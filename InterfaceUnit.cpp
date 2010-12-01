@@ -51,7 +51,7 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "Beta v0.4b"; //change for each published modification
+    ProgramVersion = "Beta v0.4c"; //change for each published modification
     //check for presence of directories, creation failure probably indicates that the working folder is read-only
     CurDir = GetCurrentDir();
     if(!DirectoryExists("Railways"))
@@ -3233,6 +3233,7 @@ try
                     while(TempStr[TempStr.Length()] == ',')
                         {
                         TempStr = TempStr.SubString(1, TempStr.Length() - 1);
+                        if(TempStr == "") break;
                         }
                     }
                 }
@@ -4125,9 +4126,12 @@ if(OutStr != "")
     while(OutStr[OutStr.Length()] == ',')
         {
         OutStr = OutStr.SubString(1, OutStr.Length() - 1);
+        if(OutStr == "") break;//if consisted of just commas then without this would fail on range error when becomes a null string
         }
     }
 ConvStr = OutStr;
+if(ConvStr == "") ConvStr = ','; //don't return a null or will fail, OK to return a comma on its own as will be ignored during ProcessOneTimetableLine
+                                 //when AllCommas will be true
 Utilities->CallLogPop(1846);
 }
 
@@ -6346,7 +6350,7 @@ try
 //have to allow in zoomout mode
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ClockTimer2");
     CallLogTickerLabel->Caption = Utilities->CallLog.size(); //diagnostic test function to ensure all CallLogs are popped - visibility
-        //toggled by 'Ctrl Alt 3' when Interface form has focus
+        //toggled by 'Ctrl Alt 2' when Interface form has focus
 //set current time
     TDateTime Now = TDateTime::CurrentDateTime();
 
@@ -6456,7 +6460,7 @@ try
         int ScreenX = Mouse->CursorPos.x - MainScreen->ClientOrigin.x;
         int ScreenY = Mouse->CursorPos.y - MainScreen->ClientOrigin.y;
         int HLoc, VLoc;
-        AnsiString MouseStr = "Posx: " + AnsiString(Mouse->CursorPos.x - ClientOrigin.x - MainScreen->Left) + "; Posy: " + AnsiString(Mouse->CursorPos.y - ClientOrigin.y - MainScreen->Top);
+        AnsiString MouseStr = "Posx: " + AnsiString(ScreenX) + "; Posy: " + AnsiString(ScreenY);
         DevelopmentPanel->Caption = MouseStr;
         Track->GetTrackLocsFromScreenPos(7, HLoc, VLoc, ScreenX, ScreenY);
         if(Track->FindNonPlatformMatch(1, HLoc, VLoc, Position, TrackElement))
@@ -6679,7 +6683,7 @@ try
     ScreenLeftButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
     if(!Display->ZoomOutFlag)
         {
-        if(ShiftKey)
+        if(CtrlKey)
             {
             Display->DisplayOffsetH-= 2;
             }
@@ -6695,7 +6699,7 @@ try
         }
     else
         {
-        if(ShiftKey)
+        if(CtrlKey)
             {
             Display->DisplayZoomOutOffsetH-= 2;
             }
@@ -6729,7 +6733,7 @@ try
     ScreenRightButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
     if(!Display->ZoomOutFlag)
         {
-        if(ShiftKey)
+        if(CtrlKey)
             {
             Display->DisplayOffsetH+= 2;
             }
@@ -6745,7 +6749,7 @@ try
         }
     else
         {
-        if(ShiftKey)
+        if(CtrlKey)
             {
             Display->DisplayZoomOutOffsetH+= 2;
             }
@@ -6779,7 +6783,7 @@ try
     ScreenDownButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
     if(!Display->ZoomOutFlag)
         {
-        if(ShiftKey)
+        if(CtrlKey)
             {
             Display->DisplayOffsetV+= 2;
             }
@@ -6795,7 +6799,7 @@ try
         }
     else
         {
-        if(ShiftKey)
+        if(CtrlKey)
             {
             Display->DisplayZoomOutOffsetV+= 2;
             }
@@ -6829,7 +6833,7 @@ try
     ScreenUpButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
     if(!Display->ZoomOutFlag)
         {
-        if(ShiftKey)
+        if(CtrlKey)
             {
             Display->DisplayOffsetV-= 2;
             }
@@ -6845,7 +6849,7 @@ try
         }
     else
         {
-        if(ShiftKey)
+        if(CtrlKey)
             {
             Display->DisplayZoomOutOffsetV-= 2;
             }
@@ -8022,7 +8026,7 @@ try
         }
     else if(Shift.Contains(ssCtrl))
         {
-        ShiftKey = true;
+        CtrlKey = true;
         }
     }
 catch (const Exception &e)
@@ -8036,7 +8040,7 @@ catch (const Exception &e)
 void __fastcall TInterface::FormKeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-ShiftKey = false;
+CtrlKey = false;
 }
 
 //---------------------------------------------------------------------------
@@ -10674,7 +10678,7 @@ TempFont->Color = clB0G0R0;
 TempFont->Charset = (TFontCharset)(0);
 MainScreen->Canvas->Font->Assign(TempFont);
 delete TempFont;
-ShiftKey = false;
+CtrlKey = false;
 Utilities->CallLogPop(1209);
 }
 
@@ -12379,11 +12383,13 @@ NB:  Don't change it to a .txt file, as the '\0' characters will be changed to s
 strip out:-
 
 up to but excluding ***Interface***
-from & including  ***ConstructPrefDir***
+from & including  ***ConstructPrefDir PrefDirVector***
 to but excluding ***PrefDirs***
-from & including  ***ConstructRoute***
+from & including  ***ConstructRoute PrefDirVector***
 to but excluding ***Routes***
-and resave.
+from & including ***No editing timetable*** or ***Editing timetable - [title]***
+to but excluding ***TimetableClock***
+and save as a .ssn file.
 
 In order to load as a railway file:
 
@@ -12395,19 +12401,23 @@ add the version number either before or instead of ***Track***, ensuring that th
 add two zero entries on their own lines after the version line (these become DisplayOffsetH & V)
 the next line should contain the number of active elements - leave that in.
 strip out ***Text*** including the \0
-strip out from & including  ***ConstructPrefDir*** to & including ***PrefDirs*** (and the \0)
-strip out from & including  ***ConstructRoute*** to the end of the file
-
+strip out from & including  ***ConstructPrefDir PrefDirVector*** to & including ***PrefDirs*** (and the \0)
+strip out from & including  ***ConstructRoute PrefDirVector*** to the end of the file
 rename as .dev or .rly file
+
+BUT - note that signals (and points, though thye won't show) will be set as they were left.  To reset to red, load a suitable timetable & select
+'Operate' then 'Exit operation'.
 */
 
 /*
-To extract a timetable:
+In order to extract a timetable:
 
-strip out all to but excluding ***Loaded timetable.... or ***Editing timetable.... depending which is to be saved
+NB:  Don't change it to a .txt file, as the '\0' characters will be changed to spaces if it is subsequently saved
+
+strip out all to and including ***Timetable*** or ***Editing timetable.... depending which is to be saved
 ensure all text before start time ends with /0
-strip out all after the final /0 (including any CRLFs , i.e. cursor to finish at the end of the last line after the /0, not
-at start of next line)
+strip out all after the final /0 immediately before ***End*** or ***End of timetable***, but ensure leave the final /0
+save as a .ttb file
 */
 
 Screen->Cursor = TCursor(-11);//Hourglass;
@@ -12415,6 +12425,11 @@ AnsiString ErrorFileStr = CurDir + "\\errorlog.err";
 std::ofstream ErrorFile(ErrorFileStr.c_str());
 if(!(ErrorFile.fail()))
     {
+//save mouse position relative to mainscreen
+    int ScreenX = Mouse->CursorPos.x - MainScreen->ClientOrigin.x;
+    int ScreenY = Mouse->CursorPos.y - MainScreen->ClientOrigin.y;
+    AnsiString MouseStr = "Posx: " + AnsiString(ScreenX) + "; Posy: " + AnsiString(ScreenY);
+    Utilities->SaveFileString(ErrorFile, MouseStr);
 //save call stack
     Utilities->SaveFileString(ErrorFile, "***Call stack***");
     for(unsigned int x=0;x<Utilities->CallLog.size();x++)
@@ -12429,6 +12444,7 @@ if(!(ErrorFile.fail()))
         AnsiString Item = Utilities->EventLog.at(x);
         ErrorFile << Item.c_str() << '\n';
         }
+//save interface
     Utilities->SaveFileString(ErrorFile, "***Interface***");
     SaveInterface(1, ErrorFile);
 //save track elements
@@ -12465,20 +12481,20 @@ if(!(ErrorFile.fail()))
     if(TimetableTitle == "") Utilities->SaveFileString(ErrorFile, "***No timetable loaded***");
     else
         {
-        Utilities->SaveFileString(ErrorFile, "***Loaded timetable - " + TimetableTitle + " ***");
-        if(!(SaveTimetableToErrorFile(0, ErrorFile, ErrorFileStr, TempTTFileName)))
+        Utilities->SaveFileString(ErrorFile, "***Timetable***");
+        if(!(SaveTimetableToSessionFile(1, ErrorFile, ErrorFileStr)))
             {
-            Utilities->SaveFileString(ErrorFile, "***Loaded timetable failed to open***");
+            Utilities->SaveFileString(ErrorFile, "***Loaded timetable failed to save***");
             }
         }
 //save editing timetable
     if(CreateEditTTTitle == "") Utilities->SaveFileString(ErrorFile, "***No editing timetable***");
     else
         {
-        Utilities->SaveFileString(ErrorFile, "***Editing timetable - " + CreateEditTTTitle + " ***");
+        Utilities->SaveFileString(ErrorFile, "***Editing timetable - " + CreateEditTTTitle + "***");
         if(!(SaveTimetableToErrorFile(1, ErrorFile, ErrorFileStr, CreateEditTTFileName)))
             {
-            Utilities->SaveFileString(ErrorFile, "***Editing timetable failed to open***");
+            Utilities->SaveFileString(ErrorFile, "***Editing timetable failed to save***");
             }
         }
 //save TimetableClock

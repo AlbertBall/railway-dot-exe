@@ -645,7 +645,7 @@ bool ScreenGridFlag;    //true when the screen grid is displayed
 bool SelectionValid;    //true when an area of screen has been selected via the 'Edit' & 'Select' or 'Reselect' menu items
 bool SelectLengthsFlag; //true when 'Set lengths &/or speeds' selected in the 'Edit' menu
 bool SelectPickedUp;    //true when a valid selected screen area has been clicked after a 'Copy' or 'Cut' selected in the 'Edit' menu
-bool ShiftKey;          //true when the CTRL key is pressed (used for small movements of the screen)
+bool CtrlKey;           //true when the CTRL key is pressed (used for small movements of the screen)
 bool ShowPerformancePanel;//true when the 'show performance panel' button has been clicked during operation
 bool TempCursorSet;     //indicates that a screen cursor has been stored in TempCursor for redisplay after a temporary cursor (usually an hourglass) has been displayed
 bool TextFoundFlag;     //indicates that a text item has been found when clicking on a build screen during 'AddText' or 'MoveText' modes

@@ -1,26 +1,53 @@
 Development History
 ---------------------------------------------------------------------------
 
-Checklist for change of version:
+VERSION CHANGES AFTER BETA V0.4b for Beta v0.4c
 
-1) Create a new folder 'release vx.xx' from earlier release zip file
-2) Change readme file & make sure cite the correct number of pages in the user manual;
-3) update railway.exe;
-4) if help file changed, update .hlp, .fts, & .cnt if necesary, + change manual too and update
-5) zip all up as Release vx.xx
-6) on user web site delete old release version and upload new one
-7) on user web site update the text of the download page wrt new release version name & make sure cite the correct number of pages in the user manual;
-8) on user web site update the error page
-9) on user web site update the manual if changed & mention in news & errors pages
-10) on user web site update the latest news page
-11) download and test the new download file
-12) read the manual from the web site if changed
-13) create a new offline website for the new version, copy it to 'Website[date]', add that name to the ignore list & delete the unwanted files created by Website.whtt
-14) backup all source files for the release & copy to 'Release backups for beta vx.xx'
-15) change version number in Interface.cpp to next version
-16) recompile all the files using build
-17) copy new releases (web files + backups) to C & D drives & memory stick
-18) create a new change section for the next release
+* = mention on user website
+
+changed version ref to v0.4c
+
+*added HasTrainGone() condition in TrainController::Operate() to prevent 2 trains both having TrainGone set
+at the same time.  That caused the error Craig Weekes reported in November 2010 where 2 trains exited at the same time, and later the TrainVector
+iterates in reverse to erase the second train to have gone, but afterwards ReplotTrains iterates forwards and therefore replots the first train to
+have gone and therefore sets the TrainIDOnElement value to the exited train, with nothing to reset it.  Hovering the mouse over that element with
+train information enabled causes an error because the track element thinks the train is still there, whereas it is missing from the TrainVector.
+
+in ConvertCRLFsToCommas, if Outstr = ',', then will have range error at last while(... - caused by having a crlf at end of a tt file (shouldn't have one in 
+  a proper file but could have in a corrupted file - add a 'break' from the 'while' if string empty, also at end check if ConvStr == "" and if so make it     ',' to avoid returning a null which would fail.
+
+added mousepos to error file
+
+changed 'ShiftKey' to 'CtrlKey'
+
+changed loaded tt routine in SaveErrorFile to use original tt session save, in order to include the tt train information to allow a session file to be extracted (formerly didn't save the tt train information)
+
+corrected another while... Length() function to break if becomes null in SaveTTEntryButtonClick
+
+tested works OK for Craig's error & for crlf at end of a tt file
+
+added train text info after save loaded timetable to error file (or use existing savetimetable routine)
+
+altered text in SaveErrorFile to cover requirements for extracting ssn file (need to change some of text & strip out editing tt)
+
+added note that if extract a railway from an error file where had been operating then likely to have non-red signals, load tt, select operate, then exit     operation - resets all to red
+
+checked that all error file extraction files described correctly
+
+checked sig controlled trains work as described re starting with zero speed at a location
+
+*changed railwayfeedback@googlemail.com in the quick start guide to ...gmail.com
+
+*altered help file 5.11.rtf & manual to say that if a signaller controlled train starts at a location with zero speed then will stay located
+
+created new pdfs for manual & quick start guide
+
+recompiled the help file
+
+deleted readme.txt file from Help-files folder (not needed as already included in the download)
+
+deleted release v0.4b.zip in trunk (not needed as already included in the download)
+
 
 
 VERSION CHANGES AFTER BETA V0.4a for Beta v0.4b
@@ -373,17 +400,42 @@ Tidy all code, check & define all variables & functions, & improve layout
 Consider what to do about map/route checks & other such development checks before issue (maybe leave in for early release or
 have self-checking and normal release versions - if poss record the call stack)
 
-ADDING A PROJECT TO THE WEBSITE
+CHECKLISTS:
+
+CHANGE OF VERSION:
+
+1) increment version number in Interface.cpp if not already incremented 
+2) check if any unexpected changes in repository wrt working files
+3) create a new folder 'release vx.xx' from earlier release zip file
+4) in that folder:-
+  a) change readme file & make sure cite the correct number of pages in the user manual;
+  b) update railway.exe;
+  c) if help file changed, update .hlp, .fts, & .cnt if necesary, + change manual too and update
+5) zip above folder as Release vx.xx
+6) on user web site delete old release version and upload new one
+7) on user web site update the text of the download page wrt new release version name & make sure cite the correct number of pages in the user manual;
+8) on user web site update the error page
+9) on user web site update the manual if changed & mention in news & errors pages
+10) on user web site update the latest news page
+11) download and test the new download file
+12) read the manual from the user web site if changed
+13) on source website add the new release version as a download provided it tested OK
+14) create a new offline website for the new user website, copy it to 'Website[date]' (if required)
+15) backup all source files for the release (including the release zip) & copy to 'Release backups vx.xx'
+16) copy new releases (web files + backups) to other drives & memory stick
+17) commit all changes to Google repository & list in log
+
+
+ADDING A NEW PROJECT TO THE USER WEBSITE:
 
 1) zip all files & just use letters, numbers & spaces in filename
-2) create a .jpg image of the railway
-3) on web - update the latest news page (latest entry first) with a link to the new project page
-4) on web - add a new (filing cabinet) page under 'Railway Projects' + include a centralised image + include descriptive text
-    + add the zipped file
-5) on web - copy the URL of the image on the website
-6) on web - update the railway projects page, include the URL to the image (latest first)
-7) on web - update the sidebar to show the new project at the top
-8) make a copy of the website for own records
+2) create a .jpg image of the railway, add it to the Uploaded_images page, & copy its URL
+3) on web - add a new (filing cabinet) page under 'Railway Projects' + include the URL to the image + include descriptive text + add the zipped file
+4) on web - update the latest news page (latest entry first) with a link to the new project page
+5) on web - update the railway projects page, include the URL to the image (latest first)
+6) on web - update the sidebar to show the new project at the top
+7) download the file & check OK
+8) make a copy of the website for own records if required
 
 
 FUTURE UPDATES:

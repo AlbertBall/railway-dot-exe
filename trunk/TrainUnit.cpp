@@ -5650,7 +5650,11 @@ if(!TrainVector.empty())
     for(unsigned int x=0;x<TrainVector.size();x++)
         {
         TrainVectorAt(33, x).UpdateTrain(0);
-        if(TrainAdded)
+        if(TrainAdded || TrainVectorAt(35, x).HasTrainGone())  //added HasTrainGone() condition in v0.4c to prevent 2 trains both having TrainGone set
+//at the same time.  That caused the error Craig Weekes reported in November 2010 where 2 trains exited at the same time, and later the TrainVector
+//iterates in reverse to erase the second train to have gone, but afterwards ReplotTrains iterates forwards and therefore replots the first train to
+//have gone and therefore sets the TrainIDOnElement value to the exited train, with nothing to reset it.  Hovering the mouse over that element with
+//train information enabled causes an error because the track element thinks the train is still there, whereas it is missing from the TrainVector.
             {
             break;
             }

@@ -4949,7 +4949,7 @@ with the new name
 */
 {
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AddName," + TrackElement->LogTrack(6) + "," + Name);
-AnsiString OldName = TrackElement->LocationName, ErrorString;
+AnsiString OldName = TrackElement->LocationName, ErrorString;//declare new AnsiStrings OldName (set to existing name) & ErrorString
 TrackElement->LocationName = Name;//covers all FixedNamedLocationElement whichever vector they are in
 int HLoc = TrackElement->HLoc;
 int VLoc = TrackElement->VLoc;
@@ -7085,14 +7085,15 @@ else
     SearchLimitLowV = TrackElement.VLoc -15;
     SearchLimitHighV = StartPrefDirElement.VLoc + 15;
     }
-
+/* dropped this for v0.4d - prevents ability to set paths for gaps that are widely separated, ok without it as search limited by SearchVector size
+   check & TotalSearchCounts check
 if((abs(TrackElement.HLoc - StartPrefDirElement.HLoc) > 120) || (abs(TrackElement.VLoc - StartPrefDirElement.VLoc) > 120))
     {
     ShowMessage("Unable to reach the selected element - too far ahead");
     Utilities->CallLogPop(1692);
     return false;
     }
-
+*/
 //get last PrefDir element
 if(PrefDirVector.at(LastElementNumber(0)).ELink == -1)//start element
     {
@@ -9350,14 +9351,15 @@ else
     SearchLimitLowV = EndElement1.VLoc -15;
     SearchLimitHighV = StartElement1.VLoc + 15;
     }
-
+/* dropped this for v0.4d - prevents ability to set routes for gaps that are widely separated, ok without it as search limited by SearchVector size
+   check & TotalSearchCounts check
 if((abs(EndElement1.HLoc - StartElement1.HLoc) > 120) || (abs(EndElement1.VLoc - StartElement1.VLoc) > 120))
     {
     TrainController->StopTTClockMessage(65, "Unable to reach the selected element - too far ahead");
     Utilities->CallLogPop(1693);
     return false;
     }
-
+*/
 //check if adjacent to start and disallow
 for(unsigned int a=0;a<AllRoutes->AllRoutesSize();a++)
     {
@@ -9518,6 +9520,19 @@ else
                 PointsChanged = true;
                 }
             Utilities->CallLogPop(1858);
+            return true;
+            }
+        }
+    else if(StartElement1.XLinkPos == (1 - BestPos))//added at v0.4d to use StartElement1 again with non-Best direction (may be only one & may not point in right direction
+        {
+        if(SearchForPreferredRoute(9, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition, AutoSigsFlag))
+            {
+            SetRouteSearchVectorGraphics(8, AutoSigsFlag, true);//change graphic colour to the route colour
+            if(PointsToBeChanged(12))
+                {
+                PointsChanged = true;
+                }
+            Utilities->CallLogPop(1864);
             return true;
             }
         }
@@ -10426,13 +10441,15 @@ else
     SearchLimitHighV = StartElement1.VLoc + 15;
     }
 
+/* dropped this for v0.4d - prevents ability to set routes for gaps that are widely separated, ok without it as search limited by SearchVector size
+   check & TotalSearchCounts check
 if((abs(EndElement1.HLoc - StartElement1.HLoc) > 120) || (abs(EndElement1.VLoc - StartElement1.VLoc) > 120))
     {
     if(!Callon) TrainController->StopTTClockMessage(66, "Unable to reach the selected element - too far ahead");
     Utilities->CallLogPop(1694);
     return false;
     }
-
+*/
 // don't need EveryPrefDir check for NonPreferredRoute
 
 //check if in an existing route - can't be a 3 or 4 track element so only one TRouteElementPair to be set

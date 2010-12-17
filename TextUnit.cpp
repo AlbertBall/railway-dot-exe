@@ -102,6 +102,7 @@ TTextHandler *TextHandler;
 
 void TTextHandler::EnterAndDisplayNewText(int Caller, TTextItem &Text, int HPos, int VPos)
 {
+Text.TextString = Text.TextString.Trim();//strip leading & trailing spaces and control characters
 if(Text.TextString == "")
     {
     return;//don't add null text to vector

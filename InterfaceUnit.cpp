@@ -51,7 +51,7 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "Beta v0.4c"; //change for each published modification
+    ProgramVersion = "Beta v0.4d"; //change for each published modification
     //check for presence of directories, creation failure probably indicates that the working folder is read-only
     CurDir = GetCurrentDir();
     if(!DirectoryExists("Railways"))
@@ -841,11 +841,15 @@ try
             {//either a new name for an unnamed location, or a different name for a named location
             //check validity of entry
             AnsiString LocStr = LocationNameTextBox->Text;
+            LocStr = LocStr.Trim(); //strip leading & trailing spaces, and control characters
+            LocationNameTextBox->Text = LocStr; //reset this as used below
+/* drop this, now covered by ...Trim() above
             //strip leading spaces
             while((LocStr != "") && (LocStr[1] == ' '))
                 {
                 LocStr = LocStr.SubString(2, LocStr.Length()-1);
                 }
+*/
             if((LocStr != "") && (LocStr[1] >= '0') && (LocStr[1] <= '9'))//can't begin with a number
                 {
                 Screen->Cursor = TCursor(-2);//Arrow
@@ -9458,8 +9462,11 @@ switch(Level2PrefDirMode)//use the data member
     case PrefDirContinuing:
         {//have to use braces as otherwise the default case bypasses the initialisation of these local variables
         InfoPanel->Visible = true;
-        AddPrefDirButton->Enabled = true; //this and the line below are to remove focus from any other button that might have it, prior to
-        AddPrefDirButton->SetFocus();     //disabling the AddPrefDir button, so pressing enter does nothing, it is reset to the AddPrefDir
+        if(!Display->ZoomOutFlag) //can't set focus if zoomed out, get an error - added this condition for v0.4d
+            {
+            AddPrefDirButton->Enabled = true; //this and the line below are to remove focus from any other button that might have it, prior to
+            AddPrefDirButton->SetFocus();     //disabling the AddPrefDir button, so pressing enter does nothing, it is reset to the AddPrefDir
+            }
         AddPrefDirButton->Enabled = false;//button later if it becomes enabled
         DeleteOnePrefDirButton->Enabled = false;
         bool LeadingPointsAtLastElement = false;
@@ -9478,8 +9485,11 @@ switch(Level2PrefDirMode)//use the data member
         else //size > 1 & EndPossible
             {
             InfoPanel->Caption = "PREFERRED DIRECTION SETTING:  Add selection or select next location (right click to truncate)";
-            AddPrefDirButton->Enabled = true;
-            AddPrefDirButton->SetFocus(); //so can just press 'Enter' key
+            if(!Display->ZoomOutFlag) //can't set focus if zoomed out, get an error - added this condition for v0.4d
+                {
+                AddPrefDirButton->Enabled = true;
+                AddPrefDirButton->SetFocus(); //so can just press 'Enter' key
+                }
             DeleteOnePrefDirButton->Enabled = true;
             }
         ExitPrefDirButton->Enabled = true;

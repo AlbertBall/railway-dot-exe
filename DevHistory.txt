@@ -1,9 +1,36 @@
 Development History
 ---------------------------------------------------------------------------
 
-VERSION CHANGES AFTER BETA V0.4b for Beta v0.4c
+VERSION CHANGES AFTER BETA V0.4c for Beta v0.4d
 
 * = mention on user website
+
+version number changed to 0.4d
+
+*15/12/10: In light of Mark Jones' route setting problem removed the three instances of horizontal & vertical distamnce limits of 120 elements in
+GetNextPrefDirElement & the 2 GetNext...RouteElement
+
+*also discovered an error where if zoomout when moving to next PrefDir element get error where can't set focus for the AddPrefDirButton when click to
+zoom back in again.  Introduced condition where doesn't try to set focus if zoomed out in SetLevel2PrefDirMode
+
+also found missing possibility in GetNextPreferredRouteElement when trying to set route & best direction doesn't correspond to XLinkPos in StartElement1
+ - added new search in non-best direction
+
+*07/12/10: Section 6 of user manual & help file changed from "....but will only stop for trains in front if they are being called-on or under signaller
+control (see later)." to "...but will only stop for trains in front if they are being called-on, under signaller control (see later), or at a timetabled
+stop location."
+
+TTextHandler::EnterAndDisplayNewText amended to strip leading & trailing spaces and control characters from entered text -
+uses Text.TextString = Text.TextString.Trim()
+
+TInterface::LocationNameKeyUp amended where entering a new name, or a changed name, to use the AnsiString Trim() function to strip leading & trailing
+spaces & and control characters, instead of just stripping leading spaces longhand.  This also corrects an error whereby a location that has a name
+allocated with a leading space isn't entered as visible text, because leading spaces are trimmed from LocStr, but the original LocationNameTextBox->Text
+is used in AddLocationName, so FindHighestLowestAndLeftmostNamedElements returns false because the two names no longer match, and the text isn't added
+to the text vector.
+
+
+VERSION CHANGES AFTER BETA V0.4b for Beta v0.4c
 
 changed version ref to v0.4c
 
@@ -49,10 +76,8 @@ deleted readme.txt file from Help-files folder (not needed as already included i
 deleted release v0.4b.zip in trunk (not needed as already included in the download)
 
 
-
 VERSION CHANGES AFTER BETA V0.4a for Beta v0.4b
 
-* = mention on user website
 
 *changed email to 'gmail' - mention googlemail still works
 
@@ -75,9 +100,8 @@ added more try.. catch.. blocks in Interface.cpp as above fault not caught
 
 remember to add the GNU license text file to the release files & mention in web news & changes
 
-VERSION CHANGES AFTER BETA V0.3a for Beta v0.4
 
-* = mention on website
+VERSION CHANGES AFTER BETA V0.3a for Beta v0.4
 
 *corrected a fault in train split functions, could get a linking error with original code
 
@@ -136,8 +160,6 @@ added an extra 6 asterisks in SavePrefDir after late element saved (so can disti
 
 
 VERSION CHANGES AFTER BETA V0.3 for Beta v0.3a
-
-* = mention on website
 
 changed (CumulativeLength < DistanceAtHalfBraking) to ((CumulativeLength - FrontElementLength) < DistanceAtHalfBraking) in the main loop
     test in SetTrainMovementValues, was an error, should check from AFTER the current element - caused a SPAD in Richard Standing's
@@ -406,7 +428,7 @@ CHANGE OF VERSION:
 
 1) increment version number in Interface.cpp if not already incremented 
 2) check if any unexpected changes in repository wrt working files
-3) create a new folder 'release vx.xx' from earlier release zip file
+3) create a new folder 'release vx.xx' from earlier release zip file (inc Help.fts, .cnt & .hlp)
 4) in that folder:-
   a) change readme file & make sure cite the correct number of pages in the user manual;
   b) update railway.exe;
@@ -424,6 +446,7 @@ CHANGE OF VERSION:
 15) backup all source files for the release (including the release zip) & copy to 'Release backups vx.xx'
 16) copy new releases (web files + backups) to other drives & memory stick
 17) commit all changes to Google repository & list in log
+18) add a new tag to Google repository for the new release
 
 
 ADDING A NEW PROJECT TO THE USER WEBSITE:
@@ -588,7 +611,7 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 
 COPY SECTIONS:
 
-NEXT value for CallLogPop is 1864
+NEXT value for CallLogPop is 1865
 NEXT value for TrackElementAt is 845
 NEXT value for InactiveTrackElementAt is 100
 NEXT value for GetFixedRouteAt is 196

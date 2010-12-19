@@ -1,9 +1,16 @@
 Development History
 ---------------------------------------------------------------------------
 
-VERSION CHANGES AFTER BETA V0.4c for Beta v0.4d
+VERSION CHANGES AFTER BETA V0.4d for Beta v0.4e
 
 * = mention on user website
+
+Added larger viewpoint movements when Shift key pressed (full screen width & height in both zoom in & out modes).  Also included this (along with
+Ctrl key for small movement) information in the button hints.
+
+Also changed the user manual (section 3.1) & help file to include this information.
+
+VERSION CHANGES AFTER BETA V0.4c for Beta v0.4d
 
 version number changed to 0.4d
 
@@ -426,7 +433,7 @@ CHECKLISTS:
 
 CHANGE OF VERSION:
 
-1) increment version number in Interface.cpp if not already incremented 
+1) increment version number in Interface.cpp if not already incremented
 2) check if any unexpected changes in repository wrt working files
 3) create a new folder 'release vx.xx' from earlier release zip file (inc Help.fts, .cnt & .hlp)
 4) in that folder:-
@@ -447,7 +454,7 @@ CHANGE OF VERSION:
 16) copy new releases (web files + backups) to other drives & memory stick
 17) commit all changes to Google repository & list in log
 18) add a new tag to Google repository for the new release
-
+19) add a message to the TrainSim forum if required
 
 ADDING A NEW PROJECT TO THE USER WEBSITE:
 

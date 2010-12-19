@@ -51,7 +51,7 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "Beta v0.4d"; //change for each published modification
+    ProgramVersion = "Beta v0.4e"; //change for each published modification
     //check for presence of directories, creation failure probably indicates that the working folder is read-only
     CurDir = GetCurrentDir();
     if(!DirectoryExists("Railways"))
@@ -6691,6 +6691,10 @@ try
             {
             Display->DisplayOffsetH-= 2;
             }
+        else if(ShiftKey)
+            {
+            Display->DisplayOffsetH-= ScreenElementWidth;
+            }
         else
             {
             Display->DisplayOffsetH-= ScreenElementWidth/2;
@@ -6706,6 +6710,10 @@ try
         if(CtrlKey)
             {
             Display->DisplayZoomOutOffsetH-= 2;
+            }
+        else if(ShiftKey)
+            {
+            Display->DisplayZoomOutOffsetH-= (4 * ScreenElementWidth);
             }
         else
             {
@@ -6741,6 +6749,10 @@ try
             {
             Display->DisplayOffsetH+= 2;
             }
+        else if(ShiftKey)
+            {
+            Display->DisplayOffsetH+= ScreenElementWidth;
+            }
         else
             {
             Display->DisplayOffsetH+= ScreenElementWidth/2;
@@ -6756,6 +6768,10 @@ try
         if(CtrlKey)
             {
             Display->DisplayZoomOutOffsetH+= 2;
+            }
+        else if(ShiftKey)
+            {
+            Display->DisplayZoomOutOffsetH+= (4 * ScreenElementWidth);
             }
         else
             {
@@ -6791,6 +6807,10 @@ try
             {
             Display->DisplayOffsetV+= 2;
             }
+        else if(ShiftKey)
+            {
+            Display->DisplayOffsetV+= ScreenElementHeight;
+            }
         else
             {
             Display->DisplayOffsetV+= ScreenElementHeight/2;
@@ -6806,6 +6826,10 @@ try
         if(CtrlKey)
             {
             Display->DisplayZoomOutOffsetV+= 2;
+            }
+        else if(ShiftKey)
+            {
+            Display->DisplayZoomOutOffsetV+= (4 * ScreenElementHeight);
             }
         else
             {
@@ -6841,6 +6865,10 @@ try
             {
             Display->DisplayOffsetV-= 2;
             }
+        else if(ShiftKey)
+            {
+            Display->DisplayOffsetV-= ScreenElementHeight;
+            }
         else
             {
             Display->DisplayOffsetV-= ScreenElementHeight/2;
@@ -6856,6 +6884,10 @@ try
         if(CtrlKey)
             {
             Display->DisplayZoomOutOffsetV-= 2;
+            }
+        else if(ShiftKey)
+            {
+            Display->DisplayZoomOutOffsetV-= (4 * ScreenElementHeight);
             }
         else
             {
@@ -8028,9 +8060,13 @@ try
             TestFunction();
             }
         }
-    else if(Shift.Contains(ssCtrl))
+    else if((Shift.Contains(ssCtrl)) && !(Shift.Contains(ssShift)))
         {
         CtrlKey = true;
+        }
+    else if((Shift.Contains(ssShift)) && !(Shift.Contains(ssCtrl)))
+        {
+        ShiftKey = true;
         }
     }
 catch (const Exception &e)
@@ -8045,6 +8081,7 @@ void __fastcall TInterface::FormKeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
 CtrlKey = false;
+ShiftKey = false;
 }
 
 //---------------------------------------------------------------------------
@@ -10689,6 +10726,7 @@ TempFont->Charset = (TFontCharset)(0);
 MainScreen->Canvas->Font->Assign(TempFont);
 delete TempFont;
 CtrlKey = false;
+ShiftKey = false;
 Utilities->CallLogPop(1209);
 }
 

@@ -435,6 +435,27 @@ __published:	// IDE-managed Components
     TSpeedButton *SpeedButton141;
     TSpeedButton *SpeedButton142;
     TSpeedButton *SpeedButton143;
+    TEdit *MPHEdit1;
+    TLabel *MPHLabel1;
+    TLabel *KPHFixedLabel1;
+    TPanel *KPHPanel1;
+    TLabel *KPHVariableLabel1;
+    TEdit *MileEdit;
+    TEdit *ChainEdit;
+    TEdit *YardEdit;
+    TPanel *MetrePanel;
+    TLabel *MetreVariableLabel;
+    TLabel *MileLabel;
+    TLabel *ChainLabel;
+    TLabel *YardLabel;
+    TLabel *MetreFixedLabel;
+    TPanel *LengthConversionPanel;
+    TPanel *SpeedConversionPanel;
+    TEdit *MPHEdit2;
+    TLabel *Label1;
+    TLabel *Label2;
+    TPanel *KPHPanel2;
+    TLabel *KPHVariableLabel2;
 
 //menu item actions
     void __fastcall About1Click(TObject *Sender);
@@ -581,6 +602,12 @@ __published:	// IDE-managed Components
     void __fastcall LocationNameComboBoxClick(TObject *Sender);
     void __fastcall MasterClockTimer(TObject *Sender);
     void __fastcall FormKeyUp(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+    void __fastcall MPHEdit1KeyUp(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+    void __fastcall MPHEdit2KeyUp(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+    void __fastcall LengthEditKeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
 
 public: //AboutForm needs access to these
@@ -824,3 +851,4 @@ extern PACKAGE TInterface *Interface;
 
 //---------------------------------------------------------------------------
 #endif
+ 

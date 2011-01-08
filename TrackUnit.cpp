@@ -3649,7 +3649,7 @@ return true;
 
 //---------------------------------------------------------------------------
 
-bool TTrack::IsTrackLinked(int Caller)
+bool TTrack::IsTrackLinked(int Caller)  //not used any more
 {
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsTrackLinked");
 for(unsigned int x=0;x<TrackVector.size();x++)// check all elements in turn
@@ -7134,6 +7134,7 @@ if(PrefDirVector.at(LastElementNumber(0)).ELink == -1)//start element
         if((PrefDirVector.at(LastElementNumber(10)).Link[x] > 0) &&
                 (PrefDirVector.at(LastElementNumber(11)).Config[x] != End)) //i.e have somewhere to go
             {
+            TotalSearchCount = 0; //added at v0.4f to give each exit direction a full chance to find the required position
             TempTrackElement = PrefDirVector.at(LastElementNumber(12));
             SearchVector.clear();
             if(SearchForPrefDir(2, TempTrackElement, x, TrackVectorPosition))
@@ -9473,9 +9474,12 @@ else
 
     //now start off in the best direction
     int BestPos = Track->FindClosestLinkPosition(0, StartRoutePosition, EndPosition);//can only be 0 or 1
-
+    //the following logic is very unstructured as extra bits have been added at different times and I'm reluctant to remove earlier bits in case
+    //they cover situations that might be overlooked.  A full analysis would enable it to be tidied up but it works (so far!) so I'll leave it as it is
+    //unless new problems are found.
     if(StartElement1.XLinkPos == BestPos)
         {
+        TotalSearchCount = 0; //added at v0.4f to give each exit direction a full chance to find required position
         if(SearchForPreferredRoute(3, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition, AutoSigsFlag))
             {
             SetRouteSearchVectorGraphics(3, AutoSigsFlag, true);//change graphic colour to the route colour
@@ -9488,6 +9492,7 @@ else
             }
         else if(StartElement2.TrackVectorPosition > -1)
             {
+            TotalSearchCount = 0; //added at v0.4f to give each exit direction a full chance to find required position
             if(SearchForPreferredRoute(4, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition, AutoSigsFlag))
                 {
                 SetRouteSearchVectorGraphics(4, AutoSigsFlag, true);//change graphic colour to the route colour
@@ -9502,6 +9507,7 @@ else
         }
     else if(StartElement2.TrackVectorPosition > -1)
         {
+        TotalSearchCount = 0; //added at v0.4f to give each exit direction a full chance to find required position
         if(SearchForPreferredRoute(5, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition, AutoSigsFlag))
             {
             SetRouteSearchVectorGraphics(6, AutoSigsFlag, true);//change graphic colour to the route colour
@@ -9525,6 +9531,7 @@ else
         }
     else if(StartElement1.XLinkPos == (1 - BestPos))//added at v0.4d to use StartElement1 again with non-Best direction (may be only one & may not point in right direction
         {
+        TotalSearchCount = 0; //added at v0.4f to give each exit direction a full chance to find required position
         if(SearchForPreferredRoute(9, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition, AutoSigsFlag))
             {
             SetRouteSearchVectorGraphics(8, AutoSigsFlag, true);//change graphic colour to the route colour
@@ -10597,6 +10604,7 @@ else //no starting route, so StartElement1 only has basic values set & is in Sea
 
     if(SearchVector.at(0).Config[BestPos] != End)
         {
+        TotalSearchCount = 0; //added at v0.4f to give each exit direction a full chance to find required position
         if(SearchForNonPreferredRoute(3, TempElement1, BestPos, EndPosition, ReqPosRouteID))
             {
             SetRemainingSearchVectorValues(6);
@@ -10610,6 +10618,7 @@ else //no starting route, so StartElement1 only has basic values set & is in Sea
         }
     if(SearchVector.at(0).Config[1 - BestPos] != End)
         {
+        TotalSearchCount = 0; //added at v0.4f to give each exit direction a full chance to find required position
         if(SearchForNonPreferredRoute(4, TempElement1, (1 - BestPos), EndPosition, ReqPosRouteID))
             {
             SetRemainingSearchVectorValues(7);

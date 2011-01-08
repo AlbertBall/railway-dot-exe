@@ -51,7 +51,7 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "Beta v0.4e"; //change for each published modification
+    ProgramVersion = "Beta v0.5"; //change for each published modification
     //check for presence of directories, creation failure probably indicates that the working folder is read-only
     CurDir = GetCurrentDir();
     if(!DirectoryExists("Railways"))
@@ -7140,7 +7140,8 @@ try
     Rotate1->Enabled = true;
     Paste1->Enabled = false;
     Delete1->Enabled = true;
-    SelectLengths1->Enabled = true;
+    if(Track->IsTrackFinished()) SelectLengths1->Enabled = true;//only permit if finished because reverts to DistanceStart
+    else SelectLengths1->Enabled = false;                       //and that can only be used if track linked
     SelectBiDirectionalPrefDirs1->Visible = false;
     CancelSelection1->Enabled = true;
     mbLeftDown = false;
@@ -8344,6 +8345,196 @@ catch (const Exception &e)
 }
 
 //---------------------------------------------------------------------------
+
+void __fastcall TInterface::MPHEdit1KeyUp(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+try
+    {
+    Utilities->LogEvent(Utilities->TimeStamp() + ",MPHEdit1KeyUp," + AnsiString(Key));
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPHEdit1KeyUp," + AnsiString(Key));
+    bool ErrorFlag = false, TooBigFlag = false;
+    if(MPHEdit1->Text.Length() > 0)
+        {
+        if(MPHEdit1->Text.Length() > 5)
+            {
+            TooBigFlag = true;
+            }
+        for(int x=1; x<=MPHEdit1->Text.Length(); x++)
+            {
+            if((MPHEdit1->Text[x] < '0') || (MPHEdit1->Text[x] > '9'))
+                {
+                KPHVariableLabel1->Caption = "Entry error";
+                ErrorFlag = true;
+                break;
+                }
+            if(TooBigFlag)
+                {
+                KPHVariableLabel1->Caption = "Too big";
+                break;
+                }
+            }
+        if(!ErrorFlag && !TooBigFlag)
+            {
+            int MPH = MPHEdit1->Text.ToInt();
+            int KPH = (MPH * 1.609344) + 0.5;
+            KPHVariableLabel1->Caption = AnsiString(KPH);
+            }
+        }
+    else
+        {
+        KPHVariableLabel1->Caption = "";
+        }
+    Utilities->CallLogPop(1865);
+    }
+catch (const EConvertError &ec) //thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash
+    {
+    KPHVariableLabel1->Caption = "Entry error";
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(176, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MPHEdit2KeyUp(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+try
+    {
+    Utilities->LogEvent(Utilities->TimeStamp() + ",MPHEdit2KeyUp," + AnsiString(Key));
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPHEdit2KeyUp," + AnsiString(Key));
+    bool ErrorFlag = false, TooBigFlag = false;
+    if(MPHEdit2->Text.Length() > 0)
+        {
+        if(MPHEdit2->Text.Length() > 5)
+            {
+            TooBigFlag = true;
+            }
+        for(int x=1; x<=MPHEdit2->Text.Length(); x++)
+            {
+            if((MPHEdit2->Text[x] < '0') || (MPHEdit2->Text[x] > '9'))
+                {
+                KPHVariableLabel2->Caption = "Entry error";
+                ErrorFlag = true;
+                break;
+                }
+            if(TooBigFlag)
+                {
+                KPHVariableLabel2->Caption = "Too big";
+                break;
+                }
+            }
+        if(!ErrorFlag && !TooBigFlag)
+            {
+            int MPH = MPHEdit2->Text.ToInt();
+            int KPH = (MPH * 1.609344) + 0.5;
+            KPHVariableLabel2->Caption = AnsiString(KPH);
+            }
+        }
+    else
+        {
+        KPHVariableLabel2->Caption = "";
+        }
+    Utilities->CallLogPop(1866);
+    }
+catch (const EConvertError &ec) //thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash
+    {
+    KPHVariableLabel2->Caption = "Entry error";
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(177, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::LengthEditKeyUp(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+try
+    {
+    Utilities->LogEvent(Utilities->TimeStamp() + ",LengthEditKeyUp," + AnsiString(Key));
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LengthEditKeyUp," + AnsiString(Key));
+    bool ErrorFlag = false, TooLongFlag = false;
+    if((MileEdit->Text.Length() > 0) && (MileEdit->Text.Length() < 6))
+        {
+        for(int x=1; x<=MileEdit->Text.Length(); x++)
+            {
+            if((MileEdit->Text[x] < '0') || (MileEdit->Text[x] > '9'))
+                {
+                MetreVariableLabel->Caption = "Entry error";
+                ErrorFlag = true;
+                break;
+                }
+            }
+        }
+    if((ChainEdit->Text.Length() > 0) && (ChainEdit->Text.Length() < 6))
+        {
+        for(int x=1; x<=ChainEdit->Text.Length(); x++)
+            {
+            if((ChainEdit->Text[x] < '0') || (ChainEdit->Text[x] > '9'))
+                {
+                MetreVariableLabel->Caption = "Entry error";
+                ErrorFlag = true;
+                break;
+                }
+            }
+        }
+    if((YardEdit->Text.Length() > 0) && (YardEdit->Text.Length() < 6))
+        {
+        for(int x=1; x<=YardEdit->Text.Length(); x++)
+            {
+            if((YardEdit->Text[x] < '0') || (YardEdit->Text[x] > '9'))
+                {
+                MetreVariableLabel->Caption = "Entry error";
+                ErrorFlag = true;
+                break;
+                }
+            }
+        }
+    if((MileEdit->Text.Length() > 5) || (ChainEdit->Text.Length() > 5) || (YardEdit->Text.Length() > 5))
+        {
+        TooLongFlag = true;
+        MetreVariableLabel->Caption = "Too big";
+        }
+    if(!ErrorFlag && !TooLongFlag)
+        {
+        int Miles = 0, Chains = 0, Yards = 0, Metres = 0;
+        if(MileEdit->Text.Length() > 0)
+            {
+            Miles = MileEdit->Text.ToInt();
+            }
+        if(ChainEdit->Text.Length() > 0)
+            {
+            Chains = ChainEdit->Text.ToInt();
+            }
+        if(YardEdit->Text.Length() > 0)
+            {
+            Yards = YardEdit->Text.ToInt();
+            }
+        Metres = int((Miles * 1609.344) + (Chains * 20.1168) + (Yards * 0.9144) + 0.5);
+        MetreVariableLabel->Caption = AnsiString(Metres);
+        }
+    if((MileEdit->Text.Length() == 0) && (ChainEdit->Text.Length() == 0) && (YardEdit->Text.Length() == 0))
+        {
+        MetreVariableLabel->Caption = "";
+        }
+    Utilities->CallLogPop(1867);
+    }
+catch (const EConvertError &ec) //thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash
+    {
+    MetreVariableLabel->Caption = "Entry error";
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(178, e.Message);
+    }
+}
+//---------------------------------------------------------------------------
 //end of fastcalls & directly associated functions
 //---------------------------------------------------------------------------
 
@@ -8389,6 +8580,8 @@ if(Level2TrackMode == DistanceStart)
     Track->LengthMarker(0, HiddenDisplay);
     DistanceKey->Visible = true;
     DistancesMarked = true;
+    LengthConversionPanel->Visible = true;
+    SpeedConversionPanel->Visible = true;
     }
 
 if(Level2TrackMode == DistanceContinuing)//for extended distances
@@ -8399,6 +8592,8 @@ if(Level2TrackMode == DistanceContinuing)//for extended distances
         Track->LengthMarker(2, HiddenDisplay);
         DistanceKey->Visible = true;
         DistancesMarked = true;
+        LengthConversionPanel->Visible = true;
+        SpeedConversionPanel->Visible = true;
         }
     }
 
@@ -8745,6 +8940,8 @@ switch(Level1Mode)//use the data member
     Level2TrackMode = NoTrackMode;
     Level2PrefDirMode = NoPrefDirMode;
     Level2OperMode = NoOperMode;
+    LengthConversionPanel->Visible = false;
+    SpeedConversionPanel->Visible = false;
     TimetableEditPanel->Visible = false;
     TrackBuildPanel->Visible = false;
     TrackElementPanel->Visible = false;
@@ -9132,6 +9329,8 @@ switch(Level2TrackMode)//use the data member
     ResetCurrentSpeedButton(1);
     InfoPanel->Visible = true;
     InfoPanel->Caption = "ADDING TRACK:  Select element then left click to add it.  Right click an element to remove it.";
+    LengthConversionPanel->Visible = false; //in case had been in distance setting mode
+    SpeedConversionPanel->Visible = false;  //in case had been in distance setting mode
     TrackElementPanel->Visible = true;
     TrackElementPanel->Enabled = true;
     ClearandRebuildRailway(34);//to replot grid if required & clear any other unwanted items
@@ -9209,6 +9408,8 @@ switch(Level2TrackMode)//use the data member
     InfoPanel->Visible = true;
     InfoPanel->Caption = "DISTANCE/SPEED SETTING:  Select first location (only non-default elements marked)";
     DistanceKey->Visible = true;
+    LengthConversionPanel->Visible = true;
+    SpeedConversionPanel->Visible = true;
     ClearandRebuildRailway(36);//to get rid of earlier unwanted markings
     break;
 
@@ -13052,3 +13253,6 @@ be tellg, which sometimes returns wrong results, and they corrupt things when us
 Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file position then close and reopen it.
 */
 
+
+
+ 

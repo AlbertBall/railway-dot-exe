@@ -1,9 +1,23 @@
 Development History
 ---------------------------------------------------------------------------
 
-VERSION CHANGES AFTER BETA V0.4d for Beta v0.4e
+VERSION CHANGES AFTER BETA V0.4e for Beta v0.5
 
 * = mention on user website
+
+For reselection added IsTrackFinished() condition before enabling SelectLengths1
+
+*If start in wrong direction when finding pref dirs & reach TotalSearchCount limit then still won't find in right direction because doesn't reset, so add TotalSearchCount = 0 for each of the 4 exit directions in GetNextPrefDirElement. (Discovered when examining James Underwood's Slough IECC)
+
+Also added above to route searches to be safe though no problems had been found for these
+
+Quick start guide changed to include trains stopping for trains in front if at a timetabled location (p4)
+
+*Rounded up the hours integer in Format96HHMMSS & Format96HHMM to avoid undershooting the hour for formatted tts (e.g. can get 07:00 when should be 08:00)
+
+*added distance & speed converters for distance/speed setting, & speed converter for timetable compilation
+
+VERSION CHANGES AFTER BETA V0.4d for Beta v0.4e
 
 Added larger viewpoint movements when Shift key pressed (full screen width & height in both zoom in & out modes).  Also included this (along with
 Ctrl key for small movement) information in the button hints.
@@ -434,32 +448,33 @@ CHECKLISTS:
 CHANGE OF VERSION:
 
 1) increment version number in Interface.cpp if not already incremented
-2) check if any unexpected changes in repository wrt working files
-3) create a new folder 'release vx.xx' from earlier release zip file (inc Help.fts, .cnt & .hlp)
-4) in that folder:-
+2) create a new folder 'release vx.xx' from earlier release zip file (inc Help.fts, .cnt & .hlp)
+3) in that folder:-
   a) change readme file & make sure cite the correct number of pages in the user manual;
   b) update railway.exe;
   c) if help file changed, update .hlp, .fts, & .cnt if necesary, + change manual too and update
-5) zip above folder as Release vx.xx
-6) on user web site delete old release version and upload new one
-7) on user web site update the text of the download page wrt new release version name & make sure cite the correct number of pages in the user manual;
-8) on user web site update the error page
-9) on user web site update the manual if changed & mention in news & errors pages
-10) on user web site update the latest news page
-11) download and test the new download file
-12) read the manual from the user web site if changed
-13) on source website add the new release version as a download provided it tested OK
-14) create a new offline website for the new user website, copy it to 'Website[date]' (if required)
-15) backup all source files for the release (including the release zip) & copy to 'Release backups vx.xx'
-16) copy new releases (web files + backups) to other drives & memory stick
-17) commit all changes to Google repository & list in log
-18) add a new tag to Google repository for the new release
-19) add a message to the TrainSim forum if required
+4) zip above folder as release vx.xx
+5) on user web site delete old release version and upload new one
+6) on user web site update the text of the download page wrt new release version name & make sure cite the correct number of pages in the user manual;
+7) on user web site update the error page
+8) on user web site update the manual & quick start guides if changed
+9) on user web site update the latest news page
+10) download and test the new download file
+11) read the manual & quick start guides from the user web site if changed
+12) create a new offline website for the new user website, copy it to 'Website[date]' (if required)
+13) backup all source files for the release (including the release zip) & copy to 'Release backups vx.xx'
+14) copy new releases (web files + backups) to other drives & memory stick
+15) add a message to the TrainSim forum if required
+
+16) check if any unexpected changes in repository wrt working files
+17) on source website add the new release version as a download provided it tested OK
+18) commit all changes to Google repository & list in log
+19) add a new tag to Google repository for the new release
 
 ADDING A NEW PROJECT TO THE USER WEBSITE:
 
 1) zip all files & just use letters, numbers & spaces in filename
-2) create a .jpg image of the railway, add it to the Uploaded_images page, & copy its URL
+2) create a .jpg image of the railway, add it to the Uploaded_images page, & copy its URL (copy link location, not image location)
 3) on web - add a new (filing cabinet) page under 'Railway Projects' + include the URL to the image + include descriptive text + add the zipped file
 4) on web - update the latest news page (latest entry first) with a link to the new project page
 5) on web - update the railway projects page, include the URL to the image (latest first)
@@ -618,13 +633,13 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 
 COPY SECTIONS:
 
-NEXT value for CallLogPop is 1865
+NEXT value for CallLogPop is 1868
 NEXT value for TrackElementAt is 845
 NEXT value for InactiveTrackElementAt is 100
 NEXT value for GetFixedRouteAt is 196
 NEXT value for GetModifiableRouteAt is 16
 NEXT value for GetFixedPrefDirElementAt is 213
-NEXT value for ErrorLog is 176
+NEXT value for ErrorLog is 179
 NEXT value for ClearandRebuildRailway is 68
 NEXT value for TrainVectorAt is 64
 NEXT value for SetLevel1Mode is 132

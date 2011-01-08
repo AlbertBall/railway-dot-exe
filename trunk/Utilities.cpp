@@ -415,7 +415,7 @@ AnsiString TUtilities::Format96HHMMSS(TDateTime DateTime)
 //Formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 & resets when it reaches 96
 {
 AnsiString MinSecString = DateTime.FormatString(":nn:ss");
-int Hours = (int)(((double)(DateTime)) * 24);
+int Hours = (int)(((double)(DateTime + 0.001)) * 24);//for v0.4f round up by 24hr/1000 (~1.5min) to prevent undershooting the hour in formatted tts
 while(Hours >= 96) Hours -= 96;
 AnsiString HourString = AnsiString(Hours);
 while(HourString.Length() < 2) HourString = "0" + HourString;;
@@ -428,7 +428,7 @@ AnsiString TUtilities::Format96HHMM(TDateTime DateTime)
 //Formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 & resets when it reaches 96
 {
 AnsiString MinString = DateTime.FormatString(":nn");
-int Hours = (int)(((double)(DateTime)) * 24);
+int Hours = (int)(((double)(DateTime + 0.001)) * 24);//for v0.4f round up by 24hr/1000 (~1.5min) to prevent undershooting the hour in formatted tts
 while(Hours >= 96) Hours -= 96;
 AnsiString HourString = AnsiString(Hours);
 while(HourString.Length() < 2) HourString = "0" + HourString;;

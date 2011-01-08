@@ -476,7 +476,7 @@ left in.
     bool IsNamedNonStationLocationPresent(int Caller, int HLoc, int VLoc); //true if a non-station named location at HLoc & VLoc
     bool IsPlatformOrNamedNonStationLocationPresent(int Caller, int HLoc, int VLoc); //true if a non-station named location or platform
         //at HLoc & VLoc
-    bool IsTrackLinked(int Caller); //true if track has been successfully linked
+    bool IsTrackLinked(int Caller); //true if track has been successfully linked (not used any more)
     bool LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool FinalCall); //attempt to link the track and return true if
         //successful, if unsuccessful return error flag and position of the first element that can't be linked together with an
         //appropriate message.  This is a link checking (FinalCall false) or linking (FinalCall true) function, with messages, called by

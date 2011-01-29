@@ -39,8 +39,8 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) //the calling program for the a
         Application->Title = "railway.exe";
         Application->HelpFile = "";
         Application->CreateForm(__classid(TInterface), &Interface);
-        Application->CreateForm(__classid(TAboutForm), &AboutForm);
-        Application->Run();
+         Application->CreateForm(__classid(TAboutForm), &AboutForm);
+         Application->Run();
         }
     catch (Exception &exception)
         {

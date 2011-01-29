@@ -676,7 +676,7 @@ for(int x=0;x<10;x++) for(int y=0;y<2;y++) LinkHVArray[x][y] = HVArray[x][y];
 TrackFinished = false;
 //DistancesSet = false;
 
-TSigElement TempSigTable[40] =
+TSigElement TempSigTable[40] = //original four aspect
            {{68, 0, RailGraphics->gl68}, {69, 0, RailGraphics->gl69},
             {70, 0, RailGraphics->gl70}, {71, 0, RailGraphics->gl71},
             {72, 0, RailGraphics->gl72}, {73, 0, RailGraphics->bm73},
@@ -705,6 +705,99 @@ TSigElement TempSigTable[40] =
 for(int x=0;x<40;x++)
     {
     SigTable[x] = TempSigTable[x];
+    }
+
+TSigElement TempSigTableThreeAspect[40] =
+           {{68, 0, RailGraphics->gl68}, {69, 0, RailGraphics->gl69},
+            {70, 0, RailGraphics->gl70}, {71, 0, RailGraphics->gl71},
+            {72, 0, RailGraphics->gl72}, {73, 0, RailGraphics->bm73},
+            {74, 0, RailGraphics->bm74}, {75, 0, RailGraphics->gl75},
+
+            {68, 1, RailGraphics->bm68yellow}, {69, 1, RailGraphics->bm69yellow},
+            {70, 1, RailGraphics->bm70yellow}, {71, 1, RailGraphics->bm71yellow},
+            {72, 1, RailGraphics->bm72yellow}, {73, 1, RailGraphics->bm73yellow},
+            {74, 1, RailGraphics->bm74yellow}, {75, 1, RailGraphics->bm75yellow},
+
+            {68, 2, RailGraphics->bm68green}, {69, 2, RailGraphics->bm69green},
+            {70, 2, RailGraphics->bm70green}, {71, 2, RailGraphics->bm71green},
+            {72, 2, RailGraphics->bm72green}, {73, 2, RailGraphics->bm73green},
+            {74, 2, RailGraphics->bm74green}, {75, 2, RailGraphics->bm75green},
+
+            {68, 3, RailGraphics->bm68green}, {69, 3, RailGraphics->bm69green},
+            {70, 3, RailGraphics->bm70green}, {71, 3, RailGraphics->bm71green},
+            {72, 3, RailGraphics->bm72green}, {73, 3, RailGraphics->bm73green},
+            {74, 3, RailGraphics->bm74green}, {75, 3, RailGraphics->bm75green},
+
+            {68, 4, RailGraphics->gl68}, {69, 4, RailGraphics->gl69},//Attr 4 disused but leave in case re-instate
+            {70, 4, RailGraphics->gl70}, {71, 4, RailGraphics->gl71},
+            {72, 4, RailGraphics->gl72}, {73, 4, RailGraphics->bm73},
+            {74, 4, RailGraphics->bm74}, {75, 4, RailGraphics->gl75}};
+
+for(int x=0;x<40;x++)
+    {
+    SigTableThreeAspect[x] = TempSigTableThreeAspect[x];
+    }
+
+TSigElement TempSigTableTwoAspect[40] =
+           {{68, 0, RailGraphics->gl68}, {69, 0, RailGraphics->gl69},
+            {70, 0, RailGraphics->gl70}, {71, 0, RailGraphics->gl71},
+            {72, 0, RailGraphics->gl72}, {73, 0, RailGraphics->bm73},
+            {74, 0, RailGraphics->bm74}, {75, 0, RailGraphics->gl75},
+
+            {68, 1, RailGraphics->bm68green}, {69, 1, RailGraphics->bm69green},
+            {70, 1, RailGraphics->bm70green}, {71, 1, RailGraphics->bm71green},
+            {72, 1, RailGraphics->bm72green}, {73, 1, RailGraphics->bm73green},
+            {74, 1, RailGraphics->bm74green}, {75, 1, RailGraphics->bm75green},
+
+            {68, 2, RailGraphics->bm68green}, {69, 2, RailGraphics->bm69green},
+            {70, 2, RailGraphics->bm70green}, {71, 2, RailGraphics->bm71green},
+            {72, 2, RailGraphics->bm72green}, {73, 2, RailGraphics->bm73green},
+            {74, 2, RailGraphics->bm74green}, {75, 2, RailGraphics->bm75green},
+
+            {68, 3, RailGraphics->bm68green}, {69, 3, RailGraphics->bm69green},
+            {70, 3, RailGraphics->bm70green}, {71, 3, RailGraphics->bm71green},
+            {72, 3, RailGraphics->bm72green}, {73, 3, RailGraphics->bm73green},
+            {74, 3, RailGraphics->bm74green}, {75, 3, RailGraphics->bm75green},
+
+            {68, 4, RailGraphics->gl68}, {69, 4, RailGraphics->gl69},//Attr 4 disused but leave in case re-instate
+            {70, 4, RailGraphics->gl70}, {71, 4, RailGraphics->gl71},
+            {72, 4, RailGraphics->gl72}, {73, 4, RailGraphics->bm73},
+            {74, 4, RailGraphics->bm74}, {75, 4, RailGraphics->gl75}};
+
+for(int x=0;x<40;x++)
+    {
+    SigTableTwoAspect[x] = TempSigTableTwoAspect[x];
+    }
+
+TSigElement TempSigTableGroundSignal[40] =
+           {{68, 0, RailGraphics->bm68grounddblred}, {69, 0, RailGraphics->bm69grounddblred},
+            {70, 0, RailGraphics->bm70grounddblred}, {71, 0, RailGraphics->bm71grounddblred},
+            {72, 0, RailGraphics->bm72grounddblred}, {73, 0, RailGraphics->bm73grounddblred},
+            {74, 0, RailGraphics->bm74grounddblred}, {75, 0, RailGraphics->bm75grounddblred},
+
+            {68, 1, RailGraphics->bm68grounddblwhite}, {69, 1, RailGraphics->bm69grounddblwhite},
+            {70, 1, RailGraphics->bm70grounddblwhite}, {71, 1, RailGraphics->bm71grounddblwhite},
+            {72, 1, RailGraphics->bm72grounddblwhite}, {73, 1, RailGraphics->bm73grounddblwhite},
+            {74, 1, RailGraphics->bm74grounddblwhite}, {75, 1, RailGraphics->bm75grounddblwhite},
+
+            {68, 2, RailGraphics->bm68grounddblwhite}, {69, 2, RailGraphics->bm69grounddblwhite},
+            {70, 2, RailGraphics->bm70grounddblwhite}, {71, 2, RailGraphics->bm71grounddblwhite},
+            {72, 2, RailGraphics->bm72grounddblwhite}, {73, 2, RailGraphics->bm73grounddblwhite},
+            {74, 2, RailGraphics->bm74grounddblwhite}, {75, 2, RailGraphics->bm75grounddblwhite},
+
+            {68, 3, RailGraphics->bm68grounddblwhite}, {69, 3, RailGraphics->bm69grounddblwhite},
+            {70, 3, RailGraphics->bm70grounddblwhite}, {71, 3, RailGraphics->bm71grounddblwhite},
+            {72, 3, RailGraphics->bm72grounddblwhite}, {73, 3, RailGraphics->bm73grounddblwhite},
+            {74, 3, RailGraphics->bm74grounddblwhite}, {75, 3, RailGraphics->bm75grounddblwhite},
+
+            {68, 4, RailGraphics->bm68grounddblred}, {69, 4, RailGraphics->bm69grounddblred},//Attr 4 disused but leave in case re-instate
+            {70, 4, RailGraphics->bm70grounddblred}, {71, 4, RailGraphics->bm71grounddblred},
+            {72, 4, RailGraphics->bm72grounddblred}, {73, 4, RailGraphics->bm73grounddblred},
+            {74, 4, RailGraphics->bm74grounddblred}, {75, 4, RailGraphics->bm75grounddblred}};
+
+for(int x=0;x<40;x++)
+    {
+    SigTableGroundSignal[x] = TempSigTableGroundSignal[x];
     }
 
 /*
@@ -1079,7 +1172,7 @@ int Links[FirstUnusedSpeedTagNumber][4] = {
 {4,6,-1,-1},{4,6,-1,-1},{2,8,-1,-1},{2,8,-1,-1},//arrows
 {4,6,-1,-1},{2,8,-1,-1},//footbridges
 {-1,-1,-1,-1},//NamedNonStationLocation
-{8,1,8,3},{4,3,4,9},{2,9,2,7},{6,7,6,1},{9,4,9,2},{7,2,7,6},{1,6,1,8},{3,8,3,4},//points without straight legs 
+{8,1,8,3},{4,3,4,9},{2,9,2,7},{6,7,6,1},{9,4,9,2},{7,2,7,6},{1,6,1,8},{3,8,3,4},//points without straight legs
 //these points have links 0 & 2 = lead, link 1 = LH trailing, link 3 = RH trailing
 {3,7,-1,-1},{3,7,-1,-1},{1,9,-1,-1},{1,9,-1,-1}};//arrowed diagonals
 
@@ -1563,7 +1656,26 @@ TTrackElement TempTrackElement(FixedTrackArray.FixedTrackPiece[CurrentTag]);
 TempTrackElement.HLoc = HLocInput;
 TempTrackElement.VLoc = VLocInput;
 SetElementID(1, TempTrackElement);//TempTrackElement is the one to be added
-
+//new at version 0.6 - set signal aspect depending on build mode
+if(TempTrackElement.TrackType == SignalPost)
+    {
+    if(SignalAspectBuildMode == ThreeAspectBuild)
+        {
+        TempTrackElement.SigAspect = TTrackElement::ThreeAspect;
+        }
+    else if(SignalAspectBuildMode == TwoAspectBuild)
+        {
+        TempTrackElement.SigAspect = TTrackElement::TwoAspect;
+        }
+    else if(SignalAspectBuildMode == GroundSignalBuild)
+        {
+        TempTrackElement.SigAspect = TTrackElement::GroundSignal;
+        }
+    else
+        {
+        TempTrackElement.SigAspect = TTrackElement::FourAspect;
+        }
+    }
 bool FoundFlag = false, InactiveFoundFlag = false, NonStationLocNamePresent = false, PlatformPresent = false;
 int VecPos = GetVectorPositionFromTrackMap(12, HLocInput, VLocInput, FoundFlag); //active track already there
 TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(5, HLocInput, VLocInput, InactiveFoundFlag);//inactive track already there
@@ -1686,6 +1798,11 @@ else if(TempTrackElement.TrackType == Points)
     TrackPush(4, TempTrackElement);
     bool BothPointFillets = true;
     PlotPoints(6, TempTrackElement, Display, BothPointFillets);
+    }
+else if(TempTrackElement.TrackType == SignalPost)
+    {
+    TrackPush(10, TempTrackElement);
+    PlotSignal(12, TempTrackElement, Display);
     }
 else
     {
@@ -2114,14 +2231,38 @@ for(int x=0; x<NumberOfActiveElements; x++)
         }
     VecFile >> TempInt; TrackElement.Length01 = TempInt;
     VecFile >> TempInt; TrackElement.Length23 = TempInt;
-    VecFile >> TempInt; TrackElement.SpeedLimit01 = TempInt;
-    VecFile >> TempInt; TrackElement.SpeedLimit23 = TempInt;
+    VecFile >> TempInt;
+    if((TempInt != -1) && (TempInt < 10)) TempInt = 10;  //added at v0.6 to ensure old railway speed limits at least 10km/h
+    TrackElement.SpeedLimit01 = TempInt;
+    VecFile >> TempInt;
+    if((TempInt != -1) && (TempInt < 10)) TempInt = 10;  //added at v0.6 to ensure old railway speed limits at least 10km/h
+    TrackElement.SpeedLimit23 = TempInt;
 
     TrackElement.LocationName = Utilities->LoadFileString(VecFile);
     TrackElement.ActiveTrackElementName = Utilities->LoadFileString(VecFile);
     SetElementID(4, TrackElement);
-    if(TrackElement.SpeedTag != 0) TrackPush(8, TrackElement);//don't save default elements now dispensed with
-    Utilities->LoadFileString(VecFile);//marker
+    AnsiString Marker = Utilities->LoadFileString(VecFile);//marker
+//new for v0.6
+    if(TrackElement.TrackType == SignalPost)
+        {
+        if(Marker[1] == '3')
+            {
+            TrackElement.SigAspect = TTrackElement::ThreeAspect;
+            }
+        else if(Marker[1] == '2')
+            {
+            TrackElement.SigAspect = TTrackElement::TwoAspect;
+            }
+        else if(Marker[1] == 'G')
+            {
+            TrackElement.SigAspect = TTrackElement::GroundSignal;
+            }
+        else
+            {
+            TrackElement.SigAspect = TTrackElement::FourAspect;
+            }
+        }
+    if(TrackElement.SpeedTag != 0) TrackPush(8, TrackElement);//don't save default elements (now dispensed with)
     }
 int NumberOfInactiveElements=0;
 NumberOfInactiveElements = Utilities->LoadFileInt(VecFile);
@@ -2192,7 +2333,30 @@ for(unsigned int x=0;x<(TrackVector.size());x++)
     VecFile << TrackElement.SpeedLimit23 << '\n';
     VecFile << TrackElement.LocationName.c_str() << '\0' << '\n';//note:  << doesn't write the null string terminator character automatically
     VecFile << TrackElement.ActiveTrackElementName.c_str() << '\0' << '\n';//note:  << doesn't write the null string terminator character automatically
-    VecFile << "******" << '\0' << '\n';//note:  << doesn't write the null string terminator character automatically
+//new for v0.6
+    if(TrackElement.TrackType == SignalPost)
+        {
+        if(TrackElement.SigAspect == TTrackElement::ThreeAspect)
+            {
+            VecFile << "3*****" << '\0' << '\n';//note:  << doesn't write the null string terminator character automatically
+            }
+        else if(TrackElement.SigAspect == TTrackElement::TwoAspect)
+            {
+            VecFile << "2*****" << '\0' << '\n';//note:  << doesn't write the null string terminator character automatically
+            }
+        else if(TrackElement.SigAspect == TTrackElement::GroundSignal)
+            {
+            VecFile << "G*****" << '\0' << '\n';//note:  << doesn't write the null string terminator character automatically
+            }
+        else //4 aspect
+            {
+            VecFile << "4*****" << '\0' << '\n';//note:  << doesn't write the null string terminator character automatically
+            }
+        }
+    else
+        {
+        VecFile << "******" << '\0' << '\n';//note:  << doesn't write the null string terminator character automatically
+        }
     }
 
 Utilities->SaveFileInt(VecFile, InactiveTrackVector.size());
@@ -2685,6 +2849,54 @@ while(ReturnNextTrackElement(2, Next))
                 Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16), RailGraphics->gl95unset);
                 }
             }
+            //below added for version 0.6, only stop signals to be drawn
+        else if(Next.TrackType == SignalPost)
+            {
+            for(int x=0;x<40;x++)
+                {
+                if((SigTable[x].SpeedTag == Next.SpeedTag) && (SigTable[x].Attribute == 0))//need to plot as red regardless of actual attribute value
+                    {
+                    //plot blank first, then plot platform if present - striped or not depending on LocationName being set
+                    int HOffset = 0;
+                    if(Next.SpeedTag > 73) HOffset = 5;
+                    else if(Next.SpeedTag == 71) HOffset = 9;
+                    int VOffset = 0;
+                    if(Next.SpeedTag == 69) VOffset = 9;
+                    else if(Next.SpeedTag == 72) VOffset = 5;
+                    else if(Next.SpeedTag == 74) VOffset = 5;
+                    Graphics::TBitmap *GraphicPtr;
+                    if(Next.SpeedTag > 71) GraphicPtr = RailGraphics->bmDiagonalSignalBlank;
+                    else if(Next.SpeedTag < 70) GraphicPtr = RailGraphics->bmStraightNSSignalBlank;
+                    else GraphicPtr = RailGraphics->bmStraightEWSignalBlank;
+                    Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16) + HOffset, ((Next.VLoc - GetVLocMin()) * 16) + VOffset, GraphicPtr);
+                    //plot special signal platform if present
+                    Graphics::TBitmap* SignalPlatformGraphic;
+                    if(PlatformOnSignalSide(2, Next.HLoc, Next.VLoc, Next.SpeedTag, SignalPlatformGraphic))
+                        {
+                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SignalPlatformGraphic);
+                        }
+                    //now plot signal (double yellow overwrites most of signal platform if present)
+                    //below amended for version 0.6
+                    if(Next.SigAspect == TTrackElement::ThreeAspect)
+                        {
+                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableThreeAspect[x].SigPtr);
+                        }
+                    else if(Next.SigAspect == TTrackElement::TwoAspect)
+                        {
+                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableTwoAspect[x].SigPtr);
+                        }
+                    else if(Next.SigAspect == TTrackElement::GroundSignal)
+                        {
+                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableGroundSignal[x].SigPtr);
+                        }
+                    else //4 aspect
+                        {
+                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTable[x].SigPtr);
+                        }
+                    break;
+                    }
+                }
+            }
         else
             {
             Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16), Next.GraphicPtr);
@@ -2812,43 +3024,79 @@ while(ReturnNextTrackElement(3, Next))
                         Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SignalPlatformGraphic);
                         }
                     //now plot signal (double yellow overwrites most of signal platform if present)
-                    Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTable[x].SigPtr);
-                    if(!Next.CallingOnSet) continue;
-                    }
-                if(Next.CallingOnSet)//calling on, need to add extra graphic, basic red signal plotted above from SigTable
-                    {
-                    if(Next.SpeedTag == 68)
+                    //below amended for version 0.6
+                    if(Next.SigAspect == TTrackElement::ThreeAspect)
                         {
-                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm68CallingOn);
+                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableThreeAspect[x].SigPtr);
                         }
-                    if(Next.SpeedTag == 69)
+                    else if(Next.SigAspect == TTrackElement::TwoAspect)
                         {
-                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm69CallingOn);
+                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableTwoAspect[x].SigPtr);
                         }
-                    if(Next.SpeedTag == 70)
+                    else if(Next.SigAspect == TTrackElement::GroundSignal)
                         {
-                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm70CallingOn);
+                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableGroundSignal[x].SigPtr);
                         }
-                    if(Next.SpeedTag == 71)
+                    else //4 aspect
                         {
-                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm71CallingOn);
+                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTable[x].SigPtr);
                         }
-                    if(Next.SpeedTag == 72)
+                    if((Next.CallingOnSet) && (Next.SigAspect != TTrackElement::GroundSignal))//normal signal calling on, need to add extra graphic, basic red signal plotted above from SigTable
                         {
-                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm72CallingOn);
+                        if(Next.SpeedTag == 68)
+                            {
+                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm68CallingOn);
+                            }
+                        if(Next.SpeedTag == 69)
+                            {
+                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm69CallingOn);
+                            }
+                        if(Next.SpeedTag == 70)
+                            {
+                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm70CallingOn);
+                            }
+                        if(Next.SpeedTag == 71)
+                            {
+                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm71CallingOn);
+                            }
+                        if(Next.SpeedTag == 72)
+                            {
+                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm72CallingOn);
+                            }
+                        if(Next.SpeedTag == 73)
+                            {
+                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm73CallingOn);
+                            }
+                        if(Next.SpeedTag == 74)
+                            {
+                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm74CallingOn);
+                            }
+                        if(Next.SpeedTag == 75)
+                            {
+                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm75CallingOn);
+                            }
                         }
-                    if(Next.SpeedTag == 73)
+                    else if((Next.CallingOnSet) && (Next.SigAspect == TTrackElement::GroundSignal))//ground signal calling on, use normal proceed aspect
                         {
-                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm73CallingOn);
+                        for(int x=0;x<40;x++)
+                            {
+                            if((SigTableGroundSignal[x].SpeedTag == Next.SpeedTag) && (SigTable[x].Attribute == 1))//use attr 1 for proceed
+                                {
+                                //plot blank first, then plot platform if present - striped or not depending on LocationName being set
+                                Display->PlotSignalBlankOnBitmap(Next.HLoc - GetHLocMin(), Next.VLoc - GetVLocMin(), Next.SpeedTag, Bitmap);//in case existing signal is a double yellow
+                                //plot special signal platform if present
+                                Graphics::TBitmap* SignalPlatformGraphic;
+                                if(PlatformOnSignalSide(4, Next.HLoc, Next.VLoc, Next.SpeedTag, SignalPlatformGraphic))
+                                    {
+                                    Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SignalPlatformGraphic);
+                                    }
+                                //now plot signal
+                                Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableGroundSignal[x].SigPtr);
+                                break;
+                                }
+                            }
                         }
-                    if(Next.SpeedTag == 74)
-                        {
-                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm74CallingOn);
-                        }
-                    if(Next.SpeedTag == 75)
-                        {
-                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm75CallingOn);
-                        }
+                    break;
                     }
                 }
             }
@@ -4182,43 +4430,78 @@ for(int x=0;x<40;x++)
             Disp->PlotOutput(57, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SignalPlatformGraphic);
             }
         //now plot signal (double yellow overwrites most of signal platform if present)
-        Disp->PlotOutput(58, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTable[x].SigPtr);
-        if(!TrackElement.CallingOnSet) continue;
-        }
-    if(TrackElement.CallingOnSet)//calling on, need to add extra graphic, basic red signal plotted above from SigTable
-        {
-        if(TrackElement.SpeedTag == 68)
+        //additions at version 0.6 for other aspects & ground sigs
+        if(TrackElement.SigAspect == TTrackElement::ThreeAspect)
             {
-            Disp->PlotOutput(59, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm68CallingOn);
+            Disp->PlotOutput(117, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTableThreeAspect[x].SigPtr);
             }
-        if(TrackElement.SpeedTag == 69)
+        else if(TrackElement.SigAspect == TTrackElement::TwoAspect)
             {
-            Disp->PlotOutput(60, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm69CallingOn);
+            Disp->PlotOutput(118, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTableTwoAspect[x].SigPtr);
             }
-        if(TrackElement.SpeedTag == 70)
+        else if(TrackElement.SigAspect == TTrackElement::GroundSignal)
             {
-            Disp->PlotOutput(61, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm70CallingOn);
+            Disp->PlotOutput(119, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTableGroundSignal[x].SigPtr);
             }
-        if(TrackElement.SpeedTag == 71)
+        else //4 aspect
             {
-            Disp->PlotOutput(62, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm71CallingOn);
+            Disp->PlotOutput(58, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTable[x].SigPtr);
             }
-        if(TrackElement.SpeedTag == 72)
+        if((TrackElement.CallingOnSet) && (TrackElement.SigAspect != TTrackElement::GroundSignal))//normal signal calling on, need to add extra graphic, basic red signal plotted above from SigTable
             {
-            Disp->PlotOutput(63, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm72CallingOn);
+            if(TrackElement.SpeedTag == 68)
+                {
+                Disp->PlotOutput(59, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm68CallingOn);
+                }
+            if(TrackElement.SpeedTag == 69)
+                {
+                Disp->PlotOutput(60, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm69CallingOn);
+                }
+            if(TrackElement.SpeedTag == 70)
+                {
+                Disp->PlotOutput(61, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm70CallingOn);
+                }
+            if(TrackElement.SpeedTag == 71)
+                {
+                Disp->PlotOutput(62, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm71CallingOn);
+                }
+            if(TrackElement.SpeedTag == 72)
+                {
+                Disp->PlotOutput(63, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm72CallingOn);
+                }
+            if(TrackElement.SpeedTag == 73)
+                {
+                Disp->PlotOutput(64, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm73CallingOn);
+                }
+            if(TrackElement.SpeedTag == 74)
+                {
+                Disp->PlotOutput(65, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm74CallingOn);
+                }
+            if(TrackElement.SpeedTag == 75)
+                {
+                Disp->PlotOutput(66, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm75CallingOn);
+                }
             }
-        if(TrackElement.SpeedTag == 73)
+        else if((TrackElement.CallingOnSet) && (TrackElement.SigAspect == TTrackElement::GroundSignal))//ground signal calling on, need to use normal proceed aspect
             {
-            Disp->PlotOutput(64, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm73CallingOn);
+            for(int x=0;x<40;x++)
+                {
+                if((SigTableGroundSignal[x].SpeedTag == TrackElement.SpeedTag) && (SigTable[x].Attribute == 1))//use attr 1 for proceed
+                    {
+                    //plot blank first, then plot platform if present - striped or not depending on LocationName being set
+                    Disp->PlotSignalBlank(1, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag);//in case existing signal is a double yellow
+                    //plot special signal platform if present
+                    Graphics::TBitmap* SignalPlatformGraphic;
+                    if(PlatformOnSignalSide(3, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, SignalPlatformGraphic))
+                        {
+                        Disp->PlotOutput(120, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SignalPlatformGraphic);
+                        }
+                    //now plot signal
+                    Disp->PlotOutput(123, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTableGroundSignal[x].SigPtr);
+                    }
+                }
             }
-        if(TrackElement.SpeedTag == 74)
-            {
-            Disp->PlotOutput(65, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm74CallingOn);
-            }
-        if(TrackElement.SpeedTag == 75)
-            {
-            Disp->PlotOutput(66, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm75CallingOn);
-            }
+        break;
         }
     }
 Utilities->CallLogPop(520);
@@ -6623,6 +6906,7 @@ return false;
 
 bool TTrack::PlatformOnSignalSide(int Caller, int HLoc, int VLoc, int SpeedTag, Graphics::TBitmap* &SignalPlatformGraphic)
 {
+//dropped special platforms at v0.6 as didn't show well against ground signals & not needed anyway as plats always plotted first where there are signals
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlatformOnSignalSide," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(SpeedTag));
 if(!IsPlatformOrNamedNonStationLocationPresent(5, HLoc, VLoc))//can't be a named location so no ambiguity
     {
@@ -6644,11 +6928,13 @@ if(SpeedTag == 68)//top sig
         else IAElement = InactiveTrackElementAt(51, IMPair.second);
         if(IAElement.LocationName == "")
             {
-            SignalPlatformGraphic = RailGraphics->Plat68Striped;
+//            SignalPlatformGraphic = RailGraphics->Plat68Striped;
+            SignalPlatformGraphic = RailGraphics->gl76Striped;
             }
         else
             {
-            SignalPlatformGraphic = RailGraphics->Plat68;
+//            SignalPlatformGraphic = RailGraphics->Plat68;
+            SignalPlatformGraphic = RailGraphics->gl76;
             }
         Utilities->CallLogPop(950);
         return true;
@@ -6662,11 +6948,13 @@ else if(SpeedTag == 69)//bot sig
         else IAElement = InactiveTrackElementAt(78, IMPair.second);
         if(IAElement.LocationName == "")
             {
-            SignalPlatformGraphic = RailGraphics->Plat69Striped;
+//            SignalPlatformGraphic = RailGraphics->Plat69Striped;
+            SignalPlatformGraphic = RailGraphics->bm77Striped;
             }
         else
             {
-            SignalPlatformGraphic = RailGraphics->Plat69;
+//            SignalPlatformGraphic = RailGraphics->Plat69;
+            SignalPlatformGraphic = RailGraphics->bm77;
             }
         Utilities->CallLogPop(951);
         return true;
@@ -6680,11 +6968,13 @@ else if(SpeedTag == 70)//left sig
         else IAElement = InactiveTrackElementAt(82, IMPair.second);
         if(IAElement.LocationName == "")
             {
-            SignalPlatformGraphic = RailGraphics->Plat70Striped;
+//            SignalPlatformGraphic = RailGraphics->Plat70Striped;
+            SignalPlatformGraphic = RailGraphics->bm78Striped;
             }
         else
             {
-            SignalPlatformGraphic = RailGraphics->Plat70;
+//            SignalPlatformGraphic = RailGraphics->Plat70;
+            SignalPlatformGraphic = RailGraphics->bm78;
             }
         Utilities->CallLogPop(952);
         return true;
@@ -6698,11 +6988,13 @@ else if(SpeedTag == 71)//right sig
         else IAElement = InactiveTrackElementAt(86, IMPair.second);
         if(IAElement.LocationName == "")
             {
-            SignalPlatformGraphic = RailGraphics->Plat71Striped;
+//            SignalPlatformGraphic = RailGraphics->Plat71Striped;
+            SignalPlatformGraphic = RailGraphics->gl79Striped;
             }
         else
             {
-            SignalPlatformGraphic = RailGraphics->Plat71;
+//            SignalPlatformGraphic = RailGraphics->Plat71;
+            SignalPlatformGraphic = RailGraphics->gl79;
             }
         Utilities->CallLogPop(953);
         return true;
@@ -11771,15 +12063,15 @@ return AllRoutesVector.at(At);
 //---------------------------------------------------------------------------
 
 TOneRoute &TAllRoutes::GetModifiableRouteAt(int Caller, int At)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetModifiableRouteAt," + AnsiString(At));
+if((At < 0) || ((unsigned int)At >=AllRoutesVector.size()))
     {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetModifiableRouteAt," + AnsiString(At));
-    if((At < 0) || ((unsigned int)At >=AllRoutesVector.size()))
-        {
-        throw Exception("Out of Range Error, vector size: " + AnsiString(AllRoutesVector.size()) + ", At: " + AnsiString(At) + " in GetModifiableRouteAt");
-        }
-    Utilities->CallLogPop(121);
-    return AllRoutesVector.at(At);
+    throw Exception("Out of Range Error, vector size: " + AnsiString(AllRoutesVector.size()) + ", At: " + AnsiString(At) + " in GetModifiableRouteAt");
     }
+Utilities->CallLogPop(121);
+return AllRoutesVector.at(At);
+}
 
 //---------------------------------------------------------------------------
 
@@ -12237,7 +12529,7 @@ for(unsigned int x=0;x<Route->PrefDirSize();x++)
     }
 int FirstVecPos = Route->GetFixedPrefDirElementAt(199, 0).TrackVectorPosition;
 int LastVecPos = Route->GetFixedPrefDirElementAt(200, (Route->PrefDirSize()) - 1).TrackVectorPosition;
-Utilities->LogEvent(Utilities->TimeStamp() + ",StoreOneRoute," + AnsiString(EmptyRoute.RouteID) + "," + AnsiString(FirstVecPos) + "," + AnsiString(LastVecPos));
+TrainController->LogEvent("StoreOneRoute," + AnsiString(EmptyRoute.RouteID) + "," + AnsiString(FirstVecPos) + "," + AnsiString(LastVecPos));
 Utilities->CallLogPop(394);
 }
 
@@ -12615,7 +12907,7 @@ if(!TrainController->ContinuationAutoSigVector.empty())
 //and adjust all the corresponding route numbers
 if(GetModifiableRouteAt(10, RequiredRoutePair.first).PrefDirSize() == 0)
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",RouteRemoved," + AnsiString(GetFixedRouteAt(189, RequiredRoutePair.first).RouteID));
+    TrainController->LogEvent("RouteRemoved," + AnsiString(GetFixedRouteAt(189, RequiredRoutePair.first).RouteID));
     AllRoutesVector.erase(AllRoutesVector.begin() + RequiredRoutePair.first);
     DecrementRouteNumbersInRoute2MultiMap(0, RequiredRoutePair.first);
 

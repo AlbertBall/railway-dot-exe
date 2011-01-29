@@ -253,6 +253,56 @@ Utilities->CallLogPop(1475);
 
 //---------------------------------------------------------------------------
 
+void TDisplay::PlotSignalBlankOnBitmap(int HLoc, int VLoc, int SpeedTag, Graphics::TBitmap *Bitmap)
+{
+/*
+straight signals:
+N	16x7  hoff = 0, voff = 0	68
+S	16x7  hoff = 0, voff = 9	69
+W	7x16  hoff = 0, voff = 0	70
+E	7x16  hoff = 9, voff = 0	71
+diagonal signals
+SW	11x11  hoff = 0, voff = 5	72
+NW	11x11  hoff = 0, voff = 0	73
+SE	11x11  hoff = 5, voff = 5	74
+NE	11x11  hoff = 5, voff = 0	75
+*/
+
+Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PlotSignalBlankOnBitmap," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(SpeedTag));
+if((SpeedTag > 75) || (SpeedTag < 68))
+    {
+    throw Exception("Error, not a signal in PlotSignalBlankOnBitmap");
+    }
+
+/*
+SpeedTag    HOffset VOffset Graphic  Direction
+68              0       0     NS       W->E        graphic is for the signal north or south of the track
+69              0       9     NS       E->W
+70              0       0     EW       S->N
+71              9       0     EW       N->S
+72              0       5    Diag     SE->NW
+73              0       0    Diag     SW->NE
+74              5       5    Diag     NE->SW
+75              5       0    Diag     NW->SE
+*/
+int HOffset = 0;
+if(SpeedTag > 73) HOffset = 5;
+else if(SpeedTag == 71) HOffset = 9;
+int VOffset = 0;
+if(SpeedTag == 69) VOffset = 9;
+else if(SpeedTag == 72) VOffset = 5;
+else if(SpeedTag == 74) VOffset = 5;
+Graphics::TBitmap *GraphicPtr;
+if(SpeedTag > 71) GraphicPtr = RailGraphics->bmDiagonalSignalBlank;
+else if(SpeedTag < 70) GraphicPtr = RailGraphics->bmStraightNSSignalBlank;
+else GraphicPtr = RailGraphics->bmStraightEWSignalBlank;
+Bitmap->Canvas->Draw(((HLoc - DisplayOffsetH) * 16) + HOffset, ((VLoc - DisplayOffsetV) * 16) + VOffset, GraphicPtr);
+//Update();
+Utilities->CallLogPop(1870);
+}
+
+//---------------------------------------------------------------------------
+
 void TDisplay::PlotAbsolute(int Caller, int HPos, int VPos, Graphics::TBitmap *PlotItem)
 {
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotAbsolute," + AnsiString(HPos) + "," + AnsiString(VPos));
@@ -303,6 +353,42 @@ OutputLog3->Caption = OutputLog4->Caption;
 OutputLog4->Caption = OutputLog5->Caption;
 OutputLog5->Caption = Statement;
 Utilities->CallLogPop(1785);
+}
+
+//---------------------------------------------------------------------------
+
+void TDisplay::HideWarningLog(int Caller)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",HideWarningLog");
+OutputLog6->Visible = false;
+OutputLog7->Visible = false;
+OutputLog8->Visible = false;
+OutputLog9->Visible = false;
+OutputLog10->Visible = false;
+OutputLog1->Visible = false;
+OutputLog2->Visible = false;
+OutputLog3->Visible = false;
+OutputLog4->Visible = false;
+OutputLog5->Visible = false;
+Utilities->CallLogPop(1873);
+}
+
+//---------------------------------------------------------------------------
+
+void TDisplay::ShowWarningLog(int Caller)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ShowWarningLog");
+OutputLog6->Visible = true;
+OutputLog7->Visible = true;
+OutputLog8->Visible = true;
+OutputLog9->Visible = true;
+OutputLog10->Visible = true;
+OutputLog1->Visible = true;
+OutputLog2->Visible = true;
+OutputLog3->Visible = true;
+OutputLog4->Visible = true;
+OutputLog5->Visible = true;
+Utilities->CallLogPop(1874);
 }
 
 //---------------------------------------------------------------------------

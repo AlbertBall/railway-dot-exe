@@ -61,15 +61,35 @@ __published:	// IDE-managed Components
     TBitBtn *SetLengthsButton;
     TBitBtn *ScreenGridButton;
     TBitBtn *SaveRailwayButton;
+    TBitBtn *SigAspectButton;
     TBitBtn *ExitTrackButton;
-    TEdit *TextBox; //the edit box that accepts text to be added
     TBitBtn *RestoreAllDefaultLengthsButton; //distance/speed setting buttons - left to right & top to bottom
     TBitBtn *ResetDefaultLengthButton;
     TBitBtn *LengthCancelButton;
     TBitBtn *LengthOKButton;
+
+    TEdit *TextBox; //the edit box that accepts text to be added
     TEdit *DistanceBox; //distance/speed setting edit box that accepts distances
     TEdit *SpeedLimitBox; //distance/speed setting edit box that accepts speed limits
     TEdit *LocationNameTextBox; //edit box that accepts location names
+
+    TEdit *MileEdit;  //length & speed conversion boxes on distance setting screen
+    TEdit *ChainEdit;
+    TEdit *YardEdit;
+    TPanel *MetrePanel;
+    TLabel *MetreVariableLabel;
+    TLabel *MileLabel;
+    TLabel *ChainLabel;
+    TLabel *YardLabel;
+    TLabel *MetreFixedLabel;
+    TPanel *LengthConversionPanel;
+    TPanel *SpeedConversionPanel;
+    TEdit *MPHEdit2;
+    TLabel *MPHLabel2;
+    TLabel *KPHLabel;
+    TPanel *KPHPanel2;
+    TLabel *KPHVariableLabel2;
+    TPanel *AddSubMinsPanel;
 
     TBitBtn *AddPrefDirButton; //'Set preferred directions' mode - buttons left to right
     TBitBtn *DeleteOnePrefDirButton;
@@ -79,7 +99,8 @@ __published:	// IDE-managed Components
 
     TBitBtn *ShowHideTTButton; //'Create a timetable'/'Edit a timetable' mode - top buttons left to right
     TBitBtn *ExitTTModeButton;
-    TButton *PreviousTTEntryButton; //left hand column buttons top to bottom
+
+    TButton *PreviousTTEntryButton; //left hand column timetable buttons top to bottom
     TButton *NextTTEntryButton;
     TButton *CopyTTEntryButton;
     TButton *CutTTEntryButton;
@@ -120,6 +141,19 @@ __published:	// IDE-managed Components
     TComboBox *LocationNameComboBox; //the combobox that lists location names
     TEdit *AddSubMinsBox; //the edit box that accepts minutes to add or subtract
 
+    TEdit *MPHEdit1;  //speed conversion box on timetable screen
+    TLabel *MPHLabel1;
+    TLabel *KPHFixedLabel1;
+    TPanel *KPHPanel1;
+    TPanel *SpeedConversionTTPanel;
+    TLabel *KPHVariableLabel1;
+
+    TEdit *HPEdit;    //power conversion box on timetable screen
+    TLabel *HPLabel;
+    TLabel *KWFixedLabel;
+    TPanel *KWPanel;
+    TLabel *KWVariableLabel;
+
     TBitBtn *OperateButton; //'Operate railway' mode - buttons left to right
     TBitBtn *AutoSigsButton;
     TBitBtn *SigPrefButton;
@@ -129,6 +163,24 @@ __published:	// IDE-managed Components
     TBitBtn *PerformanceLogButton;
     TBitBtn *SaveSessionButton;
     TBitBtn *ExitOperationButton;
+    TBitBtn *TTClockAdjButton;
+
+    TPanel *TTClockAdjPanel; //timetable clock adjustment panel, buttons & labels
+    TButton *TTClockAdd1hButton;
+    TButton *TTClockAdd10mButton;
+    TButton *TTClockAdd1mButton;
+    TButton *TTClockExitButton;
+    TButton *TTClockResetButton;
+    TButton *TTClockxQuarterButton;
+    TButton *TTClockxHalfButton;
+    TButton *TTClockx1Button;
+    TButton *TTClockx2Button;
+    TButton *TTClockx4Button;
+    TButton *TTClockx8Button;
+    TButton *TTClockx16Button;
+    TLabel *TTClockSpeedLabel;
+    TLabel *TTClockAdjustLabel1;
+    TLabel *TTClockAdjustLabel2;
 
     TBitBtn *ScreenRightButton; //screen navigation buttons (right/up means move viewpoint right/up, i.e railway moves left/down)
     TBitBtn *ScreenLeftButton;
@@ -435,27 +487,9 @@ __published:	// IDE-managed Components
     TSpeedButton *SpeedButton141;
     TSpeedButton *SpeedButton142;
     TSpeedButton *SpeedButton143;
-    TEdit *MPHEdit1;
-    TLabel *MPHLabel1;
-    TLabel *KPHFixedLabel1;
-    TPanel *KPHPanel1;
-    TLabel *KPHVariableLabel1;
-    TEdit *MileEdit;
-    TEdit *ChainEdit;
-    TEdit *YardEdit;
-    TPanel *MetrePanel;
-    TLabel *MetreVariableLabel;
-    TLabel *MileLabel;
-    TLabel *ChainLabel;
-    TLabel *YardLabel;
-    TLabel *MetreFixedLabel;
-    TPanel *LengthConversionPanel;
-    TPanel *SpeedConversionPanel;
-    TEdit *MPHEdit2;
-    TLabel *Label1;
-    TLabel *Label2;
-    TPanel *KPHPanel2;
-    TLabel *KPHVariableLabel2;
+    TLabel *TTClockTitleLabel;
+    TLabel *TTClockLabel1;
+    TLabel *TTClockLabel2;
 
 //menu item actions
     void __fastcall About1Click(TObject *Sender);
@@ -576,11 +610,25 @@ __published:	// IDE-managed Components
     void __fastcall SetGapsButtonClick(TObject *Sender);
     void __fastcall SetLengthsButtonClick(TObject *Sender);
     void __fastcall ShowHideTTButtonClick(TObject *Sender);
+    void __fastcall SigAspectButtonClick(TObject *Sender);
     void __fastcall SigPrefButtonClick(TObject *Sender);
     void __fastcall SpeedButtonClick(TObject *Sender);
     void __fastcall SubMinsButtonClick(TObject *Sender);
     void __fastcall TextGridButtonClick(TObject *Sender);
     void __fastcall TrackOKButtonClick(TObject *Sender);
+    void __fastcall TTClockAdd1hButtonClick(TObject *Sender);
+    void __fastcall TTClockAdd10mButtonClick(TObject *Sender);
+    void __fastcall TTClockAdd1mButtonClick(TObject *Sender);
+    void __fastcall TTClockAdjButtonClick(TObject *Sender);
+    void __fastcall TTClockExitButtonClick(TObject *Sender);
+    void __fastcall TTClockResetButtonClick(TObject *Sender);
+    void __fastcall TTClockxQuarterButtonClick(TObject *Sender);
+    void __fastcall TTClockxHalfButtonClick(TObject *Sender);
+    void __fastcall TTClockx1ButtonClick(TObject *Sender);
+    void __fastcall TTClockx2ButtonClick(TObject *Sender);
+    void __fastcall TTClockx4ButtonClick(TObject *Sender);
+    void __fastcall TTClockx8ButtonClick(TObject *Sender);
+    void __fastcall TTClockx16ButtonClick(TObject *Sender);
     void __fastcall TTServiceSyntaxCheckButtonClick(TObject *Sender);
     void __fastcall TTTextButtonClick(TObject *Sender);
     void __fastcall ValidateTimetableButtonClick(TObject *Sender);
@@ -608,6 +656,8 @@ __published:	// IDE-managed Components
     void __fastcall MPHEdit2KeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall LengthEditKeyUp(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+    void __fastcall HPEditKeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
 
 public: //AboutForm needs access to these
@@ -658,7 +708,6 @@ bool FileChangedFlag;   //true when a loaded railway file has changed (used to w
 bool LoadSessionFlag;   //true when a session load command has been given
 bool mbLeftDown;        //true when the left mouse button is down
 bool NewEntryInPreparationFlag;//true when a new timetable entry is being prepared in the timetable editor
-bool PointFlashFlag;    //true when points are flashing during manual change
 bool PreferredRoute;    //true when AutoSig or preferred route building selected during operation (always same state as ConsecSignalsRoute)
 bool PreferredRouteFlag;//used to select either ConvertAndAddPreferredRouteSearchVector or ConvertAndAddNonPreferredRouteSearchVector
                         //(could probably have used PreferredRoute instead)
@@ -683,8 +732,12 @@ bool TTEntryChangedFlag;//true when a timetable entry that is displayed in the t
 bool WarningFlash;      //toggles on and off automatically at a cycle of about 0.5 sec, used to drive the warning icons during operation
 bool WarningHover;      //true when mouse hovers over warning messages during operation - to prevent clicking while changing
 
+double PauseEntryRestartTime; //time value of the timetable restart time (as a double) on entry to pause mode 
+
+float PauseEntryTTClockSpeed; //rate at which the timetable clock runs on entry to the adjust routine - to restore if cancelled
 float PointsFlashDuration;//duration of the flash period when changing points manually
 float RouteFlashDuration; //duration of the route flash period
+float TTClockSpeed;       //rate at which the timetable clock runs 1 = normal
 
 Graphics::TBitmap *SelectBitmap;//the graphic defined by Edit->Select & Edit->Reselect
 
@@ -800,7 +853,9 @@ void FlashingGraphics(int Caller, TDateTime Now); //deal with any warning graphi
     //called during the ClockTimer function
 void HighlightOneEntryInAllEntriesTTListBox(int Caller, int Position); //called during timetable editing to highlight in red a single
     //entry in the list of all entries in the left hand long window
+void LoadGroundSignalGlyphs(int Caller); //In trackbuild display ground signal types on signal buttons
 void LoadInterface(int Caller, std::ifstream &SessionFile); //load the interface part of a session file
+void LoadNormalSignalGlyphs(int Caller); //In trackbuild display normal signal types on signal buttons
 void LoadPerformanceFile(int Caller, std::ifstream &InFile); //load the performance file part of a sessionfile
 void LoadRailway(int Caller, AnsiString LoadFileName); //load a railway file
 void LoadSession(int Caller); //load a session file
@@ -851,4 +906,3 @@ extern PACKAGE TInterface *Interface;
 
 //---------------------------------------------------------------------------
 #endif
- 

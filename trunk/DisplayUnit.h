@@ -98,12 +98,13 @@ void Update() {Output->Update();} //repaint the screen display
 //functions defined in .cpp file
 TDisplay::TDisplay(TImage* &Image, TMemo* &MemoBox, TLabel* &L1,  TLabel* &L2,  TLabel* &L3, TLabel* &L4, TLabel* &L5, TLabel* &L6,
     TLabel* &L7,  TLabel* &L8, TLabel* &L9, TLabel* &L10); //constructor, sets the screen image (MainScreen or HiddenScreen), the
-    //performance log panel and the warning message lables
+    //performance log panel and the warning message labels
 void Clear(int Caller, TRect Rect); //empty the rectangle defined by Rect
 void ClearDisplay(int Caller); //empty the display
 void Ellipse(int Caller, int HPos, int VPos, TColor Col); //plot an ellipse at the defined position and with the defined colour
 void GetRectangle(int Caller, TRect DestRect, TRect SourceRect, Graphics::TBitmap *&OriginalGraphic); //used in
     //TGraphicElement::LoadOriginalScreenGraphic in TrackUnit to obtain OriginalGraphic from an area of the screen defined by SourceRect
+void HideWarningLog(int Caller); //hide all the warnings from the top part of the screen - for timetable clock adjustment
 void InvertElement(int Caller, int HPos, int VPos); //display the track element at HPos & VPos inverted (used to show an offending element
     //when trying to connect track
 void PerformanceLog(int Caller, AnsiString Statement); //send Statement to the performance log on screen and to the file
@@ -116,10 +117,13 @@ void PlotPointBlank(int Caller, int HLoc, int VLoc); //plot a small blank rectan
     //prior to plotting one or both fillets (the movable section)
 void PlotSignalBlank(int Caller, int HLoc, int VLoc, int SpeedTag); //plot a small blank rectangle over the signal aspect area at HLoc &
     //VLoc prior to plotting the current signal aspect
+void PlotSignalBlankOnBitmap(int HLoc, int VLoc, int SpeedTag, Graphics::TBitmap *Bitmap); //as PlotSignalBlank but plot on the Bitmap that is
+    //supplied - for writing operating images to a bitmap file
 void PlotSmallOutput(int Caller, int HPos, int VPos, Graphics::TBitmap *PlotItem); //plot small (4x4) graphic PlotItem on the zoomed-out
     //display at HPos & Vpos
 void Rectangle(int Caller, int HPos, int VPos, TColor Col, int Size, int Width); //plot a rectangle at the defined position with colour
     //Col & size defined by Size
+void ShowWarningLog(int Caller); //show the warnings after timetable clock adjusted
 void TextOut(int Caller, int HPos, int VPos, AnsiString TextString, TFont *Font); //display TextString at the defined position with the
     //defined font
 void WarningLog(int Caller, AnsiString Statement); //display warning message Statement in the bottom left hand warning position and scroll

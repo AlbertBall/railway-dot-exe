@@ -1,9 +1,69 @@
 Development History
 ---------------------------------------------------------------------------
 
-VERSION CHANGES AFTER BETA V0.4e for Beta v0.5
+VERSION CHANGES AFTER BETA V0.5 for Beta v0.6 (Major update)
 
 * = mention on user website
+
+*incorporated two and three-aspect signals and ground signals
+
+*incorporated variable speed timetable clock + ability to increment the clock
+
+*Added HP/KW converter to the timetable, and grouped each converter in its own panel + add & sub mins also in its own panel.  Then put conversion hints in the respective panels only.
+
+*Najamuddin's error corrected re train creation during route building
+
+*ask people to report any failures to load earlier files
+
+*adding 1.5 mins to Format96... no good as adds it when displaying performance log, added ~0.5 secs for Format96HHMMSS & ~0.5min for Format96HHMM
+
+*set minimum speed limit to 10km/h, else can have a divide by zero error during train speed calculation due to approximations made in that calculation
+
+*set minimum value of 10km/h for max train speed (val of 1 gave divide by zero error in speed calc as above) - OK if start speed > max speed as set
+down to max in PlotStartingPosition
+
+*note that on loading railways saved in earlier versions speed limits will be set to a min of 10km/h & on loading earlier tts max train speeds will
+be set to a min of 10km/h - may get warning messages
+
+*note that railways saved in earlier versions will load with 4-aspect signals, and railways saved in this version then loaded into earlier versions will have all 4-aspect signals
+
+*errors corrected in calculating speed limits & lengths for points in some circumstances during operation
+
+*removed 'Location unnamed' from parapets
+
+*Changed PlotAlternativeTrackRouteGraphic because it plotted a pref dir graphic for overbridge routes when train went underneath
+    from   DestGraphic->Canvas->CopyRect(DestRect, RouteElement.GetEXGraphicPtr()->Canvas, SourceRect);
+    to     DestGraphic->Canvas->CopyRect(DestRect, RouteElement.GetRouteEXGraphicPtr()->Canvas, SourceRect);
+
+amended manual
+amended all references to four aspect only on website (source & user)
+checked all CallLogPops
+moved PointFlashFlag to TTrack from TInterface so new trains can test
+moved RouteFlashFlag to TTrack from TAllRoutes for consistency with above
+dropped special signal platforms
+moved Clearand... outside the for.. next.. loop in ClockTimer2 when removing single route elements to avoid multiple calls
+checked for any more Clearand... in loops & move outside if possible - causes delays [only for locked route timeouts & callons - leave as they are]
+tested non-special plats with signals, ensured always use PlotSignal whenever need to plot a signal, inc when lay down a new platform at a signal,
+    ensured dbl yellow displays OK when changes to red or green
+checked KCBridges that when train leaves an element it replots the train underneath OK
+checked KCBridges that when train leaves an element it replots the locked route marker correctly
+if a train on a bridge where other route locked the lock and route marker not plotted correctly - added PlotAlternativeRouteGraphic to UnplotTrain
+added tt clock time to event log in error file
+added more events to event log (e.g. train creation)
+added new ground signal graphics to transparent colour change list for dark/light backgrounds
+changed image displays for ground signals & checked all
+operating image writing stops tt clock but not other images, corrected, now all stop the clock
+when train passes ground sig it plots bottom half of normal sig, corrected
+ensured train passing ground sig in opposite direction replots OK
+checked ground sigs against platforms
+tested all types of ground sigs for train passing
+tested all types of ground sigs for autosig route
+checked correct calling on for ground sigs
+checked operating image for calling on for normal & ground sigs
+checked callers & added new functions to the checker
+
+
+VERSION CHANGES AFTER BETA V0.4e for Beta v0.5
 
 For reselection added IsTrackFinished() condition before enabling SelectLengths1
 
@@ -633,13 +693,13 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 
 COPY SECTIONS:
 
-NEXT value for CallLogPop is 1868
-NEXT value for TrackElementAt is 845
+NEXT value for CallLogPop is 1889
+NEXT value for TrackElementAt is 865
 NEXT value for InactiveTrackElementAt is 100
 NEXT value for GetFixedRouteAt is 196
 NEXT value for GetModifiableRouteAt is 16
 NEXT value for GetFixedPrefDirElementAt is 213
-NEXT value for ErrorLog is 179
+NEXT value for ErrorLog is 195
 NEXT value for ClearandRebuildRailway is 68
 NEXT value for TrainVectorAt is 64
 NEXT value for SetLevel1Mode is 132

@@ -51,7 +51,7 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "Beta v0.5"; //change for each published modification
+    ProgramVersion = "Beta v0.6"; //change vx.x for each published modification, Dev x = interim development stages (don't show on published versions)
     //check for presence of directories, creation failure probably indicates that the working folder is read-only
     CurDir = GetCurrentDir();
     if(!DirectoryExists("Railways"))
@@ -252,9 +252,11 @@ try
     SetGapsButton->Glyph->LoadFromResourceName(0, "ConnectGaps");
     SetLengthsButton->Glyph->LoadFromResourceName(0, "SetDists");
     ShowHideTTButton->Glyph->LoadFromResourceName(0, "Hide");
+    SigAspectButton->Glyph->LoadFromResourceName(0, "FourAspect"); //new at version 0.6
     SigPrefButton->Glyph->LoadFromResourceName(0, "PrefSig");
     TextGridButton->Glyph->LoadFromResourceName(0, "PixelPrecision1");
     TrackOKButton->Glyph->LoadFromResourceName(0, "Validate");
+    TTClockAdjButton->Glyph->LoadFromResourceName(0, "TTClock");
 
     BufferAttentionImage->Picture->Bitmap->LoadFromResourceName(0, "BufferWarning");
     CallOnImage->Picture->Bitmap->LoadFromResourceName(0, "CallingOn");
@@ -518,7 +520,7 @@ void __fastcall TInterface::BuildTrack1Click(TObject *Sender)//Mode Menu Item
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",BuildTrack1Click");
+    TrainController->LogEvent("BuildTrack1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BuildTrack1Click");
     Level1Mode = TrackMode;
     SetLevel1Mode(0);
@@ -535,7 +537,7 @@ void __fastcall TInterface::AddTrackButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",AddTrackButtonClick");
+    TrainController->LogEvent("AddTrackButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddTrackButtonClick");
     Level1Mode = TrackMode;
     SetLevel1Mode(38);
@@ -553,12 +555,12 @@ void __fastcall TInterface::SpeedButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SpeedButtonClick");
+    TrainController->LogEvent("SpeedButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SpeedButtonClick");
     if(((TSpeedButton*)Sender)->Down)
         {
         CurrentSpeedButton = (TSpeedButton*)Sender;
-        Utilities->LogEvent(Utilities->TimeStamp() + ",SpeedButtonClick, " + CurrentSpeedButton->Tag);
+        TrainController->LogEvent("SpeedButtonClick, " + CurrentSpeedButton->Tag);
         }
     else CurrentSpeedButton = 0;
     SelectionValid = false;
@@ -575,7 +577,7 @@ void __fastcall TInterface::TrackOKButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",TrackOKButtonClick");
+    TrainController->LogEvent("TrackOKButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrackOKButtonClick");
     SelectionValid = false;
     ResetChangedFileDataAndCaption(0, true);
@@ -644,7 +646,7 @@ void __fastcall TInterface::SetGapsButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SetGapsButtonClick");
+    TrainController->LogEvent("SetGapsButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SetGapsButtonClick");
     SelectionValid = false;
     Reselect1->Enabled = false;
@@ -664,7 +666,7 @@ void __fastcall TInterface::AddTextButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",AddTextButtonClick");
+    TrainController->LogEvent("AddTextButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddTextButtonClick");
     Level1Mode = TrackMode;
     SetLevel1Mode(43);
@@ -682,7 +684,7 @@ void __fastcall TInterface::MoveTextButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",MoveTextButtonClick");
+    TrainController->LogEvent("MoveTextButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MoveTextButtonClick");
     Level1Mode = TrackMode;
     SetLevel1Mode(44);
@@ -700,7 +702,7 @@ void __fastcall TInterface::TextBoxKeyPress(TObject *Sender, char &Key)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",TextBoxKeyPress," + AnsiString(Key));
+    TrainController->LogEvent("TextBoxKeyPress," + AnsiString(Key));
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TextBoxKeyPress," + AnsiString(Key));
     if(Key == '\x0D')//CR
         {
@@ -737,7 +739,7 @@ void __fastcall TInterface::LocationNameButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",LocationNameButtonClick");
+    TrainController->LogEvent("LocationNameButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LocationNameButtonClick");
     Level1Mode = TrackMode;
     SetLevel1Mode(45);
@@ -756,7 +758,7 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key,
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",LocationNameKeyUp," + AnsiString(Key));
+    TrainController->LogEvent("LocationNameKeyUp," + AnsiString(Key));
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LocationNameKeyUp," + AnsiString(Key));
     if(Track->LNPendingList.empty())
         {
@@ -930,7 +932,7 @@ void __fastcall TInterface::SetLengthsButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SetLengthsButtonClick");
+    TrainController->LogEvent("SetLengthsButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SetLengthsButtonClick");
     SelectLengthsFlag = false;
     ConstructPrefDir->ExternalClearPrefDirAnd4MultiMap();//added for extended distances
@@ -950,7 +952,7 @@ void __fastcall TInterface::LengthOKButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",LengthOKButtonClick," + DistanceBox->Text + "," + SpeedLimitBox->Text);
+    TrainController->LogEvent("LengthOKButtonClick," + DistanceBox->Text + "," + SpeedLimitBox->Text);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LengthOKButtonClick");
     int Dist = 0, SpeedLimit = 0;
     AnsiString DistanceStr = DistanceBox->Text;
@@ -1029,14 +1031,16 @@ try
         }
     if(Dist != -1) Dist = DistanceStr.ToInt();
     if(SpeedLimit != -1) SpeedLimit = SpeedStr.ToInt();
+/*  don't need this with new condition below
     if(SelectLengthsFlag && (Dist != -1) && (Dist < 20))
         {
         ShowMessage("Track length value must be a minimum of 20m, setting to 20m");
         Dist = 20;
         }
-    if((Dist == 0) || (SpeedLimit == 0))
+*/
+    if(((Dist != -1) && (Dist < 20)) || ((SpeedLimit != -1) && (SpeedLimit < 10))) //new limiting values for v0.6 (used only to fail at either value 0)
         {
-        ShowMessage("Can't have zero in either box!");
+        ShowMessage("Can't enter a length value less than 20m or a speed limit less than 10km/h");
         Utilities->CallLogPop(15);
         return;
         }
@@ -1113,7 +1117,7 @@ void __fastcall TInterface::LengthCancelButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",LengthCancelButtonClick");
+    TrainController->LogEvent("LengthCancelButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LengthCancelButtonClick");
     DistanceBox->Text = "";
     SpeedLimitBox->Text = "";
@@ -1146,7 +1150,7 @@ try
         }
     else
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",Accepted ResetDefaultLengthButtonClick");
+        TrainController->LogEvent("Accepted ResetDefaultLengthButtonClick");
         DistanceBox->Text = "";
         SpeedLimitBox->Text = "";
         if(SelectLengthsFlag)
@@ -1250,7 +1254,7 @@ try
         {
         Track->SetAllDefaultLengthsAndSpeedLimits(1);
         }
-    Utilities->LogEvent(Utilities->TimeStamp() + ",Accepted RestoreAllDefaultLengthsButtonClick");
+    TrainController->LogEvent("Accepted RestoreAllDefaultLengthsButtonClick");
     DistanceBox->Text = "";
     SpeedLimitBox->Text = "";
     TrackLengthPanel->Visible = false;
@@ -1271,7 +1275,7 @@ void __fastcall TInterface::ExitTrackButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ExitTrackButtonClick");
+    TrainController->LogEvent("ExitTrackButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExitTrackButtonClick");
     if(Level2TrackMode == CutMoving)
         {
@@ -1295,7 +1299,7 @@ void __fastcall TInterface::TextGridButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",TextGridButtonClick," + AnsiString(TextGridVal));
+    TrainController->LogEvent("TextGridButtonClick," + AnsiString(TextGridVal));
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TextGridButtonClick");
     if(TextGridVal == 1)
         {
@@ -1317,7 +1321,7 @@ try
         TextGridVal = 16;
         TextGridButton->Glyph->LoadFromResourceName(0, "PixelPrecision16");
         }
-    else if(TextGridVal == 16)
+    else
         {
         TextGridVal = 1;
         TextGridButton->Glyph->LoadFromResourceName(0, "PixelPrecision1");
@@ -1330,11 +1334,49 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
+void __fastcall TInterface::SigAspectButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("SigAspectButtonClick," + AnsiString(Track->SignalAspectBuildMode));
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SigAspectButtonClick");
+    if(Track->SignalAspectBuildMode == TTrack::FourAspectBuild)
+        {
+        Track->SignalAspectBuildMode = TTrack::ThreeAspectBuild;
+        SigAspectButton->Glyph->LoadFromResourceName(0, "ThreeAspect");
+        }
+    else if(Track->SignalAspectBuildMode == TTrack::ThreeAspectBuild)
+        {
+        Track->SignalAspectBuildMode = TTrack::TwoAspectBuild;
+        SigAspectButton->Glyph->LoadFromResourceName(0, "TwoAspect");
+        }
+    else if(Track->SignalAspectBuildMode == TTrack::TwoAspectBuild)
+        {
+        Track->SignalAspectBuildMode = TTrack::GroundSignalBuild;
+        SigAspectButton->Glyph->LoadFromResourceName(0, "GroundSig");
+//set all signal glyphs to ground signals
+        LoadGroundSignalGlyphs(0);
+        }
+    else
+        {
+        Track->SignalAspectBuildMode = TTrack::FourAspectBuild;
+        SigAspectButton->Glyph->LoadFromResourceName(0, "FourAspect");
+//set all signal glyphs to normal signals
+        LoadNormalSignalGlyphs(0);
+        }
+    Utilities->CallLogPop(1869);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(180, e.Message);
+    }
+}
+//---------------------------------------------------------------------------
 void __fastcall TInterface::FontButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",FontButtonClick");
+    TrainController->LogEvent("FontButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",FontButtonClick");
     FontDialog->Font = Display->GetFont();
     FontDialog->Execute();
@@ -1360,12 +1402,12 @@ try
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenGridButtonClick");
     if(ScreenGridFlag)
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",ScreenGridButtonClick + ScreenGrid off");
+        TrainController->LogEvent("ScreenGridButtonClick + ScreenGrid off");
         ScreenGridFlag = false;
         }
     else
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",ScreenGridButtonClick + ScreenGrid on");
+        TrainController->LogEvent("ScreenGridButtonClick + ScreenGrid on");
         ScreenGridFlag = true;
         }
     ClearandRebuildRailway(28);
@@ -1384,7 +1426,7 @@ void __fastcall TInterface::PlanPrefDirs1Click(TObject *Sender)//Mode Menu Item
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",PlanPrefDirs1Click");
+    TrainController->LogEvent("PlanPrefDirs1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PlanPrefDirs1Click");
     Level1Mode = PrefDirMode;
     SetLevel1Mode(3);
@@ -1400,7 +1442,7 @@ void __fastcall TInterface::AddPrefDirButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",AddPrefDirButtonClick");
+    TrainController->LogEvent("AddPrefDirButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddPrefDirButtonClick");
     if(ConstructPrefDir->PrefDirSize() == 0)
         {
@@ -1426,7 +1468,7 @@ void __fastcall TInterface::DeleteAllPrefDirButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",DeleteAllPrefDirButtonClick");
+    TrainController->LogEvent("DeleteAllPrefDirButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",DeleteAllPrefDirButtonClick");
     TMsgDlgButtons Buttons;
     Buttons << mbYes << mbNo;
@@ -1457,7 +1499,7 @@ void __fastcall TInterface::DeleteOnePrefDirButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",DeleteOnePrefDirButtonClick");
+    TrainController->LogEvent("DeleteOnePrefDirButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",DeleteOnePrefDirButtonClick");
     ResetChangedFileDataAndCaption(18, false);
 //    RlyFile = false; - don't alter this just for PrefDir changes
@@ -1484,7 +1526,7 @@ void __fastcall TInterface::ExitPrefDirButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ExitPrefDirButtonClick");
+    TrainController->LogEvent("ExitPrefDirButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExitPrefDirButtonClick");
     Level1Mode = BaseMode;
     SetLevel1Mode(6);
@@ -1503,7 +1545,7 @@ void __fastcall TInterface::OperateRailway1Click(TObject *Sender)//Mode Menu Ite
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",OperateRailway1Click");
+    TrainController->LogEvent("OperateRailway1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OperateRailwayClick");
     TTrain::NextTrainID = 0;//reset to 0 whenever enter operating mode
     AllRoutes->NextRouteID = 0;//reset to 0 whenever enter operating mode
@@ -1521,7 +1563,7 @@ void __fastcall TInterface::OperateButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",StartOperationButtonClick");
+    TrainController->LogEvent("StartOperationButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OperateButtonClick");
     if((Level2OperMode == NoOperMode) || (Level2OperMode == Paused) || (Level2OperMode == PreStart))
         {
@@ -1546,7 +1588,7 @@ void __fastcall TInterface::AutoSigsButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",AutoSigsButtonClick");
+    TrainController->LogEvent("AutoSigsButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AutoSigsButtonClick");
     AutoSigsFlag = true;
     PreferredRoute = true;
@@ -1577,7 +1619,7 @@ void __fastcall TInterface::SigPrefButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SigPrefButtonClick");
+    TrainController->LogEvent("SigPrefButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SigPrefButtonClick");
     AutoSigsFlag = false;
     PreferredRoute = true;
@@ -1607,7 +1649,7 @@ void __fastcall TInterface::UnrestrictedButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",NoSigNonPrefButtonClick");
+    TrainController->LogEvent("NoSigNonPrefButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",NoSigNonPrefButtonClick");
     AutoSigsFlag = false;
     PreferredRoute = false;
@@ -1644,7 +1686,7 @@ void __fastcall TInterface::RouteCancelButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",RouteCancelButtonClick");
+    TrainController->LogEvent("RouteCancelButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RouteCancelButtonClick");
     RouteCancelFlag = true;
     InfoPanel->Visible = true;
@@ -1665,7 +1707,7 @@ void __fastcall TInterface::PerformanceLogButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",PerformanceLogButtonClick");
+    TrainController->LogEvent("PerformanceLogButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PerformanceLogButtonClick");
     if(!ShowPerformancePanel)
         {
@@ -1692,7 +1734,7 @@ void __fastcall TInterface::ExitOperationButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ExitOperationButtonClick");
+    TrainController->LogEvent("ExitOperationButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExitOperationButtonClick");
 
     AnsiString MessageStr = "Please note that the session will be lost if it hasn't been saved.  Do you still wish to exit?";
@@ -1742,7 +1784,7 @@ void __fastcall TInterface::LoadRailway1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",LoadRailway1Click");
+    TrainController->LogEvent("LoadRailway1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LoadRailway1Click");
     if(!ClearEverything(1))
         {
@@ -1752,7 +1794,7 @@ try
     LoadRailwayDialog->Filter = "Development file (*.dev)|*.dev|Railway file (*.rly)|*.rly";
     if(LoadRailwayDialog->Execute())
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",LoadRailway " + LoadRailwayDialog->FileName);
+        TrainController->LogEvent("LoadRailway " + LoadRailwayDialog->FileName);
         LoadRailway(0, LoadRailwayDialog->FileName);
         }
     //else ShowMessage("Load Aborted"); drop this
@@ -1889,7 +1931,7 @@ void __fastcall TInterface::Save1Click(TObject *Sender)
 
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",Save1Click, " + SavedFileName);
+    TrainController->LogEvent("Save1Click, " + SavedFileName);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Save1Click");
     Screen->Cursor = TCursor(-11);//Hourglass;
     std::ofstream VecFile(SavedFileName.c_str());
@@ -1923,7 +1965,7 @@ void __fastcall TInterface::SaveAs1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SaveAs1Click");
+    TrainController->LogEvent("SaveAs1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveAs1Click");
     SaveAsSubroutine(0);
     Utilities->CallLogPop(32);
@@ -1937,10 +1979,10 @@ catch (const Exception &e)
 //---------------------------------------------------------------------------
 
 void __fastcall TInterface::SaveImageNoGrid1Click(TObject *Sender)
-{
+{//need to stop clock in case invoke during operation
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SaveImageNoGrid1Click");
+    TrainController->LogEvent("SaveImageNoGrid1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageNoGrid1Click");
     if(!DirectoryExists(CurDir + "\\Images"))
         {
@@ -1949,6 +1991,8 @@ try
         return;
         }
     Screen->Cursor = TCursor(-11);//Hourglass;
+    TrainController->StopTTClockFlag = true;//so TTClock stopped during MasterClockTimer function
+    TrainController->RestartTime = TrainController->TTClockTime;
     AnsiString ImageFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
     //format "16/06/2009 20:55:17"
     // avoid characters in filename:=   / \ : * ? " < > |
@@ -2002,6 +2046,8 @@ try
 
     RailwayImage->SaveToFile(ImageFileName);
     delete RailwayImage;
+    TrainController->BaseTime = TDateTime::CurrentDateTime();
+    TrainController->StopTTClockFlag = false;
     Screen->Cursor = TCursor(-2);//Arrow
     Utilities->CallLogPop(1535);
     }
@@ -2014,10 +2060,10 @@ catch (const Exception &e)
 //---------------------------------------------------------------------------
 
 void __fastcall TInterface::SaveImageAndGrid1Click(TObject *Sender)
-{
+{//need to stop clock in case invoke during operation
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SaveImageAndGrid1Click");
+    TrainController->LogEvent("SaveImageAndGrid1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageAndGrid1Click");
     if(!DirectoryExists(CurDir + "\\Images"))
         {
@@ -2026,6 +2072,8 @@ try
         return;
         }
     Screen->Cursor = TCursor(-11);//Hourglass;
+    TrainController->StopTTClockFlag = true;//so TTClock stopped during MasterClockTimer function
+    TrainController->RestartTime = TrainController->TTClockTime;
     AnsiString ImageFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
     //format "16/06/2009 20:55:17"
     // avoid characters in filename:=   / \ : * ? " < > |
@@ -2085,6 +2133,8 @@ try
     Track->WriteTrackToImage(1, RailwayImage);
     RailwayImage->SaveToFile(ImageFileName);
     delete RailwayImage;
+    TrainController->BaseTime = TDateTime::CurrentDateTime();
+    TrainController->StopTTClockFlag = false;
     Screen->Cursor = TCursor(-2);//Arrow
     Utilities->CallLogPop(1536);
     }
@@ -2096,10 +2146,10 @@ catch (const Exception &e)
 //---------------------------------------------------------------------------
 
 void __fastcall TInterface::SaveImageAndPrefDirs1Click(TObject *Sender)
-{
+{//need to stop clock in case invoke during operation
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SaveImageAndPrefDirs1Click");
+    TrainController->LogEvent("SaveImageAndPrefDirs1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageAndPrefDirs1Click");
     if(!DirectoryExists(CurDir + "\\Images"))
         {
@@ -2108,6 +2158,8 @@ try
         return;
         }
     Screen->Cursor = TCursor(-11);//Hourglass;
+    TrainController->StopTTClockFlag = true;//so TTClock stopped during MasterClockTimer function
+    TrainController->RestartTime = TrainController->TTClockTime;
     AnsiString ImageFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
     //format "16/06/2009 20:55:17"
     // avoid characters in filename:=   / \ : * ? " < > |
@@ -2159,6 +2211,8 @@ try
     EveryPrefDir->WritePrefDirToImage(0, RailwayImage);
     RailwayImage->SaveToFile(ImageFileName);
     delete RailwayImage;
+    TrainController->BaseTime = TDateTime::CurrentDateTime();
+    TrainController->StopTTClockFlag = false;
     Screen->Cursor = TCursor(-2);//Arrow
     Utilities->CallLogPop(1566);
     }
@@ -2170,10 +2224,10 @@ catch (const Exception &e)
 //---------------------------------------------------------------------------
 
 void __fastcall TInterface::SaveOperatingImage1Click(TObject *Sender)
-{//need to stop clock for this one
+{//need to stop clock
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SaveOperatingImage1Click");
+    TrainController->LogEvent("SaveOperatingImage1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveOperatingImage1Click");
     if(!DirectoryExists(CurDir + "\\Images"))
         {
@@ -2288,7 +2342,7 @@ void __fastcall TInterface::SaveHeaderMenu1Click(TObject *Sender)
 //
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SaveHeaderMenu1Click");
+    TrainController->LogEvent("SaveHeaderMenu1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveHeaderMenu1Click");
     if(Sender == SaveSessionButton)
         {
@@ -2331,7 +2385,7 @@ void __fastcall TInterface::LoadSession1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",LoadSession1Click");
+    TrainController->LogEvent("LoadSession1Click");
     LoadSessionFlag = true; //load session within ClockTimer2
     }
 catch (const Exception &e)
@@ -2344,7 +2398,7 @@ void __fastcall TInterface::ClearAll1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ClearAll1Click");
+    TrainController->LogEvent("ClearAll1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ClearAll1Click");
     if(ClearEverything(2)) {;}//no change in action on result
     Level1Mode = BaseMode;
@@ -2361,7 +2415,7 @@ void __fastcall TInterface::ExportTTMenuItem1Click(TObject *Sender)
 {//no need to stop clock as can't be called when railway operating
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ExportTTMenuItem1Click");
+    TrainController->LogEvent("ExportTTMenuItem1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExportTTMenuItem1Click");
     if(!DirectoryExists(CurDir + "\\Formatted timetables"))
         {
@@ -2411,7 +2465,7 @@ void __fastcall TInterface::CreateTimetable1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",CreateTimetable1Click");
+    TrainController->LogEvent("CreateTimetable1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CreateTimetable1Click");
     CreateEditTTFileName = "";
     TimetableEditVector.clear();
@@ -2504,7 +2558,7 @@ to cause newlines when displayed.  Each AnsiString corresponds to a timetable 'e
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",EditTimetable1Click");
+    TrainController->LogEvent("EditTimetable1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",EditTimetable1Click");
     TimetableDialog->Filter = "Timetable file (*.ttb)|*ttb";
     CreateEditTTFileName = "";
@@ -2523,7 +2577,7 @@ try
     TEVPtr=0; TTCurrentEntryPtr=0, TTStartTimePtr=0; TTFirstServicePtr=0; TTLastServicePtr=0;//all set to null to begin with
     if(TimetableDialog->Execute())
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",EditTimetable " + TimetableDialog->FileName);
+        TrainController->LogEvent("EditTimetable " + TimetableDialog->FileName);
         std::ifstream TTBLFile(TimetableDialog->FileName.c_str(), std::ios_base::binary);//open in binary to examine each character
         if(TTBLFile)
             {
@@ -2688,7 +2742,7 @@ void __fastcall TInterface::ShowHideTTButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ShowHideTTButtonClick");
+    TrainController->LogEvent("ShowHideTTButtonClick");
     if(TimetableEditPanel->Visible)
         {
         ShowHideTTButton->Glyph->LoadFromResourceName(0, "Show");
@@ -2716,7 +2770,7 @@ void __fastcall TInterface::NextTTEntryButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",NextTTEntryButtonClick");
+    TrainController->LogEvent("NextTTEntryButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",NextTTEntryButtonClick");
     if((TTCurrentEntryPtr == 0) || TimetableEditVector.empty())
         {
@@ -2753,7 +2807,7 @@ void __fastcall TInterface::PreviousTTEntryButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",PreviousTTEntryButtonClick");
+    TrainController->LogEvent("PreviousTTEntryButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PreviousTTEntryButtonClick");
     if((TTCurrentEntryPtr == 0) || TimetableEditVector.empty())
         {
@@ -2790,7 +2844,7 @@ void __fastcall TInterface::NewTTEntryButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",NewTTEntryButtonClick");
+    TrainController->LogEvent("NewTTEntryButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",NewTTEntryButtonClick");
     OneEntryTimetableMemo->Clear();
     OneEntryTimetableMemo->SetFocus();
@@ -2810,7 +2864,7 @@ void __fastcall TInterface::AddMinsButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",AddMinsButtonClick");
+    TrainController->LogEvent("AddMinsButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddMinsButtonClick");
     bool ValidFlag = true;
     for(int x=1; x<= AddSubMinsBox->Text.Length(); x++)
@@ -2885,7 +2939,7 @@ void __fastcall TInterface::SubMinsButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SubMinsButtonClick");
+    TrainController->LogEvent("SubMinsButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SubMinsButtonClick");
     bool ValidFlag = true;
     for(int x=1; x<= AddSubMinsBox->Text.Length(); x++)
@@ -2959,7 +3013,7 @@ void __fastcall TInterface::CopyTTEntryButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",CopyTTEntryButtonClick");
+    TrainController->LogEvent("CopyTTEntryButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CopyTTEntryButtonClick");
     if(TTCurrentEntryPtr == 0)
         {
@@ -2997,7 +3051,7 @@ void __fastcall TInterface::CutTTEntryButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",CutTTEntryButtonClick");
+    TrainController->LogEvent("CutTTEntryButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CutTTEntryButtonClick");
     if(TTCurrentEntryPtr == 0)// || (*TTCurrentEntryPtr == ""))//safeguard
         {
@@ -3067,7 +3121,7 @@ void __fastcall TInterface::PasteTTEntryButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",PasteTTEntryButtonClick");
+    TrainController->LogEvent("PasteTTEntryButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PasteTTEntryButtonClick");
     if(TTCurrentEntryPtr == 0)// || (CopiedEntryStr == "")) allow blank copies
         {
@@ -3122,7 +3176,7 @@ void __fastcall TInterface::DeleteTTEntryButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",DeleteTTEntryButtonClick");
+    TrainController->LogEvent("DeleteTTEntryButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",DeleteTTEntryButtonClick");
     if(TTCurrentEntryPtr == 0)
         {
@@ -3198,7 +3252,7 @@ void __fastcall TInterface::SaveTTEntryButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SaveTTEntryButtonClick");
+    TrainController->LogEvent("SaveTTEntryButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveTTEntryButtonClick");
     /* allow blank lines to be saved
     AnsiString ContentStr = OneEntryTimetableMemo->Text;
@@ -3329,7 +3383,7 @@ void __fastcall TInterface::SaveTTButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SaveTTButtonClick");
+    TrainController->LogEvent("SaveTTButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveTTButtonClick");
     if(TimetableEditVector.empty())
         {
@@ -3388,7 +3442,7 @@ void __fastcall TInterface::SaveTTAsButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SaveTTAsButtonClick");
+    TrainController->LogEvent("SaveTTAsButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveTTAsButtonClick");
     if(TimetableEditVector.empty())
         {
@@ -3439,7 +3493,7 @@ void __fastcall TInterface::TTServiceSyntaxCheckButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",TTServiceSyntaxCheckButtonClick");
+    TrainController->LogEvent("TTServiceSyntaxCheckButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTServiceSyntaxCheckButtonClick");
     int Count = 1;//anything > 0 OK as if 0 still seeking a start time
     bool EndOfFile = false;
@@ -3468,7 +3522,7 @@ void __fastcall TInterface::ValidateTimetableButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ValidateTimetableButtonClick");
+    TrainController->LogEvent("ValidateTimetableButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ValidateTimetableButtonClick");
     if(CreateEditTTFileName == "")
         {
@@ -3514,7 +3568,7 @@ void __fastcall TInterface::MoveTTEntryUpButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",MoveTTEntryUpButtonClick");
+    TrainController->LogEvent("MoveTTEntryUpButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MoveTTEntryUpButtonClick");
     if(TTCurrentEntryPtr == 0)
         {
@@ -3566,7 +3620,7 @@ void __fastcall TInterface::MoveTTEntryDownButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",MoveTTEntryDownButtonClick");
+    TrainController->LogEvent("MoveTTEntryDownButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MoveTTEntryDownButtonClick");
     if(TTCurrentEntryPtr == 0)
         {
@@ -3617,7 +3671,7 @@ void __fastcall TInterface::CancelTTActionButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",CancelTTActionButtonClick");
+    TrainController->LogEvent("CancelTTActionButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CancelTTActionButtonClick");
     TTEntryChangedFlag = false;
     if(NewEntryInPreparationFlag)
@@ -3653,7 +3707,7 @@ void __fastcall TInterface::RestoreTTButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",RestoreTTButtonClick");
+    TrainController->LogEvent("RestoreTTButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RestoreTTButtonClick");
     if(TimetableChangedFlag)
         {
@@ -3732,7 +3786,7 @@ void __fastcall TInterface::ExportTTButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ExportTTButtonClick");
+    TrainController->LogEvent("ExportTTButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExportTTButtonClick");
     if(!DirectoryExists(CurDir + "\\Formatted timetables"))
         {
@@ -3770,7 +3824,7 @@ void __fastcall TInterface::TTTextButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",TTTextButtonClick");
+    TrainController->LogEvent("TTTextButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTTextButtonClick");
     /*
     if(TTStartTimePtr == 0)
@@ -3802,7 +3856,7 @@ void __fastcall TInterface::ExitTTModeButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ExitTTCreateEditButtonClick");
+    TrainController->LogEvent("ExitTTCreateEditButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExitTTCreateEditButtonClick");
     if(TimetableChangedFlag)
         {
@@ -3833,7 +3887,7 @@ void __fastcall TInterface::LocationNameComboBoxClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",LocationNameComboBoxClick");
+    TrainController->LogEvent("LocationNameComboBoxClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LocationNameComboBoxClick");
     if(TTStartTimePtr != 0)
         {
@@ -3861,7 +3915,7 @@ void __fastcall TInterface::OneEntryTimetableMemoKeyUp(TObject *Sender, WORD &Ke
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",OneEntryTimetableMemoKeyUp");
+    TrainController->LogEvent("OneEntryTimetableMemoKeyUp");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OneEntryTimetableMemoKeyUp");
     if(OneEntryTimetableMemo->Text == OneEntryTimetableContents)
         {
@@ -3887,7 +3941,7 @@ void __fastcall TInterface::AddSubMinsBoxKeyUp(TObject *Sender, WORD &Key,
 //forces a recheck for whether addmins/submins buttons should be enabled
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",AddSubMinsBoxKeyUp");
+    TrainController->LogEvent("AddSubMinsBoxKeyUp");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddSubMinsBoxKeyUp");
     Level1Mode = TimetableMode;
     SetLevel1Mode(108);
@@ -3904,7 +3958,7 @@ void __fastcall TInterface::LocationNameComboBoxKeyUp(TObject *Sender,
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",LocationNameComboBoxKeyUp");
+    TrainController->LogEvent("LocationNameComboBoxKeyUp");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LocationNameComboBoxKeyUp");
     if(!Track->LocationNameMultiMap.empty())
         {
@@ -3928,7 +3982,7 @@ void __fastcall TInterface::AllEntriesTTListBoxMouseUp(TObject *Sender,
 //Select the item pointed to unless a 'save entry' is pending in which case ignore
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",AllEntriesTTListBoxMouseUp");
+    TrainController->LogEvent("AllEntriesTTListBoxMouseUp");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AllEntriesTTListBoxMouseUp");
     if((TTCurrentEntryPtr == 0) || TimetableEditVector.empty())
         {
@@ -4440,7 +4494,7 @@ void __fastcall TInterface::Exit1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",Exit1Click");
+    TrainController->LogEvent("Exit1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Exit1Click");
     if(!FileChangedFlag && !(Track->IsTrackFinished()) && (EveryPrefDir->PrefDirSize() > 0))
         {
@@ -4480,7 +4534,7 @@ void __fastcall TInterface::TrackInfoOnOff1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",TrackInfoOnOff1Click");
+    TrainController->LogEvent("TrackInfoOnOff1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrackInfoOnOff1Click");
     if(TrackInfoOnOff1->Caption == "Show")
         {
@@ -4503,7 +4557,7 @@ void __fastcall TInterface::TrainStatusInfoOnOff1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",TrainStatusInfoOnOff1Click");
+    TrainController->LogEvent("TrainStatusInfoOnOff1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrainStatusInfoOnOff1Click");
     if(TrainStatusInfoOnOff1->Caption == "Show status")
         {
@@ -4525,7 +4579,7 @@ void __fastcall TInterface::TrainTTInfoOnOff1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",TrainTTInfoOnOff1Click");
+    TrainController->LogEvent("TrainTTInfoOnOff1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrainTTInfoOnOff1Click");
     if(TrainTTInfoOnOff1->Caption == "Show timetable")
         {
@@ -4551,7 +4605,7 @@ void __fastcall TInterface::AcceptDragging(TObject *Sender, TObject *Source,
 //allow in zoom out mode
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",AcceptDragging");
+//    TrainController->LogEvent("AcceptDragging"); drop this, have too  many
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AcceptDragging");
     if((Source == PerformancePanel) || (Source == PerformancePanelLabel) || (Source == PerformanceLogBox))
         {
@@ -4584,7 +4638,7 @@ void __fastcall TInterface::PerformancePanelStartDrag(TObject *Sender,
 //allow in zoom out mode
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",PerformancePanelStartDrag");
+    TrainController->LogEvent("PerformancePanelStartDrag");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PerformancePanelStartDrag");
     PerformancePanelDragStartX = Mouse->CursorPos.x - PerformancePanel->Left;
     PerformancePanelDragStartY = Mouse->CursorPos.y - PerformancePanel->Top;
@@ -4608,7 +4662,7 @@ try
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MainScreenMouseDown," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
     bool ClockState = Utilities->Clock2Stopped;
     Utilities->Clock2Stopped = true;
-    if(!AllRoutes->RouteFlashFlag && !PointFlashFlag)
+    if(!Track->RouteFlashFlag && !Track->PointFlashFlag)
         {
         if(!Display->ZoomOutFlag) MainScreenMouseDown2(0, Button, Shift, X, Y);
         else MainScreenMouseDown3(0, Button, Shift, X, Y);
@@ -4627,7 +4681,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",MainScreenMouseDown2," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
+    TrainController->LogEvent("MainScreenMouseDown2," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",MainScreenMouseDown2," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
     //unplot GapFlash graphics if plotted & cancel gap flashing (either key down)
     //but not in ZoomOut mode - so can switch between modes & keep gaps flashing
@@ -4645,7 +4699,7 @@ try
         {
         if(Level2TrackMode == AddText)
             {
-            Utilities->LogEvent(Utilities->TimeStamp() + ",mbRight + AddText");
+            TrainController->LogEvent("mbRight + AddText");
             ResetChangedFileDataAndCaption(2, true);
             if(TextHandler->TextFound(0, NoOffsetX,NoOffsetY))
                 {
@@ -4666,7 +4720,7 @@ try
             }
         else if(Level2TrackMode == AddTrack)
             {
-            Utilities->LogEvent(Utilities->TimeStamp() + ",mbRight + AddTrack");
+            TrainController->LogEvent("mbRight + AddTrack");
             bool TrackEraseSuccessfulFlag;
             int ErasedTrackVectorPosition;
             Screen->Cursor = TCursor(-11);//Hourglass;
@@ -4708,7 +4762,7 @@ try
             }
         else if(Level2TrackMode == DistanceContinuing)//new for extended distances (similar to PrefDirContinuing)
             {
-            Utilities->LogEvent(Utilities->TimeStamp() + ",mbRight + DistanceContinuing");
+            TrainController->LogEvent("mbRight + DistanceContinuing");
             ResetChangedFileDataAndCaption(4, true);
             bool LeadingPointsAtLastElement = false;
             if(ConstructPrefDir->GetPrefDirTruncateElement(0, HLoc, VLoc))
@@ -4757,7 +4811,7 @@ try
 
         else if(Level2PrefDirMode == PrefDirContinuing)//truncate
             {
-            Utilities->LogEvent(Utilities->TimeStamp() + ",mbRight + PrefDirContinuing");
+            TrainController->LogEvent("mbRight + PrefDirContinuing");
             ResetChangedFileDataAndCaption(5, false);
 //            RlyFile = false; - don't alter this just for PrefDir changes
             if(ConstructPrefDir->GetPrefDirTruncateElement(1, HLoc, VLoc))
@@ -4779,7 +4833,7 @@ try
 
         else if((Level1Mode == PrefDirMode) && (Level2PrefDirMode != PrefDirContinuing) && (Level2PrefDirMode != PrefDirSelecting))//delete element
             {
-            Utilities->LogEvent(Utilities->TimeStamp() + ",mbRight + != PrefDirContinuing");
+            TrainController->LogEvent("mbRight + != PrefDirContinuing");
             ResetChangedFileDataAndCaption(6, false);
 //            RlyFile = false; - don't alter this just for PrefDir changes
             EveryPrefDir->EraseFromPrefDirVectorAnd4MultiMap(0, HLoc, VLoc);
@@ -4791,7 +4845,7 @@ try
 
         else if((Level2OperMode == Operating) || (Level2OperMode == PreStart))//disallow when paused, but allow some parts in prestart
             {
-            Utilities->LogEvent(Utilities->TimeStamp() + ",mbRight + OperMode");
+            TrainController->LogEvent("mbRight + OperMode");
             bool FoundFlag;
             int VecPos = Track->GetVectorPositionFromTrackMap(1, HLoc, VLoc, FoundFlag);
             if(FoundFlag && (Level2OperMode != PreStart))//disallow signaller control in PreStart
@@ -4955,7 +5009,7 @@ try
 
             if(RouteMode == RouteContinuing)//clear a single element (clears whether use left or right mouse button) +allow in PreStart
                 {
-                Utilities->LogEvent(Utilities->TimeStamp() + ",mbRight + RouteContinuing");
+                TrainController->LogEvent("mbRight + RouteContinuing");
                 RevertToOriginalRouteSelector(0);
                 Utilities->CallLogPop(41);
                 return;
@@ -4963,7 +5017,7 @@ try
 
             else if(RouteCancelFlag) //allow in PreStart
                 {
-                Utilities->LogEvent(Utilities->TimeStamp() + ",mbRight + RouteCancelFlag");
+                TrainController->LogEvent("mbRight + RouteCancelFlag");
                 Screen->Cursor = TCursor(-11);//Hourglass;
                 //stop clock as sometimes takes several seconds
                 TrainController->StopTTClockFlag = true;//so TTClock stopped during MasterClockTimer function
@@ -4980,7 +5034,7 @@ try
 
             else //gap flashing, don't allow to interfere with RouteCancelFlag
                 {
-                Utilities->LogEvent(Utilities->TimeStamp() + ",mbRight, GapFlashingInOperOrPreStartMode");
+                TrainController->LogEvent("mbRight, GapFlashingInOperOrPreStartMode");
                 int Position;
                 TTrackElement TrackElement;
                 if(Track->FindNonPlatformMatch(4, HLoc, VLoc, Position, TrackElement));
@@ -5005,7 +5059,7 @@ try
             }
 
     //deal with gap selection - if no other right button selection - apply for any mode (also included in OperMode above)
-        Utilities->LogEvent(Utilities->TimeStamp() + ",mbRight, GapFlashingNotOperOrPreStartMode");
+        TrainController->LogEvent("mbRight, GapFlashingNotOperOrPreStartMode");
         int Position;
         TTrackElement TrackElement;
         if(Track->FindNonPlatformMatch(18, HLoc, VLoc, Position, TrackElement));
@@ -5035,7 +5089,7 @@ try
 
     if(Level2TrackMode == AddTrack)//not 'else if' for this as development panel displayed as well
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + AddTrack");
+        TrainController->LogEvent("mbLeft + AddTrack");
         Screen->Cursor = TCursor(-11);//Hourglass;
         ResetChangedFileDataAndCaption(7, true);
         bool TrackLinkingRequiredFlag;
@@ -5087,7 +5141,7 @@ try
 
     else if(Level2TrackMode == AddLocationName)
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + AddLocationName");
+        TrainController->LogEvent("mbLeft + AddLocationName");
         ResetChangedFileDataAndCaption(8, true);
         bool FoundFlag;
         TTrackElement TrackElement;
@@ -5140,7 +5194,7 @@ try
     else if(Level2TrackMode == DistanceStart)//new for extended distances - similar to !PrefDirContinuing
                                              //prior to selecting start element
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + DistanceStart");
+        TrainController->LogEvent("mbLeft + DistanceStart");
         ResetChangedFileDataAndCaption(9, true);
         if(ConstructPrefDir->GetPrefDirStartElement(0, HLoc, VLoc))
             {
@@ -5157,7 +5211,7 @@ try
     else if(Level2TrackMode == DistanceContinuing)//new for extended distances - similar to PrefDirContinuing
                                                   //prior to selecting finish element
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + DistanceContinuing");
+        TrainController->LogEvent("mbLeft + DistanceContinuing");
         ResetChangedFileDataAndCaption(10, true);
         bool FinishElement = false, LeadingPointsAtLastElement = false;
         Screen->Cursor = TCursor(-11);//Hourglass;
@@ -5236,7 +5290,7 @@ try
 
     else if(Level2TrackMode == GapSetting)
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + GapSetting");
+        TrainController->LogEvent("mbLeft + GapSetting");
         ResetChangedFileDataAndCaption(11, true);
         //HighLightOneGap already called once from SetLevel2TrackMode so have all gap element values set
         //& it is highlighted
@@ -5280,7 +5334,7 @@ try
 
     else if(Level2TrackMode == AddText)
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + AddText");
+        TrainController->LogEvent("mbLeft + AddText");
         ResetChangedFileDataAndCaption(12, true);
         //X & Y are relative to Display output, but TextBox is placed relative to Form
         //if mouse position on first character of an existing piece of text reload it into the editor
@@ -5343,7 +5397,7 @@ try
 
     else if(Level2TrackMode == MoveText)
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + MoveText");
+        TrainController->LogEvent("mbLeft + MoveText");
         ResetChangedFileDataAndCaption(13, true);
     //    int HPosInput;// = X + (Display->DisplayOffsetH * 16);
     //    int VPosInput;// = Y + (Display->DisplayOffsetV * 16);
@@ -5365,7 +5419,7 @@ try
     selected rectangle.
     */
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + TrackSelecting");
+        TrainController->LogEvent("mbLeft + TrackSelecting");
         ClearandRebuildRailway(10);//to get rid of earlier rectangles
         SelectStartPair.first = HLoc;
         SelectStartPair.second = VLoc;
@@ -5378,7 +5432,7 @@ try
     is saved in SelectBitmapMouseLocX & Y for use later in MouseMove & MouseUp.
     */
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + CopyMoving or CutMoving");
+        TrainController->LogEvent("mbLeft + CopyMoving or CutMoving");
         ResetChangedFileDataAndCaption(14, true);
         if((X < ((SelectBitmapHLoc - Display->DisplayOffsetH)*16) + 4) || (X > ((SelectBitmapHLoc + (SelectBitmap->Width/16) - Display->DisplayOffsetH)*16) - 4))
             {
@@ -5402,7 +5456,7 @@ try
 
     else if((Level1Mode == PrefDirMode) && (Level2PrefDirMode != PrefDirContinuing) && (Level2PrefDirMode != PrefDirSelecting))
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + != PrefDirContinuing");
+        TrainController->LogEvent("mbLeft + != PrefDirContinuing");
         ResetChangedFileDataAndCaption(15, false);
 //        RlyFile = false; - don't alter this just for PrefDir changes
         if(ConstructPrefDir->GetPrefDirStartElement(1, HLoc, VLoc))
@@ -5417,7 +5471,7 @@ try
 
     else if(Level2PrefDirMode == PrefDirContinuing)
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + PrefDirContinuing");
+        TrainController->LogEvent("mbLeft + PrefDirContinuing");
         ResetChangedFileDataAndCaption(16, false);
 //        RlyFile = false; - don't alter this just for PrefDir changes
         bool FinishElement;
@@ -5464,7 +5518,7 @@ try
 
     else if(Level2PrefDirMode == PrefDirSelecting)
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + PrefDirSelecting");
+        TrainController->LogEvent("mbLeft + PrefDirSelecting");
         ClearandRebuildRailway(56);//to get rid of earlier rectangles
         SelectStartPair.first = HLoc;
         SelectStartPair.second = VLoc;
@@ -5474,7 +5528,7 @@ try
         {
         if((Level2OperMode == Operating) && CallingOnButton->Down && CallingOnButton->Enabled)
             {
-            Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + Operating & CallingOnButton->Down");
+            TrainController->LogEvent("mbLeft + Operating & CallingOnButton->Down");
             int Position;
             TTrackElement TrackElement;
             if(Track->FindNonPlatformMatch(2, HLoc, VLoc, Position, TrackElement))
@@ -5545,7 +5599,7 @@ try
                                         {
                                         TPrefDirElement PDE = AllRoutes->GetFixedRouteAt(193, x).GetFixedPrefDirElementAt(212, 0);
                                         AllRoutes->RemoveRouteElement(21, PDE.HLoc, PDE.VLoc, PDE.GetELink());
-                                        Utilities->LogEvent(Utilities->TimeStamp() + ",SingleRouteElementRemovedDuringCallon, H = " + AnsiString(PDE.HLoc) + ", V = " + AnsiString(PDE.VLoc));
+                                        TrainController->LogEvent("SingleRouteElementRemovedDuringCallon, H = " + AnsiString(PDE.HLoc) + ", V = " + AnsiString(PDE.VLoc));
                                         }
                                     }
                                 }
@@ -5569,7 +5623,7 @@ try
                                                 if(!PointsChanged) //shouldn't be changed, something wrong if true so don't plot route
                                                     {
                                                     NewRoute->ConvertAndAddNonPreferredRouteSearchVector(3, ReqPosRouteID);
-                                                    ClearandRebuildRailway(67); //to plot the route
+                                                    ClearandRebuildRailway(67); //to plot the route (only finds one so won't call repeatedly)
                                                     }
                                                 }
                                             }
@@ -5590,7 +5644,7 @@ try
             return;
             }
     /*get 1st element, first check if selected points, not in existing route, & in RouteNotStarted mode
-    if so, set all the flash values, PointFlashFlag & start time, then exit for flasher to take over.
+    if so, set all the flash values, Track->PointFlashFlag & start time, then exit for flasher to take over.
     If any of above conditions not met then treat as route selection, setting route flasher if
     route continuing.
     */
@@ -5599,18 +5653,18 @@ try
                                                                          //disallow route setting if paused
             {
             if(Level2OperMode == PreStart) PointsFlashDuration = 0.0;
-            else PointsFlashDuration = AllRoutes->PointsDelay;
+            else PointsFlashDuration = AllRoutes->PointsDelay/TTClockSpeed;
             if(RouteMode == RouteNotStarted)
                 {
-                Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + RouteNotStarted");
+                TrainController->LogEvent("mbLeft + RouteNotStarted");
                 int Position;
                 TTrackElement TrackElement;
                 if(Track->FindNonPlatformMatch(3, HLoc, VLoc, Position, TrackElement))
                     {
-                    if((TrackElement.TrackType == Points) && !(AllRoutes->TrackIsInARoute(1, Position, 0)) && !PointFlashFlag
-                        && !AllRoutes->RouteFlashFlag)
+                    if((TrackElement.TrackType == Points) && !(AllRoutes->TrackIsInARoute(1, Position, 0)) && !Track->PointFlashFlag
+                        && !Track->RouteFlashFlag)
                     //Flash selected points & changeover if appropriate
-                    //need !PointFlashFlag to prevent another point being selected while another is flashing, & !AllRoutes->RouteFlashFlag
+                    //need !Track->PointFlashFlag to prevent another point being selected while another is flashing, & !Track->RouteFlashFlag
                     //to ensure user only does one thing at a time
                         {
                         if(TrackElement.TrainIDOnElement > -1)
@@ -5655,7 +5709,7 @@ try
                                 else DivergingPointVectorPosition = DivergingPosition;
                                 }
                             }
-                        PointFlashFlag = true;
+                        Track->PointFlashFlag = true;
                         PointFlashVectorPosition = Position;
                         PointFlashStartTime = TDateTime::CurrentDateTime();
                         }
@@ -5672,7 +5726,7 @@ try
                                 }
                             else
                                 {
-                                PointFlashFlag = true;
+                                Track->PointFlashFlag = true;
                                 PointFlashVectorPosition = Position;
                                 DivergingPointVectorPosition = DivergingPosition;
                                 PointFlashStartTime = TDateTime::CurrentDateTime();
@@ -5680,7 +5734,7 @@ try
                             }
                         else//no matching point, just change this point
                             {
-                            PointFlashFlag = true;
+                            Track->PointFlashFlag = true;
                             PointFlashVectorPosition = Position;
                             DivergingPointVectorPosition = -1;
                             PointFlashStartTime = TDateTime::CurrentDateTime();
@@ -5705,7 +5759,7 @@ try
                             }
                         if(PreferredRoute)
                             {
-                            if(!PointFlashFlag && !AllRoutes->RouteFlashFlag)//don't allow a route to start if a point changing or
+                            if(!Track->PointFlashFlag && !Track->RouteFlashFlag)//don't allow a route to start if a point changing or
                             //another route building
                                 {
                                 ConstructRoute->ClearRoute();//in case not empty though should be
@@ -5724,7 +5778,7 @@ try
                             }
                         else//nonpreferred route
                             {
-                            if(!PointFlashFlag && !AllRoutes->RouteFlashFlag)//don't allow a route to start if a point changing or
+                            if(!Track->PointFlashFlag && !Track->RouteFlashFlag)//don't allow a route to start if a point changing or
                             //another route building
                                 {
                                 ConstructRoute->ClearRoute();//in case not empty though should be
@@ -5746,7 +5800,7 @@ try
                 }//if(RouteMode == RouteNotStarted)
             else //RouteContinuing
                 {
-                Utilities->LogEvent(Utilities->TimeStamp() + ",mbLeft + RouteContinuing");
+                TrainController->LogEvent("mbLeft + RouteContinuing");
                 TrainController->StopTTClockFlag = true;//so TTClock stopped during MasterClockTimer function
                 TrainController->RestartTime = TrainController->TTClockTime;
                 RouteMode = RouteNotStarted;
@@ -5762,11 +5816,11 @@ try
         //            int ReqPosRouteNumber;
                     if(ConstructRoute->GetNextPreferredRouteElement(0, HLoc, VLoc, EveryPrefDir, ConsecSignalsRoute, AutoSigsFlag, ConstructRoute->ReqPosRouteID, PointsChanged))
                         {
-                        AllRoutes->RouteFlashFlag = true;
+                        Track->RouteFlashFlag = true;
                         PreferredRouteFlag = true;
                         if(Level2OperMode == PreStart) RouteFlashDuration = 0.0;
-                        else if(PointsChanged) RouteFlashDuration = AllRoutes->PointsDelay;
-                        else RouteFlashDuration = AllRoutes->SignalsDelay;
+                        else if(PointsChanged) RouteFlashDuration = AllRoutes->PointsDelay/TTClockSpeed;
+                        else RouteFlashDuration = AllRoutes->SignalsDelay/TTClockSpeed;
                         ConstructRoute->SetRouteFlashValues(1, AutoSigsFlag, true);//true for ConsecSignalsRoute
                         RouteFlashStartTime = TDateTime::CurrentDateTime();
                         }
@@ -5785,11 +5839,11 @@ try
                     bool CallonFalse = false;
                     if(ConstructRoute->GetNextNonPreferredRouteElement(0, HLoc, VLoc, ConsecSignalsRoute, CallonFalse, ConstructRoute->ReqPosRouteID, PointsChanged))
                         {
-                        AllRoutes->RouteFlashFlag = true;
+                        Track->RouteFlashFlag = true;
                         PreferredRouteFlag = false;
                         if(Level2OperMode == PreStart) RouteFlashDuration = 0.0;
-                        else if(PointsChanged) RouteFlashDuration = AllRoutes->PointsDelay;
-                        else RouteFlashDuration = AllRoutes->SignalsDelay;
+                        else if(PointsChanged) RouteFlashDuration = AllRoutes->PointsDelay/TTClockSpeed;
+                        else RouteFlashDuration = AllRoutes->SignalsDelay/TTClockSpeed;
                         ConstructRoute->SetRouteFlashValues(2, false, false);
                         RouteFlashStartTime = TDateTime::CurrentDateTime();
                         }
@@ -5823,7 +5877,7 @@ void TInterface::MainScreenMouseDown3(int Caller, TMouseButton Button, TShiftSta
 try
     {
     if(Button != mbLeft) return;
-    Utilities->LogEvent(Utilities->TimeStamp() + ",MainScreenMouseDown3," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
+    TrainController->LogEvent("MainScreenMouseDown3," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",MainScreenMouseDown3," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
     InfoPanel->Visible = false;//reset infopanel in case not set later
     InfoPanel->Caption = "";
@@ -5906,7 +5960,7 @@ void __fastcall TInterface::MainScreenMouseMove(TObject *Sender,
 try
     {
     if(!mbLeftDown) return;
-    Utilities->LogEvent(Utilities->TimeStamp() + ",MainScreenMouseMove," + AnsiString(X) + "," + AnsiString(Y));
+//    TrainController->LogEvent("MainScreenMouseMove," + AnsiString(X) + "," + AnsiString(Y));    //dropped at v0.6, too many events
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MainScreenMouseMove," + AnsiString(X) + "," + AnsiString(Y));
     if(Level2TrackMode == TrackSelecting)
 /*  [Repeated from MouseDown] - When 'select' chosen from the Edit menu (only available in 'AddTrack') conditions are set ready to enclose a rectangular screen area
@@ -5923,7 +5977,7 @@ try
     the selection.
 */
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",MouseMove + TrackSelecting");
+        TrainController->LogEvent("MouseMove + TrackSelecting");
         int CurrentHLoc, CurrentVLoc, StartHLoc = SelectStartPair.first, StartVLoc = SelectStartPair.second;
         Track->GetTrackLocsFromScreenPos(2, CurrentHLoc, CurrentVLoc, X, Y);
 //to make the rectangle inclusive of the start and current points, need to increase the HLoc value of the
@@ -5942,7 +5996,7 @@ try
 
     else if(Level2PrefDirMode == PrefDirSelecting)
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",MouseMove + PrefDirSelecting");
+        TrainController->LogEvent("MouseMove + PrefDirSelecting");
 
         int CurrentHLoc, CurrentVLoc, StartHLoc = SelectStartPair.first, StartVLoc = SelectStartPair.second;
         Track->GetTrackLocsFromScreenPos(5, CurrentHLoc, CurrentVLoc, X, Y);
@@ -5971,7 +6025,7 @@ try
     occupies.  Clearand... is called finally to clear earlier selection displays.
     */
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",MouseMove + Copy or CutMoving & SelectPickedUp");
+        TrainController->LogEvent("MouseMove + Copy or CutMoving & SelectPickedUp");
         if(X < 0) X = 0; //ensure pointer stays within display area
         if(X > 959) X = 959;
         if(Y < 0) Y = 0;
@@ -5983,7 +6037,7 @@ try
 
     else if((Level2TrackMode == MoveText) && TextFoundFlag)
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",MouseMove + MoveText & TextFoundFlag");
+        TrainController->LogEvent("MouseMove + MoveText & TextFoundFlag");
         int NewHPos = TextGridVal*(div(X - StartX,TextGridVal).quot) + TextMoveHPos + Display->DisplayOffsetH * 16;
         NewHPos = TextGridVal*(div(NewHPos,TextGridVal).quot);
         int NewVPos = TextGridVal*(div(Y - StartY,TextGridVal).quot) + TextMoveVPos + Display->DisplayOffsetV * 16;
@@ -6036,11 +6090,11 @@ to an arrow.
 */
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",MainScreenMouseUp," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
+    TrainController->LogEvent("MainScreenMouseUp," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MainScreenMouseUp," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
     if((Level2TrackMode == TrackSelecting) && mbLeftDown)
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",MouseUp + TrackSelecting + mbLeftDown");
+        TrainController->LogEvent("MouseUp + TrackSelecting + mbLeftDown");
         Screen->Cursor = TCursor(-11);//Hourglass;
         int EndHLoc, EndVLoc, StartHLoc = SelectStartPair.first, StartVLoc = SelectStartPair.second;
         Track->GetTrackLocsFromScreenPos(3, EndHLoc, EndVLoc, X, Y);//these values don't allow for offsets so add in later
@@ -6196,7 +6250,7 @@ try
 
     else if((Level2PrefDirMode == PrefDirSelecting) && mbLeftDown)
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",MouseUp + PrefDirSelecting + mbLeftDown");
+        TrainController->LogEvent("MouseUp + PrefDirSelecting + mbLeftDown");
         Screen->Cursor = TCursor(-11);//Hourglass;
 
         int EndHLoc, EndVLoc, StartHLoc = SelectStartPair.first, StartVLoc = SelectStartPair.second;
@@ -6281,7 +6335,7 @@ stays in the same position (Clearand... checks whether the mouse is moving (both
 mbLeftDown or SelectPickedUp false) and uses NewSelectBitmapHLoc & VLoc or SelectBitmapHLoc & SelectBitmapVLoc respectively.
 */
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",MouseUp + Copy or CutMoving + mbLeftDown + SelectPickedUp");
+        TrainController->LogEvent("MouseUp + Copy or CutMoving + mbLeftDown + SelectPickedUp");
         SelectBitmapHLoc = NewSelectBitmapHLoc;
         SelectBitmapVLoc = NewSelectBitmapVLoc;
         }
@@ -6323,8 +6377,12 @@ try
     //stopped during 'Paused', when modal windows appear - Popup menu & ShowMessage, and at other times
         {
         //RestartTime is TTClockTime when operation pauses (timetable start time initially),
-        //BaseTime is CurrentDateTime() when operation re starts
-        TrainController->TTClockTime = TDateTime::CurrentDateTime() + TrainController->RestartTime - TrainController->BaseTime;
+        //BaseTime is CurrentDateTime() when operation restarts
+
+//clock speed multiplier
+        double RealTimeDouble = double(TDateTime::CurrentDateTime() - TrainController->BaseTime);
+        TrainController->TTClockTime = TDateTime(TTClockSpeed * RealTimeDouble) + TrainController->RestartTime;
+//        TrainController->TTClockTime = TDateTime::CurrentDateTime() - TrainController->BaseTime + TrainController->RestartTime;
         }
 
     if(Utilities->Clock2Stopped)
@@ -6384,8 +6442,9 @@ try
 //signal won't be removed because the train's LagElement is still -1 and trains only remove route elements when LagElement is > -1.
 //This also means that a preferred route can't be cancelled as it's under a train, but it's probably not worth adding a patch just for
 //this, it shouldn't interfere with operation.
-    if((Level1Mode == OperMode) && (Level2OperMode == Operating) && !AllRoutes->RouteFlashFlag)
+    if((Level1Mode == OperMode) && (Level2OperMode == Operating) && !Track->RouteFlashFlag)
         {
+        bool ElementRemovedFlag = false; //introduced at v0.6 to avoid calling Clearand.... multiple times
         for(unsigned int x=0; x<AllRoutes->AllRoutesSize(); x++)
             {
             if(AllRoutes->GetFixedRouteAt(187, x).PrefDirSize() == 1)
@@ -6396,15 +6455,16 @@ try
                     {
                     TPrefDirElement PDE = AllRoutes->GetFixedRouteAt(188, x).GetFixedPrefDirElementAt(198, 0);
                     AllRoutes->RemoveRouteElement(20, PDE.HLoc, PDE.VLoc, PDE.GetELink());
-                    Utilities->LogEvent(Utilities->TimeStamp() + ",SingleRouteElementRemoved, H = " + AnsiString(PDE.HLoc) + ", V = " + AnsiString(PDE.VLoc));
-                    if(!Display->ZoomOutFlag) ClearandRebuildRailway(66);//if zoomed out ignore, will display correctly when zoom in
-                    //if leave the above condition out then the zoom out will spontaneously cancel and the track won't display because
-                    //PlotOutput returns if zoomed out, and the zoom out flag isn't reset until the end of Clearand.....
+                    ElementRemovedFlag = true;
+                    TrainController->LogEvent("SingleRouteElementRemoved, H = " + AnsiString(PDE.HLoc) + ", V = " + AnsiString(PDE.VLoc));
                     }
                 }
             }
+        if(!Display->ZoomOutFlag && ElementRemovedFlag) ClearandRebuildRailway(66);//if zoomed out ignore, will display correctly when zoom in
+        //if leave the Zoomout condition out then the zoom out will spontaneously cancel and the track won't display because
+        //PlotOutput returns if zoomed out, and the zoom out flag isn't reset until the end of Clearand.....
+        //this was moved outside the for.. next.. loop in v0.6 as it could be called multiple times and slowed down operation (noticeable with a fast clock)
         }
-
 //stop clock if hover over a warning
     bool WH1 = (Mouse->CursorPos.x >= ClientOrigin.x + OutputLog1->Left) && (Mouse->CursorPos.x < (ClientOrigin.x + OutputLog1->Width + OutputLog1->Left)) &&
             (Mouse->CursorPos.y >= ClientOrigin.y + OutputLog1->Top) && (Mouse->CursorPos.y < (ClientOrigin.y + OutputLog1->Height + OutputLog1->Top)) &&
@@ -6497,7 +6557,7 @@ try
         }
 
 //set cursor
-    if(PointFlashFlag || AllRoutes->RouteFlashFlag)
+    if(Track->PointFlashFlag || Track->RouteFlashFlag)
         {
         if(!TempCursorSet)
             {
@@ -6651,7 +6711,7 @@ void __fastcall TInterface::CallingOnButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",CallingOnButtonClick");
+    TrainController->LogEvent("CallingOnButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CallingOnButtonClick");
     if(CallingOnButton->Down)
         {
@@ -6681,7 +6741,7 @@ void __fastcall TInterface::ScreenLeftButtonClick(TObject *Sender)
 try
     {
     //have to allow in zoomout mode
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ScreenLeftButtonClick");
+    TrainController->LogEvent("ScreenLeftButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenLeftButtonClick");
     Screen->Cursor = TCursor(-11);//Hourglass;
     ScreenLeftButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
@@ -6739,7 +6799,7 @@ void __fastcall TInterface::ScreenRightButtonClick(TObject *Sender)
 try
     {
     //have to allow in zoomout mode
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ScreenRightButtonClick");
+    TrainController->LogEvent("ScreenRightButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenRightButtonClick");
     Screen->Cursor = TCursor(-11);//Hourglass;
     ScreenRightButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
@@ -6797,7 +6857,7 @@ void __fastcall TInterface::ScreenDownButtonClick(TObject *Sender)
 try
     {
     //have to allow in zoomout mode
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ScreenDownButtonClick");
+    TrainController->LogEvent("ScreenDownButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenDownButtonClick");
     Screen->Cursor = TCursor(-11);//Hourglass;
     ScreenDownButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
@@ -6855,7 +6915,7 @@ void __fastcall TInterface::ScreenUpButtonClick(TObject *Sender)
 try
     {
     //have to allow in zoomout mode
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ScreenUpButtonClick");
+    TrainController->LogEvent("ScreenUpButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenUpButtonClick");
     Screen->Cursor = TCursor(-11);//Hourglass;
     ScreenUpButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
@@ -6913,12 +6973,12 @@ void __fastcall TInterface::ZoomButtonClick(TObject *Sender)
 try
     {
     //have to allow in zoomout mode
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ZoomButtonClick");
+    TrainController->LogEvent("ZoomButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ZoomButtonClick");
     Screen->Cursor = TCursor(-11);//Hourglass;
     if(Display->ZoomOutFlag)//i.e resume zoomed in view
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",ZoomButtonClick + ZoomOutFlag");
+        TrainController->LogEvent("ZoomButtonClick + ZoomOutFlag");
 //        TLevel2OperMode TempLevel2OperMode = Level2OperMode;
         if(Level1Mode == BaseMode)
             {
@@ -6958,6 +7018,7 @@ try
             OperateButton->Enabled = true;
             OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
             ExitOperationButton->Enabled = true;
+            TTClockAdjButton->Enabled = true;
             SetRouteButtonsInfoCaptionAndRouteNotStarted(5);
             DisableRouteButtons(1);
             }
@@ -6966,6 +7027,7 @@ try
             OperateButton->Enabled = true;
             OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
             ExitOperationButton->Enabled = true;
+            TTClockAdjButton->Enabled = true;
             SetRouteButtonsInfoCaptionAndRouteNotStarted(9);
             }
         Display->ZoomOutFlag = false;//reset this after level modes called so gap flash stays set if set to begin with
@@ -6975,7 +7037,7 @@ try
         }
     else //set zoomed out view
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",ZoomButtonClick + != ZoomOutFlag");
+        TrainController->LogEvent("ZoomButtonClick + != ZoomOutFlag");
         Display->ZoomOutFlag = true;
         SetPausedOrZoomedInfoCaption(2);
         FileMenu->Enabled = false;
@@ -6983,6 +7045,7 @@ try
         EditMenu->Enabled = false;
         TextBox->Visible = false;
         LocationNameTextBox->Visible = false;
+        TTClockAdjButton->Enabled = false;
 //        DisablePanelsStoreMainMenuStates();//ensure Display->ZoomOutFlag set true before calling
         //start assuming normal view is at centre of ZoomOut & calc excesses at each side
         int OVOffH_NVCentre = Display->DisplayOffsetH - (1.5 * ScreenElementWidth); // start zoomout centre at DisplayOffsetH + 30 - zoomout width/2 = -(1.5 * 60)
@@ -7022,12 +7085,12 @@ void __fastcall TInterface::HomeButtonClick(TObject *Sender)
 try
     {
     //have to allow in zoomout mode
-    Utilities->LogEvent(Utilities->TimeStamp() + ",HomeButtonClick");
+    TrainController->LogEvent("HomeButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",HomeButtonClick");
     Screen->Cursor = TCursor(-11);//Hourglass;
     if(!Display->ZoomOutFlag)//zoomed in mode
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",HomeButtonClick + zoomed in mode");
+        TrainController->LogEvent("HomeButtonClick + zoomed in mode");
         Display->ResetZoomInOffsets();
         ClearandRebuildRailway(27);
         if((Level2TrackMode == TrackSelecting) || (Level2PrefDirMode == PrefDirSelecting))
@@ -7039,7 +7102,7 @@ try
         {
         //zoomed out mode
         //start assuming normal view is at centre of ZoomOut & calc excesses at each side
-        Utilities->LogEvent(Utilities->TimeStamp() + ",HomeButtonClick + zoomed out mode");
+        TrainController->LogEvent("HomeButtonClick + zoomed out mode");
         Display->ResetZoomOutOffsets();
         Display->ClearDisplay(9);
         Track->PlotSmallRailway(7, Display);
@@ -7058,7 +7121,7 @@ void __fastcall TInterface::NewHomeButtonClick(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",NewHomeButtonClick");
+    TrainController->LogEvent("NewHomeButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",NewHomeButtonClick");
     if(!Display->ZoomOutFlag)//zoomed in mode
         {
@@ -7083,7 +7146,7 @@ void __fastcall TInterface::Select1Click(TObject *Sender)
 //draw a rectangle with the left mouse button mouse, enclosing whole 16 x 16 squares
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",Select1Click");
+    TrainController->LogEvent("Select1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Select1Click");
     if(Level1Mode == TrackMode)
         {
@@ -7108,7 +7171,7 @@ void __fastcall TInterface::Reselect1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",Reselect1Click");
+    TrainController->LogEvent("Reselect1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Reselect1Click");
     if((SelectBitmap->Height == 0) || (SelectBitmap->Width == 0))
         {
@@ -7161,7 +7224,7 @@ void __fastcall TInterface::Cut1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",Cut1Click");
+    TrainController->LogEvent("Cut1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Cut1Click");
     //Level1Mode = TrackMode;
     //SetLevel1Mode(69);
@@ -7180,7 +7243,7 @@ void __fastcall TInterface::Copy1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",Copy1Click");
+    TrainController->LogEvent("Copy1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Copy1Click");
     //Level1Mode = TrackMode;
     //SetLevel1Mode(70);
@@ -7198,7 +7261,7 @@ void __fastcall TInterface::Flip1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",Flip1Click");
+    TrainController->LogEvent("Flip1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Flip1Click");
     //reset values in SelectVector
     int VerSum = SelectRect.top + SelectRect.bottom - 1;
@@ -7231,7 +7294,7 @@ void __fastcall TInterface::Mirror1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",Mirror1Click");
+    TrainController->LogEvent("Mirror1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Mirror1Click");
     //reset values in SelectVector
     int HorSum = SelectRect.left + SelectRect.right - 1;
@@ -7264,7 +7327,7 @@ void __fastcall TInterface::Rotate1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",Rotate1Click");
+    TrainController->LogEvent("Rotate1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Rotate1Click");
     //reset values in SelectVector
     int HorSum = SelectRect.left + SelectRect.right - 1;
@@ -7301,7 +7364,7 @@ void __fastcall TInterface::Paste1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",Paste1Click");
+    TrainController->LogEvent("Paste1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Paste1Click");
     //Level1Mode = TrackMode;
     //SetLevel1Mode(74);
@@ -7319,7 +7382,7 @@ void __fastcall TInterface::Delete1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",Delete1Click");
+    TrainController->LogEvent("Delete1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Delete1Click");
     //Level1Mode = TrackMode;
     //SetLevel1Mode(75);
@@ -7338,7 +7401,7 @@ void __fastcall TInterface::SelectLengths1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SelectLengths1Click");
+    TrainController->LogEvent("SelectLengths1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SelectLengths1Click");
     TrackElementPanel->Visible = false;
     TrackLengthPanel->Visible = true;
@@ -7369,7 +7432,7 @@ elements from each one, and add each into ConstructPrefDir, then when all added 
 */
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SelectBiDirectionalPrefDirs1Click");
+    TrainController->LogEvent("SelectBiDirectionalPrefDirs1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SelectBiDirectionalPrefDirs1Click");
     ConstructPrefDir->ExternalClearPrefDirAnd4MultiMap();
     bool FoundFlag = false;
@@ -7427,7 +7490,7 @@ void __fastcall TInterface::CancelSelection1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",CancelSelectionClick");
+    TrainController->LogEvent("CancelSelectionClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CancelSelectionClick");
     ClearandRebuildRailway(46);//to remove the selection outline
     SelectionValid = false;
@@ -7455,12 +7518,12 @@ void __fastcall TInterface::LoadTimetable1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",LoadTimetable1Click");
+    TrainController->LogEvent("LoadTimetable1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LoadTimetable1Click");
     TimetableDialog->Filter = "Timetable file (*.ttb)|*.ttb";
     if(TimetableDialog->Execute())
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",LoadTimetable " + TimetableDialog->FileName);
+        TrainController->LogEvent("LoadTimetable " + TimetableDialog->FileName);
         bool GiveMessagesTrue = true;
         bool CheckLocationsExistInRailwayTrue = true;
         if(TrainController->TimetableIntegrityCheck(0, TimetableDialog->FileName.c_str(), GiveMessagesTrue, CheckLocationsExistInRailwayTrue))//true for GiveMessages
@@ -7495,7 +7558,7 @@ void __fastcall TInterface::TakeSignallerControl1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SignallerControl1Click");
+    TrainController->LogEvent("SignallerControl1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SignallerControl1Click");
     TTrain &Train = TrainController->TrainVectorAtIdent(17, SelectedTrainID);
     Train.SignallerStoppingFlag = false;
@@ -7567,7 +7630,7 @@ void __fastcall TInterface::TimetableControl1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",TimetableControl1Click");
+    TrainController->LogEvent("TimetableControl1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TimetableControl1Click");
     TTrain &Train = TrainController->TrainVectorAtIdent(18, SelectedTrainID);
     Train.SignallerStoppingFlag = false;
@@ -7649,7 +7712,7 @@ void __fastcall TInterface::ChangeDirection1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",ChangeDirection1Click");
+    TrainController->LogEvent("ChangeDirection1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ChangeDirection1Click");
     TTrain &Train = TrainController->TrainVectorAtIdent(19, SelectedTrainID);
     Train.SignallerStoppingFlag = false;
@@ -7686,7 +7749,7 @@ void __fastcall TInterface::MoveForwards1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",MoveForwards1Click");
+    TrainController->LogEvent("MoveForwards1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MoveForwards1Click");
     TTrain &Train = TrainController->TrainVectorAtIdent(20, SelectedTrainID);
     Train.SignallerStoppingFlag = false;
@@ -7736,7 +7799,7 @@ void __fastcall TInterface::SignallerControlStop1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SignallerControlStop1Click");
+    TrainController->LogEvent("SignallerControlStop1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SignallerControlStop1Click");
     TTrain &Train = TrainController->TrainVectorAtIdent(35, SelectedTrainID);
     Train.LeavingUnderSigControlAtContinuation = false;
@@ -7764,7 +7827,7 @@ void __fastcall TInterface::PassRedSignal1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",PassRedSignal1Click");
+    TrainController->LogEvent("PassRedSignal1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PassRedSignal1Click");
     TTrain &Train = TrainController->TrainVectorAtIdent(21, SelectedTrainID);
     Train.SignallerStoppingFlag = false;
@@ -7806,7 +7869,7 @@ void __fastcall TInterface::StepForward1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",StepForward1Click");
+    TrainController->LogEvent("StepForward1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",StepForward1Click");
     TTrain &Train = TrainController->TrainVectorAtIdent(24, SelectedTrainID);
     Train.SignallerStoppingFlag = false;
@@ -7843,7 +7906,7 @@ void __fastcall TInterface::RemoveTrain1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",RemoveTrain1Click");
+    TrainController->LogEvent("RemoveTrain1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RemoveTrain1Click");
     TTrain &Train = TrainController->TrainVectorAtIdent(22, SelectedTrainID);
     if((!Train.Derailed) && (!Train.Crashed))
@@ -7939,7 +8002,7 @@ void __fastcall TInterface::PerformancePanelLabelStartDrag(TObject *Sender,
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",PerformancePanelLabelStartDrag");
+    TrainController->LogEvent("PerformancePanelLabelStartDrag");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PerformancePanelLabelStartDrag");
     PerformancePanelDragStartX = Mouse->CursorPos.x - PerformancePanel->Left;
     PerformancePanelDragStartY = Mouse->CursorPos.y - PerformancePanel->Top;
@@ -8027,7 +8090,7 @@ catch (const Exception &e)
 void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-//Utilities->LogEvent(Utilities->TimeStamp() + ",FormKeyDown," + AnsiString(Key));
+//TrainController->LogEvent("FormKeyDown," + AnsiString(Key));
 //drop event log as have too many spurious entrues
 try
     {
@@ -8241,7 +8304,7 @@ void __fastcall TInterface::BlackBgnd1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",BlackBgnd1Click");
+    TrainController->LogEvent("BlackBgnd1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BlackBgnd1Click");
     std::ofstream ColFile((CurDir + "\\Background.col").c_str());
     if(ColFile.fail())
@@ -8278,7 +8341,7 @@ void __fastcall TInterface::WhiteBgnd1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",WhiteBgnd1Click");
+    TrainController->LogEvent("WhiteBgnd1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",WhiteBgnd1Click");
     std::ofstream ColFile((CurDir + "\\Background.col").c_str());
     if(ColFile.fail())
@@ -8314,7 +8377,7 @@ void __fastcall TInterface::BlueBgnd1Click(TObject *Sender)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",BlueBgnd1Click");
+    TrainController->LogEvent("BlueBgnd1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BlueBgnd1Click");
     std::ofstream ColFile((CurDir + "\\Background.col").c_str());
     if(ColFile.fail())
@@ -8351,7 +8414,7 @@ void __fastcall TInterface::MPHEdit1KeyUp(TObject *Sender, WORD &Key,
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",MPHEdit1KeyUp," + AnsiString(Key));
+    TrainController->LogEvent("MPHEdit1KeyUp," + AnsiString(Key));
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPHEdit1KeyUp," + AnsiString(Key));
     bool ErrorFlag = false, TooBigFlag = false;
     if(MPHEdit1->Text.Length() > 0)
@@ -8399,12 +8462,64 @@ catch (const Exception &e)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TInterface::HPEditKeyUp(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+try
+    {
+    TrainController->LogEvent("HPEditKeyUp," + AnsiString(Key));
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",HPEditKeyUp," + AnsiString(Key));
+    bool ErrorFlag = false, TooBigFlag = false;
+    if(HPEdit->Text.Length() > 0)
+        {
+        if(HPEdit->Text.Length() > 8)
+            {
+            TooBigFlag = true;
+            }
+        for(int x=1; x<=HPEdit->Text.Length(); x++)
+            {
+            if((HPEdit->Text[x] < '0') || (HPEdit->Text[x] > '9'))
+                {
+                KWVariableLabel->Caption = "Entry error";
+                ErrorFlag = true;
+                break;
+                }
+            if(TooBigFlag)
+                {
+                KWVariableLabel->Caption = "Too big";
+                break;
+                }
+            }
+        if(!ErrorFlag && !TooBigFlag)
+            {
+            int HP = HPEdit->Text.ToInt();
+            int KW = (HP * 0.745699872) + 0.5;
+            KWVariableLabel->Caption = AnsiString(KW);
+            }
+        }
+    else
+        {
+        KWVariableLabel->Caption = "";
+        }
+    Utilities->CallLogPop(1868);
+    }
+catch (const EConvertError &ec) //thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash
+    {
+    KWVariableLabel->Caption = "Entry error";
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(179, e.Message);
+    }
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TInterface::MPHEdit2KeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",MPHEdit2KeyUp," + AnsiString(Key));
+    TrainController->LogEvent("MPHEdit2KeyUp," + AnsiString(Key));
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPHEdit2KeyUp," + AnsiString(Key));
     bool ErrorFlag = false, TooBigFlag = false;
     if(MPHEdit2->Text.Length() > 0)
@@ -8457,7 +8572,7 @@ void __fastcall TInterface::LengthEditKeyUp(TObject *Sender, WORD &Key,
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",LengthEditKeyUp," + AnsiString(Key));
+    TrainController->LogEvent("LengthEditKeyUp," + AnsiString(Key));
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LengthEditKeyUp," + AnsiString(Key));
     bool ErrorFlag = false, TooLongFlag = false;
     if((MileEdit->Text.Length() > 0) && (MileEdit->Text.Length() < 6))
@@ -8534,6 +8649,288 @@ catch (const Exception &e)
     ErrorLog(178, e.Message);
     }
 }
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::TTClockAdjButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("TTClockAdjButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockAdjButtonClick");
+    Utilities->Clock2Stopped = true; //to keep panel buttons disabled, restarted on exit
+    Display->HideWarningLog(0);
+    TTClockAdjPanel->Visible = true;
+    TTClockAdjButton->Enabled = false;
+    OperatingPanel->Enabled = false;
+    OperatingPanelLabel->Caption = "Disabled";
+    ZoomButton->Enabled = false;
+    HomeButton->Enabled = false;
+    NewHomeButton->Enabled = false;
+    ScreenLeftButton->Enabled = false;
+    ScreenRightButton->Enabled = false;
+    ScreenUpButton->Enabled = false;
+    ScreenDownButton->Enabled = false;
+    Utilities->CallLogPop(1875);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(181, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::TTClockExitButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("TTClockExitButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockExitButtonClick");
+    TTClockAdjPanel->Visible = false;
+    ZoomButton->Enabled = true;
+    HomeButton->Enabled = true;
+    NewHomeButton->Enabled = true;
+    ScreenLeftButton->Enabled = true;
+    ScreenRightButton->Enabled = true;
+    ScreenUpButton->Enabled = true;
+    ScreenDownButton->Enabled = true;
+    OperatingPanel->Enabled = true;
+    OperatingPanelLabel->Caption = "Operation";
+    TTClockAdjButton->Enabled = true;
+    Display->ShowWarningLog(0);
+    double TTClockTimeChange = double(TrainController->RestartTime) - PauseEntryRestartTime;
+    if((TTClockSpeed != PauseEntryTTClockSpeed) || (TTClockTimeChange > 0.000347)) //30 seconds, min increase is 1 minute & don't trust doubles to stay exactly equal
+        {
+        AnsiString Message = "Changes have been made to the timetable clock - you may wish to save a session before resuming operation.\nTo cancel all changes click 'Adjust the timetable clock' then click the reset button BEFORE resuming operation.";
+        ShowMessage(Message);
+        }
+    Utilities->Clock2Stopped = false;
+    Utilities->CallLogPop(1876);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(182, e.Message);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::TTClockx2ButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("TTClockx2ButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockx2ButtonClick");
+    TTClockSpeed = 2;
+    TTClockSpeedLabel->Caption = "x2";
+    Utilities->CallLogPop(1878);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(184, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::TTClockx4ButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("TTClockx4ButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockx4ButtonClick");
+    TTClockSpeed = 4;
+    TTClockSpeedLabel->Caption = "x4";
+    Utilities->CallLogPop(1883);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(189, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::TTClockx8ButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("TTClockx8ButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockx8ButtonClick");
+    TTClockSpeed = 8;
+    TTClockSpeedLabel->Caption = "x8";
+    Utilities->CallLogPop(1884);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(190, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::TTClockx16ButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("TTClockx16ButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockx16ButtonClick");
+    TTClockSpeed = 16;
+    TTClockSpeedLabel->Caption = "x16";
+    Utilities->CallLogPop(1885);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(191, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::TTClockx1ButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("TTClockx1ButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockx1ButtonClick");
+    TTClockSpeed = 1;
+    TTClockSpeedLabel->Caption = "x1";
+    Utilities->CallLogPop(1886);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(192, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::TTClockxHalfButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("TTClockxHalfButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockxHalfButtonClick");
+    TTClockSpeed = 0.5;
+    TTClockSpeedLabel->Caption = "x1/2";
+    Utilities->CallLogPop(1887);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(193, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::TTClockxQuarterButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("TTClockxQuarterButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockxQuarterButtonClick");
+    TTClockSpeed = 0.25;
+    TTClockSpeedLabel->Caption = "x1/4";
+    Utilities->CallLogPop(1888);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(194, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::TTClockAdd1hButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("TTClockAdd1hButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockAdd1hButtonClick");
+    double TTClockIncrement = 1.0/24;
+    TrainController->RestartTime+= TDateTime(TTClockIncrement);
+    TrainController->TTClockTime = TrainController->RestartTime;
+    ClockLabel->Caption = Utilities->Format96HHMMSS(TrainController->TTClockTime);
+    Utilities->CallLogPop(1879);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(185, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+
+void __fastcall TInterface::TTClockAdd10mButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("TTClockAdd10mButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockAdd10mButtonClick");
+    double TTClockIncrement = 1.0/144;
+    TrainController->RestartTime+= TDateTime(TTClockIncrement);
+    TrainController->TTClockTime = TrainController->RestartTime;
+    ClockLabel->Caption = Utilities->Format96HHMMSS(TrainController->TTClockTime);
+    Utilities->CallLogPop(1881);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(187, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::TTClockAdd1mButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("TTClockAdd1mButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockAdd1mButtonClick");
+    double TTClockIncrement = 1.0/1440;
+    TrainController->RestartTime+= TDateTime(TTClockIncrement);
+    TrainController->TTClockTime = TrainController->RestartTime;
+    ClockLabel->Caption = Utilities->Format96HHMMSS(TrainController->TTClockTime);
+    Utilities->CallLogPop(1882);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(188, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::TTClockResetButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("TTClockResetButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockResetButtonClick");
+    TrainController->RestartTime = TDateTime(PauseEntryRestartTime);
+    TrainController->TTClockTime = TrainController->RestartTime;
+    ClockLabel->Caption = Utilities->Format96HHMMSS(TrainController->TTClockTime);
+    TTClockSpeed = PauseEntryTTClockSpeed;
+    if(TTClockSpeed == 2) TTClockSpeedLabel->Caption = "x2";
+    else if(TTClockSpeed == 4) TTClockSpeedLabel->Caption = "x4";
+    else if(TTClockSpeed == 8) TTClockSpeedLabel->Caption = "x8";
+    else if(TTClockSpeed == 16) TTClockSpeedLabel->Caption = "x16";
+    else if(TTClockSpeed == 0.5) TTClockSpeedLabel->Caption = "x1/2";
+    else if(TTClockSpeed == 0.25) TTClockSpeedLabel->Caption = "x1/4";
+    else
+        {
+        TTClockSpeed = 1;
+        TTClockSpeedLabel->Caption = "x1";
+        }
+    Utilities->CallLogPop(1880);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(186, e.Message);
+    }
+}
+
 //---------------------------------------------------------------------------
 //end of fastcalls & directly associated functions
 //---------------------------------------------------------------------------
@@ -8678,7 +9075,7 @@ if(Level1Mode == OperMode)
         else NonSigRouteStartMarker->PlotOverlay(9, HiddenDisplay);
         }
 
-    if(PointFlashFlag)
+    if(Track->PointFlashFlag)
         {
         //need to reset the screen location for picking up the original graphic
         Track->GetScreenPositionsFromTruePos(1, Left, Top, PointFlash->GetHPos(), PointFlash->GetVPos());
@@ -8963,6 +9360,7 @@ switch(Level1Mode)//use the data member
     FileMenu->Enabled = true;
     EditMenu->Enabled = false;
     BuildTrack1->Enabled = true;
+    SigAspectButton->Visible = false;
     if(Track->IsTrackFinished())
         {
         PlanPrefDirs1->Enabled = true;
@@ -9215,6 +9613,7 @@ switch(Level1Mode)//use the data member
     OperateButton->Enabled = true;
     OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
     ExitOperationButton->Enabled = true;
+    TTClockAdjButton->Enabled = true;
     ShowPerformancePanel = false;
     PerformanceLogButton->Glyph->LoadFromResourceName(0, "ShowLog");
 
@@ -9222,6 +9621,10 @@ switch(Level1Mode)//use the data member
 
     Utilities->Clock2Stopped = false;
     TrainController->RestartTime = TrainController->TimetableStartTime;
+    PauseEntryRestartTime = double(TrainController->RestartTime);
+    PauseEntryTTClockSpeed = 1;
+    TTClockSpeed = 1;
+    TTClockSpeedLabel->Caption = "x1";
     TrainController->TTClockTime = TrainController->TimetableStartTime;
 
     PerformanceFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
@@ -9289,10 +9692,15 @@ switch(Level1Mode)//use the data member
     OperateButton->Enabled = true;
     OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
     ExitOperationButton->Enabled = true;
+    TTClockAdjButton->Enabled = true;
     SetRouteButtonsInfoCaptionAndRouteNotStarted(3);
     SetPausedOrZoomedInfoCaption(4);
-    if(Level2OperMode == Paused) DisableRouteButtons(3);
+    if(Level2OperMode == Paused) DisableRouteButtons(3); //could be PreStart or Paused
     TrainController->TTClockTime = TrainController->RestartTime;
+    PauseEntryRestartTime = double(TrainController->RestartTime);
+    PauseEntryTTClockSpeed = 1;
+    TTClockSpeed = 1;
+    TTClockSpeedLabel->Caption = "x1";
     TrainController->SetWarningFlags(0);
     break;
 
@@ -9333,6 +9741,7 @@ switch(Level2TrackMode)//use the data member
     SpeedConversionPanel->Visible = false;  //in case had been in distance setting mode
     TrackElementPanel->Visible = true;
     TrackElementPanel->Enabled = true;
+    SigAspectButton->Visible = true;
     ClearandRebuildRailway(34);//to replot grid if required & clear any other unwanted items
     SetTrackBuildImages(4);
     SetLengthsButton->Enabled = false;
@@ -9774,22 +10183,67 @@ if(Level2OperMode == NoOperMode)
 switch(Level2OperMode)//use the data member
     {
     case Operating:
-    OperateButton->Enabled = true;
-    OperateButton->Glyph->LoadFromResourceName(0, "PauseGraphic");
-    ExitOperationButton->Enabled = true;
-    WarningHover = false;
-    SetRouteButtonsInfoCaptionAndRouteNotStarted(4);
-    TrainController->BaseTime = TDateTime::CurrentDateTime();
+        {//have to use braces as otherwise the default case bypasses the initialisation of local variables
+        OperateButton->Enabled = true;
+        OperateButton->Glyph->LoadFromResourceName(0, "PauseGraphic");
+        ExitOperationButton->Enabled = true;
+        TTClockAdjButton->Enabled = false;
+        if(TTClockSpeed == 2) TTClockSpeedLabel->Caption = "x2";
+        else if(TTClockSpeed == 4) TTClockSpeedLabel->Caption = "x4";
+        else if(TTClockSpeed == 8) TTClockSpeedLabel->Caption = "x8";
+        else if(TTClockSpeed == 16) TTClockSpeedLabel->Caption = "x16";
+        else if(TTClockSpeed == 0.5) TTClockSpeedLabel->Caption = "x1/2";
+        else if(TTClockSpeed == 0.25) TTClockSpeedLabel->Caption = "x1/4";
+        else
+            {
+            TTClockSpeed = 1;
+            TTClockSpeedLabel->Caption = "x1";
+            }
+        AnsiString TimeMessage = Utilities->Format96HHMMSS(TDateTime(PauseEntryRestartTime)) + ": ";
+        if(TTClockSpeed != PauseEntryTTClockSpeed)
+            {
+            //send message to performance log
+            if(TTClockSpeed == 2) Display->PerformanceLog(6, TimeMessage + "Timetable clock speed changed to twice normal");
+            else if(TTClockSpeed == 4) Display->PerformanceLog(7, TimeMessage + "Timetable clock speed changed to four times normal");
+            else if(TTClockSpeed == 8) Display->PerformanceLog(8, TimeMessage + "Timetable clock speed changed to eight times normal");
+            else if(TTClockSpeed == 16) Display->PerformanceLog(9, TimeMessage + "Timetable clock speed changed to sixteen times normal");
+            else if(TTClockSpeed == 0.5) Display->PerformanceLog(10, TimeMessage + "Timetable clock speed changed to half normal");
+            else if(TTClockSpeed == 0.25) Display->PerformanceLog(11, TimeMessage + "Timetable clock speed changed to quarter normal");
+            else  Display->PerformanceLog(12, TimeMessage + "Timetable clock speed changed to normal");
+            }
+        double TTClockTimeChange = double(TrainController->RestartTime) - PauseEntryRestartTime;
+        if(TTClockTimeChange > 0.000347) //30 seconds, min increase is 1 minute & don't trust doubles to stay exactly equal
+            {
+            //send message to performance log
+            int MinsIncrease = ((TTClockTimeChange * 1440) + 0.5); //add 30 secs to ensure truncates correctly
+            int HoursIncrease = 0;
+            while(MinsIncrease >= 60)
+                {
+                HoursIncrease++;
+                MinsIncrease-= 60;
+                }
+            if(HoursIncrease == 0) TimeMessage+= "Timetable clock incremented by " + AnsiString(MinsIncrease) + "m";
+            else if(MinsIncrease == 0) TimeMessage+= "Timetable clock incremented by " + AnsiString(HoursIncrease) + "h";
+            else TimeMessage+= "Timetable clock incremented by " + AnsiString(HoursIncrease) + "h " + AnsiString(MinsIncrease) + "m";
+            Display->PerformanceLog(13, TimeMessage);
+            }
+        WarningHover = false;
+        SetRouteButtonsInfoCaptionAndRouteNotStarted(4);
+        TrainController->BaseTime = TDateTime::CurrentDateTime();
+        }
     break;
 
     case Paused:
     OperateButton->Enabled = true;
     OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
     ExitOperationButton->Enabled = true;
+    TTClockAdjButton->Enabled = true;
     SetRouteButtonsInfoCaptionAndRouteNotStarted(7);
     DisableRouteButtons(4);
     SetPausedOrZoomedInfoCaption(5);
     TrainController->RestartTime = TrainController->TTClockTime;
+    PauseEntryRestartTime = double(TrainController->RestartTime);
+    PauseEntryTTClockSpeed = TTClockSpeed;
     break;
 
     //don't need a separate case for PreStart
@@ -9819,7 +10273,7 @@ if(!AllRoutes->LockedRouteVector.empty())
             TOneRoute &Route = AllRoutes->GetModifiableRouteAt(0, LRVIT->RouteNumber);
             if((TTClockTime - LRVIT->LockStartTime) > TDateTime(LockDelay/86400))
                 {
-                Utilities->LogEvent(Utilities->TimeStamp() + ",LockedRouteRemoved," + AnsiString(LRVIT->TruncateTrackVectorPosition) + "," + AnsiString(LRVIT->LastTrackVectorPosition));
+                TrainController->LogEvent("LockedRouteRemoved," + AnsiString(LRVIT->TruncateTrackVectorPosition) + "," + AnsiString(LRVIT->LastTrackVectorPosition));
                 while(Route.LastElementPtr(9)->GetTrackVectorPosition() != LRVIT->TruncateTrackVectorPosition)
                     {//examine the element one earlier in the route than the last
                     if(!(AllRoutes->TrackIsInARoute(6, Route.LastElementPtr(10)->Conn[Route.LastElementPtr(11)->GetELinkPos()], Route.LastElementPtr(12)->ConnLinkPos[Route.LastElementPtr(13)->GetELinkPos()])))
@@ -9941,6 +10395,7 @@ if(TrackInfoOnOff1->Caption == "Hide")
     AnsiString Length01Str = "", Length23Str = "", SpeedLimit01Str = "", SpeedLimit23Str = "";
     AnsiString StationEntryStopLinkPos1Str = "", StationEntryStopLinkPos2Str = "";
     AnsiString ATrackSN = "", ATrackTN = "", IATrackSN = "", LengthAndSpeedCaption = "";
+    AnsiString SigAspectString = ""; //new at version 0.6
     int ActiveVecPos = Track->GetVectorPositionFromTrackMap(5, HLoc, VLoc, ActiveTrackFoundFlag);
     TTrack::TIMPair InactiveVecPositions = Track->GetVectorPositionsFromInactiveTrackMap(3, HLoc, VLoc, InactiveTrackFoundFlag);
     TTrackElement ActiveTrackElement, InactiveTrackElement;
@@ -10064,7 +10519,7 @@ if(TrackInfoOnOff1->Caption == "Hide")
                          "ID = " + AnsiString(ActiveTrackElement.ElementID);
             }
 
-        else if(InactiveTrackFoundFlag)//no timetable name yet but unnamed inactive element at same location -
+        else if(InactiveTrackFoundFlag)//no timetable name yet but unnamed inactive element at same location (can't be a parapet if active element there)
             {
             TrackFloat = "Location unnamed\n" +
                          LengthAndSpeedCaption + '\n' +
@@ -10076,19 +10531,46 @@ if(TrackInfoOnOff1->Caption == "Hide")
             TrackFloat = LengthAndSpeedCaption + '\n' +
                          "Track Element ID = " + AnsiString(ActiveTrackElement.ElementID);
             }
+        if(ActiveTrackElement.TrackType == SignalPost) //new for version 0.6
+            {
+            if(ActiveTrackElement.SigAspect == TTrackElement::ThreeAspect)
+                {
+                SigAspectString = "\nThree-aspect signal";
+                }
+            else if(ActiveTrackElement.SigAspect == TTrackElement::TwoAspect)
+                {
+                SigAspectString = "\nTwo-aspect signal";
+                }
+            else if(ActiveTrackElement.SigAspect == TTrackElement::GroundSignal)
+                {
+                SigAspectString = "\nGround signal";
+                }
+            else
+                {
+                SigAspectString = "\nFour-aspect signal";
+                }
+            TrackFloat += SigAspectString;
+            }
         }// if(ActiveFoundFlag)
     else if(InactiveTrackFoundFlag)//inactive element but no active element,
                                    //i.e. concourse or non-station name at a blank element
         {
         ShowTrackFloatFlag = true;
-        if(IATrackSN == "")
+        if(InactiveTrackElement.TrackType != Parapet)
             {
-            TrackFloat = "Location unnamed\nID = " + AnsiString(InactiveTrackElement.ElementID);
+            if(IATrackSN == "")
+                {
+                TrackFloat = "Location unnamed\nID = " + AnsiString(InactiveTrackElement.ElementID);
+                }
+            else
+                {
+                TrackFloat = "Location = " + IATrackSN + '\n' +
+                             "ID = " + AnsiString(InactiveTrackElement.ElementID);
+                }
             }
-        else
+        else //it is a parapet, just show the ID
             {
-            TrackFloat = "Location = " + IATrackSN + '\n' +
-                         "ID = " + AnsiString(InactiveTrackElement.ElementID);
+            TrackFloat = "ID = " + AnsiString(InactiveTrackElement.ElementID);
             }
         }
     }
@@ -10382,14 +10864,14 @@ if(Track->GapFlashFlag && Display->ZoomOutFlag)
     }
 
 //deal with other flashing graphics
-if(AllRoutes->RouteFlashFlag && !Display->ZoomOutFlag)
+if(Track->RouteFlashFlag && !Display->ZoomOutFlag)
     {
     if((Now - RouteFlashStartTime) < TDateTime(RouteFlashDuration/86400))
         {
         //cancel if train is moving & arrives on any part of flashing route
         if(MovingTrainPresentOnFlashingRoute(0))
             {
-            AllRoutes->RouteFlashFlag = false;
+            Track->RouteFlashFlag = false;
             RevertToOriginalRouteSelector(7);
             ClearandRebuildRailway(18);//because using ConstructRoute->RouteFlash.PlotOriginal() can plot wrong point fillet as well as
                                      //original (if proposed route would change point). With this can dispense with ConstructRoute->RouteFlash.PlotOriginal()
@@ -10420,19 +10902,19 @@ if(AllRoutes->RouteFlashFlag && !Display->ZoomOutFlag)
         ConstructRoute->ClearRoute();//clear it immediately after use so as not to clutter the errorlog
         TrainController->BaseTime = TDateTime::CurrentDateTime();
         TrainController->StopTTClockFlag = false;
-        AllRoutes->RouteFlashFlag = false;
+        Track->RouteFlashFlag = false;
         RevertToOriginalRouteSelector(8);
         ClearandRebuildRailway(19);//if drop this ensure replot trains after replot routes else route will overwrite a train
         }
     }
 
-if(AllRoutes->RouteFlashFlag && Display->ZoomOutFlag)//must have entered RouteFlash from normal screen so button states stored
+if(Track->RouteFlashFlag && Display->ZoomOutFlag)//must have entered RouteFlash from normal screen so button states stored
 //dropped ZoomOutButton when route or point flashing, but leave this section in in case need to reinstate
 //no need to call Clearand... as that is called when revert to normal mode
     {
     if((Now - RouteFlashStartTime) >= TDateTime(RouteFlashDuration/86400))
         {
-        AllRoutes->RouteFlashFlag = false;
+        Track->RouteFlashFlag = false;
         if(PreferredRouteFlag)
             {
             ConstructRoute->ConvertAndAddPreferredRouteSearchVector(2, ConstructRoute->ReqPosRouteID, AutoSigsFlag);
@@ -10445,7 +10927,7 @@ if(AllRoutes->RouteFlashFlag && Display->ZoomOutFlag)//must have entered RouteFl
         }
     }
 
-if(PointFlashFlag && !Display->ZoomOutFlag)
+if(Track->PointFlashFlag && !Display->ZoomOutFlag)
     {
     if((Now - PointFlashStartTime) < TDateTime((PointsFlashDuration)/86400))
         {
@@ -10453,7 +10935,7 @@ if(PointFlashFlag && !Display->ZoomOutFlag)
         if((PointFlashVectorPosition > -1) && (Track->TrackElementAt(463, PointFlashVectorPosition).TrainIDOnElement > -1))
             {
             PointFlash->PlotOriginal(19, Display);
-            PointFlashFlag = false;
+            Track->PointFlashFlag = false;
             DivergingPointVectorPosition = -1;
             Utilities->CallLogPop(76);
             return;
@@ -10461,7 +10943,7 @@ if(PointFlashFlag && !Display->ZoomOutFlag)
         if((DivergingPointVectorPosition > -1) && (Track->TrackElementAt(464, DivergingPointVectorPosition).TrainIDOnElement > -1))
             {
             PointFlash->PlotOriginal(20, Display);
-            PointFlashFlag = false;
+            Track->PointFlashFlag = false;
             DivergingPointVectorPosition = -1;
             Utilities->CallLogPop(77);
             return;
@@ -10490,12 +10972,12 @@ if(PointFlashFlag && !Display->ZoomOutFlag)
             }
         Track->PlotPoints(2, Track->TrackElementAt(474, PointFlashVectorPosition), Display, false);
         Display->Update();// resurrected when Update() dropped from PlotOutput etc
-        PointFlashFlag = false;
+        Track->PointFlashFlag = false;
         DivergingPointVectorPosition = -1;
         }
     }
 
-if(PointFlashFlag && Display->ZoomOutFlag)
+if(Track->PointFlashFlag && Display->ZoomOutFlag)
 //dropped ZoomOutButton when point flashing but leave this section in in case need to reinstate
     {
     if((Now - PointFlashStartTime) < TDateTime((PointsFlashDuration)/86400))
@@ -10507,7 +10989,7 @@ if(PointFlashFlag && Display->ZoomOutFlag)
             Att = Track->TrackElementAt(477, DivergingPointVectorPosition).Attribute;
             Track->TrackElementAt(478, DivergingPointVectorPosition).Attribute = 1 - Att;
             }
-        PointFlashFlag = false;
+        Track->PointFlashFlag = false;
         DivergingPointVectorPosition = -1;
         }
     }
@@ -10528,7 +11010,7 @@ SaveRailway2Button->Visible = true;
 SaveSessionButton->Visible = true;
 if(Level1Mode == OperMode)
     {
-    if(Display->ZoomOutFlag || AllRoutes->RouteFlashFlag || PointFlashFlag)
+    if(Display->ZoomOutFlag || Track->RouteFlashFlag || Track->PointFlashFlag)
         {
         SaveRailwayButtonsFlag = false;
         }
@@ -10647,7 +11129,7 @@ if(Display->ZoomOutFlag)
 
 if(Level1Mode == OperMode)
     {
-    if(AllRoutes->RouteFlashFlag || PointFlashFlag)
+    if(Track->RouteFlashFlag || Track->PointFlashFlag)
         {
         OperatingPanelEnabledFlag = false;
         OperatingPanelLabelCaptionStr = "Disabled";
@@ -10855,13 +11337,15 @@ Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) +
 Track->GapFlashGreenPosition = -1;
 Track->GapFlashRedPosition = -1;
 Track->GapFlashFlag = false;
-AllRoutes->RouteFlashFlag = false;
-PointFlashFlag = false;
+Track->RouteFlashFlag = false;
+Track->PointFlashFlag = false;
 DivergingPointVectorPosition = -1;
 AutoSigsFlag = false;
 PreventGapOffsetResetting = false;
 
 Utilities->Clock2Stopped = false;
+TTClockSpeed = 1;
+TTClockSpeedLabel->Caption = "x1";
 Track->SetTrackFinished(false);
 Track->ActiveTrackElementNameMapCompiledFlag = false;
 CurrentSpeedButton = 0; //not assigned yet
@@ -10871,6 +11355,9 @@ StartY = 0;
 mbLeftDown = false;
 TextGridVal = 1;
 TextGridButton->Glyph->LoadFromResourceName(0, "PixelPrecision1");
+Track->SignalAspectBuildMode = TTrack::FourAspectBuild;
+SigAspectButton->Glyph->LoadFromResourceName(0, "FourAspect");
+LoadNormalSignalGlyphs(1);
 WarningFlashCount = 0;
 
 Level1Mode = BaseMode;
@@ -10896,6 +11383,7 @@ TempCursorSet = false;
 TempCursor = TCursor(-2);//Arrow
 
 TrainController->TTClockTime = TDateTime(0);//default setting
+TTClockAdjPanel->Visible = false;
 TrainController->StopTTClockFlag = false;
 SelectedTrainID = -1;
 SetTrackBuildImages(11);
@@ -11037,7 +11525,7 @@ void TInterface::SaveSession(int Caller)
 {
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",SaveSession");
+    TrainController->LogEvent("SaveSession");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveSession");
     AnsiString CurrentDateTimeStr = "", TimetableTimeStr = "", SessionFileStr = "";
     Screen->Cursor = TCursor(-11);//Hourglass;
@@ -11121,7 +11609,7 @@ void TInterface::LoadSession(int Caller)
 //set RlyFile true
 try
     {
-    Utilities->LogEvent(Utilities->TimeStamp() + ",LoadSession");
+    TrainController->LogEvent("LoadSession");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadSession");
     if(!ClearEverything(4))
         {
@@ -11131,7 +11619,7 @@ try
     LoadSessionDialog->Filter = "Session file (*.ssn)|*.ssn";
     if(LoadSessionDialog->Execute())
         {
-        Utilities->LogEvent(Utilities->TimeStamp() + ",LoadSession " + LoadSessionDialog->FileName);
+        TrainController->LogEvent("LoadSession " + LoadSessionDialog->FileName);
         Screen->Cursor = TCursor(-11);//Hourglass;
         if(SessionFileIntegrityCheck(0, LoadSessionDialog->FileName.c_str()))
 //        if(true)
@@ -12914,7 +13402,7 @@ if(NamedLocPresent)
     }
 if(((VarElements * 20) + FixedLength) > Distance)
     {
-    ShowMessage("Required distance is less than the minimum, will set to the minimum");
+    ShowMessage("Required distance is less than the minimum, will set to the minimum (20m)");
     Distance = (VarElements * 20) + FixedLength;
     }
 if(VarElements == 0)
@@ -12986,7 +13474,7 @@ else
     if(SaveRailwayDialog->Execute())
         {
         Screen->Cursor = TCursor(-11);//Hourglass;
-        Utilities->LogEvent(Utilities->TimeStamp() + ",Save " + SaveRailwayDialog->FileName);
+        TrainController->LogEvent("Save " + SaveRailwayDialog->FileName);
         AnsiString Extension = "";
         if(SaveRailwayDialog->FileName.Length() > 2)
             {
@@ -13192,6 +13680,30 @@ catch (const Exception &e)
 
 //---------------------------------------------------------------------------
 
+void TInterface::LoadNormalSignalGlyphs(int Caller)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadNormalSignalGlyphs,");
+SpeedButton68->Glyph->LoadFromResourceName(0, "gl68"); SpeedButton69->Glyph->LoadFromResourceName(0, "gl69");
+SpeedButton70->Glyph->LoadFromResourceName(0, "gl70"); SpeedButton71->Glyph->LoadFromResourceName(0, "gl71");
+SpeedButton72->Glyph->LoadFromResourceName(0, "gl72"); SpeedButton73->Glyph->LoadFromResourceName(0, "gl73");
+SpeedButton74->Glyph->LoadFromResourceName(0, "gl74"); SpeedButton75->Glyph->LoadFromResourceName(0, "gl75");
+Utilities->CallLogPop(1871);
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::LoadGroundSignalGlyphs(int Caller)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadGroundSignalGlyphs,");
+SpeedButton68->Glyph->LoadFromResourceName(0, "bm68grounddblred"); SpeedButton69->Glyph->LoadFromResourceName(0, "bm69grounddblred");
+SpeedButton70->Glyph->LoadFromResourceName(0, "bm70grounddblred"); SpeedButton71->Glyph->LoadFromResourceName(0, "bm71grounddblred");
+SpeedButton72->Glyph->LoadFromResourceName(0, "bm72grounddblred"); SpeedButton73->Glyph->LoadFromResourceName(0, "gl73grounddblred");
+SpeedButton74->Glyph->LoadFromResourceName(0, "gl74grounddblred"); SpeedButton75->Glyph->LoadFromResourceName(0, "bm75grounddblred");
+Utilities->CallLogPop(1872);
+}
+
+//---------------------------------------------------------------------------
+
 /*
 Problems with ifstream reading (see 'SessionFileIntegrityCheck(AnsiString FileName)' above):-
 
@@ -13254,5 +13766,3 @@ Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file posit
 */
 
 
-
- 

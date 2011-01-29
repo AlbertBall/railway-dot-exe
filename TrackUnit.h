@@ -128,11 +128,12 @@ class TTrackElement : public TFixedTrackPiece  //Basic track elements as impleme
                                                                                     //...01 and ...23 values give the TrainIDs for track
                                                                                     //with link positions [0] & [1], and [2] & [3]
                                                                                     //respectively
+    enum {FourAspect, ThreeAspect, TwoAspect, GroundSignal} SigAspect; //added at version 0.6
 //inline functions
     TTrackElement(TFixedTrackPiece Input) : TFixedTrackPiece(Input), HLoc(-2000000000), VLoc(-2000000000),
             LocationName(""), ActiveTrackElementName(""), Attribute(0), CallingOnSet(false), Length01(DefaultTrackLength), Length23(-1),
             SpeedLimit01(DefaultTrackSpeedLimit), SpeedLimit23(-1), TrainIDOnElement(-1), TrainIDOnBridgeTrackPos01(-1),
-            TrainIDOnBridgeTrackPos23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1)
+            TrainIDOnBridgeTrackPos23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1), SigAspect(FourAspect)
             //constructor for specific type of element, use very high neg. numbers as 'unset' values for HLoc & VLoc initially as can go
                 //high negatively legitimately, build from existing TTrackPiece with default values for extra members
 
@@ -151,7 +152,8 @@ class TTrackElement : public TFixedTrackPiece  //Basic track elements as impleme
 
     TTrackElement() : TFixedTrackPiece(), HLoc(-2000000000), VLoc(-2000000000), LocationName(""), ActiveTrackElementName(""),
             Attribute(0), CallingOnSet(false), Length01(-1), Length23(-1), SpeedLimit01(-1), SpeedLimit23(-1), TrainIDOnElement(-1),
-            TrainIDOnBridgeTrackPos01(-1), TrainIDOnBridgeTrackPos23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1)
+            TrainIDOnBridgeTrackPos01(-1), TrainIDOnBridgeTrackPos23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1),
+            SigAspect(FourAspect)
             //constructor for non-specific default element - use high neg numbers for 'unset' h & v as can go high negatively legitimately
         {
         for(int x=0;x<4;x++)
@@ -185,7 +187,7 @@ class TPrefDirElement : public TTrackElement //basic preferred direction or rout
     int TrackVectorPosition; //TrackVectorPosition of the corresponding track element
     int CheckCount; //internal check value used when building preferred directions
     Graphics::TBitmap *EXGraphicPtr, *EntryDirectionGraphicPtr; //pointers to the appropriate entry/exit graphic, or direction marker
-                                                                //graphic, for opreferred directions and routes
+                                                                //graphic, for preferred directions and routes
 
     bool operator == (TPrefDirElement RHElement); //equivalence operator
     bool operator != (TPrefDirElement RHElement); //non-equivalence operator
@@ -196,8 +198,8 @@ class TPrefDirElement : public TTrackElement //basic preferred direction or rout
                                                                                                       //red route direction graphic
     Graphics::TBitmap *GetOriginalGraphicPtr(); //picks up the original (non-flashing) graphic for use during route flashing
     Graphics::TBitmap *GetPrefDirGraphicPtr(); //picks up the EXGraphicPtr for preferred directions
-    Graphics::TBitmap *GetRouteAutoSigsGraphicPtr(); //picks up the blue route graphic (not used)
-    Graphics::TBitmap *GetRouteGraphicPtr(bool AutoSigsFlag, bool ConsecSignalsRoute); //picks up the green or red route graphic
+    Graphics::TBitmap *GetRouteAutoSigsGraphicPtr(); //picks up the blue route graphic (not used - superseded by GetRouteGraphicPtr)
+    Graphics::TBitmap *GetRouteGraphicPtr(bool AutoSigsFlag, bool ConsecSignalsRoute); //picks up the appropriate route graphic
 
     public:
 
@@ -216,7 +218,8 @@ class TPrefDirElement : public TTrackElement //basic preferred direction or rout
     int GetXLink() const {return XLink;} //returns XLink
     int GetXLinkPos() const {return XLinkPos;} //returns the XLink array position
     unsigned int GetTrackVectorPosition() const {return TrackVectorPosition;} //returns TrackVectorPosition
-    Graphics::TBitmap *GetEXGraphicPtr() {return GetPrefDirGraphicPtr();} //returns EXGraphicPtr
+    Graphics::TBitmap *GetEXGraphicPtr() {return GetPrefDirGraphicPtr();} //returns EXGraphicPtr for preferred directions
+    Graphics::TBitmap *GetRouteEXGraphicPtr() {return GetRouteGraphicPtr(AutoSignals, ConsecSignals);} //returns route graphic
 
     TPrefDirElement() : TTrackElement(), ELink(-1), ELinkPos(-1), //default constructor, loads default values
         XLink(-1), XLinkPos(-1), EXNumber(-1), TrackVectorPosition(-1), CheckCount(0),
@@ -302,15 +305,6 @@ left in.
     {
     private:
 
-    struct TSigElement //used as basic elements in a table of signals - see SigTable below
-        {//NOTE: Don't alter the order of these members as they are loaded from an array of values in the constructor
-        int SpeedTag; //the TrackElement SpeedTag value - specifies the signal element
-        int Attribute; //the signal state - red, yellow, double yellow or green
-        Graphics::TBitmap* SigPtr; //pointer to the graphic
-        };
-
-    TSigElement SigTable[40]; //table of signals
-
     class TFixedTrackArray //a class that holds an array of TrackPieces, only accessible to TTrack
         {
         public:
@@ -388,8 +382,22 @@ left in.
     typedef TActiveTrackElementNameMap::iterator TActiveTrackElementNameIterator;
     typedef std::pair<AnsiString, int> TActiveTrackElementNameMapEntry;
 
+    struct TSigElement //used as basic elements in a table of signals - see SigTable below
+        {//NOTE: Don't alter the order of these members as they are loaded from an array of values in the constructor
+        int SpeedTag; //the TrackElement SpeedTag value - specifies the signal element
+        int Attribute; //the signal state - red, yellow, double yellow or green
+        Graphics::TBitmap* SigPtr; //pointer to the graphic
+        };
+
+    TSigElement SigTable[40]; //original table of signals for four aspect
+    TSigElement SigTableThreeAspect[40]; //new at version 0.6 for three aspect
+    TSigElement SigTableTwoAspect[40]; //new at version 0.6 for two aspect
+    TSigElement SigTableGroundSignal[40]; //new at version 0.6 for ground signals
+
     bool ActiveTrackElementNameMapCompiledFlag; //indicates that the ActiveTrackElementNameMap has been compiled
     bool GapFlashFlag; //true when a pair of connected gaps is flashing
+    bool PointFlashFlag; //true when points are flashing during manual change
+    bool RouteFlashFlag; //true while a route is flashing prior to being set
     int FlipArray[FirstUnusedSpeedTagNumber]; //holds TrackElement SpeedTag values for 'flipping' via menu items 'Edit' & 'Flip'
     int GapFlashGreenPosition, GapFlashRedPosition;//TrackVectorPosition of the gap element that is flashing green or red
     int MirrorArray[FirstUnusedSpeedTagNumber]; //holds TrackElement SpeedTag values for 'mirroring' via menu items 'Edit' & 'Mirror'
@@ -412,6 +420,9 @@ left in.
                                                                                                        //is ready for saving as a '.rly'
                                                                                                        //file and for operation
     bool IsTrackFinished() {return TrackFinished;} //indicates whether or not the track has been successfully linked together
+
+    enum {FourAspectBuild, ThreeAspectBuild, TwoAspectBuild, GroundSignalBuild} SignalAspectBuildMode; //aspect mode for future signal additions 
+
     int GetGapHLoc() {return GapHLoc;} //return the respective values
     int GetGapVLoc() {return GapVLoc;}
     int GetHLocMax() {return HLocMax;}
@@ -535,7 +546,7 @@ left in.
         //the striped (i.e. when unnamed) graphic corresponding to TrackElement, if TrackElement isn't a named element just return its
         //normal graphic
 
-    int FindClosestLinkPosition(int Caller, int StartTVPosition, int EndTVPosition); ////return the link array position for the element
+    int FindClosestLinkPosition(int Caller, int StartTVPosition, int EndTVPosition); //return the link array position for the element
         //at StartTVPosition that gives the closest link to the element at EndTVPosition. NB the StartTVPosition is expected to be a single
         //track element as only positions 0 & 1 are checked
     int GetAnyElementOppositeLinkPos(int Caller, int TrackVectorPosition, int LinkPos, bool &Derail); //return the opposite link position for
@@ -995,7 +1006,6 @@ std::vector<TCallonEntry> CallonVector; //the store of all call-on entries
 
 bool LockedRouteFoundDuringRouteBuilding; //this flags the fact that a locked route has been found during route building in an
     //existing linked route which is erased prior to its elements being added to the new route
-bool RouteFlashFlag; //true while a route is flashing prior to being set
 
 //the following variables store the locked route values for reinstating after a locked route has been found during route building in an
 //existing linked route which is erased prior to its elements being added to the new route.  The locked route is erased in

@@ -319,8 +319,8 @@ void NewTrainService(int Caller); //carry out the actions needed when a train fo
 void PickUpBackgroundBitmap(int Caller, int HOffset, int VOffset, int Element, int EntryPos, Graphics::TBitmap *GraphicPtr) const; //store
     //the background bitmap pointer (BackgroundPtr - see above) prior to being overwritten by the train's headcode charcter, so that it
     //can be replotted after the train has passed using PlotBackgroundGraphic.
-void PlotAlternativeTrackRouteGraphic(int Caller, unsigned int LagElement, int LagELinkPos, int HOffset, int VOffset); //when a train
-    //moves off a bridge the other track may contain a route or have a train on it that has been obscured by this train.  This function
+void PlotAlternativeTrackRouteGraphic(int Caller, unsigned int LagElement, int LagELinkPos, int HOffset, int VOffset, TStraddle StraddleValue);
+    //when a train moves off a bridge the other track may contain a route or have a train on it that has been obscured by this train.  This function
     //checks and replots the original graphic if necessary
 void PlotBackgroundGraphic(int Caller, int ArrayNumber) const; //replot the graphic pointed to by BackgroundPtr (see above) after a train
     //has passed
@@ -475,6 +475,7 @@ float TotEarlyPassMins;
 float TotLateArrMins;
 float TotLateDepMins;
 float TotLatePassMins;
+
 int CrashedTrains;
 int Derailments;
 int EarlyArrivals;
@@ -583,6 +584,7 @@ void LoadSessionLockedRoutes(int Caller, std::ifstream &SessionFile); //load loc
 void LoadSessionTrains(int Caller, std::ifstream &SessionFile); //load trains from a session file
 void LogActionError(int Caller, AnsiString HeadCode, AnsiString OtherHeadCode, TActionEventType ActionEventType, AnsiString LocationID);
     //send an error message to the performance log and file, and as a warning if appropriate
+void LogEvent(AnsiString Str); //store Str to the event log - moved from TUtilities for v0.6 so can record the tt clock value
 void Operate(int Caller); //called every clock tick to introduce new trains and update existing trains
 void PlotAllTrainsInZoomOutMode(int Caller, bool Flash); //plots all trains on screen in zoomed-out mode, state of 'Flash' determines
     //whether the flashing trains are plotted or not

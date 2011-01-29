@@ -207,7 +207,7 @@ void __fastcall TForm1::Timer1Timer(TObject *Sender)
 {
 if(ClockStopped) return;
 ClockStopped = true;
-const int NumberOfCalls = 386;
+const int NumberOfCalls = 390;
 AnsiString FunctionString[NumberOfCalls] =
 {
 "AbleToMove",
@@ -371,6 +371,7 @@ AnsiString FunctionString[NumberOfCalls] =
 "GetVectorPositionFromTrackMap",
 "GetVectorPositionsFromInactiveTrackMap",
 "GetVectorPositionsFromPrefDir4MultiMap",
+"HideWarningLog",
 "HighlightOneEntryInAllEntriesTTListBox",
 "HighLightOneGap",
 "InactiveMapCheck",
@@ -393,7 +394,9 @@ AnsiString FunctionString[NumberOfCalls] =
 "LengthMarker",
 "LinkTrack",
 "LinkTrackNoMessages",
+"LoadGroundSignalGlyphs",
 "LoadInterface",
+"LoadNormalSignalGlyphs",
 "LoadOldPrefDir",
 "LoadOldTrack",
 "LoadOneSessionTrain",
@@ -556,6 +559,7 @@ AnsiString FunctionString[NumberOfCalls] =
 "SetTrainElementID",
 "SetTrainMovementValues",
 "ShowSelectedGap",
+"ShowWarningLog",
 "SignallerChangeTrainDirection",
 "SignallerControl",
 "SplitEntry",

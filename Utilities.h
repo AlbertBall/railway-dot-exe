@@ -40,7 +40,7 @@ AnsiString DateTimeStamp(); //creates a string of the form 'dd/mm/yyyy hh:mm:ss'
 AnsiString TimeStamp(); //creates a string of the form 'hh:mm:ss' for use in call & event logging
 TColor clTransparent; //the display background colour, can be white, black or dark blue
 
-void LogEvent(AnsiString Str); //store Str to the event log
+//void LogEvent(AnsiString Str); //store Str to the event log - moved to TTrainController for v0.6 so can record the tt clock value
 void CallLogPop(int Caller); //pops the last entry off the call stack, throws an error if called when empty
 void FileDiagnostics(AnsiString Input); //sends Input to 'TestFile.csv', this is a diagnostic function used during development
 void SaveFileBool(std::ofstream &OutFile, bool SaveBool); //stores '1' if the bool is true or '0' if false to the file, then a CR

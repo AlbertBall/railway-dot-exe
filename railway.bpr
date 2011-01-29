@@ -97,14 +97,15 @@ Item6=..\..\..\Program Files\Borland\CBuilder4\Projects;$(BCB)\include;$(BCB)\in
 Item7=E:\Program Files\Borland\CBuilder4\Projects\;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=7
-Item0=..\..\..\Program Files\Borland\CBuilder4\Imports;..\..\..\Program Files\Borland\CBuilder4\Bin;..\..\..\program files\borland\cbuilder4\Lib;..\..\..\Program Files\Borland\CBuilder4\Projects;$(BCB)\lib\obj;$(BCB)\lib
-Item1=..\..\..\Program Files\Borland\CBuilder4\Imports;..\..\..\Program Files\Borland\CBuilder4\Bin;..\..\..\program files\borland\cbuilder4\Lib;..\..\..\Program Files\Borland\CBuilder4\Projects;E:\Program Files\HTML Help Workshop\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item2=..\..\..\Program Files\Borland\CBuilder4\Bin;..\..\..\program files\borland\cbuilder4\Lib;..\..\..\Program Files\Borland\CBuilder4\Projects;$(BCB)\lib\obj;$(BCB)\lib
-Item3=..\..\..\Program Files\Borland\CBuilder4\Bin;..\..\..\program files\borland\cbuilder4\Lib;..\..\..\Program Files\Borland\CBuilder4\Projects;..\..\..\Program Files\HTML Help Workshop\lib;$(BCB)\lib\obj;$(BCB)\lib
-Item4=..\..\..\Program Files\Borland\CBuilder4\Bin;..\..\..\program files\borland\cbuilder4\Lib;..\..\..\Program Files\Borland\CBuilder4\Projects;$(BCB)\lib\obj;$(BCB)\lib;E:\Program Files\HTML Help Workshop\lib
-Item5=..\..\..\Program Files\Borland\CBuilder4\Projects;$(BCB)\lib\obj;$(BCB)\lib
-Item6=E:\Program Files\Borland\CBuilder4\Projects\;$(BCB)\lib\obj;$(BCB)\lib
+Count=8
+Item0=..\..\program files\borland\cbuilder4\Lib;..\..\..\Program Files\Borland\CBuilder4\Imports;..\..\..\Program Files\Borland\CBuilder4\Bin;..\..\..\program files\borland\cbuilder4\Lib;..\..\..\Program Files\Borland\CBuilder4\Projects;$(BCB)\lib\obj;$(BCB)\lib
+Item1=..\..\..\Program Files\Borland\CBuilder4\Imports;..\..\..\Program Files\Borland\CBuilder4\Bin;..\..\..\program files\borland\cbuilder4\Lib;..\..\..\Program Files\Borland\CBuilder4\Projects;$(BCB)\lib\obj;$(BCB)\lib
+Item2=..\..\..\Program Files\Borland\CBuilder4\Imports;..\..\..\Program Files\Borland\CBuilder4\Bin;..\..\..\program files\borland\cbuilder4\Lib;..\..\..\Program Files\Borland\CBuilder4\Projects;E:\Program Files\HTML Help Workshop\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item3=..\..\..\Program Files\Borland\CBuilder4\Bin;..\..\..\program files\borland\cbuilder4\Lib;..\..\..\Program Files\Borland\CBuilder4\Projects;$(BCB)\lib\obj;$(BCB)\lib
+Item4=..\..\..\Program Files\Borland\CBuilder4\Bin;..\..\..\program files\borland\cbuilder4\Lib;..\..\..\Program Files\Borland\CBuilder4\Projects;..\..\..\Program Files\HTML Help Workshop\lib;$(BCB)\lib\obj;$(BCB)\lib
+Item5=..\..\..\Program Files\Borland\CBuilder4\Bin;..\..\..\program files\borland\cbuilder4\Lib;..\..\..\Program Files\Borland\CBuilder4\Projects;$(BCB)\lib\obj;$(BCB)\lib;E:\Program Files\HTML Help Workshop\lib
+Item6=..\..\..\Program Files\Borland\CBuilder4\Projects;$(BCB)\lib\obj;$(BCB)\lib
+Item7=E:\Program Files\Borland\CBuilder4\Projects\;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1

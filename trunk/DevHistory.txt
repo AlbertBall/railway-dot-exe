@@ -1,9 +1,26 @@
 Development History
 ---------------------------------------------------------------------------
 
-VERSION CHANGES AFTER BETA V0.5 for Beta v0.6 (Major update)
+VERSION CHANGES AFTER BETA V0.6 for BETA v0.6a
 
 * = mention on user website
+
+*added facilities for handling different screen resolutions, 1024 x 768 recommended minimum
+amended manual/quick start guide/help file etc where resolution mentioned
+*corrected error notified by NajamUddin 17/01/11 & not see until 31/01.  Coding error when calling on and element at platform is points.
+
+Note:  
+Vertical pixel counts:
+Screen title: 18 for classic style, 26 for xp style} part of Interface that isn't available to other components
+Menu tabs: 20                                      }
+Mode Buttons: 30
+Track build panel/timetable clock panel: 65
+MainScreen->Height ((Screen->Height - 192) / 16) * 16   (192 = 18+20+30+65+29+30) (in xp style screen will be 8 lower because its top is 8 lower)
+Free area under MainScreen: 29 for classic style, 17 for XP style
+Windows taskbar 30 for classic style, 34 for XP style
+
+
+VERSION CHANGES AFTER BETA V0.5 for Beta v0.6 (Major update)
 
 *incorporated two and three-aspect signals and ground signals
 

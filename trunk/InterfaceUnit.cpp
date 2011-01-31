@@ -51,7 +51,7 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "Beta v0.6"; //change vx.x for each published modification, Dev x = interim development stages (don't show on published versions)
+    ProgramVersion = "Beta v0.6a"; //change vx.x for each published modification, Dev x = interim development stages (don't show on published versions)
     //check for presence of directories, creation failure probably indicates that the working folder is read-only
     CurDir = GetCurrentDir();
     if(!DirectoryExists("Railways"))
@@ -110,8 +110,16 @@ try
 
     Utilities = new TUtilities;
     RailGraphics = new TRailGraphics();
+    int DispW = (Screen->Width - 64) / 16; //will truncate down to a multiple of 16
+    int DispH = (Screen->Height - 192) / 16;
+
+    MainScreen->Width = DispW * 16;
+    MainScreen->Height = DispH * 16;
+
     Display = new TDisplay(MainScreen, PerformanceLogBox, OutputLog1, OutputLog2, OutputLog3, OutputLog4, OutputLog5, OutputLog6,
             OutputLog7, OutputLog8, OutputLog9, OutputLog10);
+    Utilities->ScreenElementWidth = DispW;
+    Utilities->ScreenElementHeight = DispH;
     HiddenScreen = new TImage(Interface);
     HiddenScreen->Width = MainScreen->Width;
     HiddenScreen->Height = MainScreen->Height;
@@ -398,9 +406,9 @@ try
         if(!SplashFile.fail()) SplashFile.close();
         }
 
-    if((Screen->Width != 1024) || (Screen->Height != 768))
+    if((Screen->Width < 1024) || (Screen->Height < 768))
         {
-        ShowMessage("Please note that this program works best with a screen resolution of 1024 x 768.  Please change if possible");
+        ShowMessage("Please note that this program works best with a screen resolution of at least 1024 x 768.  Please change if possible");
         }
 
     MasterClock->Enabled = true;
@@ -590,10 +598,10 @@ try
         {
         if(LocError)//links not complete or other error - show offending element
             {
-            while((Display->DisplayOffsetH - HLoc) > 0) Display->DisplayOffsetH-= (ScreenElementWidth/2);//use 30 instead of 60 so less likely to appear behind the message box
-            while((HLoc - Display->DisplayOffsetH) > (ScreenElementWidth - 1)) Display->DisplayOffsetH+= (ScreenElementWidth/2);
-            while((Display->DisplayOffsetV - VLoc) > 0) Display->DisplayOffsetV-= (ScreenElementHeight/2);//use 18 instead of 36 so less likely to appear behind the message box
-            while((VLoc - Display->DisplayOffsetV) > (ScreenElementHeight - 1)) Display->DisplayOffsetV+= (ScreenElementHeight/2);
+            while((Display->DisplayOffsetH - HLoc) > 0) Display->DisplayOffsetH-= (Utilities->ScreenElementWidth/2);//use 30 instead of 60 so less likely to appear behind the message box
+            while((HLoc - Display->DisplayOffsetH) > (Utilities->ScreenElementWidth - 1)) Display->DisplayOffsetH+= (Utilities->ScreenElementWidth/2);
+            while((Display->DisplayOffsetV - VLoc) > 0) Display->DisplayOffsetV-= (Utilities->ScreenElementHeight/2);//use 18 instead of 36 so less likely to appear behind the message box
+            while((VLoc - Display->DisplayOffsetV) > (Utilities->ScreenElementHeight - 1)) Display->DisplayOffsetV+= (Utilities->ScreenElementHeight/2);
             ClearandRebuildRailway(0);
             Display->InvertElement(0, HLoc *16, VLoc *16);
             ShowMessage("Incomplete track or other error - see inverted element (may be behind this message)");
@@ -1763,8 +1771,8 @@ try
     PerformanceLogButton->Glyph->LoadFromResourceName(0, "ShowLog");
     PerformanceLogBox->Lines->Clear();
     PerformancePanel->Visible = false;
-    PerformancePanel->Top = 442;
-    PerformancePanel->Left = 32;
+    PerformancePanel->Top = MainScreen->Top + MainScreen->Height - PerformancePanel->Height;
+    PerformancePanel->Left = MainScreen->Left;
     TrainController->ContinuationAutoSigVector.clear();
     AllRoutes->LockedRouteVector.clear();
     Level1Mode = BaseMode;
@@ -1849,20 +1857,20 @@ if(FileIntegrityCheck(0, LoadFileName.c_str()))
         delete TempFont;
 
 //calculate starting zoomed out offset values - same as when zoom out button clicked
-        int OVOffH_NVCentre = Display->DisplayOffsetH - (1.5 * ScreenElementWidth); // start zoomout centre at DisplayOffsetH + 30 - zoomout width/2 = -(1.5 * 60)
+        int OVOffH_NVCentre = Display->DisplayOffsetH - (1.5 * Utilities->ScreenElementWidth); // start zoomout centre at DisplayOffsetH + 30 - zoomout width/2 = -(1.5 * 60)
         int LeftExcess = OVOffH_NVCentre - Track->GetHLocMin();
-        int RightExcess = Track->GetHLocMax() - OVOffH_NVCentre - ((4 * ScreenElementWidth) - 1);
+        int RightExcess = Track->GetHLocMax() - OVOffH_NVCentre - ((4 * Utilities->ScreenElementWidth) - 1);
         if((LeftExcess > 0) && (RightExcess > 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre;
-        else if((LeftExcess > 0) && (RightExcess <= 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre + ((RightExcess)/(ScreenElementWidth/2))*(ScreenElementWidth/2);//normalise to nearest half screen
-        else if((LeftExcess <= 0) && (RightExcess > 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre - ((LeftExcess)/(ScreenElementWidth/2))*(ScreenElementWidth/2);
+        else if((LeftExcess > 0) && (RightExcess <= 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre + ((RightExcess)/(Utilities->ScreenElementWidth/2))*(Utilities->ScreenElementWidth/2);//normalise to nearest half screen
+        else if((LeftExcess <= 0) && (RightExcess > 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre - ((LeftExcess)/(Utilities->ScreenElementWidth/2))*(Utilities->ScreenElementWidth/2);
         else Display->DisplayZoomOutOffsetH = OVOffH_NVCentre;//no excess at either side, so display in centre
 
-        int OVOffV_NVCentre = Display->DisplayOffsetV - (1.5 * ScreenElementHeight);
+        int OVOffV_NVCentre = Display->DisplayOffsetV - (1.5 * Utilities->ScreenElementHeight);
         int TopExcess = OVOffV_NVCentre - Track->GetVLocMin();
-        int BotExcess = Track->GetVLocMax() - OVOffV_NVCentre - ((4 * ScreenElementHeight) - 1);
+        int BotExcess = Track->GetVLocMax() - OVOffV_NVCentre - ((4 * Utilities->ScreenElementHeight) - 1);
         if((TopExcess > 0) && (BotExcess > 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre;
-        else if((TopExcess > 0) && (BotExcess <= 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre + ((BotExcess)/(ScreenElementHeight/2))*(ScreenElementHeight/2);//normalise to nearest half screen
-        else if((TopExcess <= 0) && (BotExcess > 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre - ((TopExcess)/(ScreenElementHeight/2))*(ScreenElementHeight/2);
+        else if((TopExcess > 0) && (BotExcess <= 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre + ((BotExcess)/(Utilities->ScreenElementHeight/2))*(Utilities->ScreenElementHeight/2);//normalise to nearest half screen
+        else if((TopExcess <= 0) && (BotExcess > 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre - ((TopExcess)/(Utilities->ScreenElementHeight/2))*(Utilities->ScreenElementHeight/2);
         else Display->DisplayZoomOutOffsetV = OVOffV_NVCentre;//no excess at either side, so display in centre
 //all above same as when zoom out button clicked
         Display->DisplayZoomOutOffsetVHome = Display->DisplayZoomOutOffsetV;//now set zoomed out 'home' values
@@ -5885,16 +5893,16 @@ try
     int TruePosH = (X/4) + Display->DisplayZoomOutOffsetH;
     int TruePosV = (Y/4) + Display->DisplayZoomOutOffsetV;
     //find nearest screen centre - from 30 to 210 horiz & from 18 to 126 vert
-    if(TruePosH < 0) HRounding = -(ScreenElementWidth/4); else HRounding = (ScreenElementWidth/4);
-    int CentreH = (((TruePosH + HRounding)/(ScreenElementWidth/2)) * (ScreenElementWidth/2));
-    while((CentreH - Track->GetHLocMax()) >= (ScreenElementWidth/2)) CentreH-= (ScreenElementWidth/2);
-    while((Track->GetHLocMin() - CentreH) >= (ScreenElementWidth/2)) CentreH+= (ScreenElementWidth/2);
-    if(TruePosV < 0) VRounding = -(ScreenElementHeight/4); else VRounding = (ScreenElementHeight/4);
-    int CentreV = (((TruePosV + VRounding)/(ScreenElementHeight/2)) * (ScreenElementHeight/2));
-    while((CentreV - Track->GetVLocMax()) >= (ScreenElementHeight/2)) CentreV-= (ScreenElementHeight/2);
-    while((Track->GetVLocMin() - CentreV) >= (ScreenElementHeight/2)) CentreV+= (ScreenElementHeight/2);
-    Display->DisplayOffsetH = CentreH - (ScreenElementWidth/2);
-    Display->DisplayOffsetV = CentreV - (ScreenElementHeight/2);
+    if(TruePosH < 0) HRounding = -(Utilities->ScreenElementWidth/4); else HRounding = (Utilities->ScreenElementWidth/4);
+    int CentreH = (((TruePosH + HRounding)/(Utilities->ScreenElementWidth/2)) * (Utilities->ScreenElementWidth/2));
+    while((CentreH - Track->GetHLocMax()) >= (Utilities->ScreenElementWidth/2)) CentreH-= (Utilities->ScreenElementWidth/2);
+    while((Track->GetHLocMin() - CentreH) >= (Utilities->ScreenElementWidth/2)) CentreH+= (Utilities->ScreenElementWidth/2);
+    if(TruePosV < 0) VRounding = -(Utilities->ScreenElementHeight/4); else VRounding = (Utilities->ScreenElementHeight/4);
+    int CentreV = (((TruePosV + VRounding)/(Utilities->ScreenElementHeight/2)) * (Utilities->ScreenElementHeight/2));
+    while((CentreV - Track->GetVLocMax()) >= (Utilities->ScreenElementHeight/2)) CentreV-= (Utilities->ScreenElementHeight/2);
+    while((Track->GetVLocMin() - CentreV) >= (Utilities->ScreenElementHeight/2)) CentreV+= (Utilities->ScreenElementHeight/2);
+    Display->DisplayOffsetH = CentreH - (Utilities->ScreenElementWidth/2);
+    Display->DisplayOffsetV = CentreV - (Utilities->ScreenElementHeight/2);
 
     TLevel2OperMode TempLevel2OperMode = Level2OperMode;
     if(Level1Mode == BaseMode) SetLevel1Mode(17);
@@ -5984,8 +5992,8 @@ try
 //rightmost point and the VLoc value of the bottommost point
         if(CurrentHLoc >= StartHLoc) CurrentHLoc++; else StartHLoc++;
         if(CurrentVLoc >= StartVLoc) CurrentVLoc++; else StartVLoc++;
-        if(CurrentHLoc - Display->DisplayOffsetH > ScreenElementWidth) CurrentHLoc = Display->DisplayOffsetH + ScreenElementWidth;
-        if(CurrentVLoc - Display->DisplayOffsetV > ScreenElementHeight) CurrentVLoc = Display->DisplayOffsetV + ScreenElementHeight;
+        if(CurrentHLoc - Display->DisplayOffsetH > Utilities->ScreenElementWidth) CurrentHLoc = Display->DisplayOffsetH + Utilities->ScreenElementWidth;
+        if(CurrentVLoc - Display->DisplayOffsetV > Utilities->ScreenElementHeight) CurrentVLoc = Display->DisplayOffsetV + Utilities->ScreenElementHeight;
         if(CurrentHLoc - Display->DisplayOffsetH < 0) CurrentHLoc = Display->DisplayOffsetH;
         if(CurrentVLoc - Display->DisplayOffsetV < 0) CurrentVLoc = Display->DisplayOffsetV;
         TRect TempRect(StartHLoc, StartVLoc, CurrentHLoc, CurrentVLoc);
@@ -6004,8 +6012,8 @@ try
 //rightmost point and the VLoc value of the bottommost point
         if(CurrentHLoc >= StartHLoc) CurrentHLoc++; else StartHLoc++;
         if(CurrentVLoc >= StartVLoc) CurrentVLoc++; else StartVLoc++;
-        if(CurrentHLoc - Display->DisplayOffsetH > ScreenElementWidth) CurrentHLoc = Display->DisplayOffsetH + ScreenElementWidth;
-        if(CurrentVLoc - Display->DisplayOffsetV > ScreenElementHeight) CurrentVLoc = Display->DisplayOffsetV + ScreenElementHeight;
+        if(CurrentHLoc - Display->DisplayOffsetH > Utilities->ScreenElementWidth) CurrentHLoc = Display->DisplayOffsetH + Utilities->ScreenElementWidth;
+        if(CurrentVLoc - Display->DisplayOffsetV > Utilities->ScreenElementHeight) CurrentVLoc = Display->DisplayOffsetV + Utilities->ScreenElementHeight;
         if(CurrentHLoc - Display->DisplayOffsetH < 0) CurrentHLoc = Display->DisplayOffsetH;
         if(CurrentVLoc - Display->DisplayOffsetV < 0) CurrentVLoc = Display->DisplayOffsetV;
         TRect TempRect(StartHLoc, StartVLoc, CurrentHLoc, CurrentVLoc);
@@ -6020,16 +6028,16 @@ try
     Otherwise flag SelectPickedUp is set to true (to allow it to move during MouseMove and remain in place at MouseUp) and the mouse position
     is saved in SelectBitmapMouseLocX & Y for use later in MouseMove & MouseUp.
     [New] - The same actions apply on MouseMove whether Copy or Cut selected from the menu.  The X & Y mouse positions are checked and set to
-    stay within the display area of 960 x 576 pixels.  Then the current selection H & V positions are stored in NewSelectBitmapHLoc & VLoc.
+    stay within the display area.  Then the current selection H & V positions are stored in NewSelectBitmapHLoc & VLoc.
     These change continually while the mouse and the selection are moving, they are only read on MouseUp to retain the position that it then
     occupies.  Clearand... is called finally to clear earlier selection displays.
     */
         {
         TrainController->LogEvent("MouseMove + Copy or CutMoving & SelectPickedUp");
         if(X < 0) X = 0; //ensure pointer stays within display area
-        if(X > 959) X = 959;
+        if(X > (MainScreen->Width - 1)) X = MainScreen->Width - 1;
         if(Y < 0) Y = 0;
-        if(Y > 575) Y = 575;
+        if(Y > (MainScreen->Height - 1)) Y = MainScreen->Height - 1;
         NewSelectBitmapHLoc = (X - SelectBitmapMouseLocX)/16 + SelectBitmapHLoc;
         NewSelectBitmapVLoc = (Y - SelectBitmapMouseLocY)/16 + SelectBitmapVLoc;
         ClearandRebuildRailway(15);//plots SelectBitmap at the position given by NewSelectBitmapHLoc & ...VLoc
@@ -6122,8 +6130,8 @@ try
             SelectRect.top = StartVLoc;
             SelectRect.bottom = EndVLoc;
             }
-        if(SelectRect.right - Display->DisplayOffsetH > ScreenElementWidth) SelectRect.right = Display->DisplayOffsetH + ScreenElementWidth;
-        if(SelectRect.bottom - Display->DisplayOffsetV > ScreenElementHeight) SelectRect.bottom = Display->DisplayOffsetV + ScreenElementHeight;
+        if(SelectRect.right - Display->DisplayOffsetH > Utilities->ScreenElementWidth) SelectRect.right = Display->DisplayOffsetH + Utilities->ScreenElementWidth;
+        if(SelectRect.bottom - Display->DisplayOffsetV > Utilities->ScreenElementHeight) SelectRect.bottom = Display->DisplayOffsetV + Utilities->ScreenElementHeight;
         if(SelectRect.left - Display->DisplayOffsetH < 0) SelectRect.left = Display->DisplayOffsetH;
         if(SelectRect.top - Display->DisplayOffsetV < 0) SelectRect.top = Display->DisplayOffsetV;
         Display->PlotDashedRect(1, SelectRect);
@@ -6279,8 +6287,8 @@ try
             SelectRect.top = StartVLoc;
             SelectRect.bottom = EndVLoc;
             }
-        if(SelectRect.right - Display->DisplayOffsetH > ScreenElementWidth) SelectRect.right = Display->DisplayOffsetH + ScreenElementWidth;
-        if(SelectRect.bottom - Display->DisplayOffsetV > ScreenElementHeight) SelectRect.bottom = Display->DisplayOffsetV + ScreenElementHeight;
+        if(SelectRect.right - Display->DisplayOffsetH > Utilities->ScreenElementWidth) SelectRect.right = Display->DisplayOffsetH + Utilities->ScreenElementWidth;
+        if(SelectRect.bottom - Display->DisplayOffsetV > Utilities->ScreenElementHeight) SelectRect.bottom = Display->DisplayOffsetV + Utilities->ScreenElementHeight;
         if(SelectRect.left - Display->DisplayOffsetH < 0) SelectRect.left = Display->DisplayOffsetH;
         if(SelectRect.top - Display->DisplayOffsetV < 0) SelectRect.top = Display->DisplayOffsetV;
         Display->PlotDashedRect(9, SelectRect);
@@ -6327,7 +6335,7 @@ checked and unless it lies within the selected rectangle and not within 4 pixels
 Otherwise flag SelectPickedUp is set to true (to allow it to move during MouseMove and remain in place at MouseUp) and the mouse position
 is saved in SelectBitmapMouseLocX & Y for use later in MouseMove & MouseUp.
 [Repeated from MouseMove] - The same actions apply on MouseMove whether Copy or Cut selected from the menu.  The X & Y mouse positions are checked and set to
-stay within the display area of 960 x 576 pixels.  Then the current selection H & V positions are stored in NewSelectBitmapHLoc & VLoc.
+stay within the display area.  Then the current selection H & V positions are stored in NewSelectBitmapHLoc & VLoc.
 These change continually while the mouse and the selection are moving, they are only read on MouseUp to retain the position that it then
 occupies.  Clearand... is called finally to clear earlier selection displays.
 [New] - The only action here is to transfer the values of NewSelectBitmapHLoc & VLoc to SelectBitmapHLoc & VLoc so that the selection
@@ -6753,11 +6761,11 @@ try
             }
         else if(ShiftKey)
             {
-            Display->DisplayOffsetH-= ScreenElementWidth;
+            Display->DisplayOffsetH-= Utilities->ScreenElementWidth;
             }
         else
             {
-            Display->DisplayOffsetH-= ScreenElementWidth/2;
+            Display->DisplayOffsetH-= Utilities->ScreenElementWidth/2;
             }
         ClearandRebuildRailway(22);
         if((Level2TrackMode == TrackSelecting) || (Level2PrefDirMode == PrefDirSelecting))
@@ -6773,11 +6781,11 @@ try
             }
         else if(ShiftKey)
             {
-            Display->DisplayZoomOutOffsetH-= (4 * ScreenElementWidth);
+            Display->DisplayZoomOutOffsetH-= (4 * Utilities->ScreenElementWidth);
             }
         else
             {
-            Display->DisplayZoomOutOffsetH-= ScreenElementWidth;
+            Display->DisplayZoomOutOffsetH-= Utilities->ScreenElementWidth;
             }
         Display->ClearDisplay(0);
         Track->PlotSmallRailway(2, Display);
@@ -6811,11 +6819,11 @@ try
             }
         else if(ShiftKey)
             {
-            Display->DisplayOffsetH+= ScreenElementWidth;
+            Display->DisplayOffsetH+= Utilities->ScreenElementWidth;
             }
         else
             {
-            Display->DisplayOffsetH+= ScreenElementWidth/2;
+            Display->DisplayOffsetH+= Utilities->ScreenElementWidth/2;
             }
         ClearandRebuildRailway(23);
         if((Level2TrackMode == TrackSelecting) || (Level2PrefDirMode == PrefDirSelecting))
@@ -6831,11 +6839,11 @@ try
             }
         else if(ShiftKey)
             {
-            Display->DisplayZoomOutOffsetH+= (4 * ScreenElementWidth);
+            Display->DisplayZoomOutOffsetH+= (4 * Utilities->ScreenElementWidth);
             }
         else
             {
-            Display->DisplayZoomOutOffsetH+= ScreenElementWidth;
+            Display->DisplayZoomOutOffsetH+= Utilities->ScreenElementWidth;
             }
         Display->ClearDisplay(1);
         Track->PlotSmallRailway(3, Display);
@@ -6869,11 +6877,11 @@ try
             }
         else if(ShiftKey)
             {
-            Display->DisplayOffsetV+= ScreenElementHeight;
+            Display->DisplayOffsetV+= Utilities->ScreenElementHeight;
             }
         else
             {
-            Display->DisplayOffsetV+= ScreenElementHeight/2;
+            Display->DisplayOffsetV+= Utilities->ScreenElementHeight/2;
             }
         ClearandRebuildRailway(24);
         if((Level2TrackMode == TrackSelecting) || (Level2PrefDirMode == PrefDirSelecting))
@@ -6889,11 +6897,11 @@ try
             }
         else if(ShiftKey)
             {
-            Display->DisplayZoomOutOffsetV+= (4 * ScreenElementHeight);
+            Display->DisplayZoomOutOffsetV+= (4 * Utilities->ScreenElementHeight);
             }
         else
             {
-            Display->DisplayZoomOutOffsetV+= ScreenElementHeight;
+            Display->DisplayZoomOutOffsetV+= Utilities->ScreenElementHeight;
             }
         Display->ClearDisplay(2);
         Track->PlotSmallRailway(4, Display);
@@ -6927,11 +6935,11 @@ try
             }
         else if(ShiftKey)
             {
-            Display->DisplayOffsetV-= ScreenElementHeight;
+            Display->DisplayOffsetV-= Utilities->ScreenElementHeight;
             }
         else
             {
-            Display->DisplayOffsetV-= ScreenElementHeight/2;
+            Display->DisplayOffsetV-= Utilities->ScreenElementHeight/2;
             }
         ClearandRebuildRailway(25);
         if((Level2TrackMode == TrackSelecting) || (Level2PrefDirMode == PrefDirSelecting))
@@ -6947,11 +6955,11 @@ try
             }
         else if(ShiftKey)
             {
-            Display->DisplayZoomOutOffsetV-= (4 * ScreenElementHeight);
+            Display->DisplayZoomOutOffsetV-= (4 * Utilities->ScreenElementHeight);
             }
         else
             {
-            Display->DisplayZoomOutOffsetV-= ScreenElementHeight;
+            Display->DisplayZoomOutOffsetV-= Utilities->ScreenElementHeight;
             }
         Display->ClearDisplay(3);
         Track->PlotSmallRailway(5, Display);
@@ -7048,20 +7056,20 @@ try
         TTClockAdjButton->Enabled = false;
 //        DisablePanelsStoreMainMenuStates();//ensure Display->ZoomOutFlag set true before calling
         //start assuming normal view is at centre of ZoomOut & calc excesses at each side
-        int OVOffH_NVCentre = Display->DisplayOffsetH - (1.5 * ScreenElementWidth); // start zoomout centre at DisplayOffsetH + 30 - zoomout width/2 = -(1.5 * 60)
+        int OVOffH_NVCentre = Display->DisplayOffsetH - (1.5 * Utilities->ScreenElementWidth); // start zoomout centre at DisplayOffsetH + 30 - zoomout width/2 = -(1.5 * 60)
         int LeftExcess = OVOffH_NVCentre - Track->GetHLocMin();
-        int RightExcess = Track->GetHLocMax() - OVOffH_NVCentre - ((4 * ScreenElementWidth) - 1);
+        int RightExcess = Track->GetHLocMax() - OVOffH_NVCentre - ((4 * Utilities->ScreenElementWidth) - 1);
         if((LeftExcess > 0) && (RightExcess > 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre;
-        else if((LeftExcess > 0) && (RightExcess <= 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre + ((RightExcess)/(ScreenElementWidth/2))*(ScreenElementWidth/2);//normalise to nearest screen
-        else if((LeftExcess <= 0) && (RightExcess > 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre - ((LeftExcess)/(ScreenElementWidth/2))*(ScreenElementWidth/2);
+        else if((LeftExcess > 0) && (RightExcess <= 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre + ((RightExcess)/(Utilities->ScreenElementWidth/2))*(Utilities->ScreenElementWidth/2);//normalise to nearest screen
+        else if((LeftExcess <= 0) && (RightExcess > 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre - ((LeftExcess)/(Utilities->ScreenElementWidth/2))*(Utilities->ScreenElementWidth/2);
         else Display->DisplayZoomOutOffsetH = OVOffH_NVCentre;//no excess at either side, so display in centre
 
-        int OVOffV_NVCentre = Display->DisplayOffsetV - (1.5 * ScreenElementHeight);
+        int OVOffV_NVCentre = Display->DisplayOffsetV - (1.5 * Utilities->ScreenElementHeight);
         int TopExcess = OVOffV_NVCentre - Track->GetVLocMin();
-        int BotExcess = Track->GetVLocMax() - OVOffV_NVCentre - ((4 * ScreenElementHeight) - 1);
+        int BotExcess = Track->GetVLocMax() - OVOffV_NVCentre - ((4 * Utilities->ScreenElementHeight) - 1);
         if((TopExcess > 0) && (BotExcess > 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre;
-        else if((TopExcess > 0) && (BotExcess <= 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre + ((BotExcess)/(ScreenElementHeight/2))*(ScreenElementHeight/2);//normalise to nearest half screen
-        else if((TopExcess <= 0) && (BotExcess > 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre - ((TopExcess)/(ScreenElementHeight/2))*(ScreenElementHeight/2);
+        else if((TopExcess > 0) && (BotExcess <= 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre + ((BotExcess)/(Utilities->ScreenElementHeight/2))*(Utilities->ScreenElementHeight/2);//normalise to nearest half screen
+        else if((TopExcess <= 0) && (BotExcess > 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre - ((TopExcess)/(Utilities->ScreenElementHeight/2))*(Utilities->ScreenElementHeight/2);
         else Display->DisplayZoomOutOffsetV = OVOffV_NVCentre;//no excess at either side, so display in centre
 
         Display->ClearDisplay(4);
@@ -9114,10 +9122,10 @@ if(Track->FindAndHighlightAnUnsetGap(1))//true if find one
     {
     if(!PreventGapOffsetResetting)//don't reset display position if returning from zoomout mode
         {
-        while((Display->DisplayOffsetH - Track->GetGapHLoc()) > 0) Display->DisplayOffsetH-= (ScreenElementWidth/2);//use 30 instead of 60 so less likely to appear behind the message box
-        while((Track->GetGapHLoc() - Display->DisplayOffsetH) > (ScreenElementWidth - 1)) Display->DisplayOffsetH+= (ScreenElementWidth/2);
-        while((Display->DisplayOffsetV - Track->GetGapVLoc()) > 0) Display->DisplayOffsetV-= (ScreenElementHeight/2);//use 18 instead of 36 so less likely to appear behind the message box
-        while((Track->GetGapVLoc() - Display->DisplayOffsetV) > (ScreenElementHeight - 1)) Display->DisplayOffsetV+= (ScreenElementHeight/2);
+        while((Display->DisplayOffsetH - Track->GetGapHLoc()) > 0) Display->DisplayOffsetH-= (Utilities->ScreenElementWidth/2);//use 30 instead of 60 so less likely to appear behind the message box
+        while((Track->GetGapHLoc() - Display->DisplayOffsetH) > (Utilities->ScreenElementWidth - 1)) Display->DisplayOffsetH+= (Utilities->ScreenElementWidth/2);
+        while((Display->DisplayOffsetV - Track->GetGapVLoc()) > 0) Display->DisplayOffsetV-= (Utilities->ScreenElementHeight/2);//use 18 instead of 36 so less likely to appear behind the message box
+        while((Track->GetGapVLoc() - Display->DisplayOffsetV) > (Utilities->ScreenElementHeight - 1)) Display->DisplayOffsetV+= (Utilities->ScreenElementHeight/2);
         }
     InfoPanel->Visible = true;
     InfoPanel->Caption = "CONNECTING GAPS:  Click on connecting element";
@@ -10357,7 +10365,7 @@ Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) +
 TPoint MousePoint = Mouse->CursorPos;
 int ScreenX = MousePoint.x - MainScreen->ClientOrigin.x;
 int ScreenY = MousePoint.y - MainScreen->ClientOrigin.y;
-if((ScreenX > 959) || (ScreenY > 575) || (ScreenX < 0) || (ScreenY < 0))
+if((ScreenX > (MainScreen->Width - 1)) || (ScreenY > (MainScreen->Height - 1)) || (ScreenX < 0) || (ScreenY < 0))
     {
     FloatingLabel->Visible = false;
     Utilities->CallLogPop(1432);
@@ -10791,19 +10799,19 @@ else if(ShowTrackFloatFlag && ShowTrainStatusFloatFlag && ShowTrainTTFloatFlag)
     Caption = TrainStatusFloat + '\n' + '\n' + TrainTTFloat + '\n' + '\n' + TrackFloat;
     }
 
-int Left = ScreenX + 48;//so lhs of window is one element to the right of the mouse pos (32 would be at mouse pos)
+int Left = ScreenX + MainScreen->Left + 16;//so lhs of window is one element to the right of the mouse pos
 //this offset is because window position is relative to the interface form, whereas ScreenX & Y are relative to the MainScreen, which is
 //offset 32 to the right and 95 down from the interface form
 if((Left + FloatingLabel->Width) > MainScreen->Left + MainScreen->Width)
         Left = ScreenX - FloatingLabel->Width + 16;//so rhs of window is one element to the left of the mouse pos (+32 would be at mouse pos)
-int Top = ScreenY + 111;//so top of window is one element below the mouse pos (95 would be at mouse pos)
+int Top = ScreenY + MainScreen->Top + 16;//so top of window is one element below the mouse pos (ScreenY + MainScreen->Top would be at mouse pos)
 if((Top + FloatingLabel->Height) > MainScreen->Top + MainScreen->Height)
     {
     Top = ScreenY - FloatingLabel->Height + 79;//so bottom of window is one element above the mouse pos (95 would be at mouse pos)
     //but, top may now be off the top of the screen, if so position at the top of the screen, as always need to see the top, if have to
     //lose something then it's best to be from the bottom
-    if(Top < 30)//use 30 instead of 95 as top can go off MainScreen providing it doesn't reach the information panel, as that would obscure
-                //the window
+    if(Top < 30)//use 30 instead of MainScreen->Top [95] as top can go off MainScreen providing it doesn't reach the information panel, as that would
+                //obscure the window
         {
         Top = 30;
         }
@@ -11091,17 +11099,17 @@ AnsiString TimetablePanelLabelCaptionStr = "Timetable editor";
 
 if(!Display->ZoomOutFlag)
     {                       //prevent if half a screen or less visible (width = 60, height = 36) [Note HLocMin & Max 1 greater than extreme element]
-    if((Track->GetHLocMin() - Display->DisplayOffsetH + 1 >= (ScreenElementWidth/2))) ScreenLeftFlag = false;  //60 - 30
-    if((Track->GetHLocMax() - Display->DisplayOffsetH - 1 <  (ScreenElementWidth/2))) ScreenRightFlag = false; //60 - (60 - 30)
-    if((Track->GetVLocMin() - Display->DisplayOffsetV + 1 >= (ScreenElementHeight/2))) ScreenUpFlag = false;    //36 - 18
-    if((Track->GetVLocMax() - Display->DisplayOffsetV - 1 <  (ScreenElementHeight/2))) ScreenDownFlag = false;  //36 - (36 - 18)
+    if((Track->GetHLocMin() - Display->DisplayOffsetH + 1 >= (Utilities->ScreenElementWidth/2))) ScreenLeftFlag = false;  //60 - 30
+    if((Track->GetHLocMax() - Display->DisplayOffsetH - 1 <  (Utilities->ScreenElementWidth/2))) ScreenRightFlag = false; //60 - (60 - 30)
+    if((Track->GetVLocMin() - Display->DisplayOffsetV + 1 >= (Utilities->ScreenElementHeight/2))) ScreenUpFlag = false;    //36 - 18
+    if((Track->GetVLocMax() - Display->DisplayOffsetV - 1 <  (Utilities->ScreenElementHeight/2))) ScreenDownFlag = false;  //36 - (36 - 18)
     }
 else
     {                       //prevent if less than a quarter of a screen visible (width = 240, height = 144)
-    if((Track->GetHLocMin() - Display->DisplayZoomOutOffsetH + 1 >= (3*ScreenElementWidth))) ScreenLeftFlag = false; //240 - 60
-    if((Track->GetHLocMax() - Display->DisplayZoomOutOffsetH - 1 <   ScreenElementWidth)) ScreenRightFlag = false;//240 - (240 - 60)
-    if((Track->GetVLocMin() - Display->DisplayZoomOutOffsetV + 1 >= (3*ScreenElementHeight))) ScreenUpFlag = false;   //144 - 36
-    if((Track->GetVLocMax() - Display->DisplayZoomOutOffsetV - 1 <   ScreenElementHeight)) ScreenDownFlag = false; //144 - (144 - 36)
+    if((Track->GetHLocMin() - Display->DisplayZoomOutOffsetH + 1 >= (3*Utilities->ScreenElementWidth))) ScreenLeftFlag = false; //240 - 60
+    if((Track->GetHLocMax() - Display->DisplayZoomOutOffsetH - 1 <   Utilities->ScreenElementWidth)) ScreenRightFlag = false;//240 - (240 - 60)
+    if((Track->GetVLocMin() - Display->DisplayZoomOutOffsetV + 1 >= (3*Utilities->ScreenElementHeight))) ScreenUpFlag = false;   //144 - 36
+    if((Track->GetVLocMax() - Display->DisplayZoomOutOffsetV - 1 <   Utilities->ScreenElementHeight)) ScreenDownFlag = false; //144 - (144 - 36)
     }
 if(Track->NoActiveOrInactiveTrack(6) && TextHandler->TextVector.empty())
     {
@@ -11413,6 +11421,17 @@ TempFont->Size = 10;
 TempFont->Color = clB0G0R0;
 TempFont->Charset = (TFontCharset)(0);
 MainScreen->Canvas->Font->Assign(TempFont);
+PerformancePanel->Top = MainScreen->Top + MainScreen->Height - PerformancePanel->Height;
+PerformancePanel->Left = MainScreen->Left;
+ScreenRightButton->Left = Screen->Width - ScreenRightButton->Width; 
+ScreenLeftButton->Left = Screen->Width - ScreenLeftButton->Width;
+ScreenUpButton->Left = Screen->Width - ScreenUpButton->Width;
+ScreenDownButton->Left = Screen->Width - ScreenDownButton->Width;
+HomeButton->Left = Screen->Width - HomeButton->Width;
+NewHomeButton->Left = Screen->Width - NewHomeButton->Width;
+ZoomButton->Left = Screen->Width - ZoomButton->Width;
+DevelopmentPanel->Top = MainScreen->Top + MainScreen->Height - DevelopmentPanel->Height; 
+
 delete TempFont;
 CtrlKey = false;
 ShiftKey = false;

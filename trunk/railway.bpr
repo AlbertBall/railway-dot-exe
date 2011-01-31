@@ -49,7 +49,7 @@ AFLAGS = /i"..\..\..\Program Files\Borland\CBuilder4\Imports" \
   /i"..\..\..\Program Files\Borland\CBuilder4\Projects" /i$(BCB)\include \
   /i$(BCB)\include\vcl /mx /w2 /zi /d_RTLDLL /dUSEPACKAGES
 LFLAGS = -L"..\..\program files\borland\cbuilder4\Lib";"..\..\..\Program Files\Borland\CBuilder4\Imports";"..\..\..\Program Files\Borland\CBuilder4\Bin";"..\..\..\program files\borland\cbuilder4\Lib";"..\..\..\Program Files\Borland\CBuilder4\Projects";$(BCB)\lib\obj;$(BCB)\lib;$(RELEASELIBPATH) \
-  -aa -Tpe -x -Gn -v
+  -aa -Tpe -x -v
 IFLAGS =
 # ---------------------------------------------------------------------------
 ALLOBJ = c0w32.obj Memmgr.Lib $(PACKAGES) sysinit.obj $(OBJFILES)

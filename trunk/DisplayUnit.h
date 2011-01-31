@@ -24,9 +24,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 #include <vcl.h>
 
-#define ScreenElementWidth 60 //width of display screen in elements    } - use #define rather than const as used in both TrackUnit
-#define ScreenElementHeight 36 //height of display screen in elements  } & InterfaceUnit
-
 class TDisplay //class that manages all aspects of the display.  There are 2 objects - Display, which is the screen, and HiddenDisplay,
     //which is an internal object used when building a new display and transferred to Display when complete (avoids the flicker that would
     //be visible if Display was built directly

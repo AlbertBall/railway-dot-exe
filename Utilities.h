@@ -32,6 +32,10 @@ class TUtilities //single object incorporating general purpose data & functions 
 {
 public:
 bool Clock2Stopped; //when true the main loop - Interface->ClockTimer2 - is stopped
+
+int ScreenElementWidth; //width of display screen in elements
+int ScreenElementHeight; //height of display screen in elements
+
 std::ofstream PerformanceFile; //the file where the performance log for a particular period of operation is saved
 std::deque<AnsiString> CallLog; //call stack store, saved to the errorlog for diagnostic purposes
 std::deque<AnsiString> EventLog; //event store, saved to the errorlog for diagnostic purposes

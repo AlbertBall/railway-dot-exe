@@ -2669,8 +2669,8 @@ while(ReturnNextInactiveTrackElement(0, Next))
     if(Next.GraphicPtr != 0)//don't think this should ever be 0 but leave as a safeguard
         {
         //only plot if on screen, to save time
-        if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < ScreenElementWidth) &&
-                ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < ScreenElementHeight))
+        if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
+                ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
             {
             Next.PlotVariableTrackElement(2, Disp);//striped if not named
             }
@@ -2682,8 +2682,8 @@ while(ReturnNextTrackElement(0, Next))
     {
     if(Next.GraphicPtr != 0)//don't think this should ever be 0 but leave as a safeguard
         {
-        if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < ScreenElementWidth) &&
-                ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < ScreenElementHeight))
+        if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
+                ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
             {
             if(Next.TrackType == Points) PlotPoints(5, Next, Disp, BothPointFillets);
             else if(Next.TrackType == SignalPost) PlotSignal(9, Next, Disp);
@@ -11084,7 +11084,8 @@ while(true)
             {
             if((SearchElement.ELinkPos == 1) || (SearchElement.ELinkPos == 3)) SearchElement.XLinkPos = 0; //select the straight track (for the platform)
             else SearchElement.XLinkPos = 1;
-            SearchElement.XLink = SearchElement.Link[XLinkPos];
+//            SearchElement.XLink = SearchElement.Link[XLinkPos];  WRONG!! NajamUddin found this error 17/01/11, XLinkPos is the function input parameter, should be SearchElement.XLinkPos
+            SearchElement.XLink = SearchElement.Link[SearchElement.XLinkPos]; //corrected for v0.6a
             }
         SearchVector.push_back(SearchElement);
         VectorCount++; //not really needed but include for tidyness

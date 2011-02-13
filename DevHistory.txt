@@ -1,9 +1,31 @@
 Development History
 ---------------------------------------------------------------------------
 
-VERSION CHANGES AFTER BETA V0.6 for BETA v0.6a
+***Note for later:  add more info in dev't panel - for trains when hover over train, incl TrainOperatingData values & maybe other info not provided in floating window
+
+VERSION CHANGES AFTER BETA V0.6a for BETA v0.6b
 
 * = mention on user website
+
+*added performance scoring system
+Contents file recompiled because of 5.3 title change
+When editing a tt the loaded tt is changed when validate the editing tt, so have reset the TimetableTitle to "", this is the marker for timetable loaded,
+and also cleared the TrainDataVector.
+*when pasting an entry into the timetable the current item is now advanced to the pasted entry (like insert new entry), formerly stayed on the earlier entry
+*corrected Peter Ruddock's timetable error by ensuring that TTCurrentEntryPtr value valid after every erase, insert & CompileAllEntriesMemoAndSetPointers
+*Added new TrainOperatingData values for RunningEntry & TrainID for new trains from fsp/rsp/Sns & all shuttle to shuttle links - this cures the error reported by Glenn Mitchell where repeat service trains failed to join
+Added a raft of common system #include files before #pragma hdrstop in all source files - speeds up compile times considerably
+*Added service information to the train status floating window - so can identify which a particular train is, useful for joins where repeat numbers have to match
+*mention same h/c trains still look for correct repeat for linked services, e.g for Fjo/jbo
+*Allowed unrestricted headcodes (any alphanumeric for the 4 characters) except for repeats with incremental digits, where must have last 2
+    characters digits
+*point out that new tts using non digit last characters won't load in old versions
+added 'if not zoomed out' condition for PlotSignalBlank & PlotPointBlank
+set 'TTClockAdjButton->Enabled = true' in 'paused' or 'prestart' in MainScreenMouseDown3 for zooming back in (had forgotten this in v0.6a)
+dropped AnyHeadCodeValid flag + all references to it
+Added Last2CharactersDigits + CalcOperatingAndNotStartedTrainLateness callers in callerchecker
+
+VERSION CHANGES AFTER BETA V0.6 for BETA v0.6a
 
 *added facilities for handling different screen resolutions, 1024 x 768 recommended minimum
 amended manual/quick start guide/help file etc where resolution mentioned
@@ -16,7 +38,7 @@ Menu tabs: 20                                      }
 Mode Buttons: 30
 Track build panel/timetable clock panel: 65
 MainScreen->Height ((Screen->Height - 192) / 16) * 16   (192 = 18+20+30+65+29+30) (in xp style screen will be 8 lower because its top is 8 lower)
-Free area under MainScreen: 29 for classic style, 17 for XP style
+Free area under MainScreen: 29 for classic style, 17 for XP style (any extra due to MainScreen->Height truncating down to a multiple of 16)
 Windows taskbar 30 for classic style, 34 for XP style
 
 
@@ -710,7 +732,7 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 
 COPY SECTIONS:
 
-NEXT value for CallLogPop is 1889
+NEXT value for CallLogPop is 1895
 NEXT value for TrackElementAt is 865
 NEXT value for InactiveTrackElementAt is 100
 NEXT value for GetFixedRouteAt is 196
@@ -718,7 +740,7 @@ NEXT value for GetModifiableRouteAt is 16
 NEXT value for GetFixedPrefDirElementAt is 213
 NEXT value for ErrorLog is 195
 NEXT value for ClearandRebuildRailway is 68
-NEXT value for TrainVectorAt is 64
+NEXT value for TrainVectorAt is 65
 NEXT value for SetLevel1Mode is 132
 
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",," + AnsiString() + "," + AnsiString() + "," + AnsiString() + "," + AnsiString((short)));

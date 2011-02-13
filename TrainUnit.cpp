@@ -20,6 +20,20 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 //---------------------------------------------------------------------------
+#include <Classes.hpp>
+#include <Controls.hpp>
+#include <StdCtrls.hpp>
+#include <Forms.hpp>
+#include <Buttons.hpp>
+#include <ExtCtrls.hpp>
+#include <Menus.hpp>
+#include <Dialogs.hpp>
+#include <Graphics.hpp>
+#include <ComCtrls.hpp>
+#include <fstream>
+#include <vector>
+#include <vcl.h>
+
 #pragma hdrstop
 
 #include "TrainUnit.h"
@@ -27,7 +41,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "GraphicUnit.h"
 #include "DisplayUnit.h"
 #include "Utilities.h"
-#include <math.hpp> //for speed calcs
+#include <math.hpp> //for speed & performance calcs
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -3919,12 +3933,9 @@ ActionVectorEntryPtr++;
 LastActionTime = TrainController->TTClockTime;
 
 Mass = Mass/2;
-//TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).Mass = Mass;
 MaxBrakeRate = MaxBrakeRate/2;
-//TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).MaxBrakeRate = MaxBrakeRate;
 PowerAtRail = PowerAtRail/2;
-//TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).PowerAtRail = PowerAtRail;
-//AValue = sqrt(2*PowerAtRail/Mass) i.e. AValue stays same
+//AValue = sqrt(2*PowerAtRail/Mass) no need to recalc as AValue stays same
 
 //create new front train
 /*
@@ -3944,6 +3955,9 @@ if(!TrainController->AddTrain(0, FrontTrainRearPosition, FrontTrainFrontPosition
     }
 TrainController->TrainAdded = true;
 
+TTrainOperatingData &TTOD = OldActionVectorEntryPtr->LinkedTrainEntryPtr->TrainOperatingDataVector.at(RepeatNumber);
+TTOD.TrainID = TrainController->TrainVector.back().TrainID;
+TTOD.RunningEntry = Running;
 Utilities->CallLogPop(998);
 }
 
@@ -4172,6 +4186,9 @@ if(!TrainController->AddTrain(1, RearTrainRearPosition, RearTrainFrontPosition, 
     return;
     }
 TrainController->TrainAdded = true;
+TTrainOperatingData &TTOD = OldActionVectorEntryPtr->LinkedTrainEntryPtr->TrainOperatingDataVector.at(RepeatNumber);
+TTOD.TrainID = TrainController->TrainVector.back().TrainID;
+TTOD.RunningEntry = Running;
 Utilities->CallLogPop(1015);
 }
 
@@ -4291,6 +4308,8 @@ RearStartElement = MidElement;
 RearStartExitPos = MidExitPos;
 StartSpeed = 0;
 TrainDataEntryPtr = ActionVectorEntryPtr->LinkedTrainEntryPtr;
+TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).TrainID = TrainID;
+TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).RunningEntry = Running;
 ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0));
 HeadCode = NewHeadCode;
 StoppedAtLocation = true;
@@ -4560,6 +4579,8 @@ RearStartElement = MidElement;
 RearStartExitPos = MidExitPos;
 StartSpeed = 0;
 TrainDataEntryPtr = ActionVectorEntryPtr->LinkedTrainEntryPtr;
+TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).TrainID = TrainID;
+TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).RunningEntry = Running;
 ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0));
 HeadCode = NewHeadCode;
 IncrementalMinutes = TrainDataEntryPtr->ActionVector.back().RearStartOrRepeatMins;
@@ -4604,6 +4625,8 @@ RearStartElement = MidElement;
 RearStartExitPos = MidExitPos;
 StartSpeed = 0;
 TrainDataEntryPtr = ActionVectorEntryPtr->LinkedTrainEntryPtr;
+TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).TrainID = TrainID;
+TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).RunningEntry = Running;
 ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0));
 HeadCode = NewHeadCode;
 StoppedAtLocation = true;
@@ -4631,6 +4654,8 @@ if(RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))//finished all repeat
     RearStartExitPos = MidExitPos;
     StartSpeed = 0;
     TrainDataEntryPtr = ActionVectorEntryPtr->NonRepeatingShuttleLinkEntryPtr;
+    TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).TrainID = TrainID;  //but note that RepeatNumber = 0
+    TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).RunningEntry = Running; //but note that RepeatNumber = 0
     ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0));
     HeadCode = NewHeadCode;
     StoppedAtLocation = true;
@@ -4653,6 +4678,8 @@ RearStartElement = MidElement;
 RearStartExitPos = MidExitPos;
 StartSpeed = 0;
 TrainDataEntryPtr = ActionVectorEntryPtr->LinkedTrainEntryPtr;
+TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).TrainID = TrainID;
+TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).RunningEntry = Running;
 ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0));
 HeadCode = NewHeadCode;
 StoppedAtLocation = true;
@@ -5677,6 +5704,7 @@ TTrainController::TTrainController()
     SPADRisks = 0;
     CrashedTrains = 0;
     Derailments = 0;
+    TotArrDepPass = 0;
     TotLateArrMins = 0;
     TotEarlyArrMins = 0;
     TotLatePassMins = 0;
@@ -6682,16 +6710,18 @@ TExitList ExitList;
 bool Warning = false;
 if(Count == 0)
     {
+/* dropped at v0.6b
     AnyHeadCodeValid = false;
     if(OneLine.SubString(6,5) == ";0000")
         {
         AnyHeadCodeValid = true;
         }
+*/
     if(!CheckTimeValidity(0, OneLine, StartTime))
         {
         //no message is given for an invalid time as it's assumed to be an irrelevant line
         //if no start time is found at all then an error message is given in the calling function
-        AnyHeadCodeValid = false;
+//        AnyHeadCodeValid = false;
         Utilities->CallLogPop(755);
         return false;
         }
@@ -6732,6 +6762,7 @@ else
         //store Train info - conversions done in SplitTrainInfo
         //only headcode mandatory for continuing services
         TempTrainDataEntry.HeadCode = HeadCode;
+        TempTrainDataEntry.ServiceReference = HeadCode;
         TempTrainDataEntry.Description = Description;
         TempTrainDataEntry.StartSpeed = StartSpeed;
         TempTrainDataEntry.Mass = Mass;
@@ -7061,6 +7092,25 @@ else
         }
     }
 Utilities->CallLogPop(80);
+return true;
+}
+
+//---------------------------------------------------------------------------
+
+bool TTrainController::Last2CharactersBothDigits(int Caller, AnsiString HeadCode)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",Last2CharactersBothDigits," + HeadCode);
+if((HeadCode[HeadCode.Length() - 1] < '0') || (HeadCode[HeadCode.Length() - 1] > '9'))
+    {
+    Utilities->CallLogPop(1890);
+    return false;
+    }
+if((HeadCode[HeadCode.Length()] < '0') || (HeadCode[HeadCode.Length()] > '9'))
+    {
+    Utilities->CallLogPop(1891);
+    return false;
+    }
+Utilities->CallLogPop(1892);
 return true;
 }
 
@@ -7471,6 +7521,7 @@ bool TTrainController::CheckHeadCodeValidity(int Caller, bool GiveMessages, Ansi
 {
 //if(!AnyHeadCodeValid) up to 8 characters total & last 4 characters must be NLNN where N = number and L = capital or small letter
 //if(AnyHeadCodeValid) up to 8 characters total, last 2 chars must be digits & last but 2 can be any alphanumeric, upper or lower case
+//NOTE: As of v0.6b AnyHeadCodeValid dropped, all headcodes are unrestricted
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString((short)GiveMessages) + ",CheckHeadCodeValidity," + HeadCode);
 if((HeadCode.Length() < 4) || (HeadCode.Length() > 8))
     {
@@ -7478,6 +7529,7 @@ if((HeadCode.Length() < 4) || (HeadCode.Length() > 8))
     Utilities->CallLogPop(1359);
     return false;
     }
+/* dropped at v0.6b to allow letters instead of digits anywhere (but can't have repeats with a digit increase)
 if((HeadCode[HeadCode.Length() - 1] < '0') || (HeadCode[HeadCode.Length() - 1] > '9'))
     {
     TimetableMessage(GiveMessages, "Headcode error in '" + HeadCode + "', last 2 characters must be digits");
@@ -7490,6 +7542,8 @@ if((HeadCode[HeadCode.Length()] < '0') || (HeadCode[HeadCode.Length()] > '9'))
     Utilities->CallLogPop(1807);
     return false;
     }
+*/
+/*  dropped at v0.6b: all headcodes are now unrestricted
 if(!AnyHeadCodeValid)
     {
     if((HeadCode[HeadCode.Length() - 3] < '0') || (HeadCode[HeadCode.Length() - 3] > '9'))
@@ -7508,18 +7562,19 @@ if(!AnyHeadCodeValid)
     }
 else
     {
+*/
     for(int x = 3; x > 1; x--)
         {
         if(((HeadCode[HeadCode.Length() - x] < 'A') || (HeadCode[HeadCode.Length() - x] > 'Z')) &&
                 ((HeadCode[HeadCode.Length() - x] < 'a') || (HeadCode[HeadCode.Length() - x] > 'z')) &&
                 ((HeadCode[HeadCode.Length() - x] < '0') || (HeadCode[HeadCode.Length() - x] > '9')))
             {
-            TimetableMessage(GiveMessages, "Headcode error in '" + HeadCode + "', for unrestricted headcodes the first 2 characters of the headcode must be either letters or digits");
+            TimetableMessage(GiveMessages, "Headcode error in '" + HeadCode + "', headcode characters must be either letters or digits");
             Utilities->CallLogPop(1790);
             return false;
             }
         }
-    }
+//    }
 Utilities->CallLogPop(1364);
 return true;
 }
@@ -7902,7 +7957,7 @@ return true;
 
 bool TTrainController::SplitRepeat(int Caller, AnsiString OneEntry, int &RearStartOrRepeatMins, int &FrontStartOrRepeatDigits, int &NumberOfRepeats, bool GiveMessages)
 {
-//Format must be: R;mm;dd;nn  mm may be 1, 2 or more digits, dd may be 1 or 2 digits, nn may be 1, 2 or more digits, none may be zero
+//Format must be: R;mm;dd;nn  mm may be 1, 2 or more digits, dd may be 1 or 2 digits, nn may be 1, 2 or more digits
 //function checks validity of each item and returns false for error
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SplitRepeat," + OneEntry);
 if(OneEntry.Length() < 7)
@@ -7990,6 +8045,12 @@ if(FrontStartOrRepeatDigits == 0)
     return false;
     }
 */
+if(!Last2CharactersBothDigits(0, ServiceReference) && (FrontStartOrRepeatDigits > 0)) //new for v0.6b for unrestricted headcodes
+    {
+    TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - a repeating service with incrementing digits must have digits as its last two headcode characters");
+    Utilities->CallLogPop(1889);
+    return false;
+    }
 AnsiString NumberStr = Remainder;
 
 if(NumberStr == "")
@@ -9193,11 +9254,10 @@ for(unsigned int x=0;x<TrainDataVector.size();x++)
         class TTrainOperatingData
             {
             public:
-            /int TrainID; - default, set at construction
-            /TRunningEntry RunningEntry; - default, set at construction
-            TDateTime StartTime; - calc below from inc minutes
-            AnsiString HeadCode; - calc below from inc digits
-            TTrainOperatingData() {Mass=0; MaxBrakeRate=0; PowerAtRail=0; RunningEntry=NotStarted; TrainID = -1;}//ID -1 = marker for not running
+            int TrainID; - default, set at construction
+            TActionEventType EventReported; used during operation
+            TRunningEntry RunningEntry; - default, set at construction
+            TTrainOperatingData() {TrainID = -1; EventReported= NoEvent; RunningEntry=NotStarted;} //constructor, values set to defaults
             };
         */
         TDEntry.NumberOfTrains = LastAVEntry.NumberOfRepeats + 1;
@@ -10204,6 +10264,15 @@ return true;
 AnsiString TTrainController::GetRepeatHeadCode(int Caller, AnsiString BaseHeadCode, int RepeatNumber, int IncDigits)
 {
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetRepeatHeadCode," + BaseHeadCode + "," + AnsiString(RepeatNumber) + "," + AnsiString(IncDigits));
+if(!Last2CharactersBothDigits(1, BaseHeadCode) && (IncDigits > 0))
+    {
+    throw Exception("Error, last 2 characters not both digits and IncDigits > 0 in GetRepeatHeadCode");
+    }
+if(!Last2CharactersBothDigits(2, BaseHeadCode))
+    {
+    Utilities->CallLogPop(1893);
+    return BaseHeadCode;
+    }
 int BaseDigits = BaseHeadCode.SubString(3,2).ToInt();
 int NextRepeatDigits = BaseDigits + (IncDigits * RepeatNumber);
 while(NextRepeatDigits >= 100)
@@ -11862,11 +11931,13 @@ AnsiString AvEarlyArrMins = "";
 AnsiString AvLatePassMins = "";
 AnsiString AvEarlyPassMins = "";
 AnsiString AvLateDepMins = "";
+
 if(LateArrivals > 0) AvLateArrMins = FormatFloat(FormatStr, (TotLateArrMins/LateArrivals));
 if(EarlyArrivals > 0) AvEarlyArrMins = FormatFloat(FormatStr, (TotEarlyArrMins/EarlyArrivals));
 if(LatePasses > 0) AvLatePassMins = FormatFloat(FormatStr, (TotLatePassMins/LatePasses));
 if(EarlyPasses > 0) AvEarlyPassMins = FormatFloat(FormatStr, (TotEarlyPassMins/EarlyPasses));
 if(LateDeps > 0) AvLateDepMins = FormatFloat(FormatStr, (TotLateDepMins/LateDeps));
+
 PerfFile << '\n' << '\n' << "***************************************";
 PerfFile << '\n' << '\n' << "Performance summary:" << '\n';
 
@@ -11875,54 +11946,129 @@ else                    PerfFile << OnTimeArrivals << " on-time arrival"  << '\n
 
 if(LateArrivals > 1)       PerfFile << LateArrivals << " late arrivals (average " << AvLateArrMins.c_str() << " min)" << '\n';
 else if(LateArrivals == 1) PerfFile << LateArrivals << " late arrival ("          << AvLateArrMins.c_str() << " min)" << '\n';
-else                       PerfFile << LateArrivals << " late arrivals"                                               << '\n';//0
+else                       PerfFile << LateArrivals << " late arrivals"                                               << '\n';
 
 if(EarlyArrivals > 1)       PerfFile << EarlyArrivals << " early arrivals (average " << AvEarlyArrMins.c_str() << " min)" << '\n';
 else if(EarlyArrivals == 1) PerfFile << EarlyArrivals << " early arrival ("          << AvEarlyArrMins.c_str() << " min)" << '\n';
-else                        PerfFile << EarlyArrivals << " early arrivals"                                                << '\n';//0
+else                        PerfFile << EarlyArrivals << " early arrivals"                                                << '\n';
 
 if(OnTimePasses != 1) PerfFile << OnTimePasses << " on-time passes" << '\n';
-else                  PerfFile << OnTimePasses << " on-time pass" << '\n';//1
+else                  PerfFile << OnTimePasses << " on-time pass" << '\n';
 
 if(LatePasses > 1)       PerfFile << LatePasses << " late passes (average " << AvLatePassMins.c_str() << " min)" << '\n';
 else if(LatePasses == 1) PerfFile << LatePasses << " late pass ("           << AvLatePassMins.c_str() << " min)" << '\n';
-else                     PerfFile << LatePasses << " late passes" << '\n';//0
+else                     PerfFile << LatePasses << " late passes" << '\n';
 
 if(EarlyPasses > 1)       PerfFile << EarlyPasses << " early passes (average " << AvEarlyPassMins.c_str() << " min)" << '\n';
 else if(EarlyPasses == 1) PerfFile << EarlyPasses << " early pass ("           << AvEarlyPassMins.c_str() << " min)" << '\n';
-else                      PerfFile << EarlyPasses << " early passes" << '\n';//0
+else                      PerfFile << EarlyPasses << " early passes" << '\n';
 
 if(OnTimeDeps != 1) PerfFile << OnTimeDeps << " on-time departures" << '\n';
-else                PerfFile << OnTimeDeps << " on-time departure"  << '\n';//1
+else                PerfFile << OnTimeDeps << " on-time departure"  << '\n';
 
 if(LateDeps > 1)      PerfFile << LateDeps << " late departures (average " << AvLateDepMins.c_str() << " min)" << '\n';
 else if(LateDeps == 1) PerfFile << LateDeps << " late departure ("          << AvLateDepMins.c_str() << " min)" << '\n';
-else                   PerfFile << LateDeps << " late departures"                                               << '\n';//0
+else                   PerfFile << LateDeps << " late departures"                                               << '\n';
 
 if(MissedStops != 1) PerfFile << MissedStops << " missed stops" << '\n';
-else                 PerfFile << MissedStops << " missed stop"  << '\n';//1
+else                 PerfFile << MissedStops << " missed stop"  << '\n';
 
 if(OtherMissedEvents != 1) PerfFile << OtherMissedEvents << " other missed events" << '\n';
-else                       PerfFile << OtherMissedEvents << " other missed event"  << '\n';//1
+else                       PerfFile << OtherMissedEvents << " other missed event"  << '\n';
 
 if(UnexpectedExits != 1) PerfFile << UnexpectedExits << " unexpected train exits" << '\n';
-else                     PerfFile << UnexpectedExits << " unexpected train exit"  << '\n';//1
+else                     PerfFile << UnexpectedExits << " unexpected train exit"  << '\n';
 
 if(IncorrectExits != 1) PerfFile << IncorrectExits << " incorrect train exits" << '\n';
-else                    PerfFile << IncorrectExits << " incorrect train exit"  << '\n';//1
+else                    PerfFile << IncorrectExits << " incorrect train exit"  << '\n';
 
-if(SPADEvents != 1) PerfFile << SPADEvents << " SPADs" << '\n';
-else                PerfFile << SPADEvents << " SPAD"  << '\n';//1
+AnsiString AvLateMinsLocsNotReached = "";
+CalcOperatingAndNotStartedTrainLateness(0);
+int LocsNotReached = (NotStartedTrainArrDep + OperatingTrainArrDep)/2; //each location has an arrival and departure (generally) so divide by 2
+if(LocsNotReached > 0)
+    {
+    AvLateMinsLocsNotReached = FormatFloat(FormatStr, (OperatingTrainLateMins + NotStartedTrainLateMins)/(NotStartedTrainArrDep + OperatingTrainArrDep));
+    PerfFile << LocsNotReached << " locations that trains failed to reach (average lateness " << AvLateMinsLocsNotReached.c_str() << " min)" << '\n';
+    }
 
 if(SPADRisks != 1) PerfFile << SPADRisks << " SPAD risks" << '\n';
-else               PerfFile << SPADRisks << " SPAD risk"  << '\n';//1
+else               PerfFile << SPADRisks << " SPAD risk"  << '\n';
 
-if(CrashedTrains != 1) PerfFile << CrashedTrains << " crashed trains" << '\n';
-else                   PerfFile << CrashedTrains << " crashed train"  << '\n';//1
+if(SPADEvents != 1) PerfFile << SPADEvents << " SPADs" << '\n';
+else                PerfFile << SPADEvents << " SPAD"  << '\n';
 
 if(Derailments != 1) PerfFile << Derailments << " derailments" << '\n';
-else                 PerfFile << Derailments << " derailment"  << '\n';//1
+else                 PerfFile << Derailments << " derailment"  << '\n';
 
+if(CrashedTrains != 1) PerfFile << CrashedTrains << " crashed trains" << '\n';
+else                   PerfFile << CrashedTrains << " crashed train"  << '\n';
+
+PerfFile << '\n' << "***************************************" << '\n';
+
+bool DerailSPADFlag = false, CrashFlag = false;
+
+int OverallScorePercent = 100;
+int TotArrDep = 0;
+double TotLateMinsFactor = 1;
+double MissedStopAndSPADRiskFactor = 1;
+double NetNegFactor = 1;
+
+if((SPADEvents > 0) || (Derailments > 0))
+    {
+    OverallScorePercent = 9;//overrides other calculations
+    DerailSPADFlag = true;
+    }
+if(CrashedTrains > 0)
+    {
+    OverallScorePercent = 0;//overrides other calculations
+    CrashFlag = true;
+    }
+if(OverallScorePercent == 100)
+    {
+    TotArrDep = OnTimeArrivals + LateArrivals + EarlyArrivals + OnTimeDeps + LateDeps + NotStartedTrainArrDep + OperatingTrainArrDep;
+        //TotArrDepPass: total number of arrivals & departures including those for trains that haven't reached their destinations yet and are late
+    if(TotArrDep > 0)
+        {
+        TotLateMinsFactor = exp((-0.1732) * (TotLateArrMins + TotLateDepMins + OperatingTrainLateMins + NotStartedTrainLateMins)/TotArrDep);
+            //TotLateMinsFactor: negative exponential factor based on overall average arr & dep minutes late, where 4 mins late average = half, 8 mins late = a quarter etc
+        MissedStopAndSPADRiskFactor = exp((-17.33) * (MissedStops + SPADRisks)/TotArrDep);
+            //MissedEventAndSPADRiskFactor: negative exponential factor based on number of missed stops & SPAD risks as a proportion of arrivals & departures, where 4% = half, 8% = a quarter etc
+        NetNegFactor = TotLateMinsFactor * MissedStopAndSPADRiskFactor;
+            //NetNegfactor: product of the above two
+        OverallScorePercent = 100 * NetNegFactor;
+        }
+    }
+if(TotArrDep > 0)
+    {
+    PerfFile << "\nOverall score: " << OverallScorePercent << "%\n";
+    AnsiString Rating = "";
+    if(OverallScorePercent == 100) Rating = "Perfect!";
+    else if(OverallScorePercent >= 95) Rating = "Excellent";
+    else if(OverallScorePercent >= 90) Rating = "Very good";
+    else if(OverallScorePercent >= 80) Rating = "Good";
+    else if(OverallScorePercent >= 70) Rating = "Fair";
+    else if(OverallScorePercent >= 60) Rating = "Unacceptable";
+    else if(OverallScorePercent >= 50) Rating = "Poor";
+    else if(OverallScorePercent >= 40) Rating = "Bad";
+    else if(OverallScorePercent >= 30) Rating = "Very bad";
+    else if(OverallScorePercent >= 20) Rating = "Terrible";
+    else if(OverallScorePercent >= 10) Rating = "Appalling";
+    else if(OverallScorePercent >= 5)
+        {
+        if(DerailSPADFlag) Rating = "Disastrous - potential loss of life"; //SPADs/Derailments
+        else Rating = "Dire";
+        }
+    else if(OverallScorePercent < 5)
+        {
+        if(CrashFlag) Rating = "Catastrophic - loss of life"; //Crashes
+        else Rating = "Abysmal";
+        }
+    PerfFile << "Overall rating: " << Rating.c_str() << '\n';
+    }
+else
+    {
+    PerfFile << "\nInsufficient information to provide a performance score or rating" << '\n';
+    }
 PerfFile << '\n' << "***************************************";
 Utilities->CallLogPop(1736);
 }
@@ -11961,6 +12107,100 @@ for(unsigned int x = 0; x < TrainVector.size(); x++)
         }
     }
 Utilities->CallLogPop(1796);
+}
+
+//---------------------------------------------------------------------------
+
+void TTrainController::CalcOperatingAndNotStartedTrainLateness(int Caller)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CalcSignalStopLateness");
+
+//calculate lateness for running trains
+OperatingTrainLateMins = 0;
+OperatingTrainArrDep = 0;
+for(unsigned int x = 0; x < TrainVector.size(); x++)
+    {
+    TTrain &Train = TrainVectorAt(64, x);
+    for(TActionVectorEntry* AVEntryPtr = Train.TrainDataEntryPtr->ActionVector.begin(); AVEntryPtr < Train.TrainDataEntryPtr->ActionVector.end();
+            AVEntryPtr++)
+        {
+        if(AVEntryPtr < Train.ActionVectorEntryPtr) continue;
+        if((AVEntryPtr->ArrivalTime > TDateTime(-1)) && (GetRepeatTime(42, AVEntryPtr->ArrivalTime, Train.RepeatNumber, Train.IncrementalMinutes) < TTClockTime))
+            {
+            OperatingTrainLateMins+= 1440 * double(TTClockTime - GetRepeatTime(43, AVEntryPtr->ArrivalTime, Train.RepeatNumber, Train.IncrementalMinutes));
+            OperatingTrainArrDep++;
+            }
+        if((AVEntryPtr->DepartureTime > TDateTime(-1)) && (GetRepeatTime(44, AVEntryPtr->DepartureTime, Train.RepeatNumber, Train.IncrementalMinutes) < TTClockTime))
+            {
+            OperatingTrainLateMins+= 1440 * double(TTClockTime - GetRepeatTime(45, AVEntryPtr->DepartureTime, Train.RepeatNumber, Train.IncrementalMinutes));
+            OperatingTrainArrDep++;
+            }
+        }
+    }
+
+//calculate lateness for trains that haven't started yet (could be held awaiting entry)
+NotStartedTrainLateMins = 0;
+NotStartedTrainArrDep = 0;
+
+for(unsigned int x=0;x<TrainDataVector.size();x++)
+    {
+    TTrainDataEntry &TDEntry = TrainDataVector.at(x);
+    const TActionVectorEntry &AVEntryLast = TDEntry.ActionVector.at(TDEntry.ActionVector.size() - 1);
+    int IncrementalMinutes = 0;
+    if(AVEntryLast.FormatType == Repeat)
+        {
+        IncrementalMinutes = AVEntryLast.RearStartOrRepeatMins;
+        }
+    for(int y=0;y<TDEntry.NumberOfTrains;y++)
+        {
+        TTrainOperatingData &TTOD = TDEntry.TrainOperatingDataVector.at(y);
+        if(TTOD.RunningEntry != NotStarted) continue;
+        //note that can't rely on the above for sessionfiles saved before v0.6b as wasn't set to Running for Sns/Fsp/rsp & shuttles
+        //but if trains had exited then would be set to Exited, so need to check against trains still operating - use the test below
+        bool TrainOperatingFlag = false;
+        for(unsigned int a=0; a<TrainController->TrainVector.size(); a++)
+            {
+            if((TrainController->TrainVector.at(a).TrainDataEntryPtr == &TDEntry) && (TrainController->TrainVector.at(a).RepeatNumber == y))
+                {
+                TrainOperatingFlag = true;
+                break;
+                }
+            }
+        if(TrainOperatingFlag) continue;
+
+        if(GetRepeatTime(46, TDEntry.ActionVector.at(0).EventTime, y, IncrementalMinutes) > TTClockTime)
+            {
+            break;//if the first time is greater than TTClockTime then all the rest will also be greater (& default of -1 will be less so will be ignored)
+            }
+        for(unsigned int z=0; z<TDEntry.ActionVector.size(); z++)
+            {
+            TActionVectorEntry &AVEntry = TDEntry.ActionVector.at(z);
+            if(GetRepeatTime(35, AVEntry.EventTime, y, IncrementalMinutes) > TTClockTime)
+                {
+                break;//all the rest will also be greater (& default of -1 will be less)
+                }
+            if(GetRepeatTime(36, AVEntry.ArrivalTime, y, IncrementalMinutes) > TTClockTime)
+                {
+                break;//all the rest will also be greater (& default of -1 will be less)
+                }
+            if(GetRepeatTime(37, AVEntry.DepartureTime, y, IncrementalMinutes) > TTClockTime)
+                {
+                break;//all the rest will also be greater (& default of -1 will be less)
+                }
+            if((AVEntry.ArrivalTime > TDateTime(-1)) && (GetRepeatTime(38, AVEntry.ArrivalTime, y, IncrementalMinutes) < TTClockTime))
+                {
+                NotStartedTrainLateMins+= 1440 * double(TTClockTime - GetRepeatTime(39, AVEntry.ArrivalTime, y, IncrementalMinutes));
+                NotStartedTrainArrDep++;
+                }
+            if((AVEntry.DepartureTime > TDateTime(-1)) && (GetRepeatTime(40, AVEntry.DepartureTime, y, IncrementalMinutes) < TTClockTime))
+                {
+                NotStartedTrainLateMins+= 1440 * double(TTClockTime - GetRepeatTime(41, AVEntry.DepartureTime, y, IncrementalMinutes));
+                NotStartedTrainArrDep++;
+                }
+            }
+        }
+    }
+Utilities->CallLogPop(1894);
 }
 
 //---------------------------------------------------------------------------

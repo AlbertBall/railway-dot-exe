@@ -36,7 +36,7 @@ SYSDEFINES = NO_STRICT;_RTLDLL;USEPACKAGES
 USERDEFINES =
 # ---------------------------------------------------------------------------
 CFLAG1 = -I"..\..\..\Program Files\Borland\CBuilder4\Imports";"..\..\..\Program Files\Borland\CBuilder4\Bin";"..\..\..\Program Files\Borland\CBuilder4\Projects";$(BCB)\include;$(BCB)\include\vcl \
-  -Od -Hc -H=$(BCB)\lib\vcl40.csm -w -Ve -xp -Tkh30000 -r- -a4 -k -y -v -vi- \
+  -Od -H=$(BCB)\lib\vcl40.csm -w -Ve -xp -Tkh30000 -r- -a4 -k -y -v -vi- \
   -D$(SYSDEFINES);$(USERDEFINES) -c -b- -w-par -w-inl -Vx -tW -tWM
 CFLAG2 =
 CFLAG3 =
@@ -105,19 +105,10 @@ Item3=..\..\..\Program Files\Borland\CBuilder4\Bin;..\..\..\program files\borlan
 Item4=..\..\..\Program Files\Borland\CBuilder4\Bin;..\..\..\program files\borland\cbuilder4\Lib;..\..\..\Program Files\Borland\CBuilder4\Projects;..\..\..\Program Files\HTML Help Workshop\lib;$(BCB)\lib\obj;$(BCB)\lib
 Item5=..\..\..\Program Files\Borland\CBuilder4\Bin;..\..\..\program files\borland\cbuilder4\Lib;..\..\..\Program Files\Borland\CBuilder4\Projects;$(BCB)\lib\obj;$(BCB)\lib;E:\Program Files\HTML Help Workshop\lib
 Item6=..\..\..\Program Files\Borland\CBuilder4\Projects;$(BCB)\lib\obj;$(BCB)\lib
-Item7=E:\Program Files\Borland\CBuilder4\Projects\;$(BCB)\lib\obj;$(BCB)\lib
-
-[HistoryLists\hlDebugSourcePath]
-Count=1
-Item0=$(BCB)\source\vcl
-
-[HistoryLists\hlRunParameters]
-Count=2
-Item0=allelements12.dev
-Item1=adsfdasfdasf
+Item7=E:\Pr!endif
 
 [Debugging]
-DebugSourceDirs=$(BCB)\source\vcl
+DebugSourceDirs=
 
 [Parameters]
 RunParams=allelements12.dev
@@ -130,19 +121,6 @@ RemoteDebug=0
 InMemoryExe=0
 ShowInfoMsgs=0
 
-!endif
-
-# ---------------------------------------------------------------------------
-# MAKE SECTION
-# ---------------------------------------------------------------------------
-# This section of the project file is not used by the BCB IDE.  It is for
-# the benefit of building from the command-line using the MAKE utility.
-# ---------------------------------------------------------------------------
-
-.autodepend
-# ---------------------------------------------------------------------------
-!if !$d(BCC32)
-BCC32 = bcc32
 !endif
 
 !if !$d(DCC32)

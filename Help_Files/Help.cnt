@@ -29,7 +29,7 @@
 3 Joins=5.2.4
 3 Shuttle services=5.2.5
 2 Other timetable features
-3 Restricted and unrestricted headcodes=5.3
+3 Headcodes=5.3
 3 Timetable validation=5.4
 3 Timetabled and automatic warnings=5.5
 3 Showing and hiding the timetable editor=5.6

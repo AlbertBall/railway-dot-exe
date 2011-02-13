@@ -106,8 +106,7 @@ class TTrainOperatingData //data for a specific train for use during operation
     TRunningEntry RunningEntry;
 
 //inline function
-    TTrainOperatingData() {TrainID = -1; EventReported= NoEvent; RunningEntry=NotStarted;} //constructor, values set to defaults (ID = -1
-        //is a marker for not running)
+    TTrainOperatingData() {TrainID = -1; EventReported= NoEvent; RunningEntry=NotStarted;} //constructor, values set to defaults
     };
 
 typedef std::vector<TTrainOperatingData> TTrainOperatingDataVector; //vector containing operational data for each timetabled train
@@ -118,8 +117,8 @@ typedef std::vector<TTrainOperatingData> TTrainOperatingDataVector; //vector con
 class TTrainDataEntry //contains all data for a single train
     {
     public:
-    AnsiString HeadCode, Description; //null on creation headcode is the first train's headcode, rest are calculated from repeat
-        //information
+    AnsiString HeadCode, ServiceReference, Description; //headcode is the first train's headcode, rest are calculated from repeat
+        //information; ServiceReference is the full (up to 8 characters) reference from the timetable (added at V0.6b)
     double MaxBrakeRate; //in metres/sec/sec
     double MaxRunningSpeed; //in km/h
     double PowerAtRail; //in Watts (taken as 80% of the train's Gross Power, i.e. that entered by the user)
@@ -201,7 +200,7 @@ AnsiString HeadCode; //needs own HeadCode because repeat entries will differ fro
 bool HoldAtLocationInTTMode; //true if actions are needed before train departs
 bool TimeTimeLocArrived; //indicates whether has arrived (true) or not when ActionVectorEntryPtr->FormatType == TimeTimeLoc
 int IncrementalDigits; //the number of digits to increment by in repeat entries
-int IncrementalMinutes; ////the number of minutes to increment by in repeat entries
+int IncrementalMinutes; //the number of minutes to increment by in repeat entries
 int RearStartElement; //start TrackVectorPosition element for rear of train
 int RearStartExitPos; //the LinkPos value for the rear starting element (i.e. links to the front starting element)
 int RepeatNumber; //indicates which of the repeating services this train represents (0 = first service)
@@ -463,20 +462,22 @@ typedef std::pair<TDateTime, TContinuationTrainExpectationEntry> TContinuationTr
 typedef std::vector<TTrain> TTrainVector; //vector containing all trains that currently exist in the railway
 
 AnsiString ServiceReference; //string used to display the offending service in timetable error messages
-bool AnyHeadCodeValid; //flag to indicate valid headcode types for a service - when true can accept xxNN; if false accept only NaNN
-    //(N=number, x = any alphanumeric, a= upper or lower case letter)
+//bool AnyHeadCodeValid; //flag to indicate valid headcode types for a service - when true can accept xxNN; if false accept only NaNN
+    //(N=number, x = any alphanumeric, a= upper or lower case letter) - dropped at v0.6b
 bool CrashWarning, DerailWarning, SPADWarning, CallOnWarning, SignalStopWarning, BufferAttentionWarning; //flags to enable the relevant
     //warning graphics to flash at the left hand side of the screen
 bool StopTTClockFlag; //when true the timetable clock is stopped, used for messages display and train popup menu display etc
 bool TrainAdded; //true when a train has been added by a split (occurs outside the normal train introduction process)
 
-float TotEarlyArrMins; //the following are all used for the performance file summary
+float NotStartedTrainLateMins; //total late minutes of trains that haven't started yet on exit operation for locations not reached yet
+float OperatingTrainLateMins; //total late minutes of operating trains on exit operation for locations not reached yet
+float TotEarlyArrMins; //values for performance file summary
 float TotEarlyPassMins;
 float TotLateArrMins;
 float TotLateDepMins;
 float TotLatePassMins;
 
-int CrashedTrains;
+int CrashedTrains; //values for performance file summary
 int Derailments;
 int EarlyArrivals;
 int EarlyPasses;
@@ -491,7 +492,10 @@ int OnTimePasses;
 int OtherMissedEvents;
 int SPADEvents;
 int SPADRisks;
+int TotArrDepPass;
 int UnexpectedExits;
+int OperatingTrainArrDep; //total number of arrivals & departures for operating trains locations not reached yet
+int NotStartedTrainArrDep; //total number of arrivals & departures for trains that haven't started yet for locations not reached yet
 
 TContinuationAutoSigVector ContinuationAutoSigVector; //vector for TContinuationAutoSigEntry objects
 TContinuationTrainExpectationMultiMap ContinuationTrainExpectationMultiMap; //multimap for TContinuationTrainExpectationEntry objects,
@@ -545,6 +549,7 @@ bool CheckStartPositionValidity(int Caller, AnsiString RearElementStr, AnsiStrin
 bool CheckTimeValidity(int Caller, AnsiString TimeStr, TDateTime &Time); //returns true if the time complies with requirements
 bool IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEntry, AnsiString &LocationName); //new trains introduced with 'Snt' may be
     //at a timetabled location or elsewhere.  This function checks and returns true for at a timetabled location.
+bool Last2CharactersBothDigits(int Caller, AnsiString HeadCode); //Checks the last two characters in HeadCode and returns true if both are digits
 bool MovingSuccessor(const TActionVectorEntry &AVEntry); //a shorthand function that returns true if the successor to a given timetable
     //action command should be (or could be) an en-route command, used in timetable validation
 bool ProcessOneTimetableLine(int Caller, int Count, AnsiString OneLine, bool &EndOfFile, bool FinalCall, bool GiveMessages,
@@ -575,6 +580,7 @@ TTrain &TrainVectorAtIdent(int Caller, int TrainID); //return a reference to the
     //TrainID
 
 void BuildContinuationTrainExpectationMultiMap(int Caller); //populate the ContinuationTrainExpectationMultiMap during timetable loading
+void CalcOperatingAndNotStartedTrainLateness(int Caller); //calculates additional lateness values for trains that haven't reached their destinations yet
 void CreateFormattedTimetable(int Caller, AnsiString RailwayTitle, AnsiString TimetableTitle, AnsiString CurDir); //examines the internal
     //timetable (TrainDataVector) and creates from it a chronological (.txt) timetable and also a traditional spreadsheet format (.csv)
     //timetable

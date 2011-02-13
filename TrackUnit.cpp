@@ -20,6 +20,20 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 //---------------------------------------------------------------------------
+#include <Classes.hpp>
+#include <Controls.hpp>
+#include <StdCtrls.hpp>
+#include <Forms.hpp>
+#include <Buttons.hpp>
+#include <ExtCtrls.hpp>
+#include <Menus.hpp>
+#include <Dialogs.hpp>
+#include <Graphics.hpp>
+#include <ComCtrls.hpp>
+#include <fstream>
+#include <vector>
+#include <vcl.h>
+
 #pragma hdrstop
 
 #include "TrackUnit.h"

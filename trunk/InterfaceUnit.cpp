@@ -20,7 +20,25 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 //---------------------------------------------------------------------------
+#include <Classes.hpp>
+#include <Controls.hpp>
+#include <StdCtrls.hpp>
+#include <Forms.hpp>
+#include <Buttons.hpp>
+#include <ExtCtrls.hpp>
+#include <Menus.hpp>
+#include <Dialogs.hpp>
+#include <Graphics.hpp>
+#include <ComCtrls.hpp>
+#include <fstream>
+#include <vector>
+#include <vcl.h>
+
 #pragma hdrstop
+//The above batch of include files above #pragma hdrstop appear in all .cpp files.
+//They aren't all needed in each case but being together and identical they speed
+//up compilation considerably (without ~14 min, with ~1 min!). They are used in
+//conjunction with 'use pre-compiled headers' in the project compiler options.
 
 #include "InterfaceUnit.h"
 #include "GraphicUnit.h"
@@ -51,7 +69,7 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "Beta v0.6a"; //change vx.x for each published modification, Dev x = interim development stages (don't show on published versions)
+    ProgramVersion = "Beta v0.6b"; //change vx.x for each published modification, Dev x = interim development stages (don't show on published versions)
     //check for presence of directories, creation failure probably indicates that the working folder is read-only
     CurDir = GetCurrentDir();
     if(!DirectoryExists("Railways"))
@@ -1751,7 +1769,6 @@ try
     int button = Application->MessageBox(MessageStr.c_str(), "", MB_YESNO);
     TrainController->BaseTime = TDateTime::CurrentDateTime();
     TrainController->StopTTClockFlag = false;
-
     if (button == IDNO)
         {
         Utilities->CallLogPop(751);
@@ -1759,14 +1776,14 @@ try
         }
     Track->ResetSignals(1);
     Track->ResetPoints(1);
+    TrainController->SendPerformanceSummary(0, Utilities->PerformanceFile); //must come before trains finished becuase examines the train vectors
+    Utilities->PerformanceFile.close();
     TrainController->UnplotTrains(1);
     TrainController->FinishedOperation(0);
     RouteMode = None;
     PreferredRoute = true;
     ConsecSignalsRoute = true;
     AllRoutes->AllRoutesClear();
-    TrainController->SendPerformanceSummary(0, Utilities->PerformanceFile);
-    Utilities->PerformanceFile.close();
     ShowPerformancePanel = false;
     PerformanceLogButton->Glyph->LoadFromResourceName(0, "ShowLog");
     PerformanceLogBox->Lines->Clear();
@@ -2615,6 +2632,8 @@ try
         TTBLFile.open(TimetableDialog->FileName.c_str(), std::ios_base::binary);
         if(TTBLFile)
             {
+            TimetableTitle = "";//unload any loaded timetable
+            TrainController->TrainDataVector.clear();//unload any loaded timetable
             TimetableChangedFlag = false;
             TimetableValidFlag = false;
             TTEntryChangedFlag = false;
@@ -3156,6 +3175,7 @@ try
         }
 //restore TTCurrentEntryPtr
     TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos;
+    TTCurrentEntryPtr++;//advance the pointer to the pasted entry
 //    CopiedEntryStr = "";//revert to null - no, allow multiple copies
     Level1Mode = TimetableMode;
     SetLevel1Mode(94);
@@ -3344,7 +3364,9 @@ try
         NewEntryInPreparationFlag = false;
         if(TTCurrentEntryPtr != 0)
             {
+            int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin();//vector pointers unreliable after an insert
             TimetableEditVector.insert(TTCurrentEntryPtr+1, TempStr);//inserts before the indicated pointer position, which may be at the end
+            TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos;
             TTCurrentEntryPtr++;
             }
         else
@@ -3352,6 +3374,7 @@ try
             TimetableEditVector.insert(TimetableEditVector.end(), TempStr);//inserts before the indicated pointer position
             TTCurrentEntryPtr = TimetableEditVector.end() - 1;
             }
+        int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin();//save the current position
         TopPos = AllEntriesTTListBox->TopIndex;     //need to store this & reset it after SetLevel1Mode to prevent the scroll
                                                  //position changing in AllEntriesTTListBox
         AllEntriesTTListBox->Clear();
@@ -3362,6 +3385,15 @@ try
             SetLevel1Mode(113);
             Utilities->CallLogPop(1781);
             return;
+            }
+//reset the TTCurrentEntryPtr after CompileAllEntriesMemoAndSetPointers
+        if(OldVectorPos >= TimetableEditVector.end() - TimetableEditVector.begin() - 1)
+            {
+            TTCurrentEntryPtr = TimetableEditVector.end() - 1;
+            }
+        else
+            {
+            TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos;
             }
         }
     Level1Mode = TimetableMode;
@@ -3509,7 +3541,7 @@ try
     bool GiveMessagesTrue = true;
     bool CheckLocationsExistInRailway = false;
     if(RlyFile) CheckLocationsExistInRailway = true;
-    TrainController->AnyHeadCodeValid = true; //don't fail here because of an unrestricted headcode, if no good will find when validate
+//    TrainController->AnyHeadCodeValid = true; //don't fail here because of an unrestricted headcode, if no good will find when validate (dropped at v0.6b)
     if(TrainController->ProcessOneTimetableLine(2, Count, *TTCurrentEntryPtr, EndOfFile, FinalCallFalse, GiveMessagesTrue, CheckLocationsExistInRailway))
     //return true for success
         {
@@ -3600,7 +3632,17 @@ try
     int TopPos = AllEntriesTTListBox->TopIndex;     //need to store this & reset it after SetLevel1Mode to prevent the scroll
                                                  //position changing in AllEntriesTTListBox
     AllEntriesTTListBox->Clear();
+    int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin();//save the old position
     CompileAllEntriesMemoAndSetPointers(6);
+//reset the TTCurrentEntryPtr after CompileAllEntriesMemoAndSetPointers
+    if(OldVectorPos >= TimetableEditVector.end() - TimetableEditVector.begin() - 1)
+        {
+        TTCurrentEntryPtr = TimetableEditVector.end() - 1;
+        }
+    else
+        {
+        TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos;
+        }
     Level1Mode = TimetableMode;
     SetLevel1Mode(100);
     if((TTCurrentEntryPtr - TimetableEditVector.begin()) < TopPos)
@@ -3652,7 +3694,17 @@ try
     int TopPos = AllEntriesTTListBox->TopIndex;     //need to store this & reset it after SetLevel1Mode to prevent the scroll
                                                  //position changing in AllEntriesTTListBox
     AllEntriesTTListBox->Clear();
+    int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin();//save the old position
     CompileAllEntriesMemoAndSetPointers(7);
+//reset the TTCurrentEntryPtr after CompileAllEntriesMemoAndSetPointers
+    if(OldVectorPos >= TimetableEditVector.end() - TimetableEditVector.begin() - 1)
+        {
+        TTCurrentEntryPtr = TimetableEditVector.end() - 1;
+        }
+    else
+        {
+        TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos;
+        }
     Level1Mode = TimetableMode;
     SetLevel1Mode(101);
     if((TTCurrentEntryPtr - TimetableEditVector.begin()) < TopPos)
@@ -3923,7 +3975,7 @@ void __fastcall TInterface::OneEntryTimetableMemoKeyUp(TObject *Sender, WORD &Ke
 {
 try
     {
-    TrainController->LogEvent("OneEntryTimetableMemoKeyUp");
+//    TrainController->LogEvent("OneEntryTimetableMemoKeyUp");  drop this - too many entries
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OneEntryTimetableMemoKeyUp");
     if(OneEntryTimetableMemo->Text == OneEntryTimetableContents)
         {
@@ -3990,8 +4042,8 @@ void __fastcall TInterface::AllEntriesTTListBoxMouseUp(TObject *Sender,
 //Select the item pointed to unless a 'save entry' is pending in which case ignore
 try
     {
-    TrainController->LogEvent("AllEntriesTTListBoxMouseUp");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AllEntriesTTListBoxMouseUp");
+    TrainController->LogEvent("AllEntriesTTListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y));
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AllEntriesTTListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y));
     if((TTCurrentEntryPtr == 0) || TimetableEditVector.empty())
         {
         Utilities->CallLogPop(1687);
@@ -4013,7 +4065,17 @@ try
         {
         TTCurrentEntryPtr = TimetableEditVector.begin() + (Y/13) + TopPos;
         }
+    int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin();//save the old position
     CompileAllEntriesMemoAndSetPointers(9);
+//reset the TTCurrentEntryPtr after CompileAllEntriesMemoAndSetPointers
+    if(OldVectorPos >= TimetableEditVector.end() - TimetableEditVector.begin() - 1)
+        {
+        TTCurrentEntryPtr = TimetableEditVector.end() - 1;
+        }
+    else
+        {
+        TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos;
+        }
     Level1Mode = TimetableMode;
     SetLevel1Mode(120);
     AllEntriesTTListBox->TopIndex = TopPos;//reset it - have to do this at the end
@@ -4033,6 +4095,7 @@ AllEntriesTTListBox->Clear();
 TEVPtr=0; TTStartTimePtr=0; TTFirstServicePtr=0; TTLastServicePtr=0;//all set to null to begin with
 if(TimetableEditVector.empty())
     {
+    TTCurrentEntryPtr = 0;
     Utilities->CallLogPop(1681);
     return;
     }
@@ -4161,6 +4224,7 @@ if(TTStartTimePtr == 0)
     {
     TTStartTimeBox->Text = "";
     }
+TTCurrentEntryPtr = TTLastServicePtr; //may well be reset outside this function but need to ensure that it has a valid value on exit, even if it's null
 Utilities->CallLogPop(1680);
 }
 //---------------------------------------------------------------------------
@@ -5939,6 +6003,7 @@ try
         OperateButton->Enabled = true;
         OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
         ExitOperationButton->Enabled = true;
+        TTClockAdjButton->Enabled = true;
         SetRouteButtonsInfoCaptionAndRouteNotStarted(6);
         DisableRouteButtons(0);
         }
@@ -5947,6 +6012,7 @@ try
         OperateButton->Enabled = true;
         OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
         ExitOperationButton->Enabled = true;
+        TTClockAdjButton->Enabled = true;
         SetRouteButtonsInfoCaptionAndRouteNotStarted(8);
         }
     Display->ZoomOutFlag = false;//reset this after level modes called so gap flash stays set if set to begin with
@@ -7932,7 +7998,7 @@ try
             }
         }
     Train.SignallerStoppingFlag = false;
-    Train.TrainGone = true;
+    Train.TrainGone = true; //will be removed by TTrainController::Operate
     Train.SignallerRemoved = true;
     AnsiString LocName = "";
     if(Train.LeadElement > -1)
@@ -9670,6 +9736,7 @@ switch(Level1Mode)//use the data member
     TrainController->SPADRisks = 0;
     TrainController->CrashedTrains = 0;
     TrainController->Derailments = 0;
+    TrainController->TotArrDepPass = 0;
     TrainController->TotLateArrMins = 0;
     TrainController->TotEarlyArrMins = 0;
     TrainController->TotLatePassMins = 0;
@@ -10601,8 +10668,8 @@ if(Level1Mode == OperMode && ((TrainStatusInfoOnOff1->Caption == "Hide status") 
             if(TrainStatusInfoOnOff1->Caption == "Hide status")
                 {
                 ShowTrainStatusFloatFlag = true;
-                AnsiString HeadCode, Status, CurrSpeedStr, BrakePCStr, NextStopStr, TimeLeftStr, TimeToNextMovementStr,
-                        MassStr, PowerStr;
+                AnsiString HeadCode = "", ServiceReferenceInfo = "", Status = "", CurrSpeedStr = "", BrakePCStr = "", NextStopStr = "", TimeLeftStr = "",
+                        TimeToNextMovementStr = "", MassStr = "", PowerStr = "";
                 double CurrSpeed;
                 MassStr = AnsiString::FormatFloat(FormatNoDPStr, ((double)Train.Mass)/1000); //Te
                 PowerStr = AnsiString::FormatFloat(FormatNoDPStr, Train.PowerAtRail/1000/0.8); //kW
@@ -10615,6 +10682,20 @@ if(Level1Mode == OperMode && ((TrainStatusInfoOnOff1->Caption == "Hide status") 
                 double BrakePCRate = Train.BrakeRate * 100.0/Train.MaxBrakeRate;
                 MaxBrakeStr = AnsiString::FormatFloat(FormatNoDPStr, (Train.MaxBrakeRate * Train.Mass / 9810));
                 HeadCode = Train.HeadCode;
+                if(Train.TrainDataEntryPtr->NumberOfTrains > 1)//Service reference information added at v0.6b
+                    {
+                    if(Train.RepeatNumber == 0)
+                        {
+                        if(HeadCode != Train.TrainDataEntryPtr->ServiceReference) ServiceReferenceInfo = "\nFirst service of ref. " + Train.TrainDataEntryPtr->ServiceReference;
+                        else ServiceReferenceInfo = "\nFirst service";
+                        }
+                    else if(HeadCode == Train.TrainDataEntryPtr->ServiceReference) ServiceReferenceInfo = "\nRepeat service no. " + AnsiString(Train.RepeatNumber);
+                    else ServiceReferenceInfo = "\nRepeat service no. " + AnsiString(Train.RepeatNumber) + " of ref. " + Train.TrainDataEntryPtr->ServiceReference;
+                    }
+                else
+                    {
+                    if(HeadCode != Train.TrainDataEntryPtr->ServiceReference) ServiceReferenceInfo = "\nService reference " + Train.TrainDataEntryPtr->ServiceReference;
+                    }
                 if(Train.Stopped())
                     {
                     if(Train.SignallerStopped) Status = "Stopped on signaller's instruction";//if stopped for any other reason that will diplay
@@ -10701,13 +10782,13 @@ if(Level1Mode == OperMode && ((TrainStatusInfoOnOff1->Caption == "Hide status") 
                 if(Train.Stopped()) TimeToNextMovementStr = "";
                 if(Train.Stopped())
                     {
-                    TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + '\n' +
+                    TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' +
                     "Maximum train speed " + MaxSpeedStr + "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" +
                     '\n' + SpecialStr + Status + '\n' + "Next:  " + NextStopStr;
                     }
                 else
                     {
-                    TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + '\n' +
+                    TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + 
                     "Maximum train speed " + MaxSpeedStr + "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" +
                     '\n' + SpecialStr + Status + ": " + CurrSpeedStr.FormatFloat(FormatOneDPStr,CurrSpeed) + "km/h" + '\n' +
                     "Next: " + NextStopStr;
@@ -13161,7 +13242,7 @@ strip out from & including  ***ConstructPrefDir PrefDirVector*** to & including 
 strip out from & including  ***ConstructRoute PrefDirVector*** to the end of the file
 rename as .dev or .rly file
 
-BUT - note that signals (and points, though thye won't show) will be set as they were left.  To reset to red, load a suitable timetable & select
+BUT - note that signals (and points, though they won't show) will be set as they were left.  To reset to red, load a suitable timetable & select
 'Operate' then 'Exit operation'.
 */
 
@@ -13170,8 +13251,9 @@ In order to extract a timetable:
 
 NB:  Don't change it to a .txt file, as the '\0' characters will be changed to spaces if it is subsequently saved
 
+set wordwrap to window on
 strip out all to and including ***Timetable*** or ***Editing timetable.... depending which is to be saved
-ensure all text before start time ends with /0
+ensure any text before start time ends with /0, otherwise don't need the \0
 strip out all after the final /0 immediately before ***End*** or ***End of timetable***, but ensure leave the final /0
 save as a .ttb file
 */

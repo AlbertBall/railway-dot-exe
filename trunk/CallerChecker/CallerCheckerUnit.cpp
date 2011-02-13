@@ -207,7 +207,7 @@ void __fastcall TForm1::Timer1Timer(TObject *Sender)
 {
 if(ClockStopped) return;
 ClockStopped = true;
-const int NumberOfCalls = 390;
+const int NumberOfCalls = 392;
 AnsiString FunctionString[NumberOfCalls] =
 {
 "AbleToMove",
@@ -231,6 +231,7 @@ AnsiString FunctionString[NumberOfCalls] =
 "BuildTrainDataVectorForValidateFile",
 "CalcDistanceAndSpeed",
 "CalcHLocMinEtc",
+"CalcOperatingAndNotStartedTrainLateness",
 "CallingOnAllowed",
 "CallLogPop",
 "ChangeBackgroundColour",
@@ -391,6 +392,7 @@ AnsiString FunctionString[NumberOfCalls] =
 "JoinedBy",
 "LastElementNumber",
 "LastElementPtr",
+"Last2CharactersBothDigits",
 "LengthMarker",
 "LinkTrack",
 "LinkTrackNoMessages",

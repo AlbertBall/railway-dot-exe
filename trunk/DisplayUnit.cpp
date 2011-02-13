@@ -20,6 +20,20 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 //---------------------------------------------------------------------------
+#include <Classes.hpp>
+#include <Controls.hpp>
+#include <StdCtrls.hpp>
+#include <Forms.hpp>
+#include <Buttons.hpp>
+#include <ExtCtrls.hpp>
+#include <Menus.hpp>
+#include <Dialogs.hpp>
+#include <Graphics.hpp>
+#include <ComCtrls.hpp>
+#include <fstream>
+#include <vector>
+#include <vcl.h>
+
 #pragma hdrstop
 
 #include "DisplayUnit.h"
@@ -195,6 +209,7 @@ Utilities->CallLogPop(1471);
 
 void TDisplay::PlotPointBlank(int Caller, int HLoc, int VLoc)
 {
+if(Display->ZoomOutFlag) return;
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotPointBlank," + AnsiString(HLoc) + "," + AnsiString(VLoc));
 Output->Canvas->Draw(((HLoc - DisplayOffsetH) * 16) + 3, ((VLoc - DisplayOffsetV) * 16) + 3, RailGraphics->bmPointBlank);
 //Update();
@@ -218,6 +233,7 @@ SE	11x11  hoff = 5, voff = 5	74
 NE	11x11  hoff = 5, voff = 0	75
 */
 
+if(Display->ZoomOutFlag) return;
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotSignalBlank," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(SpeedTag));
 if((SpeedTag > 75) || (SpeedTag < 68))
     {

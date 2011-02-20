@@ -7446,6 +7446,7 @@ if((Second != "Fns") && (Second != "Fjo") && (Second != "jbo") && (Second != "fs
     Utilities->CallLogPop(922);
     return false;//all TimeCmdHeadCode types
     }
+
 if(!CheckHeadCodeValidity(7, GiveMessages, Third))
     {
     Utilities->CallLogPop(923);
@@ -7529,52 +7530,28 @@ if((HeadCode.Length() < 4) || (HeadCode.Length() > 8))
     Utilities->CallLogPop(1359);
     return false;
     }
-/* dropped at v0.6b to allow letters instead of digits anywhere (but can't have repeats with a digit increase)
-if((HeadCode[HeadCode.Length() - 1] < '0') || (HeadCode[HeadCode.Length() - 1] > '9'))
+//firstly allow any printable character (ASCII >= CHAR(32) & <= CHAR(126)), as these allowed in 1st 4 characters
+for(int x = 1; x < (HeadCode.Length() + 1); x++)
     {
-    TimetableMessage(GiveMessages, "Headcode error in '" + HeadCode + "', last 2 characters must be digits");
-    Utilities->CallLogPop(1806);
-    return false;
-    }
-if((HeadCode[HeadCode.Length()] < '0') || (HeadCode[HeadCode.Length()] > '9'))
-    {
-    TimetableMessage(GiveMessages, "Headcode error in '" + HeadCode + "', last 2 characters must be digits");
-    Utilities->CallLogPop(1807);
-    return false;
-    }
-*/
-/*  dropped at v0.6b: all headcodes are now unrestricted
-if(!AnyHeadCodeValid)
-    {
-    if((HeadCode[HeadCode.Length() - 3] < '0') || (HeadCode[HeadCode.Length() - 3] > '9'))
+    if((HeadCode[x] < ' ') || (HeadCode[x] > '~'))
         {
-        TimetableMessage(GiveMessages, "Headcode error in '" + HeadCode + "', for restricted headcodes the first character of the headcode must be a digit");
-        Utilities->CallLogPop(1360);
-        return false;
-        }
-    if(((HeadCode[HeadCode.Length() - 2] < 'A') || (HeadCode[HeadCode.Length() - 2] > 'Z')) &&
-            ((HeadCode[HeadCode.Length() - 2] < 'a') || (HeadCode[HeadCode.Length() - 2] > 'z')))
-        {
-        TimetableMessage(GiveMessages, "Headcode error in '" + HeadCode + "', for restricted headcodes the second character of the headcode must be a letter");
-        Utilities->CallLogPop(1361);
+        TimetableMessage(GiveMessages, "Non-printable character in headcode '" + HeadCode + "'");
+        Utilities->CallLogPop(1895);
         return false;
         }
     }
-else
+//secondly ensure the true Headcode only has letters or digits
+for(int x = 3; x >= 0; x--)
     {
-*/
-    for(int x = 3; x > 1; x--)
+    if(((HeadCode[HeadCode.Length() - x] < 'A') || (HeadCode[HeadCode.Length() - x] > 'Z')) &&
+            ((HeadCode[HeadCode.Length() - x] < 'a') || (HeadCode[HeadCode.Length() - x] > 'z')) &&
+            ((HeadCode[HeadCode.Length() - x] < '0') || (HeadCode[HeadCode.Length() - x] > '9')))
         {
-        if(((HeadCode[HeadCode.Length() - x] < 'A') || (HeadCode[HeadCode.Length() - x] > 'Z')) &&
-                ((HeadCode[HeadCode.Length() - x] < 'a') || (HeadCode[HeadCode.Length() - x] > 'z')) &&
-                ((HeadCode[HeadCode.Length() - x] < '0') || (HeadCode[HeadCode.Length() - x] > '9')))
-            {
-            TimetableMessage(GiveMessages, "Headcode error in '" + HeadCode + "', headcode characters must be either letters or digits");
-            Utilities->CallLogPop(1790);
-            return false;
-            }
+        TimetableMessage(GiveMessages, "Headcode error in '" + HeadCode + "', headcode must consist of letters and digits only");
+        Utilities->CallLogPop(1790);
+        return false;
         }
-//    }
+    }
 Utilities->CallLogPop(1364);
 return true;
 }
@@ -11826,8 +11803,8 @@ for(unsigned int x=0; x<AllTTTrains->size();x++)
             AnsiString TimeString = AllTTTrains->at(x).OneCompleteFormattedTrainVector.at(y).OneFormattedTrainVector.at(z).Time;
             AnsiString HeadCodeString = AllTTTrains->at(x).OneCompleteFormattedTrainVector.at(y).HeadCode;
             AnsiString ActionString = AllTTTrains->at(x).OneCompleteFormattedTrainVector.at(y).OneFormattedTrainVector.at(z).Action;
-            if(CheckHeadCodeValidity(11, GiveMessagesFalse, TimeString.SubString(1,4)))// 'NXNN at HH:MM'    will return true as integ check passed
-                {
+            if(CheckHeadCodeValidity(11, GiveMessagesFalse, TimeString.SubString(1,4)))// 'NXNN at HH:MM'  (will return true if H/C as integ check passed)
+                {                                                                      // fails for HH:MM because of ':' or 'End at HH:MM' because of ' '
                 AnsiString OtherHeadCode = TimeString.SubString(1,4);
                 TimeString = TimeString.SubString(9,5);
                 ActionString+= " " + OtherHeadCode;

@@ -1,11 +1,18 @@
 Development History
 ---------------------------------------------------------------------------
 
-***Note for later:  add more info in dev't panel - for trains when hover over train, incl TrainOperatingData values & maybe other info not provided in floating window
+Later:
+add more info in dev't panel - for trains when hover over train, incl TrainOperatingData values & maybe other info not provided in floating window
+improve timetable error messages, make it clear which is the train listed and the one(s) referred out to
 
-VERSION CHANGES AFTER BETA V0.6a for BETA v0.6b
+
+VERSION CHANGES AFTER BETA V0.6b for BETA v0.6c
 
 * = mention on user website
+
+*corrected the headcode validity checker - caused chronological timetables to be corrupted
+
+VERSION CHANGES AFTER BETA V0.6a for BETA v0.6b
 
 *added performance scoring system
 Contents file recompiled because of 5.3 title change
@@ -574,12 +581,13 @@ ADDING A NEW PROJECT TO THE USER WEBSITE:
 
 1) zip all files & just use letters, numbers & spaces in filename
 2) create a .jpg image of the railway, add it to the Uploaded_images page, & copy its URL (copy link location, not image location)
-3) on web - add a new (filing cabinet) page under 'Railway Projects' + include the URL to the image + include descriptive text + add the zipped file
-4) on web - update the latest news page (latest entry first) with a link to the new project page
-5) on web - update the railway projects page, include the URL to the image (latest first)
-6) on web - update the sidebar to show the new project at the top
-7) download the file & check OK
-8) make a copy of the website for own records if required
+3) on web - add a new (filing cabinet) page under 'Railway Projects' + include the URL to the image
+4) on web - update the railway projects page, include the URL to the image (latest first) & add link to the new project page
+5) on web - in new project page add descriptive text + the zipped file
+6) on web - update the latest news page (latest entry first) with a link to the new project page
+7) on web - update the sidebar to show the new project at the top
+8) download the file & check OK
+9) make a copy of the website for own records if required
 
 
 FUTURE UPDATES:
@@ -732,7 +740,7 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 
 COPY SECTIONS:
 
-NEXT value for CallLogPop is 1895
+NEXT value for CallLogPop is 1896
 NEXT value for TrackElementAt is 865
 NEXT value for InactiveTrackElementAt is 100
 NEXT value for GetFixedRouteAt is 196

@@ -1,14 +1,19 @@
 Development History
 ---------------------------------------------------------------------------
 
-Later:
-add more info in dev't panel - for trains when hover over train, incl TrainOperatingData values & maybe other info not provided in floating window
-improve timetable error messages, make it clear which is the train listed and the one(s) referred out to
+
+VERSION CHANGES AFTER BETA V0.6c for RELEASE VERSION 1.0.0
+
+* = mention on user website
+
+*Judged stable enough to come out of the beta testing phase, use GNU version numbering vX.Y.Z - Major/Minor/Patch
+Changed derail score to 5% from 9% (as already done in lev cross branch)
+Set RunningEntry to Exited for trains removed by signaller
+*Added IncorrectExits to SPADRisks & MissedStops in perf review
+*Added OtherMissedEvents & UnexpectedExits as equivalent to 15 mins late each in perf review
 
 
 VERSION CHANGES AFTER BETA V0.6b for BETA v0.6c
-
-* = mention on user website
 
 *corrected the headcode validity checker - caused chronological timetables to be corrupted
 
@@ -674,6 +679,11 @@ insert or erase, except where change existing elements from one route to another
 
 [Keep till end] Don't alter image size from 960 x 576 or will invalidate the repositioning values
 
+Future updates:
+
+Later:
+add more info in dev't panel - for trains when hover over train, incl TrainOperatingData values & maybe other info not provided in floating window
+improve timetable error messages, make it clear which is the train listed and the one(s) referred out to
 
 
 __________________________________________________________________________________________________

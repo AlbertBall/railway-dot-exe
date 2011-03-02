@@ -11992,7 +11992,7 @@ double NetNegFactor = 1;
 
 if((SPADEvents > 0) || (Derailments > 0))
     {
-    OverallScorePercent = 9;//overrides other calculations
+    OverallScorePercent = 5;//overrides other calculations
     DerailSPADFlag = true;
     }
 if(CrashedTrains > 0)
@@ -12006,10 +12006,13 @@ if(OverallScorePercent == 100)
         //TotArrDepPass: total number of arrivals & departures including those for trains that haven't reached their destinations yet and are late
     if(TotArrDep > 0)
         {
-        TotLateMinsFactor = exp((-0.1732) * (TotLateArrMins + TotLateDepMins + OperatingTrainLateMins + NotStartedTrainLateMins)/TotArrDep);
-            //TotLateMinsFactor: negative exponential factor based on overall average arr & dep minutes late, where 4 mins late average = half, 8 mins late = a quarter etc
-        MissedStopAndSPADRiskFactor = exp((-17.33) * (MissedStops + SPADRisks)/TotArrDep);
-            //MissedEventAndSPADRiskFactor: negative exponential factor based on number of missed stops & SPAD risks as a proportion of arrivals & departures, where 4% = half, 8% = a quarter etc
+        TotLateMinsFactor = exp((-0.1732) * (TotLateArrMins + TotLateDepMins + OperatingTrainLateMins + NotStartedTrainLateMins +
+            ((OtherMissedEvents + UnexpectedExits) * 15))/TotArrDep);
+            //TotLateMinsFactor: negative exponential factor based on overall average arr & dep minutes late (with OtherMissedEvents & UnexpectedExits
+            //counting as 15 mins late each), where 4 mins late average = half, 8 mins late = a quarter etc
+        MissedStopAndSPADRiskFactor = exp((-17.33) * (MissedStops + SPADRisks + IncorrectExits)/TotArrDep);
+            //MissedEventAndSPADRiskFactor: negative exponential factor based on number of missed stops, SPAD risks & IncorrectExits as a proportion
+            //of arrivals & departures, where 4% = half, 8% = a quarter etc
         NetNegFactor = TotLateMinsFactor * MissedStopAndSPADRiskFactor;
             //NetNegfactor: product of the above two
         OverallScorePercent = 100 * NetNegFactor;

@@ -69,8 +69,9 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "Beta v0.6c"; //change vx.x for each published modification, Dev x = interim development stages (don't show on published versions)
-    //check for presence of directories, creation failure probably indicates that the working folder is read-only
+    ProgramVersion = "v1.0.0"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
+    //development stages (don't show on published versions) check for presence of directories, creation failure probably indicates that the
+    //working folder is read-only
     CurDir = GetCurrentDir();
     if(!DirectoryExists("Railways"))
         {
@@ -8000,6 +8001,7 @@ try
     Train.SignallerStoppingFlag = false;
     Train.TrainGone = true; //will be removed by TTrainController::Operate
     Train.SignallerRemoved = true;
+    Train.TrainDataEntryPtr->TrainOperatingDataVector.at(Train.RepeatNumber).RunningEntry = Exited;
     AnsiString LocName = "";
     if(Train.LeadElement > -1)
         {

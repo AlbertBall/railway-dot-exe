@@ -1,0 +1,52 @@
+:Base Help.hlp>Main
+1 Introduction
+2 Introduction=1
+1 General features
+2 Backgrounds=2.1
+2 Train characteristics and floating window display=2.2
+2 Files=2.3
+2 Information=2.4
+2 Zoom-out display=2.5
+2 Program modes=2.6
+1 Building a new railway or modifying an existing railway
+2 Building a new railway or modifying an existing railway=3
+2 Adding and deleting track and other railway elements=3.1
+2 Adding, deleting and moving text=3.2
+2 Named locations=3.3
+2 Saving and loading railway files=3.4
+2 Selecting, cutting, copying and pasting etc.=3.5
+2 Setting track element lengths and speed limits=3.6
+1 Setting preferred directions (PDs)
+2 Setting preferred directions (PDs)=4
+1 Timetables
+2 Basics
+3 Timetables=5
+3 Service references for complex services=5.1
+2 Timetable service codes
+3 Simple (unlinked) codes=5.2.1
+3 Service changes=5.2.2
+3 Splits=5.2.3
+3 Joins=5.2.4
+3 Shuttle services=5.2.5
+2 Other timetable features
+3 Headcodes=5.3
+3 Timetable validation=5.4
+3 Timetabled and automatic warnings=5.5
+3 Showing and hiding the timetable editor=5.6
+3 Repeating services=5.7
+3 Using the timetable editor=5.8
+3 Non-timetabled services=5.9
+3 Formatted timetables=5.10
+2 Important points to note in timetabling
+3 Important points to note in timetabling=5.11
+1 Operating a railway
+2 Operating a railway=6
+2 Route setting and cancelling=6.1
+2 Approach locking=6.2
+2 Session saving and loading=6.3
+2 Running trains=6.4
+2 Train performance=6.5
+2 Calling-on=6.6
+2 Performance logs=6.7
+2 Signaller control=6.8
+2 Adjusting the timetable clock=6.9

@@ -49,14 +49,14 @@ TRailGraphics *RailGraphics;
 
 TRailGraphics::TRailGraphics()
 {
-//561 bitmap files in 'Bitmaps' 563 graphics files in this unit, 68 non-transparent (62 alphanumerics, bmSolidBgnd, smSolidBgnd,
-//1 point blank & 3 signal blanks) & 495 transparent
+//582 graphics files in this unit, 68 non-transparent (62 alphanumerics, bmSolidBgnd, smSolidBgnd,
+//1 point blank & 3 signal blanks) & 514 transparent
 //bmTransparentBgnd & bmSolidBgnd both created from same file, bmSolidBgnd non-transparent & bmTransparentBgnd transparent
 // GridBitmap created from existing small bitmaps
 //22 small graphics created equal to existing graphics: sm68;sm69;sm70;sm71;sm72;sm73;sm74;sm75;sm113;sm114;sm116;sm118;sm119;sm120;sm121;
 //sm122;sm123;sm124;sm125;sm126;sm127;sm128;
 
-//52 graphics loaded in Interface
+//52 graphics loaded in Interface but not in RailGraphics
 
 //transparent graphics
 bm10 = new Graphics::TBitmap; bm10->LoadFromResourceName(0, "bm10"); bm10->Transparent = true; bm10->TransparentColor = clB5G5R5;
@@ -564,6 +564,7 @@ smName = new Graphics::TBitmap; smName->LoadFromResourceName(0, "smName"); smNam
 smPaleGreen = new Graphics::TBitmap; smPaleGreen->LoadFromResourceName(0, "smPaleGreen"); smPaleGreen->Transparent = true; smPaleGreen->TransparentColor = clB5G5R5;
 smRed = new Graphics::TBitmap; smRed->LoadFromResourceName(0, "smRed"); smRed->Transparent = true; smRed->TransparentColor = clB5G5R5;
 smYellow = new Graphics::TBitmap; smYellow->LoadFromResourceName(0, "smYellow"); smYellow->Transparent = true; smYellow->TransparentColor = clB5G5R5;
+smTransparent = new Graphics::TBitmap; smTransparent->LoadFromResourceName(0, "smTransparent"); smTransparent->Transparent = true; smTransparent->TransparentColor = clB5G5R5;
 TempBackground = new Graphics::TBitmap; TempBackground->LoadFromResourceName(0, "TempBackground"); TempBackground->Transparent = true; TempBackground->TransparentColor = clB5G5R5;
 TempHeadCode = new Graphics::TBitmap; TempHeadCode->LoadFromResourceName(0, "TempHeadCode"); TempHeadCode->Transparent = true; TempHeadCode->TransparentColor = clB5G5R5;
 UnderHFootbridge = new Graphics::TBitmap; UnderHFootbridge->LoadFromResourceName(0, "UnderHFootbridge"); UnderHFootbridge->Transparent = true; UnderHFootbridge->TransparentColor = clB5G5R5;
@@ -571,6 +572,15 @@ UnderVFootbridge = new Graphics::TBitmap; UnderVFootbridge->LoadFromResourceName
 
 //extra from bmSolidBgnd bitmap file but transparent
 bmTransparentBgnd = new Graphics::TBitmap; bmTransparentBgnd->LoadFromResourceName(0, "bmSolidBgnd"); bmTransparentBgnd->Transparent = true; bmTransparentBgnd->TransparentColor = clB5G5R5;
+
+//level crossing graphics
+LCBothHor = new Graphics::TBitmap; LCBothHor->LoadFromResourceName(0, "LCBothHor"); LCBothHor->Transparent = true; LCBothHor->TransparentColor = clB5G5R5;
+LCBotHor = new Graphics::TBitmap; LCBotHor->LoadFromResourceName(0, "LCBotHor"); LCBotHor->Transparent = true; LCBotHor->TransparentColor = clB5G5R5;
+LCBothVer = new Graphics::TBitmap; LCBothVer->LoadFromResourceName(0, "LCBothVer"); LCBothVer->Transparent = true; LCBothVer->TransparentColor = clB5G5R5;
+LCLHSVer = new Graphics::TBitmap; LCLHSVer->LoadFromResourceName(0, "LCLHSVer"); LCLHSVer->Transparent = true; LCLHSVer->TransparentColor = clB5G5R5;
+LCPlain = new Graphics::TBitmap; LCPlain->LoadFromResourceName(0, "LCPlain"); LCPlain->Transparent = true; LCPlain->TransparentColor = clB5G5R5;
+LCRHSVer = new Graphics::TBitmap; LCRHSVer->LoadFromResourceName(0, "LCRHSVer"); LCRHSVer->Transparent = true; LCRHSVer->TransparentColor = clB5G5R5;
+LCTopHor = new Graphics::TBitmap; LCTopHor->LoadFromResourceName(0, "LCTopHor"); LCTopHor->Transparent = true; LCTopHor->TransparentColor = clB5G5R5;
 
 //additional pointers copied from existing pointers
 sm68 = sm1; sm69 = sm1; sm70 = sm2; sm71 = sm2; sm72 = sm19; sm73 = sm18; sm74 = sm18; sm75 = sm19;
@@ -647,7 +657,7 @@ bmPointBlank = new Graphics::TBitmap; bmPointBlank->LoadFromResourceName(0, "bmP
 bmStraightEWSignalBlank = new Graphics::TBitmap; bmStraightEWSignalBlank->LoadFromResourceName(0, "bmStraightEWSignalBlank"); bmStraightEWSignalBlank->Transparent = false;
 bmStraightNSSignalBlank = new Graphics::TBitmap; bmStraightNSSignalBlank->LoadFromResourceName(0, "bmStraightNSSignalBlank"); bmStraightNSSignalBlank->Transparent = false;
 
-//GridBitmap is a 10 x 9 grid image, quicker to plot 24 of these for whole screen than 2160 small ones
+//GridBitmap is a 10 x 9 grid image, quicker to plot these for whole screen than small ones
 GridBitmap = new Graphics::TBitmap;
 GridBitmap->PixelFormat = pf8bit;
 GridBitmap->Width = 160;
@@ -1349,10 +1359,20 @@ delete smPaleGreen;
 delete smRed;
 delete smSolidBgnd;
 delete smYellow;
+delete smTransparent;
 delete TempBackground;
 delete TempHeadCode;
 delete UnderHFootbridge;
 delete UnderVFootbridge;
+
+delete LCBothHor;
+delete LCBotHor;
+delete LCBothVer;
+delete LCLHSVer;
+delete LCPlain;
+delete LCRHSVer;
+delete LCTopHor;
+
 
 delete bmTransparentBgnd;
 delete GridBitmap;
@@ -1974,6 +1994,7 @@ ChangeTransparentColour(smName, smName, NewTransparentColour, OldTransparentColo
 ChangeTransparentColour(smPaleGreen, smPaleGreen, NewTransparentColour, OldTransparentColour);
 ChangeTransparentColour(smRed, smRed, NewTransparentColour, OldTransparentColour);
 ChangeTransparentColour(smYellow, smYellow, NewTransparentColour, OldTransparentColour);
+ChangeTransparentColour(smTransparent, smTransparent, NewTransparentColour, OldTransparentColour);
 ChangeTransparentColour(TempBackground, TempBackground, NewTransparentColour, OldTransparentColour);
 ChangeTransparentColour(TempHeadCode, TempHeadCode, NewTransparentColour, OldTransparentColour);
 ChangeTransparentColour(UnderHFootbridge, UnderHFootbridge, NewTransparentColour, OldTransparentColour);
@@ -1990,6 +2011,16 @@ ChangeTransparentColour(bmDiagonalSignalBlank, bmDiagonalSignalBlank, NewTranspa
 ChangeTransparentColour(bmPointBlank, bmPointBlank, NewTransparentColour, OldTransparentColour);
 ChangeTransparentColour(bmStraightEWSignalBlank, bmStraightEWSignalBlank, NewTransparentColour, OldTransparentColour);
 ChangeTransparentColour(bmStraightNSSignalBlank, bmStraightNSSignalBlank, NewTransparentColour, OldTransparentColour);
+
+//level crossing graphics
+ChangeTransparentColour(LCBothHor, LCBothHor, NewTransparentColour, OldTransparentColour);
+ChangeTransparentColour(LCBotHor, LCBotHor, NewTransparentColour, OldTransparentColour);
+ChangeTransparentColour(LCBothVer, LCBothVer, NewTransparentColour, OldTransparentColour);
+ChangeTransparentColour(LCLHSVer, LCLHSVer, NewTransparentColour, OldTransparentColour);
+ChangeTransparentColour(LCPlain, LCPlain, NewTransparentColour, OldTransparentColour);
+ChangeTransparentColour(LCRHSVer, LCRHSVer, NewTransparentColour, OldTransparentColour);
+ChangeTransparentColour(LCTopHor, LCTopHor, NewTransparentColour, OldTransparentColour);
+
 
 //change the grid to the nearest grey colour to the background
 if(NewTransparentColour != clB5G5R5) ChangeSpecificColour(1, GridBitmap, GridBitmap, clB4G4R4, clB1G1R1);//if already dark will ignore

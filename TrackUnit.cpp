@@ -652,6 +652,20 @@ else return true;
 
 //---------------------------------------------------------------------------
 
+TTrack::TActiveLevelCrossing::TActiveLevelCrossing()
+{
+ConsecSignals = false;
+TrainPassed = false;
+BarrierState = Up;
+ChangeDuration = 0.0;
+BaseElementSpeedTag = 1;
+HLoc = 0;
+VLoc = 0;
+StartTime = TDateTime(0);
+}
+
+//---------------------------------------------------------------------------
+
 TTrack::TTrack()
 {
 //CurrentSpeedButtonTag = 0; //not assigned yet
@@ -660,6 +674,8 @@ HLocMin = 2000000000;
 VLocMin = 2000000000;
 HLocMax = -2000000000;
 VLocMax = -2000000000;
+
+RouteFailMessage = "Unable to set a route to the selected element - may be unreachable, too far ahead, blocked by a train, another route or a changing level crossing, or invalid.";
 
 GapFlashGreen = new TGraphicElement;
 GapFlashRed = new TGraphicElement;
@@ -681,6 +697,7 @@ NameAllowed <<1<<2<<3<<4<<5<<6<<20<<21<<22<<23<<24<<25<<26<<27//disallow diagona
             <<60<<61<<62<<63<<80<<81<<82<<83<<125<<126<<127<<128;//diag continuations, diag buffers, footbridges (diagonals may be OK
             //but as can't link diagonal locations would need solid blocks to allow linkage & that would look untidy except for single
             //elements, & can always use straights so leave out.)
+LevelCrossingAllowed <<1<<2;//only allow on straight tracks without direction markers
 //Note platforms not allowed at continuations, but named non-station locations OK, though not allowed in timetables
 
 int HVArray[10][2] = {{0,0},{-1,-1},{0,-1},{1,-1},{-1,0},{0,0},{1,0},{-1,1},
@@ -1006,7 +1023,7 @@ int InternalFlipArray[FirstUnusedSpeedTagNumber] = {0,1,2,5,6,3,4,9,10,7,8,13,14
                                 89,91,90,94,95,92,93,96,99,100,97,98,103,104,101,102,
                                 106,105,109,110,107,108,113,114,111,112,117,118,115,
                                 116,119,120,121,123,122,124,125,126,128,127,129,130,131,
-                                134,133,132,135,139,138,137,136,143,142,141,140};
+                                134,133,132,135,139,138,137,136,143,142,141,140,144};
 
 int InternalMirrorArray[FirstUnusedSpeedTagNumber] = {0,1,2,4,3,6,5,8,7,10,9,12,11,14,13,15,16,17,19,18,21,20,
                                 23,22,25,24,27,26,29,28,31,30,33,32,35,34,37,36,39,38,41,
@@ -1015,7 +1032,7 @@ int InternalMirrorArray[FirstUnusedSpeedTagNumber] = {0,1,2,4,3,6,5,8,7,10,9,12,
                                 78,81,80,82,83,85,84,87,86,89,88,90,91,93,92,95,94,96,98,97,
                                 100,99,102,101,104,103,106,105,108,107,110,109,112,111,114,
                                 113,116,115,118,117,119,120,124,122,123,121,126,125,127,128,
-                                129,130,131,132,135,134,133,137,136,139,138,142,143,140,141};
+                                129,130,131,132,135,134,133,137,136,139,138,142,143,140,141,144};
 
 for(int x=0; x<FirstUnusedSpeedTagNumber; x++)
     {
@@ -1077,7 +1094,8 @@ RailGraphics->gl125, RailGraphics->gl126, RailGraphics->gl127, RailGraphics->gl1
 RailGraphics->gl129, RailGraphics->gl130, RailGraphics->bmName,
 RailGraphics->bm132, RailGraphics->bm133, RailGraphics->bm134,  RailGraphics->bm135,
 RailGraphics->bm136, RailGraphics->bm137, RailGraphics->bm138,  RailGraphics->bm139,
-RailGraphics->bm140, RailGraphics->bm141, RailGraphics->gl142,  RailGraphics->gl143};
+RailGraphics->bm140, RailGraphics->bm141, RailGraphics->gl142,  RailGraphics->gl143,
+RailGraphics->LCBothHor};
 
 Graphics::TBitmap *SmallTrackImageArray[FirstUnusedSpeedTagNumber] = {
 
@@ -1116,9 +1134,10 @@ RailGraphics->sm117, RailGraphics->sm118, RailGraphics->sm119, RailGraphics->sm1
 RailGraphics->sm121, RailGraphics->sm122, RailGraphics->sm123, RailGraphics->sm124,
 RailGraphics->sm125, RailGraphics->sm126, RailGraphics->sm127, RailGraphics->sm128,
 RailGraphics->sm129, RailGraphics->sm130, RailGraphics->smName,
-RailGraphics->sm132, RailGraphics->sm133,RailGraphics->sm134, RailGraphics->sm135,
-RailGraphics->sm136, RailGraphics->sm137,RailGraphics->sm138, RailGraphics->sm139,
-RailGraphics->sm18, RailGraphics->sm18, RailGraphics->sm19, RailGraphics->sm19};
+RailGraphics->sm132, RailGraphics->sm133, RailGraphics->sm134, RailGraphics->sm135,
+RailGraphics->sm136, RailGraphics->sm137, RailGraphics->sm138, RailGraphics->sm139,
+RailGraphics->sm18, RailGraphics->sm18, RailGraphics->sm19, RailGraphics->sm19,
+RailGraphics->smTransparent};
 
 //track types
 TTrackType TrackTypeArray[FirstUnusedSpeedTagNumber]= {
@@ -1149,7 +1168,8 @@ Simple,Simple,Simple,Simple,                                            //4    1
 Footbridge, Footbridge,                                                 //2    129-130
 NamedNonStationLocation,                                                //1    131
 Points,Points,Points,Points,Points,Points,Points,Points,                //8    132-139
-Simple,Simple,Simple,Simple};                                           //4    140-143
+Simple,Simple,Simple,Simple,                                            //4    140-143
+LevelCrossing};                                                         //1    144
 
 //links
 int Links[FirstUnusedSpeedTagNumber][4] = {
@@ -1188,7 +1208,8 @@ int Links[FirstUnusedSpeedTagNumber][4] = {
 {-1,-1,-1,-1},//NamedNonStationLocation
 {8,1,8,3},{4,3,4,9},{2,9,2,7},{6,7,6,1},{9,4,9,2},{7,2,7,6},{1,6,1,8},{3,8,3,4},//points without straight legs
 //these points have links 0 & 2 = lead, link 1 = LH trailing, link 3 = RH trailing
-{3,7,-1,-1},{3,7,-1,-1},{1,9,-1,-1},{1,9,-1,-1}};//arrowed diagonals
+{3,7,-1,-1},{3,7,-1,-1},{1,9,-1,-1},{1,9,-1,-1},//arrowed diagonals
+{-1,-1,-1,-1}}; //level crossing
 
 
 TConfiguration Configs[FirstUnusedSpeedTagNumber][4] = {
@@ -1262,7 +1283,8 @@ TConfiguration Configs[FirstUnusedSpeedTagNumber][4] = {
 {Lead,Trail,Lead,Trail},{Lead,Trail,Lead,Trail},
 {Lead,Trail,Lead,Trail},{Lead,Trail,Lead,Trail},//points
 {Connection,Connection,NotSet,NotSet},{Connection,Connection,NotSet,NotSet},
-{Connection,Connection,NotSet,NotSet},{Connection,Connection,NotSet,NotSet}};//Arrowed diagonals
+{Connection,Connection,NotSet,NotSet},{Connection,Connection,NotSet,NotSet},//Arrowed diagonals
+{NotSet,NotSet,NotSet,NotSet}};//Level crossing
 
 
 for(int x=0;x<17;x++)
@@ -1690,13 +1712,14 @@ if(TempTrackElement.TrackType == SignalPost)
         TempTrackElement.SigAspect = TTrackElement::FourAspect;
         }
     }
-bool FoundFlag = false, InactiveFoundFlag = false, NonStationLocNamePresent = false, PlatformPresent = false;
+bool FoundFlag = false, InactiveFoundFlag = false, NonStationOrLevelCrossingPresent = false, PlatformPresent = false;
 int VecPos = GetVectorPositionFromTrackMap(12, HLocInput, VLocInput, FoundFlag); //active track already there
 TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(5, HLocInput, VLocInput, InactiveFoundFlag);//inactive track already there
 int InactiveSpeedTag1=0, InactiveSpeedTag2=0;
 if(InactiveFoundFlag)//check if a LocationName already there & if so disallow platform
     {
-    if(InactiveTrackElementAt(4, IMPair.first).TrackType == NamedNonStationLocation) NonStationLocNamePresent = true;
+    if(InactiveTrackElementAt(4, IMPair.first).TrackType == NamedNonStationLocation) NonStationOrLevelCrossingPresent = true;
+    if(InactiveTrackElementAt(117, IMPair.first).TrackType == LevelCrossing) NonStationOrLevelCrossingPresent = true;
     if(InactiveTrackElementAt(5, IMPair.first).TrackType == Platform) PlatformPresent = true;
     //no need to check IMPair.second since if that exists it is because .first is a platform
     InactiveSpeedTag1 = InactiveTrackElementAt(6, IMPair.first).SpeedTag;
@@ -1711,23 +1734,23 @@ if(TempTrackElement.TrackType == Platform)
         if(InactiveFoundFlag && ((TempTrackElement.SpeedTag == InactiveSpeedTag1) || (TempTrackElement.SpeedTag == InactiveSpeedTag2))) {;}
         //same platform type already there so above keeps PlatAllowedFlag false
         else if((TempTrackElement.SpeedTag == 76) && (TopPlatAllowed.Contains
-                (TrackVector.at(VecPos).SpeedTag)) && !NonStationLocNamePresent)
+                (TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
 //won't allow a same platform, as TopPlatAllowed not valid for a same platform <--NO, only checks active track, same plat disallowed by first line after if(FoundFlag)
             {
             PlatAllowedFlag = true;
             }
         else if((TempTrackElement.SpeedTag == 77) && (BotPlatAllowed.Contains
-                (TrackVector.at(VecPos).SpeedTag)) && !NonStationLocNamePresent)
+                (TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
             {
             PlatAllowedFlag = true;
             }
         else if((TempTrackElement.SpeedTag == 78) && (LeftPlatAllowed.Contains
-                (TrackVector.at(VecPos).SpeedTag)) && !NonStationLocNamePresent)
+                (TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
             {
             PlatAllowedFlag = true;
             }
         else if((TempTrackElement.SpeedTag == 79) && (RightPlatAllowed.Contains
-                (TrackVector.at(VecPos).SpeedTag)) && !NonStationLocNamePresent)
+                (TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
             {
             PlatAllowedFlag = true;
             }
@@ -1762,7 +1785,7 @@ if(TempTrackElement.TrackType == NamedNonStationLocation)
     {
     if((FoundFlag && (NameAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag) ||
             (!FoundFlag && !InactiveFoundFlag))
-            //need to add && !NonStationLocNamePresent, or better - !InactiveFoundFlag to above FoundFlag condition <-- OK done
+            //need to add && !NonStationOrLevelCrossingPresent, or better - !InactiveFoundFlag to above FoundFlag condition <-- OK done
         {
         TrackLinkingRequiredFlag = true;//needed in case have named a continuation, need to check if adjacent element named
         TrackPush(2, TempTrackElement);
@@ -1786,6 +1809,24 @@ if(TempTrackElement.TrackType == NamedNonStationLocation)
         {
         Utilities->CallLogPop(433);
         return;
+        }
+    }
+
+//check if a level crossing - OK if placed on a plain straight track
+if(TempTrackElement.TrackType == LevelCrossing)
+    {
+    if(FoundFlag && (LevelCrossingAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag)
+        {
+        TrackPush(11, TempTrackElement);
+        PlotRaisedLinkedLevelCrossingBarriers(0, TrackVector.at(VecPos).SpeedTag, TempTrackElement.HLoc, TempTrackElement.VLoc, Display);//no need for reference to LC element as can't be open
+        TrackLinkingRequiredFlag = true;
+        Utilities->CallLogPop(1907);
+        return;
+        }
+    else
+        {
+        Utilities->CallLogPop(1906);
+        return; //was a level crossing but can't place it for some reason
         }
     }
 
@@ -1911,6 +1952,8 @@ else
     }
 
 //success
+
+PopulateLCVector(0);
 CheckGapMap(2);//test
 CheckMapAndTrack(3);//test
 CheckMapAndInactiveTrack(3);//test
@@ -2148,78 +2191,6 @@ TrackClear(0);
 //load track elements
 int NumberOfActiveElements=0;
 NumberOfActiveElements = Utilities->LoadFileInt(VecFile);
-for(int x=0; x<NumberOfActiveElements; x++)
-    {
-    VecFile >> TempInt;//SpeedTag
-    TTrackElement TrackElement(FixedTrackArray.FixedTrackPiece[TempInt]);
-    VecFile >> TempInt; TrackElement.HLoc = TempInt;
-    VecFile >> TempInt; TrackElement.VLoc = TempInt;
-    if(TrackElement.TrackType == GapJump)
-        {
-        VecFile >> TempInt; TrackElement.ConnLinkPos[0] = TempInt;
-        VecFile >> TempInt; TrackElement.Conn[0] = TempInt;
-        }
-    if((TrackElement.TrackType == SignalPost) || (TrackElement.TrackType == Points))
-        {
-        VecFile >> TempInt; TrackElement.Attribute = TempInt;
-        }
-    if(TrackElement.TrackType == SignalPost)
-        {
-        VecFile >> TempInt;
-        if(TempInt == 0) TrackElement.CallingOnSet = false;
-        else TrackElement.CallingOnSet = true;
-        }
-    VecFile >> TempInt; TrackElement.Length01 = TempInt;
-    VecFile >> TempInt; TrackElement.Length23 = TempInt;
-    VecFile >> TempInt; TrackElement.SpeedLimit01 = TempInt;
-    VecFile >> TempInt; TrackElement.SpeedLimit23 = TempInt;
-
-    TrackElement.LocationName = Utilities->LoadFileString(VecFile);
-    TrackElement.ActiveTrackElementName = Utilities->LoadFileString(VecFile);
-    SetElementID(2, TrackElement);
-    if(TrackElement.SpeedTag != 0) TrackPush(6, TrackElement);//don't save default elements now dispensed with
-    Utilities->LoadFileString(VecFile);//marker
-    }
-int NumberOfInactiveElements=0;
-NumberOfInactiveElements = Utilities->LoadFileInt(VecFile);
-for(int x=0; x<NumberOfInactiveElements; x++)
-    {
-    VecFile >> TempInt;//SpeedTag
-    TTrackElement TrackElement(FixedTrackArray.FixedTrackPiece[TempInt]);
-    VecFile >> TempInt; TrackElement.HLoc = TempInt;
-    VecFile >> TempInt; TrackElement.VLoc = TempInt;
-    TrackElement.LocationName = Utilities->LoadFileString(VecFile);
-    SetElementID(3, TrackElement);
-    TrackPush(7, TrackElement);
-    Utilities->LoadFileString(VecFile);//marker
-    }
-bool LocError = false;//needed for TryToConnectTrack but not used
-int H = -1, V = -1;//needed for TryToConnectTrack but not used
-if(TryToConnectTrack(1, LocError, H, V, false))//false for don't give messages
-    {
-    SetTrackFinished(true);
-    }
-else
-    {
-    SetTrackFinished(false);
-    }
-//CheckMapAndTrack(9); all these checked in TryToConnectTrack
-//CheckMapAndInactiveTrack(8);
-//CheckLocationNameMultiMap(10);
-Utilities->CallLogPop(447);
-}
-
-//---------------------------------------------------------------------------
-
-void TTrack::LoadTrack(int Caller, std::ifstream& VecFile)
-{
-//VecFile already open and its pointer at right place on calling
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadTrack");
-int TempInt;
-TrackClear(1);
-//load track elements
-int NumberOfActiveElements=0;
-NumberOfActiveElements = Utilities->LoadFileInt(VecFile);
 Utilities->LoadFileString(VecFile);// **Active elements** marker
 for(int x=0; x<NumberOfActiveElements; x++)
     {
@@ -2276,7 +2247,7 @@ for(int x=0; x<NumberOfActiveElements; x++)
             TrackElement.SigAspect = TTrackElement::FourAspect;
             }
         }
-    if(TrackElement.SpeedTag != 0) TrackPush(8, TrackElement);//don't save default elements (now dispensed with)
+    if(TrackElement.SpeedTag != 0) TrackPush(6, TrackElement);//don't save default elements (now dispensed with)
     }
 int NumberOfInactiveElements=0;
 NumberOfInactiveElements = Utilities->LoadFileInt(VecFile);
@@ -2289,7 +2260,107 @@ for(int x=0; x<NumberOfInactiveElements; x++)
     VecFile >> TempInt; TrackElement.HLoc = TempInt;
     VecFile >> TempInt; TrackElement.VLoc = TempInt;
     TrackElement.LocationName = Utilities->LoadFileString(VecFile);
-    SetElementID(5, TrackElement);
+    SetElementID(2, TrackElement);
+    TrackPush(7, TrackElement);
+    Utilities->LoadFileString(VecFile);//marker
+    }
+bool LocError = false;//needed for TryToConnectTrack but not used
+int H = -1, V = -1;//needed for TryToConnectTrack but not used
+if(TryToConnectTrack(1, LocError, H, V, false))//false for don't give messages
+    {
+    SetTrackFinished(true);
+    }
+else
+    {
+    SetTrackFinished(false);
+    }
+//CheckMapAndTrack(9); all these checked in TryToConnectTrack
+//CheckMapAndInactiveTrack(8);
+//CheckLocationNameMultiMap(10);
+Utilities->CallLogPop(-448);
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::LoadTrack(int Caller, std::ifstream& VecFile)
+{
+//VecFile already open and its pointer at right place on calling
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadTrack");
+int TempInt;
+TrackClear(1);
+//load track elements
+int NumberOfActiveElements=0;
+NumberOfActiveElements = Utilities->LoadFileInt(VecFile);
+Utilities->LoadFileString(VecFile);// **Active elements** marker
+for(int x=0; x<NumberOfActiveElements; x++)
+    {
+    VecFile >> TempInt;//TrackVectorNumber, not used
+    VecFile >> TempInt;//SpeedTag
+    TTrackElement TrackElement(FixedTrackArray.FixedTrackPiece[TempInt]);
+    VecFile >> TempInt; TrackElement.HLoc = TempInt;
+    VecFile >> TempInt; TrackElement.VLoc = TempInt;
+    if(TrackElement.TrackType == GapJump)
+        {
+        VecFile >> TempInt; TrackElement.ConnLinkPos[0] = TempInt;
+        VecFile >> TempInt; TrackElement.Conn[0] = TempInt;
+        }
+    if((TrackElement.TrackType == SignalPost) || (TrackElement.TrackType == Points))
+        {
+        VecFile >> TempInt; TrackElement.Attribute = TempInt;
+        }
+    if(TrackElement.TrackType == SignalPost)
+        {
+        VecFile >> TempInt;
+        if(TempInt == 0) TrackElement.CallingOnSet = false;
+        else TrackElement.CallingOnSet = true;
+        }
+    VecFile >> TempInt; TrackElement.Length01 = TempInt;
+    VecFile >> TempInt; TrackElement.Length23 = TempInt;
+    VecFile >> TempInt;
+    if((TempInt != -1) && (TempInt < 10)) TempInt = 10;  //added at v0.6 to ensure old railway speed limits at least 10km/h
+    TrackElement.SpeedLimit01 = TempInt;
+    VecFile >> TempInt;
+    if((TempInt != -1) && (TempInt < 10)) TempInt = 10;  //added at v0.6 to ensure old railway speed limits at least 10km/h
+    TrackElement.SpeedLimit23 = TempInt;
+
+    TrackElement.LocationName = Utilities->LoadFileString(VecFile);
+    TrackElement.ActiveTrackElementName = Utilities->LoadFileString(VecFile);
+    SetElementID(0, TrackElement);
+    AnsiString Marker = Utilities->LoadFileString(VecFile);//marker
+//new for v0.6
+    if(TrackElement.TrackType == SignalPost)
+        {
+        if(Marker[1] == '3')
+            {
+            TrackElement.SigAspect = TTrackElement::ThreeAspect;
+            }
+        else if(Marker[1] == '2')
+            {
+            TrackElement.SigAspect = TTrackElement::TwoAspect;
+            }
+        else if(Marker[1] == 'G')
+            {
+            TrackElement.SigAspect = TTrackElement::GroundSignal;
+            }
+        else
+            {
+            TrackElement.SigAspect = TTrackElement::FourAspect;
+            }
+        }
+    if(TrackElement.SpeedTag != 0) TrackPush(8, TrackElement);//don't save default elements (now dispensed with)
+    }
+int NumberOfInactiveElements=0;
+NumberOfInactiveElements = Utilities->LoadFileInt(VecFile);
+Utilities->LoadFileString(VecFile);// **Inactive elements** marker
+for(int x=0; x<NumberOfInactiveElements; x++)
+    {
+    VecFile >> TempInt;//InactiveTrackVectorNumber - not used, only used for identification in file
+    VecFile >> TempInt;//SpeedTag
+    TTrackElement TrackElement(FixedTrackArray.FixedTrackPiece[TempInt]);
+    VecFile >> TempInt; TrackElement.HLoc = TempInt;
+    VecFile >> TempInt; TrackElement.VLoc = TempInt;
+    TrackElement.LocationName = Utilities->LoadFileString(VecFile);
+    SetElementID(3, TrackElement);
     TrackPush(9, TrackElement);
     Utilities->LoadFileString(VecFile);//marker
     }
@@ -2323,7 +2394,7 @@ VecFile << "**Active elements**" << '\0' << '\n';//extra
 for(unsigned int x=0;x<(TrackVector.size());x++)
     {
     TrackElement = TrackVector.at(x);
-    VecFile << x << '\n';//this is the TrackVectorNumber - extra
+    VecFile << x << '\n';//this is the TrackVectorNumber - extra, so easier to identify in the file
     VecFile << TrackElement.SpeedTag << '\n';
     VecFile << TrackElement.HLoc << '\n';
     VecFile << TrackElement.VLoc << '\n';
@@ -2390,35 +2461,51 @@ Utilities->CallLogPop(449);
 
 //---------------------------------------------------------------------------
 
-bool TTrack::CheckOldTrackElementsInFile(int Caller, std::ifstream& VecFile)
+bool TTrack::CheckOldTrackElementsInFile(int Caller, int &NumberOfActiveElements, std::ifstream& VecFile)
 {
 //VecFile already open and its pointer at right place on calling
 //check trackfinished flag
 //inactive elements follow immediately after active elements, no need to check for a marker between them
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckOldTrackElementsInFile");
 int TempInt;
-char TempChar;
+//char TempString[256];
+//char TempChar;
 //check track elements
-while(true)
+NumberOfActiveElements = Utilities->LoadFileInt(VecFile);
+if((NumberOfActiveElements < 0) || (NumberOfActiveElements > 1000000))//No of active elements (up to 500 screens all completely full!)
     {
+    Utilities->CallLogPop(-1513);
+    return false;
+    }
+if(!(Utilities->CheckAndCompareFileString(VecFile, "**Active elements**")))
+    {
+    Utilities->CallLogPop(-1758);
+    return false;
+    }
+for(int x=0; x<NumberOfActiveElements; x++)
+    {
+    if(!Utilities->CheckFileInt(VecFile, x, x))//TrackVectorNumber, must be 'x'
+        {
+        Utilities->CallLogPop(-1759);
+        return false;
+        }
     VecFile >> TempInt;
     int SpeedTag = TempInt;
-    if(TempInt == 999999) break;
-    if((TempInt < 0) || (TempInt > 131) || (TempInt == 17))//Speedtag
+    if((TempInt < 0) || (TempInt >= FirstUnusedSpeedTagNumber) || (TempInt == 17))//Speedtag
         {
-        Utilities->CallLogPop(450);
+        Utilities->CallLogPop(-1514);
         return false;
         }
     VecFile >> TempInt;
     if(((TempInt > 999999) || (TempInt < -1000001)) &&  (TempInt != -2000000000))//HLoc
         {
-        Utilities->CallLogPop(451);
+        Utilities->CallLogPop(-1495);
         return false;
         }
     VecFile >> TempInt;
     if(((TempInt > 999999) || (TempInt < -1000001)) &&  (TempInt != -2000000000))//VLoc
         {
-        Utilities->CallLogPop(452);
+        Utilities->CallLogPop(-1497);
         return false;
         }
     if((SpeedTag > 87) && (SpeedTag < 96))//GapJumps 88-95 incl
@@ -2426,57 +2513,136 @@ while(true)
         VecFile >> TempInt;
         if((TempInt < -1) || (TempInt > 3))//ConnLinkPos[0]
             {
-            Utilities->CallLogPop(453);
+            Utilities->CallLogPop(-1499);
             return false;
             }
         VecFile >> TempInt;
         if((TempInt < -1) || (TempInt > 999999))//Conn[0]
             {
-            Utilities->CallLogPop(457);
+            Utilities->CallLogPop(-1500);
             return false;
             }
         }
-    if(((SpeedTag >= 7) && (SpeedTag <= 14)) || ((SpeedTag >= 28) && (SpeedTag <= 43)) || ((SpeedTag >= 68) && (SpeedTag <= 75)))
+    if(((SpeedTag >= 7) && (SpeedTag <= 14)) || ((SpeedTag >= 28) && (SpeedTag <= 43)) ||
+            ((SpeedTag >= 132) && (SpeedTag <= 139)) || ((SpeedTag >= 68) && (SpeedTag <= 75)))
         {
         VecFile >> TempInt;
         if((TempInt < -1) || (TempInt > 5))//Points & signal attribute
             {
-            Utilities->CallLogPop(461);
+            Utilities->CallLogPop(-1502);
+            return false;
+            }
+        }
+    if((SpeedTag >= 68) && (SpeedTag <= 75))//signals
+        {
+        VecFile >> TempInt;
+        if((TempInt != 0) && (TempInt != 1))//CallingOnSet
+            {
+            Utilities->CallLogPop(-1155);
             return false;
             }
         }
     VecFile >> TempInt; if((TempInt < -1) || (TempInt > 999999))//Length01
         {
-        Utilities->CallLogPop(1501);
+        Utilities->CallLogPop(-1503);
         return false;
         }
     VecFile >> TempInt; if((TempInt < -1) || (TempInt > 999999))//Length23
         {
-        Utilities->CallLogPop(462);
+        Utilities->CallLogPop(-1504);
         return false;
         }
     VecFile >> TempInt; if((TempInt < -1) || (TempInt > 999999))//SpeedLimit01
         {
-        Utilities->CallLogPop(463);
+        Utilities->CallLogPop(-1505);
         return false;
         }
     VecFile >> TempInt; if((TempInt < -1) || (TempInt > 999999))//SpeedLimit23
         {
-        Utilities->CallLogPop(464);
+        Utilities->CallLogPop(-1506);
         return false;
         }
-    VecFile >> TempChar;
-    while(TempChar != '\0')
+    if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
         {
-        VecFile >> TempChar;
+        Utilities->CallLogPop(-1142);
+        return false;//LocationName
         }
-    VecFile >> TempChar;
-    while(TempChar != '\0')
+    if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
         {
-        VecFile >> TempChar;
+        Utilities->CallLogPop(-1143);
+        return false;//ActiveTrackElementName
+        }
+    if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
+        {
+        Utilities->CallLogPop(-1787);
+        return false;//marker
         }
     }
-Utilities->CallLogPop(467);
+int NumberOfInactiveElements=0;
+NumberOfInactiveElements = Utilities->LoadFileInt(VecFile);
+if(NumberOfInactiveElements < 0)//No of active elements
+    {
+    Utilities->CallLogPop(-1493);
+    return false;
+    }
+if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
+    {
+    Utilities->CallLogPop(-1764);
+    return false;//**Inactive elements** marker
+    }
+for(int x=0; x<NumberOfInactiveElements; x++)
+    {
+    if(!Utilities->CheckFileInt(VecFile, x, x))//TrackVectorNumber, must be 'x'
+        {
+        Utilities->CallLogPop(-1765);
+        return false;
+        }
+    VecFile >> TempInt;
+    if((TempInt < 0) || (TempInt >= FirstUnusedSpeedTagNumber) || (TempInt == 17))//Speedtag
+        {
+        Utilities->CallLogPop(-1494);
+        return false;
+        }
+    VecFile >> TempInt;
+    if(((TempInt > 999999) || (TempInt < -1000001)) &&  (TempInt != -2000000000))//HLoc
+        {
+        Utilities->CallLogPop(-1496);
+        return false;
+        }
+    VecFile >> TempInt;
+    if(((TempInt > 999999) || (TempInt < -1000001)) &&  (TempInt != -2000000000))//VLoc
+        {
+        Utilities->CallLogPop(-1498);
+        return false;
+        }
+    if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
+        {
+        Utilities->CallLogPop(-1144);
+        return false;//LocationName
+        }
+    if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
+        {
+        Utilities->CallLogPop(-1788);
+        return false;//marker
+        }
+/*
+    VecFile.get(TempChar);//should be '\n'
+    if(TempChar != '\n') return false;
+    VecFile.getline(&TempString[0], 256);//'\0' & 'n' are in file as delimiters, the '\0' goes into TempString & '\n' is ignored
+    for(int x=0;x<256;x++)//LocationName
+        {
+        if(TempString[x] == '\0') break;
+        if((TempString[x] < 32) && (TempString[x] >= 0)) return false;
+        }
+
+    VecFile >> TempChar;
+    while(TempChar != '\0')
+        {
+        VecFile >> TempChar;
+        }
+*/
+    }
+Utilities->CallLogPop(-467);
 return true;
 }
 
@@ -2619,7 +2785,7 @@ for(int x=0; x<NumberOfInactiveElements; x++)
         return false;
         }
     VecFile >> TempInt;
-    if((TempInt < 0) || (TempInt > 131) || (TempInt == 17))//Speedtag
+    if((TempInt < 0) || (TempInt >= FirstUnusedSpeedTagNumber) || (TempInt == 17))//Speedtag
         {
         Utilities->CallLogPop(1494);
         return false;
@@ -2669,24 +2835,148 @@ return true;
 
 //---------------------------------------------------------------------------
 
-void TTrack::RebuildTrack(int Caller, TDisplay *Disp, bool BothPointFillets)
+void TTrack::SaveSessionBarriersDownVector(int Caller, std::ofstream &OutFile)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveSessionBarriersDownVector");
+int VecSize = Track->BarriersDownVector.size();
+Utilities->SaveFileInt(OutFile, VecSize);
+for(int x = 0; x < VecSize; x++)
+    {
+    TActiveLevelCrossing TALC = Track->BarriersDownVector.at(x);
+    Utilities->SaveFileBool(OutFile, TALC.ConsecSignals);
+    Utilities->SaveFileBool(OutFile, TALC.TrainPassed);
+    Utilities->SaveFileInt(OutFile, (short)TALC.BarrierState);
+    Utilities->SaveFileDouble(OutFile, TALC.ChangeDuration);
+    Utilities->SaveFileInt(OutFile, TALC.BaseElementSpeedTag);
+    Utilities->SaveFileInt(OutFile, TALC.HLoc);
+    Utilities->SaveFileInt(OutFile, TALC.VLoc);
+    Utilities->SaveFileDouble(OutFile, double(TALC.StartTime));
+    }
+Utilities->CallLogPop(1963);
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::SaveChangingLCVector(int Caller, std::ofstream &OutFile)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveChangingLCVector");
+int VecSize = Track->ChangingLCVector.size();
+Utilities->SaveFileInt(OutFile, VecSize);
+for(int x = 0; x < VecSize; x++)
+    {
+    TActiveLevelCrossing TALC = Track->ChangingLCVector.at(x);
+    Utilities->SaveFileBool(OutFile, TALC.ConsecSignals);
+    Utilities->SaveFileBool(OutFile, TALC.TrainPassed);
+    Utilities->SaveFileInt(OutFile, (short)TALC.BarrierState);
+    Utilities->SaveFileDouble(OutFile, TALC.ChangeDuration);
+    Utilities->SaveFileInt(OutFile, TALC.BaseElementSpeedTag);
+    Utilities->SaveFileInt(OutFile, TALC.HLoc);
+    Utilities->SaveFileInt(OutFile, TALC.VLoc);
+    Utilities->SaveFileDouble(OutFile, double(TALC.StartTime));
+    }
+Utilities->CallLogPop(1980);
+}
+
+//---------------------------------------------------------------------------
+
+bool TTrack::CheckActiveLCVector(int Caller, std::ifstream &VecFile)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckActiveLCVector");
+int VecSize = Utilities->LoadFileInt(VecFile);
+for(int x = 0; x < VecSize; x++)
+    {
+    if(!Utilities->CheckFileBool(VecFile))
+            {
+            Utilities->CallLogPop(1970);
+            return false;
+            }
+    if(!Utilities->CheckFileBool(VecFile))
+            {
+            Utilities->CallLogPop(1971);
+            return false;
+            }
+    if(!Utilities->CheckFileInt(VecFile, 0, 3))
+            {
+            Utilities->CallLogPop(1972);
+            return false;
+            }
+    if(!Utilities->CheckFileDouble(VecFile))
+            {
+            Utilities->CallLogPop(1973);
+            return false;
+            }
+    if(!Utilities->CheckFileInt(VecFile, 1, 2))
+            {
+            Utilities->CallLogPop(1974);
+            return false;
+            }
+    if(!Utilities->CheckFileInt(VecFile, -1000001, 999999))
+            {
+            Utilities->CallLogPop(1975);
+            return false;
+            }
+    if(!Utilities->CheckFileInt(VecFile, -1000001, 999999))
+            {
+            Utilities->CallLogPop(1976);
+            return false;
+            }
+    if(!Utilities->CheckFileDouble(VecFile))
+            {
+            Utilities->CallLogPop(1977);
+            return false;
+            }
+    }
+Utilities->CallLogPop(1978);
+return true;
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::LoadBarriersDownVector(int Caller, std::ifstream &VecFile)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadBarriersDownVector");
+int VecSize = Utilities->LoadFileInt(VecFile);
+for(int x = 0; x < VecSize; x++)
+    {
+    TActiveLevelCrossing TALC;
+    TALC.ConsecSignals = Utilities->LoadFileBool(VecFile);
+    TALC.TrainPassed = Utilities->LoadFileBool(VecFile);
+    TALC.BarrierState = TBarrierState(Utilities->LoadFileInt(VecFile));
+    TALC.ChangeDuration = Utilities->LoadFileDouble(VecFile);
+    TALC.BaseElementSpeedTag = Utilities->LoadFileInt(VecFile);
+    TALC.HLoc = Utilities->LoadFileInt(VecFile);
+    TALC.VLoc = Utilities->LoadFileInt(VecFile);
+    TALC.StartTime = TDateTime(Utilities->LoadFileDouble(VecFile));
+    BarriersDownVector.push_back(TALC);
+    }
+Utilities->CallLogPop(1979);
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::RebuildTrack(int Caller, TDisplay *Disp, bool BothPointFilletsAndBasicLCs)
 /*
-Note, have to plot inactives before track because track has to overwrite NamedNonStationLocations
+Note, have to plot inactives before track because track has to overwrite NamedNonStationLocations, but, plot basic LC's (if flag set) after track
+so they lie above the track.  Basic LCs are plotted for all but Level1Mode == OperMode (i.e. closed to trains), because the LC attributes will always be
+0 in such cases and because in OperMode the LCs have to be plotted again after the routes, which is done in Clearand....
 */
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RebuildTrack");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RebuildTrack," + AnsiString((short)BothPointFilletsAndBasicLCs));
 TTrackElement Next;
 //Disp->ClearDisplay();
 NextTrackElementPtr = InactiveTrackVector.begin();
 while(ReturnNextInactiveTrackElement(0, Next))
     {
-    if(Next.GraphicPtr != 0)//don't think this should ever be 0 but leave as a safeguard
+    if(Next.TrackType != LevelCrossing)//don't plot level crossings as these need to be plotted after the track
         {
-        //only plot if on screen, to save time
-        if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
-                ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
+        if(Next.GraphicPtr != 0)//don't think this should ever be 0 but leave as a safeguard
             {
-            Next.PlotVariableTrackElement(2, Disp);//striped if not named
+            //only plot if on screen, to save time
+            if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
+                    ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
+                {
+                Next.PlotVariableTrackElement(2, Disp);//striped if not named
+                }
             }
         }
     }
@@ -2699,10 +2989,37 @@ while(ReturnNextTrackElement(0, Next))
         if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
                 ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
             {
-            if(Next.TrackType == Points) PlotPoints(5, Next, Disp, BothPointFillets);
+            if(Next.TrackType == Points) PlotPoints(5, Next, Disp, BothPointFilletsAndBasicLCs);
             else if(Next.TrackType == SignalPost) PlotSignal(9, Next, Disp);
             else if(Next.TrackType == GapJump) PlotGap(0, Next, Disp);
             else  Next.PlotVariableTrackElement(3, Disp);//for footbridges, may be striped or not
+            }
+        }
+    }
+
+if(BothPointFilletsAndBasicLCs)
+    {
+    NextTrackElementPtr = InactiveTrackVector.begin();
+    while(ReturnNextInactiveTrackElement(4, Next))
+        {
+        if(Next.TrackType == LevelCrossing)//plot level crossings (if required) after the track
+            {
+            if(Next.GraphicPtr != 0)//don't think this should ever be 0 but leave as a safeguard
+                {
+                //only plot if on screen, to save time, & OK as plotting one by one here
+                if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
+                        ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
+                    {
+                    if(GetTrackElementFromTrackMap(1, Next.HLoc, Next.VLoc).SpeedTag == 1)
+                        {
+                        Disp->PlotOutput(193, (Next.HLoc * 16), (Next.VLoc * 16), RailGraphics->LCBothVer);
+                        }
+                    else
+                        {
+                        Disp->PlotOutput(194, (Next.HLoc * 16), (Next.VLoc * 16), RailGraphics->LCBothHor);
+                        }
+                    }
+                }
             }
         }
     }
@@ -4090,7 +4407,8 @@ THVPair TrackMapKeyPair, InactiveTrackMapKeyPair;
 TTrackMapEntry TrackMapEntry, InactiveTrackMapEntry;
 TLocationNameMultiMapEntry LocationNameEntry;
 LocationNameEntry.first = TrackElement.LocationName;
-if((TrackElement.TrackType == Platform) || (TrackElement.TrackType == Concourse) || (TrackElement.TrackType == Parapet) || (TrackElement.TrackType == NamedNonStationLocation))
+if((TrackElement.TrackType == Platform) || (TrackElement.TrackType == Concourse) || (TrackElement.TrackType == Parapet) || (TrackElement.TrackType == NamedNonStationLocation)
+        || (TrackElement.TrackType == LevelCrossing))
     {
 //check whether a similar element already at this position and if so ignore it (had error where allowed multiple NonStationNamedLocs)
 //could arise when loading old railways with multiple NonStationNamedLocs
@@ -4183,6 +4501,50 @@ else
     FoundFlag = true;
     Utilities->CallLogPop(513);
     return TrackMapPtr->second;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+TTrackElement &TTrack::GetTrackElementFromTrackMap(int Caller, int HLoc, int VLoc)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetTrackElementFromTrackMap," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+THVPair TrackMapKeyPair;
+TTrackMapIterator TrackMapPtr;
+TrackMapKeyPair.first = HLoc;
+TrackMapKeyPair.second = VLoc;
+TrackMapPtr = TrackMap.find(TrackMapKeyPair);
+if(TrackMapPtr == TrackMap.end())
+    {
+    AnsiString Message = "Element not found at HLoc " + AnsiString(HLoc) + " and VLoc " + AnsiString(VLoc);
+    throw Exception(Message);
+    }
+else
+    {
+    Utilities->CallLogPop(1943);
+    return TrackElementAt(871, TrackMapPtr->second);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+TTrackElement &TTrack::GetInactiveTrackElementFromTrackMap(int Caller, int HLoc, int VLoc)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetInactiveTrackElementFromTrackMap," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+THVPair InactiveTrackMapKeyPair;
+TInactiveTrack2MultiMapIterator InactiveTrackMapPtr;
+InactiveTrackMapKeyPair.first = HLoc;
+InactiveTrackMapKeyPair.second = VLoc;
+InactiveTrackMapPtr = InactiveTrack2MultiMap.find(InactiveTrackMapKeyPair);//not interested in platforms so only need to find one
+if(InactiveTrackMapPtr == InactiveTrack2MultiMap.end())
+    {
+    AnsiString Message = "Inactive element not found at HLoc " + AnsiString(HLoc) + " and VLoc " + AnsiString(VLoc);
+    throw Exception(Message);
+    }
+else
+    {
+    Utilities->CallLogPop(1949);
+    return InactiveTrackElementAt(872, InactiveTrackMapPtr->second);
     }
 }
 
@@ -4519,6 +4881,816 @@ for(int x=0;x<40;x++)
         }
     }
 Utilities->CallLogPop(520);
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::SetLinkedLevelCrossingBarrierAttributes(int Caller, int HLoc, int VLoc, int Attr)
+{
+//Set attrs to 0=closed to trains; 1=open to trains; 3 = changing = closed to trains
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LowerLinkedLevelCrossingBarrierAttributes," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+//find topmost LC, opening them all (to trains) in turn
+int UpStep = 0;
+while(IsLCAtHV(0, HLoc, (VLoc + UpStep)))//will always find LC at UpStep == 0
+    {
+    SetLCAttributeAtHV(0, HLoc, (VLoc + UpStep), Attr);
+    UpStep--;
+    }
+//now find bottommost LC, opening them all (to trains) in turn
+int DownStep = 1;
+while(IsLCAtHV(1, HLoc, (VLoc + DownStep)))
+    {
+    SetLCAttributeAtHV(1, HLoc, (VLoc + DownStep), Attr);
+    DownStep++;
+    }
+//find leftmost LC, opening them all (to trains) in turn
+int LeftStep = 0;
+while(IsLCAtHV(2, (HLoc+ LeftStep), VLoc))//will always find LC at LeftStep == 0
+    {
+    SetLCAttributeAtHV(2, (HLoc+ LeftStep), VLoc, Attr);
+    LeftStep--;
+    }
+//now find rightmost LC, opening them all (to trains) in turn
+int RightStep = 1;
+while(IsLCAtHV(3, (HLoc + RightStep), VLoc))
+    {
+    SetLCAttributeAtHV(3, (HLoc + RightStep), VLoc, Attr);
+    RightStep++;
+    }
+Utilities->CallLogPop(1915);
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, bool ConsecSignals, TDisplay *Disp) //open to trains
+//BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotLoweredLinkedLevelCrossingBarriers," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+if(!IsLCAtHV(4, HLoc, VLoc))
+    {
+    throw Exception("Error, Wrong track type in PlotAndLowerLevelCrossingBarriers");
+    }
+if((BaseElementSpeedTag != 1) && (BaseElementSpeedTag != 2))
+    {
+    throw Exception("Error, Wrong BaseElementSpeedTag value in PlotAndLowerLevelCrossingBarriers");
+    }
+//check for adjacent LCs & if so open (to trains)
+if(BaseElementSpeedTag == 1)//hor track element
+    {
+    //find topmost LC, opening them all (to trains) in turn
+    int UpStep = 0;
+    while(IsLCAtHV(5, HLoc, (VLoc + UpStep)))//will always find LC at UpStep == 0
+        {
+        UpStep--;
+        }
+    UpStep++;
+    //now find bottommost LC, opening them all (to trains) in turn
+    int DownStep = 1;
+    while(IsLCAtHV(6, HLoc, (VLoc + DownStep)))
+        {
+        DownStep++;
+        }
+    DownStep--;
+    //now plot graphics, UpStep is smallest & DownStep largest
+    //RouteGraphic is the coloured track element, BaseGraphic is non-coloured
+    //Only need to plot the coloured graphic for the HLoc & VLoc in the vector as that is the route that is causeing the LC to flash
+    Graphics::TBitmap *RouteGraphic;
+    if(ConsecSignals)
+        {
+        RouteGraphic = RailGraphics->LinkSigRouteGraphicsPtr[0];
+        }
+    else
+        {
+        RouteGraphic = RailGraphics->LinkNonSigRouteGraphicsPtr[0];
+        }
+    Graphics::TBitmap *BaseGraphic = RailGraphics->gl1;
+//LinkSigRouteGraphicsPtr[0] hor  } pref dir
+//LinkSigRouteGraphicsPtr[1] ver  }
+//LinkNonSigRouteGraphicsPtr[0] hor  } non pref dir
+//LinkNonSigRouteGraphicsPtr[1] ver  }
+
+    if(UpStep == DownStep) //both 0, so just a single track, plot the double graphic, but plot solid bgnd first then track to get rid of earlier graphics
+        {
+        Disp->PlotOutput(132, HLoc * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+        Disp->PlotOutput(133, HLoc * 16, VLoc * 16, RouteGraphic);
+        Disp->PlotOutput(134, HLoc * 16, VLoc * 16, RailGraphics->LCBothHor);
+        }
+    else if((DownStep - UpStep) == 1) //double track, no need for any plain LC graphics
+        {
+        if(UpStep == 0)
+            {
+            Disp->PlotOutput(135, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(136, HLoc * 16, (VLoc + UpStep) * 16, RouteGraphic);
+            Disp->PlotOutput(137, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+            Disp->PlotOutput(138, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(139, HLoc * 16, (VLoc + DownStep) * 16, BaseGraphic);
+            Disp->PlotOutput(140, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+            }
+        else
+            {
+            Disp->PlotOutput(195, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(196, HLoc * 16, (VLoc + UpStep) * 16, BaseGraphic);
+            Disp->PlotOutput(197, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+            Disp->PlotOutput(198, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(199, HLoc * 16, (VLoc + DownStep) * 16, RouteGraphic);
+            Disp->PlotOutput(200, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+            }
+        }
+    else //at least one plain graphic
+        {
+        if(UpStep == 0)
+            {
+            Disp->PlotOutput(141, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(142, HLoc * 16, (VLoc + UpStep) * 16, RouteGraphic);
+            Disp->PlotOutput(143, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+            Disp->PlotOutput(144, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(145, HLoc * 16, (VLoc + DownStep) * 16, BaseGraphic);
+            Disp->PlotOutput(146, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+            }
+        else if(DownStep == 0)
+            {
+            Disp->PlotOutput(201, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(202, HLoc * 16, (VLoc + UpStep) * 16, BaseGraphic);
+            Disp->PlotOutput(203, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+            Disp->PlotOutput(204, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(205, HLoc * 16, (VLoc + DownStep) * 16, RouteGraphic);
+            Disp->PlotOutput(206, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+            }
+        else
+            {
+            Disp->PlotOutput(207, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(208, HLoc * 16, (VLoc + UpStep) * 16, BaseGraphic);
+            Disp->PlotOutput(209, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+            Disp->PlotOutput(210, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(211, HLoc * 16, (VLoc + DownStep) * 16, BaseGraphic);
+            Disp->PlotOutput(212, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+            }
+        for(int x=(UpStep + 1); x<DownStep;x++)
+            {
+            Disp->PlotOutput(147, HLoc * 16, (VLoc + x) * 16, RailGraphics->bmSolidBgnd);
+            if(x == 0) Disp->PlotOutput(148, HLoc * 16, (VLoc + x) * 16, RouteGraphic);
+            else Disp->PlotOutput(213, HLoc * 16, (VLoc + x) * 16, BaseGraphic);
+            Disp->PlotOutput(149, HLoc * 16, (VLoc + x) * 16, RailGraphics->LCPlain);
+            }
+        }
+    Disp->Update();
+    Utilities->CallLogPop(1958);
+    return;
+    }
+
+else//ver track element
+    {
+    //find leftmost LC, opening them all (to trains) in turn
+    int LStep = 0;
+    while(IsLCAtHV(7, (HLoc + LStep), VLoc))
+        {
+        LStep--;
+        }
+    LStep++;
+    //now find rightmost LC, opening them all (to trains) in turn
+    int RStep = 1;
+    while(IsLCAtHV(8, (HLoc + RStep), VLoc))
+        {
+        RStep++;
+        }
+    RStep--;
+    //now plot graphics, LStep is smallest & RStep largest
+    Graphics::TBitmap *RouteGraphic;
+    if(ConsecSignals)
+        {
+        RouteGraphic = RailGraphics->LinkSigRouteGraphicsPtr[1];
+        }
+    else
+        {
+        RouteGraphic = RailGraphics->LinkNonSigRouteGraphicsPtr[1];
+        }
+    Graphics::TBitmap *BaseGraphic = RailGraphics->gl2;
+//LinkSigRouteGraphicsPtr[0] hor  } pref dir
+//LinkSigRouteGraphicsPtr[1] ver  }
+//LinkNonSigRouteGraphicsPtr[0] hor  } non pref dir
+//LinkNonSigRouteGraphicsPtr[1] ver  }
+    if(LStep == RStep)//both 0, so just a single track, plot the double graphic, but plot solid bgnd first then track to get rid of earlier graphics
+        {
+        Disp->PlotOutput(150, HLoc * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+        Disp->PlotOutput(151, HLoc * 16, VLoc * 16, RouteGraphic);
+        Disp->PlotOutput(152, HLoc * 16, VLoc * 16, RailGraphics->LCBothVer);
+        }
+    else if((RStep - LStep) == 1)//double track, no need for any plain LC graphics
+        {
+        if(LStep == 0)
+            {
+            Disp->PlotOutput(153, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(154, (HLoc + LStep) * 16, VLoc * 16, RouteGraphic);
+            Disp->PlotOutput(155, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+            Disp->PlotOutput(156, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(157, (HLoc + RStep) * 16, VLoc * 16, BaseGraphic);
+            Disp->PlotOutput(158, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+            }
+        else
+            {
+            Disp->PlotOutput(214, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(215, (HLoc + LStep) * 16, VLoc * 16, BaseGraphic);
+            Disp->PlotOutput(216, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+            Disp->PlotOutput(217, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(218, (HLoc + RStep) * 16, VLoc * 16, RouteGraphic);
+            Disp->PlotOutput(219, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+            }
+        }
+    else //at least one plain graphic
+        {
+        if(LStep == 0)
+            {
+            Disp->PlotOutput(159, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(160, (HLoc + LStep) * 16, VLoc * 16, RouteGraphic);
+            Disp->PlotOutput(161, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+            Disp->PlotOutput(162, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(163, (HLoc + RStep) * 16, VLoc * 16, BaseGraphic);
+            Disp->PlotOutput(164, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+            }
+        else if(RStep == 0)
+            {
+            Disp->PlotOutput(220, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(221, (HLoc + LStep) * 16, VLoc * 16, BaseGraphic);
+            Disp->PlotOutput(222, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+            Disp->PlotOutput(223, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(224, (HLoc + RStep) * 16, VLoc * 16, RouteGraphic);
+            Disp->PlotOutput(225, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+            }
+        else
+            {
+            Disp->PlotOutput(226, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(227, (HLoc + LStep) * 16, VLoc * 16, BaseGraphic);
+            Disp->PlotOutput(228, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+            Disp->PlotOutput(229, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+            Disp->PlotOutput(230, (HLoc + RStep) * 16, VLoc * 16, BaseGraphic);
+            Disp->PlotOutput(231, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+            }
+        for(int x=(LStep + 1); x<RStep; x++)
+            {
+            Disp->PlotOutput(165, (HLoc + x) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+            if(x == 0) Disp->PlotOutput(166, (HLoc + x) * 16, VLoc * 16, RouteGraphic);
+            else Disp->PlotOutput(232, (HLoc + x) * 16, VLoc * 16, BaseGraphic);
+            Disp->PlotOutput(167, (HLoc + x) * 16, VLoc * 16, RailGraphics->LCPlain);
+            }
+        }
+    Disp->Update();
+    Utilities->CallLogPop(1896);
+    return;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp) //open to trains
+//BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+if(!IsLCAtHV(29, HLoc, VLoc))
+    {
+    throw Exception("Error, Wrong track type in PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers");
+    }
+if((BaseElementSpeedTag != 1) && (BaseElementSpeedTag != 2))
+    {
+    throw Exception("Error, Wrong BaseElementSpeedTag value in PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers");
+    }
+//check for adjacent LCs & if so open (to trains)
+if(BaseElementSpeedTag == 1)//hor track element
+    {
+    //find topmost LC, opening them all (to trains) in turn
+    int UpStep = 0;
+    while(IsLCAtHV(30, HLoc, (VLoc + UpStep)))//will always find LC at UpStep == 0
+        {
+        UpStep--;
+        }
+    UpStep++;
+    //now find bottommost LC, opening them all (to trains) in turn
+    int DownStep = 1;
+    while(IsLCAtHV(31, HLoc, (VLoc + DownStep)))
+        {
+        DownStep++;
+        }
+    DownStep--;
+    //now plot graphics, UpStep is smallest & DownStep largest
+    if(UpStep == DownStep)//both 0, so just a single track, plot the double graphic, but plot solid bgnd first then track to get rid of earlier graphics
+        {
+        Disp->PlotOutput(179, HLoc * 16, VLoc * 16, RailGraphics->LCBothHor);
+        }
+    else if((DownStep - UpStep) == 1)//double track, no need for any plain LC graphics
+        {
+        Disp->PlotOutput(180, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+        Disp->PlotOutput(181, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+        }
+    else //at least one plain graphic
+        {
+        Disp->PlotOutput(182, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+        Disp->PlotOutput(183, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+        for(int x=(UpStep + 1); x<DownStep;x++)
+            {
+            Disp->PlotOutput(184, HLoc * 16, (VLoc + x) * 16, RailGraphics->LCPlain);
+            }
+        }
+    //set markers
+    for(int x = UpStep; x <= DownStep; x++)
+        {
+        GetInactiveTrackElementFromTrackMap(3, HLoc, (VLoc + x)).TempMarker = true;//plotted
+        }
+    Display->Update();
+    Utilities->CallLogPop(1944);
+    return;
+    }
+
+else//ver track element
+    {
+    //find leftmost LC, opening them all (to trains) in turn
+    int LStep = 0;
+    while(IsLCAtHV(32, (HLoc + LStep), VLoc))
+        {
+        LStep--;
+        }
+    LStep++;
+    //now find rightmost LC, opening them all (to trains) in turn
+    int RStep = 1;
+    while(IsLCAtHV(33, (HLoc + RStep), VLoc))
+        {
+        RStep++;
+        }
+    RStep--;
+    //now plot graphics, LStep is smallest & RStep largest
+    if(LStep == RStep)//both 0, so just a single track, plot the double graphic, but plot solid bgnd first then track to get rid of earlier graphics
+        {
+        Disp->PlotOutput(185, HLoc * 16, VLoc * 16, RailGraphics->LCBothVer);
+        }
+    else if((RStep - LStep) == 1)//double track, no need for any plain LC graphics
+        {
+        Disp->PlotOutput(186, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+        Disp->PlotOutput(187, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+        }
+    else //at least one plain graphic
+        {
+        Disp->PlotOutput(188, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+        Disp->PlotOutput(189, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+        for(int x=(LStep + 1); x<RStep; x++)
+            {
+            Disp->PlotOutput(190, (HLoc + x) * 16, VLoc * 16, RailGraphics->LCPlain);
+            }
+        }
+    //set markers
+    for(int x = LStep; x <= RStep; x++)
+        {
+        GetInactiveTrackElementFromTrackMap(4, (HLoc + x), VLoc).TempMarker = true;//plotted
+        }
+    Disp->Update();
+    Utilities->CallLogPop(1945);
+    return;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::PlotRaisedLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp) //closed to trains
+//BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotRaisedLinkedLevelCrossingBarriers," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+if(!IsLCAtHV(9, HLoc, VLoc))
+    {
+    throw Exception("Error, Wrong track type in PlotAndRaiseLevelCrossingBarriers");
+    }
+if((BaseElementSpeedTag != 1) && (BaseElementSpeedTag != 2))
+    {
+    throw Exception("Error, Wrong BaseElementSpeedTag value in PlotAndRaiseLevelCrossingBarriers");
+    }
+//check for adjacent LCs & if so close (to trains)
+if(BaseElementSpeedTag == 1)//hor track element
+    {
+    //find topmost LC, closing them all (to trains) in turn
+    int UpStep = 0;
+    while(IsLCAtHV(10, HLoc, (VLoc + UpStep)))//will always find LC at UpStep == 0
+        {
+        UpStep--;
+        }
+    UpStep++;
+    //now find bottommost LC, opening them all (to trains) in turn
+    int DownStep = 1;
+    while(IsLCAtHV(11, HLoc, (VLoc + DownStep)))
+        {
+        DownStep++;
+        }
+    DownStep--;
+    //now plot graphics, UpStep is smallest & DownStep largest
+    for(int x=UpStep; x<(DownStep+1); x++)
+        {
+        Disp->PlotOutput(168, HLoc * 16, (VLoc + x) * 16, RailGraphics->bmSolidBgnd);
+        Disp->PlotOutput(169, HLoc * 16, (VLoc + x) * 16, RailGraphics->gl1);
+        Disp->PlotOutput(170, HLoc * 16, (VLoc + x) * 16, RailGraphics->LCBothVer);
+        }
+    Disp->Update();
+    Utilities->CallLogPop(1959);
+    return;
+    }
+
+else //ver track element
+    {
+    //find leftmost LC, closing them all (to trains) in turn
+    int LStep = 0;
+    while(IsLCAtHV(12, (HLoc + LStep), VLoc))
+        {
+        LStep--;
+        }
+    LStep++;
+    //now find rightmost LC, opening them all (to trains) in turn
+    int RStep = 1;
+    while(IsLCAtHV(13, (HLoc + RStep), VLoc))
+        {
+        RStep++;
+        }
+    RStep--;
+    //now plot graphics, LStep is smallest & RStep largest
+    for(int x=LStep; x<(RStep+1); x++)
+        {
+        Disp->PlotOutput(171, (HLoc + x) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+        Disp->PlotOutput(172, (HLoc + x) * 16, VLoc * 16, RailGraphics->gl2);
+        Disp->PlotOutput(173, (HLoc + x) * 16, VLoc * 16, RailGraphics->LCBothHor);
+        }
+    Disp->Update();
+    Utilities->CallLogPop(1960);
+    return;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp) //closed to trains
+//BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+if(!IsLCAtHV(34, HLoc, VLoc))
+    {
+    throw Exception("Error, Wrong track type in PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers");
+    }
+if((BaseElementSpeedTag != 1) && (BaseElementSpeedTag != 2))
+    {
+    throw Exception("Error, Wrong BaseElementSpeedTag value in PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers");
+    }
+TTrackElement TE;
+//check for adjacent LCs & if so close (to trains)
+if(BaseElementSpeedTag == 1)//hor track element
+    {
+    //find topmost LC, closing them all (to trains) in turn
+    int UpStep = 0;
+    while(IsLCAtHV(35, HLoc, (VLoc + UpStep)))//will always find LC at UpStep == 0
+        {
+        UpStep--;
+        }
+    UpStep++;
+    //now find bottommost LC, opening them all (to trains) in turn
+    int DownStep = 1;
+    while(IsLCAtHV(36, HLoc, (VLoc + DownStep)))
+        {
+        DownStep++;
+        }
+    DownStep--;
+    //now plot graphics, UpStep is smallest & DownStep largest
+    for(int x = UpStep; x <= DownStep; x++)
+        {
+        Disp->PlotOutput(191, HLoc * 16, (VLoc + x) * 16, RailGraphics->LCBothVer);
+        GetInactiveTrackElementFromTrackMap(1, HLoc, (VLoc + x)).TempMarker = true;//plotted
+        }
+    Display->Update();
+    Utilities->CallLogPop(1946);
+    return;
+    }
+
+else //ver track element
+    {
+    //find leftmost LC, closing them all (to trains) in turn
+    int LStep = 0;
+    while(IsLCAtHV(37, (HLoc + LStep), VLoc))
+        {
+        LStep--;
+        }
+    LStep++;
+    //now find rightmost LC, opening them all (to trains) in turn
+    int RStep = 1;
+    while(IsLCAtHV(38, (HLoc + RStep), VLoc))
+        {
+        RStep++;
+        }
+    RStep--;
+    //now plot graphics, LStep is smallest & RStep largest
+    for(int x = LStep; x <= RStep; x++)
+        {
+        Disp->PlotOutput(192, (HLoc + x) * 16, VLoc * 16, RailGraphics->LCBothHor);
+        GetInactiveTrackElementFromTrackMap(2, (HLoc + x), VLoc).TempMarker = true;//plotted
+        }
+    Display->Update();
+    Utilities->CallLogPop(1947);
+    return;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseElementSpeedTag, int HLoc, int VLoc, bool ConsecSignals, TDisplay *Disp)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotBaseElementsOnly," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+Graphics::TBitmap *RouteGraphic;
+Graphics::TBitmap *BaseGraphic;
+if(BaseElementSpeedTag == 1)
+    {
+    if(ConsecSignals)
+        {
+        RouteGraphic = RailGraphics->LinkSigRouteGraphicsPtr[0];
+        }
+    else
+        {
+        RouteGraphic = RailGraphics->LinkNonSigRouteGraphicsPtr[0];
+        }
+    BaseGraphic = RailGraphics->gl1;
+    if(State == Raising) RouteGraphic = BaseGraphic;
+    }
+else
+    {
+    if(ConsecSignals)
+        {
+        RouteGraphic = RailGraphics->LinkSigRouteGraphicsPtr[1];
+        }
+    else
+        {
+        RouteGraphic = RailGraphics->LinkNonSigRouteGraphicsPtr[1];
+        }
+    BaseGraphic = RailGraphics->gl2;
+    if(State == Raising) RouteGraphic = BaseGraphic;
+    }
+int UpStep = 0;
+while(IsLCAtHV(14, HLoc, (VLoc + UpStep)))//will always find LC at UpStep == 0
+    {
+    Disp->PlotOutput(174, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->bmSolidBgnd);
+    if(UpStep == 0) Disp->PlotOutput(175, HLoc * 16, (VLoc + UpStep) * 16, RouteGraphic);
+    else Disp->PlotOutput(234, HLoc * 16, (VLoc + UpStep) * 16, BaseGraphic);
+    UpStep--;
+    }
+//now find bottommost LC, opening them all (to trains) in turn
+int DownStep = 1;
+while(IsLCAtHV(15, HLoc, (VLoc + DownStep)))
+    {
+    Disp->PlotOutput(176, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->bmSolidBgnd);
+    Disp->PlotOutput(177, HLoc * 16, (VLoc + DownStep) * 16, BaseGraphic);
+    DownStep++;
+    }
+int LeftStep = 0;
+while(IsLCAtHV(16, (HLoc + LeftStep), VLoc))//will always find LC at LeftStep == 0
+    {
+    Disp->PlotOutput(233, (HLoc + LeftStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+    if(LeftStep == 0) Disp->PlotOutput(235, (HLoc + LeftStep) * 16, VLoc * 16, RouteGraphic);
+    else Disp->PlotOutput(236, (HLoc + LeftStep) * 16, VLoc * 16, BaseGraphic);
+    LeftStep--;
+    }
+//now find rightmost LC, opening them all (to trains) in turn
+int RightStep = 1;
+while(IsLCAtHV(17, (HLoc + RightStep), VLoc))
+    {
+    Disp->PlotOutput(237, (HLoc + RightStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
+    Disp->PlotOutput(238, (HLoc + RightStep) * 16, VLoc * 16, BaseGraphic);
+    RightStep++;
+    }
+Disp->Update();
+Utilities->CallLogPop(1914);
+}
+
+//---------------------------------------------------------------------------
+
+bool TTrack::IsLCBarrierDownAtHV(int Caller, int HLoc, int VLoc)// returns true only if fully down
+{
+//return false for no LC there, flashing or a closed (to trains) LC
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsLCBarrierDownAtHV," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+bool FoundFlag;
+TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(21, HLoc, VLoc, FoundFlag);
+if(!FoundFlag)
+    {
+    Utilities->CallLogPop(1898);
+    return false;
+    }
+if(InactiveTrackElementAt(100, IMPair.first).TrackType != LevelCrossing)//only need to check first as second can only be a platform
+    {
+    Utilities->CallLogPop(1899);
+    return false;
+    }
+if(InactiveTrackElementAt(103, IMPair.first).Attribute == 1)
+    {
+    Utilities->CallLogPop(1900);
+    return true;
+    }
+Utilities->CallLogPop(1901);
+return false;
+}
+
+//---------------------------------------------------------------------------
+
+bool TTrack::IsLCBarrierUpAtHV(int Caller, int HLoc, int VLoc)// returns true only if fully up
+{
+//return false for no LC there, flashing LC or open (to trains) LC
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsBarrierUpLCAtHV," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+bool FoundFlag;
+TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(24, HLoc, VLoc, FoundFlag);
+if(!FoundFlag)
+    {
+    Utilities->CallLogPop(1922);
+    return false;
+    }
+if(InactiveTrackElementAt(110, IMPair.first).TrackType != LevelCrossing)//only need to check first as second can only be a platform
+    {
+    Utilities->CallLogPop(1923);
+    return false;
+    }
+if(InactiveTrackElementAt(111, IMPair.first).Attribute == 0)
+    {
+    Utilities->CallLogPop(1924);
+    return true;
+    }
+Utilities->CallLogPop(1925);
+return false;
+}
+
+//---------------------------------------------------------------------------
+
+bool TTrack::IsLCBarrierFlashingAtHV(int Caller, int HLoc, int VLoc)
+{
+//return true for barrier in process of moving
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsBarrierFlashingAtHV," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+bool FoundFlag;
+TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(25, HLoc, VLoc, FoundFlag);
+if(!FoundFlag)
+    {
+    Utilities->CallLogPop(1918);
+    return false;
+    }
+if(InactiveTrackElementAt(112, IMPair.first).TrackType != LevelCrossing)//only need to check first as second can only be a platform
+    {
+    Utilities->CallLogPop(1919);
+    return false;
+    }
+if(InactiveTrackElementAt(113, IMPair.first).Attribute == 2)
+    {
+    Utilities->CallLogPop(1920);
+    return true;
+    }
+Utilities->CallLogPop(1921);
+return false;
+}
+
+//---------------------------------------------------------------------------
+
+bool TTrack::IsLCAtHV(int Caller, int HLoc, int VLoc)
+{
+//return true for an LC at H&V
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsLCAtHV," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+bool FoundFlag;
+TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(22, HLoc, VLoc, FoundFlag);
+if(!FoundFlag)
+    {
+    Utilities->CallLogPop(1902);
+    return false;
+    }
+if(InactiveTrackElementAt(101, IMPair.first).TrackType != LevelCrossing)//only need to check first as second can only be a platform
+    {
+    Utilities->CallLogPop(1903);
+    return false;
+    }
+Utilities->CallLogPop(1904);
+return true;
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::SetLCAttributeAtHV(int Caller, int HLoc, int VLoc, int Attr)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetLCAttributeAtHV," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(Attr));
+bool FoundFlag;
+TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(23, HLoc, VLoc, FoundFlag);
+if(!FoundFlag)
+    {
+    throw Exception("Element not found in LowerLCBarriersAtHV " + AnsiString(HLoc) + "," + AnsiString(VLoc));
+    }
+if(InactiveTrackElementAt(102, IMPair.first).TrackType != LevelCrossing)//only need to check first as second can only be a platform
+    {
+    throw Exception("Element not a level crossing in LowerLCBarriersAtHV " + AnsiString(HLoc) + "," + AnsiString(VLoc));
+    }
+InactiveTrackElementAt(104, IMPair.first).Attribute = Attr;
+Utilities->CallLogPop(1905);
+return;
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::ResetLevelCrossings(int Caller)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ResetLevelCrossings");
+for(unsigned int x=0;x<InactiveTrackVector.size();x++)
+    {
+    TTrackElement InactiveTrackElement = InactiveTrackVector.at(x);
+    if(InactiveTrackElement.TrackType == LevelCrossing)
+        {
+        InactiveTrackVector.at(x).Attribute = 0;
+        //though this only resets the attributes the LC will display correctly when call Clearand.. in BaseMode
+        }
+    }
+Utilities->CallLogPop(1913);
+return;
+}
+
+//---------------------------------------------------------------------------
+
+bool TTrack::AnyLinkedLevelCrossingElementsWithRoutesOrTrains(int Caller, int HLoc, int VLoc, bool &TrainPresent)
+{
+//return true if there is either a route set on any element or a train on any element
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AnyLinkedLevelCrossingElementsWithRoutesOrTrains," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+
+THVPair TrackMapKeyPair;
+TTrack::TTrackMapIterator TrackMapPtr;
+int DummyRouteNumber;
+TrainPresent = false;
+//find topmost LC, checking each for routes & trains
+int UpStep = 0;
+while(IsLCAtHV(25, HLoc, (VLoc + UpStep)))//will always find LC at UpStep == 0
+    {
+    TrackMapKeyPair.first = HLoc;
+    TrackMapKeyPair.second = VLoc + UpStep;
+    TrackMapPtr = TrackMap.find(TrackMapKeyPair);
+    if(AllRoutes->GetRouteTypeAndNumber(20, TrackMapPtr->second, 0, DummyRouteNumber) != TAllRoutes::NoRoute)//use 0 for LinkPos, only 1 track element so 0 or 1 would be OK
+        {
+        Utilities->CallLogPop(1932);
+        return true;
+        }
+    if(TrackElementAt(867, TrackMapPtr->second).TrainIDOnElement != -1)
+        {
+        TrainPresent = true;
+        Utilities->CallLogPop(1933);
+        return true;
+        }
+    UpStep--;
+    }
+//now find bottommost LC, opening them all (to trains) in turn
+int DownStep = 1;
+while(IsLCAtHV(26, HLoc, (VLoc + DownStep)))
+    {
+    TrackMapKeyPair.first = HLoc;
+    TrackMapKeyPair.second = VLoc + DownStep;
+    TrackMapPtr = TrackMap.find(TrackMapKeyPair);
+    if(AllRoutes->GetRouteTypeAndNumber(21, TrackMapPtr->second, 0, DummyRouteNumber) != TAllRoutes::NoRoute)//use 0 for LinkPos, only 1 track element so 0 or 1 would be OK
+        {
+        Utilities->CallLogPop(1934);
+        return true;
+        }
+    if(TrackElementAt(868, TrackMapPtr->second).TrainIDOnElement != -1)
+        {
+        TrainPresent = true;
+        Utilities->CallLogPop(1935);
+        return true;
+        }
+    DownStep++;
+    }
+//find leftmost LC
+int LeftStep = 0;
+while(IsLCAtHV(27, (HLoc+ LeftStep), VLoc))//will always find LC at LeftStep == 0
+    {
+    TrackMapKeyPair.first = HLoc + LeftStep;
+    TrackMapKeyPair.second = VLoc;
+    TrackMapPtr = TrackMap.find(TrackMapKeyPair);
+    if(AllRoutes->GetRouteTypeAndNumber(22, TrackMapPtr->second, 0, DummyRouteNumber) != TAllRoutes::NoRoute)//use 0 for LinkPos, only 1 track element so 0 or 1 would be OK
+        {
+        Utilities->CallLogPop(1936);
+        return true;
+        }
+    if(TrackElementAt(869, TrackMapPtr->second).TrainIDOnElement != -1)
+        {
+        TrainPresent = true;
+        Utilities->CallLogPop(1937);
+        return true;
+        }
+    LeftStep--;
+    }
+//now find rightmost LC, opening them all (to trains) in turn
+int RightStep = 1;
+while(IsLCAtHV(28, (HLoc + RightStep), VLoc))
+    {
+    TrackMapKeyPair.first = HLoc + RightStep;
+    TrackMapKeyPair.second = VLoc;
+    TrackMapPtr = TrackMap.find(TrackMapKeyPair);
+    if(AllRoutes->GetRouteTypeAndNumber(23, TrackMapPtr->second, 0, DummyRouteNumber) != TAllRoutes::NoRoute)//use 0 for LinkPos, only 1 track element so 0 or 1 would be OK
+        {
+        Utilities->CallLogPop(1938);
+        return true;
+        }
+    if(TrackElementAt(870, TrackMapPtr->second).TrainIDOnElement != -1)
+        {
+        TrainPresent = true;
+        Utilities->CallLogPop(1939);
+        return true;
+        }
+    RightStep++;
+    }
+Utilities->CallLogPop(1940);
+return false;
 }
 
 //---------------------------------------------------------------------------
@@ -5032,7 +6204,7 @@ if(LNPendingList.size() != 1)
 while(!LNPendingList.empty())
     {
     TTrackVectorIterator CurrentElement = GetTrackVectorIteratorFromNamePosition(1, LNPendingList.front());
-    int NewElement;
+    int NewElement = 2000000000;//marker for unused
     int H = CurrentElement->HLoc;
     int V = CurrentElement->VLoc;
     int Tag = CurrentElement->SpeedTag;
@@ -5116,6 +6288,24 @@ while(!LNPendingList.empty())
             if(AdjElement(8, H + Tag131Array[x][0], V + Tag131Array[x][1], Tag131Array[x][2], NewElement))
                 {
                 LNPendingList.insert(LNPendingList.end(), NewElement);
+                }
+            }
+        }
+    //below new at v1.1.0
+    if(NewElement != 2000000000) //adjacent element found & new element inserted, check if a (different) name already allocated and if so erase it
+                                 //from text vector
+        {
+        int HPos, VPos; //not used but needed for FindText function
+        if(NewElement > -1)
+            {
+            AnsiString ExistingName = InactiveTrackElementAt(118, NewElement).LocationName;
+            if((ExistingName != "") && (ExistingName != LocationName))
+                {
+                if(LocationNameMultiMap.find(ExistingName) == Track->LocationNameMultiMap.end()) {} //name not in LocationNameMultiMap, so don't erase from TextVector
+                else if(TextHandler->FindText(4, ExistingName, HPos, VPos))//can't use 'EraseLocationNameText' as that function is in TInterface
+                    {
+                    if(TextHandler->TextErase(10, HPos, VPos)) {;} //condition not used
+                    }
                 }
             }
         }
@@ -5355,13 +6545,27 @@ return false;
 
 //---------------------------------------------------------------------------
 
-bool TTrack::LocationNameAllocated(int Caller, AnsiString LocationName)
+bool TTrack::LocationNameAllocated(int Caller, AnsiString LocationName) //true if a non-empty LocationName found in LocationNameMultiMap
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LocationNameAllocated," + LocationName);
+if(Track->LocationNameMultiMap.find(LocationName) != Track->LocationNameMultiMap.end())
+    {
+    Utilities->CallLogPop(1953);
+    return true;
+    }
+Utilities->CallLogPop(1954);
+return false;
+}
+
+//---------------------------------------------------------------------------
+
+bool TTrack::TimetabledLocationNameAllocated(int Caller, AnsiString LocationName)
 /*
 Examines ActiveTrackElementNameMap and returns true if the LocationName is found and isn't "" (used to use LocationNameMultiMap)
 */
 
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LocationNameAllocated," + LocationName);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TimetabledLocationNameAllocated," + LocationName);
 if(LocationName == "")
     {
     Utilities->CallLogPop(577);
@@ -7212,9 +8416,24 @@ throw Exception("Error, failure in GetExitPos");//should never reach here
 }
 
 //----------------------------------------------------------------------------
-//PrefDir & Route functions
-//---------------------------------------------------------------------------
 
+void TTrack::PopulateLCVector(int Caller)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller));
+LCVector.clear();
+for(unsigned int x=0; x<InactiveTrackVector.size(); x++)
+    {
+    if(InactiveTrackVector.at(x).TrackType == LevelCrossing)
+        {
+        LCVector.push_back(x);
+        }
+    }
+Utilities->CallLogPop(1931);
+return;
+}
+
+//---------------------------------------------------------------------------
+//PrefDir & Route functions
 //---------------------------------------------------------------------------
 
 int TOnePrefDir::LastElementNumber(int Caller) const
@@ -9305,6 +10524,13 @@ else
         }
     }
 
+if(Track->IsLCAtHV(18, HLoc, VLoc))
+    {
+    TrainController->StopTTClockMessage(73, "Can't start a route on a level crossing");
+    Utilities->CallLogPop(1909);
+    return false;
+    }
+
 //check if selected a train & disallow if so
 if(TrackElement.TrainIDOnElement > -1)
     {
@@ -9526,6 +10752,8 @@ so return false, with an appropriate message if ConsecSignalsRoute set.
 {
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetNextPreferredRouteElement," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString((short)AutoSigsFlag));
 int EndPosition;//the position selected
+Track->LCFoundInAutoSigsRoute = false;
+Track->LCFoundInAutoSigsRouteMessageGiven = false;
 TotalSearchCount = 0;
 ReqPosRouteID = IDInt(-1);//default value for not used
 TTrackElement TrackElement;
@@ -9534,6 +10762,13 @@ TPrefDirElement EndElement1, EndElement2, BlankElement;//all blank to begin with
 if(!(Track->FindNonPlatformMatch(8, HLoc, VLoc, EndPosition, TrackElement)))//return if can't find one
     {
     Utilities->CallLogPop(214);
+    return false;
+    }
+
+if(Track->IsLCAtHV(19, HLoc, VLoc))
+    {
+    TrainController->StopTTClockMessage(72, "Can't end a route on a level crossing");
+    Utilities->CallLogPop(1908);
     return false;
     }
 
@@ -9731,7 +10966,7 @@ if(StartSelectionRouteID > -1)
         Utilities->CallLogPop(227);
         return true;
         }
-    else if(ConsecSignalsRoute) TrainController->StopTTClockMessage(30, "Unable to set a route to the selected element - may be unreachable, blocked by a train or another route, too far ahead, or invalid.");
+    else if(ConsecSignalsRoute && !Track->LCFoundInAutoSigsRouteMessageGiven) TrainController->StopTTClockMessage(30, Track->RouteFailMessage);
     Utilities->CallLogPop(228);
     return false;
     }
@@ -9753,7 +10988,7 @@ else
             }
         else
             {
-            TrainController->StopTTClockMessage(31, "Unable to set a route to the selected element - may be unreachable, blocked by a train or another route, too far ahead, or invalid.");
+            if(!Track->LCFoundInAutoSigsRouteMessageGiven) TrainController->StopTTClockMessage(31, Track->RouteFailMessage);
             Utilities->CallLogPop(230);
             return false;
             }
@@ -9772,7 +11007,7 @@ else
             }
         else
             {
-            TrainController->StopTTClockMessage(32, "Unable to set a route to the selected element - may be unreachable, blocked by a train or another route, too far ahead, or invalid.");
+            if(!Track->LCFoundInAutoSigsRouteMessageGiven) TrainController->StopTTClockMessage(32, Track->RouteFailMessage);
             Utilities->CallLogPop(232);
             return false;
             }
@@ -9850,7 +11085,7 @@ else
             }
         }
     }
-TrainController->StopTTClockMessage(33, "Unable to set a route to the selected element - may be unreachable, blocked by a train or another route, too far ahead, or invalid.");
+if(!Track->LCFoundInAutoSigsRouteMessageGiven) TrainController->StopTTClockMessage(33, Track->RouteFailMessage);
 Utilities->CallLogPop(235);
 return false;
 }
@@ -9950,6 +11185,16 @@ TPrefDirElement PrefDirElement1, PrefDirElement2, BlankElement;
 bool FirstPass = true;
 while(true)
     {
+    if(AutoSigsFlag && Track->IsLCAtHV(24, PrefDirElement.HLoc, PrefDirElement.VLoc))
+        {
+        Track->LCFoundInAutoSigsRoute = true;
+        }
+    if(Track->IsLCBarrierFlashingAtHV(1, PrefDirElement.HLoc, PrefDirElement.VLoc))//can't set a route through a flashing barrier
+        {
+        for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
+        Utilities->CallLogPop(1926);
+        return false;
+        }
     if(PrefDirElement.Config[PrefDirElement.XLinkPos] == End)//buffers or continuation
         {
         for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
@@ -10128,6 +11373,17 @@ while(true)
             {
             PrefDirElement1.ConsecSignals = true;
             }
+        if(Track->LCFoundInAutoSigsRoute)
+            {
+            if(!Track->LCFoundInAutoSigsRouteMessageGiven)
+                {
+                TrainController->StopTTClockMessage(76, "Can't create an automatic signal route through a level crossing");
+                Track->LCFoundInAutoSigsRouteMessageGiven = true;
+                }
+            for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
+            Utilities->CallLogPop(1928);
+            return false;
+            }
         SearchVector.push_back(PrefDirElement1);//must be 1 as it's a simple element
         VectorCount++; //not really needed but include for tidyness
         TotalSearchCount++;
@@ -10196,6 +11452,17 @@ while(true)
 //recursive search at XLinkPos of SearchPos1 (i.e. 'set' trailing exit)
             if(SearchForPreferredRoute(6, SearchElement, SearchPos1, RequiredPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition, AutoSigsFlag))
                 {
+                if(Track->LCFoundInAutoSigsRoute)
+                    {
+                    if(!Track->LCFoundInAutoSigsRouteMessageGiven)
+                        {
+                        TrainController->StopTTClockMessage(77, "Can't create an automatic signal route through a level crossing");
+                        Track->LCFoundInAutoSigsRouteMessageGiven = true;
+                        }
+                    for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
+                    Utilities->CallLogPop(1929);
+                    return false;
+                    }
                 Utilities->CallLogPop(250);
                 return true;
                 }
@@ -10248,6 +11515,17 @@ while(true)
 //recursive search at XLinkPos of SearchPos2 (i.e. 'unset' trailing exit)
         if(SearchForPreferredRoute(7, SearchElement, SearchPos2, RequiredPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition, AutoSigsFlag))
             {
+            if(Track->LCFoundInAutoSigsRoute)
+                {
+                if(!Track->LCFoundInAutoSigsRouteMessageGiven)
+                    {
+                    TrainController->StopTTClockMessage(78, "Can't create an automatic signal route through a level crossing");
+                    Track->LCFoundInAutoSigsRouteMessageGiven = true;
+                    }
+                for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
+                Utilities->CallLogPop(1930);
+                return false;
+                }
             Utilities->CallLogPop(1592);
             return true;
             }
@@ -10301,16 +11579,16 @@ if new route non-autosig and existing route autosig, drop the final search eleme
 Check if StartSelectionRouteID set (extending an existing route) and if so proceed as follows:-
 if both new and existing routes non-autosig, then add the new route to the existing route (start element not stored in searchvector);
 if both new and existing routes autosig, then add the new route to the existing route (start element not stored in searchvector);
-in both the above cases validate the extended route, then call SetRouteSignalsAndPoints(0) for the extended route and return.
+in both the above cases validate the extended route, then call SetRoutePoints & SetRouteSignals for the extended route and return.
 if new route autosig and existing route non-autosig, remove the last route element from the existing route, make it an AutoSig element,
-    then add it to the start of the new route, then check its validity, enter it into the AllRoutesVector, call SetRouteSignalsAndPoints(1)
+    then add it to the start of the new route, then check its validity, enter it into the AllRoutesVector, call SetRoutePoints & SetRouteSignals
     for the new route and return;
 if new route non-autosig and existing route autosig, leave the existing route as it is, check its validity, then just enter the new
-route into the AllRoutesVector, finally call SetRouteSignalsAndPoints(2) for the new route and return.
+route into the AllRoutesVector, finally call SetRoutePoints & SetRouteSignals for the new route and return.
 
 If not returned by now the route in SearchVector is to be added as a new route, so check its validity, create a new route using
-StoreOneRoute, call SetRouteSignalsAndPoints() and return.  In practice the validity check, storage into AllRoutesVector and
-SetRouteSignalsAndPoints() call are combined for the above three cases.
+StoreOneRoute, call SetRoutePoints & SetRouteSignals and return.  In practice the validity check, storage into AllRoutesVector and
+SetRoutePoints & SetRouteSignals call are combined for the above three cases.
 */
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ConvertAndAddPreferredRouteSearchVector," + AnsiString(ReqPosRouteID.GetInt()) + "," + AnsiString((short)AutoSigsFlag));
 if(SearchVector.size() < 1)
@@ -10399,8 +11677,12 @@ if new route non-autosig and existing route autosig, leave the existing route as
             {
             throw Exception("Error - failed to validate extended route for preferred route");
             }
-        AllRoutes->GetModifiableRouteAtIDNumber(2, StartSelectionRouteID).SetRouteSignalsAndPoints(5);
-
+        AllRoutes->GetModifiableRouteAtIDNumber(2, StartSelectionRouteID).SetRoutePoints(0);
+        AllRoutes->GetModifiableRouteAtIDNumber(3, StartSelectionRouteID).SetRouteSignals(4);
+        if(!AutoSigsFlag)
+            {
+            AllRoutes->GetModifiableRouteAtIDNumber(7, StartSelectionRouteID).SetLCChangeValues(0, true);//ConsecSignalsRoute is true
+            }
         //now add the reinstated locked route if required and set signals accordingly
         if(AllRoutes->LockedRouteFoundDuringRouteBuilding)
             {
@@ -10445,7 +11727,12 @@ if(!ValidatePrefDir(5)) //validate PrefDir for all new route elements
     throw Exception("Error - failed to validate single route for preferred route");
     }
 AllRoutes->StoreOneRoute(1, this);
-AllRoutes->GetModifiableRouteAt(3, AllRoutes->AllRoutesSize() - 1).SetRouteSignalsAndPoints(6);//new addition
+AllRoutes->GetModifiableRouteAt(3, AllRoutes->AllRoutesSize() - 1).SetRoutePoints(1);//new addition
+AllRoutes->GetModifiableRouteAt(16, AllRoutes->AllRoutesSize() - 1).SetRouteSignals(5);//new addition
+if(!AutoSigsFlag)
+    {
+    AllRoutes->GetModifiableRouteAt(18, AllRoutes->AllRoutesSize() - 1).SetLCChangeValues(1, true);//ConsecSignalsRoute is true
+    }
 AllRoutes->CheckMapAndRoutes(2);//test
 Utilities->CallLogPop(257);
 }
@@ -10501,6 +11788,14 @@ if((TrackElement.TrackType == Points) || (TrackElement.TrackType == Bridge) || (
     Utilities->CallLogPop(259);
     return false;
     }
+
+if(Track->IsLCAtHV(21, HLoc, VLoc))
+    {
+    TrainController->StopTTClockMessage(74, "Can't start a route on a level crossing");
+    Utilities->CallLogPop(1910);
+    return false;
+    }
+
 //check if selected a train & disallow if so
 if(TrackElement.TrainIDOnElement > -1)
     {
@@ -10687,6 +11982,13 @@ if(EndPosition == StartRoutePosition)
     return false;
     }
 
+if(Track->IsLCAtHV(22, HLoc, VLoc))
+    {
+    TrainController->StopTTClockMessage(75, "Can't end a route on a level crossing");
+    Utilities->CallLogPop(1911);
+    return false;
+    }
+
 if((TrackElement.TrackType == Points) && !Callon)
     {
     if(!Callon) TrainController->StopTTClockMessage(44, "Can't select points, bridge or crossover when route building");//makes later adjacent route checks too complicated
@@ -10858,7 +12160,7 @@ if(StartSelectionRouteID > -1)
         }
     else
         {
-        if(!Callon) TrainController->StopTTClockMessage(52, "Unable to set a route to the selected element - may be unreachable, blocked by a train or another route, too far ahead, or invalid.");
+        if(!Callon) TrainController->StopTTClockMessage(52, Track->RouteFailMessage);
         Utilities->CallLogPop(282);
         return false;
         }
@@ -10881,7 +12183,7 @@ else //no starting route, so StartElement1 only has basic values set & is in Sea
             }
         else
             {
-            if(!Callon) TrainController->StopTTClockMessage(53, "Unable to set a route to the selected element - may be unreachable, blocked by a train or another route, too far ahead, or invalid.");
+            if(!Callon) TrainController->StopTTClockMessage(53, Track->RouteFailMessage);
             Utilities->CallLogPop(284);
             return false;
             }
@@ -10900,7 +12202,7 @@ else //no starting route, so StartElement1 only has basic values set & is in Sea
             }
         else
             {
-            if(!Callon) TrainController->StopTTClockMessage(54, "Unable to set a route to the selected element - may be unreachable, blocked by a train or another route, too far ahead, or invalid.");
+            if(!Callon) TrainController->StopTTClockMessage(54, Track->RouteFailMessage);
             Utilities->CallLogPop(286);
             return false;
             }
@@ -10937,7 +12239,7 @@ else //no starting route, so StartElement1 only has basic values set & is in Sea
             }
         }
     }
-if(!Callon) TrainController->StopTTClockMessage(55, "Unable to set a route to the selected element - may be unreachable, blocked by a train or another route, too far ahead, or invalid.");
+if(!Callon) TrainController->StopTTClockMessage(55, Track->RouteFailMessage);
 Utilities->CallLogPop(289);
 return false;
 }
@@ -10972,6 +12274,12 @@ Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) +
 int VectorCount = 0;
 while(true)
     {
+    if(Track->IsLCBarrierFlashingAtHV(2, CurrentTrackElement.HLoc, CurrentTrackElement.VLoc))//can't set a route through a flashing barrier
+        {
+        for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
+        Utilities->CallLogPop(1927);
+        return false;
+        }
     if(CurrentTrackElement.Config[XLinkPos] == End)//buffers or continuation
         {
         for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
@@ -11289,11 +12597,11 @@ Note that a single route cannot contain both AutoSig & non-AutoSig elements, eac
 has its own identity.  A single route can however have a mixture of Unrestricted and PreferredRoute elements
 
 Check if StartSelectionRouteID set (extending an existing route) and if so and if existing route non-autosig, then add the new route
-to the existing route (start element not stored in searchvector), call SetRouteSignalsAndPoints(7) for the extended route and return.
+to the existing route (start element not stored in searchvector), call SetRoutePoints & SetRouteSignals for the extended route and return.
 If the existing route is autosig, then leave the existing route as it is and continue as for routes that aren't linked to an existing
 route at the start.
 
-Check the validity of the route in SearchVector, and create a new route using StoreOneRoute.  Finally call SetRouteSignalsAndPoints(8)
+Check the validity of the route in SearchVector, and create a new route using StoreOneRoute.  Finally call SetRoutePoints & SetRouteSignals
 for the new route and return.
 */
 
@@ -11372,8 +12680,9 @@ if existing route autosig, leave the existing route as it is, and just enter the
             {
             throw Exception("Failed to validate extended route for nonpreferred route");
             }
-        AllRoutes->GetModifiableRouteAtIDNumber(5, StartSelectionRouteID).SetRouteSignalsAndPoints(9);
-
+        AllRoutes->GetModifiableRouteAtIDNumber(5, StartSelectionRouteID).SetRoutePoints(2);
+        AllRoutes->GetModifiableRouteAtIDNumber(6, StartSelectionRouteID).SetRouteSignals(6);
+        AllRoutes->GetModifiableRouteAtIDNumber(9, StartSelectionRouteID).SetLCChangeValues(2, false);//ConsecSignalsRoute is false
         //now add the reinstated locked route if required and set signals accordingly
         //shouldn't ever need to access this as the train that has caused the locked route will be ahead of the route to be added,
         //and it will have removed the route elements that it is standing on, but include in case there's some obscure condition
@@ -11412,19 +12721,47 @@ if(!ValidatePrefDir(8))//validate PrefDir for all new route elements
     throw Exception("Failed to validate single route for nonpreferred route");
     }
 AllRoutes->StoreOneRoute(2, this);
-AllRoutes->GetModifiableRouteAt(6, AllRoutes->AllRoutesSize()-1).SetRouteSignalsAndPoints(10);//new addition
+AllRoutes->GetModifiableRouteAt(6, AllRoutes->AllRoutesSize()-1).SetRoutePoints(3);//new addition
+AllRoutes->GetModifiableRouteAt(17, AllRoutes->AllRoutesSize()-1).SetRouteSignals(7);//new addition
+AllRoutes->GetModifiableRouteAt(19, AllRoutes->AllRoutesSize()-1).SetLCChangeValues(3, false);//ConsecSignalsRoute is false
 AllRoutes->CheckMapAndRoutes(4);//test
 Utilities->CallLogPop(309);
 }
 
 //---------------------------------------------------------------------------
 
-void TOneRoute::SetRouteSignalsAndPoints(int Caller) const
+void TOneRoute::SetRoutePoints(int Caller) const
 /*
 Examine each set of points in the route to see if entry or exit is via the straight or diverging trailing
 link, and set the attribute accordingly (don't need to worry about linked routes, points in those will have been set
 when they were created.
-Then set the signals as follows:-
+*/
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRoutePoints");
+if(!PrefDirVector.empty())
+    {
+    for(TPrefDirVectorConstIterator PrefDirPtr = (PrefDirVector.end() - 1); PrefDirPtr>=PrefDirVector.begin(); PrefDirPtr--)
+        {
+        if((PrefDirPtr->TrackType == Points) && ((PrefDirPtr->ELinkPos == 1) || (PrefDirPtr->XLinkPos == 1)))//1=straight trailing
+            {
+            Track->TrackElementAt(96, PrefDirPtr->TrackVectorPosition).Attribute = 0;//0=straight
+            Track->PlotPoints(3, Track->TrackElementAt(97, PrefDirPtr->TrackVectorPosition), Display, false);
+            }
+        if((PrefDirPtr->TrackType == Points) && ((PrefDirPtr->ELinkPos == 3) || (PrefDirPtr->XLinkPos == 3)))//3=diverging trailing
+            {
+            Track->TrackElementAt(98, PrefDirPtr->TrackVectorPosition).Attribute = 1;//1=diverging
+            Track->PlotPoints(4, Track->TrackElementAt(99, PrefDirPtr->TrackVectorPosition), Display, false);
+            }
+        }
+    }
+Utilities->CallLogPop(327);
+}
+
+//---------------------------------------------------------------------------
+
+void TOneRoute::SetRouteSignals(int Caller) const
+/*Used for new train additions in AddTrain and in route setting
+Set the signals as follows:-
 First check whether there is a linked forward route, and if so use FindForwardTargetSignalAttribute to work along it from the start
 until find a train (return Attribute = 0 & NextForwardLinkedRouteNumber = -1), a buffer (return Attribute = 1 &
 NextForwardLinkedRouteNumber = -1), a continuation (return Attribute = 3 & NextForwardLinkedRouteNumber = -1) or a forward-facing
@@ -11444,63 +12781,7 @@ SetAllRearwardsSignals (in its call to SetRearwardsSignalsReturnFalseForTrain) t
 as a green signal.
 */
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteSignalsAndPoints");
-if(!PrefDirVector.empty())
-    {
-    for(TPrefDirVectorConstIterator PrefDirPtr = (PrefDirVector.end() - 1); PrefDirPtr>=PrefDirVector.begin(); PrefDirPtr--)
-        {
-        if((PrefDirPtr->TrackType == Points) && ((PrefDirPtr->ELinkPos == 1) || (PrefDirPtr->XLinkPos == 1)))//1=straight trailing
-            {
-            Track->TrackElementAt(96, PrefDirPtr->TrackVectorPosition).Attribute = 0;//0=straight
-            Track->PlotPoints(3, Track->TrackElementAt(97, PrefDirPtr->TrackVectorPosition), Display, false);
-            }
-        if((PrefDirPtr->TrackType == Points) && ((PrefDirPtr->ELinkPos == 3) || (PrefDirPtr->XLinkPos == 3)))//3=diverging trailing
-            {
-            Track->TrackElementAt(98, PrefDirPtr->TrackVectorPosition).Attribute = 1;//1=diverging
-            Track->PlotPoints(4, Track->TrackElementAt(99, PrefDirPtr->TrackVectorPosition), Display, false);
-            }
-        }
-
-    //get target Attribute value, check first if there is a forward linked route
-    TPrefDirElement LastElement = GetFixedPrefDirElementAt(79, PrefDirSize() - 1);
-    TPrefDirElement FirstElement = GetFixedPrefDirElementAt(80, 0);
-    int ForwardLinkedRouteNumber, Attribute = 0;
-    if(LastElement.Conn[LastElement.XLinkPos] > -1)
-    //Note that LastElement can't be points but can be linked to points
-        {
-        if(AllRoutes->GetRouteTypeAndNumber(0, LastElement.Conn[LastElement.XLinkPos], LastElement.ConnLinkPos[LastElement.XLinkPos],
-                ForwardLinkedRouteNumber) != TAllRoutes::NoRoute)
-            {
-            if(ForwardLinkedRouteNumber > -1)
-                {
-                int NextForwardLinkedRouteNumber = -1;
-                while(!(AllRoutes->GetFixedRouteAt(60, ForwardLinkedRouteNumber).FindForwardTargetSignalAttribute(0, NextForwardLinkedRouteNumber, Attribute)))
-                    {
-                    ForwardLinkedRouteNumber = NextForwardLinkedRouteNumber;
-                    }
-        //if find a train before a signal then Attribute = 0, else if find end of route is a buffer then Attribute = 1, or a continuation then
-        //Attribute = 3, else if find signal then Attribute = (signal attribute + 1) up to a max value of 3.  All these return true, if find a
-        //forward linked route then the routenumber is set in NextForwardLinkedRouteNumber, Attribute = 0 & returns false.
-                }
-            }
-        }
-    int RouteNumber;
-    TAllRoutes::TRouteType RouteType = AllRoutes->GetRouteTypeAndNumber(1, GetFixedPrefDirElementAt(81, 0).TrackVectorPosition, GetFixedPrefDirElementAt(82, 0).XLinkPos, RouteNumber);
-    if(RouteType != TAllRoutes::NoRoute)// it will be, above only used to get RouteNumber, can choose any element in the route so use GetFixedPrefDirElementAt
-        {
-        AllRoutes->SetAllRearwardsSignals(1, Attribute, RouteNumber, PrefDirSize() - 1);
-        }
-    }
-Utilities->CallLogPop(327);
-}
-
-//---------------------------------------------------------------------------
-
-void TOneRoute::SetRouteSignalsOnly(int Caller) const
-/*As above but without point setting.  Used for new train additions in AddTrain
-*/
-{
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteSignalsOnly");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteSignals");
 if(!PrefDirVector.empty())
     {
     //get target Attribute value, check first if there is a forward linked route
@@ -11575,10 +12856,11 @@ Works forward through the route until finds:-
 (a) a train - Attribute = 0, NextForwardLinkedRouteNumber = -1 & returns true;
 (b) end of route at buffers - Attribute = 1, NextForwardLinkedRouteNumber = -1 & returns true;
 (c) end of route at continuation - Attribute = 3, NextForwardLinkedRouteNumber = -1 & returns true;
-(d) forward-facing signal - Attribute = 1 + signal attribute (max value of 3), NextForwardLinkedRouteNumber = -1 & returns true;
-(e) end of route not at any of foregoing and with no linked forward route - Attribute = 0, NextForwardLinkedRouteNumber = -1 &
+(d) level crossing with barriers not down - Attribute = 0, NextForwardLinkedRouteNumber = -1 & returns true;
+(e) forward-facing signal - Attribute = 1 + signal attribute (max value of 3), NextForwardLinkedRouteNumber = -1 & returns true;
+(f) end of route not at any of foregoing and with no linked forward route - Attribute = 0, NextForwardLinkedRouteNumber = -1 &
 returns true;
-(f) linked forward route - Attribute = 0, NextForwardLinkedRouteNumber = the routenumber of the forward route & returns false.
+(g) linked forward route - Attribute = 0, NextForwardLinkedRouteNumber = the routenumber of the forward route & returns false.
 */
 {
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FindForwardTargetSignalAttribute");
@@ -11608,6 +12890,15 @@ for(unsigned int x=0; x<PrefDirSize();x++)
         Attribute = 3;
         Utilities->CallLogPop(330);
         return true;
+        }
+    if(Track->IsLCAtHV(42, PrefDirVector.at(x).HLoc, PrefDirVector.at(x).VLoc))
+        {
+        if(!Track->IsLCBarrierDownAtHV(3, PrefDirVector.at(x).HLoc, PrefDirVector.at(x).VLoc))
+            {
+            Attribute = 0;
+            Utilities->CallLogPop(1950);
+            return true;
+            }
         }
     if(PrefDirVector.at(x).Config[PrefDirVector.at(x).XLinkPos] == Signal)
         {
@@ -11717,6 +13008,15 @@ if(!PrefDirVector.empty())
             Utilities->CallLogPop(334);
             return false;
             }
+        //if find an LC that is closed to trains (or flashing - may be extending an earlier route with flashing LCs) then reset
+        //the attribute to 0 so first signal behind the LC is red
+        if(Track->IsLCAtHV(20, PrefDirPtr->HLoc, PrefDirPtr->VLoc))
+            {
+            if(!Track->IsLCBarrierDownAtHV(1, PrefDirPtr->HLoc, PrefDirPtr->VLoc))
+                {
+                Attribute = 0;
+                }
+            }
 //now set signals, but skip the first position if it's a signal on an unrestricted route and truncating - otherwise the truncated signal
 //counts as the first red and the next rearwards signal becomes yellow, although it's the first in the route
         if(PrefDirPtr->Config[PrefDirPtr->XLinkPos] == Signal)
@@ -11732,6 +13032,7 @@ if(!PrefDirVector.empty())
                     Display->PlotOutput(17, Track->TrackElementAt(115, PrefDirPtr->TrackVectorPosition).HLoc * 16, Track->TrackElementAt(116, PrefDirPtr->TrackVectorPosition).VLoc * 16, EntryDirectionGraphicPtr);
                     }
                 if(Attribute < 3) Attribute++;
+                Display->Update();//update after recent plots
                 }
             }
         }
@@ -11770,7 +13071,7 @@ if(!ElementInRoute)
     Utilities->CallLogPop(336);
     return;
     }
-//it is in the route so continue, first look for a train
+//it is in the route so continue, first look for a train or a flashing level crossing
 for(int b=PrefDirSize()-1; b>=0; b--)
     {
     int TrainID = Track->TrackElementAt(117, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnElement;
@@ -11786,9 +13087,16 @@ for(int b=PrefDirSize()-1; b>=0; b--)
         Utilities->CallLogPop(337);
         return;
         }
-    else if((PrefDirVector.at(b).HLoc == HLoc) && (PrefDirVector.at(b).VLoc == VLoc))
+    if(Track->IsLCBarrierFlashingAtHV(3, PrefDirVector.at(b).HLoc, PrefDirVector.at(b).VLoc))
         {
-        break;//OK found element & no train in front
+        TrainController->StopTTClockMessage(79, "Can't cancel a route containing a level crossing that is changing state");
+        ReturnFlag = InRouteFalse;
+        Utilities->CallLogPop(1941);
+        return;
+        }
+    if((PrefDirVector.at(b).HLoc == HLoc) && (PrefDirVector.at(b).VLoc == VLoc))
+        {
+        break;//OK found truncate element & no train or flashing LC in front
         }
     }
 
@@ -11935,7 +13243,7 @@ This is used when a train enters a route set in the opposite direction of travel
 track is in a route).  The complete route is cancelled (but not linked routes), and all signals in the route are set to red.
 First all signals are set to red and replotted (without any route colours), then SetAllRearwardsSignals is called from the
 beginning of the route to set all linked rearwards route signals appropriately.  Then all elements are removed from the route
-and ForceCancelRouteFlag set (examined in Interface unit at each clock tick) to force a ClearandRebuildRailway to get rid of
+and RebuildRailwayFlag set (examined in Interface unit at each clock tick) to force a ClearandRebuildRailway to get rid of
 the route colours.
 */
 {
@@ -11960,7 +13268,7 @@ for(int c=PrefDirSize() - 1; c>=0; c--)//must use int for >= test to succeed whe
     {
     AllRoutes->RemoveRouteElement(6, LastElementPtr(6)->HLoc, LastElementPtr(7)->VLoc, LastElementPtr(8)->ELink);
     }
-AllRoutes->ForceCancelRouteFlag = true;//set to force a ClearandRebuildRailway at next clock tick if not in zoom-out mode
+AllRoutes->RebuildRailwayFlag = true;//set to force a ClearandRebuildRailway at next clock tick if not in zoom-out mode
 AllRoutes->CheckMapAndRoutes(9);//test
 TrainController->BaseTime = TDateTime::CurrentDateTime();
 TrainController->StopTTClockFlag = false;
@@ -11998,19 +13306,55 @@ TOneRoute has one member called RouteFlash) from the SearchVector.  TRouteFlashE
 TOneRoute.
 */
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteFlashValues," + AnsiString((short)AutoSigsFlag) + "," + AnsiString((short)ConsecSignalsRoute));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteAndLCChangeValues," + AnsiString((short)AutoSigsFlag) + "," + AnsiString((short)ConsecSignalsRoute));
 RouteFlash.RouteFlashVector.clear();
 TRouteFlashElement RouteFlashElement;
 for(unsigned int b=0;b<SearchVector.size();b++)
     {
+    int H = GetFixedSearchElementAt(11, b).HLoc;
+    int V = GetFixedSearchElementAt(12, b).VLoc;
     RouteFlashElement.OriginalGraphic = GetModifiableSearchElementAt(5, b).GetOriginalGraphicPtr();
     RouteFlashElement.OverlayGraphic = GetModifiableSearchElementAt(6, b).GetRouteGraphicPtr(AutoSigsFlag, ConsecSignalsRoute);
-    RouteFlashElement.HLoc = GetFixedSearchElementAt(11, b).HLoc;
-    RouteFlashElement.VLoc = GetFixedSearchElementAt(12, b).VLoc;
+    RouteFlashElement.HLoc = H;
+    RouteFlashElement.VLoc = V;
     RouteFlashElement.TrackVectorPosition = GetFixedSearchElementAt(13, b).TrackVectorPosition;
     RouteFlash.RouteFlashVector.push_back(RouteFlashElement);
     }
 Utilities->CallLogPop(348);
+}
+
+//---------------------------------------------------------------------------
+
+void TOneRoute::SetLCChangeValues(int Caller, bool ConsecSignalsRoute)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetLCChangeValues," + AnsiString((short)ConsecSignalsRoute));
+if(!PrefDirVector.empty())
+    {
+    for(TPrefDirVectorConstIterator PrefDirPtr = (PrefDirVector.end() - 1); PrefDirPtr>=PrefDirVector.begin(); PrefDirPtr--)
+        {
+        int H = PrefDirPtr->HLoc;
+        int V = PrefDirPtr->VLoc;
+    //check for any LCs that are closed to trains & set the flash values and store in the vector
+        if(Track->IsLCAtHV(39, H, V))
+            {
+            if(Track->IsLCBarrierUpAtHV(0, H, V))
+                {
+                Track->LCChangeFlag = true;
+                TTrack::TActiveLevelCrossing CLC; //constructor sets TrainPassed to false
+                CLC.HLoc = H;
+                CLC.VLoc = V;
+                CLC.StartTime = TrainController->TTClockTime;
+                CLC.BaseElementSpeedTag = PrefDirPtr->SpeedTag;
+                CLC.ChangeDuration = Track->LevelCrossingBarrierDownFlashDuration;
+                CLC.BarrierState = TTrack::Lowering;
+                CLC.ConsecSignals = ConsecSignalsRoute;
+                Track->SetLinkedLevelCrossingBarrierAttributes(1, H, V, 2); //set attr to 2 for changing state
+                Track->ChangingLCVector.push_back(CLC);
+                }
+            }
+        }
+    }
+Utilities->CallLogPop(1948);
 }
 
 //---------------------------------------------------------------------------
@@ -12020,7 +13364,7 @@ void TOneRoute::TRouteFlash::PlotRouteOverlay(int Caller)
 Class TRouteFlash is defined in TOneRoute, which has one member called RouteFlash.  This function
 checks first whether the OverlayPlotted flag is set and if not plots the OverlayGraphic for all
 elements in the RouteFlashVector, skipping any that a train is on.  Finally the OverlayPlotted flag
-is set.  The OverlayGraphic is set during TOneRoute::SetRouteFlashValues().
+is set.  The OverlayGraphic is set during TOneRoute::SetRouteAndLCChangeValues().
 */
 {
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TRouteFlash::PlotRouteOverlay");
@@ -12044,7 +13388,7 @@ void TOneRoute::TRouteFlash::PlotRouteOriginal(int Caller)
 Class TRouteFlash is defined in TOneRoute, which has one member called RouteFlash.  This function
 checks first whether the OverlayPlotted flag is set and if so plots the OriginalGraphic for all
 elements in the RouteFlashVector, skipping any that a train is on.  Finally the OverlayPlotted flag
-is reset.  The OriginalGraphic is set during TOneRoute::SetRouteFlashValues().
+is reset.  The OriginalGraphic is set during TOneRoute::SetRouteAndLCChangeValues().
 */
 {
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TRouteFlash::PlotRouteOriginal");
@@ -12131,7 +13475,7 @@ Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) +
 for(unsigned int a=0; a<AllRoutesSize(); a++)
     {
     TTruncateReturnType ReturnFlag;
-    RouteTruncateFlag = true;//used in SetRearwardsSignalsReturnFalseForTrain to skip continuation & buffer attribute change
+    RouteTruncateFlag = true;//used in SetRearwardsSignalsReturnFalseForTrain (called by GetRouteTruncateElement) to skip continuation & buffer attribute change
     GetModifiableRouteAt(7, a).GetRouteTruncateElement(0, HLoc, VLoc, ConsecSignalsRoute, ReturnFlag);
     RouteTruncateFlag = false;
     if(ReturnFlag == NotInRoute) continue;
@@ -12214,10 +13558,10 @@ return false;//none found
 TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndGraphics(int Caller, int TrackVectorPosition, int LinkPos, Graphics::TBitmap* &EXGraphicPtr,
         Graphics::TBitmap* &EntryDirectionGraphicPtr)
 /*
-Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit) and returns the appropriate route
-type - NoRoute, NotAutoSigsRoute, or AutoSigsRoute.  If element is in a route then the EXGraphicPtr is returned, and if either the start
-or end of a route then the correct EntryDirectionGraphicPtr is returned, else a transparent element is returned.  Function is used
-int TrainUnit for retaining AutoSigsRoutes but erasing others after train passes, and for picking up the correct background graphics
+Examines Route2MultiMap and if finds the element at TrackVectorPosition with LinkPos (can be entry or exit) returns the appropriate route
+type - NoRoute, NotAutoSigsRoute, or AutoSigsRoute.  If element not found then NoRoute is returned.  If element is in a route then the EXGraphicPtr
+is returned, and if either the start or end of a route then the correct EntryDirectionGraphicPtr is returned, else a transparent element is returned.
+Function is used in TrainUnit for retaining AutoSigsRoutes but erasing others after train passes, and for picking up the correct background graphics
 for replotting of AutoSigsRoutes.
 */
 {
@@ -12552,7 +13896,7 @@ Utilities->CallLogPop(394);
 
 void TAllRoutes::StoreOneRouteAfterSessionLoad(int Caller, TOneRoute *Route)
 /*
-A new (empty apart from RouteID) TOneRoute is added to the AllRoutesVector after a session load. For this the RoutID
+A new (empty apart from RouteID) TOneRoute is added to the AllRoutesVector after a session load. For this the RouteID
 that is already in Route is used.
 */
 {
@@ -12649,6 +13993,7 @@ if(ItPair.first == ItPair.second)
     {
     throw Exception("Failed to find Route2MultiMap element at HLoc = " + (AnsiString)HLoc + " VLoc = " + (AnsiString)VLoc);
     }
+
 if(GetFixedRouteAt(111, ItPair.first->second.first).GetFixedPrefDirElementAt(132, ItPair.first->second.second).GetELink() == ELink)
     {
     ReturnPair.first = ItPair.first->second.first;
@@ -13096,6 +14441,7 @@ reference.  If no train is found before the beginning of the route is reached th
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetAllRearwardsSignals," + AnsiString(Attribute) + "," + AnsiString(RouteNumber) + "," + AnsiString(RouteStartPosition));
 TPrefDirElement FirstElement = GetFixedRouteAt(127, RouteNumber).GetFixedPrefDirElementAt(144, 0);
 int RearwardLinkedRouteNumber;
+Track->LCFoundInRouteBuildingFlag = false;//only examined for the new route segment, not for linked routes
 if(GetFixedRouteAt(128, RouteNumber).SetRearwardsSignalsReturnFalseForTrain(1, Attribute, RouteStartPosition))//updates Attribute to 1+ final
                                                                             //signal value in the route for use in further linked routes
     {
@@ -13105,6 +14451,8 @@ if(GetFixedRouteAt(128, RouteNumber).SetRearwardsSignalsReturnFalseForTrain(1, A
                 RearwardLinkedRouteNumber) != TAllRoutes::NoRoute)
             {
             if(!(GetFixedRouteAt(129, RearwardLinkedRouteNumber).SetRearwardsSignalsReturnFalseForTrain(2, Attribute, AllRoutes->GetFixedRouteAt(130, RearwardLinkedRouteNumber).PrefDirSize() - 1))) break;
+            //in above the RouteSettingFlag is set to false because this call is for routes that lie behind the route that is being set so don't want to
+            //flash LCs on those routes
             FirstElement = AllRoutes->GetFixedRouteAt(131, RearwardLinkedRouteNumber).GetFixedPrefDirElementAt(145, 0);
             }
         }
@@ -13135,7 +14483,10 @@ else
         }
     if(FoundTrain && (TrainPosition > 1))//if TrainPosition 1 or less then no route behind the train so can stop
         {
-        for(int x = TrainPosition; x >= 0; x--)//then step back from that position until find element behind the train....
+        for(int x = TrainPosition; x >= 0; x--)//then step back from that position until find element behind the train - ignore any
+        //signals that the train itself is straddling, need the first signal behind the train to be set to red, when the train passes
+        //the signal it's straddling the rearwards signals will be reset again.  Even if there are two or more trains adjacent still
+        //need the element behind the rearmost train.
             {
             TPrefDirElement PrefDirElement = GetFixedRouteAt(133, RouteNumber).GetFixedPrefDirElementAt(147, x);
             TTrackElement TrackElement = Track->TrackElementAt(161, PrefDirElement.TrackVectorPosition);
@@ -13156,7 +14507,7 @@ else
         if(BehindTrain) //then carry out a recursive rearward signal setting behind the train &
                         //so on for as many trains as there are on the single route
             {
-            SetAllRearwardsSignals(7, 0, RouteNumber, BehindTrainPosition);
+            SetAllRearwardsSignals(7, 0, RouteNumber, BehindTrainPosition);//false because can't set a route where there is a train
             //first signal behind train to be red
             }
         }
@@ -13168,7 +14519,7 @@ Utilities->CallLogPop(411);
 
 bool TAllRoutes::RouteLockingRequired(int Caller, int RouteNumber, int RouteTruncatePosition)
 {
-/* Locked if a train within 3 signals back from truncate point (on the route itself or any linked routes, or on the element
+/* Locked if a moving train within 3 signals back from truncate point (on the route itself or any linked routes, or on the element
 immediately before the start of the route or linked route - this because train cancels route elements that it touches) unless
 first signal is red, then OK
 */
@@ -13192,8 +14543,16 @@ while(ExamineRoute)
             }
         if(TrainID > -1)
             {
-            Utilities->CallLogPop(412);
-            return true;
+            if(!TrainController->TrainVectorAtIdent(36, TrainID).Stopped())
+                {
+                Utilities->CallLogPop(412);
+                return true;
+                }
+            else
+                {
+                Utilities->CallLogPop(1961);
+                return false;
+                }
             }
         if(PrefDirElement.Config[PrefDirElement.XLinkPos] == Signal)//XLinkPos because signal has to be facing same direction as PrefDir to count
             {
@@ -13237,8 +14596,16 @@ while(ExamineRoute)
             }
         if(TrainID > -1)
             {
-            Utilities->CallLogPop(748);
-            return true;
+            if(!TrainController->TrainVectorAtIdent(37, TrainID).Stopped())
+                {
+                Utilities->CallLogPop(748);
+                return true;
+                }
+            else
+                {
+                Utilities->CallLogPop(1962);
+                return false;
+                }
             }
         ExamineRoute = false;
         }

@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <list>
 #include <utility> //for pair
 
-#define FirstUnusedSpeedTagNumber 144 //defined value for use in array sizing etc
+#define FirstUnusedSpeedTagNumber 145 //defined value for use in array sizing etc
 #define DefaultTrackLength 100
 #define DefaultTrackSpeedLimit 200
 
@@ -54,8 +54,8 @@ bool operator() (const THVPair& lower, const THVPair& higher) const;//HLoc  VLoc
 enum TTrackType {Simple, Crossover, Points, Buffers, Bridge, SignalPost, Continuation, Platform, //describes the type of track element
         GapJump, Footbridge, Unused,//'unused' was marker the for old 'text' number, since disused
         Concourse, Parapet, NamedNonStationLocation,//these 3 as well as Platform are the 4 types of inactive element
-        Erase};//default active element used for erasing, all data members unset
-
+        Erase,//default active element used for erasing, all data members unset
+        LevelCrossing};
 enum TConfiguration {NotSet, Connection, End, Gap, Lead, Trail, CrossConn, Under, Signal}; //describes the type of track link
                                                                                            //'End' is used for both buffer stop and
                                                                                            //continuation entry/exit positions
@@ -114,6 +114,7 @@ class TTrackElement : public TFixedTrackPiece  //Basic track elements as impleme
     int Attribute; //special variable used only for points & signals, ignored otherwise
         //points:  0=set to go straight, 1=set to diverge; where both legs diverge 0=set to left fork
         //signals:  0=red; 1=yellow; 2=double yellow; 3 = green;
+        //Level crossing: 0 = raised barriers = closed to trains; 1 = lowered barriers = open to trains; 2 = changing state = closed to trains
     int Conn[4]; //connecting element position in TrackVector, set to -1 if no connecting link or if track not linked
     int ConnLinkPos[4]; //connecting element link position (i.e. array positions of the connecting element links, in same order as Link[4])
     int HLoc, VLoc; //The h & v locations in the railway (top lh corner of the first build screen = 0,0)
@@ -289,6 +290,28 @@ constructor, and SourceRect & HPos & VPos that were set in SetScreenHVSource.
     ~TGraphicElement(); //destructor
     };
 
+//---------------------------------------------------------------------------
+
+class IDInt //this was introduced when it was decided to have a route identification number for each route rather than using the vector
+    //position number for identifying existing routes that were being extended during route building.  Using vector position numbers
+    //meant that these identification numbers had to be changed when existing routes were erased by trains passing over them.  IDInt is
+    //used for StartSelectionRouteID and ReqPosRouteID (see TAllRoutes) and ensures that any confusion with the old vector position
+    //numbers is picked up by the compiler. Note that the route's RouteID value is an 'int', not an 'IDInt', 'IDInt' is only used for
+    //StartSelectionRouteID and ReqPosRouteID
+{
+private:
+int InternalInt; //the internal integer value represented by IDInt
+
+public:
+//all inline
+int GetInt() const {return InternalInt;} //return the internal integer
+bool operator ==(IDInt Comparator) {return (InternalInt == Comparator.InternalInt);} //equality comparator
+bool operator >(int Comparator) {return (InternalInt > Comparator);} //greater than comparator
+explicit IDInt::IDInt(int Int) {InternalInt = Int;} //constructor that sets the internal integer to the input value. The 'explicit' prefix
+    //is used to force a compiler error if the input value is an IDInt, which would be a program error (otherwise it would be implicitly
+    //converted to an int)
+IDInt::IDInt() {InternalInt = -1;} //default constructor, internal integer set to -1
+};
 
 //---------------------------------------------------------------------------
 //Track
@@ -332,10 +355,43 @@ left in.
     int Tag130Array[8][3];
     int Tag131Array[4][3];
 
-    Set<int, 1, 130> TopPlatAllowed, BotPlatAllowed, LeftPlatAllowed, RightPlatAllowed, NameAllowed; //sets of valid TrackElements for
+    Set<int, 1, 130> TopPlatAllowed, BotPlatAllowed, LeftPlatAllowed, RightPlatAllowed, NameAllowed, LevelCrossingAllowed; //sets of valid TrackElements for
                                                                                                      //placement of platforms and
                                                                                                      //non-station named locations
     public:
+
+    enum TBarrierState {Raising, Lowering, Up, Down}; //state of barriers
+
+    class TActiveLevelCrossing //values for level crossings either changing state or with barriers down
+    //All LCs begin with barriers raised. i.e. closed to trains, that is the normal state.  When a route is set through an LC nothing happens until the
+    //route is set, then an active LC object is created by SetLCChangeValues (called by ConvertandAdd....  for lowering barriers) and added to the
+    //ChangingLCVector.  Once created 'FlashingGraphics' takes care of the flashing, until the duration is reached.  While flashing no further routes
+    //can be set through that LC and the first route can't be cancelled, hence the flashing only needs to cater for plotting the route on the one track that
+    //started the barrier lowering.  When the duration is reached, the object is transferred to a new vector BarriersDownVector, after the StartTime has been
+    //reset (to time the period for which the barriers are down - penalties are given for > 3 minutes), BarrierState changed to Down, and the object erased
+    //from ChangingLCVector.  When there is no route through an LC and no train on the track then the barriers are raised - in ClockTimer2 - when the
+    //BarriersDownVector object is copied back to ChangingLCVector with a new StartTime, BarrierState and ChangeDuration.  Again FlashingGraphics takes care
+    //of the flashing until the duration is reached, when the object is erased from the vector and the LC reverts to its normal (barriers raised) state.
+        {
+        public:
+
+        bool ConsecSignals;         //route type - 0 = nonsignals, 1 = preferred direction (can't have autosigs)
+        bool TrainPassed;           //marker that is set when a train is present on one of the elements of the LC - used to provide a 3 minute penalty allowance
+        TBarrierState BarrierState; //state of barriers
+        float ChangeDuration;       //duration of the level crossing changing period
+        int BaseElementSpeedTag;    //SpeedTag value for the base element of a level crossing
+        int HLoc;                   //HLoc value for found level crossing element
+        int VLoc;                   //VLoc value for found level crossing element
+        TDateTime StartTime;        //stores the starting time for level crossing changing
+        TActiveLevelCrossing::TActiveLevelCrossing(); //constructor, sets default values
+        };
+
+    typedef std::vector<TActiveLevelCrossing> TActiveLCVector; //vector of changing level crossing objects.  Note that although a LC may contain several
+    //elements there will be only one in the vector when changing, and it might be any of the individual elements.  This is because when an entry
+    //is made all linked elements have their attributes changed to 2 for changing, so no more are found.  This applies both for closing & opening to trains
+
+    typedef std::vector<int> TLCVector; //vector of level crossing InactiveTrackVector positions - note that this contains all LC elements whether
+                                        //linked to others or not
 
     typedef std::vector<TTrackElement> TTrackVector; //vector of TrackElements
     typedef std::vector<TTrackElement>::iterator TTrackVectorIterator;
@@ -354,7 +410,7 @@ left in.
                                                                                                             //to 2 entries (platforms) at
                                                                                                             //a single location
 
-    typedef std::pair<unsigned int, unsigned int> TIMPair; //TrackElement pair type used for inactive elements
+    typedef std::pair<unsigned int, unsigned int> TIMPair; //TrackElement pair type used for inactive elements, values are vector positions
 
     typedef std::list<int> TLNPendingList;                   //type list of location name vector positions (see note below) used during
     typedef TLNPendingList::iterator TLNPendingListIterator; //naming of linked named location elements
@@ -394,18 +450,31 @@ left in.
     TSigElement SigTableTwoAspect[40]; //new at version 0.6 for two aspect
     TSigElement SigTableGroundSignal[40]; //new at version 0.6 for ground signals
 
+    AnsiString RouteFailMessage;
+
     bool ActiveTrackElementNameMapCompiledFlag; //indicates that the ActiveTrackElementNameMap has been compiled
     bool GapFlashFlag; //true when a pair of connected gaps is flashing
+    bool LCChangeFlag; //true when LCs changing
+    bool LCFoundInAutoSigsRoute; //true if found an LC during an automatic route search
+    bool LCFoundInAutoSigsRouteMessageGiven; //true if message given to user, to avoid giving multiple times and to avoid other failure messages being given
+    bool LCFoundInRouteBuildingFlag; //true if a route set through an LC that is closed to trains (& therefore needs to be opened)
     bool PointFlashFlag; //true when points are flashing during manual change
     bool RouteFlashFlag; //true while a route is flashing prior to being set
+
+    float LevelCrossingBarrierUpFlashDuration;//duration of the flash period when level crossing closing to trains
+    float LevelCrossingBarrierDownFlashDuration;//duration of the flash period when level crossing opening
+
     int FlipArray[FirstUnusedSpeedTagNumber]; //holds TrackElement SpeedTag values for 'flipping' via menu items 'Edit' & 'Flip'
     int GapFlashGreenPosition, GapFlashRedPosition;//TrackVectorPosition of the gap element that is flashing green or red
     int MirrorArray[FirstUnusedSpeedTagNumber]; //holds TrackElement SpeedTag values for 'mirroring' via menu items 'Edit' & 'Mirror'
     std::map<AnsiString, char> ContinuationNameMap; //map of all continuation names, char is a dummy
     TActiveTrackElementNameMap ActiveTrackElementNameMap; //map of active track element names
+    TActiveLCVector ChangingLCVector; //vector of values for changing level crossings - i.e. barriers in course of being raised or lowered
+    TActiveLCVector BarriersDownVector; //vector of LCs with barriers down
     TGapMap GapMap; //map of gaps (see type for more information above)
     TGraphicElement *GapFlashGreen, *GapFlashRed; //the red & green circle graphics used to show where the gaps are
     TInactiveTrack2MultiMap InactiveTrack2MultiMap; //multimap of inactive TrackElements (see type for more information above)
+    TLCVector LCVector; //vector of level crossing InactiveTrackVector positions
     TLNDone2MultiMap LNDone2MultiMap; //multimap of processed location name elements (see type for more information above)
     TLNPendingList LNPendingList; //list of location name elements awaiting processing (see type for more information above)
     TLocationNameMultiMap LocationNameMultiMap; //multimap of location names (see type for more information above)
@@ -421,7 +490,7 @@ left in.
                                                                                                        //file and for operation
     bool IsTrackFinished() {return TrackFinished;} //indicates whether or not the track has been successfully linked together
 
-    enum {FourAspectBuild, ThreeAspectBuild, TwoAspectBuild, GroundSignalBuild} SignalAspectBuildMode; //aspect mode for future signal additions 
+    enum {FourAspectBuild, ThreeAspectBuild, TwoAspectBuild, GroundSignalBuild} SignalAspectBuildMode; //aspect mode for future signal additions
 
     int GetGapHLoc() {return GapHLoc;} //return the respective values
     int GetGapVLoc() {return GapVLoc;}
@@ -449,6 +518,8 @@ left in.
 
 //externally defined functions
     bool ActiveMapCheck(int Caller, int HLoc, int VLoc, int SpeedTag); //used to check the validity of footbridge links
+    bool AnyLinkedLevelCrossingElementsWithRoutesOrTrains(int Caller, int HLoc, int VLoc, bool &TrainPresent); //true if a route or train present on
+        //any linked level crossing element
     bool AdjElement(int Caller, int HLoc, int VLoc, int SpeedTag, int &FoundElement); //used during location naming to check for adjacent
         //named elements to a given element at HLoc & VLoc with a specific SpeedTag, and if found allow that element to be inserted
         //into the LNPendingList for naming similarly
@@ -457,10 +528,11 @@ left in.
         //and if found allow that name to be used for this element and all other named elements that are linked to it
     bool BlankElementAt(int Caller, int At) const; //true for a blank (SpeedTag == 0) element at a specific Trackvector position,
         //no longer used after TrackErase changed (now EraseTrackElement) so that blank elements aren't used
+    bool CheckActiveLCVector(int Caller, std::ifstream &VecFile); //true if BarriersDownVector checks OK in SessionFile
     bool CheckFootbridgeLinks(int Caller, TTrackElement &TrackElement); //true if a footbridge is linked properly at both ends
-    bool CheckOldTrackElementsInFile(int Caller, std::ifstream& VecFile); //version of CheckTrackElementsInFile prior to its being updated,
-        //used when changes made to CheckTrackElementsInFile in order to allow existing saved railways to be loaded prior to resaving in
-        //the new format compatible with the new CheckTrackElementsInFile
+    bool CheckOldTrackElementsInFile(int Caller, int &NumberOfActiveElements, std::ifstream& VecFile); //version of CheckTrackElementsInFile
+        //prior to its being updated, used when changes made to CheckTrackElementsInFile in order to allow existing saved railways to be loaded prior
+        //to resaving in the new format compatible with the new CheckTrackElementsInFile
     bool CheckTrackElementsInFile(int Caller,  int &NumberOfActiveElements, std::ifstream& VecFile); //true if TrackElements in the file
         //are all valid
     bool ElementInLNDone2MultiMap(int Caller, int MapPos); //true if the element defined by MapPos is present in LNDone2MultiMap, used during
@@ -485,6 +557,10 @@ left in.
         //true if track at link positions [0] & [1] if FirstTrack true, else that at [2] & [3] in TrackElement has the default length
         //and speed limit, return true if so
     bool IsNamedNonStationLocationPresent(int Caller, int HLoc, int VLoc); //true if a non-station named location at HLoc & VLoc
+    bool IsLCAtHV(int Caller, int HLoc, int VLoc); //true if a level crossing is found at H & V
+    bool IsLCBarrierDownAtHV(int Caller, int HLoc, int VLoc); //true if an open (to trains) level crossing is found at H & V
+    bool IsLCBarrierUpAtHV(int Caller, int HLoc, int VLoc); //true if a closed (to trains) level crossing is found at H & V
+    bool IsLCBarrierFlashingAtHV(int Caller, int HLoc, int VLoc); //true if barrier is in process of opening or closing at H & V
     bool IsPlatformOrNamedNonStationLocationPresent(int Caller, int HLoc, int VLoc); //true if a non-station named location or platform
         //at HLoc & VLoc
     bool IsTrackLinked(int Caller); //true if track has been successfully linked (not used any more)
@@ -537,6 +613,8 @@ left in.
         //one or false if not
     bool ThisNamedLocationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos, int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos);
         //see above under 'OneNamedLocationLongEnoughForSplit'
+    bool TimetabledLocationNameAllocated(int Caller, AnsiString LocationName); //true if a non-empty LocationName found as a timetabled location name
+        //i.e. not as a continuation name
     bool TryToConnectTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool GiveMessages); //handles all tasks associated with track
         //linking, returns true if successful (see also LinkTrack & LinkTrackNoMessages above)
 
@@ -567,6 +645,10 @@ left in.
         //finds it the pointer TLocationNameMultiMapIterator is returned.  If it fails ErrorString is set to an appropriate text to allow
         //the calling function to report the error.  Otherwise it is set to "".
 
+    TTrackElement &GetInactiveTrackElementFromTrackMap(int Caller, int HLoc, int VLoc); //return a reference to the inactive element at HLoc & VLoc, if
+        //no element is found an error is thrown
+    TTrackElement &GetTrackElementFromTrackMap(int Caller, int HLoc, int VLoc); //return a reference to the element at HLoc & VLoc, if
+        //no element is found an error is thrown
     TTrackElement &InactiveTrackElementAt(int Caller, int At); //a range-checked version of InactiveTrackElement.at(At)
     TTrackElement &SelectVectorAt(int Caller, int At); //a range-checked version of SelectVector.at(At)
     TTrackElement &TrackElementAt(int Caller, int At); //a range-checked version of TrackElement.at(At)
@@ -617,6 +699,7 @@ left in.
         //GetScreenPositionsFromTruePos
     void LengthMarker(int Caller, TDisplay *Disp); //examine all elements in the TrackVector and if have a valid length mark the relevant
         //track using MarkOneLength
+    void LoadBarriersDownVector(int Caller, std::ifstream &VecFile); // load all BarriersDownVector values from SessionFile
     void LoadOldTrack(int Caller, std::ifstream &VecFile); //version of LoadTrack prior to its being updated, used when changes made to
         //LoadTrack in order to allow existing saved railways to be loaded prior to resaving in the new format compatible with the new
         //LoadTrack
@@ -628,6 +711,16 @@ left in.
         //called during track building or pasting, when an element identified by CurrentTag (i.e. its SpeedTag value) is to be placed at
         //position HLocInput & VLocInput.  If the element can be placed it is displayed and added to the relevant vector, and if named its
         //name is added to LocationNameMultiMap
+    void PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseElementSpeedTag, int HLoc, int VLoc, bool ConsecSignals, TDisplay *Disp); //just replot the basic track
+        //elements at a level crossing (for flashing)
+    void PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, bool ConsecSignals, TDisplay *Disp);
+        //plot & open (to trains) all level crossings linked to TrackElement
+    void PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp);//plot
+        //LC elements without any base elements, and set TempMarker true - used in ClearandRebuildRailway
+    void PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp);//plot
+        //LC elements without any base elements, and set TempMarker true - used in ClearandRebuildRailway
+    void PlotRaisedLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp); //plot & close (to trains) all level
+        //crossings linked to TrackElement
     void PlotGap(int Caller, TTrackElement TrackElement, TDisplay *Disp); //plots a gap on screen - may be set or unset
     void PlotPoints(int Caller, TTrackElement TrackElement, TDisplay *Disp, bool BothFillets); //plot points on screen according to how
         //they are set (Attribute value), or, with both fillets if BothFillets is true (the fillet is the bit that appears to move when
@@ -637,11 +730,12 @@ left in.
     void PlotSmallRailway(int Caller, TDisplay *Disp); //plot on screen the zoomed-out railway
     void PlotSmallRedGap(int Caller); //plot on screen in zoomed-out mode and in gap setting mode a small red square corresponding to
         //the gap position that is waiting to have its matching gap selected (see also ShowSelectedGap)
+    void PopulateLCVector(int Caller); //add all LCs to LCVector - note that this contains all LC elements whether linked to others or not
     void RebuildLocationNameMultiMap(int Caller); //clears the existing LocationNameMultiMap and rebuilds it from TrackVector and
         //InactiveTrackVector.  Called after the track is linked as many of the vector positions are likely to change - called from
         //RepositionAndMapTrack(); after names are changed in EraseLocationAndActiveTrackElementNames; and after the name changes in
         //EnterLocationName.
-    void RebuildTrack(int Caller, TDisplay *Disp, bool BothPointFillets); //called by TInterface::ClearandRebuildRailway to replot
+    void RebuildTrack(int Caller, TDisplay *Disp, bool BothPointFilletsAndBasicLCs); //called by TInterface::ClearandRebuildRailway to replot
         //all the active and inactive track elements, BothPointFillets indicates whether points are to be plotted according to how they
         //are set - for operation, or with both fillets - when not operating or during development (the fillet is the bit that appears to
         //move when points are changed)
@@ -650,8 +744,11 @@ left in.
         //non-train-present state of -1.  Called by TTrainController::UnplotTrains
     void ResetAnyNonMatchingGaps(int Caller); //called by EraseTrackElement after the element has been erased and the vector positions
         //changed, in order to reset a matching gaps if the erased element was a set gap
+    void ResetLevelCrossings(int Caller); //set all LC attributes to 0 (closed to trains)
     void ResetPoints(int Caller); //called on exit from operation to reset all points to non-diverging or to left fork (Attribute = 0)
     void ResetSignals(int Caller); //called on exit from operation to reset all signals to red (Attribute = 0)
+    void SaveChangingLCVector(int Caller, std::ofstream &OutFile); ////save all changing vector values (used for error file)
+    void SaveSessionBarriersDownVector(int Caller, std::ofstream &OutFile); //save all vector values to the session file
     void SaveTrack(int Caller, std::ofstream& VecFile); //save all active and inactive track elements to VecFile
     void SearchForAndUpdateLocationName(int Caller, int HLoc, int VLoc, int SpeedTag); //checks all locations that are adjacent to the
         //one entered for linked named location elements, and if any LocationName is found in any of the linked elements that name is
@@ -663,6 +760,8 @@ left in.
         //to default values - including both tracks for 2-track elements
     void SetElementID(int Caller, TTrackElement &TrackElement); //convert the position values for the TrackElement into an identification
         //string and load in ElementID
+    void SetLCAttributeAtHV(int Caller, int HLoc, int VLoc, int Attr); //set LC attribute at H & V; 0=closed to trains, 1 = open to trains, 2 = changing state = closed to trains
+    void SetLinkedLevelCrossingBarrierAttributes(int Caller, int HLoc, int VLoc, int Attr);//set linked LC attributes; 0=closed to trains, 1 = open to trains, 2 = changing state = closed to trains
     void SetStationEntryStopLinkPosses(int Caller); //called when trying to link track and when a name changed when track already linked.
         //Examines all track elements that have ActiveTrackElementName set, sums the number of consecutive elements with the same name,
         //and sets the EntryLink values for the front of train stop points for each direction.  For stations (not non-station named
@@ -835,29 +934,6 @@ void RebuildPrefDirVector(int Caller); //called after the track vector has been 
 
 //---------------------------------------------------------------------------
 
-class IDInt //this was introduced when it was decided to have a route identification number for each route rather than using the vector
-    //position number for identifying existing routes that were being extended during route building.  Using vector position numbers
-    //meant that these identification numbers had to be changed when existing routes were erased by trains passing over them.  IDInt is
-    //used for StartSelectionRouteID and ReqPosRouteID (see TAllRoutes) and ensures that any confusion with the old vector position
-    //numbers is picked up by the compiler. Note that the route's RouteID value is an 'int', not an 'IDInt', 'IDInt' is only used for
-    //StartSelectionRouteID and ReqPosRouteID
-{
-private:
-int InternalInt; //the internal integer value represented by IDInt
-
-public:
-//all inline
-int GetInt() const {return InternalInt;} //return the internal integer
-bool operator ==(IDInt Comparator) {return (InternalInt == Comparator.InternalInt);} //equality comparator
-bool operator >(int Comparator) {return (InternalInt > Comparator);} //greater than comparator
-explicit IDInt::IDInt(int Int) {InternalInt = Int;} //constructor that sets the internal integer to the input value. The 'explicit' prefix
-    //is used to force a compiler error if the input value is an IDInt, which would be a program error (otherwise it would be implicitly
-    //converted to an int)
-IDInt::IDInt() {InternalInt = -1;} //default constructor, internal integer set to -1
-};
-
-//---------------------------------------------------------------------------
-
 class TOneRoute : public TOnePrefDir //a descendent of TOnePrefDir used for routes.  Used during contruction of a route (ConstructRoute)
     //and also for all completed routes, when each route is saved as an entry in the AllRoutesVector (see TAllRoutes)
 {
@@ -884,10 +960,10 @@ class TRouteFlash //the flashing route
 
 static const int RouteSearchLimit = 30000; //limit to the number of elements searched in attempting to find a route
 
-IDInt StartSelectionRouteID; //the route ID number of the route that is being extended forwards during route building, note that this is
-    //not needed for session saves as routes in build are not saved in sessions
-IDInt ReqPosRouteID; //the route ID number of the route that is being extended backwards during route building, again not needed for
-    //session saves
+IDInt ReqPosRouteID; //the route ID number of the route that is being extended backwards during route building, not needed for
+    //session saves as routes in build are not saved in sessions
+IDInt StartSelectionRouteID; //the route ID number of the route that is being extended forwards during route building, not
+    //needed for session saves as routes in build are not saved in sessions
 
 int RouteID; //the ID number of the route, this is needed for session saves
 int StartRoutePosition; //TrackVectorPosition of the StartElement(s) set when the starting position of a new route is selected, note that
@@ -928,7 +1004,7 @@ bool SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirElement, int XLi
 bool SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribute, int PrefDirVectorStartPosition) const; //called by
     //TAllRoutes::SetAllRearwardsSignals to set rearwards signals from a specified starting position.  If a train is found during the
     //rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further
-    //rearwards signal aspects
+    //rearwards signal aspects.
 void ConvertAndAddNonPreferredRouteSearchVector(int Caller, IDInt ReqPosRouteID); //called after a non-preferred (i.e. unrestricted) route
     //has been selected and has finished flashing, to add it to the AllRoutesVector
 void ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPosRouteID, bool AutoSigsFlag); //called after a preferred
@@ -944,15 +1020,17 @@ void GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsR
     //(for not ConsecSignalsRoute & AutoSigsFlag not set), or part of route locked.
 void RouteImageMarker(int Caller, Graphics::TBitmap *Bitmap) const; //used when creating a bitmap image to display the route colours and
     //direction arrows (as on screen during operation) for an operating railway
+void SetLCChangeValues(int Caller, bool ConsecSignalsRoute); //after a route has been selected successfully this function sets all LC change values
+    //appropriately for the selected route type and location
 void SetRemainingSearchVectorValues(int Caller); //called when setting unrestricted routes to set the route element values appropriately
     //after a successful search has been conducted.  It isn't needed for preferred routes because the element values are obtained from the
     //already set preferred direction elements
-void SetRouteFlashValues(int Caller, bool AutoSigsFlag, bool ConsecSignalsRoute); //after a route has been selected successfully this
-    //function sets all RouteFlash (see above) values appropriately for the selected route type and location
+void SetRouteFlashValues(int Caller, bool AutoSigsFlag, bool ConsecSignalsRoute); //after a route has been selected successfully this function sets all
+    //RouteFlash (see above) values appropriately for the selected route type and location
 void SetRouteSearchVectorGraphics(int Caller, bool AutoSigsFlag, bool ConsecSignalsRoute); //set values for EXGraphicPtr and
     //EntryDirectionGraphicPtr for all elements in SearchVector so that the route displays with the correct colour
-void SetRouteSignalsAndPoints(int Caller) const; //called when setting a route to set all points and signal aspects appropriately
-void SetRouteSignalsOnly(int Caller) const; //similar to SetRouteSignalsAndPoints but only signal aspects are set.  Called when a new
+void SetRoutePoints(int Caller) const; //called when setting a route to set all points appropriately
+void SetRouteSignals(int Caller) const; //called when setting a route to set all points appropriately.  Also called when a new
     //train is added at a position where a route has been set, when it is necessary to set the next rearwards signal to red, the next
     //yellow etc
 };
@@ -1017,10 +1095,13 @@ unsigned int LockedRouteLastTrackVectorPosition;
 TDateTime LockedRouteLockStartTime;
 //end of locked route values
 
-bool ForceCancelRouteFlag; //this is set whenever a route has to be cancelled forcibly in order to force a ClearandRebuildRailway at the
+bool RebuildRailwayFlag; //this is set whenever a route has to be cancelled forcibly in order to force a ClearandRebuildRailway at the
     //next clock tick if not in zoom-out mode to clear the now cancelled route on the display
 bool RouteTruncateFlag; //used to flag the fact that a route is being truncated on order to change the behaviour of signal aspect
     //setting in SetRearwardsSignalsReturnFalseForTrain
+
+const float LevelCrossingBarrierUpDelay; //the full value in seconds for which the level crossing flashes prior to closing to trains
+const float LevelCrossingBarrierDownDelay; //the full value in seconds for which the level crossing flashes prior to opening to trains
 const float PointsDelay; //the value in seconds for which points flash prior to being changed.  Used for the points flash period when
     //changing points manually and for the route flash period when points have to be changed
 const float SignalsDelay; //the value in seconds for which signals flash prior to being changed.  Used for the route flash period when
@@ -1051,7 +1132,7 @@ bool IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(int Caller, in
     //with XLinkPos value is in a locked route and returns true if so together with the element itself copied to &PrefDirElement & the
     //LockedRouteVector position in &LockedVectorNumber
 bool LoadRoutes(int Caller, std::ifstream &InFile); //loads the routes from a session file
-bool RouteLockingRequired(int Caller, int RouteNumber, int RouteTruncatePosition); //route locking is required (returns true) if a train
+bool RouteLockingRequired(int Caller, int RouteNumber, int RouteTruncatePosition); //route locking is required (returns true) if a moving train
     //is within 3 signals back from the RouteTruncatePosition (on the route itself or on any linked routes, or on the element immediately
     //before the start of the route or linked route - this because train cancels route elements that it touches) unless the first signal is
     //red, then OK
@@ -1135,7 +1216,7 @@ void StoreOneRouteAfterSessionLoad(int Caller, TOneRoute *Route); //a new (empty
 void WriteAllRoutesToImage(int Caller, Graphics::TBitmap *Bitmap); //calls RouteImageMarker for each route in turn to display the route
     //colours and direction arrows on the bitmap image (as on screen during operation) for an operating railway
 
-TAllRoutes::TAllRoutes() : PointsDelay(2.5), SignalsDelay(0.5), ForceCancelRouteFlag(false) {;} //constructor
+TAllRoutes::TAllRoutes() : LevelCrossingBarrierUpDelay(10.0), LevelCrossingBarrierDownDelay(30.0), PointsDelay(2.5), SignalsDelay(0.5), RebuildRailwayFlag(false) {;} //constructor
 };
 
 //---------------------------------------------------------------------------

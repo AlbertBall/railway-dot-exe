@@ -1,6 +1,78 @@
 Development History
 ---------------------------------------------------------------------------
 
+VERSION CHANGES AFTER v1.1.0 for v1.1.0 (level crossing version)
+
+*level crossings added
+*mention routes allowed to be cancelled without locking if first train behind signal stopped
+*mention restricted screen grid & its extension
+*tidied up location naming functions: when combining two named locations the second name stayed on screen, and could give a timetabled location the same
+    name as a continuation
+*explain that although barriers don't shut over the track the display does, to make clear that trains shouldn't pass
+*improved appearance of diagonal ground signals, the sloping top didn't stand out well enough, better now
+*for help manual: can't cancel a route when LCs changing, or set a new route through a flashing LC
+*note, earlier versions will fail if try to load railways or sessions with LCs
+
+/add new graphics in dev guide
+/add SaveSessionBarriersDownVector, CheckBarriersDownVector & LoadBarriersDownVector to callerchecker list
+/add LCs to help files
+XMention in help no session save while LC changing - evident by button being blank
+Xdon't think the barrier down time allows for barriers still down at finish - since don't know whether a train would pass or not give benefit of
+    doubt & still give 3 mins allowance - no, won't make much difference so drop this
+/need to save barrier down vectors in session files else barriers stay down after trains pass
+Xmaybe also need to check for barriers down without being in vector & raise them, in case have overlooked any other circumstances? - maybe LoadTrack will
+    load as closed to trains & set attribute correctly so that if not listed in BarriersDownVector then will be closed to trains? OK, att attrs set to
+    0 on loading
+/ALSO session files won't save the barrier vectors, should take account of barrier down times at session save to calc proper penalty
+Xclear all flashing vectors at session load (no need, ResetAll does this as it calls case BaseMode)
+/consider allowing routes to be cancelled without locking if first train behind signal stopped
+/need to do a caller check after all complete for LCs
+/screen grid only displays over original screen area
+/check for any omitted logpops in changed .cpp files
+/new callers for PlotAndOpenLevelCrossing, PlotAndCloseLevelCrossing, IsOpenLCAtHV, IsLCAtHV, OpenLCAtHV, CloseLCAtHV, ResetLevelCrossings,
+/check for any additional functions as well as the above (do a .h comparison of all changed files since early development
+/for 'not enough information' in perf summary say 'no timetable arrivals or departures...'
+Xneed to check Interface.dfm, as changed at rev83 in trunk (probably just cosmetic)
+/for eraselocationnametext just erase named loc name, not other text
+/named locs that combine retain the 2nd name as text on screen when should be deleted automatically, check what happens with 3 or more
+    OK, added text erase function in EnterLocationName (OK for 3 or more)
+/check new text erases code extensively & only where needed
+/check can't start a train on a LC
+/don't allow a train to be created at a LC - need new condition in TTrainController::CheckStartPositionValidity
+/platforms can be placed where there are LCs
+/if set an autosigs route behind a route that is opening a barrier to trains then the signal behind the LC changes immediately - OK needed to check for
+    an LC with barriers up or changing in FindForwardTargetSignalAttribute
+/check code for only plotting items on the visible portion of the screen, ensure allows for different resolutions
+/when crash into LC & remove train the graphic doesn't display correctly - set the rebuildrailwayflag after the crash in TrainController->Operate
+    so that Clearand... is called to replot the LC correctly
+/test crash & penalty
+/check both route types for each type of track and for all types of LC - single, double & multiple in each track position + check all types of
+    extended routes
+/note: when extend a route, the points on the existing route flash white momentarily, but not if autosigs followed by non-autosigs - it's because
+    points are replotted for the whole route during SetRoutePoints when a same-type route extended.  No need to change, doesn't affect anything.
+/check all required LC vector values changed at each type of transition
+/improve graphics - darker brown?  check with all backgrounds
+/have a TrainPassed flag where any train passing sets it for the LC object, and if none passes the 3 mins allowance doesn't count
+/check that only the latest LC flashes for an extended route - OK
+/add a crash penalty + list in perf summary
+Xmaybe drop all base graphic plotting, route covered by route setting - no, needed during flashing
+/need to check correct penalties for excess barrier down time + correct perf file display
+/note: when running Bjorn's railway some of the single route elements didn't cancel - due to StartSelectionRouteID staying set after it's
+    cancelled - set back to -1 when cancelled (by either right or left mouse click) [maybe cancel in RevertToOriginalRouteSelector BUT
+    ensure this OK for all calls of this function] - OK, corrected this in RevertToOriginalRouteSelector
+/when select any area with LCs present the LCs vanish - due to Clearand...
+/have routeflashflag & consecsignals in one of plotLC functions but not other yet
+/for floating label - use clearand.. whenever label goes off & reset plotted flag
+/changed flashing points/routes & LCs to use timetable clock rather than real time, so when have message the flashing continues after as normal
+/    BUT need to stop flashing if pause
+/Started developing level crossings - new speedtag 144
+/review FirstUnusedSpeedTagNumber wherever appears & ensure all usages dealt with
+/check for diff background colours
+/try LCs with all background colours
+/can't change a LC with a route through it
+/need to check that LC attributes always as expected
+/need to plot flashing LCs off-screen & plot as single assignment, else get screen flashing
+/check all Sxx train starts & ensure 'Running' & TrainID set correctly for all (6 in all).
 
 VERSION CHANGES AFTER BETA V0.6c for RELEASE VERSION 1.0.0
 
@@ -41,9 +113,9 @@ VERSION CHANGES AFTER BETA V0.6 for BETA v0.6a
 
 *added facilities for handling different screen resolutions, 1024 x 768 recommended minimum
 amended manual/quick start guide/help file etc where resolution mentioned
-*corrected error notified by NajamUddin 17/01/11 & not see until 31/01.  Coding error when calling on and element at platform is points.
+*corrected error notified by NajamUddin 17/01/11 but email not seen until 31/01.  Coding error when calling on and element at platform is points.
 
-Note:  
+Note:
 Vertical pixel counts:
 Screen title: 18 for classic style, 26 for xp style} part of Interface that isn't available to other components
 Menu tabs: 20                                      }
@@ -750,16 +822,17 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 
 COPY SECTIONS:
 
-NEXT value for CallLogPop is 1896
-NEXT value for TrackElementAt is 865
-NEXT value for InactiveTrackElementAt is 100
-NEXT value for GetFixedRouteAt is 196
+NEXT value for CallLogPop is 1981
+NEXT value for TrackElementAt is 878
+NEXT value for InactiveTrackElementAt is 119
+NEXT value for GetFixedRouteAt is 197
 NEXT value for GetModifiableRouteAt is 16
 NEXT value for GetFixedPrefDirElementAt is 213
 NEXT value for ErrorLog is 195
 NEXT value for ClearandRebuildRailway is 68
 NEXT value for TrainVectorAt is 65
 NEXT value for SetLevel1Mode is 132
+NEXT value for PlotOutput is 239
 
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",," + AnsiString() + "," + AnsiString() + "," + AnsiString() + "," + AnsiString((short)));
 Utilities->CallLogPop();

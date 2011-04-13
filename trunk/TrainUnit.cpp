@@ -479,15 +479,15 @@ if(Straddle == MidLag)
     {
     if(MidElement > -1)
         {
-        PlotBackgroundGraphic(0, 0);
-        PlotBackgroundGraphic(1, 1);
+        PlotBackgroundGraphic(0, 0, Display);
+        PlotBackgroundGraphic(1, 1, Display);
         PlotAlternativeTrackRouteGraphic(2, MidElement, MidEntryPos, HOffset[0], VOffset[0], MidLag);
         PlotAlternativeTrackRouteGraphic(3, MidElement, MidEntryPos, HOffset[1], VOffset[1], LeadMidLag);//to force plot of locked route marker, needed once only for the element
         }
     if(LagElement > -1)
         {
-        PlotBackgroundGraphic(2, 2);
-        PlotBackgroundGraphic(3, 3);
+        PlotBackgroundGraphic(2, 2, Display);
+        PlotBackgroundGraphic(3, 3, Display);
         PlotAlternativeTrackRouteGraphic(4, LagElement, LagEntryPos, HOffset[2], VOffset[2], MidLag);
         PlotAlternativeTrackRouteGraphic(5, LagElement, LagEntryPos, HOffset[3], VOffset[3], LeadMidLag);//to force plot of locked route marker, needed once only for the element
         }
@@ -496,19 +496,19 @@ else if(Straddle == LeadMidLag)
     {
     if(LeadElement > -1)
         {
-        PlotBackgroundGraphic(4, 0);
+        PlotBackgroundGraphic(4, 0, Display);
         PlotAlternativeTrackRouteGraphic(6, LeadElement, LeadEntryPos, HOffset[0], VOffset[0], LeadMidLag);//to force plot of locked route marker, needed once only for the element
         }
     if(MidElement > -1)
         {
-        PlotBackgroundGraphic(5, 1);
-        PlotBackgroundGraphic(6, 2);
+        PlotBackgroundGraphic(5, 1, Display);
+        PlotBackgroundGraphic(6, 2, Display);
         PlotAlternativeTrackRouteGraphic(7, MidElement, MidEntryPos, HOffset[1], VOffset[1], MidLag);
         PlotAlternativeTrackRouteGraphic(8, MidElement, MidEntryPos, HOffset[2], VOffset[2], LeadMidLag);//to force plot of locked route marker, needed once only for the element
         }
     if(LagElement > -1)
         {
-        PlotBackgroundGraphic(7, 3);
+        PlotBackgroundGraphic(7, 3, Display);
         PlotAlternativeTrackRouteGraphic(9, LagElement, LagEntryPos, HOffset[3], VOffset[3], LeadMidLag);//to force plot of locked route marker, needed once only for the element
         }
     }
@@ -516,15 +516,15 @@ else if(Straddle == LeadMid)
     {
     if(LeadElement > -1)
         {
-        PlotBackgroundGraphic(8, 0);
-        PlotBackgroundGraphic(9, 1);
+        PlotBackgroundGraphic(8, 0, Display);
+        PlotBackgroundGraphic(9, 1, Display);
         PlotAlternativeTrackRouteGraphic(10, LeadElement, LeadEntryPos, HOffset[0], VOffset[0], MidLag);
         PlotAlternativeTrackRouteGraphic(11, LeadElement, LeadEntryPos, HOffset[1], VOffset[1], LeadMidLag);//to force plot of locked route marker, needed once only for the element
       }
     if(MidElement > -1)
         {
-        PlotBackgroundGraphic(10, 2);
-        PlotBackgroundGraphic(11, 3);
+        PlotBackgroundGraphic(10, 2, Display);
+        PlotBackgroundGraphic(11, 3, Display);
         PlotAlternativeTrackRouteGraphic(12, MidElement, MidEntryPos, HOffset[2], VOffset[2], MidLag);
         PlotAlternativeTrackRouteGraphic(13, MidElement, MidEntryPos, HOffset[3], VOffset[3], LeadMidLag);//to force plot of locked route marker, needed once only for the element
         }
@@ -623,6 +623,11 @@ if(!SignallerStoppingFlag) SignallerStopBrakeRate = 0;
 
 if(Crashed || Derailed)
     {
+    if(Crashed && Track->IsLCAtHV(41, Track->TrackElementAt(875, LeadElement).HLoc, Track->TrackElementAt(876, LeadElement).VLoc))
+        {
+        PlotTrain(7, Display); //replotted every cycle because of level crossing crashes, otherwise a flashing level crossing wipes out half of the train
+        Display->Update();
+        }
     Utilities->CallLogPop(1017);
     return;//no further action, user has to remove or work around
     }
@@ -649,6 +654,7 @@ if(!Stopped() && !SPADFlag)
 if((Straddle == LeadMid) && (LeadElement > -1) && (Track->TrackElementAt(, LeadElement).TrackType == Buffers)) StoppedAtBuffers = true;
 else StoppedAtBuffers = false;
 */
+
 //new version where crash if run into buffers
 if(!Crashed)
     {
@@ -673,6 +679,24 @@ if(!Crashed)
     else StoppedAtBuffers = false;
     }
 else StoppedAtBuffers = false;//if crashed don't want stopped at buffers set
+
+//also crash if run into a level crossing that is changing or has barriers up
+if(!Crashed)
+    {
+    if((Straddle == LeadMid) && (LeadElement > -1) && (ExitSpeedFull > 1))
+        {
+        int H = Track->TrackElementAt(873, LeadElement).HLoc;
+        int V = Track->TrackElementAt(874, LeadElement).VLoc;
+        if(Track->IsLCAtHV(40, H, V) && !Track->IsLCBarrierDownAtHV(2, H, V))
+            {
+            Crashed = true;
+            RailGraphics->ChangeForegroundColour(26, HeadCodePosition[0], HeadCodePosition[0], clB0G0R0, BackgroundColour);
+            PlotTrainWithNewBackgroundColour(47, clCrashedBackground, Display);//red
+            TrainController->LogActionError(54, HeadCode, "", FailLevelCrossingCrash, Track->TrackElementAt(877,LeadElement).ElementID);
+            //no need for missed action logs - will be sent when train removed
+            }
+        }
+    }
 
 if(StoppedAtBuffers && !BufferZoomOutFlashRequired && !StoppedAtLocation && !Crashed && !Derailed)
     {
@@ -995,6 +1019,9 @@ else
         }
     }
 
+//NEW for offscreen train plotting - don't need this
+//HiddenDisplay->Output->Picture->Bitmap->Assign(Display->Output->Picture->Bitmap);
+
 if((LeadElement > -1) && (MidElement > -1))
     {
     if((TrainMode == Signaller) && (Track->TrackElementAt(789, LeadElement).TrackType == Continuation))
@@ -1005,8 +1032,7 @@ if((LeadElement > -1) && (MidElement > -1))
         }
     }
 
-if(Stopped())//this is what prevents another movement if the train is stopped, and stop conditions are only set when
-//the train is fully on two elements - i.e. when this routine is entered with Straddle == LeadMidLag
+if(Stopped())//this is what prevents another movement if the train is stopped
     {
     BrakeRate = 0;
     Utilities->CallLogPop(656);
@@ -1416,7 +1442,7 @@ if(LagElement > -1)//not entering at a continuation so can deal with train leavi
                     }
                 TrainController->ContinuationAutoSigVector.push_back(ContinuationAutoSigEntry);
                 }
-            PlotBackgroundGraphic(14, 3);//need to plot this as returning early so will miss the later plot (not a bridge so don't need PlotAlternativeTrackRouteGraphic)
+            PlotBackgroundGraphic(14, 3, Display);//need to plot this as returning early so will miss the later plot (not a bridge so don't need PlotAlternativeTrackRouteGraphic)
             Display->Update(); //need to keep this since Update() not called for PlotSmallOutput as too slow
             Utilities->CallLogPop(659);
             return;
@@ -1475,7 +1501,7 @@ if(LagElement > -1)//not entering at a continuation so can deal with train leavi
         }
 
 //below are the actions required at both half moves for LagElement > -1
-    PlotBackgroundGraphic(12, 3);
+    PlotBackgroundGraphic(12, 3, Display);
 
     //if was in locked route but has timed out when train leaves then plot the normal track graphic over the route graphic that is
     //still in BackgroundGraphic[3], if wasn't in a route then will just replot the same BackgroundGraphic
@@ -1495,7 +1521,7 @@ if(LagElement > -1)//not entering at a continuation so can deal with train leavi
                 {
                 RailGraphics->ChangeSpecificColour(2, BackgroundPtr[3], BackgroundPtr[3], clB5G3R0, clB5G5R5);//only applies for AutoSigs Route,
                 }
-            PlotBackgroundGraphic(13, 3);
+            PlotBackgroundGraphic(13, 3, Display);
             }
         }
 
@@ -1610,7 +1636,11 @@ else//Straddle == LeadMidLag
         PlotTrainGraphic(5, 3, Display);
         }
     }
-if(Crashed)
+
+//NEW for offscreen train plotting - drop this
+//Display->Output->Picture->Bitmap->Assign(HiddenDisplay->Output->Picture->Bitmap);
+
+if(Crashed) //only reach here if crash into another train, if crash into buffers or an LC then return earlier at the if(Stopped()) test
     {
     RailGraphics->ChangeForegroundColour(0, HeadCodePosition[0], HeadCodePosition[0], clB0G0R0, BackgroundColour);
     PlotTrainWithNewBackgroundColour(7, clCrashedBackground, Display);//red
@@ -2063,6 +2093,16 @@ else
             else TempGraphic->Canvas->Draw(0, 0, TempElement.GraphicPtr);//draw track on top
             GraphicPtr->Canvas->CopyRect(DestRect, TempGraphic->Canvas, SourceRect);
             }
+        else if(Track->InactiveTrackElementAt(116, IMPair.first).TrackType == LevelCrossing)
+            {
+            TempGraphic->Assign(TempElement.GraphicPtr);
+            TempGraphic->Transparent = true;
+            TempGraphic->TransparentColor = Utilities->clTransparent;
+            //note that can't be an AutoSigsRoute
+            //now overlay the LC central portion
+            TempGraphic->Canvas->Draw(0, 0, RailGraphics->LCPlain);
+            GraphicPtr->Canvas->CopyRect(DestRect, TempGraphic->Canvas, SourceRect);
+            }
         else
             {
             TempGraphic->Assign(TempElement.GraphicPtr);
@@ -2115,9 +2155,9 @@ Utilities->CallLogPop(677);
 
 //---------------------------------------------------------------------------
 
-void TTrain::PlotBackgroundGraphic(int Caller, int ArrayNumber) const
+void TTrain::PlotBackgroundGraphic(int Caller, int ArrayNumber, TDisplay *Disp) const
 {
-Display->PlotOutput(30, ((Track->TrackElementAt(297, PlotElement[ArrayNumber]).HLoc * 16) + HOffset[ArrayNumber]),
+Disp->PlotOutput(30, ((Track->TrackElementAt(297, PlotElement[ArrayNumber]).HLoc * 16) + HOffset[ArrayNumber]),
             ((Track->TrackElementAt(298, PlotElement[ArrayNumber]).VLoc * 16) + VOffset[ArrayNumber]), BackgroundPtr[ArrayNumber]);
 }
 
@@ -2519,7 +2559,7 @@ siding then again emeregency braking may be necessary and a crash may result.
 If the train is due to stop then the function calculates the half and full times and speeds and returns.  However the calculation depends
 on the conditions at entry.  If the EntrySpeed is lower than MaxHalfSpeed and the EntryPos element is the one
 that the train has to stop at the end of, as it might be for example if train had been stopped at a signal and the next element is a
-buffer, then the train accelerates for half the element and brakes for the ither half.
+buffer, then the train accelerates for half the element and brakes for the other half.
 Now the BrakeRate is calculated (limited to the MaxBrakeRate), but if it is less than a value calculated at an earlier pass round
 the loop then it retains its earlier value (may be due to a close speed restriction that requires more braking than a more distant stop
 requirement).  The MaxExitSpeedAtHalfBraking (maximum speed at which the train can leave the current element and still stop when required
@@ -5710,6 +5750,7 @@ TTrainController::TTrainController()
     TotLatePassMins = 0;
     TotEarlyPassMins = 0;
     TotLateDepMins = 0;
+    ExcessLCDownMins = 0;
     TTClockTime = 0; //added for v0.6
     }
 
@@ -5744,7 +5785,7 @@ Utilities->Clock2Stopped = true;
 //new section dealing with Snt & Snt-sh additions
 //BUT don't add trains if points or route flashing [conditions added for Version 0.6 as a result of Najamuddin's error - 15/01/11] - wait until next
 //clock tick after stops flashing
-if((!Track->RouteFlashFlag) && (!Track->PointFlashFlag))
+if(!Track->RouteFlashFlag && !Track->PointFlashFlag)
     {
     for(unsigned int x=0;x<TrainDataVector.size();x++)
         {
@@ -5904,6 +5945,8 @@ if(!TrainVector.empty())
             //need above first because may also have ActionVectorEntryPtr == "Fer"
                 {
                 Train.UnplotTrain(9);
+                AllRoutes->RebuildRailwayFlag = true;//to force ClearandRebuildRailway at next clock tick if not in zoom-out mode, to replot LCs
+                //correctly after a crash
                 }
             else if(AVEntryPtr->Command == "Fer")
                 {
@@ -6185,7 +6228,7 @@ if(NewTrain->LeadElement > -1)
     {
     if(AllRoutes->GetRouteTypeAndNumber(13, NewTrain->LeadElement, NewTrain->LeadEntryPos, RouteNumber) == TAllRoutes::AutoSigsRoute)
         {
-        AllRoutes->GetFixedRouteAt(169, RouteNumber).SetRouteSignalsOnly(0);
+        AllRoutes->GetFixedRouteAt(169, RouteNumber).SetRouteSignals(0);
         }
     else if(RouteNumber > -1)//non-autosigsroute
         {
@@ -6201,14 +6244,14 @@ if(NewTrain->LeadElement > -1)
             {
             AllRoutes->RemoveRouteElement(17, TempPDE.HLoc, TempPDE.VLoc, TempPDE.GetELink());//remove the last element under LeadElement
             }
-        AllRoutes->ForceCancelRouteFlag = true;//to force ClearandRebuildRailway at next clock tick if not in zoom-out mode
+        AllRoutes->RebuildRailwayFlag = true;//to force ClearandRebuildRailway at next clock tick if not in zoom-out mode
         //now deal with a linked autosigs route
         if(Track->TrackElementAt(820, FirstTVPos).Conn[FirstELinkPos] > -1)
             {
             int LinkedRouteNumber = -1;
             if(AllRoutes->GetRouteTypeAndNumber(17, Track->TrackElementAt(821, FirstTVPos).Conn[FirstELinkPos], Track->TrackElementAt(822, FirstTVPos).ConnLinkPos[FirstELinkPos], LinkedRouteNumber) == TAllRoutes::AutoSigsRoute)
                 {
-                AllRoutes->GetFixedRouteAt(183, LinkedRouteNumber).SetRouteSignalsOnly(1);
+                AllRoutes->GetFixedRouteAt(183, LinkedRouteNumber).SetRouteSignals(1);
                 }
             }
         }
@@ -6218,7 +6261,7 @@ if(NewTrain->MidElement > -1)
     RouteNumber = -1;
     if(AllRoutes->GetRouteTypeAndNumber(14, NewTrain->MidElement, NewTrain->MidEntryPos, RouteNumber) == TAllRoutes::AutoSigsRoute)
         {
-        AllRoutes->GetFixedRouteAt(170, RouteNumber).SetRouteSignalsOnly(2);
+        AllRoutes->GetFixedRouteAt(170, RouteNumber).SetRouteSignals(2);
         }
     else if(RouteNumber > -1)//non-autosigsroute
         {
@@ -6234,14 +6277,14 @@ if(NewTrain->MidElement > -1)
             {
             AllRoutes->RemoveRouteElement(19, TempPDE.HLoc, TempPDE.VLoc, TempPDE.GetELink());//remove the last element under LeadElement
             }
-        AllRoutes->ForceCancelRouteFlag = true;//to force ClearandRebuildRailway at next clock tick if not in zoom-out mode
+        AllRoutes->RebuildRailwayFlag = true;//to force ClearandRebuildRailway at next clock tick if not in zoom-out mode
         //now deal with a linked autosigs route
         if(Track->TrackElementAt(823, FirstTVPos).Conn[FirstELinkPos] > -1)
             {
             int LinkedRouteNumber = -1;
             if(AllRoutes->GetRouteTypeAndNumber(19, Track->TrackElementAt(824, FirstTVPos).Conn[FirstELinkPos], Track->TrackElementAt(825, FirstTVPos).ConnLinkPos[FirstELinkPos], LinkedRouteNumber) == TAllRoutes::AutoSigsRoute)
                 {
-                AllRoutes->GetFixedRouteAt(186, LinkedRouteNumber).SetRouteSignalsOnly(3);
+                AllRoutes->GetFixedRouteAt(186, LinkedRouteNumber).SetRouteSignals(3);
                 }
             }
         }
@@ -7505,7 +7548,7 @@ for(int x=1; x<LocStr.Length()+1;x++)
 //check exists in railway location list if CheckLocationsExistInRailway is true
 if(CheckLocationsExistInRailway)
     {
-    if(!Track->LocationNameAllocated(3, LocStr))
+    if(!Track->TimetabledLocationNameAllocated(3, LocStr))
         {
         TimetableMessage(GiveMessages, "Location name '" + LocStr + "' appears in the timetable but is not a valid name.  To be valid there must be track (but not a continuation) at a correspondingly named location.");
         Utilities->CallLogPop(1357);
@@ -9709,9 +9752,9 @@ if((ForwardEntryPtr->Command == "fsp") || (ForwardEntryPtr->Command == "rsp"))
         }
     else
         {
-        if(!(Track->LocationNameAllocated(4, ForwardEntryPtr->LocationName)))
+        if(!(Track->TimetabledLocationNameAllocated(4, ForwardEntryPtr->LocationName)))
             {
-            SecondPassMessage(GiveMessages, "Error in timetable - can't find '" + ForwardEntryPtr->LocationName + "' in railway");
+            SecondPassMessage(GiveMessages, "Error in timetable - can't find timetabled location '" + ForwardEntryPtr->LocationName + "' in railway");
             TrainDataVector.clear();
             Utilities->CallLogPop(849);
             return false;
@@ -10078,6 +10121,21 @@ if(FrontType == Continuation)
     Utilities->CallLogPop(937);
     return false;
     }
+
+//check not starting on a level crossing
+if(Track->IsLCAtHV(43, FrontTrackElement.HLoc, FrontTrackElement.VLoc))
+    {
+    TimetableMessage(GiveMessages, "Train attempting to start on a level crossing at: " + FrontElementStr);
+    Utilities->CallLogPop(1951);
+    return false;
+    }
+if(Track->IsLCAtHV(44, RearTrackElement.HLoc, RearTrackElement.VLoc))
+    {
+    TimetableMessage(GiveMessages, "Train attempting to start on a level crossing at: " + RearElementStr);
+    Utilities->CallLogPop(1952);
+    return false;
+    }
+
 //check if trying to start on diverging leg of points
 if((RearType == Points) && (RearExitPos == 3))
     {
@@ -10639,6 +10697,7 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
 //FailMissedPass:  06:00:10: ERROR: 2F43 failed to pass Essex Road
 //FailBuffersPreventingStart:  06:00:10: ERROR: 2F43 facing buffers and unable to start at Essex Road
 //FailBufferCrash:  06:00:10: ERROR: 2F43 CRASHED INTO BUFFERS at 46-N7
+//FailLevelCrossingCrash:  06:00:10: ERROR: 2F43 CRASHED INTO ROAD TRAFFIC AT A LEVEL CROSSING at 46-N7
 //RouteForceCancelled:  06:00:10: ERROR: 2F43 forced a route cancellation by entering from wrong end at 46-N7
 //WaitingForJBO:  06:00:10: WARNING: 2F43 waiting to join 3F43 at Essex Road
 //WaitingForFJO:  06:00:10: WARNING: 2F43 waiting to be joined by 3F43 at Essex Road
@@ -10760,6 +10819,12 @@ else if(ActionEventType == FailDerailed)
 else if(ActionEventType == FailBufferCrash)
     {
     ErrorLog = " CRASHED INTO BUFFERS at ";
+    Prefix = " CRASH: ";
+    CrashedTrains++;
+    }
+else if(ActionEventType == FailLevelCrossingCrash)
+    {
+    ErrorLog = " CRASHED INTO ROAD TRAFFIC AT A LEVEL CROSSING at ";
     Prefix = " CRASH: ";
     CrashedTrains++;
     }
@@ -11947,6 +12012,9 @@ if(LateDeps > 1)      PerfFile << LateDeps << " late departures (average " << Av
 else if(LateDeps == 1) PerfFile << LateDeps << " late departure ("          << AvLateDepMins.c_str() << " min)" << '\n';
 else                   PerfFile << LateDeps << " late departures"                                               << '\n';
 
+AnsiString FormattedExcessLCDownMins = FormatFloat(FormatStr, ExcessLCDownMins);
+if(ExcessLCDownMins > 0.1) PerfFile << FormattedExcessLCDownMins.c_str() << " excess minutes of level crossing barrier down time" << '\n';
+
 if(MissedStops != 1) PerfFile << MissedStops << " missed stops" << '\n';
 else                 PerfFile << MissedStops << " missed stop"  << '\n';
 
@@ -12007,7 +12075,7 @@ if(OverallScorePercent == 100)
     if(TotArrDep > 0)
         {
         TotLateMinsFactor = exp((-0.1732) * (TotLateArrMins + TotLateDepMins + OperatingTrainLateMins + NotStartedTrainLateMins +
-            ((OtherMissedEvents + UnexpectedExits) * 15))/TotArrDep);
+            ((OtherMissedEvents + UnexpectedExits + ExcessLCDownMins) * 15))/TotArrDep);
             //TotLateMinsFactor: negative exponential factor based on overall average arr & dep minutes late (with OtherMissedEvents & UnexpectedExits
             //counting as 15 mins late each), where 4 mins late average = half, 8 mins late = a quarter etc
         MissedStopAndSPADRiskFactor = exp((-17.33) * (MissedStops + SPADRisks + IncorrectExits)/TotArrDep);
@@ -12047,7 +12115,7 @@ if(TotArrDep > 0)
     }
 else
     {
-    PerfFile << "\nInsufficient information to provide a performance score or rating" << '\n';
+    PerfFile << "\nThere were no timetabled departures or arrivals so there is insufficient information to provide a performance score or rating" << '\n';
     }
 PerfFile << '\n' << "***************************************";
 Utilities->CallLogPop(1736);

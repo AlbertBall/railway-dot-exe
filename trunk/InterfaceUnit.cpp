@@ -69,7 +69,7 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "v1.0.0"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
+    ProgramVersion = "v1.1.0"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
     //development stages (don't show on published versions) check for presence of directories, creation failure probably indicates that the
     //working folder is read-only
     CurDir = GetCurrentDir();
@@ -246,6 +246,8 @@ try
     SpeedButton138->Glyph->LoadFromResourceName(0, "gl138"); SpeedButton139->Glyph->LoadFromResourceName(0, "gl139");
     SpeedButton140->Glyph->LoadFromResourceName(0, "gl140"); SpeedButton141->Glyph->LoadFromResourceName(0, "gl141");
     SpeedButton142->Glyph->LoadFromResourceName(0, "gl142"); SpeedButton143->Glyph->LoadFromResourceName(0, "gl143");
+    //below not in Railgraphics
+    SpeedButton144->Glyph->LoadFromResourceName(0, "LCGlyph");
 
     AddPrefDirButton->Glyph->LoadFromResourceName(0, "AddPrefDir");
     AddTextButton->Glyph->LoadFromResourceName(0, "AddText");
@@ -834,11 +836,12 @@ try
             int HPos, VPos;
             bool UseExistingPosition = false;
             if(EraseLocationNameText(0, LocationNameTextBox->Text, HPos, VPos)) {;} //condition not used
+            //above may be redundant at v1.1.0 due to name erase in EnterLocationName
             //but, the location to be named may also have an existing name, in which case that needs to be erased
             //and the position re-used
             if(ExistingName != "")
                 {
-                if(EraseLocationNameText(3, ExistingName, HPos, VPos)) UseExistingPosition = true;
+                if(EraseLocationNameText(3, ExistingName, HPos, VPos)) UseExistingPosition = true; //may be redundant at v1.1.0 due to name erase in EnterLocationName
                 }
             AddLocationNameText(0, LocationNameTextBox->Text, HPos, VPos, UseExistingPosition);
             Screen->Cursor = TCursor(-2);//Arrow
@@ -857,6 +860,7 @@ try
             int HPos, VPos;
             bool UseExistingPosition = false;
             if(EraseLocationNameText(2, LocationNameTextBox->Text, HPos, VPos)) UseExistingPosition = true;
+            //above may be redundant at v1.1.0 due to name erase in EnterLocationName
             AddLocationNameText(2, LocationNameTextBox->Text, HPos, VPos, UseExistingPosition);
             Screen->Cursor = TCursor(-2);//Arrow
             Level1Mode = TrackMode;
@@ -934,7 +938,7 @@ try
             bool UseExistingPosition = false;
             if(ExistingName != "")
                 {
-                if(EraseLocationNameText(1, ExistingName, HPos, VPos)) UseExistingPosition = true;
+                if(EraseLocationNameText(1, ExistingName, HPos, VPos)) UseExistingPosition = true;//may be redundant at v1.1.0 due to name erase in EnterLocationName
                 }
             AddLocationNameText(1, LocationNameTextBox->Text, HPos, VPos, UseExistingPosition);
             Screen->Cursor = TCursor(-2);//Arrow
@@ -4274,7 +4278,7 @@ void TInterface::TimetableHandler()
 relevant information - if null then not set.  TTCurrentEntryPtr is set to the Entry to be displayed or null if there's no start time or no
 entries
 */
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + ",TimetableHandler");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TimetableHandler");
 PreviousTTEntryButton->Enabled = false;
 NextTTEntryButton->Enabled = false;
 AddMinsButton->Enabled = false;
@@ -4924,6 +4928,7 @@ try
             if(FoundFlag && (Level2OperMode != PreStart))//disallow signaller control in PreStart
                 {
                 SelectedTrainID = Track->TrackElementAt(426, VecPos).TrainIDOnElement;
+                //signaller control of train
                 if(SelectedTrainID > -1)
                     {
                     TTrain Train = TrainController->TrainVectorAtIdent(23, SelectedTrainID);
@@ -5725,8 +5730,18 @@ try
         if((Level2OperMode == Operating) || (Level2OperMode == PreStart))//not 'else if' as both may apply
                                                                          //disallow route setting if paused
             {
-            if(Level2OperMode == PreStart) PointsFlashDuration = 0.0;
-            else PointsFlashDuration = AllRoutes->PointsDelay/TTClockSpeed;
+            if(Level2OperMode == PreStart)
+                {
+                PointsFlashDuration = 0.0;
+                Track->LevelCrossingBarrierUpFlashDuration = 0.0;
+                Track->LevelCrossingBarrierDownFlashDuration = 0.0;
+                }
+            else
+                {
+                PointsFlashDuration = AllRoutes->PointsDelay;
+                Track->LevelCrossingBarrierUpFlashDuration = AllRoutes->LevelCrossingBarrierUpDelay;
+                Track->LevelCrossingBarrierDownFlashDuration = AllRoutes->LevelCrossingBarrierDownDelay;
+                }
             if(RouteMode == RouteNotStarted)
                 {
                 TrainController->LogEvent("mbLeft + RouteNotStarted");
@@ -5784,7 +5799,7 @@ try
                             }
                         Track->PointFlashFlag = true;
                         PointFlashVectorPosition = Position;
-                        PointFlashStartTime = TDateTime::CurrentDateTime();
+                        PointFlashStartTime = TrainController->TTClockTime;
                         }
         */
                         TTrackElement DivergingElement = Track->TrackElementAt(433, TrackElement.Conn[3]);
@@ -5802,7 +5817,7 @@ try
                                 Track->PointFlashFlag = true;
                                 PointFlashVectorPosition = Position;
                                 DivergingPointVectorPosition = DivergingPosition;
-                                PointFlashStartTime = TDateTime::CurrentDateTime();
+                                PointFlashStartTime = TrainController->TTClockTime;
                                 }
                             }
                         else//no matching point, just change this point
@@ -5810,9 +5825,31 @@ try
                             Track->PointFlashFlag = true;
                             PointFlashVectorPosition = Position;
                             DivergingPointVectorPosition = -1;
-                            PointFlashStartTime = TDateTime::CurrentDateTime();
+                            PointFlashStartTime = TrainController->TTClockTime;
                             }
                         }
+/* drop manual changing of level crossings - only allow changing by setting a route through them
+                    else if((Track->IsLCAtHV(23, HLoc, VLoc) && !Track->PointFlashFlag && !Track->RouteFlashFlag))//level crossing
+                        {
+                        TTrack::TFlashLevelCrossing FLC;
+                        FLC.LCHLoc = HLoc;
+                        FLC.LCVLoc = VLoc;
+                        FLC.LCChangeStartTime = TrainController->TTClockTime;
+                        FLC.LCBaseElementSpeedTag = TrackElement.SpeedTag;
+                        if(Track->IsLCBarrierDownAtHV(0, HLoc, VLoc))
+                            {
+                            FLC.LCChangeDuration = LevelCrossingBarrierUpFlashDuration;
+                            FLC.BarrierState = TTrack::Raising;
+                            }
+                        else
+                            {
+                            FLC.LCChangeDuration = LevelCrossingBarrierDownFlashDuration;
+                            FLC.BarrierState = TTrack::Lowering;
+                            }
+                        Track->SetLinkedLevelCrossingBarrierAttributes(, HLoc, VLoc, 2);//set attr to 2 for changing state
+                        Track->ChangingLCVector.push_back(FLC);
+                        }
+*/
                     else//route start
                         {
                         if(AutoSigsFlag)
@@ -5892,10 +5929,10 @@ try
                         Track->RouteFlashFlag = true;
                         PreferredRouteFlag = true;
                         if(Level2OperMode == PreStart) RouteFlashDuration = 0.0;
-                        else if(PointsChanged) RouteFlashDuration = AllRoutes->PointsDelay/TTClockSpeed;
-                        else RouteFlashDuration = AllRoutes->SignalsDelay/TTClockSpeed;
+                        else if(PointsChanged) RouteFlashDuration = AllRoutes->PointsDelay;
+                        else RouteFlashDuration = AllRoutes->SignalsDelay;
                         ConstructRoute->SetRouteFlashValues(1, AutoSigsFlag, true);//true for ConsecSignalsRoute
-                        RouteFlashStartTime = TDateTime::CurrentDateTime();
+                        RouteFlashStartTime = TrainController->TTClockTime;
                         }
                     else
                         {
@@ -5915,10 +5952,10 @@ try
                         Track->RouteFlashFlag = true;
                         PreferredRouteFlag = false;
                         if(Level2OperMode == PreStart) RouteFlashDuration = 0.0;
-                        else if(PointsChanged) RouteFlashDuration = AllRoutes->PointsDelay/TTClockSpeed;
-                        else RouteFlashDuration = AllRoutes->SignalsDelay/TTClockSpeed;
+                        else if(PointsChanged) RouteFlashDuration = AllRoutes->PointsDelay;
+                        else RouteFlashDuration = AllRoutes->SignalsDelay;
                         ConstructRoute->SetRouteFlashValues(2, false, false);
-                        RouteFlashStartTime = TDateTime::CurrentDateTime();
+                        RouteFlashStartTime = TrainController->TTClockTime;
                         }
                     else
                         {
@@ -6436,6 +6473,8 @@ try
     if(ErrorLogCalledFlag) return;//don't continue after an error
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MasterClockTimer");
     //put counter outside Clock2 as that may be missed
+    LCResetCounter++;//this checks LCs every 20 clock ticks (1 sec) & raises barriers if no route & no train present, to avoid delays due to too frequent calls
+    if(LCResetCounter > 19) LCResetCounter = 0;
     WarningFlashCount++;
     if(WarningFlashCount > 4) WarningFlashCount = 0;
     if(WarningFlashCount == 0)
@@ -6489,7 +6528,7 @@ try
     CallLogTickerLabel->Caption = Utilities->CallLog.size(); //diagnostic test function to ensure all CallLogs are popped - visibility
         //toggled by 'Ctrl Alt 2' when Interface form has focus
 //set current time
-    TDateTime Now = TDateTime::CurrentDateTime();
+    TDateTime Now = TrainController->TTClockTime;
 
 //Update Displayed Clock - resets to 0 at 96hours
     ClockLabel->Caption = Utilities->Format96HHMMSS(TrainController->TTClockTime);
@@ -6508,6 +6547,48 @@ try
             LoadSession(0);
             }
         LoadSessionFlag = false;
+        }
+
+//check if any LCs need barriers raising
+
+    if((Level1Mode == OperMode) && ((Level2OperMode == Operating) || (Level2OperMode == PreStart)))
+        {
+        if((LCResetCounter == 0) && !TrainController->StopTTClockFlag)
+            {
+            for(int x = Track->BarriersDownVector.size() - 1; x >= 0; x--)
+                {
+                bool TrainPresent = false;
+                if(Track->AnyLinkedLevelCrossingElementsWithRoutesOrTrains(0, Track->BarriersDownVector.at(x).HLoc, Track->BarriersDownVector.at(x).VLoc, TrainPresent))
+                    {
+                    if(TrainPresent)
+                        {
+                        Track->BarriersDownVector.at(x).TrainPassed = true;
+                        }
+                    }
+                else
+                    {
+                    Track->LCChangeFlag = true;
+                    TTrack::TActiveLevelCrossing CLC = Track->BarriersDownVector.at(x);
+                    //check if have exceeded the allowance (3 minutes for a train having passed or 0 for not) and add it to the overall excess time
+                    TDateTime TempExcessLCDownTime;
+                    if(Track->BarriersDownVector.at(x).TrainPassed) TempExcessLCDownTime = TrainController->TTClockTime - CLC.StartTime - TDateTime(180.0/86400);
+                    else TempExcessLCDownTime = TrainController->TTClockTime - CLC.StartTime;
+                    if(TempExcessLCDownTime > TDateTime(0)) TrainController->ExcessLCDownMins+= (double(TempExcessLCDownTime) * 1440);
+
+                    CLC.StartTime = TrainController->TTClockTime;//reset these 3 members
+                    CLC.ChangeDuration = Track->LevelCrossingBarrierUpFlashDuration;
+                    CLC.BarrierState = TTrack::Raising;
+                    Track->SetLinkedLevelCrossingBarrierAttributes(0, CLC.HLoc, CLC.VLoc, 2);//set attr to 2 for changing state
+                    Track->ChangingLCVector.push_back(CLC);
+                    Track->BarriersDownVector.erase(Track->BarriersDownVector.begin() + x);
+                    }
+                }
+            }
+        }
+//clear LCChangeFlag if no LCs changing
+    if(Track->ChangingLCVector.empty())
+        {
+        Track->LCChangeFlag = false;
         }
 
 //remove any single route elements if operating, but only if not constructing a route, else if extending the single route
@@ -6664,7 +6745,7 @@ try
         }
 
 //Deal with any flashing graphics
-    if(WarningFlashCount == 0)
+    if((WarningFlashCount == 0) && !TrainController->StopTTClockFlag)
         {
         FlashingGraphics(0, Now); //only call when WarningFlash changes
         if(Level1Mode == OperMode)
@@ -6719,10 +6800,10 @@ try
     //set buttons etc as appropriate
     SetSaveMenuAndButtons(0);
     //if forced route cancellation flag set redisplay to clear the cancelled route
-    if(AllRoutes->ForceCancelRouteFlag && !Display->ZoomOutFlag)
+    if(AllRoutes->RebuildRailwayFlag && !Display->ZoomOutFlag)
         {
         ClearandRebuildRailway(16);
-        AllRoutes->ForceCancelRouteFlag = false;
+        AllRoutes->RebuildRailwayFlag = false;
         }
     //deal with approach locking
     ApproachLocking(0, TrainController->TTClockTime);
@@ -9019,18 +9100,20 @@ Utilities->Clock2Stopped = true;
 HiddenDisplay->ClearDisplay(6);
 if(ScreenGridFlag && (Level1Mode == TrackMode))
     {
-    for(int x=0;x<6;x++)
+    int WidthNum = int(MainScreen->Width/160) + 1;
+    int HeightNum = int(MainScreen->Height/144) + 1;
+    for(int x=0;x<WidthNum;x++)
         {
-        for(int y=0;y<4;y++)
+        for(int y=0;y<HeightNum;y++)
             {
             HiddenDisplay->PlotAbsolute(0, x*160, y*144, RailGraphics->GridBitmap);
             }
         }
     }
 TextHandler->RebuildFromTextVector(1, HiddenDisplay);
-Track->RebuildTrack(4, HiddenDisplay, (Level1Mode != OperMode));//Need to plot track after text since text not
-                                                                //transparent.  (Level1Mode != OperMode) plots both
-                                                                //point fillets for all but OperMode
+Track->RebuildTrack(4, HiddenDisplay, (Level1Mode != OperMode));//Need to plot track after text since text not transparent.  (Level1Mode != OperMode)
+                                                                //plots both point fillets for all but OperMode & plots closed (to trains) LCs (in
+                                                                //OperMode LCs plotted below
 if(Level2TrackMode == GapSetting)
     {
     Track->ShowSelectedGap(1, HiddenDisplay);
@@ -9045,6 +9128,18 @@ if(Level1Mode == PrefDirMode)
     if((Level2PrefDirMode == PrefDirContinuing) && (ConstructPrefDir->PrefDirSize() > 0))
         {
         ConstructPrefDir->PrefDirMarker(5, PrefDirCall, true, HiddenDisplay);
+        }
+    }
+
+if(Level1Mode == TrackMode)
+    {
+    if(Track->NonFootbridgeNamedLocationExists(0))
+        {
+        LocationNameButton->Enabled = true;
+        }
+    else
+        {
+        LocationNameButton->Enabled = false;
         }
     }
 
@@ -9136,11 +9231,7 @@ if(Level1Mode == OperMode)
                 }
             }
         }
-    TrainController->ReplotTrains(0, HiddenDisplay);
-    }
 
-if(Level1Mode == OperMode)
-    {
     if(RouteMode == RouteContinuing)
         {
         AutoRouteStartMarker->PlotOriginal(23, HiddenDisplay);//system thinks overlay is already plotted, so plot original to reset the OverlayPlotted flag
@@ -9160,19 +9251,38 @@ if(Level1Mode == OperMode)
         PointFlash->LoadOriginalScreenGraphic(4);//reload from new position
         //doesn't matter whether Flash was on or off when this function called as will sort itself out later (may miss a flash but won't be noticeable)
         }
+
+    //now plot level crossings (must be after routes). These don't need any base elements to be plotted as they are already plotted.
+    //In order to avoid plotting the whole LC for every element of a LC a TempMarker is used
+    for(unsigned int x = 0; x < Track->LCVector.size(); x++)
+        {
+        (Track->InactiveTrackVector.begin() + (*(Track->LCVector.begin() + x)))->TempMarker = false;
+        }
+    for(unsigned int x = 0; x < Track->LCVector.size(); x++)
+        {
+        int BaseSpeedTag;
+        TTrackElement ATE;
+        TTrackElement ITE = *(Track->InactiveTrackVector.begin() + (*(Track->LCVector.begin() + x)));
+            {
+            BaseSpeedTag = Track->GetTrackElementFromTrackMap(0, ITE.HLoc, ITE.VLoc).SpeedTag;
+            if(ITE.TempMarker == false)
+                {
+                if(ITE.Attribute == 0)
+                    {
+                    Track->PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers(0, BaseSpeedTag, ITE.HLoc, ITE.VLoc, HiddenDisplay);
+                    }
+                else if(ITE.Attribute == 1)
+                    {
+                    Track->PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(0, BaseSpeedTag, ITE.HLoc, ITE.VLoc, HiddenDisplay);
+                    }
+                //if ITE->Attribute == 2 then LC is changing, FlashingGraphics will take care of flashing & final plotting
+                //won't set marker but no real time lost in this case
+                }
+            }
+        }
+    TrainController->ReplotTrains(0, HiddenDisplay);
     }
 
-if(Level1Mode == TrackMode)
-    {
-    if(Track->NonFootbridgeNamedLocationExists(0))
-        {
-        LocationNameButton->Enabled = true;
-        }
-    else
-        {
-        LocationNameButton->Enabled = false;
-        }
-    }
 Display->ZoomOutFlag = false;
 ZoomButton->Glyph->LoadFromResourceName(0, "ZoomOut");
 MainScreen->Picture->Bitmap->Assign(HiddenScreen->Picture->Bitmap);
@@ -9280,7 +9390,7 @@ if(VecFile)
         }
     int NumberOfActiveElements;
     if(!(Track->CheckTrackElementsInFile(1, NumberOfActiveElements, VecFile)))//for new loads
-//    if(!(Track->CheckOldTrackElementsInFile(1, VecFile)))//for old loads
+//    if(!(Track->CheckOldTrackElementsInFile(1, NumberOfActiveElements, VecFile)))//for old loads
         {
         Utilities->CallLogPop(95);
         return false;
@@ -9383,6 +9493,7 @@ else
     RouteCancelButton->Enabled = false;
     }
 RouteMode = RouteNotStarted;
+ConstructRoute->StartSelectionRouteID = IDInt(-1);//reset here so that a n element that has been selected and then not doesn't remain set as a single element 
 InfoPanel->Visible = true;
 if(Level2OperMode != Paused)
     {
@@ -9437,6 +9548,9 @@ switch(Level1Mode)//use the data member
     EditMenu->Enabled = false;
     BuildTrack1->Enabled = true;
     SigAspectButton->Visible = false;
+    Track->ChangingLCVector.clear();
+    Track->BarriersDownVector.clear();
+    Track->ResetLevelCrossings(0);
     if(Track->IsTrackFinished())
         {
         PlanPrefDirs1->Enabled = true;
@@ -9744,6 +9858,7 @@ switch(Level1Mode)//use the data member
     TrainController->TotLatePassMins = 0;
     TrainController->TotEarlyPassMins = 0;
     TrainController->TotLateDepMins = 0;
+    TrainController->ExcessLCDownMins = 0;
     ClearandRebuildRailway(55);//so points display with one fillet
     break;
 
@@ -10790,7 +10905,7 @@ if(Level1Mode == OperMode && ((TrainStatusInfoOnOff1->Caption == "Hide status") 
                     }
                 else
                     {
-                    TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + 
+                    TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' +
                     "Maximum train speed " + MaxSpeedStr + "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" +
                     '\n' + SpecialStr + Status + ": " + CurrSpeedStr.FormatFloat(FormatOneDPStr,CurrSpeed) + "km/h" + '\n' +
                     "Next: " + NextStopStr;
@@ -10904,6 +11019,8 @@ if((Left != FloatingLabel->Left) || (Top != FloatingLabel->Top))
     FloatingLabel->Visible = false;//so doesn't flicker when reposition
     FloatingLabel->Left = Left;
     FloatingLabel->Top = Top;
+    Utilities->CallLogPop(1917);
+    return;
     }
 
 FloatingLabel->Caption = Caption;
@@ -11084,6 +11201,83 @@ if(Track->PointFlashFlag && Display->ZoomOutFlag)
         DivergingPointVectorPosition = -1;
         }
     }
+//deal with level crossings
+if(!Track->ChangingLCVector.empty() && (Level2OperMode != Paused))
+    {
+    int H;
+    int V;
+    for(unsigned int x = 0; x < Track->ChangingLCVector.size(); x++)
+        {
+        H = Track->ChangingLCVector.at(x).HLoc;
+        V = Track->ChangingLCVector.at(x).VLoc;
+        if((Now - Track->ChangingLCVector.at(x).StartTime) < TDateTime((Track->ChangingLCVector.at(x).ChangeDuration)/86400))
+        //still flashing
+            {
+            if(WarningFlash)
+                {
+                if(Track->ChangingLCVector.at(x).BarrierState == TTrack::Raising) //closing to trains
+                    {
+                    Track->PlotRaisedLinkedLevelCrossingBarriers(1, Track->ChangingLCVector.at(x).BaseElementSpeedTag, H, V, Display);
+                    }
+                else
+                    {
+                    Track->PlotLoweredLinkedLevelCrossingBarriers(0, Track->ChangingLCVector.at(x).BaseElementSpeedTag, H,
+                            V, Track->ChangingLCVector.at(x).ConsecSignals, Display);
+                    }
+                }
+            else
+                {
+                Track->PlotLCBaseElementsOnly(2, Track->ChangingLCVector.at(x).BarrierState, Track->ChangingLCVector.at(x).BaseElementSpeedTag, H,
+                        V, Track->ChangingLCVector.at(x).ConsecSignals, Display);
+                }
+            }
+        else
+        //flashing period finished
+            {
+            if(Track->ChangingLCVector.at(x).BarrierState == TTrack::Raising)
+                {
+                Track->PlotRaisedLinkedLevelCrossingBarriers(2, Track->ChangingLCVector.at(x).BaseElementSpeedTag, H, V, Display);
+                Track->SetLinkedLevelCrossingBarrierAttributes(4, H, V, 0);//only set attr to 0 when fully raised
+                //attributes set to 2 when changing state, now reset to 0, no other actions needed
+                }
+            else
+                //barriers lowering
+                {
+                Track->PlotLoweredLinkedLevelCrossingBarriers(1, Track->ChangingLCVector.at(x).BaseElementSpeedTag, H,
+                        V, Track->ChangingLCVector.at(x).ConsecSignals, Display);
+                Track->SetLinkedLevelCrossingBarrierAttributes(5, H, V, 1);//only set attr to 1 when fully lowered
+                bool FoundFlag;
+                int TVPos = Track->GetVectorPositionFromTrackMap(46, H, V, FoundFlag);
+                if(!FoundFlag)
+                    {
+                    throw Exception("Failed to find a route at LC position HLoc = " + (AnsiString)H + " VLoc = " + (AnsiString)V);
+                    }
+                int RouteNumber;
+                AllRoutes->GetRouteTypeAndNumber(24, TVPos, 0, RouteNumber);//use 0 for LinkPos, could be 1 or 0 as only a single track element
+                                                                            //don't need returned value of RouteType
+                if(RouteNumber > -1) //if train crashed then there won't be a routenumber
+                    {
+                    AllRoutes->GetFixedRouteAt(196, RouteNumber).SetRouteSignals(8);
+                    }
+                }
+            }
+        }
+    for(int x = Track->ChangingLCVector.size() - 1; x >= 0; x--)
+    //now transfer lowering barrier object from the ChangingLCVector to the BarriersDownVector, reset the start timer (to time the barrier down period)
+    //and erase the object from the ChangingLCVector
+        {
+        if(!Track->IsLCBarrierFlashingAtHV(0, Track->ChangingLCVector.at(x).HLoc, Track->ChangingLCVector.at(x).VLoc))
+            {
+            if(Track->ChangingLCVector.at(x).BarrierState == TTrack::Lowering)
+                {
+                Track->ChangingLCVector.at(x).StartTime = TrainController->TTClockTime;
+                Track->ChangingLCVector.at(x).BarrierState = TTrack::Down;
+                Track->BarriersDownVector.push_back(Track->ChangingLCVector.at(x));
+                }
+            Track->ChangingLCVector.erase(Track->ChangingLCVector.begin() + x);
+            }
+        }
+    }
 Utilities->CallLogPop(747);
 }
 
@@ -11101,7 +11295,7 @@ SaveRailway2Button->Visible = true;
 SaveSessionButton->Visible = true;
 if(Level1Mode == OperMode)
     {
-    if(Display->ZoomOutFlag || Track->RouteFlashFlag || Track->PointFlashFlag)
+    if(Display->ZoomOutFlag || Track->RouteFlashFlag || Track->PointFlashFlag || Track->LCChangeFlag)
         {
         SaveRailwayButtonsFlag = false;
         }
@@ -11506,14 +11700,14 @@ TempFont->Charset = (TFontCharset)(0);
 MainScreen->Canvas->Font->Assign(TempFont);
 PerformancePanel->Top = MainScreen->Top + MainScreen->Height - PerformancePanel->Height;
 PerformancePanel->Left = MainScreen->Left;
-ScreenRightButton->Left = Screen->Width - ScreenRightButton->Width; 
-ScreenLeftButton->Left = Screen->Width - ScreenLeftButton->Width;
-ScreenUpButton->Left = Screen->Width - ScreenUpButton->Width;
-ScreenDownButton->Left = Screen->Width - ScreenDownButton->Width;
-HomeButton->Left = Screen->Width - HomeButton->Width;
-NewHomeButton->Left = Screen->Width - NewHomeButton->Width;
-ZoomButton->Left = Screen->Width - ZoomButton->Width;
-DevelopmentPanel->Top = MainScreen->Top + MainScreen->Height - DevelopmentPanel->Height; 
+ScreenRightButton->Left = Screen->Width - ScreenRightButton->Width - 2;
+ScreenLeftButton->Left = Screen->Width - ScreenLeftButton->Width - 2;
+ScreenUpButton->Left = Screen->Width - ScreenUpButton->Width - 2;
+ScreenDownButton->Left = Screen->Width - ScreenDownButton->Width - 2;
+HomeButton->Left = Screen->Width - HomeButton->Width - 2;
+NewHomeButton->Left = Screen->Width - NewHomeButton->Width - 2;
+ZoomButton->Left = Screen->Width - ZoomButton->Width - 2;
+DevelopmentPanel->Top = MainScreen->Top + MainScreen->Height - DevelopmentPanel->Height;
 
 delete TempFont;
 CtrlKey = false;
@@ -11660,6 +11854,9 @@ try
     //save ContinuationAutoSigEntries
         Utilities->SaveFileString(SessionFile, "***ContinuationAutoSigEntries***");
         TrainController->SaveSessionContinuationAutoSigEntries(0, SessionFile);
+    //save BarriersDownVector
+        Utilities->SaveFileString(SessionFile, "***BarriersDownVector***");
+        Track->SaveSessionBarriersDownVector(0, SessionFile);
     //save timetable
         Utilities->SaveFileString(SessionFile, "***Timetable***");
         if(!(SaveTimetableToSessionFile(0, SessionFile, SessionFileStr)))
@@ -11768,8 +11965,14 @@ try
             //load ContinuationAutoSigEntries
                 TempString = Utilities->LoadFileString(SessionFile);//"***ContinuationAutoSigEntries***"
                 TrainController->LoadSessionContinuationAutoSigEntries(0, SessionFile);
-            //load timetable
-                TempString = Utilities->LoadFileString(SessionFile);//"***Timetable***"
+            //load BarriersDownVector if present, but ensure backwards compatibility with earlier files
+                TempString = Utilities->LoadFileString(SessionFile);//"***BarriersDownVector***" or "***Timetable***"
+                if(TempString == "***BarriersDownVector***")
+                    {
+                    Track->LoadBarriersDownVector(0, SessionFile);
+                    TempString = Utilities->LoadFileString(SessionFile);//"***Timetable***"
+                    }
+            //load timetable (marker "***Timetable***" already loaded)
                 if(!(LoadTimetableFromSessionFile(0, SessionFile)))
                     {
                     SessionFile.close();
@@ -11811,6 +12014,12 @@ try
                 Display->DisplayOffsetV = TempDisplayOffsetV;
                 Display->DisplayOffsetHHome = TempDisplayOffsetHHome;
                 Display->DisplayOffsetVHome = TempDisplayOffsetVHome;
+            //now set attributes to 1 for all LCs with barriers down
+                for(unsigned int x = 0; x < Track->BarriersDownVector.size(); x++)
+                    {
+                    Track->SetLinkedLevelCrossingBarrierAttributes(2, Track->BarriersDownVector.at(x).HLoc, Track->BarriersDownVector.at(x).VLoc, 1);
+                    }
+                Track->ChangingLCVector.clear();
                 Track->CalcHLocMinEtc(10);
                 Level1Mode = RestartSessionOperMode;
                 SetLevel1Mode(27);
@@ -12785,13 +12994,36 @@ if(!InFile.fail())
         Utilities->CallLogPop(1259);
         return false;
         }
-    //check timetable
-    if(!Utilities->CheckAndCompareFileString(InFile, "***Timetable***"))
+    //check BarriersDownVector, but ensure backwards compatibility with earlier files which don't have this section
+    AnsiString TempString = Utilities->LoadFileString(InFile);
+    if((TempString != "***BarriersDownVector***") && (TempString != "***Timetable***"))
         {
         InFile.close();
-        Utilities->CallLogPop(1260);
+        Utilities->CallLogPop(1964);
         return false;
         }
+    if(TempString == "***BarriersDownVector***")
+        {
+        if(!Track->CheckActiveLCVector(0, InFile))
+            {
+            InFile.close();
+            Utilities->CallLogPop(1965);
+            return false;
+            }
+        if(!InFile)
+            {
+            InFile.close();
+            Utilities->CallLogPop(1966);
+            return false;
+            }
+        if(!Utilities->CheckAndCompareFileString(InFile, "***Timetable***"))
+            {
+            InFile.close();
+            Utilities->CallLogPop(1260);
+            return false;
+            }
+        }
+    //check timetable (marker string already checked)
     if(!CheckTimetableFromSessionFile(0, InFile))
         {
         InFile.close();
@@ -12939,13 +13171,36 @@ if(InFile)
         Utilities->CallLogPop(1282);
         return false;
         }
-    //load timetable this time then carry out the remaining checks
-    if(!Utilities->CheckAndCompareFileString(InFile, "***Timetable***"))
+    //check BarriersDownVector, but ensure backwards compatibility with earlier files which don't have this section
+    AnsiString TempString = Utilities->LoadFileString(InFile);
+    if((TempString != "***BarriersDownVector***") && (TempString != "***Timetable***"))
         {
         InFile.close();
-        Utilities->CallLogPop(1283);
+        Utilities->CallLogPop(1967);
         return false;
         }
+    if(TempString == "***BarriersDownVector***")
+        {
+        if(!Track->CheckActiveLCVector(0, InFile))
+            {
+            InFile.close();
+            Utilities->CallLogPop(1968);
+            return false;
+            }
+        if(!InFile)
+            {
+            InFile.close();
+            Utilities->CallLogPop(1969);
+            return false;
+            }
+        if(!Utilities->CheckAndCompareFileString(InFile, "***Timetable***"))
+            {
+            InFile.close();
+            Utilities->CallLogPop(1283);
+            return false;
+            }
+        }
+    //check timetable (marker string already checked)
     if(!LoadTimetableFromSessionFile(1, InFile))
         {
         InFile.close();
@@ -13226,6 +13481,7 @@ from & including  ***ConstructPrefDir PrefDirVector***
 to but excluding ***PrefDirs***
 from & including  ***ConstructRoute PrefDirVector***
 to but excluding ***Routes***
+from & including ***ChangingLCVector*** to but excluding ***Timetable***
 from & including ***No editing timetable*** or ***Editing timetable - [title]***
 to but excluding ***TimetableClock***
 and save as a .ssn file.
@@ -13237,7 +13493,7 @@ NB:  Don't change it to a .txt file, as the '\0' characters will be changed to s
 note or copy the version information at the top of the file
 strip out up to but excluding ***Track*** - this is needed to keep the \0 entry at end of ***Track*** [shown as a small square in wordpad]
 add the version number either before or instead of ***Track***, ensuring that the \0 is retained
-add two zero entries on their own lines after the version line (these become DisplayOffsetH & V)
+add the two numbers on rows 7 & 8 below ***Interface*** (i.e ***Interface*** = row 0) on their own lines after the version line (these become DisplayOffsetH & V)
 the next line should contain the number of active elements - leave that in.
 strip out ***Text*** including the \0
 strip out from & including  ***ConstructPrefDir PrefDirVector*** to & including ***PrefDirs*** (and the \0)
@@ -13317,6 +13573,12 @@ if(!(ErrorFile.fail()))
 //save ContinuationAutoSigEntries
     Utilities->SaveFileString(ErrorFile, "***ContinuationAutoSigEntries***");
     TrainController->SaveSessionContinuationAutoSigEntries(1, ErrorFile);
+//save BarriersDownVector
+    Utilities->SaveFileString(ErrorFile, "***BarriersDownVector***");
+    Track->SaveSessionBarriersDownVector(1, ErrorFile);
+//save ChangingLCVector
+    Utilities->SaveFileString(ErrorFile, "***ChangingLCVector***");
+    Track->SaveChangingLCVector(0, ErrorFile);
 //save loaded timetable
     if(TimetableTitle == "") Utilities->SaveFileString(ErrorFile, "***No timetable loaded***");
     else
@@ -13721,15 +13983,16 @@ SelectRect.bottom = 0;
 //---------------------------------------------------------------------------
 
 bool TInterface::EraseLocationNameText(int Caller, AnsiString Name, int &HPos, int &VPos)
-{//return position of erased name
+{//return position of erased name in HPos & VPos, return true for found & erased
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",EraseLocationNameText," + Name);
 bool TextFound = false;
-if(TextHandler->FindText(0, Name, HPos, VPos))
+if(Track->LocationNameMultiMap.find(Name) == Track->LocationNameMultiMap.end()) {} //name not in LocationNameMultiMap, so don't erase from TextVector
+else if(TextHandler->FindText(0, Name, HPos, VPos))
     {
     if(TextHandler->TextErase(4, HPos, VPos)) {;} //condition not used
     TextFound = true;
     }
-Utilities->CallLogPop(1557);
+Utilities->CallLogPop(1956);
 return TextFound;
 }
 

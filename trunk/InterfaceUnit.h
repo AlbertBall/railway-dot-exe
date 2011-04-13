@@ -490,6 +490,7 @@ __published:	// IDE-managed Components
     TLabel *TTClockTitleLabel;
     TLabel *TTClockLabel1;
     TLabel *TTClockLabel2;
+    TSpeedButton *SpeedButton144;
 
 //menu item actions
     void __fastcall About1Click(TObject *Sender);
@@ -741,6 +742,7 @@ float TTClockSpeed;       //rate at which the timetable clock runs 1 = normal
 
 Graphics::TBitmap *SelectBitmap;//the graphic defined by Edit->Select & Edit->Reselect
 
+int LCResetCounter;     //count up to 20 then resets - to check LCs & raise barriers if no route & no train present
 int MissedTicks;        //test for missed clock ticks
 int NewSelectBitmapHLoc;//the new (during & at end of moving) HLoc value of Edit->Select & Edit->Reselect
 int NewSelectBitmapVLoc;//as above for VLoc
@@ -769,8 +771,8 @@ int WarningFlashCount;  //increments each clock cycle to a max. of 4 then resets
 TCursor TempCursor; //stores the screen cursor while a temporary cursor (ususlly an hourglass) is displayed
 
 TDateTime LastTenthSecTick;   //unused
-TDateTime PointFlashStartTime;//stores the starting time for points flashing
-TDateTime RouteFlashStartTime;//stores the starting time for route flashing
+TDateTime PointFlashStartTime;//stores the starting time (timetable clock time) for points flashing
+TDateTime RouteFlashStartTime;//stores the starting time (timetable clock time) for route flashing
 
 //declarations for 4 of the 6 TGraphicElement pointers (*GapFlashGreen, *GapFlashRed in TTrack class so TTrain can access them)
 TGraphicElement *PointFlash, *AutoRouteStartMarker, *SigRouteStartMarker, *NonSigRouteStartMarker;
@@ -813,8 +815,8 @@ bool CheckTimetableFromSessionFile(int Caller, std::ifstream &SessionFile); //ch
     //return false for error, called during SessionFileIntegrityCheck
 bool ClearEverything(int Caller); //first check whether a railway file has changed and if so ask user if really wants to delete it without
     //saving, and return false if responds no, otherwise unload the railway and clear the display and all internal railway data
-bool EraseLocationNameText(int Caller, AnsiString Name, int &HPos, int &VPos); //erase a location name from TextVector, return true if
-    //text found, and if so return text position in &HPos & &VPos
+bool EraseLocationNameText(int Caller, AnsiString Name, int &HPos, int &VPos); //erase a location name (providing it exists in LocationNameMultiMap)
+    //from TextVector, return true if text found & exists in LocationNameMultiMap, and if so return text position in &HPos & &VPos
 bool FileIntegrityCheck(int Caller, char *FileName) const; //check integrity of a railway file prior to loading, return true for success
 bool HighLightOneGap(int Caller, int &HLoc, int &VLoc); //called during gap setting to mark a gap with a red ellipse and ask user to
     //select the corresponding gap, returns true if an unset gap found

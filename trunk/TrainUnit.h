@@ -36,7 +36,7 @@ enum TActionEventType {NoEvent, FailTrainEntry, FailCreateTrain, FailCreatePoint
         FailUnexpectedBuffers, FailUnexpectedExitRailway, FailMissedArrival, FailMissedSplit, FailMissedJBO, FailMissedJoinOther,
         FailMissedTerminate, FailMissedNewService, FailMissedExitRailway, FailMissedChangeDirection, FailMissedPass,
         FailCreateLockedRoute, FailEnterLockedRoute, WaitingForJBO, WaitingForFJO, FailBuffersPreventingStart, FailBufferCrash,
-        FailIncorrectExit, ShuttleFinishedRemainingHere, RouteForceCancelled};
+        FailLevelCrossingCrash, FailIncorrectExit, ShuttleFinishedRemainingHere, RouteForceCancelled};
     //used for reporting error conditions & warnings
 
 enum TActionType {Arrive, Terminate, Depart, Create, Enter, Leave, FrontSplit, RearSplit, JoinedByOther, ChangeDirection,
@@ -321,7 +321,7 @@ void PickUpBackgroundBitmap(int Caller, int HOffset, int VOffset, int Element, i
 void PlotAlternativeTrackRouteGraphic(int Caller, unsigned int LagElement, int LagELinkPos, int HOffset, int VOffset, TStraddle StraddleValue);
     //when a train moves off a bridge the other track may contain a route or have a train on it that has been obscured by this train.  This function
     //checks and replots the original graphic if necessary
-void PlotBackgroundGraphic(int Caller, int ArrayNumber) const; //replot the graphic pointed to by BackgroundPtr (see above) after a train
+void PlotBackgroundGraphic(int Caller, int ArrayNumber, TDisplay *Disp) const; //replot the graphic pointed to by BackgroundPtr (see above) after a train
     //has passed
 void PlotTrainGraphic(int Caller, int ArrayNumber, TDisplay *Disp); //plot the train's headcode character corresponding to ArrayNumber
 void PlotTrainWithNewBackgroundColour(int Caller, TColor NewBackgroundColour, TDisplay *Disp); //changes the train's background colour
@@ -341,7 +341,7 @@ void SetTrainElementID(int Caller, unsigned int TrackVectorPosition, int EntryPo
     //has its TrainIDOnElement value set to the TrainID value to indicate that a train is present on it.  If the element is a bridge then
     //the element's TrainIDOnBridgeTrackPos01 or TrainIDOnBridgeTrackPos23 value is also set as appropriate
 
-//public:
+//public:    
 static int NextTrainID; //the ID value to be used for the next train that is created, static so that it doesn't need an object to call it
     //and its value is independent of the objects
 
@@ -357,8 +357,6 @@ TColor BackgroundColour; //the background colour of the train's headcode graphic
 //inline functions
 bool HasTrainGone() {return TrainGone;} //check whether the train has left the railway, so that it can be removed from the display at the
     //next clock tick
-bool Stopped() {return (Crashed || Derailed || StoppedAtBuffers || StoppedAtSignal || StoppedAtLocation ||
-        SignallerStopped || StoppedAfterSPAD || StoppedForTrainInFront || NotInService);} //true if the train has stopped for any reason
 
 //functions defined in .cpp file
 static bool CheckOneSessionTrain(std::ifstream &InFile); //carries out an integrity check for the train section of a session file, if fails
@@ -409,6 +407,12 @@ void UnplotTrainInZoomOutMode(int Caller); //unplot train from screen in zoomed-
 void UpdateTrain(int Caller); //major function called at each clock tick for each train & handles all train movement & associated actions
 void WriteTrainToImage(int Caller, Graphics::TBitmap *Bitmap); //called by TTrainController::WriteTrainsToImage (called by
     //TInterface::SaveOperatingImage1Click) to add all a single train graphic to the image file
+
+public:
+
+//inline function
+bool Stopped() {return (Crashed || Derailed || StoppedAtBuffers || StoppedAtSignal || StoppedAtLocation ||
+        SignallerStopped || StoppedAfterSPAD || StoppedForTrainInFront || NotInService);} //true if the train has stopped for any reason
 
 TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiString InputCode, int StartSpeed, int Mass, double MaxRunningSpeed,
     double MaxBrakeRate, double PowerAtRail, TTrainMode TrainMode, TTrainDataEntry *TrainDataEntryPtr, int RepeatNumber,
@@ -471,6 +475,7 @@ bool TrainAdded; //true when a train has been added by a split (occurs outside t
 
 float NotStartedTrainLateMins; //total late minutes of trains that haven't started yet on exit operation for locations not reached yet
 float OperatingTrainLateMins; //total late minutes of operating trains on exit operation for locations not reached yet
+float ExcessLCDownMins; //total excess time in minutes over the 3 minutes barriers down allowance for level crossings
 float TotEarlyArrMins; //values for performance file summary
 float TotEarlyPassMins;
 float TotLateArrMins;

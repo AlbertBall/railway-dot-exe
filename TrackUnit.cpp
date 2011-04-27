@@ -3085,6 +3085,17 @@ while(ReturnNextInactiveTrackElement(2, Next))
                 break;
                 }
             }
+        if(Next.SpeedTag == 144)//level crossing
+            {
+            if(GetTrackElementFromTrackMap(2, Next.HLoc, Next.VLoc).SpeedTag == 1)
+                {
+                GraphicOutput = RailGraphics->LCBothVer;
+                }
+            else
+                {
+                GraphicOutput = RailGraphics->LCBothHor;
+                }
+            }
         Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16), GraphicOutput);
         }
     }
@@ -3266,9 +3277,35 @@ NextTrackElementPtr = InactiveTrackVector.begin();
 Graphics::TBitmap *GraphicOutput;
 while(ReturnNextInactiveTrackElement(3, Next))
     {
-    GraphicOutput = Next.GraphicPtr;
+    GraphicOutput = Next.GraphicPtr; //no striped name graphics
     if(Next.GraphicPtr != 0)//don't think this should ever be 0 but leave as a safeguard
         {
+        if(Next.SpeedTag == 144)//level crossing
+            {
+            int BaseElement = GetTrackElementFromTrackMap(2, Next.HLoc, Next.VLoc).SpeedTag;
+            if(BaseElement == 1)  //hor element
+                {
+                if(Next.Attribute == 1)//open to trains
+                    {
+                    GraphicOutput = RailGraphics->LCBothHor;
+                    }
+                else  //plot as closed to trains if in any other state
+                    {
+                    GraphicOutput = RailGraphics->LCBothVer;
+                    }
+                }
+            else  //vert element
+                {
+                if(Next.Attribute == 1)//open to trains
+                    {
+                    GraphicOutput = RailGraphics->LCBothVer;
+                    }
+                else  //plot as closed to trains if in any other state
+                    {
+                    GraphicOutput = RailGraphics->LCBothHor;
+                    }
+                }
+            }
         Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16), GraphicOutput);
         }
     }

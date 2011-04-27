@@ -1,7 +1,22 @@
 Development History
 ---------------------------------------------------------------------------
 
-VERSION CHANGES AFTER v1.1.0 for v1.1.0 (level crossing version)
+
+
+VERSION CHANGES AFTER v1.1.0 for v1.1.1 (level crossing version)
+
+* = mention on user website
+
+*need to say that sessions saved with one regional setting need to be reloaded in the same regional setting to load properly because of the different
+    number formats.  Can change temporarily to load then change back to home settings & resave so don't need to reset again
+
+*Level crossings displayed as always open horizontally on images regardless of track direction.  Corrected in this version.
+
+Changed CheckFileDouble to check that represents a genuine double type number because of different regional settings
+Changed help file & user manual to say that need same regional settings when loading session files
+
+
+VERSION CHANGES AFTER v1.0.0 for v1.1.0 (level crossing version)
 
 *level crossings added
 *mention routes allowed to be cancelled without locking if first train behind signal stopped
@@ -75,8 +90,6 @@ Xmaybe drop all base graphic plotting, route covered by route setting - no, need
 /check all Sxx train starts & ensure 'Running' & TrainID set correctly for all (6 in all).
 
 VERSION CHANGES AFTER BETA V0.6c for RELEASE VERSION 1.0.0
-
-* = mention on user website
 
 *Judged stable enough to come out of the beta testing phase, use GNU version numbering vX.Y.Z - Major/Minor/Patch
 Changed derail score to 5% from 9% (as already done in lev cross branch)

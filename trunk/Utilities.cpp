@@ -247,11 +247,21 @@ catch (const EConvertError &e)
 //---------------------------------------------------------------------------
 bool TUtilities::CheckFileDouble(std::ifstream &InFile)
 {
-AnsiString DoubleString;
-if(!CheckAndReadFileString(InFile, DoubleString)) return false;
-if(InFile.fail()) return false;
-if(DoubleString == "") return false;
-bool Decimal=false;
+try
+    {
+    AnsiString DoubleString;
+    if(!CheckAndReadFileString(InFile, DoubleString)) return false;
+    if(InFile.fail()) return false;
+    if(DoubleString == "") return false;
+    DoubleString.ToDouble(); //throws EConvertError if fails
+    return true;
+    }
+catch (const EConvertError &e)
+    {
+    return false;
+    }
+}
+/* earlier routine
 for(int x=1;x<=DoubleString.Length();x++)
     {
     bool CharacterOK = false;
@@ -259,12 +269,9 @@ for(int x=1;x<=DoubleString.Length();x++)
         {
         CharacterOK = true;
         }
-    else if(!Decimal && DoubleString[x] == '.')//can only have one decimal point
-        {
-        CharacterOK = true;
-        Decimal = true;
-        }
-    else if((DoubleString[x] >= '0') && (DoubleString[x] <= '9'))
+    else if((DoubleString[x] == '.') || (DoubleString[x] == ',') || ((DoubleString[x] >= '0') && (DoubleString[x] <= '9')))
+    //allow numbers, '.' & ',' because different number formats in regional settings can use either as the decimal point and as thousands
+    //separators.  Modded at v1.1.1
         {
         CharacterOK = true;
         }
@@ -272,6 +279,7 @@ for(int x=1;x<=DoubleString.Length();x++)
     }
 return true;
 }
+*/
 //---------------------------------------------------------------------------
 bool TUtilities::CheckFileString(std::ifstream &InFile)
 //Reads the next item and checks it as a string value up to either the '\0' delimiter

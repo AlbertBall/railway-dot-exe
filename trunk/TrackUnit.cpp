@@ -11011,7 +11011,10 @@ else
     {
 //Note: StartElement not in an existing route so was added to the searchvector during the earlier function
 //First check if selection adjacent to start element and if so use that [can't be as can't have 2 consecutive signals, but leave in]
-    if(StartElement1.Conn[StartElement1.XLinkPos] == EndPosition)
+
+//added the XLinkPos checks because of Matt Blades error reported on 28/06/11, where StartElement2 matched EndPosition spuriously
+//note that a blank element will have XLinkPos set to -1
+    if((StartElement1.XLinkPos > -1) && (StartElement1.Conn[StartElement1.XLinkPos] == EndPosition))
         {
         if(SearchForPreferredRoute(1, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition, AutoSigsFlag))
             {
@@ -11030,7 +11033,7 @@ else
             return false;
             }
         }
-    else if(StartElement2.Conn[StartElement2.XLinkPos] == EndPosition)
+    else if((StartElement2.XLinkPos > -1) && (StartElement2.Conn[StartElement2.XLinkPos] == EndPosition))
         {
         if(SearchForPreferredRoute(2, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition, AutoSigsFlag))
             {

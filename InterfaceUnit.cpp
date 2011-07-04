@@ -69,7 +69,7 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "v1.1.1"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
+    ProgramVersion = "v1.1.2"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
     //development stages (don't show on published versions) check for presence of directories, creation failure probably indicates that the
     //working folder is read-only
     CurDir = GetCurrentDir();
@@ -514,6 +514,15 @@ try
     {
     if((Level1Mode == OperMode) && (Level2OperMode == Operating))
         {
+        if(Track->RouteFlashFlag)//in case route building - cancels the route, freezes otherwise - reported
+            {                    //by Matt Blades 30/06/11
+            RevertToOriginalRouteSelector(14);
+            ConstructRoute->RouteFlash.RouteFlashVector.clear();
+            ConstructRoute->ClearRoute();
+            Screen->Cursor = TCursor(-2);//Arrow
+            Track->RouteFlashFlag = false;
+            ClearandRebuildRailway(48);//to get rid of displayed route
+            }
         Level2OperMode = Paused;
         SetLevel2OperMode(2);
         }
@@ -6897,8 +6906,8 @@ void __fastcall TInterface::ScreenLeftButtonClick(TObject *Sender)
 try
     {
     //have to allow in zoomout mode
-    TrainController->LogEvent("ScreenLeftButtonClick");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenLeftButtonClick");
+    TrainController->LogEvent("ScreenLeftButtonClick" + AnsiString((short)ShiftKey)+ AnsiString((short)CtrlKey));
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenLeftButtonClick" + AnsiString((short)ShiftKey)+ AnsiString((short)CtrlKey));
     Screen->Cursor = TCursor(-11);//Hourglass;
     ScreenLeftButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
     if(!Display->ZoomOutFlag)
@@ -6955,8 +6964,8 @@ void __fastcall TInterface::ScreenRightButtonClick(TObject *Sender)
 try
     {
     //have to allow in zoomout mode
-    TrainController->LogEvent("ScreenRightButtonClick");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenRightButtonClick");
+    TrainController->LogEvent("ScreenRightButtonClick" + AnsiString((short)ShiftKey)+ AnsiString((short)CtrlKey));
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenRightButtonClick" + AnsiString((short)ShiftKey)+ AnsiString((short)CtrlKey));
     Screen->Cursor = TCursor(-11);//Hourglass;
     ScreenRightButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
     if(!Display->ZoomOutFlag)
@@ -7013,8 +7022,8 @@ void __fastcall TInterface::ScreenDownButtonClick(TObject *Sender)
 try
     {
     //have to allow in zoomout mode
-    TrainController->LogEvent("ScreenDownButtonClick");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenDownButtonClick");
+    TrainController->LogEvent("ScreenDownButtonClick" + AnsiString((short)ShiftKey)+ AnsiString((short)CtrlKey));
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenDownButtonClick" + AnsiString((short)ShiftKey)+ AnsiString((short)CtrlKey));
     Screen->Cursor = TCursor(-11);//Hourglass;
     ScreenDownButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
     if(!Display->ZoomOutFlag)
@@ -7071,8 +7080,8 @@ void __fastcall TInterface::ScreenUpButtonClick(TObject *Sender)
 try
     {
     //have to allow in zoomout mode
-    TrainController->LogEvent("ScreenUpButtonClick");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenUpButtonClick");
+    TrainController->LogEvent("ScreenUpButtonClick" + AnsiString((short)ShiftKey)+ AnsiString((short)CtrlKey));
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenUpButtonClick" + AnsiString((short)ShiftKey)+ AnsiString((short)CtrlKey));
     Screen->Cursor = TCursor(-11);//Hourglass;
     ScreenUpButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
     if(!Display->ZoomOutFlag)

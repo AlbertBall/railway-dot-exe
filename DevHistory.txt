@@ -1,15 +1,24 @@
 Development History
 ---------------------------------------------------------------------------
 
-
-
-VERSION CHANGES AFTER v1.1.0 for v1.1.1 (level crossing version)
+VERSION CHANGES AFTER v1.1.1 for v1.1.2
 
 * = mention on user website
 
-*need to say that sessions saved with one regional setting need to be reloaded in the same regional setting to load properly because of the different
-    number formats.  Can change temporarily to load then change back to home settings & resave so don't need to reset again
+added 'CtrlKey' & 'ShiftKey' booleans to the screen movement button logs & call stacks so can see how far moved
+*Corrected the errors notified by Matt Blades on 28 & 30/06/11:-
+    a) wouldn't allow an automatic signal or preferred direction route to be set into a continuation that was at TrackVectorPosition == 0 on v2 of
+    his bus railway.  Due to a false positive in GetNextPreferredRouteElement at "else if(StartElement2.Conn[StartElement2.XLinkPos] == EndPosition)",
+    with StartElement2 a blank element & StartElement2.XLinkPos == -1.  In some cases this matched EndPosition which was 0 and then failed during
+    SearchForPreferredRoute.  Corrected by adding a check for StartElement1.XLinkPos > -1 & StartElement2.XLinkPos > -1 in both conditions.
+    b) he discovered that if the user changed to a different application when a route was in course of being set then the program froze on
+    reselection.  Due to the deactivation routine not detecting this situation and leaving RouteFlashFlag set (amongst other things).
+    Corrected by checking for this situation in AppDeactivate and cancelling the route that is being set.
 
+VERSION CHANGES AFTER v1.1.0 for v1.1.1
+
+*sessions saved with one regional setting need to be reloaded in the same regional setting to load properly because of the different
+    number formats.  Can change temporarily to load then change back to home settings & resave so don't need to reset again
 *Level crossings displayed as always open horizontally on images regardless of track direction.  Corrected in this version.
 
 Changed CheckFileDouble to check that represents a genuine double type number because of different regional settings

@@ -1,9 +1,14 @@
 Development History
 ---------------------------------------------------------------------------
 
-VERSION CHANGES AFTER v1.1.1 for v1.1.2
+VERSION CHANGES AFTER v1.1.2 for v1.1.3
 
 * = mention on user website
+
+*Added check for two adjacent level crossings on same track in TTrack::LinkTrack & TTrack::LinkTrackNoMessages after notification by Bjorn
+Verzijlbergh.
+
+VERSION CHANGES AFTER v1.1.1 for v1.1.2
 
 added 'CtrlKey' & 'ShiftKey' booleans to the screen movement button logs & call stacks so can see how far moved
 *Corrected the errors notified by Matt Blades on 28 & 30/06/11:-
@@ -652,6 +657,9 @@ CHECKLISTS:
 
 CHANGE OF VERSION:
 
+NOTE: Carry out mods in 'trunk' of Home Repository checked out files & commit, then tag at the new release
+Then copy the changed files to Google checked out files (don't use add & copy) & commit, then tag at the new release
+
 1) increment version number in Interface.cpp if not already incremented
 2) create a new folder 'release vx.xx' from earlier release zip file (inc Help.fts, .cnt & .hlp)
 3) in that folder:-
@@ -670,7 +678,6 @@ CHANGE OF VERSION:
 13) backup all source files for the release (including the release zip) & copy to 'Release backups vx.xx'
 14) copy new releases (web files + backups) to other drives & memory stick
 15) add a message to the TrainSim forum if required
-
 16) check if any unexpected changes in repository wrt working files
 17) on source website add the new release version as a download provided it tested OK
 18) commit all changes to Google repository & list in log
@@ -687,6 +694,7 @@ ADDING A NEW PROJECT TO THE USER WEBSITE:
 7) on web - update the sidebar to show the new project at the top
 8) download the file & check OK
 9) make a copy of the website for own records if required
+10) add entry to UKTrainSim site discussion board if relevant
 
 
 FUTURE UPDATES:
@@ -844,7 +852,7 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 
 COPY SECTIONS:
 
-NEXT value for CallLogPop is 1981
+NEXT value for CallLogPop is 1982
 NEXT value for TrackElementAt is 878
 NEXT value for InactiveTrackElementAt is 119
 NEXT value for GetFixedRouteAt is 197

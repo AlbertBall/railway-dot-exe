@@ -3926,7 +3926,11 @@ for(unsigned int x=0;x<TrackVector.size();x++)// check all elements in turn
                 //can't join a route to an existing route where the second signal is in an existing route and the first signal is
                 //selected - appears as trying to select a signal that is not the next in line from the starting signal
                 }
-
+            else if(IsLCAtHV(45, TrackVector.at(x).HLoc, TrackVector.at(x).VLoc) && IsLCAtHV(46, TrackVector.at(VecPos).HLoc, TrackVector.at(VecPos).VLoc))
+            //true if a level crossing is present at both x and VecPos - can't have two adjacent level crossings on the same track
+                {
+                ShowMessage("Can't have two level crossings adjacent to each other on the same track");
+                }
             else CheckForLinks = true;
             if(CheckForLinks)
                 {
@@ -4117,6 +4121,12 @@ for(unsigned int x=0;x<TrackVector.size();x++)// check all elements in turn
                     (TrackVector.at(x).SpeedTag == TrackVector.at(VecPos).SpeedTag))
                 {
                 Utilities->CallLogPop(1543);
+                return false;
+                }
+            else if(IsLCAtHV(47, TrackVector.at(x).HLoc, TrackVector.at(x).VLoc) && IsLCAtHV(48, TrackVector.at(VecPos).HLoc, TrackVector.at(VecPos).VLoc))
+            //true if a level crossing is present at both x and VecPos - can't have two adjacent level crossings on the same track
+                {
+                Utilities->CallLogPop(1981);
                 return false;
                 }
 /* remove this restriction now that not permitted to treat a named continuation as a location stop

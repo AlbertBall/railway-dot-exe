@@ -69,7 +69,7 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "v1.1.2"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
+    ProgramVersion = "v1.1.3"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
     //development stages (don't show on published versions) check for presence of directories, creation failure probably indicates that the
     //working folder is read-only
     CurDir = GetCurrentDir();

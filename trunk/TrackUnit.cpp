@@ -6201,7 +6201,7 @@ else
 
 //---------------------------------------------------------------------------
 
-void TTrack::EnterLocationName(int Caller, AnsiString LocationName)
+void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingElements)
 {
 /*
 General:
@@ -6251,7 +6251,7 @@ if(LNPendingList.size() != 1)
 while(!LNPendingList.empty())
     {
     TTrackVectorIterator CurrentElement = GetTrackVectorIteratorFromNamePosition(1, LNPendingList.front());
-    int NewElement = 2000000000;//marker for unused
+    int NewElement; // = 2000000000;   //marker for unused //not needed after v1.1.4
     int H = CurrentElement->HLoc;
     int V = CurrentElement->VLoc;
     int Tag = CurrentElement->SpeedTag;
@@ -6338,9 +6338,9 @@ while(!LNPendingList.empty())
                 }
             }
         }
-    //below new at v1.1.0
-    if(NewElement != 2000000000) //adjacent element found & new element inserted, check if a (different) name already allocated and if so erase it
-                                 //from text vector
+    //below new at v1.1.0 but condition changed at v1.1.4 as interfered with name changes for single element locations
+//    if(NewElement != 2000000000) //adjacent element found & new element inserted, check if a (different) name already allocated and if so erase it from text vector
+    if(AddingElements)
         {
         int HPos, VPos; //not used but needed for FindText function
         if(NewElement > -1)
@@ -6703,7 +6703,7 @@ if(SpeedTag == 76)//top plat
         if(AdjNamedElement(1, HLoc + Tag76Array[x][0], VLoc + Tag76Array[x][1], Tag76Array[x][2], LocationName, MapPos))
             {
             LNPendingList.insert(Track->LNPendingList.end(), MapPos);
-            EnterLocationName(3, LocationName);
+            EnterLocationName(3, LocationName, true);
             break;
             }
         }
@@ -6715,7 +6715,7 @@ else if(SpeedTag == 77)//bot plat
         if(AdjNamedElement(2, HLoc + Tag77Array[x][0], VLoc + Tag77Array[x][1], Tag77Array[x][2], LocationName, MapPos))
             {
             LNPendingList.insert(Track->LNPendingList.end(), MapPos);
-            EnterLocationName(4, LocationName);
+            EnterLocationName(4, LocationName, true);
             break;
             }
         }
@@ -6727,7 +6727,7 @@ else if(SpeedTag == 78)//l plat
         if(AdjNamedElement(3, HLoc + Tag78Array[x][0], VLoc + Tag78Array[x][1], Tag78Array[x][2], LocationName, MapPos))
             {
             LNPendingList.insert(Track->LNPendingList.end(), MapPos);
-            EnterLocationName(5, LocationName);
+            EnterLocationName(5, LocationName, true);
             break;
             }
         }
@@ -6739,7 +6739,7 @@ else if(SpeedTag == 79)//r plat
         if(AdjNamedElement(4, HLoc + Tag79Array[x][0], VLoc + Tag79Array[x][1], Tag79Array[x][2], LocationName, MapPos))
             {
             LNPendingList.insert(Track->LNPendingList.end(), MapPos);
-            EnterLocationName(6, LocationName);
+            EnterLocationName(6, LocationName, true);
             break;
             }
         }
@@ -6751,7 +6751,7 @@ else if(SpeedTag == 96)//conc
         if(AdjNamedElement(5, HLoc + Tag96Array[x][0], VLoc + Tag96Array[x][1], Tag96Array[x][2], LocationName, MapPos))
             {
             LNPendingList.insert(Track->LNPendingList.end(), MapPos);
-            EnterLocationName(7, LocationName);
+            EnterLocationName(7, LocationName, true);
             break;
             }
         }
@@ -6763,7 +6763,7 @@ else if(SpeedTag == 129)//vert footbridge
         if(AdjNamedElement(6, HLoc + Tag129Array[x][0], VLoc + Tag129Array[x][1], Tag129Array[x][2], LocationName, MapPos))
             {
             LNPendingList.insert(Track->LNPendingList.end(), MapPos);
-            EnterLocationName(8, LocationName);
+            EnterLocationName(8, LocationName, true);
             break;
             }
         }
@@ -6775,7 +6775,7 @@ else if(SpeedTag == 130)//hor footbridge
         if(AdjNamedElement(7, HLoc + Tag130Array[x][0], VLoc + Tag130Array[x][1], Tag130Array[x][2], LocationName, MapPos))
             {
             LNPendingList.insert(Track->LNPendingList.end(), MapPos);
-            EnterLocationName(9, LocationName);
+            EnterLocationName(9, LocationName, true);
             break;
             }
         }
@@ -6787,7 +6787,7 @@ else if(SpeedTag == 131)//named location
         if(AdjNamedElement(8, HLoc + Tag131Array[x][0], VLoc + Tag131Array[x][1], Tag131Array[x][2], LocationName, MapPos))
             {
             LNPendingList.insert(Track->LNPendingList.end(), MapPos);
-            EnterLocationName(10, LocationName);
+            EnterLocationName(10, LocationName, true);
             break;
             }
         }
@@ -14930,6 +14930,19 @@ for XLink = 3, potentially fouled diagonals are at H+1, V, Lk 1 & H, V-1 Lk 9
 for XLink = 7, potentially fouled diagonals are at H-1, V, Lk 9 & H, V+1 Lk 1
 for XLink = 9, potentially fouled diagonals are at H+1, V, Lk 7 & H, V+1 Lk 3
 Each of these is examined in turn for each route element in the relevant position.
+
+NOTE:  This fails to detect a train fouling a diagonal.  Need to check for a train present on a
+crossing diagonal element using GetVectorPositionFromTrackMap, then check whether it is already
+or going to use the diagonal in question using function TrainController->TrainVectorAtIdent
+to identify the train, and then check which of LeadElement, MidElement or LagElement is the
+one on the crossing element, and then check its LeadEntryPos & LeadExitPos - or Mid or Lag,
+respectively.  Complication for a bridge - may be two trains present, think about this.
+
+Or, maybe define a new track (or train) property TrainOnLink or TrainOnLinkPos,
+perhaps using function SetTrainElementID which is called by PlotTrainGraphic.  Maybe need to
+add the ExitPos as well in SetTrainElementID for use in setting the Link, note that the ID is only
+set for the leading element, it stays set until train finally leaves the element, so the same should
+apply for the linkpos.
 */
 {
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FouledDiagonal," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(DiagonalLinkNumber));

@@ -12058,6 +12058,11 @@ double TotLateMinsFactor = 1;
 double MissedStopAndSPADRiskFactor = 1;
 double NetNegFactor = 1;
 
+TotArrDep = OnTimeArrivals + LateArrivals + EarlyArrivals + OnTimeDeps + LateDeps + NotStartedTrainArrDep + OperatingTrainArrDep;
+    //TotArrDep: total number of arrivals & departures including those for trains that haven't reached their destinations yet and are late
+    //changed at v1.1.4 - calc was inside "if(OverallScorePercent == 100).." block so could remain 0 for SPADs & crashes, & then received the 
+    //'no timetabled departures... message, which was inappropriate
+
 if((SPADEvents > 0) || (Derailments > 0))
     {
     OverallScorePercent = 5;//overrides other calculations
@@ -12070,8 +12075,6 @@ if(CrashedTrains > 0)
     }
 if(OverallScorePercent == 100)
     {
-    TotArrDep = OnTimeArrivals + LateArrivals + EarlyArrivals + OnTimeDeps + LateDeps + NotStartedTrainArrDep + OperatingTrainArrDep;
-        //TotArrDepPass: total number of arrivals & departures including those for trains that haven't reached their destinations yet and are late
     if(TotArrDep > 0)
         {
         TotLateMinsFactor = exp((-0.1732) * (TotLateArrMins + TotLateDepMins + OperatingTrainLateMins + NotStartedTrainLateMins +
@@ -12086,7 +12089,7 @@ if(OverallScorePercent == 100)
         OverallScorePercent = 100 * NetNegFactor;
         }
     }
-if(TotArrDep > 0)
+if((TotArrDep > 0) || DerailSPADFlag || CrashFlag) //flag condits added at v1.1.4 - see above for what the error was
     {
     PerfFile << "\nOverall score: " << OverallScorePercent << "%\n";
     AnsiString Rating = "";

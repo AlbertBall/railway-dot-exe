@@ -69,7 +69,7 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "v1.1.3"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
+    ProgramVersion = "v1.1.4"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
     //development stages (don't show on published versions) check for presence of directories, creation failure probably indicates that the
     //working folder is read-only
     CurDir = GetCurrentDir();
@@ -841,7 +841,7 @@ try
                 return;
                 }
             Track->EraseLocationAndActiveTrackElementNames(1, LocationNameTextBox->Text);
-            Track->EnterLocationName(1, LocationNameTextBox->Text);
+            Track->EnterLocationName(1, LocationNameTextBox->Text, false);
             int HPos, VPos;
             bool UseExistingPosition = false;
             if(EraseLocationNameText(0, LocationNameTextBox->Text, HPos, VPos)) {;} //condition not used
@@ -941,7 +941,7 @@ try
                 Utilities->CallLogPop(778);
                 return;
                 }
-            Track->EnterLocationName(2, LocStr);
+            Track->EnterLocationName(2, LocStr, false);
             //need to check if the location already has a name, and if so erase it from the textvector
             int HPos, VPos;
             bool UseExistingPosition = false;
@@ -7292,6 +7292,7 @@ try
         {
         Display->DisplayOffsetHHome = Display->DisplayOffsetH;
         Display->DisplayOffsetVHome = Display->DisplayOffsetV;
+	ResetChangedFileDataAndCaption(23, false); //false because no major changes made
         }
     else
         {
@@ -13995,8 +13996,8 @@ bool TInterface::EraseLocationNameText(int Caller, AnsiString Name, int &HPos, i
 {//return position of erased name in HPos & VPos, return true for found & erased
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",EraseLocationNameText," + Name);
 bool TextFound = false;
-if(Track->LocationNameMultiMap.find(Name) == Track->LocationNameMultiMap.end()) {} //name not in LocationNameMultiMap, so don't erase from TextVector
-else if(TextHandler->FindText(0, Name, HPos, VPos))
+//if(Track->LocationNameMultiMap.find(Name) == Track->LocationNameMultiMap.end()) {} //name not in LocationNameMultiMap, so don't erase from TextVector  //condition dropped at v1.1.4 because of change in EnterLocationNames
+/*else*/ if(TextHandler->FindText(0, Name, HPos, VPos))
     {
     if(TextHandler->TextErase(4, HPos, VPos)) {;} //condition not used
     TextFound = true;

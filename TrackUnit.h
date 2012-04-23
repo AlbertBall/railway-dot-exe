@@ -675,7 +675,7 @@ left in.
     void DecrementValuesInInactiveTrackAndNameMaps(int Caller, unsigned int VecPos); //after an element has been erased from the
         //InactiveTrackVector, all the later elements are moved down one.  This function decrements the position values for all values
         //above that of the erased element in both InactiveTrack2MultiMap and LocationNameMultiMap.
-    void EnterLocationName(int Caller, AnsiString LocationName); //all platform, concourse, footbridge & non-station named location
+    void EnterLocationName(int Caller, AnsiString LocationName, bool AddingElements); //all platform, concourse, footbridge & non-station named location
         //elements are able to have a LocationName allocated, and track elements (including footbridges) are able to have an
         //ActiveTrackElementName allocated provided there is an adjacent platform or a NamedNonStationLocation.  To set these names the
         //user selects a single named location element (not a footbridge), enters the name, and this is then allocated as a LocationName

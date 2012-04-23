@@ -1,6 +1,22 @@
 Development History
 ---------------------------------------------------------------------------
 
+For future versions:
+	
+	try to create a way of setting automatic signal routes automatically in pre-start mode.  Should be able to search from signal to signal along preferred dirtections and set a route where there is only plain track between.
+	note that a route can be set across a diagonal that is fouled by a train (though not by a route): need to prevent a route being set if a train present without a route, also: (a) check whether a train moving on a crossing diagonal will force cancel a route on the crossing diagonal (+check if a route will be force cancelled if a train moves onto it while it is still flashing - have MovingTrainPresentOnFlashingRoute to cancel a flashing route); and (b) whether trains will crash if meet on a crossing diagonal
+	note for further development from Sam Wainwright: Allow route setting over shunt signals so they clear automatically without having to click directly on them.
+	note for further development from Keith Hazelton: Allow random variable station delays, say between 30 secs & 3 minutes, to account for variable delaying effects caused by passengers etc.
+
+VERSION CHANGES AFTER v1.1.3 for v1.1.4
+
+* = mention on user website
+
+	*error when have a location name for a single named element - if erase the name then the text is not erased, though it is if there is more than one linked named element - corrected
+	*error in performance summary - if have derailment then overallscore (in TrainUnit.cpp) reduced from 100, TotArrDep stays 0, so report that no arrivals or departures when there likely are some - corrected
+	*added file changed flag for new home button clicked in zoomed-in mode
+
+
 VERSION CHANGES AFTER v1.1.2 for v1.1.3
 
 * = mention on user website

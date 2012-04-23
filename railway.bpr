@@ -40,7 +40,7 @@ CFLAG1 = -I"..\..\..\Program Files\Borland\CBuilder4\Imports";"..\..\..\Program 
   -D$(SYSDEFINES);$(USERDEFINES) -c -b- -w-par -w-inl -Vx -tW -tWM
 CFLAG2 =
 CFLAG3 =
-PFLAGS = -U"..\..\program files\borland\cbuilder4\Lib";"..\..\..\Program Files\Borland\CBuilder4\Imports";"..\..\..\Program Files\Borland\CBuilder4\Bin";"..\..\..\program files\borland\cbuilder4\Lib";"..\..\..\Program Files\Borland\CBuilder4\Projects";$(BCB)\lib\obj;$(BCB)\lib;$(RELEASELIBPATH) \
+PFLAGS = -U"..\program files\borland\cbuilder4\Lib";"..\..\program files\borland\cbuilder4\Lib";"..\..\..\Program Files\Borland\CBuilder4\Imports";"..\..\..\Program Files\Borland\CBuilder4\Bin";"..\..\..\program files\borland\cbuilder4\Lib";"..\..\..\Program Files\Borland\CBuilder4\Projects";$(BCB)\lib\obj;$(BCB)\lib;$(RELEASELIBPATH) \
   -I"..\..\..\Program Files\Borland\CBuilder4\Imports";"..\..\..\Program Files\Borland\CBuilder4\Bin";"..\..\..\Program Files\Borland\CBuilder4\Projects";$(BCB)\include;$(BCB)\include\vcl \
   -$Y+ -$W -$O- -v -M -JPHNE
 RFLAGS = -i"..\..\..\Program Files\Borland\CBuilder4\Imports";"..\..\..\Program Files\Borland\CBuilder4\Bin";"..\..\..\Program Files\Borland\CBuilder4\Projects";$(BCB)\include;$(BCB)\include\vcl
@@ -48,7 +48,7 @@ AFLAGS = /i"..\..\..\Program Files\Borland\CBuilder4\Imports" \
   /i"..\..\..\Program Files\Borland\CBuilder4\Bin" \
   /i"..\..\..\Program Files\Borland\CBuilder4\Projects" /i$(BCB)\include \
   /i$(BCB)\include\vcl /mx /w2 /zi /d_RTLDLL /dUSEPACKAGES
-LFLAGS = -L"..\..\program files\borland\cbuilder4\Lib";"..\..\..\Program Files\Borland\CBuilder4\Imports";"..\..\..\Program Files\Borland\CBuilder4\Bin";"..\..\..\program files\borland\cbuilder4\Lib";"..\..\..\Program Files\Borland\CBuilder4\Projects";$(BCB)\lib\obj;$(BCB)\lib;$(RELEASELIBPATH) \
+LFLAGS = -L"..\program files\borland\cbuilder4\Lib";"..\..\program files\borland\cbuilder4\Lib";"..\..\..\Program Files\Borland\CBuilder4\Imports";"..\..\..\Program Files\Borland\CBuilder4\Bin";"..\..\..\program files\borland\cbuilder4\Lib";"..\..\..\Program Files\Borland\CBuilder4\Projects";$(BCB)\lib\obj;$(BCB)\lib;$(RELEASELIBPATH) \
   -aa -Tpe -x -v
 IFLAGS =
 # ---------------------------------------------------------------------------

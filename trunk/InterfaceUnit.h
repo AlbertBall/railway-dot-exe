@@ -159,6 +159,7 @@ __published:	// IDE-managed Components
     TBitBtn *SigPrefButton;
     TBitBtn *UnrestrictedButton;
     TBitBtn *RouteCancelButton;
+    TBitBtn *PresetAutoSigRoutesButton;
     TSpeedButton *CallingOnButton; //speedbutton used so can detect when button is down
     TBitBtn *PerformanceLogButton;
     TBitBtn *SaveSessionButton;
@@ -660,6 +661,7 @@ __published:	// IDE-managed Components
           TShiftState Shift);
     void __fastcall HPEditKeyUp(TObject *Sender, WORD &Key,
           TShiftState Shift);
+    void __fastcall PresetAutoSigRoutesButtonClick(TObject *Sender);
 
 public: //AboutForm needs access to these
 
@@ -908,3 +910,4 @@ extern PACKAGE TInterface *Interface;
 
 //---------------------------------------------------------------------------
 #endif
+  

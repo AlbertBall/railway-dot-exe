@@ -199,8 +199,8 @@ would be lost and the bitmaps never destroyed, thereby causing memory leaks.
 */
 {
 //if(NoDelete) return;//used when a TTrain is created to hold copied values from elsewhere
-TrainController->LogEvent("" + AnsiString(Caller) + ",DeleteTrain");
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DeleteTrain");
+TrainController->LogEvent("" + AnsiString(Caller) + ",DeleteTrain," + HeadCode);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DeleteTrain," + HeadCode);
 if(Display->ZoomOutFlag) UnplotTrainInZoomOutMode(0);
 if(FrontCodePtr == 0)
     {
@@ -473,7 +473,7 @@ void TTrain::UnplotTrain(int Caller)
 {
 //Note:  If trouble is experienced with the PlotAlternativeTrackRouteGraphic functions remove them & test for train on a bridge and if so call Clearand..
 if(!Plotted) return;
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UnplotTrain");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UnplotTrain," + HeadCode);
 
 if(Straddle == MidLag)
     {
@@ -609,7 +609,7 @@ If Crashed is not set then Straddle is incremented and the function returns.
 */
 
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UpdateTrain");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UpdateTrain," + HeadCode);
 
 AnsiString HC = HeadCode;//to identify the train for diagnostic purposes
 
@@ -642,9 +642,14 @@ if(SignallerStopped && !StoppedForTrainInFront && !StoppedAtBuffers && !StoppedA
     PlotTrainWithNewBackgroundColour(43, clSignallerStopped, Display);
     }
 
-if(!Stopped() && !SPADFlag)
+if(ActionVectorEntryPtr->FormatType != TimeTimeLoc) //introduced at v1.2.0, formerly 'TimeTimeLocArrived = false' was included in the next condition
+//'if(!Stopped() && !SPADFlag)' which led to repeated arrival messages if signaller control allowed a train to move & then stop again at the same station
     {
     TimeTimeLocArrived = false;
+    }
+
+if(!Stopped() && !SPADFlag)
+    {
     PlotTrainWithNewBackgroundColour(44, clNormalBackground, Display);
     }
 
@@ -727,6 +732,10 @@ if(TrainMode == Timetable)
 //check if being held at location pending any actions & deal with them if time appropriate & >= 30s since LastActionTime
 if(TrainMode == Timetable)
     {
+    if((ActionVectorEntryPtr->Command != "Frh") && (ActionVectorEntryPtr->Command != "Frh-sh"))
+        {
+        RemainHereLogNotSent = true;
+        }
     if(HoldAtLocationInTTMode)
         {
         //ignore TimeLoc & TTLoc departures
@@ -842,10 +851,18 @@ else
 
 if((NextElementPosition > -1) && (NextEntryPos > -1))//may be buffers or continuation
     {
-    //check whether calling-on conditions met - a) approaching train has stopped at a signal; b) facing train held
-    //appropriately; c) at least 1 platform available for the approaching train; d) points (if any) set
-    //for direct route into platform; e) approaching train is to stop at station; f) no more facing signals between train and
-    //platform; and g) signal must be within 15 track elements of the stop platform
+/*
+Check whether calling-on conditions met - a) approaching train has stopped at a signal but not at a location;
+b) if there is a facing train at the station, it is being held appropriately (must be awaiting a join (Fjo or jbo) or a
+change of direction (cdt), remaining here (Frh), or under signaller control);
+c) at least 1 platform available for the approaching train; d) points (if any) set for direct route into platform;
+e) approaching train is to stop at station; f) no more facing signals between train and platform; g) [dropped g]
+h) train in front preventing route being set far enough to release stop signal; i) train in front not exiting at continuation; j) signal must be within 4km of
+the stop platform; k) [dropped (k), now can set a reoute or part route into platform so can set points more easily.] and l) no existing route conflicts with the route into the platform
+If all OK & route or part route not already set then set an unrestricted route into the station (just to the first platform), to prevent point changing or other route conflicts - if a partial route set than can still
+change points outside the route or have a route conflict if another route is set.
+*/
+
     if(TrainMode == Timetable)
         {
         if(CallingOnAllowed(0))
@@ -1569,7 +1586,7 @@ HeadCodePosition[0] = FrontCodePtr;
 //plot new seg [0] on Lead & [2] on Mid ([2] always on Mid)
 if(LeadElement > -1)
     {
-    if(Straddle == MidLag)
+    if(Straddle == MidLag) //just about to move half onto the new lead element
         {
         GetOffsetValues(5, HOffset[0], VOffset[0], Track->TrackElementAt(243, LeadElement).Link[LeadEntryPos]);
         //pick up new background bitmap [0]
@@ -1589,6 +1606,23 @@ if(LeadElement > -1)
                 TrainCrashedInto = Track->TrackElementAt(247, LeadElement).TrainIDOnElement;
                 Crashed = true;//only set if Straddle = MidLag
                 CallingOnFlag = false;//in case was set, need to disable call on if call on button had been pressed
+                }
+            }
+        else if(MidElement > -1) //will be -1 for continuation entries
+            {
+            //check if about to move onto a crossing diagonal that is occupied by another train, and if so crash
+            int MidExitLinkNum = Track->TrackElementAt(889, MidElement).Link[MidExitPos];
+            int MidHLoc = Track->TrackElementAt(890, MidElement).HLoc;
+            int MidVLoc = Track->TrackElementAt(891, MidElement).VLoc;
+            int OtherTrainID = -1;
+            if((MidExitLinkNum == 1) || (MidExitLinkNum == 3) || (MidExitLinkNum == 7) || (MidExitLinkNum == 9))
+                {
+                if(Track->DiagonalFouledByTrain(0, MidHLoc, MidVLoc, MidExitLinkNum, OtherTrainID))
+                    {
+                    TrainCrashedInto = OtherTrainID;
+                    Crashed = true;//only set if Straddle = MidLag
+                    CallingOnFlag = false;//in case was set, need to disable call on if call on button had been pressed
+                    }
                 }
             }
         }
@@ -1827,7 +1861,7 @@ switch(CodeChar)
 
 void TTrain::SetHeadCodeGraphics(int Caller, AnsiString Code)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetHeadCodeGraphics");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetHeadCodeGraphics," + HeadCode);
 if(Code.Length() != 4) TrainController->StopTTClockMessage(62, "Headcode Incorrect length");
 for(int x=1;x<5;x++)//AnsiString indices start at 1
     {
@@ -1854,7 +1888,7 @@ Utilities->CallLogPop(1484);
 void TTrain::GetLeadElement(int Caller)//assumes Mid & Lag already set, sets LeadElement,
 //LeadEntryPos, LeadExitPos & DerailPending (don't want to act on it immediately)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetLeadElement");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetLeadElement," + HeadCode);
 DerailPending = false;
 LeadElement = Track->TrackElementAt(269, MidElement).Conn[MidExitPos];
 LeadEntryPos = Track->TrackElementAt(270, MidElement).ConnLinkPos[MidExitPos];
@@ -1919,7 +1953,7 @@ Utilities->CallLogPop(662);
 
 void TTrain::GetOffsetValues(int Caller, int &HOffset, int &VOffset, int Link) const
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetOffsetValues," + AnsiString(Link));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetOffsetValues," + AnsiString(Link) + "," + HeadCode);
 switch(Link)
     {
     case 1:
@@ -1982,6 +2016,9 @@ Utilities->CallLogPop(674);
 
 bool TTrain::LowEntryValue(int EntryLink) const
 {
+/*returns true if EntryLink is 1, 2, 4 or 7, in these circumstances the front of the train (i.e.
+the character that is red or blue) is the last character of the headcode, otherwise it's the first character of the headcode
+*/
 if((EntryLink==1) || (EntryLink==2) || (EntryLink==4) || (EntryLink==7)) return true;
 else return false;
 }
@@ -1990,7 +2027,7 @@ else return false;
 
 void TTrain::PickUpBackgroundBitmap(int Caller, int HOffset, int VOffset, int Element, int EntryPos, Graphics::TBitmap *GraphicPtr) const
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PickUpBackgroundBitmap," + AnsiString(HOffset) + "," + AnsiString(VOffset) + "," + AnsiString(Element) + "," + AnsiString(EntryPos));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PickUpBackgroundBitmap," + AnsiString(HOffset) + "," + AnsiString(VOffset) + "," + AnsiString(Element) + "," + AnsiString(EntryPos) + "," + HeadCode);
 TAllRoutes::TRouteType RouteType;
 Graphics::TBitmap *EXGraphicPtr = RailGraphics->bmTransparentBgnd;//default values
 Graphics::TBitmap *EntryDirectionGraphicPtr = RailGraphics->bmTransparentBgnd;
@@ -2139,7 +2176,7 @@ Utilities->CallLogPop(675);
 
 void TTrain::PlotTrainGraphic(int Caller, int ArrayNumber, TDisplay *Disp)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotTrainGraphic," + AnsiString(ArrayNumber));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotTrainGraphic," + AnsiString(ArrayNumber) + "," + HeadCode);
 if(PlotElement[ArrayNumber] == -1)
     {
     Utilities->CallLogPop(676);
@@ -2165,7 +2202,7 @@ Disp->PlotOutput(30, ((Track->TrackElementAt(297, PlotElement[ArrayNumber]).HLoc
 
 bool TTrain::BufferAtExit(int Caller, int Element, int ExitPos) const
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",BufferAtExit," + AnsiString(Element) + "," + AnsiString(ExitPos));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",BufferAtExit," + AnsiString(Element) + "," + AnsiString(ExitPos) + "," + HeadCode);
 if((Track->TrackElementAt(299, Element).TrackType == Buffers) &&
                 (Track->TrackElementAt(300, Element).Config[ExitPos] == End))
     {
@@ -2183,7 +2220,7 @@ else
 
 bool TTrain::ContinuationExit(int Caller, int Element, int ExitPos) const
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ContinuationExit," + AnsiString(Element) + "," + AnsiString(ExitPos));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ContinuationExit," + AnsiString(Element) + "," + AnsiString(ExitPos) + "," + HeadCode);
 if((Track->TrackElementAt(301, Element).TrackType == Continuation) &&
                 (Track->TrackElementAt(302, Element).Config[ExitPos] == End))
     {
@@ -2202,7 +2239,7 @@ else
 bool TTrain::IsTrainIDOnBridgeTrackPos01(int Caller, unsigned int TrackVectorPosition)
 //test whether this train on a bridge on trackpos 0 & 1
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsTrainIDOnBridgeTrackPos01," + AnsiString(TrackVectorPosition));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsTrainIDOnBridgeTrackPos01," + AnsiString(TrackVectorPosition) + "," + HeadCode);
 if(Track->TrackElementAt(303, TrackVectorPosition).TrackType != Bridge)
     {
     Utilities->CallLogPop(682);
@@ -2233,7 +2270,7 @@ else
 bool TTrain::IsTrainIDOnBridgeTrackPos23(int Caller, unsigned int TrackVectorPosition)
 //test whether this train on a bridge on trackpos 2 & 3
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsTrainIDOnBridgeTrackPos23," + AnsiString(TrackVectorPosition));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsTrainIDOnBridgeTrackPos23," + AnsiString(TrackVectorPosition) + "," + HeadCode);
 if(Track->TrackElementAt(307, TrackVectorPosition).TrackType != Bridge)
     {
     Utilities->CallLogPop(686);
@@ -2257,7 +2294,7 @@ else
 
 void TTrain::SetTrainElementID(int Caller, unsigned int TrackVectorPosition, int EntryPos)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTrainElementID," + AnsiString(TrackVectorPosition) + "," + AnsiString(EntryPos));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTrainElementID," + AnsiString(TrackVectorPosition) + "," + AnsiString(EntryPos) + "," + HeadCode);
 Track->TrackElementAt(310, TrackVectorPosition).TrainIDOnElement = TrainID;
 
 //unplot GapFlash graphics if land on flashing gap (this done before train plotted - see PlotTrainGraphic)
@@ -2287,7 +2324,7 @@ Utilities->CallLogPop(690);
 
 void TTrain::ResetTrainElementID(int Caller, unsigned int TrackVectorPosition, int EntryPos)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ResetTrainElementID," + AnsiString(TrackVectorPosition) + "," + AnsiString(EntryPos));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ResetTrainElementID," + AnsiString(TrackVectorPosition) + "," + AnsiString(EntryPos) + "," + HeadCode);
 if(Track->TrackElementAt(314, TrackVectorPosition).TrackType != Bridge) Track->TrackElementAt(315, TrackVectorPosition).TrainIDOnElement = -1;
 else
     {
@@ -2314,7 +2351,7 @@ Utilities->CallLogPop(691);
 
 void TTrain::PlotAlternativeTrackRouteGraphic(int Caller, unsigned int ElementVecNum, int ElementEntryPos, int HOffset, int VOffset, TStraddle StraddleValue)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotAlternativeTrackRouteGraphic," + AnsiString(ElementVecNum) + "," + AnsiString(ElementEntryPos) + "," + AnsiString(HOffset) + "," + AnsiString(VOffset) + "," + AnsiString(StraddleValue));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotAlternativeTrackRouteGraphic," + AnsiString(ElementVecNum) + "," + AnsiString(ElementEntryPos) + "," + AnsiString(HOffset) + "," + AnsiString(VOffset) + "," + AnsiString(StraddleValue) + "," + HeadCode);
 int LockedVectorNumber;
 if(Track->TrackElementAt(325, ElementVecNum).TrackType != Bridge)// && (Track->TrackElementAt(326, ElementVecNum).TrackType != Crossover))
     {                                                         //only applies for a bridge as there can't be (or shouldn't be) 2 routes on an element that isn't a bridge
@@ -2411,10 +2448,12 @@ Utilities->CallLogPop(696);
 
 void TTrain::CheckAndCancelRouteForWrongEndEntry(int Caller, int Element, int EntryPos)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckAndCancelRouteForWrongEndEntry," + AnsiString(Element) + "," + AnsiString(EntryPos));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckAndCancelRouteForWrongEndEntry," + AnsiString(Element) + "," + AnsiString(EntryPos) + "," + HeadCode);
 int RouteNumber;
 bool WrongRoute = false;
 TPrefDirElement RouteElement;
+TAllRoutes::TRouteElementPair RoutePair;
+TAllRoutes::TRoute2MultiMapIterator Route2MultiMapIterator;
 if(AllRoutes->GetRouteTypeAndNumber(11, Element, EntryPos, RouteNumber) == TAllRoutes::NoRoute)
 //here if single track element & no route, or double track element with no route at EntryPos
 //but still need to check if on points or a crossover on non-route track, and force-erase route if so (bridge OK of course)
@@ -2432,6 +2471,103 @@ if(AllRoutes->GetRouteTypeAndNumber(11, Element, EntryPos, RouteNumber) == TAllR
             AllRoutes->GetModifiableRouteAt(13, RouteNumber).ForceCancelRoute(1);
             Utilities->CallLogPop(697);
             return;
+            }
+        }
+//also need to check for a route on a crossing diagonal
+    TTrackElement TrackElement = Track->TrackElementAt(892, Element);
+    int LinkNumber = TrackElement.Link[EntryPos];
+    if((LinkNumber == 1) || (LinkNumber == 3) || (LinkNumber == 7) || (LinkNumber == 9))
+        {
+        if(AllRoutes->DiagonalFouledByRoute(0, TrackElement.HLoc, TrackElement.VLoc, LinkNumber))
+            {
+//for LinkNumber = 1, potentially fouled diagonals are at H-1, V, Lk 3 & H, V-1, Lk 7
+            bool LogActionErrorCalled = false; // to ensure only called once if have 2 routes on the 2 crossed diagonals
+            if(LinkNumber == 1)
+                {
+                if(AllRoutes->FindRouteNumberFromRoute2MultiMapNoErrors(0, TrackElement.HLoc - 1, TrackElement.VLoc, 3, RouteNumber))
+                    {
+                    if(AllRoutes->GetFixedRouteAt(207, RouteNumber).PrefDirSize() > 2)
+                        {//don't call for stub end routes
+                        TrainController->LogActionError(55, HeadCode, "", RouteForceCancelled, TrackElement.ElementID);
+                        LogActionErrorCalled = true;
+                        }
+                    AllRoutes->GetModifiableRouteAt(20, RouteNumber).ForceCancelRoute(3);
+                    }
+                if(AllRoutes->FindRouteNumberFromRoute2MultiMapNoErrors(1, TrackElement.HLoc, TrackElement.VLoc - 1, 7, RouteNumber))//not else in case have different routes on each diagonal, though shouldn't be possible
+                    {
+                    if(!LogActionErrorCalled && AllRoutes->GetFixedRouteAt(208, RouteNumber).PrefDirSize() > 2)
+                        {//don't call for stub end routes
+                        TrainController->LogActionError(56, HeadCode, "", RouteForceCancelled, TrackElement.ElementID);
+                        }
+                    AllRoutes->GetModifiableRouteAt(21, RouteNumber).ForceCancelRoute(4);
+                    }
+                }
+
+//for LinkNumber = 3, potentially fouled diagonals are at H+1, V, Lk 1 & H, V-1 Lk 9
+            else if(LinkNumber == 3)
+                {
+                if(AllRoutes->FindRouteNumberFromRoute2MultiMapNoErrors(2, TrackElement.HLoc + 1, TrackElement.VLoc, 1, RouteNumber))
+                    {
+                    if(AllRoutes->GetFixedRouteAt(209, RouteNumber).PrefDirSize() > 2)
+                        {//don't call for stub end routes
+                        TrainController->LogActionError(57, HeadCode, "", RouteForceCancelled, TrackElement.ElementID);
+                        LogActionErrorCalled = true;
+                        }
+                    AllRoutes->GetModifiableRouteAt(22, RouteNumber).ForceCancelRoute(5);
+                    }
+                if(AllRoutes->FindRouteNumberFromRoute2MultiMapNoErrors(3, TrackElement.HLoc, TrackElement.VLoc - 1, 9, RouteNumber))//not else in case have different routes on each diagonal, though shouldn't be possible
+                    {
+                    if(!LogActionErrorCalled && AllRoutes->GetFixedRouteAt(210, RouteNumber).PrefDirSize() > 2)
+                        {//don't call for stub end routes
+                        TrainController->LogActionError(58, HeadCode, "", RouteForceCancelled, TrackElement.ElementID);
+                        }
+                    AllRoutes->GetModifiableRouteAt(23, RouteNumber).ForceCancelRoute(6);
+                    }
+                }
+
+//for LinkNumber = 7, potentially fouled diagonals are at H-1, V, Lk 9 & H, V+1 Lk 1
+            else if(LinkNumber == 7)
+                {
+                if(AllRoutes->FindRouteNumberFromRoute2MultiMapNoErrors(4, TrackElement.HLoc - 1, TrackElement.VLoc, 9, RouteNumber))
+                    {
+                    if(AllRoutes->GetFixedRouteAt(211, RouteNumber).PrefDirSize() > 2)
+                        {//don't call for stub end routes
+                        TrainController->LogActionError(59, HeadCode, "", RouteForceCancelled, TrackElement.ElementID);
+                        LogActionErrorCalled = true;
+                        }
+                    AllRoutes->GetModifiableRouteAt(24, RouteNumber).ForceCancelRoute(7);
+                    }
+                if(AllRoutes->FindRouteNumberFromRoute2MultiMapNoErrors(5, TrackElement.HLoc, TrackElement.VLoc + 1, 1, RouteNumber))//not else in case have different routes on each diagonal, though shouldn't be possible
+                    {
+                    if(!LogActionErrorCalled && AllRoutes->GetFixedRouteAt(212, RouteNumber).PrefDirSize() > 2)
+                        {//don't call for stub end routes
+                        TrainController->LogActionError(60, HeadCode, "", RouteForceCancelled, TrackElement.ElementID);
+                        }
+                    AllRoutes->GetModifiableRouteAt(25, RouteNumber).ForceCancelRoute(8);
+                    }
+                }
+
+//for LinkNumber = 9, potentially fouled diagonals are at H+1, V, Lk 7 & H, V+1 Lk 3
+            else if(LinkNumber == 9)
+                {
+                if(AllRoutes->FindRouteNumberFromRoute2MultiMapNoErrors(6, TrackElement.HLoc + 1, TrackElement.VLoc, 7, RouteNumber))
+                    {
+                    if(AllRoutes->GetFixedRouteAt(213, RouteNumber).PrefDirSize() > 2)
+                        {//don't call for stub end routes
+                        TrainController->LogActionError(61, HeadCode, "", RouteForceCancelled, TrackElement.ElementID);
+                        LogActionErrorCalled = true;
+                        }
+                    AllRoutes->GetModifiableRouteAt(26, RouteNumber).ForceCancelRoute(9);
+                    }
+                if(AllRoutes->FindRouteNumberFromRoute2MultiMapNoErrors(7, TrackElement.HLoc, TrackElement.VLoc + 1, 3, RouteNumber))//not else in case have different routes on each diagonal, though shouldn't be possible
+                    {
+                    if(!LogActionErrorCalled && AllRoutes->GetFixedRouteAt(214, RouteNumber).PrefDirSize() > 2)
+                        {//don't call for stub end routes
+                        TrainController->LogActionError(62, HeadCode, "", RouteForceCancelled, TrackElement.ElementID);
+                        }
+                    AllRoutes->GetModifiableRouteAt(27, RouteNumber).ForceCancelRoute(10);
+                    }
+                }
             }
         }
     Utilities->CallLogPop(698);
@@ -2593,7 +2729,7 @@ by UpdateTrain() which never sets any stop conditions unless the train is fully 
 when Straddle == LeadMidLag 
 */
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTrainMovementValues," + AnsiString(TrackVectorPosition) + "," + AnsiString(EntryPos));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTrainMovementValues," + AnsiString(TrackVectorPosition) + "," + AnsiString(EntryPos) + "," + HeadCode);
 int EntryHalfLength, CurrentElementHalfLength, NextElementHalfLength, CumulativeLength = 0, CurrentTrackVectorPosition = TrackVectorPosition;
 int DistanceAtHalfBraking, DistanceAtThreeQuarterBraking, ExitPos, NextTrackVectorPosition, NextEntryPos;
 bool RedSignalFlag = false, BuffersFlag = false, StationFlag = false, BuffersOrContinuationNowFlag = false,
@@ -3221,7 +3357,7 @@ but stop on way back, and in these circumstances no actions have been missed.  S
 or pass (false) the location.
 */
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NameInTimetableBeforeCDT," + Name);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NameInTimetableBeforeCDT," + Name + "," + HeadCode);
 Stop = false;
 if(TimetableFinished || (Name == ""))
     {
@@ -3262,7 +3398,7 @@ until finds either a train or a signal/buffers/continuation/loop.  If finds a tr
 Ignores the call-on signal.
 */
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ClearToNextSignal");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ClearToNextSignal" + "," + HeadCode);
 int ReturnVal = 0;
 for(unsigned int x=0; x<Track->TrackVector.size();x++)
     {
@@ -3367,19 +3503,20 @@ b) if there is a facing train at the station, it is being held appropriately (mu
 change of direction (cdt), remaining here (Frh), or under signaller control);
 c) at least 1 platform available for the approaching train; d) points (if any) set for direct route into platform;
 e) approaching train is to stop at station; f) no more facing signals between train and platform; g) [dropped g]
-h) train in front preventing route being set; i) train in front not exiting at continuation; j) signal must be within 4km of
-the stop platform; and k) either an autosigs route already set into station or able to set an unrestricted route into station.
-If all OK & autosigs route not already set then set an unrestricted route into the station (just to the first platform)
+h) train in front preventing route being set far enough to release stop signal; i) train in front not exiting at continuation; j) signal must be within 4km of
+the stop platform; k) [dropped (k), now can set a reoute or part route into platform so can set points more easily.] and l) no existing route conflicts with the route into the platform
+If all OK & route or part route not already set then set an unrestricted route into the station (just to the first platform), to prevent point changing or other route conflicts - if a partial route set than can still
+change points outside the route or have a route conflict if another route is set.
 */
 {
 if(Track->RouteFlashFlag) return false;//don't want to create a new route from the stop signal if one is already in construction as
                                        //some of the callingon route elements may be involved
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CallingOnAllowed");
-bool PlatformFoundFlag = false, StopRequired = false, SkipRouteCheck = false, AutoSigs = false;
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CallingOnAllowed" + "," + HeadCode);
+bool PlatformFoundFlag = false, StopRequired = false, SkipRouteCheck = false, RouteOrPartRouteSet = false; //last added at v1.2.0
 int CurrentTrackVectorPosition = LeadElement, NextTrackVectorPosition, ElementNumber = 0, Distance = 0;
 int RouteStartPosition; //this is the track vector position of the start element for the new unrestricted route - one past the stop signal
 int PlatformPosition; // the track vector position of the first stop platfrom
-int EntryPos = LeadEntryPos, ExitPos, NextEntryPos;
+int EntryPos = LeadEntryPos, ExitPos, NextEntryPos, RouteID; //not used here
 AnsiString LeadStationName = Track->TrackElementAt(395, LeadElement).ActiveTrackElementName;//still OK even if ""
 //must be stopped at a signal but not at a location & still in timetable (a)
 
@@ -3517,24 +3654,32 @@ while(true)
         }
     else ExitPos = Track->GetNonPointsOppositeLinkPos(EntryPos);
 
-    //check existing routes - if element forward of the signal (ElementNumber == 2) is AutoSignals then OK as this route must extend to
-    //the next signal so must at least reach the station, otherwise reject if (1) there are any route elements already set from element
-    //forward of signal to & including the first platform element (covers crossover with other route set) or (2) a fouled diagonal (k)
+    //check existing routes - if element forward of the signal (ElementNumber == 2) is AutoSignals then OK without further checks as this route must extend to
+    //the next signal so must at least reach the station, also if have another route set (must be unrestricted) from either the stop signal or the element after it
+    //to or towards the platform (& all points set correctly) then OK, otherwise reject if (1) there are any route elements already set from element
+    //forward of element after the signal to & including the first platform element (covers crossover with other route set) or (2) a fouled diagonal (k)
     if(ElementNumber < 2) SkipRouteCheck = true;
     else SkipRouteCheck = false;
     if(ElementNumber == 1) //the stop signal
         {
         RouteStartPosition = CurrentTrackVectorPosition;
         }
+/*
     if(ElementNumber == 2)
         {
-        int RouteID; //not used here
         if(AllRoutes->GetRouteTypeAndNumber(18, CurrentTrackVectorPosition, EntryPos, RouteID) == AllRoutes->AutoSigsRoute) AutoSigs = true;
         else AutoSigs = false;
+        if(AllRoutes->GetRouteTypeAndNumber(25, CurrentTrackVectorPosition, EntryPos, RouteID) == AllRoutes->NotAutoSigsRoute) OtherFullRouteSet = true;
         }
-    if(!SkipRouteCheck && !AutoSigs)
+*/
+    if(ElementNumber > 1)
         {
-        if(AllRoutes->TrackIsInARoute(16, CurrentTrackVectorPosition, EntryPos))
+        if(AllRoutes->GetRouteTypeAndNumber(26, CurrentTrackVectorPosition, EntryPos, RouteID) != AllRoutes->NoRoute) RouteOrPartRouteSet = true;
+        else RouteOrPartRouteSet = false;
+        }
+    if(!SkipRouteCheck && !RouteOrPartRouteSet)
+        {
+        if(AllRoutes->TrackIsInARoute(16, CurrentTrackVectorPosition, EntryPos)) //must be a conflicting route
             {
             Utilities->CallLogPop(1859);
             return false;
@@ -3542,7 +3687,7 @@ while(true)
         int ExitLink = CurrentTrackElement.Link[ExitPos];
         if((ExitLink == 1) || (ExitLink == 3) || (ExitLink == 7) || (ExitLink == 9))
             {
-            if(AllRoutes->FouledDiagonal(6, CurrentTrackElement.HLoc, CurrentTrackElement.VLoc, ExitLink))
+            if(AllRoutes->DiagonalFouledByRouteOrTrain(6, CurrentTrackElement.HLoc, CurrentTrackElement.VLoc, ExitLink))
                 {
                 Utilities->CallLogPop(1850);
                 return false;
@@ -3566,7 +3711,7 @@ while(true)
 //this in ClockTimer2)
 
 //now add elements to the CallonVector
-TAllRoutes::TCallonEntry CallonEntry(AutoSigs, RouteStartPosition, PlatformPosition);
+TAllRoutes::TCallonEntry CallonEntry(RouteOrPartRouteSet, RouteStartPosition, PlatformPosition);
 AllRoutes->CallonVector.push_back(CallonEntry);
 Utilities->CallLogPop(1860);
 return true; //return false if fail to set route for any reason
@@ -3588,7 +3733,7 @@ return false;
 AnsiString TTrain::GetTrainHeadCode(int Caller)
 
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetTrainHeadCode");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetTrainHeadCode" + "," + HeadCode);
 AnsiString RepeatHeadCode = TrainController->GetRepeatHeadCode(0, HeadCode, RepeatNumber, IncrementalDigits);
 Utilities->CallLogPop(1452);
 return RepeatHeadCode;
@@ -3638,7 +3783,7 @@ SignallerLeave:  06:05:40: 2F46 left railway under signaller control at 57-N4
 SignallerStepForward:  06:05:40: 2F46 received signaller authority to step forward
 */
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LogAction," + OwnHeadCode + "," + OtherHeadCode + "," + AnsiString(ActionType) + "," + LocationName);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LogAction," + OwnHeadCode + "," + OtherHeadCode + "," + AnsiString(ActionType) + "," + LocationName + "," + HeadCode);
 AnsiString BaseLog="", WarningBaseLog="", PerfLog="", ActionLog="";
 int IntMinsLate = 0;//need to set it in case MinsLate == 0, since it isn't tested for that
 if(ActionType == Arrive) ActionLog = " arrived at ";
@@ -3782,8 +3927,8 @@ will maximise the number at the location.  Note that this function isn't sophist
 location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these
 circumstances the other train will need to be move sufficiently away to release all 4 positions, then the train will split.
 */
-TrainController->LogEvent("" + AnsiString(Caller) + ",FrontTrainSplit");
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FrontTrainSplit");
+TrainController->LogEvent("" + AnsiString(Caller) + ",FrontTrainSplit" + "," + HeadCode);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FrontTrainSplit" + "," + HeadCode);
 AnsiString LocationName = Track->TrackElementAt(555, LeadElement).ActiveTrackElementName;
 if(LocationName == "") LocationName = Track->TrackElementAt(837, MidElement).ActiveTrackElementName;
 int FirstNamedElementPos, SecondNamedElementPos, FirstNamedLinkedElementPos, SecondNamedLinkedElementPos;
@@ -4011,8 +4156,8 @@ will maximise the number at the location.  Note that this function isn't sophist
 location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these
 circumstances the other train will need to be moved sufficiently away to release all 4 positions, then the train will split.
 */
-TrainController->LogEvent("" + AnsiString(Caller) + ",RearTrainSplit");
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RearTrainSplit");
+TrainController->LogEvent("" + AnsiString(Caller) + ",RearTrainSplit" + "," + HeadCode);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RearTrainSplit" + "," + HeadCode);
 AnsiString LocationName = Track->TrackElementAt(587, LeadElement).ActiveTrackElementName;
 if(LocationName == "") LocationName = Track->TrackElementAt(838, MidElement).ActiveTrackElementName;
 int FirstNamedElementPos, SecondNamedElementPos, FirstNamedLinkedElementPos, SecondNamedLinkedElementPos;
@@ -4236,8 +4381,8 @@ Utilities->CallLogPop(1015);
 
 void TTrain::FinishJoin(int Caller)
 {
-TrainController->LogEvent("" + AnsiString(Caller) + ",FinishJoin");
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FinishJoin");
+TrainController->LogEvent("" + AnsiString(Caller) + ",FinishJoin" + "," + HeadCode);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FinishJoin" + "," + HeadCode);
 if(TrainGone)//this means that the train has already joined the other & is awaiting deletion by TrainController
              //without this the 'waiting' message can be given since the other train's ActionVectorEntryPtr has moved
              //on from jbo & TrainToJoinIsAdjacent returns false
@@ -4267,8 +4412,8 @@ Utilities->CallLogPop(1031);
 
 void TTrain::JoinedBy(int Caller)
 {
-TrainController->LogEvent("" + AnsiString(Caller) + ",JoinedBy");
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",JoinedBy");
+TrainController->LogEvent("" + AnsiString(Caller) + ",JoinedBy" + "," + HeadCode);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",JoinedBy" + "," + HeadCode);
 TTrain *TrainToBeJoinedBy;
 AnsiString FJOHeadCode = TrainController->GetRepeatHeadCode(4, ActionVectorEntryPtr->OtherHeadCode, RepeatNumber, IncrementalDigits);
 if(!TrainToBeJoinedByIsAdjacent(0, TrainToBeJoinedBy))
@@ -4319,8 +4464,8 @@ Utilities->CallLogPop(1034);
 
 void TTrain::ChangeTrainDirection(int Caller)
 {
-TrainController->LogEvent("" + AnsiString(Caller) + ",ChangeTrainDirection");
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeTrainDirection");
+TrainController->LogEvent("" + AnsiString(Caller) + ",ChangeTrainDirection" + "," + HeadCode);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeTrainDirection" + "," + HeadCode);
 TColor TempColour = BackgroundColour;
 UnplotTrain(2);
 RearStartElement = LeadElement;
@@ -4339,8 +4484,8 @@ Utilities->CallLogPop(1012);
 
 void TTrain::NewTrainService(int Caller)//change to new train, give new service message
 {
-TrainController->LogEvent("" + AnsiString(Caller) + ",NewTrainService");
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NewTrainService");
+TrainController->LogEvent("" + AnsiString(Caller) + ",NewTrainService" + "," + HeadCode);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NewTrainService" + "," + HeadCode);
 AnsiString NewHeadCode = TrainController->GetRepeatHeadCode(5, ActionVectorEntryPtr->OtherHeadCode, RepeatNumber, IncrementalDigits);
 LogAction(13, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
 UnplotTrain(3);
@@ -4365,8 +4510,12 @@ Utilities->CallLogPop(1022);
 
 void TTrain::RemainHere(int Caller)
 {
-TrainController->LogEvent(Utilities->TimeStamp() + AnsiString(Caller) + ",RemainHere");
-Utilities->CallLog.push_back(Utilities->TimeStamp() + AnsiString(Caller) + ",RemainHere");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + AnsiString(Caller) + ",RemainHere" + "," + HeadCode);
+if(RemainHereLogNotSent) //to prevent repeated logs
+    {
+    TrainController->LogEvent(Utilities->TimeStamp() + AnsiString(Caller) + ",RemainHere" + "," + HeadCode);
+    RemainHereLogNotSent = false;
+    }
 if(!TerminatedMessageSent)
     {
     Display->PerformanceLog(5, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + HeadCode + " terminated at " + ActionVectorEntryPtr->LocationName);
@@ -4389,8 +4538,8 @@ If IncNum is -2, then send messages for all remaining actions, except Fer if pre
 */
 {
 if((Ptr->Command == "Snt") && Ptr->SignallerControl) return;//if remove train that starts under signaller control no messages needed
-TrainController->LogEvent("" + AnsiString(Caller) + ",SendMissedActionLogs," + AnsiString(IncNum));
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SendMissedActionLogs," + AnsiString(IncNum));
+TrainController->LogEvent("" + AnsiString(Caller) + ",SendMissedActionLogs," + AnsiString(IncNum) + "," + HeadCode);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SendMissedActionLogs," + AnsiString(IncNum) + "," + HeadCode);
 if(IncNum > 0)
     {
     for(int x=0;x<IncNum;x++)
@@ -4555,7 +4704,7 @@ Utilities->CallLogPop(1021);
 bool TTrain::TrainToJoinIsAdjacent(int Caller, TTrain* &TrainToJoin)
 //ensure same repeatnumber
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrainToJoinIsAdjacent");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrainToJoinIsAdjacent" + "," + HeadCode);
 TTrainDataEntry *TrainToJoinTDEntry = ActionVectorEntryPtr->LinkedTrainEntryPtr;
 if(TrainToJoinTDEntry->TrainOperatingDataVector.at(RepeatNumber).RunningEntry != Running)
     {
@@ -4583,7 +4732,7 @@ return false;
 bool TTrain::TrainToBeJoinedByIsAdjacent(int Caller, TTrain* &TrainToBeJoinedBy)
 //ensure same repeatnumber
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrainToBeJoinedByIsAdjacent");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrainToBeJoinedByIsAdjacent" + "," + HeadCode);
 TTrainDataEntry *TrainToBeJoinedByTDEntry = ActionVectorEntryPtr->LinkedTrainEntryPtr;
 if(TrainToBeJoinedByTDEntry->TrainOperatingDataVector.at(RepeatNumber).RunningEntry != Running)
     {
@@ -4610,8 +4759,8 @@ return false;
 
 void TTrain::NewShuttleFromNonRepeatService(int Caller)
 {
-TrainController->LogEvent("" + AnsiString(Caller) + ",NewShuttleFromNonRepeatService");
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NewShuttleFromNonRepeatService");
+TrainController->LogEvent("" + AnsiString(Caller) + ",NewShuttleFromNonRepeatService" + "," + HeadCode);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NewShuttleFromNonRepeatService" + "," + HeadCode);
 AnsiString NewHeadCode = ActionVectorEntryPtr->NonRepeatingShuttleLinkHeadCode;
 LogAction(15, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
 UnplotTrain(4);
@@ -4639,8 +4788,12 @@ Utilities->CallLogPop(1078);
 void TTrain::RepeatShuttleOrRemainHere(int Caller)
 //need to check whether all repeats finished or not
 {
-TrainController->LogEvent("" + AnsiString(Caller) + ",RepeatShuttleOrRemainHere");
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RepeatShuttleOrRemainHere");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RepeatShuttleOrRemainHere" + "," + HeadCode);
+if(RemainHereLogNotSent) //to prevent repeated logs
+    {
+    TrainController->LogEvent("" + AnsiString(Caller) + ",RepeatShuttleOrRemainHere" + "," + HeadCode);
+    RemainHereLogNotSent = false;
+    }
 if(RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))//finished all repeats
     {
     if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != ShuttleFinishedRemainingHere)
@@ -4682,8 +4835,8 @@ Utilities->CallLogPop(1079);
 
 void TTrain::RepeatShuttleOrNewNonRepeatService(int Caller)
 {
-TrainController->LogEvent("" + AnsiString(Caller) + ",RepeatShuttleOrNewNonRepeatService");
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RepeatShuttleOrNewNonRepeatService");
+TrainController->LogEvent("" + AnsiString(Caller) + ",RepeatShuttleOrNewNonRepeatService" + "," + HeadCode);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RepeatShuttleOrNewNonRepeatService" + "," + HeadCode);
 if(RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))//finished all repeats
     {
     AnsiString NewHeadCode = ActionVectorEntryPtr->NonRepeatingShuttleLinkHeadCode;
@@ -4738,7 +4891,7 @@ bool TTrain::IsTrainTerminating(int Caller)
 //Search ActionVector from the position after the entry value for Ptr to the end, and return true if find a Finish
 //entry before Fer or TimeLoc.  No point checking for TimeTimeLoc since at a stop location now so a later TimeTimeLoc
 //must be preceded by a TimeLoc departure
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsTrainTerminating");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsTrainTerminating" + "," + HeadCode);
 for(unsigned int x=1;x<TrainDataEntryPtr->ActionVector.size();x++)
     {
     if((ActionVectorEntryPtr + x) < TrainDataEntryPtr->ActionVector.end())
@@ -4763,7 +4916,7 @@ return false;
 
 bool TTrain::AbleToMove(int Caller)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AbleToMove");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AbleToMove" + "," + HeadCode);
 bool Able = true;
 if(Crashed || Derailed || StoppedAtBuffers || StoppedAtSignal || StoppedForTrainInFront) Able = false;
 if(LeadElement > -1)
@@ -4810,7 +4963,7 @@ bool TTrain::AbleToMoveButForSignal(int Caller)
 {
 //first check if a train immediately in front (may have moved there since this train stopped so StoppedForTrainInFront
 //won't be set; if there is a train then set StoppedForTrainInFront
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AbleToMoveButForSignal");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AbleToMoveButForSignal" + "," + HeadCode);
 int VecPos = Track->TrackElementAt(654, LeadElement).Conn[LeadExitPos];
 int NextEntryPos = Track->TrackElementAt(655, LeadElement).ConnLinkPos[LeadExitPos];
 if(Track->OtherTrainOnTrack(5, VecPos, NextEntryPos, TrainID))
@@ -4831,7 +4984,7 @@ else
 void TTrain::SignallerChangeTrainDirection(int Caller)
 {
 //unplots & replots train, which checks for facing signal and sets StoppedAtSignal if req'd
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SignallerChangeTrainDirection");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SignallerChangeTrainDirection" + "," + HeadCode);
 TColor TempColour = BackgroundColour;
 UnplotTrain(8);
 RearStartElement = LeadElement;
@@ -4846,7 +4999,7 @@ Utilities->CallLogPop(1102);
 
 AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - TrainDataEntryPtr->ActionVector.begin()) + ",FloatingLabelNextString");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - TrainDataEntryPtr->ActionVector.begin()) + ",FloatingLabelNextString" + "," + HeadCode);
 AnsiString RetStr = "", LocationName = "";
 if((Ptr->Command != "") && (Ptr->Command[1] == 'S'))
     {
@@ -4959,7 +5112,7 @@ return RetStr;
 AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
 //Enter with Ptr pointing to first action to be listed (i.e. next action)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - TrainDataEntryPtr->ActionVector.begin()) + ",FloatingTimetableString");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - TrainDataEntryPtr->ActionVector.begin()) + ",FloatingTimetableString" + "," + HeadCode);
 AnsiString RetStr = "", PartStr = "";
 int Count = 0;
 if((Ptr->Command != "") && (Ptr->Command[1] == 'S') && (TrainMode == Timetable))//can start in signaller control so exclude this
@@ -5118,7 +5271,7 @@ return RetStr;
 
 void TTrain::SaveOneSessionTrain(int Caller, std::ofstream &OutFile)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveOneSessionTrain");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveOneSessionTrain" + "," + HeadCode);
 Utilities->SaveFileString(OutFile, HeadCode);
 Utilities->SaveFileInt(OutFile, RearStartElement);
 Utilities->SaveFileInt(OutFile, RearStartExitPos);
@@ -5247,7 +5400,7 @@ Utilities->CallLogPop(1457);
 
 void TTrain::LoadOneSessionTrain(int Caller, std::ifstream &InFile)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadOneSessionTrain");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadOneSessionTrain" + "," + HeadCode);
 HeadCode = Utilities->LoadFileString(InFile);
 RearStartElement = Utilities->LoadFileInt(InFile);
 RearStartExitPos = Utilities->LoadFileInt(InFile);
@@ -5543,7 +5696,7 @@ void TTrain::PlotTrainInZoomOutMode(int Caller, bool Flash)
 /clNormalBackground      (TColor)0xCCCCCC grey
 */
 
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotTrainInZoomOutMode");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotTrainInZoomOutMode" + "," + HeadCode);
 bool HideFlashingTrain = false;
 Graphics::TBitmap *SmallTrainBitmap;
 //NB ensure retain same order as zoomed in order so colours correspond
@@ -5631,7 +5784,7 @@ Utilities->CallLogPop(1459);
 
 void TTrain::UnplotTrainInZoomOutMode(int Caller)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UnplotTrainInZoomOutMode," + AnsiString(TrainID));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UnplotTrainInZoomOutMode," + AnsiString(TrainID) + "," + HeadCode);
 if(!Display->ZoomOutFlag)
     {
     Utilities->CallLogPop(1304);
@@ -5667,7 +5820,7 @@ Utilities->CallLogPop(1305);
 
 bool TTrain::TrainAtLocation(int Caller, AnsiString &LocationName)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrainAtLocation");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrainAtLocation" + "," + HeadCode);
 LocationName = "";
 if(!StoppedAtLocation)
     {
@@ -5698,7 +5851,7 @@ return true;
 
 void TTrain::PlotTrain(int Caller, TDisplay *Disp)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotTrain");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotTrain" + "," + HeadCode);
 for(int x=0;x<4;x++)
     {
     PlotTrainGraphic(7, x, Disp);
@@ -5710,7 +5863,7 @@ Utilities->CallLogPop(647);
 
 void TTrain::WriteTrainToImage(int Caller, Graphics::TBitmap *Bitmap)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",WriteTrainToImage");
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",WriteTrainToImage" + "," + HeadCode);
 for(int x=0;x<4;x++)
     {
     if(PlotElement[x] > -1)
@@ -5720,6 +5873,49 @@ for(int x=0;x<4;x++)
         }
     }
 Utilities->CallLogPop(1708);
+}
+
+//---------------------------------------------------------------------------
+
+bool TTrain::LinkOccupied(int Caller, int TrackVectorPosition, int LinkNumber) //added at v1.2.0
+{
+//return true for any part of train occupying LinkNumber at TrackVectorPosition, false for anything else, including no LinkNumber & no TrackVectorPosition
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LinkOccupied," + AnsiString(TrackVectorPosition) + "," + AnsiString(LinkNumber) + "," + HeadCode);
+
+/*Note on Straddle:  Straddle defines the actual train position wrt Lag, Mid & Lead elements at all times other than within UpdateTrain.  Is only MidLag outside UpdateTrain
+on first entry at a continuation (with no train plotted), and that has no relevance here. In all other cases it is either LeadMid (when train fully
+on Lead & Mid elements) or LeadMidLag (when train straddling 3 elements).
+*/
+
+//note that MidElement always fully occupied
+if((MidElement == TrackVectorPosition) && ((Track->TrackElementAt(883, TrackVectorPosition).Link[MidEntryPos] == LinkNumber) || (Track->TrackElementAt(884, TrackVectorPosition).Link[MidExitPos] == LinkNumber)))
+    {
+    Utilities->CallLogPop(2005);
+    return true;
+    }
+if(Straddle == LeadMid)
+    {
+    if((LeadElement == TrackVectorPosition) && ((Track->TrackElementAt(885, TrackVectorPosition).Link[LeadEntryPos] == LinkNumber) || (Track->TrackElementAt(886, TrackVectorPosition).Link[LeadExitPos] == LinkNumber)))
+        {
+        Utilities->CallLogPop(2006);
+        return true;
+        }
+    }
+else if(Straddle == LeadMidLag)
+    {
+    if((LeadElement == TrackVectorPosition) && (Track->TrackElementAt(887, TrackVectorPosition).Link[LeadEntryPos] == LinkNumber)) //only interested in LeadEntryPos as train not occupying ExitPos yet
+        {
+        Utilities->CallLogPop(2007);
+        return true;
+        }
+    else if((LagElement == TrackVectorPosition) && (Track->TrackElementAt(888, TrackVectorPosition).Link[LagExitPos] == LinkNumber)) //only interested in LagExitPos as train has left EntryPos
+        {
+        Utilities->CallLogPop(2008);
+        return true;
+        }
+    }
+Utilities->CallLogPop(2009);
+return false;
 }
 
 //---------------------------------------------------------------------------
@@ -6095,9 +6291,9 @@ bool TTrainController::AddTrain(int Caller, int RearPosition, int FrontPosition,
 //so it would not be possible to use constants to number the calls.
 {
 LogEvent("" + AnsiString(Caller) + ",AddTrain," + AnsiString(RearPosition) + "," + AnsiString(FrontPosition) + "," + HeadCode + "," + AnsiString(StartSpeed) +
-        "," + AnsiString(Mass) + "," + ModeStr);
+        "," + AnsiString(Mass) + "," + ModeStr + "," + HeadCode);
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AddTrain," + AnsiString(RearPosition) + "," + AnsiString(FrontPosition) + "," + HeadCode + "," + AnsiString(StartSpeed) +
-        "," + AnsiString(Mass) + "," + ModeStr);
+        "," + AnsiString(Mass) + "," + ModeStr + "," + HeadCode);
 
 int RearExitPos = -1;
 for(int x=0;x<4;x++)
@@ -10698,7 +10894,7 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
 //FailBuffersPreventingStart:  06:00:10: ERROR: 2F43 facing buffers and unable to start at Essex Road
 //FailBufferCrash:  06:00:10: ERROR: 2F43 CRASHED INTO BUFFERS at 46-N7
 //FailLevelCrossingCrash:  06:00:10: ERROR: 2F43 CRASHED INTO ROAD TRAFFIC AT A LEVEL CROSSING at 46-N7
-//RouteForceCancelled:  06:00:10: ERROR: 2F43 forced a route cancellation by entering from wrong end at 46-N7
+//RouteForceCancelled:  06:00:10: ERROR: 2F43 forced a route cancellation by occupying it incorrectly at 46-N7
 //WaitingForJBO:  06:00:10: WARNING: 2F43 waiting to join 3F43 at Essex Road
 //WaitingForFJO:  06:00:10: WARNING: 2F43 waiting to be joined by 3F43 at Essex Road
 {
@@ -10849,7 +11045,7 @@ else if(ActionEventType == FailLockedRoute)
     }
 else if(ActionEventType == RouteForceCancelled)
     {
-    ErrorLog = " forced a route cancellation by entering from wrong end at ";
+    ErrorLog = " forced a route cancellation by occupying it incorrectly at ";
     }
 else if(ActionEventType == WaitingForJBO)
     {

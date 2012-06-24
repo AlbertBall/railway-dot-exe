@@ -3282,7 +3282,7 @@ while(ReturnNextInactiveTrackElement(3, Next))
         {
         if(Next.SpeedTag == 144)//level crossing
             {
-            int BaseElement = GetTrackElementFromTrackMap(2, Next.HLoc, Next.VLoc).SpeedTag;
+            int BaseElement = GetTrackElementFromTrackMap(3, Next.HLoc, Next.VLoc).SpeedTag;
             if(BaseElement == 1)  //hor element
                 {
                 if(Next.Attribute == 1)//open to trains
@@ -8466,7 +8466,7 @@ throw Exception("Error, failure in GetExitPos");//should never reach here
 
 void TTrack::PopulateLCVector(int Caller)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller));
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PopulateLCVector");
 LCVector.clear();
 for(unsigned int x=0; x<InactiveTrackVector.size(); x++)
     {
@@ -8477,6 +8477,104 @@ for(unsigned int x=0; x<InactiveTrackVector.size(); x++)
     }
 Utilities->CallLogPop(1931);
 return;
+}
+
+//---------------------------------------------------------------------------
+
+bool TTrack::TrainOnLink(int Caller, int HLoc, int VLoc, int Link, int &TrainID) //new at v1.2.0
+/* 
+Call GetVectorPositionFromTrackMap to identify the track element, then check if TrainIDOnElement > -1 (if a
+bridge then check relevant TrainID according to the Link), and if absent return false.  If present identify
+the train using TrainController->TrainVectorAtIdent, and check which bit on the element in question (Lead, Mid or Lag),
+and then check the relevant EntryPos & ExitPos for a match with Link.  If find a match return true and return the TrainID.
+*/
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrainOnLink," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(Link));
+bool FoundFlag;
+TrainID = -1;
+int VecPos = GetVectorPositionFromTrackMap(47, HLoc, VLoc, FoundFlag);
+if(!FoundFlag)
+    {
+    Utilities->CallLogPop(2001);
+    return false;
+    }
+TTrackElement TE = TrackElementAt(882, VecPos);
+TrainID = TE.TrainIDOnElement;
+if(TE.TrackType == Bridge)
+    {
+    if(TE.TrainIDOnElement > -1)
+        {
+        if((TE.Link[0] == Link) || (TE.Link[1] == Link))
+            {
+            TrainID = TE.TrainIDOnBridgeTrackPos01;
+            }
+        else if((TE.Link[2] == Link) || (TE.Link[3] == Link))
+            {
+            TrainID = TE.TrainIDOnBridgeTrackPos23;
+            }
+        else TrainID = -1; //shouldn't ever reach here but be safe
+        }
+    }
+if(TrainID == -1)
+    {
+    Utilities->CallLogPop(2002);
+    return false;
+    }
+//now get the train
+TTrain Train = TrainController->TrainVectorAtIdent(38, TrainID);
+if(Train.LinkOccupied(0, VecPos, Link)) //checks whether any part of train occupying Link on VecPos
+    {
+    Utilities->CallLogPop(2003);
+    return true;
+    }
+TrainID = -1;
+Utilities->CallLogPop(2004);
+return false;
+}
+
+//---------------------------------------------------------------------------
+bool TTrack::DiagonalFouledByTrain(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber, int &TrainID)
+/* New at v1.2.0
+As DiagonalFouledByRouteOrTarin but checks for a train only (may or may not be a route) and returns the ID number.    Enter with H & V set for the element whose diagonal
+is to be checked, and the XLink number of the relevant diagonal, which must be 1, 3, 7 or 9.
+for XLink = 1, potentially fouled diagonals are at H-1, V, Lk 3 & H, V-1, Lk 7
+for XLink = 3, potentially fouled diagonals are at H+1, V, Lk 1 & H, V-1 Lk 9
+for XLink = 7, potentially fouled diagonals are at H-1, V, Lk 9 & H, V+1 Lk 1
+for XLink = 9, potentially fouled diagonals are at H+1, V, Lk 7 & H, V+1 Lk 3
+Each of these is examined in turn for each route element in the relevant position.
+*/
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DiagonalFouledByTrain," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(DiagonalLinkNumber));
+TrainID = -1;
+TPrefDirElement  TempPrefDirElement;
+TAllRoutes::TRouteElementPair FirstPair, SecondPair;
+
+if(((DiagonalLinkNumber == 1) && TrainOnLink(8, HLoc-1, VLoc, 3, TrainID))  || ((DiagonalLinkNumber == 7) && TrainOnLink(9, HLoc-1, VLoc, 9, TrainID)))
+    {
+    Utilities->CallLogPop(2027);
+    return true;
+    }
+
+if(((DiagonalLinkNumber == 1) && TrainOnLink(10, HLoc, VLoc-1, 7, TrainID))  || ((DiagonalLinkNumber == 3) && TrainOnLink(11, HLoc, VLoc-1, 9, TrainID)))
+    {
+    Utilities->CallLogPop(2028);
+    return true;
+    }
+
+if(((DiagonalLinkNumber == 3) && TrainOnLink(12, HLoc+1, VLoc, 1, TrainID))  || ((DiagonalLinkNumber == 9) && TrainOnLink(13, HLoc+1, VLoc, 7, TrainID)))
+    {
+    Utilities->CallLogPop(2029);
+    return true;
+    }
+
+if(((DiagonalLinkNumber == 7) && TrainOnLink(14, HLoc, VLoc+1, 1, TrainID))  || ((DiagonalLinkNumber == 9) && TrainOnLink(15, HLoc, VLoc+1, 3, TrainID)))
+    {
+    Utilities->CallLogPop(2030);
+    return true;
+    }
+
+Utilities->CallLogPop(2031);
+return false;
 }
 
 //---------------------------------------------------------------------------
@@ -10495,6 +10593,255 @@ Utilities->CallLogPop(1565);
 }
 
 //---------------------------------------------------------------------------
+
+bool TOnePrefDir::PresetAutoRouteElementValid(int Caller, TPrefDirElement ElementIn, int EntryPos) //added at v1.2.0
+/*
+Checks ElementIn and returns true only if a single prefdir set at that H&V, with EntryPos giving entry position, not points, crossovers,
+level crossing, signals with wrong direction set, or buffers.
+*/
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PresetAutoRouteElementValid");
+int PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3;
+bool FoundFlag;
+TPrefDir4MultiMapIterator MMIT = PrefDir4MultiMap.begin();
+TPrefDirElement PrefDirElement0, PrefDirElement1, PrefDirElement2, PrefDirElement3;
+if((ElementIn.TrackType == Points) || (ElementIn.TrackType == Crossover) || (ElementIn.TrackType == Buffers) || (Track->IsLCAtHV(49, ElementIn.HLoc, ElementIn.VLoc)))
+    {
+    Utilities->CallLogPop(1982);
+    return false;
+    }
+if((ElementIn.TrackType == SignalPost) && (ElementIn.Config[EntryPos] == Signal)) //Signal is at exit end
+    {
+    Utilities->CallLogPop(1983);
+    return false;
+    }
+if((ElementIn.TrackType == SignalPost) && (ElementIn.SigAspect == TTrackElement::GroundSignal))
+    {
+    Utilities->CallLogPop(1995);
+    return false;
+    }
+//Now check that there is only a single prefdir set
+GetVectorPositionsFromPrefDir4MultiMap(8, ElementIn.HLoc, ElementIn.VLoc, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
+//always found in order, any missing have PrefDirPosx == -1
+if(PrefDirPos0 > -1) PrefDirElement0 = GetFixedPrefDirElementAt(213, PrefDirPos0);//PrefDirPos0 should always be > -1 but leave as a precaution
+if(PrefDirPos1 > -1) PrefDirElement1 = GetFixedPrefDirElementAt(214, PrefDirPos1);
+if(PrefDirPos2 > -1) PrefDirElement2 = GetFixedPrefDirElementAt(215, PrefDirPos2);
+if(PrefDirPos3 > -1) PrefDirElement3 = GetFixedPrefDirElementAt(216, PrefDirPos3);
+
+if(PrefDirPos3 > -1)//4 found, all bidirectional
+    {
+    Utilities->CallLogPop(1984);
+    return false;
+    }
+else if(PrefDirPos2 > -1)//3 found, one PrefDir bidirectional & other unidirectional
+    {
+    if((PrefDirElement0.XLinkPos == EntryPos) || (PrefDirElement1.XLinkPos == EntryPos) || (PrefDirElement2.XLinkPos == EntryPos))
+        {
+        Utilities->CallLogPop(1985);
+        return false;
+        }
+    else
+        {
+        Utilities->CallLogPop(1986);
+        return true;
+        }
+    }
+else if(PrefDirPos1 > -1)//2 found, either 1 bidirectional or 2 unidirectional
+    {
+    if((PrefDirElement0.XLinkPos == EntryPos) || (PrefDirElement1.XLinkPos == EntryPos))
+        {
+        Utilities->CallLogPop(1987);
+        return false;
+        }
+    else
+        {
+        Utilities->CallLogPop(1988);
+        return true;
+        }
+    }
+else if(PrefDirPos0 > -1)//one found, make sure in correct direction
+    {
+    if(PrefDirElement0.XLinkPos == EntryPos)
+        {
+        Utilities->CallLogPop(1989);
+        return false;
+        }
+    else
+        {
+        Utilities->CallLogPop(1990);
+        return true;
+        }
+    }
+else
+    {
+    Utilities->CallLogPop(1991);
+    return false; //none found
+    }
+}
+
+//---------------------------------------------------------------------------
+
+bool TOnePrefDir::GetStartAndEndPrefDirElements(int Caller, TPrefDirElement &StartElement, TPrefDirElement &EndElement, int &LastIteratorValue)
+{
+/* Called by PresetAutoSigRoutesButtonClick in the Interface unit.  LastIteratorValue gives the position in EveryPrefDir to start from.  Search
+EveryPrefDir for continuations (facing inwards wrt pref dir) or non-ground signals in single direction pref dirs, and when find one track forwards
+to the next non-ground signal or continuation.  If, before finding a valid signal or continuation find points, crossover, level crossing or buffers,
+or an element that is already in a route, stop tracking and continue with the search for another valid continuation or signal.  When find a suitable
+pair, return the elements in StartElement and EndElement, and also the LastIteratorValue ready for the next call.
+*/
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetStartAndEndPrefDirElements," + AnsiString(LastIteratorValue));
+TOnePrefDir::TPrefDirVectorIterator PDVIt;
+bool FoundFlag, ContFlag, FoundElements = false;
+int PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3;
+TPrefDirElement NextElement;
+for(PDVIt = (PrefDirVector.begin() + LastIteratorValue); PDVIt < PrefDirVector.end(); PDVIt++)
+    {
+    LastIteratorValue++;
+    ContFlag = false;
+    if((PDVIt->TrackType != SignalPost) && (PDVIt->TrackType != Continuation)) continue;
+    if((PDVIt->TrackType == SignalPost) && (PDVIt->SigAspect == TTrackElement::GroundSignal)) continue;
+//    if(AllRoutes::TrackIsInARoute(, PDVIt->TrackVectorPosition, PDVIt->EntryPos) continue; //already in a route - no, don't check start position as if a signal might well be at end of an existing route
+    //found a potential route start point
+    if(PresetAutoRouteElementValid(0, *PDVIt, PDVIt->ELinkPos))
+        {
+        //check if continuation either in a route or with prefdir facing 'End' (OK if find it as EndElement, but not as StartElement)
+        if(PDVIt->TrackType == Continuation)
+            {
+            if(AllRoutes->TrackIsInARoute(18, PDVIt->TrackVectorPosition, PDVIt->ELinkPos))
+                {
+                continue;
+                }
+            if(PDVIt->XLinkPos == 0) //position 0 is the continuation
+                {
+                continue;
+                }
+            }
+        StartElement = *PDVIt;
+        }
+    else
+        {
+        continue;
+        }
+    //now track along until find a signal or continuation, checking validity for each element
+    int NextTrackVectorPosition = PDVIt->Conn[PDVIt->GetXLinkPos()];
+    GetVectorPositionsFromPrefDir4MultiMap(9, Track->TrackElementAt(878, NextTrackVectorPosition).HLoc, Track->TrackElementAt(879, NextTrackVectorPosition).VLoc, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
+    if(PrefDirPos0 == -1) //no continuing prefdir
+        {
+        continue;
+        }
+    bool NextElementFoundFlag = false;
+    if(GetFixedPrefDirElementAt(217, PrefDirPos0).ELinkPos == PDVIt->ConnLinkPos[PDVIt->GetXLinkPos()])
+        {
+        NextElement = GetFixedPrefDirElementAt(218, PrefDirPos0);
+        NextElementFoundFlag = true;
+        }
+    if(PrefDirPos1 > -1)
+        {
+        if(GetFixedPrefDirElementAt(219, PrefDirPos1).ELinkPos == PDVIt->ConnLinkPos[PDVIt->GetXLinkPos()])
+            {
+            NextElement = GetFixedPrefDirElementAt(220, PrefDirPos1);
+            NextElementFoundFlag = true;
+            }
+        }
+    if(PrefDirPos2 > -1)
+        {
+        if(GetFixedPrefDirElementAt(221, PrefDirPos2).ELinkPos == PDVIt->ConnLinkPos[PDVIt->GetXLinkPos()])
+            {
+            NextElement = GetFixedPrefDirElementAt(222, PrefDirPos2);
+            NextElementFoundFlag = true;
+            }
+        }
+    if(PrefDirPos3 > -1)
+        {
+        if(GetFixedPrefDirElementAt(223, PrefDirPos3).ELinkPos == PDVIt->ConnLinkPos[PDVIt->GetXLinkPos()])
+            {
+            NextElement = GetFixedPrefDirElementAt(224, PrefDirPos3);
+            NextElementFoundFlag = true;
+            }
+        }
+    if(!NextElementFoundFlag)
+        {
+        throw(Exception("Failed to track prefdir in PresetAutoSigRoutesButtonClick (1)"));
+        }
+    while(true)
+        {
+        //check validity
+        if(!PresetAutoRouteElementValid(1, NextElement, NextElement.ELinkPos))
+            {
+            ContFlag = true;
+            break;
+            }
+        //check if in a route, providing not a signal, as a signal might be at the start of a route
+        if(NextElement.TrackType != SignalPost)
+            {
+            if(AllRoutes->TrackIsInARoute(17, NextElement.TrackVectorPosition, NextElement.ELinkPos))
+                {
+                ContFlag = true;
+                break;
+                }
+            }
+        if((NextElement.TrackType == SignalPost) || (NextElement.TrackType == Continuation)) //can't be a gound signal as would have failed the validity test
+            {
+            EndElement = NextElement;
+            break;
+            }
+        //get the next element in the sequence
+        NextTrackVectorPosition = NextElement.Conn[NextElement.GetXLinkPos()];
+        GetVectorPositionsFromPrefDir4MultiMap(10, Track->TrackElementAt(880, NextTrackVectorPosition).HLoc, Track->TrackElementAt(881, NextTrackVectorPosition).VLoc, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
+        if(PrefDirPos0 == -1) //no continuing prefdir
+            {
+            ContFlag = true;
+            break;
+            }
+        if(GetFixedPrefDirElementAt(225, PrefDirPos0).ELinkPos == NextElement.ConnLinkPos[NextElement.GetXLinkPos()])
+            {
+            NextElement = GetFixedPrefDirElementAt(226, PrefDirPos0);
+            continue;
+            }
+        if(PrefDirPos1 > -1)
+            {
+            if(GetFixedPrefDirElementAt(227, PrefDirPos1).ELinkPos == NextElement.ConnLinkPos[NextElement.GetXLinkPos()])
+                {
+                NextElement = GetFixedPrefDirElementAt(228, PrefDirPos1);
+                continue;
+                }
+            }
+        if(PrefDirPos2 > -1)
+            {
+            if(GetFixedPrefDirElementAt(229, PrefDirPos2).ELinkPos == NextElement.ConnLinkPos[NextElement.GetXLinkPos()])
+                {
+                NextElement = GetFixedPrefDirElementAt(230, PrefDirPos2);
+                continue;
+                }
+            }
+        if(PrefDirPos3 > -1)
+            {
+            if(GetFixedPrefDirElementAt(231, PrefDirPos3).ELinkPos == NextElement.ConnLinkPos[NextElement.GetXLinkPos()])
+                {
+                NextElement = GetFixedPrefDirElementAt(232, PrefDirPos3);
+                continue;
+                }
+            }
+        throw(Exception("Failed to track prefdir in PresetAutoSigRoutesButtonClick (2)"));
+        }
+    if(ContFlag) continue;
+    //else have start and end elements set & all elements valid, so set up the route segment
+    FoundElements = true;
+    break;
+    }
+if(FoundElements)
+    {
+    Utilities->CallLogPop(1992);
+    return true;
+    }
+else
+    {
+    Utilities->CallLogPop(1993);
+    return false;
+    }
+}
+
+//---------------------------------------------------------------------------
 //TOneRoute
 //---------------------------------------------------------------------------
 
@@ -10554,7 +10901,13 @@ if(!(Track->FindNonPlatformMatch(7, HLoc, VLoc, TrackVectorPosition, TrackElemen
     }
 if(ConsecSignalsRoute)
     {
-    if((TrackElement.TrackType != SignalPost) && (TrackElement.TrackType != Buffers) && (TrackElement.TrackType != Continuation))
+    if(AutoSigsFlag && (TrackElement.TrackType == Buffers))  //added at v1.2.0
+        {
+        TrainController->StopTTClockMessage(80, "Can't create an automatic signal route from buffers");
+        Utilities->CallLogPop(1996);
+        return false;
+        }
+    else if((TrackElement.TrackType != SignalPost) && (TrackElement.TrackType != Buffers) && (TrackElement.TrackType != Continuation))
         {
         TrainController->StopTTClockMessage(7, "Must select a valid signal, buffers or continuation");
         Utilities->CallLogPop(200);
@@ -10805,7 +11158,7 @@ TotalSearchCount = 0;
 ReqPosRouteID = IDInt(-1);//default value for not used
 TTrackElement TrackElement;
 TPrefDirElement EndElement1, EndElement2, BlankElement;//all blank to begin with, can only have max of 2 PrefDirs on a
-                                                    //given element as can't select 2 track elements
+                                                    //given element as can't select 2-track elements
 if(!(Track->FindNonPlatformMatch(8, HLoc, VLoc, EndPosition, TrackElement)))//return if can't find one
     {
     Utilities->CallLogPop(214);
@@ -11356,7 +11709,7 @@ while(true)
 //check for a fouled diagonal (if not leading point - these checked later - leading point XLink == -1)
     if((SearchElement.XLink == 1) || (SearchElement.XLink == 3) || (SearchElement.XLink == 7) || (SearchElement.XLink == 9))
         {
-        if(AllRoutes->FouledDiagonal(0, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
+        if(AllRoutes->DiagonalFouledByRouteOrTrain(0, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
             {
             for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
             Utilities->CallLogPop(244);
@@ -11481,7 +11834,7 @@ while(true)
 //check for a fouled diagonal for leading point for XLinkPos == 1)
             if((SearchElement.XLink == 1) || (SearchElement.XLink == 3) || (SearchElement.XLink == 7) || (SearchElement.XLink == 9))
                 {
-                if(AllRoutes->FouledDiagonal(1, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
+                if(AllRoutes->DiagonalFouledByRouteOrTrain(1, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
                     {
                     for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
                     Utilities->CallLogPop(249);
@@ -11543,7 +11896,7 @@ while(true)
 //check for a fouled diagonal for leading point for XLinkPos == SearchPos2)
         if((SearchElement.XLink == 1) || (SearchElement.XLink == 3) || (SearchElement.XLink == 7) || (SearchElement.XLink == 9))
             {
-            if(AllRoutes->FouledDiagonal(2, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
+            if(AllRoutes->DiagonalFouledByRouteOrTrain(2, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
                 {
                 for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
                 Utilities->CallLogPop(252);
@@ -12431,7 +12784,7 @@ while(true)
 //check for a fouled diagonal (if not leading point - leading point XLink == -1)
     if((SearchElement.XLink == 1) || (SearchElement.XLink == 3) || (SearchElement.XLink == 7) || (SearchElement.XLink == 9))
         {
-        if(AllRoutes->FouledDiagonal(3, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
+        if(AllRoutes->DiagonalFouledByRouteOrTrain(3, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
             {
             for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
             Utilities->CallLogPop(297);
@@ -12495,7 +12848,7 @@ while(true)
 //check for a fouled diagonal for leading point for XLinkPos == SearchPos1)
         if((SearchElement.XLink == 1) || (SearchElement.XLink == 3) || (SearchElement.XLink == 7) || (SearchElement.XLink == 9))
             {
-            if(AllRoutes->FouledDiagonal(4, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
+            if(AllRoutes->DiagonalFouledByRouteOrTrain(4, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
                 {
                 for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
                 Utilities->CallLogPop(300);
@@ -12524,7 +12877,7 @@ while(true)
 //check for a fouled diagonal for leading point for XLinkPos == SearchPos2)
             if((SearchElement.XLink == 1) || (SearchElement.XLink == 3) || (SearchElement.XLink == 7) || (SearchElement.XLink == 9))
                 {
-                if(AllRoutes->FouledDiagonal(5, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
+                if(AllRoutes->DiagonalFouledByRouteOrTrain(5, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
                     {
                     for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
                     Utilities->CallLogPop(302);
@@ -13549,7 +13902,7 @@ return false;
 bool TAllRoutes::TrackIsInARoute(int Caller, int TrackVectorPosition, int LinkPos)
 /*
 Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)
-is found it returns true, else returns false.
+is found it returns true (for crossovers returns true whichever track the route is on), else returns false.
 */
 {
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrackIsInARoute," + AnsiString(TrackVectorPosition) + "," + AnsiString(LinkPos));
@@ -14067,6 +14420,58 @@ if(GetFixedRouteAt(112, ItPair.first->second.first).GetFixedPrefDirElementAt(133
     }
 Utilities->CallLogPop(398);
 return ReturnPair;
+}
+
+//---------------------------------------------------------------------------
+
+bool TAllRoutes::FindRouteNumberFromRoute2MultiMapNoErrors(int Caller, int HLoc, int VLoc, int ELink, int &RouteNumber) //new at v1.2.0
+/*
+Similar to above but returns a bool and no errors are reported for no route or element at H&V etc.
+Examines Route2MultiMap and returns true if oa route is found with the passed values of H, V and ELink.
+RouteNumber (route position in AllRoutes vector is returned as a reference.
+Called by TTrain::CheckAndCancelRouteForWrongEndEntry.  Note that only need ELink (as well as H & V) to
+identify uniquely, since only bridges can have two routes on them & their track ELinks are always different.
+*/
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FindRouteNumberFromRoute2MultiMapNoErrors," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(ELink));
+THVPair Route2MultiMapKeyPair;
+Route2MultiMapKeyPair.first = HLoc;
+Route2MultiMapKeyPair.second = VLoc;
+std::pair<TRoute2MultiMapIterator, TRoute2MultiMapIterator> ItPair;
+ItPair = Route2MultiMap.equal_range(Route2MultiMapKeyPair);
+
+if(ItPair.first == ItPair.second)
+    {
+    RouteNumber = -1;
+    Utilities->CallLogPop(2032);
+    return false;
+    }
+
+if(GetFixedRouteAt(205, ItPair.first->second.first).GetFixedPrefDirElementAt(241, ItPair.first->second.second).GetELink() == ELink)
+    {
+    RouteNumber = ItPair.first->second.first;
+    Utilities->CallLogPop(2033);
+    return true;
+    }
+
+ItPair.first++;
+
+if(ItPair.first == ItPair.second)
+    {
+    RouteNumber = -1;
+    Utilities->CallLogPop(2034);
+    return false;
+    }
+
+if(GetFixedRouteAt(206, ItPair.first->second.first).GetFixedPrefDirElementAt(242, ItPair.first->second.second).GetELink() == ELink)
+    {
+    RouteNumber = ItPair.first->second.first;
+    Utilities->CallLogPop(2035);
+    return true;
+    }
+RouteNumber = -1;
+Utilities->CallLogPop(2036);
+return false;
 }
 
 //---------------------------------------------------------------------------
@@ -14919,10 +15324,10 @@ return false;//reached end of route so not a loop
 
 //---------------------------------------------------------------------------
 
-bool TAllRoutes::FouledDiagonal(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber)
+bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber)
 /*
 Track geometry allows diagonals to cross without occupying the same track element, so when
-route plotting it is necessary to check if there is an existing  route on such a crossing
+route plotting it is necessary to check if there is an existing  route or a train on such a crossing
 diagonal.  Returns true for a fouled diagonal.  Enter with H & V set for the element whose diagonal
 is to be checked, and the XLink number of the relevant diagonal, which must be 1, 3, 7 or 9.
 for XLink = 1, potentially fouled diagonals are at H-1, V, Lk 3 & H, V-1, Lk 7
@@ -14931,21 +15336,13 @@ for XLink = 7, potentially fouled diagonals are at H-1, V, Lk 9 & H, V+1 Lk 1
 for XLink = 9, potentially fouled diagonals are at H+1, V, Lk 7 & H, V+1 Lk 3
 Each of these is examined in turn for each route element in the relevant position.
 
-NOTE:  This fails to detect a train fouling a diagonal.  Need to check for a train present on a
-crossing diagonal element using GetVectorPositionFromTrackMap, then check whether it is already
-or going to use the diagonal in question using function TrainController->TrainVectorAtIdent
-to identify the train, and then check which of LeadElement, MidElement or LagElement is the
-one on the crossing element, and then check its LeadEntryPos & LeadExitPos - or Mid or Lag,
-respectively.  Complication for a bridge - may be two trains present, think about this.
-
-Or, maybe define a new track (or train) property TrainOnLink or TrainOnLinkPos,
-perhaps using function SetTrainElementID which is called by PlotTrainGraphic.  Maybe need to
-add the ExitPos as well in SetTrainElementID for use in setting the Link, note that the ID is only
-set for the leading element, it stays set until train finally leaves the element, so the same should
-apply for the linkpos.
+NOTE:  Originally this failed to detect a train fouling a diagonal.  v1.2.0 checks for a train present on a
+crossing diagonal element using a new bool function TTrack::TrainOnLink(int HLoc, int VLoc, int Link)
+that returns false in all cases (including elements & links not present) except train present.
 */
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FouledDiagonal," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(DiagonalLinkNumber));
+int TrainID; //not used in this function
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DiagonalFouledByRouteOrTrain," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(DiagonalLinkNumber));
 TPrefDirElement  TempPrefDirElement;
 TAllRoutes::TRouteElementPair FirstPair, SecondPair;
 
@@ -14979,6 +15376,13 @@ if(SecondPair.first > -1)
         }
     }
 
+if(((DiagonalLinkNumber == 1) && Track->TrainOnLink(0, HLoc-1, VLoc, 3, TrainID))  || ((DiagonalLinkNumber == 7) && Track->TrainOnLink(1, HLoc-1, VLoc, 9, TrainID)))
+    {
+    Utilities->CallLogPop(1997);
+    return true;
+    }
+
+
 FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(5, HLoc, VLoc-1, SecondPair);
 if(FirstPair.first > -1)
     {
@@ -15007,6 +15411,12 @@ if(SecondPair.first > -1)
         Utilities->CallLogPop(317);
         return true;
         }
+    }
+
+if(((DiagonalLinkNumber == 1) && Track->TrainOnLink(2, HLoc, VLoc-1, 7, TrainID))  || ((DiagonalLinkNumber == 3) && Track->TrainOnLink(3, HLoc, VLoc-1, 9, TrainID)))
+    {
+    Utilities->CallLogPop(1998);
+    return true;
     }
 
 FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(6, HLoc+1, VLoc, SecondPair);
@@ -15039,6 +15449,12 @@ if(SecondPair.first > -1)
         }
     }
 
+if(((DiagonalLinkNumber == 3) && Track->TrainOnLink(4, HLoc+1, VLoc, 1, TrainID))  || ((DiagonalLinkNumber == 9) && Track->TrainOnLink(5, HLoc+1, VLoc, 7, TrainID)))
+    {
+    Utilities->CallLogPop(1999);
+    return true;
+    }
+
 FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(7, HLoc, VLoc+1, SecondPair);
 if(FirstPair.first > -1)
     {
@@ -15068,9 +15484,158 @@ if(SecondPair.first > -1)
         return true;
         }
     }
+
+if(((DiagonalLinkNumber == 7) && Track->TrainOnLink(6, HLoc, VLoc+1, 1, TrainID))  || ((DiagonalLinkNumber == 9) && Track->TrainOnLink(7, HLoc, VLoc+1, 3, TrainID)))
+    {
+    Utilities->CallLogPop(2000);
+    return true;
+    }
+
 Utilities->CallLogPop(326);
 return false;
 }
 
 //---------------------------------------------------------------------------
+
+bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber)
+/*
+As above but checks for a route only (may or may not be a train).  Enter with H & V set for the element whose diagonal
+is to be checked, and the XLink number of the relevant diagonal, which must be 1, 3, 7 or 9.
+for XLink = 1, potentially fouled diagonals are at H-1, V, Lk 3 & H, V-1, Lk 7
+for XLink = 3, potentially fouled diagonals are at H+1, V, Lk 1 & H, V-1 Lk 9
+for XLink = 7, potentially fouled diagonals are at H-1, V, Lk 9 & H, V+1 Lk 1
+for XLink = 9, potentially fouled diagonals are at H+1, V, Lk 7 & H, V+1 Lk 3
+Each of these is examined in turn for each route element in the relevant position.
+*/
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DiagonalFouledByRoute," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(DiagonalLinkNumber));
+TPrefDirElement  TempPrefDirElement;
+TAllRoutes::TRouteElementPair FirstPair, SecondPair;
+
+FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(17, HLoc-1, VLoc, SecondPair);
+if(FirstPair.first > -1)
+    {
+    TempPrefDirElement = AllRoutes->GetFixedRouteAt(197, FirstPair.first).GetFixedPrefDirElementAt(233, FirstPair.second);
+    if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
+        {
+        Utilities->CallLogPop(2010);
+        return true;
+        }
+    if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
+        {
+        Utilities->CallLogPop(2011);
+        return true;
+        }
+    }
+if(SecondPair.first > -1)
+    {
+    TempPrefDirElement = AllRoutes->GetFixedRouteAt(198, SecondPair.first).GetFixedPrefDirElementAt(234, SecondPair.second);
+    if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
+        {
+        Utilities->CallLogPop(2012);
+        return true;
+        }
+    if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
+        {
+        Utilities->CallLogPop(2013);
+        return true;
+        }
+    }
+
+FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(18, HLoc, VLoc-1, SecondPair);
+if(FirstPair.first > -1)
+    {
+    TempPrefDirElement = AllRoutes->GetFixedRouteAt(199, FirstPair.first).GetFixedPrefDirElementAt(235, FirstPair.second);
+    if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
+        {
+        Utilities->CallLogPop(2014);
+        return true;
+        }
+    if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
+        {
+        Utilities->CallLogPop(2015);
+        return true;
+        }
+    }
+if(SecondPair.first > -1)
+    {
+    TempPrefDirElement = AllRoutes->GetFixedRouteAt(200, SecondPair.first).GetFixedPrefDirElementAt(236, SecondPair.second);
+    if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
+        {
+        Utilities->CallLogPop(2016);
+        return true;
+        }
+    if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
+        {
+        Utilities->CallLogPop(2017);
+        return true;
+        }
+    }
+
+FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(19, HLoc+1, VLoc, SecondPair);
+if(FirstPair.first > -1)
+    {
+    TempPrefDirElement = AllRoutes->GetFixedRouteAt(201, FirstPair.first).GetFixedPrefDirElementAt(237, FirstPair.second);
+    if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
+        {
+        Utilities->CallLogPop(2018);
+        return true;
+        }
+    if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
+        {
+        Utilities->CallLogPop(2019);
+        return true;
+        }
+    }
+if(SecondPair.first > -1)
+    {
+    TempPrefDirElement = AllRoutes->GetFixedRouteAt(202, SecondPair.first).GetFixedPrefDirElementAt(238, SecondPair.second);
+    if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
+        {
+        Utilities->CallLogPop(2020);
+        return true;
+        }
+    if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
+        {
+        Utilities->CallLogPop(2021);
+        return true;
+        }
+    }
+
+FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(20, HLoc, VLoc+1, SecondPair);
+if(FirstPair.first > -1)
+    {
+    TempPrefDirElement = AllRoutes->GetFixedRouteAt(203, FirstPair.first).GetFixedPrefDirElementAt(239, FirstPair.second);
+    if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
+        {
+        Utilities->CallLogPop(2022);
+        return true;
+        }
+    if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
+        {
+        Utilities->CallLogPop(2023);
+        return true;
+        }
+    }
+if(SecondPair.first > -1)
+    {
+    TempPrefDirElement = AllRoutes->GetFixedRouteAt(204, SecondPair.first).GetFixedPrefDirElementAt(240, SecondPair.second);
+    if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
+        {
+        Utilities->CallLogPop(2024);
+        return true;
+        }
+    if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
+        {
+        Utilities->CallLogPop(2025);
+        return true;
+        }
+    }
+
+Utilities->CallLogPop(2026);
+return false;
+}
+
+//---------------------------------------------------------------------------
+
 

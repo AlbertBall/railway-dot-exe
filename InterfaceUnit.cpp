@@ -69,7 +69,7 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "v1.1.4"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
+    ProgramVersion = "v1.2.0 Beta"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
     //development stages (don't show on published versions) check for presence of directories, creation failure probably indicates that the
     //working folder is read-only
     CurDir = GetCurrentDir();
@@ -119,6 +119,7 @@ try
         {
         ShowMessage("Failed to create one or more of folders: 'Railways', 'Program timetables', 'Performance logs', 'Sessions', 'Images' or 'Formatted timetables', program operation may be restricted");
         }
+//ShowMessage("NOTE: APPDEACTIVATE etc Disabled in FormCreate");
     SaveRailwayDialog->InitialDir = CurDir + "\\Railways";
     LoadRailwayDialog->InitialDir = CurDir + "\\Railways";
     TimetableDialog->InitialDir = CurDir + "\\Program timetables";
@@ -159,6 +160,9 @@ try
     SigRouteStartMarker = new TGraphicElement;
     NonSigRouteStartMarker = new TGraphicElement;
 
+    TrackInfoOnOff1->Caption = "Show";  //added here at v1.2.0 because dropped from ResetAll()
+    TrainStatusInfoOnOff1->Caption = "Show status";
+    TrainTTInfoOnOff1->Caption = "Show timetable";
     ResetAll(0);
 
     TempTTFileName = "";
@@ -268,6 +272,7 @@ try
     UnrestrictedButton->Glyph->LoadFromResourceName(0, "NonSig");
     OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
     PerformanceLogButton->Glyph->LoadFromResourceName(0, "ShowLog");
+    PresetAutoSigRoutesButton->Glyph->LoadFromResourceName(0, "PresetAutoSigRoutes");
     RouteCancelButton->Glyph->LoadFromResourceName(0, "RouteCancel");
     SaveRailway2Button->Glyph->LoadFromResourceName(0, "SaveRailway");
     SaveRailway3Button->Glyph->LoadFromResourceName(0, "SaveRailway");
@@ -5696,7 +5701,7 @@ try
                                 {
                                 if(AllRoutes->CallonVector.at(x).RouteStartPosition == Position)
                                     {//found it
-                                    if(!(AllRoutes->CallonVector.at(x).AutoSigs))
+                                    if(!(AllRoutes->CallonVector.at(x).RouteOrPartRouteSet)) //if RouteOrPartRouteSet false then set an unrestricted route into platform
                                         {
                                         bool PointsChanged = false;
                                         IDInt ReqPosRouteID(-1);
@@ -7292,7 +7297,7 @@ try
         {
         Display->DisplayOffsetHHome = Display->DisplayOffsetH;
         Display->DisplayOffsetVHome = Display->DisplayOffsetV;
-	ResetChangedFileDataAndCaption(23, false); //false because no major changes made
+    	ResetChangedFileDataAndCaption(23, false); //false because no major changes made
         }
     else
         {
@@ -7833,13 +7838,15 @@ try
         Train.DepartureTimeSet = false;//force it to be recalculated based on new LastActionTime (if waiting to arrive this is false anyway)
         Train.PlotTrainWithNewBackgroundColour(28, clStationStopBackground, Display);//pale green
         if((Train.ActionVectorEntryPtr->FormatType == TimeLoc) && (Train.ActionVectorEntryPtr->ArrivalTime >= TDateTime(0)))
-            {//Timetable indicates that train still waiting to arrive for a TimeLoc arrival so send message
+            {//Timetable indicates that train still waiting to arrive for a TimeLoc arrival so send message and mark as arrived
             Train.LogAction(28, Train.HeadCode, "", Arrive, LocName, Train.ActionVectorEntryPtr->ArrivalTime, Train.ActionVectorEntryPtr->Warning);
+            Train.ActionVectorEntryPtr++; //advance pointer past arrival  //added at v1.2.0
             }
         else if((Train.ActionVectorEntryPtr->FormatType == TimeTimeLoc) && !(Train.TimeTimeLocArrived))
-            {//Timetable indicates that train still waiting to arrive for a TimeTimeLoc arrival so send message
+            {//Timetable indicates that train still waiting to arrive for a TimeTimeLoc arrival so send message and mark as arrived
             Train.LogAction(29, Train.HeadCode, "", Arrive, LocName, Train.ActionVectorEntryPtr->ArrivalTime, Train.ActionVectorEntryPtr->Warning);
             Train.TimeTimeLocArrived = true;
+            //NB: No need for 'Train.ActionVectorEntryPtr++' because still to act on the departure time
             }
         }
     else
@@ -8429,7 +8436,7 @@ void __fastcall TInterface::About1Click(TObject *Sender)
 {
 try
     {
-    if(Level1Mode == OperMode)
+    if((Level1Mode == OperMode) && (Level2OperMode != PreStart))//if PreStart leave as is [Modified at v1.2.0 - formerly just 'if((Level1Mode == OperMode)']
         {
         Level2OperMode = Paused;
         SetLevel2OperMode(3);
@@ -9099,6 +9106,61 @@ catch (const Exception &e)
 }
 
 //---------------------------------------------------------------------------
+
+void __fastcall TInterface::PresetAutoSigRoutesButtonClick(TObject *Sender)
+{
+try
+    {
+    TrainController->LogEvent("PresetAutoSigRoutesButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PresetAutoSigRoutesButtonClick");
+    InfoPanel->Caption = "PRE-START:  Presetting automatic signal routes";
+    OperatingPanel->Enabled = false;               //these become re-enabled during the call to ClockTimer2
+    OperatingPanelLabel->Caption = "Disabled";
+    ZoomButton->Enabled = false;
+    HomeButton->Enabled = false;
+    NewHomeButton->Enabled = false;
+    ScreenLeftButton->Enabled = false;
+    ScreenRightButton->Enabled = false;
+    ScreenUpButton->Enabled = false;
+    ScreenDownButton->Enabled = false;
+
+    Screen->Cursor = TCursor(-11);//Hourglass
+    TPrefDirElement StartElement, EndElement;
+    bool PointsChanged, AtLeastOneSet = false;
+    int LastIteratorValue = 0;
+    while(true)
+        {
+        if(!EveryPrefDir->GetStartAndEndPrefDirElements(0, StartElement, EndElement, LastIteratorValue)) break;
+        //rest of routine here - i.e. build the routes
+        ConstructRoute->ClearRoute();//in case not empty though should be
+        AtLeastOneSet = true;
+        if(ConstructRoute->GetPreferredRouteStartElement(1, StartElement.HLoc, StartElement.VLoc, EveryPrefDir, true, true)) //true for both ConsecSignalsRoute & AutoSigsFlag
+            {
+            }
+        if(ConstructRoute->GetNextPreferredRouteElement(1, EndElement.HLoc, EndElement.VLoc, EveryPrefDir, true, true, ConstructRoute->ReqPosRouteID, PointsChanged))
+            {
+            }
+        ConstructRoute->ConvertAndAddPreferredRouteSearchVector(3, ConstructRoute->ReqPosRouteID, true); //true for AutoSigsFlag
+        }
+    if(AtLeastOneSet)
+        {
+        RevertToOriginalRouteSelector(15);
+        ClearandRebuildRailway(68);
+        }
+    else
+        {
+        ShowMessage("No presettable automatic signal routes are available");
+        }
+    Screen->Cursor = TCursor(-2);//Arrow
+    Utilities->CallLogPop(1994);
+    }
+catch (const Exception &e)
+    {
+    ErrorLog(195, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
 //end of fastcalls & directly associated functions
 //---------------------------------------------------------------------------
 
@@ -9480,6 +9542,26 @@ for(unsigned int x=0;x<ConstructRoute->SearchVectorSize();x++)
         Utilities->CallLogPop(100);
         return true;
         }
+    //check for crossed diagonal fouling by train added at v1.2.0
+    int TrainID; // not used
+    int LinkNumber1 = PrefDirElement.Link[PrefDirElement.GetELinkPos()];
+    int LinkNumber2 = PrefDirElement.Link[PrefDirElement.GetXLinkPos()];
+    if((LinkNumber1 == 1) || (LinkNumber1 == 3) || (LinkNumber1 == 7) || (LinkNumber1 == 9))
+        {
+        if(Track->DiagonalFouledByTrain(1, PrefDirElement.HLoc, PrefDirElement.VLoc, LinkNumber1, TrainID))
+            {
+            Utilities->CallLogPop(2037);
+            return true;
+            }
+        }
+    if((LinkNumber2 == 1) || (LinkNumber2 == 3) || (LinkNumber2 == 7) || (LinkNumber2 == 9))
+        {
+        if(Track->DiagonalFouledByTrain(2, PrefDirElement.HLoc, PrefDirElement.VLoc, LinkNumber2, TrainID))
+            {
+            Utilities->CallLogPop(2038);
+            return true;
+            }
+        }
     }
 Utilities->CallLogPop(101);
 return false;
@@ -9788,6 +9870,9 @@ switch(Level1Mode)//use the data member
     OperatingPanel->Visible = true;
     OperatingPanelLabel->Caption = "Operation";
 
+    CallingOnButton->Visible = false;
+    PresetAutoSigRoutesButton->Visible = true;
+    PresetAutoSigRoutesButton->Enabled = true;
     InfoPanel->Visible = true;
     ModeMenu->Enabled = false;
     FileMenu->Enabled = false;
@@ -9880,6 +9965,8 @@ switch(Level1Mode)//use the data member
     OperatingPanel->Visible = true;
     OperatingPanelLabel->Caption = "Operation";
 
+    CallingOnButton->Visible = true;
+    PresetAutoSigRoutesButton->Visible = false;
     InfoPanel->Visible = true;
     ModeMenu->Enabled = false;
     FileMenu->Enabled = false;
@@ -10382,6 +10469,8 @@ if(Level2OperMode == NoOperMode)
     Utilities->CallLogPop(112);
     return;
     }
+CallingOnButton->Visible = true;
+PresetAutoSigRoutesButton->Visible = false;
 switch(Level2OperMode)//use the data member
     {
     case Operating:
@@ -10431,7 +10520,7 @@ switch(Level2OperMode)//use the data member
             }
         WarningHover = false;
         SetRouteButtonsInfoCaptionAndRouteNotStarted(4);
-        TrainController->BaseTime = TDateTime::CurrentDateTime();
+        TrainController->BaseTime = TDateTime::CurrentDateTime(); //StopTTClockFlag already false because TTClock stopped by condition "if(!TrainController->StopTTClockFlag && (Level2OperMode == Operating))" in MasterClockTimer function
         }
     break;
 
@@ -10443,7 +10532,7 @@ switch(Level2OperMode)//use the data member
     SetRouteButtonsInfoCaptionAndRouteNotStarted(7);
     DisableRouteButtons(4);
     SetPausedOrZoomedInfoCaption(5);
-    TrainController->RestartTime = TrainController->TTClockTime;
+    TrainController->RestartTime = TrainController->TTClockTime; //StopTTClockFlag stays false because TTClock stopped by condition "if(!TrainController->StopTTClockFlag && (Level2OperMode == Operating))" in MasterClockTimer function
     PauseEntryRestartTime = double(TrainController->RestartTime);
     PauseEntryTTClockSpeed = TTClockSpeed;
     break;
@@ -11309,6 +11398,16 @@ if(Level1Mode == OperMode)
         {
         SaveRailwayButtonsFlag = false;
         }
+    //set PresetAutoSigRoutesButton enabled or not
+    //enable if PreStart & no routes set
+    if((Level2OperMode == PreStart) && (AllRoutes->AllRoutesVector.empty()))
+        {
+        PresetAutoSigRoutesButton->Enabled = true;
+        }
+    else
+        {
+        PresetAutoSigRoutesButton->Enabled = false;
+        }
     }
 else
     {
@@ -11682,9 +11781,9 @@ TTClockAdjPanel->Visible = false;
 TrainController->StopTTClockFlag = false;
 SelectedTrainID = -1;
 SetTrackBuildImages(11);
-TrackInfoOnOff1->Caption = "Show";
-TrainStatusInfoOnOff1->Caption = "Show status";
-TrainTTInfoOnOff1->Caption = "Show timetable";
+//TrackInfoOnOff1->Caption = "Show";  dropped these here at v1.2.0 so don't reset when load a session file
+//TrainStatusInfoOnOff1->Caption = "Show status";
+//TrainTTInfoOnOff1->Caption = "Show timetable";
 Track->CalcHLocMinEtc(8);
 FileChangedFlag = false;
 RlyFile = false;
@@ -14141,4 +14240,4 @@ be tellg, which sometimes returns wrong results, and they corrupt things when us
 Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file position then close and reopen it.
 */
 
-
+  

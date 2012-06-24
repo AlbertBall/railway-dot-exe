@@ -535,6 +535,8 @@ left in.
         //to resaving in the new format compatible with the new CheckTrackElementsInFile
     bool CheckTrackElementsInFile(int Caller,  int &NumberOfActiveElements, std::ifstream& VecFile); //true if TrackElements in the file
         //are all valid
+    bool DiagonalFouledByTrain(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber, int &TrainID); //as DiagonalFouledByRouteOrTrain (in TAllRoutes) but
+        //only checks for a train (may or may not be a route present (new at v1.2.0)
     bool ElementInLNDone2MultiMap(int Caller, int MapPos); //true if the element defined by MapPos is present in LNDone2MultiMap, used during
         //location naming
     bool ElementInLNPendingList(int Caller, int MapPos); //true if the element defined by MapPos is present in LNPendingList, used during
@@ -615,6 +617,7 @@ left in.
         //see above under 'OneNamedLocationLongEnoughForSplit'
     bool TimetabledLocationNameAllocated(int Caller, AnsiString LocationName); //true if a non-empty LocationName found as a timetabled location name
         //i.e. not as a continuation name
+    bool TrainOnLink(int Caller, int HLoc, int VLoc, int Link, int &TrainID); //new at v1.2.0; checks whether a train present at input location and link and returns its ID if so
     bool TryToConnectTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool GiveMessages); //handles all tasks associated with track
         //linking, returns true if successful (see also LinkTrack & LinkTrackNoMessages above)
 
@@ -852,6 +855,9 @@ TPrefDirVector PrefDirVector, SearchVector; //pref dir vectors, first is the mai
     //temporarily
 
 //functions defined in .cpp file
+bool PresetAutoRouteElementValid(int Caller, TPrefDirElement ElementIn, int EntryPos); //added at v1.2.0
+    //Checks ElementIn and returns true only if a single prefdir set at that H&V, with EntryPos giving entry position, not points,
+    //crossovers, signals with wrong direction set, or buffers.
 bool SearchForPrefDir(int Caller, TTrackElement TrackElement, int XLinkPos, int RequiredPosition); //try to find a selected element from
     //a given start position.  Enter with CurrentTrackElement stored in the PrefDirVector, XLinkPos set to the link to search on, &
     //SearchVector cleared unless entered recursively.  Function is a continuous loop that exits when find required element (returns true)
@@ -876,6 +882,8 @@ bool GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &FinishElement);
     //or element lengths. Tries to find a set of linked tracks between the last selected element and the one at HLoc & VLoc, and returns
     //true if it finds one.  FinishElement is returned true if the element selected is a buffer or continuation - in which case the chain
     //is complete
+bool GetStartAndEndPrefDirElements(int Caller, TPrefDirElement &StartElement, TPrefDirElement &EndElement, int &LastIteratorValue); //Called when searching for
+    //start and end PrefDirElements when setting up automatic signals routes in PreStart mode
 bool GetPrefDirStartElement(int Caller, int HLoc, int VLoc); //used when beginning a chain of preferred directions or element lengths.
     //Enter with HLoc & VLoc set to selected element & check if selected element is a valid track element, return false if not, if it
     //is store it as the first entry in PrefDirVector and return true
@@ -1037,7 +1045,7 @@ void SetRouteSignals(int Caller) const; //called when setting a route to set all
 
 //---------------------------------------------------------------------------
 
-class TAllRoutes  //the class that handles data and functions relating to all routes on the railway
+class TAllRoutes //the class that handles data and functions relating to all routes on the railway
 {
 public:
 
@@ -1072,11 +1080,11 @@ typedef std::pair<THVPair, TRouteElementPair> TRoute2MultiMapEntry;
 class TCallonEntry //used to store relevant values when a call-on found, ready for plotting an unrestricted route
     {
     public:
-    bool AutoSigs; //whether or not an autosigs route already plotted
+    bool RouteOrPartRouteSet; //whether or not a route or part route already plotted
     int RouteStartPosition; //the stop signal trackvectorposition
     int PlatformPosition; //the first platform trackvectorposition
 
-    TCallonEntry::TCallonEntry(bool AutoSigsIP, int RouteStartPositionIP, int PlatformPositionIP) {AutoSigs = AutoSigsIP;
+    TCallonEntry::TCallonEntry(bool RouteOrPartRouteSetIP, int RouteStartPositionIP, int PlatformPositionIP) {RouteOrPartRouteSet = RouteOrPartRouteSetIP;
             RouteStartPosition = RouteStartPositionIP; PlatformPosition = PlatformPositionIP;} //constructor
     };
 
@@ -1119,9 +1127,14 @@ void AllRoutesClear() {AllRoutesVector.clear(); Route2MultiMap.clear();} //erase
 bool CheckForLoopingRoute(int Caller, int EndPosition, int EndXLinkPos, int StartPosition);//return true if route loops back on itself
 bool CheckRoutes(int Caller, int NumberOfActiveElements, std::ifstream &InFile); //performs an integrity check on the routes stored in a
     //session file and returns false if there is an error
-bool FouledDiagonal(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber); //the track geometry allows diagonals to cross without
-    //occupying the same track element, so when route plotting it is necessary to check if there is an existing route on such a
-    //crossing diagonal.  Returns true for a fouled (i.e. fouled by a route) diagonal.
+bool DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber); //the track geometry allows diagonals to cross without
+    //occupying the same track element, so when route plotting it is necessary to check if there is an existing route or a train on such a
+    //crossing diagonal.  Returns true for a fouled (i.e. fouled by a route or a train) diagonal. New at v1.2.0
+bool DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber); //as above but only checks for a route (may or may not be a train
+    //present (new at v1.2.0)
+bool TAllRoutes::FindRouteNumberFromRoute2MultiMapNoErrors(int Caller, int HLoc, int VLoc, int ELink, int &RouteNumber); //if a route is present at
+    //H, V & Elink returns true with RouteNumber giving vector position in AllRoutes vector.  Returns false for anything else including no element
+    //or route at H & V etc. New at v1.2.0
 bool GetAllRoutesTruncateElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute); //Examines all routes and for each uses
     //GetRouteTruncateElement to see if the element at H & V is present in that route.  The ReturnFlag value indicates InRouteTrue
     //(success), InRouteFalse (failure), or NotInRoute.  Messages are given in GetRouteTruncateElement.  If successful the route is
@@ -1137,7 +1150,8 @@ bool RouteLockingRequired(int Caller, int RouteNumber, int RouteTruncatePosition
     //before the start of the route or linked route - this because train cancels route elements that it touches) unless the first signal is
     //red, then OK
 bool TrackIsInARoute(int Caller, int TrackVectorPosition, int LinkPos); //examines Route2MultiMap and if the element at
-    //TrackVectorPosition with LinkPos (can be entry or exit) is found it returns true, else returns false.
+    //TrackVectorPosition with LinkPos (can be entry or exit) is found it returns true (for crossovers returns true whichever track the route is on),
+    //else returns false.
 int GetRouteVectorNumber(int Caller, IDInt RouteID); //returns a route's position in AllRoutesVector from its ID, throws an
     //error if a matching route isn't found
 const TOneRoute &GetFixedRouteAt(int Caller, int At) const; //returns a constant reference to the route at AllRoutesVector position 'At',

@@ -199,6 +199,7 @@ static const int MaximumSpeedLimit = 400; //km/h
 AnsiString HeadCode; //needs own HeadCode because repeat entries will differ from TrainDataEntry.HeadCode
 bool HoldAtLocationInTTMode; //true if actions are needed before train departs
 bool TimeTimeLocArrived; //indicates whether has arrived (true) or not when ActionVectorEntryPtr->FormatType == TimeTimeLoc
+bool RemainHereLogNotSent; //flag to prevent repeated logs, new at v1.2.0 
 int IncrementalDigits; //the number of digits to increment by in repeat entries
 int IncrementalMinutes; //the number of minutes to increment by in repeat entries
 int RearStartElement; //start TrackVectorPosition element for rear of train
@@ -413,6 +414,9 @@ public:
 //inline function
 bool Stopped() {return (Crashed || Derailed || StoppedAtBuffers || StoppedAtSignal || StoppedAtLocation ||
         SignallerStopped || StoppedAfterSPAD || StoppedForTrainInFront || NotInService);} //true if the train has stopped for any reason
+
+bool LinkOccupied(int Caller, int TrackVectorPosition, int LinkNumber); //added at v1.2.0: true if any part of train on specific link, false otherwise, including
+    //no link present & no TrackVectorNumber within Lead, Mid or Lag (public so Track->TrainOnLink can access it)
 
 TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiString InputCode, int StartSpeed, int Mass, double MaxRunningSpeed,
     double MaxBrakeRate, double PowerAtRail, TTrainMode TrainMode, TTrainDataEntry *TrainDataEntryPtr, int RepeatNumber,

@@ -8,6 +8,13 @@
 #pragma resource "*.dfm"
 TForm1 *Form1;
 //---------------------------------------------------------------------------
+/*Ensure:-
+1) Have a complete list of source files, including both .h & .cpp in __fastcall TForm1::TForm1
+2) 'NumFiles' in header file = number of files
+3) Have a complete list of all functions that have callers in TForm1::Timer1Timer
+4) Have the correct value for 'NumberOfCalls' (= functions with callers)
+*/
+
 __fastcall TForm1::TForm1(TComponent* Owner)
     : TForm(Owner)
 {
@@ -207,7 +214,7 @@ void __fastcall TForm1::Timer1Timer(TObject *Sender)
 {
 if(ClockStopped) return;
 ClockStopped = true;
-const int NumberOfCalls = 413;
+const int NumberOfCalls = 419;
 AnsiString FunctionString[NumberOfCalls] =
 {
 "AbleToMove",
@@ -297,6 +304,9 @@ AnsiString FunctionString[NumberOfCalls] =
 "Delay",
 "DeleteTextItem",
 "DeleteTrain",
+"DiagonalFouledByRoute",
+"DiagonalFouledByRouteOrTrain",
+"DiagonalFouledByTrain",
 "DisableRouteButtons",
 "DisplayOneTTLineInPanel",
 "ElementInLNDone2MultiMap",
@@ -321,6 +331,7 @@ AnsiString FunctionString[NumberOfCalls] =
 "FindHighestLowestAndLeftmostNamedElements",
 "FindNamedElementInLocationNameMultiMap",
 "FindNonPlatformMatch",
+"FindRouteNumberFromRoute2MultiMapNoErrors",
 "FindRoutePairFromRoute2MultiMap",
 "FindSetAndDisplayMatchingGap",
 "FinishedOperation",
@@ -329,7 +340,6 @@ AnsiString FunctionString[NumberOfCalls] =
 "FloatingLabelNextString",
 "FloatingTimetableString",
 "ForceCancelRoute",
-"FouledDiagonal",
 "FrontTrainSplit",
 "GapsUnset",
 "GetAllRoutesTruncateElement",
@@ -402,6 +412,7 @@ AnsiString FunctionString[NumberOfCalls] =
 "LastElementPtr",
 "Last2CharactersBothDigits",
 "LengthMarker",
+"LinkOccupied",
 "LinkTrack",
 "LinkTrackNoMessages",
 "LoadBarriersDownVector",
@@ -492,6 +503,7 @@ AnsiString FunctionString[NumberOfCalls] =
 "PointsToBeChanged",
 "PopulateLCVector",
 "PrefDirMarker",
+"PresetAutoRouteElementValid",
 "ProcessOneTimetableLine",
 "RealignAfterTrackErase",
 "RearTrainSplit",
@@ -605,6 +617,7 @@ AnsiString FunctionString[NumberOfCalls] =
 "TrackPush",
 "TrackTrainFloat",
 "TrainAtLocation",
+"TrainOnLink",
 "TrainToBeJoinedByIsAdjacent",
 "TrainToJoinIsAdjacent",
 "TrainVectorAt",

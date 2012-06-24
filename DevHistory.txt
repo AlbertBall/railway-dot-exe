@@ -1,16 +1,28 @@
 Development History
 ---------------------------------------------------------------------------
-
-For future versions:
-	
-	try to create a way of setting automatic signal routes automatically in pre-start mode.  Should be able to search from signal to signal along preferred dirtections and set a route where there is only plain track between.
-	note that a route can be set across a diagonal that is fouled by a train (though not by a route): need to prevent a route being set if a train present without a route, also: (a) check whether a train moving on a crossing diagonal will force cancel a route on the crossing diagonal (+check if a route will be force cancelled if a train moves onto it while it is still flashing - have MovingTrainPresentOnFlashingRoute to cancel a flashing route); and (b) whether trains will crash if meet on a crossing diagonal
-	note for further development from Sam Wainwright: Allow route setting over shunt signals so they clear automatically without having to click directly on them.
-	note for further development from Keith Hazelton: Allow random variable station delays, say between 30 secs & 3 minutes, to account for variable delaying effects caused by passengers etc.
-
-VERSION CHANGES AFTER v1.1.3 for v1.1.4
+VERSION CHANGES AFTER v1.1.4 for v1.2.0 Beta
 
 * = mention on user website
+	
+*Keep existing information settings when load a new session
+*Allow route or part route into platform for callons, so can set points by setting route
+*Change manual & help relating to calling on
+Change condition to release 'TimeTimeLocArrived'
+If change first train (using timetable 1) to signaller control on Mile Oak railway then restore TT control when stopped in station, the train skips the stopped in station
+event.  [OK, added 'Train.ActionVectorEntryPtr++' for TimeLoc format in 'TimetableControl1Click' in Interfact unit.]
+*disallow creation of automatic signal route from buffers
+change copyright notice to include current year
+*if display 'About' box in pre-start mode when exit reverts to paused mode, should revert to pre-start.
+*created a way of setting automatic signal routes automatically in pre-start mode
+*Change the manual to add details of preset auto routes and when available
+*Note that a route can be set across a diagonal that is fouled by a train (though not by a route): changed to prevent a route being set if a train 
+	present without a route, also: (a) a train moving on a crossing diagonal now force cancels a route on the crossing diagonal, and a route will be force 
+	cancelled if a train moves onto it while it is still flashing; and (b) trains now crash if meet on a crossing diagonal
+
+note for further development from Sam Wainwright: Allow route setting over shunt signals so they clear automatically without having to click directly on them.
+note for further development from Keith Hazelton: Allow random variable station delays, say between 30 secs & 3 minutes, to account for variable delaying effects caused by passengers etc.
+
+VERSION CHANGES AFTER v1.1.3 for v1.1.4
 
 	*error when have a location name for a single named element - if erase the name then the text is not erased, though it is if there is more than one linked named element - corrected
 	*error in performance summary - if have derailment then overallscore (in TrainUnit.cpp) reduced from 100, TotArrDep stays 0, so report that no arrivals or departures when there likely are some - corrected
@@ -18,8 +30,6 @@ VERSION CHANGES AFTER v1.1.3 for v1.1.4
 
 
 VERSION CHANGES AFTER v1.1.2 for v1.1.3
-
-* = mention on user website
 
 *Added check for two adjacent level crossings on same track in TTrack::LinkTrack & TTrack::LinkTrackNoMessages after notification by Bjorn
 Verzijlbergh.
@@ -868,14 +878,14 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 
 COPY SECTIONS:
 
-NEXT value for CallLogPop is 1982
-NEXT value for TrackElementAt is 878
+NEXT value for CallLogPop is 2039
+NEXT value for TrackElementAt is 893
 NEXT value for InactiveTrackElementAt is 119
-NEXT value for GetFixedRouteAt is 197
-NEXT value for GetModifiableRouteAt is 16
-NEXT value for GetFixedPrefDirElementAt is 213
-NEXT value for ErrorLog is 195
-NEXT value for ClearandRebuildRailway is 68
+NEXT value for GetFixedRouteAt is 215
+NEXT value for GetModifiableRouteAt is 28
+NEXT value for GetFixedPrefDirElementAt is 243
+NEXT value for ErrorLog is 196
+NEXT value for ClearandRebuildRailway is 69
 NEXT value for TrainVectorAt is 65
 NEXT value for SetLevel1Mode is 132
 NEXT value for PlotOutput is 239

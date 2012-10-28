@@ -224,6 +224,8 @@ __published:	// IDE-managed Components
     TLabel *OutputLog9;
     TLabel *OutputLog10;
 
+    TPanel *RestoreFocusPanel; //Panel used to restore focus to Interface to enable cursor keys to move screen
+
     TPanel *TrackBuildPanel; //'Build/modify railway' panel
     TPanel *PrefDirPanel; //'Set preferred directions' panel
     TPanel *TimetablePanel; //'Create a timetable'/'Edit a timetable' panel that contains the topmost buttons (show/hide & exit)
@@ -247,7 +249,7 @@ __published:	// IDE-managed Components
     TLabel *TrackBuildPanelLabel; //label to the left of TrackBuildPanel
     TLabel *TrackLengthLabel; //displays 'Length (metres)' on TrackLengthPanel
     TLabel *CallLogTickerLabel; //diagnostic label displaying the call log depth, made visible by <ctrl> <alt> '2'
-    TLabel *ClockLabel; //timetable clock displayed during operation
+    TLabel *ClockLabel;
     TLabel *FloatingLabel; //the floating window that displays track & train information
     TLabel *OperatingPanelLabel; //displays 'Operation' or 'Disabled' on the operating panel during operation for running or paused
 
@@ -704,10 +706,12 @@ bool AllSetUpFlag;      //false during initial start up, true when all set up to
 bool AutoSigsFlag;      //true when AutoSig route building selected during operation
 bool ConsecSignalsRoute;//true when AutoSig or preferred route building selected during operation (always same state as PreferredRoute)
 bool CopiedEntryFlag;   //true when CopiedEntryStr holds a timetable entry in the timetable editor
+//bool FocusedFlag;
 bool DirOpenError;      //true when one of the program subfolders doesn't already exist and can't be created
 bool DistancesMarked;   //true when setting lengths, used to ensure the screen distance markers are redisplayed when the screen is updated
 bool ErrorLogCalledFlag;//true when an error has been thrown, stops repeated calls to ErrorLog and stops the MasterClockTimer function
 bool FileChangedFlag;   //true when a loaded railway file has changed (used to warn user if opts to exit without saving)
+bool NonCTRLOrSHIFTKeyUpFlag; //true when other than a shift or ctrl key released - added at v1.3.0 to prevent repeated keypresses from repeatedly moving the screen viewpoint 
 bool LoadSessionFlag;   //true when a session load command has been given
 bool mbLeftDown;        //true when the left mouse button is down
 bool NewEntryInPreparationFlag;//true when a new timetable entry is being prepared in the timetable editor
@@ -744,6 +748,7 @@ float TTClockSpeed;       //rate at which the timetable clock runs 1 = normal
 
 Graphics::TBitmap *SelectBitmap;//the graphic defined by Edit->Select & Edit->Reselect
 
+int ClockTimer2Count;   //added at v1.3.0 to ensure focus returned to Interface
 int LCResetCounter;     //count up to 20 then resets - to check LCs & raise barriers if no route & no train present
 int MissedTicks;        //test for missed clock ticks
 int NewSelectBitmapHLoc;//the new (during & at end of moving) HLoc value of Edit->Select & Edit->Reselect
@@ -910,4 +915,4 @@ extern PACKAGE TInterface *Interface;
 
 //---------------------------------------------------------------------------
 #endif
-  
+ 

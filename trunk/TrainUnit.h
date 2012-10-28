@@ -476,6 +476,7 @@ bool CrashWarning, DerailWarning, SPADWarning, CallOnWarning, SignalStopWarning,
     //warning graphics to flash at the left hand side of the screen
 bool StopTTClockFlag; //when true the timetable clock is stopped, used for messages display and train popup menu display etc
 bool TrainAdded; //true when a train has been added by a split (occurs outside the normal train introduction process)
+bool SignallerTrainRemovedOnAutoSigsRoute; //true if train was on an AutoSigsRoute when removed by the signaller
 
 float NotStartedTrainLateMins; //total late minutes of trains that haven't started yet on exit operation for locations not reached yet
 float OperatingTrainLateMins; //total late minutes of operating trains on exit operation for locations not reached yet

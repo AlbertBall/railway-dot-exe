@@ -11255,7 +11255,9 @@ if(RoutePair.first > -1)
         return false;
         }
     TPrefDirElement RouteElement = AllRoutes->GetFixedRouteAt(8, RoutePair.first).GetFixedPrefDirElementAt(35, RoutePair.second);
-    if((RouteElement.Config[RouteElement.ELinkPos] != End) && (AllRoutes->TrackIsInARoute(10, RouteElement.Conn[RouteElement.ELinkPos], RouteElement.ELinkPos)))
+//    if((RouteElement.Config[RouteElement.ELinkPos] != End) && (AllRoutes->TrackIsInARoute(, RouteElement.Conn[RouteElement.ELinkPos], RouteElement.ELinkPos)))
+    if((RouteElement.Config[RouteElement.ELinkPos] != End) && (AllRoutes->TrackIsInARoute(10, RouteElement.Conn[RouteElement.ELinkPos], RouteElement.ConnLinkPos[RouteElement.ELinkPos]))) //amended at v1.3.0 - had omitted ConnLinkPos - see above
+                                                                                                    //discovered when timetable building for Joshua Coupe's railway.  Also affects non-preferred routes - see below
     //first element in existing route but that route linked to another route (or a non-bridge 2-track element containing a route) so no good
         {
         TrainController->StopTTClockMessage(25, "Can't start a route within or at the end of an existing route");
@@ -12483,7 +12485,8 @@ if(RoutePair.first > -1)
         return false;
         }
     TPrefDirElement RouteElement = AllRoutes->GetFixedRouteAt(38, RoutePair.first).GetFixedPrefDirElementAt(60, RoutePair.second);
-    if((RouteElement.Config[RouteElement.ELinkPos] != End) && (AllRoutes->TrackIsInARoute(12, RouteElement.Conn[RouteElement.ELinkPos], RouteElement.ELinkPos)))
+//    if((RouteElement.Config[RouteElement.ELinkPos] != End) && (AllRoutes->TrackIsInARoute(, RouteElement.Conn[RouteElement.ELinkPos], RouteElement.ELinkPos)))
+    if((RouteElement.Config[RouteElement.ELinkPos] != End) && (AllRoutes->TrackIsInARoute(12, RouteElement.Conn[RouteElement.ELinkPos], RouteElement.ConnLinkPos[RouteElement.ELinkPos]))) //amended at v1.3.0 - had omitted ConnLinkPos - see above
     //first element in existing route but that route linked to another route (or a non-bridge 2-track element containing a route) so no good
         {
         if(!Callon) TrainController->StopTTClockMessage(47, "Can't start a route within or at the end of an existing route");

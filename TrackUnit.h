@@ -1117,6 +1117,7 @@ const float SignalsDelay; //the value in seconds for which signals flash prior t
 int NextRouteID; //stores the value for the route ID number that is next to be built
 TAllRoutesVector AllRoutesVector; //the vector that stores all the routes on the railway
 TLockedRouteVector LockedRouteVector; //the vector that stores all the locked routes on the railway
+TOneRoute SignallerRemovedTrainAutoRoute; //if train was on an AutoSigsRoute when removed then this stores the route so that signals can be reset
 TRoute2MultiMap Route2MultiMap; //the map that stores the elements of all routes on the railway (see TRoute2MultiMap for more info)
 
 //inline functions

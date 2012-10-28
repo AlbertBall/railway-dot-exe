@@ -33,6 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <fstream>
 #include <vector>
 #include <vcl.h>
+#include <stdio.h>
 
 #pragma hdrstop
 //The above batch of include files above #pragma hdrstop appear in all .cpp files.
@@ -69,7 +70,7 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "v1.2.0 Beta"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
+    ProgramVersion = "v1.3.0"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
     //development stages (don't show on published versions) check for presence of directories, creation failure probably indicates that the
     //working folder is read-only
     CurDir = GetCurrentDir();
@@ -2794,7 +2795,8 @@ try
         ShowHideTTButton->Glyph->LoadFromResourceName(0, "Show");
         TimetableEditPanel->Visible = false;
         ShowHideTTButton->Hint = "Show the timetable editor";
-        InfoPanel->Visible = false;
+//        InfoPanel->Visible = false;                          //changed at v1.3.0 to make it clearer that still in TT mode
+        InfoPanel->Caption = "Timetable mode: editor hidden";  //as above 
         }
     else
         {
@@ -4106,6 +4108,7 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
+
 void TInterface::CompileAllEntriesMemoAndSetPointers(int Caller)
 {
 enum {PreStartTime, ActiveSegment, PostEnd} Segment;
@@ -5628,7 +5631,8 @@ try
                 if(TrackElement.TrackType != SignalPost)
                     {
                     CallingOnButton->Down = false;
-                    InfoPanel->Visible = false;
+//                    InfoPanel->Visible = false;  //dropped at v1.3.0, not sure what purpose intended to serve but don't want to lose the info panel as did with this here also added line below to reset
+                    RevertToOriginalRouteSelector(16);
                     Utilities->CallLogPop(59);
                     return;
                     }
@@ -5640,6 +5644,7 @@ try
                                 (TrackElement.Config[Track->TrackElementAt(429, TrainController->TrainVectorAt(28, x).LeadElement).ConnLinkPos[TrainController->TrainVectorAt(12, x).LeadExitPos]] == Connection))
                             {
                             //found it!
+/*
                             if(TrackElement.SpeedTag == 68)
                                 {
                                 Display->PlotOutput(0, (HLoc * 16), (VLoc * 16), RailGraphics->bm68CallingOn);
@@ -5672,7 +5677,11 @@ try
                                 {
                                 Display->PlotOutput(7, (HLoc * 16), (VLoc * 16), RailGraphics->bm75CallingOn);
                                 }
+*/
                             Track->TrackElementAt(430, Position).CallingOnSet = true;
+                            Track->PlotSignal(13, Track->TrackElementAt(893, Position), Display); //added at v 1.3.0 in place of the above to ensure ground signals (as well as others) plot correctly for proceed
+                                                                          //have to call after CallingOnSet becomes true & can't use TrackElement as that still has CallingOnSet false
+                            ClearandRebuildRailway(69); //added at v1.3.0 to replot route on element after PlotSignal above
                             TrainController->TrainVectorAt(14, x).AllowedToPassRedSignal = true;
                             TrainController->TrainVectorAt(29, x).BeingCalledOn = true;
                             CallingOnButton->Down = false;
@@ -6537,8 +6546,36 @@ void TInterface::ClockTimer2(int Caller)
 //called every 50mSec
 try
     {
-//have to allow in zoomout mode
+    //have to allow in zoomout mode
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ClockTimer2");
+
+    bool FocusRestoreAllowedFlag = true; //added at v1.3.0
+
+    if(TextBox->Focused() || DistanceBox->Focused() || SpeedLimitBox->Focused() || LocationNameTextBox->Focused() || MileEdit->Focused() || ChainEdit->Focused() || YardEdit->Focused() ||
+            MPHEdit2->Focused() || LocationNameComboBox->Focused() || AddSubMinsBox->Focused() || MPHEdit1->Focused() || HPEdit->Focused() || OneEntryTimetableMemo->Focused() ||
+            AddPrefDirButton->Focused()) //Added at v1.3.0.  If any of these has focus then they keep it until they release it.  AddPrefDirButton is included as it should keep focus
+        FocusRestoreAllowedFlag = false; //when it has it - eases the setting of PrefDirs, also this button becomes disabled after use so focus returns to Interface naturally
+
+    if(!Focused() && FocusRestoreAllowedFlag && (GetAsyncKeyState(VK_LBUTTON) >= 0) && (GetAsyncKeyState(VK_RBUTTON) >= 0)) //condition added at v1.3.0 to ensure focus returned to Interface (so arrow keys work to move screen) &
+    //not left at any of the buttons or other Windows controls
+    //include the Windows API functions to test that the mouse buttons are not down (strictly only need left but user may have mapped the left onto the right so test both) - if not tested then don't always
+    //respond to button clicks on navigation and other buttons because the focus can be grabbed back from the button by RestoreFocusPanel before the button can respond (takes about 200mSec from click to response)
+    //a delay is also included to doubly avoid the button losing focus as above
+        {
+        ClockTimer2Count++; //doesn't matter what value it starts at on first use, it will soon revert to 0
+        if(ClockTimer2Count > 10) ClockTimer2Count = 0; //half second delay
+        if(ClockTimer2Count == 0)
+            {
+            RestoreFocusPanel->Visible = true;
+            RestoreFocusPanel->Enabled = true;
+            RestoreFocusPanel->BringToFront();
+            RestoreFocusPanel->SetFocus();      //to remove focus from anything else
+            RestoreFocusPanel->Enabled = false; //to remove focus from RestoreFocusPanel & return it to Interface
+            RestoreFocusPanel->Visible = false;
+            }
+        }
+    else ClockTimer2Count = 0; //reset to 0 so ensure full delay occurs before RestoreFocusPanel grabs focus from anything else
+
     CallLogTickerLabel->Caption = Utilities->CallLog.size(); //diagnostic test function to ensure all CallLogs are popped - visibility
         //toggled by 'Ctrl Alt 2' when Interface form has focus
 //set current time
@@ -6749,6 +6786,7 @@ try
         {
         TrainController->Operate(0); //ensure this called AFTER the single element route removal to ensure any single elements removed
                                      //prior to CallingOnAllowed being called (in UpdateTrain) as that sets a route from the stop signal
+        TrainController->SignallerTrainRemovedOnAutoSigsRoute = false; //added at v1.3.0 to ensure doesn't persist beyone one call
         }
 
 //plot trains in ZoomOut mode & flash trains where attention needed alternately on & off at each call
@@ -6897,6 +6935,7 @@ try
     AutoRouteStartMarker->PlotOriginal(29, Display); //if overlay not plotted will ignore
     SigRouteStartMarker->PlotOriginal(30, Display); //if overlay not plotted will ignore
     NonSigRouteStartMarker->PlotOriginal(31, Display); //if overlay not plotted will ignore
+    CallingOnButton->Enabled = false; //added at v1.3.0 to ensure doesn't retain focus - will be re-enabled during ClockTimer2 (in SetSaveMenuAndButtons) if required
     Utilities->CallLogPop(82);
     }
 catch (const Exception &e)
@@ -7031,6 +7070,7 @@ try
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenDownButtonClick" + AnsiString((short)ShiftKey)+ AnsiString((short)CtrlKey));
     Screen->Cursor = TCursor(-11);//Hourglass;
     ScreenDownButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
+    //BUT - it does prevent it from retaining focus - so can use the cursor keys to scroll the display without being captured by the buttons
     if(!Display->ZoomOutFlag)
         {
         if(CtrlKey)
@@ -8118,6 +8158,8 @@ try
         LocName = Track->TrackElementAt(644, Train.MidElement).ElementID;
         }
     TTrackElement *TrackElementPtr;
+    int RouteNumber;
+    TAllRoutes::TRouteType RouteType;
     if(Train.LeadElement > -1)
         {
         TrackElementPtr = &(Track->TrackElementAt(673, Train.LeadElement));
@@ -8127,6 +8169,15 @@ try
             TrackElementPtr->CallingOnSet = false;
             Track->PlotSignal(6, *TrackElementPtr, Display);
             }
+//[added at v1.3.0] here check if on an automatic signals route and if so reset signals for the entire route from the
+//start of the route - after the train has been removed, use LeadElement and also MidElement (if no autosigs route at LeadElement) just to be sure
+        RouteType = AllRoutes->GetRouteTypeAndNumber(27, Train.LeadElement, Train.LeadEntryPos, RouteNumber);
+        if(RouteType == TAllRoutes::AutoSigsRoute)
+            {
+            AllRoutes->SignallerRemovedTrainAutoRoute = AllRoutes->GetFixedRouteAt(215, RouteNumber);
+            TrainController->SignallerTrainRemovedOnAutoSigsRoute = true;
+            }
+//end of addition
         }
     if(Train.MidElement > -1)
         {
@@ -8136,6 +8187,17 @@ try
             TrackElementPtr->CallingOnSet = false;
             Track->PlotSignal(7, *TrackElementPtr, Display);
             }
+//[added at v1.3.0 as above]
+        if(!TrainController->SignallerTrainRemovedOnAutoSigsRoute)
+            {
+            RouteType = AllRoutes->GetRouteTypeAndNumber(28, Train.MidElement, Train.MidEntryPos, RouteNumber);
+            if(RouteType == TAllRoutes::AutoSigsRoute)
+                {
+                AllRoutes->SignallerRemovedTrainAutoRoute = AllRoutes->GetFixedRouteAt(216, RouteNumber);
+                TrainController->SignallerTrainRemovedOnAutoSigsRoute = true;
+                }
+            }
+//end of addition
         }
     if(Track->TrackElementAt(675, Train.LeadElement).Conn[Train.LeadExitPos] > -1)
         {
@@ -8306,6 +8368,32 @@ try
         {
         ShiftKey = true;
         }
+//below added at v1.3.0 to allow keyboard scrolling as well as mouse button scrolling - see user suggestion on Features & Requests forum 30/09/12
+//the NonCTRLOrSHIFTKeyUpFlag prevents repeated keypresses from repeatedly moving the screen viewpoint
+//note that use the OnKeyDown event rather than OnKeyPress as suggested by the user so that the CTRL & SHIFT keys can be taken into account
+    if(!NonCTRLOrSHIFTKeyUpFlag) return;
+    if((Key != VK_SHIFT) && (Key != VK_CONTROL)) NonCTRLOrSHIFTKeyUpFlag = false; //don't want to set this for shift or control keys being pressed
+    if((Key == 'w') || (Key == 'W') || (Key == VK_UP))
+        {
+        if(ScreenUpButton->Enabled) ScreenUpButton->Click();
+        }
+    if((Key == 's') || (Key == 'S') || (Key == VK_DOWN))
+        {
+        if(ScreenDownButton->Enabled) ScreenDownButton->Click();
+        }
+    if((Key == 'a') || (Key == 'A') || (Key == VK_LEFT))
+        {
+        if(ScreenLeftButton->Enabled) ScreenLeftButton->Click();
+        }
+    if((Key == 'd') || (Key == 'D') || (Key == VK_RIGHT))
+        {
+        if(ScreenRightButton->Enabled) ScreenRightButton->Click();
+        }
+    if(Key == VK_HOME)
+        {
+        if(HomeButton->Enabled) HomeButton->Click();
+        }
+//end of addition
     }
 catch (const Exception &e)
     {
@@ -8318,6 +8406,7 @@ catch (const Exception &e)
 void __fastcall TInterface::FormKeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
+if((Key != VK_SHIFT) && (Key != VK_CONTROL)) NonCTRLOrSHIFTKeyUpFlag = true; //added at v1.3.0 to reset flag for other than shift or control keys being released
 CtrlKey = false;
 ShiftKey = false;
 }
@@ -8869,9 +8958,9 @@ try
     ScreenRightButton->Enabled = true;
     ScreenUpButton->Enabled = true;
     ScreenDownButton->Enabled = true;
+    TTClockAdjButton->Enabled = true;
     OperatingPanel->Enabled = true;
     OperatingPanelLabel->Caption = "Operation";
-    TTClockAdjButton->Enabled = true;
     Display->ShowWarningLog(0);
     double TTClockTimeChange = double(TrainController->RestartTime) - PauseEntryRestartTime;
     if((TTClockSpeed != PauseEntryTTClockSpeed) || (TTClockTimeChange > 0.000347)) //30 seconds, min increase is 1 minute & don't trust doubles to stay exactly equal
@@ -8879,7 +8968,7 @@ try
         AnsiString Message = "Changes have been made to the timetable clock - you may wish to save a session before resuming operation.\nTo cancel all changes click 'Adjust the timetable clock' then click the reset button BEFORE resuming operation.";
         ShowMessage(Message);
         }
-    Utilities->Clock2Stopped = false;
+    Utilities->Clock2Stopped = false; //as above
     Utilities->CallLogPop(1876);
     }
 catch (const Exception &e)
@@ -11006,7 +11095,7 @@ if(Level1Mode == OperMode && ((TrainStatusInfoOnOff1->Caption == "Hide status") 
                     {
                     TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' +
                     "Maximum train speed " + MaxSpeedStr + "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" +
-                    '\n' + SpecialStr + Status + ": " + CurrSpeedStr.FormatFloat(FormatOneDPStr,CurrSpeed) + "km/h" + '\n' +
+                    '\n' + SpecialStr + Status + ": " + CurrSpeedStr.FormatFloat(FormatNoDPStr,CurrSpeed) + "km/h" + '\n' +
                     "Next: " + NextStopStr;
                     }
                 }
@@ -11553,6 +11642,28 @@ if(LocationNameTextBox->Visible)
     ScreenDownFlag = false;
     }
 
+if(TextBox->Visible)  //added at v1.3.0 to prevent screen moving when movement keys pressed during text entry
+    {
+    ZoomFlag = false;
+    HomeFlag = false;
+    NewHomeFlag = false;
+    ScreenLeftFlag = false;
+    ScreenRightFlag = false;
+    ScreenUpFlag = false;
+    ScreenDownFlag = false;
+    }
+
+if((Level1Mode == TimetableMode) && (TimetableEditPanel->Visible))  //added at v1.3.0 to prevent screen moving when movement keys pressed during timetable compilation (allowed if TT hidden)
+    {
+    ZoomFlag = false;
+    HomeFlag = false;
+    NewHomeFlag = false;
+    ScreenLeftFlag = false;
+    ScreenRightFlag = false;
+    ScreenUpFlag = false;
+    ScreenDownFlag = false;
+    }
+
 if((Level2TrackMode == TrackSelecting) || (Level2TrackMode == CopyMoving) ||
         (Level2TrackMode == CutMoving) || (Level2TrackMode == DistanceStart) ||
         (Level2TrackMode == DistanceContinuing) || (Level2PrefDirMode == PrefDirSelecting))
@@ -11728,6 +11839,7 @@ Utilities->CallLogPop(1208);
 void TInterface::ResetAll(int Caller)
 {
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ResetAll");
+NonCTRLOrSHIFTKeyUpFlag = true; //added at v1.3.0 to ensure flag set initially
 Track->GapFlashGreenPosition = -1;
 Track->GapFlashRedPosition = -1;
 Track->GapFlashFlag = false;
@@ -14240,4 +14352,6 @@ be tellg, which sometimes returns wrong results, and they corrupt things when us
 Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file position then close and reopen it.
 */
 
-  
+
+
+    

@@ -1506,6 +1506,13 @@ if(LagElement > -1)//not entering at a continuation so can deal with train leavi
                 {
                 Display->PlotOutput(26, Track->TrackElementAt(236, LagElement).HLoc * 16, Track->TrackElementAt(237, LagElement).VLoc * 16, EXGraphicPtr);
                 Display->PlotOutput(27, Track->TrackElementAt(238, LagElement).HLoc * 16, Track->TrackElementAt(239, LagElement).VLoc * 16, EntryDirectionGraphicPtr);
+//below added at v1.3.0 to reset signals if back out of an autosigs route under signaller control after changing direction, when new LeadElement not on route (if it had
+//been the route would have been ForceCancelled).  Note that the signal is not facing the direction of travel else would have entered
+//"if(Track->TrackElementAt(, LagElement).Config[LagExitPos] == Signal)" above and wouldn't be here
+                int RouteNumber;
+                AllRoutes->GetRouteTypeAndNumber(29, LagElement, LagEntryPos, RouteNumber); //already know it's an autosigsroute, this is just to get the RouteNumber
+                AllRoutes->GetFixedRouteAt(217, RouteNumber).SetRouteSignals(10);
+//end of addition
                 }
             TPrefDirElement PrefDirElement;
             //plot locked route marker if appropriate, but only when train leaves element completely as this is a 16x16 graphic (OK - Straddle == LeadMidLag)
@@ -5948,6 +5955,7 @@ TTrainController::TTrainController()
     TotLateDepMins = 0;
     ExcessLCDownMins = 0;
     TTClockTime = 0; //added for v0.6
+    SignallerTrainRemovedOnAutoSigsRoute = false; //added at v1.3.0 to ensure false at start
     }
 
 //---------------------------------------------------------------------------
@@ -6141,6 +6149,13 @@ if(!TrainVector.empty())
             //need above first because may also have ActionVectorEntryPtr == "Fer"
                 {
                 Train.UnplotTrain(9);
+//added at v1.3.0 to reset signals after train removed from an autosigsroute
+                if(SignallerTrainRemovedOnAutoSigsRoute)
+                    {
+                    AllRoutes->SignallerRemovedTrainAutoRoute.SetRouteSignals(9);
+                    SignallerTrainRemovedOnAutoSigsRoute = false;
+                    }
+//end of addition
                 AllRoutes->RebuildRailwayFlag = true;//to force ClearandRebuildRailway at next clock tick if not in zoom-out mode, to replot LCs
                 //correctly after a crash
                 }

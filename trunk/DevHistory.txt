@@ -1,5 +1,7 @@
 Development History
 ---------------------------------------------------------------------------
+
+
 Future change suggestions:
 
 Suggestions from Bjorn - email of 20/10/12:
@@ -14,12 +16,38 @@ Suggestion from Mark Jones (email of 29/06/12): try to allow different train len
 
 Suggestion from Keith Hazelton (Feature Requests Forum 02/04/12):  Have the ability to set random dwell times at station stops. At present, once you’ve got ‘the hang’ of a layout and got into a rhythm of route setting, everything is pretty predictable. Random dwell times (say between 30sec & 3 mins) would add an unpredictable element.
 
+Sam Wainwright email received 09/02/12: If a shunt signal is placed in the same direction as the main running signals, it is necessary to set a route through the shunt signal as well. Would it be possible to set a route from one running signal to the next with any shunt signals n the same direction in between clearing automatically?
+
+
+
+VERSION CHANGES AFTER v1.3.0 for v1.3.1
+
+* = mention on user website
+	
+*a) 1.3.0 allows letter keys in distance/speed boxes to move screen, all illegal except the 'd' in 'Mixed', though user doesn't normally enter this. Corrected in v1.3.1.
+
+*b) the miles/chains & mph boxes stay visible after distance setting when another button is clicked. Corrected in v1.3.1.
+
+c) Exception thrown in GetStartAndEndPrefDirElements(...) if NextElement not found, but could be a bridge where only the opposite track PrefDir is set, in which case won't find it.  Found with JK's DLR railway (17/11/12) where undertrack PrefDir not set just west of Poplar.  Hence first test if element is a bridge and if so set ContFlag to true & break (same as not finding PrefDir element at all).  Modified at version 1.3.1.  Note that it's not NextElement that is to be examined but NextTrackVectorPosition, which can be found easily by using PrefDirPos0 (there will be a PrefDirPos0 or would have exited earlier, and it doesn't matter that PrefDirPos0 isn't on the route in question because only the TrackType is needed).
+
+Two faults notified by Ian Walker in his email of 25/03/13:-
+
+*d) Program locked up if points changing when deactivates [cancelled in deactivation function];
+
+*e) MaxRunningSpeed set to other train's value for joins, but other train may be a service continuation in which case its MaxRunningSpeed is zero until it takes over during operation [tested & ignored if < 5km/h before setting other train's MaxRunningSpeed]. - mention in relation to Ian's railway - 1H27 falls foul of this error if earlier program versions used
+
+2 other faults found while operating Ian Walker's Chiltern Railway:-
+
+f) If a route is being created that extends an existing route, but before the flashing stops the existing route is deleted by a train moving on it in the wrong direction, then an error is thrown
+when GetFixedRouteAtIDNumber (caller 49) is called from ConvertAndAddNonPreferredRouteSearchVector with an invalid ID number.  It would also be thrown for ConvertAndAddPreferredRouteSearchVector.
+What is needed is a test to see whether the route exists just before the new route is created, and if it doesn't then StartSelectionRouteID is set to -1 and the 'if(StartSelectionRouteID > -1)' subfunction exited.  A suitable test function has been created called IsThereARouteAtIDNumber.
+
+g) If try to end a route at an element that links to a trailing point or a crossover, when a non-autosig route extends an autosigs route beginning at that point, then the message 'can't end a route adjacent to the start of an existing route' is given - because the non-autosigs route has its first PrefDirElement at that point.  Need to check if the existing route actually uses the link that the element links to, and if it doesn't (i.e. crossover, points or bridge), then allow the route to complete.  Added a condition that tests the link that connects to the end route element link (which must be a 1-track element because can't select 2-track elements) is in a route.
+
 
 
 VERSION CHANGES AFTER v1.2.0 Beta for v1.3.0
 
-* = mention on user website
-	
 *a) If a train enters the rear of an automatic signals route under signaller control, stops and reverses back out such that LeadElement isn't on route, the first signal stays red.  
 Need to check when under signaller control during UpdateTrain whether LagElement on a signal on an automatic signal route and if so SetRouteSignals just after it moves off the LagElement.
 *b) If remove a train from an automatic signals route then the signals behind it stay as they are.  Need to check if removed train on such a route & if so set all rearwards signals after removal as 
@@ -37,8 +65,6 @@ because of an error in GetNextPreferredRouteElement and also in GetNextNonPrefer
 
 VERSION CHANGES AFTER v1.1.4 for v1.2.0 Beta
 
-* = mention on user website
-	
 *Keep existing information settings when load a new session
 *Allow route or part route into platform for callons, so can set points by setting route
 *Change manual & help relating to calling on
@@ -913,12 +939,12 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 
 COPY SECTIONS:
 
-NEXT value for CallLogPop is 2039
+NEXT value for CallLogPop is 2041
 NEXT value for TrackElementAt is 894
 NEXT value for InactiveTrackElementAt is 119
-NEXT value for GetFixedRouteAt is 218
+NEXT value for GetFixedRouteAt is 220
 NEXT value for GetModifiableRouteAt is 28
-NEXT value for GetFixedPrefDirElementAt is 243
+NEXT value for GetFixedPrefDirElementAt is 246
 NEXT value for ErrorLog is 196
 NEXT value for ClearandRebuildRailway is 69
 NEXT value for TrainVectorAt is 65

@@ -10822,7 +10822,20 @@ for(PDVIt = (PrefDirVector.begin() + LastIteratorValue); PDVIt < PrefDirVector.e
                 continue;
                 }
             }
-        throw(Exception("Failed to track prefdir in PresetAutoSigRoutesButtonClick (2)"));
+        //had exception thrown here if NextElement not found, but could be a bridge where opposite track PrefDir set, in which case won't find it
+        //found with Jonathan Kwok's DLR railway (17/11/12) where undertrack PrefDir not set just west of Poplar.  Hence first test if element is a bridge
+        //and if so set ContFlag to true & break (same as not finding PrefDir element at all).  Modified at version 1.3.1
+        //note that it's not NextElement that is to be examined but NextTrackVectorPosition, which can be found easily by using PrefDirPos0 (there will be a
+        //PrefDirPos0 or would have exited earlier, and it doesn't matter that PrefDirPos0 isn't on the route in question because only the TrackType is needed)
+        if(GetFixedPrefDirElementAt(243, PrefDirPos0).TrackType == Bridge)
+            {
+            ContFlag = true;
+            break;
+            }
+        else
+            {
+            throw(Exception("Failed to track prefdir in PresetAutoSigRoutesButtonClick (2)"));
+            }
         }
     if(ContFlag) continue;
     //else have start and end elements set & all elements valid, so set up the route segment
@@ -11308,15 +11321,20 @@ if((abs(EndElement1.HLoc - StartElement1.HLoc) > 120) || (abs(EndElement1.VLoc -
 for(unsigned int a=0;a<AllRoutes->AllRoutesSize();a++)
     {
     int AdjPosition = AllRoutes->GetFixedRouteAt(9, a).GetFixedPrefDirElementAt(36, 0).TrackVectorPosition;
-    if((EndElement1.Config[EndElement1.XLinkPos] != End) &&
-            (EndElement1.Conn[EndElement1.XLinkPos] == AdjPosition))
+    int AdjLinkPos = AllRoutes->GetFixedRouteAt(218, a).GetFixedPrefDirElementAt(244, 0).ELinkPos; //added at v1.3.1
+//    if((EndElement1.Config[EndElement1.XLinkPos] != End) &&
+//            (EndElement1.Conn[EndElement1.XLinkPos] == AdjPosition))
+    if((EndElement1.Config[EndElement1.XLinkPos] != End) && (EndElement1.Conn[EndElement1.XLinkPos] == AdjPosition) &&  //changed at v1.3.1 to allow a route end adjacent to an element with a route that doesn't link to the ending route
+            (EndElement1.ConnLinkPos[EndElement1.XLinkPos] == AdjLinkPos))
         {
         TrainController->StopTTClockMessage(26, "Can't end a route adjacent to the start of an existing route");
         Utilities->CallLogPop(223);
         return false;
         }
-    else if((EndElement2.TrackVectorPosition > -1) && (EndElement2.Config[EndElement2.XLinkPos] != End) &&
-            (EndElement2.Conn[EndElement2.XLinkPos] == AdjPosition))
+//    else if((EndElement2.TrackVectorPosition > -1) && (EndElement2.Config[EndElement2.XLinkPos] != End) &&
+//            (EndElement2.Conn[EndElement2.XLinkPos] == AdjPosition))
+    else if((EndElement2.TrackVectorPosition > -1) && (EndElement2.Config[EndElement2.XLinkPos] != End) && //changed at v1.3.1 to allow a route end adjacent to an element with a route that doesn't link to the ending route
+            (EndElement2.Conn[EndElement2.XLinkPos] == AdjPosition) && (EndElement2.ConnLinkPos[EndElement2.XLinkPos] == AdjLinkPos))
         {
         TrainController->StopTTClockMessage(27, "Can't end a route adjacent to the start of an existing route");
         Utilities->CallLogPop(224);
@@ -12061,66 +12079,73 @@ if new route autosig and existing route non-autosig, remove the last route eleme
 if new route non-autosig and existing route autosig, leave the existing route as it is, and just enter the new route into the AllRoutesVector
 */
     {
-    if((AutoSigsFlag && (AllRoutes->GetFixedRouteAtIDNumber(26, StartSelectionRouteID).GetFixedPrefDirElementAt(52, 0).AutoSignals)) ||
-        (!AutoSigsFlag && !(AllRoutes->GetFixedRouteAtIDNumber(27, StartSelectionRouteID).GetFixedPrefDirElementAt(53, 0).AutoSignals)))
+    if(AllRoutes->IsThereARouteAtIDNumber(0, StartSelectionRouteID)) //need to test because may have been removed by a train moving in the wrong direction between first and last route selections - added at v1.3.1
         {
-        int RouteNumber = AllRoutes->GetRouteVectorNumber(0, StartSelectionRouteID);
-        for(unsigned int x=0;x<SearchVector.size();x++)
+        if((AutoSigsFlag && (AllRoutes->GetFixedRouteAtIDNumber(26, StartSelectionRouteID).GetFixedPrefDirElementAt(52, 0).AutoSignals)) ||
+            (!AutoSigsFlag && !(AllRoutes->GetFixedRouteAtIDNumber(27, StartSelectionRouteID).GetFixedPrefDirElementAt(53, 0).AutoSignals)))
             {
-            AllRoutes->AddRouteElement(1, GetFixedSearchElementAt(0, x).HLoc, GetFixedSearchElementAt(1, x).VLoc, GetFixedSearchElementAt(2, x).ELink,
-                    RouteNumber, GetFixedSearchElementAt(3, x));
-//find & store locked route truncate position in PrefDirVector for later use
+            int RouteNumber = AllRoutes->GetRouteVectorNumber(0, StartSelectionRouteID);
+            for(unsigned int x=0;x<SearchVector.size();x++)
+                {
+                AllRoutes->AddRouteElement(1, GetFixedSearchElementAt(0, x).HLoc, GetFixedSearchElementAt(1, x).VLoc, GetFixedSearchElementAt(2, x).ELink,
+                        RouteNumber, GetFixedSearchElementAt(3, x));
+    //find & store locked route truncate position in PrefDirVector for later use
+                if(AllRoutes->LockedRouteFoundDuringRouteBuilding)
+                    {
+                    if(GetFixedSearchElementAt(15, x).TrackVectorPosition == int(AllRoutes->LockedRouteTruncateTrackVectorPosition))
+                        {
+                        TruncatePrefDirPosition = AllRoutes->GetFixedRouteAt(172, RouteNumber).PrefDirSize() - 1;
+                        }
+                    }
+                }
+            if(!(AllRoutes->GetModifiableRouteAtIDNumber(1, StartSelectionRouteID).ValidatePrefDir(4)))
+                {
+                throw Exception("Error - failed to validate extended route for preferred route");
+                }
+            AllRoutes->GetModifiableRouteAtIDNumber(2, StartSelectionRouteID).SetRoutePoints(0);
+            AllRoutes->GetModifiableRouteAtIDNumber(3, StartSelectionRouteID).SetRouteSignals(4);
+            if(!AutoSigsFlag)
+                {
+                AllRoutes->GetModifiableRouteAtIDNumber(7, StartSelectionRouteID).SetLCChangeValues(0, true);//ConsecSignalsRoute is true
+                }
+            //now add the reinstated locked route if required and set signals accordingly
             if(AllRoutes->LockedRouteFoundDuringRouteBuilding)
                 {
-                if(GetFixedSearchElementAt(15, x).TrackVectorPosition == int(AllRoutes->LockedRouteTruncateTrackVectorPosition))
+                LockedRouteObject.RouteNumber = RouteNumber;
+                AllRoutes->LockedRouteVector.push_back(LockedRouteObject);
+                //now reset the signals for the locked route
+                AllRoutes->SetAllRearwardsSignals(9, 0, RouteNumber, TruncatePrefDirPosition);
+                for(int c = AllRoutes->GetFixedRouteAt(173, RouteNumber).PrefDirSize() - 1; c >= (int)TruncatePrefDirPosition; c--)//must use int for >= test to succeed when TruncatePrefDirPosition == 0
+                //return all signals to red in route section to be truncated
                     {
-                    TruncatePrefDirPosition = AllRoutes->GetFixedRouteAt(172, RouteNumber).PrefDirSize() - 1;
+                    TPrefDirElement PrefDirElement = AllRoutes->GetFixedRouteAt(174, RouteNumber).PrefDirVector.at(c);
+                    TTrackElement &TrackElement = Track->TrackElementAt(812, PrefDirElement.TrackVectorPosition);
+                    if(PrefDirElement.Config[PrefDirElement.XLinkPos] == Signal)
+                        {
+                        TrackElement.Attribute = 0;
+                        Track->PlotSignal(10, TrackElement, Display);
+                        Display->PlotOutput(113, PrefDirElement.HLoc * 16, PrefDirElement.VLoc * 16, PrefDirElement.EXGraphicPtr);
+                        Display->PlotOutput(114, PrefDirElement.HLoc * 16, PrefDirElement.VLoc * 16, PrefDirElement.EntryDirectionGraphicPtr);
+                        }
                     }
                 }
+            AllRoutes->CheckMapAndRoutes(1);//test
+            Utilities->CallLogPop(256);
+            return;
             }
-        if(!(AllRoutes->GetModifiableRouteAtIDNumber(1, StartSelectionRouteID).ValidatePrefDir(4)))
+        else if(AutoSigsFlag && !(AllRoutes->GetFixedRouteAtIDNumber(28, StartSelectionRouteID).GetFixedPrefDirElementAt(54, 0).AutoSignals))
             {
-            throw Exception("Error - failed to validate extended route for preferred route");
+            TPrefDirElement RouteElement = AllRoutes->GetFixedRouteAtIDNumber(29, StartSelectionRouteID).GetFixedPrefDirElementAt(55, AllRoutes->GetFixedRouteAtIDNumber(30, StartSelectionRouteID).PrefDirSize() -1);
+            RouteElement.AutoSignals = true;
+            RouteElement.EXGraphicPtr = RouteElement.GetRouteGraphicPtr(AutoSigsFlag, true);//true for ConsecSignalsRoute
+            RouteElement.EntryDirectionGraphicPtr = RouteElement.GetDirectionRouteGraphicPtr(AutoSigsFlag, true);//true for ConsecSignalsRoute
+            AllRoutes->RemoveRouteElement(4, RouteElement.HLoc, RouteElement.VLoc, RouteElement.ELink);
+            SearchVector.insert(SearchVector.begin(), 1, RouteElement);
             }
-        AllRoutes->GetModifiableRouteAtIDNumber(2, StartSelectionRouteID).SetRoutePoints(0);
-        AllRoutes->GetModifiableRouteAtIDNumber(3, StartSelectionRouteID).SetRouteSignals(4);
-        if(!AutoSigsFlag)
-            {
-            AllRoutes->GetModifiableRouteAtIDNumber(7, StartSelectionRouteID).SetLCChangeValues(0, true);//ConsecSignalsRoute is true
-            }
-        //now add the reinstated locked route if required and set signals accordingly
-        if(AllRoutes->LockedRouteFoundDuringRouteBuilding)
-            {
-            LockedRouteObject.RouteNumber = RouteNumber;
-            AllRoutes->LockedRouteVector.push_back(LockedRouteObject);
-            //now reset the signals for the locked route
-            AllRoutes->SetAllRearwardsSignals(9, 0, RouteNumber, TruncatePrefDirPosition);
-            for(int c = AllRoutes->GetFixedRouteAt(173, RouteNumber).PrefDirSize() - 1; c >= (int)TruncatePrefDirPosition; c--)//must use int for >= test to succeed when TruncatePrefDirPosition == 0
-            //return all signals to red in route section to be truncated
-                {
-                TPrefDirElement PrefDirElement = AllRoutes->GetFixedRouteAt(174, RouteNumber).PrefDirVector.at(c);
-                TTrackElement &TrackElement = Track->TrackElementAt(812, PrefDirElement.TrackVectorPosition);
-                if(PrefDirElement.Config[PrefDirElement.XLinkPos] == Signal)
-                    {
-                    TrackElement.Attribute = 0;
-                    Track->PlotSignal(10, TrackElement, Display);
-                    Display->PlotOutput(113, PrefDirElement.HLoc * 16, PrefDirElement.VLoc * 16, PrefDirElement.EXGraphicPtr);
-                    Display->PlotOutput(114, PrefDirElement.HLoc * 16, PrefDirElement.VLoc * 16, PrefDirElement.EntryDirectionGraphicPtr);
-                    }
-                }
-            }
-        AllRoutes->CheckMapAndRoutes(1);//test
-        Utilities->CallLogPop(256);
-        return;
         }
-    else if(AutoSigsFlag && !(AllRoutes->GetFixedRouteAtIDNumber(28, StartSelectionRouteID).GetFixedPrefDirElementAt(54, 0).AutoSignals))
+    else
         {
-        TPrefDirElement RouteElement = AllRoutes->GetFixedRouteAtIDNumber(29, StartSelectionRouteID).GetFixedPrefDirElementAt(55, AllRoutes->GetFixedRouteAtIDNumber(30, StartSelectionRouteID).PrefDirSize() -1);
-        RouteElement.AutoSignals = true;
-        RouteElement.EXGraphicPtr = RouteElement.GetRouteGraphicPtr(AutoSigsFlag, true);//true for ConsecSignalsRoute
-        RouteElement.EntryDirectionGraphicPtr = RouteElement.GetDirectionRouteGraphicPtr(AutoSigsFlag, true);//true for ConsecSignalsRoute
-        AllRoutes->RemoveRouteElement(4, RouteElement.HLoc, RouteElement.VLoc, RouteElement.ELink);
-        SearchVector.insert(SearchVector.begin(), 1, RouteElement);
+        StartSelectionRouteID = IDInt(-1);
         }
 //if new route non-autosig and existing route autosig, leave the existing route as it is, and just enter the new route into the
 //AllRoutesVector hence nothing to do here
@@ -12503,22 +12528,27 @@ if(RoutePair.first > -1)
 for(unsigned int a=0;a<AllRoutes->AllRoutesSize();a++)
     {
     int AdjPosition = AllRoutes->GetFixedRouteAt(40, a).GetFixedPrefDirElementAt(62, 0).TrackVectorPosition;
-    if((EndElement1.Config[EndElement1.XLinkPos] != End) && (EndElement1.Conn[EndElement1.XLinkPos] == AdjPosition)
-            && (AdjPosition != StartRoutePosition))
+    int AdjLinkPos = AllRoutes->GetFixedRouteAt(219, a).GetFixedPrefDirElementAt(245, 0).ELinkPos; //added at v1.3.1
+//    if((EndElement1.Config[EndElement1.XLinkPos] != End) && (EndElement1.Conn[EndElement1.XLinkPos] == AdjPosition)
+//            && (AdjPosition != StartRoutePosition))
+    if((EndElement1.Config[EndElement1.XLinkPos] != End) && (EndElement1.Conn[EndElement1.XLinkPos] == AdjPosition) &&  //changed at v1.3.1 to allow a route end adjacent to an element with a route that doesn't link to the ending route
+            (EndElement1.ConnLinkPos[EndElement1.XLinkPos] == AdjLinkPos) && (AdjPosition != StartRoutePosition))
         {
         if(!Callon) TrainController->StopTTClockMessage(48, "Can't end a route adjacent to the start of an existing route");
         Utilities->CallLogPop(277);
         return false;
         }
-    else if((EndElement2.TrackVectorPosition > -1) && (EndElement2.Config[EndElement2.XLinkPos] != End) &&
-            (EndElement2.Conn[EndElement2.XLinkPos] == AdjPosition) && (AdjPosition != StartRoutePosition))
+//    else if((EndElement2.TrackVectorPosition > -1) && (EndElement2.Config[EndElement2.XLinkPos] != End) &&
+//            (EndElement2.Conn[EndElement2.XLinkPos] == AdjPosition) && (AdjPosition != StartRoutePosition))
+    else if((EndElement2.TrackVectorPosition > -1) && (EndElement2.Config[EndElement2.XLinkPos] != End) && //changed at v1.3.1 to allow a route end adjacent to an element with a route that doesn't link to the ending route
+            (EndElement2.Conn[EndElement2.XLinkPos] == AdjPosition) && (EndElement2.ConnLinkPos[EndElement2.XLinkPos] == AdjLinkPos) && (AdjPosition != StartRoutePosition))
         {
         if(!Callon) TrainController->StopTTClockMessage(49, "Can't end a route adjacent to the start of an existing route");
         Utilities->CallLogPop(278);
         return false;
         }
 
-//check if adjacent to end of a route & disallow (unless end of existing route is the start of this route)
+//check if adjacent to end of a route & disallow (unless end of existing route is the start of this route - i.e. extending route by 1 element)
     TPrefDirElement EndOfRouteElement = AllRoutes->GetFixedRouteAt(41, a).GetFixedPrefDirElementAt(63, AllRoutes->GetFixedRouteAt(42, a).PrefDirSize() - 1);
     if((EndOfRouteElement.Config[EndOfRouteElement.XLinkPos] != End) && (EndOfRouteElement.Conn[EndOfRouteElement.XLinkPos] == EndPosition)
              && (EndOfRouteElement.TrackVectorPosition != StartRoutePosition))
@@ -13066,56 +13096,63 @@ if existing route non-autosig, then add the new route to the existing route (sta
 if existing route autosig, leave the existing route as it is, and just enter the new route into the AllRoutesVector
 */
     {
-    if(!(AllRoutes->GetFixedRouteAtIDNumber(49, StartSelectionRouteID).GetFixedPrefDirElementAt(69, 0).AutoSignals))
+    if(AllRoutes->IsThereARouteAtIDNumber(1, StartSelectionRouteID)) //need to test because may have been removed by a train moving in the wrong direction between first and last route selections - added at v1.3.1
         {
-        int RouteNumber = AllRoutes->GetRouteVectorNumber(1, StartSelectionRouteID);
-        for(unsigned int x=0;x<SearchVector.size();x++)
+        if(!(AllRoutes->GetFixedRouteAtIDNumber(49, StartSelectionRouteID).GetFixedPrefDirElementAt(69, 0).AutoSignals))
             {
-            AllRoutes->AddRouteElement(2, GetFixedSearchElementAt(4, x).HLoc, GetFixedSearchElementAt(5, x).VLoc, GetFixedSearchElementAt(6, x).ELink,
-                    RouteNumber, GetFixedSearchElementAt(7, x));
-//find & store locked route truncate position in PrefDirVector for later use
+            int RouteNumber = AllRoutes->GetRouteVectorNumber(1, StartSelectionRouteID);
+            for(unsigned int x=0;x<SearchVector.size();x++)
+                {
+                AllRoutes->AddRouteElement(2, GetFixedSearchElementAt(4, x).HLoc, GetFixedSearchElementAt(5, x).VLoc, GetFixedSearchElementAt(6, x).ELink,
+                        RouteNumber, GetFixedSearchElementAt(7, x));
+    //find & store locked route truncate position in PrefDirVector for later use
+                if(AllRoutes->LockedRouteFoundDuringRouteBuilding)
+                    {
+                    if(GetFixedSearchElementAt(16, x).TrackVectorPosition == int(AllRoutes->LockedRouteTruncateTrackVectorPosition))
+                        {
+                        TruncatePrefDirPosition = AllRoutes->GetFixedRouteAt(176, RouteNumber).PrefDirSize() - 1;
+                        }
+                    }
+                }
+            if(!(AllRoutes->GetModifiableRouteAtIDNumber(4, StartSelectionRouteID).ValidatePrefDir(7)))
+                {
+                throw Exception("Failed to validate extended route for nonpreferred route");
+                }
+            AllRoutes->GetModifiableRouteAtIDNumber(5, StartSelectionRouteID).SetRoutePoints(2);
+            AllRoutes->GetModifiableRouteAtIDNumber(6, StartSelectionRouteID).SetRouteSignals(6);
+            AllRoutes->GetModifiableRouteAtIDNumber(9, StartSelectionRouteID).SetLCChangeValues(2, false);//ConsecSignalsRoute is false
+            //now add the reinstated locked route if required and set signals accordingly
+            //shouldn't ever need to access this as the train that has caused the locked route will be ahead of the route to be added,
+            //and it will have removed the route elements that it is standing on, but include in case there's some obscure condition
+            //that I haven't thought of
             if(AllRoutes->LockedRouteFoundDuringRouteBuilding)
                 {
-                if(GetFixedSearchElementAt(16, x).TrackVectorPosition == int(AllRoutes->LockedRouteTruncateTrackVectorPosition))
+                LockedRouteObject.RouteNumber = RouteNumber;
+                AllRoutes->LockedRouteVector.push_back(LockedRouteObject);
+                //now reset the signals for the locked route
+                AllRoutes->SetAllRearwardsSignals(10, 0, RouteNumber, TruncatePrefDirPosition);
+                for(int c = AllRoutes->GetFixedRouteAt(177, RouteNumber).PrefDirSize() - 1; c >= (int)TruncatePrefDirPosition; c--)//must use int for >= test to succeed when TruncatePrefDirPosition == 0
+                //return all signals to red in route section to be truncated
                     {
-                    TruncatePrefDirPosition = AllRoutes->GetFixedRouteAt(176, RouteNumber).PrefDirSize() - 1;
+                    TPrefDirElement PrefDirElement = AllRoutes->GetFixedRouteAt(178, RouteNumber).PrefDirVector.at(c);
+                    TTrackElement &TrackElement = Track->TrackElementAt(813, PrefDirElement.TrackVectorPosition);
+                    if(PrefDirElement.Config[PrefDirElement.XLinkPos] == Signal)
+                        {
+                        TrackElement.Attribute = 0;
+                        Track->PlotSignal(11, TrackElement, Display);
+                        Display->PlotOutput(115, PrefDirElement.HLoc * 16, PrefDirElement.VLoc * 16, PrefDirElement.EXGraphicPtr);
+                        Display->PlotOutput(116, PrefDirElement.HLoc * 16, PrefDirElement.VLoc * 16, PrefDirElement.EntryDirectionGraphicPtr);
+                        }
                     }
                 }
+            AllRoutes->CheckMapAndRoutes(3);//test
+            Utilities->CallLogPop(308);
+            return;
             }
-        if(!(AllRoutes->GetModifiableRouteAtIDNumber(4, StartSelectionRouteID).ValidatePrefDir(7)))
-            {
-            throw Exception("Failed to validate extended route for nonpreferred route");
-            }
-        AllRoutes->GetModifiableRouteAtIDNumber(5, StartSelectionRouteID).SetRoutePoints(2);
-        AllRoutes->GetModifiableRouteAtIDNumber(6, StartSelectionRouteID).SetRouteSignals(6);
-        AllRoutes->GetModifiableRouteAtIDNumber(9, StartSelectionRouteID).SetLCChangeValues(2, false);//ConsecSignalsRoute is false
-        //now add the reinstated locked route if required and set signals accordingly
-        //shouldn't ever need to access this as the train that has caused the locked route will be ahead of the route to be added,
-        //and it will have removed the route elements that it is standing on, but include in case there's some obscure condition
-        //that I haven't thought of
-        if(AllRoutes->LockedRouteFoundDuringRouteBuilding)
-            {
-            LockedRouteObject.RouteNumber = RouteNumber;
-            AllRoutes->LockedRouteVector.push_back(LockedRouteObject);
-            //now reset the signals for the locked route
-            AllRoutes->SetAllRearwardsSignals(10, 0, RouteNumber, TruncatePrefDirPosition);
-            for(int c = AllRoutes->GetFixedRouteAt(177, RouteNumber).PrefDirSize() - 1; c >= (int)TruncatePrefDirPosition; c--)//must use int for >= test to succeed when TruncatePrefDirPosition == 0
-            //return all signals to red in route section to be truncated
-                {
-                TPrefDirElement PrefDirElement = AllRoutes->GetFixedRouteAt(178, RouteNumber).PrefDirVector.at(c);
-                TTrackElement &TrackElement = Track->TrackElementAt(813, PrefDirElement.TrackVectorPosition);
-                if(PrefDirElement.Config[PrefDirElement.XLinkPos] == Signal)
-                    {
-                    TrackElement.Attribute = 0;
-                    Track->PlotSignal(11, TrackElement, Display);
-                    Display->PlotOutput(115, PrefDirElement.HLoc * 16, PrefDirElement.VLoc * 16, PrefDirElement.EXGraphicPtr);
-                    Display->PlotOutput(116, PrefDirElement.HLoc * 16, PrefDirElement.VLoc * 16, PrefDirElement.EntryDirectionGraphicPtr);
-                    }
-                }
-            }
-        AllRoutes->CheckMapAndRoutes(3);//test
-        Utilities->CallLogPop(308);
-        return;
+        }
+    else
+        {
+        StartSelectionRouteID = IDInt(-1);
         }
 //if new route non-autosig and existing route autosig, leave the existing route as it is, and just enter the new route into the AllRoutesVector
 //hence nothing to do here
@@ -15161,6 +15198,25 @@ for(unsigned int x=0; x<AllRoutesSize(); x++)
         }
     }
 throw Exception("Error, failed to find RouteID in GetRouteVectorNumber for ID: " + AnsiString(RouteID.GetInt()));
+}
+
+//---------------------------------------------------------------------------
+
+bool TAllRoutes::IsThereARouteAtIDNumber(int Caller, IDInt RouteID)
+//added at v1.3.1 after an error was generated when operating Ian Walker's Chiltern Railway
+//found to be due to a route having been removed by a train moving in the wrong direction after the route was selected but before it completed (i.e. route removed while flashing)
+{
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsThereARouteAtIDNumber," + AnsiString(RouteID.GetInt()));
+for(unsigned int x=0; x<AllRoutesSize(); x++)
+    {
+    if(GetFixedRouteAt(157, x).RouteID == RouteID.GetInt())
+        {
+        Utilities->CallLogPop(2039);
+        return true;
+        }
+    }
+Utilities->CallLogPop(2040);
+return false;
 }
 
 //---------------------------------------------------------------------------

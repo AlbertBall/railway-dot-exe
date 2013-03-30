@@ -1145,6 +1145,7 @@ bool IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(int Caller, in
     TPrefDirElement &PrefDirElement, int &LockedVectorNumber); //checks whether the preferred direction element at TrackVectorPosition
     //with XLinkPos value is in a locked route and returns true if so together with the element itself copied to &PrefDirElement & the
     //LockedRouteVector position in &LockedVectorNumber
+bool IsThereARouteAtIDNumber(int Caller, IDInt RouteID); //returns true if there is a route with the given ID number - added at v1.3.1 (see function for details)
 bool LoadRoutes(int Caller, std::ifstream &InFile); //loads the routes from a session file
 bool RouteLockingRequired(int Caller, int RouteNumber, int RouteTruncatePosition); //route locking is required (returns true) if a moving train
     //is within 3 signals back from the RouteTruncatePosition (on the route itself or on any linked routes, or on the element immediately

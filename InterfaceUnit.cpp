@@ -70,7 +70,7 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "v1.3.0"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
+    ProgramVersion = "v1.3.1"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
     //development stages (don't show on published versions) check for presence of directories, creation failure probably indicates that the
     //working folder is read-only
     CurDir = GetCurrentDir();
@@ -528,6 +528,13 @@ try
             Screen->Cursor = TCursor(-2);//Arrow
             Track->RouteFlashFlag = false;
             ClearandRebuildRailway(48);//to get rid of displayed route
+            }
+        if(Track->PointFlashFlag) //added at v1.3.1 to prevent lockup for flashing points when deactivates.  Notified by Ian Walker in his email of 25/03/13.
+            {
+            PointFlash->PlotOriginal(42, Display);
+            Track->PointFlashFlag = false;
+            DivergingPointVectorPosition = -1;
+            Screen->Cursor = TCursor(-2);//Arrow
             }
         Level2OperMode = Paused;
         SetLevel2OperMode(2);
@@ -8373,25 +8380,28 @@ try
 //note that use the OnKeyDown event rather than OnKeyPress as suggested by the user so that the CTRL & SHIFT keys can be taken into account
     if(!NonCTRLOrSHIFTKeyUpFlag) return;
     if((Key != VK_SHIFT) && (Key != VK_CONTROL)) NonCTRLOrSHIFTKeyUpFlag = false; //don't want to set this for shift or control keys being pressed
-    if((Key == 'w') || (Key == 'W') || (Key == VK_UP))
+    if(!DistanceBox->Focused() && !SpeedLimitBox->Focused() && !MileEdit->Focused() && !ChainEdit->Focused() && !YardEdit->Focused() && !MPHEdit2->Focused()) //added at v1.3.1 to prevent screen scrolling when these boxes have focus
         {
-        if(ScreenUpButton->Enabled) ScreenUpButton->Click();
-        }
-    if((Key == 's') || (Key == 'S') || (Key == VK_DOWN))
-        {
-        if(ScreenDownButton->Enabled) ScreenDownButton->Click();
-        }
-    if((Key == 'a') || (Key == 'A') || (Key == VK_LEFT))
-        {
-        if(ScreenLeftButton->Enabled) ScreenLeftButton->Click();
-        }
-    if((Key == 'd') || (Key == 'D') || (Key == VK_RIGHT))
-        {
-        if(ScreenRightButton->Enabled) ScreenRightButton->Click();
-        }
-    if(Key == VK_HOME)
-        {
-        if(HomeButton->Enabled) HomeButton->Click();
+        if((Key == 'w') || (Key == 'W') || (Key == VK_UP))
+            {
+            if(ScreenUpButton->Enabled) ScreenUpButton->Click();
+            }
+        if((Key == 's') || (Key == 'S') || (Key == VK_DOWN))
+            {
+            if(ScreenDownButton->Enabled) ScreenDownButton->Click();
+            }
+        if((Key == 'a') || (Key == 'A') || (Key == VK_LEFT))
+            {
+            if(ScreenLeftButton->Enabled) ScreenLeftButton->Click();
+            }
+        if((Key == 'd') || (Key == 'D') || (Key == VK_RIGHT))
+            {
+            if(ScreenRightButton->Enabled) ScreenRightButton->Click();
+            }
+        if(Key == VK_HOME)
+            {
+            if(HomeButton->Enabled) HomeButton->Click();
+            }
         }
 //end of addition
     }
@@ -9339,6 +9349,8 @@ if((Level2TrackMode != TrackSelecting) && (Level2TrackMode != DistanceContinuing
     {
     DistancesMarked = false;
     DistanceKey->Visible = false;
+    LengthConversionPanel->Visible = false; //added at v1.3.1 to remove when distance/speed setting exited
+    SpeedConversionPanel->Visible = false;  //added at v1.3.1 to remove when distance/speed setting exited
     }
 
 if(mbLeftDown && SelectPickedUp && ((Level2TrackMode == CopyMoving) || (Level2TrackMode == CutMoving)))
@@ -13694,7 +13706,7 @@ void TInterface::SaveErrorFile()
 /*
 In order to reload as a session file:
 
-NB:  Don't change it to a .txt file, as the '\0' characters will be changed to spaces if it is subsequently saved
+NB:  Don't change it to a .txt file, as the '\0' characters [shown as a small square in wordpad] will be changed to spaces if it is subsequently saved
 strip out:-
 
 up to but excluding ***Interface***
@@ -13702,7 +13714,7 @@ from & including  ***ConstructPrefDir PrefDirVector***
 to but excluding ***PrefDirs***
 from & including  ***ConstructRoute PrefDirVector***
 to but excluding ***Routes***
-from & including ***ChangingLCVector*** to but excluding ***Timetable***
+from & including ***ChangingLCVector*** to but excluding ***Timetable*** [if have ***No timetable loaded*** then can't use as a session file]
 from & including ***No editing timetable*** or ***Editing timetable - [title]***
 to but excluding ***TimetableClock***
 and save as a .ssn file.
@@ -13712,9 +13724,9 @@ In order to load as a railway file:
 NB:  Don't change it to a .txt file, as the '\0' characters will be changed to spaces if it is subsequently saved
 
 note or copy the version information at the top of the file
+copy the two numbers on rows 7 & 8 below ***Interface*** (i.e ***Interface*** = row 0) on their own lines immediately after the ***Track*** line (these become DisplayOffsetH & V)
 strip out up to but excluding ***Track*** - this is needed to keep the \0 entry at end of ***Track*** [shown as a small square in wordpad]
 add the version number either before or instead of ***Track***, ensuring that the \0 is retained
-add the two numbers on rows 7 & 8 below ***Interface*** (i.e ***Interface*** = row 0) on their own lines after the version line (these become DisplayOffsetH & V)
 the next line should contain the number of active elements - leave that in.
 strip out ***Text*** including the \0
 strip out from & including  ***ConstructPrefDir PrefDirVector*** to & including ***PrefDirs*** (and the \0)
@@ -14354,4 +14366,4 @@ Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file posit
 
 
 
-    
+     

@@ -5425,9 +5425,15 @@ EntrySpeed = Utilities->LoadFileDouble(InFile);
 ExitSpeedHalf = Utilities->LoadFileDouble(InFile);
 ExitSpeedFull = Utilities->LoadFileDouble(InFile);
 TimetableMaxRunningSpeed = Utilities->LoadFileDouble(InFile);
-if(TimetableMaxRunningSpeed < 10) TimetableMaxRunningSpeed = 10; //added at v0.6 to avoid low max speeds
+if(TimetableMaxRunningSpeed < 10)
+    {
+    TimetableMaxRunningSpeed = 10; //added at v0.6 to avoid low max speeds
+    }
 MaxRunningSpeed = Utilities->LoadFileDouble(InFile);
-if(MaxRunningSpeed < 10) MaxRunningSpeed = 10; //added at v0.6 to avoid low max speeds
+if(MaxRunningSpeed < 10)
+    {
+    MaxRunningSpeed = 10; //added at v0.6 to avoid low max speeds
+    }
 MaxExitSpeed = Utilities->LoadFileDouble(InFile);
 MaxBrakeRate = Utilities->LoadFileDouble(InFile);
 BrakeRate = Utilities->LoadFileDouble(InFile);
@@ -6338,7 +6344,10 @@ TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = NoE
 TTrainMode TrainMode = None;
 if(ModeStr == "Timetable") TrainMode = Timetable;//all else gives 'None', 'Signaller' set within program
 
-if(MaxRunningSpeed < 10) MaxRunningSpeed = 10; //added at v0.6 to avoid low max speeds
+if(MaxRunningSpeed < 10)
+    {
+    MaxRunningSpeed = 10; //added at v0.6 to avoid low max speeds
+    }
 if(SignallerSpeed < 10) SignallerSpeed = 10;  //added at v0.6 to avoid low max speeds
 TTrain *NewTrain = new TTrain(0, RearPosition, RearExitPos, HeadCode, StartSpeed, Mass, MaxRunningSpeed, MaxBrakeRate, PowerAtRail,
         TrainMode, TrainDataEntryPtr, RepeatNumber, IncrementalMinutes, IncrementalDigits, SignallerSpeed);
@@ -9370,6 +9379,7 @@ for(unsigned int x=0;x<TrainDataVector.size();x++)//new test to ensure no duplic
             }
         }
     }
+
 for(unsigned int x=0;x<TrainDataVector.size();x++)
     {
     const TTrainDataEntry &TDEntry = TrainDataVector.at(x);
@@ -9389,6 +9399,7 @@ for(unsigned int x=0;x<TrainDataVector.size();x++)
             }
         }
     }
+
 //now repeat the check just for the shuttles
 for(unsigned int x=0;x<TrainDataVector.size();x++)
     {
@@ -9986,8 +9997,8 @@ if((ForwardEntryPtr->Command == "fsp") || (ForwardEntryPtr->Command == "rsp"))
             }
         ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
         ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
-        if(OtherTrainDataPtr->Description == "") OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
-        OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed;
+        if(OtherTrainDataPtr->Description == "") OtherTrainDataPtr->Description = MainTrainDataPtr->Description; //NB: May not be set if main train is a service continuation without a description, if so can't do much about it but doesn't affect operation, just the train information display
+        OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed;  //Probably redundant as this is continued from the earlier service when the changeover happens (also may not be set here yet if a service continuation)
         }
     }
 
@@ -10015,8 +10026,8 @@ if(ForwardEntryPtr->Command == "Fns")
         {
         ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
         ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
-        if(OtherTrainDataPtr->Description == "") OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
-        OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed;
+        if(OtherTrainDataPtr->Description == "") OtherTrainDataPtr->Description = MainTrainDataPtr->Description; //Probably redundant as this is continued from the earlier service when the changeover happens (also may not be set here yet if a service continuation)
+        OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed;  //Probably redundant as this is continued from the earlier service when the changeover happens (also may not be set here yet if a service continuation)
         }
     }
 if(ForwardEntryPtr->Command == "jbo")
@@ -10043,7 +10054,9 @@ if(ForwardEntryPtr->Command == "Fjo")
         {
         ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
         ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
-        if(MainTrainDataPtr->MaxRunningSpeed < OtherTrainDataPtr->MaxRunningSpeed) OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed;
+        if((MainTrainDataPtr->MaxRunningSpeed > 5) && (MainTrainDataPtr->MaxRunningSpeed < OtherTrainDataPtr->MaxRunningSpeed)) OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed;
+        //added test for > 5 [5 used instead of 0 because of possible floating point errors - though unlikely] above at v1.3.1 because the train will have a zero MaxRunningSpeed if it continues from another service - its max speed is set when it takes over from the other service
+        //notified of this problem by Ian Walker in his email of 25/03/13.  Probably redundant anyway because the max speed is reduced at the changeover if the 'joined by' train's max speed is less.
         }
     }
 
@@ -10752,8 +10765,8 @@ if(ForwardEntryPtr->Command == "F-nshs")
         {
         ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
         ReverseEntryPtr->NonRepeatingShuttleLinkEntryPtr = MainTrainDataPtr;
-        if(OtherTrainDataPtr->Description == "") OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
-        OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed;
+        if(OtherTrainDataPtr->Description == "") OtherTrainDataPtr->Description = MainTrainDataPtr->Description; //Probably redundant as this is continued from the earlier service when the changeover happens (also may not be set here yet if a service continuation)
+        OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed; //Probably redundant as this is continued from the earlier service when the changeover happens (also may not be set here yet if a service continuation)
         }
     }
 
@@ -10781,8 +10794,8 @@ if(ForwardEntryPtr->Command == "Fns-sh")
         {
         ForwardEntryPtr->NonRepeatingShuttleLinkEntryPtr = OtherTrainDataPtr;//links to the non-repeating non-shuttle linked service
         ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;//needed for creating formatted timetable
-        if(OtherTrainDataPtr->Description == "") OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
-        OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed;
+        if(OtherTrainDataPtr->Description == "") OtherTrainDataPtr->Description = MainTrainDataPtr->Description; //Probably redundant as this is continued from the earlier service when the changeover happens (also may not be set here yet if a service continuation)
+        OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed; //Probably redundant as this is continued from the earlier service when the changeover happens (also may not be set here yet if a service continuation)
         }
     }
 

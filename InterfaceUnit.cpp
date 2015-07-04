@@ -70,7 +70,9 @@ try
                          //initial setup
     //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
     //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "v1.3.1"; //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
+    ProgramVersion = "v1.3.2"; //Beta2 after Carwyn Thomas error (AbleToMoveButForSignal & RemoveTrain1Click LeadElement check additions) fixed 25/05/15
+                                     //Beta3 after additional errors corrected for TimetableControl1Click, MoveForwards1Click, and after dropped StepForward1 option when leaving at a continuation
+    //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
     //development stages (don't show on published versions) check for presence of directories, creation failure probably indicates that the
     //working folder is read-only
     CurDir = GetCurrentDir();
@@ -611,7 +613,8 @@ try
     if(((TSpeedButton*)Sender)->Down)
         {
         CurrentSpeedButton = (TSpeedButton*)Sender;
-        TrainController->LogEvent("SpeedButtonClick, " + CurrentSpeedButton->Tag);
+//        TrainController->LogEvent("SpeedButtonClick, " + CurrentSpeedButton->Tag); //v 1.3.1 - using non-AnsiString CurrentSpeedButton->Tag sends (for an unknown reason) a completely wrong string to LogEvent, usually "...(behind this message)"
+        TrainController->LogEvent("SpeedButtonClick, " + AnsiString(CurrentSpeedButton->Tag)); //new version //use for v1.3.2
         }
     else CurrentSpeedButton = 0;
     SelectionValid = false;
@@ -2709,8 +2712,12 @@ try
             return;
             }
         }
-    else//cancelled dialog
+    else//cancelled dialog [section prior to CallLogPop added for v1.3.2 to clear timetable screen if cancel button pressed]
         {
+        CreateEditTTFileName = "";//set to null to allow a check during error file saving, if not null save the tt being edited to the file (see entry in ExitTTModeButtonClick)
+        CreateEditTTTitle = "";//as above
+        Level1Mode = BaseMode;
+        SetLevel1Mode(132);
         Utilities->CallLogPop(1633);
         return;
         }
@@ -5078,9 +5085,9 @@ try
                                 if(Train.AbleToMove(0))
                                     {
                                     MoveForwards1->Enabled = true;
-                                    StepForward1->Enabled = true;
-                                    }
-                                if(Train.AbleToMoveButForSignal(0))
+                                    if(!Train.LeavingUnderSigControlAtContinuation) StepForward1->Enabled = true; //added 'if' condition for v1.3.2 due to Carwyn Thomas error,
+                                    }                                                                            //fails on trying to calc AutoSig time delay for resetting signals
+                                if(Train.AbleToMoveButForSignal(0))                                              //may not be in AutoSigs route but disallow anyway as not needed at continuation
                                     {
                                     PassRedSignal1->Enabled = true;
                                     StepForward1->Enabled = true;
@@ -5090,7 +5097,8 @@ try
                                  //mid move, & SetTrainMovementValues only intended to be called when stopped
                                 {
                                 TimetableControl1->Enabled = false;
-                                ChangeDirection1->Enabled = false;                                                                                                        RemoveTrain1->Enabled = false;
+                                ChangeDirection1->Enabled = false;
+                                RemoveTrain1->Enabled = false;
                                 MoveForwards1->Enabled = false;
                                 PassRedSignal1->Enabled = false;
                                 StepForward1->Enabled = false;
@@ -7898,17 +7906,40 @@ try
         }
     else
         {
-        int NextElementPos = Track->TrackElementAt(658, Train.LeadElement).Conn[Train.LeadExitPos];
-        int NextEntryPos = Track->TrackElementAt(659, Train.LeadElement).ConnLinkPos[Train.LeadExitPos];
+        int NextElementPos = -1;  //addition for v1.3.2 due to Carwyn Thomas error
+        int NextEntryPos = -1;    //---ditto---
+        if(Train.LeadElement > -1)//---ditto---
+            {                     //---ditto---
+            NextElementPos = Track->TrackElementAt(658, Train.LeadElement).Conn[Train.LeadExitPos];      //had 'int' prefix before additions
+            NextEntryPos = Track->TrackElementAt(659, Train.LeadElement).ConnLinkPos[Train.LeadExitPos]; //---ditto---
+            }                     //---ditto---
         if(Train.AbleToMove(1))
             {
             Train.PlotTrainWithNewBackgroundColour(31, clNormalBackground, Display);//to remove SPAD background if was present
-            if(NextElementPos >= 0)
+
+
+            Train.EntrySpeed = 0;                            //moved from below for v1.3.2 after Carwyn Thomas error
+            Train.EntryTime = TrainController->TTClockTime;  // ---Ditto---
+            Train.FirstHalfMove = true;                      // ---Ditto---
+            if((NextElementPos > -1) && (NextEntryPos > -1)) //changed from if(NextElementPos >= 0) as above
                 {
-                Train.EntrySpeed = 0;
-                Train.EntryTime = TrainController->TTClockTime;
-                Train.FirstHalfMove = true;
+                //Train.EntrySpeed = 0;
+                //Train.EntryTime = TrainController->TTClockTime;
+                //Train.FirstHalfMove = true;
                 Train.SetTrainMovementValues(15, NextElementPos, NextEntryPos);
+                }
+            //else follow the continuations   //added these 3 conditions for v1.3.2 after Carwyn Thomas error
+            else if((Train.LeadElement > -1) && (Track->TrackElementAt(894, Train.LeadElement).TrackType == Continuation))
+                {
+                Train.SetTrainMovementValues(21, Train.LeadElement, Train.LeadEntryPos);//Use LeadElement for calcs if lead is a continuation
+                }
+            else if((Train.MidElement > -1) && (Track->TrackElementAt(895, Train.MidElement).TrackType == Continuation))
+                {
+                Train.SetTrainMovementValues(22, Train.MidElement, Train.MidEntryPos);//Use MidElement for calcs if Mid is a continuation
+                }
+            else if((Train.LagElement > -1) && (Track->TrackElementAt(896, Train.LagElement).TrackType == Continuation))
+                {
+                Train.SetTrainMovementValues(23, Train.LagElement, Train.LagEntryPos);//Use LagElement for calcs if Lag is a continuation
                 }
             }
         else if(Train.StoppedAtSignal)
@@ -7986,8 +8017,13 @@ try
     Train.EntrySpeed = 0;
     Train.EntryTime = TrainController->TTClockTime;
     Train.FirstHalfMove = true;
-    int NextElementPos = Track->TrackElementAt(652, Train.LeadElement).Conn[Train.LeadExitPos];
-    int NextEntryPos = Track->TrackElementAt(657, Train.LeadElement).ConnLinkPos[Train.LeadExitPos];
+    int NextElementPos = -1;  //addition for v1.3.2 due to Carwyn Thomas error
+    int NextEntryPos = -1;    //---ditto---
+    if(Train.LeadElement > -1)//---ditto---
+        {                     //---ditto---
+        NextElementPos = Track->TrackElementAt(652, Train.LeadElement).Conn[Train.LeadExitPos];      //had 'int' prefix before additions
+        NextEntryPos = Track->TrackElementAt(657, Train.LeadElement).ConnLinkPos[Train.LeadExitPos]; //---ditto---
+        }                     //---ditto---
     if((NextElementPos > -1) && (NextEntryPos > -1))
         {
         Train.SetTrainMovementValues(14, NextElementPos, NextEntryPos);//NextElement is the element to be entered
@@ -8103,8 +8139,13 @@ try
     Train.AllowedToPassRedSignal = true;//in case at a signal, will clear when half-way into next element whether a signal or not
     Train.PlotTrainWithNewBackgroundColour(46, clNormalBackground, Display);
     Train.LogAction(32, Train.HeadCode, "", SignallerStepForward, "", TDateTime(0), false);//TDateTime is a dummy entry, false for no warning
-    int NextElementPos = Track->TrackElementAt(804, Train.LeadElement).Conn[Train.LeadExitPos];
-    int NextEntryPos = Track->TrackElementAt(805, Train.LeadElement).ConnLinkPos[Train.LeadExitPos];
+    int NextElementPos = -1;  //addition for v1.3.2 due to Carwyn Thomas error: can't select StepForward1 if exiting at a continuation but leave this in anyway
+    int NextEntryPos = -1;    //---ditto---
+    if(Train.LeadElement > -1)//---ditto---
+        {                     //---ditto---
+        NextElementPos = Track->TrackElementAt(804, Train.LeadElement).Conn[Train.LeadExitPos];      //had 'int' prefix before additions
+        NextEntryPos = Track->TrackElementAt(805, Train.LeadElement).ConnLinkPos[Train.LeadExitPos]; //---ditto---
+        }                     //---ditto---
     if((NextElementPos > -1) && (NextEntryPos > -1))
         {//call this after StepForwardFlag set
         Train.EntrySpeed = 0;
@@ -8206,13 +8247,16 @@ try
             }
 //end of addition
         }
-    if(Track->TrackElementAt(675, Train.LeadElement).Conn[Train.LeadExitPos] > -1)
+    if(Train.LeadElement > -1) //addition for v1.3.2 after Carwyn Thomas fault reported 24/05/15 - need to check if exiting at continuation (LeadElement == -1) as if so fails at next line
         {
-        TrackElementPtr = &(Track->TrackElementAt(676, Track->TrackElementAt(677,Train.LeadElement).Conn[Train.LeadExitPos]));
-        if((TrackElementPtr->TrackType == SignalPost) && TrackElementPtr->CallingOnSet)
+        if(Track->TrackElementAt(675, Train.LeadElement).Conn[Train.LeadExitPos] > -1)
             {
-            TrackElementPtr->CallingOnSet = false;
-            Track->PlotSignal(8, *TrackElementPtr, Display);
+            TrackElementPtr = &(Track->TrackElementAt(676, Track->TrackElementAt(677,Train.LeadElement).Conn[Train.LeadExitPos]));
+            if((TrackElementPtr->TrackType == SignalPost) && TrackElementPtr->CallingOnSet)
+                {
+                TrackElementPtr->CallingOnSet = false;
+                Track->PlotSignal(8, *TrackElementPtr, Display);
+                }
             }
         }
     Train.LogAction(5, Train.HeadCode, "", RemoveTrain, LocName, TDateTime(0), false);//TDateTime is a dummy entry, false for no warning
@@ -12256,6 +12300,18 @@ try
                 Track->CalcHLocMinEtc(10);
                 Level1Mode = RestartSessionOperMode;
                 SetLevel1Mode(27);
+                if(Level2OperMode == PreStart)   //this section added at v1.3.2 as otherwise only in MainScreenMouseDown2, and if load a session without clicking mouse on screen
+                    {                            //then delay unspecified though seems to be 0
+                    PointsFlashDuration = 0.0;
+                    Track->LevelCrossingBarrierUpFlashDuration = 0.0;
+                    Track->LevelCrossingBarrierDownFlashDuration = 0.0;
+                    }
+                else
+                    {
+                    PointsFlashDuration = AllRoutes->PointsDelay;
+                    Track->LevelCrossingBarrierUpFlashDuration = AllRoutes->LevelCrossingBarrierUpDelay;
+                    Track->LevelCrossingBarrierDownFlashDuration = AllRoutes->LevelCrossingBarrierDownDelay;
+                    }
                 RlyFile = true;
                 SetCaption(3);
                 ClearandRebuildRailway(42);

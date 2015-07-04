@@ -743,8 +743,18 @@ if(TrainMode == Timetable)
         if((TrainController->TTClockTime >= GetTrainTime(0, ActionVectorEntryPtr->EventTime)) &&
                 (TrainController->TTClockTime >= LastActionTime + TDateTime(30.0/86400)))
             {
-            if(ActionVectorEntryPtr->Command == "fsp") FrontTrainSplit(0);
-            else if(ActionVectorEntryPtr->Command == "rsp") RearTrainSplit(0);
+            if(ActionVectorEntryPtr->Command == "fsp")
+                {  //added for v1.3.2 because when add new train to TrainVector 'this' address likely invalidated, hence make no more changes to 'this' train.  Next clock cycle will deal with any required changes
+                FrontTrainSplit(0);
+                Utilities->CallLogPop(2041);
+                return;
+                }
+            else if(ActionVectorEntryPtr->Command == "rsp")
+                {  //added for v1.3.2 because when add new train to TrainVector 'this' address likely invalidated, hence make no more changes to 'this' train.  Next clock cycle will deal with any required changes
+                RearTrainSplit(0);
+                Utilities->CallLogPop(2042);
+                return;
+                }
             else if(ActionVectorEntryPtr->Command == "Fjo") FinishJoin(0);
             else if(ActionVectorEntryPtr->Command == "jbo") JoinedBy(0);
             else if(ActionVectorEntryPtr->Command == "cdt") ChangeTrainDirection(0);
@@ -1511,8 +1521,16 @@ if(LagElement > -1)//not entering at a continuation so can deal with train leavi
 //"if(Track->TrackElementAt(, LagElement).Config[LagExitPos] == Signal)" above and wouldn't be here
                 int RouteNumber;
                 AllRoutes->GetRouteTypeAndNumber(29, LagElement, LagEntryPos, RouteNumber); //already know it's an autosigsroute, this is just to get the RouteNumber
-                AllRoutes->GetFixedRouteAt(217, RouteNumber).SetRouteSignals(10);
-//end of addition
+//addition at v1.3.2 - found that a signal that had reached double yellow in ContinuationAutoSigs was reset to red when a following train's lag element moved off
+//a signal in the normal course of events. Hence check that the train is in signaller mode and that the train's lead element isn't on the same route
+                int RouteNumber2;
+                AllRoutes->GetRouteTypeAndNumber(30, LeadElement, LeadEntryPos, RouteNumber2); //already know it's an autosigsroute, this is just to get the RouteNumber
+                if((TrainMode == Signaller) && (RouteNumber2 != RouteNumber)) //note that if not in a route (as likely) then RouteNumber2 set to -1          )
+                    {
+                    AllRoutes->GetFixedRouteAt(217, RouteNumber).SetRouteSignals(10); //this was in the 1.3.0 addition but without the condition
+                    }
+//end of 1.3.2 addition
+//end of 1.3.0.addition
                 }
             TPrefDirElement PrefDirElement;
             //plot locked route marker if appropriate, but only when train leaves element completely as this is a 16x16 graphic (OK - Straddle == LeadMidLag)
@@ -3932,7 +3950,7 @@ void TTrain::FrontTrainSplit(int Caller)
 Split logic is:-  at least one of 4 final train positions must overlap with one of original train positions, & final 4 positions
 will maximise the number at the location.  Note that this function isn't sophisticated enough to account for trains already at the
 location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these
-circumstances the other train will need to be move sufficiently away to release all 4 positions, then the train will split.
+circumstances the other train will need to be moved sufficiently away to release all 4 positions, then the train will split.
 */
 TrainController->LogEvent("" + AnsiString(Caller) + ",FrontTrainSplit" + "," + HeadCode);
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FrontTrainSplit" + "," + HeadCode);
@@ -4145,9 +4163,11 @@ if(!TrainController->AddTrain(0, FrontTrainRearPosition, FrontTrainFrontPosition
                                 //when other train moves away
     return;
     }
+//Note data in 'this' now probably invalid as there has been a new addition to the TrainVector, so the train is likely to have a new address, hence make no more changes for the current train
+//see mods in UpdateTrain for v1.3.2
 TrainController->TrainAdded = true;
 
-TTrainOperatingData &TTOD = OldActionVectorEntryPtr->LinkedTrainEntryPtr->TrainOperatingDataVector.at(RepeatNumber);
+TTrainOperatingData &TTOD = OldActionVectorEntryPtr->LinkedTrainEntryPtr->TrainOperatingDataVector.at(RepeatNumber);  //this is for the newly created train
 TTOD.TrainID = TrainController->TrainVector.back().TrainID;
 TTOD.RunningEntry = Running;
 Utilities->CallLogPop(998);
@@ -4368,6 +4388,7 @@ TrainController::AddTrain(int RearPosition, int FrontPosition, AnsiString HeadCo
         int RepeatNumber, int IncrementalMinutes)
 */
  //same Mass, MaxBrakeRate & PowerAtRail as this train's halved values, and same MaxRunningSpeed as this train
+
 if(!TrainController->AddTrain(1, RearTrainRearPosition, RearTrainFrontPosition, OtherHeadCode, 0, Mass,
     MaxRunningSpeed, MaxBrakeRate, PowerAtRail, "Timetable", OldActionVectorEntryPtr->LinkedTrainEntryPtr,
     RepeatNumber, IncrementalMinutes, IncrementalDigits, SignallerMaxSpeed, false))//false for SignallerControl
@@ -4377,8 +4398,10 @@ if(!TrainController->AddTrain(1, RearTrainRearPosition, RearTrainFrontPosition, 
                                 //when other train moves away
     return;
     }
+//Note data in 'this' now probably invalid as there has been a new addition to the TrainVector, so the train is likely to have a new address, hence make no more changes for the current train
+//see mods in UpdateTrain for v1.3.2
 TrainController->TrainAdded = true;
-TTrainOperatingData &TTOD = OldActionVectorEntryPtr->LinkedTrainEntryPtr->TrainOperatingDataVector.at(RepeatNumber);
+TTrainOperatingData &TTOD = OldActionVectorEntryPtr->LinkedTrainEntryPtr->TrainOperatingDataVector.at(RepeatNumber); //this is for the newly created train
 TTOD.TrainID = TrainController->TrainVector.back().TrainID;
 TTOD.RunningEntry = Running;
 Utilities->CallLogPop(1015);
@@ -4971,6 +4994,13 @@ bool TTrain::AbleToMoveButForSignal(int Caller)
 //first check if a train immediately in front (may have moved there since this train stopped so StoppedForTrainInFront
 //won't be set; if there is a train then set StoppedForTrainInFront
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AbleToMoveButForSignal" + "," + HeadCode);
+//addition below for v1.3.2 after Carwyn Thomas fault reported 24/05/15 - need to check if exiting at continuation (LeadElement == -1) as if so fails at VecPos = .....
+if(LeadElement == -1) //exiting at continuation
+    {
+    Utilities->CallLogPop(2045);
+    return false;
+    }
+//end of addition
 int VecPos = Track->TrackElementAt(654, LeadElement).Conn[LeadExitPos];
 int NextEntryPos = Track->TrackElementAt(655, LeadElement).ConnLinkPos[LeadExitPos];
 if(Track->OtherTrainOnTrack(5, VecPos, NextEntryPos, TrainID))

@@ -10716,7 +10716,8 @@ for(PDVIt = (PrefDirVector.begin() + LastIteratorValue); PDVIt < PrefDirVector.e
                 continue;
                 }
             }
-        StartElement = *PDVIt;
+        StartElement = *PDVIt;     //in Glenn Mitchell's error log (14/04/13) the offending signal start position was 4680, problem was it linked to a point with pref dirs set on through track but signal linked to
+                                   //diverging track on which there was no pref dir.  See below for 2 required changes.
         }
     else
         {
@@ -10761,7 +10762,8 @@ for(PDVIt = (PrefDirVector.begin() + LastIteratorValue); PDVIt < PrefDirVector.e
         }
     if(!NextElementFoundFlag)
         {
-        throw(Exception("Failed to track prefdir in PresetAutoSigRoutesButtonClick (1)"));
+        continue;  //Modified for release 1.3.2 (sent as beta to John Phillipson initially)
+//        throw(Exception("Failed to track prefdir in PresetAutoSigRoutesButtonClick (1)"));  //[GM error 14/04/13] for next release change this to 'continue;' to quit from trying to find the auto route (don't need to throw an exception)
         }
     while(true)
         {
@@ -10834,7 +10836,10 @@ for(PDVIt = (PrefDirVector.begin() + LastIteratorValue); PDVIt < PrefDirVector.e
             }
         else
             {
-            throw(Exception("Failed to track prefdir in PresetAutoSigRoutesButtonClick (2)"));
+            ContFlag = true; //Modified for release 1.3.2 (sent as beta to John Phillipson initially)
+                             //could drop the bridge test but keep it to show the change history
+            break;
+//            throw(Exception("Failed to track prefdir in PresetAutoSigRoutesButtonClick (2)")); //[GM error 14/04/13] for next release set ContFlag to true & break' to quit from trying to find the auto route (don't need to throw an exception)
             }
         }
     if(ContFlag) continue;
@@ -11605,6 +11610,18 @@ Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) +
          + "," + AnsiString(EndPosition) + "," + AnsiString((short)AutoSigsFlag));
 int VectorCount = 0;
 TPrefDirElement PrefDirElement1, PrefDirElement2, BlankElement;
+
+//check for a fouled diagonal for first element.  Added for v1.3.2
+if((PrefDirElement.XLink == 1) || (PrefDirElement.XLink == 3) || (PrefDirElement.XLink == 7) || (PrefDirElement.XLink == 9))
+    {
+        if(AllRoutes->DiagonalFouledByRouteOrTrain(0, PrefDirElement.HLoc, PrefDirElement.VLoc, PrefDirElement.XLink))
+            {
+            for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
+            Utilities->CallLogPop(2043);
+            return false;
+            }
+        }
+
 bool FirstPass = true;
 while(true)
     {
@@ -12708,6 +12725,18 @@ When return true have 8 items from CheckCount established, only waiting for EXNu
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SearchForNonPreferredRoute," + CurrentTrackElement.LogTrack(14) + "," + AnsiString(XLinkPos) + "," + AnsiString(RequiredPosition)
          + "," + AnsiString() + "," + AnsiString(ReqPosRouteID.GetInt()));
 int VectorCount = 0;
+
+//check for a fouled diagonal for first element.  Added for v1.3.2
+if((CurrentTrackElement.Link[XLinkPos] == 1) || (CurrentTrackElement.Link[XLinkPos] == 3) || (CurrentTrackElement.Link[XLinkPos] == 7) || (CurrentTrackElement.Link[XLinkPos] == 9))
+    {
+        if(AllRoutes->DiagonalFouledByRouteOrTrain(0, CurrentTrackElement.HLoc, CurrentTrackElement.VLoc, CurrentTrackElement.Link[XLinkPos]))
+            {
+            for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
+            Utilities->CallLogPop(2044);
+            return false;
+            }
+        }
+
 while(true)
     {
     if(Track->IsLCBarrierFlashingAtHV(2, CurrentTrackElement.HLoc, CurrentTrackElement.VLoc))//can't set a route through a flashing barrier

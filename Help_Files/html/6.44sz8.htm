@@ -1,0 +1,152 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Running trains</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p
+	{font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma","sans-serif";
+	color:black;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma","sans-serif";
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=EN-GB>
+
+<div class=WordSection1>
+
+<p><a name=6.4></a><b>6.4 Running trains:</b></p>
+
+<p>When running, the front reporting number (headcode) character is red, to
+show that it is the front - obvious when moving of course but not so when
+stopped. In signaller-control mode (see later) the front is indicated by a blue
+character, both to show that it is the front and that it is in
+signaller-control mode.</p>
+
+<p>It is normally useful to keep train status information turned on, by
+selecting menu items 'Information', Train information' and 'Show status'.
+Timetable information is also useful when the destination is not otherwise
+obvious, turned on by selecting menu items 'Information', Train information'
+and 'Show timetable'. With one or both of these turned on the information is
+given in a floating window when the mouse hovers over a train.</p>
+
+<p>Trains have different background colours to indicate the different train
+states as follows:-</p>
+
+<p>grey = moving (black or white in zoom-out mode depending on the background
+colour);</p>
+
+<p>pale green = stopped at a timetabled location;</p>
+
+<p>pink = train ready to start from a timetabled location (changes 10 secs
+before departure);</p>
+
+<p>bright green = stopped by a signal;</p>
+
+<p>red = crashed or derailed;</p>
+
+<p>light cyan = stopped at buffers, no attention needed;</p>
+
+<p>cyan = stopped at buffers unexpectedly;</p>
+
+<p>light blue = stopped by a train in front;</p>
+
+<p>magenta = call-on available;</p>
+
+<p>yellow = signal-passed-at-danger (SPAD);</p>
+
+<p>caramel = stopped under signaller control.</p>
+
+<p>In zoom-out mode (accessed by left clicking the <img width=24 height=24
+src="../images/RailSim2_ZOOMOUT.gif"> button) any train that requires attention
+(stopped by a signal, stopped unexpectedly at buffers, SPAD, crashed/derailed
+or call-on), is shown flashing, with the colour appropriate to the condition.</p>
+
+<p>Flashing icons are also provided on the left hand side of the screen if
+signaller attention is needed somewhere on the railway. These are especially
+useful for large railways when trains may need attention that are off-screen
+and can't be seen. Selecting zoom-out will enable the train or trains (which
+will be flashing) to be located quickly. The icons are as follows:- <img
+width=24 height=24 src="../images/RailSim2_SIGNALSTOPWARNING.gif"> shows that a
+train is held at signals; <img width=24 height=24
+src="../images/RailSim2_BUFFERWARNING.gif"> shows that a train has arrived
+unexpectedly at buffers (i.e. it is under timetable control and still has
+timetable events to complete); <img width=24 height=24
+src="../images/RailSim2_CALLINGON.gif"> shows that a train may be offered a call-on;
+<img width=24 height=24 src="../images/RailSim2_SPADWARNING.gif"> shows that a
+signal has been passed at danger, and <img width=24 height=24
+src="../images/RailSim2_DERAILWARNING.gif"> and <img width=24 height=24
+src="../images/RailSim2_CRASHWARNING.gif"> show that a derailment and a crash
+have occurred respectively.</p>
+
+<p>Sometimes events occur that require signaller attention but are not covered
+by any of the above flashing symbols. Such events include trains prevented from
+entering or being created by existing trains, locked routes, or on points set
+to diverge; trains unable to split because the platform is too short or another
+train is in the way; and trains waiting for another train to join or to be
+joined by. Warnings are therefore given in red above the railway display area.
+These warnings scroll up in two columns (ten visible warnings in all) as later
+warnings are given, but they may be cancelled by right clicking on the warning.
+Cancellation is appropriate when a warning has been acted upon or does not
+require action. It will be seen that when the mouse hovers over any of the
+warnings the clock stops. This is to prevent new warnings scrolling up just as
+the right click cancel button is pressed, as then the wrong warning might be
+cancelled. </p>
+
+<p>These warnings are in addition to any that have been set in the timetable
+(see 'Timetabled and automatic warnings'). Timetabled warnings are useful for
+example to indicate when a route will need to be set in the near future, say
+when a train is approaching a junction at the end of a route controlled by
+automatic signals. </p>
+
+<p>Try to ensure that trains approach a stop location by passing along all the
+relevant named elements rather than by entering obliquely via points and
+missing out some of the named elements. This is to avoid the train missing the
+relevant stop point for that platform and thereby failing to stop. Stop points
+are set assuming straight entry into platforms.</p>
+
+<p>If there is a station that has a split platform (i.e. a section of track
+with no adjacent platform lying between two track sections that have platforms
+belonging to the same location) then trains will treat these as two separate
+platforms, but a train that is required to stop will only stop at first
+platform's stopping point.</p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,342 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Timetables</title>
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+a:link, span.MsoHyperlink
+	{color:blue;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;}
+p
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p><a name=5></a><b>5 Timetables:</b></p>
+
+<p>Note: Before and during timetable development please keep in mind the
+'Important points' set out in <a href="5.111w8h.htm">section 5.11</a>. These
+summarise some important aspects that will help to avoid errors.</p>
+
+<p>Program-readable timetables normally reside in the 'Program timetables'
+folder and have a '.ttb' extension. They are readable using the timetable
+editor within the program, selected via the menu using 'Mode' then 'Create
+timetable' to construct a new one, or 'Edit timetable' to read or change an
+existing one. For full editing capability, including the ability to validate
+the timetable, the completed railway ('.rly' file) that the timetable relates
+to should be loaded before the timetable is opened for editing. For complex
+services, especially shuttles with feeder and finishing services (explained
+later), and to a lesser extent for splits, joins and linked services, it will
+take some time to understand fully the timetable coding system. For simple
+services that don't have any of these features understanding should be
+relatively straightforward. It is suggested that simple timetables be set up
+first until familiarity is gained, before moving on to more complex timetables.
+Sample timetables are provided that give examples of both simple and complex
+services.</p>
+
+<p>Timetables consist of 'entries', usually with one entry per train service.
+Entries appear in detail in the large window on the right of the timetable
+editor, and are summarised in the smaller window on the left with one line per
+entry. The program-readable timetable begins with an entry consisting of a
+timetable start time in the format HH:MM (hours and minutes). No text may
+precede this start time, but text may follow it though following text is
+ignored by the program.</p>
+
+<p>Subsequent entries represent trains and services, but an entry beginning
+with '*' may be used as a comment, and is ignored by the program. When either a
+blank line is found, or no more lines, the program-readable timetable ends.
+Entries preceding the timetable start time (marked '-' in the window on the
+left of the editor) or following the end of the program-readable part (marked
+'+'), may be used for comments and are ignored by the program.</p>
+
+<p>Trains and service entries consist of information and service codes, in a
+strict format for the program to interpret. Service code buttons in the editor
+insert relevant codes at the cursor position, for convenience, and location
+names may be selected from the drop-down box similarly if a railway with names
+is loaded. This information may be entered longhand if preferred.</p>
+
+<p>During operation the timetable clock displays hours, minutes and seconds in
+24 hour format, but timetable events just use hours and minutes, again in 24
+hour format. In fact the hours may exceed 24, where 24:00:00 to 48:00:00
+represents the second full day of operation, and so on. The timetable clock
+displays up to 95:59:59 (i.e. 4 full days) then after the next second it resets
+to 00:00:00. The time values of timetable events may also exceed 24 hours, up
+to a maximum of 95 hours and 59 minutes (95:59). Any timetable time event that
+exceeds this value, including the maximum time value for any repeat service,
+will be rejected during validation.</p>
+
+<p>Timetable events may seem a bit cryptic at first but the coding that is used
+allows a great many trains and services with complex operations to be created
+from relatively few commands. </p>
+
+<p>A typical service is as follows:-</p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>2V31;Nottingham to
+  Cardiff;150;150;250;25;2500</span></p>
+  </td>
+  <td width=293 valign=top style='width:219.7pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Headcode;description;train
+  data</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:00;Snt;N19-29 N20-29</span></p>
+  </td>
+  <td width=293 valign=top style='width:219.7pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Start new train + start
+  elements</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:03;pas;Kings Norton Approach
+  (NE)</span></p>
+  </td>
+  <td width=293 valign=top style='width:219.7pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Pass location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:05;Fer;N89-39 N89-40)</span></p>
+  </td>
+  <td width=293 valign=top style='width:219.7pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Finish exit railway + exit
+  elements</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>R;30;2;12</span></p>
+  </td>
+  <td width=293 valign=top style='width:219.7pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Repeat service</span></p>
+  </td>
+ </tr>
+</table>
+
+<p>The first line in the above service is for a new train (new trains have
+codes Snt or Snt-sh on the second line) and consists of a service headcode -
+2V31; description - Nottingham to Cardiff; starting speed - 150km/h; maximum
+train running speed - 150km/h; mass - 250te; maximum braking force - 25te; and
+power - 2500kW. Each piece of information is separated by a semicolon. One
+additional optional item is permitted on this line - maximum signaller-control
+speed. This is the maximum speed at which the train may run when it is under
+signaller control. The default value if nothing is specified for this speed is
+30km/h, but it may be set to a different value if required, for example:-</p>
+
+<p><span style='color:blue'>2V31;Nottingham to Cardiff;150;150;250;25;2500;75 </span>would
+give the above train a signaller-controlled speed of 75km/h.</p>
+
+<p>For entries that represent new services (i.e. not new trains and do not have
+codes 'Snt' or 'Snt-sh' on the second line), just the headcode (plus optional
+';description') is required on the first line. For example <span
+style='color:blue'>1S16;London to Glasgow</span>. New services continue on from
+earlier services so the train data is generally the same as for the preceding
+service. If a new description is not provided then the earlier description is
+applied.</p>
+
+<p>For the example above (2V31) the second line is <span style='color:blue'>07:00;Snt;N19-29
+N20-29</span>.</p>
+
+<p>This tells the program that at 07:00 a new train is required (Start new
+train), located with the rear of the train on track element N19-29 and the
+front on N20-29 (trains always occupy two track elements). The train is moving
+when it is created.</p>
+
+<p>The next line is <span style='color:blue'>07:03;pas;Kings Norton Approach
+(NE)</span>, which tells the program that at 07:03 the train is expected to
+pass (<span style='color:blue'>pas</span>) Kings Norton Approach (NE). The next
+line is <span style='color:blue'>07:05;Fer;N89-39 N89-40</span>, which tells
+the program that at 07:05 the train is expected to finish by exiting the
+railway (<span style='color:blue'>F</span>inish <span style='color:blue'>e</span>xit
+<span style='color:blue'>r</span>ailway) at either track element N89-39 or
+N89-40. The last line <span style='color:blue'>R;30;2;12</span> tells the
+program to repeat (<b><u><span style='color:blue'>R</span></u></b><span
+style='color:blue'>;30;2;12</span>) the service every 30 minutes (<span
+style='color:blue'>R;<b><u>30</u></b>;2;12</span>), with the last two
+characters of the headcode increasing by 2 for each repeat (<span
+style='color:blue'>R;30;<b><u>2</u></b>;12</span>), i.e. first repeat 2V33,
+next 2V35, next 2V37 etc, and in all there are to be 12 repeats (<span
+style='color:blue'>R;30;2;<b><u>12</u></b></span>).</p>
+
+<p>Another service might be:-</p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>2K14;Shirley to
+  Kidderminster;0;120;250;25;2500</span></p>
+  </td>
+  <td width=293 valign=top style='width:219.7pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Headcode;description;train
+  data</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:00;Snt;140-32 139-32</span></p>
+  </td>
+  <td width=293 valign=top style='width:219.7pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Start new train + start elements</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:01;Tyseley</span></p>
+  </td>
+  <td width=293 valign=top style='width:219.7pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Depart location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:03;07:04;Small Heath</span></p>
+  </td>
+  <td width=293 valign=top style='width:219.7pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Arr. and Dep. location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:07;07:07;Moor Street</span></p>
+  </td>
+  <td width=293 valign=top style='width:219.7pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Arr. and Dep. location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:10;Snow Hill</span></p>
+  </td>
+  <td width=293 valign=top style='width:219.7pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Arr. location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:11;cdt</span></p>
+  </td>
+  <td width=293 valign=top style='width:219.7pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Change direction of train</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:12;Fns;2K15</span></p>
+  </td>
+  <td width=293 valign=top style='width:219.7pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Finish &amp; form new service
+  + headcode</span></p>
+  </td>
+ </tr>
+</table>
+
+<p>This is a new train as before, but the starting speed is zero, and the track
+elements 140-32 and 139-32 correspond to a platform at Tyseley, so the train
+begins at 07:00 stopped at Tyseley. The next line <span style='color:blue'>07:01;Tyseley
+</span>tells the program that the train departs at 07:01 from Tyseley, then <span
+style='color:blue'>07:03;07:04;Small Heath</span> tells the program that the
+train arrives at 07:03 at Small Heath then departs at 07:04. This line could be
+split into two separate lines <span style='color:blue'>07:03;Small Heath </span>and
+<span style='color:blue'>07:04;Small Heath </span>if preferred, it means
+exactly the same to the program. If a line consists of a time and a location,
+the program determines whether the time represents arrival or departure from
+the context. Line <span style='color:blue'>07:07;07:07;Moor Street </span>tells
+the program that the train both arrives at and departs from Moor Street at
+07:07. The train won't depart as soon as it has arrived however, because a
+minimum period of 30 seconds must elapse between any two consecutive events.
+Therefore, if the train arrives early, say at 07:05, then it will wait until 07:07
+to depart. If it arrives at 07:07 exactly, it will depart at 07:07 and 30
+seconds (i.e. 07:07:30), and if it arrives at any later time it will depart 30
+seconds later. In other words a train will never depart before a scheduled
+time, but may depart at any time after that time depending on its arrival time,
+with a minimum wait period of 30 seconds. Line <span style='color:blue'>07:10;Snow
+Hill </span>tells the program that the train will arrive at Snow Hill at 07:10;
+line <span style='color:blue'>07:11;cdt </span>tells the program that the train
+changes direction (change direction of train) at 07:11, then the final line <span
+style='color:blue'>07:12;Fns;2K15 </span>tells the program that the train
+finishes at 07:12 and forms a new service with headcode 2K15 (<span
+style='color:blue'>F</span>inish <span style='color:blue'>n</span>ew <span
+style='color:blue'>s</span>ervice). Another service entry will be needed to
+take up the story for 2K15. Service codes - <span style='color:blue'>Snt, Fns,
+cdt </span>etc - use capital '<span style='color:blue'>S</span>' for '<span
+style='color:blue'>S</span>tart' events, capital '<span style='color:blue'>F</span>'
+for '<span style='color:blue'>F</span>inish' events, and small letters for
+intermediate events.</p>
+
+</div>
+
+</body>
+
+</html>

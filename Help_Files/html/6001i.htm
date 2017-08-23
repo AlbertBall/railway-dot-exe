@@ -1,0 +1,110 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Operating a railway</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p
+	{font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma","sans-serif";
+	color:black;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma","sans-serif";
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=EN-GB>
+
+<div class=WordSection1>
+
+<p><a name=6></a><b>6 Operating a railway:</b></p>
+
+<p>When a railway has been saved as a '.rly' file and has one or more valid
+timetables it is ready for operation. </p>
+
+<p>Select menu items 'File', and 'Load railway', then click the 'Files of type'
+drop-down box and click 'Railway file (.rly)'. Double click on the required
+file to bring up the railway. Then select menu items 'File' and 'Load
+timetable', and double click the required timetable. Finally select menu items
+'Mode' and 'Operate railway'. </p>
+
+<p>The railway is now in 'Pre-start' mode, which means that the clock is
+stopped and trains won't run until the <img width=24 height=24
+src="../images/RailSim2_RUNGRAPHIC.gif"> 'Run' button is left clicked, but
+routes may be set (see later) and train information is available. It is worth
+setting up automatic signal routes in this mode, </p>
+
+<p>which can be done manually or automatically (from v1.2.0) using the <img
+width=24 height=24 src="../images/RailSim2_PRESETAUTOSIGROUTES.gif"> ‘Preset
+automatic signal routes’ button . This sets automatic signal routes on all
+track sections without points, crossovers and level crossings that have single
+preferred directions set and that lie between non-ground signals or between
+continuations and non-ground signals. Automatic signal routes may be set on
+tracks that are due to have trains created on them when the timetable begins,
+and signals that lie behind these trains will be set appropriately as soon as
+the trains are created. Beware though that any trains that are already in
+motion may be affected by such signals, so try not to have more than one train
+created on a given route at any one time. If trains are created on other types
+of route then the route behind the train will be removed.</p>
+
+<p>After the <img width=24 height=24 src="../images/RailSim2_RUNGRAPHIC.gif"> 'run'
+button is clicked and the railway is operating, this button changes into a <img
+width=24 height=24 src="../images/RailSim2_PAUSEGRAPHIC.gif"> 'pause' button .
+When this is left clicked the clock stops and operation is suspended.
+Information is available in this mode but no action may be taken that affects
+the railway such as route setting or taking signaller control of trains. Note
+that if operation is halted for any reason - by a screensaver, displaying
+on-screen help, or by temporarily changing to another application - it will be
+in 'pause' mode when it is restored. Also when the ‘run’ button is clicked the
+‘Preset automatic signal routes’ button changes into a ‘Call-on’ button <img
+width=24 height=24 src="../images/RailSim2_CALLINGON.gif">.</p>
+
+<p>During operation, although trains are normally running to a timetable, they
+will run wherever the track leads. They stop at signals and buffers (if there
+is time and braking capacity), and timetabled stop locations, but will only stop
+for trains in front if they are being called-on, under signaller control (see
+later), or at a timetabled stop location. Hence it is the signaller's
+responsibility to keep trains safe and on the right tracks. Errors other than
+crashes and derailments may usually be corrected by taking signaller control
+and making appropriate corrections, at the cost of time and possible delays to
+other trains. A train that runs on a wrongly set trailing point will become
+derailed. Crashed and derailed trains must be removed from the railway by the
+signaller.</p>
+
+</div>
+
+</body>
+
+</html>

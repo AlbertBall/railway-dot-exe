@@ -1,0 +1,192 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Named locations</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p
+	{font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma","sans-serif";
+	color:black;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma","sans-serif";
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=EN-GB>
+
+<div class=WordSection1>
+
+<p><a name=3.3></a><b>3.3 Named locations</b></p>
+
+<p>Two types of named location are provided: stations, and non-station named
+locations. Station elements consist of platforms, concourses and footbridges. These
+are indicated by reddish-brown coloured elements, the narrow ones representing
+platforms that may be placed alongside horizontal or vertical track elements;
+the full square representing a concourse, positioned where there is no track
+and used to link platforms together; and footbridges link platforms and
+concourses across vertical or horizontal track. Footbridges allow station
+elements to be linked together that would otherwise be too far apart. All
+station elements that are linked together take the same name. Trains stop at
+platforms if the timetable includes the station as a stop, and the stop
+position is central for through platforms (with one extra free element behind
+than in front for platforms with an odd number of elements), and is at the buffers
+for terminal platforms. This arrangement allows for other trains to stop both
+in front of and behind earlier trains when there is room at the platform to do
+so.</p>
+
+<p>Non-station named locations are shown as blue squares, and are used to name
+sidings, depots, works, buffers, tunnels, bridges, continuations, junction
+approaches and anything else that needs a name. They are positioned on top of
+relevant track elements. All non-station named elements that are linked take
+the same name, but they do not link to stations so they may be positioned
+adjacent to station elements but have their own name. Trains will stop at all
+non-station named locations (providing the name is in the timetable) except
+continuations - continuation names are for identification and logging purposes
+only - and it is recommended that these be named for these purposes. The stop
+position is fixed relative to the length of the named location and direction of
+train travel, but in all cases the train stops with its front adjacent to the
+front end of the location, to allow as much room as possible behind for other
+trains.</p>
+
+<p>Named elements link together vertically and horizontally, but not
+diagonally. This is straightforward for non-station named locations because
+they consist of full-sized (16 x 16 pixel) elements only. It can be more
+confusing for stations, because platforms only occupy part of an element. The
+point to remember is that an element with a platform on it is a station
+element, so it will link to any other station element in the vertical or horizontal
+directions. Hence the following two arrangements are horizontally linked <img
+width=48 height=33 src="../images/NEL1.gif"> and <img width=47 height=37
+src="../images/NEL2.gif">, but the next arrangement is not linked because the
+station elements are diagonal to each other <img width=48 height=36
+src="../images/NEL3.gif">.</p>
+
+<p>Note that platforms may be located where there are signals, thereby effectively
+embedding the signal in the platform. This is useful when space is tight but is
+not generally recommended because problems may occur when trains are required
+to split - see 'splits and joins'.</p>
+
+<p>Names are allocated using the <img width=24 height=24
+src="../images/RailSim2_NAMELOCS.gif"> 'name location' button. Any named
+element may be selected for this purpose except footbridges. Names are
+case-sensitive and must be unique (King's Cross and KING'S CROSS are different
+locations as far as the program is concerned). A warning is given if a second
+location is given the same name as an earlier one. If it is so named, the
+earlier name is erased. When a name has been given it appears as text on the
+display in the font that is currently set. Generally the position of the name
+will need to be adjusted using the <img width=24 height=24
+src="../images/RailSim2_MOVETEXT.gif"> 'move text' button as described earlier.
+Fonts may be changed using the <img width=24 height=24
+src="../images/RailSim2_FONTGRAPHIC.gif"> 'change text font' button, and this
+font will apply for all future names. If it is wished to change the font of
+existing names then first change the default font, select one of the named
+elements using the <img width=24 height=24 src="../images/RailSim2_NAMELOCS.gif"> button,
+then just press 'enter' and the name will change to the new font. This may be
+done repeatedly to change several location name fonts in turn if required. Note
+that this is a different procedure to changing the font of existing text that
+doesn't represent a location name. This is explained under 'Adding, deleting
+and moving text'.</p>
+
+<p>When a location is named and the text positioned on screen, the positioning
+system works as follows: if there is space, the top of the text is placed
+slightly higher than the highest named element. If there isn't space above the
+highest named element then it is placed slightly lower than the lowest. If the
+named location covers the entire height of the screen or more, so that there is
+no higher or lower space for the name, then it is placed in the centre of the
+screen, at the horizontal position of leftmost named element. This has been
+explained because it is possible to have a block of concourses or other
+elements in the position that the name text will occupy, and if so the name
+will not be visible on screen. It is still there however, and it is possible to
+move it as described earlier if the position of the first character is known or
+can be guessed. Nevertheless it is much easier if this situation is avoided.</p>
+
+<p>To erase the name of a named location select one of the named elements as
+above, then erase the contents of the box and press 'enter'.</p>
+
+<p><b>IMPORTANT: Do not change the names of named locations by using the
+'change text' method described earlier, otherwise the displayed name will
+change but the location name within the program (the name used by the
+timetable) will not change and the result will likely cause confusion. If the
+text on screen is different to the location name then trains will still comply
+with the timetable entries regarding the location name, regardless of what text
+is on screen. Hence it is best not to alter text that corresponds to a location
+name, other than to reposition it or to change its font. Location name changes
+should only be carried out using the method described above. If the screen text
+is lost or altered inadvertently for a location name, the internal location
+name may be checked by selecting 'Information', 'Track information' and 'Show',
+and may be recovered on screen by left clicking the </b><img width=24
+height=24 src="../images/RailSim2_NAMELOCS.gif"><b> button and selecting the
+location. Its name will then appear in the box and may be re-entered by
+pressing 'enter', at which time it will reappear on the screen - as well as the
+earlier changed name, which may be removed or moved elsewhere if required.</b></p>
+
+<p>The program will allow text to be added to the railway that is the same as
+named locations, but this should be avoided if possible. If this is done and a
+location name is erased or changed, then the wrong text may be affected,
+because the program doesn't know which of the two (or more) identical pieces of
+text should be allocated to the named location.</p>
+
+<p>When a location name element is first placed, it is shown striped, to
+indicate that it isn't yet named. When named it changes to full colour. In
+zoom-out mode unnamed locations appear pink for stations, and green for
+non-station locations. These help identify locations that still await naming. A
+railway that contains unnamed locations has the <img width=20 height=20
+src="../images/RailSim2_LOCNAMESNOTSETGRAPHIC.gif"> icon on the left. When all
+are named this changes to <img width=20 height=20
+src="../images/RailSim2_LOCNAMESSETGRAPHIC.gif">.</p>
+
+<p>When building a railway try to avoid naming locations until the final
+position of the track is fixed. The reason is that when areas are cut and
+pasted elsewhere, or are mirrored or flipped, named locations within these
+areas lose their names. This is because the program doesn't know whether a
+whole location or just part is included in the selection, so to play safe it
+assumes part only and erases the names. Also the text may fail to be included
+within the selection and have to be erased separately to avoid there being two
+pieces of text corresponding to a single location. It is also best to avoid
+naming a location until all associated named elements have been placed.
+Although additional named elements may be added to an existing named location,
+and they will take the same name, the process can be time-consuming, especially
+with a large location and a slow computer.</p>
+
+<p>If railways are to be shared with other users or used on other computers,
+ensure that the fonts used for text and named locations are standard Microsoft
+Windows types, or the Windows operating system will default to the nearest font
+which might spoil the appearance.</p>
+
+</div>
+
+</body>
+
+</html>

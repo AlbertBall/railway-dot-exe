@@ -73,6 +73,21 @@ the blue route so it wasn't just the display that was wrong. Couldn't repeat the
 location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these circumstances the other train will need to be move sufficiently away to release all 4 positions, then the train will split.)  Try to improve if possible (i.e. just take account of 'available' platforms, and ensure keep trying in case other trains move off) or at least give a warning in the help & operator manuals to keep trains that are to split separated from trains already present at platforms - preferably don't have other trains at platforms at all where a train is to split.[leave for now unless reported as a problem - no-one has reported it yet]
 
 
+VERSION CHANGES AFTER v1.3.2 for v2.0.0 Beta
+
+* = mention on user website
+
+*a) Embarcadero changes.  General info on website, more details in Development.doc.
+
+*b) Railway file loading - all files together rather than having to use drop-down box - makes loading quicker and easier.
+
+*c) Added Fjo as an option after Snt to allow empty stock to be picked up. Richard Gaede asked about this some time ago and I hadn't until then realised that it wasn't possible.
+
+*d) Brought help system up to date to use .chm files.  Had to change the main screen focus from restoring at each clock cycle to restoring when click the main screen - so the navigation keys change the display rather than cycling through active panel buttons.
+
+*e) Made 'Show status' and 'Show timetable' for trains active on startup so don't have to select each time. 
+
+
 VERSION CHANGES AFTER v1.3.1 for v1.3.2
 
 * = mention on user website
@@ -1022,7 +1037,7 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 
 COPY SECTIONS:
 
-NEXT value for CallLogPop is 2046
+NEXT value for CallLogPop is 2047
 NEXT value for TrackElementAt is 897
 NEXT value for InactiveTrackElementAt is 119
 NEXT value for GetFixedRouteAt is 220

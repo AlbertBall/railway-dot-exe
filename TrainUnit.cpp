@@ -3338,8 +3338,8 @@ else//SPADFlag set
         }
     }
 
-TempBrakeRate=MinSingle; TempBrakeRate=MaxSingle; TempBrakeRate=MinDouble; TempBrakeRate=MaxDouble;//included to stop warnings from unused declarations in math.hpp
-TempBrakeRate=MinExtended; TempBrakeRate=MaxExtended; TempBrakeRate=MinComp; TempBrakeRate=MaxComp;//included to stop warnings from unused declarations in math.hpp
+//TempBrakeRate=MinSingle; TempBrakeRate=MaxSingle; TempBrakeRate=MinDouble; TempBrakeRate=MaxDouble;//included to stop warnings from unused declarations in math.hpp
+//TempBrakeRate=MinExtended; TempBrakeRate=MaxExtended; TempBrakeRate=MinComp; TempBrakeRate=MaxComp;//included to stop warnings from unused declarations in math.hpp
 Utilities->CallLogPop(707);
 }
 
@@ -3390,7 +3390,7 @@ if(TimetableFinished || (Name == ""))
     return -1;
     }
 //start looking from current pointer position
-for(TActionVectorEntry *Ptr = ActionVectorEntryPtr; Ptr<TrainDataEntryPtr->ActionVector.end();Ptr++)
+for(TActionVectorEntry *Ptr = ActionVectorEntryPtr; Ptr < &TrainDataEntryPtr->ActionVector.back();Ptr++)
     {
     if((Ptr->Command == "cdt") || (Ptr->FormatType == Repeat))
         {
@@ -4924,7 +4924,7 @@ bool TTrain::IsTrainTerminating(int Caller)
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsTrainTerminating" + "," + HeadCode);
 for(unsigned int x=1;x<TrainDataEntryPtr->ActionVector.size();x++)
     {
-    if((ActionVectorEntryPtr + x) < TrainDataEntryPtr->ActionVector.end())
+	if((ActionVectorEntryPtr + x) < &TrainDataEntryPtr->ActionVector.back())
         {
         if(((ActionVectorEntryPtr + x)->Command == "Fer") || ((ActionVectorEntryPtr + x)->FormatType == TimeLoc))
             {
@@ -5036,7 +5036,7 @@ Utilities->CallLogPop(1102);
 
 AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - TrainDataEntryPtr->ActionVector.begin()) + ",FloatingLabelNextString" + "," + HeadCode);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - &TrainDataEntryPtr->ActionVector.front()) + ",FloatingLabelNextString" + "," + HeadCode);
 AnsiString RetStr = "", LocationName = "";
 if((Ptr->Command != "") && (Ptr->Command[1] == 'S'))
     {
@@ -5149,7 +5149,7 @@ return RetStr;
 AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
 //Enter with Ptr pointing to first action to be listed (i.e. next action)
 {
-Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - TrainDataEntryPtr->ActionVector.begin()) + ",FloatingTimetableString" + "," + HeadCode);
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - &TrainDataEntryPtr->ActionVector.front()) + ",FloatingTimetableString" + "," + HeadCode);
 AnsiString RetStr = "", PartStr = "";
 int Count = 0;
 if((Ptr->Command != "") && (Ptr->Command[1] == 'S') && (TrainMode == Timetable))//can start in signaller control so exclude this
@@ -6371,7 +6371,7 @@ if(!CheckStartAllowable(0, RearPosition, RearExitPos, HeadCode, ReportFlag, Even
     }
 
 TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = NoEvent;
-TTrainMode TrainMode = None;
+TTrainMode TrainMode = NoMode;
 if(ModeStr == "Timetable") TrainMode = Timetable;//all else gives 'None', 'Signaller' set within program
 
 if(MaxRunningSpeed < 10)
@@ -6752,7 +6752,7 @@ for(unsigned int x=0; x<Track->TrackVector.size(); x++)
 Track->ActiveTrackElementNameMapCompiledFlag = true;
 //end of new section
 std::ifstream TTBLFile(FileName, std::ios_base::binary);//binary mode so the "\r\n" pairs stay as they are rather than being entered as '\n'
-if(TTBLFile)
+if(TTBLFile.is_open())
     {
     char *TrainTimetableString = new char[10000];//enough for over 200 stations, should be adequate!
     bool EndOfFile = false;
@@ -6767,8 +6767,8 @@ if(TTBLFile)
         Utilities->CallLogPop(1611);
         return false;
         }
-    AnsiString OneLine(TrainTimetableString);
-    bool FinalCallFalse = false;
+	AnsiString OneLine(TrainTimetableString);
+	bool FinalCallFalse = false;
     while((Count == 0) && !ProcessOneTimetableLine(5, Count, OneLine, EndOfFile, FinalCallFalse, GiveMessages, CheckLocationsExistInRailway))//get rid of lines before the start time
         {
         //ProcessOneTimetableLine returns true for a valid start time, an EndOfFile &/or a blank entry
@@ -6824,7 +6824,7 @@ if(TTBLFile)
         }
     delete TrainTimetableString;
     TTBLFile.close();
-    }//if(TTBLFile)
+    }//if(TTBLFile.is_open())
 else
     {
     TimetableMessage(GiveMessages, "Failed to open timetable file, make sure it's not open in another application");
@@ -8386,7 +8386,7 @@ class TTrainDataEntry//contains all data for a single train -c opied into train 
 
 /Allowable successors:-
 /Snt unlocated ->  Fer, TimeLoc (arr), TimeTimeLoc, (new) pas; No others
-/Snt located -> No starts, no finishes except Frh, no repeat, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK
+/Snt located -> No starts, no finishes except Frh & Fjo (as of v2.0.0), no repeat, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK
 /Snt-sh -> No starts, finishes, repeats, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK
 /Sfs ->  No starts, finishes, repeats, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK (must have a TimeLoc departure somewhere in sequence to
         set location, else fails)
@@ -8475,6 +8475,7 @@ if(TrainDataVector.empty())
 2) if first actionvector entry not SignallerControl then must have at least one more actionvector entry
 3) if first actionvector entry is SignallerControl then must have no more actionvector entries except a repeat
 4) first entry must be a start;
+4a) if first entry is Snt and not signallercontrol and second is a finish then it can only be Frh, Fjo or Fer//added for v2.0.0
 5) a start must be the first entry;
 6) a repeat entry must be the last;
 7) for other than SignallerControl the last entry must be repeat or finish; if last entry is a repeat the last but one must be a finish;
@@ -8497,7 +8498,7 @@ for(unsigned int x=0;x<TrainDataVector.size();x++) //(2)
     {
     const TTrainDataEntry &TDEntry = TrainDataVector.at(x);
     TActionVectorEntry AVEntry0 = TrainDataVector.at(x).ActionVector.at(0);
-    if(!(AVEntry0.SignallerControl))
+	if(!(AVEntry0.SignallerControl))
         {
         if(TrainDataVector.at(x).ActionVector.size() == 1)
             {
@@ -8537,14 +8538,26 @@ for(unsigned int x=0;x<TrainDataVector.size();x++) //(3)
 for(unsigned int x=0;x<TrainDataVector.size();x++) //(4)
     {
     const TTrainDataEntry &TDEntry = TrainDataVector.at(x);
-    TActionVectorEntry AVEntry0 = TrainDataVector.at(x).ActionVector.at(0);
-    if(AVEntry0.SequenceType != Start)
-        {
-        SecondPassMessage(GiveMessages, "Error in timetable - the first event must be a start for: " + TDEntry.HeadCode);
-        TrainDataVector.clear();
-        Utilities->CallLogPop(1824);
-        return false;
-        }
+	TActionVectorEntry AVEntry0 = TrainDataVector.at(x).ActionVector.at(0);
+	if(AVEntry0.SequenceType != Start)
+		{
+		SecondPassMessage(GiveMessages, "Error in timetable - the first event must be a start for: " + TDEntry.HeadCode);
+		TrainDataVector.clear();
+		Utilities->CallLogPop(1824);
+		return false;
+		}
+	if((AVEntry0.Command == "Snt") && !(AVEntry0.SignallerControl)) //4a  added at v2.0.0. This is only a rough check, Fer only valid for an unlocated Snt
+	//and others for a located Snt, but those checks done later
+		{
+		TActionVectorEntry AVEntry1 = TrainDataVector.at(x).ActionVector.at(1); //must be a second entry if first not signallercontrol
+		if((AVEntry1.SequenceType == Finish) && (AVEntry1.Command != "Frh") && (AVEntry1.Command != "Fjo") && (AVEntry1.Command != "Fer"))
+			{
+			SecondPassMessage(GiveMessages, "Error in timetable - the only finish events immediately following Snt must be Frh, Fjo or Fer for: " + TDEntry.HeadCode);
+			TrainDataVector.clear();
+			Utilities->CallLogPop(2046);
+			return false;
+			}
+		}
     }
 for(unsigned int x=0;x<TrainDataVector.size();x++) //(5)
     {
@@ -8643,53 +8656,53 @@ for(unsigned int x=0;x<TrainDataVector.size();x++) //(8)
 //check ActionVector present and check start event successor validity
 //For Snt & Snt-sh set location if stopped, don't set any times yet
 for(unsigned int x=0;x<TrainDataVector.size();x++)
-    {
-    const TTrainDataEntry &TDEntry = TrainDataVector.at(x);
-    TActionVectorEntry &AVEntry0 = TrainDataVector.at(x).ActionVector.at(0);//use reference so can change internals where necessary
-    if((AVEntry0.Command == "Snt") || (AVEntry0.Command == "Snt-sh"))
-        {
-        AnsiString LocationName = "";
-        if(IsSNTEntryLocated(0, TDEntry, LocationName))//it is at a location
-            {
-            if(TDEntry.StartSpeed == 0)//stopped
-                {
-                AVEntry0.LocationName = LocationName;
-                AVEntry0.LocationType = AtLocation;
-                //check successor validity for located Snt that isn't a SignallerControl entry
-                if(!AVEntry0.SignallerControl)
-                    {
-                    const TActionVectorEntry &AVEntry1 = TrainDataVector.at(x).ActionVector.at(1);//at least 2 entries present checked in integrity check so (1) valid
-                    if(!AtLocSuccessor(AVEntry1))
-                        {
-                        //Frh following Snt-sh will return false in location check, so no need to check here
-                        SecondPassMessage(GiveMessages, "Error in timetable - stopped 'Snt' or 'Snt-sh' followed by an illegal event for: " + TDEntry.HeadCode);
-                        TrainDataVector.clear();
-                        Utilities->CallLogPop(523);
-                        return false;
-                        }
-                    }
-                }
-            else
-                {
-                SecondPassMessage(GiveMessages, "Error in timetable - 'Snt' or 'Snt-sh' event at stop location but start speed not zero for: " + TDEntry.HeadCode);
-                TrainDataVector.clear();
-                Utilities->CallLogPop(791);
-                return false;
-                }
-            }
-        else //check not Snt-sh & carry out successor validity checks for unlocated Snt that isn't a SignallerControl entry
-            {
-            if(AVEntry0.Command == "Snt-sh")
-                {
-                SecondPassMessage(GiveMessages, "Error in timetable - 'Snt-sh' event not at stop location for: " + TDEntry.HeadCode);
-                TrainDataVector.clear();
-                Utilities->CallLogPop(1042);
-                return false;
-                }
-            AVEntry0.LocationType = EnRoute;
-            if(!AVEntry0.SignallerControl)
-                {
-                const TActionVectorEntry &AVEntry1 = TrainDataVector.at(x).ActionVector.at(1);//at least 2 entries checked in integrity check so (1) valid
+	{
+	const TTrainDataEntry &TDEntry = TrainDataVector.at(x);
+	TActionVectorEntry &AVEntry0 = TrainDataVector.at(x).ActionVector.at(0);//use reference so can change internals where necessary
+	if((AVEntry0.Command == "Snt") || (AVEntry0.Command == "Snt-sh"))
+		{
+		AnsiString LocationName = "";
+		if(IsSNTEntryLocated(0, TDEntry, LocationName))//it is at a location
+			{
+			if(TDEntry.StartSpeed == 0)//stopped
+				{
+				AVEntry0.LocationName = LocationName;
+				AVEntry0.LocationType = AtLocation;
+				//check successor validity for located Snt that isn't a SignallerControl entry
+				if(!AVEntry0.SignallerControl)
+					{
+					const TActionVectorEntry &AVEntry1 = TrainDataVector.at(x).ActionVector.at(1);//at least 2 entries present checked in integrity check so (1) valid
+					if(!AtLocSuccessor(AVEntry1))
+						{
+						//Frh following Snt-sh will return false in location check, so no need to check here
+						SecondPassMessage(GiveMessages, "Error in timetable - stopped 'Snt' or 'Snt-sh' followed by an illegal event for: " + TDEntry.HeadCode);
+						TrainDataVector.clear();
+						Utilities->CallLogPop(523);
+						return false;
+						}
+					}
+				}
+			else
+				{
+				SecondPassMessage(GiveMessages, "Error in timetable - 'Snt' or 'Snt-sh' event at stop location but start speed not zero for: " + TDEntry.HeadCode);
+				TrainDataVector.clear();
+				Utilities->CallLogPop(791);
+				return false;
+				}
+			}
+		else //check not Snt-sh & carry out successor validity checks for unlocated Snt that isn't a SignallerControl entry
+			{
+			if(AVEntry0.Command == "Snt-sh")
+				{
+				SecondPassMessage(GiveMessages, "Error in timetable - 'Snt-sh' event not at stop location for: " + TDEntry.HeadCode);
+				TrainDataVector.clear();
+				Utilities->CallLogPop(1042);
+				return false;
+				}
+			AVEntry0.LocationType = EnRoute;
+			if(!AVEntry0.SignallerControl)
+				{
+				const TActionVectorEntry &AVEntry1 = TrainDataVector.at(x).ActionVector.at(1);//at least 2 entries checked in integrity check so (1) valid
                 if(!MovingSuccessor(AVEntry1))
                     {
                     SecondPassMessage(GiveMessages, "Error in timetable - unlocated 'Snt' not followed by 'Fer', 'pas' or an arrival for: " + TDEntry.HeadCode);
@@ -8699,12 +8712,12 @@ for(unsigned int x=0;x<TrainDataVector.size();x++)
                     }
                 }
             }
-        }
-    //check other start successors
+		}
+	//check other start successors
     else if(AVEntry0.SequenceType == Start)
         {
         const TActionVectorEntry &AVEntry1 = TrainDataVector.at(x).ActionVector.at(1);//at least 2 entries present checked in integrity check so (1) valid
-        if(!AtLocSuccessor(AVEntry1))
+		if(!AtLocSuccessor(AVEntry1))
             {
             SecondPassMessage(GiveMessages, "Error in timetable - 'Sfs', 'Sns', 'Sns-sh' or 'Sns-fsh' followed by an illegal event for: " + TDEntry.HeadCode);
             TrainDataVector.clear();
@@ -10260,8 +10273,9 @@ Utilities->CallLogPop(861);
 bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEntry, AnsiString &LocationName)
 //checks if an Snt or Snt-sh entry followed (somewhere, not necessarily immediately) by a TimeLoc has the same LocationName
 //and if so returns true.  Also returns true for Snt, not Snt-sh, if at least 1 start element is a location & the entry is either
-//a signaller control entry & speed is zero or it is followed immediately by Frh.  Always return false for entry at a continuation (may
-//be named but not a stop location).  Note that no successor validity checks are done in this function, they must be done elsewhere.
+//a signaller control entry & speed is zero or it is followed immediately by Frh or Fjo (mod at v2.0.0 for empty stock pickup).
+//Always return false for entry at a continuation (may be named but not a stop location).  Note that no successor validity checks
+//are done in this function, they must be done elsewhere.
 {
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsSNTEntryLocated," + AnsiString(TDEntry.HeadCode));
 const TActionVectorEntry &AVEntry0 = TDEntry.ActionVector.at(0);
@@ -10298,11 +10312,11 @@ else if((AVEntry0.SignallerControl) && (TDEntry.StartSpeed > 0))
 
 //here if not a signaller start entry so must be at least one more entry
 const TActionVectorEntry &AVEntry1 = TDEntry.ActionVector.at(1);//has to be at least 2 AV entries to pass the > 1 comma test in the preliminary check
-if((AVEntry1.Command == "Frh") && (AVEntry0.Command == "Snt"))
-    {
-    Utilities->CallLogPop(1037);
-    return true;
-    }
+if(((AVEntry1.Command == "Frh") || (AVEntry1.Command == "Fjo")) && (AVEntry0.Command == "Snt")) //added Fjo at v2.0.0 for empty stock
+	{
+	Utilities->CallLogPop(1037);
+	return true;
+	}
 AnsiString TimeLocLocationName;
 bool FoundFlag = false;
 for(unsigned int y=0;y<TDEntry.ActionVector.size();y++)
@@ -12426,7 +12440,7 @@ OperatingTrainArrDep = 0;
 for(unsigned int x = 0; x < TrainVector.size(); x++)
     {
     TTrain &Train = TrainVectorAt(64, x);
-    for(TActionVectorEntry* AVEntryPtr = Train.TrainDataEntryPtr->ActionVector.begin(); AVEntryPtr < Train.TrainDataEntryPtr->ActionVector.end();
+    for(TActionVectorEntry* AVEntryPtr = &Train.TrainDataEntryPtr->ActionVector.front(); AVEntryPtr < &Train.TrainDataEntryPtr->ActionVector.back();
             AVEntryPtr++)
         {
         if(AVEntryPtr < Train.ActionVectorEntryPtr) continue;

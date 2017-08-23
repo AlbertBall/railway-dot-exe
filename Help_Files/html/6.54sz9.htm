@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Train performance</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Train performance">
+	<PARAM NAME="Keyword" VALUE="Train acceleration">
+	<PARAM NAME="Keyword" VALUE="Acceleration">
+	<PARAM NAME="Keyword" VALUE="Train braking">
+	<PARAM NAME="Keyword" VALUE="Braking">
+	<PARAM NAME="Keyword" VALUE="Light braking">
+	<PARAM NAME="Keyword" VALUE="Heavy braking">
+	<PARAM NAME="Keyword" VALUE="Emergency braking">
+	<PARAM NAME="Keyword" VALUE="Train starting speed">
+	<PARAM NAME="Keyword" VALUE="Starting speed">
+</OBJECT>
+
+<P><B><A NAME="6.5"></A>6.5  Train performance:</B></P>
+
+<P>Trains accelerate and brake according to the characteristics that are set in the timetable.  The power that is quoted represents gross power, but only 80% of that power is available at the wheel because of internal losses.  Acceleration always assumes the application of maximum power.  Normal braking uses up to half the maximum braking effort providing there is time to respond, and calculations are made when the train reaches the end of each track element.  This explains why a train that has reached the element immediately preceding a red signal comes to a complete stop before accelerating again, even if the signal changes to yellow before the train has stopped.  The braking calculation is done by first calculating the maximum speed at which the train can have at the end of the next element in front, then looking forward for the distance from that point that is needed to come to a stop using half the maximum braking effort.  If no reason to brake is found in that distance then the train accelerates if can, or stays at the same speed if it can't.  If there is a reason to brake then the braking rate is calculated to achieve the necessary stop or speed restriction in the distance needed.  Under normal circumstances there should never be a need to brake at more than half the maximum rate, but if signals are reset in front of a train or points are changed that direct the train into a siding then much heavier braking will be needed.  The floating window indicates the braking rate that is applied - light braking up to 50%  of maximum, heavy braking from 50% to 90% of maximum, and emergency braking above 90%.  When emergency braking is used there is a very good chance that the train will fail to stop in the required distance.</P>
+
+<P>When a train enters the railway from outside or is created on the railway, then the starting speed will be as set in the timetable unless there is a reason to reduce it, for example because of adverse signals.  This means that a new train should never pass a signal at danger or crash into buffers because of excess starting speed, but it may crash into an existing train if the new train isn't protected and the existing train is in its way.</P>
+
+</BODY>
+</HTML>

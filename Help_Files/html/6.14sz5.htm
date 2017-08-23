@@ -1,0 +1,176 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Route setting and cancelling</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p
+	{font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma","sans-serif";
+	color:black;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma","sans-serif";
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=EN-GB>
+
+<div class=WordSection1>
+
+<p><a name=6.1></a><b>6.1 Route setting and cancelling:</b></p>
+
+<p>Three types of route are available by left clicking the appropriate button:
+automatic signal routes <img width=24 height=24
+src="../images/RailSim2_AUTOSIG.gif"> (blue button), preferred direction routes
+<img width=24 height=24 src="../images/RailSim2_PREFSIG.gif"> (green button),
+and unrestricted routes <img width=24 height=24
+src="../images/RailSim2_NONSIG.gif"> (red button). Automatic signal and
+preferred direction routes may only be set on tracks with preferred directions
+allocated (via the 'Mode' and 'Set preferred directions' menu items), and must
+run from signal to following signal, but unrestricted routes (red route button)
+may be set from any point to any other point (other than points, bridges or
+crossovers and providing there's a track between them), regardless of preferred
+directions. Unrestricted routes are intended for unusual movements only. When a
+route is set the direction is indicated by small coloured arrows on the first
+and last elements of the route. A route that does not involve any point changes
+will be set in about half a second, but if point changes are needed then about
+2.5 seconds are required. In 'Pre-start' mode routes are set instantly.</p>
+
+<p>Preferred direction and unrestricted routes are cancelled automatically as a
+train runs along them, and all signals passed change to red. Automatic signal
+routes are not cancelled by trains, they remain in place until cancelled by the
+signaller (or by a train running on them in the wrong direction). When a train
+passes a signal on an automatic signal route it changes to red, but (in the
+absence of any following trains) at the same time the next earlier signal
+changes to yellow, the next earlier signal to that one changes to double
+yellow, and the next earlier one to green. That is for four-aspect signals,
+three-aspect signals omit the double yellow and two-aspect signals omit both
+yellow aspects. In this way trains may proceed from section to section without
+intervention by the signaller. If an automatic signal route ends at a
+continuation then when trains pass the last signal it changes to red as normal,
+and after a time interval it will change (for four-aspect signals) to yellow,
+then double yellow, then green. Other aspect signals behave appropriately. The
+time interval is based on the speed of the departing train - the faster the
+train the sooner the signal changes.</p>
+
+<p>When a route start and end point are selected the program tries to find an
+appropriate track linking them. The strategy used is to search from start to
+end, following points initially in their 'set' direction, and beginning the
+search in the direction that moves closer to the end point. If there is more
+than one valid route between the selected start and end points then the program
+could select either depending on how the points are set. To force a particular
+selection set the points for the favoured route. Similarly if it is found that
+the program cannot find a suitable route even though you know there is one,
+probably because there are facing points with so many ways out that the search
+takes too long, then set one or more points for the desired route. Note though
+that sometimes a preferred direction or automatic signals route can't be set
+because the preferred directions don't allow it, and that isn't necessarily
+obvious during operation.</p>
+
+<p>When selected, routes may be truncated or cancelled, by left clicking the
+'route cancel' <img width=24 height=24 src="../images/RailSim2_ROUTECANCEL.gif"> button
+and then right clicking the track element to truncate to, or the start element
+of the route to cancel it completely. When truncating automatic signal and
+preferred direction routes, the truncate point must immediately follow a
+signal, so that the route that is left ends at a signal. Note that a route that
+consists of a mixture of preferred direction and unrestricted route sections is
+regarded by the program as a single route, which may be cancelled as a whole.
+However a route that consists of a mixture of automatic and other types of
+route sections is regarded by the program as a series of separate routes, with
+automatic signal sections being individual routes, and mixtures of others
+between similarly being regarded as individual but separate routes. In these
+circumstances when a route is cancelled, just the relevant section is
+cancelled. This may sometimes cause problems because the automatic signal
+routes always take preference and include the signals at both ends. Therefore,
+if a section of automatic signal route is cancelled, the signal that represents
+the boundary between it and the other type of route is removed when the
+automatic signal route is removed. This leaves the other route with a missing
+signal, and a new section of route can't be created to include it because the
+program won't permit a route to end next to an existing route. Hence the other
+section of route must be cancelled also. If there's a train on it then it can't
+be cancelled but the train will cancel it as it moves along it.</p>
+
+<p>Try to avoid having a signal immediately before a bridge, because bridges
+can't be used as truncate points, so the route can't be truncated to that
+signal. This is because a bridge is potentially ambiguous as it may have two
+routes set on it.</p>
+
+<p>Note that a train that runs in the wrong direction on any part of a route
+will cancel the whole of that route and all signals will change to red
+immediately. Also if a train is introduced by the timetable at a point in the
+middle of an existing unrestricted or preferred direction route then the route
+behind the train will be erased and all signals reset to danger. If this
+happens on an automatic signal route then the route will remain in place but
+the signals behind the train will be reset because of the presence of the new
+train. Any of these events may cause following trains to run past red signals
+and/or to crash into the new train.</p>
+
+<p>Try to avoid creating automatic signal routes where they may need to be
+cancelled. The above situation gives one reason, but another is when the route
+runs into a cul-de-sac, or into a location where there will be a train that
+isn't intended to move on. If such a situation arises, then a train will be on
+an automatic signal route with nowhere to go, and the route can't be cancelled
+because of the train. Signaller control (see later) of the train is then likely
+to be necessary to move it off the route to allow cancellation. The program
+will provide some protection here in that it won't allow an automatic signal
+route into buffers. A method that may be used if a train becomes trapped in an
+automatic signal route is to take the train under signaller control, change its
+direction and move. It will then immediately cancel all the route in front of
+it. This is a somewhat unorthodox manoeuvre but it works! </p>
+
+<p>To cancel a preferred direction or unrestricted route directly in front of a
+train select an element ahead of the train, because any element that the train
+stands on is automatically cleared from the route.</p>
+
+<p>Trains will run whether or not protected by routes and signals, but without
+protection derailments and crashes are much more likely. When not in a route
+points may be changed manually by left clicking them. This is useful for
+manoeuvring a train under signaller control without having to set a route.
+Points that are linked directly to other points and together provide a means of
+moving from one track to a parallel track are changed together when one of them
+is left clicked. If one of a pair of such linked points is in a route or has a
+train on it then the other can't be changed manually.</p>
+
+<p>If two or more trains are on the same platform, are not protected, and there
+is at least one track element separating them, then they may crash when one of
+them reaches its departure time unless they are facing in opposite directions.
+However if the two are directly adjacent then this won't happen as a train
+won't start if there is a train directly in front of it.</p>
+
+</div>
+
+</body>
+
+</html>

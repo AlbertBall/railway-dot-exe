@@ -28,6 +28,7 @@ class TDisplay //class that manages all aspects of the display.  There are 2 obj
     //which is an internal object used when building a new display and transferred to Display when complete (avoids the flicker that would
     //be visible if Display was built directly
 {
+//public:
 private:
 
 TImage* &Output; //pointer to the 60 x 36 element railway display area

@@ -1,0 +1,111 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Joins</title>
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+a:link, span.MsoHyperlink
+	{color:blue;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;}
+p
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p><a name=5.2.4></a><b>5.2.4 Joins:</b></p>
+
+<p>Join codes: Fjo; jbo.</p>
+
+<p>These always link together such that an 'Fjo' service always links to a
+'jbo' service.</p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=308 valign=top style='width:231.05pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt'>Be joined by another train</span></p>
+  </td>
+  <td width=308 valign=top style='width:231.05pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>HH:MM;jbo;joining train service
+  ref.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=308 valign=top style='width:231.05pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt'>Finish and join another train</span></p>
+  </td>
+  <td width=308 valign=top style='width:231.05pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>HH:MM;Fjo;service ref. of train
+  to join</span></p>
+  </td>
+ </tr>
+</table>
+
+<p>Join codes are 'Fjo' ('finish, join other') for the service that finishes by
+joining another service, and 'jbo' ('joined by other') for the service that has
+the other service joined onto it.</p>
+
+<p>The lines that contain these codes also contain the service references of
+the corresponding linked services. The thing to beware of during operation is
+that both trains must be received at the same platform - fairly obvious of
+course but easy to overlook at a large station when the trains arrive at
+different times. Failure to observe this will result in signaller control being
+needed. Also necessary is that the receiving platform must be long enough to
+accommodate the two trains. Try to receive joining trains at platforms where
+there will be at least one platform element free for the second train, which
+may be behind or in front of the first train depending on the arrival direction
+of the second train.</p>
+
+<p>When trains join, their masses, powers and brake forces are added, and the
+maximum running speed becomes the smaller of the values for the two trains.
+Warning messages are given when one or other train is waiting for the other.</p>
+
+<p>For services that join it is best to avoid descriptions that include the
+number of cars. The original service description doesn't change during operation
+so such descriptions will become incorrect after a join.</p>
+
+<p>Note that when repeat service trains join, each service must have the same
+repeat number. Services with different repeat numbers will not join, even
+though the headcodes correspond correctly. Service repeat numbers are provided
+in the train status floating window.</p>
+
+<p>See <a href="5.111w8h.htm">section 5.11</a> for some important aspects that
+will help to avoid errors. </p>
+
+</div>
+
+</body>
+
+</html>

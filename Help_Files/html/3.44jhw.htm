@@ -1,0 +1,95 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Saving and loading railway files</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p
+	{font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma","sans-serif";
+	color:black;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma","sans-serif";
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=EN-GB>
+
+<div class=WordSection1>
+
+<p><a name=3.4></a><b>3.4 Saving and loading railway files</b></p>
+
+<p>There are two types of railway file. Development files, used during building
+and modifying a railway, have the extension '.dev'. Railways that are ready for
+operation (operational railways) have the extension '.rly'. By default all
+railway files are stored in the 'Railways' folder that resides in the same
+folder that contains the program itself - 'railway.exe'.</p>
+
+<p>During development, files may be saved (as .dev files) by clicking the <img
+width=20 height=20 src="../images/RailSim2_SAVERAILWAY.gif"> button, new files
+requiring a new name, but thereafter being saved under the same name unless
+'Save railway as' is selected.</p>
+
+<p>When all gaps (if there are any) have been connected, all track linked, and
+all locations named, the file may be saved as a '.rly' file. This situation is
+indicated by the corresponding three left screen icons all being green - <img
+width=20 height=20 src="../images/RailSim2_TRACKLINKEDGRAPHIC.gif">,<img
+width=20 height=20 src="../images/RailSim2_GAPSSETGRAPHIC.gif">, and <img
+width=20 height=20 src="../images/RailSim2_LOCNAMESSETGRAPHIC.gif">. When saved
+as an operational railway these icons are not displayed.</p>
+
+<p>Operational railways may be modified, but if anything significant is changed
+then the railway will revert to development status. If it is still operational,
+it may be resaved under its old name, but this will have to be selected
+manually, it isn't automatic. Beware though that existing timetables may need
+corresponding alteration if they are not compatible with the changed railway.
+If changes are made to preferred directions only (described later), then these
+are not regarded as significant changes and the railway may be resaved
+automatically under its old name by left clicking the <img width=20 height=20
+src="../images/RailSim2_SAVERAILWAY.gif"> button. Such changes won't affect
+timetable compatibility but may well affect the ability to set automatic signal
+and preferred direction routes (explained later).</p>
+
+<p>When a railway is saved the 'Home' position of the detailed (i.e. zoomed-in)
+display will be saved, but not the 'Home' position of the zoomed out display
+nor the actual position of the display at the time of saving. To change the
+'Home' position select the display required then left click 'New home'. On
+reloading the railway the first display will be at the 'Home' position.</p>
+
+</div>
+
+</body>
+
+</html>

@@ -1303,7 +1303,7 @@ for(int x=18;x<FirstUnusedSpeedTagNumber;x++)
 
 //---------------------------------------------------------------------------
 TGraphicElement::TGraphicElement() : OverlayPlotted(false), OriginalLoaded(false), ScreenSourceSet(false),
-        ScreenGraphicLoaded(false), ExistingGraphicLoaded(false), Width(16), Height(16)
+		ScreenGraphicLoaded(false), ExistingGraphicLoaded(false), Width(16), Height(16)
 {
 OriginalGraphic = new Graphics::TBitmap;
 OriginalGraphic->PixelFormat = pf8bit;
@@ -1441,7 +1441,7 @@ if(!OverlayLoaded)
 if(!OverlayPlotted)
     {
     Disp->PlotOutput(35, HPos, VPos, OverlayGraphic);//plot overlay
-    Disp->Update();
+	Disp->Update();
     OverlayPlotted = true;
     }
 Utilities->CallLogPop(426);
@@ -1459,8 +1459,8 @@ if(OverlayPlotted)
         {
         throw Exception("Original not loaded in TGraphicElement::PlotOriginal()");
         }
-    Disp->PlotOutput(36, HPos, VPos, OriginalGraphic);//replot original
-    Disp->Update();
+	Disp->PlotOutput(36, HPos, VPos, OriginalGraphic);//replot original
+    Disp->Update(); //This was commented out originally but when in flashes much less frequent when points changing manually
     OverlayPlotted = false;
     }
 Utilities->CallLogPop(427);
@@ -4591,7 +4591,7 @@ if(InactiveTrackMapPtr == InactiveTrack2MultiMap.end())
 else
     {
     Utilities->CallLogPop(1949);
-    return InactiveTrackElementAt(872, InactiveTrackMapPtr->second);
+    return InactiveTrackElementAt(34, InactiveTrackMapPtr->second);
     }
 }
 
@@ -11746,7 +11746,7 @@ while(true)
 //check for a fouled diagonal (if not leading point - these checked later - leading point XLink == -1)
     if((SearchElement.XLink == 1) || (SearchElement.XLink == 3) || (SearchElement.XLink == 7) || (SearchElement.XLink == 9))
         {
-        if(AllRoutes->DiagonalFouledByRouteOrTrain(0, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
+		if(AllRoutes->DiagonalFouledByRouteOrTrain(7, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
             {
             for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
             Utilities->CallLogPop(244);
@@ -12729,7 +12729,7 @@ int VectorCount = 0;
 //check for a fouled diagonal for first element.  Added for v1.3.2
 if((CurrentTrackElement.Link[XLinkPos] == 1) || (CurrentTrackElement.Link[XLinkPos] == 3) || (CurrentTrackElement.Link[XLinkPos] == 7) || (CurrentTrackElement.Link[XLinkPos] == 9))
     {
-        if(AllRoutes->DiagonalFouledByRouteOrTrain(0, CurrentTrackElement.HLoc, CurrentTrackElement.VLoc, CurrentTrackElement.Link[XLinkPos]))
+        if(AllRoutes->DiagonalFouledByRouteOrTrain(8, CurrentTrackElement.HLoc, CurrentTrackElement.VLoc, CurrentTrackElement.Link[XLinkPos]))
             {
             for(int x=0;x<VectorCount;x++) SearchVector.erase(SearchVector.end() - 1);
             Utilities->CallLogPop(2044);
@@ -13446,11 +13446,11 @@ if(!PrefDirVector.empty())
     TTrainController::TContinuationAutoSigVectorIterator AutoSigVectorIT;
     if(!TrainController->ContinuationAutoSigVector.empty())
         {
-        for(AutoSigVectorIT = TrainController->ContinuationAutoSigVector.begin(); AutoSigVectorIT < TrainController->ContinuationAutoSigVector.end(); AutoSigVectorIT++)
+		for(AutoSigVectorIT = TrainController->ContinuationAutoSigVector.begin(); AutoSigVectorIT < TrainController->ContinuationAutoSigVector.end(); AutoSigVectorIT++)
             {
-            if(!AllRoutes->AllRoutesVector.empty())
-                {
-                if((AllRoutes->AllRoutesVector.begin() + AutoSigVectorIT->RouteNumber) == this)
+			if(!AllRoutes->AllRoutesVector.empty())
+				{
+				if((&AllRoutes->AllRoutesVector.front() + AutoSigVectorIT->RouteNumber) == this)
                     {
                     SkipContinuationAndBufferAttributeChange = true;
                     break;
@@ -13640,7 +13640,7 @@ for(unsigned int b=0; b<PrefDirSize(); b++)
             {
             TrainController->StopTTClockFlag = true;
             TrainController->RestartTime = TrainController->TTClockTime;
-            int button = Application->MessageBox("Train approaching, YES to lock route (2 minutes to release), NO to cancel", "", MB_YESNO);
+			int button = Application->MessageBox(L"Train approaching, YES to lock route (2 minutes to release), NO to cancel", L"", MB_YESNO);
             TrainController->BaseTime = TDateTime::CurrentDateTime();
             TrainController->StopTTClockFlag = false;
             if (button == IDNO)
@@ -15238,7 +15238,7 @@ bool TAllRoutes::IsThereARouteAtIDNumber(int Caller, IDInt RouteID)
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsThereARouteAtIDNumber," + AnsiString(RouteID.GetInt()));
 for(unsigned int x=0; x<AllRoutesSize(); x++)
     {
-    if(GetFixedRouteAt(157, x).RouteID == RouteID.GetInt())
+    if(GetFixedRouteAt(45, x).RouteID == RouteID.GetInt())
         {
         Utilities->CallLogPop(2039);
         return true;

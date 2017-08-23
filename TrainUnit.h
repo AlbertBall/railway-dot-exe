@@ -44,7 +44,7 @@ enum TActionType {Arrive, Terminate, Depart, Create, Enter, Leave, FrontSplit, R
         SignallerChangeDirection, SignallerPassRedSignal, Pass, SignallerControlStop, SignallerStop, SignallerLeave, SignallerStepForward};
     //used in LogAction when reporting a train action to the performance log & file
 
-enum TTrainMode {None, Timetable, Signaller}; //indicates train operating mode, 'None' for not in use
+enum TTrainMode {NoMode, Timetable, Signaller}; //indicates train operating mode, 'None' for not in use
 
 //Timetable entry types
 enum TTimetableFormatType {NoFormat, TimeLoc, TimeTimeLoc, TimeCmd, StartNew, TimeCmdHeadCode, FinRemHere,

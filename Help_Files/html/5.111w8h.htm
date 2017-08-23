@@ -1,0 +1,92 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Important points to note</title>
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+h1
+	{mso-style-link:"Heading 1 Char";
+	color:black;}
+p
+	{font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+span.Heading1Char
+	{mso-style-name:"Heading 1 Char";
+	mso-style-link:"Heading 1";
+	font-family:"Cambria","serif";
+	color:#365F91;
+	font-weight:bold;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=EN-GB>
+
+<div class=WordSection1>
+
+<h1><a name=5.11></a><span style='font-size:16.0pt'>5.11 Important points to
+note in timetabling: </span></h1>
+
+<p><b>1. All train and service entries must contain a single start event which
+must come immediately after the first line, i.e the line that contains the
+headcode.</b></p>
+
+<p><b>2. Except for signaller-controlled trains (see 5.9) all entries must
+contain a single finish event, which must either come last, or, if the service
+is to repeat (see 5.7), must be the one before last - the last being the
+repeat.</b></p>
+
+<p><b>3. Signaller-controlled trains (see 5.9) must contain either a start
+event on its own, or a start and a repeat.</b></p>
+
+<p><b>4. All location names used in the timetable must be where trains can
+stop, even if they are only used for passing points. The drop-down box in the
+timetable editor gives a list of valid locations if a railway with names is
+loaded. Note that although continuations can be named trains cannot stop there.</b></p>
+
+<p><b>5. Avoid illegal sequence events by ensuring that arrivals are followed
+by departures from the same location, and moving train events (e.g. pass times,
+departures &amp; 'Snt' events for moving trains) are not followed by events
+that can only occur when stationary and vice versa. <u>Note that an 'Snt' event
+is treated as moving (even if the starting speed is zero) unless (a) the start
+location is the next timetabled departure point for that train and the starting
+speed is zero; or (b) the train is a signaller-controlled train, its starting
+point is a location, and its starting speed is zero.</u></b></p>
+
+<p><b>6. Note that although a time-location (HH:MM;Location name) event can
+represent an arrival or a departure (the program will determine which from the
+context), it cannot be both. If both an arrival and a departure from the same
+location is required without any events inbetween then use a time-time-location
+event (HH:MM;HH:MM;Location). The times can be the same, in which case
+departure will be 30 seconds after arrival, or different.</b></p>
+
+<p><b>7. The only way for a service to link back to a service whose first train
+is earlier than the linking service is by using a shuttle.</b></p>
+
+<p><b>8. The program only works in metric units but conversion facilities are
+included to change speeds in miles per hour to kilometres per hour, and
+horsepower to kilowatts.</b></p>
+
+</div>
+
+</body>
+
+</html>

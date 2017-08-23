@@ -1,0 +1,187 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Shuttle services</title>
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+a:link, span.MsoHyperlink
+	{color:blue;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;}
+p
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p><a name=5.2.5></a><b>5.2.5 Shuttle services:</b></p>
+
+<p>Codes: Snt-sh; Sns-sh; Frh-sh; Fns-sh; Sns-fsh; F-nshs</p>
+
+<p>The linkage for these codes is quite complex and is explained below.</p>
+
+<p>Start new shuttle train at a timetabled stop</p>
+
+<p><span style='color:blue'>      HH:MM;Snt-sh;rear element ID - space - front
+element ID;linked shuttle service ref.</span></p>
+
+<p>Start new shuttle service from a feeder</p>
+
+<p><span style='color:blue'>      HH:MM;Sns-sh;linked shuttle service
+ref.;feeder service ref.</span></p>
+
+<p>Finish and repeat shuttle, finally remain here</p>
+
+<p><span style='color:blue'>      HH:MM;Frh-sh;linked shuttle service ref.</span></p>
+
+<p>Finish and repeat shuttle, finally form a finishing service</p>
+
+<p><span style='color:blue'>      HH:MM;Fns-sh;linked shuttle service
+ref.;finishing service ref.</span></p>
+
+<p>Start new non-repeating shuttle finishing service</p>
+
+<p><span style='color:blue'>      HH:MM;Sns-fsh;linked shuttle service ref.</span></p>
+
+<p>Finish non-repeating shuttle feeder service</p>
+
+<p><span style='color:blue'>      HH:MM;F-nshs;linked shuttle service ref.</span></p>
+
+<p>A shuttle service is a service that runs from A to B, then forms a new
+service that runs back from B to A and forms a new service that links to the
+first repeat of the original service. <b>Shuttles are the only way for a
+service to link back to a service whose first train starts at an earlier time,
+all other links are forward links to later services.</b> The pattern must
+repeat at least once, and may repeat as many times as required. </p>
+
+<p>In practice shuttle services may be a lot more flexible than this, for
+example: the first service may run from A to B; then form a new service that
+runs from B to C; then part of the train splits off to form a new service that
+runs to D (the service that splits off repeats as many times as there are
+shuttles but is not part of the shuttle in that it can't link back into the
+shuttle sequence); the remaining train at C changes direction then continues on
+to E, where it is joined by another service from F (the joining service from F
+repeats as many times as there are shuttles but is not part of the shuttle).
+The service from F, together with the train joined from E then returns to A,
+where it links back to the first shuttle service. <u>The essential feature of a
+shuttle service is that it represents a loop, with the same start and end
+locations, and a final service that links back to the starting service.</u>
+Intermediate events (splits, joins, direction changes etc) are possible, and
+any number of 'Fns' service finishing events that link to corresponding 'Sns'
+service starts, but the final finish must link back to the starting shuttle
+using 'Frh-sh' or 'Fns-sh', thereby completing the loop. No other finish types
+are allowed. In the above example the shuttle runs from A to B to C to E then
+back to A. The split off part to D and the service that starts from F and joins
+at E are not part of the shuttle loop.</p>
+
+<p>Another important point about shuttles is that <u>each shuttle is separate
+from all other shuttles, i.e. no two shuttles can interact.</u> In fact there
+is no need for two shuttles to interact since a single shuttle can consist of
+as complex a sequence as required.</p>
+
+<p>There are two more points to remember, the first is that <u>a shuttle loop
+cannot consist of a single service.</u> In other words a service that runs from
+'A' to 'B', then continues on by returning to 'A', cannot be a shuttle. There
+must be at least one change of service, i.e. the shuttle finishing service
+reference must be different from the shuttle starting service reference. This
+is not to say that the same headcode can't be used for these two services
+because it can, so to all appearances the same service does in fact keep
+looping for as many times as there are repeats (though the performance log will
+still record the fact that a change of service has occurred, albeit with the
+same headcode). However the service reference (prefix + headcode) must change
+at some point within the loop. This represents a program restriction in that a
+service is not permitted to link back to itself. The second point is that <u>a
+shuttle must have at least one repeat.</u> This should be fairly self-evident
+since a shuttle that doesn't repeat is just two linked services.</p>
+
+<p>It is recognised that the coding of shuttles services may be difficult to
+learn, but it is considered to be well worth the effort as sophisticated and
+interactive services become available. Nevertheless it is possible to run very
+respectable railways without any shuttles at all, if preferred. A series of
+interleaving shuttle services is provided in a sample timetable. Study of these
+will lead to a good understanding of how they work.</p>
+
+<p>The simplest form of shuttle is one that starts as a new train at the
+shuttle loop start (and end) location (hereafter referred to as the 'loop
+location'), and at the end of all the repeats remains at that location. The
+code that starts this type of shuttle is 'Snt-sh', meaning 'start a new train
+that is a shuttle'. The corresponding finishing code is 'Frh-sh', meaning
+'finish and remain here or form a repeating shuttle'. The lines that contain
+these codes also contain the service references for the linked shuttle service.</p>
+
+<p>When setting the times for shuttle links the time for the 'Frh-sh' event
+must correspond to the time for the corresponding 'Snt-sh' event <u>+ 1 repeat
+time.</u> For example, if the shuttle repeats at 30 minute intervals, and the
+'Snt-sh' time is 07:00, then the time for the 'Frh-sh' event must be 07:30.
+Note that this is the service change time, it doesn't need to correspond to the
+departure time or the overall time to complete the loop, which may be any time
+less than 30 minutes or 30 minutes exactly, but can't be more than 30 minutes.</p>
+
+<p>As well as the looping shuttle services themselves, two other associated
+services are available, known as 'shuttle feeder' and 'shuttle finishing'
+services. A feeder service is a non-repeating service that begins at a location
+other than the loop location, but ends at the loop location. It is normally
+used as an empty stock service from a depot to the station at which the shuttle
+begins. This service starts as a normal service but ends with code 'F-nshs',
+which means 'finish non-repeating shuttle feeder service'. The shuttle service
+that it forms begins with code 'Sns-sh', meaning 'start a new shuttle service'.
+A finishing service is a similar non-repeating service but starts when all the
+repeating shuttles have finished, and is typically an empty stock movement back
+to the depot. The code for a shuttle that links to a finishing service (as well
+as back to other shuttles while they are still repeating) is 'Fns-sh', meaning
+'finish and form a new service or a repeating shuttle'. The corresponding
+starting code for the finishing service is 'Sns-fsh', meaning 'start a new
+service from a shuttle'. The lines that contain the shuttle codes ('Sns-sh' and
+'Fns-sh') also contain two linked service references, the first is the linked
+shuttle reference, and the second is the non-repeating feeder or finishing
+service reference. The lines that contain the non-repeating service codes
+('F-nshs' and 'Sns-fsh') have just one linked service reference, corresponding
+to the relevant shuttle. Feeder and finishing services don't have to appear
+together, a particular shuttle may have a feeder service but no finishing
+service, a finishing service but no feeder service, both, or neither.</p>
+
+<p>When setting the times for shuttle links the time for the 'Fns-sh' event
+must correspond to the time for the corresponding 'Sns-sh' event (or 'Snt-sh'
+event if there is no feeder) <u>+ 1 repeat time.</u> This is exactly the same
+as the situation for 'Frh-sh' described above.</p>
+
+<p>When setting the time for a finishing service the 'Sns-fsh' event time must
+correspond to the time for the corresponding 'Fns-sh' event <u>+ 'n' times the
+repeat time,</u> where 'n' is the number of repeats. For example, if the
+shuttle repeats at 30 minute intervals and there are 20 repeats, then if the
+'Fns-sh' time is 07:45, the corresponding 'Sns-fsh' time should be 07:45 + (30
+x 20) minutes, i.e. 17:45.</p>
+
+<p>See <a href="5.111w8h.htm">section 5.11</a> for some important aspects that
+will help to avoid errors.</p>
+
+</div>
+
+</body>
+
+</html>

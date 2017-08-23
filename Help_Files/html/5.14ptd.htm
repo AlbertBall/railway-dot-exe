@@ -1,0 +1,538 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Service references for complex services</title>
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p><a name=5.1></a><b>5.1 Service references for complex services</b></p>
+
+<p>In all the earlier examples services have been identified by headcodes, and
+for simple services like those described headcodes are all that are required
+for identification purposes. However, for more complex types of service, where
+there are links to other services but headcodes are required to remain the same
+(as required for example on many suburban services), more complex 'service
+references' are used. <i>In the following examples shuttles and joins are used
+to illustrate the application of service references. The details of how
+shuttles and joins operate and are coded will be provided later.</i></p>
+
+<p>The point to note is that <u>all linked references must be unique*</u>, so
+if the same headcode is to be used for more than one linked service a prefix
+(own choice up to 4 extra characters) should be added, though in all cases the
+final four characters must represent a headcode. </p>
+
+<p><i>[*Shuttle services may have two links, one each for the 'out' and 'back'
+service legs - where one link is from 'out' to 'back' and the other from 'back'
+to 'out' again. This will be explained later.]</i></p>
+
+<p>The following entries represent firstly a non-shuttle linked pair of
+services where the link represents a join:-</p>
+
+<p>First entry:</p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>1A21;Glasgow to
+  London;200;200;200;20;2500</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>  Headcode;description;train
+  data</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:00;Snt;N89-13 N88-13</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>  Start new train + start
+  elements</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:00;pas;Galton Br. Approach
+  (W)</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>  Pass location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:03;pas;New Street Approach
+  (NW)</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>  Pass location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:08;Birmingham New Street</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>  Arr. location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:11;Fjo;1A23</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>  Finish &amp; join other
+  service + its headcode</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>R;30;4;12</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>  Repeat service</span></p>
+  </td>
+ </tr>
+</table>
+
+<p>Second entry:</p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>1A23;Edinburgh to
+  London;200;200;200;20;2500</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Headcode;description;train
+  data</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:02;Snt;N89-13 N88-13</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Start new train + start
+  elements</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:02;pas;Galton Br. Approach
+  (W)</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Pass location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:05;pas;New Street Approach
+  (NW)</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Pass location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:10;Birmingham New Street</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Arr. location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:11;jbo;1A21</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Joined by other service + its
+  headcode</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:15;Birmingham New Street</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Dep. location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:23;Fer;149-22</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Finish exit railway + exit
+  elements</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>R;30;4;12</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Repeat service</span></p>
+  </td>
+ </tr>
+</table>
+
+<p>Here, the first service entry - 1A21 reaches Birmingham New Street at 07:08,
+and at 07:11 the service finishes, by joining train 1A23 (code <span
+style='color:blue'>Fjo</span> signifies '<span style='color:blue'>F</span>inish,
+<span style='color:blue'>j</span>oin <span style='color:blue'>o</span>ther', in
+this case 1A23). The second service entry is for the corresponding train 1A23,
+which reaches Birmingham New Street at 07:10, and is joined by 1A21 at 07:11
+(code <span style='color:blue'>jbo</span> signifies '<span style='color:blue'>j</span>oined
+<span style='color:blue'>b</span>y <span style='color:blue'>o</span>ther', in
+this case 1A21). The two references 1A21 and 1A23 are the two linked service
+references and must appear in each other's entries for a proper linkage. In
+this case there is no need for any prefixes because these headcodes are not
+used elsewhere.</p>
+
+<p><u>Note that the repeat information must be identical for all linked
+services</u></p>
+
+<p>The next pair of entries represent shuttle services 2-2P48 and 3-2P49
+(shuttles will be explained in detail later):-</p>
+
+<p>First entry:</p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>2-2P48;Four Oaks to Kings Norton</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Reference;description;train data</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>07:06;Sns-sh;3-2P49;2-2P49</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Start new service from feeder then form
+  shuttle + linked shuttle ref. + feeder ref.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>07:07;Four Oaks</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Dep. location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>.</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'> </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>.[lines removed to simplify]</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'> </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>.</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'> </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>07:56;Kings Norton</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Arr. location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>07:56;Fns;3-2P49</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Finish and form new service + its reference</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>R;90;0;08</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Repeat service</span></p>
+  </td>
+ </tr>
+</table>
+
+<p>Second entry:</p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>3-2P49;Kings Norton to Four Oaks </span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Reference;description;train data</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>07:56;Sns;2-2P48 </span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Start new service from another service + its
+  reference</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>07:58;Kings Norton </span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Dep. location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>.</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'> </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>. [lines removed to simplify]</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'> </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>.</span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'> </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>08:35;Four Oaks </span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Arr. location</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>08:35;cdt </span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Change direction of train</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>08:36;Fns-sh;2-2P48;3-2P48 </span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Finish and link back to shuttle &amp; finally
+  form new finishing service + linked shuttle ref. + finishing service ref.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>R;90;0;8 </span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Repeat service</span></p>
+  </td>
+ </tr>
+</table>
+
+<p>This pair of services is just one pair of a number of similar pairs, all of
+which provide the same train service with the same headcodes, but at different
+time intervals. The other pairs are not shown. Here it will be seen that the
+first entry for 2-2P48 contains the linked service 3-2P49 in two places - line <span
+style='color:blue'>07:06;Sns-sh;3-2P49;2-2P49 </span>and line <span
+style='color:blue'>07:56;Fns;3-2P49</span>. This is because, being a shuttle,
+it links at both ends to the reverse shuttle service. Similarly the entry for
+3-2P49 has its linked service 2-2P48 in two places, at the start and at the end
+for the same reasons. The other service references: 2-2P49 and 3-2P48 represent
+the initial shuttle feeder service and the final shuttle finishing services,
+which are not shown. Prefixes are required because the same headcode is used in
+several sets of linked services, and as the other sets must not use the same
+reference, the headcode must be prefixed so as to make the overall reference
+unique.</p>
+
+<p>It is recommended to use different prefixes for separate same-headcode
+services even when the timetable doesn't strictly require it (i.e. where
+multiple links for the same headcode aren't used), because it is then easier to
+identify which service is at fault when errors are reported by the timetable
+syntax or validity checkers.</p>
+
+<p>Note that because headcode letters and numbers are very small, it is easy to
+confuse letter 'g' (shown as ) with number '9' (shown as ).</p>
+
+<p>See <a href="5.111w8h.htm">section 5.11</a> for some important aspects that
+will help to avoid errors.</p>
+
+</div>
+
+</body>
+
+</html>

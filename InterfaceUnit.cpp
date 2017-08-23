@@ -54,7 +54,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <Filectrl.hpp>//to check whether directories exist
 
 //---------------------------------------------------------------------------
+#include <Vcl.HTMLHelpViewer.hpp>   //added at v2.0.0 for access to the .chm help file
 #pragma package(smart_init)
+#pragma link "Vcl.HTMLHelpViewer"   //added at v2.0.0 for access to the .chm help file
 #pragma resource "*.dfm"
 
 TInterface *Interface;
@@ -63,90 +65,94 @@ TInterface *Interface;
 __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
 {//constructor
 try
-    {
-    Screen->Cursor = TCursor(-11);//Hourglass;
-    DirOpenError = false;
-    AllSetUpFlag = false;//flag to prevent MasterClock from being enabled when application activates if there has been an error during
-                         //initial setup
-    //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
-    //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-    ProgramVersion = "v1.3.2"; //Beta2 after Carwyn Thomas error (AbleToMoveButForSignal & RemoveTrain1Click LeadElement check additions) fixed 25/05/15
-                                     //Beta3 after additional errors corrected for TimetableControl1Click, MoveForwards1Click, and after dropped StepForward1 option when leaving at a continuation
-    //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
-    //development stages (don't show on published versions) check for presence of directories, creation failure probably indicates that the
-    //working folder is read-only
-    CurDir = GetCurrentDir();
-    if(!DirectoryExists("Railways"))
-        {
-        if(!CreateDir("Railways"))
-            {
-            DirOpenError = true;
-            }
-        }
-    if(!DirectoryExists("Program timetables"))
-        {
-        if(!CreateDir("Program timetables"))
-            {
-            DirOpenError = true;
-            }
-        }
-    if(!DirectoryExists("Performance logs"))
-        {
-        if(!CreateDir("Performance logs"))
-            {
-            DirOpenError = true;
-            }
-        }
-    if(!DirectoryExists("Sessions"))
-        {
-        if(!CreateDir("Sessions"))
-            {
-            DirOpenError = true;
-            }
-        }
-    if(!DirectoryExists("Images"))
-        {
-        if(!CreateDir("Images"))
-            {
-            DirOpenError = true;
-            }
-        }
-    if(!DirectoryExists("Formatted timetables"))
-        {
-        if(!CreateDir("Formatted timetables"))
-            {
-            DirOpenError = true;
-            }
-        }
-    if(DirOpenError)
-        {
-        ShowMessage("Failed to create one or more of folders: 'Railways', 'Program timetables', 'Performance logs', 'Sessions', 'Images' or 'Formatted timetables', program operation may be restricted");
-        }
+	{
+	Screen->Cursor = TCursor(-11);//Hourglass;
+	DirOpenError = false;
+	AllSetUpFlag = false;//flag to prevent MasterClock from being enabled when application activates if there has been an error during
+						 //initial setup
+	//MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
+	//Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
+	ProgramVersion = "v2.0.0 Beta"; //Beta Embarcadero version
+	//use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
+	//development stages (don't show on published versions) check for presence of directories, creation failure probably indicates that the
+	//working folder is read-only
+	CurDir = GetCurrentDir();
+	if(!DirectoryExists("Railways"))
+		{
+		if(!CreateDir("Railways"))
+			{
+			DirOpenError = true;
+			}
+		}
+	if(!DirectoryExists("Program timetables"))
+		{
+		if(!CreateDir("Program timetables"))
+			{
+			DirOpenError = true;
+			}
+		}
+	if(!DirectoryExists("Performance logs"))
+		{
+		if(!CreateDir("Performance logs"))
+			{
+			DirOpenError = true;
+			}
+		}
+	if(!DirectoryExists("Sessions"))
+		{
+		if(!CreateDir("Sessions"))
+			{
+			DirOpenError = true;
+			}
+		}
+	if(!DirectoryExists("Images"))
+		{
+		if(!CreateDir("Images"))
+			{
+			DirOpenError = true;
+			}
+		}
+	if(!DirectoryExists("Formatted timetables"))
+		{
+		if(!CreateDir("Formatted timetables"))
+			{
+			DirOpenError = true;
+			}
+		}
+	if(DirOpenError)
+		{
+		ShowMessage("Failed to create one or more of folders: 'Railways', 'Program timetables', 'Performance logs', 'Sessions', 'Images' or 'Formatted timetables', program operation may be restricted");
+		}
 //ShowMessage("NOTE: APPDEACTIVATE etc Disabled in FormCreate");
-    SaveRailwayDialog->InitialDir = CurDir + "\\Railways";
-    LoadRailwayDialog->InitialDir = CurDir + "\\Railways";
-    TimetableDialog->InitialDir = CurDir + "\\Program timetables";
-    SaveTTDialog->InitialDir = CurDir + "\\Program timetables";
-    LoadSessionDialog->InitialDir = CurDir + "\\Sessions";
-    ImageDir = CurDir + "\\Images";
-    FormattedTTDir = CurDir + "\\Formatted timetables";
+	SaveRailwayDialog->InitialDir = CurDir + "\\Railways";
+	LoadRailwayDialog->InitialDir = CurDir + "\\Railways";
+	TimetableDialog->InitialDir = CurDir + "\\Program timetables";
+	SaveTTDialog->InitialDir = CurDir + "\\Program timetables";
+	LoadSessionDialog->InitialDir = CurDir + "\\Sessions";
+	ImageDir = CurDir + "\\Images";
+	FormattedTTDir = CurDir + "\\Formatted timetables";
 
-    Utilities = new TUtilities;
-    RailGraphics = new TRailGraphics();
-    int DispW = (Screen->Width - 64) / 16; //will truncate down to a multiple of 16
-    int DispH = (Screen->Height - 192) / 16;
+	Application->HelpFile = AnsiString(CurDir + "\\Help.chm"); //added at v2.0.0 for .chm help file
 
-    MainScreen->Width = DispW * 16;
-    MainScreen->Height = DispH * 16;
+	MainMenu1->AutoHotkeys = maManual;  //Embarcadero mod: to suppress '&' inclusion for underlined characters in menu items
+	PopupMenu->AutoHotkeys = maManual;  //as above
 
-    Display = new TDisplay(MainScreen, PerformanceLogBox, OutputLog1, OutputLog2, OutputLog3, OutputLog4, OutputLog5, OutputLog6,
-            OutputLog7, OutputLog8, OutputLog9, OutputLog10);
-    Utilities->ScreenElementWidth = DispW;
-    Utilities->ScreenElementHeight = DispH;
-    HiddenScreen = new TImage(Interface);
-    HiddenScreen->Width = MainScreen->Width;
-    HiddenScreen->Height = MainScreen->Height;
-    HiddenDisplay = new TDisplay(HiddenScreen, PerformanceLogBox, OutputLog1, OutputLog2, OutputLog3, OutputLog4, OutputLog5, OutputLog6,
+	Utilities = new TUtilities;
+	RailGraphics = new TRailGraphics();
+	int DispW = (Screen->Width - 64) / 16; //will truncate down to a multiple of 16
+	int DispH = (Screen->Height - 192) / 16;
+
+	MainScreen->Width = DispW * 16;
+	MainScreen->Height = DispH * 16;
+
+	Display = new TDisplay(MainScreen, PerformanceLogBox, OutputLog1, OutputLog2, OutputLog3, OutputLog4, OutputLog5, OutputLog6,
+			OutputLog7, OutputLog8, OutputLog9, OutputLog10);
+	Utilities->ScreenElementWidth = DispW;
+	Utilities->ScreenElementHeight = DispH;
+	HiddenScreen = new TImage(Interface);
+	HiddenScreen->Width = MainScreen->Width;
+	HiddenScreen->Height = MainScreen->Height;
+	HiddenDisplay = new TDisplay(HiddenScreen, PerformanceLogBox, OutputLog1, OutputLog2, OutputLog3, OutputLog4, OutputLog5, OutputLog6,
             OutputLog7, OutputLog8, OutputLog9, OutputLog10);
     TextHandler = new TTextHandler;
     Track = new TTrack;
@@ -164,8 +170,8 @@ try
     NonSigRouteStartMarker = new TGraphicElement;
 
     TrackInfoOnOff1->Caption = "Show";  //added here at v1.2.0 because dropped from ResetAll()
-    TrainStatusInfoOnOff1->Caption = "Show status";
-    TrainTTInfoOnOff1->Caption = "Show timetable";
+	TrainStatusInfoOnOff1->Caption = "Hide status"; //changed at v2.0.0 so normally visible
+	TrainTTInfoOnOff1->Caption = "Hide timetable"; //as above
     ResetAll(0);
 
     TempTTFileName = "";
@@ -180,25 +186,25 @@ try
 
     FloatingLabel->Color = clB4G5R5;
     TrackElementPanel->Color = clB5G5R4;
-    InfoPanel->Color = clB4G5R5;
+	InfoPanel->Color = clB4G5R5;
 
-    SpeedButton1->Glyph->LoadFromResourceName(0, "gl1"); SpeedButton2->Glyph->LoadFromResourceName(0, "gl2");
-    SpeedButton3->Glyph->LoadFromResourceName(0, "gl3"); SpeedButton4->Glyph->LoadFromResourceName(0, "gl4");
-    SpeedButton5->Glyph->LoadFromResourceName(0, "gl5"); SpeedButton6->Glyph->LoadFromResourceName(0, "gl6");
-    SpeedButton7->Glyph->LoadFromResourceName(0, "gl7"); SpeedButton8->Glyph->LoadFromResourceName(0, "gl8");
-    SpeedButton9->Glyph->LoadFromResourceName(0, "gl9"); SpeedButton10->Glyph->LoadFromResourceName(0, "gl10");
-    SpeedButton11->Glyph->LoadFromResourceName(0, "gl11"); SpeedButton12->Glyph->LoadFromResourceName(0, "gl12");
-    SpeedButton13->Glyph->LoadFromResourceName(0, "gl13"); SpeedButton14->Glyph->LoadFromResourceName(0, "gl14");
-    SpeedButton15->Glyph->LoadFromResourceName(0, "gl15"); SpeedButton16->Glyph->LoadFromResourceName(0, "gl16");
-    SpeedButton18->Glyph->LoadFromResourceName(0, "gl18"); SpeedButton19->Glyph->LoadFromResourceName(0, "gl19");
-    SpeedButton20->Glyph->LoadFromResourceName(0, "gl20"); SpeedButton21->Glyph->LoadFromResourceName(0, "gl21");
-    SpeedButton22->Glyph->LoadFromResourceName(0, "gl22"); SpeedButton23->Glyph->LoadFromResourceName(0, "gl23");
-    SpeedButton24->Glyph->LoadFromResourceName(0, "gl24"); SpeedButton25->Glyph->LoadFromResourceName(0, "gl25");
-    SpeedButton26->Glyph->LoadFromResourceName(0, "gl26"); SpeedButton27->Glyph->LoadFromResourceName(0, "gl27");
-    SpeedButton28->Glyph->LoadFromResourceName(0, "gl28"); SpeedButton29->Glyph->LoadFromResourceName(0, "gl29");
-    SpeedButton30->Glyph->LoadFromResourceName(0, "gl30"); SpeedButton31->Glyph->LoadFromResourceName(0, "gl31");
-    SpeedButton32->Glyph->LoadFromResourceName(0, "gl32"); SpeedButton33->Glyph->LoadFromResourceName(0, "gl33");
-    SpeedButton34->Glyph->LoadFromResourceName(0, "gl34"); SpeedButton35->Glyph->LoadFromResourceName(0, "gl35");
+	SpeedButton1->Glyph->LoadFromResourceName(0, "gl1"); SpeedButton2->Glyph->LoadFromResourceName(0, "gl2");
+	SpeedButton3->Glyph->LoadFromResourceName(0, "gl3"); SpeedButton4->Glyph->LoadFromResourceName(0, "gl4");
+	SpeedButton5->Glyph->LoadFromResourceName(0, "gl5"); SpeedButton6->Glyph->LoadFromResourceName(0, "gl6");
+	SpeedButton7->Glyph->LoadFromResourceName(0, "gl7"); SpeedButton8->Glyph->LoadFromResourceName(0, "gl8");
+	SpeedButton9->Glyph->LoadFromResourceName(0, "gl9"); SpeedButton10->Glyph->LoadFromResourceName(0, "gl10");
+	SpeedButton11->Glyph->LoadFromResourceName(0, "gl11"); SpeedButton12->Glyph->LoadFromResourceName(0, "gl12");
+	SpeedButton13->Glyph->LoadFromResourceName(0, "gl13"); SpeedButton14->Glyph->LoadFromResourceName(0, "gl14");
+	SpeedButton15->Glyph->LoadFromResourceName(0, "gl15"); SpeedButton16->Glyph->LoadFromResourceName(0, "gl16");
+	SpeedButton18->Glyph->LoadFromResourceName(0, "gl18"); SpeedButton19->Glyph->LoadFromResourceName(0, "gl19");
+	SpeedButton20->Glyph->LoadFromResourceName(0, "gl20"); SpeedButton21->Glyph->LoadFromResourceName(0, "gl21");
+	SpeedButton22->Glyph->LoadFromResourceName(0, "gl22"); SpeedButton23->Glyph->LoadFromResourceName(0, "gl23");
+	SpeedButton24->Glyph->LoadFromResourceName(0, "gl24"); SpeedButton25->Glyph->LoadFromResourceName(0, "gl25");
+	SpeedButton26->Glyph->LoadFromResourceName(0, "gl26"); SpeedButton27->Glyph->LoadFromResourceName(0, "gl27");
+	SpeedButton28->Glyph->LoadFromResourceName(0, "gl28"); SpeedButton29->Glyph->LoadFromResourceName(0, "gl29");
+	SpeedButton30->Glyph->LoadFromResourceName(0, "gl30"); SpeedButton31->Glyph->LoadFromResourceName(0, "gl31");
+	SpeedButton32->Glyph->LoadFromResourceName(0, "gl32"); SpeedButton33->Glyph->LoadFromResourceName(0, "gl33");
+	SpeedButton34->Glyph->LoadFromResourceName(0, "gl34"); SpeedButton35->Glyph->LoadFromResourceName(0, "gl35");
     SpeedButton36->Glyph->LoadFromResourceName(0, "gl36"); SpeedButton37->Glyph->LoadFromResourceName(0, "gl37");
     SpeedButton38->Glyph->LoadFromResourceName(0, "gl38"); SpeedButton39->Glyph->LoadFromResourceName(0, "gl39");
     SpeedButton40->Glyph->LoadFromResourceName(0, "gl40"); SpeedButton41->Glyph->LoadFromResourceName(0, "gl41");
@@ -386,7 +392,7 @@ try
 
     //pick up transparent colour from file if there is one & set it to the stored value if it's valid else set to black
 
-    std::ifstream ColFile((CurDir + "\\Background.col").c_str());
+	std::ifstream ColFile((CurDir + "\\Background.col").c_str());
     if(ColFile.fail())
         {
         Utilities->clTransparent = clB0G0R0;//default black background;
@@ -461,7 +467,7 @@ catch (const EFOpenError &e)
 catch (const Exception &e)
     {
     TMsgDlgButtons But;
-    But << mbOK;
+	But << mbOK;
     AnsiString Message = "A fatal error occurred during the program setup process, the program must terminate.  Message = " + e.Message;
     MessageDlg(Message, mtError, But, 0);//this message given first in case can't create the error log
     ErrorLog(115, e.Message);
@@ -510,7 +516,7 @@ try
     }
 catch (const Exception &e)
     {
-    ErrorLog(117, e.Message);
+	ErrorLog(117, e.Message);
     }
 }
 
@@ -520,7 +526,7 @@ void __fastcall TInterface::AppDeactivate(TObject *Sender)
 { //pause operation if operating & stop the master clock
 try
     {
-    if((Level1Mode == OperMode) && (Level2OperMode == Operating))
+	if((Level1Mode == OperMode) && (Level2OperMode == Operating))
         {
         if(Track->RouteFlashFlag)//in case route building - cancels the route, freezes otherwise - reported
             {                    //by Matt Blades 30/06/11
@@ -531,17 +537,17 @@ try
             Track->RouteFlashFlag = false;
             ClearandRebuildRailway(48);//to get rid of displayed route
             }
-        if(Track->PointFlashFlag) //added at v1.3.1 to prevent lockup for flashing points when deactivates.  Notified by Ian Walker in his email of 25/03/13.
+		if(Track->PointFlashFlag) //added at v1.3.1 to prevent lockup for flashing points when deactivates.  Notified by Ian Walker in his email of 25/03/13.
             {
             PointFlash->PlotOriginal(42, Display);
-            Track->PointFlashFlag = false;
+			Track->PointFlashFlag = false;
             DivergingPointVectorPosition = -1;
             Screen->Cursor = TCursor(-2);//Arrow
             }
         Level2OperMode = Paused;
         SetLevel2OperMode(2);
         }
-    MasterClock->Enabled = false;
+	MasterClock->Enabled = false;
     }
 catch (const Exception &e)
     {
@@ -555,7 +561,7 @@ void __fastcall TInterface::AppActivate(TObject *Sender)
 { //restart the master clock providing Interface constructor has run
 try
     {
-    if(AllSetUpFlag)
+	if(AllSetUpFlag)
         {
         MasterClock->Enabled = true;
         }
@@ -843,8 +849,8 @@ try
         else ExistingName = Track->TrackElementAt(425, -1-(Track->LNPendingList.front())).LocationName;
         if(Track->LocationNameAllocated(1, LocationNameTextBox->Text) && (ExistingName != LocationNameTextBox->Text))
             {//name allocated to a different location
-            AnsiString MessageStr = AnsiString("Another location named '") + LocationNameTextBox->Text + AnsiString("' already exists.  If you continue its name will be erased.  Do you wish to continue?");
-            int button = Application->MessageBox(MessageStr.c_str(), "", MB_YESNO);
+			UnicodeString MessageStr = UnicodeString("Another location named '") + LocationNameTextBox->Text + UnicodeString("' already exists.  If you continue its name will be erased.  Do you wish to continue?");
+			int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
             if (button == IDNO)
                 {
                 Track->LNPendingList.clear();//get rid of existing entry
@@ -1434,7 +1440,7 @@ try
     {
     TrainController->LogEvent("FontButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",FontButtonClick");
-    FontDialog->Font = Display->GetFont();
+	FontDialog->Font = Display->GetFont();
     FontDialog->Execute();
     if(FontDialog->Font->Color == clB5G5R5) FontDialog->Font->Color = clB0G0R0;//don't store white in font, will display black as white on
         //dark backgrounds
@@ -1604,7 +1610,7 @@ try
     TrainController->LogEvent("OperateRailway1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OperateRailwayClick");
     TTrain::NextTrainID = 0;//reset to 0 whenever enter operating mode
-    AllRoutes->NextRouteID = 0;//reset to 0 whenever enter operating mode
+	AllRoutes->NextRouteID = 0;//reset to 0 whenever enter operating mode
     Level1Mode = OperMode;
     SetLevel1Mode(7);
     Utilities->CallLogPop(26);
@@ -1793,11 +1799,11 @@ try
     TrainController->LogEvent("ExitOperationButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExitOperationButtonClick");
 
-    AnsiString MessageStr = "Please note that the session will be lost if it hasn't been saved.  Do you still wish to exit?";
+	UnicodeString MessageStr = "Please note that the session will be lost if it hasn't been saved.  Do you still wish to exit?";
     TrainController->StopTTClockFlag = true;//so TTClock stopped during MasterClockTimer function
-    TrainController->RestartTime = TrainController->TTClockTime;
-    int button = Application->MessageBox(MessageStr.c_str(), "", MB_YESNO);
-    TrainController->BaseTime = TDateTime::CurrentDateTime();
+	TrainController->RestartTime = TrainController->TTClockTime;
+	int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
+	TrainController->BaseTime = TDateTime::CurrentDateTime();
     TrainController->StopTTClockFlag = false;
     if (button == IDNO)
         {
@@ -1846,11 +1852,13 @@ try
         Utilities->CallLogPop(1139);
         return;
         }
-    LoadRailwayDialog->Filter = "Development file (*.dev)|*.dev|Railway file (*.rly)|*.rly";
-    if(LoadRailwayDialog->Execute())
+	//LoadRailwayDialog->Filter = "Development file (*.dev)|*.dev|Railway file (*.rly)|*.rly"; //as was
+	//changed at v2.0.0 (Embarcadero change) to show all files together
+	LoadRailwayDialog->Filter = "Railway files (*.rly or *.dev)|*.rly; *.dev";
+	if(LoadRailwayDialog->Execute())
         {
-        TrainController->LogEvent("LoadRailway " + LoadRailwayDialog->FileName);
-        LoadRailway(0, LoadRailwayDialog->FileName);
+		TrainController->LogEvent("LoadRailway " + AnsiString(LoadRailwayDialog->FileName));
+        LoadRailway(0, AnsiString(LoadRailwayDialog->FileName));
         }
     //else ShowMessage("Load Aborted"); drop this
     //Display->Update(); //display updated in ClearandRebuildRailway
@@ -1860,9 +1868,9 @@ try
     Utilities->CallLogPop(31);
     }
 catch (const Exception &e)
-    {
-    ErrorLog(17, e.Message);
-    }
+	{
+	ErrorLog(17, e.Message);
+	}
 }
 //---------------------------------------------------------------------------
 
@@ -1870,109 +1878,109 @@ void TInterface::LoadRailway(int Caller, AnsiString LoadFileName)
 {//display of the loaded railway covered in the calling routine
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadRailway," + LoadFileName);
 if(FileIntegrityCheck(0, LoadFileName.c_str()))
-    {
-    Screen->Cursor = TCursor(-11);//Hourglass;
-    std::ifstream VecFile(LoadFileName.c_str());
-    if(!(VecFile.fail()))
-        {
-        AnsiString TempString = Utilities->LoadFileString(VecFile);
-        int TempOffsetHHome = Utilities->LoadFileInt(VecFile);
-        int TempOffsetVHome = Utilities->LoadFileInt(VecFile);
-        //can't load DisplayOffsetH & VHome until after LoadTrack as that calls TrackClear & zeroes them
+	{
+	Screen->Cursor = TCursor(-11);//Hourglass;
+	std::ifstream VecFile(LoadFileName.c_str());
+	if(!(VecFile.fail()))
+		{
+		AnsiString TempString = Utilities->LoadFileString(VecFile);
+		int TempOffsetHHome = Utilities->LoadFileInt(VecFile);
+		int TempOffsetVHome = Utilities->LoadFileInt(VecFile);
+		//can't load DisplayOffsetH & VHome until after LoadTrack as that calls TrackClear & zeroes them
 //load track elements
-        Track->LoadTrack(1, VecFile);
+		Track->LoadTrack(1, VecFile);
 //                Track->LoadOldTrack(1, VecFile); //used to allow loading of earlier railways when changing LoadTrack
 //load text elements
-        TextHandler->LoadText(0, VecFile);
+		TextHandler->LoadText(0, VecFile);
 //                TextHandler->LoadOld(VecFile); //used to allow loading of earlier text when changing LoadText
 //load PrefDir elements
-        EveryPrefDir->LoadPrefDir(0, VecFile);
+		EveryPrefDir->LoadPrefDir(0, VecFile);
 //                EveryPrefDir->LoadOldPrefDir(0, VecFile); //used to allow loading of earlier text when changing LoadPrefDir
-        EveryPrefDir->CheckPrefDirAgainstTrackVector(0);//clears PrefDir if any discrepancies found
-        VecFile.close();
-        Display->DisplayOffsetHHome = TempOffsetHHome;
-        Display->DisplayOffsetVHome = TempOffsetVHome;
-        Display->ResetZoomInOffsets();
+		EveryPrefDir->CheckPrefDirAgainstTrackVector(0);//clears PrefDir if any discrepancies found
+		VecFile.close();
+		Display->DisplayOffsetHHome = TempOffsetHHome;
+		Display->DisplayOffsetVHome = TempOffsetVHome;
+		Display->ResetZoomInOffsets();
 
-        TFont *TempFont = new TFont;//if try to alter MainScreen->Canvas->Font directly it won't change the style for some reason
-        TempFont->Style.Clear();
-        TempFont->Name = "MS Sans Serif";//reset font, else stays set to last displayed text font
-        TempFont->Size = 10;
-        TempFont->Color = clB0G0R0;
-        TempFont->Charset = (TFontCharset)(0);
-        MainScreen->Canvas->Font->Assign(TempFont);
-        delete TempFont;
+		TFont *TempFont = new TFont;//if try to alter MainScreen->Canvas->Font directly it won't change the style for some reason
+		TempFont->Style.Clear();
+		TempFont->Name = "MS Sans Serif";//reset font, else stays set to last displayed text font
+		TempFont->Size = 10;
+		TempFont->Color = clB0G0R0;
+		TempFont->Charset = (TFontCharset)(0);
+		MainScreen->Canvas->Font->Assign(TempFont);
+		delete TempFont;
 
 //calculate starting zoomed out offset values - same as when zoom out button clicked
-        int OVOffH_NVCentre = Display->DisplayOffsetH - (1.5 * Utilities->ScreenElementWidth); // start zoomout centre at DisplayOffsetH + 30 - zoomout width/2 = -(1.5 * 60)
-        int LeftExcess = OVOffH_NVCentre - Track->GetHLocMin();
-        int RightExcess = Track->GetHLocMax() - OVOffH_NVCentre - ((4 * Utilities->ScreenElementWidth) - 1);
-        if((LeftExcess > 0) && (RightExcess > 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre;
-        else if((LeftExcess > 0) && (RightExcess <= 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre + ((RightExcess)/(Utilities->ScreenElementWidth/2))*(Utilities->ScreenElementWidth/2);//normalise to nearest half screen
-        else if((LeftExcess <= 0) && (RightExcess > 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre - ((LeftExcess)/(Utilities->ScreenElementWidth/2))*(Utilities->ScreenElementWidth/2);
-        else Display->DisplayZoomOutOffsetH = OVOffH_NVCentre;//no excess at either side, so display in centre
+		int OVOffH_NVCentre = Display->DisplayOffsetH - (1.5 * Utilities->ScreenElementWidth); // start zoomout centre at DisplayOffsetH + 30 - zoomout width/2 = -(1.5 * 60)
+		int LeftExcess = OVOffH_NVCentre - Track->GetHLocMin();
+		int RightExcess = Track->GetHLocMax() - OVOffH_NVCentre - ((4 * Utilities->ScreenElementWidth) - 1);
+		if((LeftExcess > 0) && (RightExcess > 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre;
+		else if((LeftExcess > 0) && (RightExcess <= 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre + ((RightExcess)/(Utilities->ScreenElementWidth/2))*(Utilities->ScreenElementWidth/2);//normalise to nearest half screen
+		else if((LeftExcess <= 0) && (RightExcess > 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre - ((LeftExcess)/(Utilities->ScreenElementWidth/2))*(Utilities->ScreenElementWidth/2);
+		else Display->DisplayZoomOutOffsetH = OVOffH_NVCentre;//no excess at either side, so display in centre
 
-        int OVOffV_NVCentre = Display->DisplayOffsetV - (1.5 * Utilities->ScreenElementHeight);
-        int TopExcess = OVOffV_NVCentre - Track->GetVLocMin();
-        int BotExcess = Track->GetVLocMax() - OVOffV_NVCentre - ((4 * Utilities->ScreenElementHeight) - 1);
-        if((TopExcess > 0) && (BotExcess > 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre;
-        else if((TopExcess > 0) && (BotExcess <= 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre + ((BotExcess)/(Utilities->ScreenElementHeight/2))*(Utilities->ScreenElementHeight/2);//normalise to nearest half screen
-        else if((TopExcess <= 0) && (BotExcess > 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre - ((TopExcess)/(Utilities->ScreenElementHeight/2))*(Utilities->ScreenElementHeight/2);
-        else Display->DisplayZoomOutOffsetV = OVOffV_NVCentre;//no excess at either side, so display in centre
+		int OVOffV_NVCentre = Display->DisplayOffsetV - (1.5 * Utilities->ScreenElementHeight);
+		int TopExcess = OVOffV_NVCentre - Track->GetVLocMin();
+		int BotExcess = Track->GetVLocMax() - OVOffV_NVCentre - ((4 * Utilities->ScreenElementHeight) - 1);
+		if((TopExcess > 0) && (BotExcess > 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre;
+		else if((TopExcess > 0) && (BotExcess <= 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre + ((BotExcess)/(Utilities->ScreenElementHeight/2))*(Utilities->ScreenElementHeight/2);//normalise to nearest half screen
+		else if((TopExcess <= 0) && (BotExcess > 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre - ((TopExcess)/(Utilities->ScreenElementHeight/2))*(Utilities->ScreenElementHeight/2);
+		else Display->DisplayZoomOutOffsetV = OVOffV_NVCentre;//no excess at either side, so display in centre
 //all above same as when zoom out button clicked
-        Display->DisplayZoomOutOffsetVHome = Display->DisplayZoomOutOffsetV;//now set zoomed out 'home' values
-        Display->DisplayZoomOutOffsetHHome = Display->DisplayZoomOutOffsetH;
+		Display->DisplayZoomOutOffsetVHome = Display->DisplayZoomOutOffsetV;//now set zoomed out 'home' values
+		Display->DisplayZoomOutOffsetHHome = Display->DisplayZoomOutOffsetH;
 
-        SavedFileName = LoadRailwayDialog->FileName;//includes the full PrefDir
-        if(SavedFileName != "")//shouldn't be "" at this stage but leave in as a safeguard
-            {
-            char LastChar = SavedFileName[SavedFileName.Length()];
-            if((LastChar == 'y') || (LastChar == 'Y'))
-                {
-                if(!(Track->IsReadyForOperation()))
-                    {
-                    ShowMessage("Railway not ready for operation so unable to load as a .rly file.  Loading as a new railway under development");
-                    SavedFileName = "";
-                    RlyFile = false;
-                    RailwayTitle = "";
-                    TimetableTitle = "";
-                    SetCaption(5);
-                    Track->CalcHLocMinEtc(1);
-                    Screen->Cursor = TCursor(-2);//Arrow
-                    Level1Mode = BaseMode;
-                    SetLevel1Mode(9);
-                    Utilities->CallLogPop(1136);
-                    return;
-                    }
-                else
-                    {
-                    RlyFile = true;
-                    }
-                }
-            else
-                {
-                RlyFile = false;
-                }
-            }
-        else
-            {
-            RlyFile = false;
-            }
-        FileChangedFlag = false;
-        for(int x=LoadRailwayDialog->FileName.Length();x>0;x--)
-            {
-            if(LoadRailwayDialog->FileName[x] == '\\')
-                {
-                RailwayTitle = LoadRailwayDialog->FileName.SubString(x+1, LoadRailwayDialog->FileName.Length() - x - 4);
-                TimetableTitle = "";
-                SetCaption(6);
-                break;
-                }
-            }
-        }//if(VecFile)
-    else ShowMessage("File open failed prior to load");
-    Screen->Cursor = TCursor(-2);//Arrow
-    }//if(FileIntegrityCheck(LoadRailwayDialog->FileName.c_str()))
+		SavedFileName = AnsiString(LoadRailwayDialog->FileName);//includes the full PrefDir
+		if(SavedFileName != "")//shouldn't be "" at this stage but leave in as a safeguard
+			{
+			char LastChar = SavedFileName[SavedFileName.Length()];
+			if((LastChar == 'y') || (LastChar == 'Y'))
+				{
+				if(!(Track->IsReadyForOperation()))
+					{
+					ShowMessage("Railway not ready for operation so unable to load as a .rly file.  Loading as a new railway under development");
+					SavedFileName = "";
+					RlyFile = false;
+					RailwayTitle = "";
+					TimetableTitle = "";
+					SetCaption(5);
+					Track->CalcHLocMinEtc(1);
+					Screen->Cursor = TCursor(-2);//Arrow
+					Level1Mode = BaseMode;
+					SetLevel1Mode(9);
+					Utilities->CallLogPop(1136);
+					return;
+					}
+				else
+					{
+					RlyFile = true;
+					}
+				}
+			else
+				{
+				RlyFile = false;
+				}
+			}
+		else
+			{
+			RlyFile = false;
+			}
+		FileChangedFlag = false;
+		for(int x=AnsiString(LoadRailwayDialog->FileName).Length();x>0;x--)
+			{
+			if(AnsiString(LoadRailwayDialog->FileName)[x] == '\\')
+				{
+				RailwayTitle = AnsiString(LoadRailwayDialog->FileName).SubString(x+1, AnsiString(LoadRailwayDialog->FileName).Length() - x - 4);
+				TimetableTitle = "";
+				SetCaption(6);
+				break;
+				}
+			}
+		}//if(VecFile)
+	else ShowMessage("File open failed prior to load");
+	Screen->Cursor = TCursor(-2);//Arrow
+	}//if(FileIntegrityCheck(LoadRailwayDialog->FileName.c_str()))
 else ShowMessage("File integrity check failed - unable to load");
 Utilities->CallLogPop(1774);
 }
@@ -2048,12 +2056,12 @@ try
     Screen->Cursor = TCursor(-11);//Hourglass;
     TrainController->StopTTClockFlag = true;//so TTClock stopped during MasterClockTimer function
     TrainController->RestartTime = TrainController->TTClockTime;
-    AnsiString ImageFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
+	AnsiString ImageFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
     //format "16/06/2009 20:55:17"
     // avoid characters in filename:=   / \ : * ? " < > |
     ImageFileName = CurDir + "\\Images\\RailwayImage " + ImageFileName + "; " + RailwayTitle + ".bmp";
     AnsiString ShortName = "";
-    for(int x=ImageFileName.Length();x>0;x--)
+	for(int x=ImageFileName.Length();x>0;x--)
         {
         if(ImageFileName[x] == '\\')
             {
@@ -2078,7 +2086,7 @@ try
         {
         for(TTextHandler::TTextVectorIterator TextPtr = TextHandler->TextVector.begin(); TextPtr != TextHandler->TextVector.end(); TextPtr++)
             {
-            int NewWidth = (TextPtr->HPos - HPosMin) + (abs(TextPtr->Font->Height) * TextPtr->TextString.Length() * 0.7);
+			int NewWidth = (TextPtr->HPos - HPosMin) + (abs(TextPtr->Font->Height) * TextPtr->TextString.Length() * 0.7);
             int NewHeight = (TextPtr->VPos - VPosMin) + (abs(TextPtr->Font->Height) * 1.5);
             if(NewWidth > RailwayImage->Width)
                 {
@@ -2616,71 +2624,74 @@ try
     TrainController->LogEvent("EditTimetable1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",EditTimetable1Click");
     TimetableDialog->Filter = "Timetable file (*.ttb)|*ttb";
-    CreateEditTTFileName = "";
-    TimetableEditVector.clear();
-    TimetableEditPanel->Visible = true;
-    HighlightPanel->Visible = false;
-    TimetablePanel->Visible = true;
-    TimetablePanel->BringToFront();//in case SaveRailway button visible, want it hidden else obscures the panel text
-    ShowHideTTButton->Glyph->LoadFromResourceName(0, "Hide");
-    OneEntryTimetableMemo->Clear();
-    AllEntriesTTListBox->Clear();
-    TTStartTimeBox->Text = "";
-    AddSubMinsBox->Text = "";
-    OneEntryTimetableContents = "";
-    LocationNameComboBox->Clear();
-    TEVPtr=0; TTCurrentEntryPtr=0, TTStartTimePtr=0; TTFirstServicePtr=0; TTLastServicePtr=0;//all set to null to begin with
-    if(TimetableDialog->Execute())
-        {
-        TrainController->LogEvent("EditTimetable " + TimetableDialog->FileName);
-        std::ifstream TTBLFile(TimetableDialog->FileName.c_str(), std::ios_base::binary);//open in binary to examine each character
-        if(TTBLFile)
-            {
-            //check doesn't contain any non-ascii characters except CR, LF & '\0', and isn't empty
-            char c;
-            while(!TTBLFile.eof())
-                {
-                TTBLFile.get(c);
-                if((c < 32) && (c != 13) && (c != 10) && (c != '\0'))//char is signed by default so values > 127 will be caught as treated as -ve
-                    {
-                    ShowMessage("Timetable file is empty or contains non-ascii characters, codes must be between 20 and 127, or CR or LF");
-                    TTBLFile.close();
-                    Utilities->CallLogPop(1612);
-                    return;
-                    }
-                }
-            TTBLFile.close();
-            }
-        else
-            {
-            ShowMessage("Failed to open timetable file, make sure it's not open in another application");
-            Utilities->CallLogPop(1597);
-            return;
-            }
-        //reopen again in binary mode so the "\r\n" pairs stay as they are rather than being entered as '\n'
-        Delay(4, 100);//100mSec delay between closing & re-opening file
-        TTBLFile.open(TimetableDialog->FileName.c_str(), std::ios_base::binary);
-        if(TTBLFile)
-            {
-            TimetableTitle = "";//unload any loaded timetable
-            TrainController->TrainDataVector.clear();//unload any loaded timetable
-            TimetableChangedFlag = false;
-            TimetableValidFlag = false;
-            TTEntryChangedFlag = false;
-            NewEntryInPreparationFlag = false;
-            CopiedEntryStr = "";
-            CopiedEntryFlag = false;
-            CreateEditTTFileName = TimetableDialog->FileName;
-            for(int x=TimetableDialog->FileName.Length();x>0;x--)
-                {
-                if(TimetableDialog->FileName[x] == '\\')
-                    {
-                    CreateEditTTTitle = TimetableDialog->FileName.SubString(x+1, TimetableDialog->FileName.Length() - x - 4);
+	CreateEditTTFileName = "";
+	TimetableEditVector.clear();
+	TimetableEditPanel->Visible = true;
+	HighlightPanel->Visible = false;
+	TimetablePanel->Visible = true;
+	TimetablePanel->BringToFront();//in case SaveRailway button visible, want it hidden else obscures the panel text
+	ShowHideTTButton->Glyph->LoadFromResourceName(0, "Hide");
+	OneEntryTimetableMemo->Clear();
+	AllEntriesTTListBox->Clear();
+	TTStartTimeBox->Text = "";
+	AddSubMinsBox->Text = "";
+	OneEntryTimetableContents = "";
+	LocationNameComboBox->Clear();
+	TEVPtr=0; TTCurrentEntryPtr=0, TTStartTimePtr=0; TTFirstServicePtr=0; TTLastServicePtr=0;//all set to null to begin with
+	if(TimetableDialog->Execute())
+		{
+		CreateEditTTFileName = AnsiString(TimetableDialog->FileName);
+		TrainController->LogEvent("EditTimetable " + CreateEditTTFileName);
+		std::ifstream TTBLFile(CreateEditTTFileName.c_str(), std::ios_base::binary);//open in binary to examine each character
+		if(TTBLFile.is_open())
+			{
+			//check doesn't contain any non-ascii characters except CR, LF & '\0', and isn't empty
+			char c;
+			while(!TTBLFile.eof())
+				{
+				TTBLFile.get(c);
+				if((c < 32) && (c != 13) && (c != 10) && (c != '\0'))//char is signed by default so values > 127 will be caught as treated as -ve
+					{
+					ShowMessage("Timetable file is empty or contains non-ascii characters, codes must be between 20 and 127, or CR or LF");
+					TTBLFile.close();
+					Utilities->CallLogPop(1612);
+					return;
+					}
+				}
+			TTBLFile.close();
+			}
+		else
+			{
+			ShowMessage("Failed to open timetable file, make sure it's not open in another application");
+			Utilities->CallLogPop(1597);
+			return;
+			}
+		//reopen again in binary mode so the "\r\n" pairs stay as they are rather than being entered as '\n'
+		Delay(4, 100);//100mSec delay between closing & re-opening file
+		TTBLFile.open(CreateEditTTFileName.c_str(), std::ios_base::binary);
+		if(TTBLFile.is_open())
+			{
+			TTBLFile.clear(); //to clear eofbit from last read
+			TTBLFile.seekg(0); //shouldn't be needed but include for safety
+			TimetableTitle = "";//unload any loaded timetable
+			TrainController->TrainDataVector.clear();//unload any loaded timetable
+			TimetableChangedFlag = false;
+			TimetableValidFlag = false;
+			TTEntryChangedFlag = false;
+			NewEntryInPreparationFlag = false;
+			CopiedEntryStr = "";
+			CopiedEntryFlag = false;
+//            CreateEditTTFileName = TimetableDialog->FileName;
+			for(int x=CreateEditTTFileName.Length();x>0;x--)
+				{
+				if(CreateEditTTFileName[x] == '\\')
+					{
+                    CreateEditTTTitle = CreateEditTTFileName.SubString(x+1, CreateEditTTFileName.Length() - x - 4);
                     break;
                     }
                 }
             char *TimetableEntryString = new char[10000];
-            while(true)
+			while(true)
                 {
                 TTBLFile.getline(TimetableEntryString, 10000, '\0'); //pick up the entire AnsiString, including any embedded newlines
                 if(TTBLFile.eof() && (TimetableEntryString[0] == '\0'))//stores a null in 1st position if doesn't load any characters
@@ -2690,20 +2701,20 @@ try
                     }
                 AnsiString OneLine(TimetableEntryString);
 /*  removed to allow newlines in comments
-                while((OneLine != "") && OneLine[OneLine.Length()] == ',')
+				while((OneLine != "") && OneLine[OneLine.Length()] == ',')
                     {
-                    OneLine = OneLine.SubString(1, OneLine.Length() - 1);//strip excess commas
+					OneLine = OneLine.SubString(1, OneLine.Length() - 1);//strip excess commas
                     }
                 while((OneLine != "") && OneLine[1] == ' ')
                     {
-                    OneLine = OneLine.SubString(2, OneLine.Length() - 1);//strip leading spaces
+					OneLine = OneLine.SubString(2, OneLine.Length() - 1);//strip leading spaces
                     }
 */
                 TimetableEditVector.push_back(OneLine);
                 }
             TTBLFile.close();
             delete TimetableEntryString;
-            //here with TimetableEditVector compiled
+			//here with TimetableEditVector compiled
             }
         else
             {
@@ -2971,7 +2982,7 @@ try
                 AnsiString MinsStr = AnsiString(Mins), HrsStr = AnsiString(Hrs);
                 if(Mins < 10) MinsStr = "0" + MinsStr;
                 if(Hrs < 10) HrsStr = "0" + HrsStr;
-                int StrLength = OneEntryTimetableMemo->Lines->Strings[x].Length();
+				int StrLength = OneEntryTimetableMemo->Lines->Strings[x].Length();
                 AnsiString NewString = OneEntryTimetableMemo->Lines->Strings[x].SubString(1, (y - 1));//up to but not including the time
                 NewString+= HrsStr + ':' + MinsStr;
                 NewString+= OneEntryTimetableMemo->Lines->Strings[x].SubString((y + 5), (StrLength - y - 4));
@@ -3246,8 +3257,8 @@ try
         Utilities->CallLogPop(1645);
         return;
         }
-    AnsiString MessageStr = "Are you sure this entry should be deleted?";
-    int button = Application->MessageBox(MessageStr.c_str(), "", MB_YESNO);
+	UnicodeString MessageStr = "Are you sure this entry should be deleted?";
+	int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
     if (button == IDNO)
         {
         Utilities->CallLogPop(1663);
@@ -3472,16 +3483,16 @@ try
         TTBLFile.open(CreateEditTTFileName.c_str(), std::ios_base::binary);//if text then each time sees a "\r\n" pair enters "\r\n\n" because '\n'
                                                             //on its own causes "\r\n' to ne inserted, binary just enters characters as they are
         }
-    else
+	else
         {
         if(SaveTTDialog->Execute())
             {
-            CreateEditTTFileName = SaveTTDialog->FileName;
-            for(int x=SaveTTDialog->FileName.Length();x>0;x--)
-                {
-                if(SaveTTDialog->FileName[x] == '\\')
-                    {
-                    CreateEditTTTitle = SaveTTDialog->FileName.SubString(x+1, SaveTTDialog->FileName.Length() - x - 4);
+			CreateEditTTFileName = AnsiString(SaveTTDialog->FileName);
+			for(int x=CreateEditTTFileName.Length();x>0;x--)
+				{
+				if(CreateEditTTFileName[x] == '\\')
+					{
+					CreateEditTTTitle = CreateEditTTFileName.SubString(x+1, CreateEditTTFileName.Length() - x - 4);
                     break;
                     }
                 }
@@ -3489,7 +3500,7 @@ try
                                                             //on its own causes "\r\n' to ne inserted, binary just enters characters as they are
             }
         }
-    if(TTBLFile)
+	if(TTBLFile.is_open())
         {
         for(TEVPtr = TimetableEditVector.begin(); TEVPtr != TimetableEditVector.end(); TEVPtr++)
             {
@@ -3540,7 +3551,7 @@ try
         TTBLFile.open(CreateEditTTFileName.c_str(), std::ios_base::binary);//if text then each time sees a "\r\n" pair enters "\r\n\n" because '\n'
                                                             //on its own causes "\r\n' to ne inserted, binary just enters characters as they are
         }
-    if(TTBLFile)
+	if(TTBLFile.is_open())
         {
         for(TEVPtr = TimetableEditVector.begin(); TEVPtr != TimetableEditVector.end(); TEVPtr++)
             {
@@ -3610,7 +3621,7 @@ try
         {
         Screen->Cursor = TCursor(-11);//Hourglass;
         std::ifstream TTBLFile(CreateEditTTFileName.c_str(), std::ios_base::binary);
-        if(TTBLFile)
+		if(TTBLFile.is_open())
             {
             if(BuildTrainDataVectorForValidateFile(0, TTBLFile, GiveMessagesTrue, CheckLocationsExistInRailwayTrue))
                 {
@@ -3806,8 +3817,8 @@ try
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RestoreTTButtonClick");
     if(TimetableChangedFlag)
         {
-        AnsiString MessageStr = "All changes to the timetable will be lost - proceed?";
-        int button = Application->MessageBox(MessageStr.c_str(), "", MB_YESNO);
+		UnicodeString MessageStr = "All changes to the timetable will be lost - proceed?";
+		int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
         if (button == IDNO)
             {
             Utilities->CallLogPop(1651);
@@ -3818,7 +3829,7 @@ try
     //repeat from EditTimetable1Click, but no need to check for non-ascii characters
     //open in binary mode so the "\r\n" pairs stay as they are rather than being entered as '\n'
     std::ifstream TTBLFile(CreateEditTTFileName.c_str(), std::ios_base::binary);
-    if(TTBLFile)
+	if(TTBLFile.is_open())
         {
         TimetableChangedFlag = false;
         TimetableValidFlag = false;
@@ -3955,8 +3966,8 @@ try
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExitTTCreateEditButtonClick");
     if(TimetableChangedFlag)
         {
-        AnsiString MessageStr = "The timetable has changed, exit without saving?";
-        int button = Application->MessageBox(MessageStr.c_str(), "", MB_YESNO);
+		UnicodeString MessageStr = "The timetable has changed, exit without saving?";
+		int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
         if (button == IDNO)
             {
             Utilities->CallLogPop(1603);
@@ -4378,21 +4389,22 @@ if(!TTEntryChangedFlag && !NewEntryInPreparationFlag)
         ShowHideTTButton->Enabled = false;
         }
     ExitTTModeButton->Enabled = true;
-    AllEntriesTTListBox->Enabled = true;
-    if((AddSubMinsBox->Text != "") && AreAnyTimesInCurrentEntry())
-        {
-        bool ValidFlag = true;
-        for(int x=1; x<= AddSubMinsBox->Text.Length(); x++)
-            {
-            if((AddSubMinsBox->Text[x] > '9') || (AddSubMinsBox->Text[x] < '0'))
-                {
-                ValidFlag = false;
-                break;
-                }
-            }
-        if(ValidFlag)
-            {
-            if(AddSubMinsBox->Text.ToInt() != 0)
+	AllEntriesTTListBox->Enabled = true;
+	AnsiString AnsiAddSubText(AddSubMinsBox->Text);
+	if((AnsiAddSubText != "") && AreAnyTimesInCurrentEntry())
+		{
+		bool ValidFlag = true;
+		for(int x=1; x<= AnsiAddSubText.Length(); x++)
+			{
+			if((AnsiAddSubText[x] > '9') || (AnsiAddSubText[x] < '0'))
+				{
+				ValidFlag = false;
+				break;
+				}
+			}
+		if(ValidFlag)
+			{
+			if(AnsiAddSubText.ToInt() != 0)
                 {
                 AddMinsButton->Enabled = true;
                 SubMinsButton->Enabled = true;
@@ -4606,8 +4618,8 @@ try
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Exit1Click");
     if(!FileChangedFlag && !(Track->IsTrackFinished()) && (EveryPrefDir->PrefDirSize() > 0))
         {
-        AnsiString MessageStr = "Note that leaving the track unlinked will cause preferred directions to be lost on reloading.  Prevent by linking the track then resaving.  Do you still wish to exit?";
-        int button = Application->MessageBox(MessageStr.c_str(), "", MB_YESNO);
+		UnicodeString MessageStr = "Note that leaving the track unlinked will cause preferred directions to be lost on reloading.  Prevent by linking the track then resaving.  Do you still wish to exit?";
+		int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
         if (button == IDNO)
             {
             Utilities->CallLogPop(1711);
@@ -4616,8 +4628,8 @@ try
         }
     if(FileChangedFlag)
         {
-        AnsiString MessageStr = "The railway has changed, exit without saving?";
-        int button = Application->MessageBox(MessageStr.c_str(), "", MB_YESNO);
+		UnicodeString MessageStr = "The railway has changed, exit without saving?";
+		int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
         if (button == IDNO)
             {
             Utilities->CallLogPop(1180);
@@ -4768,14 +4780,21 @@ void __fastcall TInterface::MainScreenMouseDown(TObject *Sender,
 try
     {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MainScreenMouseDown," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
-    bool ClockState = Utilities->Clock2Stopped;
-    Utilities->Clock2Stopped = true;
-    if(!Track->RouteFlashFlag && !Track->PointFlashFlag)
+	bool ClockState = Utilities->Clock2Stopped;
+	Utilities->Clock2Stopped = true;
+
+	RestoreFocusPanel->Enabled = true; //these added at v2.0.0 to restore navigation keys to move screen when a panel had focus
+	RestoreFocusPanel->Visible = true; //because then these buttons just cycled through the panel buttons.  Added in place of the
+	RestoreFocusPanel->SetFocus();  //section in ClockTimer2 where focus restored every clock cycle, because then the help screen
+	RestoreFocusPanel->Visible = false; //was hidden.  At least now help is only hidden when the screen clicked, which is normal
+	RestoreFocusPanel->Enabled = false;  //behaviour, and can tell user that can restore navigation keys just by clicking the screen
+
+	if(!Track->RouteFlashFlag && !Track->PointFlashFlag)
         {
         if(!Display->ZoomOutFlag) MainScreenMouseDown2(0, Button, Shift, X, Y);
         else MainScreenMouseDown3(0, Button, Shift, X, Y);
         }
-    Utilities->Clock2Stopped = ClockState;
+	Utilities->Clock2Stopped = ClockState;
     Utilities->CallLogPop(33);
     }
 catch (const Exception &e)
@@ -5494,7 +5513,7 @@ try
              }
         TextBox->Visible = true;
         TextBox->SetFocus();
-        if(TextFoundFlag) TextBox->Text = ExistingText;
+		if(TextFoundFlag) TextBox->Text = ExistingText;
         else TextBox->Text = "New Text: CR=end, ESC=quit";
         TextBox->Width = (abs(TextBox->Font->Height) * TextBox->Text.Length() * 0.7);
         TextBox->SelectAll();
@@ -5760,7 +5779,7 @@ try
             return;
             }
     /*get 1st element, first check if selected points, not in existing route, & in RouteNotStarted mode
-    if so, set all the flash values, Track->PointFlashFlag & start time, then exit for flasher to take over.
+	if so, set all the flash values, Track->PointFlashFlag & start time, then exit for flasher to take over.
     If any of above conditions not met then treat as route selection, setting route flasher if
     route continuing.
     */
@@ -5787,10 +5806,10 @@ try
                 TTrackElement TrackElement;
                 if(Track->FindNonPlatformMatch(3, HLoc, VLoc, Position, TrackElement))
                     {
-                    if((TrackElement.TrackType == Points) && !(AllRoutes->TrackIsInARoute(1, Position, 0)) && !Track->PointFlashFlag
+					if((TrackElement.TrackType == Points) && !(AllRoutes->TrackIsInARoute(1, Position, 0)) && !Track->PointFlashFlag
                         && !Track->RouteFlashFlag)
                     //Flash selected points & changeover if appropriate
-                    //need !Track->PointFlashFlag to prevent another point being selected while another is flashing, & !Track->RouteFlashFlag
+					//need !Track->PointFlashFlag to prevent another point being selected while another is flashing, & !Track->RouteFlashFlag
                     //to ensure user only does one thing at a time
                         {
                         if(TrackElement.TrainIDOnElement > -1)
@@ -5835,7 +5854,7 @@ try
                                 else DivergingPointVectorPosition = DivergingPosition;
                                 }
                             }
-                        Track->PointFlashFlag = true;
+						Track->PointFlashFlag = true;
                         PointFlashVectorPosition = Position;
                         PointFlashStartTime = TrainController->TTClockTime;
                         }
@@ -5852,7 +5871,7 @@ try
                                 }
                             else
                                 {
-                                Track->PointFlashFlag = true;
+								Track->PointFlashFlag = true;
                                 PointFlashVectorPosition = Position;
                                 DivergingPointVectorPosition = DivergingPosition;
                                 PointFlashStartTime = TrainController->TTClockTime;
@@ -5860,14 +5879,14 @@ try
                             }
                         else//no matching point, just change this point
                             {
-                            Track->PointFlashFlag = true;
+							Track->PointFlashFlag = true;
                             PointFlashVectorPosition = Position;
                             DivergingPointVectorPosition = -1;
                             PointFlashStartTime = TrainController->TTClockTime;
                             }
                         }
 /* drop manual changing of level crossings - only allow changing by setting a route through them
-                    else if((Track->IsLCAtHV(23, HLoc, VLoc) && !Track->PointFlashFlag && !Track->RouteFlashFlag))//level crossing
+					else if((Track->IsLCAtHV(23, HLoc, VLoc) && !Track->PointFlashFlag && !Track->RouteFlashFlag))//level crossing
                         {
                         TTrack::TFlashLevelCrossing FLC;
                         FLC.LCHLoc = HLoc;
@@ -5907,7 +5926,7 @@ try
                             }
                         if(PreferredRoute)
                             {
-                            if(!Track->PointFlashFlag && !Track->RouteFlashFlag)//don't allow a route to start if a point changing or
+							if(!Track->PointFlashFlag && !Track->RouteFlashFlag)//don't allow a route to start if a point changing or
                             //another route building
                                 {
                                 ConstructRoute->ClearRoute();//in case not empty though should be
@@ -5926,7 +5945,7 @@ try
                             }
                         else//nonpreferred route
                             {
-                            if(!Track->PointFlashFlag && !Track->RouteFlashFlag)//don't allow a route to start if a point changing or
+							if(!Track->PointFlashFlag && !Track->RouteFlashFlag)//don't allow a route to start if a point changing or
                             //another route building
                                 {
                                 ConstructRoute->ClearRoute();//in case not empty though should be
@@ -6509,7 +6528,7 @@ try
     //don't call LogEvent here as would occur too often
     //have to allow in zoomout mode
     if(ErrorLogCalledFlag) return;//don't continue after an error
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MasterClockTimer");
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MasterClockTimer");
     //put counter outside Clock2 as that may be missed
     LCResetCounter++;//this checks LCs every 20 clock ticks (1 sec) & raises barriers if no route & no train present, to avoid delays due to too frequent calls
     if(LCResetCounter > 19) LCResetCounter = 0;
@@ -6523,7 +6542,7 @@ try
     if(Utilities->CallLog.size() > 50)
         {
         throw Exception("Warning - Utilities->CallLog contains more than 50 items");//check before clock stopped
-        }
+		}
 
     if(!TrainController->StopTTClockFlag && (Level2OperMode == Operating))
     //stopped during 'Paused', when modal windows appear - Popup menu & ShowMessage, and at other times
@@ -6537,14 +6556,14 @@ try
 //        TrainController->TTClockTime = TDateTime::CurrentDateTime() - TrainController->BaseTime + TrainController->RestartTime;
         }
 
-    if(Utilities->Clock2Stopped)
+	if(Utilities->Clock2Stopped)
         {
         MissedTicks++; //test
         Utilities->CallLogPop(774);
         return;
         }
-    Utilities->Clock2Stopped = true;//don't allow overlapping calls
-    ClockTimer2(0);
+	Utilities->Clock2Stopped = true;//don't allow overlapping calls
+	ClockTimer2(0);
     Utilities->Clock2Stopped = false;
     Utilities->CallLogPop(73);
     }
@@ -6564,32 +6583,40 @@ try
     //have to allow in zoomout mode
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ClockTimer2");
 
-    bool FocusRestoreAllowedFlag = true; //added at v1.3.0
+	// dropped at 2.0.0 because RestoreFocusPanel->SetFocus(); hides the help screen
+	//If a button holds focus then all that is needed is to click the screen and the arrow keys work correctly
 
-    if(TextBox->Focused() || DistanceBox->Focused() || SpeedLimitBox->Focused() || LocationNameTextBox->Focused() || MileEdit->Focused() || ChainEdit->Focused() || YardEdit->Focused() ||
-            MPHEdit2->Focused() || LocationNameComboBox->Focused() || AddSubMinsBox->Focused() || MPHEdit1->Focused() || HPEdit->Focused() || OneEntryTimetableMemo->Focused() ||
-            AddPrefDirButton->Focused()) //Added at v1.3.0.  If any of these has focus then they keep it until they release it.  AddPrefDirButton is included as it should keep focus
-        FocusRestoreAllowedFlag = false; //when it has it - eases the setting of PrefDirs, also this button becomes disabled after use so focus returns to Interface naturally
+	/*  Dropped when new .chm help file introduced at v2.0.0 - this hid it after ~20ms.  Replaced by a new section in
+	MainScreenMouseDown where focus restored to screen when click anywhere on screen, allowing navigation keys to
+	move screen when clicked if focus had been captured by another panel when these keys just cycle through the panel buttons
 
-    if(!Focused() && FocusRestoreAllowedFlag && (GetAsyncKeyState(VK_LBUTTON) >= 0) && (GetAsyncKeyState(VK_RBUTTON) >= 0)) //condition added at v1.3.0 to ensure focus returned to Interface (so arrow keys work to move screen) &
-    //not left at any of the buttons or other Windows controls
-    //include the Windows API functions to test that the mouse buttons are not down (strictly only need left but user may have mapped the left onto the right so test both) - if not tested then don't always
-    //respond to button clicks on navigation and other buttons because the focus can be grabbed back from the button by RestoreFocusPanel before the button can respond (takes about 200mSec from click to response)
-    //a delay is also included to doubly avoid the button losing focus as above
-        {
-        ClockTimer2Count++; //doesn't matter what value it starts at on first use, it will soon revert to 0
-        if(ClockTimer2Count > 10) ClockTimer2Count = 0; //half second delay
-        if(ClockTimer2Count == 0)
-            {
-            RestoreFocusPanel->Visible = true;
-            RestoreFocusPanel->Enabled = true;
-            RestoreFocusPanel->BringToFront();
-            RestoreFocusPanel->SetFocus();      //to remove focus from anything else
-            RestoreFocusPanel->Enabled = false; //to remove focus from RestoreFocusPanel & return it to Interface
-            RestoreFocusPanel->Visible = false;
-            }
-        }
-    else ClockTimer2Count = 0; //reset to 0 so ensure full delay occurs before RestoreFocusPanel grabs focus from anything else
+	bool FocusRestoreAllowedFlag = true; //added at v1.3.0
+
+	if(TextBox->Focused() || DistanceBox->Focused() || SpeedLimitBox->Focused() || LocationNameTextBox->Focused() || MileEdit->Focused() || ChainEdit->Focused() || YardEdit->Focused() ||
+			MPHEdit2->Focused() || LocationNameComboBox->Focused() || AddSubMinsBox->Focused() || MPHEdit1->Focused() || HPEdit->Focused() || OneEntryTimetableMemo->Focused() ||
+			AddPrefDirButton->Focused()) //Added at v1.3.0.  If any of these has focus then they keep it until they release it.  AddPrefDirButton is included as it should keep focus
+		FocusRestoreAllowedFlag = false; //when it has it - eases the setting of PrefDirs, also this button becomes disabled after use so focus returns to Interface naturally
+
+	if(!Focused() && FocusRestoreAllowedFlag && (GetAsyncKeyState(VK_LBUTTON) >= 0) && (GetAsyncKeyState(VK_RBUTTON) >= 0)) //condition added at v1.3.0 to ensure focus returned to
+	//Interface (so arrow keys work to move screen) & not left at any of the buttons or other Windows controls
+	//include the Windows API functions to test that the mouse buttons are not down (strictly only need left but user may have mapped the left onto the right so test both) - if not
+	//tested then don't always respond to button clicks on navigation and other buttons because the focus can be grabbed back from the button by RestoreFocusPanel before the button
+	//can respond (takes about 200mSec from click to response) a delay is also included to doubly avoid the button losing focus as above
+		{
+		ClockTimer2Count++; //doesn't matter what value it starts at on first use, it will soon revert to 0
+		if(ClockTimer2Count > 10) ClockTimer2Count = 0; //half second delay
+		if(ClockTimer2Count == 0)
+			{
+			RestoreFocusPanel->Visible = true;
+			RestoreFocusPanel->Enabled = true;
+			RestoreFocusPanel->BringToFront();
+			//RestoreFocusPanel->SetFocus();    //to remove focus from anything else
+			RestoreFocusPanel->Enabled = false; //to remove focus from RestoreFocusPanel & return it to Interface
+			RestoreFocusPanel->Visible = false;
+			}
+		}
+	else ClockTimer2Count = 0; //reset to 0 so ensure full delay occurs before RestoreFocusPanel grabs focus from anything else
+	*/
 
     CallLogTickerLabel->Caption = Utilities->CallLog.size(); //diagnostic test function to ensure all CallLogs are popped - visibility
         //toggled by 'Ctrl Alt 2' when Interface form has focus
@@ -6779,7 +6806,7 @@ try
         }
 
 //set cursor
-    if(Track->PointFlashFlag || Track->RouteFlashFlag)
+	if(Track->PointFlashFlag || Track->RouteFlashFlag)
         {
         if(!TempCursorSet)
             {
@@ -7082,7 +7109,7 @@ try
     {
     //have to allow in zoomout mode
     TrainController->LogEvent("ScreenDownButtonClick" + AnsiString((short)ShiftKey)+ AnsiString((short)CtrlKey));
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenDownButtonClick" + AnsiString((short)ShiftKey)+ AnsiString((short)CtrlKey));
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenDownButtonClick" + AnsiString((short)ShiftKey)+ AnsiString((short)CtrlKey));
     Screen->Cursor = TCursor(-11);//Hourglass;
     ScreenDownButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
     //BUT - it does prevent it from retaining focus - so can use the cursor keys to scroll the display without being captured by the buttons
@@ -7166,7 +7193,7 @@ try
         }
     else
         {
-        if(CtrlKey)
+		if(CtrlKey)
             {
             Display->DisplayZoomOutOffsetV-= 2;
             }
@@ -7179,123 +7206,125 @@ try
             Display->DisplayZoomOutOffsetV-= Utilities->ScreenElementHeight;
             }
         Display->ClearDisplay(3);
-        Track->PlotSmallRailway(5, Display);
-        if(Level2TrackMode == GapSetting) Track->PlotSmallRedGap(3);
-        }
-    ScreenUpButton->Enabled = true;
-    Screen->Cursor = TCursor(-2);//Arrow
-    Utilities->CallLogPop(86);
-    }
+		Track->PlotSmallRailway(5, Display);
+		if(Level2TrackMode == GapSetting) Track->PlotSmallRedGap(3);
+		}
+	ScreenUpButton->Enabled = true;
+	Screen->Cursor = TCursor(-2);//Arrow
+	Utilities->CallLogPop(86);
+	}
 catch (const Exception &e)
-    {
-    ErrorLog(30, e.Message);
-    }
+	{
+	ErrorLog(30, e.Message);
+	}
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TInterface::ZoomButtonClick(TObject *Sender)
 {
 try
-    {
-    //have to allow in zoomout mode
-    TrainController->LogEvent("ZoomButtonClick");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ZoomButtonClick");
-    Screen->Cursor = TCursor(-11);//Hourglass;
-    if(Display->ZoomOutFlag)//i.e resume zoomed in view
-        {
-        TrainController->LogEvent("ZoomButtonClick + ZoomOutFlag");
+	{
+	//have to allow in zoomout mode
+	TrainController->LogEvent("ZoomButtonClick");
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ZoomButtonClick");
+	Screen->Cursor = TCursor(-11);//Hourglass;
+	ZoomButton->Enabled = false; //this takes focus away so the arrow keys can move the display (v2.0.0)
+	if(Display->ZoomOutFlag)//i.e resume zoomed in view
+		{
+		TrainController->LogEvent("ZoomButtonClick + ZoomOutFlag");
 //        TLevel2OperMode TempLevel2OperMode = Level2OperMode;
-        if(Level1Mode == BaseMode)
-            {
-            InfoPanel->Visible = false;//reset infopanel in case not set later
-            InfoPanel->Caption = "";
-            SetLevel1Mode(18);
-            }
-        else if(Level1Mode == TrackMode)
-            {
-            InfoPanel->Visible = false;//reset infopanel in case not set later
-            InfoPanel->Caption = "";
-            //set edit menu items
-            SetInitialTrackModeEditMenu();
-            SetLevel2TrackMode(33);//revert to earlier track mode from zoom
-            }
-        else if(Level1Mode == PrefDirMode)
-            {
-            if(Level2PrefDirMode != PrefDirContinuing) SetLevel1Mode(19);//to redisplay infopanel caption "...select start..."
-            else SetLevel2PrefDirMode(4);//revert to PrefDirContinuing PrefDir mode
-            }
+		if(Level1Mode == BaseMode)
+			{
+			InfoPanel->Visible = false;//reset infopanel in case not set later
+			InfoPanel->Caption = "";
+			SetLevel1Mode(18);
+			}
+		else if(Level1Mode == TrackMode)
+			{
+			InfoPanel->Visible = false;//reset infopanel in case not set later
+			InfoPanel->Caption = "";
+			//set edit menu items
+			SetInitialTrackModeEditMenu();
+			SetLevel2TrackMode(33);//revert to earlier track mode from zoom
+			}
+		else if(Level1Mode == PrefDirMode)
+			{
+			if(Level2PrefDirMode != PrefDirContinuing) SetLevel1Mode(19);//to redisplay infopanel caption "...select start..."
+			else SetLevel2PrefDirMode(4);//revert to PrefDirContinuing PrefDir mode
+			}
 //        else if(Level1Mode == TrackMode) SetLevel1Mode();//just revert to basic track mode from zoom
 //        else if(Level1Mode == PrefDirMode) SetLevel1Mode();//just revert to basic PrefDir mode from zoom
-        else if(Level1Mode == TimetableMode)
-            {
-            InfoPanel->Visible = false;
-            }
-        //Don't include OperMode or RestartSessionOperMode as they reset the performance file
-        else if(Level2OperMode == Operating)//similar to SetLevel2OperMode but without resetting BaseTime
-            {
-            OperateButton->Enabled = true;
-            OperateButton->Glyph->LoadFromResourceName(0, "PauseGraphic");
-            ExitOperationButton->Enabled = true;
-            SetRouteButtonsInfoCaptionAndRouteNotStarted(1);
-            }
-        else if(Level2OperMode == Paused)//similar to SetLevel2OperMode but without resetting RestartTime
-            {
-            OperateButton->Enabled = true;
-            OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
-            ExitOperationButton->Enabled = true;
-            TTClockAdjButton->Enabled = true;
-            SetRouteButtonsInfoCaptionAndRouteNotStarted(5);
-            DisableRouteButtons(1);
-            }
-        else if(Level2OperMode == PreStart)
-            {
-            OperateButton->Enabled = true;
-            OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
-            ExitOperationButton->Enabled = true;
-            TTClockAdjButton->Enabled = true;
-            SetRouteButtonsInfoCaptionAndRouteNotStarted(9);
-            }
-        Display->ZoomOutFlag = false;//reset this after level modes called so gap flash stays set if set to begin with
-        SetPausedOrZoomedInfoCaption(1);
-        ClearandRebuildRailway(43);//need to call this after ZoomOutFlag reset to display track, even if Clearand... already called
-                                   //earlier during level mode setting
-        }
-    else //set zoomed out view
-        {
-        TrainController->LogEvent("ZoomButtonClick + != ZoomOutFlag");
-        Display->ZoomOutFlag = true;
-        SetPausedOrZoomedInfoCaption(2);
-        FileMenu->Enabled = false;
-        ModeMenu->Enabled = false;
-        EditMenu->Enabled = false;
-        TextBox->Visible = false;
-        LocationNameTextBox->Visible = false;
-        TTClockAdjButton->Enabled = false;
+		else if(Level1Mode == TimetableMode)
+			{
+			InfoPanel->Visible = false;
+			}
+		//Don't include OperMode or RestartSessionOperMode as they reset the performance file
+		else if(Level2OperMode == Operating)//similar to SetLevel2OperMode but without resetting BaseTime
+			{
+			OperateButton->Enabled = true;
+			OperateButton->Glyph->LoadFromResourceName(0, "PauseGraphic");
+			ExitOperationButton->Enabled = true;
+			SetRouteButtonsInfoCaptionAndRouteNotStarted(1);
+			}
+		else if(Level2OperMode == Paused)//similar to SetLevel2OperMode but without resetting RestartTime
+			{
+			OperateButton->Enabled = true;
+			OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
+			ExitOperationButton->Enabled = true;
+			TTClockAdjButton->Enabled = true;
+			SetRouteButtonsInfoCaptionAndRouteNotStarted(5);
+			DisableRouteButtons(1);
+			}
+		else if(Level2OperMode == PreStart)
+			{
+			OperateButton->Enabled = true;
+			OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
+			ExitOperationButton->Enabled = true;
+			TTClockAdjButton->Enabled = true;
+			SetRouteButtonsInfoCaptionAndRouteNotStarted(9);
+			}
+		Display->ZoomOutFlag = false;//reset this after level modes called so gap flash stays set if set to begin with
+		SetPausedOrZoomedInfoCaption(1);
+		ClearandRebuildRailway(43);//need to call this after ZoomOutFlag reset to display track, even if Clearand... already called
+								   //earlier during level mode setting
+		}
+	else //set zoomed out view
+		{
+		TrainController->LogEvent("ZoomButtonClick + != ZoomOutFlag");
+		Display->ZoomOutFlag = true;
+		SetPausedOrZoomedInfoCaption(2);
+		FileMenu->Enabled = false;
+		ModeMenu->Enabled = false;
+		EditMenu->Enabled = false;
+		TextBox->Visible = false;
+		LocationNameTextBox->Visible = false;
+		TTClockAdjButton->Enabled = false;
 //        DisablePanelsStoreMainMenuStates();//ensure Display->ZoomOutFlag set true before calling
-        //start assuming normal view is at centre of ZoomOut & calc excesses at each side
-        int OVOffH_NVCentre = Display->DisplayOffsetH - (1.5 * Utilities->ScreenElementWidth); // start zoomout centre at DisplayOffsetH + 30 - zoomout width/2 = -(1.5 * 60)
-        int LeftExcess = OVOffH_NVCentre - Track->GetHLocMin();
-        int RightExcess = Track->GetHLocMax() - OVOffH_NVCentre - ((4 * Utilities->ScreenElementWidth) - 1);
-        if((LeftExcess > 0) && (RightExcess > 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre;
-        else if((LeftExcess > 0) && (RightExcess <= 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre + ((RightExcess)/(Utilities->ScreenElementWidth/2))*(Utilities->ScreenElementWidth/2);//normalise to nearest screen
-        else if((LeftExcess <= 0) && (RightExcess > 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre - ((LeftExcess)/(Utilities->ScreenElementWidth/2))*(Utilities->ScreenElementWidth/2);
-        else Display->DisplayZoomOutOffsetH = OVOffH_NVCentre;//no excess at either side, so display in centre
+		//start assuming normal view is at centre of ZoomOut & calc excesses at each side
+		int OVOffH_NVCentre = Display->DisplayOffsetH - (1.5 * Utilities->ScreenElementWidth); // start zoomout centre at DisplayOffsetH + 30 - zoomout width/2 = -(1.5 * 60)
+		int LeftExcess = OVOffH_NVCentre - Track->GetHLocMin();
+		int RightExcess = Track->GetHLocMax() - OVOffH_NVCentre - ((4 * Utilities->ScreenElementWidth) - 1);
+		if((LeftExcess > 0) && (RightExcess > 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre;
+		else if((LeftExcess > 0) && (RightExcess <= 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre + ((RightExcess)/(Utilities->ScreenElementWidth/2))*(Utilities->ScreenElementWidth/2);//normalise to nearest screen
+		else if((LeftExcess <= 0) && (RightExcess > 0)) Display->DisplayZoomOutOffsetH = OVOffH_NVCentre - ((LeftExcess)/(Utilities->ScreenElementWidth/2))*(Utilities->ScreenElementWidth/2);
+		else Display->DisplayZoomOutOffsetH = OVOffH_NVCentre;//no excess at either side, so display in centre
 
-        int OVOffV_NVCentre = Display->DisplayOffsetV - (1.5 * Utilities->ScreenElementHeight);
-        int TopExcess = OVOffV_NVCentre - Track->GetVLocMin();
-        int BotExcess = Track->GetVLocMax() - OVOffV_NVCentre - ((4 * Utilities->ScreenElementHeight) - 1);
-        if((TopExcess > 0) && (BotExcess > 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre;
-        else if((TopExcess > 0) && (BotExcess <= 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre + ((BotExcess)/(Utilities->ScreenElementHeight/2))*(Utilities->ScreenElementHeight/2);//normalise to nearest half screen
-        else if((TopExcess <= 0) && (BotExcess > 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre - ((TopExcess)/(Utilities->ScreenElementHeight/2))*(Utilities->ScreenElementHeight/2);
-        else Display->DisplayZoomOutOffsetV = OVOffV_NVCentre;//no excess at either side, so display in centre
+		int OVOffV_NVCentre = Display->DisplayOffsetV - (1.5 * Utilities->ScreenElementHeight);
+		int TopExcess = OVOffV_NVCentre - Track->GetVLocMin();
+		int BotExcess = Track->GetVLocMax() - OVOffV_NVCentre - ((4 * Utilities->ScreenElementHeight) - 1);
+		if((TopExcess > 0) && (BotExcess > 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre;
+		else if((TopExcess > 0) && (BotExcess <= 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre + ((BotExcess)/(Utilities->ScreenElementHeight/2))*(Utilities->ScreenElementHeight/2);//normalise to nearest half screen
+		else if((TopExcess <= 0) && (BotExcess > 0)) Display->DisplayZoomOutOffsetV = OVOffV_NVCentre - ((TopExcess)/(Utilities->ScreenElementHeight/2))*(Utilities->ScreenElementHeight/2);
+		else Display->DisplayZoomOutOffsetV = OVOffV_NVCentre;//no excess at either side, so display in centre
 
-        Display->ClearDisplay(4);
-        Track->PlotSmallRailway(6, Display);
-        TrainController->PlotAllTrainsInZoomOutMode(1, WarningFlash);
-        if(Level2TrackMode == GapSetting) Track->PlotSmallRedGap(4);
-        ZoomButton->Glyph->LoadFromResourceName(0, "ZoomIn");
-        }
-    Screen->Cursor = TCursor(-2);//Arrow
+		Display->ClearDisplay(4);
+		Track->PlotSmallRailway(6, Display);
+		TrainController->PlotAllTrainsInZoomOutMode(1, WarningFlash);
+		if(Level2TrackMode == GapSetting) Track->PlotSmallRedGap(4);
+		ZoomButton->Glyph->LoadFromResourceName(0, "ZoomIn");
+		}
+	Screen->Cursor = TCursor(-2);//Arrow
+	ZoomButton->Enabled = true; //restore, see above
     Utilities->CallLogPop(87);
     }
 catch (const Exception &e)
@@ -7312,8 +7341,9 @@ try
     //have to allow in zoomout mode
     TrainController->LogEvent("HomeButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",HomeButtonClick");
-    Screen->Cursor = TCursor(-11);//Hourglass;
-    if(!Display->ZoomOutFlag)//zoomed in mode
+	Screen->Cursor = TCursor(-11);//Hourglass;
+	HomeButton->Enabled = false; //this takes focus away so the arrow keys can move the display (v2.0.0)
+	if(!Display->ZoomOutFlag)//zoomed in mode
         {
         TrainController->LogEvent("HomeButtonClick + zoomed in mode");
         Display->ResetZoomInOffsets();
@@ -7333,21 +7363,23 @@ try
         Track->PlotSmallRailway(7, Display);
         if(Level2TrackMode == GapSetting) Track->PlotSmallRedGap(5);
         }
-    Screen->Cursor = TCursor(-2);//Arrow
-    Utilities->CallLogPop(88);
-    }
+	Screen->Cursor = TCursor(-2);//Arrow
+	HomeButton->Enabled = true; //restore, see above
+	Utilities->CallLogPop(88);
+	}
 catch (const Exception &e)
-    {
-    ErrorLog(32, e.Message);
-    }
+	{
+	ErrorLog(32, e.Message);
+	}
 }
 //---------------------------------------------------------------------------
 void __fastcall TInterface::NewHomeButtonClick(TObject *Sender)
 {
 try
-    {
-    TrainController->LogEvent("NewHomeButtonClick");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",NewHomeButtonClick");
+	{
+	TrainController->LogEvent("NewHomeButtonClick");
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",NewHomeButtonClick");
+	NewHomeButton->Enabled = false; //this takes focus away so the arrow keys can move the display (v2.0.0)
     if(!Display->ZoomOutFlag)//zoomed in mode
         {
         Display->DisplayOffsetHHome = Display->DisplayOffsetH;
@@ -7359,7 +7391,8 @@ try
         Display->DisplayZoomOutOffsetHHome = Display->DisplayZoomOutOffsetH;
         Display->DisplayZoomOutOffsetVHome = Display->DisplayZoomOutOffsetV;
         }
-    Utilities->CallLogPop(1188);
+	Utilities->CallLogPop(1188);
+    NewHomeButton->Enabled = true; //restore, see above
     }
 catch (const Exception &e)
     {
@@ -7418,7 +7451,7 @@ try
             ((SelectRect.top - Display->DisplayOffsetV) * 16),
             ((SelectRect.right - Display->DisplayOffsetH) * 16),
             ((SelectRect.bottom - Display->DisplayOffsetV) * 16));
-    SelectBitmap->Canvas->CopyRect(Dest, MainScreen->Canvas, Source);
+	SelectBitmap->Canvas->CopyRect(Dest, MainScreen->Canvas, Source);
 
     SelectionValid = true;
     Reselect1->Enabled = false;
@@ -7752,11 +7785,11 @@ try
         TrainController->LogEvent("LoadTimetable " + TimetableDialog->FileName);
         bool GiveMessagesTrue = true;
         bool CheckLocationsExistInRailwayTrue = true;
-        if(TrainController->TimetableIntegrityCheck(0, TimetableDialog->FileName.c_str(), GiveMessagesTrue, CheckLocationsExistInRailwayTrue))//true for GiveMessages
+		if(TrainController->TimetableIntegrityCheck(0, AnsiString(TimetableDialog->FileName).c_str(), GiveMessagesTrue, CheckLocationsExistInRailwayTrue))//true for GiveMessages
             {
             Screen->Cursor = TCursor(-11);//Hourglass;
-            std::ifstream TTBLFile(TimetableDialog->FileName.c_str(), std::ios_base::binary);
-            if(TTBLFile)
+            std::ifstream TTBLFile(AnsiString(TimetableDialog->FileName).c_str(), std::ios_base::binary);
+			if(TTBLFile.is_open())
                 {
                 bool SessionFileFalse = false;
                 if(BuildTrainDataVectorForLoadFile(0, TTBLFile, GiveMessagesTrue, CheckLocationsExistInRailwayTrue, SessionFileFalse)) {;}//true for GiveMessages, condition result not used here
@@ -8174,8 +8207,8 @@ try
         {
         TrainController->StopTTClockFlag = true;//so TTClock stopped during MasterClockTimer function
         TrainController->RestartTime = TrainController->TTClockTime;
-        AnsiString Message = Train.HeadCode + " will be removed from the railway - proceed?";
-        int button = Application->MessageBox(Message.c_str(), "", MB_YESNO);
+		UnicodeString Message = UnicodeString(Train.HeadCode) + " will be removed from the railway - proceed?";
+		int button = Application->MessageBox(Message.c_str(), L"", MB_YESNO);
         TrainController->BaseTime = TDateTime::CurrentDateTime();
         TrainController->StopTTClockFlag = false;
         if(button == IDNO)
@@ -8310,8 +8343,8 @@ try
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",FormClose");
     if(!FileChangedFlag && !(Track->IsTrackFinished()) && (EveryPrefDir->PrefDirSize() > 0))
         {
-        AnsiString MessageStr = "Note that leaving the track unlinked will cause preferred directions to be lost on reloading.  Prevent by linking the track then resaving.  Do you still wish to exit?";
-        int button = Application->MessageBox(MessageStr.c_str(), "", MB_YESNO);
+        UnicodeString MessageStr = "Note that leaving the track unlinked will cause preferred directions to be lost on reloading.  Prevent by linking the track then resaving.  Do you still wish to exit?";
+        int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
         if (button == IDNO)
             {
             Action = caNone;//prevents form & application from closing
@@ -8321,20 +8354,20 @@ try
         }
     if(FileChangedFlag || TimetableChangedFlag)
         {
-        AnsiString MessStr = "";
-        if(FileChangedFlag && TimetableChangedFlag)
-            {
-            MessStr = AnsiString("The railway and the timetable have both changed, exit without saving either?");
+		UnicodeString MessStr = "";
+		if(FileChangedFlag && TimetableChangedFlag)
+			{
+			MessStr = UnicodeString("The railway and the timetable have both changed, exit without saving either?");
+			}
+		else if(FileChangedFlag)
+			{
+			MessStr = UnicodeString("The railway has changed, exit without saving?");
+			}
+		else
+			{
+			MessStr = UnicodeString("The timetable has changed, exit without saving?");
             }
-        else if(FileChangedFlag)
-            {
-            MessStr = AnsiString("The railway has changed, exit without saving?");
-            }
-        else
-            {
-            MessStr = AnsiString("The timetable has changed, exit without saving?");
-            }
-        int button = Application->MessageBox(MessStr.c_str(), "", MB_YESNO);
+		int button = Application->MessageBox(MessStr.c_str(), L"", MB_YESNO);
         if (button == IDNO)
             {
             Action = caNone;//prevents form & application from closing
@@ -8345,10 +8378,10 @@ try
 
     if(Level1Mode == OperMode)
         {
-        AnsiString MessageStr = "Please note that the session will be lost if it hasn't been saved.  Do you still wish to exit?";
+        UnicodeString MessageStr = "Please note that the session will be lost if it hasn't been saved.  Do you still wish to exit?";
         TrainController->StopTTClockFlag = true;//so TTClock stopped during MasterClockTimer function
         TrainController->RestartTime = TrainController->TTClockTime;
-        int button = Application->MessageBox(MessageStr.c_str(), "", MB_YESNO);
+        int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
         TrainController->BaseTime = TDateTime::CurrentDateTime();
         TrainController->StopTTClockFlag = false;
         if (button == IDNO)
@@ -8378,10 +8411,10 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
 //TrainController->LogEvent("FormKeyDown," + AnsiString(Key));
-//drop event log as have too many spurious entrues
+//drop event log as have too many spurious entries
 try
-    {
-    if((Shift.Contains(ssAlt)) && (Shift.Contains(ssCtrl)))
+	{
+	if((Shift.Contains(ssAlt)) && (Shift.Contains(ssCtrl)))
         {
         if(Key == '2')
             {
@@ -8413,20 +8446,20 @@ try
         }
     else if((Shift.Contains(ssCtrl)) && !(Shift.Contains(ssShift)))
         {
-        CtrlKey = true;
+		CtrlKey = true;
         }
     else if((Shift.Contains(ssShift)) && !(Shift.Contains(ssCtrl)))
         {
         ShiftKey = true;
         }
 //below added at v1.3.0 to allow keyboard scrolling as well as mouse button scrolling - see user suggestion on Features & Requests forum 30/09/12
-//the NonCTRLOrSHIFTKeyUpFlag prevents repeated keypresses from repeatedly moving the screen viewpoint
+//the NonCTRLOrSHIFTKeyUpFlag prevents repeated viewpoint movements without keys being re-pressed
 //note that use the OnKeyDown event rather than OnKeyPress as suggested by the user so that the CTRL & SHIFT keys can be taken into account
-    if(!NonCTRLOrSHIFTKeyUpFlag) return;
-    if((Key != VK_SHIFT) && (Key != VK_CONTROL)) NonCTRLOrSHIFTKeyUpFlag = false; //don't want to set this for shift or control keys being pressed
+	if(!NonCTRLOrSHIFTKeyUpFlag) return;
+	if((Key != VK_SHIFT) && (Key != VK_CONTROL)) NonCTRLOrSHIFTKeyUpFlag = false; //don't want to set this for shift or control keys being pressed down
     if(!DistanceBox->Focused() && !SpeedLimitBox->Focused() && !MileEdit->Focused() && !ChainEdit->Focused() && !YardEdit->Focused() && !MPHEdit2->Focused()) //added at v1.3.1 to prevent screen scrolling when these boxes have focus
-        {
-        if((Key == 'w') || (Key == 'W') || (Key == VK_UP))
+		{
+		if((Key == 'w') || (Key == 'W') || (Key == VK_UP))
             {
             if(ScreenUpButton->Enabled) ScreenUpButton->Click();
             }
@@ -8434,7 +8467,7 @@ try
             {
             if(ScreenDownButton->Enabled) ScreenDownButton->Click();
             }
-        if((Key == 'a') || (Key == 'A') || (Key == VK_LEFT))
+		if((Key == 'a') || (Key == 'A') || (Key == VK_LEFT))
             {
             if(ScreenLeftButton->Enabled) ScreenLeftButton->Click();
             }
@@ -8597,20 +8630,13 @@ catch (const Exception &e)
 
 void __fastcall TInterface::OpenHelpFile1Click(TObject *Sender)
 {
-/*  don't need this as AppDeactivate sets 'paused' if operating
-if((Level1Mode == OperMode) && (Level2OperMode != PreStart))//if PreStart leave as is
-    {
-    Level2OperMode = Paused;
-    SetLevel2OperMode(4);
-    }
-*/
 try
-    {
-    Application->HelpFile = CurDir + "\\Help.hlp";
-    Application->HelpCommand(HELP_CONTENTS, 0);
-    }
+	{
+	//Helpfile allocated during construction of Interface
+	Application->HelpKeyword(u"Introduction"); //added at v2.0.0 for .chm help file
+	}
 catch (const Exception &e)
-    {
+	{
     ErrorLog(175, e.Message);
     }
 }
@@ -8975,9 +9001,9 @@ try
     {
     TrainController->LogEvent("TTClockAdjButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockAdjButtonClick");
-    Utilities->Clock2Stopped = true; //to keep panel buttons disabled, restarted on exit
+	Utilities->Clock2Stopped = true; //to keep panel buttons disabled, restarted on exit
     Display->HideWarningLog(0);
-    TTClockAdjPanel->Visible = true;
+	TTClockAdjPanel->Visible = true;
     TTClockAdjButton->Enabled = false;
     OperatingPanel->Enabled = false;
     OperatingPanelLabel->Caption = "Disabled";
@@ -9022,7 +9048,7 @@ try
         AnsiString Message = "Changes have been made to the timetable clock - you may wish to save a session before resuming operation.\nTo cancel all changes click 'Adjust the timetable clock' then click the reset button BEFORE resuming operation.";
         ShowMessage(Message);
         }
-    Utilities->Clock2Stopped = false; //as above
+	Utilities->Clock2Stopped = false; //as above
     Utilities->CallLogPop(1876);
     }
 catch (const Exception &e)
@@ -9328,7 +9354,16 @@ if(ScreenGridFlag && (Level1Mode == TrackMode))
 TextHandler->RebuildFromTextVector(1, HiddenDisplay);
 Track->RebuildTrack(4, HiddenDisplay, (Level1Mode != OperMode));//Need to plot track after text since text not transparent.  (Level1Mode != OperMode)
                                                                 //plots both point fillets for all but OperMode & plots closed (to trains) LCs (in
-                                                                //OperMode LCs plotted below
+
+
+
+//Display->Output->Invalidate();  experiment, needs TDisplay Output to be public.  Trying to invoke the white flashes that
+//used to occur frequently without Disp->Update() in PlotOriginal
+
+
+
+
+																//OperMode LCs plotted below
 if(Level2TrackMode == GapSetting)
     {
     Track->ShowSelectedGap(1, HiddenDisplay);
@@ -9459,9 +9494,10 @@ if(Level1Mode == OperMode)
         else NonSigRouteStartMarker->PlotOverlay(9, HiddenDisplay);
         }
 
-    if(Track->PointFlashFlag)
+	if(Track->PointFlashFlag)
         {
-        //need to reset the screen location for picking up the original graphic
+		//need to reset the screen location for picking up the original graphic
+        int Left, Top;//Embarcadero change - these missing in error from Borland file
         Track->GetScreenPositionsFromTruePos(1, Left, Top, PointFlash->GetHPos(), PointFlash->GetVPos());
         //note that the above Pos values are wrt layout, not the screen, but the Left & Top values are wrt screen
         PointFlash->SetSourceRect(Left, Top);
@@ -9539,8 +9575,8 @@ bool TInterface::ClearEverything(int Caller)
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ClearEverything");
 if(FileChangedFlag)
     {
-    AnsiString MessageStr = "The railway has changed, delete it without saving?";
-    int button = Application->MessageBox(MessageStr.c_str(), "", MB_YESNO);
+    UnicodeString MessageStr = "The railway has changed, delete it without saving?";
+    int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
     if (button == IDNO)
         {
         Utilities->CallLogPop(1140);
@@ -9588,7 +9624,7 @@ bool TInterface::FileIntegrityCheck(int Caller, char *FileName) const//true for 
 {
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FileIntegrityCheck," + AnsiString(FileName));
 std::ifstream VecFile(FileName);
-if(VecFile)
+if(VecFile.is_open())
     {
     if(!Utilities->CheckFileStringZeroDelimiter(VecFile))//Program version
         {
@@ -10054,16 +10090,16 @@ switch(Level1Mode)//use the data member
     PauseEntryRestartTime = double(TrainController->RestartTime);
     PauseEntryTTClockSpeed = 1;
     TTClockSpeed = 1;
-    TTClockSpeedLabel->Caption = "x1";
+	TTClockSpeedLabel->Caption = "x1";
     TrainController->TTClockTime = TrainController->TimetableStartTime;
 
-    PerformanceFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
-    //format "16/06/2009 20:55:17"
-    // avoid characters in filename:=   / \ : * ? " < > |
-    PerformanceFileName = CurDir + "\\Performance logs\\Log " + PerformanceFileName + "; " + RailwayTitle + "; " +
-            TimetableTitle + ".txt";
+	PerformanceFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
+	//format "16/06/2009 20:55:17"
+	// avoid characters in filename:=   / \ : * ? " < > |
+	PerformanceFileName = CurDir + "\\Performance logs\\Log " + PerformanceFileName + "; " + RailwayTitle + "; " +
+			TimetableTitle + ".txt";
 
-    Utilities->PerformanceFile.open(PerformanceFileName.c_str(), std::ios_base::out);
+	Utilities->PerformanceFile.open(PerformanceFileName.c_str(), std::ios_base::out);
     if(Utilities->PerformanceFile.fail())
         {
         ShowMessage("Performance logfile failed to open, logs won't be saved.  Ensure that there is a folder named 'Performance logs' in the folder where the 'Railway.exe' program file resides");
@@ -10446,8 +10482,8 @@ switch(Level2TrackMode)//use the data member
 
     case Deleting:
         {//have to use braces as otherwise the default case bypasses the initialisation of these local variables
-        AnsiString MessageStr = "Selected area will be deleted - proceed?";
-        int button = Application->MessageBox(MessageStr.c_str(), "", MB_YESNO);
+		UnicodeString MessageStr = "Selected area will be deleted - proceed?";
+		int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
         if (button == IDNO)
             {
             break;
@@ -11347,7 +11383,7 @@ if(Track->RouteFlashFlag && !Display->ZoomOutFlag)
         {
 //        ConstructRoute->RouteFlash.PlotOriginal(); don't need with clearand....
 //stop clock while converting route as can take several seconds
-        TrainController->StopTTClockFlag = true;//so TTClock stopped during MasterClockTimer function
+		TrainController->StopTTClockFlag = true;//so TTClock stopped during MasterClockTimer function
         TrainController->RestartTime = TrainController->TTClockTime;
         if(PreferredRouteFlag) ConstructRoute->ConvertAndAddPreferredRouteSearchVector(1, ConstructRoute->ReqPosRouteID, AutoSigsFlag);
         else ConstructRoute->ConvertAndAddNonPreferredRouteSearchVector(1, ConstructRoute->ReqPosRouteID);
@@ -12099,16 +12135,16 @@ void TInterface::SaveSession(int Caller)
 try
     {
     TrainController->LogEvent("SaveSession");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveSession");
-    AnsiString CurrentDateTimeStr = "", TimetableTimeStr = "", SessionFileStr = "";
-    Screen->Cursor = TCursor(-11);//Hourglass;
-    CurrentDateTimeStr = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
-    // avoid characters in filename:=   / \ : * ? " < > |
-    TimetableTimeStr = Utilities->Format96HHMMSS(TrainController->TTClockTime);
-    TimetableTimeStr = TimetableTimeStr.SubString(1,2) + '.' + TimetableTimeStr.SubString(4,2) + '.' + TimetableTimeStr.SubString(7,2);
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveSession");
+	AnsiString CurrentDateTimeStr = "", TimetableTimeStr = "", SessionFileStr = "";
+	Screen->Cursor = TCursor(-11);//Hourglass;
+	CurrentDateTimeStr = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
+	// avoid characters in filename:=   / \ : * ? " < > |
+	TimetableTimeStr = Utilities->Format96HHMMSS(TrainController->TTClockTime);
+	TimetableTimeStr = TimetableTimeStr.SubString(1,2) + '.' + TimetableTimeStr.SubString(4,2) + '.' + TimetableTimeStr.SubString(7,2);
     SessionFileStr = CurDir + "\\Sessions\\Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " +
             RailwayTitle + "; " + TimetableTitle + ".ssn";
-    std::ofstream SessionFile(SessionFileStr.c_str());
+	std::ofstream SessionFile(SessionFileStr.c_str());
     if(!(SessionFile.fail()))
         {
         Utilities->SaveFileString(SessionFile, ProgramVersion + ": ***Interface***");
@@ -12197,10 +12233,10 @@ try
         {
         TrainController->LogEvent("LoadSession " + LoadSessionDialog->FileName);
         Screen->Cursor = TCursor(-11);//Hourglass;
-        if(SessionFileIntegrityCheck(0, LoadSessionDialog->FileName.c_str()))
+		if(SessionFileIntegrityCheck(0, AnsiString(LoadSessionDialog->FileName).c_str()))
 //        if(true)
             {
-            std::ifstream SessionFile(LoadSessionDialog->FileName.c_str());
+			std::ifstream SessionFile(AnsiString(LoadSessionDialog->FileName).c_str());
             if(!(SessionFile.fail()))
                 {
                 AnsiString TempString = Utilities->LoadFileString(SessionFile);//"version + : ***Interface***"
@@ -12278,7 +12314,7 @@ try
                 // avoid characters in filename:=   / \ : * ? " < > |
                 PerformanceFileName = CurDir + "\\Performance logs\\Log " + PerformanceFileName + "; " + RailwayTitle + "; " +
                         TimetableTitle + ".txt";
-                Utilities->PerformanceFile.open(PerformanceFileName.c_str(), std::ios_base::out);
+				Utilities->PerformanceFile.open(PerformanceFileName.c_str(), std::ios_base::out);
                 if(Utilities->PerformanceFile.fail())
                     {
                     ShowMessage("Performance logfile failed to open, logs won't be saved.  Ensure that there is a folder named 'Performance logs' in the folder where the 'Railway.exe' program file resides");
@@ -12792,7 +12828,7 @@ bool TInterface::LoadTimetableFromSessionFile(int Caller, std::ifstream &Session
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadTimetableFromSessionFile");
 if((TempTTFileName != "") && FileExists(TempTTFileName))
     {
-    DeleteFile(TempTTFileName);
+	DeleteFile(TempTTFileName);
     }
 int TempTTFileNumber = 0;
 while(FileExists(CurDir + "\\TmpTT" + AnsiString(TempTTFileNumber) + ".tmp"))
@@ -12852,7 +12888,7 @@ if(!TTBFile.fail())
     if(TrainController->TimetableIntegrityCheck(1, TempTTFileName.c_str(), GiveMessagesFalse, CheckLocationsExistInRailwayTrue))
         {
         std::ifstream TTBLFile(TempTTFileName.c_str(), std::ios_base::binary);
-        if(TTBLFile)
+		if(TTBLFile.is_open())
             {
             bool SessionFileTrue = true;
             if(!(BuildTrainDataVectorForLoadFile(1, TTBLFile, GiveMessagesFalse, CheckLocationsExistInRailwayTrue, SessionFileTrue)))
@@ -13154,7 +13190,7 @@ Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) +
 std::ifstream InFile(FileName.c_str());
 //first pass as far as timetable
 int NumberOfActiveElements;
-if(!InFile.fail())
+if(InFile.is_open())
     {
     if(!Utilities->CheckFileStringZeroDelimiter(InFile))
 //expected to be "***Interface***" for original version or "Version + : ***Interface***" for later releases
@@ -13182,26 +13218,26 @@ if(!InFile.fail())
         Utilities->CallLogPop(1243);
         return false;
         }
-    if(!InFile)
-        {
-        InFile.close();
-        Utilities->CallLogPop(1244);
-        return false;
-        }
-    //check text elements
-    if(!Utilities->CheckAndCompareFileString(InFile, "***Text***"))
-        {
-        InFile.close();
-        Utilities->CallLogPop(1245);
-        return false;
-        }
-    if(!TextHandler->CheckTextElementsInFile(1, InFile))
-        {
-        InFile.close();
-        Utilities->CallLogPop(1246);
-        return false;
-        }
-    if(!InFile)
+	if(InFile.fail())
+		{
+		InFile.close();
+		Utilities->CallLogPop(1244);
+		return false;
+		}
+	//check text elements
+	if(!Utilities->CheckAndCompareFileString(InFile, "***Text***"))
+		{
+		InFile.close();
+		Utilities->CallLogPop(1245);
+		return false;
+		}
+	if(!TextHandler->CheckTextElementsInFile(1, InFile))
+		{
+		InFile.close();
+		Utilities->CallLogPop(1246);
+		return false;
+		}
+	if(InFile.fail())
         {
         InFile.close();
         Utilities->CallLogPop(1247);
@@ -13220,7 +13256,7 @@ if(!InFile.fail())
         Utilities->CallLogPop(1249);
         return false;
         }
-    if(!InFile)
+	if(InFile.fail())
         {
         InFile.close();
         Utilities->CallLogPop(1250);
@@ -13239,7 +13275,7 @@ if(!InFile.fail())
         Utilities->CallLogPop(1252);
         return false;
         }
-    if(!InFile)
+	if(InFile.fail())
         {
         InFile.close();
         Utilities->CallLogPop(1253);
@@ -13258,26 +13294,26 @@ if(!InFile.fail())
         Utilities->CallLogPop(1255);
         return false;
         }
-    if(!InFile)
-        {
-        InFile.close();
-        Utilities->CallLogPop(1256);
-        return false;
-        }
-    //check ContinuationAutoSigs
-    if(!Utilities->CheckAndCompareFileString(InFile, "***ContinuationAutoSigEntries***"))
-        {
-        InFile.close();
-        Utilities->CallLogPop(1257);
-        return false;
-        }
-    if(!TrainController->CheckSessionContinuationAutoSigEntries(0, InFile))
-        {
-        InFile.close();
-        Utilities->CallLogPop(1258);
-        return false;
-        }
-    if(!InFile)
+	if(InFile.fail())
+		{
+		InFile.close();
+		Utilities->CallLogPop(1256);
+		return false;
+		}
+	//check ContinuationAutoSigs
+	if(!Utilities->CheckAndCompareFileString(InFile, "***ContinuationAutoSigEntries***"))
+		{
+		InFile.close();
+		Utilities->CallLogPop(1257);
+		return false;
+		}
+	if(!TrainController->CheckSessionContinuationAutoSigEntries(0, InFile))
+		{
+		InFile.close();
+		Utilities->CallLogPop(1258);
+		return false;
+		}
+	if(InFile.fail())
         {
         InFile.close();
         Utilities->CallLogPop(1259);
@@ -13299,14 +13335,14 @@ if(!InFile.fail())
             Utilities->CallLogPop(1965);
             return false;
             }
-        if(!InFile)
-            {
-            InFile.close();
-            Utilities->CallLogPop(1966);
-            return false;
-            }
-        if(!Utilities->CheckAndCompareFileString(InFile, "***Timetable***"))
-            {
+		if(InFile.fail())
+			{
+			InFile.close();
+			Utilities->CallLogPop(1966);
+			return false;
+			}
+		if(!Utilities->CheckAndCompareFileString(InFile, "***Timetable***"))
+			{
             InFile.close();
             Utilities->CallLogPop(1260);
             return false;
@@ -13319,7 +13355,7 @@ if(!InFile.fail())
         Utilities->CallLogPop(1261);
         return false;
         }
-    if(!InFile)
+	if(InFile.fail())
         {
         InFile.close();
         Utilities->CallLogPop(1262);
@@ -13337,7 +13373,7 @@ else
 //now ready for the 2nd pass for timetable loading and checking
 InFile.close();
 InFile.open(FileName.c_str());
-if(InFile)
+if(InFile.is_open())
     {
     if(!Utilities->CheckFileStringZeroDelimiter(InFile))
         {
@@ -13359,7 +13395,7 @@ if(InFile)
         return false;
         }
     Track->LoadTrack(2, InFile);//load the track this time
-    if(!InFile)
+	if(InFile.fail())
         {
         InFile.close();
         Utilities->CallLogPop(1267);
@@ -13378,7 +13414,7 @@ if(InFile)
         Utilities->CallLogPop(1269);
         return false;
         }
-    if(!InFile)
+	if(InFile.fail())
         {
         InFile.close();
         Utilities->CallLogPop(1270);
@@ -13397,7 +13433,7 @@ if(InFile)
         Utilities->CallLogPop(1272);
         return false;
         }
-    if(!InFile)
+	if(InFile.fail())
         {
         InFile.close();
         Utilities->CallLogPop(1273);
@@ -13416,7 +13452,7 @@ if(InFile)
         Utilities->CallLogPop(1275);
         return false;
         }
-    if(!InFile)
+	if(InFile.fail())
         {
         InFile.close();
         Utilities->CallLogPop(1276);
@@ -13435,7 +13471,7 @@ if(InFile)
         Utilities->CallLogPop(1278);
         return false;
         }
-    if(!InFile)
+	if(InFile.fail())
         {
         InFile.close();
         Utilities->CallLogPop(1279);
@@ -13454,7 +13490,7 @@ if(InFile)
         Utilities->CallLogPop(1281);
         return false;
         }
-    if(!InFile)
+	if(InFile.fail())
         {
         InFile.close();
         Utilities->CallLogPop(1282);
@@ -13476,7 +13512,7 @@ if(InFile)
             Utilities->CallLogPop(1968);
             return false;
             }
-        if(!InFile)
+		if(InFile.fail())
             {
             InFile.close();
             Utilities->CallLogPop(1969);
@@ -13496,11 +13532,11 @@ if(InFile)
         Utilities->CallLogPop(1284);
         return false;
         }
-    if(!InFile)
-        {
-        InFile.close();
-        Utilities->CallLogPop(1285);
-        return false;
+	if(InFile.fail())
+		{
+		InFile.close();
+		Utilities->CallLogPop(1285);
+		return false;
         }
     //check timetable clock
     if(!Utilities->CheckAndCompareFileString(InFile, "***TimetableClock***"))
@@ -13528,7 +13564,7 @@ if(InFile)
         Utilities->CallLogPop(1289);
         return false;
         }
-    if(!InFile)
+    if(InFile.fail())
         {
         InFile.close();
         Utilities->CallLogPop(1290);
@@ -14132,11 +14168,11 @@ else
         AnsiString Extension = "";
         if(SaveRailwayDialog->FileName.Length() > 2)
             {
-            Extension = SaveRailwayDialog->FileName.SubString(SaveRailwayDialog->FileName.Length()-2, 3).UpperCase();
-            }
+			Extension = AnsiString(SaveRailwayDialog->FileName).SubString(AnsiString(SaveRailwayDialog->FileName).Length()-2, 3).UpperCase();
+			}
         if((Extension == "DEV") || (Track->IsReadyForOperation() && (Extension == "RLY")))
             {
-            std::ofstream VecFile(SaveRailwayDialog->FileName.c_str());
+			std::ofstream VecFile(AnsiString(SaveRailwayDialog->FileName).c_str());
             if(!(VecFile.fail()))
                 {
                 Utilities->SaveFileString(VecFile, ProgramVersion);
@@ -14422,4 +14458,4 @@ Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file posit
 
 
 
-     
+

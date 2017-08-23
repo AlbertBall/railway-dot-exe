@@ -1,0 +1,134 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Splits</title>
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+a:link, span.MsoHyperlink
+	{color:blue;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;}
+p
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p><a name=5.2.3></a><b>5.2.3 Splits:</b></p>
+
+<p>Split codes: Sfs; fsp; rsp.</p>
+
+<p>These always link together such that an 'Sfs' service always follows from an
+earlier 'fsp' or 'rsp' service.</p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=308 valign=top style='width:231.05pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt'>Start new service from a split</span></p>
+  </td>
+  <td width=308 valign=top style='width:231.05pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>HH:MM;Sfs;service ref. of the
+  train that splits </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=308 valign=top style='width:231.05pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt'>Front split</span></p>
+  </td>
+  <td width=308 valign=top style='width:231.05pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>HH:MM;fsp;new (split-off)
+  service ref.</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=308 valign=top style='width:231.05pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt'>Rear split</span></p>
+  </td>
+  <td width=308 valign=top style='width:231.05pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>HH:MM;rsp;new (split-off)
+  service ref.</span></p>
+  </td>
+ </tr>
+</table>
+
+<p>A train may split from the front, where the new split-off service appears in
+front of the original service, or from the rear. Codes are 'fsp' ('front
+split') and 'rsp' ('rear split'). The line that contains these codes also
+contains the service reference for the split-off service. The split-off service
+has code 'Sfs' (start from split) and also the service reference for the
+service that it splits from. </p>
+
+<p>One thing to beware of during operation is that the platform at which the
+split occurs must be long enough to allow it. The condition is that both trains
+must be at a platform after the split, although only one element of the train
+(half its length) need be at a platform. Additionally at least one of the final
+four elements that the two trains stand on must overlap with one of original
+train elements, and the program will maximise the number of train elements at
+platforms. This means that the original train may be repositioned during the
+split. Therefore the minimum platform length is two elements, providing there
+is a track element linked at each end. If one end is a buffer then the platform
+must be at least three elements long. When the timetable is first validated
+(either during editing or on loading for operation) a check is made that each
+location at which a split occurs has at least one platform that is long enough,
+but it is up to the signaller to ensure that the actual platform that the train
+arrives at is long enough for the split. If it isn't then a warning message is
+given and the train will need to be moved under signaller control to find an
+appropriate platform. A second thing to beware of is to try to ensure that
+after a split both trains lie behind a protecting signal. If one of the trains
+straddles a signal, then that signal does not provide any protection, and when
+the train's departure time is reached it will depart without a route having
+been set. Note that because the number of train elements that will be standing
+at platforms is maximised, it may be necessary to move an obstructing train
+further away than would appear to be strictly necessary, but when it has been
+moved sufficiently the split will occur.</p>
+
+<p>When trains split the mass, power and braking force are split evenly between
+them (so the performance remains the same), and the maximum running speed is
+the same for the new service as the original.</p>
+
+<p>For services that split it is best to avoid descriptions that include the
+number of cars. The original service description doesn't change during
+operation so such descriptions will become incorrect after a split.</p>
+
+<p>See <a href="5.111w8h.htm">section 5.11</a> for some important aspects that
+will help to avoid errors.</p>
+
+</div>
+
+</body>
+
+</html>

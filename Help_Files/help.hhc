@@ -1,0 +1,267 @@
+<HTML>
+<!--Sitemap 1.0-->
+<OBJECT type="text/site properties">
+</OBJECT>
+<UL>
+	<LI><OBJECT type="text/sitemap">
+		<param name="Name" value="Introduction">
+		</OBJECT>
+	<UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Introduction">
+			<param name="Local" value="html/1001d.htm">
+			</OBJECT>
+			<A HREF="html/1001d.htm">Introduction</A><BR>
+	</UL>
+	<LI><OBJECT type="text/sitemap">
+		<param name="Name" value="General features">
+		</OBJECT>
+	<UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Backgrounds">
+			<param name="Local" value="html/2.14gc1.htm">
+			</OBJECT>
+			<A HREF="html/2.14gc1.htm">Backgrounds</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Train characteristics and floating window display">
+			<param name="Local" value="html/2.24gc2.htm">
+			</OBJECT>
+			<A HREF="html/2.24gc2.htm">Train characteristics and floating window display</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Files">
+			<param name="Local" value="html/2.34gc3.htm">
+			</OBJECT>
+			<A HREF="html/2.34gc3.htm">Files</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Information">
+			<param name="Local" value="html/2.44gc4.htm">
+			</OBJECT>
+			<A HREF="html/2.44gc4.htm">Information</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Zoom-out display">
+			<param name="Local" value="html/2.54gc5.htm">
+			</OBJECT>
+			<A HREF="html/2.54gc5.htm">Zoom-out display</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Program modes">
+			<param name="Local" value="html/2.64gc6.htm">
+			</OBJECT>
+			<A HREF="html/2.64gc6.htm">Program modes</A><BR>
+	</UL>
+	<LI><OBJECT type="text/sitemap">
+		<param name="Name" value="Building a new railway or modifying an existing railway">
+		</OBJECT>
+	<UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Building a new railway or modifying an existing railway">
+			<param name="Local" value="html/3001f.htm">
+			</OBJECT>
+			<A HREF="html/3001f.htm">Building a new railway or modifying an existing railway</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Adding and deleting track and other railway elements">
+			<param name="Local" value="html/3.14jht.htm">
+			</OBJECT>
+			<A HREF="html/3.14jht.htm">Adding and deleting track and other railway elements</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Track element types">
+			<param name="Local" value="html/3.1.246p.htm">
+			</OBJECT>
+			<A HREF="html/3.1.246p.htm">Track element types</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Adding, deleting and moving text">
+			<param name="Local" value="html/3.24jhu.htm">
+			</OBJECT>
+			<A HREF="html/3.24jhu.htm">Adding, deleting and moving text</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Named locations">
+			<param name="Local" value="html/3.34jhv.htm">
+			</OBJECT>
+			<A HREF="html/3.34jhv.htm">Named locations</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Saving and loading railway files">
+			<param name="Local" value="html/3.44jhw.htm">
+			</OBJECT>
+			<A HREF="html/3.44jhw.htm">Saving and loading railway files</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Selecting, cutting, copying and pasting etc.">
+			<param name="Local" value="html/3.54jhx.htm">
+			</OBJECT>
+			<A HREF="html/3.54jhx.htm">Selecting, cutting, copying and pasting etc.</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Setting track element lengths and speed limits">
+			<param name="Local" value="html/3.64jhy.htm">
+			</OBJECT>
+			<A HREF="html/3.64jhy.htm">Setting track element lengths and speed limits</A><BR>
+	</UL>
+	<LI><OBJECT type="text/sitemap">
+		<param name="Name" value="Setting preferred directions (PDs)">
+		</OBJECT>
+	<UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Setting preferred directions (PDs)">
+			<param name="Local" value="html/4001g.htm">
+			</OBJECT>
+			<A HREF="html/4001g.htm">Setting preferred directions (PDs)</A><BR>
+	</UL>
+	<LI><OBJECT type="text/sitemap">
+		<param name="Name" value="Timetables">
+		</OBJECT>
+	<UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Basics">
+			</OBJECT>
+		<UL>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Timetables">
+				<param name="Local" value="html/5001h.htm">
+				</OBJECT>
+				<A HREF="html/5001h.htm">Timetables</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Service references for complex services">
+				<param name="Local" value="html/5.14ptd.htm">
+				</OBJECT>
+				<A HREF="html/5.14ptd.htm">Service references for complex services</A><BR>
+		</UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Timetable service codes">
+			</OBJECT>
+		<UL>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Simple (unlinked) codes">
+				<param name="Local" value="html/5.2.1e41.htm">
+				</OBJECT>
+				<A HREF="html/5.2.1e41.htm">Simple (unlinked) codes</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Service changes">
+				<param name="Local" value="html/5.2.1e42.htm">
+				</OBJECT>
+				<A HREF="html/5.2.1e42.htm">Service changes</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Splits">
+				<param name="Local" value="html/5.2.1e43.htm">
+				</OBJECT>
+				<A HREF="html/5.2.1e43.htm">Splits</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Joins">
+				<param name="Local" value="html/5.2.1e44.htm">
+				</OBJECT>
+				<A HREF="html/5.2.1e44.htm">Joins</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Shuttle services">
+				<param name="Local" value="html/5.2.1e45.htm">
+				</OBJECT>
+				<A HREF="html/5.2.1e45.htm">Shuttle services</A><BR>
+		</UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Other timetable features">
+			</OBJECT>
+		<UL>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Headcodes">
+				<param name="Local" value="html/5.34ptf.htm">
+				</OBJECT>
+				<A HREF="html/5.34ptf.htm">Headcodes</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Timetable validation">
+				<param name="Local" value="html/5.44ptg.htm">
+				</OBJECT>
+				<A HREF="html/5.44ptg.htm">Timetable validation</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Timetabled and automatic warnings">
+				<param name="Local" value="html/5.54pth.htm">
+				</OBJECT>
+				<A HREF="html/5.54pth.htm">Timetabled and automatic warnings</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Showing and hiding the timetable editor">
+				<param name="Local" value="html/5.64pti.htm">
+				</OBJECT>
+				<A HREF="html/5.64pti.htm">Showing and hiding the timetable editor</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Repeating services">
+				<param name="Local" value="html/5.74ptj.htm">
+				</OBJECT>
+				<A HREF="html/5.74ptj.htm">Repeating services</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Using the timetable editor">
+				<param name="Local" value="html/5.84ptk.htm">
+				</OBJECT>
+				<A HREF="html/5.84ptk.htm">Using the timetable editor</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Non-timetabled services">
+				<param name="Local" value="html/5.94ptl.htm">
+				</OBJECT>
+				<A HREF="html/5.94ptl.htm">Non-timetabled services</A><BR>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Formatted timetables">
+				<param name="Local" value="html/5.101w8g.htm">
+				</OBJECT>
+				<A HREF="html/5.101w8g.htm">Formatted timetables</A><BR>
+		</UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Important points to note in timetabling">
+			</OBJECT>
+		<UL>
+			<LI><OBJECT type="text/sitemap">
+				<param name="Name" value="Important points to note in timetabling">
+				<param name="Local" value="html/5.111w8h.htm">
+				</OBJECT>
+				<A HREF="html/5.111w8h.htm">Important points to note in timetabling</A><BR>
+		</UL>
+	</UL>
+	<LI><OBJECT type="text/sitemap">
+		<param name="Name" value="Operating a railway">
+		</OBJECT>
+	<UL>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Operating a railway">
+			<param name="Local" value="html/6001i.htm">
+			</OBJECT>
+			<A HREF="html/6001i.htm">Operating a railway</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Route setting and cancelling">
+			<param name="Local" value="html/6.14sz5.htm">
+			</OBJECT>
+			<A HREF="html/6.14sz5.htm">Route setting and cancelling</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Approach locking">
+			<param name="Local" value="html/6.24sz6.htm">
+			</OBJECT>
+			<A HREF="html/6.24sz6.htm">Approach locking</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Session saving and loading">
+			<param name="Local" value="html/6.34sz7.htm">
+			</OBJECT>
+			<A HREF="html/6.34sz7.htm">Session saving and loading</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Running trains">
+			<param name="Local" value="html/6.44sz8.htm">
+			</OBJECT>
+			<A HREF="html/6.44sz8.htm">Running trains</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Train performance">
+			<param name="Local" value="html/6.54sz9.htm">
+			</OBJECT>
+			<A HREF="html/6.54sz9.htm">Train performance</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Calling-on">
+			<param name="Local" value="html/6.64sza.htm">
+			</OBJECT>
+			<A HREF="html/6.64sza.htm">Calling-on</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Performance logs">
+			<param name="Local" value="html/6.74szb.htm">
+			</OBJECT>
+			<A HREF="html/6.74szb.htm">Performance logs</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Signaller control">
+			<param name="Local" value="html/6.84szc.htm">
+			</OBJECT>
+			<A HREF="html/6.84szc.htm">Signaller control</A><BR>
+		<LI><OBJECT type="text/sitemap">
+			<param name="Name" value="Adjusting the timetable clock">
+			<param name="Local" value="html/6.94szd.htm">
+			</OBJECT>
+			<A HREF="html/6.94szd.htm">Adjusting the timetable clock</A><BR>
+	</UL>
+</UL>
+</HTML>

@@ -1,0 +1,57 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=Help.chm
+Contents file=help.hhc
+Default topic=html\1001d.htm
+Display compile progress=No
+Full-text search=Yes
+Index file=Help.hhk
+Language=0x809 English (United Kingdom)
+
+
+[FILES]
+html\1001d.htm
+html\2.14gc1.htm
+html\2.24gc2.htm
+html\2.34gc3.htm
+html\2.44gc4.htm
+html\2.54gc5.htm
+html\2.64gc6.htm
+html\3001f.htm
+html\3.14jht.htm
+html\3.1.246p.htm
+html\3.24jhu.htm
+html\3.34jhv.htm
+html\3.44jhw.htm
+html\3.54jhx.htm
+html\3.64jhy.htm
+html\4001g.htm
+html\5001h.htm
+html\5.14ptd.htm
+html\5.2.1e41.htm
+html\5.2.1e42.htm
+html\5.2.1e43.htm
+html\5.2.1e44.htm
+html\5.2.1e45.htm
+html\5.34ptf.htm
+html\5.44ptg.htm
+html\5.54pth.htm
+html\5.64pti.htm
+html\5.74ptj.htm
+html\5.84ptk.htm
+html\5.94ptl.htm
+html\5.101w8g.htm
+html\5.111w8h.htm
+html\6001i.htm
+html\6.14sz5.htm
+html\6.24sz6.htm
+html\6.34sz7.htm
+html\6.44sz8.htm
+html\6.54sz9.htm
+html\6.64sza.htm
+html\6.74szb.htm
+html\6.84szc.htm
+html\6.94szd.htm
+
+[INFOTYPES]
+

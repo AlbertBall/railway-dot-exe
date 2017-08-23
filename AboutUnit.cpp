@@ -53,7 +53,7 @@ void __fastcall TAboutForm::FormCreate(TObject *Sender)
 {
 AnsiString NL = '\n';
 AboutLabel->Caption = "All the tools to design, build and" + NL + "operate your own railway" + NL + NL +
-                      "Release: " + Interface->ProgramVersion + NL + NL + "Copyright 2010-2015 Albert Ball";  //[added '-2013' at v1.3.1, added 2015 at v1.3.2 Beta]
+                      "Release: " + Interface->ProgramVersion + NL + NL + "Copyright 2010-2017 Albert Ball";  //[added '-2013' at v1.3.1, '2015' at v1.3.2 Beta, '2017' at v2.0.0]
 AboutForm->Hide();
 }
 //---------------------------------------------------------------------------

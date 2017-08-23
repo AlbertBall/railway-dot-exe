@@ -1,0 +1,131 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Setting preferred directions (PDs)</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p
+	{font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma","sans-serif";
+	color:black;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma","sans-serif";
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=EN-GB>
+
+<div class=WordSection1>
+
+<p><a name=4></a><b>4 Setting preferred directions (PDs)</b></p>
+
+<p>PDs are the directions that trains travel in during normal operation. Most
+signals are set along PDs, and special arrangements are generally needed to
+allow trains to travel in non-PDs. Track elements in this program's railways
+may have PDs set either way, both ways, or not set. </p>
+
+<p>The method used to set PDs is the same as that used to set lengths and speed
+limits, but before they can be set the track must have been successfully linked
+together - see section 'Adding and deleting track and other railway elements'.</p>
+
+<p>Select menu items 'Mode' then 'Set preferred directions'. Note that if
+another mode has been selected first then that must be exited by clicking the
+red cross before the 'Mode' menu becomes available again. When in 'Set
+preferred directions' mode left click the track element that represents the
+start of the section to have a PD set, then left click another element in the
+direction required towards the final element of the section to have a PD set
+and on the desired route, and continue in this way until the final element is
+reached. Sometimes, if there are two or more routes in different directions
+from the start position to the next selected position, the program may choose
+the wrong direction. In this case cancel, then select the start position again,
+then select the element that is next to the start position in the desired
+direction. This will set the direction correctly and further points can be
+selected until the desired end point is reached. If there is only one route
+between the start and end points then the second element may be the end point.
+If the end point is a continuation or a buffer, the section is added straight
+away and a message given to this effect. To truncate part of a selected length
+just right click at the truncate point. To erase a selection truncate to the
+start point, and to cancel a start selection without making a second selection
+just click it again. Note that the selection can't end on leading points, because
+the program doesn't know which of the two trailing legs to include.</p>
+
+<p>Note that if the railway is complex a message may say that a path can't be
+found to the selected element. This is usually because there are too may search
+paths from the last selected element and the search is becoming too long. In
+these circumstances select an element nearer to the last selected element. Note
+also that if there is more than one route between the selected elements then
+the program may choose the wrong one. In this case truncate back to the last
+selection and choose an element where there is only a single route available.</p>
+
+<p>At each position relevant buttons will be available consisting of <img
+width=24 height=24 src="../images/RailSim2_ADDPREFDIR.gif"> 'add section' to
+add the selected length to the complete set of PDs, <img width=24 height=24
+src="../images/RailSim2_CLEARONEPREFDIR.gif"> 'erase one' to erase the
+selection (i.e. remove any PDs from the selected length), and <img width=24
+height=24 src="../images/RailSim2_CLEARALLPREFDIR.gif"> 'erase all' to remove
+all PDs from the railway. A warning message is given if this is selected.
+Whenever the <img width=24 height=24 src="../images/RailSim2_ADDPREFDIR.gif"> 'add
+section' button is enabled it also has focus, meaning that instead of clicking
+the button the 'enter' key may be pressed. This is often quicker when adding
+several sections in succession.</p>
+
+<p>In this mode a colour code is used to indicate PDs: original colour = no PD;
+red = one PD - the arrows indicate which; and green = both directions set
+(bidirectional running). Bidirectional running is often used in stations to
+allow flexibility in routing trains.</p>
+
+<p>The PD is indicated by an arrow on the relevant track on each element, which
+is clear for all elements except points where just one arrow is shown on the
+leading part of the points for one or both directions. This may be ambiguous in
+some circumstances for the point in isolation, but preferred directions cannot
+end on points, so reference to the directions of adjacent elements should make
+the situation clear.</p>
+
+<p>Note that if track is changed after PDs have been set, elements that have
+been changed will have their PDs erased. In these circumstances it is
+recommended to go back to the 'set preferred directions' mode to check and
+reset the necessary directions.</p>
+
+<p>In this mode bidirectional tracks may be set for complete areas, via the
+'Edit' and 'Select' menu items. Select the area required as described under
+'Selecting, cutting, copying and pasting etc.', then select 'Edit' and 'Set
+bidirectional tracks'. This option is useful for quickly setting bidirectional
+running in station areas to allow flexibility in routing trains.</p>
+
+</div>
+
+</body>
+
+</html>

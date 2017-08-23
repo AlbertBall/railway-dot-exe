@@ -1,0 +1,80 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Timetabled and automatic warnings</title>
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+a:link, span.MsoHyperlink
+	{color:blue;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;}
+p
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p><a name=5.5></a><b>5.5 Timetabled and automatic warnings:</b></p>
+
+<p>Any service event (except 'Frh' and 'Fjo' - see later) may be preceded by
+'W', e.g. <span style='color:blue'>W14:23;Moor Street</span>. This represents a
+'warning', and when the service reaches this point a warning message is given
+in red at the top of the display area. Warnings scroll up in two columns, ten
+in all, and may be erased by right clicking. Warnings are useful for example to
+indicate when a route will need to be set in the near future, say when a train
+is approaching a junction at the end of a route controlled by automatic
+signals. Warnings are also provided automatically in circumstances where the
+signaller may need to take some action, these include trains prevented from
+entering or being created by existing trains, locked routes, or on points set
+to diverge; trains unable to split because the platform is too short or another
+train is in the way; and trains waiting for another train to join or to be
+joined by.</p>
+
+<p>Remember to set separate warnings where there are different entries for
+similar services, e.g. a shuttle feeder service is listed separately from the
+shuttle service that it feeds, so both the feeder and the shuttle should have
+warnings at similar locations if appropriate, but the repeat feature will take
+care of all warnings for the shuttle services themselves.</p>
+
+<p>If a warning is set for an arrival and departure event - <span
+style='color:blue'>HH:MM;HH:MM;Location</span> - the warning is given on
+arrival only, not departure. Warnings are not permitted for 'Frh' codes because
+these are not events as such, they just represent train termination and
+indicate that the timetable has finished for the relevant trains. Warnings are
+also not permitted for 'Fjo' codes. If a warning is required when trains join
+(as opposed to when they are waiting to join - at which time an automatic
+warning is given) the 'W' should precede the 'jbo' event, not the 'Fjo' event.</p>
+
+<p>See <a href="5.111w8h.htm">section 5.11</a> for some important aspects that
+will help to avoid errors.</p>
+
+</div>
+
+</body>
+
+</html>

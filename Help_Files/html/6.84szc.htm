@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Signaller control</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Signaller control">
+	<PARAM NAME="Keyword" VALUE="SPAD">
+	<PARAM NAME="Keyword" VALUE="Signal passed at danger">
+	<PARAM NAME="Keyword" VALUE="Remove train">
+	<PARAM NAME="Keyword" VALUE="Tram services">
+	<PARAM NAME="Keyword" VALUE="Light rail services">
+	<PARAM NAME="Keyword" VALUE="Popup menu">
+	<PARAM NAME="Keyword" VALUE="Change direction">
+	<PARAM NAME="Keyword" VALUE="Stop train">
+	<PARAM NAME="Keyword" VALUE="Restore timetable control">
+	<PARAM NAME="Keyword" VALUE="Step forward one element">
+	<PARAM NAME="Keyword" VALUE="Take signaller control">
+</OBJECT>
+
+<P><B><A NAME="6.8"></A>6.8  Signaller control</B></P>
+
+<P>Normally trains run to a timetable, but whenever a train is stopped at a signal, by buffers or at a station, the signaller may take control by right clicking on the train and selecting 'take signaller control' from the popup menu.  The train then no longer runs to the timetable, which is suspended for the duration of signaller control.  It remains under the direction of the signaller until timetable control is restored.</P>
+
+<P>Signaller-control mode is normally used to manoeuvre a train that has become misplaced, perhaps by arriving at an inappropriate platform, by taking a wrong route, or after a SPAD, or to remove it after a derailment or crash.  Trains may also be created under signaller control (see timetable section), in which case they remain under signaller control at all times.  This mode is sometimes appropriate for tram or light rail services.</P>
+
+<P>All signaller commands are issued via a popup menu by right clicking on the train, and the options that are available vary according to circumstances.  'Change direction' is not available when any part of a train is on a continuation, or the element in front of a train is a continuation, because the train has then reached the point where its only course is to remain stationary or leave.  'Stop' is similarly not available if a train is on or close to a continuation, and if a train is stopping on a signaller command and it reaches a continuation then it will continue to exit - the command will effectively have been given too late.  The reason for these restrictions is that the program needs to distinguish between trains entering and trains leaving at continuations, and a stopped train that is leaving can be confused with a train that should enter.  'Restore timetable control' availability depends on the circumstances when signaller control was taken.  If the train was at a timetabled stop, then the train must be returned to and stopped at that location (though not necessarily at the same platform) before the timetable may be restored.  If the train wasn't at a timetabled stop then the timetable may be restored whenever the train is stopped.</P>
+
+<P>Note that when a stop command has been given, the train only acts on it at the end of the next full element, which is when train speeds and times are calculated for the next element.  If movement by a single track element is required then select 'Step forward one element'.  Note that if this is selected and there is a red signal in front then the signal element will be entered and the signal will no longer hold the train.  If the train is stopping under signaller control the popup menu is not available until it has stopped.</P>
+
+<P>When under signaller control the maximum running speed is 30km/h by default (for safety reasons since the train is often not protected by a route in these circumstances).  This speed may be changed if required by an appropriate timetable entry (see 'About timetables'), but it can't be changed during operation.</P>
+
+<P>A train under signaller control will obey signals, stop at buffers, and also stop for trains in front that are either stationary or moving away from it (trains under timetable control only stop - without crashing - for trains in front when entering a timetabled location).  Signaller-controlled trains won't stop at timetabled locations however because the timetable has been suspended.</P>
+
+<P>Note that if a train is on a route and is removed, then the signals behind the removed train won't be reset - they will stay at red.  In these circumstances if the route is still required it should be cancelled and then rebuilt.</P>
+
+<P>When a train under signaller control (or after a call-on) has stopped because of a train in front, it won't move (unless instructed to by the signaller and the train is not immediately in front) until the train in front has passed the next forward signal, or points direct it away from the train in front .</P>
+
+</BODY>
+</HTML>

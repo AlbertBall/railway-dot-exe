@@ -1,0 +1,170 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Track element types</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p
+	{font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma","sans-serif";
+	color:black;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma","sans-serif";
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=white lang=EN-GB>
+
+<div class=WordSection1>
+
+<p><a name=3.1.1></a><b>3.1.1 Track element types</b></p>
+
+<p><b>Straights, curves, buffers, bridges, points and crossovers</b></p>
+
+<p>Hopefully these are all fairly self-evident. However points and crossovers
+can't be placed next to buffers as there must be room for a train (2 elements
+long) without fouling any of these elements. Note also that some straight
+elements have directional arrows. These are purely for visual clarity, they
+don't need to relate to preferred directions (though clearly they should to
+avoid confusion), preferred directions are set separately. </p>
+
+<p><b>Signals</b></p>
+
+<p>Signals can be two, three or four-aspect, or ground position lights. The
+signal type button <img width=24 height=24
+src="../images/RailSim2_FOURASPECT.gif"> represents four-aspect, and clicking
+the button changes it to three-aspect <img width=24 height=24
+src="../images/RailSim2_THREEASPECT.gif">, then two-aspect <img width=24
+height=24 src="../images/RailSim2_TWOASPECT.gif">, then ground position light <img
+width=24 height=24 src="../images/RailSim2_GROUNDSIG.gif">, then back to
+four-aspect. Signals of the appropriate type are placed on the railway whenever
+the corresponding signal buttons are selected. Note that two, three and
+four-aspect signals all appear the same when placed, but the type is indicated
+in the floating window when track information is selected.</p>
+
+<p>Signals are always positioned on the left of the track relative to the
+direction of travel. Trains recognise and act on signals to their left but
+ignore signals to their right. Try to avoid placing signals immediately before
+a bridge, because then it won't be possible to truncate the route to that
+signal (see 'route setting and cancelling'). This is because a bridge is
+potentially ambiguous as it may have two routes set on it.</p>
+
+<p>Note that signals can't be placed next to buffers as there must be room for
+a train (2 elements long) in the siding without straddling a signal. Also two
+same-direction signals can't be placed next to each other as there must be room
+for a train between them.</p>
+
+<p><b>Level Crossings</b></p>
+
+<p>Level crossings work as follows:- All crossings are closed to trains
+initially (i.e. barriers raised), and are opened by creating a route (preferred
+direction or unrestricted, automatic signal routes aren't permitted) through
+them. The barriers begin to lower as soon as the route is in place, the
+lowering indicated by the 'barriers down' graphic flashing. While it is
+flashing other routes can be created elsewhere in the railway but no other
+route can be created across the level crossing until the barriers are fully
+down. They stay down while there is a route in place, and start to rise as soon
+as all routes have been cleared - in this case the 'barriers up' graphic flashes.
+The barriers take 30 seconds to lower and 10 seconds to rise. The first signal
+behind and facing the barrier stays red until the barrier is fully down.<br>
+<br>
+The graphics display differently for barriers up and down, with barriers shown
+across the road for down and across the railway for up. Although modern barrier
+crossings don't really lie across the railway I think it makes it clearer that
+the way is blocked for trains if barriers are shown in this way. Crossings can
+be placed across any number of directly parallel tracks, but can only be placed
+on plain horizontal or vertical track elements. Note that level crossings
+cannot be placed adjacent to each other on the same track.<br>
+<br>
+Up to three minutes is allowed for a barrier to remain down before penalty times
+start clocking up, so it doesn't pay to set routes too far in advance of
+trains. If a barrier is lowered and then raised (by cancelling the route)
+before any trains have passed, then the three minutes allowance isn't given,
+penalty times begin clocking up right away. Level crossings are treated as
+being closed to trains in all states other than with barriers fully down, and
+if a train runs into one when the barriers are not down then there is a crash
+(it's assumed to have hit a road vehicle) and the train has to be removed by
+the signaller. </p>
+
+<p><b>Parapets</b></p>
+
+<p>These are visual elements only, to improve the appearance of the railway by
+indicating bridge and tunnel parapets, they don't play any part in operation.</p>
+
+<p><b>Continuations</b></p>
+
+<p>Elements that represent the limit of the railway, where track extends
+outside the</p>
+
+<p>program's control area are referred to as 'Continuations' <img width=16
+height=16 src="../images/RailSim2_GL81.gif">. The dotted section represents the
+outside edge. Trains enter and leave the railway at these elements.</p>
+
+<p><b>Gaps</b></p>
+
+<p>Gaps <img width=16 height=16 src="../images/RailSim2_GL89SET.gif"> represent
+elements that connect to other elements that are not immediately adjacent.
+There must always be an even number of gaps which are arranged in paired
+connections. When part of a train moves off one gap it appears immediately on
+the connected gap. Gaps allow continuous sections of railway to be separated
+visually, for example to display a long section of track on a single screen.
+They are also useful for long bridges or tunnels, to avoid having several
+single-element bridges adjacent to each other. Right clicking the mouse on a
+gap that has been set shows the two connected gaps - flashing red for the
+clicked gap, and flashing green for the connected gap. The zoom-out and move
+screen viewpoint buttons may be used if the gaps are on different screens to
+each other. Left or right clicking the mouse at a blank area of screen stops
+the gaps flashing.</p>
+
+<p>When first placed, the oval area of the gap is hollow, to indicate that it
+isn't yet connected to another gap. When unconnected gaps are present in a
+railway under construction the <img width=20 height=20
+src="../images/RailSim2_GAPSNOTSETGRAPHIC.gif"> icon is displayed at the left
+side of the screen, and the <img width=24 height=24
+src="../images/RailSim2_CONNECTGAPS.gif"> 'connect gaps' button is enabled,
+which is used to connect gaps to each other in turn. During connection the
+program highlights a gap with a small red circle, at which point the
+corresponding gap should be left-clicked, this is then highlighted briefly with
+a green circle before the next gap to be connected is highlighted in red. The
+screen may be zoomed-out and navigated freely during gap setting, because
+connected gaps may not always lie on the same screen (though it's clearer if
+they are). When all gaps have been connected the <img width=20 height=20
+src="../images/RailSim2_GAPSSETGRAPHIC.gif"> icon is displayed.</p>
+
+</div>
+
+</body>
+
+</html>

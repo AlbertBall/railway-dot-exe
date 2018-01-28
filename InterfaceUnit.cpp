@@ -72,7 +72,7 @@ try
 						 //initial setup
 	//MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
 	//Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-	ProgramVersion = "v2.0.0 Beta"; //Beta Embarcadero version
+	ProgramVersion = GetVersion(); //Beta Embarcadero version
 	//use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
 	//development stages (don't show on published versions) check for presence of directories, creation failure probably indicates that the
 	//working folder is read-only
@@ -228,7 +228,7 @@ try
     SpeedButton76->Glyph->LoadFromResourceName(0, "gl76"); SpeedButton77->Glyph->LoadFromResourceName(0, "gl77");
     SpeedButton78->Glyph->LoadFromResourceName(0, "gl78"); SpeedButton79->Glyph->LoadFromResourceName(0, "gl79");
     SpeedButton80->Glyph->LoadFromResourceName(0, "gl80"); SpeedButton81->Glyph->LoadFromResourceName(0, "gl81");
-    SpeedButton82->Glyph->LoadFromResourceName(0, "gl82"); SpeedButton83->Glyph->LoadFromResourceName(0, "gl83");
+	SpeedButton82->Glyph->LoadFromResourceName(0, "gl82"); SpeedButton83->Glyph->LoadFromResourceName(0, "gl83");
     SpeedButton84->Glyph->LoadFromResourceName(0, "gl84"); SpeedButton85->Glyph->LoadFromResourceName(0, "gl85");
     SpeedButton86->Glyph->LoadFromResourceName(0, "gl86"); SpeedButton87->Glyph->LoadFromResourceName(0, "gl87");
     SpeedButton88->Glyph->LoadFromResourceName(0, "gl88set"); SpeedButton89->Glyph->LoadFromResourceName(0, "gl89set");
@@ -267,7 +267,7 @@ try
     AddTrackButton->Glyph->LoadFromResourceName(0, "AddTrack");
     AutoSigsButton->Glyph->LoadFromResourceName(0, "AutoSig");
     CallingOnButton->Glyph->LoadFromResourceName(0, "CallingOn");
-    DeleteAllPrefDirButton->Glyph->LoadFromResourceName(0, "ClearAllPrefDir");
+	DeleteAllPrefDirButton->Glyph->LoadFromResourceName(0, "ClearAllPrefDir");
     DeleteOnePrefDirButton->Glyph->LoadFromResourceName(0, "ClearOnePrefDir");
     ExitOperationButton->Glyph->LoadFromResourceName(0, "Exit");
     ExitPrefDirButton->Glyph->LoadFromResourceName(0, "Exit");
@@ -306,7 +306,7 @@ try
     CrashImage->Picture->Bitmap->LoadFromResourceName(0, "CrashWarning");
     DerailImage->Picture->Bitmap->LoadFromResourceName(0, "DerailWarning");
     SignalStopImage->Picture->Bitmap->LoadFromResourceName(0, "SignalStopWarning");
-    SPADImage->Picture->Bitmap->LoadFromResourceName(0, "SPADWarning");
+	SPADImage->Picture->Bitmap->LoadFromResourceName(0, "SPADWarning");
 
     DistanceKey->Picture->Bitmap->LoadFromResourceName(0, "DistanceKey");
     PrefDirKey->Picture->Bitmap->LoadFromResourceName(0, "PrefDirKey");
@@ -345,7 +345,7 @@ try
     "Finish && form a new service" + NL +
     "Finish && join another train" + NL +
     "Finish && exit railway" + NL +
-    "Finish && repeat shuttle, finally remain here" + NL +
+	"Finish && repeat shuttle, finally remain here" + NL +
     "Finish && repeat shuttle, finally form a finishing service" + NL +
     "Finish non-repeating shuttle feeder service" + NL +
     "Finish && remain here";
@@ -384,7 +384,7 @@ try
     TTLabel4->Caption = TTLabelStr4;
     TTLabel5->Caption = TTLabelStr5;
     TTLabel6->Caption = TTLabelStr6;
-    TTLabel7->Caption = TTLabelStr7;
+	TTLabel7->Caption = TTLabelStr7;
     TTLabel9->Caption = TTLabelStr9;
     TTLabel11->Caption = TTLabelStr11;
     TTLabel12->Caption = TTLabelStr12;
@@ -423,7 +423,7 @@ try
                 Utilities->clTransparent = TColor(0);
                 }
             }
-        }
+		}
 
     SelectBitmap->TransparentColor = Utilities->clTransparent;
     RailGraphics->ChangeAllTransparentColours(Utilities->clTransparent, clB5G5R5);//original colour is as loaded at this stage - white
@@ -462,7 +462,7 @@ catch (const EFOpenError &e)
     But << mbOK;
     MessageDlg(e.Message + " - program must terminate", mtError, But, 0);
     Application->Terminate();
-    }
+	}
 
 catch (const Exception &e)
     {
@@ -501,7 +501,7 @@ try
     }
 catch (const Exception &e)
     {
-    ErrorLog(116, e.Message);
+	ErrorLog(116, e.Message);
     }
 }
 
@@ -573,13 +573,46 @@ catch (const Exception &e)
 }
 
 //---------------------------------------------------------------------------
+
+UnicodeString TInterface::GetVersion()
+{
+    DWORD VersionHandle;
+    DWORD VersionSize;
+    LPBYTE pBuffer;
+	UnicodeString strVersion = L"N/A";
+
+    VersionSize = GetFileVersionInfoSizeW(Application->ExeName.c_str(), &VersionHandle);
+    if (VersionSize)
+    {
+        pBuffer = new BYTE[VersionSize];
+
+        if (GetFileVersionInfoW(Application->ExeName.c_str(), VersionHandle, VersionSize, pBuffer))
+        {
+            VS_FIXEDFILEINFO *fi;
+            UINT buflen;
+
+            if (VerQueryValueW(pBuffer, L"\\", (void** )&fi, &buflen))
+            {
+                strVersion.sprintf(L"%d.%d.%d.%d",
+                    HIWORD(fi->dwFileVersionMS), LOWORD(fi->dwFileVersionMS),
+                    HIWORD(fi->dwFileVersionLS), LOWORD(fi->dwFileVersionLS)
+                );
+            }
+        }
+
+        delete[] pBuffer;
+    }
+
+	return L" v" + strVersion + L" Beta";
+}
+//---------------------------------------------------------------------------
 //Track Build Interface
 //---------------------------------------------------------------------------
 void __fastcall TInterface::BuildTrack1Click(TObject *Sender)//Mode Menu Item
 {
 try
     {
-    TrainController->LogEvent("BuildTrack1Click");
+	TrainController->LogEvent("BuildTrack1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BuildTrack1Click");
     Level1Mode = TrackMode;
     SetLevel1Mode(0);

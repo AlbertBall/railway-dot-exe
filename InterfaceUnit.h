@@ -669,10 +669,11 @@ public: //AboutForm needs access to these
 
 //Level 1 program modes
 enum TLevel1Mode {BaseMode, TrackMode, PrefDirMode, OperMode, RestartSessionOperMode, TimetableMode} Level1Mode;
-
-AnsiString ProgramVersion;
+UnicodeString ProgramVersion;
+UnicodeString GetVersion(); //determined automatically from the project options 'Version Info'
 
 private:
+
 //Level 2 program modes (i.e. submodes from the level 1 modes)
 enum TLevel2OperMode {NoOperMode, Operating, PreStart, Paused} Level2OperMode;
 enum TLevel2PrefDirMode {NoPrefDirMode, PrefDirContinuing, PrefDirSelecting} Level2PrefDirMode;

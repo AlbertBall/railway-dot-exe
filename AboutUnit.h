@@ -33,17 +33,19 @@ class TAboutForm : public TForm //the small 'About' box selected from the Help m
 {
 __published:	// IDE-managed Components
     TButton *AboutFormButton; //the OK button
-    TImage *Image1; //the railway.exe icon
-    TLabel *AboutLabel; //the label that begins 'All the tools.....'
-    TLabel *AboutLabel2; //the 'railway.exe' label in bold
-    void __fastcall FormCreate(TObject *Sender); //called when the form is first created (by WinMain), the function sets AboutLabel
-        //then hides the form
+	TImage *ImageAppIcon;
+	TLabel *AboutLabelCaption;
+	TLabel *AboutLabelTitle;
+	void __fastcall FormCreate(TObject *Sender); //called when the form is first created (by WinMain),
+		//sets the version info, then hides the form
     void __fastcall AboutFormButtonClick(TObject *Sender); //closes the form
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action); //called when the form is closed, restarts MasterClock if Level1Mode
         //is OperMode
 private:	// User declarations
+	void __fastcall SetAboutCaption(); //gets the version string automatically from the project options 'Version Info'
 public:		// User declarations
-    __fastcall TAboutForm(TComponent* Owner); //the form constructor
+	__fastcall TAboutForm(TComponent* Owner); //the form constructor
+
 };
 //---------------------------------------------------------------------------
 

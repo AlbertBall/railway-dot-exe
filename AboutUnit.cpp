@@ -51,9 +51,7 @@ __fastcall TAboutForm::TAboutForm(TComponent* Owner)
 
 void __fastcall TAboutForm::FormCreate(TObject *Sender)
 {
-AnsiString NL = '\n';
-AboutLabel->Caption = "All the tools to design, build and" + NL + "operate your own railway" + NL + NL +
-                      "Release: " + Interface->ProgramVersion + NL + NL + "Copyright 2010-2017 Albert Ball";  //[added '-2013' at v1.3.1, '2015' at v1.3.2 Beta, '2017' at v2.0.0]
+AboutForm->SetAboutCaption();
 AboutForm->Hide();
 }
 //---------------------------------------------------------------------------
@@ -71,4 +69,39 @@ if(Interface->Level1Mode == TInterface::OperMode)
     }
 }
 //---------------------------------------------------------------------------
+void __fastcall TAboutForm::SetAboutCaption()
+{
+    DWORD VersionHandle;
+    DWORD VersionSize;
+    LPBYTE pBuffer;
+	UnicodeString strVersion = L"N/A";
+    UnicodeString NL = '\n';
 
+    VersionSize = GetFileVersionInfoSizeW(Application->ExeName.c_str(), &VersionHandle);
+    if (VersionSize)
+    {
+        pBuffer = new BYTE[VersionSize];
+
+        if (GetFileVersionInfoW(Application->ExeName.c_str(), VersionHandle, VersionSize, pBuffer))
+        {
+            VS_FIXEDFILEINFO *fi;
+            UINT buflen;
+
+            if (VerQueryValueW(pBuffer, L"\\", (void** )&fi, &buflen))
+            {
+                strVersion.sprintf(L"%d.%d.%d.%d",
+                    HIWORD(fi->dwFileVersionMS), LOWORD(fi->dwFileVersionMS),
+                    HIWORD(fi->dwFileVersionLS), LOWORD(fi->dwFileVersionLS)
+                );
+            }
+        }
+
+        delete[] pBuffer;
+    }
+
+	AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
+							L"operate your own railway" + NL + NL +
+							L" Release: " + strVersion + L" Beta " + NL + NL +
+							L"Copyright 2010-2018 Albert Ball";
+}
+//---------------------------------------------------------------------------

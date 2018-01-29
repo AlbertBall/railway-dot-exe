@@ -36,6 +36,6 @@ Although the program is fully usable now, there remains great potential for furt
 
 More recent suggestions are included in the file DevHistory.txt.
 
-'DeveloperGuide.doc' in the 'master' branch provides a summary of program history, structure, operation and interfaces, and also explains the file structure (click the document then select 'View Raw', and open with an application that will read Word 2003 files). Anyone wishing to contribute to further development should create a GitHub account then contact me with evidence of proficiency and I'll provide write access to the files. Version control is provided by 'Git', so anyone wishing to contribute needs to be familiar with 'Git' - plenty of information is available on the web and it's not difficult to learn the basics.
+'DeveloperGuide.pdf' in the 'master' branch provides a summary of program history, structure, operation and interfaces, and also explains the file structure.  Anyone wishing to contribute to further development should create a GitHub account then contact me with evidence of proficiency and I'll provide write access to the files. Version control is provided by 'Git', so anyone wishing to contribute needs to be familiar with 'Git' - plenty of information is available on the web and it's not difficult to learn the basics.
 
 I (Albert Ball) can be contacted at railwayfeedback@gmail.com or via the website at http://www.railwayoperationsimulator.com/

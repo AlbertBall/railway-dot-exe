@@ -1,5 +1,4 @@
 # railway-dot-exe
-Automatically exported from code.google.com/p/railway-dot-exe
 
 Welcome to the railway.exe project, a railway simulator for Windows originally written in Borland's C++ Builder 4 Professional and now updated to work with Embarcadero's C++ Builder Starter Edition v10.2.  Development to date has resulted in a complete and usable program that provides options to:
 

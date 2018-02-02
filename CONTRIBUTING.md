@@ -27,7 +27,7 @@ Be nice to each other. Please report unacceptable behaviour to [railwayfeedback@
 
 ## I don't want to read this whole thing I just have a question!!!
 
-We have an official [website](http://www.railwayopertionsimulator.com) where you can ask questions via the [Contact](http://www.railwayoperationsimulator.com/contact) form, or simply [Email us](mailto:railwayfeedback@gmail.com).
+We have an official [website](http://www.railwayoperationsimulator.com) where you can ask questions via the [Contact](http://www.railwayoperationsimulator.com/contact) form, or simply [Email us](mailto:railwayfeedback@gmail.com).
 
 ## What should I know before I get started as a contributor?
 
@@ -72,7 +72,7 @@ Optionally, provide more context by answering these questions:
 
 * There is no template for pull requests at this time. Simply create your pull request and try to include a meaningful description of what you are proposing. 
 
-###Suggested Enhancements
+### Suggested Enhancements
 
 Although the program is fully usable now, there remains great potential for further development. Some ideas include:
 

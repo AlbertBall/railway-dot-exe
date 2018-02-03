@@ -72,6 +72,19 @@ the blue route so it wasn't just the display that was wrong. Couldn't repeat the
 3.  If an arriving train reaches a platform with a train in front at buffers, and the arriving train is to split while facing the train at buffers (from the rear but maybe also from the front) and there is enough platform for the split, then the split doesn't occur.  Occurred on Chiltern (Chiltern rear split problem; Timetable time 10.49.03; Chiltern Railways v2; Chiltern Railways v2.ssn) after manoeuvring 5F33 & 1N24 onto a vacant platform & restoring appropriate directions & timetable control.  Due to lack of sophistication of split functions (see note in program: Split logic is:-  at least one of 4 final train positions must overlap with one of original train positions, & final 4 positions will maximise the number at the location.  Note that this function isn't sophisticated enough to account for trains already at the
 location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these circumstances the other train will need to be move sufficiently away to release all 4 positions, then the train will split.)  Try to improve if possible (i.e. just take account of 'available' platforms, and ensure keep trying in case other trains move off) or at least give a warning in the help & operator manuals to keep trains that are to split separated from trains already present at platforms - preferably don't have other trains at platforms at all where a train is to split.[leave for now unless reported as a problem - no-one has reported it yet]
 
+VERSION CHANGES AFTER v2.0.0 Beta for v2.1.0
+
+a) Change the way version info is retrieved (internal fix - no user-facing changes)
+b) Remove beta tag (6 months have passed)
+c) Change the version numbering format to use Semantic versioning (see https://semver.org/)
+d) Add 'Build' keyword support to version for future Continuous Integration implementation
+e) Put Help and About submenus in standard order
+f) Add key modifiers to menus, and ellipses on dialog opening actions
+g) Fix typo in Utilities::CallLogPop() comment
+h) Add CONTRIBUTING.md file
+i) Remove ambiguity from Clear All dialog by changing 'delete' to 'close'
+j) Change menu text to title case
+
 
 VERSION CHANGES AFTER v1.3.2 for v2.0.0 Beta
 

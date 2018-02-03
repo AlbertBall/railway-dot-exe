@@ -494,6 +494,7 @@ __published:	// IDE-managed Components
     TLabel *TTClockLabel1;
     TLabel *TTClockLabel2;
     TSpeedButton *SpeedButton144;
+	TMenuItem *N1;
 
 //menu item actions
     void __fastcall About1Click(TObject *Sender);

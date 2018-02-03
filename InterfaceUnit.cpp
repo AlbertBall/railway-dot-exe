@@ -170,8 +170,8 @@ try
     NonSigRouteStartMarker = new TGraphicElement;
 
     TrackInfoOnOff1->Caption = "Show";  //added here at v1.2.0 because dropped from ResetAll()
-	TrainStatusInfoOnOff1->Caption = "Hide status"; //changed at v2.0.0 so normally visible
-	TrainTTInfoOnOff1->Caption = "Hide timetable"; //as above
+	TrainStatusInfoOnOff1->Caption = "Hide Status"; //changed at v2.0.0 so normally visible
+	TrainTTInfoOnOff1->Caption = "Hide Timetable"; //as above
     ResetAll(0);
 
     TempTTFileName = "";
@@ -591,11 +591,14 @@ UnicodeString TInterface::GetVersion()
             VS_FIXEDFILEINFO *fi;
             UINT buflen;
 
+			//uncomment strVersion and HIWORD alternates below when future CI implemented: sas@2.1.0
             if (VerQueryValueW(pBuffer, L"\\", (void** )&fi, &buflen))
             {
-                strVersion.sprintf(L"%d.%d.%d.%d",
+				//strVersion.sprintf(L"%d.%d.%d (Build %d)",
+				strVersion.sprintf(L"%d.%d.%d",
                     HIWORD(fi->dwFileVersionMS), LOWORD(fi->dwFileVersionMS),
-                    HIWORD(fi->dwFileVersionLS), LOWORD(fi->dwFileVersionLS)
+					HIWORD(fi->dwFileVersionLS)
+					//HIWORD(fi->dwFileVersionLS), LOWORD(fi->dwFileVersionLS)
                 );
             }
         }
@@ -603,7 +606,7 @@ UnicodeString TInterface::GetVersion()
         delete[] pBuffer;
     }
 
-	return L" v" + strVersion + L" Beta";
+	return L" v" + strVersion;
 }
 //---------------------------------------------------------------------------
 //Track Build Interface
@@ -4712,13 +4715,13 @@ try
     {
     TrainController->LogEvent("TrainStatusInfoOnOff1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrainStatusInfoOnOff1Click");
-    if(TrainStatusInfoOnOff1->Caption == "Show status")
+    if(TrainStatusInfoOnOff1->Caption == "Show Status")
         {
-        TrainStatusInfoOnOff1->Caption = "Hide status";
+		TrainStatusInfoOnOff1->Caption = "Hide Status";
         }
     else
         {
-        TrainStatusInfoOnOff1->Caption = "Show status";
+        TrainStatusInfoOnOff1->Caption = "Show Status";
         }
     Utilities->CallLogPop(1184);
     }
@@ -4734,13 +4737,13 @@ try
     {
     TrainController->LogEvent("TrainTTInfoOnOff1Click");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrainTTInfoOnOff1Click");
-    if(TrainTTInfoOnOff1->Caption == "Show timetable")
+    if(TrainTTInfoOnOff1->Caption == "Show Timetable")
         {
-        TrainTTInfoOnOff1->Caption = "Hide timetable";
+        TrainTTInfoOnOff1->Caption = "Hide Timetable";
         }
     else
         {
-        TrainTTInfoOnOff1->Caption = "Show timetable";
+        TrainTTInfoOnOff1->Caption = "Show Timetable";
         }
     Utilities->CallLogPop(1185);
     }
@@ -6937,7 +6940,7 @@ try
     //deal with ContinuationAutoSigList
     ContinuationAutoSignals(0, TrainController->TTClockTime);
     //FloatingLabel function
-    if((TrackInfoOnOff1->Caption == "Hide") || (TrainStatusInfoOnOff1->Caption == "Hide status") || (TrainTTInfoOnOff1->Caption == "Hide timetable"))
+    if((TrackInfoOnOff1->Caption == "Hide") || (TrainStatusInfoOnOff1->Caption == "Hide Status") || (TrainTTInfoOnOff1->Caption == "Hide Timetable"))
         {
         TrackTrainFloat(0);
         }
@@ -9608,7 +9611,7 @@ bool TInterface::ClearEverything(int Caller)
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ClearEverything");
 if(FileChangedFlag)
     {
-    UnicodeString MessageStr = "The railway has changed, delete it without saving?";
+    UnicodeString MessageStr = "The railway has changed, close it without saving?";
     int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
     if (button == IDNO)
         {
@@ -11081,7 +11084,7 @@ if(TrackInfoOnOff1->Caption == "Hide")
     }
 //end of TrackFloat section
 
-if(Level1Mode == OperMode && ((TrainStatusInfoOnOff1->Caption == "Hide status") || (TrainTTInfoOnOff1->Caption == "Hide timetable")))//if caption is 'Off' label is on
+if(Level1Mode == OperMode && ((TrainStatusInfoOnOff1->Caption == "Hide Status") || (TrainTTInfoOnOff1->Caption == "Hide Timetable")))//if caption is 'Off' label is on
     {
     bool FoundFlag;
     AnsiString FormatOneDPStr = "####0.0";
@@ -11095,7 +11098,7 @@ if(Level1Mode == OperMode && ((TrainStatusInfoOnOff1->Caption == "Hide status") 
         //if a bridge & 2 trains at that position will select the train with TrainIDOnElement set
             {
             TTrain Train = TrainController->TrainVectorAtIdent(1, Track->TrackElementAt(452, VecPos).TrainIDOnElement);
-            if(TrainStatusInfoOnOff1->Caption == "Hide status")
+			if(TrainStatusInfoOnOff1->Caption == "Hide Status")
                 {
                 ShowTrainStatusFloatFlag = true;
                 AnsiString HeadCode = "", ServiceReferenceInfo = "", Status = "", CurrSpeedStr = "", BrakePCStr = "", NextStopStr = "", TimeLeftStr = "",
@@ -11224,7 +11227,7 @@ if(Level1Mode == OperMode && ((TrainStatusInfoOnOff1->Caption == "Hide status") 
                     "Next: " + NextStopStr;
                     }
                 }
-            if(TrainTTInfoOnOff1->Caption == "Hide timetable")
+            if(TrainTTInfoOnOff1->Caption == "Hide Timetable")
                 {
                 ShowTrainTTFloatFlag = true;
                 TrainTTFloat = Train.FloatingTimetableString(0, Train.ActionVectorEntryPtr);
@@ -12019,8 +12022,8 @@ TrainController->StopTTClockFlag = false;
 SelectedTrainID = -1;
 SetTrackBuildImages(11);
 //TrackInfoOnOff1->Caption = "Show";  dropped these here at v1.2.0 so don't reset when load a session file
-//TrainStatusInfoOnOff1->Caption = "Show status";
-//TrainTTInfoOnOff1->Caption = "Show timetable";
+//TrainStatusInfoOnOff1->Caption = "Show Status";
+//TrainTTInfoOnOff1->Caption = "Show Timetable";
 Track->CalcHLocMinEtc(8);
 FileChangedFlag = false;
 RlyFile = false;
@@ -14488,7 +14491,5 @@ be tellg, which sometimes returns wrong results, and they corrupt things when us
 
 Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file position then close and reopen it.
 */
-
-
 
 

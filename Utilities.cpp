@@ -44,7 +44,7 @@ TUtilities *Utilities;
 
 //---------------------------------------------------------------------------
 void TUtilities::CallLogPop(int Caller)
-//use this in case have too may pops, in which case CallLog seems to be destroyed &
+//use this in case we have too many pops, in which case CallLog seems to be destroyed &
 //can't record the error
 {
 if(CallLog.empty())

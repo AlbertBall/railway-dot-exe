@@ -87,21 +87,24 @@ void __fastcall TAboutForm::SetAboutCaption()
             VS_FIXEDFILEINFO *fi;
             UINT buflen;
 
-            if (VerQueryValueW(pBuffer, L"\\", (void** )&fi, &buflen))
-            {
-                strVersion.sprintf(L"%d.%d.%d.%d",
-                    HIWORD(fi->dwFileVersionMS), LOWORD(fi->dwFileVersionMS),
-                    HIWORD(fi->dwFileVersionLS), LOWORD(fi->dwFileVersionLS)
-                );
-            }
-        }
+            //uncomment strVersion and HIWORD alternates below when future CI implemented: sas@2.1.0
+			if (VerQueryValueW(pBuffer, L"\\", (void** )&fi, &buflen))
+			{
+				//strVersion.sprintf(L"%d.%d.%d (Build %d)",
+				strVersion.sprintf(L"%d.%d.%d",
+					HIWORD(fi->dwFileVersionMS), LOWORD(fi->dwFileVersionMS),
+					HIWORD(fi->dwFileVersionLS)
+					//HIWORD(fi->dwFileVersionLS), LOWORD(fi->dwFileVersionLS)
+				);
+			}
+		}
 
-        delete[] pBuffer;
-    }
+		delete[] pBuffer;
+	}
 
 	AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
 							L"operate your own railway" + NL + NL +
-							L" Release: " + strVersion + L" Beta " + NL + NL +
+							L" Release: " + strVersion + NL + NL +
 							L"Copyright 2010-2018 Albert Ball";
 }
 //---------------------------------------------------------------------------

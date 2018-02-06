@@ -1,5 +1,6 @@
 //Utilities.cpp
-//BEWARE OF COMMENTS in .cpp files:  they were accurate when written but have sometimes been overtaken by changes and not updated
+//BEWARE OF COMMENTS in .cpp files:  they were accurate when written but have
+// sometimes been overtaken by changes and not updated
 //Comments in .h files are believed to be accurate and up to date
 /*
 This is a source code file for "railway.exe", a railway operation

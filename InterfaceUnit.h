@@ -60,7 +60,7 @@ __published:	// IDE-managed Components
     TBitBtn *TextGridButton;
     TBitBtn *SetLengthsButton;
     TBitBtn *ScreenGridButton;
-    TBitBtn *SaveRailwayButton;
+	TBitBtn *SaveRailwayTBPButton; //Save button on TrackBuildPanel
     TBitBtn *SigAspectButton;
     TBitBtn *ExitTrackButton;
     TBitBtn *RestoreAllDefaultLengthsButton; //distance/speed setting buttons - left to right & top to bottom
@@ -94,7 +94,7 @@ __published:	// IDE-managed Components
     TBitBtn *AddPrefDirButton; //'Set preferred directions' mode - buttons left to right
     TBitBtn *DeleteOnePrefDirButton;
     TBitBtn *DeleteAllPrefDirButton;
-    TBitBtn *SaveRailway2Button;
+	TBitBtn *SaveRailwayPDPButton; // Save button on PrefDirPanel
     TBitBtn *ExitPrefDirButton;
 
     TBitBtn *ShowHideTTButton; //'Create a timetable'/'Edit a timetable' mode - top buttons left to right
@@ -190,8 +190,7 @@ __published:	// IDE-managed Components
     TBitBtn *HomeButton;
     TBitBtn *NewHomeButton;
     TBitBtn *ZoomButton;
-
-    TBitBtn *SaveRailway3Button; //the save railway button at top left hand corner of the screen when no mode is selected
+	TBitBtn *SaveRailwayOPButton; //Save button on the OperatingPanel at top left hand corner of the screen when no mode is selected
     TBitBtn *ErrorButton; //the 'Press to exit' button on the error screen
 
     TImage *BufferAttentionImage; //warning icons shown during operation on the left hand side of the screen
@@ -341,7 +340,7 @@ __published:	// IDE-managed Components
     TOpenDialog *LoadSessionDialog;
     TOpenDialog *TimetableDialog;
 
-    TSaveDialog *SaveRailwayDialog; //file save dialogs
+	TSaveDialog *SaveRailwayDialog; //file save dialogs
     TSaveDialog *SaveTTDialog;
 
     TFontDialog *FontDialog; //font change dialog
@@ -450,8 +449,8 @@ __published:	// IDE-managed Components
     TSpeedButton *SpeedButton101;
     TSpeedButton *SpeedButton102;
     TSpeedButton *SpeedButton103;
-    TSpeedButton *SpeedButton104;
-    TSpeedButton *SpeedButton105;
+	TSpeedButton *SpeedButton104;
+	TSpeedButton *SpeedButton105;
     TSpeedButton *SpeedButton106;
     TSpeedButton *SpeedButton107;
     TSpeedButton *SpeedButton108;
@@ -673,6 +672,14 @@ enum TLevel1Mode {BaseMode, TrackMode, PrefDirMode, OperMode, RestartSessionOper
 UnicodeString ProgramVersion;
 UnicodeString GetVersion(); //determined automatically from the project options 'Version Info'
 
+//Folder names
+UnicodeString RailwayDirName;
+UnicodeString TimetableDirName;
+UnicodeString PerfLogDirName;
+UnicodeString SessionDirName;
+UnicodeString ImageDirName;
+UnicodeString FormattedTTDirName;
+
 private:
 
 //Level 2 program modes (i.e. submodes from the level 1 modes)
@@ -695,8 +702,6 @@ AnsiString CreateEditTTFileName;//the full path and filename of the timetable fi
 AnsiString CreateEditTTTitle;//the title of the timetable currently being edited - i.e. the filename without the '.ttb'
 AnsiString CurDir;           //the full path to the folder where railway.exe resides
 AnsiString DirectoryError;   //unused
-AnsiString FormattedTTDir;   //the full path to the 'Formatted timetables' folder
-AnsiString ImageDir;         //the full path to the 'Images' folder
 AnsiString InfoCaptionStore; //temporary store for the information panel caption
 AnsiString OneEntryTimetableContents;//the current text in the large right hand timetable edit window
 AnsiString PerformanceFileName;//full path and filename of the performance file

@@ -132,19 +132,19 @@ try
 	if(DirOpenError)
 		{
 		ShowMessage("Failed to create one or more of folders: " +
-			RailwayDirName + ", " +
-			TimetableDirName + ", " +
-			PerfLogDirName + ", " +
-			SessionDirName + ", " +
-			ImageDirName + ", " +
+			RailwayDirName     + ", " +
+			TimetableDirName   + ", " +
+			PerfLogDirName     + ", " +
+			SessionDirName     + ", " +
+			ImageDirName       + ", " +
 			FormattedTTDirName + ", " +
 		 	"program operation may be restricted");
 		}
 //ShowMessage("NOTE: APPDEACTIVATE etc Disabled in FormCreate");
 	SaveRailwayDialog->InitialDir = CurDir + "\\" + RailwayDirName;
 	LoadRailwayDialog->InitialDir = CurDir + "\\" + RailwayDirName;
-	TimetableDialog->InitialDir = CurDir + "\\" + TimetableDirName;
-	SaveTTDialog->InitialDir = CurDir + "\\" + TimetableDirName;
+	TimetableDialog->InitialDir   = CurDir + "\\" + TimetableDirName;
+	SaveTTDialog->InitialDir      = CurDir + "\\" + TimetableDirName;
 	LoadSessionDialog->InitialDir = CurDir + "\\" + SessionDirName;
 
 	Application->HelpFile = AnsiString(CurDir + "\\Help.chm"); //added at v2.0.0 for .chm help file
@@ -154,6 +154,7 @@ try
 
 	Utilities = new TUtilities;
 	RailGraphics = new TRailGraphics();
+
 	int DispW = (Screen->Width - 64) / 16; //will truncate down to a multiple of 16
 	int DispH = (Screen->Height - 192) / 16;
 
@@ -199,7 +200,7 @@ try
     RouteFlashDuration = 0.0;
     PointsFlashDuration = 0.0;
 
-    FloatingLabel->Color = clB4G5R5;
+	FloatingLabel->Color = clB4G5R5;
     TrackElementPanel->Color = clB5G5R4;
 	InfoPanel->Color = clB4G5R5;
 
@@ -341,7 +342,7 @@ try
 */
 
     AnsiString NL = '\n';
-	AnsiString TTLabelStr1 =
+	const AnsiString TTLabelStr1 =
     "Start new train" + NL +
     "Start new service from a split" + NL +
     "Start new service from another service" + NL +
@@ -349,14 +350,14 @@ try
     "Start new shuttle train at a timetabled stop" + NL +
     "Start new shuttle service from a feeder";
 
-    AnsiString TTLabelStr2 =
+    const AnsiString TTLabelStr2 =
     "Pass" + NL +
     "Be joined by another train" + NL +
     "Front split" + NL +
     "Rear split" + NL +
     "Change direction of train";
 
-    AnsiString TTLabelStr3 =
+	const AnsiString TTLabelStr3 =
     "Finish && form a new service" + NL +
     "Finish && join another train" + NL +
     "Finish && exit railway" + NL +
@@ -365,33 +366,33 @@ try
     "Finish non-repeating shuttle feeder service" + NL +
     "Finish && remain here";
 
-    AnsiString TTLabelStr4 =
+	const AnsiString TTLabelStr4 =
     "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL +
     "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL +
     "HH:MM" + NL + "     ";
 
-    AnsiString TTLabelStr5 = "HH:MM ';' Location" + NL + "HH:MM ';' HH:MM ';' Location";
+	const AnsiString TTLabelStr5 = "HH:MM ';' Location" + NL + "HH:MM ';' HH:MM ';' Location";
 
-    AnsiString TTLabelStr6 =
+	const AnsiString TTLabelStr6 =
     "+ rear element ID - space - front element ID [+ optional ';S']" + NL + "+ ref. of the train that splits" + NL + "+ other service ref." + NL +
     "+ shuttle service ref." + NL + "+ rear element ID - space - front element ID ';' linked shuttle ref." + NL +
     "+ linked shuttle service ref. ';' feeder service ref." + NL + "+ location" + NL + "+ joining train ref." + NL +
     "+ new service ref." + NL + "+ new service ref." + NL + "    " + NL + "+ new service ref." + NL +
     "+ ref. of train to join" +NL + "+ list of valid exit element IDs (at least 1) separated by spaces" + NL + "+ linked shuttle service ref.";
 
-    AnsiString TTLabelStr7 =
+	const AnsiString TTLabelStr7 =
 	"Arrival OR departure time (program will determine which from the context) + location." + NL +
     "Arrival time, departure time (with no events between) + location";
 
-    AnsiString TTLabelStr9 = "Timetable entries" + NL + "(service references etc.)";
-    AnsiString TTLabelStr11 = "Timetable" + NL + "start time";
+	const AnsiString TTLabelStr9 = "Timetable entries" + NL + "(service references etc.)";
+	const AnsiString TTLabelStr11 = "Timetable" + NL + "start time";
 
-    AnsiString TTLabelStr12 = "NB: WITHIN SERVICES commas must" + NL +
+	const AnsiString TTLabelStr12 = "NB: WITHIN SERVICES commas must" + NL +
                               "not be used (have special meanings)," + NL +
                               "and semicolons may only be used to" + NL +
                               "separate service components.";
 
-    AnsiString TTLabelStr13 = "+ linked shuttle service ref. ';' finishing service ref." + NL + "+ linked shuttle service ref.";
+    const AnsiString TTLabelStr13 = "+ linked shuttle service ref. ';' finishing service ref." + NL + "+ linked shuttle service ref.";
 
     TTLabel1->Caption = TTLabelStr1;
     TTLabel2->Caption = TTLabelStr2;
@@ -403,7 +404,7 @@ try
     TTLabel9->Caption = TTLabelStr9;
     TTLabel11->Caption = TTLabelStr11;
     TTLabel12->Caption = TTLabelStr12;
-    TTLabel13->Caption = TTLabelStr13;
+	TTLabel13->Caption = TTLabelStr13;
 
     //pick up transparent colour from file if there is one & set it to the stored value if it's valid else set to black
 
@@ -10153,8 +10154,7 @@ switch(Level1Mode)//use the data member
 	Utilities->PerformanceFile.open(PerformanceFileName.c_str(), std::ios_base::out);
     if(Utilities->PerformanceFile.fail())
         {
-		ShowMessage("Performance logfile failed to open, logs won't be saved. " +
-			"Ensure that there is a folder named " + PerfLogDirName +
+		ShowMessage("Performance logfile failed to open, logs won't be saved. Ensure that there is a folder named " + PerfLogDirName +
 			" in the folder where the 'Railway.exe' program file resides");
         }
     SetPausedOrZoomedInfoCaption(3);
@@ -12370,8 +12370,7 @@ try
 				Utilities->PerformanceFile.open(PerformanceFileName.c_str(), std::ios_base::out);
                 if(Utilities->PerformanceFile.fail())
 					{
-					ShowMessage("Performance logfile failed to open, logs won't be saved. " +
-						"Ensure that there is a folder named " + PerfLogDirName +
+					ShowMessage("Performance logfile failed to open, logs won't be saved. Ensure that there is a folder named " + PerfLogDirName +
 						" in the folder where the 'Railway.exe' program file resides");
 					}
             //now reload the performance file

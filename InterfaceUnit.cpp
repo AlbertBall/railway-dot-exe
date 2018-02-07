@@ -2100,7 +2100,7 @@ try
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageNoGrid1Click");
     if(!DirectoryExists(CurDir + "\\" + ImageDirName))
         {
-        ShowMessage("Failed to find folder 'Images' in the folder where 'railway.exe' resides.  Image can't be saved");
+        ShowMessage("Failed to find folder " + ImageDirName + " in the folder where 'railway.exe' resides.  Image can't be saved");
         Utilities->CallLogPop(1695);
         return;
         }
@@ -2181,7 +2181,7 @@ try
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageAndGrid1Click");
     if(!DirectoryExists(CurDir + "\\" + ImageDirName))
         {
-        ShowMessage("Failed to find folder 'Images' in the folder where 'railway.exe' resides.  Image can't be saved");
+        ShowMessage("Failed to find folder " + ImageDirName + " in the folder where 'railway.exe' resides.  Image can't be saved");
         Utilities->CallLogPop(1696);
         return;
         }
@@ -2267,7 +2267,7 @@ try
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageAndPrefDirs1Click");
     if(!DirectoryExists(CurDir + "\\" + ImageDirName))
         {
-        ShowMessage("Failed to find folder 'Images' in the folder where 'railway.exe' resides.  Image can't be saved");
+        ShowMessage("Failed to find folder " + ImageDirName + " in the folder where 'railway.exe' resides.  Image can't be saved");
         Utilities->CallLogPop(1697);
         return;
         }
@@ -2345,7 +2345,7 @@ try
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveOperatingImage1Click");
     if(!DirectoryExists(CurDir + "\\" + ImageDirName))
         {
-        ShowMessage("Failed to find folder 'Images' in the folder where 'railway.exe' resides.  Image can't be saved");
+        ShowMessage("Failed to find folder " + ImageDirName + " in the folder where 'railway.exe' resides.  Image can't be saved");
         Utilities->CallLogPop(1702);
         return;
         }
@@ -2533,7 +2533,7 @@ try
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExportTTMenuItem1Click");
     if(!DirectoryExists(CurDir + "\\" + FormattedTTDirName))
         {
-        ShowMessage("Failed to find folder 'Formatted timetables' in the folder where 'railway.exe' resides.  Timetable can't be exported");
+        ShowMessage("Failed to find folder " + FormattedTTDirName + " in the folder where 'railway.exe' resides.  Timetable can't be exported");
         Utilities->CallLogPop(1699);
         return;
         }
@@ -3947,7 +3947,7 @@ try
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExportTTButtonClick");
     if(!DirectoryExists(CurDir + "\\" + FormattedTTDirName))
         {
-		ShowMessage("Failed to find folder 'Formatted timetables' in the folder where 'railway.exe' resides.  Timetable can't be exported");
+		ShowMessage("Failed to find folder " + FormattedTTDirName + " in the folder where 'railway.exe' resides.  Timetable can't be exported");
         Utilities->CallLogPop(1698);
         return;
         }
@@ -10153,7 +10153,9 @@ switch(Level1Mode)//use the data member
 	Utilities->PerformanceFile.open(PerformanceFileName.c_str(), std::ios_base::out);
     if(Utilities->PerformanceFile.fail())
         {
-        ShowMessage("Performance logfile failed to open, logs won't be saved.  Ensure that there is a folder named 'Performance logs' in the folder where the 'Railway.exe' program file resides");
+		ShowMessage("Performance logfile failed to open, logs won't be saved. " +
+			"Ensure that there is a folder named " + PerfLogDirName +
+			" in the folder where the 'Railway.exe' program file resides");
         }
     SetPausedOrZoomedInfoCaption(3);
 //    DisableRouteButtons(2); enable route setting or pre-start
@@ -12249,7 +12251,7 @@ try
         }
     else
         {
-        TrainController->StopTTClockMessage(5, "Session file failed to open, session not saved.  Ensure that there is a folder named 'Sessions' in the folder where the 'Railway.exe' program file resides");
+        TrainController->StopTTClockMessage(5, "Session file failed to open, session not saved.  Ensure that there is a folder named " + SessionDirName + " in the folder where the 'Railway.exe' program file resides");
         }
     Screen->Cursor = TCursor(-2);//Arrow
     Utilities->CallLogPop(1141);
@@ -12367,9 +12369,11 @@ try
                         TimetableTitle + ".txt";
 				Utilities->PerformanceFile.open(PerformanceFileName.c_str(), std::ios_base::out);
                 if(Utilities->PerformanceFile.fail())
-                    {
-                    ShowMessage("Performance logfile failed to open, logs won't be saved.  Ensure that there is a folder named 'Performance logs' in the folder where the 'Railway.exe' program file resides");
-                    }
+					{
+					ShowMessage("Performance logfile failed to open, logs won't be saved. " +
+						"Ensure that there is a folder named " + PerfLogDirName +
+						" in the folder where the 'Railway.exe' program file resides");
+					}
             //now reload the performance file
                 LoadPerformanceFile(0, SessionFile);
                 SessionFile.close();
@@ -13416,7 +13420,7 @@ if(InFile.is_open())
 else
     {
     InFile.close();
-	ShowMessage("Session file failed to open, unable to load session.  Ensure that there is a folder named 'Sessions' in the folder where the 'Railway.exe' program file resides");
+	ShowMessage("Session file failed to open, unable to load session.  Ensure that there is a folder named " + SessionDirName + " in the folder where the 'Railway.exe' program file resides");
     Utilities->CallLogPop(1263);
     return false;
     }

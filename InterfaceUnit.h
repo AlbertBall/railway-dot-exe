@@ -285,7 +285,7 @@ __published:	// IDE-managed Components
         TMenuItem *Exit1;
 
     TMenuItem *ModeMenu;
-        TMenuItem *BuildTrack1;
+	TMenuItem *BuildTrack;
         TMenuItem *PlanPrefDirs1;
         TMenuItem *Createatimetable1;
         TMenuItem *Editatimetable1;
@@ -499,7 +499,7 @@ __published:	// IDE-managed Components
     void __fastcall About1Click(TObject *Sender);
     void __fastcall BlackBgnd1Click(TObject *Sender);
     void __fastcall BlueBgnd1Click(TObject *Sender);
-    void __fastcall BuildTrack1Click(TObject *Sender);
+	void __fastcall BuildTrackClick(TObject *Sender);
     void __fastcall CancelSelection1Click(TObject *Sender);
     void __fastcall ClearAll1Click(TObject *Sender);
     void __fastcall Copy1Click(TObject *Sender);

@@ -275,7 +275,7 @@ try
     SpeedButton138->Glyph->LoadFromResourceName(0, "gl138"); SpeedButton139->Glyph->LoadFromResourceName(0, "gl139");
     SpeedButton140->Glyph->LoadFromResourceName(0, "gl140"); SpeedButton141->Glyph->LoadFromResourceName(0, "gl141");
     SpeedButton142->Glyph->LoadFromResourceName(0, "gl142"); SpeedButton143->Glyph->LoadFromResourceName(0, "gl143");
-    //below not in Railgraphics
+    //below not in RailGraphics
     SpeedButton144->Glyph->LoadFromResourceName(0, "LCGlyph");
 
     AddPrefDirButton->Glyph->LoadFromResourceName(0, "AddPrefDir");
@@ -627,12 +627,12 @@ UnicodeString TInterface::GetVersion()
 //---------------------------------------------------------------------------
 //Track Build Interface
 //---------------------------------------------------------------------------
-void __fastcall TInterface::BuildTrack1Click(TObject *Sender)//Mode Menu Item
+void __fastcall TInterface::BuildTrackClick(TObject *Sender)//Mode Menu Item
 {
 try
     {
-	TrainController->LogEvent("BuildTrack1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BuildTrack1Click");
+	TrainController->LogEvent("BuildTrackClick");
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BuildTrackClick");
     Level1Mode = TrackMode;
     SetLevel1Mode(0);
     Utilities->CallLogPop(1159);
@@ -9871,7 +9871,7 @@ switch(Level1Mode)//use the data member
     ModeMenu->Enabled = true;
     FileMenu->Enabled = true;
     EditMenu->Enabled = false;
-    BuildTrack1->Enabled = true;
+	BuildTrack->Enabled = true;
     SigAspectButton->Visible = false;
     Track->ChangingLCVector.clear();
     Track->BarriersDownVector.clear();

@@ -10424,7 +10424,9 @@ switch(Level2TrackMode)//use the data member
         Track->CheckMapAndInactiveTrack(10);//test
         Track->CheckLocationNameMultiMap(19);//test
         Screen->Cursor = TCursor(-2);//Arrow;
-        Track->SetTrackFinished(!NeedToLink);
+        //Track->SetTrackFinished(!NeedToLink);  This is an error (see Sam Wainwright email of 24/08/17 & devhistory.txt
+        // if track not linked to begin with then becomes linked if NeedToLink false
+		if(NeedToLink) Track->SetTrackFinished(false); // corrected for v2.1.0
         InfoPanel->Caption = "CUTTING:  Left click in selection && drag";
         CutMenuItem->Enabled = false;
         CopyMenuItem->Enabled = false;
@@ -10435,7 +10437,7 @@ switch(Level2TrackMode)//use the data member
         DeleteMenuItem->Enabled = false;
 		SelectLengthsMenuItem->Enabled = false;
         SelectBiDirPrefDirsMenuItem->Visible = false;
-        CancelSelectionMenuItem->Enabled = false;
+		CancelSelectionMenuItem->Enabled = false;
         SelectBitmapHLoc = SelectRect.left;
         SelectBitmapVLoc = SelectRect.top;
         if(NeedToLink || TextChangesMade)
@@ -10521,7 +10523,9 @@ switch(Level2TrackMode)//use the data member
         Track->CheckMapAndTrack(7);//test
         Track->CheckMapAndInactiveTrack(7);//test
         Track->CheckLocationNameMultiMap(7);//test
-        Track->SetTrackFinished(!NeedToLink);
+        //Track->SetTrackFinished(!NeedToLink);  This is an error (see Sam Wainwright email of 24/08/17 & devhistory.txt
+        // if track not linked to begin with then becomes linked if NeedToLink false
+        if(NeedToLink) Track->SetTrackFinished(false); // corrected for v2.1.0
         Screen->Cursor = TCursor(-2);//Arrow;
         SetTrackBuildImages(14);
         ClearandRebuildRailway(38);
@@ -10584,7 +10588,9 @@ switch(Level2TrackMode)//use the data member
         Track->CheckMapAndTrack(10);//test
         Track->CheckMapAndInactiveTrack(9);//test
         Track->CheckLocationNameMultiMap(15);//test
-        Track->SetTrackFinished(!NeedToLink);
+        //Track->SetTrackFinished(!NeedToLink);  This is an error (see Sam Wainwright email of 24/08/17 & devhistory.txt
+        //if track not linked to begin with then becomes linked if NeedToLink false
+        if(NeedToLink) Track->SetTrackFinished(false); // corrected for v2.1.0
         if(NeedToLink || TextChangesMade)
             {
             ResetChangedFileDataAndCaption(21, true); //true for NonPrefDirChangesMade

@@ -1,6 +1,11 @@
 Development History
 ---------------------------------------------------------------------------
 
+Latest corrections:  
+08/02/18:  Corrected Sam Wainwright error (reported 24/08/17):  Existing program sets track finished to !NeedToLink in cut, paste & delete, so if track not linked to begin with and no elements erased (say select a blank area of screen, just text or inactive elements & cut or copy it then paste it elsewhere or delete it), then !NeedToLink is true and TrackFinished becomes set to true also after the operation.  Changed all 'Track->SetTrackFinished(!NeedToLink);' in Interface.cpp to 'if(NeedToLink) Track->SetTrackFinished(false);' so only set it to false if NeedToLink is true.  Included for v2.1.0.  Same error occurred for Dennys Huang on 22/10/17.
+
+08/02/18:  Corrected Moric1998 error (sent in 24/03/16), corrected in TrainUnit at 'if(ContinuationExit(2, LagElement, LagExitPos))'
+---------------------------------------------------------------------------
 
 Future change suggestions:
 
@@ -15,7 +20,7 @@ Suggestions from David Graf - email of 31/03/14
 "Coventry Requirements Sig Sim for Rail Op Sim
 
 
-I’ve almost finished placing together the signalling area covered by the old Coventry PSB in the West Midlands ( the period in question would be 1965 to 1984 ) using your signalling programme.
+Iâ€™ve almost finished placing together the signalling area covered by the old Coventry PSB in the West Midlands ( the period in question would be 1965 to 1984 ) using your signalling programme.
 It looks the part only having a peek at the available information of the real signal box several things are missing and I was wondering if they might become available in any future updates.
 
 The Coventry panel should really have a slot to control the Coventry end of the single track to and from Leamington Spa and visa versa.
@@ -28,7 +33,7 @@ Also the adjacent signalling area Coundon Road has semaphore signals. I was wond
 
 Also the level crossings at Tile Hill and Berkswell are controlled by CCTV. I am assuming the TV screens were in Coventry Power Signal Box. If that is the case then there should be an open or raised , closed or lowered, and clear marker indicators in Coventry PSB for both level crossings. Basically switches to raise and lower the level crossing gates. I wonder if you could simulate that by using a simple dot indicator that you have to press to operate ie open and close the gates. At this time Canley Level Crossing was still manually operated so would be out of the control of Coventry PBS. They would set the route but it was up to the man at Canley SF to open the gates. In practice the Canley gates would be closed to road traffic just as the train was departing Coventry. So there is still a need for manually operated level crossings in the sim.
 
-Background – basically I have been waiting for a signal simulator to cover the West Midlands area only all the commercial stuff is mostly based on modern practice and badly misses the period that I would like to cover. Unfortunately and now fortunately I stumbled across your programme last week by accident and found that I was able to construct the required areas myself. So yes I am interested in helping to aid in further upgrades to enable your project to move forward. Unfortunately I do not have any Borland computer knowledge but I do have some insight into how British Railways used to work and I can hopefully suggest a few things to make your signalling Sim more authentic. Well in British Rail practice.
+Background â€“ basically I have been waiting for a signal simulator to cover the West Midlands area only all the commercial stuff is mostly based on modern practice and badly misses the period that I would like to cover. Unfortunately and now fortunately I stumbled across your programme last week by accident and found that I was able to construct the required areas myself. So yes I am interested in helping to aid in further upgrades to enable your project to move forward. Unfortunately I do not have any Borland computer knowledge but I do have some insight into how British Railways used to work and I can hopefully suggest a few things to make your signalling Sim more authentic. Well in British Rail practice.
 
 I am currently researching a North Wales Coast route so semaphore signals would be of great help. That is if its not to much to ask."
 
@@ -55,7 +60,7 @@ trains as well as fixed starting times
 Suggestion from Mark Jones (email of 29/06/12): try to allow different train lengths consisting of different numbers of elements.  Can indicate required length in 
 timetable.
 
-Suggestion from Keith Hazelton (Feature Requests Forum 02/04/12):  Have the ability to set random dwell times at station stops. At present, once you’ve got ‘the hang’ of 
+Suggestion from Keith Hazelton (Feature Requests Forum 02/04/12):  Have the ability to set random dwell times at station stops. At present, once youâ€™ve got â€˜the hangâ€™ of 
 a layout and got into a rhythm of route setting, everything is pretty predictable. Random dwell times (say between 30sec & 3 mins) would add an unpredictable element.
 
 Sam Wainwright email received 09/02/12: If a shunt signal is placed in the same direction as the main running signals, it is necessary to set a route through the shunt 
@@ -898,7 +903,7 @@ ADDING A NEW PROJECT TO THE USER WEBSITE:
 FUTURE UPDATES:
 
 Updating a family of Help files: Whenever you release an updated family of Help files, your setup program should run the following
-command on the master (default) Help file if you are adding, removing, or updating Help or contents files:- winhlp32 -g
+command on the master (default) Help file if you are adding, removing, or updating Help or contents files:- winhlp32Â -g
 This command forces WinHelp to create a new .gid file for the master contents file, which ensures that users can access the topics in
 the new or updated Help and contents files. If you do not run this command, users who try to access a topic that has been changed or
 removed may encounter unexpected results.
@@ -1051,7 +1056,7 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 COPY SECTIONS:
 
 NEXT value for CallLogPop is 2047
-NEXT value for TrackElementAt is 897
+NEXT value for TrackElementAt is 898
 NEXT value for InactiveTrackElementAt is 119
 NEXT value for GetFixedRouteAt is 220
 NEXT value for GetModifiableRouteAt is 28

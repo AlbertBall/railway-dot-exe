@@ -185,9 +185,9 @@ try
     SigRouteStartMarker = new TGraphicElement;
     NonSigRouteStartMarker = new TGraphicElement;
 
-    TrackInfoOnOff1->Caption = "Show";  //added here at v1.2.0 because dropped from ResetAll()
-	TrainStatusInfoOnOff1->Caption = "Hide Status"; //changed at v2.0.0 so normally visible
-	TrainTTInfoOnOff1->Caption = "Hide Timetable"; //as above
+    TrackInfoOnOffMenuItem->Caption = "Show";  //added here at v1.2.0 because dropped from ResetAll()
+	TrainStatusInfoOnOffMenuItem->Caption = "Hide Status"; //changed at v2.0.0 so normally visible
+	TrainTTInfoOnOffMenuItem->Caption = "Hide Timetable"; //as above
     ResetAll(0);
 
     TempTTFileName = "";
@@ -627,12 +627,12 @@ UnicodeString TInterface::GetVersion()
 //---------------------------------------------------------------------------
 //Track Build Interface
 //---------------------------------------------------------------------------
-void __fastcall TInterface::BuildTrackClick(TObject *Sender)//Mode Menu Item
+void __fastcall TInterface::BuildTrackMenuItemClick(TObject *Sender)//Mode Menu Item
 {
 try
     {
-	TrainController->LogEvent("BuildTrackClick");
-	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BuildTrackClick");
+	TrainController->LogEvent("BuildTrackMenuItemClick");
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BuildTrackMenuItemClick");
     Level1Mode = TrackMode;
     SetLevel1Mode(0);
     Utilities->CallLogPop(1159);
@@ -676,7 +676,7 @@ try
         }
     else CurrentSpeedButton = 0;
     SelectionValid = false;
-    Reselect1->Enabled = false;
+    ReselectMenuItem->Enabled = false;
     Utilities->CallLogPop(1163);
     }
 catch (const Exception &e)
@@ -761,7 +761,7 @@ try
     TrainController->LogEvent("SetGapsButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SetGapsButtonClick");
     SelectionValid = false;
-    Reselect1->Enabled = false;
+    ReselectMenuItem->Enabled = false;
     Level1Mode = TrackMode;
     SetLevel1Mode(42);
     Level2TrackMode = GapSetting;
@@ -1536,12 +1536,12 @@ catch (const Exception &e)
 //---------------------------------------------------------------------------
 //PrefDir Interface
 //---------------------------------------------------------------------------
-void __fastcall TInterface::PlanPrefDirs1Click(TObject *Sender)//Mode Menu Item
+void __fastcall TInterface::PlanPrefDirsMenuItemClick(TObject *Sender)//Mode Menu Item
 {
 try
     {
-    TrainController->LogEvent("PlanPrefDirs1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PlanPrefDirs1Click");
+	TrainController->LogEvent("PlanPrefDirsMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PlanPrefDirsMenuItemClick");
     Level1Mode = PrefDirMode;
     SetLevel1Mode(3);
     Utilities->CallLogPop(1173);
@@ -1655,12 +1655,12 @@ catch (const Exception &e)
 //---------------------------------------------------------------------------
 //Operate Railway Interface
 //---------------------------------------------------------------------------
-void __fastcall TInterface::OperateRailway1Click(TObject *Sender)//Mode Menu Item
+void __fastcall TInterface::OperateRailwayMenuItemClick(TObject *Sender)//Mode Menu Item
 {
 try
     {
-    TrainController->LogEvent("OperateRailway1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OperateRailwayClick");
+	TrainController->LogEvent("OperateRailwayMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OperateRailwayMenuItemClick");
     TTrain::NextTrainID = 0;//reset to 0 whenever enter operating mode
 	AllRoutes->NextRouteID = 0;//reset to 0 whenever enter operating mode
     Level1Mode = OperMode;
@@ -1893,15 +1893,15 @@ catch (const Exception &e)
 //---------------------------------------------------------------------------
 //Menu Interface (for items not already covered above)
 //---------------------------------------------------------------------------
-void __fastcall TInterface::LoadRailway1Click(TObject *Sender)
+void __fastcall TInterface::LoadRailwayMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("LoadRailway1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LoadRailway1Click");
+	TrainController->LogEvent("LoadRailwayMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LoadRailwayMenuItemClick");
     if(!ClearEverything(1))
         {
-        Utilities->CallLogPop(1139);
+		Utilities->CallLogPop(1139);
         return;
         }
 	//LoadRailwayDialog->Filter = "Development file (*.dev)|*.dev|Railway file (*.rly)|*.rly"; //as was
@@ -1910,7 +1910,7 @@ try
 	if(LoadRailwayDialog->Execute())
         {
 		TrainController->LogEvent("LoadRailway " + AnsiString(LoadRailwayDialog->FileName));
-        LoadRailway(0, AnsiString(LoadRailwayDialog->FileName));
+		LoadRailway(0, AnsiString(LoadRailwayDialog->FileName));
         }
     //else ShowMessage("Load Aborted"); drop this
     //Display->Update(); //display updated in ClearandRebuildRailway
@@ -2039,15 +2039,15 @@ Utilities->CallLogPop(1774);
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::Save1Click(TObject *Sender)
+void __fastcall TInterface::SaveMenuItemClick(TObject *Sender)
 {
 //save under existing name
 //no need to alter RlyFile for saving under existing name
 
 try
     {
-    TrainController->LogEvent("Save1Click, " + SavedFileName);
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Save1Click");
+	TrainController->LogEvent("SaveMenuItemClick, " + SavedFileName);
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveMenuItemClick");
     Screen->Cursor = TCursor(-11);//Hourglass;
     std::ofstream VecFile(SavedFileName.c_str());
     if(!(VecFile.fail()))
@@ -2076,12 +2076,12 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TInterface::SaveAs1Click(TObject *Sender)
+void __fastcall TInterface::SaveAsMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("SaveAs1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveAs1Click");
+	TrainController->LogEvent("SaveAsMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveAsMenuItemClick");
     SaveAsSubroutine(0);
     Utilities->CallLogPop(32);
     }
@@ -2093,12 +2093,12 @@ catch (const Exception &e)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::SaveImageNoGrid1Click(TObject *Sender)
+void __fastcall TInterface::SaveImageNoGridMenuItemClick(TObject *Sender)
 {//need to stop clock in case invoke during operation
 try
     {
-    TrainController->LogEvent("SaveImageNoGrid1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageNoGrid1Click");
+	TrainController->LogEvent("SaveImageNoGridMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageNoGridMenuItemClick");
     if(!DirectoryExists(CurDir + "\\" + ImageDirName))
         {
         ShowMessage("Failed to find folder " + ImageDirName + " in the folder where 'railway.exe' resides.  Image can't be saved");
@@ -2174,12 +2174,12 @@ catch (const Exception &e)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::SaveImageAndGrid1Click(TObject *Sender)
+void __fastcall TInterface::SaveImageAndGridMenuItemClick(TObject *Sender)
 {//need to stop clock in case invoke during operation
 try
     {
-    TrainController->LogEvent("SaveImageAndGrid1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageAndGrid1Click");
+	TrainController->LogEvent("SaveImageAndGridMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageAndGridMenuItemClick");
     if(!DirectoryExists(CurDir + "\\" + ImageDirName))
         {
         ShowMessage("Failed to find folder " + ImageDirName + " in the folder where 'railway.exe' resides.  Image can't be saved");
@@ -2260,12 +2260,12 @@ catch (const Exception &e)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::SaveImageAndPrefDirs1Click(TObject *Sender)
+void __fastcall TInterface::SaveImageAndPrefDirsMenuItemClick(TObject *Sender)
 {//need to stop clock in case invoke during operation
 try
     {
-    TrainController->LogEvent("SaveImageAndPrefDirs1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageAndPrefDirs1Click");
+	TrainController->LogEvent("SaveImageAndPrefDirsMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageAndPrefDirsMenuItemClick");
     if(!DirectoryExists(CurDir + "\\" + ImageDirName))
         {
         ShowMessage("Failed to find folder " + ImageDirName + " in the folder where 'railway.exe' resides.  Image can't be saved");
@@ -2338,12 +2338,12 @@ catch (const Exception &e)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::SaveOperatingImage1Click(TObject *Sender)
+void __fastcall TInterface::SaveOperatingImageMenuItemClick(TObject *Sender)
 {//need to stop clock
 try
     {
-    TrainController->LogEvent("SaveOperatingImage1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveOperatingImage1Click");
+	TrainController->LogEvent("SaveOperatingImageMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveOperatingImageMenuItemClick");
     if(!DirectoryExists(CurDir + "\\" + ImageDirName))
         {
         ShowMessage("Failed to find folder " + ImageDirName + " in the folder where 'railway.exe' resides.  Image can't be saved");
@@ -2496,11 +2496,11 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TInterface::LoadSession1Click(TObject *Sender)
+void __fastcall TInterface::LoadSessionMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("LoadSession1Click");
+    TrainController->LogEvent("LoadSessionMenuItemClick");
     LoadSessionFlag = true; //load session within ClockTimer2
     }
 catch (const Exception &e)
@@ -2509,12 +2509,12 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TInterface::ClearAll1Click(TObject *Sender)
+void __fastcall TInterface::ClearAllMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("ClearAll1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ClearAll1Click");
+	TrainController->LogEvent("ClearAllMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ClearAllMenuItemClick");
     if(ClearEverything(2)) {;}//no change in action on result
     Level1Mode = BaseMode;
     SetLevel1Mode(126);
@@ -2526,12 +2526,12 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TInterface::ExportTTMenuItem1Click(TObject *Sender)
+void __fastcall TInterface::ExportTTMenuItemClick(TObject *Sender)
 {//no need to stop clock as can't be called when railway operating
 try
     {
-    TrainController->LogEvent("ExportTTMenuItem1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExportTTMenuItem1Click");
+	TrainController->LogEvent("ExportTTMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExportTTMenuItemClick");
     if(!DirectoryExists(CurDir + "\\" + FormattedTTDirName))
         {
         ShowMessage("Failed to find folder " + FormattedTTDirName + " in the folder where 'railway.exe' resides.  Timetable can't be exported");
@@ -2576,12 +2576,12 @@ sent explicitly, e.g. file << '\0'.  Presumably the same applies for CRLF termin
 */
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::CreateTimetable1Click(TObject *Sender)
+void __fastcall TInterface::CreateTimetableMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("CreateTimetable1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CreateTimetable1Click");
+	TrainController->LogEvent("CreateTimetableMenuItemClick");
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CreateTimetableMenuItemClick");
     CreateEditTTFileName = "";
     TimetableEditVector.clear();
     TimetableEditPanel->Visible = true;
@@ -2610,7 +2610,7 @@ try
         {
         if((Track->TrackVector.at(x).ActiveTrackElementName != "") && (Track->ContinuationNameMap.find(Track->TrackVector.at(x).ActiveTrackElementName)) == Track->ContinuationNameMap.end())
             {//exclude any name that appears in a continuation, error message given in tt validation if try to include such a name in a tt
-            ActiveTrackElementNameMapEntry.first = Track->TrackVector.at(x).ActiveTrackElementName;
+			ActiveTrackElementNameMapEntry.first = Track->TrackVector.at(x).ActiveTrackElementName;
             ActiveTrackElementNameMapEntry.second = 0; //this is a dummy value
             Track->ActiveTrackElementNameMap.insert(ActiveTrackElementNameMapEntry);
             }
@@ -2666,15 +2666,15 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TInterface::EditTimetable1Click(TObject *Sender)
+void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
 /*The .ttb file contains a sequence of AnsiStrings separated by null characters.  CRLFs may be embedded within the AnsiStrings,
 to cause newlines when displayed.  Each AnsiString corresponds to a timetable 'entry'
 */
 {
 try
     {
-    TrainController->LogEvent("EditTimetable1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",EditTimetable1Click");
+	TrainController->LogEvent("EditTimetableMenuItemClick");
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",EditTimetableMenuItemClick");
     TimetableDialog->Filter = "Timetable file (*.ttb)|*ttb";
 	CreateEditTTFileName = "";
 	TimetableEditVector.clear();
@@ -3188,7 +3188,7 @@ try
     int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin();//vector pointers unreliable after an erase,
                                                                        //so use the position in the vector
     TimetableEditVector.erase(TTCurrentEntryPtr);
-//now need to rebuild all the pointers & the AllEntriesTTListBox so repeat the process from EditTimetable1Click
+//now need to rebuild all the pointers & the AllEntriesTTListBox so repeat the process from EditTimetableMenuItemClick
 //pick up the start time if there is one
     TimetableChangedFlag = true;
     TimetableValidFlag = false;
@@ -3320,7 +3320,7 @@ try
                                                                        //so use the position in the vector
     TimetableEditVector.erase(TTCurrentEntryPtr);
 
-//now need to rebuild all the pointers & the AllEntriesTTListBox so repeat the process from EditTimetable1Click
+//now need to rebuild all the pointers & the AllEntriesTTListBox so repeat the process from EditTimetableMenuItemClick
 //pick up the start time if there is one
     TimetableChangedFlag = true;
     TimetableValidFlag = false;
@@ -3878,7 +3878,7 @@ try
             }
         }
 
-    //repeat from EditTimetable1Click, but no need to check for non-ascii characters
+    //repeat from EditTimetableMenuItemClick, but no need to check for non-ascii characters
     //open in binary mode so the "\r\n" pairs stay as they are rather than being entered as '\n'
     std::ifstream TTBLFile(CreateEditTTFileName.c_str(), std::ios_base::binary);
 	if(TTBLFile.is_open())
@@ -3928,7 +3928,7 @@ try
         }
 //all now set where can be
     TTCurrentEntryPtr = TimetableEditVector.begin();
-//end of repeat from EditTimetable1Click
+//end of repeat from EditTimetableMenuItemClick
 
     Level1Mode = TimetableMode;
     SetLevel1Mode(104);
@@ -3958,7 +3958,7 @@ try
         {
         for(int x=CreateEditTTFileName.Length();x>0;x--)//first need to strip out the timetable title from the full name
             {
-            if(CreateEditTTFileName[x] == '\\')
+			if(CreateEditTTFileName[x] == '\\')
                 {
                 TTTitle = CreateEditTTFileName.SubString(x+1, CreateEditTTFileName.Length() - x - 4);
                 break;
@@ -4662,12 +4662,12 @@ return TimesPresent;
 //---------------------------------------------------------------------------
 //end of Timetable editing functions
 //---------------------------------------------------------------------------
-void __fastcall TInterface::Exit1Click(TObject *Sender)
+void __fastcall TInterface::ExitMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("Exit1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Exit1Click");
+	TrainController->LogEvent("ExitMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExitMenuItemClick");
     if(!FileChangedFlag && !(Track->IsTrackFinished()) && (EveryPrefDir->PrefDirSize() > 0))
         {
 		UnicodeString MessageStr = "Note that leaving the track unlinked will cause preferred directions to be lost on reloading.  Prevent by linking the track then resaving.  Do you still wish to exit?";
@@ -4702,19 +4702,19 @@ catch (const Exception &e)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::TrackInfoOnOff1Click(TObject *Sender)
+void __fastcall TInterface::TrackInfoOnOffMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("TrackInfoOnOff1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrackInfoOnOff1Click");
-    if(TrackInfoOnOff1->Caption == "Show")
+	TrainController->LogEvent("TrackInfoOnOffMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrackInfoOnOffMenuItemClick");
+	if(TrackInfoOnOffMenuItem->Caption == "Show")
         {
-        TrackInfoOnOff1->Caption = "Hide";
+		TrackInfoOnOffMenuItem->Caption = "Hide";
         }
     else
         {
-        TrackInfoOnOff1->Caption = "Show";
+        TrackInfoOnOffMenuItem->Caption = "Show";
         }
     Utilities->CallLogPop(1183);
     }
@@ -4725,19 +4725,19 @@ catch (const Exception &e)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::TrainStatusInfoOnOff1Click(TObject *Sender)
+void __fastcall TInterface::TrainStatusInfoOnOffMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("TrainStatusInfoOnOff1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrainStatusInfoOnOff1Click");
-    if(TrainStatusInfoOnOff1->Caption == "Show Status")
+	TrainController->LogEvent("TrainStatusInfoOnOffMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrainStatusInfoOnOffMenuItemClick");
+    if(TrainStatusInfoOnOffMenuItem->Caption == "Show Status")
         {
-		TrainStatusInfoOnOff1->Caption = "Hide Status";
+		TrainStatusInfoOnOffMenuItem->Caption = "Hide Status";
         }
     else
         {
-        TrainStatusInfoOnOff1->Caption = "Show Status";
+        TrainStatusInfoOnOffMenuItem->Caption = "Show Status";
         }
     Utilities->CallLogPop(1184);
     }
@@ -4747,19 +4747,19 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TInterface::TrainTTInfoOnOff1Click(TObject *Sender)
+void __fastcall TInterface::TrainTTInfoOnOffMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("TrainTTInfoOnOff1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrainTTInfoOnOff1Click");
-    if(TrainTTInfoOnOff1->Caption == "Show Timetable")
+    TrainController->LogEvent("TrainTTInfoOnOffMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrainTTInfoOnOffMenuItemClick");
+	if(TrainTTInfoOnOffMenuItem->Caption == "Show Timetable")
         {
-        TrainTTInfoOnOff1->Caption = "Hide Timetable";
+		TrainTTInfoOnOffMenuItem->Caption = "Hide Timetable";
         }
     else
         {
-        TrainTTInfoOnOff1->Caption = "Show Timetable";
+        TrainTTInfoOnOffMenuItem->Caption = "Show Timetable";
         }
     Utilities->CallLogPop(1185);
     }
@@ -5060,39 +5060,39 @@ try
                             }
                         if(Train.TrainMode == Timetable)
                             {
-                            TakeSignallerControl1->Enabled = true;
-                            TimetableControl1->Enabled = false;
-                            ChangeDirection1->Enabled = false;
-                            MoveForwards1->Enabled = false;
-                            StepForward1->Enabled = false;
-                            RemoveTrain1->Enabled = false;
-                            PassRedSignal1->Enabled = false;
-                            SignallerControlStop1->Enabled = false;
+							TakeSignallerControlMenuItem->Enabled = true;
+                            TimetableControlMenuItem->Enabled = false;
+                            ChangeDirectionMenuItem->Enabled = false;
+                            MoveForwardsMenuItem->Enabled = false;
+                            StepForwardMenuItem->Enabled = false;
+                            RemoveTrainMenuItem->Enabled = false;
+                            PassRedSignalMenuItem->Enabled = false;
+                            SignallerControlStopMenuItem->Enabled = false;
                             }
                         else
                             {
-                            TakeSignallerControl1->Enabled = false;
+                            TakeSignallerControlMenuItem->Enabled = false;
                             if((Train.Crashed) || (Train.Derailed))
                                 {
-                                TimetableControl1->Enabled = false;
-                                ChangeDirection1->Enabled = false;
-                                MoveForwards1->Enabled = false;
-                                StepForward1->Enabled = false;
-                                PassRedSignal1->Enabled = false;
-                                SignallerControlStop1->Enabled = false;
-                                RemoveTrain1->Enabled = true;
+								TimetableControlMenuItem->Enabled = false;
+                                ChangeDirectionMenuItem->Enabled = false;
+								MoveForwardsMenuItem->Enabled = false;
+                                StepForwardMenuItem->Enabled = false;
+                                PassRedSignalMenuItem->Enabled = false;
+								SignallerControlStopMenuItem->Enabled = false;
+                                RemoveTrainMenuItem->Enabled = true;
                                 }
                             else if(Train.Stopped())
                                 {
                                 if(Train.TimetableFinished)
                                     {
-                                    TimetableControl1->Enabled = false;
+                                    TimetableControlMenuItem->Enabled = false;
                                     }
                                 else
                                     {
                                     if(Train.RestoreTimetableLocation == "")//en route
                                         {
-                                        TimetableControl1->Enabled = true;
+                                        TimetableControlMenuItem->Enabled = true;
                                         }
                                     else
                                         {
@@ -5108,75 +5108,75 @@ try
                                             }
                                         if(Train.RestoreTimetableLocation == LocName)
                                             {
-                                            TimetableControl1->Enabled = true;
+                                            TimetableControlMenuItem->Enabled = true;
                                             }
                                         else
                                             {
-                                            TimetableControl1->Enabled = false;
+                                            TimetableControlMenuItem->Enabled = false;
                                             }
                                         }
                                     }
 //don't allow ChangeDirection if lead or mid elements (but not lag or next) -1, or lead, mid, lag or next elements continuations
-                                ChangeDirection1->Enabled = true;
+                                ChangeDirectionMenuItem->Enabled = true;
                                 if(Train.LeadElement > -1)
                                     {
                                     if(Track->TrackElementAt(794, Train.LeadElement).TrackType == Continuation)
                                         {
-                                        ChangeDirection1->Enabled = false;
+                                        ChangeDirectionMenuItem->Enabled = false;
                                         }
                                     if(Track->TrackElementAt(791, Train.LeadElement).Conn[Train.LeadExitPos] > -1)
                                         {
                                         if(Track->TrackElementAt(792, (Track->TrackElementAt(793, Train.LeadElement).Conn[Train.LeadExitPos])).TrackType == Continuation)
                                             {
-                                            ChangeDirection1->Enabled = false;
+                                            ChangeDirectionMenuItem->Enabled = false;
                                             }
                                         }
                                     }
-                                else ChangeDirection1->Enabled = false;
+                                else ChangeDirectionMenuItem->Enabled = false;
                                 if(Train.MidElement > -1)
                                     {
                                     if(Track->TrackElementAt(795, Train.MidElement).TrackType == Continuation)
                                         {
-                                        ChangeDirection1->Enabled = false;
+                                        ChangeDirectionMenuItem->Enabled = false;
                                         }
                                     }
-                                else ChangeDirection1->Enabled = false;
+                                else ChangeDirectionMenuItem->Enabled = false;
                                 if(Train.LagElement > -1)
                                     {
                                     if(Track->TrackElementAt(796, Train.LagElement).TrackType == Continuation)
                                         {
-                                        ChangeDirection1->Enabled = false;
+                                        ChangeDirectionMenuItem->Enabled = false;
                                         }
                                     }
-                                RemoveTrain1->Enabled = true;
-                                SignallerControlStop1->Enabled = false;
-                                StepForward1->Enabled = false;
-                                MoveForwards1->Enabled = false;
-                                PassRedSignal1->Enabled = false;
+                                RemoveTrainMenuItem->Enabled = true;
+                                SignallerControlStopMenuItem->Enabled = false;
+								StepForwardMenuItem->Enabled = false;
+                                MoveForwardsMenuItem->Enabled = false;
+                                PassRedSignalMenuItem->Enabled = false;
                                 if(Train.AbleToMove(0))
                                     {
-                                    MoveForwards1->Enabled = true;
-                                    if(!Train.LeavingUnderSigControlAtContinuation) StepForward1->Enabled = true; //added 'if' condition for v1.3.2 due to Carwyn Thomas error,
+                                    MoveForwardsMenuItem->Enabled = true;
+									if(!Train.LeavingUnderSigControlAtContinuation) StepForwardMenuItem->Enabled = true; //added 'if' condition for v1.3.2 due to Carwyn Thomas error,
                                     }                                                                            //fails on trying to calc AutoSig time delay for resetting signals
                                 if(Train.AbleToMoveButForSignal(0))                                              //may not be in AutoSigs route but disallow anyway as not needed at continuation
                                     {
-                                    PassRedSignal1->Enabled = true;
-                                    StepForward1->Enabled = true;
+                                    PassRedSignalMenuItem->Enabled = true;
+                                    StepForwardMenuItem->Enabled = true;
                                     }
                                 }
                             else //train moving under signaller control - only permit restoration of TT control when stopped as could be in
                                  //mid move, & SetTrainMovementValues only intended to be called when stopped
                                 {
-                                TimetableControl1->Enabled = false;
-                                ChangeDirection1->Enabled = false;
-                                RemoveTrain1->Enabled = false;
-                                MoveForwards1->Enabled = false;
-                                PassRedSignal1->Enabled = false;
-                                StepForward1->Enabled = false;
-                                SignallerControlStop1->Enabled = true;
+                                TimetableControlMenuItem->Enabled = false;
+								ChangeDirectionMenuItem->Enabled = false;
+                                RemoveTrainMenuItem->Enabled = false;
+                                MoveForwardsMenuItem->Enabled = false;
+                                PassRedSignalMenuItem->Enabled = false;
+								StepForwardMenuItem->Enabled = false;
+                                SignallerControlStopMenuItem->Enabled = true;
                                 }
                             }
-                        TrainHeadCode1->Caption = Train.HeadCode + ":";
+						TrainHeadCodeMenuItem->Caption = Train.HeadCode + ":";
                         TrainController->StopTTClockFlag = true;//so TTClock stopped during MasterClockTimer function
                         TrainController->RestartTime = TrainController->TTClockTime;
                         PopupMenu->Popup(X, Y);//menu stops everything so reset timetable time when restarts
@@ -6361,18 +6361,18 @@ try
             }
         else
             {
-            Reselect1->Enabled = false;
-            Cut1->Enabled = true;
-            Copy1->Enabled = true;
-            Flip1->Enabled = true;
-            Mirror1->Enabled = true;
-            Rotate1->Enabled = true;
-            Paste1->Enabled = false;
-            Delete1->Enabled = true;
-            if(Track->IsTrackFinished()) SelectLengths1->Enabled = true;//only permit if finished because reverts to DistanceStart
-            else SelectLengths1->Enabled = false;                       //and that can only be used if track linked
-            SelectBiDirectionalPrefDirs1->Visible = false;
-            CancelSelection1->Enabled = true;
+            ReselectMenuItem->Enabled = false;
+            CutMenuItem->Enabled = true;
+            CopyMenuItem->Enabled = true;
+            FlipMenuItem->Enabled = true;
+            MirrorMenuItem->Enabled = true;
+            RotateMenuItem->Enabled = true;
+            PasteMenuItem->Enabled = false;
+            DeleteMenuItem->Enabled = true;
+            if(Track->IsTrackFinished()) SelectLengthsMenuItem->Enabled = true;//only permit if finished because reverts to DistanceStart
+            else SelectLengthsMenuItem->Enabled = false;                       //and that can only be used if track linked
+            SelectBiDirPrefDirsMenuItem->Visible = false;
+            CancelSelectionMenuItem->Enabled = true;
             //set SelectBitmap
             SelectBitmap->Width = (SelectRect.right - SelectRect.left) * 16;
             SelectBitmap->Height = (SelectRect.bottom - SelectRect.top) * 16;
@@ -6517,8 +6517,8 @@ try
             }
         else
             {
-            SelectBiDirectionalPrefDirs1->Enabled = true;
-            CancelSelection1->Enabled = true;
+            SelectBiDirPrefDirsMenuItem->Enabled = true;
+            CancelSelectionMenuItem->Enabled = true;
             //don't need SelectBitmap for PrefDir selection
 
             //store active elements in Track->SelectVector, ignore inactive elements
@@ -6956,7 +6956,7 @@ try
     //deal with ContinuationAutoSigList
     ContinuationAutoSignals(0, TrainController->TTClockTime);
     //FloatingLabel function
-    if((TrackInfoOnOff1->Caption == "Hide") || (TrainStatusInfoOnOff1->Caption == "Hide Status") || (TrainTTInfoOnOff1->Caption == "Hide Timetable"))
+    if((TrackInfoOnOffMenuItem->Caption == "Hide") || (TrainStatusInfoOnOffMenuItem->Caption == "Hide Status") || (TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable"))
         {
         TrackTrainFloat(0);
         }
@@ -7452,13 +7452,13 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TInterface::Select1Click(TObject *Sender)
+void __fastcall TInterface::SelectMenuItemClick(TObject *Sender)
 {
 //draw a rectangle with the left mouse button mouse, enclosing whole 16 x 16 squares
 try
     {
-    TrainController->LogEvent("Select1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Select1Click");
+	TrainController->LogEvent("SelectMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SelectMenuItemClick");
     if(Level1Mode == TrackMode)
         {
         SelectionValid = false;
@@ -7478,12 +7478,12 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TInterface::Reselect1Click(TObject *Sender)
+void __fastcall TInterface::ReselectMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("Reselect1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Reselect1Click");
+	TrainController->LogEvent("ReselectMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ReselectMenuItemClick");
     if((SelectBitmap->Height == 0) || (SelectBitmap->Width == 0))
         {
         Utilities->CallLogPop(1424);
@@ -7506,18 +7506,18 @@ try
 	SelectBitmap->Canvas->CopyRect(Dest, MainScreen->Canvas, Source);
 
     SelectionValid = true;
-    Reselect1->Enabled = false;
-    Cut1->Enabled = true;
-    Copy1->Enabled = true;
-    Flip1->Enabled = true;
-    Mirror1->Enabled = true;
-    Rotate1->Enabled = true;
-    Paste1->Enabled = false;
-    Delete1->Enabled = true;
-    if(Track->IsTrackFinished()) SelectLengths1->Enabled = true;//only permit if finished because reverts to DistanceStart
-    else SelectLengths1->Enabled = false;                       //and that can only be used if track linked
-    SelectBiDirectionalPrefDirs1->Visible = false;
-    CancelSelection1->Enabled = true;
+    ReselectMenuItem->Enabled = false;
+    CutMenuItem->Enabled = true;
+    CopyMenuItem->Enabled = true;
+    FlipMenuItem->Enabled = true;
+    MirrorMenuItem->Enabled = true;
+    RotateMenuItem->Enabled = true;
+    PasteMenuItem->Enabled = false;
+    DeleteMenuItem->Enabled = true;
+    if(Track->IsTrackFinished()) SelectLengthsMenuItem->Enabled = true;//only permit if finished because reverts to DistanceStart
+    else SelectLengthsMenuItem->Enabled = false;                       //and that can only be used if track linked
+    SelectBiDirPrefDirsMenuItem->Visible = false;
+    CancelSelectionMenuItem->Enabled = true;
     mbLeftDown = false;
     //Level1Mode = TrackMode;
     //SetLevel1Mode(68);
@@ -7531,12 +7531,12 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TInterface::Cut1Click(TObject *Sender)
+void __fastcall TInterface::CutMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("Cut1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Cut1Click");
+	TrainController->LogEvent("CutMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CutMenuItemClick");
     //Level1Mode = TrackMode;
     //SetLevel1Mode(69);
     Level2TrackMode = CutMoving;
@@ -7550,12 +7550,12 @@ catch (const Exception &e)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::Copy1Click(TObject *Sender)
+void __fastcall TInterface::CopyMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("Copy1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Copy1Click");
+	TrainController->LogEvent("CopyMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CopyMenuItemClick");
     //Level1Mode = TrackMode;
     //SetLevel1Mode(70);
     Level2TrackMode = CopyMoving;
@@ -7568,12 +7568,12 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TInterface::Flip1Click(TObject *Sender)
+void __fastcall TInterface::FlipMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("Flip1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Flip1Click");
+	TrainController->LogEvent("FlipMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",FlipMenuItemClick");
     //reset values in SelectVector
     int VerSum = SelectRect.top + SelectRect.bottom - 1;
     for(unsigned int x = 0; x < Track->SelectVectorSize(); x++)
@@ -7601,12 +7601,12 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TInterface::Mirror1Click(TObject *Sender)
+void __fastcall TInterface::MirrorMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("Mirror1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Mirror1Click");
+	TrainController->LogEvent("MirrorMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MirrorMenuItemClick");
     //reset values in SelectVector
     int HorSum = SelectRect.left + SelectRect.right - 1;
     for(unsigned int x = 0; x < Track->SelectVectorSize(); x++)
@@ -7634,12 +7634,12 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TInterface::Rotate1Click(TObject *Sender)
+void __fastcall TInterface::RotateMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("Rotate1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Rotate1Click");
+	TrainController->LogEvent("RotateMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RotateMenuItemClick");
     //reset values in SelectVector
     int HorSum = SelectRect.left + SelectRect.right - 1;
     int VerSum = SelectRect.top + SelectRect.bottom - 1;
@@ -7671,12 +7671,12 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TInterface::Paste1Click(TObject *Sender)
+void __fastcall TInterface::PasteMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("Paste1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Paste1Click");
+	TrainController->LogEvent("PasteMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PasteMenuItemClick");
     //Level1Mode = TrackMode;
     //SetLevel1Mode(74);
     Level2TrackMode = Pasting;
@@ -7689,12 +7689,12 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TInterface::Delete1Click(TObject *Sender)
+void __fastcall TInterface::DeleteMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("Delete1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Delete1Click");
+	TrainController->LogEvent("DeleteMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",DeleteMenuItemClick");
     //Level1Mode = TrackMode;
     //SetLevel1Mode(75);
     Level2TrackMode = Deleting;
@@ -7708,12 +7708,12 @@ catch (const Exception &e)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::SelectLengths1Click(TObject *Sender)
+void __fastcall TInterface::SelectLengthsMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("SelectLengths1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SelectLengths1Click");
+	TrainController->LogEvent("SelectLengthsMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SelectLengthsMenuItemClick");
     TrackElementPanel->Visible = false;
     TrackLengthPanel->Visible = true;
     TrackLengthPanel->SetFocus();
@@ -7736,15 +7736,15 @@ catch (const Exception &e)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::SelectBiDirectionalPrefDirs1Click(TObject *Sender)
+void __fastcall TInterface::SelectBiDirPrefDirsMenuItemClick(TObject *Sender)
 {
 /*SelectVector contains all the track elements (and inactive elements but don't need them), so create up to 4 PrefDir
 elements from each one, and add each into ConstructPrefDir, then when all added use ConsolidatePrefDirs to add to EveryPrefDir
 */
 try
     {
-    TrainController->LogEvent("SelectBiDirectionalPrefDirs1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SelectBiDirectionalPrefDirs1Click");
+	TrainController->LogEvent("SelectBiDirPrefDirsMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SelectBiDirPrefDirsMenuItemClick");
     ConstructPrefDir->ExternalClearPrefDirAnd4MultiMap();
     bool FoundFlag = false;
     if(Track->SelectVector.empty())
@@ -7797,7 +7797,7 @@ catch (const Exception &e)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TInterface::CancelSelection1Click(TObject *Sender)
+void __fastcall TInterface::CancelSelectionMenuItemClick(TObject *Sender)
 {
 try
     {
@@ -7825,12 +7825,12 @@ catch (const Exception &e)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TInterface::LoadTimetable1Click(TObject *Sender)
+void __fastcall TInterface::LoadTimetableMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("LoadTimetable1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LoadTimetable1Click");
+	TrainController->LogEvent("LoadTimetableMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LoadTimetableMenuItemClick");
     TimetableDialog->Filter = "Timetable file (*.ttb)|*.ttb";
     if(TimetableDialog->Execute())
         {
@@ -7865,7 +7865,7 @@ catch (const Exception &e)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TInterface::TakeSignallerControl1Click(TObject *Sender)
+void __fastcall TInterface::TakeSignallerControlMenuItemClick(TObject *Sender)
 {
 try
     {
@@ -7937,12 +7937,12 @@ catch (const Exception &e)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::TimetableControl1Click(TObject *Sender)
+void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("TimetableControl1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TimetableControl1Click");
+	TrainController->LogEvent("TimetableControlMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TimetableControlMenuItemClick");
     TTrain &Train = TrainController->TrainVectorAtIdent(18, SelectedTrainID);
     Train.SignallerStoppingFlag = false;
     Train.TrainMode = Timetable;
@@ -8044,12 +8044,12 @@ catch (const Exception &e)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::ChangeDirection1Click(TObject *Sender)
+void __fastcall TInterface::ChangeDirectionMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("ChangeDirection1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ChangeDirection1Click");
+	TrainController->LogEvent("ChangeDirectionMenuItemClick");
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ChangeDirectionMenuItemClick");
     TTrain &Train = TrainController->TrainVectorAtIdent(19, SelectedTrainID);
     Train.SignallerStoppingFlag = false;
     Train.SignallerChangeTrainDirection(0);//this unplots & replots train, which checks for facing signal and sets StoppedAtSignal if req'd
@@ -8081,12 +8081,12 @@ catch (const Exception &e)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::MoveForwards1Click(TObject *Sender)
+void __fastcall TInterface::MoveForwardsMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("MoveForwards1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MoveForwards1Click");
+	TrainController->LogEvent("MoveForwardsMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MoveForwardsMenuItemClick");
     TTrain &Train = TrainController->TrainVectorAtIdent(20, SelectedTrainID);
     Train.SignallerStoppingFlag = false;
     if(!Train.AbleToMove(2))
@@ -8136,12 +8136,12 @@ catch (const Exception &e)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::SignallerControlStop1Click(TObject *Sender)
+void __fastcall TInterface::SignallerControlStopMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("SignallerControlStop1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SignallerControlStop1Click");
+	TrainController->LogEvent("SignallerControlStopMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SignallerControlStopMenuItemClick");
     TTrain &Train = TrainController->TrainVectorAtIdent(35, SelectedTrainID);
     Train.LeavingUnderSigControlAtContinuation = false;
     if(Train.LeadElement > -1)
@@ -8164,29 +8164,29 @@ catch (const Exception &e)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TInterface::PassRedSignal1Click(TObject *Sender)
+void __fastcall TInterface::PassRedSignalMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("PassRedSignal1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PassRedSignal1Click");
+	TrainController->LogEvent("PassRedSignalMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PassRedSignalMenuItemClick");
     TTrain &Train = TrainController->TrainVectorAtIdent(21, SelectedTrainID);
     Train.SignallerStoppingFlag = false;
     int NextElementPos = Track->TrackElementAt(712, Train.LeadElement).Conn[Train.LeadExitPos];
     if(NextElementPos < 0)
         {
-        throw Exception("Error, no element in front in PassRedSignal1Click");
+        throw Exception("Error, no element in front in PassRedSignalMenuItemClick");
         }
     TTrackElement &TrackElement = Track->TrackElementAt(653, NextElementPos);
     /* drop this error as may be some circumstances where behind a signal in sig mode but not stopped at signal
     if(!Train.StoppedAtSignal)
         {
-        throw Exception("Error, not StoppedAtSignal in PassRedSignal1Click");
+        throw Exception("Error, not StoppedAtSignal in PassRedSignalMenuItemClick");
         }
     */
     if(TrackElement.TrackType != SignalPost)
         {
-        throw Exception("Error, next element not a signal type in PassRedSignal1Click");
+		throw Exception("Error, next element not a signal type in PassRedSignalMenuItemClick");
         }
     Train.SignallerStopped = false;
     Train.StoppedAtLocation = false;//may have started at station in signaller mode and also at a red signal, in this case both SignallerStopped
@@ -8206,12 +8206,12 @@ catch (const Exception &e)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::StepForward1Click(TObject *Sender)
+void __fastcall TInterface::StepForwardMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("StepForward1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",StepForward1Click");
+	TrainController->LogEvent("StepForwardMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",StepForwardMenuItemClick");
     TTrain &Train = TrainController->TrainVectorAtIdent(24, SelectedTrainID);
     Train.SignallerStoppingFlag = false;
     Train.SignallerStopped = false;
@@ -8224,7 +8224,7 @@ try
     Train.AllowedToPassRedSignal = true;//in case at a signal, will clear when half-way into next element whether a signal or not
     Train.PlotTrainWithNewBackgroundColour(46, clNormalBackground, Display);
     Train.LogAction(32, Train.HeadCode, "", SignallerStepForward, "", TDateTime(0), false);//TDateTime is a dummy entry, false for no warning
-    int NextElementPos = -1;  //addition for v1.3.2 due to Carwyn Thomas error: can't select StepForward1 if exiting at a continuation but leave this in anyway
+	int NextElementPos = -1;  //addition for v1.3.2 due to Carwyn Thomas error: can't select StepForwardMenuItem if exiting at a continuation but leave this in anyway
     int NextEntryPos = -1;    //---ditto---
     if(Train.LeadElement > -1)//---ditto---
         {                     //---ditto---
@@ -8248,12 +8248,12 @@ catch (const Exception &e)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::RemoveTrain1Click(TObject *Sender)
+void __fastcall TInterface::RemoveTrainMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("RemoveTrain1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RemoveTrain1Click");
+	TrainController->LogEvent("RemoveTrainMenuItemClick");
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RemoveTrainMenuItemClick");
     TTrain &Train = TrainController->TrainVectorAtIdent(22, SelectedTrainID);
     if((!Train.Derailed) && (!Train.Crashed))
         {
@@ -8660,7 +8660,7 @@ if((Button == mbRight) && Level2OperMode == Operating)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::About1Click(TObject *Sender)
+void __fastcall TInterface::AboutMenuItemClick(TObject *Sender)
 {
 try
     {
@@ -8670,7 +8670,7 @@ try
         SetLevel2OperMode(3);
         MasterClock->Enabled = false;
         }
-    AboutForm->ShowModal();
+	AboutForm->ShowModal();
     }
 catch (const Exception &e)
     {
@@ -8680,7 +8680,7 @@ catch (const Exception &e)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::OpenHelpFile1Click(TObject *Sender)
+void __fastcall TInterface::OpenHelpMenuItemClick(TObject *Sender)
 {
 try
 	{
@@ -8695,12 +8695,12 @@ catch (const Exception &e)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::BlackBgnd1Click(TObject *Sender)
+void __fastcall TInterface::BlackBgndMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("BlackBgnd1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BlackBgnd1Click");
+	TrainController->LogEvent("BlackBgndMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BlackBgndMenuItemClick");
     std::ofstream ColFile((CurDir + "\\Background.col").c_str());
     if(ColFile.fail())
         {
@@ -8732,12 +8732,12 @@ catch (const Exception &e)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::WhiteBgnd1Click(TObject *Sender)
+void __fastcall TInterface::WhiteBgndMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("WhiteBgnd1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",WhiteBgnd1Click");
+	TrainController->LogEvent("WhiteBgndMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",WhiteBgndMenuItemClick");
     std::ofstream ColFile((CurDir + "\\Background.col").c_str());
     if(ColFile.fail())
         {
@@ -8768,12 +8768,12 @@ catch (const Exception &e)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::BlueBgnd1Click(TObject *Sender)
+void __fastcall TInterface::BlueBgndMenuItemClick(TObject *Sender)
 {
 try
     {
-    TrainController->LogEvent("BlueBgnd1Click");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BlueBgnd1Click");
+	TrainController->LogEvent("BlueBgndMenuItemClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BlueBgndMenuItemClick");
     std::ofstream ColFile((CurDir + "\\Background.col").c_str());
     if(ColFile.fail())
         {
@@ -9871,101 +9871,101 @@ switch(Level1Mode)//use the data member
     ModeMenu->Enabled = true;
     FileMenu->Enabled = true;
     EditMenu->Enabled = false;
-	BuildTrack->Enabled = true;
+	BuildTrackMenuItem->Enabled = true;
     SigAspectButton->Visible = false;
     Track->ChangingLCVector.clear();
     Track->BarriersDownVector.clear();
     Track->ResetLevelCrossings(0);
     if(Track->IsTrackFinished())
         {
-        PlanPrefDirs1->Enabled = true;
+		PlanPrefDirsMenuItem->Enabled = true;
         if(TimetableTitle != "")
             {
-            OperateRailway1->Enabled = true;
+			OperateRailwayMenuItem->Enabled = true;
             }
         else
             {
-            OperateRailway1->Enabled = false;
+			OperateRailwayMenuItem->Enabled = false;
             }
         }
     else
         {
-        PlanPrefDirs1->Enabled = false;
-        OperateRailway1->Enabled = false;
+		PlanPrefDirsMenuItem->Enabled = false;
+		OperateRailwayMenuItem->Enabled = false;
         }
     if(RlyFile)
         {
-        LoadTimetable1->Enabled = true;
+		LoadTimetableMenuItem->Enabled = true;
         }
     else
         {
-        LoadTimetable1->Enabled = false;
+        LoadTimetableMenuItem->Enabled = false;
         }
-    LoadRailway1->Enabled = true;
+	LoadRailwayMenuItem->Enabled = true;
     if(NoRailway())
         {
-        SaveAs1->Enabled = false;
+		SaveAsMenuItem->Enabled = false;
         ImageMenu->Enabled = false;
-        SaveImageAndGrid1->Enabled = false;
-        SaveImageNoGrid1->Enabled = false;
-        SaveImageAndPrefDirs1->Enabled = false;
-        SaveOperatingImage1->Enabled = false;
-        BlackBgnd1->Enabled = false;
-        WhiteBgnd1->Enabled = false;
-        BlueBgnd1->Enabled = false;
+        SaveImageAndGridMenuItem->Enabled = false;
+        SaveImageNoGridMenuItem->Enabled = false;
+        SaveImageAndPrefDirsMenuItem->Enabled = false;
+        SaveOperatingImageMenuItem->Enabled = false;
+        BlackBgndMenuItem->Enabled = false;
+        WhiteBgndMenuItem->Enabled = false;
+		BlueBgndMenuItem->Enabled = false;
         if(Utilities->clTransparent != TColor(0))
             {
-            BlackBgnd1->Enabled = true;
+            BlackBgndMenuItem->Enabled = true;
             }
         if(Utilities->clTransparent != TColor(0xFFFFFF))
             {
-            WhiteBgnd1->Enabled = true;
+            WhiteBgndMenuItem->Enabled = true;
             }
         if(Utilities->clTransparent != TColor(0x330000))
             {
-            BlueBgnd1->Enabled = true;
+            BlueBgndMenuItem->Enabled = true;
             }
-        ClearAll1->Enabled = false;
+        ClearAllMenuItem->Enabled = false;
         InfoPanel->Visible = true;
         InfoPanel->Caption = "Select an option from the File, Mode or Help menus";
         }
     else
         {
         InfoPanel->Visible = false;
-        SaveAs1->Enabled = true;
+        SaveAsMenuItem->Enabled = true;
         ImageMenu->Enabled = true;
-        SaveImageAndGrid1->Enabled = true;
-        SaveImageNoGrid1->Enabled = true;
-        if(EveryPrefDir->PrefDirSize() > 0) SaveImageAndPrefDirs1->Enabled = true;
-        else SaveImageAndPrefDirs1->Enabled = false;
-        BlackBgnd1->Enabled = false;
-        WhiteBgnd1->Enabled = false;
-        BlueBgnd1->Enabled = false;
-        SaveOperatingImage1->Enabled = false;
-        ClearAll1->Enabled = true;
+        SaveImageAndGridMenuItem->Enabled = true;
+        SaveImageNoGridMenuItem->Enabled = true;
+        if(EveryPrefDir->PrefDirSize() > 0) SaveImageAndPrefDirsMenuItem->Enabled = true;
+        else SaveImageAndPrefDirsMenuItem->Enabled = false;
+		BlackBgndMenuItem->Enabled = false;
+		WhiteBgndMenuItem->Enabled = false;
+		BlueBgndMenuItem->Enabled = false;
+		SaveOperatingImageMenuItem->Enabled = false;
+        ClearAllMenuItem->Enabled = true;
         }
     if(SavedFileName == "" )
         {
-        Save1->Enabled = false;
+		SaveMenuItem->Enabled = false;
         }
     else if(!FileChangedFlag)
         {
-        Save1->Enabled = false;
+        SaveMenuItem->Enabled = false;
         }
     else if((SavedFileName[SavedFileName.Length()] == 'y') || (SavedFileName[SavedFileName.Length()] == 'Y'))//'rly' file
         {
         if(!(Track->IsReadyForOperation()))
             {
-            Save1->Enabled = false;//can't save under its old name as not now a .rly file
+			SaveMenuItem->Enabled = false;//can't save under its old name as not now a .rly file
             }
-        else
+		else
             {
-            Save1->Enabled = true;//must have changed some of the PrefDirs (because FileChangedFlag is true)
+            SaveMenuItem->Enabled = true;//must have changed some of the PrefDirs (because FileChangedFlag is true)
             }
         }
-    else Save1->Enabled = true;
-    LoadSession1->Enabled = true;
-    Exit1->Enabled = true;
+	else SaveMenuItem->Enabled = true;
+	LoadSessionMenuItem->Enabled = true;
+	ExitMenuItem->Enabled = true;
     ScreenGridFlag = false;
     TrainController->CrashWarning = false;
     TrainController->DerailWarning = false;
@@ -10083,12 +10083,12 @@ switch(Level1Mode)//use the data member
         {
         DeleteAllPrefDirButton->Visible = true;
         DeleteAllPrefDirButton->Enabled = true;
-        SaveImageAndPrefDirs1->Enabled = true;
+        SaveImageAndPrefDirsMenuItem->Enabled = true;
         }
     else
         {
         DeleteAllPrefDirButton->Enabled = false;
-        SaveImageAndPrefDirs1->Enabled = false;
+        SaveImageAndPrefDirsMenuItem->Enabled = false;
         }
     ExitPrefDirButton->Enabled = true;
     ClearandRebuildRailway(33);//to mark PrefDirs & clear earlier PrefDir markers
@@ -10111,11 +10111,11 @@ switch(Level1Mode)//use the data member
     FileMenu->Enabled = false;
     EditMenu->Enabled = false;
     ImageMenu->Enabled = true;
-    SaveImageAndGrid1->Enabled = true;
-    SaveImageNoGrid1->Enabled = true;
-    if(EveryPrefDir->PrefDirSize() > 0) SaveImageAndPrefDirs1->Enabled = true;
-    else SaveImageAndPrefDirs1->Enabled = false;
-    SaveOperatingImage1->Enabled = true;
+    SaveImageAndGridMenuItem->Enabled = true;
+    SaveImageNoGridMenuItem->Enabled = true;
+    if(EveryPrefDir->PrefDirSize() > 0) SaveImageAndPrefDirsMenuItem->Enabled = true;
+    else SaveImageAndPrefDirsMenuItem->Enabled = false;
+    SaveOperatingImageMenuItem->Enabled = true;
     AutoSigsFlag = false;
     if(EveryPrefDir->PrefDirSize() > 0)
         {
@@ -10206,11 +10206,11 @@ switch(Level1Mode)//use the data member
     FileMenu->Enabled = false;
     EditMenu->Enabled = false;
     ImageMenu->Enabled = true;
-    SaveImageAndGrid1->Enabled = true;
-    SaveImageNoGrid1->Enabled = true;
-    if(EveryPrefDir->PrefDirSize() > 0) SaveImageAndPrefDirs1->Enabled = true;
-    else SaveImageAndPrefDirs1->Enabled = false;
-    SaveOperatingImage1->Enabled = true;
+    SaveImageAndGridMenuItem->Enabled = true;
+	SaveImageNoGridMenuItem->Enabled = true;
+    if(EveryPrefDir->PrefDirSize() > 0) SaveImageAndPrefDirsMenuItem->Enabled = true;
+	else SaveImageAndPrefDirsMenuItem->Enabled = false;
+    SaveOperatingImageMenuItem->Enabled = true;
 
     OperateButton->Enabled = true;
     OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
@@ -10354,28 +10354,28 @@ switch(Level2TrackMode)//use the data member
 
     case TrackSelecting:
     if(!SelectionValid) ResetSelectRect();//so a viewpoint change before a new SelectRect chosen doesn't redisplay
-                                          //the old SelectRect (only called when entered from Select1Click, & not from
-                                          //Reselect1Click)
+                                          //the old SelectRect (only called when entered from SelectMenuItemClick, & not from
+                                          //ReselectMenuItemClick)
     InfoPanel->Visible = true;
     InfoPanel->Caption = "SELECTING:  Select area - click left mouse && drag";
-    Select1->Enabled = false;
-    Reselect1->Enabled = false;
-    CancelSelection1->Enabled = true;
+    SelectMenuItem->Enabled = false;
+    ReselectMenuItem->Enabled = false;
+    CancelSelectionMenuItem->Enabled = true;
     break;
 
     case CopyMoving:
     InfoPanel->Visible = true;
     InfoPanel->Caption = "COPYING:  Left click in selection && drag";
-    Cut1->Enabled = false;
-    Copy1->Enabled = false;
-    Flip1->Enabled = false;
-    Mirror1->Enabled = false;
-    Rotate1->Enabled = false;
-    Paste1->Enabled = true;
-    Delete1->Enabled = false;
-    SelectLengths1->Enabled = false;
-    SelectBiDirectionalPrefDirs1->Visible = false;
-    CancelSelection1->Enabled = false;
+    CutMenuItem->Enabled = false;
+    CopyMenuItem->Enabled = false;
+    FlipMenuItem->Enabled = false;
+    MirrorMenuItem->Enabled = false;
+    RotateMenuItem->Enabled = false;
+    PasteMenuItem->Enabled = true;
+    DeleteMenuItem->Enabled = false;
+    SelectLengthsMenuItem->Enabled = false;
+    SelectBiDirPrefDirsMenuItem->Visible = false;
+    CancelSelectionMenuItem->Enabled = false;
     SelectBitmapHLoc = SelectRect.left;
     SelectBitmapVLoc = SelectRect.top;
     SetTrackBuildImages(6);
@@ -10426,16 +10426,16 @@ switch(Level2TrackMode)//use the data member
         Screen->Cursor = TCursor(-2);//Arrow;
         Track->SetTrackFinished(!NeedToLink);
         InfoPanel->Caption = "CUTTING:  Left click in selection && drag";
-        Cut1->Enabled = false;
-        Copy1->Enabled = false;
-        Flip1->Enabled = false;
-        Mirror1->Enabled = false;
-        Rotate1->Enabled = false;
-        Paste1->Enabled = true;
-        Delete1->Enabled = false;
-        SelectLengths1->Enabled = false;
-        SelectBiDirectionalPrefDirs1->Visible = false;
-        CancelSelection1->Enabled = false;
+        CutMenuItem->Enabled = false;
+        CopyMenuItem->Enabled = false;
+        FlipMenuItem->Enabled = false;
+        MirrorMenuItem->Enabled = false;
+        RotateMenuItem->Enabled = false;
+        PasteMenuItem->Enabled = true;
+        DeleteMenuItem->Enabled = false;
+		SelectLengthsMenuItem->Enabled = false;
+        SelectBiDirPrefDirsMenuItem->Visible = false;
+        CancelSelectionMenuItem->Enabled = false;
         SelectBitmapHLoc = SelectRect.left;
         SelectBitmapVLoc = SelectRect.top;
         if(NeedToLink || TextChangesMade)
@@ -10671,9 +10671,9 @@ switch(Level2PrefDirMode)//use the data member
     ResetSelectRect();//so a viewpoint change before a new SelectRect chosen doesn't redisplay the old SelectRect
     InfoPanel->Visible = true;
     InfoPanel->Caption = "SELECTING:  Select area - click left mouse && drag";
-    Select1->Enabled = false;
-    Reselect1->Enabled = false;
-    CancelSelection1->Enabled = true;
+    SelectMenuItem->Enabled = false;
+    ReselectMenuItem->Enabled = false;
+    CancelSelectionMenuItem->Enabled = true;
     break;
 
     default:
@@ -10914,7 +10914,7 @@ if(Display->ZoomOutFlag)
     Utilities->CallLogPop(1123);
     return;
     }
-if(TrackInfoOnOff1->Caption == "Hide")
+if(TrackInfoOnOffMenuItem->Caption == "Hide")
     {
     bool ActiveTrackFoundFlag = false, InactiveTrackFoundFlag = false, TwoTrack = false;
     AnsiString Length01Str = "", Length23Str = "", SpeedLimit01Str = "", SpeedLimit23Str = "";
@@ -11101,7 +11101,7 @@ if(TrackInfoOnOff1->Caption == "Hide")
     }
 //end of TrackFloat section
 
-if(Level1Mode == OperMode && ((TrainStatusInfoOnOff1->Caption == "Hide Status") || (TrainTTInfoOnOff1->Caption == "Hide Timetable")))//if caption is 'Off' label is on
+if(Level1Mode == OperMode && ((TrainStatusInfoOnOffMenuItem->Caption == "Hide Status") || (TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")))//if caption is 'Off' label is on
     {
     bool FoundFlag;
     AnsiString FormatOneDPStr = "####0.0";
@@ -11115,7 +11115,7 @@ if(Level1Mode == OperMode && ((TrainStatusInfoOnOff1->Caption == "Hide Status") 
         //if a bridge & 2 trains at that position will select the train with TrainIDOnElement set
             {
             TTrain Train = TrainController->TrainVectorAtIdent(1, Track->TrackElementAt(452, VecPos).TrainIDOnElement);
-			if(TrainStatusInfoOnOff1->Caption == "Hide Status")
+			if(TrainStatusInfoOnOffMenuItem->Caption == "Hide Status")
                 {
                 ShowTrainStatusFloatFlag = true;
                 AnsiString HeadCode = "", ServiceReferenceInfo = "", Status = "", CurrSpeedStr = "", BrakePCStr = "", NextStopStr = "", TimeLeftStr = "",
@@ -11244,7 +11244,7 @@ if(Level1Mode == OperMode && ((TrainStatusInfoOnOff1->Caption == "Hide Status") 
                     "Next: " + NextStopStr;
                     }
                 }
-            if(TrainTTInfoOnOff1->Caption == "Hide Timetable")
+            if(TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")
                 {
                 ShowTrainTTFloatFlag = true;
                 TrainTTFloat = Train.FloatingTimetableString(0, Train.ActionVectorEntryPtr);
@@ -11676,31 +11676,31 @@ SaveSessionButton->Enabled = SaveRailwayButtonsFlag;
 //set formatted timetable menu item
 if(TimetableTitle == "")
     {
-    ExportTTMenuItem1->Enabled = false;
+	ExportTTMenuItem->Enabled = false;
     }
 else
     {
-    ExportTTMenuItem1->Enabled = true;
+	ExportTTMenuItem->Enabled = true;
     }
 
 //set info menu items
 if((Track->NoActiveOrInactiveTrack(8)) || Display->ZoomOutFlag || ((Level1Mode == TimetableMode) && (TimetableEditPanel->Visible)))
     {
     FloatingInfoMenu->Enabled = false;
-    TrackInfo1->Enabled = false;
-    TrainInfo1->Enabled = false;
+    TrackInfoMenuItem->Enabled = false;
+    TrainInfoMenuItem->Enabled = false;
     }
 else
     {
     FloatingInfoMenu->Enabled = true;
-    TrackInfo1->Enabled = true;
+    TrackInfoMenuItem->Enabled = true;
     if(Level1Mode == OperMode)
         {
-        TrainInfo1->Enabled = true;
+        TrainInfoMenuItem->Enabled = true;
         }
     else
         {
-        TrainInfo1->Enabled = false;
+        TrainInfoMenuItem->Enabled = false;
         }
     }
 
@@ -11768,11 +11768,11 @@ if(Level1Mode == OperMode)
         ScreenRightFlag = false;
         ScreenUpFlag = false;
         ScreenDownFlag = false;
-        SaveOperatingImage1->Enabled = false;
+		SaveOperatingImageMenuItem->Enabled = false;
         }
     else
         {
-        SaveOperatingImage1->Enabled = true;
+		SaveOperatingImageMenuItem->Enabled = true;
         }
     }
 
@@ -12038,9 +12038,9 @@ TTClockAdjPanel->Visible = false;
 TrainController->StopTTClockFlag = false;
 SelectedTrainID = -1;
 SetTrackBuildImages(11);
-//TrackInfoOnOff1->Caption = "Show";  dropped these here at v1.2.0 so don't reset when load a session file
-//TrainStatusInfoOnOff1->Caption = "Show Status";
-//TrainTTInfoOnOff1->Caption = "Show Timetable";
+//TrackInfoOnOffMenuItem->Caption = "Show";  dropped these here at v1.2.0 so don't reset when load a session file
+//TrainStatusInfoOnOffMenuItem->Caption = "Show Status";
+//TrainTTInfoOnOffMenuItem->Caption = "Show Timetable";
 Track->CalcHLocMinEtc(8);
 FileChangedFlag = false;
 RlyFile = false;
@@ -14288,30 +14288,30 @@ Utilities->CallLogPop(1546);
 
 void TInterface::SetInitialTrackModeEditMenu()
 {//no need for caller or log as only setting values
-Cut1->Visible = true;
-Copy1->Visible = true;
-Flip1->Visible = true;
-Mirror1->Visible = true;
-Rotate1->Visible = true;
-Paste1->Visible = true;
-Delete1->Visible = true;
-SelectLengths1->Visible = true;
-Reselect1->Visible = true;
+CutMenuItem->Visible = true;
+CopyMenuItem->Visible = true;
+FlipMenuItem->Visible = true;
+MirrorMenuItem->Visible = true;
+RotateMenuItem->Visible = true;
+PasteMenuItem->Visible = true;
+DeleteMenuItem->Visible = true;
+SelectLengthsMenuItem->Visible = true;
+ReselectMenuItem->Visible = true;
 
-Cut1->Enabled = false;
-Copy1->Enabled = false;
-Flip1->Enabled = false;
-Mirror1->Enabled = false;
-Rotate1->Enabled = false;
-Paste1->Enabled = false;
-Delete1->Enabled = false;
-SelectLengths1->Enabled = false;
-if(SelectionValid) Reselect1->Enabled = true;
-else Reselect1->Enabled = false;
+CutMenuItem->Enabled = false;
+CopyMenuItem->Enabled = false;
+FlipMenuItem->Enabled = false;
+MirrorMenuItem->Enabled = false;
+RotateMenuItem->Enabled = false;
+PasteMenuItem->Enabled = false;
+DeleteMenuItem->Enabled = false;
+SelectLengthsMenuItem->Enabled = false;
+if(SelectionValid) ReselectMenuItem->Enabled = true;
+else ReselectMenuItem->Enabled = false;
 
-SelectBiDirectionalPrefDirs1->Visible = false;
-CancelSelection1->Enabled = true;
-Select1->Enabled = true;
+SelectBiDirPrefDirsMenuItem->Visible = false;
+CancelSelectionMenuItem->Enabled = true;
+SelectMenuItem->Enabled = true;
 
 if(NoRailway())
     {
@@ -14326,20 +14326,20 @@ void TInterface::SetInitialPrefDirModeEditMenu()
 {//no need for caller or log as only setting values
 EditMenu->Enabled = true;
 
-Cut1->Visible = false;
-Copy1->Visible = false;
-Flip1->Visible = false;
-Mirror1->Visible = false;
-Rotate1->Visible = false;
-Paste1->Visible = false;
-Delete1->Visible = false;
-SelectLengths1->Visible = false;
-Reselect1->Visible = false;
+CutMenuItem->Visible = false;
+CopyMenuItem->Visible = false;
+FlipMenuItem->Visible = false;
+MirrorMenuItem->Visible = false;
+RotateMenuItem->Visible = false;
+PasteMenuItem->Visible = false;
+DeleteMenuItem->Visible = false;
+SelectLengthsMenuItem->Visible = false;
+ReselectMenuItem->Visible = false;
 
-SelectBiDirectionalPrefDirs1->Visible = true;
-SelectBiDirectionalPrefDirs1->Enabled = false;
-CancelSelection1->Enabled = true;
-Select1->Enabled = true;
+SelectBiDirPrefDirsMenuItem->Visible = true;
+SelectBiDirPrefDirsMenuItem->Enabled = false;
+CancelSelectionMenuItem->Enabled = true;
+SelectMenuItem->Enabled = true;
 }
 
 //---------------------------------------------------------------------------

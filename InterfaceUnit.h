@@ -141,7 +141,7 @@ __published:	// IDE-managed Components
     TComboBox *LocationNameComboBox; //the combobox that lists location names
     TEdit *AddSubMinsBox; //the edit box that accepts minutes to add or subtract
 
-    TEdit *MPHEdit1;  //speed conversion box on timetable screen
+	TEdit *MPHEdit1;  //speed conversion box on timetable screen
     TLabel *MPHLabel1;
     TLabel *KPHFixedLabel1;
     TPanel *KPHPanel1;
@@ -274,67 +274,67 @@ __published:	// IDE-managed Components
     TMemo *TTInfoMemo; //timetable help text displayed on the timetable edit screen
     TListBox *AllEntriesTTListBox; //the list of service entries displayed on the left hand side of the timetable edit screen
 
-    TMenuItem *FileMenu; //menu items shown in order they appear during operation
-        TMenuItem *LoadRailway1;
-        TMenuItem *SaveAs1;
-        TMenuItem *Save1;
-        TMenuItem *LoadTimetable1;
-        TMenuItem *LoadSession1;
-        TMenuItem *ExportTTMenuItem1;
-        TMenuItem *ClearAll1;
-        TMenuItem *Exit1;
+    TMenuItem *FileMenu;
+		TMenuItem *LoadRailwayMenuItem;
+		TMenuItem *SaveAsMenuItem;
+		TMenuItem *SaveMenuItem;
+		TMenuItem *LoadTimetableMenuItem;
+		TMenuItem *LoadSessionMenuItem;
+		TMenuItem *ExportTTMenuItem;
+		TMenuItem *ClearAllMenuItem;
+		TMenuItem *ExitMenuItem;
 
-    TMenuItem *ModeMenu;
-	TMenuItem *BuildTrack;
-        TMenuItem *PlanPrefDirs1;
-        TMenuItem *Createatimetable1;
-        TMenuItem *Editatimetable1;
-        TMenuItem *OperateRailway1;
-        TMenuItem *WhiteBgnd1;
-        TMenuItem *BlackBgnd1;
-        TMenuItem *BlueBgnd1;
+	TMenuItem *ModeMenu;
+		TMenuItem *BuildTrackMenuItem;
+		TMenuItem *PlanPrefDirsMenuItem;
+		TMenuItem *CreateTimetableMenuItem;
+		TMenuItem *EditTimetableMenuItem;
+		TMenuItem *OperateRailwayMenuItem;
+		TMenuItem *WhiteBgndMenuItem;
+		TMenuItem *BlackBgndMenuItem;
+		TMenuItem *BlueBgndMenuItem;
 
     TMenuItem *EditMenu;
-        TMenuItem *Select1;
-        TMenuItem *Reselect1;
-        TMenuItem *Cut1;
-        TMenuItem *Copy1;
-        TMenuItem *Flip1;
-        TMenuItem *Mirror1;
-        TMenuItem *Rotate1;
-        TMenuItem *Paste1;
-        TMenuItem *Delete1;
-        TMenuItem *SelectLengths1;
-        TMenuItem *SelectBiDirectionalPrefDirs1;
-        TMenuItem *CancelSelection1;
+		TMenuItem *SelectMenuItem;
+		TMenuItem *ReselectMenuItem;
+		TMenuItem *CutMenuItem;
+		TMenuItem *CopyMenuItem;
+		TMenuItem *FlipMenuItem;
+		TMenuItem *MirrorMenuItem;
+		TMenuItem *RotateMenuItem;
+		TMenuItem *PasteMenuItem;
+		TMenuItem *DeleteMenuItem;
+		TMenuItem *SelectLengthsMenuItem;
+		TMenuItem *SelectBiDirPrefDirsMenuItem;
+		TMenuItem *CancelSelectionMenuItem;
 
     TMenuItem *FloatingInfoMenu;
-        TMenuItem *TrackInfo1;
-        TMenuItem *TrackInfoOnOff1;
-        TMenuItem *TrainInfo1;
-        TMenuItem *TrainStatusInfoOnOff1;
-        TMenuItem *TrainTTInfoOnOff1;
+		TMenuItem *TrackInfoMenuItem;
+		TMenuItem *TrackInfoOnOffMenuItem;
+		TMenuItem *TrainInfoMenuItem;
+		TMenuItem *TrainStatusInfoOnOffMenuItem;
+		TMenuItem *TrainTTInfoOnOffMenuItem;
 
     TMenuItem *ImageMenu;
-        TMenuItem *SaveImageNoGrid1;
-        TMenuItem *SaveImageAndGrid1;
-        TMenuItem *SaveImageAndPrefDirs1;
-        TMenuItem *SaveOperatingImage1;
+		TMenuItem *SaveImageNoGridMenuItem;
+		TMenuItem *SaveImageAndGridMenuItem;
+		TMenuItem *SaveImageAndPrefDirsMenuItem;
+		TMenuItem *SaveOperatingImageMenuItem;
 
     TMenuItem *HelpMenu;
-        TMenuItem *About1;
-        TMenuItem *OpenHelpFile1;
+		TMenuItem *AboutMenuItem;
+		TMenuItem *OpenHelpMenuItem;
 
     TPopupMenu *PopupMenu;
-        TMenuItem *TrainHeadCode1; //shows train headcode above the other menu items
-        TMenuItem *TakeSignallerControl1;
-        TMenuItem *TimetableControl1;
-        TMenuItem *ChangeDirection1;
-        TMenuItem *MoveForwards1;
-        TMenuItem *PassRedSignal1;
-        TMenuItem *StepForward1;
-        TMenuItem *SignallerControlStop1;
-        TMenuItem *RemoveTrain1;
+		TMenuItem *TrainHeadCodeMenuItem;
+		TMenuItem *TakeSignallerControlMenuItem;
+		TMenuItem *TimetableControlMenuItem;
+		TMenuItem *ChangeDirectionMenuItem;
+		TMenuItem *MoveForwardsMenuItem;
+		TMenuItem *PassRedSignalMenuItem;
+		TMenuItem *StepForwardMenuItem;
+		TMenuItem *SignallerControlStopMenuItem;
+		TMenuItem *RemoveTrainMenuItem;
 
     TOpenDialog *LoadRailwayDialog; //file open dialogs
     TOpenDialog *LoadSessionDialog;
@@ -496,54 +496,54 @@ __published:	// IDE-managed Components
 	TMenuItem *N1;
 
 //menu item actions
-    void __fastcall About1Click(TObject *Sender);
-    void __fastcall BlackBgnd1Click(TObject *Sender);
-    void __fastcall BlueBgnd1Click(TObject *Sender);
-	void __fastcall BuildTrackClick(TObject *Sender);
-    void __fastcall CancelSelection1Click(TObject *Sender);
-    void __fastcall ClearAll1Click(TObject *Sender);
-    void __fastcall Copy1Click(TObject *Sender);
-    void __fastcall CreateTimetable1Click(TObject *Sender);
-    void __fastcall Cut1Click(TObject *Sender);
-    void __fastcall Delete1Click(TObject *Sender);
-    void __fastcall EditTimetable1Click(TObject *Sender);
-    void __fastcall Exit1Click(TObject *Sender);
-    void __fastcall ExportTTMenuItem1Click(TObject *Sender);
-    void __fastcall Flip1Click(TObject *Sender);
-    void __fastcall LoadRailway1Click(TObject *Sender);
-    void __fastcall LoadSession1Click(TObject *Sender);
-    void __fastcall LoadTimetable1Click(TObject *Sender);
-    void __fastcall Mirror1Click(TObject *Sender);
-    void __fastcall OpenHelpFile1Click(TObject *Sender);
-    void __fastcall OperateRailway1Click(TObject *Sender);
-    void __fastcall Paste1Click(TObject *Sender);
-    void __fastcall PlanPrefDirs1Click(TObject *Sender);
-    void __fastcall Reselect1Click(TObject *Sender);
-    void __fastcall Rotate1Click(TObject *Sender);
-    void __fastcall Save1Click(TObject *Sender);
-    void __fastcall SaveAs1Click(TObject *Sender);
+    void __fastcall AboutMenuItemClick(TObject *Sender);
+    void __fastcall BlackBgndMenuItemClick(TObject *Sender);
+    void __fastcall BlueBgndMenuItemClick(TObject *Sender);
+	void __fastcall BuildTrackMenuItemClick(TObject *Sender);
+    void __fastcall CancelSelectionMenuItemClick(TObject *Sender);
+    void __fastcall ClearAllMenuItemClick(TObject *Sender);
+    void __fastcall CopyMenuItemClick(TObject *Sender);
+    void __fastcall CreateTimetableMenuItemClick(TObject *Sender);
+    void __fastcall CutMenuItemClick(TObject *Sender);
+    void __fastcall DeleteMenuItemClick(TObject *Sender);
+    void __fastcall EditTimetableMenuItemClick(TObject *Sender);
+    void __fastcall ExitMenuItemClick(TObject *Sender);
+    void __fastcall ExportTTMenuItemClick(TObject *Sender);
+    void __fastcall FlipMenuItemClick(TObject *Sender);
+    void __fastcall LoadRailwayMenuItemClick(TObject *Sender);
+    void __fastcall LoadSessionMenuItemClick(TObject *Sender);
+    void __fastcall LoadTimetableMenuItemClick(TObject *Sender);
+    void __fastcall MirrorMenuItemClick(TObject *Sender);
+    void __fastcall OpenHelpMenuItemClick(TObject *Sender);
+	void __fastcall OperateRailwayMenuItemClick(TObject *Sender);
+    void __fastcall PasteMenuItemClick(TObject *Sender);
+    void __fastcall PlanPrefDirsMenuItemClick(TObject *Sender);
+    void __fastcall ReselectMenuItemClick(TObject *Sender);
+    void __fastcall RotateMenuItemClick(TObject *Sender);
+    void __fastcall SaveMenuItemClick(TObject *Sender);
+    void __fastcall SaveAsMenuItemClick(TObject *Sender);
     void __fastcall SaveHeaderMenu1Click(TObject *Sender);
-    void __fastcall SaveImageAndGrid1Click(TObject *Sender);
-    void __fastcall SaveImageAndPrefDirs1Click(TObject *Sender);
-    void __fastcall SaveImageNoGrid1Click(TObject *Sender);
-    void __fastcall SaveOperatingImage1Click(TObject *Sender);
-    void __fastcall Select1Click(TObject *Sender);
-    void __fastcall SelectBiDirectionalPrefDirs1Click(TObject *Sender);
-    void __fastcall SelectLengths1Click(TObject *Sender);
-    void __fastcall TrackInfoOnOff1Click(TObject *Sender);
-    void __fastcall TrainStatusInfoOnOff1Click(TObject *Sender);
-    void __fastcall TrainTTInfoOnOff1Click(TObject *Sender);
-    void __fastcall WhiteBgnd1Click(TObject *Sender);
+    void __fastcall SaveImageAndGridMenuItemClick(TObject *Sender);
+    void __fastcall SaveImageAndPrefDirsMenuItemClick(TObject *Sender);
+    void __fastcall SaveImageNoGridMenuItemClick(TObject *Sender);
+    void __fastcall SaveOperatingImageMenuItemClick(TObject *Sender);
+    void __fastcall SelectMenuItemClick(TObject *Sender);
+    void __fastcall SelectBiDirPrefDirsMenuItemClick(TObject *Sender);
+    void __fastcall SelectLengthsMenuItemClick(TObject *Sender);
+    void __fastcall TrackInfoOnOffMenuItemClick(TObject *Sender);
+    void __fastcall TrainStatusInfoOnOffMenuItemClick(TObject *Sender);
+    void __fastcall TrainTTInfoOnOffMenuItemClick(TObject *Sender);
+    void __fastcall WhiteBgndMenuItemClick(TObject *Sender);
 
 //popup menu actions
-    void __fastcall ChangeDirection1Click(TObject *Sender);
-    void __fastcall MoveForwards1Click(TObject *Sender);
-    void __fastcall PassRedSignal1Click(TObject *Sender);
-    void __fastcall RemoveTrain1Click(TObject *Sender);
-    void __fastcall SignallerControlStop1Click(TObject *Sender);
-    void __fastcall StepForward1Click(TObject *Sender);
-    void __fastcall TakeSignallerControl1Click(TObject *Sender);
-    void __fastcall TimetableControl1Click(TObject *Sender);
+    void __fastcall ChangeDirectionMenuItemClick(TObject *Sender);
+    void __fastcall MoveForwardsMenuItemClick(TObject *Sender);
+    void __fastcall PassRedSignalMenuItemClick(TObject *Sender);
+    void __fastcall RemoveTrainMenuItemClick(TObject *Sender);
+    void __fastcall SignallerControlStopMenuItemClick(TObject *Sender);
+    void __fastcall StepForwardMenuItemClick(TObject *Sender);
+    void __fastcall TakeSignallerControlMenuItemClick(TObject *Sender);
+    void __fastcall TimetableControlMenuItemClick(TObject *Sender);
 
 //mouse actions
     void __fastcall AcceptDragging(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept);

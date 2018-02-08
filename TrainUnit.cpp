@@ -1421,7 +1421,11 @@ if(LagElement > -1)//not entering at a continuation so can deal with train leavi
                 int LastElement = LagElement, LastExitPos = LagExitPos, CumDistance = 0;
                 int NewLastElement = 0, NewLastExitPos = 0;
                 //need above because can't change LastElement & LastExitPos until both new values obtained
-                while((Track->TrackElementAt(684, LastElement).Config[LastExitPos] != Signal) && (CumDistance < 1200))
+                //while((Track->TrackElementAt(684, LastElement).Config[LastExitPos] != Signal) && (CumDistance < 1200)) as was
+	        while((Track->TrackElementAt(684, LastElement).Config[LastExitPos] != Signal) && (CumDistance < 1200) && (Track->TrackElementAt(897, LastElement).TrackType != Points))
+                //extra condition above added because of Moric1998's error (see email of 24/03/2016), where had an autosigs route across points, and another continuation on track not occupied by route so
+                //failed when found a new element = -1 when tried to cross the continuation.  Note this routine can only deal with non points as it uses GetNonPointsOppositeLinkPos
+                //leave CumDistance as it was in these circumstances.
                     {
                     if(LastExitPos < 2) CumDistance+= Track->TrackElementAt(685, LastElement).Length01;
                     else CumDistance+= Track->TrackElementAt(686, LastElement).Length23;

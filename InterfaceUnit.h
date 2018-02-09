@@ -673,14 +673,22 @@ UnicodeString ProgramVersion;
 UnicodeString GetVersion(); //determined automatically from the project options 'Version Info'
 
 //Folder names
-UnicodeString RailwayDirName;
+/*UnicodeString RailwayDirName;
 UnicodeString TimetableDirName;
 UnicodeString PerfLogDirName;
 UnicodeString SessionDirName;
 UnicodeString ImageDirName;
-UnicodeString FormattedTTDirName;
+UnicodeString FormattedTTDirName;     */
 
 private:
+
+//Folder names
+static const UnicodeString RAILWAY_DIR_NAME;
+static const UnicodeString TIMETABLE_DIR_NAME;
+static const UnicodeString PERFLOG_DIR_NAME;
+static const UnicodeString SESSION_DIR_NAME;
+static const UnicodeString IMAGE_DIR_NAME;
+static const UnicodeString FORMATTEDTT_DIR_NAME;
 
 //Level 2 program modes (i.e. submodes from the level 1 modes)
 enum TLevel2OperMode {NoOperMode, Operating, PreStart, Paused} Level2OperMode;

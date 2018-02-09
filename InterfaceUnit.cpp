@@ -61,19 +61,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma resource "*.dfm"
 
 TInterface *Interface;
+
+//Folder Names
+const UnicodeString TInterface::RAILWAY_DIR_NAME = "Railways";
+const UnicodeString TInterface::TIMETABLE_DIR_NAME = "Program timetables";
+const UnicodeString TInterface::PERFLOG_DIR_NAME = "Performance logs";
+const UnicodeString TInterface::SESSION_DIR_NAME = "Sessions";
+const UnicodeString TInterface::IMAGE_DIR_NAME = "Images";
+const UnicodeString TInterface::FORMATTEDTT_DIR_NAME = "Formatted timetables";
+
 //---------------------------------------------------------------------------
 
 __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
 {//constructor
 try
 	{
-	const UnicodeString RailwayDirName = "Railways";
-	const UnicodeString TimetableDirName = "Program timetables";
-	const UnicodeString PerfLogDirName = "Performance logs";
-	const UnicodeString SessionDirName = "Sessions";
-	const UnicodeString ImageDirName = "Images";
-	const UnicodeString FormattedTTDirName = "Formatted timetables";
-
 	Screen->Cursor = TCursor(-11);//Hourglass;
 	DirOpenError = false;
 	AllSetUpFlag = false;//flag to prevent MasterClock from being enabled when application activates if there has been an error during
@@ -87,44 +89,44 @@ try
 	//check for presence of directories, creation failure probably indicates that the
 	//working folder is read-only
 	CurDir = GetCurrentDir();
-	if(!DirectoryExists(RailwayDirName))
+	if(!DirectoryExists(RAILWAY_DIR_NAME))
 		{
-		if(!CreateDir(RailwayDirName))
+		if(!CreateDir(RAILWAY_DIR_NAME))
 			{
 			DirOpenError = true;
 			}
 		}
-	if(!DirectoryExists(TimetableDirName))
+	if(!DirectoryExists(TIMETABLE_DIR_NAME))
 		{
-		if(!CreateDir(TimetableDirName))
+		if(!CreateDir(TIMETABLE_DIR_NAME))
 			{
 			DirOpenError = true;
 			}
 		}
-	if(!DirectoryExists(PerfLogDirName))
+	if(!DirectoryExists(PERFLOG_DIR_NAME))
 		{
-		if(!CreateDir(PerfLogDirName))
+		if(!CreateDir(PERFLOG_DIR_NAME))
 			{
 			DirOpenError = true;
 			}
 		}
-	if(!DirectoryExists(SessionDirName))
+	if(!DirectoryExists(SESSION_DIR_NAME))
 		{
-		if(!CreateDir(SessionDirName))
+		if(!CreateDir(SESSION_DIR_NAME))
 			{
 			DirOpenError = true;
 			}
 		}
-	if(!DirectoryExists(ImageDirName))
+	if(!DirectoryExists(IMAGE_DIR_NAME))
 		{
-		if(!CreateDir(ImageDirName))
+		if(!CreateDir(IMAGE_DIR_NAME))
 			{
 			DirOpenError = true;
 			}
 		}
-	if(!DirectoryExists(FormattedTTDirName))
+	if(!DirectoryExists(FORMATTEDTT_DIR_NAME))
 		{
-		if(!CreateDir(FormattedTTDirName))
+		if(!CreateDir(FORMATTEDTT_DIR_NAME))
 			{
 			DirOpenError = true;
 			}
@@ -132,20 +134,20 @@ try
 	if(DirOpenError)
 		{
 		ShowMessage("Failed to create one or more of folders: " +
-			RailwayDirName     + ", " +
-			TimetableDirName   + ", " +
-			PerfLogDirName     + ", " +
-			SessionDirName     + ", " +
-			ImageDirName       + ", " +
-			FormattedTTDirName + ", " +
+			RAILWAY_DIR_NAME     + ", " +
+			TIMETABLE_DIR_NAME   + ", " +
+			PERFLOG_DIR_NAME     + ", " +
+			SESSION_DIR_NAME     + ", " +
+			IMAGE_DIR_NAME       + ", " +
+			FORMATTEDTT_DIR_NAME + ", " +
 		 	"program operation may be restricted");
 		}
 //ShowMessage("NOTE: APPDEACTIVATE etc Disabled in FormCreate");
-	SaveRailwayDialog->InitialDir = CurDir + "\\" + RailwayDirName;
-	LoadRailwayDialog->InitialDir = CurDir + "\\" + RailwayDirName;
-	TimetableDialog->InitialDir   = CurDir + "\\" + TimetableDirName;
-	SaveTTDialog->InitialDir      = CurDir + "\\" + TimetableDirName;
-	LoadSessionDialog->InitialDir = CurDir + "\\" + SessionDirName;
+	SaveRailwayDialog->InitialDir = CurDir + "\\" + RAILWAY_DIR_NAME;
+	LoadRailwayDialog->InitialDir = CurDir + "\\" + RAILWAY_DIR_NAME;
+	TimetableDialog->InitialDir   = CurDir + "\\" + TIMETABLE_DIR_NAME;
+	SaveTTDialog->InitialDir      = CurDir + "\\" + TIMETABLE_DIR_NAME;
+	LoadSessionDialog->InitialDir = CurDir + "\\" + SESSION_DIR_NAME;
 
 	Application->HelpFile = AnsiString(CurDir + "\\Help.chm"); //added at v2.0.0 for .chm help file
 
@@ -2099,9 +2101,9 @@ try
     {
 	TrainController->LogEvent("SaveImageNoGridMenuItemClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageNoGridMenuItemClick");
-    if(!DirectoryExists(CurDir + "\\" + ImageDirName))
+	if(!DirectoryExists(CurDir + "\\" + IMAGE_DIR_NAME))
         {
-        ShowMessage("Failed to find folder " + ImageDirName + " in the folder where 'railway.exe' resides.  Image can't be saved");
+		ShowMessage("Failed to find folder " + IMAGE_DIR_NAME + " in the folder where 'railway.exe' resides.  Image can't be saved");
         Utilities->CallLogPop(1695);
         return;
         }
@@ -2111,7 +2113,7 @@ try
 	AnsiString ImageFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
     //format "16/06/2009 20:55:17"
     // avoid characters in filename:=   / \ : * ? " < > |
-    ImageFileName = CurDir + "\\" + ImageDirName + "\\RailwayImage " + ImageFileName + "; " + RailwayTitle + ".bmp";
+	ImageFileName = CurDir + "\\" + IMAGE_DIR_NAME + "\\RailwayImage " + ImageFileName + "; " + RailwayTitle + ".bmp";
     AnsiString ShortName = "";
 	for(int x=ImageFileName.Length();x>0;x--)
         {
@@ -2180,9 +2182,9 @@ try
     {
 	TrainController->LogEvent("SaveImageAndGridMenuItemClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageAndGridMenuItemClick");
-    if(!DirectoryExists(CurDir + "\\" + ImageDirName))
+	if(!DirectoryExists(CurDir + "\\" + IMAGE_DIR_NAME))
         {
-        ShowMessage("Failed to find folder " + ImageDirName + " in the folder where 'railway.exe' resides.  Image can't be saved");
+        ShowMessage("Failed to find folder " + IMAGE_DIR_NAME + " in the folder where 'railway.exe' resides.  Image can't be saved");
         Utilities->CallLogPop(1696);
         return;
         }
@@ -2192,7 +2194,7 @@ try
     AnsiString ImageFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
     //format "16/06/2009 20:55:17"
     // avoid characters in filename:=   / \ : * ? " < > |
-    ImageFileName = CurDir + "\\" + ImageDirName + "\\RailwayImage " + ImageFileName + "; " + RailwayTitle + ".bmp";
+    ImageFileName = CurDir + "\\" + IMAGE_DIR_NAME + "\\RailwayImage " + ImageFileName + "; " + RailwayTitle + ".bmp";
     AnsiString ShortName = "";
     for(int x=ImageFileName.Length();x>0;x--)
         {
@@ -2266,9 +2268,9 @@ try
     {
 	TrainController->LogEvent("SaveImageAndPrefDirsMenuItemClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveImageAndPrefDirsMenuItemClick");
-    if(!DirectoryExists(CurDir + "\\" + ImageDirName))
+	if(!DirectoryExists(CurDir + "\\" + IMAGE_DIR_NAME))
         {
-        ShowMessage("Failed to find folder " + ImageDirName + " in the folder where 'railway.exe' resides.  Image can't be saved");
+		ShowMessage("Failed to find folder " + IMAGE_DIR_NAME + " in the folder where 'railway.exe' resides.  Image can't be saved");
         Utilities->CallLogPop(1697);
         return;
         }
@@ -2278,7 +2280,7 @@ try
     AnsiString ImageFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
     //format "16/06/2009 20:55:17"
     // avoid characters in filename:=   / \ : * ? " < > |
-    ImageFileName = CurDir + "\\" + ImageDirName + "\\RailwayImage " + ImageFileName + "; " + RailwayTitle + ".bmp";
+    ImageFileName = CurDir + "\\" + IMAGE_DIR_NAME + "\\RailwayImage " + ImageFileName + "; " + RailwayTitle + ".bmp";
     AnsiString ShortName = "";
     for(int x=ImageFileName.Length();x>0;x--)
         {
@@ -2344,9 +2346,9 @@ try
     {
 	TrainController->LogEvent("SaveOperatingImageMenuItemClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveOperatingImageMenuItemClick");
-    if(!DirectoryExists(CurDir + "\\" + ImageDirName))
+	if(!DirectoryExists(CurDir + "\\" + IMAGE_DIR_NAME))
         {
-        ShowMessage("Failed to find folder " + ImageDirName + " in the folder where 'railway.exe' resides.  Image can't be saved");
+        ShowMessage("Failed to find folder " + IMAGE_DIR_NAME + " in the folder where 'railway.exe' resides.  Image can't be saved");
         Utilities->CallLogPop(1702);
         return;
         }
@@ -2359,7 +2361,7 @@ try
     AnsiString ImageFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
     //format "16/06/2009 20:55:17"
     // avoid characters in filename:=   / \ : * ? " < > |
-	ImageFileName = CurDir + "\\" + ImageDirName + "\\RailwayImage " + ImageFileName + "; Timetable time " + TimetableTimeStr + "; " +
+	ImageFileName = CurDir + "\\" + IMAGE_DIR_NAME + "\\RailwayImage " + ImageFileName + "; Timetable time " + TimetableTimeStr + "; " +
             RailwayTitle + "; " + TimetableTitle + ".bmp";
     AnsiString ShortName = "";
     for(int x=ImageFileName.Length();x>0;x--)
@@ -2532,9 +2534,9 @@ try
     {
 	TrainController->LogEvent("ExportTTMenuItemClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExportTTMenuItemClick");
-    if(!DirectoryExists(CurDir + "\\" + FormattedTTDirName))
+	if(!DirectoryExists(CurDir + "\\" + FORMATTEDTT_DIR_NAME))
         {
-        ShowMessage("Failed to find folder " + FormattedTTDirName + " in the folder where 'railway.exe' resides.  Timetable can't be exported");
+        ShowMessage("Failed to find folder " + FORMATTEDTT_DIR_NAME + " in the folder where 'railway.exe' resides.  Timetable can't be exported");
         Utilities->CallLogPop(1699);
         return;
         }
@@ -3946,9 +3948,9 @@ try
     {
     TrainController->LogEvent("ExportTTButtonClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExportTTButtonClick");
-    if(!DirectoryExists(CurDir + "\\" + FormattedTTDirName))
+	if(!DirectoryExists(CurDir + "\\" + FORMATTEDTT_DIR_NAME))
         {
-		ShowMessage("Failed to find folder " + FormattedTTDirName + " in the folder where 'railway.exe' resides.  Timetable can't be exported");
+		ShowMessage("Failed to find folder " + FORMATTEDTT_DIR_NAME + " in the folder where 'railway.exe' resides.  Timetable can't be exported");
         Utilities->CallLogPop(1698);
         return;
         }
@@ -5203,7 +5205,7 @@ try
                 //stop clock as sometimes takes several seconds
                 TrainController->StopTTClockFlag = true;//so TTClock stopped during MasterClockTimer function
                 TrainController->RestartTime = TrainController->TTClockTime;
-                if(AllRoutes->GetAllRoutesTruncateElement(0, HLoc, VLoc, ConsecSignalsRoute))//updates LockedRouteClass
+				if(AllRoutes->GetAllRoutesTruncateElement(0, HLoc, VLoc, ConsecSignalsRoute))//updates LockedRouteClass
                     {
                     ClearandRebuildRailway(6);//to replot new shorter route
                     }
@@ -10148,13 +10150,13 @@ switch(Level1Mode)//use the data member
 	PerformanceFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
 	//format "16/06/2009 20:55:17"
 	// avoid characters in filename:=   / \ : * ? " < > |
-	PerformanceFileName = CurDir + "\\" + PerfLogDirName + "\\Log " + PerformanceFileName + "; " + RailwayTitle + "; " +
+	PerformanceFileName = CurDir + "\\" + PERFLOG_DIR_NAME + "\\Log " + PerformanceFileName + "; " + RailwayTitle + "; " +
 			TimetableTitle + ".txt";
 
 	Utilities->PerformanceFile.open(PerformanceFileName.c_str(), std::ios_base::out);
     if(Utilities->PerformanceFile.fail())
         {
-		ShowMessage("Performance logfile failed to open, logs won't be saved. Ensure that there is a folder named " + PerfLogDirName +
+		ShowMessage("Performance logfile failed to open, logs won't be saved. Ensure that there is a folder named " + PERFLOG_DIR_NAME +
 			" in the folder where the 'Railway.exe' program file resides");
         }
     SetPausedOrZoomedInfoCaption(3);
@@ -12173,7 +12175,7 @@ Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) +
 FileChangedFlag = true;
 if(NonPrefDirChangesMade)
     {
-    if(RlyFile)//i.e. was a Railway file but major changes made so class as a new railway
+	if(RlyFile)//i.e. was a Railway file but major changes made so class as a new railway
         {
         RailwayTitle = "";
         TimetableTitle = "";
@@ -12201,8 +12203,8 @@ try
 	// avoid characters in filename:=   / \ : * ? " < > |
 	TimetableTimeStr = Utilities->Format96HHMMSS(TrainController->TTClockTime);
 	TimetableTimeStr = TimetableTimeStr.SubString(1,2) + '.' + TimetableTimeStr.SubString(4,2) + '.' + TimetableTimeStr.SubString(7,2);
-	SessionFileStr = CurDir + "\\" + SessionDirName + "\\Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " +
-            RailwayTitle + "; " + TimetableTitle + ".ssn";
+	SessionFileStr = CurDir + "\\" + SESSION_DIR_NAME + "\\Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " +
+			RailwayTitle + "; " + TimetableTitle + ".ssn";
 	std::ofstream SessionFile(SessionFileStr.c_str());
     if(!(SessionFile.fail()))
         {
@@ -12257,7 +12259,7 @@ try
         }
     else
         {
-        TrainController->StopTTClockMessage(5, "Session file failed to open, session not saved.  Ensure that there is a folder named " + SessionDirName + " in the folder where the 'Railway.exe' program file resides");
+        TrainController->StopTTClockMessage(5, "Session file failed to open, session not saved.  Ensure that there is a folder named " + SESSION_DIR_NAME + " in the folder where the 'Railway.exe' program file resides");
         }
     Screen->Cursor = TCursor(-2);//Arrow
     Utilities->CallLogPop(1141);
@@ -12371,12 +12373,12 @@ try
             //first reset the performance file name and open it before reloading it
                 PerformanceFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
                 // avoid characters in filename:=   / \ : * ? " < > |
-				PerformanceFileName = CurDir + "\\" + PerfLogDirName + "\\Log " + PerformanceFileName + "; " + RailwayTitle + "; " +
+				PerformanceFileName = CurDir + "\\" + PERFLOG_DIR_NAME + "\\Log " + PerformanceFileName + "; " + RailwayTitle + "; " +
                         TimetableTitle + ".txt";
 				Utilities->PerformanceFile.open(PerformanceFileName.c_str(), std::ios_base::out);
                 if(Utilities->PerformanceFile.fail())
 					{
-					ShowMessage("Performance logfile failed to open, logs won't be saved. Ensure that there is a folder named " + PerfLogDirName +
+					ShowMessage("Performance logfile failed to open, logs won't be saved. Ensure that there is a folder named " + PERFLOG_DIR_NAME +
 						" in the folder where the 'Railway.exe' program file resides");
 					}
             //now reload the performance file
@@ -12488,7 +12490,7 @@ AnsiString OpMode = Utilities->LoadFileString(SessionFile);
 if(OpMode == "PreStart") Level2OperMode = PreStart;
 else Level2OperMode = Paused;
 RailwayTitle = Utilities->LoadFileString(SessionFile);
-SavedFileName = CurDir + "\\" + RailwayDirName + "\\"+ RailwayTitle + ".rly";
+SavedFileName = CurDir + "\\" + RAILWAY_DIR_NAME + "\\"+ RailwayTitle + ".rly";
 
 TimetableTitle = Utilities->LoadFileString(SessionFile);
 PreferredRoute = Utilities->LoadFileBool(SessionFile);
@@ -13425,7 +13427,7 @@ if(InFile.is_open())
 else
     {
     InFile.close();
-	ShowMessage("Session file failed to open, unable to load session.  Ensure that there is a folder named " + SessionDirName + " in the folder where the 'Railway.exe' program file resides");
+	ShowMessage("Session file failed to open, unable to load session.  Ensure that there is a folder named " + SESSION_DIR_NAME + " in the folder where the 'Railway.exe' program file resides");
     Utilities->CallLogPop(1263);
     return false;
     }

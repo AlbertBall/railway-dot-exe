@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <Graphics.hpp>
 //---------------------------------------------------------------------------
 
-#define clB0G0R0 (TColor)0x000000 //definitions based on the 216 web safe colours.  All the graphics in the resource file use these colours
+#define clB0G0R0 (TColor)0x000000 //definitions based on the 216 web safe colours. All the graphics in the resource file use these colours
 #define clB0G0R1 (TColor)0x000033
 #define clB0G0R2 (TColor)0x000066
 #define clB0G0R3 (TColor)0x000099
@@ -72,7 +72,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define clB0G5R3 (TColor)0x00FF99
 #define clB0G5R4 (TColor)0x00FFCC
 #define clB0G5R5 (TColor)0x00FFFF
-
 
 #define clB1G0R0 (TColor)0x330000
 #define clB1G0R1 (TColor)0x330033
@@ -116,7 +115,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define clB1G5R4 (TColor)0x33FFCC
 #define clB1G5R5 (TColor)0x33FFFF
 
-
 #define clB2G0R0 (TColor)0x660000
 #define clB2G0R1 (TColor)0x660033
 #define clB2G0R2 (TColor)0x660066
@@ -158,7 +156,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define clB2G5R3 (TColor)0x66FF99
 #define clB2G5R4 (TColor)0x66FFCC
 #define clB2G5R5 (TColor)0x66FFFF
-
 
 #define clB3G0R0 (TColor)0x990000
 #define clB3G0R1 (TColor)0x990033
@@ -202,7 +199,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define clB3G5R4 (TColor)0x99FFCC
 #define clB3G5R5 (TColor)0x99FFFF
 
-
 #define clB4G0R0 (TColor)0xCC0000
 #define clB4G0R1 (TColor)0xCC0033
 #define clB4G0R2 (TColor)0xCC0066
@@ -244,7 +240,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define clB4G5R3 (TColor)0xCCFF99
 #define clB4G5R4 (TColor)0xCCFFCC
 #define clB4G5R5 (TColor)0xCCFFFF
-
 
 #define clB5G0R0 (TColor)0xFF0000
 #define clB5G0R1 (TColor)0xFF0033
@@ -304,8 +299,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define clStoppedTrainInFront   (TColor)0xFF9999 //light blue     16751001d
 #define clTRSBackground         (TColor)0xFFCCFF //light pink     16764159d
 
-
-class TRailGraphics //handles graphic data & functions, single object defined
+/// Handles graphic data & functions, single object defined
+class TRailGraphics
 {
 public:
 
@@ -983,61 +978,71 @@ Graphics::TBitmap *bmStraightNSSignalBlank;
 //graphics below created from existing graphics
 //1st group is for underbridge graphic segements - i.e. the lower single track segment (the overbridge segment is the normal track
 //segment, 12 bridges
-Graphics::TBitmap *BridgeGraphicsPtr[12]; //basic graphic for use in plotting the original graphic during route flashing
-Graphics::TBitmap *BridgePrefDirGraphicsPtr[12]; //preferred direction graphic overlay
-Graphics::TBitmap *BridgeSigRouteGraphicsPtr[12]; //route graphic for preferred routes overlay
-Graphics::TBitmap *BridgeNonSigRouteGraphicsPtr[12]; //route graphic for unrestricted route overlay
-Graphics::TBitmap *BridgeRouteAutoSigsGraphicsPtr[12]; //route graphic for automatic signal routes overlay
+Graphics::TBitmap *BridgeGraphicsPtr[12]; ///< basic graphic for use in plotting the original graphic during route flashing
+Graphics::TBitmap *BridgePrefDirGraphicsPtr[12]; ///< preferred direction graphic overlay
+Graphics::TBitmap *BridgeSigRouteGraphicsPtr[12]; ///< route graphic for preferred routes overlay
+Graphics::TBitmap *BridgeNonSigRouteGraphicsPtr[12]; ///< route graphic for unrestricted route overlay
+Graphics::TBitmap *BridgeRouteAutoSigsGraphicsPtr[12]; ///< route graphic for automatic signal routes overlay
 
 //2nd group for ordinary single track segments - 16 for non underbridges (track joining each valid pair of the 8 track element links),
 //4 for diagonal buffers & 8 for continuations, 2 for footbridges
-Graphics::TBitmap *LinkGraphicsPtr[30]; //basic single track graphic for use in plotting the original graphic during route flashing
-Graphics::TBitmap *LinkPrefDirGraphicsPtr[30]; //preferred direction graphic overlay
-Graphics::TBitmap *LinkSigRouteGraphicsPtr[30]; //preferred direction route graphic overlay
-Graphics::TBitmap *LinkNonSigRouteGraphicsPtr[30]; //unrestricted route graphic overlay
-Graphics::TBitmap *LinkRouteAutoSigsGraphicsPtr[30]; //auto signal route graphic overlay
+Graphics::TBitmap *LinkGraphicsPtr[30]; ///< basic single track graphic for use in plotting the original graphic during route flashing
+Graphics::TBitmap *LinkPrefDirGraphicsPtr[30]; ///< preferred direction graphic overlay
+Graphics::TBitmap *LinkSigRouteGraphicsPtr[30]; ///< preferred direction route graphic overlay
+Graphics::TBitmap *LinkNonSigRouteGraphicsPtr[30]; ///< unrestricted route graphic overlay
+Graphics::TBitmap *LinkRouteAutoSigsGraphicsPtr[30]; ///< auto signal route graphic overlay
 
 //3rd group for the direction arrows that indicate the direction of the route or of the preferred direction - 1 for each of 8 links,
 //0 included because arrays start with 0, 5 included as arrays must be consecutive, but neither of these are used, hence 10 total
-Graphics::TBitmap *DirectionPrefDirGraphicsPtr[10]; //preferred direction marker arrows
-Graphics::TBitmap *DirectionNonSigRouteGraphicsPtr[10]; //unrestricted route marker arrows
-Graphics::TBitmap *DirectionSigRouteGraphicsPtr[10]; //preferred direction route marker arrows
-Graphics::TBitmap *DirectionRouteAutoSigsGraphicsPtr[10]; //autosigs route marker arrows
+Graphics::TBitmap *DirectionPrefDirGraphicsPtr[10]; ///< preferred direction marker arrows
+Graphics::TBitmap *DirectionNonSigRouteGraphicsPtr[10]; ///< unrestricted route marker arrows
+Graphics::TBitmap *DirectionSigRouteGraphicsPtr[10]; ///< preferred direction route marker arrows
+Graphics::TBitmap *DirectionRouteAutoSigsGraphicsPtr[10]; ///< autosigs route marker arrows
 
-Graphics::TBitmap *PointModeGraphicsPtr[32][2]; //for point fillets - 32 sets of points, each with two fillets
+Graphics::TBitmap *PointModeGraphicsPtr[32][2]; ///< for point fillets - 32 sets of points, each with two fillets
 
-Graphics::TBitmap *LockedRouteCancelPtr[10];//for locked route cancel graphic, 1 for each of 8 links, 0 & 5 included as for direction
+Graphics::TBitmap *LockedRouteCancelPtr[10];///< for locked route cancel graphic, 1 for each of 8 links, 0 & 5 included as for direction
 //marker arrows but not used
 
 //functions
-TRailGraphics::TRailGraphics(); //constructor
-TRailGraphics::~TRailGraphics(); //destructor
-void ChangeAllTransparentColours(TColor NewTransparentColour, TColor OldTransparentColour); //Changes all graphics to become compatible
-    //with a new background colour - uses 'ChangeTransparentColour' below to change each graphic in turn
+TRailGraphics::TRailGraphics(); ///< constructor
+TRailGraphics::~TRailGraphics(); ///< destructor
+/// Changes all graphics to become compatible with a new background colour
+///
+/// Uses 'ChangeTransparentColour' method to change each graphic in turn
+void ChangeAllTransparentColours(TColor NewTransparentColour, TColor OldTransparentColour);
+/// Change any pixels that are OldBackgroundColour in BitmapIn to NewBackgroundColour in BitmapOut
+///
+/// Checks that the change is correct and sets ColourError if not (Windows will choose nearest matching colour if
+/// colour depth is incorrect and that will cause the error - lot of early problems due to this behaviour but all graphics now
+/// 256 colours)
 void ChangeBackgroundColour(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap* BitmapOut, TColor NewBackgroundColour,
-    TColor OldBackgroundColour, bool &ColourError); //Change any pixels that are OldBackgroundColour in BitmapIn to NewBackgroundColour
-    //in BitmapOut, checks that the change is correct and sets ColourError if not (Windows will choose nearest matching colour if
-    //colour depth is incorrect and that will cause the error - lot of early problems due to this behaviour but all graphics now
-    //256 colours)
+							TColor OldBackgroundColour, bool &ColourError);
+/// Change any pixels that are not BackgroundColour in BitmapIn to NewForegroundColour in BitmapOut
+///
+/// Any that are BackgroundColour in BitmapIn are set to BackgroundColour in BitmapOut
 void ChangeForegroundColour(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap* BitmapOut, TColor NewForegroundColour,
-    TColor BackgroundColour); //Change any pixels that are not BackgroundColour in BitmapIn to NewForegroundColour in BitmapOut, any that
-    //are BackgroundColour in BitmapIn are set to BackgroundColour in BitmapOut
-void ChangeSpecificColour(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut, TColor ColourToBeChanged,
-    TColor NewColour); //Change any pixels that are ColourToBeChanged in BitmapIn to NewColour in BitmapOut, any that are not
-    //ColourToBeChanged in BitmapIn are set to their original colour in BitmapOut
-void ChangeTransparentColour(Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut, TColor NewTransparentColour,
-    TColor OldTransparentColour); //Changes a graphic to become compatible with a new background colour - change any pixels that
-    //are OldTransparentColour in BitmapIn to NewTransparentColour in BitmapOut, if NewTransparentColour dark then change any black
-    //pixels in BitmapIn to white in BitmapOut, or if NewTransparentColour white then change any white pixels in BitmapIn to black in
-    //BitmapOut
-void SetUpAllDerivitiveGraphics(TColor TransparentColour); //sets all the derived graphics to be compatible with a new transparent colour,
-    //used when changing the background from dark to light and vice versa.  The derived graphics are the preferred direction and route
-    //graphics for tracks, underbridges, direction markers and all the point fillets.
+							TColor BackgroundColour);
+/// Change any pixels that are ColourToBeChanged in BitmapIn to NewColour in BitmapOut
+///
+/// Any that are not ColourToBeChanged in BitmapIn are set to their original colour in BitmapOut
+void ChangeSpecificColour(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut, TColor ColourToBeChanged, TColor NewColour);
+/// Changes a graphic to become compatible with a new background colour
+///
+/// Change any pixels that are OldTransparentColour in BitmapIn to NewTransparentColour in BitmapOut,
+/// if NewTransparentColour dark then change any black pixels in BitmapIn to white in BitmapOut, or
+/// if NewTransparentColour white then change any white pixels in BitmapIn to black in BitmapOut
+void ChangeTransparentColour(Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut, TColor NewTransparentColour, TColor OldTransparentColour);
+/// Sets all the derived graphics to be compatible with a new transparent colour
+///
+/// Used when changing the background from dark to light and vice versa.  The derived graphics are the preferred direction
+/// and route graphics for tracks, underbridges, direction markers and all the point fillets.
+void SetUpAllDerivitiveGraphics(TColor TransparentColour);
 };
 
 //---------------------------------------------------------------------------
 
-extern TRailGraphics *RailGraphics; //the object pointer, object created in InterfaceUnit
+extern TRailGraphics *RailGraphics; ///< the object pointer, object created in InterfaceUnit
 
 //---------------------------------------------------------------------------
 #endif

@@ -389,8 +389,10 @@ class TTrack
     int LinkCheckArray[9][2]; ///< array of valid link connecting values, I don't think this is used now
     int LinkHVArray[10][2]; ///< array used to determine relative horizontal & vertical track element positions for specific link values
     int Tag76Array[23][3]; ///< these arrays give valid adjacent named element relative positions for each type of named element,
-    int Tag77Array[23][3]; ///< the numbers - 76, 77 etc - relate to track element element SpeedTag values (76 - 79 = platforms, 96 =
-    int Tag78Array[23][3]; ///< concourse, 129 & 130 = footbridges and 131 = non-station named location.
+                           ///< the numbers - 76, 77 etc - relate to track element element SpeedTag values (76 - 79 = platforms, 96 = concourse,
+                           ///< 129 & 130 = footbridges and 131 = non-station named location.
+    int Tag77Array[23][3];
+    int Tag78Array[23][3];
     int Tag79Array[23][3];
     int Tag96Array[24][3];
     int Tag129Array[8][3];

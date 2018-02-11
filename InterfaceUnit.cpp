@@ -2597,7 +2597,10 @@ try
     AddSubMinsBox->Text = "";
     OneEntryTimetableContents = "";
     LocationNameComboBox->Clear();
-    TimetableChangedFlag = false;
+	TimetableTitle = "";//unload any loaded timetable.  Added here at v2.1.0
+	TrainController->TrainDataVector.clear();//unload any loaded timetable.    Added here at v2.1.0
+	SetCaption(9); //added at v2.1.0 as formerly retained earlier loaded tt name in error
+	TimetableChangedFlag = false;
     TimetableValidFlag = false;
     TTEntryChangedFlag = false;
     CopiedEntryFlag = false;
@@ -2658,7 +2661,7 @@ try
         {
         LocationNameComboBox->Text = "No locations (listed when a railway with names is loaded)";
         }
-    Level1Mode = TimetableMode;
+	Level1Mode = TimetableMode;
     SetLevel1Mode(82);
     Utilities->CallLogPop(1595);
     }
@@ -2691,6 +2694,9 @@ try
 	AddSubMinsBox->Text = "";
 	OneEntryTimetableContents = "";
 	LocationNameComboBox->Clear();
+	TimetableTitle = "";//unload any loaded timetable.  Moved here from below at v2.1.0 for consistency with CreateTimetable
+	TrainController->TrainDataVector.clear();//unload any loaded timetable.  Moved here from below at v2.1.0 for consistency with CreateTimetable
+	SetCaption(8); //added at v2.1.0 as formerly retained earlier loaded tt name in error
 	TEVPtr=0; TTCurrentEntryPtr=0, TTStartTimePtr=0; TTFirstServicePtr=0; TTLastServicePtr=0;//all set to null to begin with
 	if(TimetableDialog->Execute())
 		{
@@ -2727,8 +2733,6 @@ try
 			{
 			TTBLFile.clear(); //to clear eofbit from last read
 			TTBLFile.seekg(0); //shouldn't be needed but include for safety
-			TimetableTitle = "";//unload any loaded timetable
-			TrainController->TrainDataVector.clear();//unload any loaded timetable
 			TimetableChangedFlag = false;
 			TimetableValidFlag = false;
 			TTEntryChangedFlag = false;
@@ -2790,11 +2794,11 @@ try
     CompileAllEntriesMemoAndSetPointers(0);
     if(TimetableEditVector.empty())
         {
-        Level1Mode = TimetableMode;
-        SetLevel1Mode(89);
-        Utilities->CallLogPop(1614);
-        return;
-        }
+		Level1Mode = TimetableMode;
+		SetLevel1Mode(89);
+		Utilities->CallLogPop(1614);
+		return;
+		}
 
 //all now set where can be
     TTCurrentEntryPtr = TimetableEditVector.begin();
@@ -2853,9 +2857,9 @@ try
         {
         LocationNameComboBox->Text = "No locations (listed when a railway with names is loaded)";
         }
-    Level1Mode = TimetableMode;
-    SetLevel1Mode(83);
-    Utilities->CallLogPop(1596);
+	Level1Mode = TimetableMode;
+	SetLevel1Mode(83);
+	Utilities->CallLogPop(1596);
   }
 catch (const Exception &e)
     {
@@ -2882,7 +2886,7 @@ try
         ShowHideTTButton->Glyph->LoadFromResourceName(0, "Hide");
         TimetableEditPanel->Visible = true;
         ShowHideTTButton->Hint = "Hide the timetable editor to see the railway";
-        Level1Mode = TimetableMode;
+		Level1Mode = TimetableMode;
         SetLevel1Mode(124);
         }
     }
@@ -2908,7 +2912,7 @@ try
     TTEntryChangedFlag = false;
     int TopPos = AllEntriesTTListBox->TopIndex; //need to store this & reset it after SetLevel1Mode to prevent the scroll
         //position changing in AllEntriesTTListBox
-    Level1Mode = TimetableMode;
+	Level1Mode = TimetableMode;
     SetLevel1Mode(85);
     if((TTCurrentEntryPtr - TimetableEditVector.begin()) < TopPos)
         {
@@ -4176,7 +4180,7 @@ try
         {
         TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos;
         }
-    Level1Mode = TimetableMode;
+	Level1Mode = TimetableMode;
     SetLevel1Mode(120);
     AllEntriesTTListBox->TopIndex = TopPos;//reset it - have to do this at the end
     Utilities->CallLogPop(1648);
@@ -4400,12 +4404,12 @@ if(TimetableChangedFlag) TimetableValidFlag = false;//should always be the case 
 
 if(CreateEditTTFileName == "")
     {
-    TimetableNameLabel->Caption = "New timetable: not yet saved";
-    }
+	TimetableNameLabel->Caption = "Creating new timetable: not yet saved";
+	}
 else
-    {
-    TimetableNameLabel->Caption = "Timetable: " + CreateEditTTTitle;
-    }
+	{
+	TimetableNameLabel->Caption = "Editing timetable: " + CreateEditTTTitle;
+	}
 
 /*
 if(TTStartTimePtr == 0)//Null means start time not yet set
@@ -6135,7 +6139,7 @@ try
         }
 //    else if(Level1Mode == TrackMode) SetLevel1Mode();//just revert to basic track mode from zoom
 //    else if(Level1Mode == PrefDirMode) SetLevel1Mode();//just revert to basic PrefDir mode from zoom
-    else if(Level1Mode == TimetableMode)
+	else if(Level1Mode == TimetableMode)
         {
         InfoPanel->Visible = false;
         }
@@ -9979,7 +9983,7 @@ switch(Level1Mode)//use the data member
     SetTrackBuildImages(13);
     break;
 
-    case TimetableMode:
+	case TimetableMode:
     Level2TrackMode = NoTrackMode;
     Level2PrefDirMode = NoPrefDirMode;
     Level2OperMode = NoOperMode;
@@ -9989,7 +9993,7 @@ switch(Level1Mode)//use the data member
     FloatingInfoMenu->Enabled = false;
     ImageMenu->Enabled = false;
     TimetableEditPanel->BringToFront();
-    TimetableHandler();
+	TimetableHandler();
     break;
 
     case TrackMode:
@@ -10592,7 +10596,7 @@ switch(Level2TrackMode)//use the data member
         Track->CheckLocationNameMultiMap(15);//test
         //Track->SetTrackFinished(!NeedToLink);  This is an error (see Sam Wainwright email of 24/08/17 & devhistory.txt
         //if track not linked to begin with then becomes linked if NeedToLink false
-        if(NeedToLink) Track->SetTrackFinished(false); // corrected for v2.1.0
+		if(NeedToLink) Track->SetTrackFinished(false); // corrected for v2.1.0
         if(NeedToLink || TextChangesMade)
             {
             ResetChangedFileDataAndCaption(21, true); //true for NonPrefDirChangesMade
@@ -11982,7 +11986,8 @@ NamedRailway; RlyFile; NamedTimetable
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetCaption");
 if(RailwayTitle == "")        Caption = "Railway: New railway under development";
 else if(!RlyFile)             Caption = "Railway: " + RailwayTitle + " under development";
-else if(TimetableTitle == "") Caption = "Railway: " + RailwayTitle + "; Timetable: none loaded";
+//else if(TimetableTitle == "") Caption = "Railway: " + RailwayTitle + "; Timetable: none loaded";
+else if(TimetableTitle == "") Caption = "Railway: " + RailwayTitle;  //changed at v2.1.0, no need to mention TT if none loaded
 else                          Caption = "Railway: " + RailwayTitle + "; Timetable: " + TimetableTitle;
 Utilities->CallLogPop(1208);
 }
@@ -14517,5 +14522,6 @@ be tellg, which sometimes returns wrong results, and they corrupt things when us
 
 Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file position then close and reopen it.
 */
+
 
 

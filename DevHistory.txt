@@ -1,13 +1,8 @@
-Development History
+﻿Development History
 ---------------------------------------------------------------------------
 
-Latest corrections:  
-08/02/18:  Corrected Sam Wainwright error (reported 24/08/17):  Existing program sets track finished to !NeedToLink in cut, paste & delete, so if track not linked to begin with and no elements erased (say select a blank area of screen, just text or inactive elements & cut or copy it then paste it elsewhere or delete it), then !NeedToLink is true and TrackFinished becomes set to true also after the operation.  Changed all 'Track->SetTrackFinished(!NeedToLink);' in Interface.cpp to 'if(NeedToLink) Track->SetTrackFinished(false);' so only set it to false if NeedToLink is true.  Included for v2.1.0.  Same error occurred for Dennys Huang on 22/10/17.
 
-08/02/18:  Corrected Moric1998 error (sent in 24/03/16), corrected in TrainUnit at 'if(ContinuationExit(2, LagElement, LagExitPos))'
----------------------------------------------------------------------------
-
-Future change suggestions:
+Future change suggestions from users:
 
 Suggestions from Richard Gaede 2email of 22/08/14:-
 
@@ -15,13 +10,13 @@ Suggestions from Richard Gaede 2email of 22/08/14:-
 
 2.  Have a drop-down list of running trains and their status and trains about to enter the system - to give a quick form of running train identification so they aren't forgotten and advance warning of future entries.
 
+-----------------------
+
 Suggestions from David Graf - email of 31/03/14
 
 "Coventry Requirements Sig Sim for Rail Op Sim
 
-
-I’ve almost finished placing together the signalling area covered by the old Coventry PSB in the West Midlands ( the period in question would be 1965 to 1984 ) using your signalling programme.
-It looks the part only having a peek at the available information of the real signal box several things are missing and I was wondering if they might become available in any future updates.
+I’ve almost finished placing together the signalling area covered by the old Coventry PSB in the West Midlands ( the period in question would be 1965 to 1984 ) using your signalling programme.  It looks the part only having a peek at the available information of the real signal box several things are missing and I was wondering if they might become available in any future updates.
 
 The Coventry panel should really have a slot to control the Coventry end of the single track to and from Leamington Spa and visa versa.
 
@@ -37,11 +32,12 @@ Background – basically I have been waiting for a signal simulator to cover the
 
 I am currently researching a North Wales Coast route so semaphore signals would be of great help. That is if its not to much to ask."
 
-Own:  Consider allowing empty stock - will need to start at location and be followed by Fjo.  Currently only a timeloc entry allows a train to be recognised as at a location, adding Fjo may be an easy change.
-Richard Gaede requested this for his Walhalla railway.
+-----------------------
 
 Suggestion from Jonathan Kwok (email of 11/05/13)
 Have a 'Touch mode' where when activated the buttons are bigger for easier operation with touch-sensitive screens.
+
+-----------------------
 
 Suggestions from Bjorn - email of 20/10/12:
 1) Manual Stop Signals (blue), as in, being able to set them manually, i.e. for in stations where the whole platform can be used, or only a part of the platform. As in the
@@ -54,31 +50,65 @@ put both signals on one stretch of track would not only save space, but also wou
 that the program follows wither the preferred directions to create the best available route or that it just looks for the shortest route possible from point A to point B.
 Suggestion from Josh Coupe (email ~21/10/12):  Useful if could advance the timetable clock and have all trains where they would most likely be at that time.
 
-Suggestion from Atilio Flegner (email 10/10/12): allow acceleration & deceleration rates as inputs as well as train power & braking force; and allow headways between 
-trains as well as fixed starting times
+-----------------------
 
-Suggestion from Mark Jones (email of 29/06/12): try to allow different train lengths consisting of different numbers of elements.  Can indicate required length in 
-timetable.
+Suggestion from Atilio Flegner (email 10/10/12): allow acceleration & deceleration rates as inputs as well as train power & braking force; and allow headways between trains as well as fixed starting times
 
-Suggestion from Keith Hazelton (Feature Requests Forum 02/04/12):  Have the ability to set random dwell times at station stops. At present, once you’ve got ‘the hang’ of 
-a layout and got into a rhythm of route setting, everything is pretty predictable. Random dwell times (say between 30sec & 3 mins) would add an unpredictable element.
+-----------------------
 
-Sam Wainwright email received 09/02/12: If a shunt signal is placed in the same direction as the main running signals, it is necessary to set a route through the shunt 
-signal as well. Would it be possible to set a route from one running signal to the next with any shunt signals n the same direction in between clearing automatically?
+Suggestion from Mark Jones (email of 29/06/12): try to allow different train lengths consisting of different numbers of elements.  Can indicate required length in timetable.
+
+-----------------------
+
+Suggestion from Keith Hazelton (Feature Requests Forum 02/04/12):  Have the ability to set random dwell times at station stops. At present, once you’ve got ‘the hang’ of a layout and got into a rhythm of route setting, everything is pretty predictable. Random dwell times (say between 30sec & 3 mins) would add an unpredictable element.
+
+-----------------------
+
+Sam Wainwright email received 09/02/12: If a shunt signal is placed in the same direction as the main running signals, it is necessary to set a route through the shunt signal as well. Would it be possible to set a route from one running signal to the next with any shunt signals n the same direction in between clearing automatically?
+
+-----------------------
+Own thoughts:-
+
+Try to trap memory capacity errors that occur when try to save large bitmaps without crashing the program.  Occurred on Xeon's Shanghai Metro railway when .bmp was over 500Mb
+
+Add int Left, Top in ClearandRebuildRailway before Track->GetScreenPositionsFromTruePos(1, Left, Top, PointFlash->GetHPos(), PointFlash->GetVPos()); below if(Track->PointFlashFlag), as is resets Interface->Left & Top though not permanently influenced by the change, perhaps because the values aren't constants. Say this because Interface->Left & Top took the values set in GetScreenPositionsFromTruePos within the routine but the form didn't move, though when set to fixed values it did move (!don't change anything until understand what's happening!) 
+
+With single element routes being automatically cancelled and last element being points can set another route in other direction before train reaches it.  Have to be quick and unlikely in practice, but consider preventing
+
+Points to emerge from operating Beaver Lake:  If train cancels a route by moving in wrong direction issue a SPAD risk (like approach locking) and change log accordingly.  Useful if could truncate an automatic route behind a train as well as in front.  When cancel an automatic route that links to a non-automatic route try to either include the signal(s) with the other route (problem if first element of that route is a bridge then can't cancel it and can't set another route to link to it) or cancel adjacent non-automatic routes as well - that's probably easier. 
+
+Can set an automatic signal route across a diagonal, OK when user does it but prevent when done before operation
+
+When make window smaller there are no sidebars, investigate why not, probably something simple
+
+Consider adding the status & timetable information (if selected in menu) for expected trains.
+
+Consider allowing routes to be cancelled under trains, no impact if train stopped or approaching end-of-route red signal, but usual approach warning (or maybe '...approaching clear signal...') for moving trains. +See Beaver Lake above.
+
+Times beyond 24hrs show as hh:mm:ss in .csv formatted timetables but not in .txt version (see Sheffield)
+
+-----------------------
 
 
 Problems recorded but without solutions as yet:
 
-1.  Also had a failure to reset signals to red when reset a red route in front of a blue route at High Wycombe (operating Chiltern Railways running right to left). The train ran past the end of
+1.  Had a failure to reset signals to red when reset a red route in front of a blue route at High Wycombe (operating Chiltern Railways running right to left). The train ran past the end of
 the blue route so it wasn't just the display that was wrong. Couldn't repeat the fault afterwards.
 
-2.  Also when operating Chiltern had a train under signaller control & moving forwards, but couldn't get popup menu when right clicked - nothing happened.  Saved session & reloaded, then OK.
+2.  When operating Chiltern had a train under signaller control & moving forwards, but couldn't get popup menu when right clicked - nothing happened.  Saved session & reloaded, then OK.
 
-3.  If an arriving train reaches a platform with a train in front at buffers, and the arriving train is to split while facing the train at buffers (from the rear but maybe also from the front) and there is enough platform for the split, then the split doesn't occur.  Occurred on Chiltern (Chiltern rear split problem; Timetable time 10.49.03; Chiltern Railways v2; Chiltern Railways v2.ssn) after manoeuvring 5F33 & 1N24 onto a vacant platform & restoring appropriate directions & timetable control.  Due to lack of sophistication of split functions (see note in program: Split logic is:-  at least one of 4 final train positions must overlap with one of original train positions, & final 4 positions will maximise the number at the location.  Note that this function isn't sophisticated enough to account for trains already at the
-location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these circumstances the other train will need to be move sufficiently away to release all 4 positions, then the train will split.)  Try to improve if possible (i.e. just take account of 'available' platforms, and ensure keep trying in case other trains move off) or at least give a warning in the help & operator manuals to keep trains that are to split separated from trains already present at platforms - preferably don't have other trains at platforms at all where a train is to split.[leave for now unless reported as a problem - no-one has reported it yet]
+3.  If an arriving train reaches a platform with a train in front at buffers, and the arriving train is to split while facing the train at buffers (from the rear but maybe also from the front) and there is enough platform for the split, then the split doesn't occur.  Occurred on Chiltern (Chiltern rear split problem; Timetable time 10.49.03; Chiltern Railways v2; Chiltern Railways v2.ssn) after manoeuvring 5F33 & 1N24 onto a vacant platform & restoring appropriate directions & timetable control.  Due to lack of sophistication of split functions (see note in program: Split logic is:-  at least one of 4 final train positions must overlap with one of original train positions, & final 4 positions will maximise the number at the location.  Note that this function isn't sophisticated enough to account for trains already at the location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these circumstances the other train will need to be move sufficiently away to release all 4 positions, then the train will split.)  Try to improve if possible (i.e. just take account of 'available' platforms, and ensure keep trying in case other trains move off) or at least give a warning in the help & operator manuals to keep trains that are to split separated from trains already present at platforms - preferably don't have other trains at platforms at all where a train is to split.[leave for now unless reported as a problem - no-one has reported it yet]
+
+4.  Jordy de Koning reported a speed limit bug 27/12/16.  If a train is standing on a track element with a speed limit > 400kph and a session file saved, it fails on subsequent attempts to load.  The reason is that the train is limited to 400kph but not the track speed limit, and the session file checks the track speed limit where a train starts and fails if >400kph.  Need to add a limit and message when setting track speed limits.  Add a static const value set in trackunit.h, check against it when setting speed limits, and if >400 give message and set to 400.
+
+
+-----------------------
 
 VERSION CHANGES AFTER v2.0.0 Beta for v2.1.0
 
+* = mention on user website
+
+*mention a) to j) as a group - good programming practice changes
 a) Change the way version info is retrieved (internal fix - no user-facing changes)
 b) Remove beta tag (6 months have passed)
 c) Change the version numbering format to use Semantic versioning (see https://semver.org/)
@@ -89,6 +119,12 @@ g) Fix typo in Utilities::CallLogPop() comment
 h) Add CONTRIBUTING.md file
 i) Remove ambiguity from Clear All dialog by changing 'delete' to 'close'
 j) Change menu text to title case
+
+k) Corrected Sam Wainwright error (reported 24/08/17):  Existing program sets track finished to !NeedToLink in cut, paste & delete, so if track not linked to begin with and no elements erased (say select a blank area of screen, just text or inactive elements & cut or copy it then paste it elsewhere or delete it), then !NeedToLink is true and TrackFinished becomes set to true also after the operation.  Changed all 'Track->SetTrackFinished(!NeedToLink);' in Interface.cpp to 'if(NeedToLink) Track->SetTrackFinished(false);' so only set it to false if NeedToLink is true.  Included for v2.1.0.  Same error occurred for Dennys Huang on 22/10/17.
+
+l) Corrected Moric1998 error (sent in 24/03/16), corrected in TrainUnit at 'if(ContinuationExit(2, LagElement, LagExitPos))'
+
+*m) Corrected mainform caption when creating or editing timetables.  Formerly the earlier loaded timetable name remained in the caption in error.
 
 
 VERSION CHANGES AFTER v1.3.2 for v2.0.0 Beta

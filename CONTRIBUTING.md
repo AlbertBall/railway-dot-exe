@@ -20,6 +20,7 @@ The following is a set of guidelines for contributing to railway-dot-exe.
 
 [Styleguides](#styleguides)
   * [Git Commit Messages](#git-commit-messages)
+  * [Editing the Developer Guide](#editing-the-developer-guide)
 
 ## Code of Conduct
 
@@ -101,7 +102,9 @@ So… there’s plenty still to do… what are you waiting for?
 * A properly formatted commit subject line should always be able to complete the following sentence:
     * This commit will __your commit message here__
 
+### Editing the Developer Guide
 
+* If you want access to the source copy of the Developer Guide (used to produce the PDF version on GitHub) just  [Email us](mailto:railwayfeedback@gmail.com) asking for access.
 
 
 

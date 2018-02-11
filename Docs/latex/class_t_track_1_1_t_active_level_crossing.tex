@@ -1,0 +1,58 @@
+\hypertarget{class_t_track_1_1_t_active_level_crossing}{}\section{T\+Track\+:\+:T\+Active\+Level\+Crossing Class Reference}
+\label{class_t_track_1_1_t_active_level_crossing}\index{T\+Track\+::\+T\+Active\+Level\+Crossing@{T\+Track\+::\+T\+Active\+Level\+Crossing}}
+
+
+{\ttfamily \#include $<$Track\+Unit.\+h$>$}
+
+
+
+Collaboration diagram for T\+Track\+:\+:T\+Active\+Level\+Crossing\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{class_t_track_1_1_t_active_level_crossing__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_t_track_1_1_t_active_level_crossing_adc74855a4f0cb115cef8be85b1288f15}\label{class_t_track_1_1_t_active_level_crossing_adc74855a4f0cb115cef8be85b1288f15}} 
+\mbox{\hyperlink{class_t_track_1_1_t_active_level_crossing_adc74855a4f0cb115cef8be85b1288f15}{T\+Active\+Level\+Crossing\+::\+T\+Active\+Level\+Crossing}} ()
+\begin{DoxyCompactList}\small\item\em constructor, sets default values \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_t_track_1_1_t_active_level_crossing_ab673508a424b72287259591f31e309fd}\label{class_t_track_1_1_t_active_level_crossing_ab673508a424b72287259591f31e309fd}} 
+bool \mbox{\hyperlink{class_t_track_1_1_t_active_level_crossing_ab673508a424b72287259591f31e309fd}{Consec\+Signals}}
+\begin{DoxyCompactList}\small\item\em route type -\/ 0 = nonsignals, 1 = preferred direction (can\textquotesingle{}t have autosigs) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_track_1_1_t_active_level_crossing_a1cdc06cbcf27faf07f7a653a51cd661e}\label{class_t_track_1_1_t_active_level_crossing_a1cdc06cbcf27faf07f7a653a51cd661e}} 
+bool \mbox{\hyperlink{class_t_track_1_1_t_active_level_crossing_a1cdc06cbcf27faf07f7a653a51cd661e}{Train\+Passed}}
+\begin{DoxyCompactList}\small\item\em marker that is set when a train is present on one of the elements of the LC -\/ used to provide a 3 minute penalty allowance \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_track_1_1_t_active_level_crossing_ae6a3eed6fc68f1e65a59a3da36a3d4cb}\label{class_t_track_1_1_t_active_level_crossing_ae6a3eed6fc68f1e65a59a3da36a3d4cb}} 
+T\+Barrier\+State \mbox{\hyperlink{class_t_track_1_1_t_active_level_crossing_ae6a3eed6fc68f1e65a59a3da36a3d4cb}{Barrier\+State}}
+\begin{DoxyCompactList}\small\item\em state of barriers \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_track_1_1_t_active_level_crossing_af45c2e8c0f427b23e655cdce00cebbb8}\label{class_t_track_1_1_t_active_level_crossing_af45c2e8c0f427b23e655cdce00cebbb8}} 
+float \mbox{\hyperlink{class_t_track_1_1_t_active_level_crossing_af45c2e8c0f427b23e655cdce00cebbb8}{Change\+Duration}}
+\begin{DoxyCompactList}\small\item\em duration of the level crossing changing period \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_track_1_1_t_active_level_crossing_aaca7018cee472ba2b5df1589caa071f7}\label{class_t_track_1_1_t_active_level_crossing_aaca7018cee472ba2b5df1589caa071f7}} 
+int \mbox{\hyperlink{class_t_track_1_1_t_active_level_crossing_aaca7018cee472ba2b5df1589caa071f7}{Base\+Element\+Speed\+Tag}}
+\begin{DoxyCompactList}\small\item\em Speed\+Tag value for the base element of a level crossing. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_track_1_1_t_active_level_crossing_ad935a5012ee1d5bee8767e1c634dafbf}\label{class_t_track_1_1_t_active_level_crossing_ad935a5012ee1d5bee8767e1c634dafbf}} 
+int \mbox{\hyperlink{class_t_track_1_1_t_active_level_crossing_ad935a5012ee1d5bee8767e1c634dafbf}{H\+Loc}}
+\begin{DoxyCompactList}\small\item\em H\+Loc value for found level crossing element. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_track_1_1_t_active_level_crossing_afabdf5593ed4d0f2f406aac52d7b4fb4}\label{class_t_track_1_1_t_active_level_crossing_afabdf5593ed4d0f2f406aac52d7b4fb4}} 
+int \mbox{\hyperlink{class_t_track_1_1_t_active_level_crossing_afabdf5593ed4d0f2f406aac52d7b4fb4}{V\+Loc}}
+\begin{DoxyCompactList}\small\item\em V\+Loc value for found level crossing element. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_track_1_1_t_active_level_crossing_a428974b7cd394ee22cfbcae541cd262b}\label{class_t_track_1_1_t_active_level_crossing_a428974b7cd394ee22cfbcae541cd262b}} 
+T\+Date\+Time \mbox{\hyperlink{class_t_track_1_1_t_active_level_crossing_a428974b7cd394ee22cfbcae541cd262b}{Start\+Time}}
+\begin{DoxyCompactList}\small\item\em stores the starting time for level crossing changing \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Values for level crossings either changing state or with barriers down
+
+All L\+Cs begin with barriers raised. i.\+e. closed to trains, that is the normal state. When a route is set through an LC nothing happens until the route is set, then an active LC object is created by Set\+L\+C\+Change\+Values (called by Convertand\+Add.... for lowering barriers) and added to the Changing\+L\+C\+Vector. Once created \textquotesingle{}Flashing\+Graphics\textquotesingle{} takes care of the flashing, until the duration is reached. While flashing no further routes can be set through that LC and the first route can\textquotesingle{}t be cancelled, hence the flashing only needs to cater for plotting the route on the one track that started the barrier lowering. When the duration is reached, the object is transferred to a new vector Barriers\+Down\+Vector, after the Start\+Time has been reset (to time the period for which the barriers are down -\/ penalties are given for $>$ 3 minutes), Barrier\+State changed to Down, and the object erased from Changing\+L\+C\+Vector. When there is no route through an LC and no train on the track then the barriers are raised -\/ in Clock\+Timer2 -\/ when the Barriers\+Down\+Vector object is copied back to Changing\+L\+C\+Vector with a new Start\+Time, Barrier\+State and Change\+Duration. Again Flashing\+Graphics takes care of the flashing until the duration is reached, when the object is erased from the vector and the LC reverts to its normal (barriers raised) state. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Track\+Unit.\+h\end{DoxyCompactItemize}

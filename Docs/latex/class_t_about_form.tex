@@ -1,0 +1,91 @@
+\hypertarget{class_t_about_form}{}\section{T\+About\+Form Class Reference}
+\label{class_t_about_form}\index{T\+About\+Form@{T\+About\+Form}}
+
+
+The small \textquotesingle{}About\textquotesingle{} box selected from the Help menu.  
+
+
+
+
+{\ttfamily \#include $<$About\+Unit.\+h$>$}
+
+
+
+Inheritance diagram for T\+About\+Form\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{class_t_about_form__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for T\+About\+Form\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{class_t_about_form__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \+\_\+\+\_\+fastcall \mbox{\hyperlink{class_t_about_form_ad2cb3d318c91018ed8986c8315ccd52b}{Form\+Create}} (T\+Object $\ast$Sender)
+\item 
+\mbox{\Hypertarget{class_t_about_form_a8e868f7264a80fda52fc8c0e8290eb3f}\label{class_t_about_form_a8e868f7264a80fda52fc8c0e8290eb3f}} 
+void \+\_\+\+\_\+fastcall \mbox{\hyperlink{class_t_about_form_a8e868f7264a80fda52fc8c0e8290eb3f}{About\+Form\+Button\+Click}} (T\+Object $\ast$Sender)
+\begin{DoxyCompactList}\small\item\em Closes the form. \end{DoxyCompactList}\item 
+void \+\_\+\+\_\+fastcall \mbox{\hyperlink{class_t_about_form_acddaba886282fa0cb6aa0ee77520fb05}{Form\+Close}} (T\+Object $\ast$Sender, T\+Close\+Action \&Action)
+\item 
+\mbox{\Hypertarget{class_t_about_form_a5f857ee166c84e44aa329cbf5e2b9400}\label{class_t_about_form_a5f857ee166c84e44aa329cbf5e2b9400}} 
+\+\_\+\+\_\+fastcall \mbox{\hyperlink{class_t_about_form_a5f857ee166c84e44aa329cbf5e2b9400}{T\+About\+Form}} (T\+Component $\ast$Owner)
+\begin{DoxyCompactList}\small\item\em The form constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_t_about_form_add3f256ba4f1ed42204c0e77c0d71552}\label{class_t_about_form_add3f256ba4f1ed42204c0e77c0d71552}} 
+T\+Button $\ast$ \mbox{\hyperlink{class_t_about_form_add3f256ba4f1ed42204c0e77c0d71552}{About\+Form\+Button}}
+\begin{DoxyCompactList}\small\item\em The OK button. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_about_form_a3c3968d0c1473343931bdd0ac25d99ab}\label{class_t_about_form_a3c3968d0c1473343931bdd0ac25d99ab}} 
+T\+Image $\ast$ {\bfseries Image\+App\+Icon}
+\item 
+\mbox{\Hypertarget{class_t_about_form_aa188b96e0810fb8944b8e7fd7a2deea4}\label{class_t_about_form_aa188b96e0810fb8944b8e7fd7a2deea4}} 
+T\+Label $\ast$ \mbox{\hyperlink{class_t_about_form_aa188b96e0810fb8944b8e7fd7a2deea4}{About\+Label\+Caption}}
+\begin{DoxyCompactList}\small\item\em Version info displayed here. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_about_form_a0d1afa81071159368263c6a1d1ed0c7d}\label{class_t_about_form_a0d1afa81071159368263c6a1d1ed0c7d}} 
+T\+Label $\ast$ {\bfseries About\+Label\+Title}
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_t_about_form_aae86823c5d44708f264e2c1f8cd52af1}\label{class_t_about_form_aae86823c5d44708f264e2c1f8cd52af1}} 
+void \+\_\+\+\_\+fastcall \mbox{\hyperlink{class_t_about_form_aae86823c5d44708f264e2c1f8cd52af1}{Set\+About\+Caption}} ()
+\begin{DoxyCompactList}\small\item\em Sets version details from the project options \textquotesingle{}Version Info\textquotesingle{} values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The small \textquotesingle{}About\textquotesingle{} box selected from the Help menu. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_t_about_form_acddaba886282fa0cb6aa0ee77520fb05}\label{class_t_about_form_acddaba886282fa0cb6aa0ee77520fb05}} 
+\index{T\+About\+Form@{T\+About\+Form}!Form\+Close@{Form\+Close}}
+\index{Form\+Close@{Form\+Close}!T\+About\+Form@{T\+About\+Form}}
+\subsubsection{\texorpdfstring{Form\+Close()}{FormClose()}}
+{\footnotesize\ttfamily void \+\_\+\+\_\+fastcall T\+About\+Form\+::\+Form\+Close (\begin{DoxyParamCaption}\item[{T\+Object $\ast$}]{Sender,  }\item[{T\+Close\+Action \&}]{Action }\end{DoxyParamCaption})}
+
+Called when the form is closed
+
+Restarts Master\+Clock if Level1\+Mode is Oper\+Mode \mbox{\Hypertarget{class_t_about_form_ad2cb3d318c91018ed8986c8315ccd52b}\label{class_t_about_form_ad2cb3d318c91018ed8986c8315ccd52b}} 
+\index{T\+About\+Form@{T\+About\+Form}!Form\+Create@{Form\+Create}}
+\index{Form\+Create@{Form\+Create}!T\+About\+Form@{T\+About\+Form}}
+\subsubsection{\texorpdfstring{Form\+Create()}{FormCreate()}}
+{\footnotesize\ttfamily void \+\_\+\+\_\+fastcall T\+About\+Form\+::\+Form\+Create (\begin{DoxyParamCaption}\item[{T\+Object $\ast$}]{Sender }\end{DoxyParamCaption})}
+
+Called when the form is first created (by Win\+Main)
+
+Sets the version info, then hides the form 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+About\+Unit.\+h\item 
+About\+Unit.\+cpp\end{DoxyCompactItemize}

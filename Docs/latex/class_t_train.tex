@@ -1,0 +1,488 @@
+\hypertarget{class_t_train}{}\section{T\+Train Class Reference}
+\label{class_t_train}\index{T\+Train@{T\+Train}}
+
+
+Collaboration diagram for T\+Train\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{class_t_train__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_t_train_a2a2d78164c9dc1881b2c77526f04903f}\label{class_t_train_a2a2d78164c9dc1881b2c77526f04903f}} 
+bool {\bfseries Stopped} ()
+\item 
+\mbox{\Hypertarget{class_t_train_aef32cd9a007874ab09ceeac907e7c88b}\label{class_t_train_aef32cd9a007874ab09ceeac907e7c88b}} 
+bool {\bfseries Link\+Occupied} (int Caller, int Track\+Vector\+Position, int Link\+Number)
+\item 
+\mbox{\Hypertarget{class_t_train_ae9d788d7bf536de1efe7a67ab5bb8dd7}\label{class_t_train_ae9d788d7bf536de1efe7a67ab5bb8dd7}} 
+{\bfseries T\+Train} (int Caller, int Rear\+Start\+Element\+In, int Rear\+Start\+Exit\+Pos\+In, Ansi\+String Input\+Code, int Start\+Speed, int Mass, double Max\+Running\+Speed, double Max\+Brake\+Rate, double Power\+At\+Rail, T\+Train\+Mode Train\+Mode, \mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} $\ast$Train\+Data\+Entry\+Ptr, int Repeat\+Number, int Incremental\+Minutes, int Incremental\+Digits, int Signaller\+Max\+Speed)
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_t_train_a2e3e9fd7367a9333b7550b225d328d13}\label{class_t_train_a2e3e9fd7367a9333b7550b225d328d13}} 
+bool {\bfseries Buffer\+At\+Exit} (int Caller, int Element, int Exitpos) const
+\item 
+\mbox{\Hypertarget{class_t_train_a4524b72ef62ef2c1375f58fac05929ee}\label{class_t_train_a4524b72ef62ef2c1375f58fac05929ee}} 
+bool {\bfseries Calling\+On\+Allowed} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_a36b7b4901add145605ba1e540801b6cf}\label{class_t_train_a36b7b4901add145605ba1e540801b6cf}} 
+bool {\bfseries Continuation\+Exit} (int Caller, int Element, int Exitpos) const
+\item 
+\mbox{\Hypertarget{class_t_train_a0a3a41dac70ba46da2f7f9fd03f2a63f}\label{class_t_train_a0a3a41dac70ba46da2f7f9fd03f2a63f}} 
+bool {\bfseries Is\+Train\+I\+D\+On\+Bridge\+Track\+Pos01} (int Caller, unsigned int Track\+Vector\+Position)
+\item 
+\mbox{\Hypertarget{class_t_train_a6cbff3229246b7a156cd64a531aa60a6}\label{class_t_train_a6cbff3229246b7a156cd64a531aa60a6}} 
+bool {\bfseries Is\+Train\+I\+D\+On\+Bridge\+Track\+Pos23} (int Caller, unsigned int Track\+Vector\+Position)
+\item 
+\mbox{\Hypertarget{class_t_train_a89e17b8d82633276576e365c980e718a}\label{class_t_train_a89e17b8d82633276576e365c980e718a}} 
+bool {\bfseries Is\+Train\+Terminating} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_ac2f3802b0d193d220ec6d19e2a6fc7ed}\label{class_t_train_ac2f3802b0d193d220ec6d19e2a6fc7ed}} 
+bool {\bfseries Low\+Entry\+Value} (int Entry\+Link) const
+\item 
+\mbox{\Hypertarget{class_t_train_ab4fefd748946d8530bca23a7699d0abc}\label{class_t_train_ab4fefd748946d8530bca23a7699d0abc}} 
+bool {\bfseries Train\+To\+Be\+Joined\+By\+Is\+Adjacent} (int Caller, \mbox{\hyperlink{class_t_train}{T\+Train}} $\ast$\&Train\+To\+Be\+Joined\+By)
+\item 
+\mbox{\Hypertarget{class_t_train_a23b7b40bba00cae3550bb1a30670c249}\label{class_t_train_a23b7b40bba00cae3550bb1a30670c249}} 
+bool {\bfseries Train\+To\+Join\+Is\+Adjacent} (int Caller, \mbox{\hyperlink{class_t_train}{T\+Train}} $\ast$\&Train\+To\+Join)
+\item 
+\mbox{\Hypertarget{class_t_train_ad7831e71f0c68933df4aea6661a77be5}\label{class_t_train_ad7831e71f0c68933df4aea6661a77be5}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Set\+One\+Graphic\+Code} (char Code\+Char)
+\item 
+\mbox{\Hypertarget{class_t_train_a406c172a0ba96802ada1aa04d78948d0}\label{class_t_train_a406c172a0ba96802ada1aa04d78948d0}} 
+void {\bfseries Change\+Train\+Direction} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_a50997f7e8138a7e6a147fe3b5ad21b84}\label{class_t_train_a50997f7e8138a7e6a147fe3b5ad21b84}} 
+void {\bfseries Check\+And\+Cancel\+Route\+For\+Wrong\+End\+Entry} (int Caller, int Element, int Entry\+Pos)
+\item 
+\mbox{\Hypertarget{class_t_train_ab9edf458753619f8cd25f0165484d26f}\label{class_t_train_ab9edf458753619f8cd25f0165484d26f}} 
+void {\bfseries Finish\+Join} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_ad666fb061d1da7c44a72ec963c2098aa}\label{class_t_train_ad666fb061d1da7c44a72ec963c2098aa}} 
+void {\bfseries Front\+Train\+Split} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_a0675ea1dede706d5b0dd52264496865a}\label{class_t_train_a0675ea1dede706d5b0dd52264496865a}} 
+void {\bfseries Get\+Lead\+Element} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_aa973b7a0ecaef5077fd56398419f9104}\label{class_t_train_aa973b7a0ecaef5077fd56398419f9104}} 
+void {\bfseries Get\+Offset\+Values} (int Caller, int \&H\+Offset, int \&V\+Offset, int Link) const
+\item 
+\mbox{\Hypertarget{class_t_train_a6c3479378d35f9041c38d80f03686b41}\label{class_t_train_a6c3479378d35f9041c38d80f03686b41}} 
+void {\bfseries Joined\+By} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_a56fcfe4b9a3cef988bbeb4f4766372aa}\label{class_t_train_a56fcfe4b9a3cef988bbeb4f4766372aa}} 
+void {\bfseries New\+Shuttle\+From\+Non\+Repeat\+Service} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_a75a2e9017b96e2a8f2a1edbd01c2cd68}\label{class_t_train_a75a2e9017b96e2a8f2a1edbd01c2cd68}} 
+void {\bfseries New\+Train\+Service} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_af92ae73f1be23475e7ae424306cd4866}\label{class_t_train_af92ae73f1be23475e7ae424306cd4866}} 
+void {\bfseries Pick\+Up\+Background\+Bitmap} (int Caller, int H\+Offset, int V\+Offset, int Element, int Entry\+Pos, Graphics\+::\+T\+Bitmap $\ast$Graphic\+Ptr) const
+\item 
+\mbox{\Hypertarget{class_t_train_aa21e18b3085773ca8351c446911611c1}\label{class_t_train_aa21e18b3085773ca8351c446911611c1}} 
+void {\bfseries Plot\+Alternative\+Track\+Route\+Graphic} (int Caller, unsigned int Lag\+Element, int Lag\+E\+Link\+Pos, int H\+Offset, int V\+Offset, T\+Straddle Straddle\+Value)
+\item 
+\mbox{\Hypertarget{class_t_train_abb6bb7d2024ac59230cbaff2ec3ee999}\label{class_t_train_abb6bb7d2024ac59230cbaff2ec3ee999}} 
+void {\bfseries Plot\+Background\+Graphic} (int Caller, int Array\+Number, \mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$Disp) const
+\item 
+\mbox{\Hypertarget{class_t_train_a247bd95a7c648367736b116f553f4e54}\label{class_t_train_a247bd95a7c648367736b116f553f4e54}} 
+void {\bfseries Plot\+Train\+Graphic} (int Caller, int Array\+Number, \mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$Disp)
+\item 
+\mbox{\Hypertarget{class_t_train_abfa6da75d034c737d53819e6edbfa3dc}\label{class_t_train_abfa6da75d034c737d53819e6edbfa3dc}} 
+void {\bfseries Plot\+Train\+With\+New\+Background\+Colour} (int Caller, T\+Color New\+Background\+Colour, \mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$Disp)
+\item 
+\mbox{\Hypertarget{class_t_train_ad64c5823265b0c611c2e5f0613317aa5}\label{class_t_train_ad64c5823265b0c611c2e5f0613317aa5}} 
+void {\bfseries Rear\+Train\+Split} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_abd68a68b5ce295ee01171615f3d2c7ec}\label{class_t_train_abd68a68b5ce295ee01171615f3d2c7ec}} 
+void {\bfseries Remain\+Here} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_a8262f447ec811db7e524c7bb885226c5}\label{class_t_train_a8262f447ec811db7e524c7bb885226c5}} 
+void {\bfseries Repeat\+Shuttle\+Or\+New\+Non\+Repeat\+Service} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_ac6f5cda912103fda4da31bdca611e4b5}\label{class_t_train_ac6f5cda912103fda4da31bdca611e4b5}} 
+void {\bfseries Repeat\+Shuttle\+Or\+Remain\+Here} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_ace302d98b5685104d294869b161e20a0}\label{class_t_train_ace302d98b5685104d294869b161e20a0}} 
+void {\bfseries Reset\+Train\+Element\+ID} (int Caller, unsigned int Track\+Vector\+Position, int Entry\+Pos)
+\item 
+\mbox{\Hypertarget{class_t_train_a594228489e522dfde0ffbe124cd27103}\label{class_t_train_a594228489e522dfde0ffbe124cd27103}} 
+void {\bfseries Set\+Head\+Code\+Graphics} (int Caller, Ansi\+String Code)
+\item 
+\mbox{\Hypertarget{class_t_train_a0e0ab54415645b04cbdeadd829d27898}\label{class_t_train_a0e0ab54415645b04cbdeadd829d27898}} 
+void {\bfseries Set\+Train\+Element\+ID} (int Caller, unsigned int Track\+Vector\+Position, int Entry\+Pos)
+\item 
+\mbox{\Hypertarget{class_t_train_af95a34f2334cb991841c24997d445ae3}\label{class_t_train_af95a34f2334cb991841c24997d445ae3}} 
+bool {\bfseries Has\+Train\+Gone} ()
+\item 
+\mbox{\Hypertarget{class_t_train_a221da69cd80d206a06f840f4cd463cf9}\label{class_t_train_a221da69cd80d206a06f840f4cd463cf9}} 
+Ansi\+String {\bfseries Floating\+Label\+Next\+String} (int Caller, \mbox{\hyperlink{class_t_action_vector_entry}{T\+Action\+Vector\+Entry}} $\ast$Ptr)
+\item 
+\mbox{\Hypertarget{class_t_train_a81bf61b47a2867f0c6901b1ea6f47177}\label{class_t_train_a81bf61b47a2867f0c6901b1ea6f47177}} 
+Ansi\+String {\bfseries Floating\+Timetable\+String} (int Caller, \mbox{\hyperlink{class_t_action_vector_entry}{T\+Action\+Vector\+Entry}} $\ast$Ptr)
+\item 
+\mbox{\Hypertarget{class_t_train_a63b0884e315178879369c82ee7fd2cb8}\label{class_t_train_a63b0884e315178879369c82ee7fd2cb8}} 
+Ansi\+String {\bfseries Get\+Train\+Head\+Code} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_a659e6bf818f0cfac38728d4748408ee6}\label{class_t_train_a659e6bf818f0cfac38728d4748408ee6}} 
+bool {\bfseries Able\+To\+Move} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_ab4f992b2aeb186f8d23879d9405296a3}\label{class_t_train_ab4f992b2aeb186f8d23879d9405296a3}} 
+bool {\bfseries Able\+To\+Move\+But\+For\+Signal} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_aeed1f50d8a4f76d7d77991d276758570}\label{class_t_train_aeed1f50d8a4f76d7d77991d276758570}} 
+bool {\bfseries Clear\+To\+Next\+Signal} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_a935bb43db57a3f2b635be9dfc6a7988b}\label{class_t_train_a935bb43db57a3f2b635be9dfc6a7988b}} 
+bool {\bfseries Train\+At\+Location} (int Caller, Ansi\+String \&Location\+Name)
+\item 
+\mbox{\Hypertarget{class_t_train_a7a54125a3a5052cb25e17014075a686b}\label{class_t_train_a7a54125a3a5052cb25e17014075a686b}} 
+int {\bfseries Name\+In\+Timetable\+Before\+C\+DT} (int Caller, Ansi\+String Name, bool \&Stop)
+\item 
+\mbox{\Hypertarget{class_t_train_ad249f34f6862e604b8e141d1b25fe57d}\label{class_t_train_ad249f34f6862e604b8e141d1b25fe57d}} 
+T\+Date\+Time {\bfseries Get\+Train\+Time} (int Caller, T\+Date\+Time Time)
+\item 
+\mbox{\Hypertarget{class_t_train_afd5d7ea375b8a878c31d81841acad159}\label{class_t_train_afd5d7ea375b8a878c31d81841acad159}} 
+void {\bfseries Delete\+Train} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_a23c65e7f2b2130ae87811f70afb6d5bf}\label{class_t_train_a23c65e7f2b2130ae87811f70afb6d5bf}} 
+void {\bfseries Load\+One\+Session\+Train} (int Caller, std\+::ifstream \&In\+File)
+\item 
+\mbox{\Hypertarget{class_t_train_a493ab1c185d29bf28ec8fded2356e9fc}\label{class_t_train_a493ab1c185d29bf28ec8fded2356e9fc}} 
+void {\bfseries Log\+Action} (int Caller, Ansi\+String Head\+Code, Ansi\+String Other\+Head\+Code, T\+Action\+Type Action\+Type, Ansi\+String Location\+Name, T\+Date\+Time Timetable\+Non\+Repeat\+Time, bool Warning)
+\item 
+\mbox{\Hypertarget{class_t_train_a43cd691f12297c4c13a19791329dd627}\label{class_t_train_a43cd691f12297c4c13a19791329dd627}} 
+void {\bfseries Plot\+Start\+Position} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_a5fdef825574f0e546ab25169e9f8445d}\label{class_t_train_a5fdef825574f0e546ab25169e9f8445d}} 
+void {\bfseries Plot\+Train} (int Caller, \mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$Disp)
+\item 
+\mbox{\Hypertarget{class_t_train_aa3f3a500264ddca35c7fee35f22ffa1e}\label{class_t_train_aa3f3a500264ddca35c7fee35f22ffa1e}} 
+void {\bfseries Plot\+Train\+In\+Zoom\+Out\+Mode} (int Caller, bool Flash)
+\item 
+\mbox{\Hypertarget{class_t_train_ac414e9e4fd7e25c11e09678dd4dc7944}\label{class_t_train_ac414e9e4fd7e25c11e09678dd4dc7944}} 
+void {\bfseries Save\+One\+Session\+Train} (int Caller, std\+::ofstream \&Out\+File)
+\item 
+\mbox{\Hypertarget{class_t_train_a29ad7cb992931e1e8922941fc49e2e74}\label{class_t_train_a29ad7cb992931e1e8922941fc49e2e74}} 
+void {\bfseries Send\+Missed\+Action\+Logs} (int Caller, int Inc\+Num, \mbox{\hyperlink{class_t_action_vector_entry}{T\+Action\+Vector\+Entry}} $\ast$Ptr)
+\item 
+\mbox{\Hypertarget{class_t_train_aaa6289d279b229d05963f8b3a35d53e9}\label{class_t_train_aaa6289d279b229d05963f8b3a35d53e9}} 
+void {\bfseries Set\+Train\+Movement\+Values} (int Caller, int Track\+Vector\+Position, int Entry\+Pos)
+\item 
+\mbox{\Hypertarget{class_t_train_affbb94aa088370056f8ca8c45a1fdd48}\label{class_t_train_affbb94aa088370056f8ca8c45a1fdd48}} 
+void {\bfseries Signaller\+Change\+Train\+Direction} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_a4978a3050ca943076eb6cbd03eeee1d4}\label{class_t_train_a4978a3050ca943076eb6cbd03eeee1d4}} 
+void {\bfseries Unplot\+Train} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_a439d2809c762a0981908a3b8a49520f2}\label{class_t_train_a439d2809c762a0981908a3b8a49520f2}} 
+void {\bfseries Unplot\+Train\+In\+Zoom\+Out\+Mode} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_a89ad640ecf8f5163c40727b4e28575fc}\label{class_t_train_a89ad640ecf8f5163c40727b4e28575fc}} 
+void {\bfseries Update\+Train} (int Caller)
+\item 
+\mbox{\Hypertarget{class_t_train_a86107a63225b0500b29e049f13545fff}\label{class_t_train_a86107a63225b0500b29e049f13545fff}} 
+void {\bfseries Write\+Train\+To\+Image} (int Caller, Graphics\+::\+T\+Bitmap $\ast$Bitmap)
+\end{DoxyCompactItemize}
+\subsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_t_train_aad716bab6f8f4aa6dd49f35130d28dd9}\label{class_t_train_aad716bab6f8f4aa6dd49f35130d28dd9}} 
+static bool {\bfseries Check\+One\+Session\+Train} (std\+::ifstream \&In\+File)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_t_train_abb385030108fe96cdcd550b2aa2072a7}\label{class_t_train_abb385030108fe96cdcd550b2aa2072a7}} 
+friend {\bfseries T\+Train\+Controller}
+\item 
+\mbox{\Hypertarget{class_t_train_a0dd5144abd7dbc49a714d6c2e4cc1851}\label{class_t_train_a0dd5144abd7dbc49a714d6c2e4cc1851}} 
+friend {\bfseries T\+Interface}
+\item 
+\mbox{\Hypertarget{class_t_train_a68f4b62f3405f80d58f33519392ab37e}\label{class_t_train_a68f4b62f3405f80d58f33519392ab37e}} 
+Ansi\+String {\bfseries Head\+Code}
+\item 
+\mbox{\Hypertarget{class_t_train_a8f90e7446fd72ae99641a7ca9ee76ab6}\label{class_t_train_a8f90e7446fd72ae99641a7ca9ee76ab6}} 
+bool {\bfseries Hold\+At\+Location\+In\+T\+T\+Mode}
+\item 
+\mbox{\Hypertarget{class_t_train_a4bfd087e177535b7e3086393c09e40a6}\label{class_t_train_a4bfd087e177535b7e3086393c09e40a6}} 
+bool {\bfseries Time\+Time\+Loc\+Arrived}
+\item 
+\mbox{\Hypertarget{class_t_train_a52721f222fff0b6e08fffe94d693ac65}\label{class_t_train_a52721f222fff0b6e08fffe94d693ac65}} 
+bool {\bfseries Remain\+Here\+Log\+Not\+Sent}
+\item 
+\mbox{\Hypertarget{class_t_train_a7390e5172ab0a5aa998df94953e43fba}\label{class_t_train_a7390e5172ab0a5aa998df94953e43fba}} 
+int {\bfseries Incremental\+Digits}
+\item 
+\mbox{\Hypertarget{class_t_train_a8601120683e9bf4f26b0d1cba75ceed4}\label{class_t_train_a8601120683e9bf4f26b0d1cba75ceed4}} 
+int {\bfseries Incremental\+Minutes}
+\item 
+\mbox{\Hypertarget{class_t_train_a17d0d896f438220698e0b2b47e5112da}\label{class_t_train_a17d0d896f438220698e0b2b47e5112da}} 
+int {\bfseries Rear\+Start\+Element}
+\item 
+\mbox{\Hypertarget{class_t_train_a469298d2fbbd846e2a62e7a04cfedc34}\label{class_t_train_a469298d2fbbd846e2a62e7a04cfedc34}} 
+int {\bfseries Rear\+Start\+Exit\+Pos}
+\item 
+\mbox{\Hypertarget{class_t_train_a459ae11b674cfdccb8872ef25c921fd9}\label{class_t_train_a459ae11b674cfdccb8872ef25c921fd9}} 
+int {\bfseries Repeat\+Number}
+\item 
+\mbox{\Hypertarget{class_t_train_ad11759e49fa6fcf8367090ef1db490b7}\label{class_t_train_ad11759e49fa6fcf8367090ef1db490b7}} 
+int {\bfseries Signaller\+Max\+Speed}
+\item 
+\mbox{\Hypertarget{class_t_train_adae3a1fd82da0457a983a3ac41cdda3d}\label{class_t_train_adae3a1fd82da0457a983a3ac41cdda3d}} 
+int {\bfseries Start\+Speed}
+\item 
+\mbox{\Hypertarget{class_t_train_a28a2217abf201b23fd8b3b92c12038b7}\label{class_t_train_a28a2217abf201b23fd8b3b92c12038b7}} 
+\mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} $\ast$ {\bfseries Train\+Data\+Entry\+Ptr}
+\item 
+\mbox{\Hypertarget{class_t_train_a1caacc95f3c31b0d6f71704eeee44a00}\label{class_t_train_a1caacc95f3c31b0d6f71704eeee44a00}} 
+\mbox{\hyperlink{class_t_action_vector_entry}{T\+Action\+Vector\+Entry}} $\ast$ {\bfseries Action\+Vector\+Entry\+Ptr}
+\item 
+\mbox{\Hypertarget{class_t_train_a8c94580b79a8ad1ad0fce51f0abba822}\label{class_t_train_a8c94580b79a8ad1ad0fce51f0abba822}} 
+bool {\bfseries Allowed\+To\+Pass\+Red\+Signal}
+\item 
+\mbox{\Hypertarget{class_t_train_a33f0f08a95cc392557392d02e293c7c3}\label{class_t_train_a33f0f08a95cc392557392d02e293c7c3}} 
+bool {\bfseries Being\+Called\+On}
+\item 
+\mbox{\Hypertarget{class_t_train_a60a3a9bebf64411f5d200682575a69ee}\label{class_t_train_a60a3a9bebf64411f5d200682575a69ee}} 
+bool {\bfseries Buffer\+Zoom\+Out\+Flash\+Required}
+\item 
+\mbox{\Hypertarget{class_t_train_a5a658cdc377c3f4d65af6839614e7cb1}\label{class_t_train_a5a658cdc377c3f4d65af6839614e7cb1}} 
+bool {\bfseries Calling\+On\+Flag}
+\item 
+\mbox{\Hypertarget{class_t_train_ab4f3876cb58a6160c2f1cd7a7eb3f234}\label{class_t_train_ab4f3876cb58a6160c2f1cd7a7eb3f234}} 
+bool {\bfseries Departure\+Time\+Set}
+\item 
+\mbox{\Hypertarget{class_t_train_a638de0cfb04b13fb28edd5e61d2d628f}\label{class_t_train_a638de0cfb04b13fb28edd5e61d2d628f}} 
+bool {\bfseries First\+Half\+Move}
+\item 
+\mbox{\Hypertarget{class_t_train_a843a31af1c4faec4d71a61d32d6f4510}\label{class_t_train_a843a31af1c4faec4d71a61d32d6f4510}} 
+bool {\bfseries Joined\+Other\+Train\+Flag}
+\item 
+\mbox{\Hypertarget{class_t_train_a1b53d5506e8a5bdfd55286ae2dc2d3f2}\label{class_t_train_a1b53d5506e8a5bdfd55286ae2dc2d3f2}} 
+bool {\bfseries Last\+Action\+Delay\+Flag}
+\item 
+\mbox{\Hypertarget{class_t_train_ac1ce3c1b548c1e4199d211b5fcd9763e}\label{class_t_train_ac1ce3c1b548c1e4199d211b5fcd9763e}} 
+bool {\bfseries Leaving\+Under\+Sig\+Control\+At\+Continuation}
+\item 
+\mbox{\Hypertarget{class_t_train_a36dc9bd48fb78d4257fe117908829dd7}\label{class_t_train_a36dc9bd48fb78d4257fe117908829dd7}} 
+bool {\bfseries One\+Length\+Accel\+Decel}
+\item 
+\mbox{\Hypertarget{class_t_train_a4cd38ef44706b5ae6bf0c934e58b4b93}\label{class_t_train_a4cd38ef44706b5ae6bf0c934e58b4b93}} 
+bool {\bfseries Signaller\+Removed}
+\item 
+\mbox{\Hypertarget{class_t_train_a559e8f1636c83d03463d6c901ae39567}\label{class_t_train_a559e8f1636c83d03463d6c901ae39567}} 
+bool {\bfseries Signaller\+Stopping\+Flag}
+\item 
+\mbox{\Hypertarget{class_t_train_a0f044ad19728cee6dd0b6baadec4648b}\label{class_t_train_a0f044ad19728cee6dd0b6baadec4648b}} 
+bool {\bfseries Step\+Forward\+Flag}
+\item 
+\mbox{\Hypertarget{class_t_train_aa714e9f320349edfe76fc9ac3ae3e20a}\label{class_t_train_aa714e9f320349edfe76fc9ac3ae3e20a}} 
+bool {\bfseries Terminated\+Message\+Sent}
+\item 
+\mbox{\Hypertarget{class_t_train_a9e3744afb10713ef0b88f6fabb120236}\label{class_t_train_a9e3744afb10713ef0b88f6fabb120236}} 
+bool {\bfseries Timetable\+Finished}
+\item 
+\mbox{\Hypertarget{class_t_train_a49612fd01b9450008b99d9fd66ac7583}\label{class_t_train_a49612fd01b9450008b99d9fd66ac7583}} 
+double {\bfseries A\+Value}
+\item 
+\mbox{\Hypertarget{class_t_train_ae132daaee23376980818479528f27e2f}\label{class_t_train_ae132daaee23376980818479528f27e2f}} 
+double {\bfseries Entry\+Speed}
+\item 
+\mbox{\Hypertarget{class_t_train_a05c926d79cbda85036d8d746131c3aef}\label{class_t_train_a05c926d79cbda85036d8d746131c3aef}} 
+double {\bfseries Exit\+Speed\+Half}
+\item 
+\mbox{\Hypertarget{class_t_train_ab3de27e27b474c1f2d224f73735fc1c2}\label{class_t_train_ab3de27e27b474c1f2d224f73735fc1c2}} 
+double {\bfseries Exit\+Speed\+Full}
+\item 
+\mbox{\Hypertarget{class_t_train_adc5921a57f31d66e9b22f040717716d4}\label{class_t_train_adc5921a57f31d66e9b22f040717716d4}} 
+double {\bfseries Timetable\+Max\+Running\+Speed}
+\item 
+\mbox{\Hypertarget{class_t_train_a0b9ba6ba25c153ba3142f63ec024ccde}\label{class_t_train_a0b9ba6ba25c153ba3142f63ec024ccde}} 
+double {\bfseries Max\+Running\+Speed}
+\item 
+\mbox{\Hypertarget{class_t_train_ab0dc5c73f19ad8ef811f4464dfb5fc94}\label{class_t_train_ab0dc5c73f19ad8ef811f4464dfb5fc94}} 
+double {\bfseries Max\+Exit\+Speed}
+\item 
+\mbox{\Hypertarget{class_t_train_a1cd5cd53f56a05bc4fde337e44bdd6d4}\label{class_t_train_a1cd5cd53f56a05bc4fde337e44bdd6d4}} 
+double {\bfseries Max\+Brake\+Rate}
+\item 
+\mbox{\Hypertarget{class_t_train_afc10d4584267d8f4f05e9faa0a633a6e}\label{class_t_train_afc10d4584267d8f4f05e9faa0a633a6e}} 
+double {\bfseries Brake\+Rate}
+\item 
+\mbox{\Hypertarget{class_t_train_a449a378257b8b3a3a2b3df40d0cca928}\label{class_t_train_a449a378257b8b3a3a2b3df40d0cca928}} 
+double {\bfseries Signaller\+Stop\+Brake\+Rate}
+\item 
+\mbox{\Hypertarget{class_t_train_a6940d3fe404390d1d345a80bde3f6bf9}\label{class_t_train_a6940d3fe404390d1d345a80bde3f6bf9}} 
+double {\bfseries Power\+At\+Rail}
+\item 
+\mbox{\Hypertarget{class_t_train_aa9d994b88696a8680438b109dccfd679}\label{class_t_train_aa9d994b88696a8680438b109dccfd679}} 
+int {\bfseries Front\+Element\+Speed\+Limit}
+\item 
+\mbox{\Hypertarget{class_t_train_aac3a242d9fee653d2dca155d0279cc83}\label{class_t_train_aac3a242d9fee653d2dca155d0279cc83}} 
+int {\bfseries Front\+Element\+Length}
+\item 
+\mbox{\Hypertarget{class_t_train_ab9dabc7092d31bc27b573e75ac74d0da}\label{class_t_train_ab9dabc7092d31bc27b573e75ac74d0da}} 
+int {\bfseries Mass}
+\item 
+\mbox{\Hypertarget{class_t_train_ae57749c241ad7256c6f628faf1168ce7}\label{class_t_train_ae57749c241ad7256c6f628faf1168ce7}} 
+int {\bfseries Update\+Counter}
+\item 
+\mbox{\Hypertarget{class_t_train_a6baa340127335e185e91f150ab93986f}\label{class_t_train_a6baa340127335e185e91f150ab93986f}} 
+T\+Date\+Time {\bfseries Entry\+Time}
+\item 
+\mbox{\Hypertarget{class_t_train_a8e1741c26fe9887f84f1491d16e52f0d}\label{class_t_train_a8e1741c26fe9887f84f1491d16e52f0d}} 
+T\+Date\+Time {\bfseries Exit\+Time\+Half}
+\item 
+\mbox{\Hypertarget{class_t_train_abe007893bd4ba34a70260734107d9cc4}\label{class_t_train_abe007893bd4ba34a70260734107d9cc4}} 
+T\+Date\+Time {\bfseries Exit\+Time\+Full}
+\item 
+\mbox{\Hypertarget{class_t_train_a284962532ed0464d56031f46bae2354a}\label{class_t_train_a284962532ed0464d56031f46bae2354a}} 
+T\+Date\+Time {\bfseries Release\+Time}
+\item 
+\mbox{\Hypertarget{class_t_train_a7d04648c56b58359d476792c22800657}\label{class_t_train_a7d04648c56b58359d476792c22800657}} 
+T\+Date\+Time {\bfseries T\+R\+S\+Time}
+\item 
+\mbox{\Hypertarget{class_t_train_a1887a95dd5762926ac67d244dd471e45}\label{class_t_train_a1887a95dd5762926ac67d244dd471e45}} 
+T\+Date\+Time {\bfseries Last\+Action\+Time}
+\item 
+\mbox{\Hypertarget{class_t_train_a860f87857baefc44a4928311698055a8}\label{class_t_train_a860f87857baefc44a4928311698055a8}} 
+T\+Train\+Mode {\bfseries Train\+Mode}
+\item 
+\mbox{\Hypertarget{class_t_train_a2fe228470644e5b9bcc95b3e75f9bf36}\label{class_t_train_a2fe228470644e5b9bcc95b3e75f9bf36}} 
+Ansi\+String {\bfseries Restore\+Timetable\+Location}
+\item 
+\mbox{\Hypertarget{class_t_train_ae95ef74597b4ef92b9250699e25ef58a}\label{class_t_train_ae95ef74597b4ef92b9250699e25ef58a}} 
+bool {\bfseries Plotted}
+\item 
+\mbox{\Hypertarget{class_t_train_a3ecf54f0385bc6157ebe5f56512caf1f}\label{class_t_train_a3ecf54f0385bc6157ebe5f56512caf1f}} 
+bool {\bfseries Train\+Gone}
+\item 
+\mbox{\Hypertarget{class_t_train_a05383ce005a22df0cb70df7f31a917cf}\label{class_t_train_a05383ce005a22df0cb70df7f31a917cf}} 
+bool {\bfseries S\+P\+A\+D\+Flag}
+\item 
+\mbox{\Hypertarget{class_t_train_aa7881a1af2b9f5e899ce02937325c3a3}\label{class_t_train_aa7881a1af2b9f5e899ce02937325c3a3}} 
+bool {\bfseries Derailed}
+\item 
+\mbox{\Hypertarget{class_t_train_aabb977acb12c9cd6cd527faed9637830}\label{class_t_train_aabb977acb12c9cd6cd527faed9637830}} 
+bool {\bfseries Derail\+Pending}
+\item 
+\mbox{\Hypertarget{class_t_train_acee5980b53db6ad43e7b5225ad354457}\label{class_t_train_acee5980b53db6ad43e7b5225ad354457}} 
+bool {\bfseries Crashed}
+\item 
+\mbox{\Hypertarget{class_t_train_a9a549bcd3e8c0d24701399349bc3acc9}\label{class_t_train_a9a549bcd3e8c0d24701399349bc3acc9}} 
+bool {\bfseries Stopped\+At\+Buffers}
+\item 
+\mbox{\Hypertarget{class_t_train_a444b07eb854c9af80adce5afbb207307}\label{class_t_train_a444b07eb854c9af80adce5afbb207307}} 
+bool {\bfseries Stopped\+At\+Signal}
+\item 
+\mbox{\Hypertarget{class_t_train_a89642a602f382d5b58a7f5c0473f786f}\label{class_t_train_a89642a602f382d5b58a7f5c0473f786f}} 
+bool {\bfseries Stopped\+At\+Location}
+\item 
+\mbox{\Hypertarget{class_t_train_ab04bbcf731ecc52b6549604d87101f63}\label{class_t_train_ab04bbcf731ecc52b6549604d87101f63}} 
+bool {\bfseries Signaller\+Stopped}
+\item 
+\mbox{\Hypertarget{class_t_train_a9a333bca3d60db7670500574467ad7da}\label{class_t_train_a9a333bca3d60db7670500574467ad7da}} 
+bool {\bfseries Stopped\+After\+S\+P\+AD}
+\item 
+\mbox{\Hypertarget{class_t_train_ae76e8f47258c0915f7f81e3b6596453c}\label{class_t_train_ae76e8f47258c0915f7f81e3b6596453c}} 
+bool {\bfseries Stopped\+For\+Train\+In\+Front}
+\item 
+\mbox{\Hypertarget{class_t_train_a92fca7c6fa30d8a5d5847b74e51e62cc}\label{class_t_train_a92fca7c6fa30d8a5d5847b74e51e62cc}} 
+bool {\bfseries Not\+In\+Service}
+\item 
+\mbox{\Hypertarget{class_t_train_aaa4e520024a9e4c86e8754bb3c7cac2c}\label{class_t_train_aaa4e520024a9e4c86e8754bb3c7cac2c}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Background\+Ptr} \mbox{[}4\mbox{]}
+\item 
+\mbox{\Hypertarget{class_t_train_a4ee3cdc7a3602f92a96084f8818b9bd3}\label{class_t_train_a4ee3cdc7a3602f92a96084f8818b9bd3}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Front\+Code\+Ptr}
+\item 
+\mbox{\Hypertarget{class_t_train_ac19e1d8b5171bace341f951bac1031e1}\label{class_t_train_ac19e1d8b5171bace341f951bac1031e1}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Head\+Code\+Gr\+Ptr} \mbox{[}4\mbox{]}
+\item 
+\mbox{\Hypertarget{class_t_train_a5b5409585a4af5224f1d91be6a405503}\label{class_t_train_a5b5409585a4af5224f1d91be6a405503}} 
+int {\bfseries H\+Offset} \mbox{[}4\mbox{]}
+\item 
+\mbox{\Hypertarget{class_t_train_a4c8b153a620229a3d9cc54f64ffa5f4a}\label{class_t_train_a4c8b153a620229a3d9cc54f64ffa5f4a}} 
+int {\bfseries V\+Offset} \mbox{[}4\mbox{]}
+\item 
+\mbox{\Hypertarget{class_t_train_a29c7350be73eb11a6c018a4bc8f8099a}\label{class_t_train_a29c7350be73eb11a6c018a4bc8f8099a}} 
+int {\bfseries Old\+Zoom\+Out\+Element} \mbox{[}3\mbox{]}
+\item 
+\mbox{\Hypertarget{class_t_train_ac711fc0e209da47a98fd40def880f119}\label{class_t_train_ac711fc0e209da47a98fd40def880f119}} 
+int {\bfseries Plot\+Element} \mbox{[}4\mbox{]}
+\item 
+\mbox{\Hypertarget{class_t_train_ac4ff3ae93a80d230d1ddcb992b0b546a}\label{class_t_train_ac4ff3ae93a80d230d1ddcb992b0b546a}} 
+int {\bfseries Plot\+Entry\+Pos} \mbox{[}4\mbox{]}
+\item 
+\mbox{\Hypertarget{class_t_train_ad7644b30da32d0d9e6541ba7629a4a35}\label{class_t_train_ad7644b30da32d0d9e6541ba7629a4a35}} 
+int {\bfseries Train\+Crashed\+Into}
+\item 
+\mbox{\Hypertarget{class_t_train_aba7fc74449b392035805ecc4f2bc1650}\label{class_t_train_aba7fc74449b392035805ecc4f2bc1650}} 
+T\+Straddle {\bfseries Straddle}
+\item 
+\mbox{\Hypertarget{class_t_train_abba9596f03b731ba4055f4d3591f5b0e}\label{class_t_train_abba9596f03b731ba4055f4d3591f5b0e}} 
+int {\bfseries Lead\+Element}
+\item 
+\mbox{\Hypertarget{class_t_train_ae5acbf95c32fbf654e4f68417032edad}\label{class_t_train_ae5acbf95c32fbf654e4f68417032edad}} 
+int {\bfseries Lead\+Entry\+Pos}
+\item 
+\mbox{\Hypertarget{class_t_train_af92045cb9d4cb0fa368d1541e4fb2780}\label{class_t_train_af92045cb9d4cb0fa368d1541e4fb2780}} 
+int {\bfseries Lead\+Exit\+Pos}
+\item 
+\mbox{\Hypertarget{class_t_train_a6f92853cac4bf9f463effe07c2432270}\label{class_t_train_a6f92853cac4bf9f463effe07c2432270}} 
+int {\bfseries Mid\+Element}
+\item 
+\mbox{\Hypertarget{class_t_train_a9594b786d0a6d35cfa82b1084f90c82f}\label{class_t_train_a9594b786d0a6d35cfa82b1084f90c82f}} 
+int {\bfseries Mid\+Entry\+Pos}
+\item 
+\mbox{\Hypertarget{class_t_train_a6c0d3ad2ffe11093982406e5d449bbd1}\label{class_t_train_a6c0d3ad2ffe11093982406e5d449bbd1}} 
+int {\bfseries Mid\+Exit\+Pos}
+\item 
+\mbox{\Hypertarget{class_t_train_ab2b55af1125e9cd1dcbad6d890a33edb}\label{class_t_train_ab2b55af1125e9cd1dcbad6d890a33edb}} 
+int {\bfseries Lag\+Element}
+\item 
+\mbox{\Hypertarget{class_t_train_a8d164779b76b56ab0508197280cb0180}\label{class_t_train_a8d164779b76b56ab0508197280cb0180}} 
+int {\bfseries Lag\+Entry\+Pos}
+\item 
+\mbox{\Hypertarget{class_t_train_a79b51b68b8e6c0f48330aaf3a99ee5c6}\label{class_t_train_a79b51b68b8e6c0f48330aaf3a99ee5c6}} 
+int {\bfseries Lag\+Exit\+Pos}
+\item 
+\mbox{\Hypertarget{class_t_train_a95a26f26e890d53e38f1f8067977ef0e}\label{class_t_train_a95a26f26e890d53e38f1f8067977ef0e}} 
+int {\bfseries Train\+ID}
+\item 
+\mbox{\Hypertarget{class_t_train_a9b4cfd30341ab156b539eb3a5a9fe7a3}\label{class_t_train_a9b4cfd30341ab156b539eb3a5a9fe7a3}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Head\+Code\+Position} \mbox{[}4\mbox{]}
+\item 
+\mbox{\Hypertarget{class_t_train_acee68f1e0863f2dc008a69f9c4be0fe6}\label{class_t_train_acee68f1e0863f2dc008a69f9c4be0fe6}} 
+T\+Color {\bfseries Background\+Colour}
+\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_t_train_a70e34e0666fd1c04b6c9866bfe45290f}\label{class_t_train_a70e34e0666fd1c04b6c9866bfe45290f}} 
+static const int {\bfseries Call\+On\+Max\+Speed} = 30
+\item 
+\mbox{\Hypertarget{class_t_train_a1ab673136ad153947d373b5fd48a50e9}\label{class_t_train_a1ab673136ad153947d373b5fd48a50e9}} 
+static const int {\bfseries Maximum\+Mass\+Limit} = 10000000
+\item 
+\mbox{\Hypertarget{class_t_train_a06452bf9f2c18e9d83d4b33cc24ada42}\label{class_t_train_a06452bf9f2c18e9d83d4b33cc24ada42}} 
+static const int {\bfseries Maximum\+Power\+Limit} = 100000000
+\item 
+\mbox{\Hypertarget{class_t_train_afac2548a159e8c341c008810d15e2a88}\label{class_t_train_afac2548a159e8c341c008810d15e2a88}} 
+static const int {\bfseries Maximum\+Speed\+Limit} = 400
+\item 
+\mbox{\Hypertarget{class_t_train_a59a6ad055b319a73e954e9bef5f7593c}\label{class_t_train_a59a6ad055b319a73e954e9bef5f7593c}} 
+static int {\bfseries Next\+Train\+ID} = 0
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Train\+Unit.\+h\item 
+Train\+Unit.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,3 @@
+<map id="TTrainController::TContinuationTrainExpectationEntry" name="TTrainController::TContinuationTrainExpectationEntry">
+<area shape="rect" id="node2" href="$class_t_train_data_entry.html" title="{TTrainDataEntry\n|+ HeadCode\l+ ServiceReference\l+ Description\l+ MaxBrakeRate\l+ MaxRunningSpeed\l+ PowerAtRail\l+ Mass\l+ NumberOfTrains\l+ SignallerSpeed\l+ StartSpeed\l+ ActionVector\l+ TrainOperatingDataVector\l|+ TTrainDataEntry()\l}" alt="" coords="13,5,196,244"/>
+</map>

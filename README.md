@@ -38,3 +38,5 @@ More recent suggestions are included in the file DevHistory.txt.
 'DeveloperGuide.pdf' in the 'master' branch provides a summary of program history, structure, operation and interfaces, and also explains the file structure.  Anyone wishing to contribute to further development should create a GitHub account then contact me with evidence of proficiency and I'll provide write access to the files. Version control is provided by 'Git', so anyone wishing to contribute needs to be familiar with 'Git' - plenty of information is available on the web and it's not difficult to learn the basics.
 
 I (Albert Ball) can be contacted at railwayfeedback@gmail.com or via the website at http://www.railwayoperationsimulator.com/
+
+Menu icons from Silk Icon Set 1.3 by Mark James used under Creative Commons Attribution 2.5 License http://creativecommons.org/licenses/by/2.5/

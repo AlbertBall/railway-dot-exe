@@ -484,7 +484,8 @@ class TTrack
     typedef TActiveTrackElementNameMap::iterator TActiveTrackElementNameIterator;
     typedef std::pair<AnsiString, int> TActiveTrackElementNameMapEntry;
 
-    struct TSigElement ///< used as basic elements in a table of signals - see SigTable below
+    /// Used as basic elements in a table of signals - see SigTable below
+    struct TSigElement
         {//NOTE: Don't alter the order of these members as they are loaded from an array of values in the constructor
         int SpeedTag; ///< the TrackElement SpeedTag value - specifies the signal element
         int Attribute; ///< the signal state - red, yellow, double yellow or green

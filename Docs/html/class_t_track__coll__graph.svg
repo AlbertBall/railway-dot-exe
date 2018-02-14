@@ -219,7 +219,7 @@ var sectionId = 'dynsection-0';
 </g>
 <!-- Node5 -->
 <g id="node5" class="node"><title>Node5</title>
-<g id="a_node5"><a xlink:href="struct_t_track_1_1_t_sig_element.html" target="_top" xlink:title="&lt; used as basic elements in a table of signals &#45; see SigTable below ">
+<g id="a_node5"><a xlink:href="struct_t_track_1_1_t_sig_element.html" target="_top" xlink:title="Used as basic elements in a table of signals &#45; see SigTable below. ">
 <polygon fill="white" stroke="black" points="481.5,-628 481.5,-707 588.5,-707 588.5,-628 481.5,-628"/>
 <text text-anchor="middle" x="535" y="-695" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::TSigElement</text>
 <polyline fill="none" stroke="black" points="481.5,-688 588.5,-688 "/>

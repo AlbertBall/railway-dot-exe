@@ -2,6 +2,15 @@
 \label{class_t_train_controller}\index{T\+Train\+Controller@{T\+Train\+Controller}}
 
 
+Handles all train and timetable activities, only one object created.  
+
+
+
+
+{\ttfamily \#include $<$Train\+Unit.\+h$>$}
+
+
+
 Collaboration diagram for T\+Train\+Controller\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -13,225 +22,209 @@ Collaboration diagram for T\+Train\+Controller\+:\nopagebreak
 \begin{DoxyCompactItemize}
 \item 
 class \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_auto_sig_entry}{T\+Continuation\+Auto\+Sig\+Entry}}
-\item 
+\begin{DoxyCompactList}\small\item\em Turns signals back to green in stages after a train has exited an autosig route at a continuation. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_train_expectation_entry}{T\+Continuation\+Train\+Expectation\+Entry}}
 \end{DoxyCompactItemize}
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a1908f7d1a5dcfebf2f747efbdd6f4681}\label{class_t_train_controller_a1908f7d1a5dcfebf2f747efbdd6f4681}} 
-typedef std\+::vector$<$ \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_auto_sig_entry}{T\+Continuation\+Auto\+Sig\+Entry}} $>$ {\bfseries T\+Continuation\+Auto\+Sig\+Vector}
-\item 
+typedef std\+::vector$<$ \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_auto_sig_entry}{T\+Continuation\+Auto\+Sig\+Entry}} $>$ \mbox{\hyperlink{class_t_train_controller_a1908f7d1a5dcfebf2f747efbdd6f4681}{T\+Continuation\+Auto\+Sig\+Vector}}
+\begin{DoxyCompactList}\small\item\em vector class for \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_auto_sig_entry}{T\+Continuation\+Auto\+Sig\+Entry}} objects \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a0c129f8836ec5be031f4163320ff3c0a}\label{class_t_train_controller_a0c129f8836ec5be031f4163320ff3c0a}} 
 typedef T\+Continuation\+Auto\+Sig\+Vector\+::iterator {\bfseries T\+Continuation\+Auto\+Sig\+Vector\+Iterator}
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a36525478ab0d9f59e486b8c030acd87c}\label{class_t_train_controller_a36525478ab0d9f59e486b8c030acd87c}} 
-typedef std\+::multimap$<$ T\+Date\+Time, \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_train_expectation_entry}{T\+Continuation\+Train\+Expectation\+Entry}} $>$ {\bfseries T\+Continuation\+Train\+Expectation\+Multi\+Map}
-\item 
+typedef std\+::multimap$<$ T\+Date\+Time, \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_train_expectation_entry}{T\+Continuation\+Train\+Expectation\+Entry}} $>$ \mbox{\hyperlink{class_t_train_controller_a36525478ab0d9f59e486b8c030acd87c}{T\+Continuation\+Train\+Expectation\+Multi\+Map}}
+\begin{DoxyCompactList}\small\item\em Multimap class for \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_train_expectation_entry}{T\+Continuation\+Train\+Expectation\+Entry}} objects, where the access key is the expectation time. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_ad10dfce8ec2a66858af7fbeb1529257f}\label{class_t_train_controller_ad10dfce8ec2a66858af7fbeb1529257f}} 
-typedef T\+Continuation\+Train\+Expectation\+Multi\+Map\+::iterator {\bfseries T\+Continuation\+Train\+Expectation\+Multi\+Map\+Iterator}
-\item 
+typedef T\+Continuation\+Train\+Expectation\+Multi\+Map\+::iterator \mbox{\hyperlink{class_t_train_controller_ad10dfce8ec2a66858af7fbeb1529257f}{T\+Continuation\+Train\+Expectation\+Multi\+Map\+Iterator}}
+\begin{DoxyCompactList}\small\item\em iterator for the multimap \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a5adc75543948ea32915ef025ace798b2}\label{class_t_train_controller_a5adc75543948ea32915ef025ace798b2}} 
-typedef std\+::pair$<$ T\+Date\+Time, \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_train_expectation_entry}{T\+Continuation\+Train\+Expectation\+Entry}} $>$ {\bfseries T\+Continuation\+Train\+Expectation\+Multi\+Map\+Pair}
-\item 
+typedef std\+::pair$<$ T\+Date\+Time, \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_train_expectation_entry}{T\+Continuation\+Train\+Expectation\+Entry}} $>$ \mbox{\hyperlink{class_t_train_controller_a5adc75543948ea32915ef025ace798b2}{T\+Continuation\+Train\+Expectation\+Multi\+Map\+Pair}}
+\begin{DoxyCompactList}\small\item\em a single multimap entry \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_aa9073b97736a2733dbdaf8dc52e34c24}\label{class_t_train_controller_aa9073b97736a2733dbdaf8dc52e34c24}} 
-typedef std\+::vector$<$ \mbox{\hyperlink{class_t_train}{T\+Train}} $>$ {\bfseries T\+Train\+Vector}
-\end{DoxyCompactItemize}
+typedef std\+::vector$<$ \mbox{\hyperlink{class_t_train}{T\+Train}} $>$ \mbox{\hyperlink{class_t_train_controller_aa9073b97736a2733dbdaf8dc52e34c24}{T\+Train\+Vector}}
+\begin{DoxyCompactList}\small\item\em vector containing all trains that currently exist in the railway \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_t_train_controller_ae6c904f201d8bb23b3c0714226244890}\label{class_t_train_controller_ae6c904f201d8bb23b3c0714226244890}} 
-Ansi\+String {\bfseries Get\+Exit\+Location\+And\+At} (int Caller, T\+Exit\+List \&Exit\+List) const
+Ansi\+String \mbox{\hyperlink{class_t_train_controller_ae6c904f201d8bb23b3c0714226244890}{Get\+Exit\+Location\+And\+At}} (int Caller, T\+Exit\+List \&Exit\+List) const
 \item 
 \mbox{\Hypertarget{class_t_train_controller_afb0e8fd36435809350cb323ab9fe2213}\label{class_t_train_controller_afb0e8fd36435809350cb323ab9fe2213}} 
-Ansi\+String {\bfseries Get\+Repeat\+Head\+Code} (int Caller, Ansi\+String Base\+Head\+Code, int Repeat\+Number, int Inc\+Digits)
-\item 
+Ansi\+String \mbox{\hyperlink{class_t_train_controller_afb0e8fd36435809350cb323ab9fe2213}{Get\+Repeat\+Head\+Code}} (int Caller, Ansi\+String Base\+Head\+Code, int Repeat\+Number, int Inc\+Digits)
+\begin{DoxyCompactList}\small\item\em Return the service headcode for the repeat service. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_ae9b32534ac7db1c3b0965fc375834132}\label{class_t_train_controller_ae9b32534ac7db1c3b0965fc375834132}} 
-bool {\bfseries Add\+Train} (int Caller, int Rear\+Position, int Front\+Position, Ansi\+String Head\+Code, int Start\+Speed, int Mass, double Max\+Running\+Speed, double Max\+Brake\+Rate, double Power\+At\+Rail, Ansi\+String Mode\+Str, \mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} $\ast$Train\+Data\+Entry\+Ptr, int Repeat\+Number, int Incremental\+Minutes, int Incremental\+Digits, int Signaller\+Speed, bool Signaller\+Control)
+bool \mbox{\hyperlink{class_t_train_controller_ae9b32534ac7db1c3b0965fc375834132}{Add\+Train}} (int Caller, int Rear\+Position, int Front\+Position, Ansi\+String Head\+Code, int Start\+Speed, int Mass, double Max\+Running\+Speed, double Max\+Brake\+Rate, double Power\+At\+Rail, Ansi\+String Mode\+Str, \mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} $\ast$Train\+Data\+Entry\+Ptr, int Repeat\+Number, int Incremental\+Minutes, int Incremental\+Digits, int Signaller\+Speed, bool Signaller\+Control)
+\begin{DoxyCompactList}\small\item\em Introduce a new train to the railway, with the characteristics specified, returns true for success. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_t_train_controller_a7fbe0dc297130da79bcfa3503c6c51c1}{At\+Loc\+Successor}} (const \mbox{\hyperlink{class_t_action_vector_entry}{T\+Action\+Vector\+Entry}} \&A\+V\+Entry)
 \item 
-\mbox{\Hypertarget{class_t_train_controller_a7fbe0dc297130da79bcfa3503c6c51c1}\label{class_t_train_controller_a7fbe0dc297130da79bcfa3503c6c51c1}} 
-bool {\bfseries At\+Loc\+Successor} (const \mbox{\hyperlink{class_t_action_vector_entry}{T\+Action\+Vector\+Entry}} \&A\+V\+Entry)
+bool \mbox{\hyperlink{class_t_train_controller_ae91c1a77699c9daf327938081eab2241}{Check\+And\+Populate\+List\+Of\+I\+Ds}} (int Caller, Ansi\+String I\+D\+Set, T\+Exit\+List \&Exit\+List, bool Give\+Messages)
 \item 
-\mbox{\Hypertarget{class_t_train_controller_ae91c1a77699c9daf327938081eab2241}\label{class_t_train_controller_ae91c1a77699c9daf327938081eab2241}} 
-bool {\bfseries Check\+And\+Populate\+List\+Of\+I\+Ds} (int Caller, Ansi\+String I\+D\+Set, T\+Exit\+List \&Exit\+List, bool Give\+Messages)
-\item 
-\mbox{\Hypertarget{class_t_train_controller_a72662be9ecd0e95131779bd10b6fe14f}\label{class_t_train_controller_a72662be9ecd0e95131779bd10b6fe14f}} 
-bool {\bfseries Check\+Cross\+References\+And\+Set\+Data} (int Caller, Ansi\+String Sought\+Head\+Code, Ansi\+String Seeking\+Head\+Code, bool Shuttle, bool Give\+Messages)
+bool \mbox{\hyperlink{class_t_train_controller_a72662be9ecd0e95131779bd10b6fe14f}{Check\+Cross\+References\+And\+Set\+Data}} (int Caller, Ansi\+String Sought\+Head\+Code, Ansi\+String Seeking\+Head\+Code, bool Shuttle, bool Give\+Messages)
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a232adcf919e3d70f2fc0cdc4d3bb2ee4}\label{class_t_train_controller_a232adcf919e3d70f2fc0cdc4d3bb2ee4}} 
-bool {\bfseries Check\+For\+Duplicate\+Cross\+References} (int Caller, Ansi\+String Main\+Head\+Code, Ansi\+String Second\+Head\+Code, bool Give\+Messages)
-\item 
+bool \mbox{\hyperlink{class_t_train_controller_a232adcf919e3d70f2fc0cdc4d3bb2ee4}{Check\+For\+Duplicate\+Cross\+References}} (int Caller, Ansi\+String Main\+Head\+Code, Ansi\+String Second\+Head\+Code, bool Give\+Messages)
+\begin{DoxyCompactList}\small\item\em A timetable validation function where referenced services are checked for uniqueness, returns true for success. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a1ccd6c8f2c24e7417889e1a91cb9ca2f}\label{class_t_train_controller_a1ccd6c8f2c24e7417889e1a91cb9ca2f}} 
-bool {\bfseries Check\+Head\+Code\+Validity} (int Caller, bool Give\+Messages, Ansi\+String Head\+Code)
-\item 
+bool \mbox{\hyperlink{class_t_train_controller_a1ccd6c8f2c24e7417889e1a91cb9ca2f}{Check\+Head\+Code\+Validity}} (int Caller, bool Give\+Messages, Ansi\+String Head\+Code)
+\begin{DoxyCompactList}\small\item\em Returns true if the headcode complies with requirements. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a1925032d5e41decf4befc07b35521d3c}\label{class_t_train_controller_a1925032d5e41decf4befc07b35521d3c}} 
-bool {\bfseries Check\+Location\+Validity} (int Caller, Ansi\+String Loc\+Str, bool Give\+Messages, bool Check\+Locations\+Exist\+In\+Railway)
+bool \mbox{\hyperlink{class_t_train_controller_a1925032d5e41decf4befc07b35521d3c}{Check\+Location\+Validity}} (int Caller, Ansi\+String Loc\+Str, bool Give\+Messages, bool Check\+Locations\+Exist\+In\+Railway)
+\begin{DoxyCompactList}\small\item\em Returns true if the location name complies with requirements. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_t_train_controller_aa991976bc8ea956f9e9230f6a6921ac1}{Check\+Non\+Repeating\+Shuttle\+Links\+And\+Set\+Data}} (int Caller, Ansi\+String Main\+Head\+Code, Ansi\+String Non\+Repeating\+Head\+Code, bool Give\+Messages)
 \item 
-\mbox{\Hypertarget{class_t_train_controller_aa991976bc8ea956f9e9230f6a6921ac1}\label{class_t_train_controller_aa991976bc8ea956f9e9230f6a6921ac1}} 
-bool {\bfseries Check\+Non\+Repeating\+Shuttle\+Links\+And\+Set\+Data} (int Caller, Ansi\+String Main\+Head\+Code, Ansi\+String Non\+Repeating\+Head\+Code, bool Give\+Messages)
-\item 
-\mbox{\Hypertarget{class_t_train_controller_a45168500acc985a1573602e0c00a0d9a}\label{class_t_train_controller_a45168500acc985a1573602e0c00a0d9a}} 
-bool {\bfseries Check\+Non\+Repeating\+Shuttle\+Link\+Time} (int Caller, T\+Date\+Time Reverse\+Event\+Time, T\+Date\+Time Forward\+Event\+Time, int Repeat\+Mins, int Repeat\+Number)
+bool \mbox{\hyperlink{class_t_train_controller_a45168500acc985a1573602e0c00a0d9a}{Check\+Non\+Repeating\+Shuttle\+Link\+Time}} (int Caller, T\+Date\+Time Reverse\+Event\+Time, T\+Date\+Time Forward\+Event\+Time, int Repeat\+Mins, int Repeat\+Number)
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a96985493678231bbcad15b36c0c63579}\label{class_t_train_controller_a96985493678231bbcad15b36c0c63579}} 
-bool {\bfseries Check\+Session\+Continuation\+Auto\+Sig\+Entries} (int Caller, std\+::ifstream \&Session\+File)
-\item 
+bool \mbox{\hyperlink{class_t_train_controller_a96985493678231bbcad15b36c0c63579}{Check\+Session\+Continuation\+Auto\+Sig\+Entries}} (int Caller, std\+::ifstream \&Session\+File)
+\begin{DoxyCompactList}\small\item\em Part of the session file integrity check for Continuation\+Auto\+Sig\+Entries, true for success. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a4d5ebc5a4b6dda080840913822f3f238}\label{class_t_train_controller_a4d5ebc5a4b6dda080840913822f3f238}} 
-bool {\bfseries Check\+Session\+Locked\+Routes} (int Caller, std\+::ifstream \&Session\+File)
-\item 
+bool \mbox{\hyperlink{class_t_train_controller_a4d5ebc5a4b6dda080840913822f3f238}{Check\+Session\+Locked\+Routes}} (int Caller, std\+::ifstream \&Session\+File)
+\begin{DoxyCompactList}\small\item\em Part of the session file integrity check for locked routes, true for success. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a53fb58a1ae6103601a24ad2162f86f58}\label{class_t_train_controller_a53fb58a1ae6103601a24ad2162f86f58}} 
-bool {\bfseries Check\+Session\+Trains} (int Caller, std\+::ifstream \&In\+File)
-\item 
+bool \mbox{\hyperlink{class_t_train_controller_a53fb58a1ae6103601a24ad2162f86f58}{Check\+Session\+Trains}} (int Caller, std\+::ifstream \&In\+File)
+\begin{DoxyCompactList}\small\item\em Part of the session file integrity check for train entries, true for success. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_afe4a83b3b7ba6daa955ce5617d509d51}\label{class_t_train_controller_afe4a83b3b7ba6daa955ce5617d509d51}} 
-bool {\bfseries Check\+Shuttle\+Repeat\+Time} (int Caller, T\+Date\+Time Forward\+Event\+Time, T\+Date\+Time Reverse\+Event\+Time, int Repeat\+Minutes)
+bool \mbox{\hyperlink{class_t_train_controller_afe4a83b3b7ba6daa955ce5617d509d51}{Check\+Shuttle\+Repeat\+Time}} (int Caller, T\+Date\+Time Forward\+Event\+Time, T\+Date\+Time Reverse\+Event\+Time, int Repeat\+Minutes)
+\begin{DoxyCompactList}\small\item\em Check that shuttle link services have consistent times, true for success. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_t_train_controller_a161fe7b4bbf101fc0a3f7eadd3aff9ca}{Check\+Shuttle\+Service\+Integrity}} (int Caller, \mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} $\ast$T\+D\+Entry\+Ptr, bool Give\+Messages)
 \item 
-\mbox{\Hypertarget{class_t_train_controller_a161fe7b4bbf101fc0a3f7eadd3aff9ca}\label{class_t_train_controller_a161fe7b4bbf101fc0a3f7eadd3aff9ca}} 
-bool {\bfseries Check\+Shuttle\+Service\+Integrity} (int Caller, \mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} $\ast$T\+D\+Entry\+Ptr, bool Give\+Messages)
-\item 
-\mbox{\Hypertarget{class_t_train_controller_ab8d8cf015d4784f12585f0ead325e9bf}\label{class_t_train_controller_ab8d8cf015d4784f12585f0ead325e9bf}} 
-bool {\bfseries Check\+Start\+Allowable} (int Caller, int Rear\+Position, int Rear\+Exit\+Pos, Ansi\+String Head\+Code, bool Report\+Flag, T\+Action\+Event\+Type \&Event\+Type)
+bool \mbox{\hyperlink{class_t_train_controller_ab8d8cf015d4784f12585f0ead325e9bf}{Check\+Start\+Allowable}} (int Caller, int Rear\+Position, int Rear\+Exit\+Pos, Ansi\+String Head\+Code, bool Report\+Flag, T\+Action\+Event\+Type \&Event\+Type)
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a5c9711cc69c8332cf7db5e0b2696ca45}\label{class_t_train_controller_a5c9711cc69c8332cf7db5e0b2696ca45}} 
-bool {\bfseries Check\+Start\+Position\+Validity} (int Caller, Ansi\+String Rear\+Element\+Str, Ansi\+String Front\+Element\+Str, bool Give\+Messages)
+bool \mbox{\hyperlink{class_t_train_controller_a5c9711cc69c8332cf7db5e0b2696ca45}{Check\+Start\+Position\+Validity}} (int Caller, Ansi\+String Rear\+Element\+Str, Ansi\+String Front\+Element\+Str, bool Give\+Messages)
+\begin{DoxyCompactList}\small\item\em A timetable validation function where train starting positions are checked for validity, true for success. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_t_train_controller_a523077cf0c9c02c8cb56dab0af9b0e52}{Check\+Time\+Validity}} (int Caller, Ansi\+String Time\+Str, T\+Date\+Time \&Time)
 \item 
-\mbox{\Hypertarget{class_t_train_controller_a523077cf0c9c02c8cb56dab0af9b0e52}\label{class_t_train_controller_a523077cf0c9c02c8cb56dab0af9b0e52}} 
-bool {\bfseries Check\+Time\+Validity} (int Caller, Ansi\+String Time\+Str, T\+Date\+Time \&Time)
-\item 
-\mbox{\Hypertarget{class_t_train_controller_a61cdbf0085d24c76aa84e7d5e1d11ead}\label{class_t_train_controller_a61cdbf0085d24c76aa84e7d5e1d11ead}} 
-bool {\bfseries Is\+S\+N\+T\+Entry\+Located} (int Caller, const \mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} \&T\+D\+Entry, Ansi\+String \&Location\+Name)
+bool \mbox{\hyperlink{class_t_train_controller_a61cdbf0085d24c76aa84e7d5e1d11ead}{Is\+S\+N\+T\+Entry\+Located}} (int Caller, const \mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} \&T\+D\+Entry, Ansi\+String \&Location\+Name)
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a6fc210d266e7672ccc648c0a9ab4e542}\label{class_t_train_controller_a6fc210d266e7672ccc648c0a9ab4e542}} 
-bool {\bfseries Last2\+Characters\+Both\+Digits} (int Caller, Ansi\+String Head\+Code)
+bool \mbox{\hyperlink{class_t_train_controller_a6fc210d266e7672ccc648c0a9ab4e542}{Last2\+Characters\+Both\+Digits}} (int Caller, Ansi\+String Head\+Code)
+\begin{DoxyCompactList}\small\item\em Checks the last two characters in Head\+Code and returns true if both are digits. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_t_train_controller_ae6c929171fa673b87e68694e6f48985d}{Moving\+Successor}} (const \mbox{\hyperlink{class_t_action_vector_entry}{T\+Action\+Vector\+Entry}} \&A\+V\+Entry)
 \item 
-\mbox{\Hypertarget{class_t_train_controller_ae6c929171fa673b87e68694e6f48985d}\label{class_t_train_controller_ae6c929171fa673b87e68694e6f48985d}} 
-bool {\bfseries Moving\+Successor} (const \mbox{\hyperlink{class_t_action_vector_entry}{T\+Action\+Vector\+Entry}} \&A\+V\+Entry)
-\item 
-\mbox{\Hypertarget{class_t_train_controller_a5c51eb1e0018e189966ffdbc5d251990}\label{class_t_train_controller_a5c51eb1e0018e189966ffdbc5d251990}} 
-bool {\bfseries Process\+One\+Timetable\+Line} (int Caller, int Count, Ansi\+String One\+Line, bool \&End\+Of\+File, bool Final\+Call, bool Give\+Messages, bool Check\+Locations\+Exist\+In\+Railway)
+bool \mbox{\hyperlink{class_t_train_controller_a5c51eb1e0018e189966ffdbc5d251990}{Process\+One\+Timetable\+Line}} (int Caller, int Count, Ansi\+String One\+Line, bool \&End\+Of\+File, bool Final\+Call, bool Give\+Messages, bool Check\+Locations\+Exist\+In\+Railway)
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a193bc964187b0ae255251d2c7136540a}\label{class_t_train_controller_a193bc964187b0ae255251d2c7136540a}} 
-bool {\bfseries Second\+Pass\+Actions} (int Caller, bool Give\+Messages)
-\item 
+bool \mbox{\hyperlink{class_t_train_controller_a193bc964187b0ae255251d2c7136540a}{Second\+Pass\+Actions}} (int Caller, bool Give\+Messages)
+\begin{DoxyCompactList}\small\item\em Carry out further detailed timetable consistency checks, return true for success. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a9067975adc343b753d7eb882648c66bb}\label{class_t_train_controller_a9067975adc343b753d7eb882648c66bb}} 
-bool {\bfseries Split\+Entry} (int Caller, Ansi\+String One\+Entry, bool Give\+Messages, bool Check\+Locations\+Exist\+In\+Railway, Ansi\+String \&First, Ansi\+String \&Second, Ansi\+String \&Third, Ansi\+String \&Fourth, int \&Rear\+Start\+Or\+Repeat\+Mins, int \&Front\+Start\+Position, T\+Timetable\+Format\+Type \&Timetable\+Format\+Type, T\+Timetable\+Location\+Type \&Location\+Type, T\+Timetable\+Sequence\+Type \&Sequence\+Type, T\+Timetable\+Shuttle\+Link\+Type \&Shuttle\+Link\+Type, T\+Exit\+List \&Exit\+List, bool \&Warning)
-\item 
+bool \mbox{\hyperlink{class_t_train_controller_a9067975adc343b753d7eb882648c66bb}{Split\+Entry}} (int Caller, Ansi\+String One\+Entry, bool Give\+Messages, bool Check\+Locations\+Exist\+In\+Railway, Ansi\+String \&First, Ansi\+String \&Second, Ansi\+String \&Third, Ansi\+String \&Fourth, int \&Rear\+Start\+Or\+Repeat\+Mins, int \&Front\+Start\+Position, T\+Timetable\+Format\+Type \&Timetable\+Format\+Type, T\+Timetable\+Location\+Type \&Location\+Type, T\+Timetable\+Sequence\+Type \&Sequence\+Type, T\+Timetable\+Shuttle\+Link\+Type \&Shuttle\+Link\+Type, T\+Exit\+List \&Exit\+List, bool \&Warning)
+\begin{DoxyCompactList}\small\item\em Parse a single timetable service action, return true for success. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a03d63b7579e50c092cca3b5200d9dafb}\label{class_t_train_controller_a03d63b7579e50c092cca3b5200d9dafb}} 
-bool {\bfseries Split\+Repeat} (int Caller, Ansi\+String One\+Entry, int \&Rear\+Start\+Or\+Repeat\+Mins, int \&Front\+Start\+Or\+Repeat\+Digits, int \&Repeat\+Number, bool Give\+Messages)
-\item 
+bool \mbox{\hyperlink{class_t_train_controller_a03d63b7579e50c092cca3b5200d9dafb}{Split\+Repeat}} (int Caller, Ansi\+String One\+Entry, int \&Rear\+Start\+Or\+Repeat\+Mins, int \&Front\+Start\+Or\+Repeat\+Digits, int \&Repeat\+Number, bool Give\+Messages)
+\begin{DoxyCompactList}\small\item\em Parse a timetable repeat entry, return true for success. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_afa4be4bca19620319c9e65eb0b43daa1}\label{class_t_train_controller_afa4be4bca19620319c9e65eb0b43daa1}} 
-bool {\bfseries Split\+Train\+Info} (int Caller, Ansi\+String Train\+Info\+Str, Ansi\+String \&Head\+Code, Ansi\+String \&Description, int \&Start\+Speed, int \&Max\+Running\+Speed, int \&Mass, double \&Max\+Brake\+Rate, int \&Power\+At\+Rail, int \&Signaller\+Speed, bool Give\+Messages)
-\item 
+bool \mbox{\hyperlink{class_t_train_controller_afa4be4bca19620319c9e65eb0b43daa1}{Split\+Train\+Info}} (int Caller, Ansi\+String Train\+Info\+Str, Ansi\+String \&Head\+Code, Ansi\+String \&Description, int \&Start\+Speed, int \&Max\+Running\+Speed, int \&Mass, double \&Max\+Brake\+Rate, int \&Power\+At\+Rail, int \&Signaller\+Speed, bool Give\+Messages)
+\begin{DoxyCompactList}\small\item\em Parse a train information entry, return true for success. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_ac51af4807fe6bba453f8ab9bba42e2b5}\label{class_t_train_controller_ac51af4807fe6bba453f8ab9bba42e2b5}} 
-bool {\bfseries Timetable\+Integrity\+Check} (int Caller, char $\ast$File\+Name, bool Give\+Messages, bool Check\+Locations\+Exist\+In\+Railway)
-\item 
+bool \mbox{\hyperlink{class_t_train_controller_ac51af4807fe6bba453f8ab9bba42e2b5}{Timetable\+Integrity\+Check}} (int Caller, char $\ast$File\+Name, bool Give\+Messages, bool Check\+Locations\+Exist\+In\+Railway)
+\begin{DoxyCompactList}\small\item\em Checks overall timetable integrity, calls many other specific checking functions, returns true for success. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_aa60ab73bef848c5458cdf0217092aef8}\label{class_t_train_controller_aa60ab73bef848c5458cdf0217092aef8}} 
-int {\bfseries Entry\+Pos} (int Caller, int Train\+I\+D\+In, int Track\+Vector\+Number)
-\item 
+int \mbox{\hyperlink{class_t_train_controller_aa60ab73bef848c5458cdf0217092aef8}{Entry\+Pos}} (int Caller, int Train\+I\+D\+In, int Track\+Vector\+Number)
+\begin{DoxyCompactList}\small\item\em Return the track entry link (Link\mbox{[}\mbox{]}) array position for the given train on track element at track vector position Track\+Vector\+Number. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a435ef46f062904e85ae9792faaecdcf7}\label{class_t_train_controller_a435ef46f062904e85ae9792faaecdcf7}} 
-T\+Date\+Time {\bfseries Get\+Repeat\+Time} (int Caller, T\+Date\+Time Basic\+Time, int Repeat\+Number, int Inc\+Minutes)
-\item 
+T\+Date\+Time \mbox{\hyperlink{class_t_train_controller_a435ef46f062904e85ae9792faaecdcf7}{Get\+Repeat\+Time}} (int Caller, T\+Date\+Time Basic\+Time, int Repeat\+Number, int Inc\+Minutes)
+\begin{DoxyCompactList}\small\item\em Return the repeating service time. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_aa09adf9c442406cccc270d6703867a1d}\label{class_t_train_controller_aa09adf9c442406cccc270d6703867a1d}} 
-\mbox{\hyperlink{class_t_train}{T\+Train}} \& {\bfseries Train\+Vector\+At} (int Caller, int Vec\+Pos)
-\item 
+\mbox{\hyperlink{class_t_train}{T\+Train}} \& \mbox{\hyperlink{class_t_train_controller_aa09adf9c442406cccc270d6703867a1d}{Train\+Vector\+At}} (int Caller, int Vec\+Pos)
+\begin{DoxyCompactList}\small\item\em Return a reference to the train at position Vec\+Pos in the Train\+Vector, carries out range checking on Vec\+Pos. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a4d5de42d6e9e92191241963599581210}\label{class_t_train_controller_a4d5de42d6e9e92191241963599581210}} 
-\mbox{\hyperlink{class_t_train}{T\+Train}} \& {\bfseries Train\+Vector\+At\+Ident} (int Caller, int Train\+ID)
-\item 
+\mbox{\hyperlink{class_t_train}{T\+Train}} \& \mbox{\hyperlink{class_t_train_controller_a4d5de42d6e9e92191241963599581210}{Train\+Vector\+At\+Ident}} (int Caller, int Train\+ID)
+\begin{DoxyCompactList}\small\item\em Return a reference to the train with ID Train\+ID, carries out validity checking on Train\+ID. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a0445987b1a355de3aef2c21b66d1ed8b}\label{class_t_train_controller_a0445987b1a355de3aef2c21b66d1ed8b}} 
-void {\bfseries Build\+Continuation\+Train\+Expectation\+Multi\+Map} (int Caller)
+void \mbox{\hyperlink{class_t_train_controller_a0445987b1a355de3aef2c21b66d1ed8b}{Build\+Continuation\+Train\+Expectation\+Multi\+Map}} (int Caller)
+\begin{DoxyCompactList}\small\item\em populate the Continuation\+Train\+Expectation\+Multi\+Map during timetable loading \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_t_train_controller_aadffada34a23350d7773bc7735e423a1}{Calc\+Operating\+And\+Not\+Started\+Train\+Lateness}} (int Caller)
 \item 
-\mbox{\Hypertarget{class_t_train_controller_aadffada34a23350d7773bc7735e423a1}\label{class_t_train_controller_aadffada34a23350d7773bc7735e423a1}} 
-void {\bfseries Calc\+Operating\+And\+Not\+Started\+Train\+Lateness} (int Caller)
-\item 
-\mbox{\Hypertarget{class_t_train_controller_a4ab4b6a568064d27c65f0770e5a5ccd0}\label{class_t_train_controller_a4ab4b6a568064d27c65f0770e5a5ccd0}} 
-void {\bfseries Create\+Formatted\+Timetable} (int Caller, Ansi\+String Railway\+Title, Ansi\+String Timetable\+Title, Ansi\+String Cur\+Dir)
+void \mbox{\hyperlink{class_t_train_controller_a4ab4b6a568064d27c65f0770e5a5ccd0}{Create\+Formatted\+Timetable}} (int Caller, Ansi\+String Railway\+Title, Ansi\+String Timetable\+Title, Ansi\+String Cur\+Dir)
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a07d3d10bf08d4e916b652d676c917335}\label{class_t_train_controller_a07d3d10bf08d4e916b652d676c917335}} 
-void {\bfseries Finished\+Operation} (int Caller)
-\item 
+void \mbox{\hyperlink{class_t_train_controller_a07d3d10bf08d4e916b652d676c917335}{Finished\+Operation}} (int Caller)
+\begin{DoxyCompactList}\small\item\em called when exiting operation mode to delete all trains and timetable data etc \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_ae30ca688c6c3672e98692a13f29b7a4b}\label{class_t_train_controller_ae30ca688c6c3672e98692a13f29b7a4b}} 
-void {\bfseries Load\+Session\+Continuation\+Auto\+Sig\+Entries} (int Caller, std\+::ifstream \&Session\+File)
-\item 
+void \mbox{\hyperlink{class_t_train_controller_ae30ca688c6c3672e98692a13f29b7a4b}{Load\+Session\+Continuation\+Auto\+Sig\+Entries}} (int Caller, std\+::ifstream \&Session\+File)
+\begin{DoxyCompactList}\small\item\em load Continuation\+Auto\+Sig\+Entries from a session file \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_aefaafd5c6d1c51b4db9dd4b3646d0312}\label{class_t_train_controller_aefaafd5c6d1c51b4db9dd4b3646d0312}} 
-void {\bfseries Load\+Session\+Locked\+Routes} (int Caller, std\+::ifstream \&Session\+File)
-\item 
-\mbox{\Hypertarget{class_t_train_controller_a853ddf9799c9fd7063c81ffa1dc754d7}\label{class_t_train_controller_a853ddf9799c9fd7063c81ffa1dc754d7}} 
-void {\bfseries Load\+Session\+Trains} (int Caller, std\+::ifstream \&Session\+File)
+void \mbox{\hyperlink{class_t_train_controller_aefaafd5c6d1c51b4db9dd4b3646d0312}{Load\+Session\+Locked\+Routes}} (int Caller, std\+::ifstream \&Session\+File)
+\begin{DoxyCompactList}\small\item\em load locked routes from a session file \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_t_train_controller_a853ddf9799c9fd7063c81ffa1dc754d7}{Load\+Session\+Trains}} (int Caller, std\+::ifstream \&Session\+File)
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a9acd46962be476bc76c8d5ce59fff399}\label{class_t_train_controller_a9acd46962be476bc76c8d5ce59fff399}} 
-void {\bfseries Log\+Action\+Error} (int Caller, Ansi\+String Head\+Code, Ansi\+String Other\+Head\+Code, T\+Action\+Event\+Type Action\+Event\+Type, Ansi\+String Location\+ID)
-\item 
+void \mbox{\hyperlink{class_t_train_controller_a9acd46962be476bc76c8d5ce59fff399}{Log\+Action\+Error}} (int Caller, Ansi\+String Head\+Code, Ansi\+String Other\+Head\+Code, T\+Action\+Event\+Type Action\+Event\+Type, Ansi\+String Location\+ID)
+\begin{DoxyCompactList}\small\item\em Send an error message to the performance log and file, and as a warning if appropriate. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_ac88477499edd24550fae9b90b5561ed1}\label{class_t_train_controller_ac88477499edd24550fae9b90b5561ed1}} 
-void {\bfseries Log\+Event} (Ansi\+String Str)
-\item 
-\mbox{\Hypertarget{class_t_train_controller_a20a1576dea1d86ed78fc5e9f46343481}\label{class_t_train_controller_a20a1576dea1d86ed78fc5e9f46343481}} 
-void {\bfseries Operate} (int Caller)
+void \mbox{\hyperlink{class_t_train_controller_ac88477499edd24550fae9b90b5561ed1}{Log\+Event}} (Ansi\+String Str)
+\begin{DoxyCompactList}\small\item\em store Str to the event log -\/ moved from \mbox{\hyperlink{class_t_utilities}{T\+Utilities}} for v0.\+6 so can record the tt clock value \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_t_train_controller_a20a1576dea1d86ed78fc5e9f46343481}{Operate}} (int Caller)
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a2f9cd71b60b45de8380f5fad7bbd5dd8}\label{class_t_train_controller_a2f9cd71b60b45de8380f5fad7bbd5dd8}} 
-void {\bfseries Plot\+All\+Trains\+In\+Zoom\+Out\+Mode} (int Caller, bool Flash)
-\item 
+void \mbox{\hyperlink{class_t_train_controller_a2f9cd71b60b45de8380f5fad7bbd5dd8}{Plot\+All\+Trains\+In\+Zoom\+Out\+Mode}} (int Caller, bool Flash)
+\begin{DoxyCompactList}\small\item\em Plots all trains on screen in zoomed-\/out mode, state of \textquotesingle{}Flash\textquotesingle{} determines whether the flashing trains are plotted or not. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a47676de8fc677dbcabf565569cb1435c}\label{class_t_train_controller_a47676de8fc677dbcabf565569cb1435c}} 
-void {\bfseries Replot\+Trains} (int Caller, \mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$Disp)
-\item 
+void \mbox{\hyperlink{class_t_train_controller_a47676de8fc677dbcabf565569cb1435c}{Replot\+Trains}} (int Caller, \mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$Disp)
+\begin{DoxyCompactList}\small\item\em plot all trains on the display \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_ab81acdc0c0ab6e1e321f64170f0f71af}\label{class_t_train_controller_ab81acdc0c0ab6e1e321f64170f0f71af}} 
-void {\bfseries Save\+Session\+Continuation\+Auto\+Sig\+Entries} (int Caller, std\+::ofstream \&Session\+File)
-\item 
+void \mbox{\hyperlink{class_t_train_controller_ab81acdc0c0ab6e1e321f64170f0f71af}{Save\+Session\+Continuation\+Auto\+Sig\+Entries}} (int Caller, std\+::ofstream \&Session\+File)
+\begin{DoxyCompactList}\small\item\em save Continuation\+Auto\+Sig\+Entries to a session file \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a57a934999d63367128ca639b9ab3e3ce}\label{class_t_train_controller_a57a934999d63367128ca639b9ab3e3ce}} 
-void {\bfseries Save\+Session\+Locked\+Routes} (int Caller, std\+::ofstream \&Session\+File)
-\item 
+void \mbox{\hyperlink{class_t_train_controller_a57a934999d63367128ca639b9ab3e3ce}{Save\+Session\+Locked\+Routes}} (int Caller, std\+::ofstream \&Session\+File)
+\begin{DoxyCompactList}\small\item\em save locked routes to a session file \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_afa594bfc6b628d21d02a31c3a13c3a0a}\label{class_t_train_controller_afa594bfc6b628d21d02a31c3a13c3a0a}} 
-void {\bfseries Save\+Session\+Trains} (int Caller, std\+::ofstream \&Session\+File)
-\item 
-\mbox{\Hypertarget{class_t_train_controller_a6161618bda2a677f797eda9a9deeb9fa}\label{class_t_train_controller_a6161618bda2a677f797eda9a9deeb9fa}} 
-void {\bfseries Save\+Train\+Data\+Vector\+To\+File} (int Caller)
+void \mbox{\hyperlink{class_t_train_controller_afa594bfc6b628d21d02a31c3a13c3a0a}{Save\+Session\+Trains}} (int Caller, std\+::ofstream \&Session\+File)
+\begin{DoxyCompactList}\small\item\em save trains to a session file \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_t_train_controller_a6161618bda2a677f797eda9a9deeb9fa}{Save\+Train\+Data\+Vector\+To\+File}} (int Caller)
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a8df4599a1ae95093241fb707711af894}\label{class_t_train_controller_a8df4599a1ae95093241fb707711af894}} 
-void {\bfseries Second\+Pass\+Message} (bool Give\+Messages, Ansi\+String Message)
-\item 
+void \mbox{\hyperlink{class_t_train_controller_a8df4599a1ae95093241fb707711af894}{Second\+Pass\+Message}} (bool Give\+Messages, Ansi\+String Message)
+\begin{DoxyCompactList}\small\item\em Give a user message during timetable integrity checking if Give\+Messages is true, ignore if false. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_af6c6e1e1236559f07b29b069d4377690}\label{class_t_train_controller_af6c6e1e1236559f07b29b069d4377690}} 
-void {\bfseries Send\+Performance\+Summary} (int Caller, std\+::ofstream \&Perf\+File)
-\item 
+void \mbox{\hyperlink{class_t_train_controller_af6c6e1e1236559f07b29b069d4377690}{Send\+Performance\+Summary}} (int Caller, std\+::ofstream \&Perf\+File)
+\begin{DoxyCompactList}\small\item\em At the end of operation a summary of overall performance is sent to the performance file by this function. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a29c49509e56368954ca3334a37648a7a}\label{class_t_train_controller_a29c49509e56368954ca3334a37648a7a}} 
-void {\bfseries Set\+Warning\+Flags} (int Caller)
-\item 
+void \mbox{\hyperlink{class_t_train_controller_a29c49509e56368954ca3334a37648a7a}{Set\+Warning\+Flags}} (int Caller)
+\begin{DoxyCompactList}\small\item\em This sets all the warning flags (Crash\+Warning, Derail\+Warning etc) to their required states after a session file has been loaded. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_aba5615209a7dca921e968fca5c52c060}\label{class_t_train_controller_aba5615209a7dca921e968fca5c52c060}} 
-void {\bfseries Stop\+T\+T\+Clock\+Message} (int Caller, Ansi\+String Message)
+void \mbox{\hyperlink{class_t_train_controller_aba5615209a7dca921e968fca5c52c060}{Stop\+T\+T\+Clock\+Message}} (int Caller, Ansi\+String Message)
+\begin{DoxyCompactList}\small\item\em sends a message to the user and stops the timetable clock while it is displayed \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_t_train_controller_ac47f05f3d0baaf235c430b631c6fd1ad}{Strip\+Excess\+From\+Head\+Code}} (int Caller, Ansi\+String \&Head\+Code)
 \item 
-\mbox{\Hypertarget{class_t_train_controller_ac47f05f3d0baaf235c430b631c6fd1ad}\label{class_t_train_controller_ac47f05f3d0baaf235c430b631c6fd1ad}} 
-void {\bfseries Strip\+Excess\+From\+Head\+Code} (int Caller, Ansi\+String \&Head\+Code)
-\item 
-\mbox{\Hypertarget{class_t_train_controller_ab0481dd8db0f3f99811f2cdc5b5dfd32}\label{class_t_train_controller_ab0481dd8db0f3f99811f2cdc5b5dfd32}} 
-void {\bfseries Strip\+Spaces} (int Caller, Ansi\+String \&Input)
+void \mbox{\hyperlink{class_t_train_controller_ab0481dd8db0f3f99811f2cdc5b5dfd32}{Strip\+Spaces}} (int Caller, Ansi\+String \&Input)
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a68d2124bc8f7df43e973299e0afb3dcd}\label{class_t_train_controller_a68d2124bc8f7df43e973299e0afb3dcd}} 
-void {\bfseries Timetable\+Message} (bool Give\+Messages, Ansi\+String Message)
-\item 
-\mbox{\Hypertarget{class_t_train_controller_a7e2abfcc38e51933883d959c4155aca0}\label{class_t_train_controller_a7e2abfcc38e51933883d959c4155aca0}} 
-void {\bfseries Unplot\+Trains} (int Caller)
+void \mbox{\hyperlink{class_t_train_controller_a68d2124bc8f7df43e973299e0afb3dcd}{Timetable\+Message}} (bool Give\+Messages, Ansi\+String Message)
+\begin{DoxyCompactList}\small\item\em Sends a message to the user if Give\+Messages is true, including Service\+Reference (see above) if not null, used for timetable error messages. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_t_train_controller_a7e2abfcc38e51933883d959c4155aca0}{Unplot\+Trains}} (int Caller)
 \item 
 \mbox{\Hypertarget{class_t_train_controller_aa5e441a9ec80e5076b2c05c2bb6f3fd3}\label{class_t_train_controller_aa5e441a9ec80e5076b2c05c2bb6f3fd3}} 
-void {\bfseries Write\+Trains\+To\+Image} (int Caller, Graphics\+::\+T\+Bitmap $\ast$Bitmap)
-\end{DoxyCompactItemize}
+void \mbox{\hyperlink{class_t_train_controller_aa5e441a9ec80e5076b2c05c2bb6f3fd3}{Write\+Trains\+To\+Image}} (int Caller, Graphics\+::\+T\+Bitmap $\ast$Bitmap)
+\begin{DoxyCompactList}\small\item\em Called by T\+Interface\+::\+Save\+Operating\+Image1\+Click) to write all trains to the image file. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_train_controller_aba4dd6fde9654353326cc36e6219ade7}\label{class_t_train_controller_aba4dd6fde9654353326cc36e6219ade7}} 
+\mbox{\hyperlink{class_t_train_controller_aba4dd6fde9654353326cc36e6219ade7}{T\+Train\+Controller}} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_train_controller_ad6cbfb50d0fddf2c6b43a1604da3b746}\label{class_t_train_controller_ad6cbfb50d0fddf2c6b43a1604da3b746}} 
+\mbox{\hyperlink{class_t_train_controller_ad6cbfb50d0fddf2c6b43a1604da3b746}{$\sim$\+T\+Train\+Controller}} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a8c574abde256f87d43b7cce8b9024fd9}\label{class_t_train_controller_a8c574abde256f87d43b7cce8b9024fd9}} 
-T\+Date\+Time {\bfseries Base\+Time}
-\item 
+T\+Date\+Time \mbox{\hyperlink{class_t_train_controller_a8c574abde256f87d43b7cce8b9024fd9}{Base\+Time}}
+\begin{DoxyCompactList}\small\item\em Current\+Date\+Time (i.\+e. real time) when operation restarts after a pause. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a0c0b9d01dd9e1515017b629ebf1a98f1}\label{class_t_train_controller_a0c0b9d01dd9e1515017b629ebf1a98f1}} 
-T\+Date\+Time {\bfseries T\+T\+Clock\+Time}
-\item 
+T\+Date\+Time \mbox{\hyperlink{class_t_train_controller_a0c0b9d01dd9e1515017b629ebf1a98f1}{T\+T\+Clock\+Time}}
+\begin{DoxyCompactList}\small\item\em the time indicated by the timetable clock \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a3df0fb217914cd6d38db7dd2daf1de7a}\label{class_t_train_controller_a3df0fb217914cd6d38db7dd2daf1de7a}} 
-T\+Date\+Time {\bfseries Timetable\+Start\+Time}
+T\+Date\+Time \mbox{\hyperlink{class_t_train_controller_a3df0fb217914cd6d38db7dd2daf1de7a}{Timetable\+Start\+Time}}
+\begin{DoxyCompactList}\small\item\em the start time of the current timetable \end{DoxyCompactList}\item 
+T\+Date\+Time \mbox{\hyperlink{class_t_train_controller_a7d7dc55374ee043f1045b1d4ff91853f}{Restart\+Time}}
 \item 
-\mbox{\Hypertarget{class_t_train_controller_a7d7dc55374ee043f1045b1d4ff91853f}\label{class_t_train_controller_a7d7dc55374ee043f1045b1d4ff91853f}} 
-T\+Date\+Time {\bfseries Restart\+Time}
-\item 
-\mbox{\Hypertarget{class_t_train_controller_a1b103ff111456f178286d97002b63afb}\label{class_t_train_controller_a1b103ff111456f178286d97002b63afb}} 
-Ansi\+String {\bfseries Service\+Reference}
+Ansi\+String \mbox{\hyperlink{class_t_train_controller_a1b103ff111456f178286d97002b63afb}{Service\+Reference}}
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a1d9bbe67bb4b3e68896f0a0325dfb883}\label{class_t_train_controller_a1d9bbe67bb4b3e68896f0a0325dfb883}} 
-bool {\bfseries Crash\+Warning}
-\item 
+bool \mbox{\hyperlink{class_t_train_controller_a1d9bbe67bb4b3e68896f0a0325dfb883}{Crash\+Warning}}
+\begin{DoxyCompactList}\small\item\em Flags to enable the relevant warning graphics to flash at the left hand side of the screen. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_ae14cb1df9539743db54f5828d9aceb03}\label{class_t_train_controller_ae14cb1df9539743db54f5828d9aceb03}} 
 bool {\bfseries Derail\+Warning}
 \item 
@@ -248,26 +241,26 @@ bool {\bfseries Signal\+Stop\+Warning}
 bool {\bfseries Buffer\+Attention\+Warning}
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a4cb4f95016d09ccf3007ede186474e09}\label{class_t_train_controller_a4cb4f95016d09ccf3007ede186474e09}} 
-bool {\bfseries Stop\+T\+T\+Clock\+Flag}
-\item 
+bool \mbox{\hyperlink{class_t_train_controller_a4cb4f95016d09ccf3007ede186474e09}{Stop\+T\+T\+Clock\+Flag}}
+\begin{DoxyCompactList}\small\item\em when true the timetable clock is stopped, used for messages display and train popup menu display etc \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a646a91d8cedea54902a6fdc0ef67fff1}\label{class_t_train_controller_a646a91d8cedea54902a6fdc0ef67fff1}} 
-bool {\bfseries Train\+Added}
-\item 
+bool \mbox{\hyperlink{class_t_train_controller_a646a91d8cedea54902a6fdc0ef67fff1}{Train\+Added}}
+\begin{DoxyCompactList}\small\item\em true when a train has been added by a split (occurs outside the normal train introduction process) \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a39452a716da27a51a796b7e6a2bcad5b}\label{class_t_train_controller_a39452a716da27a51a796b7e6a2bcad5b}} 
-bool {\bfseries Signaller\+Train\+Removed\+On\+Auto\+Sigs\+Route}
-\item 
+bool \mbox{\hyperlink{class_t_train_controller_a39452a716da27a51a796b7e6a2bcad5b}{Signaller\+Train\+Removed\+On\+Auto\+Sigs\+Route}}
+\begin{DoxyCompactList}\small\item\em true if train was on an Auto\+Sigs\+Route when removed by the signaller \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a095d7c99ffc21a6939a044bbad4fa18f}\label{class_t_train_controller_a095d7c99ffc21a6939a044bbad4fa18f}} 
-float {\bfseries Not\+Started\+Train\+Late\+Mins}
-\item 
+float \mbox{\hyperlink{class_t_train_controller_a095d7c99ffc21a6939a044bbad4fa18f}{Not\+Started\+Train\+Late\+Mins}}
+\begin{DoxyCompactList}\small\item\em total late minutes of trains that haven\textquotesingle{}t started yet on exit operation for locations not reached yet \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_af25f4d9be4644eab1e042751b1738f98}\label{class_t_train_controller_af25f4d9be4644eab1e042751b1738f98}} 
-float {\bfseries Operating\+Train\+Late\+Mins}
-\item 
+float \mbox{\hyperlink{class_t_train_controller_af25f4d9be4644eab1e042751b1738f98}{Operating\+Train\+Late\+Mins}}
+\begin{DoxyCompactList}\small\item\em total late minutes of operating trains on exit operation for locations not reached yet \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a2b18964f752a0241c45514b82c51e647}\label{class_t_train_controller_a2b18964f752a0241c45514b82c51e647}} 
-float {\bfseries Excess\+L\+C\+Down\+Mins}
-\item 
+float \mbox{\hyperlink{class_t_train_controller_a2b18964f752a0241c45514b82c51e647}{Excess\+L\+C\+Down\+Mins}}
+\begin{DoxyCompactList}\small\item\em total excess time in minutes over the 3 minutes barriers down allowance for level crossings \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a2904fbc7f4b39c555ea83b325f630d59}\label{class_t_train_controller_a2904fbc7f4b39c555ea83b325f630d59}} 
-float {\bfseries Tot\+Early\+Arr\+Mins}
-\item 
+float \mbox{\hyperlink{class_t_train_controller_a2904fbc7f4b39c555ea83b325f630d59}{Tot\+Early\+Arr\+Mins}}
+\begin{DoxyCompactList}\small\item\em values for performance file summary \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a464315be2825c7e4528b886b2da28bfb}\label{class_t_train_controller_a464315be2825c7e4528b886b2da28bfb}} 
 float {\bfseries Tot\+Early\+Pass\+Mins}
 \item 
@@ -332,24 +325,170 @@ int {\bfseries Tot\+Arr\+Dep\+Pass}
 int {\bfseries Unexpected\+Exits}
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a9b419c5f86d0815c35093bf3c25c6821}\label{class_t_train_controller_a9b419c5f86d0815c35093bf3c25c6821}} 
-int {\bfseries Operating\+Train\+Arr\+Dep}
-\item 
+int \mbox{\hyperlink{class_t_train_controller_a9b419c5f86d0815c35093bf3c25c6821}{Operating\+Train\+Arr\+Dep}}
+\begin{DoxyCompactList}\small\item\em total number of arrivals \& departures for operating trains locations not reached yet \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_aa547b8fba4e19683055e67359d41a933}\label{class_t_train_controller_aa547b8fba4e19683055e67359d41a933}} 
-int {\bfseries Not\+Started\+Train\+Arr\+Dep}
-\item 
-\mbox{\Hypertarget{class_t_train_controller_a0b412f7b88f829632e54bffc0659ac3b}\label{class_t_train_controller_a0b412f7b88f829632e54bffc0659ac3b}} 
-T\+Continuation\+Auto\+Sig\+Vector {\bfseries Continuation\+Auto\+Sig\+Vector}
+int \mbox{\hyperlink{class_t_train_controller_aa547b8fba4e19683055e67359d41a933}{Not\+Started\+Train\+Arr\+Dep}}
+\begin{DoxyCompactList}\small\item\em total number of arrivals \& departures for trains that haven\textquotesingle{}t started yet for locations not reached yet \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_t_train_controller_a1908f7d1a5dcfebf2f747efbdd6f4681}{T\+Continuation\+Auto\+Sig\+Vector}} \mbox{\hyperlink{class_t_train_controller_a0b412f7b88f829632e54bffc0659ac3b}{Continuation\+Auto\+Sig\+Vector}}
 \item 
 \mbox{\Hypertarget{class_t_train_controller_a1a8e542193d93581e0c391d8e7fa3e1b}\label{class_t_train_controller_a1a8e542193d93581e0c391d8e7fa3e1b}} 
-T\+Continuation\+Train\+Expectation\+Multi\+Map {\bfseries Continuation\+Train\+Expectation\+Multi\+Map}
-\item 
+\mbox{\hyperlink{class_t_train_controller_a36525478ab0d9f59e486b8c030acd87c}{T\+Continuation\+Train\+Expectation\+Multi\+Map}} \mbox{\hyperlink{class_t_train_controller_a1a8e542193d93581e0c391d8e7fa3e1b}{Continuation\+Train\+Expectation\+Multi\+Map}}
+\begin{DoxyCompactList}\small\item\em Multimap for \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_train_expectation_entry}{T\+Continuation\+Train\+Expectation\+Entry}} objects, the access key is the expectation time. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a4e9c9e646d13f9b952434abcd97cec1b}\label{class_t_train_controller_a4e9c9e646d13f9b952434abcd97cec1b}} 
-T\+Train\+Data\+Vector {\bfseries Train\+Data\+Vector}
-\item 
+T\+Train\+Data\+Vector \mbox{\hyperlink{class_t_train_controller_a4e9c9e646d13f9b952434abcd97cec1b}{Train\+Data\+Vector}}
+\begin{DoxyCompactList}\small\item\em vector containing the internal timetable \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a694986ff09f8a037b8bce849e40ac119}\label{class_t_train_controller_a694986ff09f8a037b8bce849e40ac119}} 
-T\+Train\+Vector {\bfseries Train\+Vector}
-\end{DoxyCompactItemize}
+\mbox{\hyperlink{class_t_train_controller_aa9073b97736a2733dbdaf8dc52e34c24}{T\+Train\+Vector}} \mbox{\hyperlink{class_t_train_controller_a694986ff09f8a037b8bce849e40ac119}{Train\+Vector}}
+\begin{DoxyCompactList}\small\item\em vector containing all trains currently in the railway \end{DoxyCompactList}\end{DoxyCompactItemize}
 
+
+\subsection{Detailed Description}
+Handles all train and timetable activities, only one object created. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_t_train_controller_a7fbe0dc297130da79bcfa3503c6c51c1}\label{class_t_train_controller_a7fbe0dc297130da79bcfa3503c6c51c1}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!At\+Loc\+Successor@{At\+Loc\+Successor}}
+\index{At\+Loc\+Successor@{At\+Loc\+Successor}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{At\+Loc\+Successor()}{AtLocSuccessor()}}
+{\footnotesize\ttfamily bool T\+Train\+Controller\+::\+At\+Loc\+Successor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_t_action_vector_entry}{T\+Action\+Vector\+Entry}} \&}]{A\+V\+Entry }\end{DoxyParamCaption})}
+
+A shorthand function that returns true if the successor to a given timetable action command should be (or could be) an \textquotesingle{}at location\textquotesingle{} command, used in timetable validation \mbox{\Hypertarget{class_t_train_controller_aadffada34a23350d7773bc7735e423a1}\label{class_t_train_controller_aadffada34a23350d7773bc7735e423a1}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Calc\+Operating\+And\+Not\+Started\+Train\+Lateness@{Calc\+Operating\+And\+Not\+Started\+Train\+Lateness}}
+\index{Calc\+Operating\+And\+Not\+Started\+Train\+Lateness@{Calc\+Operating\+And\+Not\+Started\+Train\+Lateness}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Calc\+Operating\+And\+Not\+Started\+Train\+Lateness()}{CalcOperatingAndNotStartedTrainLateness()}}
+{\footnotesize\ttfamily void T\+Train\+Controller\+::\+Calc\+Operating\+And\+Not\+Started\+Train\+Lateness (\begin{DoxyParamCaption}\item[{int}]{Caller }\end{DoxyParamCaption})}
+
+calculates additional lateness values for trains that haven\textquotesingle{}t reached their destinations yet \mbox{\Hypertarget{class_t_train_controller_ae91c1a77699c9daf327938081eab2241}\label{class_t_train_controller_ae91c1a77699c9daf327938081eab2241}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Check\+And\+Populate\+List\+Of\+I\+Ds@{Check\+And\+Populate\+List\+Of\+I\+Ds}}
+\index{Check\+And\+Populate\+List\+Of\+I\+Ds@{Check\+And\+Populate\+List\+Of\+I\+Ds}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Check\+And\+Populate\+List\+Of\+I\+Ds()}{CheckAndPopulateListOfIDs()}}
+{\footnotesize\ttfamily bool T\+Train\+Controller\+::\+Check\+And\+Populate\+List\+Of\+I\+Ds (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{Ansi\+String}]{I\+D\+Set,  }\item[{T\+Exit\+List \&}]{Exit\+List,  }\item[{bool}]{Give\+Messages }\end{DoxyParamCaption})}
+
+Used to compile Exit\+List from a string list of element I\+Ds, returns true for success or gives a message \& returns false for failure, used in timetable validation \mbox{\Hypertarget{class_t_train_controller_a72662be9ecd0e95131779bd10b6fe14f}\label{class_t_train_controller_a72662be9ecd0e95131779bd10b6fe14f}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Check\+Cross\+References\+And\+Set\+Data@{Check\+Cross\+References\+And\+Set\+Data}}
+\index{Check\+Cross\+References\+And\+Set\+Data@{Check\+Cross\+References\+And\+Set\+Data}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Check\+Cross\+References\+And\+Set\+Data()}{CheckCrossReferencesAndSetData()}}
+{\footnotesize\ttfamily bool T\+Train\+Controller\+::\+Check\+Cross\+References\+And\+Set\+Data (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{Ansi\+String}]{Sought\+Head\+Code,  }\item[{Ansi\+String}]{Seeking\+Head\+Code,  }\item[{bool}]{Shuttle,  }\item[{bool}]{Give\+Messages }\end{DoxyParamCaption})}
+
+A timetable validation function where all service cross references are checked for validity and set pointers and train information, return true for success \mbox{\Hypertarget{class_t_train_controller_aa991976bc8ea956f9e9230f6a6921ac1}\label{class_t_train_controller_aa991976bc8ea956f9e9230f6a6921ac1}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Check\+Non\+Repeating\+Shuttle\+Links\+And\+Set\+Data@{Check\+Non\+Repeating\+Shuttle\+Links\+And\+Set\+Data}}
+\index{Check\+Non\+Repeating\+Shuttle\+Links\+And\+Set\+Data@{Check\+Non\+Repeating\+Shuttle\+Links\+And\+Set\+Data}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Check\+Non\+Repeating\+Shuttle\+Links\+And\+Set\+Data()}{CheckNonRepeatingShuttleLinksAndSetData()}}
+{\footnotesize\ttfamily bool T\+Train\+Controller\+::\+Check\+Non\+Repeating\+Shuttle\+Links\+And\+Set\+Data (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{Ansi\+String}]{Main\+Head\+Code,  }\item[{Ansi\+String}]{Non\+Repeating\+Head\+Code,  }\item[{bool}]{Give\+Messages }\end{DoxyParamCaption})}
+
+A timetable validation function where cross references are checked for validity for non-\/repeating shuttle links, pointers and train information are set, returns true for success \mbox{\Hypertarget{class_t_train_controller_a45168500acc985a1573602e0c00a0d9a}\label{class_t_train_controller_a45168500acc985a1573602e0c00a0d9a}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Check\+Non\+Repeating\+Shuttle\+Link\+Time@{Check\+Non\+Repeating\+Shuttle\+Link\+Time}}
+\index{Check\+Non\+Repeating\+Shuttle\+Link\+Time@{Check\+Non\+Repeating\+Shuttle\+Link\+Time}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Check\+Non\+Repeating\+Shuttle\+Link\+Time()}{CheckNonRepeatingShuttleLinkTime()}}
+{\footnotesize\ttfamily bool T\+Train\+Controller\+::\+Check\+Non\+Repeating\+Shuttle\+Link\+Time (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{T\+Date\+Time}]{Reverse\+Event\+Time,  }\item[{T\+Date\+Time}]{Forward\+Event\+Time,  }\item[{int}]{Repeat\+Mins,  }\item[{int}]{Repeat\+Number }\end{DoxyParamCaption})}
+
+The forward train is the finish shuttle entry \textquotesingle{}Fns-\/sh\textquotesingle{}, the reverse (new non-\/repeating service) time must = Forward time + (Repeat\+Mins $\ast$ Repeat\+Number), return true for success \mbox{\Hypertarget{class_t_train_controller_a161fe7b4bbf101fc0a3f7eadd3aff9ca}\label{class_t_train_controller_a161fe7b4bbf101fc0a3f7eadd3aff9ca}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Check\+Shuttle\+Service\+Integrity@{Check\+Shuttle\+Service\+Integrity}}
+\index{Check\+Shuttle\+Service\+Integrity@{Check\+Shuttle\+Service\+Integrity}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Check\+Shuttle\+Service\+Integrity()}{CheckShuttleServiceIntegrity()}}
+{\footnotesize\ttfamily bool T\+Train\+Controller\+::\+Check\+Shuttle\+Service\+Integrity (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{\mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} $\ast$}]{T\+D\+Entry\+Ptr,  }\item[{bool}]{Give\+Messages }\end{DoxyParamCaption})}
+
+Check that each shuttle service ends either in Fns or Fxx-\/sh (though a single service can\textquotesingle{}t end in Fxx-\/sh), and that when the Fxx-\/sh is reached it references the original start and not another shuttle -\/ not allowed to link two shuttles, true for success \mbox{\Hypertarget{class_t_train_controller_ab8d8cf015d4784f12585f0ead325e9bf}\label{class_t_train_controller_ab8d8cf015d4784f12585f0ead325e9bf}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Check\+Start\+Allowable@{Check\+Start\+Allowable}}
+\index{Check\+Start\+Allowable@{Check\+Start\+Allowable}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Check\+Start\+Allowable()}{CheckStartAllowable()}}
+{\footnotesize\ttfamily bool T\+Train\+Controller\+::\+Check\+Start\+Allowable (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Rear\+Position,  }\item[{int}]{Rear\+Exit\+Pos,  }\item[{Ansi\+String}]{Head\+Code,  }\item[{bool}]{Report\+Flag,  }\item[{T\+Action\+Event\+Type \&}]{Event\+Type }\end{DoxyParamCaption})}
+
+Called when trying to introduce a new train -\/ checks for points in correct orientation, that no train is already at the train starting position, and not starting on a locked route \mbox{\Hypertarget{class_t_train_controller_a523077cf0c9c02c8cb56dab0af9b0e52}\label{class_t_train_controller_a523077cf0c9c02c8cb56dab0af9b0e52}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Check\+Time\+Validity@{Check\+Time\+Validity}}
+\index{Check\+Time\+Validity@{Check\+Time\+Validity}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Check\+Time\+Validity()}{CheckTimeValidity()}}
+{\footnotesize\ttfamily bool T\+Train\+Controller\+::\+Check\+Time\+Validity (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{Ansi\+String}]{Time\+Str,  }\item[{T\+Date\+Time \&}]{Time }\end{DoxyParamCaption})}
+
+returns true if the time complies with requirements \mbox{\Hypertarget{class_t_train_controller_a4ab4b6a568064d27c65f0770e5a5ccd0}\label{class_t_train_controller_a4ab4b6a568064d27c65f0770e5a5ccd0}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Create\+Formatted\+Timetable@{Create\+Formatted\+Timetable}}
+\index{Create\+Formatted\+Timetable@{Create\+Formatted\+Timetable}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Create\+Formatted\+Timetable()}{CreateFormattedTimetable()}}
+{\footnotesize\ttfamily void T\+Train\+Controller\+::\+Create\+Formatted\+Timetable (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{Ansi\+String}]{Railway\+Title,  }\item[{Ansi\+String}]{Timetable\+Title,  }\item[{Ansi\+String}]{Cur\+Dir }\end{DoxyParamCaption})}
+
+Examines the internal timetable (Train\+Data\+Vector) and creates from it a chronological (.txt) timetable and also a traditional spreadsheet format (.csv) timetable \mbox{\Hypertarget{class_t_train_controller_ae6c904f201d8bb23b3c0714226244890}\label{class_t_train_controller_ae6c904f201d8bb23b3c0714226244890}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Get\+Exit\+Location\+And\+At@{Get\+Exit\+Location\+And\+At}}
+\index{Get\+Exit\+Location\+And\+At@{Get\+Exit\+Location\+And\+At}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Get\+Exit\+Location\+And\+At()}{GetExitLocationAndAt()}}
+{\footnotesize\ttfamily Ansi\+String T\+Train\+Controller\+::\+Get\+Exit\+Location\+And\+At (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{T\+Exit\+List \&}]{Exit\+List }\end{DoxyParamCaption}) const}
+
+Check all timetable names in Exit\+List, if all same return \char`\"{} at \mbox{[}name\mbox{]}\char`\"{} else return \char`\"{}\char`\"{}. Used in floating label for Next action and in formatted timetables. \mbox{\Hypertarget{class_t_train_controller_a61cdbf0085d24c76aa84e7d5e1d11ead}\label{class_t_train_controller_a61cdbf0085d24c76aa84e7d5e1d11ead}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Is\+S\+N\+T\+Entry\+Located@{Is\+S\+N\+T\+Entry\+Located}}
+\index{Is\+S\+N\+T\+Entry\+Located@{Is\+S\+N\+T\+Entry\+Located}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Is\+S\+N\+T\+Entry\+Located()}{IsSNTEntryLocated()}}
+{\footnotesize\ttfamily bool T\+Train\+Controller\+::\+Is\+S\+N\+T\+Entry\+Located (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{const \mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} \&}]{T\+D\+Entry,  }\item[{Ansi\+String \&}]{Location\+Name }\end{DoxyParamCaption})}
+
+New trains introduced with \textquotesingle{}Snt\textquotesingle{} may be at a timetabled location or elsewhere. This function checks and returns true for at a timetabled location. \mbox{\Hypertarget{class_t_train_controller_a853ddf9799c9fd7063c81ffa1dc754d7}\label{class_t_train_controller_a853ddf9799c9fd7063c81ffa1dc754d7}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Load\+Session\+Trains@{Load\+Session\+Trains}}
+\index{Load\+Session\+Trains@{Load\+Session\+Trains}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Load\+Session\+Trains()}{LoadSessionTrains()}}
+{\footnotesize\ttfamily void T\+Train\+Controller\+::\+Load\+Session\+Trains (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{std\+::ifstream \&}]{Session\+File }\end{DoxyParamCaption})}
+
+load trains from a session file \mbox{\Hypertarget{class_t_train_controller_ae6c929171fa673b87e68694e6f48985d}\label{class_t_train_controller_ae6c929171fa673b87e68694e6f48985d}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Moving\+Successor@{Moving\+Successor}}
+\index{Moving\+Successor@{Moving\+Successor}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Moving\+Successor()}{MovingSuccessor()}}
+{\footnotesize\ttfamily bool T\+Train\+Controller\+::\+Moving\+Successor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_t_action_vector_entry}{T\+Action\+Vector\+Entry}} \&}]{A\+V\+Entry }\end{DoxyParamCaption})}
+
+A shorthand function that returns true if the successor to a given timetable action command should be (or could be) an en-\/route command, used in timetable validation \mbox{\Hypertarget{class_t_train_controller_a20a1576dea1d86ed78fc5e9f46343481}\label{class_t_train_controller_a20a1576dea1d86ed78fc5e9f46343481}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Operate@{Operate}}
+\index{Operate@{Operate}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Operate()}{Operate()}}
+{\footnotesize\ttfamily void T\+Train\+Controller\+::\+Operate (\begin{DoxyParamCaption}\item[{int}]{Caller }\end{DoxyParamCaption})}
+
+called every clock tick to introduce new trains and update existing trains \mbox{\Hypertarget{class_t_train_controller_a5c51eb1e0018e189966ffdbc5d251990}\label{class_t_train_controller_a5c51eb1e0018e189966ffdbc5d251990}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Process\+One\+Timetable\+Line@{Process\+One\+Timetable\+Line}}
+\index{Process\+One\+Timetable\+Line@{Process\+One\+Timetable\+Line}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Process\+One\+Timetable\+Line()}{ProcessOneTimetableLine()}}
+{\footnotesize\ttfamily bool T\+Train\+Controller\+::\+Process\+One\+Timetable\+Line (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Count,  }\item[{Ansi\+String}]{One\+Line,  }\item[{bool \&}]{End\+Of\+File,  }\item[{bool}]{Final\+Call,  }\item[{bool}]{Give\+Messages,  }\item[{bool}]{Check\+Locations\+Exist\+In\+Railway }\end{DoxyParamCaption})}
+
+Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if Final\+Call true) set the internal timetable data values, return true for success \mbox{\Hypertarget{class_t_train_controller_a6161618bda2a677f797eda9a9deeb9fa}\label{class_t_train_controller_a6161618bda2a677f797eda9a9deeb9fa}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Save\+Train\+Data\+Vector\+To\+File@{Save\+Train\+Data\+Vector\+To\+File}}
+\index{Save\+Train\+Data\+Vector\+To\+File@{Save\+Train\+Data\+Vector\+To\+File}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Save\+Train\+Data\+Vector\+To\+File()}{SaveTrainDataVectorToFile()}}
+{\footnotesize\ttfamily void T\+Train\+Controller\+::\+Save\+Train\+Data\+Vector\+To\+File (\begin{DoxyParamCaption}\item[{int}]{Caller }\end{DoxyParamCaption})}
+
+diagnostic function to store all train data to a file for examination, not used normally \mbox{\Hypertarget{class_t_train_controller_ac47f05f3d0baaf235c430b631c6fd1ad}\label{class_t_train_controller_ac47f05f3d0baaf235c430b631c6fd1ad}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Strip\+Excess\+From\+Head\+Code@{Strip\+Excess\+From\+Head\+Code}}
+\index{Strip\+Excess\+From\+Head\+Code@{Strip\+Excess\+From\+Head\+Code}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Strip\+Excess\+From\+Head\+Code()}{StripExcessFromHeadCode()}}
+{\footnotesize\ttfamily void T\+Train\+Controller\+::\+Strip\+Excess\+From\+Head\+Code (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{Ansi\+String \&}]{Head\+Code }\end{DoxyParamCaption})}
+
+change an extended headcode to an ordinary 4 character headcode \mbox{\Hypertarget{class_t_train_controller_ab0481dd8db0f3f99811f2cdc5b5dfd32}\label{class_t_train_controller_ab0481dd8db0f3f99811f2cdc5b5dfd32}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Strip\+Spaces@{Strip\+Spaces}}
+\index{Strip\+Spaces@{Strip\+Spaces}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Strip\+Spaces()}{StripSpaces()}}
+{\footnotesize\ttfamily void T\+Train\+Controller\+::\+Strip\+Spaces (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{Ansi\+String \&}]{Input }\end{DoxyParamCaption})}
+
+Strip both leading and trailing spaces at ends of Input and spaces before and after all commas and semicolons within Input, used to rationalise timetable service entries for internal use \mbox{\Hypertarget{class_t_train_controller_a7e2abfcc38e51933883d959c4155aca0}\label{class_t_train_controller_a7e2abfcc38e51933883d959c4155aca0}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Unplot\+Trains@{Unplot\+Trains}}
+\index{Unplot\+Trains@{Unplot\+Trains}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Unplot\+Trains()}{UnplotTrains()}}
+{\footnotesize\ttfamily void T\+Train\+Controller\+::\+Unplot\+Trains (\begin{DoxyParamCaption}\item[{int}]{Caller }\end{DoxyParamCaption})}
+
+unplot all trains from screen 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_t_train_controller_a0b412f7b88f829632e54bffc0659ac3b}\label{class_t_train_controller_a0b412f7b88f829632e54bffc0659ac3b}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Continuation\+Auto\+Sig\+Vector@{Continuation\+Auto\+Sig\+Vector}}
+\index{Continuation\+Auto\+Sig\+Vector@{Continuation\+Auto\+Sig\+Vector}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Continuation\+Auto\+Sig\+Vector}{ContinuationAutoSigVector}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_t_train_controller_a1908f7d1a5dcfebf2f747efbdd6f4681}{T\+Continuation\+Auto\+Sig\+Vector}} T\+Train\+Controller\+::\+Continuation\+Auto\+Sig\+Vector}
+
+vector for \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_auto_sig_entry}{T\+Continuation\+Auto\+Sig\+Entry}} objects \mbox{\Hypertarget{class_t_train_controller_a7d7dc55374ee043f1045b1d4ff91853f}\label{class_t_train_controller_a7d7dc55374ee043f1045b1d4ff91853f}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Restart\+Time@{Restart\+Time}}
+\index{Restart\+Time@{Restart\+Time}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Restart\+Time}{RestartTime}}
+{\footnotesize\ttfamily T\+Date\+Time T\+Train\+Controller\+::\+Restart\+Time}
+
+T\+T\+Clock\+Time when operation pauses ( = timetable start time prior to operation) T\+T\+Clock\+Time is calculated as follows\+:-\/ T\+T\+Clock\+Time = Current\+Date\+Time + Restart\+Time -\/ Base\+Time; \mbox{\Hypertarget{class_t_train_controller_a1b103ff111456f178286d97002b63afb}\label{class_t_train_controller_a1b103ff111456f178286d97002b63afb}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Service\+Reference@{Service\+Reference}}
+\index{Service\+Reference@{Service\+Reference}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Service\+Reference}{ServiceReference}}
+{\footnotesize\ttfamily Ansi\+String T\+Train\+Controller\+::\+Service\+Reference}
+
+String used to display the offending service in timetable error messages bool Any\+Head\+Code\+Valid; //flag to indicate valid headcode types for a service -\/ when true can accept xx\+NN; if false accept only Na\+NN (N=number, x = any alphanumeric, a= upper or lower case letter) -\/ dropped at v0.\+6b 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 

@@ -10,8 +10,13 @@ var searchData=
   ['findroutenumberfromroute2multimapnoerrors',['FindRouteNumberFromRoute2MultiMapNoErrors',['../class_t_all_routes.html#ac80a3ae43f749d401f470de711e8e4b0',1,'TAllRoutes']]],
   ['findroutepairfromroute2multimap',['FindRoutePairFromRoute2MultiMap',['../class_t_all_routes.html#a73d2c20327947600e5af57f908359343',1,'TAllRoutes']]],
   ['findsetanddisplaymatchinggap',['FindSetAndDisplayMatchingGap',['../class_t_track.html#a4109e356d902de07ebb8848acbee364a',1,'TTrack']]],
+  ['finishedoperation',['FinishedOperation',['../class_t_train_controller.html#a07d3d10bf08d4e916b652d676c917335',1,'TTrainController']]],
+  ['finishjoin',['FinishJoin',['../class_t_train.html#ab9edf458753619f8cd25f0165484d26f',1,'TTrain']]],
   ['flashinggraphics',['FlashingGraphics',['../class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59',1,'TInterface']]],
+  ['floatinglabelnextstring',['FloatingLabelNextString',['../class_t_train.html#a221da69cd80d206a06f840f4cd463cf9',1,'TTrain']]],
+  ['floatingtimetablestring',['FloatingTimetableString',['../class_t_train.html#a81bf61b47a2867f0c6901b1ea6f47177',1,'TTrain']]],
   ['forcecancelroute',['ForceCancelRoute',['../class_t_one_route.html#a491fff1e619a9dc79774acf85eed72a5',1,'TOneRoute']]],
   ['formclose',['FormClose',['../class_t_about_form.html#acddaba886282fa0cb6aa0ee77520fb05',1,'TAboutForm']]],
-  ['formcreate',['FormCreate',['../class_t_about_form.html#ad2cb3d318c91018ed8986c8315ccd52b',1,'TAboutForm']]]
+  ['formcreate',['FormCreate',['../class_t_about_form.html#ad2cb3d318c91018ed8986c8315ccd52b',1,'TAboutForm']]],
+  ['fronttrainsplit',['FrontTrainSplit',['../class_t_train.html#ad666fb061d1da7c44a72ec963c2098aa',1,'TTrain']]]
 ];

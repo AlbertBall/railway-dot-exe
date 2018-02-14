@@ -74,6 +74,11 @@ $(function() {
 <div class="title">TTrainController Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Handles all train and timetable activities, only one object created.  
+ <a href="class_t_train_controller.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for TTrainController:</div>
 <div class="dyncontent">
@@ -83,6 +88,7 @@ Collaboration diagram for TTrainController:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html">TContinuationAutoSigEntry</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns signals back to green in stages after a train has exited an autosig route at a continuation.  <a href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller_1_1_t_continuation_train_expectation_entry.html">TContinuationTrainExpectationEntry</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -90,217 +96,249 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a1908f7d1a5dcfebf2f747efbdd6f4681"><td class="memItemLeft" align="right" valign="top"><a id="a1908f7d1a5dcfebf2f747efbdd6f4681"></a>
-typedef std::vector&lt; <a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html">TContinuationAutoSigEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TContinuationAutoSigVector</b></td></tr>
+typedef std::vector&lt; <a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html">TContinuationAutoSigEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a1908f7d1a5dcfebf2f747efbdd6f4681">TContinuationAutoSigVector</a></td></tr>
+<tr class="memdesc:a1908f7d1a5dcfebf2f747efbdd6f4681"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector class for <a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html" title="Turns signals back to green in stages after a train has exited an autosig route at a continuation...">TContinuationAutoSigEntry</a> objects <br /></td></tr>
 <tr class="separator:a1908f7d1a5dcfebf2f747efbdd6f4681"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c129f8836ec5be031f4163320ff3c0a"><td class="memItemLeft" align="right" valign="top"><a id="a0c129f8836ec5be031f4163320ff3c0a"></a>
 typedef TContinuationAutoSigVector::iterator&#160;</td><td class="memItemRight" valign="bottom"><b>TContinuationAutoSigVectorIterator</b></td></tr>
 <tr class="separator:a0c129f8836ec5be031f4163320ff3c0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36525478ab0d9f59e486b8c030acd87c"><td class="memItemLeft" align="right" valign="top"><a id="a36525478ab0d9f59e486b8c030acd87c"></a>
-typedef std::multimap&lt; TDateTime, <a class="el" href="class_t_train_controller_1_1_t_continuation_train_expectation_entry.html">TContinuationTrainExpectationEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TContinuationTrainExpectationMultiMap</b></td></tr>
+typedef std::multimap&lt; TDateTime, <a class="el" href="class_t_train_controller_1_1_t_continuation_train_expectation_entry.html">TContinuationTrainExpectationEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a36525478ab0d9f59e486b8c030acd87c">TContinuationTrainExpectationMultiMap</a></td></tr>
+<tr class="memdesc:a36525478ab0d9f59e486b8c030acd87c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multimap class for <a class="el" href="class_t_train_controller_1_1_t_continuation_train_expectation_entry.html">TContinuationTrainExpectationEntry</a> objects, where the access key is the expectation time. <br /></td></tr>
 <tr class="separator:a36525478ab0d9f59e486b8c030acd87c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad10dfce8ec2a66858af7fbeb1529257f"><td class="memItemLeft" align="right" valign="top"><a id="ad10dfce8ec2a66858af7fbeb1529257f"></a>
-typedef TContinuationTrainExpectationMultiMap::iterator&#160;</td><td class="memItemRight" valign="bottom"><b>TContinuationTrainExpectationMultiMapIterator</b></td></tr>
+typedef TContinuationTrainExpectationMultiMap::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ad10dfce8ec2a66858af7fbeb1529257f">TContinuationTrainExpectationMultiMapIterator</a></td></tr>
+<tr class="memdesc:ad10dfce8ec2a66858af7fbeb1529257f"><td class="mdescLeft">&#160;</td><td class="mdescRight">iterator for the multimap <br /></td></tr>
 <tr class="separator:ad10dfce8ec2a66858af7fbeb1529257f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5adc75543948ea32915ef025ace798b2"><td class="memItemLeft" align="right" valign="top"><a id="a5adc75543948ea32915ef025ace798b2"></a>
-typedef std::pair&lt; TDateTime, <a class="el" href="class_t_train_controller_1_1_t_continuation_train_expectation_entry.html">TContinuationTrainExpectationEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TContinuationTrainExpectationMultiMapPair</b></td></tr>
+typedef std::pair&lt; TDateTime, <a class="el" href="class_t_train_controller_1_1_t_continuation_train_expectation_entry.html">TContinuationTrainExpectationEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a5adc75543948ea32915ef025ace798b2">TContinuationTrainExpectationMultiMapPair</a></td></tr>
+<tr class="memdesc:a5adc75543948ea32915ef025ace798b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">a single multimap entry <br /></td></tr>
 <tr class="separator:a5adc75543948ea32915ef025ace798b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9073b97736a2733dbdaf8dc52e34c24"><td class="memItemLeft" align="right" valign="top"><a id="aa9073b97736a2733dbdaf8dc52e34c24"></a>
-typedef std::vector&lt; <a class="el" href="class_t_train.html">TTrain</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TTrainVector</b></td></tr>
+typedef std::vector&lt; <a class="el" href="class_t_train.html">TTrain</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#aa9073b97736a2733dbdaf8dc52e34c24">TTrainVector</a></td></tr>
+<tr class="memdesc:aa9073b97736a2733dbdaf8dc52e34c24"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector containing all trains that currently exist in the railway <br /></td></tr>
 <tr class="separator:aa9073b97736a2733dbdaf8dc52e34c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae6c904f201d8bb23b3c0714226244890"><td class="memItemLeft" align="right" valign="top"><a id="ae6c904f201d8bb23b3c0714226244890"></a>
-AnsiString&#160;</td><td class="memItemRight" valign="bottom"><b>GetExitLocationAndAt</b> (int Caller, TExitList &amp;ExitList) const</td></tr>
+<tr class="memitem:ae6c904f201d8bb23b3c0714226244890"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ae6c904f201d8bb23b3c0714226244890">GetExitLocationAndAt</a> (int Caller, TExitList &amp;ExitList) const</td></tr>
 <tr class="separator:ae6c904f201d8bb23b3c0714226244890"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb0e8fd36435809350cb323ab9fe2213"><td class="memItemLeft" align="right" valign="top"><a id="afb0e8fd36435809350cb323ab9fe2213"></a>
-AnsiString&#160;</td><td class="memItemRight" valign="bottom"><b>GetRepeatHeadCode</b> (int Caller, AnsiString BaseHeadCode, int RepeatNumber, int IncDigits)</td></tr>
+AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#afb0e8fd36435809350cb323ab9fe2213">GetRepeatHeadCode</a> (int Caller, AnsiString BaseHeadCode, int RepeatNumber, int IncDigits)</td></tr>
+<tr class="memdesc:afb0e8fd36435809350cb323ab9fe2213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the service headcode for the repeat service. <br /></td></tr>
 <tr class="separator:afb0e8fd36435809350cb323ab9fe2213"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9b32534ac7db1c3b0965fc375834132"><td class="memItemLeft" align="right" valign="top"><a id="ae9b32534ac7db1c3b0965fc375834132"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>AddTrain</b> (int Caller, int RearPosition, int FrontPosition, AnsiString HeadCode, int StartSpeed, int Mass, double MaxRunningSpeed, double MaxBrakeRate, double PowerAtRail, AnsiString ModeStr, <a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> *TrainDataEntryPtr, int RepeatNumber, int IncrementalMinutes, int IncrementalDigits, int SignallerSpeed, bool SignallerControl)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ae9b32534ac7db1c3b0965fc375834132">AddTrain</a> (int Caller, int RearPosition, int FrontPosition, AnsiString HeadCode, int StartSpeed, int Mass, double MaxRunningSpeed, double MaxBrakeRate, double PowerAtRail, AnsiString ModeStr, <a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> *TrainDataEntryPtr, int RepeatNumber, int IncrementalMinutes, int IncrementalDigits, int SignallerSpeed, bool SignallerControl)</td></tr>
+<tr class="memdesc:ae9b32534ac7db1c3b0965fc375834132"><td class="mdescLeft">&#160;</td><td class="mdescRight">Introduce a new train to the railway, with the characteristics specified, returns true for success. <br /></td></tr>
 <tr class="separator:ae9b32534ac7db1c3b0965fc375834132"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fbe0dc297130da79bcfa3503c6c51c1"><td class="memItemLeft" align="right" valign="top"><a id="a7fbe0dc297130da79bcfa3503c6c51c1"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>AtLocSuccessor</b> (const <a class="el" href="class_t_action_vector_entry.html">TActionVectorEntry</a> &amp;AVEntry)</td></tr>
+<tr class="memitem:a7fbe0dc297130da79bcfa3503c6c51c1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a7fbe0dc297130da79bcfa3503c6c51c1">AtLocSuccessor</a> (const <a class="el" href="class_t_action_vector_entry.html">TActionVectorEntry</a> &amp;AVEntry)</td></tr>
 <tr class="separator:a7fbe0dc297130da79bcfa3503c6c51c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae91c1a77699c9daf327938081eab2241"><td class="memItemLeft" align="right" valign="top"><a id="ae91c1a77699c9daf327938081eab2241"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckAndPopulateListOfIDs</b> (int Caller, AnsiString IDSet, TExitList &amp;ExitList, bool GiveMessages)</td></tr>
+<tr class="memitem:ae91c1a77699c9daf327938081eab2241"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ae91c1a77699c9daf327938081eab2241">CheckAndPopulateListOfIDs</a> (int Caller, AnsiString IDSet, TExitList &amp;ExitList, bool GiveMessages)</td></tr>
 <tr class="separator:ae91c1a77699c9daf327938081eab2241"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72662be9ecd0e95131779bd10b6fe14f"><td class="memItemLeft" align="right" valign="top"><a id="a72662be9ecd0e95131779bd10b6fe14f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckCrossReferencesAndSetData</b> (int Caller, AnsiString SoughtHeadCode, AnsiString SeekingHeadCode, bool Shuttle, bool GiveMessages)</td></tr>
+<tr class="memitem:a72662be9ecd0e95131779bd10b6fe14f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a72662be9ecd0e95131779bd10b6fe14f">CheckCrossReferencesAndSetData</a> (int Caller, AnsiString SoughtHeadCode, AnsiString SeekingHeadCode, bool Shuttle, bool GiveMessages)</td></tr>
 <tr class="separator:a72662be9ecd0e95131779bd10b6fe14f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a232adcf919e3d70f2fc0cdc4d3bb2ee4"><td class="memItemLeft" align="right" valign="top"><a id="a232adcf919e3d70f2fc0cdc4d3bb2ee4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckForDuplicateCrossReferences</b> (int Caller, AnsiString MainHeadCode, AnsiString SecondHeadCode, bool GiveMessages)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a232adcf919e3d70f2fc0cdc4d3bb2ee4">CheckForDuplicateCrossReferences</a> (int Caller, AnsiString MainHeadCode, AnsiString SecondHeadCode, bool GiveMessages)</td></tr>
+<tr class="memdesc:a232adcf919e3d70f2fc0cdc4d3bb2ee4"><td class="mdescLeft">&#160;</td><td class="mdescRight">A timetable validation function where referenced services are checked for uniqueness, returns true for success. <br /></td></tr>
 <tr class="separator:a232adcf919e3d70f2fc0cdc4d3bb2ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ccd6c8f2c24e7417889e1a91cb9ca2f"><td class="memItemLeft" align="right" valign="top"><a id="a1ccd6c8f2c24e7417889e1a91cb9ca2f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckHeadCodeValidity</b> (int Caller, bool GiveMessages, AnsiString HeadCode)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a1ccd6c8f2c24e7417889e1a91cb9ca2f">CheckHeadCodeValidity</a> (int Caller, bool GiveMessages, AnsiString HeadCode)</td></tr>
+<tr class="memdesc:a1ccd6c8f2c24e7417889e1a91cb9ca2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the headcode complies with requirements. <br /></td></tr>
 <tr class="separator:a1ccd6c8f2c24e7417889e1a91cb9ca2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1925032d5e41decf4befc07b35521d3c"><td class="memItemLeft" align="right" valign="top"><a id="a1925032d5e41decf4befc07b35521d3c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckLocationValidity</b> (int Caller, AnsiString LocStr, bool GiveMessages, bool CheckLocationsExistInRailway)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a1925032d5e41decf4befc07b35521d3c">CheckLocationValidity</a> (int Caller, AnsiString LocStr, bool GiveMessages, bool CheckLocationsExistInRailway)</td></tr>
+<tr class="memdesc:a1925032d5e41decf4befc07b35521d3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the location name complies with requirements. <br /></td></tr>
 <tr class="separator:a1925032d5e41decf4befc07b35521d3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa991976bc8ea956f9e9230f6a6921ac1"><td class="memItemLeft" align="right" valign="top"><a id="aa991976bc8ea956f9e9230f6a6921ac1"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckNonRepeatingShuttleLinksAndSetData</b> (int Caller, AnsiString MainHeadCode, AnsiString NonRepeatingHeadCode, bool GiveMessages)</td></tr>
+<tr class="memitem:aa991976bc8ea956f9e9230f6a6921ac1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#aa991976bc8ea956f9e9230f6a6921ac1">CheckNonRepeatingShuttleLinksAndSetData</a> (int Caller, AnsiString MainHeadCode, AnsiString NonRepeatingHeadCode, bool GiveMessages)</td></tr>
 <tr class="separator:aa991976bc8ea956f9e9230f6a6921ac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45168500acc985a1573602e0c00a0d9a"><td class="memItemLeft" align="right" valign="top"><a id="a45168500acc985a1573602e0c00a0d9a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckNonRepeatingShuttleLinkTime</b> (int Caller, TDateTime ReverseEventTime, TDateTime ForwardEventTime, int RepeatMins, int RepeatNumber)</td></tr>
+<tr class="memitem:a45168500acc985a1573602e0c00a0d9a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a45168500acc985a1573602e0c00a0d9a">CheckNonRepeatingShuttleLinkTime</a> (int Caller, TDateTime ReverseEventTime, TDateTime ForwardEventTime, int RepeatMins, int RepeatNumber)</td></tr>
 <tr class="separator:a45168500acc985a1573602e0c00a0d9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96985493678231bbcad15b36c0c63579"><td class="memItemLeft" align="right" valign="top"><a id="a96985493678231bbcad15b36c0c63579"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckSessionContinuationAutoSigEntries</b> (int Caller, std::ifstream &amp;SessionFile)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a96985493678231bbcad15b36c0c63579">CheckSessionContinuationAutoSigEntries</a> (int Caller, std::ifstream &amp;SessionFile)</td></tr>
+<tr class="memdesc:a96985493678231bbcad15b36c0c63579"><td class="mdescLeft">&#160;</td><td class="mdescRight">Part of the session file integrity check for ContinuationAutoSigEntries, true for success. <br /></td></tr>
 <tr class="separator:a96985493678231bbcad15b36c0c63579"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d5ebc5a4b6dda080840913822f3f238"><td class="memItemLeft" align="right" valign="top"><a id="a4d5ebc5a4b6dda080840913822f3f238"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckSessionLockedRoutes</b> (int Caller, std::ifstream &amp;SessionFile)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a4d5ebc5a4b6dda080840913822f3f238">CheckSessionLockedRoutes</a> (int Caller, std::ifstream &amp;SessionFile)</td></tr>
+<tr class="memdesc:a4d5ebc5a4b6dda080840913822f3f238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Part of the session file integrity check for locked routes, true for success. <br /></td></tr>
 <tr class="separator:a4d5ebc5a4b6dda080840913822f3f238"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53fb58a1ae6103601a24ad2162f86f58"><td class="memItemLeft" align="right" valign="top"><a id="a53fb58a1ae6103601a24ad2162f86f58"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckSessionTrains</b> (int Caller, std::ifstream &amp;InFile)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a53fb58a1ae6103601a24ad2162f86f58">CheckSessionTrains</a> (int Caller, std::ifstream &amp;InFile)</td></tr>
+<tr class="memdesc:a53fb58a1ae6103601a24ad2162f86f58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Part of the session file integrity check for train entries, true for success. <br /></td></tr>
 <tr class="separator:a53fb58a1ae6103601a24ad2162f86f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe4a83b3b7ba6daa955ce5617d509d51"><td class="memItemLeft" align="right" valign="top"><a id="afe4a83b3b7ba6daa955ce5617d509d51"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckShuttleRepeatTime</b> (int Caller, TDateTime ForwardEventTime, TDateTime ReverseEventTime, int RepeatMinutes)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#afe4a83b3b7ba6daa955ce5617d509d51">CheckShuttleRepeatTime</a> (int Caller, TDateTime ForwardEventTime, TDateTime ReverseEventTime, int RepeatMinutes)</td></tr>
+<tr class="memdesc:afe4a83b3b7ba6daa955ce5617d509d51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check that shuttle link services have consistent times, true for success. <br /></td></tr>
 <tr class="separator:afe4a83b3b7ba6daa955ce5617d509d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a161fe7b4bbf101fc0a3f7eadd3aff9ca"><td class="memItemLeft" align="right" valign="top"><a id="a161fe7b4bbf101fc0a3f7eadd3aff9ca"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckShuttleServiceIntegrity</b> (int Caller, <a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> *TDEntryPtr, bool GiveMessages)</td></tr>
+<tr class="memitem:a161fe7b4bbf101fc0a3f7eadd3aff9ca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a161fe7b4bbf101fc0a3f7eadd3aff9ca">CheckShuttleServiceIntegrity</a> (int Caller, <a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> *TDEntryPtr, bool GiveMessages)</td></tr>
 <tr class="separator:a161fe7b4bbf101fc0a3f7eadd3aff9ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8d8cf015d4784f12585f0ead325e9bf"><td class="memItemLeft" align="right" valign="top"><a id="ab8d8cf015d4784f12585f0ead325e9bf"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckStartAllowable</b> (int Caller, int RearPosition, int RearExitPos, AnsiString HeadCode, bool ReportFlag, TActionEventType &amp;EventType)</td></tr>
+<tr class="memitem:ab8d8cf015d4784f12585f0ead325e9bf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ab8d8cf015d4784f12585f0ead325e9bf">CheckStartAllowable</a> (int Caller, int RearPosition, int RearExitPos, AnsiString HeadCode, bool ReportFlag, TActionEventType &amp;EventType)</td></tr>
 <tr class="separator:ab8d8cf015d4784f12585f0ead325e9bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c9711cc69c8332cf7db5e0b2696ca45"><td class="memItemLeft" align="right" valign="top"><a id="a5c9711cc69c8332cf7db5e0b2696ca45"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckStartPositionValidity</b> (int Caller, AnsiString RearElementStr, AnsiString FrontElementStr, bool GiveMessages)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a5c9711cc69c8332cf7db5e0b2696ca45">CheckStartPositionValidity</a> (int Caller, AnsiString RearElementStr, AnsiString FrontElementStr, bool GiveMessages)</td></tr>
+<tr class="memdesc:a5c9711cc69c8332cf7db5e0b2696ca45"><td class="mdescLeft">&#160;</td><td class="mdescRight">A timetable validation function where train starting positions are checked for validity, true for success. <br /></td></tr>
 <tr class="separator:a5c9711cc69c8332cf7db5e0b2696ca45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a523077cf0c9c02c8cb56dab0af9b0e52"><td class="memItemLeft" align="right" valign="top"><a id="a523077cf0c9c02c8cb56dab0af9b0e52"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckTimeValidity</b> (int Caller, AnsiString TimeStr, TDateTime &amp;Time)</td></tr>
+<tr class="memitem:a523077cf0c9c02c8cb56dab0af9b0e52"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a523077cf0c9c02c8cb56dab0af9b0e52">CheckTimeValidity</a> (int Caller, AnsiString TimeStr, TDateTime &amp;Time)</td></tr>
 <tr class="separator:a523077cf0c9c02c8cb56dab0af9b0e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61cdbf0085d24c76aa84e7d5e1d11ead"><td class="memItemLeft" align="right" valign="top"><a id="a61cdbf0085d24c76aa84e7d5e1d11ead"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSNTEntryLocated</b> (int Caller, const <a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> &amp;TDEntry, AnsiString &amp;LocationName)</td></tr>
+<tr class="memitem:a61cdbf0085d24c76aa84e7d5e1d11ead"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a61cdbf0085d24c76aa84e7d5e1d11ead">IsSNTEntryLocated</a> (int Caller, const <a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> &amp;TDEntry, AnsiString &amp;LocationName)</td></tr>
 <tr class="separator:a61cdbf0085d24c76aa84e7d5e1d11ead"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fc210d266e7672ccc648c0a9ab4e542"><td class="memItemLeft" align="right" valign="top"><a id="a6fc210d266e7672ccc648c0a9ab4e542"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>Last2CharactersBothDigits</b> (int Caller, AnsiString HeadCode)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a6fc210d266e7672ccc648c0a9ab4e542">Last2CharactersBothDigits</a> (int Caller, AnsiString HeadCode)</td></tr>
+<tr class="memdesc:a6fc210d266e7672ccc648c0a9ab4e542"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the last two characters in HeadCode and returns true if both are digits. <br /></td></tr>
 <tr class="separator:a6fc210d266e7672ccc648c0a9ab4e542"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6c929171fa673b87e68694e6f48985d"><td class="memItemLeft" align="right" valign="top"><a id="ae6c929171fa673b87e68694e6f48985d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>MovingSuccessor</b> (const <a class="el" href="class_t_action_vector_entry.html">TActionVectorEntry</a> &amp;AVEntry)</td></tr>
+<tr class="memitem:ae6c929171fa673b87e68694e6f48985d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ae6c929171fa673b87e68694e6f48985d">MovingSuccessor</a> (const <a class="el" href="class_t_action_vector_entry.html">TActionVectorEntry</a> &amp;AVEntry)</td></tr>
 <tr class="separator:ae6c929171fa673b87e68694e6f48985d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c51eb1e0018e189966ffdbc5d251990"><td class="memItemLeft" align="right" valign="top"><a id="a5c51eb1e0018e189966ffdbc5d251990"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ProcessOneTimetableLine</b> (int Caller, int Count, AnsiString OneLine, bool &amp;EndOfFile, bool FinalCall, bool GiveMessages, bool CheckLocationsExistInRailway)</td></tr>
+<tr class="memitem:a5c51eb1e0018e189966ffdbc5d251990"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a5c51eb1e0018e189966ffdbc5d251990">ProcessOneTimetableLine</a> (int Caller, int Count, AnsiString OneLine, bool &amp;EndOfFile, bool FinalCall, bool GiveMessages, bool CheckLocationsExistInRailway)</td></tr>
 <tr class="separator:a5c51eb1e0018e189966ffdbc5d251990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a193bc964187b0ae255251d2c7136540a"><td class="memItemLeft" align="right" valign="top"><a id="a193bc964187b0ae255251d2c7136540a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SecondPassActions</b> (int Caller, bool GiveMessages)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a193bc964187b0ae255251d2c7136540a">SecondPassActions</a> (int Caller, bool GiveMessages)</td></tr>
+<tr class="memdesc:a193bc964187b0ae255251d2c7136540a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Carry out further detailed timetable consistency checks, return true for success. <br /></td></tr>
 <tr class="separator:a193bc964187b0ae255251d2c7136540a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9067975adc343b753d7eb882648c66bb"><td class="memItemLeft" align="right" valign="top"><a id="a9067975adc343b753d7eb882648c66bb"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SplitEntry</b> (int Caller, AnsiString OneEntry, bool GiveMessages, bool CheckLocationsExistInRailway, AnsiString &amp;First, AnsiString &amp;Second, AnsiString &amp;Third, AnsiString &amp;Fourth, int &amp;RearStartOrRepeatMins, int &amp;FrontStartPosition, TTimetableFormatType &amp;TimetableFormatType, TTimetableLocationType &amp;LocationType, TTimetableSequenceType &amp;SequenceType, TTimetableShuttleLinkType &amp;ShuttleLinkType, TExitList &amp;ExitList, bool &amp;Warning)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a9067975adc343b753d7eb882648c66bb">SplitEntry</a> (int Caller, AnsiString OneEntry, bool GiveMessages, bool CheckLocationsExistInRailway, AnsiString &amp;First, AnsiString &amp;Second, AnsiString &amp;Third, AnsiString &amp;Fourth, int &amp;RearStartOrRepeatMins, int &amp;FrontStartPosition, TTimetableFormatType &amp;TimetableFormatType, TTimetableLocationType &amp;LocationType, TTimetableSequenceType &amp;SequenceType, TTimetableShuttleLinkType &amp;ShuttleLinkType, TExitList &amp;ExitList, bool &amp;Warning)</td></tr>
+<tr class="memdesc:a9067975adc343b753d7eb882648c66bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a single timetable service action, return true for success. <br /></td></tr>
 <tr class="separator:a9067975adc343b753d7eb882648c66bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03d63b7579e50c092cca3b5200d9dafb"><td class="memItemLeft" align="right" valign="top"><a id="a03d63b7579e50c092cca3b5200d9dafb"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SplitRepeat</b> (int Caller, AnsiString OneEntry, int &amp;RearStartOrRepeatMins, int &amp;FrontStartOrRepeatDigits, int &amp;RepeatNumber, bool GiveMessages)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a03d63b7579e50c092cca3b5200d9dafb">SplitRepeat</a> (int Caller, AnsiString OneEntry, int &amp;RearStartOrRepeatMins, int &amp;FrontStartOrRepeatDigits, int &amp;RepeatNumber, bool GiveMessages)</td></tr>
+<tr class="memdesc:a03d63b7579e50c092cca3b5200d9dafb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a timetable repeat entry, return true for success. <br /></td></tr>
 <tr class="separator:a03d63b7579e50c092cca3b5200d9dafb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa4be4bca19620319c9e65eb0b43daa1"><td class="memItemLeft" align="right" valign="top"><a id="afa4be4bca19620319c9e65eb0b43daa1"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SplitTrainInfo</b> (int Caller, AnsiString TrainInfoStr, AnsiString &amp;HeadCode, AnsiString &amp;Description, int &amp;StartSpeed, int &amp;MaxRunningSpeed, int &amp;Mass, double &amp;MaxBrakeRate, int &amp;PowerAtRail, int &amp;SignallerSpeed, bool GiveMessages)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#afa4be4bca19620319c9e65eb0b43daa1">SplitTrainInfo</a> (int Caller, AnsiString TrainInfoStr, AnsiString &amp;HeadCode, AnsiString &amp;Description, int &amp;StartSpeed, int &amp;MaxRunningSpeed, int &amp;Mass, double &amp;MaxBrakeRate, int &amp;PowerAtRail, int &amp;SignallerSpeed, bool GiveMessages)</td></tr>
+<tr class="memdesc:afa4be4bca19620319c9e65eb0b43daa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a train information entry, return true for success. <br /></td></tr>
 <tr class="separator:afa4be4bca19620319c9e65eb0b43daa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac51af4807fe6bba453f8ab9bba42e2b5"><td class="memItemLeft" align="right" valign="top"><a id="ac51af4807fe6bba453f8ab9bba42e2b5"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>TimetableIntegrityCheck</b> (int Caller, char *FileName, bool GiveMessages, bool CheckLocationsExistInRailway)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ac51af4807fe6bba453f8ab9bba42e2b5">TimetableIntegrityCheck</a> (int Caller, char *FileName, bool GiveMessages, bool CheckLocationsExistInRailway)</td></tr>
+<tr class="memdesc:ac51af4807fe6bba453f8ab9bba42e2b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks overall timetable integrity, calls many other specific checking functions, returns true for success. <br /></td></tr>
 <tr class="separator:ac51af4807fe6bba453f8ab9bba42e2b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa60ab73bef848c5458cdf0217092aef8"><td class="memItemLeft" align="right" valign="top"><a id="aa60ab73bef848c5458cdf0217092aef8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>EntryPos</b> (int Caller, int TrainIDIn, int TrackVectorNumber)</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#aa60ab73bef848c5458cdf0217092aef8">EntryPos</a> (int Caller, int TrainIDIn, int TrackVectorNumber)</td></tr>
+<tr class="memdesc:aa60ab73bef848c5458cdf0217092aef8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the track entry link (Link[]) array position for the given train on track element at track vector position TrackVectorNumber. <br /></td></tr>
 <tr class="separator:aa60ab73bef848c5458cdf0217092aef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a435ef46f062904e85ae9792faaecdcf7"><td class="memItemLeft" align="right" valign="top"><a id="a435ef46f062904e85ae9792faaecdcf7"></a>
-TDateTime&#160;</td><td class="memItemRight" valign="bottom"><b>GetRepeatTime</b> (int Caller, TDateTime BasicTime, int RepeatNumber, int IncMinutes)</td></tr>
+TDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7">GetRepeatTime</a> (int Caller, TDateTime BasicTime, int RepeatNumber, int IncMinutes)</td></tr>
+<tr class="memdesc:a435ef46f062904e85ae9792faaecdcf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the repeating service time. <br /></td></tr>
 <tr class="separator:a435ef46f062904e85ae9792faaecdcf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa09adf9c442406cccc270d6703867a1d"><td class="memItemLeft" align="right" valign="top"><a id="aa09adf9c442406cccc270d6703867a1d"></a>
-<a class="el" href="class_t_train.html">TTrain</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>TrainVectorAt</b> (int Caller, int VecPos)</td></tr>
+<a class="el" href="class_t_train.html">TTrain</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d">TrainVectorAt</a> (int Caller, int VecPos)</td></tr>
+<tr class="memdesc:aa09adf9c442406cccc270d6703867a1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a reference to the train at position VecPos in the TrainVector, carries out range checking on VecPos. <br /></td></tr>
 <tr class="separator:aa09adf9c442406cccc270d6703867a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d5de42d6e9e92191241963599581210"><td class="memItemLeft" align="right" valign="top"><a id="a4d5de42d6e9e92191241963599581210"></a>
-<a class="el" href="class_t_train.html">TTrain</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>TrainVectorAtIdent</b> (int Caller, int TrainID)</td></tr>
+<a class="el" href="class_t_train.html">TTrain</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a4d5de42d6e9e92191241963599581210">TrainVectorAtIdent</a> (int Caller, int TrainID)</td></tr>
+<tr class="memdesc:a4d5de42d6e9e92191241963599581210"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a reference to the train with ID TrainID, carries out validity checking on TrainID. <br /></td></tr>
 <tr class="separator:a4d5de42d6e9e92191241963599581210"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0445987b1a355de3aef2c21b66d1ed8b"><td class="memItemLeft" align="right" valign="top"><a id="a0445987b1a355de3aef2c21b66d1ed8b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>BuildContinuationTrainExpectationMultiMap</b> (int Caller)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a0445987b1a355de3aef2c21b66d1ed8b">BuildContinuationTrainExpectationMultiMap</a> (int Caller)</td></tr>
+<tr class="memdesc:a0445987b1a355de3aef2c21b66d1ed8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">populate the ContinuationTrainExpectationMultiMap during timetable loading <br /></td></tr>
 <tr class="separator:a0445987b1a355de3aef2c21b66d1ed8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadffada34a23350d7773bc7735e423a1"><td class="memItemLeft" align="right" valign="top"><a id="aadffada34a23350d7773bc7735e423a1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CalcOperatingAndNotStartedTrainLateness</b> (int Caller)</td></tr>
+<tr class="memitem:aadffada34a23350d7773bc7735e423a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#aadffada34a23350d7773bc7735e423a1">CalcOperatingAndNotStartedTrainLateness</a> (int Caller)</td></tr>
 <tr class="separator:aadffada34a23350d7773bc7735e423a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ab4b6a568064d27c65f0770e5a5ccd0"><td class="memItemLeft" align="right" valign="top"><a id="a4ab4b6a568064d27c65f0770e5a5ccd0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CreateFormattedTimetable</b> (int Caller, AnsiString RailwayTitle, AnsiString TimetableTitle, AnsiString CurDir)</td></tr>
+<tr class="memitem:a4ab4b6a568064d27c65f0770e5a5ccd0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a4ab4b6a568064d27c65f0770e5a5ccd0">CreateFormattedTimetable</a> (int Caller, AnsiString RailwayTitle, AnsiString TimetableTitle, AnsiString CurDir)</td></tr>
 <tr class="separator:a4ab4b6a568064d27c65f0770e5a5ccd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07d3d10bf08d4e916b652d676c917335"><td class="memItemLeft" align="right" valign="top"><a id="a07d3d10bf08d4e916b652d676c917335"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>FinishedOperation</b> (int Caller)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a07d3d10bf08d4e916b652d676c917335">FinishedOperation</a> (int Caller)</td></tr>
+<tr class="memdesc:a07d3d10bf08d4e916b652d676c917335"><td class="mdescLeft">&#160;</td><td class="mdescRight">called when exiting operation mode to delete all trains and timetable data etc <br /></td></tr>
 <tr class="separator:a07d3d10bf08d4e916b652d676c917335"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae30ca688c6c3672e98692a13f29b7a4b"><td class="memItemLeft" align="right" valign="top"><a id="ae30ca688c6c3672e98692a13f29b7a4b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadSessionContinuationAutoSigEntries</b> (int Caller, std::ifstream &amp;SessionFile)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ae30ca688c6c3672e98692a13f29b7a4b">LoadSessionContinuationAutoSigEntries</a> (int Caller, std::ifstream &amp;SessionFile)</td></tr>
+<tr class="memdesc:ae30ca688c6c3672e98692a13f29b7a4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">load ContinuationAutoSigEntries from a session file <br /></td></tr>
 <tr class="separator:ae30ca688c6c3672e98692a13f29b7a4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefaafd5c6d1c51b4db9dd4b3646d0312"><td class="memItemLeft" align="right" valign="top"><a id="aefaafd5c6d1c51b4db9dd4b3646d0312"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadSessionLockedRoutes</b> (int Caller, std::ifstream &amp;SessionFile)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#aefaafd5c6d1c51b4db9dd4b3646d0312">LoadSessionLockedRoutes</a> (int Caller, std::ifstream &amp;SessionFile)</td></tr>
+<tr class="memdesc:aefaafd5c6d1c51b4db9dd4b3646d0312"><td class="mdescLeft">&#160;</td><td class="mdescRight">load locked routes from a session file <br /></td></tr>
 <tr class="separator:aefaafd5c6d1c51b4db9dd4b3646d0312"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a853ddf9799c9fd7063c81ffa1dc754d7"><td class="memItemLeft" align="right" valign="top"><a id="a853ddf9799c9fd7063c81ffa1dc754d7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadSessionTrains</b> (int Caller, std::ifstream &amp;SessionFile)</td></tr>
+<tr class="memitem:a853ddf9799c9fd7063c81ffa1dc754d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a853ddf9799c9fd7063c81ffa1dc754d7">LoadSessionTrains</a> (int Caller, std::ifstream &amp;SessionFile)</td></tr>
 <tr class="separator:a853ddf9799c9fd7063c81ffa1dc754d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9acd46962be476bc76c8d5ce59fff399"><td class="memItemLeft" align="right" valign="top"><a id="a9acd46962be476bc76c8d5ce59fff399"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>LogActionError</b> (int Caller, AnsiString HeadCode, AnsiString OtherHeadCode, TActionEventType ActionEventType, AnsiString LocationID)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a9acd46962be476bc76c8d5ce59fff399">LogActionError</a> (int Caller, AnsiString HeadCode, AnsiString OtherHeadCode, TActionEventType ActionEventType, AnsiString LocationID)</td></tr>
+<tr class="memdesc:a9acd46962be476bc76c8d5ce59fff399"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send an error message to the performance log and file, and as a warning if appropriate. <br /></td></tr>
 <tr class="separator:a9acd46962be476bc76c8d5ce59fff399"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac88477499edd24550fae9b90b5561ed1"><td class="memItemLeft" align="right" valign="top"><a id="ac88477499edd24550fae9b90b5561ed1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>LogEvent</b> (AnsiString Str)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1">LogEvent</a> (AnsiString Str)</td></tr>
+<tr class="memdesc:ac88477499edd24550fae9b90b5561ed1"><td class="mdescLeft">&#160;</td><td class="mdescRight">store Str to the event log - moved from <a class="el" href="class_t_utilities.html">TUtilities</a> for v0.6 so can record the tt clock value <br /></td></tr>
 <tr class="separator:ac88477499edd24550fae9b90b5561ed1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20a1576dea1d86ed78fc5e9f46343481"><td class="memItemLeft" align="right" valign="top"><a id="a20a1576dea1d86ed78fc5e9f46343481"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Operate</b> (int Caller)</td></tr>
+<tr class="memitem:a20a1576dea1d86ed78fc5e9f46343481"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481">Operate</a> (int Caller)</td></tr>
 <tr class="separator:a20a1576dea1d86ed78fc5e9f46343481"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f9cd71b60b45de8380f5fad7bbd5dd8"><td class="memItemLeft" align="right" valign="top"><a id="a2f9cd71b60b45de8380f5fad7bbd5dd8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>PlotAllTrainsInZoomOutMode</b> (int Caller, bool Flash)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a2f9cd71b60b45de8380f5fad7bbd5dd8">PlotAllTrainsInZoomOutMode</a> (int Caller, bool Flash)</td></tr>
+<tr class="memdesc:a2f9cd71b60b45de8380f5fad7bbd5dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plots all trains on screen in zoomed-out mode, state of 'Flash' determines whether the flashing trains are plotted or not. <br /></td></tr>
 <tr class="separator:a2f9cd71b60b45de8380f5fad7bbd5dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47676de8fc677dbcabf565569cb1435c"><td class="memItemLeft" align="right" valign="top"><a id="a47676de8fc677dbcabf565569cb1435c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ReplotTrains</b> (int Caller, <a class="el" href="class_t_display.html">TDisplay</a> *Disp)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a47676de8fc677dbcabf565569cb1435c">ReplotTrains</a> (int Caller, <a class="el" href="class_t_display.html">TDisplay</a> *Disp)</td></tr>
+<tr class="memdesc:a47676de8fc677dbcabf565569cb1435c"><td class="mdescLeft">&#160;</td><td class="mdescRight">plot all trains on the display <br /></td></tr>
 <tr class="separator:a47676de8fc677dbcabf565569cb1435c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab81acdc0c0ab6e1e321f64170f0f71af"><td class="memItemLeft" align="right" valign="top"><a id="ab81acdc0c0ab6e1e321f64170f0f71af"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SaveSessionContinuationAutoSigEntries</b> (int Caller, std::ofstream &amp;SessionFile)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ab81acdc0c0ab6e1e321f64170f0f71af">SaveSessionContinuationAutoSigEntries</a> (int Caller, std::ofstream &amp;SessionFile)</td></tr>
+<tr class="memdesc:ab81acdc0c0ab6e1e321f64170f0f71af"><td class="mdescLeft">&#160;</td><td class="mdescRight">save ContinuationAutoSigEntries to a session file <br /></td></tr>
 <tr class="separator:ab81acdc0c0ab6e1e321f64170f0f71af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57a934999d63367128ca639b9ab3e3ce"><td class="memItemLeft" align="right" valign="top"><a id="a57a934999d63367128ca639b9ab3e3ce"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SaveSessionLockedRoutes</b> (int Caller, std::ofstream &amp;SessionFile)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a57a934999d63367128ca639b9ab3e3ce">SaveSessionLockedRoutes</a> (int Caller, std::ofstream &amp;SessionFile)</td></tr>
+<tr class="memdesc:a57a934999d63367128ca639b9ab3e3ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">save locked routes to a session file <br /></td></tr>
 <tr class="separator:a57a934999d63367128ca639b9ab3e3ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa594bfc6b628d21d02a31c3a13c3a0a"><td class="memItemLeft" align="right" valign="top"><a id="afa594bfc6b628d21d02a31c3a13c3a0a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SaveSessionTrains</b> (int Caller, std::ofstream &amp;SessionFile)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#afa594bfc6b628d21d02a31c3a13c3a0a">SaveSessionTrains</a> (int Caller, std::ofstream &amp;SessionFile)</td></tr>
+<tr class="memdesc:afa594bfc6b628d21d02a31c3a13c3a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">save trains to a session file <br /></td></tr>
 <tr class="separator:afa594bfc6b628d21d02a31c3a13c3a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6161618bda2a677f797eda9a9deeb9fa"><td class="memItemLeft" align="right" valign="top"><a id="a6161618bda2a677f797eda9a9deeb9fa"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SaveTrainDataVectorToFile</b> (int Caller)</td></tr>
+<tr class="memitem:a6161618bda2a677f797eda9a9deeb9fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a6161618bda2a677f797eda9a9deeb9fa">SaveTrainDataVectorToFile</a> (int Caller)</td></tr>
 <tr class="separator:a6161618bda2a677f797eda9a9deeb9fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8df4599a1ae95093241fb707711af894"><td class="memItemLeft" align="right" valign="top"><a id="a8df4599a1ae95093241fb707711af894"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SecondPassMessage</b> (bool GiveMessages, AnsiString Message)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a8df4599a1ae95093241fb707711af894">SecondPassMessage</a> (bool GiveMessages, AnsiString Message)</td></tr>
+<tr class="memdesc:a8df4599a1ae95093241fb707711af894"><td class="mdescLeft">&#160;</td><td class="mdescRight">Give a user message during timetable integrity checking if GiveMessages is true, ignore if false. <br /></td></tr>
 <tr class="separator:a8df4599a1ae95093241fb707711af894"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6c6e1e1236559f07b29b069d4377690"><td class="memItemLeft" align="right" valign="top"><a id="af6c6e1e1236559f07b29b069d4377690"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SendPerformanceSummary</b> (int Caller, std::ofstream &amp;PerfFile)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#af6c6e1e1236559f07b29b069d4377690">SendPerformanceSummary</a> (int Caller, std::ofstream &amp;PerfFile)</td></tr>
+<tr class="memdesc:af6c6e1e1236559f07b29b069d4377690"><td class="mdescLeft">&#160;</td><td class="mdescRight">At the end of operation a summary of overall performance is sent to the performance file by this function. <br /></td></tr>
 <tr class="separator:af6c6e1e1236559f07b29b069d4377690"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29c49509e56368954ca3334a37648a7a"><td class="memItemLeft" align="right" valign="top"><a id="a29c49509e56368954ca3334a37648a7a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetWarningFlags</b> (int Caller)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a29c49509e56368954ca3334a37648a7a">SetWarningFlags</a> (int Caller)</td></tr>
+<tr class="memdesc:a29c49509e56368954ca3334a37648a7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This sets all the warning flags (CrashWarning, DerailWarning etc) to their required states after a session file has been loaded. <br /></td></tr>
 <tr class="separator:a29c49509e56368954ca3334a37648a7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba5615209a7dca921e968fca5c52c060"><td class="memItemLeft" align="right" valign="top"><a id="aba5615209a7dca921e968fca5c52c060"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>StopTTClockMessage</b> (int Caller, AnsiString Message)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#aba5615209a7dca921e968fca5c52c060">StopTTClockMessage</a> (int Caller, AnsiString Message)</td></tr>
+<tr class="memdesc:aba5615209a7dca921e968fca5c52c060"><td class="mdescLeft">&#160;</td><td class="mdescRight">sends a message to the user and stops the timetable clock while it is displayed <br /></td></tr>
 <tr class="separator:aba5615209a7dca921e968fca5c52c060"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac47f05f3d0baaf235c430b631c6fd1ad"><td class="memItemLeft" align="right" valign="top"><a id="ac47f05f3d0baaf235c430b631c6fd1ad"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>StripExcessFromHeadCode</b> (int Caller, AnsiString &amp;HeadCode)</td></tr>
+<tr class="memitem:ac47f05f3d0baaf235c430b631c6fd1ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ac47f05f3d0baaf235c430b631c6fd1ad">StripExcessFromHeadCode</a> (int Caller, AnsiString &amp;HeadCode)</td></tr>
 <tr class="separator:ac47f05f3d0baaf235c430b631c6fd1ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0481dd8db0f3f99811f2cdc5b5dfd32"><td class="memItemLeft" align="right" valign="top"><a id="ab0481dd8db0f3f99811f2cdc5b5dfd32"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>StripSpaces</b> (int Caller, AnsiString &amp;Input)</td></tr>
+<tr class="memitem:ab0481dd8db0f3f99811f2cdc5b5dfd32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ab0481dd8db0f3f99811f2cdc5b5dfd32">StripSpaces</a> (int Caller, AnsiString &amp;Input)</td></tr>
 <tr class="separator:ab0481dd8db0f3f99811f2cdc5b5dfd32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68d2124bc8f7df43e973299e0afb3dcd"><td class="memItemLeft" align="right" valign="top"><a id="a68d2124bc8f7df43e973299e0afb3dcd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>TimetableMessage</b> (bool GiveMessages, AnsiString Message)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a68d2124bc8f7df43e973299e0afb3dcd">TimetableMessage</a> (bool GiveMessages, AnsiString Message)</td></tr>
+<tr class="memdesc:a68d2124bc8f7df43e973299e0afb3dcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a message to the user if GiveMessages is true, including ServiceReference (see above) if not null, used for timetable error messages. <br /></td></tr>
 <tr class="separator:a68d2124bc8f7df43e973299e0afb3dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e2abfcc38e51933883d959c4155aca0"><td class="memItemLeft" align="right" valign="top"><a id="a7e2abfcc38e51933883d959c4155aca0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>UnplotTrains</b> (int Caller)</td></tr>
+<tr class="memitem:a7e2abfcc38e51933883d959c4155aca0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a7e2abfcc38e51933883d959c4155aca0">UnplotTrains</a> (int Caller)</td></tr>
 <tr class="separator:a7e2abfcc38e51933883d959c4155aca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5e441a9ec80e5076b2c05c2bb6f3fd3"><td class="memItemLeft" align="right" valign="top"><a id="aa5e441a9ec80e5076b2c05c2bb6f3fd3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>WriteTrainsToImage</b> (int Caller, Graphics::TBitmap *Bitmap)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#aa5e441a9ec80e5076b2c05c2bb6f3fd3">WriteTrainsToImage</a> (int Caller, Graphics::TBitmap *Bitmap)</td></tr>
+<tr class="memdesc:aa5e441a9ec80e5076b2c05c2bb6f3fd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called by TInterface::SaveOperatingImage1Click) to write all trains to the image file. <br /></td></tr>
 <tr class="separator:aa5e441a9ec80e5076b2c05c2bb6f3fd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba4dd6fde9654353326cc36e6219ade7"><td class="memItemLeft" align="right" valign="top"><a id="aba4dd6fde9654353326cc36e6219ade7"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#aba4dd6fde9654353326cc36e6219ade7">TTrainController</a> ()</td></tr>
+<tr class="memdesc:aba4dd6fde9654353326cc36e6219ade7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="separator:aba4dd6fde9654353326cc36e6219ade7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6cbfb50d0fddf2c6b43a1604da3b746"><td class="memItemLeft" align="right" valign="top"><a id="ad6cbfb50d0fddf2c6b43a1604da3b746"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ad6cbfb50d0fddf2c6b43a1604da3b746">~TTrainController</a> ()</td></tr>
+<tr class="memdesc:ad6cbfb50d0fddf2c6b43a1604da3b746"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:ad6cbfb50d0fddf2c6b43a1604da3b746"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a8c574abde256f87d43b7cce8b9024fd9"><td class="memItemLeft" align="right" valign="top"><a id="a8c574abde256f87d43b7cce8b9024fd9"></a>
-TDateTime&#160;</td><td class="memItemRight" valign="bottom"><b>BaseTime</b></td></tr>
+TDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a8c574abde256f87d43b7cce8b9024fd9">BaseTime</a></td></tr>
+<tr class="memdesc:a8c574abde256f87d43b7cce8b9024fd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">CurrentDateTime (i.e. real time) when operation restarts after a pause. <br /></td></tr>
 <tr class="separator:a8c574abde256f87d43b7cce8b9024fd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c0b9d01dd9e1515017b629ebf1a98f1"><td class="memItemLeft" align="right" valign="top"><a id="a0c0b9d01dd9e1515017b629ebf1a98f1"></a>
-TDateTime&#160;</td><td class="memItemRight" valign="bottom"><b>TTClockTime</b></td></tr>
+TDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a0c0b9d01dd9e1515017b629ebf1a98f1">TTClockTime</a></td></tr>
+<tr class="memdesc:a0c0b9d01dd9e1515017b629ebf1a98f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">the time indicated by the timetable clock <br /></td></tr>
 <tr class="separator:a0c0b9d01dd9e1515017b629ebf1a98f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3df0fb217914cd6d38db7dd2daf1de7a"><td class="memItemLeft" align="right" valign="top"><a id="a3df0fb217914cd6d38db7dd2daf1de7a"></a>
-TDateTime&#160;</td><td class="memItemRight" valign="bottom"><b>TimetableStartTime</b></td></tr>
+TDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a3df0fb217914cd6d38db7dd2daf1de7a">TimetableStartTime</a></td></tr>
+<tr class="memdesc:a3df0fb217914cd6d38db7dd2daf1de7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">the start time of the current timetable <br /></td></tr>
 <tr class="separator:a3df0fb217914cd6d38db7dd2daf1de7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d7dc55374ee043f1045b1d4ff91853f"><td class="memItemLeft" align="right" valign="top"><a id="a7d7dc55374ee043f1045b1d4ff91853f"></a>
-TDateTime&#160;</td><td class="memItemRight" valign="bottom"><b>RestartTime</b></td></tr>
+<tr class="memitem:a7d7dc55374ee043f1045b1d4ff91853f"><td class="memItemLeft" align="right" valign="top">TDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a7d7dc55374ee043f1045b1d4ff91853f">RestartTime</a></td></tr>
 <tr class="separator:a7d7dc55374ee043f1045b1d4ff91853f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b103ff111456f178286d97002b63afb"><td class="memItemLeft" align="right" valign="top"><a id="a1b103ff111456f178286d97002b63afb"></a>
-AnsiString&#160;</td><td class="memItemRight" valign="bottom"><b>ServiceReference</b></td></tr>
+<tr class="memitem:a1b103ff111456f178286d97002b63afb"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a1b103ff111456f178286d97002b63afb">ServiceReference</a></td></tr>
 <tr class="separator:a1b103ff111456f178286d97002b63afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d9bbe67bb4b3e68896f0a0325dfb883"><td class="memItemLeft" align="right" valign="top"><a id="a1d9bbe67bb4b3e68896f0a0325dfb883"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CrashWarning</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a1d9bbe67bb4b3e68896f0a0325dfb883">CrashWarning</a></td></tr>
+<tr class="memdesc:a1d9bbe67bb4b3e68896f0a0325dfb883"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags to enable the relevant warning graphics to flash at the left hand side of the screen. <br /></td></tr>
 <tr class="separator:a1d9bbe67bb4b3e68896f0a0325dfb883"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae14cb1df9539743db54f5828d9aceb03"><td class="memItemLeft" align="right" valign="top"><a id="ae14cb1df9539743db54f5828d9aceb03"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>DerailWarning</b></td></tr>
@@ -318,25 +356,32 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>SignalStopWarning</b>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>BufferAttentionWarning</b></td></tr>
 <tr class="separator:ada39cdbfadd136d813752252317f624f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cb4f95016d09ccf3007ede186474e09"><td class="memItemLeft" align="right" valign="top"><a id="a4cb4f95016d09ccf3007ede186474e09"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>StopTTClockFlag</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a4cb4f95016d09ccf3007ede186474e09">StopTTClockFlag</a></td></tr>
+<tr class="memdesc:a4cb4f95016d09ccf3007ede186474e09"><td class="mdescLeft">&#160;</td><td class="mdescRight">when true the timetable clock is stopped, used for messages display and train popup menu display etc <br /></td></tr>
 <tr class="separator:a4cb4f95016d09ccf3007ede186474e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a646a91d8cedea54902a6fdc0ef67fff1"><td class="memItemLeft" align="right" valign="top"><a id="a646a91d8cedea54902a6fdc0ef67fff1"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>TrainAdded</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a646a91d8cedea54902a6fdc0ef67fff1">TrainAdded</a></td></tr>
+<tr class="memdesc:a646a91d8cedea54902a6fdc0ef67fff1"><td class="mdescLeft">&#160;</td><td class="mdescRight">true when a train has been added by a split (occurs outside the normal train introduction process) <br /></td></tr>
 <tr class="separator:a646a91d8cedea54902a6fdc0ef67fff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39452a716da27a51a796b7e6a2bcad5b"><td class="memItemLeft" align="right" valign="top"><a id="a39452a716da27a51a796b7e6a2bcad5b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SignallerTrainRemovedOnAutoSigsRoute</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a39452a716da27a51a796b7e6a2bcad5b">SignallerTrainRemovedOnAutoSigsRoute</a></td></tr>
+<tr class="memdesc:a39452a716da27a51a796b7e6a2bcad5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">true if train was on an AutoSigsRoute when removed by the signaller <br /></td></tr>
 <tr class="separator:a39452a716da27a51a796b7e6a2bcad5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a095d7c99ffc21a6939a044bbad4fa18f"><td class="memItemLeft" align="right" valign="top"><a id="a095d7c99ffc21a6939a044bbad4fa18f"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>NotStartedTrainLateMins</b></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a095d7c99ffc21a6939a044bbad4fa18f">NotStartedTrainLateMins</a></td></tr>
+<tr class="memdesc:a095d7c99ffc21a6939a044bbad4fa18f"><td class="mdescLeft">&#160;</td><td class="mdescRight">total late minutes of trains that haven't started yet on exit operation for locations not reached yet <br /></td></tr>
 <tr class="separator:a095d7c99ffc21a6939a044bbad4fa18f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af25f4d9be4644eab1e042751b1738f98"><td class="memItemLeft" align="right" valign="top"><a id="af25f4d9be4644eab1e042751b1738f98"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>OperatingTrainLateMins</b></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#af25f4d9be4644eab1e042751b1738f98">OperatingTrainLateMins</a></td></tr>
+<tr class="memdesc:af25f4d9be4644eab1e042751b1738f98"><td class="mdescLeft">&#160;</td><td class="mdescRight">total late minutes of operating trains on exit operation for locations not reached yet <br /></td></tr>
 <tr class="separator:af25f4d9be4644eab1e042751b1738f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b18964f752a0241c45514b82c51e647"><td class="memItemLeft" align="right" valign="top"><a id="a2b18964f752a0241c45514b82c51e647"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>ExcessLCDownMins</b></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a2b18964f752a0241c45514b82c51e647">ExcessLCDownMins</a></td></tr>
+<tr class="memdesc:a2b18964f752a0241c45514b82c51e647"><td class="mdescLeft">&#160;</td><td class="mdescRight">total excess time in minutes over the 3 minutes barriers down allowance for level crossings <br /></td></tr>
 <tr class="separator:a2b18964f752a0241c45514b82c51e647"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2904fbc7f4b39c555ea83b325f630d59"><td class="memItemLeft" align="right" valign="top"><a id="a2904fbc7f4b39c555ea83b325f630d59"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>TotEarlyArrMins</b></td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a2904fbc7f4b39c555ea83b325f630d59">TotEarlyArrMins</a></td></tr>
+<tr class="memdesc:a2904fbc7f4b39c555ea83b325f630d59"><td class="mdescLeft">&#160;</td><td class="mdescRight">values for performance file summary <br /></td></tr>
 <tr class="separator:a2904fbc7f4b39c555ea83b325f630d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a464315be2825c7e4528b886b2da28bfb"><td class="memItemLeft" align="right" valign="top"><a id="a464315be2825c7e4528b886b2da28bfb"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>TotEarlyPassMins</b></td></tr>
@@ -402,24 +447,741 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>TotArrDepPass</b></td>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>UnexpectedExits</b></td></tr>
 <tr class="separator:af64a32b0811b647196f8d25ac6701ddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b419c5f86d0815c35093bf3c25c6821"><td class="memItemLeft" align="right" valign="top"><a id="a9b419c5f86d0815c35093bf3c25c6821"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>OperatingTrainArrDep</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a9b419c5f86d0815c35093bf3c25c6821">OperatingTrainArrDep</a></td></tr>
+<tr class="memdesc:a9b419c5f86d0815c35093bf3c25c6821"><td class="mdescLeft">&#160;</td><td class="mdescRight">total number of arrivals &amp; departures for operating trains locations not reached yet <br /></td></tr>
 <tr class="separator:a9b419c5f86d0815c35093bf3c25c6821"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa547b8fba4e19683055e67359d41a933"><td class="memItemLeft" align="right" valign="top"><a id="aa547b8fba4e19683055e67359d41a933"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>NotStartedTrainArrDep</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#aa547b8fba4e19683055e67359d41a933">NotStartedTrainArrDep</a></td></tr>
+<tr class="memdesc:aa547b8fba4e19683055e67359d41a933"><td class="mdescLeft">&#160;</td><td class="mdescRight">total number of arrivals &amp; departures for trains that haven't started yet for locations not reached yet <br /></td></tr>
 <tr class="separator:aa547b8fba4e19683055e67359d41a933"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b412f7b88f829632e54bffc0659ac3b"><td class="memItemLeft" align="right" valign="top"><a id="a0b412f7b88f829632e54bffc0659ac3b"></a>
-TContinuationAutoSigVector&#160;</td><td class="memItemRight" valign="bottom"><b>ContinuationAutoSigVector</b></td></tr>
+<tr class="memitem:a0b412f7b88f829632e54bffc0659ac3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_train_controller.html#a1908f7d1a5dcfebf2f747efbdd6f4681">TContinuationAutoSigVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a0b412f7b88f829632e54bffc0659ac3b">ContinuationAutoSigVector</a></td></tr>
 <tr class="separator:a0b412f7b88f829632e54bffc0659ac3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a8e542193d93581e0c391d8e7fa3e1b"><td class="memItemLeft" align="right" valign="top"><a id="a1a8e542193d93581e0c391d8e7fa3e1b"></a>
-TContinuationTrainExpectationMultiMap&#160;</td><td class="memItemRight" valign="bottom"><b>ContinuationTrainExpectationMultiMap</b></td></tr>
+<a class="el" href="class_t_train_controller.html#a36525478ab0d9f59e486b8c030acd87c">TContinuationTrainExpectationMultiMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a1a8e542193d93581e0c391d8e7fa3e1b">ContinuationTrainExpectationMultiMap</a></td></tr>
+<tr class="memdesc:a1a8e542193d93581e0c391d8e7fa3e1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multimap for <a class="el" href="class_t_train_controller_1_1_t_continuation_train_expectation_entry.html">TContinuationTrainExpectationEntry</a> objects, the access key is the expectation time. <br /></td></tr>
 <tr class="separator:a1a8e542193d93581e0c391d8e7fa3e1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e9c9e646d13f9b952434abcd97cec1b"><td class="memItemLeft" align="right" valign="top"><a id="a4e9c9e646d13f9b952434abcd97cec1b"></a>
-TTrainDataVector&#160;</td><td class="memItemRight" valign="bottom"><b>TrainDataVector</b></td></tr>
+TTrainDataVector&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a4e9c9e646d13f9b952434abcd97cec1b">TrainDataVector</a></td></tr>
+<tr class="memdesc:a4e9c9e646d13f9b952434abcd97cec1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector containing the internal timetable <br /></td></tr>
 <tr class="separator:a4e9c9e646d13f9b952434abcd97cec1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a694986ff09f8a037b8bce849e40ac119"><td class="memItemLeft" align="right" valign="top"><a id="a694986ff09f8a037b8bce849e40ac119"></a>
-TTrainVector&#160;</td><td class="memItemRight" valign="bottom"><b>TrainVector</b></td></tr>
+<a class="el" href="class_t_train_controller.html#aa9073b97736a2733dbdaf8dc52e34c24">TTrainVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a694986ff09f8a037b8bce849e40ac119">TrainVector</a></td></tr>
+<tr class="memdesc:a694986ff09f8a037b8bce849e40ac119"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector containing all trains currently in the railway <br /></td></tr>
 <tr class="separator:a694986ff09f8a037b8bce849e40ac119"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Handles all train and timetable activities, only one object created. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7fbe0dc297130da79bcfa3503c6c51c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fbe0dc297130da79bcfa3503c6c51c1">&#9670;&nbsp;</a></span>AtLocSuccessor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrainController::AtLocSuccessor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_t_action_vector_entry.html">TActionVectorEntry</a> &amp;&#160;</td>
+          <td class="paramname"><em>AVEntry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A shorthand function that returns true if the successor to a given timetable action command should be (or could be) an 'at location' command, used in timetable validation </p>
+
+</div>
+</div>
+<a id="aadffada34a23350d7773bc7735e423a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadffada34a23350d7773bc7735e423a1">&#9670;&nbsp;</a></span>CalcOperatingAndNotStartedTrainLateness()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TTrainController::CalcOperatingAndNotStartedTrainLateness </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>calculates additional lateness values for trains that haven't reached their destinations yet </p>
+
+</div>
+</div>
+<a id="ae91c1a77699c9daf327938081eab2241"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae91c1a77699c9daf327938081eab2241">&#9670;&nbsp;</a></span>CheckAndPopulateListOfIDs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrainController::CheckAndPopulateListOfIDs </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>IDSet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TExitList &amp;&#160;</td>
+          <td class="paramname"><em>ExitList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>GiveMessages</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Used to compile ExitList from a string list of element IDs, returns true for success or gives a message &amp; returns false for failure, used in timetable validation </p>
+
+</div>
+</div>
+<a id="a72662be9ecd0e95131779bd10b6fe14f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72662be9ecd0e95131779bd10b6fe14f">&#9670;&nbsp;</a></span>CheckCrossReferencesAndSetData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrainController::CheckCrossReferencesAndSetData </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>SoughtHeadCode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>SeekingHeadCode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>Shuttle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>GiveMessages</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A timetable validation function where all service cross references are checked for validity and set pointers and train information, return true for success </p>
+
+</div>
+</div>
+<a id="aa991976bc8ea956f9e9230f6a6921ac1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa991976bc8ea956f9e9230f6a6921ac1">&#9670;&nbsp;</a></span>CheckNonRepeatingShuttleLinksAndSetData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrainController::CheckNonRepeatingShuttleLinksAndSetData </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>MainHeadCode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>NonRepeatingHeadCode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>GiveMessages</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A timetable validation function where cross references are checked for validity for non-repeating shuttle links, pointers and train information are set, returns true for success </p>
+
+</div>
+</div>
+<a id="a45168500acc985a1573602e0c00a0d9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45168500acc985a1573602e0c00a0d9a">&#9670;&nbsp;</a></span>CheckNonRepeatingShuttleLinkTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrainController::CheckNonRepeatingShuttleLinkTime </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TDateTime&#160;</td>
+          <td class="paramname"><em>ReverseEventTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TDateTime&#160;</td>
+          <td class="paramname"><em>ForwardEventTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>RepeatMins</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>RepeatNumber</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The forward train is the finish shuttle entry 'Fns-sh', the reverse (new non-repeating service) time must = Forward time + (RepeatMins * RepeatNumber), return true for success </p>
+
+</div>
+</div>
+<a id="a161fe7b4bbf101fc0a3f7eadd3aff9ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a161fe7b4bbf101fc0a3f7eadd3aff9ca">&#9670;&nbsp;</a></span>CheckShuttleServiceIntegrity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrainController::CheckShuttleServiceIntegrity </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> *&#160;</td>
+          <td class="paramname"><em>TDEntryPtr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>GiveMessages</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Check that each shuttle service ends either in Fns or Fxx-sh (though a single service can't end in Fxx-sh), and that when the Fxx-sh is reached it references the original start and not another shuttle - not allowed to link two shuttles, true for success </p>
+
+</div>
+</div>
+<a id="ab8d8cf015d4784f12585f0ead325e9bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8d8cf015d4784f12585f0ead325e9bf">&#9670;&nbsp;</a></span>CheckStartAllowable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrainController::CheckStartAllowable </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>RearPosition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>RearExitPos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>HeadCode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>ReportFlag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TActionEventType &amp;&#160;</td>
+          <td class="paramname"><em>EventType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Called when trying to introduce a new train - checks for points in correct orientation, that no train is already at the train starting position, and not starting on a locked route </p>
+
+</div>
+</div>
+<a id="a523077cf0c9c02c8cb56dab0af9b0e52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a523077cf0c9c02c8cb56dab0af9b0e52">&#9670;&nbsp;</a></span>CheckTimeValidity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrainController::CheckTimeValidity </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>TimeStr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TDateTime &amp;&#160;</td>
+          <td class="paramname"><em>Time</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>returns true if the time complies with requirements </p>
+
+</div>
+</div>
+<a id="a4ab4b6a568064d27c65f0770e5a5ccd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ab4b6a568064d27c65f0770e5a5ccd0">&#9670;&nbsp;</a></span>CreateFormattedTimetable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TTrainController::CreateFormattedTimetable </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>RailwayTitle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>TimetableTitle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>CurDir</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Examines the internal timetable (TrainDataVector) and creates from it a chronological (.txt) timetable and also a traditional spreadsheet format (.csv) timetable </p>
+
+</div>
+</div>
+<a id="ae6c904f201d8bb23b3c0714226244890"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6c904f201d8bb23b3c0714226244890">&#9670;&nbsp;</a></span>GetExitLocationAndAt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">AnsiString TTrainController::GetExitLocationAndAt </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TExitList &amp;&#160;</td>
+          <td class="paramname"><em>ExitList</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Check all timetable names in ExitList, if all same return " at [name]" else return "". Used in floating label for Next action and in formatted timetables. </p>
+
+</div>
+</div>
+<a id="a61cdbf0085d24c76aa84e7d5e1d11ead"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61cdbf0085d24c76aa84e7d5e1d11ead">&#9670;&nbsp;</a></span>IsSNTEntryLocated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrainController::IsSNTEntryLocated </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> &amp;&#160;</td>
+          <td class="paramname"><em>TDEntry</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString &amp;&#160;</td>
+          <td class="paramname"><em>LocationName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>New trains introduced with 'Snt' may be at a timetabled location or elsewhere. This function checks and returns true for at a timetabled location. </p>
+
+</div>
+</div>
+<a id="a853ddf9799c9fd7063c81ffa1dc754d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a853ddf9799c9fd7063c81ffa1dc754d7">&#9670;&nbsp;</a></span>LoadSessionTrains()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TTrainController::LoadSessionTrains </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::ifstream &amp;&#160;</td>
+          <td class="paramname"><em>SessionFile</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>load trains from a session file </p>
+
+</div>
+</div>
+<a id="ae6c929171fa673b87e68694e6f48985d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6c929171fa673b87e68694e6f48985d">&#9670;&nbsp;</a></span>MovingSuccessor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrainController::MovingSuccessor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_t_action_vector_entry.html">TActionVectorEntry</a> &amp;&#160;</td>
+          <td class="paramname"><em>AVEntry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A shorthand function that returns true if the successor to a given timetable action command should be (or could be) an en-route command, used in timetable validation </p>
+
+</div>
+</div>
+<a id="a20a1576dea1d86ed78fc5e9f46343481"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20a1576dea1d86ed78fc5e9f46343481">&#9670;&nbsp;</a></span>Operate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TTrainController::Operate </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>called every clock tick to introduce new trains and update existing trains </p>
+
+</div>
+</div>
+<a id="a5c51eb1e0018e189966ffdbc5d251990"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c51eb1e0018e189966ffdbc5d251990">&#9670;&nbsp;</a></span>ProcessOneTimetableLine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrainController::ProcessOneTimetableLine </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>OneLine</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool &amp;&#160;</td>
+          <td class="paramname"><em>EndOfFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>FinalCall</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>GiveMessages</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>CheckLocationsExistInRailway</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if FinalCall true) set the internal timetable data values, return true for success </p>
+
+</div>
+</div>
+<a id="a6161618bda2a677f797eda9a9deeb9fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6161618bda2a677f797eda9a9deeb9fa">&#9670;&nbsp;</a></span>SaveTrainDataVectorToFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TTrainController::SaveTrainDataVectorToFile </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>diagnostic function to store all train data to a file for examination, not used normally </p>
+
+</div>
+</div>
+<a id="ac47f05f3d0baaf235c430b631c6fd1ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac47f05f3d0baaf235c430b631c6fd1ad">&#9670;&nbsp;</a></span>StripExcessFromHeadCode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TTrainController::StripExcessFromHeadCode </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString &amp;&#160;</td>
+          <td class="paramname"><em>HeadCode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>change an extended headcode to an ordinary 4 character headcode </p>
+
+</div>
+</div>
+<a id="ab0481dd8db0f3f99811f2cdc5b5dfd32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0481dd8db0f3f99811f2cdc5b5dfd32">&#9670;&nbsp;</a></span>StripSpaces()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TTrainController::StripSpaces </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString &amp;&#160;</td>
+          <td class="paramname"><em>Input</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Strip both leading and trailing spaces at ends of Input and spaces before and after all commas and semicolons within Input, used to rationalise timetable service entries for internal use </p>
+
+</div>
+</div>
+<a id="a7e2abfcc38e51933883d959c4155aca0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e2abfcc38e51933883d959c4155aca0">&#9670;&nbsp;</a></span>UnplotTrains()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TTrainController::UnplotTrains </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>unplot all trains from screen </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a0b412f7b88f829632e54bffc0659ac3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b412f7b88f829632e54bffc0659ac3b">&#9670;&nbsp;</a></span>ContinuationAutoSigVector</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_t_train_controller.html#a1908f7d1a5dcfebf2f747efbdd6f4681">TContinuationAutoSigVector</a> TTrainController::ContinuationAutoSigVector</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>vector for <a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html" title="Turns signals back to green in stages after a train has exited an autosig route at a continuation...">TContinuationAutoSigEntry</a> objects </p>
+
+</div>
+</div>
+<a id="a7d7dc55374ee043f1045b1d4ff91853f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d7dc55374ee043f1045b1d4ff91853f">&#9670;&nbsp;</a></span>RestartTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TDateTime TTrainController::RestartTime</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>TTClockTime when operation pauses ( = timetable start time prior to operation) TTClockTime is calculated as follows:- TTClockTime = CurrentDateTime + RestartTime - BaseTime; </p>
+
+</div>
+</div>
+<a id="a1b103ff111456f178286d97002b63afb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b103ff111456f178286d97002b63afb">&#9670;&nbsp;</a></span>ServiceReference</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">AnsiString TTrainController::ServiceReference</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>String used to display the offending service in timetable error messages bool AnyHeadCodeValid; //flag to indicate valid headcode types for a service - when true can accept xxNN; if false accept only NaNN (N=number, x = any alphanumeric, a= upper or lower case letter) - dropped at v0.6b </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a></li>
 <li>TrainUnit.cpp</li>

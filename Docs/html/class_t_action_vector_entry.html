@@ -65,18 +65,32 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_t_action_vector_entry-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">TActionVectorEntry Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Contains a single train action in a timetable - repeat entry is also of this class though no train action is taken for it.  
+ <a href="class_t_action_vector_entry.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for TActionVectorEntry:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_action_vector_entry__coll__graph.svg" width="290" height="566"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_action_vector_entry__coll__graph.svg" width="290" height="566"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a2f3969c630acb3f7a346ced7a601502f"><td class="memItemLeft" align="right" valign="top"><a id="a2f3969c630acb3f7a346ced7a601502f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#a2f3969c630acb3f7a346ced7a601502f">TActionVectorEntry</a> ()</td></tr>
+<tr class="memdesc:a2f3969c630acb3f7a346ced7a601502f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor, sets all values to default states. <br /></td></tr>
+<tr class="separator:a2f3969c630acb3f7a346ced7a601502f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:afdc4364c8698998b3689039a32b8c148"><td class="memItemLeft" align="right" valign="top"><a id="afdc4364c8698998b3689039a32b8c148"></a>
@@ -88,23 +102,24 @@ AnsiString&#160;</td><td class="memItemRight" valign="bottom"><b>Command</b></td
 <tr class="memitem:a0cce6ed92eea821583a661966baae024"><td class="memItemLeft" align="right" valign="top"><a id="a0cce6ed92eea821583a661966baae024"></a>
 AnsiString&#160;</td><td class="memItemRight" valign="bottom"><b>OtherHeadCode</b></td></tr>
 <tr class="separator:a0cce6ed92eea821583a661966baae024"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae142e8e9d3a842c9b1d81bcd4e93e291"><td class="memItemLeft" align="right" valign="top"><a id="ae142e8e9d3a842c9b1d81bcd4e93e291"></a>
-AnsiString&#160;</td><td class="memItemRight" valign="bottom"><b>NonRepeatingShuttleLinkHeadCode</b></td></tr>
+<tr class="memitem:ae142e8e9d3a842c9b1d81bcd4e93e291"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#ae142e8e9d3a842c9b1d81bcd4e93e291">NonRepeatingShuttleLinkHeadCode</a></td></tr>
 <tr class="separator:ae142e8e9d3a842c9b1d81bcd4e93e291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a858aae4488b108f2e2771b1ef0e2905e"><td class="memItemLeft" align="right" valign="top"><a id="a858aae4488b108f2e2771b1ef0e2905e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SignallerControl</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#a858aae4488b108f2e2771b1ef0e2905e">SignallerControl</a></td></tr>
+<tr class="memdesc:a858aae4488b108f2e2771b1ef0e2905e"><td class="mdescLeft">&#160;</td><td class="mdescRight">indicates a train that is defined by the timetable as under signaller control <br /></td></tr>
 <tr class="separator:a858aae4488b108f2e2771b1ef0e2905e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43fd46452123d72efc2bd9d10008b6f1"><td class="memItemLeft" align="right" valign="top"><a id="a43fd46452123d72efc2bd9d10008b6f1"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>Warning</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#a43fd46452123d72efc2bd9d10008b6f1">Warning</a></td></tr>
+<tr class="memdesc:a43fd46452123d72efc2bd9d10008b6f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">if set triggers an alert in the warning panel when the action is reached <br /></td></tr>
 <tr class="separator:a43fd46452123d72efc2bd9d10008b6f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f4a663fd91b104c7f93990d79c16d1d"><td class="memItemLeft" align="right" valign="top"><a id="a5f4a663fd91b104c7f93990d79c16d1d"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>NumberOfRepeats</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#a5f4a663fd91b104c7f93990d79c16d1d">NumberOfRepeats</a></td></tr>
+<tr class="memdesc:a5f4a663fd91b104c7f93990d79c16d1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">the number of repeating services <br /></td></tr>
 <tr class="separator:a5f4a663fd91b104c7f93990d79c16d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18171f01d5e5e01242c3c672045efb28"><td class="memItemLeft" align="right" valign="top"><a id="a18171f01d5e5e01242c3c672045efb28"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>RearStartOrRepeatMins</b></td></tr>
 <tr class="separator:a18171f01d5e5e01242c3c672045efb28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b84cb2a020cfb2f81a091f3bdc59ec4"><td class="memItemLeft" align="right" valign="top"><a id="a8b84cb2a020cfb2f81a091f3bdc59ec4"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>FrontStartOrRepeatDigits</b></td></tr>
+<tr class="memitem:a8b84cb2a020cfb2f81a091f3bdc59ec4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#a8b84cb2a020cfb2f81a091f3bdc59ec4">FrontStartOrRepeatDigits</a></td></tr>
 <tr class="separator:a8b84cb2a020cfb2f81a091f3bdc59ec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07850a494d4c0c71e9579c21c1910b76"><td class="memItemLeft" align="right" valign="top"><a id="a07850a494d4c0c71e9579c21c1910b76"></a>
 TDateTime&#160;</td><td class="memItemRight" valign="bottom"><b>EventTime</b></td></tr>
@@ -112,31 +127,111 @@ TDateTime&#160;</td><td class="memItemRight" valign="bottom"><b>EventTime</b></t
 <tr class="memitem:a590726f5c852a19625d7fdbed22469b0"><td class="memItemLeft" align="right" valign="top"><a id="a590726f5c852a19625d7fdbed22469b0"></a>
 TDateTime&#160;</td><td class="memItemRight" valign="bottom"><b>ArrivalTime</b></td></tr>
 <tr class="separator:a590726f5c852a19625d7fdbed22469b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37c6ff0cda2672bbd60099487442fbb5"><td class="memItemLeft" align="right" valign="top"><a id="a37c6ff0cda2672bbd60099487442fbb5"></a>
-TDateTime&#160;</td><td class="memItemRight" valign="bottom"><b>DepartureTime</b></td></tr>
+<tr class="memitem:a37c6ff0cda2672bbd60099487442fbb5"><td class="memItemLeft" align="right" valign="top">TDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#a37c6ff0cda2672bbd60099487442fbb5">DepartureTime</a></td></tr>
 <tr class="separator:a37c6ff0cda2672bbd60099487442fbb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1d7c2bc6c0dee48c74c3dd9c325ec4d"><td class="memItemLeft" align="right" valign="top"><a id="ab1d7c2bc6c0dee48c74c3dd9c325ec4d"></a>
-TExitList&#160;</td><td class="memItemRight" valign="bottom"><b>ExitList</b></td></tr>
+TExitList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#ab1d7c2bc6c0dee48c74c3dd9c325ec4d">ExitList</a></td></tr>
+<tr class="memdesc:ab1d7c2bc6c0dee48c74c3dd9c325ec4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">the list of valid train exit TrackVector positions for 'Fer' entries (empty to begin with) <br /></td></tr>
 <tr class="separator:ab1d7c2bc6c0dee48c74c3dd9c325ec4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa45fd77d7d5f19350a0a7a8fbc05b13"><td class="memItemLeft" align="right" valign="top"><a id="aaa45fd77d7d5f19350a0a7a8fbc05b13"></a>
-TTimetableFormatType&#160;</td><td class="memItemRight" valign="bottom"><b>FormatType</b></td></tr>
+TTimetableFormatType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#aaa45fd77d7d5f19350a0a7a8fbc05b13">FormatType</a></td></tr>
+<tr class="memdesc:aaa45fd77d7d5f19350a0a7a8fbc05b13"><td class="mdescLeft">&#160;</td><td class="mdescRight">defines the timetable action type <br /></td></tr>
 <tr class="separator:aaa45fd77d7d5f19350a0a7a8fbc05b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5de0c970525a897f8ac2cdf66004dab9"><td class="memItemLeft" align="right" valign="top"><a id="a5de0c970525a897f8ac2cdf66004dab9"></a>
-TTimetableLocationType&#160;</td><td class="memItemRight" valign="bottom"><b>LocationType</b></td></tr>
+TTimetableLocationType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#a5de0c970525a897f8ac2cdf66004dab9">LocationType</a></td></tr>
+<tr class="memdesc:a5de0c970525a897f8ac2cdf66004dab9"><td class="mdescLeft">&#160;</td><td class="mdescRight">indicates where the train is when the relevant action occurs <br /></td></tr>
 <tr class="separator:a5de0c970525a897f8ac2cdf66004dab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67b29560b218e8b8ba854d326a630682"><td class="memItemLeft" align="right" valign="top"><a id="a67b29560b218e8b8ba854d326a630682"></a>
-TTimetableSequenceType&#160;</td><td class="memItemRight" valign="bottom"><b>SequenceType</b></td></tr>
+TTimetableSequenceType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#a67b29560b218e8b8ba854d326a630682">SequenceType</a></td></tr>
+<tr class="memdesc:a67b29560b218e8b8ba854d326a630682"><td class="mdescLeft">&#160;</td><td class="mdescRight">indicates where in the sequence of codes the action lies <br /></td></tr>
 <tr class="separator:a67b29560b218e8b8ba854d326a630682"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8efcbff8298cf829c26b0db65ffa6b3"><td class="memItemLeft" align="right" valign="top"><a id="ae8efcbff8298cf829c26b0db65ffa6b3"></a>
-TTimetableShuttleLinkType&#160;</td><td class="memItemRight" valign="bottom"><b>ShuttleLinkType</b></td></tr>
+TTimetableShuttleLinkType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#ae8efcbff8298cf829c26b0db65ffa6b3">ShuttleLinkType</a></td></tr>
+<tr class="memdesc:ae8efcbff8298cf829c26b0db65ffa6b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">indicates whether or not the action relates to a shuttle service link <br /></td></tr>
 <tr class="separator:ae8efcbff8298cf829c26b0db65ffa6b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab240a52305bd614f1921e86617687abf"><td class="memItemLeft" align="right" valign="top"><a id="ab240a52305bd614f1921e86617687abf"></a>
-<a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>LinkedTrainEntryPtr</b></td></tr>
+<tr class="memitem:ab240a52305bd614f1921e86617687abf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#ab240a52305bd614f1921e86617687abf">LinkedTrainEntryPtr</a></td></tr>
 <tr class="separator:ab240a52305bd614f1921e86617687abf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a921897cd667dd8933de593e97e74a3a7"><td class="memItemLeft" align="right" valign="top"><a id="a921897cd667dd8933de593e97e74a3a7"></a>
-<a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>NonRepeatingShuttleLinkEntryPtr</b></td></tr>
+<tr class="memitem:a921897cd667dd8933de593e97e74a3a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_action_vector_entry.html#a921897cd667dd8933de593e97e74a3a7">NonRepeatingShuttleLinkEntryPtr</a></td></tr>
 <tr class="separator:a921897cd667dd8933de593e97e74a3a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Contains a single train action in a timetable - repeat entry is also of this class though no train action is taken for it. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a37c6ff0cda2672bbd60099487442fbb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37c6ff0cda2672bbd60099487442fbb5">&#9670;&nbsp;</a></span>DepartureTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TDateTime TActionVectorEntry::DepartureTime</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>relevant times at which the action is timetabled, zeroed on creation so change to -1 as a marker for 'not set' </p>
+
+</div>
+</div>
+<a id="a8b84cb2a020cfb2f81a091f3bdc59ec4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b84cb2a020cfb2f81a091f3bdc59ec4">&#9670;&nbsp;</a></span>FrontStartOrRepeatDigits</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TActionVectorEntry::FrontStartOrRepeatDigits</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>dual-purpose variables used for the TrackVectorPositions of the rear and front train starting elements (for Snt) or for repeat minute &amp; digit values in repeat entries </p>
+
+</div>
+</div>
+<a id="ab240a52305bd614f1921e86617687abf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab240a52305bd614f1921e86617687abf">&#9670;&nbsp;</a></span>LinkedTrainEntryPtr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a>* TActionVectorEntry::LinkedTrainEntryPtr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>link pointer for use between fsp/rsp &amp; Sfs; Fjo &amp; jbo; Fns &amp; Sns; &amp; all shuttle to shuttle links </p>
+
+</div>
+</div>
+<a id="a921897cd667dd8933de593e97e74a3a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a921897cd667dd8933de593e97e74a3a7">&#9670;&nbsp;</a></span>NonRepeatingShuttleLinkEntryPtr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a>* TActionVectorEntry::NonRepeatingShuttleLinkEntryPtr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>pointer used by shuttles for the non-shuttle train links, in &amp; out, the corresponding non-shuttle linked trains use LinkedTrainEntryPtr </p>
+
+</div>
+</div>
+<a id="ae142e8e9d3a842c9b1d81bcd4e93e291"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae142e8e9d3a842c9b1d81bcd4e93e291">&#9670;&nbsp;</a></span>NonRepeatingShuttleLinkHeadCode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">AnsiString TActionVectorEntry::NonRepeatingShuttleLinkHeadCode</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>string values for timetabled action entries, null on creation </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a></li>
 </ul>

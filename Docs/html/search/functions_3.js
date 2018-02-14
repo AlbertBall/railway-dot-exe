@@ -6,6 +6,7 @@ var searchData=
   ['decrementvaluesingapsandtrackandnamemaps',['DecrementValuesInGapsAndTrackAndNameMaps',['../class_t_track.html#a2095a52c4b914bf6b29529a2d82043e9',1,'TTrack']]],
   ['decrementvaluesininactivetrackandnamemaps',['DecrementValuesInInactiveTrackAndNameMaps',['../class_t_track.html#af8f925ac5e7301c1094cec76808e1140',1,'TTrack']]],
   ['delay',['Delay',['../class_t_interface.html#a7fa894f52a3cb9746e81166ec1a81bf3',1,'TInterface']]],
+  ['deletetrain',['DeleteTrain',['../class_t_train.html#afd5d7ea375b8a878c31d81841acad159',1,'TTrain']]],
   ['diagonalfouledbyroute',['DiagonalFouledByRoute',['../class_t_all_routes.html#ae3fb64509afc46d5871c7843c7769f88',1,'TAllRoutes']]],
   ['diagonalfouledbyrouteortrain',['DiagonalFouledByRouteOrTrain',['../class_t_all_routes.html#a2341a7e860e716e60b733f45814e4499',1,'TAllRoutes']]],
   ['diagonalfouledbytrain',['DiagonalFouledByTrain',['../class_t_track.html#a3b4a2e8a16c61a4286fcf34adb000819',1,'TTrack']]],

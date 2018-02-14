@@ -24,7 +24,7 @@
 </g>
 <!-- Node2 -->
 <g id="node2" class="node"><title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_train_data_entry.html" target="_top" xlink:title="{TTrainDataEntry\n|+ HeadCode\l+ ServiceReference\l+ Description\l+ MaxBrakeRate\l+ MaxRunningSpeed\l+ PowerAtRail\l+ Mass\l+ NumberOfTrains\l+ SignallerSpeed\l+ StartSpeed\l+ ActionVector\l+ TrainOperatingDataVector\l|+ TTrainDataEntry()\l}">
+<g id="a_node2"><a xlink:href="class_t_train_data_entry.html" target="_top" xlink:title="Contains all data for a single train. ">
 <polygon fill="white" stroke="black" points="6,-149.5 6,-327.5 143,-327.5 143,-149.5 6,-149.5"/>
 <text text-anchor="middle" x="74.5" y="-315.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainDataEntry</text>
 <polyline fill="none" stroke="black" points="6,-308.5 143,-308.5 "/>

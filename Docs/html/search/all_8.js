@@ -4,6 +4,8 @@ var searchData=
   ['inactivemapcheck',['InactiveMapCheck',['../class_t_track.html#a23030c22d4c98706d1738205242646d9',1,'TTrack']]],
   ['inactivetrack2multimap',['InactiveTrack2MultiMap',['../class_t_track.html#add05819a2f4fc2c2e86d376f78c42493',1,'TTrack']]],
   ['inactivetrackelementat',['InactiveTrackElementAt',['../class_t_track.html#a51f89cf70e94b037f6378cd78003d82b',1,'TTrack']]],
+  ['incrementaldigits',['IncrementalDigits',['../class_t_train.html#a7390e5172ab0a5aa998df94953e43fba',1,'TTrain']]],
+  ['incrementalminutes',['IncrementalMinutes',['../class_t_train.html#a8601120683e9bf4f26b0d1cba75ceed4',1,'TTrain']]],
   ['infocaptionstore',['InfoCaptionStore',['../class_t_interface.html#adbc9c0949ca221c0b45835d086ca5b79',1,'TInterface']]],
   ['infopanel',['InfoPanel',['../class_t_interface.html#aa8f9a87d19b3695023f99fdc8e1c650a',1,'TInterface']]],
   ['internalint',['InternalInt',['../class_i_d_int.html#af9b9224cae0ea5f7ce15c83e6b94d00a',1,'IDInt']]],
@@ -21,7 +23,11 @@ var searchData=
   ['isplatformornamednonstationlocationpresent',['IsPlatformOrNamedNonStationLocationPresent',['../class_t_track.html#adbec6561f4ecd2fa1dabf3e41502b085',1,'TTrack']]],
   ['isposition',['IsPosition',['../class_t_pref_dir_element.html#afa529cc481e34148fd825b49dca7abdd',1,'TPrefDirElement']]],
   ['isreadyforoperation',['IsReadyForOperation',['../class_t_track.html#a853f6bc248fd0acdf4afe8a5f6c54251',1,'TTrack']]],
+  ['issntentrylocated',['IsSNTEntryLocated',['../class_t_train_controller.html#a61cdbf0085d24c76aa84e7d5e1d11ead',1,'TTrainController']]],
   ['istherearouteatidnumber',['IsThereARouteAtIDNumber',['../class_t_all_routes.html#ac0c25f0bd613ff645dab243f1eb8b593',1,'TAllRoutes']]],
   ['istrackfinished',['IsTrackFinished',['../class_t_track.html#aa8386109483977bfaa97909747358149',1,'TTrack']]],
-  ['istracklinked',['IsTrackLinked',['../class_t_track.html#ac0c7fcb151e24dd265a94136db9b6a58',1,'TTrack']]]
+  ['istracklinked',['IsTrackLinked',['../class_t_track.html#ac0c7fcb151e24dd265a94136db9b6a58',1,'TTrack']]],
+  ['istrainidonbridgetrackpos01',['IsTrainIDOnBridgeTrackPos01',['../class_t_train.html#a0a3a41dac70ba46da2f7f9fd03f2a63f',1,'TTrain']]],
+  ['istrainidonbridgetrackpos23',['IsTrainIDOnBridgeTrackPos23',['../class_t_train.html#a6cbff3229246b7a156cd64a531aa60a6',1,'TTrain']]],
+  ['istrainterminating',['IsTrainTerminating',['../class_t_train.html#a89e17b8d82633276576e365c980e718a',1,'TTrain']]]
 ];

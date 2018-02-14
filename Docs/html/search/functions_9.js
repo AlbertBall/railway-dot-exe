@@ -1,29 +1,4 @@
 var searchData=
 [
-  ['lastelementnumber',['LastElementNumber',['../class_t_one_pref_dir.html#a26a1ee9d1ced0d53e35936097d4896f0',1,'TOnePrefDir']]],
-  ['lastelementptr',['LastElementPtr',['../class_t_one_pref_dir.html#a42862b2abcd0eb356982f4ce46922922',1,'TOnePrefDir']]],
-  ['left',['Left',['../class_t_display.html#a1b2004c2d76614da605291b06863f340',1,'TDisplay']]],
-  ['lengthmarker',['LengthMarker',['../class_t_track.html#a8520abf65484aa83a28329a633836f97',1,'TTrack']]],
-  ['linktrack',['LinkTrack',['../class_t_track.html#a17b6095b0c8de0e1493eeebd6d534247',1,'TTrack']]],
-  ['linktracknomessages',['LinkTrackNoMessages',['../class_t_track.html#a42f410832651458a4a34769ef95be51b',1,'TTrack']]],
-  ['loadbarriersdownvector',['LoadBarriersDownVector',['../class_t_track.html#a96563ccfea0293d240212db434f4e3e0',1,'TTrack']]],
-  ['loadgroundsignalglyphs',['LoadGroundSignalGlyphs',['../class_t_interface.html#a3f17b5281842894e9cd477b4351a6c9f',1,'TInterface']]],
-  ['loadinterface',['LoadInterface',['../class_t_interface.html#ad2e9b9996aa6ebd7108d14d8db399da8',1,'TInterface']]],
-  ['loadnormalsignalglyphs',['LoadNormalSignalGlyphs',['../class_t_interface.html#a170d7ac96ec862ba0c2587972f266407',1,'TInterface']]],
-  ['loadoldprefdir',['LoadOldPrefDir',['../class_t_one_pref_dir.html#a614933ff3958e4b8c9be9bc78159d9e8',1,'TOnePrefDir']]],
-  ['loadoldtrack',['LoadOldTrack',['../class_t_track.html#abff18c1d577e257279c816da8868f232',1,'TTrack']]],
-  ['loadoriginalexistinggraphic',['LoadOriginalExistingGraphic',['../class_t_graphic_element.html#a6c3759e5c5a639ef98c3470363c48988',1,'TGraphicElement']]],
-  ['loadoriginalscreengraphic',['LoadOriginalScreenGraphic',['../class_t_graphic_element.html#ac12f60cb52eefdc86eaa504419eb138d',1,'TGraphicElement']]],
-  ['loadoverlaygraphic',['LoadOverlayGraphic',['../class_t_graphic_element.html#a82c786873b196ec443f052dedac8b1c1',1,'TGraphicElement']]],
-  ['loadperformancefile',['LoadPerformanceFile',['../class_t_interface.html#a62921b8aed8b5e8b36bd048db159a038',1,'TInterface']]],
-  ['loadprefdir',['LoadPrefDir',['../class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d',1,'TOnePrefDir']]],
-  ['loadrailway',['LoadRailway',['../class_t_interface.html#a95c3545a30171ca5a08e34c58160079c',1,'TInterface']]],
-  ['loadroutes',['LoadRoutes',['../class_t_all_routes.html#adadd08bb4cbbcaeba918f20c6c103a39',1,'TAllRoutes']]],
-  ['loadsession',['LoadSession',['../class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2',1,'TInterface']]],
-  ['loadtimetablefromsessionfile',['LoadTimetableFromSessionFile',['../class_t_interface.html#a92d5a9e07b9362dee2296b7759a1c83d',1,'TInterface']]],
-  ['loadtrack',['LoadTrack',['../class_t_track.html#adcd1d019cbdb0d0dbfa44a41dc98ba07',1,'TTrack']]],
-  ['locationnameallocated',['LocationNameAllocated',['../class_t_track.html#adf9b0df7c51a36a4fca3a4ced7cc4a35',1,'TTrack']]],
-  ['locationsnotnamed',['LocationsNotNamed',['../class_t_track.html#ad7d7ef450424ea6aab50db5445c6448c',1,'TTrack']]],
-  ['logprefdir',['LogPrefDir',['../class_t_pref_dir_element.html#a473c0faabe4d0fb8c4296c9c70dbe7d3',1,'TPrefDirElement']]],
-  ['logtrack',['LogTrack',['../class_t_track_element.html#a100bff829c4dca820927affde4cb9e57',1,'TTrackElement']]]
+  ['joinedby',['JoinedBy',['../class_t_train.html#a6c3479378d35f9041c38d80f03686b41',1,'TTrain']]]
 ];

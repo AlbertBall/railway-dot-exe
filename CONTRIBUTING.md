@@ -22,6 +22,8 @@ The following is a set of guidelines for contributing to railway-dot-exe.
   * [Git Commit Messages](#git-commit-messages)
   * [Editing the Developer Guide](#editing-the-developer-guide)
 
+[Attributions](#attributions)
+
 ## Code of Conduct
 
 Be nice to each other. Please report unacceptable behaviour to [railwayfeedback@gmail.com](mailto:railwayfeedback@gmail.com).
@@ -106,6 +108,10 @@ So… there’s plenty still to do… what are you waiting for?
 
 * If you want access to the source copy of the Developer Guide (used to produce the PDF version on GitHub) just  [Email us](mailto:railwayfeedback@gmail.com) asking for access.
 
+## Attributions
 
+Menu icons from Silk Icon Set 1.3 by Mark James used under Creative Commons Attribution 2.5 License
+
+ http://creativecommons.org/licenses/by/2.5/
 
 

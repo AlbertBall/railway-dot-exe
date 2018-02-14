@@ -80,8 +80,7 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for TTrack:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_track__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_track__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -877,17 +876,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#ab6f605b1cf52a3f8efba5549e19368a8">LinkHVArray</a> [10][2]</td></tr>
 <tr class="memdesc:ab6f605b1cf52a3f8efba5549e19368a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">array used to determine relative horizontal &amp; vertical track element positions for specific link values <br /></td></tr>
 <tr class="separator:ab6f605b1cf52a3f8efba5549e19368a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dc657245d548b3b07fdb42e173f3bba"><td class="memItemLeft" align="right" valign="top"><a id="a8dc657245d548b3b07fdb42e173f3bba"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a8dc657245d548b3b07fdb42e173f3bba">Tag76Array</a> [23][3]</td></tr>
-<tr class="memdesc:a8dc657245d548b3b07fdb42e173f3bba"><td class="mdescLeft">&#160;</td><td class="mdescRight">these arrays give valid adjacent named element relative positions for each type of named element, <br /></td></tr>
+<tr class="memitem:a8dc657245d548b3b07fdb42e173f3bba"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a8dc657245d548b3b07fdb42e173f3bba">Tag76Array</a> [23][3]</td></tr>
 <tr class="separator:a8dc657245d548b3b07fdb42e173f3bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f05f2ae83cb9f85930df970b7844c4b"><td class="memItemLeft" align="right" valign="top"><a id="a4f05f2ae83cb9f85930df970b7844c4b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a4f05f2ae83cb9f85930df970b7844c4b">Tag77Array</a> [23][3]</td></tr>
-<tr class="memdesc:a4f05f2ae83cb9f85930df970b7844c4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">the numbers - 76, 77 etc - relate to track element element SpeedTag values (76 - 79 = platforms, 96 = <br /></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>Tag77Array</b> [23][3]</td></tr>
 <tr class="separator:a4f05f2ae83cb9f85930df970b7844c4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b4b28532e1317000b4387a9b37ff981"><td class="memItemLeft" align="right" valign="top"><a id="a4b4b28532e1317000b4387a9b37ff981"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a4b4b28532e1317000b4387a9b37ff981">Tag78Array</a> [23][3]</td></tr>
-<tr class="memdesc:a4b4b28532e1317000b4387a9b37ff981"><td class="mdescLeft">&#160;</td><td class="mdescRight">concourse, 129 &amp; 130 = footbridges and 131 = non-station named location. <br /></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>Tag78Array</b> [23][3]</td></tr>
 <tr class="separator:a4b4b28532e1317000b4387a9b37ff981"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab95da137dad09b9c8cd3fc673b80e841"><td class="memItemLeft" align="right" valign="top"><a id="ab95da137dad09b9c8cd3fc673b80e841"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>Tag79Array</b> [23][3]</td></tr>
@@ -2159,7 +2154,7 @@ Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>N
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Track elements have members that indicates whether and on what track a train is present (TrainIDOnElement, TrainIDOnBridgeTrackPos01 and TrainIDOnBridgeTrackPos23). This function resets them all to their non-train-present state of -1. Called by TTrainController::UnplotTrains </p>
+<p>Track elements have members that indicates whether and on what track a train is present (TrainIDOnElement, TrainIDOnBridgeTrackPos01 and TrainIDOnBridgeTrackPos23). This function resets them all to their non-train-present state of -1. Called by <a class="el" href="class_t_train_controller.html#a7e2abfcc38e51933883d959c4155aca0">TTrainController::UnplotTrains</a> </p>
 
 </div>
 </div>
@@ -2381,6 +2376,29 @@ Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>N
 </table>
 </div><div class="memdoc">
 <p>sets of valid TrackElements for placement of platforms and non-station named locations </p>
+
+</div>
+</div>
+<a id="a8dc657245d548b3b07fdb42e173f3bba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dc657245d548b3b07fdb42e173f3bba">&#9670;&nbsp;</a></span>Tag76Array</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TTrack::Tag76Array[23][3]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>these arrays give valid adjacent named element relative positions for each type of named element, the numbers - 76, 77 etc - relate to track element element SpeedTag values (76 - 79 = platforms, 96 = concourse, 129 &amp; 130 = footbridges and 131 = non-station named location. </p>
 
 </div>
 </div>

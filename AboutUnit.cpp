@@ -106,6 +106,9 @@ void __fastcall TAboutForm::SetAboutCaption()
 	AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
 							L"operate your own railway" + NL + NL +
 							L" Release: " + strVersion + NL + NL +
-							L"Copyright 2010-2018 Albert Ball";
+							L"Copyright 2010-2018 Albert Ball" + NL + NL + NL +
+                            L"Menu icons from Silk Icon Set 1.3 by Mark James" + NL +
+                            L"used under Creative Commons Attribution 2.5 License." + NL +
+                            L"http://creativecommons.org/licenses/by/2.5/";
 }
 //---------------------------------------------------------------------------

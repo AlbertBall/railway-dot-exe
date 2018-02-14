@@ -3,6 +3,10 @@ var searchData=
   ['tactivelcvector',['TActiveLCVector',['../class_t_track.html#af124e944cfb44075f390cf5eceaf3e66',1,'TTrack']]],
   ['tactivetrackelementnamemap',['TActiveTrackElementNameMap',['../class_t_track.html#af78e1d88c49cebd05b35fc408a5d9d2e',1,'TTrack']]],
   ['tallroutesvector',['TAllRoutesVector',['../class_t_all_routes.html#a34636f74b522ec911900fce48ea6667c',1,'TAllRoutes']]],
+  ['tcontinuationautosigvector',['TContinuationAutoSigVector',['../class_t_train_controller.html#a1908f7d1a5dcfebf2f747efbdd6f4681',1,'TTrainController']]],
+  ['tcontinuationtrainexpectationmultimap',['TContinuationTrainExpectationMultiMap',['../class_t_train_controller.html#a36525478ab0d9f59e486b8c030acd87c',1,'TTrainController']]],
+  ['tcontinuationtrainexpectationmultimapiterator',['TContinuationTrainExpectationMultiMapIterator',['../class_t_train_controller.html#ad10dfce8ec2a66858af7fbeb1529257f',1,'TTrainController']]],
+  ['tcontinuationtrainexpectationmultimappair',['TContinuationTrainExpectationMultiMapPair',['../class_t_train_controller.html#a5adc75543948ea32915ef025ace798b2',1,'TTrainController']]],
   ['tgapmap',['TGapMap',['../class_t_track.html#a57d1f751f59c96c16918a044b3d271f7',1,'TTrack']]],
   ['tgapmapiterator',['TGapMapIterator',['../class_t_track.html#a59d0d360b7897d3364135f3882ec495a',1,'TTrack']]],
   ['timpair',['TIMPair',['../class_t_track.html#ae0a83809dc6f3dabb0f8fd8e9464ac70',1,'TTrack']]],
@@ -24,5 +28,6 @@ var searchData=
   ['ttevptr',['TTEVPtr',['../class_t_interface.html#abea77d791c25726e7711356bbc902534',1,'TInterface']]],
   ['ttimetableeditvector',['TTimetableEditVector',['../class_t_interface.html#abf0434fbaa193f8f7594977f6e88f006',1,'TInterface']]],
   ['ttrackmap',['TTrackMap',['../class_t_track.html#ab03d3109c635a149c57812c89cec63a4',1,'TTrack']]],
-  ['ttrackvector',['TTrackVector',['../class_t_track.html#ac64e15050a0faf07c1b7410d60cbcbe5',1,'TTrack']]]
+  ['ttrackvector',['TTrackVector',['../class_t_track.html#ac64e15050a0faf07c1b7410d60cbcbe5',1,'TTrack']]],
+  ['ttrainvector',['TTrainVector',['../class_t_train_controller.html#aa9073b97736a2733dbdaf8dc52e34c24',1,'TTrainController']]]
 ];

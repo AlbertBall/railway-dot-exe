@@ -75,6 +75,11 @@ $(function() {
 <div class="title">TTrainController::TContinuationAutoSigEntry Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Turns signals back to green in stages after a train has exited an autosig route at a continuation.  
+ <a href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for TTrainController::TContinuationAutoSigEntry:</div>
 <div class="dyncontent">
@@ -83,8 +88,7 @@ Collaboration diagram for TTrainController::TContinuationAutoSigEntry:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ab5a944eed2be17d13d99a9070f78c785"><td class="memItemLeft" align="right" valign="top"><a id="ab5a944eed2be17d13d99a9070f78c785"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>FirstDelay</b></td></tr>
+<tr class="memitem:ab5a944eed2be17d13d99a9070f78c785"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html#ab5a944eed2be17d13d99a9070f78c785">FirstDelay</a></td></tr>
 <tr class="separator:ab5a944eed2be17d13d99a9070f78c785"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a637042cd9aa1c141c68ca1979935c8d8"><td class="memItemLeft" align="right" valign="top"><a id="a637042cd9aa1c141c68ca1979935c8d8"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>SecondDelay</b></td></tr>
@@ -93,15 +97,36 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SecondDelay</b></td
 double&#160;</td><td class="memItemRight" valign="bottom"><b>ThirdDelay</b></td></tr>
 <tr class="separator:ad393d737f9031743cabfc1fbd1ac6239"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4cf92f0e912fe54c7b9549ba4158e90"><td class="memItemLeft" align="right" valign="top"><a id="ae4cf92f0e912fe54c7b9549ba4158e90"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>AccessNumber</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html#ae4cf92f0e912fe54c7b9549ba4158e90">AccessNumber</a></td></tr>
+<tr class="memdesc:ae4cf92f0e912fe54c7b9549ba4158e90"><td class="mdescLeft">&#160;</td><td class="mdescRight">the number of times the signal changing function has been accessed - starts at 0 and increments after each change <br /></td></tr>
 <tr class="separator:ae4cf92f0e912fe54c7b9549ba4158e90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20f64023350c7394250f784b58a5c036"><td class="memItemLeft" align="right" valign="top"><a id="a20f64023350c7394250f784b58a5c036"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>RouteNumber</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html#a20f64023350c7394250f784b58a5c036">RouteNumber</a></td></tr>
+<tr class="memdesc:a20f64023350c7394250f784b58a5c036"><td class="mdescLeft">&#160;</td><td class="mdescRight">the AllRoutesVector position of the route that the continuation is in <br /></td></tr>
 <tr class="separator:a20f64023350c7394250f784b58a5c036"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a658b7d6efd311690bb9c36e3518e3ff5"><td class="memItemLeft" align="right" valign="top"><a id="a658b7d6efd311690bb9c36e3518e3ff5"></a>
-TDateTime&#160;</td><td class="memItemRight" valign="bottom"><b>PassoutTime</b></td></tr>
+TDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html#a658b7d6efd311690bb9c36e3518e3ff5">PassoutTime</a></td></tr>
+<tr class="memdesc:a658b7d6efd311690bb9c36e3518e3ff5"><td class="mdescLeft">&#160;</td><td class="mdescRight">the timetable clock time at which the train exits from the continuation <br /></td></tr>
 <tr class="separator:a658b7d6efd311690bb9c36e3518e3ff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Turns signals back to green in stages after a train has exited an autosig route at a continuation. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="ab5a944eed2be17d13d99a9070f78c785"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5a944eed2be17d13d99a9070f78c785">&#9670;&nbsp;</a></span>FirstDelay</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double TTrainController::TContinuationAutoSigEntry::FirstDelay</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Delays in seconds before consecutive signal changes - these correspond to the times taken for trains to pass subsequent signals outside the boundaries of the railway. After the third delay the signal nearest to the continuation that was red when the train passed it has changed to green </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a></li>
 </ul>

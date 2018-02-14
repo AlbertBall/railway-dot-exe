@@ -5,6 +5,7 @@ var searchData=
   ['endpossible',['EndPossible',['../class_t_one_pref_dir.html#a7b81a1377e6269aafad6c25c929b2852',1,'TOnePrefDir']]],
   ['enterlocationname',['EnterLocationName',['../class_t_track.html#a433736aed04f76b3d0c39f0696c3bb18',1,'TTrack']]],
   ['entryexitnumber',['EntryExitNumber',['../class_t_pref_dir_element.html#ae8ee9f59578f80d23aebfdb9fff041d4',1,'TPrefDirElement']]],
+  ['entrypos',['EntryPos',['../class_t_train_controller.html#aa60ab73bef848c5458cdf0217092aef8',1,'TTrainController']]],
   ['erasefromprefdirvectorand4multimap',['EraseFromPrefDirVectorAnd4MultiMap',['../class_t_one_pref_dir.html#a8042c0e2fd7f9e39c3ca2a7bff7c68a4',1,'TOnePrefDir']]],
   ['eraselocationandactivetrackelementnames',['EraseLocationAndActiveTrackElementNames',['../class_t_track.html#a13a1cc9770c8729d04ad4c0130f91634',1,'TTrack']]],
   ['eraselocationnametext',['EraseLocationNameText',['../class_t_interface.html#a2bb21fd8e1e90095cf68d63a57e938ec',1,'TInterface']]],

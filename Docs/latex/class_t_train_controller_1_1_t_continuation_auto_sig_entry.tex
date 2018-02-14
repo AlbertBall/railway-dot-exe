@@ -2,6 +2,15 @@
 \label{class_t_train_controller_1_1_t_continuation_auto_sig_entry}\index{T\+Train\+Controller\+::\+T\+Continuation\+Auto\+Sig\+Entry@{T\+Train\+Controller\+::\+T\+Continuation\+Auto\+Sig\+Entry}}
 
 
+Turns signals back to green in stages after a train has exited an autosig route at a continuation.  
+
+
+
+
+{\ttfamily \#include $<$Train\+Unit.\+h$>$}
+
+
+
 Collaboration diagram for T\+Train\+Controller\+:\+:T\+Continuation\+Auto\+Sig\+Entry\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -12,8 +21,7 @@ Collaboration diagram for T\+Train\+Controller\+:\+:T\+Continuation\+Auto\+Sig\+
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_t_train_controller_1_1_t_continuation_auto_sig_entry_ab5a944eed2be17d13d99a9070f78c785}\label{class_t_train_controller_1_1_t_continuation_auto_sig_entry_ab5a944eed2be17d13d99a9070f78c785}} 
-double {\bfseries First\+Delay}
+double \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_auto_sig_entry_ab5a944eed2be17d13d99a9070f78c785}{First\+Delay}}
 \item 
 \mbox{\Hypertarget{class_t_train_controller_1_1_t_continuation_auto_sig_entry_a637042cd9aa1c141c68ca1979935c8d8}\label{class_t_train_controller_1_1_t_continuation_auto_sig_entry_a637042cd9aa1c141c68ca1979935c8d8}} 
 double {\bfseries Second\+Delay}
@@ -22,15 +30,27 @@ double {\bfseries Second\+Delay}
 double {\bfseries Third\+Delay}
 \item 
 \mbox{\Hypertarget{class_t_train_controller_1_1_t_continuation_auto_sig_entry_ae4cf92f0e912fe54c7b9549ba4158e90}\label{class_t_train_controller_1_1_t_continuation_auto_sig_entry_ae4cf92f0e912fe54c7b9549ba4158e90}} 
-int {\bfseries Access\+Number}
-\item 
+int \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_auto_sig_entry_ae4cf92f0e912fe54c7b9549ba4158e90}{Access\+Number}}
+\begin{DoxyCompactList}\small\item\em the number of times the signal changing function has been accessed -\/ starts at 0 and increments after each change \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_1_1_t_continuation_auto_sig_entry_a20f64023350c7394250f784b58a5c036}\label{class_t_train_controller_1_1_t_continuation_auto_sig_entry_a20f64023350c7394250f784b58a5c036}} 
-int {\bfseries Route\+Number}
-\item 
+int \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_auto_sig_entry_a20f64023350c7394250f784b58a5c036}{Route\+Number}}
+\begin{DoxyCompactList}\small\item\em the All\+Routes\+Vector position of the route that the continuation is in \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_1_1_t_continuation_auto_sig_entry_a658b7d6efd311690bb9c36e3518e3ff5}\label{class_t_train_controller_1_1_t_continuation_auto_sig_entry_a658b7d6efd311690bb9c36e3518e3ff5}} 
-T\+Date\+Time {\bfseries Passout\+Time}
-\end{DoxyCompactItemize}
+T\+Date\+Time \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_auto_sig_entry_a658b7d6efd311690bb9c36e3518e3ff5}{Passout\+Time}}
+\begin{DoxyCompactList}\small\item\em the timetable clock time at which the train exits from the continuation \end{DoxyCompactList}\end{DoxyCompactItemize}
 
+
+\subsection{Detailed Description}
+Turns signals back to green in stages after a train has exited an autosig route at a continuation. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_t_train_controller_1_1_t_continuation_auto_sig_entry_ab5a944eed2be17d13d99a9070f78c785}\label{class_t_train_controller_1_1_t_continuation_auto_sig_entry_ab5a944eed2be17d13d99a9070f78c785}} 
+\index{T\+Train\+Controller\+::\+T\+Continuation\+Auto\+Sig\+Entry@{T\+Train\+Controller\+::\+T\+Continuation\+Auto\+Sig\+Entry}!First\+Delay@{First\+Delay}}
+\index{First\+Delay@{First\+Delay}!T\+Train\+Controller\+::\+T\+Continuation\+Auto\+Sig\+Entry@{T\+Train\+Controller\+::\+T\+Continuation\+Auto\+Sig\+Entry}}
+\subsubsection{\texorpdfstring{First\+Delay}{FirstDelay}}
+{\footnotesize\ttfamily double T\+Train\+Controller\+::\+T\+Continuation\+Auto\+Sig\+Entry\+::\+First\+Delay}
+
+Delays in seconds before consecutive signal changes -\/ these correspond to the times taken for trains to pass subsequent signals outside the boundaries of the railway. After the third delay the signal nearest to the continuation that was red when the train passed it has changed to green 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

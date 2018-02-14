@@ -2,13 +2,29 @@
 \label{class_t_action_vector_entry}\index{T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}}
 
 
-Collaboration diagram for T\+Action\+Vector\+Entry\+:\nopagebreak
+Contains a single train action in a timetable -\/ repeat entry is also of this class though no train action is taken for it.  
+
+
+
+
+{\ttfamily \#include $<$Train\+Unit.\+h$>$}
+
+
+
+Collaboration diagram for T\+Action\+Vector\+Entry\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=289pt]{class_t_action_vector_entry__coll__graph}
 \end{center}
 \end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_t_action_vector_entry_a2f3969c630acb3f7a346ced7a601502f}\label{class_t_action_vector_entry_a2f3969c630acb3f7a346ced7a601502f}} 
+\mbox{\hyperlink{class_t_action_vector_entry_a2f3969c630acb3f7a346ced7a601502f}{T\+Action\+Vector\+Entry}} ()
+\begin{DoxyCompactList}\small\item\em Constructor, sets all values to default states. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -21,23 +37,21 @@ Ansi\+String {\bfseries Command}
 \mbox{\Hypertarget{class_t_action_vector_entry_a0cce6ed92eea821583a661966baae024}\label{class_t_action_vector_entry_a0cce6ed92eea821583a661966baae024}} 
 Ansi\+String {\bfseries Other\+Head\+Code}
 \item 
-\mbox{\Hypertarget{class_t_action_vector_entry_ae142e8e9d3a842c9b1d81bcd4e93e291}\label{class_t_action_vector_entry_ae142e8e9d3a842c9b1d81bcd4e93e291}} 
-Ansi\+String {\bfseries Non\+Repeating\+Shuttle\+Link\+Head\+Code}
+Ansi\+String \mbox{\hyperlink{class_t_action_vector_entry_ae142e8e9d3a842c9b1d81bcd4e93e291}{Non\+Repeating\+Shuttle\+Link\+Head\+Code}}
 \item 
 \mbox{\Hypertarget{class_t_action_vector_entry_a858aae4488b108f2e2771b1ef0e2905e}\label{class_t_action_vector_entry_a858aae4488b108f2e2771b1ef0e2905e}} 
-bool {\bfseries Signaller\+Control}
-\item 
+bool \mbox{\hyperlink{class_t_action_vector_entry_a858aae4488b108f2e2771b1ef0e2905e}{Signaller\+Control}}
+\begin{DoxyCompactList}\small\item\em indicates a train that is defined by the timetable as under signaller control \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_action_vector_entry_a43fd46452123d72efc2bd9d10008b6f1}\label{class_t_action_vector_entry_a43fd46452123d72efc2bd9d10008b6f1}} 
-bool {\bfseries Warning}
-\item 
+bool \mbox{\hyperlink{class_t_action_vector_entry_a43fd46452123d72efc2bd9d10008b6f1}{Warning}}
+\begin{DoxyCompactList}\small\item\em if set triggers an alert in the warning panel when the action is reached \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_action_vector_entry_a5f4a663fd91b104c7f93990d79c16d1d}\label{class_t_action_vector_entry_a5f4a663fd91b104c7f93990d79c16d1d}} 
-int {\bfseries Number\+Of\+Repeats}
-\item 
+int \mbox{\hyperlink{class_t_action_vector_entry_a5f4a663fd91b104c7f93990d79c16d1d}{Number\+Of\+Repeats}}
+\begin{DoxyCompactList}\small\item\em the number of repeating services \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_action_vector_entry_a18171f01d5e5e01242c3c672045efb28}\label{class_t_action_vector_entry_a18171f01d5e5e01242c3c672045efb28}} 
 int {\bfseries Rear\+Start\+Or\+Repeat\+Mins}
 \item 
-\mbox{\Hypertarget{class_t_action_vector_entry_a8b84cb2a020cfb2f81a091f3bdc59ec4}\label{class_t_action_vector_entry_a8b84cb2a020cfb2f81a091f3bdc59ec4}} 
-int {\bfseries Front\+Start\+Or\+Repeat\+Digits}
+int \mbox{\hyperlink{class_t_action_vector_entry_a8b84cb2a020cfb2f81a091f3bdc59ec4}{Front\+Start\+Or\+Repeat\+Digits}}
 \item 
 \mbox{\Hypertarget{class_t_action_vector_entry_a07850a494d4c0c71e9579c21c1910b76}\label{class_t_action_vector_entry_a07850a494d4c0c71e9579c21c1910b76}} 
 T\+Date\+Time {\bfseries Event\+Time}
@@ -45,31 +59,64 @@ T\+Date\+Time {\bfseries Event\+Time}
 \mbox{\Hypertarget{class_t_action_vector_entry_a590726f5c852a19625d7fdbed22469b0}\label{class_t_action_vector_entry_a590726f5c852a19625d7fdbed22469b0}} 
 T\+Date\+Time {\bfseries Arrival\+Time}
 \item 
-\mbox{\Hypertarget{class_t_action_vector_entry_a37c6ff0cda2672bbd60099487442fbb5}\label{class_t_action_vector_entry_a37c6ff0cda2672bbd60099487442fbb5}} 
-T\+Date\+Time {\bfseries Departure\+Time}
+T\+Date\+Time \mbox{\hyperlink{class_t_action_vector_entry_a37c6ff0cda2672bbd60099487442fbb5}{Departure\+Time}}
 \item 
 \mbox{\Hypertarget{class_t_action_vector_entry_ab1d7c2bc6c0dee48c74c3dd9c325ec4d}\label{class_t_action_vector_entry_ab1d7c2bc6c0dee48c74c3dd9c325ec4d}} 
-T\+Exit\+List {\bfseries Exit\+List}
-\item 
+T\+Exit\+List \mbox{\hyperlink{class_t_action_vector_entry_ab1d7c2bc6c0dee48c74c3dd9c325ec4d}{Exit\+List}}
+\begin{DoxyCompactList}\small\item\em the list of valid train exit Track\+Vector positions for \textquotesingle{}Fer\textquotesingle{} entries (empty to begin with) \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_action_vector_entry_aaa45fd77d7d5f19350a0a7a8fbc05b13}\label{class_t_action_vector_entry_aaa45fd77d7d5f19350a0a7a8fbc05b13}} 
-T\+Timetable\+Format\+Type {\bfseries Format\+Type}
-\item 
+T\+Timetable\+Format\+Type \mbox{\hyperlink{class_t_action_vector_entry_aaa45fd77d7d5f19350a0a7a8fbc05b13}{Format\+Type}}
+\begin{DoxyCompactList}\small\item\em defines the timetable action type \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_action_vector_entry_a5de0c970525a897f8ac2cdf66004dab9}\label{class_t_action_vector_entry_a5de0c970525a897f8ac2cdf66004dab9}} 
-T\+Timetable\+Location\+Type {\bfseries Location\+Type}
-\item 
+T\+Timetable\+Location\+Type \mbox{\hyperlink{class_t_action_vector_entry_a5de0c970525a897f8ac2cdf66004dab9}{Location\+Type}}
+\begin{DoxyCompactList}\small\item\em indicates where the train is when the relevant action occurs \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_action_vector_entry_a67b29560b218e8b8ba854d326a630682}\label{class_t_action_vector_entry_a67b29560b218e8b8ba854d326a630682}} 
-T\+Timetable\+Sequence\+Type {\bfseries Sequence\+Type}
-\item 
+T\+Timetable\+Sequence\+Type \mbox{\hyperlink{class_t_action_vector_entry_a67b29560b218e8b8ba854d326a630682}{Sequence\+Type}}
+\begin{DoxyCompactList}\small\item\em indicates where in the sequence of codes the action lies \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_action_vector_entry_ae8efcbff8298cf829c26b0db65ffa6b3}\label{class_t_action_vector_entry_ae8efcbff8298cf829c26b0db65ffa6b3}} 
-T\+Timetable\+Shuttle\+Link\+Type {\bfseries Shuttle\+Link\+Type}
+T\+Timetable\+Shuttle\+Link\+Type \mbox{\hyperlink{class_t_action_vector_entry_ae8efcbff8298cf829c26b0db65ffa6b3}{Shuttle\+Link\+Type}}
+\begin{DoxyCompactList}\small\item\em indicates whether or not the action relates to a shuttle service link \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} $\ast$ \mbox{\hyperlink{class_t_action_vector_entry_ab240a52305bd614f1921e86617687abf}{Linked\+Train\+Entry\+Ptr}}
 \item 
-\mbox{\Hypertarget{class_t_action_vector_entry_ab240a52305bd614f1921e86617687abf}\label{class_t_action_vector_entry_ab240a52305bd614f1921e86617687abf}} 
-\mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} $\ast$ {\bfseries Linked\+Train\+Entry\+Ptr}
-\item 
-\mbox{\Hypertarget{class_t_action_vector_entry_a921897cd667dd8933de593e97e74a3a7}\label{class_t_action_vector_entry_a921897cd667dd8933de593e97e74a3a7}} 
-\mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} $\ast$ {\bfseries Non\+Repeating\+Shuttle\+Link\+Entry\+Ptr}
+\mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} $\ast$ \mbox{\hyperlink{class_t_action_vector_entry_a921897cd667dd8933de593e97e74a3a7}{Non\+Repeating\+Shuttle\+Link\+Entry\+Ptr}}
 \end{DoxyCompactItemize}
 
+
+\subsection{Detailed Description}
+Contains a single train action in a timetable -\/ repeat entry is also of this class though no train action is taken for it. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_t_action_vector_entry_a37c6ff0cda2672bbd60099487442fbb5}\label{class_t_action_vector_entry_a37c6ff0cda2672bbd60099487442fbb5}} 
+\index{T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}!Departure\+Time@{Departure\+Time}}
+\index{Departure\+Time@{Departure\+Time}!T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}}
+\subsubsection{\texorpdfstring{Departure\+Time}{DepartureTime}}
+{\footnotesize\ttfamily T\+Date\+Time T\+Action\+Vector\+Entry\+::\+Departure\+Time}
+
+relevant times at which the action is timetabled, zeroed on creation so change to -\/1 as a marker for \textquotesingle{}not set\textquotesingle{} \mbox{\Hypertarget{class_t_action_vector_entry_a8b84cb2a020cfb2f81a091f3bdc59ec4}\label{class_t_action_vector_entry_a8b84cb2a020cfb2f81a091f3bdc59ec4}} 
+\index{T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}!Front\+Start\+Or\+Repeat\+Digits@{Front\+Start\+Or\+Repeat\+Digits}}
+\index{Front\+Start\+Or\+Repeat\+Digits@{Front\+Start\+Or\+Repeat\+Digits}!T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}}
+\subsubsection{\texorpdfstring{Front\+Start\+Or\+Repeat\+Digits}{FrontStartOrRepeatDigits}}
+{\footnotesize\ttfamily int T\+Action\+Vector\+Entry\+::\+Front\+Start\+Or\+Repeat\+Digits}
+
+dual-\/purpose variables used for the Track\+Vector\+Positions of the rear and front train starting elements (for Snt) or for repeat minute \& digit values in repeat entries \mbox{\Hypertarget{class_t_action_vector_entry_ab240a52305bd614f1921e86617687abf}\label{class_t_action_vector_entry_ab240a52305bd614f1921e86617687abf}} 
+\index{T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}!Linked\+Train\+Entry\+Ptr@{Linked\+Train\+Entry\+Ptr}}
+\index{Linked\+Train\+Entry\+Ptr@{Linked\+Train\+Entry\+Ptr}!T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}}
+\subsubsection{\texorpdfstring{Linked\+Train\+Entry\+Ptr}{LinkedTrainEntryPtr}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}}$\ast$ T\+Action\+Vector\+Entry\+::\+Linked\+Train\+Entry\+Ptr}
+
+link pointer for use between fsp/rsp \& Sfs; Fjo \& jbo; Fns \& Sns; \& all shuttle to shuttle links \mbox{\Hypertarget{class_t_action_vector_entry_a921897cd667dd8933de593e97e74a3a7}\label{class_t_action_vector_entry_a921897cd667dd8933de593e97e74a3a7}} 
+\index{T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}!Non\+Repeating\+Shuttle\+Link\+Entry\+Ptr@{Non\+Repeating\+Shuttle\+Link\+Entry\+Ptr}}
+\index{Non\+Repeating\+Shuttle\+Link\+Entry\+Ptr@{Non\+Repeating\+Shuttle\+Link\+Entry\+Ptr}!T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}}
+\subsubsection{\texorpdfstring{Non\+Repeating\+Shuttle\+Link\+Entry\+Ptr}{NonRepeatingShuttleLinkEntryPtr}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}}$\ast$ T\+Action\+Vector\+Entry\+::\+Non\+Repeating\+Shuttle\+Link\+Entry\+Ptr}
+
+pointer used by shuttles for the non-\/shuttle train links, in \& out, the corresponding non-\/shuttle linked trains use Linked\+Train\+Entry\+Ptr \mbox{\Hypertarget{class_t_action_vector_entry_ae142e8e9d3a842c9b1d81bcd4e93e291}\label{class_t_action_vector_entry_ae142e8e9d3a842c9b1d81bcd4e93e291}} 
+\index{T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}!Non\+Repeating\+Shuttle\+Link\+Head\+Code@{Non\+Repeating\+Shuttle\+Link\+Head\+Code}}
+\index{Non\+Repeating\+Shuttle\+Link\+Head\+Code@{Non\+Repeating\+Shuttle\+Link\+Head\+Code}!T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}}
+\subsubsection{\texorpdfstring{Non\+Repeating\+Shuttle\+Link\+Head\+Code}{NonRepeatingShuttleLinkHeadCode}}
+{\footnotesize\ttfamily Ansi\+String T\+Action\+Vector\+Entry\+::\+Non\+Repeating\+Shuttle\+Link\+Head\+Code}
+
+string values for timetabled action entries, null on creation 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

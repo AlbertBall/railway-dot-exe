@@ -1,5 +1,8 @@
 var searchData=
 [
+  ['departuretime',['DepartureTime',['../class_t_action_vector_entry.html#a37c6ff0cda2672bbd60099487442fbb5',1,'TActionVectorEntry']]],
+  ['departuretimeset',['DepartureTimeSet',['../class_t_train.html#ab4f3876cb58a6160c2f1cd7a7eb3f234',1,'TTrain']]],
+  ['description',['Description',['../class_t_train_data_entry.html#aea5870826c3c6815472e86d82b0c9fe7',1,'TTrainDataEntry::Description()'],['../class_t_train_controller_1_1_t_continuation_train_expectation_entry.html#a4f8cb6b7a1ab76fb56a56594aa440fe5',1,'TTrainController::TContinuationTrainExpectationEntry::Description()']]],
   ['developmentpanel',['DevelopmentPanel',['../class_t_interface.html#a82ceb0b38e171d2b46c19f76afef35c1',1,'TInterface']]],
   ['directionnonsigroutegraphicsptr',['DirectionNonSigRouteGraphicsPtr',['../class_t_rail_graphics.html#aca92d2e2beb58376b41a1f41c944e144',1,'TRailGraphics']]],
   ['directionprefdirgraphicsptr',['DirectionPrefDirGraphicsPtr',['../class_t_rail_graphics.html#a152061f5e559e36956bbc4e7e33b6122',1,'TRailGraphics']]],

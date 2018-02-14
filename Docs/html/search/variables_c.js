@@ -1,12 +1,16 @@
 var searchData=
 [
-  ['oneentrytimetablecontents',['OneEntryTimetableContents',['../class_t_interface.html#ac66012f63a57e6e1eab2e2d86b17309f',1,'TInterface']]],
-  ['oneentrytimetablememo',['OneEntryTimetableMemo',['../class_t_interface.html#ad3adbf556bff0b01b12be33a595373fb',1,'TInterface']]],
-  ['operatingpanel',['OperatingPanel',['../class_t_interface.html#a9037b5b7dd4a95e2cc9b4c64ee97b015',1,'TInterface']]],
-  ['operatingpanellabel',['OperatingPanelLabel',['../class_t_interface.html#a167b9a4eba88ea3020f67a1c89907838',1,'TInterface']]],
-  ['output',['Output',['../class_t_display.html#a0e442bbdf413812064b3d0d200261cbc',1,'TDisplay']]],
-  ['outputlog1',['OutputLog1',['../class_t_display.html#a62d6c2b2040a469fb6eb6177a8acc1f2',1,'TDisplay']]],
-  ['overallspeedlimit',['OverallSpeedLimit',['../class_t_interface.html#acc810716df0d41cad86bcba2027ff93e',1,'TInterface']]],
-  ['overlaygraphic',['OverlayGraphic',['../class_t_graphic_element.html#a129fc709d76f28924aa71d2f8ba1ecc7',1,'TGraphicElement::OverlayGraphic()'],['../class_t_one_route_1_1_t_route_flash_element.html#a9728c9fe83d991d41596efa2cf07129f',1,'TOneRoute::TRouteFlashElement::OverlayGraphic()']]],
-  ['overlayplotted',['OverlayPlotted',['../class_t_one_route_1_1_t_route_flash.html#acc9544214464de94df8becea93062c62',1,'TOneRoute::TRouteFlash']]]
+  ['newentryinpreparationflag',['NewEntryInPreparationFlag',['../class_t_interface.html#a2d1ea52d1197b3230f27ec36fd8c8958',1,'TInterface']]],
+  ['newselectbitmaphloc',['NewSelectBitmapHLoc',['../class_t_interface.html#acc7d4b190b0401de81b7173e85cc7fe7',1,'TInterface']]],
+  ['newselectbitmapvloc',['NewSelectBitmapVLoc',['../class_t_interface.html#abd8470c9d77aaaed996ab1451d28c9c6',1,'TInterface']]],
+  ['nextrouteid',['NextRouteID',['../class_t_all_routes.html#a936864598364d2e8c0aea147fea11196',1,'TAllRoutes']]],
+  ['nexttrackelementptr',['NextTrackElementPtr',['../class_t_track.html#a5a3eca45e68b0b2d5604b096e26d79f5',1,'TTrack']]],
+  ['nexttrainid',['NextTrainID',['../class_t_train.html#a59a6ad055b319a73e954e9bef5f7593c',1,'TTrain']]],
+  ['nonctrlorshiftkeyupflag',['NonCTRLOrSHIFTKeyUpFlag',['../class_t_interface.html#ab3848e35090c474e8417d5965d742f00',1,'TInterface']]],
+  ['nonrepeatingshuttlelinkentryptr',['NonRepeatingShuttleLinkEntryPtr',['../class_t_action_vector_entry.html#a921897cd667dd8933de593e97e74a3a7',1,'TActionVectorEntry']]],
+  ['nonrepeatingshuttlelinkheadcode',['NonRepeatingShuttleLinkHeadCode',['../class_t_action_vector_entry.html#ae142e8e9d3a842c9b1d81bcd4e93e291',1,'TActionVectorEntry']]],
+  ['notstartedtrainarrdep',['NotStartedTrainArrDep',['../class_t_train_controller.html#aa547b8fba4e19683055e67359d41a933',1,'TTrainController']]],
+  ['notstartedtrainlatemins',['NotStartedTrainLateMins',['../class_t_train_controller.html#a095d7c99ffc21a6939a044bbad4fa18f',1,'TTrainController']]],
+  ['numberofrepeats',['NumberOfRepeats',['../class_t_action_vector_entry.html#a5f4a663fd91b104c7f93990d79c16d1d',1,'TActionVectorEntry']]],
+  ['numberoftrains',['NumberOfTrains',['../class_t_train_data_entry.html#a977ccbe485d557d4c4a597f5de2251c4',1,'TTrainDataEntry::NumberOfTrains()'],['../class_t_train_formatted_information.html#a2f5bc8f1ff9b154a381660639c40dada',1,'TTrainFormattedInformation::NumberOfTrains()']]]
 ];

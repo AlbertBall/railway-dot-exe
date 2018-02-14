@@ -6,8 +6,7 @@
 
 
 
-Collaboration diagram for T\+Track\+:
-\nopagebreak
+Collaboration diagram for T\+Track\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -668,15 +667,14 @@ int \mbox{\hyperlink{class_t_track_ae8df4625e0c05c1158f3fc366afe928c}{Link\+Chec
 \mbox{\Hypertarget{class_t_track_ab6f605b1cf52a3f8efba5549e19368a8}\label{class_t_track_ab6f605b1cf52a3f8efba5549e19368a8}} 
 int \mbox{\hyperlink{class_t_track_ab6f605b1cf52a3f8efba5549e19368a8}{Link\+H\+V\+Array}} \mbox{[}10\mbox{]}\mbox{[}2\mbox{]}
 \begin{DoxyCompactList}\small\item\em array used to determine relative horizontal \& vertical track element positions for specific link values \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_t_track_a8dc657245d548b3b07fdb42e173f3bba}\label{class_t_track_a8dc657245d548b3b07fdb42e173f3bba}} 
 int \mbox{\hyperlink{class_t_track_a8dc657245d548b3b07fdb42e173f3bba}{Tag76\+Array}} \mbox{[}23\mbox{]}\mbox{[}3\mbox{]}
-\begin{DoxyCompactList}\small\item\em these arrays give valid adjacent named element relative positions for each type of named element, \end{DoxyCompactList}\item 
+\item 
 \mbox{\Hypertarget{class_t_track_a4f05f2ae83cb9f85930df970b7844c4b}\label{class_t_track_a4f05f2ae83cb9f85930df970b7844c4b}} 
-int \mbox{\hyperlink{class_t_track_a4f05f2ae83cb9f85930df970b7844c4b}{Tag77\+Array}} \mbox{[}23\mbox{]}\mbox{[}3\mbox{]}
-\begin{DoxyCompactList}\small\item\em the numbers -\/ 76, 77 etc -\/ relate to track element element Speed\+Tag values (76 -\/ 79 = platforms, 96 = \end{DoxyCompactList}\item 
+int {\bfseries Tag77\+Array} \mbox{[}23\mbox{]}\mbox{[}3\mbox{]}
+\item 
 \mbox{\Hypertarget{class_t_track_a4b4b28532e1317000b4387a9b37ff981}\label{class_t_track_a4b4b28532e1317000b4387a9b37ff981}} 
-int \mbox{\hyperlink{class_t_track_a4b4b28532e1317000b4387a9b37ff981}{Tag78\+Array}} \mbox{[}23\mbox{]}\mbox{[}3\mbox{]}
-\begin{DoxyCompactList}\small\item\em concourse, 129 \& 130 = footbridges and 131 = non-\/station named location. \end{DoxyCompactList}\item 
+int {\bfseries Tag78\+Array} \mbox{[}23\mbox{]}\mbox{[}3\mbox{]}
+\item 
 \mbox{\Hypertarget{class_t_track_ab95da137dad09b9c8cd3fc673b80e841}\label{class_t_track_ab95da137dad09b9c8cd3fc673b80e841}} 
 int {\bfseries Tag79\+Array} \mbox{[}23\mbox{]}\mbox{[}3\mbox{]}
 \item 
@@ -956,7 +954,7 @@ When track is being built it is entered into the Track\+Vector in the order in w
 \subsubsection{\texorpdfstring{Reset\+All\+Train\+I\+D\+Elements()}{ResetAllTrainIDElements()}}
 {\footnotesize\ttfamily void T\+Track\+::\+Reset\+All\+Train\+I\+D\+Elements (\begin{DoxyParamCaption}\item[{int}]{Caller }\end{DoxyParamCaption})}
 
-Track elements have members that indicates whether and on what track a train is present (Train\+I\+D\+On\+Element, Train\+I\+D\+On\+Bridge\+Track\+Pos01 and Train\+I\+D\+On\+Bridge\+Track\+Pos23). This function resets them all to their non-\/train-\/present state of -\/1. Called by T\+Train\+Controller\+::\+Unplot\+Trains \mbox{\Hypertarget{class_t_track_a1be0a43c6b1dc736d981fe7d883d7f01}\label{class_t_track_a1be0a43c6b1dc736d981fe7d883d7f01}} 
+Track elements have members that indicates whether and on what track a train is present (Train\+I\+D\+On\+Element, Train\+I\+D\+On\+Bridge\+Track\+Pos01 and Train\+I\+D\+On\+Bridge\+Track\+Pos23). This function resets them all to their non-\/train-\/present state of -\/1. Called by \mbox{\hyperlink{class_t_train_controller_a7e2abfcc38e51933883d959c4155aca0}{T\+Train\+Controller\+::\+Unplot\+Trains}} \mbox{\Hypertarget{class_t_track_a1be0a43c6b1dc736d981fe7d883d7f01}\label{class_t_track_a1be0a43c6b1dc736d981fe7d883d7f01}} 
 \index{T\+Track@{T\+Track}!Reset\+Gaps\+From\+Gap\+Map@{Reset\+Gaps\+From\+Gap\+Map}}
 \index{Reset\+Gaps\+From\+Gap\+Map@{Reset\+Gaps\+From\+Gap\+Map}!T\+Track@{T\+Track}}
 \subsubsection{\texorpdfstring{Reset\+Gaps\+From\+Gap\+Map()}{ResetGapsFromGapMap()}}
@@ -1011,7 +1009,13 @@ Called by T\+Interface\+::\+Save\+Image\+No\+Grid1\+Click, T\+Interface\+::\+Sav
 \subsubsection{\texorpdfstring{Level\+Crossing\+Allowed}{LevelCrossingAllowed}}
 {\footnotesize\ttfamily Set$<$int, 1, 130$>$ T\+Track\+::\+Level\+Crossing\+Allowed\hspace{0.3cm}{\ttfamily [private]}}
 
-sets of valid Track\+Elements for placement of platforms and non-\/station named locations 
+sets of valid Track\+Elements for placement of platforms and non-\/station named locations \mbox{\Hypertarget{class_t_track_a8dc657245d548b3b07fdb42e173f3bba}\label{class_t_track_a8dc657245d548b3b07fdb42e173f3bba}} 
+\index{T\+Track@{T\+Track}!Tag76\+Array@{Tag76\+Array}}
+\index{Tag76\+Array@{Tag76\+Array}!T\+Track@{T\+Track}}
+\subsubsection{\texorpdfstring{Tag76\+Array}{Tag76Array}}
+{\footnotesize\ttfamily int T\+Track\+::\+Tag76\+Array\mbox{[}23\mbox{]}\mbox{[}3\mbox{]}\hspace{0.3cm}{\ttfamily [private]}}
+
+these arrays give valid adjacent named element relative positions for each type of named element, the numbers -\/ 76, 77 etc -\/ relate to track element element Speed\+Tag values (76 -\/ 79 = platforms, 96 = concourse, 129 \& 130 = footbridges and 131 = non-\/station named location. 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 

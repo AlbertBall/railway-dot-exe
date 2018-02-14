@@ -972,7 +972,12 @@ TPrefDirVector PrefDirVector, SearchVector; ///< pref dir vectors, first is the 
 
 //functions defined in .cpp file
 
-/// Checks ElementIn and returns true only if a single prefdir set at that H&V, with EntryPos giving entry position, not points,
+/// Called by GetStartAndEndPrefDirElements, which in turn is called by PresetAutoSigRoutesButtonClick. Checks for a diagonal link in
+/// the autosigsroute being fouled by an adjacent track with a corresponding link that meets at the diagonal link, and if it is it
+/// returns true and prevents the route being set.  Note that adjacent track consisting of buffers, gaps and continuations at the
+/// diagonal link are also excluded though they need not be, but it makes the check code simpler and such adjacent track is untidy
+/// and can be modelled better anyway.  Added at v2.1.0.
+bool PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirElement ElementIn, int XLink);/// Checks ElementIn and returns true only if a single prefdir set at that H&V, with EntryPos giving entry position, not points,
 /// crossovers, signals with wrong direction set, or buffers. Added at v1.2.0
 bool PresetAutoRouteElementValid(int Caller, TPrefDirElement ElementIn, int EntryPos);
 /// Try to find a selected element from a given start position.  Enter with CurrentTrackElement stored in the PrefDirVector, XLinkPos set to the link to search on, &
@@ -1055,6 +1060,7 @@ void SavePrefDirVector(int Caller, std::ofstream &VecFile);
 void SaveSearchVector(int Caller, std::ofstream &VecFile);
 /// Used when creating a bitmap image to display preferred directions (as on screen during 'Set preferred direction' mode)
 void WritePrefDirToImage(int Caller, Graphics::TBitmap *Bitmap);
+
 //EveryPrefDir (declared in InterfaceUnit.h) functions (all external)
 
 /// Check loaded PrefDir against loaded track, and if discrepancies found clear

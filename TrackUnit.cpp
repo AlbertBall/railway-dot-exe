@@ -2274,7 +2274,7 @@ if(TryToConnectTrack(1, LocError, H, V, false))//false for don't give messages
 else
     {
     SetTrackFinished(false);
-    }
+	}
 //CheckMapAndTrack(9); all these checked in TryToConnectTrack
 //CheckMapAndInactiveTrack(8);
 //CheckLocationNameMultiMap(10);
@@ -2294,35 +2294,37 @@ int NumberOfActiveElements=0;
 NumberOfActiveElements = Utilities->LoadFileInt(VecFile);
 Utilities->LoadFileString(VecFile);// **Active elements** marker
 for(int x=0; x<NumberOfActiveElements; x++)
-    {
-    VecFile >> TempInt;//TrackVectorNumber, not used
-    VecFile >> TempInt;//SpeedTag
-    TTrackElement TrackElement(FixedTrackArray.FixedTrackPiece[TempInt]);
-    VecFile >> TempInt; TrackElement.HLoc = TempInt;
-    VecFile >> TempInt; TrackElement.VLoc = TempInt;
-    if(TrackElement.TrackType == GapJump)
-        {
-        VecFile >> TempInt; TrackElement.ConnLinkPos[0] = TempInt;
-        VecFile >> TempInt; TrackElement.Conn[0] = TempInt;
-        }
-    if((TrackElement.TrackType == SignalPost) || (TrackElement.TrackType == Points))
-        {
-        VecFile >> TempInt; TrackElement.Attribute = TempInt;
-        }
-    if(TrackElement.TrackType == SignalPost)
-        {
-        VecFile >> TempInt;
-        if(TempInt == 0) TrackElement.CallingOnSet = false;
-        else TrackElement.CallingOnSet = true;
-        }
-    VecFile >> TempInt; TrackElement.Length01 = TempInt;
-    VecFile >> TempInt; TrackElement.Length23 = TempInt;
-    VecFile >> TempInt;
-    if((TempInt != -1) && (TempInt < 10)) TempInt = 10;  //added at v0.6 to ensure old railway speed limits at least 10km/h
-    TrackElement.SpeedLimit01 = TempInt;
-    VecFile >> TempInt;
-    if((TempInt != -1) && (TempInt < 10)) TempInt = 10;  //added at v0.6 to ensure old railway speed limits at least 10km/h
-    TrackElement.SpeedLimit23 = TempInt;
+	{
+	VecFile >> TempInt;//TrackVectorNumber, not used
+	VecFile >> TempInt;//SpeedTag
+	TTrackElement TrackElement(FixedTrackArray.FixedTrackPiece[TempInt]);
+	VecFile >> TempInt; TrackElement.HLoc = TempInt;
+	VecFile >> TempInt; TrackElement.VLoc = TempInt;
+	if(TrackElement.TrackType == GapJump)
+		{
+		VecFile >> TempInt; TrackElement.ConnLinkPos[0] = TempInt;
+		VecFile >> TempInt; TrackElement.Conn[0] = TempInt;
+		}
+	if((TrackElement.TrackType == SignalPost) || (TrackElement.TrackType == Points))
+		{
+		VecFile >> TempInt; TrackElement.Attribute = TempInt;
+		}
+	if(TrackElement.TrackType == SignalPost)
+		{
+		VecFile >> TempInt;
+		if(TempInt == 0) TrackElement.CallingOnSet = false;
+		else TrackElement.CallingOnSet = true;
+		}
+	VecFile >> TempInt; TrackElement.Length01 = TempInt;
+	VecFile >> TempInt; TrackElement.Length23 = TempInt;
+	VecFile >> TempInt;
+	if((TempInt != -1) && (TempInt < 10)) TempInt = 10;  //added at v0.6 to ensure old railway speed limits at least 10km/h
+	if((TempInt != -1) && (TempInt > TTrain::MaximumSpeedLimit)) TempInt = TTrain::MaximumSpeedLimit;  //added at v2.1.0 to limit max speed
+	TrackElement.SpeedLimit01 = TempInt;
+	VecFile >> TempInt;
+	if((TempInt != -1) && (TempInt < 10)) TempInt = 10;  //added at v0.6 to ensure old railway speed limits at least 10km/h
+	if((TempInt != -1) && (TempInt > TTrain::MaximumSpeedLimit)) TempInt = TTrain::MaximumSpeedLimit;  //added at v2.1.0 to limit max speed
+	TrackElement.SpeedLimit23 = TempInt;
 
     TrackElement.LocationName = Utilities->LoadFileString(VecFile);
     TrackElement.ActiveTrackElementName = Utilities->LoadFileString(VecFile);
@@ -7213,7 +7215,7 @@ for(unsigned int x=0;x<TrackVector.size();x++)
     {
     TTrackElement &TE = TrackElementAt(718, x);
     TE.Length01 = DefaultTrackLength;
-    TE.SpeedLimit01 = DefaultTrackSpeedLimit;
+	TE.SpeedLimit01 = DefaultTrackSpeedLimit;
     if((TE.TrackType == Points) || (TE.TrackType == Crossover) || (TE.TrackType == Bridge))
         {
         TE.Length23 = DefaultTrackLength;
@@ -10661,23 +10663,154 @@ else if(PrefDirPos1 > -1)//2 found, either 1 bidirectional or 2 unidirectional
         }
     }
 else if(PrefDirPos0 > -1)//one found, make sure in correct direction
-    {
-    if(PrefDirElement0.XLinkPos == EntryPos)
-        {
-        Utilities->CallLogPop(1989);
-        return false;
-        }
-    else
-        {
-        Utilities->CallLogPop(1990);
-        return true;
-        }
-    }
+	{
+	if(PrefDirElement0.XLinkPos == EntryPos)
+		{
+		Utilities->CallLogPop(1989);
+		return false;
+		}
+	else
+		{
+		Utilities->CallLogPop(1990);
+		return true;
+		}
+	}
 else
-    {
-    Utilities->CallLogPop(1991);
-    return false; //none found
-    }
+	{
+	Utilities->CallLogPop(1991);
+	return false; //none found
+	}
+}
+
+//---------------------------------------------------------------------------
+
+bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirElement ElementIn, int XLink)
+{
+/*     //Added at v2.1.0
+Called by GetStartAndEndPrefDirElements, which in turn is called by PresetAutoSigRoutesButtonClick. Checks for a diagonal link in
+the autosigsroute being fouled by an adjacent track with a corresponding link that meets at the diagonal link, and if it is it
+returns true and prevents the route being set.  Note that adjacent track consisting of buffers, gaps and continuations at the
+diagonal link are also excluded though they need not be, but it makes the check code simpler and such adjacent track is untidy
+and can be modelled better anyway.
+
+Enter with PrefDirElement whose XLink is to be checked for track that fouls a diagonal.
+If XLink is anything but 1,3,7 or 9 return false - no fouling as not a diagonal.
+for XLink = 1, potentially fouled diagonals are at H-1, V, Lk 3 & H, V-1, Lk 7
+for XLink = 3, potentially fouled diagonals are at H+1, V, Lk 1 & H, V-1 Lk 9
+for XLink = 7, potentially fouled diagonals are at H-1, V, Lk 9 & H, V+1 Lk 1
+for XLink = 9, potentially fouled diagonals are at H+1, V, Lk 7 & H, V+1 Lk 3
+*/
+Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PresetAutoRouteDiagonalFouledByTrack," + ElementIn.HLoc + "," + ElementIn.VLoc + "," + XLink);
+int TrackVecPos;
+bool TrackFoundFlag;
+TTrackElement TempTrackElement;
+if((XLink == 2) || (XLink == 4) || (XLink == 6) || (XLink == 8))
+	{
+	Utilities->CallLogPop(2047);
+	return false;
+	}
+
+//for XLink = 1, potentially fouled diagonals are at H-1, V, Lk 3 & H, V-1, Lk 7
+if(XLink == 1)
+	{
+	TrackVecPos = Track->GetVectorPositionFromTrackMap(48, ElementIn.HLoc - 1, ElementIn.VLoc, TrackFoundFlag);
+	if(TrackFoundFlag)
+		{
+		TempTrackElement = Track->TrackElementAt(898, TrackVecPos);
+		if((TempTrackElement.Link[0] == 3) || (TempTrackElement.Link[1] == 3) || (TempTrackElement.Link[2] == 3) || (TempTrackElement.Link[3] == 3))
+			{
+			Utilities->CallLogPop(2048);
+			return true;
+			}
+		}
+	TrackVecPos = Track->GetVectorPositionFromTrackMap(49, ElementIn.HLoc, ElementIn.VLoc - 1, TrackFoundFlag);
+	if(TrackFoundFlag)
+		{
+		TempTrackElement = Track->TrackElementAt(899, TrackVecPos);
+		if((TempTrackElement.Link[0] == 7) || (TempTrackElement.Link[1] == 7) || (TempTrackElement.Link[2] == 7) || (TempTrackElement.Link[3] == 7))
+			{
+			Utilities->CallLogPop(2049);
+			return true;
+			}
+		}
+	}
+
+//for XLink = 3, potentially fouled diagonals are at H+1, V, Lk 1 & H, V-1 Lk 9
+if(XLink == 3)
+	{
+	TrackVecPos = Track->GetVectorPositionFromTrackMap(50, ElementIn.HLoc + 1, ElementIn.VLoc, TrackFoundFlag);
+	if(TrackFoundFlag)
+		{
+		TempTrackElement = Track->TrackElementAt(900, TrackVecPos);
+		if((TempTrackElement.Link[0] == 1) || (TempTrackElement.Link[1] == 1) || (TempTrackElement.Link[2] == 1) || (TempTrackElement.Link[3] == 1))
+			{
+			Utilities->CallLogPop(2050);
+			return true;
+			}
+		}
+	TrackVecPos = Track->GetVectorPositionFromTrackMap(51, ElementIn.HLoc, ElementIn.VLoc - 1, TrackFoundFlag);
+	if(TrackFoundFlag)
+		{
+		TempTrackElement = Track->TrackElementAt(901, TrackVecPos);
+		if((TempTrackElement.Link[0] == 9) || (TempTrackElement.Link[1] == 9) || (TempTrackElement.Link[2] == 9) || (TempTrackElement.Link[3] == 9))
+			{
+			Utilities->CallLogPop(2051);
+			return true;
+			}
+		}
+	}
+
+//for XLink = 7, potentially fouled diagonals are at H-1, V, Lk 9 & H, V+1 Lk 1
+if(XLink == 7)
+	{
+	TrackVecPos = Track->GetVectorPositionFromTrackMap(52, ElementIn.HLoc - 1, ElementIn.VLoc, TrackFoundFlag);
+	if(TrackFoundFlag)
+		{
+		TempTrackElement = Track->TrackElementAt(902, TrackVecPos);
+		if((TempTrackElement.Link[0] == 9) || (TempTrackElement.Link[1] == 9) || (TempTrackElement.Link[2] == 9) || (TempTrackElement.Link[3] == 9))
+			{
+			Utilities->CallLogPop(2052);
+			return true;
+			}
+		}
+	TrackVecPos = Track->GetVectorPositionFromTrackMap(53, ElementIn.HLoc, ElementIn.VLoc + 1, TrackFoundFlag);
+	if(TrackFoundFlag)
+		{
+		TempTrackElement = Track->TrackElementAt(903, TrackVecPos);
+		if((TempTrackElement.Link[0] == 1) || (TempTrackElement.Link[1] == 1) || (TempTrackElement.Link[2] == 1) || (TempTrackElement.Link[3] == 1))
+			{
+			Utilities->CallLogPop(2053);
+			return true;
+			}
+		}
+	}
+
+//for XLink = 9, potentially fouled diagonals are at H+1, V, Lk 7 & H, V+1 Lk 3
+if(XLink == 9)
+	{
+	TrackVecPos = Track->GetVectorPositionFromTrackMap(54, ElementIn.HLoc + 1, ElementIn.VLoc, TrackFoundFlag);
+	if(TrackFoundFlag)
+		{
+		TempTrackElement = Track->TrackElementAt(904, TrackVecPos);
+		if((TempTrackElement.Link[0] == 7) || (TempTrackElement.Link[1] == 7) || (TempTrackElement.Link[2] == 7) || (TempTrackElement.Link[3] == 7))
+			{
+			Utilities->CallLogPop(2054);
+			return true;
+			}
+		}
+	TrackVecPos = Track->GetVectorPositionFromTrackMap(55, ElementIn.HLoc, ElementIn.VLoc + 1, TrackFoundFlag);
+	if(TrackFoundFlag)
+		{
+		TempTrackElement = Track->TrackElementAt(905, TrackVecPos);
+		if((TempTrackElement.Link[0] == 3) || (TempTrackElement.Link[1] == 3) || (TempTrackElement.Link[2] == 3) || (TempTrackElement.Link[3] == 3))
+			{
+			Utilities->CallLogPop(2055);
+			return true;
+			}
+		}
+	}
+Utilities->CallLogPop(2056);
+return false;
 }
 
 //---------------------------------------------------------------------------
@@ -10696,21 +10829,25 @@ bool FoundFlag, ContFlag, FoundElements = false;
 int PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3;
 TPrefDirElement NextElement;
 for(PDVIt = (PrefDirVector.begin() + LastIteratorValue); PDVIt < PrefDirVector.end(); PDVIt++)
-    {
-    LastIteratorValue++;
-    ContFlag = false;
-    if((PDVIt->TrackType != SignalPost) && (PDVIt->TrackType != Continuation)) continue;
-    if((PDVIt->TrackType == SignalPost) && (PDVIt->SigAspect == TTrackElement::GroundSignal)) continue;
+	{
+	LastIteratorValue++;
+	ContFlag = false;
+	if((PDVIt->TrackType != SignalPost) && (PDVIt->TrackType != Continuation)) continue;
+	if((PDVIt->TrackType == SignalPost) && (PDVIt->SigAspect == TTrackElement::GroundSignal)) continue;
 //    if(AllRoutes::TrackIsInARoute(, PDVIt->TrackVectorPosition, PDVIt->EntryPos) continue; //already in a route - no, don't check start position as if a signal might well be at end of an existing route
-    //found a potential route start point
-    if(PresetAutoRouteElementValid(0, *PDVIt, PDVIt->ELinkPos))
-        {
-        //check if continuation either in a route or with prefdir facing 'End' (OK if find it as EndElement, but not as StartElement)
-        if(PDVIt->TrackType == Continuation)
-            {
-            if(AllRoutes->TrackIsInARoute(18, PDVIt->TrackVectorPosition, PDVIt->ELinkPos))
-                {
-                continue;
+	//found a potential route start point
+	if(PresetAutoRouteDiagonalFouledByTrack(0, *PDVIt, PDVIt->XLink))   //Added at v2.1.0
+		{
+		continue;
+		}
+	if(PresetAutoRouteElementValid(0, *PDVIt, PDVIt->ELinkPos))
+		{
+		//check if continuation either in a route or with prefdir facing 'End' (OK if find it as EndElement, but not as StartElement)
+		if(PDVIt->TrackType == Continuation)
+			{
+			if(AllRoutes->TrackIsInARoute(18, PDVIt->TrackVectorPosition, PDVIt->ELinkPos))
+				{
+				continue;
                 }
             if(PDVIt->XLinkPos == 0) //position 0 is the continuation
                 {
@@ -10769,11 +10906,16 @@ for(PDVIt = (PrefDirVector.begin() + LastIteratorValue); PDVIt < PrefDirVector.e
     while(true)
         {
         //check validity
-        if(!PresetAutoRouteElementValid(1, NextElement, NextElement.ELinkPos))
-            {
-            ContFlag = true;
-            break;
-            }
+		if(PresetAutoRouteDiagonalFouledByTrack(1, NextElement, NextElement.XLink))   //Added at v2.1.0
+			{
+			ContFlag = true;
+			break;
+			}
+		if(!PresetAutoRouteElementValid(1, NextElement, NextElement.ELinkPos))
+			{
+			ContFlag = true;
+			break;
+			}
         //check if in a route, providing not a signal, as a signal might be at the start of a route
         if(NextElement.TrackType != SignalPost)
             {
@@ -10849,10 +10991,10 @@ for(PDVIt = (PrefDirVector.begin() + LastIteratorValue); PDVIt < PrefDirVector.e
     break;
     }
 if(FoundElements)
-    {
-    Utilities->CallLogPop(1992);
-    return true;
-    }
+	{
+	Utilities->CallLogPop(1992);
+	return true;
+	}
 else
     {
     Utilities->CallLogPop(1993);

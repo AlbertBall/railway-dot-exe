@@ -1,6 +1,20 @@
 ﻿Development History
 ---------------------------------------------------------------------------
 
+This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that may be useful such as the 'NEXT' values for caller IDs and the full list of changes from version to version.
+
+The structure is as follows:-
+
+1)  List of suggestions from users for future changes.  Some are more practicable than others but I have kept them all.
+2)  My own list of thoughts for change proposals
+3)  List of problems & odd behaviour for which I don't yet have solutions
+4)  Changes made for each successive version releases
+5)  Checklists for changing versions and adding new projects to the website (note these are now well out of date)
+6)  Miscellaneous notes
+7)  List of 'NEXT' values for the most-often used caller IDs
+8)  More notes + 'to-do' and 'done' lists
+
+-----------------------
 
 Future change suggestions from users:
 
@@ -67,6 +81,11 @@ Suggestion from Keith Hazelton (Feature Requests Forum 02/04/12):  Have the abil
 Sam Wainwright email received 09/02/12: If a shunt signal is placed in the same direction as the main running signals, it is necessary to set a route through the shunt signal as well. Would it be possible to set a route from one running signal to the next with any shunt signals n the same direction in between clearing automatically?
 
 -----------------------
+
+[Corrected at v2.1.0] Jordy de Koning reported a speed limit bug 27/12/16.  If a train is standing on a track element with a speed limit > 400kph and a session file saved, it fails on subsequent attempts to load.  The reason is that the train is limited to 400kph but not the track speed limit, and the session file checks the track speed limit where a train starts and fails if >400kph.  Need to add a limit and message when setting track speed limits.
+
+-----------------------
+
 Own thoughts:-
 
 Try to trap memory capacity errors that occur when try to save large bitmaps without crashing the program.  Occurred on Xeon's Shanghai Metro railway when .bmp was over 500Mb
@@ -76,8 +95,6 @@ Add int Left, Top in ClearandRebuildRailway before Track->GetScreenPositionsFrom
 With single element routes being automatically cancelled and last element being points can set another route in other direction before train reaches it.  Have to be quick and unlikely in practice, but consider preventing
 
 Points to emerge from operating Beaver Lake:  If train cancels a route by moving in wrong direction issue a SPAD risk (like approach locking) and change log accordingly.  Useful if could truncate an automatic route behind a train as well as in front.  When cancel an automatic route that links to a non-automatic route try to either include the signal(s) with the other route (problem if first element of that route is a bridge then can't cancel it and can't set another route to link to it) or cancel adjacent non-automatic routes as well - that's probably easier. 
-
-Can set an automatic signal route across a diagonal, OK when user does it but prevent when done before operation
 
 When make window smaller there are no sidebars, investigate why not, probably something simple
 
@@ -99,16 +116,13 @@ the blue route so it wasn't just the display that was wrong. Couldn't repeat the
 
 3.  If an arriving train reaches a platform with a train in front at buffers, and the arriving train is to split while facing the train at buffers (from the rear but maybe also from the front) and there is enough platform for the split, then the split doesn't occur.  Occurred on Chiltern (Chiltern rear split problem; Timetable time 10.49.03; Chiltern Railways v2; Chiltern Railways v2.ssn) after manoeuvring 5F33 & 1N24 onto a vacant platform & restoring appropriate directions & timetable control.  Due to lack of sophistication of split functions (see note in program: Split logic is:-  at least one of 4 final train positions must overlap with one of original train positions, & final 4 positions will maximise the number at the location.  Note that this function isn't sophisticated enough to account for trains already at the location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these circumstances the other train will need to be move sufficiently away to release all 4 positions, then the train will split.)  Try to improve if possible (i.e. just take account of 'available' platforms, and ensure keep trying in case other trains move off) or at least give a warning in the help & operator manuals to keep trains that are to split separated from trains already present at platforms - preferably don't have other trains at platforms at all where a train is to split.[leave for now unless reported as a problem - no-one has reported it yet]
 
-4.  Jordy de Koning reported a speed limit bug 27/12/16.  If a train is standing on a track element with a speed limit > 400kph and a session file saved, it fails on subsequent attempts to load.  The reason is that the train is limited to 400kph but not the track speed limit, and the session file checks the track speed limit where a train starts and fails if >400kph.  Need to add a limit and message when setting track speed limits.  Add a static const value set in trackunit.h, check against it when setting speed limits, and if >400 give message and set to 400.
-
-
 -----------------------
 
 VERSION CHANGES AFTER v2.0.0 Beta for v2.1.0
 
 * = mention on user website
 
-*mention a) to j) as a group - good programming practice changes
+*mention a) to j) as a group - good programming practice changes & improved readability (credit due to SS)
 a) Change the way version info is retrieved (internal fix - no user-facing changes)
 b) Remove beta tag (6 months have passed)
 c) Change the version numbering format to use Semantic versioning (see https://semver.org/)
@@ -125,6 +139,10 @@ k) Corrected Sam Wainwright error (reported 24/08/17):  Existing program sets tr
 l) Corrected Moric1998 error (sent in 24/03/16), corrected in TrainUnit at 'if(ContinuationExit(2, LagElement, LagExitPos))'
 
 *m) Corrected mainform caption when creating or editing timetables.  Formerly the earlier loaded timetable name remained in the caption in error.
+
+*n) Corrected the problem when presetting automatic signal routes, where a route could be set across a diagonal fouled by adjacent track (i.e. a track element with a diagonal link that touched another track element's diagonal link).  Added a new function to check for such conflicts - PresetAutoRouteDiagonalFouledByTrack
+
+*o) Corrected Jordy de Koning's error above, so that track speed limits are limited to the value in TTrain::MaximumSpeedLimit, which is 400km/h.  These are limited for new settings and when loading existing railway and session files where filed values are >400km/h
 
 
 VERSION CHANGES AFTER v1.3.2 for v2.0.0 Beta
@@ -1091,8 +1109,8 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 
 COPY SECTIONS:
 
-NEXT value for CallLogPop is 2047
-NEXT value for TrackElementAt is 898
+NEXT value for CallLogPop is 2057
+NEXT value for TrackElementAt is 906
 NEXT value for InactiveTrackElementAt is 119
 NEXT value for GetFixedRouteAt is 220
 NEXT value for GetModifiableRouteAt is 28

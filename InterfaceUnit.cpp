@@ -1154,9 +1154,10 @@ try
         Dist = 20;
         }
 */
-    if(((Dist != -1) && (Dist < 20)) || ((SpeedLimit != -1) && (SpeedLimit < 10))) //new limiting values for v0.6 (used only to fail at either value 0)
-        {
-        ShowMessage("Can't enter a length value less than 20m or a speed limit less than 10km/h");
+	if(((Dist != -1) && (Dist < 20)) || ((SpeedLimit != -1) && (SpeedLimit < 10)) || ((SpeedLimit != -1) && (SpeedLimit > TTrain::MaximumSpeedLimit)))
+	//new limiting values for v0.6 (used only to fail at either value 0); added TTrain::MaxSpeedLimit at v2.1.0
+		{
+		ShowMessage("Lengths must be 20m or more, and speeds must be between 10km/h and 400km/h"); //changed at v2.1.0 to limit max speed
         Utilities->CallLogPop(15);
         return;
         }

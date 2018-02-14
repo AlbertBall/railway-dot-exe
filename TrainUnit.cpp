@@ -5455,6 +5455,8 @@ IncrementalMinutes = Utilities->LoadFileInt(InFile);
 IncrementalDigits = Utilities->LoadFileInt(InFile);
 Mass = Utilities->LoadFileInt(InFile);
 FrontElementSpeedLimit = Utilities->LoadFileInt(InFile);
+if(FrontElementSpeedLimit > TTrain::MaximumSpeedLimit) FrontElementSpeedLimit = TTrain::MaximumSpeedLimit;
+//above added at v2.1.0 for legacy session files where value may not have been limited
 FrontElementLength = Utilities->LoadFileInt(InFile);
 EntrySpeed = Utilities->LoadFileDouble(InFile);
 ExitSpeedHalf = Utilities->LoadFileDouble(InFile);
@@ -5644,7 +5646,8 @@ if(!Utilities->CheckFileInt(InFile, 0, 5760)) return false;// RepeatNumber (max 
 if(!Utilities->CheckFileInt(InFile, 0, 5760)) return false;// IncrementalMinutes (max 96 x 60)
 if(!Utilities->CheckFileInt(InFile, 0, 1000000)) return false;// IncrementalDigits
 if(!Utilities->CheckFileInt(InFile, 0, 10000000)) return false;// Mass
-if(!Utilities->CheckFileInt(InFile, 0, MaximumSpeedLimit)) return false;// FrontElementSpeedLimit
+if(!Utilities->CheckFileInt(InFile, 0, 100000000)) return false;// FrontElementSpeedLimit - changed at v2.1.0 - effectively
+//not checked so as to allow for legacy session files, for new session files limit is set when loaded, see above
 if(!Utilities->CheckFileInt(InFile, 0, 10000000)) return false;// FrontElementLength
 if(!Utilities->CheckFileDouble(InFile)) return false;// EntrySpeed
 if(!Utilities->CheckFileDouble(InFile)) return false;// ExitSpeedHalf

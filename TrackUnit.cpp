@@ -13665,141 +13665,145 @@ If it is in a route but the element selected is invalid, then a message is given
 InRouteFalse.  Otherwise the route is truncated at and including the element that matches H & V with a ReturnFlag value of InRouteTrue.
 Selection invalid if a train at or before the truncate point; select a bridge; trying to leave a single element; last element to be left
 not a signal (for ConsecSignalsRoute or has AutoSigsFlag set); last element to be left a bridge, points or crossover (for not
-ConsecSignalsRoute & AutoSigsFlag not set), or part of route locked.  Check if a train approaching and lock route if required after
-offering the user the choice to continue or not.  Then SetAllRearwardsSignals is called to set signals before the truncate point,
-beginning with a red signal, and RemoveRouteElement called for all elements from the end to and including the truncate point.
+ConsecSignalsRoute & AutoSigsFlag not set), or part of route locked.  Check if a train approaching or occupying route and lock route
+if required after offering the user the choice to continue or not.  Then SetAllRearwardsSignals is called to set signals before the
+truncate point, beginning with a red signal, and RemoveRouteElement called for all elements from the end to and including the truncate point.
 */
 {
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetRouteTruncateElement," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString((short)ConsecSignalsRoute));
 bool ElementInRoute = false;
+bool TrainOccupyingRoute = false;
 for(unsigned int b=0; b<PrefDirSize(); b++)
-    {
-    if((PrefDirVector.at(b).HLoc == HLoc) && (PrefDirVector.at(b).VLoc == VLoc))
-        {
-        ElementInRoute = true;
-        break;
-        }
-    }
+	{
+	if((PrefDirVector.at(b).HLoc == HLoc) && (PrefDirVector.at(b).VLoc == VLoc))
+		{
+		ElementInRoute = true;
+		break;
+		}
+	}
 if(!ElementInRoute)
-    {
-    ReturnFlag = NotInRoute;
-    Utilities->CallLogPop(336);
-    return;
-    }
+	{
+	ReturnFlag = NotInRoute;
+	Utilities->CallLogPop(336);
+	return;
+	}
 //it is in the route so continue, first look for a train or a flashing level crossing
 for(int b=PrefDirSize()-1; b>=0; b--)
-    {
-    int TrainID = Track->TrackElementAt(117, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnElement;
-    if(PrefDirVector.at(b).TrackType == Bridge)
-        {
-        if(PrefDirVector.at(b).XLinkPos < 2) TrainID = Track->TrackElementAt(118, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeTrackPos01;
-        else TrainID = Track->TrackElementAt(119, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeTrackPos23;
-        }
-    if(TrainID != -1)
-        {
-        TrainController->StopTTClockMessage(56, "Can't truncate a route that is occupied by a train");
-        ReturnFlag = InRouteFalse;
-        Utilities->CallLogPop(337);
-        return;
-        }
-    if(Track->IsLCBarrierFlashingAtHV(3, PrefDirVector.at(b).HLoc, PrefDirVector.at(b).VLoc))
-        {
-        TrainController->StopTTClockMessage(79, "Can't cancel a route containing a level crossing that is changing state");
-        ReturnFlag = InRouteFalse;
-        Utilities->CallLogPop(1941);
-        return;
-        }
-    if((PrefDirVector.at(b).HLoc == HLoc) && (PrefDirVector.at(b).VLoc == VLoc))
-        {
-        break;//OK found truncate element & no train or flashing LC in front
-        }
-    }
+	{
+	int TrainID = Track->TrackElementAt(117, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnElement;
+	if(PrefDirVector.at(b).TrackType == Bridge)
+		{
+		if(PrefDirVector.at(b).XLinkPos < 2) TrainID = Track->TrackElementAt(118, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeTrackPos01;
+		else TrainID = Track->TrackElementAt(119, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeTrackPos23;
+		}
+	if(TrainID != -1)
+		{
+//        TrainController->StopTTClockMessage(56, "Can't truncate a route that is occupied by a train");
+//        ReturnFlag = InRouteFalse;
+//        Utilities->CallLogPop(337);
+//        return;
+//above removed at v2.1.0 so that routes can be locked when occupied, below added
+		TrainOccupyingRoute = true;
+		}
+	if(Track->IsLCBarrierFlashingAtHV(3, PrefDirVector.at(b).HLoc, PrefDirVector.at(b).VLoc))
+		{
+		TrainController->StopTTClockMessage(79, "Can't cancel a route containing a level crossing that is changing state");
+		ReturnFlag = InRouteFalse;
+		Utilities->CallLogPop(1941);
+		return;
+		}
+	if((PrefDirVector.at(b).HLoc == HLoc) && (PrefDirVector.at(b).VLoc == VLoc))
+		{
+		break;//OK found truncate element & no flashing LC in front
+		}
+	}
 
 for(unsigned int b=0; b<PrefDirSize(); b++)
-    {
-    if((PrefDirVector.at(b).HLoc == HLoc) && (PrefDirVector.at(b).VLoc == VLoc))//b = the truncate point
-        {
-        if(PrefDirVector.at(b).TrackType == Bridge)
-            {
-            TrainController->StopTTClockMessage(57, "Can't select a bridge as a route truncate point");
-            ReturnFlag = InRouteFalse;
-            Utilities->CallLogPop(338);
-            return;
-            }
-        if(b == 1)
-            {
-            TrainController->StopTTClockMessage(58, "Can't truncate to a single route element");
-            ReturnFlag = InRouteFalse;
-            Utilities->CallLogPop(339);
-            return;
-            }
-        if(b > 0)
-            {
-            TPrefDirElement TempElement = PrefDirVector.at(b-1);
-            if(TempElement.ConsecSignals || TempElement.AutoSignals)
-                {
-                if(TempElement.Config[TempElement.XLinkPos] != Signal)
-                    {
-                    TrainController->StopTTClockMessage(59, "Must truncate to a valid signal - select position after signal");
-                    ReturnFlag = InRouteFalse;
-                    Utilities->CallLogPop(340);
-                    return;
-                    }
-                }
-            else
-                {
-                if((TempElement.TrackType == Points) ||(TempElement.TrackType == Crossover)
-                        ||(TempElement.TrackType == Bridge))
-                    {
-                    TrainController->StopTTClockMessage(60, "Can't truncate to points, bridge or crossover");
-                    ReturnFlag = InRouteFalse;
-                    Utilities->CallLogPop(341);
-                    return;
-                    }
-                }
-            }
+	{
+	if((PrefDirVector.at(b).HLoc == HLoc) && (PrefDirVector.at(b).VLoc == VLoc))//b = the truncate point
+		{
+		if(PrefDirVector.at(b).TrackType == Bridge)
+			{
+			TrainController->StopTTClockMessage(57, "Can't select a bridge as a route truncate point");
+			ReturnFlag = InRouteFalse;
+			Utilities->CallLogPop(338);
+			return;
+			}
+		if(b == 1)
+			{
+			TrainController->StopTTClockMessage(58, "Can't truncate to a single route element");
+			ReturnFlag = InRouteFalse;
+			Utilities->CallLogPop(339);
+			return;
+			}
+		if(b > 0)
+			{
+			TPrefDirElement TempElement = PrefDirVector.at(b-1);
+			if(TempElement.ConsecSignals || TempElement.AutoSignals)
+				{
+				if(TempElement.Config[TempElement.XLinkPos] != Signal)
+					{
+					TrainController->StopTTClockMessage(59, "Must truncate to a valid signal - select position after signal");
+					ReturnFlag = InRouteFalse;
+					Utilities->CallLogPop(340);
+					return;
+					}
+				}
+			else
+				{
+				if((TempElement.TrackType == Points) ||(TempElement.TrackType == Crossover)
+						||(TempElement.TrackType == Bridge))
+					{
+					TrainController->StopTTClockMessage(60, "Can't truncate to points, bridge or crossover");
+					ReturnFlag = InRouteFalse;
+					Utilities->CallLogPop(341);
+					return;
+					}
+				}
+			}
 
-        int RouteNumber;
-        AllRoutes->GetRouteTypeAndNumber(3, GetFixedPrefDirElementAt(84, 0).TrackVectorPosition, GetFixedPrefDirElementAt(85, 0).XLinkPos, RouteNumber);
+		int RouteNumber;
+		AllRoutes->GetRouteTypeAndNumber(3, GetFixedPrefDirElementAt(84, 0).TrackVectorPosition, GetFixedPrefDirElementAt(85, 0).XLinkPos, RouteNumber);
 //Have to call RouteLockingRequired before SetAllRearwardsSignals because RouteLockingRequired tests the first rearward signal, if it is
 //red then locking is not required, and if call SetAllRearwardsSignals first then it will set the first rearward signal to red.
 
 //check if part of this route already locked & disallow if so
-        if(!(AllRoutes->LockedRouteVector.empty()))
-            {
-            for(TAllRoutes::TLockedRouteVectorIterator LRVIT = AllRoutes->LockedRouteVector.begin(); LRVIT < AllRoutes->LockedRouteVector.end(); LRVIT++)
-                {
-                if(LRVIT->RouteNumber == RouteNumber)
-                    {
-                    TrainController->StopTTClockMessage(61, "Can't truncate a route that is already part-locked");
-                    ReturnFlag = InRouteFalse;
-                    Utilities->CallLogPop(749);
-                    return;
-                    }
-                }
-            }
+		if(!(AllRoutes->LockedRouteVector.empty()))
+			{
+			for(TAllRoutes::TLockedRouteVectorIterator LRVIT = AllRoutes->LockedRouteVector.begin(); LRVIT < AllRoutes->LockedRouteVector.end(); LRVIT++)
+				{
+				if(LRVIT->RouteNumber == RouteNumber)
+					{
+					TrainController->StopTTClockMessage(61, "Can't truncate a route that is already part-locked");
+					ReturnFlag = InRouteFalse;
+					Utilities->CallLogPop(749);
+					return;
+					}
+				}
+			}
 
-        if(AllRoutes->RouteLockingRequired(0, RouteNumber, b))
-            {
-            TrainController->StopTTClockFlag = true;
-            TrainController->RestartTime = TrainController->TTClockTime;
-			int button = Application->MessageBox(L"Train approaching, YES to lock route (2 minutes to release), NO to cancel", L"", MB_YESNO);
-            TrainController->BaseTime = TDateTime::CurrentDateTime();
-            TrainController->StopTTClockFlag = false;
-            if (button == IDNO)
-                {
-                ReturnFlag = InRouteTrue;//still return true even though don't act on it
-                Utilities->CallLogPop(342);
-                return;
-                }
-            AnsiString LocID = AnsiString(Track->TrackElementAt(534, PrefDirVector.at(b).TrackVectorPosition).ElementID);
-            TrainController->LogActionError(0, "", "", FailLockedRoute, LocID);
-            TAllRoutes::TLockedRouteClass LockedRoute;
-            bool ExistingLockedRouteModified = false;
-            LockedRoute.RouteNumber = RouteNumber;
-            LockedRoute.TruncateTrackVectorPosition = PrefDirVector.at(b).TrackVectorPosition;
-            LockedRoute.LastTrackVectorPosition = PrefDirVector.at(PrefDirSize()-1).TrackVectorPosition;
-            LockedRoute.LastXLinkPos = PrefDirVector.at(PrefDirSize()-1).XLinkPos;
+		if(AllRoutes->RouteLockingRequired(0, RouteNumber, b) || TrainOccupyingRoute) //added TrainOccupyingRoute  at v2.1.0,
+		//RouteLockingRequired only checks for trains approaching
+			{
+			TrainController->StopTTClockFlag = true;
+			TrainController->RestartTime = TrainController->TTClockTime;
+			int button = Application->MessageBox(L"Train approaching or occupying route, YES to lock route (2 minutes to release), NO to cancel", L"", MB_YESNO);
+			TrainController->BaseTime = TDateTime::CurrentDateTime();
+			TrainController->StopTTClockFlag = false;
+			if (button == IDNO)
+				{
+				ReturnFlag = InRouteTrue;//still return true even though don't act on it
+				Utilities->CallLogPop(342);
+				return;
+				}
+			AnsiString LocID = AnsiString(Track->TrackElementAt(534, PrefDirVector.at(b).TrackVectorPosition).ElementID);
+			TrainController->LogActionError(0, "", "", FailLockedRoute, LocID);
+			TAllRoutes::TLockedRouteClass LockedRoute;
+			bool ExistingLockedRouteModified = false;
+			LockedRoute.RouteNumber = RouteNumber;
+			LockedRoute.TruncateTrackVectorPosition = PrefDirVector.at(b).TrackVectorPosition;
+			LockedRoute.LastTrackVectorPosition = PrefDirVector.at(PrefDirSize()-1).TrackVectorPosition;
+			LockedRoute.LastXLinkPos = PrefDirVector.at(PrefDirSize()-1).XLinkPos;
             LockedRoute.LockStartTime = TrainController->TTClockTime;
 //but first check if this route already in LockedRouteVector (i.e. locked further along), and if so just change that vector entry
 //to use the new TruncateTrackVectorPosition & LockStartTime

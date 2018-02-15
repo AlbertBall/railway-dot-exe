@@ -1,6 +1,18 @@
 ﻿Development History
 ---------------------------------------------------------------------------
 
+[own notes for v2.1.0:  Test locked routes thoroughly & see that signals in autoroutes don't clear when locked
+
+Check new help file
+
+Change date on Manual.doc if too long after 15/02/18
+
+add note in this file about the locked route changes + help & manual changes
+
+compile note for web re changes est re locking routes under trains, credit person who emailed about it]
+
+
+
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that may be useful such as the 'NEXT' values for caller IDs and the full list of changes from version to version.
 
 The structure is as follows:-
@@ -1112,9 +1124,9 @@ COPY SECTIONS:
 NEXT value for CallLogPop is 2057
 NEXT value for TrackElementAt is 906
 NEXT value for InactiveTrackElementAt is 119
-NEXT value for GetFixedRouteAt is 220
+NEXT value for GetFixedRouteAt is 222
 NEXT value for GetModifiableRouteAt is 28
-NEXT value for GetFixedPrefDirElementAt is 246
+NEXT value for GetFixedPrefDirElementAt is 247
 NEXT value for ErrorLog is 196
 NEXT value for ClearandRebuildRailway is 69
 NEXT value for TrainVectorAt is 65

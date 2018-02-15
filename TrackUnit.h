@@ -976,7 +976,8 @@ TPrefDirVector PrefDirVector, SearchVector; ///< pref dir vectors, first is the 
 /// returns true and prevents the route being set.  Note that adjacent track consisting of buffers, gaps and continuations at the
 /// diagonal link are also excluded though they need not be, but it makes the check code simpler and such adjacent track is untidy
 /// and can be modelled better anyway.  Added at v2.1.0.
-bool PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirElement ElementIn, int XLink);/// Checks ElementIn and returns true only if a single prefdir set at that H&V, with EntryPos giving entry position, not points,
+bool PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirElement ElementIn, int XLink);
+/// Checks ElementIn and returns true only if a single prefdir set at that H&V, with EntryPos giving entry position, not points,
 /// crossovers, signals with wrong direction set, or buffers. Added at v1.2.0
 bool PresetAutoRouteElementValid(int Caller, TPrefDirElement ElementIn, int EntryPos);
 /// Try to find a selected element from a given start position.  Enter with CurrentTrackElement stored in the PrefDirVector, XLinkPos set to the link to search on, &
@@ -1294,6 +1295,7 @@ TRoute2MultiMap Route2MultiMap; ///< the map that stores the elements of all rou
 unsigned int AllRoutesSize() const {return AllRoutesVector.size();}
 /// Erases all routes from AllRoutesVector and from Route2MultiMap
 void AllRoutesClear() {AllRoutesVector.clear(); Route2MultiMap.clear();}
+
 /// Functions defined in .cpp file
 bool CheckForLoopingRoute(int Caller, int EndPosition, int EndXLinkPos, int StartPosition);//return true if route loops back on itself
 /// Performs an integrity check on the routes stored in a session file and returns false if there is an error
@@ -1317,7 +1319,7 @@ bool GetAllRoutesTruncateElement(int Caller, int HLoc, int VLoc, bool ConsecSign
 /// with XLinkPos value is in a locked route and returns true if so together with the element itself copied to &PrefDirElement & the
 /// LockedRouteVector position in &LockedVectorNumber
 bool IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(int Caller, int TrackVectorPosition, int XLinkPos,
-    TPrefDirElement &PrefDirElement, int &LockedVectorNumber);
+	TPrefDirElement &PrefDirElement, int &LockedVectorNumber);
 /// Returns true if there is a route with the given ID number - added at v1.3.1 (see function for details)
 bool IsThereARouteAtIDNumber(int Caller, IDInt RouteID);
 /// Loads the routes from a session file

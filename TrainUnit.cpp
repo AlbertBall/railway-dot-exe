@@ -1187,13 +1187,14 @@ if(Straddle == LeadMidLag)//During this function train moves fully onto 2 elemen
     EntrySpeed = ExitSpeedFull;
     FirstHalfMove = true;
 
-    if((NextElementPosition > -1) && (NextEntryPos > -1))//may be buffers or continuation
+	if((NextElementPosition > -1) && (NextEntryPos > -1) && !SPADFlag)//may be buffers or continuation.  SPADFlag added at v2.1.0
+	//so don't override the SPAD colour & don't set StoppedAtSignal
         {
         if((Track->TrackElementAt(207, NextElementPosition).Config[Track->GetNonPointsOppositeLinkPos(NextEntryPos)] == Signal) &&
             (Track->TrackElementAt(208, NextElementPosition).Attribute == 0) && (ExitSpeedFull < 1) && !StoppedAtLocation)
             {
             StoppedAtSignal = true;
-            PlotTrainWithNewBackgroundColour(34, clSignalStopBackground, Display);
+			PlotTrainWithNewBackgroundColour(34, clSignalStopBackground, Display);
 //            TrainController->LogActionError(41, HeadCode, "", SignalHold, Track->TrackElementAt(756, NextElementPosition).ElementID);
             }
         }
@@ -5763,20 +5764,20 @@ else if(BackgroundColour == clDerailedBackground)
     SmallTrainBitmap = RailGraphics->smRed;
     }
 else if(BackgroundColour == clSPADBackground)
-    {
-    TrainController->SPADWarning = true;
-    SmallTrainBitmap = RailGraphics->smYellow;
-    }
+	{
+	TrainController->SPADWarning = true;
+	SmallTrainBitmap = RailGraphics->smYellow;
+	}
 else if(BackgroundColour == clCallOnBackground)
-    {
-    TrainController->CallOnWarning = true;
-    SmallTrainBitmap = RailGraphics->smMagenta;
-    }
+	{
+	TrainController->CallOnWarning = true;
+	SmallTrainBitmap = RailGraphics->smMagenta;
+	}
 else if(BackgroundColour == clSignalStopBackground)
-    {
-    TrainController->SignalStopWarning = true;
-    SmallTrainBitmap = RailGraphics->smBrightGreen;
-    }
+	{
+	TrainController->SignalStopWarning = true;
+	SmallTrainBitmap = RailGraphics->smBrightGreen;
+	}
 else if(BackgroundColour == clBufferAttentionNeeded)
     {
     TrainController->BufferAttentionWarning = true;

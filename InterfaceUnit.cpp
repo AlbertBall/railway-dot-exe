@@ -9519,7 +9519,7 @@ if(Level1Mode == OperMode)
                 continue;
                 }
             TOneRoute Route = AllRoutes->GetFixedRouteAt(0, LRVIT->RouteNumber);
-            int x = Route.PrefDirSize() - 1;
+			int x = Route.PrefDirSize() - 1;
             bool BreakFlag = false;
             TPrefDirElement PrefDirElement = Route.GetFixedPrefDirElementAt(1, x);
             while(PrefDirElement.GetTrackVectorPosition() != LRVIT->TruncateTrackVectorPosition)
@@ -10854,22 +10854,36 @@ if(!TrainController->ContinuationAutoSigVector.empty())
     {
     TTrainController::TContinuationAutoSigVectorIterator AutoSigVectorIT;
     for(AutoSigVectorIT = TrainController->ContinuationAutoSigVector.end() - 1; AutoSigVectorIT >= TrainController->ContinuationAutoSigVector.begin(); AutoSigVectorIT--)
-        {
-        if(((TTClockTime - AutoSigVectorIT->PassoutTime) > TDateTime(AutoSigVectorIT->FirstDelay/86400)) && (AutoSigVectorIT->AccessNumber == 0))
-            {
-            AllRoutes->SetTrailingSignalsOnContinuationRoute(1, AutoSigVectorIT->RouteNumber, 0);
-            AutoSigVectorIT->AccessNumber++;
+		{
+		//Below added at v2.1.0 to prevent locked autosig continuation routes from clearing signals
+		//need to identify the Continuation element in the route & check if it's in a locked route.  If it is then don't call
+		//SetTrailingSignalsOnContinuationRoute as all signals must stay red.
+		TPrefDirElement TempPrefDirElement;
+		int TempLockedVectorNumber;
+		int LastRouteElement = AllRoutes->GetFixedRouteAt(220, AutoSigVectorIT->RouteNumber).PrefDirSize() - 1;
+		int TVNum = AllRoutes->GetFixedRouteAt(221, AutoSigVectorIT->RouteNumber).GetFixedPrefDirElementAt(246, LastRouteElement).GetTrackVectorPosition();
+		//this will be a continuation (error thrown in SetTrailingSignalsOnContinuationRoute if not) & XLinkPos is always 0 for
+		//route exiting at a continuation
+		if(AllRoutes->IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(14, TVNum, 0, TempPrefDirElement, TempLockedVectorNumber))
+			{
+			continue;
+			}
+		//end of additions
+		if(((TTClockTime - AutoSigVectorIT->PassoutTime) > TDateTime(AutoSigVectorIT->FirstDelay/86400)) && (AutoSigVectorIT->AccessNumber == 0))
+			{
+			AllRoutes->SetTrailingSignalsOnContinuationRoute(1, AutoSigVectorIT->RouteNumber, 0);
+			AutoSigVectorIT->AccessNumber++;
             continue;
             }
         if(((TTClockTime - AutoSigVectorIT->PassoutTime) > TDateTime(AutoSigVectorIT->SecondDelay/86400)) && (AutoSigVectorIT->AccessNumber == 1))
             {
-            AllRoutes->SetTrailingSignalsOnContinuationRoute(2, AutoSigVectorIT->RouteNumber, 1);
+			AllRoutes->SetTrailingSignalsOnContinuationRoute(2, AutoSigVectorIT->RouteNumber, 1);
             AutoSigVectorIT->AccessNumber++;
             continue;
             }
         if(((TTClockTime - AutoSigVectorIT->PassoutTime) > TDateTime(AutoSigVectorIT->ThirdDelay/86400)) && (AutoSigVectorIT->AccessNumber == 2))
             {
-            AllRoutes->SetTrailingSignalsOnContinuationRoute(3, AutoSigVectorIT->RouteNumber, 2);
+			AllRoutes->SetTrailingSignalsOnContinuationRoute(3, AutoSigVectorIT->RouteNumber, 2);
             AutoSigVectorIT->AccessNumber++;
             continue;
             }

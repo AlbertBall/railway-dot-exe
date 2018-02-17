@@ -527,6 +527,7 @@ __published:	// IDE-managed Components
 	void __fastcall CreateTimetableMenuItemClick(TObject *Sender);
 	void __fastcall CutMenuItemClick(TObject *Sender);
 	void __fastcall DeleteMenuItemClick(TObject *Sender);
+	void __fastcall EditMenuClick(TObject *Sender);   //added at v2.1.0 to allow CTRL+X, CTRL+C & CTRL+V in edit menu
 	void __fastcall EditTimetableMenuItemClick(TObject *Sender);
 	void __fastcall ExitMenuItemClick(TObject *Sender);
 	void __fastcall ExportTTMenuItemClick(TObject *Sender);
@@ -685,7 +686,6 @@ __published:	// IDE-managed Components
 	void __fastcall HPEditKeyUp(TObject *Sender, WORD &Key,
 		  TShiftState Shift);
 	void __fastcall PresetAutoSigRoutesButtonClick(TObject *Sender);
-	void __fastcall EditMenuClick(TObject *Sender);   //added at v2.1.0 to allow CTRL+X, CTRL+C & CTRL+V in edit menu
 
 public: //AboutForm needs access to these
 

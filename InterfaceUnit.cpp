@@ -7462,35 +7462,42 @@ catch (const Exception &e)
 void __fastcall TInterface::EditMenuClick(TObject *Sender)
 //added at v2.1.0 to allow CTRL+X, CTRL+C & CTRL+V in edit menu
 {
-CopyMenuItem->ShortCut = 16451;
-CutMenuItem->ShortCut = 16472;
-PasteMenuItem->ShortCut = 16470;
+try
+	{
+	CopyMenuItem->ShortCut = 16451;
+	CutMenuItem->ShortCut = 16472;
+	PasteMenuItem->ShortCut = 16470;
+	}
+catch (const Exception &e)
+	{
+	ErrorLog(196, e.Message);
+	}
 }
 //---------------------------------------------------------------------------
 void __fastcall TInterface::SelectMenuItemClick(TObject *Sender)
 {
 //draw a rectangle with the left mouse button mouse, enclosing whole 16 x 16 squares
 try
-    {
+	{
 	TrainController->LogEvent("SelectMenuItemClick");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SelectMenuItemClick");
-    if(Level1Mode == TrackMode)
-        {
-        SelectionValid = false;
-        Level2TrackMode = TrackSelecting;
-        SetLevel2TrackMode(34);
-        }
-    else if(Level1Mode == PrefDirMode)
-        {
-        Level2PrefDirMode = PrefDirSelecting;
-        SetLevel2PrefDirMode(5);
-        }
-    Utilities->CallLogPop(1189);
-    }
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SelectMenuItemClick");
+	if(Level1Mode == TrackMode)
+		{
+		SelectionValid = false;
+		Level2TrackMode = TrackSelecting;
+		SetLevel2TrackMode(34);
+		}
+	else if(Level1Mode == PrefDirMode)
+		{
+		Level2PrefDirMode = PrefDirSelecting;
+		SetLevel2PrefDirMode(5);
+		}
+	Utilities->CallLogPop(1189);
+	}
 catch (const Exception &e)
-    {
-    ErrorLog(145, e.Message);
-    }
+	{
+	ErrorLog(145, e.Message);
+	}
 }
 //---------------------------------------------------------------------------
 void __fastcall TInterface::ReselectMenuItemClick(TObject *Sender)

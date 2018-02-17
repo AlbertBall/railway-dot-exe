@@ -119,8 +119,7 @@ the boundary between it and the other type of route is removed when the
 automatic signal route is removed. This leaves the other route with a missing
 signal, and a new section of route can't be created to include it because the
 program won't permit a route to end next to an existing route. Hence the other
-section of route must be cancelled also. If there's a train on it then it can't
-be cancelled but the train will cancel it as it moves along it.</p>
+section of route must be cancelled also.</p>
 
 <p>Try to avoid having a signal immediately before a bridge, because bridges
 can't be used as truncate points, so the route can't be truncated to that
@@ -139,16 +138,8 @@ and/or to crash into the new train.</p>
 
 <p>Try to avoid creating automatic signal routes where they may need to be
 cancelled. The above situation gives one reason, but another is when the route
-runs into a cul-de-sac, or into a location where there will be a train that
-isn't intended to move on. If such a situation arises, then a train will be on
-an automatic signal route with nowhere to go, and the route can't be cancelled
-because of the train. Signaller control (see later) of the train is then likely
-to be necessary to move it off the route to allow cancellation. The program
-will provide some protection here in that it won't allow an automatic signal
-route into buffers. A method that may be used if a train becomes trapped in an
-automatic signal route is to take the train under signaller control, change its
-direction and move. It will then immediately cancel all the route in front of
-it. This is a somewhat unorthodox manoeuvre but it works! </p>
+runs into a cul-de-sac. The program will provide some protection here in that it 
+won't allow an automatic signal route into buffers.</p>
 
 <p>To cancel a preferred direction or unrestricted route directly in front of a
 train select an element ahead of the train, because any element that the train

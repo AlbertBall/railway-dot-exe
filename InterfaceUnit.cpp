@@ -2585,10 +2585,10 @@ try
     {
 	TrainController->LogEvent("CreateTimetableMenuItemClick");
 	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CreateTimetableMenuItemClick");
-    CreateEditTTFileName = "";
+	CreateEditTTFileName = "";
     TimetableEditVector.clear();
     TimetableEditPanel->Visible = true;
-    HighlightPanel->Visible = false;
+	HighlightPanel->Visible = false;
     TimetablePanel->Visible = true;
     TimetablePanel->BringToFront();//in case SaveRailway button visible, want it hidden else obscures the panel text
     ShowHideTTButton->Glyph->LoadFromResourceName(0, "Hide");
@@ -2681,7 +2681,7 @@ try
     {
 	TrainController->LogEvent("EditTimetableMenuItemClick");
 	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",EditTimetableMenuItemClick");
-    TimetableDialog->Filter = "Timetable file (*.ttb)|*ttb";
+	TimetableDialog->Filter = "Timetable file (*.ttb)|*ttb";
 	CreateEditTTFileName = "";
 	TimetableEditVector.clear();
 	TimetableEditPanel->Visible = true;
@@ -7459,6 +7459,14 @@ catch (const Exception &e)
     }
 }
 //---------------------------------------------------------------------------
+void __fastcall TInterface::EditMenuClick(TObject *Sender)
+//added at v2.1.0 to allow CTRL+X, CTRL+C & CTRL+V in edit menu
+{
+CopyMenuItem->ShortCut = 16451;
+CutMenuItem->ShortCut = 16472;
+PasteMenuItem->ShortCut = 16470;
+}
+//---------------------------------------------------------------------------
 void __fastcall TInterface::SelectMenuItemClick(TObject *Sender)
 {
 //draw a rectangle with the left mouse button mouse, enclosing whole 16 x 16 squares
@@ -7545,161 +7553,161 @@ try
 	TrainController->LogEvent("CutMenuItemClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CutMenuItemClick");
     //Level1Mode = TrackMode;
-    //SetLevel1Mode(69);
-    Level2TrackMode = CutMoving;
-    SetLevel2TrackMode(35);
-    Utilities->CallLogPop(1190);
-    }
+	//SetLevel1Mode(69);
+	Level2TrackMode = CutMoving;
+	SetLevel2TrackMode(35);
+	Utilities->CallLogPop(1190);
+	}
 catch (const Exception &e)
-    {
-    ErrorLog(147, e.Message);
-    }
+	{
+	ErrorLog(147, e.Message);
+	}
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TInterface::CopyMenuItemClick(TObject *Sender)
 {
 try
-    {
+	{
 	TrainController->LogEvent("CopyMenuItemClick");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CopyMenuItemClick");
-    //Level1Mode = TrackMode;
-    //SetLevel1Mode(70);
-    Level2TrackMode = CopyMoving;
-    SetLevel2TrackMode(36);
-    Utilities->CallLogPop(1191);
-    }
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CopyMenuItemClick");
+	//Level1Mode = TrackMode;
+	//SetLevel1Mode(70);
+	Level2TrackMode = CopyMoving;
+	SetLevel2TrackMode(36);
+	Utilities->CallLogPop(1191);
+	}
 catch (const Exception &e)
-    {
-    ErrorLog(148, e.Message);
-    }
+	{
+	ErrorLog(148, e.Message);
+	}
 }
 //---------------------------------------------------------------------------
 void __fastcall TInterface::FlipMenuItemClick(TObject *Sender)
 {
 try
-    {
+	{
 	TrainController->LogEvent("FlipMenuItemClick");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",FlipMenuItemClick");
-    //reset values in SelectVector
-    int VerSum = SelectRect.top + SelectRect.bottom - 1;
-    for(unsigned int x = 0; x < Track->SelectVectorSize(); x++)
-        {
-        Track->SelectVectorAt(7, x).VLoc = VerSum - Track->SelectVectorAt(8, x).VLoc;
-        Track->SelectVectorAt(9, x).SpeedTag = Track->FlipArray[Track->SelectVectorAt(10, x).SpeedTag];
-        }
-    //reset values in SelectTextVector
-    for(unsigned int x = 0; x < TextHandler->SelectTextVectorSize(0); x++)
-        {
-        TTextItem *TextItem = TextHandler->SelectTextPtrAt(0, x);
-        //also subtract font height, brings position approximately right
-        TextItem->VPos = ((VerSum * 16) + 15) - TextItem->VPos - abs(TextItem->Font->Height);
-        }
-    //FlipOrMirrorFlag = true;
-    //Level1Mode = TrackMode;
-    //SetLevel1Mode(71);
-    Level2TrackMode = Pasting;
-    SetLevel2TrackMode(48);
-    Utilities->CallLogPop(1426);
-    }
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",FlipMenuItemClick");
+	//reset values in SelectVector
+	int VerSum = SelectRect.top + SelectRect.bottom - 1;
+	for(unsigned int x = 0; x < Track->SelectVectorSize(); x++)
+		{
+		Track->SelectVectorAt(7, x).VLoc = VerSum - Track->SelectVectorAt(8, x).VLoc;
+		Track->SelectVectorAt(9, x).SpeedTag = Track->FlipArray[Track->SelectVectorAt(10, x).SpeedTag];
+		}
+	//reset values in SelectTextVector
+	for(unsigned int x = 0; x < TextHandler->SelectTextVectorSize(0); x++)
+		{
+		TTextItem *TextItem = TextHandler->SelectTextPtrAt(0, x);
+		//also subtract font height, brings position approximately right
+		TextItem->VPos = ((VerSum * 16) + 15) - TextItem->VPos - abs(TextItem->Font->Height);
+		}
+	//FlipOrMirrorFlag = true;
+	//Level1Mode = TrackMode;
+	//SetLevel1Mode(71);
+	Level2TrackMode = Pasting;
+	SetLevel2TrackMode(48);
+	Utilities->CallLogPop(1426);
+	}
 catch (const Exception &e)
-    {
-    ErrorLog(149, e.Message);
-    }
+	{
+	ErrorLog(149, e.Message);
+	}
 }
 //---------------------------------------------------------------------------
 void __fastcall TInterface::MirrorMenuItemClick(TObject *Sender)
 {
 try
-    {
+	{
 	TrainController->LogEvent("MirrorMenuItemClick");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MirrorMenuItemClick");
-    //reset values in SelectVector
-    int HorSum = SelectRect.left + SelectRect.right - 1;
-    for(unsigned int x = 0; x < Track->SelectVectorSize(); x++)
-        {
-        Track->SelectVectorAt(5, x).HLoc = HorSum - Track->SelectVectorAt(6, x).HLoc;
-        Track->SelectVectorAt(11, x).SpeedTag = Track->MirrorArray[Track->SelectVectorAt(12, x).SpeedTag];
-        }
-    //reset values in SelectTextVector
-    for(unsigned int x = 0; x < TextHandler->SelectTextVectorSize(1); x++)
-        {
-        TTextItem *TextItem = TextHandler->SelectTextPtrAt(1, x);
-        //also subtract half font height for each letter of text, brings position approximately right
-        TextItem->HPos = ((HorSum * 16) + 15) - TextItem->HPos - (TextItem->TextString.Length() * 0.5 * abs(TextItem->Font->Height));
-        }
-    //FlipOrMirrorFlag = true;
-    //Level1Mode = TrackMode;
-    //SetLevel1Mode(72);
-    Level2TrackMode = Pasting;
-    SetLevel2TrackMode(49);
-    Utilities->CallLogPop(1427);
-    }
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MirrorMenuItemClick");
+	//reset values in SelectVector
+	int HorSum = SelectRect.left + SelectRect.right - 1;
+	for(unsigned int x = 0; x < Track->SelectVectorSize(); x++)
+		{
+		Track->SelectVectorAt(5, x).HLoc = HorSum - Track->SelectVectorAt(6, x).HLoc;
+		Track->SelectVectorAt(11, x).SpeedTag = Track->MirrorArray[Track->SelectVectorAt(12, x).SpeedTag];
+		}
+	//reset values in SelectTextVector
+	for(unsigned int x = 0; x < TextHandler->SelectTextVectorSize(1); x++)
+		{
+		TTextItem *TextItem = TextHandler->SelectTextPtrAt(1, x);
+		//also subtract half font height for each letter of text, brings position approximately right
+		TextItem->HPos = ((HorSum * 16) + 15) - TextItem->HPos - (TextItem->TextString.Length() * 0.5 * abs(TextItem->Font->Height));
+		}
+	//FlipOrMirrorFlag = true;
+	//Level1Mode = TrackMode;
+	//SetLevel1Mode(72);
+	Level2TrackMode = Pasting;
+	SetLevel2TrackMode(49);
+	Utilities->CallLogPop(1427);
+	}
 catch (const Exception &e)
-    {
-    ErrorLog(150, e.Message);
-    }
+	{
+	ErrorLog(150, e.Message);
+	}
 }
 //---------------------------------------------------------------------------
 void __fastcall TInterface::RotateMenuItemClick(TObject *Sender)
 {
 try
-    {
+	{
 	TrainController->LogEvent("RotateMenuItemClick");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RotateMenuItemClick");
-    //reset values in SelectVector
-    int HorSum = SelectRect.left + SelectRect.right - 1;
-    int VerSum = SelectRect.top + SelectRect.bottom - 1;
-    for(unsigned int x = 0; x < Track->SelectVectorSize(); x++)
-        {
-        TTrackElement &TempEl = Track->SelectVectorAt(13, x);
-        TempEl.HLoc = HorSum - TempEl.HLoc;
-        TempEl.VLoc = VerSum - TempEl.VLoc;
-        TempEl.SpeedTag = Track->MirrorArray[Track->FlipArray[TempEl.SpeedTag]];
-        }
-    //reset values in SelectTextVector
-    for(unsigned int x = 0; x < TextHandler->SelectTextVectorSize(2); x++)
-        {
-        TTextItem *TextItem = TextHandler->SelectTextPtrAt(2, x);
-        //also subtract half font height for each letter of text, brings position approximately right horizontally
-        TextItem->HPos = ((HorSum * 16) + 15) - TextItem->HPos - (TextItem->TextString.Length() * 0.5 * abs(TextItem->Font->Height));
-        //also subtract font height, brings position approximately right vertically
-        TextItem->VPos = ((VerSum * 16) + 15) - TextItem->VPos - abs(TextItem->Font->Height);
-        }
-    //Level1Mode = TrackMode;
-    //SetLevel1Mode(73);
-    Level2TrackMode = Pasting;
-    SetLevel2TrackMode(50);
-    Utilities->CallLogPop(1435);
-    }
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RotateMenuItemClick");
+	//reset values in SelectVector
+	int HorSum = SelectRect.left + SelectRect.right - 1;
+	int VerSum = SelectRect.top + SelectRect.bottom - 1;
+	for(unsigned int x = 0; x < Track->SelectVectorSize(); x++)
+		{
+		TTrackElement &TempEl = Track->SelectVectorAt(13, x);
+		TempEl.HLoc = HorSum - TempEl.HLoc;
+		TempEl.VLoc = VerSum - TempEl.VLoc;
+		TempEl.SpeedTag = Track->MirrorArray[Track->FlipArray[TempEl.SpeedTag]];
+		}
+	//reset values in SelectTextVector
+	for(unsigned int x = 0; x < TextHandler->SelectTextVectorSize(2); x++)
+		{
+		TTextItem *TextItem = TextHandler->SelectTextPtrAt(2, x);
+		//also subtract half font height for each letter of text, brings position approximately right horizontally
+		TextItem->HPos = ((HorSum * 16) + 15) - TextItem->HPos - (TextItem->TextString.Length() * 0.5 * abs(TextItem->Font->Height));
+		//also subtract font height, brings position approximately right vertically
+		TextItem->VPos = ((VerSum * 16) + 15) - TextItem->VPos - abs(TextItem->Font->Height);
+		}
+	//Level1Mode = TrackMode;
+	//SetLevel1Mode(73);
+	Level2TrackMode = Pasting;
+	SetLevel2TrackMode(50);
+	Utilities->CallLogPop(1435);
+	}
 catch (const Exception &e)
-    {
-    ErrorLog(151, e.Message);
-    }
+	{
+	ErrorLog(151, e.Message);
+	}
 }
 //---------------------------------------------------------------------------
 void __fastcall TInterface::PasteMenuItemClick(TObject *Sender)
 {
 try
-    {
+	{
 	TrainController->LogEvent("PasteMenuItemClick");
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PasteMenuItemClick");
-    //Level1Mode = TrackMode;
-    //SetLevel1Mode(74);
-    Level2TrackMode = Pasting;
-    SetLevel2TrackMode(37);
-    Utilities->CallLogPop(1192);
-    }
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PasteMenuItemClick");
+	//Level1Mode = TrackMode;
+	//SetLevel1Mode(74);
+	Level2TrackMode = Pasting;
+	SetLevel2TrackMode(37);
+	Utilities->CallLogPop(1192);
+	}
 catch (const Exception &e)
-    {
-    ErrorLog(152, e.Message);
-    }
+	{
+	ErrorLog(152, e.Message);
+	}
 }
 //---------------------------------------------------------------------------
 void __fastcall TInterface::DeleteMenuItemClick(TObject *Sender)
 {
 try
-    {
+	{
 	TrainController->LogEvent("DeleteMenuItemClick");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",DeleteMenuItemClick");
     //Level1Mode = TrackMode;
@@ -9851,8 +9859,13 @@ if(!Display->ZoomOutFlag)
 //reset GapFlashFlag
 switch(Level1Mode)//use the data member
     {
-    case BaseMode:
-    Track->ActiveTrackElementNameMapCompiledFlag = false;
+	case BaseMode:
+
+	CopyMenuItem->ShortCut = 0;  //added these for v2.1.0 to set default values after use of the 'Edit' menu during track building
+	CutMenuItem->ShortCut = 0;   //to allow normal cutting/copying/pasting, especially in timetable construction or editing
+	PasteMenuItem->ShortCut = 0;
+
+	Track->ActiveTrackElementNameMapCompiledFlag = false;
     Level2TrackMode = NoTrackMode;
     Level2PrefDirMode = NoPrefDirMode;
     Level2OperMode = NoOperMode;
@@ -14538,5 +14551,5 @@ be tellg, which sometimes returns wrong results, and they corrupt things when us
 Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file position then close and reopen it.
 */
 
-
+//---------------------------------------------------------------------------
 

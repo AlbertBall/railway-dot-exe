@@ -111,7 +111,8 @@ So… there’s plenty still to do… what are you waiting for?
 ## Attributions
 
 Menu icons from Silk Icon Set 1.3 by Mark James used under Creative Commons Attribution 2.5 License
-
  http://creativecommons.org/licenses/by/2.5/
-
+ 
+Timetable editor icons from https://icons8.com used under Creative Commons Attribution-NoDerivs 3.0 Unported License
+http://creativecommons.org/licenses/by-nd/3.0/
 

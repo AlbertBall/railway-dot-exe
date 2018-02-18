@@ -109,6 +109,9 @@ void __fastcall TAboutForm::SetAboutCaption()
 							L"Copyright 2010-2018 Albert Ball" + NL + NL + NL +
                             L"Menu icons from Silk Icon Set 1.3 by Mark James" + NL +
                             L"used under Creative Commons Attribution 2.5 License." + NL +
-                            L"http://creativecommons.org/licenses/by/2.5/";
+                            L"http://creativecommons.org/licenses/by/2.5/" + NL + NL +
+                            L"Timetable icons from https://icons8.com" + NL +
+                            L"used under Creative Commons Attribution-NoDerivs 3.0 Unported License." + NL +
+                            L"https://creativecommons.org/licenses/by-nd/3.0/";
 }
 //---------------------------------------------------------------------------

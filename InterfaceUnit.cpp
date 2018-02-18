@@ -190,7 +190,7 @@ try
     TrackInfoOnOffMenuItem->Caption = "Show";  //added here at v1.2.0 because dropped from ResetAll()
 	TrainStatusInfoOnOffMenuItem->Caption = "Hide Status"; //changed at v2.0.0 so normally visible
 	TrainTTInfoOnOffMenuItem->Caption = "Hide Timetable"; //as above
-    ResetAll(0);
+	ResetAll(0);
 
     TempTTFileName = "";
 
@@ -704,7 +704,7 @@ try
         {
         if(LocError)//links not complete or other error - show offending element
             {
-            while((Display->DisplayOffsetH - HLoc) > 0) Display->DisplayOffsetH-= (Utilities->ScreenElementWidth/2);//use 30 instead of 60 so less likely to appear behind the message box
+			while((Display->DisplayOffsetH - HLoc) > 0) Display->DisplayOffsetH-= (Utilities->ScreenElementWidth/2);//use 30 instead of 60 so less likely to appear behind the message box
             while((HLoc - Display->DisplayOffsetH) > (Utilities->ScreenElementWidth - 1)) Display->DisplayOffsetH+= (Utilities->ScreenElementWidth/2);
             while((Display->DisplayOffsetV - VLoc) > 0) Display->DisplayOffsetV-= (Utilities->ScreenElementHeight/2);//use 18 instead of 36 so less likely to appear behind the message box
             while((VLoc - Display->DisplayOffsetV) > (Utilities->ScreenElementHeight - 1)) Display->DisplayOffsetV+= (Utilities->ScreenElementHeight/2);
@@ -4850,7 +4850,7 @@ try
 
 	if(!Track->RouteFlashFlag && !Track->PointFlashFlag)
         {
-        if(!Display->ZoomOutFlag) MainScreenMouseDown2(0, Button, Shift, X, Y);
+		if(!Display->ZoomOutFlag) MainScreenMouseDown2(0, Button, Shift, X, Y);
         else MainScreenMouseDown3(0, Button, Shift, X, Y);
         }
 	Utilities->Clock2Stopped = ClockState;
@@ -4883,6 +4883,8 @@ try
     Track->GetTruePositionsFromScreenPos(0, NoOffsetX, NoOffsetY, X, Y);
     if(Button == mbRight)//track, PrefDir or text erase, PrefDir/route truncate, or take signaller control of train
         {
+        int Pos0;  //added at v2.1.0 for WholeRailwayMoving
+        TTrackElement TTE0;  //added at v2.1.0 for WholeRailwayMoving
         if(Level2TrackMode == AddText)
             {
             TrainController->LogEvent("mbRight + AddText");
@@ -5027,6 +5029,14 @@ try
             SetLevel1Mode(15);//calls ClearandRebuildRailway to show length erased & sets back to start
             Utilities->CallLogPop(39);
             return;
+            }
+
+    //this routine new at v2.1.0.  Allows railway moving for zoom-in mode
+        else if(!Track->FindNonPlatformMatch(19, HLoc, VLoc, Pos0, TTE0))
+            {
+            StartWholeRailwayMoveHPos = X;
+            StartWholeRailwayMoveVPos = Y;
+            WholeRailwayMoving = true;
             }
 
         else if((Level2OperMode == Operating) || (Level2OperMode == PreStart))//disallow when paused, but allow some parts in prestart
@@ -5622,7 +5632,7 @@ try
         {
         TrainController->LogEvent("mbLeft + CopyMoving or CutMoving");
         ResetChangedFileDataAndCaption(14, true);
-        if((X < ((SelectBitmapHLoc - Display->DisplayOffsetH)*16) + 4) || (X > ((SelectBitmapHLoc + (SelectBitmap->Width/16) - Display->DisplayOffsetH)*16) - 4))
+		if((X < ((SelectBitmapHLoc - Display->DisplayOffsetH)*16) + 4) || (X > ((SelectBitmapHLoc + (SelectBitmap->Width/16) - Display->DisplayOffsetH)*16) - 4))
             {
             SelectPickedUp = false;
             Utilities->CallLogPop(54);
@@ -5638,7 +5648,7 @@ try
             {
             SelectPickedUp = true;
             }
-        SelectBitmapMouseLocX = X;
+		SelectBitmapMouseLocX = X;
         SelectBitmapMouseLocY = Y;
         }
 
@@ -5916,7 +5926,7 @@ try
 						Track->PointFlashFlag = true;
                         PointFlashVectorPosition = Position;
                         PointFlashStartTime = TrainController->TTClockTime;
-                        }
+                        [close curly bracket -  if include it matches earlier non-commented one!]
         */
                         TTrackElement DivergingElement = Track->TrackElementAt(433, TrackElement.Conn[3]);
                         int DivergingPosition = TrackElement.Conn[3];
@@ -6086,7 +6096,8 @@ try
             return;
             }
         }
-    Utilities->CallLogPop(68);
+
+	Utilities->CallLogPop(68);
     }
 catch (const Exception &e)
     {
@@ -6102,76 +6113,85 @@ void TInterface::MainScreenMouseDown3(int Caller, TMouseButton Button, TShiftSta
 //NB: DisplayZoomOutOffsetH & V take account of the Min & Max H & V values so don't need these again
 try
     {
-    if(Button != mbLeft) return;
     TrainController->LogEvent("MainScreenMouseDown3," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",MainScreenMouseDown3," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
-    InfoPanel->Visible = false;//reset infopanel in case not set later
-    InfoPanel->Caption = "";
-    int HRounding, VRounding;
-    int TruePosH = (X/4) + Display->DisplayZoomOutOffsetH;
-    int TruePosV = (Y/4) + Display->DisplayZoomOutOffsetV;
-    //find nearest screen centre - from 30 to 210 horiz & from 18 to 126 vert
-    if(TruePosH < 0) HRounding = -(Utilities->ScreenElementWidth/4); else HRounding = (Utilities->ScreenElementWidth/4);
-    int CentreH = (((TruePosH + HRounding)/(Utilities->ScreenElementWidth/2)) * (Utilities->ScreenElementWidth/2));
-    while((CentreH - Track->GetHLocMax()) >= (Utilities->ScreenElementWidth/2)) CentreH-= (Utilities->ScreenElementWidth/2);
-    while((Track->GetHLocMin() - CentreH) >= (Utilities->ScreenElementWidth/2)) CentreH+= (Utilities->ScreenElementWidth/2);
-    if(TruePosV < 0) VRounding = -(Utilities->ScreenElementHeight/4); else VRounding = (Utilities->ScreenElementHeight/4);
-    int CentreV = (((TruePosV + VRounding)/(Utilities->ScreenElementHeight/2)) * (Utilities->ScreenElementHeight/2));
-    while((CentreV - Track->GetVLocMax()) >= (Utilities->ScreenElementHeight/2)) CentreV-= (Utilities->ScreenElementHeight/2);
-    while((Track->GetVLocMin() - CentreV) >= (Utilities->ScreenElementHeight/2)) CentreV+= (Utilities->ScreenElementHeight/2);
-    Display->DisplayOffsetH = CentreH - (Utilities->ScreenElementWidth/2);
-    Display->DisplayOffsetV = CentreV - (Utilities->ScreenElementHeight/2);
+    if(Button != mbLeft)
+        {
+    //this routine new at v2.1.0.  Allows railway moving for zoom-out mode
+        StartWholeRailwayMoveHPos = X;
+        StartWholeRailwayMoveVPos = Y;
+        WholeRailwayMoving = true;
+        }
+    else
+        {
+        InfoPanel->Visible = false;//reset infopanel in case not set later
+        InfoPanel->Caption = "";
+        int HRounding, VRounding;
+        int TruePosH = (X/4) + Display->DisplayZoomOutOffsetH;
+        int TruePosV = (Y/4) + Display->DisplayZoomOutOffsetV;
+        //find nearest screen centre - from 30 to 210 horiz & from 18 to 126 vert
+        if(TruePosH < 0) HRounding = -(Utilities->ScreenElementWidth/4); else HRounding = (Utilities->ScreenElementWidth/4);
+        int CentreH = (((TruePosH + HRounding)/(Utilities->ScreenElementWidth/2)) * (Utilities->ScreenElementWidth/2));
+        while((CentreH - Track->GetHLocMax()) >= (Utilities->ScreenElementWidth/2)) CentreH-= (Utilities->ScreenElementWidth/2);
+        while((Track->GetHLocMin() - CentreH) >= (Utilities->ScreenElementWidth/2)) CentreH+= (Utilities->ScreenElementWidth/2);
+        if(TruePosV < 0) VRounding = -(Utilities->ScreenElementHeight/4); else VRounding = (Utilities->ScreenElementHeight/4);
+        int CentreV = (((TruePosV + VRounding)/(Utilities->ScreenElementHeight/2)) * (Utilities->ScreenElementHeight/2));
+        while((CentreV - Track->GetVLocMax()) >= (Utilities->ScreenElementHeight/2)) CentreV-= (Utilities->ScreenElementHeight/2);
+        while((Track->GetVLocMin() - CentreV) >= (Utilities->ScreenElementHeight/2)) CentreV+= (Utilities->ScreenElementHeight/2);
+        Display->DisplayOffsetH = CentreH - (Utilities->ScreenElementWidth/2);
+        Display->DisplayOffsetV = CentreV - (Utilities->ScreenElementHeight/2);
 
-    TLevel2OperMode TempLevel2OperMode = Level2OperMode;
-    if(Level1Mode == BaseMode) SetLevel1Mode(17);
-    else if(Level1Mode == TrackMode)
-        {
-        //set edit menu items
-        SetInitialTrackModeEditMenu();
-        PreventGapOffsetResetting = true;//when return from zoom by clicking screen don't force a return to the
-                                         //displayed gap, user wants to display the clicked area
-        SetLevel2TrackMode(32);//revert to earlier track mode from zoom
-        PreventGapOffsetResetting = false;
+        TLevel2OperMode TempLevel2OperMode = Level2OperMode;
+        if(Level1Mode == BaseMode) SetLevel1Mode(17);
+        else if(Level1Mode == TrackMode)
+            {
+            //set edit menu items
+            SetInitialTrackModeEditMenu();
+            PreventGapOffsetResetting = true;//when return from zoom by clicking screen don't force a return to the
+                                             //displayed gap, user wants to display the clicked area
+            SetLevel2TrackMode(32);//revert to earlier track mode from zoom
+            PreventGapOffsetResetting = false;
+            }
+        else if(Level1Mode == PrefDirMode)
+            {
+            if(Level2PrefDirMode == PrefDirContinuing) SetLevel2PrefDirMode(3);//revert to earlier PrefDir mode from zoom
+            else SetLevel1Mode(33);//if PrefDirSelecting revert to normap PrefDirMode
+            }
+    //    else if(Level1Mode == TrackMode) SetLevel1Mode();//just revert to basic track mode from zoom
+    //    else if(Level1Mode == PrefDirMode) SetLevel1Mode();//just revert to basic PrefDir mode from zoom
+        else if(Level1Mode == TimetableMode)
+            {
+            InfoPanel->Visible = false;
+            }
+        //Not OperMode or RestartSessionOperMode as that resets the performance file
+        else if(TempLevel2OperMode == Operating)//similar to SetLevel2OperMode but without resetting BaseTime
+            {
+            OperateButton->Enabled = true;
+            OperateButton->Glyph->LoadFromResourceName(0, "PauseGraphic");
+            ExitOperationButton->Enabled = true;
+            SetRouteButtonsInfoCaptionAndRouteNotStarted(0);
+            }
+        else if(TempLevel2OperMode == Paused)//similar to SetLevel2OperMode but without resetting RestartTime
+            {
+            OperateButton->Enabled = true;
+            OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
+            ExitOperationButton->Enabled = true;
+            TTClockAdjButton->Enabled = true;
+            SetRouteButtonsInfoCaptionAndRouteNotStarted(6);
+            DisableRouteButtons(0);
+            }
+        else if(TempLevel2OperMode == PreStart)
+            {
+            OperateButton->Enabled = true;
+            OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
+            ExitOperationButton->Enabled = true;
+            TTClockAdjButton->Enabled = true;
+            SetRouteButtonsInfoCaptionAndRouteNotStarted(8);
+            }
+        Display->ZoomOutFlag = false;//reset this after level modes called so gap flash stays set if set to begin with
+        SetPausedOrZoomedInfoCaption(0);
+        ClearandRebuildRailway(44);
         }
-    else if(Level1Mode == PrefDirMode)
-        {
-        if(Level2PrefDirMode == PrefDirContinuing) SetLevel2PrefDirMode(3);//revert to earlier PrefDir mode from zoom
-        else SetLevel1Mode(33);//if PrefDirSelecting revert to normap PrefDirMode
-        }
-//    else if(Level1Mode == TrackMode) SetLevel1Mode();//just revert to basic track mode from zoom
-//    else if(Level1Mode == PrefDirMode) SetLevel1Mode();//just revert to basic PrefDir mode from zoom
-	else if(Level1Mode == TimetableMode)
-        {
-        InfoPanel->Visible = false;
-        }
-    //Not OperMode or RestartSessionOperMode as that resets the performance file
-    else if(TempLevel2OperMode == Operating)//similar to SetLevel2OperMode but without resetting BaseTime
-        {
-        OperateButton->Enabled = true;
-        OperateButton->Glyph->LoadFromResourceName(0, "PauseGraphic");
-        ExitOperationButton->Enabled = true;
-        SetRouteButtonsInfoCaptionAndRouteNotStarted(0);
-        }
-    else if(TempLevel2OperMode == Paused)//similar to SetLevel2OperMode but without resetting RestartTime
-        {
-        OperateButton->Enabled = true;
-        OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
-        ExitOperationButton->Enabled = true;
-        TTClockAdjButton->Enabled = true;
-        SetRouteButtonsInfoCaptionAndRouteNotStarted(6);
-        DisableRouteButtons(0);
-        }
-    else if(TempLevel2OperMode == PreStart)
-        {
-        OperateButton->Enabled = true;
-        OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
-        ExitOperationButton->Enabled = true;
-        TTClockAdjButton->Enabled = true;
-        SetRouteButtonsInfoCaptionAndRouteNotStarted(8);
-        }
-    Display->ZoomOutFlag = false;//reset this after level modes called so gap flash stays set if set to begin with
-    SetPausedOrZoomedInfoCaption(0);
-    ClearandRebuildRailway(44);
     Utilities->CallLogPop(69);
     }
 catch (const Exception &e)
@@ -6187,99 +6207,139 @@ void __fastcall TInterface::MainScreenMouseMove(TObject *Sender,
 {
 try
     {
-    if(!mbLeftDown) return;
-//    TrainController->LogEvent("MainScreenMouseMove," + AnsiString(X) + "," + AnsiString(Y));    //dropped at v0.6, too many events
+    //TrainController->LogEvent("MainScreenMouseMove," + AnsiString(X) + "," + AnsiString(Y));    //dropped at v0.6, too many events
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MainScreenMouseMove," + AnsiString(X) + "," + AnsiString(Y));
-    if(Level2TrackMode == TrackSelecting)
-/*  [Repeated from MouseDown] - When 'select' chosen from the Edit menu (only available in 'AddTrack') conditions are set ready to enclose a rectangular screen area
-    using MouseMove.  When MouseDown occurs the starting point is marked (wrt whole railway, not just the screen) and stored in
-    SelectStartPair.  If the mouse button is released and a new start position selected then the earlier one is discarded.  Providing the
-    button is held down subsequent actions occur during MouseMove (to display the changing rectangle) and MouseUp to define the final
-    selected rectangle.
-    [New] At this point the select starting position has been defined in SelectStartPair, and the current mouse position is defined (wrt whole
-    railway) in HLoc & VLoc from the screen positions X & Y by GetTrackLocsFromScreenPos.  Both are incremented so that the rectangle
-    includes the current point (if no mouse movement at all occurs then a 1 x 1 rectangle is displayed).  Limits are set to prevent the
-    displayed rectangle extending off screen.  Edges are set at 60 & 36 rather than 59 & 35 because the defined rectangle excludes the
-    rightmost and bottom HLoc & VLoc values, if 59 & 35 were used the right & bottom screen edges wouldn't be reached.  A TRect is then
-    defined from SelectStartPair and the HLoc/VLoc values, Clearand... called to clear earlier rectangles, and a dashed edge drawn round
-    the selection.
-*/
-        {
-        TrainController->LogEvent("MouseMove + TrackSelecting");
-        int CurrentHLoc, CurrentVLoc, StartHLoc = SelectStartPair.first, StartVLoc = SelectStartPair.second;
-        Track->GetTrackLocsFromScreenPos(2, CurrentHLoc, CurrentVLoc, X, Y);
-//to make the rectangle inclusive of the start and current points, need to increase the HLoc value of the
-//rightmost point and the VLoc value of the bottommost point
-        if(CurrentHLoc >= StartHLoc) CurrentHLoc++; else StartHLoc++;
-        if(CurrentVLoc >= StartVLoc) CurrentVLoc++; else StartVLoc++;
-        if(CurrentHLoc - Display->DisplayOffsetH > Utilities->ScreenElementWidth) CurrentHLoc = Display->DisplayOffsetH + Utilities->ScreenElementWidth;
-        if(CurrentVLoc - Display->DisplayOffsetV > Utilities->ScreenElementHeight) CurrentVLoc = Display->DisplayOffsetV + Utilities->ScreenElementHeight;
-        if(CurrentHLoc - Display->DisplayOffsetH < 0) CurrentHLoc = Display->DisplayOffsetH;
-        if(CurrentVLoc - Display->DisplayOffsetV < 0) CurrentVLoc = Display->DisplayOffsetV;
-        TRect TempRect(StartHLoc, StartVLoc, CurrentHLoc, CurrentVLoc);
-        ClearandRebuildRailway(14);//to clear earlier rectangles
-        Display->PlotDashedRect(0, TempRect);
-        Display->Update();// resurrected when Update() dropped from PlotOutput etc
-        }
 
-    else if(Level2PrefDirMode == PrefDirSelecting)
+    if(!mbLeftDown && WholeRailwayMoving)    //new at v2.1.0
         {
-        TrainController->LogEvent("MouseMove + PrefDirSelecting");
-
-        int CurrentHLoc, CurrentVLoc, StartHLoc = SelectStartPair.first, StartVLoc = SelectStartPair.second;
-        Track->GetTrackLocsFromScreenPos(5, CurrentHLoc, CurrentVLoc, X, Y);
-//to make the rectangle inclusive of the start and current points, need to increase the HLoc value of the
-//rightmost point and the VLoc value of the bottommost point
-        if(CurrentHLoc >= StartHLoc) CurrentHLoc++; else StartHLoc++;
-        if(CurrentVLoc >= StartVLoc) CurrentVLoc++; else StartVLoc++;
-        if(CurrentHLoc - Display->DisplayOffsetH > Utilities->ScreenElementWidth) CurrentHLoc = Display->DisplayOffsetH + Utilities->ScreenElementWidth;
-        if(CurrentVLoc - Display->DisplayOffsetV > Utilities->ScreenElementHeight) CurrentVLoc = Display->DisplayOffsetV + Utilities->ScreenElementHeight;
-        if(CurrentHLoc - Display->DisplayOffsetH < 0) CurrentHLoc = Display->DisplayOffsetH;
-        if(CurrentVLoc - Display->DisplayOffsetV < 0) CurrentVLoc = Display->DisplayOffsetV;
-        TRect TempRect(StartHLoc, StartVLoc, CurrentHLoc, CurrentVLoc);
-        ClearandRebuildRailway(57);//to clear earlier rectangles
-        Display->PlotDashedRect(2, TempRect);
-        Display->Update(); //need to keep this since Update() not called for PlotSmallOutput as too slow
-        }
-
-    else if(((Level2TrackMode == CopyMoving) || (Level2TrackMode == CutMoving)) && SelectPickedUp)
-    /*[Repeated from MouseDown] - The same actions apply on MouseDown whether Copy or Cut selected from the menu.  First the horizontal and vertical mouse position is
-    checked and unless it lies within the selected rectangle and not within 4 pixels of an edge the pickup fails and the function returns.
-    Otherwise flag SelectPickedUp is set to true (to allow it to move during MouseMove and remain in place at MouseUp) and the mouse position
-    is saved in SelectBitmapMouseLocX & Y for use later in MouseMove & MouseUp.
-    [New] - The same actions apply on MouseMove whether Copy or Cut selected from the menu.  The X & Y mouse positions are checked and set to
-    stay within the display area.  Then the current selection H & V positions are stored in NewSelectBitmapHLoc & VLoc.
-    These change continually while the mouse and the selection are moving, they are only read on MouseUp to retain the position that it then
-    occupies.  Clearand... is called finally to clear earlier selection displays.
-    */
-        {
-        TrainController->LogEvent("MouseMove + Copy or CutMoving & SelectPickedUp");
+        TrainController->LogEvent("MouseMove + WholeRailwayMoving");
         if(X < 0) X = 0; //ensure pointer stays within display area
         if(X > (MainScreen->Width - 1)) X = MainScreen->Width - 1;
         if(Y < 0) Y = 0;
         if(Y > (MainScreen->Height - 1)) Y = MainScreen->Height - 1;
-        NewSelectBitmapHLoc = (X - SelectBitmapMouseLocX)/16 + SelectBitmapHLoc;
-        NewSelectBitmapVLoc = (Y - SelectBitmapMouseLocY)/16 + SelectBitmapVLoc;
-        ClearandRebuildRailway(15);//plots SelectBitmap at the position given by NewSelectBitmapHLoc & ...VLoc
+
+        if(!Display->ZoomOutFlag)
+            {
+            if((abs(X - StartWholeRailwayMoveHPos) >= 16) || (abs(Y - StartWholeRailwayMoveVPos) >= 16))
+                {
+                int NewH = X - StartWholeRailwayMoveHPos;
+                int NewV = Y - StartWholeRailwayMoveVPos;
+                Display->DisplayOffsetH-= NewH/16;
+                Display->DisplayOffsetV-= NewV/16;
+                StartWholeRailwayMoveHPos = X;
+                StartWholeRailwayMoveVPos = Y;
+                ClearandRebuildRailway(69);
+                }
+            }
+        else
+            {
+            if((abs(X - StartWholeRailwayMoveHPos) >= 4) || (abs(Y - StartWholeRailwayMoveVPos) >= 4))
+                {
+                int NewH = X - StartWholeRailwayMoveHPos;
+                int NewV = Y - StartWholeRailwayMoveVPos;
+                Display->DisplayZoomOutOffsetH-= NewH/4;
+                Display->DisplayZoomOutOffsetV-= NewV/4;
+                StartWholeRailwayMoveHPos = X;
+                StartWholeRailwayMoveVPos = Y;
+                Display->ClearDisplay(10);
+                Track->PlotSmallRailway(8, Display);
+                }
+            }
         }
 
-    else if((Level2TrackMode == MoveText) && TextFoundFlag)
+    else if(mbLeftDown)
         {
-        TrainController->LogEvent("MouseMove + MoveText & TextFoundFlag");
-        int NewHPos = TextGridVal*(div(X - StartX,TextGridVal).quot) + TextMoveHPos + Display->DisplayOffsetH * 16;
-        NewHPos = TextGridVal*(div(NewHPos,TextGridVal).quot);
-        int NewVPos = TextGridVal*(div(Y - StartY,TextGridVal).quot) + TextMoveVPos + Display->DisplayOffsetV * 16;
-        NewVPos = TextGridVal*(div(NewVPos,TextGridVal).quot);
+        if(Level2TrackMode == TrackSelecting)
+    /*  [Repeated from MouseDown] - When 'select' chosen from the Edit menu (only available in 'AddTrack') conditions are set ready to enclose a rectangular screen area
+        using MouseMove.  When MouseDown occurs the starting point is marked (wrt whole railway, not just the screen) and stored in
+        SelectStartPair.  If the mouse button is released and a new start position selected then the earlier one is discarded.  Providing the
+        button is held down subsequent actions occur during MouseMove (to display the changing rectangle) and MouseUp to define the final
+        selected rectangle.
+        [New] At this point the select starting position has been defined in SelectStartPair, and the current mouse position is defined (wrt whole
+        railway) in HLoc & VLoc from the screen positions X & Y by GetTrackLocsFromScreenPos.  Both are incremented so that the rectangle
+        includes the current point (if no mouse movement at all occurs then a 1 x 1 rectangle is displayed).  Limits are set to prevent the
+        displayed rectangle extending off screen.  Edges are set at 60 & 36 rather than 59 & 35 because the defined rectangle excludes the
+        rightmost and bottom HLoc & VLoc values, if 59 & 35 were used the right & bottom screen edges wouldn't be reached.  A TRect is then
+        defined from SelectStartPair and the HLoc/VLoc values, Clearand... called to clear earlier rectangles, and a dashed edge drawn round
+        the selection.
+    */
+            {
+            TrainController->LogEvent("MouseMove + TrackSelecting");
+            int CurrentHLoc, CurrentVLoc, StartHLoc = SelectStartPair.first, StartVLoc = SelectStartPair.second;
+            Track->GetTrackLocsFromScreenPos(2, CurrentHLoc, CurrentVLoc, X, Y);
+    //to make the rectangle inclusive of the start and current points, need to increase the HLoc value of the
+    //rightmost point and the VLoc value of the bottommost point
+            if(CurrentHLoc >= StartHLoc) CurrentHLoc++; else StartHLoc++;
+            if(CurrentVLoc >= StartVLoc) CurrentVLoc++; else StartVLoc++;
+            if(CurrentHLoc - Display->DisplayOffsetH > Utilities->ScreenElementWidth) CurrentHLoc = Display->DisplayOffsetH + Utilities->ScreenElementWidth;
+            if(CurrentVLoc - Display->DisplayOffsetV > Utilities->ScreenElementHeight) CurrentVLoc = Display->DisplayOffsetV + Utilities->ScreenElementHeight;
+            if(CurrentHLoc - Display->DisplayOffsetH < 0) CurrentHLoc = Display->DisplayOffsetH;
+            if(CurrentVLoc - Display->DisplayOffsetV < 0) CurrentVLoc = Display->DisplayOffsetV;
+            TRect TempRect(StartHLoc, StartVLoc, CurrentHLoc, CurrentVLoc);
+            ClearandRebuildRailway(14);//to clear earlier rectangles
+            Display->PlotDashedRect(0, TempRect);
+            Display->Update();// resurrected when Update() dropped from PlotOutput etc
+            }
 
-        TextHandler->TextPtrAt(26, TextItem)->HPos = NewHPos;
-        TextHandler->TextPtrAt(27, TextItem)->VPos = NewVPos;
-//        Display->ClearDisplay();
-//        Track->RebuildTrack(2, Display);//need to add this here as well as below to prevent flicker when moving
-//        TextHandler->RebuildFromTextVector(Display);
-//        Track->RebuildTrack(3, Display);
-        ClearandRebuildRailway(41);
+        else if(Level2PrefDirMode == PrefDirSelecting)
+            {
+            TrainController->LogEvent("MouseMove + PrefDirSelecting");
+
+            int CurrentHLoc, CurrentVLoc, StartHLoc = SelectStartPair.first, StartVLoc = SelectStartPair.second;
+            Track->GetTrackLocsFromScreenPos(5, CurrentHLoc, CurrentVLoc, X, Y);
+    //to make the rectangle inclusive of the start and current points, need to increase the HLoc value of the
+    //rightmost point and the VLoc value of the bottommost point
+            if(CurrentHLoc >= StartHLoc) CurrentHLoc++; else StartHLoc++;
+            if(CurrentVLoc >= StartVLoc) CurrentVLoc++; else StartVLoc++;
+            if(CurrentHLoc - Display->DisplayOffsetH > Utilities->ScreenElementWidth) CurrentHLoc = Display->DisplayOffsetH + Utilities->ScreenElementWidth;
+            if(CurrentVLoc - Display->DisplayOffsetV > Utilities->ScreenElementHeight) CurrentVLoc = Display->DisplayOffsetV + Utilities->ScreenElementHeight;
+            if(CurrentHLoc - Display->DisplayOffsetH < 0) CurrentHLoc = Display->DisplayOffsetH;
+            if(CurrentVLoc - Display->DisplayOffsetV < 0) CurrentVLoc = Display->DisplayOffsetV;
+            TRect TempRect(StartHLoc, StartVLoc, CurrentHLoc, CurrentVLoc);
+            ClearandRebuildRailway(57);//to clear earlier rectangles
+            Display->PlotDashedRect(2, TempRect);
+            Display->Update(); //need to keep this since Update() not called for PlotSmallOutput as too slow
+            }
+
+        else if(((Level2TrackMode == CopyMoving) || (Level2TrackMode == CutMoving)) && SelectPickedUp)
+        /*[Repeated from MouseDown] - The same actions apply on MouseDown whether Copy or Cut selected from the menu.  First the horizontal and vertical mouse position is
+        checked and unless it lies within the selected rectangle and not within 4 pixels of an edge the pickup fails and the function returns.
+        Otherwise flag SelectPickedUp is set to true (to allow it to move during MouseMove and remain in place at MouseUp) and the mouse position
+        is saved in SelectBitmapMouseLocX & Y for use later in MouseMove & MouseUp.
+        [New] - The same actions apply on MouseMove whether Copy or Cut selected from the menu.  The X & Y mouse positions are checked and set to
+        stay within the display area.  Then the current selection H & V positions are stored in NewSelectBitmapHLoc & VLoc.
+        These change continually while the mouse and the selection are moving, they are only read on MouseUp to retain the position that it then
+        occupies.  Clearand... is called finally to clear earlier selection displays.
+        */
+            {
+            TrainController->LogEvent("MouseMove + Copy or CutMoving & SelectPickedUp");
+            if(X < 0) X = 0; //ensure pointer stays within display area
+            if(X > (MainScreen->Width - 1)) X = MainScreen->Width - 1;
+            if(Y < 0) Y = 0;
+            if(Y > (MainScreen->Height - 1)) Y = MainScreen->Height - 1;
+            NewSelectBitmapHLoc = (X - SelectBitmapMouseLocX)/16 + SelectBitmapHLoc;
+            NewSelectBitmapVLoc = (Y - SelectBitmapMouseLocY)/16 + SelectBitmapVLoc;
+            ClearandRebuildRailway(15);//plots SelectBitmap at the position given by NewSelectBitmapHLoc & ...VLoc
+            }
+
+        else if((Level2TrackMode == MoveText) && TextFoundFlag)
+            {
+            TrainController->LogEvent("MouseMove + MoveText & TextFoundFlag");
+            int NewHPos = TextGridVal*(div(X - StartX,TextGridVal).quot) + TextMoveHPos + Display->DisplayOffsetH * 16;
+            NewHPos = TextGridVal*(div(NewHPos,TextGridVal).quot);
+            int NewVPos = TextGridVal*(div(Y - StartY,TextGridVal).quot) + TextMoveVPos + Display->DisplayOffsetV * 16;
+            NewVPos = TextGridVal*(div(NewVPos,TextGridVal).quot);
+
+            TextHandler->TextPtrAt(26, TextItem)->HPos = NewHPos;
+            TextHandler->TextPtrAt(27, TextItem)->VPos = NewVPos;
+    //        Display->ClearDisplay();
+    //        Track->RebuildTrack(2, Display);//need to add this here as well as below to prevent flicker when moving
+    //        TextHandler->RebuildFromTextVector(Display);
+    //        Track->RebuildTrack(3, Display);
+            ClearandRebuildRailway(41);
+            }
         }
-    Utilities->CallLogPop(70);
+	Utilities->CallLogPop(70);
     }
 catch (const Exception &e)
     {
@@ -6320,6 +6380,7 @@ try
     {
     TrainController->LogEvent("MainScreenMouseUp," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MainScreenMouseUp," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
+	WholeRailwayMoving = false; //added at v2.1.0
     if((Level2TrackMode == TrackSelecting) && mbLeftDown)
         {
         TrainController->LogEvent("MouseUp + TrackSelecting + mbLeftDown");
@@ -6355,7 +6416,7 @@ try
         if(SelectRect.left - Display->DisplayOffsetH < 0) SelectRect.left = Display->DisplayOffsetH;
         if(SelectRect.top - Display->DisplayOffsetV < 0) SelectRect.top = Display->DisplayOffsetV;
         Display->PlotDashedRect(1, SelectRect);
-        SelectBitmapHLoc = SelectRect.left;
+		SelectBitmapHLoc = SelectRect.left;
         SelectBitmapVLoc = SelectRect.top;
         if((SelectRect.top == SelectRect.bottom) || (SelectRect.left == SelectRect.right))
             {
@@ -6568,7 +6629,7 @@ mbLeftDown or SelectPickedUp false) and uses NewSelectBitmapHLoc & VLoc or Selec
         SelectBitmapVLoc = NewSelectBitmapVLoc;
         }
 
-    mbLeftDown = false;
+	mbLeftDown = false;
     Track->CalcHLocMinEtc(11);
     Utilities->CallLogPop(72);
     }
@@ -7055,52 +7116,52 @@ try
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ScreenLeftButtonClick" + AnsiString((short)ShiftKey)+ AnsiString((short)CtrlKey));
     Screen->Cursor = TCursor(-11);//Hourglass;
     ScreenLeftButton->Enabled = false;//to make multiple key presses less likely (not entirely successful)
-    if(!Display->ZoomOutFlag)
-        {
-        if(CtrlKey)
-            {
-            Display->DisplayOffsetH-= 2;
-            }
-        else if(ShiftKey)
-            {
-            Display->DisplayOffsetH-= Utilities->ScreenElementWidth;
-            }
-        else
-            {
-            Display->DisplayOffsetH-= Utilities->ScreenElementWidth/2;
-            }
-        ClearandRebuildRailway(22);
-        if((Level2TrackMode == TrackSelecting) || (Level2PrefDirMode == PrefDirSelecting))
-            {
-            Display->PlotDashedRect(3, SelectRect);
-            }
-        }
-    else
-        {
-        if(CtrlKey)
-            {
-            Display->DisplayZoomOutOffsetH-= 2;
-            }
-        else if(ShiftKey)
-            {
-            Display->DisplayZoomOutOffsetH-= (4 * Utilities->ScreenElementWidth);
-            }
-        else
-            {
-            Display->DisplayZoomOutOffsetH-= Utilities->ScreenElementWidth;
-            }
-        Display->ClearDisplay(0);
-        Track->PlotSmallRailway(2, Display);
-        if(Level2TrackMode == GapSetting) Track->PlotSmallRedGap(0);
-        }
-    ScreenLeftButton->Enabled = true;
-    Screen->Cursor = TCursor(-2);//Arrow
-    Utilities->CallLogPop(83);
-    }
+	if(!Display->ZoomOutFlag)
+		{
+		if(CtrlKey)
+			{
+			Display->DisplayOffsetH-= 2;
+			}
+		else if(ShiftKey)
+			{
+			Display->DisplayOffsetH-= Utilities->ScreenElementWidth;
+			}
+		else
+			{
+			Display->DisplayOffsetH-= Utilities->ScreenElementWidth/2;
+			}
+		ClearandRebuildRailway(22);
+		if((Level2TrackMode == TrackSelecting) || (Level2PrefDirMode == PrefDirSelecting))
+			{
+			Display->PlotDashedRect(3, SelectRect);
+			}
+		}
+	else
+		{
+		if(CtrlKey)
+			{
+			Display->DisplayZoomOutOffsetH-= 2;
+			}
+		else if(ShiftKey)
+			{
+			Display->DisplayZoomOutOffsetH-= (4 * Utilities->ScreenElementWidth);
+			}
+		else
+			{
+			Display->DisplayZoomOutOffsetH-= Utilities->ScreenElementWidth;
+			}
+		Display->ClearDisplay(0);
+		Track->PlotSmallRailway(2, Display);
+		if(Level2TrackMode == GapSetting) Track->PlotSmallRedGap(0);
+		}
+	ScreenLeftButton->Enabled = true;
+	Screen->Cursor = TCursor(-2);//Arrow
+	Utilities->CallLogPop(83);
+	}
 catch (const Exception &e)
-    {
-    ErrorLog(27, e.Message);
-    }
+	{
+	ErrorLog(27, e.Message);
+	}
 }
 //---------------------------------------------------------------------------
 
@@ -7464,9 +7525,9 @@ void __fastcall TInterface::EditMenuClick(TObject *Sender)
 {
 try
 	{
-	CopyMenuItem->ShortCut = 16451;
-	CutMenuItem->ShortCut = 16472;
-	PasteMenuItem->ShortCut = 16470;
+	CopyMenuItem->ShortCut = TextToShortCut("Ctrl+C");
+	CutMenuItem->ShortCut = TextToShortCut("Ctrl+X");
+	PasteMenuItem->ShortCut = TextToShortCut("Ctrl+V");
 	}
 catch (const Exception &e)
 	{
@@ -9867,12 +9928,10 @@ if(!Display->ZoomOutFlag)
 switch(Level1Mode)//use the data member
     {
 	case BaseMode:
-
-	CopyMenuItem->ShortCut = 0;  //added these for v2.1.0 to set default values after use of the 'Edit' menu during track building
-	CutMenuItem->ShortCut = 0;   //to allow normal cutting/copying/pasting, especially in timetable construction or editing
-	PasteMenuItem->ShortCut = 0;
-
-	Track->ActiveTrackElementNameMapCompiledFlag = false;
+    CopyMenuItem->ShortCut = TextToShortCut("");  //added these for v2.1.0 to set default values after use of the 'Edit' menu during track building
+	CutMenuItem->ShortCut = TextToShortCut("");   //to allow normal cutting/copying/pasting, especially in timetable construction or editing
+	PasteMenuItem->ShortCut = TextToShortCut("");
+    Track->ActiveTrackElementNameMapCompiledFlag = false;
     Level2TrackMode = NoTrackMode;
     Level2PrefDirMode = NoPrefDirMode;
     Level2OperMode = NoOperMode;
@@ -12080,6 +12139,7 @@ ErrorLogCalledFlag = false;
 ErrorMessage->Visible = false;
 TempCursorSet = false;
 TempCursor = TCursor(-2);//Arrow
+WholeRailwayMoving = false; //new at v2.1.0
 
 TrainController->TTClockTime = TDateTime(0);//default setting
 TTClockAdjPanel->Visible = false;

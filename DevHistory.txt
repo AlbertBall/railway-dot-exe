@@ -1140,7 +1140,7 @@ NEXT value for GetFixedRouteAt is 222
 NEXT value for GetModifiableRouteAt is 28
 NEXT value for GetFixedPrefDirElementAt is 247
 NEXT value for ErrorLog is 197
-NEXT value for ClearandRebuildRailway is 69
+NEXT value for ClearandRebuildRailway is 70
 NEXT value for TrainVectorAt is 65
 NEXT value for SetLevel1Mode is 133
 NEXT value for PlotOutput is 239

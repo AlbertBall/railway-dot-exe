@@ -765,6 +765,7 @@ bool TimetableValidFlag;///< indicates that a 'Validate timetable' button click 
 bool TTEntryChangedFlag;///< true when a timetable entry that is displayed in the timetable entry edit window has changed
 bool WarningFlash;      ///< toggles on and off automatically at a cycle of about 0.5 sec, used to drive the warning icons during operation
 bool WarningHover;      ///< true when mouse hovers over warning messages during operation - to prevent clicking while changing
+bool WholeRailwayMoving;///< true when moving the railway with the mouse, new at v2.1.0
 
 double PauseEntryRestartTime; ///< time value of the timetable restart time (as a double) on entry to pause mode
 
@@ -801,6 +802,8 @@ int TextGridVal;        ///< stores the text alignment grid value, cycles forwar
 int TextItem;           ///< used to store a single item of text
 int TextMoveHPos, TextMoveVPos;///< used to store the original text 'H' & 'V' positions for use during text moving
 int WarningFlashCount;  ///< increments each clock cycle to a max. of 4 then resets to 0, used to toggle bool WarningFlash - see above
+int StartWholeRailwayMoveHPos; ///<mouse X position when start to move the whole railway
+int StartWholeRailwayMoveVPos; ///<mouse Y position when start to move the whole railway
 
 TCursor TempCursor; ///< stores the screen cursor while a temporary cursor (ususlly an hourglass) is displayed
 

@@ -144,6 +144,8 @@ l) Corrected Moric1998 error (sent in 24/03/16), corrected in TrainUnit at 'if(C
 
 *o) Corrected Jordy de Koning's error above, so that track speed limits are limited to the value in TTrain::MaximumSpeedLimit, which is 400km/h.  These are limited for new settings and when loading existing railway and session files where filed values are >400km/h
 
+p) Added icons to Timetable editor buttons
+
 
 VERSION CHANGES AFTER v1.3.2 for v2.0.0 Beta
 

@@ -33,6 +33,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <Dialogs.hpp>
 #include <Graphics.hpp>
 #include <ComCtrls.hpp>
+#include <System.ImageList.hpp>
+#include <Vcl.ImgList.hpp>
 #include <fstream>
 #include <vector>
 #include <vcl.h>
@@ -515,6 +517,7 @@ __published:    // IDE-managed Components
     TSpeedButton *SpeedButton144;
     TMenuItem *N1;
     TMenuItem *N2;
+    TImageList *TTImageList;
 
     //menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);

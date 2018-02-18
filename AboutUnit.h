@@ -1,5 +1,5 @@
-//AboutUnit.h
-//Comments in .h files are believed to be accurate and up to date
+// AboutUnit.h
+// Comments in .h files are believed to be accurate and up to date
 /*
 This is a source code file for "railway.exe", a railway operation
 simulator, written in Borland C++ Builder 4 Professional
@@ -32,27 +32,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /// The small 'About' box selected from the Help menu
 class TAboutForm : public TForm
 {
-__published:	// IDE-managed Components
-	TButton *AboutFormButton; ///< The OK button
-	TImage *ImageAppIcon;
-	TLabel *AboutLabelCaption; ///< Version info displayed here
-	TLabel *AboutLabelTitle;
-	/// Called when the form is first created (by WinMain)
+__published:    // IDE-managed Components
+    TButton *AboutFormButton; ///< The OK button
+    TImage *ImageAppIcon;
+    TLabel *AboutLabelCaption; ///< Version info displayed here
+    TLabel *AboutLabelTitle;
+    /// Called when the form is first created (by WinMain)
     ///
-	/// Sets the version info, then hides the form
-	void __fastcall FormCreate(TObject *Sender);
-	/// Closes the form
+    /// Sets the version info, then hides the form
+    void __fastcall FormCreate(TObject *Sender);
+    /// Closes the form
     void __fastcall AboutFormButtonClick(TObject *Sender);
-	/// Called when the form is closed
-	///
-	/// Restarts MasterClock if Level1Mode is OperMode
-	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-private:	// User declarations
-	/// Sets version details from the project options 'Version Info' values
-	void __fastcall SetAboutCaption();
-public:		// User declarations
-	/// The form constructor
-	__fastcall TAboutForm(TComponent* Owner);
+    /// Called when the form is closed
+    ///
+    /// Restarts MasterClock if Level1Mode is OperMode
+    void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+private:    // User declarations
+    /// Sets version details from the project options 'Version Info' values
+    void __fastcall SetAboutCaption();
+public:     // User declarations
+    /// The form constructor
+    __fastcall TAboutForm(TComponent* Owner);
 
 };
 //---------------------------------------------------------------------------

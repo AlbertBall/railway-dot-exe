@@ -5037,6 +5037,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                 StartWholeRailwayMoveHPos = X;
                 StartWholeRailwayMoveVPos = Y;
                 WholeRailwayMoving = true;
+                Screen->Cursor = TCursor(-22);//Four arrows;
             }
 
             else if((Level2OperMode == Operating) || (Level2OperMode == PreStart)) //disallow when paused, but allow some parts in prestart
@@ -6121,6 +6122,7 @@ void TInterface::MainScreenMouseDown3(int Caller, TMouseButton Button, TShiftSta
             StartWholeRailwayMoveHPos = X;
             StartWholeRailwayMoveVPos = Y;
             WholeRailwayMoving = true;
+            Screen->Cursor = TCursor(-22);//Four arrows;
         }
         else
         {
@@ -6219,33 +6221,38 @@ void __fastcall TInterface::MainScreenMouseMove(TObject *Sender,
             if(Y > (MainScreen->Height - 1)) Y = MainScreen->Height - 1;
 
             if(!Display->ZoomOutFlag)
-            {
-                if((abs(X - StartWholeRailwayMoveHPos) >= 16) || (abs(Y - StartWholeRailwayMoveVPos) >= 16))
                 {
+                int StartOffsetX = (X - StartWholeRailwayMoveHPos) % 16;
+                int StartOffsetY = (Y - StartWholeRailwayMoveVPos) % 16;
+                if((abs(X - StartWholeRailwayMoveHPos) >= 16) || (abs(Y - StartWholeRailwayMoveVPos) >= 16))
+                    {
                     int NewH = X - StartWholeRailwayMoveHPos;
                     int NewV = Y - StartWholeRailwayMoveVPos;
                     Display->DisplayOffsetH-= NewH/16;
                     Display->DisplayOffsetV-= NewV/16;
-                    StartWholeRailwayMoveHPos = X;
-                    StartWholeRailwayMoveVPos = Y;
+                    StartWholeRailwayMoveHPos = X - StartOffsetX;
+                    StartWholeRailwayMoveVPos = Y - StartOffsetY;
                     ClearandRebuildRailway(69);
+                    }
                 }
-            }
+
             else
-            {
-                if((abs(X - StartWholeRailwayMoveHPos) >= 4) || (abs(Y - StartWholeRailwayMoveVPos) >= 4))
                 {
+                int StartZOffsetX = (X - StartWholeRailwayMoveHPos) % 4;
+                int StartZOffsetY = (Y - StartWholeRailwayMoveVPos) % 4;
+                if((abs(X - StartWholeRailwayMoveHPos) >= 4) || (abs(Y - StartWholeRailwayMoveVPos) >= 4))
+                    {
                     int NewH = X - StartWholeRailwayMoveHPos;
                     int NewV = Y - StartWholeRailwayMoveVPos;
                     Display->DisplayZoomOutOffsetH-= NewH/4;
                     Display->DisplayZoomOutOffsetV-= NewV/4;
-                    StartWholeRailwayMoveHPos = X;
-                    StartWholeRailwayMoveVPos = Y;
+                    StartWholeRailwayMoveHPos = X - StartZOffsetX;
+                    StartWholeRailwayMoveVPos = Y - StartZOffsetY;
                     Display->ClearDisplay(10);
                     Track->PlotSmallRailway(8, Display);
+                    }
                 }
-            }
-        }
+          }
 
         else if(mbLeftDown)
         {
@@ -6381,6 +6388,7 @@ to an arrow.
         TrainController->LogEvent("MainScreenMouseUp," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MainScreenMouseUp," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
         WholeRailwayMoving = false; //added at v2.1.0
+        Screen->Cursor = TCursor(-2);//Arrow; (to reset from four arrows when moving) added at v2.1.0
         if((Level2TrackMode == TrackSelecting) && mbLeftDown)
         {
             TrainController->LogEvent("MouseUp + TrackSelecting + mbLeftDown");

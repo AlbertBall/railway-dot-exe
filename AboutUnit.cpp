@@ -52,21 +52,21 @@ __fastcall TAboutForm::TAboutForm(TComponent* Owner)
 
 void __fastcall TAboutForm::FormCreate(TObject *Sender)
 {
-AboutForm->SetAboutCaption();
-AboutForm->Hide();
+    AboutForm->SetAboutCaption();
+    AboutForm->Hide();
 }
 //---------------------------------------------------------------------------
 void __fastcall TAboutForm::AboutFormButtonClick(TObject *Sender)
 {
-AboutForm->Close();
+    AboutForm->Close();
 }
 //---------------------------------------------------------------------------
 void __fastcall TAboutForm::FormClose(TObject *Sender,
-      TCloseAction &Action)
+                                      TCloseAction &Action)
 {
-if(Interface->Level1Mode == TInterface::OperMode)
+    if(Interface->Level1Mode == TInterface::OperMode)
     {
-    Interface->MasterClock->Enabled = true;
+        Interface->MasterClock->Enabled = true;
     }
 }
 //---------------------------------------------------------------------------
@@ -75,7 +75,7 @@ void __fastcall TAboutForm::SetAboutCaption()
     DWORD VersionHandle;
     DWORD VersionSize;
     LPBYTE pBuffer;
-	UnicodeString strVersion = L"N/A";
+    UnicodeString strVersion = L"N/A";
     UnicodeString NL = '\n';
 
     VersionSize = GetFileVersionInfoSizeW(Application->ExeName.c_str(), &VersionHandle);
@@ -89,26 +89,26 @@ void __fastcall TAboutForm::SetAboutCaption()
             UINT buflen;
 
             //uncomment strVersion and HIWORD alternates below when future CI implemented: sas@2.1.0
-			if (VerQueryValueW(pBuffer, L"\\", (void** )&fi, &buflen))
-			{
-				//strVersion.sprintf(L"%d.%d.%d (Build %d)",
-				strVersion.sprintf(L"%d.%d.%d",
-					HIWORD(fi->dwFileVersionMS), LOWORD(fi->dwFileVersionMS),
-					HIWORD(fi->dwFileVersionLS)
-					//HIWORD(fi->dwFileVersionLS), LOWORD(fi->dwFileVersionLS)
-				);
-			}
-		}
+            if (VerQueryValueW(pBuffer, L"\\", (void** )&fi, &buflen))
+            {
+                //strVersion.sprintf(L"%d.%d.%d (Build %d)",
+                strVersion.sprintf(L"%d.%d.%d",
+                                   HIWORD(fi->dwFileVersionMS), LOWORD(fi->dwFileVersionMS),
+                                   HIWORD(fi->dwFileVersionLS)
+                                   //HIWORD(fi->dwFileVersionLS), LOWORD(fi->dwFileVersionLS)
+                                   );
+            }
+        }
 
-		delete[] pBuffer;
-	}
+        delete[] pBuffer;
+    }
 
-	AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
-							L"operate your own railway" + NL + NL +
-							L" Release: " + strVersion + NL + NL +
-							L"Copyright 2010-2018 Albert Ball" + NL + NL + NL +
-                            L"Menu icons from Silk Icon Set 1.3 by Mark James" + NL +
-                            L"used under Creative Commons Attribution 2.5 License." + NL +
-                            L"http://creativecommons.org/licenses/by/2.5/";
+    AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
+                                 L"operate your own railway" + NL + NL +
+                                 L" Release: " + strVersion + NL + NL +
+                                 L"Copyright 2010-2018 Albert Ball" + NL + NL + NL +
+                                 L"Menu icons from Silk Icon Set 1.3 by Mark James" + NL +
+                                 L"used under Creative Commons Attribution 2.5 License." + NL +
+                                 L"http://creativecommons.org/licenses/by/2.5/";
 }
 //---------------------------------------------------------------------------

@@ -48,46 +48,46 @@ class TMapComp
 {
 public:
 /// HLoc VLoc
-bool operator() (const THVPair& lower, const THVPair& higher) const;
+    bool operator() (const THVPair& lower, const THVPair& higher) const;
 };
 
 //---------------------------------------------------------------------------
 
 enum TTrackType {Simple, Crossover, Points, Buffers, Bridge, SignalPost, Continuation, Platform,
-				GapJump, Footbridge, Unused,//'unused' was marker the for old 'text' number, since disused
-				Concourse, Parapet, NamedNonStationLocation,//these 3 as well as Platform are the 4 types of inactive element
-				Erase,//default active element used for erasing, all data members unset
-				LevelCrossing};  ///< describes the type of track element
+                 GapJump, Footbridge, Unused, //'unused' was marker the for old 'text' number, since disused
+                 Concourse, Parapet, NamedNonStationLocation, //these 3 as well as Platform are the 4 types of inactive element
+                 Erase, //default active element used for erasing, all data members unset
+                 LevelCrossing}; ///< describes the type of track element
 enum TConfiguration {NotSet, Connection, End, Gap, Lead, Trail, CrossConn, Under, Signal}; ///< describes the type of track link
-																						   ///< 'End' is used for both buffer stop and
+                                                                                           ///< 'End' is used for both buffer stop and
                                                                                            ///< continuation entry/exit positions
 //FIXED TRACK :-
 
 /// All basic track building blocks & methods
 class TFixedTrackPiece
-    {
-    public://everything uses these - should really have Gets & Sets but too many to change now
+{
+public:    //everything uses these - should really have Gets & Sets but too many to change now
 
-	bool FixedNamedLocationElement;     ///< true for an element that can be named (platforms, concourse, footbridges &
-										///< non-station named loactions)
-	int SpeedTag;                       ///< The element identification number - corresponds to the relevant SpeedButton->Tag
-	int Link[4];                        ///< Track connection link values, max. of 4, unused = -1, top lh diag.=1, top=2, top rh diag.=3
-										///< left=4, right=6, bottom lh diag.=7, bottom=8, bottom rh diag.=9
-	Graphics::TBitmap *GraphicPtr;      ///< the track bitmap for display on the zoomed-in railway
-	Graphics::TBitmap *SmallGraphicPtr; ///< the track bitmap for display on the zoomed-out railway
+    bool FixedNamedLocationElement;     ///< true for an element that can be named (platforms, concourse, footbridges &
+                                        ///< non-station named loactions)
+    int SpeedTag;                       ///< The element identification number - corresponds to the relevant SpeedButton->Tag
+    int Link[4];                        ///< Track connection link values, max. of 4, unused = -1, top lh diag.=1, top=2, top rh diag.=3
+                                        ///< left=4, right=6, bottom lh diag.=7, bottom=8, bottom rh diag.=9
+    Graphics::TBitmap *GraphicPtr;      ///< the track bitmap for display on the zoomed-in railway
+    Graphics::TBitmap *SmallGraphicPtr; ///< the track bitmap for display on the zoomed-out railway
 
-	TConfiguration Config[4];           ///< the type of link - see TConfiguration above
+    TConfiguration Config[4];           ///< the type of link - see TConfiguration above
 
-	TTrackType TrackType;               ///< the type of track element
+    TTrackType TrackType;               ///< the type of track element
 
-	/// Plot the element on the railway display at position HLocInput & VLocInput
-	void PlotFixedTrackElement(int Caller, int HLocInput, int VLocInput) const;
-	/// Constructor for building TTrack.FixedTrackArray - see below
-	TFixedTrackPiece(int SpeedTagVal, TTrackType TrackTypeVal, int LkVal[4],
-						TConfiguration ConfigVal[4], Graphics::TBitmap *GraphicPtrVal, Graphics::TBitmap *SmallGraphicPtrVal);
-	/// Default constructor
-	TFixedTrackPiece();
-	};
+    /// Plot the element on the railway display at position HLocInput & VLocInput
+    void PlotFixedTrackElement(int Caller, int HLocInput, int VLocInput) const;
+    /// Constructor for building TTrack.FixedTrackArray - see below
+    TFixedTrackPiece(int SpeedTagVal, TTrackType TrackTypeVal, int LkVal[4],
+                     TConfiguration ConfigVal[4], Graphics::TBitmap *GraphicPtrVal, Graphics::TBitmap *SmallGraphicPtrVal);
+    /// Default constructor
+    TFixedTrackPiece();
+};
 
 //---------------------------------------------------------------------------
 
@@ -102,30 +102,30 @@ to backtrack than to put up with the extra & unused data.
 
 /// Basic track elements as implemented in the overall railway layout
 class TTrackElement : public TFixedTrackPiece
-    {
-    public://everything uses these - should really have Gets & Sets but too many to change now
+{
+public:    //everything uses these - should really have Gets & Sets but too many to change now
 
-	AnsiString ActiveTrackElementName; 	///< Location name used either in the timetable or for a continuation (continuation names not used in
-										///< timetable as trains can't stop there).  Only active track elements where there are platforms
-										///< or non-station named locations have ActiveTrackElementNames
-	AnsiString ElementID; 		///< the element identifier based on position in the railway
-	AnsiString LocationName; 	///< location name not used for timetabling, only for identification: platforms, non-station named locations,
-								///< concourses and footbridges have LocationNames
+    AnsiString ActiveTrackElementName;  ///< Location name used either in the timetable or for a continuation (continuation names not used in
+                                        ///< timetable as trains can't stop there).  Only active track elements where there are platforms
+                                        ///< or non-station named locations have ActiveTrackElementNames
+    AnsiString ElementID;       ///< the element identifier based on position in the railway
+    AnsiString LocationName;    ///< location name not used for timetabling, only for identification: platforms, non-station named locations,
+                                ///< concourses and footbridges have LocationNames
 
-	bool CallingOnSet; ///< Used for for signals only when a train is being called on - used to plot the position lights
-	bool TempMarker; ///< Utility marker for program use
-	bool TempTrackMarker01, TempTrackMarker23; ///< Utility markers for program use
+    bool CallingOnSet; ///< Used for for signals only when a train is being called on - used to plot the position lights
+    bool TempMarker; ///< Utility marker for program use
+    bool TempTrackMarker01, TempTrackMarker23; ///< Utility markers for program use
 
-	int Attribute; 	///< special variable used only for points & signals, ignored otherwise
-					///< points:  0=set to go straight, 1=set to diverge; where both legs diverge 0=set to left fork
-					///< signals:  0=red; 1=yellow; 2=double yellow; 3 = green;
-					///< Level crossing: 0 = raised barriers = closed to trains; 1 = lowered barriers = open to trains; 2 = changing state = closed to trains
-	int Conn[4]; ///< Connecting element position in TrackVector, set to -1 if no connecting link or if track not linked
-	int ConnLinkPos[4]; ///< Connecting element link position (i.e. array positions of the connecting element links, in same order as Link[4])
-	int HLoc, VLoc; ///< The h & v locations in the railway (top lh corner of the first build screen = 0,0)
-	int Length01, Length23, SpeedLimit01, SpeedLimit23; ///< Element lengths and speed limits, ...01 is for the track with link positions [0]
-														///< and [1], ...23 for [2] and [3], set to -1 if not used (lengths in m & speed
-														///< limits in km/h)
+    int Attribute;  ///< special variable used only for points & signals, ignored otherwise
+                    ///< points:  0=set to go straight, 1=set to diverge; where both legs diverge 0=set to left fork
+                    ///< signals:  0=red; 1=yellow; 2=double yellow; 3 = green;
+                    ///< Level crossing: 0 = raised barriers = closed to trains; 1 = lowered barriers = open to trains; 2 = changing state = closed to trains
+    int Conn[4]; ///< Connecting element position in TrackVector, set to -1 if no connecting link or if track not linked
+    int ConnLinkPos[4]; ///< Connecting element link position (i.e. array positions of the connecting element links, in same order as Link[4])
+    int HLoc, VLoc; ///< The h & v locations in the railway (top lh corner of the first build screen = 0,0)
+    int Length01, Length23, SpeedLimit01, SpeedLimit23; ///< Element lengths and speed limits, ...01 is for the track with link positions [0]
+                                                        ///< and [1], ...23 for [2] and [3], set to -1 if not used (lengths in m & speed
+                                                        ///< limits in km/h)
     int StationEntryStopLinkPos1, StationEntryStopLinkPos2; ///< Used for track at platforms and non-station named locations to mark the
                                                             ///< train front element stop position, there are two for the two directions
                                                             ///< of travel, set to -1 if not used
@@ -143,36 +143,36 @@ class TTrackElement : public TFixedTrackPiece
     /// Use very high neg. numbers as 'unset' values for HLoc & VLoc initially as can go
     /// high negatively legitimately, build from existing TTrackPiece with default values for extra members
     TTrackElement(TFixedTrackPiece Input) : TFixedTrackPiece(Input), HLoc(-2000000000), VLoc(-2000000000),
-            LocationName(""), ActiveTrackElementName(""), Attribute(0), CallingOnSet(false), Length01(DefaultTrackLength), Length23(-1),
-            SpeedLimit01(DefaultTrackSpeedLimit), SpeedLimit23(-1), TrainIDOnElement(-1), TrainIDOnBridgeTrackPos01(-1),
-            TrainIDOnBridgeTrackPos23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1), SigAspect(FourAspect)
+        LocationName(""), ActiveTrackElementName(""), Attribute(0), CallingOnSet(false), Length01(DefaultTrackLength), Length23(-1),
+        SpeedLimit01(DefaultTrackSpeedLimit), SpeedLimit23(-1), TrainIDOnElement(-1), TrainIDOnBridgeTrackPos01(-1),
+        TrainIDOnBridgeTrackPos23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1), SigAspect(FourAspect)
+    {
+        for(int x=0; x<4; x++)
         {
-        for(int x=0;x<4;x++)
-            {
             ConnLinkPos[x]=-1; Conn[x]=-1;
-            }
+        }
         if((TrackType == Points) || (TrackType == Crossover) || (TrackType == Bridge))
-            {
+        {
             Length23 = DefaultTrackLength;
 
             SpeedLimit23 = DefaultTrackSpeedLimit;
-            }
         }
+    }
 
     /// Constructor for non-specific default element
     ///
     /// Use high neg numbers for 'unset' h & v as can go high negatively legitimately
     TTrackElement() : TFixedTrackPiece(), HLoc(-2000000000), VLoc(-2000000000), LocationName(""), ActiveTrackElementName(""),
-            Attribute(0), CallingOnSet(false), Length01(-1), Length23(-1), SpeedLimit01(-1), SpeedLimit23(-1), TrainIDOnElement(-1),
-            TrainIDOnBridgeTrackPos01(-1), TrainIDOnBridgeTrackPos23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1),
-            SigAspect(FourAspect)
+        Attribute(0), CallingOnSet(false), Length01(-1), Length23(-1), SpeedLimit01(-1), SpeedLimit23(-1), TrainIDOnElement(-1),
+        TrainIDOnBridgeTrackPos01(-1), TrainIDOnBridgeTrackPos23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1),
+        SigAspect(FourAspect)
+    {
+        for(int x=0; x<4; x++)
         {
-        for(int x=0;x<4;x++)
-            {
             ConnLinkPos[x]=-1;
             Conn[x]=-1;
-            }
         }
+    }
 
 //functions defined in .cpp file
 
@@ -193,8 +193,8 @@ class TTrackElement : public TFixedTrackPiece
 
 /// Basic preferred direction or route element - track element with additional members
 class TPrefDirElement : public TTrackElement
-    {
-    protected:
+{
+protected:
 
     int ELink, ELinkPos; ///< entry link number & array position
     int XLink, XLinkPos; ///< exit link number & array position
@@ -216,7 +216,7 @@ class TPrefDirElement : public TTrackElement
     Graphics::TBitmap *GetRouteAutoSigsGraphicPtr(); ///< picks up the blue route graphic (not used - superseded by GetRouteGraphicPtr)
     Graphics::TBitmap *GetRouteGraphicPtr(bool AutoSigsFlag, bool ConsecSignalsRoute); ///< picks up the appropriate route graphic
 
-    public:
+public:
 
     friend class TOnePrefDir;
     friend class TOneRoute;
@@ -224,36 +224,56 @@ class TPrefDirElement : public TTrackElement
 
     bool IsARoute;  ///< false for Pref Dir, true for route
     bool AutoSignals;  ///< marker within the route for an AutoSignal route element
-    bool ConsecSignals;///< marker within the route for ConsecSignalsRoute element
+    bool ConsecSignals; ///< marker within the route for ConsecSignalsRoute element
 
 //inline functions
 
     /// Position check
-    bool IsPosition(int Position) const {if(TrackVectorPosition == Position) return true; else return false;}
+    bool IsPosition(int Position) const {
+        if(TrackVectorPosition == Position) return true; else return false;
+    }
     /// Returns ELink
-    int GetELink() const {return ELink;}
+    int GetELink() const {
+        return ELink;
+    }
     /// Returns the ELink array position
-    int GetELinkPos() const {return ELinkPos;}
+    int GetELinkPos() const {
+        return ELinkPos;
+    }
     /// Returns XLink
-    int GetXLink() const {return XLink;}
+    int GetXLink() const {
+        return XLink;
+    }
     /// Returns the XLink array position
-    int GetXLinkPos() const {return XLinkPos;}
+    int GetXLinkPos() const {
+        return XLinkPos;
+    }
     /// Returns TrackVectorPosition
-    unsigned int GetTrackVectorPosition() const {return TrackVectorPosition;}
+    unsigned int GetTrackVectorPosition() const {
+        return TrackVectorPosition;
+    }
     /// Returns EXGraphicPtr for preferred directions
-    Graphics::TBitmap *GetEXGraphicPtr() {return GetPrefDirGraphicPtr();}
+    Graphics::TBitmap *GetEXGraphicPtr() {
+        return GetPrefDirGraphicPtr();
+    }
     /// Returns route graphic
-    Graphics::TBitmap *GetRouteEXGraphicPtr() {return GetRouteGraphicPtr(AutoSignals, ConsecSignals);}
+    Graphics::TBitmap *GetRouteEXGraphicPtr() {
+        return GetRouteGraphicPtr(AutoSignals, ConsecSignals);
+    }
     /// Default constructor, loads default values
     TPrefDirElement() : TTrackElement(), ELink(-1), ELinkPos(-1),
         XLink(-1), XLinkPos(-1), EXNumber(-1), TrackVectorPosition(-1), CheckCount(0),
-        EXGraphicPtr(0), EntryDirectionGraphicPtr(0), IsARoute(false), AutoSignals(false), ConsecSignals(false) {;}
+        EXGraphicPtr(0), EntryDirectionGraphicPtr(0), IsARoute(false), AutoSignals(false), ConsecSignals(false) {
+        ;
+    }
     /// Constructs a PrefDirElement from a base TrackElement
     ///
     /// Sets up the TrackElement values but leaves others as default values
     TPrefDirElement(TTrackElement Input) : TTrackElement(Input), ELink(-1), ELinkPos(-1),
         XLink(-1), XLinkPos(-1), EXNumber(-1), TrackVectorPosition(-1),
-        CheckCount(0), EXGraphicPtr(0), EntryDirectionGraphicPtr(0), IsARoute(false),  AutoSignals(false), ConsecSignals(false) {;}
+        CheckCount(0), EXGraphicPtr(0), EntryDirectionGraphicPtr(0), IsARoute(false),  AutoSignals(false), ConsecSignals(false) {
+        ;
+    }
 
 //external functions
 
@@ -261,7 +281,7 @@ class TPrefDirElement : public TTrackElement
     AnsiString LogPrefDir() const;
     /// Constructs a PrefDirElement from supplied values
     TPrefDirElement(TTrackElement InputElement, int ELink, int ELinkPos, int XLink, int XLinkPos, int TrackVectorPosition);
-    };
+};
 
 //---------------------------------------------------------------------------
 
@@ -276,8 +296,8 @@ class TPrefDirElement : public TTrackElement
 /// LoadOriginalExistingGraphic.  If an existing bitmap is selected then the loading function overrides the size that was set in the
 /// constructor, and SourceRect & HPos & VPos that were set in SetScreenHVSource.
 class TGraphicElement
-    {
-    private:
+{
+private:
 
     bool OverlayPlotted, OverlayLoaded, OriginalLoaded, ScreenSourceSet, ScreenGraphicLoaded, ExistingGraphicLoaded; ///< state flags
     int HPos, VPos; ///< horizontal and vertical positions
@@ -285,26 +305,30 @@ class TGraphicElement
     Graphics::TBitmap *OriginalGraphic, *OverlayGraphic; ///< original and temporary overlay graphics
     TRect SourceRect; ///< source rectangle of the original graphic
 
-    public:
+public:
     //inline functions
-    int GetHPos() {return HPos;}
-    int GetVPos() {return VPos;}
+    int GetHPos() {
+        return HPos;
+    }
+    int GetVPos() {
+        return VPos;
+    }
     /// Set SourceRect member values from those supplied and existing Width & Height
     ///
     /// - ensure this is only called after Width & Height are set
     void SetSourceRect(int Left, int Top)
-        {
+    {
         SourceRect.Left = Left;
         SourceRect.Right = Left + Width;
         SourceRect.Top = Top;
         SourceRect.Bottom = Top + Height;
-        }
+    }
 
     //functions defined in .cpp file
 
     /// Load red or green gap flashing graphic from the stored bitmaps
     void LoadOriginalExistingGraphic(int Caller, int HOffset, int VOffset, int WidthIn, int HeightIn,
-            Graphics::TBitmap *Graphic);
+                                     Graphics::TBitmap *Graphic);
     /// Load original graphic from the screen for point flashing or route start markers
     void LoadOriginalScreenGraphic(int Caller);
     /// Load the temporary overlay graphic
@@ -321,7 +345,7 @@ class TGraphicElement
     TGraphicElement(int WidthIn, int HeightIn);
     /// Destructor
     ~TGraphicElement();
-    };
+};
 
 //---------------------------------------------------------------------------
 
@@ -336,22 +360,32 @@ class TGraphicElement
 class IDInt
 {
 private:
-int InternalInt; ///< the internal integer value represented by IDInt
+    int InternalInt; ///< the internal integer value represented by IDInt
 
 public:
 //all inline
-int GetInt() const {return InternalInt;}
+    int GetInt() const {
+        return InternalInt;
+    }
 /// Equality comparator
-bool operator ==(IDInt Comparator) {return (InternalInt == Comparator.InternalInt);}
+    bool operator ==(IDInt Comparator) {
+        return (InternalInt == Comparator.InternalInt);
+    }
 /// Greater than comparator
-bool operator >(int Comparator) {return (InternalInt > Comparator);}
+    bool operator >(int Comparator) {
+        return (InternalInt > Comparator);
+    }
 /// Constructor that sets the internal integer to the input value
 ///
 /// The 'explicit' prefix is used to force a compiler error if the input value is an IDInt,
 /// which would be a program error (otherwise it would be implicitly converted to an int)
-explicit IDInt::IDInt(int Int) {InternalInt = Int;}
+    explicit IDInt::IDInt(int Int) {
+        InternalInt = Int;
+    }
 /// Default constructor, internal integer set to -1
-IDInt::IDInt() {InternalInt = -1;}
+    IDInt::IDInt() {
+        InternalInt = -1;
+    }
 };
 
 //---------------------------------------------------------------------------
@@ -366,17 +400,17 @@ IDInt::IDInt() {InternalInt = -1;}
 /// to remove them it was clear that they were far too embedded throughout the program for easy removal, so they were
 /// left in.
 class TTrack
-    {
-    private:
+{
+private:
     /// Holds an array of TrackPieces, only accessible to TTrack
     class TFixedTrackArray
-        {
-        public:
+    {
+public:
 
         TFixedTrackPiece FixedTrackPiece[FirstUnusedSpeedTagNumber]; ///< the array member
         /// Array constructor
         TFixedTrackArray();
-        };
+    };
 
     TFixedTrackArray FixedTrackArray; ///< the FixedTrackPiece array object
 
@@ -400,9 +434,9 @@ class TTrack
     int Tag131Array[4][3];
 
     Set<int, 1, 130> TopPlatAllowed, BotPlatAllowed, LeftPlatAllowed, RightPlatAllowed, NameAllowed, LevelCrossingAllowed; ///< sets of valid TrackElements for
-                                                                                                     ///< placement of platforms and
-                                                                                                     ///< non-station named locations
-    public:
+    ///< placement of platforms and
+    ///< non-station named locations
+public:
 
     enum TBarrierState {Raising, Lowering, Up, Down}; ///< state of barriers
 
@@ -418,8 +452,8 @@ class TTrack
     /// BarriersDownVector object is copied back to ChangingLCVector with a new StartTime, BarrierState and ChangeDuration.  Again FlashingGraphics takes care
     /// of the flashing until the duration is reached, when the object is erased from the vector and the LC reverts to its normal (barriers raised) state.
     class TActiveLevelCrossing
-        {
-        public:
+    {
+public:
 
         bool ConsecSignals;         ///< route type - 0 = nonsignals, 1 = preferred direction (can't have autosigs)
         bool TrainPassed;           ///< marker that is set when a train is present on one of the elements of the LC - used to provide a 3 minute penalty allowance
@@ -430,7 +464,7 @@ class TTrack
         int VLoc;                   ///< VLoc value for found level crossing element
         TDateTime StartTime;        ///< stores the starting time for level crossing changing
         TActiveLevelCrossing::TActiveLevelCrossing(); ///< constructor, sets default values
-        };
+    };
 
     typedef std::vector<TActiveLevelCrossing> TActiveLCVector; ///< vector of changing level crossing objects.  Note that although a LC may contain several
     ///< elements there will be only one in the vector when changing, and it might be any of the individual elements.  This is because when an entry
@@ -452,7 +486,7 @@ class TTrack
 
     typedef std::multimap<THVPair, unsigned int, TMapComp> TInactiveTrack2MultiMap; ///< multimap of inactive TrackElements (platforms,
     typedef TInactiveTrack2MultiMap::iterator TInactiveTrack2MultiMapIterator;      ///< concourses, non-station named locations & parapets)
-    typedef std::pair<TInactiveTrack2MultiMapIterator, TInactiveTrack2MultiMapIterator> TInactiveTrackRange;///< '2' because there can be up
+    typedef std::pair<TInactiveTrack2MultiMapIterator, TInactiveTrack2MultiMapIterator> TInactiveTrackRange; ///< '2' because there can be up
                                                                                                             ///< to 2 entries (platforms) at
                                                                                                             ///< a single location
 
@@ -465,7 +499,7 @@ class TTrack
     typedef TLNDone2MultiMap::iterator TLNDone2MultiMapIterator;    ///< during naming of linked named location elements, '2' because there
     typedef std::pair<THVPair, int> TLNDone2MultiMapEntry;          ///< can be up to 2 entries (platforms) at a single location
 
-    typedef std::multimap<AnsiString, int> TLocationNameMultiMap;///< map of location name vector positions (see note below), one entry for
+    typedef std::multimap<AnsiString, int> TLocationNameMultiMap; ///< map of location name vector positions (see note below), one entry for
     ///< every element that is a FixedNamedLocationElement i.e platforms, concourses, footbridges & named non-station locations.  Hence the
     ///< only active track elements included are footbridges
     typedef TLocationNameMultiMap::iterator TLocationNameMultiMapIterator;
@@ -478,18 +512,18 @@ class TTrack
     //because the value '0' is used for the first position in the inactive vector
 
     typedef std::map<AnsiString, int> TActiveTrackElementNameMap; ///< map of ActiveTrackElementNames compiled and used for populating the
-        ///< LocationNameComboBox during timetable creation or editing.  Used in place of LocationNameMultiMap as that can contain
-        ///< concourses and non-station named locations that aren't associated with any track.  The second 'int' entry is a dummy, only
-        ///< the list of AnsiString names is needed, and being a map it is automatically sorted and without duplicates.
+    ///< LocationNameComboBox during timetable creation or editing.  Used in place of LocationNameMultiMap as that can contain
+    ///< concourses and non-station named locations that aren't associated with any track.  The second 'int' entry is a dummy, only
+    ///< the list of AnsiString names is needed, and being a map it is automatically sorted and without duplicates.
     typedef TActiveTrackElementNameMap::iterator TActiveTrackElementNameIterator;
     typedef std::pair<AnsiString, int> TActiveTrackElementNameMapEntry;
 
     struct TSigElement ///< used as basic elements in a table of signals - see SigTable below
-        {//NOTE: Don't alter the order of these members as they are loaded from an array of values in the constructor
+    {    //NOTE: Don't alter the order of these members as they are loaded from an array of values in the constructor
         int SpeedTag; ///< the TrackElement SpeedTag value - specifies the signal element
         int Attribute; ///< the signal state - red, yellow, double yellow or green
         Graphics::TBitmap* SigPtr; ///< pointer to the graphic
-        };
+    };
 
     TSigElement SigTable[40]; ///< original table of signals for four aspect
     TSigElement SigTableThreeAspect[40]; ///< new at version 0.6 for three aspect
@@ -507,11 +541,11 @@ class TTrack
     bool PointFlashFlag; ///< true when points are flashing during manual change
     bool RouteFlashFlag; ///< true while a route is flashing prior to being set
 
-    float LevelCrossingBarrierUpFlashDuration;///< duration of the flash period when level crossing closing to trains
-    float LevelCrossingBarrierDownFlashDuration;///< duration of the flash period when level crossing opening
+    float LevelCrossingBarrierUpFlashDuration; ///< duration of the flash period when level crossing closing to trains
+    float LevelCrossingBarrierDownFlashDuration; ///< duration of the flash period when level crossing opening
 
     int FlipArray[FirstUnusedSpeedTagNumber]; ///< holds TrackElement SpeedTag values for 'flipping' via menu items 'Edit' & 'Flip'
-    int GapFlashGreenPosition, GapFlashRedPosition;///< TrackVectorPosition of the gap element that is flashing green or red
+    int GapFlashGreenPosition, GapFlashRedPosition; ///< TrackVectorPosition of the gap element that is flashing green or red
     int MirrorArray[FirstUnusedSpeedTagNumber]; ///< holds TrackElement SpeedTag values for 'mirroring' via menu items 'Edit' & 'Mirror'
     std::map<AnsiString, char> ContinuationNameMap; ///< map of all continuation names, char is a dummy
     TActiveTrackElementNameMap ActiveTrackElementNameMap; ///< map of active track element names
@@ -525,48 +559,84 @@ class TTrack
     TLNPendingList LNPendingList; ///< list of location name elements awaiting processing (see type for more information above)
     TLocationNameMultiMap LocationNameMultiMap; ///< multimap of location names (see type for more information above)
     TTrackMap TrackMap; ///< map of track (see type for more information above)
-    TTrackVector TrackVector, InactiveTrackVector, NewVector, DistanceVector, DistanceSearchVector, SelectVector;///< vectors of TrackElements
+    TTrackVector TrackVector, InactiveTrackVector, NewVector, DistanceVector, DistanceSearchVector, SelectVector; ///< vectors of TrackElements
     TTrackVectorIterator NextTrackElementPtr; ///< track vector iterator used during cycling through a track vector
 
 //inline functions
 
     /// Return location name for a given inactive track vector position
-    AnsiString GetLocationName(unsigned int InactiveTrackVectorPosition) {return InactiveTrackElementAt(24, InactiveTrackVectorPosition).LocationName;}
+    AnsiString GetLocationName(unsigned int InactiveTrackVectorPosition) {
+        return InactiveTrackElementAt(24, InactiveTrackVectorPosition).LocationName;
+    }
     /// Indicates whether or not the railway is ready for saving as a '.rly' file and for operation
-    bool IsReadyForOperation() {return (IsTrackFinished() && !LocationsNotNamed(1) && !GapsUnset(8));}
+    bool IsReadyForOperation() {
+        return (IsTrackFinished() && !LocationsNotNamed(1) && !GapsUnset(8));
+    }
     /// Indicates whether or not the track has been successfully linked together
-    bool IsTrackFinished() {return TrackFinished;}
+    bool IsTrackFinished() {
+        return TrackFinished;
+    }
 
     enum {FourAspectBuild, ThreeAspectBuild, TwoAspectBuild, GroundSignalBuild} SignalAspectBuildMode; ///< aspect mode for future signal additions
 
-    int GetGapHLoc() {return GapHLoc;} //return the respective values
-    int GetGapVLoc() {return GapVLoc;}
-    int GetHLocMax() {return HLocMax;}
-    int GetHLocMin() {return HLocMin;}
-    int GetVLocMax() {return VLocMax;}
-    int GetVLocMin() {return VLocMin;}
+    int GetGapHLoc() {
+        return GapHLoc;
+    }                                  //return the respective values
+    int GetGapVLoc() {
+        return GapVLoc;
+    }
+    int GetHLocMax() {
+        return HLocMax;
+    }
+    int GetHLocMin() {
+        return HLocMin;
+    }
+    int GetVLocMax() {
+        return VLocMax;
+    }
+    int GetVLocMin() {
+        return VLocMin;
+    }
     /// Return the corresponding link position (track always occupies either links 0 & 1 or 2 & 3)
     int GetNonPointsOppositeLinkPos(int LinkPosIn)
-        {
+    {
         if(LinkPosIn == 3) return 2;
         if(LinkPosIn == 2) return 3;
         if(LinkPosIn == 1) return 0;
         return 1;
-        }
+    }
     /// Return the number of active track elements
-    int TrackVectorSize() {return TrackVector.size();}
+    int TrackVectorSize() {
+        return TrackVector.size();
+    }
     /// Return the number of selected active and inactive track elements (via menu items 'Edit' and 'Select')
-    unsigned int SelectVectorSize() {return SelectVector.size();}
+    unsigned int SelectVectorSize() {
+        return SelectVector.size();
+    }
     /// Store a TrackElement in the SelectVector
-    void SelectPush(TTrackElement TrackElement) {SelectVector.push_back(TrackElement);}
-    void SelectVectorClear() {SelectVector.clear();}
+    void SelectPush(TTrackElement TrackElement) {
+        SelectVector.push_back(TrackElement);
+    }
+    void SelectVectorClear() {
+        SelectVector.clear();
+    }
 
     //set member values
-    void SetHLocMax(int HLoc) {HLocMax = HLoc;}
-    void SetHLocMin(int HLoc) {HLocMin = HLoc;}
-    void SetTrackFinished(bool Value) {TrackFinished = Value;}
-    void SetVLocMax(int VLoc) {VLocMax = VLoc;}
-    void SetVLocMin(int VLoc) {VLocMin = VLoc;}
+    void SetHLocMax(int HLoc) {
+        HLocMax = HLoc;
+    }
+    void SetHLocMin(int HLoc) {
+        HLocMin = HLoc;
+    }
+    void SetTrackFinished(bool Value) {
+        TrackFinished = Value;
+    }
+    void SetVLocMax(int VLoc) {
+        VLocMax = VLoc;
+    }
+    void SetVLocMin(int VLoc) {
+        VLocMin = VLoc;
+    }
 
 //externally defined functions
 
@@ -894,7 +964,7 @@ class TTrack
     TTrack();
     /// Destructor
     ~TTrack();
-    };
+};
 
 //---------------------------------------------------------------------------
 
@@ -918,56 +988,58 @@ enum TPrefDirRoute {PrefDirCall, RouteCall}; ///< used in TOnePrefDir::PrefDirMa
 /// Used during setting up preferred directions and track lengths (ConstructPrefDir), and for all completed preferred directions in the railway (EveryPrefDir)
 class TOnePrefDir
 {
-private://don't want descendant (TOneRoute) to access the PrefDir4MultiMap
+private: //don't want descendant (TOneRoute) to access the PrefDir4MultiMap
 
-typedef std::multimap<THVPair, unsigned int, TMapComp> TPrefDir4MultiMap; ///< HLoc&VLoc as a pair, and PrefDirVectorPosition, can be up to 4 values at any H&V
-typedef std::multimap<THVPair, unsigned int, TMapComp>::iterator TPrefDir4MultiMapIterator;
-typedef std::pair<THVPair, unsigned int> TPrefDir4MultiMapEntry;
+    typedef std::multimap<THVPair, unsigned int, TMapComp> TPrefDir4MultiMap; ///< HLoc&VLoc as a pair, and PrefDirVectorPosition, can be up to 4 values at any H&V
+    typedef std::multimap<THVPair, unsigned int, TMapComp>::iterator TPrefDir4MultiMapIterator;
+    typedef std::pair<THVPair, unsigned int> TPrefDir4MultiMapEntry;
 
-TPrefDir4MultiMap PrefDir4MultiMap; ///< the pref dir multimap - up to 4 values (up to 2 tracks per element each with 2 directions)
+    TPrefDir4MultiMap PrefDir4MultiMap; ///< the pref dir multimap - up to 4 values (up to 2 tracks per element each with 2 directions)
 
 //inline functions
 
 /// Empty the existing vectors & map
-void ClearPrefDir() {PrefDirVector.clear(); SearchVector.clear(); PrefDir4MultiMap.clear();}
+    void ClearPrefDir() {
+        PrefDirVector.clear(); SearchVector.clear(); PrefDir4MultiMap.clear();
+    }
 
 //functions defined in .cpp file
 
 /// Although there may be up to four entries at one H & V position this function gets just one.
 /// It is used in EraseFromPrefDirVectorAnd4MultiMap by being called as many times as there are PrefDir elements at H & V.
-int GetOnePrefDirPosition(int Caller, int HLoc, int VLoc);
+    int GetOnePrefDirPosition(int Caller, int HLoc, int VLoc);
 /// Retrieves a PrefDir4MultiMap iterator to the PrefDir element at PrefDirVectorPosition.  Used during ErasePrefDirElementAt to erase the
 /// relevant element in the multimap.  If nothing is found this is an error but the error message is given in the calling function.
-TPrefDir4MultiMapIterator GetExactMatchFrom4MultiMap(int Caller, unsigned int PrefDirVectorPosition, bool &FoundFlag);
+    TPrefDir4MultiMapIterator GetExactMatchFrom4MultiMap(int Caller, unsigned int PrefDirVectorPosition, bool &FoundFlag);
 /// Store a single pref dir element in the vector & map
-void StorePrefDirElement(int Caller, TPrefDirElement LoadPrefDirElement);
+    void StorePrefDirElement(int Caller, TPrefDirElement LoadPrefDirElement);
 /// Erase a single element from PrefDirVector and 4MultiMap,
 /// decrementing the remaining PrefDirElementNumbers in 4MultiMap if they are greater than the erased value.
-void ErasePrefDirElementAt(int Caller, int PrefDirVectorPosition);
+    void ErasePrefDirElementAt(int Caller, int PrefDirVectorPosition);
 /// Diagnostic validity check
-void CheckPrefDir4MultiMap(int Caller);
+    void CheckPrefDir4MultiMap(int Caller);
 /// Called after ErasePrefDirElementAt to decrement the remaining PrefDirElementNumbers in 4MultiMap if they are greater than the erased value.
-void DecrementPrefDirElementNumbersInPrefDir4MultiMap(int Caller, unsigned int ErasedElementNumber);
+    void DecrementPrefDirElementNumbersInPrefDir4MultiMap(int Caller, unsigned int ErasedElementNumber);
 
 protected: //descendant (TOneRoute) can access these
 
-typedef std::vector<TPrefDirElement> TPrefDirVector; ///< the pref dir vector type
-typedef std::vector<TPrefDirElement>::iterator TPrefDirVectorIterator;
-typedef std::vector<TPrefDirElement>::const_iterator TPrefDirVectorConstIterator;
+    typedef std::vector<TPrefDirElement> TPrefDirVector; ///< the pref dir vector type
+    typedef std::vector<TPrefDirElement>::iterator TPrefDirVectorIterator;
+    typedef std::vector<TPrefDirElement>::const_iterator TPrefDirVectorConstIterator;
 
-static const int PrefDirSearchLimit = 30000; ///< limit to the number of elements searched in attempting to find a preferred direction
+    static const int PrefDirSearchLimit = 30000; ///< limit to the number of elements searched in attempting to find a preferred direction
 
 //[dropped as not a good strategy because gaps interfered with direct line searches - instead introduced TotalSearchCount and now use that
 //to limit searches. Leave in though in case rethink strategy later on]  Search limit values - set the H&V limits when searching for
 //the next pref dir element (or route as inherited by TOneRoute), all points on search path must lie within 15 elements greater than
 //the box of which the line between start and finish is a diagonal (else search takes too long)
-int SearchLimitLowH;
-int SearchLimitHighH;
-int SearchLimitLowV;
-int SearchLimitHighV;
-int TotalSearchCount; ///< counts search elements, used to abort searches (prefdirs or routes) if reaches too high a value
+    int SearchLimitLowH;
+    int SearchLimitHighH;
+    int SearchLimitLowV;
+    int SearchLimitHighV;
+    int TotalSearchCount; ///< counts search elements, used to abort searches (prefdirs or routes) if reaches too high a value
 
-TPrefDirVector PrefDirVector, SearchVector; ///< pref dir vectors, first is the main vector, second used to store search elements temporarily
+    TPrefDirVector PrefDirVector, SearchVector; ///< pref dir vectors, first is the main vector, second used to store search elements temporarily
 
 //functions defined in .cpp file
 
@@ -976,76 +1048,84 @@ TPrefDirVector PrefDirVector, SearchVector; ///< pref dir vectors, first is the 
 /// returns true and prevents the route being set.  Note that adjacent track consisting of buffers, gaps and continuations at the
 /// diagonal link are also excluded though they need not be, but it makes the check code simpler and such adjacent track is untidy
 /// and can be modelled better anyway.  Added at v2.1.0.
-bool PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirElement ElementIn, int XLink);
+    bool PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirElement ElementIn, int XLink);
 /// Checks ElementIn and returns true only if a single prefdir set at that H&V, with EntryPos giving entry position, not points,
 /// crossovers, signals with wrong direction set, or buffers. Added at v1.2.0
-bool PresetAutoRouteElementValid(int Caller, TPrefDirElement ElementIn, int EntryPos);
+    bool PresetAutoRouteElementValid(int Caller, TPrefDirElement ElementIn, int EntryPos);
 /// Try to find a selected element from a given start position.  Enter with CurrentTrackElement stored in the PrefDirVector, XLinkPos set to the link to search on, &
 /// SearchVector cleared unless entered recursively.  Function is a continuous loop that exits when find required element (returns true) or reaches a buffer or
 /// continuation or otherwise fails a search condition (returns false).
-bool SearchForPrefDir(int Caller, TTrackElement TrackElement, int XLinkPos, int RequiredPosition);
+    bool SearchForPrefDir(int Caller, TTrackElement TrackElement, int XLinkPos, int RequiredPosition);
 /// Called after a successful search to add the elements from the search vector to the pref dir vector
-void ConvertPrefDirSearchVector(int Caller);
+    void ConvertPrefDirSearchVector(int Caller);
 
 public:
 
 //inline functions
 
 /// Return the vector size
-unsigned int PrefDirSize() const {return PrefDirVector.size();}
+    unsigned int PrefDirSize() const {
+        return PrefDirVector.size();
+    }
 /// Return the vector size
-unsigned int SearchVectorSize() const {return SearchVector.size();}
+    unsigned int SearchVectorSize() const {
+        return SearchVector.size();
+    }
 /// Empty the existing preferred direction vector & map - for use by other classes
-void ExternalClearPrefDirAnd4MultiMap() {ClearPrefDir();}
+    void ExternalClearPrefDirAnd4MultiMap() {
+        ClearPrefDir();
+    }
 
 //functions defined in .cpp file
 
 /// Called before PrefDir loading as part of the FileIntegrityCheck function in case there is an error in the file.
 /// Very similar to LoadPrefDir but with value checks instead of storage in PrefDirVector.
-bool CheckOnePrefDir(int Caller, int NumberOfActiveElements, std::ifstream &VecFile);
+    bool CheckOnePrefDir(int Caller, int NumberOfActiveElements, std::ifstream &VecFile);
 /// Used when setting preferred directions, true if able to finish at the last selected
 /// element (can't finish if there is only one element or if end on leading points)
-bool EndPossible(int Caller, bool &LeadingPoints);
+    bool EndPossible(int Caller, bool &LeadingPoints);
 /// Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linked tracks between the last
 /// selected element and the one at HLoc & VLoc, and returns true if it finds one.  FinishElement is returned true if the element
 /// selected is a buffer or continuation - in which case the chain is complete
-bool GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &FinishElement);
+    bool GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &FinishElement);
 /// Called when searching for start and end PrefDirElements when setting up automatic signals routes in PreStart mode
-bool GetStartAndEndPrefDirElements(int Caller, TPrefDirElement &StartElement, TPrefDirElement &EndElement, int &LastIteratorValue);
+    bool GetStartAndEndPrefDirElements(int Caller, TPrefDirElement &StartElement, TPrefDirElement &EndElement, int &LastIteratorValue);
 /// Used when beginning a chain of preferred directions or element lengths. Enter with HLoc & VLoc set to selected element & check
 /// if selected element is a valid track element, return false if not, if it is, store it as the first entry in PrefDirVector and return true
-bool GetPrefDirStartElement(int Caller, int HLoc, int VLoc);
+    bool GetPrefDirStartElement(int Caller, int HLoc, int VLoc);
 /// Called during PrefDir build or distance setting. It truncates at & including the first element in the PrefDir vector that matches H & V.
 /// After the truncate the final element of the remaining PrefDir has its data members reset to the same defaults as would be the case if the
 /// PrefDir had been built up to that point - i.e. for first element or a leading point.
-bool GetPrefDirTruncateElement(int Caller, int HLoc, int VLoc);
+    bool GetPrefDirTruncateElement(int Caller, int HLoc, int VLoc);
 /// Checks that all elements in PrefDirVector have been properly set, i.e. don't have their default values, and that every element is connected to the next element
-bool ValidatePrefDir(int Caller);
+    bool ValidatePrefDir(int Caller);
 /// Return the vector position of the last element in the vector (i.e. one less than the vector size)
-int LastElementNumber(int Caller) const;
+    int LastElementNumber(int Caller) const;
 /// Return a pointer to the last element in the vector
-TPrefDirVectorIterator LastElementPtr(int Caller);
+    TPrefDirVectorIterator LastElementPtr(int Caller);
 /// Return a non-modifiable element at PrefDirVector position 'At'
-const TPrefDirElement &GetFixedPrefDirElementAt(int Caller, int At) const;
+    const TPrefDirElement &GetFixedPrefDirElementAt(int Caller, int At) const;
 /// Return a modifiable element at PrefDirVector position 'At'
-TPrefDirElement &GetModifiablePrefDirElementAt(int Caller, int At);
+    TPrefDirElement &GetModifiablePrefDirElementAt(int Caller, int At);
 /// Return a non-modifiable element at SearchVector position 'At'
-const TPrefDirElement &GetFixedSearchElementAt(int Caller, int At) const;
+    const TPrefDirElement &GetFixedSearchElementAt(int Caller, int At) const;
 /// Return a modifiable element at SearchVector position 'At'
-TPrefDirElement &GetModifiableSearchElementAt(int Caller, int At);
+    TPrefDirElement &GetModifiableSearchElementAt(int Caller, int At);
 /// Used when setting element lengths, returns in &OverallDistance the overall distance for the selected chain of elements and also the speed limit in
 /// &OverallSpeedLimit, which is set to -1 if the speed limits vary over the chain
-void CalcDistanceAndSpeed(int Caller, int &OverallDistance, int &OverallSpeedLimit, bool &LeadingPointsAtLastElement);
+    void CalcDistanceAndSpeed(int Caller, int &OverallDistance, int &OverallSpeedLimit, bool &LeadingPointsAtLastElement);
 /// Store a single pref dir element in the vector & map - used by other classes
-void ExternalStorePrefDirElement(int Caller, TPrefDirElement LoadPrefDirElement) {StorePrefDirElement(6, LoadPrefDirElement);}
+    void ExternalStorePrefDirElement(int Caller, TPrefDirElement LoadPrefDirElement) {
+        StorePrefDirElement(6, LoadPrefDirElement);
+    }
 /// Return up to 4 vector positions for a given HLoc & VLoc; unused values return -1
-void GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, int VLoc, bool &FoundFlag,
-                                            int &PrefDirPos0, int &PrefDirPos1, int &PrefDirPos2, int &PrefDirPos3);
+    void GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, int VLoc, bool &FoundFlag,
+                                                int &PrefDirPos0, int &PrefDirPos1, int &PrefDirPos2, int &PrefDirPos3);
 /// Old version of LoadPrefDir, used during development when the save format
 /// changed so the old files could be loaded prior to resaving in the new format
-void LoadOldPrefDir(int Caller, std::ifstream &VecFile);
+    void LoadOldPrefDir(int Caller, std::ifstream &VecFile);
 /// Load a vector and map of preferred directions from the file
-void LoadPrefDir(int Caller, std::ifstream &VecFile);
+    void LoadPrefDir(int Caller, std::ifstream &VecFile);
 /// PrefDir and route track marker, including direction markers.  Function used for both PrefDirs (PrefDirRoute == PrefDirCall) and
 /// routes (PrefDirRoute == RouteCall).
 ///
@@ -1053,39 +1133,39 @@ void LoadPrefDir(int Caller, std::ifstream &VecFile);
 /// function is called to display them, all in the case of a PrefDir, but for a route only the first and last elements have direction
 /// markers. No markers are displayed if a train is present on an element.  Also no display if EXGraphicPtr not set.  If building a
 /// PrefDir (BuildingPrefDir true) then the start and end rectangles are also displayed.
-void PrefDirMarker(int Caller, TPrefDirRoute PrefDirRoute, bool BuildingPrefDir, TDisplay *Disp) const;
+    void PrefDirMarker(int Caller, TPrefDirRoute PrefDirRoute, bool BuildingPrefDir, TDisplay *Disp) const;
 /// Save the preferred direction vector to a file
-void SavePrefDirVector(int Caller, std::ofstream &VecFile);
+    void SavePrefDirVector(int Caller, std::ofstream &VecFile);
 /// Save the search vector to a file
-void SaveSearchVector(int Caller, std::ofstream &VecFile);
+    void SaveSearchVector(int Caller, std::ofstream &VecFile);
 /// Used when creating a bitmap image to display preferred directions (as on screen during 'Set preferred direction' mode)
-void WritePrefDirToImage(int Caller, Graphics::TBitmap *Bitmap);
+    void WritePrefDirToImage(int Caller, Graphics::TBitmap *Bitmap);
 
 //EveryPrefDir (declared in InterfaceUnit.h) functions (all external)
 
 /// Check loaded PrefDir against loaded track, and if discrepancies found clear
 /// EveryPrefDir & PrefDir4MultiMap, messages are given by the calling routine.  Return true for OK
-bool CheckPrefDirAgainstTrackVectorNoMessage(int Caller);
+    bool CheckPrefDirAgainstTrackVectorNoMessage(int Caller);
 /// Check loaded PrefDir against loaded track, and if discrepancies found give message &
 /// clear EveryPrefDir & PrefDir4MultiMap.
-void CheckPrefDirAgainstTrackVector(int Caller);
+    void CheckPrefDirAgainstTrackVector(int Caller);
 /// Used when a preferred direction has been set to add all the elements
 /// to EveryPrefDir, except when they already exist in EveryPrefDir
-void ConsolidatePrefDirs(int Caller, TOnePrefDir *InputPrefDir);
+    void ConsolidatePrefDirs(int Caller, TOnePrefDir *InputPrefDir);
 /// Erase element at HLoc and VLoc from the PrefDirVector and from the 4MultiMap.
 /// Note that this entails erasing up to four elements (2 directions and 2 tracks for 4-entry elements).
-void EraseFromPrefDirVectorAnd4MultiMap(int Caller, int HLoc, int VLoc);
+    void EraseFromPrefDirVectorAnd4MultiMap(int Caller, int HLoc, int VLoc);
 /// Similar to PrefDirMarker but used only to mark EveryPrefDir - red for unidirectional
 /// PrefDir & green for bidirectional. Colours taken from the route colours. Plot red first so green overwrites for bidirectional points.
-void EveryPrefDirMarker(int Caller, TDisplay *Disp);
+    void EveryPrefDirMarker(int Caller, TDisplay *Disp);
 /// After a track element is erased the preferred direction elements are likely to be affected.
 ///
 /// This function erases any preferred direction elements that either correspond to the erased track
 /// element, or were linked to it
-void RealignAfterTrackErase(int Caller, int ErasedTrackVectorPosition);
+    void RealignAfterTrackErase(int Caller, int ErasedTrackVectorPosition);
 /// Called after the track vector has been rebuilt following linking, to rebuild the preferred
 /// direction vector to correspond to the element positions in the rebuilt track vector. Doesn't affect the preferred direction multimap.
-void RebuildPrefDirVector(int Caller);
+    void RebuildPrefDirVector(int Caller);
 };
 
 //---------------------------------------------------------------------------
@@ -1096,89 +1176,95 @@ class TOneRoute : public TOnePrefDir
 {
 public:
 /// A single flashing element of a route that flashes during setting
-class TRouteFlashElement
+    class TRouteFlashElement
     {
-    public:
-    int HLoc, VLoc, TrackVectorPosition; ///< element values
-    Graphics::TBitmap *OriginalGraphic, *OverlayGraphic; ///< the two graphics, non route-coloured and route-coloured respectively, these are
-                                                         ///< displayed alternately during flashing
+public:
+        int HLoc, VLoc, TrackVectorPosition; ///< element values
+        Graphics::TBitmap *OriginalGraphic, *OverlayGraphic; ///< the two graphics, non route-coloured and route-coloured respectively, these are
+                                                             ///< displayed alternately during flashing
     };
 
 /// The flashing route
-class TRouteFlash
+    class TRouteFlash
     {
-    public:
-    std::vector<TRouteFlashElement> RouteFlashVector;
-    bool OverlayPlotted; ///< flag indicating the graphic that is currently displayed, true for the overlay (route-coloured)
+public:
+        std::vector<TRouteFlashElement> RouteFlashVector;
+        bool OverlayPlotted; ///< flag indicating the graphic that is currently displayed, true for the overlay (route-coloured)
 
-    //both external
-    void PlotRouteOverlay(int Caller);  ///< display the overlay (route-coloured) graphic
-    void PlotRouteOriginal(int Caller); ///< display the original (non route-coloured) graphic
+        //both external
+        void PlotRouteOverlay(int Caller); ///< display the overlay (route-coloured) graphic
+        void PlotRouteOriginal(int Caller); ///< display the original (non route-coloured) graphic
     };
 
-static const int RouteSearchLimit = 30000; ///< limit to the number of elements searched in attempting to find a route
+    static const int RouteSearchLimit = 30000; ///< limit to the number of elements searched in attempting to find a route
 
-IDInt ReqPosRouteID; ///< the route ID number of the route that is being extended backwards during route building, not needed for
-                     ///< session saves as routes in build are not saved in sessions
-IDInt StartSelectionRouteID; ///< the route ID number of the route that is being extended forwards during route building, not
-                             ///< needed for session saves as routes in build are not saved in sessions
+    IDInt ReqPosRouteID; ///< the route ID number of the route that is being extended backwards during route building, not needed for
+                         ///< session saves as routes in build are not saved in sessions
+    IDInt StartSelectionRouteID; ///< the route ID number of the route that is being extended forwards during route building, not
+                                 ///< needed for session saves as routes in build are not saved in sessions
 
-int RouteID; ///< the ID number of the route, this is needed for session saves
-int StartRoutePosition; ///< TrackVectorPosition of the StartElement(s) set when the starting position of a new route is selected, note that
-                        ///< although there may be two StartElements (as there can be two preferred directions on a single element), there is only one
-                        ///< TrackVectorPosition as the element is the same for both
-TPrefDirElement StartElement1, StartElement2; ///< the two preferred direction elements corresponding to the starting position of a new route
-TRouteFlash RouteFlash; ///< the class member that allows the route to flash during setting up (see TRouteFlash above)
+    int RouteID; ///< the ID number of the route, this is needed for session saves
+    int StartRoutePosition; ///< TrackVectorPosition of the StartElement(s) set when the starting position of a new route is selected, note that
+                            ///< although there may be two StartElements (as there can be two preferred directions on a single element), there is only one
+                            ///< TrackVectorPosition as the element is the same for both
+    TPrefDirElement StartElement1, StartElement2; ///< the two preferred direction elements corresponding to the starting position of a new route
+    TRouteFlash RouteFlash; ///< the class member that allows the route to flash during setting up (see TRouteFlash above)
 
 //inline functions
 
 /// Empty the route of any stored elements
-void ClearRoute() {PrefDirVector.clear(); SearchVector.clear();}
+    void ClearRoute() {
+        PrefDirVector.clear(); SearchVector.clear();
+    }
 /// Erase a single route element
-void EraseRouteElementAt(TPrefDirElement *RouteElementPtr) {PrefDirVector.erase(RouteElementPtr);}
+    void EraseRouteElementAt(TPrefDirElement *RouteElementPtr) {
+        PrefDirVector.erase(RouteElementPtr);
+    }
 /// Store a single route element in the PrefDirVector
-void StoreRouteElementInPrefDirVector(TPrefDirElement LoadPrefDirElement) {LoadPrefDirElement.IsARoute = true;
-     PrefDirVector.push_back(LoadPrefDirElement);}
+    void StoreRouteElementInPrefDirVector(TPrefDirElement LoadPrefDirElement) {
+        LoadPrefDirElement.IsARoute = true;
+        PrefDirVector.push_back(LoadPrefDirElement);
+    }
 
 //functions defined in .cpp file
 
 /// Used when setting signal aspects for a route by working forwards through the route to see what the next forward signal aspects is, because this determines
 /// all the rearward signal aspects.
-bool FindForwardTargetSignalAttribute(int Caller, int &NextForwardLinkedRouteNumber, int &Attribute) const;
+    bool FindForwardTargetSignalAttribute(int Caller, int &NextForwardLinkedRouteNumber, int &Attribute) const;
 /// Set the starting conditions for a non-preferred (i.e. unrestricted) route selection beginning on HLoc & VLoc
-bool GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute, bool Callon);
+    bool GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute, bool Callon);
 /// Try to find a set of linked tracks between the route start element and the one at HLoc & VLoc.  If find one return true, set
 /// &PointsChanged to true if any points need to be changed and &ReqPosRouteID to the route ID of the existing route to attach to,
 /// if there is one, and -1 if not
-bool GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute, bool Callon, IDInt &ReqPosRouteID, bool &PointsChanged);
+    bool GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute, bool Callon, IDInt &ReqPosRouteID, bool &PointsChanged);
 /// Set the starting conditions for a preferred direction or automatic signal route selection beginning on HLoc & VLoc
-bool GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TOnePrefDir *EveryPrefDir, bool ConsecSignalsRoute, bool AutoSigsFlag);
+    bool GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TOnePrefDir *EveryPrefDir, bool ConsecSignalsRoute, bool AutoSigsFlag);
 /// Try to find a set of linked tracks that lie on preferred directions between the route
 /// start element and the one at HLoc & VLoc.  If find one return true, set &PointsChanged to true if any points need to be changed and
 /// &ReqPosRouteID to the route ID of the existing route to attach to, if there is one, and -1 if not
-bool GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOnePrefDir *EveryPrefDir, bool ConsecSignalsRoute, bool AutoSigsFlag,
-    IDInt &ReqPosRouteID, bool &PointsChanged);
+    bool GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOnePrefDir *EveryPrefDir, bool ConsecSignalsRoute, bool AutoSigsFlag,
+                                      IDInt &ReqPosRouteID, bool &PointsChanged);
 /// Called by GetNextNonPreferredRouteElement and GetNextPreferredRouteElement to check whether
 /// or not any points on the selected route need to be changed
-bool PointsToBeChanged(int Caller) const;
+    bool PointsToBeChanged(int Caller) const;
 /// Called by GetNextNonPreferredRouteElement to carry out the search for linked track, and also called recursively
-bool SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrackElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID);
+    bool SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrackElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID);
 /// Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called recursively
-bool SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID,
-    TOnePrefDir *EveryPrefDir, bool ConsecSignalsRoute, int EndSelectPosition, bool AutoSigsFlag);
+    bool SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID,
+                                 TOnePrefDir *EveryPrefDir, bool ConsecSignalsRoute, int EndSelectPosition, bool AutoSigsFlag);
 /// Called by TAllRoutes::SetAllRearwardsSignals to set rearwards signals from a specified starting position.  If a train is found during the
 /// rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further
 /// rearwards signal aspects.
-bool SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribute, int PrefDirVectorStartPosition) const;
+    bool SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribute, int PrefDirVectorStartPosition) const;
 /// Called after a non-preferred (i.e. unrestricted) route
 /// has been selected and has finished flashing, to add it to the AllRoutesVector
-void ConvertAndAddNonPreferredRouteSearchVector(int Caller, IDInt ReqPosRouteID);
+    void ConvertAndAddNonPreferredRouteSearchVector(int Caller, IDInt ReqPosRouteID);
 /// Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and
 /// has finished flashing, to add it to the AllRoutesVector
-void ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPosRouteID, bool AutoSigsFlag);
+    void ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPosRouteID, bool AutoSigsFlag);
 /// Cancel a route immediately if a train occupies it when travelling in the wrong direction (or occupies
 /// a crossover on a non-route line when the other track is in a route)
-void ForceCancelRoute(int Caller);
+    void ForceCancelRoute(int Caller);
 /// Examines the route to see whether the element at H & V is in the route, and if not returns a ReturnFlag value of NotInRoute.
 ///
 /// If it is in a route but the element selected is invalid, then a message is given and returns with a ReturnFlag value of
@@ -1186,28 +1272,28 @@ void ForceCancelRoute(int Caller);
 /// InRouteTrue.  Selection invalid if a train at or before the truncate point; select a bridge; trying to leave a single element; last
 /// element to be left not a signal (for ConsecSignalsRoute or has AutoSigsFlag set); last element to be left a bridge, points or crossover
 /// (for not ConsecSignalsRoute & AutoSigsFlag not set), or part of route locked.
-void GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute, TTruncateReturnType &ReturnFlag);
+    void GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute, TTruncateReturnType &ReturnFlag);
 /// Used when creating a bitmap image to display the route colours and
 /// direction arrows (as on screen during operation) for an operating railway
-void RouteImageMarker(int Caller, Graphics::TBitmap *Bitmap) const;
+    void RouteImageMarker(int Caller, Graphics::TBitmap *Bitmap) const;
 /// After a route has been selected successfully this function sets all LC change values
 /// appropriately for the selected route type and location
-void SetLCChangeValues(int Caller, bool ConsecSignalsRoute);
+    void SetLCChangeValues(int Caller, bool ConsecSignalsRoute);
 /// Called when setting unrestricted routes to set the route element values appropriately
 /// after a successful search has been conducted.  It isn't needed for preferred routes because the element values are obtained from the
 /// already set preferred direction elements
-void SetRemainingSearchVectorValues(int Caller);
+    void SetRemainingSearchVectorValues(int Caller);
 /// After a route has been selected successfully this function sets all
 /// RouteFlash (see above) values appropriately for the selected route type and location
-void SetRouteFlashValues(int Caller, bool AutoSigsFlag, bool ConsecSignalsRoute);
+    void SetRouteFlashValues(int Caller, bool AutoSigsFlag, bool ConsecSignalsRoute);
 /// Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector so that the route displays with the correct colour
-void SetRouteSearchVectorGraphics(int Caller, bool AutoSigsFlag, bool ConsecSignalsRoute);
+    void SetRouteSearchVectorGraphics(int Caller, bool AutoSigsFlag, bool ConsecSignalsRoute);
 /// Called when setting a route to set all points appropriately
-void SetRoutePoints(int Caller) const;
+    void SetRoutePoints(int Caller) const;
 /// Called when setting a route to set all points appropriately.  Also called when a new
 /// train is added at a position where a route has been set, when it is necessary to set
 /// the next rearwards signal to red, the next yellow etc
-void SetRouteSignals(int Caller) const;
+    void SetRouteSignals(int Caller) const;
 };
 
 //---------------------------------------------------------------------------
@@ -1218,161 +1304,167 @@ class TAllRoutes
 public:
 
 /// Handles routes that are locked because of approaching trains
-class TLockedRouteClass
+    class TLockedRouteClass
     {
-    public:
-    int RouteNumber; ///< the vector position number of the relevant route in AllRoutesVector
-    unsigned int TruncateTrackVectorPosition; ///< the TrackVector position of the element selected for truncation
-    unsigned int LastTrackVectorPosition; ///< the TrackVector position of the last (i.e. most forward) element in the route
-    int LastXLinkPos; ///< the XLinkPos value of the last (i.e. most forward) element in the route
-    TDateTime LockStartTime; ///< the timetable time at which the route is locked, to start the 2 minute clock
+public:
+        int RouteNumber; ///< the vector position number of the relevant route in AllRoutesVector
+        unsigned int TruncateTrackVectorPosition; ///< the TrackVector position of the element selected for truncation
+        unsigned int LastTrackVectorPosition; ///< the TrackVector position of the last (i.e. most forward) element in the route
+        int LastXLinkPos; ///< the XLinkPos value of the last (i.e. most forward) element in the route
+        TDateTime LockStartTime; ///< the timetable time at which the route is locked, to start the 2 minute clock
     };
 
-enum TRouteType {NoRoute, NotAutoSigsRoute, AutoSigsRoute} RouteType; ///< distinguishes between automatic signals routes and other types,
+    enum TRouteType {NoRoute, NotAutoSigsRoute, AutoSigsRoute} RouteType; ///< distinguishes between automatic signals routes and other types,
     ///< or no route at all (where this is used there is no need to distinguish between preferred direction and unrestricted routes)
 
-typedef std::vector<TOneRoute> TAllRoutesVector; ///< the vector class that holds all the railway routes
-typedef std::vector<TOneRoute>::iterator TAllRoutesVectorIterator;
+    typedef std::vector<TOneRoute> TAllRoutesVector; ///< the vector class that holds all the railway routes
+    typedef std::vector<TOneRoute>::iterator TAllRoutesVectorIterator;
 
-typedef std::vector<TLockedRouteClass> TLockedRouteVector; ///< the vector class that holds all locked routes
-typedef std::vector<TLockedRouteClass>::iterator TLockedRouteVectorIterator;
+    typedef std::vector<TLockedRouteClass> TLockedRouteVector; ///< the vector class that holds all locked routes
+    typedef std::vector<TLockedRouteClass>::iterator TLockedRouteVectorIterator;
 
-typedef std::pair<int, unsigned int> TRouteElementPair; ///< defines a specific element in a route, the first (int) value is the vector
+    typedef std::pair<int, unsigned int> TRouteElementPair; ///< defines a specific element in a route, the first (int) value is the vector
     ///< position in the AllRoutesVector, and the second (unsigned int) value is the vector position of the element in the route's
     ///< PrefDirVector
-typedef std::multimap<THVPair, TRouteElementPair, TMapComp> TRoute2MultiMap; ///< the multimap class holding the elements of all routes in the
+    typedef std::multimap<THVPair, TRouteElementPair, TMapComp> TRoute2MultiMap; ///< the multimap class holding the elements of all routes in the
     ///< railway.  The first entry is the HLoc & VLoc pair values of the route element, and the second is the TRouteElementPair defining the
     ///< element.  There are a maximum of 2 elements per HLoc & VLoc location
-typedef TRoute2MultiMap::iterator TRoute2MultiMapIterator;
-typedef std::pair<THVPair, TRouteElementPair> TRoute2MultiMapEntry;
+    typedef TRoute2MultiMap::iterator TRoute2MultiMapIterator;
+    typedef std::pair<THVPair, TRouteElementPair> TRoute2MultiMapEntry;
 
 /// Used to store relevant values when a call-on found, ready for plotting an unrestricted route
-class TCallonEntry
+    class TCallonEntry
     {
-    public:
-    bool RouteOrPartRouteSet; ///< whether or not a route or part route already plotted
-    int RouteStartPosition; ///< the stop signal trackvectorposition
-    int PlatformPosition; ///< the first platform trackvectorposition
-    /// Constructor
-    TCallonEntry::TCallonEntry(bool RouteOrPartRouteSetIP, int RouteStartPositionIP, int PlatformPositionIP) {RouteOrPartRouteSet = RouteOrPartRouteSetIP;
-            RouteStartPosition = RouteStartPositionIP; PlatformPosition = PlatformPositionIP;}
+public:
+        bool RouteOrPartRouteSet; ///< whether or not a route or part route already plotted
+        int RouteStartPosition; ///< the stop signal trackvectorposition
+        int PlatformPosition; ///< the first platform trackvectorposition
+        /// Constructor
+        TCallonEntry::TCallonEntry(bool RouteOrPartRouteSetIP, int RouteStartPositionIP, int PlatformPositionIP) {
+            RouteOrPartRouteSet = RouteOrPartRouteSetIP;
+            RouteStartPosition = RouteStartPositionIP; PlatformPosition = PlatformPositionIP;
+        }
     };
 
-std::vector<TCallonEntry> CallonVector; ///< the store of all call-on entries
+    std::vector<TCallonEntry> CallonVector; ///< the store of all call-on entries
 
-bool LockedRouteFoundDuringRouteBuilding; ///< this flags the fact that a locked route has been found during route building in an
-                                          ///< existing linked route which is erased prior to its elements being added to the new route
+    bool LockedRouteFoundDuringRouteBuilding; ///< this flags the fact that a locked route has been found during route building in an
+                                              ///< existing linked route which is erased prior to its elements being added to the new route
 
 //the following variables store the locked route values for reinstating after a locked route has been found during route building in an
 //existing linked route which is erased prior to its elements being added to the new route.  The locked route is erased in
 //ClearRouteDuringRouteBuildingAt, and is reinstated in ConvertAndAddPreferredRouteSearchVector or ConvertAndAddNonPreferredRouteSearchVector.
-int LockedRouteLastXLinkPos;
-unsigned int LockedRouteTruncateTrackVectorPosition;
-unsigned int LockedRouteLastTrackVectorPosition;
-TDateTime LockedRouteLockStartTime;
+    int LockedRouteLastXLinkPos;
+    unsigned int LockedRouteTruncateTrackVectorPosition;
+    unsigned int LockedRouteLastTrackVectorPosition;
+    TDateTime LockedRouteLockStartTime;
 //end of locked route values
 
-bool RebuildRailwayFlag; ///< this is set whenever a route has to be cancelled forcibly in order to force a ClearandRebuildRailway at the
-                         ///< next clock tick if not in zoom-out mode to clear the now cancelled route on the display
-bool RouteTruncateFlag;  ///< used to flag the fact that a route is being truncated on order to change the behaviour of signal aspect
-                         ///< setting in SetRearwardsSignalsReturnFalseForTrain
+    bool RebuildRailwayFlag; ///< this is set whenever a route has to be cancelled forcibly in order to force a ClearandRebuildRailway at the
+                             ///< next clock tick if not in zoom-out mode to clear the now cancelled route on the display
+    bool RouteTruncateFlag; ///< used to flag the fact that a route is being truncated on order to change the behaviour of signal aspect
+                            ///< setting in SetRearwardsSignalsReturnFalseForTrain
 
-const float LevelCrossingBarrierUpDelay;   ///< the full value in seconds for which the level crossing flashes prior to closing to trains
-const float LevelCrossingBarrierDownDelay; ///< the full value in seconds for which the level crossing flashes prior to opening to trains
-const float PointsDelay;  ///< the value in seconds for which points flash prior to being changed.  Used for the points flash period when
-                          ///< changing points manually and for the route flash period when points have to be changed
-const float SignalsDelay; ///< the value in seconds for which signals flash prior to being changed.  Used for the route flash period when
-                          ///< points don't have to be changed
-int NextRouteID; ///< stores the value for the route ID number that is next to be built
-TAllRoutesVector AllRoutesVector; ///< the vector that stores all the routes on the railway
-TLockedRouteVector LockedRouteVector; ///< the vector that stores all the locked routes on the railway
-TOneRoute SignallerRemovedTrainAutoRoute; ///< if train was on an AutoSigsRoute when removed then this stores the route so that signals can be reset
-TRoute2MultiMap Route2MultiMap; ///< the map that stores the elements of all routes on the railway (see TRoute2MultiMap for more info)
+    const float LevelCrossingBarrierUpDelay; ///< the full value in seconds for which the level crossing flashes prior to closing to trains
+    const float LevelCrossingBarrierDownDelay; ///< the full value in seconds for which the level crossing flashes prior to opening to trains
+    const float PointsDelay; ///< the value in seconds for which points flash prior to being changed.  Used for the points flash period when
+                             ///< changing points manually and for the route flash period when points have to be changed
+    const float SignalsDelay; ///< the value in seconds for which signals flash prior to being changed.  Used for the route flash period when
+                              ///< points don't have to be changed
+    int NextRouteID; ///< stores the value for the route ID number that is next to be built
+    TAllRoutesVector AllRoutesVector; ///< the vector that stores all the routes on the railway
+    TLockedRouteVector LockedRouteVector; ///< the vector that stores all the locked routes on the railway
+    TOneRoute SignallerRemovedTrainAutoRoute; ///< if train was on an AutoSigsRoute when removed then this stores the route so that signals can be reset
+    TRoute2MultiMap Route2MultiMap; ///< the map that stores the elements of all routes on the railway (see TRoute2MultiMap for more info)
 
 //inline functions
 
 /// Returns the number of routes in the railway
-unsigned int AllRoutesSize() const {return AllRoutesVector.size();}
+    unsigned int AllRoutesSize() const {
+        return AllRoutesVector.size();
+    }
 /// Erases all routes from AllRoutesVector and from Route2MultiMap
-void AllRoutesClear() {AllRoutesVector.clear(); Route2MultiMap.clear();}
+    void AllRoutesClear() {
+        AllRoutesVector.clear(); Route2MultiMap.clear();
+    }
 
 /// Functions defined in .cpp file
-bool CheckForLoopingRoute(int Caller, int EndPosition, int EndXLinkPos, int StartPosition);//return true if route loops back on itself
+    bool CheckForLoopingRoute(int Caller, int EndPosition, int EndXLinkPos, int StartPosition); //return true if route loops back on itself
 /// Performs an integrity check on the routes stored in a session file and returns false if there is an error
-bool CheckRoutes(int Caller, int NumberOfActiveElements, std::ifstream &InFile);
+    bool CheckRoutes(int Caller, int NumberOfActiveElements, std::ifstream &InFile);
 /// The track geometry allows diagonals to cross without occupying the same track element, so when route plotting it is necessary to
 /// check if there is an existing route or a train on such a crossing diagonal.  Returns true for a fouled (i.e. fouled by a route or a train) diagonal.
 /// New at v1.2.0
-bool DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber);
+    bool DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber);
 /// As above but only checks for a route (may or may not be a train present (new at v1.2.0)
-bool DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber);
+    bool DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber);
 /// If a route is present at H, V & Elink returns true with RouteNumber giving vector position in AllRoutes vector.  Returns false for anything else including no element
 /// or route at H & V etc. New at v1.2.0
-bool TAllRoutes::FindRouteNumberFromRoute2MultiMapNoErrors(int Caller, int HLoc, int VLoc, int ELink, int &RouteNumber);
+    bool TAllRoutes::FindRouteNumberFromRoute2MultiMapNoErrors(int Caller, int HLoc, int VLoc, int ELink, int &RouteNumber);
 /// Examines all routes and for each uses GetRouteTruncateElement to see if the element at H & V is present in that route.
 ///
 ///  The ReturnFlag value indicates InRouteTrue (success), InRouteFalse (failure), or NotInRoute.  Messages are given in GetRouteTruncateElement.
 ///  If successful the route is truncated at and including the element that matches H & V.  If ConsecSignalsRoute ensure only truncate to a signal, else prevent
 /// truncation to a crossover, bridge or points, also prevent route being left less than 2 elements in length.
-bool GetAllRoutesTruncateElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute);
+    bool GetAllRoutesTruncateElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute);
 /// Checks whether the preferred direction element at TrackVectorPosition
 /// with XLinkPos value is in a locked route and returns true if so together with the element itself copied to &PrefDirElement & the
 /// LockedRouteVector position in &LockedVectorNumber
-bool IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(int Caller, int TrackVectorPosition, int XLinkPos,
-	TPrefDirElement &PrefDirElement, int &LockedVectorNumber);
+    bool IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(int Caller, int TrackVectorPosition, int XLinkPos,
+                                                                      TPrefDirElement &PrefDirElement, int &LockedVectorNumber);
 /// Returns true if there is a route with the given ID number - added at v1.3.1 (see function for details)
-bool IsThereARouteAtIDNumber(int Caller, IDInt RouteID);
+    bool IsThereARouteAtIDNumber(int Caller, IDInt RouteID);
 /// Loads the routes from a session file
-bool LoadRoutes(int Caller, std::ifstream &InFile);
+    bool LoadRoutes(int Caller, std::ifstream &InFile);
 /// Route locking is required (returns true) if a moving train is within 3 signals back from the RouteTruncatePosition
 /// (on the route itself or on any linked routes, or on the element immediately before the start of the route or linked route
 /// - this because train cancels route elements that it touches) unless the first signal is red, then OK
-bool RouteLockingRequired(int Caller, int RouteNumber, int RouteTruncatePosition);
+    bool RouteLockingRequired(int Caller, int RouteNumber, int RouteTruncatePosition);
 /// Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)
 /// is found it returns true (for crossovers returns true whichever track the route is on), else returns false.
-bool TrackIsInARoute(int Caller, int TrackVectorPosition, int LinkPos);
+    bool TrackIsInARoute(int Caller, int TrackVectorPosition, int LinkPos);
 /// Returns a route's position in AllRoutesVector from its ID, throws an error if a matching route isn't found
-int GetRouteVectorNumber(int Caller, IDInt RouteID);
+    int GetRouteVectorNumber(int Caller, IDInt RouteID);
 /// Returns a constant reference to the route at AllRoutesVector position 'At',
 /// after performing range checking on the 'At' value and throwing an error if out of range
-const TOneRoute &GetFixedRouteAt(int Caller, int At) const;
+    const TOneRoute &GetFixedRouteAt(int Caller, int At) const;
 /// Returns a constant reference to the route with ID number RouteID.  If no route is found with that ID an error is thrown
-const TOneRoute &GetFixedRouteAtIDNumber(int Caller, IDInt RouteID) const;
+    const TOneRoute &GetFixedRouteAtIDNumber(int Caller, IDInt RouteID) const;
 /// Returns a modifiable reference to the route at AllRoutesVector position 'At',
 /// after performing range checking on the 'At' value and throwing an error if out of range
-TOneRoute &GetModifiableRouteAt(int Caller, int At);
+    TOneRoute &GetModifiableRouteAt(int Caller, int At);
 /// Returns a modifiable reference to the route with ID number RouteID.
 /// If no route is found with that ID an error is thrown
-TOneRoute &GetModifiableRouteAtIDNumber(int Caller, IDInt RouteID);
+    TOneRoute &GetModifiableRouteAtIDNumber(int Caller, IDInt RouteID);
 /// Examines Route2MultiMap and returns a TRouteElementPair if one is found with the passed values of H, V and ELink.
 ///
 /// Also returned as a reference is an iterator to the found element in the map to assist in erasing it.  Called by
 /// TAllRoutes::RemoveRouteElement.  Note that only need ELink (as well as H & V) to identify uniquely, since only bridges can have
 /// two routes on them & their track ELinks are always different.  Messages are given for failure.
-TRouteElementPair FindRoutePairFromRoute2MultiMap(int Caller, int HLoc, int VLoc, int ELink,
+    TRouteElementPair FindRoutePairFromRoute2MultiMap(int Caller, int HLoc, int VLoc, int ELink,
                                                       TRoute2MultiMapIterator &Route2MultiMapIterator);
 /// Retrieve up to two TRouteElementPair entries from Route2MultiMap at H & V, the first as a function return and the second in the reference
 /// SecondPair.  If there's only one then it's the function return
-TRouteElementPair GetRouteElementDataFromRoute2MultiMap(int Caller, int HLoc, int VLoc, TRouteElementPair &SecondPair);
+    TRouteElementPair GetRouteElementDataFromRoute2MultiMap(int Caller, int HLoc, int VLoc, TRouteElementPair &SecondPair);
 /// Examines Route2MultiMap for the element at TrackVectorPosition with LinkPos
 /// (can be entry or exit) and returns the appropriate route type - NoRoute, NotAutoSigsRoute, or AutoSigsRoute.  If element is in a
 /// route then the EXGraphicPtr is returned, and if either the start or end of a route then the correct EntryDirectionGraphicPtr is
 /// returned, else a transparent element is returned.  Function is used int TrainUnit for retaining AutoSigsRoutes but erasing others
 /// after train passes, and for picking up the correct background graphics for replotting of AutoSigsRoutes; also used in
 /// CallingOnAllowed
-TRouteType GetRouteTypeAndGraphics(int Caller, int TrackVectorPosition, int LinkPos, Graphics::TBitmap* &EXGraphicPtr,
+    TRouteType GetRouteTypeAndGraphics(int Caller, int TrackVectorPosition, int LinkPos, Graphics::TBitmap* &EXGraphicPtr,
                                        Graphics::TBitmap* &EntryDirectionGraphicPtr);
 /// Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit) is found returns the appropriate route type - NoRoute,
 /// NotAutoSigsRoute, or AutoSigsRoute and number (i.e. its position in AllRoutesVector).
-TRouteType GetRouteTypeAndNumber(int Caller, int TrackVectorPosition, int LinkPos, int &RouteNumber);
+    TRouteType GetRouteTypeAndNumber(int Caller, int TrackVectorPosition, int LinkPos, int &RouteNumber);
 /// A single TPrefDirElement is added to both PrefDirVector (for the route at RouteNumber) and Route2MultiMap.  Called from
 /// TAllRoutes::StoreOneRoute.  Note that the IsARoute boolean variable is set in StoreRouteElementInPrefDirVector since that catches
 /// all route elements wherever created
-void AddRouteElement(int Caller, int HLoc, int VLoc, int ELink, int RouteNumber, TPrefDirElement RouteElement);
+    void AddRouteElement(int Caller, int HLoc, int VLoc, int ELink, int RouteNumber, TPrefDirElement RouteElement);
 /// Diagnostic function - checks equivalence for each route between entries in PrefDirVector and those
 /// in Route2MultiMap, and also that the size of the multimap and the sum of the sizes of all PrefDirVectors is the same.  Throws an
 /// error if there is a discrepancy.
-void CheckMapAndRoutes(int Caller);
+    void CheckMapAndRoutes(int Caller);
 /// When attaching a new route section to an existing route, it is sometimes necessary to erase the original route and create a new composite route.
 ///
 /// This function erases all elements in the route at RouteNumber using TAllRoutes->RemoveRouteElement to clear elements from Route2MultiMap
@@ -1380,48 +1472,50 @@ void CheckMapAndRoutes(int Caller);
 /// Route numbers are decremented in the map for route numbers that are greater than the route number that is removed.  The LockedRouteVector
 /// as also searched and if any relate to the route that has been cleared they are erased too, but the fact that one has been found is recorded
 /// so that it can be re-established later.
-void ClearRouteDuringRouteBuildingAt(int Caller, int RouteNumber);
+    void ClearRouteDuringRouteBuildingAt(int Caller, int RouteNumber);
 /// After a route element has been erased from the relevant PrefDirVector and from Route2MultiMap, this function examines all the remaining entries in
 /// Route2MultiMap with the same RouteNumber as that for the erased element.  Where a RouteElementNumber exceeds that for the erased
 /// element it is decremented.
-void DecrementRouteElementNumbersInRoute2MultiMap(int Caller, int RouteNumber, unsigned int ErasedElementNumber);
+    void DecrementRouteElementNumbersInRoute2MultiMap(int Caller, int RouteNumber, unsigned int ErasedElementNumber);
 /// After a route has been erased from AllRoutesVector and its entries from Route2MultiMap, this function examines all the remaining entries in
 /// Route2MultiMap to see if their RouteNumbers exceed that for the erased route.  Where this is so the RouteNumber is decremented.
-void DecrementRouteNumbersInRoute2MultiMap(int Caller, int RouteNumber);
+    void DecrementRouteNumbersInRoute2MultiMap(int Caller, int RouteNumber);
 /// Calls PrefDirMarker for all routes, with RouteCall set to identify a route call, and BuildingPrefDir false.
-void MarkAllRoutes(int Caller, TDisplay *Disp);
+    void MarkAllRoutes(int Caller, TDisplay *Disp);
 /// Erases the route element from Route2MultiMap and from the PrefDirVector.
-void RemoveRouteElement(int Caller, int HLoc, int VLoc, int ELink);
+    void RemoveRouteElement(int Caller, int HLoc, int VLoc, int ELink);
 /// Insert an entry in Route2MultiMap.  Called by TAllRoutes::AddRouteElement.
-void Route2MultiMapInsert(int Caller, int HLoc, int VLoc, int ELinkIn, int RouteNumber, unsigned int RouteElementNumber);
+    void Route2MultiMapInsert(int Caller, int HLoc, int VLoc, int ELinkIn, int RouteNumber, unsigned int RouteElementNumber);
 /// Save railway route information to a session file or an error file
-void SaveRoutes(int Caller, std::ofstream &OutFile);
+    void SaveRoutes(int Caller, std::ofstream &OutFile);
 /// Set rearwards signals from the specified route starting position
-void SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumber, int RouteStartPosition);
+    void SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumber, int RouteStartPosition);
 /// Enter with signal at TrackVectorElement already set to red by the passing train.  Identify the route that the TrackVectorPosition is in,
 /// carry out validity checks, then call SetAllRearwardsSignals to set signals in this route and all linked rearwards routes, unless find a train (a) in the current
 /// route, in which case the signals behind it are set (and behind any other trains in the current route), but only within the current
 /// route; or (b) in a linked rear route, in which case the function sets no further signals.
-void SetTrailingSignalsOnAutoSigsRoute(int Caller, int TrackVectorPosition, int XLinkPos);
+    void SetTrailingSignalsOnAutoSigsRoute(int Caller, int TrackVectorPosition, int XLinkPos);
 /// This is called by the InterfaceUnit at intervals based on entries in the ContinuationAutoSigVector in TrainController to set signals on the AutoSigsRoute to correspond to
 /// a train having exited the route at a continuation, and passing further signals (outside the simulated railway).  Initially the last
 /// passed signal will be red, then at the first call it will change to yellow and earlier signals will change accordingly, then double
 /// yellow, then green.  There are only 3 calls in all for any given route, and the AccessNumber changes from 0 to 1 to 2 for successive calls.
-void SetTrailingSignalsOnContinuationRoute(int Caller, int RouteNumber, int AccessNumber);
+    void SetTrailingSignalsOnContinuationRoute(int Caller, int RouteNumber, int AccessNumber);
 /// A new (empty apart from RouteID) TOneRoute is added to the AllRoutesVector, which,
 /// since it is the last to be added, will have a RouteNumber of AllRoutesSize() - 1.  Then each element of the new route is added in
 /// turn using AddRouteElement, which uses HLoc, VLoc, ELink and RouteNumber to provide the information necessary to insert it into
 /// both PrefDirVector and Route2MultiMap.
-void StoreOneRoute(int Caller, TOneRoute *Route);
+    void StoreOneRoute(int Caller, TOneRoute *Route);
 /// A new (empty apart from RouteID) TOneRoute is added to the AllRoutesVector after a session load.
 /// Very similar to StoreOneRoute but here the RoutID that is already in Route is used.
-void StoreOneRouteAfterSessionLoad(int Caller, TOneRoute *Route);
+    void StoreOneRouteAfterSessionLoad(int Caller, TOneRoute *Route);
 /// Calls RouteImageMarker for each route in turn to display the route colours and
 /// direction arrows on the bitmap image (as on screen during operation) for an operating railway
-void WriteAllRoutesToImage(int Caller, Graphics::TBitmap *Bitmap);
+    void WriteAllRoutesToImage(int Caller, Graphics::TBitmap *Bitmap);
 
 /// Constructor
-TAllRoutes::TAllRoutes() : LevelCrossingBarrierUpDelay(10.0), LevelCrossingBarrierDownDelay(30.0), PointsDelay(2.5), SignalsDelay(0.5), RebuildRailwayFlag(false) {;}
+    TAllRoutes::TAllRoutes() : LevelCrossingBarrierUpDelay(10.0), LevelCrossingBarrierDownDelay(30.0), PointsDelay(2.5), SignalsDelay(0.5), RebuildRailwayFlag(false) {
+        ;
+    }
 };
 
 //---------------------------------------------------------------------------

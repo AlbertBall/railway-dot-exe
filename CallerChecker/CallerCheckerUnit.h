@@ -12,7 +12,7 @@
 //---------------------------------------------------------------------------
 class TForm1 : public TForm
 {
-__published:	// IDE-managed Components
+__published:    // IDE-managed Components
     TLabel *Label1;
     TButton *StartAnalysis;
     TButton *Exit;
@@ -25,25 +25,24 @@ __published:	// IDE-managed Components
     void __fastcall StartAnalysisClick(TObject *Sender);
     void __fastcall ExitClick(TObject *Sender);
     void __fastcall Timer1Timer(TObject *Sender);
-private:	// User declarations
+private:    // User declarations
     bool Screen, Print, ClockStopped, BreakFlag;
-	int Count;
+    int Count;
     int DupNumArray[5000];
     int MissingNumArray[5000];
 
-	static const int NumFiles = 14;
-	static const int NumberOfCalls = 419;
-	AnsiString FileString[NumFiles];
-	AnsiString FunctionString[NumberOfCalls];
+    static const int NumFiles = 14;
+    static const int NumberOfCalls = 419;
+    AnsiString FileString[NumFiles];
+    AnsiString FunctionString[NumberOfCalls];
 
-	std::ofstream OutFile;
+    std::ofstream OutFile;
 
-	void AnalyseOneFunction(int &FunctionCount, int NumberOfCalls, AnsiString FunctionString, std::ofstream &OutFile);
-public:		// User declarations
+    void AnalyseOneFunction(int &FunctionCount, int NumberOfCalls, AnsiString FunctionString, std::ofstream &OutFile);
+public:     // User declarations
     __fastcall TForm1(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;
 //---------------------------------------------------------------------------
 #endif
- 

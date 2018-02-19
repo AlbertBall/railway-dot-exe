@@ -518,6 +518,8 @@ __published:    // IDE-managed Components
     TMenuItem *N1;
     TMenuItem *N2;
     TImageList *TTImageList;
+    TMenuItem *RailwayWebSiteMenuItem;
+    TMenuItem *N3;
 
     //menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -688,6 +690,7 @@ __published:    // IDE-managed Components
     void __fastcall HPEditKeyUp(TObject *Sender, WORD &Key,
                                 TShiftState Shift);
     void __fastcall PresetAutoSigRoutesButtonClick(TObject *Sender);
+    void __fastcall RailwayWebSiteMenuItemClick(TObject *Sender);
 
 public: //AboutForm needs access to these
 

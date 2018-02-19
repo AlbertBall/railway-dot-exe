@@ -8702,6 +8702,14 @@ void __fastcall TInterface::OpenHelpMenuItemClick(TObject *Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TInterface::RailwayWebSiteMenuItemClick(TObject *Sender)
+{
+    const UnicodeString Link = "http://www.railwayoperationsimulator.com";
+    ::ShellExecute(Handle, NULL, (Link).c_str(), NULL, NULL, SW_SHOWNORMAL);
+}
+
+//---------------------------------------------------------------------------
+
 void __fastcall TInterface::BlackBgndMenuItemClick(TObject *Sender)
 {
     try
@@ -14523,6 +14531,7 @@ be tellg, which sometimes returns wrong results, and they corrupt things when us
 
 Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file position then close and reopen it.
 */
+
 
 
 

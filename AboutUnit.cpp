@@ -104,13 +104,31 @@ void __fastcall TAboutForm::SetAboutCaption()
 
 	AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
 							     L"operate your own railway" + NL + NL +
-							     L" Release: " + strVersion + NL + NL +
-							     L"Copyright 2010-2018 Albert Ball" + NL + NL + NL +
-                                 L"Menu icons from Silk Icon Set 1.3 by Mark James" + NL +
-                                 L"used under Creative Commons Attribution 2.5 License." + NL +
-                                 L"http://creativecommons.org/licenses/by/2.5/" + NL + NL +
-                                 L"Timetable icons from https://icons8.com" + NL +
-                                 L"used under Creative Commons Attribution-NoDerivs 3.0 Unported License." + NL +
-                                 L"https://creativecommons.org/licenses/by-nd/3.0/";
+							     L"Release: " + strVersion + NL + NL +
+							     L"Copyright 2010-2018 Albert Ball";
 }
 //---------------------------------------------------------------------------
+void __fastcall TAboutForm::WebsiteLinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType)
+{
+    if (LinkType == sltURL)
+        ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TAboutForm::Attribution1LinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType)
+{
+    if (LinkType == sltURL)
+        ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TAboutForm::Attribution2LinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType)
+{
+    if (LinkType == sltURL)
+        ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
+}
+//---------------------------------------------------------------------------
+

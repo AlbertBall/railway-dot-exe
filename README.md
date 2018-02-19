@@ -41,5 +41,5 @@ I (Albert Ball) can be contacted at railwayfeedback@gmail.com or via the website
 
 Menu icons from Silk Icon Set 1.3 by Mark James used under Creative Commons Attribution 2.5 License http://creativecommons.org/licenses/by/2.5/
 
-Timetable editor icons from https://icons8.com used under Creative Commons Attribution-NoDeriv 3.0 Unported License http://creativecommons.org/licenses/by-nd/3.0/
+Timetable editor icons from https://icons8.com used under Creative Commons Attribution-NoDerivs 3.0 Unported License http://creativecommons.org/licenses/by-nd/3.0/
 

@@ -520,6 +520,7 @@ __published:    // IDE-managed Components
     TImageList *TTImageList;
     TMenuItem *RailwayWebSiteMenuItem;
     TMenuItem *N3;
+    TImageList *MMImageList;
 
     //menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);

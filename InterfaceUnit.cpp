@@ -6214,6 +6214,8 @@ void __fastcall TInterface::MainScreenMouseMove(TObject *Sender,
 
         if(!mbLeftDown && WholeRailwayMoving) //new at v2.1.0
         {
+            TrainController->StopTTClockFlag = true; //so TTClock stopped during MasterClockTimer function
+            TrainController->RestartTime = TrainController->TTClockTime;
             TrainController->LogEvent("MouseMove + WholeRailwayMoving");
             if(X < 0) X = 0;  //ensure pointer stays within display area
             if(X > (MainScreen->Width - 1)) X = MainScreen->Width - 1;
@@ -6252,7 +6254,9 @@ void __fastcall TInterface::MainScreenMouseMove(TObject *Sender,
                     Track->PlotSmallRailway(8, Display);
                     }
                 }
-          }
+                TrainController->BaseTime = TDateTime::CurrentDateTime();
+                TrainController->StopTTClockFlag = false;
+            }
 
         else if(mbLeftDown)
         {

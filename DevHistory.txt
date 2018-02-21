@@ -14,6 +14,8 @@ compile note for web re changes est re locking routes under trains, credit perso
 /Add point in help doc & chm file re saving entry before can hide the tt screen
 /Typos in help 'it is necessary to have EITHER a railway loaded,', and '07:05;Fer;N89-39 N89-40)'
 /Spurious line in help section 5.6 in chm, check doc file too
+
+Change help manual & chm re dragging & check covered locked routes under trains
 ]
 
 
@@ -167,6 +169,8 @@ n) Corrected Moric1998 error (sent in 24/03/16), corrected in TrainUnit at 'if(C
 
 *s) Allow route locking for occupied routes.  I had thought that this should be disallowed as SPADs are more likely in these circumstances, but it meant that long autosignal routes couldn't be removed when there was heavy traffic and the route was never free of trains.  One user commented on this some time ago,
 pointing out that it is allowed in real railway operation when circumstances require it, which common sense dictates that it has to be to avoid a 'no-way-out' situation.
+
+*t) Allow railway dragging with rh mouse button in either zoom mode
 
 
 VERSION CHANGES AFTER v1.3.2 for v2.0.0 Beta

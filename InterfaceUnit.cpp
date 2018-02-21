@@ -6216,7 +6216,6 @@ void __fastcall TInterface::MainScreenMouseMove(TObject *Sender,
         {
             TrainController->StopTTClockFlag = true; //so TTClock stopped during MasterClockTimer function
             TrainController->RestartTime = TrainController->TTClockTime;
-            TrainController->LogEvent("MouseMove + WholeRailwayMoving");
             if(X < 0) X = 0;  //ensure pointer stays within display area
             if(X > (MainScreen->Width - 1)) X = MainScreen->Width - 1;
             if(Y < 0) Y = 0;
@@ -6757,6 +6756,15 @@ void TInterface::ClockTimer2(int Caller)
 
 //Update Displayed Clock - resets to 0 at 96hours
         ClockLabel->Caption = Utilities->Format96HHMMSS(TrainController->TTClockTime);
+
+//Below added at v2.1.0 to ensure WholeRailwayMoving flag reset when not moving (when rh mouse button up) as sometimes misses
+//MouseUp events, probably due to a clash between a moving event and a mouse up event. Note that checks that both mouse buttons are up because
+//function only checks the physical buttons, not the logical buttons.  Most sig bit of return value set form key down.
+        if(WholeRailwayMoving && (GetAsyncKeyState(VK_LBUTTON) >= 0) && (GetAsyncKeyState(VK_RBUTTON) >=  0))
+            {
+                WholeRailwayMoving = false;
+                Screen->Cursor = TCursor(-2); //Arrow
+            }
 
 //save session if required
         if(SaveSessionFlag)

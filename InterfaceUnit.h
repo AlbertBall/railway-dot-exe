@@ -148,13 +148,17 @@ __published:    // IDE-managed Components
     TButton *FrhButton;
     TEdit *TTStartTimeBox; ///< edit box that displays the timetable start time
     TComboBox *LocationNameComboBox; ///< the combobox that lists location names
-    TEdit *AddSubMinsBox;
+    TEdit *AddSubMinsBox; ///< the edit box that accepts minutes to add or subtract
+
+    //speed conversion box on timetable screen
     TEdit *SpeedEditBox;
     TLabel *SpeedTopLabel;
     TLabel *SpeedBottomLabel;
     TPanel *KPHPanel1;
     TPanel *SpeedConversionTTPanel;
     TLabel *SpeedVariableLabel;
+
+    //power conversion box on timetable screen
     TEdit *PowerEditBox;
     TLabel *PowerTopLabel;
     TLabel *PowerBottomLabel;

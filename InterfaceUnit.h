@@ -148,22 +148,18 @@ __published:    // IDE-managed Components
     TButton *FrhButton;
     TEdit *TTStartTimeBox; ///< edit box that displays the timetable start time
     TComboBox *LocationNameComboBox; ///< the combobox that lists location names
-    TEdit *AddSubMinsBox; ///< the edit box that accepts minutes to add or subtract
-
-    //speed conversion box on timetable screen
-    TEdit *MPHEdit1;
-    TLabel *MPHLabel1;
-    TLabel *KPHFixedLabel1;
+    TEdit *AddSubMinsBox;
+    TEdit *SpeedEditBox;
+    TLabel *SpeedTopLabel;
+    TLabel *SpeedBottomLabel;
     TPanel *KPHPanel1;
     TPanel *SpeedConversionTTPanel;
-    TLabel *KPHVariableLabel1;
-
-    //power conversion box on timetable screen
-    TEdit *HPEdit;
-    TLabel *HPLabel;
-    TLabel *KWFixedLabel;
+    TLabel *SpeedVariableLabel;
+    TEdit *PowerEditBox;
+    TLabel *PowerTopLabel;
+    TLabel *PowerBottomLabel;
     TPanel *KWPanel;
-    TLabel *KWVariableLabel;
+    TLabel *PowerVariableLabel;
 
     //'Operate railway' mode - buttons left to right
     TBitBtn *OperateButton;
@@ -521,6 +517,8 @@ __published:    // IDE-managed Components
     TMenuItem *RailwayWebSiteMenuItem;
     TMenuItem *N3;
     TImageList *MMImageList;
+    TButton *PowerToggleButton;
+    TButton *SpeedToggleButton;
 
     //menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -682,16 +680,18 @@ __published:    // IDE-managed Components
     void __fastcall MasterClockTimer(TObject *Sender);
     void __fastcall FormKeyUp(TObject *Sender, WORD &Key,
                               TShiftState Shift);
-    void __fastcall MPHEdit1KeyUp(TObject *Sender, WORD &Key,
+    void __fastcall SpeedEditBoxKeyUp(TObject *Sender, WORD &Key,
                                   TShiftState Shift);
     void __fastcall MPHEdit2KeyUp(TObject *Sender, WORD &Key,
                                   TShiftState Shift);
     void __fastcall LengthEditKeyUp(TObject *Sender, WORD &Key,
                                     TShiftState Shift);
-    void __fastcall HPEditKeyUp(TObject *Sender, WORD &Key,
+    void __fastcall PowerEditBoxKeyUp(TObject *Sender, WORD &Key,
                                 TShiftState Shift);
     void __fastcall PresetAutoSigRoutesButtonClick(TObject *Sender);
     void __fastcall RailwayWebSiteMenuItemClick(TObject *Sender);
+    void __fastcall SpeedToggleButtonClick(TObject *Sender);
+    void __fastcall PowerToggleButtonClick(TObject *Sender);
 
 public: //AboutForm needs access to these
 

@@ -6652,7 +6652,7 @@ void TInterface::ClockTimer2(int Caller)
         bool FocusRestoreAllowedFlag = true; //added at v1.3.0
 
         if(TextBox->Focused() || DistanceBox->Focused() || SpeedLimitBox->Focused() || LocationNameTextBox->Focused() || MileEdit->Focused() || ChainEdit->Focused() || YardEdit->Focused() ||
-                MPHEdit2->Focused() || LocationNameComboBox->Focused() || AddSubMinsBox->Focused() || MPHEdit1->Focused() || HPEdit->Focused() || OneEntryTimetableMemo->Focused() ||
+                MPHEdit2->Focused() || LocationNameComboBox->Focused() || AddSubMinsBox->Focused() || SpeedEditBox->Focused() || PowerEditBox->Focused() || OneEntryTimetableMemo->Focused() ||
                 AddPrefDirButton->Focused()) //Added at v1.3.0.  If any of these has focus then they keep it until they release it.  AddPrefDirButton is included as it should keep focus
             FocusRestoreAllowedFlag = false; //when it has it - eases the setting of PrefDirs, also this button becomes disabled after use so focus returns to Interface naturally
 
@@ -8819,50 +8819,85 @@ void __fastcall TInterface::BlueBgndMenuItemClick(TObject *Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::MPHEdit1KeyUp(TObject *Sender, WORD &Key,
+void __fastcall TInterface::SpeedToggleButtonClick(TObject *Sender)
+{
+    if (SpeedTopLabel->Caption == "mph")
+    {
+        SpeedTopLabel->Caption = "km/h";
+        SpeedBottomLabel->Caption = "mph";
+    }
+    else
+    {
+        SpeedTopLabel->Caption = "mph";
+        SpeedBottomLabel->Caption = "km/h";
+    }
+    // swap values to match toggle state
+    UnicodeString SavedTopValue = SpeedEditBox->Text;
+    UnicodeString SavedBottomValue = SpeedVariableLabel->Caption;
+    SpeedEditBox->Text = SavedBottomValue;
+    SpeedVariableLabel->Caption = SavedTopValue;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::SpeedEditBoxKeyUp(TObject *Sender, WORD &Key,
                                           TShiftState Shift)
 {
     try
     {
-        TrainController->LogEvent("MPHEdit1KeyUp," + AnsiString(Key));
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPHEdit1KeyUp," + AnsiString(Key));
+        TrainController->LogEvent("SpeedEditBoxKeyUp," + AnsiString(Key));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SpeedEditBoxKeyUp," + AnsiString(Key));
         bool ErrorFlag = false, TooBigFlag = false;
-        if(MPHEdit1->Text.Length() > 0)
+        if(SpeedEditBox->Text.Length() > 0)
         {
-            if(MPHEdit1->Text.Length() > 5)
+            if(SpeedEditBox->Text.Length() > 5)
             {
                 TooBigFlag = true;
             }
-            for(int x=1; x<=MPHEdit1->Text.Length(); x++)
+            for(int x=1; x<=SpeedEditBox->Text.Length(); x++)
             {
-                if((MPHEdit1->Text[x] < '0') || (MPHEdit1->Text[x] > '9'))
+                if((SpeedEditBox->Text[x] < '0') || (SpeedEditBox->Text[x] > '9'))
                 {
-                    KPHVariableLabel1->Caption = "Entry error";
+                    SpeedVariableLabel->Caption = "Entry error";
                     ErrorFlag = true;
                     break;
                 }
                 if(TooBigFlag)
                 {
-                    KPHVariableLabel1->Caption = "Too big";
+                    SpeedVariableLabel->Caption = "Too big";
                     break;
                 }
             }
             if(!ErrorFlag && !TooBigFlag)
             {
-                int MPH = MPHEdit1->Text.ToInt();
-                int KPH = (MPH * 1.609344) + 0.5;
-                KPHVariableLabel1->Caption = AnsiString(KPH);
+                /*
+                1 mph =  1.609344 km/h
+                1 km/h = 0.621371 mph
+                */
+                if (SpeedTopLabel->Caption == "mph")
+                {
+                    // do mph-to-km/h conversion
+                    int MPH = SpeedEditBox->Text.ToInt();
+                    int KPH = (MPH * 1.609344) + 0.5;
+                    SpeedVariableLabel->Caption = UnicodeString(KPH);
+                }
+                else
+                {
+                    // do km/h-to-mph conversion
+                    int KPH = SpeedEditBox->Text.ToInt();
+                    int MPH = (KPH * 0.621371) + 0.5;
+                    SpeedVariableLabel->Caption = UnicodeString(MPH);
+                }
             }
         }
         else
         {
-            KPHVariableLabel1->Caption = "";
+            SpeedVariableLabel->Caption = "";
         }
         Utilities->CallLogPop(1865);
     }
     catch (const EConvertError &ec) //thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash
     {
-        KPHVariableLabel1->Caption = "Entry error";
+        SpeedVariableLabel->Caption = "Entry error";
     }
     catch (const Exception &e)
     {
@@ -8872,50 +8907,85 @@ void __fastcall TInterface::MPHEdit1KeyUp(TObject *Sender, WORD &Key,
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::HPEditKeyUp(TObject *Sender, WORD &Key,
+void __fastcall TInterface::PowerToggleButtonClick(TObject *Sender)
+{
+    if (PowerTopLabel->Caption == "HP")
+    {
+        PowerTopLabel->Caption = "kW";
+        PowerBottomLabel->Caption = "HP";
+    }
+    else
+    {
+        PowerTopLabel->Caption = "HP";
+        PowerBottomLabel->Caption = "kW";
+    }
+    // swap values to match toggle state
+    UnicodeString SavedTopValue = PowerEditBox->Text;
+    UnicodeString SavedBottomValue = PowerVariableLabel->Caption;
+    PowerEditBox->Text = SavedBottomValue;
+    PowerVariableLabel->Caption = SavedTopValue;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::PowerEditBoxKeyUp(TObject *Sender, WORD &Key,
                                         TShiftState Shift)
 {
     try
     {
-        TrainController->LogEvent("HPEditKeyUp," + AnsiString(Key));
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",HPEditKeyUp," + AnsiString(Key));
+        TrainController->LogEvent("PowerEditBoxKeyUp," + AnsiString(Key));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PowerEditBoxKeyUp," + AnsiString(Key));
         bool ErrorFlag = false, TooBigFlag = false;
-        if(HPEdit->Text.Length() > 0)
+        if(PowerEditBox->Text.Length() > 0)
         {
-            if(HPEdit->Text.Length() > 8)
+            if(PowerEditBox->Text.Length() > 8)
             {
                 TooBigFlag = true;
             }
-            for(int x=1; x<=HPEdit->Text.Length(); x++)
+            for(int x=1; x<=PowerEditBox->Text.Length(); x++)
             {
-                if((HPEdit->Text[x] < '0') || (HPEdit->Text[x] > '9'))
+                if((PowerEditBox->Text[x] < '0') || (PowerEditBox->Text[x] > '9'))
                 {
-                    KWVariableLabel->Caption = "Entry error";
+                    PowerVariableLabel->Caption = "Entry error";
                     ErrorFlag = true;
                     break;
                 }
                 if(TooBigFlag)
                 {
-                    KWVariableLabel->Caption = "Too big";
+                    PowerVariableLabel->Caption = "Too big";
                     break;
                 }
             }
             if(!ErrorFlag && !TooBigFlag)
             {
-                int HP = HPEdit->Text.ToInt();
-                int KW = (HP * 0.745699872) + 0.5;
-                KWVariableLabel->Caption = AnsiString(KW);
+                /*
+                1 kW = 1.340482574 HP
+                1 HP = 0.745699872 kW
+                */
+                if (PowerTopLabel->Caption == "HP")
+                {
+                    //do HP-to-kW conv
+                    int HP = PowerEditBox->Text.ToInt();
+                    int KW = (HP * 0.745699872) + 0.5;
+                    PowerVariableLabel->Caption = UnicodeString(KW);
+                }
+                else
+                {
+                    //do kW-to-HP conv
+                    int KW = PowerEditBox->Text.ToInt();
+                    int HP = (KW * 1.340482574) + 0.5;
+                    PowerVariableLabel->Caption = UnicodeString(HP);
+                }
             }
         }
         else
         {
-            KWVariableLabel->Caption = "";
+            PowerVariableLabel->Caption = "";
         }
         Utilities->CallLogPop(1868);
     }
     catch (const EConvertError &ec) //thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash
     {
-        KWVariableLabel->Caption = "Entry error";
+        PowerVariableLabel->Caption = "Entry error";
     }
     catch (const Exception &e)
     {
@@ -14531,7 +14601,5 @@ be tellg, which sometimes returns wrong results, and they corrupt things when us
 
 Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file position then close and reopen it.
 */
-
-
 
 

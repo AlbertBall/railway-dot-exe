@@ -127,12 +127,12 @@ a) Change the way version info is retrieved (internal fix - no user-facing chang
 b) Remove beta tag (6 months have passed)
 c) Change the version numbering format to use Semantic versioning (see https://semver.org/)
 d) Add 'Build' keyword support to version for future Continuous Integration implementation
-e) Put Help and About submenus in standard order
+e) Menu improvements - Help and About submenus put in standard order, menu text changed to title case, added railway website link to help menu, added icons to menus
 f) Add key modifiers to menus, and ellipses on dialog opening actions
 g) Fix typo in Utilities::CallLogPop() comment
 h) Add CONTRIBUTING.md file
 i) Remove ambiguity from Clear All dialog by changing 'delete' to 'close'
-j) Change menu text to title case
+j) Added icons to Timetable editor buttons, added two-way toggle buttons to Timetable conversion tools, and made Start Time edit box informational-only
 
 k) Corrected Sam Wainwright error (reported 24/08/17):  Existing program sets track finished to !NeedToLink in cut, paste & delete, so if track not linked to begin with and no elements erased (say select a blank area of screen, just text or inactive elements & cut or copy it then paste it elsewhere or delete it), then !NeedToLink is true and TrackFinished becomes set to true also after the operation.  Changed all 'Track->SetTrackFinished(!NeedToLink);' in Interface.cpp to 'if(NeedToLink) Track->SetTrackFinished(false);' so only set it to false if NeedToLink is true.  Included for v2.1.0.  Same error occurred for Dennys Huang on 22/10/17.
 
@@ -143,8 +143,6 @@ l) Corrected Moric1998 error (sent in 24/03/16), corrected in TrainUnit at 'if(C
 *n) Corrected the problem when presetting automatic signal routes, where a route could be set across a diagonal fouled by adjacent track (i.e. a track element with a diagonal link that touched another track element's diagonal link).  Added a new function to check for such conflicts - PresetAutoRouteDiagonalFouledByTrack
 
 *o) Corrected Jordy de Koning's error above, so that track speed limits are limited to the value in TTrain::MaximumSpeedLimit, which is 400km/h.  These are limited for new settings and when loading existing railway and session files where filed values are >400km/h
-
-p) Added icons to Timetable editor buttons
 
 
 VERSION CHANGES AFTER v1.3.2 for v2.0.0 Beta

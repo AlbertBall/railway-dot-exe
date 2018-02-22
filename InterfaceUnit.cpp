@@ -6652,7 +6652,7 @@ void TInterface::ClockTimer2(int Caller)
         bool FocusRestoreAllowedFlag = true; //added at v1.3.0
 
         if(TextBox->Focused() || DistanceBox->Focused() || SpeedLimitBox->Focused() || LocationNameTextBox->Focused() || MileEdit->Focused() || ChainEdit->Focused() || YardEdit->Focused() ||
-                MPHEdit2->Focused() || LocationNameComboBox->Focused() || AddSubMinsBox->Focused() || SpeedEditBox->Focused() || PowerEditBox->Focused() || OneEntryTimetableMemo->Focused() ||
+                SpeedEditBox2->Focused() || LocationNameComboBox->Focused() || AddSubMinsBox->Focused() || SpeedEditBox->Focused() || PowerEditBox->Focused() || OneEntryTimetableMemo->Focused() ||
                 AddPrefDirButton->Focused()) //Added at v1.3.0.  If any of these has focus then they keep it until they release it.  AddPrefDirButton is included as it should keep focus
             FocusRestoreAllowedFlag = false; //when it has it - eases the setting of PrefDirs, also this button becomes disabled after use so focus returns to Interface naturally
 
@@ -8516,7 +8516,7 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key,
 //note that use the OnKeyDown event rather than OnKeyPress as suggested by the user so that the CTRL & SHIFT keys can be taken into account
         if(!NonCTRLOrSHIFTKeyUpFlag) return;
         if((Key != VK_SHIFT) && (Key != VK_CONTROL)) NonCTRLOrSHIFTKeyUpFlag = false;  //don't want to set this for shift or control keys being pressed down
-        if(!DistanceBox->Focused() && !SpeedLimitBox->Focused() && !MileEdit->Focused() && !ChainEdit->Focused() && !YardEdit->Focused() && !MPHEdit2->Focused()) //added at v1.3.1 to prevent screen scrolling when these boxes have focus
+        if(!DistanceBox->Focused() && !SpeedLimitBox->Focused() && !MileEdit->Focused() && !ChainEdit->Focused() && !YardEdit->Focused() && !SpeedEditBox2->Focused()) //added at v1.3.1 to prevent screen scrolling when these boxes have focus
         {
             if((Key == 'w') || (Key == 'W') || (Key == VK_UP))
             {
@@ -8839,6 +8839,26 @@ void __fastcall TInterface::SpeedToggleButtonClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TInterface::SpeedToggleButton2Click(TObject *Sender)
+{
+    if (SpeedTopLabel2->Caption == "mph")
+    {
+        SpeedTopLabel2->Caption = "km/h";
+        SpeedBottomLabel2->Caption = "mph";
+    }
+    else
+    {
+        SpeedTopLabel2->Caption = "mph";
+        SpeedBottomLabel2->Caption = "km/h";
+    }
+    // swap values to match toggle state
+    UnicodeString SavedTopValue = SpeedEditBox2->Text;
+    UnicodeString SavedBottomValue = SpeedVariableLabel2->Caption;
+    SpeedEditBox2->Text = SavedBottomValue;
+    SpeedVariableLabel2->Caption = SavedTopValue;
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TInterface::SpeedEditBoxKeyUp(TObject *Sender, WORD &Key,
                                           TShiftState Shift)
 {
@@ -8963,14 +8983,14 @@ void __fastcall TInterface::PowerEditBoxKeyUp(TObject *Sender, WORD &Key,
                 */
                 if (PowerTopLabel->Caption == "HP")
                 {
-                    //do HP-to-kW conv
+                    // do HP-to-kW conv
                     int HP = PowerEditBox->Text.ToInt();
                     int KW = (HP * 0.745699872) + 0.5;
                     PowerVariableLabel->Caption = UnicodeString(KW);
                 }
                 else
                 {
-                    //do kW-to-HP conv
+                    // do kW-to-HP conv
                     int KW = PowerEditBox->Text.ToInt();
                     int HP = (KW * 1.340482574) + 0.5;
                     PowerVariableLabel->Caption = UnicodeString(HP);
@@ -8994,50 +9014,65 @@ void __fastcall TInterface::PowerEditBoxKeyUp(TObject *Sender, WORD &Key,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::MPHEdit2KeyUp(TObject *Sender, WORD &Key,
+void __fastcall TInterface::SpeedEditBox2KeyUp(TObject *Sender, WORD &Key,
                                           TShiftState Shift)
 {
     try
     {
-        TrainController->LogEvent("MPHEdit2KeyUp," + AnsiString(Key));
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPHEdit2KeyUp," + AnsiString(Key));
+        TrainController->LogEvent("SpeedEditBox2KeyUp," + AnsiString(Key));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SpeedEditBox2KeyUp," + AnsiString(Key));
         bool ErrorFlag = false, TooBigFlag = false;
-        if(MPHEdit2->Text.Length() > 0)
+        if(SpeedEditBox2->Text.Length() > 0)
         {
-            if(MPHEdit2->Text.Length() > 5)
+            if(SpeedEditBox2->Text.Length() > 5)
             {
                 TooBigFlag = true;
             }
-            for(int x=1; x<=MPHEdit2->Text.Length(); x++)
+            for(int x=1; x<=SpeedEditBox2->Text.Length(); x++)
             {
-                if((MPHEdit2->Text[x] < '0') || (MPHEdit2->Text[x] > '9'))
+                if((SpeedEditBox2->Text[x] < '0') || (SpeedEditBox2->Text[x] > '9'))
                 {
-                    KPHVariableLabel2->Caption = "Entry error";
+                    SpeedVariableLabel2->Caption = "Entry error";
                     ErrorFlag = true;
                     break;
                 }
                 if(TooBigFlag)
                 {
-                    KPHVariableLabel2->Caption = "Too big";
+                    SpeedVariableLabel2->Caption = "Too big";
                     break;
                 }
             }
             if(!ErrorFlag && !TooBigFlag)
             {
-                int MPH = MPHEdit2->Text.ToInt();
-                int KPH = (MPH * 1.609344) + 0.5;
-                KPHVariableLabel2->Caption = AnsiString(KPH);
+                /*
+                1 mph =  1.609344 km/h
+                1 km/h = 0.621371 mph
+                */
+                if (SpeedTopLabel2->Caption == "mph")
+                {
+                    // do mph-to-km/h conversion
+                    int MPH = SpeedEditBox2->Text.ToInt();
+                    int KPH = (MPH * 1.609344) + 0.5;
+                    SpeedVariableLabel2->Caption = AnsiString(KPH);
+                }
+                else
+                {
+                    // do km/h-to-mph conversion
+                    int KPH = SpeedEditBox2->Text.ToInt();
+                    int MPH = (KPH * 0.621371) + 0.5;
+                    SpeedVariableLabel2->Caption = AnsiString(MPH);
+                }
             }
         }
         else
         {
-            KPHVariableLabel2->Caption = "";
+            SpeedVariableLabel2->Caption = "";
         }
         Utilities->CallLogPop(1866);
     }
     catch (const EConvertError &ec) //thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash
     {
-        KPHVariableLabel2->Caption = "Entry error";
+        SpeedVariableLabel2->Caption = "Entry error";
     }
     catch (const Exception &e)
     {
@@ -14601,5 +14636,4 @@ be tellg, which sometimes returns wrong results, and they corrupt things when us
 
 Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file position then close and reopen it.
 */
-
 

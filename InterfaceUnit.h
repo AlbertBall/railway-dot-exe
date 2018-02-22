@@ -88,11 +88,11 @@ __published:    // IDE-managed Components
     TLabel *MetreFixedLabel;
     TPanel *LengthConversionPanel;
     TPanel *SpeedConversionPanel;
-    TEdit  *MPHEdit2;
-    TLabel *MPHLabel2;
-    TLabel *KPHLabel;
-    TPanel *KPHPanel2;
-    TLabel *KPHVariableLabel2;
+    TEdit *SpeedEditBox2;
+    TLabel *SpeedTopLabel2;
+    TLabel *SpeedBottomLabel2;
+    TPanel *SpeedVariablePanel2;
+    TLabel *SpeedVariableLabel2;
     TPanel *AddSubMinsPanel;
 
     // 'Set preferred directions' mode - buttons left to right
@@ -154,7 +154,7 @@ __published:    // IDE-managed Components
     TEdit *SpeedEditBox;
     TLabel *SpeedTopLabel;
     TLabel *SpeedBottomLabel;
-    TPanel *KPHPanel1;
+    TPanel *SpeedVariablePanel1;
     TPanel *SpeedConversionTTPanel;
     TLabel *SpeedVariableLabel;
 
@@ -523,6 +523,7 @@ __published:    // IDE-managed Components
     TImageList *MMImageList;
     TButton *PowerToggleButton;
     TButton *SpeedToggleButton;
+    TButton *SpeedToggleButton2;
 
     //menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -686,7 +687,7 @@ __published:    // IDE-managed Components
                               TShiftState Shift);
     void __fastcall SpeedEditBoxKeyUp(TObject *Sender, WORD &Key,
                                   TShiftState Shift);
-    void __fastcall MPHEdit2KeyUp(TObject *Sender, WORD &Key,
+    void __fastcall SpeedEditBox2KeyUp(TObject *Sender, WORD &Key,
                                   TShiftState Shift);
     void __fastcall LengthEditKeyUp(TObject *Sender, WORD &Key,
                                     TShiftState Shift);
@@ -696,6 +697,7 @@ __published:    // IDE-managed Components
     void __fastcall RailwayWebSiteMenuItemClick(TObject *Sender);
     void __fastcall SpeedToggleButtonClick(TObject *Sender);
     void __fastcall PowerToggleButtonClick(TObject *Sender);
+    void __fastcall SpeedToggleButton2Click(TObject *Sender);
 
 public: //AboutForm needs access to these
 

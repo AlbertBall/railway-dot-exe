@@ -686,6 +686,7 @@ __published:    // IDE-managed Components
     void __fastcall HPEditKeyUp(TObject *Sender, WORD &Key,
                                 TShiftState Shift);
     void __fastcall PresetAutoSigRoutesButtonClick(TObject *Sender);
+    void __fastcall FormResize(TObject *Sender);
 
 public: //AboutForm needs access to these
 
@@ -758,6 +759,7 @@ private:
     bool CtrlKey;       ///< true when the CTRL key is pressed (used for small movements of the screen)
     bool ShiftKey;      ///< true when the SHIFT key is pressed (used for large movements of the screen)
     bool ShowPerformancePanel; ///< true when the 'show performance panel' button has been clicked during operation
+    bool SkipFormResizeEvent; ///< added at v2.1.0 to avoid calling the event during startup and shutdown
     bool TempCursorSet; ///< indicates that a screen cursor has been stored in TempCursor for redisplay after a temporary cursor (usually an hourglass) has been displayed
     bool TextFoundFlag; ///< indicates that a text item has been found when clicking on a build screen during 'AddText' or 'MoveText' modes
     bool TimetableChangedFlag; ///< true when a timetable in the editor has changed (used to warn user if opts to exit without saving)

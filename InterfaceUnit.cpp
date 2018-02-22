@@ -464,14 +464,16 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
             ShowMessage("Please note that this program works best with a screen resolution of at least 1024 x 768.  Please change if possible");
         }
 
+        SkipFormResizeEvent = true;  //added at v2.1.0
         MasterClock->Enabled = true;
-        Visible = true; //make Interface form visible
-        WindowState = wsMaximized; //need this for full screen at start
+        Visible = true; //make Interface form visible                              autocalls FormResize
+        WindowState = wsMaximized; //need this for full screen at start            autocalls FormResize
         AllSetUpFlag = true;
         MissedTicks = 0; //test
         Level1Mode = BaseMode;
         SetLevel1Mode(131); //to reset background colour mode menu choices
         Screen->Cursor = TCursor(-2); //Arrow
+        SkipFormResizeEvent = false; //added at v2.1.0
     }
 
     catch (const EFOpenError &e)
@@ -499,6 +501,7 @@ __fastcall TInterface::~TInterface()
 { //destructor
     try
     {
+        SkipFormResizeEvent = true;  //added at v2.1.0
         delete NonSigRouteStartMarker;
         delete SigRouteStartMarker;
         delete AutoRouteStartMarker;
@@ -521,7 +524,7 @@ __fastcall TInterface::~TInterface()
     {
         ErrorLog(116, e.Message);
     }
-}
+}            ////autocalls FormResize at end
 
 //---------------------------------------------------------------------------
 
@@ -9485,6 +9488,41 @@ void __fastcall TInterface::PresetAutoSigRoutesButtonClick(TObject *Sender)
 }
 
 //---------------------------------------------------------------------------
+
+void __fastcall TInterface::FormResize(TObject *Sender)   //new at v2.1.0
+{
+    try
+    {
+        if(!SkipFormResizeEvent)   //to avoid calling during startup and especially during shutdown
+        {                          //else fails on shutdown because HiddenScreen & other things no longer exist
+            int DispW = (Interface->Width - 64) / 16; //will truncate down to a multiple of 16
+            int DispH = (Interface->Height - 192) / 16;
+            MainScreen->Width = DispW * 16;
+            MainScreen->Height = DispH * 16;
+            Utilities->ScreenElementWidth = DispW;
+            Utilities->ScreenElementHeight = DispH;
+            HiddenScreen->Width = MainScreen->Width;
+            HiddenScreen->Height = MainScreen->Height;
+            PerformancePanel->Top = MainScreen->Top + MainScreen->Height - PerformancePanel->Height;
+            PerformancePanel->Left = MainScreen->Left;
+            ScreenRightButton->Left = MainScreen->Width + MainScreen->Left;
+            ScreenLeftButton->Left = MainScreen->Width + MainScreen->Left;
+            ScreenUpButton->Left = MainScreen->Width + MainScreen->Left;
+            ScreenDownButton->Left = MainScreen->Width + MainScreen->Left;
+            HomeButton->Left = MainScreen->Width + MainScreen->Left;
+            NewHomeButton->Left = MainScreen->Width + MainScreen->Left;
+            ZoomButton->Left = MainScreen->Width + MainScreen->Left;
+            ClearandRebuildRailway(70);
+        }
+    }
+    catch (const Exception &e)
+    {
+        ErrorLog(197, e.Message);
+    }
+}
+
+
+//---------------------------------------------------------------------------
 //end of fastcalls & directly associated functions
 //---------------------------------------------------------------------------
 
@@ -14639,4 +14677,3 @@ Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file posit
 */
 
 //---------------------------------------------------------------------------
-

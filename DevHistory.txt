@@ -172,6 +172,8 @@ pointing out that it is allowed in real railway operation when circumstances req
 
 *t) Allow railway dragging with rh mouse button in either zoom mode
 
+*u) Resize form to suit user changes so still have complete interface at any size (so far as overall size allows)
+
 
 VERSION CHANGES AFTER v1.3.2 for v2.0.0 Beta
 
@@ -1143,8 +1145,8 @@ NEXT value for InactiveTrackElementAt is 119
 NEXT value for GetFixedRouteAt is 222
 NEXT value for GetModifiableRouteAt is 28
 NEXT value for GetFixedPrefDirElementAt is 247
-NEXT value for ErrorLog is 197
-NEXT value for ClearandRebuildRailway is 70
+NEXT value for ErrorLog is 198
+NEXT value for ClearandRebuildRailway is 71
 NEXT value for TrainVectorAt is 65
 NEXT value for SetLevel1Mode is 133
 NEXT value for PlotOutput is 239

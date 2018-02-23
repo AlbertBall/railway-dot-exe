@@ -1,25 +1,6 @@
 ﻿Development History
 ---------------------------------------------------------------------------
 
-[own notes for v2.1.0:  Test locked routes thoroughly & see that signals in autoroutes don't clear when locked
-
-Check new help file
-
-Change date on Manual.doc if too long after 15/02/18
-
-add note in this file about the locked route changes + help & manual changes
-
-compile note for web re changes est re locking routes under trains, credit person who emailed about it
-
-/Add point in help doc & chm file re saving entry before can hide the tt screen
-/Typos in help 'it is necessary to have EITHER a railway loaded,', and '07:05;Fer;N89-39 N89-40)'
-/Spurious line in help section 5.6 in chm, check doc file too
-
-Change help manual & chm re dragging & check covered locked routes under trains
-]
-
-
-
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that may be useful such as the 'NEXT' values for caller IDs and the full list of changes from version to version.
 
 The structure is as follows:-
@@ -167,12 +148,13 @@ n) Corrected Moric1998 error (sent in 24/03/16), corrected in TrainUnit at 'if(C
 
 *r) Corrected signal clearing behaviour on locked autosignal routes exiting at a Continuation - signals continued to clear in sequence in spite of the route being locked.  Corrected so that all now remain at red.
 
-*s) Allow route locking for occupied routes.  I had thought that this should be disallowed as SPADs are more likely in these circumstances, but it meant that long autosignal routes couldn't be removed when there was heavy traffic and the route was never free of trains.  One user commented on this some time ago,
-pointing out that it is allowed in real railway operation when circumstances require it, which common sense dictates that it has to be to avoid a 'no-way-out' situation.
+*s) Allow route locking for occupied routes.  I had thought that this should be disallowed as SPADs are more likely in these circumstances, but it meant that long autosignal routes couldn't be removed when there was heavy traffic and the route was never free of trains.  One user, Brian Clancy, commented on this back in 2016, pointing out that it is allowed in real railway operation when circumstances require it, which common sense dictates that it has to be to avoid a 'no-way-out' situation.
 
 *t) Allow railway dragging with rh mouse button in either zoom mode
 
 *u) Resize form to suit user changes so still have complete interface at any size (so far as overall size allows)
+
+*v) Updated help manual and on-screen help to reflect new capabilities
 
 
 VERSION CHANGES AFTER v1.3.2 for v2.0.0 Beta

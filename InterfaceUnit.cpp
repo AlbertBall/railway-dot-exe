@@ -12232,13 +12232,13 @@ void TInterface::ResetAll(int Caller)
     MainScreen->Canvas->Font->Assign(TempFont);
     PerformancePanel->Top = MainScreen->Top + MainScreen->Height - PerformancePanel->Height;
     PerformancePanel->Left = MainScreen->Left;
-    ScreenRightButton->Left = Screen->Width - ScreenRightButton->Width - 2;
-    ScreenLeftButton->Left = Screen->Width - ScreenLeftButton->Width - 2;
-    ScreenUpButton->Left = Screen->Width - ScreenUpButton->Width - 2;
-    ScreenDownButton->Left = Screen->Width - ScreenDownButton->Width - 2;
-    HomeButton->Left = Screen->Width - HomeButton->Width - 2;
-    NewHomeButton->Left = Screen->Width - NewHomeButton->Width - 2;
-    ZoomButton->Left = Screen->Width - ZoomButton->Width - 2;
+    ScreenRightButton->Left = MainScreen->Width + MainScreen->Left;  //Button values changed at v2.1.0 to allow for screen resizing
+    ScreenLeftButton->Left = ScreenRightButton->Left;
+    ScreenUpButton->Left = ScreenRightButton->Left;
+    ScreenDownButton->Left = ScreenRightButton->Left;
+    HomeButton->Left = ScreenRightButton->Left;
+    NewHomeButton->Left = ScreenRightButton->Left;
+    ZoomButton->Left = ScreenRightButton->Left;
     DevelopmentPanel->Top = MainScreen->Top + MainScreen->Height - DevelopmentPanel->Height;
 
     delete TempFont;
@@ -14579,6 +14579,7 @@ void TInterface::TestFunction()
 {
     try
     {
+    ShowMessage(UnicodeString(Interface->Left + Interface->Width) + "  " + UnicodeString(Interface->Left + MainScreen->Left + MainScreen->Width));
 //    throw Exception("Test exception");//test
 //    int zz = MissedTicks;
 //    MissedTicks = 0;

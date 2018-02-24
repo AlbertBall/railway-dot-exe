@@ -6224,17 +6224,22 @@ void __fastcall TInterface::MainScreenMouseMove(TObject *Sender,
 
             if(!Display->ZoomOutFlag)
                 {
-                int StartOffsetX = (X - StartWholeRailwayMoveHPos) % 16;
-                int StartOffsetY = (Y - StartWholeRailwayMoveVPos) % 16;
-                if((abs(X - StartWholeRailwayMoveHPos) >= 16) || (abs(Y - StartWholeRailwayMoveVPos) >= 16))
+                    int StartOffsetX = (X - StartWholeRailwayMoveHPos) % 16;
+                    int StartOffsetY = (Y - StartWholeRailwayMoveVPos) % 16;
+                    if((abs(X - StartWholeRailwayMoveHPos) >= 16) || (abs(Y - StartWholeRailwayMoveVPos) >= 16))
                     {
-                    int NewH = X - StartWholeRailwayMoveHPos;
-                    int NewV = Y - StartWholeRailwayMoveVPos;
-                    Display->DisplayOffsetH-= NewH/16;
-                    Display->DisplayOffsetV-= NewV/16;
-                    StartWholeRailwayMoveHPos = X - StartOffsetX;
-                    StartWholeRailwayMoveVPos = Y - StartOffsetY;
-                    ClearandRebuildRailway(69);
+                        int NewH = X - StartWholeRailwayMoveHPos;
+                        int NewV = Y - StartWholeRailwayMoveVPos;
+                        Display->DisplayOffsetH-= NewH/16;
+                        Display->DisplayOffsetV-= NewV/16;
+                        StartWholeRailwayMoveHPos = X - StartOffsetX;
+                        StartWholeRailwayMoveVPos = Y - StartOffsetY;
+                        ClearandRebuildRailway(69);
+                        if((Level2TrackMode == TrackSelecting) || (Level2PrefDirMode == PrefDirSelecting))
+                        {
+                            Display->PlotDashedRect(3, SelectRect);
+                        }
+
                     }
                 }
 

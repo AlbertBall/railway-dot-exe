@@ -1247,7 +1247,7 @@ the problem move the ActionVectorEntryPtr increment to before SetTrainMovementVa
         MidEntryPos = LeadEntryPos;
         MidExitPos = LeadExitPos;
         Straddle = MidLag; //train now fully on the updated Lag & Mid, the front segment is going to move onto the new
-                        l  //LeadElement during this function (note that if stopped at signal then won't get this far)
+                           //LeadElement during this function (note that if stopped at signal then won't get this far)
         if(LeadElement > -1)
         {
             if(ContinuationExit(1, LeadElement, LeadExitPos)) //i.e an exit continuation only

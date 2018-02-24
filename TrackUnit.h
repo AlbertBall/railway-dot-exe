@@ -686,6 +686,8 @@ public:
     bool GapsUnset(int Caller);
     /// Used to check the validity of footbridge links
     bool InactiveMapCheck(int Caller, int HLoc, int VLoc, int SpeedTag);
+    /// New at v1.2.0; true if an inactive track element present
+    bool InactiveTrackElementPresentAtHV(int Caller, int HLoc, int VLoc);
     /// True if there is an element adjacent to LinkIn for element at HLoc & VLoc
     bool IsATrackElementAdjacentToLink(int Caller, int HLocIn, int VLocIn, int LinkIn);
     /// True if track at link positions [0] & [1] if FirstTrack true, else that at [2] & [3] in TrackElement has the default length
@@ -771,6 +773,8 @@ public:
     bool ThisNamedLocationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos, int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos);
     /// True if a non-empty LocationName found as a timetabled location name i.e. not as a continuation name
     bool TimetabledLocationNameAllocated(int Caller, AnsiString LocationName);
+    /// New at v1.2.0; true if a track element present
+    bool TrackElementPresentAtHV(int Caller, int HLoc, int VLoc);
     /// New at v1.2.0; checks whether a train present at input location and link and returns its ID if so
     bool TrainOnLink(int Caller, int HLoc, int VLoc, int Link, int &TrainID);
     /// Handles all tasks associated with track linking, returns true if successful (see also LinkTrack & LinkTrackNoMessages above)

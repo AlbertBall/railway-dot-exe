@@ -1121,7 +1121,7 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 
 COPY SECTIONS:
 
-NEXT value for CallLogPop is 2057
+NEXT value for CallLogPop is 2059
 NEXT value for TrackElementAt is 906
 NEXT value for InactiveTrackElementAt is 119
 NEXT value for GetFixedRouteAt is 222

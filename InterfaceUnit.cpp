@@ -4886,9 +4886,16 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
         Track->GetTruePositionsFromScreenPos(0, NoOffsetX, NoOffsetY, X, Y);
         if(Button == mbRight) //track, PrefDir or text erase, PrefDir/route truncate, or take signaller control of train
         {
-            int Pos0; //added at v2.1.0 for WholeRailwayMoving
-            TTrackElement TTE0; //added at v2.1.0 for WholeRailwayMoving
-            if(Level2TrackMode == AddText)
+            //this routine new at v2.1.0.  Allows railway moving for zoom-in mode when no element at HLoc & VLoc
+            if(!Track->TrackElementPresentAtHV(0, HLoc, VLoc) && !Track->InactiveTrackElementPresentAtHV(0, HLoc, VLoc))
+            {
+                StartWholeRailwayMoveHPos = X;
+                StartWholeRailwayMoveVPos = Y;
+                WholeRailwayMoving = true;
+                Screen->Cursor = TCursor(-22);//Four arrows;
+            }
+
+            else if(Level2TrackMode == AddText)
             {
                 TrainController->LogEvent("mbRight + AddText");
                 ResetChangedFileDataAndCaption(2, true);
@@ -5032,15 +5039,6 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                 SetLevel1Mode(15); //calls ClearandRebuildRailway to show length erased & sets back to start
                 Utilities->CallLogPop(39);
                 return;
-            }
-
-            //this routine new at v2.1.0.  Allows railway moving for zoom-in mode
-            else if(!Track->FindNonPlatformMatch(19, HLoc, VLoc, Pos0, TTE0))
-            {
-                StartWholeRailwayMoveHPos = X;
-                StartWholeRailwayMoveVPos = Y;
-                WholeRailwayMoving = true;
-                Screen->Cursor = TCursor(-22);//Four arrows;
             }
 
             else if((Level2OperMode == Operating) || (Level2OperMode == PreStart)) //disallow when paused, but allow some parts in prestart

@@ -4606,6 +4606,44 @@ TTrackElement &TTrack::GetInactiveTrackElementFromTrackMap(int Caller, int HLoc,
 
 //---------------------------------------------------------------------------
 
+bool TTrack::TrackElementPresentAtHV(int Caller, int HLoc, int VLoc)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrackElementPresentAtHV," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+    bool Present = true;
+    THVPair TrackMapKeyPair;
+    TTrackMapIterator TrackMapPtr;
+    TrackMapKeyPair.first = HLoc;
+    TrackMapKeyPair.second = VLoc;
+    TrackMapPtr = TrackMap.find(TrackMapKeyPair);
+    if(TrackMapPtr == TrackMap.end())
+        {
+            Present = false;
+        }
+    Utilities->CallLogPop(2057);
+    return Present;
+}
+
+//---------------------------------------------------------------------------
+
+bool TTrack::InactiveTrackElementPresentAtHV(int Caller, int HLoc, int VLoc)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",InactiveTrackElementPresentAtHV," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+    bool Present = true;
+    THVPair InactiveTrackMapKeyPair;
+    TInactiveTrack2MultiMapIterator InactiveTrackMapPtr;
+    InactiveTrackMapKeyPair.first = HLoc;
+    InactiveTrackMapKeyPair.second = VLoc;
+    InactiveTrackMapPtr = InactiveTrack2MultiMap.find(InactiveTrackMapKeyPair); //not interested in platforms so only need to find one
+    if(InactiveTrackMapPtr == InactiveTrack2MultiMap.end())
+        {
+            Present = false;
+        }
+    Utilities->CallLogPop(2058);
+    return Present;
+}
+
+//---------------------------------------------------------------------------
+
 TTrack::TIMPair TTrack::GetVectorPositionsFromInactiveTrackMap(int Caller, int HLoc, int VLoc, bool &FoundFlag)
 //max number of elements is 2, for platforms
 //note that both elements of RetPair may be the same, if only one present in map

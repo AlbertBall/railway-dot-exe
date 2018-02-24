@@ -30,8 +30,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <ExtCtrls.hpp>
 #include <Graphics.hpp>
 //---------------------------------------------------------------------------
-
-#define clB0G0R0 (TColor)0x000000 //definitions based on the 216 web safe colours. All the graphics in the resource file use these colours
+// definitions based on the 216 web safe colours. All the graphics in the resource file use these colours
+#define clB0G0R0 (TColor)0x000000
 #define clB0G0R1 (TColor)0x000033
 #define clB0G0R2 (TColor)0x000066
 #define clB0G0R3 (TColor)0x000099

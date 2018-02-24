@@ -518,7 +518,8 @@ public:
     typedef TActiveTrackElementNameMap::iterator TActiveTrackElementNameIterator;
     typedef std::pair<AnsiString, int> TActiveTrackElementNameMapEntry;
 
-    struct TSigElement ///< used as basic elements in a table of signals - see SigTable below
+    /// Used as basic elements in a table of signals - see SigTable below
+    struct TSigElement
     {    //NOTE: Don't alter the order of these members as they are loaded from an array of values in the constructor
         int SpeedTag; ///< the TrackElement SpeedTag value - specifies the signal element
         int Attribute; ///< the signal state - red, yellow, double yellow or green
@@ -1391,7 +1392,6 @@ public:
     void AllRoutesClear() {
         AllRoutesVector.clear(); Route2MultiMap.clear();
     }
-
 /// Functions defined in .cpp file
     bool CheckForLoopingRoute(int Caller, int EndPosition, int EndXLinkPos, int StartPosition); //return true if route loops back on itself
 /// Performs an integrity check on the routes stored in a session file and returns false if there is an error

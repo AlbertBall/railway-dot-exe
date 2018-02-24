@@ -244,8 +244,8 @@ corresponds to an undebridge, i.e a gap needed between entry and exit.  In this 
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",EntryExitNumber");
     int EXArray[16][2] = {
-        {4,6},{2,8},                              //horizontal & vertical
-        {2,4},{6,2},{8,6},{4,8},                  //sharp curves
+        {4,6},{2,8},                                     //horizontal & vertical
+        {2,4},{6,2},{8,6},{4,8},                         //sharp curves
         {1,6},{3,8},{9,4},{7,2},{1,8},{3,4},{9,2},{7,6}, //loose curves
         {1,9},{3,7}
     };                                            //forward & reverse diagonals
@@ -985,28 +985,28 @@ NamedNonStationLocation link to other NamedNonStationLocations providing directl
     int Tag129[8][3] = //vert fb
     {{0, -1, 96},   //c
      {0, -1, 77},   //b
-     {0, -1, 129},   //v fb
+     {0, -1, 129},  //v fb
 
      {0, 1, 96},   //c
      {0, 1, 76},   //t
-     {0, 1, 129},   //v fb
+     {0, 1, 129},  //v fb
 
      {0, 0, 76},   //t
-     {0, 0, 77}};   //b
+     {0, 0, 77}};  //b
 
     for(int x=0; x<8; x++) for(int y=0; y<3; y++) Tag129Array[x][y] = Tag129[x][y];
 
     int Tag130[8][3] =       //hor fb
     {{-1, 0, 96},   //c
      {-1, 0, 79},   //r
-     {-1, 0, 130},   //h fb
+     {-1, 0, 130},  //h fb
 
      {1, 0, 96},   //c
      {1, 0, 78},   //l
-     {1, 0, 130},   //h fb
+     {1, 0, 130},  //h fb
 
      {0, 0, 78},   //l
-     {0, 0, 79}};   //r
+     {0, 0, 79}};  //r
 
     for(int x=0; x<8; x++) for(int y=0; y<3; y++) Tag130Array[x][y] = Tag130[x][y];
 
@@ -1462,7 +1462,7 @@ void TGraphicElement::PlotOriginal(int Caller, TDisplay *Disp)
     if(OverlayPlotted)
     {
         if(!OriginalLoaded) //this comes after OverlayPlotted because may wish to 'try' to plot original even
-                           //when it isn't loaded in case it had been plotted - e.g. when change user modes
+                            //when it isn't loaded in case it had been plotted - e.g. when change user modes
         {
             throw Exception("Original not loaded in TGraphicElement::PlotOriginal()");
         }
@@ -2031,7 +2031,7 @@ bool TTrack::ErrorInTrackBeforeSetGaps(int Caller, int &HLoc, int &VLoc)
                     break; //success, so break out of 'z' loop
                 } //  if((TrackVector.at(z).HLoc== NewHLoc) &&....
             } //for z...
-            //if there isn't a connection set the invert values for the offending element
+              //if there isn't a connection set the invert values for the offending element
             if(!ConnectionFoundFlag)
             {
                 HLoc = TrackVector.at(x).HLoc;
@@ -6405,7 +6405,7 @@ named location - only one of the sides (selected by whichever the program finds 
         }
 
         AddName(1, CurrentElement, LocationName); //add location name to current element, + timetable name to any
-                                                 //track at that loc
+                                                  //track at that loc
         THVPair HVPair(H, V);
         TLNDone2MultiMapEntry LNDone2MultiMapEntry;
         LNDone2MultiMapEntry.first = HVPair;
@@ -9788,8 +9788,8 @@ file.  Very similar to LoadPrefDir but with value checks instead of storage in P
         }
         VecFile >> TempInt;
         if(TempInt != 9) //CheckCount - reduced to 11 after NextPrefDirElement dropped &
-                        //to 9 after End & Stop dropped.  Leaving HLoc, VLoc, SpeedTag, TrackVectorPosition, ELink,
-                        //ELinkPos, XLink, XLinkPos & EXNumber
+                         //to 9 after End & Stop dropped.  Leaving HLoc, VLoc, SpeedTag, TrackVectorPosition, ELink,
+                         //ELinkPos, XLink, XLinkPos & EXNumber
         {
             Utilities->CallLogPop(168);
             return false;
@@ -11364,7 +11364,7 @@ so return false, with an appropriate message if ConsecSignalsRoute set.
     ReqPosRouteID = IDInt(-1); //default value for not used
     TTrackElement TrackElement;
     TPrefDirElement EndElement1, EndElement2, BlankElement; //all blank to begin with, can only have max of 2 PrefDirs on a
-                                                           //given element as can't select 2-track elements
+                                                            //given element as can't select 2-track elements
     if(!(Track->FindNonPlatformMatch(8, HLoc, VLoc, EndPosition, TrackElement))) //return if can't find one
     {
         Utilities->CallLogPop(214);

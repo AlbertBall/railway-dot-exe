@@ -44,8 +44,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma resource "*.dfm"
 TAboutForm *AboutForm;
 //---------------------------------------------------------------------------
-__fastcall TAboutForm::TAboutForm(TComponent* Owner)
-    : TForm(Owner)
+__fastcall TAboutForm::TAboutForm(TComponent* Owner) : TForm(Owner)
 {
 }
 //---------------------------------------------------------------------------
@@ -103,12 +102,33 @@ void __fastcall TAboutForm::SetAboutCaption()
         delete[] pBuffer;
     }
 
-    AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
-                                 L"operate your own railway" + NL + NL +
-                                 L" Release: " + strVersion + NL + NL +
-                                 L"Copyright 2010-2018 Albert Ball" + NL + NL + NL +
-                                 L"Menu icons from Silk Icon Set 1.3 by Mark James" + NL +
-                                 L"used under Creative Commons Attribution 2.5 License." + NL +
-                                 L"http://creativecommons.org/licenses/by/2.5/";
+	AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
+							     L"operate your own railway" + NL + NL +
+							     L"Release: " + strVersion + NL + NL +
+							     L"Copyright © 2010-2018 Albert Ball";
 }
 //---------------------------------------------------------------------------
+void __fastcall TAboutForm::WebsiteLinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType)
+{
+    if (LinkType == sltURL)
+        ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TAboutForm::Attribution1LinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType)
+{
+    if (LinkType == sltURL)
+        ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TAboutForm::Attribution2LinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType)
+{
+    if (LinkType == sltURL)
+        ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
+}
+//---------------------------------------------------------------------------
+

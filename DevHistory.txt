@@ -127,12 +127,12 @@ a) Change the way version info is retrieved (internal fix - no user-facing chang
 b) Remove beta tag (6 months have passed)
 c) Change the version numbering format to use Semantic versioning (see https://semver.org/)
 d) Add 'Build' keyword support to version for future Continuous Integration implementation
-e) Put Help and About submenus in standard order
+e) Menu improvements - Help and About submenus put in standard order, menu text changed to title case, added railway website link to help menu, added icons to menus
 f) Add key modifiers to menus, and ellipses on dialog opening actions
 g) Fix typo in Utilities::CallLogPop() comment
 h) Add CONTRIBUTING.md file
 i) Remove ambiguity from Clear All dialog by changing 'delete' to 'close'
-j) Change menu text to title case
+j) Added icons to Timetable editor buttons, added two-way toggle buttons to Timetable conversion tools, and made Start Time edit box informational-only
 k) 'Doxygen' file documentation added with corresponding header file comment changes
 l) Menu icons added
 

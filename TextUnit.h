@@ -29,8 +29,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 class TDisplay; //predeclaration
 
 //---------------------------------------------------------------------------
-
-class TTextItem //a single piece of text that can be displayed on the railway
+/// A single piece of text that can be displayed on the railway
+class TTextItem
 {
 public:
 /*should use private members but can't use properties with a stack AnsiString (a VCL class)
@@ -41,16 +41,16 @@ text.h or .cpp files, so it seems to mess up the program altogether.  If try to 
 as it is then the program compiles, but when try to load KingsCrossSignals.trk fails on loading 6th or 7th piece of text,
 not at the AnsiString value but at an earlier int value!  Hence leave as is.  Clearly properties & VCL classes don't mix!
 */
-    AnsiString TextString; //the text string
-    int HPos; //the horizontal position on the railway
-    int VPos; //the vertical position on the railway
-    TFont *Font; //the text font
+    AnsiString TextString; ///< the text string
+    int HPos; ///< the horizontal position on the railway
+    int VPos; ///< the vertical position on the railway
+    TFont *Font; ///< the text font
 
 //inline functions
     TTextItem() : TextString(""), HPos(0), VPos(0) {
         Font = new TFont;
-    }                                                              //default constructor
-    TTextItem(int H, int V, AnsiString T, TFont *InputFont) //contructor, sets the values given
+    } //default constructor
+    TTextItem(int H, int V, AnsiString T, TFont *InputFont) //constructor, sets the values given
         : TextString(T), HPos(H), VPos(V) {
         Font = new TFont; Font->Assign(InputFont);
     }
@@ -62,8 +62,8 @@ not at the AnsiString value but at an earlier int value!  Hence leave as is.  Cl
 };
 
 //---------------------------------------------------------------------------
-
-class TTextHandler //a single object that handles text management
+/// A single object that handles text management
+class TTextHandler
 {
 public:
 
@@ -76,11 +76,11 @@ public:
 //inline functions
     void SetNewHPos(int Caller, int TextItem, int NewHPos) {
         TextPtrAt(24, TextItem)->HPos = NewHPos;
-    }                                                                                             //change the value of HPos to NewHPos for
+    } //change the value of HPos to NewHPos for
     //the text item at position TextItem in TextVector
     void SetNewVPos(int Caller, int TextItem, int NewVPos) {
         TextPtrAt(25, TextItem)->VPos = NewVPos;
-    }                                                                                             //change the value of VPos to NewVPos for
+    } //change the value of VPos to NewVPos for
     //the text item at position TextItem in TextVector
     TTextHandler::~TTextHandler() //destructor
     {

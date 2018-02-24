@@ -1001,7 +1001,7 @@ sending a message to the performancelog.
                 DepartureTimeSet = false;
                 //no need to set LastActionTime for a departure
                 ActionVectorEntryPtr++; //advance pointer beyond departure action - (this line (& LogAction) used to be at the end -  see
-                                       //note
+                                        //note
 /*
 Note:  If train stops at station after call on with a TimeTimeLoc loaded, and before the normal stop point, then when
 SetTrainMovementValues called it assumes a stop at the stop point because the ActionVectorEntryPtr points to a name
@@ -1202,9 +1202,9 @@ the problem move the ActionVectorEntryPtr increment to before SetTrainMovementVa
         if(!Stopped())
         {
             if((NextElementPosition > -1) && (NextEntryPos > -1)) //may be buffers or continuation (skip SetTrainMovementValues if buffers, if
-                                                                 //a stop element that isn't buffers - e.g. station, then will skip the calcs
-                                                                 //during SetTrainMovementValues to avoid trying to divide by zero - see that
-                                                                 //function for fuller explanation
+                                                                  //a stop element that isn't buffers - e.g. station, then will skip the calcs
+                                                                  //during SetTrainMovementValues to avoid trying to divide by zero - see that
+                                                                  //function for fuller explanation
             {
                 SetTrainMovementValues(8, NextElementPosition, NextEntryPos); //NextElement is the element to be entered
             }
@@ -1247,7 +1247,7 @@ the problem move the ActionVectorEntryPtr increment to before SetTrainMovementVa
         MidEntryPos = LeadEntryPos;
         MidExitPos = LeadExitPos;
         Straddle = MidLag; //train now fully on the updated Lag & Mid, the front segment is going to move onto the new
-                          //LeadElement during this function (note that if stopped at signal then won't get this far)
+                        l  //LeadElement during this function (note that if stopped at signal then won't get this far)
         if(LeadElement > -1)
         {
             if(ContinuationExit(1, LeadElement, LeadExitPos)) //i.e an exit continuation only
@@ -1771,15 +1771,15 @@ the problem move the ActionVectorEntryPtr increment to before SetTrainMovementVa
                         {
                             StoppedAtLocation = true;
                             StoppedAtSignal = false; //may have been set earlier at line 925 so need to reset as
-                                                    //StoppedAtLocation takes precedence and don't want both set at same time or have flashing graphic
-                                                    //in zoom out mode
+                                                     //StoppedAtLocation takes precedence and don't want both set at same time or have flashing graphic
+                                                     //in zoom out mode
                             PlotTrainWithNewBackgroundColour(12, clStationStopBackground, Display); //pale green
                             LogAction(8, HeadCode, "", Arrive, LocName, ActionVectorEntryPtr->ArrivalTime, ActionVectorEntryPtr->Warning);
                             if(ActionVectorEntryPtr->FormatType == TimeTimeLoc)
                             {
                                 TimeTimeLocArrived = true; //used in case of later signaller control, when need to know
-                                                          //whether had arrived or not, to avoid sending the arrival
-                                                          //message twice, see TInterface::TimetableControl1Click
+                                                           //whether had arrived or not, to avoid sending the arrival
+                                                           //message twice, see TInterface::TimetableControl1Click
                             }
                         }
                         else
@@ -3100,7 +3100,7 @@ when Straddle == LeadMidLag
                     if(SignallerStopBrakeRate < BrakeRate)
                     {
                         SignallerStopBrakeRate = BrakeRate; //this prevents the brakerate from reducing for a signaller stop
-                                                           //regardless of other conditions that may change as progress round the loop
+                                                            //regardless of other conditions that may change as progress round the loop
                     }
                 }
                 if(SignallerStopBrakeRate > BrakeRate)
@@ -3541,7 +3541,7 @@ change points outside the route or have a route conflict if another route is set
 */
 {
     if(Track->RouteFlashFlag) return false;  //don't want to create a new route from the stop signal if one is already in construction as
-                                            //some of the callingon route elements may be involved
+                                             //some of the callingon route elements may be involved
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CallingOnAllowed" + "," + HeadCode);
     bool PlatformFoundFlag = false, StopRequired = false, SkipRouteCheck = false, RouteOrPartRouteSet = false; //last added at v1.2.0
     int CurrentTrackVectorPosition = LeadElement, NextTrackVectorPosition, ElementNumber = 0, Distance = 0;
@@ -4165,8 +4165,8 @@ TrainController::AddTrain(int RearPosition, int FrontPosition, AnsiString HeadCo
                                   RepeatNumber, IncrementalMinutes, IncrementalDigits, SignallerMaxSpeed, false)) //false for SignallerControl
     {
         Utilities->CallLogPop(1721); //if fails either a throw will have been sent in AddTrain or start position failed prob because of
-                                    //another train, in which case a message will have been sent to the perf log, also might well clear later
-                                    //when other train moves away
+                                     //another train, in which case a message will have been sent to the perf log, also might well clear later
+                                     //when other train moves away
         return;
     }
 //Note data in 'this' now probably invalid as there has been a new addition to the TrainVector, so the train is likely to have a new address, hence make no more changes for the current train
@@ -4400,8 +4400,8 @@ TrainController::AddTrain(int RearPosition, int FrontPosition, AnsiString HeadCo
                                   RepeatNumber, IncrementalMinutes, IncrementalDigits, SignallerMaxSpeed, false)) //false for SignallerControl
     {
         Utilities->CallLogPop(1722); //if fails either a throw will have been sent in AddTrain or start position failed prob because of
-                                    //another train, in which case a message will have been sent to the perf log, also might well clear later
-                                    //when other train moves away
+                                     //another train, in which case a message will have been sent to the perf log, also might well clear later
+                                     //when other train moves away
         return;
     }
 //Note data in 'this' now probably invalid as there has been a new addition to the TrainVector, so the train is likely to have a new address, hence make no more changes for the current train
@@ -4420,8 +4420,8 @@ void TTrain::FinishJoin(int Caller)
     TrainController->LogEvent("" + AnsiString(Caller) + ",FinishJoin" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FinishJoin" + "," + HeadCode);
     if(TrainGone) //this means that the train has already joined the other & is awaiting deletion by TrainController
-                 //without this the 'waiting' message can be given since the other train's ActionVectorEntryPtr has moved
-                 //on from jbo & TrainToJoinIsAdjacent returns false
+                  //without this the 'waiting' message can be given since the other train's ActionVectorEntryPtr has moved
+                  //on from jbo & TrainToJoinIsAdjacent returns false
     {
         Utilities->CallLogPop(1035);
         return;
@@ -4461,7 +4461,7 @@ void TTrain::JoinedBy(int Caller)
             TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = WaitingForFJO;
         }
         LastActionDelayFlag = true; //need to update LastActionTime if this train first to arrive as need 30s after
-                                   //both adjacent before the join
+                                    //both adjacent before the join
         Utilities->CallLogPop(1032);
         return;
     }
@@ -7123,8 +7123,8 @@ SplitRepeat returns false (message given in called function).
         for(int x=0; x<CommaCount+1; x++)
         {
             if((CommaCount == 0) || (x<CommaCount)) //i.e. train entered under signaller control with no repeats, or entry is not the last,
-                                                   //in which case there's a comma & finish element or repeat still to come this entry could
-                                                   //be a finish but can't be a repeat
+                                                    //in which case there's a comma & finish element or repeat still to come this entry could
+                                                    //be a finish but can't be a repeat
             {
                 if(CommaCount == 0)
                 {
@@ -7205,7 +7205,7 @@ SplitRepeat returns false (message given in called function).
                 if(SequenceType == Finish)
                 {
                     FinishFlag = true; //marker for only permitted additional entry being a repeat, only needed if the
-                                      //finish entry is not the last entry
+                                       //finish entry is not the last entry
                 }
                 if(FinalCall)
                 {
@@ -9186,7 +9186,7 @@ Other successor errors will be caught later as all 'throws' changed to messages 
                 throw Exception("Timetable error, moving Snt entry has LocationName set for " + TDEntry.HeadCode);
             }
             for(unsigned int y=1; y<TrainDataVector.at(x).ActionVector.size(); y++) //note that immediate successor to a moving Snt can only be a Moving type
-                                                                                   //if it's a SignallerControl entry then the condition isn't met
+                                                                                    //if it's a SignallerControl entry then the condition isn't met
             {
                 const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
                 if(AVEntry.FormatType == Repeat) break;  //repeat = reached end (+allows repeat after signaller controlled entry)
@@ -9322,7 +9322,7 @@ Other successor errors will be caught later as all 'throws' changed to messages 
             y=1;
         }
         while(y < TDEntry.ActionVector.size()) //need to check each location name separately in turn, skipped for SignallerControl entries
-                                              //if y == 1
+                                               //if y == 1
         {
             if((TDEntry.ActionVector.at(y).Command == "Fer") || (TDEntry.ActionVector.at(y).FormatType == Repeat))
             {
@@ -9405,9 +9405,9 @@ eg 2F44 Sns-sh ends in Fns to 2F45, & Sns 2F45 ends in Fns-sh to 2F44.  Here 2F4
 Sns-sh & Fns in train 2F44, & 2F44 is the 'OtherHeadCode' for both Sns & Fns-sh in train 2F45.
 */
     for(unsigned int x=0; x<TrainDataVector.size(); x++) //new test to ensure no duplicate links at all, other checks ensure none for shuttles,
-                                                        //non-shuttles & non-repeating links separately, but don't check that there isn't a
-                                                        //duplicate between a non-repeating shuttle and another - leave original tests in as
-                                                        //these also set the pointers
+                                                         //non-shuttles & non-repeating links separately, but don't check that there isn't a
+                                                         //duplicate between a non-repeating shuttle and another - leave original tests in as
+                                                         //these also set the pointers
     {
         const TTrainDataEntry &TDEntry = TrainDataVector.at(x);
         for(unsigned int y=0; y<TrainDataVector.at(x).ActionVector.size(); y++)
@@ -11355,7 +11355,7 @@ void TTrainController::LoadSessionTrains(int Caller, std::ifstream &SessionFile)
     for(int x=0; x<NumberOfTrains; x++)
     {
         TTrain *NewTrain = new TTrain(1, 0, 0, "", 0, 1, 0, 0, 0, (TTrainMode)0, 0, 0, 0, 0, 0); //have to have >0 for mass, else have divide
-                                                                                                //by zero error in calculating AValue, use 1
+                                                                                                 //by zero error in calculating AValue, use 1
         NewTrain->LoadOneSessionTrain(0, SessionFile);
         TrainVector.push_back(*NewTrain);
     }
@@ -11845,7 +11845,7 @@ enum TTimetableShuttleLinkType {NoShuttleLink, NotAShuttleLink, ShuttleLink, Shu
                             else //not a continuation
                             {
                                 if(LocName != "") //if not a continuation then LocName should be same as ActionVectorEntry.LocationName
-                                                 //but include anyway
+                                                  //but include anyway
                                 {
                                     PartStr = "Created at " + LocName;
                                 }

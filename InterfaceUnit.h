@@ -33,6 +33,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <Dialogs.hpp>
 #include <Graphics.hpp>
 #include <ComCtrls.hpp>
+#include <System.ImageList.hpp>
+#include <Vcl.ImgList.hpp>
 #include <fstream>
 #include <vector>
 #include <vcl.h>
@@ -86,11 +88,11 @@ __published:    // IDE-managed Components
     TLabel *MetreFixedLabel;
     TPanel *LengthConversionPanel;
     TPanel *SpeedConversionPanel;
-    TEdit  *MPHEdit2;
-    TLabel *MPHLabel2;
-    TLabel *KPHLabel;
-    TPanel *KPHPanel2;
-    TLabel *KPHVariableLabel2;
+    TEdit *SpeedEditBox2;
+    TLabel *SpeedTopLabel2;
+    TLabel *SpeedBottomLabel2;
+    TPanel *SpeedVariablePanel2;
+    TLabel *SpeedVariableLabel2;
     TPanel *AddSubMinsPanel;
 
     // 'Set preferred directions' mode - buttons left to right
@@ -149,19 +151,19 @@ __published:    // IDE-managed Components
     TEdit *AddSubMinsBox; ///< the edit box that accepts minutes to add or subtract
 
     //speed conversion box on timetable screen
-    TEdit *MPHEdit1;
-    TLabel *MPHLabel1;
-    TLabel *KPHFixedLabel1;
-    TPanel *KPHPanel1;
+    TEdit *SpeedEditBox;
+    TLabel *SpeedTopLabel;
+    TLabel *SpeedBottomLabel;
+    TPanel *SpeedVariablePanel1;
     TPanel *SpeedConversionTTPanel;
-    TLabel *KPHVariableLabel1;
+    TLabel *SpeedVariableLabel;
 
     //power conversion box on timetable screen
-    TEdit *HPEdit;
-    TLabel *HPLabel;
-    TLabel *KWFixedLabel;
+    TEdit *PowerEditBox;
+    TLabel *PowerTopLabel;
+    TLabel *PowerBottomLabel;
     TPanel *KWPanel;
-    TLabel *KWVariableLabel;
+    TLabel *PowerVariableLabel;
 
     //'Operate railway' mode - buttons left to right
     TBitBtn *OperateButton;
@@ -515,6 +517,13 @@ __published:    // IDE-managed Components
     TSpeedButton *SpeedButton144;
     TMenuItem *N1;
     TMenuItem *N2;
+    TImageList *TTImageList;
+    TMenuItem *RailwayWebSiteMenuItem;
+    TMenuItem *N3;
+    TImageList *MMImageList;
+    TButton *PowerToggleButton;
+    TButton *SpeedToggleButton;
+    TButton *SpeedToggleButton2;
 
     //menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -677,16 +686,20 @@ __published:    // IDE-managed Components
     void __fastcall MasterClockTimer(TObject *Sender);
     void __fastcall FormKeyUp(TObject *Sender, WORD &Key,
                               TShiftState Shift);
-    void __fastcall MPHEdit1KeyUp(TObject *Sender, WORD &Key,
+    void __fastcall SpeedEditBoxKeyUp(TObject *Sender, WORD &Key,
                                   TShiftState Shift);
-    void __fastcall MPHEdit2KeyUp(TObject *Sender, WORD &Key,
+    void __fastcall SpeedEditBox2KeyUp(TObject *Sender, WORD &Key,
                                   TShiftState Shift);
     void __fastcall LengthEditKeyUp(TObject *Sender, WORD &Key,
                                     TShiftState Shift);
-    void __fastcall HPEditKeyUp(TObject *Sender, WORD &Key,
+    void __fastcall PowerEditBoxKeyUp(TObject *Sender, WORD &Key,
                                 TShiftState Shift);
     void __fastcall PresetAutoSigRoutesButtonClick(TObject *Sender);
     void __fastcall FormResize(TObject *Sender);
+    void __fastcall RailwayWebSiteMenuItemClick(TObject *Sender);
+    void __fastcall SpeedToggleButtonClick(TObject *Sender);
+    void __fastcall PowerToggleButtonClick(TObject *Sender);
+    void __fastcall SpeedToggleButton2Click(TObject *Sender);
 
 public: //AboutForm needs access to these
 
@@ -747,8 +760,8 @@ private:
     bool PreferredRoute; ///< true when AutoSig or preferred route building selected during operation (always same state as ConsecSignalsRoute)
     bool PreferredRouteFlag; ///< used to select either ConvertAndAddPreferredRouteSearchVector or ConvertAndAddNonPreferredRouteSearchVector (could probably have used PreferredRoute instead)
     bool PreventGapOffsetResetting; ///< during gap setting gaps are highlighted in turn for the user to select the matching gap, but when
-                                   ///< returning from zoomout this flag prevents the highlighted gap from being redisplayed, as the user wants
-                                   ///< to see the screen that corresponds to the clicked position
+                                    ///< returning from zoomout this flag prevents the highlighted gap from being redisplayed, as the user wants
+                                    ///< to see the screen that corresponds to the clicked position
     bool RlyFile;       ///< indicates that a loaded railway file is ready for operation, i.e. is a valid .rly file
     bool RouteCancelFlag; ///< true when route cancel button pressed, enables a right mouse click to cancel a route if in an appropriate position
     bool SaveSessionFlag; ///< true when a session save command has been given
@@ -784,14 +797,14 @@ private:
     int NewSelectBitmapHLoc; ///< the new (during & at end of moving) HLoc value of Edit->Select & Edit->Reselect
     int NewSelectBitmapVLoc; ///< as above for VLoc
     int OverallDistance, OverallSpeedLimit; ///< used when setting track lengths, represents the overall distance covered by the selected elements
-                                           ///< and the overall speed limit, if the speed limits vary across the selection the value is set to -1
+                                            ///< and the overall speed limit, if the speed limits vary across the selection the value is set to -1
     int PerformancePanelDragStartX; ///< mouse 'X' position when the performance panel begins to be dragged
     int PerformancePanelDragStartY; ///< as above for 'Y'
     int PointFlashVectorPosition, DivergingPointVectorPosition;
     int SelectBitmapHLoc; ///< the original (prior to moving & after finished moving) HLoc value of Edit->Select & Edit->Reselect
     int SelectBitmapMouseLocX; ///< when flag SelectPickedUp is set to true (see above - to allow a selected screen area to move during MouseMove
-                              ///< and remain in place at MouseUp) the mouse position is saved in SelectBitmapMouseLocX & Y for use later in
-                              ///< MouseMove & MouseUp.
+                               ///< and remain in place at MouseUp) the mouse position is saved in SelectBitmapMouseLocX & Y for use later in
+                               ///< MouseMove & MouseUp.
     int SelectBitmapMouseLocY; ///< see above
     int SelectBitmapVLoc; ///< the original (prior to moving & after finished moving) VLoc value of Edit->Select & Edit->Reselect
     int SelectedTrainID; ///< used to store the train ID when right clicked for signaller control actions
@@ -817,7 +830,7 @@ private:
     TGraphicElement *PointFlash, *AutoRouteStartMarker, *SigRouteStartMarker, *NonSigRouteStartMarker;
 
     THVPair SelectStartPair; ///< stores the starting 'H' & 'V' values as a C++ pair when an area of screen is selected via the 'Edit' and
-                            ///< 'Select' menu items
+                             ///< 'Select' menu items
 
     TImage *HiddenScreen; ///< a hidden copy of the railway display screen used during ClearandRebuildRailway (see below) to avoid flicker
 
@@ -831,7 +844,7 @@ private:
     TSpeedButton* CurrentSpeedButton; ///< stores the selected track build element button during railway building
 
     TTEVPtr TEVPtr, TTCurrentEntryPtr, TTStartTimePtr, TTFirstServicePtr, TTLastServicePtr; ///< timetable entry value pointers used during
-                                                                                           ///< timetable editing
+                                                                                            ///< timetable editing
 
     TTimetableEditVector TimetableEditVector; ///< the complete timetable as a list of AnsiStrings for use in edit timetable functions
 

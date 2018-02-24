@@ -101,7 +101,7 @@ public:
 
     TLabel* GetOutputLog1() {
         return OutputLog1;
-    }                                         ///< Return pointers to warning message logs (appear above the railway display during operation)
+    } ///< Return pointers to warning message logs (appear above the railway display during operation)
     TLabel* GetOutputLog2() {
         return OutputLog2;
     }

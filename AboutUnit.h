@@ -37,6 +37,11 @@ __published:    // IDE-managed Components
     TImage *ImageAppIcon;
     TLabel *AboutLabelCaption; ///< Version info displayed here
     TLabel *AboutLabelTitle;
+    TLinkLabel *WebsiteLinkLabel;
+    TLinkLabel *Attribution1LinkLabel;
+    TLinkLabel *Attribution2LinkLabel;
+    TLabel *Attribution1Label;
+    TLabel *Attribution2Label;
     /// Called when the form is first created (by WinMain)
     ///
     /// Sets the version info, then hides the form
@@ -47,6 +52,15 @@ __published:    // IDE-managed Components
     ///
     /// Restarts MasterClock if Level1Mode is OperMode
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+    /// Sends the link to your default browser
+    void __fastcall WebsiteLinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType);
+    /// Send the first attribution statement's link to your default browser
+    void __fastcall Attribution1LinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType);
+    /// Send the second attribution statement's link to your default browser
+    void __fastcall Attribution2LinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType);
 private:    // User declarations
     /// Sets version details from the project options 'Version Info' values
     void __fastcall SetAboutCaption();

@@ -1,5 +1,5 @@
-//Utilities.h
-//Comments in .h files are believed to be accurate and up to date
+// Utilities.h
+// Comments in .h files are believed to be accurate and up to date
 /*
 This is a source code file for "railway.exe", a railway operation
 simulator, written in Borland C++ Builder 4 Professional

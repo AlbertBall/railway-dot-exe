@@ -1,7 +1,7 @@
-//GraphicUnit.cpp
-//BEWARE OF COMMENTS in .cpp files:  they were accurate when written but have
+// GraphicUnit.cpp
+// BEWARE OF COMMENTS in .cpp files:  they were accurate when written but have
 // sometimes been overtaken by changes and not updated
-//Comments in .h files are believed to be accurate and up to date
+// Comments in .h files are believed to be accurate and up to date
 /*
 This is a source code file for "railway.exe", a railway operation
 simulator, written in Borland C++ Builder 4 Professional
@@ -59,7 +59,7 @@ TRailGraphics::TRailGraphics()
 
 //52 graphics loaded in Interface but not in RailGraphics
 
-//transparent graphics
+    // transparent graphics
     bm10 = new Graphics::TBitmap; bm10->LoadFromResourceName(0, "bm10"); bm10->Transparent = true; bm10->TransparentColor = clB5G5R5;
     bm100 = new Graphics::TBitmap; bm100->LoadFromResourceName(0, "bm100"); bm100->Transparent = true; bm100->TransparentColor = clB5G5R5;
     bm101 = new Graphics::TBitmap; bm101->LoadFromResourceName(0, "bm101"); bm101->Transparent = true; bm101->TransparentColor = clB5G5R5;
@@ -571,10 +571,10 @@ TRailGraphics::TRailGraphics()
     UnderHFootbridge = new Graphics::TBitmap; UnderHFootbridge->LoadFromResourceName(0, "UnderHFootbridge"); UnderHFootbridge->Transparent = true; UnderHFootbridge->TransparentColor = clB5G5R5;
     UnderVFootbridge = new Graphics::TBitmap; UnderVFootbridge->LoadFromResourceName(0, "UnderVFootbridge"); UnderVFootbridge->Transparent = true; UnderVFootbridge->TransparentColor = clB5G5R5;
 
-//extra from bmSolidBgnd bitmap file but transparent
+    // extra from bmSolidBgnd bitmap file but transparent
     bmTransparentBgnd = new Graphics::TBitmap; bmTransparentBgnd->LoadFromResourceName(0, "bmSolidBgnd"); bmTransparentBgnd->Transparent = true; bmTransparentBgnd->TransparentColor = clB5G5R5;
 
-//level crossing graphics
+    // level crossing graphics
     LCBothHor = new Graphics::TBitmap; LCBothHor->LoadFromResourceName(0, "LCBothHor"); LCBothHor->Transparent = true; LCBothHor->TransparentColor = clB5G5R5;
     LCBotHor = new Graphics::TBitmap; LCBotHor->LoadFromResourceName(0, "LCBotHor"); LCBotHor->Transparent = true; LCBotHor->TransparentColor = clB5G5R5;
     LCBothVer = new Graphics::TBitmap; LCBothVer->LoadFromResourceName(0, "LCBothVer"); LCBothVer->Transparent = true; LCBothVer->TransparentColor = clB5G5R5;
@@ -583,12 +583,12 @@ TRailGraphics::TRailGraphics()
     LCRHSVer = new Graphics::TBitmap; LCRHSVer->LoadFromResourceName(0, "LCRHSVer"); LCRHSVer->Transparent = true; LCRHSVer->TransparentColor = clB5G5R5;
     LCTopHor = new Graphics::TBitmap; LCTopHor->LoadFromResourceName(0, "LCTopHor"); LCTopHor->Transparent = true; LCTopHor->TransparentColor = clB5G5R5;
 
-//additional pointers copied from existing pointers
+    // additional pointers copied from existing pointers
     sm68 = sm1; sm69 = sm1; sm70 = sm2; sm71 = sm2; sm72 = sm19; sm73 = sm18; sm74 = sm18; sm75 = sm19;
     sm113 = sm111; sm114 = sm112; sm116 = sm115; sm118 = sm117; sm119 = sm114; sm120 = sm117; sm121 = sm115;
     sm122 = sm111; sm123 = sm111; sm124 = sm115; sm125 = sm1; sm126 = sm1; sm127 = sm2; sm128 = sm2;
 
-//non-transparent graphics
+    // non-transparent graphics
     Code_a = new Graphics::TBitmap; Code_a->LoadFromResourceName(0, "Code_a"); Code_a->Transparent = false;
     Code_b = new Graphics::TBitmap; Code_b->LoadFromResourceName(0, "Code_b"); Code_b->Transparent = false;
     Code_c = new Graphics::TBitmap; Code_c->LoadFromResourceName(0, "Code_c"); Code_c->Transparent = false;
@@ -658,7 +658,7 @@ TRailGraphics::TRailGraphics()
     bmStraightEWSignalBlank = new Graphics::TBitmap; bmStraightEWSignalBlank->LoadFromResourceName(0, "bmStraightEWSignalBlank"); bmStraightEWSignalBlank->Transparent = false;
     bmStraightNSSignalBlank = new Graphics::TBitmap; bmStraightNSSignalBlank->LoadFromResourceName(0, "bmStraightNSSignalBlank"); bmStraightNSSignalBlank->Transparent = false;
 
-//GridBitmap is a 10 x 9 grid image, quicker to plot these for whole screen than small ones
+    // GridBitmap is a 10 x 9 grid image, quicker to plot these for whole screen than small ones
     GridBitmap = new Graphics::TBitmap;
     GridBitmap->PixelFormat = pf8bit;
     GridBitmap->Width = 160;
@@ -735,7 +735,7 @@ TRailGraphics::TRailGraphics()
         DirectionRouteAutoSigsGraphicsPtr[x]->Transparent = true;
     }
 
-//points' fillets
+    // points' fillets
     for(int x=0; x<32; x++)
     {
         PointModeGraphicsPtr[x][0] = new Graphics::TBitmap;
@@ -748,15 +748,15 @@ TRailGraphics::TRailGraphics()
         PointModeGraphicsPtr[x][1]->Transparent = true;
     }
 
-//Note: LockedRouteCancelPtr[0] & [5] unused
-//The following are just pointer copies, not new graphics
+    //Note: LockedRouteCancelPtr[0] & [5] unused
+    // The following are just pointer copies, not new graphics
     LockedRouteCancelPtr[0] = bmRtCancELink1; LockedRouteCancelPtr[1] = bmRtCancELink1;
     LockedRouteCancelPtr[2] = bmRtCancELink2; LockedRouteCancelPtr[3] = bmRtCancELink3;
     LockedRouteCancelPtr[4] = bmRtCancELink4; LockedRouteCancelPtr[5] = bmRtCancELink4;
     LockedRouteCancelPtr[6] = bmRtCancELink6; LockedRouteCancelPtr[7] = bmRtCancELink7;
     LockedRouteCancelPtr[8] = bmRtCancELink8; LockedRouteCancelPtr[9] = bmRtCancELink9;
 
-//LinkGraphicsPtr & BridgeGraphicsPtr graphics don't need to be created as already exist in correct colours
+    // LinkGraphicsPtr & BridgeGraphicsPtr graphics don't need to be created as already exist in correct colours
     LinkGraphicsPtr[0] = gl1; LinkGraphicsPtr[1] = gl2;
     LinkGraphicsPtr[2] = gl6; LinkGraphicsPtr[3] = gl5;
     LinkGraphicsPtr[4] = gl3; LinkGraphicsPtr[5] = gl4;
@@ -1383,8 +1383,8 @@ TRailGraphics::~TRailGraphics()
 void TRailGraphics::ChangeTransparentColour(Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut,
                                             TColor NewTransparentColour, TColor OldTransparentColour)
 {
-//Change OldTransparentColour to NewTransparentColour, if NewTransparentColour not white change black to white
-//else change white to black
+    // Change OldTransparentColour to NewTransparentColour, if NewTransparentColour not white change black to white
+    // else change white to black
     if(NewTransparentColour == OldTransparentColour) return;  //already stored
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ChangeTransparentColour," + AnsiString(NewTransparentColour) + "," + AnsiString(OldTransparentColour));
     BitmapOut->Height = BitmapIn->Height; BitmapOut->Width = BitmapIn->Width;
@@ -1405,7 +1405,7 @@ void TRailGraphics::ChangeTransparentColour(Graphics::TBitmap *BitmapIn, Graphic
                 }
             }
             else
-            { //new is white, old must be dark else new = old & wouldn't reach here
+            {   // new is white, old must be dark else new = old & wouldn't reach here
                 if(BitmapIn->Canvas->Pixels[x][y] == OldTransparentColour)
                 {
                     BitmapOut->Canvas->Pixels[x][y] = NewTransparentColour;
@@ -1472,7 +1472,7 @@ void TRailGraphics::ChangeBackgroundColour(int Caller, Graphics::TBitmap *Bitmap
                 if(!OneChanged)
                 {
                     if(BitmapOut->Canvas->Pixels[x][y] != NewBackgroundColour)
-                    { //can be different if the palette of the pixel is different from that expected
+                    {   // can be different if the palette of the pixel is different from that expected
                         ColourError = true;
 //                throw Exception("BackgroundColour change incorrect - actual = " + AnsiString((int)BitmapOut->Canvas->Pixels[x][y]) + ", expected " + AnsiString((int)NewBackgroundColour));
                     }
@@ -2001,11 +2001,11 @@ void TRailGraphics::ChangeAllTransparentColours(TColor NewTransparentColour, TCo
     ChangeTransparentColour(UnderHFootbridge, UnderHFootbridge, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(UnderVFootbridge, UnderVFootbridge, NewTransparentColour, OldTransparentColour);
 
-//The following are created as new bitmaps from existing  files
+    // The following are created as new bitmaps from existing  files
     ChangeTransparentColour(bmTransparentBgnd, bmTransparentBgnd, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(GridBitmap, GridBitmap, NewTransparentColour, OldTransparentColour);
 
-//non-transparent graphics - don't change headcodes
+    // non-transparent graphics - don't change headcodes
     ChangeTransparentColour(bmSolidBgnd, bmSolidBgnd, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(smSolidBgnd, smSolidBgnd, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(bmDiagonalSignalBlank, bmDiagonalSignalBlank, NewTransparentColour, OldTransparentColour);
@@ -2013,7 +2013,7 @@ void TRailGraphics::ChangeAllTransparentColours(TColor NewTransparentColour, TCo
     ChangeTransparentColour(bmStraightEWSignalBlank, bmStraightEWSignalBlank, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(bmStraightNSSignalBlank, bmStraightNSSignalBlank, NewTransparentColour, OldTransparentColour);
 
-//level crossing graphics
+    // level crossing graphics
     ChangeTransparentColour(LCBothHor, LCBothHor, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(LCBotHor, LCBotHor, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(LCBothVer, LCBothVer, NewTransparentColour, OldTransparentColour);
@@ -2023,7 +2023,7 @@ void TRailGraphics::ChangeAllTransparentColours(TColor NewTransparentColour, TCo
     ChangeTransparentColour(LCTopHor, LCTopHor, NewTransparentColour, OldTransparentColour);
 
 
-//change the grid to the nearest grey colour to the background
+    // change the grid to the nearest grey colour to the background
     if(NewTransparentColour != clB5G5R5) ChangeSpecificColour(1, GridBitmap, GridBitmap, clB4G4R4, clB1G1R1);  //if already dark will ignore
     else ChangeSpecificColour(3, GridBitmap, GridBitmap, clB1G1R1, clB4G4R4);  //if already light will ignore
 }
@@ -2050,10 +2050,10 @@ void TRailGraphics::SetUpAllDerivitiveGraphics(TColor TransparentColour)
 
 /*
 EXArray with associated Tag numbers:-
-{4,6} 1,{2,8} 2,                                      //horizontal & vertical
-{2,4} 6,{6,2} 5,{8,6} 3,{4,8}, 4                         //sharp curves
+{4,6} 1,{2,8} 2,                                                         //horizontal & vertical
+{2,4} 6,{6,2} 5,{8,6} 3,{4,8}, 4                                         //sharp curves
 {1,6} 22,{3,8} 24,{9,4} 21,{7,2} 27,{1,8} 25,{3,4} 23,{9,2} 26,{7,6}, 20 //loose curves
-{1,9} 19,{3,7} 18,                                      //forward & reverse diagonals
+{1,9} 19,{3,7} 18,                                                       //forward & reverse diagonals
 
 int Bridge EXArray with Tag numbers:-
 {4,6} 48,{2,8} 49,{1,9} 50,{3,7} 51,
@@ -2064,7 +2064,7 @@ reverse direction same in each case
 
 */
 
-//Note: DirectionPrefDirGraphicsPtr[0] & [5] unused
+    // Note: DirectionPrefDirGraphicsPtr[0] & [5] unused
     DirectionPrefDirGraphicsPtr[0]->Assign(ELk1); DirectionPrefDirGraphicsPtr[1]->Assign(ELk1);
     DirectionPrefDirGraphicsPtr[2]->Assign(ELk2); DirectionPrefDirGraphicsPtr[3]->Assign(ELk3);
     DirectionPrefDirGraphicsPtr[4]->Assign(ELk4); DirectionPrefDirGraphicsPtr[5]->Assign(ELk4);
@@ -2111,7 +2111,7 @@ reverse direction same in each case
         ChangeForegroundColour(16, DirectionRouteAutoSigsGraphicsPtr[x],DirectionRouteAutoSigsGraphicsPtr[x],clB5G3R0,TransparentColour);
     }
 
-//set up points' fillets
+    // set up points' fillets
     PointModeGraphicsPtr[0][0]->Assign(bm7Straight);
     PointModeGraphicsPtr[1][0]->Assign(bm8Straight);
     PointModeGraphicsPtr[2][0]->Assign(bm9Straight);

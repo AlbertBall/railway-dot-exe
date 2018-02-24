@@ -79,7 +79,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         Screen->Cursor = TCursor(-11); //Hourglass;
         DirOpenError = false;
         AllSetUpFlag = false; //flag to prevent MasterClock from being enabled when application activates if there has been an error during
-                             //initial setup
+                              //initial setup
         //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
         ProgramVersion = GetVersion(); //Beta Embarcadero version
@@ -943,8 +943,8 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key,
             else if(Track->LocationNameAllocated(2, LocationNameTextBox->Text) && (ExistingName == LocationNameTextBox->Text))
             { //same name being entered again
                 Track->LNPendingList.clear(); //get rid of existing entry as the location already has this name
-                                             //but in case the name is not already in text vector erase it and re-add it
-                                             //if it wasn't in the vector erasing it has no effect
+                                              //but in case the name is not already in text vector erase it and re-add it
+                                              //if it wasn't in the vector erasing it has no effect
                 int HPos, VPos;
                 bool UseExistingPosition = false;
                 if(EraseLocationNameText(2, LocationNameTextBox->Text, HPos, VPos)) UseExistingPosition = true;
@@ -960,7 +960,7 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key,
             }
             else
             { //either a new name for an unnamed location, or a different name for a named location
-             //check validity of entry
+              //check validity of entry
                 AnsiString LocStr = LocationNameTextBox->Text;
                 LocStr = LocStr.Trim(); //strip leading & trailing spaces, and control characters
                 LocationNameTextBox->Text = LocStr; //reset this as used below
@@ -3196,7 +3196,7 @@ void __fastcall TInterface::CutTTEntryButtonClick(TObject *Sender)
         CopiedEntryStr = *TTCurrentEntryPtr;
         CopiedEntryFlag = true;
         int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin(); //vector pointers unreliable after an erase,
-                                                                           //so use the position in the vector
+                                                                            //so use the position in the vector
         TimetableEditVector.erase(TTCurrentEntryPtr);
 //now need to rebuild all the pointers & the AllEntriesTTListBox so repeat the process from EditTimetableMenuItemClick
 //pick up the start time if there is one
@@ -3265,7 +3265,7 @@ void __fastcall TInterface::PasteTTEntryButtonClick(TObject *Sender)
         }
         int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin(); //vector pointers unreliable after an insert
         TimetableEditVector.insert(TTCurrentEntryPtr+1, CopiedEntryStr); //inserts before the indicated pointer position, i.e. immediately
-                                                                        //after the current Entry - may be at the end
+                                                                         //after the current Entry - may be at the end
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
         TTEntryChangedFlag = false;
@@ -3327,7 +3327,7 @@ void __fastcall TInterface::DeleteTTEntryButtonClick(TObject *Sender)
             return;
         }
         int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin(); //vector pointers unreliable after an erase,
-                                                                           //so use the position in the vector
+                                                                            //so use the position in the vector
         TimetableEditVector.erase(TTCurrentEntryPtr);
 
 //now need to rebuild all the pointers & the AllEntriesTTListBox so repeat the process from EditTimetableMenuItemClick
@@ -3436,9 +3436,9 @@ void __fastcall TInterface::SaveTTEntryButtonClick(TObject *Sender)
         if(!ActiveLine)
         {
             TempStr = OneEntryTimetableMemo->Text; //Note that if the entry was intended as a service but goes in as plain text because
-                                                  //the service & entry pointers aren't yet set, then CRLFs will be converted to commas in
-                                                  //CompileAllEntriesMemoAndSetPointers if it appears after the start time
-                                                  //and before a blank line or end of file, so the syntax check will work OK
+                                                   //the service & entry pointers aren't yet set, then CRLFs will be converted to commas in
+                                                   //CompileAllEntriesMemoAndSetPointers if it appears after the start time
+                                                   //and before a blank line or end of file, so the syntax check will work OK
         }
         TimetableValidFlag = false;
         TimetableChangedFlag = true;
@@ -4038,7 +4038,7 @@ void __fastcall TInterface::ExitTTModeButtonClick(TObject *Sender)
         }
         TimetableChangedFlag = false;
         CreateEditTTFileName = ""; //set to null to allow a check during error file saving, if not null save the tt being edited to the file
-                                  //added for Beta v0.2b
+                                   //added for Beta v0.2b
         CreateEditTTTitle = ""; //as above
         Level1Mode = BaseMode;
         SetLevel1Mode(84);
@@ -4370,7 +4370,7 @@ void TInterface::ConvertCRLFsToCommas(int Caller, AnsiString &ConvStr)
     }
     ConvStr = OutStr;
     if(ConvStr == "") ConvStr = ',';  //don't return a null or will fail, OK to return a comma on its own as will be ignored during ProcessOneTimetableLine
-                                     //when AllCommas will be true
+                                      //when AllCommas will be true
     Utilities->CallLogPop(1846);
 }
 
@@ -5392,7 +5392,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
         }
 
         else if(Level2TrackMode == DistanceStart) //new for extended distances - similar to !PrefDirContinuing
-                                                 //prior to selecting start element
+                                                  //prior to selecting start element
         {
             TrainController->LogEvent("mbLeft + DistanceStart");
             ResetChangedFileDataAndCaption(9, true);
@@ -5409,7 +5409,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
         }
 
         else if(Level2TrackMode == DistanceContinuing) //new for extended distances - similar to PrefDirContinuing
-                                                      //prior to selecting finish element
+                                                       //prior to selecting finish element
         {
             TrainController->LogEvent("mbLeft + DistanceContinuing");
             ResetChangedFileDataAndCaption(10, true);
@@ -5856,7 +5856,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
             */
 
             if((Level2OperMode == Operating) || (Level2OperMode == PreStart)) //not 'else if' as both may apply
-                                                                             //disallow route setting if paused
+                                                                              //disallow route setting if paused
             {
                 if(Level2OperMode == PreStart)
                 {
@@ -6046,7 +6046,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                     SigRouteStartMarker->PlotOriginal(15, Display); //if overlay not plotted will ignore
                     NonSigRouteStartMarker->PlotOriginal(16, Display); //if overlay not plotted will ignore
                     Screen->Cursor = TCursor(-11); //Hourglass - also set to an hourglass when flashing, after found required
-                                                  //element, but this sets it to an hourglass while searching
+                                                   //element, but this sets it to an hourglass while searching
                     bool PointsChanged = false;
                     if(PreferredRoute)
                     {
@@ -6725,7 +6725,7 @@ void TInterface::ClockTimer2(int Caller)
         bool FocusRestoreAllowedFlag = true; //added at v1.3.0
 
         if(TextBox->Focused() || DistanceBox->Focused() || SpeedLimitBox->Focused() || LocationNameTextBox->Focused() || MileEdit->Focused() || ChainEdit->Focused() || YardEdit->Focused() ||
-                MPHEdit2->Focused() || LocationNameComboBox->Focused() || AddSubMinsBox->Focused() || MPHEdit1->Focused() || HPEdit->Focused() || OneEntryTimetableMemo->Focused() ||
+                SpeedEditBox2->Focused() || LocationNameComboBox->Focused() || AddSubMinsBox->Focused() || SpeedEditBox->Focused() || PowerEditBox->Focused() || OneEntryTimetableMemo->Focused() ||
                 AddPrefDirButton->Focused()) //Added at v1.3.0.  If any of these has focus then they keep it until they release it.  AddPrefDirButton is included as it should keep focus
             FocusRestoreAllowedFlag = false; //when it has it - eases the setting of PrefDirs, also this button becomes disabled after use so focus returns to Interface naturally
 
@@ -7032,7 +7032,7 @@ void TInterface::ClockTimer2(int Caller)
                 BufferAttentionImage->Visible = false;
             }
         } //if(WarningFlashCount == 0)
-        //set buttons etc as appropriate
+          //set buttons etc as appropriate
         SetSaveMenuAndButtons(0);
         //if forced route cancellation flag set redisplay to clear the cancelled route
         if(AllRoutes->RebuildRailwayFlag && !Display->ZoomOutFlag)
@@ -7427,7 +7427,7 @@ void __fastcall TInterface::ZoomButtonClick(TObject *Sender)
             Display->ZoomOutFlag = false; //reset this after level modes called so gap flash stays set if set to begin with
             SetPausedOrZoomedInfoCaption(1);
             ClearandRebuildRailway(43); //need to call this after ZoomOutFlag reset to display track, even if Clearand... already called
-                                       //earlier during level mode setting
+                                        //earlier during level mode setting
         }
         else //set zoomed out view
         {
@@ -7959,7 +7959,7 @@ void __fastcall TInterface::LoadTimetableMenuItemClick(TObject *Sender)
             } //if(TimetableIntegrityCheck
             else ShowMessage("Timetable preliminary integrity check failed - unable to load");
         } //if(TimetableDialog->Execute())
-        //else ShowMessage("Load Aborted");
+          //else ShowMessage("Load Aborted");
         Utilities->CallLogPop(752);
     }
     catch (const Exception &e)
@@ -8077,8 +8077,8 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
         {
             Train.StoppedAtLocation = true;
             Train.LastActionTime = TrainController->TTClockTime; //by itself this only affects trains that have still to arrive, if waiting to
-                                                                //depart the departure time & TRS time have already been calculated so need to
-                                                                //force a recalculation - see below
+                                                                 //depart the departure time & TRS time have already been calculated so need to
+                                                                 //force a recalculation - see below
             Train.DepartureTimeSet = false; //force it to be recalculated based on new LastActionTime (if waiting to arrive this is false anyway)
             Train.PlotTrainWithNewBackgroundColour(28, clStationStopBackground, Display); //pale green
             if((Train.ActionVectorEntryPtr->FormatType == TimeLoc) && (Train.ActionVectorEntryPtr->ArrivalTime >= TDateTime(0)))
@@ -8294,8 +8294,8 @@ void __fastcall TInterface::PassRedSignalMenuItemClick(TObject *Sender)
         }
         Train.SignallerStopped = false;
         Train.StoppedAtLocation = false; //may have started at station in signaller mode and also at a red signal, in this case both SignallerStopped
-                                        //and StoppedAtLocation are set but the background colour stays pale green for station, not signal,
-                                        //since no need to alert the user
+                                         //and StoppedAtLocation are set but the background colour stays pale green for station, not signal,
+                                         //since no need to alert the user
         Train.StoppedAfterSPAD = false; //in case had been set
         Train.SPADFlag = false;
         Train.PlotTrainWithNewBackgroundColour(32, clNormalBackground, Display);
@@ -8320,8 +8320,8 @@ void __fastcall TInterface::StepForwardMenuItemClick(TObject *Sender)
         Train.SignallerStoppingFlag = false;
         Train.SignallerStopped = false;
         Train.StoppedAtLocation = false; //may have started at station in signaller mode and also at a red signal, in this case both SignallerStopped
-                                        //and StoppedAtLocation are set but the background colour stays pale green for station, not signal,
-                                        //since no need to alert the user
+                                         //and StoppedAtLocation are set but the background colour stays pale green for station, not signal,
+                                         //since no need to alert the user
         Train.StoppedAfterSPAD = false; //in case had been set
         Train.SPADFlag = false;
         Train.StepForwardFlag = true;
@@ -8613,7 +8613,7 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key,
 //note that use the OnKeyDown event rather than OnKeyPress as suggested by the user so that the CTRL & SHIFT keys can be taken into account
         if(!NonCTRLOrSHIFTKeyUpFlag) return;
         if((Key != VK_SHIFT) && (Key != VK_CONTROL)) NonCTRLOrSHIFTKeyUpFlag = false;  //don't want to set this for shift or control keys being pressed down
-        if(!DistanceBox->Focused() && !SpeedLimitBox->Focused() && !MileEdit->Focused() && !ChainEdit->Focused() && !YardEdit->Focused() && !MPHEdit2->Focused()) //added at v1.3.1 to prevent screen scrolling when these boxes have focus
+        if(!DistanceBox->Focused() && !SpeedLimitBox->Focused() && !MileEdit->Focused() && !ChainEdit->Focused() && !YardEdit->Focused() && !SpeedEditBox2->Focused()) //added at v1.3.1 to prevent screen scrolling when these boxes have focus
         {
             if((Key == 'w') || (Key == 'W') || (Key == VK_UP))
             {
@@ -8799,6 +8799,14 @@ void __fastcall TInterface::OpenHelpMenuItemClick(TObject *Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TInterface::RailwayWebSiteMenuItemClick(TObject *Sender)
+{
+    const UnicodeString Link = "http://www.railwayoperationsimulator.com";
+    ::ShellExecute(Handle, NULL, (Link).c_str(), NULL, NULL, SW_SHOWNORMAL);
+}
+
+//---------------------------------------------------------------------------
+
 void __fastcall TInterface::BlackBgndMenuItemClick(TObject *Sender)
 {
     try
@@ -8908,50 +8916,105 @@ void __fastcall TInterface::BlueBgndMenuItemClick(TObject *Sender)
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::MPHEdit1KeyUp(TObject *Sender, WORD &Key,
+void __fastcall TInterface::SpeedToggleButtonClick(TObject *Sender)
+{
+    if (SpeedTopLabel->Caption == "mph")
+    {
+        SpeedTopLabel->Caption = "km/h";
+        SpeedBottomLabel->Caption = "mph";
+    }
+    else
+    {
+        SpeedTopLabel->Caption = "mph";
+        SpeedBottomLabel->Caption = "km/h";
+    }
+    // swap values to match toggle state
+    UnicodeString SavedTopValue = SpeedEditBox->Text;
+    UnicodeString SavedBottomValue = SpeedVariableLabel->Caption;
+    SpeedEditBox->Text = SavedBottomValue;
+    SpeedVariableLabel->Caption = SavedTopValue;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::SpeedToggleButton2Click(TObject *Sender)
+{
+    if (SpeedTopLabel2->Caption == "mph")
+    {
+        SpeedTopLabel2->Caption = "km/h";
+        SpeedBottomLabel2->Caption = "mph";
+    }
+    else
+    {
+        SpeedTopLabel2->Caption = "mph";
+        SpeedBottomLabel2->Caption = "km/h";
+    }
+    // swap values to match toggle state
+    UnicodeString SavedTopValue = SpeedEditBox2->Text;
+    UnicodeString SavedBottomValue = SpeedVariableLabel2->Caption;
+    SpeedEditBox2->Text = SavedBottomValue;
+    SpeedVariableLabel2->Caption = SavedTopValue;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::SpeedEditBoxKeyUp(TObject *Sender, WORD &Key,
                                           TShiftState Shift)
 {
     try
     {
-        TrainController->LogEvent("MPHEdit1KeyUp," + AnsiString(Key));
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPHEdit1KeyUp," + AnsiString(Key));
+        TrainController->LogEvent("SpeedEditBoxKeyUp," + AnsiString(Key));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SpeedEditBoxKeyUp," + AnsiString(Key));
         bool ErrorFlag = false, TooBigFlag = false;
-        if(MPHEdit1->Text.Length() > 0)
+        if(SpeedEditBox->Text.Length() > 0)
         {
-            if(MPHEdit1->Text.Length() > 5)
+            if(SpeedEditBox->Text.Length() > 5)
             {
                 TooBigFlag = true;
             }
-            for(int x=1; x<=MPHEdit1->Text.Length(); x++)
+            for(int x=1; x<=SpeedEditBox->Text.Length(); x++)
             {
-                if((MPHEdit1->Text[x] < '0') || (MPHEdit1->Text[x] > '9'))
+                if((SpeedEditBox->Text[x] < '0') || (SpeedEditBox->Text[x] > '9'))
                 {
-                    KPHVariableLabel1->Caption = "Entry error";
+                    SpeedVariableLabel->Caption = "Entry error";
                     ErrorFlag = true;
                     break;
                 }
                 if(TooBigFlag)
                 {
-                    KPHVariableLabel1->Caption = "Too big";
+                    SpeedVariableLabel->Caption = "Too big";
                     break;
                 }
             }
             if(!ErrorFlag && !TooBigFlag)
             {
-                int MPH = MPHEdit1->Text.ToInt();
-                int KPH = (MPH * 1.609344) + 0.5;
-                KPHVariableLabel1->Caption = AnsiString(KPH);
+                /*
+                1 mph =  1.609344 km/h
+                1 km/h = 0.621371 mph
+                */
+                if (SpeedTopLabel->Caption == "mph")
+                {
+                    // do mph-to-km/h conversion
+                    int MPH = SpeedEditBox->Text.ToInt();
+                    int KPH = (MPH * 1.609344) + 0.5;
+                    SpeedVariableLabel->Caption = UnicodeString(KPH);
+            }
+                else
+                {
+                    // do km/h-to-mph conversion
+                    int KPH = SpeedEditBox->Text.ToInt();
+                    int MPH = (KPH * 0.621371) + 0.5;
+                    SpeedVariableLabel->Caption = UnicodeString(MPH);
+        }
             }
         }
         else
         {
-            KPHVariableLabel1->Caption = "";
+            SpeedVariableLabel->Caption = "";
         }
         Utilities->CallLogPop(1865);
     }
     catch (const EConvertError &ec) //thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash
     {
-        KPHVariableLabel1->Caption = "Entry error";
+        SpeedVariableLabel->Caption = "Entry error";
     }
     catch (const Exception &e)
     {
@@ -8961,50 +9024,85 @@ void __fastcall TInterface::MPHEdit1KeyUp(TObject *Sender, WORD &Key,
 
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::HPEditKeyUp(TObject *Sender, WORD &Key,
+void __fastcall TInterface::PowerToggleButtonClick(TObject *Sender)
+{
+    if (PowerTopLabel->Caption == "HP")
+    {
+        PowerTopLabel->Caption = "kW";
+        PowerBottomLabel->Caption = "HP";
+    }
+    else
+    {
+        PowerTopLabel->Caption = "HP";
+        PowerBottomLabel->Caption = "kW";
+    }
+    // swap values to match toggle state
+    UnicodeString SavedTopValue = PowerEditBox->Text;
+    UnicodeString SavedBottomValue = PowerVariableLabel->Caption;
+    PowerEditBox->Text = SavedBottomValue;
+    PowerVariableLabel->Caption = SavedTopValue;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::PowerEditBoxKeyUp(TObject *Sender, WORD &Key,
                                         TShiftState Shift)
 {
     try
     {
-        TrainController->LogEvent("HPEditKeyUp," + AnsiString(Key));
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",HPEditKeyUp," + AnsiString(Key));
+        TrainController->LogEvent("PowerEditBoxKeyUp," + AnsiString(Key));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PowerEditBoxKeyUp," + AnsiString(Key));
         bool ErrorFlag = false, TooBigFlag = false;
-        if(HPEdit->Text.Length() > 0)
+        if(PowerEditBox->Text.Length() > 0)
         {
-            if(HPEdit->Text.Length() > 8)
+            if(PowerEditBox->Text.Length() > 8)
             {
                 TooBigFlag = true;
             }
-            for(int x=1; x<=HPEdit->Text.Length(); x++)
+            for(int x=1; x<=PowerEditBox->Text.Length(); x++)
             {
-                if((HPEdit->Text[x] < '0') || (HPEdit->Text[x] > '9'))
+                if((PowerEditBox->Text[x] < '0') || (PowerEditBox->Text[x] > '9'))
                 {
-                    KWVariableLabel->Caption = "Entry error";
+                    PowerVariableLabel->Caption = "Entry error";
                     ErrorFlag = true;
                     break;
                 }
                 if(TooBigFlag)
                 {
-                    KWVariableLabel->Caption = "Too big";
+                    PowerVariableLabel->Caption = "Too big";
                     break;
                 }
             }
             if(!ErrorFlag && !TooBigFlag)
             {
-                int HP = HPEdit->Text.ToInt();
-                int KW = (HP * 0.745699872) + 0.5;
-                KWVariableLabel->Caption = AnsiString(KW);
+                /*
+                1 kW = 1.340482574 HP
+                1 HP = 0.745699872 kW
+                */
+                if (PowerTopLabel->Caption == "HP")
+                {
+                    // do HP-to-kW conv
+                    int HP = PowerEditBox->Text.ToInt();
+                    int KW = (HP * 0.745699872) + 0.5;
+                    PowerVariableLabel->Caption = UnicodeString(KW);
+            }
+                else
+                {
+                    // do kW-to-HP conv
+                    int KW = PowerEditBox->Text.ToInt();
+                    int HP = (KW * 1.340482574) + 0.5;
+                    PowerVariableLabel->Caption = UnicodeString(HP);
+        }
             }
         }
         else
         {
-            KWVariableLabel->Caption = "";
+            PowerVariableLabel->Caption = "";
         }
         Utilities->CallLogPop(1868);
     }
     catch (const EConvertError &ec) //thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash
     {
-        KWVariableLabel->Caption = "Entry error";
+        PowerVariableLabel->Caption = "Entry error";
     }
     catch (const Exception &e)
     {
@@ -9013,50 +9111,65 @@ void __fastcall TInterface::HPEditKeyUp(TObject *Sender, WORD &Key,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TInterface::MPHEdit2KeyUp(TObject *Sender, WORD &Key,
+void __fastcall TInterface::SpeedEditBox2KeyUp(TObject *Sender, WORD &Key,
                                           TShiftState Shift)
 {
     try
     {
-        TrainController->LogEvent("MPHEdit2KeyUp," + AnsiString(Key));
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPHEdit2KeyUp," + AnsiString(Key));
+        TrainController->LogEvent("SpeedEditBox2KeyUp," + AnsiString(Key));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SpeedEditBox2KeyUp," + AnsiString(Key));
         bool ErrorFlag = false, TooBigFlag = false;
-        if(MPHEdit2->Text.Length() > 0)
+        if(SpeedEditBox2->Text.Length() > 0)
         {
-            if(MPHEdit2->Text.Length() > 5)
+            if(SpeedEditBox2->Text.Length() > 5)
             {
                 TooBigFlag = true;
             }
-            for(int x=1; x<=MPHEdit2->Text.Length(); x++)
+            for(int x=1; x<=SpeedEditBox2->Text.Length(); x++)
             {
-                if((MPHEdit2->Text[x] < '0') || (MPHEdit2->Text[x] > '9'))
+                if((SpeedEditBox2->Text[x] < '0') || (SpeedEditBox2->Text[x] > '9'))
                 {
-                    KPHVariableLabel2->Caption = "Entry error";
+                    SpeedVariableLabel2->Caption = "Entry error";
                     ErrorFlag = true;
                     break;
                 }
                 if(TooBigFlag)
                 {
-                    KPHVariableLabel2->Caption = "Too big";
+                    SpeedVariableLabel2->Caption = "Too big";
                     break;
                 }
             }
             if(!ErrorFlag && !TooBigFlag)
             {
-                int MPH = MPHEdit2->Text.ToInt();
-                int KPH = (MPH * 1.609344) + 0.5;
-                KPHVariableLabel2->Caption = AnsiString(KPH);
+                /*
+                1 mph =  1.609344 km/h
+                1 km/h = 0.621371 mph
+                */
+                if (SpeedTopLabel2->Caption == "mph")
+                {
+                    // do mph-to-km/h conversion
+                    int MPH = SpeedEditBox2->Text.ToInt();
+                    int KPH = (MPH * 1.609344) + 0.5;
+                    SpeedVariableLabel2->Caption = AnsiString(KPH);
+            }
+                else
+                {
+                    // do km/h-to-mph conversion
+                    int KPH = SpeedEditBox2->Text.ToInt();
+                    int MPH = (KPH * 0.621371) + 0.5;
+                    SpeedVariableLabel2->Caption = AnsiString(MPH);
+        }
             }
         }
         else
         {
-            KPHVariableLabel2->Caption = "";
+            SpeedVariableLabel2->Caption = "";
         }
         Utilities->CallLogPop(1866);
     }
     catch (const EConvertError &ec) //thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash
     {
-        KPHVariableLabel2->Caption = "Entry error";
+        SpeedVariableLabel2->Caption = "Entry error";
     }
     catch (const Exception &e)
     {
@@ -9544,7 +9657,7 @@ void TInterface::ClearandRebuildRailway(int Caller) //now uses HiddenScreen to h
     }
     TextHandler->RebuildFromTextVector(1, HiddenDisplay);
     Track->RebuildTrack(4, HiddenDisplay, (Level1Mode != OperMode)); //Need to plot track after text since text not transparent.  (Level1Mode != OperMode)
-                                                                    //plots both point fillets for all but OperMode & plots closed (to trains) LCs (in
+                                                                     //plots both point fillets for all but OperMode & plots closed (to trains) LCs (in
 
 
 
@@ -10496,8 +10609,8 @@ void TInterface::SetLevel2TrackMode(int Caller)
 
     case TrackSelecting:
         if(!SelectionValid) ResetSelectRect();  //so a viewpoint change before a new SelectRect chosen doesn't redisplay
-                                               //the old SelectRect (only called when entered from SelectMenuItemClick, & not from
-                                               //ReselectMenuItemClick)
+                                                //the old SelectRect (only called when entered from SelectMenuItemClick, & not from
+                                                //ReselectMenuItemClick)
         InfoPanel->Visible = true;
         InfoPanel->Caption = "SELECTING:  Select area - click left mouse && drag";
         SelectMenuItem->Enabled = false;
@@ -11240,7 +11353,7 @@ void TInterface::TrackTrainFloat(int Caller)
             }
         } // if(ActiveFoundFlag)
         else if(InactiveTrackFoundFlag) //inactive element but no active element,
-                                       //i.e. concourse or non-station name at a blank element
+                                        //i.e. concourse or non-station name at a blank element
         {
             ShowTrackFloatFlag = true;
             if(InactiveTrackElement.TrackType != Parapet)
@@ -11504,7 +11617,7 @@ void TInterface::TrackTrainFloat(int Caller)
         //but, top may now be off the top of the screen, if so position at the top of the screen, as always need to see the top, if have to
         //lose something then it's best to be from the bottom
         if(Top < 30) //use 30 instead of MainScreen->Top [95] as top can go off MainScreen providing it doesn't reach the information panel, as that would
-                    //obscure the window
+                     //obscure the window
         {
             Top = 30;
         }
@@ -11577,7 +11690,7 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
                 Track->RouteFlashFlag = false;
                 RevertToOriginalRouteSelector(7);
                 ClearandRebuildRailway(18); //because using ConstructRoute->RouteFlash.PlotOriginal() can plot wrong point fillet as well as
-                                           //original (if proposed route would change point). With this can dispense with ConstructRoute->RouteFlash.PlotOriginal()
+                                            //original (if proposed route would change point). With this can dispense with ConstructRoute->RouteFlash.PlotOriginal()
                 Utilities->CallLogPop(75);
                 return;
             }
@@ -11749,7 +11862,7 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
                     }
                     int RouteNumber;
                     AllRoutes->GetRouteTypeAndNumber(24, TVPos, 0, RouteNumber); //use 0 for LinkPos, could be 1 or 0 as only a single track element
-                                                                                //don't need returned value of RouteType
+                                                                                 //don't need returned value of RouteType
                     if(RouteNumber > -1) //if train crashed then there won't be a routenumber
                     {
                         AllRoutes->GetFixedRouteAt(196, RouteNumber).SetRouteSignals(8);
@@ -12217,7 +12330,7 @@ void TInterface::ResetAll(int Caller)
     TimetableTitle = "";
     SetCaption(1);
     CreateEditTTFileName = ""; //set to null to allow a check during error file saving, if not null save the tt being edited to the file
-                              //added for Beta v0.2b
+                               //added for Beta v0.2b
     CreateEditTTTitle = ""; //as above
     AllRoutes->NextRouteID = 0;
     TTrain::NextTrainID = 0; //reset to 0 whenever enter operating mode

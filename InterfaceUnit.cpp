@@ -7432,7 +7432,7 @@ void __fastcall TInterface::ZoomButtonClick(TObject *Sender)
             Display->ZoomOutFlag = false; //reset this after level modes called so gap flash stays set if set to begin with
             SetPausedOrZoomedInfoCaption(1);
             ClearandRebuildRailway(43); //need to call this after ZoomOutFlag reset to display track, even if Clearand... already called
-                                        //earlier during level mode setting
+                                        //earlier during level mode setting - because until ZoomOutFlag reset PlotOutput plots nothing
         }
         else //set zoomed out view
         {
@@ -9621,14 +9621,22 @@ void __fastcall TInterface::FormResize(TObject *Sender)   //new at v2.1.0
             HiddenScreen->Height = MainScreen->Height;
             PerformancePanel->Top = MainScreen->Top + MainScreen->Height - PerformancePanel->Height;
             PerformancePanel->Left = MainScreen->Left;
-            //ScreenRightButton->Left = MainScreen->Width + MainScreen->Left;
-            //ScreenLeftButton->Left = MainScreen->Width + MainScreen->Left;
-            //ScreenUpButton->Left = MainScreen->Width + MainScreen->Left;
-            //ScreenDownButton->Left = MainScreen->Width + MainScreen->Left;
+            //ScreenRightButton->Left = MainScreen->Width + MainScreen->Left;        removed after PositionalPanel
+            //ScreenLeftButton->Left = MainScreen->Width + MainScreen->Left;         insatalled containing these buttons.
+            //ScreenUpButton->Left = MainScreen->Width + MainScreen->Left;           Prior to this had compatibility issues between
+            //ScreenDownButton->Left = MainScreen->Width + MainScreen->Left;         Windows 7 & Windows 10
             //HomeButton->Left = MainScreen->Width + MainScreen->Left;
             //NewHomeButton->Left = MainScreen->Width + MainScreen->Left;
             //ZoomButton->Left = MainScreen->Width + MainScreen->Left;
-            ClearandRebuildRailway(70);
+            if(!Display->ZoomOutFlag)
+                {
+                    ClearandRebuildRailway(70);
+                }
+            else
+                {
+                Display->ClearDisplay(11);
+                Track->PlotSmallRailway(9, Display);
+                }
         }
     }
     catch (const Exception &e)

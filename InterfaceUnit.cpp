@@ -9621,13 +9621,13 @@ void __fastcall TInterface::FormResize(TObject *Sender)   //new at v2.1.0
             HiddenScreen->Height = MainScreen->Height;
             PerformancePanel->Top = MainScreen->Top + MainScreen->Height - PerformancePanel->Height;
             PerformancePanel->Left = MainScreen->Left;
-            ScreenRightButton->Left = MainScreen->Width + MainScreen->Left;
-            ScreenLeftButton->Left = MainScreen->Width + MainScreen->Left;
-            ScreenUpButton->Left = MainScreen->Width + MainScreen->Left;
-            ScreenDownButton->Left = MainScreen->Width + MainScreen->Left;
-            HomeButton->Left = MainScreen->Width + MainScreen->Left;
-            NewHomeButton->Left = MainScreen->Width + MainScreen->Left;
-            ZoomButton->Left = MainScreen->Width + MainScreen->Left;
+            //ScreenRightButton->Left = MainScreen->Width + MainScreen->Left;
+            //ScreenLeftButton->Left = MainScreen->Width + MainScreen->Left;
+            //ScreenUpButton->Left = MainScreen->Width + MainScreen->Left;
+            //ScreenDownButton->Left = MainScreen->Width + MainScreen->Left;
+            //HomeButton->Left = MainScreen->Width + MainScreen->Left;
+            //NewHomeButton->Left = MainScreen->Width + MainScreen->Left;
+            //ZoomButton->Left = MainScreen->Width + MainScreen->Left;
             ClearandRebuildRailway(70);
         }
     }
@@ -12348,13 +12348,13 @@ void TInterface::ResetAll(int Caller)
     MainScreen->Canvas->Font->Assign(TempFont);
     PerformancePanel->Top = MainScreen->Top + MainScreen->Height - PerformancePanel->Height;
     PerformancePanel->Left = MainScreen->Left;
-    ScreenRightButton->Left = MainScreen->Width + MainScreen->Left;  //Button values changed at v2.1.0 to allow for screen resizing
-    ScreenLeftButton->Left = ScreenRightButton->Left;
-    ScreenUpButton->Left = ScreenRightButton->Left;
-    ScreenDownButton->Left = ScreenRightButton->Left;
-    HomeButton->Left = ScreenRightButton->Left;
-    NewHomeButton->Left = ScreenRightButton->Left;
-    ZoomButton->Left = ScreenRightButton->Left;
+    //ScreenRightButton->Left = MainScreen->Width + MainScreen->Left;  //Button values changed at v2.1.0 to allow for screen resizing
+    //ScreenLeftButton->Left = ScreenRightButton->Left;
+    //ScreenUpButton->Left = ScreenRightButton->Left;
+    //ScreenDownButton->Left = ScreenRightButton->Left;
+    //HomeButton->Left = ScreenRightButton->Left;
+    //NewHomeButton->Left = ScreenRightButton->Left;
+    //ZoomButton->Left = ScreenRightButton->Left;
     DevelopmentPanel->Top = MainScreen->Top + MainScreen->Height - DevelopmentPanel->Height;
 
     delete TempFont;
@@ -14695,7 +14695,17 @@ void TInterface::TestFunction()
 {
     try
     {
-    ShowMessage(UnicodeString(Interface->Left + Interface->Width) + "  " + UnicodeString(Interface->Left + MainScreen->Left + MainScreen->Width));
+    ShowMessage(
+        "Interface->Left + Interface->Width " + UnicodeString(Interface->Left + Interface->Width) +
+        "\nInterface->Left + MainScreen->Left + MainScreen->Width " +
+            UnicodeString(Interface->Left + MainScreen->Left + MainScreen->Width) +
+        "\n\nMainScreen->Width " + UnicodeString(MainScreen->Width) +
+        "\nMainScreen->Left " + UnicodeString(MainScreen->Left) +
+        " Right " + UnicodeString(MainScreen->Width + MainScreen->Left) +
+        "\n\nInterface->Width " + UnicodeString(Interface->Width) +
+        "\nInterface->Left " + UnicodeString(Interface->Left) +
+        "\n\nScreenRightButton->Left " + UnicodeString(ScreenRightButton->Left)
+        );
 //    throw Exception("Test exception");//test
 //    int zz = MissedTicks;
 //    MissedTicks = 0;

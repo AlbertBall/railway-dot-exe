@@ -524,6 +524,7 @@ __published:    // IDE-managed Components
     TButton *PowerToggleButton;
     TButton *SpeedToggleButton;
     TButton *SpeedToggleButton2;
+    TPanel *PositionalPanel;
 
     //menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);

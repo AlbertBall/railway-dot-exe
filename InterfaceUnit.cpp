@@ -11188,12 +11188,11 @@ void TInterface::TrackTrainFloat(int Caller)
         }
     }
 
-    AnsiString TrackFloat = "", TrainStatusFloat = "", TrainTTFloat = "", TrainExpectationFloat = "";
+    AnsiString TrackFloat = "", TrainStatusFloat = "", TrainTTFloat = "";
 
 //FloatingLabel->Visible = false;
 //FloatingLabel->Caption = "";
     bool ShowTrackFloatFlag = false, ShowTrainStatusFloatFlag = false, ShowTrainTTFloatFlag = false;
-    bool ShowTrainExpectationFloat = false;
     int HLoc, VLoc;
     Track->GetTrackLocsFromScreenPos(4, HLoc, VLoc, ScreenX, ScreenY);
 
@@ -11538,12 +11537,17 @@ void TInterface::TrackTrainFloat(int Caller)
                     TrainTTFloat = Train.FloatingTimetableString(0, Train.ActionVectorEntryPtr);
                 }
             }
+
             else if(Track->TrackElementAt(666, VecPos).TrackType == Continuation)
             //always give train information if a train present, but if not & either of train status or timetable info
             //selected then give next expected train to enter, or 'No trains expected'
             {
-                ShowTrainExpectationFloat = true;
-                TrainExpectationFloat = "No trains expected";
+                TrainStatusFloat = "No trains expected";
+                TrainTTFloat = "No timetable";
+                float EntrySpeed;
+                int LineSpeedLimit = Track->TrackElementAt(906, VecPos).SpeedLimit01; //speed only in 01 as a continuation
+                if(TrainStatusInfoOnOffMenuItem->Caption == "Hide Status") ShowTrainStatusFloatFlag = true;
+                if(TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable") ShowTrainTTFloatFlag = true;
                 if(!TrainController->ContinuationTrainExpectationMultiMap.empty())
                 {
                     TTrainController::TContinuationTrainExpectationMultiMapIterator CTEIt = TrainController->ContinuationTrainExpectationMultiMap.begin();
@@ -11556,15 +11560,52 @@ void TInterface::TrackTrainFloat(int Caller)
                         }
                         if(CTEIt != TrainController->ContinuationTrainExpectationMultiMap.end())
                         {
+                            TTrainDataEntry *TTDEPtr = CTEIt->second.TrainDataEntryPtr;
+                            AnsiString ServiceReferenceInfo = "";
+                        //   Repeat information
+                            if(TTDEPtr->NumberOfTrains > 1) //Service reference information
+                            {
+                                if(CTEIt->second.RepeatNumber == 0)
+                                {
+                                    if(CTEIt->second.HeadCode != TTDEPtr->ServiceReference) ServiceReferenceInfo = "\nFirst service of ref. " + TTDEPtr->ServiceReference;
+                                    else ServiceReferenceInfo = "\nFirst service";
+                                }
+                                else if(CTEIt->second.HeadCode == TTDEPtr->ServiceReference) ServiceReferenceInfo = "\nRepeat service no. " + AnsiString(CTEIt->second.RepeatNumber);
+                                else ServiceReferenceInfo = "\nRepeat service no. " + AnsiString(CTEIt->second.RepeatNumber) + " of ref. " + TTDEPtr->ServiceReference;
+                            }
+                            else
+                            {
+                                if(CTEIt->second.HeadCode != TTDEPtr->ServiceReference) ServiceReferenceInfo = "\nService reference " + TTDEPtr->ServiceReference;
+                            }
+                            if(TTDEPtr->ActionVector.at(0).SignallerControl) //entry at 0 is the start entry
+                            {
+                                SpecialStr = "\nTrain under signaller control";
+                                EntrySpeed  = TTDEPtr->SignallerSpeed;
+                                if(EntrySpeed > LineSpeedLimit) EntrySpeed = LineSpeedLimit;
+                            }
+                            else
+                            {
+                                EntrySpeed = TTDEPtr->StartSpeed;
+                                if(EntrySpeed > LineSpeedLimit) EntrySpeed = LineSpeedLimit;
+                            }
                             if((CTEIt->first + TDateTime(1.0/1440)) < TrainController->TTClockTime) //has to be at least 1 min late to show as late
                             {
                                 TDateTime TempTime = CTEIt->first; //need this because CTEIt points to a const object and shouldn't use FormatString on a const object
-                                TrainExpectationFloat = CTEIt->second.HeadCode + ": " + CTEIt->second.Description + '\n' + "delayed, was due at " + Utilities->Format96HHMM(TempTime);
+                                TrainStatusFloat = CTEIt->second.HeadCode + ": " + CTEIt->second.Description + ServiceReferenceInfo + "\nEntry speed " + AnsiString::FormatFloat(FormatNoDPStr, EntrySpeed)
+                                 + "km/h" + SpecialStr + "\nDelayed, was due at " + Utilities->Format96HHMM(TempTime);
                             }
                             else
                             {
                                 TDateTime TempTime = CTEIt->first; //need this because CTEIt points to a const object and shouldn't use FormatString on a const object
-                                TrainExpectationFloat = CTEIt->second.HeadCode + ": " + CTEIt->second.Description + '\n' + "expected at " + Utilities->Format96HHMM(TempTime);
+                                TrainStatusFloat = CTEIt->second.HeadCode + ": " + CTEIt->second.Description + ServiceReferenceInfo + "\nEntry speed " + AnsiString::FormatFloat(FormatNoDPStr, EntrySpeed)
+                                 + "km/h" + SpecialStr + "\nExpected at " + Utilities->Format96HHMM(TempTime);
+                            }
+                            if(TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")
+                            {
+                                if(!TTDEPtr->ActionVector.at(0).SignallerControl) //if signaller control there's no timetable & SpecialStr covers this
+                                {
+                                    TrainTTFloat = TrainController->ContinuationEntryFloatingTTString(0, TTDEPtr, CTEIt->second.RepeatNumber, CTEIt->second.IncrementalMinutes, CTEIt->second.IncrementalDigits);
+                                }
                             }
                         }
                     }
@@ -11575,23 +11616,15 @@ void TInterface::TrackTrainFloat(int Caller)
 
 //end of TrainFloat section
     AnsiString Caption;
-    if(!ShowTrackFloatFlag && !ShowTrainStatusFloatFlag && !ShowTrainTTFloatFlag && !ShowTrainExpectationFloat)
+    if(!ShowTrackFloatFlag && !ShowTrainStatusFloatFlag && !ShowTrainTTFloatFlag)
     {
         FloatingLabel->Visible = false;
         Utilities->CallLogPop(1485);
         return; //return with label invisible
     }
-    else if(!ShowTrackFloatFlag && !ShowTrainStatusFloatFlag && !ShowTrainTTFloatFlag && ShowTrainExpectationFloat)
-    {
-        Caption = TrainExpectationFloat;
-    }
-    else if(ShowTrackFloatFlag && !ShowTrainStatusFloatFlag && !ShowTrainTTFloatFlag && !ShowTrainExpectationFloat)
+    else if(ShowTrackFloatFlag && !ShowTrainStatusFloatFlag && !ShowTrainTTFloatFlag)
     {
         Caption = TrackFloat;
-    }
-    else if(ShowTrackFloatFlag && !ShowTrainStatusFloatFlag && !ShowTrainTTFloatFlag && ShowTrainExpectationFloat)
-    {
-        Caption = TrainExpectationFloat + '\n' + '\n' + TrackFloat;
     }
     else if(!ShowTrackFloatFlag && ShowTrainStatusFloatFlag && !ShowTrainTTFloatFlag)
     {
@@ -11603,19 +11636,23 @@ void TInterface::TrackTrainFloat(int Caller)
     }
     else if(!ShowTrackFloatFlag && !ShowTrainStatusFloatFlag && ShowTrainTTFloatFlag)
     {
-        Caption = TrainTTFloat;
+        if(TrainStatusFloat == "No trains expected") Caption = TrainStatusFloat;
+        else Caption = TrainTTFloat;
     }
     else if(ShowTrackFloatFlag && !ShowTrainStatusFloatFlag && ShowTrainTTFloatFlag)
     {
-        Caption = TrainTTFloat + '\n' + '\n' + TrackFloat;
+        if(TrainStatusFloat == "No trains expected") Caption = TrainStatusFloat + '\n' + '\n' + TrackFloat;
+        else Caption = TrainTTFloat + '\n' + '\n' + TrackFloat;
     }
     else if(!ShowTrackFloatFlag && ShowTrainStatusFloatFlag && ShowTrainTTFloatFlag)
     {
-        Caption = TrainStatusFloat + '\n' + '\n' + TrainTTFloat;
+        if(TrainStatusFloat == "No trains expected") Caption = TrainStatusFloat;
+        else Caption = TrainStatusFloat + '\n' + '\n' + TrainTTFloat;
     }
     else if(ShowTrackFloatFlag && ShowTrainStatusFloatFlag && ShowTrainTTFloatFlag)
     {
-        Caption = TrainStatusFloat + '\n' + '\n' + TrainTTFloat + '\n' + '\n' + TrackFloat;
+        if(TrainStatusFloat == "No trains expected") Caption = TrainStatusFloat + '\n' + '\n' + TrackFloat;
+        else Caption = TrainStatusFloat + '\n' + '\n' + TrainTTFloat + '\n' + '\n' + TrackFloat;
     }
 
     int Left = ScreenX + MainScreen->Left + 16; //so lhs of window is one element to the right of the mouse pos
@@ -14812,3 +14849,4 @@ Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file posit
 */
 
 //---------------------------------------------------------------------------
+

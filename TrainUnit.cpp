@@ -6607,6 +6607,133 @@ TTrain &TTrainController::TrainVectorAtIdent(int Caller, int TrainID)
 }
 
 //---------------------------------------------------------------------------
+
+TDateTime TTrainController::GetControllerTrainTime(int Caller, TDateTime Time, int RepeatNumber, int IncrementalMinutes)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetControllerTrainTime," + AnsiString(RepeatNumber) + "," + Utilities->Format96HHMMSS(Time));
+    TDateTime RepeatTime = TrainController->GetRepeatTime(1, Time, RepeatNumber, IncrementalMinutes);
+    Utilities->CallLogPop(9998);
+    return RepeatTime;
+}
+
+//---------------------------------------------------------------------------
+
+AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrainDataEntry *TTDEPtr, int RepNum, int IncMins, int IncDig)
+//Enter with Ptr pointing to first action to be listed (i.e. next action)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ContinuationEntryFloatingTTString" + "," + TTDEPtr->HeadCode);
+    AnsiString RetStr = "", PartStr = "";
+    int Count = 0;
+    TActionVectorIterator Ptr = TTDEPtr->ActionVector.begin();
+    Ptr--; //because incremented at start of loop
+    do
+    {
+        Ptr++;
+        if((Ptr->Command != "") && (Ptr->Command[1] == 'S'))
+        {
+            continue;  //move past the starting entry
+        }
+        if((Ptr->FormatType == Repeat) || Ptr >= TTDEPtr->ActionVector.end()) break;
+        if(Ptr->SignallerControl)
+        {
+            RetStr = "Train under signaller control";
+            break;
+        }
+        if(Ptr->FormatType == TimeTimeLoc)
+        {
+            if(Ptr->ArrivalTime == Ptr->DepartureTime)
+            {
+                PartStr = Utilities->Format96HHMM(GetControllerTrainTime(0, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive & depart from " + Ptr->LocationName;
+            }
+            else
+            {
+                PartStr = Utilities->Format96HHMM(GetControllerTrainTime(1, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive at " + Ptr->LocationName + '\n' +
+                          Utilities->Format96HHMM(GetControllerTrainTime(2, Ptr->DepartureTime, RepNum, IncMins)) + ": Depart from " + Ptr->LocationName;
+                Count++; //because there are 2 entries
+            }
+        }
+        else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime != TDateTime(-1)))
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(3, Ptr->ArrivalTime, RepNum, IncMins)) + ": Arrive at " + Ptr->LocationName;
+        }
+        else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime == TDateTime(-1)))
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(4, Ptr->DepartureTime, RepNum, IncMins)) + ": Depart from " + Ptr->LocationName;
+        }
+        else if(Ptr->FormatType == PassTime) //new
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(5, Ptr->EventTime, RepNum, IncMins)) + ": Pass " + Ptr->LocationName;
+        }
+        else if(Ptr->Command == "Fns")
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(6, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " + TrainController->GetRepeatHeadCode(15, Ptr->OtherHeadCode, RepNum, IncDig) +
+                      " at " + Ptr->LocationName;
+        }
+        else if(Ptr->Command == "F-nshs")
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(7, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " + Ptr->NonRepeatingShuttleLinkHeadCode +
+                      " at " + Ptr->LocationName;
+        }
+        else if((Ptr->Command == "Fns-sh") && (RepNum < (TTDEPtr->NumberOfTrains - 1))) //not the last repeat number
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(8, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " + TrainController->GetRepeatHeadCode(16, Ptr->OtherHeadCode, RepNum+1, IncDig) +
+                      " at " + Ptr->LocationName; //use RepNum+1 because it's the repeat number of the NEXT shuttle service that is relevant
+        }
+        else if((Ptr->Command == "Fns-sh") && (RepNum >= (TTDEPtr->NumberOfTrains - 1))) //last repeat number
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(9, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " + Ptr->NonRepeatingShuttleLinkHeadCode, +" at " + Ptr->LocationName;
+        }
+        else if((Ptr->Command == "Frh-sh") && (RepNum < (TTDEPtr->NumberOfTrains - 1))) //not the last repeat number
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(10, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " + TrainController->GetRepeatHeadCode(17, Ptr->OtherHeadCode, RepNum+1, IncDig) +
+                      " at " + Ptr->LocationName; //use RepNum+1 because it's the repeat number of the NEXT shuttle service that is relevant
+        }
+        else if((Ptr->Command == "Frh-sh") && (RepNum >= (TTDEPtr->NumberOfTrains - 1))) //last repeat number
+        {
+            PartStr = "Terminate at " + Ptr->LocationName;
+        }
+        else if(Ptr->Command == "Frh")
+        {
+            PartStr = "Terminate at " + Ptr->LocationName;
+        }
+        else if(Ptr->Command == "Fer")
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(11, Ptr->EventTime, RepNum, IncMins)) + ": Exit railway" + TrainController->GetExitLocationAndAt(2, Ptr->ExitList);
+        }
+        else if(Ptr->Command == "Fjo")
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(12, Ptr->EventTime, RepNum, IncMins)) + ": Join " + TrainController->GetRepeatHeadCode(18, Ptr->OtherHeadCode, RepNum, IncDig) + " at " + Ptr->LocationName;
+        }
+        else if(Ptr->Command == "jbo")
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(13, Ptr->EventTime, RepNum, IncMins)) + ": Joined by " + TrainController->GetRepeatHeadCode(19, Ptr->OtherHeadCode, RepNum, IncDig) + " at " + Ptr->LocationName;
+        }
+        else if(Ptr->Command == "fsp")
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(14, Ptr->EventTime, RepNum, IncMins)) + ": Front split to " + TrainController->GetRepeatHeadCode(20, Ptr->OtherHeadCode, RepNum, IncDig) + " at " + Ptr->LocationName;
+        }
+        else if(Ptr->Command == "rsp")
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(15, Ptr->EventTime, RepNum, IncMins)) + ": Rear split to " + TrainController->GetRepeatHeadCode(21, Ptr->OtherHeadCode, RepNum, IncDig) + " at " + Ptr->LocationName;
+        }
+        else if(Ptr->Command == "cdt")
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(16, Ptr->EventTime, RepNum, IncMins)) + ": Change direction at " + Ptr->LocationName;
+        }
+        if(RetStr != "") RetStr = RetStr + '\n' + PartStr;
+        else RetStr = PartStr;
+        Count++;
+    }
+    while(Ptr < TTDEPtr->ActionVector.end() && (Count < 33) && ((Ptr->Command == "") || ((Ptr->Command != "") && (Ptr->Command[1] != 'F'))));
+//limit of 33 allows a max of 34 entries (may have gone from 32 to 34 because of a TimeTimeLoc), which with track and train status gives
+//a max of 48 lines, at 13 pixels each, = 624 pixels & screen height has 641 so will fit comfortably.  Also 34 timetable entries is as far
+//forward as anyone should wish to see without looking at the full timetable
+    Utilities->CallLogPop(9999);
+    return RetStr;
+}
+
+//---------------------------------------------------------------------------
+
 //$$$$$$$$$$$$$$$$$$$$$$ Start of Timetable Functions $$$$$$$$$$$$$$$$$$$$$$$$
 /*
 
@@ -11555,13 +11682,16 @@ bool TTrainController::CheckSessionContinuationAutoSigEntries(int Caller, std::i
 //---------------------------------------------------------------------------
 
 /*
-class TContinuationTrainExpectationEntry//for expected trains at continuation entries
+    class TContinuationTrainExpectationEntry  //for expected trains at continuation entries
     {
-    public:
-    int VectorPosition;
-    int RepeatNumber;
-    TTrainDataEntryPtr *TrainDataEntry;
-    AnsiString HeadCode;
+public:
+        AnsiString Description; ///< service description
+        AnsiString HeadCode; ///< service headcode
+        int RepeatNumber; ///< service RepeatNumber
+        int IncrementalMinutes; ///< Repeat separation in minutes
+        int IncrementalDigits; ///< Repeat headcode separation
+        int VectorPosition; ///< TrackVectorPosition for the continuation element
+        TTrainDataEntry *TrainDataEntryPtr; ///< points to the service entry in the timetable's TrainDataVector
     };
 
 
@@ -11591,6 +11721,13 @@ void TTrainController::BuildContinuationTrainExpectationMultiMap(int Caller)
                 CTEEntry.TrainDataEntryPtr = &TDEntry; //retains this value for all repeats
                 CTEEntry.HeadCode = TDEntry.HeadCode;
                 CTEEntry.Description = TDEntry.Description;
+                CTEEntry.IncrementalMinutes = 0;
+                CTEEntry.IncrementalDigits = 0;
+                if(AVLastEntry.FormatType == Repeat)
+                {
+                    CTEEntry.IncrementalMinutes = AVLastEntry.RearStartOrRepeatMins; //retains this value or 0 for all repeats
+                    CTEEntry.IncrementalDigits = AVLastEntry.FrontStartOrRepeatDigits; //retains this value or 0 for all repeats
+                }
                 CTEMMP.first = AVFirstEntry.EventTime;
                 CTEMMP.second = CTEEntry;
                 ContinuationTrainExpectationMultiMap.insert(CTEMMP); //base entry

@@ -101,6 +101,7 @@ public:
 };
 
 typedef std::vector<TActionVectorEntry> TActionVector; ///< contains all actions for a single train
+typedef TActionVector::iterator TActionVectorIterator; ///< iterator
 
 //---------------------------------------------------------------------------
 
@@ -535,6 +536,8 @@ public:
         AnsiString Description; ///< service description
         AnsiString HeadCode; ///< service headcode
         int RepeatNumber; ///< service RepeatNumber
+        int IncrementalMinutes; ///< Repeat separation in minutes
+        int IncrementalDigits; ///< Repeat headcode separation
         int VectorPosition; ///< TrackVectorPosition for the continuation element
         TTrainDataEntry *TrainDataEntryPtr; ///< points to the service entry in the timetable's TrainDataVector
     };
@@ -594,6 +597,8 @@ public:
 
 //functions defined in .cpp file
 
+/// Build string for use in floating window for expected trains at continuations
+    AnsiString ContinuationEntryFloatingTTString(int Caller, TTrainDataEntry *TTDEPtr, int RepeatNumber, int IncrementalMinutes, int IncrementalDigits);
 /// Check all timetable names in ExitList, if all same return " at [name]" else
 /// return "".  Used in floating label for Next action and in formatted timetables.
     AnsiString GetExitLocationAndAt(int Caller, TExitList &ExitList) const;
@@ -670,6 +675,8 @@ public:
     bool TimetableIntegrityCheck(int Caller, char *FileName, bool GiveMessages, bool CheckLocationsExistInRailway);
 /// Return the track entry link (Link[]) array position for the given train on track element at track vector position TrackVectorNumber
     int EntryPos(int Caller, int TrainIDIn, int TrackVectorNumber);
+/// Get the interval betwqeen repeats
+    TDateTime GetControllerTrainTime(int Caller, TDateTime Time, int RepeatNumber, int IncrementalMinutes);
 /// Return the repeating service time
     TDateTime TTrainController::GetRepeatTime(int Caller, TDateTime BasicTime, int RepeatNumber, int IncMinutes);
 /// Return a reference to the train at position VecPos in the TrainVector, carries out range checking on VecPos

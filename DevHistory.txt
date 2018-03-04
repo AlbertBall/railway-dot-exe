@@ -8,7 +8,7 @@ The structure is as follows:-
 1)  List of suggestions from users for future changes.  Some are more practicable than others but I have kept them all.
 2)  My own list of thoughts for change proposals
 3)  List of problems & odd behaviour for which I don't yet have solutions
-4)  Changes made for each successive version releases
+4)  Changes made for each successive version release
 5)  Checklists for changing versions and adding new projects to the website (note these are now well out of date)
 6)  Miscellaneous notes
 7)  List of 'NEXT' values for the most-often used caller IDs
@@ -54,14 +54,12 @@ Have a 'Touch mode' where when activated the buttons are bigger for easier opera
 -----------------------
 
 Suggestions from Bjorn - email of 20/10/12:
-1) Manual Stop Signals (blue), as in, being able to set them manually, i.e. for in stations where the whole platform can be used, or only a part of the platform. As in the
-Netherlands it's common tho have "Stop" signals halfway down the platform to allow two opposing trains to use it as if it were 2 seperate platforms... If you catch my 
-drift. and by using a special stop (BLUE) signal, one can split a track... Also another idea I had was to allow a stretch of track to have signals. Those blue signals 
-kinda function like an "end-of-track" signal... but can also be used to signal "track not in use".
-2) Being able to have 1 track to have signals in both directions, to conserve space... now one can only have one signal on a track in either direction, but being able to 
-put both signals on one stretch of track would not only save space, but also would be more realistic as signals are usually placed in pairs (up/down)...
-3) The ability to automatically set a track from one point to another without having to set all the signals in between, just a starting point and an endpoint. And then 
-that the program follows wither the preferred directions to create the best available route or that it just looks for the shortest route possible from point A to point B.
+1) Manual Stop Signals (blue), as in, being able to set them manually, i.e. for in stations where the whole platform can be used, or only a part of the platform. As in the Netherlands it's common tho have "Stop" signals halfway down the platform to allow two opposing trains to use it as if it were 2 seperate platforms... If you catch my drift. and by using a special stop (BLUE) signal, one can split a track... Also another idea I had was to allow a stretch of track to have signals. Those blue signals kinda function like an "end-of-track" signal... but can also be used to signal "track not in use".
+2) Being able to have 1 track to have signals in both directions, to conserve space... now one can only have one signal on a track in either direction, but being able to put both signals on one stretch of track would not only save space, but also would be more realistic as signals are usually placed in pairs (up/down)...
+3) The ability to automatically set a track from one point to another without having to set all the signals in between, just a starting point and an endpoint. And then that the program follows wither the preferred directions to create the best available route or that it just looks for the shortest route possible from point A to point B.
+
+-----------------------
+
 Suggestion from Josh Coupe (email ~21/10/12):  Useful if could advance the timetable clock and have all trains where they would most likely be at that time.
 
 -----------------------
@@ -78,7 +76,7 @@ Suggestion from Keith Hazelton (Feature Requests Forum 02/04/12):  Have the abil
 
 -----------------------
 
-Sam Wainwright email received 09/02/12: If a shunt signal is placed in the same direction as the main running signals, it is necessary to set a route through the shunt signal as well. Would it be possible to set a route from one running signal to the next with any shunt signals n the same direction in between clearing automatically?
+Sam Wainwright email received 09/02/12: If a shunt signal is placed in the same direction as the main running signals, it is necessary to set a route through the shunt signal as well. Would it be possible to set a route from one running signal to the next with any shunt signals in the same direction in between clearing automatically?
 
 -----------------------
 
@@ -94,13 +92,7 @@ Add int Left, Top in ClearandRebuildRailway before Track->GetScreenPositionsFrom
 
 With single element routes being automatically cancelled and last element being points can set another route in other direction before train reaches it.  Have to be quick and unlikely in practice, but consider preventing
 
-Points to emerge from operating Beaver Lake:  If train cancels a route by moving in wrong direction issue a SPAD risk (like approach locking) and change log accordingly.  Useful if could truncate an automatic route behind a train as well as in front.  When cancel an automatic route that links to a non-automatic route try to either include the signal(s) with the other route (problem if first element of that route is a bridge then can't cancel it and can't set another route to link to it) or cancel adjacent non-automatic routes as well - that's probably easier. 
-
-When make window smaller there are no sidebars, investigate why not, probably something simple
-
-Consider adding the status & timetable information (if selected in menu) for expected trains.
-
-Consider allowing routes to be cancelled under trains, no impact if train stopped or approaching end-of-route red signal, but usual approach warning (or maybe '...approaching clear signal...') for moving trains. +See Beaver Lake above.
+Points to emerge from operating Beaver Lake:  If train cancels a route by moving in wrong direction issue a SPAD risk (like approach locking) and change log accordingly.  Useful if could truncate an automatic route behind a train as well as in front [done at v2.1.0].  When cancel an automatic route that links to a non-automatic route try to either include the signal(s) with the other route (problem if first element of that route is a bridge then can't cancel it and can't set another route to link to it) or cancel adjacent non-automatic routes as well - that's probably easier. 
 
 Times beyond 24hrs show as hh:mm:ss in .csv formatted timetables but not in .txt version (see Sheffield)
 
@@ -122,7 +114,7 @@ VERSION CHANGES AFTER v2.0.0 Beta for v2.1.0
 
 * = mention on user website
 
-*mention a) to j) as a group - good programming practice changes & improved readability (credit due to SS)
+*mention a) to l) as a group - good programming practice changes & improved readability (credit due to SS)
 a) Change the way version info is retrieved (internal fix - no user-facing changes)
 b) Remove beta tag (6 months have passed)
 c) Change the version numbering format to use Semantic versioning (see https://semver.org/)
@@ -144,7 +136,7 @@ n) Corrected Moric1998 error (sent in 24/03/16), corrected in TrainUnit at 'if(C
 
 *p) Corrected the problem when presetting automatic signal routes, where a route could be set across a diagonal fouled by adjacent track (i.e. a track element with a diagonal link that touched another track element's diagonal link).  Added a new function to check for such conflicts - PresetAutoRouteDiagonalFouledByTrack
 
-*q) Corrected Jordy de Koning's error above, so that track speed limits are limited to the value in TTrain::MaximumSpeedLimit, which is 400km/h.  These are limited for new settings and when loading existing railway and session files where filed values are >400km/h
+q) Corrected Jordy de Koning's error above, so that track speed limits are limited to the value in TTrain::MaximumSpeedLimit, which is 400km/h.  These are limited for new settings and when loading existing railway and session files where filed values are >400km/h
 
 *r) Corrected signal clearing behaviour on locked autosignal routes exiting at a Continuation - signals continued to clear in sequence in spite of the route being locked.  Corrected so that all now remain at red.
 
@@ -155,6 +147,8 @@ n) Corrected Moric1998 error (sent in 24/03/16), corrected in TrainUnit at 'if(C
 *u) Resize form to suit user changes so still have complete interface at any size (so far as overall size allows)
 
 *v) Updated help manual and on-screen help to reflect new capabilities
+
+*w) Added more information and timetables for waiting trains
 
 
 VERSION CHANGES AFTER v1.3.2 for v2.0.0 Beta
@@ -924,7 +918,7 @@ have self-checking and normal release versions - if poss record the call stack)
 
 CHECKLISTS:
 
-CHANGE OF VERSION:
+CHANGE OF VERSION: (out of date - to be updated for latest website changes)
 
 NOTE: Carry out mods in 'trunk' of Home Repository checked out files & commit, then tag at the new release
 Then copy the changed files to Google checked out files (don't use add & copy) & commit, then tag at the new release
@@ -952,7 +946,7 @@ Then copy the changed files to Google checked out files (don't use add & copy) &
 18) commit all changes to Google repository & list in log
 19) add a new tag to Google repository for the new release
 
-ADDING A NEW PROJECT TO THE USER WEBSITE:
+ADDING A NEW PROJECT TO THE USER WEBSITE: (out of date - to be updated for latest website changes)
 
 1) zip all files & just use letters, numbers & spaces in filename
 2) create a .jpg image of the railway, add it to the Uploaded_images page, & copy its URL (copy link location, not image location)
@@ -1122,7 +1116,7 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 COPY SECTIONS:
 
 NEXT value for CallLogPop is 2059
-NEXT value for TrackElementAt is 906
+NEXT value for TrackElementAt is 907
 NEXT value for InactiveTrackElementAt is 119
 NEXT value for GetFixedRouteAt is 222
 NEXT value for GetModifiableRouteAt is 28

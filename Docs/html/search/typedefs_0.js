@@ -4,6 +4,7 @@ var searchData=
   ['tactivetrackelementnamemap',['TActiveTrackElementNameMap',['../class_t_track.html#af78e1d88c49cebd05b35fc408a5d9d2e',1,'TTrack']]],
   ['tallroutesvector',['TAllRoutesVector',['../class_t_all_routes.html#a34636f74b522ec911900fce48ea6667c',1,'TAllRoutes']]],
   ['tcontinuationautosigvector',['TContinuationAutoSigVector',['../class_t_train_controller.html#a1908f7d1a5dcfebf2f747efbdd6f4681',1,'TTrainController']]],
+  ['tcontinuationentryvecposvector',['TContinuationEntryVecPosVector',['../class_t_train_controller.html#a1af939f4f452d7f2002df3dac7efb743',1,'TTrainController']]],
   ['tcontinuationtrainexpectationmultimap',['TContinuationTrainExpectationMultiMap',['../class_t_train_controller.html#a36525478ab0d9f59e486b8c030acd87c',1,'TTrainController']]],
   ['tcontinuationtrainexpectationmultimapiterator',['TContinuationTrainExpectationMultiMapIterator',['../class_t_train_controller.html#ad10dfce8ec2a66858af7fbeb1529257f',1,'TTrainController']]],
   ['tcontinuationtrainexpectationmultimappair',['TContinuationTrainExpectationMultiMapPair',['../class_t_train_controller.html#a5adc75543948ea32915ef025ace798b2',1,'TTrainController']]],

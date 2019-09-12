@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.1.0</span>
+   &#160;<span id="projectnumber">v2.2.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -83,13 +83,12 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for TOnePrefDir:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-<div class="dynheader">
-Collaboration diagram for TOnePrefDir:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir__coll__graph.svg" width="243" height="528"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+ <div class="center">
+  <img src="class_t_one_pref_dir.png" usemap="#TOnePrefDir_map" alt=""/>
+  <map id="TOnePrefDir_map" name="TOnePrefDir_map">
+<area href="class_t_one_route.html" alt="TOneRoute" shape="rect" coords="0,56,84,80"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -207,6 +206,8 @@ typedef std::vector&lt; <a class="el" href="class_t_pref_dir_element.html">TPref
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:ae0e03d494164fe961da51b0be8492934"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#ae0e03d494164fe961da51b0be8492934">PresetAutoRouteDiagonalFouledByTrack</a> (int Caller, <a class="el" href="class_t_pref_dir_element.html">TPrefDirElement</a> ElementIn, int XLink)</td></tr>
+<tr class="separator:ae0e03d494164fe961da51b0be8492934"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab35c683ba0ec156d19d4db991046b7d2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#ab35c683ba0ec156d19d4db991046b7d2">PresetAutoRouteElementValid</a> (int Caller, <a class="el" href="class_t_pref_dir_element.html">TPrefDirElement</a> ElementIn, int EntryPos)</td></tr>
 <tr class="separator:ab35c683ba0ec156d19d4db991046b7d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82c6a19d67ada7059491afae05ced4a4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a82c6a19d67ada7059491afae05ced4a4">SearchForPrefDir</a> (int Caller, <a class="el" href="class_t_track_element.html">TTrackElement</a> TrackElement, int XLinkPos, int RequiredPosition)</td></tr>
@@ -836,6 +837,49 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>PrefDir and route track marker, including direction markers. Function used for both PrefDirs (PrefDirRoute == PrefDirCall) and routes (PrefDirRoute == RouteCall).</p>
 <p>The graphics for marker colours and direction are already stored in all PrefDirElements in <a class="el" href="class_t_one_pref_dir.html">TOnePrefDir</a> and <a class="el" href="class_t_one_route.html">TOneRoute</a>, and this function is called to display them, all in the case of a PrefDir, but for a route only the first and last elements have direction markers. No markers are displayed if a train is present on an element. Also no display if EXGraphicPtr not set. If building a PrefDir (BuildingPrefDir true) then the start and end rectangles are also displayed. </p>
+
+</div>
+</div>
+<a id="ae0e03d494164fe961da51b0be8492934"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0e03d494164fe961da51b0be8492934">&#9670;&nbsp;</a></span>PresetAutoRouteDiagonalFouledByTrack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_t_pref_dir_element.html">TPrefDirElement</a>&#160;</td>
+          <td class="paramname"><em>ElementIn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>XLink</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Called by GetStartAndEndPrefDirElements, which in turn is called by PresetAutoSigRoutesButtonClick. Checks for a diagonal link in the autosigsroute being fouled by an adjacent track with a corresponding link that meets at the diagonal link, and if it is it returns true and prevents the route being set. Note that adjacent track consisting of buffers, gaps and continuations at the diagonal link are also excluded though they need not be, but it makes the check code simpler and such adjacent track is untidy and can be modelled better anyway. Added at v2.1.0. </p>
 
 </div>
 </div>

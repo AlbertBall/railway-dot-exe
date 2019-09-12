@@ -1,8 +1,10 @@
 var searchData=
 [
   ['calcdistanceandspeed',['CalcDistanceAndSpeed',['../class_t_one_pref_dir.html#abadb0c99b24d6dbfda371d96b308fc6e',1,'TOnePrefDir']]],
+  ['calcdistancetoredsignalandstoptime',['CalcDistanceToRedSignalandStopTime',['../class_t_train_controller.html#ad81afe17a036ab3f96c340ab75a2d8e2',1,'TTrainController']]],
   ['calchlocminetc',['CalcHLocMinEtc',['../class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9',1,'TTrack']]],
   ['calcoperatingandnotstartedtrainlateness',['CalcOperatingAndNotStartedTrainLateness',['../class_t_train_controller.html#aadffada34a23350d7773bc7735e423a1',1,'TTrainController']]],
+  ['calctimetoact',['CalcTimeToAct',['../class_t_train.html#ae34370de578ebd07a217c79d8b67312c',1,'TTrain']]],
   ['callingonallowed',['CallingOnAllowed',['../class_t_train.html#a4524b72ef62ef2c1375f58fac05929ee',1,'TTrain']]],
   ['changealltransparentcolours',['ChangeAllTransparentColours',['../class_t_rail_graphics.html#a5121c6d8b8fa69eefc293ca51cddce88',1,'TRailGraphics']]],
   ['changebackgroundcolour',['ChangeBackgroundColour',['../class_t_rail_graphics.html#a74d7dcd5e17ef156d8c216c8e524de11',1,'TRailGraphics']]],
@@ -57,6 +59,7 @@ var searchData=
   ['compileallentriesmemoandsetpointers',['CompileAllEntriesMemoAndSetPointers',['../class_t_interface.html#a330394a04433ce8672a52c2a0a659ff0',1,'TInterface']]],
   ['consolidateprefdirs',['ConsolidatePrefDirs',['../class_t_one_pref_dir.html#a65df51092983945e1fe3c20bf8917a39',1,'TOnePrefDir']]],
   ['continuationautosignals',['ContinuationAutoSignals',['../class_t_interface.html#abfdbbb1cf793f965f8c6ce60d4bb46ae',1,'TInterface']]],
+  ['continuationentryfloatingttstring',['ContinuationEntryFloatingTTString',['../class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3',1,'TTrainController']]],
   ['continuationexit',['ContinuationExit',['../class_t_train.html#a36b7b4901add145605ba1e540801b6cf',1,'TTrain']]],
   ['convertandaddnonpreferredroutesearchvector',['ConvertAndAddNonPreferredRouteSearchVector',['../class_t_one_route.html#a53496c398dcdb3a644801c4e74d47d01',1,'TOneRoute']]],
   ['convertandaddpreferredroutesearchvector',['ConvertAndAddPreferredRouteSearchVector',['../class_t_one_route.html#a36ba8adc8b4a47908ee4e1b8e75792ca',1,'TOneRoute']]],

@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.1.0</span>
+   &#160;<span id="projectnumber">v2.2.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -80,13 +80,11 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for TInterface:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_interface__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-<div class="dynheader">
-Collaboration diagram for TInterface:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_interface__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
+ <div class="center">
+  <img src="class_t_interface.png" usemap="#TInterface_map" alt=""/>
+  <map id="TInterface_map" name="TInterface_map">
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -134,6 +132,9 @@ void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>CutMenuIte
 <tr class="memitem:aff2c1cd6ed2d45fdcf6392a85a6d9415"><td class="memItemLeft" align="right" valign="top"><a id="aff2c1cd6ed2d45fdcf6392a85a6d9415"></a>
 void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>DeleteMenuItemClick</b> (TObject *Sender)</td></tr>
 <tr class="separator:aff2c1cd6ed2d45fdcf6392a85a6d9415"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac53c02024590fc44371ed3b7efc3ddde"><td class="memItemLeft" align="right" valign="top"><a id="ac53c02024590fc44371ed3b7efc3ddde"></a>
+void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>EditMenuClick</b> (TObject *Sender)</td></tr>
+<tr class="separator:ac53c02024590fc44371ed3b7efc3ddde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cf35a6e4a6cfa72b63222acb51f9f74"><td class="memItemLeft" align="right" valign="top"><a id="a0cf35a6e4a6cfa72b63222acb51f9f74"></a>
 void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>EditTimetableMenuItemClick</b> (TObject *Sender)</td></tr>
 <tr class="separator:a0cf35a6e4a6cfa72b63222acb51f9f74"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -548,21 +549,48 @@ void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>MasterCloc
 <tr class="memitem:a84a1627edee1954b3938f45473c09bfd"><td class="memItemLeft" align="right" valign="top"><a id="a84a1627edee1954b3938f45473c09bfd"></a>
 void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>FormKeyUp</b> (TObject *Sender, WORD &amp;Key, TShiftState Shift)</td></tr>
 <tr class="separator:a84a1627edee1954b3938f45473c09bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b462a985384627a1ab9dd2ab620fff6"><td class="memItemLeft" align="right" valign="top"><a id="a3b462a985384627a1ab9dd2ab620fff6"></a>
-void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>MPHEdit1KeyUp</b> (TObject *Sender, WORD &amp;Key, TShiftState Shift)</td></tr>
-<tr class="separator:a3b462a985384627a1ab9dd2ab620fff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d61a4cdf5ab3fefc352bad71286097d"><td class="memItemLeft" align="right" valign="top"><a id="a1d61a4cdf5ab3fefc352bad71286097d"></a>
-void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>MPHEdit2KeyUp</b> (TObject *Sender, WORD &amp;Key, TShiftState Shift)</td></tr>
-<tr class="separator:a1d61a4cdf5ab3fefc352bad71286097d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fe45d91c5e85bb4359e5868110a9641"><td class="memItemLeft" align="right" valign="top"><a id="a3fe45d91c5e85bb4359e5868110a9641"></a>
+void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedEditBoxKeyUp</b> (TObject *Sender, WORD &amp;Key, TShiftState Shift)</td></tr>
+<tr class="separator:a3fe45d91c5e85bb4359e5868110a9641"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9ade69d56c48a2bd209a3cad7027c2f"><td class="memItemLeft" align="right" valign="top"><a id="ac9ade69d56c48a2bd209a3cad7027c2f"></a>
+void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedEditBox2KeyUp</b> (TObject *Sender, WORD &amp;Key, TShiftState Shift)</td></tr>
+<tr class="separator:ac9ade69d56c48a2bd209a3cad7027c2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53206fd4d6f35c1f1981f018cf3a53df"><td class="memItemLeft" align="right" valign="top"><a id="a53206fd4d6f35c1f1981f018cf3a53df"></a>
 void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>LengthEditKeyUp</b> (TObject *Sender, WORD &amp;Key, TShiftState Shift)</td></tr>
 <tr class="separator:a53206fd4d6f35c1f1981f018cf3a53df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a748c0543de03f148759e8bcec6b1dd91"><td class="memItemLeft" align="right" valign="top"><a id="a748c0543de03f148759e8bcec6b1dd91"></a>
-void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>HPEditKeyUp</b> (TObject *Sender, WORD &amp;Key, TShiftState Shift)</td></tr>
-<tr class="separator:a748c0543de03f148759e8bcec6b1dd91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbfd29973dae21817bad616910541ce8"><td class="memItemLeft" align="right" valign="top"><a id="acbfd29973dae21817bad616910541ce8"></a>
+void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>PowerEditBoxKeyUp</b> (TObject *Sender, WORD &amp;Key, TShiftState Shift)</td></tr>
+<tr class="separator:acbfd29973dae21817bad616910541ce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa639148521a793641e694b15486b5055"><td class="memItemLeft" align="right" valign="top"><a id="aa639148521a793641e694b15486b5055"></a>
 void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>PresetAutoSigRoutesButtonClick</b> (TObject *Sender)</td></tr>
 <tr class="separator:aa639148521a793641e694b15486b5055"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fe9878a003d343a06f09c8f421e5a3b"><td class="memItemLeft" align="right" valign="top"><a id="a3fe9878a003d343a06f09c8f421e5a3b"></a>
+void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>FormResize</b> (TObject *Sender)</td></tr>
+<tr class="separator:a3fe9878a003d343a06f09c8f421e5a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b6810d510f09d97ed750ffa1f3644a3"><td class="memItemLeft" align="right" valign="top"><a id="a0b6810d510f09d97ed750ffa1f3644a3"></a>
+void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>RailwayWebSiteMenuItemClick</b> (TObject *Sender)</td></tr>
+<tr class="separator:a0b6810d510f09d97ed750ffa1f3644a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e50b78dc418e107fdd8676f6894515e"><td class="memItemLeft" align="right" valign="top"><a id="a4e50b78dc418e107fdd8676f6894515e"></a>
+void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedToggleButtonClick</b> (TObject *Sender)</td></tr>
+<tr class="separator:a4e50b78dc418e107fdd8676f6894515e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06d08704dc1619eb2d212d43d2cd3bd9"><td class="memItemLeft" align="right" valign="top"><a id="a06d08704dc1619eb2d212d43d2cd3bd9"></a>
+void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>PowerToggleButtonClick</b> (TObject *Sender)</td></tr>
+<tr class="separator:a06d08704dc1619eb2d212d43d2cd3bd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26a7001957d7d5a178320723e07e4fb3"><td class="memItemLeft" align="right" valign="top"><a id="a26a7001957d7d5a178320723e07e4fb3"></a>
+void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedToggleButton2Click</b> (TObject *Sender)</td></tr>
+<tr class="separator:a26a7001957d7d5a178320723e07e4fb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4732a8c5f1ccf8425bcc713969ed64a7"><td class="memItemLeft" align="right" valign="top"><a id="a4732a8c5f1ccf8425bcc713969ed64a7"></a>
+void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>PasteWithAttributesMenuItemClick</b> (TObject *Sender)</td></tr>
+<tr class="separator:a4732a8c5f1ccf8425bcc713969ed64a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ab8ece23e5d3fca1da26e2360e349ec"><td class="memItemLeft" align="right" valign="top"><a id="a6ab8ece23e5d3fca1da26e2360e349ec"></a>
+void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>OperatorActionButtonClick</b> (TObject *Sender)</td></tr>
+<tr class="separator:a6ab8ece23e5d3fca1da26e2360e349ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54c8faaf7d1d8f0456114676fd20a17f"><td class="memItemLeft" align="right" valign="top"><a id="a54c8faaf7d1d8f0456114676fd20a17f"></a>
+void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>OAListBoxMouseUp</b> (TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y)</td></tr>
+<tr class="separator:a54c8faaf7d1d8f0456114676fd20a17f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a659a63c1342a6d5ebd23422a608d140f"><td class="memItemLeft" align="right" valign="top"><a id="a659a63c1342a6d5ebd23422a608d140f"></a>
+void __fastcall&#160;</td><td class="memItemRight" valign="bottom"><b>OperatorActionPanelStartDrag</b> (TObject *Sender, TDragObject *&amp;DragObject)</td></tr>
+<tr class="separator:a659a63c1342a6d5ebd23422a608d140f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa09ce755ae1d39671b9b358f86d83fde"><td class="memItemLeft" align="right" valign="top"><a id="aa09ce755ae1d39671b9b358f86d83fde"></a>
 UnicodeString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#aa09ce755ae1d39671b9b358f86d83fde">GetVersion</a> ()</td></tr>
 <tr class="memdesc:aa09ce755ae1d39671b9b358f86d83fde"><td class="mdescLeft">&#160;</td><td class="mdescRight">determined automatically from the project options 'Version Info' <br /></td></tr>
@@ -672,21 +700,21 @@ TPanel *&#160;</td><td class="memItemRight" valign="bottom"><b>LengthConversionP
 <tr class="memitem:a46839b0b58182c156b0dc790b1595d24"><td class="memItemLeft" align="right" valign="top"><a id="a46839b0b58182c156b0dc790b1595d24"></a>
 TPanel *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedConversionPanel</b></td></tr>
 <tr class="separator:a46839b0b58182c156b0dc790b1595d24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f11584b8ac759bfd4aba449579d5cca"><td class="memItemLeft" align="right" valign="top"><a id="a5f11584b8ac759bfd4aba449579d5cca"></a>
-TEdit *&#160;</td><td class="memItemRight" valign="bottom"><b>MPHEdit2</b></td></tr>
-<tr class="separator:a5f11584b8ac759bfd4aba449579d5cca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d9217428a0c3ec7e4a5c1e91d7392d5"><td class="memItemLeft" align="right" valign="top"><a id="a9d9217428a0c3ec7e4a5c1e91d7392d5"></a>
-TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>MPHLabel2</b></td></tr>
-<tr class="separator:a9d9217428a0c3ec7e4a5c1e91d7392d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab326349f794b99e04281ba1b50ac88e"><td class="memItemLeft" align="right" valign="top"><a id="aab326349f794b99e04281ba1b50ac88e"></a>
-TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>KPHLabel</b></td></tr>
-<tr class="separator:aab326349f794b99e04281ba1b50ac88e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd0c61a1bd1689184025180a3d5747d2"><td class="memItemLeft" align="right" valign="top"><a id="abd0c61a1bd1689184025180a3d5747d2"></a>
-TPanel *&#160;</td><td class="memItemRight" valign="bottom"><b>KPHPanel2</b></td></tr>
-<tr class="separator:abd0c61a1bd1689184025180a3d5747d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa232e738a0ed4959b99c78755d13a98c"><td class="memItemLeft" align="right" valign="top"><a id="aa232e738a0ed4959b99c78755d13a98c"></a>
-TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>KPHVariableLabel2</b></td></tr>
-<tr class="separator:aa232e738a0ed4959b99c78755d13a98c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbfc3016277ccdf5ce24ae1593b761e0"><td class="memItemLeft" align="right" valign="top"><a id="abbfc3016277ccdf5ce24ae1593b761e0"></a>
+TEdit *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedEditBox2</b></td></tr>
+<tr class="separator:abbfc3016277ccdf5ce24ae1593b761e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a731697d07aaaef306dec0b2bbbef287a"><td class="memItemLeft" align="right" valign="top"><a id="a731697d07aaaef306dec0b2bbbef287a"></a>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedTopLabel2</b></td></tr>
+<tr class="separator:a731697d07aaaef306dec0b2bbbef287a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a052a1b3dc58073599d0fdac862195fa8"><td class="memItemLeft" align="right" valign="top"><a id="a052a1b3dc58073599d0fdac862195fa8"></a>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedBottomLabel2</b></td></tr>
+<tr class="separator:a052a1b3dc58073599d0fdac862195fa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35bb7bb089337332f98b8f21c755f199"><td class="memItemLeft" align="right" valign="top"><a id="a35bb7bb089337332f98b8f21c755f199"></a>
+TPanel *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedVariablePanel2</b></td></tr>
+<tr class="separator:a35bb7bb089337332f98b8f21c755f199"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac115749b7ea3204f722997c96a92da72"><td class="memItemLeft" align="right" valign="top"><a id="ac115749b7ea3204f722997c96a92da72"></a>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedVariableLabel2</b></td></tr>
+<tr class="separator:ac115749b7ea3204f722997c96a92da72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3db16b7382de5fdb2fbde90949026d8b"><td class="memItemLeft" align="right" valign="top"><a id="a3db16b7382de5fdb2fbde90949026d8b"></a>
 TPanel *&#160;</td><td class="memItemRight" valign="bottom"><b>AddSubMinsPanel</b></td></tr>
 <tr class="separator:a3db16b7382de5fdb2fbde90949026d8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -835,39 +863,39 @@ TComboBox *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 TEdit *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#abc16ad27bf676c2533855c4a092f43e4">AddSubMinsBox</a></td></tr>
 <tr class="memdesc:abc16ad27bf676c2533855c4a092f43e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">the edit box that accepts minutes to add or subtract <br /></td></tr>
 <tr class="separator:abc16ad27bf676c2533855c4a092f43e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a179a3a2b975332094e82fcb9d1de3111"><td class="memItemLeft" align="right" valign="top"><a id="a179a3a2b975332094e82fcb9d1de3111"></a>
-TEdit *&#160;</td><td class="memItemRight" valign="bottom"><b>MPHEdit1</b></td></tr>
-<tr class="separator:a179a3a2b975332094e82fcb9d1de3111"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a774a7ea46743a8ba8f6cd78eee0d6ba8"><td class="memItemLeft" align="right" valign="top"><a id="a774a7ea46743a8ba8f6cd78eee0d6ba8"></a>
-TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>MPHLabel1</b></td></tr>
-<tr class="separator:a774a7ea46743a8ba8f6cd78eee0d6ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adea3fe8d9345ab6eeff38a755ac1d4bf"><td class="memItemLeft" align="right" valign="top"><a id="adea3fe8d9345ab6eeff38a755ac1d4bf"></a>
-TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>KPHFixedLabel1</b></td></tr>
-<tr class="separator:adea3fe8d9345ab6eeff38a755ac1d4bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d19fe789473ab0504e3cecf514175e8"><td class="memItemLeft" align="right" valign="top"><a id="a3d19fe789473ab0504e3cecf514175e8"></a>
-TPanel *&#160;</td><td class="memItemRight" valign="bottom"><b>KPHPanel1</b></td></tr>
-<tr class="separator:a3d19fe789473ab0504e3cecf514175e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4369dc729439dc084cf175080e2d0716"><td class="memItemLeft" align="right" valign="top"><a id="a4369dc729439dc084cf175080e2d0716"></a>
+TEdit *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedEditBox</b></td></tr>
+<tr class="separator:a4369dc729439dc084cf175080e2d0716"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08a62d0894da968f67d86b2f98961f2e"><td class="memItemLeft" align="right" valign="top"><a id="a08a62d0894da968f67d86b2f98961f2e"></a>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedTopLabel</b></td></tr>
+<tr class="separator:a08a62d0894da968f67d86b2f98961f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d01dde178e238e13a0762aba5415902"><td class="memItemLeft" align="right" valign="top"><a id="a6d01dde178e238e13a0762aba5415902"></a>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedBottomLabel</b></td></tr>
+<tr class="separator:a6d01dde178e238e13a0762aba5415902"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abed4d7ddeffcee538ecab4a508e28119"><td class="memItemLeft" align="right" valign="top"><a id="abed4d7ddeffcee538ecab4a508e28119"></a>
+TPanel *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedVariablePanel1</b></td></tr>
+<tr class="separator:abed4d7ddeffcee538ecab4a508e28119"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3216d2f4e638c29d6e531dd8b83aa675"><td class="memItemLeft" align="right" valign="top"><a id="a3216d2f4e638c29d6e531dd8b83aa675"></a>
 TPanel *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedConversionTTPanel</b></td></tr>
 <tr class="separator:a3216d2f4e638c29d6e531dd8b83aa675"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaadaad646dd0ee112b5507d1240ca7ea"><td class="memItemLeft" align="right" valign="top"><a id="aaadaad646dd0ee112b5507d1240ca7ea"></a>
-TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>KPHVariableLabel1</b></td></tr>
-<tr class="separator:aaadaad646dd0ee112b5507d1240ca7ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a887c2e4c504b5eb59b8afa33c6d34295"><td class="memItemLeft" align="right" valign="top"><a id="a887c2e4c504b5eb59b8afa33c6d34295"></a>
-TEdit *&#160;</td><td class="memItemRight" valign="bottom"><b>HPEdit</b></td></tr>
-<tr class="separator:a887c2e4c504b5eb59b8afa33c6d34295"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a524da62de10424a79264bca256acbe2a"><td class="memItemLeft" align="right" valign="top"><a id="a524da62de10424a79264bca256acbe2a"></a>
-TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>HPLabel</b></td></tr>
-<tr class="separator:a524da62de10424a79264bca256acbe2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a899968c38e121279dfd1fdd0f8a8ee41"><td class="memItemLeft" align="right" valign="top"><a id="a899968c38e121279dfd1fdd0f8a8ee41"></a>
-TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>KWFixedLabel</b></td></tr>
-<tr class="separator:a899968c38e121279dfd1fdd0f8a8ee41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49c4a780cb7d5d5f20bd708013f23f51"><td class="memItemLeft" align="right" valign="top"><a id="a49c4a780cb7d5d5f20bd708013f23f51"></a>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedVariableLabel</b></td></tr>
+<tr class="separator:a49c4a780cb7d5d5f20bd708013f23f51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f56a6d6c2174a48f86eb1c2a44fc918"><td class="memItemLeft" align="right" valign="top"><a id="a2f56a6d6c2174a48f86eb1c2a44fc918"></a>
+TEdit *&#160;</td><td class="memItemRight" valign="bottom"><b>PowerEditBox</b></td></tr>
+<tr class="separator:a2f56a6d6c2174a48f86eb1c2a44fc918"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a115be70cbac0d0c8609bd2d3d4c6515f"><td class="memItemLeft" align="right" valign="top"><a id="a115be70cbac0d0c8609bd2d3d4c6515f"></a>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>PowerTopLabel</b></td></tr>
+<tr class="separator:a115be70cbac0d0c8609bd2d3d4c6515f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1de622db396402dd80fb06ae10f550a"><td class="memItemLeft" align="right" valign="top"><a id="ac1de622db396402dd80fb06ae10f550a"></a>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>PowerBottomLabel</b></td></tr>
+<tr class="separator:ac1de622db396402dd80fb06ae10f550a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66f500e3b3362042e12da9a2749f9fff"><td class="memItemLeft" align="right" valign="top"><a id="a66f500e3b3362042e12da9a2749f9fff"></a>
 TPanel *&#160;</td><td class="memItemRight" valign="bottom"><b>KWPanel</b></td></tr>
 <tr class="separator:a66f500e3b3362042e12da9a2749f9fff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06ac8acc2e616f8b8c7026b4624bb858"><td class="memItemLeft" align="right" valign="top"><a id="a06ac8acc2e616f8b8c7026b4624bb858"></a>
-TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>KWVariableLabel</b></td></tr>
-<tr class="separator:a06ac8acc2e616f8b8c7026b4624bb858"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f2b5ba2e310e1884fa338f537ce6496"><td class="memItemLeft" align="right" valign="top"><a id="a6f2b5ba2e310e1884fa338f537ce6496"></a>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>PowerVariableLabel</b></td></tr>
+<tr class="separator:a6f2b5ba2e310e1884fa338f537ce6496"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dab1f7efbc4b609f97c28c3c28df5c9"><td class="memItemLeft" align="right" valign="top"><a id="a2dab1f7efbc4b609f97c28c3c28df5c9"></a>
 TBitBtn *&#160;</td><td class="memItemRight" valign="bottom"><b>OperateButton</b></td></tr>
 <tr class="separator:a2dab1f7efbc4b609f97c28c3c28df5c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -896,12 +924,24 @@ TBitBtn *&#160;</td><td class="memItemRight" valign="bottom"><b>PerformanceLogBu
 <tr class="memitem:a1186be2f10c6d71e2f2c50a2fd9e573b"><td class="memItemLeft" align="right" valign="top"><a id="a1186be2f10c6d71e2f2c50a2fd9e573b"></a>
 TBitBtn *&#160;</td><td class="memItemRight" valign="bottom"><b>SaveSessionButton</b></td></tr>
 <tr class="separator:a1186be2f10c6d71e2f2c50a2fd9e573b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a371dcdcc6f55ffe764796c4d18d4ecfd"><td class="memItemLeft" align="right" valign="top"><a id="a371dcdcc6f55ffe764796c4d18d4ecfd"></a>
+TBitBtn *&#160;</td><td class="memItemRight" valign="bottom"><b>OperatorActionButton</b></td></tr>
+<tr class="separator:a371dcdcc6f55ffe764796c4d18d4ecfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f8ee675b1f05ed8711b01f8a97e9164"><td class="memItemLeft" align="right" valign="top"><a id="a7f8ee675b1f05ed8711b01f8a97e9164"></a>
 TBitBtn *&#160;</td><td class="memItemRight" valign="bottom"><b>ExitOperationButton</b></td></tr>
 <tr class="separator:a7f8ee675b1f05ed8711b01f8a97e9164"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6645a1f27a503f98bf153653b3f5783"><td class="memItemLeft" align="right" valign="top"><a id="ae6645a1f27a503f98bf153653b3f5783"></a>
 TBitBtn *&#160;</td><td class="memItemRight" valign="bottom"><b>TTClockAdjButton</b></td></tr>
 <tr class="separator:ae6645a1f27a503f98bf153653b3f5783"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c529ad31a99047bff4153a900ec128c"><td class="memItemLeft" align="right" valign="top"><a id="a8c529ad31a99047bff4153a900ec128c"></a>
+TButton *&#160;</td><td class="memItemRight" valign="bottom"><b>PowerToggleButton</b></td></tr>
+<tr class="separator:a8c529ad31a99047bff4153a900ec128c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae0a29bdc4382ce1b8c0d3575f50b87d"><td class="memItemLeft" align="right" valign="top"><a id="aae0a29bdc4382ce1b8c0d3575f50b87d"></a>
+TButton *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedToggleButton</b></td></tr>
+<tr class="separator:aae0a29bdc4382ce1b8c0d3575f50b87d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88e8165081a94e65e685a0952a8aef08"><td class="memItemLeft" align="right" valign="top"><a id="a88e8165081a94e65e685a0952a8aef08"></a>
+TButton *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedToggleButton2</b></td></tr>
+<tr class="separator:a88e8165081a94e65e685a0952a8aef08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1cda2e96293955038f417dc2ed73ed8"><td class="memItemLeft" align="right" valign="top"><a id="aa1cda2e96293955038f417dc2ed73ed8"></a>
 TPanel *&#160;</td><td class="memItemRight" valign="bottom"><b>TTClockAdjPanel</b></td></tr>
 <tr class="separator:aa1cda2e96293955038f417dc2ed73ed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1027,6 +1067,12 @@ TImage *&#160;</td><td class="memItemRight" valign="bottom"><b>LocationNamesNotS
 TImage *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a24ed70b178edf21a515d34df17b6aeb3">MainScreen</a></td></tr>
 <tr class="memdesc:a24ed70b178edf21a515d34df17b6aeb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">the railway display screen <br /></td></tr>
 <tr class="separator:a24ed70b178edf21a515d34df17b6aeb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51d05d3ea1933b582548629cf16b3659"><td class="memItemLeft" align="right" valign="top"><a id="a51d05d3ea1933b582548629cf16b3659"></a>
+TImageList *&#160;</td><td class="memItemRight" valign="bottom"><b>TTImageList</b></td></tr>
+<tr class="separator:a51d05d3ea1933b582548629cf16b3659"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38c4c39dcf30113d8e9d5b07010e7a41"><td class="memItemLeft" align="right" valign="top"><a id="a38c4c39dcf30113d8e9d5b07010e7a41"></a>
+TImageList *&#160;</td><td class="memItemRight" valign="bottom"><b>MMImageList</b></td></tr>
+<tr class="separator:a38c4c39dcf30113d8e9d5b07010e7a41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38215bb67fd2be9e37e5fa2046a1ce4a"><td class="memItemLeft" align="right" valign="top"><a id="a38215bb67fd2be9e37e5fa2046a1ce4a"></a>
 TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>OutputLog1</b></td></tr>
 <tr class="separator:a38215bb67fd2be9e37e5fa2046a1ce4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1109,6 +1155,17 @@ TPanel *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 TPanel *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a82ceb0b38e171d2b46c19f76afef35c1">DevelopmentPanel</a></td></tr>
 <tr class="memdesc:a82ceb0b38e171d2b46c19f76afef35c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">used for diagnostic purposes, made visible by &lt;ctrl&gt; &lt;alt&gt; '3' <br /></td></tr>
 <tr class="separator:a82ceb0b38e171d2b46c19f76afef35c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a424f4da4b4f2795f36ac40c8dc2a9a10"><td class="memItemLeft" align="right" valign="top"><a id="a424f4da4b4f2795f36ac40c8dc2a9a10"></a>
+TPanel *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a424f4da4b4f2795f36ac40c8dc2a9a10">FloatingPanel</a></td></tr>
+<tr class="memdesc:a424f4da4b4f2795f36ac40c8dc2a9a10"><td class="mdescLeft">&#160;</td><td class="mdescRight">new for v2.2.0 where label sits in it and it <br /></td></tr>
+<tr class="separator:a424f4da4b4f2795f36ac40c8dc2a9a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e02497aefb9ea945fd1cab9999e792e"><td class="memItemLeft" align="right" valign="top"><a id="a0e02497aefb9ea945fd1cab9999e792e"></a>
+TPanel *&#160;</td><td class="memItemRight" valign="bottom"><b>PositionalPanel</b></td></tr>
+<tr class="separator:a0e02497aefb9ea945fd1cab9999e792e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa17115ed5820e0ff28801224b6bc4e4a"><td class="memItemLeft" align="right" valign="top"><a id="aa17115ed5820e0ff28801224b6bc4e4a"></a>
+TPanel *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#aa17115ed5820e0ff28801224b6bc4e4a">OperatorActionPanel</a></td></tr>
+<tr class="memdesc:aa17115ed5820e0ff28801224b6bc4e4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">new v2.2.0 panel housing the OAListBox with list of trains and times to act <br /></td></tr>
+<tr class="separator:aa17115ed5820e0ff28801224b6bc4e4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b97febf985f3a4a5589f98fed9177ee"><td class="memItemLeft" align="right" valign="top"><a id="a4b97febf985f3a4a5589f98fed9177ee"></a>
 TLabel *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a4b97febf985f3a4a5589f98fed9177ee">PerformancePanelLabel</a></td></tr>
 <tr class="memdesc:a4b97febf985f3a4a5589f98fed9177ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">label at the top of PerformancePanel <br /></td></tr>
@@ -1146,16 +1203,28 @@ TLabel *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr class="memdesc:a6c42fa668ecb3a9e4f8ddeb677781b84"><td class="mdescLeft">&#160;</td><td class="mdescRight">diagnostic label displaying the call log depth, made visible by &lt;ctrl&gt; &lt;alt&gt; '2' <br /></td></tr>
 <tr class="separator:a6c42fa668ecb3a9e4f8ddeb677781b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af06ebc1f5417120c44b3474e2eb1ea51"><td class="memItemLeft" align="right" valign="top"><a id="af06ebc1f5417120c44b3474e2eb1ea51"></a>
-TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>ClockLabel</b></td></tr>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#af06ebc1f5417120c44b3474e2eb1ea51">ClockLabel</a></td></tr>
+<tr class="memdesc:af06ebc1f5417120c44b3474e2eb1ea51"><td class="mdescLeft">&#160;</td><td class="mdescRight">the floating window that displays track &amp; train information <br /></td></tr>
 <tr class="separator:af06ebc1f5417120c44b3474e2eb1ea51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ec3d5df7eb6dbab750a63c46710e7bc"><td class="memItemLeft" align="right" valign="top"><a id="a1ec3d5df7eb6dbab750a63c46710e7bc"></a>
-TLabel *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a1ec3d5df7eb6dbab750a63c46710e7bc">FloatingLabel</a></td></tr>
-<tr class="memdesc:a1ec3d5df7eb6dbab750a63c46710e7bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">the floating window that displays track &amp; train information <br /></td></tr>
-<tr class="separator:a1ec3d5df7eb6dbab750a63c46710e7bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a167b9a4eba88ea3020f67a1c89907838"><td class="memItemLeft" align="right" valign="top"><a id="a167b9a4eba88ea3020f67a1c89907838"></a>
 TLabel *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a167b9a4eba88ea3020f67a1c89907838">OperatingPanelLabel</a></td></tr>
 <tr class="memdesc:a167b9a4eba88ea3020f67a1c89907838"><td class="mdescLeft">&#160;</td><td class="mdescRight">displays 'Operation' or 'Disabled' on the operating panel during operation for running or paused <br /></td></tr>
 <tr class="separator:a167b9a4eba88ea3020f67a1c89907838"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d641fff539cab58c2a833cf3ed63e72"><td class="memItemLeft" align="right" valign="top"><a id="a2d641fff539cab58c2a833cf3ed63e72"></a>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>TTClockTitleLabel</b></td></tr>
+<tr class="separator:a2d641fff539cab58c2a833cf3ed63e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19f0b0173b71d400eed6de0b32cf52c6"><td class="memItemLeft" align="right" valign="top"><a id="a19f0b0173b71d400eed6de0b32cf52c6"></a>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>TTClockLabel1</b></td></tr>
+<tr class="separator:a19f0b0173b71d400eed6de0b32cf52c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ea88dbbf3539f837e0e6eefcc127214"><td class="memItemLeft" align="right" valign="top"><a id="a4ea88dbbf3539f837e0e6eefcc127214"></a>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>TTClockLabel2</b></td></tr>
+<tr class="separator:a4ea88dbbf3539f837e0e6eefcc127214"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac09986496b415b12787f5896be321ebe"><td class="memItemLeft" align="right" valign="top"><a id="ac09986496b415b12787f5896be321ebe"></a>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>OAPanelLabel</b></td></tr>
+<tr class="separator:ac09986496b415b12787f5896be321ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ec3d5df7eb6dbab750a63c46710e7bc"><td class="memItemLeft" align="right" valign="top"><a id="a1ec3d5df7eb6dbab750a63c46710e7bc"></a>
+TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>FloatingLabel</b></td></tr>
+<tr class="separator:a1ec3d5df7eb6dbab750a63c46710e7bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf476d1498548ff2b79c6cb0e85b6f2e"><td class="memItemLeft" align="right" valign="top"><a id="aaf476d1498548ff2b79c6cb0e85b6f2e"></a>
 TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>TTLabel1</b></td></tr>
 <tr class="separator:aaf476d1498548ff2b79c6cb0e85b6f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1219,6 +1288,10 @@ TMemo *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 TListBox *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a2186c4827761360ddb9bccc3d8ef4295">AllEntriesTTListBox</a></td></tr>
 <tr class="memdesc:a2186c4827761360ddb9bccc3d8ef4295"><td class="mdescLeft">&#160;</td><td class="mdescRight">the list of service entries displayed on the left hand side of the timetable edit screen <br /></td></tr>
 <tr class="separator:a2186c4827761360ddb9bccc3d8ef4295"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06c02506913fc9d0fe5f13c4950ff99f"><td class="memItemLeft" align="right" valign="top"><a id="a06c02506913fc9d0fe5f13c4950ff99f"></a>
+TListBox *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a06c02506913fc9d0fe5f13c4950ff99f">OAListBox</a></td></tr>
+<tr class="memdesc:a06c02506913fc9d0fe5f13c4950ff99f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operator action list, sits inside OperatorActionPanel and lists trains in ascending order of time to act. <br /></td></tr>
+<tr class="separator:a06c02506913fc9d0fe5f13c4950ff99f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60596fc589806809a947f92681a0eb76"><td class="memItemLeft" align="right" valign="top"><a id="a60596fc589806809a947f92681a0eb76"></a>
 TMenuItem *&#160;</td><td class="memItemRight" valign="bottom"><b>FileMenu</b></td></tr>
 <tr class="separator:a60596fc589806809a947f92681a0eb76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1354,9 +1427,6 @@ TMenuItem *&#160;</td><td class="memItemRight" valign="bottom"><b>AboutMenuItem<
 <tr class="memitem:a6cdce7bb8a495891ca9aebdec811eea7"><td class="memItemLeft" align="right" valign="top"><a id="a6cdce7bb8a495891ca9aebdec811eea7"></a>
 TMenuItem *&#160;</td><td class="memItemRight" valign="bottom"><b>OpenHelpMenuItem</b></td></tr>
 <tr class="separator:a6cdce7bb8a495891ca9aebdec811eea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0962233c50c6c67c55b71b54b634b9b"><td class="memItemLeft" align="right" valign="top"><a id="ac0962233c50c6c67c55b71b54b634b9b"></a>
-TPopupMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>PopupMenu</b></td></tr>
-<tr class="separator:ac0962233c50c6c67c55b71b54b634b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f47c7fbc5c7fed553660681e9a9db13"><td class="memItemLeft" align="right" valign="top"><a id="a4f47c7fbc5c7fed553660681e9a9db13"></a>
 TMenuItem *&#160;</td><td class="memItemRight" valign="bottom"><b>TrainHeadCodeMenuItem</b></td></tr>
 <tr class="separator:a4f47c7fbc5c7fed553660681e9a9db13"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1384,6 +1454,24 @@ TMenuItem *&#160;</td><td class="memItemRight" valign="bottom"><b>SignallerContr
 <tr class="memitem:a5471ec6f1a7b0b956c9faa1c6c30b672"><td class="memItemLeft" align="right" valign="top"><a id="a5471ec6f1a7b0b956c9faa1c6c30b672"></a>
 TMenuItem *&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveTrainMenuItem</b></td></tr>
 <tr class="separator:a5471ec6f1a7b0b956c9faa1c6c30b672"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a424b363a104a95f4822dd16de1097ede"><td class="memItemLeft" align="right" valign="top"><a id="a424b363a104a95f4822dd16de1097ede"></a>
+TMenuItem *&#160;</td><td class="memItemRight" valign="bottom"><b>N1</b></td></tr>
+<tr class="separator:a424b363a104a95f4822dd16de1097ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8e2cca943dae09344c978022b88dd2b"><td class="memItemLeft" align="right" valign="top"><a id="aa8e2cca943dae09344c978022b88dd2b"></a>
+TMenuItem *&#160;</td><td class="memItemRight" valign="bottom"><b>N2</b></td></tr>
+<tr class="separator:aa8e2cca943dae09344c978022b88dd2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa576dc5d61c896895f249cdf8d7ccfc5"><td class="memItemLeft" align="right" valign="top"><a id="aa576dc5d61c896895f249cdf8d7ccfc5"></a>
+TMenuItem *&#160;</td><td class="memItemRight" valign="bottom"><b>RailwayWebSiteMenuItem</b></td></tr>
+<tr class="separator:aa576dc5d61c896895f249cdf8d7ccfc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b5a32294b339476a9af8f269ed9194f"><td class="memItemLeft" align="right" valign="top"><a id="a1b5a32294b339476a9af8f269ed9194f"></a>
+TMenuItem *&#160;</td><td class="memItemRight" valign="bottom"><b>N3</b></td></tr>
+<tr class="separator:a1b5a32294b339476a9af8f269ed9194f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a039a43bfeefcbc4dcdf273c24f1140a1"><td class="memItemLeft" align="right" valign="top"><a id="a039a43bfeefcbc4dcdf273c24f1140a1"></a>
+TMenuItem *&#160;</td><td class="memItemRight" valign="bottom"><b>PasteWithAttributesMenuItem</b></td></tr>
+<tr class="separator:a039a43bfeefcbc4dcdf273c24f1140a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0962233c50c6c67c55b71b54b634b9b"><td class="memItemLeft" align="right" valign="top"><a id="ac0962233c50c6c67c55b71b54b634b9b"></a>
+TPopupMenu *&#160;</td><td class="memItemRight" valign="bottom"><b>PopupMenu</b></td></tr>
+<tr class="separator:ac0962233c50c6c67c55b71b54b634b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2ab1b35577d8792f335abf9e79a4993"><td class="memItemLeft" align="right" valign="top"><a id="ae2ab1b35577d8792f335abf9e79a4993"></a>
 TOpenDialog *&#160;</td><td class="memItemRight" valign="bottom"><b>LoadRailwayDialog</b></td></tr>
 <tr class="separator:ae2ab1b35577d8792f335abf9e79a4993"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1833,24 +1921,9 @@ TSpeedButton *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedButton
 <tr class="memitem:a81be9a2f24c16fcddd636cb65416f32f"><td class="memItemLeft" align="right" valign="top"><a id="a81be9a2f24c16fcddd636cb65416f32f"></a>
 TSpeedButton *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedButton143</b></td></tr>
 <tr class="separator:a81be9a2f24c16fcddd636cb65416f32f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d641fff539cab58c2a833cf3ed63e72"><td class="memItemLeft" align="right" valign="top"><a id="a2d641fff539cab58c2a833cf3ed63e72"></a>
-TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>TTClockTitleLabel</b></td></tr>
-<tr class="separator:a2d641fff539cab58c2a833cf3ed63e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19f0b0173b71d400eed6de0b32cf52c6"><td class="memItemLeft" align="right" valign="top"><a id="a19f0b0173b71d400eed6de0b32cf52c6"></a>
-TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>TTClockLabel1</b></td></tr>
-<tr class="separator:a19f0b0173b71d400eed6de0b32cf52c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ea88dbbf3539f837e0e6eefcc127214"><td class="memItemLeft" align="right" valign="top"><a id="a4ea88dbbf3539f837e0e6eefcc127214"></a>
-TLabel *&#160;</td><td class="memItemRight" valign="bottom"><b>TTClockLabel2</b></td></tr>
-<tr class="separator:a4ea88dbbf3539f837e0e6eefcc127214"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67212c07e268f5a78ee5a4fcfe8eaca5"><td class="memItemLeft" align="right" valign="top"><a id="a67212c07e268f5a78ee5a4fcfe8eaca5"></a>
 TSpeedButton *&#160;</td><td class="memItemRight" valign="bottom"><b>SpeedButton144</b></td></tr>
 <tr class="separator:a67212c07e268f5a78ee5a4fcfe8eaca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a424b363a104a95f4822dd16de1097ede"><td class="memItemLeft" align="right" valign="top"><a id="a424b363a104a95f4822dd16de1097ede"></a>
-TMenuItem *&#160;</td><td class="memItemRight" valign="bottom"><b>N1</b></td></tr>
-<tr class="separator:a424b363a104a95f4822dd16de1097ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8e2cca943dae09344c978022b88dd2b"><td class="memItemLeft" align="right" valign="top"><a id="aa8e2cca943dae09344c978022b88dd2b"></a>
-TMenuItem *&#160;</td><td class="memItemRight" valign="bottom"><b>N2</b></td></tr>
-<tr class="separator:aa8e2cca943dae09344c978022b88dd2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4144280e4a8af28178c7949976fc67bd"><td class="memItemLeft" align="right" valign="top"><a id="a4144280e4a8af28178c7949976fc67bd"></a>
 enum TInterface::TLevel1Mode&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a4144280e4a8af28178c7949976fc67bd">Level1Mode</a></td></tr>
 <tr class="memdesc:a4144280e4a8af28178c7949976fc67bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Level 1 program modes. <br /></td></tr>
@@ -1942,9 +2015,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a1072fd152bca3234e6730efa17f84670"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44bce128da0e5ae552031e39552d0c39"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a44bce128da0e5ae552031e39552d0c39">HighLightOneGap</a> (int Caller, int &amp;HLoc, int &amp;VLoc)</td></tr>
 <tr class="separator:a44bce128da0e5ae552031e39552d0c39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6aabbfe2ebc6e92d6306697e2940b86c"><td class="memItemLeft" align="right" valign="top"><a id="a6aabbfe2ebc6e92d6306697e2940b86c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a6aabbfe2ebc6e92d6306697e2940b86c">IsPerformancePanelObscuringFloatingLabel</a> (int Caller)</td></tr>
-<tr class="memdesc:a6aabbfe2ebc6e92d6306697e2940b86c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checked during operation, returns true if so and PerformancePanel removed. <br /></td></tr>
+<tr class="memitem:a6aabbfe2ebc6e92d6306697e2940b86c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a6aabbfe2ebc6e92d6306697e2940b86c">IsPerformancePanelObscuringFloatingLabel</a> (int Caller)</td></tr>
 <tr class="separator:a6aabbfe2ebc6e92d6306697e2940b86c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92d5a9e07b9362dee2296b7759a1c83d"><td class="memItemLeft" align="right" valign="top"><a id="a92d5a9e07b9362dee2296b7759a1c83d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a92d5a9e07b9362dee2296b7759a1c83d">LoadTimetableFromSessionFile</a> (int Caller, std::ifstream &amp;SessionFile)</td></tr>
@@ -1978,9 +2049,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#aaa05ac95703a25e1fb4863779854967c">ClearandRebuildRailway</a> (int Caller)</td></tr>
 <tr class="memdesc:aaa05ac95703a25e1fb4863779854967c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker. <br /></td></tr>
 <tr class="separator:aaa05ac95703a25e1fb4863779854967c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6139ffb52492eb89e5487a8a3cd647b5"><td class="memItemLeft" align="right" valign="top"><a id="a6139ffb52492eb89e5487a8a3cd647b5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5">ClockTimer2</a> (int Caller)</td></tr>
-<tr class="memdesc:a6139ffb52492eb89e5487a8a3cd647b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The main loop, called every clock tick via MasterClockTimer. <br /></td></tr>
+<tr class="memitem:a6139ffb52492eb89e5487a8a3cd647b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5">ClockTimer2</a> (int Caller)</td></tr>
+<tr class="memdesc:a6139ffb52492eb89e5487a8a3cd647b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The main loop, called every clock tick via MasterClockTimer.  <a href="#a6139ffb52492eb89e5487a8a3cd647b5">More...</a><br /></td></tr>
 <tr class="separator:a6139ffb52492eb89e5487a8a3cd647b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a330394a04433ce8672a52c2a0a659ff0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a330394a04433ce8672a52c2a0a659ff0">CompileAllEntriesMemoAndSetPointers</a> (int Caller)</td></tr>
 <tr class="separator:a330394a04433ce8672a52c2a0a659ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2132,6 +2202,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b">TrackTrainFloat</a> (int Caller)</td></tr>
 <tr class="memdesc:a9aaa19d39382a32701d7ded3b8c1802b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls the floating window function, called during the ClockTimer2 function. <br /></td></tr>
 <tr class="separator:a9aaa19d39382a32701d7ded3b8c1802b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a656aa01e4fac67c4d7dede71e42208af"><td class="memItemLeft" align="right" valign="top"><a id="a656aa01e4fac67c4d7dede71e42208af"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a656aa01e4fac67c4d7dede71e42208af">UpdateOperatorActionPanel</a> (int Caller)</td></tr>
+<tr class="memdesc:a656aa01e4fac67c4d7dede71e42208af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called every 5 secs to update the panel (if visible) <br /></td></tr>
+<tr class="separator:a656aa01e4fac67c4d7dede71e42208af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -2293,6 +2367,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a9d0e89a8c2ee7c7fd2db3e8f2ca8eaa2">ShowPerformancePanel</a></td></tr>
 <tr class="memdesc:a9d0e89a8c2ee7c7fd2db3e8f2ca8eaa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">true when the 'show performance panel' button has been clicked during operation <br /></td></tr>
 <tr class="separator:a9d0e89a8c2ee7c7fd2db3e8f2ca8eaa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1df099695b33df73ef815751d426a50"><td class="memItemLeft" align="right" valign="top"><a id="aa1df099695b33df73ef815751d426a50"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#aa1df099695b33df73ef815751d426a50">SkipFormResizeEvent</a></td></tr>
+<tr class="memdesc:aa1df099695b33df73ef815751d426a50"><td class="mdescLeft">&#160;</td><td class="mdescRight">added at v2.1.0 to avoid calling the event during startup and shutdown <br /></td></tr>
+<tr class="separator:aa1df099695b33df73ef815751d426a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a069490da193b0cd917842b07dbd1b145"><td class="memItemLeft" align="right" valign="top"><a id="a069490da193b0cd917842b07dbd1b145"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a069490da193b0cd917842b07dbd1b145">TempCursorSet</a></td></tr>
 <tr class="memdesc:a069490da193b0cd917842b07dbd1b145"><td class="mdescLeft">&#160;</td><td class="mdescRight">indicates that a screen cursor has been stored in TempCursor for redisplay after a temporary cursor (usually an hourglass) has been displayed <br /></td></tr>
@@ -2309,6 +2387,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a37aeb05f6d0f1cb639e31e5c8467cadd">TimetableValidFlag</a></td></tr>
 <tr class="memdesc:a37aeb05f6d0f1cb639e31e5c8467cadd"><td class="mdescLeft">&#160;</td><td class="mdescRight">indicates that a 'Validate timetable' button click in the timetable editor has succeeded <br /></td></tr>
 <tr class="separator:a37aeb05f6d0f1cb639e31e5c8467cadd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe13c4fbf81da4b1d11723cf0ce7473a"><td class="memItemLeft" align="right" valign="top"><a id="abe13c4fbf81da4b1d11723cf0ce7473a"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#abe13c4fbf81da4b1d11723cf0ce7473a">ShowOperatorActionPanel</a></td></tr>
+<tr class="memdesc:abe13c4fbf81da4b1d11723cf0ce7473a"><td class="mdescLeft">&#160;</td><td class="mdescRight">true when the 'trains needing action' button has been clicked during operation (new at v2.2.0) <br /></td></tr>
+<tr class="separator:abe13c4fbf81da4b1d11723cf0ce7473a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a615a33846b3930ea4691e786912c2ce0"><td class="memItemLeft" align="right" valign="top"><a id="a615a33846b3930ea4691e786912c2ce0"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a615a33846b3930ea4691e786912c2ce0">TTEntryChangedFlag</a></td></tr>
 <tr class="memdesc:a615a33846b3930ea4691e786912c2ce0"><td class="mdescLeft">&#160;</td><td class="mdescRight">true when a timetable entry that is displayed in the timetable entry edit window has changed <br /></td></tr>
@@ -2321,6 +2403,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a928b389995d7601e79e0114f400e21f6">WarningHover</a></td></tr>
 <tr class="memdesc:a928b389995d7601e79e0114f400e21f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">true when mouse hovers over warning messages during operation - to prevent clicking while changing <br /></td></tr>
 <tr class="separator:a928b389995d7601e79e0114f400e21f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a374697196f54a38d8a1fd6cfabb5a8a4"><td class="memItemLeft" align="right" valign="top"><a id="a374697196f54a38d8a1fd6cfabb5a8a4"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a374697196f54a38d8a1fd6cfabb5a8a4">WholeRailwayMoving</a></td></tr>
+<tr class="memdesc:a374697196f54a38d8a1fd6cfabb5a8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">true when moving the railway with the mouse, new at v2.1.0 <br /></td></tr>
+<tr class="separator:a374697196f54a38d8a1fd6cfabb5a8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32337255881759fc912873adc8f203fc"><td class="memItemLeft" align="right" valign="top"><a id="a32337255881759fc912873adc8f203fc"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a32337255881759fc912873adc8f203fc">PauseEntryRestartTime</a></td></tr>
 <tr class="memdesc:a32337255881759fc912873adc8f203fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">time value of the timetable restart time (as a double) on entry to pause mode <br /></td></tr>
@@ -2345,10 +2431,6 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 Graphics::TBitmap *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#ab6a299c76cfb2b9c8e9e6966133b56a3">SelectBitmap</a></td></tr>
 <tr class="memdesc:ab6a299c76cfb2b9c8e9e6966133b56a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">the graphic defined by Edit-&gt;Select &amp; Edit-&gt;Reselect <br /></td></tr>
 <tr class="separator:ab6a299c76cfb2b9c8e9e6966133b56a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a039907015f5174600f6020bd0a8ab7d1"><td class="memItemLeft" align="right" valign="top"><a id="a039907015f5174600f6020bd0a8ab7d1"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a039907015f5174600f6020bd0a8ab7d1">ClockTimer2Count</a></td></tr>
-<tr class="memdesc:a039907015f5174600f6020bd0a8ab7d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">added at v1.3.0 to ensure focus returned to Interface <br /></td></tr>
-<tr class="separator:a039907015f5174600f6020bd0a8ab7d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49670c19087423dc9ea68b5b6169a92b"><td class="memItemLeft" align="right" valign="top"><a id="a49670c19087423dc9ea68b5b6169a92b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a49670c19087423dc9ea68b5b6169a92b">LCResetCounter</a></td></tr>
 <tr class="memdesc:a49670c19087423dc9ea68b5b6169a92b"><td class="mdescLeft">&#160;</td><td class="mdescRight">count up to 20 then resets - to check LCs &amp; raise barriers if no route &amp; no train present <br /></td></tr>
@@ -2365,6 +2447,14 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#abd8470c9d77aaaed996ab1451d28c9c6">NewSelectBitmapVLoc</a></td></tr>
 <tr class="memdesc:abd8470c9d77aaaed996ab1451d28c9c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">as above for VLoc <br /></td></tr>
 <tr class="separator:abd8470c9d77aaaed996ab1451d28c9c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefa2e04a18c5bf935ad977bfb2a4f7eb"><td class="memItemLeft" align="right" valign="top"><a id="aefa2e04a18c5bf935ad977bfb2a4f7eb"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#aefa2e04a18c5bf935ad977bfb2a4f7eb">OperatorActionPanelDragStartX</a></td></tr>
+<tr class="memdesc:aefa2e04a18c5bf935ad977bfb2a4f7eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">mouse 'X' position when the OperatorActionPanel begins to be dragged <br /></td></tr>
+<tr class="separator:aefa2e04a18c5bf935ad977bfb2a4f7eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96a87be70f36ce7820f10159edceac4a"><td class="memItemLeft" align="right" valign="top"><a id="a96a87be70f36ce7820f10159edceac4a"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a96a87be70f36ce7820f10159edceac4a">OperatorActionPanelDragStartY</a></td></tr>
+<tr class="memdesc:a96a87be70f36ce7820f10159edceac4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">as above for 'Y' <br /></td></tr>
+<tr class="separator:a96a87be70f36ce7820f10159edceac4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ed3107d6e8a3851b082a7f655aa9a25"><td class="memItemLeft" align="right" valign="top"><a id="a7ed3107d6e8a3851b082a7f655aa9a25"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>OverallDistance</b></td></tr>
 <tr class="separator:a7ed3107d6e8a3851b082a7f655aa9a25"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2438,6 +2528,14 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a6bee5767dfc53fea26f3e9abc0cd5d12">WarningFlashCount</a></td></tr>
 <tr class="memdesc:a6bee5767dfc53fea26f3e9abc0cd5d12"><td class="mdescLeft">&#160;</td><td class="mdescRight">increments each clock cycle to a max. of 4 then resets to 0, used to toggle bool WarningFlash - see above <br /></td></tr>
 <tr class="separator:a6bee5767dfc53fea26f3e9abc0cd5d12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40c0a22cf1ab72cf07aa11befc324923"><td class="memItemLeft" align="right" valign="top"><a id="a40c0a22cf1ab72cf07aa11befc324923"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a40c0a22cf1ab72cf07aa11befc324923">StartWholeRailwayMoveHPos</a></td></tr>
+<tr class="memdesc:a40c0a22cf1ab72cf07aa11befc324923"><td class="mdescLeft">&#160;</td><td class="mdescRight">mouse X position when start to move the whole railway <br /></td></tr>
+<tr class="separator:a40c0a22cf1ab72cf07aa11befc324923"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e0518ced8df034a2e11c8caef58bf25"><td class="memItemLeft" align="right" valign="top"><a id="a2e0518ced8df034a2e11c8caef58bf25"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#a2e0518ced8df034a2e11c8caef58bf25">StartWholeRailwayMoveVPos</a></td></tr>
+<tr class="memdesc:a2e0518ced8df034a2e11c8caef58bf25"><td class="mdescLeft">&#160;</td><td class="mdescRight">mouse Y position when start to move the whole railway <br /></td></tr>
+<tr class="separator:a2e0518ced8df034a2e11c8caef58bf25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1b67812d2bbd790158bc50e14172b35"><td class="memItemLeft" align="right" valign="top"><a id="ab1b67812d2bbd790158bc50e14172b35"></a>
 TCursor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html#ab1b67812d2bbd790158bc50e14172b35">TempCursor</a></td></tr>
 <tr class="memdesc:ab1b67812d2bbd790158bc50e14172b35"><td class="mdescLeft">&#160;</td><td class="mdescRight">stores the screen cursor while a temporary cursor (ususlly an hourglass) is displayed <br /></td></tr>
@@ -2752,6 +2850,36 @@ static const UnicodeString&#160;</td><td class="memItemRight" valign="bottom"><b
 
 </div>
 </div>
+<a id="a6139ffb52492eb89e5487a8a3cd647b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6139ffb52492eb89e5487a8a3cd647b5">&#9670;&nbsp;</a></span>ClockTimer2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TInterface::ClockTimer2 </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The main loop, called every clock tick via MasterClockTimer. </p>
+<p>&lt;new v2.2.0, controls 2 second updating for OpTimeToActPanel</p>
+<p>&lt;new v2.2.0, delay on start operation </p>
+
+</div>
+</div>
 <a id="a330394a04433ce8672a52c2a0a659ff0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a330394a04433ce8672a52c2a0a659ff0">&#9670;&nbsp;</a></span>CompileAllEntriesMemoAndSetPointers()</h2>
 
@@ -3022,6 +3150,33 @@ static const UnicodeString&#160;</td><td class="memItemRight" valign="bottom"><b
 </table>
 </div><div class="memdoc">
 <p>Called during gap setting to mark a gap with a red ellipse and ask user to select the corresponding gap, returns true if an unset gap found </p>
+
+</div>
+</div>
+<a id="a6aabbfe2ebc6e92d6306697e2940b86c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6aabbfe2ebc6e92d6306697e2940b86c">&#9670;&nbsp;</a></span>IsPerformancePanelObscuringFloatingLabel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TInterface::IsPerformancePanelObscuringFloatingLabel </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Checked during operation, returns true if so and PerformancePanel removed - not used from v2.2.0 as now allow floating panel &amp; label to overlie performance panel </p>
 
 </div>
 </div>

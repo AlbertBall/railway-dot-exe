@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.1.0</span>
+   &#160;<span id="projectnumber">v2.2.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -75,11 +75,6 @@ $(function() {
 <div class="title">TTrain Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Collaboration diagram for TTrain:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -138,6 +133,9 @@ Graphics::TBitmap *&#160;</td><td class="memItemRight" valign="bottom"><a class=
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train.html#a406c172a0ba96802ada1aa04d78948d0">ChangeTrainDirection</a> (int Caller)</td></tr>
 <tr class="memdesc:a406c172a0ba96802ada1aa04d78948d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reverses the direction of motion of the train. <br /></td></tr>
 <tr class="separator:a406c172a0ba96802ada1aa04d78948d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae34370de578ebd07a217c79d8b67312c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train.html#ae34370de578ebd07a217c79d8b67312c">CalcTimeToAct</a> (int Caller)</td></tr>
+<tr class="memdesc:ae34370de578ebd07a217c79d8b67312c"><td class="mdescLeft">&#160;</td><td class="mdescRight">new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessary delays  <a href="#ae34370de578ebd07a217c79d8b67312c">More...</a><br /></td></tr>
+<tr class="separator:ae34370de578ebd07a217c79d8b67312c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50997f7e8138a7e6a147fe3b5ad21b84"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train.html#a50997f7e8138a7e6a147fe3b5ad21b84">CheckAndCancelRouteForWrongEndEntry</a> (int Caller, int Element, int EntryPos)</td></tr>
 <tr class="separator:a50997f7e8138a7e6a147fe3b5ad21b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9edf458753619f8cd25f0165484d26f"><td class="memItemLeft" align="right" valign="top"><a id="ab9edf458753619f8cd25f0165484d26f"></a>
@@ -438,6 +436,17 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train.html#a6940d3fe404390d1d345a80bde3f6bf9">PowerAtRail</a></td></tr>
 <tr class="memdesc:a6940d3fe404390d1d345a80bde3f6bf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">in Watts (taken as 80% of the train's Gross Power, i.e. that entered by the user) <br /></td></tr>
 <tr class="separator:a6940d3fe404390d1d345a80bde3f6bf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1d46932f9ed9e6d0a3ee2f3e76d1705"><td class="memItemLeft" align="right" valign="top"><a id="ab1d46932f9ed9e6d0a3ee2f3e76d1705"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train.html#ab1d46932f9ed9e6d0a3ee2f3e76d1705">MinsDelayed</a></td></tr>
+<tr class="memdesc:ab1d46932f9ed9e6d0a3ee2f3e76d1705"><td class="mdescLeft">&#160;</td><td class="mdescRight">new at v2.2.0 for operator time to act panel. Calculated in UpdateTrain <br /></td></tr>
+<tr class="separator:ab1d46932f9ed9e6d0a3ee2f3e76d1705"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a324320d17dcf544cb0507b909ac14975"><td class="memItemLeft" align="right" valign="top"><a id="a324320d17dcf544cb0507b909ac14975"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train.html#a324320d17dcf544cb0507b909ac14975">OpTimeToAct</a></td></tr>
+<tr class="memdesc:a324320d17dcf544cb0507b909ac14975"><td class="mdescLeft">&#160;</td><td class="mdescRight">in minutes: new at v2.2.0 for operator time to act panel. Calculated in UpdateTrain, -1 indicates not to be displayed on panel <br /></td></tr>
+<tr class="separator:a324320d17dcf544cb0507b909ac14975"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0188ccc7d6e918b6522a72addfb96d0d"><td class="memItemLeft" align="right" valign="top"><a id="a0188ccc7d6e918b6522a72addfb96d0d"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>FirstLaterStopRecoverableTime</b></td></tr>
+<tr class="separator:a0188ccc7d6e918b6522a72addfb96d0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9d994b88696a8680438b109dccfd679"><td class="memItemLeft" align="right" valign="top"><a id="aa9d994b88696a8680438b109dccfd679"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>FrontElementSpeedLimit</b></td></tr>
 <tr class="separator:aa9d994b88696a8680438b109dccfd679"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -612,6 +621,35 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <tr class="separator:a59a6ad055b319a73e954e9bef5f7593c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae34370de578ebd07a217c79d8b67312c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae34370de578ebd07a217c79d8b67312c">&#9670;&nbsp;</a></span>CalcTimeToAct()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TTrain::CalcTimeToAct </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessary delays </p>
+<p>New v2.2.0 for operator action panel. Calls CalcDistance ToRedSignal and uses the current speed to estimate the time in minutes assuming a constant deceleration rate to it. If a buffer, continuation, stopping location, an autosignal route after the next red signal, or service finished, then -1 is returned to signal that there is to be no display for that train. If stopped at a location the time is still calculated assuming a speed of 30km/h and the time to start added to it. </p>
+
+</div>
+</div>
 <a id="a50997f7e8138a7e6a147fe3b5ad21b84"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a50997f7e8138a7e6a147fe3b5ad21b84">&#9670;&nbsp;</a></span>CheckAndCancelRouteForWrongEndEntry()</h2>
 

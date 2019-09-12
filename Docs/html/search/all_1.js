@@ -16,6 +16,7 @@ var searchData=
   ['bridgesigroutegraphicsptr',['BridgeSigRouteGraphicsPtr',['../class_t_rail_graphics.html#a029f04249337f7d891f83f3e713f81cc',1,'TRailGraphics']]],
   ['bufferatexit',['BufferAtExit',['../class_t_train.html#a2e3e9fd7367a9333b7550b225d328d13',1,'TTrain']]],
   ['bufferzoomoutflashrequired',['BufferZoomOutFlashRequired',['../class_t_train.html#a60a3a9bebf64411f5d200682575a69ee',1,'TTrain']]],
+  ['buildbasicelementfromspeedtag',['BuildBasicElementFromSpeedTag',['../class_t_track.html#af507e9106aa12a670d6b09bd575cbfc3',1,'TTrack']]],
   ['buildcontinuationtrainexpectationmultimap',['BuildContinuationTrainExpectationMultiMap',['../class_t_train_controller.html#a0445987b1a355de3aef2c21b66d1ed8b',1,'TTrainController']]],
   ['buildgapmapfromtrackvector',['BuildGapMapFromTrackVector',['../class_t_track.html#a1a3aca3dd4e4bdc7e4c3c254997c2c5a',1,'TTrack']]],
   ['buildtraindatavectorforloadfile',['BuildTrainDataVectorForLoadFile',['../class_t_interface.html#a148e3f99d39f596dbd7d490403936154',1,'TInterface']]],

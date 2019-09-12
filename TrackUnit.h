@@ -1,8 +1,10 @@
 //TrackUnit.h
-//Comments in .h files are believed to be accurate and up to date
 /*
+Comments in .h files are believed to be accurate and up to date
+
 This is a source code file for "railway.exe", a railway operation
-simulator, written in Borland C++ Builder 4 Professional
+simulator, written originally in Borland C++ Builder 4 Professional with
+later updates in Embarcadero C++Builder 10.2.
 Copyright (C) 2010 Albert Ball [original development]
 
 This program is free software: you can redistribute it and/or modify
@@ -487,8 +489,8 @@ public:
     typedef std::multimap<THVPair, unsigned int, TMapComp> TInactiveTrack2MultiMap; ///< multimap of inactive TrackElements (platforms,
     typedef TInactiveTrack2MultiMap::iterator TInactiveTrack2MultiMapIterator;      ///< concourses, non-station named locations & parapets)
     typedef std::pair<TInactiveTrack2MultiMapIterator, TInactiveTrack2MultiMapIterator> TInactiveTrackRange; ///< '2' because there can be up
-                                                                                                            ///< to 2 entries (platforms) at
-                                                                                                            ///< a single location
+                                                                                                             ///< to 2 entries (platforms) at
+                                                                                                             ///< a single location
 
     typedef std::pair<unsigned int, unsigned int> TIMPair; ///< TrackElement pair type used for inactive elements, values are vector positions
 
@@ -539,6 +541,7 @@ public:
     bool LCFoundInAutoSigsRoute; ///< true if found an LC during an automatic route search
     bool LCFoundInAutoSigsRouteMessageGiven; ///< true if message given to user, to avoid giving multiple times and to avoid other failure messages being given
     bool LCFoundInRouteBuildingFlag; ///< true if a route set through an LC that is closed to trains (& therefore needs to be opened)
+    bool PastingWithAttributes; ///new at v2.2.0 - needed to distinguish between the two types of paste & to suppress multimap checks while pasting
     bool PointFlashFlag; ///< true when points are flashing during manual change
     bool RouteFlashFlag; ///< true while a route is flashing prior to being set
 
@@ -610,6 +613,13 @@ public:
     int TrackVectorSize() {
         return TrackVector.size();
     }
+    /// Return a basic track element from the SpeedTag   new at v2.2.0 - needed because Interface doesn't have direct access to FixedTrackArray
+    TTrackElement BuildBasicElementFromSpeedTag(int Caller, int SpeedTag)
+    {
+        return FixedTrackArray.FixedTrackPiece[SpeedTag];
+    }
+
+
     /// Return the number of selected active and inactive track elements (via menu items 'Edit' and 'Select')
     unsigned int SelectVectorSize() {
         return SelectVector.size();
@@ -877,8 +887,10 @@ public:
     void MarkOneLength(int Caller, TTrackElement TE, bool FirstTrack, TDisplay *Disp);
     /// Called during track building or pasting, when an element identified by CurrentTag (i.e. its SpeedTag value) is to be placed at
     /// position HLocInput & VLocInput.  If the element can be placed it is displayed and added to the relevant vector, and if named its
-    /// name is added to LocationNameMultiMap
-    void PlotAndAddTrackElement(int Caller, int CurrentTag, int HLocInput, int VLocInput, bool &TrackPlottedFlag, bool InternalChecks);
+    /// name is added to LocationNameMultiMap. At v2.2.0 'Aspect' added so can distinguish between adding and pasting track
+    void PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &TrackPlottedFlag, bool InternalChecks);
+    ///new at v2.2.0 - as PlotAndAddTrackElement but keeping speed & length attributes (for pasting) and also pastin location names
+    void PlotPastedTrackElementWithAttributes(int Caller, TTrackElement TempTrackElement, int HLocInput, int VLocInput, bool &TrackLinkingRequiredFlag, bool InternalChecks);
     /// Just replot the basic track elements at a level crossing (for flashing)
     void PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseElementSpeedTag, int HLoc, int VLoc, bool ConsecSignals, TDisplay *Disp);
     /// Plot & open (to trains) all level crossings linked to TrackElement

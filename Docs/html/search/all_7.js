@@ -12,5 +12,6 @@ var searchData=
   ['highlightonegap',['HighLightOneGap',['../class_t_interface.html#a44bce128da0e5ae552031e39552d0c39',1,'TInterface']]],
   ['highlightpanel',['HighlightPanel',['../class_t_interface.html#abd2c189b2bb0ca543d7fcd3082ddcddb',1,'TInterface']]],
   ['hloc',['HLoc',['../class_t_track_1_1_t_active_level_crossing.html#ad935a5012ee1d5bee8767e1c634dafbf',1,'TTrack::TActiveLevelCrossing']]],
-  ['holdatlocationinttmode',['HoldAtLocationInTTMode',['../class_t_train.html#a8f90e7446fd72ae99641a7ca9ee76ab6',1,'TTrain']]]
+  ['holdatlocationinttmode',['HoldAtLocationInTTMode',['../class_t_train.html#a8f90e7446fd72ae99641a7ca9ee76ab6',1,'TTrain']]],
+  ['hpos',['HPos',['../class_t_text_item.html#a1be1010d3eed8002ab893103a43ffc7b',1,'TTextItem']]]
 ];

@@ -1,10 +1,12 @@
 // Utilities.cpp
-// BEWARE OF COMMENTS in .cpp files:  they were accurate when written but have
-// sometimes been overtaken by changes and not updated
-// Comments in .h files are believed to be accurate and up to date
 /*
+BEWARE OF COMMENTS in .cpp files:  they were accurate when written but have
+ sometimes been overtaken by changes and not updated
+Comments in .h files are believed to be accurate and up to date
+
 This is a source code file for "railway.exe", a railway operation
-simulator, written in Borland C++ Builder 4 Professional
+simulator, written originally in Borland C++ Builder 4 Professional with
+later updates in Embarcadero C++Builder 10.2.
 Copyright (C) 2010 Albert Ball [original development]
 
 This program is free software: you can redistribute it and/or modify

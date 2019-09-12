@@ -16,6 +16,7 @@ var searchData=
   ['maximumspeedlimit',['MaximumSpeedLimit',['../class_t_train.html#afac2548a159e8c341c008810d15e2a88',1,'TTrain']]],
   ['maxrunningspeed',['MaxRunningSpeed',['../class_t_train_data_entry.html#aaef868581a7c5383f70f119b1f551178',1,'TTrainDataEntry::MaxRunningSpeed()'],['../class_t_train.html#a0b9ba6ba25c153ba3142f63ec024ccde',1,'TTrain::MaxRunningSpeed()']]],
   ['mbleftdown',['mbLeftDown',['../class_t_interface.html#a1bc1b96388de989a60a3956542997a5c',1,'TInterface']]],
+  ['minsdelayed',['MinsDelayed',['../class_t_train.html#ab1d46932f9ed9e6d0a3ee2f3e76d1705',1,'TTrain']]],
   ['mirrorarray',['MirrorArray',['../class_t_track.html#a45717d2ba1186b2ff1188b50447ad22a',1,'TTrack']]],
   ['missedticks',['MissedTicks',['../class_t_interface.html#a54f8918641a888d1a288c8a5573b2850',1,'TInterface']]],
   ['movingsuccessor',['MovingSuccessor',['../class_t_train_controller.html#ae6c929171fa673b87e68694e6f48985d',1,'TTrainController']]],

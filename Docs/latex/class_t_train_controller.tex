@@ -9,15 +9,6 @@ Handles all train and timetable activities, only one object created.
 
 {\ttfamily \#include $<$Train\+Unit.\+h$>$}
 
-
-
-Collaboration diagram for T\+Train\+Controller\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=268pt]{class_t_train_controller__coll__graph}
-\end{center}
-\end{figure}
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
@@ -43,12 +34,29 @@ typedef T\+Continuation\+Train\+Expectation\+Multi\+Map\+::iterator \mbox{\hyper
 \mbox{\Hypertarget{class_t_train_controller_a5adc75543948ea32915ef025ace798b2}\label{class_t_train_controller_a5adc75543948ea32915ef025ace798b2}} 
 typedef std\+::pair$<$ T\+Date\+Time, \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_train_expectation_entry}{T\+Continuation\+Train\+Expectation\+Entry}} $>$ \mbox{\hyperlink{class_t_train_controller_a5adc75543948ea32915ef025ace798b2}{T\+Continuation\+Train\+Expectation\+Multi\+Map\+Pair}}
 \begin{DoxyCompactList}\small\item\em a single multimap entry \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_t_train_controller_aa9073b97736a2733dbdaf8dc52e34c24}\label{class_t_train_controller_aa9073b97736a2733dbdaf8dc52e34c24}} 
 typedef std\+::vector$<$ \mbox{\hyperlink{class_t_train}{T\+Train}} $>$ \mbox{\hyperlink{class_t_train_controller_aa9073b97736a2733dbdaf8dc52e34c24}{T\+Train\+Vector}}
-\begin{DoxyCompactList}\small\item\em vector containing all trains that currently exist in the railway \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em vector containing all trains that currently exist in the railway \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_train_controller_a1eb3c8cb9ff238f5000c7567ab1cd7e1}\label{class_t_train_controller_a1eb3c8cb9ff238f5000c7567ab1cd7e1}} 
+typedef std\+::pair$<$ Ansi\+String, int $>$ {\bfseries T\+H\+Cand\+Vec\+Pos\+Pair}
+\item 
+\mbox{\Hypertarget{class_t_train_controller_ad048a6a119316f72047e40188f43afca}\label{class_t_train_controller_ad048a6a119316f72047e40188f43afca}} 
+typedef std\+::multimap$<$ float, T\+H\+Cand\+Vec\+Pos\+Pair $>$ {\bfseries T\+Op\+Time\+To\+Act\+Multi\+Map}
+\item 
+\mbox{\Hypertarget{class_t_train_controller_ae5821b48e2fe5c77f169c9f07019f20e}\label{class_t_train_controller_ae5821b48e2fe5c77f169c9f07019f20e}} 
+typedef std\+::pair$<$ float, T\+H\+Cand\+Vec\+Pos\+Pair $>$ {\bfseries T\+Op\+Time\+To\+Act\+Multi\+Map\+Entry}
+\item 
+\mbox{\Hypertarget{class_t_train_controller_ada41a0ac7bb3a3d27c9095dde80d9b59}\label{class_t_train_controller_ada41a0ac7bb3a3d27c9095dde80d9b59}} 
+typedef T\+Op\+Time\+To\+Act\+Multi\+Map\+::iterator {\bfseries T\+Op\+Time\+To\+Act\+Multi\+Map\+Iterator}
+\item 
+\mbox{\Hypertarget{class_t_train_controller_a1af939f4f452d7f2002df3dac7efb743}\label{class_t_train_controller_a1af939f4f452d7f2002df3dac7efb743}} 
+typedef std\+::vector$<$ int $>$ \mbox{\hyperlink{class_t_train_controller_a1af939f4f452d7f2002df3dac7efb743}{T\+Continuation\+Entry\+Vec\+Pos\+Vector}}
+\begin{DoxyCompactList}\small\item\em ensures only one train displayed for a given continuation \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+\mbox{\Hypertarget{class_t_train_controller_a9c531d3df66921ada4e698bcf47f72f3}\label{class_t_train_controller_a9c531d3df66921ada4e698bcf47f72f3}} 
+Ansi\+String \mbox{\hyperlink{class_t_train_controller_a9c531d3df66921ada4e698bcf47f72f3}{Continuation\+Entry\+Floating\+T\+T\+String}} (int Caller, \mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}} $\ast$T\+T\+D\+E\+Ptr, int Repeat\+Number, int Incremental\+Minutes, int Incremental\+Digits)
+\begin{DoxyCompactList}\small\item\em Build string for use in floating window for expected trains at continuations. \end{DoxyCompactList}\item 
 Ansi\+String \mbox{\hyperlink{class_t_train_controller_ae6c904f201d8bb23b3c0714226244890}{Get\+Exit\+Location\+And\+At}} (int Caller, T\+Exit\+List \&Exit\+List) const
 \item 
 \mbox{\Hypertarget{class_t_train_controller_afb0e8fd36435809350cb323ab9fe2213}\label{class_t_train_controller_afb0e8fd36435809350cb323ab9fe2213}} 
@@ -121,9 +129,14 @@ bool \mbox{\hyperlink{class_t_train_controller_afa4be4bca19620319c9e65eb0b43daa1
 \mbox{\Hypertarget{class_t_train_controller_ac51af4807fe6bba453f8ab9bba42e2b5}\label{class_t_train_controller_ac51af4807fe6bba453f8ab9bba42e2b5}} 
 bool \mbox{\hyperlink{class_t_train_controller_ac51af4807fe6bba453f8ab9bba42e2b5}{Timetable\+Integrity\+Check}} (int Caller, char $\ast$File\+Name, bool Give\+Messages, bool Check\+Locations\+Exist\+In\+Railway)
 \begin{DoxyCompactList}\small\item\em Checks overall timetable integrity, calls many other specific checking functions, returns true for success. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_t_train_controller_ad81afe17a036ab3f96c340ab75a2d8e2}{Calc\+Distance\+To\+Red\+Signaland\+Stop\+Time}} (int Caller, int Track\+Vector\+Position, int Track\+Vector\+Position\+Entry\+Pos, bool Sig\+Control\+And\+Can\+Pass\+Red\+Signal, \mbox{\hyperlink{class_t_action_vector_entry}{T\+Action\+Vector\+Entry}} $\ast$A\+V\+Ptr, Ansi\+String Head\+Code, int Train\+ID, float \&Current\+Stop\+Time, float \&Later\+Stop\+Time, float \&Recoverable\+Time, int \&Av\+Track\+Speed)
+\item 
 \mbox{\Hypertarget{class_t_train_controller_aa60ab73bef848c5458cdf0217092aef8}\label{class_t_train_controller_aa60ab73bef848c5458cdf0217092aef8}} 
 int \mbox{\hyperlink{class_t_train_controller_aa60ab73bef848c5458cdf0217092aef8}{Entry\+Pos}} (int Caller, int Train\+I\+D\+In, int Track\+Vector\+Number)
 \begin{DoxyCompactList}\small\item\em Return the track entry link (Link\mbox{[}\mbox{]}) array position for the given train on track element at track vector position Track\+Vector\+Number. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_train_controller_a2713e7d4bb329d65df8b3fa0ad59b6cf}\label{class_t_train_controller_a2713e7d4bb329d65df8b3fa0ad59b6cf}} 
+T\+Date\+Time \mbox{\hyperlink{class_t_train_controller_a2713e7d4bb329d65df8b3fa0ad59b6cf}{Get\+Controller\+Train\+Time}} (int Caller, T\+Date\+Time Time, int Repeat\+Number, int Incremental\+Minutes)
+\begin{DoxyCompactList}\small\item\em Get the interval betwqeen repeats. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a435ef46f062904e85ae9792faaecdcf7}\label{class_t_train_controller_a435ef46f062904e85ae9792faaecdcf7}} 
 T\+Date\+Time \mbox{\hyperlink{class_t_train_controller_a435ef46f062904e85ae9792faaecdcf7}{Get\+Repeat\+Time}} (int Caller, T\+Date\+Time Basic\+Time, int Repeat\+Number, int Inc\+Minutes)
 \begin{DoxyCompactList}\small\item\em Return the repeating service time. \end{DoxyCompactList}\item 
@@ -162,6 +175,9 @@ void \mbox{\hyperlink{class_t_train_controller_a20a1576dea1d86ed78fc5e9f46343481
 \mbox{\Hypertarget{class_t_train_controller_a2f9cd71b60b45de8380f5fad7bbd5dd8}\label{class_t_train_controller_a2f9cd71b60b45de8380f5fad7bbd5dd8}} 
 void \mbox{\hyperlink{class_t_train_controller_a2f9cd71b60b45de8380f5fad7bbd5dd8}{Plot\+All\+Trains\+In\+Zoom\+Out\+Mode}} (int Caller, bool Flash)
 \begin{DoxyCompactList}\small\item\em Plots all trains on screen in zoomed-\/out mode, state of \textquotesingle{}Flash\textquotesingle{} determines whether the flashing trains are plotted or not. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_train_controller_a0e16b9cb91bb29f83bffc7ae3461200d}\label{class_t_train_controller_a0e16b9cb91bb29f83bffc7ae3461200d}} 
+void {\bfseries Rebuild\+Op\+Time\+To\+Act\+Multimap} (int Caller)
+\item 
 \mbox{\Hypertarget{class_t_train_controller_a47676de8fc677dbcabf565569cb1435c}\label{class_t_train_controller_a47676de8fc677dbcabf565569cb1435c}} 
 void \mbox{\hyperlink{class_t_train_controller_a47676de8fc677dbcabf565569cb1435c}{Replot\+Trains}} (int Caller, \mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$Disp)
 \begin{DoxyCompactList}\small\item\em plot all trains on the display \end{DoxyCompactList}\item 
@@ -249,6 +265,9 @@ bool \mbox{\hyperlink{class_t_train_controller_a646a91d8cedea54902a6fdc0ef67fff1
 \mbox{\Hypertarget{class_t_train_controller_a39452a716da27a51a796b7e6a2bcad5b}\label{class_t_train_controller_a39452a716da27a51a796b7e6a2bcad5b}} 
 bool \mbox{\hyperlink{class_t_train_controller_a39452a716da27a51a796b7e6a2bcad5b}{Signaller\+Train\+Removed\+On\+Auto\+Sigs\+Route}}
 \begin{DoxyCompactList}\small\item\em true if train was on an Auto\+Sigs\+Route when removed by the signaller \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_train_controller_a15c68187a0fa6fb497f949eb4e9693d9}\label{class_t_train_controller_a15c68187a0fa6fb497f949eb4e9693d9}} 
+bool \mbox{\hyperlink{class_t_train_controller_a15c68187a0fa6fb497f949eb4e9693d9}{Op\+Action\+Panel\+Visible}}
+\begin{DoxyCompactList}\small\item\em new v2.\+2.\+0 flag to prevent time to act functions when not visible \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a095d7c99ffc21a6939a044bbad4fa18f}\label{class_t_train_controller_a095d7c99ffc21a6939a044bbad4fa18f}} 
 float \mbox{\hyperlink{class_t_train_controller_a095d7c99ffc21a6939a044bbad4fa18f}{Not\+Started\+Train\+Late\+Mins}}
 \begin{DoxyCompactList}\small\item\em total late minutes of trains that haven\textquotesingle{}t started yet on exit operation for locations not reached yet \end{DoxyCompactList}\item 
@@ -309,9 +328,15 @@ int {\bfseries On\+Time\+Deps}
 \mbox{\Hypertarget{class_t_train_controller_a3498a167993b7da117ec243defb56ab4}\label{class_t_train_controller_a3498a167993b7da117ec243defb56ab4}} 
 int {\bfseries On\+Time\+Passes}
 \item 
+\mbox{\Hypertarget{class_t_train_controller_a77d198d6770529b3d5fd65f21763f7cb}\label{class_t_train_controller_a77d198d6770529b3d5fd65f21763f7cb}} 
+unsigned int \mbox{\hyperlink{class_t_train_controller_a77d198d6770529b3d5fd65f21763f7cb}{Op\+Time\+To\+Act\+Update\+Counter}}
+\begin{DoxyCompactList}\small\item\em new v2.\+2.\+0, incremented in Interface.\+cpp, controls updating for Op\+Time\+To\+Act\+Panel \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_train_controller_a2b1a86606eb0906b85142c5749c999e9}\label{class_t_train_controller_a2b1a86606eb0906b85142c5749c999e9}} 
+unsigned int \mbox{\hyperlink{class_t_train_controller_a2b1a86606eb0906b85142c5749c999e9}{Op\+Action\+Panel\+Hint\+Delay\+Counter}}
+\begin{DoxyCompactList}\small\item\em new v2.\+2.\+0 on start operation delays the op action panle headcode display for about 5 secs while hints shown \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_ac4449f3490e36190d510f6960191ce45}\label{class_t_train_controller_ac4449f3490e36190d510f6960191ce45}} 
-int {\bfseries Other\+Missed\+Events}
-\item 
+int \mbox{\hyperlink{class_t_train_controller_ac4449f3490e36190d510f6960191ce45}{Other\+Missed\+Events}}
+\begin{DoxyCompactList}\small\item\em unsigned as might initialise at any value \& need it to be positive \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a273080615512d3a32b82a881af9dc5fb}\label{class_t_train_controller_a273080615512d3a32b82a881af9dc5fb}} 
 int {\bfseries S\+P\+A\+D\+Events}
 \item 
@@ -335,6 +360,12 @@ int \mbox{\hyperlink{class_t_train_controller_aa547b8fba4e19683055e67359d41a933}
 \mbox{\Hypertarget{class_t_train_controller_a1a8e542193d93581e0c391d8e7fa3e1b}\label{class_t_train_controller_a1a8e542193d93581e0c391d8e7fa3e1b}} 
 \mbox{\hyperlink{class_t_train_controller_a36525478ab0d9f59e486b8c030acd87c}{T\+Continuation\+Train\+Expectation\+Multi\+Map}} \mbox{\hyperlink{class_t_train_controller_a1a8e542193d93581e0c391d8e7fa3e1b}{Continuation\+Train\+Expectation\+Multi\+Map}}
 \begin{DoxyCompactList}\small\item\em Multimap for \mbox{\hyperlink{class_t_train_controller_1_1_t_continuation_train_expectation_entry}{T\+Continuation\+Train\+Expectation\+Entry}} objects, the access key is the expectation time. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_train_controller_af37800c6e9a97ebf632d011291e5070e}\label{class_t_train_controller_af37800c6e9a97ebf632d011291e5070e}} 
+T\+Op\+Time\+To\+Act\+Multi\+Map \mbox{\hyperlink{class_t_train_controller_af37800c6e9a97ebf632d011291e5070e}{Op\+Time\+To\+Act\+Multi\+Map}}
+\begin{DoxyCompactList}\small\item\em added v2.\+2.\+0 for Op time to act display \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_train_controller_aa35fcf78d6d349c399c8a240508df51d}\label{class_t_train_controller_aa35fcf78d6d349c399c8a240508df51d}} 
+T\+Op\+Time\+To\+Act\+Multi\+Map\+Iterator \mbox{\hyperlink{class_t_train_controller_aa35fcf78d6d349c399c8a240508df51d}{Op\+Time\+To\+Act\+Multi\+Map\+Iterator}}
+\begin{DoxyCompactList}\small\item\em added v2.\+2.\+0 for Op time to act display \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_train_controller_a4e9c9e646d13f9b952434abcd97cec1b}\label{class_t_train_controller_a4e9c9e646d13f9b952434abcd97cec1b}} 
 T\+Train\+Data\+Vector \mbox{\hyperlink{class_t_train_controller_a4e9c9e646d13f9b952434abcd97cec1b}{Train\+Data\+Vector}}
 \begin{DoxyCompactList}\small\item\em vector containing the internal timetable \end{DoxyCompactList}\item 
@@ -346,6 +377,19 @@ T\+Train\+Data\+Vector \mbox{\hyperlink{class_t_train_controller_a4e9c9e646d13f9
 \subsection{Detailed Description}
 Handles all train and timetable activities, only one object created. 
 
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_t_train_controller_aa9073b97736a2733dbdaf8dc52e34c24}\label{class_t_train_controller_aa9073b97736a2733dbdaf8dc52e34c24}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!T\+Train\+Vector@{T\+Train\+Vector}}
+\index{T\+Train\+Vector@{T\+Train\+Vector}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{T\+Train\+Vector}{TTrainVector}}
+{\footnotesize\ttfamily typedef std\+::vector$<$\mbox{\hyperlink{class_t_train}{T\+Train}}$>$ \mbox{\hyperlink{class_t_train_controller_aa9073b97736a2733dbdaf8dc52e34c24}{T\+Train\+Controller\+::\+T\+Train\+Vector}}}
+
+
+
+vector containing all trains that currently exist in the railway 
+
+these added v2.\+2.\+0, for Op\+Time\+To\+Act\+Panel 
+
 \subsection{Member Function Documentation}
 \mbox{\Hypertarget{class_t_train_controller_a7fbe0dc297130da79bcfa3503c6c51c1}\label{class_t_train_controller_a7fbe0dc297130da79bcfa3503c6c51c1}} 
 \index{T\+Train\+Controller@{T\+Train\+Controller}!At\+Loc\+Successor@{At\+Loc\+Successor}}
@@ -353,7 +397,13 @@ Handles all train and timetable activities, only one object created.
 \subsubsection{\texorpdfstring{At\+Loc\+Successor()}{AtLocSuccessor()}}
 {\footnotesize\ttfamily bool T\+Train\+Controller\+::\+At\+Loc\+Successor (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_t_action_vector_entry}{T\+Action\+Vector\+Entry}} \&}]{A\+V\+Entry }\end{DoxyParamCaption})}
 
-A shorthand function that returns true if the successor to a given timetable action command should be (or could be) an \textquotesingle{}at location\textquotesingle{} command, used in timetable validation \mbox{\Hypertarget{class_t_train_controller_aadffada34a23350d7773bc7735e423a1}\label{class_t_train_controller_aadffada34a23350d7773bc7735e423a1}} 
+A shorthand function that returns true if the successor to a given timetable action command should be (or could be) an \textquotesingle{}at location\textquotesingle{} command, used in timetable validation \mbox{\Hypertarget{class_t_train_controller_ad81afe17a036ab3f96c340ab75a2d8e2}\label{class_t_train_controller_ad81afe17a036ab3f96c340ab75a2d8e2}} 
+\index{T\+Train\+Controller@{T\+Train\+Controller}!Calc\+Distance\+To\+Red\+Signaland\+Stop\+Time@{Calc\+Distance\+To\+Red\+Signaland\+Stop\+Time}}
+\index{Calc\+Distance\+To\+Red\+Signaland\+Stop\+Time@{Calc\+Distance\+To\+Red\+Signaland\+Stop\+Time}!T\+Train\+Controller@{T\+Train\+Controller}}
+\subsubsection{\texorpdfstring{Calc\+Distance\+To\+Red\+Signaland\+Stop\+Time()}{CalcDistanceToRedSignalandStopTime()}}
+{\footnotesize\ttfamily int T\+Train\+Controller\+::\+Calc\+Distance\+To\+Red\+Signaland\+Stop\+Time (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Track\+Vector\+Position,  }\item[{int}]{Track\+Vector\+Position\+Entry\+Pos,  }\item[{bool}]{Sig\+Control\+And\+Can\+Pass\+Red\+Signal,  }\item[{\mbox{\hyperlink{class_t_action_vector_entry}{T\+Action\+Vector\+Entry}} $\ast$}]{A\+V\+Ptr,  }\item[{Ansi\+String}]{Head\+Code,  }\item[{int}]{Train\+ID,  }\item[{float \&}]{Current\+Stop\+Time,  }\item[{float \&}]{Later\+Stop\+Time,  }\item[{float \&}]{Recoverable\+Time,  }\item[{int \&}]{Av\+Track\+Speed }\end{DoxyParamCaption})}
+
+new v2.\+2.\+0, calcs distance to red signal, returns -\/1 for no signal found, for autosigs route after next red signal \& other conditions, also totals up location stop times before the red signal and returns value in Stop\+Time \mbox{\Hypertarget{class_t_train_controller_aadffada34a23350d7773bc7735e423a1}\label{class_t_train_controller_aadffada34a23350d7773bc7735e423a1}} 
 \index{T\+Train\+Controller@{T\+Train\+Controller}!Calc\+Operating\+And\+Not\+Started\+Train\+Lateness@{Calc\+Operating\+And\+Not\+Started\+Train\+Lateness}}
 \index{Calc\+Operating\+And\+Not\+Started\+Train\+Lateness@{Calc\+Operating\+And\+Not\+Started\+Train\+Lateness}!T\+Train\+Controller@{T\+Train\+Controller}}
 \subsubsection{\texorpdfstring{Calc\+Operating\+And\+Not\+Started\+Train\+Lateness()}{CalcOperatingAndNotStartedTrainLateness()}}

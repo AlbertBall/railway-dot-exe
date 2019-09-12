@@ -10,7 +10,6 @@ Language=0x809 English (United Kingdom)
 
 
 [FILES]
-html\1001d.htm
 html\2.14gc1.htm
 html\2.24gc2.htm
 html\2.34gc3.htm
@@ -52,6 +51,7 @@ html\6.64sza.htm
 html\6.74szb.htm
 html\6.84szc.htm
 html\6.94szd.htm
+html\6.10.htm
 
 [INFOTYPES]
 

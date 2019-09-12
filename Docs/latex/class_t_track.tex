@@ -4,16 +4,6 @@
 
 {\ttfamily \#include $<$Track\+Unit.\+h$>$}
 
-
-
-Collaboration diagram for T\+Track\+:
-\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[height=550pt]{class_t_track__coll__graph}
-\end{center}
-\end{figure}
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
@@ -149,6 +139,9 @@ int \mbox{\hyperlink{class_t_track_aeb515d40cb9b08ed55ce877ffdbc51a5}{Get\+Non\+
 \mbox{\Hypertarget{class_t_track_a55d9415e3ecac804f3345dddd74f9bad}\label{class_t_track_a55d9415e3ecac804f3345dddd74f9bad}} 
 int \mbox{\hyperlink{class_t_track_a55d9415e3ecac804f3345dddd74f9bad}{Track\+Vector\+Size}} ()
 \begin{DoxyCompactList}\small\item\em Return the number of active track elements. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_track_af507e9106aa12a670d6b09bd575cbfc3}\label{class_t_track_af507e9106aa12a670d6b09bd575cbfc3}} 
+\mbox{\hyperlink{class_t_track_element}{T\+Track\+Element}} \mbox{\hyperlink{class_t_track_af507e9106aa12a670d6b09bd575cbfc3}{Build\+Basic\+Element\+From\+Speed\+Tag}} (int Caller, int Speed\+Tag)
+\begin{DoxyCompactList}\small\item\em Return a basic track element from the Speed\+Tag new at v2.\+2.\+0 -\/ needed because Interface doesn\textquotesingle{}t have direct access to Fixed\+Track\+Array. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_track_a3cae8cc2dc72d74cf0d24dbc4148c591}\label{class_t_track_a3cae8cc2dc72d74cf0d24dbc4148c591}} 
 unsigned int \mbox{\hyperlink{class_t_track_a3cae8cc2dc72d74cf0d24dbc4148c591}{Select\+Vector\+Size}} ()
 \begin{DoxyCompactList}\small\item\em Return the number of selected active and inactive track elements (via menu items \textquotesingle{}Edit\textquotesingle{} and \textquotesingle{}Select\textquotesingle{}) \end{DoxyCompactList}\item 
@@ -225,6 +218,9 @@ bool \mbox{\hyperlink{class_t_track_a794daa0471b473e28ff24c87a92112dc}{Gaps\+Uns
 \mbox{\Hypertarget{class_t_track_a23030c22d4c98706d1738205242646d9}\label{class_t_track_a23030c22d4c98706d1738205242646d9}} 
 bool \mbox{\hyperlink{class_t_track_a23030c22d4c98706d1738205242646d9}{Inactive\+Map\+Check}} (int Caller, int H\+Loc, int V\+Loc, int Speed\+Tag)
 \begin{DoxyCompactList}\small\item\em Used to check the validity of footbridge links. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_track_ae98d9466242e62a8892e073ebb44374e}\label{class_t_track_ae98d9466242e62a8892e073ebb44374e}} 
+bool \mbox{\hyperlink{class_t_track_ae98d9466242e62a8892e073ebb44374e}{Inactive\+Track\+Element\+Present\+At\+HV}} (int Caller, int H\+Loc, int V\+Loc)
+\begin{DoxyCompactList}\small\item\em New at v1.\+2.\+0; true if an inactive track element present. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_track_a5259f2d309f98df4f6e2821e7e71ca81}\label{class_t_track_a5259f2d309f98df4f6e2821e7e71ca81}} 
 bool \mbox{\hyperlink{class_t_track_a5259f2d309f98df4f6e2821e7e71ca81}{Is\+A\+Track\+Element\+Adjacent\+To\+Link}} (int Caller, int H\+Loc\+In, int V\+Loc\+In, int Link\+In)
 \begin{DoxyCompactList}\small\item\em True if there is an element adjacent to Link\+In for element at H\+Loc \& V\+Loc. \end{DoxyCompactList}\item 
@@ -308,6 +304,9 @@ bool \mbox{\hyperlink{class_t_track_a4dffe604a7d6b14cce2c94ad7522fb7f}{This\+Nam
 \mbox{\Hypertarget{class_t_track_addd8e149e66c99a295541c9eda13eae4}\label{class_t_track_addd8e149e66c99a295541c9eda13eae4}} 
 bool \mbox{\hyperlink{class_t_track_addd8e149e66c99a295541c9eda13eae4}{Timetabled\+Location\+Name\+Allocated}} (int Caller, Ansi\+String Location\+Name)
 \begin{DoxyCompactList}\small\item\em True if a non-\/empty Location\+Name found as a timetabled location name i.\+e. not as a continuation name. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_track_a1c808ac52b6e5e7081273916ce458638}\label{class_t_track_a1c808ac52b6e5e7081273916ce458638}} 
+bool \mbox{\hyperlink{class_t_track_a1c808ac52b6e5e7081273916ce458638}{Track\+Element\+Present\+At\+HV}} (int Caller, int H\+Loc, int V\+Loc)
+\begin{DoxyCompactList}\small\item\em New at v1.\+2.\+0; true if a track element present. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_track_a12d4069a6a201e13a83347c555a465b2}\label{class_t_track_a12d4069a6a201e13a83347c555a465b2}} 
 bool \mbox{\hyperlink{class_t_track_a12d4069a6a201e13a83347c555a465b2}{Train\+On\+Link}} (int Caller, int H\+Loc, int V\+Loc, int Link, int \&Train\+ID)
 \begin{DoxyCompactList}\small\item\em New at v1.\+2.\+0; checks whether a train present at input location and link and returns its ID if so. \end{DoxyCompactList}\item 
@@ -407,8 +406,11 @@ void \mbox{\hyperlink{class_t_track_adcd1d019cbdb0d0dbfa44a41dc98ba07}{Load\+Tra
 \mbox{\Hypertarget{class_t_track_a6cab5ab84e10504ef1c9d39e931d42fe}\label{class_t_track_a6cab5ab84e10504ef1c9d39e931d42fe}} 
 void \mbox{\hyperlink{class_t_track_a6cab5ab84e10504ef1c9d39e931d42fe}{Mark\+One\+Length}} (int Caller, \mbox{\hyperlink{class_t_track_element}{T\+Track\+Element}} TE, bool First\+Track, \mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$Disp)
 \begin{DoxyCompactList}\small\item\em Mark on screen a track element according to its length and speed limit if either of these differ from their default values. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{class_t_track_a608674798cf48d88d614c8817566126e}{Plot\+And\+Add\+Track\+Element}} (int Caller, int Current\+Tag, int H\+Loc\+Input, int V\+Loc\+Input, bool \&Track\+Plotted\+Flag, bool Internal\+Checks)
+void \mbox{\hyperlink{class_t_track_a4385335a5bb0891cdbf2b6d0f0aabdf2}{Plot\+And\+Add\+Track\+Element}} (int Caller, int Current\+Tag, int Aspect, int H\+Loc\+Input, int V\+Loc\+Input, bool \&Track\+Plotted\+Flag, bool Internal\+Checks)
 \item 
+\mbox{\Hypertarget{class_t_track_a9f93210292bf2423e0ac0d738adafe9e}\label{class_t_track_a9f93210292bf2423e0ac0d738adafe9e}} 
+void \mbox{\hyperlink{class_t_track_a9f93210292bf2423e0ac0d738adafe9e}{Plot\+Pasted\+Track\+Element\+With\+Attributes}} (int Caller, \mbox{\hyperlink{class_t_track_element}{T\+Track\+Element}} Temp\+Track\+Element, int H\+Loc\+Input, int V\+Loc\+Input, bool \&Track\+Linking\+Required\+Flag, bool Internal\+Checks)
+\begin{DoxyCompactList}\small\item\em new at v2.\+2.\+0 -\/ as Plot\+And\+Add\+Track\+Element but keeping speed \& length attributes (for pasting) and also pastin location names \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_track_a9baeb3f155bea71ef42f09c276707562}\label{class_t_track_a9baeb3f155bea71ef42f09c276707562}} 
 void \mbox{\hyperlink{class_t_track_a9baeb3f155bea71ef42f09c276707562}{Plot\+L\+C\+Base\+Elements\+Only}} (int Caller, T\+Barrier\+State State, int Base\+Element\+Speed\+Tag, int H\+Loc, int V\+Loc, bool Consec\+Signals, \mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$Disp)
 \begin{DoxyCompactList}\small\item\em Just replot the basic track elements at a level crossing (for flashing) \end{DoxyCompactList}\item 
@@ -539,9 +541,11 @@ bool \mbox{\hyperlink{class_t_track_a5d8fb05b298ffb88648aa1993cf4ac2c}{L\+C\+Fou
 \mbox{\Hypertarget{class_t_track_a3be055d3c016ced93635700d7da9a2da}\label{class_t_track_a3be055d3c016ced93635700d7da9a2da}} 
 bool \mbox{\hyperlink{class_t_track_a3be055d3c016ced93635700d7da9a2da}{L\+C\+Found\+In\+Route\+Building\+Flag}}
 \begin{DoxyCompactList}\small\item\em true if a route set through an LC that is closed to trains (\& therefore needs to be opened) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_t_track_a50f518fa93ef56b1570e4102fb691e14}\label{class_t_track_a50f518fa93ef56b1570e4102fb691e14}} 
+\mbox{\Hypertarget{class_t_track_ac1051330dac60335da74eb2c265cd40c}\label{class_t_track_ac1051330dac60335da74eb2c265cd40c}} 
+bool {\bfseries Pasting\+With\+Attributes}
+\item 
 bool \mbox{\hyperlink{class_t_track_a50f518fa93ef56b1570e4102fb691e14}{Point\+Flash\+Flag}}
-\begin{DoxyCompactList}\small\item\em true when points are flashing during manual change \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em new at v2.\+2.\+0 -\/ needed to distinguish between the two types of paste \& to suppress multimap checks while pasting \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_track_aa66417417a7767acb35425dfa4754311}\label{class_t_track_aa66417417a7767acb35425dfa4754311}} 
 bool \mbox{\hyperlink{class_t_track_aa66417417a7767acb35425dfa4754311}{Route\+Flash\+Flag}}
 \begin{DoxyCompactList}\small\item\em true while a route is flashing prior to being set \end{DoxyCompactList}\item 
@@ -911,13 +915,13 @@ Only one length is needed to return true, but this doesn\textquotesingle{}t mean
 \subsubsection{\texorpdfstring{Platform\+On\+Signal\+Side()}{PlatformOnSignalSide()}}
 {\footnotesize\ttfamily bool T\+Track\+::\+Platform\+On\+Signal\+Side (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{H\+Loc,  }\item[{int}]{V\+Loc,  }\item[{int}]{Speed\+Tag,  }\item[{Graphics\+::\+T\+Bitmap $\ast$\&}]{Signal\+Platform\+Graphic }\end{DoxyParamCaption})}
 
-Check whether there is a platform present at H\+Loc \& V\+Loc at the same side as the signal represented by Speed\+Tag, if so return true, and also return a pointer to the appropriate platform graphic (same as a normal platform graphic but with a bit cut out for the signal) \mbox{\Hypertarget{class_t_track_a608674798cf48d88d614c8817566126e}\label{class_t_track_a608674798cf48d88d614c8817566126e}} 
+Check whether there is a platform present at H\+Loc \& V\+Loc at the same side as the signal represented by Speed\+Tag, if so return true, and also return a pointer to the appropriate platform graphic (same as a normal platform graphic but with a bit cut out for the signal) \mbox{\Hypertarget{class_t_track_a4385335a5bb0891cdbf2b6d0f0aabdf2}\label{class_t_track_a4385335a5bb0891cdbf2b6d0f0aabdf2}} 
 \index{T\+Track@{T\+Track}!Plot\+And\+Add\+Track\+Element@{Plot\+And\+Add\+Track\+Element}}
 \index{Plot\+And\+Add\+Track\+Element@{Plot\+And\+Add\+Track\+Element}!T\+Track@{T\+Track}}
 \subsubsection{\texorpdfstring{Plot\+And\+Add\+Track\+Element()}{PlotAndAddTrackElement()}}
-{\footnotesize\ttfamily void T\+Track\+::\+Plot\+And\+Add\+Track\+Element (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Current\+Tag,  }\item[{int}]{H\+Loc\+Input,  }\item[{int}]{V\+Loc\+Input,  }\item[{bool \&}]{Track\+Plotted\+Flag,  }\item[{bool}]{Internal\+Checks }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void T\+Track\+::\+Plot\+And\+Add\+Track\+Element (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Current\+Tag,  }\item[{int}]{Aspect,  }\item[{int}]{H\+Loc\+Input,  }\item[{int}]{V\+Loc\+Input,  }\item[{bool \&}]{Track\+Plotted\+Flag,  }\item[{bool}]{Internal\+Checks }\end{DoxyParamCaption})}
 
-Called during track building or pasting, when an element identified by Current\+Tag (i.\+e. its Speed\+Tag value) is to be placed at position H\+Loc\+Input \& V\+Loc\+Input. If the element can be placed it is displayed and added to the relevant vector, and if named its name is added to Location\+Name\+Multi\+Map \mbox{\Hypertarget{class_t_track_af56adb319c7003b8ddac8e55afaee3d2}\label{class_t_track_af56adb319c7003b8ddac8e55afaee3d2}} 
+Called during track building or pasting, when an element identified by Current\+Tag (i.\+e. its Speed\+Tag value) is to be placed at position H\+Loc\+Input \& V\+Loc\+Input. If the element can be placed it is displayed and added to the relevant vector, and if named its name is added to Location\+Name\+Multi\+Map. At v2.\+2.\+0 \textquotesingle{}Aspect\textquotesingle{} added so can distinguish between adding and pasting track \mbox{\Hypertarget{class_t_track_af56adb319c7003b8ddac8e55afaee3d2}\label{class_t_track_af56adb319c7003b8ddac8e55afaee3d2}} 
 \index{T\+Track@{T\+Track}!Plot\+Points@{Plot\+Points}}
 \index{Plot\+Points@{Plot\+Points}!T\+Track@{T\+Track}}
 \subsubsection{\texorpdfstring{Plot\+Points()}{PlotPoints()}}
@@ -1010,7 +1014,17 @@ Called by T\+Interface\+::\+Save\+Image\+No\+Grid1\+Click, T\+Interface\+::\+Sav
 \subsubsection{\texorpdfstring{Level\+Crossing\+Allowed}{LevelCrossingAllowed}}
 {\footnotesize\ttfamily Set$<$int, 1, 130$>$ T\+Track\+::\+Level\+Crossing\+Allowed\hspace{0.3cm}{\ttfamily [private]}}
 
-sets of valid Track\+Elements for placement of platforms and non-\/station named locations \mbox{\Hypertarget{class_t_track_a8dc657245d548b3b07fdb42e173f3bba}\label{class_t_track_a8dc657245d548b3b07fdb42e173f3bba}} 
+sets of valid Track\+Elements for placement of platforms and non-\/station named locations \mbox{\Hypertarget{class_t_track_a50f518fa93ef56b1570e4102fb691e14}\label{class_t_track_a50f518fa93ef56b1570e4102fb691e14}} 
+\index{T\+Track@{T\+Track}!Point\+Flash\+Flag@{Point\+Flash\+Flag}}
+\index{Point\+Flash\+Flag@{Point\+Flash\+Flag}!T\+Track@{T\+Track}}
+\subsubsection{\texorpdfstring{Point\+Flash\+Flag}{PointFlashFlag}}
+{\footnotesize\ttfamily bool T\+Track\+::\+Point\+Flash\+Flag}
+
+
+
+new at v2.\+2.\+0 -\/ needed to distinguish between the two types of paste \& to suppress multimap checks while pasting 
+
+true when points are flashing during manual change \mbox{\Hypertarget{class_t_track_a8dc657245d548b3b07fdb42e173f3bba}\label{class_t_track_a8dc657245d548b3b07fdb42e173f3bba}} 
 \index{T\+Track@{T\+Track}!Tag76\+Array@{Tag76\+Array}}
 \index{Tag76\+Array@{Tag76\+Array}!T\+Track@{T\+Track}}
 \subsubsection{\texorpdfstring{Tag76\+Array}{Tag76Array}}

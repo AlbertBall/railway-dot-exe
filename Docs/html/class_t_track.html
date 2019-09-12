@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.1.0</span>
+   &#160;<span id="projectnumber">v2.2.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -77,12 +77,6 @@ $(function() {
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for TTrack:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_track__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -235,6 +229,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a55d9415e3ecac804f3345dddd74f9bad">TrackVectorSize</a> ()</td></tr>
 <tr class="memdesc:a55d9415e3ecac804f3345dddd74f9bad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the number of active track elements. <br /></td></tr>
 <tr class="separator:a55d9415e3ecac804f3345dddd74f9bad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af507e9106aa12a670d6b09bd575cbfc3"><td class="memItemLeft" align="right" valign="top"><a id="af507e9106aa12a670d6b09bd575cbfc3"></a>
+<a class="el" href="class_t_track_element.html">TTrackElement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#af507e9106aa12a670d6b09bd575cbfc3">BuildBasicElementFromSpeedTag</a> (int Caller, int SpeedTag)</td></tr>
+<tr class="memdesc:af507e9106aa12a670d6b09bd575cbfc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a basic track element from the SpeedTag new at v2.2.0 - needed because Interface doesn't have direct access to FixedTrackArray. <br /></td></tr>
+<tr class="separator:af507e9106aa12a670d6b09bd575cbfc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cae8cc2dc72d74cf0d24dbc4148c591"><td class="memItemLeft" align="right" valign="top"><a id="a3cae8cc2dc72d74cf0d24dbc4148c591"></a>
 unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a3cae8cc2dc72d74cf0d24dbc4148c591">SelectVectorSize</a> ()</td></tr>
 <tr class="memdesc:a3cae8cc2dc72d74cf0d24dbc4148c591"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the number of selected active and inactive track elements (via menu items 'Edit' and 'Select') <br /></td></tr>
@@ -325,6 +323,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a23030c22d4c98706d1738205242646d9">InactiveMapCheck</a> (int Caller, int HLoc, int VLoc, int SpeedTag)</td></tr>
 <tr class="memdesc:a23030c22d4c98706d1738205242646d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to check the validity of footbridge links. <br /></td></tr>
 <tr class="separator:a23030c22d4c98706d1738205242646d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae98d9466242e62a8892e073ebb44374e"><td class="memItemLeft" align="right" valign="top"><a id="ae98d9466242e62a8892e073ebb44374e"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#ae98d9466242e62a8892e073ebb44374e">InactiveTrackElementPresentAtHV</a> (int Caller, int HLoc, int VLoc)</td></tr>
+<tr class="memdesc:ae98d9466242e62a8892e073ebb44374e"><td class="mdescLeft">&#160;</td><td class="mdescRight">New at v1.2.0; true if an inactive track element present. <br /></td></tr>
+<tr class="separator:ae98d9466242e62a8892e073ebb44374e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5259f2d309f98df4f6e2821e7e71ca81"><td class="memItemLeft" align="right" valign="top"><a id="a5259f2d309f98df4f6e2821e7e71ca81"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a5259f2d309f98df4f6e2821e7e71ca81">IsATrackElementAdjacentToLink</a> (int Caller, int HLocIn, int VLocIn, int LinkIn)</td></tr>
 <tr class="memdesc:a5259f2d309f98df4f6e2821e7e71ca81"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if there is an element adjacent to LinkIn for element at HLoc &amp; VLoc. <br /></td></tr>
@@ -429,6 +431,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#addd8e149e66c99a295541c9eda13eae4">TimetabledLocationNameAllocated</a> (int Caller, AnsiString LocationName)</td></tr>
 <tr class="memdesc:addd8e149e66c99a295541c9eda13eae4"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if a non-empty LocationName found as a timetabled location name i.e. not as a continuation name. <br /></td></tr>
 <tr class="separator:addd8e149e66c99a295541c9eda13eae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c808ac52b6e5e7081273916ce458638"><td class="memItemLeft" align="right" valign="top"><a id="a1c808ac52b6e5e7081273916ce458638"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a1c808ac52b6e5e7081273916ce458638">TrackElementPresentAtHV</a> (int Caller, int HLoc, int VLoc)</td></tr>
+<tr class="memdesc:a1c808ac52b6e5e7081273916ce458638"><td class="mdescLeft">&#160;</td><td class="mdescRight">New at v1.2.0; true if a track element present. <br /></td></tr>
+<tr class="separator:a1c808ac52b6e5e7081273916ce458638"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12d4069a6a201e13a83347c555a465b2"><td class="memItemLeft" align="right" valign="top"><a id="a12d4069a6a201e13a83347c555a465b2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a12d4069a6a201e13a83347c555a465b2">TrainOnLink</a> (int Caller, int HLoc, int VLoc, int Link, int &amp;TrainID)</td></tr>
 <tr class="memdesc:a12d4069a6a201e13a83347c555a465b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">New at v1.2.0; checks whether a train present at input location and link and returns its ID if so. <br /></td></tr>
@@ -551,8 +557,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a6cab5ab84e10504ef1c9d39e931d42fe">MarkOneLength</a> (int Caller, <a class="el" href="class_t_track_element.html">TTrackElement</a> TE, bool FirstTrack, <a class="el" href="class_t_display.html">TDisplay</a> *Disp)</td></tr>
 <tr class="memdesc:a6cab5ab84e10504ef1c9d39e931d42fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark on screen a track element according to its length and speed limit if either of these differ from their default values. <br /></td></tr>
 <tr class="separator:a6cab5ab84e10504ef1c9d39e931d42fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a608674798cf48d88d614c8817566126e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a608674798cf48d88d614c8817566126e">PlotAndAddTrackElement</a> (int Caller, int CurrentTag, int HLocInput, int VLocInput, bool &amp;TrackPlottedFlag, bool InternalChecks)</td></tr>
-<tr class="separator:a608674798cf48d88d614c8817566126e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4385335a5bb0891cdbf2b6d0f0aabdf2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a4385335a5bb0891cdbf2b6d0f0aabdf2">PlotAndAddTrackElement</a> (int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &amp;TrackPlottedFlag, bool InternalChecks)</td></tr>
+<tr class="separator:a4385335a5bb0891cdbf2b6d0f0aabdf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f93210292bf2423e0ac0d738adafe9e"><td class="memItemLeft" align="right" valign="top"><a id="a9f93210292bf2423e0ac0d738adafe9e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a9f93210292bf2423e0ac0d738adafe9e">PlotPastedTrackElementWithAttributes</a> (int Caller, <a class="el" href="class_t_track_element.html">TTrackElement</a> TempTrackElement, int HLocInput, int VLocInput, bool &amp;TrackLinkingRequiredFlag, bool InternalChecks)</td></tr>
+<tr class="memdesc:a9f93210292bf2423e0ac0d738adafe9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">new at v2.2.0 - as PlotAndAddTrackElement but keeping speed &amp; length attributes (for pasting) and also pastin location names <br /></td></tr>
+<tr class="separator:a9f93210292bf2423e0ac0d738adafe9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9baeb3f155bea71ef42f09c276707562"><td class="memItemLeft" align="right" valign="top"><a id="a9baeb3f155bea71ef42f09c276707562"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a9baeb3f155bea71ef42f09c276707562">PlotLCBaseElementsOnly</a> (int Caller, TBarrierState State, int BaseElementSpeedTag, int HLoc, int VLoc, bool ConsecSignals, <a class="el" href="class_t_display.html">TDisplay</a> *Disp)</td></tr>
 <tr class="memdesc:a9baeb3f155bea71ef42f09c276707562"><td class="mdescLeft">&#160;</td><td class="mdescRight">Just replot the basic track elements at a level crossing (for flashing) <br /></td></tr>
@@ -719,9 +729,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a3be055d3c016ced93635700d7da9a2da">LCFoundInRouteBuildingFlag</a></td></tr>
 <tr class="memdesc:a3be055d3c016ced93635700d7da9a2da"><td class="mdescLeft">&#160;</td><td class="mdescRight">true if a route set through an LC that is closed to trains (&amp; therefore needs to be opened) <br /></td></tr>
 <tr class="separator:a3be055d3c016ced93635700d7da9a2da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50f518fa93ef56b1570e4102fb691e14"><td class="memItemLeft" align="right" valign="top"><a id="a50f518fa93ef56b1570e4102fb691e14"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a50f518fa93ef56b1570e4102fb691e14">PointFlashFlag</a></td></tr>
-<tr class="memdesc:a50f518fa93ef56b1570e4102fb691e14"><td class="mdescLeft">&#160;</td><td class="mdescRight">true when points are flashing during manual change <br /></td></tr>
+<tr class="memitem:ac1051330dac60335da74eb2c265cd40c"><td class="memItemLeft" align="right" valign="top"><a id="ac1051330dac60335da74eb2c265cd40c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>PastingWithAttributes</b></td></tr>
+<tr class="separator:ac1051330dac60335da74eb2c265cd40c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50f518fa93ef56b1570e4102fb691e14"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a50f518fa93ef56b1570e4102fb691e14">PointFlashFlag</a></td></tr>
+<tr class="memdesc:a50f518fa93ef56b1570e4102fb691e14"><td class="mdescLeft">&#160;</td><td class="mdescRight">new at v2.2.0 - needed to distinguish between the two types of paste &amp; to suppress multimap checks while pasting  <a href="#a50f518fa93ef56b1570e4102fb691e14">More...</a><br /></td></tr>
 <tr class="separator:a50f518fa93ef56b1570e4102fb691e14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa66417417a7767acb35425dfa4754311"><td class="memItemLeft" align="right" valign="top"><a id="aa66417417a7767acb35425dfa4754311"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#aa66417417a7767acb35425dfa4754311">RouteFlashFlag</a></td></tr>
@@ -1953,8 +1965,8 @@ Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>N
 
 </div>
 </div>
-<a id="a608674798cf48d88d614c8817566126e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a608674798cf48d88d614c8817566126e">&#9670;&nbsp;</a></span>PlotAndAddTrackElement()</h2>
+<a id="a4385335a5bb0891cdbf2b6d0f0aabdf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4385335a5bb0891cdbf2b6d0f0aabdf2">&#9670;&nbsp;</a></span>PlotAndAddTrackElement()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1970,6 +1982,12 @@ Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>N
           <td></td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>CurrentTag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Aspect</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -2002,7 +2020,7 @@ Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>N
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Called during track building or pasting, when an element identified by CurrentTag (i.e. its SpeedTag value) is to be placed at position HLocInput &amp; VLocInput. If the element can be placed it is displayed and added to the relevant vector, and if named its name is added to LocationNameMultiMap </p>
+<p>Called during track building or pasting, when an element identified by CurrentTag (i.e. its SpeedTag value) is to be placed at position HLocInput &amp; VLocInput. If the element can be placed it is displayed and added to the relevant vector, and if named its name is added to LocationNameMultiMap. At v2.2.0 'Aspect' added so can distinguish between adding and pasting track </p>
 
 </div>
 </div>
@@ -2377,6 +2395,23 @@ Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>N
 </table>
 </div><div class="memdoc">
 <p>sets of valid TrackElements for placement of platforms and non-station named locations </p>
+
+</div>
+</div>
+<a id="a50f518fa93ef56b1570e4102fb691e14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50f518fa93ef56b1570e4102fb691e14">&#9670;&nbsp;</a></span>PointFlashFlag</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrack::PointFlashFlag</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>new at v2.2.0 - needed to distinguish between the two types of paste &amp; to suppress multimap checks while pasting </p>
+<p>true when points are flashing during manual change </p>
 
 </div>
 </div>

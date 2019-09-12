@@ -1,10 +1,12 @@
 //TrackUnit.cpp
-//BEWARE OF COMMENTS in .cpp files:  they were accurate when written but have
-// sometimes been overtaken by changes and not updated
-//Comments in .h files are believed to be accurate and up to date
 /*
+BEWARE OF COMMENTS in .cpp files:  they were accurate when written but have
+ sometimes been overtaken by changes and not updated
+Comments in .h files are believed to be accurate and up to date
+
 This is a source code file for "railway.exe", a railway operation
-simulator, written in Borland C++ Builder 4 Professional
+simulator, written originally in Borland C++ Builder 4 Professional with
+later updates in Embarcadero C++Builder 10.2.
 Copyright (C) 2010 Albert Ball [original development]
 
 This program is free software: you can redistribute it and/or modify
@@ -676,6 +678,7 @@ TTrack::TTrack()
     VLocMin = 2000000000;
     HLocMax = -2000000000;
     VLocMax = -2000000000;
+    PastingWithAttributes = false;  //new at v2.2.0, false is default value
 
     RouteFailMessage = "Unable to set a route to the selected element - may be unreachable, too far ahead, blocked by a train, another route or a changing level crossing, or invalid.";
 
@@ -1670,9 +1673,10 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
 
 //---------------------------------------------------------------------------
 
-void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int HLocInput, int VLocInput, bool &TrackLinkingRequiredFlag, bool InternalChecks)
-//TrackPlottedFlag only relates to elements that require track linking after plotting - used to set TrackFinished
-//to false in calling function
+void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &TrackLinkingRequiredFlag, bool InternalChecks)
+//TrackLinkingRequiredFlag only relates to elements that require track linking after plotting - used to set TrackFinished
+//to false in calling function. New at v2.2.0 new parameter 'Aspect' to ensure signals plotted as they were in selected area
+//and also when zero and combined with SignalPost to indicate that adding track rather than pasting
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotAndAddTrackElement," + AnsiString(CurrentTag) + "," + AnsiString(HLocInput) + "," + AnsiString(VLocInput) +
                                  "," + AnsiString((short)InternalChecks));
@@ -1700,25 +1704,35 @@ reject if so.
     TempTrackElement.VLoc = VLocInput;
     SetElementID(1, TempTrackElement); //TempTrackElement is the one to be added
 //new at version 0.6 - set signal aspect depending on build mode
+
     if(TempTrackElement.TrackType == SignalPost)
     {
-        if(SignalAspectBuildMode == ThreeAspectBuild)
+        if(Aspect == 0) //new at v2.2.0, '0' and SignalPost together means that track being added & not pasted, because when
+                        //pasting a SignalPost can only have values 1 to 4
         {
-            TempTrackElement.SigAspect = TTrackElement::ThreeAspect;
+            if(SignalAspectBuildMode == ThreeAspectBuild)
+            {
+                TempTrackElement.SigAspect = TTrackElement::ThreeAspect;
+            }
+            else if(SignalAspectBuildMode == TwoAspectBuild)
+            {
+                TempTrackElement.SigAspect = TTrackElement::TwoAspect;
+            }
+            else if(SignalAspectBuildMode == GroundSignalBuild)
+            {
+                TempTrackElement.SigAspect = TTrackElement::GroundSignal;
+            }
+            else
+            {
+                TempTrackElement.SigAspect = TTrackElement::FourAspect;
+            }
         }
-        else if(SignalAspectBuildMode == TwoAspectBuild)
-        {
-            TempTrackElement.SigAspect = TTrackElement::TwoAspect;
-        }
-        else if(SignalAspectBuildMode == GroundSignalBuild)
-        {
-            TempTrackElement.SigAspect = TTrackElement::GroundSignal;
-        }
-        else
-        {
-            TempTrackElement.SigAspect = TTrackElement::FourAspect;
-        }
+        else if(Aspect == 1) TempTrackElement.SigAspect = TTrackElement::GroundSignal;
+        else if(Aspect == 2) TempTrackElement.SigAspect = TTrackElement::TwoAspect;
+        else if(Aspect == 3) TempTrackElement.SigAspect = TTrackElement::ThreeAspect;
+        else TempTrackElement.SigAspect = TTrackElement::FourAspect;
     }
+
     bool FoundFlag = false, InactiveFoundFlag = false, NonStationOrLevelCrossingPresent = false, PlatformPresent = false;
     int VecPos = GetVectorPositionFromTrackMap(12, HLocInput, VLocInput, FoundFlag); //active track already there
     TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(5, HLocInput, VLocInput, InactiveFoundFlag); //inactive track already there
@@ -1878,7 +1892,216 @@ reject if so.
         CheckMapAndInactiveTrack(2); //test
         CheckLocationNameMultiMap(5); //test
     }
-    Utilities->CallLogPop(436);
+    Utilities->CallLogPop(2062);
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement TempTrackElement, int HLocInput, int VLocInput, bool &TrackLinkingRequiredFlag, bool InternalChecks)
+//new at v2.2.0 - similar to above but keeping speed & length attributes (for pasting) and also pastes location names
+//NB experimental: - need to change all caller numbers & check thoroughly if release
+//as is if single elements have location or platform names then have message that names fail to align when mouse over
+//need to deal with this if release - it's because ActiveTrackElementName is cleared in the new function, if not a single element
+//then set when call SearchForAndUpdateLocationName. Maybe instead of clearing can set to the InactiveTrackElementName at the same location?
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotPastedTrackElementWithAttributes," + AnsiString(HLocInput) + "," + AnsiString(VLocInput) +
+                                 "," + AnsiString((short)InternalChecks));
+    bool PlatAllowedFlag = false;
+    TrackLinkingRequiredFlag = false;
+/*
+Not erase, that covered separately.
+First check if Current SpeedButton assigned, then check if a platform and only
+permit if an appropriate trackpiece already there & not a same platform there.
+- can't enter a platform without track first.
+Then for non-platforms, check if a track piece already present at location &
+reject if so.
+*/
+
+    TLocationNameMultiMapEntry LocationNameEntry;
+    LocationNameEntry.first = "";
+    if(TempTrackElement.SpeedTag == 0)
+    {
+        Utilities->CallLogPop(2063);
+        return; // not assigned yet
+    }
+
+    TempTrackElement.HLoc = HLocInput;
+    TempTrackElement.VLoc = VLocInput;
+//    TempTrackElement.ActiveTrackElementName = ""; //not needed now suppress name multimap chacks with PastingWithAttributes flag
+    for(int x=0; x<4; x++) //unset any gaps
+    {
+        if(TempTrackElement.Config[x] == Gap) TempTrackElement.ConnLinkPos[x]=-1; TempTrackElement.Conn[x]=-1;
+    }
+    SetElementID(5, TempTrackElement); //TempTrackElement is the one to be added
+//new at version 0.6 - set signal aspect depending on build mode
+    bool FoundFlag = false, InactiveFoundFlag = false, NonStationOrLevelCrossingPresent = false, PlatformPresent = false;
+    int VecPos = GetVectorPositionFromTrackMap(56, HLocInput, VLocInput, FoundFlag); //active track already there
+
+    //if find an active track element (as has been pasted into track vector when dealing with inactive elements in SelectVector)
+    //)set its ActiveTrackElementName to same name as the inactive element (from SelectVector). Note that can't use LocationName
+    //for the active track element because these aren't set
+    //if don't do this then get a mismatch error during map checks later
+
+    //if(FoundFlag) TrackElementAt(xx, VecPos).ActiveTrackElementName = TempTrackElement.LocationName; //doesn't work!!
+
+    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(26, HLocInput, VLocInput, InactiveFoundFlag); //inactive track already there
+    int InactiveSpeedTag1=0, InactiveSpeedTag2=0;
+    if(InactiveFoundFlag) //check if a LocationName already there & if so disallow platform
+    {
+        if(InactiveTrackElementAt(119, IMPair.first).TrackType == NamedNonStationLocation) NonStationOrLevelCrossingPresent = true;
+        if(InactiveTrackElementAt(120, IMPair.first).TrackType == LevelCrossing) NonStationOrLevelCrossingPresent = true;
+        if(InactiveTrackElementAt(121, IMPair.first).TrackType == Platform) PlatformPresent = true;
+        //no need to check IMPair.second since if that exists it is because .first is a platform
+        InactiveSpeedTag1 = InactiveTrackElementAt(122, IMPair.first).SpeedTag;
+        InactiveSpeedTag2 = InactiveTrackElementAt(123, IMPair.second).SpeedTag; // note .first & .second will be same if only one present
+    }
+
+//check platforms
+    if(TempTrackElement.TrackType == Platform)
+    {
+        if(FoundFlag) //active track element already there
+        {
+            if(InactiveFoundFlag && ((TempTrackElement.SpeedTag == InactiveSpeedTag1) || (TempTrackElement.SpeedTag == InactiveSpeedTag2))) {; }
+            //same platform type already there so above keeps PlatAllowedFlag false
+            else if((TempTrackElement.SpeedTag == 76) && (TopPlatAllowed.Contains
+                                                              (TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
+//won't allow a same platform, as TopPlatAllowed not valid for a same platform <--NO, only checks active track, same plat disallowed by first line after if(FoundFlag)
+            {
+                PlatAllowedFlag = true;
+            }
+            else if((TempTrackElement.SpeedTag == 77) && (BotPlatAllowed.Contains
+                                                              (TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
+            {
+                PlatAllowedFlag = true;
+            }
+            else if((TempTrackElement.SpeedTag == 78) && (LeftPlatAllowed.Contains
+                                                              (TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
+            {
+                PlatAllowedFlag = true;
+            }
+            else if((TempTrackElement.SpeedTag == 79) && (RightPlatAllowed.Contains
+                                                              (TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
+            {
+                PlatAllowedFlag = true;
+            }
+            if(PlatAllowedFlag)
+            {
+                TrackLinkingRequiredFlag = true; //needed in order to call LinkTrack
+                TrackPush(12, TempTrackElement);
+                SearchForAndUpdateLocationName(4, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
+                //checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
+                //Must be called AFTER TrackPush
+//No need to plot the element - Clearand ... called after this function called
+                //set corresponding track element length to 100m & give message if was different
+                //note can only be Length01 since even if points then only the straight part can be adjacent to the platform
+                if(TrackElementAt(907, VecPos).Length01 != DefaultTrackLength) ShowMessage("Note:  The track element at this location has a length of " +
+                                                                                           AnsiString(TrackElementAt(908, VecPos).Length01) + "m.  It will be reset to 100m since all platform track lengths are fixed at 100m");
+                TrackElementAt(909, VecPos).Length01 = DefaultTrackLength;
+                if(InternalChecks)
+                {
+                    CheckMapAndInactiveTrack(12); //test
+                    CheckLocationNameMultiMap(20); //test
+                }
+                Utilities->CallLogPop(2064);
+                return;
+            }
+        } //if(FoundFlag)
+        Utilities->CallLogPop(2065);
+        return;
+    } //if platform
+
+//check if element is a LocationName - OK if placed on an allowable track element, or on a blank element
+    if(TempTrackElement.TrackType == NamedNonStationLocation)
+    {
+        if((FoundFlag && (NameAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag) ||
+           (!FoundFlag && !InactiveFoundFlag))
+        //need to add && !NonStationOrLevelCrossingPresent, or better - !InactiveFoundFlag to above FoundFlag condition <-- OK done
+        {
+            TrackLinkingRequiredFlag = true; //needed in case have named a continuation, need to check if adjacent element named
+            TrackPush(13, TempTrackElement);
+            SearchForAndUpdateLocationName(5, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
+            //checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
+            if(VecPos > -1) //need to allow for non-station named locations that aren't on tracks
+            {
+                if(TrackElementAt(910, VecPos).Length01 != DefaultTrackLength) ShowMessage("Note:  The track element at this location has a length of " +
+                                                                                           AnsiString(TrackElementAt(911, VecPos).Length01) + "m.  It will be reset to 100m since all named location track lengths are fixed at 100m");
+                TrackElementAt(912, VecPos).Length01 = DefaultTrackLength; //NB named locations can only be placed at one track elements
+            }
+            if(InternalChecks)
+            {
+                CheckMapAndInactiveTrack(13); //test
+                CheckLocationNameMultiMap(21); //test
+            }
+            Utilities->CallLogPop(2066);
+            return;
+        }
+        else
+        {
+            Utilities->CallLogPop(2067);
+            return;
+        }
+    }
+
+//check if a level crossing - OK if placed on a plain straight track
+    if(TempTrackElement.TrackType == LevelCrossing)
+    {
+        if(FoundFlag && (LevelCrossingAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag)
+        {
+            TrackPush(14, TempTrackElement);
+            PlotRaisedLinkedLevelCrossingBarriers(3, TrackVector.at(VecPos).SpeedTag, TempTrackElement.HLoc, TempTrackElement.VLoc, Display); //no need for reference to LC element as can't be open
+            TrackLinkingRequiredFlag = true;
+            Utilities->CallLogPop(2068);
+            return;
+        }
+        else
+        {
+            Utilities->CallLogPop(2069);
+            return; //was a level crossing but can't place it for some reason
+        }
+    }
+
+//check if another element already there
+    else if(FoundFlag || InactiveFoundFlag)
+    {
+        Utilities->CallLogPop(2070);
+        return; //something already there (active or inactive track)
+    }
+
+//add LocationName if a FixedNamedLocationElement by checking for any adjacent names, then give all linked named location
+//elements the same name - in case had linked 2 separately named locations - all get the one name that it finds
+//first from an adjacent element search, also non-named location elements at platform locations have timetable name set
+//do this after pushed into vector so that can use EnterLocationName
+
+    if(TempTrackElement.FixedNamedLocationElement) //concourse or footbridge (platforms & named non-station locations already dealt with)
+    {
+        TrackPush(15, TempTrackElement);
+        SearchForAndUpdateLocationName(6, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
+        //checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
+    }
+    else if(TempTrackElement.TrackType == Points)
+    {
+        TrackPush(16, TempTrackElement);
+        bool BothPointFillets = true;
+        PlotPoints(7, TempTrackElement, Display, BothPointFillets);
+    }
+    else if(TempTrackElement.TrackType == SignalPost)
+    {
+        TrackPush(17, TempTrackElement);
+        PlotSignal(14, TempTrackElement, Display);
+    }
+    else
+    {
+        TrackPush(18, TempTrackElement);
+        TempTrackElement.PlotVariableTrackElement(6, Display); //all named locations already dealt with so no ambiguity between striped & non-striped
+    }
+    if((TempTrackElement.TrackType != Concourse) && (TempTrackElement.TrackType != Parapet)) TrackLinkingRequiredFlag = true;  //plats & NamedLocs aleady dealt with
+    if(InternalChecks)
+    {
+        CheckMapAndTrack(12); //test
+        CheckMapAndInactiveTrack(14); //test
+        CheckLocationNameMultiMap(22); //test
+    }
+    Utilities->CallLogPop(2071);
 }
 
 //---------------------------------------------------------------------------
@@ -4616,9 +4839,9 @@ bool TTrack::TrackElementPresentAtHV(int Caller, int HLoc, int VLoc)
     TrackMapKeyPair.second = VLoc;
     TrackMapPtr = TrackMap.find(TrackMapKeyPair);
     if(TrackMapPtr == TrackMap.end())
-        {
-            Present = false;
-        }
+    {
+        Present = false;
+    }
     Utilities->CallLogPop(2057);
     return Present;
 }
@@ -4635,9 +4858,9 @@ bool TTrack::InactiveTrackElementPresentAtHV(int Caller, int HLoc, int VLoc)
     InactiveTrackMapKeyPair.second = VLoc;
     InactiveTrackMapPtr = InactiveTrack2MultiMap.find(InactiveTrackMapKeyPair); //not interested in platforms so only need to find one
     if(InactiveTrackMapPtr == InactiveTrack2MultiMap.end())
-        {
-            Present = false;
-        }
+    {
+        Present = false;
+    }
     Utilities->CallLogPop(2058);
     return Present;
 }
@@ -6910,6 +7133,12 @@ void TTrack::CheckLocationNameMultiMap(int Caller) //test function
 //check quantity in map & vectors match
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckLocationNameMultiMap,");
     unsigned int Count = 0;
+    if(PastingWithAttributes) //added at v2.2.0 to distinguish between the two types of paste and to skip check when pasting
+                              //with attributes because fails as map elements not fully aligned until all pasted
+    {
+        Utilities->CallLogPop(2059);
+        return;
+    }
     AnsiString SName, TName, ErrorString;
     for(unsigned int x=0; x<TrackVector.size(); x++)
     {
@@ -7882,10 +8111,13 @@ void TTrack::CalcHLocMinEtc(int Caller)
     }
     for(unsigned int x=0; x<TextHandler->TextVectorSize(10); x++) // check all elements in turn
     {
-        if(TextHandler->TextPtrAt(34, x)->TextString == "") //shouldn't be any nulls but erase if find any
+/*  Removed at v2.2.0: It isn't needed because null names aren't entered into vector, and in any case if were then
+    will fail as x will exceed the maximum value
+    if(TextHandler->TextPtrAt(34, x)->TextString == "")
         {
             TextHandler->TextErase(8, TextHandler->TextPtrAt(35, x)->HPos, TextHandler->TextPtrAt(36, x)->VPos);
         }
+*/
         int TextH = TextHandler->TextPtrAt(0, x)->HPos, TextV = TextHandler->TextPtrAt(1, x)->VPos;
         if((TextH/16) - 1 < HLocMin) HLocMin = (TextH/16) - 1;  //integer division will truncate so subtract 1 to ensure include the start
         if((TextH/16) + 1 > HLocMax) HLocMax = (TextH/16) + 1;  //integer division will truncate so add 1 to ensure include the start
@@ -8119,7 +8351,16 @@ splitting.
         HVPair.second = InactiveElement.VLoc;
         if(TrackMap.find(HVPair) == TrackMap.end())
         {
-            throw Exception("Error - failed to find element in TrackMap for a non-concourse element in LocationNameMultiMap in ThisNamedLocationLongEnoughForSplit (2)");
+            if(InactiveElement.TrackType == NamedNonStationLocation) //added at v2.2.0 to correct the error Xeon reported on 14/07/18.
+            //If there is a NamedNonStationLocation without an associated active track element (effectively a non-station concourse)
+            //then it won't be found in TrackMap but it's still legitimate.
+            {
+                continue;
+            }
+            else //for anything else throw the error
+            {
+                throw Exception("Error - failed to find element in TrackMap for a non-concourse element in LocationNameMultiMap in ThisNamedLocationLongEnoughForSplit (2)");
+            }
         }
         int TVPos = TrackMap.find(HVPair)->second;
         if(TVPos != FirstNamedElementPos) continue;  //looking for an exact match
@@ -15352,7 +15593,7 @@ bool TAllRoutes::IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(in
     {
         if(TrackIsInARoute(14, LRVIT->LastTrackVectorPosition, LRVIT->LastXLinkPos))
         { //end of route can't be points, crossover or bridge so danger of route being on the other track of a 2-track element
-         //doesn't arise)
+          //doesn't arise)
             InLockedRoute = true;
             break;
         }

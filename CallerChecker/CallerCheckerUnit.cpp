@@ -64,13 +64,16 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "AtLocSuccessor",
         "BlankElementAt",
         "BufferAtExit",
+        "BuildBasicElementFromSpeedTag",
         "BuildContinuationTrainExpectationMultiMap",
         "BuildGapMapFromTrackVector",
         "BuildTrainDataVectorForLoadFile",
         "BuildTrainDataVectorForValidateFile",
         "CalcDistanceAndSpeed",
+        "CalcDistanceToRedSignalandStopTime", //new v2.2.0
         "CalcHLocMinEtc",
         "CalcOperatingAndNotStartedTrainLateness",
+        "CalcTimeToAct", //new v2.2.0
         "CallingOnAllowed",
         "CallLogPop",
         "ChangeBackgroundColour",
@@ -313,6 +316,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "PlotOriginal",
         "PlotOutput",
         "PlotOverlay",
+        "PlotPastedTrackElementWithAttributes",
         "PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers",
         "PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers",
         "PlotPointBlank",
@@ -339,6 +343,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "RealignAfterTrackErase",
         "RearTrainSplit",
         "RebuildLocationNameMultiMap",
+        "RebuildOpTimeToActMultimap", //new v2.2.0
         "RebuildPrefDirVector",
         "RebuildTrack",
         "Rectangle",
@@ -455,6 +460,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "TrainVectorAtIdent",
         "TryToConnectTrack",
         "TTrain",
+        "UpdateOperatorActionPanel", //new v2.2.0
         "UnplotTrain",
         "UnplotTrainInZoomOutMode",
         "UnplotTrains",
@@ -564,6 +570,7 @@ void TForm1::AnalyseOneFunction(int &FunctionCount, int NumberOfCalls, AnsiStrin
         MissingNumArray[x] = DupNumArray[x];
     }
 //check for duplicates
+    bool FirstPass = true;
     for(int x=0; x<MaxIndex + 1; x++)
     {
         int CheckNumber = DupNumArray[x];
@@ -579,7 +586,14 @@ void TForm1::AnalyseOneFunction(int &FunctionCount, int NumberOfCalls, AnsiStrin
         }
         if(RepeatCount > 0)
         {
+            if(Print && FirstPass) OutFile << CHAR(13) << CHAR(10);//new line for each function
             UnicodeString MessageString = L"Number " + UnicodeString(CheckNumber) + L" repeated " + UnicodeString(RepeatCount) + L" times in function " + UnicodeString(FunctionString);
+            if(FirstPass)
+            {
+                MessageString = MessageString + L" Max caller number = " + (UnicodeString)MaxNumber;
+                FirstPass = false;
+            }
+
             if(!RadioButton2->Checked)
             {
                 if(Screen)

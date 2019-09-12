@@ -1,6 +1,43 @@
-ï»¿Development History
+Development History
 ---------------------------------------------------------------------------
 
+Blurb for news on website:
+
+New program version released - version 2.2.0
+
+I have been giving some thought recently as to how to make operation easier for railways that extend over several screens when many trains are out of sight.  The zoom feature is useful of course in showing where trains are stopped at signals, but it would be better to know when a train is approaching a red signal so as to take action before it stops and preferably before it begins to slow down.  With that in mind I have developed an 'Actions due' panel, containing a list of train headcodes with times to act in timetable minutes, in ascending time order.  This panel is displayed by left clicking a new button with an houglass icon.  Left clicking a headcode brings the train selected (or the entry point for trains not yet running) to the centre of the display, with the mouse hovering over it and displaying status and timetable information when these are selected.  This feature proved to be a lot more complex in implementing than I thought it would be, so it has taken some weeks to develop, but it seems to work well now.  The user manual and online help have a new section 'Actions due' that explains how the feature works in more detail.  I hope you find it as useful as I do when operating large railways.
+
+A second feature available during build is to 'paste with attributes' after cutting an area of railway.  I often find that I want to modify the layout of a submitted railway so that it fits better on my wide screen (though I'm now back to a square screen since my wide screen died on me!), and when using the normal cut and paste functions all preferred directions, track lengths, speed limits and location names are lost.  This feature retains all these attributes so they don't have to be rebuilt which can be quite a big job.  Any new track elements needed to link to the repositioned area need new attributes setting of course, and if the cut area includes any train entry points then the timetable will need to be altered to reflect the changed element identifiers.
+
+A few other minor alterations have been made as follows:
+
+The 'End' key on the numeric keypad can now be used to toggle the zoom function on and off, providing Numlock isn't on.
+
+The earlier letter keys w, s, a and d that could be used to move the display up, down, left or right well as the keyboard arrow keys have been dropped.  The arrow keys still work as before, but conflicts arose with the hotkeys introduced in the last version.  No-one reported this so I assume that they weren't generally used, and keyboard movement is much less necessary since the ability to drag the display using the right mouse button was introduced.
+
+The need to set 256 compatibility mode for Windows 10 may have been solved - almost by accident!  It occurred to me to try out different colours for the various panels instead of using the default system colours set by Windows.  These became transparent in Windows 10 obscuring the text that was incorporated, especially on the floating panel used for track and train information.  Hey presto - providing solid colours were used there was no transparency!  I set the colours to match the earlier ones so there won't appear to be any difference.  Compatibility with earlier operating systems will probably still be needed for high dpi settings and perhaps for other circumstances, but hopfully the colour compatibility issue has gone away.
+
+I discovered that performance scores for excess level crossing barrier down times weren't being saved in session files (I noticed this when operating Anthony Sheehy's Eastbourne, Newhaven & Seaford when my performance score went up after reloading a session!)  This has now been corrected.
+
+As ever please let me know if anything unexpected occurs when using these features and send me any error files that are generated.  I have tested them extensively but it's quite likely that I've overlooked some sets of circumstances, so there may still be bugs that need correction.
+
+I hope you find the new features useful.
+
+Regards,
+
+Albert
+
+
+Notes after v2.1.0
+
++ modify compatibility issues on downloads page to say 'may' need to... for op systs later than win 7
+
++ Update version info including bug fixes, see below & own thoughts
+
+
+
+
+---------------------------------------------------------------------------
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that may be useful such as the 'NEXT' values for caller IDs and the full list of changes from version to version.
 
 The structure is as follows:-
@@ -18,7 +55,30 @@ The structure is as follows:-
 
 Future change suggestions from users:
 
-Suggestions from Richard Gaede 2email of 22/08/14:-
+Suggestions from Kristian Zarebski (Krizar) 06/08/19
+
+- Catch Points: This is rather a minor thing and perhaps is not needed enough to warrant time. Many of the routes I look at have either catch points or very short lengths of line after points within a passing loop. For the simulator all this would mean is removing the constraint that you cannot have the ends of track next to a set of points with the added condition that if someone routes a train towards the track end it then "derails" (or in the loop case collides immediately with buffers).
+
+- Signal Side: Someone oddly asked me specifically about this (I dont know why me?). They wanted to know if it was possible to switch the side that signals are positioned on tracks (For Europe etc). I took a brief look at the code and my conclusion was that you actually draw the icons through the code, is that right? They are not just image files.
+
+- Three way junction: I am actually surprised how common these are in track layouts. This should not interfere with connecting to existing track as it would just be the "Y" junction with the added straight line.
+
+- Bookmarks: this is of great use to large layouts (considering real signalling centres do not cover whole networks this might only apply to my outrageously large layouts!). Similar to the existing home button having extra buttons customisable within the simulation to "jump" to various positions on the map would be very useful. For the "L" train I have to keep pausing the simulation so as to move across the map. In short: multiple "home" buttons aka "location jumps".
+
+- Clickable Notices: alternatively to the above or in addition, if a train flashes when you use the zoomed out version of the map, you can click it to quickly head to that map location?
+
+- Signal ID: probably easier to explain with an example "1A02 held at signal OX23" accompanied by the usual flashing. Probably much easier to do than the above! Although it does still have the issue of the user not knowing the location without map knowledge.
+
+- Unknown: I do not know if you have ever used Simsig but something came to mind. On the maps included there are radial clickable buttons. I cannot remember what they do at all, is it some automatic route setting? My knowledge of computational signalling is very low, but being able to select between preset automatic routes would be great. Although adding such a feature sounds a headache.
+
+-----------------------
+Suggestion from Xeon email of 05/03/18
+
+Chinese railways use several more aspects than UK railways, Xeon requests 6-aspect to allow for this
+
+-----------------------
+
+Suggestions from Richard Gaede email of 22/08/14:-
 
 1.  Allow cut and copied segments to be retained when a railway is cleared and a new one loaded, so that railways can be merged together
 
@@ -30,7 +90,7 @@ Suggestions from David Graf - email of 31/03/14
 
 "Coventry Requirements Sig Sim for Rail Op Sim
 
-Iâ€™ve almost finished placing together the signalling area covered by the old Coventry PSB in the West Midlands ( the period in question would be 1965 to 1984 ) using your signalling programme.  It looks the part only having a peek at the available information of the real signal box several things are missing and I was wondering if they might become available in any future updates.
+I’ve almost finished placing together the signalling area covered by the old Coventry PSB in the West Midlands ( the period in question would be 1965 to 1984 ) using your signalling programme.  It looks the part only having a peek at the available information of the real signal box several things are missing and I was wondering if they might become available in any future updates.
 
 The Coventry panel should really have a slot to control the Coventry end of the single track to and from Leamington Spa and visa versa.
 
@@ -42,7 +102,7 @@ Also the adjacent signalling area Coundon Road has semaphore signals. I was wond
 
 Also the level crossings at Tile Hill and Berkswell are controlled by CCTV. I am assuming the TV screens were in Coventry Power Signal Box. If that is the case then there should be an open or raised , closed or lowered, and clear marker indicators in Coventry PSB for both level crossings. Basically switches to raise and lower the level crossing gates. I wonder if you could simulate that by using a simple dot indicator that you have to press to operate ie open and close the gates. At this time Canley Level Crossing was still manually operated so would be out of the control of Coventry PBS. They would set the route but it was up to the man at Canley SF to open the gates. In practice the Canley gates would be closed to road traffic just as the train was departing Coventry. So there is still a need for manually operated level crossings in the sim.
 
-Background â€“ basically I have been waiting for a signal simulator to cover the West Midlands area only all the commercial stuff is mostly based on modern practice and badly misses the period that I would like to cover. Unfortunately and now fortunately I stumbled across your programme last week by accident and found that I was able to construct the required areas myself. So yes I am interested in helping to aid in further upgrades to enable your project to move forward. Unfortunately I do not have any Borland computer knowledge but I do have some insight into how British Railways used to work and I can hopefully suggest a few things to make your signalling Sim more authentic. Well in British Rail practice.
+Background – basically I have been waiting for a signal simulator to cover the West Midlands area only all the commercial stuff is mostly based on modern practice and badly misses the period that I would like to cover. Unfortunately and now fortunately I stumbled across your programme last week by accident and found that I was able to construct the required areas myself. So yes I am interested in helping to aid in further upgrades to enable your project to move forward. Unfortunately I do not have any Borland computer knowledge but I do have some insight into how British Railways used to work and I can hopefully suggest a few things to make your signalling Sim more authentic. Well in British Rail practice.
 
 I am currently researching a North Wales Coast route so semaphore signals would be of great help. That is if its not to much to ask."
 
@@ -72,7 +132,7 @@ Suggestion from Mark Jones (email of 29/06/12): try to allow different train len
 
 -----------------------
 
-Suggestion from Keith Hazelton (Feature Requests Forum 02/04/12):  Have the ability to set random dwell times at station stops. At present, once youâ€™ve got â€˜the hangâ€™ of a layout and got into a rhythm of route setting, everything is pretty predictable. Random dwell times (say between 30sec & 3 mins) would add an unpredictable element.
+Suggestion from Keith Hazelton (Feature Requests Forum 02/04/12):  Have the ability to set random dwell times at station stops. At present, once you’ve got ‘the hang’ of a layout and got into a rhythm of route setting, everything is pretty predictable. Random dwell times (say between 30sec & 3 mins) would add an unpredictable element.
 
 -----------------------
 
@@ -86,15 +146,21 @@ Sam Wainwright email received 09/02/12: If a shunt signal is placed in the same 
 
 Own thoughts:-
 
-Try to trap memory capacity errors that occur when try to save large bitmaps without crashing the program.  Occurred on Xeon's Shanghai Metro railway when .bmp was over 500Mb
+No: Try to trap memory capacity errors that occur when try to save large bitmaps without crashing the program.  Occurred on Xeon's Shanghai Metro railway when .bmp was over 500Mb.  Probably too rare an occurrence to warrant action.
 
-Add int Left, Top in ClearandRebuildRailway before Track->GetScreenPositionsFromTruePos(1, Left, Top, PointFlash->GetHPos(), PointFlash->GetVPos()); below if(Track->PointFlashFlag), as is resets Interface->Left & Top though not permanently influenced by the change, perhaps because the values aren't constants. Say this because Interface->Left & Top took the values set in GetScreenPositionsFromTruePos within the routine but the form didn't move, though when set to fixed values it did move (!don't change anything until understand what's happening!) 
+No: Add int Left, Top in ClearandRebuildRailway before Track->GetScreenPositionsFromTruePos(1, Left, Top, PointFlash->GetHPos(), PointFlash->GetVPos()); below if(Track->PointFlashFlag), as is resets Interface->Left & Top though not permanently influenced by the change, perhaps because the values aren't constants. Say this because Interface->Left & Top took the values set in GetScreenPositionsFromTruePos within the routine but the form didn't move, though when set to fixed values it did move (!!don't change anything until understand what's happening. Could be a compiler issue!!) 
 
 With single element routes being automatically cancelled and last element being points can set another route in other direction before train reaches it.  Have to be quick and unlikely in practice, but consider preventing
 
-Points to emerge from operating Beaver Lake:  If train cancels a route by moving in wrong direction issue a SPAD risk (like approach locking) and change log accordingly.  Useful if could truncate an automatic route behind a train as well as in front [done at v2.1.0].  When cancel an automatic route that links to a non-automatic route try to either include the signal(s) with the other route (problem if first element of that route is a bridge then can't cancel it and can't set another route to link to it) or cancel adjacent non-automatic routes as well - that's probably easier. 
+Points to emerge from operating Beaver Lake:  If train cancels a route by moving in wrong direction issue a SPAD risk (like approach locking) and change log accordingly.  Useful if could truncate an automatic route behind a train as well as in front [done at v2.1.0].  When cancel an automatic route that links to a non-automatic route try to either include the signal(s) with the other route (problem if first element of that route is a bridge then can't cancel it and can't set another route to link to it) or cancel adjacent non-automatic routes as well - that's probably easier. May well be more complex than it's worth?
 
-Times beyond 24hrs show as hh:mm:ss in .csv formatted timetables but not in .txt version (see Sheffield)
+OK: Times beyond 24hrs show as hh:mm:ss in .csv formatted timetables but not in .txt version (see Sheffield). This is a feature of Excel, the times are correct in the .csv file
+
+OK: Fail to save Traincontroller->ExcessLCDownMins in session files (should be in TInterface::SaveInterface), so on loading a session the excess minutes value resets to zero.  If try to correct this beware that need to retain compatibility with earlier session files that don't save it.  ok corrected at v2.2.0. Added floating point value as a string after ***Interface***
+
+OK: Error given when try to split at a named non-station location & there is a non-track element present (i.e. effectively a nonstation [blue] concourse) - discovered by Xeon & notified 14 July 2018.  (TrackUnit line about 8121 [8354 in v2.2.0 file]) Ordinary concourses are excluded but these aren't.  It's because the active track 'find' function fails as there isn't one for this type of element.  Keep the 'find' function but include a test if it fails where if due to one of these elements just 'continue', otherwise throw the error. OK corrected in v2.2.0
+
+OK: Allow Frh & Fjo for trains after split and maybe others such as new services (Snt [done inc Fjo at v2.0.0] & Sns) No need - for Sns, Frh & Fjo can just follow the original service; for Sfs, can have the original remain or join other, if both to remain then no need to split, or if both to join others then have the split train jbo rather than Fjo.
 
 -----------------------
 
@@ -109,6 +175,27 @@ the blue route so it wasn't just the display that was wrong. Couldn't repeat the
 3.  If an arriving train reaches a platform with a train in front at buffers, and the arriving train is to split while facing the train at buffers (from the rear but maybe also from the front) and there is enough platform for the split, then the split doesn't occur.  Occurred on Chiltern (Chiltern rear split problem; Timetable time 10.49.03; Chiltern Railways v2; Chiltern Railways v2.ssn) after manoeuvring 5F33 & 1N24 onto a vacant platform & restoring appropriate directions & timetable control.  Due to lack of sophistication of split functions (see note in program: Split logic is:-  at least one of 4 final train positions must overlap with one of original train positions, & final 4 positions will maximise the number at the location.  Note that this function isn't sophisticated enough to account for trains already at the location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these circumstances the other train will need to be move sufficiently away to release all 4 positions, then the train will split.)  Try to improve if possible (i.e. just take account of 'available' platforms, and ensure keep trying in case other trains move off) or at least give a warning in the help & operator manuals to keep trains that are to split separated from trains already present at platforms - preferably don't have other trains at platforms at all where a train is to split.[leave for now unless reported as a problem - no-one has reported it yet]
 
 -----------------------
+
+VERSION CHANGES AFTER v2.1.0 for v2.2.0
+
+* = mention on user website
+
+*Actions due panel added
+
+*use of solid colours should avoid need to set 256 colour compatibility
+
+*Paste-with-attributes feature added
+
+*Level crossing excess barrier down time not saved on exit so start a new session with a clean slate! Change at next release.  ok corrected at v2.2.0 - 07/07/19. Added floating point value as a string after ***Interface***
+
+*'End' key can now be used as a zoom toggle
+
+Ctrl+S, A, W & Z disabled for screen moving. Ctrl+S conflicted with save in v2.1.0 but no-one reported this so these jeys probably not used, especially since now (since v2.1.0) have ability to move using the right mouse key.
+
+had underlines in floating timetable for '&' character (used for hotkeys but applied in error here), corrected at this release
+
+Program crash with error report when try to split at a named non-station location & there is a non-track element present (i.e. effectively a nonstation [blue] concourse) - discovered by Xeon & notified 14 July 2018.  Ordinary concourses are excluded but these aren't.  It's because the active track 'find' function fails as there isn't one for this type of element.  Keep the 'find' function but include a test if it fails where if due to one of these elements just 'continue', otherwise throw the error. OK corrected in v2.2.0
+
 
 VERSION CHANGES AFTER v2.0.0 Beta for v2.1.0
 
@@ -963,7 +1050,7 @@ ADDING A NEW PROJECT TO THE USER WEBSITE: (out of date - to be updated for lates
 FUTURE UPDATES:
 
 Updating a family of Help files: Whenever you release an updated family of Help files, your setup program should run the following
-command on the master (default) Help file if you are adding, removing, or updating Help or contents files:- winhlp32Â -g
+command on the master (default) Help file if you are adding, removing, or updating Help or contents files:- winhlp32 -g
 This command forces WinHelp to create a new .gid file for the master contents file, which ensures that users can access the topics in
 the new or updated Help and contents files. If you do not run this command, users who try to access a topic that has been changed or
 removed may encounter unexpected results.
@@ -1115,15 +1202,14 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 
 COPY SECTIONS:
 
-NEXT value for CallLogPop is 2059
-NEXT value for TrackElementAt is 907
-NEXT value for InactiveTrackElementAt is 119
+NEXT value for CallLogPop is 2098
+NEXT value for TrackElementAt is 955
+NEXT value for InactiveTrackElementAt is 124
 NEXT value for GetFixedRouteAt is 222
-NEXT value for GetModifiableRouteAt is 28
 NEXT value for GetFixedPrefDirElementAt is 247
-NEXT value for ErrorLog is 198
-NEXT value for ClearandRebuildRailway is 71
-NEXT value for TrainVectorAt is 65
+NEXT value for ErrorLog is 203
+NEXT value for ClearandRebuildRailway is 73
+NEXT value for TrainVectorAt is 66
 NEXT value for SetLevel1Mode is 133
 NEXT value for PlotOutput is 239
 

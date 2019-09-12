@@ -222,6 +222,10 @@
 			<param name="Name" value="Adjusting the timetable clock">
 			<param name="Local" value="html/6.94szd.htm">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Actions due">
+			<param name="Local" value="html\6.10.htm">
+			</OBJECT>
 	</UL>
 </UL>
 </BODY></HTML>

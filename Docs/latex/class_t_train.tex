@@ -1,14 +1,5 @@
 \hypertarget{class_t_train}{}\section{T\+Train Class Reference}
 \label{class_t_train}\index{T\+Train@{T\+Train}}
-
-
-Collaboration diagram for T\+Train\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[height=550pt]{class_t_train__coll__graph}
-\end{center}
-\end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -55,6 +46,8 @@ Graphics\+::\+T\+Bitmap $\ast$ \mbox{\hyperlink{class_t_train_ad7831e71f0c68933d
 \mbox{\Hypertarget{class_t_train_a406c172a0ba96802ada1aa04d78948d0}\label{class_t_train_a406c172a0ba96802ada1aa04d78948d0}} 
 void \mbox{\hyperlink{class_t_train_a406c172a0ba96802ada1aa04d78948d0}{Change\+Train\+Direction}} (int Caller)
 \begin{DoxyCompactList}\small\item\em Reverses the direction of motion of the train. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{class_t_train_ae34370de578ebd07a217c79d8b67312c}{Calc\+Time\+To\+Act}} (int Caller)
+\begin{DoxyCompactList}\small\item\em new v2.\+2.\+0 for operator action panel. Calculates the time left for operator action to avoid unnecessary delays \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_t_train_a50997f7e8138a7e6a147fe3b5ad21b84}{Check\+And\+Cancel\+Route\+For\+Wrong\+End\+Entry}} (int Caller, int Element, int Entry\+Pos)
 \item 
 \mbox{\Hypertarget{class_t_train_ab9edf458753619f8cd25f0165484d26f}\label{class_t_train_ab9edf458753619f8cd25f0165484d26f}} 
@@ -295,6 +288,15 @@ double \mbox{\hyperlink{class_t_train_a449a378257b8b3a3a2b3df40d0cca928}{Signall
 \mbox{\Hypertarget{class_t_train_a6940d3fe404390d1d345a80bde3f6bf9}\label{class_t_train_a6940d3fe404390d1d345a80bde3f6bf9}} 
 double \mbox{\hyperlink{class_t_train_a6940d3fe404390d1d345a80bde3f6bf9}{Power\+At\+Rail}}
 \begin{DoxyCompactList}\small\item\em in Watts (taken as 80\% of the train\textquotesingle{}s Gross Power, i.\+e. that entered by the user) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_train_ab1d46932f9ed9e6d0a3ee2f3e76d1705}\label{class_t_train_ab1d46932f9ed9e6d0a3ee2f3e76d1705}} 
+float \mbox{\hyperlink{class_t_train_ab1d46932f9ed9e6d0a3ee2f3e76d1705}{Mins\+Delayed}}
+\begin{DoxyCompactList}\small\item\em new at v2.\+2.\+0 for operator time to act panel. Calculated in Update\+Train \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_train_a324320d17dcf544cb0507b909ac14975}\label{class_t_train_a324320d17dcf544cb0507b909ac14975}} 
+float \mbox{\hyperlink{class_t_train_a324320d17dcf544cb0507b909ac14975}{Op\+Time\+To\+Act}}
+\begin{DoxyCompactList}\small\item\em in minutes\+: new at v2.\+2.\+0 for operator time to act panel. Calculated in Update\+Train, -\/1 indicates not to be displayed on panel \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_train_a0188ccc7d6e918b6522a72addfb96d0d}\label{class_t_train_a0188ccc7d6e918b6522a72addfb96d0d}} 
+float {\bfseries First\+Later\+Stop\+Recoverable\+Time}
+\item 
 \mbox{\Hypertarget{class_t_train_aa9d994b88696a8680438b109dccfd679}\label{class_t_train_aa9d994b88696a8680438b109dccfd679}} 
 int {\bfseries Front\+Element\+Speed\+Limit}
 \item 
@@ -447,7 +449,17 @@ static int \mbox{\hyperlink{class_t_train_a59a6ad055b319a73e954e9bef5f7593c}{Nex
 
 
 \subsection{Member Function Documentation}
-\mbox{\Hypertarget{class_t_train_a50997f7e8138a7e6a147fe3b5ad21b84}\label{class_t_train_a50997f7e8138a7e6a147fe3b5ad21b84}} 
+\mbox{\Hypertarget{class_t_train_ae34370de578ebd07a217c79d8b67312c}\label{class_t_train_ae34370de578ebd07a217c79d8b67312c}} 
+\index{T\+Train@{T\+Train}!Calc\+Time\+To\+Act@{Calc\+Time\+To\+Act}}
+\index{Calc\+Time\+To\+Act@{Calc\+Time\+To\+Act}!T\+Train@{T\+Train}}
+\subsubsection{\texorpdfstring{Calc\+Time\+To\+Act()}{CalcTimeToAct()}}
+{\footnotesize\ttfamily float T\+Train\+::\+Calc\+Time\+To\+Act (\begin{DoxyParamCaption}\item[{int}]{Caller }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+new v2.\+2.\+0 for operator action panel. Calculates the time left for operator action to avoid unnecessary delays 
+
+New v2.\+2.\+0 for operator action panel. Calls Calc\+Distance To\+Red\+Signal and uses the current speed to estimate the time in minutes assuming a constant deceleration rate to it. If a buffer, continuation, stopping location, an autosignal route after the next red signal, or service finished, then -\/1 is returned to signal that there is to be no display for that train. If stopped at a location the time is still calculated assuming a speed of 30km/h and the time to start added to it. \mbox{\Hypertarget{class_t_train_a50997f7e8138a7e6a147fe3b5ad21b84}\label{class_t_train_a50997f7e8138a7e6a147fe3b5ad21b84}} 
 \index{T\+Train@{T\+Train}!Check\+And\+Cancel\+Route\+For\+Wrong\+End\+Entry@{Check\+And\+Cancel\+Route\+For\+Wrong\+End\+Entry}}
 \index{Check\+And\+Cancel\+Route\+For\+Wrong\+End\+Entry@{Check\+And\+Cancel\+Route\+For\+Wrong\+End\+Entry}!T\+Train@{T\+Train}}
 \subsubsection{\texorpdfstring{Check\+And\+Cancel\+Route\+For\+Wrong\+End\+Entry()}{CheckAndCancelRouteForWrongEndEntry()}}

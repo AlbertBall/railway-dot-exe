@@ -3,6 +3,7 @@ var searchData=
   ['gapsunset',['GapsUnset',['../class_t_track.html#a794daa0471b473e28ff24c87a92112dc',1,'TTrack']]],
   ['getallroutestruncateelement',['GetAllRoutesTruncateElement',['../class_t_all_routes.html#a0f3313fe1870b98a63cbc0deda000d4e',1,'TAllRoutes']]],
   ['getanyelementoppositelinkpos',['GetAnyElementOppositeLinkPos',['../class_t_track.html#a5b63dde2b21a37d5db7e4d078b03a74c',1,'TTrack']]],
+  ['getcontrollertraintime',['GetControllerTrainTime',['../class_t_train_controller.html#a2713e7d4bb329d65df8b3fa0ad59b6cf',1,'TTrainController']]],
   ['getdirectionprefdirgraphicptr',['GetDirectionPrefDirGraphicPtr',['../class_t_pref_dir_element.html#a13526cb4ee94a708a7bfef517abaa605',1,'TPrefDirElement']]],
   ['getdirectionroutegraphicptr',['GetDirectionRouteGraphicPtr',['../class_t_pref_dir_element.html#a5d03028241e6c38e473882120d5bcc68',1,'TPrefDirElement']]],
   ['getelink',['GetELink',['../class_t_pref_dir_element.html#af00e0755cd716b4d101abbae02c73ca2',1,'TPrefDirElement']]],

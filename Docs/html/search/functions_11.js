@@ -21,6 +21,7 @@ var searchData=
   ['tprefdirelement',['TPrefDirElement',['../class_t_pref_dir_element.html#ab65391b0967a01b2d1b6450ff5ee85a7',1,'TPrefDirElement::TPrefDirElement()'],['../class_t_pref_dir_element.html#a0a06cd720bbc8e23a24d2e3b62f37de5',1,'TPrefDirElement::TPrefDirElement(TTrackElement Input)'],['../class_t_pref_dir_element.html#a05688db45c02484229e4d226454ed8f3',1,'TPrefDirElement::TPrefDirElement(TTrackElement InputElement, int ELink, int ELinkPos, int XLink, int XLinkPos, int TrackVectorPosition)']]],
   ['trackclear',['TrackClear',['../class_t_track.html#ae6fe537bbd1e56074a358bf2c6233c71',1,'TTrack']]],
   ['trackelementat',['TrackElementAt',['../class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f',1,'TTrack']]],
+  ['trackelementpresentathv',['TrackElementPresentAtHV',['../class_t_track.html#a1c808ac52b6e5e7081273916ce458638',1,'TTrack']]],
   ['trackisinaroute',['TrackIsInARoute',['../class_t_all_routes.html#aace498b67ccef13364a1afa1f5f15311',1,'TAllRoutes']]],
   ['trackpush',['TrackPush',['../class_t_track.html#a2d8f9445f873689b8e71d3f8efc7c7d3',1,'TTrack']]],
   ['tracktrainfloat',['TrackTrainFloat',['../class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b',1,'TInterface']]],

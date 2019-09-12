@@ -61,6 +61,11 @@
 		<param name="Local" value="html/6.54sz9.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Actions due">
+		<param name="Name" value="Actions due">
+		<param name="Local" value="html\6.10.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Adding text">
 		<param name="Name" value="Adding, deleting and moving text">
 		<param name="Local" value="html/3.24jhu.htm">
@@ -819,6 +824,11 @@
 		<param name="Name" value="Paste">
 		<param name="Name" value="Selecting, cutting, copying and pasting etc.">
 		<param name="Local" value="html/3.54jhx.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Paste with attributes">
+		<param name="Name" value="Selecting, cutting, copying and pasting etc">
+		<param name="Local" value="html\3.54jhx.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Pause mode">

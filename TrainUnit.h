@@ -1,8 +1,10 @@
 //TrainUnit.h
-//Comments in .h files are believed to be accurate and up to date
 /*
+Comments in .h files are believed to be accurate and up to date
+
 This is a source code file for "railway.exe", a railway operation
-simulator, written in Borland C++ Builder 4 Professional
+simulator, written originally in Borland C++ Builder 4 Professional with
+later updates in Embarcadero C++Builder 10.2.
 Copyright (C) 2010 Albert Ball [original development]
 
 This program is free software: you can redistribute it and/or modify
@@ -275,6 +277,9 @@ private:
     double SignallerStopBrakeRate; ///< the train brake rate when stopping under signaller control
 
     double PowerAtRail; ///< in Watts (taken as 80% of the train's Gross Power, i.e. that entered by the user)
+    float MinsDelayed; ///<new at v2.2.0 for operator time to act panel. Calculated in UpdateTrain
+    float OpTimeToAct;  ///<in minutes: new at v2.2.0 for operator time to act panel. Calculated in UpdateTrain, -1 indicates not to be displayed on panel
+    float FirstLaterStopRecoverableTime; //this used to deduct from RecoverableTime when arrive at a location for OperatorActionpanel
     int FrontElementSpeedLimit, FrontElementLength; ///< values associated with the element immediately in front of the train (speed in km/h, length in m)
     int Mass; ///< in kg
     int UpdateCounter; ///< used in train splitting operations to prevent too frequent checks for a location being long enough for a split
@@ -334,6 +339,8 @@ private:
     Graphics::TBitmap *SetOneGraphicCode(char CodeChar);
 /// Reverses the direction of motion of the train
     void ChangeTrainDirection(int Caller);
+///new v2.2.0 for operator action panel.  Calculates the time left for operator action to avoid unnecessary delays
+    float CalcTimeToAct(int Caller);
 /// Checks whether Element and EntryPos (where train is
 /// about to enter) is on an existing route (or crosses or meets an existing route for crossings and points) that isn't the train's own
 /// route and cancels it if so - because it has reached it at the wrong point
@@ -549,7 +556,15 @@ public:
 
     typedef std::vector<TTrain> TTrainVector; ///< vector containing all trains that currently exist in the railway
 
-/// String used to display the offending service in timetable error messages
+///< these added v2.2.0, for OpTimeToActPanel
+    typedef std::pair<AnsiString, int> THCandVecPosPair;
+    typedef std::multimap<float, THCandVecPosPair> TOpTimeToActMultiMap;
+    typedef std::pair<float, THCandVecPosPair> TOpTimeToActMultiMapEntry;
+    typedef TOpTimeToActMultiMap::iterator TOpTimeToActMultiMapIterator;
+    typedef std::vector<int> TContinuationEntryVecPosVector; ///<ensures only one train displayed for a given continuation
+
+
+    /// String used to display the offending service in timetable error messages
 /// bool AnyHeadCodeValid; //flag to indicate valid headcode types for a service - when true can accept xxNN; if false accept only NaNN
 /// (N=number, x = any alphanumeric, a= upper or lower case letter) - dropped at v0.6b
     AnsiString ServiceReference;
@@ -558,6 +573,7 @@ public:
     bool StopTTClockFlag; ///< when true the timetable clock is stopped, used for messages display and train popup menu display etc
     bool TrainAdded; ///< true when a train has been added by a split (occurs outside the normal train introduction process)
     bool SignallerTrainRemovedOnAutoSigsRoute; ///< true if train was on an AutoSigsRoute when removed by the signaller
+    bool OpActionPanelVisible; ///<new v2.2.0 flag to prevent time to act functions when not visible
 
     float NotStartedTrainLateMins; ///< total late minutes of trains that haven't started yet on exit operation for locations not reached yet
     float OperatingTrainLateMins; ///< total late minutes of operating trains on exit operation for locations not reached yet
@@ -581,7 +597,9 @@ public:
     int OnTimeArrivals;
     int OnTimeDeps;
     int OnTimePasses;
-    int OtherMissedEvents;
+    unsigned int OpTimeToActUpdateCounter; ///<new v2.2.0, incremented in Interface.cpp, controls updating for OpTimeToActPanel
+    unsigned int OpActionPanelHintDelayCounter; ///<new v2.2.0 on start operation delays the op action panle headcode display for about 5 secs while hints shown
+    int OtherMissedEvents;                 ///< unsigned as might initialise at any value & need it to be positive
     int SPADEvents;
     int SPADRisks;
     int TotArrDepPass;
@@ -592,10 +610,12 @@ public:
     TContinuationAutoSigVector ContinuationAutoSigVector; ///< vector for TContinuationAutoSigEntry objects
 /// Multimap for TContinuationTrainExpectationEntry objects, the access key is the expectation time
     TContinuationTrainExpectationMultiMap ContinuationTrainExpectationMultiMap;
+    TOpTimeToActMultiMap OpTimeToActMultiMap; ///<added v2.2.0 for Op time to act display
+    TOpTimeToActMultiMapIterator OpTimeToActMultiMapIterator; ///<added v2.2.0 for Op time to act display
     TTrainDataVector TrainDataVector; ///< vector containing the internal timetable
     TTrainVector TrainVector; ///< vector containing all trains currently in the railway
 
-//functions defined in .cpp file
+    //functions defined in .cpp file
 
 /// Build string for use in floating window for expected trains at continuations
     AnsiString ContinuationEntryFloatingTTString(int Caller, TTrainDataEntry *TTDEPtr, int RepeatNumber, int IncrementalMinutes, int IncrementalDigits);
@@ -673,6 +693,11 @@ public:
                         int &MaxRunningSpeed, int &Mass, double &MaxBrakeRate, int &PowerAtRail, int &SignallerSpeed, bool GiveMessages);
 /// Checks overall timetable integrity, calls many other specific checking functions, returns true for success
     bool TimetableIntegrityCheck(int Caller, char *FileName, bool GiveMessages, bool CheckLocationsExistInRailway);
+/// new v2.2.0, calcs distance to red signal, returns -1 for no signal found, for autosigs route after next red signal & other conditions,
+/// also totals up location stop times before the red signal and returns value in StopTime
+    int CalcDistanceToRedSignalandStopTime(int Caller, int TrackVectorPosition, int TrackVectorPositionEntryPos,
+                                           bool SigControlAndCanPassRedSignal, TActionVectorEntry *AVPtr, AnsiString HeadCode, int TrainID,
+                                           float &CurrentStopTime, float &LaterStopTime, float &RecoverableTime, int &AvTrackSpeed);
 /// Return the track entry link (Link[]) array position for the given train on track element at track vector position TrackVectorNumber
     int EntryPos(int Caller, int TrainIDIn, int TrackVectorNumber);
 /// Get the interval betwqeen repeats
@@ -698,6 +723,7 @@ public:
     void Operate(int Caller); ///< called every clock tick to introduce new trains and update existing trains
 /// Plots all trains on screen in zoomed-out mode, state of 'Flash' determines whether the flashing trains are plotted or not
     void PlotAllTrainsInZoomOutMode(int Caller, bool Flash);
+    void RebuildOpTimeToActMultimap(int Caller); //new v2.2.0 for OperatorActionPanel
     void ReplotTrains(int Caller, TDisplay *Disp); ///< plot all trains on the display
     void SaveSessionContinuationAutoSigEntries(int Caller, std::ofstream &SessionFile); ///< save ContinuationAutoSigEntries to a session file
     void SaveSessionLockedRoutes(int Caller, std::ofstream &SessionFile); ///< save locked routes to a session file

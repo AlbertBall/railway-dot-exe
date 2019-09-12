@@ -1,8 +1,10 @@
 var searchData=
 [
   ['calcdistanceandspeed',['CalcDistanceAndSpeed',['../class_t_one_pref_dir.html#abadb0c99b24d6dbfda371d96b308fc6e',1,'TOnePrefDir']]],
+  ['calcdistancetoredsignalandstoptime',['CalcDistanceToRedSignalandStopTime',['../class_t_train_controller.html#ad81afe17a036ab3f96c340ab75a2d8e2',1,'TTrainController']]],
   ['calchlocminetc',['CalcHLocMinEtc',['../class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9',1,'TTrack']]],
   ['calcoperatingandnotstartedtrainlateness',['CalcOperatingAndNotStartedTrainLateness',['../class_t_train_controller.html#aadffada34a23350d7773bc7735e423a1',1,'TTrainController']]],
+  ['calctimetoact',['CalcTimeToAct',['../class_t_train.html#ae34370de578ebd07a217c79d8b67312c',1,'TTrain']]],
   ['callingonallowed',['CallingOnAllowed',['../class_t_train.html#a4524b72ef62ef2c1375f58fac05929ee',1,'TTrain']]],
   ['callingonbutton',['CallingOnButton',['../class_t_interface.html#a4c3b977862eea5eae2631c9af65ac069',1,'TInterface']]],
   ['callingonflag',['CallingOnFlag',['../class_t_train.html#a5a658cdc377c3f4d65af6839614e7cb1',1,'TTrain']]],
@@ -62,8 +64,8 @@ var searchData=
   ['clearroute',['ClearRoute',['../class_t_one_route.html#a05ce65e80c2272a775f6497890d42b6b',1,'TOneRoute']]],
   ['clearrouteduringroutebuildingat',['ClearRouteDuringRouteBuildingAt',['../class_t_all_routes.html#ab23a53bd95aeb951108a004735b9a45e',1,'TAllRoutes']]],
   ['cleartonextsignal',['ClearToNextSignal',['../class_t_train.html#aeed1f50d8a4f76d7d77991d276758570',1,'TTrain']]],
+  ['clocklabel',['ClockLabel',['../class_t_interface.html#af06ebc1f5417120c44b3474e2eb1ea51',1,'TInterface']]],
   ['clocktimer2',['ClockTimer2',['../class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5',1,'TInterface']]],
-  ['clocktimer2count',['ClockTimer2Count',['../class_t_interface.html#a039907015f5174600f6020bd0a8ab7d1',1,'TInterface']]],
   ['compileallentriesmemoandsetpointers',['CompileAllEntriesMemoAndSetPointers',['../class_t_interface.html#a330394a04433ce8672a52c2a0a659ff0',1,'TInterface']]],
   ['config',['Config',['../class_t_fixed_track_piece.html#ab0230b6fb2112bce31f205ae7ed5fd07',1,'TFixedTrackPiece']]],
   ['conn',['Conn',['../class_t_track_element.html#a9551c6d789485c121203be6d51e4781f',1,'TTrackElement']]],
@@ -75,6 +77,7 @@ var searchData=
   ['constructroute',['ConstructRoute',['../class_t_interface.html#ab6d6b9aa3402b35dfd89610b31831402',1,'TInterface']]],
   ['continuationautosignals',['ContinuationAutoSignals',['../class_t_interface.html#abfdbbb1cf793f965f8c6ce60d4bb46ae',1,'TInterface']]],
   ['continuationautosigvector',['ContinuationAutoSigVector',['../class_t_train_controller.html#a0b412f7b88f829632e54bffc0659ac3b',1,'TTrainController']]],
+  ['continuationentryfloatingttstring',['ContinuationEntryFloatingTTString',['../class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3',1,'TTrainController']]],
   ['continuationexit',['ContinuationExit',['../class_t_train.html#a36b7b4901add145605ba1e540801b6cf',1,'TTrain']]],
   ['continuationnamemap',['ContinuationNameMap',['../class_t_track.html#a4cade2b1cabb095c4a52efc729efb44f',1,'TTrack']]],
   ['continuationtrainexpectationmultimap',['ContinuationTrainExpectationMultiMap',['../class_t_train_controller.html#a1a8e542193d93581e0c391d8e7fa3e1b',1,'TTrainController']]],

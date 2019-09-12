@@ -4,22 +4,10 @@
 
 {\ttfamily \#include $<$Track\+Unit.\+h$>$}
 
-
-
-Inheritance diagram for T\+One\+Pref\+Dir\+:\nopagebreak
-\begin{figure}[H]
+Inheritance diagram for T\+One\+Pref\+Dir\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=550pt]{class_t_one_pref_dir__inherit__graph}
-\end{center}
-\end{figure}
-
-
-Collaboration diagram for T\+One\+Pref\+Dir\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=254pt]{class_t_one_pref_dir__coll__graph}
+\includegraphics[height=2.000000cm]{class_t_one_pref_dir}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
@@ -120,6 +108,8 @@ typedef std\+::vector$<$ \mbox{\hyperlink{class_t_pref_dir_element}{T\+Pref\+Dir
 \end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{class_t_one_pref_dir_ae0e03d494164fe961da51b0be8492934}{Preset\+Auto\+Route\+Diagonal\+Fouled\+By\+Track}} (int Caller, \mbox{\hyperlink{class_t_pref_dir_element}{T\+Pref\+Dir\+Element}} Element\+In, int X\+Link)
 \item 
 bool \mbox{\hyperlink{class_t_one_pref_dir_ab35c683ba0ec156d19d4db991046b7d2}{Preset\+Auto\+Route\+Element\+Valid}} (int Caller, \mbox{\hyperlink{class_t_pref_dir_element}{T\+Pref\+Dir\+Element}} Element\+In, int Entry\+Pos)
 \item 
@@ -303,7 +293,13 @@ Old version of Load\+Pref\+Dir, used during development when the save format cha
 
 Pref\+Dir and route track marker, including direction markers. Function used for both Pref\+Dirs (Pref\+Dir\+Route == Pref\+Dir\+Call) and routes (Pref\+Dir\+Route == Route\+Call).
 
-The graphics for marker colours and direction are already stored in all Pref\+Dir\+Elements in \mbox{\hyperlink{class_t_one_pref_dir}{T\+One\+Pref\+Dir}} and \mbox{\hyperlink{class_t_one_route}{T\+One\+Route}}, and this function is called to display them, all in the case of a Pref\+Dir, but for a route only the first and last elements have direction markers. No markers are displayed if a train is present on an element. Also no display if E\+X\+Graphic\+Ptr not set. If building a Pref\+Dir (Building\+Pref\+Dir true) then the start and end rectangles are also displayed. \mbox{\Hypertarget{class_t_one_pref_dir_ab35c683ba0ec156d19d4db991046b7d2}\label{class_t_one_pref_dir_ab35c683ba0ec156d19d4db991046b7d2}} 
+The graphics for marker colours and direction are already stored in all Pref\+Dir\+Elements in \mbox{\hyperlink{class_t_one_pref_dir}{T\+One\+Pref\+Dir}} and \mbox{\hyperlink{class_t_one_route}{T\+One\+Route}}, and this function is called to display them, all in the case of a Pref\+Dir, but for a route only the first and last elements have direction markers. No markers are displayed if a train is present on an element. Also no display if E\+X\+Graphic\+Ptr not set. If building a Pref\+Dir (Building\+Pref\+Dir true) then the start and end rectangles are also displayed. \mbox{\Hypertarget{class_t_one_pref_dir_ae0e03d494164fe961da51b0be8492934}\label{class_t_one_pref_dir_ae0e03d494164fe961da51b0be8492934}} 
+\index{T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}!Preset\+Auto\+Route\+Diagonal\+Fouled\+By\+Track@{Preset\+Auto\+Route\+Diagonal\+Fouled\+By\+Track}}
+\index{Preset\+Auto\+Route\+Diagonal\+Fouled\+By\+Track@{Preset\+Auto\+Route\+Diagonal\+Fouled\+By\+Track}!T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}}
+\subsubsection{\texorpdfstring{Preset\+Auto\+Route\+Diagonal\+Fouled\+By\+Track()}{PresetAutoRouteDiagonalFouledByTrack()}}
+{\footnotesize\ttfamily bool T\+One\+Pref\+Dir\+::\+Preset\+Auto\+Route\+Diagonal\+Fouled\+By\+Track (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{\mbox{\hyperlink{class_t_pref_dir_element}{T\+Pref\+Dir\+Element}}}]{Element\+In,  }\item[{int}]{X\+Link }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+Called by Get\+Start\+And\+End\+Pref\+Dir\+Elements, which in turn is called by Preset\+Auto\+Sig\+Routes\+Button\+Click. Checks for a diagonal link in the autosigsroute being fouled by an adjacent track with a corresponding link that meets at the diagonal link, and if it is it returns true and prevents the route being set. Note that adjacent track consisting of buffers, gaps and continuations at the diagonal link are also excluded though they need not be, but it makes the check code simpler and such adjacent track is untidy and can be modelled better anyway. Added at v2.\+1.\+0. \mbox{\Hypertarget{class_t_one_pref_dir_ab35c683ba0ec156d19d4db991046b7d2}\label{class_t_one_pref_dir_ab35c683ba0ec156d19d4db991046b7d2}} 
 \index{T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}!Preset\+Auto\+Route\+Element\+Valid@{Preset\+Auto\+Route\+Element\+Valid}}
 \index{Preset\+Auto\+Route\+Element\+Valid@{Preset\+Auto\+Route\+Element\+Valid}!T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}}
 \subsubsection{\texorpdfstring{Preset\+Auto\+Route\+Element\+Valid()}{PresetAutoRouteElementValid()}}

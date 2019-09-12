@@ -1,21 +1,9 @@
 \hypertarget{class_t_interface}{}\section{T\+Interface Class Reference}
 \label{class_t_interface}\index{T\+Interface@{T\+Interface}}
-
-
-Inheritance diagram for T\+Interface\+:\nopagebreak
-\begin{figure}[H]
+Inheritance diagram for T\+Interface\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=550pt]{class_t_interface__inherit__graph}
-\end{center}
-\end{figure}
-
-
-Collaboration diagram for T\+Interface\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[height=550pt]{class_t_interface__coll__graph}
+\includegraphics[height=2.000000cm]{class_t_interface}
 \end{center}
 \end{figure}
 \subsection*{Public Types}
@@ -64,6 +52,9 @@ void \+\_\+\+\_\+fastcall {\bfseries Cut\+Menu\+Item\+Click} (T\+Object $\ast$Se
 \item 
 \mbox{\Hypertarget{class_t_interface_aff2c1cd6ed2d45fdcf6392a85a6d9415}\label{class_t_interface_aff2c1cd6ed2d45fdcf6392a85a6d9415}} 
 void \+\_\+\+\_\+fastcall {\bfseries Delete\+Menu\+Item\+Click} (T\+Object $\ast$Sender)
+\item 
+\mbox{\Hypertarget{class_t_interface_ac53c02024590fc44371ed3b7efc3ddde}\label{class_t_interface_ac53c02024590fc44371ed3b7efc3ddde}} 
+void \+\_\+\+\_\+fastcall {\bfseries Edit\+Menu\+Click} (T\+Object $\ast$Sender)
 \item 
 \mbox{\Hypertarget{class_t_interface_a0cf35a6e4a6cfa72b63222acb51f9f74}\label{class_t_interface_a0cf35a6e4a6cfa72b63222acb51f9f74}} 
 void \+\_\+\+\_\+fastcall {\bfseries Edit\+Timetable\+Menu\+Item\+Click} (T\+Object $\ast$Sender)
@@ -479,20 +470,47 @@ void \+\_\+\+\_\+fastcall {\bfseries Master\+Clock\+Timer} (T\+Object $\ast$Send
 \mbox{\Hypertarget{class_t_interface_a84a1627edee1954b3938f45473c09bfd}\label{class_t_interface_a84a1627edee1954b3938f45473c09bfd}} 
 void \+\_\+\+\_\+fastcall {\bfseries Form\+Key\+Up} (T\+Object $\ast$Sender, W\+O\+RD \&Key, T\+Shift\+State Shift)
 \item 
-\mbox{\Hypertarget{class_t_interface_a3b462a985384627a1ab9dd2ab620fff6}\label{class_t_interface_a3b462a985384627a1ab9dd2ab620fff6}} 
-void \+\_\+\+\_\+fastcall {\bfseries M\+P\+H\+Edit1\+Key\+Up} (T\+Object $\ast$Sender, W\+O\+RD \&Key, T\+Shift\+State Shift)
+\mbox{\Hypertarget{class_t_interface_a3fe45d91c5e85bb4359e5868110a9641}\label{class_t_interface_a3fe45d91c5e85bb4359e5868110a9641}} 
+void \+\_\+\+\_\+fastcall {\bfseries Speed\+Edit\+Box\+Key\+Up} (T\+Object $\ast$Sender, W\+O\+RD \&Key, T\+Shift\+State Shift)
 \item 
-\mbox{\Hypertarget{class_t_interface_a1d61a4cdf5ab3fefc352bad71286097d}\label{class_t_interface_a1d61a4cdf5ab3fefc352bad71286097d}} 
-void \+\_\+\+\_\+fastcall {\bfseries M\+P\+H\+Edit2\+Key\+Up} (T\+Object $\ast$Sender, W\+O\+RD \&Key, T\+Shift\+State Shift)
+\mbox{\Hypertarget{class_t_interface_ac9ade69d56c48a2bd209a3cad7027c2f}\label{class_t_interface_ac9ade69d56c48a2bd209a3cad7027c2f}} 
+void \+\_\+\+\_\+fastcall {\bfseries Speed\+Edit\+Box2\+Key\+Up} (T\+Object $\ast$Sender, W\+O\+RD \&Key, T\+Shift\+State Shift)
 \item 
 \mbox{\Hypertarget{class_t_interface_a53206fd4d6f35c1f1981f018cf3a53df}\label{class_t_interface_a53206fd4d6f35c1f1981f018cf3a53df}} 
 void \+\_\+\+\_\+fastcall {\bfseries Length\+Edit\+Key\+Up} (T\+Object $\ast$Sender, W\+O\+RD \&Key, T\+Shift\+State Shift)
 \item 
-\mbox{\Hypertarget{class_t_interface_a748c0543de03f148759e8bcec6b1dd91}\label{class_t_interface_a748c0543de03f148759e8bcec6b1dd91}} 
-void \+\_\+\+\_\+fastcall {\bfseries H\+P\+Edit\+Key\+Up} (T\+Object $\ast$Sender, W\+O\+RD \&Key, T\+Shift\+State Shift)
+\mbox{\Hypertarget{class_t_interface_acbfd29973dae21817bad616910541ce8}\label{class_t_interface_acbfd29973dae21817bad616910541ce8}} 
+void \+\_\+\+\_\+fastcall {\bfseries Power\+Edit\+Box\+Key\+Up} (T\+Object $\ast$Sender, W\+O\+RD \&Key, T\+Shift\+State Shift)
 \item 
 \mbox{\Hypertarget{class_t_interface_aa639148521a793641e694b15486b5055}\label{class_t_interface_aa639148521a793641e694b15486b5055}} 
 void \+\_\+\+\_\+fastcall {\bfseries Preset\+Auto\+Sig\+Routes\+Button\+Click} (T\+Object $\ast$Sender)
+\item 
+\mbox{\Hypertarget{class_t_interface_a3fe9878a003d343a06f09c8f421e5a3b}\label{class_t_interface_a3fe9878a003d343a06f09c8f421e5a3b}} 
+void \+\_\+\+\_\+fastcall {\bfseries Form\+Resize} (T\+Object $\ast$Sender)
+\item 
+\mbox{\Hypertarget{class_t_interface_a0b6810d510f09d97ed750ffa1f3644a3}\label{class_t_interface_a0b6810d510f09d97ed750ffa1f3644a3}} 
+void \+\_\+\+\_\+fastcall {\bfseries Railway\+Web\+Site\+Menu\+Item\+Click} (T\+Object $\ast$Sender)
+\item 
+\mbox{\Hypertarget{class_t_interface_a4e50b78dc418e107fdd8676f6894515e}\label{class_t_interface_a4e50b78dc418e107fdd8676f6894515e}} 
+void \+\_\+\+\_\+fastcall {\bfseries Speed\+Toggle\+Button\+Click} (T\+Object $\ast$Sender)
+\item 
+\mbox{\Hypertarget{class_t_interface_a06d08704dc1619eb2d212d43d2cd3bd9}\label{class_t_interface_a06d08704dc1619eb2d212d43d2cd3bd9}} 
+void \+\_\+\+\_\+fastcall {\bfseries Power\+Toggle\+Button\+Click} (T\+Object $\ast$Sender)
+\item 
+\mbox{\Hypertarget{class_t_interface_a26a7001957d7d5a178320723e07e4fb3}\label{class_t_interface_a26a7001957d7d5a178320723e07e4fb3}} 
+void \+\_\+\+\_\+fastcall {\bfseries Speed\+Toggle\+Button2\+Click} (T\+Object $\ast$Sender)
+\item 
+\mbox{\Hypertarget{class_t_interface_a4732a8c5f1ccf8425bcc713969ed64a7}\label{class_t_interface_a4732a8c5f1ccf8425bcc713969ed64a7}} 
+void \+\_\+\+\_\+fastcall {\bfseries Paste\+With\+Attributes\+Menu\+Item\+Click} (T\+Object $\ast$Sender)
+\item 
+\mbox{\Hypertarget{class_t_interface_a6ab8ece23e5d3fca1da26e2360e349ec}\label{class_t_interface_a6ab8ece23e5d3fca1da26e2360e349ec}} 
+void \+\_\+\+\_\+fastcall {\bfseries Operator\+Action\+Button\+Click} (T\+Object $\ast$Sender)
+\item 
+\mbox{\Hypertarget{class_t_interface_a54c8faaf7d1d8f0456114676fd20a17f}\label{class_t_interface_a54c8faaf7d1d8f0456114676fd20a17f}} 
+void \+\_\+\+\_\+fastcall {\bfseries O\+A\+List\+Box\+Mouse\+Up} (T\+Object $\ast$Sender, T\+Mouse\+Button Button, T\+Shift\+State Shift, int X, int Y)
+\item 
+\mbox{\Hypertarget{class_t_interface_a659a63c1342a6d5ebd23422a608d140f}\label{class_t_interface_a659a63c1342a6d5ebd23422a608d140f}} 
+void \+\_\+\+\_\+fastcall {\bfseries Operator\+Action\+Panel\+Start\+Drag} (T\+Object $\ast$Sender, T\+Drag\+Object $\ast$\&Drag\+Object)
 \item 
 \mbox{\Hypertarget{class_t_interface_aa09ce755ae1d39671b9b358f86d83fde}\label{class_t_interface_aa09ce755ae1d39671b9b358f86d83fde}} 
 Unicode\+String \mbox{\hyperlink{class_t_interface_aa09ce755ae1d39671b9b358f86d83fde}{Get\+Version}} ()
@@ -596,20 +614,20 @@ T\+Panel $\ast$ {\bfseries Length\+Conversion\+Panel}
 \mbox{\Hypertarget{class_t_interface_a46839b0b58182c156b0dc790b1595d24}\label{class_t_interface_a46839b0b58182c156b0dc790b1595d24}} 
 T\+Panel $\ast$ {\bfseries Speed\+Conversion\+Panel}
 \item 
-\mbox{\Hypertarget{class_t_interface_a5f11584b8ac759bfd4aba449579d5cca}\label{class_t_interface_a5f11584b8ac759bfd4aba449579d5cca}} 
-T\+Edit $\ast$ {\bfseries M\+P\+H\+Edit2}
+\mbox{\Hypertarget{class_t_interface_abbfc3016277ccdf5ce24ae1593b761e0}\label{class_t_interface_abbfc3016277ccdf5ce24ae1593b761e0}} 
+T\+Edit $\ast$ {\bfseries Speed\+Edit\+Box2}
 \item 
-\mbox{\Hypertarget{class_t_interface_a9d9217428a0c3ec7e4a5c1e91d7392d5}\label{class_t_interface_a9d9217428a0c3ec7e4a5c1e91d7392d5}} 
-T\+Label $\ast$ {\bfseries M\+P\+H\+Label2}
+\mbox{\Hypertarget{class_t_interface_a731697d07aaaef306dec0b2bbbef287a}\label{class_t_interface_a731697d07aaaef306dec0b2bbbef287a}} 
+T\+Label $\ast$ {\bfseries Speed\+Top\+Label2}
 \item 
-\mbox{\Hypertarget{class_t_interface_aab326349f794b99e04281ba1b50ac88e}\label{class_t_interface_aab326349f794b99e04281ba1b50ac88e}} 
-T\+Label $\ast$ {\bfseries K\+P\+H\+Label}
+\mbox{\Hypertarget{class_t_interface_a052a1b3dc58073599d0fdac862195fa8}\label{class_t_interface_a052a1b3dc58073599d0fdac862195fa8}} 
+T\+Label $\ast$ {\bfseries Speed\+Bottom\+Label2}
 \item 
-\mbox{\Hypertarget{class_t_interface_abd0c61a1bd1689184025180a3d5747d2}\label{class_t_interface_abd0c61a1bd1689184025180a3d5747d2}} 
-T\+Panel $\ast$ {\bfseries K\+P\+H\+Panel2}
+\mbox{\Hypertarget{class_t_interface_a35bb7bb089337332f98b8f21c755f199}\label{class_t_interface_a35bb7bb089337332f98b8f21c755f199}} 
+T\+Panel $\ast$ {\bfseries Speed\+Variable\+Panel2}
 \item 
-\mbox{\Hypertarget{class_t_interface_aa232e738a0ed4959b99c78755d13a98c}\label{class_t_interface_aa232e738a0ed4959b99c78755d13a98c}} 
-T\+Label $\ast$ {\bfseries K\+P\+H\+Variable\+Label2}
+\mbox{\Hypertarget{class_t_interface_ac115749b7ea3204f722997c96a92da72}\label{class_t_interface_ac115749b7ea3204f722997c96a92da72}} 
+T\+Label $\ast$ {\bfseries Speed\+Variable\+Label2}
 \item 
 \mbox{\Hypertarget{class_t_interface_a3db16b7382de5fdb2fbde90949026d8b}\label{class_t_interface_a3db16b7382de5fdb2fbde90949026d8b}} 
 T\+Panel $\ast$ {\bfseries Add\+Sub\+Mins\+Panel}
@@ -755,38 +773,38 @@ T\+Combo\+Box $\ast$ \mbox{\hyperlink{class_t_interface_a68191596344fa3f2f7c8b4f
 \mbox{\Hypertarget{class_t_interface_abc16ad27bf676c2533855c4a092f43e4}\label{class_t_interface_abc16ad27bf676c2533855c4a092f43e4}} 
 T\+Edit $\ast$ \mbox{\hyperlink{class_t_interface_abc16ad27bf676c2533855c4a092f43e4}{Add\+Sub\+Mins\+Box}}
 \begin{DoxyCompactList}\small\item\em the edit box that accepts minutes to add or subtract \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_t_interface_a179a3a2b975332094e82fcb9d1de3111}\label{class_t_interface_a179a3a2b975332094e82fcb9d1de3111}} 
-T\+Edit $\ast$ {\bfseries M\+P\+H\+Edit1}
+\mbox{\Hypertarget{class_t_interface_a4369dc729439dc084cf175080e2d0716}\label{class_t_interface_a4369dc729439dc084cf175080e2d0716}} 
+T\+Edit $\ast$ {\bfseries Speed\+Edit\+Box}
 \item 
-\mbox{\Hypertarget{class_t_interface_a774a7ea46743a8ba8f6cd78eee0d6ba8}\label{class_t_interface_a774a7ea46743a8ba8f6cd78eee0d6ba8}} 
-T\+Label $\ast$ {\bfseries M\+P\+H\+Label1}
+\mbox{\Hypertarget{class_t_interface_a08a62d0894da968f67d86b2f98961f2e}\label{class_t_interface_a08a62d0894da968f67d86b2f98961f2e}} 
+T\+Label $\ast$ {\bfseries Speed\+Top\+Label}
 \item 
-\mbox{\Hypertarget{class_t_interface_adea3fe8d9345ab6eeff38a755ac1d4bf}\label{class_t_interface_adea3fe8d9345ab6eeff38a755ac1d4bf}} 
-T\+Label $\ast$ {\bfseries K\+P\+H\+Fixed\+Label1}
+\mbox{\Hypertarget{class_t_interface_a6d01dde178e238e13a0762aba5415902}\label{class_t_interface_a6d01dde178e238e13a0762aba5415902}} 
+T\+Label $\ast$ {\bfseries Speed\+Bottom\+Label}
 \item 
-\mbox{\Hypertarget{class_t_interface_a3d19fe789473ab0504e3cecf514175e8}\label{class_t_interface_a3d19fe789473ab0504e3cecf514175e8}} 
-T\+Panel $\ast$ {\bfseries K\+P\+H\+Panel1}
+\mbox{\Hypertarget{class_t_interface_abed4d7ddeffcee538ecab4a508e28119}\label{class_t_interface_abed4d7ddeffcee538ecab4a508e28119}} 
+T\+Panel $\ast$ {\bfseries Speed\+Variable\+Panel1}
 \item 
 \mbox{\Hypertarget{class_t_interface_a3216d2f4e638c29d6e531dd8b83aa675}\label{class_t_interface_a3216d2f4e638c29d6e531dd8b83aa675}} 
 T\+Panel $\ast$ {\bfseries Speed\+Conversion\+T\+T\+Panel}
 \item 
-\mbox{\Hypertarget{class_t_interface_aaadaad646dd0ee112b5507d1240ca7ea}\label{class_t_interface_aaadaad646dd0ee112b5507d1240ca7ea}} 
-T\+Label $\ast$ {\bfseries K\+P\+H\+Variable\+Label1}
+\mbox{\Hypertarget{class_t_interface_a49c4a780cb7d5d5f20bd708013f23f51}\label{class_t_interface_a49c4a780cb7d5d5f20bd708013f23f51}} 
+T\+Label $\ast$ {\bfseries Speed\+Variable\+Label}
 \item 
-\mbox{\Hypertarget{class_t_interface_a887c2e4c504b5eb59b8afa33c6d34295}\label{class_t_interface_a887c2e4c504b5eb59b8afa33c6d34295}} 
-T\+Edit $\ast$ {\bfseries H\+P\+Edit}
+\mbox{\Hypertarget{class_t_interface_a2f56a6d6c2174a48f86eb1c2a44fc918}\label{class_t_interface_a2f56a6d6c2174a48f86eb1c2a44fc918}} 
+T\+Edit $\ast$ {\bfseries Power\+Edit\+Box}
 \item 
-\mbox{\Hypertarget{class_t_interface_a524da62de10424a79264bca256acbe2a}\label{class_t_interface_a524da62de10424a79264bca256acbe2a}} 
-T\+Label $\ast$ {\bfseries H\+P\+Label}
+\mbox{\Hypertarget{class_t_interface_a115be70cbac0d0c8609bd2d3d4c6515f}\label{class_t_interface_a115be70cbac0d0c8609bd2d3d4c6515f}} 
+T\+Label $\ast$ {\bfseries Power\+Top\+Label}
 \item 
-\mbox{\Hypertarget{class_t_interface_a899968c38e121279dfd1fdd0f8a8ee41}\label{class_t_interface_a899968c38e121279dfd1fdd0f8a8ee41}} 
-T\+Label $\ast$ {\bfseries K\+W\+Fixed\+Label}
+\mbox{\Hypertarget{class_t_interface_ac1de622db396402dd80fb06ae10f550a}\label{class_t_interface_ac1de622db396402dd80fb06ae10f550a}} 
+T\+Label $\ast$ {\bfseries Power\+Bottom\+Label}
 \item 
 \mbox{\Hypertarget{class_t_interface_a66f500e3b3362042e12da9a2749f9fff}\label{class_t_interface_a66f500e3b3362042e12da9a2749f9fff}} 
 T\+Panel $\ast$ {\bfseries K\+W\+Panel}
 \item 
-\mbox{\Hypertarget{class_t_interface_a06ac8acc2e616f8b8c7026b4624bb858}\label{class_t_interface_a06ac8acc2e616f8b8c7026b4624bb858}} 
-T\+Label $\ast$ {\bfseries K\+W\+Variable\+Label}
+\mbox{\Hypertarget{class_t_interface_a6f2b5ba2e310e1884fa338f537ce6496}\label{class_t_interface_a6f2b5ba2e310e1884fa338f537ce6496}} 
+T\+Label $\ast$ {\bfseries Power\+Variable\+Label}
 \item 
 \mbox{\Hypertarget{class_t_interface_a2dab1f7efbc4b609f97c28c3c28df5c9}\label{class_t_interface_a2dab1f7efbc4b609f97c28c3c28df5c9}} 
 T\+Bit\+Btn $\ast$ {\bfseries Operate\+Button}
@@ -815,11 +833,23 @@ T\+Bit\+Btn $\ast$ {\bfseries Performance\+Log\+Button}
 \mbox{\Hypertarget{class_t_interface_a1186be2f10c6d71e2f2c50a2fd9e573b}\label{class_t_interface_a1186be2f10c6d71e2f2c50a2fd9e573b}} 
 T\+Bit\+Btn $\ast$ {\bfseries Save\+Session\+Button}
 \item 
+\mbox{\Hypertarget{class_t_interface_a371dcdcc6f55ffe764796c4d18d4ecfd}\label{class_t_interface_a371dcdcc6f55ffe764796c4d18d4ecfd}} 
+T\+Bit\+Btn $\ast$ {\bfseries Operator\+Action\+Button}
+\item 
 \mbox{\Hypertarget{class_t_interface_a7f8ee675b1f05ed8711b01f8a97e9164}\label{class_t_interface_a7f8ee675b1f05ed8711b01f8a97e9164}} 
 T\+Bit\+Btn $\ast$ {\bfseries Exit\+Operation\+Button}
 \item 
 \mbox{\Hypertarget{class_t_interface_ae6645a1f27a503f98bf153653b3f5783}\label{class_t_interface_ae6645a1f27a503f98bf153653b3f5783}} 
 T\+Bit\+Btn $\ast$ {\bfseries T\+T\+Clock\+Adj\+Button}
+\item 
+\mbox{\Hypertarget{class_t_interface_a8c529ad31a99047bff4153a900ec128c}\label{class_t_interface_a8c529ad31a99047bff4153a900ec128c}} 
+T\+Button $\ast$ {\bfseries Power\+Toggle\+Button}
+\item 
+\mbox{\Hypertarget{class_t_interface_aae0a29bdc4382ce1b8c0d3575f50b87d}\label{class_t_interface_aae0a29bdc4382ce1b8c0d3575f50b87d}} 
+T\+Button $\ast$ {\bfseries Speed\+Toggle\+Button}
+\item 
+\mbox{\Hypertarget{class_t_interface_a88e8165081a94e65e685a0952a8aef08}\label{class_t_interface_a88e8165081a94e65e685a0952a8aef08}} 
+T\+Button $\ast$ {\bfseries Speed\+Toggle\+Button2}
 \item 
 \mbox{\Hypertarget{class_t_interface_aa1cda2e96293955038f417dc2ed73ed8}\label{class_t_interface_aa1cda2e96293955038f417dc2ed73ed8}} 
 T\+Panel $\ast$ {\bfseries T\+T\+Clock\+Adj\+Panel}
@@ -941,6 +971,12 @@ T\+Image $\ast$ {\bfseries Location\+Names\+Not\+Set\+Image}
 \mbox{\Hypertarget{class_t_interface_a24ed70b178edf21a515d34df17b6aeb3}\label{class_t_interface_a24ed70b178edf21a515d34df17b6aeb3}} 
 T\+Image $\ast$ \mbox{\hyperlink{class_t_interface_a24ed70b178edf21a515d34df17b6aeb3}{Main\+Screen}}
 \begin{DoxyCompactList}\small\item\em the railway display screen \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_interface_a51d05d3ea1933b582548629cf16b3659}\label{class_t_interface_a51d05d3ea1933b582548629cf16b3659}} 
+T\+Image\+List $\ast$ {\bfseries T\+T\+Image\+List}
+\item 
+\mbox{\Hypertarget{class_t_interface_a38c4c39dcf30113d8e9d5b07010e7a41}\label{class_t_interface_a38c4c39dcf30113d8e9d5b07010e7a41}} 
+T\+Image\+List $\ast$ {\bfseries M\+M\+Image\+List}
+\item 
 \mbox{\Hypertarget{class_t_interface_a38215bb67fd2be9e37e5fa2046a1ce4a}\label{class_t_interface_a38215bb67fd2be9e37e5fa2046a1ce4a}} 
 T\+Label $\ast$ {\bfseries Output\+Log1}
 \item 
@@ -1010,6 +1046,15 @@ T\+Panel $\ast$ \mbox{\hyperlink{class_t_interface_abc8305e8654aeac73f905b3fa8f9
 \mbox{\Hypertarget{class_t_interface_a82ceb0b38e171d2b46c19f76afef35c1}\label{class_t_interface_a82ceb0b38e171d2b46c19f76afef35c1}} 
 T\+Panel $\ast$ \mbox{\hyperlink{class_t_interface_a82ceb0b38e171d2b46c19f76afef35c1}{Development\+Panel}}
 \begin{DoxyCompactList}\small\item\em used for diagnostic purposes, made visible by $<$ctrl$>$ $<$alt$>$ \textquotesingle{}3\textquotesingle{} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_interface_a424f4da4b4f2795f36ac40c8dc2a9a10}\label{class_t_interface_a424f4da4b4f2795f36ac40c8dc2a9a10}} 
+T\+Panel $\ast$ \mbox{\hyperlink{class_t_interface_a424f4da4b4f2795f36ac40c8dc2a9a10}{Floating\+Panel}}
+\begin{DoxyCompactList}\small\item\em new for v2.\+2.\+0 where label sits in it and it \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_interface_a0e02497aefb9ea945fd1cab9999e792e}\label{class_t_interface_a0e02497aefb9ea945fd1cab9999e792e}} 
+T\+Panel $\ast$ {\bfseries Positional\+Panel}
+\item 
+\mbox{\Hypertarget{class_t_interface_aa17115ed5820e0ff28801224b6bc4e4a}\label{class_t_interface_aa17115ed5820e0ff28801224b6bc4e4a}} 
+T\+Panel $\ast$ \mbox{\hyperlink{class_t_interface_aa17115ed5820e0ff28801224b6bc4e4a}{Operator\+Action\+Panel}}
+\begin{DoxyCompactList}\small\item\em new v2.\+2.\+0 panel housing the O\+A\+List\+Box with list of trains and times to act \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_interface_a4b97febf985f3a4a5589f98fed9177ee}\label{class_t_interface_a4b97febf985f3a4a5589f98fed9177ee}} 
 T\+Label $\ast$ \mbox{\hyperlink{class_t_interface_a4b97febf985f3a4a5589f98fed9177ee}{Performance\+Panel\+Label}}
 \begin{DoxyCompactList}\small\item\em label at the top of Performance\+Panel \end{DoxyCompactList}\item 
@@ -1038,14 +1083,26 @@ T\+Label $\ast$ \mbox{\hyperlink{class_t_interface_abf62cb5692bcccbba65b85dd6b19
 T\+Label $\ast$ \mbox{\hyperlink{class_t_interface_a6c42fa668ecb3a9e4f8ddeb677781b84}{Call\+Log\+Ticker\+Label}}
 \begin{DoxyCompactList}\small\item\em diagnostic label displaying the call log depth, made visible by $<$ctrl$>$ $<$alt$>$ \textquotesingle{}2\textquotesingle{} \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_interface_af06ebc1f5417120c44b3474e2eb1ea51}\label{class_t_interface_af06ebc1f5417120c44b3474e2eb1ea51}} 
-T\+Label $\ast$ {\bfseries Clock\+Label}
-\item 
-\mbox{\Hypertarget{class_t_interface_a1ec3d5df7eb6dbab750a63c46710e7bc}\label{class_t_interface_a1ec3d5df7eb6dbab750a63c46710e7bc}} 
-T\+Label $\ast$ \mbox{\hyperlink{class_t_interface_a1ec3d5df7eb6dbab750a63c46710e7bc}{Floating\+Label}}
+T\+Label $\ast$ \mbox{\hyperlink{class_t_interface_af06ebc1f5417120c44b3474e2eb1ea51}{Clock\+Label}}
 \begin{DoxyCompactList}\small\item\em the floating window that displays track \& train information \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_interface_a167b9a4eba88ea3020f67a1c89907838}\label{class_t_interface_a167b9a4eba88ea3020f67a1c89907838}} 
 T\+Label $\ast$ \mbox{\hyperlink{class_t_interface_a167b9a4eba88ea3020f67a1c89907838}{Operating\+Panel\+Label}}
 \begin{DoxyCompactList}\small\item\em displays \textquotesingle{}Operation\textquotesingle{} or \textquotesingle{}Disabled\textquotesingle{} on the operating panel during operation for running or paused \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_interface_a2d641fff539cab58c2a833cf3ed63e72}\label{class_t_interface_a2d641fff539cab58c2a833cf3ed63e72}} 
+T\+Label $\ast$ {\bfseries T\+T\+Clock\+Title\+Label}
+\item 
+\mbox{\Hypertarget{class_t_interface_a19f0b0173b71d400eed6de0b32cf52c6}\label{class_t_interface_a19f0b0173b71d400eed6de0b32cf52c6}} 
+T\+Label $\ast$ {\bfseries T\+T\+Clock\+Label1}
+\item 
+\mbox{\Hypertarget{class_t_interface_a4ea88dbbf3539f837e0e6eefcc127214}\label{class_t_interface_a4ea88dbbf3539f837e0e6eefcc127214}} 
+T\+Label $\ast$ {\bfseries T\+T\+Clock\+Label2}
+\item 
+\mbox{\Hypertarget{class_t_interface_ac09986496b415b12787f5896be321ebe}\label{class_t_interface_ac09986496b415b12787f5896be321ebe}} 
+T\+Label $\ast$ {\bfseries O\+A\+Panel\+Label}
+\item 
+\mbox{\Hypertarget{class_t_interface_a1ec3d5df7eb6dbab750a63c46710e7bc}\label{class_t_interface_a1ec3d5df7eb6dbab750a63c46710e7bc}} 
+T\+Label $\ast$ {\bfseries Floating\+Label}
+\item 
 \mbox{\Hypertarget{class_t_interface_aaf476d1498548ff2b79c6cb0e85b6f2e}\label{class_t_interface_aaf476d1498548ff2b79c6cb0e85b6f2e}} 
 T\+Label $\ast$ {\bfseries T\+T\+Label1}
 \item 
@@ -1103,6 +1160,9 @@ T\+Memo $\ast$ \mbox{\hyperlink{class_t_interface_a5f4cdf54d45ef2756fbcc7c1faeb7
 \mbox{\Hypertarget{class_t_interface_a2186c4827761360ddb9bccc3d8ef4295}\label{class_t_interface_a2186c4827761360ddb9bccc3d8ef4295}} 
 T\+List\+Box $\ast$ \mbox{\hyperlink{class_t_interface_a2186c4827761360ddb9bccc3d8ef4295}{All\+Entries\+T\+T\+List\+Box}}
 \begin{DoxyCompactList}\small\item\em the list of service entries displayed on the left hand side of the timetable edit screen \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_interface_a06c02506913fc9d0fe5f13c4950ff99f}\label{class_t_interface_a06c02506913fc9d0fe5f13c4950ff99f}} 
+T\+List\+Box $\ast$ \mbox{\hyperlink{class_t_interface_a06c02506913fc9d0fe5f13c4950ff99f}{O\+A\+List\+Box}}
+\begin{DoxyCompactList}\small\item\em Operator action list, sits inside Operator\+Action\+Panel and lists trains in ascending order of time to act. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_interface_a60596fc589806809a947f92681a0eb76}\label{class_t_interface_a60596fc589806809a947f92681a0eb76}} 
 T\+Menu\+Item $\ast$ {\bfseries File\+Menu}
 \item 
@@ -1238,9 +1298,6 @@ T\+Menu\+Item $\ast$ {\bfseries About\+Menu\+Item}
 \mbox{\Hypertarget{class_t_interface_a6cdce7bb8a495891ca9aebdec811eea7}\label{class_t_interface_a6cdce7bb8a495891ca9aebdec811eea7}} 
 T\+Menu\+Item $\ast$ {\bfseries Open\+Help\+Menu\+Item}
 \item 
-\mbox{\Hypertarget{class_t_interface_ac0962233c50c6c67c55b71b54b634b9b}\label{class_t_interface_ac0962233c50c6c67c55b71b54b634b9b}} 
-T\+Popup\+Menu $\ast$ {\bfseries Popup\+Menu}
-\item 
 \mbox{\Hypertarget{class_t_interface_a4f47c7fbc5c7fed553660681e9a9db13}\label{class_t_interface_a4f47c7fbc5c7fed553660681e9a9db13}} 
 T\+Menu\+Item $\ast$ {\bfseries Train\+Head\+Code\+Menu\+Item}
 \item 
@@ -1267,6 +1324,24 @@ T\+Menu\+Item $\ast$ {\bfseries Signaller\+Control\+Stop\+Menu\+Item}
 \item 
 \mbox{\Hypertarget{class_t_interface_a5471ec6f1a7b0b956c9faa1c6c30b672}\label{class_t_interface_a5471ec6f1a7b0b956c9faa1c6c30b672}} 
 T\+Menu\+Item $\ast$ {\bfseries Remove\+Train\+Menu\+Item}
+\item 
+\mbox{\Hypertarget{class_t_interface_a424b363a104a95f4822dd16de1097ede}\label{class_t_interface_a424b363a104a95f4822dd16de1097ede}} 
+T\+Menu\+Item $\ast$ {\bfseries N1}
+\item 
+\mbox{\Hypertarget{class_t_interface_aa8e2cca943dae09344c978022b88dd2b}\label{class_t_interface_aa8e2cca943dae09344c978022b88dd2b}} 
+T\+Menu\+Item $\ast$ {\bfseries N2}
+\item 
+\mbox{\Hypertarget{class_t_interface_aa576dc5d61c896895f249cdf8d7ccfc5}\label{class_t_interface_aa576dc5d61c896895f249cdf8d7ccfc5}} 
+T\+Menu\+Item $\ast$ {\bfseries Railway\+Web\+Site\+Menu\+Item}
+\item 
+\mbox{\Hypertarget{class_t_interface_a1b5a32294b339476a9af8f269ed9194f}\label{class_t_interface_a1b5a32294b339476a9af8f269ed9194f}} 
+T\+Menu\+Item $\ast$ {\bfseries N3}
+\item 
+\mbox{\Hypertarget{class_t_interface_a039a43bfeefcbc4dcdf273c24f1140a1}\label{class_t_interface_a039a43bfeefcbc4dcdf273c24f1140a1}} 
+T\+Menu\+Item $\ast$ {\bfseries Paste\+With\+Attributes\+Menu\+Item}
+\item 
+\mbox{\Hypertarget{class_t_interface_ac0962233c50c6c67c55b71b54b634b9b}\label{class_t_interface_ac0962233c50c6c67c55b71b54b634b9b}} 
+T\+Popup\+Menu $\ast$ {\bfseries Popup\+Menu}
 \item 
 \mbox{\Hypertarget{class_t_interface_ae2ab1b35577d8792f335abf9e79a4993}\label{class_t_interface_ae2ab1b35577d8792f335abf9e79a4993}} 
 T\+Open\+Dialog $\ast$ {\bfseries Load\+Railway\+Dialog}
@@ -1715,23 +1790,8 @@ T\+Speed\+Button $\ast$ {\bfseries Speed\+Button142}
 \mbox{\Hypertarget{class_t_interface_a81be9a2f24c16fcddd636cb65416f32f}\label{class_t_interface_a81be9a2f24c16fcddd636cb65416f32f}} 
 T\+Speed\+Button $\ast$ {\bfseries Speed\+Button143}
 \item 
-\mbox{\Hypertarget{class_t_interface_a2d641fff539cab58c2a833cf3ed63e72}\label{class_t_interface_a2d641fff539cab58c2a833cf3ed63e72}} 
-T\+Label $\ast$ {\bfseries T\+T\+Clock\+Title\+Label}
-\item 
-\mbox{\Hypertarget{class_t_interface_a19f0b0173b71d400eed6de0b32cf52c6}\label{class_t_interface_a19f0b0173b71d400eed6de0b32cf52c6}} 
-T\+Label $\ast$ {\bfseries T\+T\+Clock\+Label1}
-\item 
-\mbox{\Hypertarget{class_t_interface_a4ea88dbbf3539f837e0e6eefcc127214}\label{class_t_interface_a4ea88dbbf3539f837e0e6eefcc127214}} 
-T\+Label $\ast$ {\bfseries T\+T\+Clock\+Label2}
-\item 
 \mbox{\Hypertarget{class_t_interface_a67212c07e268f5a78ee5a4fcfe8eaca5}\label{class_t_interface_a67212c07e268f5a78ee5a4fcfe8eaca5}} 
 T\+Speed\+Button $\ast$ {\bfseries Speed\+Button144}
-\item 
-\mbox{\Hypertarget{class_t_interface_a424b363a104a95f4822dd16de1097ede}\label{class_t_interface_a424b363a104a95f4822dd16de1097ede}} 
-T\+Menu\+Item $\ast$ {\bfseries N1}
-\item 
-\mbox{\Hypertarget{class_t_interface_aa8e2cca943dae09344c978022b88dd2b}\label{class_t_interface_aa8e2cca943dae09344c978022b88dd2b}} 
-T\+Menu\+Item $\ast$ {\bfseries N2}
 \item 
 \mbox{\Hypertarget{class_t_interface_a4144280e4a8af28178c7949976fc67bd}\label{class_t_interface_a4144280e4a8af28178c7949976fc67bd}} 
 enum T\+Interface\+::\+T\+Level1\+Mode \mbox{\hyperlink{class_t_interface_a4144280e4a8af28178c7949976fc67bd}{Level1\+Mode}}
@@ -1819,9 +1879,8 @@ bool \mbox{\hyperlink{class_t_interface_a1072fd152bca3234e6730efa17f84670}{File\
 \begin{DoxyCompactList}\small\item\em Check integrity of a railway file prior to loading, return true for success. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{class_t_interface_a44bce128da0e5ae552031e39552d0c39}{High\+Light\+One\+Gap}} (int Caller, int \&H\+Loc, int \&V\+Loc)
 \item 
-\mbox{\Hypertarget{class_t_interface_a6aabbfe2ebc6e92d6306697e2940b86c}\label{class_t_interface_a6aabbfe2ebc6e92d6306697e2940b86c}} 
 bool \mbox{\hyperlink{class_t_interface_a6aabbfe2ebc6e92d6306697e2940b86c}{Is\+Performance\+Panel\+Obscuring\+Floating\+Label}} (int Caller)
-\begin{DoxyCompactList}\small\item\em Checked during operation, returns true if so and Performance\+Panel removed. \end{DoxyCompactList}\item 
+\item 
 \mbox{\Hypertarget{class_t_interface_a92d5a9e07b9362dee2296b7759a1c83d}\label{class_t_interface_a92d5a9e07b9362dee2296b7759a1c83d}} 
 bool \mbox{\hyperlink{class_t_interface_a92d5a9e07b9362dee2296b7759a1c83d}{Load\+Timetable\+From\+Session\+File}} (int Caller, std\+::ifstream \&Session\+File)
 \begin{DoxyCompactList}\small\item\em Loads timetable into memory from a session file, true if successful. \end{DoxyCompactList}\item 
@@ -1847,7 +1906,6 @@ void \mbox{\hyperlink{class_t_interface_a0a89df44c20c9e2c096e66e2950c79a6}{Appro
 \mbox{\Hypertarget{class_t_interface_aaa05ac95703a25e1fb4863779854967c}\label{class_t_interface_aaa05ac95703a25e1fb4863779854967c}} 
 void \mbox{\hyperlink{class_t_interface_aaa05ac95703a25e1fb4863779854967c}{Clearand\+Rebuild\+Railway}} (int Caller)
 \begin{DoxyCompactList}\small\item\em Clear screen and rebuild it from stored data, uses Hidden\+Screen to avoid flicker. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_t_interface_a6139ffb52492eb89e5487a8a3cd647b5}\label{class_t_interface_a6139ffb52492eb89e5487a8a3cd647b5}} 
 void \mbox{\hyperlink{class_t_interface_a6139ffb52492eb89e5487a8a3cd647b5}{Clock\+Timer2}} (int Caller)
 \begin{DoxyCompactList}\small\item\em The main loop, called every clock tick via Master\+Clock\+Timer. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_t_interface_a330394a04433ce8672a52c2a0a659ff0}{Compile\+All\+Entries\+Memo\+And\+Set\+Pointers}} (int Caller)
@@ -1968,7 +2026,10 @@ void \mbox{\hyperlink{class_t_interface_a4502fb89b8be8afeaf2771fbe5d0cd75}{Timet
 \item 
 \mbox{\Hypertarget{class_t_interface_a9aaa19d39382a32701d7ded3b8c1802b}\label{class_t_interface_a9aaa19d39382a32701d7ded3b8c1802b}} 
 void \mbox{\hyperlink{class_t_interface_a9aaa19d39382a32701d7ded3b8c1802b}{Track\+Train\+Float}} (int Caller)
-\begin{DoxyCompactList}\small\item\em Controls the floating window function, called during the Clock\+Timer2 function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Controls the floating window function, called during the Clock\+Timer2 function. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_interface_a656aa01e4fac67c4d7dede71e42208af}\label{class_t_interface_a656aa01e4fac67c4d7dede71e42208af}} 
+void \mbox{\hyperlink{class_t_interface_a656aa01e4fac67c4d7dede71e42208af}{Update\+Operator\+Action\+Panel}} (int Caller)
+\begin{DoxyCompactList}\small\item\em Called every 5 secs to update the panel (if visible) \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -2094,6 +2155,9 @@ bool \mbox{\hyperlink{class_t_interface_a4fe6f9d78a513b65b597487a90ad41a8}{Shift
 \mbox{\Hypertarget{class_t_interface_a9d0e89a8c2ee7c7fd2db3e8f2ca8eaa2}\label{class_t_interface_a9d0e89a8c2ee7c7fd2db3e8f2ca8eaa2}} 
 bool \mbox{\hyperlink{class_t_interface_a9d0e89a8c2ee7c7fd2db3e8f2ca8eaa2}{Show\+Performance\+Panel}}
 \begin{DoxyCompactList}\small\item\em true when the \textquotesingle{}show performance panel\textquotesingle{} button has been clicked during operation \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_interface_aa1df099695b33df73ef815751d426a50}\label{class_t_interface_aa1df099695b33df73ef815751d426a50}} 
+bool \mbox{\hyperlink{class_t_interface_aa1df099695b33df73ef815751d426a50}{Skip\+Form\+Resize\+Event}}
+\begin{DoxyCompactList}\small\item\em added at v2.\+1.\+0 to avoid calling the event during startup and shutdown \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_interface_a069490da193b0cd917842b07dbd1b145}\label{class_t_interface_a069490da193b0cd917842b07dbd1b145}} 
 bool \mbox{\hyperlink{class_t_interface_a069490da193b0cd917842b07dbd1b145}{Temp\+Cursor\+Set}}
 \begin{DoxyCompactList}\small\item\em indicates that a screen cursor has been stored in Temp\+Cursor for redisplay after a temporary cursor (usually an hourglass) has been displayed \end{DoxyCompactList}\item 
@@ -2106,6 +2170,9 @@ bool \mbox{\hyperlink{class_t_interface_a1cf45c2ae9952b143d022ed2b46fa2fd}{Timet
 \mbox{\Hypertarget{class_t_interface_a37aeb05f6d0f1cb639e31e5c8467cadd}\label{class_t_interface_a37aeb05f6d0f1cb639e31e5c8467cadd}} 
 bool \mbox{\hyperlink{class_t_interface_a37aeb05f6d0f1cb639e31e5c8467cadd}{Timetable\+Valid\+Flag}}
 \begin{DoxyCompactList}\small\item\em indicates that a \textquotesingle{}Validate timetable\textquotesingle{} button click in the timetable editor has succeeded \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_interface_abe13c4fbf81da4b1d11723cf0ce7473a}\label{class_t_interface_abe13c4fbf81da4b1d11723cf0ce7473a}} 
+bool \mbox{\hyperlink{class_t_interface_abe13c4fbf81da4b1d11723cf0ce7473a}{Show\+Operator\+Action\+Panel}}
+\begin{DoxyCompactList}\small\item\em true when the \textquotesingle{}trains needing action\textquotesingle{} button has been clicked during operation (new at v2.\+2.\+0) \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_interface_a615a33846b3930ea4691e786912c2ce0}\label{class_t_interface_a615a33846b3930ea4691e786912c2ce0}} 
 bool \mbox{\hyperlink{class_t_interface_a615a33846b3930ea4691e786912c2ce0}{T\+T\+Entry\+Changed\+Flag}}
 \begin{DoxyCompactList}\small\item\em true when a timetable entry that is displayed in the timetable entry edit window has changed \end{DoxyCompactList}\item 
@@ -2115,6 +2182,9 @@ bool \mbox{\hyperlink{class_t_interface_a62422649dfbc50527056fc4c2979f270}{Warni
 \mbox{\Hypertarget{class_t_interface_a928b389995d7601e79e0114f400e21f6}\label{class_t_interface_a928b389995d7601e79e0114f400e21f6}} 
 bool \mbox{\hyperlink{class_t_interface_a928b389995d7601e79e0114f400e21f6}{Warning\+Hover}}
 \begin{DoxyCompactList}\small\item\em true when mouse hovers over warning messages during operation -\/ to prevent clicking while changing \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_interface_a374697196f54a38d8a1fd6cfabb5a8a4}\label{class_t_interface_a374697196f54a38d8a1fd6cfabb5a8a4}} 
+bool \mbox{\hyperlink{class_t_interface_a374697196f54a38d8a1fd6cfabb5a8a4}{Whole\+Railway\+Moving}}
+\begin{DoxyCompactList}\small\item\em true when moving the railway with the mouse, new at v2.\+1.\+0 \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_interface_a32337255881759fc912873adc8f203fc}\label{class_t_interface_a32337255881759fc912873adc8f203fc}} 
 double \mbox{\hyperlink{class_t_interface_a32337255881759fc912873adc8f203fc}{Pause\+Entry\+Restart\+Time}}
 \begin{DoxyCompactList}\small\item\em time value of the timetable restart time (as a double) on entry to pause mode \end{DoxyCompactList}\item 
@@ -2133,9 +2203,6 @@ float \mbox{\hyperlink{class_t_interface_aa6c357f4fb2a415dd9afe2f8b64146b7}{T\+T
 \mbox{\Hypertarget{class_t_interface_ab6a299c76cfb2b9c8e9e6966133b56a3}\label{class_t_interface_ab6a299c76cfb2b9c8e9e6966133b56a3}} 
 Graphics\+::\+T\+Bitmap $\ast$ \mbox{\hyperlink{class_t_interface_ab6a299c76cfb2b9c8e9e6966133b56a3}{Select\+Bitmap}}
 \begin{DoxyCompactList}\small\item\em the graphic defined by Edit-\/$>$Select \& Edit-\/$>$Reselect \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_t_interface_a039907015f5174600f6020bd0a8ab7d1}\label{class_t_interface_a039907015f5174600f6020bd0a8ab7d1}} 
-int \mbox{\hyperlink{class_t_interface_a039907015f5174600f6020bd0a8ab7d1}{Clock\+Timer2\+Count}}
-\begin{DoxyCompactList}\small\item\em added at v1.\+3.\+0 to ensure focus returned to Interface \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_interface_a49670c19087423dc9ea68b5b6169a92b}\label{class_t_interface_a49670c19087423dc9ea68b5b6169a92b}} 
 int \mbox{\hyperlink{class_t_interface_a49670c19087423dc9ea68b5b6169a92b}{L\+C\+Reset\+Counter}}
 \begin{DoxyCompactList}\small\item\em count up to 20 then resets -\/ to check L\+Cs \& raise barriers if no route \& no train present \end{DoxyCompactList}\item 
@@ -2148,6 +2215,12 @@ int \mbox{\hyperlink{class_t_interface_acc7d4b190b0401de81b7173e85cc7fe7}{New\+S
 \mbox{\Hypertarget{class_t_interface_abd8470c9d77aaaed996ab1451d28c9c6}\label{class_t_interface_abd8470c9d77aaaed996ab1451d28c9c6}} 
 int \mbox{\hyperlink{class_t_interface_abd8470c9d77aaaed996ab1451d28c9c6}{New\+Select\+Bitmap\+V\+Loc}}
 \begin{DoxyCompactList}\small\item\em as above for V\+Loc \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_interface_aefa2e04a18c5bf935ad977bfb2a4f7eb}\label{class_t_interface_aefa2e04a18c5bf935ad977bfb2a4f7eb}} 
+int \mbox{\hyperlink{class_t_interface_aefa2e04a18c5bf935ad977bfb2a4f7eb}{Operator\+Action\+Panel\+Drag\+StartX}}
+\begin{DoxyCompactList}\small\item\em mouse \textquotesingle{}X\textquotesingle{} position when the Operator\+Action\+Panel begins to be dragged \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_interface_a96a87be70f36ce7820f10159edceac4a}\label{class_t_interface_a96a87be70f36ce7820f10159edceac4a}} 
+int \mbox{\hyperlink{class_t_interface_a96a87be70f36ce7820f10159edceac4a}{Operator\+Action\+Panel\+Drag\+StartY}}
+\begin{DoxyCompactList}\small\item\em as above for \textquotesingle{}Y\textquotesingle{} \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_interface_a7ed3107d6e8a3851b082a7f655aa9a25}\label{class_t_interface_a7ed3107d6e8a3851b082a7f655aa9a25}} 
 int {\bfseries Overall\+Distance}
 \item 
@@ -2208,6 +2281,12 @@ int \mbox{\hyperlink{class_t_interface_a31983744b7c13161ed501a3288f8e985}{Text\+
 \mbox{\Hypertarget{class_t_interface_a6bee5767dfc53fea26f3e9abc0cd5d12}\label{class_t_interface_a6bee5767dfc53fea26f3e9abc0cd5d12}} 
 int \mbox{\hyperlink{class_t_interface_a6bee5767dfc53fea26f3e9abc0cd5d12}{Warning\+Flash\+Count}}
 \begin{DoxyCompactList}\small\item\em increments each clock cycle to a max. of 4 then resets to 0, used to toggle bool Warning\+Flash -\/ see above \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_interface_a40c0a22cf1ab72cf07aa11befc324923}\label{class_t_interface_a40c0a22cf1ab72cf07aa11befc324923}} 
+int \mbox{\hyperlink{class_t_interface_a40c0a22cf1ab72cf07aa11befc324923}{Start\+Whole\+Railway\+Move\+H\+Pos}}
+\begin{DoxyCompactList}\small\item\em mouse X position when start to move the whole railway \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_interface_a2e0518ced8df034a2e11c8caef58bf25}\label{class_t_interface_a2e0518ced8df034a2e11c8caef58bf25}} 
+int \mbox{\hyperlink{class_t_interface_a2e0518ced8df034a2e11c8caef58bf25}{Start\+Whole\+Railway\+Move\+V\+Pos}}
+\begin{DoxyCompactList}\small\item\em mouse Y position when start to move the whole railway \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_interface_ab1b67812d2bbd790158bc50e14172b35}\label{class_t_interface_ab1b67812d2bbd790158bc50e14172b35}} 
 T\+Cursor \mbox{\hyperlink{class_t_interface_ab1b67812d2bbd790158bc50e14172b35}{Temp\+Cursor}}
 \begin{DoxyCompactList}\small\item\em stores the screen cursor while a temporary cursor (ususlly an hourglass) is displayed \end{DoxyCompactList}\item 
@@ -2329,7 +2408,19 @@ Check the timetable file embedded within a session file \& return false for erro
 \subsubsection{\texorpdfstring{Clear\+Everything()}{ClearEverything()}}
 {\footnotesize\ttfamily bool T\+Interface\+::\+Clear\+Everything (\begin{DoxyParamCaption}\item[{int}]{Caller }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-First check whether a railway file has changed and if so ask user if really wants to close it without saving, and return false if responds no, otherwise unload the railway and clear the display and all internal railway data \mbox{\Hypertarget{class_t_interface_a330394a04433ce8672a52c2a0a659ff0}\label{class_t_interface_a330394a04433ce8672a52c2a0a659ff0}} 
+First check whether a railway file has changed and if so ask user if really wants to close it without saving, and return false if responds no, otherwise unload the railway and clear the display and all internal railway data \mbox{\Hypertarget{class_t_interface_a6139ffb52492eb89e5487a8a3cd647b5}\label{class_t_interface_a6139ffb52492eb89e5487a8a3cd647b5}} 
+\index{T\+Interface@{T\+Interface}!Clock\+Timer2@{Clock\+Timer2}}
+\index{Clock\+Timer2@{Clock\+Timer2}!T\+Interface@{T\+Interface}}
+\subsubsection{\texorpdfstring{Clock\+Timer2()}{ClockTimer2()}}
+{\footnotesize\ttfamily void T\+Interface\+::\+Clock\+Timer2 (\begin{DoxyParamCaption}\item[{int}]{Caller }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The main loop, called every clock tick via Master\+Clock\+Timer. 
+
+$<$new v2.\+2.\+0, controls 2 second updating for Op\+Time\+To\+Act\+Panel
+
+$<$new v2.\+2.\+0, delay on start operation \mbox{\Hypertarget{class_t_interface_a330394a04433ce8672a52c2a0a659ff0}\label{class_t_interface_a330394a04433ce8672a52c2a0a659ff0}} 
 \index{T\+Interface@{T\+Interface}!Compile\+All\+Entries\+Memo\+And\+Set\+Pointers@{Compile\+All\+Entries\+Memo\+And\+Set\+Pointers}}
 \index{Compile\+All\+Entries\+Memo\+And\+Set\+Pointers@{Compile\+All\+Entries\+Memo\+And\+Set\+Pointers}!T\+Interface@{T\+Interface}}
 \subsubsection{\texorpdfstring{Compile\+All\+Entries\+Memo\+And\+Set\+Pointers()}{CompileAllEntriesMemoAndSetPointers()}}
@@ -2371,7 +2462,13 @@ Called during timetable editing to highlight in red a single entry in the list o
 \subsubsection{\texorpdfstring{High\+Light\+One\+Gap()}{HighLightOneGap()}}
 {\footnotesize\ttfamily bool T\+Interface\+::\+High\+Light\+One\+Gap (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int \&}]{H\+Loc,  }\item[{int \&}]{V\+Loc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-Called during gap setting to mark a gap with a red ellipse and ask user to select the corresponding gap, returns true if an unset gap found \mbox{\Hypertarget{class_t_interface_a1cd9f01bcbcc37fb31712b7007d04dac}\label{class_t_interface_a1cd9f01bcbcc37fb31712b7007d04dac}} 
+Called during gap setting to mark a gap with a red ellipse and ask user to select the corresponding gap, returns true if an unset gap found \mbox{\Hypertarget{class_t_interface_a6aabbfe2ebc6e92d6306697e2940b86c}\label{class_t_interface_a6aabbfe2ebc6e92d6306697e2940b86c}} 
+\index{T\+Interface@{T\+Interface}!Is\+Performance\+Panel\+Obscuring\+Floating\+Label@{Is\+Performance\+Panel\+Obscuring\+Floating\+Label}}
+\index{Is\+Performance\+Panel\+Obscuring\+Floating\+Label@{Is\+Performance\+Panel\+Obscuring\+Floating\+Label}!T\+Interface@{T\+Interface}}
+\subsubsection{\texorpdfstring{Is\+Performance\+Panel\+Obscuring\+Floating\+Label()}{IsPerformancePanelObscuringFloatingLabel()}}
+{\footnotesize\ttfamily bool T\+Interface\+::\+Is\+Performance\+Panel\+Obscuring\+Floating\+Label (\begin{DoxyParamCaption}\item[{int}]{Caller }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Checked during operation, returns true if so and Performance\+Panel removed -\/ not used from v2.\+2.\+0 as now allow floating panel \& label to overlie performance panel \mbox{\Hypertarget{class_t_interface_a1cd9f01bcbcc37fb31712b7007d04dac}\label{class_t_interface_a1cd9f01bcbcc37fb31712b7007d04dac}} 
 \index{T\+Interface@{T\+Interface}!Moving\+Train\+Present\+On\+Flashing\+Route@{Moving\+Train\+Present\+On\+Flashing\+Route}}
 \index{Moving\+Train\+Present\+On\+Flashing\+Route@{Moving\+Train\+Present\+On\+Flashing\+Route}!T\+Interface@{T\+Interface}}
 \subsubsection{\texorpdfstring{Moving\+Train\+Present\+On\+Flashing\+Route()}{MovingTrainPresentOnFlashingRoute()}}

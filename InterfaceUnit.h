@@ -1,8 +1,10 @@
 //InterfaceUnit.h
-//Comments in .h files are believed to be accurate and up to date
 /*
+Comments in .h files are believed to be accurate and up to date
+
 This is a source code file for "railway.exe", a railway operation
-simulator, written in Borland C++ Builder 4 Professional
+simulator, written originally in Borland C++ Builder 4 Professional with
+later updates in Embarcadero C++Builder 10.2.
 Copyright (C) 2010 Albert Ball [original development]
 
 This program is free software: you can redistribute it and/or modify
@@ -175,8 +177,13 @@ __published:    // IDE-managed Components
     TSpeedButton *CallingOnButton; ///< speedbutton used so can detect when button is down
     TBitBtn *PerformanceLogButton;
     TBitBtn *SaveSessionButton;
+    TBitBtn *OperatorActionButton;   //new for v2.2.0
     TBitBtn *ExitOperationButton;
     TBitBtn *TTClockAdjButton;
+
+    TButton *PowerToggleButton; //kilowatts to horse power toggle
+    TButton *SpeedToggleButton; //miles per hour to kilmetres per hour toggle
+    TButton *SpeedToggleButton2; //miles per hour to kilmetres per hour toggle
 
     //timetable clock adjustment panel, buttons & labels
     TPanel *TTClockAdjPanel;
@@ -228,6 +235,9 @@ __published:    // IDE-managed Components
 
     TImage *MainScreen; ///< the railway display screen
 
+    TImageList *TTImageList;
+    TImageList *MMImageList;
+
     //the warning logs displayed during operation above the railway screen
     TLabel *OutputLog1;
     TLabel *OutputLog2;
@@ -255,6 +265,11 @@ __published:    // IDE-managed Components
     TPanel *TrackElementPanel; ///< panel containing the track/location/parapet element buttons
     TPanel *TrackLengthPanel; ///< the panel that contains the distance/speed setting buttons and edit boxes
     TPanel *DevelopmentPanel; ///< used for diagnostic purposes, made visible by <ctrl> <alt> '3'
+    TPanel *FloatingPanel; ///<new for v2.2.0 where label sits in it and it
+    //autosizes to the label. Labels are not TWinControls so they always underlie panels which are, so using a panel allows it to
+    //overlie other panels.  With this hiding of the performance panel when floating panel obscures it is dispensed with
+    TPanel *PositionalPanel;
+    TPanel *OperatorActionPanel; ///< new v2.2.0 panel housing the OAListBox with list of trains and times to act
 
     TLabel *PerformancePanelLabel; ///< label at the top of PerformancePanel
     TLabel *PrefDirPanelLabel; ///< label to the left of PrefDirPanel
@@ -265,9 +280,13 @@ __published:    // IDE-managed Components
     TLabel *TrackBuildPanelLabel; ///< label to the left of TrackBuildPanel
     TLabel *TrackLengthLabel; ///< displays 'Length (metres)' on TrackLengthPanel
     TLabel *CallLogTickerLabel; ///< diagnostic label displaying the call log depth, made visible by <ctrl> <alt> '2'
-    TLabel *ClockLabel;
-    TLabel *FloatingLabel; ///< the floating window that displays track & train information
+    TLabel *ClockLabel; ///< the floating window that displays track & train information
     TLabel *OperatingPanelLabel; ///< displays 'Operation' or 'Disabled' on the operating panel during operation for running or paused
+    TLabel *TTClockTitleLabel;
+    TLabel *TTClockLabel1;
+    TLabel *TTClockLabel2;
+    TLabel *OAPanelLabel;
+    TLabel *FloatingLabel;
 
     //text displayed on the timetable screen
     TLabel *TTLabel1;
@@ -290,7 +309,9 @@ __published:    // IDE-managed Components
     TMemo *OneEntryTimetableMemo; ///< the single service editing and display area on the right hand side of the timetable edit screen
     TMemo *PerformanceLogBox; ///< the performance log displayed during operation
     TMemo *TTInfoMemo; ///< timetable help text displayed on the timetable edit screen
+
     TListBox *AllEntriesTTListBox; ///< the list of service entries displayed on the left hand side of the timetable edit screen
+    TListBox *OAListBox; ///< Operator action list, sits inside OperatorActionPanel and lists trains in ascending order of time to act
 
     TMenuItem *FileMenu;
     TMenuItem *LoadRailwayMenuItem;
@@ -342,8 +363,6 @@ __published:    // IDE-managed Components
     TMenuItem *HelpMenu;
     TMenuItem *AboutMenuItem;
     TMenuItem *OpenHelpMenuItem;
-
-    TPopupMenu *PopupMenu;
     TMenuItem *TrainHeadCodeMenuItem;
     TMenuItem *TakeSignallerControlMenuItem;
     TMenuItem *TimetableControlMenuItem;
@@ -353,6 +372,14 @@ __published:    // IDE-managed Components
     TMenuItem *StepForwardMenuItem;
     TMenuItem *SignallerControlStopMenuItem;
     TMenuItem *RemoveTrainMenuItem;
+
+    TMenuItem *N1;
+    TMenuItem *N2;
+    TMenuItem *RailwayWebSiteMenuItem;
+    TMenuItem *N3;
+    TMenuItem *PasteWithAttributesMenuItem;
+
+    TPopupMenu *PopupMenu;
 
     //file open dialogs
     TOpenDialog *LoadRailwayDialog;
@@ -511,20 +538,7 @@ __published:    // IDE-managed Components
     TSpeedButton *SpeedButton141;
     TSpeedButton *SpeedButton142;
     TSpeedButton *SpeedButton143;
-    TLabel *TTClockTitleLabel;
-    TLabel *TTClockLabel1;
-    TLabel *TTClockLabel2;
-    TSpeedButton *SpeedButton144;
-    TMenuItem *N1;
-    TMenuItem *N2;
-    TImageList *TTImageList;
-    TMenuItem *RailwayWebSiteMenuItem;
-    TMenuItem *N3;
-    TImageList *MMImageList;
-    TButton *PowerToggleButton;
-    TButton *SpeedToggleButton;
-    TButton *SpeedToggleButton2;
-    TPanel *PositionalPanel;
+    TSpeedButton *SpeedButton144; //level crossing button
 
     //menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -688,19 +702,25 @@ __published:    // IDE-managed Components
     void __fastcall FormKeyUp(TObject *Sender, WORD &Key,
                               TShiftState Shift);
     void __fastcall SpeedEditBoxKeyUp(TObject *Sender, WORD &Key,
-                                  TShiftState Shift);
+                                      TShiftState Shift);
     void __fastcall SpeedEditBox2KeyUp(TObject *Sender, WORD &Key,
-                                  TShiftState Shift);
+                                       TShiftState Shift);
     void __fastcall LengthEditKeyUp(TObject *Sender, WORD &Key,
                                     TShiftState Shift);
     void __fastcall PowerEditBoxKeyUp(TObject *Sender, WORD &Key,
-                                TShiftState Shift);
+                                      TShiftState Shift);
     void __fastcall PresetAutoSigRoutesButtonClick(TObject *Sender);
     void __fastcall FormResize(TObject *Sender);
     void __fastcall RailwayWebSiteMenuItemClick(TObject *Sender);
     void __fastcall SpeedToggleButtonClick(TObject *Sender);
     void __fastcall PowerToggleButtonClick(TObject *Sender);
     void __fastcall SpeedToggleButton2Click(TObject *Sender);
+    void __fastcall PasteWithAttributesMenuItemClick(TObject *Sender);
+    void __fastcall OperatorActionButtonClick(TObject *Sender);
+    void __fastcall OAListBoxMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
+                                     int X, int Y);
+    void __fastcall OperatorActionPanelStartDrag(TObject *Sender, TDragObject *&DragObject);
+    //new function for v2.2.0 for pasting with attributes after cutting
 
 public: //AboutForm needs access to these
 
@@ -778,6 +798,7 @@ private:
     bool TextFoundFlag; ///< indicates that a text item has been found when clicking on a build screen during 'AddText' or 'MoveText' modes
     bool TimetableChangedFlag; ///< true when a timetable in the editor has changed (used to warn user if opts to exit without saving)
     bool TimetableValidFlag; ///< indicates that a 'Validate timetable' button click in the timetable editor has succeeded
+    bool ShowOperatorActionPanel; ///< true when the 'trains needing action' button has been clicked during operation (new at v2.2.0)
     bool TTEntryChangedFlag; ///< true when a timetable entry that is displayed in the timetable entry edit window has changed
     bool WarningFlash;  ///< toggles on and off automatically at a cycle of about 0.5 sec, used to drive the warning icons during operation
     bool WarningHover;  ///< true when mouse hovers over warning messages during operation - to prevent clicking while changing
@@ -792,11 +813,13 @@ private:
 
     Graphics::TBitmap *SelectBitmap; ///< the graphic defined by Edit->Select & Edit->Reselect
 
-    int ClockTimer2Count; ///< added at v1.3.0 to ensure focus returned to Interface
+//    int ClockTimer2Count; ///< added at v1.3.0 to ensure focus returned to Interface, dropped at v2.0.0
     int LCResetCounter; ///< count up to 20 then resets - to check LCs & raise barriers if no route & no train present
     int MissedTicks;    ///< test for missed clock ticks
     int NewSelectBitmapHLoc; ///< the new (during & at end of moving) HLoc value of Edit->Select & Edit->Reselect
     int NewSelectBitmapVLoc; ///< as above for VLoc
+    int OperatorActionPanelDragStartX; ///< mouse 'X' position when the OperatorActionPanel begins to be dragged
+    int OperatorActionPanelDragStartY; ///< as above for 'Y'
     int OverallDistance, OverallSpeedLimit; ///< used when setting track lengths, represents the overall distance covered by the selected elements
                                             ///< and the overall speed limit, if the speed limits vary across the selection the value is set to -1
     int PerformancePanelDragStartX; ///< mouse 'X' position when the performance panel begins to be dragged
@@ -883,7 +906,8 @@ private:
 /// Called during gap setting to mark a gap with a red ellipse and ask user to
 /// select the corresponding gap, returns true if an unset gap found
     bool HighLightOneGap(int Caller, int &HLoc, int &VLoc);
-/// Checked during operation, returns true if so and PerformancePanel removed
+/// Checked during operation, returns true if so and PerformancePanel removed -
+/// not used from v2.2.0 as now allow floating panel & label to overlie performance panel
     bool IsPerformancePanelObscuringFloatingLabel(int Caller);
 /// Loads timetable into memory from a session file, true if successful
     bool LoadTimetableFromSessionFile(int Caller, std::ifstream &SessionFile);
@@ -1011,6 +1035,8 @@ private:
     void TimetableHandler();
 /// Controls the floating window function, called during the ClockTimer2 function
     void TrackTrainFloat(int Caller);
+/// Called every 5 secs to update the panel (if visible)
+    void TInterface::UpdateOperatorActionPanel(int Caller);
 };
 
 //---------------------------------------------------------------------------

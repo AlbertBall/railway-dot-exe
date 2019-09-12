@@ -9,7 +9,7 @@ var searchData=
   ['changeduration',['ChangeDuration',['../class_t_track_1_1_t_active_level_crossing.html#af45c2e8c0f427b23e655cdce00cebbb8',1,'TTrack::TActiveLevelCrossing']]],
   ['changinglcvector',['ChangingLCVector',['../class_t_track.html#af81ededf353294c66fbdcc4c20ba545f',1,'TTrack']]],
   ['checkcount',['CheckCount',['../class_t_pref_dir_element.html#aa6061a11fdf8dab01fe05febc8315707',1,'TPrefDirElement']]],
-  ['clocktimer2count',['ClockTimer2Count',['../class_t_interface.html#a039907015f5174600f6020bd0a8ab7d1',1,'TInterface']]],
+  ['clocklabel',['ClockLabel',['../class_t_interface.html#af06ebc1f5417120c44b3474e2eb1ea51',1,'TInterface']]],
   ['config',['Config',['../class_t_fixed_track_piece.html#ab0230b6fb2112bce31f205ae7ed5fd07',1,'TFixedTrackPiece']]],
   ['conn',['Conn',['../class_t_track_element.html#a9551c6d789485c121203be6d51e4781f',1,'TTrackElement']]],
   ['connlinkpos',['ConnLinkPos',['../class_t_track_element.html#a93a9094a1833fced2891c012bc46a4ea',1,'TTrackElement']]],

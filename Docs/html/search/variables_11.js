@@ -15,6 +15,7 @@ var searchData=
   ['textgridval',['TextGridVal',['../class_t_interface.html#a86dddbbcc24c740334718b1b80082c0d',1,'TInterface']]],
   ['textitem',['TextItem',['../class_t_interface.html#a049c070bc8cf04330b359248b4d772d1',1,'TInterface']]],
   ['textmovevpos',['TextMoveVPos',['../class_t_interface.html#a31983744b7c13161ed501a3288f8e985',1,'TInterface']]],
+  ['textstring',['TextString',['../class_t_text_item.html#a4c25a60852b8493f06d26e64241aa98f',1,'TTextItem']]],
   ['time',['Time',['../class_t_one_train_formatted_entry.html#a1731ee3ca7f8f0a0e7a5d048737bdeec',1,'TOneTrainFormattedEntry']]],
   ['timetablechangedflag',['TimetableChangedFlag',['../class_t_interface.html#a1cf45c2ae9952b143d022ed2b46fa2fd',1,'TInterface']]],
   ['timetableeditpanel',['TimetableEditPanel',['../class_t_interface.html#a99b9c15c11d2620c255966f62b2b9226',1,'TInterface']]],

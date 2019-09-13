@@ -1,43 +1,5 @@
 Development History
 ---------------------------------------------------------------------------
-
-Blurb for news on website:
-
-New program version released - version 2.2.0
-
-I have been giving some thought recently as to how to make operation easier for railways that extend over several screens when many trains are out of sight.  The zoom feature is useful of course in showing where trains are stopped at signals, but it would be better to know when a train is approaching a red signal so as to take action before it stops and preferably before it begins to slow down.  With that in mind I have developed an 'Actions due' panel, containing a list of train headcodes with times to act in timetable minutes, in ascending time order.  This panel is displayed by left clicking a new button with an houglass icon.  Left clicking a headcode brings the train selected (or the entry point for trains not yet running) to the centre of the display, with the mouse hovering over it and displaying status and timetable information when these are selected.  This feature proved to be a lot more complex in implementing than I thought it would be, so it has taken some weeks to develop, but it seems to work well now.  The user manual and online help have a new section 'Actions due' that explains how the feature works in more detail.  I hope you find it as useful as I do when operating large railways.
-
-A second feature available during build is to 'paste with attributes' after cutting an area of railway.  I often find that I want to modify the layout of a submitted railway so that it fits better on my wide screen (though I'm now back to a square screen since my wide screen died on me!), and when using the normal cut and paste functions all preferred directions, track lengths, speed limits and location names are lost.  This feature retains all these attributes so they don't have to be rebuilt which can be quite a big job.  Any new track elements needed to link to the repositioned area need new attributes setting of course, and if the cut area includes any train entry points then the timetable will need to be altered to reflect the changed element identifiers.
-
-A few other minor alterations have been made as follows:
-
-The 'End' key on the numeric keypad can now be used to toggle the zoom function on and off, providing Numlock isn't on.
-
-The earlier letter keys w, s, a and d that could be used to move the display up, down, left or right well as the keyboard arrow keys have been dropped.  The arrow keys still work as before, but conflicts arose with the hotkeys introduced in the last version.  No-one reported this so I assume that they weren't generally used, and keyboard movement is much less necessary since the ability to drag the display using the right mouse button was introduced.
-
-The need to set 256 compatibility mode for Windows 10 may have been solved - almost by accident!  It occurred to me to try out different colours for the various panels instead of using the default system colours set by Windows.  These became transparent in Windows 10 obscuring the text that was incorporated, especially on the floating panel used for track and train information.  Hey presto - providing solid colours were used there was no transparency!  I set the colours to match the earlier ones so there won't appear to be any difference.  Compatibility with earlier operating systems will probably still be needed for high dpi settings and perhaps for other circumstances, but hopfully the colour compatibility issue has gone away.
-
-I discovered that performance scores for excess level crossing barrier down times weren't being saved in session files (I noticed this when operating Anthony Sheehy's Eastbourne, Newhaven & Seaford when my performance score went up after reloading a session!)  This has now been corrected.
-
-As ever please let me know if anything unexpected occurs when using these features and send me any error files that are generated.  I have tested them extensively but it's quite likely that I've overlooked some sets of circumstances, so there may still be bugs that need correction.
-
-I hope you find the new features useful.
-
-Regards,
-
-Albert
-
-
-Notes after v2.1.0
-
-+ modify compatibility issues on downloads page to say 'may' need to... for op systs later than win 7
-
-+ Update version info including bug fixes, see below & own thoughts
-
-
-
-
----------------------------------------------------------------------------
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that may be useful such as the 'NEXT' values for caller IDs and the full list of changes from version to version.
 
 The structure is as follows:-
@@ -190,7 +152,9 @@ VERSION CHANGES AFTER v2.1.0 for v2.2.0
 
 *'End' key can now be used as a zoom toggle
 
-Ctrl+S, A, W & Z disabled for screen moving. Ctrl+S conflicted with save in v2.1.0 but no-one reported this so these jeys probably not used, especially since now (since v2.1.0) have ability to move using the right mouse key.
+Ctrl+S, A, W & Z disabled for screen moving. Ctrl+S conflicted with save in v2.1.0 but no-one reported this so these keys probably not used, especially since now (since v2.1.0) have ability to move using the right mouse key.
+
+Used TPanel for the floating information label, with an automatic resizing TLabel on it containing the information.  TPanel is a TWinControl which can overlie other panels, whereas a TLabel (as before) isn't and TPanels always overlie it.  So now there is no need to remove the performance panel when it obscures a floating label as the floating label appears on top of it.
 
 had underlines in floating timetable for '&' character (used for hotkeys but applied in error here), corrected at this release
 

@@ -1,0 +1,131 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="Generator" content="Microsoft Word 14 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma","sans-serif";}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma","sans-serif";}
+.MsoChpDefault
+	{font-family:"Calibri","sans-serif";}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:42.55pt 42.55pt 42.55pt 42.55pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang="EN-GB">
+
+<div class="WordSection1">
+
+<p class="MsoNormal"><b>6.10 Actions Due</b></p>
+
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">During operation a list of trains with
+required operator action times is available by clicking the </span><img id="Picture 2" src="../images/Show_Action_Due_Button.gif" alt="ShowOpActionPanel" width="16" height="16"><span lang="EN-US">&nbsp;'show actions due' button.&nbsp; It can be
+removed by clicking the </span><img id="Picture 1" src="../images/Hide_Action_Due_Button.gif" alt="HideOpActionPanel" width="18" height="18"><span lang="EN-US">&nbsp;'hide'
+button.</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">The list contains an maximum of twenty
+trains, and shows headcodes in ascending order of time to act in order to avoid
+delays, based normally on the time to reach a red signal. The time given should
+be regarded as a guide only, as it is estimated from available information
+which is likely to change.&nbsp; Accuracy improves as the time shortens, so trains
+with short times to act are those that require early attention.&nbsp; This feature
+is helpful for railways that spread over several screens when many trains are
+out of sight.&nbsp; Left clicking any listed headcode moves the display to the train
+in question, with the train centred in the display and the mouse hovering over
+it and displaying relevant train status and timetable information if these are
+selected (see <A HREF="6.44sz8.htm">section 6.4 Running Trains</A>).&nbsp; The panel itself can be moved to
+any position on the screen by left clicking on the grey area (not on the list
+itself), holding down the mouse key and dragging it to where it is needed.</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">The time displayed represents timetable
+time, not real time, so a time to act of say thirty minutes with a railway
+operating at 16x speed represents a real time of less than two minutes.</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">The list is updated approximately every two
+seconds, and takes account of running trains and trains due to enter at
+continuations.&nbsp; Trains scheduled to start other than at continuations are only taken
+into account when they appear.&nbsp; No advance warning times are given for
+impending crashes, derailments or unexpected buffer stops, as in real
+operation, though when these things happen the time to act will be shown as
+'NOW'.</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">Times are normally estimated based on the
+time taken for a train to reach the next red signal, unless the train is on an
+automatic signal route, when the time taken to reach the final red signal in
+the route is estimated.&nbsp; A train stopped at an automatic signal doesn't require
+operator action, though the train in front that is stopping it might well do,
+and that one will be listed.&nbsp; Scheduled stops before the red signal are
+incorporated in the estimated time, with dwell times at each stop added.&nbsp;
+Corrections for early and late running are made each time a train makes a
+scheduled arrival, departure or pass, and these can cause the estimated time to
+increase or reduce accordingly, sometimes by large amounts if running very
+early or late.&nbsp; Trains running under signaller control don't have scheduled
+stops while under such control, so the estimated time excludes any timetabled
+stops before the red signal.</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">Trains are excluded from the list if their
+action time is 60 minutes or more, if there are trains in front before the next
+red signal, or if their next scheduled event is anything other than an arrival,
+departure or pass.&nbsp; These latter conditions can result in trains appearing in
+the list with short action times, for example:-</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If a train is standing at a red
+signal at a continuation and preventing another's entry, the waiting train will
+appear as soon as the offending train has its signal cleared, which will leave
+the new train with a very short time to reach the signal.</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If a train is due to finish and
+start a new service at a location, the new service may be facing a red starter
+signal and due to depart soon after it is created, giving a short action time.</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Similarly for a train that changes direction at a location, the
+action time will only appear after the change of direction.</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">Note that it is sometimes good practice to hold a train at a red signal, especially if it is running early, if setting a route for it would cause another train to be delayed.&nbsp; In such cases the 'NOW' indication in the list should be ignored until the other train has cleared its route ahead of the held train.</span></p>
+
+</div>
+
+
+
+
+</body></html>

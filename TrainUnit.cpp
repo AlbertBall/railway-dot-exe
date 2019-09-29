@@ -499,7 +499,7 @@ void TTrain::UnplotTrain(int Caller)
             PlotAlternativeTrackRouteGraphic(5, LagElement, LagEntryPos, HOffset[3], VOffset[3], LeadMidLag); //to force plot of locked route marker, needed once only for the element
         }
     }
-    else if(Straddle == LeadMidLag)
+	else if(Straddle == LeadMidLag)
     {
         if(LeadElement > -1)
         {
@@ -516,7 +516,7 @@ void TTrain::UnplotTrain(int Caller)
         if(LagElement > -1)
         {
             PlotBackgroundGraphic(7, 3, Display);
-            PlotAlternativeTrackRouteGraphic(9, LagElement, LagEntryPos, HOffset[3], VOffset[3], LeadMidLag); //to force plot of locked route marker, needed once only for the element
+			PlotAlternativeTrackRouteGraphic(9, LagElement, LagEntryPos, HOffset[3], VOffset[3], LeadMidLag); //to force plot of locked route marker, needed once only for the element
         }
     }
     else if(Straddle == LeadMid)
@@ -1049,7 +1049,7 @@ the problem move the ActionVectorEntryPtr increment to before SetTrainMovementVa
         }
     }
 
-    if(Straddle == LeadMidLag)
+	if(Straddle == LeadMidLag)
     {
         if(TrainController->TTClockTime < ExitTimeFull)
         {
@@ -1123,7 +1123,7 @@ the problem move the ActionVectorEntryPtr increment to before SetTrainMovementVa
         }
     }
 
-    if(Straddle == LeadMidLag) //During this function train moves fully onto 2 elements, Lead & Mid, so set next 2 moves from here
+	if(Straddle == LeadMidLag) //During this function train moves fully onto 2 elements, Lead & Mid, so set next 2 moves from here
 //for the element after Lead
     {
         //if SPADFlag set allow to keep moving until signal obscured before setting background colour, & stop only when ExitSpeedFull is 0
@@ -1287,7 +1287,7 @@ the problem move the ActionVectorEntryPtr increment to before SetTrainMovementVa
         }
     }
 
-    if(Straddle == LeadMidLag)
+	if(Straddle == LeadMidLag)
     { //remove route elements - this section moved from below, was under LagElement > -1 condition but needs to cover LagElement == -1
         if(AllRoutes->GetRouteTypeAndGraphics(2, LeadElement, LeadEntryPos, EXGraphicPtr, EntryDirectionGraphicPtr) == TAllRoutes::NotAutoSigsRoute) //Trains may not be in a route
         //If Straddle = LeadMidLag at this point then the train is going to move fully off the existing Lag & fully onto existing Lead
@@ -1348,7 +1348,7 @@ the problem move the ActionVectorEntryPtr increment to before SetTrainMovementVa
 
     if(LagElement > -1) //not entering at a continuation so can deal with train leaving the lag element
     {
-        if(Straddle == LeadMidLag)
+		if(Straddle == LeadMidLag)
 //below are the actions required only when the train is not straddling 3 elements (will move onto 2 elements if enters with LeadMidLag)
         {
             ResetTrainElementID(4, LagElement, LagEntryPos);
@@ -1746,7 +1746,7 @@ the problem move the ActionVectorEntryPtr increment to before SetTrainMovementVa
 //deal here with station stops & pass times after all replotting done but before Straddle changed
     if(TrainMode == Timetable)
     {
-        if(Straddle == LeadMidLag)
+		if(Straddle == LeadMidLag)
         {
             if((LeadElement > -1) && (MidElement > -1) && !TimetableFinished)
             {
@@ -1822,7 +1822,7 @@ the problem move the ActionVectorEntryPtr increment to before SetTrainMovementVa
         Straddle = LeadMidLag;
         FirstHalfMove = false;
     }
-    else if(Straddle == LeadMidLag)
+	else if(Straddle == LeadMidLag)
     {
         Straddle = LeadMid;
         FirstHalfMove = true;
@@ -5617,7 +5617,7 @@ PlotTrainWithNewBackgroundColour(30, TempBackgroundColour, Display);
         if(MidElement > -1) PickUpBackgroundBitmap(8, HOffset[2], VOffset[2], MidElement, MidEntryPos, BackgroundPtr[2]);
         if(MidElement > -1) PickUpBackgroundBitmap(9, HOffset[3], VOffset[3], MidElement, MidEntryPos, BackgroundPtr[3]);
     }
-    else if(Straddle == LeadMidLag)
+	else if(Straddle == LeadMidLag)
     {
         if(LeadElement > -1) PickUpBackgroundBitmap(10, HOffset[0], VOffset[0], LeadElement, LeadEntryPos, BackgroundPtr[0]);
         if(MidElement > -1) PickUpBackgroundBitmap(11, HOffset[1], VOffset[1], MidElement, MidEntryPos, BackgroundPtr[1]);
@@ -5975,7 +5975,7 @@ on Lead & Mid elements) or LeadMidLag (when train straddling 3 elements).
             return true;
         }
     }
-    else if(Straddle == LeadMidLag)
+	else if(Straddle == LeadMidLag)
     {
         if((LeadElement == TrackVectorPosition) && (Track->TrackElementAt(887, TrackVectorPosition).Link[LeadEntryPos] == LinkNumber)) //only interested in LeadEntryPos as train not occupying ExitPos yet
         {
@@ -6021,7 +6021,7 @@ float TTrain::CalcTimeToAct(int Caller) //only called for running trains
             int FirstPosToBeMeasured = Track->TrackElementAt(953, LeadElement).Conn[LeadExitPos];
             int FirstEntryPos = Track->TrackElementAt(954, LeadElement).ConnLinkPos[LeadExitPos];
             if((Straddle == LeadMidLag) && (TrainMode == Timetable))
-            /*In TTMode t's important to set the first element to be measured ahead of the lead element only when the train fully on
+            /*In TTMode it's important to set the first element to be measured ahead of the lead element only when the train fully on
             2 elements. Otherwise, if the train is only half on the lead element and approaching a station stop where the platform doesn't
             extend beyond the lead element stop point, the element ahead of the lead element is not a location whereas the ActionVector
             still points to the station stop location.  In these circumstances the train hasn't yet stopped, so the dwell time at the
@@ -12847,19 +12847,20 @@ void TTrainController::RebuildOpTimeToActMultimap(int Caller) //new v2.2.0 for O
     if(!TrainVector.empty()) //build OpTimeToActMultiMap entries for running trains
     {
         AnsiString HeadCode;
-        int VecPos; //TrackVectorPosition of LeadElement or continuation where train is to enter
-        THCandVecPosPair HCandVecPosPair;
+//dropped in favour of TrainID for running trains int VecPos; //TrackVectorPosition of LeadElement or continuation where train is to enter
+        int TrainID;
+        THCandTrainPosParam HCandTrainPosParam;
         for(unsigned int x=0; x<TrainVector.size(); x++)
         {
             HeadCode = TrainVectorAt(62, x).HeadCode;
-            VecPos = TrainVectorAt(63, x).LeadElement;
-            HCandVecPosPair.first = HeadCode;
-            HCandVecPosPair.second = VecPos;
+            TrainID = TrainVectorAt(63, x).TrainID;
+            HCandTrainPosParam.first = HeadCode;
+            HCandTrainPosParam.second = TrainID;
             float TimeToAct = TrainVectorAt(65, x).OpTimeToAct;
             if((TimeToAct >= 0) && (TimeToAct < 59.9))  //-1 indicates don't display
             {
                 OpTimeToActMultiMapEntry.first = TimeToAct;
-                OpTimeToActMultiMapEntry.second = HCandVecPosPair;
+                OpTimeToActMultiMapEntry.second = HCandTrainPosParam;
                 OpTimeToActMultiMap.insert(OpTimeToActMultiMapEntry);
             }
         }
@@ -12958,13 +12959,14 @@ void TTrainController::RebuildOpTimeToActMultimap(int Caller) //new v2.2.0 for O
                 float MinsBefEnter = double(CTEIt->first - TTClockTime) * 86400.0/60.0;
                 TimeToAct += MinsBefEnter;
             }
-            THCandVecPosPair HCandVecPosPair;
-            HCandVecPosPair.first = HeadCode;
-            HCandVecPosPair.second = CTEIt->second.VectorPosition;
+            THCandTrainPosParam HCandTrainPosParam;
+            HCandTrainPosParam.first = HeadCode;
+            HCandTrainPosParam.second = -1 -CTEIt->second.VectorPosition; //-1-CTE... because 2nd value covers TrainID if +ve &
+                                                    //continuation track vector position if -ve, -1 allows for vecpos being 0
             if(TimeToAct < 59.9) //if 60 don't enter a value in multimap
             {
                 OpTimeToActMultiMapEntry.first = TimeToAct;
-                OpTimeToActMultiMapEntry.second = HCandVecPosPair;
+                OpTimeToActMultiMapEntry.second = HCandTrainPosParam;
                 OpTimeToActMultiMap.insert(OpTimeToActMultiMapEntry);
             }
             CTEIt++;

@@ -4244,9 +4244,20 @@ void __fastcall TInterface::OAListBoxMouseUp(TObject *Sender, TMouseButton Butto
             OACurrentEntryPtr = TrainController->OpTimeToActMultiMap.begin();
             std::advance(OACurrentEntryPtr, ((Y/13) + TopPos));
         }
-        int TrackVectorPosition = OACurrentEntryPtr->second.second;
-        int HPos = (Track->TrackElementAt(926, TrackVectorPosition).HLoc * 16);
-        int VPos = (Track->TrackElementAt(927, TrackVectorPosition).VLoc * 16);
+        int HPos;
+        int VPos;
+        int TrackVectorPosition;
+        int TrainIDorTVPos = OACurrentEntryPtr->second.second;
+        if(TrainIDorTVPos >= 0) //running train, so value is the TrainID
+        {
+            TrackVectorPosition = TrainController->TrainVectorAtIdent(43, TrainIDorTVPos).LeadElement;
+        }
+        else //train to enter at a continuation, so value is -TVPos of continuation - 1
+        {
+            TrackVectorPosition = -(TrainIDorTVPos + 1);
+        }
+        HPos = (Track->TrackElementAt(926, TrackVectorPosition).HLoc * 16);
+        VPos = (Track->TrackElementAt(927, TrackVectorPosition).VLoc * 16);
         //now want to set the offsets to display HPos & VPos in the centre of the screen
         Display->DisplayOffsetH = (HPos - MainScreen->Width/2)/16; //ScreenPosH = HPos - (DisplayOffsetH * 16)
         Display->DisplayOffsetV = (VPos - MainScreen->Height/2)/16;
@@ -15158,7 +15169,7 @@ void TInterface::UpdateOperatorActionPanel(int Caller)  //new at v2.2.0
     AnsiString OpTimeToActString;
     AnsiString HeadCode;
     float OpTimeToActFloat;
-    TTrainController::THCandVecPosPair HCandVecPosPair;
+	TTrainController::THCandTrainPosParam HCandTrainPosParam;
     TrainController->OpTimeToActMultiMapIterator = TrainController->OpTimeToActMultiMap.begin();
     while(TrainController->OpTimeToActMultiMapIterator != TrainController->OpTimeToActMultiMap.end())
     {
@@ -15167,8 +15178,8 @@ void TInterface::UpdateOperatorActionPanel(int Caller)  //new at v2.2.0
             break;
         }
         OpTimeToActFloat = TrainController->OpTimeToActMultiMapIterator->first;
-        HCandVecPosPair = TrainController->OpTimeToActMultiMapIterator->second;
-        HeadCode = HCandVecPosPair.first;
+		HCandTrainPosParam = TrainController->OpTimeToActMultiMapIterator->second;
+		HeadCode = HCandTrainPosParam.first;
         if(OpTimeToActFloat < 0.25) //15 secs estimated
         {
             OpTimeToActString = "NOW";

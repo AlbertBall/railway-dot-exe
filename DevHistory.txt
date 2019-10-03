@@ -156,7 +156,7 @@ Ctrl+S, A, W & Z disabled for screen moving. Ctrl+S conflicted with save in v2.1
 
 Used TPanel for the floating information label, with an automatic resizing TLabel on it containing the information.  TPanel is a TWinControl which can overlie other panels, whereas a TLabel (as before) isn't and TPanels always overlie it.  So now there is no need to remove the performance panel when it obscures a floating label as the floating label appears on top of it.
 
-had underlines in floating timetable for '&' character (used for hotkeys but applied in error here), corrected at this release
+Had underlines in floating timetable for '&' character (used for hotkeys but applied in error here), corrected at this release
 
 Program crash with error report when try to split at a named non-station location & there is a non-track element present (i.e. effectively a nonstation [blue] concourse) - discovered by Xeon & notified 14 July 2018.  Ordinary concourses are excluded but these aren't.  It's because the active track 'find' function fails as there isn't one for this type of element.  Keep the 'find' function but include a test if it fails where if due to one of these elements just 'continue', otherwise throw the error. OK corrected in v2.2.0
 

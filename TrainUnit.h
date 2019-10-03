@@ -557,9 +557,12 @@ public:
     typedef std::vector<TTrain> TTrainVector; ///< vector containing all trains that currently exist in the railway
 
 ///< these added v2.2.0, for OpTimeToActPanel
-    typedef std::pair<AnsiString, int> THCandVecPosPair;
-    typedef std::multimap<float, THCandVecPosPair> TOpTimeToActMultiMap;
-    typedef std::pair<float, THCandVecPosPair> TOpTimeToActMultiMapEntry;
+    typedef std::pair<AnsiString, int> THCandTrainPosParam; //Headcode + TrainID for running trains & -TrackVectorPosition - 1 for continuation
+        //entries neg values for continuation track vector & -1 as could be 0 so all negative.  Was simply the trackvector (TV) position, but
+        //since OA panel only rebuilt every 2 secs when mouseup on panel the train could be well past the TV position stored, especially at
+        //16x operating speed
+    typedef std::multimap<float, THCandTrainPosParam> TOpTimeToActMultiMap;
+    typedef std::pair<float, THCandTrainPosParam> TOpTimeToActMultiMapEntry;
     typedef TOpTimeToActMultiMap::iterator TOpTimeToActMultiMapIterator;
     typedef std::vector<int> TContinuationEntryVecPosVector; ///<ensures only one train displayed for a given continuation
 

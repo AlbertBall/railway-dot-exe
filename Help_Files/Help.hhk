@@ -111,6 +111,11 @@
 		<param name="Local" value="html/2.14gc1.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Signals">
+		<param name="Name" value="Backgrounds & trackside signal locations">
+		<param name="Local" value="html\2.14gc1.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Background colours of trains">
 		<param name="Name" value="Running trains">
 		<param name="Local" value="html/6.44sz8.htm">
@@ -1153,6 +1158,8 @@
 		<param name="Name" value="Signalling">
 		<param name="Name" value="Introduction">
 		<param name="Local" value="html/1001d.htm">
+		<param name="Name" value="Backgrounds & trackside signal locations">
+		<param name="Local" value="html\2.14gc1.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Signals">
@@ -1160,6 +1167,8 @@
 		<param name="Local" value="html/3.1.246p.htm">
 		<param name="Name" value="Setting preferred directions (PDs)">
 		<param name="Local" value="html/4001g.htm">
+		<param name="Name" value="Backgrounds & trackside signal locations">
+		<param name="Local" value="html\2.14gc1.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Simple (unlinked) service codes">
@@ -1316,7 +1325,7 @@
 		<param name="Local" value="html/3.24jhu.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="timetable">
+		<param name="Name" value="Timetable">
 		<param name="Name" value="Operating a railway">
 		<param name="Local" value="html/6001i.htm">
 		</OBJECT>

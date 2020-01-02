@@ -221,19 +221,20 @@ void TDisplay::PlotPointBlank(int Caller, int HLoc, int VLoc)
 
 //---------------------------------------------------------------------------
 
-void TDisplay::PlotSignalBlank(int Caller, int HLoc, int VLoc, int SpeedTag)
+void TDisplay::PlotSignalBlank(int Caller, int HLoc, int VLoc, int SpeedTag, bool RHSFlag)
 {
 /*
 straight signals:
-N	16x7  hoff = 0, voff = 0	68
-S	16x7  hoff = 0, voff = 9	69
-W	7x16  hoff = 0, voff = 0	70
-E	7x16  hoff = 9, voff = 0	71
+straight signals:
+N	16x7  hoff = 0, voff = 0	68    RHSigs   N<->S   E<->W   hoff 0, voff 9
+S	16x7  hoff = 0, voff = 9	69                                  0       0
+W	7x16  hoff = 0, voff = 0	70                                  9       0
+E	7x16  hoff = 9, voff = 0	71                                  0       0
 diagonal signals
-SW	11x11  hoff = 0, voff = 5	72
-NW	11x11  hoff = 0, voff = 0	73
-SE	11x11  hoff = 5, voff = 5	74
-NE	11x11  hoff = 5, voff = 0	75
+SW	11x11  hoff = 0, voff = 5	72         SW<->NE  NW<->SE         5       0
+NW	11x11  hoff = 0, voff = 0	73                                  5       5
+SE	11x11  hoff = 5, voff = 5	74                                  0       0
+NE	11x11  hoff = 5, voff = 0	75                                  0       5
 */
 
     if(Display->ZoomOutFlag) return;
@@ -242,17 +243,28 @@ NE	11x11  hoff = 5, voff = 0	75
     {
         throw Exception("Error, not a signal in PlotSignalBlank");
     }
+    if(RHSFlag)  //new for v2.3.0.  Jusrt transpose speedtag numbers so can leave the rest as it is
+    {
+        if(SpeedTag == 68) SpeedTag = 69;
+        else if(SpeedTag == 69) SpeedTag = 68;
+        else if(SpeedTag == 70) SpeedTag = 71;
+        else if(SpeedTag == 71) SpeedTag = 70;
+        else if(SpeedTag == 72) SpeedTag = 75;
+        else if(SpeedTag == 73) SpeedTag = 74;
+        else if(SpeedTag == 74) SpeedTag = 73;
+        else if(SpeedTag == 75) SpeedTag = 72;
+    }
 
 /*
 SpeedTag    HOffset VOffset Graphic  Direction
-68              0       0     NS       W->E        graphic is for the signal north or south of the track
-69              0       9     NS       E->W
-70              0       0     EW       S->N
-71              9       0     EW       N->S
-72              0       5    Diag     SE->NW
-73              0       0    Diag     SW->NE
-74              5       5    Diag     NE->SW
-75              5       0    Diag     NW->SE
+68              0       0     NS       W->E         RHSigs   N<->S   E<->W   hoff 0, voff 9
+69              0       9     NS       E->W                                       0       0
+70              0       0     EW       S->N                                       9       0
+71              9       0     EW       N->S                                       0       0
+72              0       5    Diag     SE->NW                                      5       0
+73              0       0    Diag     SW->NE                                      5       5
+74              5       5    Diag     NE->SW                                      0       0
+75              5       0    Diag     NW->SE                                      0       5
 */
     int HOffset = 0;
     if(SpeedTag > 73) HOffset = 5;
@@ -272,19 +284,19 @@ SpeedTag    HOffset VOffset Graphic  Direction
 
 //---------------------------------------------------------------------------
 
-void TDisplay::PlotSignalBlankOnBitmap(int HLoc, int VLoc, int SpeedTag, Graphics::TBitmap *Bitmap)
+void TDisplay::PlotSignalBlankOnBitmap(int HLoc, int VLoc, int SpeedTag, Graphics::TBitmap *Bitmap, bool RHSFlag)
 {
 /*
 straight signals:
-N	16x7  hoff = 0, voff = 0	68
-S	16x7  hoff = 0, voff = 9	69
-W	7x16  hoff = 0, voff = 0	70
-E	7x16  hoff = 9, voff = 0	71
+N	16x7  hoff = 0, voff = 0	68    RHSigs   N<->S   E<->W   hoff 0, voff 9
+S	16x7  hoff = 0, voff = 9	69                                  0       0
+W	7x16  hoff = 0, voff = 0	70                                  9       0
+E	7x16  hoff = 9, voff = 0	71                                  0       0
 diagonal signals
-SW	11x11  hoff = 0, voff = 5	72
-NW	11x11  hoff = 0, voff = 0	73
-SE	11x11  hoff = 5, voff = 5	74
-NE	11x11  hoff = 5, voff = 0	75
+SW	11x11  hoff = 0, voff = 5	72         SW<->NE  NW<->SE         5       0
+NW	11x11  hoff = 0, voff = 0	73                                  5       5
+SE	11x11  hoff = 5, voff = 5	74                                  0       0
+NE	11x11  hoff = 5, voff = 0	75                                  0       5
 */
 
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PlotSignalBlankOnBitmap," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(SpeedTag));
@@ -292,17 +304,28 @@ NE	11x11  hoff = 5, voff = 0	75
     {
         throw Exception("Error, not a signal in PlotSignalBlankOnBitmap");
     }
+    if(RHSFlag)  //new for v2.3.0.  Jusrt transpose speedtag numbers so can leave the rest as it is
+    {
+        if(SpeedTag == 68) SpeedTag = 69;
+        else if(SpeedTag == 69) SpeedTag = 68;
+        else if(SpeedTag == 70) SpeedTag = 71;
+        else if(SpeedTag == 71) SpeedTag = 70;
+        else if(SpeedTag == 72) SpeedTag = 75;
+        else if(SpeedTag == 73) SpeedTag = 74;
+        else if(SpeedTag == 74) SpeedTag = 73;
+        else if(SpeedTag == 75) SpeedTag = 72;
+    }
 
 /*
 SpeedTag    HOffset VOffset Graphic  Direction
-68              0       0     NS       W->E        graphic is for the signal north or south of the track
-69              0       9     NS       E->W
-70              0       0     EW       S->N
-71              9       0     EW       N->S
-72              0       5    Diag     SE->NW
-73              0       0    Diag     SW->NE
-74              5       5    Diag     NE->SW
-75              5       0    Diag     NW->SE
+68              0       0     NS       W->E         RHSigs   N<->S   E<->W   hoff 0, voff 9
+69              0       9     NS       E->W                                       0       0
+70              0       0     EW       S->N                                       9       0
+71              9       0     EW       N->S                                       0       0
+72              0       5    Diag     SE->NW                                      5       0
+73              0       0    Diag     SW->NE                                      5       5
+74              5       5    Diag     NE->SW                                      0       0
+75              5       0    Diag     NW->SE                                      0       5
 */
     int HOffset = 0;
     if(SpeedTag > 73) HOffset = 5;

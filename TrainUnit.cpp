@@ -1919,15 +1919,9 @@ void TTrain::SetHeadCodeGraphics(int Caller, AnsiString Code)
     }
     if(BackgroundColour != clB5G5R5) //i.e. not the basic graphic colour as loaded from .exe resource
     {
-        bool ColourError = false, ColourError2 = false;
         for(int x=0; x<4; x++)
         {
-            RailGraphics->ChangeBackgroundColour(0, HeadCodeGrPtr[x], HeadCodeGrPtr[x], BackgroundColour, clB5G5R5, ColourError);
-            if(ColourError) ColourError2 = true;
-        }
-        if(ColourError2)
-        {
-            TrainController->StopTTClockMessage(68, "ERROR:  Colour depth insufficient to display train colours properly.  Please ensure that the 'safe' (web) palette of 256 colours can be displayed");
+            RailGraphics->ChangeBackgroundColour3(0, HeadCodeGrPtr[x], HeadCodeGrPtr[x], BackgroundColour, clB5G5R5);
         }
     }
     Utilities->CallLogPop(1484);
@@ -5604,10 +5598,10 @@ PlotTrainWithNewBackgroundColour(30, TempBackgroundColour, Display);
 //if crashed & in timetable mode then change FrontCodePtr to black, if in signaller mode then change to blue whether crashed or not
     if(TrainMode == Timetable)
     {
-        if(Crashed) RailGraphics->ChangeForegroundColour(2, HeadCodePosition[0], FrontCodePtr, clB0G0R0, BackgroundColour);
-        else RailGraphics->ChangeForegroundColour(3, HeadCodePosition[0], FrontCodePtr, clFrontCodeTimetable, BackgroundColour);
+        if(Crashed) RailGraphics->ChangeForegroundColour2(0, HeadCodePosition[0], FrontCodePtr, clB0G0R0, BackgroundColour);
+        else RailGraphics->ChangeForegroundColour2(1, HeadCodePosition[0], FrontCodePtr, clFrontCodeTimetable, BackgroundColour);
     }
-    else RailGraphics->ChangeForegroundColour(4, HeadCodePosition[0], FrontCodePtr, clFrontCodeSignaller, BackgroundColour);
+    else RailGraphics->ChangeForegroundColour2(2, HeadCodePosition[0], FrontCodePtr, clFrontCodeSignaller, BackgroundColour);
     HeadCodePosition[0] = FrontCodePtr;
 //pick up background bitmaps, none if MidLag as no train plotted - entering at continuation
     if(Straddle == LeadMid)
@@ -6517,7 +6511,7 @@ bool TTrainController::AddTrain(int Caller, int RearPosition, int FrontPosition,
 //so it would not be possible to use constants to number the calls.
 {
     LogEvent("" + AnsiString(Caller) + ",AddTrain," + AnsiString(RearPosition) + "," + AnsiString(FrontPosition) + "," + HeadCode + "," + AnsiString(StartSpeed) +
-             "," + AnsiString(Mass) + "," + ModeStr + "," + HeadCode);
+             "," + AnsiString(Mass) + "," + ModeStr);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AddTrain," + AnsiString(RearPosition) + "," + AnsiString(FrontPosition) + "," + HeadCode + "," + AnsiString(StartSpeed) +
                                  "," + AnsiString(Mass) + "," + ModeStr + "," + HeadCode);
 
@@ -7489,7 +7483,7 @@ SplitRepeat returns false (message given in called function).
                         }
                         if((StartSpeed != 0) || (MaxRunningSpeed != 0) || (Mass != 0) || (MaxBrakeRate != 0) || (PowerAtRail != 0))
                         {
-                            TimetableMessage(GiveMessages, "Error in timetable - information additional to a headcode && optional description given before 'Sfs', 'Sns', 'Sns-sh' or 'Sns-fsh'start event: '" + OneEntry + "'");
+                            TimetableMessage(GiveMessages, "Error in timetable - information additional to a headcode & optional description given before 'Sfs', 'Sns', 'Sns-sh' or 'Sns-fsh' start event: '" + OneEntry + "'");
                             Utilities->CallLogPop(843);
                             return false;
                         }
@@ -9410,7 +9404,7 @@ Other successor errors will be caught later as all 'throws' changed to messages 
             {
                 if(AVEntry.DepartureTime < AVEntry.ArrivalTime)
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a timed arrival and departure has an later arrival than departure time for: " + TDEntry.HeadCode);
+                    SecondPassMessage(GiveMessages, "Error in timetable - a timed arrival and departure has a later arrival than departure time for: " + TDEntry.HeadCode);
                     TrainDataVector.clear();
                     Utilities->CallLogPop(813);
                     return false;
@@ -10351,7 +10345,7 @@ Sns-fsh.  All others should check out OK, but check shuttles & non-shuttles sepa
     {
         if(ReverseEntryPtr->Command != "Fns")
         {
-            SecondPassMessage(GiveMessages, "Error in timetable - unable to find a corresponding 'Fns' event for the 'Sns' train whose headcode is " + MainHeadCode + " and forms a new service with headcode " + OtherHeadCode);
+            SecondPassMessage(GiveMessages, "Error in timetable - unable to find a corresponding 'Fns' event for the 'Sns' train whose headcode is " + MainHeadCode + " and is formed from a service with headcode " + OtherHeadCode);
             TrainDataVector.clear();
             Utilities->CallLogPop(531);
             return false;
@@ -11226,7 +11220,10 @@ bool TTrainController::CheckShuttleServiceIntegrity(int Caller, TTrainDataEntry 
 void TTrainController::TimetableMessage(bool GiveMessages, AnsiString Message)
 {
     if(!GiveMessages) return;
-    if(ServiceReference == "") ShowMessage(Message);
+//    if(ServiceReference == "") ShowMessage(Message);
+    if(!CheckHeadCodeValidity(9999, false, ServiceReference)) ShowMessage(Message);
+      //changed from above at v2.3.0 as a meaningless value for 'Timetable invalid - unable to find a valid start time on its own line' (uses last entry text)
+      //false means don't give messages within the function
     else ShowMessage("Service " + ServiceReference + ": " + Message);
 }
 
@@ -11645,13 +11642,17 @@ void TTrainController::LoadSessionTrains(int Caller, std::ifstream &SessionFile)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadSessionTrains");
     int NumberOfTrains = Utilities->LoadFileInt(SessionFile);
+    TTrain *NewTrain = new TTrain(1, 0, 0, "", 0, 1, 0, 0, 0, (TTrainMode)0, 0, 0, 0, 0, 0); //have to have >0 for mass, else have divide
+                                                                                             //by zero error in calculating AValue, use 1
     for(int x=0; x<NumberOfTrains; x++)
     {
-        TTrain *NewTrain = new TTrain(1, 0, 0, "", 0, 1, 0, 0, 0, (TTrainMode)0, 0, 0, 0, 0, 0); //have to have >0 for mass, else have divide
-                                                                                                 //by zero error in calculating AValue, use 1
+        *NewTrain = TTrain(1, 0, 0, "", 0, 1, 0, 0, 0, (TTrainMode)0, 0, 0, 0, 0, 0); //have to have >0 for mass, else have divide
+                                                                                      //by zero error in calculating AValue, use 1
         NewTrain->LoadOneSessionTrain(0, SessionFile);
         TrainVector.push_back(*NewTrain);
+        LastTrainLoaded = x;
     }
+    delete NewTrain;
     Utilities->CallLogPop(1376);
 }
 

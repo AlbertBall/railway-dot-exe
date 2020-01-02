@@ -8,7 +8,6 @@ var searchData=
   ['tcontinuationautosigentry',['TContinuationAutoSigEntry',['../class_t_train_controller_1_1_t_continuation_auto_sig_entry.html',1,'TTrainController']]],
   ['tcontinuationtrainexpectationentry',['TContinuationTrainExpectationEntry',['../class_t_train_controller_1_1_t_continuation_train_expectation_entry.html',1,'TTrainController']]],
   ['tdisplay',['TDisplay',['../class_t_display.html',1,'']]],
-  ['tfixedtrackarray',['TFixedTrackArray',['../class_t_track_1_1_t_fixed_track_array.html',1,'TTrack']]],
   ['tfixedtrackpiece',['TFixedTrackPiece',['../class_t_fixed_track_piece.html',1,'']]],
   ['tgraphicelement',['TGraphicElement',['../class_t_graphic_element.html',1,'']]],
   ['tinterface',['TInterface',['../class_t_interface.html',1,'']]],

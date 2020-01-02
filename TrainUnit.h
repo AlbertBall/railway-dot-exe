@@ -609,6 +609,7 @@ public:
     int UnexpectedExits;
     int OperatingTrainArrDep; ///< total number of arrivals & departures for operating trains locations not reached yet
     int NotStartedTrainArrDep; ///< total number of arrivals & departures for trains that haven't started yet for locations not reached yet
+    int LastTrainLoaded; ///<displays last train loaded from session file, used for debugging
 
     TContinuationAutoSigVector ContinuationAutoSigVector; ///< vector for TContinuationAutoSigEntry objects
 /// Multimap for TContinuationTrainExpectationEntry objects, the access key is the expectation time

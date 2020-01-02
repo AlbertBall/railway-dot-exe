@@ -232,6 +232,10 @@ __published:    // IDE-managed Components
     TImage *GapsNotSetImage;
     TImage *LocationNamesSetImage;
     TImage *LocationNamesNotSetImage;
+    TImage *SigsOnLeftImage1; //these new at v2.3.0 for handed signals
+    TImage *SigsOnLeftImage2;
+    TImage *SigsOnRightImage1;
+    TImage *SigsOnRightImage2;
 
     TImage *MainScreen; ///< the railway display screen
 
@@ -270,6 +274,7 @@ __published:    // IDE-managed Components
     //overlie other panels.  With this hiding of the performance panel when floating panel obscures it is dispensed with
     TPanel *PositionalPanel;
     TPanel *OperatorActionPanel; ///< new v2.2.0 panel housing the OAListBox with list of trains and times to act
+    TPanel *SigImagePanel; ///< new at v2.3.0 for handed signals
 
     TLabel *PerformancePanelLabel; ///< label at the top of PerformancePanel
     TLabel *PrefDirPanelLabel; ///< label to the left of PrefDirPanel
@@ -372,11 +377,12 @@ __published:    // IDE-managed Components
     TMenuItem *StepForwardMenuItem;
     TMenuItem *SignallerControlStopMenuItem;
     TMenuItem *RemoveTrainMenuItem;
-
+    TMenuItem *ConverttoRightHandSignalsMenuItem;
     TMenuItem *N1;
     TMenuItem *N2;
-    TMenuItem *RailwayWebSiteMenuItem;
     TMenuItem *N3;
+    TMenuItem *N4;
+    TMenuItem *RailwayWebSiteMenuItem;
     TMenuItem *PasteWithAttributesMenuItem;
 
     TPopupMenu *PopupMenu;
@@ -538,7 +544,9 @@ __published:    // IDE-managed Components
     TSpeedButton *SpeedButton141;
     TSpeedButton *SpeedButton142;
     TSpeedButton *SpeedButton143;
-    TSpeedButton *SpeedButton144; //level crossing button
+    TSpeedButton *SpeedButton144;
+    TButton *TTClockxEighthButton;
+    TButton *TTClockxSixteenthButton;
 
     //menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -720,6 +728,9 @@ __published:    // IDE-managed Components
     void __fastcall OAListBoxMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
                                      int X, int Y);
     void __fastcall OperatorActionPanelStartDrag(TObject *Sender, TDragObject *&DragObject);
+    void __fastcall ConverttoRightHandSignalsMenuItemClick(TObject *Sender);
+    void __fastcall TTClockxEighthButtonClick(TObject *Sender);
+    void __fastcall TTClockxSixteenthButtonClick(TObject *Sender);
     //new function for v2.2.0 for pasting with attributes after cutting
 
 public: //AboutForm needs access to these

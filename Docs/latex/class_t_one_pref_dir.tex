@@ -148,45 +148,6 @@ int \mbox{\hyperlink{class_t_one_pref_dir_a8e982d8317ce1579b143adf74d88d692}{Tot
 \mbox{\Hypertarget{class_t_one_pref_dir_a9fc8032fb9c525951620e7aafa067d45}\label{class_t_one_pref_dir_a9fc8032fb9c525951620e7aafa067d45}} 
 static const int \mbox{\hyperlink{class_t_one_pref_dir_a9fc8032fb9c525951620e7aafa067d45}{Pref\+Dir\+Search\+Limit}} = 30000
 \begin{DoxyCompactList}\small\item\em limit to the number of elements searched in attempting to find a preferred direction \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Private Types}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{class_t_one_pref_dir_a940ba2bdbedb288c8188c1da5c4c79bc}\label{class_t_one_pref_dir_a940ba2bdbedb288c8188c1da5c4c79bc}} 
-typedef std\+::multimap$<$ T\+H\+V\+Pair, unsigned int, \mbox{\hyperlink{class_t_map_comp}{T\+Map\+Comp}} $>$ \mbox{\hyperlink{class_t_one_pref_dir_a940ba2bdbedb288c8188c1da5c4c79bc}{T\+Pref\+Dir4\+Multi\+Map}}
-\begin{DoxyCompactList}\small\item\em H\+Loc\&V\+Loc as a pair, and Pref\+Dir\+Vector\+Position, can be up to 4 values at any H\&V. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_t_one_pref_dir_a37efac41fc00465b0569704517233d4e}\label{class_t_one_pref_dir_a37efac41fc00465b0569704517233d4e}} 
-typedef std\+::multimap$<$ T\+H\+V\+Pair, unsigned int, \mbox{\hyperlink{class_t_map_comp}{T\+Map\+Comp}} $>$\+::iterator {\bfseries T\+Pref\+Dir4\+Multi\+Map\+Iterator}
-\item 
-\mbox{\Hypertarget{class_t_one_pref_dir_a05da09493d511df74b8e5b9a794c2e0b}\label{class_t_one_pref_dir_a05da09493d511df74b8e5b9a794c2e0b}} 
-typedef std\+::pair$<$ T\+H\+V\+Pair, unsigned int $>$ {\bfseries T\+Pref\+Dir4\+Multi\+Map\+Entry}
-\end{DoxyCompactItemize}
-\subsection*{Private Member Functions}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{class_t_one_pref_dir_ad2e6adb7b634b17cab9cd03610a0f8e3}\label{class_t_one_pref_dir_ad2e6adb7b634b17cab9cd03610a0f8e3}} 
-void \mbox{\hyperlink{class_t_one_pref_dir_ad2e6adb7b634b17cab9cd03610a0f8e3}{Clear\+Pref\+Dir}} ()
-\begin{DoxyCompactList}\small\item\em Empty the existing vectors \& map. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{class_t_one_pref_dir_a200fd1dc1cffc400160b8d2147278752}{Get\+One\+Pref\+Dir\+Position}} (int Caller, int H\+Loc, int V\+Loc)
-\item 
-T\+Pref\+Dir4\+Multi\+Map\+Iterator \mbox{\hyperlink{class_t_one_pref_dir_a8bc65b139325c45b57a9f43a9b3404a8}{Get\+Exact\+Match\+From4\+Multi\+Map}} (int Caller, unsigned int Pref\+Dir\+Vector\+Position, bool \&Found\+Flag)
-\item 
-\mbox{\Hypertarget{class_t_one_pref_dir_ac5f8d2864f0510cf73cb9883b520ec9f}\label{class_t_one_pref_dir_ac5f8d2864f0510cf73cb9883b520ec9f}} 
-void \mbox{\hyperlink{class_t_one_pref_dir_ac5f8d2864f0510cf73cb9883b520ec9f}{Store\+Pref\+Dir\+Element}} (int Caller, \mbox{\hyperlink{class_t_pref_dir_element}{T\+Pref\+Dir\+Element}} Load\+Pref\+Dir\+Element)
-\begin{DoxyCompactList}\small\item\em Store a single pref dir element in the vector \& map. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{class_t_one_pref_dir_aa191ffa7fa23838043d34d9b02cd7bcb}{Erase\+Pref\+Dir\+Element\+At}} (int Caller, int Pref\+Dir\+Vector\+Position)
-\item 
-\mbox{\Hypertarget{class_t_one_pref_dir_a8a7ddf3981800ec0df1225c9e5aa52c2}\label{class_t_one_pref_dir_a8a7ddf3981800ec0df1225c9e5aa52c2}} 
-void \mbox{\hyperlink{class_t_one_pref_dir_a8a7ddf3981800ec0df1225c9e5aa52c2}{Check\+Pref\+Dir4\+Multi\+Map}} (int Caller)
-\begin{DoxyCompactList}\small\item\em Diagnostic validity check. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_t_one_pref_dir_a056c475541b487ce13cb34dc43b1cf6f}\label{class_t_one_pref_dir_a056c475541b487ce13cb34dc43b1cf6f}} 
-void \mbox{\hyperlink{class_t_one_pref_dir_a056c475541b487ce13cb34dc43b1cf6f}{Decrement\+Pref\+Dir\+Element\+Numbers\+In\+Pref\+Dir4\+Multi\+Map}} (int Caller, unsigned int Erased\+Element\+Number)
-\begin{DoxyCompactList}\small\item\em Called after Erase\+Pref\+Dir\+Element\+At to decrement the remaining Pref\+Dir\+Element\+Numbers in 4\+Multi\+Map if they are greater than the erased value. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Private Attributes}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{class_t_one_pref_dir_aa6738f8f24fe0a417a84388c049b5e4c}\label{class_t_one_pref_dir_aa6738f8f24fe0a417a84388c049b5e4c}} 
-\mbox{\hyperlink{class_t_one_pref_dir_a940ba2bdbedb288c8188c1da5c4c79bc}{T\+Pref\+Dir4\+Multi\+Map}} \mbox{\hyperlink{class_t_one_pref_dir_aa6738f8f24fe0a417a84388c049b5e4c}{Pref\+Dir4\+Multi\+Map}}
-\begin{DoxyCompactList}\small\item\em the pref dir multimap -\/ up to 4 values (up to 2 tracks per element each with 2 directions) \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -237,37 +198,19 @@ Used when setting preferred directions, true if able to finish at the last selec
 \subsubsection{\texorpdfstring{Erase\+From\+Pref\+Dir\+Vector\+And4\+Multi\+Map()}{EraseFromPrefDirVectorAnd4MultiMap()}}
 {\footnotesize\ttfamily void T\+One\+Pref\+Dir\+::\+Erase\+From\+Pref\+Dir\+Vector\+And4\+Multi\+Map (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{H\+Loc,  }\item[{int}]{V\+Loc }\end{DoxyParamCaption})}
 
-Erase element at H\+Loc and V\+Loc from the Pref\+Dir\+Vector and from the 4\+Multi\+Map. Note that this entails erasing up to four elements (2 directions and 2 tracks for 4-\/entry elements). \mbox{\Hypertarget{class_t_one_pref_dir_aa191ffa7fa23838043d34d9b02cd7bcb}\label{class_t_one_pref_dir_aa191ffa7fa23838043d34d9b02cd7bcb}} 
-\index{T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}!Erase\+Pref\+Dir\+Element\+At@{Erase\+Pref\+Dir\+Element\+At}}
-\index{Erase\+Pref\+Dir\+Element\+At@{Erase\+Pref\+Dir\+Element\+At}!T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}}
-\subsubsection{\texorpdfstring{Erase\+Pref\+Dir\+Element\+At()}{ErasePrefDirElementAt()}}
-{\footnotesize\ttfamily void T\+One\+Pref\+Dir\+::\+Erase\+Pref\+Dir\+Element\+At (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Pref\+Dir\+Vector\+Position }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
-
-Erase a single element from Pref\+Dir\+Vector and 4\+Multi\+Map, decrementing the remaining Pref\+Dir\+Element\+Numbers in 4\+Multi\+Map if they are greater than the erased value. \mbox{\Hypertarget{class_t_one_pref_dir_a9b425a3ed8ef998e2366d13ad52bf08c}\label{class_t_one_pref_dir_a9b425a3ed8ef998e2366d13ad52bf08c}} 
+Erase element at H\+Loc and V\+Loc from the Pref\+Dir\+Vector and from the 4\+Multi\+Map. Note that this entails erasing up to four elements (2 directions and 2 tracks for 4-\/entry elements). \mbox{\Hypertarget{class_t_one_pref_dir_a9b425a3ed8ef998e2366d13ad52bf08c}\label{class_t_one_pref_dir_a9b425a3ed8ef998e2366d13ad52bf08c}} 
 \index{T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}!Every\+Pref\+Dir\+Marker@{Every\+Pref\+Dir\+Marker}}
 \index{Every\+Pref\+Dir\+Marker@{Every\+Pref\+Dir\+Marker}!T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}}
 \subsubsection{\texorpdfstring{Every\+Pref\+Dir\+Marker()}{EveryPrefDirMarker()}}
 {\footnotesize\ttfamily void T\+One\+Pref\+Dir\+::\+Every\+Pref\+Dir\+Marker (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{\mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$}]{Disp }\end{DoxyParamCaption})}
 
-Similar to Pref\+Dir\+Marker but used only to mark Every\+Pref\+Dir -\/ red for unidirectional Pref\+Dir \& green for bidirectional. Colours taken from the route colours. Plot red first so green overwrites for bidirectional points. \mbox{\Hypertarget{class_t_one_pref_dir_a8bc65b139325c45b57a9f43a9b3404a8}\label{class_t_one_pref_dir_a8bc65b139325c45b57a9f43a9b3404a8}} 
-\index{T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}!Get\+Exact\+Match\+From4\+Multi\+Map@{Get\+Exact\+Match\+From4\+Multi\+Map}}
-\index{Get\+Exact\+Match\+From4\+Multi\+Map@{Get\+Exact\+Match\+From4\+Multi\+Map}!T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}}
-\subsubsection{\texorpdfstring{Get\+Exact\+Match\+From4\+Multi\+Map()}{GetExactMatchFrom4MultiMap()}}
-{\footnotesize\ttfamily T\+One\+Pref\+Dir\+::\+T\+Pref\+Dir4\+Multi\+Map\+Iterator T\+One\+Pref\+Dir\+::\+Get\+Exact\+Match\+From4\+Multi\+Map (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{unsigned int}]{Pref\+Dir\+Vector\+Position,  }\item[{bool \&}]{Found\+Flag }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
-
-Retrieves a Pref\+Dir4\+Multi\+Map iterator to the Pref\+Dir element at Pref\+Dir\+Vector\+Position. Used during Erase\+Pref\+Dir\+Element\+At to erase the relevant element in the multimap. If nothing is found this is an error but the error message is given in the calling function. \mbox{\Hypertarget{class_t_one_pref_dir_a06cd3491535362fccbba4e76b9a120e9}\label{class_t_one_pref_dir_a06cd3491535362fccbba4e76b9a120e9}} 
+Similar to Pref\+Dir\+Marker but used only to mark Every\+Pref\+Dir -\/ red for unidirectional Pref\+Dir \& green for bidirectional. Colours taken from the route colours. Plot red first so green overwrites for bidirectional points. \mbox{\Hypertarget{class_t_one_pref_dir_a06cd3491535362fccbba4e76b9a120e9}\label{class_t_one_pref_dir_a06cd3491535362fccbba4e76b9a120e9}} 
 \index{T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}!Get\+Next\+Pref\+Dir\+Element@{Get\+Next\+Pref\+Dir\+Element}}
 \index{Get\+Next\+Pref\+Dir\+Element@{Get\+Next\+Pref\+Dir\+Element}!T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}}
 \subsubsection{\texorpdfstring{Get\+Next\+Pref\+Dir\+Element()}{GetNextPrefDirElement()}}
 {\footnotesize\ttfamily bool T\+One\+Pref\+Dir\+::\+Get\+Next\+Pref\+Dir\+Element (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{H\+Loc,  }\item[{int}]{V\+Loc,  }\item[{bool \&}]{Finish\+Element }\end{DoxyParamCaption})}
 
-Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linked tracks between the last selected element and the one at H\+Loc \& V\+Loc, and returns true if it finds one. Finish\+Element is returned true if the element selected is a buffer or continuation -\/ in which case the chain is complete \mbox{\Hypertarget{class_t_one_pref_dir_a200fd1dc1cffc400160b8d2147278752}\label{class_t_one_pref_dir_a200fd1dc1cffc400160b8d2147278752}} 
-\index{T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}!Get\+One\+Pref\+Dir\+Position@{Get\+One\+Pref\+Dir\+Position}}
-\index{Get\+One\+Pref\+Dir\+Position@{Get\+One\+Pref\+Dir\+Position}!T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}}
-\subsubsection{\texorpdfstring{Get\+One\+Pref\+Dir\+Position()}{GetOnePrefDirPosition()}}
-{\footnotesize\ttfamily int T\+One\+Pref\+Dir\+::\+Get\+One\+Pref\+Dir\+Position (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{H\+Loc,  }\item[{int}]{V\+Loc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
-
-Although there may be up to four entries at one H \& V position this function gets just one. It is used in Erase\+From\+Pref\+Dir\+Vector\+And4\+Multi\+Map by being called as many times as there are Pref\+Dir elements at H \& V. \mbox{\Hypertarget{class_t_one_pref_dir_ace0402792492c9da2551423f8287e41e}\label{class_t_one_pref_dir_ace0402792492c9da2551423f8287e41e}} 
+Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linked tracks between the last selected element and the one at H\+Loc \& V\+Loc, and returns true if it finds one. Finish\+Element is returned true if the element selected is a buffer or continuation -\/ in which case the chain is complete \mbox{\Hypertarget{class_t_one_pref_dir_ace0402792492c9da2551423f8287e41e}\label{class_t_one_pref_dir_ace0402792492c9da2551423f8287e41e}} 
 \index{T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}!Get\+Pref\+Dir\+Start\+Element@{Get\+Pref\+Dir\+Start\+Element}}
 \index{Get\+Pref\+Dir\+Start\+Element@{Get\+Pref\+Dir\+Start\+Element}!T\+One\+Pref\+Dir@{T\+One\+Pref\+Dir}}
 \subsubsection{\texorpdfstring{Get\+Pref\+Dir\+Start\+Element()}{GetPrefDirStartElement()}}
@@ -329,5 +272,5 @@ Try to find a selected element from a given start position. Enter with Current\+
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-Track\+Unit.\+h\item 
-Track\+Unit.\+cpp\end{DoxyCompactItemize}
+C\+:/\+Programming work/railway development after v2.\+2.\+0/Track\+Unit.\+h\item 
+C\+:/\+Programming work/railway development after v2.\+2.\+0/Track\+Unit.\+cpp\end{DoxyCompactItemize}

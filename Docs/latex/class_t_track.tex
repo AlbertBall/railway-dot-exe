@@ -9,8 +9,6 @@
 \item 
 class \mbox{\hyperlink{class_t_track_1_1_t_active_level_crossing}{T\+Active\+Level\+Crossing}}
 \item 
-class \mbox{\hyperlink{class_t_track_1_1_t_fixed_track_array}{T\+Fixed\+Track\+Array}}
-\begin{DoxyCompactList}\small\item\em Holds an array of Track\+Pieces, only accessible to \mbox{\hyperlink{class_t_track}{T\+Track}}. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{struct_t_track_1_1_t_sig_element}{T\+Sig\+Element}}
 \begin{DoxyCompactList}\small\item\em Used as basic elements in a table of signals -\/ see Sig\+Table below. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Types}
@@ -434,6 +432,9 @@ void \mbox{\hyperlink{class_t_track_af56adb319c7003b8ddac8e55afaee3d2}{Plot\+Poi
 \mbox{\Hypertarget{class_t_track_aa5742fbc2eb3f8743dde84005499f89e}\label{class_t_track_aa5742fbc2eb3f8743dde84005499f89e}} 
 void \mbox{\hyperlink{class_t_track_aa5742fbc2eb3f8743dde84005499f89e}{Plot\+Signal}} (int Caller, \mbox{\hyperlink{class_t_track_element}{T\+Track\+Element}} Track\+Element, \mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$Disp)
 \begin{DoxyCompactList}\small\item\em Plot signals on screen according to their aspect (Attribute value) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_track_a2830b22db25712a80fa55b1546b5df9b}\label{class_t_track_a2830b22db25712a80fa55b1546b5df9b}} 
+void \mbox{\hyperlink{class_t_track_a2830b22db25712a80fa55b1546b5df9b}{Plot\+Signal\+Platforms}} (int Caller, int H\+Loc, int V\+Loc, \mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$Disp)
+\begin{DoxyCompactList}\small\item\em Plot platforms if any for a signal graphic -\/ plotted before signal so shows through transparent signal pixels. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_track_af654985aa4d1c17684f91474fa03ed98}\label{class_t_track_af654985aa4d1c17684f91474fa03ed98}} 
 void \mbox{\hyperlink{class_t_track_af654985aa4d1c17684f91474fa03ed98}{Plot\+Small\+Railway}} (int Caller, \mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$Disp)
 \begin{DoxyCompactList}\small\item\em Plot on screen the zoomed-\/out railway. \end{DoxyCompactList}\item 
@@ -630,88 +631,6 @@ T\+Track\+Vector\+Iterator \mbox{\hyperlink{class_t_track_a5a3eca45e68b0b2d5604b
 \mbox{\Hypertarget{class_t_track_ab012f6fbdca9a4a0354885c557f41736}\label{class_t_track_ab012f6fbdca9a4a0354885c557f41736}} 
 enum T\+Track\+:: \{ ... \}  \mbox{\hyperlink{class_t_track_ab012f6fbdca9a4a0354885c557f41736}{Signal\+Aspect\+Build\+Mode}}
 \begin{DoxyCompactList}\small\item\em aspect mode for future signal additions \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Private Attributes}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{class_t_track_aa518e921b7809730b4b43e96f7136817}\label{class_t_track_aa518e921b7809730b4b43e96f7136817}} 
-\mbox{\hyperlink{class_t_track_1_1_t_fixed_track_array}{T\+Fixed\+Track\+Array}} \mbox{\hyperlink{class_t_track_aa518e921b7809730b4b43e96f7136817}{Fixed\+Track\+Array}}
-\begin{DoxyCompactList}\small\item\em the Fixed\+Track\+Piece array object \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_t_track_a87d65b786df282006e60c97826095892}\label{class_t_track_a87d65b786df282006e60c97826095892}} 
-\mbox{\hyperlink{class_t_track_element}{T\+Track\+Element}} {\bfseries Distance\+Start\+Element}
-\item 
-\mbox{\Hypertarget{class_t_track_a8a68b341049d8b5c05b626fed08cdb33}\label{class_t_track_a8a68b341049d8b5c05b626fed08cdb33}} 
-\mbox{\hyperlink{class_t_track_element}{T\+Track\+Element}} \mbox{\hyperlink{class_t_track_a8a68b341049d8b5c05b626fed08cdb33}{Distance\+Continuing\+Element}}
-\begin{DoxyCompactList}\small\item\em initially used for track element lengths but since disused \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_t_track_a3129d1f4b765dea2a15dab78e5e58129}\label{class_t_track_a3129d1f4b765dea2a15dab78e5e58129}} 
-bool \mbox{\hyperlink{class_t_track_a3129d1f4b765dea2a15dab78e5e58129}{Track\+Finished}}
-\begin{DoxyCompactList}\small\item\em marker for all Conn \& Conn\+Link\+Pos values set \& track complete \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_t_track_a19b95a52149a0cab545fddace312e0cc}\label{class_t_track_a19b95a52149a0cab545fddace312e0cc}} 
-int {\bfseries Gap\+Pos}
-\item 
-\mbox{\Hypertarget{class_t_track_af57a8d2b11f3618b0502cd757fa41541}\label{class_t_track_af57a8d2b11f3618b0502cd757fa41541}} 
-int {\bfseries Gap\+H\+Loc}
-\item 
-\mbox{\Hypertarget{class_t_track_abb7e520a67eccc292c97444ff395d0c0}\label{class_t_track_abb7e520a67eccc292c97444ff395d0c0}} 
-int \mbox{\hyperlink{class_t_track_abb7e520a67eccc292c97444ff395d0c0}{Gap\+V\+Loc}}
-\begin{DoxyCompactList}\small\item\em record gap setting info \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_t_track_aa3a4180a4a3316a5d265964a6ba6b9f8}\label{class_t_track_aa3a4180a4a3316a5d265964a6ba6b9f8}} 
-int {\bfseries H\+Loc\+Min}
-\item 
-\mbox{\Hypertarget{class_t_track_a906deb75070b0e29cf624569c982c23a}\label{class_t_track_a906deb75070b0e29cf624569c982c23a}} 
-int {\bfseries V\+Loc\+Min}
-\item 
-\mbox{\Hypertarget{class_t_track_ab464ea55d7bf8c25d8d5863295209937}\label{class_t_track_ab464ea55d7bf8c25d8d5863295209937}} 
-int {\bfseries H\+Loc\+Max}
-\item 
-\mbox{\Hypertarget{class_t_track_a847326710b5b428b1a8bb54b1d143c26}\label{class_t_track_a847326710b5b428b1a8bb54b1d143c26}} 
-int \mbox{\hyperlink{class_t_track_a847326710b5b428b1a8bb54b1d143c26}{V\+Loc\+Max}}
-\begin{DoxyCompactList}\small\item\em give extent of railway for use in zoomed in and out displays and in saving railway images \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_t_track_ae8df4625e0c05c1158f3fc366afe928c}\label{class_t_track_ae8df4625e0c05c1158f3fc366afe928c}} 
-int \mbox{\hyperlink{class_t_track_ae8df4625e0c05c1158f3fc366afe928c}{Link\+Check\+Array}} \mbox{[}9\mbox{]}\mbox{[}2\mbox{]}
-\begin{DoxyCompactList}\small\item\em array of valid link connecting values, I don\textquotesingle{}t think this is used now \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{class_t_track_ab6f605b1cf52a3f8efba5549e19368a8}\label{class_t_track_ab6f605b1cf52a3f8efba5549e19368a8}} 
-int \mbox{\hyperlink{class_t_track_ab6f605b1cf52a3f8efba5549e19368a8}{Link\+H\+V\+Array}} \mbox{[}10\mbox{]}\mbox{[}2\mbox{]}
-\begin{DoxyCompactList}\small\item\em array used to determine relative horizontal \& vertical track element positions for specific link values \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{class_t_track_a8dc657245d548b3b07fdb42e173f3bba}{Tag76\+Array}} \mbox{[}23\mbox{]}\mbox{[}3\mbox{]}
-\item 
-\mbox{\Hypertarget{class_t_track_a4f05f2ae83cb9f85930df970b7844c4b}\label{class_t_track_a4f05f2ae83cb9f85930df970b7844c4b}} 
-int {\bfseries Tag77\+Array} \mbox{[}23\mbox{]}\mbox{[}3\mbox{]}
-\item 
-\mbox{\Hypertarget{class_t_track_a4b4b28532e1317000b4387a9b37ff981}\label{class_t_track_a4b4b28532e1317000b4387a9b37ff981}} 
-int {\bfseries Tag78\+Array} \mbox{[}23\mbox{]}\mbox{[}3\mbox{]}
-\item 
-\mbox{\Hypertarget{class_t_track_ab95da137dad09b9c8cd3fc673b80e841}\label{class_t_track_ab95da137dad09b9c8cd3fc673b80e841}} 
-int {\bfseries Tag79\+Array} \mbox{[}23\mbox{]}\mbox{[}3\mbox{]}
-\item 
-\mbox{\Hypertarget{class_t_track_a689870b6bccd25e8b8980e363ad646d0}\label{class_t_track_a689870b6bccd25e8b8980e363ad646d0}} 
-int {\bfseries Tag96\+Array} \mbox{[}24\mbox{]}\mbox{[}3\mbox{]}
-\item 
-\mbox{\Hypertarget{class_t_track_ac54feeb3cf1699bde9e4ac88d76d88fb}\label{class_t_track_ac54feeb3cf1699bde9e4ac88d76d88fb}} 
-int {\bfseries Tag129\+Array} \mbox{[}8\mbox{]}\mbox{[}3\mbox{]}
-\item 
-\mbox{\Hypertarget{class_t_track_a33e00a86d9cb4b0402c08144f9ab563b}\label{class_t_track_a33e00a86d9cb4b0402c08144f9ab563b}} 
-int {\bfseries Tag130\+Array} \mbox{[}8\mbox{]}\mbox{[}3\mbox{]}
-\item 
-\mbox{\Hypertarget{class_t_track_aff5c466da1dda0b20e1f770253ad2813}\label{class_t_track_aff5c466da1dda0b20e1f770253ad2813}} 
-int {\bfseries Tag131\+Array} \mbox{[}4\mbox{]}\mbox{[}3\mbox{]}
-\item 
-\mbox{\Hypertarget{class_t_track_aebfb764fdd1bddb8f82b943e5af9979b}\label{class_t_track_aebfb764fdd1bddb8f82b943e5af9979b}} 
-Set$<$ int, 1, 130 $>$ {\bfseries Top\+Plat\+Allowed}
-\item 
-\mbox{\Hypertarget{class_t_track_a0b2e23790782af830a0b206dcb9d9469}\label{class_t_track_a0b2e23790782af830a0b206dcb9d9469}} 
-Set$<$ int, 1, 130 $>$ {\bfseries Bot\+Plat\+Allowed}
-\item 
-\mbox{\Hypertarget{class_t_track_a70fcf10b4a31240e4d103d04e7116926}\label{class_t_track_a70fcf10b4a31240e4d103d04e7116926}} 
-Set$<$ int, 1, 130 $>$ {\bfseries Left\+Plat\+Allowed}
-\item 
-\mbox{\Hypertarget{class_t_track_a1cde503d01659ec96a735529aca8efcb}\label{class_t_track_a1cde503d01659ec96a735529aca8efcb}} 
-Set$<$ int, 1, 130 $>$ {\bfseries Right\+Plat\+Allowed}
-\item 
-\mbox{\Hypertarget{class_t_track_a44c0c3df5931635e578bfd17d51ecd31}\label{class_t_track_a44c0c3df5931635e578bfd17d51ecd31}} 
-Set$<$ int, 1, 130 $>$ {\bfseries Name\+Allowed}
-\item 
-Set$<$ int, 1, 130 $>$ \mbox{\hyperlink{class_t_track_a29617e6f88e44a7974dc08a371682d0b}{Level\+Crossing\+Allowed}}
-\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -947,7 +866,7 @@ Called after the track is linked as many of the vector positions are likely to c
 \subsubsection{\texorpdfstring{Rebuild\+Track()}{RebuildTrack()}}
 {\footnotesize\ttfamily void T\+Track\+::\+Rebuild\+Track (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{\mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$}]{Disp,  }\item[{bool}]{Both\+Point\+Fillets\+And\+Basic\+L\+Cs }\end{DoxyParamCaption})}
 
-Called by \mbox{\hyperlink{class_t_interface_aaa05ac95703a25e1fb4863779854967c}{T\+Interface\+::\+Clearand\+Rebuild\+Railway}} to replot all the active and inactive track elements, Both\+Point\+Fillets indicates whether points are to be plotted according to how they are set -\/ for operation, or with both fillets -\/ when not operating or during development (the fillet is the bit that appears to move when points are changed) \mbox{\Hypertarget{class_t_track_a5e2e215fae5247206220d301c324e9a0}\label{class_t_track_a5e2e215fae5247206220d301c324e9a0}} 
+Called by T\+Interface\+::\+Clearand\+Rebuild\+Railway to replot all the active and inactive track elements, Both\+Point\+Fillets indicates whether points are to be plotted according to how they are set -\/ for operation, or with both fillets -\/ when not operating or during development (the fillet is the bit that appears to move when points are changed) \mbox{\Hypertarget{class_t_track_a5e2e215fae5247206220d301c324e9a0}\label{class_t_track_a5e2e215fae5247206220d301c324e9a0}} 
 \index{T\+Track@{T\+Track}!Reposition\+And\+Map\+Track@{Reposition\+And\+Map\+Track}}
 \index{Reposition\+And\+Map\+Track@{Reposition\+And\+Map\+Track}!T\+Track@{T\+Track}}
 \subsubsection{\texorpdfstring{Reposition\+And\+Map\+Track()}{RepositionAndMapTrack()}}
@@ -1008,13 +927,7 @@ Examines all track elements that have Active\+Track\+Element\+Name set, sums the
 Called by T\+Interface\+::\+Save\+Image\+No\+Grid1\+Click, T\+Interface\+::\+Save\+Image\+And\+Grid1\+Click and T\+Interface\+::\+Save\+Image\+And\+Pref\+Dirs1\+Click to add all track element graphics to the image file in their non-\/operating state 
 
 \subsection{Member Data Documentation}
-\mbox{\Hypertarget{class_t_track_a29617e6f88e44a7974dc08a371682d0b}\label{class_t_track_a29617e6f88e44a7974dc08a371682d0b}} 
-\index{T\+Track@{T\+Track}!Level\+Crossing\+Allowed@{Level\+Crossing\+Allowed}}
-\index{Level\+Crossing\+Allowed@{Level\+Crossing\+Allowed}!T\+Track@{T\+Track}}
-\subsubsection{\texorpdfstring{Level\+Crossing\+Allowed}{LevelCrossingAllowed}}
-{\footnotesize\ttfamily Set$<$int, 1, 130$>$ T\+Track\+::\+Level\+Crossing\+Allowed\hspace{0.3cm}{\ttfamily [private]}}
-
-sets of valid Track\+Elements for placement of platforms and non-\/station named locations \mbox{\Hypertarget{class_t_track_a50f518fa93ef56b1570e4102fb691e14}\label{class_t_track_a50f518fa93ef56b1570e4102fb691e14}} 
+\mbox{\Hypertarget{class_t_track_a50f518fa93ef56b1570e4102fb691e14}\label{class_t_track_a50f518fa93ef56b1570e4102fb691e14}} 
 \index{T\+Track@{T\+Track}!Point\+Flash\+Flag@{Point\+Flash\+Flag}}
 \index{Point\+Flash\+Flag@{Point\+Flash\+Flag}!T\+Track@{T\+Track}}
 \subsubsection{\texorpdfstring{Point\+Flash\+Flag}{PointFlashFlag}}
@@ -1024,15 +937,9 @@ sets of valid Track\+Elements for placement of platforms and non-\/station named
 
 new at v2.\+2.\+0 -\/ needed to distinguish between the two types of paste \& to suppress multimap checks while pasting 
 
-true when points are flashing during manual change \mbox{\Hypertarget{class_t_track_a8dc657245d548b3b07fdb42e173f3bba}\label{class_t_track_a8dc657245d548b3b07fdb42e173f3bba}} 
-\index{T\+Track@{T\+Track}!Tag76\+Array@{Tag76\+Array}}
-\index{Tag76\+Array@{Tag76\+Array}!T\+Track@{T\+Track}}
-\subsubsection{\texorpdfstring{Tag76\+Array}{Tag76Array}}
-{\footnotesize\ttfamily int T\+Track\+::\+Tag76\+Array\mbox{[}23\mbox{]}\mbox{[}3\mbox{]}\hspace{0.3cm}{\ttfamily [private]}}
-
-these arrays give valid adjacent named element relative positions for each type of named element, the numbers -\/ 76, 77 etc -\/ relate to track element element Speed\+Tag values (76 -\/ 79 = platforms, 96 = concourse, 129 \& 130 = footbridges and 131 = non-\/station named location. 
+true when points are flashing during manual change 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-Track\+Unit.\+h\item 
-Track\+Unit.\+cpp\end{DoxyCompactItemize}
+C\+:/\+Programming work/railway development after v2.\+2.\+0/Track\+Unit.\+h\item 
+C\+:/\+Programming work/railway development after v2.\+2.\+0/Track\+Unit.\+cpp\end{DoxyCompactItemize}

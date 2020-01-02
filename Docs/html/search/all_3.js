@@ -1,14 +1,10 @@
 var searchData=
 [
-  ['decrementprefdirelementnumbersinprefdir4multimap',['DecrementPrefDirElementNumbersInPrefDir4MultiMap',['../class_t_one_pref_dir.html#a056c475541b487ce13cb34dc43b1cf6f',1,'TOnePrefDir']]],
   ['decrementrouteelementnumbersinroute2multimap',['DecrementRouteElementNumbersInRoute2MultiMap',['../class_t_all_routes.html#a5ebf1d3fbba09f98acc23b7d18822e9e',1,'TAllRoutes']]],
   ['decrementroutenumbersinroute2multimap',['DecrementRouteNumbersInRoute2MultiMap',['../class_t_all_routes.html#a5b18fe89f84962fca0a86063043b2a75',1,'TAllRoutes']]],
   ['decrementvaluesingapsandtrackandnamemaps',['DecrementValuesInGapsAndTrackAndNameMaps',['../class_t_track.html#a2095a52c4b914bf6b29529a2d82043e9',1,'TTrack']]],
   ['decrementvaluesininactivetrackandnamemaps',['DecrementValuesInInactiveTrackAndNameMaps',['../class_t_track.html#af8f925ac5e7301c1094cec76808e1140',1,'TTrack']]],
-  ['delay',['Delay',['../class_t_interface.html#a7fa894f52a3cb9746e81166ec1a81bf3',1,'TInterface']]],
-  ['deletetrain',['DeleteTrain',['../class_t_train.html#afd5d7ea375b8a878c31d81841acad159',1,'TTrain']]],
   ['departuretime',['DepartureTime',['../class_t_action_vector_entry.html#a37c6ff0cda2672bbd60099487442fbb5',1,'TActionVectorEntry']]],
-  ['departuretimeset',['DepartureTimeSet',['../class_t_train.html#ab4f3876cb58a6160c2f1cd7a7eb3f234',1,'TTrain']]],
   ['description',['Description',['../class_t_train_data_entry.html#aea5870826c3c6815472e86d82b0c9fe7',1,'TTrainDataEntry::Description()'],['../class_t_train_controller_1_1_t_continuation_train_expectation_entry.html#a4f8cb6b7a1ab76fb56a56594aa440fe5',1,'TTrainController::TContinuationTrainExpectationEntry::Description()']]],
   ['developmentpanel',['DevelopmentPanel',['../class_t_interface.html#a82ceb0b38e171d2b46c19f76afef35c1',1,'TInterface']]],
   ['diagonalfouledbyroute',['DiagonalFouledByRoute',['../class_t_all_routes.html#ae3fb64509afc46d5871c7843c7769f88',1,'TAllRoutes']]],
@@ -18,20 +14,14 @@ var searchData=
   ['directionprefdirgraphicsptr',['DirectionPrefDirGraphicsPtr',['../class_t_rail_graphics.html#a152061f5e559e36956bbc4e7e33b6122',1,'TRailGraphics']]],
   ['directionrouteautosigsgraphicsptr',['DirectionRouteAutoSigsGraphicsPtr',['../class_t_rail_graphics.html#ab0775db98387eb5c22ba0b1f4daa8efe',1,'TRailGraphics']]],
   ['directionsigroutegraphicsptr',['DirectionSigRouteGraphicsPtr',['../class_t_rail_graphics.html#aa35e6363b01e557c7ec995ff23d4469f',1,'TRailGraphics']]],
-  ['directoryerror',['DirectoryError',['../class_t_interface.html#a5f4678f1a03c0c6ed614433f24ca3891',1,'TInterface']]],
-  ['diropenerror',['DirOpenError',['../class_t_interface.html#ae989b91d63d00b75971cd845cc3410b2',1,'TInterface']]],
-  ['disableroutebuttons',['DisableRouteButtons',['../class_t_interface.html#ac0c9be911e93134ddda04ba498a8bd9c',1,'TInterface']]],
   ['displayoffseth',['DisplayOffsetH',['../class_t_display.html#a9a9f37c50df125f2543f251460caf841',1,'TDisplay']]],
   ['displayoffsethhome',['DisplayOffsetHHome',['../class_t_display.html#aef050e7f3b440542a12bbccd27bcd99d',1,'TDisplay']]],
   ['displayoffsetv',['DisplayOffsetV',['../class_t_display.html#a6f11e4ccff893eef6ab624a7430974c3',1,'TDisplay']]],
   ['displayoffsetvhome',['DisplayOffsetVHome',['../class_t_display.html#a4ea243ff377fcc09d3da53dbb2b18dfe',1,'TDisplay']]],
-  ['displayonettlineinpanel',['DisplayOneTTLineInPanel',['../class_t_interface.html#a1181c865da8cea56e6f0af6b31a88db0',1,'TInterface']]],
   ['displayzoomoutoffseth',['DisplayZoomOutOffsetH',['../class_t_display.html#aa26d2bf6d6d14ad1c853f81f06f25121',1,'TDisplay']]],
   ['displayzoomoutoffsethhome',['DisplayZoomOutOffsetHHome',['../class_t_display.html#a62c3d449d00b1a063a4bf7f212968e87',1,'TDisplay']]],
   ['displayzoomoutoffsetv',['DisplayZoomOutOffsetV',['../class_t_display.html#a3c63a18e8901299ab56176c034072b1c',1,'TDisplay']]],
   ['displayzoomoutoffsetvhome',['DisplayZoomOutOffsetVHome',['../class_t_display.html#a758f553cef2eb9b3eee4d491454a7da9',1,'TDisplay']]],
   ['distancebox',['DistanceBox',['../class_t_interface.html#ad11eb967bcb0710eef4bf8874cc55da5',1,'TInterface']]],
-  ['distancecontinuingelement',['DistanceContinuingElement',['../class_t_track.html#a8a68b341049d8b5c05b626fed08cdb33',1,'TTrack']]],
-  ['distancekey',['DistanceKey',['../class_t_interface.html#aefe8c85a36e64f78a69e5cde5ba13727',1,'TInterface']]],
-  ['distancesmarked',['DistancesMarked',['../class_t_interface.html#adfaa3df9168b5f57613e4ff8b1fbf1fe',1,'TInterface']]]
+  ['distancekey',['DistanceKey',['../class_t_interface.html#aefe8c85a36e64f78a69e5cde5ba13727',1,'TInterface']]]
 ];

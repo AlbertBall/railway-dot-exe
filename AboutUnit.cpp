@@ -107,7 +107,7 @@ void __fastcall TAboutForm::SetAboutCaption()
 	AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
 							     L"operate your own railway" + NL + NL +
 							     L"Release: " + strVersion + NL + NL +
-							     L"Copyright © 2010-2018 Albert Ball";
+							     L"Copyright © 2010-2019 Albert Ball";
 }
 //---------------------------------------------------------------------------
 void __fastcall TAboutForm::WebsiteLinkLabelLinkClick(TObject *Sender, const UnicodeString Link,

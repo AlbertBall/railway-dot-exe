@@ -1,14 +1,11 @@
 var searchData=
 [
-  ['namedlocationelementat',['NamedLocationElementAt',['../class_t_track.html#a198ba6486ccb7cdfb25bdd8c30451d06',1,'TTrack']]],
-  ['nameintimetablebeforecdt',['NameInTimetableBeforeCDT',['../class_t_train.html#a7a54125a3a5052cb25e17014075a686b',1,'TTrain']]],
-  ['newshuttlefromnonrepeatservice',['NewShuttleFromNonRepeatService',['../class_t_train.html#a56fcfe4b9a3cef988bbeb4f4766372aa',1,'TTrain']]],
-  ['newtrainservice',['NewTrainService',['../class_t_train.html#a75a2e9017b96e2a8f2a1edbd01c2cd68',1,'TTrain']]],
-  ['noactiveorinactivetrack',['NoActiveOrInactiveTrack',['../class_t_track.html#ab20c55ecbc1801614695279daa8da0ba',1,'TTrack']]],
-  ['noactivetrack',['NoActiveTrack',['../class_t_track.html#a2eaa84532799b76a0b42cf6e2611224d',1,'TTrack']]],
-  ['nogaps',['NoGaps',['../class_t_track.html#ab9e1aa42b1d6399d97390f5068bf68b0',1,'TTrack']]],
-  ['nonamedlocationelements',['NoNamedLocationElements',['../class_t_track.html#ab079bfd6871c5337b29297e7bc2cfe8b',1,'TTrack']]],
-  ['nonfootbridgenamedlocationexists',['NonFootbridgeNamedLocationExists',['../class_t_track.html#adb8c5f303e4977a8ea92c7b706a1d4e5',1,'TTrack']]],
-  ['norailway',['NoRailway',['../class_t_interface.html#a488e772a2e2a52820fdbe1d1695e0118',1,'TInterface']]],
-  ['numberofgaps',['NumberOfGaps',['../class_t_track.html#a72c171ba53777dc2f5fab90877f9bc45',1,'TTrack']]]
+  ['onenamedlocationelementatlocation',['OneNamedLocationElementAtLocation',['../class_t_track.html#a7eba939947b4c035a191ecaaf1b0bb9a',1,'TTrack']]],
+  ['onenamedlocationlongenoughforsplit',['OneNamedLocationLongEnoughForSplit',['../class_t_track.html#a9d209cb6e24f67ba12020440a5e42347',1,'TTrack']]],
+  ['operate',['Operate',['../class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481',1,'TTrainController']]],
+  ['operator_21_3d',['operator!=',['../class_t_track_element.html#ab8e14338f1059d834353d6c2264b80ee',1,'TTrackElement::operator!=()'],['../class_t_pref_dir_element.html#a22ed5d6b16c6b53f7c3229231791d35e',1,'TPrefDirElement::operator!=()']]],
+  ['operator_28_29',['operator()',['../class_t_map_comp.html#a6784886eff8452405709d93063d74147',1,'TMapComp']]],
+  ['operator_3d_3d',['operator==',['../class_t_track_element.html#aae268d9684a1de26e01dd6578b0f3527',1,'TTrackElement::operator==()'],['../class_t_pref_dir_element.html#a2f8b222ba3f5990c095d5a4e120681c1',1,'TPrefDirElement::operator==()'],['../class_i_d_int.html#ae083414184db298f8abbfbe791db82de',1,'IDInt::operator==()']]],
+  ['operator_3e',['operator&gt;',['../class_i_d_int.html#ae309faa19a8c2f2a6f5e16c7cd64f184',1,'IDInt']]],
+  ['othertrainontrack',['OtherTrainOnTrack',['../class_t_track.html#aeac90568597c9f13a27fa90c58f9041f',1,'TTrack']]]
 ];

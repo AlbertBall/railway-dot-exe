@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Railway Operation Simulator: TOnePrefDir Class Reference</title>
+<title>My Project: TOnePrefDir Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,12 +20,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.2.0</span>
+   <div id="projectname">My Project
    </div>
-   <div id="projectbrief">A railway simulator for Windows</div>
   </td>
  </tr>
  </tbody>
@@ -70,9 +67,6 @@ $(function() {
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
-<a href="#pri-types">Private Types</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_t_one_pref_dir-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">TOnePrefDir Class Reference</div>  </div>
@@ -249,51 +243,6 @@ Static Protected Attributes</h2></td></tr>
 static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a9fc8032fb9c525951620e7aafa067d45">PrefDirSearchLimit</a> = 30000</td></tr>
 <tr class="memdesc:a9fc8032fb9c525951620e7aafa067d45"><td class="mdescLeft">&#160;</td><td class="mdescRight">limit to the number of elements searched in attempting to find a preferred direction <br /></td></tr>
 <tr class="separator:a9fc8032fb9c525951620e7aafa067d45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-types"></a>
-Private Types</h2></td></tr>
-<tr class="memitem:a940ba2bdbedb288c8188c1da5c4c79bc"><td class="memItemLeft" align="right" valign="top"><a id="a940ba2bdbedb288c8188c1da5c4c79bc"></a>
-typedef std::multimap&lt; THVPair, unsigned int, <a class="el" href="class_t_map_comp.html">TMapComp</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc">TPrefDir4MultiMap</a></td></tr>
-<tr class="memdesc:a940ba2bdbedb288c8188c1da5c4c79bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">HLoc&amp;VLoc as a pair, and PrefDirVectorPosition, can be up to 4 values at any H&amp;V. <br /></td></tr>
-<tr class="separator:a940ba2bdbedb288c8188c1da5c4c79bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37efac41fc00465b0569704517233d4e"><td class="memItemLeft" align="right" valign="top"><a id="a37efac41fc00465b0569704517233d4e"></a>
-typedef std::multimap&lt; THVPair, unsigned int, <a class="el" href="class_t_map_comp.html">TMapComp</a> &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><b>TPrefDir4MultiMapIterator</b></td></tr>
-<tr class="separator:a37efac41fc00465b0569704517233d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05da09493d511df74b8e5b9a794c2e0b"><td class="memItemLeft" align="right" valign="top"><a id="a05da09493d511df74b8e5b9a794c2e0b"></a>
-typedef std::pair&lt; THVPair, unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TPrefDir4MultiMapEntry</b></td></tr>
-<tr class="separator:a05da09493d511df74b8e5b9a794c2e0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:ad2e6adb7b634b17cab9cd03610a0f8e3"><td class="memItemLeft" align="right" valign="top"><a id="ad2e6adb7b634b17cab9cd03610a0f8e3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#ad2e6adb7b634b17cab9cd03610a0f8e3">ClearPrefDir</a> ()</td></tr>
-<tr class="memdesc:ad2e6adb7b634b17cab9cd03610a0f8e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty the existing vectors &amp; map. <br /></td></tr>
-<tr class="separator:ad2e6adb7b634b17cab9cd03610a0f8e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a200fd1dc1cffc400160b8d2147278752"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a200fd1dc1cffc400160b8d2147278752">GetOnePrefDirPosition</a> (int Caller, int HLoc, int VLoc)</td></tr>
-<tr class="separator:a200fd1dc1cffc400160b8d2147278752"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bc65b139325c45b57a9f43a9b3404a8"><td class="memItemLeft" align="right" valign="top">TPrefDir4MultiMapIterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a8bc65b139325c45b57a9f43a9b3404a8">GetExactMatchFrom4MultiMap</a> (int Caller, unsigned int PrefDirVectorPosition, bool &amp;FoundFlag)</td></tr>
-<tr class="separator:a8bc65b139325c45b57a9f43a9b3404a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5f8d2864f0510cf73cb9883b520ec9f"><td class="memItemLeft" align="right" valign="top"><a id="ac5f8d2864f0510cf73cb9883b520ec9f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#ac5f8d2864f0510cf73cb9883b520ec9f">StorePrefDirElement</a> (int Caller, <a class="el" href="class_t_pref_dir_element.html">TPrefDirElement</a> LoadPrefDirElement)</td></tr>
-<tr class="memdesc:ac5f8d2864f0510cf73cb9883b520ec9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store a single pref dir element in the vector &amp; map. <br /></td></tr>
-<tr class="separator:ac5f8d2864f0510cf73cb9883b520ec9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa191ffa7fa23838043d34d9b02cd7bcb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#aa191ffa7fa23838043d34d9b02cd7bcb">ErasePrefDirElementAt</a> (int Caller, int PrefDirVectorPosition)</td></tr>
-<tr class="separator:aa191ffa7fa23838043d34d9b02cd7bcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a7ddf3981800ec0df1225c9e5aa52c2"><td class="memItemLeft" align="right" valign="top"><a id="a8a7ddf3981800ec0df1225c9e5aa52c2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a8a7ddf3981800ec0df1225c9e5aa52c2">CheckPrefDir4MultiMap</a> (int Caller)</td></tr>
-<tr class="memdesc:a8a7ddf3981800ec0df1225c9e5aa52c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Diagnostic validity check. <br /></td></tr>
-<tr class="separator:a8a7ddf3981800ec0df1225c9e5aa52c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a056c475541b487ce13cb34dc43b1cf6f"><td class="memItemLeft" align="right" valign="top"><a id="a056c475541b487ce13cb34dc43b1cf6f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a056c475541b487ce13cb34dc43b1cf6f">DecrementPrefDirElementNumbersInPrefDir4MultiMap</a> (int Caller, unsigned int ErasedElementNumber)</td></tr>
-<tr class="memdesc:a056c475541b487ce13cb34dc43b1cf6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after ErasePrefDirElementAt to decrement the remaining PrefDirElementNumbers in 4MultiMap if they are greater than the erased value. <br /></td></tr>
-<tr class="separator:a056c475541b487ce13cb34dc43b1cf6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:aa6738f8f24fe0a417a84388c049b5e4c"><td class="memItemLeft" align="right" valign="top"><a id="aa6738f8f24fe0a417a84388c049b5e4c"></a>
-<a class="el" href="class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc">TPrefDir4MultiMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#aa6738f8f24fe0a417a84388c049b5e4c">PrefDir4MultiMap</a></td></tr>
-<tr class="memdesc:aa6738f8f24fe0a417a84388c049b5e4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">the pref dir multimap - up to 4 values (up to 2 tracks per element each with 2 directions) <br /></td></tr>
-<tr class="separator:aa6738f8f24fe0a417a84388c049b5e4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The basic preferred direction class, consisting of any number of elements with preferred directions set.</p>
@@ -506,43 +455,6 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa191ffa7fa23838043d34d9b02cd7bcb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa191ffa7fa23838043d34d9b02cd7bcb">&#9670;&nbsp;</a></span>ErasePrefDirElementAt()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TOnePrefDir::ErasePrefDirElementAt </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>Caller</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>PrefDirVectorPosition</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Erase a single element from PrefDirVector and 4MultiMap, decrementing the remaining PrefDirElementNumbers in 4MultiMap if they are greater than the erased value. </p>
-
-</div>
-</div>
 <a id="a9b425a3ed8ef998e2366d13ad52bf08c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9b425a3ed8ef998e2366d13ad52bf08c">&#9670;&nbsp;</a></span>EveryPrefDirMarker()</h2>
 
@@ -569,49 +481,6 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Similar to PrefDirMarker but used only to mark EveryPrefDir - red for unidirectional PrefDir &amp; green for bidirectional. Colours taken from the route colours. Plot red first so green overwrites for bidirectional points. </p>
-
-</div>
-</div>
-<a id="a8bc65b139325c45b57a9f43a9b3404a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bc65b139325c45b57a9f43a9b3404a8">&#9670;&nbsp;</a></span>GetExactMatchFrom4MultiMap()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TOnePrefDir::TPrefDir4MultiMapIterator TOnePrefDir::GetExactMatchFrom4MultiMap </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>Caller</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>PrefDirVectorPosition</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool &amp;&#160;</td>
-          <td class="paramname"><em>FoundFlag</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Retrieves a PrefDir4MultiMap iterator to the PrefDir element at PrefDirVectorPosition. Used during ErasePrefDirElementAt to erase the relevant element in the multimap. If nothing is found this is an error but the error message is given in the calling function. </p>
 
 </div>
 </div>
@@ -653,49 +522,6 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linked tracks between the last selected element and the one at HLoc &amp; VLoc, and returns true if it finds one. FinishElement is returned true if the element selected is a buffer or continuation - in which case the chain is complete </p>
-
-</div>
-</div>
-<a id="a200fd1dc1cffc400160b8d2147278752"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a200fd1dc1cffc400160b8d2147278752">&#9670;&nbsp;</a></span>GetOnePrefDirPosition()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int TOnePrefDir::GetOnePrefDirPosition </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>Caller</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>HLoc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>VLoc</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Although there may be up to four entries at one H &amp; V position this function gets just one. It is used in EraseFromPrefDirVectorAnd4MultiMap by being called as many times as there are PrefDir elements at H &amp; V. </p>
 
 </div>
 </div>
@@ -1025,8 +851,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li><a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a></li>
-<li>TrackUnit.cpp</li>
+<li>C:/Programming work/railway development after v2.2.0/<a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a></li>
+<li>C:/Programming work/railway development after v2.2.0/TrackUnit.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

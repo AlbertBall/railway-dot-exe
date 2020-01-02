@@ -908,6 +908,8 @@ public:
     void PlotPoints(int Caller, TTrackElement TrackElement, TDisplay *Disp, bool BothFillets);
     /// Plot signals on screen according to their aspect (Attribute value)
     void PlotSignal(int Caller, TTrackElement TrackElement, TDisplay *Disp);
+    /// Plot platforms if any for a signal graphic - plotted before signal so shows through transparent signal pixels
+    void PlotSignalPlatforms(int Caller, int HLoc, int VLoc, TDisplay *Disp);
     /// Plot on screen the zoomed-out railway
     void PlotSmallRailway(int Caller, TDisplay *Disp);
     /// Plot on screen in zoomed-out mode and in gap setting mode a small red square corresponding to the gap position

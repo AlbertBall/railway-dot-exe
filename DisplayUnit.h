@@ -190,10 +190,10 @@ public:
     void PlotPointBlank(int Caller, int HLoc, int VLoc);
 /// Plot a small blank rectangle over the signal aspect area at HLoc & VLoc
 /// prior to plotting the current signal aspect
-    void PlotSignalBlank(int Caller, int HLoc, int VLoc, int SpeedTag);
+    void PlotSignalBlank(int Caller, int HLoc, int VLoc, int SpeedTag, bool RHSFlag);
 /// As PlotSignalBlank but plot on the Bitmap that is supplied
 /// - for writing operating images to a bitmap file
-    void PlotSignalBlankOnBitmap(int HLoc, int VLoc, int SpeedTag, Graphics::TBitmap *Bitmap);
+    void PlotSignalBlankOnBitmap(int HLoc, int VLoc, int SpeedTag, Graphics::TBitmap *Bitmap, bool RHSFlag);
 /// Plot small (4x4) graphic PlotItem on the zoomed-out display at HPos & Vpos
     void PlotSmallOutput(int Caller, int HPos, int VPos, Graphics::TBitmap *PlotItem);
 /// Plot a rectangle at the defined position with colour Col & size defined by Size

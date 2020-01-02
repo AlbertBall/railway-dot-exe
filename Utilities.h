@@ -34,6 +34,7 @@ class TUtilities //single object incorporating general purpose data & functions 
 {
 public:
     bool Clock2Stopped; //when true the main loop - Interface->ClockTimer2 - is stopped
+    bool RHSignalFlag; //new at v2.3.0   false=LH signals
 
     int ScreenElementWidth; //width of display screen in elements
     int ScreenElementHeight; //height of display screen in elements

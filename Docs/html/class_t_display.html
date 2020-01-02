@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Railway Operation Simulator: TDisplay Class Reference</title>
+<title>My Project: TDisplay Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,12 +20,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.2.0</span>
+   <div id="projectname">My Project
    </div>
-   <div id="projectbrief">A railway simulator for Windows</div>
   </td>
  </tr>
  </tbody>
@@ -68,7 +65,6 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_t_display-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">TDisplay Class Reference</div>  </div>
@@ -204,10 +200,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a9ab49e52c7eb92b32ae2c34547183439"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab35e517eba56f1c95f500958ce431ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#aab35e517eba56f1c95f500958ce431ae">PlotPointBlank</a> (int Caller, int HLoc, int VLoc)</td></tr>
 <tr class="separator:aab35e517eba56f1c95f500958ce431ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69c85bcbafea6cba5f06a93ffae7d3b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#a69c85bcbafea6cba5f06a93ffae7d3b2">PlotSignalBlank</a> (int Caller, int HLoc, int VLoc, int SpeedTag)</td></tr>
-<tr class="separator:a69c85bcbafea6cba5f06a93ffae7d3b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6c0da6543f57f83107fd0af371fec3e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#ab6c0da6543f57f83107fd0af371fec3e">PlotSignalBlankOnBitmap</a> (int HLoc, int VLoc, int SpeedTag, Graphics::TBitmap *Bitmap)</td></tr>
-<tr class="separator:ab6c0da6543f57f83107fd0af371fec3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e970089a9419e6bdd12576b6e860c95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#a6e970089a9419e6bdd12576b6e860c95">PlotSignalBlank</a> (int Caller, int HLoc, int VLoc, int SpeedTag, bool RHSFlag)</td></tr>
+<tr class="separator:a6e970089a9419e6bdd12576b6e860c95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb140097c975da97aa53bc3946f3ea31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#abb140097c975da97aa53bc3946f3ea31">PlotSignalBlankOnBitmap</a> (int HLoc, int VLoc, int SpeedTag, Graphics::TBitmap *Bitmap, bool RHSFlag)</td></tr>
+<tr class="separator:abb140097c975da97aa53bc3946f3ea31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95aaa80515f0abb7715920b326b318dd"><td class="memItemLeft" align="right" valign="top"><a id="a95aaa80515f0abb7715920b326b318dd"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#a95aaa80515f0abb7715920b326b318dd">PlotSmallOutput</a> (int Caller, int HPos, int VPos, Graphics::TBitmap *PlotItem)</td></tr>
 <tr class="memdesc:a95aaa80515f0abb7715920b326b318dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plot small (4x4) graphic PlotItem on the zoomed-out display at HPos &amp; Vpos. <br /></td></tr>
@@ -270,48 +266,6 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
 static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#a758f553cef2eb9b3eee4d491454a7da9">DisplayZoomOutOffsetVHome</a> = 0</td></tr>
 <tr class="memdesc:a758f553cef2eb9b3eee4d491454a7da9"><td class="mdescLeft">&#160;</td><td class="mdescRight">the vertical offset of the zoomed-out 'Home' display <br /></td></tr>
 <tr class="separator:a758f553cef2eb9b3eee4d491454a7da9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a0e442bbdf413812064b3d0d200261cbc"><td class="memItemLeft" align="right" valign="top"><a id="a0e442bbdf413812064b3d0d200261cbc"></a>
-TImage *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#a0e442bbdf413812064b3d0d200261cbc">Output</a></td></tr>
-<tr class="memdesc:a0e442bbdf413812064b3d0d200261cbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to the 60 x 36 element railway display area <br /></td></tr>
-<tr class="separator:a0e442bbdf413812064b3d0d200261cbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62d6c2b2040a469fb6eb6177a8acc1f2"><td class="memItemLeft" align="right" valign="top"><a id="a62d6c2b2040a469fb6eb6177a8acc1f2"></a>
-TLabel *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#a62d6c2b2040a469fb6eb6177a8acc1f2">OutputLog1</a></td></tr>
-<tr class="memdesc:a62d6c2b2040a469fb6eb6177a8acc1f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointers to the warning message logs (appear above the railway display during operation) <br /></td></tr>
-<tr class="separator:a62d6c2b2040a469fb6eb6177a8acc1f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7a9ab1d203557810bdbfe39fad79855"><td class="memItemLeft" align="right" valign="top"><a id="ad7a9ab1d203557810bdbfe39fad79855"></a>
-TLabel *&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>OutputLog2</b></td></tr>
-<tr class="separator:ad7a9ab1d203557810bdbfe39fad79855"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae099b334095873971b46f5c4c5e0bd2e"><td class="memItemLeft" align="right" valign="top"><a id="ae099b334095873971b46f5c4c5e0bd2e"></a>
-TLabel *&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>OutputLog3</b></td></tr>
-<tr class="separator:ae099b334095873971b46f5c4c5e0bd2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4084cb29429480cfe74c86d84e376009"><td class="memItemLeft" align="right" valign="top"><a id="a4084cb29429480cfe74c86d84e376009"></a>
-TLabel *&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>OutputLog4</b></td></tr>
-<tr class="separator:a4084cb29429480cfe74c86d84e376009"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5ac89214b13057a1bf2dae88b3dac96"><td class="memItemLeft" align="right" valign="top"><a id="af5ac89214b13057a1bf2dae88b3dac96"></a>
-TLabel *&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>OutputLog5</b></td></tr>
-<tr class="separator:af5ac89214b13057a1bf2dae88b3dac96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3adf5d70fb01209e746cb3cd490294b4"><td class="memItemLeft" align="right" valign="top"><a id="a3adf5d70fb01209e746cb3cd490294b4"></a>
-TLabel *&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>OutputLog6</b></td></tr>
-<tr class="separator:a3adf5d70fb01209e746cb3cd490294b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b134b87e594c2cd261210023fd11161"><td class="memItemLeft" align="right" valign="top"><a id="a1b134b87e594c2cd261210023fd11161"></a>
-TLabel *&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>OutputLog7</b></td></tr>
-<tr class="separator:a1b134b87e594c2cd261210023fd11161"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9de95aeb0787e6c535cf6622b3a87d8d"><td class="memItemLeft" align="right" valign="top"><a id="a9de95aeb0787e6c535cf6622b3a87d8d"></a>
-TLabel *&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>OutputLog8</b></td></tr>
-<tr class="separator:a9de95aeb0787e6c535cf6622b3a87d8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5bf597b689a283f16b1aae5fe79ad2ec"><td class="memItemLeft" align="right" valign="top"><a id="a5bf597b689a283f16b1aae5fe79ad2ec"></a>
-TLabel *&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>OutputLog9</b></td></tr>
-<tr class="separator:a5bf597b689a283f16b1aae5fe79ad2ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc194f2bc9eda7fe8de600098c85d2ac"><td class="memItemLeft" align="right" valign="top"><a id="afc194f2bc9eda7fe8de600098c85d2ac"></a>
-TLabel *&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>OutputLog10</b></td></tr>
-<tr class="separator:afc194f2bc9eda7fe8de600098c85d2ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ecb842151b8cb4a56a72ec72b9ca682"><td class="memItemLeft" align="right" valign="top"><a id="a4ecb842151b8cb4a56a72ec72b9ca682"></a>
-TMemo *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#a4ecb842151b8cb4a56a72ec72b9ca682">PerformanceMemo</a></td></tr>
-<tr class="memdesc:a4ecb842151b8cb4a56a72ec72b9ca682"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to the panel that displays the performance log <br /></td></tr>
-<tr class="separator:a4ecb842151b8cb4a56a72ec72b9ca682"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that manages all aspects of the display</p>
@@ -559,8 +513,8 @@ TMemo *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a69c85bcbafea6cba5f06a93ffae7d3b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69c85bcbafea6cba5f06a93ffae7d3b2">&#9670;&nbsp;</a></span>PlotSignalBlank()</h2>
+<a id="a6e970089a9419e6bdd12576b6e860c95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e970089a9419e6bdd12576b6e860c95">&#9670;&nbsp;</a></span>PlotSignalBlank()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -587,7 +541,13 @@ TMemo *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>SpeedTag</em>&#160;</td>
+          <td class="paramname"><em>SpeedTag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>RHSFlag</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -600,8 +560,8 @@ TMemo *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="ab6c0da6543f57f83107fd0af371fec3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6c0da6543f57f83107fd0af371fec3e">&#9670;&nbsp;</a></span>PlotSignalBlankOnBitmap()</h2>
+<a id="abb140097c975da97aa53bc3946f3ea31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb140097c975da97aa53bc3946f3ea31">&#9670;&nbsp;</a></span>PlotSignalBlankOnBitmap()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -628,7 +588,13 @@ TMemo *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Graphics::TBitmap *&#160;</td>
-          <td class="paramname"><em>Bitmap</em>&#160;</td>
+          <td class="paramname"><em>Bitmap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>RHSFlag</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -644,8 +610,8 @@ TMemo *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li><a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a></li>
-<li>DisplayUnit.cpp</li>
+<li>C:/Programming work/railway development after v2.2.0/<a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a></li>
+<li>C:/Programming work/railway development after v2.2.0/DisplayUnit.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

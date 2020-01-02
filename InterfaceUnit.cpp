@@ -339,6 +339,19 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         LocationNamesNotSetImage->Picture->Bitmap->LoadFromResourceName(0, "LocNamesNotSetGraphic");
         LocationNamesSetImage->Picture->Bitmap->LoadFromResourceName(0, "LocNamesSetGraphic");
 
+        SigsOnLeftImage1->Picture->Bitmap->LoadFromResourceName(0, "SigsOnLeft");
+        SigsOnLeftImage2->Picture->Bitmap->LoadFromResourceName(0, "SigsOnLeft");
+        SigsOnLeftImage1->Transparent = true;
+        SigsOnLeftImage2->Transparent = true;
+        SigsOnLeftImage1->Picture->Bitmap->TransparentColor = clB5G5R5;
+        SigsOnLeftImage2->Picture->Bitmap->TransparentColor = clB5G5R5;
+        SigsOnRightImage1->Picture->Bitmap->LoadFromResourceName(0, "SigsOnRight");
+        SigsOnRightImage2->Picture->Bitmap->LoadFromResourceName(0, "SigsOnRight");
+        SigsOnRightImage1->Transparent = true;
+        SigsOnRightImage2->Transparent = true;
+        SigsOnRightImage1->Picture->Bitmap->TransparentColor = clB5G5R5;
+        SigsOnRightImage2->Picture->Bitmap->TransparentColor = clB5G5R5;
+
 /*   Don't need this - load icon directly into both Interface form & Application (via Project - Options - Application - Load Icon)
     RailwayIcon = new TPicture;
     RailwayIcon->Icon->LoadFromResourceName(0, "Icon1.ico");
@@ -413,6 +426,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
 
         //pick up transparent colour from file if there is one & set it to the stored value if it's valid else set to black
 
+        AnsiString ColourStr = "";
         std::ifstream ColFile((CurDir + "\\Background.col").c_str());
         if(ColFile.fail())
         {
@@ -420,7 +434,6 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         }
         else
         {
-            AnsiString ColourStr = "";
             if(!(Utilities->CheckAndReadFileString(ColFile, ColourStr)))
             {
                 Utilities->clTransparent = clB0G0R0; //default black background;
@@ -442,6 +455,67 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
                 else
                 {
                     Utilities->clTransparent = TColor(0);
+                }
+                ColFile.close(); //added at v2.3.0, should have been in earlier
+            }
+        }
+
+        Utilities->RHSignalFlag = false; //new at v2.3.0 for RH signals, always left hand on startup
+        AnsiString RHSigStr = "";
+        std::ifstream SignalFile((CurDir + "\\Signal.hnd").c_str());
+        if(SignalFile.fail())
+        {
+            SigImagePanel->Caption = "Signals will be on the left hand side of the track";
+            SigsOnLeftImage1->Visible = true;
+            SigsOnLeftImage2->Visible = true;
+            SigsOnRightImage1->Visible = false;
+            SigsOnRightImage2->Visible = false;
+            SignalFile.close(); //close ifstream & open ofstream
+            std::ofstream SignalFile((CurDir + "\\Signal.hnd").c_str());
+            if(!SignalFile.fail())  //if it does fail then it will revert to LHS anyway on next load unless select RH sigs
+            {
+                Utilities->SaveFileString(SignalFile, "LHSignals");
+            }
+            SignalFile.close();
+        }
+        else
+        {
+            if(Utilities->CheckAndReadFileString(SignalFile, RHSigStr))//if it fails then do nothing
+            {
+                if(RHSigStr == "RHSignals")
+                {
+                    RailGraphics->ConvertSignalsToOppositeHand(1); //always left hand initially when start program
+                    ConverttoRightHandSignalsMenuItem->Caption = "Convert to Left Hand Signals";
+                    if(Track->SignalAspectBuildMode == TTrack::GroundSignalBuild)
+                    {
+                        LoadGroundSignalGlyphs(1);
+                    }
+                    else
+                    {
+                        LoadNormalSignalGlyphs(1);
+                    }
+                    SigImagePanel->Caption = "Signals will be on the right hand side of the track";
+                    SigsOnLeftImage1->Visible = false;
+                    SigsOnLeftImage2->Visible = false;
+                    SigsOnRightImage1->Visible = true;
+                    SigsOnRightImage2->Visible = true;
+                    SignalFile.close();
+                }
+                else
+                {
+                    ConverttoRightHandSignalsMenuItem->Caption = "Convert to Right Hand Signals";
+                    SigImagePanel->Caption = "Signals will be on the left hand side of the track";
+                    SigsOnLeftImage1->Visible = true;
+                    SigsOnLeftImage2->Visible = true;
+                    SigsOnRightImage1->Visible = false;
+                    SigsOnRightImage2->Visible = false;
+                    SignalFile.close(); //close ifstream & open ofstream
+                    std::ofstream SignalFile((CurDir + "\\Signal.hnd").c_str());
+                    if(!SignalFile.fail())  //if it does fail then it will revert to LHS anyway on next load unless select RH sigs
+                    {
+                        Utilities->SaveFileString(SignalFile, "LHSignals");
+                    }
+                    SignalFile.close();
                 }
             }
         }
@@ -483,6 +557,8 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         OperatorActionPanel->Color = TColor(0xCCCCCC); //new v2.2.0 as above
         DevelopmentPanel->Color = TColor(0xCCCCCC); //new v2.2.0 as above
         TrainController->OpActionPanelHintDelayCounter = 0;
+
+        SigImagePanel->Left = (Interface->Width - SigImagePanel->Width)/2; //added for v2.3.0
     }
 
     catch (const EFOpenError &e)
@@ -842,8 +918,10 @@ void __fastcall TInterface::TextBoxKeyPress(TObject *Sender, char &Key)
                     Display->SetFont(TempFont);
                     delete TempFont;
                 }
-                TTextItem *TempText = new TTextItem(Text_X, Text_Y, TextBox->Text, Display->GetFont()); //needs to persist as added to text vector by reference
-                TextHandler->EnterAndDisplayNewText(0, *TempText, Text_X, Text_Y);
+                TFont *DisplayFont = Display->GetFont();
+                TTextItem TempText = TTextItem(Text_X, Text_Y, TextBox->Text, DisplayFont);
+                TempText.Font = DisplayFont; //may have been changed in above constructor when returned as reference
+                TextHandler->EnterAndDisplayNewText(0, TempText, Text_X, Text_Y);
             }
             EditMenu->Enabled = true;
             TextBox->Visible = false;
@@ -2190,7 +2268,16 @@ void __fastcall TInterface::SaveImageNoGridMenuItemClick(TObject *Sender)
     }
     catch (const Exception &e)
     {
-        ErrorLog(42, e.Message);
+        if(e.Message.Pos("torage") > 0) //'storage', avoid capitals as may be OS dependent
+        {
+            Screen->Cursor = TCursor(-2); //Arrow;
+            UnicodeString MessageStr = "Insufficient memory available to store this image";
+            Application->MessageBox(MessageStr.c_str(), L"", MB_OK);
+        }
+        else
+        {
+            ErrorLog(42, e.Message);
+        }
     }
 }
 
@@ -2277,7 +2364,16 @@ void __fastcall TInterface::SaveImageAndGridMenuItemClick(TObject *Sender)
     }
     catch (const Exception &e)
     {
-        ErrorLog(43, e.Message);
+        if(e.Message.Pos("torage") > 0) //'storage', avoid capitals as may be OS dependent
+        {
+            Screen->Cursor = TCursor(-2); //Arrow;
+            UnicodeString MessageStr = "Insufficient memory available to store this image";
+            Application->MessageBox(MessageStr.c_str(), L"", MB_OK);
+        }
+        else
+        {
+            ErrorLog(43, e.Message);
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -2355,7 +2451,16 @@ void __fastcall TInterface::SaveImageAndPrefDirsMenuItemClick(TObject *Sender)
     }
     catch (const Exception &e)
     {
-        ErrorLog(45, e.Message);
+        if(e.Message.Pos("torage") > 0) //'storage', avoid capitals as may be OS dependent
+        {
+            Screen->Cursor = TCursor(-2); //Arrow;
+            UnicodeString MessageStr = "Insufficient memory available to store this image";
+            Application->MessageBox(MessageStr.c_str(), L"", MB_OK);
+        }
+        else
+        {
+            ErrorLog(45, e.Message);
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -2468,7 +2573,16 @@ void __fastcall TInterface::SaveOperatingImageMenuItemClick(TObject *Sender)
     }
     catch (const Exception &e)
     {
-        ErrorLog(113, e.Message);
+        if(e.Message.Pos("torage") > 0) //'storage', avoid capitals as may be OS dependent
+        {
+            Screen->Cursor = TCursor(-2); //Arrow;
+            UnicodeString MessageStr = "Insufficient memory available to store this image";
+            Application->MessageBox(MessageStr.c_str(), L"", MB_OK);
+        }
+        else
+        {
+            ErrorLog(113, e.Message);
+        }
     }
 }
 
@@ -5997,9 +6111,11 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                 }
                 else
                 {
-                    PointsFlashDuration = AllRoutes->PointsDelay;
-                    Track->LevelCrossingBarrierUpFlashDuration = AllRoutes->LevelCrossingBarrierUpDelay;
-                    Track->LevelCrossingBarrierDownFlashDuration = AllRoutes->LevelCrossingBarrierDownDelay;
+                    float TempSpeedVal = 1; //added for v2.3.0 to keep durations same as x1 values for slow speeds
+                    if(TTClockSpeed < 1) TempSpeedVal = TTClockSpeed;
+                    PointsFlashDuration = AllRoutes->PointsDelay * TempSpeedVal;
+                    Track->LevelCrossingBarrierUpFlashDuration = AllRoutes->LevelCrossingBarrierUpDelay * TempSpeedVal;
+                    Track->LevelCrossingBarrierDownFlashDuration = AllRoutes->LevelCrossingBarrierDownDelay * TempSpeedVal;
                 }
                 if(RouteMode == RouteNotStarted)
                 {
@@ -6187,9 +6303,11 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                         {
                             Track->RouteFlashFlag = true;
                             PreferredRouteFlag = true;
+                            float TempSpeedVal = 1; //added for v2.3.0 to keep durations same as x1 values for slow speeds
+                            if(TTClockSpeed < 1) TempSpeedVal = TTClockSpeed;
                             if(Level2OperMode == PreStart) RouteFlashDuration = 0.0;
-                            else if(PointsChanged) RouteFlashDuration = AllRoutes->PointsDelay;
-                            else RouteFlashDuration = AllRoutes->SignalsDelay;
+                            else if(PointsChanged) RouteFlashDuration = AllRoutes->PointsDelay * TempSpeedVal;
+                            else RouteFlashDuration = AllRoutes->SignalsDelay * TempSpeedVal;
                             ConstructRoute->SetRouteFlashValues(1, AutoSigsFlag, true); //true for ConsecSignalsRoute
                             RouteFlashStartTime = TrainController->TTClockTime;
                         }
@@ -6210,9 +6328,11 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                         {
                             Track->RouteFlashFlag = true;
                             PreferredRouteFlag = false;
+                            float TempSpeedVal = 1; //added for v2.3.0 to keep durations same as x1 values for slow speeds
+                            if(TTClockSpeed < 1) TempSpeedVal = TTClockSpeed;
                             if(Level2OperMode == PreStart) RouteFlashDuration = 0.0;
-                            else if(PointsChanged) RouteFlashDuration = AllRoutes->PointsDelay;
-                            else RouteFlashDuration = AllRoutes->SignalsDelay;
+                            else if(PointsChanged) RouteFlashDuration = AllRoutes->PointsDelay * TempSpeedVal;
+                            else RouteFlashDuration = AllRoutes->SignalsDelay * TempSpeedVal;
                             ConstructRoute->SetRouteFlashValues(2, false, false);
                             RouteFlashStartTime = TrainController->TTClockTime;
                         }
@@ -7859,7 +7979,7 @@ void __fastcall TInterface::FlipMenuItemClick(TObject *Sender)
             //Note:  need to change flip, mirror & 180deg functions as only change speedtag without changing anything else.
             //This didn't matter before new paste with attributes added at v2.2.0 as a new element was built from the speedtag,
             //but now if do a reselect then cut and paste with attributes the wrong graphic is pasted and all other attributes
-            //are wrong. Need to rebuilt a new TrackElement from the new speedtag and use that in the select vector.
+            //are wrong. Need to rebuild a new TrackElement from the new speedtag and use that in the select vector.
             //Note the if use Flip, mirror etc then all attributes lost anyway so ok to build a basic element.
             int VLoc = VerSum - Track->SelectVectorAt(8, x).VLoc;
             int HLoc = Track->SelectVectorAt(7, x).HLoc;
@@ -9052,6 +9172,7 @@ void __fastcall TInterface::BlackBgndMenuItemClick(TObject *Sender)
         else
         {
             Utilities->SaveFileString(ColFile, "black");
+            ColFile.close(); //added at v2.3.0, should have been in earlier
         }
         TColor OldTransparentColour = Utilities->clTransparent;
         Utilities->clTransparent = TColor(0);
@@ -9088,6 +9209,7 @@ void __fastcall TInterface::WhiteBgndMenuItemClick(TObject *Sender)
         else
         {
             Utilities->SaveFileString(ColFile, "white");
+            ColFile.close(); //added at v2.3.0, should have been in earlier
         }
         TColor OldTransparentColour = Utilities->clTransparent;
         Utilities->clTransparent = TColor(0xFFFFFF);
@@ -9124,6 +9246,7 @@ void __fastcall TInterface::BlueBgndMenuItemClick(TObject *Sender)
         else
         {
             Utilities->SaveFileString(ColFile, "blue");
+            ColFile.close(); //added at v2.3.0, should have been in earlier
         }
         TColor OldTransparentColour = Utilities->clTransparent;
         Utilities->clTransparent = TColor(0x330000);
@@ -9683,6 +9806,41 @@ void __fastcall TInterface::TTClockxQuarterButtonClick(TObject *Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TInterface::TTClockxEighthButtonClick(TObject *Sender)
+{ //added for v2.3.0 for very big railways
+    try
+    {
+        TrainController->LogEvent("TTClockxEighthButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockxEighthButtonClick");
+        TTClockSpeed = 0.125;
+        TTClockSpeedLabel->Caption = "x1/8";
+        Utilities->CallLogPop(2099);
+    }
+    catch (const Exception &e)
+    {
+        ErrorLog(203, e.Message);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::TTClockxSixteenthButtonClick(TObject *Sender)
+{ //added for v2.3.0 for very big railways
+    try
+    {
+        TrainController->LogEvent("TTClockxSixteenthButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockxSixteenthButtonClick");
+        TTClockSpeed = 0.0625;
+        TTClockSpeedLabel->Caption = "x1/16";
+        Utilities->CallLogPop(2100);
+    }
+    catch (const Exception &e)
+    {
+        ErrorLog(204, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
 void __fastcall TInterface::TTClockAdd1hButtonClick(TObject *Sender)
 {
     try
@@ -9760,6 +9918,8 @@ void __fastcall TInterface::TTClockResetButtonClick(TObject *Sender)
         else if(TTClockSpeed == 16) TTClockSpeedLabel->Caption = "x16";
         else if(TTClockSpeed == 0.5) TTClockSpeedLabel->Caption = "x1/2";
         else if(TTClockSpeed == 0.25) TTClockSpeedLabel->Caption = "x1/4";
+        else if(TTClockSpeed == 0.125) TTClockSpeedLabel->Caption = "x1/8";
+        else if(TTClockSpeed == 0.0625) TTClockSpeedLabel->Caption = "x1/16";
         else
         {
             TTClockSpeed = 1;
@@ -9855,6 +10015,7 @@ void __fastcall TInterface::FormResize(TObject *Sender)   //new at v2.1.0
             //HomeButton->Left = MainScreen->Width + MainScreen->Left;
             //NewHomeButton->Left = MainScreen->Width + MainScreen->Left;
             //ZoomButton->Left = MainScreen->Width + MainScreen->Left;
+            SigImagePanel->Left = (Interface->Width - SigImagePanel->Width)/2;//added for v2.3.0
             DevelopmentPanel->Top = MainScreen->Top + MainScreen->Height - DevelopmentPanel->Height;  //new v2.2.0
             DevelopmentPanel->Left = MainScreen->Left + MainScreen->Width - DevelopmentPanel->Width;; //new v2.2.0
             if(!Display->ZoomOutFlag)
@@ -9906,9 +10067,76 @@ void __fastcall TInterface::OperatorActionButtonClick(TObject *Sender)
     {
         ErrorLog(199, e.Message);
     }
-
 }
 
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::ConverttoRightHandSignalsMenuItemClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("ConverttoRightHandSignalsMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ConverttoRightHandSignalsMenuItemClick");
+        RailGraphics->ConvertSignalsToOppositeHand(2);
+        if(Utilities->RHSignalFlag)  //RH sigs after conversion
+        {
+            ConverttoRightHandSignalsMenuItem->Caption = "Convert to Left Hand Signals";
+            if(Track->SignalAspectBuildMode == TTrack::GroundSignalBuild)
+            {
+                LoadGroundSignalGlyphs(2);
+            }
+            else
+            {
+                LoadNormalSignalGlyphs(2);
+            }
+            SigImagePanel->Caption = "Signals will be on the right hand side of the track";
+            SigsOnLeftImage1->Visible = false;
+            SigsOnLeftImage2->Visible = false;
+            SigsOnRightImage1->Visible = true;
+            SigsOnRightImage2->Visible = true;
+            std::ofstream SigFile((CurDir + "\\Signal.hnd").c_str());
+            if(SigFile.fail())
+            {
+                ShowMessage("Failed to store right hand signal setting, program will default to left hand signals when next loaded");
+            }
+            else
+            {
+                Utilities->SaveFileString(SigFile, "RHSignals");
+            }
+        }
+        else  //LH sigs after conversion
+        {
+            ConverttoRightHandSignalsMenuItem->Caption = "Convert to Right Hand Signals";
+            if(Track->SignalAspectBuildMode == TTrack::GroundSignalBuild)
+            {
+                LoadGroundSignalGlyphs(3);
+            }
+            else
+            {
+                LoadNormalSignalGlyphs(3);
+            }
+            SigImagePanel->Caption = "Signals will be on the left hand side of the track";
+            SigsOnRightImage1->Visible = false;
+            SigsOnRightImage2->Visible = false;
+            SigsOnLeftImage1->Visible = true;
+            SigsOnLeftImage2->Visible = true;
+            std::ofstream SigFile((CurDir + "\\Signal.hnd").c_str());
+            if(SigFile.fail())
+            {
+                //no need for message as will default to LH: ShowMessage("Failed to store left hand signal setting, program will default to left hand signals when next loaded");
+            }
+            else
+            {
+                Utilities->SaveFileString(SigFile, "LHSignals");
+            }
+        }
+        Utilities->CallLogPop(2097);
+    }
+    catch (const Exception &e)
+    {
+        ErrorLog(202, e.Message);
+    }
+}
 //---------------------------------------------------------------------------
 //end of fastcalls & directly associated functions
 //---------------------------------------------------------------------------
@@ -9933,7 +10161,7 @@ void TInterface::ClearandRebuildRailway(int Caller) //now uses HiddenScreen to h
     }
     TextHandler->RebuildFromTextVector(1, HiddenDisplay);
     Track->RebuildTrack(4, HiddenDisplay, (Level1Mode != OperMode)); //Need to plot track after text since text not transparent.  (Level1Mode != OperMode)
-                                                                     //plots both point fillets for all but OperMode & plots closed (to trains) LCs (in
+                                                                     //plots both point fillets for all but OperMode & plots closed (to trains) LCs
 
 
 
@@ -10407,6 +10635,8 @@ void TInterface::SetLevel1Mode(int Caller)
         Track->ChangingLCVector.clear();
         Track->BarriersDownVector.clear();
         Track->ResetLevelCrossings(0);
+        ConverttoRightHandSignalsMenuItem->Enabled = false; //new at v2.3.0
+        SigImagePanel->Visible = false;  //new at v2.3.0
         if(Track->IsTrackFinished())
         {
             PlanPrefDirsMenuItem->Enabled = true;
@@ -10444,6 +10674,8 @@ void TInterface::SetLevel1Mode(int Caller)
             BlackBgndMenuItem->Enabled = false;
             WhiteBgndMenuItem->Enabled = false;
             BlueBgndMenuItem->Enabled = false;
+            ConverttoRightHandSignalsMenuItem->Enabled = true; //new at v2.3.0
+            SigImagePanel->Visible = true;  //new at v2.3.0
             if(Utilities->clTransparent != TColor(0))
             {
                 BlackBgndMenuItem->Enabled = true;
@@ -10513,6 +10745,7 @@ void TInterface::SetLevel1Mode(int Caller)
         Level2PrefDirMode = NoPrefDirMode;
         Level2OperMode = NoOperMode;
         ModeMenu->Enabled = false;
+        SigImagePanel->Visible = false;  //new at v2.3.0
         FileMenu->Enabled = false;
         EditMenu->Enabled = false;
         FloatingInfoMenu->Enabled = false;
@@ -10543,6 +10776,7 @@ void TInterface::SetLevel1Mode(int Caller)
         LocationNameTextBox->Visible = false;
         TextBox->Visible = false;
         ModeMenu->Enabled = false;
+        SigImagePanel->Visible = false;  //new at v2.3.0
         FileMenu->Enabled = false;
         //set edit menu items
         SetInitialTrackModeEditMenu();
@@ -10604,6 +10838,7 @@ void TInterface::SetLevel1Mode(int Caller)
         InfoPanel->Caption = "PREFERRED DIRECTION SETTING:  Select preferred direction start location (right click to erase)";
         PrefDirKey->Visible = true;
         ModeMenu->Enabled = false;
+        SigImagePanel->Visible = false;  //new at v2.3.0
         FileMenu->Enabled = false;
 //set edit menu items
         SetInitialPrefDirModeEditMenu();
@@ -10638,6 +10873,7 @@ void TInterface::SetLevel1Mode(int Caller)
         PresetAutoSigRoutesButton->Visible = true;
         PresetAutoSigRoutesButton->Enabled = true;
         InfoPanel->Visible = true;
+        SigImagePanel->Visible = false;  //new at v2.3.0
         ModeMenu->Enabled = false;
         FileMenu->Enabled = false;
         EditMenu->Enabled = false;
@@ -10753,6 +10989,7 @@ void TInterface::SetLevel1Mode(int Caller)
         PresetAutoSigRoutesButton->Visible = false;
         InfoPanel->Visible = true;
         ModeMenu->Enabled = false;
+        SigImagePanel->Visible = false;  //new at v2.3.0
         FileMenu->Enabled = false;
         EditMenu->Enabled = false;
         ImageMenu->Enabled = true;
@@ -10878,7 +11115,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
 
     case AddText:
         InfoPanel->Visible = true;
-        InfoPanel->Caption = "ADDING/EDITING TEXT:  Left click to add, left click first letter to edit, right click first letter to remove";
+        InfoPanel->Caption = "ADDING/EDITING TEXT: Left click to add, left click first letter to edit (+CR), or remove (+Esc)";
         if(TextHandler->TextVectorSize(13) > 0)
         {
             MoveTextButton->Enabled = true;
@@ -11330,6 +11567,8 @@ void TInterface::SetLevel2OperMode(int Caller)
         else if(TTClockSpeed == 16) TTClockSpeedLabel->Caption = "x16";
         else if(TTClockSpeed == 0.5) TTClockSpeedLabel->Caption = "x1/2";
         else if(TTClockSpeed == 0.25) TTClockSpeedLabel->Caption = "x1/4";
+        else if(TTClockSpeed == 0.125) TTClockSpeedLabel->Caption = "x1/8";
+        else if(TTClockSpeed == 0.0625) TTClockSpeedLabel->Caption = "x1/16";
         else
         {
             TTClockSpeed = 1;
@@ -11345,6 +11584,8 @@ void TInterface::SetLevel2OperMode(int Caller)
             else if(TTClockSpeed == 16) Display->PerformanceLog(9, TimeMessage + "Timetable clock speed changed to sixteen times normal");
             else if(TTClockSpeed == 0.5) Display->PerformanceLog(10, TimeMessage + "Timetable clock speed changed to half normal");
             else if(TTClockSpeed == 0.25) Display->PerformanceLog(11, TimeMessage + "Timetable clock speed changed to quarter normal");
+            else if(TTClockSpeed == 0.125) Display->PerformanceLog(11, TimeMessage + "Timetable clock speed changed to one eighth normal");
+            else if(TTClockSpeed == 0.0625) Display->PerformanceLog(11, TimeMessage + "Timetable clock speed changed to one sixteenth normal");
             else Display->PerformanceLog(12, TimeMessage + "Timetable clock speed changed to normal");
         }
         double TTClockTimeChange = double(TrainController->RestartTime) - PauseEntryRestartTime;
@@ -11521,6 +11762,17 @@ void TInterface::TrackTrainFloat(int Caller)
         { //dont show floating window if mouse over performance panel
             FloatingPanel->Visible = false;
             Utilities->CallLogPop(1715);
+            return;
+        }
+    }
+
+    if(OperatorActionPanel->Visible) //added at v2.3.0 as showed info from behind panel - thanks to Xeon who notified me in email of 15/10/19
+    {
+        if((MousePoint.x >= OperatorActionPanel->Left) && (MousePoint.x <= (OperatorActionPanel->Left + OperatorActionPanel->Width)) &&
+           ((MousePoint.y - ClientOrigin.y) >= OperatorActionPanel->Top) && ((MousePoint.y - ClientOrigin.y) <= (OperatorActionPanel->Top + OperatorActionPanel->Height)))
+        { //dont show floating window if mouse over OperatorActionPanel
+            FloatingPanel->Visible = false;
+            Utilities->CallLogPop(2098);
             return;
         }
     }
@@ -12566,6 +12818,7 @@ void TInterface::ErrorLog(int Caller, AnsiString Message)
     OperatingPanel->Visible = false;
     FloatingPanel->Visible = false;
     ModeMenu->Enabled = false;
+    SigImagePanel->Visible = false;  //new at v2.3.0
     FileMenu->Enabled = false;
     EditMenu->Enabled = false;
     FloatingInfoMenu->Enabled = false;
@@ -12673,7 +12926,7 @@ void TInterface::ResetAll(int Caller)
     TextGridButton->Glyph->LoadFromResourceName(0, "PixelPrecision1");
     Track->SignalAspectBuildMode = TTrack::FourAspectBuild;
     SigAspectButton->Glyph->LoadFromResourceName(0, "FourAspect");
-    LoadNormalSignalGlyphs(1);
+    LoadNormalSignalGlyphs(4);
     WarningFlashCount = 0;
 
     Level1Mode = BaseMode;
@@ -13102,7 +13355,29 @@ void TInterface::LoadSession(int Caller)
     }
     catch (const Exception &e)
     {
-        ErrorLog(41, e.Message);
+        if((e.Message.Pos("esource") > 0) || (e.Message.Pos("arameter") > 0)) //'Resource or Parameter, avoid capitals as may be OS dependent
+        {
+            Screen->Cursor = TCursor(-2); //Arrow;
+            OutputLog1->Caption = "";
+            OutputLog2->Caption = "";
+            OutputLog3->Caption = "";
+            OutputLog4->Caption = "";
+            OutputLog5->Caption = "";
+            OutputLog6->Caption = "";
+            OutputLog7->Caption = "";
+            OutputLog8->Caption = "";
+            OutputLog9->Caption = "";
+            OutputLog10->Caption = "";
+            UnicodeString MessageStr = "Insufficient memory available to load the file, and partial load likely to be corrupt. Application will terminate. Try loading the session as the first action after reloading the program";
+//            UnicodeString MessageStr = "Last train loaded = " + UnicodeString(TrainController->LastTrainLoaded); //for debugging session train loading for many trains
+            Application->MessageBox(MessageStr.c_str(), L"", MB_OK);
+            Application->Terminate();
+
+        }
+        else
+        {
+            ErrorLog(41, e.Message);
+        }
     }
 }
 
@@ -15092,6 +15367,7 @@ void TInterface::AddLocationNameText(int Caller, AnsiString Name, int HPos, int 
         else VPos = ScreenPosLo + 288;  //if location extends to or beyond height of screen the display in centre of screen
     }
     TTextItem TI(HPos, VPos, Name, Font);
+    TI.Font = Font; //may have been changed in constructor when returned as reference
     TextHandler->EnterAndDisplayNewText(1, TI, HPos, VPos);
     Utilities->CallLogPop(1558);
 }
@@ -15102,6 +15378,7 @@ void TInterface::TestFunction()
 {
     try
     {
+    /*
         ShowMessage(
             "Interface->Left + Interface->Width " + UnicodeString(Interface->Left + Interface->Width) +
             "\nInterface->Left + MainScreen->Left + MainScreen->Width " +
@@ -15116,6 +15393,13 @@ void TInterface::TestFunction()
             "\nInterface->Top " + UnicodeString(Interface->Top) +
             "\n\nScreenRightButton->Left " + UnicodeString(ScreenRightButton->Left)
             );
+*/
+/*
+    RailGraphics->ConvertSignalsToOppositeHand(0);
+    Utilities->RHSignalFlag = !Utilities->RHSignalFlag; //set initially to 0 = LH
+    ClearandRebuildRailway(73);
+*/
+
 //    throw Exception("Test exception");//test
 //    int zz = MissedTicks;
 //    MissedTicks = 0;
@@ -15127,7 +15411,7 @@ void TInterface::TestFunction()
 }
 
 //---------------------------------------------------------------------------
-
+/*
 void TInterface::LoadNormalSignalGlyphs(int Caller)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadNormalSignalGlyphs,");
@@ -15135,7 +15419,7 @@ void TInterface::LoadNormalSignalGlyphs(int Caller)
     SpeedButton70->Glyph->LoadFromResourceName(0, "gl70"); SpeedButton71->Glyph->LoadFromResourceName(0, "gl71");
     SpeedButton72->Glyph->LoadFromResourceName(0, "gl72"); SpeedButton73->Glyph->LoadFromResourceName(0, "gl73");
     SpeedButton74->Glyph->LoadFromResourceName(0, "gl74"); SpeedButton75->Glyph->LoadFromResourceName(0, "gl75");
-    Utilities->CallLogPop(1871);
+    Utilities->CallLogPop(**);
 }
 
 //---------------------------------------------------------------------------
@@ -15147,6 +15431,29 @@ void TInterface::LoadGroundSignalGlyphs(int Caller)
     SpeedButton70->Glyph->LoadFromResourceName(0, "bm70grounddblred"); SpeedButton71->Glyph->LoadFromResourceName(0, "bm71grounddblred");
     SpeedButton72->Glyph->LoadFromResourceName(0, "bm72grounddblred"); SpeedButton73->Glyph->LoadFromResourceName(0, "gl73grounddblred");
     SpeedButton74->Glyph->LoadFromResourceName(0, "gl74grounddblred"); SpeedButton75->Glyph->LoadFromResourceName(0, "bm75grounddblred");
+    Utilities->CallLogPop(**);
+}
+*/
+//---------------------------------------------------------------------------
+void TInterface::LoadNormalSignalGlyphs(int Caller) //changed from the above at v2.3.0 so the signal glyphs change hands
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadNormalSignalGlyphs,");
+    SpeedButton68->Glyph = RailGraphics->SpeedBut68NormBlackGlyph; SpeedButton69->Glyph = RailGraphics->SpeedBut69NormBlackGlyph;
+    SpeedButton70->Glyph = RailGraphics->SpeedBut70NormBlackGlyph; SpeedButton71->Glyph = RailGraphics->SpeedBut71NormBlackGlyph;
+    SpeedButton72->Glyph = RailGraphics->SpeedBut72NormBlackGlyph; SpeedButton73->Glyph = RailGraphics->SpeedBut73NormBlackGlyph;
+    SpeedButton74->Glyph = RailGraphics->SpeedBut74NormBlackGlyph; SpeedButton75->Glyph = RailGraphics->SpeedBut75NormBlackGlyph;
+    Utilities->CallLogPop(1871);
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::LoadGroundSignalGlyphs(int Caller) //changed from the above at v2.3.0 so the signal glyphs change hands
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadGroundSignalGlyphs,");
+    SpeedButton68->Glyph = RailGraphics->SpeedBut68GrndBlackGlyph; SpeedButton69->Glyph = RailGraphics->SpeedBut69GrndBlackGlyph;
+    SpeedButton70->Glyph = RailGraphics->SpeedBut70GrndBlackGlyph; SpeedButton71->Glyph = RailGraphics->SpeedBut71GrndBlackGlyph;
+    SpeedButton72->Glyph = RailGraphics->SpeedBut72GrndBlackGlyph; SpeedButton73->Glyph = RailGraphics->SpeedBut73GrndBlackGlyph;
+    SpeedButton74->Glyph = RailGraphics->SpeedBut74GrndBlackGlyph; SpeedButton75->Glyph = RailGraphics->SpeedBut75GrndBlackGlyph;
     Utilities->CallLogPop(1872);
 }
 
@@ -15169,7 +15476,7 @@ void TInterface::UpdateOperatorActionPanel(int Caller)  //new at v2.2.0
     AnsiString OpTimeToActString;
     AnsiString HeadCode;
     float OpTimeToActFloat;
-	TTrainController::THCandTrainPosParam HCandTrainPosParam;
+    TTrainController::THCandTrainPosParam HCandTrainPosParam;
     TrainController->OpTimeToActMultiMapIterator = TrainController->OpTimeToActMultiMap.begin();
     while(TrainController->OpTimeToActMultiMapIterator != TrainController->OpTimeToActMultiMap.end())
     {
@@ -15178,8 +15485,8 @@ void TInterface::UpdateOperatorActionPanel(int Caller)  //new at v2.2.0
             break;
         }
         OpTimeToActFloat = TrainController->OpTimeToActMultiMapIterator->first;
-		HCandTrainPosParam = TrainController->OpTimeToActMultiMapIterator->second;
-		HeadCode = HCandTrainPosParam.first;
+        HCandTrainPosParam = TrainController->OpTimeToActMultiMapIterator->second;
+        HeadCode = HCandTrainPosParam.first;
         if(OpTimeToActFloat < 0.25) //15 secs estimated
         {
             OpTimeToActString = "NOW";
@@ -15268,5 +15575,4 @@ Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file posit
 */
 
 //---------------------------------------------------------------------------
-
 

@@ -33,273 +33,273 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <Graphics.hpp>
 //---------------------------------------------------------------------------
 // definitions based on the 216 web safe colours. All the graphics in the resource file use these colours
-#define clB0G0R0 (TColor)0x000000
-#define clB0G0R1 (TColor)0x000033
-#define clB0G0R2 (TColor)0x000066
-#define clB0G0R3 (TColor)0x000099
-#define clB0G0R4 (TColor)0x0000CC
-#define clB0G0R5 (TColor)0x0000FF
+#define clB0G0R0 (TColor)0x000000   //offset, hex values 36  colour number 00
+#define clB0G0R1 (TColor)0x000033   //3a   24
+#define clB0G0R2 (TColor)0x000066   //3e   48
+#define clB0G0R3 (TColor)0x000099   //42   6c
+#define clB0G0R4 (TColor)0x0000CC   //46   90
+#define clB0G0R5 (TColor)0x0000FF   //4a   b4
 
-#define clB0G1R0 (TColor)0x003300
-#define clB0G1R1 (TColor)0x003333
-#define clB0G1R2 (TColor)0x003366
-#define clB0G1R3 (TColor)0x003399
-#define clB0G1R4 (TColor)0x0033CC
-#define clB0G1R5 (TColor)0x0033FF
+#define clB0G1R0 (TColor)0x003300   //4e   06
+#define clB0G1R1 (TColor)0x003333   //52   2a
+#define clB0G1R2 (TColor)0x003366   //56   4e
+#define clB0G1R3 (TColor)0x003399   //5a   72
+#define clB0G1R4 (TColor)0x0033CC   //5e   96
+#define clB0G1R5 (TColor)0x0033FF   //62   ba
 
-#define clB0G2R0 (TColor)0x006600
-#define clB0G2R1 (TColor)0x006633
-#define clB0G2R2 (TColor)0x006666
-#define clB0G2R3 (TColor)0x006699
-#define clB0G2R4 (TColor)0x0066CC
-#define clB0G2R5 (TColor)0x0066FF
+#define clB0G2R0 (TColor)0x006600   //66   0c
+#define clB0G2R1 (TColor)0x006633   //6a   30
+#define clB0G2R2 (TColor)0x006666   //6e   54
+#define clB0G2R3 (TColor)0x006699   //72   78
+#define clB0G2R4 (TColor)0x0066CC   //76   9c
+#define clB0G2R5 (TColor)0x0066FF   //7a   c0
 
-#define clB0G3R0 (TColor)0x009900
-#define clB0G3R1 (TColor)0x009933
-#define clB0G3R2 (TColor)0x009966
-#define clB0G3R3 (TColor)0x009999
-#define clB0G3R4 (TColor)0x0099CC
-#define clB0G3R5 (TColor)0x0099FF
+#define clB0G3R0 (TColor)0x009900   //7e   12
+#define clB0G3R1 (TColor)0x009933   //82   36
+#define clB0G3R2 (TColor)0x009966   //86   5a
+#define clB0G3R3 (TColor)0x009999   //8a   7e
+#define clB0G3R4 (TColor)0x0099CC   //8e   a2
+#define clB0G3R5 (TColor)0x0099FF   //92   c6
 
-#define clB0G4R0 (TColor)0x00CC00
-#define clB0G4R1 (TColor)0x00CC33
-#define clB0G4R2 (TColor)0x00CC66
-#define clB0G4R3 (TColor)0x00CC99
-#define clB0G4R4 (TColor)0x00CCCC
-#define clB0G4R5 (TColor)0x00CCFF
+#define clB0G4R0 (TColor)0x00CC00   //96   18
+#define clB0G4R1 (TColor)0x00CC33   //9a   3c
+#define clB0G4R2 (TColor)0x00CC66   //9e   60
+#define clB0G4R3 (TColor)0x00CC99   //a2   84
+#define clB0G4R4 (TColor)0x00CCCC   //a6   a8
+#define clB0G4R5 (TColor)0x00CCFF   //aa   cc
 
-#define clB0G5R0 (TColor)0x00FF00
-#define clB0G5R1 (TColor)0x00FF33
-#define clB0G5R2 (TColor)0x00FF66
-#define clB0G5R3 (TColor)0x00FF99
-#define clB0G5R4 (TColor)0x00FFCC
-#define clB0G5R5 (TColor)0x00FFFF
+#define clB0G5R0 (TColor)0x00FF00   //ae   1e
+#define clB0G5R1 (TColor)0x00FF33   //b2   42
+#define clB0G5R2 (TColor)0x00FF66   //b6   66
+#define clB0G5R3 (TColor)0x00FF99   //ba   8a
+#define clB0G5R4 (TColor)0x00FFCC   //be   ae
+#define clB0G5R5 (TColor)0x00FFFF   //c2   d2
 
-#define clB1G0R0 (TColor)0x330000
-#define clB1G0R1 (TColor)0x330033
-#define clB1G0R2 (TColor)0x330066
-#define clB1G0R3 (TColor)0x330099
-#define clB1G0R4 (TColor)0x3300CC
-#define clB1G0R5 (TColor)0x3300FF
+#define clB1G0R0 (TColor)0x330000   //c6   01
+#define clB1G0R1 (TColor)0x330033   //ca   25
+#define clB1G0R2 (TColor)0x330066   //ce   49
+#define clB1G0R3 (TColor)0x330099   //d2   6d
+#define clB1G0R4 (TColor)0x3300CC   //d6   91
+#define clB1G0R5 (TColor)0x3300FF   //da   b5
 
-#define clB1G1R0 (TColor)0x333300
-#define clB1G1R1 (TColor)0x333333
-#define clB1G1R2 (TColor)0x333366
-#define clB1G1R3 (TColor)0x333399
-#define clB1G1R4 (TColor)0x3333CC
-#define clB1G1R5 (TColor)0x3333FF
+#define clB1G1R0 (TColor)0x333300   //de   07
+#define clB1G1R1 (TColor)0x333333   //e2   2b
+#define clB1G1R2 (TColor)0x333366   //e6   4f
+#define clB1G1R3 (TColor)0x333399   //ea   73
+#define clB1G1R4 (TColor)0x3333CC   //ee   97
+#define clB1G1R5 (TColor)0x3333FF   //f2   bb
 
-#define clB1G2R0 (TColor)0x336600
-#define clB1G2R1 (TColor)0x336633
-#define clB1G2R2 (TColor)0x336666
-#define clB1G2R3 (TColor)0x336699
-#define clB1G2R4 (TColor)0x3366CC
-#define clB1G2R5 (TColor)0x3366FF
+#define clB1G2R0 (TColor)0x336600   //f6   0d
+#define clB1G2R1 (TColor)0x336633   //fa   31
+#define clB1G2R2 (TColor)0x336666   //fe   55
+#define clB1G2R3 (TColor)0x336699   //102  79
+#define clB1G2R4 (TColor)0x3366CC   //106  9d
+#define clB1G2R5 (TColor)0x3366FF   //10a  c1
 
-#define clB1G3R0 (TColor)0x339900
-#define clB1G3R1 (TColor)0x339933
-#define clB1G3R2 (TColor)0x339966
-#define clB1G3R3 (TColor)0x339999
-#define clB1G3R4 (TColor)0x3399CC
-#define clB1G3R5 (TColor)0x3399FF
+#define clB1G3R0 (TColor)0x339900   //10e  13
+#define clB1G3R1 (TColor)0x339933   //11   37
+#define clB1G3R2 (TColor)0x339966   //116  5b
+#define clB1G3R3 (TColor)0x339999   //11a  7f
+#define clB1G3R4 (TColor)0x3399CC   //11e  a3
+#define clB1G3R5 (TColor)0x3399FF   //122  c7
 
-#define clB1G4R0 (TColor)0x33CC00
-#define clB1G4R1 (TColor)0x33CC33
-#define clB1G4R2 (TColor)0x33CC66
-#define clB1G4R3 (TColor)0x33CC99
-#define clB1G4R4 (TColor)0x33CCCC
-#define clB1G4R5 (TColor)0x33CCFF
+#define clB1G4R0 (TColor)0x33CC00   //126  19
+#define clB1G4R1 (TColor)0x33CC33   //12a  3d
+#define clB1G4R2 (TColor)0x33CC66   //12e  61
+#define clB1G4R3 (TColor)0x33CC99   //132  85
+#define clB1G4R4 (TColor)0x33CCCC   //136  a9
+#define clB1G4R5 (TColor)0x33CCFF   //13a  cd
 
-#define clB1G5R0 (TColor)0x33FF00
-#define clB1G5R1 (TColor)0x33FF33
-#define clB1G5R2 (TColor)0x33FF66
-#define clB1G5R3 (TColor)0x33FF99
-#define clB1G5R4 (TColor)0x33FFCC
-#define clB1G5R5 (TColor)0x33FFFF
+#define clB1G5R0 (TColor)0x33FF00   //13e  1f
+#define clB1G5R1 (TColor)0x33FF33   //142  43
+#define clB1G5R2 (TColor)0x33FF66   //146  67
+#define clB1G5R3 (TColor)0x33FF99   //14a  8b
+#define clB1G5R4 (TColor)0x33FFCC   //14e  af
+#define clB1G5R5 (TColor)0x33FFFF   //152  d3
 
-#define clB2G0R0 (TColor)0x660000
-#define clB2G0R1 (TColor)0x660033
-#define clB2G0R2 (TColor)0x660066
-#define clB2G0R3 (TColor)0x660099
-#define clB2G0R4 (TColor)0x6600CC
-#define clB2G0R5 (TColor)0x6600FF
+#define clB2G0R0 (TColor)0x660000   //156  02
+#define clB2G0R1 (TColor)0x660033   //15a  26
+#define clB2G0R2 (TColor)0x660066   //15e  4a
+#define clB2G0R3 (TColor)0x660099   //162  6e
+#define clB2G0R4 (TColor)0x6600CC   //166  92
+#define clB2G0R5 (TColor)0x6600FF   //16a  b6
 
-#define clB2G1R0 (TColor)0x663300
-#define clB2G1R1 (TColor)0x663333
-#define clB2G1R2 (TColor)0x663366
-#define clB2G1R3 (TColor)0x663399
-#define clB2G1R4 (TColor)0x6633CC
-#define clB2G1R5 (TColor)0x6633FF
+#define clB2G1R0 (TColor)0x663300   //16e  08
+#define clB2G1R1 (TColor)0x663333   //172  2c
+#define clB2G1R2 (TColor)0x663366   //176  50
+#define clB2G1R3 (TColor)0x663399   //17a  74
+#define clB2G1R4 (TColor)0x6633CC   //17e  98
+#define clB2G1R5 (TColor)0x6633FF   //182  bc
 
-#define clB2G2R0 (TColor)0x666600
-#define clB2G2R1 (TColor)0x666633
-#define clB2G2R2 (TColor)0x666666
-#define clB2G2R3 (TColor)0x666699
-#define clB2G2R4 (TColor)0x6666CC
-#define clB2G2R5 (TColor)0x6666FF
+#define clB2G2R0 (TColor)0x666600   //186  0e
+#define clB2G2R1 (TColor)0x666633   //18a  32
+#define clB2G2R2 (TColor)0x666666   //18e  56
+#define clB2G2R3 (TColor)0x666699   //192  7a
+#define clB2G2R4 (TColor)0x6666CC   //196  9e
+#define clB2G2R5 (TColor)0x6666FF   //19a  c2
 
-#define clB2G3R0 (TColor)0x669900
-#define clB2G3R1 (TColor)0x669933
-#define clB2G3R2 (TColor)0x669966
-#define clB2G3R3 (TColor)0x669999
-#define clB2G3R4 (TColor)0x6699CC
-#define clB2G3R5 (TColor)0x6699FF
+#define clB2G3R0 (TColor)0x669900   //19e  14
+#define clB2G3R1 (TColor)0x669933   //1a2  38
+#define clB2G3R2 (TColor)0x669966   //1a6  5c
+#define clB2G3R3 (TColor)0x669999   //1aa  80
+#define clB2G3R4 (TColor)0x6699CC   //1ae  a4
+#define clB2G3R5 (TColor)0x6699FF   //1b2  c8
 
-#define clB2G4R0 (TColor)0x66CC00
-#define clB2G4R1 (TColor)0x66CC33
-#define clB2G4R2 (TColor)0x66CC66
-#define clB2G4R3 (TColor)0x66CC99
-#define clB2G4R4 (TColor)0x66CCCC
-#define clB2G4R5 (TColor)0x66CCFF
+#define clB2G4R0 (TColor)0x66CC00   //1b6  1a
+#define clB2G4R1 (TColor)0x66CC33   //1ba  3e
+#define clB2G4R2 (TColor)0x66CC66   //1be  62
+#define clB2G4R3 (TColor)0x66CC99   //1c2  86
+#define clB2G4R4 (TColor)0x66CCCC   //1c6  aa
+#define clB2G4R5 (TColor)0x66CCFF   //1ca  ce
 
-#define clB2G5R0 (TColor)0x66FF00
-#define clB2G5R1 (TColor)0x66FF33
-#define clB2G5R2 (TColor)0x66FF66
-#define clB2G5R3 (TColor)0x66FF99
-#define clB2G5R4 (TColor)0x66FFCC
-#define clB2G5R5 (TColor)0x66FFFF
+#define clB2G5R0 (TColor)0x66FF00   //1ce  20
+#define clB2G5R1 (TColor)0x66FF33   //1d2  44
+#define clB2G5R2 (TColor)0x66FF66   //1d6  68
+#define clB2G5R3 (TColor)0x66FF99   //1da  8c
+#define clB2G5R4 (TColor)0x66FFCC   //1de  b0
+#define clB2G5R5 (TColor)0x66FFFF   //1e2  d4
 
-#define clB3G0R0 (TColor)0x990000
-#define clB3G0R1 (TColor)0x990033
-#define clB3G0R2 (TColor)0x990066
-#define clB3G0R3 (TColor)0x990099
-#define clB3G0R4 (TColor)0x9900CC
-#define clB3G0R5 (TColor)0x9900FF
+#define clB3G0R0 (TColor)0x990000   //1e6  03
+#define clB3G0R1 (TColor)0x990033   //1ea  27
+#define clB3G0R2 (TColor)0x990066   //1ee  4b
+#define clB3G0R3 (TColor)0x990099   //1f2  6f
+#define clB3G0R4 (TColor)0x9900CC   //1f6  93
+#define clB3G0R5 (TColor)0x9900FF   //1fa  b7
 
-#define clB3G1R0 (TColor)0x993300
-#define clB3G1R1 (TColor)0x993333
-#define clB3G1R2 (TColor)0x993366
-#define clB3G1R3 (TColor)0x993399
-#define clB3G1R4 (TColor)0x9933CC
-#define clB3G1R5 (TColor)0x9933FF
+#define clB3G1R0 (TColor)0x993300   //1fe  09
+#define clB3G1R1 (TColor)0x993333   //202  2d
+#define clB3G1R2 (TColor)0x993366   //206  51
+#define clB3G1R3 (TColor)0x993399   //20a  75
+#define clB3G1R4 (TColor)0x9933CC   //20e  99
+#define clB3G1R5 (TColor)0x9933FF   //212  bd
 
-#define clB3G2R0 (TColor)0x996600
-#define clB3G2R1 (TColor)0x996633
-#define clB3G2R2 (TColor)0x996666
-#define clB3G2R3 (TColor)0x996699
-#define clB3G2R4 (TColor)0x9966CC
-#define clB3G2R5 (TColor)0x9966FF
+#define clB3G2R0 (TColor)0x996600   //216  0f
+#define clB3G2R1 (TColor)0x996633   //21a  33
+#define clB3G2R2 (TColor)0x996666   //21e  57
+#define clB3G2R3 (TColor)0x996699   //222  7b
+#define clB3G2R4 (TColor)0x9966CC   //226  9f
+#define clB3G2R5 (TColor)0x9966FF   //22a  c3
 
-#define clB3G3R0 (TColor)0x999900
-#define clB3G3R1 (TColor)0x999933
-#define clB3G3R2 (TColor)0x999966
-#define clB3G3R3 (TColor)0x999999
-#define clB3G3R4 (TColor)0x9999CC
-#define clB3G3R5 (TColor)0x9999FF
+#define clB3G3R0 (TColor)0x999900   //22e  15
+#define clB3G3R1 (TColor)0x999933   //232  39
+#define clB3G3R2 (TColor)0x999966   //236  5d
+#define clB3G3R3 (TColor)0x999999   //23a  81
+#define clB3G3R4 (TColor)0x9999CC   //23e  a5
+#define clB3G3R5 (TColor)0x9999FF   //242  c9
 
-#define clB3G4R0 (TColor)0x99CC00
-#define clB3G4R1 (TColor)0x99CC33
-#define clB3G4R2 (TColor)0x99CC66
-#define clB3G4R3 (TColor)0x99CC99
-#define clB3G4R4 (TColor)0x99CCCC
-#define clB3G4R5 (TColor)0x99CCFF
+#define clB3G4R0 (TColor)0x99CC00   //246  1b
+#define clB3G4R1 (TColor)0x99CC33   //24a  3f
+#define clB3G4R2 (TColor)0x99CC66   //24e  63
+#define clB3G4R3 (TColor)0x99CC99   //252  87
+#define clB3G4R4 (TColor)0x99CCCC   //256  ab
+#define clB3G4R5 (TColor)0x99CCFF   //25a  cf
 
-#define clB3G5R0 (TColor)0x99FF00
-#define clB3G5R1 (TColor)0x99FF33
-#define clB3G5R2 (TColor)0x99FF66
-#define clB3G5R3 (TColor)0x99FF99
-#define clB3G5R4 (TColor)0x99FFCC
-#define clB3G5R5 (TColor)0x99FFFF
+#define clB3G5R0 (TColor)0x99FF00   //25e  21
+#define clB3G5R1 (TColor)0x99FF33   //262  45
+#define clB3G5R2 (TColor)0x99FF66   //266  69
+#define clB3G5R3 (TColor)0x99FF99   //26a  8d
+#define clB3G5R4 (TColor)0x99FFCC   //26e  b1
+#define clB3G5R5 (TColor)0x99FFFF   //272  d5
 
-#define clB4G0R0 (TColor)0xCC0000
-#define clB4G0R1 (TColor)0xCC0033
-#define clB4G0R2 (TColor)0xCC0066
-#define clB4G0R3 (TColor)0xCC0099
-#define clB4G0R4 (TColor)0xCC00CC
-#define clB4G0R5 (TColor)0xCC00FF
+#define clB4G0R0 (TColor)0xCC0000   //276  04
+#define clB4G0R1 (TColor)0xCC0033   //27a  28
+#define clB4G0R2 (TColor)0xCC0066   //27e  4c
+#define clB4G0R3 (TColor)0xCC0099   //282  70
+#define clB4G0R4 (TColor)0xCC00CC   //286  94
+#define clB4G0R5 (TColor)0xCC00FF   //28a  b8
 
-#define clB4G1R0 (TColor)0xCC3300
-#define clB4G1R1 (TColor)0xCC3333
-#define clB4G1R2 (TColor)0xCC3366
-#define clB4G1R3 (TColor)0xCC3399
-#define clB4G1R4 (TColor)0xCC33CC
-#define clB4G1R5 (TColor)0xCC33FF
+#define clB4G1R0 (TColor)0xCC3300   //28e  0a
+#define clB4G1R1 (TColor)0xCC3333   //292  2e
+#define clB4G1R2 (TColor)0xCC3366   //296  52
+#define clB4G1R3 (TColor)0xCC3399   //29a  76
+#define clB4G1R4 (TColor)0xCC33CC   //29e  9a
+#define clB4G1R5 (TColor)0xCC33FF   //2a2  be
 
-#define clB4G2R0 (TColor)0xCC6600
-#define clB4G2R1 (TColor)0xCC6633
-#define clB4G2R2 (TColor)0xCC6666
-#define clB4G2R3 (TColor)0xCC6699
-#define clB4G2R4 (TColor)0xCC66CC
-#define clB4G2R5 (TColor)0xCC66FF
+#define clB4G2R0 (TColor)0xCC6600   //2a6  10
+#define clB4G2R1 (TColor)0xCC6633   //2aa  34
+#define clB4G2R2 (TColor)0xCC6666   //2ae  58
+#define clB4G2R3 (TColor)0xCC6699   //2b2  7c
+#define clB4G2R4 (TColor)0xCC66CC   //2b6  a0
+#define clB4G2R5 (TColor)0xCC66FF   //2ba  c4
 
-#define clB4G3R0 (TColor)0xCC9900
-#define clB4G3R1 (TColor)0xCC9933
-#define clB4G3R2 (TColor)0xCC9966
-#define clB4G3R3 (TColor)0xCC9999
-#define clB4G3R4 (TColor)0xCC99CC
-#define clB4G3R5 (TColor)0xCC99FF
+#define clB4G3R0 (TColor)0xCC9900   //2be  16
+#define clB4G3R1 (TColor)0xCC9933   //2c2  3a
+#define clB4G3R2 (TColor)0xCC9966   //2c6  5e
+#define clB4G3R3 (TColor)0xCC9999   //2ca  82
+#define clB4G3R4 (TColor)0xCC99CC   //2ce  a6
+#define clB4G3R5 (TColor)0xCC99FF   //2d2  ca
 
-#define clB4G4R0 (TColor)0xCCCC00
-#define clB4G4R1 (TColor)0xCCCC33
-#define clB4G4R2 (TColor)0xCCCC66
-#define clB4G4R3 (TColor)0xCCCC99
-#define clB4G4R4 (TColor)0xCCCCCC
-#define clB4G4R5 (TColor)0xCCCCFF
+#define clB4G4R0 (TColor)0xCCCC00   //2d6  1c
+#define clB4G4R1 (TColor)0xCCCC33   //2da  40
+#define clB4G4R2 (TColor)0xCCCC66   //2de  64
+#define clB4G4R3 (TColor)0xCCCC99   //2e2  88
+#define clB4G4R4 (TColor)0xCCCCCC   //2e6  ac
+#define clB4G4R5 (TColor)0xCCCCFF   //2ea  d0
 
-#define clB4G5R0 (TColor)0xCCFF00
-#define clB4G5R1 (TColor)0xCCFF33
-#define clB4G5R2 (TColor)0xCCFF66
-#define clB4G5R3 (TColor)0xCCFF99
-#define clB4G5R4 (TColor)0xCCFFCC
-#define clB4G5R5 (TColor)0xCCFFFF
+#define clB4G5R0 (TColor)0xCCFF00   //2ee  22
+#define clB4G5R1 (TColor)0xCCFF33   //2f2  46
+#define clB4G5R2 (TColor)0xCCFF66   //2f6  6a
+#define clB4G5R3 (TColor)0xCCFF99   //2fa  8e
+#define clB4G5R4 (TColor)0xCCFFCC   //2fe  b2
+#define clB4G5R5 (TColor)0xCCFFFF   //302  d6
 
-#define clB5G0R0 (TColor)0xFF0000
-#define clB5G0R1 (TColor)0xFF0033
-#define clB5G0R2 (TColor)0xFF0066
-#define clB5G0R3 (TColor)0xFF0099
-#define clB5G0R4 (TColor)0xFF00CC
-#define clB5G0R5 (TColor)0xFF00FF
+#define clB5G0R0 (TColor)0xFF0000   //306  05
+#define clB5G0R1 (TColor)0xFF0033   //30a  29
+#define clB5G0R2 (TColor)0xFF0066   //30e  4d
+#define clB5G0R3 (TColor)0xFF0099   //312  71
+#define clB5G0R4 (TColor)0xFF00CC   //316  95
+#define clB5G0R5 (TColor)0xFF00FF   //31a  b9
 
-#define clB5G1R0 (TColor)0xFF3300
-#define clB5G1R1 (TColor)0xFF3333
-#define clB5G1R2 (TColor)0xFF3366
-#define clB5G1R3 (TColor)0xFF3399
-#define clB5G1R4 (TColor)0xFF33CC
-#define clB5G1R5 (TColor)0xFF33FF
+#define clB5G1R0 (TColor)0xFF3300   //31e  0b
+#define clB5G1R1 (TColor)0xFF3333   //322  2f
+#define clB5G1R2 (TColor)0xFF3366   //326  53
+#define clB5G1R3 (TColor)0xFF3399   //32a  77
+#define clB5G1R4 (TColor)0xFF33CC   //32e  9b
+#define clB5G1R5 (TColor)0xFF33FF   //332  bf
 
-#define clB5G2R0 (TColor)0xFF6600
-#define clB5G2R1 (TColor)0xFF6633
-#define clB5G2R2 (TColor)0xFF6666
-#define clB5G2R3 (TColor)0xFF6699
-#define clB5G2R4 (TColor)0xFF66CC
-#define clB5G2R5 (TColor)0xFF66FF
+#define clB5G2R0 (TColor)0xFF6600   //336  11
+#define clB5G2R1 (TColor)0xFF6633   //33a  35
+#define clB5G2R2 (TColor)0xFF6666   //33e  59
+#define clB5G2R3 (TColor)0xFF6699   //342  7d
+#define clB5G2R4 (TColor)0xFF66CC   //346  a1
+#define clB5G2R5 (TColor)0xFF66FF   //34a  c5
 
-#define clB5G3R0 (TColor)0xFF9900
-#define clB5G3R1 (TColor)0xFF9933
-#define clB5G3R2 (TColor)0xFF9966
-#define clB5G3R3 (TColor)0xFF9999
-#define clB5G3R4 (TColor)0xFF99CC
-#define clB5G3R5 (TColor)0xFF99FF
+#define clB5G3R0 (TColor)0xFF9900   //34e  17
+#define clB5G3R1 (TColor)0xFF9933   //352  3b
+#define clB5G3R2 (TColor)0xFF9966   //356  5f
+#define clB5G3R3 (TColor)0xFF9999   //35a  83
+#define clB5G3R4 (TColor)0xFF99CC   //35e  a7
+#define clB5G3R5 (TColor)0xFF99FF   //362  cb
 
-#define clB5G4R0 (TColor)0xFFCC00
-#define clB5G4R1 (TColor)0xFFCC33
-#define clB5G4R2 (TColor)0xFFCC66
-#define clB5G4R3 (TColor)0xFFCC99
-#define clB5G4R4 (TColor)0xFFCCCC
-#define clB5G4R5 (TColor)0xFFCCFF
+#define clB5G4R0 (TColor)0xFFCC00   //366  1d
+#define clB5G4R1 (TColor)0xFFCC33   //36a  41
+#define clB5G4R2 (TColor)0xFFCC66   //36e  65
+#define clB5G4R3 (TColor)0xFFCC99   //372  89
+#define clB5G4R4 (TColor)0xFFCCCC   //376  ad
+#define clB5G4R5 (TColor)0xFFCCFF   //37a  d1
 
-#define clB5G5R0 (TColor)0xFFFF00
-#define clB5G5R1 (TColor)0xFFFF33
-#define clB5G5R2 (TColor)0xFFFF66
-#define clB5G5R3 (TColor)0xFFFF99
-#define clB5G5R4 (TColor)0xFFFFCC
-#define clB5G5R5 (TColor)0xFFFFFF
+#define clB5G5R0 (TColor)0xFFFF00   //37e  23
+#define clB5G5R1 (TColor)0xFFFF33   //382  47
+#define clB5G5R2 (TColor)0xFFFF66   //386  6b
+#define clB5G5R3 (TColor)0xFFFF99   //38a  8f
+#define clB5G5R4 (TColor)0xFFFFCC   //38e  b3
+#define clB5G5R5 (TColor)0xFFFFFF   //392  d7
 
 //train background colour definitions
-#define clBufferAttentionNeeded (TColor)0xFFFF00 //cyan           16776960d
-#define clBufferStopBackground  (TColor)0xFFFFCC //pale cyan      16777164d
-#define clCallOnBackground      (TColor)0xFF33FF //light magenta  16724991d
-#define clCrashedBackground     (TColor)0x0000FF //red            255d
-#define clDerailedBackground    (TColor)0x0000FF //red            255d
-#define clFrontCodeSignaller    (TColor)0xFF0000 //blue           16711680d
-#define clFrontCodeTimetable    (TColor)0x0000FF //red            255
-#define clNormalBackground      (TColor)0xCCCCCC //grey           13421772d
-#define clSignallerStopped      (TColor)0x99CCFF //caramel        10079487d
-#define clSignalStopBackground  (TColor)0x00FF66 //green          65382d
-#define clSPADBackground        (TColor)0x00FFFF //yellow         65535d
-#define clStationStopBackground (TColor)0xCCFFCC //pale green     13434828d
-#define clStoppedTrainInFront   (TColor)0xFF9999 //light blue     16751001d
-#define clTRSBackground         (TColor)0xFFCCFF //light pink     16764159d
+#define clBufferAttentionNeeded (TColor)0xFFFF00 //cyan           16776960d    offset hex 37e  col no.  23
+#define clBufferStopBackground  (TColor)0xFFFFCC //pale cyan      16777164d     38e    b3
+#define clCallOnBackground      (TColor)0xFF33FF //light magenta  16724991d     332    bf
+#define clCrashedBackground     (TColor)0x0000FF //red            255d          4a     b4
+#define clDerailedBackground    (TColor)0x0000FF //red            255d          4a     b4
+#define clFrontCodeSignaller    (TColor)0xFF0000 //blue           16711680d     306    05
+#define clFrontCodeTimetable    (TColor)0x0000FF //red            255           4a     b4
+#define clNormalBackground      (TColor)0xCCCCCC //grey           13421772d     2e6    ac
+#define clSignallerStopped      (TColor)0x99CCFF //caramel        10079487d     25a    cf
+#define clSignalStopBackground  (TColor)0x00FF66 //green          65382d        b6     66
+#define clSPADBackground        (TColor)0x00FFFF //yellow         65535d        c2     d2
+#define clStationStopBackground (TColor)0xCCFFCC //pale green     13434828d     2fe    b2
+#define clStoppedTrainInFront   (TColor)0xFF9999 //light blue     16751001d     35a    83
+#define clTRSBackground         (TColor)0xFFCCFF //light pink     16764159d     37a    d1
 
 /// Handles graphic data & functions, single object defined
 class TRailGraphics
@@ -1006,6 +1006,29 @@ public:
     Graphics::TBitmap *LockedRouteCancelPtr[10]; ///< for locked route cancel graphic, 1 for each of 8 links, 0 & 5 included as for direction
 //marker arrows but not used
 
+
+
+//This group is for signal speedbutton glyphs, added at v2.3.0 when glyphs required to change hand for RH signals.  These have to
+//stay black regardless of background colour.  Before v2.3.0 they were loaded directly from the resource file in InterfaceUnit.cpp,
+//where they are already black, but after they can't because sometimes they are RH signals, so these are used instead of those
+//that change colour.  They are created from the resource file at startup and they change hand when ConvertSignalsToOppositeHand is called.
+    Graphics::TBitmap *SpeedBut68NormBlackGlyph;
+    Graphics::TBitmap *SpeedBut69NormBlackGlyph;
+    Graphics::TBitmap *SpeedBut70NormBlackGlyph;
+    Graphics::TBitmap *SpeedBut71NormBlackGlyph;
+    Graphics::TBitmap *SpeedBut72NormBlackGlyph;
+    Graphics::TBitmap *SpeedBut73NormBlackGlyph;
+    Graphics::TBitmap *SpeedBut74NormBlackGlyph;
+    Graphics::TBitmap *SpeedBut75NormBlackGlyph;
+    Graphics::TBitmap *SpeedBut68GrndBlackGlyph;
+    Graphics::TBitmap *SpeedBut69GrndBlackGlyph;
+    Graphics::TBitmap *SpeedBut70GrndBlackGlyph;
+    Graphics::TBitmap *SpeedBut71GrndBlackGlyph;
+    Graphics::TBitmap *SpeedBut72GrndBlackGlyph;
+    Graphics::TBitmap *SpeedBut73GrndBlackGlyph;
+    Graphics::TBitmap *SpeedBut74GrndBlackGlyph;
+    Graphics::TBitmap *SpeedBut75GrndBlackGlyph;
+
 //functions
     TRailGraphics::TRailGraphics(); ///< constructor
     TRailGraphics::~TRailGraphics(); ///< destructor
@@ -1020,13 +1043,21 @@ public:
 /// 256 colours)
     void ChangeBackgroundColour(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap* BitmapOut, TColor NewBackgroundColour,
                                 TColor OldBackgroundColour, bool &ColourError);
+/// New function to do the same as the above but with fewer pixel changes - for use in LoadSession (& PlotStartPosition) to avoid resource failures on loading many session trains
+    void ChangeBackgroundColour2(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap* BitmapOut,
+                                           TColor NewBackgroundColour, TColor OldBackgroundColour);
+/// as above but uses Scanline
+    void ChangeBackgroundColour3(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap* BitmapOut,
+                                           TColor NewBackgroundColour, TColor OldBackgroundColour);
 /// Change any pixels that are not BackgroundColour in BitmapIn to NewForegroundColour in BitmapOut
-///
 /// Any that are BackgroundColour in BitmapIn are set to BackgroundColour in BitmapOut
     void ChangeForegroundColour(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap* BitmapOut, TColor NewForegroundColour,
                                 TColor BackgroundColour);
+/// New function to do the same as the above but with fewer pixel changes - for use in LoadSession to avoid resource failures on loading many session trains
+    void ChangeForegroundColour2(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut,
+                                           TColor NewForegroundColour, TColor BackgroundColour);
+//---------------------------------------------------------------------------
 /// Change any pixels that are ColourToBeChanged in BitmapIn to NewColour in BitmapOut
-///
 /// Any that are not ColourToBeChanged in BitmapIn are set to their original colour in BitmapOut
     void ChangeSpecificColour(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut, TColor ColourToBeChanged, TColor NewColour);
 /// Changes a graphic to become compatible with a new background colour
@@ -1035,6 +1066,10 @@ public:
 /// if NewTransparentColour dark then change any black pixels in BitmapIn to white in BitmapOut, or
 /// if NewTransparentColour white then change any white pixels in BitmapIn to black in BitmapOut
     void ChangeTransparentColour(Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut, TColor NewTransparentColour, TColor OldTransparentColour);
+/// used in ChangeBackgroundColour3 to convert a named colour to a number for Scanline
+    int ColNametoNumber(int Caller, TColor Colour);
+    /// Converts all signal graphics to opposite hand new at v2.3.0
+    void ConvertSignalsToOppositeHand(int Caller);
 /// Sets all the derived graphics to be compatible with a new transparent colour
 ///
 /// Used when changing the background from dark to light and vice versa.  The derived graphics are the preferred direction

@@ -1,10 +1,8 @@
 var searchData=
 [
   ['callingonbutton',['CallingOnButton',['../class_t_interface.html#a4c3b977862eea5eae2631c9af65ac069',1,'TInterface']]],
-  ['callingonflag',['CallingOnFlag',['../class_t_train.html#a5a658cdc377c3f4d65af6839614e7cb1',1,'TTrain']]],
   ['callingonset',['CallingOnSet',['../class_t_track_element.html#a7cde223e36c063fedde528797b3df77d',1,'TTrackElement']]],
   ['calllogtickerlabel',['CallLogTickerLabel',['../class_t_interface.html#a6c42fa668ecb3a9e4f8ddeb677781b84',1,'TInterface']]],
-  ['callonmaxspeed',['CallOnMaxSpeed',['../class_t_train.html#a70e34e0666fd1c04b6c9866bfe45290f',1,'TTrain']]],
   ['callonvector',['CallonVector',['../class_t_all_routes.html#a3993d52ba2a60f04572838e2cbd78bbf',1,'TAllRoutes']]],
   ['changeduration',['ChangeDuration',['../class_t_track_1_1_t_active_level_crossing.html#af45c2e8c0f427b23e655cdce00cebbb8',1,'TTrack::TActiveLevelCrossing']]],
   ['changinglcvector',['ChangingLCVector',['../class_t_track.html#af81ededf353294c66fbdcc4c20ba545f',1,'TTrack']]],
@@ -14,18 +12,8 @@ var searchData=
   ['conn',['Conn',['../class_t_track_element.html#a9551c6d789485c121203be6d51e4781f',1,'TTrackElement']]],
   ['connlinkpos',['ConnLinkPos',['../class_t_track_element.html#a93a9094a1833fced2891c012bc46a4ea',1,'TTrackElement']]],
   ['consecsignals',['ConsecSignals',['../class_t_pref_dir_element.html#a96013ae599fd950932832937cada3b96',1,'TPrefDirElement::ConsecSignals()'],['../class_t_track_1_1_t_active_level_crossing.html#ab673508a424b72287259591f31e309fd',1,'TTrack::TActiveLevelCrossing::ConsecSignals()']]],
-  ['consecsignalsroute',['ConsecSignalsRoute',['../class_t_interface.html#a90265cdb9d53302216a4d251f8901ca1',1,'TInterface']]],
-  ['constructprefdir',['ConstructPrefDir',['../class_t_interface.html#a65dd6114d59ec7623b0577a22477a04a',1,'TInterface']]],
-  ['constructroute',['ConstructRoute',['../class_t_interface.html#ab6d6b9aa3402b35dfd89610b31831402',1,'TInterface']]],
   ['continuationautosigvector',['ContinuationAutoSigVector',['../class_t_train_controller.html#a0b412f7b88f829632e54bffc0659ac3b',1,'TTrainController']]],
   ['continuationnamemap',['ContinuationNameMap',['../class_t_track.html#a4cade2b1cabb095c4a52efc729efb44f',1,'TTrack']]],
   ['continuationtrainexpectationmultimap',['ContinuationTrainExpectationMultiMap',['../class_t_train_controller.html#a1a8e542193d93581e0c391d8e7fa3e1b',1,'TTrainController']]],
-  ['copiedentryflag',['CopiedEntryFlag',['../class_t_interface.html#a4d521aed31c0bcbe61090e7bcdb658ea',1,'TInterface']]],
-  ['copiedentrystr',['CopiedEntryStr',['../class_t_interface.html#a96f26034858fa594f151c7e8ed36c09e',1,'TInterface']]],
-  ['crashwarning',['CrashWarning',['../class_t_train_controller.html#a1d9bbe67bb4b3e68896f0a0325dfb883',1,'TTrainController']]],
-  ['createeditttfilename',['CreateEditTTFileName',['../class_t_interface.html#afb89eda9fd1b5b36f39310de2903d455',1,'TInterface']]],
-  ['createedittttitle',['CreateEditTTTitle',['../class_t_interface.html#a65f647cf6a00083288ae3642cfd24c0e',1,'TInterface']]],
-  ['ctrlkey',['CtrlKey',['../class_t_interface.html#afbb1365eba3ccd54462f24f85f459ab8',1,'TInterface']]],
-  ['curdir',['CurDir',['../class_t_interface.html#a5cac77c0ad95e8218a047a7a6ade7fb7',1,'TInterface']]],
-  ['currentspeedbutton',['CurrentSpeedButton',['../class_t_interface.html#a5aad0b6cde6091f55e097cc820310889',1,'TInterface']]]
+  ['crashwarning',['CrashWarning',['../class_t_train_controller.html#a1d9bbe67bb4b3e68896f0a0325dfb883',1,'TTrainController']]]
 ];

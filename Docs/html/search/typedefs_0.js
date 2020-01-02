@@ -22,12 +22,9 @@ var searchData=
   ['tlnpendinglistiterator',['TLNPendingListIterator',['../class_t_track.html#a5fe44ea483c447ec227dc2015ffff40c',1,'TTrack']]],
   ['tlocationnamemultimap',['TLocationNameMultiMap',['../class_t_track.html#ac68eed5a26013072d6852aa2e6d6f33d',1,'TTrack']]],
   ['tlockedroutevector',['TLockedRouteVector',['../class_t_all_routes.html#a00c2d57382ed6560f1c611bdfddc3a6f',1,'TAllRoutes']]],
-  ['tprefdir4multimap',['TPrefDir4MultiMap',['../class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc',1,'TOnePrefDir']]],
   ['tprefdirvector',['TPrefDirVector',['../class_t_one_pref_dir.html#a7162736e4bbe36fbac7a57ce395fcd14',1,'TOnePrefDir']]],
   ['troute2multimap',['TRoute2MultiMap',['../class_t_all_routes.html#a1d2aa3032df6e13d1f6f1a93f96157c6',1,'TAllRoutes']]],
   ['trouteelementpair',['TRouteElementPair',['../class_t_all_routes.html#a159a7d547e3d435d109a36cb41193a78',1,'TAllRoutes']]],
-  ['ttevptr',['TTEVPtr',['../class_t_interface.html#abea77d791c25726e7711356bbc902534',1,'TInterface']]],
-  ['ttimetableeditvector',['TTimetableEditVector',['../class_t_interface.html#abf0434fbaa193f8f7594977f6e88f006',1,'TInterface']]],
   ['ttrackmap',['TTrackMap',['../class_t_track.html#ab03d3109c635a149c57812c89cec63a4',1,'TTrack']]],
   ['ttrackvector',['TTrackVector',['../class_t_track.html#ac64e15050a0faf07c1b7410d60cbcbe5',1,'TTrack']]],
   ['ttrainvector',['TTrainVector',['../class_t_train_controller.html#aa9073b97736a2733dbdaf8dc52e34c24',1,'TTrainController']]]

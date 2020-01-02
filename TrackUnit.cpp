@@ -1782,7 +1782,7 @@ reject if so.
                 SearchForAndUpdateLocationName(1, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
                 //checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
                 //Must be called AFTER TrackPush
-//No need to plot the element - Clearand ... called after this function called
+                //No need to plot the element - Clearand ... called after this function called
                 //set corresponding track element length to 100m & give message if was different
                 //note can only be Length01 since even if points then only the straight part can be adjacent to the platform
                 if(TrackElementAt(2, VecPos).Length01 != DefaultTrackLength) ShowMessage("Note:  The track element at this location has a length of " +
@@ -3285,7 +3285,7 @@ Note, have to plot inactives before track because track has to overwrite 'name' 
         if(Next.GraphicPtr != 0) //don't think this should ever be 0 but leave as a safeguard
         {
             if(Next.LocationName == "") //plot as named or unnamed (striped)
-            {
+            {                           //default is not striped
                 switch(Next.SpeedTag)
                 {
                 case 76: //t platform
@@ -3431,6 +3431,8 @@ Note, have to plot inactives before track because track has to overwrite 'name' 
                     if((SigTable[x].SpeedTag == Next.SpeedTag) && (SigTable[x].Attribute == 0)) //need to plot as red regardless of actual attribute value
                     {
                         //plot blank first, then plot platform if present - striped or not depending on LocationName being set
+                        //note these blanks plotted on lh signal side, even for rh signals, but works ok because the platform is replotted
+                        //in PlatformOnSignalSide, which return true for platform NOT on signal side for rh sigs
                         int HOffset = 0;
                         if(Next.SpeedTag > 73) HOffset = 5;
                         else if(Next.SpeedTag == 71) HOffset = 9;
@@ -3445,7 +3447,7 @@ Note, have to plot inactives before track because track has to overwrite 'name' 
                         Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16) + HOffset, ((Next.VLoc - GetVLocMin()) * 16) + VOffset, GraphicPtr);
                         //plot special signal platform if present
                         Graphics::TBitmap* SignalPlatformGraphic;
-                        if(PlatformOnSignalSide(2, Next.HLoc, Next.VLoc, Next.SpeedTag, SignalPlatformGraphic))
+                        if(PlatformOnSignalSide(2, Next.HLoc, Next.VLoc, Next.SpeedTag, SignalPlatformGraphic)) //
                         {
                             Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SignalPlatformGraphic);
                         }
@@ -3604,7 +3606,9 @@ Here plot all named elements as non-striped, points with active fillet, signals 
                 {
                     if((SigTable[x].SpeedTag == Next.SpeedTag) && (SigTable[x].Attribute == Next.Attribute))
                     {
-                        //plot blank first, then plot platform if present - striped or not depending on LocationName being set
+                        //plot blank first, then plot platform if present - (always not striped for operating railway)
+                        //note these blanks plotted on lh signal side, even for rh signals, but works ok because the platform is replotted
+                        //in PlatformOnSignalSide, which return true for platform NOT on signal side for rh sigs
                         int HOffset = 0;
                         if(Next.SpeedTag > 73) HOffset = 5;
                         else if(Next.SpeedTag == 71) HOffset = 9;
@@ -3683,7 +3687,7 @@ Here plot all named elements as non-striped, points with active fillet, signals 
                                 if((SigTableGroundSignal[x].SpeedTag == Next.SpeedTag) && (SigTable[x].Attribute == 1)) //use attr 1 for proceed
                                 {
                                     //plot blank first, then plot platform if present - striped or not depending on LocationName being set
-                                    Display->PlotSignalBlankOnBitmap(Next.HLoc - GetHLocMin(), Next.VLoc - GetVLocMin(), Next.SpeedTag, Bitmap); //in case existing signal is a double yellow
+                                    Display->PlotSignalBlankOnBitmap(Next.HLoc - GetHLocMin(), Next.VLoc - GetVLocMin(), Next.SpeedTag, Bitmap, Utilities->RHSignalFlag); //in case existing signal is a double yellow
                                     //plot special signal platform if present
                                     Graphics::TBitmap* SignalPlatformGraphic;
                                     if(PlatformOnSignalSide(4, Next.HLoc, Next.VLoc, Next.SpeedTag, SignalPlatformGraphic))
@@ -5115,13 +5119,14 @@ void TTrack::PlotSignal(int Caller, TTrackElement TrackElement, TDisplay *Disp)
         if((SigTable[x].SpeedTag == TrackElement.SpeedTag) && (SigTable[x].Attribute == TrackElement.Attribute))
         {
             //plot blank first, then plot platform if present - striped or not depending on LocationName being set
-            Disp->PlotSignalBlank(0, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag); //in case existing signal is a double yellow
-            //plot special signal platform if present
-            Graphics::TBitmap* SignalPlatformGraphic;
-            if(PlatformOnSignalSide(0, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, SignalPlatformGraphic))
-            {
-                Disp->PlotOutput(57, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SignalPlatformGraphic);
-            }
+            Disp->PlotSignalBlank(0, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, Utilities->RHSignalFlag); //in case existing signal is a double yellow
+            //plot platforms if present
+//          Graphics::TBitmap* SignalPlatformGraphic;
+//          if(PlatformOnSignalSide(0, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, SignalPlatformGraphic))
+//Above dropped at v2.3.0.  Now plot either or both platforms if present regardless of which side they are on.  The platforms will
+//be consistent with the signal graphic as can't enter an inappropriate platform.  The new right hand signal option caused platforms
+//to not be plotted with the above function.
+            PlotSignalPlatforms(0, TrackElement.HLoc, TrackElement.VLoc, Disp); //if no platforms nothing is plotted
             //now plot signal (double yellow overwrites most of signal platform if present)
             //additions at version 0.6 for other aspects & ground sigs
             if(TrackElement.SigAspect == TTrackElement::ThreeAspect)
@@ -5182,13 +5187,10 @@ void TTrack::PlotSignal(int Caller, TTrackElement TrackElement, TDisplay *Disp)
                     if((SigTableGroundSignal[x].SpeedTag == TrackElement.SpeedTag) && (SigTable[x].Attribute == 1)) //use attr 1 for proceed
                     {
                         //plot blank first, then plot platform if present - striped or not depending on LocationName being set
-                        Disp->PlotSignalBlank(1, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag); //in case existing signal is a double yellow
+                        Disp->PlotSignalBlank(1, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, Utilities->RHSignalFlag);
                         //plot special signal platform if present
                         Graphics::TBitmap* SignalPlatformGraphic;
-                        if(PlatformOnSignalSide(3, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, SignalPlatformGraphic))
-                        {
-                            Disp->PlotOutput(120, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SignalPlatformGraphic);
-                        }
+                        PlotSignalPlatforms(1, TrackElement.HLoc, TrackElement.VLoc, Disp);
                         //now plot signal
                         Disp->PlotOutput(123, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTableGroundSignal[x].SigPtr);
                     }
@@ -5198,6 +5200,68 @@ void TTrack::PlotSignal(int Caller, TTrackElement TrackElement, TDisplay *Disp)
         }
     }
     Utilities->CallLogPop(520);
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::PlotSignalPlatforms(int Caller, int HLoc, int VLoc, TDisplay *Disp)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotSignalPlatforms," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+    bool FoundFlag;
+    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(13, HLoc, VLoc, FoundFlag);
+    if(!FoundFlag)
+    {
+        Utilities->CallLogPop(2112);
+        return;
+    }
+    TTrackElement IAElement1 = InactiveTrackElementAt(124, IMPair.first);
+    TTrackElement IAElement2 = InactiveTrackElementAt(125, IMPair.second);
+    //don't want 'else if' for the below as may need to plot 2 platforms
+    if((IAElement1.SpeedTag == 76) || (IAElement2.SpeedTag == 76)) //top plat
+    {
+        if(IAElement1.LocationName == "") //'2' will be same
+        {
+            Disp->PlotOutput(239, HLoc * 16, VLoc * 16, RailGraphics->gl76Striped);
+        }
+        else
+        {
+            Disp->PlotOutput(240, HLoc * 16, VLoc * 16, RailGraphics->gl76);
+        }
+    }
+    if((IAElement1.SpeedTag == 77) || (IAElement2.SpeedTag == 77)) //bot plat
+    {
+        if(IAElement1.LocationName == "") //'2' will be same
+        {
+            Disp->PlotOutput(241, HLoc * 16, VLoc * 16, RailGraphics->bm77Striped);
+        }
+        else
+        {
+            Disp->PlotOutput(242, HLoc * 16, VLoc * 16, RailGraphics->bm77);
+        }
+    }
+    if((IAElement1.SpeedTag == 78) || (IAElement2.SpeedTag == 78)) //lh plat
+    {
+        if(IAElement1.LocationName == "") //'2' will be same
+        {
+            Disp->PlotOutput(243, HLoc * 16, VLoc * 16, RailGraphics->bm78Striped);
+        }
+        else
+        {
+            Disp->PlotOutput(244, HLoc * 16, VLoc * 16, RailGraphics->bm78);
+        }
+    }
+    if((IAElement1.SpeedTag == 79) || (IAElement2.SpeedTag == 79)) //rh plat
+    {
+        if(IAElement1.LocationName == "") //'2' will be same
+        {
+            Disp->PlotOutput(245, HLoc * 16, VLoc * 16, RailGraphics->gl79Striped);
+        }
+        else
+        {
+            Disp->PlotOutput(246, HLoc * 16, VLoc * 16, RailGraphics->gl79);
+        }
+    }
+    Utilities->CallLogPop(2113);
 }
 
 //---------------------------------------------------------------------------

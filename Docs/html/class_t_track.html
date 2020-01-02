@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Railway Operation Simulator: TTrack Class Reference</title>
+<title>My Project: TTrack Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,12 +20,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.2.0</span>
+   <div id="projectname">My Project
    </div>
-   <div id="projectbrief">A railway simulator for Windows</div>
   </td>
  </tr>
  </tbody>
@@ -69,7 +66,6 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_t_track-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">TTrack Class Reference</div>  </div>
@@ -81,9 +77,6 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_1_1_t_active_level_crossing.html">TActiveLevelCrossing</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_1_1_t_fixed_track_array.html">TFixedTrackArray</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds an array of TrackPieces, only accessible to <a class="el" href="class_t_track.html">TTrack</a>.  <a href="class_t_track_1_1_t_fixed_track_array.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_t_track_1_1_t_sig_element.html">TSigElement</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used as basic elements in a table of signals - see SigTable below.  <a href="struct_t_track_1_1_t_sig_element.html#details">More...</a><br /></td></tr>
@@ -593,6 +586,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e">PlotSignal</a> (int Caller, <a class="el" href="class_t_track_element.html">TTrackElement</a> TrackElement, <a class="el" href="class_t_display.html">TDisplay</a> *Disp)</td></tr>
 <tr class="memdesc:aa5742fbc2eb3f8743dde84005499f89e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plot signals on screen according to their aspect (Attribute value) <br /></td></tr>
 <tr class="separator:aa5742fbc2eb3f8743dde84005499f89e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2830b22db25712a80fa55b1546b5df9b"><td class="memItemLeft" align="right" valign="top"><a id="a2830b22db25712a80fa55b1546b5df9b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a2830b22db25712a80fa55b1546b5df9b">PlotSignalPlatforms</a> (int Caller, int HLoc, int VLoc, <a class="el" href="class_t_display.html">TDisplay</a> *Disp)</td></tr>
+<tr class="memdesc:a2830b22db25712a80fa55b1546b5df9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plot platforms if any for a signal graphic - plotted before signal so shows through transparent signal pixels. <br /></td></tr>
+<tr class="separator:a2830b22db25712a80fa55b1546b5df9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af654985aa4d1c17684f91474fa03ed98"><td class="memItemLeft" align="right" valign="top"><a id="af654985aa4d1c17684f91474fa03ed98"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#af654985aa4d1c17684f91474fa03ed98">PlotSmallRailway</a> (int Caller, <a class="el" href="class_t_display.html">TDisplay</a> *Disp)</td></tr>
 <tr class="memdesc:af654985aa4d1c17684f91474fa03ed98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plot on screen the zoomed-out railway. <br /></td></tr>
@@ -840,95 +837,6 @@ TTrackVectorIterator&#160;</td><td class="memItemRight" valign="bottom"><a class
 enum TTrack:: { ... } &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#ab012f6fbdca9a4a0354885c557f41736">SignalAspectBuildMode</a></td></tr>
 <tr class="memdesc:ab012f6fbdca9a4a0354885c557f41736"><td class="mdescLeft">&#160;</td><td class="mdescRight">aspect mode for future signal additions <br /></td></tr>
 <tr class="separator:ab012f6fbdca9a4a0354885c557f41736"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:aa518e921b7809730b4b43e96f7136817"><td class="memItemLeft" align="right" valign="top"><a id="aa518e921b7809730b4b43e96f7136817"></a>
-<a class="el" href="class_t_track_1_1_t_fixed_track_array.html">TFixedTrackArray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#aa518e921b7809730b4b43e96f7136817">FixedTrackArray</a></td></tr>
-<tr class="memdesc:aa518e921b7809730b4b43e96f7136817"><td class="mdescLeft">&#160;</td><td class="mdescRight">the FixedTrackPiece array object <br /></td></tr>
-<tr class="separator:aa518e921b7809730b4b43e96f7136817"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87d65b786df282006e60c97826095892"><td class="memItemLeft" align="right" valign="top"><a id="a87d65b786df282006e60c97826095892"></a>
-<a class="el" href="class_t_track_element.html">TTrackElement</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DistanceStartElement</b></td></tr>
-<tr class="separator:a87d65b786df282006e60c97826095892"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a68b341049d8b5c05b626fed08cdb33"><td class="memItemLeft" align="right" valign="top"><a id="a8a68b341049d8b5c05b626fed08cdb33"></a>
-<a class="el" href="class_t_track_element.html">TTrackElement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a8a68b341049d8b5c05b626fed08cdb33">DistanceContinuingElement</a></td></tr>
-<tr class="memdesc:a8a68b341049d8b5c05b626fed08cdb33"><td class="mdescLeft">&#160;</td><td class="mdescRight">initially used for track element lengths but since disused <br /></td></tr>
-<tr class="separator:a8a68b341049d8b5c05b626fed08cdb33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3129d1f4b765dea2a15dab78e5e58129"><td class="memItemLeft" align="right" valign="top"><a id="a3129d1f4b765dea2a15dab78e5e58129"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a3129d1f4b765dea2a15dab78e5e58129">TrackFinished</a></td></tr>
-<tr class="memdesc:a3129d1f4b765dea2a15dab78e5e58129"><td class="mdescLeft">&#160;</td><td class="mdescRight">marker for all Conn &amp; ConnLinkPos values set &amp; track complete <br /></td></tr>
-<tr class="separator:a3129d1f4b765dea2a15dab78e5e58129"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19b95a52149a0cab545fddace312e0cc"><td class="memItemLeft" align="right" valign="top"><a id="a19b95a52149a0cab545fddace312e0cc"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GapPos</b></td></tr>
-<tr class="separator:a19b95a52149a0cab545fddace312e0cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af57a8d2b11f3618b0502cd757fa41541"><td class="memItemLeft" align="right" valign="top"><a id="af57a8d2b11f3618b0502cd757fa41541"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GapHLoc</b></td></tr>
-<tr class="separator:af57a8d2b11f3618b0502cd757fa41541"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb7e520a67eccc292c97444ff395d0c0"><td class="memItemLeft" align="right" valign="top"><a id="abb7e520a67eccc292c97444ff395d0c0"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#abb7e520a67eccc292c97444ff395d0c0">GapVLoc</a></td></tr>
-<tr class="memdesc:abb7e520a67eccc292c97444ff395d0c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">record gap setting info <br /></td></tr>
-<tr class="separator:abb7e520a67eccc292c97444ff395d0c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3a4180a4a3316a5d265964a6ba6b9f8"><td class="memItemLeft" align="right" valign="top"><a id="aa3a4180a4a3316a5d265964a6ba6b9f8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>HLocMin</b></td></tr>
-<tr class="separator:aa3a4180a4a3316a5d265964a6ba6b9f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a906deb75070b0e29cf624569c982c23a"><td class="memItemLeft" align="right" valign="top"><a id="a906deb75070b0e29cf624569c982c23a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>VLocMin</b></td></tr>
-<tr class="separator:a906deb75070b0e29cf624569c982c23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab464ea55d7bf8c25d8d5863295209937"><td class="memItemLeft" align="right" valign="top"><a id="ab464ea55d7bf8c25d8d5863295209937"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>HLocMax</b></td></tr>
-<tr class="separator:ab464ea55d7bf8c25d8d5863295209937"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a847326710b5b428b1a8bb54b1d143c26"><td class="memItemLeft" align="right" valign="top"><a id="a847326710b5b428b1a8bb54b1d143c26"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a847326710b5b428b1a8bb54b1d143c26">VLocMax</a></td></tr>
-<tr class="memdesc:a847326710b5b428b1a8bb54b1d143c26"><td class="mdescLeft">&#160;</td><td class="mdescRight">give extent of railway for use in zoomed in and out displays and in saving railway images <br /></td></tr>
-<tr class="separator:a847326710b5b428b1a8bb54b1d143c26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8df4625e0c05c1158f3fc366afe928c"><td class="memItemLeft" align="right" valign="top"><a id="ae8df4625e0c05c1158f3fc366afe928c"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#ae8df4625e0c05c1158f3fc366afe928c">LinkCheckArray</a> [9][2]</td></tr>
-<tr class="memdesc:ae8df4625e0c05c1158f3fc366afe928c"><td class="mdescLeft">&#160;</td><td class="mdescRight">array of valid link connecting values, I don't think this is used now <br /></td></tr>
-<tr class="separator:ae8df4625e0c05c1158f3fc366afe928c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6f605b1cf52a3f8efba5549e19368a8"><td class="memItemLeft" align="right" valign="top"><a id="ab6f605b1cf52a3f8efba5549e19368a8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#ab6f605b1cf52a3f8efba5549e19368a8">LinkHVArray</a> [10][2]</td></tr>
-<tr class="memdesc:ab6f605b1cf52a3f8efba5549e19368a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">array used to determine relative horizontal &amp; vertical track element positions for specific link values <br /></td></tr>
-<tr class="separator:ab6f605b1cf52a3f8efba5549e19368a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dc657245d548b3b07fdb42e173f3bba"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a8dc657245d548b3b07fdb42e173f3bba">Tag76Array</a> [23][3]</td></tr>
-<tr class="separator:a8dc657245d548b3b07fdb42e173f3bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f05f2ae83cb9f85930df970b7844c4b"><td class="memItemLeft" align="right" valign="top"><a id="a4f05f2ae83cb9f85930df970b7844c4b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>Tag77Array</b> [23][3]</td></tr>
-<tr class="separator:a4f05f2ae83cb9f85930df970b7844c4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b4b28532e1317000b4387a9b37ff981"><td class="memItemLeft" align="right" valign="top"><a id="a4b4b28532e1317000b4387a9b37ff981"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>Tag78Array</b> [23][3]</td></tr>
-<tr class="separator:a4b4b28532e1317000b4387a9b37ff981"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab95da137dad09b9c8cd3fc673b80e841"><td class="memItemLeft" align="right" valign="top"><a id="ab95da137dad09b9c8cd3fc673b80e841"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>Tag79Array</b> [23][3]</td></tr>
-<tr class="separator:ab95da137dad09b9c8cd3fc673b80e841"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a689870b6bccd25e8b8980e363ad646d0"><td class="memItemLeft" align="right" valign="top"><a id="a689870b6bccd25e8b8980e363ad646d0"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>Tag96Array</b> [24][3]</td></tr>
-<tr class="separator:a689870b6bccd25e8b8980e363ad646d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac54feeb3cf1699bde9e4ac88d76d88fb"><td class="memItemLeft" align="right" valign="top"><a id="ac54feeb3cf1699bde9e4ac88d76d88fb"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>Tag129Array</b> [8][3]</td></tr>
-<tr class="separator:ac54feeb3cf1699bde9e4ac88d76d88fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33e00a86d9cb4b0402c08144f9ab563b"><td class="memItemLeft" align="right" valign="top"><a id="a33e00a86d9cb4b0402c08144f9ab563b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>Tag130Array</b> [8][3]</td></tr>
-<tr class="separator:a33e00a86d9cb4b0402c08144f9ab563b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff5c466da1dda0b20e1f770253ad2813"><td class="memItemLeft" align="right" valign="top"><a id="aff5c466da1dda0b20e1f770253ad2813"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>Tag131Array</b> [4][3]</td></tr>
-<tr class="separator:aff5c466da1dda0b20e1f770253ad2813"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebfb764fdd1bddb8f82b943e5af9979b"><td class="memItemLeft" align="right" valign="top"><a id="aebfb764fdd1bddb8f82b943e5af9979b"></a>
-Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TopPlatAllowed</b></td></tr>
-<tr class="separator:aebfb764fdd1bddb8f82b943e5af9979b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b2e23790782af830a0b206dcb9d9469"><td class="memItemLeft" align="right" valign="top"><a id="a0b2e23790782af830a0b206dcb9d9469"></a>
-Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>BotPlatAllowed</b></td></tr>
-<tr class="separator:a0b2e23790782af830a0b206dcb9d9469"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70fcf10b4a31240e4d103d04e7116926"><td class="memItemLeft" align="right" valign="top"><a id="a70fcf10b4a31240e4d103d04e7116926"></a>
-Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>LeftPlatAllowed</b></td></tr>
-<tr class="separator:a70fcf10b4a31240e4d103d04e7116926"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cde503d01659ec96a735529aca8efcb"><td class="memItemLeft" align="right" valign="top"><a id="a1cde503d01659ec96a735529aca8efcb"></a>
-Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>RightPlatAllowed</b></td></tr>
-<tr class="separator:a1cde503d01659ec96a735529aca8efcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44c0c3df5931635e578bfd17d51ecd31"><td class="memItemLeft" align="right" valign="top"><a id="a44c0c3df5931635e578bfd17d51ecd31"></a>
-Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>NameAllowed</b></td></tr>
-<tr class="separator:a44c0c3df5931635e578bfd17d51ecd31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29617e6f88e44a7974dc08a371682d0b"><td class="memItemLeft" align="right" valign="top">Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a29617e6f88e44a7974dc08a371682d0b">LevelCrossingAllowed</a></td></tr>
-<tr class="separator:a29617e6f88e44a7974dc08a371682d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>All dynamic track data &amp; methods. Only one object since only one operating railway</p>
@@ -2135,7 +2043,7 @@ Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>N
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Called by <a class="el" href="class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker. ...">TInterface::ClearandRebuildRailway</a> to replot all the active and inactive track elements, BothPointFillets indicates whether points are to be plotted according to how they are set - for operation, or with both fillets - when not operating or during development (the fillet is the bit that appears to move when points are changed) </p>
+<p>Called by TInterface::ClearandRebuildRailway to replot all the active and inactive track elements, BothPointFillets indicates whether points are to be plotted according to how they are set - for operation, or with both fillets - when not operating or during development (the fillet is the bit that appears to move when points are changed) </p>
 
 </div>
 </div>
@@ -2375,29 +2283,6 @@ Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>N
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a29617e6f88e44a7974dc08a371682d0b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29617e6f88e44a7974dc08a371682d0b">&#9670;&nbsp;</a></span>LevelCrossingAllowed</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Set&lt;int, 1, 130&gt; TTrack::LevelCrossingAllowed</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>sets of valid TrackElements for placement of platforms and non-station named locations </p>
-
-</div>
-</div>
 <a id="a50f518fa93ef56b1570e4102fb691e14"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a50f518fa93ef56b1570e4102fb691e14">&#9670;&nbsp;</a></span>PointFlashFlag</h2>
 
@@ -2415,32 +2300,9 @@ Set&lt; int, 1, 130 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>N
 
 </div>
 </div>
-<a id="a8dc657245d548b3b07fdb42e173f3bba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8dc657245d548b3b07fdb42e173f3bba">&#9670;&nbsp;</a></span>Tag76Array</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int TTrack::Tag76Array[23][3]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>these arrays give valid adjacent named element relative positions for each type of named element, the numbers - 76, 77 etc - relate to track element element SpeedTag values (76 - 79 = platforms, 96 = concourse, 129 &amp; 130 = footbridges and 131 = non-station named location. </p>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li><a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a></li>
-<li>TrackUnit.cpp</li>
+<li>C:/Programming work/railway development after v2.2.0/<a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a></li>
+<li>C:/Programming work/railway development after v2.2.0/TrackUnit.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

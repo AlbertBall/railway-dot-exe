@@ -49,21 +49,64 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //---------------------------------------------------------------------------
 
-int TTextItem::GetFontStyleAsInt(int Caller)
+    TTextItem::TTextItem() : TextString(""), HPos(0), VPos(0), Font(NULL) {};  //default constructor
+
+//---------------------------------------------------------------------------
+
+    TTextItem::TTextItem(int H, int V, AnsiString T, TFont *&FontPointer) //constructor, sets the values given & if font already exists then that pointer returned
+        : TextString(T), HPos(H), VPos(V), Font(FontPointer)
+    {
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ", TextItem constructor " + AnsiString(H) + "," + AnsiString(V) + "," + T);
+        TFont *NewFont = new TFont;
+        NewFont->Assign(FontPointer);
+        TFont *RequiredPointer = NewFont;
+        if(TextHandler->FontVector.empty())
+        {
+            TextHandler->FontVector.push_back(NewFont);
+        }
+        else
+        {
+            bool FoundPointer = false;
+            for(unsigned int x = 0; x < TextHandler->FontVector.size(); x++)
+            {
+                if(TextHandler->FontSame(0, TextHandler->FontVector.at(x), NewFont))
+                {
+                    RequiredPointer = TextHandler->FontVector.at(x);
+                    FoundPointer = true;
+                    delete NewFont;
+                    break;
+                }
+            }
+            if(!FoundPointer)
+            {
+                TextHandler->FontVector.push_back(NewFont);
+            }
+        }
+    FontPointer = RequiredPointer;
+    Utilities->CallLogPop(2105);
+    }
+
+//---------------------------------------------------------------------------
+
+TTextHandler *TextHandler;
+
+//---------------------------------------------------------------------------
+
+int TTextHandler::GetFontStyleAsInt(int Caller, TFont *InputFont)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetFontStyleAsInt");
     int Output = 0;
-    if(Font->Style.Contains(fsBold)) Output = 1;
-    if(Font->Style.Contains(fsItalic)) Output+= 2;
-    if(Font->Style.Contains(fsUnderline)) Output+= 4;
-    if(Font->Style.Contains(fsStrikeOut)) Output+= 8;
+    if(InputFont->Style.Contains(fsBold)) Output = 1;
+    if(InputFont->Style.Contains(fsItalic)) Output+= 2;
+    if(InputFont->Style.Contains(fsUnderline)) Output+= 4;
+    if(InputFont->Style.Contains(fsStrikeOut)) Output+= 8;
     Utilities->CallLogPop(1306);
     return Output;
 }
 
 //---------------------------------------------------------------------------
 
-void TTextItem::SetFontStyleFromInt(int Caller, int Input)
+TFontStyles TTextHandler::SetFontStyleFromInt(int Caller, int Input)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetFontStyleAsInt" + AnsiString(Input));
     TFontStyles TempStyle;
@@ -83,41 +126,47 @@ void TTextItem::SetFontStyleFromInt(int Caller, int Input)
         Input -= 2;
     }
     if(Input >= 1) TempStyle << fsBold;
-    Font->Style = TempStyle; //Font->Style doesn't accept << values directly for some reason??
     Utilities->CallLogPop(1307);
+    return TempStyle; //Font->Style doesn't accept << values directly
 }
 
 //---------------------------------------------------------------------------
 
-void TTextItem::DeleteTextItem(int Caller)
-/*
-Delete text heap object (font) explicitly by this special function rather than by a destructor, because vectors
-erase elements during internal operations & if TTextItem had an explicit destructor that deleted the font then
-it would be called when a vector element was erased.  Calling the default TTextItem destructor doesn't matter because all
-that does is release the memory of the members (including the pointer to the font), it doesn't destroy the font itself.
-It's important therefore to call this function before erasing the vector element, otherwise the pointer to the font
-would be lost and the font never destroyed, thereby causing memory leaks.
-*/
+bool TTextHandler::FontSame(int Caller, TFont *ExistingFont, TFont *InputFont)
 {
-//    if(NoDelete) return;
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DeleteTextItem");
-    if(Font == 0)
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FontSame,");
+    if(ExistingFont->Name != InputFont->Name)
     {
-        throw Exception("Error in attempting to delete Font");
+        Utilities->CallLogPop(2106);
+        return false;
     }
-    delete Font;
-    Font = 0;
-    Utilities->CallLogPop(741);
+    if(ExistingFont->Color != InputFont->Color)
+    {
+        Utilities->CallLogPop(2107);
+        return false;
+    }
+    if(ExistingFont->Charset != InputFont->Charset)
+    {
+        Utilities->CallLogPop(2108);
+        return false;
+    }
+    if(ExistingFont->Size != InputFont->Size)
+    {
+        Utilities->CallLogPop(2109);
+        return false;
+    }
+    if(ExistingFont->Style != InputFont->Style)
+    {
+        Utilities->CallLogPop(2110);
+        return false;
+    }
+    Utilities->CallLogPop(2111);
+    return true;
 }
 
 //---------------------------------------------------------------------------
-//---------------------------------------------------------------------------
 
-TTextHandler *TextHandler;
-
-//---------------------------------------------------------------------------
-
-void TTextHandler::EnterAndDisplayNewText(int Caller, TTextItem &Text, int HPos, int VPos)
+void TTextHandler::EnterAndDisplayNewText(int Caller, TTextItem Text, int HPos, int VPos)
 {
     Text.TextString = Text.TextString.Trim(); //strip leading & trailing spaces and control characters
     if(Text.TextString == "")
@@ -131,6 +180,7 @@ void TTextHandler::EnterAndDisplayNewText(int Caller, TTextItem &Text, int HPos,
     Utilities->CallLogPop(1308);
 }
 //---------------------------------------------------------------------------
+
 void TTextHandler::TextMove(int Caller, int HPosInput, int VPosInput, int &TextItem,
                             int &TextMoveHPos, int &TextMoveVPos, bool &TextFoundFlag)
 {
@@ -199,7 +249,6 @@ bool TTextHandler::TextErase(int Caller, int HPosInput, int VPosInput)
                (VPosInput < ((*TextPtr).VPos + ((*TextPtr).Font->Size)*1.5)))
 
             {
-                TextPtr->DeleteTextItem(1);
                 TextVector.erase(TextPtr);
                 Track->CalcHLocMinEtc(5);
                 Utilities->CallLogPop(1314);
@@ -213,65 +262,35 @@ bool TTextHandler::TextErase(int Caller, int HPosInput, int VPosInput)
 
 //---------------------------------------------------------------------------
 
-void TTextHandler::LoadOld(int Caller, std::ifstream& VecFile)
-//VecFile already open and its pointer at right place on calling
-{
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadOld");
-    int TempInt;
-    char *TempString = new char[256];
-    char TempChar;
-    while(true)
-    {
-        VecFile >> TempInt; //1 unless end of text
-        if(TempInt == 999999) break;
-        TTextItem *TempText = new TTextItem; //needs to persist as referenced by text vector
-        VecFile >> TempInt; TempText->HPos = TempInt;
-        VecFile >> TempInt; TempText->VPos = TempInt;
-        VecFile.get(TempChar); //get rid of '\n' prior to loading string
-        VecFile.getline(&TempString[0], 256); //'n' is in file as delimiter, but \0 goes into TempString
-        TempText->TextString = TempString; //text string
-        VecFile.getline(&TempString[0], 256); //Font name
-        TempText->Font->Name = TempString;
-        VecFile >> TempInt; //font size
-        TempText->Font->Size = TempInt;
-        VecFile >> TempInt; //font colour
-        TempText->Font->Color = static_cast<TColor>(TempInt);
-        VecFile >> TempInt; //font charset
-        TempText->Font->Charset = (TFontCharset)TempInt;
-        VecFile >> TempInt; //font style as integer
-        TempText->SetFontStyleFromInt(0, TempInt);
-        TextVectorPush(2, *TempText);
-    }
-    delete TempString;
-    Utilities->CallLogPop(1316);
-}
-
-//---------------------------------------------------------------------------
-
 void TTextHandler::LoadText(int Caller, std::ifstream& VecFile)
 //VecFile already open and its pointer at right place on calling
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadText");
     int TempInt;
-    AnsiString FontNameString = "";
     int NumberOfTextElements=0;
     NumberOfTextElements = Utilities->LoadFileInt(VecFile);
+    int HPos, VPos, FontSize, FontColour, FontCharset, FontStyle;
+    AnsiString TextString, FontName;
     for(int x=0; x<NumberOfTextElements; x++)
     {
-        TTextItem *TempText = new TTextItem; //needs to persist as referenced by text vector
-        VecFile >> TempInt; TempText->HPos = TempInt;
-        VecFile >> TempInt; TempText->VPos = TempInt;
-
-        TempText->TextString = Utilities->LoadFileString(VecFile);
-        TempText->Font->Name = Utilities->LoadFileString(VecFile); //name
-        VecFile >> TempInt; //font size
-        TempText->Font->Size = TempInt;
-        VecFile >> TempInt; //font colour
-        TempText->Font->Color = static_cast<TColor>(TempInt);
-        VecFile >> TempInt; //font charset
-        TempText->Font->Charset = (TFontCharset)TempInt;
-        VecFile >> TempInt; //font style as integer
-        TempText->SetFontStyleFromInt(1, TempInt);
+        VecFile >> HPos;
+        VecFile >> VPos;
+        TextString = Utilities->LoadFileString(VecFile);
+        FontName = Utilities->LoadFileString(VecFile);
+        VecFile >> FontSize;
+        VecFile >> FontColour;
+        VecFile >> FontCharset;
+        VecFile >> FontStyle;
+        TFont *NewFont = new TFont;
+        TFont *CreatedFontPointer = NewFont; //stores it for later deletion
+        NewFont->Name = FontName;
+        NewFont->Size = FontSize;
+        NewFont->Color = static_cast<TColor>(FontColour);
+        NewFont->Charset = FontCharset;
+        NewFont->Style = SetFontStyleFromInt(1, FontStyle);
+        TTextItem *TempText = new TTextItem(HPos, VPos, TextString, NewFont); //NewFont changed to actual pointer pushed into or already in FontVector
+        TempText->Font = NewFont;
+        delete CreatedFontPointer; //TempText constructor creates a new font on the heap and pushes that onto FontVector if new so this not needed in future
         TextVectorPush(3, *TempText);
     }
     Utilities->CallLogPop(1317);
@@ -301,7 +320,7 @@ void TTextHandler::SaveText(int Caller, std::ofstream& VecFile)
             VecFile << TextPtrAt(13, x)->Font->Color << '\n';
         }
         VecFile << (int)(TextPtrAt(14, x)->Font->Charset) << '\n'; //save as 'int' (would be unsigned char else) so 'n' can act as proper delimiter
-        VecFile << TextPtrAt(15, x)->GetFontStyleAsInt(0) << '\n';
+        VecFile << GetFontStyleAsInt(0, TextPtrAt(15, x)->Font) << '\n';
     }
     Utilities->CallLogPop(1318);
 }
@@ -314,9 +333,6 @@ bool TTextHandler::CheckTextElementsInFile(int Caller, std::ifstream& VecFile)
 //check text elements
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckTextElementsInFile");
     int TempInt;
-//TTextItem TempText;
-//char TempString[256];
-//char TempChar;
     int NumberOfTextElements=0;
     NumberOfTextElements = Utilities->LoadFileInt(VecFile);
     for(int x=0; x<NumberOfTextElements; x++)
@@ -403,7 +419,7 @@ void TTextHandler::WriteTextToImage(int Caller, Graphics::TBitmap *Bitmap)
 
 //---------------------------------------------------------------------------
 
-void TTextHandler::TextVectorResetPosition(int Caller, int HOffset, int VOffset)
+void TTextHandler::TextVectorResetPosition(int Caller, int HOffset, int VOffset) //not used
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextVectorResetPosition," + AnsiString(HOffset) + "," + AnsiString(VOffset));
     if(TextVectorSize(5) > 0)
@@ -419,7 +435,7 @@ void TTextHandler::TextVectorResetPosition(int Caller, int HOffset, int VOffset)
 
 //---------------------------------------------------------------------------
 
-void TTextHandler::TextClear(int Caller)
+void TTextHandler::TextClear(int Caller)    //not used
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextClear");
     TextVector.clear();
@@ -444,7 +460,7 @@ void TTextHandler::TextClear(int Caller)
 
 //---------------------------------------------------------------------------
 
-void TTextHandler::TextVectorPush(int Caller, TTextItem &Text)
+void TTextHandler::TextVectorPush(int Caller, TTextItem Text)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextVectorPush," + Text.TextString);
     int HLoc = (Text.HPos)/16;

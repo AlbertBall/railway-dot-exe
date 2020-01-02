@@ -660,6 +660,25 @@ TRailGraphics::TRailGraphics()
     bmStraightEWSignalBlank = new Graphics::TBitmap; bmStraightEWSignalBlank->LoadFromResourceName(0, "bmStraightEWSignalBlank"); bmStraightEWSignalBlank->Transparent = false;
     bmStraightNSSignalBlank = new Graphics::TBitmap; bmStraightNSSignalBlank->LoadFromResourceName(0, "bmStraightNSSignalBlank"); bmStraightNSSignalBlank->Transparent = false;
 
+//These are the new glyphs for v2.3.0 that stay black
+    SpeedBut68NormBlackGlyph = new Graphics::TBitmap; SpeedBut68NormBlackGlyph->LoadFromResourceName(0, "gl68");
+    SpeedBut69NormBlackGlyph = new Graphics::TBitmap; SpeedBut69NormBlackGlyph->LoadFromResourceName(0, "gl69");
+    SpeedBut70NormBlackGlyph = new Graphics::TBitmap; SpeedBut70NormBlackGlyph->LoadFromResourceName(0, "gl70");
+    SpeedBut71NormBlackGlyph = new Graphics::TBitmap; SpeedBut71NormBlackGlyph->LoadFromResourceName(0, "gl71");
+    SpeedBut72NormBlackGlyph = new Graphics::TBitmap; SpeedBut72NormBlackGlyph->Assign(gl72); SpeedBut72NormBlackGlyph->Transparent = false;
+    SpeedBut73NormBlackGlyph = new Graphics::TBitmap; SpeedBut73NormBlackGlyph->Assign(gl73); SpeedBut73NormBlackGlyph->Transparent = false;
+    SpeedBut74NormBlackGlyph = new Graphics::TBitmap; SpeedBut74NormBlackGlyph->Assign(gl74); SpeedBut74NormBlackGlyph->Transparent = false;
+    SpeedBut75NormBlackGlyph = new Graphics::TBitmap; SpeedBut75NormBlackGlyph->Assign(gl75); SpeedBut75NormBlackGlyph->Transparent = false;
+
+    SpeedBut68GrndBlackGlyph = new Graphics::TBitmap; SpeedBut68GrndBlackGlyph->Assign(bm68grounddblred);
+    SpeedBut69GrndBlackGlyph = new Graphics::TBitmap; SpeedBut69GrndBlackGlyph->Assign(bm69grounddblred);
+    SpeedBut70GrndBlackGlyph = new Graphics::TBitmap; SpeedBut70GrndBlackGlyph->Assign(bm70grounddblred);
+    SpeedBut71GrndBlackGlyph = new Graphics::TBitmap; SpeedBut71GrndBlackGlyph->Assign(bm71grounddblred);
+    SpeedBut72GrndBlackGlyph = new Graphics::TBitmap; SpeedBut72GrndBlackGlyph->Assign(bm72grounddblred);
+    SpeedBut73GrndBlackGlyph = new Graphics::TBitmap; SpeedBut73GrndBlackGlyph->Assign(bm73grounddblred);
+    SpeedBut74GrndBlackGlyph = new Graphics::TBitmap; SpeedBut74GrndBlackGlyph->Assign(bm74grounddblred);
+    SpeedBut75GrndBlackGlyph = new Graphics::TBitmap; SpeedBut75GrndBlackGlyph->Assign(bm75grounddblred);
+
     // GridBitmap is a 10 x 9 grid image, quicker to plot these for whole screen than small ones
     GridBitmap = new Graphics::TBitmap;
     GridBitmap->PixelFormat = pf8bit;
@@ -1446,14 +1465,47 @@ void TRailGraphics::ChangeForegroundColour(int Caller, Graphics::TBitmap *Bitmap
 
 //---------------------------------------------------------------------------
 
+void TRailGraphics::ChangeForegroundColour2(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut,
+                                           TColor NewForegroundColour, TColor BackgroundColour)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeForegroundColour2," + AnsiString(NewForegroundColour) + "," + AnsiString(BackgroundColour));
+    Graphics::TBitmap *TempBitmapOut = new Graphics::TBitmap;
+    TempBitmapOut->Assign(BitmapIn); //in case BitmapOut isn't fully defined at this stage
+    TRect FullRect(0, 0, BitmapIn->Width, BitmapIn->Height); //the full size of both bitmaps
+    TempBitmapOut->Canvas->Brush->Color = BackgroundColour; //BrushStyle default is solid so leave at that
+    TempBitmapOut->Canvas->FillRect(FullRect);
+    for(int x=0; x<BitmapIn->Width; x++)
+    {
+        for(int y=0; y<BitmapIn->Height; y++)
+        {
+            if(BitmapIn->Canvas->Pixels[x][y] != BackgroundColour)
+            {
+                TempBitmapOut->Canvas->Pixels[x][y] = NewForegroundColour;
+            }
+        }
+    }
+    BitmapOut->Assign(TempBitmapOut);
+    delete TempBitmapOut;
+    Utilities->CallLogPop(2101);
+}
+
+//---------------------------------------------------------------------------
+
 void TRailGraphics::ChangeSpecificColour(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut,
                                          TColor ColourToBeChanged, TColor NewColour)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeSpecificColour," + AnsiString(ColourToBeChanged) + "," + AnsiString(NewColour));
     BitmapOut->Height = BitmapIn->Height; BitmapOut->Width = BitmapIn->Width;
-    for(int x=0; x<BitmapIn->Width; x++) for(int y=0; y<BitmapIn->Height; y++)
+    for(int x=0; x<BitmapIn->Width; x++)
+    {
+        for(int y=0; y<BitmapIn->Height; y++)
+        {
             if(BitmapIn->Canvas->Pixels[x][y] == ColourToBeChanged)
+            {
                 BitmapOut->Canvas->Pixels[x][y] = NewColour;
+            }
+        }
+    }
     Utilities->CallLogPop(1481);
 }
 
@@ -1485,6 +1537,130 @@ void TRailGraphics::ChangeBackgroundColour(int Caller, Graphics::TBitmap *Bitmap
                 BitmapOut->Canvas->Pixels[x][y] = BitmapIn->Canvas->Pixels[x][y];
         }
     Utilities->CallLogPop(1482);
+}
+
+//---------------------------------------------------------------------------
+
+void TRailGraphics::ChangeBackgroundColour2(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap* BitmapOut,
+                                           TColor NewBackgroundColour, TColor OldBackgroundColour)
+{
+//superseded by ChangeBackgroundColour3 using direct pixel manipulation
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeBackgroundColour2," + AnsiString(NewBackgroundColour) + "," + AnsiString(OldBackgroundColour));
+    Graphics::TBitmap *TempBitmapOut = new Graphics::TBitmap;
+    TempBitmapOut->Assign(BitmapIn); //in case BitmapOut isn't fully defined at this stage
+    TRect FullRect(0, 0, BitmapIn->Width, BitmapIn->Height); //the full size of both bitmaps
+    TempBitmapOut->Canvas->Brush->Color = NewBackgroundColour; //BrushStyle default is solid so leave at that
+    TempBitmapOut->Canvas->FillRect(FullRect); //now all coloured same as new background
+
+//    TempBitmapOut->Canvas->CopyMode = cmSrcAnd; //these lines instead of the for.. next pixel loop didn't work, they gave distorted
+//    TempBitmapOut->Canvas->CopyRect(FullRect, BitmapIn->Canvas, FullRect); //colours, but worked OK without the Assign for a reason I couldn't fathom
+
+    for(int x=0; x<BitmapIn->Width; x++)
+    {
+        for(int y=0; y<BitmapIn->Height; y++)
+        {
+            {
+                if(BitmapIn->Canvas->Pixels[x][y] != OldBackgroundColour)
+                {
+                    TempBitmapOut->Canvas->Pixels[x][y] = BitmapIn->Canvas->Pixels[x][y];
+                }
+            }
+        }
+    }
+
+    BitmapOut->Assign(TempBitmapOut);
+    delete TempBitmapOut;
+    Utilities->CallLogPop(2102);
+}
+
+//---------------------------------------------------------------------------
+
+void TRailGraphics::ChangeBackgroundColour3(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap* BitmapOut,
+                                           TColor NewBackgroundColour, TColor OldBackgroundColour)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeBackgroundColour3" + AnsiString(NewBackgroundColour) + "," + AnsiString(OldBackgroundColour));
+    Byte *SLPtrIn; //pointer to the ScanLine values in BitmapIn
+    Byte *SLPtrOut; //pointer to the ScanLine values in TempBitmapOut
+    Graphics::TBitmap *TempBitmapOut = new Graphics::TBitmap;
+    TempBitmapOut->Assign(BitmapIn); //in case BitmapOut isn't fully defined at this stage
+    int NewBGColourNumber = ColNametoNumber(0, NewBackgroundColour);
+    int OldBGColourNumber = ColNametoNumber(1, OldBackgroundColour);
+    for(int x = 0; x < BitmapIn->Height; x++)
+    {
+        SLPtrIn = reinterpret_cast<Byte *>(BitmapIn->ScanLine[x]);
+        SLPtrOut = reinterpret_cast<Byte *>(TempBitmapOut->ScanLine[x]);
+        for(int y = 0; y < BitmapIn->Width; y++)
+        {
+            if(SLPtrIn[y] == OldBGColourNumber)
+            {
+                SLPtrOut[y] = NewBGColourNumber;
+            }
+            else
+            {
+                SLPtrOut[y] = SLPtrIn[y];
+            }
+        }
+    }
+    BitmapOut->Assign(TempBitmapOut);
+    delete TempBitmapOut;
+    Utilities->CallLogPop(2103);
+}
+
+//---------------------------------------------------------------------------
+
+int TRailGraphics::ColNametoNumber(int Caller, TColor Colour)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ColNametoNumber" + AnsiString(Colour));
+    int Number;
+    switch(Colour)
+    {
+        case clB0G0R0:  //black
+            Number = 0x0;
+            break;
+        case clB5G5R5:  //white
+            Number = 0xd7;
+            break;
+        case clBufferAttentionNeeded:
+            Number = 0x23;
+            break;
+        case clBufferStopBackground:
+            Number = 0xb3;
+            break;
+        case clCallOnBackground:
+            Number = 0xbf;
+            break;
+        case clCrashedBackground: //covers DerailedBackground because that has the same colour number
+            Number = 0xb4;
+            break;
+        case clNormalBackground:
+            Number = 0xac;
+            break;
+        case clSignallerStopped:
+            Number = 0xcf;
+            break;
+        case clSignalStopBackground:
+            Number = 0x66;
+            break;
+        case clSPADBackground:
+            Number = 0xd2;
+            break;
+        case clStationStopBackground:
+            Number = 0xb2;
+            break;
+        case clStoppedTrainInFront:
+            Number = 0x83;
+            break;
+        case clTRSBackground:
+            Number = 0xd1;
+            break;
+        default:
+            UnicodeString MessageStr = "Can't find colour in ColNametoNumber, InputColour = " + UnicodeString(Colour);
+            Application->MessageBox(MessageStr.c_str(), L"", MB_OK);
+            Number = 0xad; //normal background
+            break;
+    }
+    Utilities->CallLogPop(2104);
+    return Number;
 }
 
 //---------------------------------------------------------------------------
@@ -2185,4 +2361,246 @@ reverse direction same in each case
 }
 
 //---------------------------------------------------------------------------
+
+void TRailGraphics::ConvertSignalsToOppositeHand(int Caller) //new at v2.3.0
+
+{
+    Utilities->EventLog.push_back("ConvertSignalsToRightHand");
+    if(Utilities->EventLog.size() > 1000) Utilities->EventLog.pop_front();
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ", ConvertSignalsToRightHand");
+
+    Graphics::TBitmap* HorizSignalArray[18] =
+    {
+        Plat68,
+        Plat68Striped,
+        Plat69,
+        Plat69Striped,
+        bm68CallingOn,
+        bm68dblyellow,
+        bm68grounddblred,
+        bm68grounddblwhite,
+        bm68green,
+        bm68yellow,
+        bm69CallingOn,
+        bm69dblyellow,
+        bm69grounddblred,
+        bm69grounddblwhite,
+        bm69green,
+        bm69yellow,
+        gl68,
+        gl69
+    };
+
+
+    Graphics::TBitmap* VertSignalArray[18] =
+    {
+        Plat70,
+        Plat70Striped,
+        Plat71,
+        Plat71Striped,
+        bm70CallingOn,
+        bm70dblyellow,
+        bm70grounddblred,
+        bm70grounddblwhite,
+        bm70green,
+        bm70yellow,
+        bm71CallingOn,
+        bm71dblyellow,
+        bm71grounddblred,
+        bm71grounddblwhite,
+        bm71green,
+        bm71yellow,
+        gl70,
+        gl71
+    };
+
+
+    Graphics::TBitmap* BackDiagSignalArray[14] =
+    {
+        bm72CallingOn,
+        bm72dblyellow,
+        bm72grounddblred,
+        bm72grounddblwhite,
+        bm72green,
+        bm72yellow,
+        bm75CallingOn,
+        bm75dblyellow,
+        bm75grounddblred,
+        bm75grounddblwhite,
+        bm75green,
+        bm75yellow,
+        gl72,
+        gl75
+    };
+
+
+    Graphics::TBitmap* FwdDiagSignalArray[16] =
+    {
+        bm73,
+        bm73CallingOn,
+        bm73dblyellow,
+        bm73grounddblred,
+        bm73grounddblwhite,
+        bm73green,
+        bm73yellow,
+        bm74,
+        bm74CallingOn,
+        bm74dblyellow,
+        bm74grounddblred,
+        bm74grounddblwhite,
+        bm74green,
+        bm74yellow,
+        gl73,
+        gl74
+    };
+
+//the following are the stay black glyphs for the speedbuttons
+    Graphics::TBitmap* HorizSignalGlyphArray[4] =
+    {
+        SpeedBut68NormBlackGlyph,
+        SpeedBut69NormBlackGlyph,
+        SpeedBut68GrndBlackGlyph,
+        SpeedBut69GrndBlackGlyph
+    };
+
+    Graphics::TBitmap* VertSignalGlyphArray[4] =
+    {
+        SpeedBut70NormBlackGlyph,
+        SpeedBut71NormBlackGlyph,
+        SpeedBut70GrndBlackGlyph,
+        SpeedBut71GrndBlackGlyph
+    };
+
+    Graphics::TBitmap* BackDiagSignalGlyphArray[4] =
+    {
+        SpeedBut72NormBlackGlyph,
+        SpeedBut75NormBlackGlyph,
+        SpeedBut72GrndBlackGlyph,
+        SpeedBut75GrndBlackGlyph,
+    };
+
+    Graphics::TBitmap* FwdDiagSignalGlyphArray[4] =
+    {
+        SpeedBut73NormBlackGlyph,
+        SpeedBut74NormBlackGlyph,
+        SpeedBut73GrndBlackGlyph,
+        SpeedBut74GrndBlackGlyph
+    };
+
+
+    Graphics::TBitmap* TmpBM;
+    TmpBM = new Graphics::TBitmap;
+    TmpBM->Assign(bmTransparentBgnd);  //current background colour as transparent colour
+
+    for(int x=0; x<18; x++)
+        {
+        for(int i=0; i<16; i++)
+            {
+            for(int j=0; j<16; j++)
+                {
+                TmpBM->Canvas->Pixels[i][j] = HorizSignalArray[x]->Canvas->Pixels[i][15-j];
+                }
+            }
+        HorizSignalArray[x]->Assign(TmpBM);
+        }
+
+    TmpBM->Assign(bmTransparentBgnd);  //current background colour as transparent colour
+    for(int x=0; x<18; x++)
+        {
+        for(int i=0; i<16; i++)
+            {
+            for(int j=0; j<16; j++)
+                {
+                TmpBM->Canvas->Pixels[i][j] = VertSignalArray[x]->Canvas->Pixels[15-i][j];
+                }
+            }
+        VertSignalArray[x]->Assign(TmpBM);
+        }
+
+    TmpBM->Assign(bmTransparentBgnd);  //current background colour as transparent colour
+    for(int x=0; x<14; x++)
+        {
+        for(int i=0; i<16; i++)
+            {
+            for(int j=0; j<16; j++)
+                {
+                TmpBM->Canvas->Pixels[i][j] = BackDiagSignalArray[x]->Canvas->Pixels[j][i];
+                }
+            }
+        BackDiagSignalArray[x]->Assign(TmpBM);  //current background colour as transparent colour
+        }
+
+    TmpBM->Assign(bmTransparentBgnd);
+    for(int x=0; x<16; x++)
+        {
+        for(int i=0; i<16; i++)
+            {
+            for(int j=0; j<16; j++)
+                {
+                TmpBM->Canvas->Pixels[i][j] = FwdDiagSignalArray[x]->Canvas->Pixels[15-j][15-i];
+                }
+            }
+        FwdDiagSignalArray[x]->Assign(TmpBM);
+        }
+
+    TmpBM->LoadFromResourceName(0, "bmSolidBgnd"); TmpBM->Transparent = true; TmpBM->TransparentColor = clB5G5R5;
+        //white as transparent colour for speedbutton glyphs
+    for(int x=0; x<4; x++)
+        {
+        for(int i=0; i<16; i++)
+            {
+            for(int j=0; j<16; j++)
+                {
+                TmpBM->Canvas->Pixels[i][j] = HorizSignalGlyphArray[x]->Canvas->Pixels[i][15-j];
+                }
+            }
+        HorizSignalGlyphArray[x]->Assign(TmpBM);
+        }
+
+    TmpBM->LoadFromResourceName(0, "bmSolidBgnd"); TmpBM->Transparent = true; TmpBM->TransparentColor = clB5G5R5;
+        //white as transparent colour for speedbutton glyphs
+    for(int x=0; x<4; x++)
+        {
+        for(int i=0; i<16; i++)
+            {
+            for(int j=0; j<16; j++)
+                {
+                TmpBM->Canvas->Pixels[i][j] = VertSignalGlyphArray[x]->Canvas->Pixels[15-i][j];
+                }
+            }
+        VertSignalGlyphArray[x]->Assign(TmpBM);
+        }
+
+    TmpBM->LoadFromResourceName(0, "bmSolidBgnd"); TmpBM->Transparent = true; TmpBM->TransparentColor = clB5G5R5;
+        //white as transparent colour for speedbutton glyphs
+    for(int x=0; x<4; x++)
+        {
+        for(int i=0; i<16; i++)
+            {
+            for(int j=0; j<16; j++)
+                {
+                TmpBM->Canvas->Pixels[i][j] = BackDiagSignalGlyphArray[x]->Canvas->Pixels[j][i];
+                }
+            }
+        BackDiagSignalGlyphArray[x]->Assign(TmpBM);
+        }
+
+    TmpBM->LoadFromResourceName(0, "bmSolidBgnd"); TmpBM->Transparent = true; TmpBM->TransparentColor = clB5G5R5;
+        //white as transparent colour for speedbutton glyphs
+    for(int x=0; x<4; x++)
+        {
+        for(int i=0; i<16; i++)
+            {
+            for(int j=0; j<16; j++)
+                {
+                TmpBM->Canvas->Pixels[i][j] = FwdDiagSignalGlyphArray[x]->Canvas->Pixels[15-j][15-i];
+                }
+            }
+        FwdDiagSignalGlyphArray[x]->Assign(TmpBM);
+        }
+
+    Utilities->RHSignalFlag = !Utilities->RHSignalFlag; //set in itially to false (= LH)
+    Utilities->CallLogPop(74);
+}
+
 

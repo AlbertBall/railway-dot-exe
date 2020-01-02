@@ -21,12 +21,27 @@ void \mbox{\hyperlink{class_t_rail_graphics_a5121c6d8b8fa69eefc293ca51cddce88}{C
 \item 
 void \mbox{\hyperlink{class_t_rail_graphics_a74d7dcd5e17ef156d8c216c8e524de11}{Change\+Background\+Colour}} (int Caller, Graphics\+::\+T\+Bitmap $\ast$Bitmap\+In, Graphics\+::\+T\+Bitmap $\ast$Bitmap\+Out, T\+Color New\+Background\+Colour, T\+Color Old\+Background\+Colour, bool \&Colour\+Error)
 \item 
+\mbox{\Hypertarget{class_t_rail_graphics_ad718b35b6e9f7c36138d234a29da2b37}\label{class_t_rail_graphics_ad718b35b6e9f7c36138d234a29da2b37}} 
+void \mbox{\hyperlink{class_t_rail_graphics_ad718b35b6e9f7c36138d234a29da2b37}{Change\+Background\+Colour2}} (int Caller, Graphics\+::\+T\+Bitmap $\ast$Bitmap\+In, Graphics\+::\+T\+Bitmap $\ast$Bitmap\+Out, T\+Color New\+Background\+Colour, T\+Color Old\+Background\+Colour)
+\begin{DoxyCompactList}\small\item\em New function to do the same as the above but with fewer pixel changes -\/ for use in Load\+Session (\& Plot\+Start\+Position) to avoid resource failures on loading many session trains. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_rail_graphics_af83b21217bb1c2a229bdf14b0d2ffd0d}\label{class_t_rail_graphics_af83b21217bb1c2a229bdf14b0d2ffd0d}} 
+void \mbox{\hyperlink{class_t_rail_graphics_af83b21217bb1c2a229bdf14b0d2ffd0d}{Change\+Background\+Colour3}} (int Caller, Graphics\+::\+T\+Bitmap $\ast$Bitmap\+In, Graphics\+::\+T\+Bitmap $\ast$Bitmap\+Out, T\+Color New\+Background\+Colour, T\+Color Old\+Background\+Colour)
+\begin{DoxyCompactList}\small\item\em as above but uses Scanline \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_t_rail_graphics_aa2dace651659e084ec23c9961f5819b1}{Change\+Foreground\+Colour}} (int Caller, Graphics\+::\+T\+Bitmap $\ast$Bitmap\+In, Graphics\+::\+T\+Bitmap $\ast$Bitmap\+Out, T\+Color New\+Foreground\+Colour, T\+Color Background\+Colour)
 \item 
+\mbox{\Hypertarget{class_t_rail_graphics_ad6db946801b17d5d4b462bc2c95ebfbd}\label{class_t_rail_graphics_ad6db946801b17d5d4b462bc2c95ebfbd}} 
+void \mbox{\hyperlink{class_t_rail_graphics_ad6db946801b17d5d4b462bc2c95ebfbd}{Change\+Foreground\+Colour2}} (int Caller, Graphics\+::\+T\+Bitmap $\ast$Bitmap\+In, Graphics\+::\+T\+Bitmap $\ast$Bitmap\+Out, T\+Color New\+Foreground\+Colour, T\+Color Background\+Colour)
+\begin{DoxyCompactList}\small\item\em New function to do the same as the above but with fewer pixel changes -\/ for use in Load\+Session to avoid resource failures on loading many session trains. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_t_rail_graphics_ac4e48e6ee19e01724adb0d490762d548}{Change\+Specific\+Colour}} (int Caller, Graphics\+::\+T\+Bitmap $\ast$Bitmap\+In, Graphics\+::\+T\+Bitmap $\ast$Bitmap\+Out, T\+Color Colour\+To\+Be\+Changed, T\+Color New\+Colour)
 \item 
 void \mbox{\hyperlink{class_t_rail_graphics_a89a3e3a91129c4d02f4606478781b519}{Change\+Transparent\+Colour}} (Graphics\+::\+T\+Bitmap $\ast$Bitmap\+In, Graphics\+::\+T\+Bitmap $\ast$Bitmap\+Out, T\+Color New\+Transparent\+Colour, T\+Color Old\+Transparent\+Colour)
 \item 
+\mbox{\Hypertarget{class_t_rail_graphics_a654ae6c6b77e20d1625f1e52d04d9d69}\label{class_t_rail_graphics_a654ae6c6b77e20d1625f1e52d04d9d69}} 
+int \mbox{\hyperlink{class_t_rail_graphics_a654ae6c6b77e20d1625f1e52d04d9d69}{Col\+Nameto\+Number}} (int Caller, T\+Color Colour)
+\begin{DoxyCompactList}\small\item\em used in Change\+Background\+Colour3 to convert a named colour to a number for Scanline \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_rail_graphics_a2a9f6885adeb46f1f8825ac02eaf30b0}\label{class_t_rail_graphics_a2a9f6885adeb46f1f8825ac02eaf30b0}} 
+void \mbox{\hyperlink{class_t_rail_graphics_a2a9f6885adeb46f1f8825ac02eaf30b0}{Convert\+Signals\+To\+Opposite\+Hand}} (int Caller)
+\begin{DoxyCompactList}\small\item\em Converts all signal graphics to opposite hand new at v2.\+3.\+0. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_t_rail_graphics_ae19696d461eea07c5444ed4c9714acf3}{Set\+Up\+All\+Derivitive\+Graphics}} (T\+Color Transparent\+Colour)
 \end{DoxyCompactItemize}
 \subsection*{Public Attributes}
@@ -2068,7 +2083,55 @@ Graphics\+::\+T\+Bitmap $\ast$ \mbox{\hyperlink{class_t_rail_graphics_a962b7f59e
 \begin{DoxyCompactList}\small\item\em for point fillets -\/ 32 sets of points, each with two fillets \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_rail_graphics_a10379722f35b86436020ca874744c339}\label{class_t_rail_graphics_a10379722f35b86436020ca874744c339}} 
 Graphics\+::\+T\+Bitmap $\ast$ \mbox{\hyperlink{class_t_rail_graphics_a10379722f35b86436020ca874744c339}{Locked\+Route\+Cancel\+Ptr}} \mbox{[}10\mbox{]}
-\begin{DoxyCompactList}\small\item\em for locked route cancel graphic, 1 for each of 8 links, 0 \& 5 included as for direction \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em for locked route cancel graphic, 1 for each of 8 links, 0 \& 5 included as for direction \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_rail_graphics_abe8d5e5e23696a9b940b80bd905b0416}\label{class_t_rail_graphics_abe8d5e5e23696a9b940b80bd905b0416}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But68\+Norm\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_ac5d408c66785ce7cf034076a37aaefed}\label{class_t_rail_graphics_ac5d408c66785ce7cf034076a37aaefed}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But69\+Norm\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_ae345b580dc92db627f7c378d7ca5ed97}\label{class_t_rail_graphics_ae345b580dc92db627f7c378d7ca5ed97}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But70\+Norm\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_ae4dca7933577de83a2053b61f18bfa97}\label{class_t_rail_graphics_ae4dca7933577de83a2053b61f18bfa97}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But71\+Norm\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_a3cab25a4d8cb8f7bc8a9112c35665977}\label{class_t_rail_graphics_a3cab25a4d8cb8f7bc8a9112c35665977}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But72\+Norm\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_aaec446ce70a8ce8c49f5938324a526c1}\label{class_t_rail_graphics_aaec446ce70a8ce8c49f5938324a526c1}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But73\+Norm\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_a7f9cb9f4b74c58bc18aac4cfd7b346f7}\label{class_t_rail_graphics_a7f9cb9f4b74c58bc18aac4cfd7b346f7}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But74\+Norm\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_a5df8ac834e73a4aadd601b2a06e5551f}\label{class_t_rail_graphics_a5df8ac834e73a4aadd601b2a06e5551f}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But75\+Norm\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_a655a56bc8b79b3e51a781f2ffd088067}\label{class_t_rail_graphics_a655a56bc8b79b3e51a781f2ffd088067}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But68\+Grnd\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_a3292eb1ef693cb95a1da22c2ec70c82b}\label{class_t_rail_graphics_a3292eb1ef693cb95a1da22c2ec70c82b}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But69\+Grnd\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_a56f1776fc3b800273d04793fb0dc6ee6}\label{class_t_rail_graphics_a56f1776fc3b800273d04793fb0dc6ee6}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But70\+Grnd\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_a00dd68c4f9be48b7c6ff7999e12f1a60}\label{class_t_rail_graphics_a00dd68c4f9be48b7c6ff7999e12f1a60}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But71\+Grnd\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_ac90d9133819e848c2b7bbbabf74bc112}\label{class_t_rail_graphics_ac90d9133819e848c2b7bbbabf74bc112}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But72\+Grnd\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_abd1a40fb2d73ae06bd4b39abe9ec3e33}\label{class_t_rail_graphics_abd1a40fb2d73ae06bd4b39abe9ec3e33}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But73\+Grnd\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_a08455751f2ba853eb6a7cc28e0df50e5}\label{class_t_rail_graphics_a08455751f2ba853eb6a7cc28e0df50e5}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But74\+Grnd\+Black\+Glyph}
+\item 
+\mbox{\Hypertarget{class_t_rail_graphics_acc265d40f67b2f906bb6c0f4884154a8}\label{class_t_rail_graphics_acc265d40f67b2f906bb6c0f4884154a8}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Speed\+But75\+Grnd\+Black\+Glyph}
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -2106,17 +2169,13 @@ Checks that the change is correct and sets Colour\+Error if not (Windows will ch
 \subsubsection{\texorpdfstring{Change\+Foreground\+Colour()}{ChangeForegroundColour()}}
 {\footnotesize\ttfamily void T\+Rail\+Graphics\+::\+Change\+Foreground\+Colour (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{Graphics\+::\+T\+Bitmap $\ast$}]{Bitmap\+In,  }\item[{Graphics\+::\+T\+Bitmap $\ast$}]{Bitmap\+Out,  }\item[{T\+Color}]{New\+Foreground\+Colour,  }\item[{T\+Color}]{Background\+Colour }\end{DoxyParamCaption})}
 
-Change any pixels that are not Background\+Colour in Bitmap\+In to New\+Foreground\+Colour in Bitmap\+Out
-
-Any that are Background\+Colour in Bitmap\+In are set to Background\+Colour in Bitmap\+Out \mbox{\Hypertarget{class_t_rail_graphics_ac4e48e6ee19e01724adb0d490762d548}\label{class_t_rail_graphics_ac4e48e6ee19e01724adb0d490762d548}} 
+Change any pixels that are not Background\+Colour in Bitmap\+In to New\+Foreground\+Colour in Bitmap\+Out Any that are Background\+Colour in Bitmap\+In are set to Background\+Colour in Bitmap\+Out \mbox{\Hypertarget{class_t_rail_graphics_ac4e48e6ee19e01724adb0d490762d548}\label{class_t_rail_graphics_ac4e48e6ee19e01724adb0d490762d548}} 
 \index{T\+Rail\+Graphics@{T\+Rail\+Graphics}!Change\+Specific\+Colour@{Change\+Specific\+Colour}}
 \index{Change\+Specific\+Colour@{Change\+Specific\+Colour}!T\+Rail\+Graphics@{T\+Rail\+Graphics}}
 \subsubsection{\texorpdfstring{Change\+Specific\+Colour()}{ChangeSpecificColour()}}
 {\footnotesize\ttfamily void T\+Rail\+Graphics\+::\+Change\+Specific\+Colour (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{Graphics\+::\+T\+Bitmap $\ast$}]{Bitmap\+In,  }\item[{Graphics\+::\+T\+Bitmap $\ast$}]{Bitmap\+Out,  }\item[{T\+Color}]{Colour\+To\+Be\+Changed,  }\item[{T\+Color}]{New\+Colour }\end{DoxyParamCaption})}
 
-Change any pixels that are Colour\+To\+Be\+Changed in Bitmap\+In to New\+Colour in Bitmap\+Out
-
-Any that are not Colour\+To\+Be\+Changed in Bitmap\+In are set to their original colour in Bitmap\+Out \mbox{\Hypertarget{class_t_rail_graphics_a89a3e3a91129c4d02f4606478781b519}\label{class_t_rail_graphics_a89a3e3a91129c4d02f4606478781b519}} 
+Change any pixels that are Colour\+To\+Be\+Changed in Bitmap\+In to New\+Colour in Bitmap\+Out Any that are not Colour\+To\+Be\+Changed in Bitmap\+In are set to their original colour in Bitmap\+Out \mbox{\Hypertarget{class_t_rail_graphics_a89a3e3a91129c4d02f4606478781b519}\label{class_t_rail_graphics_a89a3e3a91129c4d02f4606478781b519}} 
 \index{T\+Rail\+Graphics@{T\+Rail\+Graphics}!Change\+Transparent\+Colour@{Change\+Transparent\+Colour}}
 \index{Change\+Transparent\+Colour@{Change\+Transparent\+Colour}!T\+Rail\+Graphics@{T\+Rail\+Graphics}}
 \subsubsection{\texorpdfstring{Change\+Transparent\+Colour()}{ChangeTransparentColour()}}
@@ -2136,5 +2195,5 @@ Used when changing the background from dark to light and vice versa. The derived
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-Graphic\+Unit.\+h\item 
-Graphic\+Unit.\+cpp\end{DoxyCompactItemize}
+C\+:/\+Programming work/railway development after v2.\+2.\+0/Graphic\+Unit.\+h\item 
+C\+:/\+Programming work/railway development after v2.\+2.\+0/Graphic\+Unit.\+cpp\end{DoxyCompactItemize}

@@ -279,7 +279,8 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         SpeedButton138->Glyph->LoadFromResourceName(0, "gl138"); SpeedButton139->Glyph->LoadFromResourceName(0, "gl139");
         SpeedButton140->Glyph->LoadFromResourceName(0, "gl140"); SpeedButton141->Glyph->LoadFromResourceName(0, "gl141");
         SpeedButton142->Glyph->LoadFromResourceName(0, "gl142"); SpeedButton143->Glyph->LoadFromResourceName(0, "gl143");
-        //below not in RailGraphics
+        SpeedButton145->Glyph->LoadFromResourceName(0, "gl145"); SpeedButton146->Glyph->LoadFromResourceName(0, "gl146");
+		//below not in RailGraphics
         SpeedButton144->Glyph->LoadFromResourceName(0, "LCGlyph");
 
         AddPrefDirButton->Glyph->LoadFromResourceName(0, "AddPrefDir");
@@ -337,7 +338,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         GapsNotSetImage->Picture->Bitmap->LoadFromResourceName(0, "GapsNotSetGraphic");
         GapsSetImage->Picture->Bitmap->LoadFromResourceName(0, "GapsSetGraphic");
         LocationNamesNotSetImage->Picture->Bitmap->LoadFromResourceName(0, "LocNamesNotSetGraphic");
-        LocationNamesSetImage->Picture->Bitmap->LoadFromResourceName(0, "LocNamesSetGraphic");
+		LocationNamesSetImage->Picture->Bitmap->LoadFromResourceName(0, "LocNamesSetGraphic");
 
         SigsOnLeftImage1->Picture->Bitmap->LoadFromResourceName(0, "SigsOnLeft");
         SigsOnLeftImage2->Picture->Bitmap->LoadFromResourceName(0, "SigsOnLeft");
@@ -350,7 +351,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         SigsOnRightImage1->Transparent = true;
         SigsOnRightImage2->Transparent = true;
         SigsOnRightImage1->Picture->Bitmap->TransparentColor = clB5G5R5;
-        SigsOnRightImage2->Picture->Bitmap->TransparentColor = clB5G5R5;
+		SigsOnRightImage2->Picture->Bitmap->TransparentColor = clB5G5R5;
 
 /*   Don't need this - load icon directly into both Interface form & Application (via Project - Options - Application - Load Icon)
     RailwayIcon = new TPicture;
@@ -2035,7 +2036,7 @@ void TInterface::LoadRailway(int Caller, AnsiString LoadFileName)
         std::ifstream VecFile(LoadFileName.c_str());
         if(!(VecFile.fail()))
         {
-            AnsiString TempString = Utilities->LoadFileString(VecFile);
+            AnsiString TempString = Utilities->LoadFileString(VecFile); //version number
             int TempOffsetHHome = Utilities->LoadFileInt(VecFile);
             int TempOffsetVHome = Utilities->LoadFileInt(VecFile);
             //can't load DisplayOffsetH & VHome until after LoadTrack as that calls TrackClear & zeroes them
@@ -7181,7 +7182,7 @@ void TInterface::ClockTimer2(int Caller)
             int Position;
             TTrackElement TrackElement;
             AnsiString Type[15] = {"Simple", "Crossover", "Points", "Buffers", "Bridge", "SignalPost", "Continuation", "Platform",
-                                   "GapJump", "Footbridge", "Unused", "Concourse", "Parapet", "NamedNonStationLocation", "Erase"};
+								   "GapJump", "FootCrossing", "Unused", "Concourse", "Parapet", "NamedNonStationLocation", "Erase"};
 
             int ScreenX = Mouse->CursorPos.x - MainScreen->ClientOrigin.x;
             int ScreenY = Mouse->CursorPos.y - MainScreen->ClientOrigin.y;
@@ -7980,7 +7981,7 @@ void __fastcall TInterface::FlipMenuItemClick(TObject *Sender)
             //This didn't matter before new paste with attributes added at v2.2.0 as a new element was built from the speedtag,
             //but now if do a reselect then cut and paste with attributes the wrong graphic is pasted and all other attributes
             //are wrong. Need to rebuild a new TrackElement from the new speedtag and use that in the select vector.
-            //Note the if use Flip, mirror etc then all attributes lost anyway so ok to build a basic element.
+            //Note that if use Flip, mirror etc then all attributes lost anyway so ok to build a basic element.
             int VLoc = VerSum - Track->SelectVectorAt(8, x).VLoc;
             int HLoc = Track->SelectVectorAt(7, x).HLoc;
             TTrackElement TE = Track->BuildBasicElementFromSpeedTag(0, Track->FlipArray[Track->SelectVectorAt(0, x).SpeedTag]);
@@ -8216,7 +8217,7 @@ elements from each one, and add each into ConstructPrefDir, then when all added 
                     ConstructPrefDir->ExternalStorePrefDirElement(3, PE3);
                 }
                 else if((TE.TrackType == Simple) || (TE.TrackType == Buffers) || (TE.TrackType == SignalPost) ||
-                        (TE.TrackType == Continuation) || (TE.TrackType == GapJump) || (TE.TrackType == Footbridge))
+						(TE.TrackType == Continuation) || (TE.TrackType == GapJump) || (TE.TrackType == FootCrossing))
                 //need to list these explicitly since inactive elements will still be 'found' if there is an active element
                 //at the same position
                 {
@@ -10191,7 +10192,7 @@ void TInterface::ClearandRebuildRailway(int Caller) //now uses HiddenScreen to h
 
     if(Level1Mode == TrackMode)
     {
-        if(Track->NonFootbridgeNamedLocationExists(0))
+		if(Track->NonFootCrossingNamedLocationExists(0))
         {
             LocationNameButton->Enabled = true;
         }
@@ -10782,7 +10783,7 @@ void TInterface::SetLevel1Mode(int Caller)
         SetInitialTrackModeEditMenu();
         //track buttons
         AddTrackButton->Enabled = true;
-        if(Track->NonFootbridgeNamedLocationExists(1))
+		if(Track->NonFootCrossingNamedLocationExists(1))
         {
             LocationNameButton->Enabled = true;
         }
@@ -11584,8 +11585,8 @@ void TInterface::SetLevel2OperMode(int Caller)
             else if(TTClockSpeed == 16) Display->PerformanceLog(9, TimeMessage + "Timetable clock speed changed to sixteen times normal");
             else if(TTClockSpeed == 0.5) Display->PerformanceLog(10, TimeMessage + "Timetable clock speed changed to half normal");
             else if(TTClockSpeed == 0.25) Display->PerformanceLog(11, TimeMessage + "Timetable clock speed changed to quarter normal");
-            else if(TTClockSpeed == 0.125) Display->PerformanceLog(11, TimeMessage + "Timetable clock speed changed to one eighth normal");
-            else if(TTClockSpeed == 0.0625) Display->PerformanceLog(11, TimeMessage + "Timetable clock speed changed to one sixteenth normal");
+			else if(TTClockSpeed == 0.125) Display->PerformanceLog(14, TimeMessage + "Timetable clock speed changed to one eighth normal");
+            else if(TTClockSpeed == 0.0625) Display->PerformanceLog(15, TimeMessage + "Timetable clock speed changed to one sixteenth normal");
             else Display->PerformanceLog(12, TimeMessage + "Timetable clock speed changed to normal");
         }
         double TTClockTimeChange = double(TrainController->RestartTime) - PauseEntryRestartTime;
@@ -11911,7 +11912,7 @@ void TInterface::TrackTrainFloat(int Caller)
                              LengthAndSpeedCaption + '\n' +
                              "ID = " + AnsiString(ActiveTrackElement.ElementID);
             }
-            else if(ATrackSN != "") //no timetable name but location name, i.e. a footbridge
+			else if(ATrackSN != "") //no timetable name but location name, i.e. a footcrossing
             {
                 TrackFloat = "Location = " + ATrackSN + '\n' +
                              LengthAndSpeedCaption + '\n' +
@@ -13073,7 +13074,7 @@ void TInterface::SetTrackBuildImages(int Caller)
         }
         else
         {
-            LocationNamesSetImage->Visible = false;
+			LocationNamesSetImage->Visible = false;
             LocationNamesNotSetImage->Visible = false;
         }
     }
@@ -13368,7 +13369,7 @@ void TInterface::LoadSession(int Caller)
             OutputLog8->Caption = "";
             OutputLog9->Caption = "";
             OutputLog10->Caption = "";
-            UnicodeString MessageStr = "Insufficient memory available to load the file, and partial load likely to be corrupt. Application will terminate. Try loading the session as the first action after reloading the program";
+            UnicodeString MessageStr = "Insufficient memory available to load the file, and partial load likely to be corrupt. Application will terminate. Try loading the session as the first action after reloading the program.";
 //            UnicodeString MessageStr = "Last train loaded = " + UnicodeString(TrainController->LastTrainLoaded); //for debugging session train loading for many trains
             Application->MessageBox(MessageStr.c_str(), L"", MB_OK);
             Application->Terminate();

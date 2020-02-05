@@ -8545,104 +8545,116 @@ bool TTrainController::SplitRepeat(int Caller, AnsiString OneEntry, int &RearSta
     }
     if((OneEntry[1] != 'R') || (OneEntry[2] != ';'))
     {
-        TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - should be 'R;m;d;n'");
-        Utilities->CallLogPop(867);
-        return false;
-    }
-    AnsiString Remainder = OneEntry.SubString(3, OneEntry.Length() - 2); //strip off R;
+		TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - should be 'R;m;d;n'");
+		Utilities->CallLogPop(867);
+		return false;
+	}
+	AnsiString Remainder = OneEntry.SubString(3, OneEntry.Length() - 2); //strip off R;
 
-    int Pos = 0;
-    Pos = Remainder.Pos(';');
-    AnsiString MinutesStr = Remainder.SubString(1, Pos-1);
-    Remainder = Remainder.SubString(Pos+1, Remainder.Length() - Pos);
-    if(MinutesStr == "")
-    {
-        TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - minute increment segment missing");
-        Utilities->CallLogPop(868);
-        return false;
-    }
-    for(int x=1; x<MinutesStr.Length()+1; x++)
-    {
-        if((MinutesStr[x] < '0') || (MinutesStr[x] > '9'))
-        {
-            TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - non-digit character in minute increment segment");
-            Utilities->CallLogPop(869);
-            return false;
-        }
-    }
-    RearStartOrRepeatMins = MinutesStr.ToInt();
-    if(RearStartOrRepeatMins == 0)
-    {
-        TimetableMessage(GiveMessages, "Repeat minute increment is zero in:  '" + OneEntry + "' - can't have a zero value");
-        Utilities->CallLogPop(870);
-        return false;
-    }
-    Pos = Remainder.Pos(';');
-    AnsiString DigitsStr = Remainder.SubString(1, Pos-1);
-    Remainder = Remainder.SubString(Pos+1, Remainder.Length() - Pos);
-    if(DigitsStr == "")
-    {
-        TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - headcode increment segment missing");
-        Utilities->CallLogPop(871);
-        return false;
-    }
-    for(int x=1; x<DigitsStr.Length()+1; x++)
-    {
-        if((DigitsStr[x] < '0') || (DigitsStr[x] > '9'))
-        {
-            TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - non-digit character in headcode increment segment");
-            Utilities->CallLogPop(872);
-            return false;
-        }
-    }
-    if(DigitsStr.Length() > 2)
-    {
-        TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - maximum number of digits for headcode increment is 2");
-        Utilities->CallLogPop(873);
-        return false;
-    }
-    FrontStartOrRepeatDigits = DigitsStr.ToInt();
+	int Pos = 0;
+	Pos = Remainder.Pos(';');
+	AnsiString MinutesStr = Remainder.SubString(1, Pos-1);
+	Remainder = Remainder.SubString(Pos+1, Remainder.Length() - Pos);
+	if(MinutesStr == "")
+	{
+		TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - minute increment segment missing");
+		Utilities->CallLogPop(868);
+		return false;
+	}
+	if(MinutesStr.Length() > 3) //added for v2.3.1 following Albie Vowles' reported error in repeat value 03/02/20
+	{
+		TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - minute value too high, maximum value is 999");
+		Utilities->CallLogPop(2119);
+		return false;
+	}
+	for(int x=1; x<MinutesStr.Length()+1; x++)
+	{
+		if((MinutesStr[x] < '0') || (MinutesStr[x] > '9'))
+		{
+			TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - non-digit character in minute increment segment");
+			Utilities->CallLogPop(869);
+			return false;
+		}
+	}
+	RearStartOrRepeatMins = MinutesStr.ToInt();
+	if(RearStartOrRepeatMins == 0)
+	{
+		TimetableMessage(GiveMessages, "Repeat minute increment is zero in:  '" + OneEntry + "' - can't have a zero value");
+		Utilities->CallLogPop(870);
+		return false;
+	}
+	Pos = Remainder.Pos(';');
+	AnsiString DigitsStr = Remainder.SubString(1, Pos-1);
+	Remainder = Remainder.SubString(Pos+1, Remainder.Length() - Pos);
+	if(DigitsStr == "")
+	{
+		TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - headcode increment segment missing");
+		Utilities->CallLogPop(871);
+		return false;
+	}
+	for(int x=1; x<DigitsStr.Length()+1; x++)
+	{
+		if((DigitsStr[x] < '0') || (DigitsStr[x] > '9'))
+		{
+			TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - non-digit character in headcode increment segment");
+			Utilities->CallLogPop(872);
+			return false;
+		}
+	}
+	if(DigitsStr.Length() > 2)
+	{
+		TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - maximum number of digits for headcode increment is 2");
+		Utilities->CallLogPop(873);
+		return false;
+	}
+	FrontStartOrRepeatDigits = DigitsStr.ToInt();
 /* allow zero digit increments so HC can stay same for repeated services - for many suburban services the headcode digits relate to the
 route rather than the service
 if(FrontStartOrRepeatDigits == 0)
-    {
-    TimetableMessage(GiveMessages, "Repeat headcode increment is zero in:  '" + OneEntry + "' - can't have a zero value");
-    Utilities->CallLogPop(874);
-    return false;
-    }
+	{
+	TimetableMessage(GiveMessages, "Repeat headcode increment is zero in:  '" + OneEntry + "' - can't have a zero value");
+	Utilities->CallLogPop(874);
+	return false;
+	}
 */
-    if(!Last2CharactersBothDigits(0, ServiceReference) && (FrontStartOrRepeatDigits > 0)) //new for v0.6b for unrestricted headcodes
-    {
-        TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - a repeating service with incrementing digits must have digits as its last two headcode characters");
-        Utilities->CallLogPop(1889);
-        return false;
-    }
-    AnsiString NumberStr = Remainder;
+	if(!Last2CharactersBothDigits(0, ServiceReference) && (FrontStartOrRepeatDigits > 0)) //new for v0.6b for unrestricted headcodes
+	{
+		TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - a repeating service with incrementing digits must have digits as its last two headcode characters");
+		Utilities->CallLogPop(1889);
+		return false;
+	}
+	AnsiString NumberStr = Remainder;
 
-    if(NumberStr == "")
-    {
-        TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - number of repeats missing");
-        Utilities->CallLogPop(875);
-        return false;
-    }
-    for(int x=1; x<NumberStr.Length()+1; x++)
-    {
-        if((NumberStr[x] < '0') || (NumberStr[x] > '9'))
-        {
-            TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - non-digit character in number of repeats");
-            Utilities->CallLogPop(876);
-            return false;
-        }
-    }
-    NumberOfRepeats = NumberStr.ToInt();
-    if(NumberOfRepeats == 0)
-    {
-        TimetableMessage(GiveMessages, "Number of repeats is zero in:  '" + OneEntry + "' - if no repeats are needed the repeat should be omitted");
-        Utilities->CallLogPop(877);
-        return false;
-    }
-    Utilities->CallLogPop(878);
-    return true;
+	if(NumberStr == "")
+	{
+		TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - number of repeats missing");
+		Utilities->CallLogPop(875);
+		return false;
+	}
+	if(NumberStr.Length() > 4) //added for v2.3.1 following Albie Vowles' reported error 03/02/20
+	{
+		TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - repeat value too high, no timetabled event can exceed 95 hours & 59 minutes");
+		Utilities->CallLogPop(2118);
+		return false;
+	}
+	for(int x=1; x<NumberStr.Length()+1; x++)
+	{
+		if((NumberStr[x] < '0') || (NumberStr[x] > '9'))   //catches negative numbers
+		{
+			TimetableMessage(GiveMessages, "Error in repeat: '" + OneEntry + "' - non-digit character in number of repeats");
+			Utilities->CallLogPop(876);
+			return false;
+		}
+	}
+	NumberOfRepeats = NumberStr.ToInt();
+	if(NumberOfRepeats == 0)
+	{
+		TimetableMessage(GiveMessages, "Number of repeats is zero in:  '" + OneEntry + "' - if no repeats are needed the repeat should be omitted");
+		Utilities->CallLogPop(877);
+		return false;
+	}
+	Utilities->CallLogPop(878);
+	return true;
 }
 
 //---------------------------------------------------------------------------
@@ -8656,10 +8668,10 @@ Many of the errors caught here duplicate those in the preliminary checks, but le
 
 For info:-
 class TActionVectorEntry//contains a single train action - repeat entry is also of this class though no train action is taken for it
-    {
-    public:
-    TTimetableEntryType FormatType;
-    TDateTime EventTime, ArrivalTime, DepartureTime;//zeroed on creation so change to -1 as a marker for 'not set'
+	{
+	public:
+	TTimetableEntryType FormatType;
+	TDateTime EventTime, ArrivalTime, DepartureTime;//zeroed on creation so change to -1 as a marker for 'not set'
     AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode;//null on creation
     TActionVectorEntry *OtherHeadCodeStartingEntryPtr;
     int RearStartOrRepeatMins, FrontStartOrRepeatDigits;
@@ -8971,7 +8983,7 @@ Other successor errors will be caught later as all 'throws' changed to messages 
                         if(!AtLocSuccessor(AVEntry1))
                         {
                             //Frh following Snt-sh will return false in location check, so no need to check here
-                            SecondPassMessage(GiveMessages, "Error in timetable - stopped 'Snt' or 'Snt-sh' followed by an illegal event for: " + TDEntry.HeadCode);
+							SecondPassMessage(GiveMessages, "Error in timetable - stopped 'Snt' or 'Snt-sh' followed by an illegal event for: " + TDEntry.HeadCode + ". The event isn't valid for a stationary train.");
                             TrainDataVector.clear();
                             Utilities->CallLogPop(523);
                             return false;
@@ -9015,8 +9027,8 @@ Other successor errors will be caught later as all 'throws' changed to messages 
             const TActionVectorEntry &AVEntry1 = TrainDataVector.at(x).ActionVector.at(1); //at least 2 entries present checked in integrity check so (1) valid
             if(!AtLocSuccessor(AVEntry1))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - 'Sfs', 'Sns', 'Sns-sh' or 'Sns-fsh' followed by an illegal event for: " + TDEntry.HeadCode);
-                TrainDataVector.clear();
+				SecondPassMessage(GiveMessages, "Error in timetable - 'Sfs', 'Sns', 'Sns-sh' or 'Sns-fsh' followed by an illegal event for: " + TDEntry.HeadCode + ". The event isn't valid for a stationary train.");
+				TrainDataVector.clear();
                 Utilities->CallLogPop(793);
                 return false;
             }
@@ -9134,7 +9146,7 @@ Other successor errors will be caught later as all 'throws' changed to messages 
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y+1);
                 if(!AtLocSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a jbo event is followed by an illegal event for: " + TDEntry.HeadCode);
+					SecondPassMessage(GiveMessages, "Error in timetable - a jbo event is followed by an illegal event for: " + TDEntry.HeadCode + ". The event isn't valid for a stationary train.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(801);
                     return false;
@@ -9152,7 +9164,7 @@ Other successor errors will be caught later as all 'throws' changed to messages 
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y+1);
                 if(!AtLocSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a train split is followed by an illegal event for: " + TDEntry.HeadCode);
+					SecondPassMessage(GiveMessages, "Error in timetable - a train split is followed by an illegal event for: " + TDEntry.HeadCode + ". The event isn't valid for a stationary train.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(803);
                     return false;
@@ -9170,7 +9182,7 @@ Other successor errors will be caught later as all 'throws' changed to messages 
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y+1);
                 if(!AtLocSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a 'cdt' is followed by an illegal event for: " + TDEntry.HeadCode);
+					SecondPassMessage(GiveMessages, "Error in timetable - a 'cdt' is followed by an illegal event for: " + TDEntry.HeadCode + ". The event isn't valid for a stationary train.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(805);
                     return false;
@@ -9188,7 +9200,7 @@ Other successor errors will be caught later as all 'throws' changed to messages 
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y+1);
                 if(!MovingSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a timed arrival and departure is followed by an illegal event for: " + TDEntry.HeadCode);
+					SecondPassMessage(GiveMessages, "Error in timetable - a timed arrival and departure is followed by an illegal event for: " + TDEntry.HeadCode + ". The event isn't valid for a moving train.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(807);
                     return false;
@@ -9206,7 +9218,7 @@ Other successor errors will be caught later as all 'throws' changed to messages 
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y+1);
                 if(!MovingSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a pass time is followed by an illegal event for: " + TDEntry.HeadCode);
+					SecondPassMessage(GiveMessages, "Error in timetable - a pass time is followed by an illegal event for: " + TDEntry.HeadCode + ". The event isn't valid for a moving train.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(1531);
                     return false;
@@ -9308,7 +9320,7 @@ Other successor errors will be caught later as all 'throws' changed to messages 
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y+1);
                 if(!AtLocSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a timed arrival is followed by an illegal event for: " + TDEntry.HeadCode);
+					SecondPassMessage(GiveMessages, "Error in timetable - a timed arrival is followed by an illegal event for: " + TDEntry.HeadCode + ". The event isn't valid for a stationary train.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(810);
                     return false;
@@ -9327,7 +9339,7 @@ Other successor errors will be caught later as all 'throws' changed to messages 
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y+1);
                 if(!MovingSuccessor(AVEntry2))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a timed departure is followed by an illegal event for: " + TDEntry.HeadCode);
+					SecondPassMessage(GiveMessages, "Error in timetable - a timed departure is followed by an illegal event for: " + TDEntry.HeadCode + ". The event isn't valid for a moving train.");
                     TrainDataVector.clear();
                     Utilities->CallLogPop(812);
                     return false;
@@ -9885,17 +9897,17 @@ Sns-sh & Fns in train 2F44, & 2F44 is the 'OtherHeadCode' for both Sns & Fns-sh 
         {
             if((double)TrainDataVector.at(x).ActionVector.at(y).EventTime > -1)
             {
-                if(((double)GetRepeatTime(32, TrainDataVector.at(x).ActionVector.at(y).EventTime, NumRepeats, IncMinutes) >= 3.9994)) //3d 23h 59m = 3.9993055556
+				if(((double)GetRepeatTime(32, TrainDataVector.at(x).ActionVector.at(y).EventTime, NumRepeats, IncMinutes) >= 3.9994))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a repeat time exceeds 95h 59m, see service " + HC);
-                    TrainDataVector.clear();
-                    Utilities->CallLogPop(1818);
-                    return false;
-                }
-            }
-            if((double)TrainDataVector.at(x).ActionVector.at(y).ArrivalTime > -1)
-            {
-                if(((double)GetRepeatTime(33, TrainDataVector.at(x).ActionVector.at(y).EventTime, NumRepeats, IncMinutes) >= 3.9994)) //3d 23h 59m = 3.9993055556
+					SecondPassMessage(GiveMessages, "Error in timetable - a repeat time exceeds 95h 59m, see service " + HC); //3d 23h 59m = 3.9993055556
+					TrainDataVector.clear();
+					Utilities->CallLogPop(1818);
+					return false;
+				}
+			}
+			if((double)TrainDataVector.at(x).ActionVector.at(y).ArrivalTime > -1)
+			{
+				if(((double)GetRepeatTime(33, TrainDataVector.at(x).ActionVector.at(y).EventTime, NumRepeats, IncMinutes) >= 3.9994)) //3d 23h 59m = 3.9993055556
                 {
                     SecondPassMessage(GiveMessages, "Error in timetable - a repeat entry time exceeds 95h 59m, see service " + HC);
                     TrainDataVector.clear();
@@ -11646,7 +11658,7 @@ void TTrainController::LoadSessionTrains(int Caller, std::ifstream &SessionFile)
                                                                                              //by zero error in calculating AValue, use 1
     for(int x=0; x<NumberOfTrains; x++)
     {
-        *NewTrain = TTrain(1, 0, 0, "", 0, 1, 0, 0, 0, (TTrainMode)0, 0, 0, 0, 0, 0); //have to have >0 for mass, else have divide
+        *NewTrain = TTrain(2, 0, 0, "", 0, 1, 0, 0, 0, (TTrainMode)0, 0, 0, 0, 0, 0); //have to have >0 for mass, else have divide
                                                                                       //by zero error in calculating AValue, use 1
         NewTrain->LoadOneSessionTrain(0, SessionFile);
         TrainVector.push_back(*NewTrain);

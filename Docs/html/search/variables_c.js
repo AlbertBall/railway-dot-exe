@@ -1,20 +1,16 @@
 var searchData=
 [
-  ['oalistbox',['OAListBox',['../class_t_interface.html#a06c02506913fc9d0fe5f13c4950ff99f',1,'TInterface']]],
-  ['onecompleteformattedtrainvector',['OneCompleteFormattedTrainVector',['../class_t_train_formatted_information.html#a7ed8168782c7afd5f7b42b41f5515c8f',1,'TTrainFormattedInformation']]],
-  ['oneentrytimetablememo',['OneEntryTimetableMemo',['../class_t_interface.html#ad3adbf556bff0b01b12be33a595373fb',1,'TInterface']]],
-  ['oneformattedtrainvector',['OneFormattedTrainVector',['../class_t_one_complete_formatted_train.html#a7153d13265831ee7c241779b5c803278',1,'TOneCompleteFormattedTrain']]],
-  ['opactionpanelhintdelaycounter',['OpActionPanelHintDelayCounter',['../class_t_train_controller.html#a2b1a86606eb0906b85142c5749c999e9',1,'TTrainController']]],
-  ['opactionpanelvisible',['OpActionPanelVisible',['../class_t_train_controller.html#a15c68187a0fa6fb497f949eb4e9693d9',1,'TTrainController']]],
-  ['operatingpanel',['OperatingPanel',['../class_t_interface.html#a9037b5b7dd4a95e2cc9b4c64ee97b015',1,'TInterface']]],
-  ['operatingpanellabel',['OperatingPanelLabel',['../class_t_interface.html#a167b9a4eba88ea3020f67a1c89907838',1,'TInterface']]],
-  ['operatingtrainarrdep',['OperatingTrainArrDep',['../class_t_train_controller.html#a9b419c5f86d0815c35093bf3c25c6821',1,'TTrainController']]],
-  ['operatingtrainlatemins',['OperatingTrainLateMins',['../class_t_train_controller.html#af25f4d9be4644eab1e042751b1738f98',1,'TTrainController']]],
-  ['operatoractionpanel',['OperatorActionPanel',['../class_t_interface.html#aa17115ed5820e0ff28801224b6bc4e4a',1,'TInterface']]],
-  ['optimetoactmultimap',['OpTimeToActMultiMap',['../class_t_train_controller.html#af37800c6e9a97ebf632d011291e5070e',1,'TTrainController']]],
-  ['optimetoactmultimapiterator',['OpTimeToActMultiMapIterator',['../class_t_train_controller.html#aa35fcf78d6d349c399c8a240508df51d',1,'TTrainController']]],
-  ['optimetoactupdatecounter',['OpTimeToActUpdateCounter',['../class_t_train_controller.html#a77d198d6770529b3d5fd65f21763f7cb',1,'TTrainController']]],
-  ['othermissedevents',['OtherMissedEvents',['../class_t_train_controller.html#ac4449f3490e36190d510f6960191ce45',1,'TTrainController']]],
-  ['overlaygraphic',['OverlayGraphic',['../class_t_one_route_1_1_t_route_flash_element.html#a9728c9fe83d991d41596efa2cf07129f',1,'TOneRoute::TRouteFlashElement']]],
-  ['overlayplotted',['OverlayPlotted',['../class_t_one_route_1_1_t_route_flash.html#acc9544214464de94df8becea93062c62',1,'TOneRoute::TRouteFlash']]]
+  ['newentryinpreparationflag_1740',['NewEntryInPreparationFlag',['../class_t_interface.html#a2d1ea52d1197b3230f27ec36fd8c8958',1,'TInterface']]],
+  ['newselectbitmaphloc_1741',['NewSelectBitmapHLoc',['../class_t_interface.html#acc7d4b190b0401de81b7173e85cc7fe7',1,'TInterface']]],
+  ['newselectbitmapvloc_1742',['NewSelectBitmapVLoc',['../class_t_interface.html#abd8470c9d77aaaed996ab1451d28c9c6',1,'TInterface']]],
+  ['nextrouteid_1743',['NextRouteID',['../class_t_all_routes.html#a936864598364d2e8c0aea147fea11196',1,'TAllRoutes']]],
+  ['nexttrackelementptr_1744',['NextTrackElementPtr',['../class_t_track.html#a5a3eca45e68b0b2d5604b096e26d79f5',1,'TTrack']]],
+  ['nexttrainid_1745',['NextTrainID',['../class_t_train.html#a59a6ad055b319a73e954e9bef5f7593c',1,'TTrain']]],
+  ['nonctrlorshiftkeyupflag_1746',['NonCTRLOrSHIFTKeyUpFlag',['../class_t_interface.html#ab3848e35090c474e8417d5965d742f00',1,'TInterface']]],
+  ['nonrepeatingshuttlelinkentryptr_1747',['NonRepeatingShuttleLinkEntryPtr',['../class_t_action_vector_entry.html#a921897cd667dd8933de593e97e74a3a7',1,'TActionVectorEntry']]],
+  ['nonrepeatingshuttlelinkheadcode_1748',['NonRepeatingShuttleLinkHeadCode',['../class_t_action_vector_entry.html#ae142e8e9d3a842c9b1d81bcd4e93e291',1,'TActionVectorEntry']]],
+  ['notstartedtrainarrdep_1749',['NotStartedTrainArrDep',['../class_t_train_controller.html#aa547b8fba4e19683055e67359d41a933',1,'TTrainController']]],
+  ['notstartedtrainlatemins_1750',['NotStartedTrainLateMins',['../class_t_train_controller.html#a095d7c99ffc21a6939a044bbad4fa18f',1,'TTrainController']]],
+  ['numberofrepeats_1751',['NumberOfRepeats',['../class_t_action_vector_entry.html#a5f4a663fd91b104c7f93990d79c16d1d',1,'TActionVectorEntry']]],
+  ['numberoftrains_1752',['NumberOfTrains',['../class_t_train_data_entry.html#a977ccbe485d557d4c4a597f5de2251c4',1,'TTrainDataEntry::NumberOfTrains()'],['../class_t_train_formatted_information.html#a2f5bc8f1ff9b154a381660639c40dada',1,'TTrainFormattedInformation::NumberOfTrains()']]]
 ];

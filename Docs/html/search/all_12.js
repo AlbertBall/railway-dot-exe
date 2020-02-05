@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['validateprefdir',['ValidatePrefDir',['../class_t_one_pref_dir.html#a2b883633382e26cdff4583a24575d337',1,'TOnePrefDir']]],
-  ['vectorposition',['VectorPosition',['../class_t_train_controller_1_1_t_continuation_train_expectation_entry.html#a77f5a64b552a6d938b1ab2a0e3488c11',1,'TTrainController::TContinuationTrainExpectationEntry']]],
-  ['vloc',['VLoc',['../class_t_track_element.html#a0d9a1c95d1c1aedd0ffec4d24772cfbc',1,'TTrackElement::VLoc()'],['../class_t_track_1_1_t_active_level_crossing.html#afabdf5593ed4d0f2f406aac52d7b4fb4',1,'TTrack::TActiveLevelCrossing::VLoc()']]],
-  ['vpos',['VPos',['../class_t_text_item.html#a7fc4c3a7d8583931e2ac595006550f9c',1,'TTextItem']]]
+  ['unplottrain_956',['UnplotTrain',['../class_t_train.html#a4978a3050ca943076eb6cbd03eeee1d4',1,'TTrain']]],
+  ['unplottraininzoomoutmode_957',['UnplotTrainInZoomOutMode',['../class_t_train.html#a439d2809c762a0981908a3b8a49520f2',1,'TTrain']]],
+  ['unplottrains_958',['UnplotTrains',['../class_t_train_controller.html#a7e2abfcc38e51933883d959c4155aca0',1,'TTrainController']]],
+  ['update_959',['Update',['../class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b',1,'TDisplay']]],
+  ['updatecounter_960',['UpdateCounter',['../class_t_train.html#ae57749c241ad7256c6f628faf1168ce7',1,'TTrain']]],
+  ['updateoperatoractionpanel_961',['UpdateOperatorActionPanel',['../class_t_interface.html#a656aa01e4fac67c4d7dede71e42208af',1,'TInterface']]],
+  ['updatetrain_962',['UpdateTrain',['../class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc',1,'TTrain']]]
 ];

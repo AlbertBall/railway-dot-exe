@@ -32,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <list>
 #include <utility> //for pair
 
-#define FirstUnusedSpeedTagNumber 145 //defined value for use in array sizing etc
+#define FirstUnusedSpeedTagNumber 147 //defined value for use in array sizing etc
 #define DefaultTrackLength 100
 #define DefaultTrackSpeedLimit 200
 
@@ -56,7 +56,7 @@ public:
 //---------------------------------------------------------------------------
 
 enum TTrackType {Simple, Crossover, Points, Buffers, Bridge, SignalPost, Continuation, Platform,
-                 GapJump, Footbridge, Unused, //'unused' was marker the for old 'text' number, since disused
+                 GapJump, FootCrossing, Unused, //FootCrossing covers fottbridge & underpass/surface, 'unused' was marker the for old 'text' number, since disused
                  Concourse, Parapet, NamedNonStationLocation, //these 3 as well as Platform are the 4 types of inactive element
                  Erase, //default active element used for erasing, all data members unset
                  LevelCrossing}; ///< describes the type of track element
@@ -70,7 +70,7 @@ class TFixedTrackPiece
 {
 public:    //everything uses these - should really have Gets & Sets but too many to change now
 
-    bool FixedNamedLocationElement;     ///< true for an element that can be named (platforms, concourse, footbridges &
+	bool FixedNamedLocationElement;     ///< true for an element that can be named (platforms, concourse, footcrossings &
                                         ///< non-station named loactions)
     int SpeedTag;                       ///< The element identification number - corresponds to the relevant SpeedButton->Tag
     int Link[4];                        ///< Track connection link values, max. of 4, unused = -1, top lh diag.=1, top=2, top rh diag.=3
@@ -112,7 +112,7 @@ public:    //everything uses these - should really have Gets & Sets but too many
                                         ///< or non-station named locations have ActiveTrackElementNames
     AnsiString ElementID;       ///< the element identifier based on position in the railway
     AnsiString LocationName;    ///< location name not used for timetabling, only for identification: platforms, non-station named locations,
-                                ///< concourses and footbridges have LocationNames
+								///< concourses and footcrossings have LocationNames
 
     bool CallingOnSet; ///< Used for for signals only when a train is being called on - used to plot the position lights
     bool TempMarker; ///< Utility marker for program use
@@ -424,23 +424,25 @@ public:
     int HLocMin, VLocMin, HLocMax, VLocMax; ///< give extent of railway for use in zoomed in and out displays and in saving railway images
     int LinkCheckArray[9][2]; ///< array of valid link connecting values, I don't think this is used now
     int LinkHVArray[10][2]; ///< array used to determine relative horizontal & vertical track element positions for specific link values
-    int Tag76Array[23][3]; ///< these arrays give valid adjacent named element relative positions for each type of named element,
-                           ///< the numbers - 76, 77 etc - relate to track element element SpeedTag values (76 - 79 = platforms, 96 = concourse,
-                           ///< 129 & 130 = footbridges and 131 = non-station named location.
-    int Tag77Array[23][3];
-    int Tag78Array[23][3];
-    int Tag79Array[23][3];
-    int Tag96Array[24][3];
-    int Tag129Array[8][3];
-    int Tag130Array[8][3];
-    int Tag131Array[4][3];
+	int Tag76Array[25][3]; ///< these arrays give valid adjacent named element relative positions for each type of named element,
+						   ///< the numbers - 76, 77 etc - relate to track element element SpeedTag values (76 - 79 = platforms, 96 = concourse,
+						   ///< 129 & 130 = footbridges, 145 & 146 underpasses and 131 = non-station named location.
+	int Tag77Array[25][3];
+	int Tag78Array[25][3];
+	int Tag79Array[25][3];
+	int Tag96Array[28][3];
+	int Tag129Array[8][3];
+	int Tag130Array[8][3];
+	int Tag131Array[4][3];
+	int Tag145Array[8][3];
+	int Tag146Array[8][3];
 
-    Set<int, 1, 130> TopPlatAllowed, BotPlatAllowed, LeftPlatAllowed, RightPlatAllowed, NameAllowed, LevelCrossingAllowed; ///< sets of valid TrackElements for
-    ///< placement of platforms and
-    ///< non-station named locations
+	Set<int, 1, 146> TopPlatAllowed, BotPlatAllowed, LeftPlatAllowed, RightPlatAllowed, NameAllowed, LevelCrossingAllowed; ///< sets of valid TrackElements for
+	///< placement of platforms and
+	///< non-station named locations
 public:
 
-    enum TBarrierState {Raising, Lowering, Up, Down}; ///< state of barriers
+	enum TBarrierState {Raising, Lowering, Up, Down}; ///< state of barriers
 
     /// Values for level crossings either changing state or with barriers down
     ///
@@ -502,8 +504,8 @@ public:
     typedef std::pair<THVPair, int> TLNDone2MultiMapEntry;          ///< can be up to 2 entries (platforms) at a single location
 
     typedef std::multimap<AnsiString, int> TLocationNameMultiMap; ///< map of location name vector positions (see note below), one entry for
-    ///< every element that is a FixedNamedLocationElement i.e platforms, concourses, footbridges & named non-station locations.  Hence the
-    ///< only active track elements included are footbridges
+	///< every element that is a FixedNamedLocationElement i.e platforms, concourses, footcrossings & named non-station locations.  Hence the
+	///< only active track elements included are footcrossings
     typedef TLocationNameMultiMap::iterator TLocationNameMultiMapIterator;
     typedef std::pair<TLocationNameMultiMapIterator, TLocationNameMultiMapIterator> TLocationNameMultiMapRange;
     typedef std::pair<AnsiString, int> TLocationNameMultiMapEntry;
@@ -548,7 +550,7 @@ public:
     float LevelCrossingBarrierUpFlashDuration; ///< duration of the flash period when level crossing closing to trains
     float LevelCrossingBarrierDownFlashDuration; ///< duration of the flash period when level crossing opening
 
-    int FlipArray[FirstUnusedSpeedTagNumber]; ///< holds TrackElement SpeedTag values for 'flipping' via menu items 'Edit' & 'Flip'
+	int FlipArray[FirstUnusedSpeedTagNumber]; ///< holds TrackElement SpeedTag values for 'flipping' via menu items 'Edit' & 'Flip'
     int GapFlashGreenPosition, GapFlashRedPosition; ///< TrackVectorPosition of the gap element that is flashing green or red
     int MirrorArray[FirstUnusedSpeedTagNumber]; ///< holds TrackElement SpeedTag values for 'mirroring' via menu items 'Edit' & 'Mirror'
     std::map<AnsiString, char> ContinuationNameMap; ///< map of all continuation names, char is a dummy
@@ -651,7 +653,7 @@ public:
 
 //externally defined functions
 
-    /// Used to check the validity of footbridge links
+	/// Used to check the validity of footcrossing links
     bool ActiveMapCheck(int Caller, int HLoc, int VLoc, int SpeedTag);
     /// True if a route or train present on any linked level crossing element
     bool AnyLinkedLevelCrossingElementsWithRoutesOrTrains(int Caller, int HLoc, int VLoc, bool &TrainPresent);
@@ -667,8 +669,8 @@ public:
     bool BlankElementAt(int Caller, int At) const;
     // True if BarriersDownVector checks OK in SessionFile
     bool CheckActiveLCVector(int Caller, std::ifstream &VecFile);
-    /// True if a footbridge is linked properly at both ends
-    bool CheckFootbridgeLinks(int Caller, TTrackElement &TrackElement);
+	/// True if a footcrossing is linked properly at both ends
+	bool CheckFootCrossingLinks(int Caller, TTrackElement &TrackElement);
     /// Version of CheckTrackElementsInFile prior to its being updated
     ///
     /// Used when changes made to CheckTrackElementsInFile in order to allow existing saved railways to be loaded prior
@@ -695,7 +697,7 @@ public:
     bool FindSetAndDisplayMatchingGap(int Caller, int HLoc, int VLoc);
     /// True if there are gaps in the railway and any are unset
     bool GapsUnset(int Caller);
-    /// Used to check the validity of footbridge links
+	/// Used to check the validity of footcrossing links
     bool InactiveMapCheck(int Caller, int HLoc, int VLoc, int SpeedTag);
     /// New at v1.2.0; true if an inactive track element present
     bool InactiveTrackElementPresentAtHV(int Caller, int HLoc, int VLoc);
@@ -731,7 +733,7 @@ public:
     bool LinkTrackNoMessages(int Caller, bool FinalCall);
     /// True if a non-empty LocationName found in LocationNameMultiMap
     bool LocationNameAllocated(int Caller, AnsiString LocationName);
-    /// True if there are unnamed NamedLocationElements (includes footbridges)
+	/// True if there are unnamed NamedLocationElements (includes footcrossings)
     bool LocationsNotNamed(int Caller);
     /// True if the two vector positions are points that have a straight and a diverging leg, are linked together by their
     /// diverging legs, and both are set either to straight or to diverge
@@ -744,10 +746,10 @@ public:
     bool NoActiveTrack(int Caller);
     /// True if there are no gaps
     bool NoGaps(int Caller);
-    /// True if there are no NamedLocationElements (includes footbridges)
+	/// True if there are no NamedLocationElements (includes footcrossings)
     bool NoNamedLocationElements(int Caller);
     /// True if there is a platform, NamedNonStationLocation or Concourse present in the railway
-    bool NonFootbridgeNamedLocationExists(int Caller);
+	bool NonFootCrossingNamedLocationExists(int Caller);
     /// True if there is at least one named location element with name 'LocationName', used in timetable integrity checking
     bool OneNamedLocationElementAtLocation(int Caller, AnsiString LocationName);
     /// check sufficient track elements with same LocationName linked together without any trailing point links to allow
@@ -851,13 +853,13 @@ public:
     /// After an element has been erased from the InactiveTrackVector, all the later elements are moved down one.  This function decrements the position values for all values
     /// above that of the erased element in both InactiveTrack2MultiMap and LocationNameMultiMap.
     void DecrementValuesInInactiveTrackAndNameMaps(int Caller, unsigned int VecPos);
-    /// All platform, concourse, footbridge & non-station named location
-    /// elements are able to have a LocationName allocated, and track elements (including footbridges) are able to have an
+	/// All platform, concourse, footcrossing & non-station named location
+	/// elements are able to have a LocationName allocated, and track elements (including footcrossings) are able to have an
     /// ActiveTrackElementName allocated provided there is an adjacent platform or a NamedNonStationLocation.
     ///
-    /// To set these names the user selects a single named location element (not a footbridge), enters the name, and this is then allocated as a LocationName
-    /// to all linked platform, concourse and footbridge elements, and as an ActiveTrackElementName to all track elements adjacent to
-    /// platforms (inc footbridge tracks if (but only if) they have a platform at that location).
+	/// To set these names the user selects a single named location element (not a footcrossing), enters the name, and this is then allocated as a LocationName
+	/// to all linked platform, concourse and footcrossing elements, and as an ActiveTrackElementName to all track elements adjacent to
+	/// platforms (inc footcrossing tracks if (but only if) they have a platform at that location).
     void EnterLocationName(int Caller, AnsiString LocationName, bool AddingElements);
     /// Examines LocationNameMultiMap and if the LocationName is found all elements at that H & V (in both active and inactive vectors) have the name erased both as a
     /// LocationName and a ActiveTrackElementName.  The LocationNameMultiMap is also rebuilt to correspond to the new names in the vectors.

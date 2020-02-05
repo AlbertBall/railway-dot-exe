@@ -1,5 +1,5 @@
-\hypertarget{class_t_action_vector_entry}{}\section{T\+Action\+Vector\+Entry Class Reference}
-\label{class_t_action_vector_entry}\index{T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}}
+\hypertarget{class_t_action_vector_entry}{}\doxysection{T\+Action\+Vector\+Entry Class Reference}
+\label{class_t_action_vector_entry}\index{TActionVectorEntry@{TActionVectorEntry}}
 
 
 Contains a single train action in a timetable -\/ repeat entry is also of this class though no train action is taken for it.  
@@ -9,13 +9,13 @@ Contains a single train action in a timetable -\/ repeat entry is also of this c
 
 {\ttfamily \#include $<$Train\+Unit.\+h$>$}
 
-\subsection*{Public Member Functions}
+\doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_t_action_vector_entry_a2f3969c630acb3f7a346ced7a601502f}\label{class_t_action_vector_entry_a2f3969c630acb3f7a346ced7a601502f}} 
 \mbox{\hyperlink{class_t_action_vector_entry_a2f3969c630acb3f7a346ced7a601502f}{T\+Action\+Vector\+Entry}} ()
 \begin{DoxyCompactList}\small\item\em Constructor, sets all values to default states. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Public Attributes}
+\doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_t_action_vector_entry_afdc4364c8698998b3689039a32b8c148}\label{class_t_action_vector_entry_afdc4364c8698998b3689039a32b8c148}} 
@@ -72,42 +72,42 @@ T\+Timetable\+Shuttle\+Link\+Type \mbox{\hyperlink{class_t_action_vector_entry_a
 \end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 Contains a single train action in a timetable -\/ repeat entry is also of this class though no train action is taken for it. 
 
-\subsection{Member Data Documentation}
+\doxysubsection{Member Data Documentation}
 \mbox{\Hypertarget{class_t_action_vector_entry_a37c6ff0cda2672bbd60099487442fbb5}\label{class_t_action_vector_entry_a37c6ff0cda2672bbd60099487442fbb5}} 
-\index{T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}!Departure\+Time@{Departure\+Time}}
-\index{Departure\+Time@{Departure\+Time}!T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}}
-\subsubsection{\texorpdfstring{Departure\+Time}{DepartureTime}}
+\index{TActionVectorEntry@{TActionVectorEntry}!DepartureTime@{DepartureTime}}
+\index{DepartureTime@{DepartureTime}!TActionVectorEntry@{TActionVectorEntry}}
+\doxysubsubsection{\texorpdfstring{DepartureTime}{DepartureTime}}
 {\footnotesize\ttfamily T\+Date\+Time T\+Action\+Vector\+Entry\+::\+Departure\+Time}
 
 relevant times at which the action is timetabled, zeroed on creation so change to -\/1 as a marker for \textquotesingle{}not set\textquotesingle{} \mbox{\Hypertarget{class_t_action_vector_entry_a8b84cb2a020cfb2f81a091f3bdc59ec4}\label{class_t_action_vector_entry_a8b84cb2a020cfb2f81a091f3bdc59ec4}} 
-\index{T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}!Front\+Start\+Or\+Repeat\+Digits@{Front\+Start\+Or\+Repeat\+Digits}}
-\index{Front\+Start\+Or\+Repeat\+Digits@{Front\+Start\+Or\+Repeat\+Digits}!T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}}
-\subsubsection{\texorpdfstring{Front\+Start\+Or\+Repeat\+Digits}{FrontStartOrRepeatDigits}}
+\index{TActionVectorEntry@{TActionVectorEntry}!FrontStartOrRepeatDigits@{FrontStartOrRepeatDigits}}
+\index{FrontStartOrRepeatDigits@{FrontStartOrRepeatDigits}!TActionVectorEntry@{TActionVectorEntry}}
+\doxysubsubsection{\texorpdfstring{FrontStartOrRepeatDigits}{FrontStartOrRepeatDigits}}
 {\footnotesize\ttfamily int T\+Action\+Vector\+Entry\+::\+Front\+Start\+Or\+Repeat\+Digits}
 
 dual-\/purpose variables used for the Track\+Vector\+Positions of the rear and front train starting elements (for Snt) or for repeat minute \& digit values in repeat entries \mbox{\Hypertarget{class_t_action_vector_entry_ab240a52305bd614f1921e86617687abf}\label{class_t_action_vector_entry_ab240a52305bd614f1921e86617687abf}} 
-\index{T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}!Linked\+Train\+Entry\+Ptr@{Linked\+Train\+Entry\+Ptr}}
-\index{Linked\+Train\+Entry\+Ptr@{Linked\+Train\+Entry\+Ptr}!T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}}
-\subsubsection{\texorpdfstring{Linked\+Train\+Entry\+Ptr}{LinkedTrainEntryPtr}}
+\index{TActionVectorEntry@{TActionVectorEntry}!LinkedTrainEntryPtr@{LinkedTrainEntryPtr}}
+\index{LinkedTrainEntryPtr@{LinkedTrainEntryPtr}!TActionVectorEntry@{TActionVectorEntry}}
+\doxysubsubsection{\texorpdfstring{LinkedTrainEntryPtr}{LinkedTrainEntryPtr}}
 {\footnotesize\ttfamily \mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}}$\ast$ T\+Action\+Vector\+Entry\+::\+Linked\+Train\+Entry\+Ptr}
 
 link pointer for use between fsp/rsp \& Sfs; Fjo \& jbo; Fns \& Sns; \& all shuttle to shuttle links \mbox{\Hypertarget{class_t_action_vector_entry_a921897cd667dd8933de593e97e74a3a7}\label{class_t_action_vector_entry_a921897cd667dd8933de593e97e74a3a7}} 
-\index{T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}!Non\+Repeating\+Shuttle\+Link\+Entry\+Ptr@{Non\+Repeating\+Shuttle\+Link\+Entry\+Ptr}}
-\index{Non\+Repeating\+Shuttle\+Link\+Entry\+Ptr@{Non\+Repeating\+Shuttle\+Link\+Entry\+Ptr}!T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}}
-\subsubsection{\texorpdfstring{Non\+Repeating\+Shuttle\+Link\+Entry\+Ptr}{NonRepeatingShuttleLinkEntryPtr}}
+\index{TActionVectorEntry@{TActionVectorEntry}!NonRepeatingShuttleLinkEntryPtr@{NonRepeatingShuttleLinkEntryPtr}}
+\index{NonRepeatingShuttleLinkEntryPtr@{NonRepeatingShuttleLinkEntryPtr}!TActionVectorEntry@{TActionVectorEntry}}
+\doxysubsubsection{\texorpdfstring{NonRepeatingShuttleLinkEntryPtr}{NonRepeatingShuttleLinkEntryPtr}}
 {\footnotesize\ttfamily \mbox{\hyperlink{class_t_train_data_entry}{T\+Train\+Data\+Entry}}$\ast$ T\+Action\+Vector\+Entry\+::\+Non\+Repeating\+Shuttle\+Link\+Entry\+Ptr}
 
 pointer used by shuttles for the non-\/shuttle train links, in \& out, the corresponding non-\/shuttle linked trains use Linked\+Train\+Entry\+Ptr \mbox{\Hypertarget{class_t_action_vector_entry_ae142e8e9d3a842c9b1d81bcd4e93e291}\label{class_t_action_vector_entry_ae142e8e9d3a842c9b1d81bcd4e93e291}} 
-\index{T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}!Non\+Repeating\+Shuttle\+Link\+Head\+Code@{Non\+Repeating\+Shuttle\+Link\+Head\+Code}}
-\index{Non\+Repeating\+Shuttle\+Link\+Head\+Code@{Non\+Repeating\+Shuttle\+Link\+Head\+Code}!T\+Action\+Vector\+Entry@{T\+Action\+Vector\+Entry}}
-\subsubsection{\texorpdfstring{Non\+Repeating\+Shuttle\+Link\+Head\+Code}{NonRepeatingShuttleLinkHeadCode}}
+\index{TActionVectorEntry@{TActionVectorEntry}!NonRepeatingShuttleLinkHeadCode@{NonRepeatingShuttleLinkHeadCode}}
+\index{NonRepeatingShuttleLinkHeadCode@{NonRepeatingShuttleLinkHeadCode}!TActionVectorEntry@{TActionVectorEntry}}
+\doxysubsubsection{\texorpdfstring{NonRepeatingShuttleLinkHeadCode}{NonRepeatingShuttleLinkHeadCode}}
 {\footnotesize\ttfamily Ansi\+String T\+Action\+Vector\+Entry\+::\+Non\+Repeating\+Shuttle\+Link\+Head\+Code}
 
 string values for timetabled action entries, null on creation 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-C\+:/\+Programming work/railway development after v2.\+2.\+0/Train\+Unit.\+h\end{DoxyCompactItemize}
+Train\+Unit.\+h\end{DoxyCompactItemize}

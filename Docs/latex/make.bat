@@ -3,11 +3,12 @@ cd /D %~dp0
 
 del /s /f *.ps *.dvi *.aux *.toc *.idx *.ind *.ilg *.log *.out *.brf *.blg *.bbl refman.pdf
 
-pdflatex refman
+set LATEX_CMD=pdflatex
+%LATEX_CMD% refman
 echo ----
 makeindex refman.idx
 echo ----
-pdflatex refman
+%LATEX_CMD% refman
 
 setlocal enabledelayedexpansion
 set count=8
@@ -20,11 +21,11 @@ set /a count-=1
 if !count! EQU 0 goto :skip
 
 echo ----
-pdflatex refman
+%LATEX_CMD% refman
 goto :repeat
 :skip
 endlocal
 makeindex refman.idx
-pdflatex refman
+%LATEX_CMD% refman
 cd /D %Dir_Old%
 set Dir_Old=

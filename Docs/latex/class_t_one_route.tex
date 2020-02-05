@@ -1,5 +1,5 @@
-\hypertarget{class_t_one_route}{}\section{T\+One\+Route Class Reference}
-\label{class_t_one_route}\index{T\+One\+Route@{T\+One\+Route}}
+\hypertarget{class_t_one_route}{}\doxysection{T\+One\+Route Class Reference}
+\label{class_t_one_route}\index{TOneRoute@{TOneRoute}}
 
 
 {\ttfamily \#include $<$Track\+Unit.\+h$>$}
@@ -10,14 +10,14 @@ Inheritance diagram for T\+One\+Route\+:\begin{figure}[H]
 \includegraphics[height=2.000000cm]{class_t_one_route}
 \end{center}
 \end{figure}
-\subsection*{Classes}
+\doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
 class \mbox{\hyperlink{class_t_one_route_1_1_t_route_flash}{T\+Route\+Flash}}
 \begin{DoxyCompactList}\small\item\em The flashing route. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{class_t_one_route_1_1_t_route_flash_element}{T\+Route\+Flash\+Element}}
 \begin{DoxyCompactList}\small\item\em A single flashing element of a route that flashes during setting. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Public Member Functions}
+\doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_t_one_route_a05ce65e80c2272a775f6497890d42b6b}\label{class_t_one_route_a05ce65e80c2272a775f6497890d42b6b}} 
@@ -75,7 +75,7 @@ void \mbox{\hyperlink{class_t_one_route_afc6dafc4713c2b10c9e21b28fac20430}{Set\+
 \begin{DoxyCompactList}\small\item\em Called when setting a route to set all points appropriately. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_t_one_route_a4dfe3a028da7a4b6df0f44f33c3e2196}{Set\+Route\+Signals}} (int Caller) const
 \end{DoxyCompactItemize}
-\subsection*{Public Attributes}
+\doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{class_i_d_int}{I\+D\+Int}} \mbox{\hyperlink{class_t_one_route_aee7b2c91e9920bbb59c84cb562f0680a}{Req\+Pos\+Route\+ID}}
@@ -96,129 +96,129 @@ int \mbox{\hyperlink{class_t_one_route_a5b779b57f966fd9c7c7d1c42f8ecde22}{Start\
 \mbox{\Hypertarget{class_t_one_route_ad5c3066eea66bd42ea847f550e2b0589}\label{class_t_one_route_ad5c3066eea66bd42ea847f550e2b0589}} 
 \mbox{\hyperlink{class_t_one_route_1_1_t_route_flash}{T\+Route\+Flash}} \mbox{\hyperlink{class_t_one_route_ad5c3066eea66bd42ea847f550e2b0589}{Route\+Flash}}
 \begin{DoxyCompactList}\small\item\em the class member that allows the route to flash during setting up (see \mbox{\hyperlink{class_t_one_route_1_1_t_route_flash}{T\+Route\+Flash}} above) \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Static Public Attributes}
+\doxysubsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_t_one_route_aa2d1990ed4b4884eb45ac54644fe749c}\label{class_t_one_route_aa2d1990ed4b4884eb45ac54644fe749c}} 
 static const int \mbox{\hyperlink{class_t_one_route_aa2d1990ed4b4884eb45ac54644fe749c}{Route\+Search\+Limit}} = 30000
 \begin{DoxyCompactList}\small\item\em limit to the number of elements searched in attempting to find a route \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Additional Inherited Members}
+\doxysubsection*{Additional Inherited Members}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 A descendent of \mbox{\hyperlink{class_t_one_pref_dir}{T\+One\+Pref\+Dir}} used for routes. Used during contruction of a route (Construct\+Route) and also for all completed routes, when each route is saved as an entry in the All\+Routes\+Vector (see \mbox{\hyperlink{class_t_all_routes}{T\+All\+Routes}}) 
 
-\subsection{Member Function Documentation}
+\doxysubsection{Member Function Documentation}
 \mbox{\Hypertarget{class_t_one_route_a53496c398dcdb3a644801c4e74d47d01}\label{class_t_one_route_a53496c398dcdb3a644801c4e74d47d01}} 
-\index{T\+One\+Route@{T\+One\+Route}!Convert\+And\+Add\+Non\+Preferred\+Route\+Search\+Vector@{Convert\+And\+Add\+Non\+Preferred\+Route\+Search\+Vector}}
-\index{Convert\+And\+Add\+Non\+Preferred\+Route\+Search\+Vector@{Convert\+And\+Add\+Non\+Preferred\+Route\+Search\+Vector}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Convert\+And\+Add\+Non\+Preferred\+Route\+Search\+Vector()}{ConvertAndAddNonPreferredRouteSearchVector()}}
+\index{TOneRoute@{TOneRoute}!ConvertAndAddNonPreferredRouteSearchVector@{ConvertAndAddNonPreferredRouteSearchVector}}
+\index{ConvertAndAddNonPreferredRouteSearchVector@{ConvertAndAddNonPreferredRouteSearchVector}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{ConvertAndAddNonPreferredRouteSearchVector()}{ConvertAndAddNonPreferredRouteSearchVector()}}
 {\footnotesize\ttfamily void T\+One\+Route\+::\+Convert\+And\+Add\+Non\+Preferred\+Route\+Search\+Vector (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{\mbox{\hyperlink{class_i_d_int}{I\+D\+Int}}}]{Req\+Pos\+Route\+ID }\end{DoxyParamCaption})}
 
 Called after a non-\/preferred (i.\+e. unrestricted) route has been selected and has finished flashing, to add it to the All\+Routes\+Vector \mbox{\Hypertarget{class_t_one_route_a36ba8adc8b4a47908ee4e1b8e75792ca}\label{class_t_one_route_a36ba8adc8b4a47908ee4e1b8e75792ca}} 
-\index{T\+One\+Route@{T\+One\+Route}!Convert\+And\+Add\+Preferred\+Route\+Search\+Vector@{Convert\+And\+Add\+Preferred\+Route\+Search\+Vector}}
-\index{Convert\+And\+Add\+Preferred\+Route\+Search\+Vector@{Convert\+And\+Add\+Preferred\+Route\+Search\+Vector}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Convert\+And\+Add\+Preferred\+Route\+Search\+Vector()}{ConvertAndAddPreferredRouteSearchVector()}}
+\index{TOneRoute@{TOneRoute}!ConvertAndAddPreferredRouteSearchVector@{ConvertAndAddPreferredRouteSearchVector}}
+\index{ConvertAndAddPreferredRouteSearchVector@{ConvertAndAddPreferredRouteSearchVector}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{ConvertAndAddPreferredRouteSearchVector()}{ConvertAndAddPreferredRouteSearchVector()}}
 {\footnotesize\ttfamily void T\+One\+Route\+::\+Convert\+And\+Add\+Preferred\+Route\+Search\+Vector (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{\mbox{\hyperlink{class_i_d_int}{I\+D\+Int}}}]{Req\+Pos\+Route\+ID,  }\item[{bool}]{Auto\+Sigs\+Flag }\end{DoxyParamCaption})}
 
 Called after a preferred (i.\+e. preferred direction or automatic signals) route has been selected and has finished flashing, to add it to the All\+Routes\+Vector \mbox{\Hypertarget{class_t_one_route_a4d92e68782eea0534a02e1b8176bc730}\label{class_t_one_route_a4d92e68782eea0534a02e1b8176bc730}} 
-\index{T\+One\+Route@{T\+One\+Route}!Find\+Forward\+Target\+Signal\+Attribute@{Find\+Forward\+Target\+Signal\+Attribute}}
-\index{Find\+Forward\+Target\+Signal\+Attribute@{Find\+Forward\+Target\+Signal\+Attribute}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Find\+Forward\+Target\+Signal\+Attribute()}{FindForwardTargetSignalAttribute()}}
+\index{TOneRoute@{TOneRoute}!FindForwardTargetSignalAttribute@{FindForwardTargetSignalAttribute}}
+\index{FindForwardTargetSignalAttribute@{FindForwardTargetSignalAttribute}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{FindForwardTargetSignalAttribute()}{FindForwardTargetSignalAttribute()}}
 {\footnotesize\ttfamily bool T\+One\+Route\+::\+Find\+Forward\+Target\+Signal\+Attribute (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int \&}]{Next\+Forward\+Linked\+Route\+Number,  }\item[{int \&}]{Attribute }\end{DoxyParamCaption}) const}
 
 Used when setting signal aspects for a route by working forwards through the route to see what the next forward signal aspects is, because this determines all the rearward signal aspects. \mbox{\Hypertarget{class_t_one_route_a491fff1e619a9dc79774acf85eed72a5}\label{class_t_one_route_a491fff1e619a9dc79774acf85eed72a5}} 
-\index{T\+One\+Route@{T\+One\+Route}!Force\+Cancel\+Route@{Force\+Cancel\+Route}}
-\index{Force\+Cancel\+Route@{Force\+Cancel\+Route}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Force\+Cancel\+Route()}{ForceCancelRoute()}}
+\index{TOneRoute@{TOneRoute}!ForceCancelRoute@{ForceCancelRoute}}
+\index{ForceCancelRoute@{ForceCancelRoute}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{ForceCancelRoute()}{ForceCancelRoute()}}
 {\footnotesize\ttfamily void T\+One\+Route\+::\+Force\+Cancel\+Route (\begin{DoxyParamCaption}\item[{int}]{Caller }\end{DoxyParamCaption})}
 
 Cancel a route immediately if a train occupies it when travelling in the wrong direction (or occupies a crossover on a non-\/route line when the other track is in a route) \mbox{\Hypertarget{class_t_one_route_a997f3cb02d8e03d0a12769b8eb903674}\label{class_t_one_route_a997f3cb02d8e03d0a12769b8eb903674}} 
-\index{T\+One\+Route@{T\+One\+Route}!Get\+Next\+Non\+Preferred\+Route\+Element@{Get\+Next\+Non\+Preferred\+Route\+Element}}
-\index{Get\+Next\+Non\+Preferred\+Route\+Element@{Get\+Next\+Non\+Preferred\+Route\+Element}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Get\+Next\+Non\+Preferred\+Route\+Element()}{GetNextNonPreferredRouteElement()}}
+\index{TOneRoute@{TOneRoute}!GetNextNonPreferredRouteElement@{GetNextNonPreferredRouteElement}}
+\index{GetNextNonPreferredRouteElement@{GetNextNonPreferredRouteElement}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{GetNextNonPreferredRouteElement()}{GetNextNonPreferredRouteElement()}}
 {\footnotesize\ttfamily bool T\+One\+Route\+::\+Get\+Next\+Non\+Preferred\+Route\+Element (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{H\+Loc,  }\item[{int}]{V\+Loc,  }\item[{bool}]{Consec\+Signals\+Route,  }\item[{bool}]{Callon,  }\item[{\mbox{\hyperlink{class_i_d_int}{I\+D\+Int}} \&}]{Req\+Pos\+Route\+ID,  }\item[{bool \&}]{Points\+Changed }\end{DoxyParamCaption})}
 
 Try to find a set of linked tracks between the route start element and the one at H\+Loc \& V\+Loc. If find one return true, set \&Points\+Changed to true if any points need to be changed and \&Req\+Pos\+Route\+ID to the route ID of the existing route to attach to, if there is one, and -\/1 if not \mbox{\Hypertarget{class_t_one_route_af1794f576d8aff59f83992afc1c5acc2}\label{class_t_one_route_af1794f576d8aff59f83992afc1c5acc2}} 
-\index{T\+One\+Route@{T\+One\+Route}!Get\+Next\+Preferred\+Route\+Element@{Get\+Next\+Preferred\+Route\+Element}}
-\index{Get\+Next\+Preferred\+Route\+Element@{Get\+Next\+Preferred\+Route\+Element}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Get\+Next\+Preferred\+Route\+Element()}{GetNextPreferredRouteElement()}}
+\index{TOneRoute@{TOneRoute}!GetNextPreferredRouteElement@{GetNextPreferredRouteElement}}
+\index{GetNextPreferredRouteElement@{GetNextPreferredRouteElement}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{GetNextPreferredRouteElement()}{GetNextPreferredRouteElement()}}
 {\footnotesize\ttfamily bool T\+One\+Route\+::\+Get\+Next\+Preferred\+Route\+Element (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{H\+Loc,  }\item[{int}]{V\+Loc,  }\item[{\mbox{\hyperlink{class_t_one_pref_dir}{T\+One\+Pref\+Dir}} $\ast$}]{Every\+Pref\+Dir,  }\item[{bool}]{Consec\+Signals\+Route,  }\item[{bool}]{Auto\+Sigs\+Flag,  }\item[{\mbox{\hyperlink{class_i_d_int}{I\+D\+Int}} \&}]{Req\+Pos\+Route\+ID,  }\item[{bool \&}]{Points\+Changed }\end{DoxyParamCaption})}
 
 Try to find a set of linked tracks that lie on preferred directions between the route start element and the one at H\+Loc \& V\+Loc. If find one return true, set \&Points\+Changed to true if any points need to be changed and \&Req\+Pos\+Route\+ID to the route ID of the existing route to attach to, if there is one, and -\/1 if not \mbox{\Hypertarget{class_t_one_route_ae131609dd8248dae2d7b699ab8777202}\label{class_t_one_route_ae131609dd8248dae2d7b699ab8777202}} 
-\index{T\+One\+Route@{T\+One\+Route}!Get\+Route\+Truncate\+Element@{Get\+Route\+Truncate\+Element}}
-\index{Get\+Route\+Truncate\+Element@{Get\+Route\+Truncate\+Element}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Get\+Route\+Truncate\+Element()}{GetRouteTruncateElement()}}
+\index{TOneRoute@{TOneRoute}!GetRouteTruncateElement@{GetRouteTruncateElement}}
+\index{GetRouteTruncateElement@{GetRouteTruncateElement}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{GetRouteTruncateElement()}{GetRouteTruncateElement()}}
 {\footnotesize\ttfamily void T\+One\+Route\+::\+Get\+Route\+Truncate\+Element (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{H\+Loc,  }\item[{int}]{V\+Loc,  }\item[{bool}]{Consec\+Signals\+Route,  }\item[{T\+Truncate\+Return\+Type \&}]{Return\+Flag }\end{DoxyParamCaption})}
 
 Examines the route to see whether the element at H \& V is in the route, and if not returns a Return\+Flag value of Not\+In\+Route.
 
 If it is in a route but the element selected is invalid, then a message is given and returns with a Return\+Flag value of In\+Route\+False. Otherwise the route is truncated at and including the element that matches H \& V with a Return\+Flag value of In\+Route\+True. Selection invalid if a train at or before the truncate point; select a bridge; trying to leave a single element; last element to be left not a signal (for Consec\+Signals\+Route or has Auto\+Sigs\+Flag set); last element to be left a bridge, points or crossover (for not Consec\+Signals\+Route \& Auto\+Sigs\+Flag not set), or part of route locked. \mbox{\Hypertarget{class_t_one_route_a077235e61d88fb865f5f9eaf09f275e6}\label{class_t_one_route_a077235e61d88fb865f5f9eaf09f275e6}} 
-\index{T\+One\+Route@{T\+One\+Route}!Points\+To\+Be\+Changed@{Points\+To\+Be\+Changed}}
-\index{Points\+To\+Be\+Changed@{Points\+To\+Be\+Changed}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Points\+To\+Be\+Changed()}{PointsToBeChanged()}}
+\index{TOneRoute@{TOneRoute}!PointsToBeChanged@{PointsToBeChanged}}
+\index{PointsToBeChanged@{PointsToBeChanged}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{PointsToBeChanged()}{PointsToBeChanged()}}
 {\footnotesize\ttfamily bool T\+One\+Route\+::\+Points\+To\+Be\+Changed (\begin{DoxyParamCaption}\item[{int}]{Caller }\end{DoxyParamCaption}) const}
 
 Called by Get\+Next\+Non\+Preferred\+Route\+Element and Get\+Next\+Preferred\+Route\+Element to check whether or not any points on the selected route need to be changed \mbox{\Hypertarget{class_t_one_route_aa36c801460b594ec96af1779d633d739}\label{class_t_one_route_aa36c801460b594ec96af1779d633d739}} 
-\index{T\+One\+Route@{T\+One\+Route}!Route\+Image\+Marker@{Route\+Image\+Marker}}
-\index{Route\+Image\+Marker@{Route\+Image\+Marker}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Route\+Image\+Marker()}{RouteImageMarker()}}
+\index{TOneRoute@{TOneRoute}!RouteImageMarker@{RouteImageMarker}}
+\index{RouteImageMarker@{RouteImageMarker}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{RouteImageMarker()}{RouteImageMarker()}}
 {\footnotesize\ttfamily void T\+One\+Route\+::\+Route\+Image\+Marker (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{Graphics\+::\+T\+Bitmap $\ast$}]{Bitmap }\end{DoxyParamCaption}) const}
 
 Used when creating a bitmap image to display the route colours and direction arrows (as on screen during operation) for an operating railway \mbox{\Hypertarget{class_t_one_route_a92dbe2a2df334da0b20e54683c0fba8e}\label{class_t_one_route_a92dbe2a2df334da0b20e54683c0fba8e}} 
-\index{T\+One\+Route@{T\+One\+Route}!Set\+L\+C\+Change\+Values@{Set\+L\+C\+Change\+Values}}
-\index{Set\+L\+C\+Change\+Values@{Set\+L\+C\+Change\+Values}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Set\+L\+C\+Change\+Values()}{SetLCChangeValues()}}
+\index{TOneRoute@{TOneRoute}!SetLCChangeValues@{SetLCChangeValues}}
+\index{SetLCChangeValues@{SetLCChangeValues}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{SetLCChangeValues()}{SetLCChangeValues()}}
 {\footnotesize\ttfamily void T\+One\+Route\+::\+Set\+L\+C\+Change\+Values (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{bool}]{Consec\+Signals\+Route }\end{DoxyParamCaption})}
 
 After a route has been selected successfully this function sets all LC change values appropriately for the selected route type and location \mbox{\Hypertarget{class_t_one_route_a55e04e36f652344b5215f8a28143c4a3}\label{class_t_one_route_a55e04e36f652344b5215f8a28143c4a3}} 
-\index{T\+One\+Route@{T\+One\+Route}!Set\+Rearwards\+Signals\+Return\+False\+For\+Train@{Set\+Rearwards\+Signals\+Return\+False\+For\+Train}}
-\index{Set\+Rearwards\+Signals\+Return\+False\+For\+Train@{Set\+Rearwards\+Signals\+Return\+False\+For\+Train}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Set\+Rearwards\+Signals\+Return\+False\+For\+Train()}{SetRearwardsSignalsReturnFalseForTrain()}}
+\index{TOneRoute@{TOneRoute}!SetRearwardsSignalsReturnFalseForTrain@{SetRearwardsSignalsReturnFalseForTrain}}
+\index{SetRearwardsSignalsReturnFalseForTrain@{SetRearwardsSignalsReturnFalseForTrain}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{SetRearwardsSignalsReturnFalseForTrain()}{SetRearwardsSignalsReturnFalseForTrain()}}
 {\footnotesize\ttfamily bool T\+One\+Route\+::\+Set\+Rearwards\+Signals\+Return\+False\+For\+Train (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int \&}]{Attribute,  }\item[{int}]{Pref\+Dir\+Vector\+Start\+Position }\end{DoxyParamCaption}) const}
 
 Called by \mbox{\hyperlink{class_t_all_routes_ac6bd39457747eaa96476a8a87df15ac2}{T\+All\+Routes\+::\+Set\+All\+Rearwards\+Signals}} to set rearwards signals from a specified starting position. If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects. \mbox{\Hypertarget{class_t_one_route_a8f8fe8f852dd24cf8d12933f22b5750c}\label{class_t_one_route_a8f8fe8f852dd24cf8d12933f22b5750c}} 
-\index{T\+One\+Route@{T\+One\+Route}!Set\+Remaining\+Search\+Vector\+Values@{Set\+Remaining\+Search\+Vector\+Values}}
-\index{Set\+Remaining\+Search\+Vector\+Values@{Set\+Remaining\+Search\+Vector\+Values}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Set\+Remaining\+Search\+Vector\+Values()}{SetRemainingSearchVectorValues()}}
+\index{TOneRoute@{TOneRoute}!SetRemainingSearchVectorValues@{SetRemainingSearchVectorValues}}
+\index{SetRemainingSearchVectorValues@{SetRemainingSearchVectorValues}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{SetRemainingSearchVectorValues()}{SetRemainingSearchVectorValues()}}
 {\footnotesize\ttfamily void T\+One\+Route\+::\+Set\+Remaining\+Search\+Vector\+Values (\begin{DoxyParamCaption}\item[{int}]{Caller }\end{DoxyParamCaption})}
 
 Called when setting unrestricted routes to set the route element values appropriately after a successful search has been conducted. It isn\textquotesingle{}t needed for preferred routes because the element values are obtained from the already set preferred direction elements \mbox{\Hypertarget{class_t_one_route_abdb89bb3f7ce55d926bee3c2d4b3652f}\label{class_t_one_route_abdb89bb3f7ce55d926bee3c2d4b3652f}} 
-\index{T\+One\+Route@{T\+One\+Route}!Set\+Route\+Flash\+Values@{Set\+Route\+Flash\+Values}}
-\index{Set\+Route\+Flash\+Values@{Set\+Route\+Flash\+Values}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Set\+Route\+Flash\+Values()}{SetRouteFlashValues()}}
+\index{TOneRoute@{TOneRoute}!SetRouteFlashValues@{SetRouteFlashValues}}
+\index{SetRouteFlashValues@{SetRouteFlashValues}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{SetRouteFlashValues()}{SetRouteFlashValues()}}
 {\footnotesize\ttfamily void T\+One\+Route\+::\+Set\+Route\+Flash\+Values (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{bool}]{Auto\+Sigs\+Flag,  }\item[{bool}]{Consec\+Signals\+Route }\end{DoxyParamCaption})}
 
 After a route has been selected successfully this function sets all Route\+Flash (see above) values appropriately for the selected route type and location \mbox{\Hypertarget{class_t_one_route_a4dfe3a028da7a4b6df0f44f33c3e2196}\label{class_t_one_route_a4dfe3a028da7a4b6df0f44f33c3e2196}} 
-\index{T\+One\+Route@{T\+One\+Route}!Set\+Route\+Signals@{Set\+Route\+Signals}}
-\index{Set\+Route\+Signals@{Set\+Route\+Signals}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Set\+Route\+Signals()}{SetRouteSignals()}}
+\index{TOneRoute@{TOneRoute}!SetRouteSignals@{SetRouteSignals}}
+\index{SetRouteSignals@{SetRouteSignals}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{SetRouteSignals()}{SetRouteSignals()}}
 {\footnotesize\ttfamily void T\+One\+Route\+::\+Set\+Route\+Signals (\begin{DoxyParamCaption}\item[{int}]{Caller }\end{DoxyParamCaption}) const}
 
 Called when setting a route to set all points appropriately. Also called when a new train is added at a position where a route has been set, when it is necessary to set the next rearwards signal to red, the next yellow etc 
 
-\subsection{Member Data Documentation}
+\doxysubsection{Member Data Documentation}
 \mbox{\Hypertarget{class_t_one_route_aee7b2c91e9920bbb59c84cb562f0680a}\label{class_t_one_route_aee7b2c91e9920bbb59c84cb562f0680a}} 
-\index{T\+One\+Route@{T\+One\+Route}!Req\+Pos\+Route\+ID@{Req\+Pos\+Route\+ID}}
-\index{Req\+Pos\+Route\+ID@{Req\+Pos\+Route\+ID}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Req\+Pos\+Route\+ID}{ReqPosRouteID}}
+\index{TOneRoute@{TOneRoute}!ReqPosRouteID@{ReqPosRouteID}}
+\index{ReqPosRouteID@{ReqPosRouteID}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{ReqPosRouteID}{ReqPosRouteID}}
 {\footnotesize\ttfamily \mbox{\hyperlink{class_i_d_int}{I\+D\+Int}} T\+One\+Route\+::\+Req\+Pos\+Route\+ID}
 
 the route ID number of the route that is being extended backwards during route building, not needed for session saves as routes in build are not saved in sessions \mbox{\Hypertarget{class_t_one_route_a5b779b57f966fd9c7c7d1c42f8ecde22}\label{class_t_one_route_a5b779b57f966fd9c7c7d1c42f8ecde22}} 
-\index{T\+One\+Route@{T\+One\+Route}!Start\+Route\+Position@{Start\+Route\+Position}}
-\index{Start\+Route\+Position@{Start\+Route\+Position}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Start\+Route\+Position}{StartRoutePosition}}
+\index{TOneRoute@{TOneRoute}!StartRoutePosition@{StartRoutePosition}}
+\index{StartRoutePosition@{StartRoutePosition}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{StartRoutePosition}{StartRoutePosition}}
 {\footnotesize\ttfamily int T\+One\+Route\+::\+Start\+Route\+Position}
 
 Track\+Vector\+Position of the Start\+Element(s) set when the starting position of a new route is selected, note that although there may be two Start\+Elements (as there can be two preferred directions on a single element), there is only one Track\+Vector\+Position as the element is the same for both \mbox{\Hypertarget{class_t_one_route_a485b30c243956a400f658124d0f4ecd0}\label{class_t_one_route_a485b30c243956a400f658124d0f4ecd0}} 
-\index{T\+One\+Route@{T\+One\+Route}!Start\+Selection\+Route\+ID@{Start\+Selection\+Route\+ID}}
-\index{Start\+Selection\+Route\+ID@{Start\+Selection\+Route\+ID}!T\+One\+Route@{T\+One\+Route}}
-\subsubsection{\texorpdfstring{Start\+Selection\+Route\+ID}{StartSelectionRouteID}}
+\index{TOneRoute@{TOneRoute}!StartSelectionRouteID@{StartSelectionRouteID}}
+\index{StartSelectionRouteID@{StartSelectionRouteID}!TOneRoute@{TOneRoute}}
+\doxysubsubsection{\texorpdfstring{StartSelectionRouteID}{StartSelectionRouteID}}
 {\footnotesize\ttfamily \mbox{\hyperlink{class_i_d_int}{I\+D\+Int}} T\+One\+Route\+::\+Start\+Selection\+Route\+ID}
 
 the route ID number of the route that is being extended forwards during route building, not needed for session saves as routes in build are not saved in sessions 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-C\+:/\+Programming work/railway development after v2.\+2.\+0/Track\+Unit.\+h\item 
-C\+:/\+Programming work/railway development after v2.\+2.\+0/Track\+Unit.\+cpp\end{DoxyCompactItemize}
+Track\+Unit.\+h\item 
+Track\+Unit.\+cpp\end{DoxyCompactItemize}

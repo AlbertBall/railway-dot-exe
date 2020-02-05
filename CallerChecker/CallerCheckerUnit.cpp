@@ -16,57 +16,57 @@ TForm1 *Form1;
 */
 
 __fastcall TForm1::TForm1(TComponent* Owner)
-    : TForm(Owner)
+	: TForm(Owner)
 {
-    ClockStopped = true;
-    AnsiString TempFileString[NumFiles] =
-    {
-        "InterfaceUnit.cpp",
-        "GraphicUnit.cpp",
-        "DisplayUnit.cpp",
-        "TrackUnit.cpp",
-        "TextUnit.cpp",
-        "TrainUnit.cpp",
-        "Utilities.cpp",
-        "InterfaceUnit.h",
-        "GraphicUnit.h",
-        "DisplayUnit.h",
-        "TrackUnit.h",
-        "TextUnit.h",
-        "TrainUnit.h",
-        "Utilities.h",
-    };
-    for(int x = 0; x < NumFiles; x++)
-    {
-        FileString[x] = TempFileString[x];
-        std::ifstream TempFile(FileString[x].c_str());
-        if(!TempFile.is_open())
-        {
-            throw Exception("Failed to open file " + FileString[x] + " program can't start");
-        }
-    }
+	ClockStopped = true;
+	AnsiString TempFileString[NumFiles] =
+	{
+		"InterfaceUnit.cpp",
+		"GraphicUnit.cpp",
+		"DisplayUnit.cpp",
+		"TrackUnit.cpp",
+		"TextUnit.cpp",
+		"TrainUnit.cpp",
+		"Utilities.cpp",
+		"InterfaceUnit.h",
+		"GraphicUnit.h",
+		"DisplayUnit.h",
+		"TrackUnit.h",
+		"TextUnit.h",
+		"TrainUnit.h",
+		"Utilities.h",
+	};
+	for(int x = 0; x < NumFiles; x++)
+	{
+		FileString[x] = TempFileString[x];
+		std::ifstream TempFile(FileString[x].c_str());
+		if(!TempFile.is_open())
+		{
+			throw Exception("Failed to open file " + FileString[x] + " program can't start");
+		}
+	}
 
-    AnsiString TempFunctionString[NumberOfCalls] =
-    {
-        "AbleToMove",
-        "AbleToMoveButForSignal",
-        "ActiveMapCheck",
-        "AddLocationNameText",
-        "AddName",
-        "AddRouteElement",
-        "AddTrain",
-        "AdjElement",
-        "AdjNamedElement",
-        "AllFormattedTrainsAt",
-        "AnyLinkedLevelCrossingElementsWithRoutesOrTrains",
-        "ApproachLocking",
-        "AreAnyTimesInCurrentEntry",
-        "AtLocSuccessor",
-        "BlankElementAt",
-        "BufferAtExit",
-        "BuildBasicElementFromSpeedTag",
-        "BuildContinuationTrainExpectationMultiMap",
-        "BuildGapMapFromTrackVector",
+	AnsiString TempFunctionString[NumberOfCalls] =
+	{
+		"AbleToMove",
+		"AbleToMoveButForSignal",
+		"ActiveMapCheck",
+		"AddLocationNameText",
+		"AddName",
+		"AddRouteElement",
+		"AddTrain",
+		"AdjElement",
+		"AdjNamedElement",
+		"AllFormattedTrainsAt",
+		"AnyLinkedLevelCrossingElementsWithRoutesOrTrains",
+		"ApproachLocking",
+		"AreAnyTimesInCurrentEntry",
+		"AtLocSuccessor",
+		"BlankElementAt",
+		"BufferAtExit",
+		"BuildBasicElementFromSpeedTag",
+		"BuildContinuationTrainExpectationMultiMap",
+		"BuildGapMapFromTrackVector",
         "BuildTrainDataVectorForLoadFile",
         "BuildTrainDataVectorForValidateFile",
         "CalcDistanceAndSpeed",
@@ -76,8 +76,10 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "CalcTimeToAct", //new v2.2.0
         "CallingOnAllowed",
         "CallLogPop",
-        "ChangeBackgroundColour",
-        "ChangeForegroundColour",
+		"ChangeBackgroundColour",
+		"ChangeBackgroundColour2",
+		"ChangeBackgroundColour3",
+		"ChangeForegroundColour",
         "ChangeLocationNameMultiMapEntry",
         "ChangeSpecificColour",
         "ChangeTrainDirection",
@@ -86,7 +88,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "CheckBarriersDownVector",
         "CheckCrossReferencesAndSetData",
         "CheckFootbridgeLinks",
-        "CheckForDuplicateCrossReferences",
+		"CheckForDuplicateCrossReferences",
         "CheckGapMap",
         "CheckHeadCodeValidity",
         "CheckInterface",
@@ -101,9 +103,9 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "CheckOnePrefDir",
         "CheckPerformanceFile",
         "CheckPrefDir4MultiMap",
-        "CheckPrefDirAgainstTrackVector",
+		"CheckPrefDirAgainstTrackVector",
         "CheckPrefDirAgainstTrackVectorNoMessage",
-        "CheckRoutes",
+		"CheckRoutes",
         "CheckSessionContinuationAutoSigEntries",
         "CheckSessionLockedRoutes",
         "CheckSessionTrains",
@@ -120,11 +122,12 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "ClearEverything",
         "ClearRouteAt",
         "ClearToNextSignal",
-        "ClockTimer2",
+		"ClockTimer2",
+		"ColNametoNumber",
 		"CompileAllEntriesMemoAndSetPointers",
         "ConvertSignalsToOppositeHand",
         "ConsolidatePrefDirs",
-        "ContinuationAutoSignals",
+		"ContinuationAutoSignals",
         "ContinuationExit",
         "ConvertAndAddNonPreferredRouteSearchVector",
         "ConvertAndAddPreferredRouteSearchVector",
@@ -149,9 +152,9 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "ElementInLNPendingList",
         "Ellipse",
         "EndPossible",
-        "EnterLocationName",
+		"EnterLocationName",
         "EntryPos",
-        "EraseFromPrefDirVectorAnd4MultiMap",
+		"EraseFromPrefDirVectorAnd4MultiMap",
         "EraseLocationAndActiveTrackElementNames",
         "EraseLocationNameText",
         "ErasePrefDirElementAt",
@@ -163,7 +166,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "FileIntegrityCheck",
         "FindAndHighlightAnUnsetGap",
         "FindClosestLinkPosition",
-        "FindForwardTargetSignalAttribute",
+		"FindForwardTargetSignalAttribute",
         "FindHighestLowestAndLeftmostNamedElements",
         "FindNamedElementInLocationNameMultiMap",
         "FindNonPlatformMatch",
@@ -198,11 +201,11 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "GetNextPrefDirElement",
         "GetNextPreferredRouteElement",
         "GetNonPreferredRouteStartElement",
-        "GetOffsetValues",
+		"GetOffsetValues",
         "GetOnePrefDirPosition",
-        "GetPrefDirStartElement",
+		"GetPrefDirStartElement",
         "GetPrefDirTruncateElement",
-        "GetPreferredRouteStartElement",
+		"GetPreferredRouteStartElement",
         "GetRectangle",
         "GetRepeatHeadCode",
         "GetRepeatTime",
@@ -241,15 +244,15 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "IsSNTEntryLocated",
         "IsTrackLinked",
         "IsTrainIDOnBridgeTrackPos01",
-        "IsTrainIDOnBridgeTrackPos23",
+		"IsTrainIDOnBridgeTrackPos23",
         "IsTrainTerminating",
         "JoinedBy",
         "LastElementNumber",
         "LastElementPtr",
         "Last2CharactersBothDigits",
-        "LengthMarker",
+		"LengthMarker",
         "LinkOccupied",
-        "LinkTrack",
+		"LinkTrack",
         "LinkTrackNoMessages",
         "LoadBarriersDownVector",
         "LoadGroundSignalGlyphs",
@@ -280,7 +283,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "MainScreenMouseDown2",
         "MainScreenMouseDown3",
         "MarkAllRoutes",
-        "MarkOneLength",
+		"MarkOneLength",
         "MatchingPoint",
         "MovingSuccessor",
         "MovingTrainPresentOnFlashingRoute",
@@ -296,9 +299,9 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "NumberOfGaps",
         "OldTextOut",
         "OneCompleteFormattedTrainVectorAt",
-        "OneFormattedTrainVectorAt",
+		"OneFormattedTrainVectorAt",
         "OneNamedLocationElementAtLocation",
-        "OneNamedLocationLongEnoughForSplit",
+		"OneNamedLocationLongEnoughForSplit",
         "Operate",
         "OtherTrainOnTrack",
         "PerformanceLog",
@@ -319,7 +322,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "PlotOutput",
         "PlotOverlay",
         "PlotPastedTrackElementWithAttributes",
-        "PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers",
+		"PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers",
         "PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers",
         "PlotPointBlank",
         "PlotPoints",
@@ -327,7 +330,8 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "PlotRouteOriginal",
         "PlotRouteOverlay",
         "PlotSignal",
-        "PlotSignalBlank",
+        "PlotSignalPlatforms",
+		"PlotSignalBlank",
         "PlotSmallOutput",
         "PlotSmallRailway",
         "PlotSmallRedGap",
@@ -344,9 +348,9 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "ProcessOneTimetableLine",
         "RealignAfterTrackErase",
         "RearTrainSplit",
-        "RebuildLocationNameMultiMap",
+		"RebuildLocationNameMultiMap",
         "RebuildOpTimeToActMultimap", //new v2.2.0
-        "RebuildPrefDirVector",
+		"RebuildPrefDirVector",
         "RebuildTrack",
         "Rectangle",
         "RemainHere",
@@ -357,7 +361,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "RepositionAndMapTrack",
         "ResetAll",
         "ResetAllTrainIDElements",
-        "ResetAnyNonMatchingGaps",
+		"ResetAnyNonMatchingGaps",
         "ResetChangedFileDataAndCaption",
         "ResetConnClkCheckUnsetGapJumps",
         "ResetCurrentSpeedButton",
@@ -393,10 +397,10 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "SearchForNonPreferredRoute",
         "SearchForPrefDir",
         "SearchForPreferredRoute",
-        "SecondPassActions",
+		"SecondPassActions",
         "SelectVectorAt",
-        "SendMissedActionLogs",
-        "SendPerformanceSummary",
+		"SendMissedActionLogs",
+		"SendPerformanceSummary",
         "SessionFileIntegrityCheck",
         "SetAllDefaultLengths",
         "SetAllRearwardsSignals",
@@ -435,46 +439,46 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "SignallerChangeTrainDirection",
         "SignallerControl",
         "SplitEntry",
-        "SplitRepeat",
+		"SplitRepeat",
         "SplitTrainInfo",
         "StopTTClockMessage",
         "StoreOneRoute",
         "StoreOneRouteAfterSessionLoad",
         "StorePrefDirElement",
         "StripExcessFromHeadCode",
-        "StripSpaces",
+		"StripSpaces",
         "TestRoutine",
-        "TextOut",
-        "ThisNamedLocationLongEnoughForSplit",
-        "TimetabledLocationNameAllocated",
-        "TimetableIntegrityCheck",
-        "TimetableMessage",
-        "TrackClear",
-        "TrackElementAt",
-        "TrackIsInARoute",
-        "TrackPush",
-        "TrackTrainFloat",
-        "TrainAtLocation",
-        "TrainOnLink",
-        "TrainToBeJoinedByIsAdjacent",
-        "TrainToJoinIsAdjacent",
-        "TrainVectorAt",
-        "TrainVectorAtIdent",
-        "TryToConnectTrack",
-        "TTrain",
-        "UpdateOperatorActionPanel", //new v2.2.0
-        "UnplotTrain",
-        "UnplotTrainInZoomOutMode",
-        "UnplotTrains",
-        "UpdateTrain",
-        "ValidatePrefDir",
-        "WarningLog",
-        "WriteAllRoutesToImage",
-        "WriteOperatingTrackToImage",
-        "WritePrefDirToImage",
-        "WriteTrackToImage",
-        "WriteTrainsToImage",
-        "WriteTrainToImage"
+		"TextOut",
+		"ThisNamedLocationLongEnoughForSplit",
+		"TimetabledLocationNameAllocated",
+		"TimetableIntegrityCheck",
+		"TimetableMessage",
+		"TrackClear",
+		"TrackElementAt",
+		"TrackIsInARoute",
+		"TrackPush",
+		"TrackTrainFloat",
+		"TrainAtLocation",
+		"TrainOnLink",
+		"TrainToBeJoinedByIsAdjacent",
+		"TrainToJoinIsAdjacent",
+		"TrainVectorAt",
+		"TrainVectorAtIdent",
+		"TryToConnectTrack",
+		"TTrain",
+		"UpdateOperatorActionPanel", //new v2.2.0
+		"UnplotTrain",
+		"UnplotTrainInZoomOutMode",
+		"UnplotTrains",
+		"UpdateTrain",
+		"ValidatePrefDir",
+		"WarningLog",
+		"WriteAllRoutesToImage",
+		"WriteOperatingTrackToImage",
+		"WritePrefDirToImage",
+		"WriteTrackToImage",
+		"WriteTrainsToImage",
+		"WriteTrainToImage"
     };
 
     for(int x = 0; x < NumberOfCalls; x++)
@@ -559,101 +563,100 @@ void TForm1::AnalyseOneFunction(int &FunctionCount, int NumberOfCalls, AnsiStrin
     int MaxIndex = -1; //so first brings it to 0
     int MaxNumber = -1;
     for(int x=0; x<5000; x++)
-    {
-        if(DupNumArray[x] > -1)
-        {
-            MaxIndex++;
-            if(DupNumArray[x] > MaxNumber) MaxNumber = DupNumArray[x];
-        }
-        else break;
-    }
-    for(int x=0; x<MaxIndex+1; x++)
-    {
-        MissingNumArray[x] = DupNumArray[x];
-    }
+	{
+		if(DupNumArray[x] > -1)
+		{
+			MaxIndex++;
+			if(DupNumArray[x] > MaxNumber) MaxNumber = DupNumArray[x];
+		}
+		else break;
+	}
+	for(int x=0; x<MaxIndex+1; x++)
+	{
+		MissingNumArray[x] = DupNumArray[x];
+	}
 //check for duplicates
-    bool FirstPass = true;
-    for(int x=0; x<MaxIndex + 1; x++)
-    {
-        int CheckNumber = DupNumArray[x];
-        if(CheckNumber == -1) continue;
-        int RepeatCount = 0;
-        for(int y=x+1; y<MaxIndex + 1; y++)
-        {
-            if(DupNumArray[y] == CheckNumber)
-            {
-                RepeatCount++;
-                DupNumArray[y] = -1; //so it isn't counted again if appears more than twice in all
-            }
-        }
-        if(RepeatCount > 0)
-        {
-            if(Print && FirstPass) OutFile << CHAR(13) << CHAR(10);//new line for each function
-            UnicodeString MessageString = L"Number " + UnicodeString(CheckNumber) + L" repeated " + UnicodeString(RepeatCount) + L" times in function " + UnicodeString(FunctionString);
-            if(FirstPass)
-            {
-                MessageString = MessageString + L" Max caller number = " + (UnicodeString)MaxNumber;
-                FirstPass = false;
-            }
+	bool FirstPass = true;
+	for(int x=0; x<MaxIndex + 1; x++)
+	{
+		int CheckNumber = DupNumArray[x];
+		if(CheckNumber == -1) continue;
+		int RepeatCount = 0;
+		for(int y=x+1; y<MaxIndex + 1; y++)
+		{
+			if(DupNumArray[y] == CheckNumber)
+			{
+				RepeatCount++;
+				DupNumArray[y] = -1; //so it isn't counted again if appears more than twice in all
+			}
+		}
+		if(RepeatCount > 0)
+		{
+			UnicodeString MessageString = L"Number " + UnicodeString(CheckNumber) + L" repeated " + UnicodeString(RepeatCount) + L" times in function " + UnicodeString(FunctionString);
+			if(FirstPass)
+			{
+				MessageString = MessageString + L" Max caller number = " + (UnicodeString)MaxNumber;
+				FirstPass = false;
+			}
 
-            if(!RadioButton2->Checked)
-            {
-                if(Screen)
-                {
-                    int button = Application->MessageBox(MessageString.c_str(), L"", MB_OKCANCEL);
-                    if (button == IDCANCEL)
-                    {
-                        BreakFlag = true;
-                        return;
-                    }
-                }
-            }
-            if(Print) OutFile << AnsiString(MessageString).c_str() << CHAR(13) << CHAR(10);
-        }
-    }
+			if(!RadioButton2->Checked)
+			{
+				if(Screen)
+				{
+					int button = Application->MessageBox(MessageString.c_str(), L"", MB_OKCANCEL);
+					if (button == IDCANCEL)
+					{
+						BreakFlag = true;
+						return;
+					}
+				}
+			}
+			if(Print) OutFile << AnsiString(MessageString).c_str() << char(10);
+		}
+	}
 
 //now check for missing numbers
-    if(CheckBox1->Checked)
-    {
-        int IncNumber = 0;
-        bool FoundFlag=false;
-        while(IncNumber <= MaxNumber)
-        {
-            FoundFlag = false;
-            for(int x=0; x<MaxIndex + 1; x++)
-            {
-                if(MissingNumArray[x] == IncNumber)
-                {
-                    FoundFlag = true;
-                    break;
-                }
-            }
-            if(!FoundFlag)
-            {
-                UnicodeString MessageString = L"Number " + UnicodeString(IncNumber) + L" missing for function " + UnicodeString(FunctionString);
-                if(Screen)
-                {
-                    int button = Application->MessageBox(MessageString.c_str(), L"", MB_OKCANCEL);
-                    if (button == IDCANCEL)
-                    {
-                        BreakFlag = true;
-                        return;
-                    }
-                }
-                if(Print) OutFile << AnsiString(MessageString).c_str() << CHAR(13) << CHAR(10);
-            }
-            IncNumber++;
-        }
-    }
-    FunctionCount++;
+	if(CheckBox1->Checked)
+	{
+		int IncNumber = 0;
+		bool FoundFlag=false;
+		while(IncNumber <= MaxNumber)
+		{
+			FoundFlag = false;
+			for(int x=0; x<MaxIndex + 1; x++)
+			{
+				if(MissingNumArray[x] == IncNumber)
+				{
+					FoundFlag = true;
+					break;
+				}
+			}
+			if(!FoundFlag)
+			{
+				UnicodeString MessageString = L"Number " + UnicodeString(IncNumber) + L" missing for function " + UnicodeString(FunctionString);
+				if(Screen)
+				{
+					int button = Application->MessageBox(MessageString.c_str(), L"", MB_OKCANCEL);
+					if (button == IDCANCEL)
+					{
+						BreakFlag = true;
+						return;
+					}
+				}
+				if(Print) OutFile << AnsiString(MessageString).c_str() << char(10);
+			}
+			IncNumber++;
+		}
+	}
+	FunctionCount++;
 }
 
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::ExitClick(TObject *Sender)
 {
-    if(OutFile.is_open()) OutFile.close();
-    Application->Terminate();
+	if(OutFile.is_open()) OutFile.close();
+	Application->Terminate();
 }
 //---------------------------------------------------------------------------
 
@@ -698,7 +701,7 @@ void __fastcall TForm1::Timer1Timer(TObject *Sender)
         Label1->Caption = "";
         Form1->Repaint();
         ShowMessage("Finished");
-        if(Print && OutFile.is_open()) OutFile.close();
+		if(Print && OutFile.is_open()) OutFile.close();
         StartAnalysis->Enabled = true;
         Exit->Enabled = true;
     }

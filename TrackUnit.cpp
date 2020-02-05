@@ -67,25 +67,27 @@ TFixedTrackPiece::TFixedTrackPiece(int SpeedTagVal, TTrackType TrackTypeVal, int
         Link[x] = LkVal[x];
         Config[x] = ConfigVal[x];
     }
-//NamedLocationElements 76, 77, 78, 79, 96, 129, 130, 131  (platforms, concourses, footbridges & named non-station locations)
-    FixedNamedLocationElement = false;
-    if(SpeedTagVal == 76) FixedNamedLocationElement = true;
-    else if(SpeedTagVal == 77) FixedNamedLocationElement = true;
-    else if(SpeedTagVal == 78) FixedNamedLocationElement = true;
-    else if(SpeedTagVal == 79) FixedNamedLocationElement = true;
-    else if(SpeedTagVal == 96) FixedNamedLocationElement = true;
-    else if(SpeedTagVal == 129) FixedNamedLocationElement = true;
-    else if(SpeedTagVal == 130) FixedNamedLocationElement = true;
-    else if(SpeedTagVal == 131) FixedNamedLocationElement = true;
+//NamedLocationElements 76, 77, 78, 79, 96, 129, 130, 131, 145 & 146  (platforms, concourses, footcrossings & named non-station locations)
+	FixedNamedLocationElement = false; // underpasses (144 & 145 added at v2.3.1
+	if(SpeedTagVal == 76) FixedNamedLocationElement = true;
+	else if(SpeedTagVal == 77) FixedNamedLocationElement = true;
+	else if(SpeedTagVal == 78) FixedNamedLocationElement = true;
+	else if(SpeedTagVal == 79) FixedNamedLocationElement = true;
+	else if(SpeedTagVal == 96) FixedNamedLocationElement = true;
+	else if(SpeedTagVal == 129) FixedNamedLocationElement = true;
+	else if(SpeedTagVal == 130) FixedNamedLocationElement = true;
+	else if(SpeedTagVal == 131) FixedNamedLocationElement = true;
+	else if(SpeedTagVal == 145) FixedNamedLocationElement = true;
+	else if(SpeedTagVal == 146) FixedNamedLocationElement = true;
 }
 
 //---------------------------------------------------------------------------
 
 TFixedTrackPiece::TFixedTrackPiece() : SpeedTag(0), TrackType(Erase), GraphicPtr(RailGraphics->bmSolidBgnd),
-    SmallGraphicPtr(RailGraphics->smSolidBgnd), FixedNamedLocationElement(false)    //default values
+	SmallGraphicPtr(RailGraphics->smSolidBgnd), FixedNamedLocationElement(false)    //default values
 {
-    for(int x=0; x<4; x++)
-    {
+	for(int x=0; x<4; x++)
+	{
         Link[x] = -1; //-1 & NotSet are the markers for 'unused' respectively
         Config[x] = NotSet;
     }
@@ -147,16 +149,22 @@ void TTrackElement::PlotVariableTrackElement(int Caller, TDisplay *Disp) const
         case 96: //concourse
             GraphicOutput = RailGraphics->ConcourseStriped;
             break;
-        case 129: //v footbridge
+		case 129: //v footbridge
             GraphicOutput = RailGraphics->gl129Striped;
             break;
         case 130: //h footbridge
             GraphicOutput = RailGraphics->gl130Striped;
             break;
-        case 131: //non-station named loc
-            GraphicOutput = RailGraphics->bmNameStriped;
-            break;
-        default:
+		case 131: //non-station named loc
+			GraphicOutput = RailGraphics->bmNameStriped;
+			break;
+		case 145: //v underpass
+			GraphicOutput = RailGraphics->gl145Striped;
+			break;
+		case 146: //h underpass
+			GraphicOutput = RailGraphics->gl146Striped;
+			break;
+		default:
             GraphicOutput = GraphicPtr;
             break;
         }
@@ -335,7 +343,7 @@ This is the basic track graphic for use in plotting the original graphic during 
 Enter with all set apart from EXGraphic & EntryDirectionGraphic
 */
 {
-    if(SpeedTag == 64) return RailGraphics->LinkGraphicsPtr[16];  //intercept diagonal buffers
+	if(SpeedTag == 64) return RailGraphics->LinkGraphicsPtr[16];  //intercept diagonal buffers
     if(SpeedTag == 65) return RailGraphics->LinkGraphicsPtr[17];
     if(SpeedTag == 66) return RailGraphics->LinkGraphicsPtr[18];
     if(SpeedTag == 67) return RailGraphics->LinkGraphicsPtr[19];
@@ -347,36 +355,36 @@ Enter with all set apart from EXGraphic & EntryDirectionGraphic
     if(SpeedTag == 84) return RailGraphics->LinkGraphicsPtr[24];
     if(SpeedTag == 85) return RailGraphics->LinkGraphicsPtr[25];
     if(SpeedTag == 86) return RailGraphics->LinkGraphicsPtr[26];
-    if(SpeedTag == 87) return RailGraphics->LinkGraphicsPtr[27];
+	if(SpeedTag == 87) return RailGraphics->LinkGraphicsPtr[27];
 
-    if(SpeedTag == 129) return RailGraphics->LinkGraphicsPtr[28];  //intercept under footbridges
-    if(SpeedTag == 130) return RailGraphics->LinkGraphicsPtr[29];
+	if(SpeedTag == 129) return RailGraphics->LinkGraphicsPtr[28];  //intercept under footbridges
+	if(SpeedTag == 130) return RailGraphics->LinkGraphicsPtr[29];
 
-    if(XLinkPos == -1) //not set, could be first element or last element = leading point
-    {
+	if(XLinkPos == -1) //not set, could be first element or last element = leading point
+	{
 //check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or
 //Points & don't want to display these)
-        if(Link[2] != -1) return 0;  //i.e. complex element, don't display
-        else
-        {
-            if(!EntryExitNumber())
-            {
-                throw Exception("Error in EntryExitNumber 4");
-            }
-            else
-            {
-                return RailGraphics->LinkGraphicsPtr[EXNumber];
-            }
-        }
-    }
-    if(EXNumber > 15) //underbridge
-    {
-        return RailGraphics->BridgeGraphicsPtr[EXNumber-16];
-    }
-    else
-    {
-        return RailGraphics->LinkGraphicsPtr[EXNumber];
-    }
+		if(Link[2] != -1) return 0;  //i.e. complex element, don't display
+		else
+		{
+			if(!EntryExitNumber())
+			{
+				throw Exception("Error in EntryExitNumber 4");
+			}
+			else
+			{
+				return RailGraphics->LinkGraphicsPtr[EXNumber];
+			}
+		}
+	}
+	if(EXNumber > 15) //underbridge
+	{
+		return RailGraphics->BridgeGraphicsPtr[EXNumber-16];
+	}
+	else
+	{
+		return RailGraphics->LinkGraphicsPtr[EXNumber];
+	}
 }
 
 //---------------------------------------------------------------------------
@@ -386,41 +394,41 @@ Graphics::TBitmap *TPrefDirElement::GetPrefDirGraphicPtr()
 As above but for PrefDir graphics.
 */
 {
-    if(SpeedTag == 64) return RailGraphics->LinkPrefDirGraphicsPtr[16];  //intercept diagonal buffers
-    if(SpeedTag == 65) return RailGraphics->LinkPrefDirGraphicsPtr[17];
-    if(SpeedTag == 66) return RailGraphics->LinkPrefDirGraphicsPtr[18];
-    if(SpeedTag == 67) return RailGraphics->LinkPrefDirGraphicsPtr[19];
+	if(SpeedTag == 64) return RailGraphics->LinkPrefDirGraphicsPtr[16];  //intercept diagonal buffers
+	if(SpeedTag == 65) return RailGraphics->LinkPrefDirGraphicsPtr[17];
+	if(SpeedTag == 66) return RailGraphics->LinkPrefDirGraphicsPtr[18];
+	if(SpeedTag == 67) return RailGraphics->LinkPrefDirGraphicsPtr[19];
 
-    if(SpeedTag == 80) return RailGraphics->LinkPrefDirGraphicsPtr[20];  //intercept continuations
-    if(SpeedTag == 81) return RailGraphics->LinkPrefDirGraphicsPtr[21];
-    if(SpeedTag == 82) return RailGraphics->LinkPrefDirGraphicsPtr[22];
-    if(SpeedTag == 83) return RailGraphics->LinkPrefDirGraphicsPtr[23];
-    if(SpeedTag == 84) return RailGraphics->LinkPrefDirGraphicsPtr[24];
-    if(SpeedTag == 85) return RailGraphics->LinkPrefDirGraphicsPtr[25];
-    if(SpeedTag == 86) return RailGraphics->LinkPrefDirGraphicsPtr[26];
-    if(SpeedTag == 87) return RailGraphics->LinkPrefDirGraphicsPtr[27];
+	if(SpeedTag == 80) return RailGraphics->LinkPrefDirGraphicsPtr[20];  //intercept continuations
+	if(SpeedTag == 81) return RailGraphics->LinkPrefDirGraphicsPtr[21];
+	if(SpeedTag == 82) return RailGraphics->LinkPrefDirGraphicsPtr[22];
+	if(SpeedTag == 83) return RailGraphics->LinkPrefDirGraphicsPtr[23];
+	if(SpeedTag == 84) return RailGraphics->LinkPrefDirGraphicsPtr[24];
+	if(SpeedTag == 85) return RailGraphics->LinkPrefDirGraphicsPtr[25];
+	if(SpeedTag == 86) return RailGraphics->LinkPrefDirGraphicsPtr[26];
+	if(SpeedTag == 87) return RailGraphics->LinkPrefDirGraphicsPtr[27];
 
-    if(SpeedTag == 129) return RailGraphics->LinkPrefDirGraphicsPtr[28];  //intercept under footbridges
-    if(SpeedTag == 130) return RailGraphics->LinkPrefDirGraphicsPtr[29];
+	if(SpeedTag == 129) return RailGraphics->LinkPrefDirGraphicsPtr[28];  //intercept under footbridges
+	if(SpeedTag == 130) return RailGraphics->LinkPrefDirGraphicsPtr[29];
 
-    if(XLinkPos == -1) //not set, could be first element or last element = leading point
-    {
+	if(XLinkPos == -1) //not set, could be first element or last element = leading point
+	{
 //check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or Points)
-        if(Link[2] != -1) return 0;  //i.e. complex element, don't display
-        else
-        {
-            if(!EntryExitNumber())
-            {
-                throw Exception("Error in EntryExitNumber 5");
-            }
-            else return RailGraphics->LinkPrefDirGraphicsPtr[EXNumber];
-        }
-    }
-    if(EXNumber > 15) //underbridge
-    {
-        return RailGraphics->BridgePrefDirGraphicsPtr[EXNumber-16];
-    }
-    else return RailGraphics->LinkPrefDirGraphicsPtr[EXNumber];
+		if(Link[2] != -1) return 0;  //i.e. complex element, don't display
+		else
+		{
+			if(!EntryExitNumber())
+			{
+				throw Exception("Error in EntryExitNumber 5");
+			}
+			else return RailGraphics->LinkPrefDirGraphicsPtr[EXNumber];
+		}
+	}
+	if(EXNumber > 15) //underbridge
+	{
+		return RailGraphics->BridgePrefDirGraphicsPtr[EXNumber-16];
+	}
+	else return RailGraphics->LinkPrefDirGraphicsPtr[EXNumber];
 }
 
 //---------------------------------------------------------------------------
@@ -430,122 +438,122 @@ Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool C
 As above but for route graphics.
 */
 {
-    if(!AutoSigsFlag && !ConsecSignalsRoute)
-    {
-        if(SpeedTag == 64) return RailGraphics->LinkNonSigRouteGraphicsPtr[16];  //intercept diagonal buffers
-        if(SpeedTag == 65) return RailGraphics->LinkNonSigRouteGraphicsPtr[17];
-        if(SpeedTag == 66) return RailGraphics->LinkNonSigRouteGraphicsPtr[18];
-        if(SpeedTag == 67) return RailGraphics->LinkNonSigRouteGraphicsPtr[19];
+	if(!AutoSigsFlag && !ConsecSignalsRoute)
+	{
+		if(SpeedTag == 64) return RailGraphics->LinkNonSigRouteGraphicsPtr[16];  //intercept diagonal buffers
+		if(SpeedTag == 65) return RailGraphics->LinkNonSigRouteGraphicsPtr[17];
+		if(SpeedTag == 66) return RailGraphics->LinkNonSigRouteGraphicsPtr[18];
+		if(SpeedTag == 67) return RailGraphics->LinkNonSigRouteGraphicsPtr[19];
 
-        if(SpeedTag == 80) return RailGraphics->LinkNonSigRouteGraphicsPtr[20];  //intercept continuations
-        if(SpeedTag == 81) return RailGraphics->LinkNonSigRouteGraphicsPtr[21];
-        if(SpeedTag == 82) return RailGraphics->LinkNonSigRouteGraphicsPtr[22];
-        if(SpeedTag == 83) return RailGraphics->LinkNonSigRouteGraphicsPtr[23];
-        if(SpeedTag == 84) return RailGraphics->LinkNonSigRouteGraphicsPtr[24];
-        if(SpeedTag == 85) return RailGraphics->LinkNonSigRouteGraphicsPtr[25];
-        if(SpeedTag == 86) return RailGraphics->LinkNonSigRouteGraphicsPtr[26];
-        if(SpeedTag == 87) return RailGraphics->LinkNonSigRouteGraphicsPtr[27];
+		if(SpeedTag == 80) return RailGraphics->LinkNonSigRouteGraphicsPtr[20];  //intercept continuations
+		if(SpeedTag == 81) return RailGraphics->LinkNonSigRouteGraphicsPtr[21];
+		if(SpeedTag == 82) return RailGraphics->LinkNonSigRouteGraphicsPtr[22];
+		if(SpeedTag == 83) return RailGraphics->LinkNonSigRouteGraphicsPtr[23];
+		if(SpeedTag == 84) return RailGraphics->LinkNonSigRouteGraphicsPtr[24];
+		if(SpeedTag == 85) return RailGraphics->LinkNonSigRouteGraphicsPtr[25];
+		if(SpeedTag == 86) return RailGraphics->LinkNonSigRouteGraphicsPtr[26];
+		if(SpeedTag == 87) return RailGraphics->LinkNonSigRouteGraphicsPtr[27];
 
-        if(SpeedTag == 129) return RailGraphics->LinkNonSigRouteGraphicsPtr[28];  //intercept under footbridges
-        if(SpeedTag == 130) return RailGraphics->LinkNonSigRouteGraphicsPtr[29];
+		if(SpeedTag == 129) return RailGraphics->LinkNonSigRouteGraphicsPtr[28];  //intercept under footbridges
+		if(SpeedTag == 130) return RailGraphics->LinkNonSigRouteGraphicsPtr[29];
 
-        if(XLinkPos == -1) //not set, could be first element or last element = leading point
-        {
-            //check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or Points)
-            if(Link[2] != -1) return 0;  //i.e. complex element, don't display
-            else
-            {
-                if(!EntryExitNumber())
-                {
-                    throw Exception("Error in EntryExitNumber 6");
-                }
-                else return RailGraphics->LinkNonSigRouteGraphicsPtr[EXNumber];
-            }
-        }
-        if(EXNumber > 15) //underbridge
-        {
-            return RailGraphics->BridgeNonSigRouteGraphicsPtr[EXNumber-16];
-        }
-        else return RailGraphics->LinkNonSigRouteGraphicsPtr[EXNumber];
-    }
+		if(XLinkPos == -1) //not set, could be first element or last element = leading point
+		{
+			//check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or Points)
+			if(Link[2] != -1) return 0;  //i.e. complex element, don't display
+			else
+			{
+				if(!EntryExitNumber())
+				{
+					throw Exception("Error in EntryExitNumber 6");
+				}
+				else return RailGraphics->LinkNonSigRouteGraphicsPtr[EXNumber];
+			}
+		}
+		if(EXNumber > 15) //underbridge
+		{
+			return RailGraphics->BridgeNonSigRouteGraphicsPtr[EXNumber-16];
+		}
+		else return RailGraphics->LinkNonSigRouteGraphicsPtr[EXNumber];
+	}
 
-    else if(!AutoSigsFlag && ConsecSignalsRoute)
-    {
-        if(SpeedTag == 64) return RailGraphics->LinkSigRouteGraphicsPtr[16];  //intercept diagonal buffers
-        if(SpeedTag == 65) return RailGraphics->LinkSigRouteGraphicsPtr[17];
-        if(SpeedTag == 66) return RailGraphics->LinkSigRouteGraphicsPtr[18];
-        if(SpeedTag == 67) return RailGraphics->LinkSigRouteGraphicsPtr[19];
+	else if(!AutoSigsFlag && ConsecSignalsRoute)
+	{
+		if(SpeedTag == 64) return RailGraphics->LinkSigRouteGraphicsPtr[16];  //intercept diagonal buffers
+		if(SpeedTag == 65) return RailGraphics->LinkSigRouteGraphicsPtr[17];
+		if(SpeedTag == 66) return RailGraphics->LinkSigRouteGraphicsPtr[18];
+		if(SpeedTag == 67) return RailGraphics->LinkSigRouteGraphicsPtr[19];
 
-        if(SpeedTag == 80) return RailGraphics->LinkSigRouteGraphicsPtr[20];  //intercept continuations
-        if(SpeedTag == 81) return RailGraphics->LinkSigRouteGraphicsPtr[21];
-        if(SpeedTag == 82) return RailGraphics->LinkSigRouteGraphicsPtr[22];
-        if(SpeedTag == 83) return RailGraphics->LinkSigRouteGraphicsPtr[23];
-        if(SpeedTag == 84) return RailGraphics->LinkSigRouteGraphicsPtr[24];
-        if(SpeedTag == 85) return RailGraphics->LinkSigRouteGraphicsPtr[25];
-        if(SpeedTag == 86) return RailGraphics->LinkSigRouteGraphicsPtr[26];
-        if(SpeedTag == 87) return RailGraphics->LinkSigRouteGraphicsPtr[27];
+		if(SpeedTag == 80) return RailGraphics->LinkSigRouteGraphicsPtr[20];  //intercept continuations
+		if(SpeedTag == 81) return RailGraphics->LinkSigRouteGraphicsPtr[21];
+		if(SpeedTag == 82) return RailGraphics->LinkSigRouteGraphicsPtr[22];
+		if(SpeedTag == 83) return RailGraphics->LinkSigRouteGraphicsPtr[23];
+		if(SpeedTag == 84) return RailGraphics->LinkSigRouteGraphicsPtr[24];
+		if(SpeedTag == 85) return RailGraphics->LinkSigRouteGraphicsPtr[25];
+		if(SpeedTag == 86) return RailGraphics->LinkSigRouteGraphicsPtr[26];
+		if(SpeedTag == 87) return RailGraphics->LinkSigRouteGraphicsPtr[27];
 
-        if(SpeedTag == 129) return RailGraphics->LinkSigRouteGraphicsPtr[28];  //intercept under footbridges
-        if(SpeedTag == 130) return RailGraphics->LinkSigRouteGraphicsPtr[29];
+		if(SpeedTag == 129) return RailGraphics->LinkSigRouteGraphicsPtr[28];  //intercept under footbridges
+		if(SpeedTag == 130) return RailGraphics->LinkSigRouteGraphicsPtr[29];
 
-        if(XLinkPos == -1) //not set, could be first element or last element = leading point
-        {
-            //check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or Points)
-            if(Link[2] != -1) return 0;  //i.e. complex element, don't display
-            else
-            {
-                if(!EntryExitNumber())
-                {
-                    throw Exception("Error in EntryExitNumber 10");
-                }
-                else return RailGraphics->LinkSigRouteGraphicsPtr[EXNumber];
-            }
-        }
-        if(EXNumber > 15) //underbridge
-        {
-            return RailGraphics->BridgeSigRouteGraphicsPtr[EXNumber-16];
-        }
-        else return RailGraphics->LinkSigRouteGraphicsPtr[EXNumber];
-    }
+		if(XLinkPos == -1) //not set, could be first element or last element = leading point
+		{
+			//check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or Points)
+			if(Link[2] != -1) return 0;  //i.e. complex element, don't display
+			else
+			{
+				if(!EntryExitNumber())
+				{
+					throw Exception("Error in EntryExitNumber 10");
+				}
+				else return RailGraphics->LinkSigRouteGraphicsPtr[EXNumber];
+			}
+		}
+		if(EXNumber > 15) //underbridge
+		{
+			return RailGraphics->BridgeSigRouteGraphicsPtr[EXNumber-16];
+		}
+		else return RailGraphics->LinkSigRouteGraphicsPtr[EXNumber];
+	}
 
-    else
-    {
-        if(SpeedTag == 64) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[16];  //intercept diagonal buffers
-        if(SpeedTag == 65) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[17];
-        if(SpeedTag == 66) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[18];
-        if(SpeedTag == 67) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[19];
+	else
+	{
+		if(SpeedTag == 64) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[16];  //intercept diagonal buffers
+		if(SpeedTag == 65) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[17];
+		if(SpeedTag == 66) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[18];
+		if(SpeedTag == 67) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[19];
 
-        if(SpeedTag == 80) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[20];  //intercept continuations
-        if(SpeedTag == 81) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[21];
-        if(SpeedTag == 82) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[22];
-        if(SpeedTag == 83) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[23];
-        if(SpeedTag == 84) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[24];
-        if(SpeedTag == 85) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[25];
-        if(SpeedTag == 86) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[26];
-        if(SpeedTag == 87) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[27];
+		if(SpeedTag == 80) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[20];  //intercept continuations
+		if(SpeedTag == 81) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[21];
+		if(SpeedTag == 82) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[22];
+		if(SpeedTag == 83) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[23];
+		if(SpeedTag == 84) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[24];
+		if(SpeedTag == 85) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[25];
+		if(SpeedTag == 86) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[26];
+		if(SpeedTag == 87) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[27];
 
-        if(SpeedTag == 129) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[28];  //intercept under footbridges
-        if(SpeedTag == 130) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[29];
+		if(SpeedTag == 129) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[28];  //intercept under footbridges
+		if(SpeedTag == 130) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[29];
 
-        if(XLinkPos == -1) //not set, could be first element or last element = leading point
-        {
-            //check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or Points)
-            if(Link[2] != -1) return 0;  //i.e. complex element, don't display
-            else
-            {
-                if(!EntryExitNumber())
-                {
-                    throw Exception("Error in EntryExitNumber 11");
-                }
-                else return RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber];
-            }
-        }
-        if(EXNumber > 15) //underbridge
-        {
-            return RailGraphics->BridgeRouteAutoSigsGraphicsPtr[EXNumber-16];
-        }
-        else return RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber];
-    }
+		if(XLinkPos == -1) //not set, could be first element or last element = leading point
+		{
+			//check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or Points)
+			if(Link[2] != -1) return 0;  //i.e. complex element, don't display
+			else
+			{
+				if(!EntryExitNumber())
+				{
+					throw Exception("Error in EntryExitNumber 11");
+				}
+				else return RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber];
+			}
+		}
+		if(EXNumber > 15) //underbridge
+		{
+			return RailGraphics->BridgeRouteAutoSigsGraphicsPtr[EXNumber-16];
+		}
+		else return RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber];
+	}
 }
 
 //---------------------------------------------------------------------------
@@ -555,41 +563,41 @@ Graphics::TBitmap *TPrefDirElement::GetRouteAutoSigsGraphicPtr()
 As above but for route flashing graphics.  (Disused - now combined with above)
 */
 {
-    if(SpeedTag == 64) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[16];  //intercept diagonal buffers
-    if(SpeedTag == 65) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[17];
-    if(SpeedTag == 66) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[18];
-    if(SpeedTag == 67) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[19];
+	if(SpeedTag == 64) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[16];  //intercept diagonal buffers
+	if(SpeedTag == 65) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[17];
+	if(SpeedTag == 66) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[18];
+	if(SpeedTag == 67) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[19];
 
-    if(SpeedTag == 80) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[20];  //intercept continuations
-    if(SpeedTag == 81) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[21];
-    if(SpeedTag == 82) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[22];
-    if(SpeedTag == 83) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[23];
-    if(SpeedTag == 84) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[24];
-    if(SpeedTag == 85) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[25];
-    if(SpeedTag == 86) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[26];
-    if(SpeedTag == 87) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[27];
+	if(SpeedTag == 80) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[20];  //intercept continuations
+	if(SpeedTag == 81) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[21];
+	if(SpeedTag == 82) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[22];
+	if(SpeedTag == 83) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[23];
+	if(SpeedTag == 84) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[24];
+	if(SpeedTag == 85) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[25];
+	if(SpeedTag == 86) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[26];
+	if(SpeedTag == 87) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[27];
 
-    if(SpeedTag == 129) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[28];  //intercept under footbridges
-    if(SpeedTag == 130) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[29];
+	if(SpeedTag == 129) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[28];  //intercept under footbridges
+	if(SpeedTag == 130) return RailGraphics->LinkRouteAutoSigsGraphicsPtr[29];
 
-    if(XLinkPos == -1) //not set, could be first element or last element = leading point
-    {
+	if(XLinkPos == -1) //not set, could be first element or last element = leading point
+	{
 //check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or Points)
-        if(Link[2] != -1) return 0;  //i.e. complex element, don't display
-        else
-        {
-            if(!EntryExitNumber())
-            {
-                throw Exception("Error in EntryExitNumber 7");
-            }
-            else return RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber];
-        }
-    }
-    if(EXNumber > 15) //underbridge
-    {
-        return RailGraphics->BridgeRouteAutoSigsGraphicsPtr[EXNumber-16];
-    }
-    else return RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber];
+		if(Link[2] != -1) return 0;  //i.e. complex element, don't display
+		else
+		{
+			if(!EntryExitNumber())
+			{
+				throw Exception("Error in EntryExitNumber 7");
+			}
+			else return RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber];
+		}
+	}
+	if(EXNumber > 15) //underbridge
+	{
+		return RailGraphics->BridgeRouteAutoSigsGraphicsPtr[EXNumber-16];
+	}
+	else return RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber];
 }
 
 //---------------------------------------------------------------------------
@@ -599,12 +607,12 @@ Graphics::TBitmap *TPrefDirElement::GetDirectionPrefDirGraphicPtr() const
 Get PrefDir direction graphic.  Enter with all set apart from EXGraphic & EntryDirectionGraphic
 */
 {
-    if((ELink > 0) && (ELink < 10) && (ELink != 5))
-        return RailGraphics->DirectionPrefDirGraphicsPtr[ELink];
-    else
-    {
-        throw Exception("Error in EntryExitNumber 8");
-    }
+	if((ELink > 0) && (ELink < 10) && (ELink != 5))
+		return RailGraphics->DirectionPrefDirGraphicsPtr[ELink];
+	else
+	{
+		throw Exception("Error in EntryExitNumber 8");
+	}
 }
 
 //---------------------------------------------------------------------------
@@ -614,16 +622,16 @@ Graphics::TBitmap *TPrefDirElement::GetDirectionRouteGraphicPtr(bool AutoSigsFla
 Get route direction graphic.  Enter with all set apart from EXGraphic & EntryDirectionGraphic
 */
 {
-    if((ELink > 0) && (ELink < 10) && (ELink != 5))
-    {
-        if(!AutoSigsFlag && !ConsecSignalsRoute) return RailGraphics->DirectionNonSigRouteGraphicsPtr[ELink];
-        else if(!AutoSigsFlag && ConsecSignalsRoute) return RailGraphics->DirectionSigRouteGraphicsPtr[ELink];
-        else return RailGraphics->DirectionRouteAutoSigsGraphicsPtr[ELink];
-    }
-    else
-    {
-        throw Exception("Error in EntryExitNumber 9");
-    }
+	if((ELink > 0) && (ELink < 10) && (ELink != 5))
+	{
+		if(!AutoSigsFlag && !ConsecSignalsRoute) return RailGraphics->DirectionNonSigRouteGraphicsPtr[ELink];
+		else if(!AutoSigsFlag && ConsecSignalsRoute) return RailGraphics->DirectionSigRouteGraphicsPtr[ELink];
+		else return RailGraphics->DirectionRouteAutoSigsGraphicsPtr[ELink];
+	}
+	else
+	{
+		throw Exception("Error in EntryExitNumber 9");
+	}
 }
 
 //---------------------------------------------------------------------------
@@ -680,7 +688,12 @@ TTrack::TTrack()
     VLocMax = -2000000000;
     PastingWithAttributes = false;  //new at v2.2.0, false is default value
 
-    RouteFailMessage = "Unable to set a route to the selected element - may be unreachable, too far ahead, blocked by a train, another route or a changing level crossing, or invalid.";
+    AnsiString NL = '\n';
+
+	RouteFailMessage = "Unable to set a route: it may be unreachable; " + NL +
+		"reachable but with too many different directions leading away from the start point  - set some points on the route required; " + NL +
+		"blocked by a train, another route or a changing level crossing; " + NL +
+		"or invalid - possibly due to a preferred direction mismatch or a missed signal in a green or blue route.";
 
     GapFlashGreen = new TGraphicElement;
     GapFlashRed = new TGraphicElement;
@@ -694,13 +707,13 @@ array number = (((Hnew - Hold)+1)*3) + ((Vnew - Vold)+1) */
     for(int x=0; x<9; x++) for(int y=0; y<2; y++) LinkCheckArray[x][y] = InternalLinkCheckArray[x][y];
 
 //Platform and default track element values
-    TopPlatAllowed <<1<<9<<10<<30<<31<<60<<61<<68<<69<<77<<125<<126<<129; //top & bot sigs, straights, straight points, buffers, signal, vert footbridge, bot plat
-    BotPlatAllowed <<1<<7<<8<<28<<29<<60<<61<<68<<69<<76<<125<<126<<129;
-    LeftPlatAllowed <<2<<12<<14<<33<<35<<62<<63<<70<<71<<79<<127<<128<<130;
-    RightPlatAllowed <<2<<11<<13<<32<<34<<62<<63<<70<<71<<78<<127<<128<<130;
+	TopPlatAllowed <<1<<9<<10<<30<<31<<60<<61<<68<<69<<77<<125<<126<<129<<145; //top & bot sigs, straights, straight points, buffers, signal, vert footcrossing, bot plat
+	BotPlatAllowed <<1<<7<<8<<28<<29<<60<<61<<68<<69<<76<<125<<126<<129<<145;
+	LeftPlatAllowed <<2<<12<<14<<33<<35<<62<<63<<70<<71<<79<<127<<128<<130<<146;
+	RightPlatAllowed <<2<<11<<13<<32<<34<<62<<63<<70<<71<<78<<127<<128<<130<<146;
     NameAllowed <<1<<2<<3<<4<<5<<6<<20<<21<<22<<23<<24<<25<<26<<27 //disallow diagonals, points, signals, crossovers, bridges, gaps,
-                <<60<<61<<62<<63<<80<<81<<82<<83<<125<<126<<127<<128; //diag continuations, diag buffers, footbridges (diagonals may be OK
-    //but as can't link diagonal locations would need solid blocks to allow linkage & that would look untidy except for single
+				<<60<<61<<62<<63<<80<<81<<82<<83<<125<<126<<127<<128; //diag continuations, diag buffers, footcrossings (diagonals may be OK
+	//but as can't link diagonal locations would need solid blocks to allow linkage & that would look untidy except for single
     //elements, & can always use straights so leave out.)
     LevelCrossingAllowed <<1<<2; //only allow on straight tracks without direction markers
 //Note platforms not allowed at continuations, but named non-station locations OK, though not allowed in timetables
@@ -840,7 +853,7 @@ array number = (((Hnew - Hold)+1)*3) + ((Vnew - Vold)+1) */
 Named Location Arrays:  Set out the adjacent positions and tracktypes that are accepted as valid connections for
 a single location.  These are as follows:-
 Directly Adjacent = up, down, left or right - NOT diagonal.
-There are two separate groups, platforms, concourses & footbridges (providing the bridge part touches or overlaps the other relevant
+There are two separate groups, platforms, concourses & footcrossings (providing the crossing part touches or overlaps the other relevant
 named location) all link with each other providing directly adjacent, but not to NamedNonStationLocations.
 NamedNonStationLocation link to other NamedNonStationLocations providing directly adjacent, but not to anything else.
 
@@ -851,184 +864,226 @@ NamedNonStationLocation link to other NamedNonStationLocations providing directl
 //c     96
 //v fb  129
 //h fb  130
+//v underpass 145
+//h underpass 146
 //n     131
 */
 
-    int Tag76[23][3] = {{-1, 0, 96}, //c     top plat
-                        {1, 0, 96},
-                        {0, -1, 96},
-                        {0, 1, 96},
-                        {-1, 0, 76}, //t
-                        {1, 0, 76},
-                        {0, -1, 76},
-                        {0, 1, 76},
-                        {-1, 0, 77}, //b
-                        {1, 0, 77},
-                        {0, -1, 77},
-                        {0, 1, 77},
-                        {0, 0, 77},
-                        {-1, 0, 78}, //l
-                        {1, 0, 78},
-                        {0, -1, 78},
-                        {0, 1, 78},
-                        {-1, 0, 79}, //r
-                        {1, 0, 79},
-                        {0, -1, 79},
-                        {0, 1, 79},
-                        {0, -1, 129}, // v fb
-                        {0, 0, 129}}; //v fb
+	int Tag76[25][3] = {{-1, 0, 96}, //c    top plat
+						{1, 0, 96},
+						{0, -1, 96},
+						{0, 1, 96},
+						{-1, 0, 76}, //t
+						{1, 0, 76},
+						{0, -1, 76},
+						{0, 1, 76},
+						{-1, 0, 77}, //b
+						{1, 0, 77},
+						{0, -1, 77},
+						{0, 1, 77},
+						{0, 0, 77},
+						{-1, 0, 78}, //l
+						{1, 0, 78},
+						{0, -1, 78},
+						{0, 1, 78},
+						{-1, 0, 79}, //r
+						{1, 0, 79},
+						{0, -1, 79},
+						{0, 1, 79},
+						{0, -1, 129}, // v fb
+						{0, 0, 129},
+						{0, -1, 145}, //v up
+						{0, 0, 145}};
 
-    for(int x=0; x<23; x++) for(int y=0; y<3; y++) Tag76Array[x][y] = Tag76[x][y];
+	for(int x=0; x<25; x++) for(int y=0; y<3; y++) Tag76Array[x][y] = Tag76[x][y];
 
-    int Tag77[23][3] = {{-1, 0, 96}, //c     bot plat
-                        {1, 0, 96},
-                        {0, -1, 96},
-                        {0, 1, 96},
-                        {-1, 0, 76}, //t
-                        {1, 0, 76},
-                        {0, -1, 76},
-                        {0, 1, 76},
-                        {0, 0, 76},
-                        {-1, 0, 77}, //b
-                        {1, 0, 77},
-                        {0, -1, 77},
-                        {0, 1, 77},
-                        {-1, 0, 78}, //l
-                        {1, 0, 78},
-                        {0, -1, 78},
-                        {0, 1, 78},
-                        {-1, 0, 79}, //r
-                        {1, 0, 79},
-                        {0, -1, 79},
-                        {0, 1, 79},
-                        {0, 1, 129}, // v fb
-                        {0, 0, 129}}; //v fb
+	int Tag77[25][3] = {{-1, 0, 96}, //c     bot plat
+						{1, 0, 96},
+						{0, -1, 96},
+						{0, 1, 96},
+						{-1, 0, 76}, //t
+						{1, 0, 76},
+						{0, -1, 76},
+						{0, 1, 76},
+						{0, 0, 76},
+						{-1, 0, 77}, //b
+						{1, 0, 77},
+						{0, -1, 77},
+						{0, 1, 77},
+						{-1, 0, 78}, //l
+						{1, 0, 78},
+						{0, -1, 78},
+						{0, 1, 78},
+						{-1, 0, 79}, //r
+						{1, 0, 79},
+						{0, -1, 79},
+						{0, 1, 79},
+						{0, 1, 129}, // v fb
+						{0, 0, 129},
+						{0, 1, 145}, // v up
+						{0, 0, 145}};
 
-    for(int x=0; x<23; x++) for(int y=0; y<3; y++) Tag77Array[x][y] = Tag77[x][y];
+	for(int x=0; x<25; x++) for(int y=0; y<3; y++) Tag77Array[x][y] = Tag77[x][y];
 
-    int Tag78[23][3] = {{-1, 0, 96}, //c     left plat
-                        {1, 0, 96},
-                        {0, -1, 96},
-                        {0, 1, 96},
-                        {-1, 0, 76}, //t
-                        {1, 0, 76},
-                        {0, -1, 76},
-                        {0, 1, 76},
-                        {-1, 0, 77}, //b
-                        {1, 0, 77},
-                        {0, -1, 77},
-                        {0, 1, 77},
-                        {-1, 0, 78}, //l
-                        {1, 0, 78},
-                        {0, -1, 78},
-                        {0, 1, 78},
-                        {-1, 0, 79}, //r
-                        {1, 0, 79},
-                        {0, -1, 79},
-                        {0, 1, 79},
-                        {0, 0, 79},
-                        {-1, 0, 130}, //h fb
-                        {0, 0, 130}}; //h fb
+	int Tag78[25][3] = {{-1, 0, 96}, //c     left plat
+						{1, 0, 96},
+						{0, -1, 96},
+						{0, 1, 96},
+						{-1, 0, 76}, //t
+						{1, 0, 76},
+						{0, -1, 76},
+						{0, 1, 76},
+						{-1, 0, 77}, //b
+						{1, 0, 77},
+						{0, -1, 77},
+						{0, 1, 77},
+						{-1, 0, 78}, //l
+						{1, 0, 78},
+						{0, -1, 78},
+						{0, 1, 78},
+						{-1, 0, 79}, //r
+						{1, 0, 79},
+						{0, -1, 79},
+						{0, 1, 79},
+						{0, 0, 79},
+						{-1, 0, 130}, //h fb
+						{0, 0, 130},
+						{-1, 0, 146}, //h up
+						{0, 0, 146}};
 
-    for(int x=0; x<23; x++) for(int y=0; y<3; y++) Tag78Array[x][y] = Tag78[x][y];
+	for(int x=0; x<25; x++) for(int y=0; y<3; y++) Tag78Array[x][y] = Tag78[x][y];
 
-    int Tag79[23][3] = {{-1, 0, 96}, //c     right plat
-                        {1, 0, 96},
-                        {0, -1, 96},
-                        {0, 1, 96},
-                        {-1, 0, 76}, //t
-                        {1, 0, 76},
-                        {0, -1, 76},
-                        {0, 1, 76},
-                        {-1, 0, 77}, //b
-                        {1, 0, 77},
-                        {0, -1, 77},
-                        {0, 1, 77},
-                        {-1, 0, 78}, //l
-                        {1, 0, 78},
-                        {0, -1, 78},
-                        {0, 1, 78},
-                        {0, 0, 78},
-                        {-1, 0, 79}, //r
-                        {1, 0, 79},
-                        {0, -1, 79},
-                        {0, 1, 79},
-                        {1, 0, 130}, //h fb
-                        {0, 0, 130}}; //h fb
+	int Tag79[25][3] = {{-1, 0, 96}, //c     right plat
+						{1, 0, 96},
+						{0, -1, 96},
+						{0, 1, 96},
+						{-1, 0, 76}, //t
+						{1, 0, 76},
+						{0, -1, 76},
+						{0, 1, 76},
+						{-1, 0, 77}, //b
+						{1, 0, 77},
+						{0, -1, 77},
+						{0, 1, 77},
+						{-1, 0, 78}, //l
+						{1, 0, 78},
+						{0, -1, 78},
+						{0, 1, 78},
+						{0, 0, 78},
+						{-1, 0, 79}, //r
+						{1, 0, 79},
+						{0, -1, 79},
+						{0, 1, 79},
+						{1, 0, 130}, //h fb
+						{0, 0, 130},
+						{1, 0, 146}, //h up
+						{0, 0, 146}};
 
-    for(int x=0; x<23; x++) for(int y=0; y<3; y++) Tag79Array[x][y] = Tag79[x][y];
+	for(int x=0; x<25; x++) for(int y=0; y<3; y++) Tag79Array[x][y] = Tag79[x][y];
 
-    int Tag96[24][3] = {{-1, 0, 96}, //c       //concourse
-                        {1, 0, 96},
-                        {0, -1, 96},
-                        {0, 1, 96},
-                        {-1, 0, 76}, //t
-                        {1, 0, 76},
-                        {0, -1, 76},
-                        {0, 1, 76},
-                        {-1, 0, 77}, //b
-                        {1, 0, 77},
-                        {0, -1, 77},
-                        {0, 1, 77},
-                        {-1, 0, 78}, //l
-                        {1, 0, 78},
-                        {0, -1, 78},
-                        {0, 1, 78},
-                        {-1, 0, 79}, //r
-                        {1, 0, 79},
-                        {0, -1, 79},
-                        {0, 1, 79},
-                        {0, 1, 129}, // v fb
-                        {0, -1, 129},
-                        {1, 0, 130}, // h fb
-                        {-1, 0, 130}};
+	int Tag96[28][3] = {{-1, 0, 96}, //c       //concourse
+						{1, 0, 96},
+						{0, -1, 96},
+						{0, 1, 96},
+						{-1, 0, 76}, //t
+						{1, 0, 76},
+						{0, -1, 76},
+						{0, 1, 76},
+						{-1, 0, 77}, //b
+						{1, 0, 77},
+						{0, -1, 77},
+						{0, 1, 77},
+						{-1, 0, 78}, //l
+						{1, 0, 78},
+						{0, -1, 78},
+						{0, 1, 78},
+						{-1, 0, 79}, //r
+						{1, 0, 79},
+						{0, -1, 79},
+						{0, 1, 79},
+						{0, 1, 129}, // v fb
+						{0, -1, 129},
+						{1, 0, 130}, // h fb
+						{-1, 0, 130},
+						{0, 1, 145}, // v up
+						{0, -1, 145},
+						{1, 0, 146}, // h up
+						{-1, 0, 146}};
 
-    for(int x=0; x<24; x++) for(int y=0; y<3; y++) Tag96Array[x][y] = Tag96[x][y];
+	for(int x=0; x<28; x++) for(int y=0; y<3; y++) Tag96Array[x][y] = Tag96[x][y];
 
-    int Tag129[8][3] = //vert fb
-    {{0, -1, 96},   //c
-     {0, -1, 77},   //b
-     {0, -1, 129},  //v fb
+	int Tag129[8][3] = //vert fb
+	{{0, -1, 96},   //c
+	 {0, -1, 77},   //b
+	 {0, -1, 129},  //v fb
 
-     {0, 1, 96},   //c
-     {0, 1, 76},   //t
-     {0, 1, 129},  //v fb
+	 {0, 1, 96},   //c
+	 {0, 1, 76},   //t
+	 {0, 1, 129},  //v fb
 
-     {0, 0, 76},   //t
-     {0, 0, 77}};  //b
+	 {0, 0, 76},   //t
+	 {0, 0, 77}};  //b
 
-    for(int x=0; x<8; x++) for(int y=0; y<3; y++) Tag129Array[x][y] = Tag129[x][y];
+	for(int x=0; x<8; x++) for(int y=0; y<3; y++) Tag129Array[x][y] = Tag129[x][y];
 
-    int Tag130[8][3] =       //hor fb
-    {{-1, 0, 96},   //c
-     {-1, 0, 79},   //r
-     {-1, 0, 130},  //h fb
+	int Tag145[8][3] = //vert up
+	{{0, -1, 96},   //c
+	 {0, -1, 77},   //b
+	 {0, -1, 145},  //v fb
 
-     {1, 0, 96},   //c
-     {1, 0, 78},   //l
-     {1, 0, 130},  //h fb
+	 {0, 1, 96},   //c
+	 {0, 1, 76},   //t
+	 {0, 1, 145},  //v fb
 
-     {0, 0, 78},   //l
-     {0, 0, 79}};  //r
+	 {0, 0, 76},   //t
+	 {0, 0, 77}};  //b
 
-    for(int x=0; x<8; x++) for(int y=0; y<3; y++) Tag130Array[x][y] = Tag130[x][y];
+	for(int x=0; x<8; x++) for(int y=0; y<3; y++) Tag145Array[x][y] = Tag145[x][y];
 
-    int Tag131[4][3] = {{-1, 0, 131}, //n
-                        {1, 0, 131},
-                        {0, -1, 131},
-                        {0, 1, 131}};
+	int Tag130[8][3] =       //hor fb
+	{{-1, 0, 96},   //c
+	 {-1, 0, 79},   //r
+	 {-1, 0, 130},  //h fb
 
-    for(int x=0; x<4; x++) for(int y=0; y<3; y++) Tag131Array[x][y] = Tag131[x][y];
+	 {1, 0, 96},   //c
+	 {1, 0, 78},   //l
+	 {1, 0, 130},  //h fb
 
-    int InternalFlipArray[FirstUnusedSpeedTagNumber] = {0,1,2,5,6,3,4,9,10,7,8,13,14,11,12,15,16,17,19,18,22,
-                                                        23,20,21,26,27,24,25,30,31,28,29,34,35,32,33,38,39,
-                                                        36,37,42,43,40,41,45,44,47,46,48,49,51,50,53,52,55,
-                                                        54,57,56,59,58,60,61,63,62,66,67,64,65,68,69,71,70,
-                                                        74,75,72,73,77,76,78,79,80,81,83,82,86,87,84,85,88,
-                                                        89,91,90,94,95,92,93,96,99,100,97,98,103,104,101,102,
-                                                        106,105,109,110,107,108,113,114,111,112,117,118,115,
+	 {0, 0, 78},   //l
+	 {0, 0, 79}};  //r
+
+	for(int x=0; x<8; x++) for(int y=0; y<3; y++) Tag130Array[x][y] = Tag130[x][y];
+
+	int Tag146[8][3] =       //hor up
+	{{-1, 0, 96},   //c
+	 {-1, 0, 79},   //r
+	 {-1, 0, 146},  //h fb
+
+	 {1, 0, 96},   //c
+	 {1, 0, 78},   //l
+	 {1, 0, 146},  //h fb
+
+	 {0, 0, 78},   //l
+	 {0, 0, 79}};  //r
+
+	for(int x=0; x<8; x++) for(int y=0; y<3; y++) Tag146Array[x][y] = Tag146[x][y];
+
+	int Tag131[4][3] = {{-1, 0, 131}, //n
+						{1, 0, 131},
+						{0, -1, 131},
+						{0, 1, 131}};
+
+	for(int x=0; x<4; x++) for(int y=0; y<3; y++) Tag131Array[x][y] = Tag131[x][y];
+
+	int InternalFlipArray[FirstUnusedSpeedTagNumber] = {0,1,2,5,6,3,4,9,10,7,8,13,14,11,12,15,16,17,19,18,22,
+														23,20,21,26,27,24,25,30,31,28,29,34,35,32,33,38,39,
+														36,37,42,43,40,41,45,44,47,46,48,49,51,50,53,52,55,
+														54,57,56,59,58,60,61,63,62,66,67,64,65,68,69,71,70,
+														74,75,72,73,77,76,78,79,80,81,83,82,86,87,84,85,88,
+														89,91,90,94,95,92,93,96,99,100,97,98,103,104,101,102,
+														106,105,109,110,107,108,113,114,111,112,117,118,115,
                                                         116,119,120,121,123,122,124,125,126,128,127,129,130,131,
-                                                        134,133,132,135,139,138,137,136,143,142,141,140,144};
+														134,133,132,135,139,138,137,136,143,142,141,140,144,145,146};
 
     int InternalMirrorArray[FirstUnusedSpeedTagNumber] = {0,1,2,4,3,6,5,8,7,10,9,12,11,14,13,15,16,17,19,18,21,20,
                                                           23,22,25,24,27,26,29,28,31,30,33,32,35,34,37,36,39,38,41,
@@ -1037,7 +1092,7 @@ NamedNonStationLocation link to other NamedNonStationLocations providing directl
                                                           78,81,80,82,83,85,84,87,86,89,88,90,91,93,92,95,94,96,98,97,
                                                           100,99,102,101,104,103,106,105,108,107,110,109,112,111,114,
                                                           113,116,115,118,117,119,120,124,122,123,121,126,125,127,128,
-                                                          129,130,131,132,135,134,133,137,136,139,138,142,143,140,141,144};
+														  129,130,131,132,135,134,133,137,136,139,138,142,143,140,141,144,145,146};
 
     for(int x=0; x<FirstUnusedSpeedTagNumber; x++)
     {
@@ -1096,11 +1151,11 @@ TTrack::TFixedTrackArray::TFixedTrackArray()
         RailGraphics->gl117, RailGraphics->gl118, RailGraphics->gl119, RailGraphics->gl120,
         RailGraphics->gl121, RailGraphics->gl122, RailGraphics->gl123, RailGraphics->gl124,
         RailGraphics->gl125, RailGraphics->gl126, RailGraphics->gl127, RailGraphics->gl128,
-        RailGraphics->gl129, RailGraphics->gl130, RailGraphics->bmName,
+		RailGraphics->gl129, RailGraphics->gl130, RailGraphics->bmName,
         RailGraphics->bm132, RailGraphics->bm133, RailGraphics->bm134,  RailGraphics->bm135,
         RailGraphics->bm136, RailGraphics->bm137, RailGraphics->bm138,  RailGraphics->bm139,
         RailGraphics->bm140, RailGraphics->bm141, RailGraphics->gl142,  RailGraphics->gl143,
-        RailGraphics->LCBothHor
+		RailGraphics->LCBothHor, RailGraphics->gl145, RailGraphics->gl146
     };
 
     Graphics::TBitmap *SmallTrackImageArray[FirstUnusedSpeedTagNumber] = {
@@ -1139,11 +1194,11 @@ TTrack::TFixedTrackArray::TFixedTrackArray()
         RailGraphics->sm117, RailGraphics->sm118, RailGraphics->sm119, RailGraphics->sm120,
         RailGraphics->sm121, RailGraphics->sm122, RailGraphics->sm123, RailGraphics->sm124,
         RailGraphics->sm125, RailGraphics->sm126, RailGraphics->sm127, RailGraphics->sm128,
-        RailGraphics->sm129, RailGraphics->sm130, RailGraphics->smName,
-        RailGraphics->sm132, RailGraphics->sm133, RailGraphics->sm134, RailGraphics->sm135,
-        RailGraphics->sm136, RailGraphics->sm137, RailGraphics->sm138, RailGraphics->sm139,
-        RailGraphics->sm18, RailGraphics->sm18, RailGraphics->sm19, RailGraphics->sm19,
-        RailGraphics->smTransparent
+		RailGraphics->sm129, RailGraphics->sm130, RailGraphics->smName,
+		RailGraphics->sm132, RailGraphics->sm133, RailGraphics->sm134, RailGraphics->sm135,
+		RailGraphics->sm136, RailGraphics->sm137, RailGraphics->sm138, RailGraphics->sm139,
+		RailGraphics->sm18, RailGraphics->sm18, RailGraphics->sm19, RailGraphics->sm19,
+		RailGraphics->smTransparent, RailGraphics->sm129, RailGraphics->sm130    //use small footbridges for underpasses
     };
 
 //track types
@@ -1172,12 +1227,13 @@ TTrack::TFixedTrackArray::TFixedTrackArray()
         Parapet, Parapet, Parapet, Parapet, Parapet, Parapet, Parapet,
         Parapet, Parapet, Parapet, Parapet, Parapet, Parapet, Parapet,  //28   97-124
         Simple,Simple,Simple,Simple,                                    //4    125-128
-        Footbridge, Footbridge,                                         //2    129-130
-        NamedNonStationLocation,                                        //1    131
-        Points,Points,Points,Points,Points,Points,Points,Points,        //8    132-139
-        Simple,Simple,Simple,Simple,                                    //4    140-143
-        LevelCrossing
-    };                                                                  //1    144
+		FootCrossing, FootCrossing,                                     //2    129-130
+		NamedNonStationLocation,                                        //1    131
+		Points,Points,Points,Points,Points,Points,Points,Points,        //8    132-139
+		Simple,Simple,Simple,Simple,                                    //4    140-143
+		LevelCrossing,                                                  //1    144
+		FootCrossing, FootCrossing                                      //2    145 & 146
+	};
 
 //links
     int Links[FirstUnusedSpeedTagNumber][4] = {
@@ -1212,13 +1268,14 @@ TTrack::TFixedTrackArray::TFixedTrackArray()
         {-1,-1,-1,-1}, {-1,-1,-1,-1}, {-1,-1,-1,-1}, {-1,-1,-1,-1}, {-1,-1,-1,-1}, {-1,-1,-1,-1},
         {-1,-1,-1,-1}, {-1,-1,-1,-1}, {-1,-1,-1,-1}, {-1,-1,-1,-1}, //Parapets
         {4,6,-1,-1},{4,6,-1,-1},{2,8,-1,-1},{2,8,-1,-1}, //arrows
-        {4,6,-1,-1},{2,8,-1,-1}, //footbridges
+		{4,6,-1,-1},{2,8,-1,-1}, //footbridges
         {-1,-1,-1,-1}, //NamedNonStationLocation
         {8,1,8,3},{4,3,4,9},{2,9,2,7},{6,7,6,1},{9,4,9,2},{7,2,7,6},{1,6,1,8},{3,8,3,4}, //points without straight legs
 //these points have links 0 & 2 = lead, link 1 = LH trailing, link 3 = RH trailing
         {3,7,-1,-1},{3,7,-1,-1},{1,9,-1,-1},{1,9,-1,-1}, //arrowed diagonals
-        {-1,-1,-1,-1}
-    };          //level crossing
+		{-1,-1,-1,-1}, //level crossing
+		{4,6,-1,-1},{2,8,-1,-1}, //underpasses/surface crossings
+	};
 
 
     TConfiguration Configs[FirstUnusedSpeedTagNumber][4] = {
@@ -1285,16 +1342,17 @@ TTrack::TFixedTrackArray::TFixedTrackArray()
         {NotSet,NotSet,NotSet,NotSet}, //Parapets
         {Connection,Connection,NotSet,NotSet},{Connection,Connection,NotSet,NotSet},
         {Connection,Connection,NotSet,NotSet},{Connection,Connection,NotSet,NotSet}, //Arrows
-        {Connection,Connection,NotSet,NotSet},{Connection,Connection,NotSet,NotSet}, //Footbridges
-        {NotSet,NotSet,NotSet,NotSet}, //NamedNonStationLocation
-        {Lead,Trail,Lead,Trail},{Lead,Trail,Lead,Trail},
-        {Lead,Trail,Lead,Trail},{Lead,Trail,Lead,Trail},
-        {Lead,Trail,Lead,Trail},{Lead,Trail,Lead,Trail},
-        {Lead,Trail,Lead,Trail},{Lead,Trail,Lead,Trail}, //points
-        {Connection,Connection,NotSet,NotSet},{Connection,Connection,NotSet,NotSet},
-        {Connection,Connection,NotSet,NotSet},{Connection,Connection,NotSet,NotSet}, //Arrowed diagonals
-        {NotSet,NotSet,NotSet,NotSet}
-    };                         //Level crossing
+		{Connection,Connection,NotSet,NotSet},{Connection,Connection,NotSet,NotSet}, //Footbridges
+		{NotSet,NotSet,NotSet,NotSet}, //NamedNonStationLocation
+		{Lead,Trail,Lead,Trail},{Lead,Trail,Lead,Trail},
+		{Lead,Trail,Lead,Trail},{Lead,Trail,Lead,Trail},
+		{Lead,Trail,Lead,Trail},{Lead,Trail,Lead,Trail},
+		{Lead,Trail,Lead,Trail},{Lead,Trail,Lead,Trail}, //points
+		{Connection,Connection,NotSet,NotSet},{Connection,Connection,NotSet,NotSet},
+		{Connection,Connection,NotSet,NotSet},{Connection,Connection,NotSet,NotSet}, //Arrowed diagonals
+		{NotSet,NotSet,NotSet,NotSet}, //Level crossing
+		{Connection,Connection,NotSet,NotSet},{Connection,Connection,NotSet,NotSet} //Underpasses/surface crossings
+	};
 
 
     for(int x=0; x<17; x++)
@@ -1553,7 +1611,7 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
             int VecPos = GetVectorPositionFromTrackMap(37, HLocInput, VLocInput, FoundFlag);
             if(FoundFlag) //should find it as it's in the map
             {
-                if(TrackElementAt(629, VecPos).FixedNamedLocationElement) //footbridge only
+				if(TrackElementAt(629, VecPos).FixedNamedLocationElement) //footcrossings only
                 {
                     SName = TrackElementAt(1, VecPos).LocationName;
                     SNIt = FindNamedElementInLocationNameMultiMap(7, SName, TrackVector.begin() + VecPos, ErrorString);
@@ -1863,7 +1921,7 @@ reject if so.
 //first from an adjacent element search, also non-named location elements at platform locations have timetable name set
 //do this after pushed into vector so that can use EnterLocationName
 
-    if(TempTrackElement.FixedNamedLocationElement) //concourse or footbridge (platforms & named non-station locations already dealt with)
+	if(TempTrackElement.FixedNamedLocationElement) //concourse or footcrossing (platforms & named non-station locations already dealt with)
     {
         TrackPush(3, TempTrackElement);
         SearchForAndUpdateLocationName(3, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
@@ -2072,7 +2130,7 @@ reject if so.
 //first from an adjacent element search, also non-named location elements at platform locations have timetable name set
 //do this after pushed into vector so that can use EnterLocationName
 
-    if(TempTrackElement.FixedNamedLocationElement) //concourse or footbridge (platforms & named non-station locations already dealt with)
+	if(TempTrackElement.FixedNamedLocationElement) //concourse or footcrossing (platforms & named non-station locations already dealt with)
     {
         TrackPush(15, TempTrackElement);
         SearchForAndUpdateLocationName(6, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
@@ -2849,11 +2907,11 @@ bool TTrack::CheckOldTrackElementsInFile(int Caller, int &NumberOfActiveElements
         }
         if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
         {
-            Utilities->CallLogPop(-1144);
+			Utilities->CallLogPop(-1144);
             return false; //LocationName
         }
         if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
-        {
+		{
             Utilities->CallLogPop(-1788);
             return false; //marker
         }
@@ -3224,7 +3282,7 @@ so they lie above the track.  Basic LCs are plotted for all but Level1Mode == Op
                 if(Next.TrackType == Points) PlotPoints(5, Next, Disp, BothPointFilletsAndBasicLCs);
                 else if(Next.TrackType == SignalPost) PlotSignal(9, Next, Disp);
                 else if(Next.TrackType == GapJump) PlotGap(0, Next, Disp);
-                else Next.PlotVariableTrackElement(3, Disp);  //for footbridges, may be striped or not
+				else Next.PlotVariableTrackElement(3, Disp);  //for footcrossings, may be striped or not
             }
         }
     }
@@ -3303,21 +3361,27 @@ Note, have to plot inactives before track because track has to overwrite 'name' 
                 case 96: //concourse
                     GraphicOutput = RailGraphics->ConcourseStriped;
                     break;
-                case 129: //v footbridge
-                    GraphicOutput = RailGraphics->gl129Striped;
+				case 129: //v footbridge
+					GraphicOutput = RailGraphics->gl129Striped;
                     break;
-                case 130: //h footbridge
-                    GraphicOutput = RailGraphics->gl130Striped;
-                    break;
-                case 131: //non-station named loc
-                    GraphicOutput = RailGraphics->bmNameStriped;
-                    break;
-                default:
+				case 130: //h footbridge
+					GraphicOutput = RailGraphics->gl130Striped;
+					break;
+				case 131: //non-station named loc
+					GraphicOutput = RailGraphics->bmNameStriped;
+					break;
+				case 145: //v underpass
+					GraphicOutput = RailGraphics->gl145Striped;
+					break;
+				case 146: //h underpass
+					GraphicOutput = RailGraphics->gl146Striped;
+					break;
+				default:
                     GraphicOutput = Next.GraphicPtr;
                     break;
                 }
             }
-            if(Next.SpeedTag == 144) //level crossing
+			if(Next.SpeedTag == 144) //level crossing
             {
                 if(GetTrackElementFromTrackMap(2, Next.HLoc, Next.VLoc).SpeedTag == 1)
                 {
@@ -3844,7 +3908,7 @@ bool TTrack::NoGaps(int Caller) //returns true if there are no gaps
 
 //---------------------------------------------------------------------------
 
-bool TTrack::NoNamedLocationElements(int Caller) //returns true if there are no NamedLocationElements (includes footbridges)
+bool TTrack::NoNamedLocationElements(int Caller) //returns true if there are no NamedLocationElements (includes footcrossings)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NoLocations");
     for(unsigned int x = 0; x<InactiveTrackVector.size(); x++)
@@ -3870,7 +3934,7 @@ bool TTrack::NoNamedLocationElements(int Caller) //returns true if there are no 
 //---------------------------------------------------------------------------
 
 bool TTrack::LocationsNotNamed(int Caller)
-//returns true if there are unnamed NamedLocationElements (includes footbridges)
+//returns true if there are unnamed NamedLocationElements (includes footcrossings)
 //returns false otherwise or if there are no NamedLocationElements
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LocationsNotNamed");
@@ -4094,19 +4158,19 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
     for(unsigned int x=0; x<TrackVector.size(); x++) // check all elements in turn
     {
         if(TrackVector.at(x).TrackType == Erase) continue;  //skip blank elements
-//check footbridge linkages
-        if(TrackVector.at(x).TrackType == Footbridge)
+//check footcrossing linkages
+		if(TrackVector.at(x).TrackType == FootCrossing)
         {
-            if(!CheckFootbridgeLinks(1, TrackVector.at(x)))
+			if(!CheckFootCrossingLinks(1, TrackVector.at(x)))
             {
-                ShowMessage("Footbridge not connected to a platform, concourse or other footbridge");
-                HLoc = TrackVector.at(x).HLoc;
+				ShowMessage("Footbridge or underpass connection error.  These must connect to a platform, concourse or other footbridge or underpass, and must not connect to each other");
+				HLoc = TrackVector.at(x).HLoc;
                 VLoc = TrackVector.at(x).VLoc;
                 LocError = true;
                 Utilities->CallLogPop(493);
                 return false;
             }
-        }
+		}
         for(unsigned int y=0; y<4; y++) //check all links for each element
         {
             CheckForLinks = false;
@@ -4302,10 +4366,10 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
         if(TrackVector.at(x).TrackType == Erase)
             continue;   //skip blank elements
 
-//check footbridge linkages
-        if(TrackVector.at(x).TrackType == Footbridge)
-        {
-            if(!CheckFootbridgeLinks(3, TrackVector.at(x)))
+//check footcrossing linkages
+		if(TrackVector.at(x).TrackType == FootCrossing)
+		{
+			if(!CheckFootCrossingLinks(3, TrackVector.at(x)))
             {
                 Utilities->CallLogPop(1127);
                 return false;
@@ -4425,7 +4489,7 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
                 {
                     throw Exception("Error in final track linkage in LinkTrackNoMessages - connection not found");
                 }
-                Utilities->CallLogPop(1129);
+				Utilities->CallLogPop(1129);
                 return false;
             }
         }
@@ -4522,10 +4586,10 @@ bool TTrack::IsTrackLinked(int Caller)  //not used any more
             return false;
         }
 
-//check footbridge linkages
-        if(TrackVector.at(x).TrackType == Footbridge)
-        {
-            if(!CheckFootbridgeLinks(2, TrackVector.at(x)))
+//check foot linkages
+		if(TrackVector.at(x).TrackType == FootCrossing)
+		{
+			if(!CheckFootCrossingLinks(2, TrackVector.at(x)))
             {
                 Utilities->CallLogPop(499);
                 return false;
@@ -6402,62 +6466,104 @@ int TTrack::GetTrackVectorPositionFromString(int Caller, AnsiString String, bool
 
 //---------------------------------------------------------------------------
 
-bool TTrack::CheckFootbridgeLinks(int Caller, TTrackElement &TrackElement)
+bool TTrack::CheckFootCrossingLinks(int Caller, TTrackElement &TrackElement)
 /*
 True for linked properly at both ends
 */
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckFootbridgeLinks," + AnsiString(TrackElement.HLoc) + "," + AnsiString(TrackElement.VLoc) + "," + AnsiString(TrackElement.SpeedTag));
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckFootCrossingLinks," + AnsiString(TrackElement.HLoc) + "," + AnsiString(TrackElement.VLoc) + "," + AnsiString(TrackElement.SpeedTag));
     int HLoc = TrackElement.HLoc;
     int VLoc = TrackElement.VLoc;
-    if((TrackElement.SpeedTag != 129) && (TrackElement.SpeedTag != 130))
+	if((TrackElement.SpeedTag != 129) && (TrackElement.SpeedTag != 130) && (TrackElement.SpeedTag != 145) && (TrackElement.SpeedTag != 146))
     {
         Utilities->CallLogPop(1821);
         return false;
     }
-    if(TrackElement.SpeedTag == 129) //vertical footbridge
-    {
-        //check top connection
-        if(!(InactiveMapCheck(1, HLoc, VLoc, 76) //top plat
-             || InactiveMapCheck(2, HLoc, VLoc - 1, 96) //concourse
-             || InactiveMapCheck(3, HLoc, VLoc - 1, 77) //bot plat
-             || ActiveMapCheck(4, HLoc, VLoc - 1, 129))) //vert footbridge
-        {
-            Utilities->CallLogPop(550);
-            return false;
-        }
-        //check bottom connection
-        else if(!(InactiveMapCheck(4, HLoc, VLoc, 77) //bot plat
-                  || InactiveMapCheck(5, HLoc, VLoc + 1, 96) //concourse
-                  || InactiveMapCheck(6, HLoc, VLoc + 1, 76) //top plat
-                  || ActiveMapCheck(1, HLoc, VLoc + 1, 129))) //vert footbridge
-        {
-            Utilities->CallLogPop(551);
-            return false;
-        }
-    }
-    if(TrackElement.SpeedTag == 130) //hor footbridge
-    {
-        //check left connection
-        if(!(InactiveMapCheck(7, HLoc, VLoc, 78) //left plat
-             || InactiveMapCheck(8, HLoc - 1, VLoc, 96) //concourse
-             || InactiveMapCheck(9, HLoc - 1, VLoc, 79) //right plat
-             || ActiveMapCheck(2, HLoc - 1, VLoc, 130))) //hor footbridge
-        {
-            Utilities->CallLogPop(552);
-            return false;
-        }
-        //check right connection
-        else if(!(InactiveMapCheck(10, HLoc, VLoc, 79) //right plat
-                  || InactiveMapCheck(11, HLoc + 1, VLoc, 96) //concourse
-                  || InactiveMapCheck(12, HLoc + 1, VLoc, 78) //left plat
-                  || ActiveMapCheck(3, HLoc + 1, VLoc, 130))) //hor footbridge
-        {
-            Utilities->CallLogPop(553);
-            return false;
-        }
-    }
-    Utilities->CallLogPop(554);
+	if(TrackElement.SpeedTag == 129) //vertical footbridge
+	{
+		//check top connection
+		if(!(InactiveMapCheck(1, HLoc, VLoc, 76) //top plat
+			 || InactiveMapCheck(2, HLoc, VLoc - 1, 96) //concourse
+			 || InactiveMapCheck(3, HLoc, VLoc - 1, 77) //bot plat
+			 || ActiveMapCheck(4, HLoc, VLoc - 1, 129))) //vert footbridge
+		{
+			Utilities->CallLogPop(550);
+			return false;
+		}
+		//check bottom connection
+		else if(!(InactiveMapCheck(4, HLoc, VLoc, 77) //bot plat
+				  || InactiveMapCheck(5, HLoc, VLoc + 1, 96) //concourse
+				  || InactiveMapCheck(6, HLoc, VLoc + 1, 76) //top plat
+				  || ActiveMapCheck(1, HLoc, VLoc + 1, 129))) //vert footbridge
+		{
+			Utilities->CallLogPop(551);
+			return false;
+		}
+	}
+	if(TrackElement.SpeedTag == 145) //vertical underpass
+	{
+		//check top connection
+		if(!(InactiveMapCheck(13, HLoc, VLoc, 76) //top plat
+			 || InactiveMapCheck(14, HLoc, VLoc - 1, 96) //concourse
+			 || InactiveMapCheck(15, HLoc, VLoc - 1, 77) //bot plat
+			 || ActiveMapCheck(5, HLoc, VLoc - 1, 145))) //vert u'pass
+		{
+			Utilities->CallLogPop(2114);
+			return false;
+		}
+		//check bottom connection
+		else if(!(InactiveMapCheck(16, HLoc, VLoc, 77) //bot plat
+				  || InactiveMapCheck(17, HLoc, VLoc + 1, 96) //concourse
+				  || InactiveMapCheck(18, HLoc, VLoc + 1, 76) //top plat
+				  || ActiveMapCheck(6, HLoc, VLoc + 1, 145))) //vert u'pass
+		{
+			Utilities->CallLogPop(2115);
+			return false;
+		}
+	}
+	if(TrackElement.SpeedTag == 130) //hor footbridge
+	{
+		//check left connection
+		if(!(InactiveMapCheck(19, HLoc, VLoc, 78) //left plat
+			 || InactiveMapCheck(20, HLoc - 1, VLoc, 96) //concourse
+			 || InactiveMapCheck(21, HLoc - 1, VLoc, 79) //right plat
+			 || ActiveMapCheck(2, HLoc - 1, VLoc, 130))) //hor footbridge
+		{
+			Utilities->CallLogPop(552);
+			return false;
+		}
+		//check right connection
+		else if(!(InactiveMapCheck(22, HLoc, VLoc, 79) //right plat
+				  || InactiveMapCheck(23, HLoc + 1, VLoc, 96) //concourse
+				  || InactiveMapCheck(24, HLoc + 1, VLoc, 78) //left plat
+				  || ActiveMapCheck(3, HLoc + 1, VLoc, 130))) //hor footbridge
+		{
+			Utilities->CallLogPop(553);
+			return false;
+		}
+	}
+	if(TrackElement.SpeedTag == 146) //hor u'pass
+	{
+		//check left connection
+		if(!(InactiveMapCheck(7, HLoc, VLoc, 78) //left plat
+			 || InactiveMapCheck(8, HLoc - 1, VLoc, 96) //concourse
+			 || InactiveMapCheck(9, HLoc - 1, VLoc, 79) //right plat
+			 || ActiveMapCheck(7, HLoc - 1, VLoc, 146))) //hor u'pass
+		{
+			Utilities->CallLogPop(2116);
+			return false;
+		}
+		//check right connection
+		else if(!(InactiveMapCheck(10, HLoc, VLoc, 79) //right plat
+				  || InactiveMapCheck(11, HLoc + 1, VLoc, 96) //concourse
+				  || InactiveMapCheck(12, HLoc + 1, VLoc, 78) //left plat
+				  || ActiveMapCheck(8, HLoc + 1, VLoc, 146))) //hor u'pass
+		{
+			Utilities->CallLogPop(2117);
+			return false;
+		}
+	}
+	Utilities->CallLogPop(554);
     return true;
 }
 
@@ -6539,12 +6645,12 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
 {
 /*
 General:
-All platform, concourse, footbridge & non-station named location elements are able to have a LocationName allocated, and track
-elements (including footbridges) are able to have an ActiveTrackElementName allocated provided there is an adjacent platform or
+All platform, concourse, footcrossing & non-station named location elements are able to have a LocationName allocated, and track
+elements (including footcrossings) are able to have an ActiveTrackElementName allocated provided there is an adjacent platform or
 a NamedNonStationLocation.
-To set these names the user selects a single named location element (not a footbridge), enters the name, and
-this is then allocated as a LocationName to all linked platform, concourse and footbridge elements, and as an
-ActiveTrackElementName to all track elements adjacent to platforms (inc footbridge tracks if (but only if) they have a
+To set these names the user selects a single named location element (not a footcrossing), enters the name, and
+this is then allocated as a LocationName to all linked platform, concourse and footcrossing elements, and as an
+ActiveTrackElementName to all track elements adjacent to platforms (inc footcrossing tracks if (but only if) they have a
 platform at that location).
 
 Linked named location elements are those explained in TTrack::TTrack()
@@ -6561,7 +6667,7 @@ The List holds elements that have still to be processed, and the Map holds eleme
 this function a single element should be in the List (normally from the user's selection but can also be from
 SearchForAndUpdateLocationName), and the Map is cleared within the function.
 A 'while' loop is entered if the List isn't empty, and the front element in it examined.  All linked named location elements
-(platforms, concourses and footbridges) that aren't already in either the Map or the List are first added to the List using
+(platforms, concourses and footcrossings) that aren't already in either the Map or the List are first added to the List using
 AdjElement, then the element itself has it's LocationName set, and any relevant track elements at the same H & V (i.e. adjacent
 to a platform) have their ActiveTrackElementName set using AddName.  The element is then inserted into the Map and erased from the List.
 In this way the list builds up while there are linked elements to be added, but reduces to zero when all are added and processing
@@ -6593,121 +6699,141 @@ named location - only one of the sides (selected by whichever the program finds 
         {
             //AdjElement checks if there is an element matching Tag at H & V that isn't already in LNDone2MultiMap or LNPendingList,
             //& returns true if so with the adjusted vector position in NewElement.  It checks the appropriate vector
-            //depending on the SpeedTag value (footbridges in active vector, rest in inactive vector),
-            for(int x=0; x<23; x++)
-            {
-                if(AdjElement(1, H + Tag76Array[x][0], V + Tag76Array[x][1], Tag76Array[x][2], NewElement))
-                {
-                    LNPendingList.insert(LNPendingList.end(), NewElement);
-                }
-            }
-        }
-        else if(Tag == 77) //bot plat
-        {
-            for(int x=0; x<23; x++)
-            {
-                if(AdjElement(2, H + Tag77Array[x][0], V + Tag77Array[x][1], Tag77Array[x][2], NewElement))
-                {
-                    LNPendingList.insert(LNPendingList.end(), NewElement);
-                }
-            }
-        }
-        else if(Tag == 78) //l plat
-        {
-            for(int x=0; x<23; x++)
-            {
-                if(AdjElement(3, H + Tag78Array[x][0], V + Tag78Array[x][1], Tag78Array[x][2], NewElement))
-                {
-                    LNPendingList.insert(LNPendingList.end(), NewElement);
-                }
-            }
-        }
-        else if(Tag == 79) //r plat
-        {
-            for(int x=0; x<23; x++)
-            {
-                if(AdjElement(4, H + Tag79Array[x][0], V + Tag79Array[x][1], Tag79Array[x][2], NewElement))
-                {
-                    LNPendingList.insert(LNPendingList.end(), NewElement);
-                }
-            }
-        }
-        else if(Tag == 96) //conc
-        {
-            for(int x=0; x<24; x++)
-            {
-                if(AdjElement(5, H + Tag96Array[x][0], V + Tag96Array[x][1], Tag96Array[x][2], NewElement))
-                {
-                    LNPendingList.insert(LNPendingList.end(), NewElement);
-                }
-            }
-        }
-        else if(Tag == 129) //vert footbridge
-        {
-            for(int x=0; x<8; x++)
-            {
-                if(AdjElement(6, H + Tag129Array[x][0], V + Tag129Array[x][1], Tag129Array[x][2], NewElement))
-                {
-                    LNPendingList.insert(LNPendingList.end(), NewElement);
-                }
-            }
-        }
-        else if(Tag == 130) //hor footbridge
-        {
-            for(int x=0; x<8; x++)
-            {
-                if(AdjElement(7, H + Tag130Array[x][0], V + Tag130Array[x][1], Tag130Array[x][2], NewElement))
-                {
-                    LNPendingList.insert(LNPendingList.end(), NewElement);
-                }
-            }
-        }
-        else if(Tag == 131) //named location
-        {
-            for(int x=0; x<4; x++)
-            {
-                if(AdjElement(8, H + Tag131Array[x][0], V + Tag131Array[x][1], Tag131Array[x][2], NewElement))
-                {
-                    LNPendingList.insert(LNPendingList.end(), NewElement);
-                }
-            }
-        }
-        //below new at v1.1.0 but condition changed at v1.1.4 as interfered with name changes for single element locations
+			//depending on the SpeedTag value (footcrossings in active vector, rest in inactive vector),
+			for(int x=0; x<25; x++)
+			{
+				if(AdjElement(1, H + Tag76Array[x][0], V + Tag76Array[x][1], Tag76Array[x][2], NewElement))
+				{
+					LNPendingList.insert(LNPendingList.end(), NewElement);
+				}
+			}
+		}
+		else if(Tag == 77) //bot plat
+		{
+			for(int x=0; x<25; x++)
+			{
+				if(AdjElement(2, H + Tag77Array[x][0], V + Tag77Array[x][1], Tag77Array[x][2], NewElement))
+				{
+					LNPendingList.insert(LNPendingList.end(), NewElement);
+				}
+			}
+		}
+		else if(Tag == 78) //l plat
+		{
+			for(int x=0; x<25; x++)
+			{
+				if(AdjElement(3, H + Tag78Array[x][0], V + Tag78Array[x][1], Tag78Array[x][2], NewElement))
+				{
+					LNPendingList.insert(LNPendingList.end(), NewElement);
+				}
+			}
+		}
+		else if(Tag == 79) //r plat
+		{
+			for(int x=0; x<25; x++)
+			{
+				if(AdjElement(4, H + Tag79Array[x][0], V + Tag79Array[x][1], Tag79Array[x][2], NewElement))
+				{
+					LNPendingList.insert(LNPendingList.end(), NewElement);
+				}
+			}
+		}
+		else if(Tag == 96) //conc
+		{
+			for(int x=0; x<28; x++)
+			{
+				if(AdjElement(5, H + Tag96Array[x][0], V + Tag96Array[x][1], Tag96Array[x][2], NewElement))
+				{
+					LNPendingList.insert(LNPendingList.end(), NewElement);
+				}
+			}
+		}
+		else if(Tag == 129) //vert footbridge
+		{
+			for(int x=0; x<8; x++)
+			{
+				if(AdjElement(6, H + Tag129Array[x][0], V + Tag129Array[x][1], Tag129Array[x][2], NewElement))
+				{
+					LNPendingList.insert(LNPendingList.end(), NewElement);
+				}
+			}
+		}
+		else if(Tag == 130) //hor footbridge
+		{
+			for(int x=0; x<8; x++)
+			{
+				if(AdjElement(7, H + Tag130Array[x][0], V + Tag130Array[x][1], Tag130Array[x][2], NewElement))
+				{
+					LNPendingList.insert(LNPendingList.end(), NewElement);
+				}
+			}
+		}
+		else if(Tag == 131) //named location
+		{
+			for(int x=0; x<4; x++)
+			{
+				if(AdjElement(8, H + Tag131Array[x][0], V + Tag131Array[x][1], Tag131Array[x][2], NewElement))
+				{
+					LNPendingList.insert(LNPendingList.end(), NewElement);
+				}
+			}
+		}
+		else if(Tag == 145) //v u'pass
+		{
+			for(int x=0; x<8; x++)
+			{
+				if(AdjElement(9, H + Tag145Array[x][0], V + Tag145Array[x][1], Tag145Array[x][2], NewElement))
+				{
+					LNPendingList.insert(LNPendingList.end(), NewElement);
+				}
+			}
+		}
+		else if(Tag == 146) //h u'pass
+		{
+			for(int x=0; x<8; x++)
+			{
+				if(AdjElement(10, H + Tag146Array[x][0], V + Tag146Array[x][1], Tag146Array[x][2], NewElement))
+				{
+					LNPendingList.insert(LNPendingList.end(), NewElement);
+				}
+			}
+		}
+		//below new at v1.1.0 but condition changed at v1.1.4 as interfered with name changes for single element locations
 //    if(NewElement != 2000000000) //adjacent element found & new element inserted, check if a (different) name already allocated and if so erase it from text vector
-        if(AddingElements)
-        {
-            int HPos, VPos; //not used but needed for FindText function
-            if(NewElement > -1)
-            {
-                AnsiString ExistingName = InactiveTrackElementAt(118, NewElement).LocationName;
-                if((ExistingName != "") && (ExistingName != LocationName))
-                {
-                    if(LocationNameMultiMap.find(ExistingName) == Track->LocationNameMultiMap.end()) {} //name not in LocationNameMultiMap, so don't erase from TextVector
-                    else if(TextHandler->FindText(4, ExistingName, HPos, VPos)) //can't use 'EraseLocationNameText' as that function is in TInterface
-                    {
-                        if(TextHandler->TextErase(10, HPos, VPos)) {; } //condition not used
-                    }
-                }
-            }
-        }
+		if(AddingElements)
+		{
+			int HPos, VPos; //not used but needed for FindText function
+			if(NewElement > -1)
+			{
+				AnsiString ExistingName = InactiveTrackElementAt(118, NewElement).LocationName;
+				if((ExistingName != "") && (ExistingName != LocationName))
+				{
+					if(LocationNameMultiMap.find(ExistingName) == Track->LocationNameMultiMap.end()) {} //name not in LocationNameMultiMap, so don't erase from TextVector
+					else if(TextHandler->FindText(4, ExistingName, HPos, VPos)) //can't use 'EraseLocationNameText' as that function is in TInterface
+					{
+						if(TextHandler->TextErase(10, HPos, VPos)) {; } //condition not used
+					}
+				}
+			}
+		}
 
-        AddName(1, CurrentElement, LocationName); //add location name to current element, + timetable name to any
-                                                  //track at that loc
-        THVPair HVPair(H, V);
-        TLNDone2MultiMapEntry LNDone2MultiMapEntry;
-        LNDone2MultiMapEntry.first = HVPair;
-        LNDone2MultiMapEntry.second = LNPendingList.front();
-        LNDone2MultiMap.insert(LNDone2MultiMapEntry);
-        LNPendingList.erase(LNPendingList.begin());
-    }
+		AddName(1, CurrentElement, LocationName); //add location name to current element, + timetable name to any
+												  //track at that loc
+		THVPair HVPair(H, V);
+		TLNDone2MultiMapEntry LNDone2MultiMapEntry;
+		LNDone2MultiMapEntry.first = HVPair;
+		LNDone2MultiMapEntry.second = LNPendingList.front();
+		LNDone2MultiMap.insert(LNDone2MultiMapEntry);
+		LNPendingList.erase(LNPendingList.begin());
+	}
 
 //search all name multimap for same name where corresponding active elements don't appear in
 //LNDone2MultiMap & erase the name for all elements at that H & V in both active & inactive vectors
 
-    TLocationNameMultiMapIterator SNIterator;
-    TLocationNameMultiMapRange SNRange = LocationNameMultiMap.equal_range(LocationName);
-    bool FoundFlag, ErasedFlag = false;
-    if(SNRange.first != SNRange.second)
+	TLocationNameMultiMapIterator SNIterator;
+	TLocationNameMultiMapRange SNRange = LocationNameMultiMap.equal_range(LocationName);
+	bool FoundFlag, ErasedFlag = false;
+	if(SNRange.first != SNRange.second)
     {
         SNRange.first--; //now pointing to before the first
         SNRange.second--; //now pointing to the last
@@ -6719,7 +6845,7 @@ named location - only one of the sides (selected by whichever the program finds 
                 ErasedFlag = true;
                 TTrackVectorIterator TVIt = GetTrackVectorIteratorFromNamePosition(2, SNIterator->second);
                 TVIt->LocationName = "";
-                TVIt->ActiveTrackElementName = ""; //in case it's a footbridge
+				TVIt->ActiveTrackElementName = ""; //in case it's a footcrossing
                 //need to erase the timetable name in a track element at same H&V if present (i.e. if a platform)
                 if((TVIt->TrackType == Platform) || (TVIt->TrackType == NamedNonStationLocation))
                 {
@@ -6760,8 +6886,8 @@ LNDone2MultiMap or the LNPendingList returns an int corresponding to the adjuste
     bool FoundFlag;
     int Position = -1;
     TIMPair IMPair;
-    if((SpeedTag == 129) || (SpeedTag == 130)) //footbridge - only in active vector
-    {
+	if((SpeedTag == 129) || (SpeedTag == 130) || (SpeedTag == 145) || (SpeedTag == 146)) //footcrossing - only in active vector
+	{
         Position = GetVectorPositionFromTrackMap(18, HLoc, VLoc, FoundFlag);
         if(FoundFlag)
         {
@@ -6995,7 +7121,7 @@ new names in the vectors.
         {
             TTrackVectorIterator TVIt = GetTrackVectorIteratorFromNamePosition(3, SNIterator->second);
             TVIt->LocationName = "";
-            TVIt->ActiveTrackElementName = ""; //in case it's a footbridge
+			TVIt->ActiveTrackElementName = ""; //in case it's a footcrossing
             //need to erase the timetable name in a track element at same H&V if present (i.e. if a platform or namedlocation)
             if((TVIt->TrackType == Platform) || (TVIt->TrackType == NamedNonStationLocation))
             {
@@ -7025,62 +7151,62 @@ case the SpeedTag is that for the element that is erased) and PlotAndAddTrackEle
 naming up to date with the deletion or insertion.
 */
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SearchForAndUpdateLocationName," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(SpeedTag));
-    LNPendingList.clear();
-    AnsiString LocationName;
-    int MapPos;
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SearchForAndUpdateLocationName," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(SpeedTag));
+	LNPendingList.clear();
+	AnsiString LocationName;
+	int MapPos;
 
-    if(SpeedTag == 76) //top plat
-    {
-        for(int x=0; x<23; x++)
-        {
-            if(AdjNamedElement(1, HLoc + Tag76Array[x][0], VLoc + Tag76Array[x][1], Tag76Array[x][2], LocationName, MapPos))
-            {
-                LNPendingList.insert(Track->LNPendingList.end(), MapPos);
-                EnterLocationName(3, LocationName, true);
-                break;
-            }
-        }
-    }
-    else if(SpeedTag == 77) //bot plat
-    {
-        for(int x=0; x<23; x++)
-        {
-            if(AdjNamedElement(2, HLoc + Tag77Array[x][0], VLoc + Tag77Array[x][1], Tag77Array[x][2], LocationName, MapPos))
-            {
-                LNPendingList.insert(Track->LNPendingList.end(), MapPos);
-                EnterLocationName(4, LocationName, true);
-                break;
-            }
-        }
-    }
-    else if(SpeedTag == 78) //l plat
-    {
-        for(int x=0; x<23; x++)
-        {
-            if(AdjNamedElement(3, HLoc + Tag78Array[x][0], VLoc + Tag78Array[x][1], Tag78Array[x][2], LocationName, MapPos))
-            {
-                LNPendingList.insert(Track->LNPendingList.end(), MapPos);
-                EnterLocationName(5, LocationName, true);
-                break;
-            }
-        }
-    }
-    else if(SpeedTag == 79) //r plat
-    {
-        for(int x=0; x<23; x++)
-        {
-            if(AdjNamedElement(4, HLoc + Tag79Array[x][0], VLoc + Tag79Array[x][1], Tag79Array[x][2], LocationName, MapPos))
-            {
-                LNPendingList.insert(Track->LNPendingList.end(), MapPos);
-                EnterLocationName(6, LocationName, true);
-                break;
-            }
-        }
-    }
-    else if(SpeedTag == 96) //conc
-    {
-        for(int x=0; x<24; x++)
+	if(SpeedTag == 76) //top plat
+	{
+		for(int x=0; x<25; x++)
+		{
+			if(AdjNamedElement(1, HLoc + Tag76Array[x][0], VLoc + Tag76Array[x][1], Tag76Array[x][2], LocationName, MapPos))
+			{
+				LNPendingList.insert(Track->LNPendingList.end(), MapPos);
+				EnterLocationName(3, LocationName, true);
+				break;
+			}
+		}
+	}
+	else if(SpeedTag == 77) //bot plat
+	{
+		for(int x=0; x<25; x++)
+		{
+			if(AdjNamedElement(2, HLoc + Tag77Array[x][0], VLoc + Tag77Array[x][1], Tag77Array[x][2], LocationName, MapPos))
+			{
+				LNPendingList.insert(Track->LNPendingList.end(), MapPos);
+				EnterLocationName(4, LocationName, true);
+				break;
+			}
+		}
+	}
+	else if(SpeedTag == 78) //l plat
+	{
+		for(int x=0; x<25; x++)
+		{
+			if(AdjNamedElement(3, HLoc + Tag78Array[x][0], VLoc + Tag78Array[x][1], Tag78Array[x][2], LocationName, MapPos))
+			{
+				LNPendingList.insert(Track->LNPendingList.end(), MapPos);
+				EnterLocationName(5, LocationName, true);
+				break;
+			}
+		}
+	}
+	else if(SpeedTag == 79) //r plat
+	{
+		for(int x=0; x<25; x++)
+		{
+			if(AdjNamedElement(4, HLoc + Tag79Array[x][0], VLoc + Tag79Array[x][1], Tag79Array[x][2], LocationName, MapPos))
+			{
+				LNPendingList.insert(Track->LNPendingList.end(), MapPos);
+				EnterLocationName(6, LocationName, true);
+				break;
+			}
+		}
+	}
+	else if(SpeedTag == 96) //conc
+	{
+		for(int x=0; x<28; x++)
         {
             if(AdjNamedElement(5, HLoc + Tag96Array[x][0], VLoc + Tag96Array[x][1], Tag96Array[x][2], LocationName, MapPos))
             {
@@ -7090,35 +7216,59 @@ naming up to date with the deletion or insertion.
             }
         }
     }
-    else if(SpeedTag == 129) //vert footbridge
-    {
-        for(int x=0; x<8; x++)
-        {
-            if(AdjNamedElement(6, HLoc + Tag129Array[x][0], VLoc + Tag129Array[x][1], Tag129Array[x][2], LocationName, MapPos))
-            {
-                LNPendingList.insert(Track->LNPendingList.end(), MapPos);
-                EnterLocationName(8, LocationName, true);
-                break;
-            }
-        }
-    }
-    else if(SpeedTag == 130) //hor footbridge
-    {
-        for(int x=0; x<8; x++)
-        {
-            if(AdjNamedElement(7, HLoc + Tag130Array[x][0], VLoc + Tag130Array[x][1], Tag130Array[x][2], LocationName, MapPos))
-            {
-                LNPendingList.insert(Track->LNPendingList.end(), MapPos);
-                EnterLocationName(9, LocationName, true);
-                break;
-            }
-        }
-    }
-    else if(SpeedTag == 131) //named location
+	else if(SpeedTag == 129) //vert footbridge
+	{
+		for(int x=0; x<8; x++)
+		{
+			if(AdjNamedElement(6, HLoc + Tag129Array[x][0], VLoc + Tag129Array[x][1], Tag129Array[x][2], LocationName, MapPos))
+			{
+				LNPendingList.insert(Track->LNPendingList.end(), MapPos);
+				EnterLocationName(8, LocationName, true);
+				break;
+			}
+		}
+	}
+	else if(SpeedTag == 130) //hor footbridge
+	{
+		for(int x=0; x<8; x++)
+		{
+			if(AdjNamedElement(7, HLoc + Tag130Array[x][0], VLoc + Tag130Array[x][1], Tag130Array[x][2], LocationName, MapPos))
+			{
+				LNPendingList.insert(Track->LNPendingList.end(), MapPos);
+				EnterLocationName(9, LocationName, true);
+				break;
+			}
+		}
+	}
+	else if(SpeedTag == 145) //vert u'pass
+	{
+		for(int x=0; x<8; x++)
+		{
+			if(AdjNamedElement(9, HLoc + Tag145Array[x][0], VLoc + Tag145Array[x][1], Tag145Array[x][2], LocationName, MapPos))
+			{
+				LNPendingList.insert(Track->LNPendingList.end(), MapPos);
+				EnterLocationName(11, LocationName, true);
+				break;
+			}
+		}
+	}
+	else if(SpeedTag == 146) //hor u'pass
+	{
+		for(int x=0; x<8; x++)
+		{
+			if(AdjNamedElement(10, HLoc + Tag146Array[x][0], VLoc + Tag146Array[x][1], Tag146Array[x][2], LocationName, MapPos))
+			{
+				LNPendingList.insert(Track->LNPendingList.end(), MapPos);
+				EnterLocationName(12, LocationName, true);
+				break;
+			}
+		}
+	}
+	else if(SpeedTag == 131) //named location
     {
         for(int x=0; x<4; x++)
         {
-            if(AdjNamedElement(8, HLoc + Tag131Array[x][0], VLoc + Tag131Array[x][1], Tag131Array[x][2], LocationName, MapPos))
+			if(AdjNamedElement(8, HLoc + Tag131Array[x][0], VLoc + Tag131Array[x][1], Tag131Array[x][2], LocationName, MapPos))
             {
                 LNPendingList.insert(Track->LNPendingList.end(), MapPos);
                 EnterLocationName(10, LocationName, true);
@@ -7208,9 +7358,9 @@ void TTrack::CheckLocationNameMultiMap(int Caller) //test function
     {
         if(TrackVector.at(x).FixedNamedLocationElement)
         {
-            if(TrackVector.at(x).TrackType != Footbridge)
-            {
-                throw Exception("Track element has FixedNamedLocationElement set but is not a footbridge in CheckLocationNameMultiMap, caller = " + AnsiString(Caller));
+			if(TrackVector.at(x).TrackType != FootCrossing)
+			{
+				throw Exception("Track element has FixedNamedLocationElement set but is not a footbridge/underpass in CheckLocationNameMultiMap, caller = " + AnsiString(Caller));
             }
             Count++;
         }
@@ -7372,13 +7522,13 @@ TTrack::TTrackVectorIterator TTrack::GetTrackVectorIteratorFromNamePosition(int 
 {
 //Takes an adjusted vector position value and returns a pointer to the relevant element.  Can be in either vector.
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetTrackVectorIteratorFromNamePosition," + AnsiString(Position));
-    if(Position < 0) //footbridge
+	if(Position < 0) //footcrossing
     {
         int TruePos = -1 - Position;
         //new check at v0.2b
-        if(TrackElementAt(817, TruePos).TrackType != Footbridge)
+		if(TrackElementAt(817, TruePos).TrackType != FootCrossing)
         {
-            throw Exception("Footbridge error in GetTrackVectorIteratorFromNamePosition, caller = " + AnsiString(Caller));
+			throw Exception("Footbridge/underpass error in GetTrackVectorIteratorFromNamePosition, caller = " + AnsiString(Caller));
         }
         Utilities->CallLogPop(591);
         return(TrackVector.begin() + TruePos);
@@ -7496,7 +7646,7 @@ after names are changed in EraseLocationAndActiveTrackElementNames; and after th
         if(TrackElement.FixedNamedLocationElement)
         {
             LocationNameEntry.first = TrackElement.LocationName;
-            LocationNameEntry.second = -1-TVPos; //adjusted for footbridges
+			LocationNameEntry.second = -1-TVPos; //adjusted for footcrossings
             LocationNameMultiMap.insert(LocationNameEntry);
         }
     }
@@ -7516,11 +7666,11 @@ after names are changed in EraseLocationAndActiveTrackElementNames; and after th
 
 //---------------------------------------------------------------------------
 
-bool TTrack::NonFootbridgeNamedLocationExists(int Caller)
+bool TTrack::NonFootCrossingNamedLocationExists(int Caller)
 //Return true if there is a named location present in the railway
-//ignores lone footbridges, can't name these on their own & track won't link if there are any
+//ignores lone footcrossings, can't name these on their own & track won't link if there are any
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NonFootbridgeNamedLocationExists");
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NonFootCrossingNamedLocationExists");
     TTrackVectorIterator ITVI;
     if(InactiveTrackVector.empty())
     {
@@ -7701,9 +7851,11 @@ int BrEXArray[24][2] = {
         if(TrackElement.SpeedTag == 86) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[26];
         if(TrackElement.SpeedTag == 87) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[27];
 
-        if(TrackElement.SpeedTag == 129) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[28];  //intercept under footbridges
-        if(TrackElement.SpeedTag == 130) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[29];
-    }
+		if(TrackElement.SpeedTag == 129) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[28];  //intercept under footbridges
+		if(TrackElement.SpeedTag == 130) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[29];
+		if(TrackElement.SpeedTag == 145) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[30];  //intercept over u'passes
+		if(TrackElement.SpeedTag == 146) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[31];
+	}
 
     else if(LengthDifferent && !SpeedDifferent) //green - use pref sig graphics
     {
@@ -7727,9 +7879,11 @@ int BrEXArray[24][2] = {
         if(TrackElement.SpeedTag == 86) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[26];
         if(TrackElement.SpeedTag == 87) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[27];
 
-        if(TrackElement.SpeedTag == 129) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[28];  //intercept under footbridges
-        if(TrackElement.SpeedTag == 130) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[29];
-    }
+		if(TrackElement.SpeedTag == 129) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[28];  //intercept under footbridges
+		if(TrackElement.SpeedTag == 130) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[29];
+		if(TrackElement.SpeedTag == 145) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[30];  //intercept over u'passes
+		if(TrackElement.SpeedTag == 146) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[31];
+	}
 
     else //SpeedDifferent only: red - use non sig graphics
     {
@@ -7753,9 +7907,11 @@ int BrEXArray[24][2] = {
         if(TrackElement.SpeedTag == 86) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[26];
         if(TrackElement.SpeedTag == 87) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[27];
 
-        if(TrackElement.SpeedTag == 129) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[28];  //intercept under footbridges
+		if(TrackElement.SpeedTag == 129) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[28];  //intercept under footbridges
         if(TrackElement.SpeedTag == 130) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[29];
-    }
+		if(TrackElement.SpeedTag == 145) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[30];  //intercept over u'passes
+		if(TrackElement.SpeedTag == 146) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[31];
+	}
 
     Disp->PlotOutput(67, TrackElement.HLoc * 16, TrackElement.VLoc * 16, Bitmap);
     Utilities->CallLogPop(620);
@@ -8098,10 +8254,10 @@ void TTrack::PlotSmallRailway(int Caller, TDisplay *Disp)
     {
         if(Next.SmallGraphicPtr != 0) //don't think this should ever be 0 but leave as a safeguard
         {
-            if((Next.TrackType == Footbridge) && (Next.LocationName == "")) //need striped graphics
-            {
-                if(Next.SpeedTag == 129) Disp->PlotSmallOutput(18, Next.HLoc * 4, (Next.VLoc * 4), RailGraphics->sm129striped);
-                else if(Next.SpeedTag == 130) Disp->PlotSmallOutput(19, Next.HLoc * 4, (Next.VLoc * 4), RailGraphics->sm130striped);
+			if((Next.TrackType == FootCrossing) && (Next.LocationName == "")) //need striped graphics, use sm129 & 130 for 145 & 146
+			{
+				if((Next.SpeedTag == 129) || (Next.SpeedTag == 145)) Disp->PlotSmallOutput(18, Next.HLoc * 4, (Next.VLoc * 4), RailGraphics->sm129striped);
+				else if((Next.SpeedTag == 130) || (Next.SpeedTag == 146)) Disp->PlotSmallOutput(19, Next.HLoc * 4, (Next.VLoc * 4), RailGraphics->sm130striped);
             }
             else Disp->PlotSmallOutput(20, Next.HLoc * 4, (Next.VLoc * 4), Next.SmallGraphicPtr);
         }
@@ -8219,15 +8375,21 @@ Graphics::TBitmap *TTrack::RetrieveStripedNamedLocationGraphicsWhereRelevant(int
     case 96: //concourse
         GraphicOutput = RailGraphics->ConcourseStriped;
         break;
-    case 129: //v footbridge
+	case 129: //v footbridge
         GraphicOutput = RailGraphics->gl129Striped;
         break;
-    case 130: //h footbridge
+	case 130: //h footbridge
         GraphicOutput = RailGraphics->gl130Striped;
         break;
     case 131: //non-station named loc
         GraphicOutput = RailGraphics->bmNameStriped;
         break;
+	case 145: //v u'pass
+		GraphicOutput = RailGraphics->gl145Striped;
+		break;
+	case 146: //h u'pass
+		GraphicOutput = RailGraphics->gl146Striped;
+		break;
 
     default:
         GraphicOutput = TrackElement.GraphicPtr;
@@ -8306,7 +8468,7 @@ and no connections via point trailing links.  Note that these conditions exclude
     }
     for(SNIterator = SNRange.first; SNIterator != SNRange.second; SNIterator++)
     {
-        if(SNIterator->second < 0) continue;  //exclude footbridges
+		if(SNIterator->second < 0) continue;  //exclude footcrossings
         InactiveElement = InactiveTrackElementAt(47, SNIterator->second);
         if(InactiveElement.TrackType == Concourse) continue;  //only interested in locations where ActiveTrackElementName may be set
         THVPair HVPair;
@@ -8407,7 +8569,7 @@ splitting.
     }
     for(SNIterator = SNRange.first; SNIterator != SNRange.second; SNIterator++)
     {
-        if(SNIterator->second < 0) continue;  //exclude footbridges
+		if(SNIterator->second < 0) continue;  //exclude footcrossings
         InactiveElement = InactiveTrackElementAt(69, SNIterator->second);
         if(InactiveElement.TrackType == Concourse) continue;  //only interested in locations where ActiveTrackElementName may be set
         THVPair HVPair;
@@ -8532,7 +8694,7 @@ bool TTrack::PlatformOnSignalSide(int Caller, int HLoc, int VLoc, int SpeedTag, 
         return false;
     }
     bool FoundFlag;
-    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(13, HLoc, VLoc, FoundFlag);
+    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(27, HLoc, VLoc, FoundFlag);
     if(!FoundFlag)
     {
         throw Exception("Error, FoundFlag false in PlatformOnSignalSide after IsPlatformOrNamedNonStationLocationPresent called successfully");
@@ -9172,7 +9334,7 @@ if((abs(TrackElement.HLoc - StartPrefDirElement.HLoc) > 120) || (abs(TrackElemen
                 }
             }
         } //here if checked all possible exits without success
-        ShowMessage("Unable to find a route to the selected element - may be unreachable, too far ahead, or invalid.");
+		ShowMessage("Unable to find a route to the selected element - may be unreachable, too far ahead, or invalid. Try selecting an end point closer to the start point.");
         Utilities->CallLogPop(133);
         return false;
     }
@@ -9256,7 +9418,7 @@ if((abs(TrackElement.HLoc - StartPrefDirElement.HLoc) > 120) || (abs(TrackElemen
 //here if failed to find match for leading point
         PrefDirVector.at(LastElementNumber(69)).CheckCount--; //to removed the earlier increments for XLinkPos & XLink
         PrefDirVector.at(LastElementNumber(70)).CheckCount--;
-        ShowMessage("Unable to find a route to the selected element - may be unreachable, too far ahead, or invalid.");
+        ShowMessage("Unable to find a route to the selected element - may be unreachable, too far ahead, or invalid. Try selecting an end point closer to the start point.");
         Utilities->CallLogPop(138);
         return false;
     }
@@ -9277,7 +9439,7 @@ if((abs(TrackElement.HLoc - StartPrefDirElement.HLoc) > 120) || (abs(TrackElemen
         Utilities->CallLogPop(139);
         return true;
     }
-    ShowMessage("Unable to find a route to the selected element - may be unreachable, too far ahead, or invalid.");
+    ShowMessage("Unable to find a route to the selected element - may be unreachable, too far ahead, or invalid. Try selecting an end point closer to the start point.");
     Utilities->CallLogPop(140);
     return false; //failed to find required element
 }
@@ -11529,7 +11691,7 @@ be used as the start element.
 
     if(!InPrefDirFlag)
     {
-        TrainController->StopTTClockMessage(12, "Selection not in an appropriate preferred direction");
+		TrainController->StopTTClockMessage(12, "Route and preferred direction mismatch. If no preferred direction then only red routes can be used. Green and blue route directions must correspond to the preferred direction.");
         Utilities->CallLogPop(205);
         return false;
     }
@@ -11748,7 +11910,7 @@ so return false, with an appropriate message if ConsecSignalsRoute set.
     }
     if(!InPrefDirFlag)
     {
-        TrainController->StopTTClockMessage(23, "Selection not in an appropriate preferred direction");
+		TrainController->StopTTClockMessage(23, "Route and preferred direction mismatch. If no preferred direction then only red routes can be used. Green and blue route directions must correspond to the preferred direction.");
         Utilities->CallLogPop(220);
         return false;
     }

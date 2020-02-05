@@ -588,38 +588,42 @@ public:
     Graphics::TBitmap *gl127;
     Graphics::TBitmap *gl128;
     Graphics::TBitmap *gl129;
-    Graphics::TBitmap *gl129Striped;
-    Graphics::TBitmap *gl13;
-    Graphics::TBitmap *gl130;
-    Graphics::TBitmap *gl130Striped;
-    Graphics::TBitmap *gl131;
-    Graphics::TBitmap *gl132;
-    Graphics::TBitmap *gl133;
-    Graphics::TBitmap *gl134;
-    Graphics::TBitmap *gl135;
-    Graphics::TBitmap *gl136;
-    Graphics::TBitmap *gl137;
-    Graphics::TBitmap *gl138;
-    Graphics::TBitmap *gl139;
-    Graphics::TBitmap *gl14;
-    Graphics::TBitmap *gl140;
-    Graphics::TBitmap *gl141;
-    Graphics::TBitmap *gl142;
-    Graphics::TBitmap *gl143;
-    Graphics::TBitmap *gl15;
-    Graphics::TBitmap *gl16;
-    Graphics::TBitmap *gl18;
-    Graphics::TBitmap *gl19;
-    Graphics::TBitmap *gl2;
-    Graphics::TBitmap *gl20;
-    Graphics::TBitmap *gl21;
-    Graphics::TBitmap *gl22;
-    Graphics::TBitmap *gl23;
-    Graphics::TBitmap *gl24;
-    Graphics::TBitmap *gl25;
-    Graphics::TBitmap *gl26;
-    Graphics::TBitmap *gl27;
-    Graphics::TBitmap *gl28;
+	Graphics::TBitmap *gl129Striped;
+	Graphics::TBitmap *gl13;
+	Graphics::TBitmap *gl130;
+	Graphics::TBitmap *gl130Striped;
+	Graphics::TBitmap *gl131;
+	Graphics::TBitmap *gl132;
+	Graphics::TBitmap *gl133;
+	Graphics::TBitmap *gl134;
+	Graphics::TBitmap *gl135;
+	Graphics::TBitmap *gl136;
+	Graphics::TBitmap *gl137;
+	Graphics::TBitmap *gl138;
+	Graphics::TBitmap *gl139;
+	Graphics::TBitmap *gl14;
+	Graphics::TBitmap *gl140;
+	Graphics::TBitmap *gl141;
+	Graphics::TBitmap *gl142;
+	Graphics::TBitmap *gl143;
+	Graphics::TBitmap *gl145;
+	Graphics::TBitmap *gl145Striped;
+	Graphics::TBitmap *gl146;
+	Graphics::TBitmap *gl146Striped;
+	Graphics::TBitmap *gl15;
+	Graphics::TBitmap *gl16;
+	Graphics::TBitmap *gl18;
+	Graphics::TBitmap *gl19;
+	Graphics::TBitmap *gl2;
+	Graphics::TBitmap *gl20;
+	Graphics::TBitmap *gl21;
+	Graphics::TBitmap *gl22;
+	Graphics::TBitmap *gl23;
+	Graphics::TBitmap *gl24;
+	Graphics::TBitmap *gl25;
+	Graphics::TBitmap *gl26;
+	Graphics::TBitmap *gl27;
+	Graphics::TBitmap *gl28;
     Graphics::TBitmap *gl29;
     Graphics::TBitmap *gl3;
     Graphics::TBitmap *gl30;
@@ -986,12 +990,12 @@ public:
     Graphics::TBitmap *BridgeNonSigRouteGraphicsPtr[12]; ///< route graphic for unrestricted route overlay
     Graphics::TBitmap *BridgeRouteAutoSigsGraphicsPtr[12]; ///< route graphic for automatic signal routes overlay
 
-//2nd group for ordinary single track segments - 16 for non underbridges (track joining each valid pair of the 8 track element links),
-//4 for diagonal buffers & 8 for continuations, 2 for footbridges
-    Graphics::TBitmap *LinkGraphicsPtr[30]; ///< basic single track graphic for use in plotting the original graphic during route flashing
-    Graphics::TBitmap *LinkPrefDirGraphicsPtr[30]; ///< preferred direction graphic overlay
-    Graphics::TBitmap *LinkSigRouteGraphicsPtr[30]; ///< preferred direction route graphic overlay
-    Graphics::TBitmap *LinkNonSigRouteGraphicsPtr[30]; ///< unrestricted route graphic overlay
+//2nd group for ordinary single track segments - 16 for non underbridges & non-underfootbridges (track joining each valid pair of the 8 track element links),
+//4 for diagonal buffers & 8 for continuations, 2 for footbridges (not underpasses - these have track on top so included in first 16)
+	Graphics::TBitmap *LinkGraphicsPtr[30]; ///< basic single track graphic for use in plotting the original graphic during route flashing
+	Graphics::TBitmap *LinkPrefDirGraphicsPtr[30]; ///< preferred direction graphic overlay
+	Graphics::TBitmap *LinkSigRouteGraphicsPtr[30]; ///< preferred direction route graphic overlay
+	Graphics::TBitmap *LinkNonSigRouteGraphicsPtr[30]; ///< unrestricted route graphic overlay
     Graphics::TBitmap *LinkRouteAutoSigsGraphicsPtr[30]; ///< auto signal route graphic overlay
 
 //3rd group for the direction arrows that indicate the direction of the route or of the preferred direction - 1 for each of 8 links,
@@ -1068,7 +1072,7 @@ public:
     void ChangeTransparentColour(Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut, TColor NewTransparentColour, TColor OldTransparentColour);
 /// used in ChangeBackgroundColour3 to convert a named colour to a number for Scanline
     int ColNametoNumber(int Caller, TColor Colour);
-    /// Converts all signal graphics to opposite hand new at v2.3.0
+/// Converts all signal graphics to opposite hand new at v2.3.0
     void ConvertSignalsToOppositeHand(int Caller);
 /// Sets all the derived graphics to be compatible with a new transparent colour
 ///

@@ -545,8 +545,10 @@ __published:    // IDE-managed Components
     TSpeedButton *SpeedButton142;
     TSpeedButton *SpeedButton143;
     TSpeedButton *SpeedButton144;
-    TButton *TTClockxEighthButton;
-    TButton *TTClockxSixteenthButton;
+	TSpeedButton *SpeedButton146;
+	TSpeedButton *SpeedButton145;
+	TButton *TTClockxEighthButton;
+	TButton *TTClockxSixteenthButton;
 
     //menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);

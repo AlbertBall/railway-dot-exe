@@ -16,6 +16,15 @@ The structure is as follows:-
 -----------------------
 
 Future change suggestions from users:
+
+
+
+Suggestion from @Mark 04/02/20
+
+Ability to tell a train to skip the next station or skip its next trip in the timetable (in cases where a train is running very delayed).  That and have the ability to select a different timetable.  [Prob best to consider this if/when random failures introduced. Before that timetables shouldn't be so tight as to cause long delays.]
+
+-----------------------
+
 Suggestion from Oli_k123 29/10/19
 
 A new route chopping tool would be nice so when you use the 'blue route' you can chop between 2 signals without having to re do everything after the first signal or maybe a 'one time override' ?
@@ -37,9 +46,14 @@ Suggestions from Kristian Zarebski (Krizar) 06/08/19
 - Unknown: I do not know if you have ever used Simsig but something came to mind. On the maps included there are radial clickable buttons. I cannot remember what they do at all, is it some automatic route setting? My knowledge of computational signalling is very low, but being able to select between preset automatic routes would be great. Although adding such a feature sounds a headache.
 
 -----------------------
+
 Suggestion from Xeon email of 05/03/18
 
 Chinese railways use several more aspects than UK railways, Xeon requests 6-aspect to allow for this
+
+-----------------------
+
+[Corrected at v2.1.0] Jordy de Koning reported a speed limit bug 27/12/16.  If a train is standing on a track element with a speed limit > 400kph and a session file saved, it fails on subsequent attempts to load.  The reason is that the train is limited to 400kph but not the track speed limit, and the session file checks the track speed limit where a train starts and fails if >400kph.  Need to add a limit and message when setting track speed limits.
 
 -----------------------
 
@@ -105,13 +119,7 @@ Sam Wainwright email received 09/02/12: If a shunt signal is placed in the same 
 
 -----------------------
 
-[Corrected at v2.1.0] Jordy de Koning reported a speed limit bug 27/12/16.  If a train is standing on a track element with a speed limit > 400kph and a session file saved, it fails on subsequent attempts to load.  The reason is that the train is limited to 400kph but not the track speed limit, and the session file checks the track speed limit where a train starts and fails if >400kph.  Need to add a limit and message when setting track speed limits.
-
------------------------
-
 Own thoughts:-
-
-Bitmap note:  All bitmaps use 8 bits per pixel using websafe colours apart from HIDEOPACTIONPANEL, SHOWOPACTIONPANEL, SIGSONLEFT, SIGSONRIGHT, and NEWHOME which are 24 bits per pixel.  These won't matter as they are buttons that aren't manipulated by the program.  Must have forgotten about restricted colours when created these, though NEWHOME is an odd one out as created very early in development.
 
 Done at v 2.3.0. Try to trap memory capacity errors that occur when try to save large bitmaps without crashing the program.  Occurred on Xeon's Shanghai Metro railway when .bmp was over 500Mb.  Probably too rare an occurrence to warrant action.
 
@@ -140,6 +148,27 @@ the blue route so it wasn't just the display that was wrong. Couldn't repeat the
 2.  When operating Chiltern had a train under signaller control & moving forwards, but couldn't get popup menu when right clicked - nothing happened.  Saved session & reloaded, then OK.
 
 3.  If an arriving train reaches a platform with a train in front at buffers, and the arriving train is to split while facing the train at buffers (from the rear but maybe also from the front) and there is enough platform for the split, then the split doesn't occur.  Occurred on Chiltern (Chiltern rear split problem; Timetable time 10.49.03; Chiltern Railways v2; Chiltern Railways v2.ssn) after manoeuvring 5F33 & 1N24 onto a vacant platform & restoring appropriate directions & timetable control.  Due to lack of sophistication of split functions (see note in program: Split logic is:-  at least one of 4 final train positions must overlap with one of original train positions, & final 4 positions will maximise the number at the location.  Note that this function isn't sophisticated enough to account for trains already at the location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these circumstances the other train will need to be move sufficiently away to release all 4 positions, then the train will split.)  Try to improve if possible (i.e. just take account of 'available' platforms, and ensure keep trying in case other trains move off) or at least give a warning in the help & operator manuals to keep trains that are to split separated from trains already present at platforms - preferably don't have other trains at platforms at all where a train is to split.[leave for now unless reported as a problem - no-one has reported it yet]
+
+-----------------------
+
+VERSION CHANGES AFTER v2.3.0 for v2.3.1
+
+* = mention on user website
+
+Make all new signal glyphs consistent & have bot lh pixel in glyph itself white (affects diag sigs 73 & 74)
+
+Made all bitmaps 8 bits per pixel using websafe colours.  Earlier HIDEOPACTIONPANEL, SHOWOPACTIONPANEL, SIGSONLEFT, SIGSONRIGHT and NEWHOME were 24 bits per pixel. Also DISTANCEKEY was 8 bits but not websafe.
+
+*Added underpasses
+
+*Expanded on a few messages to clarify
+
+Updated help files & developer doc
+
+*Note added about underpasses not loading in earlier versions
+
+*Corrected Albie Vowles' error - crashed for very large repeat values.  Now a warning message is given.
+
 
 -----------------------
 
@@ -1190,7 +1219,7 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 
 COPY SECTIONS:
 
-NEXT value for CallLogPop is 2114
+NEXT value for CallLogPop is 2120
 NEXT value for TrackElementAt is 955
 NEXT value for InactiveTrackElementAt is 126
 NEXT value for GetFixedRouteAt is 222

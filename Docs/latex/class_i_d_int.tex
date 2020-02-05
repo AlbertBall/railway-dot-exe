@@ -1,10 +1,10 @@
-\hypertarget{class_i_d_int}{}\section{I\+D\+Int Class Reference}
-\label{class_i_d_int}\index{I\+D\+Int@{I\+D\+Int}}
+\hypertarget{class_i_d_int}{}\doxysection{I\+D\+Int Class Reference}
+\label{class_i_d_int}\index{IDInt@{IDInt}}
 
 
 {\ttfamily \#include $<$Track\+Unit.\+h$>$}
 
-\subsection*{Public Member Functions}
+\doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_i_d_int_a3c40e609e12caab2063aa7f3ff8b8ea7}\label{class_i_d_int_a3c40e609e12caab2063aa7f3ff8b8ea7}} 
@@ -21,18 +21,24 @@ bool \mbox{\hyperlink{class_i_d_int_ae309faa19a8c2f2a6f5e16c7cd64f184}{operator$
 \mbox{\Hypertarget{class_i_d_int_ae0583f8509efd2cff2fa60b52e7b5cea}\label{class_i_d_int_ae0583f8509efd2cff2fa60b52e7b5cea}} 
 \mbox{\hyperlink{class_i_d_int_ae0583f8509efd2cff2fa60b52e7b5cea}{I\+D\+Int}} ()
 \begin{DoxyCompactList}\small\item\em Default constructor, internal integer set to -\/1. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_i_d_int_af9b9224cae0ea5f7ce15c83e6b94d00a}\label{class_i_d_int_af9b9224cae0ea5f7ce15c83e6b94d00a}} 
+int \mbox{\hyperlink{class_i_d_int_af9b9224cae0ea5f7ce15c83e6b94d00a}{Internal\+Int}}
+\begin{DoxyCompactList}\small\item\em the internal integer value represented by \mbox{\hyperlink{class_i_d_int}{I\+D\+Int}} \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 Identification Number
 
 This was introduced when it was decided to have a route identification number for each route rather than using the vector position number for identifying existing routes that were being extended during route building. Using vector position numbers meant that these identification numbers had to be changed when existing routes were erased by trains passing over them. \mbox{\hyperlink{class_i_d_int}{I\+D\+Int}} is used for Start\+Selection\+Route\+ID and Req\+Pos\+Route\+ID (see \mbox{\hyperlink{class_t_all_routes}{T\+All\+Routes}}) and ensures that any confusion with the old vector position numbers is picked up by the compiler. Note that the route\textquotesingle{}s Route\+ID value is an \textquotesingle{}int\textquotesingle{}, not an \textquotesingle{}\mbox{\hyperlink{class_i_d_int}{I\+D\+Int}}\textquotesingle{}, \textquotesingle{}\mbox{\hyperlink{class_i_d_int}{I\+D\+Int}}\textquotesingle{} is only used for Start\+Selection\+Route\+ID and Req\+Pos\+Route\+ID 
 
-\subsection{Constructor \& Destructor Documentation}
+\doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{class_i_d_int_ae51fdc864457738e484bb91c829b082c}\label{class_i_d_int_ae51fdc864457738e484bb91c829b082c}} 
-\index{I\+D\+Int@{I\+D\+Int}!I\+D\+Int@{I\+D\+Int}}
-\index{I\+D\+Int@{I\+D\+Int}!I\+D\+Int@{I\+D\+Int}}
-\subsubsection{\texorpdfstring{I\+D\+Int()}{IDInt()}}
+\index{IDInt@{IDInt}!IDInt@{IDInt}}
+\index{IDInt@{IDInt}!IDInt@{IDInt}}
+\doxysubsubsection{\texorpdfstring{IDInt()}{IDInt()}}
 {\footnotesize\ttfamily I\+D\+Int\+::\+I\+D\+Int (\begin{DoxyParamCaption}\item[{int}]{Int }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
 
 Constructor that sets the internal integer to the input value
@@ -41,4 +47,4 @@ The \textquotesingle{}explicit\textquotesingle{} prefix is used to force a compi
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-C\+:/\+Programming work/railway development after v2.\+2.\+0/Track\+Unit.\+h\end{DoxyCompactItemize}
+Track\+Unit.\+h\end{DoxyCompactItemize}

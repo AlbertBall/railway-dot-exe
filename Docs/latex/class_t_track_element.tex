@@ -1,5 +1,5 @@
-\hypertarget{class_t_track_element}{}\section{T\+Track\+Element Class Reference}
-\label{class_t_track_element}\index{T\+Track\+Element@{T\+Track\+Element}}
+\hypertarget{class_t_track_element}{}\doxysection{T\+Track\+Element Class Reference}
+\label{class_t_track_element}\index{TTrackElement@{TTrackElement}}
 
 
 Basic track elements as implemented in the overall railway layout.  
@@ -15,7 +15,7 @@ Inheritance diagram for T\+Track\+Element\+:\begin{figure}[H]
 \includegraphics[height=3.000000cm]{class_t_track_element}
 \end{center}
 \end{figure}
-\subsection*{Public Types}
+\doxysubsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_t_track_element_abbbcaeb3e062e962d53337965d4fcaad}\label{class_t_track_element_abbbcaeb3e062e962d53337965d4fcaad}} 
@@ -25,7 +25,7 @@ enum \{ {\bfseries Four\+Aspect},
 {\bfseries Ground\+Signal}
  \}
 \end{DoxyCompactItemize}
-\subsection*{Public Member Functions}
+\doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{class_t_track_element_a47b976d743e1d92e81ee807c410ef094}{T\+Track\+Element}} (\mbox{\hyperlink{class_t_fixed_track_piece}{T\+Fixed\+Track\+Piece}} Input)
@@ -42,7 +42,7 @@ Ansi\+String \mbox{\hyperlink{class_t_track_element_a100bff829c4dca820927affde4c
 \begin{DoxyCompactList}\small\item\em Used to log track parameters for call stack logging. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_t_track_element_a453377f8db5e108cb274464333e1100f}{Plot\+Variable\+Track\+Element}} (int Caller, \mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$Disp) const
 \end{DoxyCompactItemize}
-\subsection*{Public Attributes}
+\doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 Ansi\+String \mbox{\hyperlink{class_t_track_element_aa74717ece7b257122688b6f5855d6125}{Active\+Track\+Element\+Name}}
@@ -102,90 +102,90 @@ int {\bfseries Train\+I\+D\+On\+Bridge\+Track\+Pos01}
 \item 
 int \mbox{\hyperlink{class_t_track_element_aa3d8b1fef605f7ef4e6b09360abbb528}{Train\+I\+D\+On\+Bridge\+Track\+Pos23}}
 \item 
-\mbox{\Hypertarget{class_t_track_element_a2742b1ba840a4e8895d074e00791c464}\label{class_t_track_element_a2742b1ba840a4e8895d074e00791c464}} 
-enum T\+Track\+Element\+:: \{ ... \}  \mbox{\hyperlink{class_t_track_element_a2742b1ba840a4e8895d074e00791c464}{Sig\+Aspect}}
+\mbox{\Hypertarget{class_t_track_element_aa16c9130eef5e434146b9100781b0600}\label{class_t_track_element_aa16c9130eef5e434146b9100781b0600}} 
+enum T\+Track\+Element\+:: \{ ... \}  \mbox{\hyperlink{class_t_track_element_aa16c9130eef5e434146b9100781b0600}{Sig\+Aspect}}
 \begin{DoxyCompactList}\small\item\em added at version 0.\+6 \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 Basic track elements as implemented in the overall railway layout. 
 
-\subsection{Constructor \& Destructor Documentation}
+\doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{class_t_track_element_a47b976d743e1d92e81ee807c410ef094}\label{class_t_track_element_a47b976d743e1d92e81ee807c410ef094}} 
-\index{T\+Track\+Element@{T\+Track\+Element}!T\+Track\+Element@{T\+Track\+Element}}
-\index{T\+Track\+Element@{T\+Track\+Element}!T\+Track\+Element@{T\+Track\+Element}}
-\subsubsection{\texorpdfstring{T\+Track\+Element()}{TTrackElement()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+\index{TTrackElement@{TTrackElement}!TTrackElement@{TTrackElement}}
+\index{TTrackElement@{TTrackElement}!TTrackElement@{TTrackElement}}
+\doxysubsubsection{\texorpdfstring{TTrackElement()}{TTrackElement()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily T\+Track\+Element\+::\+T\+Track\+Element (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_t_fixed_track_piece}{T\+Fixed\+Track\+Piece}}}]{Input }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Constructor for specific type of element
 
 Use very high neg. numbers as \textquotesingle{}unset\textquotesingle{} values for H\+Loc \& V\+Loc initially as can go high negatively legitimately, build from existing T\+Track\+Piece with default values for extra members \mbox{\Hypertarget{class_t_track_element_a0f269bad77fe6988e0c2e0a542410d0e}\label{class_t_track_element_a0f269bad77fe6988e0c2e0a542410d0e}} 
-\index{T\+Track\+Element@{T\+Track\+Element}!T\+Track\+Element@{T\+Track\+Element}}
-\index{T\+Track\+Element@{T\+Track\+Element}!T\+Track\+Element@{T\+Track\+Element}}
-\subsubsection{\texorpdfstring{T\+Track\+Element()}{TTrackElement()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+\index{TTrackElement@{TTrackElement}!TTrackElement@{TTrackElement}}
+\index{TTrackElement@{TTrackElement}!TTrackElement@{TTrackElement}}
+\doxysubsubsection{\texorpdfstring{TTrackElement()}{TTrackElement()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily T\+Track\+Element\+::\+T\+Track\+Element (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Constructor for non-\/specific default element
 
 Use high neg numbers for \textquotesingle{}unset\textquotesingle{} h \& v as can go high negatively legitimately 
 
-\subsection{Member Function Documentation}
+\doxysubsection{Member Function Documentation}
 \mbox{\Hypertarget{class_t_track_element_ab8e14338f1059d834353d6c2264b80ee}\label{class_t_track_element_ab8e14338f1059d834353d6c2264b80ee}} 
-\index{T\+Track\+Element@{T\+Track\+Element}!operator"!=@{operator"!=}}
-\index{operator"!=@{operator"!=}!T\+Track\+Element@{T\+Track\+Element}}
-\subsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+\index{TTrackElement@{TTrackElement}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!TTrackElement@{TTrackElement}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
 {\footnotesize\ttfamily bool T\+Track\+Element\+::operator!= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_t_track_element}{T\+Track\+Element}}}]{R\+H\+Element }\end{DoxyParamCaption})}
 
 non-\/equivalence operator \mbox{\Hypertarget{class_t_track_element_a453377f8db5e108cb274464333e1100f}\label{class_t_track_element_a453377f8db5e108cb274464333e1100f}} 
-\index{T\+Track\+Element@{T\+Track\+Element}!Plot\+Variable\+Track\+Element@{Plot\+Variable\+Track\+Element}}
-\index{Plot\+Variable\+Track\+Element@{Plot\+Variable\+Track\+Element}!T\+Track\+Element@{T\+Track\+Element}}
-\subsubsection{\texorpdfstring{Plot\+Variable\+Track\+Element()}{PlotVariableTrackElement()}}
+\index{TTrackElement@{TTrackElement}!PlotVariableTrackElement@{PlotVariableTrackElement}}
+\index{PlotVariableTrackElement@{PlotVariableTrackElement}!TTrackElement@{TTrackElement}}
+\doxysubsubsection{\texorpdfstring{PlotVariableTrackElement()}{PlotVariableTrackElement()}}
 {\footnotesize\ttfamily void T\+Track\+Element\+::\+Plot\+Variable\+Track\+Element (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{\mbox{\hyperlink{class_t_display}{T\+Display}} $\ast$}]{Disp }\end{DoxyParamCaption}) const}
 
 Plot the element on the display
 
 \textquotesingle{}variable\textquotesingle{} indicates that the element may be named and if so may be plotted striped or solid depending on whether the name has been set 
 
-\subsection{Member Data Documentation}
+\doxysubsection{Member Data Documentation}
 \mbox{\Hypertarget{class_t_track_element_aa74717ece7b257122688b6f5855d6125}\label{class_t_track_element_aa74717ece7b257122688b6f5855d6125}} 
-\index{T\+Track\+Element@{T\+Track\+Element}!Active\+Track\+Element\+Name@{Active\+Track\+Element\+Name}}
-\index{Active\+Track\+Element\+Name@{Active\+Track\+Element\+Name}!T\+Track\+Element@{T\+Track\+Element}}
-\subsubsection{\texorpdfstring{Active\+Track\+Element\+Name}{ActiveTrackElementName}}
+\index{TTrackElement@{TTrackElement}!ActiveTrackElementName@{ActiveTrackElementName}}
+\index{ActiveTrackElementName@{ActiveTrackElementName}!TTrackElement@{TTrackElement}}
+\doxysubsubsection{\texorpdfstring{ActiveTrackElementName}{ActiveTrackElementName}}
 {\footnotesize\ttfamily Ansi\+String T\+Track\+Element\+::\+Active\+Track\+Element\+Name}
 
 Location name used either in the timetable or for a continuation (continuation names not used in timetable as trains can\textquotesingle{}t stop there). Only active track elements where there are platforms or non-\/station named locations have Active\+Track\+Element\+Names \mbox{\Hypertarget{class_t_track_element_a16594caf5c9e6a35bd4120ad639b8cc2}\label{class_t_track_element_a16594caf5c9e6a35bd4120ad639b8cc2}} 
-\index{T\+Track\+Element@{T\+Track\+Element}!Attribute@{Attribute}}
-\index{Attribute@{Attribute}!T\+Track\+Element@{T\+Track\+Element}}
-\subsubsection{\texorpdfstring{Attribute}{Attribute}}
+\index{TTrackElement@{TTrackElement}!Attribute@{Attribute}}
+\index{Attribute@{Attribute}!TTrackElement@{TTrackElement}}
+\doxysubsubsection{\texorpdfstring{Attribute}{Attribute}}
 {\footnotesize\ttfamily int T\+Track\+Element\+::\+Attribute}
 
 special variable used only for points \& signals, ignored otherwise points\+: 0=set to go straight, 1=set to diverge; where both legs diverge 0=set to left fork signals\+: 0=red; 1=yellow; 2=double yellow; 3 = green; Level crossing\+: 0 = raised barriers = closed to trains; 1 = lowered barriers = open to trains; 2 = changing state = closed to trains \mbox{\Hypertarget{class_t_track_element_ae4aec8db868ce67f4ec275ce5a2249dc}\label{class_t_track_element_ae4aec8db868ce67f4ec275ce5a2249dc}} 
-\index{T\+Track\+Element@{T\+Track\+Element}!Location\+Name@{Location\+Name}}
-\index{Location\+Name@{Location\+Name}!T\+Track\+Element@{T\+Track\+Element}}
-\subsubsection{\texorpdfstring{Location\+Name}{LocationName}}
+\index{TTrackElement@{TTrackElement}!LocationName@{LocationName}}
+\index{LocationName@{LocationName}!TTrackElement@{TTrackElement}}
+\doxysubsubsection{\texorpdfstring{LocationName}{LocationName}}
 {\footnotesize\ttfamily Ansi\+String T\+Track\+Element\+::\+Location\+Name}
 
-location name not used for timetabling, only for identification\+: platforms, non-\/station named locations, concourses and footbridges have Location\+Names \mbox{\Hypertarget{class_t_track_element_abd898b7031200a2f24c1315b52c965cd}\label{class_t_track_element_abd898b7031200a2f24c1315b52c965cd}} 
-\index{T\+Track\+Element@{T\+Track\+Element}!Speed\+Limit23@{Speed\+Limit23}}
-\index{Speed\+Limit23@{Speed\+Limit23}!T\+Track\+Element@{T\+Track\+Element}}
-\subsubsection{\texorpdfstring{Speed\+Limit23}{SpeedLimit23}}
+location name not used for timetabling, only for identification\+: platforms, non-\/station named locations, concourses and footcrossings have Location\+Names \mbox{\Hypertarget{class_t_track_element_abd898b7031200a2f24c1315b52c965cd}\label{class_t_track_element_abd898b7031200a2f24c1315b52c965cd}} 
+\index{TTrackElement@{TTrackElement}!SpeedLimit23@{SpeedLimit23}}
+\index{SpeedLimit23@{SpeedLimit23}!TTrackElement@{TTrackElement}}
+\doxysubsubsection{\texorpdfstring{SpeedLimit23}{SpeedLimit23}}
 {\footnotesize\ttfamily int T\+Track\+Element\+::\+Speed\+Limit23}
 
 Element lengths and speed limits, ...01 is for the track with link positions \mbox{[}0\mbox{]} and \mbox{[}1\mbox{]}, ...23 for \mbox{[}2\mbox{]} and \mbox{[}3\mbox{]}, set to -\/1 if not used (lengths in m \& speed limits in km/h) \mbox{\Hypertarget{class_t_track_element_af6b589b13c3b59adb3c493816316ffe1}\label{class_t_track_element_af6b589b13c3b59adb3c493816316ffe1}} 
-\index{T\+Track\+Element@{T\+Track\+Element}!Station\+Entry\+Stop\+Link\+Pos2@{Station\+Entry\+Stop\+Link\+Pos2}}
-\index{Station\+Entry\+Stop\+Link\+Pos2@{Station\+Entry\+Stop\+Link\+Pos2}!T\+Track\+Element@{T\+Track\+Element}}
-\subsubsection{\texorpdfstring{Station\+Entry\+Stop\+Link\+Pos2}{StationEntryStopLinkPos2}}
+\index{TTrackElement@{TTrackElement}!StationEntryStopLinkPos2@{StationEntryStopLinkPos2}}
+\index{StationEntryStopLinkPos2@{StationEntryStopLinkPos2}!TTrackElement@{TTrackElement}}
+\doxysubsubsection{\texorpdfstring{StationEntryStopLinkPos2}{StationEntryStopLinkPos2}}
 {\footnotesize\ttfamily int T\+Track\+Element\+::\+Station\+Entry\+Stop\+Link\+Pos2}
 
 Used for track at platforms and non-\/station named locations to mark the train front element stop position, there are two for the two directions of travel, set to -\/1 if not used \mbox{\Hypertarget{class_t_track_element_aa3d8b1fef605f7ef4e6b09360abbb528}\label{class_t_track_element_aa3d8b1fef605f7ef4e6b09360abbb528}} 
-\index{T\+Track\+Element@{T\+Track\+Element}!Train\+I\+D\+On\+Bridge\+Track\+Pos23@{Train\+I\+D\+On\+Bridge\+Track\+Pos23}}
-\index{Train\+I\+D\+On\+Bridge\+Track\+Pos23@{Train\+I\+D\+On\+Bridge\+Track\+Pos23}!T\+Track\+Element@{T\+Track\+Element}}
-\subsubsection{\texorpdfstring{Train\+I\+D\+On\+Bridge\+Track\+Pos23}{TrainIDOnBridgeTrackPos23}}
+\index{TTrackElement@{TTrackElement}!TrainIDOnBridgeTrackPos23@{TrainIDOnBridgeTrackPos23}}
+\index{TrainIDOnBridgeTrackPos23@{TrainIDOnBridgeTrackPos23}!TTrackElement@{TTrackElement}}
+\doxysubsubsection{\texorpdfstring{TrainIDOnBridgeTrackPos23}{TrainIDOnBridgeTrackPos23}}
 {\footnotesize\ttfamily int T\+Track\+Element\+::\+Train\+I\+D\+On\+Bridge\+Track\+Pos23}
 
 Set to the Train\+ID value when a train is present on the element, bridges can have two trains present so the ...01 and ...23 values give the Train\+I\+Ds for track with link positions \mbox{[}0\mbox{]} \& \mbox{[}1\mbox{]}, and \mbox{[}2\mbox{]} \& \mbox{[}3\mbox{]} respectively 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-C\+:/\+Programming work/railway development after v2.\+2.\+0/Track\+Unit.\+h\item 
-C\+:/\+Programming work/railway development after v2.\+2.\+0/Track\+Unit.\+cpp\end{DoxyCompactItemize}
+Track\+Unit.\+h\item 
+Track\+Unit.\+cpp\end{DoxyCompactItemize}

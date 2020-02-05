@@ -52,14 +52,7 @@ TRailGraphics *RailGraphics;
 
 TRailGraphics::TRailGraphics()
 {
-//582 graphics files in this unit, 68 non-transparent (62 alphanumerics, bmSolidBgnd, smSolidBgnd,
-//1 point blank & 3 signal blanks) & 514 transparent
-//bmTransparentBgnd & bmSolidBgnd both created from same file, bmSolidBgnd non-transparent & bmTransparentBgnd transparent
-// GridBitmap created from existing small bitmaps
-//22 small graphics created equal to existing graphics: sm68;sm69;sm70;sm71;sm72;sm73;sm74;sm75;sm113;sm114;sm116;sm118;sm119;sm120;sm121;
-//sm122;sm123;sm124;sm125;sm126;sm127;sm128;
-
-//52 graphics loaded in Interface but not in RailGraphics
+//See Graphics.xlsx for details of all graphics
 
     // transparent graphics
     bm10 = new Graphics::TBitmap; bm10->LoadFromResourceName(0, "bm10"); bm10->Transparent = true; bm10->TransparentColor = clB5G5R5;
@@ -147,7 +140,7 @@ TRailGraphics::TRailGraphics()
     bm39Diverging = new Graphics::TBitmap; bm39Diverging->LoadFromResourceName(0, "bm39Diverging"); bm39Diverging->Transparent = true; bm39Diverging->TransparentColor = clB5G5R5;
     bm39Straight = new Graphics::TBitmap; bm39Straight->LoadFromResourceName(0, "bm39Straight"); bm39Straight->Transparent = true; bm39Straight->TransparentColor = clB5G5R5;
     bm40 = new Graphics::TBitmap; bm40->LoadFromResourceName(0, "bm40"); bm40->Transparent = true; bm40->TransparentColor = clB5G5R5;
-    bm40Diverging = new Graphics::TBitmap; bm40Diverging->LoadFromResourceName(0, "bm40Diverging"); bm40Diverging->Transparent = true; bm40Diverging->TransparentColor = clB5G5R5;
+	bm40Diverging = new Graphics::TBitmap; bm40Diverging->LoadFromResourceName(0, "bm40Diverging"); bm40Diverging->Transparent = true; bm40Diverging->TransparentColor = clB5G5R5;
     bm40Straight = new Graphics::TBitmap; bm40Straight->LoadFromResourceName(0, "bm40Straight"); bm40Straight->Transparent = true; bm40Straight->TransparentColor = clB5G5R5;
     bm41 = new Graphics::TBitmap; bm41->LoadFromResourceName(0, "bm41"); bm41->Transparent = true; bm41->TransparentColor = clB5G5R5;
     bm41Diverging = new Graphics::TBitmap; bm41Diverging->LoadFromResourceName(0, "bm41Diverging"); bm41Diverging->Transparent = true; bm41Diverging->TransparentColor = clB5G5R5;
@@ -189,7 +182,7 @@ TRailGraphics::TRailGraphics()
     bm71CallingOn = new Graphics::TBitmap; bm71CallingOn->LoadFromResourceName(0, "bm71CallingOn"); bm71CallingOn->Transparent = true; bm71CallingOn->TransparentColor = clB5G5R5;
     bm71dblyellow = new Graphics::TBitmap; bm71dblyellow->LoadFromResourceName(0, "bm71dblyellow"); bm71dblyellow->Transparent = true; bm71dblyellow->TransparentColor = clB5G5R5;
     bm71grounddblred = new Graphics::TBitmap; bm71grounddblred->LoadFromResourceName(0, "bm71grounddblred"); bm71grounddblred->Transparent = true; bm71grounddblred->TransparentColor = clB5G5R5;
-    bm71grounddblwhite = new Graphics::TBitmap; bm71grounddblwhite->LoadFromResourceName(0, "bm71grounddblwhite"); bm71grounddblwhite->Transparent = true; bm71grounddblwhite->TransparentColor = clB5G5R5;
+	bm71grounddblwhite = new Graphics::TBitmap; bm71grounddblwhite->LoadFromResourceName(0, "bm71grounddblwhite"); bm71grounddblwhite->Transparent = true; bm71grounddblwhite->TransparentColor = clB5G5R5;
     bm71green = new Graphics::TBitmap; bm71green->LoadFromResourceName(0, "bm71green"); bm71green->Transparent = true; bm71green->TransparentColor = clB5G5R5;
     bm71yellow = new Graphics::TBitmap; bm71yellow->LoadFromResourceName(0, "bm71yellow"); bm71yellow->Transparent = true; bm71yellow->TransparentColor = clB5G5R5;
     bm72CallingOn = new Graphics::TBitmap; bm72CallingOn->LoadFromResourceName(0, "bm72CallingOn"); bm72CallingOn->Transparent = true; bm72CallingOn->TransparentColor = clB5G5R5;
@@ -231,7 +224,7 @@ TRailGraphics::TRailGraphics()
     bm9 = new Graphics::TBitmap; bm9->LoadFromResourceName(0, "bm9"); bm9->Transparent = true; bm9->TransparentColor = clB5G5R5;
     bm93set = new Graphics::TBitmap; bm93set->LoadFromResourceName(0, "bm93set"); bm93set->Transparent = true; bm93set->TransparentColor = clB5G5R5;
     bm93unset = new Graphics::TBitmap; bm93unset->LoadFromResourceName(0, "bm93unset"); bm93unset->Transparent = true; bm93unset->TransparentColor = clB5G5R5;
-    bm94set = new Graphics::TBitmap; bm94set->LoadFromResourceName(0, "bm94set"); bm94set->Transparent = true; bm94set->TransparentColor = clB5G5R5;
+	bm94set = new Graphics::TBitmap; bm94set->LoadFromResourceName(0, "bm94set"); bm94set->Transparent = true; bm94set->TransparentColor = clB5G5R5;
     bm94unset = new Graphics::TBitmap; bm94unset->LoadFromResourceName(0, "bm94unset"); bm94unset->Transparent = true; bm94unset->TransparentColor = clB5G5R5;
     bm9Diverging = new Graphics::TBitmap; bm9Diverging->LoadFromResourceName(0, "bm9Diverging"); bm9Diverging->Transparent = true; bm9Diverging->TransparentColor = clB5G5R5;
     bm9Straight = new Graphics::TBitmap; bm9Straight->LoadFromResourceName(0, "bm9Straight"); bm9Straight->Transparent = true; bm9Straight->TransparentColor = clB5G5R5;
@@ -301,41 +294,45 @@ TRailGraphics::TRailGraphics()
     gl120 = new Graphics::TBitmap; gl120->LoadFromResourceName(0, "gl120"); gl120->Transparent = true; gl120->TransparentColor = clB5G5R5;
     gl121 = new Graphics::TBitmap; gl121->LoadFromResourceName(0, "gl121"); gl121->Transparent = true; gl121->TransparentColor = clB5G5R5;
     gl122 = new Graphics::TBitmap; gl122->LoadFromResourceName(0, "gl122"); gl122->Transparent = true; gl122->TransparentColor = clB5G5R5;
-    gl123 = new Graphics::TBitmap; gl123->LoadFromResourceName(0, "gl123"); gl123->Transparent = true; gl123->TransparentColor = clB5G5R5;
+	gl123 = new Graphics::TBitmap; gl123->LoadFromResourceName(0, "gl123"); gl123->Transparent = true; gl123->TransparentColor = clB5G5R5;
     gl124 = new Graphics::TBitmap; gl124->LoadFromResourceName(0, "gl124"); gl124->Transparent = true; gl124->TransparentColor = clB5G5R5;
     gl125 = new Graphics::TBitmap; gl125->LoadFromResourceName(0, "gl125"); gl125->Transparent = true; gl125->TransparentColor = clB5G5R5;
     gl126 = new Graphics::TBitmap; gl126->LoadFromResourceName(0, "gl126"); gl126->Transparent = true; gl126->TransparentColor = clB5G5R5;
-    gl127 = new Graphics::TBitmap; gl127->LoadFromResourceName(0, "gl127"); gl127->Transparent = true; gl127->TransparentColor = clB5G5R5;
+	gl127 = new Graphics::TBitmap; gl127->LoadFromResourceName(0, "gl127"); gl127->Transparent = true; gl127->TransparentColor = clB5G5R5;
     gl128 = new Graphics::TBitmap; gl128->LoadFromResourceName(0, "gl128"); gl128->Transparent = true; gl128->TransparentColor = clB5G5R5;
     gl129 = new Graphics::TBitmap; gl129->LoadFromResourceName(0, "gl129"); gl129->Transparent = true; gl129->TransparentColor = clB5G5R5;
-    gl129Striped = new Graphics::TBitmap; gl129Striped->LoadFromResourceName(0, "gl129Striped"); gl129Striped->Transparent = true; gl129Striped->TransparentColor = clB5G5R5;
-    gl13 = new Graphics::TBitmap; gl13->LoadFromResourceName(0, "gl13"); gl13->Transparent = true; gl13->TransparentColor = clB5G5R5;
-    gl130 = new Graphics::TBitmap; gl130->LoadFromResourceName(0, "gl130"); gl130->Transparent = true; gl130->TransparentColor = clB5G5R5;
-    gl130Striped = new Graphics::TBitmap; gl130Striped->LoadFromResourceName(0, "gl130Striped"); gl130Striped->Transparent = true; gl130Striped->TransparentColor = clB5G5R5;
-    gl131 = new Graphics::TBitmap; gl131->LoadFromResourceName(0, "gl131"); gl131->Transparent = true; gl131->TransparentColor = clB5G5R5;
-    gl132 = new Graphics::TBitmap; gl132->LoadFromResourceName(0, "gl132"); gl132->Transparent = true; gl132->TransparentColor = clB5G5R5;
-    gl133 = new Graphics::TBitmap; gl133->LoadFromResourceName(0, "gl133"); gl133->Transparent = true; gl133->TransparentColor = clB5G5R5;
-    gl134 = new Graphics::TBitmap; gl134->LoadFromResourceName(0, "gl134"); gl134->Transparent = true; gl134->TransparentColor = clB5G5R5;
-    gl135 = new Graphics::TBitmap; gl135->LoadFromResourceName(0, "gl135"); gl135->Transparent = true; gl135->TransparentColor = clB5G5R5;
-    gl136 = new Graphics::TBitmap; gl136->LoadFromResourceName(0, "gl136"); gl136->Transparent = true; gl136->TransparentColor = clB5G5R5;
-    gl137 = new Graphics::TBitmap; gl137->LoadFromResourceName(0, "gl137"); gl137->Transparent = true; gl137->TransparentColor = clB5G5R5;
-    gl138 = new Graphics::TBitmap; gl138->LoadFromResourceName(0, "gl138"); gl138->Transparent = true; gl138->TransparentColor = clB5G5R5;
-    gl139 = new Graphics::TBitmap; gl139->LoadFromResourceName(0, "gl139"); gl139->Transparent = true; gl139->TransparentColor = clB5G5R5;
-    gl14 = new Graphics::TBitmap; gl14->LoadFromResourceName(0, "gl14"); gl14->Transparent = true; gl14->TransparentColor = clB5G5R5;
-    gl140 = new Graphics::TBitmap; gl140->LoadFromResourceName(0, "gl140"); gl140->Transparent = true; gl140->TransparentColor = clB5G5R5;
-    gl141 = new Graphics::TBitmap; gl141->LoadFromResourceName(0, "gl141"); gl141->Transparent = true; gl141->TransparentColor = clB5G5R5;
-    gl142 = new Graphics::TBitmap; gl142->LoadFromResourceName(0, "gl142"); gl142->Transparent = true; gl142->TransparentColor = clB5G5R5;
-    gl143 = new Graphics::TBitmap; gl143->LoadFromResourceName(0, "gl143"); gl143->Transparent = true; gl143->TransparentColor = clB5G5R5;
-    gl15 = new Graphics::TBitmap; gl15->LoadFromResourceName(0, "gl15"); gl15->Transparent = true; gl15->TransparentColor = clB5G5R5;
-    gl16 = new Graphics::TBitmap; gl16->LoadFromResourceName(0, "gl16"); gl16->Transparent = true; gl16->TransparentColor = clB5G5R5;
-    gl18 = new Graphics::TBitmap; gl18->LoadFromResourceName(0, "gl18"); gl18->Transparent = true; gl18->TransparentColor = clB5G5R5;
-    gl19 = new Graphics::TBitmap; gl19->LoadFromResourceName(0, "gl19"); gl19->Transparent = true; gl19->TransparentColor = clB5G5R5;
-    gl2 = new Graphics::TBitmap; gl2->LoadFromResourceName(0, "gl2"); gl2->Transparent = true; gl2->TransparentColor = clB5G5R5;
-    gl20 = new Graphics::TBitmap; gl20->LoadFromResourceName(0, "gl20"); gl20->Transparent = true; gl20->TransparentColor = clB5G5R5;
-    gl21 = new Graphics::TBitmap; gl21->LoadFromResourceName(0, "gl21"); gl21->Transparent = true; gl21->TransparentColor = clB5G5R5;
-    gl22 = new Graphics::TBitmap; gl22->LoadFromResourceName(0, "gl22"); gl22->Transparent = true; gl22->TransparentColor = clB5G5R5;
-    gl23 = new Graphics::TBitmap; gl23->LoadFromResourceName(0, "gl23"); gl23->Transparent = true; gl23->TransparentColor = clB5G5R5;
-    gl24 = new Graphics::TBitmap; gl24->LoadFromResourceName(0, "gl24"); gl24->Transparent = true; gl24->TransparentColor = clB5G5R5;
+	gl129Striped = new Graphics::TBitmap; gl129Striped->LoadFromResourceName(0, "gl129Striped"); gl129Striped->Transparent = true; gl129Striped->TransparentColor = clB5G5R5;
+	gl13 = new Graphics::TBitmap; gl13->LoadFromResourceName(0, "gl13"); gl13->Transparent = true; gl13->TransparentColor = clB5G5R5;
+	gl130 = new Graphics::TBitmap; gl130->LoadFromResourceName(0, "gl130"); gl130->Transparent = true; gl130->TransparentColor = clB5G5R5;
+	gl130Striped = new Graphics::TBitmap; gl130Striped->LoadFromResourceName(0, "gl130Striped"); gl130Striped->Transparent = true; gl130Striped->TransparentColor = clB5G5R5;
+	gl131 = new Graphics::TBitmap; gl131->LoadFromResourceName(0, "gl131"); gl131->Transparent = true; gl131->TransparentColor = clB5G5R5;
+	gl132 = new Graphics::TBitmap; gl132->LoadFromResourceName(0, "gl132"); gl132->Transparent = true; gl132->TransparentColor = clB5G5R5;
+	gl133 = new Graphics::TBitmap; gl133->LoadFromResourceName(0, "gl133"); gl133->Transparent = true; gl133->TransparentColor = clB5G5R5;
+	gl134 = new Graphics::TBitmap; gl134->LoadFromResourceName(0, "gl134"); gl134->Transparent = true; gl134->TransparentColor = clB5G5R5;
+	gl135 = new Graphics::TBitmap; gl135->LoadFromResourceName(0, "gl135"); gl135->Transparent = true; gl135->TransparentColor = clB5G5R5;
+	gl136 = new Graphics::TBitmap; gl136->LoadFromResourceName(0, "gl136"); gl136->Transparent = true; gl136->TransparentColor = clB5G5R5;
+	gl137 = new Graphics::TBitmap; gl137->LoadFromResourceName(0, "gl137"); gl137->Transparent = true; gl137->TransparentColor = clB5G5R5;
+	gl138 = new Graphics::TBitmap; gl138->LoadFromResourceName(0, "gl138"); gl138->Transparent = true; gl138->TransparentColor = clB5G5R5;
+	gl139 = new Graphics::TBitmap; gl139->LoadFromResourceName(0, "gl139"); gl139->Transparent = true; gl139->TransparentColor = clB5G5R5;
+	gl14 = new Graphics::TBitmap; gl14->LoadFromResourceName(0, "gl14"); gl14->Transparent = true; gl14->TransparentColor = clB5G5R5;
+	gl140 = new Graphics::TBitmap; gl140->LoadFromResourceName(0, "gl140"); gl140->Transparent = true; gl140->TransparentColor = clB5G5R5;
+	gl141 = new Graphics::TBitmap; gl141->LoadFromResourceName(0, "gl141"); gl141->Transparent = true; gl141->TransparentColor = clB5G5R5;
+	gl142 = new Graphics::TBitmap; gl142->LoadFromResourceName(0, "gl142"); gl142->Transparent = true; gl142->TransparentColor = clB5G5R5;
+	gl143 = new Graphics::TBitmap; gl143->LoadFromResourceName(0, "gl143"); gl143->Transparent = true; gl143->TransparentColor = clB5G5R5;
+	gl145 = new Graphics::TBitmap; gl145->LoadFromResourceName(0, "gl145"); gl145->Transparent = true; gl145->TransparentColor = clB5G5R5;
+	gl145Striped = new Graphics::TBitmap; gl145Striped->LoadFromResourceName(0, "gl145Striped"); gl145Striped->Transparent = true; gl145Striped->TransparentColor = clB5G5R5;
+	gl146 = new Graphics::TBitmap; gl146->LoadFromResourceName(0, "gl146"); gl146->Transparent = true; gl146->TransparentColor = clB5G5R5;
+	gl146Striped = new Graphics::TBitmap; gl146Striped->LoadFromResourceName(0, "gl146Striped"); gl146Striped->Transparent = true; gl146Striped->TransparentColor = clB5G5R5;
+	gl15 = new Graphics::TBitmap; gl15->LoadFromResourceName(0, "gl15"); gl15->Transparent = true; gl15->TransparentColor = clB5G5R5;
+	gl16 = new Graphics::TBitmap; gl16->LoadFromResourceName(0, "gl16"); gl16->Transparent = true; gl16->TransparentColor = clB5G5R5;
+	gl18 = new Graphics::TBitmap; gl18->LoadFromResourceName(0, "gl18"); gl18->Transparent = true; gl18->TransparentColor = clB5G5R5;
+	gl19 = new Graphics::TBitmap; gl19->LoadFromResourceName(0, "gl19"); gl19->Transparent = true; gl19->TransparentColor = clB5G5R5;
+	gl2 = new Graphics::TBitmap; gl2->LoadFromResourceName(0, "gl2"); gl2->Transparent = true; gl2->TransparentColor = clB5G5R5;
+	gl20 = new Graphics::TBitmap; gl20->LoadFromResourceName(0, "gl20"); gl20->Transparent = true; gl20->TransparentColor = clB5G5R5;
+	gl21 = new Graphics::TBitmap; gl21->LoadFromResourceName(0, "gl21"); gl21->Transparent = true; gl21->TransparentColor = clB5G5R5;
+	gl22 = new Graphics::TBitmap; gl22->LoadFromResourceName(0, "gl22"); gl22->Transparent = true; gl22->TransparentColor = clB5G5R5;
+	gl23 = new Graphics::TBitmap; gl23->LoadFromResourceName(0, "gl23"); gl23->Transparent = true; gl23->TransparentColor = clB5G5R5;
+	gl24 = new Graphics::TBitmap; gl24->LoadFromResourceName(0, "gl24"); gl24->Transparent = true; gl24->TransparentColor = clB5G5R5;
     gl25 = new Graphics::TBitmap; gl25->LoadFromResourceName(0, "gl25"); gl25->Transparent = true; gl25->TransparentColor = clB5G5R5;
     gl26 = new Graphics::TBitmap; gl26->LoadFromResourceName(0, "gl26"); gl26->Transparent = true; gl26->TransparentColor = clB5G5R5;
     gl27 = new Graphics::TBitmap; gl27->LoadFromResourceName(0, "gl27"); gl27->Transparent = true; gl27->TransparentColor = clB5G5R5;
@@ -347,7 +344,7 @@ TRailGraphics::TRailGraphics()
     gl32 = new Graphics::TBitmap; gl32->LoadFromResourceName(0, "gl32"); gl32->Transparent = true; gl32->TransparentColor = clB5G5R5;
     gl33 = new Graphics::TBitmap; gl33->LoadFromResourceName(0, "gl33"); gl33->Transparent = true; gl33->TransparentColor = clB5G5R5;
     gl34 = new Graphics::TBitmap; gl34->LoadFromResourceName(0, "gl34"); gl34->Transparent = true; gl34->TransparentColor = clB5G5R5;
-    gl35 = new Graphics::TBitmap; gl35->LoadFromResourceName(0, "gl35"); gl35->Transparent = true; gl35->TransparentColor = clB5G5R5;
+	gl35 = new Graphics::TBitmap; gl35->LoadFromResourceName(0, "gl35"); gl35->Transparent = true; gl35->TransparentColor = clB5G5R5;
     gl36 = new Graphics::TBitmap; gl36->LoadFromResourceName(0, "gl36"); gl36->Transparent = true; gl36->TransparentColor = clB5G5R5;
     gl37 = new Graphics::TBitmap; gl37->LoadFromResourceName(0, "gl37"); gl37->Transparent = true; gl37->TransparentColor = clB5G5R5;
     gl38 = new Graphics::TBitmap; gl38->LoadFromResourceName(0, "gl38"); gl38->Transparent = true; gl38->TransparentColor = clB5G5R5;
@@ -390,8 +387,10 @@ TRailGraphics::TRailGraphics()
     gl71 = new Graphics::TBitmap; gl71->LoadFromResourceName(0, "gl71"); gl71->Transparent = true; gl71->TransparentColor = clB5G5R5;
     gl72 = new Graphics::TBitmap; gl72->LoadFromResourceName(0, "gl72"); gl72->Transparent = true; gl72->TransparentColor = clB5G5R5;
     gl73 = new Graphics::TBitmap; gl73->LoadFromResourceName(0, "gl73"); gl73->Transparent = true; gl73->TransparentColor = clB5G5R5;
-    gl74 = new Graphics::TBitmap; gl74->LoadFromResourceName(0, "gl74"); gl74->Transparent = true; gl74->TransparentColor = clB5G5R5;
-    gl75 = new Graphics::TBitmap; gl75->LoadFromResourceName(0, "gl75"); gl75->Transparent = true; gl75->TransparentColor = clB5G5R5;
+	gl73grounddblred = new Graphics::TBitmap; gl73grounddblred->LoadFromResourceName(0, "gl73grounddblred"); gl73grounddblred->Transparent = true; gl73grounddblred->TransparentColor = clB5G5R5;
+	gl74 = new Graphics::TBitmap; gl74->LoadFromResourceName(0, "gl74"); gl74->Transparent = true; gl74->TransparentColor = clB5G5R5;
+	gl74grounddblred = new Graphics::TBitmap; gl74grounddblred->LoadFromResourceName(0, "gl74grounddblred"); gl74grounddblred->Transparent = true; gl74grounddblred->TransparentColor = clB5G5R5;
+	gl75 = new Graphics::TBitmap; gl75->LoadFromResourceName(0, "gl75"); gl75->Transparent = true; gl75->TransparentColor = clB5G5R5;
     gl76 = new Graphics::TBitmap; gl76->LoadFromResourceName(0, "gl76"); gl76->Transparent = true; gl76->TransparentColor = clB5G5R5;
     gl76Striped = new Graphics::TBitmap; gl76Striped->LoadFromResourceName(0, "gl76Striped"); gl76Striped->Transparent = true; gl76Striped->TransparentColor = clB5G5R5;
     gl77 = new Graphics::TBitmap; gl77->LoadFromResourceName(0, "gl77"); gl77->Transparent = true; gl77->TransparentColor = clB5G5R5;
@@ -452,7 +451,7 @@ TRailGraphics::TRailGraphics()
     sm115 = new Graphics::TBitmap; sm115->LoadFromResourceName(0, "sm115"); sm115->Transparent = true; sm115->TransparentColor = clB5G5R5;
     sm117 = new Graphics::TBitmap; sm117->LoadFromResourceName(0, "sm117"); sm117->Transparent = true; sm117->TransparentColor = clB5G5R5;
     sm12 = new Graphics::TBitmap; sm12->LoadFromResourceName(0, "sm12"); sm12->Transparent = true; sm12->TransparentColor = clB5G5R5;
-    sm129 = new Graphics::TBitmap; sm129->LoadFromResourceName(0, "sm129"); sm129->Transparent = true; sm129->TransparentColor = clB5G5R5;
+	sm129 = new Graphics::TBitmap; sm129->LoadFromResourceName(0, "sm129"); sm129->Transparent = true; sm129->TransparentColor = clB5G5R5;
     sm129striped = new Graphics::TBitmap; sm129striped->LoadFromResourceName(0, "sm129striped"); sm129striped->Transparent = true; sm129striped->TransparentColor = clB5G5R5;
     sm13 = new Graphics::TBitmap; sm13->LoadFromResourceName(0, "sm13"); sm13->Transparent = true; sm13->TransparentColor = clB5G5R5;
     sm130 = new Graphics::TBitmap; sm130->LoadFromResourceName(0, "sm130"); sm130->Transparent = true; sm130->TransparentColor = clB5G5R5;
@@ -574,7 +573,7 @@ TRailGraphics::TRailGraphics()
     UnderVFootbridge = new Graphics::TBitmap; UnderVFootbridge->LoadFromResourceName(0, "UnderVFootbridge"); UnderVFootbridge->Transparent = true; UnderVFootbridge->TransparentColor = clB5G5R5;
 
     // extra from bmSolidBgnd bitmap file but transparent
-    bmTransparentBgnd = new Graphics::TBitmap; bmTransparentBgnd->LoadFromResourceName(0, "bmSolidBgnd"); bmTransparentBgnd->Transparent = true; bmTransparentBgnd->TransparentColor = clB5G5R5;
+	bmTransparentBgnd = new Graphics::TBitmap; bmTransparentBgnd->LoadFromResourceName(0, "bmSolidBgnd"); bmTransparentBgnd->Transparent = true; bmTransparentBgnd->TransparentColor = clB5G5R5;
 
     // level crossing graphics
     LCBothHor = new Graphics::TBitmap; LCBothHor->LoadFromResourceName(0, "LCBothHor"); LCBothHor->Transparent = true; LCBothHor->TransparentColor = clB5G5R5;
@@ -660,27 +659,27 @@ TRailGraphics::TRailGraphics()
     bmStraightEWSignalBlank = new Graphics::TBitmap; bmStraightEWSignalBlank->LoadFromResourceName(0, "bmStraightEWSignalBlank"); bmStraightEWSignalBlank->Transparent = false;
     bmStraightNSSignalBlank = new Graphics::TBitmap; bmStraightNSSignalBlank->LoadFromResourceName(0, "bmStraightNSSignalBlank"); bmStraightNSSignalBlank->Transparent = false;
 
-//These are the new glyphs for v2.3.0 that stay black
-    SpeedBut68NormBlackGlyph = new Graphics::TBitmap; SpeedBut68NormBlackGlyph->LoadFromResourceName(0, "gl68");
-    SpeedBut69NormBlackGlyph = new Graphics::TBitmap; SpeedBut69NormBlackGlyph->LoadFromResourceName(0, "gl69");
-    SpeedBut70NormBlackGlyph = new Graphics::TBitmap; SpeedBut70NormBlackGlyph->LoadFromResourceName(0, "gl70");
-    SpeedBut71NormBlackGlyph = new Graphics::TBitmap; SpeedBut71NormBlackGlyph->LoadFromResourceName(0, "gl71");
-    SpeedBut72NormBlackGlyph = new Graphics::TBitmap; SpeedBut72NormBlackGlyph->Assign(gl72); SpeedBut72NormBlackGlyph->Transparent = false;
-    SpeedBut73NormBlackGlyph = new Graphics::TBitmap; SpeedBut73NormBlackGlyph->Assign(gl73); SpeedBut73NormBlackGlyph->Transparent = false;
-    SpeedBut74NormBlackGlyph = new Graphics::TBitmap; SpeedBut74NormBlackGlyph->Assign(gl74); SpeedBut74NormBlackGlyph->Transparent = false;
-    SpeedBut75NormBlackGlyph = new Graphics::TBitmap; SpeedBut75NormBlackGlyph->Assign(gl75); SpeedBut75NormBlackGlyph->Transparent = false;
+//These are the new glyphs for v2.3.0 that stay black, they are transparent, using the bottom LH corner pixel as the transparent colour
+	SpeedBut68NormBlackGlyph = new Graphics::TBitmap; SpeedBut68NormBlackGlyph->Assign(gl68); //changed after v2.3.0 from 'LoadFromResourceName' for consistency
+	SpeedBut69NormBlackGlyph = new Graphics::TBitmap; SpeedBut69NormBlackGlyph->Assign(gl69);
+	SpeedBut70NormBlackGlyph = new Graphics::TBitmap; SpeedBut70NormBlackGlyph->Assign(gl70);
+	SpeedBut71NormBlackGlyph = new Graphics::TBitmap; SpeedBut71NormBlackGlyph->Assign(gl71);
+	SpeedBut72NormBlackGlyph = new Graphics::TBitmap; SpeedBut72NormBlackGlyph->Assign(gl72);
+	SpeedBut73NormBlackGlyph = new Graphics::TBitmap; SpeedBut73NormBlackGlyph->Assign(gl73);
+	SpeedBut74NormBlackGlyph = new Graphics::TBitmap; SpeedBut74NormBlackGlyph->Assign(gl74);
+	SpeedBut75NormBlackGlyph = new Graphics::TBitmap; SpeedBut75NormBlackGlyph->Assign(gl75);
 
-    SpeedBut68GrndBlackGlyph = new Graphics::TBitmap; SpeedBut68GrndBlackGlyph->Assign(bm68grounddblred);
-    SpeedBut69GrndBlackGlyph = new Graphics::TBitmap; SpeedBut69GrndBlackGlyph->Assign(bm69grounddblred);
-    SpeedBut70GrndBlackGlyph = new Graphics::TBitmap; SpeedBut70GrndBlackGlyph->Assign(bm70grounddblred);
-    SpeedBut71GrndBlackGlyph = new Graphics::TBitmap; SpeedBut71GrndBlackGlyph->Assign(bm71grounddblred);
-    SpeedBut72GrndBlackGlyph = new Graphics::TBitmap; SpeedBut72GrndBlackGlyph->Assign(bm72grounddblred);
-    SpeedBut73GrndBlackGlyph = new Graphics::TBitmap; SpeedBut73GrndBlackGlyph->Assign(bm73grounddblred);
-    SpeedBut74GrndBlackGlyph = new Graphics::TBitmap; SpeedBut74GrndBlackGlyph->Assign(bm74grounddblred);
-    SpeedBut75GrndBlackGlyph = new Graphics::TBitmap; SpeedBut75GrndBlackGlyph->Assign(bm75grounddblred);
+	SpeedBut68GrndBlackGlyph = new Graphics::TBitmap; SpeedBut68GrndBlackGlyph->Assign(bm68grounddblred);
+	SpeedBut69GrndBlackGlyph = new Graphics::TBitmap; SpeedBut69GrndBlackGlyph->Assign(bm69grounddblred);
+	SpeedBut70GrndBlackGlyph = new Graphics::TBitmap; SpeedBut70GrndBlackGlyph->Assign(bm70grounddblred);
+	SpeedBut71GrndBlackGlyph = new Graphics::TBitmap; SpeedBut71GrndBlackGlyph->Assign(bm71grounddblred);
+	SpeedBut72GrndBlackGlyph = new Graphics::TBitmap; SpeedBut72GrndBlackGlyph->Assign(bm72grounddblred);
+	SpeedBut73GrndBlackGlyph = new Graphics::TBitmap; SpeedBut73GrndBlackGlyph->Assign(gl73grounddblred); //these have to use 'gl' graphics as bot LH corner = transparent
+	SpeedBut74GrndBlackGlyph = new Graphics::TBitmap; SpeedBut74GrndBlackGlyph->Assign(gl74grounddblred); //colour, & 'bm' graphics have black at that position
+	SpeedBut75GrndBlackGlyph = new Graphics::TBitmap; SpeedBut75GrndBlackGlyph->Assign(bm75grounddblred);
 
     // GridBitmap is a 10 x 9 grid image, quicker to plot these for whole screen than small ones
-    GridBitmap = new Graphics::TBitmap;
+	GridBitmap = new Graphics::TBitmap;
     GridBitmap->PixelFormat = pf8bit;
     GridBitmap->Width = 160;
     GridBitmap->Height = 144;
@@ -792,7 +791,8 @@ TRailGraphics::TRailGraphics()
     LinkGraphicsPtr[22] = gl82; LinkGraphicsPtr[23] = gl83;
     LinkGraphicsPtr[24] = gl84; LinkGraphicsPtr[25] = bm85;
     LinkGraphicsPtr[26] = gl86; LinkGraphicsPtr[27] = gl87;
-    LinkGraphicsPtr[28] = UnderHFootbridge; LinkGraphicsPtr[29] = UnderVFootbridge;
+	LinkGraphicsPtr[28] = UnderHFootbridge;
+	LinkGraphicsPtr[29] = UnderVFootbridge;
 
     BridgeGraphicsPtr[0] = br1; BridgeGraphicsPtr[1] = br2;
     BridgeGraphicsPtr[2] = br3; BridgeGraphicsPtr[3] = br4;
@@ -919,68 +919,84 @@ TRailGraphics::~TRailGraphics()
     delete bm42Straight;
     delete bm43;
     delete bm43Diverging;
-    delete bm43Straight;
-    delete bm45;
-    delete bm46;
-    delete bm50;
-    delete bm51;
-    delete bm53;
-    delete bm54;
-    delete bm56;
-    delete bm59;
-    delete bm65;
-    delete bm68CallingOn;
-    delete bm68dblyellow;
-    delete bm68green;
-    delete bm68yellow;
-    delete bm69CallingOn;
-    delete bm69dblyellow;
-    delete bm69green;
-    delete bm69yellow;
-    delete bm7;
-    delete bm70CallingOn;
-    delete bm70dblyellow;
-    delete bm70green;
-    delete bm70yellow;
-    delete bm71CallingOn;
-    delete bm71dblyellow;
-    delete bm71green;
-    delete bm71yellow;
-    delete bm72CallingOn;
-    delete bm72dblyellow;
-    delete bm72green;
-    delete bm72yellow;
-    delete bm73;
-    delete bm73CallingOn;
-    delete bm73dblyellow;
-    delete bm73green;
-    delete bm73yellow;
-    delete bm74;
-    delete bm74CallingOn;
-    delete bm74dblyellow;
-    delete bm74green;
-    delete bm74yellow;
-    delete bm75CallingOn;
-    delete bm75dblyellow;
-    delete bm75green;
-    delete bm75yellow;
-    delete bm77;
-    delete bm77Striped;
-    delete bm78;
-    delete bm78Striped;
-    delete bm7Diverging;
-    delete bm7Straight;
-    delete bm8;
-    delete bm85;
-    delete bm8Diverging;
-    delete bm8Straight;
-    delete bm9;
-    delete bm93set;
-    delete bm93unset;
-    delete bm94set;
-    delete bm94unset;
-    delete bm9Diverging;
-    delete bm9Straight;
+	delete bm43Straight;
+	delete bm45;
+	delete bm46;
+	delete bm50;
+	delete bm51;
+	delete bm53;
+	delete bm54;
+	delete bm56;
+	delete bm59;
+	delete bm65;
+	delete bm68CallingOn;
+	delete bm68dblyellow;
+	delete bm68grounddblred;  //added after v2.3.0 (missed)
+	delete bm68grounddblwhite;//added after v2.3.0 (missed)
+	delete bm68green;
+	delete bm68yellow;
+	delete bm69CallingOn;
+	delete bm69dblyellow;
+	delete bm69grounddblred;  //added after v2.3.0 (missed)
+	delete bm69grounddblwhite;//added after v2.3.0 (missed)
+	delete bm69green;
+	delete bm69yellow;
+	delete bm7;
+	delete bm70CallingOn;
+	delete bm70dblyellow;
+	delete bm70grounddblred;  //added after v2.3.0 (missed)
+	delete bm70grounddblwhite;//added after v2.3.0 (missed)
+	delete bm70green;
+	delete bm70yellow;
+	delete bm71CallingOn;
+	delete bm71dblyellow;
+	delete bm71grounddblred;  //added after v2.3.0 (missed)
+	delete bm71grounddblwhite;//added after v2.3.0 (missed)
+	delete bm71green;
+	delete bm71yellow;
+	delete bm72CallingOn;
+	delete bm72dblyellow;
+	delete bm72grounddblred;  //added after v2.3.0 (missed)
+	delete bm72grounddblwhite;//added after v2.3.0 (missed)
+	delete bm72green;
+	delete bm72yellow;
+	delete bm73;
+	delete bm73CallingOn;
+	delete bm73dblyellow;
+	delete bm73grounddblred;  //added after v2.3.0 (missed)
+	delete bm73grounddblwhite;//added after v2.3.0 (missed)
+	delete bm73green;
+	delete bm73yellow;
+	delete bm74;
+	delete bm74CallingOn;
+	delete bm74dblyellow;
+	delete bm74grounddblred;  //added after v2.3.0 (missed)
+	delete bm74grounddblwhite;//added after v2.3.0 (missed)
+	delete bm74green;
+	delete bm74yellow;
+	delete bm75CallingOn;
+	delete bm75dblyellow;
+	delete bm75grounddblred;  //added after v2.3.0 (missed)
+	delete bm75grounddblwhite;//added after v2.3.0 (missed)
+	delete bm75green;
+	delete bm75yellow;
+	delete bm77;
+	delete bm77Striped;
+	delete bm78;
+	delete bm78Striped;
+	delete bm7Diverging;
+	delete bm7Straight;
+	delete bm8;
+	delete bm85;
+	delete bm8Diverging;
+	delete bm8Straight;
+	delete bm9;
+	delete bm93set;
+	delete bm93unset;
+	delete bm94set;
+	delete bm94unset;
+	delete bm9Diverging;
+	delete bm9Straight;
     delete bmDiagonalSignalBlank;
     delete bmGreenEllipse;
     delete bmGreenRect;
@@ -1120,33 +1136,37 @@ TRailGraphics::~TRailGraphics()
     delete gl126;
     delete gl127;
     delete gl128;
-    delete gl129;
-    delete gl129Striped;
-    delete gl13;
-    delete gl130;
-    delete gl130Striped;
-    delete gl131;
-    delete gl132;
-    delete gl133;
-    delete gl134;
-    delete gl135;
-    delete gl136;
-    delete gl137;
-    delete gl138;
-    delete gl139;
-    delete gl14;
-    delete gl140;
-    delete gl141;
-    delete gl142;
-    delete gl143;
-    delete gl15;
-    delete gl16;
-    delete gl18;
-    delete gl19;
-    delete gl2;
-    delete gl20;
-    delete gl21;
-    delete gl22;
+	delete gl129;
+	delete gl129Striped;
+	delete gl13;
+	delete gl130;
+	delete gl130Striped;
+	delete gl131;
+	delete gl132;
+	delete gl133;
+	delete gl134;
+	delete gl135;
+	delete gl136;
+	delete gl137;
+	delete gl138;
+	delete gl139;
+	delete gl14;
+	delete gl140;
+	delete gl141;
+	delete gl142;
+	delete gl143;
+	delete gl145;
+	delete gl145Striped;
+	delete gl146;
+	delete gl146Striped;
+	delete gl15;
+	delete gl16;
+	delete gl18;
+	delete gl19;
+	delete gl2;
+	delete gl20;
+	delete gl21;
+	delete gl22;
     delete gl23;
     delete gl24;
     delete gl25;
@@ -1202,8 +1222,10 @@ TRailGraphics::~TRailGraphics()
     delete gl70;
     delete gl71;
     delete gl72;
-    delete gl73;
-    delete gl74;
+	delete gl73;
+	delete gl73grounddblred;
+	delete gl74;
+	delete gl74grounddblred;
     delete gl75;
     delete gl76;
     delete gl76Striped;
@@ -1359,7 +1381,7 @@ TRailGraphics::~TRailGraphics()
     delete sm89;
     delete sm9;
     delete sm90;
-    delete sm91;
+	delete sm91;
     delete sm92;
     delete sm93;
     delete sm94;
@@ -1393,11 +1415,28 @@ TRailGraphics::~TRailGraphics()
     delete LCLHSVer;
     delete LCPlain;
     delete LCRHSVer;
-    delete LCTopHor;
+	delete LCTopHor;
 
+	delete SpeedBut68NormBlackGlyph; //added after v2.3.0 (missed)
+	delete SpeedBut69NormBlackGlyph; //added after v2.3.0 (missed)
+	delete SpeedBut70NormBlackGlyph; //added after v2.3.0 (missed)
+	delete SpeedBut71NormBlackGlyph; //added after v2.3.0 (missed)
+	delete SpeedBut72NormBlackGlyph; //added after v2.3.0 (missed)
+	delete SpeedBut73NormBlackGlyph; //added after v2.3.0 (missed)
+	delete SpeedBut74NormBlackGlyph; //added after v2.3.0 (missed)
+	delete SpeedBut75NormBlackGlyph; //added after v2.3.0 (missed)
 
-    delete bmTransparentBgnd;
-    delete GridBitmap;
+	delete SpeedBut68GrndBlackGlyph; //added after v2.3.0 (missed)
+	delete SpeedBut69GrndBlackGlyph; //added after v2.3.0 (missed)
+	delete SpeedBut70GrndBlackGlyph; //added after v2.3.0 (missed)
+	delete SpeedBut71GrndBlackGlyph; //added after v2.3.0 (missed)
+	delete SpeedBut72GrndBlackGlyph; //added after v2.3.0 (missed)
+	delete SpeedBut73GrndBlackGlyph; //added after v2.3.0 (missed)
+	delete SpeedBut74GrndBlackGlyph; //added after v2.3.0 (missed)
+	delete SpeedBut75GrndBlackGlyph; //added after v2.3.0 (missed)
+
+	delete bmTransparentBgnd;
+	delete GridBitmap;
 }
 
 //---------------------------------------------------------------------------
@@ -1583,7 +1622,7 @@ void TRailGraphics::ChangeBackgroundColour3(int Caller, Graphics::TBitmap *Bitma
     Byte *SLPtrOut; //pointer to the ScanLine values in TempBitmapOut
     Graphics::TBitmap *TempBitmapOut = new Graphics::TBitmap;
     TempBitmapOut->Assign(BitmapIn); //in case BitmapOut isn't fully defined at this stage
-    int NewBGColourNumber = ColNametoNumber(0, NewBackgroundColour);
+	int NewBGColourNumber = ColNametoNumber(0, NewBackgroundColour);
     int OldBGColourNumber = ColNametoNumber(1, OldBackgroundColour);
     for(int x = 0; x < BitmapIn->Height; x++)
     {
@@ -1633,7 +1672,7 @@ int TRailGraphics::ColNametoNumber(int Caller, TColor Colour)
             Number = 0xb4;
             break;
         case clNormalBackground:
-            Number = 0xac;
+			Number = 0xac;
             break;
         case clSignallerStopped:
             Number = 0xcf;
@@ -1654,9 +1693,9 @@ int TRailGraphics::ColNametoNumber(int Caller, TColor Colour)
             Number = 0xd1;
             break;
         default:
-            UnicodeString MessageStr = "Can't find colour in ColNametoNumber, InputColour = " + UnicodeString(Colour);
-            Application->MessageBox(MessageStr.c_str(), L"", MB_OK);
-            Number = 0xad; //normal background
+//			UnicodeString MessageStr = "Can't find required colour - normal background colour will be used.");
+//          Application->MessageBox(MessageStr.c_str(), L"", MB_OK);  don't give message as can be called when operating (need StopTTClockMessage)
+			Number = 0xac; //normal background
             break;
     }
     Utilities->CallLogPop(2104);
@@ -1932,7 +1971,11 @@ void TRailGraphics::ChangeAllTransparentColours(TColor NewTransparentColour, TCo
     ChangeTransparentColour(gl141, gl141, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(gl142, gl142, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(gl143, gl143, NewTransparentColour, OldTransparentColour);
-    ChangeTransparentColour(gl15, gl15, NewTransparentColour, OldTransparentColour);
+	ChangeTransparentColour(gl145, gl145, NewTransparentColour, OldTransparentColour);
+	ChangeTransparentColour(gl145Striped, gl145Striped, NewTransparentColour, OldTransparentColour);
+	ChangeTransparentColour(gl146, gl146, NewTransparentColour, OldTransparentColour);
+	ChangeTransparentColour(gl146Striped, gl146Striped, NewTransparentColour, OldTransparentColour);
+	ChangeTransparentColour(gl15, gl15, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(gl16, gl16, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(gl18, gl18, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(gl19, gl19, NewTransparentColour, OldTransparentColour);
@@ -2203,7 +2246,7 @@ void TRailGraphics::ChangeAllTransparentColours(TColor NewTransparentColour, TCo
 
     // change the grid to the nearest grey colour to the background
     if(NewTransparentColour != clB5G5R5) ChangeSpecificColour(1, GridBitmap, GridBitmap, clB4G4R4, clB1G1R1);  //if already dark will ignore
-    else ChangeSpecificColour(3, GridBitmap, GridBitmap, clB1G1R1, clB4G4R4);  //if already light will ignore
+	else ChangeSpecificColour(3, GridBitmap, GridBitmap, clB1G1R1, clB4G4R4);  //if already light will ignore
 }
 
 //---------------------------------------------------------------------------
@@ -2267,13 +2310,13 @@ reverse direction same in each case
     DirectionRouteAutoSigsGraphicsPtr[6]->Assign(ELk6); DirectionRouteAutoSigsGraphicsPtr[7]->Assign(ELk7);
     DirectionRouteAutoSigsGraphicsPtr[8]->Assign(ELk8); DirectionRouteAutoSigsGraphicsPtr[9]->Assign(ELk9);
 
-    for(int x=0; x<30; x++)
-    {
-        ChangeForegroundColour(5, LinkGraphicsPtr[x],LinkPrefDirGraphicsPtr[x],clB2G0R4,TransparentColour);
-        ChangeForegroundColour(6, LinkGraphicsPtr[x],LinkNonSigRouteGraphicsPtr[x],clB0G0R5,TransparentColour);
-        ChangeForegroundColour(7, LinkGraphicsPtr[x],LinkSigRouteGraphicsPtr[x],clB0G4R0,TransparentColour);
-        ChangeForegroundColour(8, LinkGraphicsPtr[x],LinkRouteAutoSigsGraphicsPtr[x],clB5G3R0,TransparentColour);
-    }
+	for(int x=0; x<30; x++)
+	{
+		ChangeForegroundColour(5, LinkGraphicsPtr[x],LinkPrefDirGraphicsPtr[x],clB2G0R4,TransparentColour);       //magenta
+		ChangeForegroundColour(6, LinkGraphicsPtr[x],LinkNonSigRouteGraphicsPtr[x],clB0G0R5,TransparentColour);   //red
+		ChangeForegroundColour(7, LinkGraphicsPtr[x],LinkSigRouteGraphicsPtr[x],clB0G4R0,TransparentColour);      //green
+		ChangeForegroundColour(8, LinkGraphicsPtr[x],LinkRouteAutoSigsGraphicsPtr[x],clB5G3R0,TransparentColour); //blue
+	}
     for(int x=0; x<12; x++)
     {
         ChangeForegroundColour(9, BridgeGraphicsPtr[x],BridgePrefDirGraphicsPtr[x],clB2G0R4,TransparentColour);
@@ -2457,7 +2500,7 @@ void TRailGraphics::ConvertSignalsToOppositeHand(int Caller) //new at v2.3.0
 //the following are the stay black glyphs for the speedbuttons
     Graphics::TBitmap* HorizSignalGlyphArray[4] =
     {
-        SpeedBut68NormBlackGlyph,
+		SpeedBut68NormBlackGlyph,
         SpeedBut69NormBlackGlyph,
         SpeedBut68GrndBlackGlyph,
         SpeedBut69GrndBlackGlyph

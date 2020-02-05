@@ -1,10 +1,10 @@
-\hypertarget{class_t_graphic_element}{}\section{T\+Graphic\+Element Class Reference}
-\label{class_t_graphic_element}\index{T\+Graphic\+Element@{T\+Graphic\+Element}}
+\hypertarget{class_t_graphic_element}{}\doxysection{T\+Graphic\+Element Class Reference}
+\label{class_t_graphic_element}\index{TGraphicElement@{TGraphicElement}}
 
 
 {\ttfamily \#include $<$Track\+Unit.\+h$>$}
 
-\subsection*{Public Member Functions}
+\doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_t_graphic_element_aaf109e208515c9b9aaad753d829d25e9}\label{class_t_graphic_element_aaf109e208515c9b9aaad753d829d25e9}} 
@@ -42,18 +42,60 @@ void \mbox{\hyperlink{class_t_graphic_element_afbfce56e5041fa0ac49b3ba49f7566fd}
 \mbox{\Hypertarget{class_t_graphic_element_af7a475400bc15a5ab41bf1b3d345dc31}\label{class_t_graphic_element_af7a475400bc15a5ab41bf1b3d345dc31}} 
 \mbox{\hyperlink{class_t_graphic_element_af7a475400bc15a5ab41bf1b3d345dc31}{$\sim$\+T\+Graphic\+Element}} ()
 \begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_t_graphic_element_a346a9ac23010defeaec2ba5e3b15e2fb}\label{class_t_graphic_element_a346a9ac23010defeaec2ba5e3b15e2fb}} 
+bool {\bfseries Overlay\+Plotted}
+\item 
+\mbox{\Hypertarget{class_t_graphic_element_a8a4d5766d6ba3419beaab94bac20da89}\label{class_t_graphic_element_a8a4d5766d6ba3419beaab94bac20da89}} 
+bool {\bfseries Overlay\+Loaded}
+\item 
+\mbox{\Hypertarget{class_t_graphic_element_abc32d53fda4618426c9acc8614cad7ef}\label{class_t_graphic_element_abc32d53fda4618426c9acc8614cad7ef}} 
+bool {\bfseries Original\+Loaded}
+\item 
+\mbox{\Hypertarget{class_t_graphic_element_a63c8c1a8ad01f515e0c906dd48e6675e}\label{class_t_graphic_element_a63c8c1a8ad01f515e0c906dd48e6675e}} 
+bool {\bfseries Screen\+Source\+Set}
+\item 
+\mbox{\Hypertarget{class_t_graphic_element_a9e9bb81c5f42be1f760c905f3697701e}\label{class_t_graphic_element_a9e9bb81c5f42be1f760c905f3697701e}} 
+bool {\bfseries Screen\+Graphic\+Loaded}
+\item 
+\mbox{\Hypertarget{class_t_graphic_element_a751ff95653c3c7c70299c51657bd2195}\label{class_t_graphic_element_a751ff95653c3c7c70299c51657bd2195}} 
+bool \mbox{\hyperlink{class_t_graphic_element_a751ff95653c3c7c70299c51657bd2195}{Existing\+Graphic\+Loaded}}
+\begin{DoxyCompactList}\small\item\em state flags \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_graphic_element_abc0d517132a89b44f93d599aa3528030}\label{class_t_graphic_element_abc0d517132a89b44f93d599aa3528030}} 
+int {\bfseries H\+Pos}
+\item 
+\mbox{\Hypertarget{class_t_graphic_element_a5f06e91844e62b9975b6128921746178}\label{class_t_graphic_element_a5f06e91844e62b9975b6128921746178}} 
+int \mbox{\hyperlink{class_t_graphic_element_a5f06e91844e62b9975b6128921746178}{V\+Pos}}
+\begin{DoxyCompactList}\small\item\em horizontal and vertical positions \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_graphic_element_a5449d46461dbf9108441020cdd00c0ae}\label{class_t_graphic_element_a5449d46461dbf9108441020cdd00c0ae}} 
+int {\bfseries Width}
+\item 
+\mbox{\Hypertarget{class_t_graphic_element_aa7e2feb822e3a00228b582e0c8b6d277}\label{class_t_graphic_element_aa7e2feb822e3a00228b582e0c8b6d277}} 
+int \mbox{\hyperlink{class_t_graphic_element_aa7e2feb822e3a00228b582e0c8b6d277}{Height}}
+\begin{DoxyCompactList}\small\item\em dimensions in pixels \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_graphic_element_a5de04c4143742c4247e4015dc7554fad}\label{class_t_graphic_element_a5de04c4143742c4247e4015dc7554fad}} 
+Graphics\+::\+T\+Bitmap $\ast$ {\bfseries Original\+Graphic}
+\item 
+\mbox{\Hypertarget{class_t_graphic_element_a129fc709d76f28924aa71d2f8ba1ecc7}\label{class_t_graphic_element_a129fc709d76f28924aa71d2f8ba1ecc7}} 
+Graphics\+::\+T\+Bitmap $\ast$ \mbox{\hyperlink{class_t_graphic_element_a129fc709d76f28924aa71d2f8ba1ecc7}{Overlay\+Graphic}}
+\begin{DoxyCompactList}\small\item\em original and temporary overlay graphics \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_t_graphic_element_af4a75f077eac76c1f14c66571ff2f3b3}\label{class_t_graphic_element_af4a75f077eac76c1f14c66571ff2f3b3}} 
+T\+Rect \mbox{\hyperlink{class_t_graphic_element_af4a75f077eac76c1f14c66571ff2f3b3}{Source\+Rect}}
+\begin{DoxyCompactList}\small\item\em source rectangle of the original graphic \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 Allows a single Width x Height graphic to change and change back independently of the remaining display
 
 Used for the flashing green and red gap markers, flashing points and route start graphics. The code is mostly self-\/explanatory, but Set\+Screen\+H\+V\+Source (sets source rectangle) must be called before the original graphic is loaded, whether or not the graphic is loaded from the screen (using Load\+Original\+Screen\+Graphic, for point flashing and route start markers) or an existing bitmap (using Load\+Original\+Existing\+Graphic, for red and green gap flashing), and Overlay\+Graphic and Original\+Graphic must be loaded before they are plotted. Checks are built in for these conditions. Source\+Rect is the rectangle on the appropriate canvas where the original graphic is taken from. The original graphic can be taken from the screen -\/ \mbox{\hyperlink{class_t_graphic_element_ac12f60cb52eefdc86eaa504419eb138d}{Load\+Original\+Screen\+Graphic()}}, or from a section from an existing bitmap -\/ Load\+Original\+Existing\+Graphic. If an existing bitmap is selected then the loading function overrides the size that was set in the constructor, and Source\+Rect \& H\+Pos \& V\+Pos that were set in Set\+Screen\+H\+V\+Source. 
 
-\subsection{Member Function Documentation}
+\doxysubsection{Member Function Documentation}
 \mbox{\Hypertarget{class_t_graphic_element_adffdc9f9c4a5fff5cbeab6b5a027dad9}\label{class_t_graphic_element_adffdc9f9c4a5fff5cbeab6b5a027dad9}} 
-\index{T\+Graphic\+Element@{T\+Graphic\+Element}!Set\+Source\+Rect@{Set\+Source\+Rect}}
-\index{Set\+Source\+Rect@{Set\+Source\+Rect}!T\+Graphic\+Element@{T\+Graphic\+Element}}
-\subsubsection{\texorpdfstring{Set\+Source\+Rect()}{SetSourceRect()}}
+\index{TGraphicElement@{TGraphicElement}!SetSourceRect@{SetSourceRect}}
+\index{SetSourceRect@{SetSourceRect}!TGraphicElement@{TGraphicElement}}
+\doxysubsubsection{\texorpdfstring{SetSourceRect()}{SetSourceRect()}}
 {\footnotesize\ttfamily void T\+Graphic\+Element\+::\+Set\+Source\+Rect (\begin{DoxyParamCaption}\item[{int}]{Left,  }\item[{int}]{Top }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Set Source\+Rect member values from those supplied and existing Width \& Height
@@ -65,5 +107,5 @@ Set Source\+Rect member values from those supplied and existing Width \& Height
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-C\+:/\+Programming work/railway development after v2.\+2.\+0/Track\+Unit.\+h\item 
-C\+:/\+Programming work/railway development after v2.\+2.\+0/Track\+Unit.\+cpp\end{DoxyCompactItemize}
+Track\+Unit.\+h\item 
+Track\+Unit.\+cpp\end{DoxyCompactItemize}

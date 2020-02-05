@@ -1,16 +1,16 @@
-\hypertarget{class_t_track_1_1_t_active_level_crossing}{}\section{T\+Track\+:\+:T\+Active\+Level\+Crossing Class Reference}
-\label{class_t_track_1_1_t_active_level_crossing}\index{T\+Track\+::\+T\+Active\+Level\+Crossing@{T\+Track\+::\+T\+Active\+Level\+Crossing}}
+\hypertarget{class_t_track_1_1_t_active_level_crossing}{}\doxysection{T\+Track\+::T\+Active\+Level\+Crossing Class Reference}
+\label{class_t_track_1_1_t_active_level_crossing}\index{TTrack::TActiveLevelCrossing@{TTrack::TActiveLevelCrossing}}
 
 
 {\ttfamily \#include $<$Track\+Unit.\+h$>$}
 
-\subsection*{Public Member Functions}
+\doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_t_track_1_1_t_active_level_crossing_adc74855a4f0cb115cef8be85b1288f15}\label{class_t_track_1_1_t_active_level_crossing_adc74855a4f0cb115cef8be85b1288f15}} 
 \mbox{\hyperlink{class_t_track_1_1_t_active_level_crossing_adc74855a4f0cb115cef8be85b1288f15}{T\+Active\+Level\+Crossing\+::\+T\+Active\+Level\+Crossing}} ()
 \begin{DoxyCompactList}\small\item\em constructor, sets default values \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Public Attributes}
+\doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_t_track_1_1_t_active_level_crossing_ab673508a424b72287259591f31e309fd}\label{class_t_track_1_1_t_active_level_crossing_ab673508a424b72287259591f31e309fd}} 
@@ -39,11 +39,11 @@ T\+Date\+Time \mbox{\hyperlink{class_t_track_1_1_t_active_level_crossing_a428974
 \begin{DoxyCompactList}\small\item\em stores the starting time for level crossing changing \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 Values for level crossings either changing state or with barriers down
 
 All L\+Cs begin with barriers raised. i.\+e. closed to trains, that is the normal state. When a route is set through an LC nothing happens until the route is set, then an active LC object is created by Set\+L\+C\+Change\+Values (called by Convertand\+Add.... for lowering barriers) and added to the Changing\+L\+C\+Vector. Once created \textquotesingle{}Flashing\+Graphics\textquotesingle{} takes care of the flashing, until the duration is reached. While flashing no further routes can be set through that LC and the first route can\textquotesingle{}t be cancelled, hence the flashing only needs to cater for plotting the route on the one track that started the barrier lowering. When the duration is reached, the object is transferred to a new vector Barriers\+Down\+Vector, after the Start\+Time has been reset (to time the period for which the barriers are down -\/ penalties are given for $>$ 3 minutes), Barrier\+State changed to Down, and the object erased from Changing\+L\+C\+Vector. When there is no route through an LC and no train on the track then the barriers are raised -\/ in Clock\+Timer2 -\/ when the Barriers\+Down\+Vector object is copied back to Changing\+L\+C\+Vector with a new Start\+Time, Barrier\+State and Change\+Duration. Again Flashing\+Graphics takes care of the flashing until the duration is reached, when the object is erased from the vector and the LC reverts to its normal (barriers raised) state. 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-C\+:/\+Programming work/railway development after v2.\+2.\+0/Track\+Unit.\+h\end{DoxyCompactItemize}
+Track\+Unit.\+h\end{DoxyCompactItemize}

@@ -1,5 +1,5 @@
-\hypertarget{class_t_all_routes}{}\section{T\+All\+Routes Class Reference}
-\label{class_t_all_routes}\index{T\+All\+Routes@{T\+All\+Routes}}
+\hypertarget{class_t_all_routes}{}\doxysection{T\+All\+Routes Class Reference}
+\label{class_t_all_routes}\index{TAllRoutes@{TAllRoutes}}
 
 
 Handles data and functions relating to all routes on the railway.  
@@ -9,14 +9,14 @@ Handles data and functions relating to all routes on the railway.
 
 {\ttfamily \#include $<$Track\+Unit.\+h$>$}
 
-\subsection*{Classes}
+\doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
 class \mbox{\hyperlink{class_t_all_routes_1_1_t_callon_entry}{T\+Callon\+Entry}}
 \begin{DoxyCompactList}\small\item\em Used to store relevant values when a call-\/on found, ready for plotting an unrestricted route. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{class_t_all_routes_1_1_t_locked_route_class}{T\+Locked\+Route\+Class}}
 \begin{DoxyCompactList}\small\item\em Handles routes that are locked because of approaching trains. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Public Types}
+\doxysubsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_t_all_routes_af94f31040cc7692c777123c609d4cbd6}\label{class_t_all_routes_af94f31040cc7692c777123c609d4cbd6}} 
@@ -47,7 +47,7 @@ typedef T\+Route2\+Multi\+Map\+::iterator {\bfseries T\+Route2\+Multi\+Map\+Iter
 \mbox{\Hypertarget{class_t_all_routes_a993331007a31dae38f2d81afe0796ef4}\label{class_t_all_routes_a993331007a31dae38f2d81afe0796ef4}} 
 typedef std\+::pair$<$ T\+H\+V\+Pair, \mbox{\hyperlink{class_t_all_routes_a159a7d547e3d435d109a36cb41193a78}{T\+Route\+Element\+Pair}} $>$ {\bfseries T\+Route2\+Multi\+Map\+Entry}
 \end{DoxyCompactItemize}
-\subsection*{Public Member Functions}
+\doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_t_all_routes_a438b71f3afbc2c8adb45b47f69cb3bb9}\label{class_t_all_routes_a438b71f3afbc2c8adb45b47f69cb3bb9}} 
@@ -141,10 +141,10 @@ void \mbox{\hyperlink{class_t_all_routes_a7c9ca14ec6116983b505f0a451dd078f}{Writ
 \mbox{\Hypertarget{class_t_all_routes_ad562b9a2301042e109db1a895235e36f}\label{class_t_all_routes_ad562b9a2301042e109db1a895235e36f}} 
 \mbox{\hyperlink{class_t_all_routes_ad562b9a2301042e109db1a895235e36f}{T\+All\+Routes}} ()
 \begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Public Attributes}
+\doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-enum T\+All\+Routes\+::\+T\+Route\+Type \mbox{\hyperlink{class_t_all_routes_a418f6235db60f6f41c56aede07b5fe24}{Route\+Type}}
+enum T\+All\+Routes\+::\+T\+Route\+Type \mbox{\hyperlink{class_t_all_routes_a8b4c0632615307653f3d1a24de9967b3}{Route\+Type}}
 \begin{DoxyCompactList}\small\item\em or no route at all (where this is used there is no need to distinguish between preferred direction and unrestricted routes) \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_t_all_routes_a3993d52ba2a60f04572838e2cbd78bbf}\label{class_t_all_routes_a3993d52ba2a60f04572838e2cbd78bbf}} 
 std\+::vector$<$ \mbox{\hyperlink{class_t_all_routes_1_1_t_callon_entry}{T\+Callon\+Entry}} $>$ \mbox{\hyperlink{class_t_all_routes_a3993d52ba2a60f04572838e2cbd78bbf}{Callon\+Vector}}
@@ -194,218 +194,218 @@ int \mbox{\hyperlink{class_t_all_routes_a936864598364d2e8c0aea147fea11196}{Next\
 \begin{DoxyCompactList}\small\item\em the map that stores the elements of all routes on the railway (see T\+Route2\+Multi\+Map for more info) \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 Handles data and functions relating to all routes on the railway. 
 
-\subsection{Member Typedef Documentation}
+\doxysubsection{Member Typedef Documentation}
 \mbox{\Hypertarget{class_t_all_routes_a1d2aa3032df6e13d1f6f1a93f96157c6}\label{class_t_all_routes_a1d2aa3032df6e13d1f6f1a93f96157c6}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!T\+Route2\+Multi\+Map@{T\+Route2\+Multi\+Map}}
-\index{T\+Route2\+Multi\+Map@{T\+Route2\+Multi\+Map}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{T\+Route2\+Multi\+Map}{TRoute2MultiMap}}
+\index{TAllRoutes@{TAllRoutes}!TRoute2MultiMap@{TRoute2MultiMap}}
+\index{TRoute2MultiMap@{TRoute2MultiMap}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{TRoute2MultiMap}{TRoute2MultiMap}}
 {\footnotesize\ttfamily typedef std\+::multimap$<$T\+H\+V\+Pair, \mbox{\hyperlink{class_t_all_routes_a159a7d547e3d435d109a36cb41193a78}{T\+Route\+Element\+Pair}}, \mbox{\hyperlink{class_t_map_comp}{T\+Map\+Comp}}$>$ \mbox{\hyperlink{class_t_all_routes_a1d2aa3032df6e13d1f6f1a93f96157c6}{T\+All\+Routes\+::\+T\+Route2\+Multi\+Map}}}
 
 the multimap class holding the elements of all routes in the railway. The first entry is the H\+Loc \& V\+Loc pair values of the route element, and the second is the T\+Route\+Element\+Pair defining the element. There are a maximum of 2 elements per H\+Loc \& V\+Loc location \mbox{\Hypertarget{class_t_all_routes_a159a7d547e3d435d109a36cb41193a78}\label{class_t_all_routes_a159a7d547e3d435d109a36cb41193a78}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!T\+Route\+Element\+Pair@{T\+Route\+Element\+Pair}}
-\index{T\+Route\+Element\+Pair@{T\+Route\+Element\+Pair}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{T\+Route\+Element\+Pair}{TRouteElementPair}}
+\index{TAllRoutes@{TAllRoutes}!TRouteElementPair@{TRouteElementPair}}
+\index{TRouteElementPair@{TRouteElementPair}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{TRouteElementPair}{TRouteElementPair}}
 {\footnotesize\ttfamily typedef std\+::pair$<$int, unsigned int$>$ \mbox{\hyperlink{class_t_all_routes_a159a7d547e3d435d109a36cb41193a78}{T\+All\+Routes\+::\+T\+Route\+Element\+Pair}}}
 
 defines a specific element in a route, the first (int) value is the vector position in the All\+Routes\+Vector, and the second (unsigned int) value is the vector position of the element in the route\textquotesingle{}s Pref\+Dir\+Vector 
 
-\subsection{Member Function Documentation}
+\doxysubsection{Member Function Documentation}
 \mbox{\Hypertarget{class_t_all_routes_a6eaa33fa8e8dcb44d0671be5889305a9}\label{class_t_all_routes_a6eaa33fa8e8dcb44d0671be5889305a9}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Add\+Route\+Element@{Add\+Route\+Element}}
-\index{Add\+Route\+Element@{Add\+Route\+Element}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Add\+Route\+Element()}{AddRouteElement()}}
+\index{TAllRoutes@{TAllRoutes}!AddRouteElement@{AddRouteElement}}
+\index{AddRouteElement@{AddRouteElement}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{AddRouteElement()}{AddRouteElement()}}
 {\footnotesize\ttfamily void T\+All\+Routes\+::\+Add\+Route\+Element (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{H\+Loc,  }\item[{int}]{V\+Loc,  }\item[{int}]{E\+Link,  }\item[{int}]{Route\+Number,  }\item[{\mbox{\hyperlink{class_t_pref_dir_element}{T\+Pref\+Dir\+Element}}}]{Route\+Element }\end{DoxyParamCaption})}
 
 A single \mbox{\hyperlink{class_t_pref_dir_element}{T\+Pref\+Dir\+Element}} is added to both Pref\+Dir\+Vector (for the route at Route\+Number) and Route2\+Multi\+Map. Called from \mbox{\hyperlink{class_t_all_routes_af70c07d73f0b62ed85bbebc5451d009c}{T\+All\+Routes\+::\+Store\+One\+Route}}. Note that the Is\+A\+Route boolean variable is set in Store\+Route\+Element\+In\+Pref\+Dir\+Vector since that catches all route elements wherever created \mbox{\Hypertarget{class_t_all_routes_a54e5483e7b01daf50436e3dcc8794e77}\label{class_t_all_routes_a54e5483e7b01daf50436e3dcc8794e77}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Check\+Map\+And\+Routes@{Check\+Map\+And\+Routes}}
-\index{Check\+Map\+And\+Routes@{Check\+Map\+And\+Routes}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Check\+Map\+And\+Routes()}{CheckMapAndRoutes()}}
+\index{TAllRoutes@{TAllRoutes}!CheckMapAndRoutes@{CheckMapAndRoutes}}
+\index{CheckMapAndRoutes@{CheckMapAndRoutes}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{CheckMapAndRoutes()}{CheckMapAndRoutes()}}
 {\footnotesize\ttfamily void T\+All\+Routes\+::\+Check\+Map\+And\+Routes (\begin{DoxyParamCaption}\item[{int}]{Caller }\end{DoxyParamCaption})}
 
 Diagnostic function -\/ checks equivalence for each route between entries in Pref\+Dir\+Vector and those in Route2\+Multi\+Map, and also that the size of the multimap and the sum of the sizes of all Pref\+Dir\+Vectors is the same. Throws an error if there is a discrepancy. \mbox{\Hypertarget{class_t_all_routes_ab23a53bd95aeb951108a004735b9a45e}\label{class_t_all_routes_ab23a53bd95aeb951108a004735b9a45e}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Clear\+Route\+During\+Route\+Building\+At@{Clear\+Route\+During\+Route\+Building\+At}}
-\index{Clear\+Route\+During\+Route\+Building\+At@{Clear\+Route\+During\+Route\+Building\+At}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Clear\+Route\+During\+Route\+Building\+At()}{ClearRouteDuringRouteBuildingAt()}}
+\index{TAllRoutes@{TAllRoutes}!ClearRouteDuringRouteBuildingAt@{ClearRouteDuringRouteBuildingAt}}
+\index{ClearRouteDuringRouteBuildingAt@{ClearRouteDuringRouteBuildingAt}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{ClearRouteDuringRouteBuildingAt()}{ClearRouteDuringRouteBuildingAt()}}
 {\footnotesize\ttfamily void T\+All\+Routes\+::\+Clear\+Route\+During\+Route\+Building\+At (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Route\+Number }\end{DoxyParamCaption})}
 
 When attaching a new route section to an existing route, it is sometimes necessary to erase the original route and create a new composite route.
 
 This function erases all elements in the route at Route\+Number using T\+All\+Routes-\/$>$Remove\+Route\+Element to clear elements from Route2\+Multi\+Map and from the Pref\+Dir\+Vector. Since all elements for the route are removed Remove\+Route\+Element also clears the Route from All\+Routes\+Vector. Route numbers are decremented in the map for route numbers that are greater than the route number that is removed. The Locked\+Route\+Vector as also searched and if any relate to the route that has been cleared they are erased too, but the fact that one has been found is recorded so that it can be re-\/established later. \mbox{\Hypertarget{class_t_all_routes_a5ebf1d3fbba09f98acc23b7d18822e9e}\label{class_t_all_routes_a5ebf1d3fbba09f98acc23b7d18822e9e}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Decrement\+Route\+Element\+Numbers\+In\+Route2\+Multi\+Map@{Decrement\+Route\+Element\+Numbers\+In\+Route2\+Multi\+Map}}
-\index{Decrement\+Route\+Element\+Numbers\+In\+Route2\+Multi\+Map@{Decrement\+Route\+Element\+Numbers\+In\+Route2\+Multi\+Map}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Decrement\+Route\+Element\+Numbers\+In\+Route2\+Multi\+Map()}{DecrementRouteElementNumbersInRoute2MultiMap()}}
+\index{TAllRoutes@{TAllRoutes}!DecrementRouteElementNumbersInRoute2MultiMap@{DecrementRouteElementNumbersInRoute2MultiMap}}
+\index{DecrementRouteElementNumbersInRoute2MultiMap@{DecrementRouteElementNumbersInRoute2MultiMap}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{DecrementRouteElementNumbersInRoute2MultiMap()}{DecrementRouteElementNumbersInRoute2MultiMap()}}
 {\footnotesize\ttfamily void T\+All\+Routes\+::\+Decrement\+Route\+Element\+Numbers\+In\+Route2\+Multi\+Map (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Route\+Number,  }\item[{unsigned int}]{Erased\+Element\+Number }\end{DoxyParamCaption})}
 
 After a route element has been erased from the relevant Pref\+Dir\+Vector and from Route2\+Multi\+Map, this function examines all the remaining entries in Route2\+Multi\+Map with the same Route\+Number as that for the erased element. Where a Route\+Element\+Number exceeds that for the erased element it is decremented. \mbox{\Hypertarget{class_t_all_routes_a5b18fe89f84962fca0a86063043b2a75}\label{class_t_all_routes_a5b18fe89f84962fca0a86063043b2a75}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Decrement\+Route\+Numbers\+In\+Route2\+Multi\+Map@{Decrement\+Route\+Numbers\+In\+Route2\+Multi\+Map}}
-\index{Decrement\+Route\+Numbers\+In\+Route2\+Multi\+Map@{Decrement\+Route\+Numbers\+In\+Route2\+Multi\+Map}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Decrement\+Route\+Numbers\+In\+Route2\+Multi\+Map()}{DecrementRouteNumbersInRoute2MultiMap()}}
+\index{TAllRoutes@{TAllRoutes}!DecrementRouteNumbersInRoute2MultiMap@{DecrementRouteNumbersInRoute2MultiMap}}
+\index{DecrementRouteNumbersInRoute2MultiMap@{DecrementRouteNumbersInRoute2MultiMap}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{DecrementRouteNumbersInRoute2MultiMap()}{DecrementRouteNumbersInRoute2MultiMap()}}
 {\footnotesize\ttfamily void T\+All\+Routes\+::\+Decrement\+Route\+Numbers\+In\+Route2\+Multi\+Map (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Route\+Number }\end{DoxyParamCaption})}
 
 After a route has been erased from All\+Routes\+Vector and its entries from Route2\+Multi\+Map, this function examines all the remaining entries in Route2\+Multi\+Map to see if their Route\+Numbers exceed that for the erased route. Where this is so the Route\+Number is decremented. \mbox{\Hypertarget{class_t_all_routes_a2341a7e860e716e60b733f45814e4499}\label{class_t_all_routes_a2341a7e860e716e60b733f45814e4499}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Diagonal\+Fouled\+By\+Route\+Or\+Train@{Diagonal\+Fouled\+By\+Route\+Or\+Train}}
-\index{Diagonal\+Fouled\+By\+Route\+Or\+Train@{Diagonal\+Fouled\+By\+Route\+Or\+Train}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Diagonal\+Fouled\+By\+Route\+Or\+Train()}{DiagonalFouledByRouteOrTrain()}}
+\index{TAllRoutes@{TAllRoutes}!DiagonalFouledByRouteOrTrain@{DiagonalFouledByRouteOrTrain}}
+\index{DiagonalFouledByRouteOrTrain@{DiagonalFouledByRouteOrTrain}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{DiagonalFouledByRouteOrTrain()}{DiagonalFouledByRouteOrTrain()}}
 {\footnotesize\ttfamily bool T\+All\+Routes\+::\+Diagonal\+Fouled\+By\+Route\+Or\+Train (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{H\+Loc,  }\item[{int}]{V\+Loc,  }\item[{int}]{Diagonal\+Link\+Number }\end{DoxyParamCaption})}
 
 The track geometry allows diagonals to cross without occupying the same track element, so when route plotting it is necessary to check if there is an existing route or a train on such a crossing diagonal. Returns true for a fouled (i.\+e. fouled by a route or a train) diagonal. New at v1.\+2.\+0 \mbox{\Hypertarget{class_t_all_routes_ac80a3ae43f749d401f470de711e8e4b0}\label{class_t_all_routes_ac80a3ae43f749d401f470de711e8e4b0}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Find\+Route\+Number\+From\+Route2\+Multi\+Map\+No\+Errors@{Find\+Route\+Number\+From\+Route2\+Multi\+Map\+No\+Errors}}
-\index{Find\+Route\+Number\+From\+Route2\+Multi\+Map\+No\+Errors@{Find\+Route\+Number\+From\+Route2\+Multi\+Map\+No\+Errors}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Find\+Route\+Number\+From\+Route2\+Multi\+Map\+No\+Errors()}{FindRouteNumberFromRoute2MultiMapNoErrors()}}
+\index{TAllRoutes@{TAllRoutes}!FindRouteNumberFromRoute2MultiMapNoErrors@{FindRouteNumberFromRoute2MultiMapNoErrors}}
+\index{FindRouteNumberFromRoute2MultiMapNoErrors@{FindRouteNumberFromRoute2MultiMapNoErrors}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{FindRouteNumberFromRoute2MultiMapNoErrors()}{FindRouteNumberFromRoute2MultiMapNoErrors()}}
 {\footnotesize\ttfamily bool T\+All\+Routes\+::\+Find\+Route\+Number\+From\+Route2\+Multi\+Map\+No\+Errors (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{H\+Loc,  }\item[{int}]{V\+Loc,  }\item[{int}]{E\+Link,  }\item[{int \&}]{Route\+Number }\end{DoxyParamCaption})}
 
 If a route is present at H, V \& Elink returns true with Route\+Number giving vector position in All\+Routes vector. Returns false for anything else including no element or route at H \& V etc. New at v1.\+2.\+0 \mbox{\Hypertarget{class_t_all_routes_a73d2c20327947600e5af57f908359343}\label{class_t_all_routes_a73d2c20327947600e5af57f908359343}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Find\+Route\+Pair\+From\+Route2\+Multi\+Map@{Find\+Route\+Pair\+From\+Route2\+Multi\+Map}}
-\index{Find\+Route\+Pair\+From\+Route2\+Multi\+Map@{Find\+Route\+Pair\+From\+Route2\+Multi\+Map}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Find\+Route\+Pair\+From\+Route2\+Multi\+Map()}{FindRoutePairFromRoute2MultiMap()}}
+\index{TAllRoutes@{TAllRoutes}!FindRoutePairFromRoute2MultiMap@{FindRoutePairFromRoute2MultiMap}}
+\index{FindRoutePairFromRoute2MultiMap@{FindRoutePairFromRoute2MultiMap}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{FindRoutePairFromRoute2MultiMap()}{FindRoutePairFromRoute2MultiMap()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{class_t_all_routes_a159a7d547e3d435d109a36cb41193a78}{T\+All\+Routes\+::\+T\+Route\+Element\+Pair}} T\+All\+Routes\+::\+Find\+Route\+Pair\+From\+Route2\+Multi\+Map (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{H\+Loc,  }\item[{int}]{V\+Loc,  }\item[{int}]{E\+Link,  }\item[{T\+Route2\+Multi\+Map\+Iterator \&}]{Route2\+Multi\+Map\+Iterator }\end{DoxyParamCaption})}
 
 Examines Route2\+Multi\+Map and returns a T\+Route\+Element\+Pair if one is found with the passed values of H, V and E\+Link.
 
 Also returned as a reference is an iterator to the found element in the map to assist in erasing it. Called by \mbox{\hyperlink{class_t_all_routes_aacbc3765d695c99cf64ad2826792508f}{T\+All\+Routes\+::\+Remove\+Route\+Element}}. Note that only need E\+Link (as well as H \& V) to identify uniquely, since only bridges can have two routes on them \& their track E\+Links are always different. Messages are given for failure. \mbox{\Hypertarget{class_t_all_routes_a0f3313fe1870b98a63cbc0deda000d4e}\label{class_t_all_routes_a0f3313fe1870b98a63cbc0deda000d4e}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Get\+All\+Routes\+Truncate\+Element@{Get\+All\+Routes\+Truncate\+Element}}
-\index{Get\+All\+Routes\+Truncate\+Element@{Get\+All\+Routes\+Truncate\+Element}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Get\+All\+Routes\+Truncate\+Element()}{GetAllRoutesTruncateElement()}}
+\index{TAllRoutes@{TAllRoutes}!GetAllRoutesTruncateElement@{GetAllRoutesTruncateElement}}
+\index{GetAllRoutesTruncateElement@{GetAllRoutesTruncateElement}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{GetAllRoutesTruncateElement()}{GetAllRoutesTruncateElement()}}
 {\footnotesize\ttfamily bool T\+All\+Routes\+::\+Get\+All\+Routes\+Truncate\+Element (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{H\+Loc,  }\item[{int}]{V\+Loc,  }\item[{bool}]{Consec\+Signals\+Route }\end{DoxyParamCaption})}
 
 Examines all routes and for each uses Get\+Route\+Truncate\+Element to see if the element at H \& V is present in that route.
 
 The Return\+Flag value indicates In\+Route\+True (success), In\+Route\+False (failure), or Not\+In\+Route. Messages are given in Get\+Route\+Truncate\+Element. If successful the route is truncated at and including the element that matches H \& V. If Consec\+Signals\+Route ensure only truncate to a signal, else prevent truncation to a crossover, bridge or points, also prevent route being left less than 2 elements in length. \mbox{\Hypertarget{class_t_all_routes_a7d9f820738af6314f2b9a4a1f52bb64a}\label{class_t_all_routes_a7d9f820738af6314f2b9a4a1f52bb64a}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Get\+Fixed\+Route\+At@{Get\+Fixed\+Route\+At}}
-\index{Get\+Fixed\+Route\+At@{Get\+Fixed\+Route\+At}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Get\+Fixed\+Route\+At()}{GetFixedRouteAt()}}
+\index{TAllRoutes@{TAllRoutes}!GetFixedRouteAt@{GetFixedRouteAt}}
+\index{GetFixedRouteAt@{GetFixedRouteAt}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{GetFixedRouteAt()}{GetFixedRouteAt()}}
 {\footnotesize\ttfamily const \mbox{\hyperlink{class_t_one_route}{T\+One\+Route}} \& T\+All\+Routes\+::\+Get\+Fixed\+Route\+At (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{At }\end{DoxyParamCaption}) const}
 
 Returns a constant reference to the route at All\+Routes\+Vector position \textquotesingle{}At\textquotesingle{}, after performing range checking on the \textquotesingle{}At\textquotesingle{} value and throwing an error if out of range \mbox{\Hypertarget{class_t_all_routes_a8b522eb0d7aa415c3648d464c2885484}\label{class_t_all_routes_a8b522eb0d7aa415c3648d464c2885484}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Get\+Modifiable\+Route\+At@{Get\+Modifiable\+Route\+At}}
-\index{Get\+Modifiable\+Route\+At@{Get\+Modifiable\+Route\+At}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Get\+Modifiable\+Route\+At()}{GetModifiableRouteAt()}}
+\index{TAllRoutes@{TAllRoutes}!GetModifiableRouteAt@{GetModifiableRouteAt}}
+\index{GetModifiableRouteAt@{GetModifiableRouteAt}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{GetModifiableRouteAt()}{GetModifiableRouteAt()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{class_t_one_route}{T\+One\+Route}} \& T\+All\+Routes\+::\+Get\+Modifiable\+Route\+At (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{At }\end{DoxyParamCaption})}
 
 Returns a modifiable reference to the route at All\+Routes\+Vector position \textquotesingle{}At\textquotesingle{}, after performing range checking on the \textquotesingle{}At\textquotesingle{} value and throwing an error if out of range \mbox{\Hypertarget{class_t_all_routes_a22bbb69a96356c26848fe9c6b154f387}\label{class_t_all_routes_a22bbb69a96356c26848fe9c6b154f387}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Get\+Modifiable\+Route\+At\+I\+D\+Number@{Get\+Modifiable\+Route\+At\+I\+D\+Number}}
-\index{Get\+Modifiable\+Route\+At\+I\+D\+Number@{Get\+Modifiable\+Route\+At\+I\+D\+Number}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Get\+Modifiable\+Route\+At\+I\+D\+Number()}{GetModifiableRouteAtIDNumber()}}
+\index{TAllRoutes@{TAllRoutes}!GetModifiableRouteAtIDNumber@{GetModifiableRouteAtIDNumber}}
+\index{GetModifiableRouteAtIDNumber@{GetModifiableRouteAtIDNumber}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{GetModifiableRouteAtIDNumber()}{GetModifiableRouteAtIDNumber()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{class_t_one_route}{T\+One\+Route}} \& T\+All\+Routes\+::\+Get\+Modifiable\+Route\+At\+I\+D\+Number (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{\mbox{\hyperlink{class_i_d_int}{I\+D\+Int}}}]{Route\+ID }\end{DoxyParamCaption})}
 
 Returns a modifiable reference to the route with ID number Route\+ID. If no route is found with that ID an error is thrown \mbox{\Hypertarget{class_t_all_routes_a7eda7a4b535c7538e217bbbc4d878071}\label{class_t_all_routes_a7eda7a4b535c7538e217bbbc4d878071}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Get\+Route\+Element\+Data\+From\+Route2\+Multi\+Map@{Get\+Route\+Element\+Data\+From\+Route2\+Multi\+Map}}
-\index{Get\+Route\+Element\+Data\+From\+Route2\+Multi\+Map@{Get\+Route\+Element\+Data\+From\+Route2\+Multi\+Map}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Get\+Route\+Element\+Data\+From\+Route2\+Multi\+Map()}{GetRouteElementDataFromRoute2MultiMap()}}
+\index{TAllRoutes@{TAllRoutes}!GetRouteElementDataFromRoute2MultiMap@{GetRouteElementDataFromRoute2MultiMap}}
+\index{GetRouteElementDataFromRoute2MultiMap@{GetRouteElementDataFromRoute2MultiMap}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{GetRouteElementDataFromRoute2MultiMap()}{GetRouteElementDataFromRoute2MultiMap()}}
 {\footnotesize\ttfamily \mbox{\hyperlink{class_t_all_routes_a159a7d547e3d435d109a36cb41193a78}{T\+All\+Routes\+::\+T\+Route\+Element\+Pair}} T\+All\+Routes\+::\+Get\+Route\+Element\+Data\+From\+Route2\+Multi\+Map (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{H\+Loc,  }\item[{int}]{V\+Loc,  }\item[{\mbox{\hyperlink{class_t_all_routes_a159a7d547e3d435d109a36cb41193a78}{T\+All\+Routes\+::\+T\+Route\+Element\+Pair}} \&}]{Second\+Pair }\end{DoxyParamCaption})}
 
 Retrieve up to two T\+Route\+Element\+Pair entries from Route2\+Multi\+Map at H \& V, the first as a function return and the second in the reference Second\+Pair. If there\textquotesingle{}s only one then it\textquotesingle{}s the function return \mbox{\Hypertarget{class_t_all_routes_afbb161c646677f13755041b895a23982}\label{class_t_all_routes_afbb161c646677f13755041b895a23982}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Get\+Route\+Type\+And\+Graphics@{Get\+Route\+Type\+And\+Graphics}}
-\index{Get\+Route\+Type\+And\+Graphics@{Get\+Route\+Type\+And\+Graphics}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Get\+Route\+Type\+And\+Graphics()}{GetRouteTypeAndGraphics()}}
+\index{TAllRoutes@{TAllRoutes}!GetRouteTypeAndGraphics@{GetRouteTypeAndGraphics}}
+\index{GetRouteTypeAndGraphics@{GetRouteTypeAndGraphics}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{GetRouteTypeAndGraphics()}{GetRouteTypeAndGraphics()}}
 {\footnotesize\ttfamily T\+All\+Routes\+::\+T\+Route\+Type T\+All\+Routes\+::\+Get\+Route\+Type\+And\+Graphics (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Track\+Vector\+Position,  }\item[{int}]{Link\+Pos,  }\item[{Graphics\+::\+T\+Bitmap $\ast$\&}]{E\+X\+Graphic\+Ptr,  }\item[{Graphics\+::\+T\+Bitmap $\ast$\&}]{Entry\+Direction\+Graphic\+Ptr }\end{DoxyParamCaption})}
 
 Examines Route2\+Multi\+Map for the element at Track\+Vector\+Position with Link\+Pos (can be entry or exit) and returns the appropriate route type -\/ No\+Route, Not\+Auto\+Sigs\+Route, or Auto\+Sigs\+Route. If element is in a route then the E\+X\+Graphic\+Ptr is returned, and if either the start or end of a route then the correct Entry\+Direction\+Graphic\+Ptr is returned, else a transparent element is returned. Function is used int Train\+Unit for retaining Auto\+Sigs\+Routes but erasing others after train passes, and for picking up the correct background graphics for replotting of Auto\+Sigs\+Routes; also used in Calling\+On\+Allowed \mbox{\Hypertarget{class_t_all_routes_a0a9ccbc84687f85806115877aa86dcfd}\label{class_t_all_routes_a0a9ccbc84687f85806115877aa86dcfd}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Get\+Route\+Type\+And\+Number@{Get\+Route\+Type\+And\+Number}}
-\index{Get\+Route\+Type\+And\+Number@{Get\+Route\+Type\+And\+Number}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Get\+Route\+Type\+And\+Number()}{GetRouteTypeAndNumber()}}
+\index{TAllRoutes@{TAllRoutes}!GetRouteTypeAndNumber@{GetRouteTypeAndNumber}}
+\index{GetRouteTypeAndNumber@{GetRouteTypeAndNumber}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{GetRouteTypeAndNumber()}{GetRouteTypeAndNumber()}}
 {\footnotesize\ttfamily T\+All\+Routes\+::\+T\+Route\+Type T\+All\+Routes\+::\+Get\+Route\+Type\+And\+Number (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Track\+Vector\+Position,  }\item[{int}]{Link\+Pos,  }\item[{int \&}]{Route\+Number }\end{DoxyParamCaption})}
 
 Examines Route2\+Multi\+Map and if the element at Track\+Vector\+Position with Link\+Pos (can be entry or exit) is found returns the appropriate route type -\/ No\+Route, Not\+Auto\+Sigs\+Route, or Auto\+Sigs\+Route and number (i.\+e. its position in All\+Routes\+Vector). \mbox{\Hypertarget{class_t_all_routes_aa92b37f73176fcf3454688bb15b9f64c}\label{class_t_all_routes_aa92b37f73176fcf3454688bb15b9f64c}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Is\+Element\+In\+Locked\+Route\+Get\+Pref\+Dir\+Element\+Get\+Locked\+Vector\+Number@{Is\+Element\+In\+Locked\+Route\+Get\+Pref\+Dir\+Element\+Get\+Locked\+Vector\+Number}}
-\index{Is\+Element\+In\+Locked\+Route\+Get\+Pref\+Dir\+Element\+Get\+Locked\+Vector\+Number@{Is\+Element\+In\+Locked\+Route\+Get\+Pref\+Dir\+Element\+Get\+Locked\+Vector\+Number}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Is\+Element\+In\+Locked\+Route\+Get\+Pref\+Dir\+Element\+Get\+Locked\+Vector\+Number()}{IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber()}}
+\index{TAllRoutes@{TAllRoutes}!IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber@{IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber}}
+\index{IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber@{IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber()}{IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber()}}
 {\footnotesize\ttfamily bool T\+All\+Routes\+::\+Is\+Element\+In\+Locked\+Route\+Get\+Pref\+Dir\+Element\+Get\+Locked\+Vector\+Number (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Track\+Vector\+Position,  }\item[{int}]{X\+Link\+Pos,  }\item[{\mbox{\hyperlink{class_t_pref_dir_element}{T\+Pref\+Dir\+Element}} \&}]{Pref\+Dir\+Element,  }\item[{int \&}]{Locked\+Vector\+Number }\end{DoxyParamCaption})}
 
 Checks whether the preferred direction element at Track\+Vector\+Position with X\+Link\+Pos value is in a locked route and returns true if so together with the element itself copied to \&Pref\+Dir\+Element \& the Locked\+Route\+Vector position in \&Locked\+Vector\+Number \mbox{\Hypertarget{class_t_all_routes_a38ede0231e26c62498999d1873d547a2}\label{class_t_all_routes_a38ede0231e26c62498999d1873d547a2}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Route\+Locking\+Required@{Route\+Locking\+Required}}
-\index{Route\+Locking\+Required@{Route\+Locking\+Required}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Route\+Locking\+Required()}{RouteLockingRequired()}}
+\index{TAllRoutes@{TAllRoutes}!RouteLockingRequired@{RouteLockingRequired}}
+\index{RouteLockingRequired@{RouteLockingRequired}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{RouteLockingRequired()}{RouteLockingRequired()}}
 {\footnotesize\ttfamily bool T\+All\+Routes\+::\+Route\+Locking\+Required (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Route\+Number,  }\item[{int}]{Route\+Truncate\+Position }\end{DoxyParamCaption})}
 
 Route locking is required (returns true) if a moving train is within 3 signals back from the Route\+Truncate\+Position (on the route itself or on any linked routes, or on the element immediately before the start of the route or linked route
 \begin{DoxyItemize}
 \item this because train cancels route elements that it touches) unless the first signal is red, then OK 
 \end{DoxyItemize}\mbox{\Hypertarget{class_t_all_routes_a2ab882d5be1966d8a492d13886531c45}\label{class_t_all_routes_a2ab882d5be1966d8a492d13886531c45}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Set\+Trailing\+Signals\+On\+Auto\+Sigs\+Route@{Set\+Trailing\+Signals\+On\+Auto\+Sigs\+Route}}
-\index{Set\+Trailing\+Signals\+On\+Auto\+Sigs\+Route@{Set\+Trailing\+Signals\+On\+Auto\+Sigs\+Route}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Set\+Trailing\+Signals\+On\+Auto\+Sigs\+Route()}{SetTrailingSignalsOnAutoSigsRoute()}}
+\index{TAllRoutes@{TAllRoutes}!SetTrailingSignalsOnAutoSigsRoute@{SetTrailingSignalsOnAutoSigsRoute}}
+\index{SetTrailingSignalsOnAutoSigsRoute@{SetTrailingSignalsOnAutoSigsRoute}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{SetTrailingSignalsOnAutoSigsRoute()}{SetTrailingSignalsOnAutoSigsRoute()}}
 {\footnotesize\ttfamily void T\+All\+Routes\+::\+Set\+Trailing\+Signals\+On\+Auto\+Sigs\+Route (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Track\+Vector\+Position,  }\item[{int}]{X\+Link\+Pos }\end{DoxyParamCaption})}
 
 Enter with signal at Track\+Vector\+Element already set to red by the passing train. Identify the route that the Track\+Vector\+Position is in, carry out validity checks, then call Set\+All\+Rearwards\+Signals to set signals in this route and all linked rearwards routes, unless find a train (a) in the current route, in which case the signals behind it are set (and behind any other trains in the current route), but only within the current route; or (b) in a linked rear route, in which case the function sets no further signals. \mbox{\Hypertarget{class_t_all_routes_a18177a40331bb96bbec791245b541f47}\label{class_t_all_routes_a18177a40331bb96bbec791245b541f47}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Set\+Trailing\+Signals\+On\+Continuation\+Route@{Set\+Trailing\+Signals\+On\+Continuation\+Route}}
-\index{Set\+Trailing\+Signals\+On\+Continuation\+Route@{Set\+Trailing\+Signals\+On\+Continuation\+Route}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Set\+Trailing\+Signals\+On\+Continuation\+Route()}{SetTrailingSignalsOnContinuationRoute()}}
+\index{TAllRoutes@{TAllRoutes}!SetTrailingSignalsOnContinuationRoute@{SetTrailingSignalsOnContinuationRoute}}
+\index{SetTrailingSignalsOnContinuationRoute@{SetTrailingSignalsOnContinuationRoute}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{SetTrailingSignalsOnContinuationRoute()}{SetTrailingSignalsOnContinuationRoute()}}
 {\footnotesize\ttfamily void T\+All\+Routes\+::\+Set\+Trailing\+Signals\+On\+Continuation\+Route (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Route\+Number,  }\item[{int}]{Access\+Number }\end{DoxyParamCaption})}
 
 This is called by the Interface\+Unit at intervals based on entries in the Continuation\+Auto\+Sig\+Vector in Train\+Controller to set signals on the Auto\+Sigs\+Route to correspond to a train having exited the route at a continuation, and passing further signals (outside the simulated railway). Initially the last passed signal will be red, then at the first call it will change to yellow and earlier signals will change accordingly, then double yellow, then green. There are only 3 calls in all for any given route, and the Access\+Number changes from 0 to 1 to 2 for successive calls. \mbox{\Hypertarget{class_t_all_routes_af70c07d73f0b62ed85bbebc5451d009c}\label{class_t_all_routes_af70c07d73f0b62ed85bbebc5451d009c}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Store\+One\+Route@{Store\+One\+Route}}
-\index{Store\+One\+Route@{Store\+One\+Route}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Store\+One\+Route()}{StoreOneRoute()}}
+\index{TAllRoutes@{TAllRoutes}!StoreOneRoute@{StoreOneRoute}}
+\index{StoreOneRoute@{StoreOneRoute}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{StoreOneRoute()}{StoreOneRoute()}}
 {\footnotesize\ttfamily void T\+All\+Routes\+::\+Store\+One\+Route (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{\mbox{\hyperlink{class_t_one_route}{T\+One\+Route}} $\ast$}]{Route }\end{DoxyParamCaption})}
 
 A new (empty apart from Route\+ID) \mbox{\hyperlink{class_t_one_route}{T\+One\+Route}} is added to the All\+Routes\+Vector, which, since it is the last to be added, will have a Route\+Number of \mbox{\hyperlink{class_t_all_routes_a438b71f3afbc2c8adb45b47f69cb3bb9}{All\+Routes\+Size()}} -\/ 1. Then each element of the new route is added in turn using Add\+Route\+Element, which uses H\+Loc, V\+Loc, E\+Link and Route\+Number to provide the information necessary to insert it into both Pref\+Dir\+Vector and Route2\+Multi\+Map. \mbox{\Hypertarget{class_t_all_routes_a7bf52152ec8f71a9aa78ad4dc4f80c65}\label{class_t_all_routes_a7bf52152ec8f71a9aa78ad4dc4f80c65}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Store\+One\+Route\+After\+Session\+Load@{Store\+One\+Route\+After\+Session\+Load}}
-\index{Store\+One\+Route\+After\+Session\+Load@{Store\+One\+Route\+After\+Session\+Load}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Store\+One\+Route\+After\+Session\+Load()}{StoreOneRouteAfterSessionLoad()}}
+\index{TAllRoutes@{TAllRoutes}!StoreOneRouteAfterSessionLoad@{StoreOneRouteAfterSessionLoad}}
+\index{StoreOneRouteAfterSessionLoad@{StoreOneRouteAfterSessionLoad}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{StoreOneRouteAfterSessionLoad()}{StoreOneRouteAfterSessionLoad()}}
 {\footnotesize\ttfamily void T\+All\+Routes\+::\+Store\+One\+Route\+After\+Session\+Load (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{\mbox{\hyperlink{class_t_one_route}{T\+One\+Route}} $\ast$}]{Route }\end{DoxyParamCaption})}
 
 A new (empty apart from Route\+ID) \mbox{\hyperlink{class_t_one_route}{T\+One\+Route}} is added to the All\+Routes\+Vector after a session load. Very similar to Store\+One\+Route but here the Rout\+ID that is already in Route is used. \mbox{\Hypertarget{class_t_all_routes_aace498b67ccef13364a1afa1f5f15311}\label{class_t_all_routes_aace498b67ccef13364a1afa1f5f15311}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Track\+Is\+In\+A\+Route@{Track\+Is\+In\+A\+Route}}
-\index{Track\+Is\+In\+A\+Route@{Track\+Is\+In\+A\+Route}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Track\+Is\+In\+A\+Route()}{TrackIsInARoute()}}
+\index{TAllRoutes@{TAllRoutes}!TrackIsInARoute@{TrackIsInARoute}}
+\index{TrackIsInARoute@{TrackIsInARoute}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{TrackIsInARoute()}{TrackIsInARoute()}}
 {\footnotesize\ttfamily bool T\+All\+Routes\+::\+Track\+Is\+In\+A\+Route (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{int}]{Track\+Vector\+Position,  }\item[{int}]{Link\+Pos }\end{DoxyParamCaption})}
 
 Examines Route2\+Multi\+Map and if the element at Track\+Vector\+Position with Link\+Pos (can be entry or exit) is found it returns true (for crossovers returns true whichever track the route is on), else returns false. \mbox{\Hypertarget{class_t_all_routes_a7c9ca14ec6116983b505f0a451dd078f}\label{class_t_all_routes_a7c9ca14ec6116983b505f0a451dd078f}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Write\+All\+Routes\+To\+Image@{Write\+All\+Routes\+To\+Image}}
-\index{Write\+All\+Routes\+To\+Image@{Write\+All\+Routes\+To\+Image}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Write\+All\+Routes\+To\+Image()}{WriteAllRoutesToImage()}}
+\index{TAllRoutes@{TAllRoutes}!WriteAllRoutesToImage@{WriteAllRoutesToImage}}
+\index{WriteAllRoutesToImage@{WriteAllRoutesToImage}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{WriteAllRoutesToImage()}{WriteAllRoutesToImage()}}
 {\footnotesize\ttfamily void T\+All\+Routes\+::\+Write\+All\+Routes\+To\+Image (\begin{DoxyParamCaption}\item[{int}]{Caller,  }\item[{Graphics\+::\+T\+Bitmap $\ast$}]{Bitmap }\end{DoxyParamCaption})}
 
 Calls Route\+Image\+Marker for each route in turn to display the route colours and direction arrows on the bitmap image (as on screen during operation) for an operating railway 
 
-\subsection{Member Data Documentation}
+\doxysubsection{Member Data Documentation}
 \mbox{\Hypertarget{class_t_all_routes_a961a443309f2ea74dc4c24b5a94fd8b6}\label{class_t_all_routes_a961a443309f2ea74dc4c24b5a94fd8b6}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Locked\+Route\+Found\+During\+Route\+Building@{Locked\+Route\+Found\+During\+Route\+Building}}
-\index{Locked\+Route\+Found\+During\+Route\+Building@{Locked\+Route\+Found\+During\+Route\+Building}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Locked\+Route\+Found\+During\+Route\+Building}{LockedRouteFoundDuringRouteBuilding}}
+\index{TAllRoutes@{TAllRoutes}!LockedRouteFoundDuringRouteBuilding@{LockedRouteFoundDuringRouteBuilding}}
+\index{LockedRouteFoundDuringRouteBuilding@{LockedRouteFoundDuringRouteBuilding}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{LockedRouteFoundDuringRouteBuilding}{LockedRouteFoundDuringRouteBuilding}}
 {\footnotesize\ttfamily bool T\+All\+Routes\+::\+Locked\+Route\+Found\+During\+Route\+Building}
 
 this flags the fact that a locked route has been found during route building in an existing linked route which is erased prior to its elements being added to the new route \mbox{\Hypertarget{class_t_all_routes_a7f0e30f383ca3cb65ab72d102c162316}\label{class_t_all_routes_a7f0e30f383ca3cb65ab72d102c162316}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Points\+Delay@{Points\+Delay}}
-\index{Points\+Delay@{Points\+Delay}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Points\+Delay}{PointsDelay}}
+\index{TAllRoutes@{TAllRoutes}!PointsDelay@{PointsDelay}}
+\index{PointsDelay@{PointsDelay}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{PointsDelay}{PointsDelay}}
 {\footnotesize\ttfamily const float T\+All\+Routes\+::\+Points\+Delay}
 
 the value in seconds for which points flash prior to being changed. Used for the points flash period when changing points manually and for the route flash period when points have to be changed \mbox{\Hypertarget{class_t_all_routes_a140f03788fbf646cb07f3c51f1f19175}\label{class_t_all_routes_a140f03788fbf646cb07f3c51f1f19175}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Rebuild\+Railway\+Flag@{Rebuild\+Railway\+Flag}}
-\index{Rebuild\+Railway\+Flag@{Rebuild\+Railway\+Flag}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Rebuild\+Railway\+Flag}{RebuildRailwayFlag}}
+\index{TAllRoutes@{TAllRoutes}!RebuildRailwayFlag@{RebuildRailwayFlag}}
+\index{RebuildRailwayFlag@{RebuildRailwayFlag}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{RebuildRailwayFlag}{RebuildRailwayFlag}}
 {\footnotesize\ttfamily bool T\+All\+Routes\+::\+Rebuild\+Railway\+Flag}
 
 this is set whenever a route has to be cancelled forcibly in order to force a Clearand\+Rebuild\+Railway at the next clock tick if not in zoom-\/out mode to clear the now cancelled route on the display \mbox{\Hypertarget{class_t_all_routes_a86d544429dcddbcbe43e63c8879128ee}\label{class_t_all_routes_a86d544429dcddbcbe43e63c8879128ee}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Route\+Truncate\+Flag@{Route\+Truncate\+Flag}}
-\index{Route\+Truncate\+Flag@{Route\+Truncate\+Flag}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Route\+Truncate\+Flag}{RouteTruncateFlag}}
+\index{TAllRoutes@{TAllRoutes}!RouteTruncateFlag@{RouteTruncateFlag}}
+\index{RouteTruncateFlag@{RouteTruncateFlag}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{RouteTruncateFlag}{RouteTruncateFlag}}
 {\footnotesize\ttfamily bool T\+All\+Routes\+::\+Route\+Truncate\+Flag}
 
-used to flag the fact that a route is being truncated on order to change the behaviour of signal aspect setting in Set\+Rearwards\+Signals\+Return\+False\+For\+Train \mbox{\Hypertarget{class_t_all_routes_a418f6235db60f6f41c56aede07b5fe24}\label{class_t_all_routes_a418f6235db60f6f41c56aede07b5fe24}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Route\+Type@{Route\+Type}}
-\index{Route\+Type@{Route\+Type}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Route\+Type}{RouteType}}
-{\footnotesize\ttfamily enum T\+All\+Routes\+::\+T\+Route\+Type  T\+All\+Routes\+::\+Route\+Type}
+used to flag the fact that a route is being truncated on order to change the behaviour of signal aspect setting in Set\+Rearwards\+Signals\+Return\+False\+For\+Train \mbox{\Hypertarget{class_t_all_routes_a8b4c0632615307653f3d1a24de9967b3}\label{class_t_all_routes_a8b4c0632615307653f3d1a24de9967b3}} 
+\index{TAllRoutes@{TAllRoutes}!RouteType@{RouteType}}
+\index{RouteType@{RouteType}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{RouteType}{RouteType}}
+{\footnotesize\ttfamily enum T\+All\+Routes\+::\+T\+Route\+Type T\+All\+Routes\+::\+Route\+Type}
 
 
 
 or no route at all (where this is used there is no need to distinguish between preferred direction and unrestricted routes) 
 
 distinguishes between automatic signals routes and other types, \mbox{\Hypertarget{class_t_all_routes_a7183b12f8de4fcb82e036252a37d574d}\label{class_t_all_routes_a7183b12f8de4fcb82e036252a37d574d}} 
-\index{T\+All\+Routes@{T\+All\+Routes}!Signals\+Delay@{Signals\+Delay}}
-\index{Signals\+Delay@{Signals\+Delay}!T\+All\+Routes@{T\+All\+Routes}}
-\subsubsection{\texorpdfstring{Signals\+Delay}{SignalsDelay}}
+\index{TAllRoutes@{TAllRoutes}!SignalsDelay@{SignalsDelay}}
+\index{SignalsDelay@{SignalsDelay}!TAllRoutes@{TAllRoutes}}
+\doxysubsubsection{\texorpdfstring{SignalsDelay}{SignalsDelay}}
 {\footnotesize\ttfamily const float T\+All\+Routes\+::\+Signals\+Delay}
 
 the value in seconds for which signals flash prior to being changed. Used for the route flash period when points don\textquotesingle{}t have to be changed 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-C\+:/\+Programming work/railway development after v2.\+2.\+0/Track\+Unit.\+h\item 
-C\+:/\+Programming work/railway development after v2.\+2.\+0/Track\+Unit.\+cpp\end{DoxyCompactItemize}
+Track\+Unit.\+h\item 
+Track\+Unit.\+cpp\end{DoxyCompactItemize}

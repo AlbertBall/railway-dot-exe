@@ -9,6 +9,8 @@
 		<param name="Name" value=".bmp">
 		<param name="Name" value="Files">
 		<param name="Local" value="html/2.34gc3.htm">
+		<param name="Name" value="Adding and deleting track and user-defined graphics">
+		<param name="Local" value="html\3.14jht.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value=".csv">
@@ -23,9 +25,25 @@
 		<param name="Local" value="html/3.44jhw.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value=".gif">
+		<param name="Name" value="Files">
+		<param name="Local" value="html\2.34gc3.htm">
+		<param name="Name" value="Adding and deleting track and user-defined graphics">
+		<param name="Local" value="html\3.14jht.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value=".jpg">
 		<param name="Name" value="Files">
 		<param name="Local" value="html/2.34gc3.htm">
+		<param name="Name" value="Adding and deleting track and user-defined graphics">
+		<param name="Local" value="html\3.14jht.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value=".png">
+		<param name="Name" value="Files">
+		<param name="Local" value="html\2.34gc3.htm">
+		<param name="Name" value="Adding and deleting track and user-defined graphics">
+		<param name="Local" value="html\3.14jht.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value=".rly">
@@ -81,6 +99,11 @@
 		<param name="Local" value="html/3.24jhu.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Alphabetical order">
+		<param name="Name" value="Using the timetable editor">
+		<param name="Local" value="html\5.84ptk.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Approach locking">
 		<param name="Name" value="Approach locking">
 		<param name="Local" value="html/6.24sz6.htm">
@@ -106,9 +129,14 @@
 		<param name="Local" value="html/5.54pth.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="A-Z order">
+		<param name="Name" value="Using the timetable editor">
+		<param name="Local" value="html\5.84ptk.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Background">
-		<param name="Name" value="Backgrounds">
-		<param name="Local" value="html/2.14gc1.htm">
+		<param name="Name" value="Backgrounds & trackside signal locations">
+		<param name="Local" value="html\2.14gc1.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Background colours of trains">
@@ -395,6 +423,11 @@
 		<param name="Local" value="html/6.54sz9.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Empty stock">
+		<param name="Name" value="Running trains">
+		<param name="Local" value="html\6.44sz8.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Entries">
 		<param name="See Also" value="Entries">
 		</OBJECT>
@@ -430,6 +463,11 @@
 		<param name="Name" value="Exporting timetables">
 		<param name="Name" value="Formatted timetables">
 		<param name="Local" value="html/5.101w8g.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Failures">
+		<param name="Name" value="Train failures">
+		<param name="Local" value="html\6.11.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Fer">
@@ -569,6 +607,11 @@
 		<param name="Local" value="html/3001f.htm">
 		<param name="Name" value="Track element types">
 		<param name="Local" value="html/3.1.246p.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Graphics">
+		<param name="Name" value="Adding and deleting track and user-defined graphics">
+		<param name="Local" value="html\3.14jht.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Headcodes">
@@ -940,6 +983,11 @@
 		<param name="Local" value="html/2.34gc3.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Random failures">
+		<param name="Name" value="Train failures">
+		<param name="Local" value="html\6.11.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Rear split">
 		<param name="Name" value="Splits">
 		<param name="Local" value="html/5.2.1e43.htm">
@@ -1158,15 +1206,15 @@
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Signals">
-		<param name="Name" value="Track element types">
-		<param name="Local" value="html/3.1.246p.htm">
-		<param name="Name" value="Setting preferred directions (PDs)">
-		<param name="Local" value="html/4001g.htm">
 		<param name="Name" value="Backgrounds & trackside signal locations">
 		<param name="Local" value="html\2.14gc1.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Signals">
+		<param name="Name" value="Track element types">
+		<param name="Local" value="html/3.1.246p.htm">
+		<param name="Name" value="Setting preferred directions (PDs)">
+		<param name="Local" value="html/4001g.htm">
 		<param name="Name" value="Backgrounds & trackside signal locations">
 		<param name="Local" value="html\2.14gc1.htm">
 		</OBJECT>
@@ -1503,6 +1551,11 @@
 		<param name="Local" value="html/2.24gc2.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Train failures">
+		<param name="Name" value="Train failures">
+		<param name="Local" value="html\6.11.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Train information">
 		<param name="Name" value="Train characteristics and floating window display">
 		<param name="Local" value="html/2.24gc2.htm">
@@ -1601,6 +1654,11 @@
 		<param name="Local" value="html\1001d.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Unpowered trains">
+		<param name="Name" value="Running trains">
+		<param name="Local" value="html\6.44sz8.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Unrestricted headcodes">
 		<param name="Name" value="Restricted and unrestricted headcodes">
 		<param name="Local" value="html/5.34ptf.htm">
@@ -1609,6 +1667,11 @@
 		<param name="Name" value="Unrestricted routes">
 		<param name="Name" value="Route setting and cancelling">
 		<param name="Local" value="html/6.14sz5.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="User-defined graphics">
+		<param name="Name" value="Adding and deleting track and user-defined graphics">
+		<param name="Local" value="html\3.14jht.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Using the timetable editor">

@@ -7,6 +7,7 @@ Display compile progress=No
 Full-text search=Yes
 Index file=Help.hhk
 Language=0x809 English (United Kingdom)
+Title=Railway help
 
 
 [FILES]
@@ -52,6 +53,8 @@ html\6.74szb.htm
 html\6.84szc.htm
 html\6.94szd.htm
 html\6.10.htm
+html\6.11.htm
+html\1001d.htm
 
 [INFOTYPES]
 

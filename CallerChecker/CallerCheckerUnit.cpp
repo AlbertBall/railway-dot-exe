@@ -116,6 +116,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "CheckTimetableFromSessionFile",
         "CheckTimeValidity",
         "CheckTrackElementsInFile",
+        "CheckUserGraphics",
         "Clear",
         "ClearandRebuildRailway",
         "ClearDisplay",
@@ -242,6 +243,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "IsPerformancePanelObscuringFloatingLabel",
         "IsPlatformOrNamedLocationPresent",
         "IsSNTEntryLocated",
+        "IsThereAnAdjacentTrain",
         "IsTrackLinked",
         "IsTrainIDOnBridgeTrackPos01",
 		"IsTrainIDOnBridgeTrackPos23",
@@ -255,6 +257,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 		"LinkTrack",
         "LinkTrackNoMessages",
         "LoadBarriersDownVector",
+        "LoadGraphics",
         "LoadGroundSignalGlyphs",
         "LoadInterface",
         "LoadNormalSignalGlyphs",
@@ -275,6 +278,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "LoadTimetable",
         "LoadTimetableFromSessionFile",
         "LoadTrack",
+        "LoadUserGraphic",
         "LocationNameAllocated",
         "LocationsNotNamed",
         "LogAction",
@@ -352,6 +356,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "RebuildOpTimeToActMultimap", //new v2.2.0
 		"RebuildPrefDirVector",
         "RebuildTrack",
+        "RebuildUserGraphics",
         "Rectangle",
         "RemainHere",
         "RemoveRouteElement",
@@ -393,6 +398,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "SaveTimetableToSessionFile",
         "SaveTrack",
         "SaveTrainDataVectorToFile",
+        "SaveUserGraphics",
         "SearchForAndUpdateLocationName",
         "SearchForNonPreferredRoute",
         "SearchForPrefDir",
@@ -459,6 +465,9 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 		"TrackPush",
 		"TrackTrainFloat",
 		"TrainAtLocation",
+        "TrainExistsAtIdent",
+        "TrainHasFailed",
+        "TrainOnContinuation",
 		"TrainOnLink",
 		"TrainToBeJoinedByIsAdjacent",
 		"TrainToJoinIsAdjacent",
@@ -471,9 +480,13 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 		"UnplotTrainInZoomOutMode",
 		"UnplotTrains",
 		"UpdateTrain",
+        "UserGraphicMove",
+        "UserGraphicPresentAtHV",
+        "UserGraphicVectorAt",
 		"ValidatePrefDir",
 		"WarningLog",
 		"WriteAllRoutesToImage",
+        "WriteGraphicsToImage",
 		"WriteOperatingTrackToImage",
 		"WritePrefDirToImage",
 		"WriteTrackToImage",
@@ -590,15 +603,15 @@ void TForm1::AnalyseOneFunction(int &FunctionCount, int NumberOfCalls, AnsiStrin
 				DupNumArray[y] = -1; //so it isn't counted again if appears more than twice in all
 			}
 		}
+		if(FirstPass)
+        {
+            UnicodeString MessageString = FunctionString + L":  max caller number = " + (UnicodeString)MaxNumber;
+    	    if(Print) OutFile << AnsiString(MessageString).c_str() << char(10);
+            FirstPass = false;
+        }
 		if(RepeatCount > 0)
 		{
-			UnicodeString MessageString = L"Number " + UnicodeString(CheckNumber) + L" repeated " + UnicodeString(RepeatCount) + L" times in function " + UnicodeString(FunctionString);
-			if(FirstPass)
-			{
-				MessageString = MessageString + L" Max caller number = " + (UnicodeString)MaxNumber;
-				FirstPass = false;
-			}
-
+			UnicodeString MessageString = L"--->>>Number " + UnicodeString(CheckNumber) + L" repeated " + UnicodeString(RepeatCount) + L" times in function " + UnicodeString(FunctionString);
 			if(!RadioButton2->Checked)
 			{
 				if(Screen)

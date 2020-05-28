@@ -39,7 +39,7 @@ div.WordSection1
 
 <div class=WordSection1>
 
-<p><a name=5></a><b>5 Timetables:</b></p>
+<p><a name=5></a><b>5 Timetables</b></p>
 
 <p>Note: Before and during timetable development please keep in mind the
 'Important points' set out in <a href="5.111w8h.htm">section 5.11</a>. These
@@ -56,14 +56,14 @@ services, especially shuttles with feeder and finishing services (explained
 later), and to a lesser extent for splits, joins and linked services, it will
 take some time to understand fully the timetable coding system. For simple
 services that don't have any of these features understanding should be
-relatively straightforward. It is suggested that simple timetables be set up
+easier, though it will still take time and practice when unfamiliar with its use. It is suggested that simple timetables be set up
 first until familiarity is gained, before moving on to more complex timetables.
 Sample timetables are provided that give examples of both simple and complex
 services.</p>
 
 <p>Timetables consist of 'entries', usually with one entry per train service.
 Entries appear in detail in the large window on the right of the timetable
-editor, and are summarised in the smaller window on the left with one line per
+editor, and are listed in the smaller window on the left with one line per
 entry. The program-readable timetable begins with an entry consisting of a
 timetable start time in the format HH:MM (hours and minutes). No text may
 precede this start time, but text may follow it though following text is
@@ -82,7 +82,7 @@ insert relevant codes at the cursor position, for convenience, and location
 names may be selected from the drop-down box similarly if a railway with names
 is loaded. This information may be entered longhand if preferred.</p>
 
-<p>During operation the timetable clock displays hours, minutes and seconds in
+<p>During railway operation the timetable clock displays hours, minutes and seconds in
 24 hour format, but timetable events just use hours and minutes, again in 24
 hour format. In fact the hours may exceed 24, where 24:00:00 to 48:00:00
 represents the second full day of operation, and so on. The timetable clock
@@ -90,7 +90,7 @@ displays up to 95:59:59 (i.e. 4 full days) then after the next second it resets
 to 00:00:00. The time values of timetable events may also exceed 24 hours, up
 to a maximum of 95 hours and 59 minutes (95:59). Any timetable time event that
 exceeds this value, including the maximum time value for any repeat service,
-will be rejected during validation.</p>
+will be rejected with an error message during validation.</p>
 
 <p>Timetable events may seem a bit cryptic at first but the coding that is used
 allows a great many trains and services with complex operations to be created
@@ -162,10 +162,16 @@ from relatively few commands. </p>
 </table>
 
 <p>The first line in the above service is for a new train (new trains have
-codes Snt or Snt-sh on the second line) and consists of a service headcode -
-2V31; description - Nottingham to Cardiff; starting speed - 150km/h; maximum
-train running speed - 150km/h; mass - 250te; maximum braking force - 25te; and
-power - 2500kW. Each piece of information is separated by a semicolon. One
+codes Snt or Snt-sh on the second line) and consists of:</p><p></p>
+<p>service headcode - 2V31; (Headcode format is described in <a href"5.34ptf.htm>section 5.3</a.)</p>
+<p>description - Nottingham to Cardiff; </p>
+<p>starting speed - 150km/h; </p>
+<p>maximum train running speed - 150km/h; </p>
+<p>mass - 250te; </p>
+<p>maximum braking force - 25te; and </p>
+<p>power - 2500kW. </p>
+
+Each piece of information is separated by a semicolon. One
 additional optional item is permitted on this line - maximum signaller-control
 speed. This is the maximum speed at which the train may run when it is under
 signaller control. The default value if nothing is specified for this speed is
@@ -175,12 +181,12 @@ signaller control. The default value if nothing is specified for this speed is
 give the above train a signaller-controlled speed of 75km/h.</p>
 
 <p>For entries that represent new services (i.e. not new trains and do not have
-codes 'Snt' or 'Snt-sh' on the second line), just the headcode (plus optional
-';description') is required on the first line. For example <span
+codes 'Snt' or 'Snt-sh' on the second line), just the headcode and optional
+description is required on the first line. For example <span
 style='color:blue'>1S16;London to Glasgow</span>. New services continue on from
-earlier services so the train data is generally the same as for the preceding
+earlier services so the train data is normally the same as for the preceding
 service. If a new description is not provided then the earlier description is
-applied.</p>
+used.</p>
 
 <p>For the example above (2V31) the second line is <span style='color:blue'>07:00;Snt;N19-29
 N20-29</span>.</p>
@@ -188,12 +194,12 @@ N20-29</span>.</p>
 <p>This tells the program that at 07:00 a new train is required (Start new
 train), located with the rear of the train on track element N19-29 and the
 front on N20-29 (trains always occupy two track elements). The train is moving
-when it is created.</p>
+when it is created because its starting speed is 150km/h.</p>
 
 <p>The next line is <span style='color:blue'>07:03;pas;Kings Norton Approach
 (NE)</span>, which tells the program that at 07:03 the train is expected to
-pass (<span style='color:blue'>pas</span>) Kings Norton Approach (NE). The next
-line is <span style='color:blue'>07:05;Fer;N89-39 N89-40</span>, which tells
+pass (<span style='color:blue'>pas</span>) Kings Norton Approach (NE). This name ' Kings Norton Approach (NE)' must be a named location that must have this exact name.</p>
+<p>The next line is <span style='color:blue'>07:05;Fer;N89-39 N89-40</span>, which tells
 the program that at 07:05 the train is expected to finish by exiting the
 railway (<span style='color:blue'>F</span>inish <span style='color:blue'>e</span>xit
 <span style='color:blue'>r</span>ailway) at either track element N89-39 or

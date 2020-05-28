@@ -52,7 +52,7 @@ references' are used. <i>In the following examples shuttles and joins are used
 to illustrate the application of service references. The details of how
 shuttles and joins operate and are coded will be provided later.</i></p>
 
-<p>The point to note is that <u>all linked references must be unique*</u>, so
+<p>The point to note is that <u>all linked references must be unique*</u>, (services that don't link to other services can just be identified by headcodes, and those headcodes don't have to be unique) so
 if the same headcode is to be used for more than one linked service a prefix
 (own choice up to 4 extra characters) should be added, <b> though in all cases the
 final four characters must represent a headcode <A HREF="5.34ptf.htm">see section 5.3</A></b>).</p>
@@ -274,7 +274,7 @@ which reaches Birmingham New Street at 07:10, and is joined by 1A21 at 07:11
 this case 1A21). The two references 1A21 and 1A23 are the two linked service
 references and must appear in each other's entries for a proper linkage. In
 this case there is no need for any prefixes because these headcodes are not
-used elsewhere.</p>
+used elsewhere. Service codes - Snt, pas, Fjo, jbo, Fer and many others are described in detail later.</p>
 
 <p><u>Note that the repeat information must be identical for all linked
 services</u></p>
@@ -521,12 +521,12 @@ unique.</p>
 
 <p>It is recommended to use different prefixes for separate same-headcode
 services even when the timetable doesn't strictly require it (i.e. where
-multiple links for the same headcode aren't used), because it is then easier to
+linked trains with the same headcode aren't used), because it is then easier to
 identify which service is at fault when errors are reported by the timetable
 syntax or validity checkers.</p>
 
 <p>Note that because headcode letters and numbers are very small, it is easy to
-confuse letter 'g' (shown as ) with number '9' (shown as ).</p>
+confuse letter 'g' (shown as <img width=8 height=8 src="../images/Code_g.gif">) with number '9' (shown as <img width=8 height=8 src="../images/Code_9.gif">).</p>
 
 <p>See <a href="5.111w8h.htm">section 5.11</a> for some important aspects that
 will help to avoid errors.</p>

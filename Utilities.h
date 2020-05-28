@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <deque>
 #include <vcl.h>
 #include <fstream>
+#include <locale.h> //to check local decimal point character, added at v2.4.0
 
 //---------------------------------------------------------------------------
 
@@ -35,6 +36,9 @@ class TUtilities //single object incorporating general purpose data & functions 
 public:
     bool Clock2Stopped; //when true the main loop - Interface->ClockTimer2 - is stopped
     bool RHSignalFlag; //new at v2.3.0   false=LH signals
+    bool SetLocaleResultOK; //flag to indicate whether the call to setlocale() in InterfaceUnit.cpp succeeded or not
+
+    char DecimalPoint; //added at v2.4.0 so can use the local value in loaded session files
 
     int ScreenElementWidth; //width of display screen in elements
     int ScreenElementHeight; //height of display screen in elements
@@ -53,11 +57,12 @@ public:
     void SaveFileBool(std::ofstream &OutFile, bool SaveBool); //stores '1' if the bool is true or '0' if false to the file, then a CR
     void SaveFileInt(std::ofstream &OutFile, int SaveInt); //stores the int value to the file, then a CR
     void SaveFileDouble(std::ofstream &OutFile, double SaveDouble); //converts the double value to a string (if double stored directly
-    //it is truncated to 6 digits) then stores to the file, then a CR
+    //it is truncated to 6 digits) then stores to the file, then a CR, uses the local decimal point character
     void SaveFileString(std::ofstream &OutFile, AnsiString SaveString); //stores the string value to the file, then a '0' delimiter then a CR
     bool LoadFileBool(std::ifstream &InFile); //loads a bool value from the file
     int LoadFileInt(std::ifstream &InFile); //loads an int value from the file
     double LoadFileDouble(std::ifstream &InFile); //loads a double value from the file (converts from a string to a double)
+                                                //and uses the local decimal point character regardless of what appears in the string
     AnsiString LoadFileString(std::ifstream &InFile); //loads a string value from the file
     bool CheckFileBool(std::ifstream &InFile); //checks that the value is a bool returns true for success
     bool CheckFileInt(std::ifstream &InFile, int Lowest, int Highest); //checks that the value is an int lying between Lowest & Highest
@@ -65,6 +70,8 @@ public:
     bool CheckAndReadFileInt(std::ifstream &InFile, int Lowest, int Highest, int &OutInt); //checks that the value is an int lying
     //between Lowest & Highest (inclusive), returns true for success and returns the value in OutInt
     bool CheckFileDouble(std::ifstream &InFile); //checks that the value is a double, returns true for success
+    bool CheckStringDouble(AnsiString &DoubleString); //checks the string represents a valid double value, returns true for success. Added at v2.4.0 for checking ExcessLCDownMins
+                                                      //DoubleString is returned as a reference because the decimal point is potentially modified by the function
     bool CheckFileString(std::ifstream &InFile); //checks that the value is a string ('0' or CR accepted as delimiters), returns true for
     //success
     bool CheckFileStringZeroDelimiter(std::ifstream &InFile); //checks that the value is a string ('0' only accepted as the delimiter),
@@ -73,9 +80,9 @@ public:
     //delimiters) and is the same as InString, returns true for success
     bool CheckAndReadFileString(std::ifstream &InFile, AnsiString &OutString); //checks that the value is a string ('0' or CR accepted as
     //delimiters), returns true for success and returns the value in OutString
-    AnsiString TUtilities::Format96HHMMSS(TDateTime DateTime); //formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs
+    AnsiString Format96HHMMSS(TDateTime DateTime); //formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs
     //from 00 to 95 & resets when it reaches 96
-    AnsiString TUtilities::Format96HHMM(TDateTime DateTime); //formats a TDateTime into an AnsiString of the form hh:mm where hh runs from
+    AnsiString Format96HHMM(TDateTime DateTime); //formats a TDateTime into an AnsiString of the form hh:mm where hh runs from
     //00 to 95 & resets when it reaches 96
 };
 

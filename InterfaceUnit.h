@@ -59,10 +59,10 @@ __published:    // IDE-managed Components
     TBitBtn *SetGapsButton;
     TBitBtn *TrackOKButton;
     TBitBtn *AddTextButton;
-    TBitBtn *MoveTextButton;
+    TBitBtn *MoveTextOrGraphicButton;
     TBitBtn *LocationNameButton;
     TBitBtn *FontButton;
-    TBitBtn *TextGridButton;
+    TBitBtn *TextOrUserGraphicGridButton;
     TBitBtn *SetLengthsButton;
     TBitBtn *ScreenGridButton;
     TBitBtn *SaveRailwayTBPButton; ///< Save button on TrackBuildPanel
@@ -72,6 +72,11 @@ __published:    // IDE-managed Components
     TBitBtn *ResetDefaultLengthButton;
     TBitBtn *LengthCancelButton;
     TBitBtn *LengthOKButton;
+    TBitBtn *UserGraphicButton;  //new at v2.4.0
+
+    //user graphic selection buttons
+    TButton *ReselectUserGraphic;
+    TButton *SelectNewGraphic;
 
     TEdit *TextBox; ///< the edit box that accepts text to be added
     TEdit *DistanceBox; ///< distance/speed setting edit box that accepts distances
@@ -82,20 +87,19 @@ __published:    // IDE-managed Components
     TEdit  *MileEdit;
     TEdit  *ChainEdit;
     TEdit  *YardEdit;
+    TEdit  *SpeedEditBox2;
     TPanel *MetrePanel;
     TLabel *MetreVariableLabel;
     TLabel *MileLabel;
+    TPanel *LengthConversionPanel;
+    TPanel *SpeedConversionPanel;
+    TPanel *SpeedVariablePanel2;
     TLabel *ChainLabel;
     TLabel *YardLabel;
     TLabel *MetreFixedLabel;
-    TPanel *LengthConversionPanel;
-    TPanel *SpeedConversionPanel;
-    TEdit *SpeedEditBox2;
     TLabel *SpeedTopLabel2;
     TLabel *SpeedBottomLabel2;
-    TPanel *SpeedVariablePanel2;
     TLabel *SpeedVariableLabel2;
-    TPanel *AddSubMinsPanel;
 
     // 'Set preferred directions' mode - buttons left to right
     TBitBtn *AddPrefDirButton;
@@ -121,6 +125,7 @@ __published:    // IDE-managed Components
     TButton *CancelTTActionButton;
     TButton *NewTTEntryButton;
     //centre column buttons left to right & top to bottom
+    TButton *AZOrderButton;
     TButton *AddMinsButton;
     TButton *SubMinsButton;
     TButton *TTServiceSyntaxCheckButton;
@@ -148,6 +153,9 @@ __published:    // IDE-managed Components
     TButton *Fns_shButton;
     TButton *F_nshsButton;
     TButton *FrhButton;
+
+
+    TPanel *AddSubMinsPanel; ///< tt mins panel
     TEdit *TTStartTimeBox; ///< edit box that displays the timetable start time
     TComboBox *LocationNameComboBox; ///< the combobox that lists location names
     TEdit *AddSubMinsBox; ///< the edit box that accepts minutes to add or subtract
@@ -156,16 +164,16 @@ __published:    // IDE-managed Components
     TEdit *SpeedEditBox;
     TLabel *SpeedTopLabel;
     TLabel *SpeedBottomLabel;
+    TLabel *SpeedVariableLabel;
     TPanel *SpeedVariablePanel1;
     TPanel *SpeedConversionTTPanel;
-    TLabel *SpeedVariableLabel;
 
     //power conversion box on timetable screen
     TEdit *PowerEditBox;
     TLabel *PowerTopLabel;
     TLabel *PowerBottomLabel;
-    TPanel *KWPanel;
     TLabel *PowerVariableLabel;
+    TPanel *KWPanel;
 
     //'Operate railway' mode - buttons left to right
     TBitBtn *OperateButton;
@@ -174,12 +182,14 @@ __published:    // IDE-managed Components
     TBitBtn *UnrestrictedButton;
     TBitBtn *RouteCancelButton;
     TBitBtn *PresetAutoSigRoutesButton;
-    TSpeedButton *CallingOnButton; ///< speedbutton used so can detect when button is down
     TBitBtn *PerformanceLogButton;
+    TBitBtn *SaveRailwayOPButton; ///< Save button on the OperatingPanel at top left hand corner of the screen when no mode is selected
     TBitBtn *SaveSessionButton;
     TBitBtn *OperatorActionButton;   //new for v2.2.0
     TBitBtn *ExitOperationButton;
     TBitBtn *TTClockAdjButton;
+    TSpeedButton *CallingOnButton; ///< speedbutton used so can detect when button is down
+
 
     TButton *PowerToggleButton; //kilowatts to horse power toggle
     TButton *SpeedToggleButton; //miles per hour to kilmetres per hour toggle
@@ -199,9 +209,8 @@ __published:    // IDE-managed Components
     TButton *TTClockx4Button;
     TButton *TTClockx8Button;
     TButton *TTClockx16Button;
-    TLabel *TTClockSpeedLabel;
-    TLabel *TTClockAdjustLabel1;
-    TLabel *TTClockAdjustLabel2;
+	TButton *TTClockxEighthButton;
+	TButton *TTClockxSixteenthButton;
 
     //screen navigation buttons (right/up means move viewpoint right/up, i.e railway moves left/down)
     TBitBtn *ScreenRightButton;
@@ -211,7 +220,7 @@ __published:    // IDE-managed Components
     TBitBtn *HomeButton;
     TBitBtn *NewHomeButton;
     TBitBtn *ZoomButton;
-    TBitBtn *SaveRailwayOPButton; ///< Save button on the OperatingPanel at top left hand corner of the screen when no mode is selected
+
     TBitBtn *ErrorButton; ///< the 'Press to exit' button on the error screen
 
     //warning icons shown during operation on the left hand side of the screen
@@ -254,6 +263,44 @@ __published:    // IDE-managed Components
     TLabel *OutputLog9;
     TLabel *OutputLog10;
 
+    TLabel *PerformancePanelLabel; ///< label at the top of PerformancePanel
+    TLabel *PrefDirPanelLabel; ///< label to the left of PrefDirPanel
+    TLabel *ServiceCodeLabel; ///< displays 'Service component codes' on TimetableEditPanel
+    TLabel *SpeedRestrictionLabel; ///< displays 'Speed Limit (km/h)' on TrackLengthPanel
+    TLabel *TimetableNameLabel; ///< displays the current timetable name on the timetable edit panel
+    TLabel *TimetablePanelLabel; ///< label to the left of TimetablePanel
+    TLabel *TrackBuildPanelLabel; ///< label to the left of TrackBuildPanel
+    TLabel *TrackLengthLabel; ///< displays 'Length (metres)' on TrackLengthPanel
+    TLabel *CallLogTickerLabel; ///< diagnostic label displaying the call log depth, made visible by <ctrl> <alt> '2'
+    TLabel *ClockLabel;
+    TLabel *OperatingPanelLabel; ///< displays 'Operation' or 'Disabled' on the operating panel during operation for running or paused
+
+    TLabel *TTClockTitleLabel; ///< tt clock labels
+    TLabel *TTClockLabel1;
+    TLabel *TTClockLabel2;
+    TLabel *TTClockSpeedLabel;
+    TLabel *TTClockAdjustLabel1;
+    TLabel *TTClockAdjustLabel2;
+
+    TLabel *OAPanelLabel;
+    TLabel *FloatingLabel; ///< the floating window that displays track & train information
+
+    //text displayed on the timetable screen
+    TLabel *TTLabel1;
+    TLabel *TTLabel2;
+    TLabel *TTLabel3;
+    TLabel *TTLabel4;
+    TLabel *TTLabel5;
+    TLabel *TTLabel6;
+    TLabel *TTLabel7;
+    TLabel *TTLabel8;
+    TLabel *TTLabel9;
+    TLabel *TTLabel11;
+    TLabel *TTLabel12;
+    TLabel *TTLabel13;
+    TLabel *TTLabel14;
+
+
     TPanel *RestoreFocusPanel; ///< Panel used to restore focus to Interface to enable cursor keys to move screen
 
     TPanel *TrackBuildPanel; ///< 'Build/modify railway' panel
@@ -275,38 +322,6 @@ __published:    // IDE-managed Components
     TPanel *PositionalPanel;
     TPanel *OperatorActionPanel; ///< new v2.2.0 panel housing the OAListBox with list of trains and times to act
     TPanel *SigImagePanel; ///< new at v2.3.0 for handed signals
-
-    TLabel *PerformancePanelLabel; ///< label at the top of PerformancePanel
-    TLabel *PrefDirPanelLabel; ///< label to the left of PrefDirPanel
-    TLabel *ServiceCodeLabel; ///< displays 'Service component codes' on TimetableEditPanel
-    TLabel *SpeedRestrictionLabel; ///< displays 'Speed Limit (km/h)' on TrackLengthPanel
-    TLabel *TimetableNameLabel; ///< displays the current timetable name on the timetable edit panel
-    TLabel *TimetablePanelLabel; ///< label to the left of TimetablePanel
-    TLabel *TrackBuildPanelLabel; ///< label to the left of TrackBuildPanel
-    TLabel *TrackLengthLabel; ///< displays 'Length (metres)' on TrackLengthPanel
-    TLabel *CallLogTickerLabel; ///< diagnostic label displaying the call log depth, made visible by <ctrl> <alt> '2'
-    TLabel *ClockLabel; ///< the floating window that displays track & train information
-    TLabel *OperatingPanelLabel; ///< displays 'Operation' or 'Disabled' on the operating panel during operation for running or paused
-    TLabel *TTClockTitleLabel;
-    TLabel *TTClockLabel1;
-    TLabel *TTClockLabel2;
-    TLabel *OAPanelLabel;
-    TLabel *FloatingLabel;
-
-    //text displayed on the timetable screen
-    TLabel *TTLabel1;
-    TLabel *TTLabel2;
-    TLabel *TTLabel3;
-    TLabel *TTLabel4;
-    TLabel *TTLabel5;
-    TLabel *TTLabel6;
-    TLabel *TTLabel7;
-    TLabel *TTLabel8;
-    TLabel *TTLabel9;
-    TLabel *TTLabel11;
-    TLabel *TTLabel12;
-    TLabel *TTLabel13;
-    TLabel *TTLabel14;
 
     TMainMenu *MainMenu1; ///< the program menu
 
@@ -383,7 +398,18 @@ __published:    // IDE-managed Components
     TMenuItem *N3;
     TMenuItem *N4;
     TMenuItem *RailwayWebSiteMenuItem;
-    TMenuItem *PasteWithAttributesMenuItem;
+//    TMenuItem *PasteWithAttributesMenuItem;
+	TMenuItem *RotRightMenuItem;           //new at v2.4.0
+	TMenuItem *RotLeftMenuItem;            //new at v2.4.0
+    TMenuItem *SignallerJoinedByMenuItem;  //new at v2.4.0
+    TMenuItem *RepairFailedTrainMenuItem;
+    TMenuItem *SetMTBFMenuItem;
+
+    TImage *TrainFailedImage;              //new at v2.4.0
+    TEdit *MTBFEditBox;
+    TLabel *MTBFLabel;
+    TPanel *UserGraphicReselectPanel;
+
 
     TPopupMenu *PopupMenu;
 
@@ -391,11 +417,11 @@ __published:    // IDE-managed Components
     TOpenDialog *LoadRailwayDialog;
     TOpenDialog *LoadSessionDialog;
     TOpenDialog *TimetableDialog;
+    TOpenDialog *LoadUserGraphicDialog;
 
     //file save dialogs
     TSaveDialog *SaveRailwayDialog;
     TSaveDialog *SaveTTDialog;
-
     TFontDialog *FontDialog; ///< font change dialog
 
     TTimer *MasterClock; ///< the program clock (not the timetable clock)
@@ -547,8 +573,6 @@ __published:    // IDE-managed Components
     TSpeedButton *SpeedButton144;
 	TSpeedButton *SpeedButton146;
 	TSpeedButton *SpeedButton145;
-	TButton *TTClockxEighthButton;
-	TButton *TTClockxSixteenthButton;
 
     //menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -644,7 +668,7 @@ __published:    // IDE-managed Components
     void __fastcall LengthCancelButtonClick(TObject *Sender);
     void __fastcall LengthOKButtonClick(TObject *Sender);
     void __fastcall LocationNameButtonClick(TObject *Sender);
-    void __fastcall MoveTextButtonClick(TObject *Sender);
+    void __fastcall MoveTextOrGraphicButtonClick(TObject *Sender);
     void __fastcall MoveTTEntryDownButtonClick(TObject *Sender);
     void __fastcall MoveTTEntryUpButtonClick(TObject *Sender);
     void __fastcall NewHomeButtonClick(TObject *Sender);
@@ -674,7 +698,7 @@ __published:    // IDE-managed Components
     void __fastcall SigPrefButtonClick(TObject *Sender);
     void __fastcall SpeedButtonClick(TObject *Sender);
     void __fastcall SubMinsButtonClick(TObject *Sender);
-    void __fastcall TextGridButtonClick(TObject *Sender);
+    void __fastcall TextOrUserGraphicGridButtonClick(TObject *Sender);
     void __fastcall TrackOKButtonClick(TObject *Sender);
     void __fastcall TTClockAdd1hButtonClick(TObject *Sender);
     void __fastcall TTClockAdd10mButtonClick(TObject *Sender);
@@ -725,7 +749,6 @@ __published:    // IDE-managed Components
     void __fastcall SpeedToggleButtonClick(TObject *Sender);
     void __fastcall PowerToggleButtonClick(TObject *Sender);
     void __fastcall SpeedToggleButton2Click(TObject *Sender);
-    void __fastcall PasteWithAttributesMenuItemClick(TObject *Sender);
     void __fastcall OperatorActionButtonClick(TObject *Sender);
     void __fastcall OAListBoxMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
                                      int X, int Y);
@@ -733,10 +756,18 @@ __published:    // IDE-managed Components
     void __fastcall ConverttoRightHandSignalsMenuItemClick(TObject *Sender);
     void __fastcall TTClockxEighthButtonClick(TObject *Sender);
     void __fastcall TTClockxSixteenthButtonClick(TObject *Sender);
-    //new function for v2.2.0 for pasting with attributes after cutting
+	void __fastcall RotRightMenuItemClick(TObject *Sender);              //new at v2.4.0
+	void __fastcall RotLeftMenuItemClick(TObject *Sender);               //new at v2.4.0
+    void __fastcall SignallerJoinedByMenuItemClick(TObject *Sender);     //new at v2.4.0
+    void __fastcall RepairFailedTrainMenuItemClick(TObject *Sender);     //new at v2.4.0
+    void __fastcall MTBFEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftState Shift);
+    void __fastcall MTBFEditBoxClick(TObject *Sender);
+    void __fastcall AZOrderButtonClick(TObject *Sender);
+    void __fastcall UserGraphicButtonClick(TObject *Sender);
+    void __fastcall ReselectUserGraphicClick(TObject *Sender);
+    void __fastcall SelectNewGraphicClick(TObject *Sender);    //new at v2.4.0
 
 public: //AboutForm needs access to these
-
 
     enum TLevel1Mode {BaseMode, TrackMode, PrefDirMode, OperMode, RestartSessionOperMode, TimetableMode} Level1Mode; ///< Level 1 program modes
     UnicodeString ProgramVersion;
@@ -751,11 +782,12 @@ private:
     static const UnicodeString SESSION_DIR_NAME;
     static const UnicodeString IMAGE_DIR_NAME;
     static const UnicodeString FORMATTEDTT_DIR_NAME;
+    static const UnicodeString USERGRAPHICS_DIR_NAME;
 
 //Level 2 program modes (i.e. submodes from the level 1 modes)
     enum TLevel2OperMode {NoOperMode, Operating, PreStart, Paused} Level2OperMode;
     enum TLevel2PrefDirMode {NoPrefDirMode, PrefDirContinuing, PrefDirSelecting} Level2PrefDirMode;
-    enum TLevel2TrackMode {NoTrackMode, AddTrack, GapSetting, AddText, MoveText, AddLocationName,
+    enum TLevel2TrackMode {NoTrackMode, AddTrack, AddGraphic, SelectGraphic, GapSetting, AddText, MoveTextOrGraphic, AddLocationName,
                            DistanceStart, DistanceContinuing, TrackSelecting, CutMoving, CopyMoving, Pasting, Deleting} Level2TrackMode;
 
     enum {None, RouteNotStarted, RouteContinuing} RouteMode; ///< route building modes
@@ -777,6 +809,8 @@ private:
     AnsiString RailwayTitle, TimetableTitle; ///< the titles of the loaded railway and loaded timetable, i.e. the filenames without the extension
     AnsiString SavedFileName; ///< the full path and filename of the loaded railway
     AnsiString TempTTFileName; ///< the name for the temporary file used to save loaded timetables for storage in session files & error logs
+    AnsiString TTSelectedEntry; ///< used to record the current timetable entry when changing to AZ order or back to original order
+    AnsiString SelectedGraphicFileName; ///< filename for selected graphic set during LoadGraphic
 
     bool AllSetUpFlag;  ///< false during initial start up, true when all set up to allow MasterClock to start
     bool AutoSigsFlag;  ///< true when AutoSig route building selected during operation
@@ -788,7 +822,7 @@ private:
     bool ErrorLogCalledFlag; ///< true when an error has been thrown, stops repeated calls to ErrorLog and stops the MasterClockTimer function
     bool FileChangedFlag; ///< true when a loaded railway file has changed (used to warn user if opts to exit without saving)
     bool NonCTRLOrSHIFTKeyUpFlag; ///< true when other than a shift or ctrl key released - added at v1.3.0 to prevent repeated keypresses from repeatedly moving the screen viewpoint
-    bool LoadSessionFlag; ///< true when a session load command has been given
+    bool LoadSessionFlag; ///< true when a session load command has been given - implemented at next clock tick
     bool mbLeftDown;    ///< true when the left mouse button is down
     bool NewEntryInPreparationFlag; ///< true when a new timetable entry is being prepared in the timetable editor
     bool PreferredRoute; ///< true when AutoSig or preferred route building selected during operation (always same state as ConsecSignalsRoute)
@@ -798,7 +832,7 @@ private:
                                     ///< to see the screen that corresponds to the clicked position
     bool RlyFile;       ///< indicates that a loaded railway file is ready for operation, i.e. is a valid .rly file
     bool RouteCancelFlag; ///< true when route cancel button pressed, enables a right mouse click to cancel a route if in an appropriate position
-    bool SaveSessionFlag; ///< true when a session save command has been given
+    bool SaveSessionFlag; ///< true when a session save command has been given - implemented at next clock tick
     bool ScreenGridFlag; ///< true when the screen grid is displayed
     bool SelectionValid; ///< true when an area of screen has been selected via the 'Edit' & 'Select' or 'Reselect' menu items
     bool SelectLengthsFlag; ///< true when 'Set lengths &/or speeds' selected in the 'Edit' menu
@@ -808,9 +842,11 @@ private:
     bool ShowPerformancePanel; ///< true when the 'show performance panel' button has been clicked during operation
     bool SkipFormResizeEvent; ///< added at v2.1.0 to avoid calling the event during startup and shutdown
     bool TempCursorSet; ///< indicates that a screen cursor has been stored in TempCursor for redisplay after a temporary cursor (usually an hourglass) has been displayed
-    bool TextFoundFlag; ///< indicates that a text item has been found when clicking on a build screen during 'AddText' or 'MoveText' modes
+    bool TextFoundFlag; ///< indicates that a text item has been found when clicking on a build screen during 'AddText' or 'MoveTextOrGraphic' modes
+    bool UserGraphicFoundFlag; ///< indicates that a user graphic item has been found when clicking on a build screen for moving
     bool TimetableChangedFlag; ///< true when a timetable in the editor has changed (used to warn user if opts to exit without saving)
     bool TimetableValidFlag; ///< indicates that a 'Validate timetable' button click in the timetable editor has succeeded
+    bool TimetableChangedInAZOrderFlag; ///< used to give a warning message that changes will be discarded if proceed
     bool ShowOperatorActionPanel; ///< true when the 'trains needing action' button has been clicked during operation (new at v2.2.0)
     bool TTEntryChangedFlag; ///< true when a timetable entry that is displayed in the timetable entry edit window has changed
     bool WarningFlash;  ///< toggles on and off automatically at a cycle of about 0.5 sec, used to drive the warning icons during operation
@@ -827,8 +863,10 @@ private:
     Graphics::TBitmap *SelectBitmap; ///< the graphic defined by Edit->Select & Edit->Reselect
 
 //    int ClockTimer2Count; ///< added at v1.3.0 to ensure focus returned to Interface, dropped at v2.0.0
-    int LCResetCounter; ///< count up to 20 then resets - to check LCs & raise barriers if no route & no train present
-    int MissedTicks;    ///< test for missed clock ticks
+    unsigned int LCResetCounter; ///< count up to 20 then resets - to check LCs & raise barriers if no route & no train present
+    unsigned long UnMissedTicks; ///<counts ticks that are responded to for comparison with MissedTicks (for test purposes)
+    unsigned long MissedTicks;    ///< test for missed clock ticks
+    int AvHoursIntValue; ///<Input in MTBFEditBox in timetable hours, min value is 1 and max is 10,000
     int NewSelectBitmapHLoc; ///< the new (during & at end of moving) HLoc value of Edit->Select & Edit->Reselect
     int NewSelectBitmapVLoc; ///< as above for VLoc
     int OperatorActionPanelDragStartX; ///< mouse 'X' position when the OperatorActionPanel begins to be dragged
@@ -845,17 +883,19 @@ private:
     int SelectBitmapMouseLocY; ///< see above
     int SelectBitmapVLoc; ///< the original (prior to moving & after finished moving) VLoc value of Edit->Select & Edit->Reselect
     int SelectedTrainID; ///< used to store the train ID when right clicked for signaller control actions
+    int StartWholeRailwayMoveHPos; ///<mouse X position when start to move the whole railway
+    int StartWholeRailwayMoveVPos; ///<mouse Y position when start to move the whole railway
     int StartX, StartY; ///< the mouse position in terms of pixels when an item of text is being selected for moving
     int TempCount;      ///< test value
     int Text_X;         ///< the 'X' pixel value for an item of text
     int Text_Y;         ///< as above for 'Y'
-    int TextGridVal;    ///< stores the text alignment grid value, cycles forwards through 1, 2, 4, 8 & 16 each time the text grid alignment
+    int TextOrUserGraphicGridVal;    ///< stores the text alignment grid value, cycles forwards through 1, 2, 4, 8 & 16 each time the text grid alignment
                         ///< button is clicked
     int TextItem;       ///< used to store a single item of text
     int TextMoveHPos, TextMoveVPos; ///< used to store the original text 'H' & 'V' positions for use during text moving
+    int UserGraphicVectorNumber;       ///< used to store a single item of user graphics
+    int UserGraphicMoveHPos, UserGraphicMoveVPos; ///< used to store the original user graphic 'H' & 'V' positions for use during moving
     int WarningFlashCount; ///< increments each clock cycle to a max. of 4 then resets to 0, used to toggle bool WarningFlash - see above
-    int StartWholeRailwayMoveHPos; ///<mouse X position when start to move the whole railway
-    int StartWholeRailwayMoveVPos; ///<mouse Y position when start to move the whole railway
 
     TCursor TempCursor; ///< stores the screen cursor while a temporary cursor (ususlly an hourglass) is displayed
 
@@ -876,14 +916,14 @@ private:
 
     TOneRoute *ConstructRoute; ///< the route under construction
 
-    TRect SelectRect;   ///< the rectangle in HLoc & VLoc terms set in in Edit->Select & Edit->Reselect
+    TRect SelectRect;   ///< the rectangle in HLoc & VLoc terms set in Edit->Select & Edit->Reselect
 
     TSpeedButton* CurrentSpeedButton; ///< stores the selected track build element button during railway building
 
     TTEVPtr TEVPtr, TTCurrentEntryPtr, TTStartTimePtr, TTFirstServicePtr, TTLastServicePtr; ///< timetable entry value pointers used during
                                                                                             ///< timetable editing
 
-    TTimetableEditVector TimetableEditVector; ///< the complete timetable as a list of AnsiStrings for use in edit timetable functions
+    TTimetableEditVector TimetableEditVector, OriginalTimetableEditVector; ///< the complete timetable as a list of AnsiStrings for use in edit timetable functions
 
 /// constructor
     __fastcall TInterface(TComponent* Owner);
@@ -976,10 +1016,17 @@ private:
     void LoadNormalSignalGlyphs(int Caller);
 /// Load the performance file part of a sessionfile
     void LoadPerformanceFile(int Caller, std::ifstream &InFile);
-/// Load a railway file
+/// Load a railway file.  The **Active elements** marker now has a '1' at the end if there are user graphics to be loaded,
+/// and if there are they are loaded after the preferred directions.
     void LoadRailway(int Caller, AnsiString LoadFileName);
-/// Load a session file
+/*  Load a session file.  the structure of session files has changed due to 'patching' as later mods have needed inclusion
+    The version line ("version + : ***Interface***" ) now ends with a floating point value for excess level crossing down minutes - had been overlooked when this
+    performance measure was first introduced.  The **Active elements** marker now has a '1' at the end if there are user graphics to be loaded, and this is
+    inlcuded in railway files also, and if there are they are loaded after the preferred directions.  After the end of the performance file "***Additions after v2.3.1***"
+    is loaded fillowed by AvHoursIntValue then all failed trains if any. */
     void LoadSession(int Caller);
+/// Load a user-defined graphic (bmp, gif, jpg, png).
+    void LoadUserGraphic(int Caller);
 /// Called when mouse button clicked in zoom-in mode
     void MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftState Shift, int X, int Y);
 /// Called when mouse button clicked in zoom-out mode
@@ -988,16 +1035,17 @@ private:
     void ResetAll(int Caller);
 /// Called whenever the railway is changed to deal with title displays
 /// (loaded railway and timetable) and set the FileChangedFlag so that user will be warned before it is deleted
+/// NonPrefDirChangesMade is true if the changes don't involve prefdirs
     void ResetChangedFileDataAndCaption(int Caller, bool NonPrefDirChangesMade);
 /// Resets the CurrentSpeedButton variable to zero and the 'Down' property to false
     void ResetCurrentSpeedButton(int Caller);
 /// SelectRect is the rectangle selected via the 'Edit'menu, and this function sets left, right, top and bottom values to zero
-    void ResetSelectRect();
+	void ResetSelectRect();
 /// Clears any route start markers, enables or disables the route cancel button, and resets
 /// the information panel to the message it had before it was changed temporarily, e.g. due to a new route being set
     void RevertToOriginalRouteSelector(int Caller);
 /// Used to save a railway when not already saved - e.g. when not already named or when the 'Save as'
-/// menu item selected
+/// menu item selected - see LoadRailway for changes made because of user graphics
     void SaveAsSubroutine(int Caller);
 /// Save the error log after an error has been thrown - no need for a caller
     void SaveErrorFile();
@@ -1005,10 +1053,9 @@ private:
     void SaveInterface(int Caller, std::ofstream &SessionFile);
 /// Save performance file part of a session file
     void SavePerformanceFile(int Caller, std::ofstream &OutFile);
-/// Save a session file
+/// Save a session file - see LoadSession for details of additions to the session file
     void SaveSession(int Caller);
-/// Save a timetable as a temporary file either on loading directly or on loading a session file
-///
+/// Save a timetable as a temporary file either on loading directly or on loading a session file.
 /// Used later in saving sessions because the original timetable might have changed, been deleted, or not
 /// present if loaded from a session file
     void SaveTempTimetableFile(int Caller, AnsiString InFileName);
@@ -1049,7 +1096,7 @@ private:
 /// Controls the floating window function, called during the ClockTimer2 function
     void TrackTrainFloat(int Caller);
 /// Called every 5 secs to update the panel (if visible)
-    void TInterface::UpdateOperatorActionPanel(int Caller);
+    void UpdateOperatorActionPanel(int Caller);
 };
 
 //---------------------------------------------------------------------------

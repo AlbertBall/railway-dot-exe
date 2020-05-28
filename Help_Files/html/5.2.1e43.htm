@@ -39,12 +39,12 @@ div.WordSection1
 
 <div class=WordSection1>
 
-<p><a name=5.2.3></a><b>5.2.3 Splits:</b></p>
+<p><a name=5.2.3></a><b>5.2.3 Splits</b></p>
 
 <p>Split codes: Sfs; fsp; rsp.</p>
 
 <p>These always link together such that an 'Sfs' service always follows from an
-earlier 'fsp' or 'rsp' service.</p>
+earlier 'fsp' (split from front) or 'rsp' (split from rear) service.</p>
 
 <table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
  style='border-collapse:collapse;border:none'>
@@ -86,8 +86,7 @@ earlier 'fsp' or 'rsp' service.</p>
 </table>
 
 <p>A train may split from the front, where the new split-off service appears in
-front of the original service, or from the rear. Codes are 'fsp' ('front
-split') and 'rsp' ('rear split'). The line that contains these codes also
+front of the original service, or from the rear. The line that contains these codes also
 contains the service reference for the split-off service. The split-off service
 has code 'Sfs' (start from split) and also the service reference for the
 service that it splits from. </p>
@@ -96,7 +95,7 @@ service that it splits from. </p>
 split occurs must be long enough to allow it. The condition is that both trains
 must be at a platform after the split, although only one element of the train
 (half its length) need be at a platform. Additionally at least one of the final
-four elements that the two trains stand on must overlap with one of original
+four elements that the two trains stand on must overlap one of the original
 train elements, and the program will maximise the number of train elements at
 platforms. This means that the original train may be repositioned during the
 split. Therefore the minimum platform length is two elements, providing there
@@ -107,7 +106,7 @@ location at which a split occurs has at least one platform that is long enough,
 but it is up to the signaller to ensure that the actual platform that the train
 arrives at is long enough for the split. If it isn't then a warning message is
 given and the train will need to be moved under signaller control to find an
-appropriate platform. A second thing to beware of is to try to ensure that
+appropriate platform. To be safe it is best to ensure that platforms where splits are to occur are several elements long. A second thing to beware of is to try to ensure that
 after a split both trains lie behind a protecting signal. If one of the trains
 straddles a signal, then that signal does not provide any protection, and when
 the train's departure time is reached it will depart without a route having

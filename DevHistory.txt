@@ -4,7 +4,7 @@ This is a very rough set of notes recorded practically from day 1 of C++ Builder
 
 The structure is as follows:-
 
-1)  List of suggestions from users for future changes.  Some are more practicable than others but I have kept them all.
+1)  List of suggestions from users for future changes.
 2)  My own list of thoughts for change proposals
 3)  List of problems & odd behaviour for which I don't yet have solutions
 4)  Changes made for each successive version release
@@ -18,6 +18,13 @@ The structure is as follows:-
 Future change suggestions from users:
 
 
+Suggestions from Wilsteady, Discord 09/05/20:  Place footbridge/underpass over existing track to avoid having to reset lengths etc; ability to add a non-station named location over a signal
+
+-----------------------
+
+From Dan on Discord 17/04/20:  Drive-by-sight would be a neat feature for trams, and maybe a signal type to permit access to a siding or a drive-by-sight section.
+
+-----------------------
 
 Suggestion from @Mark 04/02/20
 
@@ -121,13 +128,13 @@ Sam Wainwright email received 09/02/12: If a shunt signal is placed in the same 
 
 Own thoughts:-
 
-Done at v 2.3.0. Try to trap memory capacity errors that occur when try to save large bitmaps without crashing the program.  Occurred on Xeon's Shanghai Metro railway when .bmp was over 500Mb.  Probably too rare an occurrence to warrant action.
+OK: Done at v 2.3.0. Try to trap memory capacity errors that occur when try to save large bitmaps without crashing the program.  Occurred on Xeon's Shanghai Metro railway when .bmp was over 500Mb.  Probably too rare an occurrence to warrant action.
 
 No: Add int Left, Top in ClearandRebuildRailway before Track->GetScreenPositionsFromTruePos(1, Left, Top, PointFlash->GetHPos(), PointFlash->GetVPos()); below if(Track->PointFlashFlag), as is resets Interface->Left & Top though not permanently influenced by the change, perhaps because the values aren't constants. Say this because Interface->Left & Top took the values set in GetScreenPositionsFromTruePos within the routine but the form didn't move, though when set to fixed values it did move (!!don't change anything until understand what's happening. Could be a compiler issue!!) 
 
 With single element routes being automatically cancelled and last element being points can set another route in other direction before train reaches it.  Have to be quick and unlikely in practice, but consider preventing
 
-Points to emerge from operating Beaver Lake:  If train cancels a route by moving in wrong direction issue a SPAD risk (like approach locking) and change log accordingly.  Useful if could truncate an automatic route behind a train as well as in front [done at v2.1.0].  When cancel an automatic route that links to a non-automatic route try to either include the signal(s) with the other route (problem if first element of that route is a bridge then can't cancel it and can't set another route to link to it) or cancel adjacent non-automatic routes as well - that's probably easier. May well be more complex than it's worth?
+Points to emerge from operating Beaver Lake:  If train cancels a route by moving in wrong direction issue a SPAD risk (like approach locking) and change log accordingly.  Useful if could truncate an automatic route behind a train as well as in front [done at v2.1.0].  When cancel an automatic route that links to a non-automatic route try to either include the signal(s) with the other route (problem if first element of that route is a bridge then can't cancel it and can't set another route to link to it) or cancel adjacent non-automatic routes as well - that's probably easier. May be more complex than it's worth?
 
 OK: Times beyond 24hrs show as hh:mm:ss in .csv formatted timetables but not in .txt version (see Sheffield). This is a feature of Excel, the times are correct in the .csv file
 
@@ -148,6 +155,47 @@ the blue route so it wasn't just the display that was wrong. Couldn't repeat the
 2.  When operating Chiltern had a train under signaller control & moving forwards, but couldn't get popup menu when right clicked - nothing happened.  Saved session & reloaded, then OK.
 
 3.  If an arriving train reaches a platform with a train in front at buffers, and the arriving train is to split while facing the train at buffers (from the rear but maybe also from the front) and there is enough platform for the split, then the split doesn't occur.  Occurred on Chiltern (Chiltern rear split problem; Timetable time 10.49.03; Chiltern Railways v2; Chiltern Railways v2.ssn) after manoeuvring 5F33 & 1N24 onto a vacant platform & restoring appropriate directions & timetable control.  Due to lack of sophistication of split functions (see note in program: Split logic is:-  at least one of 4 final train positions must overlap with one of original train positions, & final 4 positions will maximise the number at the location.  Note that this function isn't sophisticated enough to account for trains already at the location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these circumstances the other train will need to be move sufficiently away to release all 4 positions, then the train will split.)  Try to improve if possible (i.e. just take account of 'available' platforms, and ensure keep trying in case other trains move off) or at least give a warning in the help & operator manuals to keep trains that are to split separated from trains already present at platforms - preferably don't have other trains at platforms at all where a train is to split.[leave for now unless reported as a problem - no-one has reported it yet]
+
+-----------------------
+
+VERSION CHANGES AFTER v2.3.1 for v2.4.0 Beta
+
+all mentioned on website
+
+Version 2.4.0 Beta incorporates several features, some of which have required significant code modification, so it is released as a 'Beta' because even after a lot of testing there may well remain some teething problems that will need early attention.  It has been compiled using Embarcadero's latest C++ compiler version 10.3, which is based on Windows 10 and generates code that doesn't need any changes to the compatibility mode, at least for normal Windows 10 settings.  A very welcome and surprising outcome was that the program also works on earlier Windows versions without the need for any changes to the settings.  It has been tested on an ancient notebook computer that runs Windows XP and it worked perfectly straight out of the box - that was really unexpected!  It should therefore work on any Windows operating system later than XP.
+
+New features include:
+
+-  Random train failures.
+
+-  The ability to ad user-defined graphics (note that session files saved with failures or user graphics won't load in earlier versions).
+
+-  Rotation by 90 degrees.
+
+-  All pastes are now with attributes, although 'Copy' won't copy location names because these can't be duplicated.
+
+-  Timetable listings can be sorted into alphabetical order for easier service location.
+
+-  More keyboard shortcuts have been added.
+
+-  All session files should load regardless of which decimal point character was used when saved (different countries use different characters) - thanks to Micke for helping me with this.
+
+-  Platforms can now be any length equal to or greater than 20m, which is the minimum length for any track element.  Formerly they were fixed at 100m to prevent unrealistic scaling, but user pressure forced a rethink, especially when Discord member Xander with an X pointed out that ERTMS requires short platfrom lengths in order to display several train locations at each platform.
+
+-  A number of error messages have been clarified.
+
+
+Bug fixes:
+
+-  The 'Submins' (subtract minutes) box had disappeared from the timetable editor in version 2.3.1.  It's a bit too easy to move buttons and other program features inadvertently when changing the user interface, and I must have moved that button behind one of the panels without realising it so it couldn't be used.  No-one reported it so it must not have been missed, but it's back now.
+
+-  If there was an exit signal next to a level crossing and an autosignals route was set from that signal the train crashed into the crossing.  The reason was that as a train approached the crossing the single route element on the crossing was removed ahead of the train and the crossing started to close, causing the train to crash.  Exit signals now can't be placed next to a level crossing.  Thanks to Krizar for reporting it.
+
+-  If the 'Actions due' panel was clicked before trains were listed, or a train was clicked after it had been removed by the signaller but before the panel updated then the program crashed.  This has now been fixed.  Thanks to Rokas and LiWinDom for reporting these errors.
+
+-  The wrong colours were displayed for underpass lengths and speed limits.  These have now been fixed.  Thanks to Xeon for reporting it.
+
+-  There was a lockup condition when the 'Actions due' panel was open and a train was in a loop. This has been fixed.  Thanks again to Xeon for reporting it.
 
 -----------------------
 
@@ -1217,17 +1265,17 @@ ability to introduce a train manually, diff speeds of simulation faster & slower
 & specific train types (25kV, 3rd rail DC, restricted loading gauge (e.g. underground services) etc;
 
 
-COPY SECTIONS:
+COPY SECTIONS: Note - these are out of date - use CallerOutput.txt from v2.4.0 Beta
 
-NEXT value for CallLogPop is 2120
-NEXT value for TrackElementAt is 955
-NEXT value for InactiveTrackElementAt is 126
+NEXT value for CallLogPop is 2125
+NEXT value for TrackElementAt is 961
+NEXT value for InactiveTrackElementAt is 130
 NEXT value for GetFixedRouteAt is 222
 NEXT value for GetFixedPrefDirElementAt is 247
-NEXT value for ErrorLog is 205
-NEXT value for ClearandRebuildRailway is 74
+NEXT value for ErrorLog is 207
+NEXT value for ClearandRebuildRailway is 78
 NEXT value for TrainVectorAt is 66
-NEXT value for SetLevel1Mode is 133
+NEXT value for SetLevel1Mode is 135
 NEXT value for PlotOutput is 247
 
 Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",," + AnsiString() + "," + AnsiString() + "," + AnsiString() + "," + AnsiString((short)));

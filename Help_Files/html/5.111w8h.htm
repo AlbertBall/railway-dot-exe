@@ -43,10 +43,10 @@ div.WordSection1
 <div class=WordSection1>
 
 <h1><a name=5.11></a><span style='font-size:16.0pt'>5.11 Important points to
-note in timetabling: </span></h1>
+note in timetabling</span></h1>
 
 <p><b>1. All train and service entries must contain a single start event which
-must come immediately after the first line, i.e the line that contains the
+must come immediately after the first line, i.e after the line that contains the
 headcode.</b></p>
 
 <p><b>2. Except for signaller-controlled trains (see <A HREF="5.94ptl.htm">section 5.9</A>) all entries must
@@ -58,7 +58,7 @@ repeat.</b></p>
 event on its own, or a start and a repeat.</b></p>
 
 <p><b>4. All location names used in the timetable must be where trains can
-stop, even if they are only used for passing points. The drop-down box in the
+stop, even if they are only used as passing points. The drop-down box in the
 timetable editor gives a list of valid locations if a railway with names is
 loaded. Note that although continuations can be named trains cannot stop there.</b></p>
 
@@ -74,8 +74,8 @@ point is a location, and its starting speed is zero.</u></b></p>
 <p><b>6. Note that although a time-location (HH:MM;Location name) event can
 represent an arrival or a departure (the program will determine which from the
 context), it cannot be both. If both an arrival and a departure from the same
-location is required without any events inbetween then use a time-time-location
-event (HH:MM;HH:MM;Location). The times can be the same, in which case
+location is required without any events inbetween then a time-time-location
+event (HH:MM;HH:MM;Location) can be used, where the first time is the arrival and the second the departure. The times can be the same, in which case
 departure will be 30 seconds after arrival, or different.</b></p>
 
 <p><b>7. The only way for a service to link back to a service whose first train
@@ -83,7 +83,7 @@ is earlier than the linking service is by using a shuttle.</b></p>
 
 <p><b>8. The program only works in metric units but conversion facilities are
 included to change speeds in miles per hour to kilometres per hour, and
-horsepower to kilowatts.</b></p>
+horsepower to kilowatts, and vice versa.</b></p>
 
 </div>
 

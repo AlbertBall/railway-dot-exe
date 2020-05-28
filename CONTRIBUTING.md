@@ -42,7 +42,7 @@ The program is written using Embarcardero's C++ Builder Starter Edition. As such
 
 Until then, simply visit Embarcadero's site to download the free C++ Builder Starter Edition. Then `git clone` our repository and open the railway.cbproj file in C++ Builder.
 
-* [Embarcadero C++ Starter Edition](https://www.embarcadero.com/products/cbuilder/start-for-free)
+* [Embarcadero C++ Starter Edition](https://www.embarcadero.com/products/cbuilder/starter)
 
 ## How Can I Contribute?
 
@@ -86,8 +86,7 @@ Although the program is fully usable now, there remains great potential for furt
 * multi-player operation over the internet
 * signalbox mode where individual signals and points are operated directly, perhaps via a graphical lever frame, with user-defined interlocking
 * sound effects, e.g. enter a track ID & hear trains & station announcements at that location
-* random failures of trains, signals & points etc, and random delay times at stations
-* incorporation of user-defined graphics
+* random failures of signals & points etc, and random delay times at stations
 * variable train lengths
 * restricted routes – e.g. DC 3 & 4 rail, 25kV AC, tube lines and so on
 * etc. etc.

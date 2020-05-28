@@ -1,0 +1,78 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="Generator" content="Microsoft Word 14 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma","sans-serif";}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma","sans-serif";}
+.MsoChpDefault
+	{font-family:"Calibri","sans-serif";}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:42.55pt 42.55pt 42.55pt 42.55pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang="EN-GB">
+
+<div class="WordSection1">
+
+<p class="MsoNormal"><b>6.11 Train failures</b></p>
+
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+
+<p class="MsoNormal"><span lang="EN-US">The program includes the ability to allow random train failures.  The failure rate is set during pre-start mode, i.e. after 'Operate' is selected from the 'Mode' menu but before the 'Run' button is clicked.  The setting is in the box at the top right hand side of the screen and defines the mean (average) time between train failures (MTBF) in hours where 0 is the minimum and 10,000 the maximum. If the box is left blank or the value is 0 there will be no train failures. The MTBF value must be a whole number, fractions aren't allowed.  The value applies for all trains individually, so a setting of 1 hour between failures for a railway with 10 operating trains means that on average there will be a train failure every 6 minutes.  It is important to recognise that the MTBF value represents an average length of time, it does not indicate when a failure will occur - failures occur randomly.  The lower the MTBF value (provided that it isn't zero) the more frequently trains will fail.  Another important point is that the MTBF value is in terms of timetable clock time.  Therefore an MTBF of 1 hour on a railway running at 16x speed means that on average each train will fail just less than once every 4 minutes in real time, because 60/16 = 3minutes 45 seconds.</p>
+<p></p>
+<p class="MsoNormal"><span lang="EN-US">A session that is saved with an MTBF setting will load with the same setting, and can't be changed unless operation is stopped and 'Operate' selected to re-enter pre-start mode.</p>
+<p></p>
+
+<p>Trains that can't fail:<br>
+<p>&nbsp;&nbsp;&nbsp;those without power - i.e. empty stock;<br>
+<p>&nbsp;&nbsp;&nbsp;those that are on a continuation (entering or leaving the railway);<br>
+<p>&nbsp;&nbsp;&nbsp;those that have terminated;<br>
+<p>&nbsp;&nbsp;&nbsp;those that have crashed or derailed;<br>
+<p>&nbsp;&nbsp;&nbsp;those that are stopped and under signaller control; and<br>
+<p>&nbsp;&nbsp;&nbsp;those that have already failed.<br></p>
+
+
+<p class="MsoNormal"><span lang="EN-US">If you are mathematically minded and want to calculate a suitable MTBF value, first decide how many failures (on average) you want to occur during a typical operating session, call that number A.  Then decide how long (in timetable hours) a typical session should last, call that number B.  Then make an estimate of the average number of trains present on the railway at any time that can fail, and call that number C.  The required failure rate is B x C/A.  For example, a session lasting 4 timetable hours with an average of 6 trains present that can fail will produce one failure (on average) during the session with a MTBF value of 4 x 6 = 24 hours.  Therefore if you want to see 3 failures on average in each such session the value should be divided by 3, giving a final value of 8 for the MTBF.  If you aren't mathematically minded or it sounds too complicated then just experiment with different MTBF values and see what happens.</p>
+<p></p>
+<p class="MsoNormal"><span lang="EN-US">All failures are of onboard power, so a train that fails when moving will coast to a stop, to allow it to move clear of junctions if required.  Alternatively it can be taken under signaller control and ordered to stop, when the brakes will be applied.  While coasting a train will still obey all signals and speed restrictions provided that its braking capacity allows it to do so. Following failure a train can no longer comply with the timetable.</p>
+<p></p>
+<p class="MsoNormal"><span lang="EN-US">There are two ways to deal with a failed train.  When stopped and taken under signaller control it can be repaired, and power will be restored to its original value.  It can then be returned to timetable control to continue running to its timetable.  The other way is to bring out a standby train to join it under signaller control.  When the standby train is adjacent to the failed train they can join, provided that both trains are under signaller control.  Either train can be selected as the train to be joined by the other, but if it is intended that the failed train should continue running to its timetable then that train must be joined by the standby train.  When joining the masses of the two trains are added and the joint power is the power of the standby train.  Standby trains kept in reserve to recover failed trains should therefore have a high power to mass ratio or the joint train will be underpowered.  After joining in this way the train can be returned to timetable control to continue running to its normal timetable, although it will probably run late.  If the failed train is to be towed away to a depot or to exit the railway then the standby train can be selected as the train to be joined by the failed train.</p>
+<p></p>
+<p class="MsoNormal"><span lang="EN-US">Unless you intend to repair all failed trains it is recommended to keep a number of standby trains at various points on the railway ready to rescue failures.  These trains should be created as non-timetabled services so they are always under signaller control (see section 5.9).  Note that standby trains are just a likely to fail as are all other powered trains.</p>
+<p></p>
+<p class="MsoNormal"><span lang="EN-US">A failed train is shown with an orange background, and flashes in zoom-out mode for easy identification.  Also a flashing 
+icon <img width=24 height=24 src="../images/TrainFailedWarning.gif"> is shown at the left hand side of the screen to show that one or more trains have failed.</p>
+
+</span></p>
+
+</div>
+
+</body></html>

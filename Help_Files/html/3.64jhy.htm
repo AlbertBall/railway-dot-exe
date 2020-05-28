@@ -63,8 +63,7 @@ click another element in the direction required towards the final element of
 the length to be set and on the desired route, and continue in this way until
 the final element is reached. Sometimes, if there are two or more routes in
 different directions from the start position to the next selected position, the
-program may choose the wrong direction. In this case cancel, then select the
-start position again, then select the element that is next to the start
+program may choose the wrong direction. In this case erase the selection as described below, then select the start position again, and select the element that is next to the start
 position in the desired direction. This will set the direction correctly and
 further points can be selected until the desired end point is reached. If there
 is only one route between the start and end points then the second element may
@@ -72,10 +71,10 @@ be the end point. </p>
 
 <p>To truncate part of a selected length just right click at the truncate
 point. To erase a selection truncate to the start point, and to cancel a start
-selection without making a second selection just click it again.</p>
+selection without making a second selection just click it again. Note also that if there is more than one route between the selected elements then the program may choose the wrong one.  In this case truncate back to the last correct selection and choose an element where there is only a single route available.</p>
 
 <p>Note that the selection can't end on leading points, because the program
-doesn't know which of the two trailing legs to include. At each position the
+doesn't know which of the two legs to include. At each position the
 box will indicate the cumulative length of the current selection, and the speed
 limit. If the speed limits differ along the length then 'Mixed' will show in
 the speed limit box. When the end point has been reached the required overall

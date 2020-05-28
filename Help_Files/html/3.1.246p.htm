@@ -58,7 +58,8 @@ can't be placed next to buffers as there must be room for a train (2 elements
 long) without fouling any of these elements. Note also that some straight
 elements have directional arrows. These are purely for visual clarity, they
 don't need to relate to preferred directions (though clearly they should to
-avoid confusion), preferred directions are set separately. </p>
+avoid confusion). Preferred directions are set separately and described in 
+<a href="4001g.htm">section 4.</a> </p>
 
 <p><b>Signals</b></p>
 
@@ -70,7 +71,7 @@ src="../images/RailSim2_THREEASPECT.gif">, then two-aspect <img width=24
 height=24 src="../images/RailSim2_TWOASPECT.gif">, then ground position light <img
 width=24 height=24 src="../images/RailSim2_GROUNDSIG.gif">, then back to
 four-aspect. Signals of the appropriate type are placed on the railway whenever
-the corresponding signal buttons are selected. Note that two, three and
+the corresponding signal button is selected. Note that two, three and
 four-aspect signals all appear the same when placed, but the type is indicated
 in the floating window when track information is selected.</p>
 
@@ -97,7 +98,7 @@ as all routes have been cleared - in this case the 'barriers up' graphic flashes
 The barriers take 30 seconds to lower and 10 seconds to rise. The first signal
 behind and facing the barrier stays red until the barrier is fully down.<br>
 <br>
-The graphics display differently for barriers up and down, with barriers shown
+Level crossings display differently for barriers up and down, with barriers shown
 across the road for down and across the railway for up. Although modern barrier
 crossings don't really lie across the railway I think it makes it clearer that
 the way is blocked for trains if barriers are shown in this way. Crossings can
@@ -126,6 +127,8 @@ indicating bridge and tunnel parapets, they don't play any part in operation.</p
 outside the program's control area are referred to as 'Continuations' <img width=16
 height=16 src="../images/RailSim2_GL81.gif">. The dotted section represents the
 outside edge. Trains enter and leave the railway at these elements.</p>
+
+<p>Continuations used for train entry should be protected by entry signals, ideally placed so that a stopped train has its rear element on the continuation so the whole train is visible.  This is because following trains will not enter when the entry is blocked by a train, but if the earlier train is held further along then the later train will crash into it.</p>
 
 <p><b>Gaps</b></p>
 
@@ -156,7 +159,7 @@ a green circle before the next gap to be connected is highlighted in red. The
 screen may be zoomed-out and navigated freely during gap setting, because
 connected gaps may not always lie on the same screen (though it's clearer if
 they are). When all gaps have been connected the <img width=20 height=20
-src="../images/RailSim2_GAPSSETGRAPHIC.gif"> icon is displayed.</p>
+src="../images/RailSim2_GAPSSETGRAPHIC.gif"> icon is displayed and the <img width=24 height=24 src="../images/RailSim2_VALIDATE.gif"> 'link track' button becomes available.</p>
 
 </div>
 

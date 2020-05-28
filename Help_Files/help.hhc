@@ -52,7 +52,7 @@
 			<param name="Local" value="html/3001f.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Adding and deleting track and other railway elements">
+			<param name="Name" value="Adding and deleting track and user-defined graphics">
 			<param name="Local" value="html/3.14jht.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
@@ -60,7 +60,7 @@
 			<param name="Local" value="html/3.1.246p.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Adding, deleting and moving text">
+			<param name="Name" value="Adding, deleting and moving text and graphics">
 			<param name="Local" value="html/3.24jhu.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
@@ -225,6 +225,10 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Actions due">
 			<param name="Local" value="html\6.10.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Train failures">
+			<param name="Local" value="html\6.11.htm">
 			</OBJECT>
 	</UL>
 </UL>

@@ -41,7 +41,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "TrackUnit.h"
 #include "Utilities.h"
-#include "DisplayUnit.h"
+//#include "DisplayUnit.h" included in header file
 #include "GraphicUnit.h"
 #include "TextUnit.h"
 #include "TrainUnit.h"
@@ -686,7 +686,8 @@ TTrack::TTrack()
     VLocMin = 2000000000;
     HLocMax = -2000000000;
     VLocMax = -2000000000;
-    PastingWithAttributes = false;  //new at v2.2.0, false is default value
+    SkipLocationNameMultiMapCheck = false;  //new at v2.2.0, false is default value
+    CopyFlag = false; //only true for copying, so names aren't copied
 
     AnsiString NL = '\n';
 
@@ -1089,16 +1090,36 @@ NamedNonStationLocation link to other NamedNonStationLocations providing directl
                                                           23,22,25,24,27,26,29,28,31,30,33,32,35,34,37,36,39,38,41,
                                                           40,43,42,45,44,47,46,48,49,51,50,53,52,55,54,57,56,59,58,
                                                           61,60,62,63,65,64,67,66,69,68,70,71,73,72,75,74,76,77,79,
-                                                          78,81,80,82,83,85,84,87,86,89,88,90,91,93,92,95,94,96,98,97,
-                                                          100,99,102,101,104,103,106,105,108,107,110,109,112,111,114,
-                                                          113,116,115,118,117,119,120,124,122,123,121,126,125,127,128,
+														  78,81,80,82,83,85,84,87,86,89,88,90,91,93,92,95,94,96,98,97,
+														  100,99,102,101,104,103,106,105,108,107,110,109,112,111,114,
+														  113,116,115,118,117,119,120,124,122,123,121,126,125,127,128,
 														  129,130,131,132,135,134,133,137,136,139,138,142,143,140,141,144,145,146};
 
-    for(int x=0; x<FirstUnusedSpeedTagNumber; x++)
+	int InternalRotRightArray[FirstUnusedSpeedTagNumber] = {0,2,1,4,6,3,5,14,12,13,11,7,9,8,10,15,16,17,19,18,25,27,
+															24,26,21,23,20,22,35,33,34,32,28,30,29,31,41,43,40,42,37,
+															39,36,38,46,47,44,45,49,48,51,50,56,57,58,59,52,53,54,55,
+															63,62,60,61,65,67,64,66,71,70,68,69,73,75,72,74,79,78,76,77,
+															83,82,80,81,85,87,84,86,91,90,88,89,93,95,92,94,96,102,104,
+															101,103,98,100,97,99,106,105,108,110,107,109,116,118,115,117,
+															112,114,111,113,120,119,122,124,121,123,127,128,126,125,130,
+															129,131,133,134,135,132,137,138,139,136,143,142,140,141,144,146,145};
+
+	int InternalRotLeftArray[FirstUnusedSpeedTagNumber] = {0,2,1,5,3,6,4,11,13,12,14,10,8,9,7,15,16,17,19,18,26,24,27,25,22,
+															20,23,21,32,34,33,35,31,29,30,28,42,40,43,41,38,36,39,37,46,47,
+															44,45,49,48,51,50,56,57,58,59,52,53,54,55,62,63,61,60,66,64,67,
+															65,70,71,69,68,74,72,75,73,78,79,77,76,82,83,81,80,86,84,87,85,
+															90,91,89,88,94,92,95,93,96,103,101,104,102,99,97,100,98,106,105,
+															109,107,110,108,117,115,118,116,113,111,114,112,120,119,123,121,
+															124,122,128,127,125,126,130,129,131,135,132,133,134,139,136,137,
+															138,142,143,141,140,144,146,145};
+
+	for(int x=0; x<FirstUnusedSpeedTagNumber; x++)
     {
         FlipArray[x] = InternalFlipArray[x];
-        MirrorArray[x] = InternalMirrorArray[x];
-    }
+		MirrorArray[x] = InternalMirrorArray[x];
+		RotRightArray[x] = InternalRotRightArray[x];
+		RotLeftArray[x] = InternalRotLeftArray[x];
+	}
 }
 
 //---------------------------------------------------------------------------
@@ -1106,8 +1127,15 @@ TTrack::~TTrack()
 {
 //delete TrackVectorPtr;
 //delete FixedTrackArrayPtr;
+    TTrack::TUserGraphicMap::iterator UGMIt = Track->UserGraphicMap.begin();
+    while(UGMIt != Track->UserGraphicMap.end()) //delete all the TPictures in the map
+    {
+        delete UGMIt->second;
+        UGMIt++;
+    }
     delete GapFlashGreen;
     delete GapFlashRed;
+    //all the rest are cleared by the relevant automatic destructors
 }
 
 //---------------------------------------------------------------------------
@@ -1255,7 +1283,7 @@ TTrack::TFixedTrackArray::TFixedTrackArray()
         {4,6,-1,-1},{6,4,-1,-1},{8,2,-1,-1},{2,8,-1,-1},{1,9,-1,-1},{3,7,-1,-1},
         {7,3,-1,-1},{9,1,-1,-1}, //buffers - position 0 = buffer
         {4,6,-1,-1},{4,6,-1,-1},{2,8,-1,-1},{2,8,-1,-1},{1,9,-1,-1},{3,7,-1,-1},
-        {3,7,-1,-1},{1,9,-1,-1}, //signals (need Config to determine signal end, see below)
+		{3,7,-1,-1},{1,9,-1,-1}, //signals (need Config to determine signal end, see below)
         {-1,-1,-1,-1},{-1,-1,-1,-1},{-1,-1,-1,-1},{-1,-1,-1,-1}, //platform
         {4,6,-1,-1},{6,4,-1,-1},{8,2,-1,-1},{2,8,-1,-1},{1,9,-1,-1},{3,7,-1,-1},
         {7,3,-1,-1},{9,1,-1,-1}, //continuation - position 0 = continuation
@@ -1272,7 +1300,7 @@ TTrack::TFixedTrackArray::TFixedTrackArray()
         {-1,-1,-1,-1}, //NamedNonStationLocation
         {8,1,8,3},{4,3,4,9},{2,9,2,7},{6,7,6,1},{9,4,9,2},{7,2,7,6},{1,6,1,8},{3,8,3,4}, //points without straight legs
 //these points have links 0 & 2 = lead, link 1 = LH trailing, link 3 = RH trailing
-        {3,7,-1,-1},{3,7,-1,-1},{1,9,-1,-1},{1,9,-1,-1}, //arrowed diagonals
+		{3,7,-1,-1},{3,7,-1,-1},{1,9,-1,-1},{1,9,-1,-1}, //arrowed diagonals
 		{-1,-1,-1,-1}, //level crossing
 		{4,6,-1,-1},{2,8,-1,-1}, //underpasses/surface crossings
 	};
@@ -1408,10 +1436,7 @@ void TGraphicElement::SetScreenHVSource(int Caller, int HPosIn, int VPosIn)
     VPos = VPosIn;
     int Left, Top; //can't use e.g. PointFlash.SourceRect.Left & Top directly as references as don't exist as objects in their own right
     Track->GetScreenPositionsFromTruePos(2, Left, Top, HPos, VPos);
-    SourceRect.Left = Left;
-    SourceRect.Top = Top;
-    SourceRect.Right = SourceRect.Left + Width;
-    SourceRect.Bottom = SourceRect.Top + Height;
+    SourceRect.init(Left, Top, Left + Width, Top + Height);
     ScreenSourceSet = true;
     Utilities->CallLogPop(422);
 }
@@ -1477,10 +1502,7 @@ Overrides size set in the constructor, SourceRect & HPos & VPos in SetScreenHVSo
     HPos+=HOffset; //originally set in SetScreenHVSource to position of H & V locations
     VPos+=VOffset;
     TRect DestRect(0,0,Width,Height);
-    SourceRect.Left = HOffset;
-    SourceRect.Top = VOffset;
-    SourceRect.Right = SourceRect.Left + Width;
-    SourceRect.Bottom = SourceRect.Top + Height;
+    SourceRect.init(HOffset, VOffset, HOffset + Width, VOffset + Height);
     OriginalGraphic->Canvas->CopyRect(DestRect, Graphic->Canvas, SourceRect);
     OriginalLoaded = true;
     ExistingGraphicLoaded = true;
@@ -1733,7 +1755,7 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
 
 void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &TrackLinkingRequiredFlag, bool InternalChecks)
 //TrackLinkingRequiredFlag only relates to elements that require track linking after plotting - used to set TrackFinished
-//to false in calling function. New at v2.2.0 new parameter 'Aspect' to ensure signals plotted as they were in selected area
+//to false in calling function. New at v2.2.0 new parameter 'Aspect' to ensure signals plotted with correct number of aspects (for pasting)
 //and also when zero and combined with SignalPost to indicate that adding track rather than pasting
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotAndAddTrackElement," + AnsiString(CurrentTag) + "," + AnsiString(HLocInput) + "," + AnsiString(VLocInput) +
@@ -1841,11 +1863,11 @@ reject if so.
                 //checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
                 //Must be called AFTER TrackPush
                 //No need to plot the element - Clearand ... called after this function called
-                //set corresponding track element length to 100m & give message if was different
+				//set corresponding track element length to 100m & give message if was different    drop in v2.4.0
                 //note can only be Length01 since even if points then only the straight part can be adjacent to the platform
-                if(TrackElementAt(2, VecPos).Length01 != DefaultTrackLength) ShowMessage("Note:  The track element at this location has a length of " +
-                                                                                         AnsiString(TrackElementAt(3, VecPos).Length01) + "m.  It will be reset to 100m since all platform track lengths are fixed at 100m");
-                TrackElementAt(4, VecPos).Length01 = DefaultTrackLength;
+// drop in v2.4.0                if(TrackElementAt(2, VecPos).Length01 != DefaultTrackLength) ShowMessage("Note:  The track element at this location has a length of " +
+//																						 AnsiString(TrackElementAt(3, VecPos).Length01) + "m.  It will be reset to 100m since all platform track lengths are fixed at 100m");
+//                TrackElementAt(4, VecPos).Length01 = DefaultTrackLength;
                 if(InternalChecks)
                 {
                     CheckMapAndInactiveTrack(5); //test
@@ -1869,12 +1891,12 @@ reject if so.
             TrackLinkingRequiredFlag = true; //needed in case have named a continuation, need to check if adjacent element named
             TrackPush(2, TempTrackElement);
             SearchForAndUpdateLocationName(2, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
-            //checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
+                //checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
             if(VecPos > -1) //need to allow for non-station named locations that aren't on tracks
             {
-                if(TrackElementAt(830, VecPos).Length01 != DefaultTrackLength) ShowMessage("Note:  The track element at this location has a length of " +
-                                                                                           AnsiString(TrackElementAt(831, VecPos).Length01) + "m.  It will be reset to 100m since all named location track lengths are fixed at 100m");
-                TrackElementAt(832, VecPos).Length01 = DefaultTrackLength; //NB named locations can only be placed at one track elements
+//drop in v2.4.0                if(TrackElementAt(830, VecPos).Length01 != DefaultTrackLength) ShowMessage("Note:  The track element at this location has a length of " +
+//                                                                                           AnsiString(TrackElementAt(831, VecPos).Length01) + "m.  It will be reset to 100m since all named location track lengths are fixed at 100m");
+//                TrackElementAt(832, VecPos).Length01 = DefaultTrackLength; //NB named locations can only be placed at one track elements
             }
             if(InternalChecks)
             {
@@ -1975,8 +1997,8 @@ Then for non-platforms, check if a track piece already present at location &
 reject if so.
 */
 
-    TLocationNameMultiMapEntry LocationNameEntry;
-    LocationNameEntry.first = "";
+	TLocationNameMultiMapEntry LocationNameEntry;
+	LocationNameEntry.first = "";
     if(TempTrackElement.SpeedTag == 0)
     {
         Utilities->CallLogPop(2063);
@@ -1985,7 +2007,6 @@ reject if so.
 
     TempTrackElement.HLoc = HLocInput;
     TempTrackElement.VLoc = VLocInput;
-//    TempTrackElement.ActiveTrackElementName = ""; //not needed now suppress name multimap chacks with PastingWithAttributes flag
     for(int x=0; x<4; x++) //unset any gaps
     {
         if(TempTrackElement.Config[x] == Gap) TempTrackElement.ConnLinkPos[x]=-1; TempTrackElement.Conn[x]=-1;
@@ -1996,7 +2017,7 @@ reject if so.
     int VecPos = GetVectorPositionFromTrackMap(56, HLocInput, VLocInput, FoundFlag); //active track already there
 
     //if find an active track element (as has been pasted into track vector when dealing with inactive elements in SelectVector)
-    //)set its ActiveTrackElementName to same name as the inactive element (from SelectVector). Note that can't use LocationName
+	//)set its ActiveTrackElementName to same name as the inactive element (from SelectVector). Note that can't use LocationName
     //for the active track element because these aren't set
     //if don't do this then get a mismatch error during map checks later
 
@@ -2046,15 +2067,18 @@ reject if so.
             {
                 TrackLinkingRequiredFlag = true; //needed in order to call LinkTrack
                 TrackPush(12, TempTrackElement);
-                SearchForAndUpdateLocationName(4, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
-                //checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
+                if(!CopyFlag) //don't need this for copy
+                {
+    				SearchForAndUpdateLocationName(4, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
+                    //checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
+                }
                 //Must be called AFTER TrackPush
 //No need to plot the element - Clearand ... called after this function called
-                //set corresponding track element length to 100m & give message if was different
+				//set corresponding track element length to 100m & give message if was different  drop in v2.4.0
                 //note can only be Length01 since even if points then only the straight part can be adjacent to the platform
-                if(TrackElementAt(907, VecPos).Length01 != DefaultTrackLength) ShowMessage("Note:  The track element at this location has a length of " +
-                                                                                           AnsiString(TrackElementAt(908, VecPos).Length01) + "m.  It will be reset to 100m since all platform track lengths are fixed at 100m");
-                TrackElementAt(909, VecPos).Length01 = DefaultTrackLength;
+//drop in v2.4.0                if(TrackElementAt(907, VecPos).Length01 != DefaultTrackLength) ShowMessage("Note:  The track element at this location has a length of " +
+//                                                                                           AnsiString(TrackElementAt(908, VecPos).Length01) + "m.  It will be reset to 100m since all platform track lengths are fixed at 100m");
+//                TrackElementAt(909, VecPos).Length01 = DefaultTrackLength;
                 if(InternalChecks)
                 {
                     CheckMapAndInactiveTrack(12); //test
@@ -2077,13 +2101,16 @@ reject if so.
         {
             TrackLinkingRequiredFlag = true; //needed in case have named a continuation, need to check if adjacent element named
             TrackPush(13, TempTrackElement);
-            SearchForAndUpdateLocationName(5, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
-            //checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
+            if(!CopyFlag) //don't need this for copy
+            {
+                SearchForAndUpdateLocationName(5, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
+                //checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
+            }
             if(VecPos > -1) //need to allow for non-station named locations that aren't on tracks
             {
-                if(TrackElementAt(910, VecPos).Length01 != DefaultTrackLength) ShowMessage("Note:  The track element at this location has a length of " +
-                                                                                           AnsiString(TrackElementAt(911, VecPos).Length01) + "m.  It will be reset to 100m since all named location track lengths are fixed at 100m");
-                TrackElementAt(912, VecPos).Length01 = DefaultTrackLength; //NB named locations can only be placed at one track elements
+//drop in v2.4.0                if(TrackElementAt(910, VecPos).Length01 != DefaultTrackLength) ShowMessage("Note:  The track element at this location has a length of " +
+//																						   AnsiString(TrackElementAt(911, VecPos).Length01) + "m.  It will be reset to 100m since all named location track lengths are fixed at 100m");
+//                TrackElementAt(912, VecPos).Length01 = DefaultTrackLength; //NB named locations can only be placed at one track elements
             }
             if(InternalChecks)
             {
@@ -2149,8 +2176,8 @@ reject if so.
     }
     else
     {
-        TrackPush(18, TempTrackElement);
-        TempTrackElement.PlotVariableTrackElement(6, Display); //all named locations already dealt with so no ambiguity between striped & non-striped
+		TrackPush(18, TempTrackElement);
+		TempTrackElement.PlotVariableTrackElement(6, Display); //all named locations already dealt with so no ambiguity between striped & non-striped
     }
     if((TempTrackElement.TrackType != Concourse) && (TempTrackElement.TrackType != Parapet)) TrackLinkingRequiredFlag = true;  //plats & NamedLocs aleady dealt with
     if(InternalChecks)
@@ -2159,7 +2186,7 @@ reject if so.
         CheckMapAndInactiveTrack(14); //test
         CheckLocationNameMultiMap(22); //test
     }
-    Utilities->CallLogPop(2071);
+	Utilities->CallLogPop(2071);
 }
 
 //---------------------------------------------------------------------------
@@ -2470,107 +2497,7 @@ bool TTrack::ResetConnClkCheckUnsetGapJumps(int Caller)
 
 //---------------------------------------------------------------------------
 
-void TTrack::LoadOldTrack(int Caller, std::ifstream& VecFile)
-{
-//VecFile already open and its pointer at right place on calling
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadTrack");
-    int TempInt;
-    TrackClear(0);
-//load track elements
-    int NumberOfActiveElements=0;
-    NumberOfActiveElements = Utilities->LoadFileInt(VecFile);
-    Utilities->LoadFileString(VecFile); // **Active elements** marker
-    for(int x=0; x<NumberOfActiveElements; x++)
-    {
-        VecFile >> TempInt; //TrackVectorNumber, not used
-        VecFile >> TempInt; //SpeedTag
-        TTrackElement TrackElement(FixedTrackArray.FixedTrackPiece[TempInt]);
-        VecFile >> TempInt; TrackElement.HLoc = TempInt;
-        VecFile >> TempInt; TrackElement.VLoc = TempInt;
-        if(TrackElement.TrackType == GapJump)
-        {
-            VecFile >> TempInt; TrackElement.ConnLinkPos[0] = TempInt;
-            VecFile >> TempInt; TrackElement.Conn[0] = TempInt;
-        }
-        if((TrackElement.TrackType == SignalPost) || (TrackElement.TrackType == Points))
-        {
-            VecFile >> TempInt; TrackElement.Attribute = TempInt;
-        }
-        if(TrackElement.TrackType == SignalPost)
-        {
-            VecFile >> TempInt;
-            if(TempInt == 0) TrackElement.CallingOnSet = false;
-            else TrackElement.CallingOnSet = true;
-        }
-        VecFile >> TempInt; TrackElement.Length01 = TempInt;
-        VecFile >> TempInt; TrackElement.Length23 = TempInt;
-        VecFile >> TempInt;
-        if((TempInt != -1) && (TempInt < 10)) TempInt = 10;  //added at v0.6 to ensure old railway speed limits at least 10km/h
-        TrackElement.SpeedLimit01 = TempInt;
-        VecFile >> TempInt;
-        if((TempInt != -1) && (TempInt < 10)) TempInt = 10;  //added at v0.6 to ensure old railway speed limits at least 10km/h
-        TrackElement.SpeedLimit23 = TempInt;
-
-        TrackElement.LocationName = Utilities->LoadFileString(VecFile);
-        TrackElement.ActiveTrackElementName = Utilities->LoadFileString(VecFile);
-        SetElementID(4, TrackElement);
-        AnsiString Marker = Utilities->LoadFileString(VecFile); //marker
-//new for v0.6
-        if(TrackElement.TrackType == SignalPost)
-        {
-            if(Marker[1] == '3')
-            {
-                TrackElement.SigAspect = TTrackElement::ThreeAspect;
-            }
-            else if(Marker[1] == '2')
-            {
-                TrackElement.SigAspect = TTrackElement::TwoAspect;
-            }
-            else if(Marker[1] == 'G')
-            {
-                TrackElement.SigAspect = TTrackElement::GroundSignal;
-            }
-            else
-            {
-                TrackElement.SigAspect = TTrackElement::FourAspect;
-            }
-        }
-        if(TrackElement.SpeedTag != 0) TrackPush(6, TrackElement);  //don't save default elements (now dispensed with)
-    }
-    int NumberOfInactiveElements=0;
-    NumberOfInactiveElements = Utilities->LoadFileInt(VecFile);
-    Utilities->LoadFileString(VecFile); // **Inactive elements** marker
-    for(int x=0; x<NumberOfInactiveElements; x++)
-    {
-        VecFile >> TempInt; //InactiveTrackVectorNumber - not used
-        VecFile >> TempInt; //SpeedTag
-        TTrackElement TrackElement(FixedTrackArray.FixedTrackPiece[TempInt]);
-        VecFile >> TempInt; TrackElement.HLoc = TempInt;
-        VecFile >> TempInt; TrackElement.VLoc = TempInt;
-        TrackElement.LocationName = Utilities->LoadFileString(VecFile);
-        SetElementID(2, TrackElement);
-        TrackPush(7, TrackElement);
-        Utilities->LoadFileString(VecFile); //marker
-    }
-    bool LocError = false; //needed for TryToConnectTrack but not used
-    int H = -1, V = -1; //needed for TryToConnectTrack but not used
-    if(TryToConnectTrack(1, LocError, H, V, false)) //false for don't give messages
-    {
-        SetTrackFinished(true);
-    }
-    else
-    {
-        SetTrackFinished(false);
-    }
-//CheckMapAndTrack(9); all these checked in TryToConnectTrack
-//CheckMapAndInactiveTrack(8);
-//CheckLocationNameMultiMap(10);
-    Utilities->CallLogPop(-448);
-}
-
-//---------------------------------------------------------------------------
-
-void TTrack::LoadTrack(int Caller, std::ifstream& VecFile)
+void TTrack::LoadTrack(int Caller, std::ifstream& VecFile, bool &GraphicsFollow)
 {
 //VecFile already open and its pointer at right place on calling
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadTrack");
@@ -2578,8 +2505,13 @@ void TTrack::LoadTrack(int Caller, std::ifstream& VecFile)
     TrackClear(1);
 //load track elements
     int NumberOfActiveElements=0;
+    GraphicsFollow = false;
     NumberOfActiveElements = Utilities->LoadFileInt(VecFile);
-    Utilities->LoadFileString(VecFile); // **Active elements** marker
+    AnsiString MarkerString = Utilities->LoadFileString(VecFile); // **Active elements** marker, if last character is '1' then there are graphics to be loaded
+    if(MarkerString[MarkerString.Length()] == '1')
+    {
+        GraphicsFollow = true;
+    }
     for(int x=0; x<NumberOfActiveElements; x++)
     {
         VecFile >> TempInt; //TrackVectorNumber, not used
@@ -2672,15 +2604,165 @@ void TTrack::LoadTrack(int Caller, std::ifstream& VecFile)
 
 //---------------------------------------------------------------------------
 
-void TTrack::SaveTrack(int Caller, std::ofstream& VecFile)
+void TTrack::LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString GraphicsPath)
 {
 //VecFile already open and its pointer at right place on calling
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadGraphics, " + GraphicsPath);
+//first int is number og graphics, then each graphic, create in UserGraphicMap, derive Width & height from TPicture
+//& load into UserGraphicItem then store in UserGraphicVector
+    UserGraphicVector.clear();
+    TUserGraphicItem UGI;
+    int NumberOfGraphics = Utilities->LoadFileInt(VecFile);
+    for(int x = 0; x < NumberOfGraphics; x++)
+    {
+        UGI.FileName = GraphicsPath + "\\" + Utilities->LoadFileString(VecFile);
+        UGI.HPos = Utilities->LoadFileInt(VecFile);
+        UGI.VPos = Utilities->LoadFileInt(VecFile);
+        UGI.Width = 0;           //provisional value
+        UGI.Height = 0;          //provisional value
+        UGI.UserGraphic = NULL;  //provisional value
+        UserGraphicVector.push_back(UGI);
+    }
+//now load the map & set Width, Height & TPicture*
+    bool FileError = false;
+    for(int x = 0; x < NumberOfGraphics; x++)
+    {
+        if(FileError)
+        {
+            break; //otherwise keeps going round the loop
+        }
+        UGI = UserGraphicVectorAt(0, x);
+        if(UserGraphicMap.empty())  //will be when x == 0 but not after
+        {
+            try
+            {
+//                TUserGraphicMapEntry UGME;   //can't define it here, it has to be defined before it is used - now defined in TrackUnit.h
+                UGME.first = UGI.FileName;
+                UGME.second = new TPicture;
+                UGME.second->LoadFromFile(UGME.first); //errors caught below
+                if(!Track->UserGraphicMap.insert(UGME).second) //if no failure then the new entry is inserted
+                {
+                    throw Exception("Map Insertion Error 2 - UserGraphicMap insertion failure for " + UGI.FileName);
+                }
+                UGI.UserGraphic = UGME.second;
+                UGI.Width = UGI.UserGraphic->Width;
+                UGI.Height = UGI.UserGraphic->Height;
+                UserGraphicVectorAt(1, x) = UGI;
+            }
+            catch (const EInvalidGraphic &e)
+            {
+                ShowMessage(UGI.FileName + " has an incorrect file format, graphics can't be loaded. Ensure that all graphic files are valid with extension .bmp, .gif, .jpg, or .png");
+                FileError = true;
+                UserGraphicVector.clear(); //so doesn't try to plot non-existent graphics
+                if(!UserGraphicMap.empty())
+                {
+                    for(TTrack::TUserGraphicMap::iterator UGMIt = UserGraphicMap.begin(); UGMIt != UserGraphicMap.end(); UGMIt++)
+                    {
+                        delete UGMIt->second;
+                    }
+                    UserGraphicMap.clear();
+                }
+            }
+            catch (const Exception &e)
+            {
+                ShowMessage("Unable to load file, ensure that this graphic file exists: " + UGI.FileName + ", and that it is has extension .bmp, .gif, .jpg, or .png.  Graphics can't be loaded.");
+                FileError = true;
+                UserGraphicVector.clear(); //so doesn't try to plot non-existent graphics
+                if(!UserGraphicMap.empty())
+                {
+                    for(TTrack::TUserGraphicMap::iterator UGMIt = UserGraphicMap.begin(); UGMIt != UserGraphicMap.end(); UGMIt++)
+                    {
+                        delete UGMIt->second;
+                    }
+                    UserGraphicMap.clear();
+                }
+            }
+        }
+        else
+        {
+            bool FoundInMap = false;
+            for(TUserGraphicMap::iterator UGMIt = UserGraphicMap.begin(); UGMIt != UserGraphicMap.end(); UGMIt++)
+            {
+                if(UGI.FileName == UGMIt->first) //already exists in map
+                {
+                    UGI.UserGraphic = UGMIt->second;
+                    UGI.Width = UGI.UserGraphic->Width;
+                    UGI.Height = UGI.UserGraphic->Height;
+                    UserGraphicVectorAt(2, x) = UGI;
+                    FoundInMap = true;
+                    break;
+                }
+            }
+            if(!FoundInMap)
+            {
+                try
+                {
+                    TUserGraphicMapEntry UGME;
+                    UGME.first = UGI.FileName;
+                    UGME.second = new TPicture;
+                    UGME.second->LoadFromFile(UGME.first); //errors caught below
+                    if(!Track->UserGraphicMap.insert(UGME).second) //if no failure then the new entry is inserted
+                    {
+                        throw Exception("Map Insertion Error 3 - UserGraphicMap insertion failure for " + UGI.FileName);
+                    }
+                    UGI.UserGraphic = UGME.second;
+                    UGI.Width = UGI.UserGraphic->Width;
+                    UGI.Height = UGI.UserGraphic->Height;
+                    UserGraphicVectorAt(3, x) = UGI;
+                }
+                catch (const EInvalidGraphic &e)
+                {
+                    ShowMessage(UGI.FileName + " has an incorrect file format, graphics can't be loaded. Ensure that all graphic files are valid with extension .bmp, .gif, .jpg, or .png");
+                    FileError = true;
+                    UserGraphicVector.clear(); //so doesn't try to plot non-existent graphics
+                    if(!UserGraphicMap.empty())
+                    {
+                        for(TTrack::TUserGraphicMap::iterator UGMIt = UserGraphicMap.begin(); UGMIt != UserGraphicMap.end(); UGMIt++)
+                        {
+                            delete UGMIt->second;
+                        }
+                        UserGraphicMap.clear();
+                    }
+                }
+                catch (const Exception &e)
+                {
+                    ShowMessage("Unable to load file, ensure that this graphic file exists: " + UGI.FileName + ", and that it is has extension .bmp, .gif, .jpg, or .png");
+                    FileError = true;
+                    UserGraphicVector.clear(); //so doesn't try to plot non-existent graphics
+                    if(!UserGraphicMap.empty())
+                    {
+                        for(TTrack::TUserGraphicMap::iterator UGMIt = UserGraphicMap.begin(); UGMIt != UserGraphicMap.end(); UGMIt++)
+                        {
+                            delete UGMIt->second;
+                        }
+                        UserGraphicMap.clear();
+                    }
+                }
+            }
+        }
+    }
+    Utilities->CallLogPop(2167);
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::SaveTrack(int Caller, std::ofstream& VecFile, bool GraphicsFollow)
+{
+//VecFile already open and its pointer at right place on calling
+//if GraphicsFollow true, then save Marker as **Active elements**1
 //save trackfinished flag
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveTrack");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveTrack, " + AnsiString(int(GraphicsFollow)));
     TTrackElement TrackElement, InactiveTrackElement;
 //save track elements
     Utilities->SaveFileInt(VecFile, TrackVector.size());
-    VecFile << "**Active elements**" << '\0' << '\n'; //extra
+    if(GraphicsFollow)
+    {
+        VecFile << "**Active elements**1" << '\0' << '\n';
+    }
+    else
+    {
+        VecFile << "**Active elements**" << '\0' << '\n';
+    }
     for(unsigned int x=0; x<(TrackVector.size()); x++)
     {
         TrackElement = TrackVector.at(x);
@@ -2751,213 +2833,30 @@ void TTrack::SaveTrack(int Caller, std::ofstream& VecFile)
 
 //---------------------------------------------------------------------------
 
-bool TTrack::CheckOldTrackElementsInFile(int Caller, int &NumberOfActiveElements, std::ifstream& VecFile)
-{
-//VecFile already open and its pointer at right place on calling
-//check trackfinished flag
-//inactive elements follow immediately after active elements, no need to check for a marker between them
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckOldTrackElementsInFile");
-    int TempInt;
-//char TempString[256];
-//char TempChar;
-//check track elements
-    NumberOfActiveElements = Utilities->LoadFileInt(VecFile);
-    if((NumberOfActiveElements < 0) || (NumberOfActiveElements > 1000000)) //No of active elements (up to 500 screens all completely full!)
-    {
-        Utilities->CallLogPop(-1513);
-        return false;
-    }
-    if(!(Utilities->CheckAndCompareFileString(VecFile, "**Active elements**")))
-    {
-        Utilities->CallLogPop(-1758);
-        return false;
-    }
-    for(int x=0; x<NumberOfActiveElements; x++)
-    {
-        if(!Utilities->CheckFileInt(VecFile, x, x)) //TrackVectorNumber, must be 'x'
-        {
-            Utilities->CallLogPop(-1759);
-            return false;
-        }
-        VecFile >> TempInt;
-        int SpeedTag = TempInt;
-        if((TempInt < 0) || (TempInt >= FirstUnusedSpeedTagNumber) || (TempInt == 17)) //Speedtag
-        {
-            Utilities->CallLogPop(-1514);
-            return false;
-        }
-        VecFile >> TempInt;
-        if(((TempInt > 999999) || (TempInt < -1000001)) &&  (TempInt != -2000000000)) //HLoc
-        {
-            Utilities->CallLogPop(-1495);
-            return false;
-        }
-        VecFile >> TempInt;
-        if(((TempInt > 999999) || (TempInt < -1000001)) &&  (TempInt != -2000000000)) //VLoc
-        {
-            Utilities->CallLogPop(-1497);
-            return false;
-        }
-        if((SpeedTag > 87) && (SpeedTag < 96)) //GapJumps 88-95 incl
-        {
-            VecFile >> TempInt;
-            if((TempInt < -1) || (TempInt > 3)) //ConnLinkPos[0]
-            {
-                Utilities->CallLogPop(-1499);
-                return false;
-            }
-            VecFile >> TempInt;
-            if((TempInt < -1) || (TempInt > 999999)) //Conn[0]
-            {
-                Utilities->CallLogPop(-1500);
-                return false;
-            }
-        }
-        if(((SpeedTag >= 7) && (SpeedTag <= 14)) || ((SpeedTag >= 28) && (SpeedTag <= 43)) ||
-           ((SpeedTag >= 132) && (SpeedTag <= 139)) || ((SpeedTag >= 68) && (SpeedTag <= 75)))
-        {
-            VecFile >> TempInt;
-            if((TempInt < -1) || (TempInt > 5)) //Points & signal attribute
-            {
-                Utilities->CallLogPop(-1502);
-                return false;
-            }
-        }
-        if((SpeedTag >= 68) && (SpeedTag <= 75)) //signals
-        {
-            VecFile >> TempInt;
-            if((TempInt != 0) && (TempInt != 1)) //CallingOnSet
-            {
-                Utilities->CallLogPop(-1155);
-                return false;
-            }
-        }
-        VecFile >> TempInt; if((TempInt < -1) || (TempInt > 999999)) //Length01
-        {
-            Utilities->CallLogPop(-1503);
-            return false;
-        }
-        VecFile >> TempInt; if((TempInt < -1) || (TempInt > 999999)) //Length23
-        {
-            Utilities->CallLogPop(-1504);
-            return false;
-        }
-        VecFile >> TempInt; if((TempInt < -1) || (TempInt > 999999)) //SpeedLimit01
-        {
-            Utilities->CallLogPop(-1505);
-            return false;
-        }
-        VecFile >> TempInt; if((TempInt < -1) || (TempInt > 999999)) //SpeedLimit23
-        {
-            Utilities->CallLogPop(-1506);
-            return false;
-        }
-        if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
-        {
-            Utilities->CallLogPop(-1142);
-            return false; //LocationName
-        }
-        if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
-        {
-            Utilities->CallLogPop(-1143);
-            return false; //ActiveTrackElementName
-        }
-        if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
-        {
-            Utilities->CallLogPop(-1787);
-            return false; //marker
-        }
-    }
-    int NumberOfInactiveElements=0;
-    NumberOfInactiveElements = Utilities->LoadFileInt(VecFile);
-    if(NumberOfInactiveElements < 0) //No of active elements
-    {
-        Utilities->CallLogPop(-1493);
-        return false;
-    }
-    if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
-    {
-        Utilities->CallLogPop(-1764);
-        return false; //**Inactive elements** marker
-    }
-    for(int x=0; x<NumberOfInactiveElements; x++)
-    {
-        if(!Utilities->CheckFileInt(VecFile, x, x)) //TrackVectorNumber, must be 'x'
-        {
-            Utilities->CallLogPop(-1765);
-            return false;
-        }
-        VecFile >> TempInt;
-        if((TempInt < 0) || (TempInt >= FirstUnusedSpeedTagNumber) || (TempInt == 17)) //Speedtag
-        {
-            Utilities->CallLogPop(-1494);
-            return false;
-        }
-        VecFile >> TempInt;
-        if(((TempInt > 999999) || (TempInt < -1000001)) &&  (TempInt != -2000000000)) //HLoc
-        {
-            Utilities->CallLogPop(-1496);
-            return false;
-        }
-        VecFile >> TempInt;
-        if(((TempInt > 999999) || (TempInt < -1000001)) &&  (TempInt != -2000000000)) //VLoc
-        {
-            Utilities->CallLogPop(-1498);
-            return false;
-        }
-        if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
-        {
-			Utilities->CallLogPop(-1144);
-            return false; //LocationName
-        }
-        if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
-		{
-            Utilities->CallLogPop(-1788);
-            return false; //marker
-        }
-/*
-    VecFile.get(TempChar);//should be '\n'
-    if(TempChar != '\n') return false;
-    VecFile.getline(&TempString[0], 256);//'\0' & 'n' are in file as delimiters, the '\0' goes into TempString & '\n' is ignored
-    for(int x=0;x<256;x++)//LocationName
-        {
-        if(TempString[x] == '\0') break;
-        if((TempString[x] < 32) && (TempString[x] >= 0)) return false;
-        }
-
-    VecFile >> TempChar;
-    while(TempChar != '\0')
-        {
-        VecFile >> TempChar;
-        }
-*/
-    }
-    Utilities->CallLogPop(-467);
-    return true;
-}
-
-//---------------------------------------------------------------------------
-
-bool TTrack::CheckTrackElementsInFile(int Caller, int &NumberOfActiveElements, std::ifstream& VecFile)
+bool TTrack::CheckTrackElementsInFile(int Caller, int &NumberOfActiveElements, bool &GraphicsFollow, std::ifstream& VecFile)
 {
 //VecFile already open and its pointer at right place on calling
 //check trackfinished flag
 //inactive elements follow immediately after active elements, no need to check for a marker between them
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckTrackElementsInFile");
     int TempInt;
-//char TempString[256];
-//char TempChar;
-//check track elements
+    GraphicsFollow = false;
     NumberOfActiveElements = Utilities->LoadFileInt(VecFile);
     if((NumberOfActiveElements < 0) || (NumberOfActiveElements > 1000000)) //No of active elements (up to 500 screens all completely full!)
     {
         Utilities->CallLogPop(1513);
         return false;
     }
-    if(!(Utilities->CheckAndCompareFileString(VecFile, "**Active elements**")))
+//    if(!Utilities->CheckAndCompareFileString(VecFile, "**Active elements**")) dropped at v2.4.0 as could have a '1' at the end if there are graphics
+    AnsiString MarkerString;
+    if(!Utilities->CheckAndReadFileString(VecFile, MarkerString)) //new version for v2.4.0
     {
         Utilities->CallLogPop(1758);
         return false;
+    }
+    if(MarkerString[MarkerString.Length()] == '1')
+    {
+        GraphicsFollow = true;
     }
     for(int x=0; x<NumberOfActiveElements; x++)
     {
@@ -3102,24 +3001,63 @@ bool TTrack::CheckTrackElementsInFile(int Caller, int &NumberOfActiveElements, s
             Utilities->CallLogPop(1788);
             return false; //marker
         }
-/*
-    VecFile.get(TempChar);//should be '\n'
-    if(TempChar != '\n') return false;
-    VecFile.getline(&TempString[0], 256);//'\0' & 'n' are in file as delimiters, the '\0' goes into TempString & '\n' is ignored
-    for(int x=0;x<256;x++)//LocationName
-        {
-        if(TempString[x] == '\0') break;
-        if((TempString[x] < 32) && (TempString[x] >= 0)) return false;
-        }
-
-    VecFile >> TempChar;
-    while(TempChar != '\0')
-        {
-        VecFile >> TempChar;
-        }
-*/
     }
     Utilities->CallLogPop(1507);
+    return true;
+}
+
+//---------------------------------------------------------------------------
+
+bool TTrack::CheckUserGraphics(int Caller, std::ifstream &VecFile, UnicodeString GraphicsPath)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckUserGraphics");
+    int NumberOfGraphics = Utilities->LoadFileInt(VecFile);
+    if((NumberOfGraphics < 0) || (NumberOfGraphics > 100000)) //100,000 should be plenty!
+    {
+        Utilities->CallLogPop(2168);
+        return false;
+    }
+    //filename in Graphics folder, then HPos, then VPos
+    AnsiString FileName;
+    for(int x = 0; x < NumberOfGraphics; x++)
+    {
+        TPicture *TempPicture = new TPicture;
+        try
+        {
+            if(!Utilities->CheckAndReadFileString(VecFile, FileName))
+            {
+                Utilities->CallLogPop(2169);
+                return false;
+            }
+            TempPicture->LoadFromFile(GraphicsPath + "\\" + FileName); //only loaded to check and catch errors
+            delete TempPicture;
+            if(!Utilities->CheckFileInt(VecFile, -2000000, 2000000)) //HPos, allow plenty of scope
+            {
+                Utilities->CallLogPop(2170);
+                return false;
+            }
+            if(!Utilities->CheckFileInt(VecFile, -2000000, 2000000)) //VPos
+            {
+                Utilities->CallLogPop(2171);
+                return false;
+            }
+        }
+        catch (const EInvalidGraphic &e)
+        {
+            ShowMessage(FileName + " has an incorrect file format, graphics can't be loaded. Ensure that all graphic files are valid with extension .bmp, .gif, .jpg, or .png");
+            delete TempPicture;
+            Utilities->CallLogPop(2172);
+            return false;
+        }
+        catch (const Exception &e)
+        {
+            ShowMessage("Unable to load file, ensure that " + FileName + " exists in the 'Graphics' folder and that it is has extension .bmp, .gif, .jpg, or .png.");
+            delete TempPicture;
+            Utilities->CallLogPop(2173);
+            return false;
+        }
+    }
+    Utilities->CallLogPop(2174);
     return true;
 }
 
@@ -3244,14 +3182,14 @@ void TTrack::LoadBarriersDownVector(int Caller, std::ifstream &VecFile)
 
 //---------------------------------------------------------------------------
 
-void TTrack::RebuildTrack(int Caller, TDisplay *Disp, bool BothPointFilletsAndBasicLCs)
+void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFilletsAndBasicLCs)
 /*
 Note, have to plot inactives before track because track has to overwrite NamedNonStationLocations, but, plot basic LC's (if flag set) after track
 so they lie above the track.  Basic LCs are plotted for all but Level1Mode == OperMode (i.e. closed to trains), because the LC attributes will always be
 0 in such cases and because in OperMode the LCs have to be plotted again after the routes, which is done in Clearand....
 */
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RebuildTrack," + AnsiString((short)BothPointFilletsAndBasicLCs));
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RebuildTrackAndText," + AnsiString((short)BothPointFilletsAndBasicLCs));
     TTrackElement Next;
 //Disp->ClearDisplay();
     NextTrackElementPtr = InactiveTrackVector.begin();
@@ -3270,6 +3208,8 @@ so they lie above the track.  Basic LCs are plotted for all but Level1Mode == Op
             }
         }
     }
+
+    TextHandler->RebuildFromTextVector(1, Disp); //plot text after inactives so can have text on stations etc
 
     NextTrackElementPtr = TrackVector.begin();
     while(ReturnNextTrackElement(0, Next))
@@ -3315,6 +3255,30 @@ so they lie above the track.  Basic LCs are plotted for all but Level1Mode == Op
     }
     Disp->Update();
     Utilities->CallLogPop(468);
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::RebuildUserGraphics(int Caller, TDisplay *Disp) //new at v2.4.0
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RebuildUserGraphics,");
+    if(UserGraphicVector.empty())
+    {
+        Utilities->CallLogPop(2175);
+        return;
+    }
+    TUserGraphicItem UGI;
+    for(unsigned int x = 0; x < UserGraphicVector.size(); x++)
+    {
+        UGI = UserGraphicVectorAt(4, x);
+        if(((UGI.HPos + UGI.Width - (Display->DisplayOffsetH * 16)) >= 0) && ((UGI.HPos - (Display->DisplayOffsetH * 16)) < (Utilities->ScreenElementWidth * 16)) &&
+           ((UGI.VPos + UGI.Height - (Display->DisplayOffsetV * 16)) >= 0) && ((UGI.VPos - (Display->DisplayOffsetV * 16)) < (Utilities->ScreenElementHeight * 16)))
+        {
+            Disp->PlotAndAddUserGraphic(0, UGI);
+        }
+    }
+    Disp->Update();
+    Utilities->CallLogPop(2176);
 }
 
 //---------------------------------------------------------------------------
@@ -3550,6 +3514,27 @@ Note, have to plot inactives before track because track has to overwrite 'name' 
         RailGraphics->SetUpAllDerivitiveGraphics(Utilities->clTransparent);
     }
     Utilities->CallLogPop(1533);
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::WriteGraphicsToImage(int Caller, Graphics::TBitmap *Bitmap)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",WriteGraphicsToImage");
+    if(UserGraphicVector.empty())
+    {
+        Utilities->CallLogPop(2192);
+        return;
+    }
+    else
+    {
+        for(unsigned int x = 0; x < UserGraphicVector.size(); x++)
+        {
+            Bitmap->Canvas->CopyMode = cmSrcCopy;
+            Bitmap->Canvas->Draw(UserGraphicVectorAt(26, x).HPos - (GetHLocMin() * 16), UserGraphicVectorAt(27, x).VPos - (GetVLocMin() * 16), UserGraphicVectorAt(28, x).UserGraphic->Graphic);
+        }
+    }
+    Utilities->CallLogPop(2193);
 }
 
 //---------------------------------------------------------------------------
@@ -4163,7 +4148,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
         {
 			if(!CheckFootCrossingLinks(1, TrackVector.at(x)))
             {
-				ShowMessage("Footbridge or underpass connection error.  These must connect to a platform, concourse or other footbridge or underpass, and must not connect to each other");
+				ShowMessage("Footbridge or underpass connection error.  Each end must connect to a platform, concourse or other footbridge or underpass, and they can't connect to each other");
 				HLoc = TrackVector.at(x).HLoc;
                 VLoc = TrackVector.at(x).VLoc;
                 LocError = true;
@@ -4203,14 +4188,19 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                 TrackVector.at(x).Conn[y]=VecPos;
                 //find connecting link in the newly found track element if there is one & make buffer & adjacent signals check
                 bool LinkFoundFlag = false;
-                if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost)
-                    || (TrackVector.at(x).TrackType == Crossover))
-                   && (TrackVector.at(VecPos).TrackType == Buffers))
-                {
-                    ShowMessage("Can't have points, crossover or signal next to buffers - need room for a train without fouling");
-                    //need room for a train (2 elements) without fouling points or signals
-                }
-                else if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost)
+				if((TrackVector.at(x).Config[1-y] == Signal) && IsLCAtHV(50, TrackVector.at(VecPos).HLoc, TrackVector.at(VecPos).VLoc))
+				{   //new in v2.4.0 - Krizar (Kristian Zarebski) found this error
+					ShowMessage("Can't have an exit signal next to a level crossing");
+					//otherwise when single route element removed in front of train the LC will start to close and the train will crash
+				}
+				else if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost)
+					|| (TrackVector.at(x).TrackType == Crossover))
+				   && (TrackVector.at(VecPos).TrackType == Buffers))
+				{
+					ShowMessage("Can't have points, crossover or signal next to buffers - need room for a train without fouling");
+					//need room for a train (2 elements) without fouling points or signals
+				}
+				else if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost)
                          || (TrackVector.at(x).TrackType == Crossover) || (TrackVector.at(x).TrackType == Bridge))
                         && (TrackVector.at(VecPos).TrackType == Continuation))
                 {
@@ -4226,7 +4216,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                     //can't join a route to an existing route where the second signal is in an existing route and the first signal is
                     //selected - appears as trying to select a signal that is not the next in line from the starting signal
                 }
-                else if(IsLCAtHV(45, TrackVector.at(x).HLoc, TrackVector.at(x).VLoc) && IsLCAtHV(46, TrackVector.at(VecPos).HLoc, TrackVector.at(VecPos).VLoc))
+				else if(IsLCAtHV(45, TrackVector.at(x).HLoc, TrackVector.at(x).VLoc) && IsLCAtHV(46, TrackVector.at(VecPos).HLoc, TrackVector.at(VecPos).VLoc))
                 //true if a level crossing is present at both x and VecPos - can't have two adjacent level crossings on the same track
                 {
                     ShowMessage("Can't have two level crossings adjacent to each other on the same track");
@@ -7090,7 +7080,7 @@ Examines ActiveTrackElementNameMap and returns true if the LocationName is found
             { //exclude any name that appears in a continuation, error message given in tt validation if try to include such a name in a tt
                 ActiveTrackElementNameMapEntry.first = Track->TrackVector.at(x).ActiveTrackElementName;
                 ActiveTrackElementNameMapEntry.second = 0; //this is a dummy value
-                ActiveTrackElementNameMap.insert(ActiveTrackElementNameMapEntry);
+				ActiveTrackElementNameMap.insert(ActiveTrackElementNameMapEntry);
             }
         }
         ActiveTrackElementNameMapCompiledFlag = true;
@@ -7134,7 +7124,7 @@ new names in the vectors.
             }
         }
     }
-    if(ErasedFlag) RebuildLocationNameMultiMap(3);
+	if(ErasedFlag) RebuildLocationNameMultiMap(3);
     CheckLocationNameMultiMap(3); //test
     Utilities->CallLogPop(579);
 }
@@ -7336,7 +7326,7 @@ true if a LocationName is found, and also returns the name and the adjusted vect
             }
         }
     }
-    Utilities->CallLogPop(584);
+	Utilities->CallLogPop(584);
     return false;
 }
 
@@ -7347,12 +7337,13 @@ void TTrack::CheckLocationNameMultiMap(int Caller) //test function
 //check quantity in map & vectors match
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckLocationNameMultiMap,");
     unsigned int Count = 0;
-    if(PastingWithAttributes) //added at v2.2.0 to distinguish between the two types of paste and to skip check when pasting
-                              //with attributes because fails as map elements not fully aligned until all pasted
+
+	if(SkipLocationNameMultiMapCheck) //renamed in v2.4.0 to skip check when pasting because fails as map elements not fully aligned until all pasted
     {
         Utilities->CallLogPop(2059);
         return;
     }
+
     AnsiString SName, TName, ErrorString;
     for(unsigned int x=0; x<TrackVector.size(); x++)
     {
@@ -7798,123 +7789,117 @@ int BrEXArray[24][2] = {
 {1,9},{3,7},{1,9},{3,7},
 {2,8},{4,6},{2,8},{4,6}
 */
-    if(!FirstTrack && (TrackElement.TrackType == Bridge))
-    {
-        if(Index == 1)
-        {
-            if(TrackElement.SpeedTag == 49) BrNum = 1+16;
-            else if(TrackElement.SpeedTag == 54) BrNum = 8+16;
-            else if(TrackElement.SpeedTag == 55) BrNum = 10+16;
-        }
-        else if(Index == 0)
-        {
-            if(TrackElement.SpeedTag == 48) BrNum = 0+16;
-            else if(TrackElement.SpeedTag == 58) BrNum = 11+16;
-            else if(TrackElement.SpeedTag == 59) BrNum = 9+16;
-        }
-        else if(Index == 14)
-        {
-            if(TrackElement.SpeedTag == 50) BrNum = 2+16;
-            else if(TrackElement.SpeedTag == 52) BrNum = 4+16;
-            else if(TrackElement.SpeedTag == 57) BrNum = 6+16;
-        }
-        else if(Index == 15)
-        {
-            if(TrackElement.SpeedTag == 51) BrNum = 3+16;
-            else if(TrackElement.SpeedTag == 53) BrNum = 7+16;
-            else if(TrackElement.SpeedTag == 56) BrNum = 5+16;
-        }
-    }
+	if(!FirstTrack && (TrackElement.TrackType == Bridge))
+	{
+		if(Index == 1)
+		{
+			if(TrackElement.SpeedTag == 49) BrNum = 1+16;
+			else if(TrackElement.SpeedTag == 54) BrNum = 8+16;
+			else if(TrackElement.SpeedTag == 55) BrNum = 10+16;
+		}
+		else if(Index == 0)
+		{
+			if(TrackElement.SpeedTag == 48) BrNum = 0+16;
+			else if(TrackElement.SpeedTag == 58) BrNum = 11+16;
+			else if(TrackElement.SpeedTag == 59) BrNum = 9+16;
+		}
+		else if(Index == 14)
+		{
+			if(TrackElement.SpeedTag == 50) BrNum = 2+16;
+			else if(TrackElement.SpeedTag == 52) BrNum = 4+16;
+			else if(TrackElement.SpeedTag == 57) BrNum = 6+16;
+		}
+		else if(Index == 15)
+		{
+			if(TrackElement.SpeedTag == 51) BrNum = 3+16;
+			else if(TrackElement.SpeedTag == 53) BrNum = 7+16;
+			else if(TrackElement.SpeedTag == 56) BrNum = 5+16;
+		}
+	}
 
-    if(!FirstTrack && (TrackElement.TrackType == Bridge)) GrNum = BrNum;
-    else GrNum = Index;
+	if(!FirstTrack && (TrackElement.TrackType == Bridge)) GrNum = BrNum;
+	else GrNum = Index;
 
-    if(LengthDifferent && SpeedDifferent) //blue - use autosig graphics
-    {
-        if(GrNum > 15) //underbridge
-        {
-            Bitmap = RailGraphics->BridgeRouteAutoSigsGraphicsPtr[GrNum-16];
-        }
-        else Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[GrNum];
+	if(LengthDifferent && SpeedDifferent) //blue - use autosig graphics
+	{
+		if(GrNum > 15) //underbridge
+		{
+			Bitmap = RailGraphics->BridgeRouteAutoSigsGraphicsPtr[GrNum-16];
+		}
+		else Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[GrNum];
 
-        if(TrackElement.SpeedTag == 64) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[16];  //intercept diagonal buffers to show the buffer
-        if(TrackElement.SpeedTag == 65) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[17];
-        if(TrackElement.SpeedTag == 66) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[18];
-        if(TrackElement.SpeedTag == 67) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[19];
+		if(TrackElement.SpeedTag == 64) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[16];  //intercept diagonal buffers to show the buffer
+		if(TrackElement.SpeedTag == 65) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[17];
+		if(TrackElement.SpeedTag == 66) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[18];
+		if(TrackElement.SpeedTag == 67) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[19];
 
-        if(TrackElement.SpeedTag == 80) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[20];  //intercept continuations to show the dots
-        if(TrackElement.SpeedTag == 81) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[21];
-        if(TrackElement.SpeedTag == 82) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[22];
-        if(TrackElement.SpeedTag == 83) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[23];
-        if(TrackElement.SpeedTag == 84) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[24];
-        if(TrackElement.SpeedTag == 85) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[25];
-        if(TrackElement.SpeedTag == 86) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[26];
-        if(TrackElement.SpeedTag == 87) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[27];
+		if(TrackElement.SpeedTag == 80) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[20];  //intercept continuations to show the dots
+		if(TrackElement.SpeedTag == 81) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[21];
+		if(TrackElement.SpeedTag == 82) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[22];
+		if(TrackElement.SpeedTag == 83) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[23];
+		if(TrackElement.SpeedTag == 84) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[24];
+		if(TrackElement.SpeedTag == 85) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[25];
+		if(TrackElement.SpeedTag == 86) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[26];
+		if(TrackElement.SpeedTag == 87) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[27];
 
 		if(TrackElement.SpeedTag == 129) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[28];  //intercept under footbridges
 		if(TrackElement.SpeedTag == 130) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[29];
-		if(TrackElement.SpeedTag == 145) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[30];  //intercept over u'passes
-		if(TrackElement.SpeedTag == 146) Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[31];
 	}
 
-    else if(LengthDifferent && !SpeedDifferent) //green - use pref sig graphics
-    {
-        if(GrNum > 15) //underbridge
-        {
-            Bitmap = RailGraphics->BridgeSigRouteGraphicsPtr[GrNum-16];
-        }
-        else Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[GrNum];
+	else if(LengthDifferent && !SpeedDifferent) //green - use pref sig graphics
+	{
+		if(GrNum > 15) //underbridge
+		{
+			Bitmap = RailGraphics->BridgeSigRouteGraphicsPtr[GrNum-16];
+		}
+		else Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[GrNum];
 
-        if(TrackElement.SpeedTag == 64) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[16];  //intercept diagonal buffers to show the buffer
-        if(TrackElement.SpeedTag == 65) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[17];
-        if(TrackElement.SpeedTag == 66) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[18];
-        if(TrackElement.SpeedTag == 67) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[19];
+		if(TrackElement.SpeedTag == 64) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[16];  //intercept diagonal buffers to show the buffer
+		if(TrackElement.SpeedTag == 65) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[17];
+		if(TrackElement.SpeedTag == 66) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[18];
+		if(TrackElement.SpeedTag == 67) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[19];
 
-        if(TrackElement.SpeedTag == 80) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[20];  //intercept continuations to show the dots
-        if(TrackElement.SpeedTag == 81) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[21];
-        if(TrackElement.SpeedTag == 82) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[22];
-        if(TrackElement.SpeedTag == 83) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[23];
-        if(TrackElement.SpeedTag == 84) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[24];
-        if(TrackElement.SpeedTag == 85) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[25];
-        if(TrackElement.SpeedTag == 86) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[26];
-        if(TrackElement.SpeedTag == 87) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[27];
+		if(TrackElement.SpeedTag == 80) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[20];  //intercept continuations to show the dots
+		if(TrackElement.SpeedTag == 81) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[21];
+		if(TrackElement.SpeedTag == 82) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[22];
+		if(TrackElement.SpeedTag == 83) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[23];
+		if(TrackElement.SpeedTag == 84) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[24];
+		if(TrackElement.SpeedTag == 85) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[25];
+		if(TrackElement.SpeedTag == 86) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[26];
+		if(TrackElement.SpeedTag == 87) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[27];
 
 		if(TrackElement.SpeedTag == 129) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[28];  //intercept under footbridges
 		if(TrackElement.SpeedTag == 130) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[29];
-		if(TrackElement.SpeedTag == 145) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[30];  //intercept over u'passes
-		if(TrackElement.SpeedTag == 146) Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[31];
 	}
 
-    else //SpeedDifferent only: red - use non sig graphics
-    {
-        if(GrNum > 15) //underbridge
-        {
-            Bitmap = RailGraphics->BridgeNonSigRouteGraphicsPtr[GrNum-16];
-        }
-        else Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[GrNum];
+	else //SpeedDifferent only: red - use non sig graphics
+	{
+		if(GrNum > 15) //underbridge
+		{
+			Bitmap = RailGraphics->BridgeNonSigRouteGraphicsPtr[GrNum-16];
+		}
+		else Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[GrNum];
 
-        if(TrackElement.SpeedTag == 64) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[16];  //intercept diagonal buffers to show the buffer
-        if(TrackElement.SpeedTag == 65) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[17];
-        if(TrackElement.SpeedTag == 66) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[18];
-        if(TrackElement.SpeedTag == 67) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[19];
+		if(TrackElement.SpeedTag == 64) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[16];  //intercept diagonal buffers to show the buffer
+		if(TrackElement.SpeedTag == 65) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[17];
+		if(TrackElement.SpeedTag == 66) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[18];
+		if(TrackElement.SpeedTag == 67) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[19];
 
-        if(TrackElement.SpeedTag == 80) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[20];  //intercept continuations to show the dots
-        if(TrackElement.SpeedTag == 81) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[21];
-        if(TrackElement.SpeedTag == 82) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[22];
-        if(TrackElement.SpeedTag == 83) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[23];
-        if(TrackElement.SpeedTag == 84) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[24];
-        if(TrackElement.SpeedTag == 85) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[25];
-        if(TrackElement.SpeedTag == 86) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[26];
-        if(TrackElement.SpeedTag == 87) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[27];
+		if(TrackElement.SpeedTag == 80) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[20];  //intercept continuations to show the dots
+		if(TrackElement.SpeedTag == 81) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[21];
+		if(TrackElement.SpeedTag == 82) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[22];
+		if(TrackElement.SpeedTag == 83) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[23];
+		if(TrackElement.SpeedTag == 84) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[24];
+		if(TrackElement.SpeedTag == 85) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[25];
+		if(TrackElement.SpeedTag == 86) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[26];
+		if(TrackElement.SpeedTag == 87) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[27];
 
 		if(TrackElement.SpeedTag == 129) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[28];  //intercept under footbridges
-        if(TrackElement.SpeedTag == 130) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[29];
-		if(TrackElement.SpeedTag == 145) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[30];  //intercept over u'passes
-		if(TrackElement.SpeedTag == 146) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[31];
+		if(TrackElement.SpeedTag == 130) Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[29];
 	}
 
-    Disp->PlotOutput(67, TrackElement.HLoc * 16, TrackElement.VLoc * 16, Bitmap);
-    Utilities->CallLogPop(620);
+	Disp->PlotOutput(67, TrackElement.HLoc * 16, TrackElement.VLoc * 16, Bitmap);
+	Utilities->CallLogPop(620);
 }
 
 //---------------------------------------------------------------------------
@@ -8344,7 +8329,44 @@ void TTrack::CalcHLocMinEtc(int Caller)
         if((TextV/16) - 1< VLocMin) VLocMin = (TextV/16) - 1;
         if((TextV/16) + 1 > VLocMax) VLocMax = (TextV/16) + 1;
     }
+    for(unsigned int x=0; x<UserGraphicVector.size(); x++) // added at v2.4.0
+    {
+        if((UserGraphicVectorAt(5, x).HPos/16) - 1 < HLocMin) HLocMin = (UserGraphicVectorAt(6, x).HPos/16) - 1;  //add one all round
+        if(((UserGraphicVectorAt(7, x).HPos + UserGraphicVectorAt(8, x).Width)/16) + 1 > HLocMax) HLocMax = ((UserGraphicVectorAt(9, x).HPos + UserGraphicVectorAt(10, x).Width)/16) + 1;
+        if((UserGraphicVectorAt(11, x).VPos/16) - 1 < VLocMin) VLocMin = (UserGraphicVectorAt(12, x).VPos/16) - 1;
+        if(((UserGraphicVectorAt(13, x).VPos + UserGraphicVectorAt(14, x).Height)/16) + 1 > VLocMax) VLocMax = ((UserGraphicVectorAt(15, x).VPos + UserGraphicVectorAt(16, x).Height)/16) + 1;
+    }
+
     Utilities->CallLogPop(641);
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::UserGraphicMove(int Caller, int HPosInput, int VPosInput, int &UserGraphicItem, int &UserGraphicMoveHPos, int &UserGraphicMoveVPos, bool &UserGraphicFoundFlag)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UserGraphicMove," + AnsiString(HPosInput) + "," + AnsiString(VPosInput));
+    TUserGraphicVector::iterator UserGraphicPtr;
+    UserGraphicFoundFlag = false;
+    if(!UserGraphicVector.empty())
+    {
+        int x = UserGraphicVector.size();
+        for(UserGraphicPtr = (UserGraphicVector.end() - 1); UserGraphicPtr >= UserGraphicVector.begin(); UserGraphicPtr--)
+        {
+            x--;
+            if((HPosInput >= (*UserGraphicPtr).HPos) &&
+               (HPosInput < ((*UserGraphicPtr).HPos + (*UserGraphicPtr).Width)) && (VPosInput >= (*UserGraphicPtr).VPos) &&
+               (VPosInput < ((*UserGraphicPtr).VPos + (*UserGraphicPtr).Height)))
+            {
+                UserGraphicItem = x;
+                UserGraphicMoveHPos = (*UserGraphicPtr).HPos;
+                UserGraphicMoveVPos = (*UserGraphicPtr).VPos;
+                UserGraphicFoundFlag = true;
+                Utilities->CallLogPop(2177);
+                return;
+            } //if ....
+        } //for UserGraphicPtr...
+    } //if !UserGraphicVector...
+    Utilities->CallLogPop(2197);
 }
 
 //---------------------------------------------------------------------------
@@ -8706,7 +8728,7 @@ bool TTrack::PlatformOnSignalSide(int Caller, int HLoc, int VLoc, int SpeedTag, 
         {
             if(InactiveTrackElementAt(49, IMPair.first).SpeedTag == 76) IAElement = InactiveTrackElementAt(50, IMPair.first);
             else IAElement = InactiveTrackElementAt(51, IMPair.second);
-            if(IAElement.LocationName == "")
+			if(IAElement.LocationName == "")
             {
 //            SignalPlatformGraphic = RailGraphics->Plat68Striped;
                 SignalPlatformGraphic = RailGraphics->gl76Striped;
@@ -9090,6 +9112,46 @@ Each of these is examined in turn for each route element in the relevant positio
 
     Utilities->CallLogPop(2031);
     return false;
+}
+
+//---------------------------------------------------------------------------
+
+void TTrack::SaveUserGraphics(int Caller, std::ofstream &VecFile)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveUserGraphics");
+    Utilities->SaveFileInt(VecFile, UserGraphicVector.size());  //number of items
+    TUserGraphicItem UGI;
+    AnsiString JustFileName = "";
+    for(unsigned int x = 0; x  < UserGraphicVector.size();  x++)
+    {
+        UGI = UserGraphicVectorAt(17, x);
+        int LastDelim = UGI.FileName.LastDelimiter('\\');
+        if(LastDelim == 0) //can't find it so skip this item
+        {
+            continue;
+        }
+        else
+        {
+            JustFileName = UGI.FileName.SubString(LastDelim + 1, UGI.FileName.Length() - LastDelim);
+        }
+        Utilities->SaveFileString(VecFile, JustFileName);
+        Utilities->SaveFileInt(VecFile, UGI.HPos);
+        Utilities->SaveFileInt(VecFile, UGI.VPos);
+    }
+    Utilities->CallLogPop(2178);
+}
+
+//---------------------------------------------------------------------------
+
+TUserGraphicItem &TTrack::UserGraphicVectorAt(int Caller, int At)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UserGraphicVectorAt," + AnsiString(At));
+    if((At < 0) || ((unsigned int)At >= UserGraphicVector.size()))
+    {
+        throw Exception("Out of Range Error, vector size: " + AnsiString(UserGraphicVector.size()) + ", At: " + AnsiString(At) + " in UserGraphicVectorAt");
+    }
+    Utilities->CallLogPop(2194);
+    return UserGraphicVector.at(At);
 }
 
 //---------------------------------------------------------------------------
@@ -10187,7 +10249,7 @@ void TOnePrefDir::LoadPrefDir(int Caller, std::ifstream &VecFile)
             LoadPrefDirElement.EntryDirectionGraphicPtr = LoadPrefDirElement.GetDirectionRouteGraphicPtr(LoadPrefDirElement.AutoSignals, LoadPrefDirElement.ConsecSignals);
         }
         StorePrefDirElement(0, LoadPrefDirElement);
-        Utilities->LoadFileString(VecFile); //marker
+        AnsiString MarkerString = Utilities->LoadFileString(VecFile); //marker
     }
     CheckPrefDir4MultiMap(6);
     Utilities->CallLogPop(1509);
@@ -10203,7 +10265,7 @@ file.  Very similar to LoadPrefDir but with value checks instead of storage in P
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckOnePrefDir");
     int TempInt;
-    int NumberOfPrefDirElements=0;
+    int NumberOfPrefDirElements = 0;
     NumberOfPrefDirElements = Utilities->LoadFileInt(VecFile);
     if((NumberOfPrefDirElements < 0) || (NumberOfPrefDirElements > 1000000))
     {
@@ -10311,7 +10373,7 @@ void TOnePrefDir::SavePrefDirVector(int Caller, std::ofstream &VecFile)
         Utilities->SaveFileBool(VecFile, PrefDirVector.at(y).ConsecSignals);
         if(y == (NumberOfPrefDirElements - 1)) //last element, write a longer delimiter
         {
-            VecFile << "************" << '\0' << '\n'; //note:  << doesn't write the null string terminator character automatically
+            VecFile << "************" << '\0' << '\n'; //marker
         }
         else
         {
@@ -13814,7 +13876,7 @@ if existing route autosig, leave the existing route as it is, and just enter the
                     LockedRouteObject.RouteNumber = RouteNumber;
                     AllRoutes->LockedRouteVector.push_back(LockedRouteObject);
                     //now reset the signals for the locked route
-                    AllRoutes->SetAllRearwardsSignals(10, 0, RouteNumber, TruncatePrefDirPosition);
+                    AllRoutes->SetAllRearwardsSignals(12, 0, RouteNumber, TruncatePrefDirPosition);
                     for(int c = AllRoutes->GetFixedRouteAt(177, RouteNumber).PrefDirSize() - 1; c >= (int)TruncatePrefDirPosition; c--) //must use int for >= test to succeed when TruncatePrefDirPosition == 0
                     //return all signals to red in route section to be truncated
                     {
@@ -14299,7 +14361,7 @@ truncate point, beginning with a red signal, and RemoveRouteElement called for a
             {
                 TrainController->StopTTClockFlag = true;
                 TrainController->RestartTime = TrainController->TTClockTime;
-                int button = Application->MessageBox(L"Train approaching or occupying route, YES to lock route (2 minutes to release), NO to cancel", L"", MB_YESNO);
+                int button = Application->MessageBox(L"Train approaching or occupying route, YES to lock route (2 minutes to release), NO to cancel", L"Warning!", MB_YESNO | MB_ICONWARNING);
                 TrainController->BaseTime = TDateTime::CurrentDateTime();
                 TrainController->StopTTClockFlag = false;
                 if (button == IDNO)

@@ -563,6 +563,7 @@ TRailGraphics::TRailGraphics()
     smLightBlue = new Graphics::TBitmap; smLightBlue->LoadFromResourceName(0, "smLightBlue"); smLightBlue->Transparent = true; smLightBlue->TransparentColor = clB5G5R5;
     smMagenta = new Graphics::TBitmap; smMagenta->LoadFromResourceName(0, "smMagenta"); smMagenta->Transparent = true; smMagenta->TransparentColor = clB5G5R5;
     smName = new Graphics::TBitmap; smName->LoadFromResourceName(0, "smName"); smName->Transparent = true; smName->TransparentColor = clB5G5R5;
+    smOrange = new Graphics::TBitmap; smOrange->LoadFromResourceName(0, "smOrange"); smOrange->Transparent = true; smOrange->TransparentColor = clB5G5R5;
     smPaleGreen = new Graphics::TBitmap; smPaleGreen->LoadFromResourceName(0, "smPaleGreen"); smPaleGreen->Transparent = true; smPaleGreen->TransparentColor = clB5G5R5;
     smRed = new Graphics::TBitmap; smRed->LoadFromResourceName(0, "smRed"); smRed->Transparent = true; smRed->TransparentColor = clB5G5R5;
     smYellow = new Graphics::TBitmap; smYellow->LoadFromResourceName(0, "smYellow"); smYellow->Transparent = true; smYellow->TransparentColor = clB5G5R5;
@@ -1691,6 +1692,9 @@ int TRailGraphics::ColNametoNumber(int Caller, TColor Colour)
             break;
         case clTRSBackground:
             Number = 0xd1;
+            break;
+        case clTrainFailedBackground: //added at v2.4.0
+            Number = 0xc0;
             break;
         default:
 //			UnicodeString MessageStr = "Can't find required colour - normal background colour will be used.");

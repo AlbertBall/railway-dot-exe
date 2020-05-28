@@ -25,13 +25,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DisplayUnitH
 //---------------------------------------------------------------------------
 #include <vcl.h>
+#include <memory> //for smart pointer
 
+class TUserGraphicItem
+{
+    public:
+    AnsiString FileName; //this file is in the Graphics folder
+    int HPos, VPos;
+    int Width, Height;
+    TPicture *UserGraphic;
+};
+
+//---------------------------------------------------------------------------
 /// Class that manages all aspects of the display
 ///
 /// There are 2 objects - Display, which is the screen, and HiddenDisplay,
 /// which is an internal object used when building a new display and transferred
 /// to Display when complete (avoids the flicker that would be visible if Display
 /// was built directly)
+
 class TDisplay
 {
 private:
@@ -185,6 +197,8 @@ public:
     void PlotDashedRect(int Caller, TRect Rect);
 /// Plot the graphic at screen position HPos & VPos
     void PlotOutput(int Caller, int HPos, int VPos, Graphics::TBitmap *PlotItem);
+/// Plot user graphic
+    void PlotAndAddUserGraphic(int Caller, TUserGraphicItem UserGraphicItem);
 /// Plot a small blank rectangle in the centre of a set of points at HLoc & VLoc
 /// prior to plotting one or both fillets (the movable section)
     void PlotPointBlank(int Caller, int HLoc, int VLoc);

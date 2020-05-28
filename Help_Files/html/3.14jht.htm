@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv=Content-Type content="text/html; charset=windows-1252">
 <meta name=Generator content="Microsoft Word 14 (filtered)">
-<title>Adding and deleting track and other railway elements</title>
+<title>Adding and deleting track and user-defined graphics</title>
 <style>
 <!--
  /* Font Definitions */
@@ -49,7 +49,7 @@ div.WordSection1
 
 <div class=WordSection1>
 
-<p><a name=3.1></a><b>3.1 Adding and deleting track and other railway elements</b></p>
+<p><a name=3.1></a><b>3.1 Adding and deleting track and user-defined graphics</b></p>
 
 <p>Click <img width=24 height=24 src="../images/RailSim2_ADDTRACK.gif"> to add
 elements, and the railway element panel will appear, containing a wide range of
@@ -60,8 +60,9 @@ area below to place it. It is often helpful to display the screen grid during
 building to indicate element locations. As many of the same element as required
 may be placed by repeatedly left clicking the mouse in the railway area, and
 other elements may be selected and placed similarly. To remove an element just
-right click it. To navigate off the visible screen the easiest method is to 
-right-click the mouse on a blank area of screen and drag the railway to a new 
+right click it. </p>
+
+<p>To navigate off the visible screen the easiest method is to hold down the right mouse button on a blank area of screen and drag the railway with the mouse to a new 
 position.  Other methods are to click the relevant 'move viewpoint' buttons 
 <img width=24 height=24
 src="../images/RailSim2_BLACKARROWRIGHT.gif"><img width=24 height=24
@@ -73,8 +74,7 @@ key when navigating moves the viewpoint by a small amount, and holding down the
 Shift key moves it by a large amount. Think of the railway area as infinitely
 large, with a window 60 elements wide by 36 elements high visible at any time
 (60 x 36 elements is for a screen resolution of 1024 x 768, other resolutions
-contain different numbers of elements). Other views are available depending on
-the extent of the railway. The 'Home' button (or ‘Home’ key on the keyboard)
+contain different numbers of elements). The 'Home' button (or ‘Home’ key on the keyboard)
 brings the display back to the original screen, or 'New home' sets a new 'home'
 position. The zoom-out button <img width=24 height=24
 src="../images/RailSim2_ZOOMOUT.gif"> (or 'End' key on the keyboard) displays the railway at a quarter scale,
@@ -89,9 +89,9 @@ or keys.</p>
 
 <p>During build the <img width=20 height=20
 src="../images/RailSim2_TRACKNOTLINKEDGRAPHIC.gif"> 'unlinked track' icon is
-displayed on the left. All the track must be properly linked before preferred
+displayed on the left. All track must be properly linked before preferred
 directions or track lengths and speeds can be set and the railway saved for
-operation. Track is linked using the <img width=24 height=24
+operation. Linking allows every element to store the positions and types of adjacent elements, and that information is interrogated and applied by trains and routes during operation.  Prior to linking, any element can be placed anywhere, but linking will only be successful for a viable railway. Track is linked using the <img width=24 height=24
 src="../images/RailSim2_VALIDATE.gif"> 'link track' button, but note that if
 there are unconnected gaps these must be connected first. Any faults in the
 layout are indicated by appropriate messages when the 'link track' button is
@@ -111,10 +111,8 @@ preceded by 'N', so an ID of 'N12-N06' would represent an element 12 places to
 the left of the first screen and 6 places above the top of the first screen.
 Element IDs are used in timetables, performance logs and warnings etc.</p>
 
-<p><b>Important: Note that if track is changed after preferred directions have
-been set, elements that have been changed will have the preferred directions
-erased. In these circumstances it is necessary to go back to the 'set preferred
-directions' mode to check and reset the necessary directions.</b></p>
+<p>User-defined graphics can be added to improve the appearance of the railway, incorporating any image file of type .bmp, .gif, .jpg or .png.  These files must be saved in the 'Graphics' folder in order to be used. You may wish to apply a graphic with a transparent background, and for this you will probably need to manipulate the file using an image editor of which there are many available, some free.  To add graphics click the <img width=30 height=30
+src="../images/PictureImage.bmp">'select user graphic' button, and select from the files listed.  Left click the railway at the desired location for the graphic and it will be placed there, right click it and it will be removed.  Once placed a graphic can be moved, as described below in section 3.2.  Try to avoid placing a graphic directly over text, track or locations, as it will be obscured by these elements when the screen is updated.</p>
 
 </div>
 

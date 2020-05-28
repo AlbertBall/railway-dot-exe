@@ -52,12 +52,8 @@ div.WordSection1
 <p><a name=3.3></a><b>3.3 Named locations</b></p>
 
 <p>Two types of named location are provided: stations, and non-station named
-locations. Station elements consist of platforms, concourses, footbridges and underpasses. These
-are indicated by reddish-brown coloured elements, the narrow ones representing
-platforms that may be placed alongside horizontal or vertical track elements;
-the full square representing a concourse, positioned where there is no track
-and used to link platforms together; and footbridges/underpasses link platforms and
-concourses across vertical or horizontal track. Footbridges/underpasses allow station
+locations. Station elements consist of platforms, concourses, footbridges and underpasses. These are indicated by reddish-brown coloured elements, the narrow ones representing platforms that may be placed alongside horizontal or vertical track elements; the full square representing a concourse, positioned where there is no track
+and used to link platforms together; and footbridges/underpasses that lie at 90 degrees to the track and link platforms; and concourses across vertical or horizontal track. Footbridges/underpasses allow station
 elements to be linked together that would otherwise be too far apart. All
 station elements that are linked together take the same name. Trains stop at
 platforms if the timetable includes the station as a stop, and the stop
@@ -96,7 +92,7 @@ src="../images/NEL3.gif">.</p>
 <p>Note that platforms may be located where there are signals, thereby effectively
 embedding the signal in the platform. This is useful when space is tight but is
 not generally recommended because problems may occur when trains are required
-to split - see <A HREF="5.2.1e43.htm">section 5.2.3 'Splits'</A>.</p>
+to split - see <A HREF="5.2.1e43.htm">section 5.2.3 'Splits'</A>. Locations with very long platforms that are designed to hold two or more trains can use embedded signals, but signaller control is likely to be required to move trains up a platform to their departure position.</p>
 
 <p>Names are allocated using the <img width=24 height=24
 src="../images/RailSim2_NAMELOCS.gif"> 'name location' button. Any named
@@ -107,7 +103,7 @@ location is given the same name as an earlier one. If it is so named, the
 earlier name is erased. When a name has been given it appears as text on the
 display in the font that is currently set. Generally the position of the name
 will need to be adjusted using the <img width=24 height=24
-src="../images/RailSim2_MOVETEXT.gif"> 'move text' button as described earlier.
+src="../images/RailSim2_MOVETEXT.gif"> 'move text or graphics' button as described earlier.
 Fonts may be changed using the <img width=24 height=24
 src="../images/RailSim2_FONTGRAPHIC.gif"> 'change text font' button, and this
 font will apply for all future names. If it is wished to change the font of
@@ -167,18 +163,12 @@ src="../images/RailSim2_LOCNAMESNOTSETGRAPHIC.gif"> icon on the left. When all
 are named this changes to <img width=20 height=20
 src="../images/RailSim2_LOCNAMESSETGRAPHIC.gif">.</p>
 
-<p>When building a railway try to avoid naming locations until the final
-position of the track is fixed. The reason is that when areas are cut and
-pasted elsewhere, or are mirrored or flipped, named locations within these
-areas lose their names. This is because the program doesn't know whether a
-whole location or just part is included in the selection, so to play safe it
-assumes part only and erases the names. Also the text may fail to be included
-within the selection and have to be erased separately to avoid there being two
-pieces of text corresponding to a single location. It is also best to avoid
-naming a location until all associated named elements have been placed.
+<p>When building a railway try to avoid naming a location until all associated named elements have been placed.
 Although additional named elements may be added to an existing named location,
 and they will take the same name, the process can be time-consuming, especially
 with a large location and a slow computer.</p>
+
+<p>If a named location has any of its elements deleted it will revert to being unnamed and its name will disappear from the screen.</p>
 
 <p>If railways are to be shared with other users or used on other computers,
 ensure that the fonts used for text and named locations are standard Microsoft

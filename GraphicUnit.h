@@ -285,28 +285,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define clB5G5R4 (TColor)0xFFFFCC   //38e  b3
 #define clB5G5R5 (TColor)0xFFFFFF   //392  d7
 
-//train background colour definitions
-#define clBufferAttentionNeeded (TColor)0xFFFF00 //cyan           16776960d    offset hex 37e  col no.  23
+//train background colour definitions                                         offset  colour
+//                                                                              hex    no.
+#define clBufferAttentionNeeded (TColor)0xFFFF00 //cyan           16776960d     37e    23
 #define clBufferStopBackground  (TColor)0xFFFFCC //pale cyan      16777164d     38e    b3
 #define clCallOnBackground      (TColor)0xFF33FF //light magenta  16724991d     332    bf
-#define clCrashedBackground     (TColor)0x0000FF //red            255d          4a     b4
-#define clDerailedBackground    (TColor)0x0000FF //red            255d          4a     b4
+#define clCrashedBackground     (TColor)0x0000FF //red                 255d      4a    b4
+#define clDerailedBackground    (TColor)0x0000FF //red                 255d      4a    b4
 #define clFrontCodeSignaller    (TColor)0xFF0000 //blue           16711680d     306    05
-#define clFrontCodeTimetable    (TColor)0x0000FF //red            255           4a     b4
+#define clFrontCodeTimetable    (TColor)0x0000FF //red                 255d      4a    b4
 #define clNormalBackground      (TColor)0xCCCCCC //grey           13421772d     2e6    ac
 #define clSignallerStopped      (TColor)0x99CCFF //caramel        10079487d     25a    cf
-#define clSignalStopBackground  (TColor)0x00FF66 //green          65382d        b6     66
-#define clSPADBackground        (TColor)0x00FFFF //yellow         65535d        c2     d2
+#define clSignalStopBackground  (TColor)0x00FF66 //green             65382d      b6    66
+#define clSPADBackground        (TColor)0x00FFFF //yellow            65535d      c2    d2
 #define clStationStopBackground (TColor)0xCCFFCC //pale green     13434828d     2fe    b2
-#define clStoppedTrainInFront   (TColor)0xFF9999 //light blue     16751001d     35a    83
+#define clStoppedTrainInFront   (TColor)0xFF9999 //lavender blue  16751001d     35a    83
 #define clTRSBackground         (TColor)0xFFCCFF //light pink     16764159d     37a    d1
+#define clTrainFailedBackground (TColor)0x0066FF //orange            26367d      7a    c0
+
 
 /// Handles graphic data & functions, single object defined
 class TRailGraphics
 {
 public:
 
-//transparent graphics (incorporated in the resource file railway.res)
+//transparent graphics (incorporated in the resource file borland.res)
     Graphics::TBitmap *AddPrefDir;
     Graphics::TBitmap *AddText;
     Graphics::TBitmap *AddTrack;
@@ -318,9 +321,10 @@ public:
     Graphics::TBitmap *Exit;
     Graphics::TBitmap *FontGraphic;
     Graphics::TBitmap *Hide;
-    Graphics::TBitmap *MoveText;
+    Graphics::TBitmap *MoveTextOrGraphic;
     Graphics::TBitmap *NameLocs;
     Graphics::TBitmap *NonSig;
+    Graphics::TBitmap *PictureImage;
     Graphics::TBitmap *PrefSig;
     Graphics::TBitmap *RouteCancel;
     Graphics::TBitmap *SaveRailway;
@@ -870,6 +874,7 @@ public:
     Graphics::TBitmap *smLightBlue;
     Graphics::TBitmap *smMagenta;
     Graphics::TBitmap *smName;
+    Graphics::TBitmap *smOrange;
     Graphics::TBitmap *smPaleGreen;
     Graphics::TBitmap *smRed;
     Graphics::TBitmap *smYellow;
@@ -911,7 +916,7 @@ public:
     Graphics::TBitmap *sm127;
     Graphics::TBitmap *sm128;
 
-//non-transparent graphics (incorporated in the resource file railway.res)
+//non-transparent graphics (incorporated in the resource file borland.res)
     Graphics::TBitmap *Code_a;
     Graphics::TBitmap *Code_b;
     Graphics::TBitmap *Code_c;

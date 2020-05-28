@@ -36,6 +36,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <fstream>
 #include <vector>
 #include <vcl.h>
+#include <Vcl.Imaging.jpeg.hpp>         //for user graphics
+#include <Vcl.Imaging.pngimage.hpp>     //for user graphics
+#include <Vcl.Imaging.GIFImg.hpp>       //for user graphics
 
 #pragma hdrstop
 
@@ -89,6 +92,16 @@ void TDisplay::PlotOutput(int Caller, int HPos, int VPos, Graphics::TBitmap *Plo
     Output->Canvas->Draw(HPos - (DisplayOffsetH * 16), VPos - (DisplayOffsetV * 16), PlotItem);
 //Update(); dropped as many operations too slow
     Utilities->CallLogPop(1461);
+}
+
+//---------------------------------------------------------------------------
+
+void TDisplay::PlotAndAddUserGraphic(int Caller, TUserGraphicItem UserGraphicItem)
+{
+    if(Display->ZoomOutFlag) return;
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotAndAddUserGraphic," + AnsiString(UserGraphicItem.HPos) + "," + AnsiString(UserGraphicItem.VPos));
+    Output->Canvas->Draw(UserGraphicItem.HPos - (DisplayOffsetH * 16), UserGraphicItem.VPos - (DisplayOffsetV * 16), UserGraphicItem.UserGraphic->Graphic);
+    Utilities->CallLogPop(2179);
 }
 
 //---------------------------------------------------------------------------
@@ -181,9 +194,12 @@ void TDisplay::TextOut(int Caller, int HPos, int VPos, AnsiString TextString, TF
     {
         if(TempInputFont->Color == clB0G0R0) TempInputFont->Color = clB5G5R5;  //if font was black set it to white for for dark backgrounds
     }
+    TBrush *TempBrush = Output->Canvas->Brush;
+    Output->Canvas->Brush->Style = bsClear;  //so text prints transparent
     Output->Canvas->Font->Assign(TempInputFont);
     Output->Canvas->TextOut(HPos - (DisplayOffsetH * 16), VPos - (DisplayOffsetV * 16), TextString);
     Output->Canvas->Font->Assign(TempCanvasFont); //restore original
+    Output->Canvas->Brush = TempBrush;       //restore original brush
     delete TempInputFont;
     delete TempCanvasFont;
     Utilities->CallLogPop(1469);

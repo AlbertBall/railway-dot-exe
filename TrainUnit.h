@@ -35,7 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 class TDisplay;
 
 /// Used for reporting error conditions & warnings
-enum TActionEventType {NoEvent, FailTrainEntry, FailCreateTrain, FailCreatePoints, FailSPAD, FailLockedRoute,
+enum TActionEventType {NoEvent, FailTrainEntry, FailCreateTrain, FailCreateOnRoute, FailCreatePoints, FailSPAD, FailLockedRoute,
                        FailLocTooShort, FailSplitDueToOtherTrain, FailCrashed, FailDerailed,
                        FailUnexpectedBuffers, FailUnexpectedExitRailway, FailMissedArrival, FailMissedSplit, FailMissedJBO, FailMissedJoinOther,
                        FailMissedTerminate, FailMissedNewService, FailMissedExitRailway, FailMissedChangeDirection, FailMissedPass,
@@ -44,8 +44,8 @@ enum TActionEventType {NoEvent, FailTrainEntry, FailCreateTrain, FailCreatePoint
 
 /// Used in LogAction when reporting a train action to the performance log & file
 enum TActionType {Arrive, Terminate, Depart, Create, Enter, Leave, FrontSplit, RearSplit, JoinedByOther, ChangeDirection,
-                  NewService, TakeSignallerControl, RestoreTimetableControl, RemoveTrain, SignallerMoveForwards,
-                  SignallerChangeDirection, SignallerPassRedSignal, Pass, SignallerControlStop, SignallerStop, SignallerLeave, SignallerStepForward};
+                  NewService, TakeSignallerControl, RestoreTimetableControl, RemoveTrain, SignallerMoveForwards, SignallerJoin, TrainFailure,  //SignallerJoin, TrainFailure & RepairFailedTrain new at v2.4.0
+                  RepairFailedTrain, SignallerChangeDirection, SignallerPassRedSignal, Pass, SignallerControlStop, SignallerStop, SignallerLeave, SignallerStepForward};
 
 
 enum TTrainMode {NoMode, Timetable, Signaller}; ///< indicates train operating mode, 'None' for not in use
@@ -118,7 +118,8 @@ public:
 //inline function
 
     /// Constructor, values set to defaults
-    TTrainOperatingData() {
+    TTrainOperatingData()
+    {
         TrainID = -1; EventReported= NoEvent; RunningEntry=NotStarted;
     }
 };
@@ -146,16 +147,15 @@ public:
     TTrainOperatingDataVector TrainOperatingDataVector; ///< operating information for the train including all its repeats
 
 //inline function
-
     /// Constructor with default values
-    TTrainDataEntry() {
+    TTrainDataEntry()
+    {
         StartSpeed=0; MaxRunningSpeed=0; NumberOfTrains=0;
     }
 };
 
 typedef std::vector<TTrainDataEntry> TTrainDataVector; ///< vector class for containing the whole timetable (the object is a member of
                                                        ///< TTrainController)
-
 //---------------------------------------------------------------------------
 
 //formatted timetable types
@@ -222,10 +222,26 @@ private:
     static const int MaximumPowerLimit = 100000000; ///< Watts (i.e. 100MW)
     static const int MaximumSpeedLimit = 400; ///< km/h
 
+    static int NextTrainID; ///< the ID value to be used for the next train that is created, static so that it doesn't need an object to call it
+                            ///< and its value is independent of the objects
+
     AnsiString HeadCode; ///< needs own HeadCode because repeat entries will differ from TrainDataEntry.HeadCode
     bool HoldAtLocationInTTMode; ///< true if actions are needed before train departs
     bool TimeTimeLocArrived; ///< indicates whether has arrived (true) or not when ActionVectorEntryPtr->FormatType == TimeTimeLoc
     bool RemainHereLogNotSent; ///< flag to prevent repeated logs, new at v1.2.0
+    bool FinishJoinLogSent; //added at v2.4.0 to prevent repeatedly logging the event
+
+    bool ZeroPowerNoFrontSplitMessage; //these added at v2.4.0
+    bool ZeroPowerNoRearSplitMessage;
+    bool FailedTrainNoFinishJoinMessage;  //zero power trains can finish join, as for empty stock, but not failed trains
+    bool ZeroPowerNoJoinedByMessage;
+    bool ZeroPowerNoCDTMessage;
+    bool ZeroPowerNoNewServiceMessage;
+    bool ZeroPowerNoNewShuttleFromNonRepeatMessage;
+    bool ZeroPowerNoRepeatShuttleMessage;
+    bool ZeroPowerNoRepeatShuttleOrNewServiceMessage;
+    bool TrainFailurePending; //set when failure due & takes effect when all PlotElements properly set, added at v2.4.0
+
     int IncrementalDigits; ///< the number of digits to increment by in repeat entries
     int IncrementalMinutes; ///< the number of minutes to increment by in repeat entries
     int RearStartElement; ///< start TrackVectorPosition element for rear of train
@@ -233,6 +249,11 @@ private:
     int RepeatNumber; ///< indicates which of the repeating services this train represents (0 = first service)
     int SignallerMaxSpeed; ///< maximum train speed under signaller control (in km/h)
     int StartSpeed; ///< the speed of the train when introduced into the railway (in km/h)
+    int LeadElement, LeadEntryPos, LeadExitPos, /// TrackVector positions, & entry & exit connection positions for the elements that the train occupies
+        MidElement, MidEntryPos, MidExitPos,
+        LagElement, LagEntryPos, LagExitPos;
+    int TrainID; ///< the train's identification number
+
     TTrainDataEntry *TrainDataEntryPtr; ///< points to the current position in the timetable's TrainDataVector
     TActionVectorEntry *ActionVectorEntryPtr; ///< points to the current position in the ActionVector (a member of the TTrainDataEntry class)
 
@@ -247,7 +268,7 @@ private:
                            ///< have been established)
     bool FirstHalfMove; ///< true when the train is on the first half of an element when it displays as fully on two elements.  It only displays
                         ///< with the front character of the headcode on the first half of an element when the halfway point of the element has been passed.
-    bool JoinedOtherTrainFlag; ///< true when the train has joined another train following an 'Fjo' timetable command (when set the train is
+    bool JoinedOtherTrainFlag; ///< true when the train has joined another train following an 'Fjo' timetable command or a signaller join (when set the train is
                                ///< removed from the display at the next clock tick)
     bool LastActionDelayFlag; ///< used when trains join to ensure that there is a 30 second delay before the actual join takes place after the
                               ///< two trains are adjacent to each other
@@ -261,6 +282,7 @@ private:
     bool StepForwardFlag; ///< set when the signaller command to step forward one element has been given
     bool TerminatedMessageSent; ///< set when a 'train terminated' message has been logged, to prevent its being logged more than once
     bool TimetableFinished; ///< set when there are no more timetable actions
+    bool TrainFailed; ///<added at v2.4.0 to indicate failure
     double AValue; ///< this is a useful shorthand value in calculating speeds and transit times in SetTrainMovementValues
                    //< [= sqrt(2*PowerAtRail/Mass)]
 
@@ -277,12 +299,13 @@ private:
     double SignallerStopBrakeRate; ///< the train brake rate when stopping under signaller control
 
     double PowerAtRail; ///< in Watts (taken as 80% of the train's Gross Power, i.e. that entered by the user)
+    double OriginalPowerAtRail; ///< new at v2.4.0 to store value before a failure so it can be restored from here when repaired
     float MinsDelayed; ///<new at v2.2.0 for operator time to act panel. Calculated in UpdateTrain
     float OpTimeToAct;  ///<in minutes: new at v2.2.0 for operator time to act panel. Calculated in UpdateTrain, -1 indicates not to be displayed on panel
     float FirstLaterStopRecoverableTime; //this used to deduct from RecoverableTime when arrive at a location for OperatorActionpanel
     int FrontElementSpeedLimit, FrontElementLength; ///< values associated with the element immediately in front of the train (speed in km/h, length in m)
     int Mass; ///< in kg
-    int UpdateCounter; ///< used in train splitting operations to prevent too frequent checks for a location being long enough for a split
+    unsigned int UpdateCounter; ///< used in train splitting operations to prevent too frequent checks for a location being long enough for a split
     ///< after a failure message has already been given (doesn't need to stay failed as signaller can manoeuvre it to a better location)
     TDateTime EntryTime, ExitTimeHalf, ExitTimeFull; ///< times used in SetTrainMovementValues corresponding to the next element the train runs on
     TDateTime ReleaseTime, TRSTime; ///< location departure time and 'train ready to start' time (TRSTime is 10 seconds before the ReleaseTime)
@@ -297,25 +320,52 @@ private:
     bool SPADFlag; ///< set when running past a red signal without permission
 ///< flags to indicate relevant stop conditions or pending stop conditions
     bool Derailed, DerailPending, Crashed, StoppedAtBuffers, StoppedAtSignal, StoppedAtLocation,
-         SignallerStopped, StoppedAfterSPAD, StoppedForTrainInFront, NotInService;
-
-    Graphics::TBitmap *BackgroundPtr[4]; ///< the existing track graphic that the train headcode segment covers up (one for each headcode segment)
-    Graphics::TBitmap *FrontCodePtr; ///< points to the front headcode segment, this is set to red or blue depending on TrainMode
-    Graphics::TBitmap *HeadCodeGrPtr[4]; ///< points to the headcode segment graphics e.g. 5,A,4,7.
+         SignallerStopped, StoppedAfterSPAD, StoppedForTrainInFront, StoppedWithoutPower, NotInService;
 
     int HOffset[4], VOffset[4]; ///< each headcode character is an 8x8 pixel graphic and must be placed within a 16x16 pixel element, these
     ///< values set the horizontal & vertical offsets of the top left hand corner character graphic relative to the 16x16 element
     int OldZoomOutElement[3]; ///< stores the Lead, Mid & Lag TrackVectorPositions, used for unplotting trains from the old position in
     ///< zoomed-out mode prior to replotting in a new position (new will be different from old if train moving)
-    int PlotElement[4]; ///< the TrackVectorPosition of the element where each of the 4 headcode characters is plotted
+    int PlotElement[4]; ///< the TrackVectorPosition of the element where each of the 4 headcode characters is plotted  (need to be set to Lead,
+                        ///<Mid & Lag elemnt values before PlotGraphic called)
     int PlotEntryPos[4]; ///< the LinkPos value corresponding to the train entry link of the element where each of the 4 headcode characters is
                          ///< plotted
     int TrainCrashedInto; ///< the TrainID of the train that this train has crashed into, recorded so that train can be marked and displayed as
                           ///< crashed also
+
+                          /// Set from the HeadCodeGrPtr[4] pointer values, HeadCodePosition[0] is always the front, which may be the first or the last headcode
+/// character depending on the direction of motion and the entry link value of the element being entered (see also LowEntryValue(int EntryLink) above)
+    Graphics::TBitmap *HeadCodePosition[4];
+    Graphics::TBitmap *BackgroundPtr[4]; ///< the existing track graphic that the train headcode segment covers up (one for each headcode segment)
+    Graphics::TBitmap *FrontCodePtr; ///< points to the front headcode segment, this is set to red or blue depending on TrainMode
+    Graphics::TBitmap *HeadCodeGrPtr[4]; ///< points to the headcode segment graphics e.g. 5,A,4,7.
+
+    TColor BackgroundColour; ///< the background colour of the train's headcode graphics
     TStraddle Straddle; ///< the current Straddle value of the train (see TStraddle above)
 
 //functions defined in .cpp file
 
+/// Used in the floating window to display the 'Next' action
+    AnsiString FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr);
+/// Used in the floating window to display the timetable
+    AnsiString FloatingTimetableString(int Caller, TActionVectorEntry *Ptr);
+/// Returns the train headcode, taking account of the RepeatNumber
+    AnsiString GetTrainHeadCode(int Caller);
+/// Carries out an integrity check for the train section of a session file, if fails
+/// a message is given and the file is not loaded.  It is static so that it can be called without needing an object.
+    static bool CheckOneSessionTrain(std::ifstream &InFile);
+////Used to check for an adjacent train in signaller mode for use in PopUp menu //new at v2.4.0
+    bool IsThereAnAdjacentTrain(int Caller, TTrain* &TrainToBeJoinedBy);
+/// Indicates that a train is not prevented from moving - used to allow appropriate popup menu options when under signaller control
+    bool AbleToMove(int Caller);
+/// Indicates that a train is only prevented from moving by a signal - used to allow appropriate popup menu options when under signaller control
+    bool AbleToMoveButForSignal(int Caller);
+/// Checks forward from train LeadElement, following leading point attributes but ignoring trailing
+/// point attributes, until finds either a train or a signal/buffers/continuation/loop.  If finds a train returns false, else returns
+/// true.  Used when train stopped for a train in front, to ensure it remains stopped until this function returns true.
+    bool ClearToNextSignal(int Caller);
+/// True when the train is stopped at a timetabled location
+    bool TrainAtLocation(int Caller, AnsiString &LocationName);
 /// True if Element is a buffer and Exitpos is the buffer end
     bool BufferAtExit(int Caller, int Element, int Exitpos) const;
 /// True if the train can be called on at its current position - see detail in .cpp file
@@ -331,16 +381,43 @@ private:
 /// Returns true if EntryLink is 1, 2, 4 or 7, in these circumstances the front of the train (i.e.
 /// the character that is red or blue) is the last character of the headcode, otherwise it's the first character of the headcode
     bool LowEntryValue(int EntryLink) const;
+/// Returns true if any part of train on a continuation - called when checking for failures, prevent if on a continuation
+    bool TrainOnContinuation(int Caller); //new at v2.4.0
 /// True for a train waiting to be joined when the joining train is adjacent
     bool TrainToBeJoinedByIsAdjacent(int Caller, TTrain* &TrainToBeJoinedBy);
 /// True for a train waiting to join another when the other train is adjacent
     bool TrainToJoinIsAdjacent(int Caller, TTrain* &TrainToJoin);
-/// Return a pointer to the graphic corresponding to the character 'CodeVhar'
-    Graphics::TBitmap *SetOneGraphicCode(char CodeChar);
-/// Reverses the direction of motion of the train
-    void ChangeTrainDirection(int Caller);
+
+/// Returns the number by which the train ActionVectorEntryPtr needs to be incremented to point to the location arrival entry or
+/// passtime entry before a change of direction.
+///
+/// Used to display missed actions when a stop or pass location has been reached before other timetabled actions have been carried out.
+/// If can't find it, or Name is "", -1 is returned.  A change of direction is the limit of the search because a train may not stop at a
+/// location on the way out but stop on way back, and in these circumstances no actions have been missed.  Stop indicates whether the train
+/// will stop at (true) or pass (false) the location.
+    int NameInTimetableBeforeCDT(int Caller, AnsiString Name, bool &Stop);
+
 ///new v2.2.0 for operator action panel.  Calculates the time left for operator action to avoid unnecessary delays
     float CalcTimeToAct(int Caller);
+/// Return a pointer to the graphic corresponding to the character 'CodeVhar'
+    Graphics::TBitmap *SetOneGraphicCode(char CodeChar);
+
+
+/// Returns the timetable action time corresponding to 'Time' for this train, i.e. it
+/// adjusts the time value according to the train's RepeatNumber and the incremental minutes between repeats
+    TDateTime GetTrainTime(int Caller, TDateTime Time);
+
+
+/// Reverses the direction of motion of the train
+    void ChangeTrainDirection(int Caller);
+/// This is a housekeeping function to delete train heap objects (bitmaps) explicitly rather than by using a
+/// destructor, because vectors erase elements during internal operations & if TTrain had an explicit destructor that deleted the heap
+/// elements then it would be called when a vector element was erased.
+///
+/// Calling the default TTrain destructor doesn't matter because all that does is release the memory of the members (including pointers
+/// to the bitmaps), it doesn't destroy the bitmaps themselves. It's important therefore to call this function before erasing the vector
+/// element, otherwise the pointers to the bitmaps would be lost and the bitmaps never destroyed, thereby causing memory leaks.
+    void DeleteTrain(int Caller);
 /// Checks whether Element and EntryPos (where train is
 /// about to enter) is on an existing route (or crosses or meets an existing route for crossings and points) that isn't the train's own
 /// route and cancels it if so - because it has reached it at the wrong point
@@ -358,21 +435,36 @@ private:
     void GetOffsetValues(int Caller, int &HOffset, int &VOffset, int Link) const;
 /// Carry out the actions needed when a train is waiting to be joined by another train
     void JoinedBy(int Caller);
+/// Create one train with relevant member values from the sesion file
+    void LoadOneSessionTrain(int Caller, std::ifstream &InFile);
+/// Send a message to the performance log and performance file, and if the message
+/// is flagged as a warning then it is also sent as a warning (in red at the top of the railway display area)
+    void LogAction(int Caller, AnsiString HeadCode, AnsiString OtherHeadCode, TActionType ActionType, AnsiString LocationName,
+                   TDateTime TimetableNonRepeatTime, bool Warning);
 /// Carry out the actions needed when a new shuttle service is created from a non-repeating (F-nshs) service
     void NewShuttleFromNonRepeatService(int Caller);
 /// Carry out the actions needed when a train forms a new service (code Fns)
     void NewTrainService(int Caller);
-/// Store the background bitmap pointer (BackgroundPtr - see above) prior to being overwritten by the train's headcode charcter, so that it
-/// can be replotted after the train has passed using PlotBackgroundGraphic.
+/// Store the background bitmap pointer (BackgroundPtr - see above) prior to being overwritten by the train's headcode character, so that it
+/// can be replotted after the train has passed using PlotBackgroundGraphic.  Note that this doesn't pick up the actual graphic, it reconstructs the track
+/// graphic with autosigs route if set, so any text or user graphics at that position will be blanked out by the train until the next ClearandRebuildRailway
     void PickUpBackgroundBitmap(int Caller, int HOffset, int VOffset, int Element, int EntryPos, Graphics::TBitmap *GraphicPtr) const;
 /// When a train moves off a bridge the other track may contain a route or have a train on it that has been obscured by this train.  This function
 /// checks and replots the original graphic if necessary
     void PlotAlternativeTrackRouteGraphic(int Caller, unsigned int LagElement, int LagELinkPos, int HOffset, int VOffset, TStraddle StraddleValue);
 /// Replot the graphic pointed to by BackgroundPtr (see above) after a train has passed
     void PlotBackgroundGraphic(int Caller, int ArrayNumber, TDisplay *Disp) const;
+/// Plots the train and sets up all relevant members for a new train when it is introduced into the railway
+    void PlotStartPosition(int Caller);
+/// Plots the train on the display in normal (zoomed-in) mode
+    void PlotTrain(int Caller, TDisplay *Disp);
 /// Plot the train's headcode character corresponding to ArrayNumber
     void PlotTrainGraphic(int Caller, int ArrayNumber, TDisplay *Disp);
+/// Plots the train on screen in zoomed-out mode, state of 'Flash' determines whether the flashing trains are plotted or not
+    void PlotTrainInZoomOutMode(int Caller, bool Flash);
 /// Changes the train's background colour (e.g. to pale green if stopped at a station)
+/// Note that this uses the PlotElement[4] values, so whenever called these should reflect the Lead, Mid and Lag Element values or
+/// will be plotted in the wrong position
     void PlotTrainWithNewBackgroundColour(int Caller, TColor NewBackgroundColour, TDisplay *Disp);
 /// Carry out the actions needed when a train is to split from the rear
     void RearTrainSplit(int Caller);
@@ -388,95 +480,24 @@ private:
 /// has its TrainIDOnElement value set back to -1 to indicate that a train is not present on it, but, if the element is a bridge then
 /// the action is more complex because the element's TrainIDOnBridgeTrackPos01 &/or TrainIDOnBridgeTrackPos23 values are involved
     void ResetTrainElementID(int Caller, unsigned int TrackVectorPosition, int EntryPos);
-/// Set the four HeadCodeGrPtr[4] pointers to the appropriate character graphics
-/// by calling SetOneGraphicCode four times, also check the background colour and reset it to the default colour if necessary
-    void SetHeadCodeGraphics(int Caller, AnsiString Code);
-/// When a train moves onto an element that element has its TrainIDOnElement value set to the TrainID value to indicate that
-/// a train is present on it.  If the element is a bridge then the element's TrainIDOnBridgeTrackPos01 or TrainIDOnBridgeTrackPos23
-/// value is also set as appropriate
-    void SetTrainElementID(int Caller, unsigned int TrackVectorPosition, int EntryPos);
-
-//public:
-
-    static int NextTrainID; ///< the ID value to be used for the next train that is created, static so that it doesn't need an object to call it
-                            ///< and its value is independent of the objects
-/// TrackVector positions, & entry & exit connection positions for the elements that the train occupies
-    int LeadElement, LeadEntryPos, LeadExitPos,
-        MidElement, MidEntryPos, MidExitPos,
-        LagElement, LagEntryPos, LagExitPos;
-    int TrainID; ///< the train's identification number
-/// Set from the HeadCodeGrPtr[4] pointer values, HeadCodePosition[0] is always the front, which may be the first or the last headcode
-/// character depending on the direction of motion and the entry link value of the element being entered (see also LowEntryValue(int EntryLink) above)
-    Graphics::TBitmap *HeadCodePosition[4];
-    TColor BackgroundColour; ///< the background colour of the train's headcode graphics
-
-//inline functions
-
-/// Check whether the train has left the railway, so that it can be removed from the display at the next clock tick
-    bool HasTrainGone() {
-        return TrainGone;
-    }
-
-//functions defined in .cpp file
-
-/// Carries out an integrity check for the train section of a session file, if fails
-/// a message is given and the file is not loaded.  It is static so that it can be called without needing an object.
-    static bool CheckOneSessionTrain(std::ifstream &InFile);
-/// Used in the floating window to display the 'Next' action
-    AnsiString FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr);
-/// Used in the floating window to display the timetable
-    AnsiString FloatingTimetableString(int Caller, TActionVectorEntry *Ptr);
-/// Returns the train headcode, taking account of the RepeatNumber
-    AnsiString GetTrainHeadCode(int Caller);
-/// Indicates that a train is not prevented from moving - used to allow appropriate popup menu options when under signaller control
-    bool AbleToMove(int Caller);
-/// Indicates that a train is only prevented from moving by a signal - used to allow appropriate popup menu options when under signaller control
-    bool AbleToMoveButForSignal(int Caller);
-/// Checks forward from train LeadElement, following leading point attributes but ignoring trailing
-/// point attributes, until finds either a train or a signal/buffers/continuation/loop.  If finds a train returns false, else returns
-/// true.  Used when train stopped for a train in front, to ensure it remains stopped until this function returns true.
-    bool ClearToNextSignal(int Caller);
-/// True when the train is stopped at a timetabled location
-    bool TrainAtLocation(int Caller, AnsiString &LocationName);
-/// Returns the number by which the train ActionVectorEntryPtr needs to be incremented to point to the location arrival entry or
-/// passtime entry before a change of direction.
-///
-/// Used to display missed actions when a stop or pass location has been reached before other timetabled actions have been carried out.
-/// If can't find it, or Name is "", -1 is returned.  A change of direction is the limit of the search because a train may not stop at a
-/// location on the way out but stop on way back, and in these circumstances no actions have been missed.  Stop indicates whether the train
-/// will stop at (true) or pass (false) the location.
-    int NameInTimetableBeforeCDT(int Caller, AnsiString Name, bool &Stop);
-/// Returns the timetable action time corresponding to 'Time' for this train, i.e. it
-/// adjusts the time value according to the train's RepeatNumber and the incremental minutes between repeats
-    TDateTime GetTrainTime(int Caller, TDateTime Time);
-/// This is a housekeeping function to delete train heap objects (bitmaps) explicitly rather than by using a
-/// destructor, because vectors erase elements during internal operations & if TTrain had an explicit destructor that deleted the heap
-/// elements then it would be called when a vector element was erased.
-///
-/// Calling the default TTrain destructor doesn't matter because all that does is release the memory of the members (including pointers
-/// to the bitmaps), it doesn't destroy the bitmaps themselves. It's important therefore to call this function before erasing the vector
-/// element, otherwise the pointers to the bitmaps would be lost and the bitmaps never destroyed, thereby causing memory leaks.
-    void DeleteTrain(int Caller);
-/// Create one train with relevant member values from the sesion file
-    void LoadOneSessionTrain(int Caller, std::ifstream &InFile);
-/// Send a message to the performance log and performance file, and if the message
-/// is flagged as a warning then it is also sent as a warning (in red at the top of the railway display area)
-    void LogAction(int Caller, AnsiString HeadCode, AnsiString OtherHeadCode, TActionType ActionType, AnsiString LocationName,
-                   TDateTime TimetableNonRepeatTime, bool Warning);
-/// Plots the train and sets up all relevant members for a new train when it is introduced into the railway
-    void PlotStartPosition(int Caller);
-/// Plots the train on the display in normal (zoomed-in) mode
-    void PlotTrain(int Caller, TDisplay *Disp);
-/// Plots the train on screen in zoomed-out mode, state of 'Flash' determines whether the flashing trains are plotted or not
-    void PlotTrainInZoomOutMode(int Caller, bool Flash);
 /// Data for a single train is saved to a session file
     void SaveOneSessionTrain(int Caller, std::ofstream &OutFile);
 /// Missed actions (see NameInTimetableBeforeCDT above) sent to the performance log and performance file
     void SendMissedActionLogs(int Caller, int IncNum, TActionVectorEntry *Ptr);
+/// Set the four HeadCodeGrPtr[4] pointers to the appropriate character graphics with the current backgroundcolour
+/// by calling SetOneGraphicCode four times.  This doesn't plot anything on screen, it just sets the graphics which can be
+/// plotted at the appropriate position when required
+    void SetHeadCodeGraphics(int Caller, AnsiString Code);
+/// When a train moves onto an element that element has its TrainIDOnElement value set to the TrainID value to indicate that
+/// a train is present on it.  If the element is a bridge then the element's TrainIDOnBridgeTrackPos01 or TrainIDOnBridgeTrackPos23
+/// value is also set as appropriate. Also if the element is a flashing gap (LeadElement used as that lands on it first) then the flashing stops
+    void SetTrainElementID(int Caller, unsigned int TrackVectorPosition, int EntryPos);
 /// Calculates train speeds and times for the element that the train is about to enter
     void SetTrainMovementValues(int Caller, int TrackVectorPosition, int EntryPos);
 /// Unplots & replots train, which checks for facing signal and sets StoppedAtSignal if req'd
     void SignallerChangeTrainDirection(int Caller);
+/// Called when there is a random train failure
+    void TrainHasFailed(int Caller);
 /// Unplot train from screen in zoomed-in mode
     void UnplotTrain(int Caller);
 /// Unplot train from screen in zoomed-out mode
@@ -487,14 +508,23 @@ private:
 /// TInterface::SaveOperatingImage1Click) to add all a single train graphic to the image file
     void WriteTrainToImage(int Caller, Graphics::TBitmap *Bitmap);
 
+//inline functions
+
+/// Check whether the train has left the railway, so that it can be removed from the display at the next clock tick
+    bool HasTrainGone()
+    {
+        return TrainGone;
+    }
+
 public:
 
 //inline function
 
 /// True if the train has stopped for any reason
-    bool Stopped() {
+    bool Stopped()
+    {
         return (Crashed || Derailed || StoppedAtBuffers || StoppedAtSignal || StoppedAtLocation ||
-                SignallerStopped || StoppedAfterSPAD || StoppedForTrainInFront || NotInService);
+                SignallerStopped || StoppedAfterSPAD || StoppedForTrainInFront || StoppedWithoutPower || NotInService);
     }
 /// Added at v1.2.0: true if any part of train on specific link, false otherwise, including
 /// no link present & no TrackVectorNumber within Lead, Mid or Lag (public so Track->TrainOnLink can access it)
@@ -522,7 +552,7 @@ public:
 /// Turns signals back to green in stages after a train has exited an autosig route at a continuation
     class TContinuationAutoSigEntry
     {
-public:
+    public:
         /// Delays in seconds before consecutive signal changes - these correspond to the times
         /// taken for trains to pass subsequent signals outside the boundaries of the railway.  After the third delay the signal nearest to
         /// the continuation that was red when the train passed it has changed to green
@@ -539,7 +569,7 @@ public:
 /// see below), used to display information in the floating window when mouse hovers over a continuation
     class TContinuationTrainExpectationEntry
     {
-public:
+    public:
         AnsiString Description; ///< service description
         AnsiString HeadCode; ///< service headcode
         int RepeatNumber; ///< service RepeatNumber
@@ -566,17 +596,20 @@ public:
     typedef TOpTimeToActMultiMap::iterator TOpTimeToActMultiMapIterator;
     typedef std::vector<int> TContinuationEntryVecPosVector; ///<ensures only one train displayed for a given continuation
 
-
-    /// String used to display the offending service in timetable error messages
+/// String used to display the offending service in timetable error messages
 /// bool AnyHeadCodeValid; //flag to indicate valid headcode types for a service - when true can accept xxNN; if false accept only NaNN
 /// (N=number, x = any alphanumeric, a= upper or lower case letter) - dropped at v0.6b
     AnsiString ServiceReference;
 /// Flags to enable the relevant warning graphics to flash at the left hand side of the screen
-    bool CrashWarning, DerailWarning, SPADWarning, CallOnWarning, SignalStopWarning, BufferAttentionWarning;
+    bool CrashWarning, DerailWarning, SPADWarning, CallOnWarning, SignalStopWarning, BufferAttentionWarning, TrainFailedWarning;
     bool StopTTClockFlag; ///< when true the timetable clock is stopped, used for messages display and train popup menu display etc
     bool TrainAdded; ///< true when a train has been added by a split (occurs outside the normal train introduction process)
     bool SignallerTrainRemovedOnAutoSigsRoute; ///< true if train was on an AutoSigsRoute when removed by the signaller
     bool OpActionPanelVisible; ///<new v2.2.0 flag to prevent time to act functions when not visible
+
+    bool SSHigh, MRSHigh, MRSLow, MassHigh, BFHigh, BFLow, PwrHigh, SigSHigh, SigSLow;///<Message flags in TT checks to stop being given twice
+
+    double MTBFHours; ///<Mean time between failures in timetable clock hours
 
     float NotStartedTrainLateMins; ///< total late minutes of trains that haven't started yet on exit operation for locations not reached yet
     float OperatingTrainLateMins; ///< total late minutes of operating trains on exit operation for locations not reached yet
@@ -587,8 +620,8 @@ public:
     float TotLateDepMins;
     float TotLatePassMins;
 
-//values for performance file summary
-    int CrashedTrains;
+    //values for performance file summary
+    int CrashedTrains;           ///< all these set to 0 in constructor
     int Derailments;
     int EarlyArrivals;
     int EarlyPasses;
@@ -600,16 +633,19 @@ public:
     int OnTimeArrivals;
     int OnTimeDeps;
     int OnTimePasses;
-    unsigned int OpTimeToActUpdateCounter; ///<new v2.2.0, incremented in Interface.cpp, controls updating for OpTimeToActPanel
-    unsigned int OpActionPanelHintDelayCounter; ///<new v2.2.0 on start operation delays the op action panle headcode display for about 5 secs while hints shown
-    int OtherMissedEvents;                 ///< unsigned as might initialise at any value & need it to be positive
+    int OtherMissedEvents;
     int SPADEvents;
     int SPADRisks;
     int TotArrDepPass;
     int UnexpectedExits;
+    int NumFailures; //counts number of failed trains, added at v2.4.0
     int OperatingTrainArrDep; ///< total number of arrivals & departures for operating trains locations not reached yet
     int NotStartedTrainArrDep; ///< total number of arrivals & departures for trains that haven't started yet for locations not reached yet
     int LastTrainLoaded; ///<displays last train loaded from session file, used for debugging
+
+    unsigned int OpTimeToActUpdateCounter; ///<new v2.2.0, incremented in Interface.cpp, controls updating for OpTimeToActPanel
+    unsigned int OpActionPanelHintDelayCounter; ///<new v2.2.0 on start operation delays the op action panel headcode display for about 5 secs while hints shown
+    unsigned int RandomFailureCounter; //new at v2.4.0, resets after 53 seconds (53 prime so can trigger at any clock time)
 
     TContinuationAutoSigVector ContinuationAutoSigVector; ///< vector for TContinuationAutoSigEntry objects
 /// Multimap for TContinuationTrainExpectationEntry objects, the access key is the expectation time
@@ -692,11 +728,14 @@ public:
 /// Parse a timetable repeat entry, return true for success
     bool SplitRepeat(int Caller, AnsiString OneEntry, int &RearStartOrRepeatMins, int &FrontStartOrRepeatDigits, int &RepeatNumber,
                      bool GiveMessages);
-/// Parse a train information entry, return true for success
+/// Parse a train information entry, return true for success;  PowerAtRail changed to double& from int& at v2.4.0
     bool SplitTrainInfo(int Caller, AnsiString TrainInfoStr, AnsiString &HeadCode, AnsiString &Description, int &StartSpeed,
-                        int &MaxRunningSpeed, int &Mass, double &MaxBrakeRate, int &PowerAtRail, int &SignallerSpeed, bool GiveMessages);
+                        int &MaxRunningSpeed, int &Mass, double &MaxBrakeRate, double &PowerAtRail, int &SignallerSpeed, bool GiveMessages);
 /// Checks overall timetable integrity, calls many other specific checking functions, returns true for success
     bool TimetableIntegrityCheck(int Caller, char *FileName, bool GiveMessages, bool CheckLocationsExistInRailway);
+/// new at v2.4.0 return true if find the train (added at v2.4.0 as can select a removed train in OAListBox before it updates
+/// see LiWinDom error report via Discord on 23/04/20
+    bool TrainExistsAtIdent(int Caller, int TrainID);
 /// new v2.2.0, calcs distance to red signal, returns -1 for no signal found, for autosigs route after next red signal & other conditions,
 /// also totals up location stop times before the red signal and returns value in StopTime
     int CalcDistanceToRedSignalandStopTime(int Caller, int TrackVectorPosition, int TrackVectorPositionEntryPos,

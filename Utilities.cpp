@@ -148,9 +148,21 @@ int TUtilities::LoadFileInt(std::ifstream &InFile)
     return TempInt;
 }
 //---------------------------------------------------------------------------
-double TUtilities::LoadFileDouble(std::ifstream &InFile)
+double TUtilities::LoadFileDouble(std::ifstream &InFile) //modified at v2.4.0 to change the decimal point character if necessary
 {
-    return LoadFileString(InFile).ToDouble();
+    AnsiString TempString = LoadFileString(InFile);
+    if(SetLocaleResultOK) //if false the locale conversion failed so don't change anything, then will work as earlier versions
+    {
+        for(int x=1;x<=TempString.Length(); x++)
+        {
+            if((TempString[x] < '0') && (TempString[x] != '-'))//must be the decimal point character, dot or comma
+            {
+                TempString[x] = DecimalPoint; //so load the value according to the locale
+                break;
+            }
+        }
+    }
+    return TempString.ToDouble();
 }
 //---------------------------------------------------------------------------
 AnsiString TUtilities::LoadFileString(std::ifstream &InFile)
@@ -248,6 +260,7 @@ bool TUtilities::CheckAndReadFileInt(std::ifstream &InFile, int Lowest, int High
     }
 }
 //---------------------------------------------------------------------------
+
 bool TUtilities::CheckFileDouble(std::ifstream &InFile)
 {
     try
@@ -256,6 +269,17 @@ bool TUtilities::CheckFileDouble(std::ifstream &InFile)
         if(!CheckAndReadFileString(InFile, DoubleString)) return false;
         if(InFile.fail()) return false;
         if(DoubleString == "") return false;
+        if(SetLocaleResultOK) //if false the locale conversion failed so don't change anything, then will work as earlier versions
+        {
+            for(int x=1;x<=DoubleString.Length(); x++) //added at v2.4.0 to allow decimal point to be changed to local type
+            {
+                if((DoubleString[x] < '0') && (DoubleString[x] != '-'))//special character must be the decimal point character, dot or comma
+                {
+                    DoubleString[x] = DecimalPoint;  //so load the value according to the locale
+                    break;
+                }
+            }
+        }
         DoubleString.ToDouble(); //throws EConvertError if fails
         return true;
     }
@@ -264,26 +288,38 @@ bool TUtilities::CheckFileDouble(std::ifstream &InFile)
         return false;
     }
 }
-/* earlier routine
-for(int x=1;x<=DoubleString.Length();x++)
-    {
-    bool CharacterOK = false;
-    if((x == 1) && (DoubleString[x] == '-'))//'-' must appear first
-        {
-        CharacterOK = true;
-        }
-    else if((DoubleString[x] == '.') || (DoubleString[x] == ',') || ((DoubleString[x] >= '0') && (DoubleString[x] <= '9')))
-    //allow numbers, '.' & ',' because different number formats in regional settings can use either as the decimal point and as thousands
-    //separators.  Modded at v1.1.1
-        {
-        CharacterOK = true;
-        }
-    if(!CharacterOK) return false;
-    }
-return true;
-}
-*/
+
 //---------------------------------------------------------------------------
+
+bool TUtilities::CheckStringDouble(AnsiString &DoubleString)
+{
+    try
+    {
+        if(DoubleString == "")
+        {
+            return false;
+        }
+        if(SetLocaleResultOK) //if false the locale conversion failed so don't change anything, then will work as earlier versions
+        {
+            for(int x=1;x<=DoubleString.Length(); x++) //added at v2.4.0 to allow decimal point to be changed to local type
+            {
+                if((DoubleString[x] < '0') && (DoubleString[x] != '-'))//special character must be the decimal point character, dot or comma
+                {
+                    DoubleString[x] = DecimalPoint;  //so load the value according to the locale
+                    break;
+                }
+            }
+        }
+        DoubleString.ToDouble(); //throws EConvertError if fails
+        return true;
+    }
+    catch (const EConvertError &e)
+    {
+        return false;
+    }
+}
+//---------------------------------------------------------------------------
+
 bool TUtilities::CheckFileString(std::ifstream &InFile)
 //Reads the next item and checks it as a string value up to either the '\0' delimiter
 //if there is one, in which case the '\0' is extracted but nothing more, or up to the next '\n',

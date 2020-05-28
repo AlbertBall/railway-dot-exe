@@ -1,5 +1,11 @@
 <html>
 
+</head>
+
+<body bgcolor=white lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
 <head>
 <meta http-equiv=Content-Type content="text/html; charset=windows-1252">
 <meta name=Generator content="Microsoft Word 14 (filtered)">
@@ -17,21 +23,13 @@
 	font-size:12.0pt;
 	font-family:"Times New Roman","serif";
 	color:black;}
+a:link, span.MsoHyperlink
+	{color:blue;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;}
 p
 	{font-size:12.0pt;
 	font-family:"Times New Roman","serif";
-	color:black;}
-p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
-	{mso-style-link:"Balloon Text Char";
-	margin:0cm;
-	margin-bottom:.0001pt;
-	font-size:8.0pt;
-	font-family:"Tahoma","sans-serif";
-	color:black;}
-span.BalloonTextChar
-	{mso-style-name:"Balloon Text Char";
-	mso-style-link:"Balloon Text";
-	font-family:"Tahoma","sans-serif";
 	color:black;}
 .MsoChpDefault
 	{font-size:10.0pt;}
@@ -49,7 +47,7 @@ div.WordSection1
 
 <div class=WordSection1>
 
-<p><a name=6.4></a><b>6.4 Running trains:</b></p>
+<p><a name=6.4></a><b>6.4 Running trains</b></p>
 
 <p>When running, the front reporting number (headcode) character is red, to
 show that it is the front - obvious when moving of course but not so when
@@ -57,11 +55,8 @@ stopped. In signaller-control mode (see later) the front is indicated by a blue
 character, both to show that it is the front and that it is in
 signaller-control mode.</p>
 
-<p>It is normally useful to keep train status information turned on, by
-selecting menu items 'Information', Train information' and 'Show status'.
-Timetable information is also useful when the destination is not otherwise
-obvious, turned on by selecting menu items 'Information', Train information'
-and 'Show timetable'. With one or both of these turned on the information is
+<p>Train status and timetable information is turned on by default, but this can be hidden by selecting menu items 'Information', Train information' and 'Hide status' and/or 'Hide
+timetable'. With one or both of these turned on the information is
 given in a floating window when the mouse hovers over a train.</p>
 
 <p>Trains have different background colours to indicate the different train
@@ -83,7 +78,7 @@ before departure);</p>
 
 <p>cyan = stopped at buffers unexpectedly;</p>
 
-<p>light blue = stopped by a train in front;</p>
+<p>lavender blue = stopped by a train in front;</p>
 
 <p>magenta = call-on available;</p>
 
@@ -91,10 +86,12 @@ before departure);</p>
 
 <p>caramel = stopped under signaller control.</p>
 
+<p>orange = train failed.</p>
+
 <p>In zoom-out mode (accessed by left clicking the <img width=24 height=24
 src="../images/RailSim2_ZOOMOUT.gif"> button) or pressing the 'End' key, any train that requires attention
-(stopped by a signal, stopped unexpectedly at buffers, SPAD, crashed/derailed
-or call-on), is shown flashing, with the colour appropriate to the condition.</p>
+(stopped by a signal, stopped unexpectedly at buffers, SPAD, crashed/derailed, 
+call-on or failed), is shown flashing, with the colour appropriate to the condition.</p>
 
 <p>Flashing icons are also provided on the left hand side of the screen if
 signaller attention is needed somewhere on the railway. These are especially
@@ -110,15 +107,15 @@ src="../images/RailSim2_CALLINGON.gif"> shows that a train may be offered a call
 <img width=24 height=24 src="../images/RailSim2_SPADWARNING.gif"> shows that a
 signal has been passed at danger, and <img width=24 height=24
 src="../images/RailSim2_DERAILWARNING.gif"> and <img width=24 height=24
-src="../images/RailSim2_CRASHWARNING.gif"> show that a derailment and a crash
-have occurred respectively.</p>
+src="../images/RailSim2_CRASHWARNING.gif"> show that a derailment or crash
+have occurred respectively, and <img width=24 height=24 src="../images/TrainFailedWarning.gif"> shows that a failure has occurred.</p>
 
 <p>Sometimes events occur that require signaller attention but are not covered
 by any of the above flashing symbols. Such events include trains prevented from
 entering or being created by existing trains, locked routes, or on points set
 to diverge; trains unable to split because the platform is too short or another
 train is in the way; and trains waiting for another train to join or to be
-joined by. Warnings are therefore given in red above the railway display area.
+joined by. In these cases warnings are given in red above the railway display area.
 These warnings scroll up in two columns (ten visible warnings in all) as later
 warnings are given, but they may be cancelled by right clicking on the warning.
 Cancellation is appropriate when a warning has been acted upon or does not
@@ -133,17 +130,53 @@ example to indicate when a route will need to be set in the near future, say
 when a train is approaching a junction at the end of a route controlled by
 automatic signals. </p>
 
-<p>Try to ensure that trains approach a stop location by passing along all the
+<p>Except when there are split platforms (see below) trains should approach stop locations by passing along all the
 relevant named elements rather than by entering obliquely via points and
 missing out some of the named elements. This is to avoid the train missing the
 relevant stop point for that platform and thereby failing to stop. Stop points
-are set assuming straight entry into platforms.</p>
+are set assuming straight entry into platforms.  However this situation can be handled by using split platforms e.g. <img width=74 height=19 src="../images/SplitPlatform.gif">, where a section of track with no adjacent platform lies between two track sections that have platforms belonging to the same location. Trains treat these as two separate platforms.  This is useful in the situation mentioned above and shown in the diagram where an adjoining track meets the main track partway along a platform, as it allows trains to stop at each separate platform segment.  Approaching trains scheduled to stop at the station will stop at the first platform that they meet.</p>
 
-<p>If there is a station that has a split platform (i.e. a section of track
-with no adjacent platform lying between two track sections that have platforms
-belonging to the same location) then trains will treat these as two separate
-platforms, but a train that is required to stop will only stop at first
-platform's stopping point.</p>
+<p>Empty stock can be created (trains with zero power).  In the timetable the 'Snt' starting entry should be immediately followed by 'Fjo' for finish and join other train. e.g. </p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+<tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>0X00;Empty stock;0;200;60;6;0 </span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Zero start speed and zero power</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>07:00;Snt;40-13 41-13 </span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Start new unpowered vehicle at a named siding </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:blue'>08:30;Fjo;2A50 </span></p>
+  </td>
+  <td width=387 valign=top style='width:290.6pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='color:#009900'>Finish and join 2A50 </span></p>
+  </td>
+ </tr>
+</table>
+
+<p>Empty stock can be picked up by powered trains using the 'jbo - joined by other' command in the timetable.  Empty stock that is to be present but not picked up can have 'Frh - finish and remain here' after the starting entry, or be created as a non-timetabled service under signaller control (see section 5.9).</p>
+
+<p>Having zero power also allows trains to enter the railway with an entry speed but no power, but this isn't recommended as the train will coast to a stop or be stopped by a signal and thereafter be unable to move.  A train that has zero entry speed and zero power scheduled to enter at a continuation will block the entry for any other train after its entry time.  In this case all that can be done and even though it can't be seen on the railway is to take it under signaller control by right clicking its entry point and remove it from the railway.</p>
 
 </div>
 

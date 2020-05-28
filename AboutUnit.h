@@ -48,10 +48,9 @@ __published:    // IDE-managed Components
     ///
     /// Sets the version info, then hides the form
     void __fastcall FormCreate(TObject *Sender);
-    /// Closes the form
+    /// Opens the About form
     void __fastcall AboutFormButtonClick(TObject *Sender);
-    /// Called when the form is closed
-    ///
+    /// Called when the About form is closed
     /// Restarts MasterClock if Level1Mode is OperMode
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
     /// Sends the link to your default browser

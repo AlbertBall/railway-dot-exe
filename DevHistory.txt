@@ -158,6 +158,18 @@ the blue route so it wasn't just the display that was wrong. Couldn't repeat the
 
 -----------------------
 
+VERSION CHANGES AFTER v2.4.0 Beta for v2.4.1 Beta
+
+all mentioned on website
+
+The ‘Set mean time between failures’ menu option under the ‘Mode’ tag had been left in by mistake during development but did nothing.  This version removes it.  Thanks to Mark for reporting it.
+
+Inactive track elements such as concourses couldn’t be erased in v2.4.0 due to an error in the code which this version corrects.  Thanks to Krizar for reporting it.
+
+Mark sent in an error file generated when a train left at a continuation.  The file made it clear that just as the train left it had zero speed, which caused an arithmetic error that crashed the program.  This version ensures that the program won’t crash if the same thing happens again – but why it happened remains a mystery.
+
+-----------------------
+
 VERSION CHANGES AFTER v2.3.1 for v2.4.0 Beta
 
 all mentioned on website

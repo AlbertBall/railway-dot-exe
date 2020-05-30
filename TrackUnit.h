@@ -809,7 +809,7 @@ public:
     bool ThisNamedLocationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos, int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos);
     /// True if a non-empty LocationName found as a timetabled location name i.e. not as a continuation name
     bool TimetabledLocationNameAllocated(int Caller, AnsiString LocationName);
-    /// New at v1.2.0; true if a track element present
+    /// New at v1.2.0; true if a track element present (not inactive elements - see InactiveTrackElementPresentAtHV
     bool TrackElementPresentAtHV(int Caller, int HLoc, int VLoc);
     /// New at v1.2.0; checks whether a train present at input location and link and returns its ID if so
     bool TrainOnLink(int Caller, int HLoc, int VLoc, int Link, int &TrainID);

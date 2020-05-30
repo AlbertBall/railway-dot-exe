@@ -106,7 +106,7 @@ void __fastcall TAboutForm::SetAboutCaption()
 
 	AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
 							     L"operate your own railway" + NL + NL +
-							     L"Release: " + strVersion + NL + NL +
+							     L"Release: " + strVersion + " Beta" + NL + NL +
 							     L"Copyright © 2010-2020 Albert Ball" + NL +
                                  L"with contributions from Stephen A Smith";
 }

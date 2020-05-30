@@ -86,7 +86,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
                               //initial setup
         //MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         //Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = GetVersion() + L" Beta"; //Beta Embarcadero version
+        ProgramVersion = GetVersion() + " Beta";
         //use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         //development stages (don't show on published versions)
 
@@ -566,8 +566,8 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         PositionalPanel->Top = MainScreen->Top; //changed at v2.4.0
         PositionalPanel->Height = MainScreen->Height; //changed at v2.4.0
         AllSetUpFlag = true;
-        MissedTicks = 0; //test
-        UnMissedTicks = 0;
+        MissedTicks = 0;
+        TotalTicks = 0;
         Level1Mode = BaseMode;
         SetLevel1Mode(131); //to reset background colour mode menu choices
         Screen->Cursor = TCursor(-2); //Arrow
@@ -583,7 +583,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TrainController->OpActionPanelHintDelayCounter = 0;
         MTBFEditBox->Visible = false; //new at v2.4.0
         MTBFLabel->Visible = false;
-        AvHoursIntValue = 0;
+        TrainController->AvHoursIntValue = 0;
         TrainController->MTBFHours = 0;
         TTStartTimePtr = 0;
         TTFirstServicePtr = 0;
@@ -2097,7 +2097,7 @@ void __fastcall TInterface::LoadRailwayMenuItemClick(TObject *Sender)
         //Display->Update(); //display updated in ClearandRebuildRailway
         Track->CalcHLocMinEtc(9);
         Level1Mode = BaseMode;
-        AvHoursIntValue = 0;
+        TrainController->AvHoursIntValue = 0;
         TrainController->MTBFHours = 0;
         SetLevel1Mode(11); //calls Clearand... to plot the new railway
         Utilities->CallLogPop(31);
@@ -5308,7 +5308,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
         {
             //this routine new at v2.1.0.  Allows railway moving for zoom-in mode when no element at HLoc & VLoc
             int Dummy; //unused in next function
-            if(!Track->TrackElementPresentAtHV(0, HLoc, VLoc) && !Track->UserGraphicPresentAtHV(0, X, Y, Dummy))
+            if(!Track->TrackElementPresentAtHV(0, HLoc, VLoc) && !Track->InactiveTrackElementPresentAtHV(0, HLoc, VLoc) && !Track->UserGraphicPresentAtHV(0, X, Y, Dummy))
             {
                 StartWholeRailwayMoveHPos = X;
                 StartWholeRailwayMoveVPos = Y;
@@ -7230,9 +7230,10 @@ void __fastcall TInterface::MasterClockTimer(TObject *Sender)
 //        TrainController->TTClockTime = TDateTime::CurrentDateTime() - TrainController->BaseTime + TrainController->RestartTime;
         }
 
+        TotalTicks++;
         if(Utilities->Clock2Stopped)
         {
-            MissedTicks++; //test
+            MissedTicks++;
             Utilities->CallLogPop(774);
             return;
         }
@@ -7298,7 +7299,6 @@ void TInterface::ClockTimer2(int Caller)
         //set current time
         TDateTime Now = TrainController->TTClockTime;
 
-        UnMissedTicks++;
         TrainController->OpTimeToActUpdateCounter++; ///<new v2.2.0, controls 2 second updating for OpTimeToActPanel
         if(TrainController->OpTimeToActUpdateCounter >= 40) TrainController->OpTimeToActUpdateCounter = 0;
 
@@ -10601,7 +10601,7 @@ void __fastcall TInterface::TTClockx2ButtonClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockx2ButtonClick");
         TTClockSpeed = 2;
         TTClockSpeedLabel->Caption = "x2";
-        TrainController->MTBFHours = double(AvHoursIntValue)/TTClockSpeed;
+        TrainController->MTBFHours = double(TrainController->AvHoursIntValue)/TTClockSpeed;
         Utilities->CallLogPop(1878);
     }
     catch (const Exception &e)
@@ -10620,7 +10620,7 @@ void __fastcall TInterface::TTClockx4ButtonClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockx4ButtonClick");
         TTClockSpeed = 4;
         TTClockSpeedLabel->Caption = "x4";
-        TrainController->MTBFHours = double(AvHoursIntValue)/TTClockSpeed;
+        TrainController->MTBFHours = double(TrainController->AvHoursIntValue)/TTClockSpeed;
         Utilities->CallLogPop(1883);
     }
     catch (const Exception &e)
@@ -10639,7 +10639,7 @@ void __fastcall TInterface::TTClockx8ButtonClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockx8ButtonClick");
         TTClockSpeed = 8;
         TTClockSpeedLabel->Caption = "x8";
-        TrainController->MTBFHours = double(AvHoursIntValue)/TTClockSpeed;
+        TrainController->MTBFHours = double(TrainController->AvHoursIntValue)/TTClockSpeed;
         Utilities->CallLogPop(1884);
     }
     catch (const Exception &e)
@@ -10658,7 +10658,7 @@ void __fastcall TInterface::TTClockx16ButtonClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockx16ButtonClick");
         TTClockSpeed = 16;
         TTClockSpeedLabel->Caption = "x16";
-        TrainController->MTBFHours = double(AvHoursIntValue)/TTClockSpeed;
+        TrainController->MTBFHours = double(TrainController->AvHoursIntValue)/TTClockSpeed;
         Utilities->CallLogPop(1885);
     }
     catch (const Exception &e)
@@ -10677,7 +10677,7 @@ void __fastcall TInterface::TTClockx1ButtonClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockx1ButtonClick");
         TTClockSpeed = 1;
         TTClockSpeedLabel->Caption = "x1";
-        TrainController->MTBFHours = double(AvHoursIntValue)/TTClockSpeed;
+        TrainController->MTBFHours = double(TrainController->AvHoursIntValue)/TTClockSpeed;
         Utilities->CallLogPop(1886);
     }
     catch (const Exception &e)
@@ -10696,7 +10696,7 @@ void __fastcall TInterface::TTClockxHalfButtonClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockxHalfButtonClick");
         TTClockSpeed = 0.5;
         TTClockSpeedLabel->Caption = "x1/2";
-        TrainController->MTBFHours = double(AvHoursIntValue)/TTClockSpeed;
+        TrainController->MTBFHours = double(TrainController->AvHoursIntValue)/TTClockSpeed;
         Utilities->CallLogPop(1887);
     }
     catch (const Exception &e)
@@ -10715,7 +10715,7 @@ void __fastcall TInterface::TTClockxQuarterButtonClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockxQuarterButtonClick");
         TTClockSpeed = 0.25;
         TTClockSpeedLabel->Caption = "x1/4";
-        TrainController->MTBFHours = double(AvHoursIntValue)/TTClockSpeed;
+        TrainController->MTBFHours = double(TrainController->AvHoursIntValue)/TTClockSpeed;
         Utilities->CallLogPop(1888);
     }
     catch (const Exception &e)
@@ -10734,7 +10734,7 @@ void __fastcall TInterface::TTClockxEighthButtonClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockxEighthButtonClick");
         TTClockSpeed = 0.125;
         TTClockSpeedLabel->Caption = "x1/8";
-        TrainController->MTBFHours = double(AvHoursIntValue)/TTClockSpeed;
+        TrainController->MTBFHours = double(TrainController->AvHoursIntValue)/TTClockSpeed;
         Utilities->CallLogPop(2099);
     }
     catch (const Exception &e)
@@ -10752,7 +10752,7 @@ void __fastcall TInterface::TTClockxSixteenthButtonClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockxSixteenthButtonClick");
         TTClockSpeed = 0.0625;
         TTClockSpeedLabel->Caption = "x1/16";
-        TrainController->MTBFHours = double(AvHoursIntValue)/TTClockSpeed;
+        TrainController->MTBFHours = double(TrainController->AvHoursIntValue)/TTClockSpeed;
         Utilities->CallLogPop(2100);
     }
     catch (const Exception &e)
@@ -11074,7 +11074,7 @@ void __fastcall TInterface::MTBFEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftS
             return;
         }
         bool TooBigFlag = false, BadCharsFlag = false;
-        AvHoursIntValue = 0;
+        TrainController->AvHoursIntValue = 0;
         TrainController->MTBFHours = 0;
         if(MTBFEditBox->Text.Length() > 0)
         {
@@ -11097,7 +11097,7 @@ void __fastcall TInterface::MTBFEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftS
             {
                 ShowMessage("Maximum value allowed is 10,000");
                 MTBFEditBox->Text = "";
-                AvHoursIntValue = 0;
+                TrainController->AvHoursIntValue = 0;
                 TrainController->MTBFHours = 0;
                 Utilities->CallLogPop(2161);
                 return;
@@ -11106,15 +11106,15 @@ void __fastcall TInterface::MTBFEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftS
             {
                 ShowMessage("Value must be a whole number with no special characters");
                 MTBFEditBox->Text = "";
-                AvHoursIntValue = 0;
+                TrainController->AvHoursIntValue = 0;
                 TrainController->MTBFHours = 0;
                 Utilities->CallLogPop(2162);
                 return;
             }
-            AvHoursIntValue = StrToInt(MTBFEditBox->Text); //ok if user enters 0 as that means no failures
-            TrainController->MTBFHours = double(AvHoursIntValue)/TTClockSpeed;
+            TrainController->AvHoursIntValue = StrToInt(MTBFEditBox->Text); //ok if user enters 0 as that means no failures
+            TrainController->MTBFHours = double(TrainController->AvHoursIntValue)/TTClockSpeed;
         }
-        if(AvHoursIntValue == 0)
+        if(TrainController->AvHoursIntValue == 0)
         {
             MTBFEditBox->Text = "";
             TrainController->MTBFHours = 0;
@@ -11991,9 +11991,9 @@ void TInterface::SetLevel1Mode(int Caller)
         SaveOperatingImageMenuItem->Enabled = true;
         AutoSigsFlag = false;
         MTBFEditBox->Visible = true;  //visible at pre-start whether any value set or not, so can set a value if required
-        if(AvHoursIntValue > 0)
+        if(TrainController->AvHoursIntValue > 0)
         {
-            MTBFEditBox->Text = AnsiString(AvHoursIntValue);
+            MTBFEditBox->Text = AnsiString(TrainController->AvHoursIntValue);
         }
         else
         {
@@ -12002,7 +12002,7 @@ void TInterface::SetLevel1Mode(int Caller)
         MTBFEditBox->ReadOnly = false;   //because this is prestart mode
         MTBFLabel->Visible = true;
         MTBFLabel->Caption = "Mean time between\ntrain failures in\ntimetable hours";
-        TrainController->MTBFHours = double(AvHoursIntValue)/TTClockSpeed;
+        TrainController->MTBFHours = double(TrainController->AvHoursIntValue)/TTClockSpeed;
         if(EveryPrefDir->PrefDirSize() > 0)
         {
             ConsecSignalsRoute = true;
@@ -12148,12 +12148,12 @@ void TInterface::SetLevel1Mode(int Caller)
         OAListBox->Items->Add(L"Left click and");
         OAListBox->Items->Add(L"hold grey area");
         OAListBox->Items->Add(L"to move panel");
-        if((AvHoursIntValue > 0) || (Level2OperMode == PreStart)) //only visible if already set or if still in prestart mode
+        if((TrainController->AvHoursIntValue > 0) || (Level2OperMode == PreStart)) //only visible if already set or if still in prestart mode
         {
             MTBFEditBox->Visible = true;
-            if(AvHoursIntValue > 0)
+            if(TrainController->AvHoursIntValue > 0)
             {
-                MTBFEditBox->Text = AnsiString(AvHoursIntValue);
+                MTBFEditBox->Text = AnsiString(TrainController->AvHoursIntValue);
             }
             else
             {
@@ -12162,7 +12162,7 @@ void TInterface::SetLevel1Mode(int Caller)
             MTBFEditBox->ReadOnly = false; //because this is still prestart mode
             MTBFLabel->Visible = true;
             MTBFLabel->Caption = "Mean time between\ntrain failures in\ntimetable hours";
-            TrainController->MTBFHours = double(AvHoursIntValue)/TTClockSpeed;
+            TrainController->MTBFHours = double(TrainController->AvHoursIntValue)/TTClockSpeed;
         }
         else
         {
@@ -12854,14 +12854,14 @@ void TInterface::SetLevel2OperMode(int Caller)
             }
             WarningHover = false;
             SetRouteButtonsInfoCaptionAndRouteNotStarted(4);
-            if(AvHoursIntValue > 0)
+            if(TrainController->AvHoursIntValue > 0)
             {
                 MTBFEditBox->Visible = true;
-                MTBFEditBox->Text = AnsiString(AvHoursIntValue);
+                MTBFEditBox->Text = AnsiString(TrainController->AvHoursIntValue);
                 MTBFEditBox->ReadOnly = true;  //because this is not prestart mode
                 MTBFLabel->Visible = true;
                 MTBFLabel->Caption = "Mean time between\ntrain failures in\ntimetable hours";
-                TrainController->MTBFHours = double(AvHoursIntValue)/TTClockSpeed;
+                TrainController->MTBFHours = double(TrainController->AvHoursIntValue)/TTClockSpeed;
             }
             else
             {
@@ -14479,9 +14479,9 @@ void TInterface::SaveSession(int Caller)
             Utilities->SaveFileString(SessionFile, "***Performance file***");
             SavePerformanceFile(0, SessionFile);
             Utilities->SaveFileString(SessionFile, "***End of performance file***");
-//addition at v2.4.0 to save AvHoursIntValue + any future additions
+//addition at v2.4.0 to save TrainController->AvHoursIntValue + any future additions
             Utilities->SaveFileString(SessionFile, "***Additions after v2.3.1***");
-            Utilities->SaveFileInt(SessionFile, AvHoursIntValue);
+            Utilities->SaveFileInt(SessionFile, TrainController->AvHoursIntValue);
             Utilities->SaveFileInt(SessionFile, TrainController->NumFailures);
             Utilities->SaveFileString(SessionFile, "***Failed Trains***");
             for(unsigned int x=0;x<TrainController->TrainVector.size();x++)
@@ -14542,7 +14542,7 @@ void TInterface::LoadSession(int Caller)
                 std::ifstream SessionFile(AnsiString(LoadSessionDialog->FileName).c_str());
                 if(!(SessionFile.fail()))
                 {
-                    AvHoursIntValue = 0;             //initial value set at v2.4.0 in case not changed later
+                    TrainController->AvHoursIntValue = 0;             //initial value set at v2.4.0 in case not changed later
                     TrainController->MTBFHours = 0;  //initial value set at v2.4.0 in case not changed later
                     AnsiString TempString = Utilities->LoadFileString(SessionFile); //"version + : ***Interface***" + at v2.2.0 ExcessLCDownMins (omitted earlier)
 
@@ -14660,16 +14660,16 @@ void TInterface::LoadSession(int Caller)
                     }
                     if(SessionFile.eof())  //end of file
                     {
-                        AvHoursIntValue = 0;
+                        TrainController->AvHoursIntValue = 0;
                         TrainController->MTBFHours = 0;
-                        SessionFile.close(); //no AvHoursIntValue & no failed trains
+                        SessionFile.close(); //no TrainController->AvHoursIntValue & no failed trains
                     }
                     else
                     {
                         AnsiString DummyStr = Utilities->LoadFileString(SessionFile); // "**Additions after v2.3.1***"  discarded (first '*' loaded earlier)
-                        AvHoursIntValue = Utilities->LoadFileInt(SessionFile); //AvHoursIntValue added at v2.4.0
+                        TrainController->AvHoursIntValue = Utilities->LoadFileInt(SessionFile); //TrainController->AvHoursIntValue added at v2.4.0
                         TrainController->NumFailures = Utilities->LoadFileInt(SessionFile); //number of train failures
-                        TrainController->MTBFHours = AvHoursIntValue;  //TTClockSpeed set to 1 in RestartSessionMode so no need to include here
+                        TrainController->MTBFHours = TrainController->AvHoursIntValue;  //TTClockSpeed set to 1 in RestartSessionMode so no need to include here
                         //now load any failed trains along with their OriginalPowerAtRail values
                         DummyStr = Utilities->LoadFileString(SessionFile); //discard "***Failed Trains***"
                         int ID = Utilities->LoadFileInt(SessionFile); //train ID or -1 for no more failed trains
@@ -16026,7 +16026,7 @@ would probably have been easier.  To change it now though would cause compatibil
                 Utilities->CallLogPop(2198);
                 return false;
             }
-            if(!Utilities->CheckFileInt(InFile, 0, 1000000)) //AvHoursIntValue
+            if(!Utilities->CheckFileInt(InFile, 0, 1000000)) //TrainController->AvHoursIntValue
             {
                 InFile.close();
                 Utilities->CallLogPop(2199);
@@ -16251,6 +16251,7 @@ strip out:-
 up to but excluding ***Interface***
 from & including  ***ConstructPrefDir PrefDirVector***
 to but excluding ***PrefDirs***
+if there is a single line ***UserGraphics*** delete it (won't be present if no graphics)
 from & including  ***ConstructRoute PrefDirVector***
 to but excluding ***Routes***
 from & including ***ChangingLCVector*** to but excluding ***Timetable*** [if have ***No timetable loaded*** then can't use as a session file]
@@ -16298,6 +16299,9 @@ save as a .ttb file
         int ScreenY = Mouse->CursorPos.y - MainScreen->ClientOrigin.y;
         AnsiString MouseStr = "Posx: " + AnsiString(ScreenX) + "; Posy: " + AnsiString(ScreenY);
         Utilities->SaveFileString(ErrorFile, MouseStr);
+        Utilities->SaveFileInt(ErrorFile, MissedTicks);
+        Utilities->SaveFileInt(ErrorFile, TotalTicks);
+
 //save call stack
         Utilities->SaveFileString(ErrorFile, "***Call stack***");
         for(unsigned int x=0; x<Utilities->CallLog.size(); x++)
@@ -16394,6 +16398,23 @@ save as a .ttb file
         Utilities->SaveFileString(ErrorFile, "***Performance file***");
         SavePerformanceFile(1, ErrorFile);
         Utilities->SaveFileString(ErrorFile, "***End of performance file***");
+//addition at v2.4.1 to save TrainController->AvHoursIntValue + any future additions
+        Utilities->SaveFileString(ErrorFile, "***Additions after v2.3.1***");
+        Utilities->SaveFileInt(ErrorFile, TrainController->AvHoursIntValue);
+        Utilities->SaveFileInt(ErrorFile, TrainController->NumFailures);
+        Utilities->SaveFileString(ErrorFile, "***Failed Trains***");
+        for(unsigned int x=0;x<TrainController->TrainVector.size();x++)
+        {
+            if(TrainController->TrainVectorAt(66, x).TrainFailed)
+            {
+                Utilities->SaveFileInt(ErrorFile, TrainController->TrainVectorAt(67, x).TrainID);
+                Utilities->SaveFileDouble(ErrorFile, TrainController->TrainVectorAt(68, x).OriginalPowerAtRail);
+            }
+        }
+        Utilities->SaveFileInt(ErrorFile, -1); //marker for end of failed trains
+        Utilities->SaveFileString(ErrorFile, "End of file at v2.4.1");
+//end of v2.4.1 addition
+
         ErrorFile.close();
     }
     else
@@ -16877,7 +16898,6 @@ void TInterface::TestFunction()
             "\n\nScreenRightButton->Left " + UnicodeString(ScreenRightButton->Left)
             );
 */
-//        ShowMessage("MissedTicks = " + AnsiString(MissedTicks) + "; UnMissedTicks = " + AnsiString(UnMissedTicks));
 /*
         for(unsigned int x=0;x<TrainController->TrainVector.size();x++)
         {
@@ -16887,6 +16907,11 @@ void TInterface::TestFunction()
             }
         }
 */
+
+//    throw Exception("Test error");  //generate an error file
+
+//        ShowMessage("MissedTicks = " + AnsiString(MissedTicks) + "; TotalTicks = " + AnsiString(TotalTicks));
+
     }
     catch (const Exception &e)
     {

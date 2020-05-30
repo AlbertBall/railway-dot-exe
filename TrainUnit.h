@@ -642,6 +642,7 @@ public:
     int OperatingTrainArrDep; ///< total number of arrivals & departures for operating trains locations not reached yet
     int NotStartedTrainArrDep; ///< total number of arrivals & departures for trains that haven't started yet for locations not reached yet
     int LastTrainLoaded; ///<displays last train loaded from session file, used for debugging
+    int AvHoursIntValue; ///<Input in MTBFEditBox in timetable hours, min value is 1 and max is 10,000. Here because performance file needs access
 
     unsigned int OpTimeToActUpdateCounter; ///<new v2.2.0, incremented in Interface.cpp, controls updating for OpTimeToActPanel
     unsigned int OpActionPanelHintDelayCounter; ///<new v2.2.0 on start operation delays the op action panel headcode display for about 5 secs while hints shown
@@ -664,10 +665,10 @@ public:
     AnsiString GetExitLocationAndAt(int Caller, TExitList &ExitList) const;
 /// Return the service headcode for the repeat service
     AnsiString GetRepeatHeadCode(int Caller, AnsiString BaseHeadCode, int RepeatNumber, int IncDigits);
-/// Introduce a new train to the railway, with the characteristics specified, returns true for success
+/// Introduce a new train to the railway, with the characteristics specified, returns true for success, if fails the EventType indicates the reason
     bool AddTrain(int Caller, int RearPosition, int FrontPosition, AnsiString HeadCode, int StartSpeed, int Mass, double MaxRunningSpeed,
                   double MaxBrakeRate, double PowerAtRail, AnsiString ModeStr, TTrainDataEntry *TrainDataEntryPtr, int RepeatNumber,
-                  int IncrementalMinutes, int IncrementalDigits, int SignallerSpeed, bool SignallerControl);
+                  int IncrementalMinutes, int IncrementalDigits, int SignallerSpeed, bool SignallerControl, TActionEventType &EventType);
 /// A shorthand function that returns true if the successor to a given timetable
 /// action command should be (or could be) an 'at location' command, used in timetable validation
     bool AtLocSuccessor(const TActionVectorEntry &AVEntry);

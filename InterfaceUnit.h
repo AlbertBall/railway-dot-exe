@@ -403,7 +403,6 @@ __published:    // IDE-managed Components
 	TMenuItem *RotLeftMenuItem;            //new at v2.4.0
     TMenuItem *SignallerJoinedByMenuItem;  //new at v2.4.0
     TMenuItem *RepairFailedTrainMenuItem;
-    TMenuItem *SetMTBFMenuItem;
 
     TImage *TrainFailedImage;              //new at v2.4.0
     TEdit *MTBFEditBox;
@@ -864,9 +863,8 @@ private:
 
 //    int ClockTimer2Count; ///< added at v1.3.0 to ensure focus returned to Interface, dropped at v2.0.0
     unsigned int LCResetCounter; ///< count up to 20 then resets - to check LCs & raise barriers if no route & no train present
-    unsigned long UnMissedTicks; ///<counts ticks that are responded to for comparison with MissedTicks (for test purposes)
-    unsigned long MissedTicks;    ///< test for missed clock ticks
-    int AvHoursIntValue; ///<Input in MTBFEditBox in timetable hours, min value is 1 and max is 10,000
+    unsigned int TotalTicks; ///< total clock ticks
+    unsigned int MissedTicks;    ///< missed clock ticks
     int NewSelectBitmapHLoc; ///< the new (during & at end of moving) HLoc value of Edit->Select & Edit->Reselect
     int NewSelectBitmapVLoc; ///< as above for VLoc
     int OperatorActionPanelDragStartX; ///< mouse 'X' position when the OperatorActionPanel begins to be dragged

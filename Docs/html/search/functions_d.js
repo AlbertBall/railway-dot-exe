@@ -1,11 +1,17 @@
 var searchData=
 [
-  ['onenamedlocationelementatlocation_1319',['OneNamedLocationElementAtLocation',['../class_t_track.html#a7eba939947b4c035a191ecaaf1b0bb9a',1,'TTrack']]],
-  ['onenamedlocationlongenoughforsplit_1320',['OneNamedLocationLongEnoughForSplit',['../class_t_track.html#a9d209cb6e24f67ba12020440a5e42347',1,'TTrack']]],
-  ['operate_1321',['Operate',['../class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481',1,'TTrainController']]],
-  ['operator_21_3d_1322',['operator!=',['../class_t_track_element.html#ab8e14338f1059d834353d6c2264b80ee',1,'TTrackElement::operator!=()'],['../class_t_pref_dir_element.html#a22ed5d6b16c6b53f7c3229231791d35e',1,'TPrefDirElement::operator!=()']]],
-  ['operator_28_29_1323',['operator()',['../class_t_map_comp.html#a6784886eff8452405709d93063d74147',1,'TMapComp']]],
-  ['operator_3d_3d_1324',['operator==',['../class_t_track_element.html#aae268d9684a1de26e01dd6578b0f3527',1,'TTrackElement::operator==()'],['../class_t_pref_dir_element.html#a2f8b222ba3f5990c095d5a4e120681c1',1,'TPrefDirElement::operator==()'],['../class_i_d_int.html#ae083414184db298f8abbfbe791db82de',1,'IDInt::operator==()']]],
-  ['operator_3e_1325',['operator&gt;',['../class_i_d_int.html#ae309faa19a8c2f2a6f5e16c7cd64f184',1,'IDInt']]],
-  ['othertrainontrack_1326',['OtherTrainOnTrack',['../class_t_track.html#aeac90568597c9f13a27fa90c58f9041f',1,'TTrack']]]
+  ['namedlocationelementat_3471',['NamedLocationElementAt',['../class_t_track.html#a198ba6486ccb7cdfb25bdd8c30451d06',1,'TTrack']]],
+  ['nameintimetablebeforecdt_3472',['NameInTimetableBeforeCDT',['../class_t_train.html#a7a54125a3a5052cb25e17014075a686b',1,'TTrain']]],
+  ['newhomebuttonclick_3473',['NewHomeButtonClick',['../class_t_interface.html#a77c402ebf53d182c76821a44f5895d98',1,'TInterface']]],
+  ['newshuttlefromnonrepeatservice_3474',['NewShuttleFromNonRepeatService',['../class_t_train.html#a56fcfe4b9a3cef988bbeb4f4766372aa',1,'TTrain']]],
+  ['newtrainservice_3475',['NewTrainService',['../class_t_train.html#a75a2e9017b96e2a8f2a1edbd01c2cd68',1,'TTrain']]],
+  ['newttentrybuttonclick_3476',['NewTTEntryButtonClick',['../class_t_interface.html#a889fff98fb93d17aefc0a341a8216e72',1,'TInterface']]],
+  ['nextttentrybuttonclick_3477',['NextTTEntryButtonClick',['../class_t_interface.html#a8d9fefd50730926d40c89801a70b8c95',1,'TInterface']]],
+  ['noactiveorinactivetrack_3478',['NoActiveOrInactiveTrack',['../class_t_track.html#ab20c55ecbc1801614695279daa8da0ba',1,'TTrack']]],
+  ['noactivetrack_3479',['NoActiveTrack',['../class_t_track.html#a2eaa84532799b76a0b42cf6e2611224d',1,'TTrack']]],
+  ['nogaps_3480',['NoGaps',['../class_t_track.html#ab9e1aa42b1d6399d97390f5068bf68b0',1,'TTrack']]],
+  ['nonamedlocationelements_3481',['NoNamedLocationElements',['../class_t_track.html#ab079bfd6871c5337b29297e7bc2cfe8b',1,'TTrack']]],
+  ['nonfootcrossingnamedlocationexists_3482',['NonFootCrossingNamedLocationExists',['../class_t_track.html#aa67be9f8ad9bd885f649b26962e0d41d',1,'TTrack']]],
+  ['norailway_3483',['NoRailway',['../class_t_interface.html#a488e772a2e2a52820fdbe1d1695e0118',1,'TInterface']]],
+  ['numberofgaps_3484',['NumberOfGaps',['../class_t_track.html#a72c171ba53777dc2f5fab90877f9bc45',1,'TTrack']]]
 ];

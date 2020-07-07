@@ -79,6 +79,11 @@
 		<param name="Local" value="html/6.54sz9.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Accelerator keys">
+		<param name="Name" value="Keyboard shortcut keys">
+		<param name="Local" value="html\700.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Actions due">
 		<param name="Name" value="Actions due">
 		<param name="Local" value="html\6.10.htm">
@@ -689,6 +694,11 @@
 		<param name="Local" value="html/5.2.1e44.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Keyboard shortcut keys">
+		<param name="Name" value="Keyboard shortcut keys">
+		<param name="Local" value="html\700.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Length of platform required for joins">
 		<param name="Name" value="Joins">
 		<param name="Local" value="html/5.2.1e44.htm">
@@ -1169,6 +1179,11 @@
 		<param name="Local" value="html/5.2.1e43.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Shortcut keys">
+		<param name="Name" value="Shortcut keys">
+		<param name="Local" value="html\700.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Showing the timetable editor">
 		<param name="Name" value="Showing and hiding the timetable editor">
 		<param name="Local" value="html/5.64pti.htm">
@@ -1206,15 +1221,15 @@
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Signals">
+		<param name="Name" value="Track element types">
+		<param name="Local" value="html/3.1.246p.htm">
+		<param name="Name" value="Setting preferred directions (PDs)">
+		<param name="Local" value="html/4001g.htm">
 		<param name="Name" value="Backgrounds & trackside signal locations">
 		<param name="Local" value="html\2.14gc1.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Signals">
-		<param name="Name" value="Track element types">
-		<param name="Local" value="html/3.1.246p.htm">
-		<param name="Name" value="Setting preferred directions (PDs)">
-		<param name="Local" value="html/4001g.htm">
 		<param name="Name" value="Backgrounds & trackside signal locations">
 		<param name="Local" value="html\2.14gc1.htm">
 		</OBJECT>

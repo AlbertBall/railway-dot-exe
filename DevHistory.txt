@@ -5,7 +5,7 @@ This is a very rough set of notes recorded practically from day 1 of C++ Builder
 The structure is as follows:-
 
 1)  List of suggestions from users for future changes (some incorporated).
-2)  My own list of thoughts for change proposals (largely incorporated)
+2)  My own list of thoughts for change proposals (many incorporated)
 3)  List of problems & odd behaviour for which I don't yet have solutions
 4)  Changes made for each successive version release
 5)  Checklists for changing versions and adding new projects to the website (these are now well out of date)
@@ -182,6 +182,20 @@ OK: Error given when try to split at a named non-station location & there is a n
 
 OK: Allow Frh & Fjo for trains after split and maybe others such as new services (Snt [done inc Fjo at v2.0.0] & Sns) No need - for Sns, Frh & Fjo can just follow the original service; for Sfs, can have the original remain or join other, if both to remain then no need to split, or if both to join others then have the split train jbo rather than Fjo.
 
+General improvement possibilities (some also suggested by users):
+
+Three-way points.
+Automatic route setting.
+Option to use & display imperial units as well as metric units.
+Ability to record and replay sessions.
+Signalbox mode where individual signals and points are operated directly, perhaps via a
+graphical lever frame, with user-defined interlocking.
+Sound effects, e.g. enter a track ID & hear trains & station announcements at that location.
+Random failures of signals & points.
+Variable train lengths.
+Restricted routes - DC 3 & 4 rail; AC; tube stock etc.
+Multi-player facility over the internet.
+
 -----------------------
 
 
@@ -201,21 +215,23 @@ VERSION CHANGES AFTER v2.4.1 Beta for v2.4.2
 
 * = mentioned on website
 
-*Mention can put text on top of stations and non-station named locations (added for 2.4.0 but forgot to mention then)
+*Mention can put text on top of stations and non-station named locations (added for 2.4.0 but forgot to mention then).
 
-[done] Update developerguide to mention the doxy files with more detailed descriptions
+Updated developerguide to mention the doxy files with more detailed descriptions.
 
-[done] Check the html in the doxyfiles and maybe arrange comments better in header files - check the doxy spec regarding comments
+Arranged comments better in header files so display better in Doxygen html.
 
-[done] *Added many more keyboard shortcut keys, most buttons now have a shortcut.  The button hint shows the shortcut and they are all listed in the manual and on-screen help
+*Added many more keyboard shortcut keys, most buttons now have a shortcut.  The button hint shows the shortcut and they are all listed in the manual and on-screen help
 
-[done] *mention manual & on-screen help updated
+*Mention manual & on-screen help updated.
 
-[done] *Added points check in check for wrong end entry (Xeon error reported 30/05/20 - not a new fault)
+*Added points check in check for wrong end entry (Xeon error reported 30/05/20 - not a new fault).
 
-[done] *Corrected SPAD error reported by Micke 02/06/20 when trains entered a continuation with zero (or very low) speed - see TrainUnit.cpp for explanation in SetTrainMovementValues (search on Micke)
+Dropped 'save failed' message when click cancel in a timetable save dialogue and 'File not saved' message in smae circumstances for a railway file save
 
-[done] Route locking required takes no account of train direction. A train moving away from a set route within 1 element of route start still gives the lock message when attempt to cancel and causes locking. OK, modified RouteLockingRequired
+*Corrected SPAD error reported by Micke 02/06/20 when trains entered a continuation with zero (or very low) speed - see TrainUnit.cpp for explanation in SetTrainMovementValues (search on Micke).
+
+Route locking required took no account of train direction. A train moving away from a set route within 1 element of route start still gave the lock message when attempted to cancel and caused locking. Modified RouteLockingRequired to correct this behaviour.
 
 -----------------------
 
@@ -1144,7 +1160,7 @@ Consider what to do about map/route checks & other such development checks befor
 have self-checking and normal release versions - if poss record the call stack)
 
 
-5) Checklists: (well out of date - use separate files)
+5) Checklists: (out of date)
 
 CHANGE OF VERSION: (out of date - to be updated for latest website changes)
 

@@ -1,4 +1,0 @@
-<map id="TTrain" name="TTrain">
-<area shape="rect" id="node2" href="$class_t_train_data_entry.html" title="Contains all data for a single train. " alt="" coords="73,5,255,244"/>
-<area shape="rect" id="node3" href="$class_t_action_vector_entry.html" title="Contains a single train action in a timetable &#45; repeat entry is also of this class though no train ac..." alt="" coords="225,336,465,560"/>
-</map>

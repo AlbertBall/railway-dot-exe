@@ -1,8 +1,20 @@
 var searchData=
 [
-  ['vectorposition_1956',['VectorPosition',['../class_t_train_controller_1_1_t_continuation_train_expectation_entry.html#a77f5a64b552a6d938b1ab2a0e3488c11',1,'TTrainController::TContinuationTrainExpectationEntry']]],
-  ['vloc_1957',['VLoc',['../class_t_track_element.html#a0d9a1c95d1c1aedd0ffec4d24772cfbc',1,'TTrackElement::VLoc()'],['../class_t_track_1_1_t_active_level_crossing.html#afabdf5593ed4d0f2f406aac52d7b4fb4',1,'TTrack::TActiveLevelCrossing::VLoc()']]],
-  ['vlocmax_1958',['VLocMax',['../class_t_track.html#a847326710b5b428b1a8bb54b1d143c26',1,'TTrack']]],
-  ['voffset_1959',['VOffset',['../class_t_train.html#a4c8b153a620229a3d9cc54f64ffa5f4a',1,'TTrain']]],
-  ['vpos_1960',['VPos',['../class_t_text_item.html#a7fc4c3a7d8583931e2ac595006550f9c',1,'TTextItem::VPos()'],['../class_t_graphic_element.html#a5f06e91844e62b9975b6128921746178',1,'TGraphicElement::VPos()']]]
+  ['ugme_5521',['UGME',['../class_t_track.html#a929ce0e54d114b3411f5a2e9a4a20041',1,'TTrack']]],
+  ['underhfootbridge_5522',['UnderHFootbridge',['../class_t_rail_graphics.html#ad83df5ce0b92a10abf886ffd2c601e79',1,'TRailGraphics']]],
+  ['undervfootbridge_5523',['UnderVFootbridge',['../class_t_rail_graphics.html#a9a82f44b53b28abd305249039ec429b3',1,'TRailGraphics']]],
+  ['unexpectedexits_5524',['UnexpectedExits',['../class_t_train_controller.html#af64a32b0811b647196f8d25ac6701ddc',1,'TTrainController']]],
+  ['unrestrictedbutton_5525',['UnrestrictedButton',['../class_t_interface.html#a68ff82d32f0c984c9b186fae5d3a758d',1,'TInterface']]],
+  ['updatecounter_5526',['UpdateCounter',['../class_t_train.html#a042c53d86c73b973053c9dee5afda314',1,'TTrain']]],
+  ['usergraphic_5527',['UserGraphic',['../class_t_user_graphic_item.html#a1030e112811e13f2d740d2ee964a3a9f',1,'TUserGraphicItem']]],
+  ['usergraphicbutton_5528',['UserGraphicButton',['../class_t_interface.html#ad459bb8882aac220f2d277e6115f36a4',1,'TInterface']]],
+  ['usergraphicfoundflag_5529',['UserGraphicFoundFlag',['../class_t_interface.html#a6c88b1934c26be7707ecca12b9bec89b',1,'TInterface']]],
+  ['usergraphicmap_5530',['UserGraphicMap',['../class_t_track.html#ae94b491c9f0edcced632e4561a274554',1,'TTrack']]],
+  ['usergraphicmovehpos_5531',['UserGraphicMoveHPos',['../class_t_interface.html#a3a095a3bd476b2a324312e6fda8e0646',1,'TInterface']]],
+  ['usergraphicmovevpos_5532',['UserGraphicMoveVPos',['../class_t_interface.html#a1402aa051ed8f74498052afec4bfa6bc',1,'TInterface']]],
+  ['usergraphicreselectpanel_5533',['UserGraphicReselectPanel',['../class_t_interface.html#ad5b0b1d429585601872f7e256eb523b5',1,'TInterface']]],
+  ['usergraphics_5fdir_5fname_5534',['USERGRAPHICS_DIR_NAME',['../class_t_interface.html#a1c62c461b8b784f3271a6b4ff25f653b',1,'TInterface']]],
+  ['usergraphicvector_5535',['UserGraphicVector',['../class_t_track.html#a2169056a3e0e621474a0513f4d1b4a3e',1,'TTrack']]],
+  ['usergraphicvectornumber_5536',['UserGraphicVectorNumber',['../class_t_interface.html#a0c41d754acd7ee989e12229bb41b4aca',1,'TInterface']]],
+  ['utilities_5537',['Utilities',['../_utilities_8cpp.html#a69ecaeba7a18032cf8a1d212b92d94f8',1,'Utilities():&#160;Utilities.cpp'],['../_utilities_8h.html#a69ecaeba7a18032cf8a1d212b92d94f8',1,'Utilities():&#160;Utilities.cpp']]]
 ];

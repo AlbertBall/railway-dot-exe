@@ -1,3 +1,0 @@
-<map id="TOnePrefDir" name="TOnePrefDir">
-<area shape="rect" id="node2" href="$class_t_one_route.html" title="{TOneRoute\n|+ ReqPosRouteID\l+ StartSelectionRouteID\l+ RouteID\l+ StartRoutePosition\l+ StartElement1\l+ StartElement2\l+ RouteFlash\l+ RouteSearchLimit\l|+ ClearRoute()\l+ EraseRouteElementAt()\l+ StoreRouteElementInPrefDir\lVector()\l+ FindForwardTargetSignalAttribute()\l+ GetNonPreferredRouteStart\lElement()\l+ GetNextNonPreferredRoute\lElement()\l+ GetPreferredRouteStartElement()\l+ GetNextPreferredRouteElement()\l+ PointsToBeChanged()\l+ SearchForNonPreferredRoute()\land 13 more...\l}" alt="" coords="5,571,240,941"/>
-</map>

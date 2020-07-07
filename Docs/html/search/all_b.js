@@ -1,24 +1,4 @@
 var searchData=
 [
-  ['mainmenu1_453',['MainMenu1',['../class_t_interface.html#ac0defbc28edeb49db14e81c2084341cf',1,'TInterface']]],
-  ['mainscreen_454',['MainScreen',['../class_t_interface.html#a24ed70b178edf21a515d34df17b6aeb3',1,'TInterface']]],
-  ['mainscreenmousedown2_455',['MainScreenMouseDown2',['../class_t_interface.html#abf07d5edc1507de381825f17620748b2',1,'TInterface']]],
-  ['mainscreenmousedown3_456',['MainScreenMouseDown3',['../class_t_interface.html#a8c96de45b013362b03ad0e8725a7c64b',1,'TInterface']]],
-  ['markallroutes_457',['MarkAllRoutes',['../class_t_all_routes.html#af0a34aa05027527d256566ae52600583',1,'TAllRoutes']]],
-  ['markonelength_458',['MarkOneLength',['../class_t_track.html#a6cab5ab84e10504ef1c9d39e931d42fe',1,'TTrack']]],
-  ['mass_459',['Mass',['../class_t_train_data_entry.html#a16d6c71abfab0a1ebd961fe3cd3edae7',1,'TTrainDataEntry::Mass()'],['../class_t_train.html#ab9dabc7092d31bc27b573e75ac74d0da',1,'TTrain::Mass()']]],
-  ['masterclock_460',['MasterClock',['../class_t_interface.html#a86ed4cb82f825abe93c1df870d2bf4d2',1,'TInterface']]],
-  ['matchingpoint_461',['MatchingPoint',['../class_t_track.html#aa60a7460b2d95189e8de3817e4ad21f2',1,'TTrack']]],
-  ['maxbrakerate_462',['MaxBrakeRate',['../class_t_train_data_entry.html#a3d7e696d79ee15cae196c0197fed3821',1,'TTrainDataEntry::MaxBrakeRate()'],['../class_t_train.html#a1cd5cd53f56a05bc4fde337e44bdd6d4',1,'TTrain::MaxBrakeRate()']]],
-  ['maxexitspeed_463',['MaxExitSpeed',['../class_t_train.html#ab0dc5c73f19ad8ef811f4464dfb5fc94',1,'TTrain']]],
-  ['maximummasslimit_464',['MaximumMassLimit',['../class_t_train.html#a1ab673136ad153947d373b5fd48a50e9',1,'TTrain']]],
-  ['maximumpowerlimit_465',['MaximumPowerLimit',['../class_t_train.html#a06452bf9f2c18e9d83d4b33cc24ada42',1,'TTrain']]],
-  ['maximumspeedlimit_466',['MaximumSpeedLimit',['../class_t_train.html#afac2548a159e8c341c008810d15e2a88',1,'TTrain']]],
-  ['maxrunningspeed_467',['MaxRunningSpeed',['../class_t_train_data_entry.html#aaef868581a7c5383f70f119b1f551178',1,'TTrainDataEntry::MaxRunningSpeed()'],['../class_t_train.html#a0b9ba6ba25c153ba3142f63ec024ccde',1,'TTrain::MaxRunningSpeed()']]],
-  ['mbleftdown_468',['mbLeftDown',['../class_t_interface.html#a1bc1b96388de989a60a3956542997a5c',1,'TInterface']]],
-  ['minsdelayed_469',['MinsDelayed',['../class_t_train.html#ab1d46932f9ed9e6d0a3ee2f3e76d1705',1,'TTrain']]],
-  ['mirrorarray_470',['MirrorArray',['../class_t_track.html#a45717d2ba1186b2ff1188b50447ad22a',1,'TTrack']]],
-  ['missedticks_471',['MissedTicks',['../class_t_interface.html#a54f8918641a888d1a288c8a5573b2850',1,'TInterface']]],
-  ['movingsuccessor_472',['MovingSuccessor',['../class_t_train_controller.html#ae6c929171fa673b87e68694e6f48985d',1,'TTrainController']]],
-  ['movingtrainpresentonflashingroute_473',['MovingTrainPresentOnFlashingRoute',['../class_t_interface.html#a1cd9f01bcbcc37fb31712b7007d04dac',1,'TInterface']]]
+  ['kwpanel_1357',['KWPanel',['../class_t_interface.html#a66f500e3b3362042e12da9a2749f9fff',1,'TInterface']]]
 ];

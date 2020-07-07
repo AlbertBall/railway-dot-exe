@@ -14,6 +14,8 @@
 
 <P><B><A NAME="5.4"></A>5.4  Timetable validation</B></P>
 
+<P>The 'Validate timetable' button in the timetable editor is available only when a railway is loaded and a timetable is open in the editor and saved to a file.  A timetable that is in course of development can't be validated until it has been saved (or saved under a different name using the 'Save timetable as...' button), because the validator works on the file.</P>
+
 <P>Timetable integrity is validated with respect to program interpretation, not with respect to logical structure.  It is the user's responsibility to make sure that a timetable makes sense!</P>
 
 <P>Two sets of checks are carried out, the first for syntax, and the second for overall structure.  The first will reveal incorrect coding, the second will reveal incorrect timings such as a departure before an arrival, incorrect sequences such as arrival at Station A followed by departure from Station B, and incorrect service reference linkages etc.  Checking is quite comprehensive, so a timetable that is validated should load and operate correctly.</P>

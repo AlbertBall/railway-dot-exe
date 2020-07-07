@@ -1,26 +1,26 @@
 //AboutUnit.cpp
 /*
-BEWARE OF COMMENTS in .cpp files:  they were accurate when written but have
- sometimes been overtaken by changes and not updated
-Comments in .h files are believed to be accurate and up to date
+      BEWARE OF COMMENTS in .cpp files:  they were accurate when written but have
+      sometimes been overtaken by changes and not updated
+      Comments in .h files are believed to be accurate and up to date
 
-This is a source code file for "railway.exe", a railway operation
-simulator, written originally in Borland C++ Builder 4 Professional with
-later updates in Embarcadero C++Builder 10.2.
-Copyright (C) 2010 Albert Ball [original development]
+      This is a source code file for "railway.exe", a railway operation
+      simulator, written originally in Borland C++ Builder 4 Professional with
+      later updates in Embarcadero C++Builder 10.2.
+      Copyright (C) 2010 Albert Ball [original development]
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+      This program is free software: you can redistribute it and/or modify
+      it under the terms of the GNU General Public License as published by
+      the Free Software Foundation, either version 3 of the License, or
+      (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+      This program is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+      You should have received a copy of the GNU General Public License
+      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 //---------------------------------------------------------------------------
 #include <Classes.hpp>
@@ -63,7 +63,7 @@ void __fastcall TAboutForm::AboutFormButtonClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 void __fastcall TAboutForm::FormClose(TObject *Sender,
-                                      TCloseAction &Action)
+        TCloseAction &Action)
 {
     if(Interface->Level1Mode == TInterface::OperMode)
     {
@@ -77,60 +77,60 @@ void __fastcall TAboutForm::SetAboutCaption()
     DWORD VersionSize;
     LPBYTE pBuffer;
     UnicodeString strVersion = L"N/A";
-    UnicodeString NL = '\n';
+    UnicodeString NL         = '\n';
 
     VersionSize = GetFileVersionInfoSizeW(Application->ExeName.c_str(), &VersionHandle);
-    if (VersionSize)
+    if(VersionSize)
     {
         pBuffer = new BYTE[VersionSize];
 
-        if (GetFileVersionInfoW(Application->ExeName.c_str(), VersionHandle, VersionSize, pBuffer))
+        if(GetFileVersionInfoW(Application->ExeName.c_str(), VersionHandle, VersionSize, pBuffer))
         {
             VS_FIXEDFILEINFO *fi;
             UINT buflen;
 
             //uncomment strVersion and HIWORD alternates below when future CI implemented: sas@2.1.0
-            if (VerQueryValueW(pBuffer, L"\\", (void** )&fi, &buflen))
+            if(VerQueryValueW(pBuffer, L"\\", (void** )&fi, &buflen))
             {
                 //strVersion.sprintf(L"%d.%d.%d (Build %d)",
                 strVersion.sprintf(L"%d.%d.%d",
-                                   HIWORD(fi->dwFileVersionMS), LOWORD(fi->dwFileVersionMS),
-                                   HIWORD(fi->dwFileVersionLS)
-                                   //HIWORD(fi->dwFileVersionLS), LOWORD(fi->dwFileVersionLS)
-                                   );
+                        HIWORD(fi->dwFileVersionMS), LOWORD(fi->dwFileVersionMS),
+                        HIWORD(fi->dwFileVersionLS)
+                        //HIWORD(fi->dwFileVersionLS), LOWORD(fi->dwFileVersionLS)
+                        );
             }
         }
 
         delete[] pBuffer;
     }
 
-	AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
-							     L"operate your own railway" + NL + NL +
-							     L"Release: " + strVersion + " Beta" + NL + NL +
-							     L"Copyright © 2010-2020 Albert Ball" + NL +
-                                 L"with contributions from Stephen A Smith";
+    AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
+            L"operate your own railway" + NL + NL +
+            L"Release: " + strVersion + NL + NL +
+            L"Copyright © 2010-2020 Albert Ball" + NL +
+            L"with contributions from Stephen A Smith";
 }
 //---------------------------------------------------------------------------
 void __fastcall TAboutForm::WebsiteLinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
-          TSysLinkType LinkType)
+        TSysLinkType LinkType)
 {
-    if (LinkType == sltURL)
+    if(LinkType == sltURL)
         ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TAboutForm::Attribution1LinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
-          TSysLinkType LinkType)
+        TSysLinkType LinkType)
 {
-    if (LinkType == sltURL)
+    if(LinkType == sltURL)
         ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TAboutForm::Attribution2LinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
-          TSysLinkType LinkType)
+        TSysLinkType LinkType)
 {
-    if (LinkType == sltURL)
+    if(LinkType == sltURL)
         ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
 }
 //---------------------------------------------------------------------------

@@ -1,28 +1,28 @@
-//TextUnit.cpp
+// TextUnit.cpp
 /*
-BEWARE OF COMMENTS in .cpp files:  they were accurate when written but have
- sometimes been overtaken by changes and not updated
-Comments in .h files are believed to be accurate and up to date
+      BEWARE OF COMMENTS in .cpp files:  they were accurate when written but have
+      sometimes been overtaken by changes and not updated
+      Comments in .h files are believed to be accurate and up to date
 
-This is a source code file for "railway.exe", a railway operation
-simulator, written originally in Borland C++ Builder 4 Professional with
-later updates in Embarcadero C++Builder 10.2.
-Copyright (C) 2010 Albert Ball [original development]
+      This is a source code file for "railway.exe", a railway operation
+      simulator, written originally in Borland C++ Builder 4 Professional with
+      later updates in Embarcadero C++Builder 10.2.
+      Copyright (C) 2010 Albert Ball [original development]
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+      This program is free software: you can redistribute it and/or modify
+      it under the terms of the GNU General Public License as published by
+      the Free Software Foundation, either version 3 of the License, or
+      (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+      This program is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+      You should have received a copy of the GNU General Public License
+      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
@@ -44,72 +44,81 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "DisplayUnit.h"
 #include "Utilities.h"
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 #pragma package(smart_init)
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-    TTextItem::TTextItem() : TextString(""), HPos(0), VPos(0), Font(NULL) {};  //default constructor
+TTextItem::TTextItem(): TextString(""), HPos(0), VPos(0), Font(NULL)
+{}; // default constructor
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-    TTextItem::TTextItem(int H, int V, AnsiString T, TFont *&FontPointer) //constructor, sets the values given & if font already exists then that pointer returned
-        : TextString(T), HPos(H), VPos(V), Font(FontPointer)
+TTextItem::TTextItem(int H, int V, AnsiString T, TFont * &FontPointer) // constructor, sets the values given & if font already exists then that pointer returned
+    : TextString(T), HPos(H), VPos(V), Font(FontPointer)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ", TextItem constructor " + AnsiString(H) + "," + AnsiString(V) + "," + T);
+    TFont *NewFont = new TFont;
+
+    NewFont->Assign(FontPointer);
+    TFont *RequiredPointer = NewFont;
+
+    if(TextHandler->FontVector.empty())
     {
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ", TextItem constructor " + AnsiString(H) + "," + AnsiString(V) + "," + T);
-        TFont *NewFont = new TFont;
-        NewFont->Assign(FontPointer);
-        TFont *RequiredPointer = NewFont;
-        if(TextHandler->FontVector.empty())
+        TextHandler->FontVector.push_back(NewFont);
+    }
+    else
+    {
+        bool FoundPointer = false;
+        for(unsigned int x = 0; x < TextHandler->FontVector.size(); x++)
+        {
+            if(TextHandler->FontSame(0, TextHandler->FontVector.at(x), NewFont))
+            {
+                RequiredPointer = TextHandler->FontVector.at(x);
+                FoundPointer = true;
+                delete NewFont;
+                break;
+            }
+        }
+        if(!FoundPointer)
         {
             TextHandler->FontVector.push_back(NewFont);
         }
-        else
-        {
-            bool FoundPointer = false;
-            for(unsigned int x = 0; x < TextHandler->FontVector.size(); x++)
-            {
-                if(TextHandler->FontSame(0, TextHandler->FontVector.at(x), NewFont))
-                {
-                    RequiredPointer = TextHandler->FontVector.at(x);
-                    FoundPointer = true;
-                    delete NewFont;
-                    break;
-                }
-            }
-            if(!FoundPointer)
-            {
-                TextHandler->FontVector.push_back(NewFont);
-            }
-        }
+    }
     FontPointer = RequiredPointer;
     Utilities->CallLogPop(2105);
-    }
+}
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 TTextHandler *TextHandler;
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 int TTextHandler::GetFontStyleAsInt(int Caller, TFont *InputFont)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetFontStyleAsInt");
     int Output = 0;
-    if(InputFont->Style.Contains(fsBold)) Output = 1;
-    if(InputFont->Style.Contains(fsItalic)) Output+= 2;
-    if(InputFont->Style.Contains(fsUnderline)) Output+= 4;
-    if(InputFont->Style.Contains(fsStrikeOut)) Output+= 8;
+
+    if(InputFont->Style.Contains(fsBold))
+        Output = 1;
+    if(InputFont->Style.Contains(fsItalic))
+        Output += 2;
+    if(InputFont->Style.Contains(fsUnderline))
+        Output += 4;
+    if(InputFont->Style.Contains(fsStrikeOut))
+        Output += 8;
     Utilities->CallLogPop(1306);
     return Output;
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 TFontStyles TTextHandler::SetFontStyleFromInt(int Caller, int Input)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetFontStyleAsInt" + AnsiString(Input));
     TFontStyles TempStyle;
+
     if(Input >= 8)
     {
         TempStyle << fsStrikeOut;
@@ -125,12 +134,13 @@ TFontStyles TTextHandler::SetFontStyleFromInt(int Caller, int Input)
         TempStyle << fsItalic;
         Input -= 2;
     }
-    if(Input >= 1) TempStyle << fsBold;
+    if(Input >= 1)
+        TempStyle << fsBold;
     Utilities->CallLogPop(1307);
-    return TempStyle; //Font->Style doesn't accept << values directly
+    return TempStyle; // Font->Style doesn't accept << values directly
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 bool TTextHandler::FontSame(int Caller, TFont *ExistingFont, TFont *InputFont)
 {
@@ -164,28 +174,30 @@ bool TTextHandler::FontSame(int Caller, TFont *ExistingFont, TFont *InputFont)
     return true;
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void TTextHandler::EnterAndDisplayNewText(int Caller, TTextItem Text, int HPos, int VPos)
 {
-    Text.TextString = Text.TextString.Trim(); //strip leading & trailing spaces and control characters
+    Text.TextString = Text.TextString.Trim(); // strip leading & trailing spaces and control characters
     if(Text.TextString == "")
     {
-        return; //don't add null text to vector
+        return; // don't add null text to vector
     }
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",EnterAndDisplayNewText," + Text.TextString + ',' + AnsiString(HPos) + "," + AnsiString(VPos));
-    if(Text.TextString.Length() > 255) Text.TextString = Text.TextString.SubString(0, 255);  //limited because of char* buffer length on loading
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",EnterAndDisplayNewText," + Text.TextString + ',' + AnsiString(HPos) +
+        "," + AnsiString(VPos));
+    if(Text.TextString.Length() > 255)
+        Text.TextString = Text.TextString.SubString(0, 255); // limited because of char* buffer length on loading
     TextVectorPush(1, Text);
     Display->TextOut(0, HPos, VPos, Text.TextString, Text.Font);
     Utilities->CallLogPop(1308);
 }
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-void TTextHandler::TextMove(int Caller, int HPosInput, int VPosInput, int &TextItem,
-                            int &TextMoveHPos, int &TextMoveVPos, bool &TextFoundFlag)
+void TTextHandler::TextMove(int Caller, int HPosInput, int VPosInput, int &TextItem, int &TextMoveHPos, int &TextMoveVPos, bool &TextFoundFlag)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextMove," + AnsiString(HPosInput) + "," + AnsiString(VPosInput));
     TTextVectorIterator TextPtr;
+
     TextFoundFlag = false;
     if(!TextVector.empty())
     {
@@ -193,9 +205,8 @@ void TTextHandler::TextMove(int Caller, int HPosInput, int VPosInput, int &TextI
         for(TextPtr = (TextVector.end() - 1); TextPtr >= TextVector.begin(); TextPtr--)
         {
             x--;
-            if((HPosInput >= (*TextPtr).HPos) &&
-               (HPosInput < ((*TextPtr).HPos + abs((*TextPtr).Font->Height))) && (VPosInput >= (*TextPtr).VPos) &&
-               (VPosInput < ((*TextPtr).VPos + abs((*TextPtr).Font->Height))))
+            if((HPosInput >= (*TextPtr).HPos) && (HPosInput < ((*TextPtr).HPos + abs((*TextPtr).Font->Height))) && (VPosInput >= (*TextPtr).VPos) &&
+                (VPosInput < ((*TextPtr).VPos + abs((*TextPtr).Font->Height))))
             {
                 TextItem = x;
                 TextMoveHPos = (*TextPtr).HPos;
@@ -203,18 +214,19 @@ void TTextHandler::TextMove(int Caller, int HPosInput, int VPosInput, int &TextI
                 TextFoundFlag = true;
                 Utilities->CallLogPop(1309);
                 return;
-            } //if ....
-        } //for TextPtr...
-    } //if !TextVector...
+            } // if ....
+        } // for TextPtr...
+    } // if !TextVector...
     Utilities->CallLogPop(1310);
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 bool TTextHandler::TextFound(int Caller, int HPosInput, int VPosInput)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextFound," + AnsiString(HPosInput) + "," + AnsiString(VPosInput));
     TTextVectorIterator TextPtr;
+
     if(TextHandler->TextVectorSize(1) == 0)
     {
         Utilities->CallLogPop(1311);
@@ -222,9 +234,8 @@ bool TTextHandler::TextFound(int Caller, int HPosInput, int VPosInput)
     }
     for(TextPtr = (TextHandler->TextVector.end() - 1); TextPtr >= TextHandler->TextVector.begin(); TextPtr--)
     {
-        if((HPosInput >= (*TextPtr).HPos) &&
-           (HPosInput < ((*TextPtr).HPos + abs((*TextPtr).Font->Height))) && (VPosInput >= (*TextPtr).VPos) &&
-           (VPosInput < ((*TextPtr).VPos + abs((*TextPtr).Font->Height))))
+        if((HPosInput >= (*TextPtr).HPos) && (HPosInput < ((*TextPtr).HPos + abs((*TextPtr).Font->Height))) && (VPosInput >= (*TextPtr).VPos) && (VPosInput <
+            ((*TextPtr).VPos + abs((*TextPtr).Font->Height))))
         {
             Utilities->CallLogPop(1312);
             return true;
@@ -234,44 +245,45 @@ bool TTextHandler::TextFound(int Caller, int HPosInput, int VPosInput)
     return false;
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 bool TTextHandler::TextErase(int Caller, int HPosInput, int VPosInput)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextErase," + AnsiString(HPosInput) + "," + AnsiString(VPosInput));
     TTextVectorIterator TextPtr;
+
     if(!TextVector.empty())
     {
         for(TextPtr = (TextVector.end() - 1); TextPtr >= TextVector.begin(); TextPtr--)
         {
-            if((HPosInput >= (*TextPtr).HPos) &&
-               (HPosInput < ((*TextPtr).HPos + (*TextPtr).Font->Size)) &&
-               (VPosInput >= (*TextPtr).VPos) &&
-               (VPosInput < ((*TextPtr).VPos + ((*TextPtr).Font->Size)*1.5)))
+            if((HPosInput >= (*TextPtr).HPos) && (HPosInput < ((*TextPtr).HPos + (*TextPtr).Font->Size)) && (VPosInput >= (*TextPtr).VPos) && (VPosInput <
+                ((*TextPtr).VPos + ((*TextPtr).Font->Size) * 1.5)))
 
             {
                 TextVector.erase(TextPtr);
                 Track->CalcHLocMinEtc(5);
                 Utilities->CallLogPop(1314);
                 return true;
-            } //if ....
-        } //for TextPtr...
+            } // if ....
+        } // for TextPtr...
     }
     Utilities->CallLogPop(1315);
     return false;
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void TTextHandler::LoadText(int Caller, std::ifstream& VecFile)
-//VecFile already open and its pointer at right place on calling
+    // VecFile already open and its pointer at right place on calling
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadText");
     int TempInt;
-    int NumberOfTextElements=0;
+    int NumberOfTextElements = 0;
+
     NumberOfTextElements = Utilities->LoadFileInt(VecFile);
     int HPos, VPos, FontSize, FontColour, FontCharset, FontStyle;
     AnsiString TextString, FontName;
-    for(int x=0; x<NumberOfTextElements; x++)
+
+    for(int x = 0; x < NumberOfTextElements; x++)
     {
         VecFile >> HPos;
         VecFile >> VPos;
@@ -282,29 +294,30 @@ void TTextHandler::LoadText(int Caller, std::ifstream& VecFile)
         VecFile >> FontCharset;
         VecFile >> FontStyle;
         TFont *NewFont = new TFont;
-        TFont *CreatedFontPointer = NewFont; //stores it for later deletion
+        TFont *CreatedFontPointer = NewFont; // stores it for later deletion
         NewFont->Name = FontName;
         NewFont->Size = FontSize;
         NewFont->Color = static_cast<TColor>(FontColour);
         NewFont->Charset = FontCharset;
         NewFont->Style = SetFontStyleFromInt(1, FontStyle);
-        TTextItem *TempText = new TTextItem(HPos, VPos, TextString, NewFont); //NewFont changed to actual pointer pushed into or already in FontVector
+        TTextItem *TempText = new TTextItem(HPos, VPos, TextString, NewFont); // NewFont changed to actual pointer pushed into or already in FontVector
         TempText->Font = NewFont;
-        delete CreatedFontPointer; //TempText constructor creates a new font on the heap and pushes that onto FontVector if new so this not needed in future
+        delete CreatedFontPointer; // TempText constructor creates a new font on the heap and pushes that onto FontVector if new so this not needed in future
         TextVectorPush(3, *TempText);
     }
     Utilities->CallLogPop(1317);
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void TTextHandler::SaveText(int Caller, std::ofstream& VecFile)
-//VecFile already open and its pointer at right place on calling
+    // VecFile already open and its pointer at right place on calling
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveText");
     int NumberOfTextElements = TextVectorSize(2);
+
     Utilities->SaveFileInt(VecFile, NumberOfTextElements);
-    for(unsigned int x=0; x<(TextVectorSize(3)); x++)
+    for(unsigned int x = 0; x < (TextVectorSize(3)); x++)
     {
         VecFile << TextPtrAt(8, x)->HPos << '\n';
         VecFile << TextPtrAt(9, x)->VPos << '\n';
@@ -312,67 +325,68 @@ void TTextHandler::SaveText(int Caller, std::ofstream& VecFile)
         Utilities->SaveFileString(VecFile, TextPtrAt(11, x)->Font->Name);
         VecFile << TextPtrAt(12, x)->Font->Size << '\n';
         if((int(TextPtrAt(37, x)->Font->Color) < 0) || (int(TextPtrAt(38, x)->Font->Color) > 0xFFFFFF))
-        { //if set to any of the special 'windows' colours save it as black
+        { // if set to any of the special 'windows' colours save it as black
             VecFile << '0' << '\n';
         }
         else
         {
             VecFile << TextPtrAt(13, x)->Font->Color << '\n';
         }
-        VecFile << (int)(TextPtrAt(14, x)->Font->Charset) << '\n'; //save as 'int' (would be unsigned char else) so 'n' can act as proper delimiter
+        VecFile << (int)(TextPtrAt(14, x)->Font->Charset) << '\n'; // save as 'int' (would be unsigned char else) so 'n' can act as proper delimiter
         VecFile << GetFontStyleAsInt(0, TextPtrAt(15, x)->Font) << '\n';
     }
     Utilities->CallLogPop(1318);
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 bool TTextHandler::CheckTextElementsInFile(int Caller, std::ifstream& VecFile)
 {
-//VecFile already open and its pointer at right place on calling
-//check text elements
+// VecFile already open and its pointer at right place on calling
+// check text elements
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckTextElementsInFile");
     int TempInt;
-    int NumberOfTextElements=0;
+    int NumberOfTextElements = 0;
+
     NumberOfTextElements = Utilities->LoadFileInt(VecFile);
-    for(int x=0; x<NumberOfTextElements; x++)
+    for(int x = 0; x < NumberOfTextElements; x++)
     {
         VecFile >> TempInt;
         if((TempInt < -16000000) || (TempInt > 16000000))
         {
             Utilities->CallLogPop(1319);
-            return false; //HPos
+            return false; // HPos
         }
         VecFile >> TempInt;
         if((TempInt < -16000000) || (TempInt > 16000000))
         {
             Utilities->CallLogPop(1320);
-            return false; //VPos
+            return false; // VPos
         }
         if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
         {
             Utilities->CallLogPop(1321);
-            return false; //Text string
+            return false; // Text string
         }
         if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
         {
             Utilities->CallLogPop(1322);
-            return false; //font name
+            return false; // font name
         }
-        VecFile >> TempInt; //font point size
+        VecFile >> TempInt; // font point size
         if((TempInt < 1) || (TempInt > 1000))
         {
             Utilities->CallLogPop(1323);
             return false;
         }
-        VecFile >> TempInt; //font colour - no point checking as all possible values valid as colours
-        VecFile >> TempInt; //font charset
+        VecFile >> TempInt; // font colour - no point checking as all possible values valid as colours
+        VecFile >> TempInt; // font charset
         if((TempInt < 0) || (TempInt > 255))
         {
             Utilities->CallLogPop(1324);
             return false;
         }
-        VecFile >> TempInt; //font style as integer
+        VecFile >> TempInt; // font style as integer
         if((TempInt < 0) || (TempInt > 15))
         {
             Utilities->CallLogPop(1325);
@@ -383,29 +397,29 @@ bool TTextHandler::CheckTextElementsInFile(int Caller, std::ifstream& VecFile)
     return true;
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void TTextHandler::RebuildFromTextVector(int Caller, TDisplay *Disp)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RebuildFromTextVector");
-    for(unsigned int x=0; x<(TextHandler->TextVectorSize(4)); x++)
+    for(unsigned int x = 0; x < (TextHandler->TextVectorSize(4)); x++)
     {
         int HPos = TextHandler->TextPtrAt(16, x)->HPos;
         int VPos = TextHandler->TextPtrAt(17, x)->VPos;
         AnsiString TextString = TextHandler->TextPtrAt(18, x)->TextString;
         TFont *TextFont = TextHandler->TextPtrAt(19, x)->Font;
-        Disp->TextOut(1, HPos, VPos, TextString, TextFont); //colour changed to white if was black & dark background in TDisplay::TextOut
+        Disp->TextOut(1, HPos, VPos, TextString, TextFont); // colour changed to white if was black & dark background in TDisplay::TextOut
     }
     Disp->Update();
     Utilities->CallLogPop(1327);
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void TTextHandler::WriteTextToImage(int Caller, Graphics::TBitmap *Bitmap)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",WriteTextToImage");
-    for(unsigned int x=0; x<(TextHandler->TextVectorSize(11)); x++)
+    for(unsigned int x = 0; x < (TextHandler->TextVectorSize(11)); x++)
     {
         int HPos = TextHandler->TextPtrAt(30, x)->HPos;
         int VPos = TextHandler->TextPtrAt(31, x)->VPos;
@@ -417,14 +431,15 @@ void TTextHandler::WriteTextToImage(int Caller, Graphics::TBitmap *Bitmap)
     Utilities->CallLogPop(1534);
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-void TTextHandler::TextVectorResetPosition(int Caller, int HOffset, int VOffset) //not used
+void TTextHandler::TextVectorResetPosition(int Caller, int HOffset, int VOffset) // not used
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextVectorResetPosition," + AnsiString(HOffset) + "," + AnsiString(VOffset));
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextVectorResetPosition," + AnsiString(HOffset) + "," +
+        AnsiString(VOffset));
     if(TextVectorSize(5) > 0)
     {
-        for(unsigned int x=0; x<TextVectorSize(6); x++)
+        for(unsigned int x = 0; x < TextVectorSize(6); x++)
         {
             TextPtrAt(20, x)->HPos = TextPtrAt(21, x)->HPos - (HOffset * 16);
             TextPtrAt(22, x)->VPos = TextPtrAt(23, x)->VPos - (VOffset * 16);
@@ -433,9 +448,9 @@ void TTextHandler::TextVectorResetPosition(int Caller, int HOffset, int VOffset)
     Utilities->CallLogPop(1328);
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-void TTextHandler::TextClear(int Caller)    //not used
+void TTextHandler::TextClear(int Caller) // not used
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextClear");
     TextVector.clear();
@@ -454,46 +469,54 @@ void TTextHandler::TextClear(int Caller)    //not used
         Track->SetVLocMin(2000000000);
         Track->SetVLocMax(-2000000000);
     }
-    else Track->CalcHLocMinEtc(6);
+    else
+        Track->CalcHLocMinEtc(6);
     Utilities->CallLogPop(1329);
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void TTextHandler::TextVectorPush(int Caller, TTextItem Text)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextVectorPush," + Text.TextString);
-    int HLoc = (Text.HPos)/16;
-    int VLoc = (Text.VPos)/16;
-    if(HLoc < Track->GetHLocMin()) Track->SetHLocMin(HLoc);
-    if(HLoc > Track->GetHLocMax()) Track->SetHLocMax(HLoc);
-    if(VLoc < Track->GetVLocMin()) Track->SetVLocMin(VLoc);
-    if(VLoc > Track->GetVLocMax()) Track->SetVLocMax(VLoc);
+    int HLoc = (Text.HPos) / 16;
+    int VLoc = (Text.VPos) / 16;
+
+    if(HLoc < Track->GetHLocMin())
+        Track->SetHLocMin(HLoc);
+    if(HLoc > Track->GetHLocMax())
+        Track->SetHLocMax(HLoc);
+    if(VLoc < Track->GetVLocMin())
+        Track->SetVLocMin(VLoc);
+    if(VLoc > Track->GetVLocMax())
+        Track->SetVLocMax(VLoc);
     TextVector.push_back(Text);
     Utilities->CallLogPop(1330);
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 unsigned int TTextHandler::TextVectorSize(int Caller)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextVectorSize");
     int TempSize = TextVector.size();
+
     Utilities->CallLogPop(1430);
     return TempSize;
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 unsigned int TTextHandler::SelectTextVectorSize(int Caller)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SelectTextVectorSize");
     int TempSize = SelectTextVector.size();
+
     Utilities->CallLogPop(1431);
     return TempSize;
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 TTextItem *TTextHandler::TextPtrAt(int Caller, int At)
 {
@@ -503,11 +526,12 @@ TTextItem *TTextHandler::TextPtrAt(int Caller, int At)
         throw Exception("At value outside range of TextVector in TextPtrAt");
     }
     TTextItem *TempItem = &(TextVector.at(At));
+
     Utilities->CallLogPop(1428);
     return TempItem;
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 TTextItem *TTextHandler::SelectTextPtrAt(int Caller, int At)
 {
@@ -517,17 +541,18 @@ TTextItem *TTextHandler::SelectTextPtrAt(int Caller, int At)
         throw Exception("At value outside range of SelectTextVector in SelectTextPtrAt");
     }
     TTextItem *TempItem = &(SelectTextVector.at(At));
+
     Utilities->CallLogPop(1429);
     return TempItem;
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 bool TTextHandler::FindText(int Caller, AnsiString Name, int &HPos, int &VPos)
 {
-//Return true if find name in TextVector, HPos & VPos give location, else return false
+// Return true if find name in TextVector, HPos & VPos give location, else return false
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FindText," + Name);
-    for(unsigned int x=0; x<TextVectorSize(12); x++)
+    for(unsigned int x = 0; x < TextVectorSize(12); x++)
     {
         if(TextVector.at(x).TextString == Name)
         {
@@ -541,6 +566,4 @@ bool TTextHandler::FindText(int Caller, AnsiString Name, int &HPos, int &VPos)
     return false;
 }
 
-//---------------------------------------------------------------------------
-
-
+// ---------------------------------------------------------------------------

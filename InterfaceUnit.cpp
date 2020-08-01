@@ -13460,7 +13460,16 @@ void TInterface::SetLevel2TrackMode(int Caller)
         // erase graphic elements that fall within selected region
             if(!Track->UserGraphicVector.empty()) // skip iteration if empty else have an error
             {
-                for(TTrack::TUserGraphicVector::iterator GraphicPtr = (Track->SelectGraphicVector.end() - 1); GraphicPtr >= Track->SelectGraphicVector.begin();
+
+//Isglassen05 (vilhelmgg@gmail.com) reported an error via email and attached an error file on 31/07/20.  The error was in the following line which was:
+
+//                for(TTrack::TUserGraphicVector::iterator GraphicPtr = (Track->SelectGraphicVector.end() - 1); GraphicPtr >= Track->SelectGraphicVector.begin();
+//                GraphicPtr--) // reverse to prevent skipping during erase
+
+//i.e if the railway included one or more user graphics but the SelectGraphicVector didn't include any, then GraphicPtr wouldn't point to anything and the program would fail
+//corrected 01/08/20 by using UserGraphicVector (as it should have been) for SelectGraphicVector
+
+                for(TTrack::TUserGraphicVector::iterator GraphicPtr = (Track->UserGraphicVector.end() - 1); GraphicPtr >= Track->UserGraphicVector.begin();
                 GraphicPtr--) // reverse to prevent skipping during erase
                 {
                     if((GraphicPtr->HPos >= LowSelectHPos) && ((GraphicPtr->HPos + GraphicPtr->Width) < HighSelectHPos) && (GraphicPtr->VPos >= LowSelectVPos)

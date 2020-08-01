@@ -211,6 +211,12 @@ Multi-player facility over the internet.
 
 4) Version change information
 
+VERSION CHANGES AFTER v2.4.2 Beta for v2.4.3
+
+This is purely a bug-fix release to correct an error reported by Isglassen05 on 31/07/20.  When using 'Delete' in the edit menu in a railway that included one or more user graphics, where the selected area for deletion didn't include any graphics, the program would fail.  It was due to the variable used to search for included graphics being set wrongly.  This version corrects the error.  It is surprising that it hadn't been reported before as it was present from v2.4.0 onwards.
+
+-----------------------
+
 VERSION CHANGES AFTER v2.4.1 Beta for v2.4.2
 
 * = mentioned on website

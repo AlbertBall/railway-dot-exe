@@ -15,16 +15,22 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
+#49.  Suggestion from Dan via Discord 12/08/20.  Include route availability with stock being given a specific value, and the lines having a corresponding value. The trains' value should be lower than or equal to the track's value, or it cannot run on that track. You may see it as RA then a number from 1 to 10
 
-44 - 46. Suggestions from Micke (Commuterpop), Krizar & Bjorn via discord 28 & 29/06/20.  Have program able to adapt to different user file structures than having all subfolders below the executable folder. Allow user to set preferred folders for file locations, and autoload the last used file.
 
------------------------
+#48. Suggestion from Wilsteady via discord 21/07/20.  Two I would love to see, is a two aspect yellow over green as a repeater signal, and a single aspect red signal.
 
-43. Suggestion from The10toFarnborough via discord 27/06/20 - have timetable functions work in seconds rather than minutes (similar from 
 
------------------------
+#47. Suggestion from imortallknedlik via discord 20/07/20.  Maybe do like an option to choose what colours you have on different signals, or just add some of the LU signals, like the ATO ones
 
-35 - 42. Requests from 506_Independent via discord 21/06/20.  
+
+#44 - #46. Suggestions from Micke (Commuterpop), Krizar & Bjorn via discord 28 & 29/06/20.  Have program able to adapt to different user file structures than having all subfolders below the executable folder. Allow user to set preferred folders for file locations, and autoload the last used file.
+
+
+#43. Suggestion from The10toFarnborough via discord 27/06/20 - have timetable functions work in seconds rather than minutes (similar from 
+
+
+#35 - #42. Requests from 506_Independent via discord 21/06/20.  
 
 First of all, I would like a small red halo around my selected track piece, as having no way to know what iv'e selected means I could add the wrong piece, wasting a few seconds of aluble time. 
 
@@ -44,37 +50,26 @@ I would also like another way of where instead of clicking in the blackness, you
 
 I also think a even more graphical, almost block based timetable editor would really help, allowing for scratch-like blocks, but a bit more white and boring. 
 
------------------------
 
-34. Suggestion from Micke (Commuterpop) 16/06/20 via discord - when a train is heavily delayed often skip stops in real life, include facility to skip stops in timetable as a signaller option
+#34. Suggestion from Micke (Commuterpop) 16/06/20 via discord - when a train is heavily delayed often skip stops in real life, include facility to skip stops in timetable as a signaller option
 
------------------------
 
-33. Suggestion from Wilsteady, Discord 02/06/20:  I've thought of an interesting concept that could be rather interesting to include. Support for recognition of train types linked with lines, i.e. Electric/Diesel or different track gauges. In practice I guess it would be something like, setting a route for a train where the track leaves electrified territory, but the type of train is designated as electric, and as such approaching that junction, depending on a different setting, could either continue through and "derail/fault" for leaving the electrified territory, or simply come to a complete stop at the preceding signal until the route is corrected.
+#33. Suggestion from Wilsteady, Discord 02/06/20:  I've thought of an interesting concept that could be rather interesting to include. Support for recognition of train types linked with lines, i.e. Electric/Diesel or different track gauges. In practice I guess it would be something like, setting a route for a train where the track leaves electrified territory, but the type of train is designated as electric, and as such approaching that junction, depending on a different setting, could either continue through and "derail/fault" for leaving the electrified territory, or simply come to a complete stop at the preceding signal until the route is corrected.
 
------------------------
 
-31 & 32. Suggestions from Wilsteady, Discord 09/05/20:  Place footbridge/underpass over existing track to avoid having to reset lengths etc; ability to add a non-station named location over a signal
+#31 & #32. Suggestions from Wilsteady, Discord 09/05/20:  Place footbridge/underpass over existing track to avoid having to reset lengths etc; ability to add a non-station named location over a signal
 
------------------------
 
-29 & 30. From Dan on Discord 17/04/20:  Drive-by-sight would be a neat feature for trams, and maybe a signal type to permit access to a siding or a drive-by-sight section.
+#29 & #30. From Dan on Discord 17/04/20:  Drive-by-sight would be a neat feature for trams, and maybe a signal type to permit access to a siding or a drive-by-sight section.
 
------------------------
 
-Suggestion from @Mark 04/02/20
+#27 & #28. Suggestion from @Mark 04/02/20.  Ability to tell a train to skip the next station or skip its next trip in the timetable (in cases where a train is running very delayed).  That and have the ability to select a different timetable.  
 
-27 & 28. Ability to tell a train to skip the next station or skip its next trip in the timetable (in cases where a train is running very delayed).  That and have the ability to select a different timetable.  
 
------------------------
+#26. Suggestion from Oli_k123 29/10/19.  A new route chopping tool would be nice so when you use the 'blue route' you can chop between 2 signals without having to re do everything after the first signal or maybe a 'one time override'?
 
-Suggestion from Oli_k123 29/10/19
 
-26. A new route chopping tool would be nice so when you use the 'blue route' you can chop between 2 signals without having to re do everything after the first signal or maybe a 'one time override' ?
-
------------------------
-
-19 - 25. Suggestions from Kristian Zarebski (Krizar) 06/08/19
+#19 - #25. Suggestions from Kristian Zarebski (Krizar) 06/08/19
 
 - Catch Points: This is rather a minor thing and perhaps is not needed enough to warrant time. Many of the routes I look at have either catch points or very short lengths of line after points within a passing loop. For the simulator all this would mean is removing the constraint that you cannot have the ends of track next to a set of points with the added condition that if someone routes a train towards the track end it then "derails" (or in the loop case collides immediately with buffers).
 
@@ -90,27 +85,18 @@ Suggestion from Oli_k123 29/10/19
 
 - Unknown: I do not know if you have ever used Simsig but something came to mind. On the maps included there are radial clickable buttons. I cannot remember what they do at all, is it some automatic route setting? My knowledge of computational signalling is very low, but being able to select between preset automatic routes would be great. Although adding such a feature sounds a headache.
 
------------------------
 
-Suggestion from Xeon email of 05/03/18
+#18. Suggestion from Xeon email of 05/03/18. Chinese railways use several more aspects than UK railways, Xeon requests 6-aspect to allow for this
 
-18. Chinese railways use several more aspects than UK railways, Xeon requests 6-aspect to allow for this
 
------------------------
+#16 & #17. Suggestions from Richard Gaede email of 22/08/14:-
 
-[Corrected at v2.1.0] Jordy de Koning reported a speed limit bug 27/12/16.  If a train is standing on a track element with a speed limit > 400kph and a session file saved, it fails on subsequent attempts to load.  The reason is that the train is limited to 400kph but not the track speed limit, and the session file checks the track speed limit where a train starts and fails if >400kph.  Need to add a limit and message when setting track speed limits.
+Allow cut and copied segments to be retained when a railway is cleared and a new one loaded, so that railways can be merged together
 
------------------------
+Have a drop-down list of running trains and their status and trains about to enter the system - to give a quick form of running train identification so they aren't forgotten and advance warning of future entries.
 
-16 & 17. Suggestions from Richard Gaede email of 22/08/14:-
 
-1.  Allow cut and copied segments to be retained when a railway is cleared and a new one loaded, so that railways can be merged together
-
-2.  Have a drop-down list of running trains and their status and trains about to enter the system - to give a quick form of running train identification so they aren't forgotten and advance warning of future entries.
-
------------------------
-
-11 - 15. Suggestions from David Graf - email of 31/03/14
+#11 - #15. Suggestions from David Graf - email of 31/03/14
 
 "Coventry Requirements Sig Sim for Rail Op Sim
 
@@ -130,37 +116,30 @@ Background – basically I have been waiting for a signal simulator to cover the W
 
 I am currently researching a North Wales Coast route so semaphore signals would be of great help. That is if its not to much to ask."
 
------------------------
 
-10. Suggestion from Jonathan Kwok (email of 11/05/13)
+#10. Suggestion from Jonathan Kwok (email of 11/05/13)
 Have a 'Touch mode' where when activated the buttons are bigger for easier operation with touch-sensitive screens.
 
------------------------
 
-7 - 9. Suggestions from Bjorn - email of 20/10/12:
+#7 - #9. Suggestions from Bjorn - email of 20/10/12:
 1) Manual Stop Signals (blue), as in, being able to set them manually, i.e. for in stations where the whole platform can be used, or only a part of the platform. As in the Netherlands it's common tho have "Stop" signals halfway down the platform to allow two opposing trains to use it as if it were 2 seperate platforms... If you catch my drift. and by using a special stop (BLUE) signal, one can split a track... Also another idea I had was to allow a stretch of track to have signals. Those blue signals kinda function like an "end-of-track" signal... but can also be used to signal "track not in use".
 2) Being able to have 1 track to have signals in both directions, to conserve space... now one can only have one signal on a track in either direction, but being able to put both signals on one stretch of track would not only save space, but also would be more realistic as signals are usually placed in pairs (up/down)...
 3) The ability to automatically set a track from one point to another without having to set all the signals in between, just a starting point and an endpoint. And then that the program follows wither the preferred directions to create the best available route or that it just looks for the shortest route possible from point A to point B.
 
------------------------
 
-6. Suggestion from Josh Coupe (email ~21/10/12):  Useful if could advance the timetable clock and have all trains where they would most likely be at that time.
+#6. Suggestion from Josh Coupe (email ~21/10/12):  Useful if could advance the timetable clock and have all trains where they would most likely be at that time.
 
------------------------
 
-4 & 5.Suggestion from Atilio Flegner (email 10/10/12): allow acceleration & deceleration rates as inputs as well as train power & braking force; and allow headways between trains as well as fixed starting times
+#4 & #5.Suggestion from Atilio Flegner (email 10/10/12): allow acceleration & deceleration rates as inputs as well as train power & braking force; and allow headways between trains as well as fixed starting times
 
------------------------
 
-3. Suggestion from Mark Jones (email of 29/06/12): try to allow different train lengths consisting of different numbers of elements.  Can indicate required length in timetable.
+#3. Suggestion from Mark Jones (email of 29/06/12): try to allow different train lengths consisting of different numbers of elements.  Can indicate required length in timetable.
 
------------------------
 
-2. Suggestion from Keith Hazelton (Feature Requests Forum 02/04/12):  Have the ability to set random dwell times at station stops. At present, once you’ve got ‘the hang’ of a layout and got into a rhythm of route setting, everything is pretty predictable. Random dwell times (say between 30sec & 3 mins) would add an unpredictable element.
+#2. Suggestion from Keith Hazelton (Feature Requests Forum 02/04/12):  Have the ability to set random dwell times at station stops. At present, once you’ve got ‘the hang’ of a layout and got into a rhythm of route setting, everything is pretty predictable. Random dwell times (say between 30sec & 3 mins) would add an unpredictable element.
 
------------------------
 
-1. Sam Wainwright email received 09/02/12: If a shunt signal is placed in the same direction as the main running signals, it is necessary to set a route through the shunt signal as well. Would it be possible to set a route from one running signal to the next with any shunt signals in the same direction in between clearing automatically?
+#1. Sam Wainwright email received 09/02/12: If a shunt signal is placed in the same direction as the main running signals, it is necessary to set a route through the shunt signal as well. Would it be possible to set a route from one running signal to the next with any shunt signals in the same direction in between clearing automatically?
 
 -----------------------
 

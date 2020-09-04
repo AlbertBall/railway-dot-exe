@@ -17,7 +17,6 @@ The structure is as follows:-
 
 #49.  Suggestion from Dan via Discord 12/08/20.  Include route availability with stock being given a specific value, and the lines having a corresponding value. The trains' value should be lower than or equal to the track's value, or it cannot run on that track. You may see it as RA then a number from 1 to 10
 
-
 #48. Suggestion from Wilsteady via discord 21/07/20.  Two I would love to see, is a two aspect yellow over green as a repeater signal, and a single aspect red signal.
 
 
@@ -27,7 +26,7 @@ The structure is as follows:-
 #44 - #46. Suggestions from Micke (Commuterpop), Krizar & Bjorn via discord 28 & 29/06/20.  Have program able to adapt to different user file structures than having all subfolders below the executable folder. Allow user to set preferred folders for file locations, and autoload the last used file.
 
 
-#43. Suggestion from The10toFarnborough via discord 27/06/20 - have timetable functions work in seconds rather than minutes (similar from 
+#43. Suggestion from The10toFarnborough via discord 27/06/20 - have timetable functions work in seconds rather than minutes. 
 
 
 #35 - #42. Requests from 506_Independent via discord 21/06/20.  
@@ -189,6 +188,62 @@ Multi-player facility over the internet.
 -----------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.4.3 for v2.5.0
+
+* = mentioned on website
+
+Functional changes:
+
+
+*Timetable conflict analysis added. This is too complex to explain here but it is described in detail in section 5.12 of the user manual and on-screen help.
+
+*The warning that a session file hasn't been saved when a session is ended or the application closed is now only given if the timetable clock time is 5 minutes or more later than the last session save or later than a new session start time
+
+*Signals immediately before bridges are now disallowed for new railways because the bridge prevents a route from being truncated to the signal (a bridge as a truncate point is ambiguous as it may contain two routes and is therefore not permitted). Existing railways with signals next to bridges will still work as normal, but if any changes are made to the layout then the restriction will apply.
+
+*An option has been added to 'not show again' the warning when changing the timetable clock.
+
+*Information is now provided for follow-on services in both the train status and timetable information windows when hovering the mouse over a train. It includes changes of direction, splits and joins, and departure times. This information helps in decision making for trains at and due to arrive at locations, especially in route setting for departures and platform selection for arrivals.
+
+*The 'Actions Due' panel now shows trains requiring attention before operation is resumed when a session file is loaded. This only applies for sessions saved after operating the railway, it doesn't apply for pre-start sessions. This allows the state of play to be assessed before operation, and trains requiring the most urgent attention can be located ready for routes to be set as soon as operation begins.
+
+*The ability to right-click the first letter of text to delete it has been re-established in 'AddText' mode. From v2.1.0 it was overridden by the screen move routine, but now text deletion takes precedence.
+
+*In the timetable editor the selected entry following a cut or delete action is now the entry before the deleted entry rather than after it. This makes it easier to insert a new entry in place of the deleted entry.
+
+*The keyboard shortcut keys for AddMins & SubMins in the timetable editor have been removed because when these are to be used the edit box has focus and a keypress is interpreted as a text entry rather than as a command to simulate a button click.
+
+Operator action panel hint delay changed to 3 secs from 4, and update operator action panel changed to every second from every 2 seconds.
+
+Bug fixes:
+
+*It was noticed that the response to timetable editor keyboard shortcut keys didn't match button click behaviour accurately in all respects. The keys worked as they should but sometimes the selected entry reverted to the top of the list making it necessary to scroll down again for long timetables. This has now been corrected.
+
+*An error discovered by Albie Vowles and reported via email on 14/08/20 was corrected. It was a fault that was present from the beginning involving locked routes, where all elements in the route normally stay locked until they time out at 2 minutes. In Albie's case a train ran past the signal at danger (with the locked route ahead of it) and cancelled two elements, leaving it shorter than it originally was. Periodically the program rebuilds the entire railway, for example when the viewpoint changes, but in rebuilding this locked route it assumed it was longer than it was, and when it came to the end sooner than expected the program crashed and generated an error file. Fortunately it was easily fixed. The program now checks whether the actual length of the locked route is shorter than expected, and if it is then the rebuilding stops when it reaches the real endpoint.
+
+*An error discovered by JKWok and reported via discord on 9/7/20 was corrected. If separate locations were joined together by a new platform or concourse not all the earlier separate names were deleted. It was due to not ensuring that all elements had the chance to have an existing name erased, but now they do.
+
+Delete own temporary timetable file on exiting the program so as to limit the build up of these unwanted files.
+
+If tried to load a timetable for editing but failed for any reason, the timetable stays displayed with the signal hand image present & obscuring half the timetable.  Now the signal panel is blanked early in the 'edit timetable' function.
+
+Notes about correcting shortcut key behaviour in the timetable editor - this was particularly problematic. After copy a timetable entry using shift c, (not when click button) the list starts again at the top where the top entry shows blue, even though the highlighted (orange) entry is as it was and still shows in the display panel. Spent a long time on this and can't make any headway.  Tried setting ...ListBox->Selected[index] to the highlighted entry in ClockTimer2 when HighlightPanel set but it altered the TopBox value and the highlighted entry for some unknown reason.  Tried lots of other things but none worked.  Found that if pressed C again it reverted to the correct position!  It also affected the other keyboard keys as well but not delete, presumably because had to click a message box button.
+Progress!  When press a key it highlights the first entry it finds beginning with that letter - BEFORE the click function is called.  BUT, still can't override it, setting AutoComplete to false doesn't work, and changing ItemIndex, TopIndex and Selected[ItemIndex] in CopyTTEntryButtonClick affects behaviour but doesn't do what is needed.
+If press 'c' on its own, goes up to first comment, then click copy button while 'c' held down, still reverts to proper position. Same if hold down shift c then click copy button. Tried setting focus on listbox, no effect, tried running through the copy routine twice (since when shift c pressed again it reverts to proper position) no effect, tried setting AutoComplete to false within the copy function, no effect.
+Question is why does it behave differently when all executed code is the same?  And why does it revert to proper position on second keypress (only reverts ok with shift c, not with c on its own)?
+Maybe flush the character buffer before the function executes? No effect.
+Interesting: in monitoring AllEntriesTTListBox->TopIndex in copy function, in the first pass when shift c pressed it was 75 (as it should be), but when shift c pressed again it entered with the value 1, i.e. the true position, and was reset to 75 in the function, when it displayed correctly.  So it seems that it is reset outside my code by Windows, somehow.  But setting it to 1 initially inside the function had no effect.
+Setting AllEntriesTTListBox->TopIndex to 75 in ClockTimer 2 worked ok, regardless of whether key down or not.
+Set AutoCompleteDelay to 1mSec (from 500mSec) and added a delay before the copy function of 2 secs, interestingly the positioning of the selected entry to 1 occurred AFTER the 2 seconds, so the Windows function (whatever it is) occurs AFTER my code executes - didn't expect that!
+Try flushing the input buffer before the delay before the copy function.  No good.
+Seems that the only way to deal with the problem is to pass control back to ClockTimer2 so the function executes after the os does what it does with the key.  Set a flag in FormKeyDown and execute and reset it in ClockTimer2.
+It works!!
+But, problem with delete (shift e) because the confirm question box appears after the keypress but before the main part of the function call.  Reset AllEntriesTTListBox->TopIndex before the question, that works ok, but still have the selected entry showing in blue which might be confusing, so try selecting the same entry as TTCurrentEntry.  Yes this works ok, added new function SetTopIndex() & call for every keypress in timetable mode.
+Problem when press page up or page down with selected entry changing.  Added AllEntriesTTListBox->Selected[TTCurrentEntryPtr - TimetableEditVector.begin()] = true; in ClockTimer2 whenever in TTMode so selected always same as TTCurrentryPtr.  Solves that problem but now when click mouse on one of the listed entries the entry chosen on MouseUp isn't always right.  It's because when scroll to a different position and click on an entry, the ...Selected[...] line immediately changes TopIndex so the entry where the mouse is down is different to the one chosen.  Hence only allow selected to be changed when both mouse buttons are up, to ensure that AllEntriesTTListBoxMouseUp runs first (uses either mouse button).  Yes that works OK.
+But, still changes TopIndex on Copy using shift+ c, even though correct item highlighted. Cured it by setting AllEntriesTTListBoxTopPosition = AllEntriesTTListBox->TopIndex in FormKeyDown function for TTMode and restored it in ClockTimer2 if any key flag set.  Now at last all seem to work as the buttons - phew!!
+
+-----------------------
 
 VERSION CHANGES AFTER v2.4.2 Beta for v2.4.3
 
@@ -364,7 +419,9 @@ n) Corrected Moric1998 error (sent in 24/03/16), corrected in TrainUnit at 'if(C
 
 *p) Corrected the problem when presetting automatic signal routes, where a route could be set across a diagonal fouled by adjacent track (i.e. a track element with a diagonal link that touched another track element's diagonal link).  Added a new function to check for such conflicts - PresetAutoRouteDiagonalFouledByTrack
 
-q) Corrected Jordy de Koning's error above, so that track speed limits are limited to the value in TTrain::MaximumSpeedLimit, which is 400km/h.  These are limited for new settings and when loading existing railway and session files where filed values are >400km/h
+q) Corrected Jordy de Koning's error:
+[Jordy de Koning reported a speed limit bug 27/12/16.  If a train is standing on a track element with a speed limit > 400kph and a session file saved, it fails on subsequent attempts to load.  The reason is that the train is limited to 400kph but not the track speed limit, and the session file checks the track speed limit where a train starts and fails if >400kph.  Need to add a limit and message when setting track speed limits.]
+Track speed limits are now limited to the value in TTrain::MaximumSpeedLimit, which is 400km/h.  These are limited for new settings and when loading existing railway and session files where filed values are >400km/h
 
 *r) Corrected signal clearing behaviour on locked autosignal routes exiting at a Continuation - signals continued to clear in sequence in spite of the route being locked.  Corrected so that all now remain at red.
 

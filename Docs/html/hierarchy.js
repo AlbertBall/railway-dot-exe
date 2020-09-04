@@ -20,6 +20,7 @@ var hierarchy =
     ] ],
     [ "TGraphicElement", "class_t_graphic_element.html", null ],
     [ "TAllRoutes::TLockedRouteClass", "class_t_all_routes_1_1_t_locked_route_class.html", null ],
+    [ "TTrainController::TLocServiceTimes", "struct_t_train_controller_1_1_t_loc_service_times.html", null ],
     [ "TMapComp", "class_t_map_comp.html", null ],
     [ "TOneCompleteFormattedTrain", "class_t_one_complete_formatted_train.html", null ],
     [ "TOnePrefDir", "class_t_one_pref_dir.html", [

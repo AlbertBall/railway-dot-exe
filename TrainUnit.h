@@ -454,6 +454,8 @@ private:
 
 // functions defined in .cpp file
 
+/// called during FloatingLabelNextString to find the next service departure time
+    AnsiString CheckNewServiceDepartureTime(int Caller, TActionVectorEntry *Ptr, int RptNum, TTrainDataEntry *LinkedTrainDataPtr, AnsiString RetStr);
 /// Used in the floating window to display the 'Next' action
     AnsiString FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr);
 /// Used in the floating window to display the timetable
@@ -636,6 +638,8 @@ public:
 ///< the start time of the current timetable
     TDateTime RestartTime;
 ///< TTClockTime when operation pauses ( = timetable start time prior to operation) TTClockTime is calculated as follows:- TTClockTime = CurrentDateTime + RestartTime - BaseTime;
+    TDateTime LastSessionSaveTTClockTime; //added at v2.5.0
+///< TTClockTime when last session saved - to prevent display of warning message on exit session if < 5 minutes ago
 
 /// Turns signals back to green in stages after a train has exited an autosig route at a continuation
     class TContinuationAutoSigEntry
@@ -684,6 +688,23 @@ public:
     typedef std::vector<TTrain>TTrainVector;
 ///< vector containing all trains that currently exist in the railway
 
+/// Class used for timetable conflict file compilation
+    struct TLocServiceTimes
+    {
+        AnsiString Location;
+        AnsiString ServiceAndRepeatNum;
+        AnsiString AtLocTime;
+        AnsiString ArrTime;
+        AnsiString DepTime;
+        AnsiString FrhMarker;
+    };
+    typedef std::vector<TLocServiceTimes> TLocServiceTimesVector;
+
+/// Used in determining train directions in timetable conflict analysis
+    typedef std::list<AnsiString> TServiceCallingLocsList;
+/// Map of all ServiceCallingLocsLists with key as service reference.  A map is ok as all service refs are unique when it is built
+    typedef std::map<AnsiString, TServiceCallingLocsList> TAllServiceCallingLocsMap;
+    TAllServiceCallingLocsMap AllServiceCallingLocsMap;
 // these added v2.2.0, for OpTimeToActPanel
     typedef std::pair<AnsiString, int>THCandTrainPosParam;
 /// Headcode + TrainID for running trains & -TrackVectorPosition - 1 for continuation.
@@ -696,7 +717,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     typedef std::vector<int>TContinuationEntryVecPosVector;
 ///<ensures only one train displayed for a given continuation
 
-// bool AnyHeadCodeValid; //flag to indicate valid headcode types for a service - when true can accept xxNN; if false accept only NaNN (N=number, x = any alphanumeric, a= upper or lower case letter) - dropped at v0.6b
+    AnsiString LastTTTime;
+///< Stores the last time used in the timetable as an AnsiString - used for timetable analysis
     AnsiString ServiceReference;
 ///< String used to display the offending service in timetable error messages
     bool CrashWarning, DerailWarning, SPADWarning, CallOnWarning, SignalStopWarning, BufferAttentionWarning, TrainFailedWarning;
@@ -761,7 +783,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     unsigned int OpTimeToActUpdateCounter;
 ///<new v2.2.0, incremented in Interface.cpp, controls updating for OpTimeToActPanel
     unsigned int OpActionPanelHintDelayCounter;
-///<new v2.2.0 on start operation delays the op action panel headcode display for about 5 secs while hints shown
+///<new v2.2.0 on start operation delays the op action panel headcode display for about 3 secs while hints shown
     unsigned int RandomFailureCounter; // new at v2.4.0, resets after 53 seconds (53 prime so can trigger at any clock time)
 
     TContinuationAutoSigVector ContinuationAutoSigVector;
@@ -777,8 +799,35 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     TTrainVector TrainVector;
 ///< vector containing all trains currently in the railway
 
+//inline function
+
+    bool LocServiceTimesLocationSort(TLocServiceTimes i, TLocServiceTimes j)
+    {
+        return (i.Location < j.Location);
+    }
+
+    bool LocServiceTimesArrTimeSort(TLocServiceTimes i, TLocServiceTimes j)
+    {
+        return (i.ArrTime < j.ArrTime);
+    }
+
+    bool LocServiceTimesDepTimeSort(TLocServiceTimes i, TLocServiceTimes j)
+    {
+        return (i.DepTime < j.DepTime);
+    }
+    bool LocServiceTimesAtLocTimeSort(TLocServiceTimes i, TLocServiceTimes j)
+    {
+        return (i.AtLocTime < j.AtLocTime);
+    }
+
 // functions defined in .cpp file
 
+/// Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for arrivals (bool Arrival == true) & departures, also returns NumTrainsAtLoc after consolidation, used on creating the timetable conflict analysis file, Location needed to determine direction information
+    AnsiString ConsolidateSARNTArrDep(int Caller, const AnsiString Input, int &NumTrainsAtLoc, AnsiString Location, bool Arrival, bool &AnalysisError, int &MaxNumberOfSameDirections);
+/// Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for AtLoc listing (similar to ArrDep but doesn't include times in the input & don't need Location), also returns NumTrainsAtLoc after consolidation, used on creating the timetable conflict analysis file
+    AnsiString ConsolidateSARNTAtLoc(int Caller, const AnsiString Input, int &NumTrainsAtLoc);
+/// Similar to TTrain::CheckNewServiceDepartureTime for use in ContinuationEntryFloatingTTString
+    AnsiString ControllerCheckNewServiceDepartureTime(int Caller, TActionVectorIterator Ptr, int RptNum, TTrainDataEntry *TDEPtr, TTrainDataEntry *LinkedTrainDataPtr, int IncrementalMinutes, AnsiString RetStr);
 /// Build string for use in floating window for expected trains at continuations
     AnsiString ContinuationEntryFloatingTTString(int Caller, TTrainDataEntry *TTDEPtr, int RepeatNumber, int IncrementalMinutes, int IncrementalDigits);
 /// Check all timetable names in ExitList, if all same return " at [name]" else return "".  Used in floating label for Next action and in formatted timetables.
@@ -821,6 +870,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     bool CheckStartPositionValidity(int Caller, AnsiString RearElementStr, AnsiString FrontElementStr, bool GiveMessages);
 /// returns true if the time complies with requirements
     bool CheckTimeValidity(int Caller, AnsiString TimeStr, TDateTime &Time);
+/// Generate a timetable analysis file in the 'Formatted Timetables' folder, return false if failed for any reason
+    bool CreateTTAnalysisFile(int Caller, AnsiString RailwayTitle, AnsiString TimetableTitle, AnsiString CurDir, bool ArrChecked, bool DepChecked, bool AtLocChecked, int ArrRange, int DepRange);
 /// New trains introduced with 'Snt' may be at a timetabled location or elsewhere. This function checks and returns true for at a timetabled location.
     bool IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEntry, AnsiString &LocationName);
 /// Checks the last two characters in HeadCode and returns true if both are digits
@@ -829,6 +880,9 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     bool MovingSuccessor(const TActionVectorEntry &AVEntry);
 /// Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if FinalCall true) set the internal timetable data values, return true for success
     bool ProcessOneTimetableLine(int Caller, int Count, AnsiString OneLine, bool &EndOfFile, bool FinalCall, bool GiveMessages, bool CheckLocationsExistInRailway);
+/// Determines whether two services are running in the same direction when they arrive or depart from Location
+    bool SameDirection(int Caller, AnsiString Ref1, AnsiString Ref2, AnsiString Time1, AnsiString Time2, int RepeatNum1, int RepeatNum2, TServiceCallingLocsList List1,
+        TServiceCallingLocsList List2, AnsiString Location, bool Arrival);
 /// Carry out further detailed timetable consistency checks, return true for success
     bool SecondPassActions(int Caller, bool GiveMessages);
 /// Parse a single timetable service action, return true for success
@@ -845,12 +899,14 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     bool TimetableIntegrityCheck(int Caller, char *FileName, bool GiveMessages, bool CheckLocationsExistInRailway);
 /// new at v2.4.0 return true if find the train (added at v2.4.0 as can select a removed train in OAListBox before it updates see LiWinDom error report via Discord on 23/04/20
     bool TrainExistsAtIdent(int Caller, int TrainID);
+/// check whether the two times are within the range in minutes specified and return true if so. For an equal time check MinuteRange = 0;
+    bool WithinTimeRange(int Caller, AnsiString Time1, AnsiString Time2, int MinuteRange);
 /// new v2.2.0, calcs distance to red signal, returns -1 for no signal found, for autosigs route after next red signal & other conditions, also totals up location stop times before the red signal and returns value in StopTime
     int CalcDistanceToRedSignalandStopTime(int Caller, int TrackVectorPosition, int TrackVectorPositionEntryPos, bool SigControlAndCanPassRedSignal,
         TActionVectorEntry *AVPtr, AnsiString HeadCode, int TrainID, float &CurrentStopTime, float &LaterStopTime, float &RecoverableTime, int &AvTrackSpeed);
 /// Return the track entry link (Link[]) array position for the given train on track element at track vector position TrackVectorNumber
     int EntryPos(int Caller, int TrainIDIn, int TrackVectorNumber);
-/// Get the interval betwqeen repeats
+/// Get the interval between repeats
     TDateTime GetControllerTrainTime(int Caller, TDateTime Time, int RepeatNumber, int IncrementalMinutes);
 /// Return the repeating service time
     TDateTime TTrainController::GetRepeatTime(int Caller, TDateTime BasicTime, int RepeatNumber, int IncMinutes);

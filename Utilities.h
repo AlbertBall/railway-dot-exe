@@ -23,6 +23,7 @@
 // ---------------------------------------------------------------------------
 #ifndef UtilitiesH
 #define UtilitiesH
+// ---------------------------------------------------------------------------
 
 #include <deque>
 #include <vcl.h>
@@ -107,6 +108,8 @@ public:
     ///< formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 & resets when it reaches 96
     AnsiString Format96HHMM(TDateTime DateTime);
     ///< formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 & resets when it reaches 96
+    AnsiString IncrementAnsiTimeOneMinute(AnsiString TimeVal);
+    ///< takes "HH:MM" and increments it to "HH:MX", where MX == MM + 1, incrementing the hour if necessary
 };
 
 // ---------------------------------------------------------------------------

@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.4.2</span>
+   &#160;<span id="projectnumber">v2.5.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -367,7 +367,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A descendent of <a class="el" href="class_t_one_pref_dir.html" title="The basic preferred direction class, consisting of any number of elements with preferred directions s...">TOnePrefDir</a> used for routes. Used during contruction of a route (ConstructRoute) and also for all completed routes, when each route is saved as an entry in the AllRoutesVector (see <a class="el" href="class_t_all_routes.html" title="Handles data and functions relating to all routes on the railway.">TAllRoutes</a>) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01354">1354</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01357">1357</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a05ce65e80c2272a775f6497890d42b6b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a05ce65e80c2272a775f6497890d42b6b">&#9670;&nbsp;</a></span>ClearRoute()</h2>
@@ -394,7 +394,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Empty the route of any stored elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01405">1405</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01408">1408</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -426,7 +426,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Called after a non-preferred (i.e. unrestricted) route has been selected and has finished flashing, to add it to the AllRoutesVector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14624">14624</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14705">14705</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -464,7 +464,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and has finished flashing, to add it to the AllRoutesVector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13475">13475</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13556">13556</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -494,7 +494,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Erase a single route element. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01412">1412</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01415">1415</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -532,7 +532,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Used when setting signal aspects for a route by working forwards through the route to see what the next forward signal aspects is, because this determines all the rearward signal aspects. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14908">14908</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14989">14989</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -554,7 +554,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Cancel a route immediately if a train occupies it when travelling in the wrong direction (or occupies a crossover on a non-route line when the other track is in a route) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15325">15325</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15406">15406</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -616,7 +616,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc. If find one return true, set &amp;PointsChanged to true if any points need to be changed and &amp;ReqPosRouteID to the route ID of the existing route to attach to, if there is one, and -1 if not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13886">13886</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13967">13967</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -684,7 +684,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Try to find a set of linked tracks that lie on preferred directions between the route start element and the one at HLoc &amp; VLoc. If find one return true, set &amp;PointsChanged to true if any points need to be changed and &amp;ReqPosRouteID to the route ID of the existing route to attach to, if there is one, and -1 if not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12536">12536</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12617">12617</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -734,7 +734,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Set the starting conditions for a non-preferred (i.e. unrestricted) route selection beginning on HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13671">13671</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13752">13752</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -790,7 +790,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Set the starting conditions for a preferred direction or automatic signal route selection beginning on HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12256">12256</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12337">12337</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -841,7 +841,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Examines the route to see whether the element at H &amp; V is in the route, and if not returns a ReturnFlag value of NotInRoute. </p>
 <p>If it is in a route but the element selected is invalid, then a message is given and returns with a ReturnFlag value of InRouteFalse. Otherwise the route is truncated at and including the element that matches H &amp; V with a ReturnFlag value of InRouteTrue. Selection invalid if a train at or before the truncate point; select a bridge; trying to leave a single element; last element to be left not a signal (for ConsecSignalsRoute or has AutoSigsFlag set); last element to be left a bridge, points or crossover (for not ConsecSignalsRoute &amp; AutoSigsFlag not set), or part of route locked. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15121">15121</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15202">15202</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -863,7 +863,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Called by GetNextNonPreferredRouteElement and GetNextPreferredRouteElement to check whether or not any points on the selected route need to be changed. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14877">14877</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14958">14958</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -895,7 +895,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Used when creating a bitmap image to display the route colours and direction arrows (as on screen during operation) for an operating railway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12954">12954</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13035">13035</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -945,7 +945,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Called by GetNextNonPreferredRouteElement to carry out the search for linked track, and also called recursively. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14242">14242</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14323">14323</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1019,7 +1019,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called recursively. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12990">12990</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13071">13071</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1051,7 +1051,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>After a route has been selected successfully this function sets all LC change values appropriately for the selected route type and location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15420">15420</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15501">15501</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1089,7 +1089,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Called by <a class="el" href="class_t_all_routes.html#ac6bd39457747eaa96476a8a87df15ac2" title="Set rearwards signals from the specified route starting position.">TAllRoutes::SetAllRearwardsSignals</a> to set rearwards signals from a specified starting position. If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14989">14989</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15070">15070</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1111,7 +1111,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Called when setting unrestricted routes to set the route element values appropriately after a successful search has been conducted. It isn't needed for preferred routes because the element values are obtained from the already set preferred direction elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14548">14548</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14629">14629</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1149,7 +1149,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>After a route has been selected successfully this function sets all RouteFlash (see above) values appropriately for the selected route type and location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15392">15392</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15473">15473</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1171,7 +1171,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Called when setting a route to set all points appropriately. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14785">14785</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14866">14866</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1209,7 +1209,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector so that the route displays with the correct colour. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15369">15369</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15450">15450</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1231,7 +1231,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Called when setting a route to set all points appropriately. Also called when a new train is added at a position where a route has been set, when it is necessary to set the next rearwards signal to red, the next yellow etc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14814">14814</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14895">14895</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1261,7 +1261,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Store a single route element in the PrefDirVector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01418">1418</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01421">1421</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1281,7 +1281,7 @@ Additional Inherited Members</h2></td></tr>
 <p>session saves as routes in build are not saved in sessions </p>
 <p>the route ID number of the route that is being extended backwards during route building, not needed for </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01386">1386</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01389">1389</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1299,7 +1299,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>the class member that allows the route to flash during setting up (see <a class="el" href="class_t_one_route_1_1_t_route_flash.html" title="The flashing route.">TRouteFlash</a> above) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01399">1399</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01402">1402</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1317,7 +1317,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>the ID number of the route, this is needed for session saves </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01393">1393</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01396">1396</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1343,7 +1343,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>limit to the number of elements searched in attempting to find a route </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01383">1383</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01386">1386</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1359,7 +1359,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01397">1397</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01400">1400</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1377,7 +1377,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>the two preferred direction elements corresponding to the starting position of a new route </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01397">1397</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01400">1400</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1395,7 +1395,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>TrackVectorPosition of the StartElement(s) set when the starting position of a new route is selected, note that although there may be two StartElements (as there can be two preferred directions on a single element), there is only one TrackVectorPosition as the element is the same for both. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01395">1395</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01398">1398</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1414,7 +1414,7 @@ Additional Inherited Members</h2></td></tr>
 <p>needed for session saves as routes in build are not saved in sessions </p>
 <p>the route ID number of the route that is being extended forwards during route building, not </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01389">1389</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01392">1392</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>

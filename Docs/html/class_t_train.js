@@ -8,6 +8,7 @@ var class_t_train =
     [ "CallingOnAllowed", "class_t_train.html#a4524b72ef62ef2c1375f58fac05929ee", null ],
     [ "ChangeTrainDirection", "class_t_train.html#a406c172a0ba96802ada1aa04d78948d0", null ],
     [ "CheckAndCancelRouteForWrongEndEntry", "class_t_train.html#a50997f7e8138a7e6a147fe3b5ad21b84", null ],
+    [ "CheckNewServiceDepartureTime", "class_t_train.html#a781291ed1d591990b7615286462a2861", null ],
     [ "CheckOneSessionTrain", "class_t_train.html#aad716bab6f8f4aa6dd49f35130d28dd9", null ],
     [ "ClearToNextSignal", "class_t_train.html#aeed1f50d8a4f76d7d77991d276758570", null ],
     [ "ContinuationExit", "class_t_train.html#a36b7b4901add145605ba1e540801b6cf", null ],

@@ -128,6 +128,7 @@ var class_t_track =
     [ "NoNamedLocationElements", "class_t_track.html#ab079bfd6871c5337b29297e7bc2cfe8b", null ],
     [ "NonFootCrossingNamedLocationExists", "class_t_track.html#aa67be9f8ad9bd885f649b26962e0d41d", null ],
     [ "NumberOfGaps", "class_t_track.html#a72c171ba53777dc2f5fab90877f9bc45", null ],
+    [ "NumberOfPlatforms", "class_t_track.html#aded8153d40ad58664e2a887316108add", null ],
     [ "OneNamedLocationElementAtLocation", "class_t_track.html#a7eba939947b4c035a191ecaaf1b0bb9a", null ],
     [ "OneNamedLocationLongEnoughForSplit", "class_t_track.html#a9d209cb6e24f67ba12020440a5e42347", null ],
     [ "OtherTrainOnTrack", "class_t_track.html#aeac90568597c9f13a27fa90c58f9041f", null ],

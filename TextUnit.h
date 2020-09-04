@@ -96,10 +96,10 @@ public:
 ///< look in TextVector for text item 'Name', and if found return true and return its position in &HPos and &VPos
     bool FontSame(int Caller, TFont *ExistingFont, TFont *InputFont);
 ///< checks colour, size, name, charset and style
-    bool TextErase(int Caller, int HPosition, int VPosition);
-///< look for a text item in the vicinity of HPosInput & VPosInput & erase it if found
-    bool TextFound(int Caller, int HPosInput, int VPosInput);
-///< look for a text item in the vicinity of HPosInput & VPosInput & return true if found
+    bool TextErase(int Caller, int HPosition, int VPosition, AnsiString TextToErase);
+///< look for a text item in the vicinity of HPosInput & VPosInput & if TextToErase is null then erase any text that is found, else erase TextToErase
+    bool TextFound(int Caller, int HPosInput, int VPosInput, AnsiString& Text);
+///< look for a text item in the vicinity of HPosInput & VPosInput, return true if found & return the found text in the AnsiString
     int GetFontStyleAsInt(int Caller, TFont *InputFont);
 ///< retrieve the style of the font as a coded integer
     TTextItem *SelectTextPtrAt(int Caller, int At);

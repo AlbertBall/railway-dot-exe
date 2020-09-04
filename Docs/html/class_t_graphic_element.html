@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.4.2</span>
+   &#160;<span id="projectnumber">v2.5.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -173,7 +173,7 @@ Private Attributes</h2></td></tr>
 <div class="textblock"><p>Allows a single Width x Height graphic to change and change back independently of the remaining display. </p>
 <p>Used for the flashing green and red gap markers, flashing points and route start graphics. The code is mostly self-explanatory, but SetScreenHVSource (sets source rectangle) must be called before the original graphic is loaded, whether or not the graphic is loaded from the screen (using LoadOriginalScreenGraphic, for point flashing and route start markers) or an existing bitmap (using LoadOriginalExistingGraphic, for red and green gap flashing), and OverlayGraphic and OriginalGraphic must be loaded before they are plotted. Checks are built in for these conditions. SourceRect is the rectangle on the appropriate canvas where the original graphic is taken from. The original graphic can be taken from the screen - <a class="el" href="class_t_graphic_element.html#ac12f60cb52eefdc86eaa504419eb138d" title="Load original graphic from the screen for point flashing or route start markers.">LoadOriginalScreenGraphic()</a>, or from a section from an existing bitmap - LoadOriginalExistingGraphic. If an existing bitmap is selected then the loading function overrides the size that was set in the constructor, and SourceRect &amp; HPos &amp; VPos that were set in SetScreenHVSource. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00344">344</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00345">345</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a037be3b14fb32ebac36bbee7b76a6fc1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a037be3b14fb32ebac36bbee7b76a6fc1">&#9670;&nbsp;</a></span>TGraphicElement() <span class="overload">[1/2]</span></h2>
@@ -192,7 +192,7 @@ Private Attributes</h2></td></tr>
 
 <p>Default constructor (16 x 16 pixel element) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01452">1452</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01453">1453</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -224,7 +224,7 @@ Private Attributes</h2></td></tr>
 
 <p>Constructor for specified dimensions. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01464">1464</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01465">1465</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -245,7 +245,7 @@ Private Attributes</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01476">1476</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01477">1477</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -273,7 +273,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00361">361</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00362">362</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -300,7 +300,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00366">366</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00367">367</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -356,7 +356,7 @@ Private Attributes</h2></td></tr>
 
 <p>Load red or green gap flashing graphic from the stored bitmaps. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01532">1532</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01533">1533</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -378,7 +378,7 @@ Private Attributes</h2></td></tr>
 
 <p>Load original graphic from the screen for point flashing or route start markers. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01498">1498</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01499">1499</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -410,7 +410,7 @@ Private Attributes</h2></td></tr>
 
 <p>Load the temporary overlay graphic. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01568">1568</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01569">1569</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -442,7 +442,7 @@ Private Attributes</h2></td></tr>
 
 <p>Plot the original graphic on screen. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01596">1596</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01597">1597</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -474,7 +474,7 @@ Private Attributes</h2></td></tr>
 
 <p>Plot the overlay graphic on screen. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01578">1578</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01579">1579</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -512,7 +512,7 @@ Private Attributes</h2></td></tr>
 
 <p>Set HPos, VPos &amp; SourceRect member values from the supplied positions. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01483">1483</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01484">1484</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -552,7 +552,7 @@ Private Attributes</h2></td></tr>
 
 <p>Set SourceRect member values from those supplied and existing Width &amp; Height - ensure this is only called after Width &amp; Height are set. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00372">372</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00373">373</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -579,7 +579,7 @@ Private Attributes</h2></td></tr>
 
 <p>state flags </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00348">348</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00349">349</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -605,7 +605,7 @@ Private Attributes</h2></td></tr>
 
 <p>dimensions in pixels </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00352">352</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00353">353</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -629,7 +629,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00350">350</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00351">351</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -653,7 +653,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00354">354</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00355">355</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -677,7 +677,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00348">348</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00349">349</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -703,7 +703,7 @@ Private Attributes</h2></td></tr>
 
 <p>original and temporary overlay graphics </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00354">354</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00355">355</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -727,7 +727,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00348">348</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00349">349</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -751,7 +751,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00348">348</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00349">349</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -775,7 +775,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00348">348</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00349">349</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -799,7 +799,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00348">348</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00349">349</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -825,7 +825,7 @@ Private Attributes</h2></td></tr>
 
 <p>source rectangle of the original graphic </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00356">356</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00357">357</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -851,7 +851,7 @@ Private Attributes</h2></td></tr>
 
 <p>horizontal and vertical positions </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00350">350</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00351">351</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -875,7 +875,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00352">352</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00353">353</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>

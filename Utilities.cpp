@@ -23,6 +23,7 @@
       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 // ---------------------------------------------------------------------------
+
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
@@ -545,3 +546,31 @@ AnsiString TUtilities::Format96HHMM(TDateTime DateTime)
 }
 
 // ---------------------------------------------------------------------------
+
+AnsiString TUtilities::IncrementAnsiTimeOneMinute(AnsiString TimeVal)
+{
+    AnsiString MinString = TimeVal.SubString(4,2);
+    AnsiString HourString = TimeVal.SubString(1,2);
+    int Mins =  MinString.ToInt();
+    int Hours = HourString.ToInt();
+    Mins++;
+    if(Mins > 59)
+    {
+        Mins = 0;
+        Hours++; //don't need to worry about exceeding 96 hours as TT validity checker looks after that
+    }
+    MinString = AnsiString(Mins);
+    if(MinString.Length() < 2)
+    {
+        MinString = "0" + MinString;
+    }
+    HourString = AnsiString(Hours);
+    if(HourString.Length() < 2)
+    {
+        HourString = "0" + HourString;
+    }
+    return HourString + ":" + MinString;
+}
+
+// ---------------------------------------------------------------------------
+

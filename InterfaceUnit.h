@@ -209,9 +209,11 @@ __published: // IDE-managed Components
 
 // timetable clock adjustment panel, buttons & labels
     TPanel *TTClockAdjPanel;
+    TPanel *TTClockAdjustWarningPanel;
     TButton *TTClockAdd1hButton;
     TButton *TTClockAdd10mButton;
     TButton *TTClockAdd1mButton;
+    TButton *TTClockAdjustOKButton;
     TButton *TTClockExitButton;
     TButton *TTClockResetButton;
     TButton *TTClockxQuarterButton;
@@ -223,6 +225,24 @@ __published: // IDE-managed Components
     TButton *TTClockx16Button;
     TButton *TTClockxEighthButton;
     TButton *TTClockxSixteenthButton;
+    TCheckBox *TTClockAdjustCheckBox;
+    TLabel *TTClockAdjustWarningLabel;
+
+// timetable conflict analysis button & panel
+    TButton *ConflictAnalysisButton;
+    TButton *CPCancelButton;
+    TButton *CPGenFileButton;
+    TPanel *ConflictPanel;
+    TLabel *CPLabel1;
+    TLabel *CPLabel2;
+    TLabel *CPLabel3;
+    TLabel *CPLabel4;
+    TLabel *CPLabel5;
+    TCheckBox *CPArrivalsCheckBox;
+    TCheckBox *CPDeparturesCheckBox;
+    TCheckBox *CPAtLocCheckBox;
+    TEdit *CPEditArrRange;
+    TEdit *CPEditDepRange;
 
 // screen navigation buttons (right/up means move viewpoint right/up, i.e railway moves left/down)
     TBitBtn *ScreenRightButton;
@@ -347,7 +367,7 @@ __published: // IDE-managed Components
     TPanel *TTCommandTextPanel;
 ///< the timetable panel that contains the service component buttons and information
     TPanel *HighlightPanel;
-///< the red bar that displays the current timetable entry in AllEntriesTTListBox
+///< the orange bar that displays the current timetable entry in AllEntriesTTListBox
     TPanel *InfoPanel;
 ///< the general information panel (with blue 'i' symbol)
     TPanel *PerformancePanel;
@@ -370,7 +390,9 @@ __published: // IDE-managed Components
 ///< the program menu
 
     TMemo *ErrorMessage;
-///< the text of the error message screen
+///< the text of the normal error message screen
+    TMemo *ErrorMessageStoreImage;
+///< the text of the error message for failure to draw trains in SaveOperatingImage
     TMemo *OneEntryTimetableMemo;
 ///< the single service editing and display area on the right hand side of the timetable edit screen
     TMemo *PerformanceLogBox;
@@ -625,6 +647,9 @@ __published: // IDE-managed Components
     TSpeedButton *SpeedButton144;
     TSpeedButton *SpeedButton145;
     TSpeedButton *SpeedButton146;
+    TLabel *CPLabel6;
+    TLabel *CPLabel7;
+    TLabel *CPLabel8;
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -811,7 +836,11 @@ __published: // IDE-managed Components
     void __fastcall AZOrderButtonClick(TObject *Sender);
     void __fastcall UserGraphicButtonClick(TObject *Sender);
     void __fastcall ReselectUserGraphicClick(TObject *Sender);
-    void __fastcall SelectNewGraphicClick(TObject *Sender); // new at v2.4.0
+    void __fastcall SelectNewGraphicClick(TObject *Sender);
+    void __fastcall TTClockAdjustOKButtonClick(TObject *Sender);
+    void __fastcall ConflictAnalysisButtonClick(TObject *Sender);
+    void __fastcall CPCancelButtonClick(TObject *Sender);
+    void __fastcall CPGenFileButtonClick(TObject *Sender); // new at v2.4.0
 
 public: // AboutForm needs access to these
 
@@ -900,6 +929,8 @@ private:
 ///< true when AutoSig or preferred route building selected during operation (always same state as PreferredRoute)
     bool CopiedEntryFlag;
 ///< true when CopiedEntryStr holds a timetable entry in the timetable editor
+    bool CtrlKey;
+///< true when the CTRL key is pressed (see also ShiftKey)
     bool DirOpenError;
 ///< true when one of the program subfolders doesn't already exist and can't be created
     bool DistancesMarked;
@@ -934,10 +965,8 @@ private:
 ///< true when 'Set lengths &/or speeds' selected in the 'Edit' menu
     bool SelectPickedUp;
 ///< true when a valid selected screen area has been clicked after a 'Copy' or 'Cut' selected in the 'Edit' menu
-    bool CtrlKey;
-///< true when the CTRL key is pressed (used for small movements of the screen)
     bool ShiftKey;
-///< true when the SHIFT key is pressed (used for large movements of the screen)
+///< true when the SHIFT key is pressed (see also CtrlKey)
     bool ShowPerformancePanel;
 ///< true when the 'show performance panel' button has been clicked during operation
     bool SkipFormResizeEvent;
@@ -946,6 +975,8 @@ private:
 ///< indicates that a screen cursor has been stored in TempCursor for redisplay after a temporary cursor (usually an hourglass) has been displayed
     bool TextFoundFlag;
 ///< indicates that a text item has been found when clicking on a build screen during 'AddText' or 'MoveTextOrGraphic' modes
+    bool TTClockAdjustWarningHide;
+///< true if user opts not to show the timetable clock adjustment warning (false on starting the program)
     bool UserGraphicFoundFlag;
 ///< indicates that a user graphic item has been found when clicking on a build screen for moving
     bool TimetableChangedFlag;
@@ -964,6 +995,28 @@ private:
 ///< true when mouse hovers over warning messages during operation - to prevent clicking while changing
     bool WholeRailwayMoving;
 ///< true when moving the railway with the mouse, new at v2.1.0
+
+
+/**These are for Shift Key shortcuts. 'Click()' execution must occur separately to the keypress because Windows stores the key until after any directly linked key code
+is executed then selects the timetable entry that begins with the letter corresponding to the key.  Without this separation the list box is left with the wrong entry
+showing.  See DevHistory.txt for the version after v2.4.3 for details. */
+    bool PreviousTTEntryKeyFlag;
+    bool NextTTEntryKeyFlag;
+    bool MoveTTEntryUpKeyFlag;
+    bool MoveTTEntryDownKeyFlag;
+    bool CopyTTEntryKeyFlag;
+    bool CutTTEntryKeyFlag;
+    bool PasteTTEntryKeyFlag;
+    bool DeleteTTEntryKeyFlag;
+    bool NewTTEntryKeyFlag;
+    bool AZOrderKeyFlag;
+    bool TTServiceSyntaxCheckKeyFlag;
+    bool ValidateTimetableKeyFlag;
+    bool SaveTTKeyFlag;
+    bool SaveTTAsKeyFlag;
+    bool RestoreTTKeyFlag;
+    bool ExportTTKeyFlag;
+    bool ConflictAnalysisKeyFlag;
 
     double PauseEntryRestartTime;
 ///< time value of the timetable restart time (as a double) on entry to pause mode
@@ -987,6 +1040,8 @@ private:
 ///< total clock ticks
     unsigned int MissedTicks;
 ///< missed clock ticks
+    int AllEntriesTTListBoxTopPosition;
+///< stores the TopIndex property when keys are used to select items in the TT edit panel
     int LastNonCtrlOrShiftKeyDown;
 ///< value of last key (other than Ctrl or Shift) pressed down - to prevent repeated FormKeyDown calls from repeatedly acting on the same key combination
     int NewSelectBitmapHLoc;
@@ -1084,6 +1139,15 @@ private:
     __fastcall TInterface(TComponent* Owner);
 /// destructor
     __fastcall ~TInterface();
+
+//inline function
+//true if any of the TT key flags are set
+bool AnyTTKeyFlagSet()
+     {
+         return (PreviousTTEntryKeyFlag || NextTTEntryKeyFlag || MoveTTEntryUpKeyFlag || MoveTTEntryDownKeyFlag || CopyTTEntryKeyFlag || CutTTEntryKeyFlag || PasteTTEntryKeyFlag
+                    || DeleteTTEntryKeyFlag || NewTTEntryKeyFlag || AZOrderKeyFlag || TTServiceSyntaxCheckKeyFlag || ValidateTimetableKeyFlag || SaveTTKeyFlag || SaveTTAsKeyFlag
+                    || RestoreTTKeyFlag || ExportTTKeyFlag || ConflictAnalysisKeyFlag);
+     }
 
 // functions defined in .cpp file
 
@@ -1212,6 +1276,8 @@ is loaded fillowed by AvHoursIntValue then all failed trains if any. */
     void SetRouteButtonsInfoCaptionAndRouteNotStarted(int Caller);
 /// Called during the ClockTimer2 function to set screen boundaries, buttons & menu items
     void SetSaveMenuAndButtons(int Caller);
+///This used in timetable functions when shift keys pressed to make sure that the highlighted entry remains visible
+    void SetTopIndex(int Caller);
 /// Sets the left screen images (track linked or not, gaps set or not, locations named or not) during railway building
     void SetTrackBuildImages(int Caller);
 /// Called during track building when setting distances, to calculate and set the individual track element lengths

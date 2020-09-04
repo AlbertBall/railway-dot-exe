@@ -113,7 +113,7 @@ automatic signal sections being individual routes, and mixtures of others
 between similarly being regarded as individual but separate routes. In these
 circumstances when a route is cancelled, just the relevant section is
 cancelled. This may sometimes cause problems because the automatic signal
-routes always take preference and include the signals at both ends. Therefore,
+routes always take precedence and include the signals at both ends. Therefore,
 if a section of automatic signal route is cancelled, the signal that represents
 the boundary between it and the other type of route is removed when the
 automatic signal route is removed. This leaves the other route with a missing
@@ -121,10 +121,7 @@ signal, and a new section of route can't be created to include it because the
 program won't permit a route to end next to an existing route. Hence the other
 section of route must be cancelled also.</p>
 
-<p>Try to avoid having a signal immediately before a bridge, because bridges
-can't be used as truncate points, so the route can't be truncated to that
-signal. This is because a bridge is potentially ambiguous as it may have two
-routes set on it.</p>
+<p> Signals are not permitted immediately before and facing a bridge, because bridges can't be used as truncate points, so the route can't be truncated to that signal. This is because a bridge is potentially ambiguous as it may have two routes set on it.</p>
 
 <p>Note that a train that runs in the wrong direction on any part of a route
 will cancel the whole of that route and all signals will change to red

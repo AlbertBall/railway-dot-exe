@@ -608,7 +608,7 @@ of the flashing until the duration is reached, when the object is erased from th
 
 // NOTE: the above (TLNPendingList, TLNDone2MultiMap & TLocationNameMultiMap) store adjusted vector positions - adjusted because have
 // a single int to represent both active and inactive vector positions.  Use (-1 - Position) for active vector positions & (Position)
-// for inactive vector positions (most location elements are in the inactive vector so these are positive).  Tthe '-1' bit is needed
+// for inactive vector positions (most location elements are in the inactive vector so these are positive).  The '-1' bit is needed
 // because the value '0' is used for the first position in the inactive vector
 
     typedef std::map<AnsiString, int>TActiveTrackElementNameMap;
@@ -989,6 +989,8 @@ exclude opposed buffers since these not linked.  Used in timetable integrity che
     int GetVectorPositionFromTrackMap(int Caller, int HLoc, int VLoc, bool &FoundFlag);
 /// Returns the number of gaps in the railway
     int NumberOfGaps(int Caller);
+/// Returns the number of separate platforms (not platform elements) at a given location, either a station or non station named location
+    int NumberOfPlatforms(int Caller, AnsiString LocationName);
 /// Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there can be up to 2 platforms at a specific position
     TIMPair GetVectorPositionsFromInactiveTrackMap(int Caller, int HLoc, int VLoc, bool &FoundFlag);
 /// Searches LocationNameMultiMap to check if the element pointed to by the TTrackVectorIterator has the name LocationName. If it finds it the pointer TLocationNameMultiMapIterator is returned.  If it fails ErrorString is set to an appropriate text to allow the calling function to report the error.  Otherwise it is set to "".

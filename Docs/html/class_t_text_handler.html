@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.4.2</span>
+   &#160;<span id="projectnumber">v2.5.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -125,12 +125,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a316bc0c1c06d77aa8c33a668946e49f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_text_handler.html#a316bc0c1c06d77aa8c33a668946e49f1">FontSame</a> (int Caller, TFont *ExistingFont, TFont *InputFont)</td></tr>
 <tr class="memdesc:a316bc0c1c06d77aa8c33a668946e49f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks colour, size, name, charset and style  <a href="class_t_text_handler.html#a316bc0c1c06d77aa8c33a668946e49f1">More...</a><br /></td></tr>
 <tr class="separator:a316bc0c1c06d77aa8c33a668946e49f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad606b1b745b674f0a46cdaa65d09206d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_text_handler.html#ad606b1b745b674f0a46cdaa65d09206d">TextErase</a> (int Caller, int HPosition, int VPosition)</td></tr>
-<tr class="memdesc:ad606b1b745b674f0a46cdaa65d09206d"><td class="mdescLeft">&#160;</td><td class="mdescRight">look for a text item in the vicinity of HPosInput &amp; VPosInput &amp; erase it if found  <a href="class_t_text_handler.html#ad606b1b745b674f0a46cdaa65d09206d">More...</a><br /></td></tr>
-<tr class="separator:ad606b1b745b674f0a46cdaa65d09206d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2395c6412e763e1b1141b6dc1d524f8b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_text_handler.html#a2395c6412e763e1b1141b6dc1d524f8b">TextFound</a> (int Caller, int HPosInput, int VPosInput)</td></tr>
-<tr class="memdesc:a2395c6412e763e1b1141b6dc1d524f8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">look for a text item in the vicinity of HPosInput &amp; VPosInput &amp; return true if found  <a href="class_t_text_handler.html#a2395c6412e763e1b1141b6dc1d524f8b">More...</a><br /></td></tr>
-<tr class="separator:a2395c6412e763e1b1141b6dc1d524f8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5741d1b36f1245b55926cb1243046307"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_text_handler.html#a5741d1b36f1245b55926cb1243046307">TextErase</a> (int Caller, int HPosition, int VPosition, AnsiString TextToErase)</td></tr>
+<tr class="memdesc:a5741d1b36f1245b55926cb1243046307"><td class="mdescLeft">&#160;</td><td class="mdescRight">look for a text item in the vicinity of HPosInput &amp; VPosInput &amp; if TextToErase is null then erase any text that is found, else erase TextToErase  <a href="class_t_text_handler.html#a5741d1b36f1245b55926cb1243046307">More...</a><br /></td></tr>
+<tr class="separator:a5741d1b36f1245b55926cb1243046307"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6b912627bb0401c255b4db5e272e9fd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_text_handler.html#af6b912627bb0401c255b4db5e272e9fd">TextFound</a> (int Caller, int HPosInput, int VPosInput, AnsiString &amp;Text)</td></tr>
+<tr class="memdesc:af6b912627bb0401c255b4db5e272e9fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">look for a text item in the vicinity of HPosInput &amp; VPosInput, return true if found &amp; return the found text in the AnsiString  <a href="class_t_text_handler.html#af6b912627bb0401c255b4db5e272e9fd">More...</a><br /></td></tr>
+<tr class="separator:af6b912627bb0401c255b4db5e272e9fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19a5042d87a979d56ba4678bee8b2abb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_text_handler.html#a19a5042d87a979d56ba4678bee8b2abb">GetFontStyleAsInt</a> (int Caller, TFont *InputFont)</td></tr>
 <tr class="memdesc:a19a5042d87a979d56ba4678bee8b2abb"><td class="mdescLeft">&#160;</td><td class="mdescRight">retrieve the style of the font as a coded integer  <a href="class_t_text_handler.html#a19a5042d87a979d56ba4678bee8b2abb">More...</a><br /></td></tr>
 <tr class="separator:a19a5042d87a979d56ba4678bee8b2abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -295,7 +295,7 @@ Public Attributes</h2></td></tr>
 
 <p>check the validity of text items in VecFile prior to loading, return true for success </p>
 
-<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00343">343</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00349">349</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -383,7 +383,7 @@ Public Attributes</h2></td></tr>
 
 <p>look in TextVector for text item 'Name', and if found return true and return its position in &amp;HPos and &amp;VPos </p>
 
-<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00551">551</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00557">557</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -485,7 +485,7 @@ Public Attributes</h2></td></tr>
 
 <p>load the railway's text from VecFile </p>
 
-<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00275">275</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00281">281</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -517,7 +517,7 @@ Public Attributes</h2></td></tr>
 
 <p>display all text items in TextVector on the screen </p>
 
-<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00402">402</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00408">408</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -549,7 +549,7 @@ Public Attributes</h2></td></tr>
 
 <p>save the railway's text to VecFile </p>
 
-<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00313">313</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00319">319</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -581,7 +581,7 @@ Public Attributes</h2></td></tr>
 
 <p>return the text item at position 'At' in SelectTextVector (carries out range checking) </p>
 
-<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00536">536</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00542">542</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -603,7 +603,7 @@ Public Attributes</h2></td></tr>
 
 <p>return the number of items in SelectTextVector </p>
 
-<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00510">510</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00516">516</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -745,12 +745,12 @@ Public Attributes</h2></td></tr>
 
 <p>empties TextVector and sets all offsets back to zero if there is no active or inactive track </p>
 
-<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00453">453</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00459">459</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
 </div>
 </div>
-<a id="ad606b1b745b674f0a46cdaa65d09206d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad606b1b745b674f0a46cdaa65d09206d">&#9670;&nbsp;</a></span>TextErase()</h2>
+<a id="a5741d1b36f1245b55926cb1243046307"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5741d1b36f1245b55926cb1243046307">&#9670;&nbsp;</a></span>TextErase()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -771,7 +771,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>VPosition</em>&#160;</td>
+          <td class="paramname"><em>VPosition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>TextToErase</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -781,14 +787,14 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>look for a text item in the vicinity of HPosInput &amp; VPosInput &amp; erase it if found </p>
+<p>look for a text item in the vicinity of HPosInput &amp; VPosInput &amp; if TextToErase is null then erase any text that is found, else erase TextToErase </p>
 
-<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00249">249</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00250">250</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a2395c6412e763e1b1141b6dc1d524f8b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2395c6412e763e1b1141b6dc1d524f8b">&#9670;&nbsp;</a></span>TextFound()</h2>
+<a id="af6b912627bb0401c255b4db5e272e9fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6b912627bb0401c255b4db5e272e9fd">&#9670;&nbsp;</a></span>TextFound()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -809,7 +815,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>VPosInput</em>&#160;</td>
+          <td class="paramname"><em>VPosInput</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString &amp;&#160;</td>
+          <td class="paramname"><em>Text</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -819,7 +831,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>look for a text item in the vicinity of HPosInput &amp; VPosInput &amp; return true if found </p>
+<p>look for a text item in the vicinity of HPosInput &amp; VPosInput, return true if found &amp; return the found text in the AnsiString </p>
 
 <p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00225">225</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
@@ -914,7 +926,7 @@ Public Attributes</h2></td></tr>
 
 <p>return the text item at position 'At' in TextVector (carries out range checking) </p>
 
-<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00521">521</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00527">527</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -946,7 +958,7 @@ Public Attributes</h2></td></tr>
 
 <p>push &amp;Text onto TextVector &amp; reset the size of the railway if necessary </p>
 
-<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00479">479</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00485">485</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -984,7 +996,7 @@ Public Attributes</h2></td></tr>
 
 <p>change the HPos &amp; VPos values for all items in TextVector by the amount in HOffset and VOffset (unused) </p>
 
-<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00436">436</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00442">442</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1006,7 +1018,7 @@ Public Attributes</h2></td></tr>
 
 <p>return the number of items in TextVector </p>
 
-<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00499">499</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00505">505</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1038,7 +1050,7 @@ Public Attributes</h2></td></tr>
 
 <p>write all items in TextVector to the railway image in 'Bitmap' </p>
 
-<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00419">419</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_unit_8cpp_source.html#l00425">425</a> of file <a class="el" href="_text_unit_8cpp_source.html">TextUnit.cpp</a>.</p>
 
 </div>
 </div>

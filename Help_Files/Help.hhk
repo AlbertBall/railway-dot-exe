@@ -274,6 +274,11 @@
 		<param name="Local" value="html/3.34jhv.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Conflicts">
+		<param name="Name" value="Timetable conflict analysis">
+		<param name="Local" value="html\5.12.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Connect gaps">
 		<param name="Name" value="Building a new railway or modifying an existing railway">
 		<param name="Local" value="html/3001f.htm">
@@ -1221,15 +1226,15 @@
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Signals">
-		<param name="Name" value="Track element types">
-		<param name="Local" value="html/3.1.246p.htm">
-		<param name="Name" value="Setting preferred directions (PDs)">
-		<param name="Local" value="html/4001g.htm">
 		<param name="Name" value="Backgrounds & trackside signal locations">
 		<param name="Local" value="html\2.14gc1.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Signals">
+		<param name="Name" value="Track element types">
+		<param name="Local" value="html/3.1.246p.htm">
+		<param name="Name" value="Setting preferred directions (PDs)">
+		<param name="Local" value="html/4001g.htm">
 		<param name="Name" value="Backgrounds & trackside signal locations">
 		<param name="Local" value="html\2.14gc1.htm">
 		</OBJECT>
@@ -1418,6 +1423,11 @@
 		<param name="Name" value="Timetable comment">
 		<param name="Name" value="Timetables">
 		<param name="Local" value="html/5001h.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Timetable conflict analysis">
+		<param name="Name" value="Timetable conflict analysis">
+		<param name="Local" value="html\5.12.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Timetable editor">

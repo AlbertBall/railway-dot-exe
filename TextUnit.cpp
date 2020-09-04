@@ -205,12 +205,12 @@ void TTextHandler::TextMove(int Caller, int HPosInput, int VPosInput, int &TextI
         for(TextPtr = (TextVector.end() - 1); TextPtr >= TextVector.begin(); TextPtr--)
         {
             x--;
-            if((HPosInput >= (*TextPtr).HPos) && (HPosInput < ((*TextPtr).HPos + abs((*TextPtr).Font->Height))) && (VPosInput >= (*TextPtr).VPos) &&
-                (VPosInput < ((*TextPtr).VPos + abs((*TextPtr).Font->Height))))
+            if((HPosInput >= TextPtr->HPos) && (HPosInput < (TextPtr->HPos + abs(TextPtr->Font->Height))) && (VPosInput >= TextPtr->VPos) &&
+                (VPosInput < (TextPtr->VPos + abs(TextPtr->Font->Height))))
             {
                 TextItem = x;
-                TextMoveHPos = (*TextPtr).HPos;
-                TextMoveVPos = (*TextPtr).VPos;
+                TextMoveHPos = TextPtr->HPos;
+                TextMoveVPos = TextPtr->VPos;
                 TextFoundFlag = true;
                 Utilities->CallLogPop(1309);
                 return;
@@ -222,7 +222,7 @@ void TTextHandler::TextMove(int Caller, int HPosInput, int VPosInput, int &TextI
 
 // ---------------------------------------------------------------------------
 
-bool TTextHandler::TextFound(int Caller, int HPosInput, int VPosInput)
+bool TTextHandler::TextFound(int Caller, int HPosInput, int VPosInput, AnsiString& Text)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextFound," + AnsiString(HPosInput) + "," + AnsiString(VPosInput));
     TTextVectorIterator TextPtr;
@@ -234,9 +234,10 @@ bool TTextHandler::TextFound(int Caller, int HPosInput, int VPosInput)
     }
     for(TextPtr = (TextHandler->TextVector.end() - 1); TextPtr >= TextHandler->TextVector.begin(); TextPtr--)
     {
-        if((HPosInput >= (*TextPtr).HPos) && (HPosInput < ((*TextPtr).HPos + abs((*TextPtr).Font->Height))) && (VPosInput >= (*TextPtr).VPos) && (VPosInput <
-            ((*TextPtr).VPos + abs((*TextPtr).Font->Height))))
+        if((HPosInput >= TextPtr->HPos) && (HPosInput < (TextPtr->HPos + abs(TextPtr->Font->Height))) && (VPosInput >= TextPtr->VPos) && (VPosInput <
+            (TextPtr->VPos + abs(TextPtr->Font->Height))))
         {
+            Text = TextPtr->TextString;
             Utilities->CallLogPop(1312);
             return true;
         }
@@ -246,23 +247,28 @@ bool TTextHandler::TextFound(int Caller, int HPosInput, int VPosInput)
 }
 
 // ---------------------------------------------------------------------------
-bool TTextHandler::TextErase(int Caller, int HPosInput, int VPosInput)
+bool TTextHandler::TextErase(int Caller, int HPosInput, int VPosInput, AnsiString TextToErase)//if TextToErase is null then erase any text that is found, else erase TextToErase
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextErase," + AnsiString(HPosInput) + "," + AnsiString(VPosInput));
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextErase," + AnsiString(HPosInput) + "," + AnsiString(VPosInput) + "," + TextToErase);
     TTextVectorIterator TextPtr;
 
     if(!TextVector.empty())
     {
         for(TextPtr = (TextVector.end() - 1); TextPtr >= TextVector.begin(); TextPtr--)
         {
-            if((HPosInput >= (*TextPtr).HPos) && (HPosInput < ((*TextPtr).HPos + (*TextPtr).Font->Size)) && (VPosInput >= (*TextPtr).VPos) && (VPosInput <
-                ((*TextPtr).VPos + ((*TextPtr).Font->Size) * 1.5)))
+//            if((HPosInput >= TextPtr->HPos) && (HPosInput < (TextPtr->HPos + TextPtr->Font->Size)) && (VPosInput >= TextPtr->VPos) && (VPosInput <
+//                (TextPtr->VPos + (TextPtr->Font->Size) * 1.5)))  //changed this after v2.4.3 so all functions use the same values
+            if((HPosInput >= TextPtr->HPos) && (HPosInput < (TextPtr->HPos + abs(TextPtr->Font->Height))) && (VPosInput >= TextPtr->VPos) && (VPosInput <
+                (TextPtr->VPos + abs(TextPtr->Font->Height))))
 
             {
-                TextVector.erase(TextPtr);
-                Track->CalcHLocMinEtc(5);
-                Utilities->CallLogPop(1314);
-                return true;
+                if(((TextToErase != "") && (TextPtr->TextString == TextToErase)) || (TextToErase == ""))
+                {
+                    TextVector.erase(TextPtr);
+                    Track->CalcHLocMinEtc(5);
+                    Utilities->CallLogPop(1314);
+                    return true;
+                }
             } // if ....
         } // for TextPtr...
     }

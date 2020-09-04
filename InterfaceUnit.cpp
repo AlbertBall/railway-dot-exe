@@ -640,7 +640,9 @@ __fastcall TInterface::TInterface(TComponent* Owner): TForm(Owner)
         TTStartTimePtr = 0;
         TTFirstServicePtr = 0;
         TTLastServicePtr = 0;
-
+        ConflictPanel->Visible = false;
+        TTClockAdjustWarningPanel->Visible = false;
+        TTClockAdjustWarningHide = false;
         LastNonCtrlOrShiftKeyDown = -1; //set to no key
 
         SigImagePanel->Left = (Interface->Width - SigImagePanel->Width) / 2; // added for v2.3.0
@@ -703,6 +705,7 @@ __fastcall TInterface::~TInterface()
         delete Display;
         delete RailGraphics;
         delete Utilities;
+        DeleteFile(TempTTFileName); //added after v2.4.3 to prevent temporary files building up
     }
     catch(const Exception &e)
     {
@@ -1762,12 +1765,11 @@ void __fastcall TInterface::FontButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("FontButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",FontButtonClick");
-        FontDialog->Font = Display->GetFont();
-        FontDialog->Execute();
-        if(FontDialog->Font->Color == clB5G5R5)
-            FontDialog->Font->Color = clB0G0R0; // don't store white in font, will display black as white on
-        // dark backgrounds
-        Display->SetFont(FontDialog->Font);
+        FontDialog->Font = Display->GetFont();  //sets the dialog box font to the currently used font
+        FontDialog->Execute();                  //this displays the dialog box
+        if(FontDialog->Font->Color == clB5G5R5) //white
+            FontDialog->Font->Color = clB0G0R0; //black - don't store white in font, will display black as white on dark backgrounds
+        Display->SetFont(FontDialog->Font);     //sets the displayed font to the output from the dialog box
         if(TextBox->Visible)
             TextBox->SetFocus();
         else if(LocationNameTextBox->Visible)
@@ -2138,17 +2140,19 @@ void __fastcall TInterface::ExitOperationButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("ExitOperationButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExitOperationButtonClick");
-
-        UnicodeString MessageStr = "Please note that the session will be lost if it hasn't been saved.  Do you still wish to exit?";
-        TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
-        TrainController->RestartTime = TrainController->TTClockTime;
-        int button = Application->MessageBox(MessageStr.c_str(), L"Please confirm", MB_YESNO);
-        TrainController->BaseTime = TDateTime::CurrentDateTime();
-        TrainController->StopTTClockFlag = false;
-        if(button == IDNO)
+        if((double(TrainController->TTClockTime - TrainController->LastSessionSaveTTClockTime) * 86400) >= 300)
         {
-            Utilities->CallLogPop(751);
-            return;
+            UnicodeString MessageStr = "Please note that the session will be lost if it hasn't been saved.  Do you still wish to exit?";
+            TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
+            TrainController->RestartTime = TrainController->TTClockTime;
+            int button = Application->MessageBox(MessageStr.c_str(), L"Please confirm", MB_YESNO);
+            TrainController->BaseTime = TDateTime::CurrentDateTime();
+            TrainController->StopTTClockFlag = false;
+            if(button == IDNO)
+            {
+                Utilities->CallLogPop(751);
+                return;
+            }
         }
         Track->ResetSignals(1);
         Track->ResetPoints(1);
@@ -2820,7 +2824,7 @@ void __fastcall TInterface::SaveOperatingImageMenuItemClick(TObject *Sender)
         }
         else
         {
-            ErrorLog(113, e.Message);
+            ErrorLog(113, e.Message); //NB: DO NOT CHANGE THIS ERROR NUMBER - THE DISPLAYED MESSAGE DEPENDS ON IT
         }
     }
 }
@@ -2931,10 +2935,11 @@ void __fastcall TInterface::ExportTTMenuItemClick(TObject *Sender)
             Utilities->CallLogPop(1699);
             return;
         }
-        Screen->Cursor = TCursor(-11); // Hourglass;
+//        Screen->Cursor = TCursor(-11); // Hourglass; - no good setting here as it's reset by ShowMessage in CreateFormattedTimetable. It's set there after
+//        the message instead, but reset here afterwards
         // no need to stop clock as can't select this if operating
         TrainController->CreateFormattedTimetable(0, RailwayTitle, TimetableTitle, CurDir);
-        Screen->Cursor = TCursor(-2); // Arrow
+        Screen->Cursor = TCursor(-2); // Arrow - reset after above function returns
         Utilities->CallLogPop(1573);
     }
     catch(const Exception &e)
@@ -3080,6 +3085,7 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
     {
         TrainController->LogEvent("EditTimetableMenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",EditTimetableMenuItemClick");
+        SigImagePanel->Visible = false; //stop panel showing while waiting for name entry
         TimetableDialog->Filter = "Timetable file (*.ttb)|*ttb";
         CreateEditTTFileName = "";
         TimetableEditVector.clear();
@@ -3598,15 +3604,15 @@ void __fastcall TInterface::CutTTEntryButtonClick(TObject *Sender)
             return;
         }
 
-// reset the TTCurrentEntryPtr to the Entry after the erased one if there is one
+// reset the TTCurrentEntryPtr to the Entry before the erased one if there is one //was 'after', changed after v2.4.3
 // but vector pointers unreliable after an erase, so use the position in the vector
-        if(OldVectorPos >= TimetableEditVector.end() - TimetableEditVector.begin() - 1)
+        if(OldVectorPos == 0)
         {
-            TTCurrentEntryPtr = TimetableEditVector.end() - 1;
+            TTCurrentEntryPtr = TimetableEditVector.begin();
         }
         else
         {
-            TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos; // no need to add one as will be one further on because of erase
+            TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos - 1;
         }
         if(TTCurrentEntryPtr == 0)
         {
@@ -3736,15 +3742,15 @@ void __fastcall TInterface::DeleteTTEntryButtonClick(TObject *Sender)
             Utilities->CallLogPop(1779);
             return;
         }
-// reset the TTCurrentEntryPtr to the Entry after the erased one if there is one
+// reset the TTCurrentEntryPtr to the Entry before the erased one if there is one
 // but vector pointers unreliable after an erase, so use the position in the vector
-        if(OldVectorPos >= TimetableEditVector.end() - TimetableEditVector.begin() - 1)
+        if(OldVectorPos == 0)
         {
-            TTCurrentEntryPtr = TimetableEditVector.end() - 1;
+            TTCurrentEntryPtr = TimetableEditVector.begin();
         }
         else
         {
-            TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos; // no need to add one as will be one further on because of erase
+            TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos - 1;
         }
         if(TTCurrentEntryPtr == 0)
         {
@@ -4388,7 +4394,8 @@ void __fastcall TInterface::ExportTTButtonClick(TObject *Sender)
             Utilities->CallLogPop(1698);
             return;
         }
-        Screen->Cursor = TCursor(-11); // Hourglass;
+//        Screen->Cursor = TCursor(-11); // Hourglass; - no good setting here as it's reset by ShowMessage in CreateFormattedTimetable. It's set there after
+//        the message instead, but reset here afterwards
         AnsiString TTTitle;
         if(RlyFile && TimetableValidFlag && (CreateEditTTFileName != ""))
         {
@@ -4402,7 +4409,7 @@ void __fastcall TInterface::ExportTTButtonClick(TObject *Sender)
             }
             TrainController->CreateFormattedTimetable(1, RailwayTitle, TTTitle, CurDir);
         }
-        Screen->Cursor = TCursor(-2); // Arrow
+        Screen->Cursor = TCursor(-2); // Arrow - reset after above function returns
         Level1Mode = TimetableMode;
         SetLevel1Mode(116);
         Utilities->CallLogPop(1662);
@@ -4467,6 +4474,7 @@ void __fastcall TInterface::ExitTTModeButtonClick(TObject *Sender)
         CreateEditTTFileName = ""; // set to null to allow a check during error file saving, if not null save the tt being edited to the file
                                    // added for Beta v0.2b
         CreateEditTTTitle = ""; // as above
+        ConflictPanel->Visible = false;
         Level1Mode = BaseMode;
         SetLevel1Mode(84);
         Utilities->CallLogPop(1606);
@@ -4572,7 +4580,9 @@ void __fastcall TInterface::LocationNameComboBoxKeyUp(TObject *Sender, WORD &Key
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TInterface::AllEntriesTTListBoxMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y)
+
+void __fastcall TInterface::AllEntriesTTListBoxMouseUp(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y)
 {
 // Select the item pointed to unless a 'save entry' is pending in which case ignore
     try
@@ -4621,6 +4631,7 @@ void __fastcall TInterface::AllEntriesTTListBoxMouseUp(TObject *Sender, TMouseBu
         ErrorLog(103, e.Message);
     }
 }
+
 // ---------------------------------------------------------------------------
 
 void __fastcall TInterface::OAListBoxMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y)
@@ -5016,6 +5027,7 @@ void TInterface::TimetableHandler()
     CancelTTEntryButton->Enabled = false;
     RestoreTTButton->Enabled = false;
     ExportTTButton->Enabled = false;
+    ConflictAnalysisButton->Enabled = false;
     ExitTTModeButton->Enabled = true;
 
     if(!TimetableEditVector.empty() && !TTEntryChangedFlag && !NewEntryInPreparationFlag)
@@ -5088,6 +5100,7 @@ void TInterface::TimetableHandler()
         if(TimetableValidFlag && RlyFile && (CreateEditTTFileName != ""))
         {
             ExportTTButton->Enabled = true;
+            ConflictAnalysisButton->Enabled = true;
         }
         if(TTCurrentEntryPtr != 0)
         {
@@ -5235,7 +5248,7 @@ void TInterface::HighlightOneEntryInAllEntriesTTListBox(int Caller, int Position
         else
             HighlightPanel->Visible = true; // doesn't matter if goes off the bottom as it becomes invisible as then it's off its parent panel
         HighlightPanel->Caption = CurrentStr;
-        if(AllEntriesTTListBox->Items->Count > 46)
+        if(AllEntriesTTListBox->Items->Count > 46)   //because the scrollbar will be present
             HighlightPanel->Width = 82;
         else
             HighlightPanel->Width = 100;
@@ -5536,8 +5549,9 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
         {
             // this routine new at v2.1.0.  Allows railway moving for zoom-in mode when no element at HLoc & VLoc
             int Dummy; // unused in next function
-            if(!Track->TrackElementPresentAtHV(0, HLoc, VLoc) && !Track->InactiveTrackElementPresentAtHV(0, HLoc, VLoc) && !Track->UserGraphicPresentAtHV(0, X,
-                Y, Dummy))
+            AnsiString Text = ""; //needed for TextFound but not used
+            if(!Track->TrackElementPresentAtHV(0, HLoc, VLoc) && !Track->InactiveTrackElementPresentAtHV(0, HLoc, VLoc) && !Track->UserGraphicPresentAtHV(0, X, Y, Dummy) &&
+                !TextHandler->TextFound(0, X + (Display->DisplayOffsetH * 16), Y + (Display->DisplayOffsetV * 16), Text))
             {
                 StartWholeRailwayMoveHPos = X;
                 StartWholeRailwayMoveVPos = Y;
@@ -5549,9 +5563,9 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
             {
                 TrainController->LogEvent("mbRight + AddText");
                 ResetChangedFileDataAndCaption(2, true);
-                if(TextHandler->TextFound(0, NoOffsetX, NoOffsetY))
+                if(TextHandler->TextFound(1, NoOffsetX, NoOffsetY, Text))
                 {
-                    if(TextHandler->TextErase(0, NoOffsetX, NoOffsetY)) // erase text in vector
+                    if(TextHandler->TextErase(0, NoOffsetX, NoOffsetY, Text)) // erase text in vector
                     {
                         ClearandRebuildRailway(4);
                         if(NoRailway())
@@ -6294,15 +6308,15 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
             {
                 for(TextPtr = (TextHandler->TextVector.end() - 1); TextPtr >= TextHandler->TextVector.begin(); TextPtr--)
                 {
-                    if((TrueX >= (*TextPtr).HPos) && (TrueX < ((*TextPtr).HPos + abs((*TextPtr).Font->Height))) && (TrueY >= (*TextPtr).VPos) && (TrueY <
-                        ((*TextPtr).VPos + abs((*TextPtr).Font->Height))))
+                    if((TrueX >= TextPtr->HPos) && (TrueX < (TextPtr->HPos + abs(TextPtr->Font->Height))) && (TrueY >= TextPtr->VPos) && (TrueY <
+                        (TextPtr->VPos + abs(TextPtr->Font->Height))))
                     {
-                        ExistingText = (*TextPtr).TextString;
-                        ExistingTextFont->Assign((*TextPtr).Font);
-                        ExistingTextHPos = (*TextPtr).HPos;
-                        ExistingTextVPos = (*TextPtr).VPos;
+                        ExistingText = TextPtr->TextString;
+                        ExistingTextFont->Assign(TextPtr->Font);
+                        ExistingTextHPos = TextPtr->HPos;
+                        ExistingTextVPos = TextPtr->VPos;
                         TextFoundFlag = true;
-                        TextHandler->TextErase(9, TrueX, TrueY);
+                        TextHandler->TextErase(9, TrueX, TrueY, ExistingText);
                         break;
                     } // if ....
                 } // for TextPtr...
@@ -7644,14 +7658,14 @@ void TInterface::ClockTimer2(int Caller)
 
         TrainController->OpTimeToActUpdateCounter++;
 ///<new v2.2.0, controls 2 second updating for OpTimeToActPanel
-        if(TrainController->OpTimeToActUpdateCounter >= 40)
+        if(TrainController->OpTimeToActUpdateCounter >= 20)
             TrainController->OpTimeToActUpdateCounter = 0;
 
         if(OperatorActionPanel->Visible)
             TrainController->OpActionPanelHintDelayCounter++;
 ///<new v2.2.0, delay on start operation
-        if(TrainController->OpActionPanelHintDelayCounter >= 80)
-            TrainController->OpActionPanelHintDelayCounter = 80; // new at v2.2.0
+        if(TrainController->OpActionPanelHintDelayCounter >= 60)
+            TrainController->OpActionPanelHintDelayCounter = 60; // new at v2.2.0
 
         TrainController->RandomFailureCounter++; // new at v2.4.0 counts up for 53 seconds then resets
         if(TrainController->RandomFailureCounter >= 1060)
@@ -7838,9 +7852,129 @@ void TInterface::ClockTimer2(int Caller)
             }
         }
 
-// highlight timetable entry if in tt mode (have to call this regularly so will scroll with the listbox)
         if(Level1Mode == TimetableMode)
         {
+/*These are for Shift Key shortcuts. Unless 'Click()' execution occurs after the key is pressed Windows stores the key until after any code is executed then selects
+the timetable entry that begins with the letter corresponding to the key.  See DevHistory.txt for the version after v2.4.3 for details.
+
+First make sure the selected entry is the Highlighted entry, but only if both mouse buttons are up, to make sure AllEntriesTTListBoxMouseUp runs first or TopIndex
+likely to be set to the wrong position since when ...Selected... runs it sets TopIndex accordingly.  Then when  ...MouseUp runs it will use the wrong value and select
+the entry that the mouse is now on rather than the one that was chosen.
+Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any flag set so when Copy or any other key function runs the top index is correct
+*/
+            if((GetKeyState(VK_LBUTTON) >= 0) && (GetKeyState(VK_RBUTTON) >= 0) && (TTCurrentEntryPtr > 0))  //high order bit set to 1 when button down, so arithmetically it is negative
+            {                                                                                                //TTCurrentEntryPtr == 0 when create a timetable
+                AllEntriesTTListBox->Selected[TTCurrentEntryPtr - TimetableEditVector.begin()] = true;
+            }
+            if(AnyTTKeyFlagSet()) //true if any of the below flags set
+            {
+                AllEntriesTTListBox->TopIndex = AllEntriesTTListBoxTopPosition; //reset it to the value before the key press changes it (see FormKeyDown)
+            }
+            if(PreviousTTEntryKeyFlag)
+            {
+                PreviousTTEntryButton->Click();
+                SetTopIndex(0);
+                PreviousTTEntryKeyFlag = false;
+            }
+            else if(NextTTEntryKeyFlag)
+            {
+                NextTTEntryButton->Click();
+                SetTopIndex(1);
+                NextTTEntryKeyFlag = false;
+            }
+            else if(MoveTTEntryUpKeyFlag)
+            {
+                MoveTTEntryUpButton->Click();
+                SetTopIndex(2);
+                MoveTTEntryUpKeyFlag = false;
+            }
+            else if(MoveTTEntryDownKeyFlag)
+            {
+                MoveTTEntryDownButton->Click();
+                SetTopIndex(3);
+                MoveTTEntryDownKeyFlag = false;
+            }
+            else if(CopyTTEntryKeyFlag)
+            {
+                CopyTTEntryButton->Click();
+                SetTopIndex(4);
+                CopyTTEntryKeyFlag = false;
+            }
+            else if(CutTTEntryKeyFlag)
+            {
+                CutTTEntryButton->Click();
+                SetTopIndex(5);
+                CutTTEntryKeyFlag = false;
+            }
+            else if(PasteTTEntryKeyFlag)
+            {
+                PasteTTEntryButton->Click();
+                SetTopIndex(6);
+                PasteTTEntryKeyFlag = false;
+            }
+            else if(DeleteTTEntryKeyFlag)
+            {
+                DeleteTTEntryButton->Click();
+                SetTopIndex(7);
+                DeleteTTEntryKeyFlag = false;
+            }
+            else if(NewTTEntryKeyFlag)
+            {
+                NewTTEntryButton->Click();
+                SetTopIndex(8);
+                NewTTEntryKeyFlag = false;
+            }
+            else if(AZOrderKeyFlag)
+            {
+                AZOrderButton->Click();
+                SetTopIndex(9);
+                AZOrderKeyFlag = false;
+            }
+            else if(TTServiceSyntaxCheckKeyFlag)
+            {
+                TTServiceSyntaxCheckButton->Click();
+                SetTopIndex(12);
+                TTServiceSyntaxCheckKeyFlag = false;
+            }
+            else if(ValidateTimetableKeyFlag)
+            {
+                ValidateTimetableButton->Click();
+                SetTopIndex(13);
+                ValidateTimetableKeyFlag = false;
+            }
+            else if(SaveTTKeyFlag)
+            {
+                SaveTTButton->Click();
+                SetTopIndex(14);
+                SaveTTKeyFlag = false;
+            }
+            else if(SaveTTAsKeyFlag)
+            {
+                SaveTTAsButton->Click();
+                SetTopIndex(15);
+                SaveTTAsKeyFlag = false;
+            }
+            else if(RestoreTTKeyFlag)
+            {
+                RestoreTTButton->Click();
+                SetTopIndex(16);
+                RestoreTTKeyFlag = false;
+            }
+            else if(ExportTTKeyFlag)
+            {
+                ExportTTButton->Click();
+                SetTopIndex(17);
+                ExportTTKeyFlag = false;
+            }
+            else if(ConflictAnalysisKeyFlag)
+            {
+                ConflictAnalysisButton->Click();
+                SetTopIndex(18);
+                ConflictAnalysisKeyFlag = false;
+            }
+
+
+// highlight timetable entry if in tt mode (have to call this regularly so will scroll with the listbox)
             if(!TimetableEditVector.empty() && (TTCurrentEntryPtr > 0))
             {
                 HighlightOneEntryInAllEntriesTTListBox(1, TTCurrentEntryPtr - TimetableEditVector.begin());
@@ -7876,9 +8010,22 @@ void TInterface::ClockTimer2(int Caller)
                                          // prior to CallingOnAllowed being called (in UpdateTrain) as that sets a route from the stop signal
             if((TrainController->OpTimeToActUpdateCounter == 0) && (OperatorActionPanel->Visible))
             {
-                UpdateOperatorActionPanel(0); // new at v2.2.0 to update panel when train OpTimeToAct updated
+                UpdateOperatorActionPanel(0); // new at v2.2.0 to update panel when train OpTimeToAct updated (updated earlier)
             }
-            TrainController->SignallerTrainRemovedOnAutoSigsRoute = false; // added at v1.3.0 to ensure doesn't persist beyone one call
+            TrainController->SignallerTrainRemovedOnAutoSigsRoute = false; // added at v1.3.0 to ensure doesn't persist beyond one call
+        }
+
+        else if(Level2OperMode == Paused) //added after v2.4.3 to show actions due after a session file reloaded
+        {
+            if((TrainController->OpTimeToActUpdateCounter == 0) && (OperatorActionPanel->Visible))
+            {
+                for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
+                {
+                    TrainController->TrainVectorAt(73, x).OpTimeToAct = TrainController->TrainVectorAt(74, x).CalcTimeToAct(1);
+                }
+                TrainController->RebuildOpTimeToActMultimap(1);
+                UpdateOperatorActionPanel(1);
+            }
         }
 
 // plot trains in ZoomOut mode & flash trains where attention needed alternately on & off at each call
@@ -10113,6 +10260,7 @@ void __fastcall TInterface::ErrorButtonClick(TObject *Sender)
     // to terminate after error message given
 {
     ErrorMessage->Visible = false;
+    ErrorMessageStoreImage->Visible = false;
     ErrorButton->Visible = false;
     Display->GetImage()->Visible = true;
     Application->Terminate();
@@ -10179,17 +10327,20 @@ void __fastcall TInterface::FormClose(TObject *Sender, TCloseAction &Action)
 
         if(Level1Mode == OperMode)
         {
-            UnicodeString MessageStr = "Please note that the session will be lost if it hasn't been saved.  Do you still wish to exit?";
-            TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
-            TrainController->RestartTime = TrainController->TTClockTime;
-            int button = Application->MessageBox(MessageStr.c_str(), L"Please confirm", MB_YESNO);
-            TrainController->BaseTime = TDateTime::CurrentDateTime();
-            TrainController->StopTTClockFlag = false;
-            if(button == IDNO)
+            if((double(TrainController->TTClockTime - TrainController->LastSessionSaveTTClockTime) * 86400) >= 300)
             {
-                Action = caNone; // prevents form & application from closing
-                Utilities->CallLogPop(969);
-                return;
+                UnicodeString MessageStr = "Please note that the session will be lost if it hasn't been saved.  Do you still wish to exit?";
+                TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
+                TrainController->RestartTime = TrainController->TTClockTime;
+                int button = Application->MessageBox(MessageStr.c_str(), L"Please confirm", MB_YESNO);
+                TrainController->BaseTime = TDateTime::CurrentDateTime();
+                TrainController->StopTTClockFlag = false;
+                if(button == IDNO)
+                {
+                    Action = caNone; // prevents form & application from closing
+                    Utilities->CallLogPop(969);
+                    return;
+                }
             }
             TrainController->SendPerformanceSummary(1, Utilities->PerformanceFile);
             Utilities->PerformanceFile.close();
@@ -10551,90 +10702,100 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key, TShiftState 
         }
 
 //Timetable edit panel
+//These just set flags.  The corresponding 'Click()' function executes separately to the keypress because Windows stores the key until after any directly linked key code
+//is executed then selects the timetable entry that begins with the letter corresponding to the key.  Without this separation the list box is left with the wrong entry
+//showing.  See DevHistory.txt for the version after v2.4.3 for details.
         if(Level1Mode == TimetableMode && TimetableEditPanel->Visible && TimetableEditPanel->Enabled && !Shift.Contains(ssAlt))
         {
             if(Shift.Contains(ssShift) && !Shift.Contains(ssCtrl))
             {
+                AllEntriesTTListBoxTopPosition = AllEntriesTTListBox->TopIndex; //store value here before the Windows key press function runs (it runs after any local code)
                 if(PreviousTTEntryButton->Enabled && (Key == 'L' || Key == 'l'))
                 {
-                    PreviousTTEntryButton->Click();
+                    PreviousTTEntryKeyFlag = true;
                 }
                 if(NextTTEntryButton->Enabled && (Key == 'N' || Key == 'n'))
                 {
-                    NextTTEntryButton->Click();
+                    NextTTEntryKeyFlag = true;
                 }
                 if(MoveTTEntryUpButton->Enabled && (Key == 'U' || Key == 'u'))
                 {
-                    MoveTTEntryUpButton->Click();
+                    MoveTTEntryUpKeyFlag = true;
                 }
                 if(MoveTTEntryDownButton->Enabled && (Key == 'D' || Key == 'd'))
                 {
-                    MoveTTEntryDownButton->Click();
+                    MoveTTEntryDownKeyFlag = true;
                 }
                 if(CopyTTEntryButton->Enabled && (Key == 'C' || Key == 'c'))
                 {
-                    CopyTTEntryButton->Click();
+                    CopyTTEntryKeyFlag = true;
                 }
                 if(CutTTEntryButton->Enabled && (Key == 'X' || Key == 'x'))
                 {
-                    CutTTEntryButton->Click();
+                    CutTTEntryKeyFlag = true;
                 }
                 if(PasteTTEntryButton->Enabled && (Key == 'P' || Key == 'p'))
                 {
-                    PasteTTEntryButton->Click();
+                    PasteTTEntryKeyFlag = true;
                 }
                 if(DeleteTTEntryButton->Enabled && (Key == 'E' || Key == 'e'))
                 {
-                    DeleteTTEntryButton->Click();
+                    DeleteTTEntryKeyFlag = true;
                 }
 /*              if(SaveTTEntryButton->Enabled && (Key == 'E' || Key == 'e'))  //can't have save while editing entry as adds the letter to the entry
                 {
-                    SaveTTEntryButton->Click();
+                    SaveTTEntryKeyFlag = true;
                 }
               if(CancelTTActionButton->Enabled && (Key == 'K' || Key == 'k')) //can't have cancel while editing entry as adds the letter to the entry
                 {
-                    CancelTTActionButton->Click();
+                    CancelTTActionKeyFlag = true;
                 }
 */
                 if(NewTTEntryButton->Enabled && (Key == 'I' || Key == 'i'))
                 {
-                    NewTTEntryButton->Click();
+                    NewTTEntryKeyFlag = true;
                 }
                 if(AZOrderButton->Enabled && (Key == 'Z' || Key == 'z'))
                 {
-                    AZOrderButton->Click();
+                    AZOrderKeyFlag = true;
                 }
-                if(AddMinsButton->Enabled && (Key == 'M' || Key == 'm'))
+/*
+                if(AddMinsButton->Enabled && (Key == 'M' || Key == 'm'))  //can't have key here as adds the letter to the entry
                 {
-                    AddMinsButton->Click();
+                    AddMinsKeyFlag = true;
                 }
-                if(SubMinsButton->Enabled && (Key == 'B' || Key == 'b'))
+                if(SubMinsButton->Enabled && (Key == 'B' || Key == 'b'))  //can't have key here as adds the letter to the entry
                 {
-                    SubMinsButton->Click();
+                    SubMinsKeyFlag = true;
                 }
+*/
                 if(TTServiceSyntaxCheckButton->Enabled && (Key == 'Q' || Key == 'q'))
                 {
-                    TTServiceSyntaxCheckButton->Click();
+                    TTServiceSyntaxCheckKeyFlag = true;
                 }
                 if(ValidateTimetableButton->Enabled && (Key == 'V' || Key == 'v'))
                 {
-                    ValidateTimetableButton->Click();
+                    ValidateTimetableKeyFlag = true;
                 }
                 if(SaveTTButton->Enabled && (Key == 'T' || Key == 't'))
                 {
-                    SaveTTButton->Click();
+                    SaveTTKeyFlag = true;
                 }
                 if(SaveTTAsButton->Enabled && (Key == 'A' || Key == 'a'))
                 {
-                    SaveTTAsButton->Click();
+                    SaveTTAsKeyFlag = true;
                 }
                 if(RestoreTTButton->Enabled && (Key == 'R' || Key == 'r'))
                 {
-                    RestoreTTButton->Click();
+                    RestoreTTKeyFlag = true;
                 }
                 if(ExportTTButton->Enabled && (Key == 'O' || Key == 'o'))
                 {
-                    ExportTTButton->Click();
+                    ExportTTKeyFlag = true;
+                }
+                if(ConflictAnalysisButton->Enabled && (Key == 'F' || Key == 'f'))
+                {
+                    ConflictAnalysisKeyFlag = true;
                 }
             }
         }
@@ -11337,10 +11498,13 @@ void __fastcall TInterface::TTClockExitButtonClick(TObject *Sender)
         double TTClockTimeChange = double(TrainController->RestartTime) - PauseEntryRestartTime;
         if((TTClockSpeed != PauseEntryTTClockSpeed) || (TTClockTimeChange > 0.000347))
     // 30 seconds, min increase is 1 minute & don't trust doubles to stay exactly equal
+        if(!TTClockAdjustWarningHide)
         {
-            AnsiString Message =
-                "Changes have been made to the timetable clock - you may wish to save a session before resuming operation.\nTo cancel all changes click 'Adjust the timetable clock' then click the reset button BEFORE resuming operation.";
-            ShowMessage(Message);
+            TTClockAdjustWarningPanel->Top = MainScreen->Top + ((MainScreen->Height - TTClockAdjustWarningPanel->Height)/2);
+            TTClockAdjustWarningPanel->Left = MainScreen->Left + ((MainScreen->Width - TTClockAdjustWarningPanel->Width)/2);
+            TTClockAdjustWarningLabel->Caption =
+                "Changes have been made to the timetable clock - you may wish to save a session before resuming operation.\n\nTo cancel all changes re-click the 'Adjust the timetable clock' button then click the reset button BEFORE resuming operation.";
+            TTClockAdjustWarningPanel->Visible = true;
         }
 //        Utilities->Clock2Stopped = false; // as above
         LastNonCtrlOrShiftKeyDown = -1; //to restore the ability to reselect T after adj panel hidden (FormKeyUp doesn't work because the Interface form doesn't have focus)
@@ -11989,7 +12153,127 @@ void __fastcall TInterface::SelectNewGraphicClick(TObject *Sender)
 }
 
 // ---------------------------------------------------------------------------
+
+void __fastcall TInterface::TTClockAdjustOKButtonClick(TObject *Sender)
+{
+    try
+    {
+    TrainController->LogEvent("TTClockAdjustOKButtonClick");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTClockAdjustOKButtonClick");
+    TTClockAdjustWarningPanel->Visible = false;
+    if(TTClockAdjustCheckBox->Checked)
+        {
+            TTClockAdjustWarningHide = true;
+        }
+    Utilities->CallLogPop(2219);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(216, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::ConflictAnalysisButtonClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("ConflictAnalysisButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ConflictAnalysisButtonClick");
+        ConflictPanel->Visible = true;
+        Utilities->CallLogPop(2220);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(217, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::CPCancelButtonClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("CPCancelButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CPCancelButtonClick");
+        ConflictPanel->Visible = false;
+        Utilities->CallLogPop(2221);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(218, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::CPGenFileButtonClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("CPGenFileButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CPGenFileButtonClick");
+        if(!CPArrivalsCheckBox->Checked && !CPDeparturesCheckBox->Checked && !CPAtLocCheckBox->Checked)
+        {
+            ShowMessage("No boxes ticked!");
+        }
+        else //keep ticks & range values from last time, only reset on startup
+        {
+            Screen->Cursor = TCursor(-11);//hourglass
+            AnsiString TTTitle;
+            if(RlyFile && TimetableValidFlag && (CreateEditTTFileName != ""))
+            {
+                for(int x = CreateEditTTFileName.Length(); x > 0; x--) // first need to strip out the timetable title from the full name
+                {
+                    if(CreateEditTTFileName[x] == '\\')
+                    {
+                        TTTitle = CreateEditTTFileName.SubString(x + 1, CreateEditTTFileName.Length() - x - 4);
+                        break;
+                    }
+                }
+                if(TrainController->CreateTTAnalysisFile(0, RailwayTitle, TTTitle, CurDir, CPArrivalsCheckBox->Checked, CPDeparturesCheckBox->Checked,
+                    CPAtLocCheckBox->Checked, CPEditArrRange->Text.ToInt(), CPEditDepRange->Text.ToInt()))
+                {
+                    ShowMessage("Analysis complete and file created");
+                }
+            ConflictPanel->Visible = false;
+            }
+        }
+        Screen->Cursor = TCursor(-2);//arrow
+        Utilities->CallLogPop(2222);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(219, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
 // end of fastcalls & directly associated functions
+// ---------------------------------------------------------------------------
+
+void TInterface::SetTopIndex(int Caller)
+{
+//Set TopIndex to the proper value & also Selected so don't have a different selection to the highlighted entry
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTopIndex");
+    if((TTCurrentEntryPtr - TimetableEditVector.begin()) < AllEntriesTTListBox->TopIndex)
+    {
+        AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin();
+    }
+    else if((TTCurrentEntryPtr - TimetableEditVector.begin()) > (AllEntriesTTListBox->TopIndex + 45))
+    {
+        AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin() - 45;
+    }
+    else
+    {
+        AllEntriesTTListBox->TopIndex = AllEntriesTTListBox->TopIndex;
+    }
+    AllEntriesTTListBox->Selected[TTCurrentEntryPtr - TimetableEditVector.begin()] = true;
+    Utilities->CallLogPop(2207);
+}
+
 // ---------------------------------------------------------------------------
 
 void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to help avoid flicker
@@ -12132,6 +12416,11 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
                         break; // train removed earlier element from route so stop here
                     }
                     x--;
+                    if(x < 0) //added after Albie Vowles reported error on 14/08/20 by email
+                    {           //it means that part of the route (including that at the truncate point) has been cancelled, in this case by a train running past the signal
+                        BreakFlag = true; //at danger and cancelling the route elements in front of it.  The locked route is now too short and this 'while' loop won't find
+                        break;       //it, so x keeps decrementing and when it becomes -1 an error is thrown.  This addition prevents the error.
+                    }
                     PrefDirElement = Route.GetFixedPrefDirElementAt(2, x);
                 }
                 if(!BreakFlag)
@@ -12523,6 +12812,7 @@ void TInterface::SetLevel1Mode(int Caller)
         SigImagePanel->Visible = false; // new at v2.3.0
         MTBFEditBox->Visible = false; // new at v2.4.0
         MTBFLabel->Visible = false;
+        TTClockAdjustWarningPanel->Visible = false;
         if(Track->IsTrackFinished())
         {
             PlanPrefDirsMenuItem->Enabled = true;
@@ -12823,6 +13113,7 @@ void TInterface::SetLevel1Mode(int Caller)
         TTClockSpeed = 1;
         TTClockSpeedLabel->Caption = "x1";
         TrainController->TTClockTime = TrainController->TimetableStartTime;
+        TrainController->LastSessionSaveTTClockTime = TrainController->TimetableStartTime; //added at v2.5.0
 
         PerformanceFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
         // format "16/06/2009 20:55:17"
@@ -12920,13 +13211,14 @@ void TInterface::SetLevel1Mode(int Caller)
             DisableRouteButtons(3); // could be PreStart or Paused
         TrainController->TTClockTime = TrainController->RestartTime;
         PauseEntryRestartTime = double(TrainController->RestartTime);
+        TrainController->LastSessionSaveTTClockTime = TrainController->TTClockTime; //added at v2.5.0
         PauseEntryTTClockSpeed = 1;
         TTClockSpeed = 1;
         TTClockSpeedLabel->Caption = "x1";
         TrainController->SetWarningFlags(0);
         ShowPerformancePanel = false; // added at v2.2.0
         ShowOperatorActionPanel = false; // new at v2.2.0
-        TrainController->OpActionPanelHintDelayCounter = 0; // new at v2.2.0 to reset hint dela
+        TrainController->OpActionPanelHintDelayCounter = 0; // new at v2.2.0 to reset hint delay
         OAListBox->Clear();
         OAListBox->Items->Add(L""); // hints for OpActionPanel
         OAListBox->Items->Add(L"");
@@ -13065,7 +13357,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
 
     case AddText:
         InfoPanel->Visible = true;
-        InfoPanel->Caption = "ADDING/EDITING TEXT: Left click to add, left click first letter to edit (+CR), or remove (+Esc)";
+        InfoPanel->Caption = "ADDING/EDITING TEXT: Left click to add, right click first letter to erase, or left click first letter to edit)";
         if(TextHandler->TextVectorSize(13) > 0)
         {
             MoveTextOrGraphicButton->Enabled = true;
@@ -13186,7 +13478,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
                     if((TextPtr->HPos >= LowSelectHPos) && (TextPtr->HPos < HighSelectHPos) && (TextPtr->VPos >= LowSelectVPos) && (TextPtr->VPos <
                         HighSelectVPos))
                     {
-                        if(TextHandler->TextErase(1, TextPtr->HPos, TextPtr->VPos))
+                        if(TextHandler->TextErase(1, TextPtr->HPos, TextPtr->VPos, AnsiString("")))
                         {;
                         } // unused condition
                         TextChangesMade = true;
@@ -13283,7 +13575,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
                     if((TextPtr->HPos >= LowSelectHPos) && (TextPtr->HPos < HighSelectHPos) && (TextPtr->VPos >= LowSelectVPos) && (TextPtr->VPos <
                         HighSelectVPos))
                     {
-                        if(TextHandler->TextErase(2, TextPtr->HPos, TextPtr->VPos))
+                        if(TextHandler->TextErase(2, TextPtr->HPos, TextPtr->VPos, AnsiString("")))
                         {;
                         } // unused condition
                     }
@@ -13450,7 +13742,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
                     if((TextPtr->HPos >= LowSelectHPos) && (TextPtr->HPos < HighSelectHPos) && (TextPtr->VPos >= LowSelectVPos) && (TextPtr->VPos <
                         HighSelectVPos))
                     {
-                        if(TextHandler->TextErase(3, TextPtr->HPos, TextPtr->VPos))
+                        if(TextHandler->TextErase(3, TextPtr->HPos, TextPtr->VPos, AnsiString("")))
                         {;
                         } // unused condition
                         TextChangesMade = true;
@@ -13467,7 +13759,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
 //                GraphicPtr--) // reverse to prevent skipping during erase
 
 //i.e if the railway included one or more user graphics but the SelectGraphicVector didn't include any, then GraphicPtr wouldn't point to anything and the program would fail
-//corrected 01/08/20 by using UserGraphicVector (as it should have been) for SelectGraphicVector
+//corrected 01/08/20 by using UserGraphicVector (as it should have been) for SelectGraphicVector.  New version v2.4.3.
 
                 for(TTrack::TUserGraphicVector::iterator GraphicPtr = (Track->UserGraphicVector.end() - 1); GraphicPtr >= Track->UserGraphicVector.begin();
                 GraphicPtr--) // reverse to prevent skipping during erase
@@ -14077,7 +14369,7 @@ void TInterface::TrackTrainFloat(int Caller)
 // end of TrackFloat section
 
     if(Level1Mode == OperMode && ((TrainStatusInfoOnOffMenuItem->Caption == "Hide Status") || (TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")))
-    // if caption is 'Off' label is on
+    // if caption is 'Hide' label is required
     {
         bool FoundFlag;
         AnsiString FormatOneDPStr = "####0.0";
@@ -14881,8 +15173,9 @@ void TInterface::SetSaveMenuAndButtons(int Caller)
 
     if(Level1Mode == OperMode)
     {
-        if(Track->RouteFlashFlag || Track->PointFlashFlag || TTClockAdjPanel->Visible == true) //TTClockAdjPanel added for v2.4.2 to keep it disabled after Clock2Stopped dropped
+        if(Track->RouteFlashFlag || Track->PointFlashFlag || TTClockAdjPanel->Visible == true || TTClockAdjustWarningPanel->Visible == true) //TTClockAdjPanel added for v2.4.2 to keep it disabled after Clock2Stopped dropped
         {
+            MTBFEditBox->Enabled = false;
             OperatingPanelEnabledFlag = false;
             OperatingPanelLabelCaptionStr = "Disabled";
             ZoomFlag = false;
@@ -14896,6 +15189,7 @@ void TInterface::SetSaveMenuAndButtons(int Caller)
         }
         else
         {
+            MTBFEditBox->Enabled = true;
             SaveOperatingImageMenuItem->Enabled = true;
         }
     }
@@ -15088,7 +15382,14 @@ void TInterface::ErrorLog(int Caller, AnsiString Message)
     OutputLog8->Caption = "";
     OutputLog9->Caption = "";
     OutputLog10->Caption = "";
-    ErrorMessage->Visible = true;
+    if(Caller == 113)
+    {
+        ErrorMessageStoreImage->Visible = true;
+    }
+    else
+    {
+        ErrorMessage->Visible = true;
+    }
     ErrorButton->Visible = true;
     Screen->Cursor = TCursor(-2); // Arrow; - in case was an hourglass
 // No need for Utilities->CallLogPop as the call log deque has already been written to file & the next action
@@ -15194,6 +15495,7 @@ void TInterface::ResetAll(int Caller)
     InfoCaptionStore = "";
     ErrorLogCalledFlag = false;
     ErrorMessage->Visible = false;
+    ErrorMessageStoreImage->Visible = false;
     TempCursorSet = false;
     TempCursor = TCursor(-2); // Arrow
     WholeRailwayMoving = false; // new at v2.1.0
@@ -15201,6 +15503,7 @@ void TInterface::ResetAll(int Caller)
     TrainController->TTClockTime = TDateTime(0); // default setting
     TTClockAdjPanel->Visible = false;
     TrainController->StopTTClockFlag = false;
+    ConflictPanel->Visible = false;
     SelectedTrainID = -1;
     SetTrackBuildImages(11);
 // TrackInfoOnOffMenuItem->Caption = "Show";  dropped these here at v1.2.0 so don't reset when load a session file
@@ -15453,6 +15756,7 @@ void TInterface::SaveSession(int Caller)
             TrainController->StopTTClockMessage(5, "Session file failed to open, session not saved.  Ensure that there is a folder named " + SESSION_DIR_NAME +
                 " in the folder where the 'Railway.exe' program file resides");
         }
+        TrainController->LastSessionSaveTTClockTime = TrainController->TTClockTime; //added at v2.5.0
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1141);
     }
@@ -17263,9 +17567,10 @@ void TInterface::SaveErrorFile()
    copy the two numbers on rows 7 & 8 below ***Interface*** (i.e ***Interface*** = row 0) on their own lines immediately after the ***Track*** line (these become DisplayOffsetH & V)
    strip out up to but excluding ***Track*** - this is needed to keep the \0 entry at end of ***Track*** [shown as a small square in wordpad]
    add the version number either before or instead of ***Track***, ensuring that the \0 is retained
-   the next line should contain the number of active elements - leave that in.
+   the next line after the two insertions should contain the number of active elements.
    strip out ***Text*** including the \0
-   strip out from & including  ***ConstructPrefDir PrefDirVector*** to & including ***PrefDirs*** (and the \0)
+   strip out from & including  ***ConstructPrefDir PrefDirVector*** to & including ***PrefDirs*** (and the \0's)
+   strip out ***UserGraphics*** including the \0
    strip out from & including  ***ConstructRoute PrefDirVector*** to the end of the file
    rename as .dev or .rly file
 
@@ -17854,7 +18159,7 @@ bool TInterface::EraseLocationNameText(int Caller, AnsiString Name, int &HPos, i
 // if(Track->LocationNameMultiMap.find(Name) == Track->LocationNameMultiMap.end()) {} //name not in LocationNameMultiMap, so don't erase from TextVector  //condition dropped at v1.1.4 because of change in EnterLocationNames
 /* else */ if(TextHandler->FindText(0, Name, HPos, VPos))
     {
-        if(TextHandler->TextErase(4, HPos, VPos))
+        if(TextHandler->TextErase(4, HPos, VPos, Name))
         {;
         } // condition not used
         TextFound = true;
@@ -18006,11 +18311,11 @@ void TInterface::UpdateOperatorActionPanel(int Caller) // new at v2.2.0
     // limit it to 20 entries max
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UpdateOperatorActionPanel");
-    if(TrainController->OpActionPanelHintDelayCounter >= 80)
+    if(TrainController->OpActionPanelHintDelayCounter >= 60)
     {
         OAListBox->Clear();
     }
-    if((!OperatorActionPanel->Visible) || TrainController->OpTimeToActMultiMap.empty() || (TrainController->OpActionPanelHintDelayCounter < 80))
+    if((!OperatorActionPanel->Visible) || TrainController->OpTimeToActMultiMap.empty() || (TrainController->OpActionPanelHintDelayCounter < 60))
     // new at v2.2.0
     {
         Utilities->CallLogPop(2092);
@@ -18161,3 +18466,4 @@ void TInterface::LoadUserGraphic(int Caller) // new at v2.4.0
 */
 
 // ---------------------------------------------------------------------------
+

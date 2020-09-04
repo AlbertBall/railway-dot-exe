@@ -23,6 +23,7 @@
       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 // ---------------------------------------------------------------------------
+
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
@@ -4421,3 +4422,6 @@ void TRailGraphics::ConvertSignalsToOppositeHand(int Caller) // new at v2.3.0
     Utilities->RHSignalFlag = !Utilities->RHSignalFlag; // set in itially to false (= LH)
     Utilities->CallLogPop(74);
 }
+
+// ---------------------------------------------------------------------------
+

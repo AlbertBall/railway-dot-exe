@@ -35,6 +35,7 @@
 #include <ComCtrls.hpp>
 #include <fstream>
 #include <vector>
+#include <algorithm>  //for std::find
 #include <vcl.h>
 
 #pragma hdrstop
@@ -1717,7 +1718,7 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
                     int HPos, VPos;
                     if(TextHandler->FindText(1, SName, HPos, VPos))
                     {
-                        if(TextHandler->TextErase(5, HPos, VPos))
+                        if(TextHandler->TextErase(5, HPos, VPos, SName))
                         {;
                         } // condition not used
                     }
@@ -1761,7 +1762,7 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
                 int HPos, VPos;
                 if(TextHandler->FindText(2, SName, HPos, VPos))
                 {
-                    if(TextHandler->TextErase(6, HPos, VPos))
+                    if(TextHandler->TextErase(6, HPos, VPos, SName))
                     {;
                     } // condition not used
                 }
@@ -1795,7 +1796,7 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
                     int HPos, VPos;
                     if(TextHandler->FindText(3, SName, HPos, VPos))
                     {
-                        if(TextHandler->TextErase(7, HPos, VPos))
+                        if(TextHandler->TextErase(7, HPos, VPos, SName))
                         {;
                         } // condition not used
                     }
@@ -4397,7 +4398,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                 bool LinkFoundFlag = false;
                 if((TrackVector.at(x).Config[1 - y] == Signal) && IsLCAtHV(50, TrackVector.at(VecPos).HLoc, TrackVector.at(VecPos).VLoc))
                 { // new in v2.4.0 - Krizar (Kristian Zarebski) found this error
-                    ShowMessage("Can't have an exit signal next to a level crossing");
+                    ShowMessage("Can't have an exit signal next to a level crossing - it can cause the train to foul the crossing in some circumstances");
                     // otherwise when single route element removed in front of train the LC will start to close and the train will crash
                 }
                 else if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost) || (TrackVector.at(x).TrackType == Crossover))
@@ -4409,7 +4410,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                 else if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost) || (TrackVector.at(x).TrackType == Crossover) ||
                     (TrackVector.at(x).TrackType == Bridge)) && (TrackVector.at(VecPos).TrackType == Continuation))
                 {
-                    ShowMessage("Can't have points, crossover, bridge or signal next to a continuation");
+                    ShowMessage("Can't have points, crossover, bridge or signal next to a continuation - it can cause route setting problems");
                     // route setting won't allow an end of route selection adjacent to an existing route, which would happen
                     // if continuation next to a signal; also none of these can be a named location, and a continuation can
                     // be named but needs the adjacent element named too
@@ -4417,7 +4418,13 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                 else if((TrackVector.at(x).TrackType == SignalPost) && (TrackVector.at(VecPos).TrackType == SignalPost) &&
                     (TrackVector.at(x).SpeedTag == TrackVector.at(VecPos).SpeedTag))
                 {
-                    ShowMessage("Can't have two same-direction signals adjacent to each other");
+                    ShowMessage("Can't have two same-direction signals adjacent to each other as there is no room for a train between them");
+                    // can't join a route to an existing route where the second signal is in an existing route and the first signal is
+                    // selected - appears as trying to select a signal that is not the next in line from the starting signal
+                }
+                else if((TrackVector.at(x).Config[y] == Signal) && (TrackVector.at(VecPos).TrackType == Bridge))
+                {
+                    ShowMessage("Can't have a signal facing a bridge - it prevents a route from being truncated to the signal");
                     // can't join a route to an existing route where the second signal is in an existing route and the first signal is
                     // selected - appears as trying to select a signal that is not the next in line from the starting signal
                 }
@@ -7005,9 +7012,11 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
     {
         throw Exception("LNPendingList size not 1 on entry");
     }
+    int CurrentElementNumber; //new after 2.4.3 due to error the JK found (Discord 9/7/20).  See note below after 'if(AddingElements)' where CurrentElementNumber is used.
     while(!LNPendingList.empty())
     {
-        TTrackVectorIterator CurrentElement = GetTrackVectorIteratorFromNamePosition(1, LNPendingList.front());
+        CurrentElementNumber = LNPendingList.front();
+        TTrackVectorIterator CurrentElement = GetTrackVectorIteratorFromNamePosition(1, CurrentElementNumber);
         int NewElement; // = 2000000000;   //marker for unused //not needed after v1.1.4
         int H = CurrentElement->HLoc;
         int V = CurrentElement->VLoc;
@@ -7120,16 +7129,18 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
         if(AddingElements)
         {
             int HPos, VPos; // not used but needed for FindText function
-            if(NewElement > -1)
+            if(CurrentElementNumber > -1) //up to & including 2.4.2 this was NewElement, which was the last one added during LNPendingList building above, so it could be
+                                         //repeatedly selected rather than the element under examination (LNPendingList.front()) & the front element text name wouldn't be erased.
+                                         //Using CurrentElementNumber ensures that all elements are examined &  have names erased if present
             {
-                AnsiString ExistingName = InactiveTrackElementAt(118, NewElement).LocationName;
+                AnsiString ExistingName = InactiveTrackElementAt(118, CurrentElementNumber).LocationName;//existing name of CurrentElement
                 if((ExistingName != "") && (ExistingName != LocationName))
                 {
                     if(LocationNameMultiMap.find(ExistingName) == Track->LocationNameMultiMap.end())
                     {} // name not in LocationNameMultiMap, so don't erase from TextVector
                     else if(TextHandler->FindText(4, ExistingName, HPos, VPos)) // can't use 'EraseLocationNameText' as that function is in TInterface
                     {
-                        if(TextHandler->TextErase(10, HPos, VPos))
+                        if(TextHandler->TextErase(10, HPos, VPos, ExistingName))
                         {;
                         } // condition not used
                     }
@@ -8788,9 +8799,9 @@ void TTrack::CalcHLocMinEtc(int Caller)
     {
 /* Removed at v2.2.0: It isn't needed because null names aren't entered into vector, and in any case if were then
        will fail as x will exceed the maximum value
-       if(TextHandler->TextPtrAt(34, x)->TextString == "")
+       if(TextHandler->TextPtrAt(, x)->TextString == "")
            {
-               TextHandler->TextErase(8, TextHandler->TextPtrAt(35, x)->HPos, TextHandler->TextPtrAt(36, x)->VPos);
+               TextHandler->TextErase(, TextHandler->TextPtrAt(35, x)->HPos, TextHandler->TextPtrAt(36, x)->VPos);
            }
 */
         int TextH = TextHandler->TextPtrAt(0, x)->HPos, TextV = TextHandler->TextPtrAt(1, x)->VPos;
@@ -9605,6 +9616,7 @@ bool TTrack::TrainOnLink(int Caller, int HLoc, int VLoc, int Link, int &TrainID)
 }
 
 // ---------------------------------------------------------------------------
+
 bool TTrack::DiagonalFouledByTrain(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber, int &TrainID)
 /* New at v1.2.0
       As DiagonalFouledByRouteOrTarin but checks for a train only (may or may not be a route) and returns the ID number.    Enter with H & V set for the element whose diagonal
@@ -9680,6 +9692,77 @@ void TTrack::SaveUserGraphics(int Caller, std::ofstream &VecFile)
 
 // ---------------------------------------------------------------------------
 
+int TTrack::NumberOfPlatforms(int Caller, AnsiString LocationName)
+//checks all active track elements and lists those with ActiveTrackElementName same as LocationName in NamePosVector
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NumberOfPlatforms," + LocationName);
+    int NumPlats = 0;
+    TTrackElement TempElement;
+    int TempInt;
+
+    typedef std::list<int> TNamePosList;
+    TNamePosList NamePosList;
+    typedef TNamePosList::iterator TNPLIt;
+    TNPLIt NPLIt;
+    typedef std::list<int> TOnePlatList;
+    TOnePlatList OnePlatList;
+    typedef TOnePlatList::iterator TOPLIt;
+    TOPLIt OPLIt;
+
+    NamePosList.clear();
+    OnePlatList.clear();
+    for(unsigned int x = 0; x < TrackVector.size(); x++)
+    {
+        if(TrackElementAt(988, x).ActiveTrackElementName == LocationName)
+        {
+            NamePosList.push_back(x);
+        }
+    }
+    //NamePosList complete
+
+    if(!NamePosList.empty())  //first value for the loop examination
+    {
+        OnePlatList.push_back(NamePosList.back());
+        NamePosList.pop_back(); //erase from NPV as done with it here
+    }
+
+    while(!OnePlatList.empty()) //loop to examine all linked elements
+    {
+        TempInt = OnePlatList.front();
+        TempElement = TrackElementAt(989, TempInt);
+
+        NPLIt = find(NamePosList.begin(), NamePosList.end(), TempElement.Conn[0]);
+        if(NPLIt != NamePosList.end() && ((TempElement.Link[0] == 2) || (TempElement.Link[0] == 4) || (TempElement.Link[0] == 6) || (TempElement.Link[0] == 8)))
+        {
+            OnePlatList.push_back(TempElement.Conn[0]);
+            NamePosList.erase(NPLIt);
+        }
+        NPLIt = find(NamePosList.begin(), NamePosList.end(), TempElement.Conn[1]);
+        if(NPLIt != NamePosList.end() && ((TempElement.Link[1] == 2) || (TempElement.Link[1] == 4) || (TempElement.Link[1] == 6) || (TempElement.Link[1] == 8)))
+        {
+            OnePlatList.push_back(TempElement.Conn[1]);
+            NamePosList.erase(NPLIt);
+        }
+        //here when loaded any connecting links into OnePlatList, so can erase the front element
+        OnePlatList.erase(OnePlatList.begin());
+        if(OnePlatList.empty())
+        {
+            NumPlats++; //finished with current linked elements so can increment NumPlats
+            if(!NamePosList.empty())
+            {
+                OnePlatList.push_back(NamePosList.back());  //ready for next iteration
+                NamePosList.pop_back(); //erase from NPV as done with it there
+            }
+        }
+    }
+    Utilities->CallLogPop(2218);
+    return NumPlats;
+}
+
+// ---------------------------------------------------------------------------
+// UserGraphic, PrefDir & Route functions
+// ---------------------------------------------------------------------------
+
 TUserGraphicItem &TTrack::UserGraphicVectorAt(int Caller, int At)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UserGraphicVectorAt," + AnsiString(At));
@@ -9691,8 +9774,6 @@ TUserGraphicItem &TTrack::UserGraphicVectorAt(int Caller, int At)
     return UserGraphicVector.at(At);
 }
 
-// ---------------------------------------------------------------------------
-// PrefDir & Route functions
 // ---------------------------------------------------------------------------
 
 int TOnePrefDir::LastElementNumber(int Caller) const

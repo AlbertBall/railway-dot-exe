@@ -61,17 +61,17 @@ var NAVTREEINDEX =
 "_about_unit_8cpp.html",
 "_graphic_unit_8h_source.html",
 "class_t_all_routes.html#a415c16a43e8e997c82226987e7bffc59",
-"class_t_interface.html#a167b9a4eba88ea3020f67a1c89907838",
-"class_t_interface.html#a587fc3983cca8f443a7f4e5e80fa3d74",
-"class_t_interface.html#aae335c69e96b9210f28225f562e50c4d",
-"class_t_interface.html#afbb1365eba3ccd54462f24f85f459ab8",
-"class_t_rail_graphics.html#a1ee831017102bc31047251ce93d8e3c6",
-"class_t_rail_graphics.html#a7bed604334572d1238c8acabda539b2d",
-"class_t_rail_graphics.html#ad2a42966e489fef7c54b4032eef58d81",
-"class_t_track.html#a4a948544c9ac877232ec721db8bfc914",
-"class_t_train.html#a1ab673136ad153947d373b5fd48a50e9",
-"class_t_train_controller.html#a9acd46962be476bc76c8d5ce59fff399",
-"railway_8cpp.html#ac6afdc93da51ef483fb949cf0b350f6f"
+"class_t_interface.html#a14d8976ee13c85f12eab634de845baf1",
+"class_t_interface.html#a586c3aa182a227b9fcf8ec298ba139d7a2a06806ed86b6977bfaf3def14a26ef9",
+"class_t_interface.html#aa30c16dcd420fbc593eedbb4d463b442",
+"class_t_interface.html#aed6a1d00024acdef83e090d53deecd69",
+"class_t_rail_graphics.html#a0ba78493adf42e9c9f5db97670851ea7",
+"class_t_rail_graphics.html#a6cff9d2e88613d861454415bdeeea8bf",
+"class_t_rail_graphics.html#ac4169f80a117aa44ca448e37f6c3fbc1",
+"class_t_track.html#a1c808ac52b6e5e7081273916ce458638",
+"class_t_track_element.html",
+"class_t_train_controller.html#a3df0fb217914cd6d38db7dd2daf1de7a",
+"functions_vars_c.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

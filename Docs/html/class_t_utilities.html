@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.4.2</span>
+   &#160;<span id="projectnumber">v2.5.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -166,6 +166,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6dc0e83b149563fdf43f068fd26cead8"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8">Format96HHMM</a> (TDateTime DateTime)</td></tr>
 <tr class="memdesc:a6dc0e83b149563fdf43f068fd26cead8"><td class="mdescLeft">&#160;</td><td class="mdescRight">formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it reaches 96  <a href="class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8">More...</a><br /></td></tr>
 <tr class="separator:a6dc0e83b149563fdf43f068fd26cead8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6df4b6a5d1398f57ff62799331351a8"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#ae6df4b6a5d1398f57ff62799331351a8">IncrementAnsiTimeOneMinute</a> (AnsiString TimeVal)</td></tr>
+<tr class="memdesc:ae6df4b6a5d1398f57ff62799331351a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">takes "HH:MM" and increments it to "HH:MX", where MX == MM + 1, incrementing the hour if necessary  <a href="class_t_utilities.html#ae6df4b6a5d1398f57ff62799331351a8">More...</a><br /></td></tr>
+<tr class="separator:ae6df4b6a5d1398f57ff62799331351a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -202,7 +205,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00034">34</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00035">35</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae1eddca13cc3c492839e131f40ec21c0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae1eddca13cc3c492839e131f40ec21c0">&#9670;&nbsp;</a></span>CallLogPop()</h2>
@@ -222,7 +225,7 @@ Public Attributes</h2></td></tr>
 
 <p>pops the last entry off the call stack, throws an error if called when empty </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00049">49</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00050">50</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -254,7 +257,7 @@ Public Attributes</h2></td></tr>
 
 <p>checks that the value is a string ('0' or CR accepted as delimiters) and is the same as InString, returns true for success </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00412">412</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00413">413</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -298,7 +301,7 @@ Public Attributes</h2></td></tr>
 
 <p>checks that the value is an int lying between Lowest &amp; Highest (inclusive), returns true for success and returns the value in OutInt </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00250">250</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00251">251</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -330,7 +333,7 @@ Public Attributes</h2></td></tr>
 
 <p>checks that the value is a string ('0' or CR accepted as delimiters), returns true for success and returns the value in OutString </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00467">467</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00468">468</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -352,7 +355,7 @@ Public Attributes</h2></td></tr>
 
 <p>checks that the value is a bool returns true for success </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00197">197</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00198">198</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -374,7 +377,7 @@ Public Attributes</h2></td></tr>
 
 <p>checks that the value is a double, returns true for success </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00293">293</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00294">294</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -412,7 +415,7 @@ Public Attributes</h2></td></tr>
 
 <p>checks that the value is an int lying between Lowest &amp; Highest (inclusive), returns true for success </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00216">216</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00217">217</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -434,7 +437,7 @@ Public Attributes</h2></td></tr>
 
 <p>checks that the value is a string ('0' or CR accepted as delimiters), returns true for success </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00355">355</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00356">356</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -456,7 +459,7 @@ Public Attributes</h2></td></tr>
 
 <p>checks that the value is a string ('0' only accepted as the delimiter), returns true for success </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00383">383</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00384">384</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -478,7 +481,7 @@ Public Attributes</h2></td></tr>
 
 <p>checks the string represents a valid double value, returns true for success. Added at v2.4.0 for checking ExcessLCDownMins DoubleString is returned as a reference because the decimal point is potentially modified by the function </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00326">326</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00327">327</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -499,7 +502,7 @@ Public Attributes</h2></td></tr>
 
 <p>creates a string of the form 'dd/mm/yyyy hh:mm:ss' for use in call &amp; event logging </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00066">66</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00067">67</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -521,7 +524,7 @@ Public Attributes</h2></td></tr>
 
 <p>sends Input to 'TestFile.csv', this is a diagnostic function used during development </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00099">99</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00100">100</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -543,7 +546,7 @@ Public Attributes</h2></td></tr>
 
 <p>formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it reaches 96 </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00534">534</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00535">535</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -565,7 +568,29 @@ Public Attributes</h2></td></tr>
 
 <p>formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when it reaches 96 </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00519">519</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00520">520</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ae6df4b6a5d1398f57ff62799331351a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6df4b6a5d1398f57ff62799331351a8">&#9670;&nbsp;</a></span>IncrementAnsiTimeOneMinute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">AnsiString TUtilities::IncrementAnsiTimeOneMinute </td>
+          <td>(</td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>TimeVal</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>takes "HH:MM" and increments it to "HH:MX", where MX == MM + 1, incrementing the hour if necessary </p>
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00550">550</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -587,7 +612,7 @@ Public Attributes</h2></td></tr>
 
 <p>loads a bool value from the file </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00140">140</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00141">141</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -609,7 +634,7 @@ Public Attributes</h2></td></tr>
 
 <p>loads a double value from the file (converts from a string to a double) and uses the local decimal point character regardless of what appears in the string </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00163">163</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00164">164</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -631,7 +656,7 @@ Public Attributes</h2></td></tr>
 
 <p>loads an int value from the file </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00153">153</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00154">154</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -653,7 +678,7 @@ Public Attributes</h2></td></tr>
 
 <p>loads a string value from the file </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00181">181</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00182">182</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -685,7 +710,7 @@ Public Attributes</h2></td></tr>
 
 <p>stores '1' if the bool is true or '0' if false to the file, then a CR </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00107">107</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00108">108</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -717,7 +742,7 @@ Public Attributes</h2></td></tr>
 
 <p>converts the double value to a string (if double stored directly it is truncated to 6 digits) then stores to the file, then a CR, uses the local decimal point character </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00122">122</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00123">123</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -749,7 +774,7 @@ Public Attributes</h2></td></tr>
 
 <p>stores the int value to the file, then a CR </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00116">116</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00117">117</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -781,7 +806,7 @@ Public Attributes</h2></td></tr>
 
 <p>stores the string value to the file, then a '0' delimiter then a CR </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00130">130</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00131">131</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -802,7 +827,7 @@ Public Attributes</h2></td></tr>
 
 <p>creates a string of the form 'hh:mm:ss' for use in call &amp; event logging </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00072">72</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00073">73</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 
 </div>
 </div>
@@ -821,7 +846,7 @@ Public Attributes</h2></td></tr>
 
 <p>call stack store, saved to the errorlog for diagnostic purposes </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00054">54</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00055">55</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -839,7 +864,7 @@ Public Attributes</h2></td></tr>
 
 <p>when true the main loop - Interface-&gt;ClockTimer2 - is stopped </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00037">37</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00038">38</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -857,7 +882,7 @@ Public Attributes</h2></td></tr>
 
 <p>the display background colour, can be white, black or dark blue </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00064">64</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00065">65</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -875,7 +900,7 @@ Public Attributes</h2></td></tr>
 
 <p>added at v2.4.0 so can use the local value in loaded session files </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00044">44</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00045">45</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -893,7 +918,7 @@ Public Attributes</h2></td></tr>
 
 <p>event store, saved to the errorlog for diagnostic purposes </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00056">56</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00057">57</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -911,7 +936,7 @@ Public Attributes</h2></td></tr>
 
 <p>the file where the performance log for a particular period of operation is saved </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00052">52</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00053">53</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -929,7 +954,7 @@ Public Attributes</h2></td></tr>
 
 <p>new at v2.3.0 false=LH signals </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00039">39</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00040">40</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -947,7 +972,7 @@ Public Attributes</h2></td></tr>
 
 <p>height of display screen in elements </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00049">49</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00050">50</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -965,7 +990,7 @@ Public Attributes</h2></td></tr>
 
 <p>width of display screen in elements </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00047">47</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00048">48</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -983,7 +1008,7 @@ Public Attributes</h2></td></tr>
 
 <p>flag to indicate whether the call to setlocale() in <a class="el" href="_interface_unit_8cpp.html">InterfaceUnit.cpp</a> succeeded or not </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00041">41</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00042">42</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>

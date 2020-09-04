@@ -177,6 +177,15 @@
 				<param name="Local" value="html/5.111w8h.htm">
 				</OBJECT>
 		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Timetable conflict analysis">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Timetable conflict analysis">
+				<param name="Local" value="html\5.12.htm">
+				</OBJECT>
+		</UL>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Operating a railway">

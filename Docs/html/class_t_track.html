@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.4.2</span>
+   &#160;<span id="projectnumber">v2.5.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -430,6 +430,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a72c171ba53777dc2f5fab90877f9bc45"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a72c171ba53777dc2f5fab90877f9bc45">NumberOfGaps</a> (int Caller)</td></tr>
 <tr class="memdesc:a72c171ba53777dc2f5fab90877f9bc45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of gaps in the railway.  <a href="class_t_track.html#a72c171ba53777dc2f5fab90877f9bc45">More...</a><br /></td></tr>
 <tr class="separator:a72c171ba53777dc2f5fab90877f9bc45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aded8153d40ad58664e2a887316108add"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#aded8153d40ad58664e2a887316108add">NumberOfPlatforms</a> (int Caller, AnsiString LocationName)</td></tr>
+<tr class="memdesc:aded8153d40ad58664e2a887316108add"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of separate platforms (not platform elements) at a given location, either a station or non station named location.  <a href="class_t_track.html#aded8153d40ad58664e2a887316108add">More...</a><br /></td></tr>
+<tr class="separator:aded8153d40ad58664e2a887316108add"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a418966e6fefb71b9d0c9b941197832da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_track.html#ae0a83809dc6f3dabb0f8fd8e9464ac70">TIMPair</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track.html#a418966e6fefb71b9d0c9b941197832da">GetVectorPositionsFromInactiveTrackMap</a> (int Caller, int HLoc, int VLoc, bool &amp;FoundFlag)</td></tr>
 <tr class="memdesc:a418966e6fefb71b9d0c9b941197832da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there can be up to 2 platforms at a specific position.  <a href="class_t_track.html#a418966e6fefb71b9d0c9b941197832da">More...</a><br /></td></tr>
 <tr class="separator:a418966e6fefb71b9d0c9b941197832da"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -856,7 +859,7 @@ Private Attributes</h2></td></tr>
 <p>Note: The TrackMap &amp; InactiveTrackMap were developed well after the TrackVector, to speed up track element searches. It was realised at that time that the maps themselves could contain type <a class="el" href="class_t_track_element.html" title="Basic track elements as implemented in the overall railway layout.">TTrackElement</a> rather than int (for TrackVectorPosition), and that the track vectors could be dispensed with completely. However after an attempt to remove them it was clear that they were far too embedded throughout the program for easy removal, so they were left in. <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00461">461</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00462">462</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="af124e944cfb44075f390cf5eceaf3e66"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af124e944cfb44075f390cf5eceaf3e66">&#9670;&nbsp;</a></span>TActiveLCVector</h2>
@@ -872,7 +875,7 @@ Private Attributes</h2></td></tr>
 
 <p>vector of changing level crossing objects. Note that although a LC may contain several elements there will be only one in the vector when changing, and it might be any of the individual elements. This is because when an entry is made all linked elements have their attributes changed to 2 for changing, so no more are found. This applies both for closing &amp; opening to trains </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00549">549</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00550">550</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -888,7 +891,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00615">615</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00616">616</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -906,7 +909,7 @@ Private Attributes</h2></td></tr>
 
 <p>map of ActiveTrackElementNames compiled and used for populating the LocationNameComboBox during timetable creation or editing. Used in place of LocationNameMultiMap as that can contain concourses and non-station named locations that aren't associated with any track. The second 'int' entry is a dummy, only the list of AnsiString names is needed, and being a map it is automatically sorted and without duplicates. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00613">613</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00614">614</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -922,7 +925,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00616">616</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00617">617</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -940,7 +943,7 @@ Private Attributes</h2></td></tr>
 
 <p>map of matching gap positions as an HLoc/VLoc pair, with the key being </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00572">572</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00573">573</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -956,7 +959,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00576">576</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00577">577</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -974,7 +977,7 @@ Private Attributes</h2></td></tr>
 
 <p>the first gap HLoc/VLoc pair, contains one entry for each pair of matched gaps </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00574">574</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00575">575</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -992,7 +995,7 @@ Private Attributes</h2></td></tr>
 
 <p>TrackElement pair type used for inactive elements, values are vector positions. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00587">587</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00588">588</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1010,7 +1013,7 @@ Private Attributes</h2></td></tr>
 
 <p>multimap of inactive TrackElements (platforms, </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00578">578</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00579">579</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1028,7 +1031,7 @@ Private Attributes</h2></td></tr>
 
 <p>concourses, non-station named locations &amp; parapets) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00580">580</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00581">581</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1045,7 +1048,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>'2' because there can be up to 2 entries (platforms) at a single location </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00582">582</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00583">583</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1063,7 +1066,7 @@ Private Attributes</h2></td></tr>
 
 <p>vector of level crossing InactiveTrackVector positions - note that this contains all LC elements whether linked to others or not </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00552">552</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00553">553</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1081,7 +1084,7 @@ Private Attributes</h2></td></tr>
 
 <p>multimap of location name vector positions (see note below) used </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00595">595</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00596">596</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1099,7 +1102,7 @@ Private Attributes</h2></td></tr>
 
 <p>can be up to 2 entries (platforms) at a single location </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00599">599</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00600">600</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1117,7 +1120,7 @@ Private Attributes</h2></td></tr>
 
 <p>during naming of linked named location elements, '2' because there </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00597">597</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00598">598</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1135,7 +1138,7 @@ Private Attributes</h2></td></tr>
 
 <p>type list of location name vector positions (see note below) used during </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00590">590</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00591">591</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1153,7 +1156,7 @@ Private Attributes</h2></td></tr>
 
 <p>naming of linked named location elements </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00592">592</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00593">593</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1171,7 +1174,7 @@ Private Attributes</h2></td></tr>
 
 <p>map of location name vector positions (see note below), one entry for every element that is a FixedNamedLocationElement i.e platforms, concourses, footcrossings &amp; named non-station locations. Hence the only active track elements included are footcrossings </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00602">602</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00603">603</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1187,7 +1190,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00606">606</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00607">607</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1203,7 +1206,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00604">604</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00605">605</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1219,7 +1222,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00605">605</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00606">606</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1237,7 +1240,7 @@ Private Attributes</h2></td></tr>
 
 <p>map of TrackElement TrackVectorPositions, HLoc &amp; VLoc pair is the key </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00567">567</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00568">568</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1253,7 +1256,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00570">570</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00571">571</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1269,7 +1272,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00569">569</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00570">570</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1287,7 +1290,7 @@ Private Attributes</h2></td></tr>
 
 <p>vector of TrackElements </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00558">558</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00559">559</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1305,7 +1308,7 @@ Private Attributes</h2></td></tr>
 
 <p>iterator for TTrackVector </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00560">560</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00561">561</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1323,7 +1326,7 @@ Private Attributes</h2></td></tr>
 
 <p>map of filenames as key and TPicture* as value. This holds all the TPicture pointers created when a user graphic is selected </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00562">562</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00563">563</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1341,7 +1344,7 @@ Private Attributes</h2></td></tr>
 
 <p>an entry for TUserGraphicMap </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00564">564</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00565">565</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1359,7 +1362,7 @@ Private Attributes</h2></td></tr>
 
 <p>vector of UserGraphicItems </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00555">555</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00556">556</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1382,7 +1385,7 @@ Private Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="a05bacf165698f9502dc7287b01ece848aa43eec45a9d0dc4f51dba5319b1e88b9"></a>GroundSignalBuild&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00750">750</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00751">751</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1408,7 +1411,7 @@ Private Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="a4c2e42d85ed9151b4983f079f11d6d79a94f085ae23f4e7cc6d5ae224e4b4fb8b"></a>Down&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00508">508</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00509">509</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1430,7 +1433,7 @@ Private Attributes</h2></td></tr>
 
 <p>Constructor, only one object of this class. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l00893">893</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l00894">894</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1451,7 +1454,7 @@ Private Attributes</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01242">1242</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01243">1243</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1496,7 +1499,7 @@ Private Attributes</h2></td></tr>
 
 <p>Used to check the validity of footcrossing links. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06929">6929</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06936">6936</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1534,7 +1537,7 @@ Private Attributes</h2></td></tr>
 
 <p>TrackElement.LocationName becomes 'Name' (for active and inactive elements) and, if TrackElement is a platform or named non-station location, any active element at the same HLoc &amp; VLoc position has its ActiveTrackElementName set to 'Name'. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07263">7263</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07274">7274</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1583,7 +1586,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Used during location naming to check for adjacent named elements to a given element at HLoc &amp; VLoc with a specific SpeedTag, and if found allow that element to be inserted into the LNPendingList for naming similarly </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07197">7197</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07208">7208</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1638,7 +1641,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Used in SearchForAndUpdateLocationName to check for adjacent named elements to a given element at HLoc &amp; VLoc with a specific SpeedTag, and if found allow that name to be used for this element and all other named elements that are linked to it </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07621">7621</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07632">7632</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1682,7 +1685,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if a route or train present on any linked level crossing element. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06317">6317</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06324">6324</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1713,7 +1716,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>True for a blank (SpeedTag == 0) element at a specific Trackvector position, no longer used after TrackErase changed (now EraseTrackElement) so that blank elements aren't used </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08943">8943</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08954">8954</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1753,7 +1756,7 @@ Private Attributes</h2></td></tr>
 
 <p>Return a basic track element from the SpeedTag new at v2.2.0 - needed because Interface doesn't have direct access to FixedTrackArray. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00807">807</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00808">808</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1775,7 +1778,7 @@ Private Attributes</h2></td></tr>
 
 <p>Examine TrackVector and whenever find a new gap pair enter it into GapMap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04306">4306</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04307">4307</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1797,7 +1800,7 @@ Private Attributes</h2></td></tr>
 
 <p>Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent of the railway (HLocMin, VLocMin, HLocMax &amp; VLocMax) for use in zoomed in and out displays and in saving railway images. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08754">8754</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08765">8765</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1835,7 +1838,7 @@ Private Attributes</h2></td></tr>
 
 <p>Changes the LocationName in the name multimap to NewName at the location pointed to by the TLocationNameMultiMapIterator from whatever it was before. Accepts null entries so that a formerly named element can have the name changed to "". </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07855">7855</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07866">7866</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1865,7 +1868,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03248">3248</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03249">3249</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1897,7 +1900,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if a footcrossing is linked properly at both ends. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06777">6777</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06784">6784</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1919,7 +1922,7 @@ Private Attributes</h2></td></tr>
 
 <p>Validity test. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06575">6575</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06582">6582</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1941,7 +1944,7 @@ Private Attributes</h2></td></tr>
 
 <p>Validity test. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07682">7682</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07693">7693</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1963,7 +1966,7 @@ Private Attributes</h2></td></tr>
 
 <p>Validity test. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06543">6543</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06550">6550</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1985,7 +1988,7 @@ Private Attributes</h2></td></tr>
 
 <p>Validity test. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06503">6503</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06510">6510</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2029,7 +2032,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if TrackElements in the file are all valid. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02961">2961</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02962">2962</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2067,7 +2070,7 @@ Private Attributes</h2></td></tr>
 
 <p>checks all user graphics &amp; returns true for success </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03143">3143</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03144">3144</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2099,7 +2102,7 @@ Private Attributes</h2></td></tr>
 
 <p>After an element has been erased from the TrackVector, all the later elements are moved down one. This function decrements the position values for all values above that of the erased element in the gap elements, TrackMap and LocationNameMultiMap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07939">7939</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07950">7950</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2131,7 +2134,7 @@ Private Attributes</h2></td></tr>
 
 <p>After an element has been erased from the InactiveTrackVector, all the later elements are moved down one. This function decrements the position values for all values above that of the erased element in both InactiveTrack2MultiMap and LocationNameMultiMap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07902">7902</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07913">7913</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2180,7 +2183,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>As DiagonalFouledByRouteOrTrain (in <a class="el" href="class_t_all_routes.html" title="Handles data and functions relating to all routes on the railway.">TAllRoutes</a>) but only checks for a train (may or may not be a route present (new at v1.2.0) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09608">9608</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09620">9620</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2212,7 +2215,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if the element defined by MapPos is present in LNDone2MultiMap, used during location naming. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07300">7300</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07311">7311</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2242,7 +2245,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07327">7327</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07338">7338</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2281,7 +2284,7 @@ Private Attributes</h2></td></tr>
 <p>All platform, concourse, footcrossing &amp; non-station named location elements are able to have a LocationName allocated. </p>
 <p>Track elements (including footcrossings) are able to have an ActiveTrackElementName allocated provided there is an adjacent platform or a NamedNonStationLocation. To set these names the user selects a single named location element (not a footcrossing), enters the name, and this is then allocated as a LocationName to all linked platform, concourse and footcrossing elements, and as an ActiveTrackElementName to all track elements adjacent to platforms (inc footcrossing tracks if (but only if) they have a platform at that location). </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06960">6960</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06967">6967</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2313,7 +2316,7 @@ Private Attributes</h2></td></tr>
 
 <p>Examines LocationNameMultiMap and if the LocationName is found all elements at that H &amp; V (in both active and inactive vectors) have the name erased both as a LocationName and a ActiveTrackElementName. The LocationNameMultiMap is also rebuilt to correspond to the new names in the vectors. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07439">7439</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07450">7450</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2369,7 +2372,7 @@ Private Attributes</h2></td></tr>
 
 <p>Erases all active and inactive track elements at HLocInput &amp; VLocInput from the vectors, and, if any of these elements are named the entries are erased from LocationNameMultiMap and the corresponding name is removed from the display and from all other linked named elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01669">1669</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01670">1670</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2407,7 +2410,7 @@ Private Attributes</h2></td></tr>
 
 <p>Check for track errors prior to gap setting - disused as incorporated a time-consuming double brute force search. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02383">2383</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02384">2384</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2429,7 +2432,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if there is an unset gap, and if so it is marked with a red circle, used during gap setting. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03964">3964</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03965">3965</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2467,7 +2470,7 @@ Private Attributes</h2></td></tr>
 
 <p>Return the link array position for the element at StartTVPosition that gives the closest link to the element a EndTVPosition. NB the StartTVPosition is expected to be a single track element as only positions 0 &amp; 1 are checked. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09428">9428</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09439">9439</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2517,7 +2520,7 @@ Private Attributes</h2></td></tr>
 
 <p>Used in locating the screen name position for a named location, return true if find an inactive element called 'Name'. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09389">9389</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09400">9400</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2561,7 +2564,7 @@ Private Attributes</h2></td></tr>
 
 <p>Searches LocationNameMultiMap to check if the element pointed to by the TTrackVectorIterator has the name LocationName. If it finds it the pointer TLocationNameMultiMapIterator is returned. If it fails ErrorString is set to an appropriate text to allow the calling function to report the error. Otherwise it is set to "". </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07798">7798</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07809">7809</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2611,7 +2614,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if find a non-platform element at HLoc &amp; VLoc, and if so return its TrackVector position and a reference to it in TrackElement. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02448">2448</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02449">2449</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2649,7 +2652,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if find an unset gap that matches the gap at HLoc &amp; VLoc, if find one mark it with a green circle. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03989">3989</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03990">3990</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2671,7 +2674,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if there are gaps in the railway and any are unset. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04028">4028</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04029">4029</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2715,7 +2718,7 @@ Private Attributes</h2></td></tr>
 
 <p>Return the opposite link position for the element at TrackVectorPosition with link position LinkPos, if the element is points and they are set against the exit then &amp;Derail is returned true. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09463">9463</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09474">9474</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2747,7 +2750,7 @@ Private Attributes</h2></td></tr>
 
 <p>Return a pointer to the point fillet (the bit that appears to move when points are changed) for the point and its Attribute specified in TrackElement. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06422">6422</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06429">6429</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2774,7 +2777,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00755">755</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00756">756</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2801,7 +2804,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00760">760</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00761">761</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2828,7 +2831,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00765">765</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00766">766</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2855,7 +2858,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00770">770</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00771">771</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2893,7 +2896,7 @@ Private Attributes</h2></td></tr>
 
 <p>Return a reference to the inactive element at HLoc &amp; VLoc, if no element is found an error is thrown. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05108">5108</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05115">5115</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2923,7 +2926,7 @@ Private Attributes</h2></td></tr>
 
 <p>Return location name for a given inactive track vector position. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00715">715</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00716">716</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2953,7 +2956,7 @@ Private Attributes</h2></td></tr>
 
 <p>Return the corresponding link position (track always occupies either links 0 &amp; 1 or 2 &amp; 3) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00786">786</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00787">787</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3003,7 +3006,7 @@ Private Attributes</h2></td></tr>
 
 <p>With large railways only part of the railway is displayed on screen, and this function converts true (relative to the whole railway) H &amp; V positions to screen (relative to the displayed screen) H &amp; V positions. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06492">6492</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06499">6499</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3041,7 +3044,7 @@ Private Attributes</h2></td></tr>
 
 <p>Return a reference to the element at HLoc &amp; VLoc, if no element is found an error is thrown. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05084">5084</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05091">5091</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3091,7 +3094,7 @@ Private Attributes</h2></td></tr>
 
 <p>Converse of GetScreenPositionsFromTruePos except that in this function HLoc &amp; VLoc are expressed in track elements (i.e. 16x16 pixel squares) rather than in single pixels. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06463">6463</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06470">6470</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3123,7 +3126,7 @@ Private Attributes</h2></td></tr>
 
 <p>Takes an adjusted vector position value from either vector (if active, Position = -TruePos -1, if inactive, Position = TruePos) and returns a pointer to the relevant element. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07873">7873</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07884">7884</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3161,7 +3164,7 @@ Private Attributes</h2></td></tr>
 
 <p>Takes the ElementID value (an AnsiString) (e.g. "8-13", "N43-N127", etc) and returns the corresponding track vector position, if none is found then -1 is returned. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06654">6654</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06661">6661</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3211,7 +3214,7 @@ Private Attributes</h2></td></tr>
 
 <p>Converse of GetScreenPositionsFromTruePos. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06478">6478</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06485">6485</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3255,7 +3258,7 @@ Private Attributes</h2></td></tr>
 
 <p>Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whether an element is found or not, and if not -1 is returned. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05057">5057</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05064">5064</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3299,7 +3302,7 @@ Private Attributes</h2></td></tr>
 
 <p>Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there can be up to 2 platforms at a specific position. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05173">5173</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05180">5180</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3326,7 +3329,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00775">775</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00776">776</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3353,7 +3356,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00780">780</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00781">781</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3397,7 +3400,7 @@ Private Attributes</h2></td></tr>
 
 <p>Used to check the validity of footcrossing links. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06882">6882</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06889">6889</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3429,7 +3432,7 @@ Private Attributes</h2></td></tr>
 
 <p>A range-checked version of InactiveTrackElement.at(At) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08929">8929</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08940">8940</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3467,7 +3470,7 @@ Private Attributes</h2></td></tr>
 
 <p>New at v1.2.0; true if an inactive track element present. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05152">5152</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05159">5159</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3511,7 +3514,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if there is an element adjacent to LinkIn for element at HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09373">9373</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09384">9384</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3560,7 +3563,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>True if track at link positions [0] &amp; [1] if FirstTrack true, else that at [2] &amp; [3] in TrackElement has the default length and speed limit, return true if so </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08346">8346</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08357">8357</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3598,7 +3601,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if a level crossing is found at H &amp; V. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06254">6254</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06261">6261</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3636,7 +3639,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if an open (to trains) level crossing is found at H &amp; V. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06170">6170</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06177">6177</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3674,7 +3677,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if barrier is in process of opening or closing at H &amp; V. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06226">6226</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06233">6233</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3712,7 +3715,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if a closed (to trains) level crossing is found at H &amp; V. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06198">6198</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06205">6205</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3750,7 +3753,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if a non-station named location at HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08442">8442</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08453">8453</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3788,7 +3791,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if a non-station named location or platform at HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08415">8415</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08426">8426</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3817,7 +3820,7 @@ Private Attributes</h2></td></tr>
 
 <p>Indicates whether or not the railway is ready for saving as a '.rly' file and for operation. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00721">721</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00722">722</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3846,7 +3849,7 @@ Private Attributes</h2></td></tr>
 
 <p>Indicates whether or not the track has been successfully linked together. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00727">727</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00728">728</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3868,7 +3871,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if track has been successfully linked (not used any more) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04788">4788</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04795">4795</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3900,7 +3903,7 @@ Private Attributes</h2></td></tr>
 
 <p>Examine all elements in the TrackVector and if have a valid length mark the relevant track using MarkOneLength. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08096">8096</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08107">8107</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3950,7 +3953,7 @@ Private Attributes</h2></td></tr>
 
 <p>Attempt to link the track and return true if successful, if unsuccessful return error flag and position of the first element that can't be linked together with an appropriate message. This is a link checking (FinalCall false) or linking (FinalCall true) function, with messages, called by TryToConnectTrack, which handles linking and all other associated functions. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04338">4338</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04339">4339</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3982,7 +3985,7 @@ Private Attributes</h2></td></tr>
 
 <p>Attempt to link the track and return true if successful, don't issue any screen messages. This is also a link checking (FinalCall false) or linking (FinalCall true) function, without messages, that is called by TryToConnectTrack, which handles linking and all other associated functions. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04563">4563</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04570">4570</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4014,7 +4017,7 @@ Private Attributes</h2></td></tr>
 
 <p>Load all BarriersDownVector values from SessionFile. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03302">3302</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03303">3303</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4052,7 +4055,7 @@ Private Attributes</h2></td></tr>
 
 <p>new at v2.4.0, load user graphics </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02723">2723</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02724">2724</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4090,7 +4093,7 @@ Private Attributes</h2></td></tr>
 
 <p>Load track elements (active &amp; inactive) from the file into the relevant vectors and maps, and try to link the resulting track. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02595">2595</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02596">2596</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4122,7 +4125,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if a non-empty LocationName found in LocationNameMultiMap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07387">7387</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07398">7398</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4144,7 +4147,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if there are unnamed NamedLocationElements (includes footcrossings) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04115">4115</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04116">4116</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4188,7 +4191,7 @@ Private Attributes</h2></td></tr>
 
 <p>Mark on screen a track element according to its length and speed limit if either of these differ from their default values. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08114">8114</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08125">8125</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4225,7 +4228,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>True if the two vector positions are points that have a straight and a diverging leg, are linked together by their diverging legs, and both are set either to straight or to diverge </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05213">5213</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05220">5220</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4263,7 +4266,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if the active or inactive TrackElement at HLoc &amp; VLoc has its FixedNamedLocationElement member true. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07354">7354</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07365">7365</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4285,7 +4288,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if there is no active or inactive track in the railway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01615">1615</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01616">1616</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4307,7 +4310,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if there is no active track in the railway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01644">1644</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01645">1645</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4329,7 +4332,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if there are no gaps. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04073">4073</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04074">4074</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4351,7 +4354,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if there are no NamedLocationElements (includes footcrossings) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04090">4090</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04091">4091</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4373,7 +4376,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if there is a platform, NamedNonStationLocation or Concourse present in the railway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08035">8035</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08046">8046</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4395,7 +4398,39 @@ Private Attributes</h2></td></tr>
 
 <p>Returns the number of gaps in the railway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02495">2495</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02496">2496</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aded8153d40ad58664e2a887316108add"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aded8153d40ad58664e2a887316108add">&#9670;&nbsp;</a></span>NumberOfPlatforms()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TTrack::NumberOfPlatforms </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString&#160;</td>
+          <td class="paramname"><em>LocationName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the number of separate platforms (not platform elements) at a given location, either a station or non station named location. </p>
+
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09695">9695</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4427,7 +4462,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if there is at least one named location element with name 'LocationName', used in timetable integrity checking. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09188">9188</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09199">9199</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4458,7 +4493,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>check sufficient track elements with same LocationName linked together without any trailing point links to allow a train split. Only one length is needed to return true, but this doesn't mean that all platforms at the location are long enough. When a split is required during operation a specific check is made using ThisNamedLocationLongEnoughForSplit. Need at least two linked track elements with the same LocationName, with connected elements at each end, which may or may not be named and no connections via point trailing links. Note that these conditions exclude opposed buffers since these not linked. Used in timetable integrity checking. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08964">8964</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08975">8975</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4502,7 +4537,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if another train on NextEntryPos track of element at NextPos, whether bridge or not, return false if not, or if NextPos == -1, or if only own train on the track. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09327">9327</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09338">9338</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4552,7 +4587,7 @@ Private Attributes</h2></td></tr>
 
 <p>Check whether there is a platform present at HLoc &amp; VLoc at the same side as the signal represented by SpeedTag, if so return true, and also return a pointer to the appropriate platform graphic (same as a normal platform graphic but with a bit cut out for the signal) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09214">9214</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09225">9225</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4614,7 +4649,7 @@ Private Attributes</h2></td></tr>
 
 <p>Called during track building or pasting, when an element identified by CurrentTag (i.e. its SpeedTag value) is to be placed at position HLocInput &amp; VLocInput. If the element can be placed it is displayed and added to the relevant vector, and if named its name is added to LocationNameMultiMap. At v2.2.0 'Aspect' added so can distinguish between adding and pasting track. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01822">1822</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01823">1823</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4652,7 +4687,7 @@ Private Attributes</h2></td></tr>
 
 <p>Plots a gap on screen - may be set or unset. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05267">5267</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05274">5274</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4714,7 +4749,7 @@ Private Attributes</h2></td></tr>
 
 <p>Just replot the basic track elements at a level crossing (for flashing) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06090">6090</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06097">6097</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4770,7 +4805,7 @@ Private Attributes</h2></td></tr>
 
 <p>Plot &amp; open (to trains) all level crossings linked to TrackElement. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05611">5611</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05618">5618</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4826,7 +4861,7 @@ Private Attributes</h2></td></tr>
 
 <p>new at v2.2.0 - as PlotAndAddTrackElement but keeping speed &amp; length attributes (for pasting) and also pastin location names </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02057">2057</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02058">2058</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4876,7 +4911,7 @@ Private Attributes</h2></td></tr>
 
 <p>Plot LC elements without any base elements, and set TempMarker true - used in ClearandRebuildRailway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05836">5836</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05843">5843</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4926,7 +4961,7 @@ Private Attributes</h2></td></tr>
 
 <p>Plot LC elements without any base elements, and set TempMarker true - used in ClearandRebuildRailway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06016">6016</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06023">6023</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -4970,7 +5005,7 @@ Private Attributes</h2></td></tr>
 
 <p>Plot points on screen according to how they are set (Attribute value), or, with both fillets if BothFillets is true (the fillet is the bit that appears to move when points are changed) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05344">5344</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05351">5351</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5020,7 +5055,7 @@ Private Attributes</h2></td></tr>
 
 <p>Plot &amp; close (to trains) all level crossings linked to TrackElement. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05943">5943</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05950">5950</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5058,7 +5093,7 @@ Private Attributes</h2></td></tr>
 
 <p>Plot signals on screen according to their aspect (Attribute value) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05404">5404</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05411">5411</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5102,7 +5137,7 @@ Private Attributes</h2></td></tr>
 
 <p>Plot platforms if any for a signal graphic - plotted before signal so shows through transparent signal pixels. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05505">5505</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05512">5512</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5134,7 +5169,7 @@ Private Attributes</h2></td></tr>
 
 <p>Plot on screen the zoomed-out railway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08663">8663</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08674">8674</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5156,7 +5191,7 @@ Private Attributes</h2></td></tr>
 
 <p>Plot on screen in zoomed-out mode and in gap setting mode a small red square corresponding to the gap position that is waiting to have its matching gap selected (see also ShowSelectedGap) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08716">8716</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08727">8727</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5178,7 +5213,7 @@ Private Attributes</h2></td></tr>
 
 <p>Add all LCs to LCVector - note that this contains all LC elements whether linked to others or not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09533">9533</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09544">9544</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5200,7 +5235,7 @@ Private Attributes</h2></td></tr>
 
 <p>Clears the existing LocationNameMultiMap and rebuilds it from TrackVector and InactiveTrackVector. Called after the track is linked as many of the vector positions are likely to change - called from <a class="el" href="class_t_track.html#a5e2e215fae5247206220d301c324e9a0" title="When track is being built it is entered into the TrackVector in the order in which it is built,...">RepositionAndMapTrack()</a>; after names are changed in EraseLocationAndActiveTrackElementNames; and after the name changes in EnterLocationName. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07997">7997</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08008">8008</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5238,7 +5273,7 @@ Private Attributes</h2></td></tr>
 
 <p>Called by <a class="el" href="class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker.">TInterface::ClearandRebuildRailway</a> to replot all the active and inactive track elements and text, BothPointFillets indicates whether points are to be plotted according to how they are set - for operation, or with both fillets - when not operating or during development (the fillet is the bit that appears to move when points are changed) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03325">3325</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03326">3326</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5270,7 +5305,7 @@ Private Attributes</h2></td></tr>
 
 <p>rebuild user graphics </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03407">3407</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03408">3408</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5292,7 +5327,7 @@ Private Attributes</h2></td></tr>
 
 <p>When track is being built it is entered into the TrackVector in the order in which it is built, and the TrackMap reflects that positioning. When the track is linked, the vector is rebuilt in track element position order, and the map is also rebuilt to reflect the new positions. Called during track linking, returns true if successful. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04228">4228</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04229">4229</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5314,7 +5349,7 @@ Private Attributes</h2></td></tr>
 
 <p>Track elements have members that indicates whether and on what track a train is present (TrainIDOnElement, TrainIDOnBridgeTrackPos01 and TrainIDOnBridgeTrackPos23). This function resets them all to their non-train-present state of -1. Called by <a class="el" href="class_t_train_controller.html#a7e2abfcc38e51933883d959c4155aca0" title="unplot all trains from screen">TTrainController::UnplotTrains</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06449">6449</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06456">6456</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5336,7 +5371,7 @@ Private Attributes</h2></td></tr>
 
 <p>Called by EraseTrackElement after the element has been erased and the vector positions changed, in order to reset a matching gaps if the erased element was a set gap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04157">4157</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04158">4158</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5358,7 +5393,7 @@ Private Attributes</h2></td></tr>
 
 <p>Sets all Conns and CLks to -1 except for gapjumps that match and are properly set, returns true for any unset gaps. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02516">2516</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02517">2517</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5380,7 +5415,7 @@ Private Attributes</h2></td></tr>
 
 <p>Called by RepositionAndMapTrack to reset the connecting elements of all set gaps (their TrackVector positions will have changed during the repositioning process), returns true if successful. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04921">4921</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04928">4928</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5402,7 +5437,7 @@ Private Attributes</h2></td></tr>
 
 <p>Set all LC attributes to 0 (closed to trains) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06299">6299</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06306">6306</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5424,7 +5459,7 @@ Private Attributes</h2></td></tr>
 
 <p>Called on exit from operation to reset all points to non-diverging or to left fork (Attribute = 0) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04213">4213</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04214">4214</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5446,7 +5481,7 @@ Private Attributes</h2></td></tr>
 
 <p>Called on exit from operation to reset all signals to red (Attribute = 0) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04198">4198</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04199">4199</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5478,7 +5513,7 @@ Private Attributes</h2></td></tr>
 
 <p>Return a pointer to the striped (i.e. when unnamed) graphic corresponding to TrackElement, if TrackElement isn't a named element just return its normal graphic. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08853">8853</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08864">8864</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5510,7 +5545,7 @@ Private Attributes</h2></td></tr>
 
 <p>Return a reference to the inactive track element pointed to by NextTrackElementPtr (during zoomed-in or out track rebuilding, or writing image files), return true if there is a next one or false if not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02479">2479</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02480">2480</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5542,7 +5577,7 @@ Private Attributes</h2></td></tr>
 
 <p>Return a reference to the active track element pointed to by NextTrackElementPtr (during zoomed-in or out track rebuilding, or writing image files), return true if there is a next one or false if not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02463">2463</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02464">2464</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5574,7 +5609,7 @@ Private Attributes</h2></td></tr>
 
 <p>Save all changing vector values (used for error file) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03225">3225</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03226">3226</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5606,7 +5641,7 @@ Private Attributes</h2></td></tr>
 
 <p>Save all vector values to the session file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03202">3202</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03203">3203</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5644,7 +5679,7 @@ Private Attributes</h2></td></tr>
 
 <p>Save all active and inactive track elements to VecFile. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02871">2871</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02872">2872</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5676,7 +5711,7 @@ Private Attributes</h2></td></tr>
 
 <p>save graphics </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09655">9655</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09667">9667</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5721,7 +5756,7 @@ Private Attributes</h2></td></tr>
 <p>Checks all locations that are adjacent to the one entered for linked named location elements. </p>
 <p>If any LocationName is found in any of the linked elements, that name is used for all elements that are now linked to it. The location entered doesn't need to be a FixedNamedLocationElement and there doesn't even need to be an element there. Used during EraseTrackElement (in which case the SpeedTag is that for the element that is erased) and PlotAndAddTrackElement, to bring the named location and timetable naming up to date with the deletion or insertion. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07479">7479</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07490">7490</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5751,7 +5786,7 @@ Private Attributes</h2></td></tr>
 
 <p>Store a TrackElement in the SelectVector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00819">819</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00820">820</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5783,7 +5818,7 @@ Private Attributes</h2></td></tr>
 
 <p>A range-checked version of SelectVector.at(At) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09360">9360</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09371">9371</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5810,7 +5845,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00824">824</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00825">825</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5839,7 +5874,7 @@ Private Attributes</h2></td></tr>
 
 <p>Return the number of selected active and inactive track elements (via menu items 'Edit' and 'Select') </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00813">813</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00814">814</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5861,7 +5896,7 @@ Private Attributes</h2></td></tr>
 
 <p>Work through all elements in TrackVector setting all lengths &amp; speed limits to default values - including both tracks for 2-track elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08061">8061</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08072">8072</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5893,7 +5928,7 @@ Private Attributes</h2></td></tr>
 
 <p>Convert the position values for the TrackElement into an identification string and load in ElementID. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06626">6626</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06633">6633</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -5921,7 +5956,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00830">830</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00831">831</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5949,7 +5984,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00835">835</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00836">836</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5993,7 +6028,7 @@ Private Attributes</h2></td></tr>
 
 <p>Set LC attribute at H &amp; V; 0=closed to trains, 1 = open to trains, 2 = changing state = closed to trains. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06277">6277</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l06284">6284</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6037,7 +6072,7 @@ Private Attributes</h2></td></tr>
 
 <p>Set linked LC attributes; 0=closed to trains, 1 = open to trains, 2 = changing state = closed to trains. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05569">5569</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05576">5576</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6060,7 +6095,7 @@ Private Attributes</h2></td></tr>
 <p>Called when trying to link track and when a name changed when track already linked. </p>
 <p>Examines all track elements that have ActiveTrackElementName set, sums the number of consecutive elements with the same name, and sets the EntryLink values for the front of train stop points for each direction. For stations (not non-station named locations) of length n, where n &gt; 1, stop element is [floor((n+1)/2) + 1] from each end (unless buffers at one or both ends in which case stop points are the end elements). Note that for a single element the stop point is the element itself (formula doesn't apply). For NamedNonStationLocations the stop points are at the end elements to allow trains to stack up. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08469">8469</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08480">8480</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6088,7 +6123,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00840">840</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00841">841</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6116,7 +6151,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00845">845</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00846">846</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6144,7 +6179,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00850">850</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00851">851</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6176,7 +6211,7 @@ Private Attributes</h2></td></tr>
 
 <p>Called during gap setting to mark a gap with a red circle - after which the program awaits user selection of the matching gap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04148">4148</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04149">4149</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6232,7 +6267,7 @@ Private Attributes</h2></td></tr>
 
 <p>See above under 'OneNamedLocationLongEnoughForSplit'. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09061">9061</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09072">9072</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6264,7 +6299,7 @@ Private Attributes</h2></td></tr>
 
 <p>True if a non-empty LocationName found as a timetabled location name i.e. not as a continuation name. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07401">7401</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l07412">7412</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6286,7 +6321,7 @@ Private Attributes</h2></td></tr>
 
 <p>Empty the track and inactive track vectors, the corresponding track maps, and LocationNameMultiMap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08725">8725</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08736">8736</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6318,7 +6353,7 @@ Private Attributes</h2></td></tr>
 
 <p>A range-checked version of TrackElement.at(At) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08916">8916</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08927">8927</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6356,7 +6391,7 @@ Private Attributes</h2></td></tr>
 
 <p>New at v1.2.0; true if a track element present (not inactive elements - see InactiveTrackElementPresentAtHV. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05132">5132</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l05139">5139</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6388,7 +6423,7 @@ Private Attributes</h2></td></tr>
 
 <p>Insert TrackElement into the relevant vector and map, and, if named, insert the name in LocationNameMultiMap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04964">4964</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l04971">4971</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6417,7 +6452,7 @@ Private Attributes</h2></td></tr>
 
 <p>Return the number of active track elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00801">801</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00802">802</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6467,7 +6502,7 @@ Private Attributes</h2></td></tr>
 
 <p>New at v1.2.0; checks whether a train present at input location and link and returns its ID if so. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09550">9550</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09561">9561</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6517,7 +6552,7 @@ Private Attributes</h2></td></tr>
 
 <p>Handles all tasks associated with track linking, returns true if successful (see also LinkTrack &amp; LinkTrackNoMessages above) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02280">2280</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l02281">2281</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6579,7 +6614,7 @@ Private Attributes</h2></td></tr>
 
 <p>handles moving of user graphics </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08823">8823</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l08834">8834</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6631,7 +6666,7 @@ Private Attributes</h2></td></tr>
 
 <p>checks if a user graphic present </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00733">733</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00734">734</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6663,7 +6698,7 @@ Private Attributes</h2></td></tr>
 
 <p>A range-checked version of UserGraphicVector.at(At) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09683">9683</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l09766">9766</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6695,7 +6730,7 @@ Private Attributes</h2></td></tr>
 
 <p>Called by SaveImageNoGridMenuItemClick, SaveImageAndGridMenuItemClick amd SaveImageAndPrefDirsMenuItemClick to add all track element graphics to the image file in their non-operating state. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03695">3695</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03696">3696</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6727,7 +6762,7 @@ Private Attributes</h2></td></tr>
 
 <p>Called by TInterface::SaveOperatingImage1Click to add all track element graphics to the image file in their operating state. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03717">3717</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03718">3718</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6759,7 +6794,7 @@ Private Attributes</h2></td></tr>
 
 <p>Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveImageAndPrefDirs1Click to add all track element graphics to the image file in their non-operating state. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03433">3433</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l03434">3434</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -6778,7 +6813,7 @@ Private Attributes</h2></td></tr>
 
 <p>map of active track element names </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00680">680</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00681">681</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6796,7 +6831,7 @@ Private Attributes</h2></td></tr>
 
 <p>indicates that the ActiveTrackElementNameMap has been compiled </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00640">640</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00641">641</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6814,7 +6849,7 @@ Private Attributes</h2></td></tr>
 
 <p>vector of LCs with barriers down </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00684">684</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00685">685</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6838,7 +6873,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00504">504</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00505">505</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6856,7 +6891,7 @@ Private Attributes</h2></td></tr>
 
 <p>vector of values for changing level crossings - i.e. barriers in course of being raised or lowered </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00682">682</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00683">683</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6874,7 +6909,7 @@ Private Attributes</h2></td></tr>
 
 <p>map of all continuation names, char is a dummy </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00677">677</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00678">678</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6892,7 +6927,7 @@ Private Attributes</h2></td></tr>
 
 <p>true only when copying a selection, used to prevent location names being copied </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00642">642</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00643">643</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6918,7 +6953,7 @@ Private Attributes</h2></td></tr>
 
 <p>initially used for track element lengths but since disused </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00478">478</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00479">479</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6934,7 +6969,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00705">705</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00706">706</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6958,7 +6993,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00478">478</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00479">479</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6974,7 +7009,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00705">705</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00706">706</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7000,7 +7035,7 @@ Private Attributes</h2></td></tr>
 
 <p>the FixedTrackPiece array object </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00476">476</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00477">477</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7018,7 +7053,7 @@ Private Attributes</h2></td></tr>
 
 <p>holds TrackElement SpeedTag values for 'flipping' via menu items 'Edit' &amp; 'Flip' </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00666">666</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00667">667</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7036,7 +7071,7 @@ Private Attributes</h2></td></tr>
 
 <p>true when a pair of connected gaps is flashing </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00644">644</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00645">645</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7052,7 +7087,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00688">688</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00689">689</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7068,7 +7103,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00668">668</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00669">669</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7086,7 +7121,7 @@ Private Attributes</h2></td></tr>
 
 <p>the red &amp; green circle graphics used to show where the gaps are </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00688">688</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00689">689</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7104,7 +7139,7 @@ Private Attributes</h2></td></tr>
 
 <p>TrackVectorPosition of the gap element that is flashing green or red. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00668">668</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00669">669</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7128,7 +7163,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00484">484</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00485">485</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7146,7 +7181,7 @@ Private Attributes</h2></td></tr>
 
 <p>map of gaps (see type for more information above) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00686">686</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00687">687</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7170,7 +7205,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00484">484</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00485">485</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7196,7 +7231,7 @@ Private Attributes</h2></td></tr>
 
 <p>record gap setting info </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00484">484</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00485">485</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7220,7 +7255,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00486">486</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00487">487</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7244,7 +7279,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00486">486</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00487">487</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7262,7 +7297,7 @@ Private Attributes</h2></td></tr>
 
 <p>multimap of inactive TrackElements (see type for more information above) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00690">690</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00691">691</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7278,7 +7313,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00705">705</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00706">706</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7296,7 +7331,7 @@ Private Attributes</h2></td></tr>
 
 <p>true when LCs changing </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00646">646</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00647">647</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7314,7 +7349,7 @@ Private Attributes</h2></td></tr>
 
 <p>true if found an LC during an automatic route search </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00648">648</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00649">649</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7332,7 +7367,7 @@ Private Attributes</h2></td></tr>
 
 <p>true if message given to user, to avoid giving multiple times and to avoid other failure messages being given </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00650">650</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00651">651</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7350,7 +7385,7 @@ Private Attributes</h2></td></tr>
 
 <p>true if a route set through an LC that is closed to trains (&amp; therefore needs to be opened) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00652">652</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00653">653</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7368,7 +7403,7 @@ Private Attributes</h2></td></tr>
 
 <p>vector of level crossing InactiveTrackVector positions </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00692">692</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00693">693</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7392,7 +7427,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00504">504</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00505">505</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7418,7 +7453,7 @@ Private Attributes</h2></td></tr>
 
 <p>sets of valid TrackElements for placement of platforms and non-station named locations </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00504">504</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00505">505</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7436,7 +7471,7 @@ Private Attributes</h2></td></tr>
 
 <p>duration of the flash period when level crossing opening </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00663">663</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00664">664</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7454,7 +7489,7 @@ Private Attributes</h2></td></tr>
 
 <p>duration of the flash period when level crossing closing to trains </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00661">661</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00662">662</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7480,7 +7515,7 @@ Private Attributes</h2></td></tr>
 
 <p>array of valid link connecting values, I don't think this is used now </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00488">488</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00489">489</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7506,7 +7541,7 @@ Private Attributes</h2></td></tr>
 
 <p>array used to determine relative horizontal &amp; vertical track element positions for specific link values </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00490">490</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00491">491</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7524,7 +7559,7 @@ Private Attributes</h2></td></tr>
 
 <p>multimap of processed location name elements (see type for more information above) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00694">694</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00695">695</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7542,7 +7577,7 @@ Private Attributes</h2></td></tr>
 
 <p>list of location name elements awaiting processing (see type for more information above) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00696">696</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00697">697</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7560,7 +7595,7 @@ Private Attributes</h2></td></tr>
 
 <p>multimap of location names (see type for more information above) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00698">698</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00699">699</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7578,7 +7613,7 @@ Private Attributes</h2></td></tr>
 
 <p>holds TrackElement SpeedTag values for 'mirroring' via menu items 'Edit' &amp; 'Mirror' </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00670">670</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00671">671</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7602,7 +7637,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00504">504</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00505">505</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7618,7 +7653,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00705">705</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00706">706</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7636,7 +7671,7 @@ Private Attributes</h2></td></tr>
 
 <p>track vector iterator used during cycling through a track vector </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00707">707</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00708">708</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7654,7 +7689,7 @@ Private Attributes</h2></td></tr>
 
 <p>true when points are flashing during manual change </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00654">654</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00655">655</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7678,7 +7713,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00504">504</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00505">505</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7696,7 +7731,7 @@ Private Attributes</h2></td></tr>
 
 <p>holds TrackElement SpeedTag values for 'rotating left' via menu items 'Edit' &amp; 'Rotate left' </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00674">674</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00675">675</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7714,7 +7749,7 @@ Private Attributes</h2></td></tr>
 
 <p>holds TrackElement SpeedTag values for 'rotating right' via menu items 'Edit' &amp; 'Rotate right' </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00672">672</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00673">673</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7730,7 +7765,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00638">638</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00639">639</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7748,7 +7783,7 @@ Private Attributes</h2></td></tr>
 
 <p>true while a route is flashing prior to being set </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00656">656</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00657">657</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7764,7 +7799,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00700">700</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00701">701</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7782,7 +7817,7 @@ Private Attributes</h2></td></tr>
 
 <p>vectors of TrackElements </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00705">705</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00706">706</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7816,7 +7851,7 @@ Private Attributes</h2></td></tr>
 
 <p>original table of signals for four aspect </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00629">629</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00630">630</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7834,7 +7869,7 @@ Private Attributes</h2></td></tr>
 
 <p>new at version 0.6 for ground signals </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00635">635</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00636">636</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7852,7 +7887,7 @@ Private Attributes</h2></td></tr>
 
 <p>new at version 0.6 for three aspect </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00631">631</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00632">632</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7870,7 +7905,7 @@ Private Attributes</h2></td></tr>
 
 <p>new at version 0.6 for two aspect </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00633">633</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00634">634</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7888,7 +7923,7 @@ Private Attributes</h2></td></tr>
 
 <p>changed from PastingWithAttributes in v2.4.0 as all pastes are now with attributes - needed to suppress multimap checks while pasting </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00658">658</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00659">659</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7912,7 +7947,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00498">498</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00499">499</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7936,7 +7971,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00499">499</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00500">500</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7960,7 +7995,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00500">500</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00501">501</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -7984,7 +8019,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00501">501</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00502">502</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8008,7 +8043,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00502">502</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00503">503</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8034,7 +8069,7 @@ Private Attributes</h2></td></tr>
 
 <p>these arrays give valid adjacent named element relative positions for each type of named element, the numbers - 76, 77 etc - relate to track element element SpeedTag values (76 - 79 = platforms, 96 = concourse, 129 &amp; 130 = footbridges, 145 &amp; 146 underpasses and 131 = non-station named location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00492">492</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00493">493</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8058,7 +8093,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00494">494</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00495">495</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8082,7 +8117,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00495">495</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00496">496</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8106,7 +8141,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00496">496</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00497">497</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8130,7 +8165,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00497">497</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00498">498</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8154,7 +8189,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00504">504</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00505">505</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8180,7 +8215,7 @@ Private Attributes</h2></td></tr>
 
 <p>marker for all Conn &amp; ConnLinkPos values set &amp; track complete </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00481">481</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00482">482</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8198,7 +8233,7 @@ Private Attributes</h2></td></tr>
 
 <p>map of track (see type for more information above) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00703">703</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00704">704</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8214,7 +8249,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00705">705</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00706">706</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8232,7 +8267,7 @@ Private Attributes</h2></td></tr>
 
 <p>an entry for the UserGraphicMap </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00709">709</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00710">710</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8250,7 +8285,7 @@ Private Attributes</h2></td></tr>
 
 <p>the map of graphic filenames as key and TPicture* as values </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00701">701</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00702">702</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8266,7 +8301,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00700">700</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00701">701</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8292,7 +8327,7 @@ Private Attributes</h2></td></tr>
 
 <p>give extent of railway for use in zoomed in and out displays and in saving railway images </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00486">486</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00487">487</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -8316,7 +8351,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00486">486</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00487">487</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>

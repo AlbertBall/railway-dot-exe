@@ -14,6 +14,7 @@ var class_t_utilities =
     [ "FileDiagnostics", "class_t_utilities.html#a100a392ac8eeb3955796954a5afade36", null ],
     [ "Format96HHMM", "class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8", null ],
     [ "Format96HHMMSS", "class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c", null ],
+    [ "IncrementAnsiTimeOneMinute", "class_t_utilities.html#ae6df4b6a5d1398f57ff62799331351a8", null ],
     [ "LoadFileBool", "class_t_utilities.html#a9a0ec4d0c686c71157c371d647824777", null ],
     [ "LoadFileDouble", "class_t_utilities.html#ac970a0df84f5cb26ed962020b7dc2d6d", null ],
     [ "LoadFileInt", "class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c", null ],

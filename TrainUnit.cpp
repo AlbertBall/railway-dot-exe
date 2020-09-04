@@ -35,6 +35,7 @@
 #include <ComCtrls.hpp>
 #include <fstream>
 #include <vector>
+#include <algorithm> //for sort
 #include <vcl.h>
 #include <stdlib.h> //for rand()
 #include <math.hpp> //for speed & performance calcs
@@ -843,7 +844,7 @@ void TTrain::UpdateTrain(int Caller)
     if((TrainController->OpTimeToActUpdateCounter == 0) && TrainController->OpActionPanelVisible)
     {
         OpTimeToAct = CalcTimeToAct(0); // called after ReleaseTime set
-        // calculate every 5 secs (in real time, not timetable time) for all trains
+        // calculate every 1 sec (in real time, not timetable time) for all trains
     }
 
     // check if being held at location pending any actions & deal with them if time appropriate & >= 30s since LastActionTime
@@ -6384,32 +6385,40 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
     {
         RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(8, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " +
             Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(6, Ptr->EventTime));
+        RetStr = CheckNewServiceDepartureTime(0, Ptr, RepeatNumber, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
     }
     else if(Ptr->Command == "F-nshs")
     {
         RetStr = "Forms new service " + Ptr->NonRepeatingShuttleLinkHeadCode + " at " + Ptr->LocationName + " at " +
             Utilities->Format96HHMM(GetTrainTime(32, Ptr->EventTime));
+        RetStr = CheckNewServiceDepartureTime(1, Ptr, 0, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+        //note that use LinkedTrainEntryPtr and not NonRepeatingShuttleLinkEntryPtr because the forward link from the feeder is LinkedTrainEntryPtr.
+        //NonRepeatingShuttleLinkEntryPtr is in the shuttle's ActionVector to point back to the feeder.
+        //NonRepeatingShuttleLinkEntryPtr is used below from the last shuttle as the forward link to the finishing service
     }
     else if((Ptr->Command == "Fns-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1))) // not last repeat number
     {
         RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(9, Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " +
             Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(7, Ptr->EventTime));
         // use RepeatNumber+1 as it's the repeat number of the NEXT shuttle service that is relevant
+        RetStr = CheckNewServiceDepartureTime(2, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
     }
     else if((Ptr->Command == "Fns-sh") && (RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))) // last repeat number
     {
         RetStr = "Forms new service " + Ptr->NonRepeatingShuttleLinkHeadCode,
             + " at " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(8, Ptr->EventTime));
+        RetStr = CheckNewServiceDepartureTime(3, Ptr, 0, Ptr->NonRepeatingShuttleLinkEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
     }
     else if((Ptr->Command == "Frh-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1))) // not last repeat number
     {
         RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(10, Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " +
             Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(9, Ptr->EventTime));
         // use RepeatNumber+1 as it's the repeat number of the NEXT shuttle service that is relevant
+        RetStr = CheckNewServiceDepartureTime(4, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
     }
     else if((Ptr->Command == "Frh-sh") && (RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))) // last repeat number
     {
-        RetStr = "None, train terminated at " + Ptr->LocationName;
+        RetStr ="None, train terminated at " + Ptr->LocationName;
     }
     else if(Ptr->Command == "Frh")
     {
@@ -6448,6 +6457,56 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
 }
 
 // ---------------------------------------------------------------------------
+
+AnsiString TTrain::CheckNewServiceDepartureTime(int Caller, TActionVectorEntry *Ptr, int RptNum, TTrainDataEntry *LinkedTrainDataPtr, AnsiString RetStr)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - &TrainDataEntryPtr->ActionVector.front()) + ","
+         + AnsiString(RptNum) + ",CheckNewServiceDepartureTime," + HeadCode);
+    AnsiString DepTime = "", EventTime = "";
+    bool CDTFlag = false; //reports if train changes direction before departs
+    TActionVector NewServiceAV = LinkedTrainDataPtr->ActionVector;
+    for(TActionVectorIterator AVI = NewServiceAV.begin(); AVI < NewServiceAV.end(); AVI++)
+    {
+        if(AVI->Command == "cdt")
+        {
+            CDTFlag = !CDTFlag; //toggles flag - allows for there being more than one cdt before departure
+            continue;
+        }
+        if((AVI->Command == "fsp") || (AVI->Command == "rsp"))
+        {
+            EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(19, AVI->EventTime, RptNum, IncrementalMinutes));
+            RetStr += "\nNew service splits at " + EventTime;
+            Utilities->CallLogPop(2234);
+            return RetStr;
+        }
+        if(AVI->Command == "jbo")
+        {
+            EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(20, AVI->EventTime, RptNum, IncrementalMinutes));
+            RetStr += "\nNew service joined by " + AVI->OtherHeadCode + " at " + EventTime;
+            Utilities->CallLogPop(2235);
+            return RetStr;
+        }
+        if((AVI->FormatType == TimeLoc) && (AVI->DepartureTime > TDateTime(-1))) //departure time set
+        {
+            DepTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(17, AVI->DepartureTime, RptNum, IncrementalMinutes));
+            if(CDTFlag)
+            {
+                RetStr += "\nNew service changes direction then departs at " + DepTime;
+            }
+            else
+            {
+                RetStr += "\nNew service departs at " + DepTime;
+            }
+            Utilities->CallLogPop(2236);
+            return RetStr;
+        }
+    }
+    Utilities->CallLogPop(2208);
+    return RetStr; //if reach here then RetStr doesn't change
+}
+
+// ---------------------------------------------------------------------------
+
 AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
     // Enter with Ptr pointing to first action to be listed (i.e. next action)
 {
@@ -6542,30 +6601,36 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
         {
             PartStr = Utilities->Format96HHMM(GetTrainTime(20, Ptr->EventTime)) + ": Form new service " + TrainController->GetRepeatHeadCode(15,
                 Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;
+            PartStr = CheckNewServiceDepartureTime(5, Ptr, RepeatNumber, Ptr->LinkedTrainEntryPtr, PartStr); //if there is a next service this adds the new service departure time to PartStr
         }
         else if(Ptr->Command == "F-nshs")
         {
             PartStr = Utilities->Format96HHMM(GetTrainTime(35, Ptr->EventTime)) + ": Form new service " + Ptr->NonRepeatingShuttleLinkHeadCode + " at " +
                 Ptr->LocationName;
+            PartStr = CheckNewServiceDepartureTime(6, Ptr, 0, Ptr->LinkedTrainEntryPtr, PartStr); //if there is a next service this adds the new service departure time to RetStr
+            //note that use LinkedTrainEntryPtr and not NonRepeatingShuttleLinkEntryPtr because the forward link from the feeder is LinkedTrainEntryPtr.
+            //NonRepeatingShuttleLinkEntryPtr is in the shuttle's ActionVector to point back to the feeder.
+            //NonRepeatingShuttleLinkEntryPtr is used below from the last shuttle as the forward link to the finishing service
         }
-        else if((Ptr->Command == "Fns-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1)))
-        // not the last repeat number
+        else if((Ptr->Command == "Fns-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1))) // not the last repeat number
         {
             PartStr = Utilities->Format96HHMM(GetTrainTime(21, Ptr->EventTime)) + ": Form new service " + TrainController->GetRepeatHeadCode(16,
                 Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " + Ptr->LocationName;
             // use RepeatNumber+1 because it's the repeat number of the NEXT shuttle service that is relevant
+            PartStr = CheckNewServiceDepartureTime(7, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, PartStr); //if there is a next service this adds the new service departure time to RetStr
         }
         else if((Ptr->Command == "Fns-sh") && (RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))) // last repeat number
         {
             PartStr = Utilities->Format96HHMM(GetTrainTime(22, Ptr->EventTime)) + ": Form new service " + Ptr->NonRepeatingShuttleLinkHeadCode,
             + " at " + Ptr->LocationName;
+            PartStr = CheckNewServiceDepartureTime(8, Ptr, 0, Ptr->NonRepeatingShuttleLinkEntryPtr, PartStr); //if there is a next service this adds the new service departure time to RetStr
         }
-        else if((Ptr->Command == "Frh-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1)))
-        // not the last repeat number
+        else if((Ptr->Command == "Frh-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1))) // not the last repeat number
         {
             PartStr = Utilities->Format96HHMM(GetTrainTime(23, Ptr->EventTime)) + ": Form new service " + TrainController->GetRepeatHeadCode(17,
                 Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " + Ptr->LocationName;
             // use RepeatNumber+1 because it's the repeat number of the NEXT shuttle service that is relevant
+            PartStr = CheckNewServiceDepartureTime(9, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, PartStr); //if there is a next service this adds the new service departure time to RetStr
         }
         else if((Ptr->Command == "Frh-sh") && (RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))) // last repeat number
         {
@@ -6610,9 +6675,9 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
         FirstPass = false;
         Count++;
     }
-    while(!TimetableFinished && (Count < 33) && ((Ptr->Command == "") || ((Ptr->Command != "") && (Ptr->Command[1] != 'F'))));
-    // limit of 33 allows a max of 34 entries (may have gone from 32 to 34 because of a TimeTimeLoc), which with track and train status gives
-    // a max of 48 lines, at 13 pixels each, = 624 pixels & screen height has 641 so will fit comfortably.  Also 34 timetable entries is as far
+    while(!TimetableFinished && (Count < 32) && ((Ptr->Command == "") || ((Ptr->Command != "") && (Ptr->Command[1] != 'F'))));
+    // limit of 32 allows a max of 34 entries (33 + 1 for the new service departure time) (may have gone from 32 to 34 because of a TimeTimeLoc), which with track and
+    // train status gives a max of 48 lines, at 13 pixels each, = 624 pixels & screen height has 641 so will fit comfortably.  Also 34 timetable entries is as far
     // forward as anyone should wish to see without looking at the full timetable
     if(TimetableFinished)
     {
@@ -8575,28 +8640,37 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(6, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 TrainController->GetRepeatHeadCode(46, Ptr->OtherHeadCode, RepNum, IncDig) + " at " + Ptr->LocationName;
+            PartStr = ControllerCheckNewServiceDepartureTime(0, Ptr, RepNum, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to PartStr
         }
         else if(Ptr->Command == "F-nshs")
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(7, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 Ptr->NonRepeatingShuttleLinkHeadCode + " at " + Ptr->LocationName;
+            PartStr = ControllerCheckNewServiceDepartureTime(1, Ptr, 0, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
+            //note that use LinkedTrainEntryPtr and not NonRepeatingShuttleLinkEntryPtr because the forward link from the feeder is LinkedTrainEntryPtr.
+            //NonRepeatingShuttleLinkEntryPtr is in the shuttle's ActionVector to point back to the feeder.
+            //NonRepeatingShuttleLinkEntryPtr is used below from the last shuttle as the forward link to the finishing service
         }
+//Since this is a new continuation entry service it can't be Fns-sh or Frh-sh but leave these in for consistency with TTrain::FloatingTimetableString
         else if((Ptr->Command == "Fns-sh") && (RepNum < (TTDEPtr->NumberOfTrains - 1))) // not the last repeat number
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(8, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 TrainController->GetRepeatHeadCode(47, Ptr->OtherHeadCode, RepNum + 1, IncDig) + " at " + Ptr->LocationName;
             // use RepNum+1 because it's the repeat number of the NEXT shuttle service that is relevant
+            PartStr = ControllerCheckNewServiceDepartureTime(2, Ptr, RepNum + 1, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
         }
         else if((Ptr->Command == "Fns-sh") && (RepNum >= (TTDEPtr->NumberOfTrains - 1))) // last repeat number
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(9, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 Ptr->NonRepeatingShuttleLinkHeadCode, + " at " + Ptr->LocationName;
+            PartStr = ControllerCheckNewServiceDepartureTime(3, Ptr, 0, TTDEPtr, Ptr->NonRepeatingShuttleLinkEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
         }
         else if((Ptr->Command == "Frh-sh") && (RepNum < (TTDEPtr->NumberOfTrains - 1))) // not the last repeat number
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(10, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 TrainController->GetRepeatHeadCode(48, Ptr->OtherHeadCode, RepNum + 1, IncDig) + " at " + Ptr->LocationName;
             // use RepNum+1 because it's the repeat number of the NEXT shuttle service that is relevant
+            PartStr = ControllerCheckNewServiceDepartureTime(4, Ptr, RepNum + 1, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
         }
         else if((Ptr->Command == "Frh-sh") && (RepNum >= (TTDEPtr->NumberOfTrains - 1))) // last repeat number
         {
@@ -8651,6 +8725,54 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
 
 // ---------------------------------------------------------------------------
 
+AnsiString TTrainController::ControllerCheckNewServiceDepartureTime(int Caller, TActionVectorIterator Ptr, int RptNum, TTrainDataEntry *TDEPtr, TTrainDataEntry *LinkedTrainDataPtr, int IncrementalMinutes, AnsiString RetStr)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - &TDEPtr->ActionVector.front()) + ","
+         + AnsiString(RptNum) + ",ControllerCheckNewServiceDepartureTime," + TDEPtr->HeadCode);
+    AnsiString DepTime = "", EventTime = "";
+    bool CDTFlag = false; //reports if train changes direction before departs
+    TActionVector NewServiceAV = LinkedTrainDataPtr->ActionVector;
+    for(TActionVectorIterator AVI = NewServiceAV.begin(); AVI < NewServiceAV.end(); AVI++)
+    {
+        if(AVI->Command == "cdt")
+        {
+            CDTFlag = !CDTFlag; //toggles flag - allows for there being more than one cdt before departure
+            continue;
+        }
+        if((AVI->Command == "fsp") || (AVI->Command == "rsp"))
+        {
+            EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(21, AVI->EventTime, RptNum, IncrementalMinutes));
+            RetStr += "\nNew service splits at " + EventTime;
+            Utilities->CallLogPop(2237);
+            return RetStr;
+        }
+        if(AVI->Command == "jbo")
+        {
+            EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(22, AVI->EventTime, RptNum, IncrementalMinutes));
+            RetStr += "\nNew service joined by " + AVI->OtherHeadCode + " at " + EventTime;
+            Utilities->CallLogPop(2238);
+            return RetStr;
+        }
+        if((AVI->FormatType == TimeLoc) && (AVI->DepartureTime > TDateTime(-1))) //departure time set
+        {
+            DepTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(23, AVI->DepartureTime, RptNum, IncrementalMinutes));
+            if(CDTFlag)
+            {
+                RetStr += "\nNew service changes direction then departs at " + DepTime;
+            }
+            else
+            {
+                RetStr += "\nNew service departs at " + DepTime;
+            }
+            Utilities->CallLogPop(2239);
+            return RetStr;
+        }
+    }
+    Utilities->CallLogPop(2223);
+    return RetStr;
+}
+
+// ---------------------------------------------------------------------------
 // $$$$$$$$$$$$$$$$$$$$$$ Start of Timetable Functions $$$$$$$$$$$$$$$$$$$$$$$$
 /*
   Note:  The terms 'action' and 'entry' have been used freely for individual code lines within services in comments & in variable names, but
@@ -8744,8 +8866,8 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
   fsp                 AtLoc         )
   rsp                 AtLoc         ) Intermediate
   cdt                 AtLoc         )
-  TimeLoc arr         AtLoc         )
-  TimeLoc dep         Moving        )
+  TimeLoc arr         Moving (bef)  )
+  TimeLoc dep         AtLoc  (bef)  )
   TimeTimeLoc         Moving        )
 
   Fns                 Repeat/Nothing)
@@ -9425,7 +9547,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                 if((FinishFlag) && (OneEntry[1] != 'R'))
                 // already had a finish entry
                 {
-                    TimetableMessage(GiveMessages, "Error in timetable - Event: '" + OneEntry + "' - only a repeat can follow a finish event");
+                    TimetableMessage(GiveMessages, "Error in timetable - Last event = '" + OneEntry + "'. An earlier finish event has been found with something other than a repeat following it - only a repeat can follow a finish event.");
                     Utilities->CallLogPop(79);
                     return false;
                 }
@@ -12206,8 +12328,7 @@ bool TTrainController::CheckCrossReferencesAndSetData(int Caller, AnsiString Mai
                         ReverseTDVectorNumber = x;
                     }
                 }
-                else if(Shuttle && ((AVEntry.Command == "Sns-sh") || (AVEntry.Command == "Snt-sh") || (AVEntry.Command == "Fns-sh") ||
-                    (AVEntry.Command == "Frh-sh")))
+                else if(Shuttle && ((AVEntry.Command == "Sns-sh") || (AVEntry.Command == "Snt-sh") || (AVEntry.Command == "Fns-sh") || (AVEntry.Command == "Frh-sh")))
                 {
                     if(AVEntry.OtherHeadCode == MainHeadCode)
                     {
@@ -14164,40 +14285,50 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CreateFormattedTimetable");
     AnsiString RetStr = "", PartStr = "";
 
+
 /*
        Have description & mass etc for train at top - header, then array of actions
 
-       class TActionVectorEntry//contains a single train action - repeat entry is also of this class though no train action is taken for it
-       {
-       public:
-       TTimetableFormatType FormatType;
-       TTimetableSequenceType SequenceType;
-       TTimetableLocationType LocationType;
-       TTimetableShuttleLinkType ShuttleLinkType;
-       TDateTime EventTime, ArrivalTime, DepartureTime;//zeroed on creation so change to -1 as a marker for 'not set'
-       AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode;//null on creation
-       TTrainDataEntry *LinkedTrainEntryPtr;
-       TTrainDataEntry *NonShuttleEntryPtrForFSHNS;//only used for the non-shuttle train
-       int RearStartOrRepeatMins, FrontStartOrRepeatDigits;//for Snt & repeat entries
-       int RepeatNumber; //for repeat entries
-       TExitList ExitList;//for Fer entries (empty to begin with)
-
-       //inline function
-       TActionVectorEntry() {RearStartOrRepeatMins=0; FrontStartOrRepeatDigits=0; RepeatNumber=0; FormatType=NoFormat;
-       SequenceType=NoSequence; LocationType=NoLocation; ShuttleLinkType=NoShuttleLink, EventTime=TDateTime(-1); ArrivalTime=TDateTime(-1);
-       DepartureTime=TDateTime(-1); LinkedTrainEntryPtr=0; NonShuttleEntryPtrForFSHNS=0;}
-       };
+    class TActionVectorEntry
+    {
+    public:
+        AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode;
+    ///< string values for timetabled action entries, null on creation
+        bool SignallerControl;
+    ///< indicates a train that is defined by the timetable as under signaller control
+        bool Warning;
+    ///< if set triggers an alert in the warning panel when the action is reached
+        int NumberOfRepeats;
+    ///< the number of repeating services
+        int RearStartOrRepeatMins, FrontStartOrRepeatDigits;
+    ///< dual-purpose variables used for the TrackVectorPositions of the rear and front train starting elements (for Snt) or for repeat minute & digit values in repeat entries
+        TDateTime EventTime, ArrivalTime, DepartureTime;
+    ///< relevant times at which the action is timetabled, zeroed on creation so change to -1 as a marker for 'not set'
+        TExitList ExitList;
+    ///< the list of valid train exit TrackVector positions for 'Fer' entries (empty to begin with)
+        TTimetableFormatType FormatType;
+    ///< defines the timetable action type
+        TTimetableLocationType LocationType;
+    ///< indicates where the train is when the relevant action occurs
+        TTimetableSequenceType SequenceType;
+    ///< indicates where in the sequence of codes the action lies
+        TTimetableShuttleLinkType ShuttleLinkType;
+    ///< indicates whether or not the action relates to a shuttle service link
+        TTrainDataEntry *LinkedTrainEntryPtr;
+    ///< link pointer for use between fsp/rsp & Sfs; Fjo & jbo; Fns & Sns; & all shuttle to shuttle links
+        TTrainDataEntry *NonRepeatingShuttleLinkEntryPtr;
+    ///< pointer used by shuttles for the non-shuttle train links, in & out, the corresponding non-shuttle linked trains use LinkedTrainEntryPtr
 
        typedef std::vector<TActionVectorEntry> TActionVector;//contains all actions for a single train
 
        enum TRunningEntry {NotStarted, Running, Exited};//contains status info for each train
 
-       class TTrainOperatingData
-       {
-       public:
-       int TrainID;
-       TActionEventType EventReported;
-       TRunningEntry RunningEntry;
+    class TTrainOperatingData
+    {
+    public:
+        int TrainID;
+        TActionEventType EventReported;
+        TRunningEntry RunningEntry;
 
        //inline function
        TTrainOperatingData() {TrainID = -1; EventReported= NoEvent; RunningEntry=NotStarted;}//ID -1 = marker for not running
@@ -14205,17 +14336,29 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
 
        typedef std::vector<TTrainOperatingData> TTrainOperatingDataVector;
 
-       class TTrainDataEntry//contains all data for a single train
-       {
-       public:
-       AnsiString HeadCode, Description;//null on creation, headcode is the first train's headcode, rest are calculated from repeat information
-       int StartSpeed;//kph
-       int Mass;//kg
-       double MaxRunningSpeed;//kph
-       double MaxBrakeRate, PowerAtRail;//m/s/s;W
-       int NumberOfTrains;// number of repeats + 1
-       TActionVector ActionVector;
-       TTrainOperatingDataVector TrainOperatingDataVector;//no of repeats + 1
+    class TTrainDataEntry
+    {
+    public:
+        AnsiString HeadCode, ServiceReference, Description;
+    ///< headcode is the first train's headcode, rest are calculated from repeat information; ServiceReference is the full (up to 8 characters) reference from the timetable (added at V0.6b)
+        double MaxBrakeRate;
+    ///< in metres/sec/sec
+        double MaxRunningSpeed;
+    ///< in km/h
+        double PowerAtRail;
+    ///< in Watts (taken as 80% of the train's Gross Power, i.e. that entered by the user)
+        int Mass;
+    ///< in kg
+        int NumberOfTrains;
+    ///< number of repeats + 1
+        int SignallerSpeed;
+    ///< in km/h for use when under signaller control
+        int StartSpeed;
+    ///< in km/h
+        TActionVector ActionVector;
+    ///< all the actions for the train
+        TTrainOperatingDataVector TrainOperatingDataVector;
+    ///< operating information for the train including all its repeats
 
        //inline function
        TTrainDataEntry() {StartSpeed=0; MaxRunningSpeed=0; NumberOfTrains=0;}
@@ -14275,6 +14418,8 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
     ShowMessage("Creates two timetables named " + ShortTTName +
         " in the 'Formatted timetables' folder, one in service order in '.csv' format, and one in chronological order in '.txt' format");
 
+    Screen->Cursor = TCursor(-11); // Hourglass
+
     AnsiString FormatNoDPStr = "#######0";
     AnsiString TableTitle = "", TimetableTimeStr = "", MassStr = "", PowerStr = "", BrakeStr = "", MaxSpeedStr = "", FirstHeadCode = "", Header = "";
 
@@ -14283,6 +14428,7 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
     TAllFormattedTrains *AllTTTrains = new TAllFormattedTrains;
 
     // all timetable in formatted form
+    //create the AllTTTrains vector
     for(unsigned int x = 0; x < TrainDataVector.size(); x++)
     {
         MassStr = "", PowerStr = "", BrakeStr = "", MaxSpeedStr = "";
@@ -14576,9 +14722,9 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
         }
         AllTTTrains->push_back(OneTTLine); // one per repeating train
     }
-    // AllTTTrains now complete
+    // AllTTTrains vector now complete
 
-    std::ofstream TTFile(TTFileName.c_str());
+    std::ofstream TTFile(TTFileName.c_str()); //formatted timetable
 
     if(TTFile == 0)
     {
@@ -14663,7 +14809,7 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
 
     TTFileName2 = CurDir + "\\Formatted timetables\\Timetable " + TTFileName2 + "; " + RailwayTitle + "; " + TimetableTitle + ".txt";
 
-    std::ofstream TTFile2(TTFileName2.c_str());
+    std::ofstream TTFile2(TTFileName2.c_str()); //chronological timetable
 
     if(TTFile2 == 0)
     {
@@ -14678,6 +14824,7 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
     std::pair<AnsiString, AnsiString>AnsiMultiMapEntry;
 
     TAnsiMultiMap *TAMM = new TAnsiMultiMap;
+    LastTTTime = "";   //records the very last time in the timetable - used in analysis file for Frh entries
 
     // multimap of AnsiStrings with TimeString as key (to sort automatically)
 
@@ -14716,12 +14863,1908 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
     {
         TTFile2 << (AMMIT->second).c_str();
     }
-
     delete AllTTTrains;
     delete TAMM;
-    Utilities->CallLogPop(1580);
     TTFile2.close();
+    Utilities->CallLogPop(1580);
 }
+
+// ---------------------------------------------------------------------------
+
+bool TTrainController::CreateTTAnalysisFile(int Caller, AnsiString RailwayTitle, AnsiString TimetableTitle, AnsiString CurDir, bool ArrChecked, bool DepChecked,
+        bool AtLocChecked, int ArrRange, int DepRange)
+{
+
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CreateTTAnalysisFile");
+    bool AnalysisError = false;
+
+    try
+    {
+    //New section after v2.4.3 for tt conflict analysis
+    /*
+        typedef std::list<AnsiString> TServiceCallingLocsList;
+        typedef std::vector<TServiceCallingLocsList> TAllServiceCallingLocsMap;
+
+        struct TLocServiceTimes
+        {
+            AnsiString Location;
+            AnsiString ServiceAndRepeatNum;
+            AnsiString AtLocTime;
+            AnsiString ArrTime;
+            AnsiString DepTime;
+        };
+        typedef std::vector<TLocServiceTimes> TLocServiceTimesVector;
+    */
+
+    //first have to check through all the services and give each one a unique name, or the analysis won't recognise differences between services that have the same reference
+    //to do that need a new TrainDataVector as don't want to change anything in the original.  TrainDataVectorCopy is used for building AllServiceCallingLocsMap & LocServiceTimesVector
+
+        TTrainDataVector TrainDataVectorCopy = TrainDataVector; //don't need it on heap as TrainController is on the heap.  Didn't need others in CreatFormattedTimetables but leave as is.
+        TTrainDataVector::iterator TDVIt, TDVCopyIt;
+        int Suffix = 0;
+        int IteratorNumber = 0;
+        AnsiString AnsiSuffix = "";
+        for(TDVIt = TrainDataVector.begin(); TDVIt != TrainDataVector.end() - 1; TDVIt++)
+        {
+            IteratorNumber++;  //first value in loop is 1
+            Suffix = 0;
+            for(TDVCopyIt = TrainDataVectorCopy.begin() + IteratorNumber; TDVCopyIt != TrainDataVectorCopy.end(); TDVCopyIt++)
+            {
+                if(TDVCopyIt->ServiceReference == TDVIt->ServiceReference)
+                {
+                    Suffix++;                        //first value is 1
+                    AnsiSuffix = AnsiString(Suffix);
+                    TDVCopyIt->ServiceReference = TDVIt->ServiceReference + "/" + AnsiSuffix;
+                }
+            }
+        }
+
+    //build AllServiceCallingLocsMap, it only uses the base service reference (with /1, /2 etc suffixes) as later times are calculated from the repeat number
+        TServiceCallingLocsList ServiceCallingLocsList;
+        std::pair<AnsiString, TServiceCallingLocsList> AllServiceCallingLocsEntry;
+        for(unsigned int x = 0; x < TrainDataVectorCopy.size(); x++)
+        {
+            const TTrainDataEntry &TrainDataEntry = TrainDataVectorCopy.at(x);
+            const TActionVector &ActionVector = TrainDataEntry.ActionVector;
+            AllServiceCallingLocsEntry.first = TrainDataEntry.ServiceReference;
+            ServiceCallingLocsList.clear();
+            if(ActionVector.empty())
+            {
+                continue;
+            }
+            if(ActionVector.at(0).SignallerControl)
+            {
+                continue;
+            }
+            for(unsigned int z = 0; z < ActionVector.size(); z++)
+            {
+                TActionVectorEntry AVE = ActionVector.at(z);
+                if(AVE.FormatType == StartNew)
+                {
+                    if(AVE.LocationType == AtLocation) //located Snt
+                    {
+                        ServiceCallingLocsList.push_back(AVE.LocationName);
+                    }
+                    else //unlocated Snt (could be entering at continuation)
+                    {
+                        TTrackElement TE = Track->TrackElementAt(994, AVE.RearStartOrRepeatMins);
+                        if(TE.ActiveTrackElementName != "")
+                        {
+                            ServiceCallingLocsList.push_back(TE.ActiveTrackElementName);
+                        }
+                        else
+                        {
+                            int HLoc = TE.HLoc;
+                            int VLoc = TE.VLoc;
+                            AnsiString HString;
+                            AnsiString VString;
+                            if(HLoc < 0)
+                            {
+                                HString = 'N' + AnsiString(HLoc).SubString(2, AnsiString(HLoc).Length() - 1); //strip off '-'
+                            }
+                            else
+                            {
+                                HString = AnsiString(HLoc);
+                            }
+                            if(VLoc < 0)
+                            {
+                                VString = 'N' + AnsiString(VLoc).SubString(2, AnsiString(VLoc).Length() - 1); //strip off '-'
+                            }
+                            else
+                            {
+                                VString = AnsiString(VLoc);
+                            }
+                            ServiceCallingLocsList.push_back(HString + '-' + VString);
+                        }
+                    }
+                }
+                else if(AVE.SequenceType == Start) //other start entries, all located
+                {
+                    ServiceCallingLocsList.push_back(AVE.LocationName);
+                }
+                else if(AVE.FormatType == TimeLoc) //z must be > 0
+                {
+                    if(ServiceCallingLocsList.back() != AVE.LocationName)
+                    {
+                        ServiceCallingLocsList.push_back(AVE.LocationName); //may be listed twice in succession so only want one entry
+                    }
+                }
+                else if(AVE.FormatType == PassTime)
+                {
+                    ServiceCallingLocsList.push_back(AVE.LocationName);
+                }
+                else if(AVE.FormatType == TimeTimeLoc)
+                {
+                    ServiceCallingLocsList.push_back(AVE.LocationName);
+                }
+                else if(AVE.Command == "cdt") //list if not next to start or finish
+                {
+                    if(ActionVector.at(z-1).SequenceType == Start)
+                    {
+                        continue;
+                    }
+                    else if(ActionVector.at(z+1).SequenceType == Finish) //although deal with Fer entries cdt (train stopped) can't precede FER (train moving)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        AnsiString TimeString = Utilities->Format96HHMM(AVE.EventTime);
+                        ServiceCallingLocsList.push_back("%%%" + TimeString); //%%% is a marker - unlikely that any locations will begin with this & easy to check to identify a time
+                    }
+                }
+                else if(AVE.FormatType == ExitRailway) //Fer
+                {
+                    TTrackElement TE = Track->TrackElementAt(995, AVE.ExitList.front());
+                    AnsiString LName = TE.ActiveTrackElementName;
+                    if(LName != "")
+                    {
+                        ServiceCallingLocsList.push_back(LName);
+                    }
+                    else
+                    {
+                        int HLoc = TE.HLoc;
+                        int VLoc = TE.VLoc;
+                        AnsiString HString;
+                        AnsiString VString;
+                        if(HLoc < 0)
+                        {
+                            HString = 'N' + AnsiString(HLoc).SubString(2, AnsiString(HLoc).Length() - 1); //strip off '-'
+                        }
+                        else
+                        {
+                            HString = AnsiString(HLoc);
+                        }
+                        if(VLoc < 0)
+                        {
+                            VString = 'N' + AnsiString(VLoc).SubString(2, AnsiString(VLoc).Length() - 1); //strip off '-'
+                        }
+                        else
+                        {
+                            VString = AnsiString(VLoc);
+                        }
+                        ServiceCallingLocsList.push_back(HString + '-' + VString);
+                    }
+                }
+            }
+        AllServiceCallingLocsEntry.second = ServiceCallingLocsList;
+        AllServiceCallingLocsMap.insert(AllServiceCallingLocsEntry);
+        }
+    //AllServiceCallingLocsMap built
+
+    //test validity of AllServiceCallingLocsMap
+/*
+        AnsiString TestFile = CurDir + "\\Formatted timetables\\TestFile; " + RailwayTitle + "; " + TimetableTitle + ".txt";
+        std::ofstream Test(TestFile.c_str());
+
+        if(TestFile == 0)
+        {
+            ShowMessage("TestFile failed to open - can't be created");
+            Utilities->CallLogPop();
+            return false;
+        }
+
+        for(TAllServiceCallingLocsMap::iterator ASCLIt = AllServiceCallingLocsMap.begin(); ASCLIt != AllServiceCallingLocsMap.end(); ASCLIt++)
+        {
+            Test << ASCLIt->first << '\n'; //service ref
+            for(TServiceCallingLocsList::iterator SCLIt = ASCLIt->second.begin(); SCLIt != ASCLIt->second.end(); SCLIt++)
+            {
+                Test << *SCLIt << '\n';
+            }
+            Test << "\n\n";
+        }
+        Test.close();
+        Utilities->CallLogPop();
+        return true;
+*/
+
+    //initialise variables before calc LastTTTime & build LocServiceTimesVector
+        if(TrainDataVector.empty())
+        {
+            ShowMessage("Unable to create a program-readable timetable - please check the timetable file validity");
+            Utilities->CallLogPop(2209);
+            return false;
+        }
+        TLocServiceTimes TLSTEntry;
+        TLocServiceTimesVector LocServiceTimesVector; //will be on heap as TrainController is on the heap
+        bool NumPlatsAtThisLocCalculated = false, ArrivalsPrinted = false, DeparturesPrinted = false, AtLocsPrinted =  false;
+        AnsiString PreviousService = "", PreviousServiceAndRepeatNumTotalOutput = "", BasicTime = "", MinuteString = "", LastAnsiTime = "";
+        int NumTrains = 0, NumPlats = 0, LastFrhCount =  0, FrhCount = 0, NumTrainsAtLoc = 0;
+        LastTTTime = "";
+
+        //calculate LastTTTime
+        for(unsigned int x = 0; x < TrainDataVectorCopy.size(); x++)
+        {
+            TTrainDataEntry &TrainDataEntry = TrainDataVectorCopy.at(x);
+            TActionVector &ActionVector = TrainDataEntry.ActionVector;
+            TActionVectorIterator AVLast = ActionVector.end() - 1;//points to last entry
+            TDateTime LastTDTime;
+            int IncMinutes = 0;
+            NumTrains = TrainDataEntry.NumberOfTrains;
+            if(ActionVector.empty())
+            {
+                continue;
+            }
+            if(ActionVector.at(0).SignallerControl)
+            {
+                continue;
+            }
+            if(AVLast->FormatType == Repeat)
+            {
+                IncMinutes = ActionVector.at(ActionVector.size() - 1).RearStartOrRepeatMins;
+                AVLast--; //now points to the command before the repeat
+            }
+            if(AVLast->FormatType == FinRemHere) //not 'else if' as may have both a repeat and an Frh
+            {
+                AVLast--; //points to last timed entry
+            }
+            //here AVLast points to last entry with a time
+            if(AVLast->ArrivalTime != TDateTime(-1))
+            {
+                LastTDTime = AVLast->ArrivalTime;
+            }
+            else if(AVLast->EventTime != TDateTime(-1)) //can't be a departure time
+            {
+                LastTDTime = AVLast->EventTime;
+            }
+            else
+            {
+                continue; //shouldn't ever reach here but if do then skip this service
+            }
+            if(NumTrains == 1)
+            {
+                LastAnsiTime = Utilities->Format96HHMM(LastTDTime);
+            }
+            else
+            {
+                LastAnsiTime = Utilities->Format96HHMM(GetRepeatTime(59, LastTDTime, NumTrains - 1, IncMinutes));
+            }
+            if(LastAnsiTime > LastTTTime)
+            {
+                LastTTTime = LastAnsiTime;
+            }
+        }
+
+//build LocServiceTimesVector
+
+/*      struct TLocServiceTimes
+        {
+            AnsiString Location;
+            AnsiString ServiceAndRepeatNum;
+            AnsiString AtLocTime;
+            AnsiString ArrTime;
+            AnsiString DepTime;
+        };
+        typedef std::vector<TLocServiceTimes> TLocServiceTimesVector;
+
+This works as follows:
+ServiceAndRepeatNum is taken from the TrainDataVector as it is the same for all actionvector entries
+Location is taken from ActionVectorEntry.LocationName if there is one, or from the H & V locations if not (e.g. at an unnamed Fer)
+AtLocTime is always entered either on its own or with ArrTime or DepTime as appropriate
+
+Every action for every train is examined and times entered as follows:-
+a) a located Snt: entry time becomes the AtLocTime, and all subsequent minutes entered too up to but not including a departure or a finish
+b) an unlocated Snt: entry time becomes DepTime
+c) all other start entries: entry time becomes AtLoc, and all subsequent minutes entered too up to but not including a departure or a finish
+d) TimeLoc Arr: entry time becomes ArrTime, and all subsequent minutes entered too up to but not including a departure or a finish
+e) TimeLoc Dep: entry time becomes DepTime, checks if DepTime same as earlier ArrTime and if so all times go in as one entry
+f) TimeTimeLoc: Arrival time entered as ErrTime, a check if Arr & Dep same and if s go in as one entry, else all minutes between entered as AtLocs then DepTime
+g) ExitRailway (Fer): check if located and use Locationname if so. else use H & V positions, time becomes AtLocTime
+h) Frh: use the earlier vector time as the AtLocTime and set FrhMarker, and enter all minutes to end of timetable as AtLocs
+i) Frh-sh: for the last train use time as AtLocTime, set FrhMarker, and enter all minutes to end of timetable as AtLocs
+j) all other finish entries (all link to another service) are ignored as will be listed for the linked service
+*/
+        for(unsigned int x = 0; x < TrainDataVectorCopy.size(); x++)
+        {
+            const TTrainDataEntry &TrainDataEntry = TrainDataVectorCopy.at(x);
+            const TActionVector &ActionVector = TrainDataEntry.ActionVector;
+            AnsiString ServiceRef = TrainDataEntry.ServiceReference;
+            int IncMinutes = 0;
+            NumTrains = TrainDataEntry.NumberOfTrains;
+            if(ActionVector.empty())
+            {
+                continue;
+            }
+            if(ActionVector.at(0).SignallerControl)
+            {
+                continue;
+            }
+            if(ActionVector.at(ActionVector.size() - 1).FormatType == Repeat)
+            {
+                IncMinutes = ActionVector.at(ActionVector.size() - 1).RearStartOrRepeatMins;
+            }
+
+            for(int y = 0; y < NumTrains; y++)
+            {
+                if(NumTrains == 1)
+                {
+                    TLSTEntry.ServiceAndRepeatNum = ServiceRef;
+                }
+                else if(y == 0)
+                {
+                    TLSTEntry.ServiceAndRepeatNum = ServiceRef + " (First service)";
+                }
+                else
+                {
+                    TLSTEntry.ServiceAndRepeatNum = ServiceRef + " (Repeat " + AnsiString(y) + ")";
+                }
+                for(unsigned int z = 0; z < ActionVector.size(); z++)
+                {
+                    TActionVectorEntry AVE = ActionVector.at(z);
+                    TLSTEntry.AtLocTime = "";
+                    TLSTEntry.ArrTime = "";
+                    TLSTEntry.DepTime = "";
+                    TLSTEntry.Location = "";
+                    TLSTEntry.FrhMarker = "";
+
+                    if(AVE.FormatType == StartNew) //Snt only
+                    {
+                        if(AVE.LocationType == AtLocation) //located Snt, class time as AtLocTime
+                        {
+                            TLSTEntry.Location = AVE.LocationName;
+                            TLSTEntry.AtLocTime = Utilities->Format96HHMM(GetRepeatTime(58, AVE.EventTime, y, IncMinutes));
+                            LocServiceTimesVector.push_back(TLSTEntry);
+
+                            //now look forwards until find a departure or a Fns, Fns-sh etc & add in all the minutes up to but not including the dep or finish times
+                            AnsiString IncTime = "", FoundStopTime = "";           //these handled in later checks
+                            for(unsigned int a = z + 1; a < ActionVector.size(); a++)
+                            {
+                                if(ActionVector.at(a).FormatType == TimeLoc) //must be a departure
+                                {
+                                    FoundStopTime = Utilities->Format96HHMM(GetRepeatTime(62, ActionVector.at(a).DepartureTime, y, IncMinutes));
+                                    break;
+                                }
+                                if(ActionVector.at(a).SequenceType == Finish) //finish catered in a later test
+                                {
+                                    FoundStopTime = Utilities->Format96HHMM(GetRepeatTime(63, ActionVector.at(a).EventTime, y, IncMinutes));
+                                    break;
+                                }
+                            }
+                            if(FoundStopTime == "")
+                            {
+                                throw Exception("Failure to determine FoundStopTime for located Snt");
+                            }
+                            int WhileCount = 0;
+                            while(true)
+                            {
+                                //add minutes until reach StopAddingMinutesTime but don't add that time
+                                WhileCount++;
+                                IncTime = Utilities->IncrementAnsiTimeOneMinute(TLSTEntry.AtLocTime);
+                                TLSTEntry.AtLocTime = IncTime;//all entered times will be AtLocs
+                                TLSTEntry.DepTime = "";
+                                TLSTEntry.ArrTime = "";
+                                if(IncTime >= FoundStopTime) //don't add that time
+                                {
+                                    break;
+                                }
+                                LocServiceTimesVector.push_back(TLSTEntry);
+                                if(WhileCount > 2000)
+                                {
+                                    throw Exception("While loop failed to break in 2000 loops for located Snt");
+                                }
+                            }
+                        }
+                        else //unlocated Snt, use the EventTime as DepTime for this vector
+                        {
+                            TTrackElement TE = Track->TrackElementAt(993, AVE.RearStartOrRepeatMins);
+                            if(TE.ActiveTrackElementName != "")
+                            {
+                                TLSTEntry.Location = TE.ActiveTrackElementName;
+                            }
+                            else
+                            {
+                                int HLoc = TE.HLoc;
+                                int VLoc = TE.VLoc;
+                                AnsiString HString;
+                                AnsiString VString;
+                                if(HLoc < 0)
+                                {
+                                    HString = 'N' + AnsiString(HLoc).SubString(2, AnsiString(HLoc).Length() - 1); //strip off '-'
+                                }
+                                else
+                                {
+                                    HString = AnsiString(HLoc);
+                                }
+                                if(VLoc < 0)
+                                {
+                                    VString = 'N' + AnsiString(VLoc).SubString(2, AnsiString(VLoc).Length() - 1); //strip off '-'
+                                }
+                                else
+                                {
+                                    VString = AnsiString(VLoc);
+                                }
+                                TLSTEntry.Location = HString + '-' + VString;
+                            }
+                            TLSTEntry.DepTime = Utilities->Format96HHMM(GetRepeatTime(49, AVE.EventTime, y, IncMinutes));
+                            TLSTEntry.AtLocTime = TLSTEntry.DepTime;
+                            LocServiceTimesVector.push_back(TLSTEntry);
+                        }
+                    }
+
+                    else if(AVE.SequenceType == Start) //other start entries, all located
+                    {
+                        TLSTEntry.Location = AVE.LocationName;
+                        TLSTEntry.AtLocTime = Utilities->Format96HHMM(GetRepeatTime(50, AVE.EventTime, y, IncMinutes));
+                        LocServiceTimesVector.push_back(TLSTEntry);
+                        //now look forwards until find a departure or a Fns, Fns-sh etc & add in all the minutes up to but not including the dep or finish times
+                        AnsiString IncTime = "", FoundStopTime = "";           //these handled in other checks
+                        for(unsigned int a = z + 1; a < ActionVector.size(); a++)
+                        {
+                            if(ActionVector.at(a).FormatType == TimeLoc) //must be a departure
+                            {
+                                FoundStopTime = Utilities->Format96HHMM(GetRepeatTime(64, ActionVector.at(a).DepartureTime, y, IncMinutes));
+                                break;
+                            }
+                            if(ActionVector.at(a).SequenceType == Finish) //finish catered in a later test
+                            {
+                                FoundStopTime = Utilities->Format96HHMM(GetRepeatTime(65, ActionVector.at(a).EventTime, y, IncMinutes));
+                                break;
+                            }
+                        }
+                        if(FoundStopTime == "")
+                        {
+                            throw Exception("Failure to determine FoundStopTime for SequenceType == Start");
+                        }
+                        int WhileCount = 0;
+                        while(true)
+                        {
+                            //add minutes until reach StopAddingMinutesTime but don't add that time
+                            WhileCount++;
+                            IncTime = Utilities->IncrementAnsiTimeOneMinute(TLSTEntry.AtLocTime);
+                            TLSTEntry.AtLocTime = IncTime;//all entered times will be AtLocs
+                            TLSTEntry.DepTime = "";
+                            TLSTEntry.ArrTime = "";
+                            if(IncTime >= FoundStopTime) //don't add that time
+                            {
+                                break;
+                            }
+                            LocServiceTimesVector.push_back(TLSTEntry);
+                            if(WhileCount > 2000)
+                            {
+                                throw Exception("While loop failed to break in 2000 loops for SequenceType == Start");
+                            }
+                        }
+                    }
+
+                    else if(AVE.FormatType == TimeLoc) //could be arr or dep, if ar5rival add in all mins to the departure or finish
+                    {
+                        TLSTEntry.Location = AVE.LocationName;
+                        if(AVE.ArrivalTime > TDateTime(-1)) //one or other set, not both, in this case arrival
+                        {
+                            TLSTEntry.ArrTime = Utilities->Format96HHMM(GetRepeatTime(51, AVE.ArrivalTime, y, IncMinutes));
+                            TLSTEntry.AtLocTime = TLSTEntry.ArrTime;
+                            LocServiceTimesVector.push_back(TLSTEntry); //Arr and AtLoc added (may be popped if dep time found to be same at next TimeLoc)
+                            //now look forwards until find a departure or a Fns, Fns-sh etc & add in all the minutes up to but not including the dep or finish times
+                            AnsiString IncTime = "", FoundStopTime = "";           //these handled in other checks
+                            for(unsigned int a = z + 1; a < ActionVector.size(); a++)
+                            {
+                                if(ActionVector.at(a).FormatType == TimeLoc) //must be a departure
+                                {
+                                    FoundStopTime = Utilities->Format96HHMM(GetRepeatTime(66, ActionVector.at(a).DepartureTime, y, IncMinutes));
+                                    break;
+                                }
+                                if(ActionVector.at(a).SequenceType == Finish) //finish catered in a later test
+                                {
+                                    FoundStopTime = Utilities->Format96HHMM(GetRepeatTime(67, ActionVector.at(a).EventTime, y, IncMinutes));
+                                    break;
+                                }
+                            }
+                            if(FoundStopTime == "")
+                            {
+                                throw Exception("Failure to determine FoundStopTime for SequenceType == Start");
+                            }
+                            int WhileCount = 0;
+                            while(true)
+                            {
+                                //add minutes until reach StopAddingMinutesTime but don't add that time
+                                WhileCount++;
+                                IncTime = Utilities->IncrementAnsiTimeOneMinute(TLSTEntry.AtLocTime);
+                                TLSTEntry.AtLocTime = IncTime;//all entered times will be AtLocs
+                                TLSTEntry.DepTime = "";
+                                TLSTEntry.ArrTime = "";
+                                if(IncTime >= FoundStopTime) //don't add that time
+                                {
+                                    break;
+                                }
+                                LocServiceTimesVector.push_back(TLSTEntry);
+                                if(WhileCount > 2000)
+                                {
+                                    throw Exception("While loop failed to break in 2000 loops for SequenceType == Start");
+                                }
+                            }
+                        }
+                        else if(AVE.DepartureTime > TDateTime(-1)) //need to check if the arrival time (which should already be listed) is same and if so put all times on one line
+                        {
+                            TLSTEntry.DepTime = Utilities->Format96HHMM(GetRepeatTime(52, AVE.DepartureTime, y, IncMinutes));
+                            TLSTEntry.AtLocTime = TLSTEntry.DepTime;
+                            if((TLSTEntry.Location == LocServiceTimesVector.back().Location) && (TLSTEntry.ServiceAndRepeatNum == LocServiceTimesVector.back().ServiceAndRepeatNum))//if not it's a new service
+                            {
+                                if(TLSTEntry.DepTime == LocServiceTimesVector.back().ArrTime)
+                                {
+                                    TLSTEntry.ArrTime = LocServiceTimesVector.back().ArrTime;
+                                    LocServiceTimesVector.pop_back();
+                                    LocServiceTimesVector.push_back(TLSTEntry); //Arr, Dep and AtLoc added in place of earlier Arr entry.
+                                }
+                                else //just add the dep & atloc times
+                                {
+                                    TLSTEntry.ArrTime = "";
+                                    LocServiceTimesVector.push_back(TLSTEntry);
+                                }
+                            }
+                            else //just add the dep & atloc times
+                            {
+                                TLSTEntry.ArrTime = "";
+                                LocServiceTimesVector.push_back(TLSTEntry);
+                            }
+                        }
+                    }
+
+                    else if(AVE.FormatType == TimeTimeLoc)
+                    {
+                        TLSTEntry.Location = AVE.LocationName;
+                        if(AVE.ArrivalTime > TDateTime(-1)) //should be
+                        {
+                            TLSTEntry.ArrTime = Utilities->Format96HHMM(GetRepeatTime(53, AVE.ArrivalTime, y, IncMinutes));
+                            TLSTEntry.AtLocTime = TLSTEntry.ArrTime;
+                        }
+                        if(AVE.DepartureTime > TDateTime(-1)) //should be
+                        {
+                            TLSTEntry.DepTime = Utilities->Format96HHMM(GetRepeatTime(54, AVE.DepartureTime, y, IncMinutes));
+                        }
+                        if(TLSTEntry.ArrTime == TLSTEntry.DepTime)
+                        {
+                            LocServiceTimesVector.push_back(TLSTEntry);
+                        }
+                        else
+                        {
+                            AnsiString TempDepTime = TLSTEntry.DepTime; //save it temporarily
+                            TLSTEntry.DepTime = "";
+                            LocServiceTimesVector.push_back(TLSTEntry); //push just the arrival and AtLoc times
+                            TLSTEntry.ArrTime = ""; //done with this now
+                            while(TLSTEntry.AtLocTime < TempDepTime)
+                            {
+                                TLSTEntry.AtLocTime = Utilities->IncrementAnsiTimeOneMinute(TLSTEntry.AtLocTime);
+                                if(TLSTEntry.AtLocTime == TempDepTime)
+                                {
+                                    TLSTEntry.DepTime = TempDepTime; //restore value
+                                    LocServiceTimesVector.push_back(TLSTEntry); //push the AtLoc and Dep times - will finish loop after this
+                                }
+                                else
+                                {
+                                    LocServiceTimesVector.push_back(TLSTEntry); //push the AtLoc time on its own
+                                }
+                            }
+                        }
+                    }
+
+                    else if(AVE.FormatType == ExitRailway) //Fer
+                    {
+                        TLSTEntry.AtLocTime = Utilities->Format96HHMM(GetRepeatTime(55, AVE.EventTime, y, IncMinutes));
+                        AnsiString LName = Track->TrackElementAt(990, AVE.ExitList.front()).ActiveTrackElementName;
+                        if(LName != "")
+                        {
+                            TLSTEntry.Location = LName;
+                        }
+                        else
+                        {
+                            int HLoc = Track->TrackElementAt(991, AVE.ExitList.front()).HLoc;
+                            int VLoc = Track->TrackElementAt(992, AVE.ExitList.front()).VLoc;
+                            AnsiString HString;
+                            AnsiString VString;
+                            if(HLoc < 0)
+                            {
+                                HString = 'N' + AnsiString(HLoc).SubString(2, AnsiString(HLoc).Length() - 1); //strip off '-'
+                            }
+                            else
+                            {
+                                HString = AnsiString(HLoc);
+                            }
+                            if(VLoc < 0)
+                            {
+                                VString = 'N' + AnsiString(VLoc).SubString(2, AnsiString(VLoc).Length() - 1); //strip off '-'
+                            }
+                            else
+                            {
+                                VString = AnsiString(VLoc);
+                            }
+                            TLSTEntry.Location = HString + '-' + VString;
+                        }
+                        LocServiceTimesVector.push_back(TLSTEntry); //just use the exit time as AtLocTime
+                    }
+
+                    else if(AVE.FormatType == FinRemHere)  //Frh, not Frh-sh, that dealt with next
+                    {
+                        AnsiString FrhTime;
+                        if(ActionVector.at(z - 1).ArrivalTime != TDateTime(-1))
+                        {
+                            FrhTime = Utilities->Format96HHMM(GetRepeatTime(56, ActionVector.at(z - 1).ArrivalTime, y, IncMinutes));
+                        }
+                        else if(ActionVector.at(z - 1).EventTime != TDateTime(-1))
+                        {
+                            FrhTime = Utilities->Format96HHMM(GetRepeatTime(57, ActionVector.at(z - 1).EventTime, y, IncMinutes));
+                        }
+                        TLSTEntry.AtLocTime = FrhTime; //use the last entry time as the first recorded time
+                        TLSTEntry.Location = AVE.LocationName;
+                        AnsiString IncTime = Utilities->IncrementAnsiTimeOneMinute(TLSTEntry.AtLocTime);
+                        TLSTEntry.FrhMarker = "Frh";
+                        LocServiceTimesVector.push_back(TLSTEntry);
+                        TLSTEntry.FrhMarker = "";
+    //add all times from next minute to end of timetable
+                        while(IncTime <= LastTTTime)
+                        {
+                            TLSTEntry.AtLocTime = IncTime;
+                            LocServiceTimesVector.push_back(TLSTEntry);
+                            IncTime = Utilities->IncrementAnsiTimeOneMinute(IncTime);
+                        }
+                    }
+
+                    else if(AVE.Command == "Frh-sh") //do nothing if links to other shuttle but treat as Frh when remaining here
+                    {
+                        if(y == NumTrains - 1)//last repeat, it remains here when accessed for the last train
+                        {
+                            TLSTEntry.AtLocTime = Utilities->Format96HHMM(GetRepeatTime(68, AVE.EventTime, y, IncMinutes));
+                            TLSTEntry.Location = AVE.LocationName;
+                            AnsiString IncTime = Utilities->IncrementAnsiTimeOneMinute(TLSTEntry.AtLocTime);
+                            TLSTEntry.FrhMarker = "Frh";
+                            LocServiceTimesVector.push_back(TLSTEntry);
+                            TLSTEntry.FrhMarker = "";
+        //add all times from next minute to end of timetable
+                            while(IncTime <= LastTTTime)
+                            {
+                                TLSTEntry.AtLocTime = IncTime;
+                                LocServiceTimesVector.push_back(TLSTEntry);
+                                IncTime = Utilities->IncrementAnsiTimeOneMinute(IncTime);
+                            }
+                        }
+                    }
+
+                    else if(AVE.SequenceType == Finish)  //other finish types - all located & all link to another service
+                    {
+                    //nothing is done here as the entry will be listed at this time under the new service reference
+                    }
+                }
+            }
+        }
+
+    //now sort in location order
+        std::sort(LocServiceTimesVector.begin(), LocServiceTimesVector.end(), &LocServiceTimesLocationSort); //LocServiceTimesLocationSort is a function pointer
+    //LocServiceTimesVector now complete & sorted in location order
+
+    //declare pointers for use in printouts
+        TLocServiceTimesVector::iterator Ptr1, Ptr2;
+
+    //set up the output file
+        AnsiString TTFileName3 = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
+        TTFileName3 = CurDir + "\\Formatted timetables\\Conflict Analysis " + TTFileName3 + "; " + RailwayTitle + "; " + TimetableTitle + ".csv";
+
+        std::ofstream TTFile3(TTFileName3.c_str());
+
+        if(TTFile3 == 0)
+        {
+            ShowMessage("Conflict Analysis file failed to open - can't be created");
+            Utilities->CallLogPop(2210);
+            return false;
+        }
+
+        if(LocServiceTimesVector.empty())
+        {
+            ShowMessage("No timetabled services found");
+            TTFile3.close();
+            DeleteFile(TTFileName3);
+            Utilities->CallLogPop(2211);
+            return false;
+        }
+
+        TTFile3 << "Timetable analysis for timetable: '" + TimetableTitle + "' in conjunction with railway: '" + RailwayTitle + "'\n\n\n";
+
+
+    //arrivals
+        if(ArrChecked)
+        {
+        //sort in ArrTime order for each location
+            Ptr1 = LocServiceTimesVector.begin();
+            Ptr2 = Ptr1 + 1;
+            while(Ptr2 != LocServiceTimesVector.end())
+            {
+                while(Ptr2->Location == Ptr1->Location) //ends with Ptr2 one past same Location value as Ptr1
+                {
+                    Ptr2++;
+                    if(Ptr2 == LocServiceTimesVector.end())
+                    {
+                        break;
+                    }
+                }
+                std::sort(Ptr1, Ptr2, &LocServiceTimesArrTimeSort);
+                Ptr1 = Ptr2; //first entry with next name
+                if(Ptr2 != LocServiceTimesVector.end())
+                {
+                    Ptr2++;
+                }
+            }
+
+        //routine for arrivals - number of trains arriving within the specified range with services listed at the end
+
+            TTFile3 << "Arrival analysis - an asterisk means that the number of same approach code arrivals is equal to or greater than the number of platforms\n\n";
+            MinuteString = " minutes";
+            AnsiString ServiceAndRepeatNumTotal = "", ServiceAndRepeatNumTotalOutput = "";
+            if(ArrRange == 1)
+            {
+                MinuteString = " minute";
+            }
+            TTFile3 << "Location,Number of,Number of,Services arriving within " << AnsiString(ArrRange) << MinuteString << " with their arrival times and approach codes\n";
+            TTFile3 << ",Platforms,Trains\n\n";
+
+            Ptr1 = LocServiceTimesVector.begin();
+            Ptr2 = Ptr1 + 1;
+            while(Ptr2 != LocServiceTimesVector.end())
+            {
+                PreviousService = "";
+                NumTrainsAtLoc = 0;
+                ServiceAndRepeatNumTotal = "";
+                NumPlats = 0;
+                NumPlatsAtThisLocCalculated = false;
+                BasicTime = "";
+                while((Ptr2->Location != Ptr1->Location) || ((Ptr1->Location == "") && (Ptr2->Location == "")))
+                {
+                    PreviousService = "";
+                    NumTrainsAtLoc = 0;
+                    ServiceAndRepeatNumTotal = "";
+                    NumPlats = 0;
+                    NumPlatsAtThisLocCalculated = false;
+                    BasicTime = "";
+                    Ptr1++;
+                    Ptr2++;
+                    if(Ptr2 == LocServiceTimesVector.end())
+                    {
+                        break;
+                    }
+                }
+                if(Ptr2 == LocServiceTimesVector.end())
+                {
+                    break;
+                }
+                while(Ptr2->Location == Ptr1->Location)
+                {
+                    PreviousService = "";
+                    NumTrainsAtLoc = 0;
+                    ServiceAndRepeatNumTotal = "";
+                    BasicTime = Ptr1->ArrTime; //used to compare later times - later pointer contents have same or later times as sorted in time order
+                    if((Ptr1->Location == "") && (Ptr2->Location == ""))
+                    {
+                        break;
+                    }
+                    while(!WithinTimeRange(0, BasicTime, Ptr2->ArrTime, ArrRange) || ((Ptr1->ArrTime == "") && (Ptr2->ArrTime == "")))
+                    {
+                        BasicTime = Ptr2->ArrTime; //used to compare later times or last can exceed first
+                        Ptr1++;
+                        Ptr2++;
+                        if(Ptr2 == LocServiceTimesVector.end())
+                        {
+                            break;
+                        }
+                        if(Ptr2->Location != Ptr1->Location)
+                        {
+                            break;
+                        }
+                    }
+                    if(Ptr2 == LocServiceTimesVector.end())
+                    {
+                        break;
+                    }
+                    if(Ptr2->Location != Ptr1->Location)
+                    {
+                        break;
+                    }
+                    while(WithinTimeRange(1, BasicTime, Ptr2->ArrTime, ArrRange))
+                    {
+                        if((Ptr1->ArrTime == "") && (Ptr2->ArrTime == ""))
+                        {
+                            break;
+                        }
+                        if(!NumPlatsAtThisLocCalculated) //num plats at relevant location, reset when locations change
+                        {
+                            NumPlats = Track->NumberOfPlatforms(0, Ptr1->Location);
+                            NumPlatsAtThisLocCalculated = true;
+                        }
+                        if(Ptr1->ServiceAndRepeatNum != PreviousService) //don't print it twice if same as last - as will be if >1 service at same loc at same time
+                        {
+                            if(ServiceAndRepeatNumTotal == "")
+                            {
+                                ServiceAndRepeatNumTotal = Ptr1->ServiceAndRepeatNum + "," + Ptr1->ArrTime;
+                                NumTrainsAtLoc = 1;
+                            }
+                            else
+                            {
+                                ServiceAndRepeatNumTotal = ServiceAndRepeatNumTotal + "," + Ptr1->ServiceAndRepeatNum + "," + Ptr1->ArrTime;
+                            }
+                        }
+                        PreviousService = Ptr2->ServiceAndRepeatNum; //last service at relevant time, reset when times differ
+                        if(ServiceAndRepeatNumTotal == "")
+                        {
+                            ServiceAndRepeatNumTotal = Ptr2->ServiceAndRepeatNum + "," + Ptr2->ArrTime;
+                            NumTrainsAtLoc = 1;
+                        }
+                        else
+                        {
+                            ServiceAndRepeatNumTotal = ServiceAndRepeatNumTotal + "," + Ptr2->ServiceAndRepeatNum + "," + Ptr2->ArrTime;
+                        }
+                        Ptr1 = Ptr2;
+                        Ptr2++;
+                        if((Ptr2 == LocServiceTimesVector.end()) || (Ptr2->Location != Ptr1->Location) || (!WithinTimeRange(2, BasicTime, Ptr2->ArrTime, ArrRange)))
+                        {
+                            int MaxNumberOfSameDirections = 0;
+                            ServiceAndRepeatNumTotalOutput = ConsolidateSARNTArrDep(1, ServiceAndRepeatNumTotal, NumTrainsAtLoc, Ptr1->Location, true, AnalysisError, MaxNumberOfSameDirections); //sort into alphabetical order and remove duplicates
+                            if(AnalysisError)                                                                                                                    //has to be Ptr1->Location as Ptr2 loc may have changed
+                            {
+//                                ShowMessage("Error in arrival analysis - file will be incomplete and/or corrupt. Please send railway and timetable files to railwayfeedback@gmail.com for investigation - thanks. Details: " + ServiceAndRepeatNumTotalOutput);
+                                TTFile3.close();
+                                throw Exception(ServiceAndRepeatNumTotalOutput.c_str());
+//                                Utilities->CallLogPop(2224);
+//                                return false;
+                            }
+                            AnsiString Asterisk = "";
+                            if(MaxNumberOfSameDirections >= NumPlats)
+                            {
+                                Asterisk = "* ";
+                            }
+                            //print out a single line for number of trains at loc with all service refs
+                            TTFile3 << Asterisk << Ptr1->Location  << "," << NumPlats << "," << NumTrainsAtLoc << "," << ServiceAndRepeatNumTotalOutput << '\n'; //no description as >1 service
+                            ArrivalsPrinted = true;
+                            ServiceAndRepeatNumTotal = "";
+                        }
+                        if(Ptr2 == LocServiceTimesVector.end())
+                        {
+                            break;
+                        }
+                        if(Ptr2->Location != Ptr1->Location)
+                        {
+                            break;
+                        }
+                    }
+                    if(Ptr2 == LocServiceTimesVector.end())
+                    {
+                        break;
+                    }
+                }
+            }
+            if(!ArrivalsPrinted)
+            {
+                TTFile3 << "Nothing to report for arrivals";
+            }
+        TTFile3 << "\n\n\n";
+        }
+    //end of routine for arrivals
+
+    //departures
+        if(DepChecked)
+        {
+        //sort in DepTime order for each location
+            Ptr1 = LocServiceTimesVector.begin();
+            Ptr2 = Ptr1 + 1;
+            while(Ptr2 != LocServiceTimesVector.end())
+            {
+                while(Ptr2->Location == Ptr1->Location) //ends with Ptr2 one past same Location value as Ptr1
+                {
+                    Ptr2++;
+                    if(Ptr2 == LocServiceTimesVector.end())
+                    {
+                        break;
+                    }
+                }
+                std::sort(Ptr1, Ptr2, &LocServiceTimesDepTimeSort);
+                Ptr1 = Ptr2; //first entry with next name
+                if(Ptr2 != LocServiceTimesVector.end())
+                {
+                    Ptr2++;
+                }
+            }
+
+        //routine for departures - number of trains departing within the specified range with services listed at the end
+            TTFile3 << "Departure analysis - an asterisk means that the number of same exit code departures is equal to or greater than the number of platforms\n\n";
+            MinuteString = " minutes";
+            AnsiString ServiceAndRepeatNumTotal = "", ServiceAndRepeatNumTotalOutput = "";
+            if(DepRange == 1)
+            {
+                MinuteString = " minute";
+            }
+            TTFile3 << "Location,Number of,Number of,Services departing within " << AnsiString(DepRange) << MinuteString << " with their departure times and exit codes\n";
+            TTFile3 << ",Platforms,Trains\n\n";
+
+            Ptr1 = LocServiceTimesVector.begin();
+            Ptr2 = Ptr1 + 1;
+            while(Ptr2 != LocServiceTimesVector.end())
+            {
+                PreviousService = "";
+                NumTrainsAtLoc = 0;
+                ServiceAndRepeatNumTotal = "";
+                NumPlats = 0;
+                NumPlatsAtThisLocCalculated = false;
+                BasicTime = "";
+                while((Ptr2->Location != Ptr1->Location) || ((Ptr1->Location == "") && (Ptr2->Location == "")))
+                {
+                    PreviousService = "";
+                    NumTrainsAtLoc = 0;
+                    ServiceAndRepeatNumTotal = "";
+                    NumPlats = 0;
+                    NumPlatsAtThisLocCalculated = false;
+                    BasicTime = "";
+                    Ptr1++;
+                    Ptr2++;
+                    if(Ptr2 == LocServiceTimesVector.end())
+                    {
+                        break;
+                    }
+                }
+                if(Ptr2 == LocServiceTimesVector.end())
+                {
+                    break;
+                }
+                while(Ptr2->Location == Ptr1->Location)
+                {
+                    PreviousService = "";
+                    NumTrainsAtLoc = 0;
+                    ServiceAndRepeatNumTotal = "";
+                    BasicTime = Ptr1->DepTime;  //used to compare later times - later pointer contents have same or later times as sorted in time order
+                    if((Ptr1->Location == "") && (Ptr2->Location == ""))
+                    {
+                        break;
+                    }
+                    while(!WithinTimeRange(3, BasicTime, Ptr2->DepTime, DepRange) || ((Ptr1->DepTime == "") && (Ptr2->DepTime == "")))
+                    {
+                        BasicTime = Ptr2->DepTime; //used to compare later times or last can exceed first
+                        Ptr1++;
+                        Ptr2++;
+                        if(Ptr2 == LocServiceTimesVector.end())
+                        {
+                            break;
+                        }
+                        if(Ptr2->Location != Ptr1->Location)
+                        {
+                            break;
+                        }
+                    }
+                    if(Ptr2 == LocServiceTimesVector.end())
+                    {
+                        break;
+                    }
+                    if(Ptr2->Location != Ptr1->Location)
+                    {
+                        break;
+                    }
+                    while(WithinTimeRange(4, BasicTime, Ptr2->DepTime, DepRange))
+                    {
+                        if((Ptr1->DepTime == "") && (Ptr2->DepTime == ""))
+                        {
+                            break;
+                        }
+                        if(!NumPlatsAtThisLocCalculated) //num plats at relevant location, reset when locations change
+                        {
+                            NumPlats = Track->NumberOfPlatforms(1, Ptr1->Location);
+                            NumPlatsAtThisLocCalculated = true;
+                        }
+                        if(Ptr1->ServiceAndRepeatNum != PreviousService) //don't print it twice if same as last - as will be if >1 service at same loc at same time
+                        {
+                            if(ServiceAndRepeatNumTotal == "")
+                            {
+                                ServiceAndRepeatNumTotal = Ptr1->ServiceAndRepeatNum + "," + Ptr1->DepTime;
+                                NumTrainsAtLoc = 1;
+                            }
+                            else
+                            {
+                                ServiceAndRepeatNumTotal = ServiceAndRepeatNumTotal + "," + Ptr1->ServiceAndRepeatNum + "," + Ptr1->DepTime;
+                            }
+                        }
+                        PreviousService = Ptr2->ServiceAndRepeatNum; //last service at relevant time, reset when times differ
+                        if(ServiceAndRepeatNumTotal == "")
+                        {
+                            ServiceAndRepeatNumTotal = Ptr2->ServiceAndRepeatNum + "," + Ptr2->DepTime;
+                            NumTrainsAtLoc = 1;
+                        }
+                        else
+                        {
+                            ServiceAndRepeatNumTotal = ServiceAndRepeatNumTotal + "," + Ptr2->ServiceAndRepeatNum + "," + Ptr2->DepTime;
+                        }
+                        Ptr1 = Ptr2;
+                        Ptr2++;
+                        if((Ptr2 == LocServiceTimesVector.end()) || (Ptr2->Location != Ptr1->Location) || (!WithinTimeRange(5, BasicTime, Ptr2->DepTime, DepRange)))
+                        {
+                            int MaxNumberOfSameDirections = 0;
+                            ServiceAndRepeatNumTotalOutput = ConsolidateSARNTArrDep(3, ServiceAndRepeatNumTotal, NumTrainsAtLoc, Ptr1->Location, false, AnalysisError, MaxNumberOfSameDirections); //sort into alphabetical order and remove duplicates
+                            if(AnalysisError)                                                                                                                     //has to be Ptr1->Location as Ptr2 loc may have changed
+                            {
+//                                ShowMessage("Error in departure analysis - file will be incomplete and/or corrupt. Please send railway and timetable files to railwayfeedback@gmail.com for investigation - thanks. Details: " + ServiceAndRepeatNumTotalOutput);
+                                TTFile3.close();
+                                throw Exception(ServiceAndRepeatNumTotalOutput.c_str());
+//                                Utilities->CallLogPop(2225);
+//                                return false;
+                            }
+                            AnsiString Asterisk = "";
+                            if(MaxNumberOfSameDirections >= NumPlats)
+                            {
+                                Asterisk = "* ";
+                            }
+                            //print out a single line for number of trains at loc with all service refs
+                            TTFile3 << Asterisk << Ptr1->Location  << "," << NumPlats << "," << NumTrainsAtLoc << "," << ServiceAndRepeatNumTotalOutput << '\n'; //no description as >1 service
+                            DeparturesPrinted = true;
+                            ServiceAndRepeatNumTotal = "";
+                        }
+                        if(Ptr2 == LocServiceTimesVector.end())
+                        {
+                            break;
+                        }
+                        if(Ptr2->Location != Ptr1->Location)
+                        {
+                            break;
+                        }
+                    }
+                    if(Ptr2 == LocServiceTimesVector.end())
+                    {
+                        break;
+                    }
+                }
+            }
+            if(!DeparturesPrinted)
+            {
+                TTFile3 << "Nothing to report for departures";
+            }
+        TTFile3 << "\n\n\n";
+        }
+    //end of routine for departures
+
+
+    //list trains at locations at same time
+
+        if(AtLocChecked)
+        {
+        //sort in AtLocTime order for each location
+            Ptr1 = LocServiceTimesVector.begin();
+            Ptr2 = Ptr1 + 1;
+            while(Ptr2 != LocServiceTimesVector.end())
+            {
+                while(Ptr2->Location == Ptr1->Location) //ends with Ptr2 one past same Location value as Ptr1
+                {
+                    Ptr2++;
+                    if(Ptr2 == LocServiceTimesVector.end())
+                    {
+                        break;
+                    }
+                }
+                std::sort(Ptr1, Ptr2, &LocServiceTimesAtLocTimeSort);
+                Ptr1 = Ptr2; //first entry with next name
+                if(Ptr2 != LocServiceTimesVector.end())
+                {
+                    Ptr2++;
+                }
+            }
+
+        //print out simultaneous AtLocs (don't need range of times for AtLocs)
+            TTFile3 << "Trains present at locations - an asterisk means that the number of trains at the location is greater than the number of platforms\n\n";
+            TTFile3 << "Location,Number of,Number of,Time,Services at the location at that time\n";
+            TTFile3 << ",Platforms,Trains,\n\n";
+            AnsiString ServiceAndRepeatNumTotal = "", ServiceAndRepeatNumTotalOutput = "";
+            Ptr1 = LocServiceTimesVector.begin();
+            Ptr2 = Ptr1 + 1;
+            while(Ptr2 != LocServiceTimesVector.end())
+            {
+                PreviousService = "";
+                ServiceAndRepeatNumTotal = "";
+                NumTrainsAtLoc = 0;
+                NumPlats = 0;
+                NumPlatsAtThisLocCalculated = false;
+                FrhCount = 0;
+                while((Ptr2->Location != Ptr1->Location) || ((Ptr1->Location == "") && (Ptr2->Location == "")))
+                {
+                    PreviousService = "";
+                    ServiceAndRepeatNumTotal = "";
+                    NumTrainsAtLoc = 0;
+                    NumPlats = 0;
+                    NumPlatsAtThisLocCalculated = false;
+                    FrhCount = 0;
+                    Ptr1++;
+                    Ptr2++;
+                    if(Ptr2 == LocServiceTimesVector.end())
+                    {
+                        break;
+                    }
+                }
+                if(Ptr2 == LocServiceTimesVector.end())
+                {
+                    break;
+                }
+                while(Ptr2->Location == Ptr1->Location)
+                {
+                    if(Ptr1->FrhMarker == "Frh")  //this test is made here and each time Ptr1 increases with Ptr1 & 2 at same loc so as to catch them all
+                    {
+                        FrhCount++;
+                        Ptr1->FrhMarker = "FrhCounted";  //to avoid double counting
+                    }
+                    PreviousService = "";
+                    NumTrainsAtLoc = 0;
+                    ServiceAndRepeatNumTotal = "";
+                    if((Ptr1->Location == "") && (Ptr2->Location == ""))
+                    {
+                        break;
+                    }
+                    while((Ptr2->AtLocTime != Ptr1->AtLocTime) || ((Ptr1->AtLocTime == "") && (Ptr2->AtLocTime == "")))
+                    {
+                        Ptr1++;
+                        if(Ptr1->FrhMarker == "Frh")
+                        {
+                            FrhCount++;
+                            Ptr1->FrhMarker = "FrhCounted";  //to avoid double counting
+                        }
+                        Ptr2++;
+                        if(Ptr2 == LocServiceTimesVector.end())
+                        {
+                            break;
+                        }
+                        if(Ptr2->Location != Ptr1->Location)
+                        {
+                            break;
+                        }
+                    }
+                    if(Ptr2 == LocServiceTimesVector.end())
+                    {
+                        break;
+                    }
+                    if(Ptr2->Location != Ptr1->Location)
+                    {
+                        break;
+                    }
+                    while(Ptr2->AtLocTime == Ptr1->AtLocTime)
+                    {
+                        if((Ptr1->AtLocTime == "") && (Ptr2->AtLocTime == ""))
+                        {
+                            break;
+                        }
+                        if(!NumPlatsAtThisLocCalculated) //num plats at relevant location, reset when locations change
+                        {
+                            NumPlats = Track->NumberOfPlatforms(2, Ptr1->Location);
+                            NumPlatsAtThisLocCalculated = true;
+                        }
+                        if(Ptr1->ServiceAndRepeatNum != PreviousService) //don't print it twice if same as last - as will be if >1 service at same loc at same time
+                        {
+                            if(ServiceAndRepeatNumTotal == "")
+                            {
+                                ServiceAndRepeatNumTotal = Ptr1->ServiceAndRepeatNum;
+                                NumTrainsAtLoc = 1;
+                            }
+                            else
+                            {
+                                ServiceAndRepeatNumTotal = ServiceAndRepeatNumTotal + "," + Ptr1->ServiceAndRepeatNum;
+                            }
+                        }
+                        PreviousService = Ptr2->ServiceAndRepeatNum; //last service at relevant time, reset when times differ, has to be Ptr2 to compare Ptr1 at next round when incremented
+                        if(ServiceAndRepeatNumTotal == "")
+                        {
+                            ServiceAndRepeatNumTotal = Ptr2->ServiceAndRepeatNum;
+                            NumTrainsAtLoc = 1;
+                        }
+                        else
+                        {
+                            ServiceAndRepeatNumTotal = ServiceAndRepeatNumTotal + "," + Ptr2->ServiceAndRepeatNum;
+                        }
+                        Ptr1 = Ptr2;
+                        if(Ptr1->FrhMarker == "Frh")
+                        {
+                            FrhCount++;
+                            Ptr1->FrhMarker = "FrhCounted"; //to avoid double counting
+                        }
+                        Ptr2++;
+                        if((Ptr2 == LocServiceTimesVector.end()) || (Ptr2->Location != Ptr1->Location) || (Ptr2->AtLocTime != Ptr1->AtLocTime))
+                        {
+//old text                  //only print out if no remainers (1st condition), change in remainers (2nd condition) or change in ServiceAndRepeatNumTotalOutput, and >1 train (later condition)
+//new text                  //don't print out if all remainers or if only 1 train at loc
+                            ServiceAndRepeatNumTotalOutput = ConsolidateSARNTAtLoc(1, ServiceAndRepeatNumTotal, NumTrainsAtLoc); //sort into alphabetical order, remove duplicates, and calculate new value for NumTrainsAtLoc
+//old condits               if((FrhCount == 0) || (FrhCount != LastFrhCount) || (PreviousServiceAndRepeatNumTotalOutput != ServiceAndRepeatNumTotalOutput))//don't print if same output
+/*new condits*/             if((NumTrainsAtLoc > 1) && ((FrhCount < NumTrainsAtLoc) || (FrhCount != LastFrhCount)))
+                            {
+                                AnsiString Asterisk = "";
+                                if(NumTrainsAtLoc > NumPlats)
+                                {
+                                    Asterisk = "* ";
+                                }
+                                //print out a single line for number of trains at loc with all service refs
+                                if(FrhCount == 0)
+                                {
+                                    TTFile3 << Asterisk << Ptr1->Location  << "," << NumPlats << "," << NumTrainsAtLoc << "," << Ptr1->AtLocTime << "," << ServiceAndRepeatNumTotalOutput << '\n';
+                                }
+                                else if(FrhCount == 1)
+                                {
+                                    TTFile3 << Asterisk << Ptr1->Location  << "," << NumPlats << "," << NumTrainsAtLoc << "," << Ptr1->AtLocTime << " (1 remains here)," << ServiceAndRepeatNumTotalOutput << '\n';
+                                }
+                                else
+                                {
+                                    TTFile3 << Asterisk << Ptr1->Location  << "," << NumPlats << "," << NumTrainsAtLoc << "," << Ptr1->AtLocTime << " (" << FrhCount << " remain here)," << ServiceAndRepeatNumTotalOutput << '\n';
+                                }
+                                LastFrhCount = FrhCount;
+                                PreviousServiceAndRepeatNumTotalOutput = ServiceAndRepeatNumTotalOutput;
+                                AtLocsPrinted = true;
+                                ServiceAndRepeatNumTotal = "";
+                            }
+                        }
+                        if(Ptr2 == LocServiceTimesVector.end())
+                        {
+                            break;
+                        }
+                        if(Ptr2->Location != Ptr1->Location)
+                        {
+                            break;
+                        }
+                    }
+                    if(Ptr2 == LocServiceTimesVector.end())
+                    {
+                        break;
+                    }
+                }
+            }
+            if(!AtLocsPrinted)
+            {
+                TTFile3 << "Nothing to report for trains at locations";
+            }
+        TTFile3 << "\n\n\n";
+        //end of simultaneous AtLocs
+
+/*
+        //print out the full vector here for testing purposes
+            TTFile3 << "Full LocServiceTimesVector\n\n";
+            TTFile3 << "Location,AtLocTime,ArrTime,DepTime,ServiceAndRepeatNum,Description\n\n";
+
+            for(TLocServiceTimesVector::iterator Ptr = LocServiceTimesVector.begin(); Ptr != LocServiceTimesVector.end(); Ptr++)
+            {
+                TTFile3 << Ptr->Location << "," << Ptr->AtLocTime << "," << Ptr->ArrTime << "," << Ptr->DepTime << "," << Ptr->ServiceAndRepeatNum << "," << Ptr->FrhMarker << '\n';
+            }
+
+            TTFile3 << "\n\n\n";
+*/
+        }
+
+        TTFile3.close();
+        Utilities->CallLogPop(2212);
+        return true;
+    }
+
+    catch(const Exception &e)
+    {
+        AnsiString TTErrorFileName = "Analysis Error.txt";
+        TTErrorFileName = CurDir + "\\Formatted timetables\\" + TTErrorFileName;
+        std::ofstream TTError(TTErrorFileName.c_str());
+        if(TTError == 0)
+        {
+            ShowMessage("Analysis error file failed to open - can't be created");
+            Utilities->CallLogPop(2233);
+            return false;
+        }
+        AnsiString TimeNow = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
+        TTError << TimeNow.c_str() << "\n" << ArrRange << "\n" << ArrChecked << "\n" << DepRange << "\n" <<
+                DepChecked << "\n" << AtLocChecked << "\n" << AnsiString(e.Message);
+        TTError.close();
+        ShowMessage("Error in Conflict Analysis: A file called 'Analysis Error.txt' has been created in your Formatted timetables folder. Please send this file together with your railway and timetable files to railwayfeedback@gmail.com for investigation - many thanks");
+        Utilities->CallLogPop(2226);
+        return false;
+    }
+}
+
+// ---------------------------------------------------------------------------
+
+bool TTrainController::WithinTimeRange(int Caller, AnsiString Time1, AnsiString Time2, int MinuteRange) //times are "HH:MM"
+{
+//convert times to integer minutes
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",WithinTimeRange," + Time1 + "," + Time2 + "," + AnsiString(MinuteRange));
+    if((Time1 == "") || (Time2 == ""))
+    {
+        Utilities->CallLogPop(2213);
+        return false;
+    }
+    int Mins = Time1.SubString(4,2).ToInt();
+    int Hours = Time1.SubString(1,2).ToInt();
+    int Time1Mins = (Hours * 60) + Mins;
+    Mins = Time2.SubString(4,2).ToInt();
+    Hours = Time2.SubString(1,2).ToInt();
+    int Time2Mins = (Hours * 60) + Mins;
+    if(abs(Time1Mins - Time2Mins) <= MinuteRange)
+    {
+        Utilities->CallLogPop(2214);
+        return true;
+    }
+    Utilities->CallLogPop(2215);
+    return false;
+}
+
+// ---------------------------------------------------------------------------
+
+AnsiString TTrainController::ConsolidateSARNTArrDep(int Caller, const AnsiString Input, int &NumTrainsAtLoc, AnsiString Location, bool Arrival,
+        bool &AnalysisError, int &MaxNumberOfSameDirections)
+{//input consists of services and service Arr or Dep times as a comma separated list, Location needed to determine direction information
+
+    try
+    {
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ConsolidateSARNTArrDep," + Input);
+        AnsiString Output = "", OneService = "", TempStr1 = "", TempStr2 = "";
+        int SCPos = 0;
+        std::list<AnsiString> ServiceList; //this is the list of services with times extracted from Input - not to be confused with ServiceCallingPointsList
+        //first change every second comma in Input to a semicolon so can separate services but keep times with services
+        bool EvenComma = false;
+        for(int x = 1; x <= Input.Length(); x++)
+        {
+            TempStr1 = Input[x];
+            if(TempStr1 == AnsiString(',') && EvenComma)
+            {
+                TempStr2 += ';';
+            }
+            else
+            {
+                TempStr2 += Input[x];
+            }
+            if(TempStr1 == AnsiString(','))
+            {
+                EvenComma = !EvenComma;
+            }
+        }
+        //load up the list of services with associated times
+        while(TempStr2.Length() > 0)
+        {
+            SCPos = TempStr2.Pos(';');
+            if(SCPos > 0) //0 if not found, as won't be when only one service left
+            {
+                OneService = TempStr2.SubString(1, SCPos - 1);
+                ServiceList.push_back(OneService);
+                TempStr2 = TempStr2.SubString(SCPos + 1, TempStr2.Length() - SCPos);
+            }
+            else //no semicolon so looking at last (or only) element
+            {
+                ServiceList.push_back(TempStr2);
+                TempStr2 = "";
+            }
+        }
+        ServiceList.sort(); // alphabetical order
+        ServiceList.unique(); //remove duplicates
+        NumTrainsAtLoc = ServiceList.size(); //calc this after removing duplicates as may not have changed
+
+    //now add direction information from AllServiceCallingLocsMap - key is service ref and value a list of calling points in order
+        int DirectionMarker = 0;  //this is added in & runs from 1 upwards, same marker for diff services = same direction
+        //first add the direction marker "&0" for not yet allocated - '&' is an identifier
+        std::list<AnsiString>::iterator SLIt, SLIt1, SLIt2, SLIt3;
+
+        for(SLIt = ServiceList.begin(); SLIt != ServiceList.end(); SLIt++)
+        {
+            *SLIt = *SLIt + "&0"; //add in a basic direction marker to each service
+        }
+        SLIt3 = ServiceList.end();
+        SLIt3--; //so points to last element
+        AnsiString ServiceRef1, ServiceRef2, AnsiTime1, AnsiTime2, RepeatInfo1, RepeatInfo2;  //1 refers to first for..next loop & 2 to second
+        int AmpersandPos, SpacePos, CommaPos1, CommaPos2, RepeatNum1, RepeatNum2;
+        TAllServiceCallingLocsMap::iterator ASCLIt1, ASCLIt2;
+        TServiceCallingLocsList ServiceCallingLocsList1, ServiceCallingLocsList2;
+        MaxNumberOfSameDirections = 0; //at end of each SLIt loop if SameDirectionCount > MaxNumberOfSameDirections then MaxNumberOfSameDirections = SameDirectionCount
+        int SameDirectionCount = 0; //starts at 1 at each SLIt loop (because SLIt1 entry already has a DirectionMarker) and increments for every same direction
+
+        for(std::list<AnsiString>::iterator SLIt1 = ServiceList.begin(); SLIt1 != SLIt3; SLIt1++) //should be end() - 1 but can't use -1 with lists so have to improvise
+        {
+            SLIt = SLIt1;
+            SLIt++; //so points to one after SLIt1
+            if(SLIt1->SubString(SLIt1->Length() - 1, 2) != AnsiString("&0"))
+            {
+                continue; //already allocated so skip to the next
+            }
+            else
+            {
+                CommaPos1 = SLIt1->Pos(','); //can't be 0
+                ServiceRef1 = SLIt1->SubString(1, CommaPos1 - 1);
+                //but this contains "(First service..." etc so need to strip these, but use to extract RepeatNum
+                SpacePos = ServiceRef1.Pos(' ');
+                RepeatNum1 = 0;
+                if(SpacePos > 0) //otherwise it's already correct
+                {
+                    RepeatInfo1 = ServiceRef1.SubString(SpacePos + 2, ServiceRef1.Length() - SpacePos - 2); //drops the brackets and leaves "First service", "Repeat 2" etc
+                    ServiceRef1 = ServiceRef1.SubString(1, SpacePos - 1);
+                    if(RepeatInfo1[1] == 'F')
+                    {
+                        RepeatNum1 = 0;
+                    }
+                    else
+                    {
+                        SpacePos = RepeatInfo1.Pos(' ');
+                        RepeatNum1 = RepeatInfo1.SubString(SpacePos + 1, RepeatInfo1.Length() - SpacePos).ToInt();
+                    }
+                }
+                AnsiTime1 =  SLIt1->SubString(CommaPos1 + 1, SLIt1->Length() - CommaPos1);
+                //but this includes the "&0" etc so need to strip these
+                AmpersandPos = AnsiTime1.Pos('&');
+                AnsiTime1 = AnsiTime1.SubString(1, AmpersandPos - 1);
+
+                ASCLIt1 = AllServiceCallingLocsMap.find(ServiceRef1);
+                if(ASCLIt1 == AllServiceCallingLocsMap.end()) //can't find it
+                {
+                        throw Exception("ASCLIt1 Error in " + Input);
+                }
+                ServiceCallingLocsList1 = ASCLIt1->second;
+                AmpersandPos = SLIt1->Pos('&');
+                *SLIt1 = SLIt1->SubString(1, AmpersandPos); //truncate up to & leave in the '&'
+                *SLIt1 = *SLIt1 + AnsiString(++DirectionMarker); //now add the next marker (pre-increment), allow for it being more than one digit
+
+                SameDirectionCount = 1;
+                for(SLIt2 = SLIt; SLIt2 != ServiceList.end(); SLIt2++)
+                {
+                    CommaPos2 = SLIt2->Pos(','); //can't be 0
+                    ServiceRef2 = SLIt2->SubString(1, CommaPos2 - 1);
+                    //but this contains "(First service..." etc so need to strip these
+                    SpacePos = ServiceRef2.Pos(' ');
+                    RepeatNum2 = 0;
+                    if(SpacePos > 0) //otherwise it's already correct
+                    {
+                        RepeatInfo2 = ServiceRef2.SubString(SpacePos + 2, ServiceRef2.Length() - SpacePos - 2); //drops the brackets and leaves "First service", "Repeat 2" etc
+                        ServiceRef2 = ServiceRef2.SubString(1, SpacePos - 1);
+                        if(RepeatInfo2[1] == 'F')
+                        {
+                            RepeatNum2 = 0;
+                        }
+                        else
+                        {
+                            SpacePos = RepeatInfo2.Pos(' ');
+                            RepeatNum2 = RepeatInfo2.SubString(SpacePos + 1, RepeatInfo2.Length() - SpacePos).ToInt();
+                        }
+
+                    }
+                    AnsiTime2 = SLIt2->SubString(CommaPos2 + 1, SLIt2->Length() - CommaPos2);
+                    //but this includes the "&0" etc so need to strip these
+                    AmpersandPos = AnsiTime2.Pos('&');
+                    AnsiTime2 = AnsiTime2.SubString(1, AmpersandPos - 1);
+
+                    ASCLIt2 = AllServiceCallingLocsMap.find(ServiceRef2);
+                    if(ASCLIt2 == AllServiceCallingLocsMap.end()) //can't find it
+                    {
+                        throw Exception("ASCLIt2 Error in " + Input);
+                    }
+                    ServiceCallingLocsList2 = ASCLIt2->second;
+    //now compare the two
+                    if(SameDirection(0, ServiceRef1, ServiceRef2, AnsiTime1, AnsiTime2, RepeatNum1, RepeatNum2, ServiceCallingLocsList1, ServiceCallingLocsList2, Location, Arrival))
+                    {
+                        int AmpersandPos = SLIt2->Pos('&');
+                        *SLIt2 = SLIt2->SubString(1, AmpersandPos); //truncate up to & leave in the '&'
+                        *SLIt2 = *SLIt2 + AnsiString(DirectionMarker); //now add the same marker as *SLIt1
+                        SameDirectionCount++;
+                    }
+                }
+                if(SameDirectionCount > MaxNumberOfSameDirections)
+                {
+                    MaxNumberOfSameDirections = SameDirectionCount;
+                }
+            }
+        }
+
+        if(SLIt3->SubString(SLIt3->Length() - 1, 2) == AnsiString("&0"))//*SLTIt3 is the last in the list and may not have been allocated, if not it doesn't match
+        {                                                               //any existing direction so allocate it now
+            AmpersandPos = SLIt3->Pos('&');
+            *SLIt3 = SLIt3->SubString(1, AmpersandPos); //truncate up to & leave in the '&'
+            *SLIt3 = *SLIt3 + AnsiString(++DirectionMarker);
+        }
+
+    //now change direction markers to upper case letters beginning with 'A' (and continuing with 'AA' if exceed 26) & add a comma before so have ServiceRef, DirectionMarker, Time
+        for(SLIt = ServiceList.begin(); SLIt != ServiceList.end(); SLIt++)
+        {
+            //extract the DirectionMarker as an integer
+            AmpersandPos = SLIt->Pos('&');
+            AnsiString DirectionMarkerString = SLIt->SubString(AmpersandPos + 1, SLIt->Length() - AmpersandPos); //extract the number as an ansistring
+            AnsiString ServiceWithoutMarker = SLIt->SubString(1, AmpersandPos - 1); //truncate the &number
+            DirectionMarker = DirectionMarkerString.ToInt();
+            AnsiString DirectionSuffix = "";
+            char c;
+            if(DirectionMarker < 27)
+            {
+                c = 64 + DirectionMarker; //so 1 -> 'A'
+                DirectionSuffix = "," + AnsiString(c);
+            }
+            else if(DirectionMarker < 53)
+            {
+                c = 65 + DirectionMarker - 27; //so 27 -> 'AA'
+                DirectionSuffix = ",A" + AnsiString(c);
+            }
+            else
+            {
+                DirectionSuffix = ",?"; //shouldn'tn ever get this far!
+            }
+            *SLIt = ServiceWithoutMarker + DirectionSuffix;
+        }
+    //now prepare the final consolidated output
+        for(SLIt = ServiceList.begin(); SLIt != ServiceList.end(); SLIt++)
+        {
+            Output = Output + *SLIt + ","; //will end up with an unwanted comma at the end
+        }
+        if(Output.Length() > 0)
+        {
+            Output = Output.SubString(1, Output.Length() - 1); //remove the last comma
+        }
+        Utilities->CallLogPop(2216);
+        return Output;
+        }
+
+    catch(const Exception &e)
+    {
+        AnalysisError = true;
+        Utilities->CallLogPop(2227);
+        return e.Message;
+    }
+}
+
+// ---------------------------------------------------------------------------
+
+AnsiString TTrainController::ConsolidateSARNTAtLoc(int Caller, const AnsiString Input, int &NumTrainsAtLoc)
+{//similar to above but doesn't include times in the input
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ConsolidateSARNTAtLoc," + Input);
+    AnsiString InternalInput = Input, Output = "", OneService = "";
+    int CommaPos = 0;
+    std::list<AnsiString> ServiceList;
+    //load up the list
+    while(InternalInput.Length() > 0)
+    {
+        CommaPos = InternalInput.Pos(',');
+        if(CommaPos > 0) //0 if not found, as won't be when only one service left
+        {
+            OneService = InternalInput.SubString(1, CommaPos - 1);
+            ServiceList.push_back(OneService);
+            InternalInput = InternalInput.SubString(CommaPos + 1, InternalInput.Length() - CommaPos);
+        }
+        else //no comma so looking at last (or only) element
+        {
+            ServiceList.push_back(InternalInput);
+            InternalInput = "";
+        }
+    }
+
+    ServiceList.sort(); // alphabetical order
+    ServiceList.unique(); //remove duplicates
+    NumTrainsAtLoc = ServiceList.size(); //calc this after removing duplicates as may not have changed
+    for(std::list<AnsiString>::iterator SLIt = ServiceList.begin(); SLIt != ServiceList.end(); SLIt++)
+    {
+        Output = Output + *SLIt + ","; //will end up with an unwanted comma at the end
+    }
+    if(Output.Length() > 0)
+    {
+        Output = Output.SubString(1, Output.Length() - 1); //remove the last comma
+    }
+    Utilities->CallLogPop(2217);
+    return Output;
+}
+
+// ---------------------------------------------------------------------------
+
+
+bool TTrainController::SameDirection(int Caller, AnsiString Ref1In, AnsiString Ref2In, AnsiString Time1, AnsiString Time2, int RepeatNum1, int RepeatNum2, TServiceCallingLocsList List1,
+        TServiceCallingLocsList List2, AnsiString Location, bool Arrival)
+    {
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SameDirection," + Ref1In + "," + Ref2In  + "," + Time1 + "," + Time2 + "," +
+            AnsiString(RepeatNum1) + "," + AnsiString(RepeatNum2) + "," + Location);
+
+        std::list<AnsiString>::iterator LP1 = 0, LP2 = 0, ListPtr1 = 0, ListPtr2 = 0, LocPtr1 = 0, LocPtr2 = 0; //LP1 & 2 are temporary pointers, ListPtrs are
+        //general list pointers, LocPtrs point to Location in the two lists
+
+        //first find the relevant values for LocPtr1 & LocPtr2 taking account of cdts and times
+        //for List1
+        bool LocFound = false;
+        AnsiString Ref1 = Ref1In, Ref2 = Ref2In;
+        int IncMinutes;
+        TDateTime FirstServiceTime;
+
+        //first need to strip off /1, /2 etc if present from Ref1 & Ref2 (leave Ref1In & Ref2In for error message & retain value as target in finding the correct reference for cdts)
+        int Ref1Target = 0, Ref1Count = 0;
+        int SlashPos = Ref1.Pos('/');
+        if(SlashPos > 0) //if 0 Ref1 == Ref1In & target stays  at 0
+        {
+            Ref1Target = Ref1.SubString(SlashPos + 1, Ref1.Length() - SlashPos).ToInt();
+            Ref1 = Ref1.SubString(1, SlashPos - 1); //truncate up to but omit '/'
+        }
+        int Ref2Target = 0, Ref2Count = 0;
+        SlashPos = Ref2.Pos('/');
+        if(SlashPos > 0) //if 0 leave as is
+        {
+            Ref2Target = Ref2.SubString(SlashPos + 1, Ref2.Length() - SlashPos).ToInt();
+            Ref2 = Ref2.SubString(1, SlashPos - 1); //truncate up to but omit '/'
+        }
+
+        for(ListPtr1 = List1.begin(); ListPtr1 != List1.end(); ListPtr1++) //note that when this routine entered Ref1In &  Ref2In are already set to the correct services,
+        {                                                                  //even if others have same names. But if there are cdt's then need to refind the correct service
+            if((*ListPtr1) == Location)                                    //
+            {
+                LocPtr1 = ListPtr1; //may be modified later
+                LocFound = true;
+            }
+            if(ListPtr1->SubString(1, 3) == "%%%")
+            {
+                AnsiString CDTTime = ListPtr1->SubString(4, 5);
+                //now adjust the time to correspond to the repeat if there is one
+                if(RepeatNum1 > 0) //if it is 0 then AnsiTime1 is already valid
+                {
+                    IncMinutes = -1;
+                    FirstServiceTime = TDateTime(-1);
+                    bool BreakFlag = false;
+                    for(TTrainDataVector::iterator TDVIt = TrainDataVector.begin(); TDVIt != TrainDataVector.end(); TDVIt++)
+                    {
+                        if(TDVIt->ServiceReference == Ref1)
+                        {
+                            if(Ref1Target > Ref1Count)
+                            {
+                                Ref1Count++;
+                                continue;
+                            }
+                            IncMinutes = TDVIt->ActionVector.back().RearStartOrRepeatMins;
+                            for(TActionVector::iterator AVIt = TDVIt->ActionVector.begin(); AVIt != TDVIt->ActionVector.end(); AVIt++)
+                            {
+                                if(Utilities->Format96HHMM(AVIt->EventTime) == CDTTime)
+                                {
+                                    FirstServiceTime = AVIt->EventTime; //i.e. the FirstService value of CDTTime
+                                    BreakFlag = true;
+                                    break;
+                                }
+                                if(Utilities->Format96HHMM(AVIt->ArrivalTime) == CDTTime) //add arr & dep in case find sooner (though dep shouldn't be sooner)
+                                {
+                                    FirstServiceTime = AVIt->ArrivalTime;
+                                    BreakFlag = true;
+                                    break;
+                                }
+                                if(Utilities->Format96HHMM(AVIt->DepartureTime) == CDTTime)
+                                {
+                                    FirstServiceTime = AVIt->DepartureTime;
+                                    BreakFlag = true;
+                                    break;
+                                }
+                            }
+                            if(BreakFlag)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    if(IncMinutes == -1)
+                    {
+                        throw Exception("Failed to find service for ServiceRef1 in SameDirection " + Ref1In + " " + Ref2In  + " " + Time1 + " " + Time2 + " " + AnsiString(RepeatNum1) + " " + AnsiString(RepeatNum2) + " " + Location);
+                    }
+                    if(FirstServiceTime == TDateTime(-1))
+                    {
+                        throw Exception("Failed to find first service time for ServiceRef1 in SameDirection " + Ref1In + " " + Ref2In  + " " + Time1 + " " + Time2 + " " + AnsiString(RepeatNum1) + " " + AnsiString(RepeatNum2) + " " + Location);
+                    }
+                    CDTTime = Utilities->Format96HHMM(TrainController->GetRepeatTime(60, FirstServiceTime, RepeatNum1, IncMinutes));
+                }
+                if(!Arrival && (Time1 == CDTTime)) //continue if equal in case next is a departure for the Location
+                {
+                    LocFound = false;
+                    continue;
+                }
+                if(Arrival && (Time1 == CDTTime)) //gone far enough so can stop
+                {
+                    break;
+                }
+                if(Time1 > CDTTime) //not there yet so go on
+                {
+                    LocFound = false;
+                    continue;
+                }
+                if(Time1 < CDTTime) //gone too far so can stop now
+                {
+                    break;
+                }
+            }
+        }
+        if(!LocFound) //have to find it in both lists
+        {
+            Utilities->CallLogPop(2228);
+            return false;
+        }
+
+        //for List2
+        LocFound = false;
+        for(ListPtr2 = List2.begin(); ListPtr2 != List2.end(); ListPtr2++)
+        {
+            if((*ListPtr2) == Location)
+            {
+                LocPtr2 = ListPtr2; //may be modified later
+                LocFound = true;
+            }
+            if(ListPtr2->SubString(1, 3) == "%%%")
+            {
+                AnsiString CDTTime = ListPtr2->SubString(4, 5);
+                //now adjust the time to correspond to the repeat if there is one
+                if(RepeatNum2 > 0) //if it is 0 then AnsiTime1 is already valid
+                {
+                    IncMinutes = -1;
+                    FirstServiceTime = TDateTime(-1);
+                    bool BreakFlag = false;
+                    for(TTrainDataVector::iterator TDVIt = TrainDataVector.begin(); TDVIt != TrainDataVector.end(); TDVIt++)
+                    {
+                        if(TDVIt->ServiceReference == Ref2)
+                        {
+                            if(Ref2Target > Ref2Count)
+                            {
+                                Ref2Count++;
+                                continue;
+                            }
+                            IncMinutes = TDVIt->ActionVector.back().RearStartOrRepeatMins;
+                            for(TActionVector::iterator AVIt = TDVIt->ActionVector.begin(); AVIt != TDVIt->ActionVector.end(); AVIt++)
+                            {
+                                if(Utilities->Format96HHMM(AVIt->EventTime) == CDTTime)
+                                {
+                                    FirstServiceTime = AVIt->EventTime;
+                                    BreakFlag = true;
+                                    break;
+                                }
+                                if(Utilities->Format96HHMM(AVIt->ArrivalTime) == CDTTime)
+                                {
+                                    FirstServiceTime = AVIt->ArrivalTime;
+                                    BreakFlag = true;
+                                    break;
+                                }
+                                if(Utilities->Format96HHMM(AVIt->DepartureTime) == CDTTime)
+                                {
+                                    FirstServiceTime = AVIt->DepartureTime;
+                                    BreakFlag = true;
+                                    break;
+                                }
+                            }
+                            if(BreakFlag)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    if(IncMinutes == -1)
+                    {
+                        throw Exception("IncMinutes -1 for ServiceRef2 in SameDirection " + Ref1In + " " + Ref2In  + " " + Time1 + " " + Time2 + " " + AnsiString(RepeatNum1) + " " + AnsiString(RepeatNum2) + " " + Location);
+                    }
+                    if(FirstServiceTime == TDateTime(-1))
+                    {
+                        throw Exception("First service time -1 for ServiceRef2 in SameDirection " + Ref1In + " " + Ref2In  + " " + Time1 + " " + Time2 + " " + AnsiString(RepeatNum1) + " " + AnsiString(RepeatNum2) + " " + Location);
+                    }
+                    CDTTime = Utilities->Format96HHMM(TrainController->GetRepeatTime(61, FirstServiceTime, RepeatNum2, IncMinutes));
+                }
+                if(!Arrival && (Time2 == CDTTime)) //continue if equal in case next is a departure for the Location
+                {
+                    LocFound = false;
+                    continue;
+                }
+                if(Arrival && (Time2 == CDTTime)) //gone far enough so can stop
+                {
+                    break;
+                }
+                if(Time2 > CDTTime) //not there yet so go on
+                {
+                    LocFound = false;
+                    continue;
+                }
+                if(Time2 < CDTTime) //gone too far so can stop now
+                {
+                    break;
+                }
+            }
+        }
+        if(!LocFound)    //have to find it in both lists, and should be found but allow for it not being
+        {
+            Utilities->CallLogPop(2229);
+            return false;
+        }
+
+        //now, for the arrival analysis, see if there is a common location before the LocPtrs & within any cdts, and if so return true, else return false
+        //set ListPtr1 to the search start position
+        if(Arrival)
+        {
+            LP1 = List1.begin();
+            LP1--; //now points to before the first entry
+            for(ListPtr1 = LocPtr1; ListPtr1 != LP1; ListPtr1--) //search backwards from Location
+            {
+                if(ListPtr1 == List1.begin())
+                {
+                    break;
+                }
+                if(ListPtr1->SubString(1, 3) == "%%%") //a cdt event
+                {
+                    ListPtr1++; //point to one past the cdt
+                    break;
+                }
+            }
+            //set ListPtr2 to the search start position
+            LP2 = List2.begin();
+            LP2--; //now points to before the first entry
+            for(ListPtr2 = LocPtr2; ListPtr2 != LP2; ListPtr2--)
+            {
+                if(ListPtr2 == List2.begin())
+                {
+                    break;
+                }
+                if(ListPtr2->SubString(1, 3) == "%%%") //a cdt event
+                {
+                    ListPtr2++; //point to one past the cdt
+                    break;
+                }
+            }
+            //ListPtr1 & 2 now at search start position
+            LP1 = ListPtr1;
+            LP2 = ListPtr2;
+            //now search forwards, i.e. for common locations before Location
+            for(ListPtr1 = LP1; ListPtr1 != List1.end(); ListPtr1++)
+            {
+                if(ListPtr1 == LocPtr1) //reached Location without finding a common earlier location so skip to the backwards check
+                {
+                    break;
+                }
+                if(ListPtr1->SubString(1, 3) == "%%%") //reached a cdt event without finding a common earlier location
+                {
+                    break;
+                }
+                for(ListPtr2 = LP2; ListPtr2 != List2.end(); ListPtr2++)
+                {
+                    if(ListPtr2 == LocPtr2) //not found common earlier location so go to the next ListPtr1
+                    {
+                        break;
+                    }
+                    if(ListPtr2->SubString(1, 3) == "%%%") //reached a cdt event without finding a common earlier location so go to the next ListPtr1
+                    {
+                        break;
+                    }
+                    if((*ListPtr1) == (*ListPtr2)) //found a common earlier location
+                    {
+                        Utilities->CallLogPop(2230);
+                        return true;
+                    }
+                }
+            }
+        }
+
+        //now, for the departure analysis, reset the start positions and search locations after Location
+
+        else
+        {
+            LP1 = LocPtr1; LP1++;  //start at one past the location itself
+            LP2 = LocPtr2; LP2++;
+            for(ListPtr1 = LP1; ListPtr1 != List1.end(); ListPtr1++)
+            {
+                if(ListPtr1 == List1.end()) //reached end point so stop
+                {
+                    break;
+                }
+                if(ListPtr1->SubString(1, 3) == "%%%") //reached a cdt event without finding a common location
+                {
+                    break;
+                }
+                for(ListPtr2 = LP2; ListPtr2 != List2.end(); ListPtr2++)
+                {
+                    if(ListPtr2 == List2.end()) //reached end point so go to next ListPtr1
+                    {
+                        break;
+                    }
+                    if(ListPtr2->SubString(1, 3) == "%%%") //reached a cdt event without finding a common location so go to the next ListPtr1
+                    {
+                        break;
+                    }
+                    if((*ListPtr1) == (*ListPtr2)) //found a common later location
+                    {
+                        Utilities->CallLogPop(2231);
+                        return true;
+                    }
+                }
+            }
+        }
+        Utilities->CallLogPop(2232);
+        return false;
+    }
 
 // ---------------------------------------------------------------------------
 

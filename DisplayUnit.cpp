@@ -45,7 +45,6 @@
 #include "DisplayUnit.h"
 #include "GraphicUnit.h"
 #include "Utilities.h"
-#include <fstream>
 
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)

@@ -10,6 +10,7 @@ var _train_unit_8h =
     [ "TTrainController", "class_t_train_controller.html", "class_t_train_controller" ],
     [ "TContinuationAutoSigEntry", "class_t_train_controller_1_1_t_continuation_auto_sig_entry.html", "class_t_train_controller_1_1_t_continuation_auto_sig_entry" ],
     [ "TContinuationTrainExpectationEntry", "class_t_train_controller_1_1_t_continuation_train_expectation_entry.html", "class_t_train_controller_1_1_t_continuation_train_expectation_entry" ],
+    [ "TLocServiceTimes", "struct_t_train_controller_1_1_t_loc_service_times.html", "struct_t_train_controller_1_1_t_loc_service_times" ],
     [ "TActionVector", "_train_unit_8h.html#a5b1395ed328e4835de16cc626e4e1c96", null ],
     [ "TActionVectorIterator", "_train_unit_8h.html#a1c433df1c6495c2199be919be7b57694", null ],
     [ "TAllFormattedTrains", "_train_unit_8h.html#a7996ca00e9edacd4c3fa4cebe91dc101", null ],

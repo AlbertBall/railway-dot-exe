@@ -36,13 +36,13 @@ We have an official [website](http://www.railwayoperationsimulator.com) where yo
 
 ### Railway-dot-exe and C++
 
-Railway-dot-exe is a large open source project &mdash;  and it's written in C++. In order to make changes you will need to have some competence in C++ programming. If you want to experiment or learn C++ using railway-dot-exe by all means please do &mdash; but fork your own copy of the project. Once you feel confident with your level of experience you can submit a pull-request via GitHub. Many people use the software, and have for many years, so you don't want to break things on the master repository because you're learning or trying new things. Once we see evidence of proficiency we'll give you write access to the repository.
+Railway-dot-exe is a large open source project &mdash;  and it's written in C++. In order to make changes you will need to have some competence in C++ programming. If you want to experiment or learn C++ using railway-dot-exe by all means please do &mdash; but fork your own copy of the project. Once you feel confident with your level of experience you can submit a pull-request via GitHub. Many people use the software, and have for many years, so you don't want to break things on the master repository because you're learning or trying new things. Once we see evidence of proficiency and are confident that your changes work and are beneficial then we'll pull them into the master.
 
-The program is written using Embarcardero's C++ Builder Starter Edition. As such, it's only able to produce a win32 version of the program. This will happily run on your 64bit Windows machine though. Plans are underway (as of February 2018) to move to a new C++ platform that will support other operating systems (Linux/MacOS/etc.) without the associated cost of upgrading your C++ Builder edition. 
+The program is written using Embarcardero's C++ Builder Community Edition. As such, it's only able to produce a win32 version of the program. This will happily run on your 64bit Windows machine though. Plans are underway (as of February 2018) to move to a new C++ platform that will support other operating systems (Linux/MacOS/etc.) without the associated cost of upgrading your C++ Builder edition. 
 
-Until then, simply visit Embarcadero's site to download the free C++ Builder Starter Edition. Then `git clone` our repository and open the railway.cbproj file in C++ Builder.
+Until then, simply visit Embarcadero's site to download the free C++ Builder Community Edition. Then `git clone` our repository and open the railway.cbproj file in C++ Builder.
 
-* [Embarcadero C++ Starter Edition](https://www.embarcadero.com/products/cbuilder/starter)
+* [Embarcadero C++ Community Edition](https://www.embarcadero.com/products/cbuilder/starter)
 
 ## How Can I Contribute?
 

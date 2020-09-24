@@ -1,0 +1,132 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Timetable conflict analysis</title>
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+.MsoChpDefault
+	{font-family:"Calibri","sans-serif";}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:1.0cm 1.0cm 1.0cm 1.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+</head>
+
+<body lang=EN-GB>
+
+<div class=WordSection1>
+
+<p class=MsoNormal><b>5.12  Timetable conflict analysis</b></p>
+
+<p class=MsoNormal><b>&nbsp;</b></p>
+
+<p class=MsoNormal>With long or complex timetables it is usually difficult to
+ensure that train timings don't conflict. For example two or more services might be scheduled
+to arrive at a location at the same time with only one platform available, or two or
+more services might be scheduled to depart from a location within a minute of each other
+when it takes two minutes to clear the next signal, or three services might be scheduled
+to occupy platforms at a location with only two platforms, each with room for
+only one train. Operating the services
+to check for conflicts is far from ideal as it can take a very long time,
+especially as most timetables run for several hours.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>To help highlight conflicts the timetable editor includes an
+analysis facility, accessed by clicking the 'Conflict Analysis' button at the
+top of the editor next to the 'Timetable start time' box.  This is available
+when a railway has been loaded and its timetable opened in the editor and
+validated.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>Analyses are provided only for timetabled trains.  No analysis is possible for trains that start under signaller control.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>Clicking the button opens a new panel with options to
+analyse arrivals, departures, and trains at locations.  Arrivals and departures
+each include a box to specify the number of minutes within which scheduled
+arrivals or departures will be listed.  The arrival analysis lists events when
+two or more services are scheduled to arrive at a location within the number of
+minutes specified (0 minutes represents simultaneous arrival).  In each case
+relevant locations are listed in alphabetical order with the number of
+platforms at the location and the number of trains arriving, followed by the
+services involved with a repeat number if appropriate, the time that the
+service is due to arrive, and an approach code - explained later. Departure analysis is similar.  The service repeat number together with the first service reference (headcode + prefix if present) is given for ease of comparison with the entry in the timetable editor.  For two or more trains at a location the relevant services are listed together with the time at
+which they are there at the same time.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>The analyses are written to a file that is saved in the
+'Formatted timetables' folder.  It is in comma separated variable (.csv) format
+so that it can be opened using a spreadsheet program such as Microsoft's
+Excel.  If used with Excel an oddity to be aware of is that any service of the
+form nEnn where 'n' represents a digit, e.g. 4E23, will be listed as 4.00E+23
+because Excel interprets it as a number in scientific notation.  The same happens
+if it is entered in quotes or the cell is formatted as text.  Excel seems to
+insist that regardless of any cell format anything that looks like a
+number is a number!  The only way to make it display correctly seems to be to
+add a single inverted comma ( ' ) before the entry, after which it displays as
+it should with a small green triangle that warns of the presence of this
+inverted comma.  However once aware of this effect it is relatively easy to
+interpret the display as the appropriate service without making any change.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>Approach codes normally relate to the direction from which a train approaches a location, and, for departures, exit codes normally relate to the direction taken after departure.  To determine these codes the timetable is examined and if two services have the same location listed at any time before the arrival location (but after a change of direction if there is one) then they are allocated the same approach code.  Similarly for departures - if two services have the same location listed after the departure location (but before a change of direction if there is one) then they are allocated the same exit code.  However this system isn't perfect.  If there are two routes from a location to another location, where one service takes one route and another the other, then they will have the same approach code but will approach from different directions.  The same applies for departures and exit codes.  More likely is where two services approach from the same direction but one stops at locations on the way whereas the other doesn't.  In such cases there might well not be a common location listed in each service's timetable prior to the arrival location, and they will be allocated different approach codes even though their approach direction is the same.  The same applies for departures and exit codes.  These codes are particularly valuable in cases where there are stations with only two platforms that serve 'up' and 'down' directions.  In these cases where services have different approach or exit codes then the risk of conflict can normally be dismissed, and often there are many such stations.  Potential problems are more likely at large stations served by several different routes.  Different codes will be given for services arriving from different routes, though trains from these routes might arrive at the same side of the station.  To offset the risk of conflict these stations normally have plenty of platforms to accommodate trains arriving at the same time at the same side of the station.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>Although the analyses look complex, especially for complex railways and/or intense services, they will become easier to use with a bit of practice.  Users will be familiar with their own railways and will soon recognise locations and times when real conflicts are possible, and quickly narrow down areas for more detailed examination accordingly.  To help identify quickly likely points of conflict for arrivals and departures asterisks are placed before location names where the number of same approach or exit codes is equal to or greater than the number of platforms.  Also for trains at locations asterisks are similarly placed where the number of trains exceeds the number of platforms.  Asterisk entries may not in fact represent conflicts when there is room for more than one train at a platform.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>An important point to note is that approach and exit codes apply only for services listed at a particular location within a particular time range - i.e. those that are listed on the same line.  They do not have a universal meaning.  Code A on one line might relate to one approach direction and code A on another line to a completely different approach direction - similarly for exit codes.  In fact it will be seen that the first service at any location is always allocated code A, both for arrivals and departures.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>Timetables don't require that service references be unique,
+except for services that reference other services, so it is often the case that
+several services are listed with the same reference, which will normally take
+the form of a simple headcode without a prefix.  Listing these for analysis
+purposes would be very unhelpful as the actual service referred to would be
+ambiguous.  To get round this problem, when the same reference is encountered a
+second time in a timetable it will be given the suffix '/1', a third similar
+reference will be suffixed '/2', then '/3' and so on.  The order of these
+suffixes relates to the order in which the services are listed in the
+timetable.  These suffixes are only used in the analyses, they don't appear
+anywhere else.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>If entry or exit locations don't have names the element ID is given instead.  For exits only the first listed ID is given, so if there are more then conflicts are less likely.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>When the first draft of a timetable has been completed and
+validated, an analysis file should be generated and the listings examined for
+potential conflicts.  Any that appear too tight for proper timekeeping can be
+used to adjust the timetable accordingly and a new analysis carried out.  Often
+changing the timing of a service will cure one conflict only to create a new
+one with another service.  In these cases more drastic surgery might be needed
+such as changing repeat timings to interleave better with conflicting
+services.  In most cases several iterations will be necessary before a
+satisfactory or perhaps more likely a 'least worst' arrangement is found.</p>
+
+</div>
+
+</body>
+
+</html>

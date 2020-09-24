@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.5.0</span>
+   &#160;<span id="projectnumber">v2.5.1</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('class_t_train_controller.html',''); in
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html">TContinuationAutoSigEntry</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns signals back to green in stages after a train has exited an autosig route at a continuation.  <a href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; TTClockTime when last session saved - to prevent display of warning message on exit session if &lt; 5 minutes ago  <a href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller_1_1_t_continuation_train_expectation_entry.html">TContinuationTrainExpectationEntry</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class that stores data for trains expected at continuation entries (kept in a multimap - see below), used to display information in the floating window when mouse hovers over a continuation.  <a href="class_t_train_controller_1_1_t_continuation_train_expectation_entry.html#details">More...</a><br /></td></tr>
@@ -115,7 +115,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a1908f7d1a5dcfebf2f747efbdd6f4681"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html">TContinuationAutoSigEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a1908f7d1a5dcfebf2f747efbdd6f4681">TContinuationAutoSigVector</a></td></tr>
-<tr class="memdesc:a1908f7d1a5dcfebf2f747efbdd6f4681"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector class for <a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html" title="Turns signals back to green in stages after a train has exited an autosig route at a continuation.">TContinuationAutoSigEntry</a> objects  <a href="class_t_train_controller.html#a1908f7d1a5dcfebf2f747efbdd6f4681">More...</a><br /></td></tr>
+<tr class="memdesc:a1908f7d1a5dcfebf2f747efbdd6f4681"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector class for <a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html" title="&lt; TTClockTime when last session saved - to prevent display of warning message on exit session if &lt; 5 ...">TContinuationAutoSigEntry</a> objects  <a href="class_t_train_controller.html#a1908f7d1a5dcfebf2f747efbdd6f4681">More...</a><br /></td></tr>
 <tr class="separator:a1908f7d1a5dcfebf2f747efbdd6f4681"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c129f8836ec5be031f4163320ff3c0a"><td class="memItemLeft" align="right" valign="top">typedef TContinuationAutoSigVector::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a0c129f8836ec5be031f4163320ff3c0a">TContinuationAutoSigVectorIterator</a></td></tr>
 <tr class="separator:a0c129f8836ec5be031f4163320ff3c0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -387,6 +387,8 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a7d7dc55374ee043f1045b1d4ff91853f"><td class="memItemLeft" align="right" valign="top">TDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a7d7dc55374ee043f1045b1d4ff91853f">RestartTime</a></td></tr>
 <tr class="memdesc:a7d7dc55374ee043f1045b1d4ff91853f"><td class="mdescLeft">&#160;</td><td class="mdescRight">TTClockTime when operation pauses ( = timetable start time prior to operation) TTClockTime is calculated as follows:- TTClockTime = CurrentDateTime + RestartTime - BaseTime;.  <a href="class_t_train_controller.html#a7d7dc55374ee043f1045b1d4ff91853f">More...</a><br /></td></tr>
 <tr class="separator:a7d7dc55374ee043f1045b1d4ff91853f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9c2bed92e3448f96e434669b0d89e71"><td class="memItemLeft" align="right" valign="top">TDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ac9c2bed92e3448f96e434669b0d89e71">LastSessionSaveTTClockTime</a></td></tr>
+<tr class="separator:ac9c2bed92e3448f96e434669b0d89e71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6417ad9b1c400616453a90ffd530ded6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_train_controller.html#a8264dfc1795fb196c5436da83fc01198">TAllServiceCallingLocsMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a6417ad9b1c400616453a90ffd530ded6">AllServiceCallingLocsMap</a></td></tr>
 <tr class="separator:a6417ad9b1c400616453a90ffd530ded6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3795370cc431617d117244705efa9189"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a3795370cc431617d117244705efa9189">LastTTTime</a></td></tr>
@@ -521,7 +523,7 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a8ffb6e4df3a8b3a6142b6f6c3cb6fc7a"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a8ffb6e4df3a8b3a6142b6f6c3cb6fc7a">RandomFailureCounter</a></td></tr>
 <tr class="separator:a8ffb6e4df3a8b3a6142b6f6c3cb6fc7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b412f7b88f829632e54bffc0659ac3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_train_controller.html#a1908f7d1a5dcfebf2f747efbdd6f4681">TContinuationAutoSigVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a0b412f7b88f829632e54bffc0659ac3b">ContinuationAutoSigVector</a></td></tr>
-<tr class="memdesc:a0b412f7b88f829632e54bffc0659ac3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector for <a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html" title="Turns signals back to green in stages after a train has exited an autosig route at a continuation.">TContinuationAutoSigEntry</a> objects  <a href="class_t_train_controller.html#a0b412f7b88f829632e54bffc0659ac3b">More...</a><br /></td></tr>
+<tr class="memdesc:a0b412f7b88f829632e54bffc0659ac3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector for <a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html" title="&lt; TTClockTime when last session saved - to prevent display of warning message on exit session if &lt; 5 ...">TContinuationAutoSigEntry</a> objects  <a href="class_t_train_controller.html#a0b412f7b88f829632e54bffc0659ac3b">More...</a><br /></td></tr>
 <tr class="separator:a0b412f7b88f829632e54bffc0659ac3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a8e542193d93581e0c391d8e7fa3e1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_train_controller.html#a36525478ab0d9f59e486b8c030acd87c">TContinuationTrainExpectationMultiMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a1a8e542193d93581e0c391d8e7fa3e1b">ContinuationTrainExpectationMultiMap</a></td></tr>
 <tr class="memdesc:a1a8e542193d93581e0c391d8e7fa3e1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multimap for <a class="el" href="class_t_train_controller_1_1_t_continuation_train_expectation_entry.html" title="Class that stores data for trains expected at continuation entries (kept in a multimap - see below),...">TContinuationTrainExpectationEntry</a> objects, the access key is the expectation time.  <a href="class_t_train_controller.html#a1a8e542193d93581e0c391d8e7fa3e1b">More...</a><br /></td></tr>
@@ -558,7 +560,7 @@ Public Attributes</h2></td></tr>
 
 <p>Map of all ServiceCallingLocsLists with key as service reference. A map is ok as all service refs are unique when it is built. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00704">704</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00706">706</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -574,9 +576,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>vector class for <a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html" title="Turns signals back to green in stages after a train has exited an autosig route at a continuation.">TContinuationAutoSigEntry</a> objects </p>
+<p>vector class for <a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html" title="&lt; TTClockTime when last session saved - to prevent display of warning message on exit session if &lt; 5 ...">TContinuationAutoSigEntry</a> objects </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00656">656</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00658">658</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -592,7 +594,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00658">658</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00660">660</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -610,7 +612,7 @@ Public Attributes</h2></td></tr>
 
 <p>ensures only one train displayed for a given continuation </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00715">715</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00717">717</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -628,7 +630,7 @@ Public Attributes</h2></td></tr>
 
 <p>Multimap class for <a class="el" href="class_t_train_controller_1_1_t_continuation_train_expectation_entry.html" title="Class that stores data for trains expected at continuation entries (kept in a multimap - see below),...">TContinuationTrainExpectationEntry</a> objects, where the access key is the expectation time. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00680">680</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00682">682</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -646,7 +648,7 @@ Public Attributes</h2></td></tr>
 
 <p>iterator for the multimap </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00682">682</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00684">684</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -664,7 +666,7 @@ Public Attributes</h2></td></tr>
 
 <p>a single multimap entry </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00684">684</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00686">686</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -680,7 +682,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00707">707</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00709">709</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -696,7 +698,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00699">699</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00701">701</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -715,7 +717,7 @@ Public Attributes</h2></td></tr>
 <p>Headcode + TrainID for running trains &amp; -TrackVectorPosition - 1 for continuation. </p>
 <p>entries neg values for continuation track vector &amp; -1 as could be 0 so all negative. Was simply the trackvector (TV) position, but since OA panel only rebuilt every 2 secs when mouseup on panel the train could be well past the TV position stored, especially at 16x operating speed </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00712">712</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00714">714</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -731,7 +733,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00713">713</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00715">715</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -747,7 +749,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00714">714</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00716">716</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -765,7 +767,7 @@ Public Attributes</h2></td></tr>
 
 <p>Used in determining train directions in timetable conflict analysis. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00702">702</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00704">704</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -783,7 +785,7 @@ Public Attributes</h2></td></tr>
 
 <p>vector containing all trains that currently exist in the railway </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00686">686</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00688">688</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -805,7 +807,7 @@ Public Attributes</h2></td></tr>
 
 <p>Constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07777">7777</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07838">7838</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -826,7 +828,7 @@ Public Attributes</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07824">7824</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07885">7885</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -949,7 +951,7 @@ Public Attributes</h2></td></tr>
 
 <p>Introduce a new train to the railway, with the characteristics specified, returns true for success, if fails the EventType indicates the reason. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08206">8206</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08267">8267</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -971,7 +973,7 @@ Public Attributes</h2></td></tr>
 
 <p>A shorthand function that returns true if the successor to a given timetable action command should be (or could be) an 'at location' command, used in timetable validation. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12062">12062</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12148">12148</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -993,7 +995,7 @@ Public Attributes</h2></td></tr>
 
 <p>populate the ContinuationTrainExpectationMultiMap during timetable loading </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14133">14133</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14219">14219</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1079,7 +1081,7 @@ Public Attributes</h2></td></tr>
 
 <p>new v2.2.0, calcs distance to red signal, returns -1 for no signal found, for autosigs route after next red signal &amp; other conditions, also totals up location stop times before the red signal and returns value in StopTime </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17342">17342</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17428">17428</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1101,7 +1103,7 @@ Public Attributes</h2></td></tr>
 
 <p>calculates additional lateness values for trains that haven't reached their destinations yet </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17086">17086</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17172">17172</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1145,7 +1147,7 @@ Public Attributes</h2></td></tr>
 
 <p>Used to compile ExitList from a string list of element IDs, returns true for success or gives a message &amp; returns false for failure, used in timetable validation. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10088">10088</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10174">10174</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1195,7 +1197,7 @@ Public Attributes</h2></td></tr>
 
 <p>A timetable validation function where all service cross references are checked for validity and set pointers and train information, return true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12188">12188</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12274">12274</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1239,7 +1241,7 @@ Public Attributes</h2></td></tr>
 
 <p>A timetable validation function where referenced services are checked for uniqueness, returns true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12083">12083</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12169">12169</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1277,7 +1279,7 @@ Public Attributes</h2></td></tr>
 
 <p>Returns true if the headcode complies with requirements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10047">10047</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10133">10133</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1321,7 +1323,7 @@ Public Attributes</h2></td></tr>
 
 <p>Returns true if the location name complies with requirements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10002">10002</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10088">10088</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1365,7 +1367,7 @@ Public Attributes</h2></td></tr>
 
 <p>A timetable validation function where cross references are checked for validity for non-repeating shuttle links, pointers and train information are set, returns true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13120">13120</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13206">13206</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1415,7 +1417,7 @@ Public Attributes</h2></td></tr>
 
 <p>The forward train is the finish shuttle entry 'Fns-sh', the reverse (new non-repeating service) time must = Forward time + (RepeatMins * RepeatNumber), return true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13374">13374</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13460">13460</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1447,7 +1449,7 @@ Public Attributes</h2></td></tr>
 
 <p>Part of the session file integrity check for ContinuationAutoSigEntries, true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14066">14066</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14152">14152</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1479,7 +1481,7 @@ Public Attributes</h2></td></tr>
 
 <p>Part of the session file integrity check for locked routes, true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13982">13982</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14068">14068</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1511,7 +1513,7 @@ Public Attributes</h2></td></tr>
 
 <p>Part of the session file integrity check for train entries, true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13920">13920</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14006">14006</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1555,7 +1557,7 @@ Public Attributes</h2></td></tr>
 
 <p>Check that shuttle link services have consistent times, true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13097">13097</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13183">13183</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1593,7 +1595,7 @@ Public Attributes</h2></td></tr>
 
 <p>Check that each shuttle service ends either in Fns or Fxx-sh (though a single service can't end in Fxx-sh), and that when the Fxx-sh is reached it references the original start and not another shuttle - not allowed to link two shuttles, true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13398">13398</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13484">13484</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1649,7 +1651,7 @@ Public Attributes</h2></td></tr>
 
 <p>Called when trying to introduce a new train - checks for points in correct orientation, that no train is already at the train starting position, and not starting on a locked route. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12892">12892</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12978">12978</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1693,7 +1695,7 @@ Public Attributes</h2></td></tr>
 
 <p>A timetable validation function where train starting positions are checked for validity, true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12809">12809</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12895">12895</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1731,7 +1733,7 @@ Public Attributes</h2></td></tr>
 
 <p>returns true if the time complies with requirements </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09629">9629</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09715">9715</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1793,7 +1795,7 @@ Public Attributes</h2></td></tr>
 
 <p>Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for arrivals (bool Arrival == true) &amp; departures, also returns NumTrainsAtLoc after consolidation, used on creating the timetable conflict analysis file, Location needed to determine direction information. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16146">16146</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16232">16232</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1831,7 +1833,7 @@ Public Attributes</h2></td></tr>
 
 <p>Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for AtLoc listing (similar to ArrDep but doesn't include times in the input &amp; don't need Location), also returns NumTrainsAtLoc after consolidation, used on creating the timetable conflict analysis file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16362">16362</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16448">16448</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1881,7 +1883,7 @@ Public Attributes</h2></td></tr>
 
 <p>Build string for use in floating window for expected trains at continuations. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08566">8566</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08627">8627</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1943,7 +1945,7 @@ Public Attributes</h2></td></tr>
 
 <p>Similar to <a class="el" href="class_t_train.html#a781291ed1d591990b7615286462a2861" title="called during FloatingLabelNextString to find the next service departure time">TTrain::CheckNewServiceDepartureTime</a> for use in ContinuationEntryFloatingTTString. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08703">8703</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08764">8764</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -1987,7 +1989,7 @@ Public Attributes</h2></td></tr>
 
 <p>Examines the internal timetable (TrainDataVector) and creates from it a chronological (.txt) timetable and also a traditional spreadsheet format (.csv) timetable. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14233">14233</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14319">14319</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2061,7 +2063,7 @@ Public Attributes</h2></td></tr>
 
 <p>Generate a timetable analysis file in the 'Formatted Timetables' folder, return false if failed for any reason. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14824">14824</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14910">14910</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2099,7 +2101,7 @@ Public Attributes</h2></td></tr>
 
 <p>Return the track entry link (Link[]) array position for the given train on track element at track vector position TrackVectorNumber. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08481">8481</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08542">8542</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2121,7 +2123,7 @@ Public Attributes</h2></td></tr>
 
 <p>called when exiting operation mode to delete all trains and timetable data etc </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08120">8120</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08181">8181</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2165,7 +2167,7 @@ Public Attributes</h2></td></tr>
 
 <p>Get the interval between repeats. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08554">8554</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08615">8615</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2197,7 +2199,7 @@ Public Attributes</h2></td></tr>
 
 <p>Check all timetable names in ExitList, if all same return " at [name]" else return "". Used in floating label for Next action and in formatted timetables. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16721">16721</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16807">16807</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2241,7 +2243,7 @@ Public Attributes</h2></td></tr>
 
 <p>Return the service headcode for the repeat service. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13053">13053</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13139">13139</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2285,7 +2287,7 @@ Public Attributes</h2></td></tr>
 
 <p>Return the repeating service time. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13085">13085</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13171">13171</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2323,7 +2325,7 @@ Public Attributes</h2></td></tr>
 
 <p>New trains introduced with 'Snt' may be at a timetabled location or elsewhere. This function checks and returns true for at a timetabled location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12727">12727</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12813">12813</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2355,7 +2357,7 @@ Public Attributes</h2></td></tr>
 
 <p>Checks the last two characters in HeadCode and returns true if both are digits. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09610">9610</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09696">9696</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2387,7 +2389,7 @@ Public Attributes</h2></td></tr>
 
 <p>load ContinuationAutoSigEntries from a session file </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14044">14044</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14130">14130</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2419,7 +2421,7 @@ Public Attributes</h2></td></tr>
 
 <p>load locked routes from a session file </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13961">13961</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14047">14047</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2451,7 +2453,7 @@ Public Attributes</h2></td></tr>
 
 <p>load trains from a session file </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13894">13894</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13980">13980</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2489,7 +2491,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00807">807</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00809">809</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2527,7 +2529,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00816">816</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00818">818</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2565,7 +2567,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00812">812</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00814">814</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2603,7 +2605,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00802">802</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00804">804</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2653,7 +2655,7 @@ Public Attributes</h2></td></tr>
 
 <p>Send an error message to the performance log and file, and as a warning if appropriate. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13478">13478</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13564">13564</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2675,7 +2677,7 @@ Public Attributes</h2></td></tr>
 
 <p>store Str to the event log - moved from <a class="el" href="class_t_utilities.html">TUtilities</a> for v0.6 so can record the tt clock value </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07835">7835</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07896">7896</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2697,7 +2699,7 @@ Public Attributes</h2></td></tr>
 
 <p>A shorthand function that returns true if the successor to a given timetable action command should be (or could be) an en-route command, used in timetable validation. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12055">12055</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12141">12141</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2719,7 +2721,7 @@ Public Attributes</h2></td></tr>
 
 <p>called every clock tick to introduce new trains and update existing trains </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07847">7847</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07908">7908</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2751,7 +2753,7 @@ Public Attributes</h2></td></tr>
 
 <p>Plots all trains on screen in zoomed-out mode, state of 'Flash' determines whether the flashing trains are plotted or not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14197">14197</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14283">14283</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2813,7 +2815,7 @@ Public Attributes</h2></td></tr>
 
 <p>Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if FinalCall true) set the internal timetable data values, return true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08979">8979</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09065">9065</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2835,7 +2837,7 @@ Public Attributes</h2></td></tr>
 
 <p>new v2.2.0 for OperatorActionPanel </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17186">17186</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17272">17272</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2867,7 +2869,7 @@ Public Attributes</h2></td></tr>
 
 <p>plot all trains on the display </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08160">8160</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08221">8221</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2953,7 +2955,7 @@ Public Attributes</h2></td></tr>
 
 <p>Determines whether two services are running in the same direction when they arrive or depart from Location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16403">16403</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16489">16489</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -2985,7 +2987,7 @@ Public Attributes</h2></td></tr>
 
 <p>save ContinuationAutoSigEntries to a session file </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14026">14026</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14112">14112</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3017,7 +3019,7 @@ Public Attributes</h2></td></tr>
 
 <p>save locked routes to a session file </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13944">13944</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14030">14030</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3049,7 +3051,7 @@ Public Attributes</h2></td></tr>
 
 <p>save trains to a session file </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13878">13878</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13964">13964</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3071,7 +3073,7 @@ Public Attributes</h2></td></tr>
 
 <p>diagnostic function to store all train data to a file for examination, not used normally </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13685">13685</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13771">13771</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3103,7 +3105,7 @@ Public Attributes</h2></td></tr>
 
 <p>Carry out further detailed timetable consistency checks, return true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10667">10667</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10753">10753</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3135,7 +3137,7 @@ Public Attributes</h2></td></tr>
 
 <p>Give a user message during timetable integrity checking if GiveMessages is true, ignore if false. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13467">13467</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13553">13553</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3167,7 +3169,7 @@ Public Attributes</h2></td></tr>
 
 <p>At the end of operation a summary of overall performance is sent to the performance file by this function. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16789">16789</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16875">16875</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3189,7 +3191,7 @@ Public Attributes</h2></td></tr>
 
 <p>This sets all the warning flags (CrashWarning, DerailWarning etc) to their required states after a session file has been loaded. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17040">17040</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17126">17126</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3305,7 +3307,7 @@ Public Attributes</h2></td></tr>
 
 <p>Parse a single timetable service action, return true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09680">9680</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09766">9766</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3361,7 +3363,7 @@ Public Attributes</h2></td></tr>
 
 <p>Parse a timetable repeat entry, return true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10517">10517</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10603">10603</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3447,7 +3449,7 @@ Public Attributes</h2></td></tr>
 
 <p>Parse a train information entry, return true for success; PowerAtRail changed to double&amp; from int&amp; at v2.4.0. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10171">10171</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10257">10257</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3479,7 +3481,7 @@ Public Attributes</h2></td></tr>
 
 <p>sends a message to the user and stops the timetable clock while it is displayed </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13863">13863</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13949">13949</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3511,7 +3513,7 @@ Public Attributes</h2></td></tr>
 
 <p>change an extended headcode to an ordinary 4 character headcode </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12071">12071</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12157">12157</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3543,7 +3545,7 @@ Public Attributes</h2></td></tr>
 
 <p>Strip both leading and trailing spaces at ends of Input and spaces before and after all commas and semicolons within Input, used to rationalise timetable service entries for internal use. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12630">12630</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12716">12716</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3587,7 +3589,7 @@ Public Attributes</h2></td></tr>
 
 <p>Checks overall timetable integrity, calls many other specific checking functions, returns true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08857">8857</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08943">8943</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3619,7 +3621,7 @@ Public Attributes</h2></td></tr>
 
 <p>Sends a message to the user if GiveMessages is true, including ServiceReference (see above) if not null, used for timetable error messages. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13451">13451</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13537">13537</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3651,7 +3653,7 @@ Public Attributes</h2></td></tr>
 
 <p>new at v2.4.0 return true if find the train (added at v2.4.0 as can select a removed train in OAListBox before it updates see LiWinDom error report via Discord on 23/04/20 </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08535">8535</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08596">8596</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3683,7 +3685,7 @@ Public Attributes</h2></td></tr>
 
 <p>Return a reference to the train at position VecPos in the TrainVector, carries out range checking on VecPos. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14220">14220</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14306">14306</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3715,7 +3717,7 @@ Public Attributes</h2></td></tr>
 
 <p>Return a reference to the train with ID TrainID, carries out validity checking on TrainID. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08519">8519</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08580">8580</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3737,7 +3739,7 @@ Public Attributes</h2></td></tr>
 
 <p>unplot all trains from screen </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08190">8190</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08251">8251</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3781,7 +3783,7 @@ Public Attributes</h2></td></tr>
 
 <p>check whether the two times are within the range in minutes specified and return true if so. For an equal time check MinuteRange = 0; </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16120">16120</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16206">16206</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3813,7 +3815,7 @@ Public Attributes</h2></td></tr>
 
 <p>Called by TInterface::SaveOperatingImage1Click) to write all trains to the image file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08175">8175</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08236">8236</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -3830,7 +3832,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00705">705</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00707">707</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3848,7 +3850,7 @@ Public Attributes</h2></td></tr>
 
 <p>Input in MTBFEditBox in timetable hours, min value is 1 and max is 10,000. Here because performance file needs access. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00778">778</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00780">780</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3882,7 +3884,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00733">733</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00735">735</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3898,7 +3900,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00733">733</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00735">735</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3914,7 +3916,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00722">722</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00724">724</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3930,7 +3932,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00722">722</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00724">724</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3946,9 +3948,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>vector for <a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html" title="Turns signals back to green in stages after a train has exited an autosig route at a continuation.">TContinuationAutoSigEntry</a> objects </p>
+<p>vector for <a class="el" href="class_t_train_controller_1_1_t_continuation_auto_sig_entry.html" title="&lt; TTClockTime when last session saved - to prevent display of warning message on exit session if &lt; 5 ...">TContinuationAutoSigEntry</a> objects </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00787">787</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00789">789</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3966,7 +3968,7 @@ Public Attributes</h2></td></tr>
 
 <p>Multimap for <a class="el" href="class_t_train_controller_1_1_t_continuation_train_expectation_entry.html" title="Class that stores data for trains expected at continuation entries (kept in a multimap - see below),...">TContinuationTrainExpectationEntry</a> objects, the access key is the expectation time. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00789">789</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00791">791</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3982,7 +3984,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00753">753</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00755">755</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3998,7 +4000,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00722">722</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00724">724</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4014,7 +4016,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00754">754</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00756">756</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4030,7 +4032,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00722">722</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00724">724</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4046,7 +4048,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00755">755</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00757">757</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4062,7 +4064,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00756">756</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00758">758</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4080,7 +4082,7 @@ Public Attributes</h2></td></tr>
 
 <p>total excess time in minutes over the 3 minutes barriers down allowance for level crossings </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00743">743</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00745">745</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4096,7 +4098,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00757">757</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00759">759</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+
+</div>
+</div>
+<a id="ac9c2bed92e3448f96e434669b0d89e71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9c2bed92e3448f96e434669b0d89e71">&#9670;&nbsp;</a></span>LastSessionSaveTTClockTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TDateTime TTrainController::LastSessionSaveTTClockTime</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00641">641</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4114,7 +4132,7 @@ Public Attributes</h2></td></tr>
 
 <p>displays last train loaded from session file, used for debugging </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00776">776</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00778">778</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4132,7 +4150,7 @@ Public Attributes</h2></td></tr>
 
 <p>Stores the last time used in the timetable as an AnsiString - used for timetable analysis. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00718">718</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00720">720</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4148,7 +4166,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00758">758</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00760">760</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4164,7 +4182,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00759">759</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00761">761</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4180,7 +4198,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00760">760</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00762">762</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4196,7 +4214,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00733">733</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00735">735</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4212,7 +4230,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00761">761</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00763">763</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4228,7 +4246,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00733">733</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00735">735</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4244,7 +4262,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00733">733</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00735">735</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4262,7 +4280,7 @@ Public Attributes</h2></td></tr>
 
 <p>Mean time between failures in timetable clock hours. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00736">736</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00738">738</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4280,7 +4298,7 @@ Public Attributes</h2></td></tr>
 
 <p>total number of arrivals &amp; departures for trains that haven't started yet for locations not reached yet </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00774">774</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00776">776</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4298,7 +4316,7 @@ Public Attributes</h2></td></tr>
 
 <p>total late minutes of trains that haven't started yet on exit operation for locations not reached yet </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00739">739</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00741">741</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4314,7 +4332,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00770">770</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00772">772</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4330,7 +4348,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00762">762</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00764">764</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4346,7 +4364,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00763">763</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00765">765</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4362,7 +4380,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00764">764</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00766">766</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4380,7 +4398,7 @@ Public Attributes</h2></td></tr>
 
 <p>new v2.2.0 on start operation delays the op action panel headcode display for about 3 secs while hints shown </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00783">783</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00785">785</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4398,7 +4416,7 @@ Public Attributes</h2></td></tr>
 
 <p>new v2.2.0 flag to prevent time to act functions when not visible </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00730">730</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00732">732</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4417,7 +4435,7 @@ Public Attributes</h2></td></tr>
 <p>&lt; all these set to 0 in constructor </p>
 <p>total number of arrivals &amp; departures for operating trains locations not reached yet </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00772">772</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00774">774</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4435,7 +4453,7 @@ Public Attributes</h2></td></tr>
 
 <p>total late minutes of operating trains on exit operation for locations not reached yet </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00741">741</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00743">743</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4453,7 +4471,7 @@ Public Attributes</h2></td></tr>
 
 <p>added v2.2.0 for Op time to act display </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00791">791</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00793">793</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4471,7 +4489,7 @@ Public Attributes</h2></td></tr>
 
 <p>added v2.2.0 for Op time to act display </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00793">793</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00795">795</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4489,7 +4507,7 @@ Public Attributes</h2></td></tr>
 
 <p>new v2.2.0, incremented in Interface.cpp, controls updating for OpTimeToActPanel </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00781">781</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00783">783</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4505,7 +4523,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00765">765</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00767">767</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4521,7 +4539,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00733">733</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00735">735</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4537,7 +4555,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00785">785</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00787">787</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4573,7 +4591,7 @@ Public Attributes</h2></td></tr>
 
 <p>String used to display the offending service in timetable error messages. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00720">720</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00722">722</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4591,7 +4609,7 @@ Public Attributes</h2></td></tr>
 
 <p>true if train was on an AutoSigsRoute when removed by the signaller </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00728">728</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00730">730</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4607,7 +4625,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00722">722</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00724">724</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4623,7 +4641,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00733">733</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00735">735</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4641,7 +4659,7 @@ Public Attributes</h2></td></tr>
 
 <p>Message flags in TT checks to stop being given twice. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00733">733</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00735">735</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4657,7 +4675,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00766">766</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00768">768</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4673,7 +4691,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00767">767</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00769">769</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4689,7 +4707,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00722">722</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00724">724</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4705,7 +4723,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00733">733</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00735">735</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4723,7 +4741,7 @@ Public Attributes</h2></td></tr>
 
 <p>when true the timetable clock is stopped, used for messages display and train popup menu display etc </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00724">724</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00726">726</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4757,7 +4775,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00768">768</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00770">770</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4775,7 +4793,7 @@ Public Attributes</h2></td></tr>
 
 <p>values for performance file summary </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00745">745</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00747">747</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4791,7 +4809,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00747">747</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00749">749</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4807,7 +4825,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00748">748</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00750">750</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4823,7 +4841,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00749">749</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00751">751</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4839,7 +4857,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00750">750</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00752">752</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4857,7 +4875,7 @@ Public Attributes</h2></td></tr>
 
 <p>true when a train has been added by a split (occurs outside the normal train introduction process) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00726">726</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00728">728</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4875,7 +4893,7 @@ Public Attributes</h2></td></tr>
 
 <p>vector containing the internal timetable </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00795">795</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00797">797</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4893,7 +4911,7 @@ Public Attributes</h2></td></tr>
 
 <p>Flags to enable the relevant warning graphics to flash at the left hand side of the screen. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00722">722</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00724">724</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4911,7 +4929,7 @@ Public Attributes</h2></td></tr>
 
 <p>vector containing all trains currently in the railway </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00797">797</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00799">799</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4945,7 +4963,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00769">769</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00771">771</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>

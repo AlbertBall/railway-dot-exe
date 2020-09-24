@@ -939,6 +939,8 @@ private:
 ///< true when an error has been thrown, stops repeated calls to ErrorLog and stops the MasterClockTimer function
     bool FileChangedFlag;
 ///< true when a loaded railway file has changed (used to warn user if opts to exit without saving)
+    bool LengthWarningSentFlag;
+///< indicates that the length selection applying to all elements in the selection warning has been given, so it won't be given again
     bool LoadSessionFlag;
 ///< true when a session load command has been given - implemented at next clock tick
     bool mbLeftDown;

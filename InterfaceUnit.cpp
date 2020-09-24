@@ -193,6 +193,7 @@ __fastcall TInterface::TInterface(TComponent* Owner): TForm(Owner)
         AutoRouteStartMarker = new TGraphicElement;
         SigRouteStartMarker = new TGraphicElement;
         NonSigRouteStartMarker = new TGraphicElement;
+        LengthWarningSentFlag = false;
 
         TrackInfoOnOffMenuItem->Caption = "Show"; // added here at v1.2.0 because dropped from ResetAll()
         TrainStatusInfoOnOffMenuItem->Caption = "Hide Status"; // changed at v2.0.0 so normally visible
@@ -640,6 +641,7 @@ __fastcall TInterface::TInterface(TComponent* Owner): TForm(Owner)
         TTStartTimePtr = 0;
         TTFirstServicePtr = 0;
         TTLastServicePtr = 0;
+        Track->OverrideAndHideSignalBridgeMessage = false; //added at v2.5.1 to allow facing signals before bridges - with a warning
         ConflictPanel->Visible = false;
         TTClockAdjustWarningPanel->Visible = false;
         TTClockAdjustWarningHide = false;
@@ -7773,7 +7775,10 @@ void TInterface::ClockTimer2(int Caller)
                 }
             }
             if(!Display->ZoomOutFlag && ElementRemovedFlag)
-                ClearandRebuildRailway(66); // if zoomed out ignore, will display correctly when zoom in
+            {
+                ClearandRebuildRailway(66);
+            }
+            // if zoomed out ignore, will display correctly when zoom in
             // if leave the Zoomout condition out then the zoom out will spontaneously cancel and the track won't display because
             // PlotOutput returns if zoomed out, and the zoom out flag isn't reset until the end of Clearand.....
             // this was moved outside the for.. next.. loop in v0.6 as it could be called multiple times and slowed down operation (noticeable with a fast clock)
@@ -9402,7 +9407,11 @@ void __fastcall TInterface::SelectLengthsMenuItemClick(TObject *Sender)
         SelectLengthsFlag = true;
         InfoPanel->Visible = true;
         InfoPanel->Caption = "DISTANCE/SPEED SETTING:  Set values or leave blank for no change";
-        ShowMessage("Note: length value will apply to each element's track within the selection");
+        if(!LengthWarningSentFlag)
+        {
+            ShowMessage("Note: length value will apply to each element's track within the selection\n\nThis message will only be shown once");
+            LengthWarningSentFlag = true;
+        }
         DistanceBox->Text = "";
         SpeedLimitBox->Text = "";
         SelectBitmapHLoc = SelectRect.left;
@@ -10393,6 +10402,19 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key, TShiftState 
             else if(Key == '4')
             {
                 TestFunction();
+            }
+            else if(Key == '5')
+            {
+                TMsgDlgButtons Buttons;
+                Buttons << mbYes << mbNo;
+                if(MessageDlg("Do you wish to allow facing signals next to bridges?  If so please be aware that routes cannot be truncated to these signals.", mtWarning, Buttons, 0) == mrYes)
+                {
+                    Track->OverrideAndHideSignalBridgeMessage = true;
+                }
+                else
+                {
+                    Track->OverrideAndHideSignalBridgeMessage = false;
+                }
             }
         }
         else if(Shift.Contains(ssCtrl) && !Shift.Contains(ssShift) && !Shift.Contains(ssAlt))
@@ -12348,8 +12370,8 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
     {
         if(ConstructPrefDir->PrefDirSize() > 0)
         {
+            Track->LengthMarker(2, HiddenDisplay); //this line was after the next line until v2.5.1, changed so magenta not overrridden after PrefDirMarker called
             ConstructPrefDir->PrefDirMarker(11, PrefDirCall, true, HiddenDisplay);
-            Track->LengthMarker(2, HiddenDisplay);
             DistanceKey->Visible = true;
             DistancesMarked = true;
             LengthConversionPanel->Visible = true;
@@ -14182,6 +14204,18 @@ void TInterface::TrackTrainFloat(int Caller)
         { // dont show floating window if mouse over OperatorActionPanel
             FloatingPanel->Visible = false;
             Utilities->CallLogPop(2098);
+            return;
+        }
+    }
+
+    if(TimetableEditPanel->Visible) // added at v2.5.1 as showed track info behind panel
+    {
+        if((MousePoint.x >= TimetableEditPanel->Left) && (MousePoint.x <= (TimetableEditPanel->Left + TimetableEditPanel->Width)) &&
+            ((MousePoint.y - ClientOrigin.y) >= TimetableEditPanel->Top) && ((MousePoint.y - ClientOrigin.y) <=
+            (TimetableEditPanel->Top + TimetableEditPanel->Height)))
+        { // dont show floating window if mouse over TimetableEditPanel
+            FloatingPanel->Visible = false;
+            Utilities->CallLogPop(2240);
             return;
         }
     }

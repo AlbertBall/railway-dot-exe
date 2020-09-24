@@ -422,6 +422,7 @@ var class_t_interface =
     [ "LengthCancelButton", "class_t_interface.html#afeadfc0f77796b75186a1647496dc0ac", null ],
     [ "LengthConversionPanel", "class_t_interface.html#a212f0dc25b6a2bb09dfafbb66f7f50f9", null ],
     [ "LengthOKButton", "class_t_interface.html#ad73c4b5aefb218b1b56a35e8955533b0", null ],
+    [ "LengthWarningSentFlag", "class_t_interface.html#ab7c2ee30059a0d6153f1a9c4fd3658ff", null ],
     [ "Level1Mode", "class_t_interface.html#ac1799c95feacd89003c5609f39453557", null ],
     [ "Level2OperMode", "class_t_interface.html#a24476158b3dd423e47564bad04d0c6c5", null ],
     [ "Level2PrefDirMode", "class_t_interface.html#a639bc3747c2ed13ca77349595f3cd337", null ],

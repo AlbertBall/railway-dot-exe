@@ -4422,9 +4422,9 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                     // can't join a route to an existing route where the second signal is in an existing route and the first signal is
                     // selected - appears as trying to select a signal that is not the next in line from the starting signal
                 }
-                else if((TrackVector.at(x).Config[y] == Signal) && (TrackVector.at(VecPos).TrackType == Bridge))
+                else if((TrackVector.at(x).Config[y] == Signal) && (TrackVector.at(VecPos).TrackType == Bridge) && !OverrideAndHideSignalBridgeMessage)
                 {
-                    ShowMessage("Can't have a signal facing a bridge - it prevents a route from being truncated to the signal");
+                    ShowMessage("Signal facing a bridge - routes can't be truncated to this or other such signals.\n\nThis restriction can be removed or reinstated by pressing\nCTRL ALT 5.  When removed this message won't be shown again.");
                     // can't join a route to an existing route where the second signal is in an existing route and the first signal is
                     // selected - appears as trying to select a signal that is not the next in line from the starting signal
                 }

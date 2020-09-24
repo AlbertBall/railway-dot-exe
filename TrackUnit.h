@@ -658,7 +658,8 @@ of the flashing until the duration is reached, when the object is erased from th
 ///< true while a route is flashing prior to being set
     bool SkipLocationNameMultiMapCheck;
 ///<changed from PastingWithAttributes in v2.4.0 as all pastes are now with attributes - needed to suppress multimap checks while pasting
-
+    bool OverrideAndHideSignalBridgeMessage;
+///<if false signals facing bridges are not permitted, but can be set to true using CTRL ALT 5
     float LevelCrossingBarrierUpFlashDuration;
 ///< duration of the flash period when level crossing closing to trains
     float LevelCrossingBarrierDownFlashDuration;
@@ -1213,7 +1214,7 @@ private: // don't want descendant (TOneRoute) to access the PrefDir4MultiMap
 
 protected: // descendant (TOneRoute) can access these
 
-    typedef std::vector<TPrefDirElement>TPrefDirVector;
+    typedef std::vector<TPrefDirElement> TPrefDirVector;
 ///< the pref dir vector type
     typedef std::vector<TPrefDirElement>::iterator TPrefDirVectorIterator;
     typedef std::vector<TPrefDirElement>::const_iterator TPrefDirVectorConstIterator;
@@ -1642,7 +1643,7 @@ after train passes, and for picking up the correct background graphics for replo
 CallingOnAllowed*/
     TRouteType GetRouteTypeAndGraphics(int Caller, int TrackVectorPosition, int LinkPos, Graphics::TBitmap* &EXGraphicPtr,
         Graphics::TBitmap* &EntryDirectionGraphicPtr);
-/// Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit) is found returns the appropriate route type - NoRoute, NotAutoSigsRoute, or AutoSigsRoute and number (i.e. its position in AllRoutesVector).
+/// Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit) is found returns the appropriate route type - NoRoute, NotAutoSigsRoute, or AutoSigsRoute and number (i.e. its position in AllRoutesVector, -1 if NoRoute).
     TRouteType GetRouteTypeAndNumber(int Caller, int TrackVectorPosition, int LinkPos, int &RouteNumber);
 /// A single TPrefDirElement is added to both PrefDirVector (for the route at RouteNumber) and Route2MultiMap.  Called from TAllRoutes::StoreOneRoute.  Note that the IsARoute boolean variable is set in StoreRouteElementInPrefDirVector since that catches all route elements wherever created
     void AddRouteElement(int Caller, int HLoc, int VLoc, int ELink, int RouteNumber, TPrefDirElement RouteElement);

@@ -108,6 +108,7 @@ var class_t_train_controller =
     [ "EarlyPasses", "class_t_train_controller.html#a10e0551a6c8cd4aee4bd0902419794cd", null ],
     [ "ExcessLCDownMins", "class_t_train_controller.html#a2b18964f752a0241c45514b82c51e647", null ],
     [ "IncorrectExits", "class_t_train_controller.html#a1f0a35fbb4a902ef5cc0b5cae9f5ef89", null ],
+    [ "LastSessionSaveTTClockTime", "class_t_train_controller.html#ac9c2bed92e3448f96e434669b0d89e71", null ],
     [ "LastTrainLoaded", "class_t_train_controller.html#afe81208f331c62fbf818e28098a5d750", null ],
     [ "LastTTTime", "class_t_train_controller.html#a3795370cc431617d117244705efa9189", null ],
     [ "LateArrivals", "class_t_train_controller.html#abea3abf3d6ba9ac99b1e0cdfa711b957", null ],

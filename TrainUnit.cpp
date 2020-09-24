@@ -5744,6 +5744,41 @@ void TTrain::ChangeTrainDirection(int Caller)
     LogAction(12, HeadCode, "", ChangeDirection, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
     ActionVectorEntryPtr++;
     LastActionTime = TrainController->TTClockTime;
+
+    //now erase a stub route if there is one, added at v2.5.1
+    //first element of route is now immediately behind the train (i.e. next to MidElement)
+    if(MidEntryPos >= 0)
+    {
+        TTrackElement MidTrackElement = Track->TrackElementAt(996, MidElement);
+        int FirstRouteElementVecPos = MidTrackElement.Conn[MidEntryPos];
+        int FirstRouteLinkPos = MidTrackElement.ConnLinkPos[MidEntryPos];
+        int RouteNumber = -1;
+        TAllRoutes::TRouteType RouteType = AllRoutes->GetRouteTypeAndNumber(34, FirstRouteElementVecPos, FirstRouteLinkPos, RouteNumber);
+        if(RouteType == TAllRoutes::NotAutoSigsRoute)
+        {
+            TOneRoute &OR = AllRoutes->GetModifiableRouteAt(28, RouteNumber);
+            TTrackElement TE = Track->TrackElementAt(997, FirstRouteElementVecPos);
+            if((TE.TrackType != SignalPost) && (TE.TrackType != Continuation))//all autosigs routes have signalpost or continuation at 0 so they are automatically excluded
+            {
+                while(OR.PrefDirSize() > 0) //remove the route up to but not including the next facing signal, in case a pref dir route extends to another signal
+                {
+                    TPrefDirElement PDE = OR.GetFixedPrefDirElementAt(247, 0); //these will change at each element removal because OR is a reference to the real route
+                    int TVPos2 = PDE.GetTrackVectorPosition();
+                    TTrackElement TE2 = Track->TrackElementAt(998, TVPos2);
+                    if(Track->TrackElementAt(999, PDE.GetTrackVectorPosition()).Config[PDE.GetXLinkPos()] != Signal)
+                    {
+                        AllRoutes->RemoveRouteElement(22, TE2.HLoc, TE2.VLoc, PDE.GetELink());
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                AllRoutes->RebuildRailwayFlag = true;
+                // to force ClearandRebuildRailway at next clock tick if not in zoom-out mode, to replot without stub route
+            }
+        }
+    }
     Utilities->CallLogPop(1012);
 }
 
@@ -7627,6 +7662,7 @@ float TTrain::CalcTimeToAct(int Caller) // only called for running trains
         Utilities->CallLogPop(2080);
         return -1;
     }
+
     if(!Stopped() || StoppedAtLocation)
     {
         // calc distance to next red signal but check for continuation exit
@@ -10104,7 +10140,7 @@ bool TTrainController::CheckHeadCodeValidity(int Caller, bool GiveMessages, Ansi
     if((HeadCode.Length() < 4) || (HeadCode.Length() > 8))
     {
         TimetableMessage(GiveMessages, "Headcode error in '" + HeadCode +
-            "', length must be between 4 and 8 characters, and last 4 must be a legitimate headcode");
+            "', length must be between 4 and 8 characters, and last 4 must be a legitimate headcode. This error can also be caused by omitting a service reference after Snt-sh, Sns-sh, Fns-sh or Frh-sh");
         Utilities->CallLogPop(1359);
         return false;
     }
@@ -10951,9 +10987,9 @@ bool TTrainController::SecondPassActions(int Caller, bool GiveMessages)
         {
             TActionVectorEntry AVEntry1 = TrainDataVector.at(x).ActionVector.at(1);
             // must be a second entry if first not signallercontrol
-            if((AVEntry1.SequenceType == Finish) && (AVEntry1.Command != "Frh") && (AVEntry1.Command != "Fjo") && (AVEntry1.Command != "Fer"))
+            if((AVEntry1.SequenceType == Finish) && ((AVEntry1.Command == "Fns-sh") || (AVEntry1.Command == "Frh-sh")))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - the only finish events immediately following Snt must be Frh, Fjo or Fer for: " +
+                SecondPassMessage(GiveMessages, "Error in timetable - finish events Fns-sh and Frh-sh not permitted immediately after an Snt entry for: " +
                     TDEntry.HeadCode);
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2046);
@@ -12176,7 +12212,7 @@ bool TTrainController::CheckForDuplicateCrossReferences(int Caller, AnsiString M
     // can have 2 if one is Sns-sh linking from another leg of the shuttle, and Fns links out to that same leg
     {
         SecondPassMessage(GiveMessages, "Error in timetable - found more than two references to " + SecondHeadCode + " from a train whose headcode is " +
-            MainHeadCode);
+            MainHeadCode + ". Check the service cross references from each service, and check whether one or other service is listed twice or more.");
         TrainDataVector.clear();
         Utilities->CallLogPop(1587);
         return false;
@@ -12214,7 +12250,7 @@ bool TTrainController::CheckForDuplicateCrossReferences(int Caller, AnsiString M
     // can have 2 if one is a second shuttle leg with a link in from Fns, and it links out to the same service with Fxx-sh
     {
         SecondPassMessage(GiveMessages, "Error in timetable - found more than two references to " + MainHeadCode + " from a train whose headcode is " +
-            SecondHeadCode);
+            SecondHeadCode + ". Check the service cross references from each service, and check whether one or other service is listed twice or more.");
         TrainDataVector.clear();
         Utilities->CallLogPop(1589);
         return false;
@@ -12822,10 +12858,10 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
     const TActionVectorEntry &AVEntry1 = TDEntry.ActionVector.at(1);
 
     // has to be at least 2 AV entries to pass the > 1 comma test in the preliminary check
-    if(((AVEntry1.Command == "Frh") || (AVEntry1.Command == "Fjo")) && (AVEntry0.Command == "Snt")) // added Fjo at v2.0.0 for empty stock
-    {
-        Utilities->CallLogPop(1037);
-        return true;
+    if(((AVEntry1.Command == "Frh") || (AVEntry1.Command == "Fjo") || (AVEntry1.Command == "F-nshs") || (AVEntry1.Command == "Fns")) && (AVEntry0.Command == "Snt")) // added Fjo at v2.0.0 for empty stock
+    {                                                                                                                                 //added F-nshs at v2.5.1 so can stay at a
+        Utilities->CallLogPop(1037);                                                                                                  //location until become a new shuttle service
+        return true;                                                                                                                  //added Fns at same time as saw no reason to exclude
     }
     AnsiString TimeLocLocationName;
     bool FoundFlag = false;

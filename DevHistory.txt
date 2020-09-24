@@ -189,12 +189,35 @@ Multi-player facility over the internet.
 
 4) Version change information
 
+VERSION CHANGES AFTER v2.5.0 for v2.5.1
+
+This is a relatively minor 'tidy up' release.  It adds a few features that improve usability and operation, and corrects a couple of bugs.
+
+Functional changes:
+
+When a train changes direction under timetable control at a location other than at buffers there is usually a redundant route left in the original direction. The program now removes these unwanted routes automatically up to the next facing signal.
+
+All types of finish event are now permitted immediately after a new train is declared ('Snt') apart from Fns-sh & Frh-sh.
+
+Facing signals can now be allowed next to bridges if the user chooses it - this is useful for working on old railways without having to change them or for new densely packed railways. A warning is given that such signals can't be used as route truncate points, but it is now up to the user to decide whether or not that risk matters.
+
+The distance/speed selection warning that all track lengths will be set to the specified value is now only given once.
+
+A few timetable error messages have been clarified.
+
+Bug fixes:
+
+For distance/speed setting the selected track length should show in magenta for easy identification, but prior to this release it was overridden by the normal colour when set.
+
+Track information showed when the mouse was positioned over the timetable editor, this has now been corrected.
+
+-----------------------
+
 VERSION CHANGES AFTER v2.4.3 for v2.5.0
 
 * = mentioned on website
 
 Functional changes:
-
 
 *Timetable conflict analysis added. This is too complex to explain here but it is described in detail in section 5.12 of the user manual and on-screen help.
 

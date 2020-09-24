@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.5.0</span>
+   &#160;<span id="projectnumber">v2.5.1</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -203,7 +203,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:afbb161c646677f13755041b895a23982"><td class="mdescLeft">&#160;</td><td class="mdescRight">Examines Route2MultiMap for the element at TrackVectorPosition with LinkPos (can be entry or exit).  <a href="class_t_all_routes.html#afbb161c646677f13755041b895a23982">More...</a><br /></td></tr>
 <tr class="separator:afbb161c646677f13755041b895a23982"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a9ccbc84687f85806115877aa86dcfd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_all_routes.html#af94f31040cc7692c777123c609d4cbd6">TRouteType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_all_routes.html#a0a9ccbc84687f85806115877aa86dcfd">GetRouteTypeAndNumber</a> (int Caller, int TrackVectorPosition, int LinkPos, int &amp;RouteNumber)</td></tr>
-<tr class="memdesc:a0a9ccbc84687f85806115877aa86dcfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit) is found returns the appropriate route type - NoRoute, NotAutoSigsRoute, or AutoSigsRoute and number (i.e. its position in AllRoutesVector).  <a href="class_t_all_routes.html#a0a9ccbc84687f85806115877aa86dcfd">More...</a><br /></td></tr>
+<tr class="memdesc:a0a9ccbc84687f85806115877aa86dcfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit) is found returns the appropriate route type - NoRoute, NotAutoSigsRoute, or AutoSigsRoute and number (i.e. its position in AllRoutesVector, -1 if NoRoute).  <a href="class_t_all_routes.html#a0a9ccbc84687f85806115877aa86dcfd">More...</a><br /></td></tr>
 <tr class="separator:a0a9ccbc84687f85806115877aa86dcfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6eaa33fa8e8dcb44d0671be5889305a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_all_routes.html#a6eaa33fa8e8dcb44d0671be5889305a9">AddRouteElement</a> (int Caller, int HLoc, int VLoc, int ELink, int RouteNumber, <a class="el" href="class_t_pref_dir_element.html">TPrefDirElement</a> RouteElement)</td></tr>
 <tr class="memdesc:a6eaa33fa8e8dcb44d0671be5889305a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single <a class="el" href="class_t_pref_dir_element.html" title="Basic preferred direction or route element - track element with additional members.">TPrefDirElement</a> is added to both PrefDirVector (for the route at RouteNumber) and Route2MultiMap. Called from <a class="el" href="class_t_all_routes.html#af70c07d73f0b62ed85bbebc5451d009c" title="A new (empty apart from RouteID) TOneRoute is added to the AllRoutesVector.">TAllRoutes::StoreOneRoute</a>. Note that the IsARoute boolean variable is set in StoreRouteElementInPrefDirVector since that catches all route elements wherever created.  <a href="class_t_all_routes.html#a6eaa33fa8e8dcb44d0671be5889305a9">More...</a><br /></td></tr>
@@ -310,7 +310,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Handles data and functions relating to all routes on the railway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01481">1481</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01482">1482</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a34636f74b522ec911900fce48ea6667c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a34636f74b522ec911900fce48ea6667c">&#9670;&nbsp;</a></span>TAllRoutesVector</h2>
@@ -326,7 +326,7 @@ Public Attributes</h2></td></tr>
 
 <p>the vector class that holds all the railway routes </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01506">1506</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01507">1507</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -342,7 +342,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01508">1508</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01509">1509</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -360,7 +360,7 @@ Public Attributes</h2></td></tr>
 
 <p>the vector class that holds all locked routes </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01510">1510</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01511">1511</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -376,7 +376,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01512">1512</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01513">1513</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -394,7 +394,7 @@ Public Attributes</h2></td></tr>
 
 <p>the multimap class holding the elements of all routes in the railway. The first entry is the HLoc &amp; VLoc pair values of the route element, and the second is the TRouteElementPair defining the element. There are a maximum of 2 elements per HLoc &amp; VLoc location </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01516">1516</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01517">1517</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -410,7 +410,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01519">1519</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01520">1520</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -426,7 +426,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01518">1518</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01519">1519</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -444,7 +444,7 @@ Public Attributes</h2></td></tr>
 
 <p>defines a specific element in a route, the first (int) value is the vector position in the AllRoutesVector, and the second (unsigned int) value is the vector position of the element in the route's PrefDirVector </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01514">1514</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01515">1515</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -466,7 +466,7 @@ Public Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="af94f31040cc7692c777123c609d4cbd6a9452af506b9a9a2513ba95b114ec59e5"></a>AutoSigsRoute&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01501">1501</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01502">1502</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -496,7 +496,7 @@ Public Attributes</h2></td></tr>
 
 <p>Constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01693">1693</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01694">1694</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -582,7 +582,7 @@ Public Attributes</h2></td></tr>
 
 <p>Erases all routes from AllRoutesVector and from Route2MultiMap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01589">1589</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01590">1590</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -611,7 +611,7 @@ Public Attributes</h2></td></tr>
 
 <p>Returns the number of routes in the railway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01583">1583</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01584">1584</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1317,7 +1317,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit) is found returns the appropriate route type - NoRoute, NotAutoSigsRoute, or AutoSigsRoute and number (i.e. its position in AllRoutesVector). </p>
+<p>Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit) is found returns the appropriate route type - NoRoute, NotAutoSigsRoute, or AutoSigsRoute and number (i.e. its position in AllRoutesVector, -1 if NoRoute). </p>
 
 <p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15915">15915</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
@@ -1943,7 +1943,7 @@ Public Attributes</h2></td></tr>
 
 <p>the vector that stores all the routes on the railway </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01571">1571</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01572">1572</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1961,7 +1961,7 @@ Public Attributes</h2></td></tr>
 
 <p>the store of all call-on entries </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01541">1541</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01542">1542</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1979,7 +1979,7 @@ Public Attributes</h2></td></tr>
 
 <p>the full value in seconds for which the level crossing flashes prior to opening to trains </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01563">1563</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01564">1564</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1997,7 +1997,7 @@ Public Attributes</h2></td></tr>
 
 <p>the full value in seconds for which the level crossing flashes prior to closing to trains </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01561">1561</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01562">1562</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2015,7 +2015,7 @@ Public Attributes</h2></td></tr>
 
 <p>this flags the fact that a locked route has been found during route building in an existing linked route which is erased prior to its elements being added to the new route. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01544">1544</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01545">1545</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2031,7 +2031,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01552">1552</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01553">1553</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2047,7 +2047,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01550">1550</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01551">1551</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2063,7 +2063,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01553">1553</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01554">1554</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2079,7 +2079,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01551">1551</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01552">1552</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2097,7 +2097,7 @@ Public Attributes</h2></td></tr>
 
 <p>the vector that stores all the locked routes on the railway </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01573">1573</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01574">1574</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2115,7 +2115,7 @@ Public Attributes</h2></td></tr>
 
 <p>stores the value for the route ID number that is next to be built </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01569">1569</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01570">1570</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2133,7 +2133,7 @@ Public Attributes</h2></td></tr>
 
 <p>the value in seconds for which points flash prior to being changed. Used for the points flash period when changing points manually and for the route flash period when points have to be changed </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01565">1565</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01566">1566</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2151,7 +2151,7 @@ Public Attributes</h2></td></tr>
 
 <p>this is set whenever a route has to be cancelled forcibly in order to force a ClearandRebuildRailway at the next clock tick if not in zoom-out mode to clear the now cancelled route on the display </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01556">1556</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01557">1557</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2169,7 +2169,7 @@ Public Attributes</h2></td></tr>
 
 <p>the map that stores the elements of all routes on the railway (see TRoute2MultiMap for more info) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01577">1577</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01578">1578</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2187,7 +2187,7 @@ Public Attributes</h2></td></tr>
 
 <p>used to flag the fact that a route is being truncated on order to change the behaviour of signal aspect setting in SetRearwardsSignalsReturnFalseForTrain </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01558">1558</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01559">1559</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2221,7 +2221,7 @@ Public Attributes</h2></td></tr>
 
 <p>if train was on an AutoSigsRoute when removed then this stores the route so that signals can be reset </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01575">1575</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01576">1576</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2239,7 +2239,7 @@ Public Attributes</h2></td></tr>
 
 <p>the value in seconds for which signals flash prior to being changed. Used for the route flash period when points don't have to be changed </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01567">1567</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01568">1568</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>

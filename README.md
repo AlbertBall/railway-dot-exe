@@ -1,6 +1,6 @@
 # railway-dot-exe
 
-Welcome to the railway.exe project, a railway simulator for Windows originally written in Borland's C++ Builder 4 Professional and now updated to work with Embarcadero's C++ Builder Starter Edition v10.2.  Development to date has resulted in a complete and usable program that provides options to:
+Welcome to the railway.exe project, a railway simulator for Windows originally written in Borland's C++ Builder 4 Professional and now updated to work with Embarcadero's C++ Builder Starter Edition v10.3.  Development to date has resulted in a complete and usable program that provides options to:
 
 - build a railway of any size
 - add text of any available colour, font and size
@@ -36,9 +36,9 @@ Although the program is fully usable now, there remains great potential for furt
 
 More recent suggestions are included in the file DevHistory.txt.
 
-'DeveloperGuide.pdf' in the 'master' branch provides a summary of program history, structure, operation and interfaces, and also explains the file structure.  Anyone wishing to contribute to further development should create a GitHub account then contact me with evidence of proficiency and I'll provide write access to the files. Version control is provided by 'Git', so anyone wishing to contribute needs to be familiar with 'Git' - plenty of information is available on the web and it's not difficult to learn the basics.
+'DeveloperGuide.pdf' in the 'master' branch provides a summary of program history, structure, operation and interfaces, and also explains the file structure.  Anyone wishing to contribute to further development should read 'CONTRIBUTING.md'.
 
-I (Albert Ball) can be contacted at railwayfeedback@gmail.com or via the website at http://www.railwayoperationsimulator.com/
+We can be contacted at railwayfeedback@gmail.com or via the website at http://www.railwayoperationsimulator.com/
 
 Menu icons from Silk Icon Set 1.3 by Mark James used under Creative Commons Attribution 2.5 License http://creativecommons.org/licenses/by/2.5/
 

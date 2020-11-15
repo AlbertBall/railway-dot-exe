@@ -880,7 +880,7 @@ bool TPrefDirElement:: operator != (TPrefDirElement RHElement)
 TTrack::TActiveLevelCrossing::TActiveLevelCrossing()
 {
     ConsecSignals = false;
-    TrainPassed = false;
+    ReducedTimePenalty = false;
     BarrierState = Up;
     ChangeDuration = 0.0;
     BaseElementSpeedTag = 1;
@@ -904,9 +904,9 @@ TTrack::TTrack()
 
     AnsiString NL = '\n';
 
-    RouteFailMessage = "Unable to set a route: it may be unreachable; " + NL +
-        "reachable but with too many different directions leading away from the start point  - set some points on the route required; " + NL +
-        "blocked by a train, another route or a changing level crossing; " + NL +
+    RouteFailMessage = "Unable to set a route:" + NL + NL + "it may be unreachable; " + NL + NL +
+        "reachable but with too many different directions leading away from the start point  - set some points on the route required; " + NL + NL +
+        "blocked by a train, another route or a changing level crossing; " + NL + NL +
         "or invalid - possibly due to a preferred direction mismatch or a missed signal in a green or blue route.";
 
     GapFlashGreen = new TGraphicElement;
@@ -930,10 +930,10 @@ TTrack::TTrack()
     BotPlatAllowed << 1 << 7 << 8 << 28 << 29 << 60 << 61 << 68 << 69 << 76 << 125 << 126 << 129 << 145;
     LeftPlatAllowed << 2 << 12 << 14 << 33 << 35 << 62 << 63 << 70 << 71 << 79 << 127 << 128 << 130 << 146;
     RightPlatAllowed << 2 << 11 << 13 << 32 << 34 << 62 << 63 << 70 << 71 << 78 << 127 << 128 << 130 << 146;
-    NameAllowed << 1 << 2 << 3 << 4 << 5 << 6 << 20 << 21 << 22 << 23 << 24 << 25 << 26 << 27 // disallow diagonals, points, signals, crossovers, bridges, gaps,
-        << 60 << 61 << 62 << 63 << 80 << 81 << 82 << 83 << 125 << 126 << 127 << 128; // diag continuations, diag buffers, footcrossings (diagonals may be OK
+    NameAllowed << 1 << 2 << 3 << 4 << 5 << 6 << 20 << 21 << 22 << 23 << 24 << 25 << 26 << 27 // disallow diagonals, points, crossovers, bridges, gaps,
+        << 60 << 61 << 62 << 63  << 68  << 69  << 70  << 71 << 80 << 81 << 82 << 83 << 125 << 126 << 127 << 128; // diag continuations, diag buffers, footcrossings (diagonals may be OK
     // but as can't link diagonal locations would need solid blocks to allow linkage & that would look untidy except for single
-    // elements, & can always use straights so leave out.)
+    // elements, & can always use straights so leave out.) Allow horiz & vert signals as from v2.6.0
     LevelCrossingAllowed << 1 << 2; // only allow on straight tracks without direction markers
 // Note platforms not allowed at continuations, but named non-station locations OK, though not allowed in timetables
 
@@ -1995,7 +1995,7 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
         if(FoundFlag && (LevelCrossingAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag)
         {
             TrackPush(11, TempTrackElement);
-            PlotRaisedLinkedLevelCrossingBarriers(0, TrackVector.at(VecPos).SpeedTag, TempTrackElement.HLoc, TempTrackElement.VLoc, Display);
+            PlotRaisedLinkedLevelCrossingBarriers(0, TrackVector.at(VecPos).SpeedTag, TempTrackElement.HLoc, TempTrackElement.VLoc, Display); //always plots red
 // no need for reference to LC element as can't be open
             TrackLinkingRequiredFlag = true;
             Utilities->CallLogPop(1907);
@@ -2152,7 +2152,7 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
             {
                 TrackLinkingRequiredFlag = true; // needed in order to call LinkTrack
                 TrackPush(12, TempTrackElement);
-                if(!CopyFlag) // don't need this for copy
+//                if(!CopyFlag) // don't need this for copy - yes we do, this is so a location will be named if pasted next to a named location - condition removed at v2.6.0
                 {
                     SearchForAndUpdateLocationName(4, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
                     // checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
@@ -2186,7 +2186,7 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
         {
             TrackLinkingRequiredFlag = true; // needed in case have named a continuation, need to check if adjacent element named
             TrackPush(13, TempTrackElement);
-            if(!CopyFlag) // don't need this for copy
+//            if(!CopyFlag) // don't need this for copy - yes we do, this is so a location will be named if pasted next to a named location - condition removed at v2.6.0
             {
                 SearchForAndUpdateLocationName(5, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
                 // checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
@@ -2218,7 +2218,7 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
         if(FoundFlag && (LevelCrossingAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag)
         {
             TrackPush(14, TempTrackElement);
-            PlotRaisedLinkedLevelCrossingBarriers(3, TrackVector.at(VecPos).SpeedTag, TempTrackElement.HLoc, TempTrackElement.VLoc, Display);
+            PlotRaisedLinkedLevelCrossingBarriers(3, TrackVector.at(VecPos).SpeedTag, TempTrackElement.HLoc, TempTrackElement.VLoc, Display); //always plots red
 // no need for reference to LC element as can't be open
             TrackLinkingRequiredFlag = true;
             Utilities->CallLogPop(2068);
@@ -2725,7 +2725,7 @@ void TTrack::LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString Grap
 {
 // VecFile already open and its pointer at right place on calling
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadGraphics, " + GraphicsPath);
-// first int is number og graphics, then each graphic, create in UserGraphicMap, derive Width & height from TPicture
+// first int is number of graphics, then each graphic, create in UserGraphicMap, derive Width & height from TPicture
 // & load into UserGraphicItem then store in UserGraphicVector
     UserGraphicVector.clear();
     TUserGraphicItem UGI;
@@ -2770,8 +2770,7 @@ void TTrack::LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString Grap
             }
             catch(const EInvalidGraphic &e)
             {
-                ShowMessage(UGI.FileName +
-                    " has an incorrect file format, graphics can't be loaded. Ensure that all graphic files are valid with extension .bmp, .gif, .jpg, or .png");
+                //message already sent in CheckUserGraphics
                 FileError = true;
                 UserGraphicVector.clear(); // so doesn't try to plot non-existent graphics
                 if(!UserGraphicMap.empty())
@@ -2785,8 +2784,7 @@ void TTrack::LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString Grap
             }
             catch(const Exception &e)
             {
-                ShowMessage("Unable to load file, ensure that this graphic file exists: " + UGI.FileName +
-                    ", and that it is has extension .bmp, .gif, .jpg, or .png.  Graphics can't be loaded.");
+                //message already sent in CheckUserGraphics
                 FileError = true;
                 UserGraphicVector.clear(); // so doesn't try to plot non-existent graphics
                 if(!UserGraphicMap.empty())
@@ -2833,8 +2831,7 @@ void TTrack::LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString Grap
                 }
                 catch(const EInvalidGraphic &e)
                 {
-                    ShowMessage(UGI.FileName +
-                        " has an incorrect file format, graphics can't be loaded. Ensure that all graphic files are valid with extension .bmp, .gif, .jpg, or .png");
+                    //message already sent in CheckUserGraphics
                     FileError = true;
                     UserGraphicVector.clear(); // so doesn't try to plot non-existent graphics
                     if(!UserGraphicMap.empty())
@@ -2848,8 +2845,7 @@ void TTrack::LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString Grap
                 }
                 catch(const Exception &e)
                 {
-                    ShowMessage("Unable to load file, ensure that this graphic file exists: " + UGI.FileName +
-                        ", and that it is has extension .bmp, .gif, .jpg, or .png");
+                    //message already sent in CheckUserGraphics
                     FileError = true;
                     UserGraphicVector.clear(); // so doesn't try to plot non-existent graphics
                     if(!UserGraphicMap.empty())
@@ -3152,7 +3148,7 @@ bool TTrack::CheckUserGraphics(int Caller, std::ifstream &VecFile, UnicodeString
         return false;
     }
     // filename in Graphics folder, then HPos, then VPos
-    AnsiString FileName;
+    AnsiString FileName = "", TempStr = "";
 
     for(int x = 0; x < NumberOfGraphics; x++)
     {
@@ -3162,6 +3158,7 @@ bool TTrack::CheckUserGraphics(int Caller, std::ifstream &VecFile, UnicodeString
             if(!Utilities->CheckAndReadFileString(VecFile, FileName))
             {
                 Utilities->CallLogPop(2169);
+                delete TempPicture;
                 return false;
             }
             TempPicture->LoadFromFile(GraphicsPath + "\\" + FileName); // only loaded to check and catch errors
@@ -3179,19 +3176,37 @@ bool TTrack::CheckUserGraphics(int Caller, std::ifstream &VecFile, UnicodeString
         }
         catch(const EInvalidGraphic &e)
         {
+            //move file pointer to end of graphic section for later checks in session files
+            Utilities->CheckAndReadFileString(VecFile, TempStr); //get rid of HPos
+            Utilities->CheckAndReadFileString(VecFile, TempStr);//VPos
+            for(int y = x + 1; y < NumberOfGraphics; y++)
+            {
+                Utilities->CheckAndReadFileString(VecFile, TempStr);//next FileName
+                Utilities->CheckAndReadFileString(VecFile, TempStr);//next VPos
+                Utilities->CheckAndReadFileString(VecFile, TempStr);//next VPos
+            }
             ShowMessage(FileName +
-                " has an incorrect file format, graphics can't be loaded. Ensure that all graphic files are valid with extension .bmp, .gif, .jpg, or .png");
-            delete TempPicture;
+                " has an incorrect file format, user graphics can't be loaded. Ensure that all user graphic files are valid with extension .bmp, .gif, .jpg, or .png");
             Utilities->CallLogPop(2172);
-            return false;
+            delete TempPicture;
+            return true;      //for these file errors allow railway or session to be loaded, changed at v2.6.0
         }
         catch(const Exception &e)
         {
-            ShowMessage("Unable to load file, ensure that " + FileName +
+            //move file pointer to end of graphic section for later checks in session files
+            Utilities->CheckAndReadFileString(VecFile, TempStr); //get rid of HPos
+            Utilities->CheckAndReadFileString(VecFile, TempStr);//VPos
+            for(int y = x + 1; y < NumberOfGraphics; y++)
+            {
+                Utilities->CheckAndReadFileString(VecFile, TempStr);//next FileName
+                Utilities->CheckAndReadFileString(VecFile, TempStr);//next VPos
+                Utilities->CheckAndReadFileString(VecFile, TempStr);//next VPos
+            }
+            ShowMessage("Unable to load user graphic files, ensure that " + FileName +
                 " exists in the 'Graphics' folder and that it is has extension .bmp, .gif, .jpg, or .png.");
-            delete TempPicture;
             Utilities->CallLogPop(2173);
-            return false;
+            delete TempPicture;
+            return true;      //for these file errors allow railway or session to be loaded, changed at v2.6.0
         }
     }
     Utilities->CallLogPop(2174);
@@ -3209,8 +3224,8 @@ void TTrack::SaveSessionBarriersDownVector(int Caller, std::ofstream &OutFile)
     for(int x = 0; x < VecSize; x++)
     {
         TActiveLevelCrossing TALC = Track->BarriersDownVector.at(x);
-        Utilities->SaveFileBool(OutFile, TALC.ConsecSignals);
-        Utilities->SaveFileBool(OutFile, TALC.TrainPassed);
+        Utilities->SaveFileInt(OutFile, TALC.ConsecSignals);  //changed to int from bool in v2.6.0
+        Utilities->SaveFileBool(OutFile, TALC.ReducedTimePenalty);
         Utilities->SaveFileInt(OutFile, (short)TALC.BarrierState);
         Utilities->SaveFileDouble(OutFile, TALC.ChangeDuration);
         Utilities->SaveFileInt(OutFile, TALC.BaseElementSpeedTag);
@@ -3223,7 +3238,7 @@ void TTrack::SaveSessionBarriersDownVector(int Caller, std::ofstream &OutFile)
 
 // ---------------------------------------------------------------------------
 
-void TTrack::SaveChangingLCVector(int Caller, std::ofstream &OutFile)
+void TTrack::SaveChangingLCVector(int Caller, std::ofstream &OutFile) //used only in errorfile
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveChangingLCVector");
     int VecSize = Track->ChangingLCVector.size();
@@ -3232,8 +3247,8 @@ void TTrack::SaveChangingLCVector(int Caller, std::ofstream &OutFile)
     for(int x = 0; x < VecSize; x++)
     {
         TActiveLevelCrossing TALC = Track->ChangingLCVector.at(x);
-        Utilities->SaveFileBool(OutFile, TALC.ConsecSignals);
-        Utilities->SaveFileBool(OutFile, TALC.TrainPassed);
+        Utilities->SaveFileInt(OutFile, TALC.ConsecSignals); //changed to int from bool in v2.6.0
+        Utilities->SaveFileBool(OutFile, TALC.ReducedTimePenalty);
         Utilities->SaveFileInt(OutFile, (short)TALC.BarrierState);
         Utilities->SaveFileDouble(OutFile, TALC.ChangeDuration);
         Utilities->SaveFileInt(OutFile, TALC.BaseElementSpeedTag);
@@ -3253,7 +3268,7 @@ bool TTrack::CheckActiveLCVector(int Caller, std::ifstream &VecFile)
 
     for(int x = 0; x < VecSize; x++)
     {
-        if(!Utilities->CheckFileBool(VecFile))
+        if(!Utilities->CheckFileInt(VecFile, 0, 2))   //changed from bool at v2.6.0 to allow ConsecSignals == 2 for barriers manually lowered
         {
             Utilities->CallLogPop(1970);
             return false;
@@ -3308,8 +3323,8 @@ void TTrack::LoadBarriersDownVector(int Caller, std::ifstream &VecFile)
     for(int x = 0; x < VecSize; x++)
     {
         TActiveLevelCrossing TALC;
-        TALC.ConsecSignals = Utilities->LoadFileBool(VecFile);
-        TALC.TrainPassed = Utilities->LoadFileBool(VecFile);
+        TALC.ConsecSignals = Utilities->LoadFileInt(VecFile);  //changed to int from bool in v2.6.0
+        TALC.ReducedTimePenalty = Utilities->LoadFileBool(VecFile);
         TALC.BarrierState = TBarrierState(Utilities->LoadFileInt(VecFile));
         TALC.ChangeDuration = Utilities->LoadFileDouble(VecFile);
         TALC.BaseElementSpeedTag = Utilities->LoadFileInt(VecFile);
@@ -4424,7 +4439,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                 }
                 else if((TrackVector.at(x).Config[y] == Signal) && (TrackVector.at(VecPos).TrackType == Bridge) && !OverrideAndHideSignalBridgeMessage)
                 {
-                    ShowMessage("Signal facing a bridge - routes can't be truncated to this or other such signals.\n\nThis restriction can be removed or reinstated by pressing\nCTRL ALT 5.  When removed this message won't be shown again.");
+                    ShowMessage("Signal facing a bridge - routes can't be truncated to this or other such signals.\n\nThis restriction can be removed or reinstated by pressing\nCTRL ALT 5.  When removed this message will not be shown again.");
                     // can't join a route to an existing route where the second signal is in an existing route and the first signal is
                     // selected - appears as trying to select a signal that is not the next in line from the starting signal
                 }
@@ -5575,7 +5590,7 @@ void TTrack::PlotSignalPlatforms(int Caller, int HLoc, int VLoc, TDisplay *Disp)
 
 void TTrack::SetLinkedLevelCrossingBarrierAttributes(int Caller, int HLoc, int VLoc, int Attr)
 {
-// Set attrs to 0=closed to trains; 1=open to trains; 3 = changing = closed to trains
+// Set attrs to 0=closed to trains; 1=open to trains; 2 = changing = closed to trains
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LowerLinkedLevelCrossingBarrierAttributes," + AnsiString(HLoc) + "," +
         AnsiString(VLoc));
 // find topmost LC, opening them all (to trains) in turn
@@ -5615,7 +5630,139 @@ void TTrack::SetLinkedLevelCrossingBarrierAttributes(int Caller, int HLoc, int V
 
 // ---------------------------------------------------------------------------
 
-void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, bool ConsecSignals, TDisplay *Disp)
+void TTrack::SetLinkedManualLCs(int Caller, int HLoc, int VLoc) //sets ConsecSignals to 2 for all linked LCs
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetLinkedManualLCs," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+// work upwards setting all to manual
+    int UpStep = -1;
+
+    while(IsLCAtHV(51, HLoc, (VLoc + UpStep)))
+    {
+        SetBarriersDownLCToManual(0, HLoc, (VLoc + UpStep));
+        UpStep--;
+    }
+// work downwards setting all to manual
+    int DownStep = 1;
+
+    while(IsLCAtHV(52, HLoc, (VLoc + DownStep)))
+    {
+        SetBarriersDownLCToManual(1, HLoc, (VLoc + DownStep));
+        DownStep++;
+    }
+// work leftwards setting all to manual
+    int LeftStep = -1;
+
+    while(IsLCAtHV(53, (HLoc + LeftStep), VLoc))
+    {
+        SetBarriersDownLCToManual(2, (HLoc + LeftStep), VLoc);
+        LeftStep--;
+    }
+// work rightwards setting all to manual
+    int RightStep = 1;
+
+    while(IsLCAtHV(54, (HLoc + RightStep), VLoc))
+    {
+        SetBarriersDownLCToManual(3, (HLoc + RightStep), VLoc);
+        RightStep++;
+    }
+    Utilities->CallLogPop(2242);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::SetBarriersDownLCToManual(int Caller, int HLoc, int VLoc)
+{// Set ConsecSignals value to 2 to indicate barriers manually closed
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetBarriersDownLCToManual," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+    for(unsigned int x = 0; x < BarriersDownVector.size(); x++)
+    {
+        if((BarriersDownVector.at(x).HLoc == HLoc) && (BarriersDownVector.at(x).VLoc == VLoc))
+        {
+            BarriersDownVector.at(x).ConsecSignals = 2;
+            break;
+        }
+    }
+    Utilities->CallLogPop(2243);
+}
+
+// ---------------------------------------------------------------------------
+
+bool TTrack::AnyLinkedBarrierDownVectorManual(int Caller, int HLoc, int VLoc, int &BDVectorPos)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AnyLinkedBarrierDownVectorManual," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+// work upwards
+    int UpStep = 0; //start with this location
+
+    while(IsLCAtHV(55, HLoc, (VLoc + UpStep)))
+    {
+        if(IsBarrierDownVectorAtHVManual(0, HLoc, (VLoc + UpStep), BDVectorPos))
+        {
+            Utilities->CallLogPop(2244);
+            return true;
+        }
+        UpStep--;
+    }
+// work downwards
+    int DownStep = 1;
+
+    while(IsLCAtHV(56, HLoc, (VLoc + DownStep)))
+    {
+        if(IsBarrierDownVectorAtHVManual(1, HLoc, (VLoc + DownStep), BDVectorPos))
+        {
+            Utilities->CallLogPop(2245);
+            return true;
+        }
+        DownStep++;
+    }
+// work leftwards
+    int LeftStep = -1;
+
+    while(IsLCAtHV(57, (HLoc + LeftStep), VLoc))
+    {
+        if(IsBarrierDownVectorAtHVManual(2, (HLoc + LeftStep), VLoc, BDVectorPos))
+        {
+            Utilities->CallLogPop(2246);
+            return true;
+        }
+        LeftStep--;
+    }
+// work rightwards
+    int RightStep = 1;
+
+    while(IsLCAtHV(58, (HLoc + RightStep), VLoc))
+    {
+        if(IsBarrierDownVectorAtHVManual(3, (HLoc + RightStep), VLoc, BDVectorPos))
+        {
+            Utilities->CallLogPop(2247);
+            return true;
+        }
+        RightStep++;
+    }
+    Utilities->CallLogPop(2248);
+    return false;
+}
+
+// ---------------------------------------------------------------------------
+
+bool TTrack::IsBarrierDownVectorAtHVManual(int Caller, int HLoc, int VLoc, int &BDVectorPos)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsBarrierDownVectorAtHVManual," + AnsiString(HLoc) + "," + AnsiString(VLoc));
+    for(unsigned int x = 0; x < BarriersDownVector.size(); x++)
+    {
+        if((BarriersDownVector.at(x).HLoc == HLoc) && (BarriersDownVector.at(x).VLoc == VLoc) && (BarriersDownVector.at(x).ConsecSignals == 2))
+        {
+            BDVectorPos = x;
+            Utilities->CallLogPop(2249);
+            return true;
+        }
+    }
+    BDVectorPos = -1;
+    Utilities->CallLogPop(2250);
+    return false;
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, int ConsecSignals, TDisplay *Disp, bool Manual)
     // open to trains
     // BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
 {
@@ -5650,15 +5797,19 @@ void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementS
         // RouteGraphic is the coloured track element, BaseGraphic is non-coloured
         // Only need to plot the coloured graphic for the HLoc & VLoc in the vector as that is the route that is causeing the LC to flash
         Graphics::TBitmap *RouteGraphic;
-        if(ConsecSignals)
+        Graphics::TBitmap *BaseGraphic = RailGraphics->gl1;
+        if(ConsecSignals == 1)
         {
             RouteGraphic = RailGraphics->LinkSigRouteGraphicsPtr[0];
         }
-        else
+        else if(ConsecSignals == 0)
         {
             RouteGraphic = RailGraphics->LinkNonSigRouteGraphicsPtr[0];
         }
-        Graphics::TBitmap *BaseGraphic = RailGraphics->gl1;
+        else //manual - no route
+        {
+            RouteGraphic = BaseGraphic;
+        }
 // LinkSigRouteGraphicsPtr[0] hor  } pref dir
 // LinkSigRouteGraphicsPtr[1] ver  }
 // LinkNonSigRouteGraphicsPtr[0] hor  } non pref dir
@@ -5668,7 +5819,14 @@ void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementS
         {
             Disp->PlotOutput(132, HLoc * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
             Disp->PlotOutput(133, HLoc * 16, VLoc * 16, RouteGraphic);
-            Disp->PlotOutput(134, HLoc * 16, VLoc * 16, RailGraphics->LCBothHor);
+            if(!Manual)
+            {
+                Disp->PlotOutput(134, HLoc * 16, VLoc * 16, RailGraphics->LCBothHor);
+            }
+            else
+            {
+                Disp->PlotOutput(247, HLoc * 16, VLoc * 16, RailGraphics->LCBothHorMan);
+            }
         }
         else if((DownStep - UpStep) == 1) // double track, no need for any plain LC graphics
         {
@@ -5676,19 +5834,47 @@ void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementS
             {
                 Disp->PlotOutput(135, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(136, HLoc * 16, (VLoc + UpStep) * 16, RouteGraphic);
-                Disp->PlotOutput(137, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(137, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+                }
+                else
+                {
+                    Disp->PlotOutput(248, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHorMan);
+                }
                 Disp->PlotOutput(138, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(139, HLoc * 16, (VLoc + DownStep) * 16, BaseGraphic);
-                Disp->PlotOutput(140, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(140, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+                }
+                else
+                {
+                    Disp->PlotOutput(249, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHorMan);
+                }
             }
             else
             {
                 Disp->PlotOutput(195, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(196, HLoc * 16, (VLoc + UpStep) * 16, BaseGraphic);
-                Disp->PlotOutput(197, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(197, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+                }
+                else
+                {
+                    Disp->PlotOutput(250, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHorMan);
+                }
                 Disp->PlotOutput(198, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(199, HLoc * 16, (VLoc + DownStep) * 16, RouteGraphic);
-                Disp->PlotOutput(200, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(200, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+                }
+                else
+                {
+                    Disp->PlotOutput(251, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHorMan);
+                }
             }
         }
         else // at least one plain graphic
@@ -5697,28 +5883,70 @@ void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementS
             {
                 Disp->PlotOutput(141, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(142, HLoc * 16, (VLoc + UpStep) * 16, RouteGraphic);
-                Disp->PlotOutput(143, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(143, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+                }
+                else
+                {
+                    Disp->PlotOutput(252, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHorMan);
+                }
                 Disp->PlotOutput(144, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(145, HLoc * 16, (VLoc + DownStep) * 16, BaseGraphic);
-                Disp->PlotOutput(146, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(146, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+                }
+                else
+                {
+                    Disp->PlotOutput(253, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHorMan);
+                }
             }
             else if(DownStep == 0)
             {
                 Disp->PlotOutput(201, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(202, HLoc * 16, (VLoc + UpStep) * 16, BaseGraphic);
-                Disp->PlotOutput(203, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(203, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+                }
+                else
+                {
+                    Disp->PlotOutput(254, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHorMan);
+                }
                 Disp->PlotOutput(204, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(205, HLoc * 16, (VLoc + DownStep) * 16, RouteGraphic);
-                Disp->PlotOutput(206, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(206, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+                }
+                else
+                {
+                    Disp->PlotOutput(255, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHorMan);
+                }
             }
             else
             {
                 Disp->PlotOutput(207, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(208, HLoc * 16, (VLoc + UpStep) * 16, BaseGraphic);
-                Disp->PlotOutput(209, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(209, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+                }
+                else
+                {
+                    Disp->PlotOutput(256, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHorMan);
+                }
                 Disp->PlotOutput(210, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(211, HLoc * 16, (VLoc + DownStep) * 16, BaseGraphic);
-                Disp->PlotOutput(212, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(212, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+                }
+                else
+                {
+                    Disp->PlotOutput(257, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHorMan);
+                }
             }
             for(int x = (UpStep + 1); x < DownStep; x++)
             {
@@ -5727,7 +5955,14 @@ void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementS
                     Disp->PlotOutput(148, HLoc * 16, (VLoc + x) * 16, RouteGraphic);
                 else
                     Disp->PlotOutput(213, HLoc * 16, (VLoc + x) * 16, BaseGraphic);
-                Disp->PlotOutput(149, HLoc * 16, (VLoc + x) * 16, RailGraphics->LCPlain);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(149, HLoc * 16, (VLoc + x) * 16, RailGraphics->LCPlain);
+                }
+                else
+                {
+                    Disp->PlotOutput(258, HLoc * 16, (VLoc + x) * 16, RailGraphics->LCPlainMan);
+                }
             }
         }
         Disp->Update();
@@ -5753,15 +5988,19 @@ void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementS
         RStep--;
         // now plot graphics, LStep is smallest & RStep largest
         Graphics::TBitmap *RouteGraphic;
-        if(ConsecSignals)
+        Graphics::TBitmap *BaseGraphic = RailGraphics->gl2;
+        if(ConsecSignals == 1)
         {
             RouteGraphic = RailGraphics->LinkSigRouteGraphicsPtr[1];
         }
-        else
+        else if(ConsecSignals == 0)
         {
             RouteGraphic = RailGraphics->LinkNonSigRouteGraphicsPtr[1];
         }
-        Graphics::TBitmap *BaseGraphic = RailGraphics->gl2;
+        else //manual
+        {
+            RouteGraphic = BaseGraphic;
+        }
 // LinkSigRouteGraphicsPtr[0] hor  } pref dir
 // LinkSigRouteGraphicsPtr[1] ver  }
 // LinkNonSigRouteGraphicsPtr[0] hor  } non pref dir
@@ -5770,7 +6009,14 @@ void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementS
         {
             Disp->PlotOutput(150, HLoc * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
             Disp->PlotOutput(151, HLoc * 16, VLoc * 16, RouteGraphic);
-            Disp->PlotOutput(152, HLoc * 16, VLoc * 16, RailGraphics->LCBothVer);
+            if(!Manual)
+            {
+                Disp->PlotOutput(152, HLoc * 16, VLoc * 16, RailGraphics->LCBothVer);
+            }
+            else
+            {
+                Disp->PlotOutput(259, HLoc * 16, VLoc * 16, RailGraphics->LCBothVerMan);
+            }
         }
         else if((RStep - LStep) == 1) // double track, no need for any plain LC graphics
         {
@@ -5778,19 +6024,47 @@ void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementS
             {
                 Disp->PlotOutput(153, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(154, (HLoc + LStep) * 16, VLoc * 16, RouteGraphic);
-                Disp->PlotOutput(155, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(155, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+                }
+                else
+                {
+                    Disp->PlotOutput(260, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVerMan);
+                }
                 Disp->PlotOutput(156, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(157, (HLoc + RStep) * 16, VLoc * 16, BaseGraphic);
-                Disp->PlotOutput(158, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(158, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+                }
+                else
+                {
+                    Disp->PlotOutput(261, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVerMan);
+                }
             }
             else
             {
                 Disp->PlotOutput(214, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(215, (HLoc + LStep) * 16, VLoc * 16, BaseGraphic);
-                Disp->PlotOutput(216, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(216, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+                }
+                else
+                {
+                    Disp->PlotOutput(262, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVerMan);
+                }
                 Disp->PlotOutput(217, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(218, (HLoc + RStep) * 16, VLoc * 16, RouteGraphic);
-                Disp->PlotOutput(219, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(219, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+                }
+                else
+                {
+                    Disp->PlotOutput(263, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVerMan);
+                }
             }
         }
         else // at least one plain graphic
@@ -5799,37 +6073,90 @@ void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementS
             {
                 Disp->PlotOutput(159, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(160, (HLoc + LStep) * 16, VLoc * 16, RouteGraphic);
-                Disp->PlotOutput(161, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(161, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+                }
+                else
+                {
+                    Disp->PlotOutput(264, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVerMan);
+                }
                 Disp->PlotOutput(162, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(163, (HLoc + RStep) * 16, VLoc * 16, BaseGraphic);
-                Disp->PlotOutput(164, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(164, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+                }
+                else
+                {
+                    Disp->PlotOutput(265, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVerMan);
+                }
             }
             else if(RStep == 0)
             {
                 Disp->PlotOutput(220, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(221, (HLoc + LStep) * 16, VLoc * 16, BaseGraphic);
-                Disp->PlotOutput(222, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(222, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+                }
+                else
+                {
+                    Disp->PlotOutput(266, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVerMan);
+                }
                 Disp->PlotOutput(223, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(224, (HLoc + RStep) * 16, VLoc * 16, RouteGraphic);
-                Disp->PlotOutput(225, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(225, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+                }
+                else
+                {
+                    Disp->PlotOutput(267, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVerMan);
+                }
             }
             else
             {
                 Disp->PlotOutput(226, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(227, (HLoc + LStep) * 16, VLoc * 16, BaseGraphic);
-                Disp->PlotOutput(228, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(228, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+                }
+                else
+                {
+                    Disp->PlotOutput(268, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVerMan);
+                }
                 Disp->PlotOutput(229, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
                 Disp->PlotOutput(230, (HLoc + RStep) * 16, VLoc * 16, BaseGraphic);
-                Disp->PlotOutput(231, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+                if(!Manual)
+                {
+                    Disp->PlotOutput(231, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+                }
+                else
+                {
+                    Disp->PlotOutput(269, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVerMan);
+                }
             }
             for(int x = (LStep + 1); x < RStep; x++)
             {
                 Disp->PlotOutput(165, (HLoc + x) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
                 if(x == 0)
+                {
                     Disp->PlotOutput(166, (HLoc + x) * 16, VLoc * 16, RouteGraphic);
+                }
                 else
+                {
                     Disp->PlotOutput(232, (HLoc + x) * 16, VLoc * 16, BaseGraphic);
-                Disp->PlotOutput(167, (HLoc + x) * 16, VLoc * 16, RailGraphics->LCPlain);
+                }
+                if(!Manual)
+                {
+                    Disp->PlotOutput(167, (HLoc + x) * 16, VLoc * 16, RailGraphics->LCPlain);
+                }
+                else
+                {
+                    Disp->PlotOutput(270, (HLoc + x) * 16, VLoc * 16, RailGraphics->LCPlainMan);
+                }
             }
         }
         Disp->Update();
@@ -5840,7 +6167,7 @@ void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementS
 
 // ---------------------------------------------------------------------------
 
-void TTrack::PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp) // open to trains
+void TTrack::PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp, bool Manual) // open to trains
     // BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers," +
@@ -5873,26 +6200,53 @@ void TTrack::PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(int Caller
         // now plot graphics, UpStep is smallest & DownStep largest
         if(UpStep == DownStep) // both 0, so just a single track, plot the double graphic, but plot solid bgnd first then track to get rid of earlier graphics
         {
-            Disp->PlotOutput(179, HLoc * 16, VLoc * 16, RailGraphics->LCBothHor);
+            if(!Manual)
+            {
+                Disp->PlotOutput(179, HLoc * 16, VLoc * 16, RailGraphics->LCBothHor);
+            }
+            else
+            {
+                Disp->PlotOutput(271, HLoc * 16, VLoc * 16, RailGraphics->LCBothHorMan);
+            }
         }
         else if((DownStep - UpStep) == 1) // double track, no need for any plain LC graphics
         {
-            Disp->PlotOutput(180, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
-            Disp->PlotOutput(181, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+            if(!Manual)
+            {
+                Disp->PlotOutput(180, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+                Disp->PlotOutput(181, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+            }
+            else
+            {
+                Disp->PlotOutput(272, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHorMan);
+                Disp->PlotOutput(273, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHorMan);
+            }
         }
         else // at least one plain graphic
         {
-            Disp->PlotOutput(182, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
-            Disp->PlotOutput(183, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
-            for(int x = (UpStep + 1); x < DownStep; x++)
+            if(!Manual)
             {
-                Disp->PlotOutput(184, HLoc * 16, (VLoc + x) * 16, RailGraphics->LCPlain);
+                Disp->PlotOutput(182, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHor);
+                Disp->PlotOutput(183, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHor);
+                for(int x = (UpStep + 1); x < DownStep; x++)
+                {
+                    Disp->PlotOutput(184, HLoc * 16, (VLoc + x) * 16, RailGraphics->LCPlain);
+                }
+            }
+            else
+            {
+                Disp->PlotOutput(274, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->LCTopHorMan);
+                Disp->PlotOutput(275, HLoc * 16, (VLoc + DownStep) * 16, RailGraphics->LCBotHorMan);
+                for(int x = (UpStep + 1); x < DownStep; x++)
+                {
+                    Disp->PlotOutput(276, HLoc * 16, (VLoc + x) * 16, RailGraphics->LCPlainMan);
+                }
             }
         }
         // set markers
         for(int x = UpStep; x <= DownStep; x++)
         {
-            GetInactiveTrackElementFromTrackMap(3, HLoc, (VLoc + x)).TempMarker = true; // plotted
+            GetInactiveTrackElementFromTrackMap(3, HLoc, (VLoc + x)).LCPlotted = true; // plotted
         }
         Display->Update();
         Utilities->CallLogPop(1944);
@@ -5918,26 +6272,53 @@ void TTrack::PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(int Caller
         // now plot graphics, LStep is smallest & RStep largest
         if(LStep == RStep) // both 0, so just a single track, plot the double graphic, but plot solid bgnd first then track to get rid of earlier graphics
         {
-            Disp->PlotOutput(185, HLoc * 16, VLoc * 16, RailGraphics->LCBothVer);
+            if(!Manual)
+            {
+                Disp->PlotOutput(185, HLoc * 16, VLoc * 16, RailGraphics->LCBothVer);
+            }
+            else
+            {
+                Disp->PlotOutput(277, HLoc * 16, VLoc * 16, RailGraphics->LCBothVerMan);
+            }
         }
         else if((RStep - LStep) == 1) // double track, no need for any plain LC graphics
         {
-            Disp->PlotOutput(186, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
-            Disp->PlotOutput(187, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+            if(!Manual)
+            {
+                Disp->PlotOutput(186, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+                Disp->PlotOutput(187, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+            }
+            else
+            {
+                Disp->PlotOutput(278, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVerMan);
+                Disp->PlotOutput(279, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVerMan);
+            }
         }
         else // at least one plain graphic
         {
-            Disp->PlotOutput(188, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
-            Disp->PlotOutput(189, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
-            for(int x = (LStep + 1); x < RStep; x++)
+            if(!Manual)
             {
-                Disp->PlotOutput(190, (HLoc + x) * 16, VLoc * 16, RailGraphics->LCPlain);
+                Disp->PlotOutput(188, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVer);
+                Disp->PlotOutput(189, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVer);
+                for(int x = (LStep + 1); x < RStep; x++)
+                {
+                    Disp->PlotOutput(190, (HLoc + x) * 16, VLoc * 16, RailGraphics->LCPlain);
+                }
+            }
+            else
+            {
+                Disp->PlotOutput(280, (HLoc + LStep) * 16, VLoc * 16, RailGraphics->LCLHSVerMan);
+                Disp->PlotOutput(281, (HLoc + RStep) * 16, VLoc * 16, RailGraphics->LCRHSVerMan);
+                for(int x = (LStep + 1); x < RStep; x++)
+                {
+                    Disp->PlotOutput(282, (HLoc + x) * 16, VLoc * 16, RailGraphics->LCPlainMan);
+                }
             }
         }
         // set markers
         for(int x = LStep; x <= RStep; x++)
         {
-            GetInactiveTrackElementFromTrackMap(4, (HLoc + x), VLoc).TempMarker = true; // plotted
+            GetInactiveTrackElementFromTrackMap(4, (HLoc + x), VLoc).LCPlotted = true; // plotted
         }
         Disp->Update();
         Utilities->CallLogPop(1945);
@@ -6057,7 +6438,7 @@ void TTrack::PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers(int Caller,
         for(int x = UpStep; x <= DownStep; x++)
         {
             Disp->PlotOutput(191, HLoc * 16, (VLoc + x) * 16, RailGraphics->LCBothVer);
-            GetInactiveTrackElementFromTrackMap(1, HLoc, (VLoc + x)).TempMarker = true; // plotted
+            GetInactiveTrackElementFromTrackMap(1, HLoc, (VLoc + x)).LCPlotted = true; // plotted
         }
         Display->Update();
         Utilities->CallLogPop(1946);
@@ -6084,7 +6465,7 @@ void TTrack::PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers(int Caller,
         for(int x = LStep; x <= RStep; x++)
         {
             Disp->PlotOutput(192, (HLoc + x) * 16, VLoc * 16, RailGraphics->LCBothHor);
-            GetInactiveTrackElementFromTrackMap(2, (HLoc + x), VLoc).TempMarker = true; // plotted
+            GetInactiveTrackElementFromTrackMap(2, (HLoc + x), VLoc).LCPlotted = true; // plotted
         }
         Display->Update();
         Utilities->CallLogPop(1947);
@@ -6094,37 +6475,45 @@ void TTrack::PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers(int Caller,
 
 // ---------------------------------------------------------------------------
 
-void TTrack::PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseElementSpeedTag, int HLoc, int VLoc, bool ConsecSignals, TDisplay *Disp)
+void TTrack::PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseElementSpeedTag, int HLoc, int VLoc, int ConsecSignals, TDisplay *Disp)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotBaseElementsOnly," + AnsiString(HLoc) + "," + AnsiString(VLoc));
     Graphics::TBitmap *RouteGraphic;
-    Graphics::TBitmap *BaseGraphic;
+    Graphics::TBitmap *BaseGraphic = RailGraphics->gl1;
 
     if(BaseElementSpeedTag == 1)
     {
-        if(ConsecSignals)
+        if(ConsecSignals == 1)
         {
             RouteGraphic = RailGraphics->LinkSigRouteGraphicsPtr[0];
         }
-        else
+        else if(ConsecSignals == 0)
         {
             RouteGraphic = RailGraphics->LinkNonSigRouteGraphicsPtr[0];
         }
-        BaseGraphic = RailGraphics->gl1;
+        else //manual
+        {
+            RouteGraphic = BaseGraphic;
+        }
+
         if(State == Raising)
             RouteGraphic = BaseGraphic;
     }
     else
     {
-        if(ConsecSignals)
+        BaseGraphic = RailGraphics->gl2;
+        if(ConsecSignals == 1)
         {
             RouteGraphic = RailGraphics->LinkSigRouteGraphicsPtr[1];
         }
-        else
+        else if(ConsecSignals == 0)
         {
             RouteGraphic = RailGraphics->LinkNonSigRouteGraphicsPtr[1];
         }
-        BaseGraphic = RailGraphics->gl2;
+        else
+        {
+            RouteGraphic = BaseGraphic; //manual
+        }
         if(State == Raising)
             RouteGraphic = BaseGraphic;
     }
@@ -7502,6 +7891,44 @@ void TTrack::SearchForAndUpdateLocationName(int Caller, int HLoc, int VLoc, int 
     LNPendingList.clear();
     AnsiString LocationName;
     int MapPos;
+    bool FoundFlag = 0;
+
+//first check if this element is inactive and named, and if so use its position and name   (new at v2.6.0 to allow pasted named locations to name linked elements)
+    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(30, HLoc, VLoc, FoundFlag);
+    if(FoundFlag)
+    {
+        LocationName = InactiveTrackElementAt(132, IMPair.first).LocationName;
+        if(LocationName != "")
+        {
+            LNPendingList.insert(Track->LNPendingList.end(), IMPair.first);
+            EnterLocationName(13, LocationName, true);
+            Utilities->CallLogPop(2251);
+            return;
+        }
+        LocationName = InactiveTrackElementAt(133, IMPair.second).LocationName;
+        if(LocationName != "")
+        {
+            LNPendingList.insert(Track->LNPendingList.end(), IMPair.second);
+            EnterLocationName(14, LocationName, true);
+            Utilities->CallLogPop(2252);
+            return;
+        }
+    }
+//then check if this element is active and named, and if so use its position (-Pos-1) and name   (new at v2.6.0 to allow pasted named locations to name linked elements)
+
+    int Position = GetVectorPositionFromTrackMap(59, HLoc, VLoc, FoundFlag);
+    if(FoundFlag)
+    {
+        LocationName = TrackElementAt(1004, Position).LocationName;
+        if(LocationName != "")
+        {
+            int ModifiedPosition = -1 - Position;
+            LNPendingList.insert(Track->LNPendingList.end(), ModifiedPosition);
+            EnterLocationName(15, LocationName, true);
+            Utilities->CallLogPop(2253);
+            return;
+        }
+    }
 
     if(SpeedTag == 76) // top plat
     {
@@ -15498,7 +15925,7 @@ void TOneRoute::SetRouteFlashValues(int Caller, bool AutoSigsFlag, bool ConsecSi
 
 // ---------------------------------------------------------------------------
 
-void TOneRoute::SetLCChangeValues(int Caller, bool ConsecSignalsRoute)
+void TOneRoute::SetLCChangeValues(int Caller, bool ConsecSignalsRoute)   //used when setting routes to start any included LC's lowering
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetLCChangeValues," + AnsiString((short)ConsecSignalsRoute));
     if(!PrefDirVector.empty())
@@ -15513,7 +15940,7 @@ void TOneRoute::SetLCChangeValues(int Caller, bool ConsecSignalsRoute)
                 if(Track->IsLCBarrierUpAtHV(0, H, V))
                 {
                     Track->LCChangeFlag = true;
-                    TTrack::TActiveLevelCrossing CLC; // constructor sets TrainPassed to false
+                    TTrack::TActiveLevelCrossing CLC; // constructor sets ReducedTimePenalty to false
                     CLC.HLoc = H;
                     CLC.VLoc = V;
                     CLC.StartTime = TrainController->TTClockTime;
@@ -15677,7 +16104,7 @@ bool TAllRoutes::GetAllRoutesTruncateElement(int Caller, int HLoc, int VLoc, boo
 bool TAllRoutes::TrackIsInARoute(int Caller, int TrackVectorPosition, int LinkPos)
 /*
       Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)
-      is found it returns true (for crossovers returns true whichever track the route is on), else returns false.
+      is found it returns true (for crossovers & points returns true whichever track the route is on), else returns false.
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrackIsInARoute," + AnsiString(TrackVectorPosition) + "," +
@@ -17162,12 +17589,12 @@ bool TAllRoutes::CheckForLoopingRoute(int Caller, int EndPosition, int EndXLinkP
         return true; // shouldn't happen but treat as a loop if does
     }
 // begin at EndPosition & EndXLinkPos & work forwards until reach end of route (return false) or StartElement (return true)
-    int TVPos = EndPosition;
-    int LkPos = EndXLinkPos;
+    int TVPos = EndPosition; //TVPos is the current element and NewTVPos is the element it connects to
+    int LkPos = EndXLinkPos; //LkPos is the exit link and NewLkPos is the entry link of the linked element
 
     while(TrackIsInARoute(15, TVPos, LkPos))
     {
-        int NewTVPos = Track->TrackElementAt(826, TVPos).Conn[LkPos];
+        int NewTVPos = Track->TrackElementAt(826, TVPos).Conn[LkPos]; //see above
         int NewLkPos = -1;
         if(NewTVPos > -1)
         {
@@ -17183,6 +17610,21 @@ bool TAllRoutes::CheckForLoopingRoute(int Caller, int EndPosition, int EndXLinkP
             Utilities->CallLogPop(1841);
             return false;
         }
+//Error found by Xeon notified by email 13/10/20.
+//Need to make sure there is a route with the new entry link NewLkPos on the next element (TrackIsInARoute normally used where it doesn't matter which track a route
+//is on - except for bridges).  But here a route can end at a trailing point leg or a crossover and if so it doesn't link to the route on the other track, and needs to
+//return false.  Without the new check below the program gets stuck in an endless loop, which is the error that Xeon found.
+//If there isn't a route at all on the next element then it would return false at the next iteration so can return false here.
+//New check added for v2.6.0
+//Note: Could probably use GetRouteTypeAndNumber in place of TrackIsInARoute in the while statement above and dispense with this new check, but I prefer to keep mods as simple
+//as possible in case there are other unforeseen effects.
+        int RouteNumber; //dummy, not used
+        if(GetRouteTypeAndNumber(36, NewTVPos, NewLkPos, RouteNumber) == NoRoute)
+        {
+            Utilities->CallLogPop(2241);
+            return false;
+        }
+        //now make the connected element the current element, read across the TV number and determine the exit link
         TVPos = NewTVPos;
         if(Track->TrackElementAt(828, TVPos).TrackType == Points)
         {

@@ -158,5 +158,7 @@ var class_t_train_controller =
     [ "TrainFailedWarning", "class_t_train_controller.html#ad9e396de97fe8e5da680be3e7d0dde8b", null ],
     [ "TrainVector", "class_t_train_controller.html#a694986ff09f8a037b8bce849e40ac119", null ],
     [ "TTClockTime", "class_t_train_controller.html#a0c0b9d01dd9e1515017b629ebf1a98f1", null ],
+    [ "TTEditPanelVisible", "class_t_train_controller.html#a3eadc7c3d1b3aa6c60ac35922f545948", null ],
+    [ "TwoOrMoreLocationsWarningGiven", "class_t_train_controller.html#a17bcb9b1795adcaadd08d33e598c70d9", null ],
     [ "UnexpectedExits", "class_t_train_controller.html#af64a32b0811b647196f8d25ac6701ddc", null ]
 ];

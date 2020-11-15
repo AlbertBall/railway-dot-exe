@@ -573,6 +573,11 @@
 		<param name="Local" value="html/5.2.1e45.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Folders">
+		<param name="Name" value="Folders and Files">
+		<param name="Local" value="html\2.34gc3.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Font">
 		<param name="Name" value="Building a new railway or modifying an existing railway">
 		<param name="Local" value="html/3001f.htm">

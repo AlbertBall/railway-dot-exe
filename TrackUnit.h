@@ -132,12 +132,12 @@ public: // everything uses these - should really have Gets & Sets but too many t
 
     bool CallingOnSet;
 ///< Used for for signals only when a train is being called on - used to plot the position lights
-    bool TempMarker;
-///< Utility marker for program use
+    bool LCPlotted;
+///< Utility marker to avoid plotting every element of a multitrack LC during ClearandRebuildRailway
     bool TempTrackMarker01, TempTrackMarker23;
 ///< Utility markers for program use
     int Attribute;
-///< special variable used only for points, signals & level crossings, ignored otherwise points:  0=set to go straight, 1=set to diverge; where both legs diverge 0=set to left fork signals:  0=red; 1=yellow; 2=double yellow; 3 = green; Level crossing: 0 = raised barriers = closed to trains; 1 = lowered barriers = open to trains; 2 = changing state = closed to trains
+///< special variable used only for points, signals & level crossings, ignored otherwise; points 0=set to go straight, 1=set to diverge, where both legs diverge 0=set to left fork; signals:  0=red; 1=yellow; 2=double yellow; 3 = green; Level crossing: 0 = raised barriers = closed to trains; 1 = lowered barriers = open to trains; 2 = changing state = closed to trains
     int Conn[4];
 ///< Connecting element position in TrackVector, set to -1 if no connecting link or if track not linked
     int ConnLinkPos[4];
@@ -527,9 +527,9 @@ of the flashing until the duration is reached, when the object is erased from th
     {
     public:
 
-        bool ConsecSignals;
-///< route type - 0 = nonsignals, 1 = preferred direction (can't have autosigs)
-        bool TrainPassed;
+        int ConsecSignals;
+///< route type - 0 = nonsignals, 1 = preferred direction (can't have autosigs), 2 no route, 2 added at v2.6.0 for manual operation
+        bool ReducedTimePenalty;
 ///< marker that is set when a train is present on one of the elements of the LC - used to provide a 3 minute penalty allowance
         TBarrierState BarrierState;
 ///< state of barriers
@@ -858,6 +858,8 @@ of the flashing until the duration is reached, when the object is erased from th
 
 /// Used to check the validity of footcrossing links
     bool ActiveMapCheck(int Caller, int HLoc, int VLoc, int SpeedTag);
+/// Checks BarrierDownVector and returns true if there is one that is linked to the LC at H & V positions and is set to manual (ConsecSignals == 2), and returns the vector position in BDVectorPos
+    bool AnyLinkedBarrierDownVectorManual(int Caller, int HLoc, int VLoc, int &BDVectorPos);
 /// True if a route or train present on any linked level crossing element
     bool AnyLinkedLevelCrossingElementsWithRoutesOrTrains(int Caller, int HLoc, int VLoc, bool &TrainPresent);
 /// Used during location naming to check for adjacent
@@ -903,6 +905,8 @@ of the flashing until the duration is reached, when the object is erased from th
     bool InactiveTrackElementPresentAtHV(int Caller, int HLoc, int VLoc);
 /// True if there is an element adjacent to LinkIn for element at HLoc & VLoc
     bool IsATrackElementAdjacentToLink(int Caller, int HLocIn, int VLocIn, int LinkIn);
+/// True if there is a vector entry at H & V that is set to manual (ConsecSignals == 2) and returns the vector position in BDVectorPos
+    bool IsBarrierDownVectorAtHVManual(int Caller, int HLoc, int VLoc, int &BDVectorPos);
 /// True if track at link positions [0] & [1] if FirstTrack true, else that at [2] & [3] in TrackElement has the default length
 /// and speed limit, return true if so
     bool IsElementDefaultLength(int Caller, TTrackElement &TrackElement, bool FirstTrack, bool &LengthDifferent, bool &SpeedDifferent);
@@ -992,7 +996,7 @@ exclude opposed buffers since these not linked.  Used in timetable integrity che
     int NumberOfGaps(int Caller);
 /// Returns the number of separate platforms (not platform elements) at a given location, either a station or non station named location
     int NumberOfPlatforms(int Caller, AnsiString LocationName);
-/// Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there can be up to 2 platforms at a specific position
+/// Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there can be up to 2 platforms at a specific position. If nothing found each element of pair is 0 & FoundFlag false
     TIMPair GetVectorPositionsFromInactiveTrackMap(int Caller, int HLoc, int VLoc, bool &FoundFlag);
 /// Searches LocationNameMultiMap to check if the element pointed to by the TTrackVectorIterator has the name LocationName. If it finds it the pointer TLocationNameMultiMapIterator is returned.  If it fails ErrorString is set to an appropriate text to allow the calling function to report the error.  Otherwise it is set to "".
     TLocationNameMultiMapIterator FindNamedElementInLocationNameMultiMap(int Caller, AnsiString LocationName, TTrackVectorIterator TrackElement,
@@ -1063,14 +1067,14 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
     void PlotPastedTrackElementWithAttributes(int Caller, TTrackElement TempTrackElement, int HLocInput, int VLocInput, bool &TrackLinkingRequiredFlag,
         bool InternalChecks);
 /// Just replot the basic track elements at a level crossing (for flashing)
-    void PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseElementSpeedTag, int HLoc, int VLoc, bool ConsecSignals, TDisplay *Disp);
-/// Plot & open (to trains) all level crossings linked to TrackElement
-    void PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, bool ConsecSignals, TDisplay *Disp);
-/// Plot LC elements without any base elements, and set TempMarker true - used in ClearandRebuildRailway
-    void PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp);
-/// Plot LC elements without any base elements, and set TempMarker true - used in ClearandRebuildRailway
+    void PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseElementSpeedTag, int HLoc, int VLoc, int ConsecSignals, TDisplay *Disp);
+/// Plot & open (to trains) all level crossings linked to TrackElement (Manual true = manually lowered, colour is green)
+    void PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, int ConsecSignals, TDisplay *Disp, bool Manual);
+/// Plot LC elements without any base elements, and set LCPlotted true - used in ClearandRebuildRailway (Manual true = manually lowered, colour is green)
+    void PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp, bool Manual);
+/// Plot LC elements without any base elements, and set LCPlotted true - used in ClearandRebuildRailway
     void PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp);
-/// Plot & close (to trains) all level crossings linked to TrackElement
+/// Plot & close (to trains) all level crossings linked to TrackElement - always plots as red - auto
     void PlotRaisedLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp);
 /// Plots a gap on screen - may be set or unset
     void PlotGap(int Caller, TTrackElement TrackElement, TDisplay *Disp);
@@ -1118,12 +1122,16 @@ to bring the named location and timetable naming up to date with the deletion or
     void SearchForAndUpdateLocationName(int Caller, int HLoc, int VLoc, int SpeedTag);
 /// Work through all elements in TrackVector setting all lengths & speed limits to default values - including both tracks for 2-track elements
     void SetAllDefaultLengthsAndSpeedLimits(int Caller);
+/// Set ConsecSignals value to 2 to indicate barriers manually closed
+    void SetBarriersDownLCToManual(int Caller, int HLoc, int VLoc);
 /// Convert the position values for the TrackElement into an identification string and load in ElementID
     void SetElementID(int Caller, TTrackElement &TrackElement);
 /// Set LC attribute at H & V; 0=closed to trains, 1 = open to trains, 2 = changing state = closed to trains
     void SetLCAttributeAtHV(int Caller, int HLoc, int VLoc, int Attr);
 /// Set linked LC attributes; 0=closed to trains, 1 = open to trains, 2 = changing state = closed to trains
     void SetLinkedLevelCrossingBarrierAttributes(int Caller, int HLoc, int VLoc, int Attr);
+/// Set all ConsecSignals values to 2 for all linked LCs to indicate manually lowered
+    void SetLinkedManualLCs(int Caller, int HLoc, int VLoc);
 /// Called when trying to link track and when a name changed when track already linked.
 /**Examines all track elements that have ActiveTrackElementName set, sums the number of consecutive elements with the same name,
 and sets the EntryLink values for the front of train stop points for each direction.  For stations (not non-station named
@@ -1616,7 +1624,7 @@ truncation to a crossover, bridge or points, also prevent route being left less 
     bool LoadRoutes(int Caller, std::ifstream &InFile);
 /// Route locking is required (returns true) if a moving train is within 3 signals back from the RouteTruncatePosition (on the route itself or on any linked routes, or on the element immediately before the start of the route or linked route - this because train cancels route elements that it touches) unless the first signal is red, then OK
     bool RouteLockingRequired(int Caller, int RouteNumber, int RouteTruncatePosition);
-/// Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit) is found it returns true (for crossovers returns true whichever track the route is on), else returns false.
+/// Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit) is found it returns true (for crossovers & points returns true whichever track the route is on), else returns false.
     bool TrackIsInARoute(int Caller, int TrackVectorPosition, int LinkPos);
 /// Returns a route's position in AllRoutesVector from its ID, throws an error if a matching route isn't found
     int GetRouteVectorNumber(int Caller, IDInt RouteID);

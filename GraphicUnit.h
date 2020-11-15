@@ -723,6 +723,13 @@ public:
     Graphics::TBitmap *LCPlain;
     Graphics::TBitmap *LCRHSVer;
     Graphics::TBitmap *LCTopHor;
+    Graphics::TBitmap *LCBothHorMan;
+    Graphics::TBitmap *LCBotHorMan;
+    Graphics::TBitmap *LCBothVerMan;
+    Graphics::TBitmap *LCLHSVerMan;
+    Graphics::TBitmap *LCPlainMan;
+    Graphics::TBitmap *LCRHSVerMan;
+    Graphics::TBitmap *LCTopHorMan;
     Graphics::TBitmap *LocNamesNotSetGraphic;
     Graphics::TBitmap *LocNamesSetGraphic;
     Graphics::TBitmap *NewHome;

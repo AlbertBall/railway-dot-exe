@@ -81,7 +81,7 @@ __fastcall TInterface::TInterface(TComponent* Owner): TForm(Owner)
 { // constructor
     try
     {
-        Screen->Cursor = TCursor(-11); // Hourglass;
+        Screen->Cursor = TCursor(-11); // Hourglass
         DirOpenError = false;
         AllSetUpFlag = false; // flag to prevent MasterClock from being enabled when application activates if there has been an error during
                                      // initial setup
@@ -149,13 +149,6 @@ __fastcall TInterface::TInterface(TComponent* Owner): TForm(Owner)
                 SESSION_DIR_NAME + ", " + IMAGE_DIR_NAME + ", " + FORMATTEDTT_DIR_NAME + ", " + USERGRAPHICS_DIR_NAME + ", " +
                 "program operation may be restricted");
         }
-// ShowMessage("NOTE: APPDEACTIVATE etc Disabled in FormCreate");
-        SaveRailwayDialog->InitialDir = CurDir + "\\" + RAILWAY_DIR_NAME;
-        LoadRailwayDialog->InitialDir = CurDir + "\\" + RAILWAY_DIR_NAME;
-        TimetableDialog->InitialDir = CurDir + "\\" + TIMETABLE_DIR_NAME;
-        SaveTTDialog->InitialDir = CurDir + "\\" + TIMETABLE_DIR_NAME;
-        LoadSessionDialog->InitialDir = CurDir + "\\" + SESSION_DIR_NAME;
-        LoadUserGraphicDialog->InitialDir = CurDir + "\\" + USERGRAPHICS_DIR_NAME;
 
         Application->HelpFile = AnsiString(CurDir + "\\Help.chm"); // added at v2.0.0 for .chm help file
 
@@ -194,6 +187,9 @@ __fastcall TInterface::TInterface(TComponent* Owner): TForm(Owner)
         SigRouteStartMarker = new TGraphicElement;
         NonSigRouteStartMarker = new TGraphicElement;
         LengthWarningSentFlag = false;
+        PasteWarningSentFlag = false;   //added at v2.6.0
+        FillSelectionMessageSentFlag = false;  //added at v2.6.0
+        LCManualLowerBarriersMessageSent = false; //added at v2.6.0
 
         TrackInfoOnOffMenuItem->Caption = "Show"; // added here at v1.2.0 because dropped from ResetAll()
         TrainStatusInfoOnOffMenuItem->Caption = "Hide Status"; // changed at v2.0.0 so normally visible
@@ -213,6 +209,125 @@ __fastcall TInterface::TInterface(TComponent* Owner): TForm(Owner)
         FloatingLabel->Color = clB4G5R5;
         TrackElementPanel->Color = clB5G5R4;
         InfoPanel->Color = clB4G5R5;
+
+        LoadUserGraphicDialog->InitialDir = CurDir + "\\" + USERGRAPHICS_DIR_NAME; //not changeable
+
+        Utilities->RHSignalFlag = false; // new at v2.3.0 for RH signals, always left hand on startup
+        SigsOnLeftImage1->Picture->Bitmap->LoadFromResourceName(0, "SigsOnLeft");
+        SigsOnLeftImage2->Picture->Bitmap->LoadFromResourceName(0, "SigsOnLeft");
+        SigsOnLeftImage1->Transparent = true;
+        SigsOnLeftImage2->Transparent = true;
+        SigsOnLeftImage1->Picture->Bitmap->TransparentColor = clB5G5R5;
+        SigsOnLeftImage2->Picture->Bitmap->TransparentColor = clB5G5R5;
+        SigsOnRightImage1->Picture->Bitmap->LoadFromResourceName(0, "SigsOnRight");
+        SigsOnRightImage2->Picture->Bitmap->LoadFromResourceName(0, "SigsOnRight");
+        SigsOnRightImage1->Transparent = true;
+        SigsOnRightImage2->Transparent = true;
+        SigsOnRightImage1->Picture->Bitmap->TransparentColor = clB5G5R5;
+        SigsOnRightImage2->Picture->Bitmap->TransparentColor = clB5G5R5;
+
+        SaveRailwayDialog->InitialDir = CurDir + "\\" + RAILWAY_DIR_NAME;  //default locations if not updated from Config.txt
+        LoadRailwayDialog->InitialDir = CurDir + "\\" + RAILWAY_DIR_NAME;
+        TimetableDialog->InitialDir = CurDir + "\\" + TIMETABLE_DIR_NAME;
+        SaveTTDialog->InitialDir = CurDir + "\\" + TIMETABLE_DIR_NAME;
+        LoadSessionDialog->InitialDir = CurDir + "\\" + SESSION_DIR_NAME;
+
+        std::ifstream ConfigFile((CurDir + "\\Config.txt").c_str());     //added at v2.6.0 to set save & load directories for railways, timetables & session & to
+        if(ConfigFile.fail()) //no Config file                           //replace Signal.hnd, Background.col and GNU
+        {
+            ConverttoRightHandSignalsMenuItem->Caption = "Convert to Right Hand Signals";
+            SigImagePanel->Caption = "Signals will be on the left hand side of the track";
+            SigsOnLeftImage1->Visible = true;
+            SigsOnLeftImage2->Visible = true;
+            SigsOnRightImage1->Visible = false;
+            SigsOnRightImage2->Visible = false;
+            ShowMessage(
+                "This program is free software released under the terms of the GNU General Public License Version 3, as published by the Free Software Foundation. "
+                "It may be used or redistributed in accordance with that license and is released in the hope that it will be useful, but WITHOUT ANY WARRANTY; "
+                "without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details - "
+                "you should have received a copy along with this program but if not see <http://www.gnu.org/licenses/>.");
+        }
+        else
+        {
+            AnsiString ConfigStr = "";
+            do
+            {
+                Utilities->CheckAndReadFileString(ConfigFile, ConfigStr);
+                if(ConfigFile.eof())
+                {
+                    break;
+                }
+                AnsiString ConfigValue = ConfigStr.SubString(9, ConfigStr.Length() - 8);
+                if(ConfigStr.SubString(1, 8) == "Signals=")
+                {
+                    if(ConfigValue == "right")
+                    {
+                        RailGraphics->ConvertSignalsToOppositeHand(1); // always left hand initially when start program, toggles Utilities->RHSignalFlag
+                        ConverttoRightHandSignalsMenuItem->Caption = "Convert to Left Hand Signals";
+                        if(Track->SignalAspectBuildMode == TTrack::GroundSignalBuild)
+                        {
+                            LoadGroundSignalGlyphs(1);
+                        }
+                        else
+                        {
+                            LoadNormalSignalGlyphs(1);
+                        }
+                        SigImagePanel->Caption = "Signals will be on the right hand side of the track";
+                        SigsOnLeftImage1->Visible = false;
+                        SigsOnLeftImage2->Visible = false;
+                        SigsOnRightImage1->Visible = true;
+                        SigsOnRightImage2->Visible = true;
+                    }
+                    else
+                    {
+                        ConverttoRightHandSignalsMenuItem->Caption = "Convert to Right Hand Signals";
+                        SigImagePanel->Caption = "Signals will be on the left hand side of the track";
+                        SigsOnLeftImage1->Visible = true;
+                        SigsOnLeftImage2->Visible = true;
+                        SigsOnRightImage1->Visible = false;
+                        SigsOnRightImage2->Visible = false;
+                    }
+                }
+                if(ConfigStr.SubString(1, 8) == "BgndCol=")
+                {
+                    // pick up transparent colour from file if there is one & set it to the stored value if it's valid else set to black
+                    Utilities->clTransparent = clB0G0R0; // default black background;
+                    if(ConfigValue == "white")
+                    {
+                        Utilities->clTransparent = TColor(0xFFFFFF);
+                    }
+                    else if(ConfigValue == "blue")
+                    {
+                        Utilities->clTransparent = TColor(0x330000);
+                    }
+                }
+                if(ConfigStr.SubString(1, 8) == "RLYLocn=")
+                {
+                    if(DirectoryExists(ConfigValue))  //e;se stays as original directory
+                    {
+                        SaveRailwayDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
+                        LoadRailwayDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
+                    }
+                }
+                else if(ConfigStr.SubString(1, 8) == "TTBLocn=")
+                {
+                    if(DirectoryExists(ConfigValue))  //e;se stays as original directory
+                    {
+                        TimetableDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
+                        SaveTTDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
+                    }
+                }
+                else if(ConfigStr.SubString(1, 8) == "SSNLocn=")
+                {
+                    if(DirectoryExists(ConfigValue))  //e;se stays as original directory
+                    {
+                        LoadSessionDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
+                    }
+                }
+            }
+            while(!ConfigFile.eof());
+            ConfigFile.close();
+        }
 
         SpeedButton1->Glyph->LoadFromResourceName(0, "gl1");
         SpeedButton2->Glyph->LoadFromResourceName(0, "gl2");
@@ -420,19 +535,6 @@ __fastcall TInterface::TInterface(TComponent* Owner): TForm(Owner)
         LocationNamesNotSetImage->Picture->Bitmap->LoadFromResourceName(0, "LocNamesNotSetGraphic");
         LocationNamesSetImage->Picture->Bitmap->LoadFromResourceName(0, "LocNamesSetGraphic");
 
-        SigsOnLeftImage1->Picture->Bitmap->LoadFromResourceName(0, "SigsOnLeft");
-        SigsOnLeftImage2->Picture->Bitmap->LoadFromResourceName(0, "SigsOnLeft");
-        SigsOnLeftImage1->Transparent = true;
-        SigsOnLeftImage2->Transparent = true;
-        SigsOnLeftImage1->Picture->Bitmap->TransparentColor = clB5G5R5;
-        SigsOnLeftImage2->Picture->Bitmap->TransparentColor = clB5G5R5;
-        SigsOnRightImage1->Picture->Bitmap->LoadFromResourceName(0, "SigsOnRight");
-        SigsOnRightImage2->Picture->Bitmap->LoadFromResourceName(0, "SigsOnRight");
-        SigsOnRightImage1->Transparent = true;
-        SigsOnRightImage2->Transparent = true;
-        SigsOnRightImage1->Picture->Bitmap->TransparentColor = clB5G5R5;
-        SigsOnRightImage2->Picture->Bitmap->TransparentColor = clB5G5R5;
-
 /* Don't need this - load icon directly into both Interface form & Application (via Project - Options - Application - Load Icon)
      RailwayIcon = new TPicture;
      RailwayIcon->Icon->LoadFromResourceName(0, "Icon1.ico");
@@ -488,120 +590,13 @@ __fastcall TInterface::TInterface(TComponent* Owner): TForm(Owner)
         TTLabel13->Caption = TTLabelStr13;
         TTLabel15->Caption = TTLabelStr15;
 
-        // pick up transparent colour from file if there is one & set it to the stored value if it's valid else set to black
-
-        AnsiString ColourStr = "";
-        std::ifstream ColFile((CurDir + "\\Background.col").c_str());
-        if(ColFile.fail())
-        {
-            Utilities->clTransparent = clB0G0R0; // default black background;
-        }
-        else
-        {
-            if(!(Utilities->CheckAndReadFileString(ColFile, ColourStr)))
-            {
-                Utilities->clTransparent = clB0G0R0; // default black background;
-            }
-            else if((ColourStr != "white") && (ColourStr != "black") && (ColourStr != "blue"))
-            {
-                Utilities->clTransparent = clB0G0R0; // default black background;
-            }
-            else
-            {
-                if(ColourStr == "white")
-                {
-                    Utilities->clTransparent = TColor(0xFFFFFF);
-                }
-                else if(ColourStr == "blue")
-                {
-                    Utilities->clTransparent = TColor(0x330000);
-                }
-                else
-                {
-                    Utilities->clTransparent = TColor(0);
-                }
-                ColFile.close(); // added at v2.3.0, should have been in earlier
-            }
-        }
-
-        Utilities->RHSignalFlag = false; // new at v2.3.0 for RH signals, always left hand on startup
-        AnsiString RHSigStr = "";
-        std::ifstream SignalFile((CurDir + "\\Signal.hnd").c_str());
-        if(SignalFile.fail())
-        {
-            SigImagePanel->Caption = "Signals will be on the left hand side of the track";
-            SigsOnLeftImage1->Visible = true;
-            SigsOnLeftImage2->Visible = true;
-            SigsOnRightImage1->Visible = false;
-            SigsOnRightImage2->Visible = false;
-            SignalFile.close(); // close ifstream & open ofstream
-            std::ofstream SignalFile((CurDir + "\\Signal.hnd").c_str());
-            if(!SignalFile.fail()) // if it does fail then it will revert to LHS anyway on next load unless select RH sigs
-            {
-                Utilities->SaveFileString(SignalFile, "LHSignals");
-            }
-            SignalFile.close();
-        }
-        else
-        {
-            if(Utilities->CheckAndReadFileString(SignalFile, RHSigStr)) // if it fails then do nothing
-            {
-                if(RHSigStr == "RHSignals")
-                {
-                    RailGraphics->ConvertSignalsToOppositeHand(1); // always left hand initially when start program
-                    ConverttoRightHandSignalsMenuItem->Caption = "Convert to Left Hand Signals";
-                    if(Track->SignalAspectBuildMode == TTrack::GroundSignalBuild)
-                    {
-                        LoadGroundSignalGlyphs(1);
-                    }
-                    else
-                    {
-                        LoadNormalSignalGlyphs(1);
-                    }
-                    SigImagePanel->Caption = "Signals will be on the right hand side of the track";
-                    SigsOnLeftImage1->Visible = false;
-                    SigsOnLeftImage2->Visible = false;
-                    SigsOnRightImage1->Visible = true;
-                    SigsOnRightImage2->Visible = true;
-                    SignalFile.close();
-                }
-                else
-                {
-                    ConverttoRightHandSignalsMenuItem->Caption = "Convert to Right Hand Signals";
-                    SigImagePanel->Caption = "Signals will be on the left hand side of the track";
-                    SigsOnLeftImage1->Visible = true;
-                    SigsOnLeftImage2->Visible = true;
-                    SigsOnRightImage1->Visible = false;
-                    SigsOnRightImage2->Visible = false;
-                    SignalFile.close(); // close ifstream & open ofstream
-                    std::ofstream SignalFile((CurDir + "\\Signal.hnd").c_str());
-                    if(!SignalFile.fail()) // if it does fail then it will revert to LHS anyway on next load unless select RH sigs
-                    {
-                        Utilities->SaveFileString(SignalFile, "LHSignals");
-                    }
-                    SignalFile.close();
-                }
-            }
-        }
-
         SelectBitmap->TransparentColor = Utilities->clTransparent;
         RailGraphics->ChangeAllTransparentColours(Utilities->clTransparent, clB5G5R5); // original colour is as loaded at this stage - white
-        if(Utilities->clTransparent != clB5G5R5)
-            TextBox->Color = clB3G3R3;
         RailGraphics->SetUpAllDerivitiveGraphics(Utilities->clTransparent);
 
+        TextBox->Color = clB3G3R3;
         MainScreen->Canvas->Brush->Color = Utilities->clTransparent;
         MainScreen->Canvas->FillRect(MainScreen->ClientRect);
-
-        std::ifstream SplashFile((CurDir + "\\GNU").c_str());
-        if(SplashFile.fail())
-        {
-            ShowMessage(
-                "This program is free software released under the terms of the GNU General Public License Version 3, as published by the Free Software Foundation.  It may be used or redistributed in accordance with that license and is released in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details - you should have received a copy along with this program but if not see <http://www.gnu.org/licenses/>.");
-            std::ofstream SplashFile((CurDir + "\\GNU").c_str());
-            if(!SplashFile.fail())
-                SplashFile.close();
-        }
 
         if((Screen->Width < 1024) || (Screen->Height < 768))
         {
@@ -638,6 +633,7 @@ __fastcall TInterface::TInterface(TComponent* Owner): TForm(Owner)
         MTBFLabel->Visible = false;
         TrainController->AvHoursIntValue = 0;
         TrainController->MTBFHours = 0;
+        TrainController->TwoOrMoreLocationsWarningGiven = false;
         TTStartTimePtr = 0;
         TTFirstServicePtr = 0;
         TTLastServicePtr = 0;
@@ -689,6 +685,32 @@ __fastcall TInterface::~TInterface()
 { // destructor
     try
     {
+    //rewrite ConfigFile with signal handedness, background colour & InitialDir values (may be same but no matter)
+        AnsiString ColourStr = "", SignalStr = "";
+        remove((CurDir + "\\Config.txt").c_str());
+        std::ofstream ConfigFile((CurDir + "\\Config.txt").c_str());
+        ColourStr = "black";
+        SignalStr = "left";
+        if(Utilities->clTransparent == TColor(0xFFFFFF))
+        {
+            ColourStr = "white";
+        }
+        else if(Utilities->clTransparent == TColor(0x330000))
+        {
+            ColourStr = "blue";
+        }
+        if(Utilities->RHSignalFlag)
+        {
+            SignalStr = "right";
+        }
+
+        ConfigFile << AnsiString("Signals=") << SignalStr << '\n';
+        ConfigFile << AnsiString("BgndCol=") << ColourStr << '\n';
+        ConfigFile << AnsiString("RLYLocn=") << AnsiString(LoadRailwayDialog->InitialDir) << '\n';
+        ConfigFile << AnsiString("TTBLocn=") << AnsiString(TimetableDialog->InitialDir) << '\n';
+        ConfigFile << AnsiString("SSNLocn=") << AnsiString(LoadSessionDialog->InitialDir) << '\n';
+        ConfigFile.close();
+
         SkipFormResizeEvent = true; // added at v2.1.0
         delete NonSigRouteStartMarker;
         delete SigRouteStartMarker;
@@ -864,16 +886,68 @@ void __fastcall TInterface::SpeedButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("SpeedButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SpeedButtonClick");
+        ReselectMenuItem->Enabled = false;
         if(((TSpeedButton*)Sender)->Down)
         {
             CurrentSpeedButton = (TSpeedButton*)Sender;
 // TrainController->LogEvent("SpeedButtonClick, " + CurrentSpeedButton->Tag); //v 1.3.1 - using non-AnsiString CurrentSpeedButton->Tag sends (for an unknown reason) a completely wrong string to LogEvent, usually "...(behind this message)"
             TrainController->LogEvent("SpeedButtonClick, " + AnsiString(CurrentSpeedButton->Tag)); // new version //use for v1.3.2
+            if((Level2TrackMode == TrackSelecting) && (CurrentSpeedButton->Tag != 144)) //new addition at v2.6.0 to fill selected area with the element corresponding to CurrentSpeedButton
+            {                                                                          //144 = level crossing & these not permitted
+                if((SelectRect.left != SelectRect.right) && (SelectRect.top != SelectRect.bottom) && SelectionValid)
+                {
+                    Screen->Cursor = TCursor(-11); // Hourglass;
+                    InfoPanel->Caption = "SELECTING:  Filling area with chosen element";
+                    bool FillSelectionFlag = false;
+                    if(!FillSelectionMessageSentFlag)
+                    {
+                        UnicodeString MessageStr = "Click 'Yes' to fill the area with the chosen element or 'No' to abort.\n"
+                                                   "Existing elements won't be overwritten although track can\n"
+                                                   "have platforms and non-station named location elements added.\n\nThis message will not be shown again.";
+                        int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
+                        if(button == IDYES)
+                        {
+                            FillSelectionFlag = true;
+                        }
+                    }
+                    if(FillSelectionFlag || FillSelectionMessageSentFlag)
+                    {
+                        bool TrackLinkingRequiredFlag = true;
+                        for(int HLoc = SelectRect.left; HLoc < SelectRect.right; HLoc++)
+                        {
+                            for(int VLoc = SelectRect.top; VLoc < SelectRect.bottom; VLoc++)
+                            {
+                                if((HLoc != SelectRect.right) || (VLoc != SelectRect.bottom))
+                                {
+                                    Track->PlotAndAddTrackElement(3, CurrentSpeedButton->Tag, 0, HLoc, VLoc, TrackLinkingRequiredFlag, false); //false for internal checks
+                                    // above now has extra zero 'Aspect' parameter at v2.2.0 so can distinguish between adding track and pasting
+                                }
+                                else
+                                {
+                                    Track->PlotAndAddTrackElement(4, CurrentSpeedButton->Tag, 0, HLoc, VLoc, TrackLinkingRequiredFlag, true); //internal checks true for last plot
+                                }
+                            }
+                        }
+                    }
+                    Track->SetTrackFinished(false);
+                    ClearandRebuildRailway(80); // to remove selection outline
+                    SelectionValid = false;
+                    Track->CopyFlag = false;
+                    Track->SkipLocationNameMultiMapCheck = false;
+                    ResetSelectRect();
+                    SetLevel1Mode(139);
+                    Level2TrackMode = AddTrack;
+                    SetLevel2TrackMode(66);
+                    FillSelectionMessageSentFlag = true;
+                    Screen->Cursor = TCursor(-2); // Arrow
+                    ReselectMenuItem->Enabled = true; //allow when filling areas
+                }
+            }
         }
         else
+        {
             CurrentSpeedButton = 0;
-        SelectionValid = false;
-        ReselectMenuItem->Enabled = false;
+        }
         Utilities->CallLogPop(1163);
     }
     catch(const Exception &e)
@@ -2210,6 +2284,11 @@ void __fastcall TInterface::LoadRailwayMenuItemClick(TObject *Sender)
         LoadRailwayDialog->Filter = "Railway files (*.rly or *.dev)|*.rly; *.dev";
         if(LoadRailwayDialog->Execute())
         {
+            if(LoadRailwayDialog->InitialDir != TPath::GetDirectoryName(LoadRailwayDialog->FileName))//new at v2.6.0 to retain a new directory
+            {
+                LoadRailwayDialog->InitialDir = TPath::GetDirectoryName(LoadRailwayDialog->FileName);
+                SaveRailwayDialog->InitialDir = TPath::GetDirectoryName(LoadRailwayDialog->FileName);
+            }
             TrainController->LogEvent("LoadRailway " + AnsiString(LoadRailwayDialog->FileName));
             LoadRailway(0, AnsiString(LoadRailwayDialog->FileName));
         }
@@ -2985,6 +3064,7 @@ void __fastcall TInterface::CreateTimetableMenuItemClick(TObject *Sender)
         CreateEditTTFileName = "";
         TimetableEditVector.clear();
         TimetableEditPanel->Visible = true;
+        TrainController->TTEditPanelVisible = true; //added at v2.6.0 for two location message
         HighlightPanel->Visible = false;
         TimetablePanel->Visible = true;
         TimetablePanel->BringToFront(); // in case SaveRailway button visible, want it hidden else obscures the panel text
@@ -3092,6 +3172,7 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
         CreateEditTTFileName = "";
         TimetableEditVector.clear();
         TimetableEditPanel->Visible = true;
+        TrainController->TTEditPanelVisible = true; //added at v2.6.0 for two location message
         HighlightPanel->Visible = false;
         TimetablePanel->Visible = true;
         TimetablePanel->BringToFront(); // in case SaveRailway button visible, want it hidden else obscures the panel text
@@ -3111,6 +3192,11 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
         TTLastServicePtr = 0; // all set to null to begin with
         if(TimetableDialog->Execute())
         {
+            if(TimetableDialog->InitialDir != TPath::GetDirectoryName(TimetableDialog->FileName))//new at v2.6.0 to retain a new directory
+            {
+                TimetableDialog->InitialDir = TPath::GetDirectoryName(TimetableDialog->FileName);
+                SaveTTDialog->InitialDir = TPath::GetDirectoryName(TimetableDialog->FileName);
+            }
             CreateEditTTFileName = AnsiString(TimetableDialog->FileName);
             TrainController->LogEvent("EditTimetable " + CreateEditTTFileName);
             std::ifstream TTBLFile(CreateEditTTFileName.c_str(), std::ios_base::binary); // open in binary to examine each character
@@ -3258,6 +3344,7 @@ void __fastcall TInterface::ShowHideTTButtonClick(TObject *Sender)
         {
             ShowHideTTButton->Glyph->LoadFromResourceName(0, "Show");
             TimetableEditPanel->Visible = false;
+            TrainController->TTEditPanelVisible = false; //added at v2.6.0 for two location message
             ShowHideTTButton->Hint = "Show the timetable editor          Shift S";
 // InfoPanel->Visible = false;                          //changed at v1.3.0 to make it clearer that still in TT mode
             InfoPanel->Caption = "Timetable mode: editor hidden"; // as above
@@ -3266,6 +3353,7 @@ void __fastcall TInterface::ShowHideTTButtonClick(TObject *Sender)
         {
             ShowHideTTButton->Glyph->LoadFromResourceName(0, "Hide");
             TimetableEditPanel->Visible = true;
+            TrainController->TTEditPanelVisible = true; //added at v2.6.0 for two location message
             ShowHideTTButton->Hint = "Hide the timetable editor to see the railway          Shift H";
             Level1Mode = TimetableMode;
             SetLevel1Mode(124);
@@ -3951,6 +4039,11 @@ void __fastcall TInterface::SaveTTButtonClick(TObject *Sender)
         {
             if(SaveTTDialog->Execute())
             {
+                if(SaveTTDialog->InitialDir != TPath::GetDirectoryName(SaveTTDialog->FileName))//new at v2.6.0 to retain a new directory
+                {
+                    TimetableDialog->InitialDir = TPath::GetDirectoryName(SaveTTDialog->FileName);
+                    SaveTTDialog->InitialDir = TPath::GetDirectoryName(SaveTTDialog->FileName);
+                }
                 CreateEditTTFileName = AnsiString(SaveTTDialog->FileName);
                 for(int x = CreateEditTTFileName.Length(); x > 0; x--)
                 {
@@ -4010,6 +4103,11 @@ void __fastcall TInterface::SaveTTAsButtonClick(TObject *Sender)
         std::ofstream TTBLFile;
         if(SaveTTDialog->Execute())
         {
+            if(SaveTTDialog->InitialDir != TPath::GetDirectoryName(SaveTTDialog->FileName))//new at v2.6.0 to retain a new directory
+            {
+                TimetableDialog->InitialDir = TPath::GetDirectoryName(SaveTTDialog->FileName);
+                SaveTTDialog->InitialDir = TPath::GetDirectoryName(SaveTTDialog->FileName);
+            }
             CreateEditTTFileName = SaveTTDialog->FileName;
             for(int x = SaveTTDialog->FileName.Length(); x > 0; x--)
             {
@@ -5250,7 +5348,7 @@ void TInterface::HighlightOneEntryInAllEntriesTTListBox(int Caller, int Position
         else
             HighlightPanel->Visible = true; // doesn't matter if goes off the bottom as it becomes invisible as then it's off its parent panel
         HighlightPanel->Caption = CurrentStr;
-        if(AllEntriesTTListBox->Items->Count > 46)   //because the scrollbar will be present
+        if(AllEntriesTTListBox->Items->Count > 47)   //because the scrollbar will be present
             HighlightPanel->Width = 82;
         else
             HighlightPanel->Width = 100;
@@ -5639,11 +5737,11 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                     {
                         SetLengthsButton->Enabled = false;
                     }
-                    if(NoRailway())
-                    {
-                        EditMenu->Enabled = false;
-                    }
-                    else
+//                    if(NoRailway()) dropped at v2.6.0 to allow edits during AddTrack
+//                    {
+//                        EditMenu->Enabled = false;
+//                    }
+//                    else
                         EditMenu->Enabled = true;
                 }
                 Screen->Cursor = TCursor(-2); // Arrow
@@ -6734,28 +6832,72 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 PointFlashStartTime = TrainController->TTClockTime;
                             }
                         }
-/* drop manual changing of level crossings - only allow changing by setting a route through them
-                    else if((Track->IsLCAtHV(23, HLoc, VLoc) && !Track->PointFlashFlag && !Track->RouteFlashFlag))//level crossing
+
+                        else if(Track->IsLCAtHV(59, HLoc, VLoc) && !Track->PointFlashFlag && !Track->RouteFlashFlag)//level crossing   added at v2.6.0 to allow manual LC changing
                         {
-                        TTrack::TFlashLevelCrossing FLC;
-                        FLC.LCHLoc = HLoc;
-                        FLC.LCVLoc = VLoc;
-                        FLC.LCChangeStartTime = TrainController->TTClockTime;
-                        FLC.LCBaseElementSpeedTag = TrackElement.SpeedTag;
-                        if(Track->IsLCBarrierDownAtHV(0, HLoc, VLoc))
+                            if(Track->GetInactiveTrackElementFromTrackMap(5, HLoc, VLoc).Attribute != 2) // 2 = LC changing state, can't click if changing
                             {
-                            FLC.LCChangeDuration = LevelCrossingBarrierUpFlashDuration;
-                            FLC.BarrierState = TTrack::Raising;
+                                Track->LCChangeFlag = true;
+                                bool TrainPresent = false;
+                                if(Track->IsLCBarrierDownAtHV(4, HLoc, VLoc))  //if true then raise barriers
+                                {
+                                //first need to identify the LC in the BarriersDownVector
+                                    int BDVectorPos = -1;
+                                    if(Track->AnyLinkedBarrierDownVectorManual(1, HLoc, VLoc, BDVectorPos)) //looking for same position & manually closed
+                                    { //this largely copied from ClockTimer2
+                                        if(!Track->AnyLinkedLevelCrossingElementsWithRoutesOrTrains(0, Track->BarriersDownVector.at(BDVectorPos).HLoc,
+                                            Track->BarriersDownVector.at(BDVectorPos).VLoc, TrainPresent)) //returns true for route or train, and TrainPresent true if train on LC
+                                        {
+                                            TTrack::TActiveLevelCrossing CLC = Track->BarriersDownVector.at(BDVectorPos);
+                                            // check if have exceeded the allowance (3 minutes for a train having passed or 0 for not) and add it to the overall excess time
+                                            TDateTime TempExcessLCDownTime;
+                                            if(Track->BarriersDownVector.at(BDVectorPos).ReducedTimePenalty) //this set in ClockTimer2, relies on train being on LC for >= 1 second or won't
+                                            {                                               //get the 3 mins allowance - hard to imagine will pass in less than a second!
+                                                TempExcessLCDownTime = TrainController->TTClockTime - CLC.StartTime - TDateTime(180.0 / 86400);
+                                            }
+                                            else
+                                            {
+                                                TempExcessLCDownTime = TrainController->TTClockTime - CLC.StartTime;
+                                            }
+                                            if(TempExcessLCDownTime > TDateTime(0))
+                                            {
+                                                TrainController->ExcessLCDownMins += (double(TempExcessLCDownTime) * 1440);
+                                            }
+                                            CLC.StartTime = TrainController->TTClockTime; // reset these 3 members
+                                            CLC.ChangeDuration = Track->LevelCrossingBarrierUpFlashDuration;
+                                            CLC.BarrierState = TTrack::Raising;
+                                            Track->SetLinkedLevelCrossingBarrierAttributes(7, CLC.HLoc, CLC.VLoc, 2); // set attr to 2 for changing state
+                                            Track->ChangingLCVector.push_back(CLC);
+                                            Track->BarriersDownVector.erase(Track->BarriersDownVector.begin() + BDVectorPos);
+                                        }
+                                    }
+                                }
+                                else //lowering
+                                {
+                                    //this largely copied from SetLCChangeValues
+                                    TTrack::TActiveLevelCrossing ALC; //constructor sets ReducedTimePenalty to false
+                                    ALC.HLoc = HLoc;
+                                    ALC.VLoc = VLoc;
+                                    ALC.StartTime = TrainController->TTClockTime;
+                                    ALC.BaseElementSpeedTag = TrackElement.SpeedTag;
+                                    ALC.ChangeDuration = Track->LevelCrossingBarrierDownFlashDuration;
+                                    ALC.BarrierState = TTrack::Lowering;
+                                    ALC.ConsecSignals = 2;
+                                    Track->SetLinkedManualLCs(0, HLoc, VLoc);  //this sets all linked LC ConsecSignals values to 2 for manually lowered - differs from SetLCChangeValues which uses the route type
+                                    Track->SetLinkedLevelCrossingBarrierAttributes(6, HLoc, VLoc, 2);//set attr to 2 for changing state
+                                    Track->ChangingLCVector.push_back(ALC);
+                                    if(!LCManualLowerBarriersMessageSent)
+                                    {
+                                        AnsiString Message = AnsiString("This will open the level crossing manually (it will show in green).\n\nA manually opened"
+                                            " level crossing must be manually closed, and as soon as possible to avoid time penalties.\n\n"
+                                            "This message will not be shown again.");
+                                        TrainController->StopTTClockMessage(93, Message);
+                                        LCManualLowerBarriersMessageSent = true;
+                                    }
+                                }
                             }
-                        else
-                            {
-                            FLC.LCChangeDuration = LevelCrossingBarrierDownFlashDuration;
-                            FLC.BarrierState = TTrack::Lowering;
-                            }
-                        Track->SetLinkedLevelCrossingBarrierAttributes(, HLoc, VLoc, 2);//set attr to 2 for changing state
-                        Track->ChangingLCVector.push_back(FLC);
                         }
-*/ else // route start
+                    else // route start
                         {
                             if(AutoSigsFlag)
                             {
@@ -7709,36 +7851,43 @@ void TInterface::ClockTimer2(int Caller)
         {
             if((LCResetCounter == 0) && !TrainController->StopTTClockFlag)
             {
-                for(int x = Track->BarriersDownVector.size() - 1; x >= 0; x--)
+                for(int x = Track->BarriersDownVector.size() - 1; x >= 0; x--) //iterate downwards because erase element
                 {
                     bool TrainPresent = false;
-                    if(Track->AnyLinkedLevelCrossingElementsWithRoutesOrTrains(0, Track->BarriersDownVector.at(x).HLoc, Track->BarriersDownVector.at(x).VLoc,
-                        TrainPresent))
+                    if(Track->AnyLinkedLevelCrossingElementsWithRoutesOrTrains(1, Track->BarriersDownVector.at(x).HLoc, Track->BarriersDownVector.at(x).VLoc,
+                        TrainPresent)) //returns true for route or train, and TrainPresent true if train on LC
                     {
                         if(TrainPresent)
                         {
-                            Track->BarriersDownVector.at(x).TrainPassed = true;
+                            Track->BarriersDownVector.at(x).ReducedTimePenalty = true; //to allow 3 mins before time penalty starts to clock up, if no train passes then no time allowance
                         }
                     }
                     else
                     {
-                        Track->LCChangeFlag = true;
-                        TTrack::TActiveLevelCrossing CLC = Track->BarriersDownVector.at(x);
-                        // check if have exceeded the allowance (3 minutes for a train having passed or 0 for not) and add it to the overall excess time
-                        TDateTime TempExcessLCDownTime;
-                        if(Track->BarriersDownVector.at(x).TrainPassed)
-                            TempExcessLCDownTime = TrainController->TTClockTime - CLC.StartTime - TDateTime(180.0 / 86400);
-                        else
-                            TempExcessLCDownTime = TrainController->TTClockTime - CLC.StartTime;
-                        if(TempExcessLCDownTime > TDateTime(0))
-                            TrainController->ExcessLCDownMins += (double(TempExcessLCDownTime) * 1440);
+                        if(Track->BarriersDownVector.at(x).ConsecSignals != 2) //added at v2.6.0 for manual LC operation
+                        {
+                            Track->LCChangeFlag = true;
+                            TTrack::TActiveLevelCrossing CLC = Track->BarriersDownVector.at(x);
+                            // check if have exceeded the allowance (3 minutes for a train having passed or 0 for not) and add it to the overall excess time
+                            TDateTime TempExcessLCDownTime;
+                            if(Track->BarriersDownVector.at(x).ReducedTimePenalty)
+                            {
+                                TempExcessLCDownTime = TrainController->TTClockTime - CLC.StartTime - TDateTime(180.0 / 86400);
+                            }
+                            else
+                            {
+                                TempExcessLCDownTime = TrainController->TTClockTime - CLC.StartTime;
+                            }
+                            if(TempExcessLCDownTime > TDateTime(0))
+                                TrainController->ExcessLCDownMins += (double(TempExcessLCDownTime) * 1440);
 
-                        CLC.StartTime = TrainController->TTClockTime; // reset these 3 members
-                        CLC.ChangeDuration = Track->LevelCrossingBarrierUpFlashDuration;
-                        CLC.BarrierState = TTrack::Raising;
-                        Track->SetLinkedLevelCrossingBarrierAttributes(0, CLC.HLoc, CLC.VLoc, 2); // set attr to 2 for changing state
-                        Track->ChangingLCVector.push_back(CLC);
-                        Track->BarriersDownVector.erase(Track->BarriersDownVector.begin() + x);
+                            CLC.StartTime = TrainController->TTClockTime; // reset these 3 members
+                            CLC.ChangeDuration = Track->LevelCrossingBarrierUpFlashDuration;
+                            CLC.BarrierState = TTrack::Raising;
+                            Track->SetLinkedLevelCrossingBarrierAttributes(0, CLC.HLoc, CLC.VLoc, 2); // set attr to 2 for changing state
+                            Track->ChangingLCVector.push_back(CLC);
+                            Track->BarriersDownVector.erase(Track->BarriersDownVector.begin() + x);
+                        }
                     }
                 }
             }
@@ -8681,6 +8830,11 @@ void __fastcall TInterface::SelectMenuItemClick(TObject *Sender)
             SelectionValid = false;
             Level2TrackMode = TrackSelecting;
             SetLevel2TrackMode(34);
+            if(!PasteWarningSentFlag)
+            {
+                ShowMessage("Please be aware when pasting that anything inside the pasted area will be overwritten.\n\nThis warning will not be shown again.");
+                PasteWarningSentFlag = true;
+            }
         }
         else if(Level1Mode == PrefDirMode)
         {
@@ -9409,7 +9563,7 @@ void __fastcall TInterface::SelectLengthsMenuItemClick(TObject *Sender)
         InfoPanel->Caption = "DISTANCE/SPEED SETTING:  Set values or leave blank for no change";
         if(!LengthWarningSentFlag)
         {
-            ShowMessage("Note: length value will apply to each element's track within the selection\n\nThis message will only be shown once");
+            ShowMessage("Note: length value will apply to each element's track within the selection.\n\nThis message will not be shown again.");
             LengthWarningSentFlag = true;
         }
         DistanceBox->Text = "";
@@ -9537,6 +9691,11 @@ void __fastcall TInterface::LoadTimetableMenuItemClick(TObject *Sender)
         TrainController->SigSLow = false;
         if(TimetableDialog->Execute())
         {
+            if(TimetableDialog->InitialDir != TPath::GetDirectoryName(TimetableDialog->FileName))//new at v2.6.0 to retain a new directory
+            {
+                TimetableDialog->InitialDir = TPath::GetDirectoryName(TimetableDialog->FileName);
+                SaveTTDialog->InitialDir = TPath::GetDirectoryName(TimetableDialog->FileName);
+            }
             TrainController->LogEvent("LoadTimetable " + TimetableDialog->FileName);
             bool CheckLocationsExistInRailwayTrue = true;
             if(TrainController->TimetableIntegrityCheck(0, AnsiString(TimetableDialog->FileName).c_str(), true, CheckLocationsExistInRailwayTrue))
@@ -11013,22 +11172,10 @@ void __fastcall TInterface::BlackBgndMenuItemClick(TObject *Sender)
     {
         TrainController->LogEvent("BlackBgndMenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BlackBgndMenuItemClick");
-        std::ofstream ColFile((CurDir + "\\Background.col").c_str());
-        if(ColFile.fail())
-        {
-            // ShowMessage("Failed to store colour file, program will default to a black background when next loaded");
-            // no need for message as will revert to black by default
-        }
-        else
-        {
-            Utilities->SaveFileString(ColFile, "black");
-            ColFile.close(); // added at v2.3.0, should have been in earlier
-        }
         TColor OldTransparentColour = Utilities->clTransparent;
         Utilities->clTransparent = TColor(0);
         SelectBitmap->TransparentColor = Utilities->clTransparent;
         RailGraphics->ChangeAllTransparentColours(Utilities->clTransparent, OldTransparentColour);
-        TextBox->Color = clB3G3R3;
         RailGraphics->SetUpAllDerivitiveGraphics(Utilities->clTransparent);
 
         MainScreen->Canvas->Brush->Color = Utilities->clTransparent;
@@ -11051,21 +11198,10 @@ void __fastcall TInterface::WhiteBgndMenuItemClick(TObject *Sender)
     {
         TrainController->LogEvent("WhiteBgndMenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",WhiteBgndMenuItemClick");
-        std::ofstream ColFile((CurDir + "\\Background.col").c_str());
-        if(ColFile.fail())
-        {
-            ShowMessage("Failed to store colour file, program will default to a black background when next loaded");
-        }
-        else
-        {
-            Utilities->SaveFileString(ColFile, "white");
-            ColFile.close(); // added at v2.3.0, should have been in earlier
-        }
         TColor OldTransparentColour = Utilities->clTransparent;
         Utilities->clTransparent = TColor(0xFFFFFF);
         SelectBitmap->TransparentColor = Utilities->clTransparent;
         RailGraphics->ChangeAllTransparentColours(Utilities->clTransparent, OldTransparentColour);
-        TextBox->Color = clB5G5R5;
         RailGraphics->SetUpAllDerivitiveGraphics(Utilities->clTransparent);
 
         MainScreen->Canvas->Brush->Color = Utilities->clTransparent;
@@ -11088,21 +11224,10 @@ void __fastcall TInterface::BlueBgndMenuItemClick(TObject *Sender)
     {
         TrainController->LogEvent("BlueBgndMenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BlueBgndMenuItemClick");
-        std::ofstream ColFile((CurDir + "\\Background.col").c_str());
-        if(ColFile.fail())
-        {
-            ShowMessage("Failed to store colour file, program will default to a black background when next loaded");
-        }
-        else
-        {
-            Utilities->SaveFileString(ColFile, "blue");
-            ColFile.close(); // added at v2.3.0, should have been in earlier
-        }
         TColor OldTransparentColour = Utilities->clTransparent;
         Utilities->clTransparent = TColor(0x330000);
         SelectBitmap->TransparentColor = Utilities->clTransparent;
         RailGraphics->ChangeAllTransparentColours(Utilities->clTransparent, OldTransparentColour);
-        TextBox->Color = clB3G3R3;
         RailGraphics->SetUpAllDerivitiveGraphics(Utilities->clTransparent);
 
         MainScreen->Canvas->Brush->Color = Utilities->clTransparent;
@@ -12115,7 +12240,7 @@ void __fastcall TInterface::UserGraphicButtonClick(TObject *Sender)
         Level2TrackMode = SelectGraphic;
         SetLevel2TrackMode(63);
         Display->Update();
-        if(SelectedGraphicFileName != "")
+        if((SelectedGraphicFileName != "") && (!Track->UserGraphicVector.empty())) //latter condition added at v2.6.0 because showed after ClearAll & reselect failed
         {
             UserGraphicReselectPanel->Visible = true;
         }
@@ -12482,10 +12607,10 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
         }
 
         // now plot level crossings (must be after routes). These don't need any base elements to be plotted as they are already plotted.
-        // In order to avoid plotting the whole LC for every element of a LC a TempMarker is used
+        // In order to avoid plotting the whole LC for every element of a LC a bool value - LCPlotted - is used to save time
         for(unsigned int x = 0; x < Track->LCVector.size(); x++)
         {
-            (Track->InactiveTrackVector.begin() + (*(Track->LCVector.begin() + x)))->TempMarker = false;
+            (Track->InactiveTrackVector.begin() + (*(Track->LCVector.begin() + x)))->LCPlotted = false;
         }
         for(unsigned int x = 0; x < Track->LCVector.size(); x++)
         {
@@ -12494,7 +12619,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
             TTrackElement ITE = *(Track->InactiveTrackVector.begin() + (*(Track->LCVector.begin() + x)));
             {
                 BaseSpeedTag = Track->GetTrackElementFromTrackMap(0, ITE.HLoc, ITE.VLoc).SpeedTag;
-                if(ITE.TempMarker == false)
+                if(ITE.LCPlotted == false)
                 {
                     if(ITE.Attribute == 0)
                     {
@@ -12502,10 +12627,25 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
                     }
                     else if(ITE.Attribute == 1)
                     {
-                        Track->PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(0, BaseSpeedTag, ITE.HLoc, ITE.VLoc, HiddenDisplay);
+                    //need to determine if should plot green (manual) or red (auto), but all linked LCs have ConsecSignals set to 2 in BarriersDownVector if manual
+                    //so just need to test this for the HLoc & VLoc position match
+                    for(unsigned int x = 0; x <  Track->BarriersDownVector.size(); x++)
+                        {
+                            if((Track->BarriersDownVector.at(x).HLoc == ITE.HLoc) && (Track->BarriersDownVector.at(x).VLoc == ITE.VLoc))
+                            {
+                                if(Track->BarriersDownVector.at(x).ConsecSignals == 2)
+                                {
+                                    Track->PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(0, BaseSpeedTag, ITE.HLoc, ITE.VLoc, HiddenDisplay, true); //true for manual = green
+                                }
+                                else
+                                {
+                                    Track->PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(1, BaseSpeedTag, ITE.HLoc, ITE.VLoc, HiddenDisplay, false); //false for auto = red
+                                }
+                            }
+                        }
                     }
-                    // if ITE->Attribute == 2 then LC is changing, FlashingGraphics will take care of flashing & final plotting
-                    // won't set marker but no real time lost in this case
+                    // if ITE->Attribute == 2 then LC is changing, FlashingGraphics will take care of flashing & final plotting,
+                    // it won't set LCPlotted but no real time lost in this case
                 }
             }}
         TrainController->ReplotTrains(0, HiddenDisplay);
@@ -12806,6 +12946,7 @@ void TInterface::SetLevel1Mode(int Caller)
         LengthConversionPanel->Visible = false;
         SpeedConversionPanel->Visible = false;
         TimetableEditPanel->Visible = false;
+        TrainController->TTEditPanelVisible = false; //added at v2.6.0 for two location message
         TrackBuildPanel->Visible = false;
         TrackElementPanel->Visible = false;
         LocationNameTextBox->Visible = false;
@@ -12927,7 +13068,9 @@ void TInterface::SetLevel1Mode(int Caller)
             }
         }
         else
+        {
             SaveMenuItem->Enabled = true;
+        }
         LoadSessionMenuItem->Enabled = true;
         ExitMenuItem->Enabled = true;
         ScreenGridFlag = false;
@@ -13330,6 +13473,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
         }
         UserGraphicReselectPanel->Visible = false;
         SelectLengthsFlag = false; // in case still set though probably won't be
+        EditMenu->Enabled = true; //added at v2.6.0 to allow edits for an empty screen so track elements can fill a selected area
         break;
 
     case AddGraphic:
@@ -14981,8 +15125,14 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
     {
         int H;
         int V;
+
         for(unsigned int x = 0; x < Track->ChangingLCVector.size(); x++)
         {
+            bool Manual = false;
+            if(Track->ChangingLCVector.at(x).ConsecSignals == 2) //manual
+            {
+                Manual = true;
+            }
             H = Track->ChangingLCVector.at(x).HLoc;
             V = Track->ChangingLCVector.at(x).VLoc;
             if((Now - Track->ChangingLCVector.at(x).StartTime) < TDateTime((Track->ChangingLCVector.at(x).ChangeDuration) / 86400))
@@ -14992,12 +15142,12 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
                 {
                     if(Track->ChangingLCVector.at(x).BarrierState == TTrack::Raising) // closing to trains
                     {
-                        Track->PlotRaisedLinkedLevelCrossingBarriers(1, Track->ChangingLCVector.at(x).BaseElementSpeedTag, H, V, Display);
+                        Track->PlotRaisedLinkedLevelCrossingBarriers(1, Track->ChangingLCVector.at(x).BaseElementSpeedTag, H, V, Display); //always plots red when raising
                     }
                     else
                     {
                         Track->PlotLoweredLinkedLevelCrossingBarriers(0, Track->ChangingLCVector.at(x).BaseElementSpeedTag, H, V,
-                            Track->ChangingLCVector.at(x).ConsecSignals, Display);
+                            Track->ChangingLCVector.at(x).ConsecSignals, Display, Manual);
                     }
                 }
                 else
@@ -15011,7 +15161,7 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
             {
                 if(Track->ChangingLCVector.at(x).BarrierState == TTrack::Raising)
                 {
-                    Track->PlotRaisedLinkedLevelCrossingBarriers(2, Track->ChangingLCVector.at(x).BaseElementSpeedTag, H, V, Display);
+                    Track->PlotRaisedLinkedLevelCrossingBarriers(2, Track->ChangingLCVector.at(x).BaseElementSpeedTag, H, V, Display); //always plot red when fully raised
                     Track->SetLinkedLevelCrossingBarrierAttributes(4, H, V, 0); // only set attr to 0 when fully raised
                     // attributes set to 2 when changing state, now reset to 0, no other actions needed
                 }
@@ -15019,7 +15169,7 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
                 // barriers lowering
                 {
                     Track->PlotLoweredLinkedLevelCrossingBarriers(1, Track->ChangingLCVector.at(x).BaseElementSpeedTag, H, V,
-                        Track->ChangingLCVector.at(x).ConsecSignals, Display);
+                        Track->ChangingLCVector.at(x).ConsecSignals, Display, Manual);
                     Track->SetLinkedLevelCrossingBarrierAttributes(5, H, V, 1); // only set attr to 1 when fully lowered
                     bool FoundFlag;
                     int TVPos = Track->GetVectorPositionFromTrackMap(46, H, V, FoundFlag);
@@ -15038,8 +15188,8 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
             }
         }
         for(int x = Track->ChangingLCVector.size() - 1; x >= 0; x--)
-        // now transfer lowering barrier object from the ChangingLCVector to the BarriersDownVector, reset the start timer (to time the barrier down period)
-        // and erase the object from the ChangingLCVector
+        // now transfer lowering barrier object from the ChangingLCVector to the BarriersDownVector if lowering, reset the start timer (to time the barrier down period)
+        // and for either raising or lowering erase the object from the ChangingLCVector
         {
             if(!Track->IsLCBarrierFlashingAtHV(0, Track->ChangingLCVector.at(x).HLoc, Track->ChangingLCVector.at(x).VLoc))
             {
@@ -15388,6 +15538,7 @@ void TInterface::ErrorLog(int Caller, AnsiString Message)
     PrefDirPanel->Visible = false;
     TimetablePanel->Visible = false;
     TimetableEditPanel->Visible = false;
+    TrainController->TTEditPanelVisible = false; //added at v2.6.0 for two location message
     OperatingPanel->Visible = false;
     FloatingPanel->Visible = false;
     ModeMenu->Enabled = false;
@@ -15701,7 +15852,9 @@ void TInterface::SaveSession(int Caller)
         // avoid characters in filename:=   / \ : * ? " < > |
         TimetableTimeStr = Utilities->Format96HHMMSS(TrainController->TTClockTime);
         TimetableTimeStr = TimetableTimeStr.SubString(1, 2) + '.' + TimetableTimeStr.SubString(4, 2) + '.' + TimetableTimeStr.SubString(7, 2);
-        SessionFileStr = CurDir + "\\" + SESSION_DIR_NAME + "\\Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " + RailwayTitle +
+//        SessionFileStr = CurDir + "\\" + SESSION_DIR_NAME + "\\Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " + RailwayTitle +
+//            "; " + TimetableTitle + ".ssn";
+        SessionFileStr = LoadSessionDialog->InitialDir + "\\Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " + RailwayTitle +
             "; " + TimetableTitle + ".ssn";
         std::ofstream SessionFile(SessionFileStr.c_str());
         if(!(SessionFile.fail()))
@@ -15787,8 +15940,7 @@ void TInterface::SaveSession(int Caller)
         }
         else
         {
-            TrainController->StopTTClockMessage(5, "Session file failed to open, session not saved.  Ensure that there is a folder named " + SESSION_DIR_NAME +
-                " in the folder where the 'Railway.exe' program file resides");
+            TrainController->StopTTClockMessage(5, "Session file failed to open - reason not known, session unable to be saved.");
         }
         TrainController->LastSessionSaveTTClockTime = TrainController->TTClockTime; //added at v2.5.0
         Screen->Cursor = TCursor(-2); // Arrow
@@ -15822,6 +15974,10 @@ void TInterface::LoadSession(int Caller)
         LoadSessionDialog->Filter = "Session file (*.ssn)|*.ssn";
         if(LoadSessionDialog->Execute())
         {
+            if(LoadSessionDialog->InitialDir != TPath::GetDirectoryName(LoadSessionDialog->FileName))//new at v2.6.0 to retain a new directory
+            {
+                LoadSessionDialog->InitialDir = TPath::GetDirectoryName(LoadSessionDialog->FileName);
+            }
             TrainController->LogEvent("LoadSession " + LoadSessionDialog->FileName);
             Screen->Cursor = TCursor(-11); // Hourglass;
             if(SessionFileIntegrityCheck(0, AnsiString(LoadSessionDialog->FileName).c_str()))
@@ -17098,8 +17254,7 @@ bool TInterface::SessionFileIntegrityCheck(int Caller, AnsiString FileName)
     else
     {
         InFile.close();
-        ShowMessage("Session file failed to open, unable to load session.  Ensure that there is a folder named " + SESSION_DIR_NAME +
-            " in the folder where the 'Railway.exe' program file resides");
+        ShowMessage("Session file failed to open - reason not known, unable to load session.");
         Utilities->CallLogPop(1263);
         return false;
     }
@@ -17843,7 +17998,7 @@ void TInterface::SaveTempTimetableFile(int Caller, AnsiString InFileName)
 
 void TInterface::SetTrackLengths(int Caller, int Distance, int SpeedLimit) // Distance & SpeedLimit are -1 for no change to that parameter
 /*
-                  Rules: Platforms are fixed length elements of 100m and aren't changed. Variable length elements can't be less than 20m.
+                  Rules: Platforms are fixed length elements of 100m and aren't changed - no, see note below. Variable length elements can't be less than 20m.
                   above changed in v2.4.0 to be variable as other track, but if <50m or >200m a warning is given
 
                   Enter with DistanceVector containing the PrefDir to be set, Distance containing the required sum of all element lengths,
@@ -18018,6 +18173,11 @@ void TInterface::SaveAsSubroutine(int Caller)
             SaveRailwayDialog->Filter = "Development file (*.dev)|*.dev";
         if(SaveRailwayDialog->Execute())
         {
+            if(SaveRailwayDialog->InitialDir != TPath::GetDirectoryName(SaveRailwayDialog->FileName))//new at v2.6.0 to retain a new directory
+            {
+                SaveRailwayDialog->InitialDir = TPath::GetDirectoryName(SaveRailwayDialog->FileName);
+                LoadRailwayDialog->InitialDir = TPath::GetDirectoryName(SaveRailwayDialog->FileName);
+            }
             Screen->Cursor = TCursor(-11); // Hourglass;
             TrainController->LogEvent("Save " + SaveRailwayDialog->FileName);
             AnsiString Extension = "";
@@ -18401,7 +18561,6 @@ void TInterface::LoadUserGraphic(int Caller) // new at v2.4.0
     {
         TrainController->LogEvent("LoadUserGraphic");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadUserGraphic");
-        LoadUserGraphicDialog;
         if(LoadUserGraphicDialog->Execute())
         {
             TrainController->LogEvent("LoadUserGraphic " + LoadUserGraphicDialog->FileName);

@@ -36,6 +36,7 @@
 #include <Graphics.hpp>
 #include <ComCtrls.hpp>
 #include <System.ImageList.hpp>
+#include <System.IOUtils.hpp>  //for directory manipulation
 #include <Vcl.ImgList.hpp>
 #include <fstream>
 #include <vector>
@@ -939,6 +940,10 @@ private:
 ///< true when an error has been thrown, stops repeated calls to ErrorLog and stops the MasterClockTimer function
     bool FileChangedFlag;
 ///< true when a loaded railway file has changed (used to warn user if opts to exit without saving)
+    bool FillSelectionMessageSentFlag;
+///< indicates that the message about filling a selected area with a chosen track element has been given, so it won't be given again
+    bool LCManualLowerBarriersMessageSent;
+///< indicates that the manual LC operation message has been given, so it won't be given again
     bool LengthWarningSentFlag;
 ///< indicates that the length selection applying to all elements in the selection warning has been given, so it won't be given again
     bool LoadSessionFlag;
@@ -947,6 +952,8 @@ private:
 ///< true when the left mouse button is down
     bool NewEntryInPreparationFlag;
 ///< true when a new timetable entry is being prepared in the timetable editor
+    bool PasteWarningSentFlag;
+///< indicates that the warning message about pasting overwriting the area has been given, so it won't be given again
     bool PreferredRoute;
 ///< true when AutoSig or preferred route building selected during operation (always same state as ConsecSignalsRoute)
     bool PreferredRouteFlag;

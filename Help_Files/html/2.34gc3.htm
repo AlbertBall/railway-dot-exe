@@ -2,7 +2,7 @@
 <HTML>
 <HEAD>
 <META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
-<TITLE>Files</TITLE>
+<TITLE>Folders and Files</TITLE>
 </HEAD>
 
 <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
@@ -29,7 +29,21 @@
 	<PARAM NAME="Keyword" VALUE=".jpg">
 </OBJECT>
 
-<P><B><A NAME="2.3"></A>2.3  Files</B></P>
+<P><B><A NAME="2.3"></A>2.3  Folders and Files</B></P>
+
+<P>When the program is opened for the first time a number of folders ('folder' is a modern term for 'directory') are created in the working folder (also known as the current directory), which is normally where the program itself - 'railway.exe' - resides.  To make sure that railway.exe is in the working folder set up a desktop shortcut to it and check in the shortcut properties that the 'Start in:' entry matches 'Target:', but without '\railway.exe'.</P>
+
+<P>The folders created by the program are:</P>
+
+<P>Formatted timetables - for user-readable timetables, see sections 5.10 and 5.12;<br>
+Images - for storing railway images, see section 3;<br>
+Graphics - for storing user-defined graphics, see sections 3.1 and 3.2;<br> 
+Performance logs - for storing logs of operating sessions, see section 6.7;<br>
+Program timetables - for program-readable timetables, see section 5;<br>
+Railways - for storing railways that are operational or being developed, see sections 3 and 4; and<br>
+Sessions - for storing operating sessions, see section 6.3.</P>
+
+<P>The folders for storing railways, timetables and sessions can be changed by the user if required, and these changes will be saved when the program closes and reloaded next time it opens.</P>
 
 <P>There are two types of railway file.  Development files, used during building and modifying a railway, have the extension '.dev'.  Railways that are ready for operation have the extension '.rly'.</P>
 
@@ -43,7 +57,7 @@
 
 <P>It is suggested that unwanted performance logs, sessions and images be deleted periodically as they can take up a considerable amount of space.  This particularly applies to image files.  If particular images are to be saved then it is best to convert them to '.jpg' files rather '.bmp' files, using a suitable image processing program, since '.jpg' files use much less memory.  If particular sessions, performance logs or images are to be saved, then it is probably best to rename them to something more meaningful so that they are easy to distinguish from other similar files - but be sure to retain the same extension (i.e. '.ssn', '.bmp' etc).</P>
 
-<P>All files apart from images - i.e. railways, timetables, performance logs and sessions, as well as an error log if a fatal error is encountered during program use, are all text files, and are readable using a word processor or text editor, though it is strongly recommended that any file that is used by the program shouldn't be altered outside the program or it may not work correctly afterwards.   A number of other files are used, temporary files with extension .tmp that store timetables when multiple railways are in use at the same time (these can be deleted after all railways are closed), a 'Background.col' file that stores the current background colour, and 'Signal.hnd' that stores the trackside signal location - left hand or right hand.</P>
+<P>All files apart from images - i.e. railways, timetables, performance logs and sessions, as well as an error log if a fatal error is encountered during program use, are all text files, and are readable using a word processor or text editor, though it is strongly recommended that any file that is used by the program shouldn't be altered outside the program or it may not work correctly afterwards.   A number of other files are used, temporary files with extension .tmp that store timetables when multiple railways are in use at the same time (these can be deleted after all railways are closed), a configuration file 'Config.txt' that stores the current background colour, the trackside signal location - left hand or right hand, and the folder locations for railways, timetables and sessions that are in use when the program closes.</P>
 
 <P>Help.chm is the program's on-screen help file, opened by selecting 'Help' then 'Railway help'.</P>
 

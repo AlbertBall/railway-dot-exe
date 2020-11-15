@@ -731,7 +731,10 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 ///< true if train was on an AutoSigsRoute when removed by the signaller
     bool OpActionPanelVisible;
 ///<new v2.2.0 flag to prevent time to act functions when not visible
-
+    bool TwoOrMoreLocationsWarningGiven;
+///<new at v2.6.0 to allow loops
+    bool TTEditPanelVisible;
+///<new at v2.6.0 so potential error message only shows in TTEdit mode
     bool SSHigh, MRSHigh, MRSLow, MassHigh, BFHigh, BFLow, PwrHigh, SigSHigh, SigSLow;
 ///<Message flags in TT checks to stop being given twice
 

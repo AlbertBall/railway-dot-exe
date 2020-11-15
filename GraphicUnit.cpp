@@ -2136,30 +2136,58 @@ TRailGraphics::TRailGraphics()
     LCBothHor->LoadFromResourceName(0, "LCBothHor");
     LCBothHor->Transparent = true;
     LCBothHor->TransparentColor = clB5G5R5;
+    LCBothHorMan = new Graphics::TBitmap;
+    LCBothHorMan->LoadFromResourceName(0, "LCBothHorMan");
+    LCBothHorMan->Transparent = true;
+    LCBothHorMan->TransparentColor = clB5G5R5;
     LCBotHor = new Graphics::TBitmap;
     LCBotHor->LoadFromResourceName(0, "LCBotHor");
     LCBotHor->Transparent = true;
     LCBotHor->TransparentColor = clB5G5R5;
+    LCBotHorMan = new Graphics::TBitmap;
+    LCBotHorMan->LoadFromResourceName(0, "LCBotHorMan");
+    LCBotHorMan->Transparent = true;
+    LCBotHorMan->TransparentColor = clB5G5R5;
     LCBothVer = new Graphics::TBitmap;
     LCBothVer->LoadFromResourceName(0, "LCBothVer");
     LCBothVer->Transparent = true;
     LCBothVer->TransparentColor = clB5G5R5;
+    LCBothVerMan = new Graphics::TBitmap;
+    LCBothVerMan->LoadFromResourceName(0, "LCBothVerMan");
+    LCBothVerMan->Transparent = true;
+    LCBothVerMan->TransparentColor = clB5G5R5;
     LCLHSVer = new Graphics::TBitmap;
     LCLHSVer->LoadFromResourceName(0, "LCLHSVer");
     LCLHSVer->Transparent = true;
     LCLHSVer->TransparentColor = clB5G5R5;
+    LCLHSVerMan = new Graphics::TBitmap;
+    LCLHSVerMan->LoadFromResourceName(0, "LCLHSVerMan");
+    LCLHSVerMan->Transparent = true;
+    LCLHSVerMan->TransparentColor = clB5G5R5;
     LCPlain = new Graphics::TBitmap;
     LCPlain->LoadFromResourceName(0, "LCPlain");
     LCPlain->Transparent = true;
     LCPlain->TransparentColor = clB5G5R5;
+    LCPlainMan = new Graphics::TBitmap;
+    LCPlainMan->LoadFromResourceName(0, "LCPlainMan");
+    LCPlainMan->Transparent = true;
+    LCPlainMan->TransparentColor = clB5G5R5;
     LCRHSVer = new Graphics::TBitmap;
     LCRHSVer->LoadFromResourceName(0, "LCRHSVer");
     LCRHSVer->Transparent = true;
     LCRHSVer->TransparentColor = clB5G5R5;
+    LCRHSVerMan = new Graphics::TBitmap;
+    LCRHSVerMan->LoadFromResourceName(0, "LCRHSVerMan");
+    LCRHSVerMan->Transparent = true;
+    LCRHSVerMan->TransparentColor = clB5G5R5;
     LCTopHor = new Graphics::TBitmap;
     LCTopHor->LoadFromResourceName(0, "LCTopHor");
     LCTopHor->Transparent = true;
     LCTopHor->TransparentColor = clB5G5R5;
+    LCTopHorMan = new Graphics::TBitmap;
+    LCTopHorMan->LoadFromResourceName(0, "LCTopHorMan");
+    LCTopHorMan->Transparent = true;
+    LCTopHorMan->TransparentColor = clB5G5R5;
 
     // additional pointers copied from existing pointers
     sm68 = sm1;
@@ -3214,6 +3242,13 @@ TRailGraphics::~TRailGraphics()
     delete LCPlain;
     delete LCRHSVer;
     delete LCTopHor;
+    delete LCBothHorMan;
+    delete LCBotHorMan;
+    delete LCBothVerMan;
+    delete LCLHSVerMan;
+    delete LCPlainMan;
+    delete LCRHSVerMan;
+    delete LCTopHorMan;
 
     delete SpeedBut68NormBlackGlyph; // added after v2.3.0 (missed)
     delete SpeedBut69NormBlackGlyph; // added after v2.3.0 (missed)
@@ -4081,6 +4116,13 @@ void TRailGraphics::ChangeAllTransparentColours(TColor NewTransparentColour, TCo
     ChangeTransparentColour(LCPlain, LCPlain, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(LCRHSVer, LCRHSVer, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(LCTopHor, LCTopHor, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(LCBothHorMan, LCBothHorMan, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(LCBotHorMan, LCBotHorMan, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(LCBothVerMan, LCBothVerMan, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(LCLHSVerMan, LCLHSVerMan, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(LCPlainMan, LCPlainMan, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(LCRHSVerMan, LCRHSVerMan, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(LCTopHorMan, LCTopHorMan, NewTransparentColour, OldTransparentColour);
 
 // change the grid to the nearest grey colour to the background
     if(NewTransparentColour != clB5G5R5)

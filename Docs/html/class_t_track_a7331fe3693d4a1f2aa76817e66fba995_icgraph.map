@@ -1,0 +1,12 @@
+<map id="TTrack::IsLCBarrierUpAtHV" name="TTrack::IsLCBarrierUpAtHV">
+<area shape="rect" id="node1" title="True if a closed (to trains) level crossing is found at H &amp; V." alt="" coords="1283,73,1463,99"/>
+<area shape="rect" id="node2" href="$class_t_one_route.html#a92dbe2a2df334da0b20e54683c0fba8e" title="After a route has been selected successfully this function sets all LC change values appropriately fo..." alt="" coords="1020,73,1235,99"/>
+<area shape="rect" id="node3" href="$class_t_one_route.html#a53496c398dcdb3a644801c4e74d47d01" title="Called after a non&#45;preferred (i.e. unrestricted) route has been selected and has finished flashing,..." alt="" coords="761,32,972,73"/>
+<area shape="rect" id="node9" href="$class_t_one_route.html#a36ba8adc8b4a47908ee4e1b8e75792ca" title="Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and ..." alt="" coords="773,97,960,139"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="523,71,709,98"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="519,5,713,47"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="278,71,437,98"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,71,196,98"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="244,13,471,39"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#aa639148521a793641e694b15486b5055" title=" " alt="" coords="531,123,701,164"/>
+</map>

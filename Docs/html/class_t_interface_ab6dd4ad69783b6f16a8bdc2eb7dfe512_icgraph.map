@@ -1,0 +1,7 @@
+<map id="TInterface::SetLevel2OperMode" name="TInterface::SetLevel2OperMode">
+<area shape="rect" id="node1" title="Sets the Level2OperMode user mode, using the Level2OperMode variable to determine the mode." alt="" coords="433,71,636,98"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a7ccec66d1d0a81f124397af39f43da32" title=" " alt="" coords="208,5,385,47"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a75f68c918750c0e007ea7a85d718e2ab" title=" " alt="" coords="212,71,381,98"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a26619c94a8ad27b574e0963dd123dc2a" title=" " alt="" coords="211,123,382,164"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a9cef18571e29b70d02ba9a92a830b3b8" title=" " alt="" coords="5,71,160,98"/>
+</map>

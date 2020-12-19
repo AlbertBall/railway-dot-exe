@@ -1,0 +1,16 @@
+<map id="TOnePrefDir::GetStartAndEndPrefDirElements" name="TOnePrefDir::GetStartAndEndPrefDirElements">
+<area shape="rect" id="node1" title="Called when searching for start and end PrefDirElements when setting up automatic signals routes in P..." alt="" coords="5,668,177,709"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="980,339,1127,366"/>
+<area shape="rect" id="node3" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="483,79,659,120"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="980,574,1127,601"/>
+<area shape="rect" id="node5" href="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc" title="Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return &#45;1." alt="" coords="719,449,932,491"/>
+<area shape="rect" id="node6" href="$class_t_pref_dir_element.html#a35cd9c18012bd537fa988a32c510b01b" title="Returns the XLink array position." alt="" coords="225,937,424,963"/>
+<area shape="rect" id="node7" href="$class_t_one_pref_dir.html#ae0e03d494164fe961da51b0be8492934" title="Called by GetStartAndEndPrefDirElements..." alt="" coords="472,668,671,709"/>
+<area shape="rect" id="node9" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="744,734,907,761"/>
+<area shape="rect" id="node10" href="$class_t_one_pref_dir.html#ab35c683ba0ec156d19d4db991046b7d2" title="Checks ElementIn and returns true only if a single prefdir set at that H&amp;V, with EntryPos giving entr..." alt="" coords="225,375,424,416"/>
+<area shape="rect" id="node14" href="$class_t_all_routes.html#aace498b67ccef13364a1afa1f5f15311" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="477,785,665,811"/>
+<area shape="rect" id="node8" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="738,567,913,608"/>
+<area shape="rect" id="node11" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="508,339,635,366"/>
+<area shape="rect" id="node12" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="734,332,917,373"/>
+<area shape="rect" id="node13" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="723,281,928,307"/>
+</map>

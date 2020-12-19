@@ -1,0 +1,8 @@
+<map id="TOneRoute::RouteImageMarker" name="TOneRoute::RouteImageMarker">
+<area shape="rect" id="node1" title="Used when creating a bitmap image to display the route colours and direction arrows (as on screen dur..." alt="" coords="5,107,209,133"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="267,5,413,32"/>
+<area shape="rect" id="node3" href="$class_t_track.html#a5d25871e34f26d3c4c878fd4707ed375" title=" " alt="" coords="269,56,411,83"/>
+<area shape="rect" id="node4" href="$class_t_track.html#ac42bd1e1e148a91396310b1077d2d8e0" title=" " alt="" coords="269,107,411,133"/>
+<area shape="rect" id="node5" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="257,157,423,184"/>
+<area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="267,208,413,235"/>
+</map>

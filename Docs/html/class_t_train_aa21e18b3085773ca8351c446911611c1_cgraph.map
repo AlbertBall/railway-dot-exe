@@ -1,0 +1,26 @@
+<map id="TTrain::PlotAlternativeTrackRouteGraphic" name="TTrain::PlotAlternativeTrackRouteGraphic">
+<area shape="rect" id="node1" title="When a train moves off a bridge the other track may contain a route or have a train on it that has be..." alt="" coords="5,781,185,823"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1503,485,1649,511"/>
+<area shape="rect" id="node3" href="$class_t_pref_dir_element.html#af00e0755cd716b4d101abbae02c73ca2" title="Returns ELink." alt="" coords="243,1346,422,1373"/>
+<area shape="rect" id="node4" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1267,165,1443,207"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1503,957,1649,983"/>
+<area shape="rect" id="node6" href="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a" title="Returns a constant reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ch..." alt="" coords="1259,738,1452,765"/>
+<area shape="rect" id="node7" href="$class_t_all_routes.html#a7eda7a4b535c7538e217bbbc4d878071" title="Retrieve up to two TRouteElementPair entries from Route2MultiMap at H &amp; V, the first as a function re..." alt="" coords="1257,1211,1453,1252"/>
+<area shape="rect" id="node8" href="$class_t_pref_dir_element.html#a9dfc04bfa3abf32eb043d771381f971a" title="Returns route graphic." alt="" coords="480,840,659,881"/>
+<area shape="rect" id="node11" href="$class_t_pref_dir_element.html#a0edec31fc9787847e3b6240bab91783c" title="Returns TrackVectorPosition." alt="" coords="244,1397,421,1439"/>
+<area shape="rect" id="node12" href="$class_t_pref_dir_element.html#a35cd9c18012bd537fa988a32c510b01b" title="Returns the XLink array position." alt="" coords="233,1463,432,1490"/>
+<area shape="rect" id="node13" href="$class_t_all_routes.html#aa92b37f73176fcf3454688bb15b9f64c" title="Checks whether the preferred direction element at TrackVectorPosition with XLinkPos value is in a loc..." alt="" coords="943,151,1208,207"/>
+<area shape="rect" id="node15" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="1284,383,1427,410"/>
+<area shape="rect" id="node16" href="$class_t_train.html#a5fdef825574f0e546ab25169e9f8445d" title="Plots the train on the display in normal (zoomed&#45;in) mode." alt="" coords="275,573,391,599"/>
+<area shape="rect" id="node21" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="994,637,1157,663"/>
+<area shape="rect" id="node22" href="$class_t_all_routes.html#aace498b67ccef13364a1afa1f5f15311" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="707,687,895,714"/>
+<area shape="rect" id="node23" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="982,896,1169,937"/>
+<area shape="rect" id="node9" href="$class_t_pref_dir_element.html#ad58c8d4fa30c04fa9d8e84ae55c7ce61" title="picks up the appropriate route graphic" alt="" coords="711,840,890,881"/>
+<area shape="rect" id="node10" href="$class_t_pref_dir_element.html#ae8ee9f59578f80d23aebfdb9fff041d4" title="determines and loads EXNumber (see above)" alt="" coords="1266,789,1445,831"/>
+<area shape="rect" id="node14" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="1273,114,1438,141"/>
+<area shape="rect" id="node17" href="$class_t_train.html#a247bd95a7c648367736b116f553f4e54" title="Plot the train&#39;s headcode character corresponding to ArrayNumber." alt="" coords="489,561,650,587"/>
+<area shape="rect" id="node18" href="$class_t_train.html#a0e0ab54415645b04cbdeadd829d27898" title="When a train moves onto an element that element has its TrainIDOnElement value set to the TrainID val..." alt="" coords="714,535,887,562"/>
+<area shape="rect" id="node19" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="977,535,1174,562"/>
+<area shape="rect" id="node20" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="1295,535,1416,562"/>
+<area shape="rect" id="node24" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="1256,855,1455,882"/>
+</map>

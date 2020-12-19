@@ -1,0 +1,12 @@
+<map id="TTrack::IsPlatformOrNamedNonStationLocationPresent" name="TTrack::IsPlatformOrNamedNonStationLocationPresent">
+<area shape="rect" id="node1" title="True if a non&#45;station named location or platform at HLoc &amp; VLoc." alt="" coords="723,47,905,88"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#ab34f55bab5984b72264d7275660a3463" title=" " alt="" coords="245,5,428,47"/>
+<area shape="rect" id="node3" href="$class_t_track.html#a7c2888cb7acea2b9c65c5f9cc538df66" title="Check whether there is a platform present at HLoc &amp; VLoc at the same side as the signal represented b..." alt="" coords="479,105,675,131"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#acc36eb15dae8d564e6d91f8c6596065c" title="Called during track building when setting distances, to calculate and set the individual track elemen..." alt="" coords="485,54,669,81"/>
+<area shape="rect" id="node4" href="$class_t_track.html#afb6bf873ba2e4107cf462f9d42dbe33f" title="Called by TInterface::SaveOperatingImage1Click to add all track element graphics to the image file in..." alt="" coords="243,88,431,129"/>
+<area shape="rect" id="node6" href="$class_t_track.html#ab3530b4af2a4b2a9cd1c1b480a19298d" title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI..." alt="" coords="246,174,427,201"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a4d75015545313004ffd5022c020f4edf" title=" " alt="" coords="15,68,185,109"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#a14d8976ee13c85f12eab634de845baf1" title=" " alt="" coords="14,133,186,175"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#ab73377784e302350bcc4f1fed4f8d90a" title=" " alt="" coords="14,199,186,240"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#a69b645fe4cc36d0bea7de3fca553bd6a" title=" " alt="" coords="5,264,195,305"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="TTrack::WriteGraphicsToImage" name="TTrack::WriteGraphicsToImage">
+<area shape="rect" id="node1" title="Called by SaveImageNoGridMenuItemClick, SaveImageAndGridMenuItemClick amd SaveImageAndPrefDirsMenuIte..." alt="" coords="5,87,207,114"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="495,112,641,139"/>
+<area shape="rect" id="node3" href="$class_t_track.html#a5d25871e34f26d3c4c878fd4707ed375" title=" " alt="" coords="280,36,421,63"/>
+<area shape="rect" id="node4" href="$class_t_track.html#ac42bd1e1e148a91396310b1077d2d8e0" title=" " alt="" coords="280,87,421,114"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="495,175,641,202"/>
+<area shape="rect" id="node6" href="$class_t_track.html#a1092232428ee654facf8f53340c13f74" title="A range&#45;checked version of UserGraphicVector.at(At)" alt="" coords="255,138,447,164"/>
+</map>

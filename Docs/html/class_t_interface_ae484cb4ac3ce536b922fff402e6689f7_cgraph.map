@@ -1,0 +1,10 @@
+<map id="TInterface::CheckInterface" name="TInterface::CheckInterface">
+<area shape="rect" id="node1" title="Check the interface part of a session file &amp; return false for error, called during SessionFileIntegri..." alt="" coords="5,157,177,184"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="241,5,388,32"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37" title="checks that the value is a string (&#39;0&#39; or CR accepted as delimiters), returns true for success and re..." alt="" coords="452,125,623,166"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a1b39fffcd392bfb0f5a2ca393de3a6bb" title="checks that the value is a bool returns true for success" alt="" coords="233,107,397,133"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a5c7332a6b45894902f271f0ab9ab87db" title="checks that the value is a double, returns true for success" alt="" coords="225,157,404,184"/>
+<area shape="rect" id="node6" href="$class_t_utilities.html#a4d229af6e8943da1936bcbcc1c83846b" title="checks that the value is an int lying between Lowest &amp; Highest (inclusive), returns true for success" alt="" coords="239,208,391,235"/>
+<area shape="rect" id="node7" href="$class_t_utilities.html#a8bc6745e0433d55022e016b6551f04a0" title="checks that the value is a string (&#39;0&#39; only accepted as the delimiter), returns true for success" alt="" coords="229,259,401,301"/>
+<area shape="rect" id="node8" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="241,325,388,352"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="TUtilities::LoadFileDouble" name="TUtilities::LoadFileDouble">
+<area shape="rect" id="node1" title="loads a double value from the file (converts from a string to a double) and uses the local decimal po..." alt="" coords="5,5,175,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#a0aac90f10a08736514da3b3e02129e1e" title="loads a string value from the file" alt="" coords="223,5,385,32"/>
+</map>

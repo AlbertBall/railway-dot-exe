@@ -1,0 +1,6 @@
+<map id="TTrainController::CheckShuttleServiceIntegrity" name="TTrainController::CheckShuttleServiceIntegrity">
+<area shape="rect" id="node1" title="Check that each shuttle service ends either in Fns or Fxx&#45;sh (though a single service can&#39;t end in Fx..." alt="" coords="5,57,204,98"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="261,5,407,32"/>
+<area shape="rect" id="node3" href="$class_t_train_controller.html#a8df4599a1ae95093241fb707711af894" title="Give a user message during timetable integrity checking if GiveMessages is true, ignore if false." alt="" coords="252,57,416,98"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="261,123,407,149"/>
+</map>

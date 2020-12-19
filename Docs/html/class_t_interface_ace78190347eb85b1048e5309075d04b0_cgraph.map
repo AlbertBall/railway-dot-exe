@@ -1,0 +1,6 @@
+<map id="TInterface::CheckPerformanceFile" name="TInterface::CheckPerformanceFile">
+<area shape="rect" id="node1" title="Check the performance file embedded within a session file &amp; return false for error,..." alt="" coords="5,64,223,91"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="283,5,429,32"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37" title="checks that the value is a string (&#39;0&#39; or CR accepted as delimiters), returns true for success and re..." alt="" coords="271,57,441,98"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="283,123,429,149"/>
+</map>

@@ -1,0 +1,20 @@
+<map id="TOnePrefDir::LoadOldPrefDir" name="TOnePrefDir::LoadOldPrefDir">
+<area shape="rect" id="node1" title="Old version of LoadPrefDir, used during development when the save format changed so the old files cou..." alt="" coords="5,529,192,556"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="745,185,892,212"/>
+<area shape="rect" id="node3" href="$class_t_one_pref_dir.html#a8a7ddf3981800ec0df1225c9e5aa52c2" title="Diagnostic validity check." alt="" coords="247,323,429,364"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="745,361,892,388"/>
+<area shape="rect" id="node6" href="$class_t_one_pref_dir.html#ad2e6adb7b634b17cab9cd03610a0f8e3" title="Empty the existing vectors &amp; map." alt="" coords="253,580,423,606"/>
+<area shape="rect" id="node7" href="$class_t_pref_dir_element.html#a13526cb4ee94a708a7bfef517abaa605" title="picks up the EntryDirectionGraphicPtr for preferred directions" alt="" coords="240,631,436,672"/>
+<area shape="rect" id="node8" href="$class_t_pref_dir_element.html#a5d03028241e6c38e473882120d5bcc68" title="picks up the green or red route direction graphic" alt="" coords="240,696,436,738"/>
+<area shape="rect" id="node9" href="$class_t_pref_dir_element.html#a10b4ff375e779de7cc2a16344959bb31" title="picks up the EXGraphicPtr for preferred directions" alt="" coords="254,463,422,504"/>
+<area shape="rect" id="node11" href="$class_t_pref_dir_element.html#ad58c8d4fa30c04fa9d8e84ae55c7ce61" title="picks up the appropriate route graphic" alt="" coords="249,398,427,439"/>
+<area shape="rect" id="node12" href="$class_t_utilities.html#a9a0ec4d0c686c71157c371d647824777" title="loads a bool value from the file" alt="" coords="261,762,415,789"/>
+<area shape="rect" id="node13" href="$class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c" title="loads an int value from the file" alt="" coords="267,813,409,840"/>
+<area shape="rect" id="node14" href="$class_t_utilities.html#a0aac90f10a08736514da3b3e02129e1e" title="loads a string value from the file" alt="" coords="257,864,419,890"/>
+<area shape="rect" id="node15" href="$class_t_one_pref_dir.html#ac5f8d2864f0510cf73cb9883b520ec9f" title="Store a single pref dir element in the vector &amp; map." alt="" coords="253,178,423,219"/>
+<area shape="rect" id="node18" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="509,244,672,270"/>
+<area shape="rect" id="node4" href="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc" title="Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return &#45;1." alt="" coords="484,295,697,336"/>
+<area shape="rect" id="node10" href="$class_t_pref_dir_element.html#ae8ee9f59578f80d23aebfdb9fff041d4" title="determines and loads EXNumber (see above)" alt="" coords="501,463,680,504"/>
+<area shape="rect" id="node16" href="$class_t_one_pref_dir.html#a26a1ee9d1ced0d53e35936097d4896f0" title="Return the vector position of the last element in the vector (i.e. one less than the vector size)" alt="" coords="504,178,677,219"/>
+<area shape="rect" id="node17" href="$class_t_pref_dir_element.html#a473c0faabe4d0fb8c4296c9c70dbe7d3" title="Sends a list of PrefDirElement values to Utilities&#45;&gt;CallLog file for debugging purposes." alt="" coords="499,76,683,102"/>
+</map>

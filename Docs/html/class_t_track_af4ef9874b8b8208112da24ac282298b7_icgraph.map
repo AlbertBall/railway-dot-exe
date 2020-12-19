@@ -1,0 +1,10 @@
+<map id="TTrack::CheckUserGraphics" name="TTrack::CheckUserGraphics">
+<area shape="rect" id="node1" title="checks all user graphics &amp; returns true for success" alt="" coords="940,46,1125,73"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a1072fd152bca3234e6730efa17f84670" title="Check integrity of a railway file prior to loading, return true for success." alt="" coords="715,5,869,47"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a3904f26b67b9512507960187b37b6f7b" title="Checks session file integrity prior to loading, true for success." alt="" coords="692,71,892,112"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="484,13,643,39"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="244,5,435,47"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="483,78,644,105"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="260,78,419,105"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,78,196,105"/>
+</map>

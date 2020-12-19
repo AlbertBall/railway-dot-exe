@@ -1,0 +1,13 @@
+<map id="TDisplay::ResetZoomInOffsets" name="TDisplay::ResetZoomInOffsets">
+<area shape="rect" id="node1" title="Reset the zoomed&#45;in screen display to the &#39;Home&#39; position." alt="" coords="1148,56,1345,83"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a19e64ee6952b0fd3c260eb05c14a34c8" title=" " alt="" coords="913,5,1100,32"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="698,49,857,76"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#ac5e079dc6f8023485367f6db2e693caa" title="Called during ClearEverything and on startup to reset all major railway data values." alt="" coords="939,111,1074,137"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="451,38,641,79"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a686430e962991bc32742399164187b62" title="First check whether a railway file has changed and if so ask user if really wants to close it without..." alt="" coords="689,111,865,137"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#a0659e748042e378f3e325652c9c2e6d2" title="constructor" alt="" coords="706,161,849,188"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#a928eba983ac5132e1ae7799f8330451e" title=" " alt="" coords="465,103,627,145"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,195,403,221"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="465,220,627,247"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,195,196,221"/>
+</map>

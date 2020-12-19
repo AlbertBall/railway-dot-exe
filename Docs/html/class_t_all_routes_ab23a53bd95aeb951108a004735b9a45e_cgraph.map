@@ -1,0 +1,12 @@
+<map id="TAllRoutes::ClearRouteDuringRouteBuildingAt" name="TAllRoutes::ClearRouteDuringRouteBuildingAt">
+<area shape="rect" id="node1" title="When attaching a new route section to an existing route, it is sometimes necessary to erase the origi..." alt="" coords="5,233,200,274"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="759,101,905,128"/>
+<area shape="rect" id="node3" href="$class_t_pref_dir_element.html#af00e0755cd716b4d101abbae02c73ca2" title="Returns ELink." alt="" coords="269,405,448,432"/>
+<area shape="rect" id="node4" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="526,35,702,77"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="759,228,905,255"/>
+<area shape="rect" id="node6" href="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a" title="Returns a constant reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ch..." alt="" coords="517,152,711,179"/>
+<area shape="rect" id="node7" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="276,456,441,483"/>
+<area shape="rect" id="node8" href="$class_t_all_routes.html#aacbc3765d695c99cf64ad2826792508f" title="Erases the route element from Route2MultiMap and from the PrefDirVector." alt="" coords="248,240,469,267"/>
+<area shape="rect" id="node9" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="527,304,701,331"/>
+<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="533,203,695,229"/>
+</map>

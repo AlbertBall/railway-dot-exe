@@ -1,0 +1,5 @@
+<map id="TTrack::ResetAllTrainIDElements" name="TTrack::ResetAllTrainIDElements">
+<area shape="rect" id="node1" title="Track elements have members that indicates whether and on what track a train is present (TrainIDOnEle..." alt="" coords="424,13,637,39"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a7e2abfcc38e51933883d959c4155aca0" title="unplot all trains from screen" alt="" coords="219,5,376,47"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="5,5,171,47"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="TTrack::DecrementValuesInGapsAndTrackAndNameMaps" name="TTrack::DecrementValuesInGapsAndTrackAndNameMaps">
+<area shape="rect" id="node1" title="After an element has been erased from the TrackVector, all the later elements are moved down one...." alt="" coords="5,23,203,65"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="461,5,608,32"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="461,68,608,95"/>
+<area shape="rect" id="node4" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="251,31,413,57"/>
+</map>

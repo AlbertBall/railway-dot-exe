@@ -1,0 +1,8 @@
+<map id="TAllRoutes::SaveRoutes" name="TAllRoutes::SaveRoutes">
+<area shape="rect" id="node1" title="Save railway route information to a session file or an error file." alt="" coords="5,83,168,109"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="435,5,581,32"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#a86ed634e8a9d7ca534a324954f4a7a2f" title="stores the int value to the file, then a CR" alt="" coords="437,57,579,84"/>
+<area shape="rect" id="node4" href="$class_t_one_pref_dir.html#a3d115535b2e2d2ea05e210997a3f525c" title="Save the preferred direction vector to a file." alt="" coords="216,105,383,146"/>
+<area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="435,167,581,193"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a06a211ebaa112f3fac0edc5b238ef876" title="stores &#39;1&#39; if the bool is true or &#39;0&#39; if false to the file, then a CR" alt="" coords="431,112,585,139"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="TTrainController::BuildContinuationTrainExpectationMultiMap" name="TTrainController::BuildContinuationTrainExpectationMultiMap">
+<area shape="rect" id="node1" title="populate the ContinuationTrainExpectationMultiMap during timetable loading" alt="" coords="1576,104,1797,145"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a193bc964187b0ae255251d2c7136540a" title="Carry out further detailed timetable consistency checks, return true for success." alt="" coords="1364,104,1528,145"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a148e3f99d39f596dbd7d490403936154" title="Convert a stored timetable file (either as a stand alone file or within a session file) to a loaded t..." alt="" coords="1145,71,1316,112"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a4ffe7e6eb2421577f670a52f556aef97" title="Check the integrity of a stored timetable file (either as a stand alone file or within a session file..." alt="" coords="1145,136,1316,177"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a92d5a9e07b9362dee2296b7759a1c83d" title="Loads timetable into memory from a session file, true if successful." alt="" coords="917,5,1088,47"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#a15a2f5ad77e4f6c2b0cc6314224dfb78" title=" " alt="" coords="917,71,1088,112"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="451,13,612,39"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a3904f26b67b9512507960187b37b6f7b" title="Checks session file integrity prior to loading, true for success." alt="" coords="660,35,860,76"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,13,403,39"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,13,196,39"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#a2f501868bbee2310af99bf2e8e265c59" title=" " alt="" coords="908,136,1097,177"/>
+</map>

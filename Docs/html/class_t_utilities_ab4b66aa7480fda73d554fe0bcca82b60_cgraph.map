@@ -1,0 +1,4 @@
+<map id="TUtilities::CheckAndReadFileInt" name="TUtilities::CheckAndReadFileInt">
+<area shape="rect" id="node1" title="checks that the value is an int lying between Lowest &amp; Highest (inclusive), returns true for success ..." alt="" coords="5,5,176,47"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37" title="checks that the value is a string (&#39;0&#39; or CR accepted as delimiters), returns true for success and re..." alt="" coords="224,5,395,47"/>
+</map>

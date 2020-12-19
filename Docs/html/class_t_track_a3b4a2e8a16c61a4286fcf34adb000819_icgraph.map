@@ -1,0 +1,9 @@
+<map id="TTrack::DiagonalFouledByTrain" name="TTrack::DiagonalFouledByTrain">
+<area shape="rect" id="node1" title=" " alt="" coords="932,35,1107,76"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a1cd9f01bcbcc37fb31712b7007d04dac" title="Examines a flashing route (i.e. one being set) and returns true if a moving train is detected on it a..." alt="" coords="685,5,884,47"/>
+<area shape="rect" id="node6" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="717,71,852,98"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="451,15,637,42"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,42,403,69"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,42,196,69"/>
+<area shape="rect" id="node7" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="461,67,627,94"/>
+</map>

@@ -1,0 +1,28 @@
+<map id="TTrack::EraseTrackElement" name="TTrack::EraseTrackElement">
+<area shape="rect" id="node1" title="Erases all active and inactive track elements at HLocInput &amp; VLocInput from the vectors,..." alt="" coords="5,811,188,837"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9" title="Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent ..." alt="" coords="479,1363,646,1389"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="992,840,1139,867"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="992,992,1139,1019"/>
+<area shape="rect" id="node8" href="$class_t_track.html#aaf3f48b8df9877499aaf4c05f804426c" title="Validity test." alt="" coords="468,774,657,815"/>
+<area shape="rect" id="node9" href="$class_t_track.html#a694370e3ec67d43da1d8333e06d9ebba" title="Searches LocationNameMultiMap to check if the element pointed to by the TTrackVectorIterator has the ..." alt="" coords="736,723,919,765"/>
+<area shape="rect" id="node11" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="725,840,930,867"/>
+<area shape="rect" id="node12" href="$class_t_track.html#a6fa2d4f2c6c94e2c6b4f7218f5356108" title="Validity test." alt="" coords="464,543,661,585"/>
+<area shape="rect" id="node13" href="$class_t_track.html#a4045fe3f4a71f30a137a7e4581d39231" title="Validity test." alt="" coords="469,267,656,293"/>
+<area shape="rect" id="node14" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="740,286,915,327"/>
+<area shape="rect" id="node15" href="$class_t_track.html#a2095a52c4b914bf6b29529a2d82043e9" title="After an element has been erased from the TrackVector, all the later elements are moved down one...." alt="" coords="464,1262,661,1303"/>
+<area shape="rect" id="node16" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="746,1160,909,1187"/>
+<area shape="rect" id="node17" href="$class_t_track.html#af8f925ac5e7301c1094cec76808e1140" title="After an element has been erased from the InactiveTrackVector, all the later elements are moved down ..." alt="" coords="734,67,921,109"/>
+<area shape="rect" id="node18" href="$class_t_track.html#a13a1cc9770c8729d04ad4c0130f91634" title="Examines LocationNameMultiMap and if the LocationName is found all elements at that H &amp; V (in both ac..." alt="" coords="236,917,415,958"/>
+<area shape="rect" id="node21" href="$class_t_text_handler.html#a0fb5dca23fd07e642c611381b6344746" title="look in TextVector for text item &#39;Name&#39;, and if found return true and return its position in &amp;HPos an..." alt="" coords="485,1575,641,1601"/>
+<area shape="rect" id="node22" href="$class_t_fixed_track_piece.html#a13eca615770d45f35bb808eaa264fda9" title="Plot the element on the railway display at position HLocInput &amp; VLocInput." alt="" coords="468,633,657,674"/>
+<area shape="rect" id="node24" href="$class_t_track.html#ac416bb4b69d75d4c5c0303a2cadd52ca" title="Called by EraseTrackElement after the element has been erased and the vector positions changed,..." alt="" coords="711,133,944,160"/>
+<area shape="rect" id="node25" href="$class_t_track.html#a98e6a381eec13868c31a28f450c1a361" title=" " alt="" coords="240,1819,411,1845"/>
+<area shape="rect" id="node26" href="$class_t_text_handler.html#a5741d1b36f1245b55926cb1243046307" title="look for a text item in the vicinity of HPosInput &amp; VPosInput &amp; if TextToErase is null then erase any..." alt="" coords="243,1280,408,1307"/>
+<area shape="rect" id="node4" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="747,1363,908,1389"/>
+<area shape="rect" id="node6" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="730,1616,925,1643"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a1092232428ee654facf8f53340c13f74" title="A range&#45;checked version of UserGraphicVector.at(At)" alt="" coords="731,1413,923,1440"/>
+<area shape="rect" id="node10" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="736,606,919,647"/>
+<area shape="rect" id="node19" href="$class_t_track.html#ae37fe26f1d8ed9ef0f498ae12347e0ac" title="Takes an adjusted vector position value from either vector (if active, Position = &#45;TruePos &#45;1,..." alt="" coords="463,942,663,983"/>
+<area shape="rect" id="node20" href="$class_t_track.html#a4a948544c9ac877232ec721db8bfc914" title="Clears the existing LocationNameMultiMap and rebuilds it from TrackVector and InactiveTrackVector...." alt="" coords="730,1043,925,1085"/>
+<area shape="rect" id="node23" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="756,453,899,480"/>
+</map>

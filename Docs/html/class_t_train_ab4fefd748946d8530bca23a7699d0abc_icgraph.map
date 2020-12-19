@@ -1,0 +1,8 @@
+<map id="TTrain::TrainToBeJoinedByIsAdjacent" name="TTrain::TrainToBeJoinedByIsAdjacent">
+<area shape="rect" id="node1" title="True for a train waiting to be joined when the joining train is adjacent." alt="" coords="1015,5,1191,47"/>
+<area shape="rect" id="node2" href="$class_t_train.html#a6c3479378d35f9041c38d80f03686b41" title="Carry out the actions needed when a train is waiting to be joined by another train." alt="" coords="848,13,967,39"/>
+<area shape="rect" id="node3" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="665,13,800,39"/>
+<area shape="rect" id="node4" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="451,13,617,39"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,13,403,39"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,13,196,39"/>
+</map>

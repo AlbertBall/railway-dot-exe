@@ -1,0 +1,25 @@
+<map id="TTrack::RebuildTrackAndText" name="TTrack::RebuildTrackAndText">
+<area shape="rect" id="node1" title="Called by TInterface::ClearandRebuildRailway to replot all the active and inactive track elements and..." alt="" coords="5,837,197,863"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="932,582,1079,609"/>
+<area shape="rect" id="node3" href="$class_t_track.html#aeb60286bc570dbafab64fe6dc06af2e4" title="Return a reference to the element at HLoc &amp; VLoc, if no element is found an error is thrown." alt="" coords="421,997,621,1039"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="932,910,1079,937"/>
+<area shape="rect" id="node6" href="$class_t_track.html#aa638a7e118fb22e648d89adbe814a4a1" title="Plots a gap on screen &#45; may be set or unset." alt="" coords="463,211,579,238"/>
+<area shape="rect" id="node8" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="705,262,848,289"/>
+<area shape="rect" id="node9" href="$class_t_track.html#af56adb319c7003b8ddac8e55afaee3d2" title="Plot points on screen according to how they are set (Attribute value), or, with both fillets if BothF..." alt="" coords="457,473,586,499"/>
+<area shape="rect" id="node13" href="$class_t_track_element.html#a453377f8db5e108cb274464333e1100f" title="Plot the element on the display &#39;variable&#39; indicates that the element may be named and if so may be p..." alt="" coords="683,785,870,827"/>
+<area shape="rect" id="node14" href="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e" title="Plot signals on screen according to their aspect (Attribute value)" alt="" coords="245,414,373,441"/>
+<area shape="rect" id="node17" href="$class_t_text_handler.html#a30f32d9d3267bc8c90298e0ecd3c26fd" title="display all text items in TextVector on the screen" alt="" coords="432,1164,611,1205"/>
+<area shape="rect" id="node21" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="716,1323,837,1350"/>
+<area shape="rect" id="node22" href="$class_t_track.html#a58a2afacadd0f564b474ac0faabc88d4" title="Return a reference to the inactive track element pointed to by NextTrackElementPtr (during zoomed&#45;in ..." alt="" coords="688,903,865,944"/>
+<area shape="rect" id="node23" href="$class_t_track.html#a90e1db27659603b72a703c017ee576c8" title="Return a reference to the active track element pointed to by NextTrackElementPtr (during zoomed&#45;in or..." alt="" coords="669,969,884,995"/>
+<area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="695,1019,858,1046"/>
+<area shape="rect" id="node7" href="$class_t_track_element.html#a100bff829c4dca820927affde4cb9e57" title="Used to log track parameters for call stack logging." alt="" coords="691,211,862,238"/>
+<area shape="rect" id="node10" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="685,465,868,507"/>
+<area shape="rect" id="node11" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="674,414,879,441"/>
+<area shape="rect" id="node12" href="$class_t_display.html#aab35e517eba56f1c95f500958ce431ae" title=" " alt="" coords="693,531,860,558"/>
+<area shape="rect" id="node15" href="$class_t_display.html#a6e970089a9419e6bdd12576b6e860c95" title=" " alt="" coords="691,734,863,761"/>
+<area shape="rect" id="node16" href="$class_t_track.html#a2830b22db25712a80fa55b1546b5df9b" title="Plot platforms if any for a signal graphic &#45; plotted before signal so shows through transparent signa..." alt="" coords="430,414,613,441"/>
+<area shape="rect" id="node18" href="$class_t_display.html#adfff17bfef798b07b1e6bbfc6f5e0822" title="Display TextString at the defined position with the defined font." alt="" coords="713,1171,840,1198"/>
+<area shape="rect" id="node19" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="696,1222,857,1249"/>
+<area shape="rect" id="node20" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="679,1070,874,1097"/>
+</map>

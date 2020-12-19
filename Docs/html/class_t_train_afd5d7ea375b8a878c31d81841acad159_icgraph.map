@@ -1,0 +1,9 @@
+<map id="TTrain::DeleteTrain" name="TTrain::DeleteTrain">
+<area shape="rect" id="node1" title="This is a housekeeping function to delete train heap objects (bitmaps) explicitly rather than by usin..." alt="" coords="675,71,805,98"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a07d3d10bf08d4e916b652d676c917335" title="called when exiting operation mode to delete all trains and timetable data etc" alt="" coords="457,5,627,47"/>
+<area shape="rect" id="node4" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="459,71,625,98"/>
+<area shape="rect" id="node7" href="$class_t_train_controller.html#ad6cbfb50d0fddf2c6b43a1604da3b746" title="Destructor." alt="" coords="482,123,602,164"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="244,5,409,47"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="247,71,406,98"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,71,196,98"/>
+</map>

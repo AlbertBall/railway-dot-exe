@@ -1,0 +1,19 @@
+<map id="TTrain::Stopped" name="TTrain::Stopped">
+<area shape="rect" id="node1" title="True if the train has stopped for any reason." alt="" coords="1220,271,1333,298"/>
+<area shape="rect" id="node2" href="$class_t_train.html#ae34370de578ebd07a217c79d8b67312c" title="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa..." alt="" coords="996,90,1149,117"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,141,403,167"/>
+<area shape="rect" id="node5" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="758,141,893,167"/>
+<area shape="rect" id="node7" href="$class_t_train.html#aa76cf279cc5cc86bccf44eae2a03df26" title=" " alt="" coords="985,293,1160,335"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="728,228,923,269"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#a1cd9f01bcbcc37fb31712b7007d04dac" title="Examines a flashing route (i.e. one being set) and returns true if a moving train is detected on it a..." alt="" coords="973,541,1172,583"/>
+<area shape="rect" id="node13" href="$class_t_all_routes.html#a38ede0231e26c62498999d1873d547a2" title="Route locking is required (returns true) if a moving train is within 3 signals back from the RouteTru..." alt="" coords="987,476,1159,517"/>
+<area shape="rect" id="node15" href="$class_t_interface.html#ab5b80c76a8cc8d2c87f21d323f61c1ce" title=" " alt="" coords="991,411,1155,452"/>
+<area shape="rect" id="node16" href="$class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" title="Controls the floating window function, called during the ClockTimer2 function." alt="" coords="477,39,651,66"/>
+<area shape="rect" id="node17" href="$class_t_train.html#a84204e3d8492e73d1eebf0707c49f620" title="Called when there is a random train failure." alt="" coords="997,141,1148,167"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,141,196,167"/>
+<area shape="rect" id="node6" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="481,141,647,167"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#ad493289c9c9aa2e4d4e39329e80cc47c" title=" " alt="" coords="739,293,912,335"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="451,235,677,262"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="471,477,657,503"/>
+<area shape="rect" id="node14" href="$class_t_one_route.html#ae131609dd8248dae2d7b699ab8777202" title="Examines the route to see whether the element at H &amp; V is in the route, and if not returns a ReturnFl..." alt="" coords="725,476,925,517"/>
+</map>

@@ -1,0 +1,3 @@
+<map id="TTrainController" name="TTrainController">
+<area shape="rect" id="node1" title="Handles all train and timetable activities, only one object created." alt="" coords="5,5,232,405"/>
+</map>

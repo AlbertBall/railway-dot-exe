@@ -1,0 +1,4 @@
+<map id="TUtilities::CheckFileDouble" name="TUtilities::CheckFileDouble">
+<area shape="rect" id="node1" title="checks that the value is a double, returns true for success" alt="" coords="5,13,184,39"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37" title="checks that the value is a string (&#39;0&#39; or CR accepted as delimiters), returns true for success and re..." alt="" coords="232,5,403,47"/>
+</map>

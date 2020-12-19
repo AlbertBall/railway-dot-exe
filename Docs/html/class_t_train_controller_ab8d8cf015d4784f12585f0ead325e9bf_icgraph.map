@@ -1,0 +1,10 @@
+<map id="TTrainController::CheckStartAllowable" name="TTrainController::CheckStartAllowable">
+<area shape="rect" id="node1" title="Called when trying to introduce a new train &#45; checks for points in correct orientation,..." alt="" coords="1264,49,1449,90"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#aa895b60238810a9d134cd5b9c886da56" title="Introduce a new train to the railway, with the characteristics specified, returns true for success,..." alt="" coords="1045,56,1216,83"/>
+<area shape="rect" id="node3" href="$class_t_train.html#ad666fb061d1da7c44a72ec963c2098aa" title="Carry out the actions needed when a train is to split from the front." alt="" coords="848,5,997,32"/>
+<area shape="rect" id="node5" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="451,81,617,108"/>
+<area shape="rect" id="node8" href="$class_t_train.html#ad64c5823265b0c611c2e5f0613317aa5" title="Carry out the actions needed when a train is to split from the rear." alt="" coords="849,56,996,83"/>
+<area shape="rect" id="node4" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="665,56,800,83"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,81,403,108"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,81,196,108"/>
+</map>

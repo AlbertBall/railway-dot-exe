@@ -1,0 +1,4 @@
+<map id="TUtilities::SaveFileDouble" name="TUtilities::SaveFileDouble">
+<area shape="rect" id="node1" title="converts the double value to a string (if double stored directly it is truncated to 6 digits) then st..." alt="" coords="5,5,175,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#a60531c6cb1a6a33dd71299d3a5b6cc21" title="stores the string value to the file, then a &#39;0&#39; delimiter then a CR" alt="" coords="223,5,385,32"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="TTrack::IsTrackLinked" name="TTrack::IsTrackLinked">
+<area shape="rect" id="node1" title="True if track has been successfully linked (not used any more)" alt="" coords="5,172,155,199"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="909,176,1056,203"/>
+<area shape="rect" id="node3" href="$class_t_track.html#ab79158ff07bc54986fbaa34df0d7f2b2" title="True if a footcrossing is linked properly at both ends." alt="" coords="203,270,385,311"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="909,379,1056,405"/>
+<area shape="rect" id="node9" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="671,59,846,101"/>
+<area shape="rect" id="node4" href="$class_t_track.html#a0b0e7c333d860841aed4b66b94a6a955" title="Used to check the validity of footcrossing links." alt="" coords="437,277,604,304"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a23030c22d4c98706d1738205242646d9" title="Used to check the validity of footcrossing links." alt="" coords="433,353,608,380"/>
+<area shape="rect" id="node6" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="677,277,840,304"/>
+<area shape="rect" id="node8" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="656,379,861,405"/>
+</map>

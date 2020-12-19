@@ -1,0 +1,9 @@
+<map id="TTrainController::BuildContinuationTrainExpectationMultiMap" name="TTrainController::BuildContinuationTrainExpectationMultiMap">
+<area shape="rect" id="node1" title="populate the ContinuationTrainExpectationMultiMap during timetable loading" alt="" coords="5,127,227,168"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="768,83,915,110"/>
+<area shape="rect" id="node3" href="$class_t_train_controller.html#afb0e8fd36435809350cb323ab9fe2213" title="Return the service headcode for the repeat service." alt="" coords="275,185,457,227"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="768,193,915,219"/>
+<area shape="rect" id="node6" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="507,134,718,161"/>
+<area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="531,33,694,59"/>
+<area shape="rect" id="node4" href="$class_t_train_controller.html#a6fc210d266e7672ccc648c0a9ab4e542" title="Checks the last two characters in HeadCode and returns true if both are digits." alt="" coords="505,185,720,227"/>
+</map>

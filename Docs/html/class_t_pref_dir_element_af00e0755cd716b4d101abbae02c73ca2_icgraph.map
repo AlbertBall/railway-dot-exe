@@ -1,0 +1,52 @@
+<map id="TPrefDirElement::GetELink" name="TPrefDirElement::GetELink">
+<area shape="rect" id="node1" title="Returns ELink." alt="" coords="1765,372,1944,399"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#aa895b60238810a9d134cd5b9c886da56" title="Introduce a new train to the railway, with the characteristics specified, returns true for success,..." alt="" coords="1277,195,1448,221"/>
+<area shape="rect" id="node4" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="787,220,922,247"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="298,555,457,581"/>
+<area shape="rect" id="node9" href="$class_t_train.html#a406c172a0ba96802ada1aa04d78948d0" title="Reverses the direction of motion of the train." alt="" coords="1005,144,1193,171"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="1530,1201,1710,1242"/>
+<area shape="rect" id="node18" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="280,1318,475,1359"/>
+<area shape="rect" id="node41" href="$class_t_all_routes.html#ab23a53bd95aeb951108a004735b9a45e" title="When attaching a new route section to an existing route, it is sometimes necessary to erase the origi..." alt="" coords="1523,453,1717,494"/>
+<area shape="rect" id="node44" href="$class_t_train.html#aa21e18b3085773ca8351c446911611c1" title="When a train moves off a bridge the other track may contain a route or have a train on it that has be..." alt="" coords="1530,281,1710,322"/>
+<area shape="rect" id="node46" href="$class_t_train.html#affbb94aa088370056f8ca8c45a1fdd48" title="Unplots &amp; replots train, which checks for facing signal and sets StoppedAtSignal if req&#39;d." alt="" coords="1006,398,1193,439"/>
+<area shape="rect" id="node48" href="$class_t_interface.html#a4d75015545313004ffd5022c020f4edf" title=" " alt="" coords="1535,1266,1705,1307"/>
+<area shape="rect" id="node49" href="$class_t_all_routes.html#af70c07d73f0b62ed85bbebc5451d009c" title="A new (empty apart from RouteID) TOneRoute is added to the AllRoutesVector." alt="" coords="1529,401,1711,428"/>
+<area shape="rect" id="node50" href="$class_t_all_routes.html#a7bf52152ec8f71a9aa78ad4dc4f80c65" title="A new (empty apart from RouteID) TOneRoute is added to the AllRoutesVector after a session load...." alt="" coords="1529,1331,1711,1373"/>
+<area shape="rect" id="node3" href="$class_t_train.html#ad666fb061d1da7c44a72ec963c2098aa" title="Carry out the actions needed when a train is to split from the front." alt="" coords="1025,245,1174,272"/>
+<area shape="rect" id="node5" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="535,245,701,272"/>
+<area shape="rect" id="node8" href="$class_t_train.html#ad64c5823265b0c611c2e5f0613317aa5" title="Carry out the actions needed when a train is to split from the rear." alt="" coords="1026,195,1173,221"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="23,555,214,581"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#a75f68c918750c0e007ea7a85d718e2ab" title=" " alt="" coords="1278,1351,1447,1377"/>
+<area shape="rect" id="node13" href="$class_t_interface.html#a0a89df44c20c9e2c096e66e2950c79a6" title="Function that deals with approach locking during ClockTimer2 function." alt="" coords="761,580,948,607"/>
+<area shape="rect" id="node14" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="528,1585,708,1626"/>
+<area shape="rect" id="node15" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="1006,529,1193,556"/>
+<area shape="rect" id="node16" href="$class_t_interface.html#a3fe9878a003d343a06f09c8f421e5a3b" title=" " alt="" coords="1285,783,1441,809"/>
+<area shape="rect" id="node17" href="$class_t_interface.html#a44bce128da0e5ae552031e39552d0c39" title="Called during gap setting to mark a gap with a red ellipse and ask user to select the corresponding g..." alt="" coords="1269,1452,1457,1479"/>
+<area shape="rect" id="node20" href="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b" title="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode." alt="" coords="996,1637,1203,1664"/>
+<area shape="rect" id="node21" href="$class_t_interface.html#a8c96de45b013362b03ad0e8725a7c64b" title="Called when mouse button clicked in zoom&#45;out mode." alt="" coords="280,1994,475,2035"/>
+<area shape="rect" id="node22" href="$class_t_interface.html#a3cf2db0424e05908b20a97130895d056" title=" " alt="" coords="526,1402,710,1443"/>
+<area shape="rect" id="node23" href="$class_t_interface.html#aa6e7359ece526e43589456e9a31851a0" title=" " alt="" coords="534,1467,702,1509"/>
+<area shape="rect" id="node24" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="767,1756,942,1783"/>
+<area shape="rect" id="node27" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="537,783,699,809"/>
+<area shape="rect" id="node28" href="$class_t_interface.html#af01b649aa75f881cbfd2f14a60533bcc" title="Sets the Level2PrefDirMode user mode, using the Level2PrefDirMode variable to determine the mode." alt="" coords="535,1935,701,1977"/>
+<area shape="rect" id="node29" href="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc" title=" " alt="" coords="285,1888,470,1915"/>
+<area shape="rect" id="node30" href="$class_t_interface.html#ab1487b7a54ebacf27d7b980c65723d18" title=" " alt="" coords="523,1884,713,1911"/>
+<area shape="rect" id="node31" href="$class_t_interface.html#aab42b12ff3ba43ad2f70994b5399dd90" title=" " alt="" coords="531,2053,705,2094"/>
+<area shape="rect" id="node32" href="$class_t_interface.html#a19e64ee6952b0fd3c260eb05c14a34c8" title=" " alt="" coords="1269,833,1456,860"/>
+<area shape="rect" id="node33" href="$class_t_interface.html#abb268a3a209bc0d66111540c84345c1b" title=" " alt="" coords="1251,884,1475,911"/>
+<area shape="rect" id="node34" href="$class_t_interface.html#a54c8faaf7d1d8f0456114676fd20a17f" title=" " alt="" coords="1261,935,1465,961"/>
+<area shape="rect" id="node35" href="$class_t_interface.html#aa639148521a793641e694b15486b5055" title=" " alt="" coords="1014,463,1185,505"/>
+<area shape="rect" id="node36" href="$class_t_interface.html#ad53c136eca39fddb0e7e49a4b7018f66" title=" " alt="" coords="1264,986,1461,1027"/>
+<area shape="rect" id="node37" href="$class_t_interface.html#a05d882d712519bd79267e4ce5a52269c" title=" " alt="" coords="1268,1051,1457,1093"/>
+<area shape="rect" id="node38" href="$class_t_interface.html#a358ab18cab57f8a5b5b850387039f822" title=" " alt="" coords="1269,1169,1456,1210"/>
+<area shape="rect" id="node39" href="$class_t_interface.html#aba3f772739d000bcbd8059181417a9b3" title=" " alt="" coords="1265,1234,1460,1275"/>
+<area shape="rect" id="node40" href="$class_t_interface.html#a714f1498bb6cbbd706f6ed0882c4b03d" title=" " alt="" coords="1272,1503,1453,1545"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#a9cef18571e29b70d02ba9a92a830b3b8" title=" " alt="" coords="1022,1300,1177,1327"/>
+<area shape="rect" id="node19" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="5,1651,232,1677"/>
+<area shape="rect" id="node25" href="$class_t_interface.html#a30904d608111ce6452a9861d86b64267" title=" " alt="" coords="531,1702,705,1743"/>
+<area shape="rect" id="node26" href="$class_t_interface.html#a1b1a4260e251c9bd5f48fd6c3432e7a5" title=" " alt="" coords="525,1767,711,1809"/>
+<area shape="rect" id="node42" href="$class_t_one_route.html#a53496c398dcdb3a644801c4e74d47d01" title="Called after a non&#45;preferred (i.e. unrestricted) route has been selected and has finished flashing,..." alt="" coords="1257,463,1468,505"/>
+<area shape="rect" id="node43" href="$class_t_one_route.html#a36ba8adc8b4a47908ee4e1b8e75792ca" title="Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and ..." alt="" coords="1269,398,1456,439"/>
+<area shape="rect" id="node45" href="$class_t_train.html#a4978a3050ca943076eb6cbd03eeee1d4" title="Unplot train from screen in zoomed&#45;in mode." alt="" coords="1297,245,1428,272"/>
+<area shape="rect" id="node47" href="$class_t_interface.html#aaaf32c3c815553f7ba70698e0f0071bb" title=" " alt="" coords="764,398,945,439"/>
+</map>

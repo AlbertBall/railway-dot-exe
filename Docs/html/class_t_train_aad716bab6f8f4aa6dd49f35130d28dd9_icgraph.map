@@ -1,0 +1,8 @@
+<map id="TTrain::CheckOneSessionTrain" name="TTrain::CheckOneSessionTrain">
+<area shape="rect" id="node1" title="Carries out an integrity check for the train section of a session file, if fails a message is given a..." alt="" coords="1160,13,1361,39"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a53fb58a1ae6103601a24ad2162f86f58" title="Part of the session file integrity check for train entries, true for success." alt="" coords="908,5,1112,47"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a3904f26b67b9512507960187b37b6f7b" title="Checks session file integrity prior to loading, true for success." alt="" coords="660,5,860,47"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="451,13,612,39"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,13,403,39"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,13,196,39"/>
+</map>

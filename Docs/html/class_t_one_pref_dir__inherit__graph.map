@@ -1,0 +1,4 @@
+<map id="TOnePrefDir" name="TOnePrefDir">
+<area shape="rect" id="node1" title="The basic preferred direction class, consisting of any number of elements with preferred directions s..." alt="" coords="7,5,239,552"/>
+<area shape="rect" id="node2" href="$class_t_one_route.html" title="A descendent of TOnePrefDir used for routes. Used during contruction of a route (ConstructRoute) and ..." alt="" coords="5,600,240,971"/>
+</map>

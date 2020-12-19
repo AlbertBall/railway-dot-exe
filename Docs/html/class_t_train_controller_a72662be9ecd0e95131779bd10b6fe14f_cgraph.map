@@ -1,0 +1,13 @@
+<map id="TTrainController::CheckCrossReferencesAndSetData" name="TTrainController::CheckCrossReferencesAndSetData">
+<area shape="rect" id="node1" title="A timetable validation function where all service cross references are checked for validity and set p..." alt="" coords="5,315,196,356"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="728,148,875,174"/>
+<area shape="rect" id="node3" href="$class_t_train_controller.html#afe4a83b3b7ba6daa955ce5617d509d51" title="Check that shuttle link services have consistent times, true for success." alt="" coords="478,140,677,182"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="728,373,875,400"/>
+<area shape="rect" id="node5" href="$class_t_track.html#a7eba939947b4c035a191ecaaf1b0bb9a" title="True if there is at least one named location element with name &#39;LocationName&#39;, used in timetable inte..." alt="" coords="244,399,427,440"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a9d209cb6e24f67ba12020440a5e42347" title=" " alt="" coords="244,315,427,356"/>
+<area shape="rect" id="node10" href="$class_t_train_controller.html#a8df4599a1ae95093241fb707711af894" title="Give a user message during timetable integrity checking if GiveMessages is true, ignore if false." alt="" coords="253,576,417,618"/>
+<area shape="rect" id="node11" href="$class_t_track.html#addd8e149e66c99a295541c9eda13eae4" title="True if a non&#45;empty LocationName found as a timetabled location name i.e. not as a continuation name." alt="" coords="487,75,668,116"/>
+<area shape="rect" id="node6" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="475,424,680,450"/>
+<area shape="rect" id="node8" href="$class_t_track.html#aeb515d40cb9b08ed55ce877ffdbc51a5" title="Return the corresponding link position (track always occupies either links 0 &amp; 1 or 2 &amp; 3)" alt="" coords="476,206,679,247"/>
+<area shape="rect" id="node9" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="496,322,659,349"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="TOneRoute::ConvertAndAddNonPreferredRouteSearchVector" name="TOneRoute::ConvertAndAddNonPreferredRouteSearchVector">
+<area shape="rect" id="node1" title="Called after a non&#45;preferred (i.e. unrestricted) route has been selected and has finished flashing,..." alt="" coords="761,27,972,69"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="523,5,709,32"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="519,57,713,98"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="278,5,437,32"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,5,196,32"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="244,64,471,91"/>
+</map>

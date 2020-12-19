@@ -1,0 +1,6 @@
+<map id="TTrack::PlotLoweredLinkedLevelCrossingBarriers" name="TTrack::PlotLoweredLinkedLevelCrossingBarriers">
+<area shape="rect" id="node1" title="Plot &amp; open (to trains) all level crossings linked to TrackElement." alt="" coords="685,5,864,47"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="451,13,637,39"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,13,403,39"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,13,196,39"/>
+</map>

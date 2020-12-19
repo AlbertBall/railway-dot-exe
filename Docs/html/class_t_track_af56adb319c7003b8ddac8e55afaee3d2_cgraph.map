@@ -1,0 +1,11 @@
+<map id="TTrack::PlotPoints" name="TTrack::PlotPoints">
+<area shape="rect" id="node1" title="Plot points on screen according to how they are set (Attribute value), or, with both fillets if BothF..." alt="" coords="5,190,135,216"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="436,139,583,166"/>
+<area shape="rect" id="node3" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="194,48,377,89"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="436,190,583,216"/>
+<area shape="rect" id="node5" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="183,114,388,140"/>
+<area shape="rect" id="node6" href="$class_t_track_element.html#a100bff829c4dca820927affde4cb9e57" title="Used to log track parameters for call stack logging." alt="" coords="200,383,371,410"/>
+<area shape="rect" id="node7" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="214,164,357,191"/>
+<area shape="rect" id="node8" href="$class_t_display.html#aab35e517eba56f1c95f500958ce431ae" title=" " alt="" coords="202,215,369,242"/>
+<area shape="rect" id="node9" href="$class_t_track_element.html#a453377f8db5e108cb274464333e1100f" title="Plot the element on the display &#39;variable&#39; indicates that the element may be named and if so may be p..." alt="" coords="192,266,379,308"/>
+</map>

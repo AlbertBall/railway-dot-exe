@@ -1,0 +1,12 @@
+<map id="TUtilities::LoadFileDouble" name="TUtilities::LoadFileDouble">
+<area shape="rect" id="node1" title="loads a double value from the file (converts from a string to a double) and uses the local decimal po..." alt="" coords="1145,150,1315,177"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a96563ccfea0293d240212db434f4e3e0" title="Load all BarriersDownVector values from SessionFile." alt="" coords="670,5,845,47"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="451,151,612,178"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ad2e9b9996aa6ebd7108d14d8db399da8" title="Load the interface part of a session file." alt="" coords="919,126,1081,153"/>
+<area shape="rect" id="node7" href="$class_t_train.html#a23c65e7f2b2130ae87811f70afb6d5bf" title="Create one train with relevant member values from the sesion file." alt="" coords="904,179,1096,206"/>
+<area shape="rect" id="node9" href="$class_t_train_controller.html#ae30ca688c6c3672e98692a13f29b7a4b" title="load ContinuationAutoSigEntries from a session file" alt="" coords="660,239,855,280"/>
+<area shape="rect" id="node10" href="$class_t_train_controller.html#aefaafd5c6d1c51b4db9dd4b3646d0312" title="load locked routes from a session file" alt="" coords="903,292,1097,333"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,151,403,178"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,151,196,178"/>
+<area shape="rect" id="node8" href="$class_t_train_controller.html#a853ddf9799c9fd7063c81ffa1dc754d7" title="load trains from a session file" alt="" coords="660,173,855,215"/>
+</map>

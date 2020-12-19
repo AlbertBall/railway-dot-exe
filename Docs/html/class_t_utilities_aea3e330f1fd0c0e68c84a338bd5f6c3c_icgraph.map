@@ -1,0 +1,6 @@
+<map id="TUtilities::CheckStringDouble" name="TUtilities::CheckStringDouble">
+<area shape="rect" id="node1" title="checks the string represents a valid double value, returns true for success. Added at v2...." alt="" coords="660,5,851,32"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="451,5,612,32"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,5,403,32"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,5,196,32"/>
+</map>

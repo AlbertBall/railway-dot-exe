@@ -1,0 +1,11 @@
+<map id="TOnePrefDir::GetPrefDirTruncateElement" name="TOnePrefDir::GetPrefDirTruncateElement">
+<area shape="rect" id="node1" title="Called during PrefDir build or distance setting. It truncates at &amp; including the first element in the..." alt="" coords="5,258,216,299"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1019,97,1165,124"/>
+<area shape="rect" id="node3" href="$class_t_one_pref_dir.html#aa191ffa7fa23838043d34d9b02cd7bcb" title="Erase a single element from PrefDirVector and 4MultiMap, decrementing the remaining PrefDirElementNum..." alt="" coords="264,258,437,299"/>
+<area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1019,330,1165,357"/>
+<area shape="rect" id="node4" href="$class_t_one_pref_dir.html#a8a7ddf3981800ec0df1225c9e5aa52c2" title="Diagnostic validity check." alt="" coords="489,258,672,299"/>
+<area shape="rect" id="node7" href="$class_t_one_pref_dir.html#a056c475541b487ce13cb34dc43b1cf6f" title="Called after ErasePrefDirElementAt to decrement the remaining PrefDirElementNumbers in 4MultiMap if t..." alt="" coords="724,323,971,364"/>
+<area shape="rect" id="node8" href="$class_t_one_pref_dir.html#a8bc65b139325c45b57a9f43a9b3404a8" title="Retrieves a PrefDir4MultiMap iterator to the PrefDir element at PrefDirVectorPosition...." alt="" coords="485,140,676,182"/>
+<area shape="rect" id="node5" href="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc" title="Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return &#45;1." alt="" coords="741,258,954,299"/>
+<area shape="rect" id="node9" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="759,90,935,131"/>
+</map>

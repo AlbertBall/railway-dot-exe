@@ -1,0 +1,5 @@
+<map id="TFixedTrackPiece" name="TFixedTrackPiece">
+<area shape="rect" id="node1" title=" " alt="" coords="11,5,215,200"/>
+<area shape="rect" id="node2" href="$class_t_track_element.html" title="Basic track elements as implemented in the overall railway layout." alt="" coords="17,248,209,545"/>
+<area shape="rect" id="node3" href="$class_t_pref_dir_element.html" title="Basic preferred direction or route element &#45; track element with additional members." alt="" coords="5,593,220,1125"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="TTrain::UnplotTrainInZoomOutMode" name="TTrain::UnplotTrainInZoomOutMode">
+<area shape="rect" id="node1" title="Unplot train from screen in zoomed&#45;out mode." alt="" coords="897,152,1069,193"/>
+<area shape="rect" id="node2" href="$class_t_train.html#afd5d7ea375b8a878c31d81841acad159" title="This is a housekeeping function to delete train heap objects (bitmaps) explicitly rather than by usin..." alt="" coords="705,101,835,127"/>
+<area shape="rect" id="node9" href="$class_t_train_controller.html#a2f9cd71b60b45de8380f5fad7bbd5dd8" title="Plots all trains on screen in zoomed&#45;out mode, state of &#39;Flash&#39; determines whether the flashing train..." alt="" coords="691,181,849,223"/>
+<area shape="rect" id="node3" href="$class_t_train_controller.html#a07d3d10bf08d4e916b652d676c917335" title="called when exiting operation mode to delete all trains and timetable data etc" alt="" coords="465,5,635,47"/>
+<area shape="rect" id="node5" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="467,71,633,98"/>
+<area shape="rect" id="node8" href="$class_t_train_controller.html#ad6cbfb50d0fddf2c6b43a1604da3b746" title="Destructor." alt="" coords="490,123,610,164"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="244,5,409,47"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="247,130,406,157"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,130,196,157"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc" title=" " alt="" coords="457,239,643,266"/>
+</map>

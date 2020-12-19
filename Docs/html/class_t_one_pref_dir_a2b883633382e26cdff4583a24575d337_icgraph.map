@@ -1,0 +1,14 @@
+<map id="TOnePrefDir::ValidatePrefDir" name="TOnePrefDir::ValidatePrefDir">
+<area shape="rect" id="node1" title="Checks that all elements in PrefDirVector have been properly set, i.e. don&#39;t have their default value..." alt="" coords="1016,111,1203,138"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a1b1a4260e251c9bd5f48fd6c3432e7a5" title=" " alt="" coords="769,5,956,47"/>
+<area shape="rect" id="node3" href="$class_t_one_route.html#a53496c398dcdb3a644801c4e74d47d01" title="Called after a non&#45;preferred (i.e. unrestricted) route has been selected and has finished flashing,..." alt="" coords="757,136,968,177"/>
+<area shape="rect" id="node9" href="$class_t_one_route.html#a36ba8adc8b4a47908ee4e1b8e75792ca" title="Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and ..." alt="" coords="769,71,956,112"/>
+<area shape="rect" id="node11" href="$class_t_one_pref_dir.html#a482d1c69a674eec4db0190b78659c495" title="Called after a successful search to add the elements from the search vector to the pref dir vector." alt="" coords="779,201,946,243"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="523,99,709,126"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="280,176,475,217"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="298,99,457,126"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="23,99,214,126"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="5,183,232,210"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#aa639148521a793641e694b15486b5055" title=" " alt="" coords="531,33,701,75"/>
+<area shape="rect" id="node12" href="$class_t_one_pref_dir.html#a06cd3491535362fccbba4e76b9a120e9" title="Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linke..." alt="" coords="531,201,701,243"/>
+</map>

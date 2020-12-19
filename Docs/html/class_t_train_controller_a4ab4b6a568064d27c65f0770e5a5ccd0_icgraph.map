@@ -1,0 +1,5 @@
+<map id="TTrainController::CreateFormattedTimetable" name="TTrainController::CreateFormattedTimetable">
+<area shape="rect" id="node1" title="Examines the internal timetable (TrainDataVector) and creates from it a chronological (...." alt="" coords="229,39,388,80"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#ab7c52bd31930036c95b9b71c2f1f0426" title=" " alt="" coords="5,5,181,47"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a1bf4807428bf9fa4504be97d28642597" title=" " alt="" coords="8,71,179,112"/>
+</map>

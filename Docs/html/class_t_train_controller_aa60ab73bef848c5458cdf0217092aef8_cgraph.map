@@ -1,0 +1,6 @@
+<map id="TTrainController::EntryPos" name="TTrainController::EntryPos">
+<area shape="rect" id="node1" title="Return the track entry link (Link[]) array position for the given train on track element at track vec..." alt="" coords="5,31,180,57"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="475,5,621,32"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="475,68,621,95"/>
+<area shape="rect" id="node4" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="228,31,427,57"/>
+</map>

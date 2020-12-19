@@ -1,0 +1,7 @@
+<map id="TOneRoute::ConvertAndAddPreferredRouteSearchVector" name="TOneRoute::ConvertAndAddPreferredRouteSearchVector">
+<area shape="rect" id="node1" title="Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and ..." alt="" coords="685,27,872,69"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="451,5,637,32"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#aa639148521a793641e694b15486b5055" title=" " alt="" coords="459,57,629,98"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,5,403,32"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,5,196,32"/>
+</map>

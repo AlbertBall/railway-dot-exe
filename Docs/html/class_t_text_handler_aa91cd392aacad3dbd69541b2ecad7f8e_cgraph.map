@@ -1,0 +1,11 @@
+<map id="TTextHandler::TextVectorPush" name="TTextHandler::TextVectorPush">
+<area shape="rect" id="node1" title="push &amp;Text onto TextVector &amp; reset the size of the railway if necessary" alt="" coords="5,183,204,209"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="252,5,399,32"/>
+<area shape="rect" id="node3" href="$class_t_track.html#a750354d5deccaf7ccdbe8afe8f0f8e35" title=" " alt="" coords="253,56,398,83"/>
+<area shape="rect" id="node4" href="$class_t_track.html#a5c13595c171f5c7e4aaa6dfc18f4359f" title=" " alt="" coords="253,107,398,133"/>
+<area shape="rect" id="node5" href="$class_t_track.html#a453e9074035359dc22be2b15913e4bab" title=" " alt="" coords="253,157,397,184"/>
+<area shape="rect" id="node6" href="$class_t_track.html#a30e9bd8b4f5e2fb3f01b8c94a98d79f3" title=" " alt="" coords="255,208,395,235"/>
+<area shape="rect" id="node7" href="$class_t_track.html#ad33eb8c757120a0fc52ba43c9c8a3293" title=" " alt="" coords="253,259,397,285"/>
+<area shape="rect" id="node8" href="$class_t_track.html#a6459d38cdb82ae38f54f4a1de4935e09" title=" " alt="" coords="255,309,395,336"/>
+<area shape="rect" id="node9" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="252,360,399,387"/>
+</map>

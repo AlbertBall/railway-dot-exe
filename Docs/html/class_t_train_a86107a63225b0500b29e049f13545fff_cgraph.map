@@ -1,0 +1,8 @@
+<map id="TTrain::WriteTrainToImage" name="TTrain::WriteTrainToImage">
+<area shape="rect" id="node1" title="Called by TTrainController::WriteTrainsToImage (called by TInterface::SaveOperatingImage1Click) to ad..." alt="" coords="5,85,179,111"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="437,110,584,137"/>
+<area shape="rect" id="node3" href="$class_t_track.html#a5d25871e34f26d3c4c878fd4707ed375" title=" " alt="" coords="237,34,379,61"/>
+<area shape="rect" id="node4" href="$class_t_track.html#ac42bd1e1e148a91396310b1077d2d8e0" title=" " alt="" coords="237,85,379,111"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="437,173,584,199"/>
+<area shape="rect" id="node6" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="227,135,389,162"/>
+</map>

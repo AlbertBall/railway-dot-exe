@@ -1,0 +1,5 @@
+<map id="TOnePrefDir::CheckPrefDirAgainstTrackVector" name="TOnePrefDir::CheckPrefDirAgainstTrackVector">
+<area shape="rect" id="node1" title="Check loaded PrefDir against loaded track, and if discrepancies found give message &amp; clear EveryPrefD..." alt="" coords="451,5,627,47"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="244,13,403,39"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="5,5,196,47"/>
+</map>

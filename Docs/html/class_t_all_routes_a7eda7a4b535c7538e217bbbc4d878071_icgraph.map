@@ -1,0 +1,34 @@
+<map id="TAllRoutes::GetRouteElementDataFromRoute2MultiMap" name="TAllRoutes::GetRouteElementDataFromRoute2MultiMap">
+<area shape="rect" id="node1" title="Retrieve up to two TRouteElementPair entries from Route2MultiMap at H &amp; V, the first as a function re..." alt="" coords="2004,843,2200,884"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#aa895b60238810a9d134cd5b9c886da56" title="Introduce a new train to the railway, with the characteristics specified, returns true for success,..." alt="" coords="1244,609,1415,635"/>
+<area shape="rect" id="node4" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="711,473,846,499"/>
+<area shape="rect" id="node9" href="$class_t_all_routes.html#ae3fb64509afc46d5871c7843c7769f88" title="As above but only checks for a route (may or may not be a train present (new at v1...." alt="" coords="1769,660,1952,701"/>
+<area shape="rect" id="node11" href="$class_t_all_routes.html#a2341a7e860e716e60b733f45814e4499" title="The track geometry allows diagonals to cross without occupying the same track element,..." alt="" coords="1769,843,1952,884"/>
+<area shape="rect" id="node13" href="$class_t_one_route.html#a59270c9b68d679ea29086216c21decfb" title="Called by GetNextNonPreferredRouteElement to carry out the search for linked track,..." alt="" coords="1487,879,1717,920"/>
+<area shape="rect" id="node14" href="$class_t_one_route.html#a997f3cb02d8e03d0a12769b8eb903674" title="Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc...." alt="" coords="1220,879,1439,920"/>
+<area shape="rect" id="node17" href="$class_t_one_route.html#a78f476e2ae0584ef8873414b53fd09b4" title="Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called rec..." alt="" coords="1499,944,1705,985"/>
+<area shape="rect" id="node18" href="$class_t_one_route.html#af1794f576d8aff59f83992afc1c5acc2" title="Try to find a set of linked tracks that lie on preferred directions between the route start element a..." alt="" coords="1232,944,1427,985"/>
+<area shape="rect" id="node20" href="$class_t_one_route.html#a43513cae58e5d18979492cbe76b51f74" title="Set the starting conditions for a non&#45;preferred (i.e. unrestricted) route selection beginning on HLoc..." alt="" coords="1765,777,1956,819"/>
+<area shape="rect" id="node21" href="$class_t_one_route.html#a07ee58454e2f49b4f0d5d8e6a1a2d40f" title="Set the starting conditions for a preferred direction or automatic signal route selection beginning o..." alt="" coords="1228,1009,1431,1051"/>
+<area shape="rect" id="node22" href="$class_t_train.html#aa21e18b3085773ca8351c446911611c1" title="When a train moves off a bridge the other track may contain a route or have a train on it that has be..." alt="" coords="1512,465,1692,507"/>
+<area shape="rect" id="node3" href="$class_t_train.html#ad666fb061d1da7c44a72ec963c2098aa" title="Carry out the actions needed when a train is to split from the front." alt="" coords="981,574,1131,601"/>
+<area shape="rect" id="node5" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="451,473,617,499"/>
+<area shape="rect" id="node8" href="$class_t_train.html#ad64c5823265b0c611c2e5f0613317aa5" title="Carry out the actions needed when a train is to split from the rear." alt="" coords="983,523,1129,550"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,473,403,499"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,473,196,499"/>
+<area shape="rect" id="node10" href="$class_t_train.html#a50997f7e8138a7e6a147fe3b5ad21b84" title="Checks whether Element and EntryPos (where train is about to enter) is on an existing route (or cross..." alt="" coords="1503,660,1701,701"/>
+<area shape="rect" id="node12" href="$class_t_train.html#a4524b72ef62ef2c1375f58fac05929ee" title="True if the train can be called on at its current position &#45; see detail in .cpp file." alt="" coords="1519,827,1685,854"/>
+<area shape="rect" id="node15" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="959,879,1153,920"/>
+<area shape="rect" id="node16" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="665,886,892,913"/>
+<area shape="rect" id="node19" href="$class_t_interface.html#aa639148521a793641e694b15486b5055" title=" " alt="" coords="971,976,1141,1017"/>
+<area shape="rect" id="node23" href="$class_t_train.html#a4978a3050ca943076eb6cbd03eeee1d4" title="Unplot train from screen in zoomed&#45;in mode." alt="" coords="1264,313,1395,339"/>
+<area shape="rect" id="node24" href="$class_t_train.html#a406c172a0ba96802ada1aa04d78948d0" title="Reverses the direction of motion of the train." alt="" coords="962,422,1150,449"/>
+<area shape="rect" id="node25" href="$class_t_train.html#a56fcfe4b9a3cef988bbeb4f4766372aa" title="Carry out the actions needed when a new shuttle service is created from a non&#45;repeating (F&#45;nshs) serv..." alt="" coords="964,188,1148,229"/>
+<area shape="rect" id="node26" href="$class_t_train.html#a75a2e9017b96e2a8f2a1edbd01c2cd68" title="Carry out the actions needed when a train forms a new service (code Fns)" alt="" coords="976,254,1136,281"/>
+<area shape="rect" id="node27" href="$class_t_train.html#a8262f447ec811db7e524c7bb885226c5" title="Carry out the actions needed to create either a new shuttle service or (if all repeats have finished)..." alt="" coords="963,305,1149,347"/>
+<area shape="rect" id="node28" href="$class_t_train.html#ac6f5cda912103fda4da31bdca611e4b5" title="Carry out the actions needed to create either a new shuttle service or (if all repeats have finished)..." alt="" coords="940,371,1172,398"/>
+<area shape="rect" id="node29" href="$class_t_train.html#affbb94aa088370056f8ca8c45a1fdd48" title="Unplots &amp; replots train, which checks for facing signal and sets StoppedAtSignal if req&#39;d." alt="" coords="963,71,1149,112"/>
+<area shape="rect" id="node31" href="$class_t_train_controller.html#a7e2abfcc38e51933883d959c4155aca0" title="unplot all trains from screen" alt="" coords="977,5,1135,47"/>
+<area shape="rect" id="node30" href="$class_t_interface.html#aaaf32c3c815553f7ba70698e0f0071bb" title=" " alt="" coords="688,71,869,112"/>
+<area shape="rect" id="node32" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="696,5,861,47"/>
+</map>

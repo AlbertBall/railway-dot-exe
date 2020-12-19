@@ -1,0 +1,23 @@
+<map id="TTrainController::FinishedOperation" name="TTrainController::FinishedOperation">
+<area shape="rect" id="node1" title="called when exiting operation mode to delete all trains and timetable data etc" alt="" coords="5,745,175,786"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="920,183,1067,210"/>
+<area shape="rect" id="node3" href="$class_t_train.html#afd5d7ea375b8a878c31d81841acad159" title="This is a housekeeping function to delete train heap objects (bitmaps) explicitly rather than by usin..." alt="" coords="245,474,375,500"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="920,372,1067,399"/>
+<area shape="rect" id="node11" href="$class_t_display.html#abaab175c40149d2a4c449e9463b21a42" title="Return pointers to warning message logs (appear above the railway display during operation)" alt="" coords="226,626,394,652"/>
+<area shape="rect" id="node12" href="$class_t_display.html#af3539f02f6a316b418aa5536cf52649c" title=" " alt="" coords="223,676,397,703"/>
+<area shape="rect" id="node13" href="$class_t_display.html#a913b1be885ac6fc291bf8367e0a8f6f0" title=" " alt="" coords="226,727,394,754"/>
+<area shape="rect" id="node14" href="$class_t_display.html#a1e134169a934d995afa8fc6cb2d5dba3" title=" " alt="" coords="226,778,394,804"/>
+<area shape="rect" id="node15" href="$class_t_display.html#aba802332a11229140ce5871c0b6cc6f7" title=" " alt="" coords="226,828,394,855"/>
+<area shape="rect" id="node16" href="$class_t_display.html#a890f6524c617a499ddf6a33dedd402d5" title=" " alt="" coords="226,879,394,906"/>
+<area shape="rect" id="node17" href="$class_t_display.html#a6195645236a8467bb91251ebc05e7aaa" title=" " alt="" coords="226,930,394,956"/>
+<area shape="rect" id="node18" href="$class_t_display.html#abd6048be9875c6a05d5e03dafad392eb" title=" " alt="" coords="226,980,394,1007"/>
+<area shape="rect" id="node19" href="$class_t_display.html#a6b64227ebcf1e3d89ab7b91935b34418" title=" " alt="" coords="226,1031,394,1058"/>
+<area shape="rect" id="node20" href="$class_t_display.html#a3c0d9e395bca910692d99bf290003a82" title=" " alt="" coords="226,1082,394,1108"/>
+<area shape="rect" id="node21" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="670,52,869,79"/>
+<area shape="rect" id="node4" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="445,474,619,500"/>
+<area shape="rect" id="node6" href="$class_t_train.html#a439d2809c762a0981908a3b8a49520f2" title="Unplot train from screen in zoomed&#45;out mode." alt="" coords="446,314,618,356"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="678,205,861,246"/>
+<area shape="rect" id="node8" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="667,271,872,298"/>
+<area shape="rect" id="node9" href="$class_t_display.html#a95aaa80515f0abb7715920b326b318dd" title="Plot small (4x4) graphic PlotItem on the zoomed&#45;out display at HPos &amp; Vpos." alt="" coords="682,322,857,348"/>
+<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="688,372,851,399"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="TDisplay::Ellipse" name="TDisplay::Ellipse">
+<area shape="rect" id="node1" title="Plot an ellipse at the defined position and with the defined colour." alt="" coords="5,56,124,83"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="172,5,319,32"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="172,56,319,83"/>
+<area shape="rect" id="node4" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="185,107,306,133"/>
+</map>

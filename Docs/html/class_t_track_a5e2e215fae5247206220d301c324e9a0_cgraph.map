@@ -1,0 +1,17 @@
+<map id="TTrack::RepositionAndMapTrack" name="TTrack::RepositionAndMapTrack">
+<area shape="rect" id="node1" title="When track is being built it is entered into the TrackVector in the order in which it is built,..." alt="" coords="5,408,184,450"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="996,241,1143,268"/>
+<area shape="rect" id="node3" href="$class_t_track.html#aaf3f48b8df9877499aaf4c05f804426c" title="Validity test." alt="" coords="499,219,689,260"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="996,605,1143,632"/>
+<area shape="rect" id="node8" href="$class_t_track.html#a6fa2d4f2c6c94e2c6b4f7218f5356108" title="Validity test." alt="" coords="495,315,693,356"/>
+<area shape="rect" id="node9" href="$class_t_track.html#a4045fe3f4a71f30a137a7e4581d39231" title="Validity test." alt="" coords="501,460,687,486"/>
+<area shape="rect" id="node11" href="$class_t_track.html#a4a948544c9ac877232ec721db8bfc914" title="Clears the existing LocationNameMultiMap and rebuilds it from TrackVector and InactiveTrackVector...." alt="" coords="748,383,943,424"/>
+<area shape="rect" id="node12" href="$class_t_track.html#a1be0a43c6b1dc736d981fe7d883d7f01" title="Called by RepositionAndMapTrack to reset the connecting elements of all set gaps (their TrackVector p..." alt="" coords="232,542,445,569"/>
+<area shape="rect" id="node15" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="513,521,675,548"/>
+<area shape="rect" id="node4" href="$class_t_track.html#a694370e3ec67d43da1d8333e06d9ebba" title="Searches LocationNameMultiMap to check if the element pointed to by the TTrackVectorIterator has the ..." alt="" coords="754,200,937,242"/>
+<area shape="rect" id="node6" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="754,266,937,307"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="743,149,948,176"/>
+<area shape="rect" id="node10" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="758,652,933,694"/>
+<area shape="rect" id="node13" href="$class_t_track.html#ad55e3329a208e84e9e7519cc024b7aec" title="True if find a non&#45;platform element at HLoc &amp; VLoc, and if so return its TrackVector position and a r..." alt="" coords="493,660,695,686"/>
+<area shape="rect" id="node14" href="$class_t_track_element.html#a100bff829c4dca820927affde4cb9e57" title="Used to log track parameters for call stack logging." alt="" coords="760,870,931,897"/>
+</map>

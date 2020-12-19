@@ -1,0 +1,13 @@
+<map id="TInterface::RevertToOriginalRouteSelector" name="TInterface::RevertToOriginalRouteSelector">
+<area shape="rect" id="node1" title="Clears any route start markers, enables or disables the route cancel button, and resets the informati..." alt="" coords="761,158,941,199"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a75f68c918750c0e007ea7a85d718e2ab" title=" " alt="" coords="531,5,701,32"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a0a89df44c20c9e2c096e66e2950c79a6" title="Function that deals with approach locking during ClockTimer2 function." alt="" coords="523,56,709,83"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="278,107,437,133"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#ae758bf4183bb5aa2a7cd83e06acd89b6" title=" " alt="" coords="526,158,706,199"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="523,224,709,251"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="519,275,713,317"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#aa639148521a793641e694b15486b5055" title=" " alt="" coords="531,341,701,382"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a9cef18571e29b70d02ba9a92a830b3b8" title=" " alt="" coords="280,5,435,32"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,107,196,133"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="244,283,471,309"/>
+</map>

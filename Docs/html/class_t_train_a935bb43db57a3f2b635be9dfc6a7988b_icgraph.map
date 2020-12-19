@@ -1,0 +1,8 @@
+<map id="TTrain::TrainAtLocation" name="TTrain::TrainAtLocation">
+<area shape="rect" id="node1" title="True when the train is stopped at a timetabled location." alt="" coords="891,46,1045,73"/>
+<area shape="rect" id="node2" href="$class_t_train.html#a221da69cd80d206a06f840f4cd463cf9" title="Used in the floating window to display the &#39;Next&#39; action." alt="" coords="673,5,843,47"/>
+<area shape="rect" id="node6" href="$class_t_train.html#a81bf61b47a2867f0c6901b1ea6f47177" title="Used in the floating window to display the timetable." alt="" coords="675,71,841,112"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" title="Controls the floating window function, called during the ClockTimer2 function." alt="" coords="451,46,625,73"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,46,403,73"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,46,196,73"/>
+</map>

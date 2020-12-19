@@ -1,0 +1,10 @@
+<map id="TTrack::AnyLinkedLevelCrossingElementsWithRoutesOrTrains" name="TTrack::AnyLinkedLevelCrossingElementsWithRoutesOrTrains">
+<area shape="rect" id="node1" title="True if a route or train present on any linked level crossing element." alt="" coords="5,214,216,255"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="741,90,888,117"/>
+<area shape="rect" id="node3" href="$class_t_all_routes.html#a0a9ccbc84687f85806115877aa86dcfd" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="264,272,440,314"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="741,254,888,281"/>
+<area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="509,280,672,306"/>
+<area shape="rect" id="node6" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="289,120,415,146"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="499,112,682,154"/>
+<area shape="rect" id="node8" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="488,61,693,88"/>
+</map>

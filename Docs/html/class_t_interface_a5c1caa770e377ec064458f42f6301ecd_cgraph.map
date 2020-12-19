@@ -1,0 +1,11 @@
+<map id="TInterface::SetTrackBuildImages" name="TInterface::SetTrackBuildImages">
+<area shape="rect" id="node1" title="Sets the left screen images (track linked or not, gaps set or not, locations named or not) during rai..." alt="" coords="5,166,172,208"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="499,123,645,150"/>
+<area shape="rect" id="node3" href="$class_t_track.html#a794daa0471b473e28ff24c87a92112dc" title="True if there are gaps in the railway and any are unset." alt="" coords="268,47,403,74"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="499,174,645,200"/>
+<area shape="rect" id="node5" href="$class_t_track.html#aa8386109483977bfaa97909747358149" title="Indicates whether or not the track has been successfully linked together." alt="" coords="255,351,415,378"/>
+<area shape="rect" id="node6" href="$class_t_track.html#ad7d7ef450424ea6aab50db5445c6448c" title="True if there are unnamed NamedLocationElements (includes footcrossings)" alt="" coords="242,98,429,124"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a2eaa84532799b76a0b42cf6e2611224d" title="True if there is no active track in the railway." alt="" coords="259,148,411,175"/>
+<area shape="rect" id="node8" href="$class_t_track.html#ab9e1aa42b1d6399d97390f5068bf68b0" title="True if there are no gaps." alt="" coords="277,199,393,226"/>
+<area shape="rect" id="node9" href="$class_t_track.html#ab079bfd6871c5337b29297e7bc2cfe8b" title="True if there are no NamedLocationElements (includes footcrossings)" alt="" coords="220,250,451,276"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="TOnePrefDir::EndPossible" name="TOnePrefDir::EndPossible">
+<area shape="rect" id="node1" title="Used when setting preferred directions, true if able to finish at the last selected element (can&#39;t fi..." alt="" coords="5,32,179,59"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="448,5,595,32"/>
+<area shape="rect" id="node3" href="$class_t_one_pref_dir.html#a26a1ee9d1ced0d53e35936097d4896f0" title="Return the vector position of the last element in the vector (i.e. one less than the vector size)" alt="" coords="227,25,400,66"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="448,60,595,87"/>
+</map>

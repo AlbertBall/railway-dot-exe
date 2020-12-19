@@ -1,0 +1,13 @@
+<map id="TTrainController::ReplotTrains" name="TTrainController::ReplotTrains">
+<area shape="rect" id="node1" title="plot all trains on the display" alt="" coords="5,251,163,293"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1297,169,1444,196"/>
+<area shape="rect" id="node3" href="$class_t_train.html#a5fdef825574f0e546ab25169e9f8445d" title="Plots the train on the display in normal (zoomed&#45;in) mode." alt="" coords="211,309,327,336"/>
+<area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1297,499,1444,525"/>
+<area shape="rect" id="node11" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="1051,245,1249,272"/>
+<area shape="rect" id="node4" href="$class_t_train.html#a247bd95a7c648367736b116f553f4e54" title="Plot the train&#39;s headcode character corresponding to ArrayNumber." alt="" coords="375,321,536,348"/>
+<area shape="rect" id="node5" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="1079,296,1221,323"/>
+<area shape="rect" id="node7" href="$class_t_train.html#a0e0ab54415645b04cbdeadd829d27898" title="When a train moves onto an element that element has its TrainIDOnElement value set to the TrainID val..." alt="" coords="584,347,757,373"/>
+<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="823,499,985,525"/>
+<area shape="rect" id="node8" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="805,347,1003,373"/>
+<area shape="rect" id="node9" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="1089,347,1211,373"/>
+</map>

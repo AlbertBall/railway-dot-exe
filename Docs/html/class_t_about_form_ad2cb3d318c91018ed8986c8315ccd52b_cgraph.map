@@ -1,0 +1,4 @@
+<map id="TAboutForm::FormCreate" name="TAboutForm::FormCreate">
+<area shape="rect" id="node1" title="Called when the form is first created (by WinMain). Sets the version info, then hides the form." alt="" coords="5,5,175,32"/>
+<area shape="rect" id="node2" href="$class_t_about_form.html#aae86823c5d44708f264e2c1f8cd52af1" title="Sets version details from the project options &#39;Version Info&#39; values." alt="" coords="223,5,421,32"/>
+</map>

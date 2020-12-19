@@ -1,0 +1,12 @@
+<map id="TTrainController::GetExitLocationAndAt" name="TTrainController::GetExitLocationAndAt">
+<area shape="rect" id="node1" title="Check all timetable names in ExitList, if all same return &quot; at [name]&quot; else return &quot;&quot;...." alt="" coords="915,104,1079,145"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3" title="Build string for use in floating window for expected trains at continuations." alt="" coords="675,5,867,47"/>
+<area shape="rect" id="node6" href="$class_t_train_controller.html#a4ab4b6a568064d27c65f0770e5a5ccd0" title="Examines the internal timetable (TrainDataVector) and creates from it a chronological (...." alt="" coords="691,201,850,243"/>
+<area shape="rect" id="node9" href="$class_t_train.html#a221da69cd80d206a06f840f4cd463cf9" title="Used in the floating window to display the &#39;Next&#39; action." alt="" coords="686,71,855,112"/>
+<area shape="rect" id="node10" href="$class_t_train.html#a81bf61b47a2867f0c6901b1ea6f47177" title="Used in the floating window to display the timetable." alt="" coords="687,136,854,177"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" title="Controls the floating window function, called during the ClockTimer2 function." alt="" coords="451,78,626,105"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,78,403,105"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,78,196,105"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#ab7c52bd31930036c95b9b71c2f1f0426" title=" " alt="" coords="451,168,627,209"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a1bf4807428bf9fa4504be97d28642597" title=" " alt="" coords="453,233,624,275"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="TInterface::TrackTrainFloat" name="TInterface::TrackTrainFloat">
+<area shape="rect" id="node1" title="Controls the floating window function, called during the ClockTimer2 function." alt="" coords="451,5,625,32"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,5,403,32"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,5,196,32"/>
+</map>

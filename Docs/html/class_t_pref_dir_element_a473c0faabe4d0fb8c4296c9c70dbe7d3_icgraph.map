@@ -1,0 +1,28 @@
+<map id="TPrefDirElement::LogPrefDir" name="TPrefDirElement::LogPrefDir">
+<area shape="rect" id="node1" title="Sends a list of PrefDirElement values to Utilities&#45;&gt;CallLog file for debugging purposes." alt="" coords="1521,143,1705,170"/>
+<area shape="rect" id="node2" href="$class_t_all_routes.html#a6eaa33fa8e8dcb44d0671be5889305a9" title="A single TPrefDirElement is added to both PrefDirVector (for the route at RouteNumber) and Route2Mult..." alt="" coords="1020,78,1219,105"/>
+<area shape="rect" id="node11" href="$class_t_one_route.html#a78f476e2ae0584ef8873414b53fd09b4" title="Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called rec..." alt="" coords="1267,136,1473,177"/>
+<area shape="rect" id="node13" href="$class_t_one_pref_dir.html#ac5f8d2864f0510cf73cb9883b520ec9f" title="Store a single pref dir element in the vector &amp; map." alt="" coords="1285,381,1455,423"/>
+<area shape="rect" id="node3" href="$class_t_one_route.html#a53496c398dcdb3a644801c4e74d47d01" title="Called after a non&#45;preferred (i.e. unrestricted) route has been selected and has finished flashing,..." alt="" coords="761,71,972,112"/>
+<area shape="rect" id="node9" href="$class_t_one_route.html#a36ba8adc8b4a47908ee4e1b8e75792ca" title="Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and ..." alt="" coords="773,5,960,47"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="523,78,709,105"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="519,195,713,236"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="278,115,437,142"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,115,196,142"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="244,202,471,229"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#aa639148521a793641e694b15486b5055" title=" " alt="" coords="531,129,701,171"/>
+<area shape="rect" id="node12" href="$class_t_one_route.html#af1794f576d8aff59f83992afc1c5acc2" title="Try to find a set of linked tracks that lie on preferred directions between the route start element a..." alt="" coords="769,136,964,177"/>
+<area shape="rect" id="node14" href="$class_t_one_pref_dir.html#a65df51092983945e1fe3c20bf8917a39" title="Used when a preferred direction has been set to add all the elements to EveryPrefDir,..." alt="" coords="1035,251,1203,292"/>
+<area shape="rect" id="node17" href="$class_t_one_pref_dir.html#a482d1c69a674eec4db0190b78659c495" title="Called after a successful search to add the elements from the search vector to the pref dir vector." alt="" coords="1036,381,1203,423"/>
+<area shape="rect" id="node19" href="$class_t_one_pref_dir.html#a5e8d14c19c70cafe968e7481b116a714" title="Store a single pref dir element in the vector &amp; map &#45; used by other classes." alt="" coords="1030,316,1209,357"/>
+<area shape="rect" id="node20" href="$class_t_one_pref_dir.html#ace0402792492c9da2551423f8287e41e" title="Used when beginning a chain of preferred directions or element lengths. Enter with HLoc &amp; VLoc set to..." alt="" coords="1025,447,1213,488"/>
+<area shape="rect" id="node21" href="$class_t_one_pref_dir.html#a614933ff3958e4b8c9be9bc78159d9e8" title="Old version of LoadPrefDir, used during development when the save format changed so the old files cou..." alt="" coords="1026,513,1213,539"/>
+<area shape="rect" id="node22" href="$class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d" title="Load a vector and map of preferred directions from the file." alt="" coords="1036,563,1203,590"/>
+<area shape="rect" id="node15" href="$class_t_interface.html#a1b1a4260e251c9bd5f48fd6c3432e7a5" title=" " alt="" coords="773,253,960,295"/>
+<area shape="rect" id="node16" href="$class_t_interface.html#a8ed3d3631b2d3235f1e011d595909eec" title=" " alt="" coords="779,319,954,360"/>
+<area shape="rect" id="node18" href="$class_t_one_pref_dir.html#a06cd3491535362fccbba4e76b9a120e9" title="Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linke..." alt="" coords="781,384,952,425"/>
+<area shape="rect" id="node23" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="787,505,946,531"/>
+<area shape="rect" id="node25" href="$class_t_all_routes.html#adadd08bb4cbbcaeba918f20c6c103a39" title="Loads the routes from a session file." alt="" coords="785,559,948,586"/>
+<area shape="rect" id="node26" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="535,561,697,587"/>
+<area shape="rect" id="node24" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="521,495,711,536"/>
+</map>

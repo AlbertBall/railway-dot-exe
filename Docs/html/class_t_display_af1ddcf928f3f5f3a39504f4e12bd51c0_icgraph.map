@@ -1,0 +1,7 @@
+<map id="TDisplay::SetFont" name="TDisplay::SetFont">
+<area shape="rect" id="node1" title="Set the screen font to &#39;Font&#39;." alt="" coords="523,64,649,91"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a167410ef8c1ebe53abd0afee71943ecf" title=" " alt="" coords="288,5,467,32"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="280,57,475,98"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#ad0ce61f7a8050fb57d19ebd049fa8b49" title=" " alt="" coords="282,123,473,149"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="5,64,232,91"/>
+</map>

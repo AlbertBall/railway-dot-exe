@@ -1,0 +1,17 @@
+<map id="TUtilities::CheckFileStringZeroDelimiter" name="TUtilities::CheckFileStringZeroDelimiter">
+<area shape="rect" id="node1" title="checks that the value is a string (&#39;0&#39; only accepted as the delimiter), returns true for success" alt="" coords="1460,175,1632,216"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#ae484cb4ac3ce536b922fff402e6689f7" title="Check the interface part of a session file &amp; return false for error, called during SessionFileIntegri..." alt="" coords="953,34,1125,61"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a3904f26b67b9512507960187b37b6f7b" title="Checks session file integrity prior to loading, true for success." alt="" coords="689,128,889,169"/>
+<area shape="rect" id="node7" href="$class_t_one_pref_dir.html#a1896affce3465b84cfd5128cca122639" title="Called before PrefDir loading as part of the FileIntegrityCheck function in case there is an error in..." alt="" coords="1201,131,1401,158"/>
+<area shape="rect" id="node9" href="$class_t_train.html#aad716bab6f8f4aa6dd49f35130d28dd9" title="Carries out an integrity check for the train section of a session file, if fails a message is given a..." alt="" coords="1200,182,1401,209"/>
+<area shape="rect" id="node11" href="$class_t_text_handler.html#a9b78e10ef2f0907a845c0d8ed7ccdede" title="check the validity of text items in VecFile prior to loading, return true for success" alt="" coords="1189,233,1412,275"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#a1072fd152bca3234e6730efa17f84670" title="Check integrity of a railway file prior to loading, return true for success." alt="" coords="963,355,1116,396"/>
+<area shape="rect" id="node15" href="$class_t_track.html#aaaeca0e8840e05572e9c27e76a04483a" title="True if TrackElements in the file are all valid." alt="" coords="1204,299,1397,340"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="465,135,627,162"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,135,403,162"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,135,196,162"/>
+<area shape="rect" id="node8" href="$class_t_all_routes.html#ad151a9c7a0ad304f0f5c5c6b523ffb2e" title="Performs an integrity check on the routes stored in a session file and returns false if there is an e..." alt="" coords="954,135,1125,162"/>
+<area shape="rect" id="node10" href="$class_t_train_controller.html#a53fb58a1ae6103601a24ad2162f86f58" title="Part of the session file integrity check for train entries, true for success." alt="" coords="937,187,1141,228"/>
+<area shape="rect" id="node13" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="710,362,869,389"/>
+<area shape="rect" id="node14" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="451,355,641,396"/>
+</map>

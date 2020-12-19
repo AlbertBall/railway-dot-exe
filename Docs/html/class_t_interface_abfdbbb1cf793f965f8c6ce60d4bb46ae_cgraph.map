@@ -1,0 +1,11 @@
+<map id="TInterface::ContinuationAutoSignals" name="TInterface::ContinuationAutoSignals">
+<area shape="rect" id="node1" title="Deal with signal resetting on auto signal routes that extend to continuations where trains have depar..." alt="" coords="5,230,164,271"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="767,90,913,117"/>
+<area shape="rect" id="node3" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="534,83,710,124"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="767,301,913,328"/>
+<area shape="rect" id="node5" href="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a" title="Returns a constant reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ch..." alt="" coords="525,352,719,378"/>
+<area shape="rect" id="node6" href="$class_t_pref_dir_element.html#a0edec31fc9787847e3b6240bab91783c" title="Returns TrackVectorPosition." alt="" coords="256,454,433,495"/>
+<area shape="rect" id="node7" href="$class_t_all_routes.html#aa92b37f73176fcf3454688bb15b9f64c" title="Checks whether the preferred direction element at TrackVectorPosition with XLinkPos value is in a loc..." alt="" coords="212,254,477,310"/>
+<area shape="rect" id="node8" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="539,200,705,226"/>
+<area shape="rect" id="node9" href="$class_t_all_routes.html#a18177a40331bb96bbec791245b541f47" title="This is called by the InterfaceUnit at intervals based on entries in the ContinuationAutoSigVector in..." alt="" coords="246,138,443,179"/>
+</map>

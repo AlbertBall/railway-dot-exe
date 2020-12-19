@@ -1,0 +1,12 @@
+<map id="TOnePrefDir::GetPrefDirStartElement" name="TOnePrefDir::GetPrefDirStartElement">
+<area shape="rect" id="node1" title="Used when beginning a chain of preferred directions or element lengths. Enter with HLoc &amp; VLoc set to..." alt="" coords="5,284,193,326"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="723,120,869,146"/>
+<area shape="rect" id="node3" href="$class_t_one_pref_dir.html#ad2e6adb7b634b17cab9cd03610a0f8e3" title="Empty the existing vectors &amp; map." alt="" coords="257,498,427,525"/>
+<area shape="rect" id="node4" href="$class_t_track.html#ad55e3329a208e84e9e7519cc024b7aec" title="True if find a non&#45;platform element at HLoc &amp; VLoc, and if so return its TrackVector position and a r..." alt="" coords="241,292,443,318"/>
+<area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="723,296,869,322"/>
+<area shape="rect" id="node8" href="$class_t_one_pref_dir.html#ac5f8d2864f0510cf73cb9883b520ec9f" title="Store a single pref dir element in the vector &amp; map." alt="" coords="257,112,427,154"/>
+<area shape="rect" id="node5" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="495,230,670,271"/>
+<area shape="rect" id="node7" href="$class_t_track_element.html#a100bff829c4dca820927affde4cb9e57" title="Used to log track parameters for call stack logging." alt="" coords="497,346,668,373"/>
+<area shape="rect" id="node9" href="$class_t_one_pref_dir.html#a26a1ee9d1ced0d53e35936097d4896f0" title="Return the vector position of the last element in the vector (i.e. one less than the vector size)" alt="" coords="496,112,669,154"/>
+<area shape="rect" id="node10" href="$class_t_pref_dir_element.html#a473c0faabe4d0fb8c4296c9c70dbe7d3" title="Sends a list of PrefDirElement values to Utilities&#45;&gt;CallLog file for debugging purposes." alt="" coords="491,61,675,88"/>
+</map>

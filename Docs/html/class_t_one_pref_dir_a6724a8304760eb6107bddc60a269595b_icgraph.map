@@ -1,0 +1,11 @@
+<map id="TOnePrefDir::GetModifiableSearchElementAt" name="TOnePrefDir::GetModifiableSearchElementAt">
+<area shape="rect" id="node1" title="Return a modifiable element at SearchVector position &#39;At&#39;." alt="" coords="1293,49,1472,91"/>
+<area shape="rect" id="node2" href="$class_t_one_route.html#abdb89bb3f7ce55d926bee3c2d4b3652f" title="After a route has been selected successfully this function sets all RouteFlash (see above) values app..." alt="" coords="1059,5,1241,47"/>
+<area shape="rect" id="node5" href="$class_t_one_route.html#ae06f7e9335f1a94ff996ad634dc102a0" title="Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector so that the..." alt="" coords="1055,81,1245,123"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="280,35,475,76"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="5,42,232,69"/>
+<area shape="rect" id="node6" href="$class_t_one_route.html#af1794f576d8aff59f83992afc1c5acc2" title="Try to find a set of linked tracks that lie on preferred directions between the route start element a..." alt="" coords="801,81,995,123"/>
+<area shape="rect" id="node8" href="$class_t_one_route.html#a8f8fe8f852dd24cf8d12933f22b5750c" title="Called when setting unrestricted routes to set the route element values appropriately after a success..." alt="" coords="789,152,1007,193"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#aa639148521a793641e694b15486b5055" title=" " alt="" coords="547,93,717,135"/>
+<area shape="rect" id="node9" href="$class_t_one_route.html#a997f3cb02d8e03d0a12769b8eb903674" title="Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc...." alt="" coords="523,159,741,200"/>
+</map>

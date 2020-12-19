@@ -1,0 +1,4 @@
+<map id="TTrain::SignallerChangeTrainDirection" name="TTrain::SignallerChangeTrainDirection">
+<area shape="rect" id="node1" title="Unplots &amp; replots train, which checks for facing signal and sets StoppedAtSignal if req&#39;d." alt="" coords="235,5,421,47"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#aaaf32c3c815553f7ba70698e0f0071bb" title=" " alt="" coords="5,5,187,47"/>
+</map>

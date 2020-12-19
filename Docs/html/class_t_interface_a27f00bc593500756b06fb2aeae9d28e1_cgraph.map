@@ -1,0 +1,16 @@
+<map id="TInterface::AddLocationNameText" name="TInterface::AddLocationNameText">
+<area shape="rect" id="node1" title="Add &#39;Name&#39; to TextVector and display on screen at a position determined by the shape and size of the ..." alt="" coords="5,143,223,170"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="768,63,915,90"/>
+<area shape="rect" id="node3" href="$class_t_text_handler.html#a49b9ef44166e8768b231fd4beea8c0da" title="add Text to TextVector and display it on the screen" alt="" coords="271,136,473,177"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="768,122,915,149"/>
+<area shape="rect" id="node13" href="$class_t_track.html#aabdf6becaf1d21cc5c654293cc3fc734" title="Used in locating the screen name position for a named location, return true if find an inactive eleme..." alt="" coords="525,56,716,97"/>
+<area shape="rect" id="node14" href="$class_t_display.html#a375ba345403e91af04392540fbd5f2f3" title="Return the current screen font." alt="" coords="309,274,435,301"/>
+<area shape="rect" id="node4" href="$class_t_display.html#adfff17bfef798b07b1e6bbfc6f5e0822" title="Display TextString at the defined position with the defined font." alt="" coords="557,122,684,149"/>
+<area shape="rect" id="node6" href="$class_t_text_handler.html#aa91cd392aacad3dbd69541b2ecad7f8e" title="push &amp;Text onto TextVector &amp; reset the size of the railway if necessary" alt="" coords="521,274,720,301"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a750354d5deccaf7ccdbe8afe8f0f8e35" title=" " alt="" coords="769,375,914,402"/>
+<area shape="rect" id="node8" href="$class_t_track.html#a5c13595c171f5c7e4aaa6dfc18f4359f" title=" " alt="" coords="769,426,914,453"/>
+<area shape="rect" id="node9" href="$class_t_track.html#a453e9074035359dc22be2b15913e4bab" title=" " alt="" coords="769,173,913,199"/>
+<area shape="rect" id="node10" href="$class_t_track.html#a30e9bd8b4f5e2fb3f01b8c94a98d79f3" title=" " alt="" coords="771,223,911,250"/>
+<area shape="rect" id="node11" href="$class_t_track.html#ad33eb8c757120a0fc52ba43c9c8a3293" title=" " alt="" coords="769,274,913,301"/>
+<area shape="rect" id="node12" href="$class_t_track.html#a6459d38cdb82ae38f54f4a1de4935e09" title=" " alt="" coords="771,325,911,351"/>
+</map>

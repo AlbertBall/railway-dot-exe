@@ -1,0 +1,29 @@
+<map id="TUtilities::LoadFileInt" name="TUtilities::LoadFileInt">
+<area shape="rect" id="node1" title="loads an int value from the file" alt="" coords="1451,585,1593,611"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a3ff62ece81af00462951a989f3cee4e5" title=" " alt="" coords="937,141,1132,167"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="465,671,627,698"/>
+<area shape="rect" id="node7" href="$class_t_one_pref_dir.html#a1896affce3465b84cfd5128cca122639" title="Called before PrefDir loading as part of the FileIntegrityCheck function in case there is an error in..." alt="" coords="1191,198,1391,225"/>
+<area shape="rect" id="node8" href="$class_t_all_routes.html#ad151a9c7a0ad304f0f5c5c6b523ffb2e" title="Performs an integrity check on the routes stored in a session file and returns false if there is an e..." alt="" coords="949,242,1120,269"/>
+<area shape="rect" id="node9" href="$class_t_text_handler.html#a9b78e10ef2f0907a845c0d8ed7ccdede" title="check the validity of text items in VecFile prior to loading, return true for success" alt="" coords="1180,417,1403,459"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="710,773,869,799"/>
+<area shape="rect" id="node13" href="$class_t_track.html#aaaeca0e8840e05572e9c27e76a04483a" title="True if TrackElements in the file are all valid." alt="" coords="1195,300,1388,341"/>
+<area shape="rect" id="node14" href="$class_t_track.html#af4ef9874b8b8208112da24ac282298b7" title="checks all user graphics &amp; returns true for success" alt="" coords="1199,366,1384,393"/>
+<area shape="rect" id="node15" href="$class_t_track.html#a96563ccfea0293d240212db434f4e3e0" title="Load all BarriersDownVector values from SessionFile." alt="" coords="702,555,877,596"/>
+<area shape="rect" id="node16" href="$class_t_track.html#a989be9c495abc0850c9237a845fa2846" title="new at v2.4.0, load user graphics" alt="" coords="960,838,1109,865"/>
+<area shape="rect" id="node17" href="$class_t_interface.html#ad2e9b9996aa6ebd7108d14d8db399da8" title="Load the interface part of a session file." alt="" coords="708,621,871,647"/>
+<area shape="rect" id="node18" href="$class_t_one_pref_dir.html#a614933ff3958e4b8c9be9bc78159d9e8" title="Old version of LoadPrefDir, used during development when the save format changed so the old files cou..." alt="" coords="1198,1091,1385,1118"/>
+<area shape="rect" id="node19" href="$class_t_train.html#a23c65e7f2b2130ae87811f70afb6d5bf" title="Create one train with relevant member values from the sesion file." alt="" coords="1195,686,1387,713"/>
+<area shape="rect" id="node20" href="$class_t_train_controller.html#a853ddf9799c9fd7063c81ffa1dc754d7" title="load trains from a session file" alt="" coords="937,664,1132,705"/>
+<area shape="rect" id="node21" href="$class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d" title="Load a vector and map of preferred directions from the file." alt="" coords="951,889,1118,915"/>
+<area shape="rect" id="node22" href="$class_t_all_routes.html#adadd08bb4cbbcaeba918f20c6c103a39" title="Loads the routes from a session file." alt="" coords="708,925,871,951"/>
+<area shape="rect" id="node23" href="$class_t_train_controller.html#ae30ca688c6c3672e98692a13f29b7a4b" title="load ContinuationAutoSigEntries from a session file" alt="" coords="692,976,887,1017"/>
+<area shape="rect" id="node24" href="$class_t_train_controller.html#aefaafd5c6d1c51b4db9dd4b3646d0312" title="load locked routes from a session file" alt="" coords="692,1041,887,1083"/>
+<area shape="rect" id="node25" href="$class_t_text_handler.html#ab67bb7278c89557bf9cc8bef475afab5" title="load the railway&#39;s text from VecFile" alt="" coords="955,737,1114,763"/>
+<area shape="rect" id="node26" href="$class_t_interface.html#a92d5a9e07b9362dee2296b7759a1c83d" title="Loads timetable into memory from a session file, true if successful." alt="" coords="949,75,1120,116"/>
+<area shape="rect" id="node27" href="$class_t_track.html#a09140dd23c45ccd541f056c3dd257c13" title="Load track elements (active &amp; inactive) from the file into the relevant vectors and maps,..." alt="" coords="970,511,1099,538"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a3904f26b67b9512507960187b37b6f7b" title="Checks session file integrity prior to loading, true for success." alt="" coords="689,285,889,327"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,671,403,698"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,671,196,698"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a1072fd152bca3234e6730efa17f84670" title="Check integrity of a railway file prior to loading, return true for success." alt="" coords="958,395,1111,436"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="451,765,641,807"/>
+</map>

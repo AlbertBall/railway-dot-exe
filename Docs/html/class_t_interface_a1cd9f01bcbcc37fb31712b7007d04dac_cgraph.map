@@ -1,0 +1,18 @@
+<map id="TInterface::MovingTrainPresentOnFlashingRoute" name="TInterface::MovingTrainPresentOnFlashingRoute">
+<area shape="rect" id="node1" title="Examines a flashing route (i.e. one being set) and returns true if a moving train is detected on it a..." alt="" coords="5,539,204,580"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1173,226,1320,253"/>
+<area shape="rect" id="node3" href="$class_t_track.html#a3b4a2e8a16c61a4286fcf34adb000819" title=" " alt="" coords="267,371,442,412"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1173,488,1320,514"/>
+<area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="945,386,1107,413"/>
+<area shape="rect" id="node9" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="692,488,879,530"/>
+<area shape="rect" id="node11" href="$class_t_pref_dir_element.html#aa5944dedfb065d9e251c26b28fff69f6" title="Returns the ELink array position." alt="" coords="254,597,455,624"/>
+<area shape="rect" id="node12" href="$class_t_one_pref_dir.html#a11543812cef66a28f4747fb3f8f33f47" title="Return a non&#45;modifiable element at SearchVector position &#39;At&#39;." alt="" coords="929,102,1123,143"/>
+<area shape="rect" id="node13" href="$class_t_pref_dir_element.html#a0edec31fc9787847e3b6240bab91783c" title="Returns TrackVectorPosition." alt="" coords="266,648,443,690"/>
+<area shape="rect" id="node14" href="$class_t_pref_dir_element.html#a35cd9c18012bd537fa988a32c510b01b" title="Returns the XLink array position." alt="" coords="255,714,454,741"/>
+<area shape="rect" id="node15" href="$class_t_one_pref_dir.html#a7a7fb4b5ae1ed73c9a989d21980d5b54" title="Return the vector size." alt="" coords="252,765,457,792"/>
+<area shape="rect" id="node16" href="$class_t_train.html#a2a2d78164c9dc1881b2c77526f04903f" title="True if the train has stopped for any reason." alt="" coords="298,816,411,842"/>
+<area shape="rect" id="node5" href="$class_t_track.html#a12d4069a6a201e13a83347c555a465b2" title="New at v1.2.0; checks whether a train present at input location and link and returns its ID if so." alt="" coords="505,378,644,405"/>
+<area shape="rect" id="node6" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="939,219,1113,260"/>
+<area shape="rect" id="node7" href="$class_t_train.html#aef32cd9a007874ab09ceeac907e7c88b" title="Added at v1.2.0: true if any part of train on specific link, false otherwise, including no link prese..." alt="" coords="713,336,857,362"/>
+<area shape="rect" id="node10" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="927,488,1125,514"/>
+</map>

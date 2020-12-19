@@ -1,0 +1,8 @@
+<map id="TTrack" name="TTrack">
+<area shape="rect" id="node1" title=" " alt="" coords="334,784,570,1345"/>
+<area shape="rect" id="node2" href="$class_t_track_element.html" title="Basic track elements as implemented in the overall railway layout." alt="" coords="5,321,197,619"/>
+<area shape="rect" id="node3" href="$class_t_fixed_track_piece.html" title=" " alt="" coords="101,5,305,200"/>
+<area shape="rect" id="node6" href="$class_t_track_1_1_t_fixed_track_array.html" title="Holds an array of TrackPieces, only accessible to TTrack." alt="" coords="221,431,392,509"/>
+<area shape="rect" id="node4" href="$class_t_graphic_element.html" title="Allows a single Width x Height graphic to change and change back independently of the remaining displ..." alt="" coords="417,263,623,677"/>
+<area shape="rect" id="node5" href="$struct_t_track_1_1_t_sig_element.html" title="Used as basic elements in a table of signals &#45; see SigTable below." alt="" coords="647,417,790,523"/>
+</map>

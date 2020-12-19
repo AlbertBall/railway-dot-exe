@@ -1,0 +1,9 @@
+<map id="TInterface::SetRouteButtonsInfoCaptionAndRouteNotStarted" name="TInterface::SetRouteButtonsInfoCaptionAndRouteNotStarted">
+<area shape="rect" id="node1" title="Enables or disables the route type buttons depending on the route mode, sets the information panel me..." alt="" coords="5,150,211,191"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="695,5,841,32"/>
+<area shape="rect" id="node3" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="259,107,456,133"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="695,107,841,133"/>
+<area shape="rect" id="node7" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="275,259,440,285"/>
+<area shape="rect" id="node4" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="504,56,647,83"/>
+<area shape="rect" id="node6" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="515,157,636,184"/>
+</map>

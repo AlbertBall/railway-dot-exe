@@ -1,0 +1,12 @@
+<map id="TInterface::FileIntegrityCheck" name="TInterface::FileIntegrityCheck">
+<area shape="rect" id="node1" title="Check integrity of a railway file prior to loading, return true for success." alt="" coords="5,157,159,199"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="490,71,637,98"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#a4d229af6e8943da1936bcbcc1c83846b" title="checks that the value is an int lying between Lowest &amp; Highest (inclusive), returns true for success" alt="" coords="487,325,639,351"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a8bc6745e0433d55022e016b6551f04a0" title="checks that the value is a string (&#39;0&#39; only accepted as the delimiter), returns true for success" alt="" coords="477,5,649,47"/>
+<area shape="rect" id="node6" href="$class_t_text_handler.html#a9b78e10ef2f0907a845c0d8ed7ccdede" title="check the validity of text items in VecFile prior to loading, return true for success" alt="" coords="207,92,429,133"/>
+<area shape="rect" id="node8" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="490,223,637,250"/>
+<area shape="rect" id="node9" href="$class_t_track.html#aaaeca0e8840e05572e9c27e76a04483a" title="True if TrackElements in the file are all valid." alt="" coords="221,157,415,199"/>
+<area shape="rect" id="node10" href="$class_t_track.html#af4ef9874b8b8208112da24ac282298b7" title="checks all user graphics &amp; returns true for success" alt="" coords="225,223,411,250"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37" title="checks that the value is a string (&#39;0&#39; or CR accepted as delimiters), returns true for success and re..." alt="" coords="697,267,868,308"/>
+<area shape="rect" id="node7" href="$class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c" title="loads an int value from the file" alt="" coords="492,122,635,149"/>
+</map>

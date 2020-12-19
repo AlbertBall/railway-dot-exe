@@ -1,0 +1,9 @@
+<map id="TTrainController::CheckSessionLockedRoutes" name="TTrainController::CheckSessionLockedRoutes">
+<area shape="rect" id="node1" title="Part of the session file integrity check for locked routes, true for success." alt="" coords="5,115,209,157"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="273,5,420,32"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ab4b66aa7480fda73d554fe0bcca82b60" title="checks that the value is an int lying between Lowest &amp; Highest (inclusive), returns true for success ..." alt="" coords="261,57,432,98"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a5c7332a6b45894902f271f0ab9ab87db" title="checks that the value is a double, returns true for success" alt="" coords="257,123,436,149"/>
+<area shape="rect" id="node6" href="$class_t_utilities.html#a4d229af6e8943da1936bcbcc1c83846b" title="checks that the value is an int lying between Lowest &amp; Highest (inclusive), returns true for success" alt="" coords="271,173,423,200"/>
+<area shape="rect" id="node7" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="273,224,420,251"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37" title="checks that the value is a string (&#39;0&#39; or CR accepted as delimiters), returns true for success and re..." alt="" coords="484,115,655,157"/>
+</map>

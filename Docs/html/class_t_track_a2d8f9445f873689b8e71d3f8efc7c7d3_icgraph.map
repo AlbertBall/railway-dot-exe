@@ -1,0 +1,52 @@
+<map id="TTrack::TrackPush" name="TTrack::TrackPush">
+<area shape="rect" id="node1" title="Insert TrackElement into the relevant vector and map, and, if named, insert the name in LocationNameM..." alt="" coords="1549,173,1680,199"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a09140dd23c45ccd541f056c3dd257c13" title="Load track elements (active &amp; inactive) from the file into the relevant vectors and maps,..." alt="" coords="1072,97,1201,123"/>
+<area shape="rect" id="node9" href="$class_t_track.html#a4385335a5bb0891cdbf2b6d0f0aabdf2" title="Called during track building or pasting, when an element identified by CurrentTag (i...." alt="" coords="767,173,985,199"/>
+<area shape="rect" id="node13" href="$class_t_track.html#a9f93210292bf2423e0ac0d738adafe9e" title="new at v2.2.0 &#45; as PlotAndAddTrackElement but keeping speed &amp; length attributes (for pasting) and als..." alt="" coords="1288,641,1501,683"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="539,339,698,366"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="538,71,699,98"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a3904f26b67b9512507960187b37b6f7b" title="Checks session file integrity prior to loading, true for success." alt="" coords="776,5,976,47"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="262,553,453,595"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="278,71,437,98"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,71,196,98"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="521,156,716,197"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#ab1487b7a54ebacf27d7b980c65723d18" title=" " alt="" coords="523,222,714,249"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="244,222,471,249"/>
+<area shape="rect" id="node14" href="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b" title="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode." alt="" coords="1033,1037,1240,1063"/>
+<area shape="rect" id="node15" href="$class_t_interface.html#aa20c05bf2d6c23035a10a89796334d0f" title=" " alt="" coords="533,704,705,745"/>
+<area shape="rect" id="node16" href="$class_t_interface.html#a10494e62a7bb4e7114ab4d98e18499f1" title=" " alt="" coords="529,769,708,811"/>
+<area shape="rect" id="node17" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="529,835,709,876"/>
+<area shape="rect" id="node18" href="$class_t_interface.html#a424a7eb780461c1acb396feb21f52062" title=" " alt="" coords="789,1000,963,1041"/>
+<area shape="rect" id="node19" href="$class_t_interface.html#ae6e977c9dfdfbde9924ceefd19d7d0d3" title=" " alt="" coords="780,1066,972,1093"/>
+<area shape="rect" id="node20" href="$class_t_interface.html#aff2c1cd6ed2d45fdcf6392a85a6d9415" title=" " alt="" coords="786,1117,966,1159"/>
+<area shape="rect" id="node21" href="$class_t_interface.html#ad0fa9f32b059b346e066ab23d62a4bfc" title=" " alt="" coords="529,1148,708,1189"/>
+<area shape="rect" id="node22" href="$class_t_interface.html#add5fbdbceae6285c2cc440905b270491" title=" " alt="" coords="794,1235,958,1276"/>
+<area shape="rect" id="node23" href="$class_t_interface.html#a5e7eff5bd235780252147bb4878a4c95" title=" " alt="" coords="536,1213,701,1255"/>
+<area shape="rect" id="node24" href="$class_t_interface.html#ab34f55bab5984b72264d7275660a3463" title=" " alt="" coords="527,1279,710,1320"/>
+<area shape="rect" id="node25" href="$class_t_interface.html#ac04724e6b4eafc041ee65ce5168a82ae" title="Load a user&#45;defined graphic (bmp, gif, jpg, png)." alt="" coords="783,1970,969,1997"/>
+<area shape="rect" id="node27" href="$class_t_interface.html#a9bc3aaa0f0176016dc5c84245917aa71" title=" " alt="" coords="521,1856,717,1897"/>
+<area shape="rect" id="node28" href="$class_t_interface.html#aef9267dd01da25269797e2e8ca08a3f9" title=" " alt="" coords="534,1344,703,1385"/>
+<area shape="rect" id="node29" href="$class_t_interface.html#ac666c9f62cdb68b29c2a7db123a43a28" title=" " alt="" coords="534,1409,703,1451"/>
+<area shape="rect" id="node30" href="$class_t_interface.html#a8c96de45b013362b03ad0e8725a7c64b" title="Called when mouse button clicked in zoom&#45;out mode." alt="" coords="521,273,716,315"/>
+<area shape="rect" id="node31" href="$class_t_interface.html#a4ee6afffbc33eab918cba315ab65ee6e" title=" " alt="" coords="788,1605,964,1647"/>
+<area shape="rect" id="node32" href="$class_t_interface.html#a13e8cd35a6f61caf6794791f1a4fe7f6" title=" " alt="" coords="519,1475,719,1516"/>
+<area shape="rect" id="node33" href="$class_t_interface.html#a4ef96184d97d0f9ff92e78328578e825" title=" " alt="" coords="787,1723,965,1764"/>
+<area shape="rect" id="node34" href="$class_t_interface.html#a7d0d3bbfab692ca3d26c1eea6ef24542" title=" " alt="" coords="791,1788,961,1829"/>
+<area shape="rect" id="node35" href="$class_t_interface.html#ac285c199f6c43151dbec9ba017a29bdc" title=" " alt="" coords="794,1853,958,1895"/>
+<area shape="rect" id="node36" href="$class_t_interface.html#aa439e164f7f2304477010985c2caabed" title=" " alt="" coords="539,1540,699,1581"/>
+<area shape="rect" id="node37" href="$class_t_interface.html#a9113d88b504cd30eb8dd6ecddde1c0ec" title=" " alt="" coords="525,1605,712,1647"/>
+<area shape="rect" id="node38" href="$class_t_interface.html#a02e91aba36e2b91354abd2884f658510" title=" " alt="" coords="785,2021,967,2063"/>
+<area shape="rect" id="node39" href="$class_t_interface.html#a3cf2db0424e05908b20a97130895d056" title=" " alt="" coords="527,1711,711,1752"/>
+<area shape="rect" id="node40" href="$class_t_interface.html#aa6e7359ece526e43589456e9a31851a0" title=" " alt="" coords="535,391,703,432"/>
+<area shape="rect" id="node41" href="$class_t_interface.html#a6a0ecdd864e40a84b833014d4478d1e3" title=" " alt="" coords="786,376,966,417"/>
+<area shape="rect" id="node42" href="$class_t_interface.html#a19148984e07e16178b6a6898bcbcdf22" title=" " alt="" coords="531,456,706,497"/>
+<area shape="rect" id="node43" href="$class_t_interface.html#a4b0c482229c19b856a8c3f07815e5d7d" title=" " alt="" coords="523,521,714,563"/>
+<area shape="rect" id="node44" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="789,898,963,925"/>
+<area shape="rect" id="node48" href="$class_t_interface.html#aab42b12ff3ba43ad2f70994b5399dd90" title=" " alt="" coords="531,587,706,628"/>
+<area shape="rect" id="node49" href="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc" title=" " alt="" coords="526,653,711,679"/>
+<area shape="rect" id="node50" href="$class_t_interface.html#ad0ce61f7a8050fb57d19ebd049fa8b49" title=" " alt="" coords="781,695,971,722"/>
+<area shape="rect" id="node26" href="$class_t_interface.html#a76ee131726624d4cb505d4771e5051a2" title=" " alt="" coords="522,1963,715,2004"/>
+<area shape="rect" id="node45" href="$class_t_interface.html#a30904d608111ce6452a9861d86b64267" title=" " alt="" coords="531,1017,706,1059"/>
+<area shape="rect" id="node46" href="$class_t_interface.html#a1b1a4260e251c9bd5f48fd6c3432e7a5" title=" " alt="" coords="525,1083,712,1124"/>
+<area shape="rect" id="node47" href="$class_t_interface.html#a0abab134f4994b02507e1e2d3f31cd77" title=" " alt="" coords="527,952,710,993"/>
+</map>

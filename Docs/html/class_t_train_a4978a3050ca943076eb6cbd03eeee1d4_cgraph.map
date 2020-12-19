@@ -1,0 +1,29 @@
+<map id="TTrain::UnplotTrain" name="TTrain::UnplotTrain">
+<area shape="rect" id="node1" title="Unplot train from screen in zoomed&#45;in mode." alt="" coords="5,1085,136,1112"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1672,420,1819,446"/>
+<area shape="rect" id="node3" href="$class_t_train.html#aa21e18b3085773ca8351c446911611c1" title="When a train moves off a bridge the other track may contain a route or have a train on it that has be..." alt="" coords="184,824,364,866"/>
+<area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1672,958,1819,985"/>
+<area shape="rect" id="node21" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="1464,1212,1585,1238"/>
+<area shape="rect" id="node26" href="$class_t_train.html#abb6bb7d2024ac59230cbaff2ec3ee999" title="Replot the graphic pointed to by BackgroundPtr (see above) after a train has passed." alt="" coords="1143,1060,1346,1086"/>
+<area shape="rect" id="node27" href="$class_t_train.html#ace302d98b5685104d294869b161e20a0" title="After a train has moved off an element that element has its TrainIDOnElement value set back to &#45;1 to ..." alt="" coords="1151,564,1338,590"/>
+<area shape="rect" id="node4" href="$class_t_pref_dir_element.html#af00e0755cd716b4d101abbae02c73ca2" title="Returns ELink." alt="" coords="422,958,601,985"/>
+<area shape="rect" id="node5" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1437,740,1613,782"/>
+<area shape="rect" id="node7" href="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a" title="Returns a constant reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ch..." alt="" coords="1428,806,1621,833"/>
+<area shape="rect" id="node8" href="$class_t_all_routes.html#a7eda7a4b535c7538e217bbbc4d878071" title="Retrieve up to two TRouteElementPair entries from Route2MultiMap at H &amp; V, the first as a function re..." alt="" coords="1427,471,1623,512"/>
+<area shape="rect" id="node9" href="$class_t_pref_dir_element.html#a9dfc04bfa3abf32eb043d771381f971a" title="Returns route graphic." alt="" coords="659,151,837,192"/>
+<area shape="rect" id="node12" href="$class_t_pref_dir_element.html#a0edec31fc9787847e3b6240bab91783c" title="Returns TrackVectorPosition." alt="" coords="423,1010,600,1051"/>
+<area shape="rect" id="node13" href="$class_t_pref_dir_element.html#a35cd9c18012bd537fa988a32c510b01b" title="Returns the XLink array position." alt="" coords="412,756,611,782"/>
+<area shape="rect" id="node14" href="$class_t_all_routes.html#aa92b37f73176fcf3454688bb15b9f64c" title="Checks whether the preferred direction element at TrackVectorPosition with XLinkPos value is in a loc..." alt="" coords="1112,637,1377,693"/>
+<area shape="rect" id="node16" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="1453,1161,1596,1188"/>
+<area shape="rect" id="node17" href="$class_t_train.html#a5fdef825574f0e546ab25169e9f8445d" title="Plots the train on the display in normal (zoomed&#45;in) mode." alt="" coords="453,1076,569,1102"/>
+<area shape="rect" id="node22" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="1443,1009,1606,1036"/>
+<area shape="rect" id="node23" href="$class_t_all_routes.html#aace498b67ccef13364a1afa1f5f15311" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="1151,857,1339,884"/>
+<area shape="rect" id="node24" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="1151,358,1338,399"/>
+<area shape="rect" id="node10" href="$class_t_pref_dir_element.html#ad58c8d4fa30c04fa9d8e84ae55c7ce61" title="picks up the appropriate route graphic" alt="" coords="885,100,1064,142"/>
+<area shape="rect" id="node11" href="$class_t_pref_dir_element.html#ae8ee9f59578f80d23aebfdb9fff041d4" title="determines and loads EXNumber (see above)" alt="" coords="1435,303,1614,344"/>
+<area shape="rect" id="node15" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="1442,689,1607,716"/>
+<area shape="rect" id="node18" href="$class_t_train.html#a247bd95a7c648367736b116f553f4e54" title="Plot the train&#39;s headcode character corresponding to ArrayNumber." alt="" coords="667,1076,829,1102"/>
+<area shape="rect" id="node19" href="$class_t_train.html#a0e0ab54415645b04cbdeadd829d27898" title="When a train moves onto an element that element has its TrainIDOnElement value set to the TrainID val..." alt="" coords="888,1076,1061,1102"/>
+<area shape="rect" id="node20" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="1146,1110,1343,1137"/>
+<area shape="rect" id="node25" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="1425,420,1624,446"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="TInterface::FileIntegrityCheck" name="TInterface::FileIntegrityCheck">
+<area shape="rect" id="node1" title="Check integrity of a railway file prior to loading, return true for success." alt="" coords="451,5,604,47"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="244,13,403,39"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="5,5,196,47"/>
+</map>

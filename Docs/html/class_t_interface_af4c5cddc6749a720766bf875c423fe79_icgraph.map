@@ -1,0 +1,4 @@
+<map id="TInterface::SaveTempTimetableFile" name="TInterface::SaveTempTimetableFile">
+<area shape="rect" id="node1" title="Save a timetable as a temporary file either on loading directly or on loading a session file...." alt="" coords="224,13,447,39"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a15a2f5ad77e4f6c2b0cc6314224dfb78" title=" " alt="" coords="5,5,176,47"/>
+</map>

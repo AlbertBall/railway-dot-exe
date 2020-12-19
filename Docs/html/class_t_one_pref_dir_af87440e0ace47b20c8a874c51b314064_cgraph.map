@@ -1,0 +1,13 @@
+<map id="TOnePrefDir::WritePrefDirToImage" name="TOnePrefDir::WritePrefDirToImage">
+<area shape="rect" id="node1" title="Used when creating a bitmap image to display preferred directions (as on screen during &#39;Set preferred..." alt="" coords="5,250,176,292"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="729,108,876,135"/>
+<area shape="rect" id="node3" href="$class_t_pref_dir_element.html#a5d03028241e6c38e473882120d5bcc68" title="picks up the green or red route direction graphic" alt="" coords="224,309,420,350"/>
+<area shape="rect" id="node4" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="487,64,663,105"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="729,166,876,192"/>
+<area shape="rect" id="node6" href="$class_t_track.html#a5d25871e34f26d3c4c878fd4707ed375" title=" " alt="" coords="251,375,393,402"/>
+<area shape="rect" id="node7" href="$class_t_pref_dir_element.html#ad58c8d4fa30c04fa9d8e84ae55c7ce61" title="picks up the appropriate route graphic" alt="" coords="233,132,411,173"/>
+<area shape="rect" id="node9" href="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc" title="Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return &#45;1." alt="" coords="468,194,681,236"/>
+<area shape="rect" id="node10" href="$class_t_track.html#ac42bd1e1e148a91396310b1077d2d8e0" title=" " alt="" coords="251,426,393,452"/>
+<area shape="rect" id="node11" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="239,476,405,503"/>
+<area shape="rect" id="node8" href="$class_t_pref_dir_element.html#ae8ee9f59578f80d23aebfdb9fff041d4" title="determines and loads EXNumber (see above)" alt="" coords="485,129,664,170"/>
+</map>

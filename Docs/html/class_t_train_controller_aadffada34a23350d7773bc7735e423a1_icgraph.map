@@ -1,0 +1,6 @@
+<map id="TTrainController::CalcOperatingAndNotStartedTrainLateness" name="TTrainController::CalcOperatingAndNotStartedTrainLateness">
+<area shape="rect" id="node1" title="calculates additional lateness values for trains that haven&#39;t reached their destinations yet" alt="" coords="489,35,692,76"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#af6c6e1e1236559f07b29b069d4377690" title="At the end of operation a summary of overall performance is sent to the performance file by this func..." alt="" coords="219,35,441,76"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="5,5,171,47"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#ad1418f26381a91c4333c3947585ed60e" title=" " alt="" coords="13,71,163,98"/>
+</map>

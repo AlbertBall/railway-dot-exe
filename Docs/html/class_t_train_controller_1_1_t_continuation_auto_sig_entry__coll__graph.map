@@ -1,0 +1,3 @@
+<map id="TTrainController::TContinuationAutoSigEntry" name="TTrainController::TContinuationAutoSigEntry">
+<area shape="rect" id="node1" title="&lt; TTClockTime when last session saved &#45; to prevent display of warning message on exit session if &lt; 5 ..." alt="" coords="5,5,204,171"/>
+</map>

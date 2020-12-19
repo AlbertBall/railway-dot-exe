@@ -1,0 +1,9 @@
+<map id="TDisplay::GetFont" name="TDisplay::GetFont">
+<area shape="rect" id="node1" title="Return the current screen font." alt="" coords="545,93,672,119"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a27f00bc593500756b06fb2aeae9d28e1" title="Add &#39;Name&#39; to TextVector and display on screen at a position determined by the shape and size of the ..." alt="" coords="280,13,497,39"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a167410ef8c1ebe53abd0afee71943ecf" title=" " alt="" coords="299,63,478,90"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="291,115,486,156"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#ad0ce61f7a8050fb57d19ebd049fa8b49" title=" " alt="" coords="293,181,484,207"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#ac666c9f62cdb68b29c2a7db123a43a28" title=" " alt="" coords="34,5,203,47"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="5,122,232,149"/>
+</map>

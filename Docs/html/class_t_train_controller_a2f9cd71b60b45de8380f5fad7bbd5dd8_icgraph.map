@@ -1,0 +1,6 @@
+<map id="TTrainController::PlotAllTrainsInZoomOutMode" name="TTrainController::PlotAllTrainsInZoomOutMode">
+<area shape="rect" id="node1" title="Plots all trains on screen in zoomed&#45;out mode, state of &#39;Flash&#39; determines whether the flashing train..." alt="" coords="477,23,636,65"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="257,5,416,32"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc" title=" " alt="" coords="244,56,429,83"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,5,196,32"/>
+</map>

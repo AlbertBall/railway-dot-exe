@@ -1,0 +1,17 @@
+<map id="TTrainController::SecondPassMessage" name="TTrainController::SecondPassMessage">
+<area shape="rect" id="node1" title="Give a user message during timetable integrity checking if GiveMessages is true, ignore if false." alt="" coords="1847,123,2011,164"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a72662be9ecd0e95131779bd10b6fe14f" title="A timetable validation function where all service cross references are checked for validity and set p..." alt="" coords="1592,5,1783,47"/>
+<area shape="rect" id="node3" href="$class_t_train_controller.html#a193bc964187b0ae255251d2c7136540a" title="Carry out further detailed timetable consistency checks, return true for success." alt="" coords="1364,123,1528,164"/>
+<area shape="rect" id="node13" href="$class_t_train_controller.html#a232adcf919e3d70f2fc0cdc4d3bb2ee4" title="A timetable validation function where referenced services are checked for uniqueness,..." alt="" coords="1599,123,1775,164"/>
+<area shape="rect" id="node14" href="$class_t_train_controller.html#aa991976bc8ea956f9e9230f6a6921ac1" title="A timetable validation function where cross references are checked for validity for non&#45;repeating shu..." alt="" coords="1576,188,1799,229"/>
+<area shape="rect" id="node15" href="$class_t_train_controller.html#a161fe7b4bbf101fc0a3f7eadd3aff9ca" title="Check that each shuttle service ends either in Fns or Fxx&#45;sh (though a single service can&#39;t end in Fx..." alt="" coords="1588,253,1787,295"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a148e3f99d39f596dbd7d490403936154" title="Convert a stored timetable file (either as a stand alone file or within a session file) to a loaded t..." alt="" coords="1145,89,1316,131"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#a4ffe7e6eb2421577f670a52f556aef97" title="Check the integrity of a stored timetable file (either as a stand alone file or within a session file..." alt="" coords="1145,155,1316,196"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a92d5a9e07b9362dee2296b7759a1c83d" title="Loads timetable into memory from a session file, true if successful." alt="" coords="917,24,1088,65"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a15a2f5ad77e4f6c2b0cc6314224dfb78" title=" " alt="" coords="917,89,1088,131"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="451,31,612,58"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#a3904f26b67b9512507960187b37b6f7b" title="Checks session file integrity prior to loading, true for success." alt="" coords="660,53,860,95"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,31,403,58"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,31,196,58"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#a2f501868bbee2310af99bf2e8e265c59" title=" " alt="" coords="908,155,1097,196"/>
+</map>

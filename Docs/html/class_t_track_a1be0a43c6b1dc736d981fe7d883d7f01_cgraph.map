@@ -1,0 +1,9 @@
+<map id="TTrack::ResetGapsFromGapMap" name="TTrack::ResetGapsFromGapMap">
+<area shape="rect" id="node1" title="Called by RepositionAndMapTrack to reset the connecting elements of all set gaps (their TrackVector p..." alt="" coords="5,137,219,164"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="739,55,885,81"/>
+<area shape="rect" id="node3" href="$class_t_track.html#ad55e3329a208e84e9e7519cc024b7aec" title="True if find a non&#45;platform element at HLoc &amp; VLoc, and if so return its TrackVector position and a r..." alt="" coords="267,109,468,136"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="739,193,885,220"/>
+<area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="522,219,685,245"/>
+<area shape="rect" id="node4" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="516,102,691,143"/>
+<area shape="rect" id="node6" href="$class_t_track_element.html#a100bff829c4dca820927affde4cb9e57" title="Used to log track parameters for call stack logging." alt="" coords="518,51,689,77"/>
+</map>

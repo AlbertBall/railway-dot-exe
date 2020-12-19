@@ -1,0 +1,9 @@
+<map id="TTrack::SetStationEntryStopLinkPosses" name="TTrack::SetStationEntryStopLinkPosses">
+<area shape="rect" id="node1" title="Called when trying to link track and when a name changed when track already linked." alt="" coords="5,84,193,125"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="727,87,873,114"/>
+<area shape="rect" id="node3" href="$class_t_track.html#a7867a4b41fbc25f35eccab0b03cab9ed" title="True if a non&#45;station named location at HLoc &amp; VLoc." alt="" coords="241,139,425,180"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="727,205,873,231"/>
+<area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="495,37,657,63"/>
+<area shape="rect" id="node4" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="485,139,667,180"/>
+<area shape="rect" id="node6" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="473,205,679,231"/>
+</map>

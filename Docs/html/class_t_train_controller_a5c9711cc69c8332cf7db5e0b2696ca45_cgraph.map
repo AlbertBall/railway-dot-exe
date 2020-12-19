@@ -1,0 +1,12 @@
+<map id="TTrainController::CheckStartPositionValidity" name="TTrainController::CheckStartPositionValidity">
+<area shape="rect" id="node1" title="A timetable validation function where train starting positions are checked for validity,..." alt="" coords="5,234,191,275"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="717,128,864,154"/>
+<area shape="rect" id="node3" href="$class_t_track.html#a54d3b9daeb9ec0b45b0672e7273bf575" title="Takes the ElementID value (an AnsiString) (e.g. &quot;8&#45;13&quot;, &quot;N43&#45;N127&quot;, etc) and returns the correspondin..." alt="" coords="463,354,669,395"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="717,237,864,264"/>
+<area shape="rect" id="node5" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="263,186,390,213"/>
+<area shape="rect" id="node8" href="$class_t_train_controller.html#a68d2124bc8f7df43e973299e0afb3dcd" title="Sends a message to the user if GiveMessages is true, including ServiceReference (see above) if not nu..." alt="" coords="239,288,415,330"/>
+<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="485,69,647,96"/>
+<area shape="rect" id="node6" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="475,120,657,162"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="463,186,669,213"/>
+<area shape="rect" id="node9" href="$class_t_train_controller.html#a1ccd6c8f2c24e7417889e1a91cb9ca2f" title="Returns true if the headcode complies with requirements." alt="" coords="473,288,659,330"/>
+</map>

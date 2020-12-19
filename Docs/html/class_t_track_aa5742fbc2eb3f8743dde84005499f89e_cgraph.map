@@ -1,0 +1,11 @@
+<map id="TTrack::PlotSignal" name="TTrack::PlotSignal">
+<area shape="rect" id="node1" title="Plot signals on screen according to their aspect (Attribute value)" alt="" coords="5,238,133,264"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="665,114,812,140"/>
+<area shape="rect" id="node3" href="$class_t_track_element.html#a100bff829c4dca820927affde4cb9e57" title="Used to log track parameters for call stack logging." alt="" coords="187,408,358,435"/>
+<area shape="rect" id="node4" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="443,307,586,334"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="665,227,812,254"/>
+<area shape="rect" id="node6" href="$class_t_display.html#a6e970089a9419e6bdd12576b6e860c95" title=" " alt="" coords="429,38,601,64"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a2830b22db25712a80fa55b1546b5df9b" title="Plot platforms if any for a signal graphic &#45; plotted before signal so shows through transparent signa..." alt="" coords="181,212,364,239"/>
+<area shape="rect" id="node8" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="423,190,606,232"/>
+<area shape="rect" id="node9" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="412,139,617,166"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="TDisplay::GetOutputLog2" name="TDisplay::GetOutputLog2">
+<area shape="rect" id="node1" title=" " alt="" coords="436,13,604,39"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a07d3d10bf08d4e916b652d676c917335" title="called when exiting operation mode to delete all trains and timetable data etc" alt="" coords="219,5,388,47"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="5,5,171,47"/>
+</map>

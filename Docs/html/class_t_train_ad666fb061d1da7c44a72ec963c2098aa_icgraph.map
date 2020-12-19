@@ -1,0 +1,7 @@
+<map id="TTrain::FrontTrainSplit" name="TTrain::FrontTrainSplit">
+<area shape="rect" id="node1" title="Carry out the actions needed when a train is to split from the front." alt="" coords="848,5,997,32"/>
+<area shape="rect" id="node2" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="665,5,800,32"/>
+<area shape="rect" id="node3" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="451,5,617,32"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,5,403,32"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,5,196,32"/>
+</map>

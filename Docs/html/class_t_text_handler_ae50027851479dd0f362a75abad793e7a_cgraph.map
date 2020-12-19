@@ -1,0 +1,14 @@
+<map id="TTextHandler::TextClear" name="TTextHandler::TextClear">
+<area shape="rect" id="node1" title="empties TextVector and sets all offsets back to zero if there is no active or inactive track" alt="" coords="5,357,167,383"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9" title="Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent ..." alt="" coords="215,138,381,165"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="672,101,819,127"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="672,177,819,203"/>
+<area shape="rect" id="node8" href="$class_t_track.html#ab20c55ecbc1801614695279daa8da0ba" title="True if there is no active or inactive track in the railway." alt="" coords="438,265,615,307"/>
+<area shape="rect" id="node9" href="$class_t_track.html#a453e9074035359dc22be2b15913e4bab" title=" " alt="" coords="226,382,370,409"/>
+<area shape="rect" id="node10" href="$class_t_track.html#a30e9bd8b4f5e2fb3f01b8c94a98d79f3" title=" " alt="" coords="228,433,368,459"/>
+<area shape="rect" id="node11" href="$class_t_track.html#ad33eb8c757120a0fc52ba43c9c8a3293" title=" " alt="" coords="226,483,370,510"/>
+<area shape="rect" id="node12" href="$class_t_track.html#a6459d38cdb82ae38f54f4a1de4935e09" title=" " alt="" coords="228,534,368,561"/>
+<area shape="rect" id="node4" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="446,62,607,89"/>
+<area shape="rect" id="node6" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="429,113,624,139"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a1092232428ee654facf8f53340c13f74" title="A range&#45;checked version of UserGraphicVector.at(At)" alt="" coords="431,163,623,190"/>
+</map>

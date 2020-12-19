@@ -1,0 +1,21 @@
+<map id="TOnePrefDir::GetNextPrefDirElement" name="TOnePrefDir::GetNextPrefDirElement">
+<area shape="rect" id="node1" title="Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linke..." alt="" coords="5,778,176,820"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="949,499,1096,526"/>
+<area shape="rect" id="node3" href="$class_t_one_pref_dir.html#a482d1c69a674eec4db0190b78659c495" title="Called after a successful search to add the elements from the search vector to the pref dir vector." alt="" coords="224,509,391,550"/>
+<area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="949,659,1096,686"/>
+<area shape="rect" id="node10" href="$class_t_one_pref_dir.html#a26a1ee9d1ced0d53e35936097d4896f0" title="Return the vector position of the last element in the vector (i.e. one less than the vector size)" alt="" coords="708,492,881,533"/>
+<area shape="rect" id="node16" href="$class_t_track.html#ad55e3329a208e84e9e7519cc024b7aec" title="True if find a non&#45;platform element at HLoc &amp; VLoc, and if so return its TrackVector position and a r..." alt="" coords="439,862,640,888"/>
+<area shape="rect" id="node19" href="$class_t_one_pref_dir.html#a82c6a19d67ada7059491afae05ced4a4" title="Try to find a selected element from a given start position. Enter with CurrentTrackElement stored in ..." alt="" coords="440,811,639,838"/>
+<area shape="rect" id="node4" href="$class_t_one_pref_dir.html#a8a7ddf3981800ec0df1225c9e5aa52c2" title="Diagnostic validity check." alt="" coords="448,185,631,226"/>
+<area shape="rect" id="node7" href="$class_t_pref_dir_element.html#ae8ee9f59578f80d23aebfdb9fff041d4" title="determines and loads EXNumber (see above)" alt="" coords="705,273,884,314"/>
+<area shape="rect" id="node8" href="$class_t_pref_dir_element.html#a13526cb4ee94a708a7bfef517abaa605" title="picks up the EntryDirectionGraphicPtr for preferred directions" alt="" coords="441,593,637,634"/>
+<area shape="rect" id="node9" href="$class_t_pref_dir_element.html#a10b4ff375e779de7cc2a16344959bb31" title="picks up the EXGraphicPtr for preferred directions" alt="" coords="455,352,623,393"/>
+<area shape="rect" id="node11" href="$class_t_one_pref_dir.html#a42862b2abcd0eb356982f4ce46922922" title="Return a pointer to the last element in the vector." alt="" coords="699,659,890,686"/>
+<area shape="rect" id="node12" href="$class_t_one_pref_dir.html#ac5f8d2864f0510cf73cb9883b520ec9f" title="Store a single pref dir element in the vector &amp; map." alt="" coords="454,425,625,466"/>
+<area shape="rect" id="node14" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="713,710,876,736"/>
+<area shape="rect" id="node15" href="$class_t_one_pref_dir.html#a2b883633382e26cdff4583a24575d337" title="Checks that all elements in PrefDirVector have been properly set, i.e. don&#39;t have their default value..." alt="" coords="701,558,888,584"/>
+<area shape="rect" id="node5" href="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc" title="Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return &#45;1." alt="" coords="688,156,901,197"/>
+<area shape="rect" id="node13" href="$class_t_pref_dir_element.html#a473c0faabe4d0fb8c4296c9c70dbe7d3" title="Sends a list of PrefDirElement values to Utilities&#45;&gt;CallLog file for debugging purposes." alt="" coords="703,390,887,416"/>
+<area shape="rect" id="node17" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="707,913,882,954"/>
+<area shape="rect" id="node18" href="$class_t_track_element.html#a100bff829c4dca820927affde4cb9e57" title="Used to log track parameters for call stack logging." alt="" coords="709,862,880,888"/>
+</map>

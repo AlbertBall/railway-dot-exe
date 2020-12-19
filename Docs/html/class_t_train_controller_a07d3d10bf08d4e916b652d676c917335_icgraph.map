@@ -1,0 +1,4 @@
+<map id="TTrainController::FinishedOperation" name="TTrainController::FinishedOperation">
+<area shape="rect" id="node1" title="called when exiting operation mode to delete all trains and timetable data etc" alt="" coords="219,5,388,47"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="5,5,171,47"/>
+</map>

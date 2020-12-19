@@ -1,0 +1,4 @@
+<map id="TTrainController::LogEvent" name="TTrainController::LogEvent">
+<area shape="rect" id="node1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="5,5,179,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="227,5,373,32"/>
+</map>

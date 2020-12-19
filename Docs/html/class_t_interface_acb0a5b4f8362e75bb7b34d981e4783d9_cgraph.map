@@ -1,0 +1,6 @@
+<map id="TInterface::AreAnyTimesInCurrentEntry" name="TInterface::AreAnyTimesInCurrentEntry">
+<area shape="rect" id="node1" title="Search the timetable entry pointed to by TTCurrentEntryPtr and if any times (HH:MM) are present retur..." alt="" coords="5,23,180,65"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a523077cf0c9c02c8cb56dab0af9b0e52" title="returns true if the time complies with requirements" alt="" coords="228,23,413,65"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="461,5,608,32"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="461,56,608,83"/>
+</map>

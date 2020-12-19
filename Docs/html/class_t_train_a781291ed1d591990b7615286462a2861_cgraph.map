@@ -1,0 +1,9 @@
+<map id="TTrain::CheckNewServiceDepartureTime" name="TTrain::CheckNewServiceDepartureTime">
+<area shape="rect" id="node1" title="called during FloatingLabelNextString to find the next service departure time" alt="" coords="5,64,259,90"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="809,13,956,40"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8" title="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it..." alt="" coords="317,34,492,61"/>
+<area shape="rect" id="node4" href="$class_t_train_controller.html#a2713e7d4bb329d65df8b3fa0ad59b6cf" title="Get the interval between repeats." alt="" coords="307,86,503,127"/>
+<area shape="rect" id="node7" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="809,165,956,192"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="559,64,753,90"/>
+<area shape="rect" id="node6" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="551,114,761,141"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="TTrainController::WriteTrainsToImage" name="TTrainController::WriteTrainsToImage">
+<area shape="rect" id="node1" title="Called by TInterface::SaveOperatingImage1Click) to write all trains to the image file." alt="" coords="224,5,411,47"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a4d75015545313004ffd5022c020f4edf" title=" " alt="" coords="5,5,176,47"/>
+</map>

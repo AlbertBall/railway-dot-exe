@@ -1,0 +1,12 @@
+<map id="TTrack::ResetConnClkCheckUnsetGapJumps" name="TTrack::ResetConnClkCheckUnsetGapJumps">
+<area shape="rect" id="node1" title="Sets all Conns and CLks to &#45;1 except for gapjumps that match and are properly set,..." alt="" coords="1389,85,1579,127"/>
+<area shape="rect" id="node2" href="$class_t_track.html#ac1dc75f1df6278c62f13e23469b80982" title="Handles all tasks associated with track linking, returns true if successful (see also LinkTrack &amp; Lin..." alt="" coords="1160,93,1341,119"/>
+<area shape="rect" id="node3" href="$class_t_track.html#a09140dd23c45ccd541f056c3dd257c13" title="Load track elements (active &amp; inactive) from the file into the relevant vectors and maps,..." alt="" coords="960,63,1089,90"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#aab42b12ff3ba43ad2f70994b5399dd90" title=" " alt="" coords="937,115,1112,156"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="710,13,869,39"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="465,97,627,123"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#a3904f26b67b9512507960187b37b6f7b" title="Checks session file integrity prior to loading, true for success." alt="" coords="689,115,889,156"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="451,5,641,47"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,97,403,123"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,97,196,123"/>
+</map>

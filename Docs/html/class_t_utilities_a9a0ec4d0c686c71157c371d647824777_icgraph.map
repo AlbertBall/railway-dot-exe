@@ -1,0 +1,15 @@
+<map id="TUtilities::LoadFileBool" name="TUtilities::LoadFileBool">
+<area shape="rect" id="node1" title="loads a bool value from the file" alt="" coords="1172,121,1327,147"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a96563ccfea0293d240212db434f4e3e0" title="Load all BarriersDownVector values from SessionFile." alt="" coords="699,5,874,47"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ad2e9b9996aa6ebd7108d14d8db399da8" title="Load the interface part of a session file." alt="" coords="947,70,1109,97"/>
+<area shape="rect" id="node7" href="$class_t_one_pref_dir.html#a614933ff3958e4b8c9be9bc78159d9e8" title="Old version of LoadPrefDir, used during development when the save format changed so the old files cou..." alt="" coords="935,121,1121,147"/>
+<area shape="rect" id="node8" href="$class_t_train.html#a23c65e7f2b2130ae87811f70afb6d5bf" title="Create one train with relevant member values from the sesion file." alt="" coords="932,171,1124,198"/>
+<area shape="rect" id="node10" href="$class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d" title="Load a vector and map of preferred directions from the file." alt="" coords="945,230,1111,257"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="465,130,627,157"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,130,403,157"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,130,196,157"/>
+<area shape="rect" id="node9" href="$class_t_train_controller.html#a853ddf9799c9fd7063c81ffa1dc754d7" title="load trains from a session file" alt="" coords="689,123,884,164"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="707,290,866,317"/>
+<area shape="rect" id="node13" href="$class_t_all_routes.html#adadd08bb4cbbcaeba918f20c6c103a39" title="Loads the routes from a session file." alt="" coords="705,239,868,266"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="451,283,641,324"/>
+</map>

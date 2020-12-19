@@ -1,0 +1,6 @@
+<map id="TTrainController::SaveTrainDataVectorToFile" name="TTrainController::SaveTrainDataVectorToFile">
+<area shape="rect" id="node1" title="diagnostic function to store all train data to a file for examination, not used normally" alt="" coords="5,49,181,90"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="243,5,390,32"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8" title="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it..." alt="" coords="229,56,404,83"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="243,107,390,133"/>
+</map>

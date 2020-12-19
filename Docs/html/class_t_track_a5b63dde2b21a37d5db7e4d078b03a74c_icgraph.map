@@ -1,0 +1,18 @@
+<map id="TTrack::GetAnyElementOppositeLinkPos" name="TTrack::GetAnyElementOppositeLinkPos">
+<area shape="rect" id="node1" title="Return the opposite link position for the element at TrackVectorPosition with link position LinkPos,..." alt="" coords="1573,209,1787,250"/>
+<area shape="rect" id="node2" href="$class_t_train.html#a43cd691f12297c4c13a19791329dd627" title="Plots the train and sets up all relevant members for a new train when it is introduced into the railw..." alt="" coords="1363,216,1525,243"/>
+<area shape="rect" id="node3" href="$class_t_train_controller.html#aa895b60238810a9d134cd5b9c886da56" title="Introduce a new train to the railway, with the characteristics specified, returns true for success,..." alt="" coords="1136,5,1307,32"/>
+<area shape="rect" id="node4" href="$class_t_train.html#ad666fb061d1da7c44a72ec963c2098aa" title="Carry out the actions needed when a train is to split from the front." alt="" coords="889,56,1039,83"/>
+<area shape="rect" id="node9" href="$class_t_train.html#ad64c5823265b0c611c2e5f0613317aa5" title="Carry out the actions needed when a train is to split from the rear." alt="" coords="891,107,1037,133"/>
+<area shape="rect" id="node10" href="$class_t_train.html#a406c172a0ba96802ada1aa04d78948d0" title="Reverses the direction of motion of the train." alt="" coords="870,161,1058,188"/>
+<area shape="rect" id="node11" href="$class_t_train.html#a56fcfe4b9a3cef988bbeb4f4766372aa" title="Carry out the actions needed when a new shuttle service is created from a non&#45;repeating (F&#45;nshs) serv..." alt="" coords="1129,209,1313,250"/>
+<area shape="rect" id="node12" href="$class_t_train.html#a75a2e9017b96e2a8f2a1edbd01c2cd68" title="Carry out the actions needed when a train forms a new service (code Fns)" alt="" coords="1141,275,1301,301"/>
+<area shape="rect" id="node13" href="$class_t_train.html#a8262f447ec811db7e524c7bb885226c5" title="Carry out the actions needed to create either a new shuttle service or (if all repeats have finished)..." alt="" coords="1128,326,1315,367"/>
+<area shape="rect" id="node14" href="$class_t_train.html#ac6f5cda912103fda4da31bdca611e4b5" title="Carry out the actions needed to create either a new shuttle service or (if all repeats have finished)..." alt="" coords="848,383,1080,409"/>
+<area shape="rect" id="node15" href="$class_t_train.html#affbb94aa088370056f8ca8c45a1fdd48" title="Unplots &amp; replots train, which checks for facing signal and sets StoppedAtSignal if req&#39;d." alt="" coords="1128,443,1315,485"/>
+<area shape="rect" id="node6" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="451,111,617,137"/>
+<area shape="rect" id="node5" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="665,188,800,215"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,111,403,137"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,111,196,137"/>
+<area shape="rect" id="node16" href="$class_t_interface.html#aaaf32c3c815553f7ba70698e0f0071bb" title=" " alt="" coords="873,443,1055,485"/>
+</map>

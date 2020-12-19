@@ -1,0 +1,6 @@
+<map id="TTrainController::TimetableMessage" name="TTrainController::TimetableMessage">
+<area shape="rect" id="node1" title="Sends a message to the user if GiveMessages is true, including ServiceReference (see above) if not nu..." alt="" coords="5,23,181,65"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a1ccd6c8f2c24e7417889e1a91cb9ca2f" title="Returns true if the headcode complies with requirements." alt="" coords="229,23,416,65"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="464,5,611,32"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="464,56,611,83"/>
+</map>

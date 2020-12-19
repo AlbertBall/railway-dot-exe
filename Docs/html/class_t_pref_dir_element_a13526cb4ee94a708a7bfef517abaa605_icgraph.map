@@ -1,0 +1,16 @@
+<map id="TPrefDirElement::GetDirectionPrefDirGraphicPtr" name="TPrefDirElement::GetDirectionPrefDirGraphicPtr">
+<area shape="rect" id="node1" title="picks up the EntryDirectionGraphicPtr for preferred directions" alt="" coords="1215,92,1411,133"/>
+<area shape="rect" id="node2" href="$class_t_one_pref_dir.html#a482d1c69a674eec4db0190b78659c495" title="Called after a successful search to add the elements from the search vector to the pref dir vector." alt="" coords="990,7,1157,48"/>
+<area shape="rect" id="node6" href="$class_t_one_pref_dir.html#a614933ff3958e4b8c9be9bc78159d9e8" title="Old version of LoadPrefDir, used during development when the save format changed so the old files cou..." alt="" coords="980,74,1167,101"/>
+<area shape="rect" id="node7" href="$class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d" title="Load a vector and map of preferred directions from the file." alt="" coords="990,125,1157,151"/>
+<area shape="rect" id="node14" href="$class_t_pref_dir_element.html#a05688db45c02484229e4d226454ed8f3" title="Constructs a PrefDirElement from supplied values." alt="" coords="988,176,1159,217"/>
+<area shape="rect" id="node3" href="$class_t_one_pref_dir.html#a06cd3491535362fccbba4e76b9a120e9" title="Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linke..." alt="" coords="761,7,932,48"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="519,5,713,47"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="244,13,471,39"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="767,75,926,102"/>
+<area shape="rect" id="node10" href="$class_t_all_routes.html#adadd08bb4cbbcaeba918f20c6c103a39" title="Loads the routes from a session file." alt="" coords="765,126,928,153"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="535,155,697,182"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="521,71,711,112"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="278,155,437,182"/>
+<area shape="rect" id="node13" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,155,196,182"/>
+</map>

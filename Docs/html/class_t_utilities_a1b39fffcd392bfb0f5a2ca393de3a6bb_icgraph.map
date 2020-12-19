@@ -1,0 +1,11 @@
+<map id="TUtilities::CheckFileBool" name="TUtilities::CheckFileBool">
+<area shape="rect" id="node1" title="checks that the value is a bool returns true for success" alt="" coords="1409,56,1573,83"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a3ff62ece81af00462951a989f3cee4e5" title=" " alt="" coords="913,5,1107,32"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#ae484cb4ac3ce536b922fff402e6689f7" title="Check the interface part of a session file &amp; return false for error, called during SessionFileIntegri..." alt="" coords="1175,56,1347,83"/>
+<area shape="rect" id="node8" href="$class_t_train.html#aad716bab6f8f4aa6dd49f35130d28dd9" title="Carries out an integrity check for the train section of a session file, if fails a message is given a..." alt="" coords="1160,111,1361,137"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a3904f26b67b9512507960187b37b6f7b" title="Checks session file integrity prior to loading, true for success." alt="" coords="660,49,860,90"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="451,56,612,83"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,56,403,83"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,56,196,83"/>
+<area shape="rect" id="node9" href="$class_t_train_controller.html#a53fb58a1ae6103601a24ad2162f86f58" title="Part of the session file integrity check for train entries, true for success." alt="" coords="908,107,1112,149"/>
+</map>

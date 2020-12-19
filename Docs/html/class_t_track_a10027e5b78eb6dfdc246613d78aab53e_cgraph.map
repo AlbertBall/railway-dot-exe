@@ -1,0 +1,6 @@
+<map id="TTrack::RetrieveStripedNamedLocationGraphicsWhereRelevant" name="TTrack::RetrieveStripedNamedLocationGraphicsWhereRelevant">
+<area shape="rect" id="node1" title="Return a pointer to the striped (i.e. when unnamed) graphic corresponding to TrackElement,..." alt="" coords="5,49,216,90"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="276,5,423,32"/>
+<area shape="rect" id="node3" href="$class_t_track_element.html#a100bff829c4dca820927affde4cb9e57" title="Used to log track parameters for call stack logging." alt="" coords="264,56,435,83"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="276,107,423,133"/>
+</map>

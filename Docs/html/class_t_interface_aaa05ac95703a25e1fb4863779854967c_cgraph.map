@@ -1,0 +1,52 @@
+<map id="TInterface::ClearandRebuildRailway" name="TInterface::ClearandRebuildRailway">
+<area shape="rect" id="node1" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="5,1881,185,1922"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1048,1536,1195,1563"/>
+<area shape="rect" id="node3" href="$class_t_display.html#a8d990507ae0111e0b7890e8aa77fd76d" title="Empty the display." alt="" coords="816,2943,969,2969"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1048,2105,1195,2132"/>
+<area shape="rect" id="node5" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="533,321,704,362"/>
+<area shape="rect" id="node7" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="805,383,981,425"/>
+<area shape="rect" id="node10" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="821,1292,964,1319"/>
+<area shape="rect" id="node11" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="810,85,975,112"/>
+<area shape="rect" id="node12" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="832,972,953,999"/>
+<area shape="rect" id="node13" href="$class_t_pref_dir_element.html#af00e0755cd716b4d101abbae02c73ca2" title="Returns ELink." alt="" coords="253,2989,432,3016"/>
+<area shape="rect" id="node14" href="$class_t_pref_dir_element.html#aa5944dedfb065d9e251c26b28fff69f6" title="Returns the ELink array position." alt="" coords="242,3040,443,3067"/>
+<area shape="rect" id="node15" href="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a" title="Returns a constant reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ch..." alt="" coords="796,551,989,577"/>
+<area shape="rect" id="node16" href="$class_t_graphic_element.html#aaf109e208515c9b9aaad753d829d25e9" title=" " alt="" coords="251,3091,434,3117"/>
+<area shape="rect" id="node17" href="$class_t_track.html#abda5d1209d5a197f1cefb851f567736d" title="With large railways only part of the railway is displayed on screen, and this function converts true ..." alt="" coords="800,653,985,694"/>
+<area shape="rect" id="node18" href="$class_t_track.html#aeb60286bc570dbafab64fe6dc06af2e4" title="Return a reference to the element at HLoc &amp; VLoc, if no element is found an error is thrown." alt="" coords="519,2569,719,2610"/>
+<area shape="rect" id="node20" href="$class_t_pref_dir_element.html#a0edec31fc9787847e3b6240bab91783c" title="Returns TrackVectorPosition." alt="" coords="254,3142,431,3183"/>
+<area shape="rect" id="node21" href="$class_t_graphic_element.html#ad2780e85ae1e401bfbb6a7c37b15bea8" title=" " alt="" coords="251,3208,434,3235"/>
+<area shape="rect" id="node22" href="$class_t_track.html#a8520abf65484aa83a28329a633836f97" title="Examine all elements in the TrackVector and if have a valid length mark the relevant track using Mark..." alt="" coords="269,972,417,999"/>
+<area shape="rect" id="node24" href="$class_t_graphic_element.html#ac12f60cb52eefdc86eaa504419eb138d" title="Load original graphic from the screen for point flashing or route start markers." alt="" coords="517,2250,720,2291"/>
+<area shape="rect" id="node26" href="$class_t_all_routes.html#af0a34aa05027527d256566ae52600583" title="Calls PrefDirMarker for all routes, with RouteCall set to identify a route call, and BuildingPrefDir ..." alt="" coords="803,2521,982,2548"/>
+<area shape="rect" id="node27" href="$class_t_track.html#aa67be9f8ad9bd885f649b26962e0d41d" title="True if there is a platform, NamedNonStationLocation or Concourse present in the railway." alt="" coords="787,1226,998,1267"/>
+<area shape="rect" id="node28" href="$class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc" title=" " alt="" coords="815,1124,970,1151"/>
+<area shape="rect" id="node29" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="520,921,717,948"/>
+<area shape="rect" id="node30" href="$class_t_graphic_element.html#a04ccc26451ff7d95dc3c5951b71f421e" title="Plot the overlay graphic on screen." alt="" coords="521,1124,717,1151"/>
+<area shape="rect" id="node31" href="$class_t_track.html#ad8a74040f61dffb16633deea5054deef" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway (..." alt="" coords="515,1457,723,1513"/>
+<area shape="rect" id="node34" href="$class_t_track.html#a1f59015a92ef00604156a44011b4f4c8" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway." alt="" coords="500,1341,737,1382"/>
+<area shape="rect" id="node35" href="$class_t_one_pref_dir.html#aef8388386635d73a921fae7ce43f5214" title="PrefDir and route track marker, including direction markers." alt="" coords="803,2993,982,3020"/>
+<area shape="rect" id="node36" href="$class_t_track.html#a12569ed581bb1c76c1d201b3cf013da7" title="Called by TInterface::ClearandRebuildRailway to replot all the active and inactive track elements and..." alt="" coords="247,1791,439,1817"/>
+<area shape="rect" id="node44" href="$class_t_track.html#aab8f4096e7cd62d7afc16c1ef706131c" title="rebuild user graphics" alt="" coords="523,2341,714,2368"/>
+<area shape="rect" id="node47" href="$class_t_train_controller.html#a47676de8fc677dbcabf565569cb1435c" title="plot all trains on the display" alt="" coords="814,2725,971,2766"/>
+<area shape="rect" id="node48" href="$class_t_graphic_element.html#adffdc9f9c4a5fff5cbeab6b5a027dad9" title="Set SourceRect member values from those supplied and existing Width &amp; Height &#45; ensure this is only ca..." alt="" coords="233,3259,452,3285"/>
+<area shape="rect" id="node49" href="$class_t_track.html#a7fe1e2c641e38da6ab3fdbf20e529d2c" title="Called during gap setting to mark a gap with a red circle &#45; after which the program awaits user selec..." alt="" coords="805,2791,981,2817"/>
+<area shape="rect" id="node50" href="$class_t_all_routes.html#aace498b67ccef13364a1afa1f5f15311" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="525,2635,713,2661"/>
+<area shape="rect" id="node6" href="$class_t_pref_dir_element.html#a5d03028241e6c38e473882120d5bcc68" title="picks up the green or red route direction graphic" alt="" coords="795,253,991,294"/>
+<area shape="rect" id="node8" href="$class_t_pref_dir_element.html#ad58c8d4fa30c04fa9d8e84ae55c7ce61" title="picks up the appropriate route graphic" alt="" coords="803,187,982,229"/>
+<area shape="rect" id="node9" href="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc" title="Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return &#45;1." alt="" coords="786,318,999,359"/>
+<area shape="rect" id="node19" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="811,2673,974,2700"/>
+<area shape="rect" id="node23" href="$class_t_track.html#a6cab5ab84e10504ef1c9d39e931d42fe" title="Mark on screen a track element according to its length and speed limit if either of these differ from..." alt="" coords="538,845,699,872"/>
+<area shape="rect" id="node25" href="$class_t_display.html#a2b408bc588565f7b0cdcb85edc7479b7" title=" " alt="" coords="813,2303,972,2329"/>
+<area shape="rect" id="node32" href="$class_t_track.html#a224071baecc50be0a643711bf9005db2" title="Return a reference to the inactive element at HLoc &amp; VLoc, if no element is found an error is thrown." alt="" coords="810,1343,975,1385"/>
+<area shape="rect" id="node33" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="829,1409,956,1436"/>
+<area shape="rect" id="node37" href="$class_t_track.html#aa638a7e118fb22e648d89adbe814a4a1" title="Plots a gap on screen &#45; may be set or unset." alt="" coords="561,1663,677,1689"/>
+<area shape="rect" id="node38" href="$class_t_track.html#af56adb319c7003b8ddac8e55afaee3d2" title="Plot points on screen according to how they are set (Attribute value), or, with both fillets if BothF..." alt="" coords="554,1791,683,1817"/>
+<area shape="rect" id="node39" href="$class_t_track_element.html#a453377f8db5e108cb274464333e1100f" title="Plot the element on the display &#39;variable&#39; indicates that the element may be named and if so may be p..." alt="" coords="799,2069,986,2110"/>
+<area shape="rect" id="node40" href="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e" title="Plot signals on screen according to their aspect (Attribute value)" alt="" coords="555,1612,683,1639"/>
+<area shape="rect" id="node41" href="$class_t_text_handler.html#a30f32d9d3267bc8c90298e0ecd3c26fd" title="display all text items in TextVector on the screen" alt="" coords="529,745,708,786"/>
+<area shape="rect" id="node42" href="$class_t_track.html#a58a2afacadd0f564b474ac0faabc88d4" title="Return a reference to the inactive track element pointed to by NextTrackElementPtr (during zoomed&#45;in ..." alt="" coords="804,2237,981,2278"/>
+<area shape="rect" id="node43" href="$class_t_track.html#a90e1db27659603b72a703c017ee576c8" title="Return a reference to the active track element pointed to by NextTrackElementPtr (during zoomed&#45;in or..." alt="" coords="785,2135,1000,2161"/>
+<area shape="rect" id="node45" href="$class_t_display.html#a60756c55ee44db2e876d0419417b9e25" title="Plot user graphic." alt="" coords="805,2405,981,2446"/>
+<area shape="rect" id="node46" href="$class_t_track.html#a1092232428ee654facf8f53340c13f74" title="A range&#45;checked version of UserGraphicVector.at(At)" alt="" coords="797,2353,989,2380"/>
+</map>

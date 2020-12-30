@@ -15,7 +15,9 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
-#50.  Suggestion from Wilsteady 21/10/20 via Discord.  Don't know if this is a feature that already exists or not - It would be handy in the layout builder, to be able to Select an area, choose a particular track type, and have the system auto fill that space with that type. For example build a railway by selecting the location of each station, signal, turnout, etc, but don't add any 'straight' tracks. Then being able to select a long line, and having it pre-fill all the straight sections. Would be handy when building twin or quad track sections that don't vary other than a X-over or signal here or there. [Done]
+#51.  Suggestion from Wilsteady 24/12/20 via discord. Got another fun feature idea for consideration - Inbuilt native support for windows that if you double click on a .rly or .dev [or .ssn] file in Windows Explorer, it will open railway.exe with that file pre-loaded.
+
+#50 [Done].  Suggestion from Wilsteady 21/10/20 via Discord.  Don't know if this is a feature that already exists or not - It would be handy in the layout builder, to be able to Select an area, choose a particular track type, and have the system auto fill that space with that type. For example build a railway by selecting the location of each station, signal, turnout, etc, but don't add any 'straight' tracks. Then being able to select a long line, and having it pre-fill all the straight sections. Would be handy when building twin or quad track sections that don't vary other than a X-over or signal here or there.
 
 #49.  Suggestion from Dan via Discord 12/08/20.  Include route availability with stock being given a specific value, and the lines having a corresponding value. The trains' value should be lower than or equal to the track's value, or it cannot run on that track. You may see it as RA then a number from 1 to 10
 
@@ -25,7 +27,7 @@ The structure is as follows:-
 #47. Suggestion from imortallknedlik via discord 20/07/20.  Maybe do like an option to choose what colours you have on different signals, or just add some of the LU signals, like the ATO ones
 
 
-#44 - #46. Suggestions from Micke (Commuterpop), Krizar & Bjorn via discord 28 & 29/06/20.  Have program able to adapt to different user file structures than having all subfolders below the executable folder. Allow user to set preferred folders for file locations, and autoload the last used file.  [Done]
+#44 - #46 [Done]. Suggestions from Micke (Commuterpop), Krizar & Bjorn via discord 28 & 29/06/20.  Have program able to adapt to different user file structures than having all subfolders below the executable folder. Allow user to set preferred folders for file locations, and autoload the last used file.
 
 
 #43. Suggestion from The10toFarnborough via discord 27/06/20 - have timetable functions work in seconds rather than minutes. 
@@ -58,7 +60,7 @@ I also think a even more graphical, almost block based timetable editor would re
 #33. Suggestion from Wilsteady, Discord 02/06/20:  I've thought of an interesting concept that could be rather interesting to include. Support for recognition of train types linked with lines, i.e. Electric/Diesel or different track gauges. In practice I guess it would be something like, setting a route for a train where the track leaves electrified territory, but the type of train is designated as electric, and as such approaching that junction, depending on a different setting, could either continue through and "derail/fault" for leaving the electrified territory, or simply come to a complete stop at the preceding signal until the route is corrected.
 
 
-#31 & #32. Suggestions from Wilsteady, Discord 09/05/20:  Place footbridge/underpass over existing track to avoid having to reset lengths etc; ability to add a non-station named location over a signal [Location over signal added at v2.6.0]
+#31 & #32 [part done]. Suggestions from Wilsteady, Discord 09/05/20:  Place footbridge/underpass over existing track to avoid having to reset lengths etc; ability to add a non-station named location over a signal [Location over signal added at v2.6.0]
 
 
 #29 & #30. From Dan on Discord 17/04/20:  Drive-by-sight would be a neat feature for trams, and maybe a signal type to permit access to a siding or a drive-by-sight section.
@@ -74,7 +76,7 @@ I also think a even more graphical, almost block based timetable editor would re
 
 - Catch Points: This is rather a minor thing and perhaps is not needed enough to warrant time. Many of the routes I look at have either catch points or very short lengths of line after points within a passing loop. For the simulator all this would mean is removing the constraint that you cannot have the ends of track next to a set of points with the added condition that if someone routes a train towards the track end it then "derails" (or in the loop case collides immediately with buffers).
 
-- Signal Side: Someone oddly asked me specifically about this (I dont know why me?). They wanted to know if it was possible to switch the side that signals are positioned on tracks (For Europe etc). I took a brief look at the code and my conclusion was that you actually draw the icons through the code, is that right? They are not just image files. [Done]
+- Signal Side [Done]: Someone oddly asked me specifically about this (I dont know why me?). They wanted to know if it was possible to switch the side that signals are positioned on tracks (For Europe etc). I took a brief look at the code and my conclusion was that you actually draw the icons through the code, is that right? They are not just image files.
 
 - Three way junction: I am actually surprised how common these are in track layouts. This should not interfere with connecting to existing track as it would just be the "Y" junction with the added straight line.
 
@@ -94,7 +96,7 @@ I also think a even more graphical, almost block based timetable editor would re
 
 Allow cut and copied segments to be retained when a railway is cleared and a new one loaded, so that railways can be merged together
 
-Have a drop-down list of running trains and their status and trains about to enter the system - to give a quick form of running train identification so they aren't forgotten and advance warning of future entries. [Done with 'actions due' panel]
+[Done with 'actions due' panel] Have a drop-down list of running trains and their status and trains about to enter the system - to give a quick form of running train identification so they aren't forgotten and advance warning of future entries.
 
 
 #11 - #15. Suggestions from David Graf - email of 31/03/14
@@ -111,7 +113,7 @@ Will probably also require a repeater banner indicator. There is one between Cov
 
 Also the adjacent signalling area Coundon Road has semaphore signals. I was wondering if you could use a semaphore signal icon to denote that it is a semaphore but have a RED dot for stop and a Green dot for clear . I am currently using a double MAS signal to simulate both the Repeater Banner and the Semaphores. They sort of cover the same function but it would be more authentic if a semaphore icon was in use.
 
-Also the level crossings at Tile Hill and Berkswell are controlled by CCTV. I am assuming the TV screens were in Coventry Power Signal Box. If that is the case then there should be an open or raised , closed or lowered, and clear marker indicators in Coventry PSB for both level crossings. Basically switches to raise and lower the level crossing gates. I wonder if you could simulate that by using a simple dot indicator that you have to press to operate ie open and close the gates. At this time Canley Level Crossing was still manually operated so would be out of the control of Coventry PBS. They would set the route but it was up to the man at Canley SF to open the gates. In practice the Canley gates would be closed to road traffic just as the train was departing Coventry. So there is still a need for manually operated level crossings in the sim. [Done]
+[Done] Also the level crossings at Tile Hill and Berkswell are controlled by CCTV. I am assuming the TV screens were in Coventry Power Signal Box. If that is the case then there should be an open or raised , closed or lowered, and clear marker indicators in Coventry PSB for both level crossings. Basically switches to raise and lower the level crossing gates. I wonder if you could simulate that by using a simple dot indicator that you have to press to operate ie open and close the gates. At this time Canley Level Crossing was still manually operated so would be out of the control of Coventry PBS. They would set the route but it was up to the man at Canley SF to open the gates. In practice the Canley gates would be closed to road traffic just as the train was departing Coventry. So there is still a need for manually operated level crossings in the sim.
 
 Background – basically I have been waiting for a signal simulator to cover the West Midlands area only all the commercial stuff is mostly based on modern practice and badly misses the period that I would like to cover. Unfortunately and now fortunately I stumbled across your programme last week by accident and found that I was able to construct the required areas myself. So yes I am interested in helping to aid in further upgrades to enable your project to move forward. Unfortunately I do not have any Borland computer knowledge but I do have some insight into how British Railways used to work and I can hopefully suggest a few things to make your signalling Sim more authentic. Well in British Rail practice.
 
@@ -125,7 +127,7 @@ Have a 'Touch mode' where when activated the buttons are bigger for easier opera
 #7 - #9. Suggestions from Bjorn - email of 20/10/12:
 1) Manual Stop Signals (blue), as in, being able to set them manually, i.e. for in stations where the whole platform can be used, or only a part of the platform. As in the Netherlands it's common tho have "Stop" signals halfway down the platform to allow two opposing trains to use it as if it were 2 seperate platforms... If you catch my drift. and by using a special stop (BLUE) signal, one can split a track... Also another idea I had was to allow a stretch of track to have signals. Those blue signals kinda function like an "end-of-track" signal... but can also be used to signal "track not in use".
 2) Being able to have 1 track to have signals in both directions, to conserve space... now one can only have one signal on a track in either direction, but being able to put both signals on one stretch of track would not only save space, but also would be more realistic as signals are usually placed in pairs (up/down)...
-3) The ability to automatically set a track from one point to another without having to set all the signals in between, just a starting point and an endpoint. And then that the program follows wither the preferred directions to create the best available route or that it just looks for the shortest route possible from point A to point B. [Unrestricted routes do this]
+3) [Unrestricted routes do this] The ability to automatically set a track from one point to another without having to set all the signals in between, just a starting point and an endpoint. And then that the program follows wither the preferred directions to create the best available route or that it just looks for the shortest route possible from point A to point B. 
 
 
 #6. Suggestion from Josh Coupe (email ~21/10/12):  Useful if could advance the timetable clock and have all trains where they would most likely be at that time.
@@ -146,7 +148,15 @@ Have a 'Touch mode' where when activated the buttons are bigger for easier opera
 
 2) Own thoughts:-
 
-OK: Done at v 2.3.0. Try to trap memory capacity errors that occur when try to save large bitmaps without crashing the program.  Occurred on Xeon's Shanghai Metro railway when .bmp was over 500Mb.
+Expand railway file spec to include .ssn & .ttb files as well
+
+Allow front end route cancellation by clicking element before signal for green & blue, check how to do it for red - maybe have left click for remove from front, right click for remove from back (looks complex)
+
+Variable zoom would be useful - by changing the displayed image (prob not to replace existing zoom)
+
+Undo facility would be useful, esp for cut & paste
+
+[Done at v 2.3.0]. Try to trap memory capacity errors that occur when try to save large bitmaps without crashing the program.  Occurred on Xeon's Shanghai Metro railway when .bmp was over 500Mb.
 
 No: Add int Left, Top in ClearandRebuildRailway before Track->GetScreenPositionsFromTruePos(1, Left, Top, PointFlash->GetHPos(), PointFlash->GetVPos()); below if(Track->PointFlashFlag), as is resets Interface->Left & Top though not permanently influenced by the change, perhaps because the values aren't constants. Say this because Interface->Left & Top took the values set in GetScreenPositionsFromTruePos within the routine but the form didn't move, though when set to fixed values it did move (!!don't change anything until understand what's happening. Could be a compiler issue!!) 
 
@@ -156,11 +166,11 @@ Points to emerge from operating Beaver Lake:  If train cancels a route by moving
 
 OK: Times beyond 24hrs show as hh:mm:ss in .csv formatted timetables but not in .txt version (see Sheffield). This is a feature of Excel, the times are correct in the .csv file
 
-OK: Fail to save Traincontroller->ExcessLCDownMins in session files (should be in TInterface::SaveInterface), so on loading a session the excess minutes value resets to zero.  If try to correct this beware that need to retain compatibility with earlier session files that don't save it.  ok corrected at v2.2.0. Added floating point value as a string after ***Interface***
+[Done]: Fail to save Traincontroller->ExcessLCDownMins in session files (should be in TInterface::SaveInterface), so on loading a session the excess minutes value resets to zero.  If try to correct this beware that need to retain compatibility with earlier session files that don't save it.  ok corrected at v2.2.0. Added floating point value as a string after ***Interface***
 
-OK: Error given when try to split at a named non-station location & there is a non-track element present (i.e. effectively a nonstation [blue] concourse) - discovered by Xeon & notified 14 July 2018.  (TrackUnit line about 8121 [8354 in v2.2.0 file]) Ordinary concourses are excluded but these aren't.  It's because the active track 'find' function fails as there isn't one for this type of element.  Keep the 'find' function but include a test if it fails where if due to one of these elements just 'continue', otherwise throw the error. OK corrected in v2.2.0
+[Done]: Error given when try to split at a named non-station location & there is a non-track element present (i.e. effectively a nonstation [blue] concourse) - discovered by Xeon & notified 14 July 2018.  (TrackUnit line about 8121 [8354 in v2.2.0 file]) Ordinary concourses are excluded but these aren't.  It's because the active track 'find' function fails as there isn't one for this type of element.  Keep the 'find' function but include a test if it fails where if due to one of these elements just 'continue', otherwise throw the error. OK corrected in v2.2.0
 
-OK: Allow Frh & Fjo for trains after split and maybe others such as new services (Snt [done inc Fjo at v2.0.0] & Sns) No need - for Sns, Frh & Fjo can just follow the original service; for Sfs, can have the original remain or join other, if both to remain then no need to split, or if both to join others then have the split train jbo rather than Fjo.
+[Done]: Allow Frh & Fjo for trains after split and maybe others such as new services (Snt [done inc Fjo at v2.0.0] & Sns) No need - for Sns, Frh & Fjo can just follow the original service; for Sfs, can have the original remain or join other, if both to remain then no need to split, or if both to join others then have the split train jbo rather than Fjo.
 
 General improvement possibilities (some also suggested by users):
 
@@ -190,9 +200,57 @@ Multi-player facility over the internet.
 
 4) Version change information
 
+VERSION CHANGES AFTER v2.6.0 for v2.6.1
+
+This version includes a number of small functional changes, a couple of bug fixes and documentation changes.
+
+Small Functional changes:
+
+In response to Bill78's supporting program to merge two .dev railway files there was a need to check that two locations didn't have the same name so as to prevent the merged railway being saved as a .rly file.  There is an existing check but this is made on entering a name, and this prevents two locations having the same name, but with two separate railways being merged each might have a name that appears in the other railway.  A new check is now made on loading a railway file, and if the same name is found a warning is given to say that the railway can't be saved as a .rly file.  The check and warning is repeated if an attempt is made to save as a .rly file.
+
+When gap setting the existing arrangement marks gaps to be set, but in a detailed railway these can be hard to find.  Now the marks flash in both zoom-in and zoom-out modes and are easier to spot.
+
+During operation, after taking signaller control of a train, it was easy to click 'step forward one element' inadvertently if two clicks were made in quick succession.  The position of the pop-up menu has now been moved slightly so that the mouse does not lie over any of the options so as to prevent this nuisance.
+
+If a train was removed by the signaller there could be a short stub route left over ahead of the removed train.  This is now removed up to the next signal (similar to route removal behind a train that has changed direction).
+
+Bug fixes:
+
+Androeker discovered an error & notified it via discord on 16/12/20.  The error was that if a location name containing a continuation was changed then a timetable that included it would validate and therefore allow the program to load and operate, the reason being that the list of continuation names [ContinuationNameMap] wasn't updated in these circumstances [it's only updated in TryToLinkTrack, so if that isn't called, as it isn't for a name change, then the error wouldn't be seen by the program].  When the program was exited and later restarted and an attempt made to reload the (flawed) timetable the continuation name list was updated (as it is whenever track is linked), so the program saw the error and the load failed.  This correction rebuilds ContinuationNameMap whenever a name is entered or changed so the timetable validator now gives an appropriate error message.
+
+It was noticed in the 'Actions due' panel that the time to act was sometimes too short for trains that were approaching a stop location.  The time corrected itself when the train stopped.  What happened was that when running early the time calculator didn't take account of the extra time needed at the next station before reaching it.  This version updates the time calculator to take account of the dwell time.
+
+Additional changes:
+
+User manual and on-screen help updated in line with latest program changes.
+
+The file specification document has been expanded to include session files, timetable files and the configuration file as well as railway files.  It now also incorporates the earlier 'Changing a timetable in a session file whilst retaining routes' document.
+
+
+Detail:
+* = mention on website
+
+/*changed position of popup menu for signaller control - as was could inadvertently select 'move forwards one element' if clicked twice in quick succession
+
+/*remove route ahead of a removed train up to next signal - like cdt stub route removal
+
+/*add location name checker for when saving as a .rly file in response to Bill78 merge program (& when loading a file)
+
+/*add flashing gap in zoom out & zoom in for ease of finding
+
+/*[bug fix] Androeker error found 16/12/20 & notified by discord on 16/12/20.  Error was that if a location name containing a continuation was changed then a timetable that included it would validate and therefore allow the program to load and operate it, the reason being that the list of continuation names [ContinuationNameMap] wasn't updated in these circumstances [it's only updated in TryToLinkTrack, so if that isn't called, as it isn't for a name change, then the error wouldn't be seen by the program].  When the program was exited and later restarted and an attempt made to reload the (flawed) timetable the continuation name list was updated (as it is whenever track is linked), so the program saw the error and the load failed.  The modification rebuilds ContinuationNameMap whenever a name is entered or changed so the error is no longer be hidden.
+
+/*[bug fix] Actions due time too short for trains approaching a stop location, corrects when stopped for duration of stop but seems to ignore the next stop duration when approaching. Only seem to calc stop times when actually stopped (see TrainUnit.cpp line 17684), prob to do with early or late running & recovery times & prob a comment somewhere about it.  If merely remove line 17684 then seems ok!  Compare with & without this if... statement and check whether can lead to any problems - if ok then run for a long time to confirm no adverse behaviour.  No, that is needed because in a while.. loop where each element is examined in turn.  What happens is that when running early it doesn't take account of the extra time needed at the next station.  Added mod 16/12/20 & seems ok but needs a lot of testing.
+
+/update on-screen help when all manual changes made
+
+/mention in user manual flashing gaps when setting - to find easier on big railway (both zoom modes)
+
+-----------------------
+
 VERSION CHANGES AFTER v2.5.1 for v2.6.0
 
-Text in website 'Versin information':
+Text in website 'Version information':
 
 This version includes a number of functional changes as well as several 'corrections' (i.e. improved undesirable behaviour) and bug fixes.
 
@@ -1329,55 +1387,120 @@ have self-checking and normal release versions - if poss record the call stack)
 
 5) Release & website reminders:
 
-CHANGE OF VERSION: (updated October 2020 - needs amending for the revised site)
+CHANGE OF VERSION: (updated November 2020 for the revised site)
 
 Prior to uploading:
 
 1 Increment version number & copyright year  (if required) in Project>Options & AboutUnit.cpp, & ensure references to it are included in source files
-2 Update Doxygen files & include graph legend link in pages.html
-3 Build & store to local Git repository
-4 Update manual & on-screen help if required
-5 Update readme file in release & on website if required
+2 Update Doxygen files & include graph legend link in pages.html, make sure flowcharts are in files folder & work ok
+3 Update manual & on-screen help if required
+4 Build & store to local Git repository tagged with latest release version
+5 Update readme file to reference latest release & update user manual reference & no. of pages if required
 6 Create a new directory 'Release vx.x.x' from earlier release & replace files as follows:
-	readme.txt - refer to correct version & ensure cite correct number of pages in user manual
+	readme.txt
 	Manual vx.x.x .pdf (if updated)
 	Quick start.pdf (if updated)
 	Railways>railway.exe
 	Railway>Help.chm (if updated)
-	In Railway, check have 5 x dlls and 3 x bpls, GNU licence, & that all directories contain the expected files
+	In Railway, check have 5 x dlls and 3 x bpls & GNU licence, & that all directories contain the expected files
 7 Zip the above as Release vx.x.x.zip
 
 On website:
 
-6 Upload new release version as a 'download' & note ID number (Category: Railway Operation Simulator)
-7 If Manual or Quick start changed upload the new versions & note ID numbers (Category: Documents)
-8 Delete earlier versions
-9 Update text of download page iaw readme.txt
-10 Change download ID numbers for new release version + anything else that's changed
-11 Update 'version information' page
-12 Download & check the new release & anything else that's changed
-13 Add a new post for the release with details of main changes - Categories: Railway Operation Simulator, news; Tags 	14 Railway Operation Simulator, year, v2x.x.x.
+8 Upload new release version zip to 'Media'
+9 Go to 'Base Program'  & edit product 'Railway Operation Simulator' (normally on last page of 'All Products')
+	Update text of page iaw readme.txt (short & full)
+	Category should already be 'Base Program & Documentation'
+	Tag should already be 'Railway Operation Simulator'
+	Image should already be in 'Product image'
+	Product data should already be 'Simple product'
+	TAuto Poster should be 'No', this a plugin that automatically posts to Twitter if set to 'Yes'
+10 Under 'General' tab
+	Click 'Add File' & enter url of the new zip
+	Move it to the top of the list
+	Make latest release '(stable)' and last one '(deprecated)'
+	'Virtual' & 'Downloadable' boxes should already be ticked
+	Price should be 0.00
+	Download limit should be 'Unlimited'
+	Download expiry should be 'Never'
+	Tax status should be 'None'
+	Tax class  should be 'Zero rate'
+11 Under 'Inventory' tab
+	SKU should be 'RailwayOS-Releases'
+	Stock status should be 'In stock'
+	Neither box should be ticked
+12 Under 'Linked Products' tab Upsells should be empty & Cross sells should be ROS Manuals & TT tutorials
+13 Should be nothing under 'Attributes' tab
+14 Under 'Advanced' tab
+	Purchase note should say 'Please read the included instructions included in the .zip file before contacting us for support. The manuals and tutorials are also available for free download.'
+	Menu order should be 0
+	Enable reviews should be ticked
+15 Preview then update if all ok (best to select update first as otherwise preview shows last version)
+16 If Manual or Quick start changed upload the new versions to 'Media' as above and add by editing product 'Railway Operation Simulator manuals' as above, SKU is RailwayOS-Manuals. Alter text (short & full) to refer to new version. Update & preview.
+17 Go to 'Version Information' page (uses DiviBuilder), click 'settings' on 'Versions (Accordion)', copy last version then click 'settings' on it, add version number & date as title, then change all text to the new text.  Save the new addition, save changes then update the page & check ok.
+18 Download & check the new release & anything else that's changed
+19 Add a new post for the release with details of main changes - Categories: Railway Operation Simulator, news; Tags Railway Operation Simulator, year, v2x.x.x.  Add 'Download it here' with link to 'Railway Operation Simulator'. TAutoPost set to yes. Schedule release or release immediately.
 
 On GitHub:
 
 15 Update DevHistory.txt with relevant public information
 16 Update all files on GitHub clone (after pulling latest commit), ensuring that the .md files are ok and that all doxygen docs included - check unversioned files for possible inclusion
 17 Commit the latest update locally & tag with release version
-18 Push to GitHub with 'include tags' ticked) & an appropriate message
+18 Push to GitHub with 'include tags' ticked & an appropriate message
 19 Create a new release on GitHub & include the new zip file
-20 Add new version to the referenced archive on the cloud
 
-ADDING A NEW PROJECT TO THE USER WEBSITE: (updated October 2020 - needs amending for the revised site)
+ADDING A NEW PROJECT TO THE USER WEBSITE: (updated November 2020 for the revised site)
 
 1 Check works ok & no copyrighted information
-2 Create a .jpg image of the railway & upload it to 'media'
-3 Upload original or modified (if required) zip file to 'downloads' - add title, select add file, upload file, insert file into page, check URL listed, set download count if required, Category: Railway Projects, publish.
-4 Select pages, add title - 'XXX by YYY (**NEW**)', image and description as provided by the author, use 10 for order, parent = Railway projects, edit URL to make searchable, insert download & select correct file, publish, check, download file & check all ok
-5 Select Appearance>Menus, insert last page, find it at bottom of page & move up to correct position, delete all but 'name' & (**NEW**), save menu & check works ok
-6 In quick edit change author to creator (may need to change user to contributor if new) & ensure allow comments ticked, update 
-7 Create new post, add title 'XXX by YYY', image & description - same as for page, add 'Download it here' with 'here' linked to the page. Add Categories news & railway projects, and tags Railway Projects, author & year. Preview & check link works ok, publish
-8 Final check that all links work, including from home screen where this project should be the latest.
-9 On Discord make author a creator if not already
+2 Create a .jpg image of the railway & upload it to 'Media'
+3 Upload original or modified (if required) zip file to 'Media'
+[From here on it's easier to duplicate an earlier project then modify areas that need to be changed, but remember to reset the download count!]
+4 Select 'Add new product'
+	Add title from email form - just the railway name (author is in the tag)
+	Add text from email description (required to be provided by form)
+	Add short description from email (required to be provided by form)
+	Add image in sidebar
+	Tick Category Community Projects + appropriate location/fantasy or add a new category if required
+	Add Tags Community Project, Community Projects, Author (use name from form), geographic information - same as category or additional - include anything people might search on
+	TAuto Post -> 'No' (only set to yes for the news post)
+	Page layout -> No Sidebar'
+	Hide Nav Before Scroll -> 'Default'
+
+5 Under 'Product data'
+	Simple product, tick Virtual & Downloadable
+
+6 Under 'Product data/General' tab
+	Price 0.00
+	Sale price blank
+	Set the url for the new project in 'Downloadable files' & for name just give version, usually v1.0 but check email form
+	Download limit 'Unlimited'
+	Download expiry 'Never'
+	Tax status 'None'
+	Tax class  'Zero rate'
+7 Under 'Inventory' tab
+	SKU should be 'cp-xxx' where xxx = railway name (use lower case & dashes in place of blanks)
+	Manage stock? box not ticked
+	Stock status 'In stock'
+	Tick Sold individually box
+8 Under 'Linked Products' Upsells & Cross sells should be empty
+9 Should be nothing under 'Attributes' tab
+10 Under 'Advanced' tab
+	Purchase note should be empty
+	Menu order should be 0
+	Enable reviews should be ticked
+11 Save draft, preview, then publish if ok
+[No need to duplicate an earlier post as almost everything would need to be changed]
+12 Create new post, add title 'Railway name' by 'Author'
+13 Add description text (not the image) and add 'Download it here' with 'here' linked to the product location
+14 Add the image as the 'Featured Image' - don't include in the main description
+15 Set TAuto Poster to 'Yes'
+16 Categories: News & Railway Projects, Tags: year, author & Railway Projects
+17 Make sure 'Allow comments' is ticked
+18 Set sheduled date if not immediate
+19 Save draft, preview, check & if ok check TAuto Post still 'yes' then either publish or schedule
+20 Final check that all links work (in preview if scheduled for future), including from home screen where this project should be the latest (unless scheduled), & that it downloads ok
+21 Make user a contributor if not already
+22 On Discord make author a creator if not already
 
 
 6) Historic development notes

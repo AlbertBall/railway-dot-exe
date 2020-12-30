@@ -72,7 +72,7 @@ var sectionId = 'dynsection-0';
 <text text-anchor="start" x="8" y="-279.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; ZeroPowerNoFrontSplitMessage</text>
 <text text-anchor="start" x="8" y="-268.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; ZeroPowerNoRearSplitMessage</text>
 <text text-anchor="start" x="8" y="-257.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; FailedTrainNoFinishJoinMessage</text>
-<text text-anchor="start" x="8" y="-246.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 93 more...</text>
+<text text-anchor="start" x="8" y="-246.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 95 more...</text>
 <text text-anchor="start" x="8" y="-235.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CallOnMaxSpeed</text>
 <text text-anchor="start" x="8" y="-224.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; MaximumMassLimit</text>
 <text text-anchor="start" x="8" y="-213.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; MaximumPowerLimit</text>

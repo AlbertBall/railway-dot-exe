@@ -5053,7 +5053,7 @@ void TTrack::TrackPush(int Caller, TTrackElement TrackElement)
             TrackMap.insert(TrackMapEntry);
             if(TrackElement.FixedNamedLocationElement)
             {
-                LocationNameEntry.second = -(int)(TrackVector.size()); // add to LocationNameMultiMap
+                LocationNameEntry.second = -(int)(TrackVector.size()); // add to LocationNameMultiMap  TrackVector.size = Required value + 1, so ...second = -1-Requ'd value
                 LocationNameMultiMap.insert(LocationNameEntry);
             }
             if(TrackElement.HLoc < HLocMin)
@@ -7372,8 +7372,8 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
       integers and the Map using THVPairs as keys. An adjustment is made for the vector positions as follows:-
       inactive vector positions are stored as they are (since most NamedLocationElements are in the inactive vector), but active vector
       positions stored as (-1-True Position), so can hold both types in a single integer uniquely - not very elegant but it seems to
-      work OK!  e.g. vector position 0 would be stored as -1, position n would be stored as -1-n.  To recover the true position
-      from a stored value the same rule applies, i.e. -1-stored value, equivalent to -1-(-1-original) = -1+1+original = original.
+      work OK!  e.g. TrackVector position 0 would be stored as -1, position n would be stored as -1-n.  InactiveTrackVector position 0 would be stored as 0.
+      To recover the true TrackVector position from a stored value the same rule applies, i.e. -1-stored value, equivalent to -1-(-1-original) = -1+1+original = original.
 
       The List holds elements that have still to be processed, and the Map holds elements that have been processed.  On entering
       this function a single element should be in the List (normally from the user's selection but can also be from
@@ -7588,6 +7588,26 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
         SetStationEntryStopLinkPosses(3);
 // set here as well as in LinkTrack so don't have to link track just because a name added
 // if track not finished then will be set when track validated
+
+// Rebuild ContinuationNameMap - added at v2.6.1 due to error found by Andrekoener &  notified by discord on 16/12/20
+// error was that if a continuation name was changed and a timetable stopping place included that new name then ContinuationNameMap wouldn't be rebuilt
+// so the timetable would validate and load and the name would appear in the dropdown list.  The reason was that ContinuationNameMap was only built in TryToLinkTrack,
+// so if that isn't called (as it isn't for a name change) then the error wouldn't be seen.  However next time the railway was loaded TryToLinkTrack was called
+// so the error would be seen.
+// This inclusion rebuilds ContinuationNameMap whenever a name is entered or changed so the error can no longer be hidden.
+    std::pair<AnsiString, char>TempMapPair;
+
+    ContinuationNameMap.clear();
+    for(int x = 0; x < Track->TrackVectorSize(); x++)
+    {
+        if((Track->TrackVector.at(x).TrackType == Continuation) && (Track->TrackVector.at(x).ActiveTrackElementName != ""))
+        {
+            TempMapPair.first = Track->TrackVector.at(x).ActiveTrackElementName;
+            TempMapPair.second = 'x'; // unused
+            ContinuationNameMap.insert(TempMapPair);
+        }
+    }
+//end of addition
     CheckLocationNameMultiMap(1); // test
     Utilities->CallLogPop(562);
 }
@@ -7794,6 +7814,150 @@ bool TTrack::LocationNameAllocated(int Caller, AnsiString LocationName) // true 
     }
     Utilities->CallLogPop(1954);
     return false;
+}
+
+// ---------------------------------------------------------------------------
+
+bool TTrack::DuplicatedLocationName(int Caller, bool GiveMessage)
+//examines LocationNameMultiMap and returns true if there are two or more locations with the same name - added at v2.6.1 to cater for Bill78's new .dev file merge
+//program and used when try to save as a .rly file
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DuplicatedLocationName");
+    TLocationNameMultiMapIterator LNMMIt;
+    TLocationNameMultiMapRange LNMMRg;
+    if(LocationNameMultiMap.empty()) //no names so no duplicates
+    {
+        Utilities->CallLogPop(2254);
+        return false;
+    }
+    AnsiString NameBeingChecked = LocationNameMultiMap.begin()->first; //first name to start with
+    LNMMRg = LocationNameMultiMap.equal_range(NameBeingChecked);
+    if(!PopulateHVPairsLinkedMapAndNoDuplicates(0, LNMMRg))
+    {
+        if(GiveMessage)
+        {
+            ShowMessage("Please note that more than one instance of " + NameBeingChecked + " was found.  Location names must be unique before the railway can be saved as a .rly file");
+        }
+        Utilities->CallLogPop(2255);
+        return true;
+    }
+    while(LNMMRg.second != LocationNameMultiMap.end()) //here LNMMRg still set to earlier name
+    {
+        NameBeingChecked = LNMMRg.second->first;
+        LNMMRg = LocationNameMultiMap.equal_range(NameBeingChecked); //here LNMMRg is the new range
+        if(!PopulateHVPairsLinkedMapAndNoDuplicates(1, LNMMRg))
+        {
+            if(GiveMessage)
+            {
+                ShowMessage("Please note that more than one instance of " + NameBeingChecked + " was found.  Location names must be unique before the railway can be saved as a .rly file");
+            }
+            Utilities->CallLogPop(2256);
+            return true;
+        }
+    }
+    Utilities->CallLogPop(2257);
+    return false;       //OK, no duplicates
+}
+
+// ---------------------------------------------------------------------------
+
+bool TTrack::PopulateHVPairsLinkedMapAndNoDuplicates(int Caller, TLocationNameMultiMapRange LNMMRg)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PopulateHVPairsLinkedMapAndNoDuplicates");
+    THVPair HVPair;
+    THVPairsLinkedMap HVPairsLinkedMap; //this is a map of HVPairs (so each is unique), each with a boolean marker, false for not linked and true for linked
+                                        //for use in the duplicate check
+    for(TLocationNameMultiMapIterator LNMMIt = LNMMRg.first; LNMMIt != LNMMRg.second; LNMMIt++) //populating the linked map
+    {
+       if(LNMMIt->second < 0) //active track element
+       {
+           HVPair.first = TrackElementAt(1011, (-1 - LNMMIt->second)).HLoc;
+           HVPair.second = TrackElementAt(1012, (-1 - LNMMIt->second)).VLoc;
+       }
+       else //inactive track element
+       {
+           HVPair.first = InactiveTrackElementAt(134, LNMMIt->second).HLoc;
+           HVPair.second = InactiveTrackElementAt(135, LNMMIt->second).VLoc;
+       }
+       HVPairsLinkedMap.insert(std::pair<THVPair, bool>(HVPair, false)); //set all bools to false initially
+    }
+    //All HVPairs now present in HVPairsLinkedMap for the specific location name
+
+    //now need to identify all named elements that are linked either vertically or horizontally with the first one (could be any but must be just one)
+    //so that at the end any that haven't been identified aren't linked and so represent a duplicated name
+    //to do so need a list (works like LNPendingList) to hold all elements that haven't been checked for links
+
+    std::list<THVPair> HVLinkedList;
+
+    //set the first value to true and add it to the list
+    HVPairsLinkedMap.begin()->second = true;
+    HVLinkedList.push_back(HVPairsLinkedMap.begin()->first);
+    //now enter a loop to examine the front pair in the list and set all linked bools to true, and if they weren't already true then add them to the back of the list for later
+    //examination
+    THVPair HVPairUnderExamination;
+    THVPairsLinkedMap::iterator HVPLMIt;
+    THVPair HVPairNew;
+    while(!HVLinkedList.empty())
+    {
+        HVPairUnderExamination = HVLinkedList.front();
+        HVLinkedList.pop_front();
+        HVPairNew.first = HVPairUnderExamination.first;
+        HVPairNew.second = HVPairUnderExamination.second - 1; //position directly above element
+        HVPLMIt = HVPairsLinkedMap.find(HVPairNew);
+        if(HVPLMIt != HVPairsLinkedMap.end())
+        {
+            if(!HVPLMIt->second)
+            {
+                HVLinkedList.push_back(HVPLMIt->first);
+            }
+            HVPLMIt->second = true;
+        }
+        HVPairNew.first = HVPairUnderExamination.first - 1;
+        HVPairNew.second = HVPairUnderExamination.second; //position to the left of the element
+        HVPLMIt = HVPairsLinkedMap.find(HVPairNew);
+        if(HVPLMIt != HVPairsLinkedMap.end())
+        {
+            if(!HVPLMIt->second)
+            {
+                HVLinkedList.push_back(HVPLMIt->first);
+            }
+            HVPLMIt->second = true;
+        }
+        HVPairNew.first = HVPairUnderExamination.first;
+        HVPairNew.second = HVPairUnderExamination.second + 1; //position under the element
+        HVPLMIt = HVPairsLinkedMap.find(HVPairNew);
+        if(HVPLMIt != HVPairsLinkedMap.end())
+        {
+            if(!HVPLMIt->second)
+            {
+                HVLinkedList.push_back(HVPLMIt->first);
+            }
+            HVPLMIt->second = true;
+        }
+        HVPairNew.first = HVPairUnderExamination.first + 1;
+        HVPairNew.second = HVPairUnderExamination.second; //position to the right of the element
+        HVPLMIt = HVPairsLinkedMap.find(HVPairNew);
+        if(HVPLMIt != HVPairsLinkedMap.end())
+        {
+            if(!HVPLMIt->second)
+            {
+                HVLinkedList.push_back(HVPLMIt->first);
+            }
+            HVPLMIt->second = true;
+        }
+    }
+
+    //at the end if any have a false bool then the name is duplicated so return false
+    for(THVPairsLinkedMap::iterator HVPLMIt = HVPairsLinkedMap.begin(); HVPLMIt != HVPairsLinkedMap.end(); HVPLMIt++)
+    {
+        if(!HVPLMIt->second)
+        {
+            Utilities->CallLogPop(2258);
+            return false;
+        }
+    }
+    Utilities->CallLogPop(2259);
+    return true;
 }
 
 // ---------------------------------------------------------------------------

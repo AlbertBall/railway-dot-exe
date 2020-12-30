@@ -1,10 +1,11 @@
 <map id="TTrainController::CalcDistanceToRedSignalandStopTime" name="TTrainController::CalcDistanceToRedSignalandStopTime">
-<area shape="rect" id="node1" title="new v2.2.0, calcs distance to red signal, returns &#45;1 for no signal found, for autosigs route after ne..." alt="" coords="5,139,203,180"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="748,65,895,91"/>
-<area shape="rect" id="node3" href="$class_t_track.html#aeb515d40cb9b08ed55ce877ffdbc51a5" title="Return the corresponding link position (track always occupies either links 0 &amp; 1 or 2 &amp; 3)" alt="" coords="251,369,453,411"/>
-<area shape="rect" id="node4" href="$class_t_all_routes.html#a0a9ccbc84687f85806115877aa86dcfd" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="264,105,440,147"/>
-<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="748,217,895,243"/>
-<area shape="rect" id="node6" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="519,65,682,91"/>
-<area shape="rect" id="node7" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="259,171,445,212"/>
-<area shape="rect" id="node8" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="501,166,700,193"/>
+<area shape="rect" id="node1" title="new v2.2.0, calcs distance to red signal, returns &#45;1 for no signal found, for autosigs route after ne..." alt="" coords="5,275,203,316"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="776,113,923,139"/>
+<area shape="rect" id="node3" href="$class_t_track.html#aeb515d40cb9b08ed55ce877ffdbc51a5" title="Return the corresponding link position (track always occupies either links 0 &amp; 1 or 2 &amp; 3)" alt="" coords="251,443,453,484"/>
+<area shape="rect" id="node4" href="$class_t_all_routes.html#a0a9ccbc84687f85806115877aa86dcfd" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="264,275,440,316"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="776,239,923,266"/>
+<area shape="rect" id="node6" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="533,341,696,367"/>
+<area shape="rect" id="node7" href="$class_t_train.html#a7a54125a3a5052cb25e17014075a686b" title="Returns the number by which the train ActionVectorEntryPtr needs to be incremented to point to the lo..." alt="" coords="501,37,728,63"/>
+<area shape="rect" id="node8" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="259,159,445,200"/>
+<area shape="rect" id="node9" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="515,138,714,165"/>
 </map>

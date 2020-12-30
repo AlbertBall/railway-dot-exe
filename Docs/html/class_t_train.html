@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.6.0</span>
+   &#160;<span id="projectnumber">v2.6.1</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -100,7 +100,8 @@ $(document).ready(function(){initNavTree('class_t_train.html',''); initResizable
 <div class="dynheader">
 Collaboration diagram for TTrain:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -433,6 +434,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a559e8f1636c83d03463d6c901ae39567"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train.html#a559e8f1636c83d03463d6c901ae39567">SignallerStoppingFlag</a></td></tr>
 <tr class="memdesc:a559e8f1636c83d03463d6c901ae39567"><td class="mdescLeft">&#160;</td><td class="mdescRight">set when the signaller stop command has been given  <a href="class_t_train.html#a559e8f1636c83d03463d6c901ae39567">More...</a><br /></td></tr>
 <tr class="separator:a559e8f1636c83d03463d6c901ae39567"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11c97a9e0864bb4d08cf511d3264a5bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train.html#a11c97a9e0864bb4d08cf511d3264a5bb">StationStopCalculated</a></td></tr>
+<tr class="memdesc:a11c97a9e0864bb4d08cf511d3264a5bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">used in calculating DistanceToStationStop for trains running early before they have reached the stop station  <a href="class_t_train.html#a11c97a9e0864bb4d08cf511d3264a5bb">More...</a><br /></td></tr>
+<tr class="separator:a11c97a9e0864bb4d08cf511d3264a5bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f044ad19728cee6dd0b6baadec4648b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train.html#a0f044ad19728cee6dd0b6baadec4648b">StepForwardFlag</a></td></tr>
 <tr class="memdesc:a0f044ad19728cee6dd0b6baadec4648b"><td class="mdescLeft">&#160;</td><td class="mdescRight">set when the signaller command to step forward one element has been given  <a href="class_t_train.html#a0f044ad19728cee6dd0b6baadec4648b">More...</a><br /></td></tr>
 <tr class="separator:a0f044ad19728cee6dd0b6baadec4648b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -488,6 +492,7 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:a324320d17dcf544cb0507b909ac14975"><td class="mdescLeft">&#160;</td><td class="mdescRight">in minutes: new at v2.2.0 for operator time to act panel. Calculated in UpdateTrain, -1 indicates not to be displayed on panel  <a href="class_t_train.html#a324320d17dcf544cb0507b909ac14975">More...</a><br /></td></tr>
 <tr class="separator:a324320d17dcf544cb0507b909ac14975"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0188ccc7d6e918b6522a72addfb96d0d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train.html#a0188ccc7d6e918b6522a72addfb96d0d">FirstLaterStopRecoverableTime</a></td></tr>
+<tr class="memdesc:a0188ccc7d6e918b6522a72addfb96d0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">this used to deduct from RecoverableTime when arrive at a location for OperatorActionpanel  <a href="class_t_train.html#a0188ccc7d6e918b6522a72addfb96d0d">More...</a><br /></td></tr>
 <tr class="separator:a0188ccc7d6e918b6522a72addfb96d0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9d994b88696a8680438b109dccfd679"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train.html#aa9d994b88696a8680438b109dccfd679">FrontElementSpeedLimit</a></td></tr>
 <tr class="separator:aa9d994b88696a8680438b109dccfd679"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -497,6 +502,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:ab9dabc7092d31bc27b573e75ac74d0da"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train.html#ab9dabc7092d31bc27b573e75ac74d0da">Mass</a></td></tr>
 <tr class="memdesc:ab9dabc7092d31bc27b573e75ac74d0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">in kg  <a href="class_t_train.html#ab9dabc7092d31bc27b573e75ac74d0da">More...</a><br /></td></tr>
 <tr class="separator:ab9dabc7092d31bc27b573e75ac74d0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e58e27771dc21b6beca4cc0f61ceaa0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train.html#a1e58e27771dc21b6beca4cc0f61ceaa0">DistanceToStationStop</a></td></tr>
+<tr class="memdesc:a1e58e27771dc21b6beca4cc0f61ceaa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculated in UpdateTrain &amp; used in CalcDistanceToRedSignalandStopTime to cater for trains running early before they have reached the stop station  <a href="class_t_train.html#a1e58e27771dc21b6beca4cc0f61ceaa0">More...</a><br /></td></tr>
+<tr class="separator:a1e58e27771dc21b6beca4cc0f61ceaa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a042c53d86c73b973053c9dee5afda314"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train.html#a042c53d86c73b973053c9dee5afda314">UpdateCounter</a></td></tr>
 <tr class="memdesc:a042c53d86c73b973053c9dee5afda314"><td class="mdescLeft">&#160;</td><td class="mdescRight">used in train splitting operations to prevent too frequent checks for a location being long enough for a split after a failure message has already been given (doesn't need to stay failed as signaller can manoeuvre it to a better location)  <a href="class_t_train.html#a042c53d86c73b973053c9dee5afda314">More...</a><br /></td></tr>
 <tr class="separator:a042c53d86c73b973053c9dee5afda314"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -752,7 +760,7 @@ Here is the call graph for this function:</div>
 
 <p>Indicates that a train is not prevented from moving - used to allow appropriate popup menu options when under signaller control. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06279">6279</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06281">6281</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -792,7 +800,7 @@ Here is the caller graph for this function:</div>
 
 <p>Indicates that a train is only prevented from moving by a signal - used to allow appropriate popup menu options when under signaller control. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06331">6331</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06333">6333</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -884,11 +892,12 @@ Here is the call graph for this function:</div>
 <p>new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessary delays </p>
 <p>New v2.2.0 for operator action panel. Calls CalcDistance ToRedSignal and uses the current speed to estimate the time in minutes assuming a constant deceleration rate to it. If a buffer, continuation, stopping location, an autosignal route after the next red signal, or service finished, then -1 is returned to signal that there is to be no display for that train. If stopped at a location the time is still calculated assuming a speed of 30km/h and the time to start added to it. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07688">7688</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07690">7690</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_ae34370de578ebd07a217c79d8b67312c_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_ae34370de578ebd07a217c79d8b67312c_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -924,7 +933,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if the train can be called on at its current position - see detail in .cpp file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l04442">4442</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l04444">4444</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -964,7 +973,7 @@ Here is the caller graph for this function:</div>
 
 <p>Reverses the direction of motion of the train. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05729">5729</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05731">5731</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1088,7 +1097,7 @@ Here is the caller graph for this function:</div>
 
 <p>called during FloatingLabelNextString to find the next service departure time </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06539">6539</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06541">6541</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1128,7 +1137,7 @@ Here is the caller graph for this function:</div>
 
 <p>Carries out an integrity check for the train section of a session file, if fails a message is given and the file is not loaded. It is static so that it can be called without needing an object. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07167">7167</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07169">7169</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1168,7 +1177,7 @@ Here is the caller graph for this function:</div>
 
 <p>Checks forward from train LeadElement, following leading point attributes but ignoring trailing point attributes, until finds either a train or a signal/buffers/continuation/loop. If finds a train returns false, else returns true. Used when train stopped for a train in front, to ensure it remains stopped until this function returns true. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l04330">4330</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l04332">4332</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1305,7 +1314,7 @@ Here is the caller graph for this function:</div>
 
 <p>Carry out the actions needed when a train is waiting to join another train. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05615">5615</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05617">5617</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1355,7 +1364,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used in the floating window to display the 'Next' action. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06414">6414</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06416">6416</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1405,7 +1414,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used in the floating window to display the timetable. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06588">6588</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06590">6590</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1445,7 +1454,7 @@ Here is the caller graph for this function:</div>
 
 <p>Carry out the actions needed when a train is to split from the front. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05064">5064</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05066">5066</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1484,7 +1493,7 @@ Here is the caller graph for this function:</div>
 
 <p>get LeadElement - used in RouteLockingRequired in <a class="el" href="_track_unit_8cpp.html">TrackUnit.cpp</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00615">615</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00620">620</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1622,7 +1631,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns the train headcode, taking account of the RepeatNumber. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l04687">4687</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l04689">4689</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1667,7 +1676,7 @@ Here is the call graph for this function:</div>
 
 <p>Returns the timetable action time corresponding to 'Time' for this train, i.e. it adjusts the time value according to the train's RepeatNumber and the incremental minutes between repeats. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l04699">4699</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l04701">4701</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1706,7 +1715,7 @@ Here is the caller graph for this function:</div>
 
 <p>Check whether the train has left the railway, so that it can be removed from the display at the next clock tick. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00599">599</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00604">604</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1749,7 +1758,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l04710">4710</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l04712">4712</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1879,7 +1888,7 @@ Here is the call graph for this function:</div>
 
 <p>True if train service terminates at its current location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06251">6251</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06253">6253</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1919,7 +1928,7 @@ Here is the caller graph for this function:</div>
 
 <p>Carry out the actions needed when a train is waiting to be joined by another train. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05662">5662</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05664">5664</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1968,7 +1977,7 @@ Here is the caller graph for this function:</div>
 <p>Added at v1.2.0: true if any part of train on specific link, false otherwise, including no link present &amp; no TrackVectorNumber within Lead, Mid or Lag (public so Track-&gt;TrainOnLink can access it) </p>
 <p>functions in .cpp file </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07640">7640</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07642">7642</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1977,7 +1986,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_aef32cd9a007874ab09ceeac907e7c88b_icgraph.svg" width="100%" height="476"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_aef32cd9a007874ab09ceeac907e7c88b_icgraph.svg" width="100%" height="476"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -2018,7 +2028,7 @@ Here is the caller graph for this function:</div>
 
 <p>Create one train with relevant member values from the sesion file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06935">6935</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06937">6937</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2098,7 +2108,7 @@ Here is the caller graph for this function:</div>
 
 <p>Send a message to the performance log and performance file, and if the message is flagged as a warning then it is also sent as a warning (in red at the top of the railway display area) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l04793">4793</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l04795">4795</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2190,7 +2200,7 @@ Here is the caller graph for this function:</div>
 <p>Returns the number by which the train ActionVectorEntryPtr needs to be incremented to point to the location arrival entry or passtime entry before a change of direction. </p>
 <p>Used to display missed actions when a stop or pass location has been reached before other timetabled actions have been carried out. If can't find it, or Name is "", -1 is returned. A change of direction is the limit of the search because a train may not stop at a location on the way out but stop on way back, and in these circumstances no actions have been missed. Stop indicates whether the train will stop at (true) or pass (false) the location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l04286">4286</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l04288">4288</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2199,7 +2209,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_a7a54125a3a5052cb25e17014075a686b_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_a7a54125a3a5052cb25e17014075a686b_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -2230,7 +2241,7 @@ Here is the caller graph for this function:</div>
 
 <p>Carry out the actions needed when a new shuttle service is created from a non-repeating (F-nshs) service. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06087">6087</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06089">6089</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2270,7 +2281,7 @@ Here is the caller graph for this function:</div>
 
 <p>Carry out the actions needed when a train forms a new service (code Fns) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05795">5795</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05797">5797</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2564,7 +2575,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plots the train on the display in normal (zoomed-in) mode. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07612">7612</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07614">7614</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2670,7 +2681,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plots the train on screen in zoomed-out mode, state of 'Flash' determines whether the flashing trains are plotted or not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07433">7433</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07435">7435</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2766,7 +2777,7 @@ Here is the caller graph for this function:</div>
 
 <p>Carry out the actions needed when a train is to split from the rear. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05340">5340</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05342">5342</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2806,7 +2817,7 @@ Here is the caller graph for this function:</div>
 
 <p>Sends the 'train terminated' message to the performance log and sets TimetableFinished to true. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05833">5833</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05835">5835</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2846,7 +2857,7 @@ Here is the caller graph for this function:</div>
 
 <p>Carry out the actions needed to create either a new shuttle service or (if all repeats have finished) a non-repeating shuttle finishing service (code is Fns-sh) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06186">6186</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06188">6188</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2886,7 +2897,7 @@ Here is the caller graph for this function:</div>
 
 <p>Carry out the actions needed to create either a new shuttle service or (if all repeats have finished) to keep train at its current location (code is Frh-sh) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06126">6126</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06128">6128</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2992,7 +3003,7 @@ Here is the caller graph for this function:</div>
 
 <p>Data for a single train is saved to a session file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06774">6774</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06776">6776</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3048,7 +3059,7 @@ Here is the caller graph for this function:</div>
 
 <p>Missed actions (see NameInTimetableBeforeCDT above) sent to the performance log and performance file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05854">5854</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05856">5856</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3297,7 +3308,7 @@ Here is the caller graph for this function:</div>
 
 <p>Unplots &amp; replots train, which checks for facing signal and sets StoppedAtSignal if req'd. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06362">6362</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06364">6364</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3336,7 +3347,7 @@ Here is the caller graph for this function:</div>
 
 <p>True if the train has stopped for any reason. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00609">609</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00614">614</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -3381,7 +3392,7 @@ Here is the caller graph for this function:</div>
 
 <p>True when the train is stopped at a timetabled location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07581">7581</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07583">7583</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3421,7 +3432,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called when there is a random train failure. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05012">5012</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l05014">5014</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3461,7 +3472,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns true if any part of train on a continuation - called when checking for failures, prevent if on a continuation. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07847">7847</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07876">7876</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3511,7 +3522,7 @@ Here is the caller graph for this function:</div>
 
 <p>True for a train waiting to be joined when the joining train is adjacent. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06058">6058</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06060">6060</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3561,7 +3572,7 @@ Here is the caller graph for this function:</div>
 
 <p>True for a train waiting to join another when the other train is adjacent. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06030">6030</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l06032">6032</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3641,7 +3652,7 @@ Here is the caller graph for this function:</div>
 
 <p>Unplot train from screen in zoomed-out mode. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07544">7544</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07546">7546</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3738,7 +3749,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called by <a class="el" href="class_t_train_controller.html#aa5e441a9ec80e5076b2c05c2bb6f3fd3" title="Called by TInterface::SaveOperatingImage1Click) to write all trains to the image file.">TTrainController::WriteTrainsToImage</a> (called by TInterface::SaveOperatingImage1Click) to add all a single train graphic to the image file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07624">7624</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07626">7626</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3827,7 +3838,7 @@ Here is the caller graph for this function:</div>
 
 <p>this is a useful shorthand value in calculating speeds and transit times in SetTrainMovementValues [= sqrt(2*PowerAtRail/Mass)] </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00371">371</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00373">373</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3853,7 +3864,7 @@ Here is the caller graph for this function:</div>
 
 <p>the background colour of the train's headcode graphics </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00450">450</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00455">455</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3879,7 +3890,7 @@ Here is the caller graph for this function:</div>
 
 <p>the existing track graphic that the train headcode segment covers up (one for each headcode segment) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00443">443</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00448">448</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -3931,7 +3942,7 @@ Here is the caller graph for this function:</div>
 
 <p>the current train brake rate </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00389">389</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00391">391</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4033,7 +4044,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00427">427</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00432">432</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4083,7 +4094,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00427">427</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00432">432</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4107,7 +4118,33 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00427">427</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00432">432</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+
+</div>
+</div>
+<a id="a1e58e27771dc21b6beca4cc0f61ceaa0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e58e27771dc21b6beca4cc0f61ceaa0">&#9670;&nbsp;</a></span>DistanceToStationStop</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TTrain::DistanceToStationStop</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>calculated in UpdateTrain &amp; used in CalcDistanceToRedSignalandStopTime to cater for trains running early before they have reached the stop station </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00410">410</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4133,7 +4170,7 @@ Here is the caller graph for this function:</div>
 
 <p>speed at which the train enters the next element </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00375">375</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00377">377</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4157,7 +4194,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00409">409</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00414">414</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4183,7 +4220,7 @@ Here is the caller graph for this function:</div>
 
 <p>speed when leaving the next element </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00379">379</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00381">381</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4209,7 +4246,7 @@ Here is the caller graph for this function:</div>
 
 <p>speed when half way into the next element </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00377">377</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00379">379</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4235,7 +4272,7 @@ Here is the caller graph for this function:</div>
 
 <p>times used in SetTrainMovementValues corresponding to the next element the train runs on </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00409">409</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00414">414</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4259,7 +4296,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00409">409</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00414">414</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4357,7 +4394,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00402">402</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p>this used to deduct from RecoverableTime when arrive at a location for OperatorActionpanel </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00404">404</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4383,7 +4422,7 @@ Here is the caller graph for this function:</div>
 
 <p>points to the front headcode segment, this is set to red or blue depending on TrainMode </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00445">445</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00450">450</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4409,7 +4448,7 @@ Here is the caller graph for this function:</div>
 
 <p>values associated with the element immediately in front of the train (speed in km/h, length in m) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00403">403</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00406">406</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4433,7 +4472,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00403">403</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00406">406</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4485,7 +4524,7 @@ Here is the caller graph for this function:</div>
 
 <p>points to the headcode segment graphics e.g. 5,A,4,7. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00447">447</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00452">452</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4511,7 +4550,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set from the HeadCodeGrPtr[4] pointer values, HeadCodePosition[0] is always the front, which may be the first or the last headcode character depending on the direction of motion and the entry link value of the element being entered (see also LowEntryValue(int EntryLink) above) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00441">441</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00446">446</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4535,7 +4574,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00430">430</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00435">435</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4765,7 +4804,7 @@ Here is the caller graph for this function:</div>
 
 <p>time of the last timetabled action, used to ensure at least a 30 second delay before the next action </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00413">413</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00418">418</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4889,7 +4928,7 @@ Here is the caller graph for this function:</div>
 
 <p>in kg </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00405">405</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00408">408</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4915,7 +4954,7 @@ Here is the caller graph for this function:</div>
 
 <p>the maximum brake rate that the train can achieve </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00387">387</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00389">389</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -4941,7 +4980,7 @@ Here is the caller graph for this function:</div>
 
 <p>the maximum speed that the train can exit the next element </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00385">385</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00387">387</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5045,7 +5084,7 @@ Here is the caller graph for this function:</div>
 
 <p>the current maximum train running speed </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00383">383</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00385">385</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5143,7 +5182,7 @@ Here is the caller graph for this function:</div>
 
 <p>new at v2.2.0 for operator time to act panel. Calculated in UpdateTrain </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00398">398</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00400">400</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5193,7 +5232,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00428">428</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00433">433</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5219,7 +5258,7 @@ Here is the caller graph for this function:</div>
 
 <p>stores the Lead, Mid &amp; Lag TrackVectorPositions, used for unplotting trains from the old position in zoomed-out mode prior to replotting in a new position (new will be different from old if train moving) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00432">432</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00437">437</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5271,7 +5310,7 @@ Here is the caller graph for this function:</div>
 
 <p>in minutes: new at v2.2.0 for operator time to act panel. Calculated in UpdateTrain, -1 indicates not to be displayed on panel </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00400">400</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00402">402</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5297,7 +5336,7 @@ Here is the caller graph for this function:</div>
 
 <p>new at v2.4.0 to store value before a failure so it can be restored from here when repaired </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00396">396</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00398">398</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5323,7 +5362,7 @@ Here is the caller graph for this function:</div>
 
 <p>the TrackVectorPosition of the element where each of the 4 headcode characters is plotted (need to be set to Lead, Mid &amp; Lag elemnt values before PlotGraphic called) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00434">434</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00439">439</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5349,7 +5388,7 @@ Here is the caller graph for this function:</div>
 
 <p>the LinkPos value corresponding to the train entry link of the element where each of the 4 headcode characters is plotted </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00436">436</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00441">441</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5375,7 +5414,7 @@ Here is the caller graph for this function:</div>
 
 <p>set when train plotted on screen </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00421">421</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00426">426</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5401,7 +5440,7 @@ Here is the caller graph for this function:</div>
 
 <p>in Watts (taken as 80% of the train's Gross Power, i.e. that entered by the user) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00394">394</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00396">396</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5477,7 +5516,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00411">411</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00416">416</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5555,7 +5594,7 @@ Here is the caller graph for this function:</div>
 
 <p>stores the location name at which signaller control is taken, to ensure that it is back at that location before timetable control can be restored </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00419">419</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00424">424</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5633,7 +5672,7 @@ Here is the caller graph for this function:</div>
 
 <p>the train brake rate when stopping under signaller control </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00391">391</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00393">393</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5657,7 +5696,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00427">427</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00432">432</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5709,7 +5748,7 @@ Here is the caller graph for this function:</div>
 
 <p>set when running past a red signal without permission flags to indicate relevant stop conditions or pending stop conditions </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00425">425</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00430">430</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5739,6 +5778,32 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a11c97a9e0864bb4d08cf511d3264a5bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11c97a9e0864bb4d08cf511d3264a5bb">&#9670;&nbsp;</a></span>StationStopCalculated</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrain::StationStopCalculated</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>used in calculating DistanceToStationStop for trains running early before they have reached the stop station </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00363">363</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+
+</div>
+</div>
 <a id="a0f044ad19728cee6dd0b6baadec4648b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0f044ad19728cee6dd0b6baadec4648b">&#9670;&nbsp;</a></span>StepForwardFlag</h2>
 
@@ -5761,7 +5826,7 @@ Here is the caller graph for this function:</div>
 
 <p>set when the signaller command to step forward one element has been given </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00363">363</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00365">365</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5785,7 +5850,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00427">427</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00432">432</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5809,7 +5874,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00427">427</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00432">432</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5833,7 +5898,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00427">427</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00432">432</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5857,7 +5922,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00427">427</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00432">432</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5881,7 +5946,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00427">427</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00432">432</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5905,7 +5970,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00428">428</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00433">433</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5931,7 +5996,7 @@ Here is the caller graph for this function:</div>
 
 <p>the current Straddle value of the train (see TStraddle above) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00452">452</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00457">457</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5957,7 +6022,7 @@ Here is the caller graph for this function:</div>
 
 <p>set when a 'train terminated' message has been logged, to prevent its being logged more than once </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00365">365</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00367">367</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -5983,7 +6048,7 @@ Here is the caller graph for this function:</div>
 
 <p>set when there are no more timetable actions </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00367">367</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00369">369</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6009,7 +6074,7 @@ Here is the caller graph for this function:</div>
 
 <p>the maximum train running speed when in timetable mode (see int SignallerMaxSpeed for signaller control) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00381">381</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00383">383</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6085,7 +6150,7 @@ Here is the caller graph for this function:</div>
 
 <p>the TrainID of the train that this train has crashed into, recorded so that train can be marked and displayed as crashed also </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00438">438</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00443">443</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6137,7 +6202,7 @@ Here is the caller graph for this function:</div>
 
 <p>added at v2.4.0 to indicate failure </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00369">369</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00371">371</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6189,7 +6254,7 @@ Here is the caller graph for this function:</div>
 
 <p>set when train has left the railway, so it can be removed from the display at the next clock tick </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00423">423</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00428">428</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6241,7 +6306,7 @@ Here is the caller graph for this function:</div>
 
 <p>mode of operation - either Timetable (running under timetable control) or Signaller (running under signaller control) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00415">415</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00420">420</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6267,7 +6332,7 @@ Here is the caller graph for this function:</div>
 
 <p>location departure time and 'train ready to start' time (TRSTime is 10 seconds before the ReleaseTime) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00411">411</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00416">416</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6317,7 +6382,7 @@ Here is the caller graph for this function:</div>
 
 <p>used in train splitting operations to prevent too frequent checks for a location being long enough for a split after a failure message has already been given (doesn't need to stay failed as signaller can manoeuvre it to a better location) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00407">407</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00412">412</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -6343,7 +6408,7 @@ Here is the caller graph for this function:</div>
 
 <p>each headcode character is an 8x8 pixel graphic and must be placed within a 16x16 pixel element, these values set the horizontal &amp; vertical offsets of the top left hand corner character graphic relative to the 16x16 element </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00430">430</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00435">435</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>

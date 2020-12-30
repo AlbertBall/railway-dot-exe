@@ -12,7 +12,7 @@
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title=" ">
+<g id="a_node1"><a xlink:title="As DiagonalFouledByRouteOrTrain (in TAllRoutes) but only checks for a train (may or may not be a rout...">
 <polygon fill="#bfbfbf" stroke="black" points="0,-119.41 0,-149.41 131,-149.41 131,-119.41 0,-119.41"/>
 <text text-anchor="start" x="8" y="-137.41" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::DiagonalFouledBy</text>
 <text text-anchor="middle" x="65.5" y="-126.41" font-family="Helvetica,sans-Serif" font-size="10.00">Train</text>

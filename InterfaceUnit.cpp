@@ -1180,6 +1180,7 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key, TShift
             Screen->Cursor = TCursor(-11); // Hourglass;
             SetTrackBuildImages(8);
             AnsiString ExistingName;
+            LocationNameTextBox->Text = LocationNameTextBox->Text.Trim(); //added at v2.6.1 to prevent added spaces because they skip the different location same name chack
             if(Track->LNPendingList.front() > -1)
                 ExistingName = Track->InactiveTrackElementAt(27, Track->LNPendingList.front()).LocationName;
             else
@@ -2382,10 +2383,11 @@ void TInterface::LoadRailway(int Caller, AnsiString LoadFileName)
             SavedFileName = AnsiString(LoadRailwayDialog->FileName); // includes the full PrefDir
             if(SavedFileName != "") // shouldn't be "" at this stage but leave in as a safeguard
             {
+                Track->DuplicatedLocationName(1, true);
                 char LastChar = SavedFileName[SavedFileName.Length()];
                 if((LastChar == 'y') || (LastChar == 'Y'))
                 {
-                    if(!(Track->IsReadyForOperation()))
+                    if(!(Track->IsReadyForOperation(false)))
                     {
                         ShowMessage("Railway not ready for operation so unable to load as a .rly file.  Loading as a new railway under development");
                         SavedFileName = "";
@@ -5633,9 +5635,9 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
         TrainController->LogEvent("MainScreenMouseDown2," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
         Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",MainScreenMouseDown2," + AnsiString(Button) + "," + AnsiString(X) +
             "," + AnsiString(Y));
-        // unplot GapFlash graphics if plotted & cancel gap flashing (either key down)
+        // unplot GapFlash graphics if plotted & cancel gap flashing if left mouse button pressed (so can move display with right mouse button)
         // but not in ZoomOut mode - so can switch between modes & keep gaps flashing
-        if(Track->GapFlashFlag && !Display->ZoomOutFlag)
+        if(Track->GapFlashFlag && !Display->ZoomOutFlag && (Button == mbLeft))
         {
             Track->GapFlashGreen->PlotOriginal(35, Display);
             Track->GapFlashRed->PlotOriginal(36, Display);
@@ -6013,7 +6015,9 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                             TrainHeadCodeMenuItem->Caption = Train.HeadCode + ":";
                             TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
                             TrainController->RestartTime = TrainController->TTClockTime;
-                            PopupMenu->Popup(X, Y); // menu stops everything so reset timetable time when restarts
+                            PopupMenu->Popup(MainScreen->Left+X, MainScreen->Top+Y+43); //menu stops everything so reset timetable time when restarts,
+                                                                                        //new at v2.6.1, displays so that can't inadvertently click on a selection if click twice
+                                                                                        //43 is the distance from the top of the screen to the top of TInterface
                             TrainController->BaseTime = TDateTime::CurrentDateTime();
                             TrainController->StopTTClockFlag = false;
                             Utilities->CallLogPop(40);
@@ -7917,9 +7921,23 @@ void TInterface::ClockTimer2(int Caller)
                     if(AllRoutes->GetFixedRouteAt(194, x).RouteID != ConstructRoute->StartSelectionRouteID.GetInt())
                     {
                         TPrefDirElement PDE = AllRoutes->GetFixedRouteAt(188, x).GetFixedPrefDirElementAt(198, 0);
-                        AllRoutes->RemoveRouteElement(20, PDE.HLoc, PDE.VLoc, PDE.GetELink());
-                        ElementRemovedFlag = true;
-                        TrainController->LogEvent("SingleRouteElementRemoved, H = " + AnsiString(PDE.HLoc) + ", V = " + AnsiString(PDE.VLoc));
+                        //also don't remove if it links two automatic signal routes (reported by Daniel Gill for Darlington via discord on 13/12/20)
+                        //added at v2.6.1
+                        //note that a train will still remove the route element when it reaches it because of the 3rd condition below, but it will be removed when the train
+                        //is half on the preceding element rather than fully on it, in other cases the train has to be fully on the element because the route only becomes a
+                        //single element at that stage
+                        unsigned int LinkFromTVNumber = Track->TrackElementAt(1007, PDE.GetTrackVectorPosition()).Conn[PDE.GetELinkPos()];
+                        unsigned int LinkToTVNumber = Track->TrackElementAt(1008, PDE.GetTrackVectorPosition()).Conn[PDE.GetXLinkPos()];
+                        int RouteNumber1, RouteNumber2, TrainID; //not used
+                        if((AllRoutes->GetRouteTypeAndNumber(37, LinkFromTVNumber, PDE.GetELinkPos(), RouteNumber1) != TAllRoutes::AutoSigsRoute) ||
+                           (AllRoutes->GetRouteTypeAndNumber(38, LinkToTVNumber, PDE.GetXLinkPos(), RouteNumber2) != TAllRoutes::AutoSigsRoute) ||
+                           (Track->TrackElementAt(1009, LinkFromTVNumber).TrainIDOnElement > -1))  //don't need to test for it being a bridge as then LinkFromTVNumber can't be
+                                                                                                   //an autosigs route
+                        {
+                            AllRoutes->RemoveRouteElement(20, PDE.HLoc, PDE.VLoc, PDE.GetELink());
+                            ElementRemovedFlag = true;
+                            TrainController->LogEvent("SingleRouteElementRemoved, H = " + AnsiString(PDE.HLoc) + ", V = " + AnsiString(PDE.VLoc));
+                        }
                     }
                 }
             }
@@ -10359,6 +10377,41 @@ void __fastcall TInterface::RemoveTrainMenuItemClick(TObject *Sender)
                 TrainController->SignallerTrainRemovedOnAutoSigsRoute = true;
             }
 // end of addition
+
+//erase a stub route if there is one, added at v2.6.1
+//first element of route is immediately in front of the train
+            if(Train.LeadExitPos >= 0)
+            {
+                TTrackElement LeadTrackElement = Track->TrackElementAt(1013, Train.LeadElement);
+                int FirstRouteElementVecPos = LeadTrackElement.Conn[Train.LeadExitPos];
+                int FirstRouteLinkPos = LeadTrackElement.ConnLinkPos[Train.LeadExitPos];
+                RouteType = AllRoutes->GetRouteTypeAndNumber(39, FirstRouteElementVecPos, FirstRouteLinkPos, RouteNumber);
+                if(RouteType == TAllRoutes::NotAutoSigsRoute) //red or green route, if no route then ignore
+                {
+                    TOneRoute &OR = AllRoutes->GetModifiableRouteAt(30, RouteNumber);
+                    TTrackElement TE = Track->TrackElementAt(1014, FirstRouteElementVecPos);
+                    if((TE.TrackType != SignalPost) && (TE.TrackType != Continuation))//all autosigs routes have signalpost or continuation at 0 so they are automatically excluded
+                    {
+                        while(OR.PrefDirSize() > 0) //remove the route up to but not including the next facing signal, in case a route extends to another signal
+                        {
+                            TPrefDirElement PDE = OR.GetFixedPrefDirElementAt(249, 0); //these will change at each element removal because OR is a reference to the real route
+                            int TVPos2 = PDE.GetTrackVectorPosition();
+                            TTrackElement TE2 = Track->TrackElementAt(1015, TVPos2);
+                            if(Track->TrackElementAt(1016, PDE.GetTrackVectorPosition()).Config[PDE.GetXLinkPos()] != Signal)
+                            {
+                                AllRoutes->RemoveRouteElement(24, TE2.HLoc, TE2.VLoc, PDE.GetELink());
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        AllRoutes->RebuildRailwayFlag = true;
+                        // to force ClearandRebuildRailway at next clock tick if not in zoom-out mode, to replot without stub route
+                    }
+                }
+            }
+//end of stub route removal addition
         }
         if(Train.MidElement > -1)
         {
@@ -13058,7 +13111,7 @@ void TInterface::SetLevel1Mode(int Caller)
         }
         else if((SavedFileName[SavedFileName.Length()] == 'y') || (SavedFileName[SavedFileName.Length()] == 'Y')) // 'rly' file
         {
-            if(!(Track->IsReadyForOperation()))
+            if(!(Track->IsReadyForOperation(false)))
             {
                 SaveMenuItem->Enabled = false; // can't save under its old name as not now a .rly file
             }
@@ -14986,6 +15039,25 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
         }
     }
 
+//deal with gap setting - added at v2.6.1 to make location easier
+    if((WarningFlash && Level2TrackMode == GapSetting) && Display->ZoomOutFlag)
+    {
+        Display->PlotSmallOutput(22, Track->GetGapHLoc() * 4, Track->GetGapVLoc() * 4, RailGraphics->smRed);
+    }
+    if((WarningFlash && Level2TrackMode == GapSetting) && !Display->ZoomOutFlag)
+    {
+        Display->Ellipse(2, Track->GetGapHLoc() * 16, Track->GetGapVLoc() * 16, clB0G0R5);
+    }
+
+    if((!WarningFlash && Level2TrackMode == GapSetting) && Display->ZoomOutFlag)
+    {
+        Display->PlotSmallOutput(23, Track->GetGapHLoc() * 4, Track->GetGapVLoc() * 4, RailGraphics->smYellow);
+    }
+    if((!WarningFlash && Level2TrackMode == GapSetting) && !Display->ZoomOutFlag)
+    {
+        Display->Ellipse(3, Track->GetGapHLoc() * 16, Track->GetGapVLoc() * 16, clB5G5R5);
+    }
+
 // deal with other flashing graphics
     if(Track->RouteFlashFlag && !Display->ZoomOutFlag)
     {
@@ -15246,7 +15318,7 @@ void TInterface::SetSaveMenuAndButtons(int Caller)
         {
             if((SavedFileName[SavedFileName.Length()] == 'y') || (SavedFileName[SavedFileName.Length()] == 'Y')) // 'rly' file
             {
-                if(!(Track->IsReadyForOperation()))
+                if(!(Track->IsReadyForOperation(false)))
                 {
                     SaveRailwayButtonsFlag = false; // can't save under its old name as not now a .rly file
                 }
@@ -18165,7 +18237,7 @@ void TInterface::SaveAsSubroutine(int Caller)
         ShowMessage("Nothing to save!");
     else
     {
-        if(Track->IsReadyForOperation())
+        if(Track->IsReadyForOperation(false))
         {
             SaveRailwayDialog->Filter = "Development file (*.dev)|*.dev|Railway file (*.rly)|*.rly";
         }
@@ -18185,7 +18257,7 @@ void TInterface::SaveAsSubroutine(int Caller)
             {
                 Extension = AnsiString(SaveRailwayDialog->FileName).SubString(AnsiString(SaveRailwayDialog->FileName).Length() - 2, 3).UpperCase();
             }
-            if((Extension == "DEV") || (Track->IsReadyForOperation() && (Extension == "RLY")))
+            if((Extension == "DEV") || (Track->IsReadyForOperation(true) && (Extension == "RLY"))) //give duplicated location name message if appropriate
             {
                 std::ofstream VecFile(AnsiString(SaveRailwayDialog->FileName).c_str());
                 if(!(VecFile.fail()))

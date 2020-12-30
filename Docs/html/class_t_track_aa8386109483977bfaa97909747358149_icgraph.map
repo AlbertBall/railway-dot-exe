@@ -2,7 +2,7 @@
 <area shape="rect" id="node1" title="Indicates whether or not the track has been successfully linked together." alt="" coords="1279,1323,1439,1350"/>
 <area shape="rect" id="node2" href="$class_t_interface.html#a9cfdb7521877f2c7ab124d0e4f47a0f6" title=" " alt="" coords="1042,5,1209,47"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#ad1418f26381a91c4333c3947585ed60e" title=" " alt="" coords="1051,71,1200,98"/>
-<area shape="rect" id="node4" href="$class_t_track.html#a853f6bc248fd0acdf4afe8a5f6c54251" title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation." alt="" coords="1030,290,1221,317"/>
+<area shape="rect" id="node4" href="$class_t_track.html#a1a9f8ddecccd649195ede1ec027500d1" title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation." alt="" coords="1030,290,1221,317"/>
 <area shape="rect" id="node8" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="790,1361,965,1387"/>
 <area shape="rect" id="node41" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="283,435,477,476"/>
 <area shape="rect" id="node46" href="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b" title="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode." alt="" coords="528,2355,735,2382"/>

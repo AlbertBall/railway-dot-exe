@@ -1,6 +1,6 @@
 <map id="TTrack::LocationsNotNamed" name="TTrack::LocationsNotNamed">
 <area shape="rect" id="node1" title="True if there are unnamed NamedLocationElements (includes footcrossings)" alt="" coords="984,1823,1171,1850"/>
-<area shape="rect" id="node2" href="$class_t_track.html#a853f6bc248fd0acdf4afe8a5f6c54251" title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation." alt="" coords="745,713,936,739"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a1a9f8ddecccd649195ede1ec027500d1" title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation." alt="" coords="745,713,936,739"/>
 <area shape="rect" id="node49" href="$class_t_interface.html#a5c1caa770e377ec064458f42f6301ecd" title="Sets the left screen images (track linked or not, gaps set or not, locations named or not) during rai..." alt="" coords="757,2424,924,2465"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="277,119,436,146"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#a1b3189e6a50555f5952652d12b978e57" title="Used to save a railway when not already saved &#45; e.g. when not already named or when the &#39;Save as&#39; men..." alt="" coords="261,69,453,95"/>

@@ -360,6 +360,8 @@ private:
 ///< set when removed under signaller control to force a removal from the display at the next clock tick
     bool SignallerStoppingFlag;
 ///< set when the signaller stop command has been given
+    bool StationStopCalculated;
+///< used in calculating DistanceToStationStop for trains running early before they have reached the stop station
     bool StepForwardFlag;
 ///< set when the signaller command to step forward one element has been given
     bool TerminatedMessageSent;
@@ -399,11 +401,14 @@ private:
 ///<new at v2.2.0 for operator time to act panel. Calculated in UpdateTrain
     float OpTimeToAct;
 ///<in minutes: new at v2.2.0 for operator time to act panel. Calculated in UpdateTrain, -1 indicates not to be displayed on panel
-    float FirstLaterStopRecoverableTime; // this used to deduct from RecoverableTime when arrive at a location for OperatorActionpanel
+    float FirstLaterStopRecoverableTime;
+///< this used to deduct from RecoverableTime when arrive at a location for OperatorActionpanel
     int FrontElementSpeedLimit, FrontElementLength;
 ///< values associated with the element immediately in front of the train (speed in km/h, length in m)
     int Mass;
 ///< in kg
+    int DistanceToStationStop;
+///< calculated in UpdateTrain & used in CalcDistanceToRedSignalandStopTime to cater for trains running early before they have reached the stop station
     unsigned int UpdateCounter;
 ///< used in train splitting operations to prevent too frequent checks for a location being long enough for a split after a failure message has already been given (doesn't need to stay failed as signaller can manoeuvre it to a better location)
     TDateTime EntryTime, ExitTimeHalf, ExitTimeFull;
@@ -787,8 +792,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 ///<new v2.2.0, incremented in Interface.cpp, controls updating for OpTimeToActPanel
     unsigned int OpActionPanelHintDelayCounter;
 ///<new v2.2.0 on start operation delays the op action panel headcode display for about 3 secs while hints shown
-    unsigned int RandomFailureCounter; // new at v2.4.0, resets after 53 seconds (53 prime so can trigger at any clock time)
-
+    unsigned int RandomFailureCounter;
+///< new at v2.4.0, resets after 53 seconds (53 prime so can trigger at any clock time)
     TContinuationAutoSigVector ContinuationAutoSigVector;
 ///< vector for TContinuationAutoSigEntry objects
     TContinuationTrainExpectationMultiMap ContinuationTrainExpectationMultiMap;

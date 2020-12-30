@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 858;
 var viewHeight = 2056;
-var sectionId = 'dynsection-68';
+var sectionId = 'dynsection-70';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -67,7 +67,7 @@ var sectionId = 'dynsection-68';
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_track.html#a853f6bc248fd0acdf4afe8a5f6c54251" target="_top" xlink:title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation.">
+<g id="a_node2"><a xlink:href="class_t_track.html#a1a9f8ddecccd649195ede1ec027500d1" target="_top" xlink:title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation.">
 <polygon fill="white" stroke="black" points="570,-1512 570,-1531 713,-1531 713,-1512 570,-1512"/>
 <text text-anchor="middle" x="641.5" y="-1519" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::IsReadyForOperation</text>
 </a>

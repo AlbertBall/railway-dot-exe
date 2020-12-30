@@ -34,7 +34,7 @@
 <area shape="rect" id="node33" href="$class_t_interface.html#ac0c9be911e93134ddda04ba498a8bd9c" title="Called during operation whenever the route type buttons need to be disabled, e.g. when paused." alt="" coords="1007,165,1169,206"/>
 <area shape="rect" id="node34" href="$class_t_one_pref_dir.html#abc09de3c32460a73d3de12625329210d" title="Empty the existing preferred direction vector &amp; map &#45; for use by other classes." alt="" coords="489,1176,667,1217"/>
 <area shape="rect" id="node35" href="$class_t_track.html#a794daa0471b473e28ff24c87a92112dc" title="True if there are gaps in the railway and any are unset." alt="" coords="1021,818,1155,844"/>
-<area shape="rect" id="node36" href="$class_t_track.html#a853f6bc248fd0acdf4afe8a5f6c54251" title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation." alt="" coords="737,770,927,796"/>
+<area shape="rect" id="node36" href="$class_t_track.html#a1a9f8ddecccd649195ede1ec027500d1" title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation." alt="" coords="737,770,927,796"/>
 <area shape="rect" id="node37" href="$class_t_track.html#aa8386109483977bfaa97909747358149" title="Indicates whether or not the track has been successfully linked together." alt="" coords="1008,764,1168,791"/>
 <area shape="rect" id="node38" href="$class_t_track.html#a2eaa84532799b76a0b42cf6e2611224d" title="True if there is no active track in the railway." alt="" coords="1012,919,1164,946"/>
 <area shape="rect" id="node39" href="$class_t_interface.html#a488e772a2e2a52820fdbe1d1695e0118" title="Returns true if there are no track elements and no text." alt="" coords="759,1358,905,1384"/>

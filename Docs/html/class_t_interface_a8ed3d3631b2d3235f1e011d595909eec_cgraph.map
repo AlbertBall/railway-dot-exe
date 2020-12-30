@@ -37,7 +37,7 @@
 <area shape="rect" id="node36" href="$class_t_track.html#aa67be9f8ad9bd885f649b26962e0d41d" title="True if there is a platform, NamedNonStationLocation or Concourse present in the railway." alt="" coords="1183,2074,1393,2116"/>
 <area shape="rect" id="node37" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="1189,2023,1387,2050"/>
 <area shape="rect" id="node38" href="$class_t_interface.html#ac0c9be911e93134ddda04ba498a8bd9c" title="Called during operation whenever the route type buttons need to be disabled, e.g. when paused." alt="" coords="1207,490,1369,532"/>
-<area shape="rect" id="node39" href="$class_t_track.html#a853f6bc248fd0acdf4afe8a5f6c54251" title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation." alt="" coords="935,1559,1126,1586"/>
+<area shape="rect" id="node39" href="$class_t_track.html#a1a9f8ddecccd649195ede1ec027500d1" title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation." alt="" coords="935,1559,1126,1586"/>
 <area shape="rect" id="node40" href="$class_t_interface.html#a488e772a2e2a52820fdbe1d1695e0118" title="Returns true if there are no track elements and no text." alt="" coords="721,1052,868,1079"/>
 <area shape="rect" id="node41" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="933,1095,1128,1122"/>
 <area shape="rect" id="node42" href="$class_t_interface.html#ad91195c1ea742572c4579ea38fbd4eb3" title="Resets the CurrentSpeedButton variable to zero and the &#39;Down&#39; property to false." alt="" coords="713,1610,876,1652"/>

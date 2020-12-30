@@ -1,5 +1,5 @@
 <map id="TTrack::DiagonalFouledByTrain" name="TTrack::DiagonalFouledByTrain">
-<area shape="rect" id="node1" title=" " alt="" coords="932,35,1107,76"/>
+<area shape="rect" id="node1" title="As DiagonalFouledByRouteOrTrain (in TAllRoutes) but only checks for a train (may or may not be a rout..." alt="" coords="932,35,1107,76"/>
 <area shape="rect" id="node2" href="$class_t_interface.html#a1cd9f01bcbcc37fb31712b7007d04dac" title="Examines a flashing route (i.e. one being set) and returns true if a moving train is detected on it a..." alt="" coords="685,5,884,47"/>
 <area shape="rect" id="node6" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="717,71,852,98"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="451,15,637,42"/>

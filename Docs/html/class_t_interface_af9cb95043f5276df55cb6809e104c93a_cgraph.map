@@ -38,7 +38,7 @@
 <area shape="rect" id="node37" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="1173,1962,1371,1989"/>
 <area shape="rect" id="node38" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="1189,2232,1355,2258"/>
 <area shape="rect" id="node39" href="$class_t_interface.html#ac0c9be911e93134ddda04ba498a8bd9c" title="Called during operation whenever the route type buttons need to be disabled, e.g. when paused." alt="" coords="1191,1795,1353,1836"/>
-<area shape="rect" id="node40" href="$class_t_track.html#a853f6bc248fd0acdf4afe8a5f6c54251" title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation." alt="" coords="921,1541,1111,1568"/>
+<area shape="rect" id="node40" href="$class_t_track.html#a1a9f8ddecccd649195ede1ec027500d1" title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation." alt="" coords="921,1541,1111,1568"/>
 <area shape="rect" id="node41" href="$class_t_interface.html#a488e772a2e2a52820fdbe1d1695e0118" title="Returns true if there are no track elements and no text." alt="" coords="705,1288,852,1314"/>
 <area shape="rect" id="node42" href="$class_t_interface.html#ad91195c1ea742572c4579ea38fbd4eb3" title="Resets the CurrentSpeedButton variable to zero and the &#39;Down&#39; property to false." alt="" coords="697,1846,860,1887"/>
 <area shape="rect" id="node43" href="$class_t_track.html#a1a5d8cf5f3a46667a745bfcf4c77ba9d" title="Set all LC attributes to 0 (closed to trains)" alt="" coords="1177,2384,1367,2410"/>

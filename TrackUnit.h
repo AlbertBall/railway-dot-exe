@@ -149,7 +149,7 @@ public: // everything uses these - should really have Gets & Sets but too many t
     int StationEntryStopLinkPos1, StationEntryStopLinkPos2;
 ///< Used for track at platforms and non-station named locations to mark the train front element stop position, there are two for the two directions of travel, set to -1 if not used
     int TrainIDOnElement, TrainIDOnBridgeTrackPos01, TrainIDOnBridgeTrackPos23;
-///< Set to the TrainID value when a train is present on the element, bridges can have two trains present so the ...01 and ...23 values give the TrainIDs for track with link positions [0] & [1], and [2] & [3] respectively
+///< Set to the TrainID value when a train is present on the element, bridges can have two trains present so the ...01 and ...23 values give the TrainIDs for track with link positions [0] & [1], and [2] & [3] respectively, set to -1 if no train present
     enum
 ///< added at version 0.6
     {
@@ -532,7 +532,7 @@ of the flashing until the duration is reached, when the object is erased from th
         bool ReducedTimePenalty;
 ///< marker that is set when a train is present on one of the elements of the LC - used to provide a 3 minute penalty allowance
         TBarrierState BarrierState;
-///< state of barriers
+///< state of barriers - Raising, Lowering, Up, Down (an enum - see above)
         float ChangeDuration;
 ///< duration of the level crossing changing period
         int BaseElementSpeedTag;
@@ -577,13 +577,11 @@ of the flashing until the duration is reached, when the object is erased from th
     typedef std::pair<THVPair, THVPair>TGapMapEntry;
 
     typedef std::multimap<THVPair, unsigned int, TMapComp>TInactiveTrack2MultiMap;
-///< multimap of inactive TrackElements (platforms,
+///< multimap of inactive TrackElements (platforms, concourses, non-station named locations, parapets & level crossings) '2' because can have 2 entries (platforms) at a single location
     typedef TInactiveTrack2MultiMap::iterator TInactiveTrack2MultiMapIterator;
-///< concourses, non-station named locations & parapets)
+///< iterator for TInactiveTrack2MultiMap
     typedef std::pair<TInactiveTrack2MultiMapIterator, TInactiveTrack2MultiMapIterator>TInactiveTrackRange;
-///< '2' because there can be up
-                                                                                                                     ///< to 2 entries (platforms) at
-                                                                                                                     ///< a single location
+///< range for TInactiveTrack2MultiMap
 
     typedef std::pair<unsigned int, unsigned int>TIMPair;
 ///< TrackElement pair type used for inactive elements, values are vector positions
@@ -603,8 +601,11 @@ of the flashing until the duration is reached, when the object is erased from th
     typedef std::multimap<AnsiString, int>TLocationNameMultiMap;
 ///< map of location name vector positions (see note below), one entry for every element that is a FixedNamedLocationElement i.e platforms, concourses, footcrossings & named non-station locations.  Hence the only active track elements included are footcrossings
     typedef TLocationNameMultiMap::iterator TLocationNameMultiMapIterator;
-    typedef std::pair<TLocationNameMultiMapIterator, TLocationNameMultiMapIterator>TLocationNameMultiMapRange;
+    typedef std::pair<TLocationNameMultiMapIterator, TLocationNameMultiMapIterator> TLocationNameMultiMapRange;
     typedef std::pair<AnsiString, int>TLocationNameMultiMapEntry;
+
+    typedef std::map<THVPair, bool> THVPairsLinkedMap;
+///< added at v2.6.1 for use in PopulateHVPairsLinkedMapAndNoDuplicates
 
 // NOTE: the above (TLNPendingList, TLNDone2MultiMap & TLocationNameMultiMap) store adjusted vector positions - adjusted because have
 // a single int to represent both active and inactive vector positions.  Use (-1 - Position) for active vector positions & (Position)
@@ -642,6 +643,8 @@ of the flashing until the duration is reached, when the object is erased from th
 ///< indicates that the ActiveTrackElementNameMap has been compiled
     bool CopyFlag;
 ///< true only when copying a selection, used to prevent location names being copied
+    bool DuplicatedLocationName(int Caller, bool GiveMessage);
+///< examines LocationNameMultiMap and returns true if there are two or more locations with the same name - added at v2.6.1 to cater for Bill78's new .dev file merge program and used when try to save as a .rly file.
     bool GapFlashFlag;
 ///< true when a pair of connected gaps is flashing
     bool LCChangeFlag;
@@ -720,9 +723,9 @@ of the flashing until the duration is reached, when the object is erased from th
     }
 
 /// Indicates whether or not the railway is ready for saving as a '.rly' file and for operation
-    bool IsReadyForOperation()
+    bool IsReadyForOperation(bool GiveMessage)
     {
-        return (IsTrackFinished() && !LocationsNotNamed(1) && !GapsUnset(8));
+        return (IsTrackFinished() && !LocationsNotNamed(1) && !GapsUnset(8) && !DuplicatedLocationName(0, GiveMessage));
     }
 
 /// Indicates whether or not the track has been successfully linked together
@@ -880,8 +883,7 @@ of the flashing until the duration is reached, when the object is erased from th
     bool CheckTrackElementsInFile(int Caller, int &NumberOfActiveElements, bool &GraphicsFollow, std::ifstream& VecFile);
 ///checks all user graphics & returns true for success
     bool CheckUserGraphics(int Caller, std::ifstream &InFile, UnicodeString GraphicsPath);
-/// As DiagonalFouledByRouteOrTrain (in TAllRoutes) but
-/// only checks for a train (may or may not be a route present (new at v1.2.0)
+/// As DiagonalFouledByRouteOrTrain (in TAllRoutes) but only checks for a train (may or may not be a route present (new at v1.2.0))
     bool DiagonalFouledByTrain(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber, int &TrainID);
 /// True if the element defined by MapPos is present in LNDone2MultiMap, used during location naming
     bool ElementInLNDone2MultiMap(int Caller, int MapPos);
@@ -959,6 +961,8 @@ exclude opposed buffers since these not linked.  Used in timetable integrity che
     bool OtherTrainOnTrack(int Caller, int NextPos, int NextEntryPos, int OwnTrainID);
 /// Check whether there is a platform present at HLoc & VLoc at the same side as the signal represented by SpeedTag, if so return true, and also return a pointer to the appropriate platform graphic (same as a normal platform graphic but with a bit cut out for the signal)
     bool PlatformOnSignalSide(int Caller, int HLoc, int VLoc, int SpeedTag, Graphics::TBitmap* &SignalPlatformGraphic);
+/// Used in checking for duplicate location names after Bill78 (discord name) developed the .dev file merge tool - added at v2.6.1
+    bool PopulateHVPairsLinkedMapAndNoDuplicates(int Caller, TLocationNameMultiMapRange LNMMRg);
 /// When track is being built it is entered into the TrackVector in the order in which it is built, and the TrackMap reflects that positioning.  When the track is linked, the vector is rebuilt in track element position order, and the map is also rebuilt to reflect the new positions.  Called during track linking, returns true if successful.
     bool RepositionAndMapTrack(int Caller);
 /// Sets all Conns and CLks to -1 except for gapjumps that match and are properly set, returns true for any unset gaps
@@ -1693,7 +1697,7 @@ yellow, then green.  There are only 3 calls in all for any given route, and the 
 /**The route is the last to be added, and will have a RouteNumber of AllRoutesSize() - 1.  Each element of the new route is added in
 turn using AddRouteElement, which uses HLoc, VLoc, ELink and RouteNumber to provide the information necessary to insert it into both PrefDirVector and Route2MultiMap.*/
     void StoreOneRoute(int Caller, TOneRoute *Route);
-/// A new (empty apart from RouteID) TOneRoute is added to the AllRoutesVector after a session load. Very similar to StoreOneRoute but here the RoutID that is already in Route is used.
+/// A new (empty apart from RouteID) TOneRoute is added to the AllRoutesVector after a session load. Very similar to StoreOneRoute but here the RouteID that is already in Route is used.
     void StoreOneRouteAfterSessionLoad(int Caller, TOneRoute *Route);
 /// Calls RouteImageMarker for each route in turn to display the route colours and direction arrows on the bitmap image (as on screen during operation) for an operating railway
     void WriteAllRoutesToImage(int Caller, Graphics::TBitmap *Bitmap);

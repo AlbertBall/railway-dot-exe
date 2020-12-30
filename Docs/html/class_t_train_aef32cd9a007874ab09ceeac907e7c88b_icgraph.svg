@@ -98,7 +98,7 @@ var sectionId = 'dynsection-51';
 <!-- Node16 -->
 <g id="node16" class="node">
 <title>Node16</title>
-<g id="a_node16"><a xlink:href="class_t_track.html#a3b4a2e8a16c61a4286fcf34adb000819" target="_top" xlink:title=" ">
+<g id="a_node16"><a xlink:href="class_t_track.html#a3b4a2e8a16c61a4286fcf34adb000819" target="_top" xlink:title="As DiagonalFouledByRouteOrTrain (in TAllRoutes) but only checks for a train (may or may not be a rout...">
 <polygon fill="white" stroke="black" points="788,-0.5 788,-30.5 919,-30.5 919,-0.5 788,-0.5"/>
 <text text-anchor="start" x="796" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::DiagonalFouledBy</text>
 <text text-anchor="middle" x="853.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">Train</text>

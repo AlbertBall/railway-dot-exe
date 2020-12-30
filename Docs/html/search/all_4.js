@@ -62,7 +62,9 @@ var searchData=
   ['distancesmarked_875',['DistancesMarked',['../class_t_interface.html#adfaa3df9168b5f57613e4ff8b1fbf1fe',1,'TInterface']]],
   ['distancestart_876',['DistanceStart',['../class_t_interface.html#a586c3aa182a227b9fcf8ec298ba139d7ae2cb9c33082c78764007c812dde70879',1,'TInterface']]],
   ['distancestartelement_877',['DistanceStartElement',['../class_t_track.html#a87d65b786df282006e60c97826095892',1,'TTrack']]],
-  ['distancevector_878',['DistanceVector',['../class_t_track.html#a1829522bd2d6b59f94e6b66896eaaa65',1,'TTrack']]],
-  ['divergingpointvectorposition_879',['DivergingPointVectorPosition',['../class_t_interface.html#a3ba3ac4978e08f567f4883f351013c36',1,'TInterface']]],
-  ['down_880',['Down',['../class_t_track.html#a4c2e42d85ed9151b4983f079f11d6d79a94f085ae23f4e7cc6d5ae224e4b4fb8b',1,'TTrack']]]
+  ['distancetostationstop_878',['DistanceToStationStop',['../class_t_train.html#a1e58e27771dc21b6beca4cc0f61ceaa0',1,'TTrain']]],
+  ['distancevector_879',['DistanceVector',['../class_t_track.html#a1829522bd2d6b59f94e6b66896eaaa65',1,'TTrack']]],
+  ['divergingpointvectorposition_880',['DivergingPointVectorPosition',['../class_t_interface.html#a3ba3ac4978e08f567f4883f351013c36',1,'TInterface']]],
+  ['down_881',['Down',['../class_t_track.html#a4c2e42d85ed9151b4983f079f11d6d79a94f085ae23f4e7cc6d5ae224e4b4fb8b',1,'TTrack']]],
+  ['duplicatedlocationname_882',['DuplicatedLocationName',['../class_t_track.html#a1fe2aafdc89ee9d809e6949b121e468e',1,'TTrack']]]
 ];

@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 834;
 var viewHeight = 78;
-var sectionId = 'dynsection-41';
+var sectionId = 'dynsection-43';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -58,7 +58,7 @@ var sectionId = 'dynsection-41';
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title=" ">
+<g id="a_node1"><a xlink:title="As DiagonalFouledByRouteOrTrain (in TAllRoutes) but only checks for a train (may or may not be a rout...">
 <polygon fill="#bfbfbf" stroke="black" points="695,-17 695,-47 826,-47 826,-17 695,-17"/>
 <text text-anchor="start" x="703" y="-35" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::DiagonalFouledBy</text>
 <text text-anchor="middle" x="760.5" y="-24" font-family="Helvetica,sans-Serif" font-size="10.00">Train</text>

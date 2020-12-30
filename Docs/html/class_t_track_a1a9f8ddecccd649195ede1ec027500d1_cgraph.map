@@ -1,0 +1,12 @@
+<map id="TTrack::IsReadyForOperation" name="TTrack::IsReadyForOperation">
+<area shape="rect" id="node1" title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation." alt="" coords="5,339,196,365"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a1fe2aafdc89ee9d809e6949b121e468e" title="examines LocationNameMultiMap and returns true if there are two or more locations with the same name ..." alt="" coords="244,261,457,288"/>
+<area shape="rect" id="node8" href="$class_t_track.html#a794daa0471b473e28ff24c87a92112dc" title="True if there are gaps in the railway and any are unset." alt="" coords="795,5,930,32"/>
+<area shape="rect" id="node9" href="$class_t_track.html#aa8386109483977bfaa97909747358149" title="Indicates whether or not the track has been successfully linked together." alt="" coords="271,415,431,441"/>
+<area shape="rect" id="node10" href="$class_t_track.html#ad7d7ef450424ea6aab50db5445c6448c" title="True if there are unnamed NamedLocationElements (includes footcrossings)" alt="" coords="769,309,956,336"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1013,145,1160,172"/>
+<area shape="rect" id="node4" href="$class_t_track.html#abd5dcc3c2beef43856091745c72d8317" title="Used in checking for duplicate location names after Bill78 (discord name) developed the ...." alt="" coords="505,201,712,242"/>
+<area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1013,221,1160,248"/>
+<area shape="rect" id="node5" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="760,157,965,184"/>
+<area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="781,208,944,235"/>
+</map>

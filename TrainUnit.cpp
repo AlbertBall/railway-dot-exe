@@ -3592,7 +3592,9 @@ when Straddle == LeadMidLag
                 {
                     // no need to add in the length of element to CumulativeLength
                     if(StopRequired)
+                    {
                         StationFlag = true;
+                    }
                 }
             }
             else
@@ -6387,7 +6389,7 @@ void TTrain::SignallerChangeTrainDirection(int Caller)
             TTrackElement TE = Track->TrackElementAt(1001, FirstRouteElementVecPos);
             if((TE.TrackType != SignalPost) && (TE.TrackType != Continuation))//all autosigs routes have signalpost or continuation at 0 so they are automatically excluded
             {
-                while(OR.PrefDirSize() > 0) //remove the route up to but not including the next facing signal, in case a pref dir route extends to another signal
+                while(OR.PrefDirSize() > 0) //remove the route up to but not including the next facing signal, in case a route extends to another signal
                 {
                     TPrefDirElement PDE = OR.GetFixedPrefDirElementAt(248, 0); //these will change at each element removal because OR is a reference to the real route
                     int TVPos2 = PDE.GetTrackVectorPosition();
@@ -7694,6 +7696,8 @@ float TTrain::CalcTimeToAct(int Caller) // only called for running trains
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CalcTimeToAct, " + HeadCode);
     int DistanceToRedSignal = 0;
     float TimeToAct = 0;
+    float MinsEarly = 0;  //added at v2.6.1
+    TDateTime DepartureTime; //added at v2.6.1
 
     if(TrainFailed)
     {
@@ -7731,7 +7735,8 @@ float TTrain::CalcTimeToAct(int Caller) // only called for running trains
                       before the train has stopped the current station is still recognised as a future stop.
                       In signaller mode stops don't count, and if pass red signal command is given then when have LeadMidLag the current element
                       becomes the signal, and the time to act indication becomes 'NOW'.
-*/ {
+*/
+            {
                 FirstPosToBeMeasured = LeadElement;
                 FirstEntryPos = LeadEntryPos;
             }
@@ -7748,18 +7753,18 @@ float TTrain::CalcTimeToAct(int Caller) // only called for running trains
                 return -1;
             }
 /* Have     MinsDelayed;        pos or neg,
-              CurrentStopTime;    pos or zero
-              LaterStopTime;      pos or zero
-              RecoverableTime;    pos or zero
+            CurrentStopTime;    pos or zero
+            LaterStopTime;      pos or zero
+            RecoverableTime;    pos or zero
 
-              & from these calculate TotalStopTime. noting that:
-              If stopped CurrentStopTime automatically adjusts for all early running and for as much late running as possible
-              RecoverableTime always < LaterStopTime or both zero
-              can't subtract more than RecoverableTime (MinsDelayed > 0)
-              only subtract from LaterStopTime, not CurrentTime (MinsDelayed > 0)
-              only subtract from LaterStopTime if LaterStopTime > 0 (MinsDelayed > 0)
-              only add to LaterStopTime if LaterStopTime > 0 (MinsDelayed < 0)
-              if running early & stopped at location CurrentStopTime will automatically include the excess
+            & from these calculate TotalStopTime. noting that:
+            If stopped CurrentStopTime automatically adjusts for all early running and for as much late running as possible
+            RecoverableTime always < LaterStopTime or both zero
+            can't subtract more than RecoverableTime (MinsDelayed > 0)
+            only subtract from LaterStopTime, not CurrentTime (MinsDelayed > 0)
+            only subtract from LaterStopTime if LaterStopTime > 0 (MinsDelayed > 0)
+            only add to LaterStopTime if LaterStopTime > 0 (MinsDelayed < 0)
+            if running early & stopped at location CurrentStopTime will automatically include the excess
 */
             float TimeToSubtract, TotalStopTime;
             if(MinsDelayed > RecoverableTime)
@@ -7767,7 +7772,27 @@ float TTrain::CalcTimeToAct(int Caller) // only called for running trains
             else
                 TimeToSubtract = MinsDelayed; // may be negative;
 
-            if(MinsDelayed < 0) // running early
+            if((AvTrackSpeed > 0) && (DistanceToStationStop < DistanceToRedSignal) && (DistanceToStationStop > 0))//protection against div by zero, not needed of no stop before red signal, DistanceToStationStop != 0 as set to 0 if invalid
+            {//added at v2.6.1, DistanceToStationStop is calculated in SetTrainMovementValues, AvTrackSpeed is average to next red signal, but should be ok to use for next station stop
+             //first find departure time from the next stop
+                if(ActionVectorEntryPtr->FormatType == TimeTimeLoc)
+                {
+                    DepartureTime = ActionVectorEntryPtr->DepartureTime;
+                }
+                else if((ActionVectorEntryPtr->FormatType == TimeLoc) && (ActionVectorEntryPtr->ArrivalTime != TDateTime(-1))) // must be an arrival
+                {
+                    if((ActionVectorEntryPtr + 1)->FormatType == TimeLoc)
+                    // must be a departure
+                    DepartureTime = (ActionVectorEntryPtr + 1)->DepartureTime;
+                }
+                MinsEarly = (double(DepartureTime - TrainController->TTClockTime) * 86400 / 60) - (DistanceToStationStop * 3.6 / 60 / AvTrackSpeed);
+                if(MinsEarly < 0)
+                {
+                    MinsEarly = 0;
+                }
+            }
+
+            if(MinsDelayed < 0) // MinsDelayed < 0 means have arrived early at a station
             {
                 if(CurrentStopTime > 0)
                     TotalStopTime = CurrentStopTime + LaterStopTime;
@@ -7775,6 +7800,10 @@ float TTrain::CalcTimeToAct(int Caller) // only called for running trains
                 else
                     TotalStopTime = LaterStopTime - MinsDelayed;
                 // not stopped, will depart on time at first later stop so add the delay
+            }
+            else if((MinsEarly > 0) && !Stopped()) //running early
+            {
+                TotalStopTime = LaterStopTime + MinsEarly;
             }
             else // on time or running late
             {
@@ -10163,7 +10192,9 @@ bool TTrainController::CheckLocationValidity(int Caller, AnsiString LocStr, bool
         if(!Track->TimetabledLocationNameAllocated(3, LocStr))
         {
             TimetableMessage(GiveMessages, "Location name '" + LocStr +
-                "' appears in the timetable but is not a valid name.  To be valid the name must apply to one or more platforms (not concourses on their own), or to track at a blue non-station named location other than a continuation.");
+                "' appears in the timetable but is not a valid name.  To be valid the name must be a stopping location and apply to one or more platforms " +
+                "(not concourses on their own), or to track at a blue non-station named location.  BUT NOTE THAT trains can't stop at continuations so a name " +
+                "that includes a continuation will not be valid.");
             Utilities->CallLogPop(1357);
             return false;
         }
@@ -11834,9 +11865,8 @@ bool TTrainController::SecondPassActions(int Caller, bool GiveMessages)
         }
     }
 
-    // Check same location doesn't appear twice before a cdt except for separate arr & dep TimeLocs
-    // i.e. same location can appear in any number of consecutive entries but once changed can't repeat
-    // before a direction change
+    // Check same location doesn't appear twice before a cdt except for separate arr & dep TimeLocs (just a potential error warning given in v2.6.0)
+    // i.e. same location can appear in any number of consecutive entries but once changed couldn't repeat before a direction change prior to v2.6.0
     AnsiString LocationNameToBeChecked = "";
 
     for(unsigned int x = 0; x < TrainDataVector.size(); x++)
@@ -17352,7 +17382,7 @@ void TTrainController::CalcOperatingAndNotStartedTrainLateness(int Caller)
 void TTrainController::RebuildOpTimeToActMultimap(int Caller)
     // new v2.2.0 for OperatorActionPanel
     // clears entries then adds values for running trains then for continuation entries
-    // dont limit size here as need to check all trains (OAListBox is limites to 20 trains in Interface.cpp)
+    // dont limit size here as need to check all trains (OAListBox is limited to 20 trains in Interface.cpp)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RebuildOpTimeToActMultimap");
     OpTimeToActMultiMap.clear();
@@ -17522,6 +17552,14 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
     // average track speed, in case need to use in time calc
     int TrackSpeedCount = 0;
 
+    //below added at v2.6.1
+    if(TrainID > -1)
+    {
+        TTrain &Train = TrainVectorAtIdent(51, TrainID);
+        Train.DistanceToStationStop = 0;//if find a red signal first then this distance isn't needed
+        Train.StationStopCalculated = false;
+    }
+
     AvTrackSpeed = 0;
     int CurrentElement = TrackVectorPosition;
     int CurrentEntryPos = TrackVectorPositionEntryPos;
@@ -17564,7 +17602,7 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
     if(TrainID > -1)
     // -1 for a continuation and can't be at a location as not yet entered
     {
-        TTrain Train = TrainVectorAtIdent(39, TrainID);
+        TTrain &Train = TrainVectorAtIdent(39, TrainID);   //Train wasn't a reference before v2.6.1 mods so FirstLaterStopRecoverableTime wouldn't be reset for the referenced train
         Train.FirstLaterStopRecoverableTime = 0;
         // this used to deduct from RecoverableTime when arrive at a location
         if(Train.StoppedAtLocation)
@@ -17636,8 +17674,8 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
     }
     int LaterStopNumber = 0;
     int x = 0;
-
     // added in v2.4.0 to prevent endless circling round track loops - spotted by Xeon 09/03/20 & reported by emsil
+
     while(!((CurrentExitConfig == Signal) && (CurrentAttribute == 0)))
     // not red signal next (in fwd direction) so enter loop to calc CumLength
     {
@@ -17658,6 +17696,30 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
             CumTrackSpeed += Track->TrackElementAt(946, CurrentElement).SpeedLimit01;
         }
         TrackSpeedCount++;
+
+        // added at v2.6.1 to find DistanceToStationStop for trains running early
+        if(TrainID > -1) //can ignore continuation entries as these don't run early
+        {
+            TTrain &Train = TrainVectorAtIdent(52, TrainID);
+            if(!Train.StationStopCalculated)
+            {
+                if(Train.TrainMode == Timetable)
+                {
+                    bool StopRequired = false;
+                    if(!Train.TimetableFinished && (Train.NameInTimetableBeforeCDT(16, Track->TrackElementAt(1005, CurrentElement).ActiveTrackElementName,
+                        StopRequired) > -1) && ((Track->TrackElementAt(1006, CurrentElement).StationEntryStopLinkPos1 == CurrentEntryPos) ||
+                        (Track->TrackElementAt(1010, CurrentElement).StationEntryStopLinkPos2 == CurrentEntryPos)))
+                    {
+                        // no need to add in the length of element to CumulativeLength
+                        if(StopRequired)
+                        {
+                            Train.DistanceToStationStop = DistanceToRedSignal;// DistanceToRedSignal holds the intermediate distance to this point
+                            Train.StationStopCalculated = true; //don't want to update it with later stops
+                        }
+                    }
+                }
+            }
+        }
 
         // check for train in front, but if on a bridge on other track then ok
         TTrackElement TE = Track->TrackElementAt(947, CurrentElement);

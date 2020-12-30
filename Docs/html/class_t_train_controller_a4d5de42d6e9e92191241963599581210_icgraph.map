@@ -44,7 +44,7 @@
 <area shape="rect" id="node32" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="693,420,859,461"/>
 <area shape="rect" id="node36" href="$class_t_one_route.html#ae131609dd8248dae2d7b699ab8777202" title="Examines the route to see whether the element at H &amp; V is in the route, and if not returns a ReturnFl..." alt="" coords="1195,963,1395,1004"/>
 <area shape="rect" id="node43" href="$class_t_all_routes.html#a2341a7e860e716e60b733f45814e4499" title="The track geometry allows diagonals to cross without occupying the same track element,..." alt="" coords="1203,1187,1386,1228"/>
-<area shape="rect" id="node46" href="$class_t_track.html#a3b4a2e8a16c61a4286fcf34adb000819" title=" " alt="" coords="1207,1383,1382,1424"/>
+<area shape="rect" id="node46" href="$class_t_track.html#a3b4a2e8a16c61a4286fcf34adb000819" title="As DiagonalFouledByRouteOrTrain (in TAllRoutes) but only checks for a train (may or may not be a rout..." alt="" coords="1207,1383,1382,1424"/>
 <area shape="rect" id="node44" href="$class_t_one_route.html#a59270c9b68d679ea29086216c21decfb" title="Called by GetNextNonPreferredRouteElement to carry out the search for linked track,..." alt="" coords="915,1153,1146,1195"/>
 <area shape="rect" id="node45" href="$class_t_one_route.html#a78f476e2ae0584ef8873414b53fd09b4" title="Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called rec..." alt="" coords="927,1219,1134,1260"/>
 <area shape="rect" id="node48" href="$class_t_train.html#a6c3479378d35f9041c38d80f03686b41" title="Carry out the actions needed when a train is waiting to be joined by another train." alt="" coords="1235,1085,1354,1111"/>

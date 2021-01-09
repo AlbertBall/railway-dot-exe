@@ -200,6 +200,10 @@ Multi-player facility over the internet.
 
 4) Version change information
 
+VERSION CHANGES AFTER v2.6.1 for v2.6.2
+
+This is simply a fix for a bug introduced in the last version relating to two locations having the same name.  What I overlooked was that in a developing railway locations can be saved before they are named, and in these cases they have a null name, which is an empty string - meaning unnamed.  The name checker failed to ignore these locations so the warning message was given in error - causing confusion - each time such a railway was loaded.  Happily the fix was quite simple - a new line that checks for nulls and bypasses the name check if any are found.
+
 VERSION CHANGES AFTER v2.6.0 for v2.6.1
 
 This version includes a number of small functional changes, a couple of bug fixes and documentation changes.

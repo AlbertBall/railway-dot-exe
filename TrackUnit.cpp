@@ -7832,27 +7832,33 @@ bool TTrack::DuplicatedLocationName(int Caller, bool GiveMessage)
     }
     AnsiString NameBeingChecked = LocationNameMultiMap.begin()->first; //first name to start with
     LNMMRg = LocationNameMultiMap.equal_range(NameBeingChecked);
-    if(!PopulateHVPairsLinkedMapAndNoDuplicates(0, LNMMRg))
+    if(NameBeingChecked != "") //added for v2.6.2 as 2.6.1 reported duplicate null names (reported by Micke(Commuterpop) 06/01/21 via discord)
     {
-        if(GiveMessage)
-        {
-            ShowMessage("Please note that more than one instance of " + NameBeingChecked + " was found.  Location names must be unique before the railway can be saved as a .rly file");
-        }
-        Utilities->CallLogPop(2255);
-        return true;
-    }
-    while(LNMMRg.second != LocationNameMultiMap.end()) //here LNMMRg still set to earlier name
-    {
-        NameBeingChecked = LNMMRg.second->first;
-        LNMMRg = LocationNameMultiMap.equal_range(NameBeingChecked); //here LNMMRg is the new range
-        if(!PopulateHVPairsLinkedMapAndNoDuplicates(1, LNMMRg))
+        if(!PopulateHVPairsLinkedMapAndNoDuplicates(0, LNMMRg))
         {
             if(GiveMessage)
             {
                 ShowMessage("Please note that more than one instance of " + NameBeingChecked + " was found.  Location names must be unique before the railway can be saved as a .rly file");
             }
-            Utilities->CallLogPop(2256);
+            Utilities->CallLogPop(2255);
             return true;
+        }
+    }
+    while(LNMMRg.second != LocationNameMultiMap.end()) //here LNMMRg still set to earlier name
+    {
+        NameBeingChecked = LNMMRg.second->first; //this is the next name as LNMMRg->second points to the first location NOT containing the first name
+        LNMMRg = LocationNameMultiMap.equal_range(NameBeingChecked); //here LNMMRg is the new range
+        if(NameBeingChecked != "")  //should have skipped all null names as all listed together but add to be on the safe side
+        {
+            if(!PopulateHVPairsLinkedMapAndNoDuplicates(1, LNMMRg))
+            {
+                if(GiveMessage)
+                {
+                    ShowMessage("Please note that more than one instance of " + NameBeingChecked + " was found.  Location names must be unique before the railway can be saved as a .rly file");
+                }
+                Utilities->CallLogPop(2256);
+                return true;
+            }
         }
     }
     Utilities->CallLogPop(2257);
@@ -7869,17 +7875,17 @@ bool TTrack::PopulateHVPairsLinkedMapAndNoDuplicates(int Caller, TLocationNameMu
                                         //for use in the duplicate check
     for(TLocationNameMultiMapIterator LNMMIt = LNMMRg.first; LNMMIt != LNMMRg.second; LNMMIt++) //populating the linked map
     {
-       if(LNMMIt->second < 0) //active track element
-       {
-           HVPair.first = TrackElementAt(1011, (-1 - LNMMIt->second)).HLoc;
-           HVPair.second = TrackElementAt(1012, (-1 - LNMMIt->second)).VLoc;
-       }
-       else //inactive track element
-       {
-           HVPair.first = InactiveTrackElementAt(134, LNMMIt->second).HLoc;
-           HVPair.second = InactiveTrackElementAt(135, LNMMIt->second).VLoc;
-       }
-       HVPairsLinkedMap.insert(std::pair<THVPair, bool>(HVPair, false)); //set all bools to false initially
+        if(LNMMIt->second < 0) //active track element
+        {
+            HVPair.first = TrackElementAt(1011, (-1 - LNMMIt->second)).HLoc;
+            HVPair.second = TrackElementAt(1012, (-1 - LNMMIt->second)).VLoc;
+        }
+        else //inactive track element
+        {
+            HVPair.first = InactiveTrackElementAt(134, LNMMIt->second).HLoc;
+            HVPair.second = InactiveTrackElementAt(135, LNMMIt->second).VLoc;
+        }
+        HVPairsLinkedMap.insert(std::pair<THVPair, bool>(HVPair, false)); //set all bools to false initially
     }
     //All HVPairs now present in HVPairsLinkedMap for the specific location name
 

@@ -1,17 +1,17 @@
 <map id="TPrefDirElement::EntryExitNumber" name="TPrefDirElement::EntryExitNumber">
 <area shape="rect" id="node1" title="determines and loads EXNumber (see above)" alt="" coords="1569,1443,1748,1485"/>
 <area shape="rect" id="node2" href="$class_t_one_pref_dir.html#a482d1c69a674eec4db0190b78659c495" title="Called after a successful search to add the elements from the search vector to the pref dir vector." alt="" coords="1088,1531,1255,1573"/>
-<area shape="rect" id="node6" href="$class_t_one_route.html#a997f3cb02d8e03d0a12769b8eb903674" title="Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc...." alt="" coords="525,1466,744,1507"/>
-<area shape="rect" id="node7" href="$class_t_one_route.html#a43513cae58e5d18979492cbe76b51f74" title="Set the starting conditions for a non&#45;preferred (i.e. unrestricted) route selection beginning on HLoc..." alt="" coords="1331,1647,1521,1689"/>
+<area shape="rect" id="node6" href="$class_t_one_route.html#a5ce1c3a064a656ca764b5ed98c63151a" title="Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc...." alt="" coords="525,1466,744,1507"/>
+<area shape="rect" id="node7" href="$class_t_one_route.html#a13dd08bfcc95ea1296f9ac4fd699e94d" title="Set the starting conditions for a non&#45;preferred (i.e. unrestricted) route selection beginning on HLoc..." alt="" coords="1331,1647,1521,1689"/>
 <area shape="rect" id="node8" href="$class_t_pref_dir_element.html#a9181d9e11c34c6660c43fe2cf4ee35a8" title="picks up the original (non&#45;flashing) graphic for use during route flashing" alt="" coords="1331,1414,1521,1455"/>
 <area shape="rect" id="node10" href="$class_t_pref_dir_element.html#a10b4ff375e779de7cc2a16344959bb31" title="picks up the EXGraphicPtr for preferred directions" alt="" coords="1342,966,1510,1007"/>
 <area shape="rect" id="node19" href="$class_t_pref_dir_element.html#a05688db45c02484229e4d226454ed8f3" title="Constructs a PrefDirElement from supplied values." alt="" coords="1086,831,1257,873"/>
 <area shape="rect" id="node20" href="$class_t_pref_dir_element.html#aee43c641cd4a0550b55105a08ba2cef2" title="picks up the blue route graphic (not used &#45; superseded by GetRouteGraphicPtr)" alt="" coords="1337,1582,1515,1623"/>
-<area shape="rect" id="node21" href="$class_t_pref_dir_element.html#ad58c8d4fa30c04fa9d8e84ae55c7ce61" title="picks up the appropriate route graphic" alt="" coords="1337,1218,1515,1259"/>
+<area shape="rect" id="node21" href="$class_t_pref_dir_element.html#acc8674681c7b4eda8ce8551abdae9680" title="picks up the appropriate route graphic" alt="" coords="1337,1218,1515,1259"/>
 <area shape="rect" id="node3" href="$class_t_one_pref_dir.html#a06cd3491535362fccbba4e76b9a120e9" title="Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linke..." alt="" coords="818,1583,989,1625"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="280,1357,475,1398"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="5,1229,232,1256"/>
-<area shape="rect" id="node9" href="$class_t_one_route.html#abdb89bb3f7ce55d926bee3c2d4b3652f" title="After a route has been selected successfully this function sets all RouteFlash (see above) values app..." alt="" coords="1081,1414,1262,1455"/>
+<area shape="rect" id="node9" href="$class_t_one_route.html#a767d992d3794bbd31c8641e9ecb5f7dd" title="After a route has been selected successfully this function sets all RouteFlash (see above) values app..." alt="" coords="1081,1414,1262,1455"/>
 <area shape="rect" id="node11" href="$class_t_pref_dir_element.html#a9fd01c7c6774198d7efe2c9e60ab59bf" title="Returns EXGraphicPtr for preferred directions." alt="" coords="1060,948,1283,975"/>
 <area shape="rect" id="node12" href="$class_t_one_pref_dir.html#a614933ff3958e4b8c9be9bc78159d9e8" title="Old version of LoadPrefDir, used during development when the save format changed so the old files cou..." alt="" coords="1078,999,1265,1025"/>
 <area shape="rect" id="node13" href="$class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d" title="Load a vector and map of preferred directions from the file." alt="" coords="820,157,987,184"/>
@@ -23,7 +23,7 @@
 <area shape="rect" id="node22" href="$class_t_one_route.html#a36ba8adc8b4a47908ee4e1b8e75792ca" title="Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and ..." alt="" coords="810,1153,997,1194"/>
 <area shape="rect" id="node25" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="1086,1101,1257,1142"/>
 <area shape="rect" id="node44" href="$class_t_pref_dir_element.html#a9dfc04bfa3abf32eb043d771381f971a" title="Returns route graphic." alt="" coords="1082,1283,1261,1325"/>
-<area shape="rect" id="node46" href="$class_t_one_route.html#ae06f7e9335f1a94ff996ad634dc102a0" title="Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector so that the..." alt="" coords="1076,1349,1267,1390"/>
+<area shape="rect" id="node46" href="$class_t_one_route.html#ab8570cc4c3941927b206c015a9813af0" title="Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector so that the..." alt="" coords="1076,1349,1267,1390"/>
 <area shape="rect" id="node49" href="$class_t_one_pref_dir.html#af87440e0ace47b20c8a874c51b314064" title="Used when creating a bitmap image to display preferred directions (as on screen during &#39;Set preferred..." alt="" coords="1086,1218,1257,1259"/>
 <area shape="rect" id="node23" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="541,1196,728,1223"/>
 <area shape="rect" id="node24" href="$class_t_interface.html#aa639148521a793641e694b15486b5055" title=" " alt="" coords="549,1298,720,1339"/>
@@ -46,7 +46,7 @@
 <area shape="rect" id="node42" href="$class_t_interface.html#a714f1498bb6cbbd706f6ed0882c4b03d" title=" " alt="" coords="544,826,725,867"/>
 <area shape="rect" id="node43" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="547,623,722,649"/>
 <area shape="rect" id="node45" href="$class_t_train.html#aa21e18b3085773ca8351c446911611c1" title="When a train moves off a bridge the other track may contain a route or have a train on it that has be..." alt="" coords="813,1283,993,1325"/>
-<area shape="rect" id="node47" href="$class_t_one_route.html#af1794f576d8aff59f83992afc1c5acc2" title="Try to find a set of linked tracks that lie on preferred directions between the route start element a..." alt="" coords="806,1349,1001,1390"/>
+<area shape="rect" id="node47" href="$class_t_one_route.html#a974ac7ab4cb5e6a5df33a3d7b3563315" title="Try to find a set of linked tracks that lie on preferred directions between the route start element a..." alt="" coords="806,1349,1001,1390"/>
 <area shape="rect" id="node48" href="$class_t_one_route.html#a8f8fe8f852dd24cf8d12933f22b5750c" title="Called when setting unrestricted routes to set the route element values appropriately after a success..." alt="" coords="795,1466,1012,1507"/>
 <area shape="rect" id="node50" href="$class_t_interface.html#ab73377784e302350bcc4f1fed4f8d90a" title=" " alt="" coords="817,1218,989,1259"/>
 </map>

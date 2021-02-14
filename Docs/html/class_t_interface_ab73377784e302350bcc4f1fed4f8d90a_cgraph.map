@@ -38,9 +38,9 @@
 <area shape="rect" id="node23" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="916,1811,1077,1838"/>
 <area shape="rect" id="node24" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="899,1862,1094,1888"/>
 <area shape="rect" id="node29" href="$class_t_track.html#a1092232428ee654facf8f53340c13f74" title="A range&#45;checked version of UserGraphicVector.at(At)" alt="" coords="901,1608,1093,1635"/>
-<area shape="rect" id="node38" href="$class_t_pref_dir_element.html#a5d03028241e6c38e473882120d5bcc68" title="picks up the green or red route direction graphic" alt="" coords="899,3033,1095,3074"/>
+<area shape="rect" id="node38" href="$class_t_pref_dir_element.html#a3a31ae39854d89213a06010dcb8d2b34" title="picks up the green or red route direction graphic" alt="" coords="899,3033,1095,3074"/>
 <area shape="rect" id="node39" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="909,2800,1085,2841"/>
-<area shape="rect" id="node40" href="$class_t_pref_dir_element.html#ad58c8d4fa30c04fa9d8e84ae55c7ce61" title="picks up the appropriate route graphic" alt="" coords="907,2865,1086,2906"/>
+<area shape="rect" id="node40" href="$class_t_pref_dir_element.html#acc8674681c7b4eda8ce8551abdae9680" title="picks up the appropriate route graphic" alt="" coords="907,2865,1086,2906"/>
 <area shape="rect" id="node41" href="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc" title="Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return &#45;1." alt="" coords="890,2734,1103,2776"/>
 <area shape="rect" id="node42" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="914,2931,1079,2958"/>
 <area shape="rect" id="node45" href="$class_t_rail_graphics.html#a5121c6d8b8fa69eefc293ca51cddce88" title=" " alt="" coords="911,2313,1082,2354"/>

@@ -116,7 +116,7 @@
 <!-- Node42 -->
 <g id="node23" class="node">
 <title>Node42</title>
-<g id="a_node23"><a xlink:href="class_t_one_route.html#a997f3cb02d8e03d0a12769b8eb903674" target="_top" xlink:title="Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc....">
+<g id="a_node23"><a xlink:href="class_t_one_route.html#a5ce1c3a064a656ca764b5ed98c63151a" target="_top" xlink:title="Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc....">
 <polygon fill="white" stroke="black" points="1178.5,-961.26 1178.5,-991.26 1342.5,-991.26 1342.5,-961.26 1178.5,-961.26"/>
 <text text-anchor="start" x="1186.5" y="-979.26" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::GetNextNonPreferred</text>
 <text text-anchor="middle" x="1260.5" y="-968.26" font-family="Helvetica,sans-Serif" font-size="10.00">RouteElement</text>
@@ -132,7 +132,7 @@
 <!-- Node43 -->
 <g id="node24" class="node">
 <title>Node43</title>
-<g id="a_node24"><a xlink:href="class_t_one_route.html#af1794f576d8aff59f83992afc1c5acc2" target="_top" xlink:title="Try to find a set of linked tracks that lie on preferred directions between the route start element a...">
+<g id="a_node24"><a xlink:href="class_t_one_route.html#a974ac7ab4cb5e6a5df33a3d7b3563315" target="_top" xlink:title="Try to find a set of linked tracks that lie on preferred directions between the route start element a...">
 <polygon fill="white" stroke="black" points="980,-930.26 980,-960.26 1126,-960.26 1126,-930.26 980,-930.26"/>
 <text text-anchor="start" x="988" y="-948.26" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::GetNextPreferred</text>
 <text text-anchor="middle" x="1053" y="-937.26" font-family="Helvetica,sans-Serif" font-size="10.00">RouteElement</text>
@@ -148,7 +148,7 @@
 <!-- Node44 -->
 <g id="node25" class="node">
 <title>Node44</title>
-<g id="a_node25"><a xlink:href="class_t_one_route.html#a43513cae58e5d18979492cbe76b51f74" target="_top" xlink:title="Set the starting conditions for a non&#45;preferred (i.e. unrestricted) route selection beginning on HLoc...">
+<g id="a_node25"><a xlink:href="class_t_one_route.html#a13dd08bfcc95ea1296f9ac4fd699e94d" target="_top" xlink:title="Set the starting conditions for a non&#45;preferred (i.e. unrestricted) route selection beginning on HLoc...">
 <polygon fill="white" stroke="black" points="981.5,-1176.26 981.5,-1206.26 1124.5,-1206.26 1124.5,-1176.26 981.5,-1176.26"/>
 <text text-anchor="start" x="989.5" y="-1194.26" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::GetNonPreferred</text>
 <text text-anchor="middle" x="1053" y="-1183.26" font-family="Helvetica,sans-Serif" font-size="10.00">RouteStartElement</text>
@@ -164,7 +164,7 @@
 <!-- Node45 -->
 <g id="node26" class="node">
 <title>Node45</title>
-<g id="a_node26"><a xlink:href="class_t_one_route.html#a07ee58454e2f49b4f0d5d8e6a1a2d40f" target="_top" xlink:title="Set the starting conditions for a preferred direction or automatic signal route selection beginning o...">
+<g id="a_node26"><a xlink:href="class_t_one_route.html#ab7ac58fe51393873e9054ffa724bc118" target="_top" xlink:title="Set the starting conditions for a preferred direction or automatic signal route selection beginning o...">
 <polygon fill="white" stroke="black" points="573,-778.26 573,-808.26 725,-808.26 725,-778.26 573,-778.26"/>
 <text text-anchor="start" x="581" y="-796.26" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::GetPreferredRoute</text>
 <text text-anchor="middle" x="649" y="-785.26" font-family="Helvetica,sans-Serif" font-size="10.00">StartElement</text>
@@ -210,7 +210,7 @@
 <!-- Node53 -->
 <g id="node33" class="node">
 <title>Node53</title>
-<g id="a_node33"><a xlink:href="class_t_track.html#aaf831691bef8e8f60a780502f21c6efe" target="_top" xlink:title="Just replot the basic track elements at a level crossing (for flashing)">
+<g id="a_node33"><a xlink:href="class_t_track.html#af3d75ea89bb62053003b7b1aaeeda15b" target="_top" xlink:title="Just replot the basic track elements at a level crossing (for flashing)">
 <polygon fill="white" stroke="black" points="1178,-219.76 1178,-238.76 1343,-238.76 1343,-219.76 1178,-219.76"/>
 <text text-anchor="middle" x="1260.5" y="-226.76" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::PlotLCBaseElementsOnly</text>
 </a>
@@ -225,7 +225,7 @@
 <!-- Node54 -->
 <g id="node34" class="node">
 <title>Node54</title>
-<g id="a_node34"><a xlink:href="class_t_track.html#a7aaf669a8c305c70cd0a598be82c1c44" target="_top" xlink:title="Plot &amp; open (to trains) all level crossings linked to TrackElement (Manual true = manually lowered,...">
+<g id="a_node34"><a xlink:href="class_t_track.html#a43db60c0e61f80db5e529aa926742818" target="_top" xlink:title="Plot &amp; open (to trains) all level crossings linked to TrackElement (Manual true = manually lowered,...">
 <polygon fill="white" stroke="black" points="1193.5,-262.26 1193.5,-292.26 1327.5,-292.26 1327.5,-262.26 1193.5,-262.26"/>
 <text text-anchor="start" x="1201.5" y="-280.26" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::PlotLoweredLinked</text>
 <text text-anchor="middle" x="1260.5" y="-269.26" font-family="Helvetica,sans-Serif" font-size="10.00">LevelCrossingBarriers</text>
@@ -306,7 +306,7 @@
 <!-- Node161 -->
 <g id="node45" class="node">
 <title>Node161</title>
-<g id="a_node45"><a xlink:href="class_t_one_route.html#a78f476e2ae0584ef8873414b53fd09b4" target="_top" xlink:title="Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called rec...">
+<g id="a_node45"><a xlink:href="class_t_one_route.html#ac20b954f16c606ccf5c9e513ab6908f6" target="_top" xlink:title="Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called rec...">
 <polygon fill="white" stroke="black" points="1183,-905.26 1183,-935.26 1338,-935.26 1338,-905.26 1183,-905.26"/>
 <text text-anchor="start" x="1191" y="-923.26" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::SearchForPreferred</text>
 <text text-anchor="middle" x="1260.5" y="-912.26" font-family="Helvetica,sans-Serif" font-size="10.00">Route</text>
@@ -322,7 +322,7 @@
 <!-- Node162 -->
 <g id="node46" class="node">
 <title>Node162</title>
-<g id="a_node46"><a xlink:href="class_t_one_route.html#a92dbe2a2df334da0b20e54683c0fba8e" target="_top" xlink:title="After a route has been selected successfully this function sets all LC change values appropriately fo...">
+<g id="a_node46"><a xlink:href="class_t_one_route.html#a27944580589d98672c0328c498617bdb" target="_top" xlink:title="After a route has been selected successfully this function sets all LC change values appropriately fo...">
 <polygon fill="white" stroke="black" points="767,-362.76 767,-381.76 928,-381.76 928,-362.76 767,-362.76"/>
 <text text-anchor="middle" x="847.5" y="-369.76" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::SetLCChangeValues</text>
 </a>
@@ -353,7 +353,7 @@
 <!-- Node164 -->
 <g id="node48" class="node">
 <title>Node164</title>
-<g id="a_node48"><a xlink:href="class_t_track.html#a603206eee65e4b536af10b048e3573c6" target="_top" xlink:title="Set all ConsecSignals values to 2 for all linked LCs to indicate manually lowered.">
+<g id="a_node48"><a xlink:href="class_t_track.html#a603206eee65e4b536af10b048e3573c6" target="_top" xlink:title="Set all TypeOfRoute values to 2 for all linked LCs to indicate manually lowered.">
 <polygon fill="white" stroke="black" points="981,-1055.76 981,-1074.76 1125,-1074.76 1125,-1055.76 981,-1055.76"/>
 <text text-anchor="middle" x="1053" y="-1062.76" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::SetLinkedManualLCs</text>
 </a>

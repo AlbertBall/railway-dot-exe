@@ -54,12 +54,11 @@ div.WordSection1
 <p>Three types of route are available by left clicking the appropriate button:
 automatic signal routes <img width=24 height=24
 src="../images/RailSim2_AUTOSIG.gif"> (blue button), preferred direction routes
-<img width=24 height=24 src="../images/RailSim2_PREFSIG.gif"> (green button),
+<img width=24 height=24 src="../images/RailSim2_PREFSIG.gif"> (two half-size green buttons),
 and unrestricted routes <img width=24 height=24
 src="../images/RailSim2_NONSIG.gif"> (red button). Automatic signal and
 preferred direction routes may only be set on tracks with preferred directions
-allocated (via the 'Mode' and 'Set preferred directions' menu items <a href="4001g.htm">see section 4</a>), and must
-run from signal to following signal, but unrestricted routes (red route button)
+allocated (via the 'Mode' and 'Set preferred directions' menu items <a href="4001g.htm">see section 4</a>), but unrestricted routes (red route button)
 may be set from any point to any other point (other than points, bridges or
 crossovers and providing there's a track between them), regardless of preferred
 directions. Unrestricted routes are intended for unusual movements only. When a
@@ -68,7 +67,9 @@ and last elements of the route. A route that does not involve any point changes
 will be set in about half a second, but if point changes are needed then about
 2.5 seconds are required. In 'Pre-start' mode routes are set instantly.</p>
 
-<p>Preferred direction and unrestricted routes are cancelled automatically as a
+<p>Preferred direction routes can be set in two different ways.  For authentic operation they should be set from a signal, buffer or continuation to the next signal, buffer or continuation (top half-size button), but to allow for quicker route setting they can be set from a signal, buffer or continuation to any following signal, buffer or continuation - intermediate signals can be skipped (bottom half-size button).  Automatic signal routes must be set from a signal, buffer or continuation to the next signal, buffer or continuation.</p>
+
+<p>Preferred direction routes and unrestricted routes are cancelled automatically as a
 train runs along them, and all signals passed change to red. Automatic signal
 routes are not cancelled by trains, they remain in place until cancelled by the
 signaller (or by a train running on them in the wrong direction). When a train
@@ -95,9 +96,9 @@ selection set the points for the favoured route. Similarly if it is found that
 the program cannot find a suitable route even though you know there is one,
 probably because there are facing points with so many ways out that the search
 takes too long, then set one or more points for the desired route. Note though
-that sometimes a preferred direction or automatic signals route can't be set
-because the preferred directions don't allow it, and that isn't necessarily
-obvious during operation.</p>
+that sometimes a preferred direction or automatic signal route can't be set
+because the preferred directions won't allow it, and that isn't necessarily
+obvious during operation, so it's advisable to make sure that preferred directions are set on all tracks that are to be used in normal operation.</p>
 
 <p>When selected, routes may be truncated or cancelled, by left clicking the
 'route cancel' <img width=24 height=24 src="../images/RailSim2_ROUTECANCEL.gif"> button
@@ -110,7 +111,7 @@ regarded by the program as a single route, which may be cancelled as a whole.
 However a route that consists of a mixture of automatic and other types of
 route sections is regarded by the program as a series of separate routes, with
 automatic signal sections being individual routes, and mixtures of others
-between similarly being regarded as individual but separate routes. In these
+similarly being regarded as individual but separate routes. In these
 circumstances when a route is cancelled, just the relevant section is
 cancelled. This may sometimes cause problems because the automatic signal
 routes always take precedence and include the signals at both ends. Therefore,
@@ -121,7 +122,7 @@ signal, and a new section of route can't be created to include it because the
 program won't permit a route to end next to an existing route. Hence the other
 section of route must be cancelled also.</p>
 
-<p> Signals are not permitted immediately before and facing a bridge, because bridges can't be used as truncate points, so the route can't be truncated to that signal. This is because a bridge is potentially ambiguous as it may have two routes set on it.</p>
+<p> If a signal is placed immediately before and facing a bridge, a warning message is given on trying to link the track, because bridges can't be used as truncate points so the route can't be truncated to that signal. Bridges can't be used as truncate points because they are potentially ambiguous as they can have two routes set on them. An option to ignore the warning is offered and accepted by using a specific key combination.</p>
 
 <p>Note that a train that runs in the wrong direction on any part of a route
 will cancel the whole of that route and all signals will change to red

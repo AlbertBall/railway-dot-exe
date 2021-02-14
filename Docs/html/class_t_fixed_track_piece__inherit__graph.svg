@@ -119,7 +119,7 @@ var sectionId = 'dynsection-0';
 <polyline fill="none" stroke="black" points="0,-379.5 161,-379.5 "/>
 <text text-anchor="start" x="8" y="-367.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ IsARoute</text>
 <text text-anchor="start" x="8" y="-356.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ AutoSignals</text>
-<text text-anchor="start" x="8" y="-345.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ ConsecSignals</text>
+<text text-anchor="start" x="8" y="-345.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDirRoute</text>
 <text text-anchor="start" x="8" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00"># ELink</text>
 <text text-anchor="start" x="8" y="-323.5" font-family="Helvetica,sans-Serif" font-size="10.00"># ELinkPos</text>
 <text text-anchor="start" x="8" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00"># XLink</text>

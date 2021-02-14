@@ -324,7 +324,8 @@ public:
     Graphics::TBitmap *NameLocs;
     Graphics::TBitmap *NonSig;
     Graphics::TBitmap *PictureImage;
-    Graphics::TBitmap *PrefSig;
+    Graphics::TBitmap *PrefTop;
+    Graphics::TBitmap *PrefBottom;
     Graphics::TBitmap *RouteCancel;
     Graphics::TBitmap *SaveRailway;
     Graphics::TBitmap *SaveSession;

@@ -1,5 +1,5 @@
 <map id="TTrack::IsBarrierDownVectorAtHVManual" name="TTrack::IsBarrierDownVectorAtHVManual">
-<area shape="rect" id="node1" title="True if there is a vector entry at H &amp; V that is set to manual (ConsecSignals == 2) and returns the v..." alt="" coords="2131,225,2317,267"/>
+<area shape="rect" id="node1" title="True if there is a vector entry at H &amp; V that is set to manual (TypeOfRoute == 2) and returns the vec..." alt="" coords="2131,225,2317,267"/>
 <area shape="rect" id="node2" href="$class_t_track.html#af0a13922e664c99defc573f080956bb9" title="Checks BarrierDownVector and returns true if there is one that is linked to the LC at H &amp; V positions..." alt="" coords="1915,225,2083,267"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="1672,183,1867,224"/>
 <area shape="rect" id="node5" href="$class_t_train.html#af92ae73f1be23475e7ae424306cd4866" title="Store the background bitmap pointer (BackgroundPtr &#45; see above) prior to being overwritten by the tra..." alt="" coords="1681,257,1857,299"/>

@@ -5,7 +5,7 @@
 <area shape="rect" id="node5" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="523,156,709,182"/>
 <area shape="rect" id="node6" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="1047,72,1208,98"/>
 <area shape="rect" id="node7" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="519,235,713,276"/>
-<area shape="rect" id="node9" href="$class_t_one_route.html#a92dbe2a2df334da0b20e54683c0fba8e" title="After a route has been selected successfully this function sets all LC change values appropriately fo..." alt="" coords="1020,141,1235,168"/>
+<area shape="rect" id="node9" href="$class_t_one_route.html#a27944580589d98672c0328c498617bdb" title="After a route has been selected successfully this function sets all LC change values appropriately fo..." alt="" coords="1020,141,1235,168"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,36,196,62"/>
 <area shape="rect" id="node8" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="244,242,471,269"/>
 <area shape="rect" id="node10" href="$class_t_one_route.html#a53496c398dcdb3a644801c4e74d47d01" title="Called after a non&#45;preferred (i.e. unrestricted) route has been selected and has finished flashing,..." alt="" coords="761,152,972,194"/>

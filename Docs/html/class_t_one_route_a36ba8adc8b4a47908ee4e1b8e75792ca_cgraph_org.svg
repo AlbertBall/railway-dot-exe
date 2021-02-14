@@ -189,7 +189,7 @@
 <!-- Node16 -->
 <g id="node16" class="node">
 <title>Node16</title>
-<g id="a_node16"><a xlink:href="class_t_pref_dir_element.html#a5d03028241e6c38e473882120d5bcc68" target="_top" xlink:title="picks up the green or red route direction graphic">
+<g id="a_node16"><a xlink:href="class_t_pref_dir_element.html#a3a31ae39854d89213a06010dcb8d2b34" target="_top" xlink:title="picks up the green or red route direction graphic">
 <polygon fill="white" stroke="black" points="176,-2010.78 176,-2040.78 323,-2040.78 323,-2010.78 176,-2010.78"/>
 <text text-anchor="start" x="184" y="-2028.78" font-family="Helvetica,sans-Serif" font-size="10.00">TPrefDirElement::GetDirection</text>
 <text text-anchor="middle" x="249.5" y="-2017.78" font-family="Helvetica,sans-Serif" font-size="10.00">RouteGraphicPtr</text>
@@ -284,7 +284,7 @@
 <!-- Node22 -->
 <g id="node22" class="node">
 <title>Node22</title>
-<g id="a_node22"><a xlink:href="class_t_pref_dir_element.html#ad58c8d4fa30c04fa9d8e84ae55c7ce61" target="_top" xlink:title="picks up the appropriate route graphic">
+<g id="a_node22"><a xlink:href="class_t_pref_dir_element.html#acc8674681c7b4eda8ce8551abdae9680" target="_top" xlink:title="picks up the appropriate route graphic">
 <polygon fill="white" stroke="black" points="363,-2352.78 363,-2382.78 497,-2382.78 497,-2352.78 363,-2352.78"/>
 <text text-anchor="start" x="371" y="-2370.78" font-family="Helvetica,sans-Serif" font-size="10.00">TPrefDirElement::GetRoute</text>
 <text text-anchor="middle" x="430" y="-2359.78" font-family="Helvetica,sans-Serif" font-size="10.00">GraphicPtr</text>
@@ -378,7 +378,7 @@
 <!-- Node39 -->
 <g id="node39" class="node">
 <title>Node39</title>
-<g id="a_node39"><a xlink:href="class_t_one_route.html#a92dbe2a2df334da0b20e54683c0fba8e" target="_top" xlink:title="After a route has been selected successfully this function sets all LC change values appropriately fo...">
+<g id="a_node39"><a xlink:href="class_t_one_route.html#a27944580589d98672c0328c498617bdb" target="_top" xlink:title="After a route has been selected successfully this function sets all LC change values appropriately fo...">
 <polygon fill="white" stroke="black" points="538.5,-1266.28 538.5,-1285.28 699.5,-1285.28 699.5,-1266.28 538.5,-1266.28"/>
 <text text-anchor="middle" x="619" y="-1273.28" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::SetLCChangeValues</text>
 </a>

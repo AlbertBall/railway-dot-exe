@@ -405,7 +405,7 @@
 <!-- Node15 -->
 <g id="node15" class="node">
 <title>Node15</title>
-<g id="a_node15"><a xlink:href="class_t_track.html#a6635891513167223f4b9aadd0121c312" target="_top" xlink:title="True if there is a vector entry at H &amp; V that is set to manual (ConsecSignals == 2) and returns the v...">
+<g id="a_node15"><a xlink:href="class_t_track.html#a6635891513167223f4b9aadd0121c312" target="_top" xlink:title="True if there is a vector entry at H &amp; V that is set to manual (TypeOfRoute == 2) and returns the vec...">
 <polygon fill="white" stroke="black" points="755.5,-522.47 755.5,-552.47 895.5,-552.47 895.5,-522.47 755.5,-522.47"/>
 <text text-anchor="start" x="763.5" y="-540.47" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::IsBarrierDownVector</text>
 <text text-anchor="middle" x="825.5" y="-529.47" font-family="Helvetica,sans-Serif" font-size="10.00">AtHVManual</text>

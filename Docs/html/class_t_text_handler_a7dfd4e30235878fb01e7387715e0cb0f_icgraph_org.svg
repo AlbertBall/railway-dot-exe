@@ -139,9 +139,9 @@
 <path fill="none" stroke="midnightblue" d="M1353.26,-653.07C1338.01,-622.5 1303.37,-563.05 1254,-537 1154.47,-484.48 1114.04,-518 1001.5,-518 1001.5,-518 1001.5,-518 819.5,-518 595.9,-518 471.2,-179.82 450.19,-117.73"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1350.19,-654.76 1357.68,-662.24 1356.49,-651.72 1350.19,-654.76"/>
 </g>
-<!-- Node211 -->
+<!-- Node213 -->
 <g id="node47" class="node">
-<title>Node211</title>
+<title>Node213</title>
 <g id="a_node47"><a xlink:href="class_t_interface.html#afeb3a4236e5cfa7e93d7d5167304f937" target="_top" xlink:title="Called during the ClockTimer2 function to set screen boundaries, buttons &amp; menu items.">
 <polygon fill="white" stroke="red" points="1112,-547 1112,-577 1254,-577 1254,-547 1112,-547"/>
 <text text-anchor="start" x="1120" y="-565" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::SetSaveMenuAnd</text>
@@ -149,30 +149,30 @@
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node211 -->
+<!-- Node1&#45;&gt;Node213 -->
 <g id="edge73" class="edge">
-<title>Node1&#45;&gt;Node211</title>
+<title>Node1&#45;&gt;Node213</title>
 <path fill="none" stroke="midnightblue" d="M1343.17,-655.93C1322.33,-638.65 1287.26,-611.1 1254,-592 1244.48,-586.54 1233.78,-581.46 1223.66,-577.1"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1341.03,-658.69 1350.94,-662.43 1345.52,-653.33 1341.03,-658.69"/>
 </g>
-<!-- Node212 -->
+<!-- Node214 -->
 <g id="node48" class="node">
-<title>Node212</title>
+<title>Node214</title>
 <g id="a_node48"><a xlink:href="class_t_text_handler.html#af6b912627bb0401c255b4db5e272e9fd" target="_top" xlink:title="look for a text item in the vicinity of HPosInput &amp; VPosInput, return true if found &amp; return the foun...">
 <polygon fill="white" stroke="black" points="576,-1295.5 576,-1314.5 701,-1314.5 701,-1295.5 576,-1295.5"/>
 <text text-anchor="middle" x="638.5" y="-1302.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTextHandler::TextFound</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node212 -->
+<!-- Node1&#45;&gt;Node214 -->
 <g id="edge74" class="edge">
-<title>Node1&#45;&gt;Node212</title>
+<title>Node1&#45;&gt;Node214</title>
 <path fill="none" stroke="midnightblue" d="M1360.02,-691.65C1351.29,-775.11 1313.97,-1099.57 1254,-1180 1123.36,-1355.22 819.73,-1332.5 694.76,-1314.53"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1363.52,-691.83 1361.06,-681.53 1356.56,-691.11 1363.52,-691.83"/>
 </g>
-<!-- Node213 -->
+<!-- Node215 -->
 <g id="node49" class="node">
-<title>Node213</title>
+<title>Node215</title>
 <g id="a_node49"><a xlink:href="class_t_text_handler.html#a599c1a13d78b63a18ebc17550dfa9a0d" target="_top" xlink:title="change the HPos &amp; VPos values for all items in TextVector by the amount in HOffset and VOffset (unuse...">
 <polygon fill="white" stroke="black" points="1119.5,-459 1119.5,-489 1246.5,-489 1246.5,-459 1119.5,-459"/>
 <text text-anchor="start" x="1127.5" y="-477" font-family="Helvetica,sans-Serif" font-size="10.00">TTextHandler::TextVector</text>
@@ -180,15 +180,15 @@
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node213 -->
+<!-- Node1&#45;&gt;Node215 -->
 <g id="edge76" class="edge">
-<title>Node1&#45;&gt;Node213</title>
+<title>Node1&#45;&gt;Node215</title>
 <path fill="none" stroke="midnightblue" d="M1354.27,-652.91C1339.54,-618.72 1304.38,-546.62 1254,-504 1246.93,-498.02 1238.5,-493.07 1229.97,-489.03"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1351.08,-654.36 1358.18,-662.23 1357.54,-651.66 1351.08,-654.36"/>
 </g>
-<!-- Node214 -->
+<!-- Node216 -->
 <g id="node50" class="node">
-<title>Node214</title>
+<title>Node216</title>
 <g id="a_node50"><a xlink:href="class_t_text_handler.html#a7d202827ae62cd288a07431579977539" target="_top" xlink:title="write all items in TextVector to the railway image in &#39;Bitmap&#39;">
 <polygon fill="white" stroke="red" points="1117,-410 1117,-440 1249,-440 1249,-410 1117,-410"/>
 <text text-anchor="start" x="1125" y="-428" font-family="Helvetica,sans-Serif" font-size="10.00">TTextHandler::WriteTextTo</text>
@@ -196,9 +196,9 @@
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node214 -->
+<!-- Node1&#45;&gt;Node216 -->
 <g id="edge77" class="edge">
-<title>Node1&#45;&gt;Node214</title>
+<title>Node1&#45;&gt;Node216</title>
 <path fill="none" stroke="midnightblue" d="M1357.88,-652.33C1347.85,-609.24 1318.14,-505.83 1254,-449 1250.15,-445.59 1245.8,-442.66 1241.19,-440.15"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1354.52,-653.36 1360.11,-662.36 1361.36,-651.84 1354.52,-653.36"/>
 </g>
@@ -927,24 +927,24 @@
 <path fill="none" stroke="midnightblue" d="M405.34,-95.31C370.08,-84.02 319.31,-67.78 287.38,-57.56"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="404.7,-98.78 415.29,-98.49 406.83,-92.11 404.7,-98.78"/>
 </g>
-<!-- Node177 -->
+<!-- Node178 -->
 <g id="node46" class="node">
-<title>Node177</title>
+<title>Node178</title>
 <g id="a_node46"><a xlink:href="class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25" target="_top" xlink:title="Save a session file &#45; see LoadSession for details of additions to the session file.">
 <polygon fill="white" stroke="red" points="196,-0.5 196,-19.5 317,-19.5 317,-0.5 196,-0.5"/>
 <text text-anchor="middle" x="256.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::SaveSession</text>
 </a>
 </g>
 </g>
-<!-- Node137&#45;&gt;Node177 -->
+<!-- Node137&#45;&gt;Node178 -->
 <g id="edge70" class="edge">
-<title>Node137&#45;&gt;Node177</title>
+<title>Node137&#45;&gt;Node178</title>
 <path fill="none" stroke="midnightblue" d="M426.44,-92.02C404.87,-74.21 367.53,-45.73 331,-29 322.73,-25.21 313.58,-22.09 304.62,-19.54"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="424.25,-94.75 434.16,-98.49 428.75,-89.39 424.25,-94.75"/>
 </g>
-<!-- Node212&#45;&gt;Node4 -->
+<!-- Node214&#45;&gt;Node4 -->
 <g id="edge75" class="edge">
-<title>Node212&#45;&gt;Node4</title>
+<title>Node214&#45;&gt;Node4</title>
 <path fill="none" stroke="midnightblue" d="M565.5,-1301.13C509.04,-1295.74 429.78,-1282.84 367,-1252 326.16,-1231.93 288.61,-1192.62 269.92,-1171.05"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="565.5,-1304.65 575.77,-1302.06 566.13,-1297.68 565.5,-1304.65"/>
 </g>

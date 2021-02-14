@@ -1,7 +1,8 @@
 <map id="TTrainController::ControllerCheckNewServiceDepartureTime" name="TTrainController::ControllerCheckNewServiceDepartureTime">
-<area shape="rect" id="node1" title="Similar to TTrain::CheckNewServiceDepartureTime for use in ContinuationEntryFloatingTTString." alt="" coords="913,5,1124,47"/>
-<area shape="rect" id="node2" href="$class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3" title="Build string for use in floating window for expected trains at continuations." alt="" coords="673,5,865,47"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" title="Controls the floating window function, called during the ClockTimer2 function." alt="" coords="451,13,625,39"/>
-<area shape="rect" id="node4" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,13,403,39"/>
-<area shape="rect" id="node5" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,13,196,39"/>
+<area shape="rect" id="node1" title="Similar to TTrain::CheckNewServiceDepartureTime for use in ContinuationEntryFloatingTTString." alt="" coords="1143,5,1353,47"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3" title="Build string for use in floating window for expected trains at continuations." alt="" coords="903,5,1095,47"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#adc9ce6e5ee756279efbe92fd749355bf" title="Called when floating train info needed and train hasn&#39;t entered yet." alt="" coords="673,5,855,47"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" title="Controls the floating window function, called during the ClockTimer2 function." alt="" coords="451,13,625,39"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,13,403,39"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,13,196,39"/>
 </map>

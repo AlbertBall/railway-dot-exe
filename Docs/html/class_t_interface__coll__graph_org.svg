@@ -26,7 +26,7 @@
 <text text-anchor="start" x="118.5" y="-488.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ FontButton</text>
 <text text-anchor="start" x="118.5" y="-477.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ TextOrUserGraphicGridButton</text>
 <text text-anchor="start" x="118.5" y="-466.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ SetLengthsButton</text>
-<text text-anchor="start" x="118.5" y="-455.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 463 more...</text>
+<text text-anchor="start" x="118.5" y="-455.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 464 more...</text>
 <text text-anchor="start" x="118.5" y="-444.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; Level2OperMode</text>
 <text text-anchor="start" x="118.5" y="-433.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; Level2PrefDirMode</text>
 <text text-anchor="start" x="118.5" y="-422.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; Level2TrackMode</text>
@@ -37,7 +37,7 @@
 <text text-anchor="start" x="118.5" y="-367.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CurDir</text>
 <text text-anchor="start" x="118.5" y="-356.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; DirectoryError</text>
 <text text-anchor="start" x="118.5" y="-345.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; InfoCaptionStore</text>
-<text text-anchor="start" x="118.5" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 122 more...</text>
+<text text-anchor="start" x="118.5" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 123 more...</text>
 <text text-anchor="start" x="118.5" y="-323.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; RAILWAY_DIR_NAME</text>
 <text text-anchor="start" x="118.5" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; TIMETABLE_DIR_NAME</text>
 <text text-anchor="start" x="118.5" y="-301.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; PERFLOG_DIR_NAME</text>
@@ -56,18 +56,18 @@
 <text text-anchor="start" x="118.5" y="-161.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ CreateTimetableMenuItemClick()</text>
 <text text-anchor="start" x="118.5" y="-150.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ CutMenuItemClick()</text>
 <text text-anchor="start" x="118.5" y="-139.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ DeleteMenuItemClick()</text>
-<text text-anchor="start" x="118.5" y="-128.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 170 more...</text>
+<text text-anchor="start" x="118.5" y="-128.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 172 more...</text>
 <text text-anchor="start" x="118.5" y="-117.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; TInterface()</text>
 <text text-anchor="start" x="118.5" y="-106.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; ~TInterface()</text>
 <text text-anchor="start" x="118.5" y="-95.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; AnyTTKeyFlagSet()</text>
-<text text-anchor="start" x="118.5" y="-84.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; AreAnyTimesInCurrentEntry()</text>
-<text text-anchor="start" x="118.5" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; BuildTrainDataVectorForLoadFile()</text>
-<text text-anchor="start" x="118.5" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; BuildTrainDataVectorForValidateFile()</text>
-<text text-anchor="start" x="118.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CheckInterface()</text>
-<text text-anchor="start" x="118.5" y="-40.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CheckPerformanceFile()</text>
-<text text-anchor="start" x="118.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CheckTimetableFromSessionFile()</text>
-<text text-anchor="start" x="118.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; ClearEverything()</text>
-<text text-anchor="start" x="118.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 61 more...</text>
+<text text-anchor="start" x="118.5" y="-84.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; GetTrainStatusFloat()</text>
+<text text-anchor="start" x="118.5" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; AreAnyTimesInCurrentEntry()</text>
+<text text-anchor="start" x="118.5" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; BuildTrainDataVectorForLoadFile()</text>
+<text text-anchor="start" x="118.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; BuildTrainDataVectorForValidateFile()</text>
+<text text-anchor="start" x="118.5" y="-40.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CheckInterface()</text>
+<text text-anchor="start" x="118.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CheckPerformanceFile()</text>
+<text text-anchor="start" x="118.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CheckTimetableFromSessionFile()</text>
+<text text-anchor="start" x="118.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 64 more...</text>
 </a>
 </g>
 </g>
@@ -261,7 +261,7 @@
 <polyline fill="none" stroke="black" points="516.5,-1431 677.5,-1431 "/>
 <text text-anchor="start" x="524.5" y="-1419" font-family="Helvetica,sans-Serif" font-size="10.00">+ IsARoute</text>
 <text text-anchor="start" x="524.5" y="-1408" font-family="Helvetica,sans-Serif" font-size="10.00">+ AutoSignals</text>
-<text text-anchor="start" x="524.5" y="-1397" font-family="Helvetica,sans-Serif" font-size="10.00">+ ConsecSignals</text>
+<text text-anchor="start" x="524.5" y="-1397" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDirRoute</text>
 <text text-anchor="start" x="524.5" y="-1386" font-family="Helvetica,sans-Serif" font-size="10.00"># ELink</text>
 <text text-anchor="start" x="524.5" y="-1375" font-family="Helvetica,sans-Serif" font-size="10.00"># ELinkPos</text>
 <text text-anchor="start" x="524.5" y="-1364" font-family="Helvetica,sans-Serif" font-size="10.00"># XLink</text>

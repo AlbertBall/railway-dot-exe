@@ -1,6 +1,6 @@
 Development History
 
-This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be reatined such as user requests and the full list of changes from version to version.
+This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
 
 The structure is as follows:-
 
@@ -14,6 +14,12 @@ The structure is as follows:-
 -----------------------
 
 1) Future change suggestions from users:
+
+#53 Suggestion from Wilsteady via discord 09/01/21.  New idea with rollingstock details - could there be a way to enter a Trains acceleration/deceleration instead of brake force? I can imagine it would be potentially a large change in how the program functions, but given many Wikipedia pages for trains give the Accel/Decel rates in m/s2 not the brake force, it means guessing the values required for the program to find one that works best for the timetable in place.
+
+#52.  Suggestion from Bill78 08/01/21 via discord.  I've been thinking about Speedbutton 17. Could it be made into a "reporting point?" Buy this, I mean a person could put one or more on any route and when any train crossed it, a notice would pop up on the notification area that "such-and-such train is at Reporting Point whatever." This way, it wouldn't be controlled by anything in a timetable, but simply be there and notify when a train crosses it. Leave the "W" in the timetable so certain trains will show a Warning, but SB17 would pop a Warning every time a train crosses it.
+
+#52 [done].  Suggestion from josco 05/01/21 via discord.  No idea if this is doable but would it be possible to replicate the 'hover' menu from the trains in the actions due box? Thus when a train appears in the actions menu you could hover over the train and it would show you the train menu with timetable etc. This would be more user friendly in my view than clicking the train to then find out where it is in the map. This is not a crucial update but would be useful in my view. However if it is not doable nor a simple fix then I would leave alone!
 
 #51.  Suggestion from Wilsteady 24/12/20 via discord. Got another fun feature idea for consideration - Inbuilt native support for windows that if you double click on a .rly or .dev [or .ssn] file in Windows Explorer, it will open railway.exe with that file pre-loaded.
 
@@ -41,9 +47,7 @@ Its also a little bit silly having all your pieces in a big splat, a sorted spla
 
 Second of all: as you can see, there is an icon, and the name of the piece. Organising like type would be better then by direction (signals, bridges, straight, direction, splits...). 
 
-Third, I would like to be able to mix stuff together, because as you can see, the signals and direction pointers take up a lot of space, so what if I could point direction and show switches at the same 
-time? Maybe you could make it so that you could left click on a straight with a signal button [images in original] you could click on buttons like this, but for seperate things. (maybe switches, or 
-turns). They will automatch to the pieces, so you dont need all the different pieces, and just have a few of each type.
+Third, I would like to be able to mix stuff together, because as you can see, the signals and direction pointers take up a lot of space, so what if I could point direction and show switches at the same time? Maybe you could make it so that you could left click on a straight with a signal button [images in original] you could click on buttons like this, but for seperate things. (maybe switches, or turns). They will automatch to the pieces, so you dont need all the different pieces, and just have a few of each type.
 
 In a different way, think about how stations work. Apply this working to everything. Imagine the straights as base blocks, and you can click on them to add things. This would simplify the entire grid, requiring a maximum of 3 buttons for each category (two switch types for each, and a "bannana skin" connector, two curves). Of course, you may need the full menu when you are doing some complicated things, like this [image in original] 
 
@@ -82,7 +86,7 @@ I also think a even more graphical, almost block based timetable editor would re
 
 - Bookmarks: this is of great use to large layouts (considering real signalling centres do not cover whole networks this might only apply to my outrageously large layouts!). Similar to the existing home button having extra buttons customisable within the simulation to "jump" to various positions on the map would be very useful. For the "L" train I have to keep pausing the simulation so as to move across the map. In short: multiple "home" buttons aka "location jumps".
 
-- Clickable Notices: alternatively to the above or in addition, if a train flashes when you use the zoomed out version of the map, you can click it to quickly head to that map location?
+- [already available] Clickable Notices: alternatively to the above or in addition, if a train flashes when you use the zoomed out version of the map, you can click it to quickly head to that map location?
 
 - Signal ID: probably easier to explain with an example "1A02 held at signal OX23" accompanied by the usual flashing. Probably much easier to do than the above! Although it does still have the issue of the user not knowing the location without map knowledge.
 
@@ -127,7 +131,7 @@ Have a 'Touch mode' where when activated the buttons are bigger for easier opera
 #7 - #9. Suggestions from Bjorn - email of 20/10/12:
 1) Manual Stop Signals (blue), as in, being able to set them manually, i.e. for in stations where the whole platform can be used, or only a part of the platform. As in the Netherlands it's common tho have "Stop" signals halfway down the platform to allow two opposing trains to use it as if it were 2 seperate platforms... If you catch my drift. and by using a special stop (BLUE) signal, one can split a track... Also another idea I had was to allow a stretch of track to have signals. Those blue signals kinda function like an "end-of-track" signal... but can also be used to signal "track not in use".
 2) Being able to have 1 track to have signals in both directions, to conserve space... now one can only have one signal on a track in either direction, but being able to put both signals on one stretch of track would not only save space, but also would be more realistic as signals are usually placed in pairs (up/down)...
-3) [Unrestricted routes do this] The ability to automatically set a track from one point to another without having to set all the signals in between, just a starting point and an endpoint. And then that the program follows wither the preferred directions to create the best available route or that it just looks for the shortest route possible from point A to point B. 
+3) [Done] The ability to automatically set a track from one point to another without having to set all the signals in between, just a starting point and an endpoint. And then that the program follows wither the preferred directions to create the best available route or that it just looks for the shortest route possible from point A to point B. 
 
 
 #6. Suggestion from Josh Coupe (email ~21/10/12):  Useful if could advance the timetable clock and have all trains where they would most likely be at that time.
@@ -200,9 +204,27 @@ Multi-player facility over the internet.
 
 4) Version change information
 
+VERSION CHANGES AFTER v2.6.2 for v2.7.0
+
+This version incorporates a number of functional changes that will hopefully make operation easier as follows:
+
+In response to Josco's suggestion via Discord of adding information to trains listed in the 'actions due' panel this is now included.  The same information as is selected via the 'information' menu is shown when the user hovers over a headcode and clicks the right mouse button.  The mouse button click was added instead of just plain hovering to avoid distraction when the information isn't needed.
+
+There are now two options available when selecting preferred direction (green) routes.  The green route selection button is split into upper and lower halves, the upper half working as before where the route is built by clicking on each consecutive signal (or buffer/continuation at the ends) - this reflects normal practice.  The lower half button allows routes to be built from signal to any following signal (or buffer/continuation at the ends).  Routes built in this way must still follow preferred directions, so should be more accurate first time than unrestricted routes that don't have to follow preferred directions.  In fact this change was suggested by Bjorn years ago!
+
+When a train exits at a continuation and there are two or more possible exits to choose from, there is currently no way during operation to know which is/are designated as correct in the timetable.  The exit element identifier (ID) is shown only if the exit isn't named.  In this version the allowable exit IDs are listed in the timetable information window.  This change was prompted by my abysmal performance at the last signalling social when operating Liverpool St to Romford.  I repeatedly sent trains out from Romford on the slow line when they should have used the fast line.  I won't have that excuse in future so I'll have to find a new one!
+
+When a train was stopped at a signal and a call-on offered and accepted, the time to act remained 'NOW' until it passed the signal.  That was inappropriate so now as soon as a call-on is accepted the train is removed from the list.
+
+The manual and on-screen help have been updated in accordance with these changes as have the file specifications.
+
+One correction was made relating to train colours:
+
+I noticed that on returning a train to timetable control at a stop location after being under signaller control the train colour changed to 'running' (grey) when the route in front cleared, even though the train wasn't due to depart.  The colour should have remained pale green (stopped at location) until the departure time.  The fault was found and corrected.
+
 VERSION CHANGES AFTER v2.6.1 for v2.6.2
 
-This is simply a fix for a bug introduced in the last version relating to two locations having the same name.  What I overlooked was that in a developing railway locations can be saved before they are named, and in these cases they have a null name, which is an empty string - meaning unnamed.  The name checker failed to ignore these locations so the warning message was given in error - causing confusion - each time such a railway was loaded.  Happily the fix was quite simple - a new line that checks for nulls and bypasses the name check if any are found.
+This is simply a fix for a bug introduced in the last version relating to two locations having the same name.  What I overlooked was that in a developing railway locations can be saved before they are named, and in these cases they have a null name, which is an empty string - meaning unnamed.  The name checker failed to ignore these locations so the warning message was given in error - causing confusion - each time such a railway was loaded.  Happily the fix was quite simple - a new line that checks for nulls and bypasses the name check if any are found. Thanks to Micke(Commuterpop) for reporting this issue.
 
 VERSION CHANGES AFTER v2.6.0 for v2.6.1
 
@@ -1493,7 +1515,6 @@ ADDING A NEW PROJECT TO THE USER WEBSITE: (updated November 2020 for the revised
 	Menu order should be 0
 	Enable reviews should be ticked
 11 Save draft, preview, then publish if ok
-[No need to duplicate an earlier post as almost everything would need to be changed]
 12 Create new post, add title 'Railway name' by 'Author'
 13 Add description text (not the image) and add 'Download it here' with 'here' linked to the product location
 14 Add the image as the 'Featured Image' - don't include in the main description
@@ -1501,7 +1522,7 @@ ADDING A NEW PROJECT TO THE USER WEBSITE: (updated November 2020 for the revised
 16 Categories: News & Railway Projects, Tags: year, author & Railway Projects
 17 Make sure 'Allow comments' is ticked
 18 Set sheduled date if not immediate
-19 Save draft, preview, check & if ok check TAuto Post still 'yes' then either publish or schedule
+19 Save draft, preview, check & if ok check TAuto Post still 'yes' (oddly it sometimes reverts to 'no') then either publish or schedule
 20 Final check that all links work (in preview if scheduled for future), including from home screen where this project should be the latest (unless scheduled), & that it downloads ok
 21 Make user a contributor if not already
 22 On Discord make author a creator if not already

@@ -29,7 +29,7 @@ var class_t_all_routes =
     [ "DiagonalFouledByRouteOrTrain", "class_t_all_routes.html#a2341a7e860e716e60b733f45814e4499", null ],
     [ "FindRouteNumberFromRoute2MultiMapNoErrors", "class_t_all_routes.html#ac80a3ae43f749d401f470de711e8e4b0", null ],
     [ "FindRoutePairFromRoute2MultiMap", "class_t_all_routes.html#a73d2c20327947600e5af57f908359343", null ],
-    [ "GetAllRoutesTruncateElement", "class_t_all_routes.html#a0f3313fe1870b98a63cbc0deda000d4e", null ],
+    [ "GetAllRoutesTruncateElement", "class_t_all_routes.html#ad793743cfcda59b80e6f37cc4ac6ae32", null ],
     [ "GetFixedRouteAt", "class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a", null ],
     [ "GetFixedRouteAtIDNumber", "class_t_all_routes.html#a415c16a43e8e997c82226987e7bffc59", null ],
     [ "GetModifiableRouteAt", "class_t_all_routes.html#a8b522eb0d7aa415c3648d464c2885484", null ],

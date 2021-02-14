@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 847;
+var viewWidth = 1019;
 var viewHeight = 39;
 var sectionId = 'dynsection-48';
 </script>
@@ -54,14 +54,14 @@ var sectionId = 'dynsection-48';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>TTrainController::ControllerCheckNewServiceDepartureTime</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-35 843,-35 843,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-35 1015,-35 1015,4 -4,4"/>
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="Similar to TTrain::CheckNewServiceDepartureTime for use in ContinuationEntryFloatingTTString.">
-<polygon fill="#bfbfbf" stroke="black" points="681,-0.5 681,-30.5 839,-30.5 839,-0.5 681,-0.5"/>
-<text text-anchor="start" x="689" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::Controller</text>
-<text text-anchor="middle" x="760" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">CheckNewServiceDepartureTime</text>
+<polygon fill="#bfbfbf" stroke="black" points="853,-0.5 853,-30.5 1011,-30.5 1011,-0.5 853,-0.5"/>
+<text text-anchor="start" x="861" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::Controller</text>
+<text text-anchor="middle" x="932" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">CheckNewServiceDepartureTime</text>
 </a>
 </g>
 </g>
@@ -69,60 +69,76 @@ var sectionId = 'dynsection-48';
 <g id="node2" class="node">
 <title>Node2</title>
 <g id="a_node2"><a xlink:href="class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3" target="_top" xlink:title="Build string for use in floating window for expected trains at continuations.">
-<polygon fill="white" stroke="black" points="501,-0.5 501,-30.5 645,-30.5 645,-0.5 501,-0.5"/>
-<text text-anchor="start" x="509" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::Continuation</text>
-<text text-anchor="middle" x="573" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">EntryFloatingTTString</text>
+<polygon fill="white" stroke="black" points="673,-0.5 673,-30.5 817,-30.5 817,-0.5 673,-0.5"/>
+<text text-anchor="start" x="681" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::Continuation</text>
+<text text-anchor="middle" x="745" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">EntryFloatingTTString</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M670.77,-15.5C662.18,-15.5 653.54,-15.5 645.15,-15.5"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="670.81,-19 680.81,-15.5 670.81,-12 670.81,-19"/>
+<path fill="none" stroke="midnightblue" d="M842.77,-15.5C834.18,-15.5 825.54,-15.5 817.15,-15.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="842.81,-19 852.81,-15.5 842.81,-12 842.81,-19"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" target="_top" xlink:title="Controls the floating window function, called during the ClockTimer2 function.">
-<polygon fill="white" stroke="black" points="334,-6 334,-25 465,-25 465,-6 334,-6"/>
-<text text-anchor="middle" x="399.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::TrackTrainFloat</text>
+<g id="a_node3"><a xlink:href="class_t_interface.html#adc9ce6e5ee756279efbe92fd749355bf" target="_top" xlink:title="Called when floating train info needed and train hasn&#39;t entered yet.">
+<polygon fill="white" stroke="black" points="501,-0.5 501,-30.5 637,-30.5 637,-0.5 501,-0.5"/>
+<text text-anchor="start" x="509" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::GetTrainFloating</text>
+<text text-anchor="middle" x="569" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">InfoFromContinuation</text>
 </a>
 </g>
 </g>
 <!-- Node2&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node2&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M490.75,-15.5C482.18,-15.5 473.56,-15.5 465.21,-15.5"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="490.76,-19 500.76,-15.5 490.76,-12 490.76,-19"/>
+<path fill="none" stroke="midnightblue" d="M662.91,-15.5C654.29,-15.5 645.59,-15.5 637.15,-15.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="662.98,-19 672.98,-15.5 662.98,-12 662.98,-19"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" target="_top" xlink:title="The main loop, called every clock tick via MasterClockTimer.">
-<polygon fill="white" stroke="black" points="179,-6 179,-25 298,-25 298,-6 179,-6"/>
-<text text-anchor="middle" x="238.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ClockTimer2</text>
+<g id="a_node4"><a xlink:href="class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" target="_top" xlink:title="Controls the floating window function, called during the ClockTimer2 function.">
+<polygon fill="white" stroke="black" points="334,-6 334,-25 465,-25 465,-6 334,-6"/>
+<text text-anchor="middle" x="399.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::TrackTrainFloat</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node3&#45;&gt;Node4</title>
-<path fill="none" stroke="midnightblue" d="M323.81,-15.5C315.22,-15.5 306.56,-15.5 298.23,-15.5"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="323.83,-19 333.83,-15.5 323.83,-12 323.83,-19"/>
+<path fill="none" stroke="midnightblue" d="M490.56,-15.5C482.09,-15.5 473.53,-15.5 465.23,-15.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="490.84,-19 500.84,-15.5 490.84,-12 490.84,-19"/>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="0,-6 0,-25 143,-25 143,-6 0,-6"/>
-<text text-anchor="middle" x="71.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::MasterClockTimer</text>
+<g id="a_node5"><a xlink:href="class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" target="_top" xlink:title="The main loop, called every clock tick via MasterClockTimer.">
+<polygon fill="white" stroke="black" points="179,-6 179,-25 298,-25 298,-6 179,-6"/>
+<text text-anchor="middle" x="238.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ClockTimer2</text>
 </a>
 </g>
 </g>
 <!-- Node4&#45;&gt;Node5 -->
 <g id="edge4" class="edge">
 <title>Node4&#45;&gt;Node5</title>
+<path fill="none" stroke="midnightblue" d="M323.81,-15.5C315.22,-15.5 306.56,-15.5 298.23,-15.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="323.83,-19 333.83,-15.5 323.83,-12 323.83,-19"/>
+</g>
+<!-- Node6 -->
+<g id="node6" class="node">
+<title>Node6</title>
+<g id="a_node6"><a xlink:href="class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="0,-6 0,-25 143,-25 143,-6 0,-6"/>
+<text text-anchor="middle" x="71.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::MasterClockTimer</text>
+</a>
+</g>
+</g>
+<!-- Node5&#45;&gt;Node6 -->
+<g id="edge5" class="edge">
+<title>Node5&#45;&gt;Node6</title>
 <path fill="none" stroke="midnightblue" d="M168.67,-15.5C160.22,-15.5 151.57,-15.5 143.09,-15.5"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="168.86,-19 178.86,-15.5 168.86,-12 168.86,-19"/>
 </g>

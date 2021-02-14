@@ -1,0 +1,7 @@
+<map id="TInterface::GetTrainIDOrContinuationPosition" name="TInterface::GetTrainIDOrContinuationPosition">
+<area shape="rect" id="node1" title="Used in actions due panel to identify the train or continuation." alt="" coords="703,23,864,65"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a54c8faaf7d1d8f0456114676fd20a17f" title=" " alt="" coords="451,5,655,32"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" title="Controls the floating window function, called during the ClockTimer2 function." alt="" coords="465,56,640,83"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,56,403,83"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,56,196,83"/>
+</map>

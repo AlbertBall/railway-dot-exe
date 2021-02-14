@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.6.1</span>
+   &#160;<span id="projectnumber">v2.7.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -179,9 +179,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9c531d3df66921ada4e698bcf47f72f3"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3">ContinuationEntryFloatingTTString</a> (int Caller, <a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> *TTDEPtr, int RepeatNumber, int IncrementalMinutes, int IncrementalDigits)</td></tr>
 <tr class="memdesc:a9c531d3df66921ada4e698bcf47f72f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build string for use in floating window for expected trains at continuations.  <a href="class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3">More...</a><br /></td></tr>
 <tr class="separator:a9c531d3df66921ada4e698bcf47f72f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6c904f201d8bb23b3c0714226244890"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#ae6c904f201d8bb23b3c0714226244890">GetExitLocationAndAt</a> (int Caller, <a class="el" href="_train_unit_8h.html#a1690f97d4f6dd77f9eab02bb3465b343">TExitList</a> &amp;ExitList) const</td></tr>
-<tr class="memdesc:ae6c904f201d8bb23b3c0714226244890"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check all timetable names in ExitList, if all same return " at [name]" else return "". Used in floating label for Next action and in formatted timetables.  <a href="class_t_train_controller.html#ae6c904f201d8bb23b3c0714226244890">More...</a><br /></td></tr>
-<tr class="separator:ae6c904f201d8bb23b3c0714226244890"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0114e517611ab24d3b947c1781130a23"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#a0114e517611ab24d3b947c1781130a23">GetExitLocationAndAt</a> (int Caller, <a class="el" href="_train_unit_8h.html#a1690f97d4f6dd77f9eab02bb3465b343">TExitList</a> &amp;ExitList, AnsiString &amp;AllowedExits) const</td></tr>
+<tr class="memdesc:a0114e517611ab24d3b947c1781130a23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check all timetable names in ExitList, if all same return " at [name]" + AllowableExits = elements, else just return "" &amp; AllowableExits = elements. Used in floating label for Next action and in formatted timetables.  <a href="class_t_train_controller.html#a0114e517611ab24d3b947c1781130a23">More...</a><br /></td></tr>
+<tr class="separator:a0114e517611ab24d3b947c1781130a23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb0e8fd36435809350cb323ab9fe2213"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_controller.html#afb0e8fd36435809350cb323ab9fe2213">GetRepeatHeadCode</a> (int Caller, AnsiString BaseHeadCode, int RepeatNumber, int IncDigits)</td></tr>
 <tr class="memdesc:afb0e8fd36435809350cb323ab9fe2213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the service headcode for the repeat service.  <a href="class_t_train_controller.html#afb0e8fd36435809350cb323ab9fe2213">More...</a><br /></td></tr>
 <tr class="separator:afb0e8fd36435809350cb323ab9fe2213"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -819,7 +819,7 @@ Public Attributes</h2></td></tr>
 
 <p>Constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07911">7911</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07920">7920</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -840,7 +840,7 @@ Public Attributes</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07958">7958</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07967">7967</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -968,7 +968,7 @@ Here is the call graph for this function:</div>
 
 <p>Introduce a new train to the railway, with the characteristics specified, returns true for success, if fails the EventType indicates the reason. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08340">8340</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08349">8349</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1000,7 +1000,7 @@ Here is the caller graph for this function:</div>
 
 <p>A shorthand function that returns true if the successor to a given timetable action command should be (or could be) an 'at location' command, used in timetable validation. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12229">12229</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12239">12239</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1027,7 +1027,7 @@ Here is the caller graph for this function:</div>
 
 <p>populate the ContinuationTrainExpectationMultiMap during timetable loading </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14300">14300</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14310">14310</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1123,12 +1123,11 @@ Here is the caller graph for this function:</div>
 
 <p>new v2.2.0, calcs distance to red signal, returns -1 for no signal found, for autosigs route after next red signal &amp; other conditions, also totals up location stop times before the red signal and returns value in StopTime </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17538">17538</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17588">17588</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_ad81afe17a036ab3f96c340ab75a2d8e2_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_ad81afe17a036ab3f96c340ab75a2d8e2_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1156,7 +1155,7 @@ Here is the caller graph for this function:</div>
 
 <p>calculates additional lateness values for trains that haven't reached their destinations yet </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17282">17282</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17332">17332</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1210,7 +1209,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used to compile ExitList from a string list of element IDs, returns true for success or gives a message &amp; returns false for failure, used in timetable validation. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10249">10249</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10259">10259</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1270,7 +1269,7 @@ Here is the caller graph for this function:</div>
 
 <p>A timetable validation function where all service cross references are checked for validity and set pointers and train information, return true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12355">12355</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12365">12365</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1324,7 +1323,7 @@ Here is the caller graph for this function:</div>
 
 <p>A timetable validation function where referenced services are checked for uniqueness, returns true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12250">12250</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12260">12260</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1372,7 +1371,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns true if the headcode complies with requirements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10208">10208</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10218">10218</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1426,7 +1425,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns true if the location name complies with requirements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10161">10161</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10171">10171</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1480,7 +1479,7 @@ Here is the caller graph for this function:</div>
 
 <p>A timetable validation function where cross references are checked for validity for non-repeating shuttle links, pointers and train information are set, returns true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13287">13287</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13297">13297</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1540,7 +1539,7 @@ Here is the caller graph for this function:</div>
 
 <p>The forward train is the finish shuttle entry 'Fns-sh', the reverse (new non-repeating service) time must = Forward time + (RepeatMins * RepeatNumber), return true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13541">13541</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13551">13551</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1582,7 +1581,7 @@ Here is the caller graph for this function:</div>
 
 <p>Part of the session file integrity check for ContinuationAutoSigEntries, true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14233">14233</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14243">14243</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1624,7 +1623,7 @@ Here is the caller graph for this function:</div>
 
 <p>Part of the session file integrity check for locked routes, true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14149">14149</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14159">14159</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1666,7 +1665,7 @@ Here is the caller graph for this function:</div>
 
 <p>Part of the session file integrity check for train entries, true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14087">14087</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14097">14097</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1720,7 +1719,7 @@ Here is the caller graph for this function:</div>
 
 <p>Check that shuttle link services have consistent times, true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13264">13264</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13274">13274</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1768,7 +1767,7 @@ Here is the caller graph for this function:</div>
 
 <p>Check that each shuttle service ends either in Fns or Fxx-sh (though a single service can't end in Fxx-sh), and that when the Fxx-sh is reached it references the original start and not another shuttle - not allowed to link two shuttles, true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13565">13565</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13575">13575</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1834,7 +1833,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called when trying to introduce a new train - checks for points in correct orientation, that no train is already at the train starting position, and not starting on a locked route. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13059">13059</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13069">13069</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1888,7 +1887,7 @@ Here is the caller graph for this function:</div>
 
 <p>A timetable validation function where train starting positions are checked for validity, true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12976">12976</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12986">12986</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1936,7 +1935,7 @@ Here is the caller graph for this function:</div>
 
 <p>returns true if the time complies with requirements </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09788">9788</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09798">9798</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2008,7 +2007,7 @@ Here is the caller graph for this function:</div>
 
 <p>Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for arrivals (bool Arrival == true) &amp; departures, also returns NumTrainsAtLoc after consolidation, used on creating the timetable conflict analysis file, Location needed to determine direction information. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16325">16325</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16336">16336</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2056,7 +2055,7 @@ Here is the caller graph for this function:</div>
 
 <p>Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for AtLoc listing (similar to ArrDep but doesn't include times in the input &amp; don't need Location), also returns NumTrainsAtLoc after consolidation, used on creating the timetable conflict analysis file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16541">16541</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16552">16552</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2116,11 +2115,12 @@ Here is the caller graph for this function:</div>
 
 <p>Build string for use in floating window for expected trains at continuations. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08700">8700</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08709">8709</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_a9c531d3df66921ada4e698bcf47f72f3_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_a9c531d3df66921ada4e698bcf47f72f3_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -2188,7 +2188,7 @@ Here is the caller graph for this function:</div>
 
 <p>Similar to <a class="el" href="class_t_train.html#a781291ed1d591990b7615286462a2861" title="called during FloatingLabelNextString to find the next service departure time">TTrain::CheckNewServiceDepartureTime</a> for use in ContinuationEntryFloatingTTString. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08837">8837</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08847">8847</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2242,11 +2242,12 @@ Here is the caller graph for this function:</div>
 
 <p>Examines the internal timetable (TrainDataVector) and creates from it a chronological (.txt) timetable and also a traditional spreadsheet format (.csv) timetable. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14400">14400</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14410">14410</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_a4ab4b6a568064d27c65f0770e5a5ccd0_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_a4ab4b6a568064d27c65f0770e5a5ccd0_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -2326,7 +2327,7 @@ Here is the caller graph for this function:</div>
 
 <p>Generate a timetable analysis file in the 'Formatted Timetables' folder, return false if failed for any reason. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14991">14991</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l15002">15002</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2374,7 +2375,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the track entry link (Link[]) array position for the given train on track element at track vector position TrackVectorNumber. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08615">8615</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08624">8624</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2406,7 +2407,7 @@ Here is the caller graph for this function:</div>
 
 <p>called when exiting operation mode to delete all trains and timetable data etc </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08254">8254</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08263">8263</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2460,7 +2461,7 @@ Here is the caller graph for this function:</div>
 
 <p>Get the interval between repeats. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08688">8688</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08697">8697</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2474,8 +2475,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="ae6c904f201d8bb23b3c0714226244890"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6c904f201d8bb23b3c0714226244890">&#9670;&nbsp;</a></span>GetExitLocationAndAt()</h2>
+<a id="a0114e517611ab24d3b947c1781130a23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0114e517611ab24d3b947c1781130a23">&#9670;&nbsp;</a></span>GetExitLocationAndAt()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2490,7 +2491,13 @@ Here is the caller graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="_train_unit_8h.html#a1690f97d4f6dd77f9eab02bb3465b343">TExitList</a> &amp;&#160;</td>
-          <td class="paramname"><em>ExitList</em>&#160;</td>
+          <td class="paramname"><em>ExitList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString &amp;&#160;</td>
+          <td class="paramname"><em>AllowedExits</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2500,18 +2507,20 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Check all timetable names in ExitList, if all same return " at [name]" else return "". Used in floating label for Next action and in formatted timetables. </p>
+<p>Check all timetable names in ExitList, if all same return " at [name]" + AllowableExits = elements, else just return "" &amp; AllowableExits = elements. Used in floating label for Next action and in formatted timetables. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16900">16900</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16911">16911</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_ae6c904f201d8bb23b3c0714226244890_cgraph.svg" width="580" height="100"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_a0114e517611ab24d3b947c1781130a23_cgraph.svg" width="580" height="100"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_ae6c904f201d8bb23b3c0714226244890_icgraph.svg" width="100%" height="510"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_a0114e517611ab24d3b947c1781130a23_icgraph.svg" width="100%" height="530"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -2556,7 +2565,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the service headcode for the repeat service. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13220">13220</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13230">13230</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2610,7 +2619,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the repeating service time. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13252">13252</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13262">13262</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2658,7 +2667,7 @@ Here is the caller graph for this function:</div>
 
 <p>New trains introduced with 'Snt' may be at a timetabled location or elsewhere. This function checks and returns true for at a timetabled location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12894">12894</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12904">12904</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2700,7 +2709,7 @@ Here is the caller graph for this function:</div>
 
 <p>Checks the last two characters in HeadCode and returns true if both are digits. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09769">9769</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09779">9779</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2742,7 +2751,7 @@ Here is the caller graph for this function:</div>
 
 <p>load ContinuationAutoSigEntries from a session file </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14211">14211</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14221">14221</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2784,7 +2793,7 @@ Here is the caller graph for this function:</div>
 
 <p>load locked routes from a session file </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14128">14128</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14138">14138</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2826,7 +2835,7 @@ Here is the caller graph for this function:</div>
 
 <p>load trains from a session file </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14061">14061</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14071">14071</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3058,7 +3067,7 @@ Here is the caller graph for this function:</div>
 
 <p>Send an error message to the performance log and file, and as a warning if appropriate. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13645">13645</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13655">13655</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3090,7 +3099,7 @@ Here is the caller graph for this function:</div>
 
 <p>store Str to the event log - moved from <a class="el" href="class_t_utilities.html">TUtilities</a> for v0.6 so can record the tt clock value </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07969">7969</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07978">7978</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3117,7 +3126,7 @@ Here is the call graph for this function:</div>
 
 <p>A shorthand function that returns true if the successor to a given timetable action command should be (or could be) an en-route command, used in timetable validation. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12222">12222</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12232">12232</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -3144,7 +3153,7 @@ Here is the caller graph for this function:</div>
 
 <p>called every clock tick to introduce new trains and update existing trains </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07981">7981</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l07990">7990</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3186,7 +3195,7 @@ Here is the caller graph for this function:</div>
 
 <p>Plots all trains on screen in zoomed-out mode, state of 'Flash' determines whether the flashing trains are plotted or not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14364">14364</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14374">14374</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3258,7 +3267,7 @@ Here is the caller graph for this function:</div>
 
 <p>Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if FinalCall true) set the internal timetable data values, return true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09138">9138</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09148">9148</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3290,12 +3299,11 @@ Here is the caller graph for this function:</div>
 
 <p>new v2.2.0 for OperatorActionPanel </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17382">17382</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17432">17432</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_a0e16b9cb91bb29f83bffc7ae3461200d_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_a0e16b9cb91bb29f83bffc7ae3461200d_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -3333,7 +3341,7 @@ Here is the caller graph for this function:</div>
 
 <p>plot all trains on the display </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08294">8294</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08303">8303</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3429,7 +3437,7 @@ Here is the caller graph for this function:</div>
 
 <p>Determines whether two services are running in the same direction when they arrive or depart from Location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16582">16582</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16593">16593</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3471,7 +3479,7 @@ Here is the caller graph for this function:</div>
 
 <p>save ContinuationAutoSigEntries to a session file </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14193">14193</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14203">14203</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3513,7 +3521,7 @@ Here is the caller graph for this function:</div>
 
 <p>save locked routes to a session file </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14111">14111</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14121">14121</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3555,7 +3563,7 @@ Here is the caller graph for this function:</div>
 
 <p>save trains to a session file </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14045">14045</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14055">14055</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3587,7 +3595,7 @@ Here is the caller graph for this function:</div>
 
 <p>diagnostic function to store all train data to a file for examination, not used normally </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13852">13852</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13862">13862</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3624,7 +3632,7 @@ Here is the call graph for this function:</div>
 
 <p>Carry out further detailed timetable consistency checks, return true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10828">10828</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10838">10838</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3666,7 +3674,7 @@ Here is the caller graph for this function:</div>
 
 <p>Give a user message during timetable integrity checking if GiveMessages is true, ignore if false. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13634">13634</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13644">13644</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -3703,7 +3711,7 @@ Here is the caller graph for this function:</div>
 
 <p>At the end of operation a summary of overall performance is sent to the performance file by this function. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16968">16968</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17018">17018</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3735,7 +3743,7 @@ Here is the caller graph for this function:</div>
 
 <p>This sets all the warning flags (CrashWarning, DerailWarning etc) to their required states after a session file has been loaded. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17236">17236</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l17286">17286</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3861,7 +3869,7 @@ Here is the caller graph for this function:</div>
 
 <p>Parse a single timetable service action, return true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09839">9839</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09849">9849</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3927,7 +3935,7 @@ Here is the caller graph for this function:</div>
 
 <p>Parse a timetable repeat entry, return true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10678">10678</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10688">10688</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4023,7 +4031,7 @@ Here is the caller graph for this function:</div>
 
 <p>Parse a train information entry, return true for success; PowerAtRail changed to double&amp; from int&amp; at v2.4.0. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10332">10332</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l10342">10342</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4065,7 +4073,7 @@ Here is the caller graph for this function:</div>
 
 <p>sends a message to the user and stops the timetable clock while it is displayed </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14030">14030</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14040">14040</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4107,7 +4115,7 @@ Here is the caller graph for this function:</div>
 
 <p>change an extended headcode to an ordinary 4 character headcode </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12238">12238</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12248">12248</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4149,7 +4157,7 @@ Here is the caller graph for this function:</div>
 
 <p>Strip both leading and trailing spaces at ends of Input and spaces before and after all commas and semicolons within Input, used to rationalise timetable service entries for internal use. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12797">12797</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l12807">12807</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4203,7 +4211,7 @@ Here is the caller graph for this function:</div>
 
 <p>Checks overall timetable integrity, calls many other specific checking functions, returns true for success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09016">9016</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l09026">9026</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4245,7 +4253,7 @@ Here is the caller graph for this function:</div>
 
 <p>Sends a message to the user if GiveMessages is true, including ServiceReference (see above) if not null, used for timetable error messages. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13618">13618</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l13628">13628</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4287,7 +4295,7 @@ Here is the caller graph for this function:</div>
 
 <p>new at v2.4.0 return true if find the train (added at v2.4.0 as can select a removed train in OAListBox before it updates see LiWinDom error report via Discord on 23/04/20 </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08669">8669</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08678">8678</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4296,7 +4304,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_ab98eb9e3dd43fb5028c6cda88ae929f2_icgraph.svg" width="448" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_ab98eb9e3dd43fb5028c6cda88ae929f2_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -4329,7 +4337,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return a reference to the train at position VecPos in the TrainVector, carries out range checking on VecPos. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14387">14387</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l14397">14397</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4371,7 +4379,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return a reference to the train with ID TrainID, carries out validity checking on TrainID. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08653">8653</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08662">8662</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4380,8 +4388,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_a4d5de42d6e9e92191241963599581210_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_train_controller_a4d5de42d6e9e92191241963599581210_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -4404,7 +4411,7 @@ Here is the caller graph for this function:</div>
 
 <p>unplot all trains from screen </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08324">8324</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08333">8333</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4458,7 +4465,7 @@ Here is the caller graph for this function:</div>
 
 <p>check whether the two times are within the range in minutes specified and return true if so. For an equal time check MinuteRange = 0; </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16299">16299</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l16310">16310</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -4500,7 +4507,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called by TInterface::SaveOperatingImage1Click) to write all trains to the image file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08309">8309</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8cpp_source.html#l08318">8318</a> of file <a class="el" href="_train_unit_8cpp_source.html">TrainUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

@@ -83,7 +83,7 @@ var sectionId = 'dynsection-31';
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="class_t_one_route.html#ae06f7e9335f1a94ff996ad634dc102a0" target="_top" xlink:title="Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector so that the...">
+<g id="a_node3"><a xlink:href="class_t_one_route.html#ab8570cc4c3941927b206c015a9813af0" target="_top" xlink:title="Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector so that the...">
 <polygon fill="white" stroke="black" points="199,-106.61 199,-136.61 342,-136.61 342,-106.61 199,-106.61"/>
 <text text-anchor="start" x="207" y="-124.61" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::SetRouteSearch</text>
 <text text-anchor="middle" x="270.5" y="-113.61" font-family="Helvetica,sans-Serif" font-size="10.00">VectorGraphics</text>
@@ -120,7 +120,7 @@ var sectionId = 'dynsection-31';
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="class_t_pref_dir_element.html#a5d03028241e6c38e473882120d5bcc68" target="_top" xlink:title="picks up the green or red route direction graphic">
+<g id="a_node4"><a xlink:href="class_t_pref_dir_element.html#a3a31ae39854d89213a06010dcb8d2b34" target="_top" xlink:title="picks up the green or red route direction graphic">
 <polygon fill="white" stroke="black" points="378,-18.61 378,-48.61 525,-48.61 525,-18.61 378,-18.61"/>
 <text text-anchor="start" x="386" y="-36.61" font-family="Helvetica,sans-Serif" font-size="10.00">TPrefDirElement::GetDirection</text>
 <text text-anchor="middle" x="451.5" y="-25.61" font-family="Helvetica,sans-Serif" font-size="10.00">RouteGraphicPtr</text>
@@ -158,7 +158,7 @@ var sectionId = 'dynsection-31';
 <!-- Node7 -->
 <g id="node7" class="node">
 <title>Node7</title>
-<g id="a_node7"><a xlink:href="class_t_pref_dir_element.html#ad58c8d4fa30c04fa9d8e84ae55c7ce61" target="_top" xlink:title="picks up the appropriate route graphic">
+<g id="a_node7"><a xlink:href="class_t_pref_dir_element.html#acc8674681c7b4eda8ce8551abdae9680" target="_top" xlink:title="picks up the appropriate route graphic">
 <polygon fill="white" stroke="black" points="384.5,-106.61 384.5,-136.61 518.5,-136.61 518.5,-106.61 384.5,-106.61"/>
 <text text-anchor="start" x="392.5" y="-124.61" font-family="Helvetica,sans-Serif" font-size="10.00">TPrefDirElement::GetRoute</text>
 <text text-anchor="middle" x="451.5" y="-113.61" font-family="Helvetica,sans-Serif" font-size="10.00">GraphicPtr</text>

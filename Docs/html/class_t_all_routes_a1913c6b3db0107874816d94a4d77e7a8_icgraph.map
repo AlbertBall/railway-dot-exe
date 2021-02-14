@@ -3,13 +3,13 @@
 <area shape="rect" id="node2" href="$class_t_one_route.html#a53496c398dcdb3a644801c4e74d47d01" title="Called after a non&#45;preferred (i.e. unrestricted) route has been selected and has finished flashing,..." alt="" coords="799,171,1010,212"/>
 <area shape="rect" id="node8" href="$class_t_one_route.html#a36ba8adc8b4a47908ee4e1b8e75792ca" title="Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and ..." alt="" coords="811,40,998,81"/>
 <area shape="rect" id="node10" href="$class_t_one_route.html#a59270c9b68d679ea29086216c21decfb" title="Called by GetNextNonPreferredRouteElement to carry out the search for linked track,..." alt="" coords="789,236,1020,277"/>
-<area shape="rect" id="node12" href="$class_t_one_route.html#a78f476e2ae0584ef8873414b53fd09b4" title="Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called rec..." alt="" coords="801,105,1008,147"/>
+<area shape="rect" id="node12" href="$class_t_one_route.html#ac20b954f16c606ccf5c9e513ab6908f6" title="Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called rec..." alt="" coords="801,105,1008,147"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="539,63,725,90"/>
 <area shape="rect" id="node6" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="280,173,475,215"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="298,71,457,98"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="23,71,214,98"/>
 <area shape="rect" id="node7" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="5,181,232,207"/>
 <area shape="rect" id="node9" href="$class_t_interface.html#aa639148521a793641e694b15486b5055" title=" " alt="" coords="292,5,463,47"/>
-<area shape="rect" id="node11" href="$class_t_one_route.html#a997f3cb02d8e03d0a12769b8eb903674" title="Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc...." alt="" coords="523,233,741,275"/>
-<area shape="rect" id="node13" href="$class_t_one_route.html#af1794f576d8aff59f83992afc1c5acc2" title="Try to find a set of linked tracks that lie on preferred directions between the route start element a..." alt="" coords="535,115,729,156"/>
+<area shape="rect" id="node11" href="$class_t_one_route.html#a5ce1c3a064a656ca764b5ed98c63151a" title="Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc...." alt="" coords="523,233,741,275"/>
+<area shape="rect" id="node13" href="$class_t_one_route.html#a974ac7ab4cb5e6a5df33a3d7b3563315" title="Try to find a set of linked tracks that lie on preferred directions between the route start element a..." alt="" coords="535,115,729,156"/>
 </map>

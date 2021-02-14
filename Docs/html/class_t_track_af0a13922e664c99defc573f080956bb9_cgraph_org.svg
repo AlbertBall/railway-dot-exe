@@ -37,7 +37,7 @@
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="class_t_track.html#a6635891513167223f4b9aadd0121c312" target="_top" xlink:title="True if there is a vector entry at H &amp; V that is set to manual (ConsecSignals == 2) and returns the v...">
+<g id="a_node3"><a xlink:href="class_t_track.html#a6635891513167223f4b9aadd0121c312" target="_top" xlink:title="True if there is a vector entry at H &amp; V that is set to manual (TypeOfRoute == 2) and returns the vec...">
 <polygon fill="white" stroke="black" points="300,-162.28 300,-192.28 440,-192.28 440,-162.28 300,-162.28"/>
 <text text-anchor="start" x="308" y="-180.28" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::IsBarrierDownVector</text>
 <text text-anchor="middle" x="370" y="-169.28" font-family="Helvetica,sans-Serif" font-size="10.00">AtHVManual</text>

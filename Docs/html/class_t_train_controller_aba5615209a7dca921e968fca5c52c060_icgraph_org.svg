@@ -83,7 +83,7 @@
 <!-- Node12 -->
 <g id="node11" class="node">
 <title>Node12</title>
-<g id="a_node11"><a xlink:href="class_t_one_route.html#a997f3cb02d8e03d0a12769b8eb903674" target="_top" xlink:title="Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc....">
+<g id="a_node11"><a xlink:href="class_t_one_route.html#a5ce1c3a064a656ca764b5ed98c63151a" target="_top" xlink:title="Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc....">
 <polygon fill="white" stroke="black" points="1057,-388.5 1057,-418.5 1221,-418.5 1221,-388.5 1057,-388.5"/>
 <text text-anchor="start" x="1065" y="-406.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::GetNextNonPreferred</text>
 <text text-anchor="middle" x="1139" y="-395.5" font-family="Helvetica,sans-Serif" font-size="10.00">RouteElement</text>
@@ -115,7 +115,7 @@
 <!-- Node15 -->
 <g id="node14" class="node">
 <title>Node15</title>
-<g id="a_node14"><a xlink:href="class_t_one_route.html#af1794f576d8aff59f83992afc1c5acc2" target="_top" xlink:title="Try to find a set of linked tracks that lie on preferred directions between the route start element a...">
+<g id="a_node14"><a xlink:href="class_t_one_route.html#a974ac7ab4cb5e6a5df33a3d7b3563315" target="_top" xlink:title="Try to find a set of linked tracks that lie on preferred directions between the route start element a...">
 <polygon fill="white" stroke="black" points="872,-49.5 872,-79.5 1018,-79.5 1018,-49.5 872,-49.5"/>
 <text text-anchor="start" x="880" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::GetNextPreferred</text>
 <text text-anchor="middle" x="945" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00">RouteElement</text>
@@ -131,7 +131,7 @@
 <!-- Node17 -->
 <g id="node16" class="node">
 <title>Node17</title>
-<g id="a_node16"><a xlink:href="class_t_one_route.html#a43513cae58e5d18979492cbe76b51f74" target="_top" xlink:title="Set the starting conditions for a non&#45;preferred (i.e. unrestricted) route selection beginning on HLoc...">
+<g id="a_node16"><a xlink:href="class_t_one_route.html#a13dd08bfcc95ea1296f9ac4fd699e94d" target="_top" xlink:title="Set the starting conditions for a non&#45;preferred (i.e. unrestricted) route selection beginning on HLoc...">
 <polygon fill="white" stroke="black" points="1067.5,-339.5 1067.5,-369.5 1210.5,-369.5 1210.5,-339.5 1067.5,-339.5"/>
 <text text-anchor="start" x="1075.5" y="-357.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::GetNonPreferred</text>
 <text text-anchor="middle" x="1139" y="-346.5" font-family="Helvetica,sans-Serif" font-size="10.00">RouteStartElement</text>
@@ -147,7 +147,7 @@
 <!-- Node18 -->
 <g id="node17" class="node">
 <title>Node18</title>
-<g id="a_node17"><a xlink:href="class_t_one_route.html#a07ee58454e2f49b4f0d5d8e6a1a2d40f" target="_top" xlink:title="Set the starting conditions for a preferred direction or automatic signal route selection beginning o...">
+<g id="a_node17"><a xlink:href="class_t_one_route.html#ab7ac58fe51393873e9054ffa724bc118" target="_top" xlink:title="Set the starting conditions for a preferred direction or automatic signal route selection beginning o...">
 <polygon fill="white" stroke="black" points="869,-98.5 869,-128.5 1021,-128.5 1021,-98.5 869,-98.5"/>
 <text text-anchor="start" x="877" y="-116.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::GetPreferredRoute</text>
 <text text-anchor="middle" x="945" y="-105.5" font-family="Helvetica,sans-Serif" font-size="10.00">StartElement</text>
@@ -163,7 +163,7 @@
 <!-- Node19 -->
 <g id="node18" class="node">
 <title>Node19</title>
-<g id="a_node18"><a xlink:href="class_t_one_route.html#ae131609dd8248dae2d7b699ab8777202" target="_top" xlink:title="Examines the route to see whether the element at H &amp; V is in the route, and if not returns a ReturnFl...">
+<g id="a_node18"><a xlink:href="class_t_one_route.html#afe23206f22e1ffaafe1a5fe866d2b8ec" target="_top" xlink:title="Examines the route to see whether the element at H &amp; V is in the route, and if not returns a ReturnFl...">
 <polygon fill="white" stroke="black" points="1064,-164.5 1064,-194.5 1214,-194.5 1214,-164.5 1064,-164.5"/>
 <text text-anchor="start" x="1072" y="-182.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::GetRouteTruncate</text>
 <text text-anchor="middle" x="1139" y="-171.5" font-family="Helvetica,sans-Serif" font-size="10.00">Element</text>
@@ -345,49 +345,49 @@
 <path fill="none" stroke="midnightblue" d="M1317.04,-739.14C1299.61,-705.56 1264.52,-644.67 1221,-604.5 1203.89,-588.71 1180.4,-576.13 1163.12,-568.14"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1314.01,-740.92 1321.67,-748.24 1320.25,-737.74 1314.01,-740.92"/>
 </g>
-<!-- Node144 -->
+<!-- Node145 -->
 <g id="node47" class="node">
-<title>Node144</title>
+<title>Node145</title>
 <g id="a_node47"><a xlink:href="class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25" target="_top" xlink:title="Save a session file &#45; see LoadSession for details of additions to the session file.">
 <polygon fill="white" stroke="black" points="685.5,-137 685.5,-156 806.5,-156 806.5,-137 685.5,-137"/>
 <text text-anchor="middle" x="746" y="-144" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::SaveSession</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node144 -->
+<!-- Node1&#45;&gt;Node145 -->
 <g id="edge96" class="edge">
-<title>Node1&#45;&gt;Node144</title>
+<title>Node1&#45;&gt;Node145</title>
 <path fill="none" stroke="midnightblue" d="M1324.39,-738.52C1314.39,-691.76 1286.15,-591.1 1221,-539.5 1158.19,-489.76 922.84,-520.83 869,-461.5 779.95,-363.36 922.08,-263.62 833,-165.5 826.01,-157.8 816.67,-152.85 806.71,-149.74"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1320.98,-739.31 1326.4,-748.42 1327.84,-737.92 1320.98,-739.31"/>
 </g>
-<!-- Node198 -->
+<!-- Node200 -->
 <g id="node48" class="node">
-<title>Node198</title>
-<g id="a_node48"><a xlink:href="class_t_one_route.html#a78f476e2ae0584ef8873414b53fd09b4" target="_top" xlink:title="Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called rec...">
+<title>Node200</title>
+<g id="a_node48"><a xlink:href="class_t_one_route.html#ac20b954f16c606ccf5c9e513ab6908f6" target="_top" xlink:title="Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called rec...">
 <polygon fill="white" stroke="black" points="1061.5,-213.5 1061.5,-243.5 1216.5,-243.5 1216.5,-213.5 1061.5,-213.5"/>
 <text text-anchor="start" x="1069.5" y="-231.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::SearchForPreferred</text>
 <text text-anchor="middle" x="1139" y="-220.5" font-family="Helvetica,sans-Serif" font-size="10.00">Route</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node198 -->
+<!-- Node1&#45;&gt;Node200 -->
 <g id="edge97" class="edge">
-<title>Node1&#45;&gt;Node198</title>
+<title>Node1&#45;&gt;Node200</title>
 <path fill="none" stroke="midnightblue" d="M1326.81,-738.47C1318.34,-647.03 1284.99,-332.44 1221,-258.5 1215.7,-252.38 1209.03,-247.5 1201.81,-243.62"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1323.33,-738.85 1327.72,-748.49 1330.3,-738.21 1323.33,-738.85"/>
 </g>
-<!-- Node199 -->
+<!-- Node201 -->
 <g id="node49" class="node">
-<title>Node199</title>
+<title>Node201</title>
 <g id="a_node49"><a xlink:href="class_t_train.html#a594228489e522dfde0ffbe124cd27103" target="_top" xlink:title="Set the four HeadCodeGrPtr[4] pointers to the appropriate character graphics with the current backgro...">
 <polygon fill="white" stroke="black" points="1065,-1458 1065,-1477 1213,-1477 1213,-1458 1065,-1458"/>
 <text text-anchor="middle" x="1139" y="-1465" font-family="Helvetica,sans-Serif" font-size="10.00">TTrain::SetHeadCodeGraphics</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node199 -->
+<!-- Node1&#45;&gt;Node201 -->
 <g id="edge99" class="edge">
-<title>Node1&#45;&gt;Node199</title>
+<title>Node1&#45;&gt;Node201</title>
 <path fill="none" stroke="midnightblue" d="M1328.47,-788.99C1325.66,-900.37 1309.03,-1343.16 1221,-1443.5 1215.49,-1449.78 1208.41,-1454.46 1200.75,-1457.93"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1331.98,-788.8 1328.72,-778.72 1324.98,-788.63 1331.98,-788.8"/>
 </g>
@@ -1067,42 +1067,42 @@
 <path fill="none" stroke="midnightblue" d="M884.21,-520.16C861.75,-518.91 836.08,-517.47 813.08,-516.19"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="884.11,-523.66 894.29,-520.72 884.5,-516.67 884.11,-523.66"/>
 </g>
-<!-- Node40&#45;&gt;Node144 -->
+<!-- Node40&#45;&gt;Node145 -->
 <g id="edge91" class="edge">
-<title>Node40&#45;&gt;Node144</title>
+<title>Node40&#45;&gt;Node145</title>
 <path fill="none" stroke="midnightblue" d="M885,-512.25C878.9,-509 873.35,-504.84 869,-499.5 774.63,-383.8 932.61,-276.72 833,-165.5 826.06,-157.75 816.74,-152.78 806.8,-149.66"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="883.7,-515.51 894.26,-516.39 886.56,-509.12 883.7,-515.51"/>
 </g>
-<!-- Node144&#45;&gt;Node5 -->
+<!-- Node145&#45;&gt;Node5 -->
 <g id="edge92" class="edge">
-<title>Node144&#45;&gt;Node5</title>
+<title>Node145&#45;&gt;Node5</title>
 <path fill="none" stroke="midnightblue" d="M684.79,-158.32C676.07,-160.46 667.25,-162.86 659,-165.5 423.54,-240.77 152.94,-373.14 79.64,-409.83"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="685.63,-161.72 694.56,-156.02 684.03,-154.9 685.63,-161.72"/>
 </g>
-<!-- Node198&#45;&gt;Node15 -->
+<!-- Node200&#45;&gt;Node15 -->
 <g id="edge98" class="edge">
-<title>Node198&#45;&gt;Node15</title>
+<title>Node200&#45;&gt;Node15</title>
 <path fill="none" stroke="midnightblue" d="M1061.57,-207.58C1059.97,-206.3 1058.45,-204.94 1057,-203.5 1019.05,-165.71 1058.75,-126.49 1021,-88.5 1017.63,-85.11 1013.77,-82.19 1009.64,-79.69"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1059.82,-210.62 1070.06,-213.35 1063.76,-204.83 1059.82,-210.62"/>
 </g>
-<!-- Node199&#45;&gt;Node29 -->
+<!-- Node201&#45;&gt;Node29 -->
 <g id="edge101" class="edge">
-<title>Node199&#45;&gt;Node29</title>
+<title>Node201&#45;&gt;Node29</title>
 <path fill="none" stroke="midnightblue" d="M1113.36,-1452.87C1073.45,-1429.17 995.74,-1383.03 962.13,-1363.08"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1111.57,-1455.88 1121.96,-1457.98 1115.15,-1449.86 1111.57,-1455.88"/>
 </g>
-<!-- Node200 -->
+<!-- Node202 -->
 <g id="node50" class="node">
-<title>Node200</title>
+<title>Node202</title>
 <g id="a_node50"><a xlink:href="class_t_train.html#a23c65e7f2b2130ae87811f70afb6d5bf" target="_top" xlink:title="Create one train with relevant member values from the sesion file.">
 <polygon fill="white" stroke="red" points="873,-1572 873,-1591 1017,-1591 1017,-1572 873,-1572"/>
 <text text-anchor="middle" x="945" y="-1579" font-family="Helvetica,sans-Serif" font-size="10.00">TTrain::LoadOneSessionTrain</text>
 </a>
 </g>
 </g>
-<!-- Node199&#45;&gt;Node200 -->
+<!-- Node201&#45;&gt;Node202 -->
 <g id="edge100" class="edge">
-<title>Node199&#45;&gt;Node200</title>
+<title>Node201&#45;&gt;Node202</title>
 <path fill="none" stroke="midnightblue" d="M1120.42,-1484.21C1098.64,-1504.13 1059.64,-1537.25 1021,-1557.5 1009.62,-1563.47 996.48,-1568.29 984.42,-1572"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1122.94,-1486.65 1127.89,-1477.28 1118.18,-1481.52 1122.94,-1486.65"/>
 </g>

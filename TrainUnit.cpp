@@ -1057,8 +1057,9 @@ void TTrain::UpdateTrain(int Caller)
                 CallingOnFlag = false;
             }
         }
-        if(StoppedAtSignal && ((Track->TrackElementAt(191, NextElementPosition).Attribute > 0) || AllowedToPassRedSignal) && !TrainFailed)
+        if(StoppedAtSignal && ((Track->TrackElementAt(191, NextElementPosition).Attribute > 0) || AllowedToPassRedSignal) && !TrainFailed && !StoppedAtLocation)
         {
+            //'&& !StoppedAtLocation' added at v2.7.0 as if had been stopped at signal before tt control restored then background colour changed to normal when signal changed from red
             // reset PassRedSignal when reached half-way point in next element, if reset here then SetTrainMovementValues
             // sets StoppedAtSignal again & train doesn't move
             StoppedAtSignal = false;
@@ -6506,7 +6507,8 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
     }
     else if(Ptr->Command == "Fer")
     {
-        RetStr = "Exit railway" + TrainController->GetExitLocationAndAt(1, Ptr->ExitList) + " at " + Utilities->Format96HHMM(GetTrainTime(10, Ptr->EventTime));
+        AnsiString AllowedExits = "";
+        RetStr = "Exit railway" + TrainController->GetExitLocationAndAt(1, Ptr->ExitList, AllowedExits) + " at " + Utilities->Format96HHMM(GetTrainTime(10, Ptr->EventTime)) + AllowedExits;
     }
     else if(Ptr->Command == "Fjo")
     {
@@ -6723,7 +6725,8 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
         }
         else if(Ptr->Command == "Fer")
         {
-            PartStr = Utilities->Format96HHMM(GetTrainTime(24, Ptr->EventTime)) + ": Exit railway" + TrainController->GetExitLocationAndAt(2, Ptr->ExitList);
+            AnsiString AllowedExits = "";
+            PartStr = Utilities->Format96HHMM(GetTrainTime(24, Ptr->EventTime)) + ": Exit railway" + TrainController->GetExitLocationAndAt(2, Ptr->ExitList, AllowedExits) + AllowedExits;
         }
         else if(Ptr->Command == "Fjo")
         {
@@ -7690,7 +7693,7 @@ bool TTrain::LinkOccupied(int Caller, int TrackVectorPosition, int LinkNumber) /
 float TTrain::CalcTimeToAct(int Caller) // only called for running trains
     ///New v2.2.0 for operator action panel.  Calls CalcDistance ToRedSignal and uses the current speed to estimate
     ///the time in minutes assuming a constant deceleration rate to it.  If a buffer, continuation, stopping location, an autosignal
-    ///route after the next red signal, or service finished, then -1 is returned to signal that there is to be no display for that train.
+    ///route after the next red signal, service finished or train being called on, then -1 is returned to signal that there is to be no display for that train.
     ///If stopped at a location the time is still calculated assuming a speed of 30km/h and the time to start added to it.
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CalcTimeToAct, " + HeadCode);
@@ -7708,6 +7711,12 @@ float TTrain::CalcTimeToAct(int Caller) // only called for running trains
     if(SignallerStopped)
     {
         Utilities->CallLogPop(2080);
+        return -1;
+    }
+
+    if(BeingCalledOn) //added at v2.7.0 so zero time to act cancelled right away
+    {
+        Utilities->CallLogPop(2266);
         return -1;
     }
 
@@ -8791,8 +8800,9 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
         }
         else if(Ptr->Command == "Fer")
         {
+            AnsiString AllowedExits;
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(11, Ptr->EventTime, RepNum, IncMins)) + ": Exit railway" +
-                TrainController->GetExitLocationAndAt(3, Ptr->ExitList);
+                TrainController->GetExitLocationAndAt(3, Ptr->ExitList, AllowedExits) + AllowedExits;
         }
         else if(Ptr->Command == "Fjo")
         {
@@ -14817,7 +14827,8 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
                     }
                     else if(ActionVectorEntry.Command == "Fer")
                     {
-                        PartStr = "Exits railway" + GetExitLocationAndAt(0, ActionVectorEntry.ExitList);
+                        AnsiString AllowedExits;
+                        PartStr = "Exits railway" + GetExitLocationAndAt(0, ActionVectorEntry.ExitList, AllowedExits) + AllowedExits;
                         TimeStr = Utilities->Format96HHMM(GetRepeatTime(18, ActionVectorEntry.EventTime, y, IncMinutes));
                     }
                     else if(ActionVectorEntry.Command == "Fjo")
@@ -16897,15 +16908,27 @@ bool TTrainController::SameDirection(int Caller, AnsiString Ref1In, AnsiString R
 
 // ---------------------------------------------------------------------------
 
-AnsiString TTrainController::GetExitLocationAndAt(int Caller, TExitList &ExitList) const
+AnsiString TTrainController::GetExitLocationAndAt(int Caller, TExitList &ExitList, AnsiString &AllowedExits) const
 {
-    // check all timetable names in list, if all same return " at [name]" else return ""
+    // changed at v2.7.0 to show allowable exit elements
     if(ExitList.empty())
         return "";
 
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetExitLocationAndAt");
     AnsiString StartName = Track->TrackElementAt(735, *(ExitList.begin())).ActiveTrackElementName;
+    AnsiString ExitLocList = "";
+    AllowedExits = "";
 
+    unsigned int Counter = 0;
+    for(TExitListIterator ELIt = ExitList.begin(); ELIt != ExitList.end(); ELIt++)
+    {
+        ExitLocList += Track->TrackElementAt(7777, *ELIt).ElementID + " ";
+        Counter++;
+        if(((Counter % 6) == 0) && (Counter < (ExitList.size() - 1))) // only add a newline if more to come
+        {
+            ExitLocList += "\n";
+        }
+    }
     if(StartName == "")
     {
         if(ExitList.size() == 1)
@@ -16917,7 +16940,16 @@ AnsiString TTrainController::GetExitLocationAndAt(int Caller, TExitList &ExitLis
         else
         {
             Utilities->CallLogPop(1572);
-            return "";
+            if(ExitList.size() < 4)
+            {
+                AllowedExits = ",\nallowable exit element(s): " + ExitLocList;
+                return "";
+            }
+            else
+            {
+                AllowedExits = ",\nallowable exit element(s):\n" + ExitLocList;
+                return "";
+            }
         }
     }
     for(TExitListIterator ELIT = ExitList.begin(); ELIT != ExitList.end(); ELIT++)
@@ -16925,11 +16957,29 @@ AnsiString TTrainController::GetExitLocationAndAt(int Caller, TExitList &ExitLis
         if(Track->TrackElementAt(736, *ELIT).ActiveTrackElementName != StartName)
         {
             Utilities->CallLogPop(1570);
-            return "";
+            if(ExitList.size() < 4)
+            {
+                AllowedExits = ",\nallowable exit element(s): " + ExitLocList;
+                return "";
+            }
+            else
+            {
+                AllowedExits = ",\nallowable exit element(s):\n" + ExitLocList;
+                return "";
+            }
         }
     }
     Utilities->CallLogPop(1569);
-    return " at " + StartName;
+    if(ExitList.size() < 4)
+    {
+        AllowedExits = ",\nallowable exit element(s): " + ExitLocList;
+        return " at " + StartName;
+    }
+    else
+    {
+        AllowedExits = ",\nallowable exit element(s):\n" + ExitLocList;
+        return " at " + StartName;
+    }
 }
 
 // ---------------------------------------------------------------------------

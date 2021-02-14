@@ -236,7 +236,7 @@ bool TMapComp:: operator()(const THVPair& lower, const THVPair& higher) const //
 
 TPrefDirElement::TPrefDirElement(TTrackElement ElementIn, int ELinkIn, int ELinkPosIn, int XLinkIn, int XLinkPosIn, int TrackVectorPositionIn)
     : TTrackElement(ElementIn), ELink(ELinkIn), ELinkPos(ELinkPosIn), XLink(XLinkIn), XLinkPos(XLinkPosIn), TrackVectorPosition(TrackVectorPositionIn),
-    CheckCount(9), IsARoute(false), AutoSignals(false), ConsecSignals(false)
+    CheckCount(9), IsARoute(false), AutoSignals(false), PrefDirRoute(false)
 {
     if(!EntryExitNumber())
     {
@@ -252,7 +252,7 @@ AnsiString TPrefDirElement::LogPrefDir() const
     // for debugging when passed as a call parameter
 {
     AnsiString LogString = "PthEl:-," + AnsiString(ELink) + "," + AnsiString(ELinkPos) + "," + AnsiString(XLink) + "," + AnsiString(XLinkPos) + "," +
-        AnsiString(EXNumber) + "," + AnsiString(TrackVectorPosition) + "," + AnsiString((short)AutoSignals) + "," + AnsiString((short)ConsecSignals) +
+        AnsiString(EXNumber) + "," + AnsiString(TrackVectorPosition) + "," + AnsiString((short)AutoSignals) + "," + AnsiString((short)PrefDirRoute) +
         ",ElementID," + AnsiString(ElementID) + "," + LocationName + "," + AnsiString(TrainIDOnElement) + "," + AnsiString(TrainIDOnBridgeTrackPos01) + "," +
         AnsiString(TrainIDOnBridgeTrackPos23);
 
@@ -529,12 +529,12 @@ Graphics::TBitmap *TPrefDirElement::GetPrefDirGraphicPtr()
 
 // ---------------------------------------------------------------------------
 
-Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool ConsecSignalsRoute)
+Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool PrefDirRoute)
 /*
       As above but for route graphics.
 */
 {
-    if(!AutoSigsFlag && !ConsecSignalsRoute)
+    if(!AutoSigsFlag && !PrefDirRoute)
     {
         if(SpeedTag == 64)
             return RailGraphics->LinkNonSigRouteGraphicsPtr[16]; // intercept diagonal buffers
@@ -601,7 +601,7 @@ Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool C
             return RailGraphics->LinkNonSigRouteGraphicsPtr[EXNumber];
     }
 
-    else if(!AutoSigsFlag && ConsecSignalsRoute)
+    else if(!AutoSigsFlag && PrefDirRoute)
     {
         if(SpeedTag == 64)
             return RailGraphics->LinkSigRouteGraphicsPtr[16]; // intercept diagonal buffers
@@ -825,16 +825,16 @@ Graphics::TBitmap *TPrefDirElement::GetDirectionPrefDirGraphicPtr() const
 
 // ---------------------------------------------------------------------------
 
-Graphics::TBitmap *TPrefDirElement::GetDirectionRouteGraphicPtr(bool AutoSigsFlag, bool ConsecSignalsRoute) const
+Graphics::TBitmap *TPrefDirElement::GetDirectionRouteGraphicPtr(bool AutoSigsFlag, bool PrefDirRoute) const
 /*
       Get route direction graphic.  Enter with all set apart from EXGraphic & EntryDirectionGraphic
 */
 {
     if((ELink > 0) && (ELink < 10) && (ELink != 5))
     {
-        if(!AutoSigsFlag && !ConsecSignalsRoute)
+        if(!AutoSigsFlag && !PrefDirRoute)
             return RailGraphics->DirectionNonSigRouteGraphicsPtr[ELink];
-        else if(!AutoSigsFlag && ConsecSignalsRoute)
+        else if(!AutoSigsFlag && PrefDirRoute)
             return RailGraphics->DirectionSigRouteGraphicsPtr[ELink];
         else
             return RailGraphics->DirectionRouteAutoSigsGraphicsPtr[ELink];
@@ -879,7 +879,7 @@ bool TPrefDirElement:: operator != (TPrefDirElement RHElement)
 
 TTrack::TActiveLevelCrossing::TActiveLevelCrossing()
 {
-    ConsecSignals = false;
+    TypeOfRoute = 0;
     ReducedTimePenalty = false;
     BarrierState = Up;
     ChangeDuration = 0.0;
@@ -907,7 +907,7 @@ TTrack::TTrack()
     RouteFailMessage = "Unable to set a route:" + NL + NL + "it may be unreachable; " + NL + NL +
         "reachable but with too many different directions leading away from the start point  - set some points on the route required; " + NL + NL +
         "blocked by a train, another route or a changing level crossing; " + NL + NL +
-        "or invalid - possibly due to a preferred direction mismatch or a missed signal in a green or blue route.";
+        "or invalid - possibly due to a preferred direction mismatch, or a missed signal in a blue route or green route restricted to consecutive signals.";
 
     GapFlashGreen = new TGraphicElement;
     GapFlashRed = new TGraphicElement;
@@ -2058,25 +2058,12 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
 void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement TempTrackElement, int HLocInput, int VLocInput, bool &TrackLinkingRequiredFlag,
     bool InternalChecks)
     // new at v2.2.0 - similar to above but keeping speed & length attributes (for pasting) and also pastes location names
-    // NB experimental: - need to change all caller numbers & check thoroughly if release
-    // as is if single elements have location or platform names then have message that names fail to align when mouse over
-    // need to deal with this if release - it's because ActiveTrackElementName is cleared in the new function, if not a single element
-    // then set when call SearchForAndUpdateLocationName. Maybe instead of clearing can set to the InactiveTrackElementName at the same location?
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotPastedTrackElementWithAttributes," + AnsiString(HLocInput) + "," +
         AnsiString(VLocInput) + "," + AnsiString((short)InternalChecks));
     bool PlatAllowedFlag = false;
 
     TrackLinkingRequiredFlag = false;
-/*
-      Not erase, that covered separately.
-      First check if Current SpeedButton assigned, then check if a platform and only
-      permit if an appropriate trackpiece already there & not a same platform there.
-      - can't enter a platform without track first.
-      Then for non-platforms, check if a track piece already present at location &
-      reject if so.
-*/
-
     TLocationNameMultiMapEntry LocationNameEntry;
 
     LocationNameEntry.first = "";
@@ -3224,7 +3211,7 @@ void TTrack::SaveSessionBarriersDownVector(int Caller, std::ofstream &OutFile)
     for(int x = 0; x < VecSize; x++)
     {
         TActiveLevelCrossing TALC = Track->BarriersDownVector.at(x);
-        Utilities->SaveFileInt(OutFile, TALC.ConsecSignals);  //changed to int from bool in v2.6.0
+        Utilities->SaveFileInt(OutFile, TALC.TypeOfRoute);  //changed to int from bool in v2.6.0
         Utilities->SaveFileBool(OutFile, TALC.ReducedTimePenalty);
         Utilities->SaveFileInt(OutFile, (short)TALC.BarrierState);
         Utilities->SaveFileDouble(OutFile, TALC.ChangeDuration);
@@ -3247,7 +3234,7 @@ void TTrack::SaveChangingLCVector(int Caller, std::ofstream &OutFile) //used onl
     for(int x = 0; x < VecSize; x++)
     {
         TActiveLevelCrossing TALC = Track->ChangingLCVector.at(x);
-        Utilities->SaveFileInt(OutFile, TALC.ConsecSignals); //changed to int from bool in v2.6.0
+        Utilities->SaveFileInt(OutFile, TALC.TypeOfRoute); //changed to int from bool in v2.6.0
         Utilities->SaveFileBool(OutFile, TALC.ReducedTimePenalty);
         Utilities->SaveFileInt(OutFile, (short)TALC.BarrierState);
         Utilities->SaveFileDouble(OutFile, TALC.ChangeDuration);
@@ -3268,7 +3255,7 @@ bool TTrack::CheckActiveLCVector(int Caller, std::ifstream &VecFile)
 
     for(int x = 0; x < VecSize; x++)
     {
-        if(!Utilities->CheckFileInt(VecFile, 0, 2))   //changed from bool at v2.6.0 to allow ConsecSignals == 2 for barriers manually lowered
+        if(!Utilities->CheckFileInt(VecFile, 0, 2))   //changed from bool at v2.6.0 to allow TypeOfRoute == 2 for barriers manually lowered
         {
             Utilities->CallLogPop(1970);
             return false;
@@ -3323,7 +3310,7 @@ void TTrack::LoadBarriersDownVector(int Caller, std::ifstream &VecFile)
     for(int x = 0; x < VecSize; x++)
     {
         TActiveLevelCrossing TALC;
-        TALC.ConsecSignals = Utilities->LoadFileInt(VecFile);  //changed to int from bool in v2.6.0
+        TALC.TypeOfRoute = Utilities->LoadFileInt(VecFile);  //changed to int from bool in v2.6.0
         TALC.ReducedTimePenalty = Utilities->LoadFileBool(VecFile);
         TALC.BarrierState = TBarrierState(Utilities->LoadFileInt(VecFile));
         TALC.ChangeDuration = Utilities->LoadFileDouble(VecFile);
@@ -5630,7 +5617,7 @@ void TTrack::SetLinkedLevelCrossingBarrierAttributes(int Caller, int HLoc, int V
 
 // ---------------------------------------------------------------------------
 
-void TTrack::SetLinkedManualLCs(int Caller, int HLoc, int VLoc) //sets ConsecSignals to 2 for all linked LCs
+void TTrack::SetLinkedManualLCs(int Caller, int HLoc, int VLoc) //sets TypeOfRoute to 2 for all linked LCs
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetLinkedManualLCs," + AnsiString(HLoc) + "," + AnsiString(VLoc));
 // work upwards setting all to manual
@@ -5671,13 +5658,13 @@ void TTrack::SetLinkedManualLCs(int Caller, int HLoc, int VLoc) //sets ConsecSig
 // ---------------------------------------------------------------------------
 
 void TTrack::SetBarriersDownLCToManual(int Caller, int HLoc, int VLoc)
-{// Set ConsecSignals value to 2 to indicate barriers manually closed
+{// Set TypeOfRoute value to 2 to indicate barriers manually closed
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetBarriersDownLCToManual," + AnsiString(HLoc) + "," + AnsiString(VLoc));
     for(unsigned int x = 0; x < BarriersDownVector.size(); x++)
     {
         if((BarriersDownVector.at(x).HLoc == HLoc) && (BarriersDownVector.at(x).VLoc == VLoc))
         {
-            BarriersDownVector.at(x).ConsecSignals = 2;
+            BarriersDownVector.at(x).TypeOfRoute = 2;
             break;
         }
     }
@@ -5748,7 +5735,7 @@ bool TTrack::IsBarrierDownVectorAtHVManual(int Caller, int HLoc, int VLoc, int &
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsBarrierDownVectorAtHVManual," + AnsiString(HLoc) + "," + AnsiString(VLoc));
     for(unsigned int x = 0; x < BarriersDownVector.size(); x++)
     {
-        if((BarriersDownVector.at(x).HLoc == HLoc) && (BarriersDownVector.at(x).VLoc == VLoc) && (BarriersDownVector.at(x).ConsecSignals == 2))
+        if((BarriersDownVector.at(x).HLoc == HLoc) && (BarriersDownVector.at(x).VLoc == VLoc) && (BarriersDownVector.at(x).TypeOfRoute == 2))
         {
             BDVectorPos = x;
             Utilities->CallLogPop(2249);
@@ -5762,7 +5749,7 @@ bool TTrack::IsBarrierDownVectorAtHVManual(int Caller, int HLoc, int VLoc, int &
 
 // ---------------------------------------------------------------------------
 
-void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, int ConsecSignals, TDisplay *Disp, bool Manual)
+void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, int TypeOfRoute, TDisplay *Disp, bool Manual)
     // open to trains
     // BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
 {
@@ -5798,11 +5785,11 @@ void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementS
         // Only need to plot the coloured graphic for the HLoc & VLoc in the vector as that is the route that is causeing the LC to flash
         Graphics::TBitmap *RouteGraphic;
         Graphics::TBitmap *BaseGraphic = RailGraphics->gl1;
-        if(ConsecSignals == 1)
+        if(TypeOfRoute == 1)
         {
             RouteGraphic = RailGraphics->LinkSigRouteGraphicsPtr[0];
         }
-        else if(ConsecSignals == 0)
+        else if(TypeOfRoute == 0)
         {
             RouteGraphic = RailGraphics->LinkNonSigRouteGraphicsPtr[0];
         }
@@ -5989,11 +5976,11 @@ void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementS
         // now plot graphics, LStep is smallest & RStep largest
         Graphics::TBitmap *RouteGraphic;
         Graphics::TBitmap *BaseGraphic = RailGraphics->gl2;
-        if(ConsecSignals == 1)
+        if(TypeOfRoute == 1)
         {
             RouteGraphic = RailGraphics->LinkSigRouteGraphicsPtr[1];
         }
-        else if(ConsecSignals == 0)
+        else if(TypeOfRoute == 0)
         {
             RouteGraphic = RailGraphics->LinkNonSigRouteGraphicsPtr[1];
         }
@@ -6475,7 +6462,7 @@ void TTrack::PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers(int Caller,
 
 // ---------------------------------------------------------------------------
 
-void TTrack::PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseElementSpeedTag, int HLoc, int VLoc, int ConsecSignals, TDisplay *Disp)
+void TTrack::PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseElementSpeedTag, int HLoc, int VLoc, int TypeOfRoute, TDisplay *Disp)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotBaseElementsOnly," + AnsiString(HLoc) + "," + AnsiString(VLoc));
     Graphics::TBitmap *RouteGraphic;
@@ -6483,11 +6470,11 @@ void TTrack::PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseEle
 
     if(BaseElementSpeedTag == 1)
     {
-        if(ConsecSignals == 1)
+        if(TypeOfRoute == 1)
         {
             RouteGraphic = RailGraphics->LinkSigRouteGraphicsPtr[0];
         }
-        else if(ConsecSignals == 0)
+        else if(TypeOfRoute == 0)
         {
             RouteGraphic = RailGraphics->LinkNonSigRouteGraphicsPtr[0];
         }
@@ -6502,11 +6489,11 @@ void TTrack::PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseEle
     else
     {
         BaseGraphic = RailGraphics->gl2;
-        if(ConsecSignals == 1)
+        if(TypeOfRoute == 1)
         {
             RouteGraphic = RailGraphics->LinkSigRouteGraphicsPtr[1];
         }
-        else if(ConsecSignals == 0)
+        else if(TypeOfRoute == 0)
         {
             RouteGraphic = RailGraphics->LinkNonSigRouteGraphicsPtr[1];
         }
@@ -11471,7 +11458,7 @@ void TOnePrefDir::LoadOldPrefDir(int Caller, std::ifstream &VecFile)
         LoadPrefDirElement.CheckCount = TempInt;
         LoadPrefDirElement.IsARoute = Utilities->LoadFileBool(VecFile);
         LoadPrefDirElement.AutoSignals = Utilities->LoadFileBool(VecFile);
-        LoadPrefDirElement.ConsecSignals = Utilities->LoadFileBool(VecFile);
+        LoadPrefDirElement.PrefDirRoute = Utilities->LoadFileBool(VecFile);
         if(!(LoadPrefDirElement.IsARoute))
         {
             LoadPrefDirElement.EXGraphicPtr = LoadPrefDirElement.GetPrefDirGraphicPtr();
@@ -11479,9 +11466,9 @@ void TOnePrefDir::LoadOldPrefDir(int Caller, std::ifstream &VecFile)
         }
         else
         {
-            LoadPrefDirElement.EXGraphicPtr = LoadPrefDirElement.GetRouteGraphicPtr(LoadPrefDirElement.AutoSignals, LoadPrefDirElement.ConsecSignals);
+            LoadPrefDirElement.EXGraphicPtr = LoadPrefDirElement.GetRouteGraphicPtr(LoadPrefDirElement.AutoSignals, LoadPrefDirElement.PrefDirRoute);
             LoadPrefDirElement.EntryDirectionGraphicPtr = LoadPrefDirElement.GetDirectionRouteGraphicPtr(LoadPrefDirElement.AutoSignals,
-                LoadPrefDirElement.ConsecSignals);
+                LoadPrefDirElement.PrefDirRoute);
         }
         StorePrefDirElement(5, LoadPrefDirElement);
         Utilities->LoadFileString(VecFile); // marker
@@ -11521,7 +11508,7 @@ void TOnePrefDir::LoadPrefDir(int Caller, std::ifstream &VecFile)
         LoadPrefDirElement.CheckCount = TempInt;
         LoadPrefDirElement.IsARoute = Utilities->LoadFileBool(VecFile);
         LoadPrefDirElement.AutoSignals = Utilities->LoadFileBool(VecFile);
-        LoadPrefDirElement.ConsecSignals = Utilities->LoadFileBool(VecFile);
+        LoadPrefDirElement.PrefDirRoute = Utilities->LoadFileBool(VecFile);
         if(!(LoadPrefDirElement.IsARoute))
         {
             LoadPrefDirElement.EXGraphicPtr = LoadPrefDirElement.GetPrefDirGraphicPtr();
@@ -11529,9 +11516,9 @@ void TOnePrefDir::LoadPrefDir(int Caller, std::ifstream &VecFile)
         }
         else
         {
-            LoadPrefDirElement.EXGraphicPtr = LoadPrefDirElement.GetRouteGraphicPtr(LoadPrefDirElement.AutoSignals, LoadPrefDirElement.ConsecSignals);
+            LoadPrefDirElement.EXGraphicPtr = LoadPrefDirElement.GetRouteGraphicPtr(LoadPrefDirElement.AutoSignals, LoadPrefDirElement.PrefDirRoute);
             LoadPrefDirElement.EntryDirectionGraphicPtr = LoadPrefDirElement.GetDirectionRouteGraphicPtr(LoadPrefDirElement.AutoSignals,
-                LoadPrefDirElement.ConsecSignals);
+                LoadPrefDirElement.PrefDirRoute);
         }
         StorePrefDirElement(0, LoadPrefDirElement);
         AnsiString MarkerString = Utilities->LoadFileString(VecFile); // marker
@@ -11622,7 +11609,7 @@ bool TOnePrefDir::CheckOnePrefDir(int Caller, int NumberOfActiveElements, std::i
             return false;
         }
         VecFile >> TempInt;
-        if((TempInt != 0) && (TempInt != 1)) // ConsecSignals
+        if((TempInt != 0) && (TempInt != 1)) // PrefDirRoute
         {
             Utilities->CallLogPop(1148);
             return false;
@@ -11657,7 +11644,7 @@ void TOnePrefDir::SavePrefDirVector(int Caller, std::ofstream &VecFile)
         VecFile << PrefDirVector.at(y).CheckCount << '\n';
         Utilities->SaveFileBool(VecFile, PrefDirVector.at(y).IsARoute);
         Utilities->SaveFileBool(VecFile, PrefDirVector.at(y).AutoSignals);
-        Utilities->SaveFileBool(VecFile, PrefDirVector.at(y).ConsecSignals);
+        Utilities->SaveFileBool(VecFile, PrefDirVector.at(y).PrefDirRoute);
         if(y == (NumberOfPrefDirElements - 1)) // last element, write a longer delimiter
         {
             VecFile << "************" << '\0' << '\n'; // marker
@@ -11690,7 +11677,7 @@ void TOnePrefDir::SaveSearchVector(int Caller, std::ofstream &VecFile)
         VecFile << SearchVector.at(y).CheckCount << '\n';
         Utilities->SaveFileBool(VecFile, SearchVector.at(y).IsARoute);
         Utilities->SaveFileBool(VecFile, SearchVector.at(y).AutoSignals);
-        Utilities->SaveFileBool(VecFile, SearchVector.at(y).ConsecSignals);
+        Utilities->SaveFileBool(VecFile, SearchVector.at(y).PrefDirRoute);
         if(y == (NumberOfSearchElements - 1)) // last element, write a longer delimiter
         {
             VecFile << "************" << '\0' << '\n'; // note:  << doesn't write the null string terminator character automatically
@@ -12931,7 +12918,7 @@ bool TOnePrefDir::GetStartAndEndPrefDirElements(int Caller, TPrefDirElement &Sta
 // TOneRoute
 // ---------------------------------------------------------------------------
 
-bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TOnePrefDir *EveryPrefDir, bool ConsecSignalsRoute, bool AutoSigsFlag)
+bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TOnePrefDir *EveryPrefDir, bool AutoSigsFlag)
 {
 /* General:
       The basis of all these route setting functions, preferred and non-preferred, is that a SearchVector is set up
@@ -12944,36 +12931,6 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
       a route - see SetRemainingSearchVectorValues.  The call order is GetStart....; GetNext...,
       which includes the Search... function; [SetRemainingSearchVectorValues for non-preferred routes only], then
       ConvertAndAdd.......
-
-      Note that originally intended to allow preferred routes without consecutive signals, hence ConsecSignalsRoute flag.
-      Later decided to enforce ConsecSignalsRoute for preferred routes, but left original code as was.
-
-      Specific:
-
-      Function returns true for a valid start element, false, with a message, if not.
-      ClearRoute to empty both PrefDirVector & SearchVector
-      Check selection matches a TrackElement & ensure a signal/buffers/continuation if using ConsecSignals,
-      else disallow points, bridge or crossover.
-      Disallow if train on element.
-
-      Set default values for parameters that are retained in AllRoutes:-
-       StartSelectionRouteID = route that selection starts in or adjacent to end of;
-       StartRoutePosition = trackvectornumber of the element to be used as the start of the route;
-       StartElement1 = the 1st or only TPrefDirElement of the route start element
-       StartElement2 = the 2nd (if exists) TPrefDirElement of the start element (can be a max of 2 PrefDirs for
-      a given selection that isn't points, bridge or crossover;
-
-      Check selection corresponds to at least 1 PrefDir element in EveryPrefDir & set StartElement1 & possibly also 2.  If
-      signal/buffers/continuation for ConsecSignalsRoute, or buffers/continuation for not ConsecSignalsRoute,
-      ensure the PrefDir corresponds to the direction of the signal or away from the buffers/continuation.
-      Check if in an existing route.  Disallow if start anywhere except at end of the route, if the route end is an 'End'
-      configuration (nowhere to go), and if the end of the route links forwards into another route.
-      If these tests passed set StartSelectionRouteID, StartElement1 and StartRoutePosition to correspond to the route end element
-      and blank StartElement2 (only want to use the route element), then return true.
-      Check also that doesn't lie in >1 route & give error message if so - should never happen.
-      Check if adjacent to start or end of an existing route & disallow.
-      The start element (with AutoSignals member set as AutoSigs flag) is stored in SearchVector, unless an existing route element is to
-      be used as the start element.
 */
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetPreferredRouteStartElement," + AnsiString(HLoc) + "," +
         AnsiString(VLoc) + "," + AnsiString((short)AutoSigsFlag));
@@ -12987,30 +12944,17 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
         Utilities->CallLogPop(199);
         return false;
     }
-    if(ConsecSignalsRoute)
+    if(AutoSigsFlag && (TrackElement.TrackType == Buffers)) // added at v1.2.0
     {
-        if(AutoSigsFlag && (TrackElement.TrackType == Buffers)) // added at v1.2.0
-        {
-            TrainController->StopTTClockMessage(80, "Can't create an automatic signal route from buffers");
-            Utilities->CallLogPop(1996);
-            return false;
-        }
-        else if((TrackElement.TrackType != SignalPost) && (TrackElement.TrackType != Buffers) && (TrackElement.TrackType != Continuation))
-        {
-            TrainController->StopTTClockMessage(7, "Must select a valid signal, buffers or continuation");
-            Utilities->CallLogPop(200);
-            return false;
-        }
+        TrainController->StopTTClockMessage(80, "Can't create an automatic signal route from buffers");
+        Utilities->CallLogPop(1996);
+        return false;
     }
-    else
+    else if((TrackElement.TrackType != SignalPost) && (TrackElement.TrackType != Buffers) && (TrackElement.TrackType != Continuation))
     {
-        if((TrackElement.TrackType == Points) || (TrackElement.TrackType == Bridge) || (TrackElement.TrackType == Crossover))
-        {
-            TrainController->StopTTClockMessage(8, "Can't select points, bridge or crossover when route building");
-// makes later adjacent route checks too complicated
-            Utilities->CallLogPop(201);
-            return false;
-        }
+        TrainController->StopTTClockMessage(7, "Must select a valid signal, buffers or continuation");
+        Utilities->CallLogPop(200);
+        return false;
     }
 
     if(Track->IsLCAtHV(18, HLoc, VLoc))
@@ -13052,7 +12996,7 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
     TPrefDirElement BlankElement;
 
     StartElement1 = BlankElement;
-    StartElement2 = BlankElement;
+    StartElement2 = BlankElement; //not used in this routine but used in GetNextPreferred.... though could probably dispense with it there
 // check it's in a PrefDir (could be 2 entries for two possible PrefDirs, can only select single track elements so can't have more than 2 PrefDirs)
     bool InPrefDirFlag = false;
 
@@ -13072,45 +13016,20 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
         int b = PrefDirVecPos[x];
         if(b > -1)
         {
-            if(ConsecSignalsRoute)
+            // only allow the appropriate exit route to be searched
+            if(((TrackElement.TrackType == SignalPost) && (EveryPrefDir->GetFixedPrefDirElementAt(15, b).Config[EveryPrefDir->GetFixedPrefDirElementAt(16,
+                b).XLinkPos] == Signal)) || ((TrackElement.TrackType == Buffers) && (EveryPrefDir->GetFixedPrefDirElementAt(17,
+                b).Config[EveryPrefDir->GetFixedPrefDirElementAt(18, b).XLinkPos] == Connection)) ||
+                ((TrackElement.TrackType == Continuation) && (EveryPrefDir->GetFixedPrefDirElementAt(19,
+                b).Config[EveryPrefDir->GetFixedPrefDirElementAt(20, b).XLinkPos] == Connection)))
             {
-                // only allow the appropriate exit route to be searched
-                if(((TrackElement.TrackType == SignalPost) && (EveryPrefDir->GetFixedPrefDirElementAt(15, b).Config[EveryPrefDir->GetFixedPrefDirElementAt(16,
-                    b).XLinkPos] == Signal)) || ((TrackElement.TrackType == Buffers) && (EveryPrefDir->GetFixedPrefDirElementAt(17,
-                    b).Config[EveryPrefDir->GetFixedPrefDirElementAt(18, b).XLinkPos] == Connection)) ||
-                    ((TrackElement.TrackType == Continuation) && (EveryPrefDir->GetFixedPrefDirElementAt(19,
-                    b).Config[EveryPrefDir->GetFixedPrefDirElementAt(20, b).XLinkPos] == Connection)))
+                InPrefDirFlag = true;
+                StartElement1 = EveryPrefDir->GetFixedPrefDirElementAt(21, b);
+                if(AutoSigsFlag)
                 {
-                    InPrefDirFlag = true;
-                    StartElement1 = EveryPrefDir->GetFixedPrefDirElementAt(21, b);
-                    if(AutoSigsFlag)
-                    {
-                        StartElement1.AutoSignals = true;
-                    }
-                    StartElement1.ConsecSignals = true;
-                    StartElement2 = BlankElement;
+                    StartElement1.AutoSignals = true;
                 }
-            }
-            else
-            {
-                // only allow the appropriate exit route to be searched
-                // AutoSignals & ConsecSignals stay false for not ConsecSignalsRoute
-                if(((TrackElement.TrackType == Buffers) && (EveryPrefDir->GetFixedPrefDirElementAt(22, b).Config[EveryPrefDir->GetFixedPrefDirElementAt(23,
-                    b).XLinkPos] == Connection)) || ((TrackElement.TrackType == Continuation) && (EveryPrefDir->GetFixedPrefDirElementAt(24,
-                    b).Config[EveryPrefDir->GetFixedPrefDirElementAt(25, b).XLinkPos] == Connection)))
-                {
-                    InPrefDirFlag = true;
-                    StartElement1 = EveryPrefDir->GetFixedPrefDirElementAt(26, b);
-                    StartElement2 = BlankElement;
-                }
-                else if((TrackElement.TrackType != Buffers) && (TrackElement.TrackType != Continuation))
-                {
-                    InPrefDirFlag = true;
-                    if(StartElement1.TrackVectorPosition == -1)
-                        StartElement1 = EveryPrefDir->GetFixedPrefDirElementAt(27, b);
-                    else
-                        StartElement2 = EveryPrefDir->GetFixedPrefDirElementAt(28, b);
-                }
+                StartElement1.PrefDirRoute = true;
             }
         }
     }
@@ -13162,11 +13081,7 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
         {
             StartElement1.AutoSignals = true;
         }
-        if(ConsecSignalsRoute)
-        {
-            StartElement1.ConsecSignals = true;
-        }
-        StartElement2 = BlankElement; // only use the route element
+        StartElement1.PrefDirRoute = true;
         StartRoutePosition = StartElement1.TrackVectorPosition;
         Utilities->CallLogPop(209);
         return true; // all retained values (StartElement1 & maybe 2; StartRoutePosition) set
@@ -13211,57 +13126,50 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
 
 // ---------------------------------------------------------------------------
 
-bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOnePrefDir *EveryPrefDir, bool ConsecSignalsRoute, bool AutoSigsFlag,
+bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOnePrefDir *EveryPrefDir, bool ConsecSignals, bool AutoSigsFlag,
     IDInt &ReqPosRouteID, bool &PointsChanged)
 
 /*
-      [Note this was written when it was intended to have routes confined to preferred direction elements but with a choice of whether
-      they had to run from signal to signal (bool ConsecSignalsRoute true), or not (bool ConsecSignalsRoute false), as well as using
-      automatic signals or not.  Since then it was decided only to allow these routes to run from signal to signal, so ConsecSignalsRoute
-      is always true when this routine is called.  The routine could be made much simpler, but has been left as is because it works (at
-      least it has done so far), and it allows the original option to be used if it ever seems appropriate in the future.]
-         *
-      Return true if select valid next element, in which case the route is set & stored.  Return false for an invalid next element.
-         *
-      Declare integers EndPosition (the position used) and
-      ReqPosRouteID to hold (when required) the existing route selected, this being set to -1 for not used.
+      Return true if select valid next element, in which case the route is set & stored in SearchVector.  Return false for an invalid next element.
+
+      Declare integers EndPosition (the position used) and ReqPosRouteID to hold (when required) the existing route selected (for linking to an existing route),
+      this being set to -1 for not used.
       Check if selection is a valid track element, cancel if not, if select original start element or if select buffers
       with AutoSigsFlag set - would have no way out and no way to cancel the route with a train at the buffers.
-      Check correct type of element - signal/buffers/continuation if ConsecSignalsRoute, else not points, bridge or crossover.
+      Check correct type of element - signal/buffers/continuation.
       Fail if train on element, or if selection not in EveryPrefDir.  Otherwise set EndElement1 & possibly also
-      EndElement2 corresponding to the 2 possible PrefDir elements (similar to StartElement1 & 2 above).
+      EndElement2 corresponding to the 2 possible PrefDir elements).
       Check if selection is first element in an existing route & if so set ReqPosRouteID, EndElement1, and set EndElement2 to
       blank as can only be one route at that element (can't select bridges).  Fail if in a route & not at start, or at start but route
       linked forward to another route.
       Check & fail if adjacent to start or end of an existing route, or if select the route that selected at start (though earlier check
       for same position as start should cover this)
-         *
+
       If there's a StartSelectionRouteID then StartElement1 will be set to the last entry in the selected route so use
       SearchForPreferredRoute to search for the selected end element from this start element.  If succeed then set the search vector
       graphics using SetRouteSearchVectorGraphics(AutoSigsFlag) & return true, for Interface to handle the flashing & time delay.  After the
       delay completes the Interface flasher calls ConvertAndAddPreferredRouteSearchVector to add the new route to the AllRoutesVectorPtr.
-      If the search fails the return false.
+      If the search fails then return false.
       If there isn't a StartSelectionRouteID then the starting element is not already in a route, so it will have been stored
       in the SearchVector to ensure it's entered as part of the new route.
       First check whether the selected element (either EndElement1 or 2) is adjacent to the starting position and if so set the route to go
       directly to it (as opposed to going round a long loop to get to it just because that XLinkPos happens to be chosen first.  If not
-      adjacent then first search on EndElement1, and if fail search on EndElement2 providing it's set.  If succeed set
+      adjacent then first search on EndElement1, and if fail search on EndElement2 providing it's set.  If succeed
       set the search vector graphics as above and return.  If reach end of function then have failed to find a valid element,
       so return false, with an appropriate message if ConsecSignalsRoute set.
 */
 
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetNextPreferredRouteElement," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc) + "," + AnsiString((short)AutoSigsFlag));
+        AnsiString(VLoc) + "," + AnsiString((short)ConsecSignals) + "," + AnsiString((short)AutoSigsFlag));
     int EndPosition; // the position selected
 
     Track->LCFoundInAutoSigsRoute = false;
-    Track->LCFoundInAutoSigsRouteMessageGiven = false;
+    Track->SuppressRouteFailMessage = false;
     TotalSearchCount = 0;
     ReqPosRouteID = IDInt(-1); // default value for not used
     TTrackElement TrackElement;
     TPrefDirElement EndElement1, EndElement2, BlankElement; // all blank to begin with, can only have max of 2 PrefDirs on a
-
     // given element as can't select 2-track elements
     if(!(Track->FindNonPlatformMatch(8, HLoc, VLoc, EndPosition, TrackElement))) // return if can't find one
     {
@@ -13291,24 +13199,11 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
             return false;
         }
     }
-    if(ConsecSignalsRoute)
+    if((TrackElement.TrackType != SignalPost) && (TrackElement.TrackType != Buffers) && (TrackElement.TrackType != Continuation))
     {
-        if((TrackElement.TrackType != SignalPost) && (TrackElement.TrackType != Buffers) && (TrackElement.TrackType != Continuation))
-        {
-            TrainController->StopTTClockMessage(20, "Must select a valid signal, buffers or continuation");
-            Utilities->CallLogPop(217);
-            return false;
-        }
-    }
-    else // not needed now can't have preferred non-consec signals routes, but leave in
-    {
-        if((TrackElement.TrackType == Points) || (TrackElement.TrackType == Bridge) || (TrackElement.TrackType == Crossover))
-        {
-            TrainController->StopTTClockMessage(21, "Can't select points, bridge or crossover when building a route");
-// makes later adjacent route checks too complicated
-            Utilities->CallLogPop(218);
-            return false;
-        }
+        TrainController->StopTTClockMessage(20, "Must select a valid signal, buffers or continuation");
+        Utilities->CallLogPop(217);
+        return false;
     }
 
 // check if train on element
@@ -13477,7 +13372,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
 // and don't want to add it again
     if(StartSelectionRouteID > -1)
     {
-        if(SearchForPreferredRoute(0, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition,
+        if(SearchForPreferredRoute(0, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
             AutoSigsFlag))
         {
             SetRouteSearchVectorGraphics(0, AutoSigsFlag, true); // change graphic colour to the route colour
@@ -13488,10 +13383,12 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
             Utilities->CallLogPop(227);
             return true;
         }
-        else if(ConsecSignalsRoute && !Track->LCFoundInAutoSigsRouteMessageGiven)
+        else if(!Track->SuppressRouteFailMessage)
+        {        //corrected at v2.7.0 - brackets were missed earlier so if SearchForPreferredRoute failed & else condition failed too then returned false with no message
             TrainController->StopTTClockMessage(30, Track->RouteFailMessage);
-        Utilities->CallLogPop(228);
-        return false;
+            Utilities->CallLogPop(228);
+            return false;
+        }
     }
     else
     {
@@ -13502,7 +13399,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
 // note that a blank element will have XLinkPos set to -1
         if((StartElement1.XLinkPos > -1) && (StartElement1.Conn[StartElement1.XLinkPos] == EndPosition))
         {
-            if(SearchForPreferredRoute(1, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition,
+            if(SearchForPreferredRoute(1, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
                 AutoSigsFlag))
             {
                 SetRouteSearchVectorGraphics(1, AutoSigsFlag, true); // change graphic colour to the route colour
@@ -13515,7 +13412,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
             }
             else
             {
-                if(!Track->LCFoundInAutoSigsRouteMessageGiven)
+                if(!Track->SuppressRouteFailMessage)
                     TrainController->StopTTClockMessage(31, Track->RouteFailMessage);
                 Utilities->CallLogPop(230);
                 return false;
@@ -13523,7 +13420,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         }
         else if((StartElement2.XLinkPos > -1) && (StartElement2.Conn[StartElement2.XLinkPos] == EndPosition))
         {
-            if(SearchForPreferredRoute(2, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition,
+            if(SearchForPreferredRoute(2, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
                 AutoSigsFlag))
             {
                 SetRouteSearchVectorGraphics(2, AutoSigsFlag, true); // change graphic colour to the route colour
@@ -13536,7 +13433,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
             }
             else
             {
-                if(!Track->LCFoundInAutoSigsRouteMessageGiven)
+                if(!Track->SuppressRouteFailMessage)
                     TrainController->StopTTClockMessage(32, Track->RouteFailMessage);
                 Utilities->CallLogPop(232);
                 return false;
@@ -13551,7 +13448,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         if(StartElement1.XLinkPos == BestPos)
         {
             TotalSearchCount = 0; // added at v0.4f to give each exit direction a full chance to find required position
-            if(SearchForPreferredRoute(3, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition,
+            if(SearchForPreferredRoute(3, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
                 AutoSigsFlag))
             {
                 SetRouteSearchVectorGraphics(3, AutoSigsFlag, true); // change graphic colour to the route colour
@@ -13565,7 +13462,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
             else if(StartElement2.TrackVectorPosition > -1)
             {
                 TotalSearchCount = 0; // added at v0.4f to give each exit direction a full chance to find required position
-                if(SearchForPreferredRoute(4, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition,
+                if(SearchForPreferredRoute(4, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
                     AutoSigsFlag))
                 {
                     SetRouteSearchVectorGraphics(4, AutoSigsFlag, true); // change graphic colour to the route colour
@@ -13581,7 +13478,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         else if(StartElement2.TrackVectorPosition > -1)
         {
             TotalSearchCount = 0; // added at v0.4f to give each exit direction a full chance to find required position
-            if(SearchForPreferredRoute(5, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition,
+            if(SearchForPreferredRoute(5, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
                 AutoSigsFlag))
             {
                 SetRouteSearchVectorGraphics(6, AutoSigsFlag, true); // change graphic colour to the route colour
@@ -13592,7 +13489,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
                 Utilities->CallLogPop(1857);
                 return true;
             }
-            else if(SearchForPreferredRoute(8, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition,
+            else if(SearchForPreferredRoute(8, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
                 AutoSigsFlag))
             {
                 SetRouteSearchVectorGraphics(7, AutoSigsFlag, true); // change graphic colour to the route colour
@@ -13605,10 +13502,10 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
             }
         }
         else if(StartElement1.XLinkPos == (1 - BestPos))
-    // added at v0.4d to use StartElement1 again with non-Best direction (may be only one & may not point in right direction
+    // added at v0.4d to use StartElement1 again with non-Best direction (may be only one & may not point in right direction)
         {
             TotalSearchCount = 0; // added at v0.4f to give each exit direction a full chance to find required position
-            if(SearchForPreferredRoute(9, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition,
+            if(SearchForPreferredRoute(9, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
                 AutoSigsFlag))
             {
                 SetRouteSearchVectorGraphics(8, AutoSigsFlag, true); // change graphic colour to the route colour
@@ -13621,7 +13518,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
             }
         }
     }
-    if(!Track->LCFoundInAutoSigsRouteMessageGiven)
+    if(!Track->SuppressRouteFailMessage)
         TrainController->StopTTClockMessage(33, Track->RouteFailMessage);
     Utilities->CallLogPop(235);
     return false;
@@ -13666,15 +13563,15 @@ void TOneRoute::RouteImageMarker(int Caller, Graphics::TBitmap *Bitmap) const
 // ---------------------------------------------------------------------------
 
 bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID,
-    TOnePrefDir *EveryPrefDir, bool ConsecSignalsRoute, int EndPosition, bool AutoSigsFlag)
+    TOnePrefDir *EveryPrefDir, bool ConsecSignals, int EndPosition, bool AutoSigsFlag)
 
 /*
       Brief:  similar to SearchForPrefDir but with a PrefDirElement instead of a TrackElement & with additional parameters.
-      PrefDirElement is the starting element from which to search, it is NOT stored in searchvector during this function.  If
-      it's an element that's not already in a route it will have been stored in SearchVector during GetPreferredRouteStartElement.
+      PrefDirElement is the starting element from which to search, it is NOT stored in searchvector during this function.  If it's an
+      element that's not already in a route it will have been stored in SearchVector during GetPreferredRouteStartElement.
       ReqPosRouteID is used when RequiredPosition is start of an existing route, else it's -1.
       Return false if any element (apart from RequiredPosition) is on an existing route.
-      Return false if not on a PrefDir with same ELink (can't check XLink as may not be set - if it's a leading point).
+      Return false if not on a PrefDir with same ELink (can't check XLink as may not be set - if it's a leading point in a recursive call - see later).
 
       Detail:  Function is a continuous loop as examine each element on a potential route, exiting only if find
       the required position (return true & leave Searchvector as set up) or if fail (erase all SearchVector entries
@@ -13690,9 +13587,9 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
       2 possible PrefDirs are for a leading point & its two trailing PrefDirs.
 
       Enter loop - note that PrefDirElement changes each time round the loop - check if PrefDirElement XLinkPos faces buffers
-      or a continuation, and fail if so. Check if reached a valid signal in ConsecSignalsRoute on any but firstpass
+      or a continuation, and fail if so. Check if reached a valid next signal in ConsecSignalsRoute on any but firstpass
       (nonrecursive firstpass starts at a valid signal, and recursive firstpass always starts at points so doesn't matter
-      for recursive calls), and fail if so as user should always select the next signal in a route.
+      for recursive calls), and fail if so as user should always select the next signal in a route if ConsecSignals set.
       Create a new TPrefDirElement - SearchElement, from PrefDirElement.Conn[XLinkPos], & set all FixedTrackPiece &
       TrackElement values, ELink & ELinkPos, and also XLink & XLinkPos unless element is a leading point.
       Check if element is already in searchvector (OK if a bridge & earlier entry on different track, but not OK if
@@ -13701,9 +13598,9 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
       Check & fail for a fouled diagonal (unless element is a leading point - these checked later).
       Check element in EveryPrefDir with same ELink value & set PrefDirElement1, & also 2 if element is
       a leading point where both trailing directions are in EveryPrefDir, if not fail.
-      Check if found RequiredPosition & that it's a signal/buffer/continuation if ConsecSignalsRoute set.  If OK save in SearchVector with
+      Check if found RequiredPosition & that it's a signal/buffer/continuation.  If OK save in SearchVector with
       AutoSignals member set if AutoSigsFlag set, then return true.
-      Check & fail if a buffer or continuation (if element = RequiredPosition will have succeeded in the above check.
+      Check & fail if a buffer or continuation (unless it is the RequiredPosition, in which case will have succeeded in the above check).
 
       Now check if a leading point and if so set XLinkPos to the 'set' exit & check if that XLink is in EveryPrefDir,
       by comparing with PrefDirElement1 or 2, fail if not.  If valid check for a fouled diagonal and fail if so.  If OK
@@ -13758,7 +13655,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             Utilities->CallLogPop(236);
             return false;
         }
-        if(!FirstPass && (ConsecSignalsRoute) && (PrefDirElement.Config[PrefDirElement.XLinkPos] == Signal))
+        if(!FirstPass && ConsecSignals && (PrefDirElement.Config[PrefDirElement.XLinkPos] == Signal))
         // reached a valid signal that isn't the required position, user should always select the next
         // signal in a route so have to fail
         // won't affect recurive searches as for them the first pass element is always a point
@@ -13935,29 +13832,28 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
 // check if found it
         if(SearchElement.TrackVectorPosition == RequiredPosition)
         {
-// need to ensure a signal/buffer/continuation if ConsecSignalsRoute set,
-            if(ConsecSignalsRoute && (SearchElement.Config[SearchElement.XLinkPos] != Signal) && (SearchElement.Config[SearchElement.XLinkPos] != End) &&
+// need to ensure a signal/buffer/continuation
+            if((SearchElement.Config[SearchElement.XLinkPos] != Signal) && (SearchElement.Config[SearchElement.XLinkPos] != End) &&
                 (SearchElement.Config[SearchElement.XLinkPos] != Continuation))
             {
+                TrainController->StopTTClockMessage(94, "Must select a valid signal, buffers or continuation"); //added at v2.7.0
+                Track->SuppressRouteFailMessage = true;
                 for(int x = 0; x < VectorCount; x++)
                     SearchVector.erase(SearchVector.end() - 1);
                 Utilities->CallLogPop(246);
                 return false;
-            } // if(ConsecSignalsRoute && (SearchElement.Config[SearchElement.XLinkPos] != Signal).......
+            } // if((SearchElement.Config[SearchElement.XLinkPos] != Signal).......
             if(AutoSigsFlag)
             {
                 PrefDirElement1.AutoSignals = true;
             }
-            if(ConsecSignalsRoute)
-            {
-                PrefDirElement1.ConsecSignals = true;
-            }
+            PrefDirElement1.PrefDirRoute = true;
             if(Track->LCFoundInAutoSigsRoute)
             {
-                if(!Track->LCFoundInAutoSigsRouteMessageGiven)
+                if(!Track->SuppressRouteFailMessage)
                 {
                     TrainController->StopTTClockMessage(76, "Can't create an automatic signal route through a level crossing");
-                    Track->LCFoundInAutoSigsRouteMessageGiven = true;
+                    Track->SuppressRouteFailMessage = true;
                 }
                 for(int x = 0; x < VectorCount; x++)
                     SearchVector.erase(SearchVector.end() - 1);
@@ -14029,23 +13925,20 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                 {
                     SearchElement.AutoSignals = true;
                 }
-                if(ConsecSignalsRoute)
-                {
-                    SearchElement.ConsecSignals = true;
-                }
+                SearchElement.PrefDirRoute = true;
                 SearchVector.push_back(SearchElement);
                 VectorCount++;
                 TotalSearchCount++;
 // recursive search at XLinkPos of SearchPos1 (i.e. 'set' trailing exit)
-                if(SearchForPreferredRoute(6, SearchElement, SearchPos1, RequiredPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition,
+                if(SearchForPreferredRoute(6, SearchElement, SearchPos1, RequiredPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
                     AutoSigsFlag))
                 {
                     if(Track->LCFoundInAutoSigsRoute)
                     {
-                        if(!Track->LCFoundInAutoSigsRouteMessageGiven)
+                        if(!Track->SuppressRouteFailMessage)
                         {
                             TrainController->StopTTClockMessage(77, "Can't create an automatic signal route through a level crossing");
-                            Track->LCFoundInAutoSigsRouteMessageGiven = true;
+                            Track->SuppressRouteFailMessage = true;
                         }
                         for(int x = 0; x < VectorCount; x++)
                             SearchVector.erase(SearchVector.end() - 1);
@@ -14096,23 +13989,20 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             {
                 SearchElement.AutoSignals = true;
             }
-            if(ConsecSignalsRoute)
-            {
-                SearchElement.ConsecSignals = true;
-            }
+            SearchElement.PrefDirRoute = true;
             SearchVector.push_back(SearchElement);
             VectorCount++;
             TotalSearchCount++;
 // recursive search at XLinkPos of SearchPos2 (i.e. 'unset' trailing exit)
-            if(SearchForPreferredRoute(7, SearchElement, SearchPos2, RequiredPosition, ReqPosRouteID, EveryPrefDir, ConsecSignalsRoute, EndPosition,
+            if(SearchForPreferredRoute(7, SearchElement, SearchPos2, RequiredPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
                 AutoSigsFlag))
             {
                 if(Track->LCFoundInAutoSigsRoute)
                 {
-                    if(!Track->LCFoundInAutoSigsRouteMessageGiven)
+                    if(!Track->SuppressRouteFailMessage)
                     {
                         TrainController->StopTTClockMessage(78, "Can't create an automatic signal route through a level crossing");
-                        Track->LCFoundInAutoSigsRouteMessageGiven = true;
+                        Track->SuppressRouteFailMessage = true;
                     }
                     for(int x = 0; x < VectorCount; x++)
                         SearchVector.erase(SearchVector.end() - 1);
@@ -14136,10 +14026,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
         {
             SearchElement.AutoSignals = true;
         }
-        if(ConsecSignalsRoute)
-        {
-            SearchElement.ConsecSignals = true;
-        }
+        SearchElement.PrefDirRoute = true;
         SearchVector.push_back(SearchElement);
         VectorCount++;
         TotalSearchCount++;
@@ -14183,6 +14070,7 @@ void TOneRoute::ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPos
       If not returned by now the route in SearchVector is to be added as a new route, so check its validity, create a new route using
       StoreOneRoute, call SetRoutePoints & SetRouteSignals and return.  In practice the validity check, storage into AllRoutesVector and
       SetRoutePoints & SetRouteSignals call are combined for the above three cases.
+
 */
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ConvertAndAddPreferredRouteSearchVector," +
         AnsiString(ReqPosRouteID.GetInt()) + "," + AnsiString((short)AutoSigsFlag));
@@ -14314,8 +14202,8 @@ void TOneRoute::ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPos
                 TPrefDirElement RouteElement = AllRoutes->GetFixedRouteAtIDNumber(29, StartSelectionRouteID).GetFixedPrefDirElementAt(55,
                     AllRoutes->GetFixedRouteAtIDNumber(30, StartSelectionRouteID).PrefDirSize() - 1);
                 RouteElement.AutoSignals = true;
-                RouteElement.EXGraphicPtr = RouteElement.GetRouteGraphicPtr(AutoSigsFlag, true); // true for ConsecSignalsRoute
-                RouteElement.EntryDirectionGraphicPtr = RouteElement.GetDirectionRouteGraphicPtr(AutoSigsFlag, true); // true for ConsecSignalsRoute
+                RouteElement.EXGraphicPtr = RouteElement.GetRouteGraphicPtr(AutoSigsFlag, true);
+                RouteElement.EntryDirectionGraphicPtr = RouteElement.GetDirectionRouteGraphicPtr(AutoSigsFlag, true); // as above
                 AllRoutes->RemoveRouteElement(4, RouteElement.HLoc, RouteElement.VLoc, RouteElement.ELink);
                 SearchVector.insert(SearchVector.begin(), 1, RouteElement);
             }
@@ -14346,15 +14234,10 @@ void TOneRoute::ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPos
 
 // ---------------------------------------------------------------------------
 
-bool TOneRoute::GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute, bool Callon) // Return true if OK.
+bool TOneRoute::GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc, bool Callon) // Return true if OK.
 {
 /*
-      [Note: original intention was to allow both consecutive signals and non-consecutive signals for routes
-      on track with or without pref dirs set, hence the bool ConsecSignalsRoute, subsequently decided to
-      make all unrestricted routes nonconsecutive signals, so that parameter will always be false.  leave
-      as is in case wish to change at a later time]
-
-      If Callon true then called to set an unrestricted call-on route - suppress messages
+      If Callon true then this routine is called from MainScreenMouseDown2 in InterfaceUnit.cpp to set an unrestricted call-on route - messages are suppressed
       Clear the PrefDir and search vectors using ClearRoute().  Check selection matches a TrackElement
       & ensure signal/buffers/continuation.
       Note that can't select ConsecSignalsRoute for non-preferred routes.
@@ -14378,6 +14261,7 @@ bool TOneRoute::GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc,
       to 4 for StartElement1, & blank StartElement2.  The remaining data members will be set later in
       SetRemainingSearchVectorValues().
       Finally add the required element to the SearchVector & return true.
+
 */
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetNonPreferredRouteStartElement," + AnsiString(HLoc) + "," +
         AnsiString(VLoc) + "," + AnsiString((short)Callon));
@@ -14561,14 +14445,14 @@ bool TOneRoute::GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc,
 }
 
 // ---------------------------------------------------------------------------
-bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute, bool Callon, IDInt &ReqPosRouteID, bool &PointsChanged)
+bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, bool Callon, IDInt &ReqPosRouteID, bool &PointsChanged)
 
 /*
-      If Callon true then called to set an unrestricted call-on route - suppress messages & allow points to be selected
+      If Callon true then this routine is called from MainScreenMouseDown2 in InterfaceUnit.cpp to set an unrestricted call-on route - messages are suppressed
 
       Declare the following integers:-
       EndPosition - TrackVectorPosition for the selection;
-      ReqPosRouteID - for the existing route selected, set to -1 if not used and initially;
+      ReqPosRouteID - for the existing route selected if there is one, set to -1 if not;
       Check if selection is a valid track element and set EndPosition.
       Cancel if select original start element, then check that not points, bridge or crossover.
       Check & fail if a train is present at the selection.
@@ -14592,6 +14476,7 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
       If not adjacent then search on the two possible ways out of StartElement1 providing it isn't facing an 'End'.  If succeed complete
       the search vector values and return.
       If not returned yet then have failed to find the required element so return false with no message.
+
 */
 
 {
@@ -15292,7 +15177,7 @@ void TOneRoute::SetRemainingSearchVectorValues(int Caller)
     }
 
     SetRouteSearchVectorGraphics(5, false, false); // change graphic colour to the route colour
-// This function is only called here for nonsignals routes, so AutoSigsFlag & ConsecSignalsRoute both false
+// This function is only called here for nonsignals routes, so AutoSigsFlag & PrefDirRoute both false
 // PrefDir is validated in ConvertAndAddNonPreferredRouteSearchVector
     Utilities->CallLogPop(305);
 }
@@ -15406,7 +15291,7 @@ void TOneRoute::ConvertAndAddNonPreferredRouteSearchVector(int Caller, IDInt Req
                 }
                 AllRoutes->GetModifiableRouteAtIDNumber(5, StartSelectionRouteID).SetRoutePoints(2);
                 AllRoutes->GetModifiableRouteAtIDNumber(6, StartSelectionRouteID).SetRouteSignals(6);
-                AllRoutes->GetModifiableRouteAtIDNumber(9, StartSelectionRouteID).SetLCChangeValues(2, false); // ConsecSignalsRoute is false
+                AllRoutes->GetModifiableRouteAtIDNumber(9, StartSelectionRouteID).SetLCChangeValues(2, false); // PrefDirRoute is false
                 // now add the reinstated locked route if required and set signals accordingly
                 // shouldn't ever need to access this as the train that has caused the locked route will be ahead of the route to be added,
                 // and it will have removed the route elements that it is standing on, but include in case there's some obscure condition
@@ -15768,7 +15653,7 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
             if(PrefDirPtr->Config[PrefDirPtr->XLinkPos] == Signal)
             {
                 if((!AllRoutes->RouteTruncateFlag) || (PrefDirPtr != (PrefDirVector.begin() + PrefDirVectorStartPosition)) || PrefDirPtr->AutoSignals ||
-                    PrefDirPtr->ConsecSignals)
+                    PrefDirPtr->PrefDirRoute)
                 {
                     if(Attribute < 3)
                         Track->TrackElementAt(110, PrefDirPtr->TrackVectorPosition).Attribute = Attribute;
@@ -15796,20 +15681,20 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
 
 // ---------------------------------------------------------------------------
 
-void TOneRoute::GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute, TTruncateReturnType &ReturnFlag)
+void TOneRoute::GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool PrefDirRoute, TTruncateReturnType &ReturnFlag)
 /*
       Examines the route to see whether the element at H & V is in the route, and if not returns a ReturnFlag value of NotInRoute.
       If it is in a route but the element selected is invalid, then a message is given and returns with a ReturnFlag value of
       InRouteFalse.  Otherwise the route is truncated at and including the element that matches H & V with a ReturnFlag value of InRouteTrue.
-      Selection invalid if a train at or before the truncate point; select a bridge; trying to leave a single element; last element to be left
-      not a signal (for ConsecSignalsRoute or has AutoSigsFlag set); last element to be left a bridge, points or crossover (for not
-      ConsecSignalsRoute & AutoSigsFlag not set), or part of route locked.  Check if a train approaching or occupying route and lock route
+      Selection invalid if select a bridge; trying to leave a single element; last element to be left
+      not a signal (for PrefDirRoute or has AutoSigsFlag set); last element to be left a bridge, points or crossover (for not
+      PrefDirRoute & AutoSigsFlag not set), or part of route locked.  Check if a train approaching or occupying route and lock route
       if required after offering the user the choice to continue or not.  Then SetAllRearwardsSignals is called to set signals before the
       truncate point, beginning with a red signal, and RemoveRouteElement called for all elements from the end to and including the truncate point.
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetRouteTruncateElement," + AnsiString(HLoc) + "," + AnsiString(VLoc) +
-        "," + AnsiString((short)ConsecSignalsRoute));
+        "," + AnsiString((short)PrefDirRoute));
     bool ElementInRoute = false;
     bool TrainOccupyingRoute = false;
 
@@ -15881,7 +15766,7 @@ void TOneRoute::GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool Con
             if(b > 0)
             {
                 TPrefDirElement TempElement = PrefDirVector.at(b - 1);
-                if(TempElement.ConsecSignals || TempElement.AutoSignals)
+                if(TempElement.PrefDirRoute || TempElement.AutoSignals)
                 {
                     if(TempElement.Config[TempElement.XLinkPos] != Signal)
                     {
@@ -16044,13 +15929,13 @@ void TOneRoute::ForceCancelRoute(int Caller)
 
 // ---------------------------------------------------------------------------
 
-void TOneRoute::SetRouteSearchVectorGraphics(int Caller, bool AutoSigsFlag, bool ConsecSignalsRoute)
+void TOneRoute::SetRouteSearchVectorGraphics(int Caller, bool AutoSigsFlag, bool PrefDirRoute)
 /*
       Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector.
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteSearchVectorGraphics," + AnsiString((short)AutoSigsFlag) + "," +
-        AnsiString((short)ConsecSignalsRoute));
+        AnsiString((short)PrefDirRoute));
     if(SearchVector.empty())
     {
         Utilities->CallLogPop(1149);
@@ -16058,16 +15943,16 @@ void TOneRoute::SetRouteSearchVectorGraphics(int Caller, bool AutoSigsFlag, bool
     }
     for(unsigned int b = 0; b < SearchVector.size(); b++)
     {
-        GetModifiableSearchElementAt(1, b).EXGraphicPtr = GetModifiableSearchElementAt(2, b).GetRouteGraphicPtr(AutoSigsFlag, ConsecSignalsRoute);
+        GetModifiableSearchElementAt(1, b).EXGraphicPtr = GetModifiableSearchElementAt(2, b).GetRouteGraphicPtr(AutoSigsFlag, PrefDirRoute);
         GetModifiableSearchElementAt(3, b).EntryDirectionGraphicPtr = GetModifiableSearchElementAt(4, b).GetDirectionRouteGraphicPtr(AutoSigsFlag,
-            ConsecSignalsRoute);
+            PrefDirRoute);
     }
     Utilities->CallLogPop(346);
 }
 
 // ---------------------------------------------------------------------------
 
-void TOneRoute::SetRouteFlashValues(int Caller, bool AutoSigsFlag, bool ConsecSignalsRoute)
+void TOneRoute::SetRouteFlashValues(int Caller, bool AutoSigsFlag, bool PrefDirRoute)
 /*
       Sets all element values in the RouteFlashVector (member of class TRouteFlash - defined in TOneRoute, of which
       TOneRoute has one member called RouteFlash) from the SearchVector.  TRouteFlashElement is also a class defined in
@@ -16075,7 +15960,7 @@ void TOneRoute::SetRouteFlashValues(int Caller, bool AutoSigsFlag, bool ConsecSi
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteAndLCChangeValues," + AnsiString((short)AutoSigsFlag) + "," +
-        AnsiString((short)ConsecSignalsRoute));
+        AnsiString((short)PrefDirRoute));
     RouteFlash.RouteFlashVector.clear();
     TRouteFlashElement RouteFlashElement;
 
@@ -16084,7 +15969,7 @@ void TOneRoute::SetRouteFlashValues(int Caller, bool AutoSigsFlag, bool ConsecSi
         int H = GetFixedSearchElementAt(11, b).HLoc;
         int V = GetFixedSearchElementAt(12, b).VLoc;
         RouteFlashElement.OriginalGraphic = GetModifiableSearchElementAt(5, b).GetOriginalGraphicPtr();
-        RouteFlashElement.OverlayGraphic = GetModifiableSearchElementAt(6, b).GetRouteGraphicPtr(AutoSigsFlag, ConsecSignalsRoute);
+        RouteFlashElement.OverlayGraphic = GetModifiableSearchElementAt(6, b).GetRouteGraphicPtr(AutoSigsFlag, PrefDirRoute);
         RouteFlashElement.HLoc = H;
         RouteFlashElement.VLoc = V;
         RouteFlashElement.TrackVectorPosition = GetFixedSearchElementAt(13, b).TrackVectorPosition;
@@ -16095,9 +15980,9 @@ void TOneRoute::SetRouteFlashValues(int Caller, bool AutoSigsFlag, bool ConsecSi
 
 // ---------------------------------------------------------------------------
 
-void TOneRoute::SetLCChangeValues(int Caller, bool ConsecSignalsRoute)   //used when setting routes to start any included LC's lowering
+void TOneRoute::SetLCChangeValues(int Caller, bool PrefDirRoute)   //used when setting routes to start any included LC's lowering
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetLCChangeValues," + AnsiString((short)ConsecSignalsRoute));
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetLCChangeValues," + AnsiString((short)PrefDirRoute));
     if(!PrefDirVector.empty())
     {
         for(TPrefDirVectorConstIterator PrefDirPtr = (PrefDirVector.end() - 1); PrefDirPtr >= PrefDirVector.begin(); PrefDirPtr--)
@@ -16117,7 +16002,10 @@ void TOneRoute::SetLCChangeValues(int Caller, bool ConsecSignalsRoute)   //used 
                     CLC.BaseElementSpeedTag = PrefDirPtr->SpeedTag;
                     CLC.ChangeDuration = Track->LevelCrossingBarrierDownFlashDuration;
                     CLC.BarrierState = TTrack::Lowering;
-                    CLC.ConsecSignals = ConsecSignalsRoute;
+                    if(PrefDirRoute)
+                    {
+                        CLC.TypeOfRoute = 1;
+                    }
                     Track->SetLinkedLevelCrossingBarrierAttributes(1, H, V, 2); // set attr to 2 for changing state
                     Track->ChangingLCVector.push_back(CLC);
                 }
@@ -16233,24 +16121,24 @@ void TAllRoutes::WriteAllRoutesToImage(int Caller, Graphics::TBitmap *Bitmap)
 
 // ---------------------------------------------------------------------------
 
-bool TAllRoutes::GetAllRoutesTruncateElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute)
+bool TAllRoutes::GetAllRoutesTruncateElement(int Caller, int HLoc, int VLoc, bool PrefDirRoute)
 /*
       Examines all routes and for each uses GetRouteTruncateElement to see if the element at H & V is present in
       that route.  The ReturnFlag value indicates InRouteTrue (success), InRouteFalse (failure), or NotInRoute.
       Messages are given in GetRouteTruncateElement.  If successful the route is truncated at and including
-      the element that matches H & V.  If ConsecSignalsRoute ensure only truncate to a signal, else prevent
+      the element that matches H & V.  If PrefDirRoute ensure only truncate to a signal, else prevent
       truncation to a crossover, bridge or points, also prevent route being left less than 2 elements in
       length (train length).
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetAllRoutesTruncateElement," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc) + "," + AnsiString((short)ConsecSignalsRoute));
+        AnsiString(VLoc) + "," + AnsiString((short)PrefDirRoute));
     for(unsigned int a = 0; a < AllRoutesSize(); a++)
     {
         TTruncateReturnType ReturnFlag;
         RouteTruncateFlag = true;
 // used in SetRearwardsSignalsReturnFalseForTrain (called by GetRouteTruncateElement) to skip continuation & buffer attribute change
-        GetModifiableRouteAt(7, a).GetRouteTruncateElement(0, HLoc, VLoc, ConsecSignalsRoute, ReturnFlag);
+        GetModifiableRouteAt(7, a).GetRouteTruncateElement(0, HLoc, VLoc, PrefDirRoute, ReturnFlag);
         RouteTruncateFlag = false;
         if(ReturnFlag == NotInRoute)
             continue;

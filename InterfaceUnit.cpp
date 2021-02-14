@@ -511,7 +511,8 @@ __fastcall TInterface::TInterface(TComponent* Owner): TForm(Owner)
         SetLengthsButton->Glyph->LoadFromResourceName(0, "SetDists");
         ShowHideTTButton->Glyph->LoadFromResourceName(0, "Hide");
         SigAspectButton->Glyph->LoadFromResourceName(0, "FourAspect"); // new at version 0.6
-        SigPrefButton->Glyph->LoadFromResourceName(0, "PrefSig");
+        SigPrefConsecButton->Glyph->LoadFromResourceName(0, "PrefTop");
+        SigPrefNonConsecButton->Glyph->LoadFromResourceName(0, "PrefBottom");
         TextOrUserGraphicGridButton->Glyph->LoadFromResourceName(0, "PixelPrecision1");
         TrackOKButton->Glyph->LoadFromResourceName(0, "Validate");
         TTClockAdjButton->Glyph->LoadFromResourceName(0, "TTClock");
@@ -2066,7 +2067,8 @@ void __fastcall TInterface::AutoSigsButtonClick(TObject *Sender)
         ConsecSignalsRoute = true;
 
         AutoSigsButton->Enabled = false;
-        SigPrefButton->Enabled = true;
+        SigPrefConsecButton->Enabled = true;
+        SigPrefNonConsecButton->Enabled = true;
         UnrestrictedButton->Enabled = true;
 
         InfoPanel->Visible = true;
@@ -2088,7 +2090,8 @@ void __fastcall TInterface::AutoSigsButtonClick(TObject *Sender)
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TInterface::SigPrefButtonClick(TObject *Sender)
+
+void __fastcall TInterface::SigPrefConsecButtonClick(TObject *Sender)
     // must have PrefDirs to be available
 {
     try
@@ -2100,7 +2103,44 @@ void __fastcall TInterface::SigPrefButtonClick(TObject *Sender)
         ConsecSignalsRoute = true;
 
         AutoSigsButton->Enabled = true;
-        SigPrefButton->Enabled = false;
+        SigPrefConsecButton->Enabled = false;
+        SigPrefNonConsecButton->Enabled = true;
+        UnrestrictedButton->Enabled = true;
+
+        InfoPanel->Visible = true;
+        if(Level2OperMode == PreStart)
+            InfoPanel->Caption = "PRE-START:  Select PREFERRED ROUTE start signal, or left click points to change manually";
+        else
+            InfoPanel->Caption = "OPERATING:  Select PREFERRED ROUTE start signal, or left click points to change manually";
+        InfoCaptionStore = InfoPanel->Caption;
+        AutoRouteStartMarker->PlotOriginal(43, Display); // if overlay not plotted will ignore
+        SigRouteStartMarker->PlotOriginal(44, Display); // if overlay not plotted will ignore
+        NonSigRouteStartMarker->PlotOriginal(45, Display); // if overlay not plotted will ignore
+        RouteMode = RouteNotStarted;
+        Utilities->CallLogPop(2265);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(221, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::SigPrefNonConsecButtonClick(TObject *Sender)
+    // must have PrefDirs to be available
+{
+    try
+    {
+        TrainController->LogEvent("SigPrefButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SigPrefButtonClick");
+        AutoSigsFlag = false;
+        PreferredRoute = true;
+        ConsecSignalsRoute = false;
+
+        AutoSigsButton->Enabled = true;
+        SigPrefConsecButton->Enabled = true;
+        SigPrefNonConsecButton->Enabled = false;
         UnrestrictedButton->Enabled = true;
 
         InfoPanel->Visible = true;
@@ -2134,13 +2174,15 @@ void __fastcall TInterface::UnrestrictedButtonClick(TObject *Sender)
         if(EveryPrefDir->PrefDirSize() > 0)
         {
             AutoSigsButton->Enabled = true;
-            SigPrefButton->Enabled = true;
+            SigPrefConsecButton->Enabled = true;
+            SigPrefNonConsecButton->Enabled = true;
             UnrestrictedButton->Enabled = false;
         }
         else
         {
             AutoSigsButton->Enabled = false;
-            SigPrefButton->Enabled = false;
+            SigPrefConsecButton->Enabled = false;
+            SigPrefNonConsecButton->Enabled = false;
             UnrestrictedButton->Enabled = false;
         }
         InfoPanel->Visible = true;
@@ -2238,8 +2280,8 @@ void __fastcall TInterface::ExitOperationButtonClick(TObject *Sender)
         TrainController->UnplotTrains(1);
         TrainController->FinishedOperation(0);
         RouteMode = None;
-        PreferredRoute = true;
-        ConsecSignalsRoute = true;
+        PreferredRoute = true;       //default starting conditions
+        ConsecSignalsRoute = true;   //default starting conditions
         AllRoutes->AllRoutesClear();
         ShowPerformancePanel = false;
         PerformanceLogButton->Glyph->LoadFromResourceName(0, "ShowLog");
@@ -4738,10 +4780,10 @@ void __fastcall TInterface::AllEntriesTTListBoxMouseUp(TObject *Sender, TMouseBu
 
 void __fastcall TInterface::OAListBoxMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-// Mouseup rather than Mousedown so shows floating label when over train
+// Mouseup rather than Mousedown so shows floating label when over selected train
     try
     {
-        TrainController->LogEvent("OAListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y));
+        TrainController->LogEvent("OAListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y) + "," + AnsiString(Button)); //button may be right or left
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OAListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y));
         if(Track->RouteFlashFlag || Track->PointFlashFlag) // no action
         {
@@ -4753,64 +4795,107 @@ void __fastcall TInterface::OAListBoxMouseUp(TObject *Sender, TMouseButton Butto
             Utilities->CallLogPop(2088);
             return;
         }
-        TTrainController::TOpTimeToActMultiMapIterator OACurrentEntryPtr;
-        // find item required - 13 pixels per line of text
-        int TopPos = OAListBox->TopIndex;
-        int OAIndex;
-        if((TopPos + (Y / 13)) >= OAListBox->Items->Count) // if click beyond end of list ignore
+        int HPos, VPos, TrainID = -1, TrackVectorPosition = -1;
+        if(!GetTrainIDOrContinuationPosition(0, X, Y, TrainID, TrackVectorPosition))
         {
-            Utilities->CallLogPop(2089);
+            OAListBoxRightMouseButtonDown = false; //so resets when button over blank area
+            Utilities->CallLogPop(2260);
             return;
         }
-        else
+        if(Button == mbLeft) //added at v2.7.0 to keep right button for train information
         {
-            OACurrentEntryPtr = TrainController->OpTimeToActMultiMap.begin();
-            std::advance(OACurrentEntryPtr, ((Y / 13) + TopPos));
-        }
-        int HPos;
-        int VPos;
-        int TrackVectorPosition;
-        int TrainIDorTVPos = OACurrentEntryPtr->second.second;
-        if(TrainIDorTVPos >= 0) // running train, so value is the TrainID
-        {
-            if(TrainController->TrainExistsAtIdent(0, TrainIDorTVPos)) // added at v2.4.0 in case train removed but still in OA list as not updated yet
-            // see LiWinDom error report on Discord 23/04/20. Also needed for click OAListBox before any trains show,
-            // as notified by Rokas Serys by email on 16/05/20
+            HPos = (Track->TrackElementAt(926, TrackVectorPosition).HLoc * 16);
+            VPos = (Track->TrackElementAt(927, TrackVectorPosition).VLoc * 16);
+            // now want to set the offsets to display HPos & VPos in the centre of the screen
+            Display->DisplayOffsetH = (HPos - MainScreen->Width / 2) / 16; // ScreenPosH = HPos - (DisplayOffsetH * 16)
+            Display->DisplayOffsetV = (VPos - MainScreen->Height / 2) / 16;
+            int ScreenPosH = HPos - (Display->DisplayOffsetH * 16);
+            int ScreenPosV = VPos - (Display->DisplayOffsetV * 16);
+            if(Display->ZoomOutFlag) // panel displays in either zoom mode
             {
-                TrackVectorPosition = TrainController->TrainVectorAtIdent(43, TrainIDorTVPos).LeadElement;
+                Display->ZoomOutFlag = false;
+                SetPausedOrZoomedInfoCaption(6);
             }
-            else
-            {
-                Utilities->CallLogPop(2155); // if not there then ignore
-                return;
-            }
+            ClearandRebuildRailway(72); // if was zoomed out this displays the track because until ZoomOutFlag reset PlotOutput plots nothing
+            TPoint MainScreenPoint(ScreenPosH + 8, ScreenPosV + 8); // new v2.2.0 add 8 to centre pointer in element
+            TPoint CursPos = MainScreen->ClientToScreen(MainScreenPoint); // accurate funtion to convert from local to global co-ordinates
+            Mouse->CursorPos = CursPos;
         }
-        else // train to enter at a continuation, so value is -TVPos of continuation - 1
+        else //mbRight, reset OAListBoxRightMouseButtonDown
         {
-            TrackVectorPosition = -(TrainIDorTVPos + 1);
+            OAListBoxRightMouseButtonDown = false;
         }
-        HPos = (Track->TrackElementAt(926, TrackVectorPosition).HLoc * 16);
-        VPos = (Track->TrackElementAt(927, TrackVectorPosition).VLoc * 16);
-        // now want to set the offsets to display HPos & VPos in the centre of the screen
-        Display->DisplayOffsetH = (HPos - MainScreen->Width / 2) / 16; // ScreenPosH = HPos - (DisplayOffsetH * 16)
-        Display->DisplayOffsetV = (VPos - MainScreen->Height / 2) / 16;
-        int ScreenPosH = HPos - (Display->DisplayOffsetH * 16);
-        int ScreenPosV = VPos - (Display->DisplayOffsetV * 16);
-        if(Display->ZoomOutFlag) // panel displays in either zoom mode
-        {
-            Display->ZoomOutFlag = false;
-            SetPausedOrZoomedInfoCaption(6);
-        }
-        ClearandRebuildRailway(72); // if was zoomed out this displays the track because until ZoomOutFlag reset PlotOutput plots nothing
-        TPoint MainScreenPoint(ScreenPosH + 8, ScreenPosV + 8); // new v2.2.0 add 8 to centre pointer in element
-        TPoint CursPos = MainScreen->ClientToScreen(MainScreenPoint); // accurate funtion to convert from local to global co-ordinates
-        Mouse->CursorPos = CursPos;
         Utilities->CallLogPop(2090);
     }
     catch(const Exception &e)
     {
         ErrorLog(200, e.Message);
     }
+}
+
+// ---------------------------------------------------------------------------
+
+void __fastcall TInterface::OAListBoxMouseDown(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y)
+{
+    try
+    {
+        TrainController->LogEvent("OAListBoxMouseDown," + AnsiString(X) + "," + AnsiString(Y));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OAListBoxMouseDown");
+        if(Button == mbRight)
+        {
+            OAListBoxRightMouseButtonDown = true;
+        }
+        Utilities->CallLogPop(2264);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(220, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::GetTrainIDOrContinuationPosition(int Caller, int X, int Y, int &TrainID, int &TrackVectorPosition)
+//returns true if value(s) valid
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",GetTrainIDOrContinuationPosition");
+    TTrainController::TOpTimeToActMultiMapIterator OACurrentEntryPtr;
+    // find item required - 13 pixels per line of text
+    int TopPos = OAListBox->TopIndex;
+    int OAIndex;
+    if((TopPos + (Y / 13)) >= OAListBox->Items->Count) // if click beyond end of list ignore
+    {
+        Utilities->CallLogPop(2089);
+        return false;
+    }
+    else
+    {
+        OACurrentEntryPtr = TrainController->OpTimeToActMultiMap.begin();
+        std::advance(OACurrentEntryPtr, ((Y / 13) + TopPos));
+    }
+    int TrainIDorTVPos = OACurrentEntryPtr->second.second;
+    if(TrainIDorTVPos >= 0) // running train, so value is the TrainID
+    {
+        if(TrainController->TrainExistsAtIdent(0, TrainIDorTVPos)) // added at v2.4.0 in case train removed but still in OA list as not updated yet
+        // see LiWinDom error report on Discord 23/04/20. Also needed for click OAListBox before any trains show,
+        // as notified by Rokas Serys by email on 16/05/20
+        {
+            TrainID = TrainIDorTVPos;
+            TrackVectorPosition = TrainController->TrainVectorAtIdent(43, TrainIDorTVPos).LeadElement;
+        }
+        else
+        {
+            Utilities->CallLogPop(2155); // if not there then ignore
+            return false;
+        }
+    }
+    else // train to enter at a continuation, so value is -TVPos of continuation - 1
+    {
+        TrackVectorPosition = -(TrainIDorTVPos + 1);
+    }
+    Utilities->CallLogPop(2261);
+    return true;
 }
 
 // ---------------------------------------------------------------------------
@@ -6693,16 +6778,13 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                             IDInt ReqPosRouteID(-1);
                                             TOneRoute *NewRoute = new TOneRoute;
                                             bool CallonTrue = true;
-                                            bool ConsecSignalsRouteFalse = false;
                                             if(NewRoute->GetNonPreferredRouteStartElement(1,
                                                 Track->TrackElementAt(841, AllRoutes->CallonVector.at(x).RouteStartPosition).HLoc,
-                                                Track->TrackElementAt(842, AllRoutes->CallonVector.at(x).RouteStartPosition).VLoc, ConsecSignalsRouteFalse,
-                                                CallonTrue))
+                                                Track->TrackElementAt(842, AllRoutes->CallonVector.at(x).RouteStartPosition).VLoc, CallonTrue))
                                             {
                                                 if(NewRoute->GetNextNonPreferredRouteElement(1,
                                                     Track->TrackElementAt(843, AllRoutes->CallonVector.at(x).PlatformPosition).HLoc,
-                                                    Track->TrackElementAt(844, AllRoutes->CallonVector.at(x).PlatformPosition).VLoc, ConsecSignalsRouteFalse,
-                                                    CallonTrue, ReqPosRouteID, PointsChanged))
+                                                    Track->TrackElementAt(844, AllRoutes->CallonVector.at(x).PlatformPosition).VLoc, CallonTrue, ReqPosRouteID, PointsChanged))
                                                 {
                                                     if(!PointsChanged) // shouldn't be changed, something wrong if true so don't plot route
                                                     {
@@ -6886,7 +6968,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                     ALC.BaseElementSpeedTag = TrackElement.SpeedTag;
                                     ALC.ChangeDuration = Track->LevelCrossingBarrierDownFlashDuration;
                                     ALC.BarrierState = TTrack::Lowering;
-                                    ALC.ConsecSignals = 2;
+                                    ALC.TypeOfRoute = 2;
                                     Track->SetLinkedManualLCs(0, HLoc, VLoc);  //this sets all linked LC ConsecSignals values to 2 for manually lowered - differs from SetLCChangeValues which uses the route type
                                     Track->SetLinkedLevelCrossingBarrierAttributes(6, HLoc, VLoc, 2);//set attr to 2 for changing state
                                     Track->ChangingLCVector.push_back(ALC);
@@ -6908,7 +6990,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 AutoRouteStartMarker->SetScreenHVSource(2, TrackElement.HLoc * 16, TrackElement.VLoc * 16);
                                 AutoRouteStartMarker->LoadOriginalScreenGraphic(0);
                             }
-                            else if(ConsecSignalsRoute)
+                            else if(PreferredRoute) //added at v2.7.0, was ConsecSignalsRoute
                             {
                                 SigRouteStartMarker->SetScreenHVSource(3, TrackElement.HLoc * 16, TrackElement.VLoc * 16);
                                 SigRouteStartMarker->LoadOriginalScreenGraphic(1);
@@ -6924,7 +7006,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 // another route building
                                 {
                                     ConstructRoute->ClearRoute(); // in case not empty though should be
-                                    if(ConstructRoute->GetPreferredRouteStartElement(0, HLoc, VLoc, EveryPrefDir, ConsecSignalsRoute, AutoSigsFlag))
+                                    if(ConstructRoute->GetPreferredRouteStartElement(0, HLoc, VLoc, EveryPrefDir, AutoSigsFlag))
                                     {
                                         if(AutoSigsFlag)
                                             AutoRouteStartMarker->PlotOverlay(1, Display);
@@ -6948,7 +7030,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 {
                                     ConstructRoute->ClearRoute(); // in case not empty though should be
                                     bool CallonFalse = false;
-                                    if(ConstructRoute->GetNonPreferredRouteStartElement(0, HLoc, VLoc, ConsecSignalsRoute, CallonFalse))
+                                    if(ConstructRoute->GetNonPreferredRouteStartElement(0, HLoc, VLoc, CallonFalse))
                                     {
                                         NonSigRouteStartMarker->PlotOverlay(3, Display);
                                         RouteMode = RouteContinuing;
@@ -6995,7 +7077,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 RouteFlashDuration = AllRoutes->PointsDelay * TempSpeedVal;
                             else
                                 RouteFlashDuration = AllRoutes->SignalsDelay * TempSpeedVal;
-                            ConstructRoute->SetRouteFlashValues(1, AutoSigsFlag, true); // true for ConsecSignalsRoute
+                            ConstructRoute->SetRouteFlashValues(1, AutoSigsFlag, true); // true for PrefDirRoute
                             RouteFlashStartTime = TrainController->TTClockTime;
                         }
                         else
@@ -7011,7 +7093,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                     else
                     {
                         bool CallonFalse = false;
-                        if(ConstructRoute->GetNextNonPreferredRouteElement(0, HLoc, VLoc, ConsecSignalsRoute, CallonFalse, ConstructRoute->ReqPosRouteID,
+                        if(ConstructRoute->GetNextNonPreferredRouteElement(0, HLoc, VLoc, CallonFalse, ConstructRoute->ReqPosRouteID,
                             PointsChanged))
                         {
                             Track->RouteFlashFlag = true;
@@ -7804,6 +7886,11 @@ void TInterface::ClockTimer2(int Caller)
         // set current time
         TDateTime Now = TrainController->TTClockTime;
 
+        if(!OAListBox->MouseInClient) //added at v2.7.0 to reset this flag whenever mouse not in OAListBox
+        {
+             OAListBoxRightMouseButtonDown = false;
+        }
+
         TrainController->OpTimeToActUpdateCounter++;
 ///<new v2.2.0, controls 2 second updating for OpTimeToActPanel
         if(TrainController->OpTimeToActUpdateCounter >= 20)
@@ -7868,7 +7955,7 @@ void TInterface::ClockTimer2(int Caller)
                     }
                     else
                     {
-                        if(Track->BarriersDownVector.at(x).ConsecSignals != 2) //added at v2.6.0 for manual LC operation
+                        if(Track->BarriersDownVector.at(x).TypeOfRoute != 2) //added at v2.6.0 for manual LC operation
                         {
                             Track->LCChangeFlag = true;
                             TTrack::TActiveLevelCrossing CLC = Track->BarriersDownVector.at(x);
@@ -8325,7 +8412,7 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
             if(AutoSigsFlag)
                 RouteStartVecPos = Track->GetVectorPositionFromTrackMap(7, (AutoRouteStartMarker->GetHPos()) / 16, (AutoRouteStartMarker->GetVPos()) / 16,
                 FoundFlag);
-            else if(ConsecSignalsRoute)
+            else if(PreferredRoute) //added at v2.7.0, was ConsecSignalsRoute
                 RouteStartVecPos = Track->GetVectorPositionFromTrackMap(8, (SigRouteStartMarker->GetHPos()) / 16, (SigRouteStartMarker->GetVPos()) / 16,
                 FoundFlag);
             else
@@ -9857,6 +9944,7 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
         if((Train.ActionVectorEntryPtr->LocationType == AtLocation) && (LocName == Train.ActionVectorEntryPtr->LocationName))
         {
             Train.StoppedAtLocation = true;
+            Train.StoppedAtSignal = false;   //added at v2.7.0 as if had been stopped at signal before tt control restored then background colour would change to normal when signal cleared even when not due to depart
             Train.LastActionTime = TrainController->TTClockTime; // by itself this only affects trains that have still to arrive, if waiting to
                                                                  // depart the departure time & TRS time have already been calculated so need to
                                                                  // force a recalculation - see below
@@ -9880,7 +9968,7 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
         }
         else
         {
-            int NextElementPos = -1; // addition for v1.3.2 due to Carwyn Thomas error
+            int NextElementPos = -1; // addition for v1.3.2 due to Carwyn Thomas' error
             int NextEntryPos = -1; // ---ditto---
             if(Train.LeadElement > -1) // ---ditto---
             { // ---ditto---
@@ -10755,9 +10843,13 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key, TShiftState 
                 {
                     AutoSigsButton->Click();
                 }
-                if(SigPrefButton->Visible && SigPrefButton->Enabled && Key == '2') //route buttons - prefdir
+                if(SigPrefConsecButton->Visible && SigPrefConsecButton->Enabled && Key == '2') //route buttons - prefdir
                 {
-                    SigPrefButton->Click();
+                    SigPrefConsecButton->Click();
+                }
+                if(SigPrefNonConsecButton->Visible && SigPrefNonConsecButton->Enabled && Key == '4') //added at v2.7.0 for prefdir & any following signal
+                {
+                    SigPrefNonConsecButton->Click();
                 }
                 if(UnrestrictedButton->Visible && UnrestrictedButton->Enabled && Key == '3') //route buttons - unrestricted
                 {
@@ -12016,8 +12108,7 @@ void __fastcall TInterface::PresetAutoSigRoutesButtonClick(TObject *Sender)
             // rest of routine here - i.e. build the routes
             ConstructRoute->ClearRoute(); // in case not empty though should be
             AtLeastOneSet = true;
-            if(ConstructRoute->GetPreferredRouteStartElement(1, StartElement.HLoc, StartElement.VLoc, EveryPrefDir, true, true))
-    // true for both ConsecSignalsRoute & AutoSigsFlag
+            if(ConstructRoute->GetPreferredRouteStartElement(1, StartElement.HLoc, StartElement.VLoc, EveryPrefDir, true))  // true for AutoSigsFlag
             {}
             if(ConstructRoute->GetNextPreferredRouteElement(1, EndElement.HLoc, EndElement.VLoc, EveryPrefDir, true, true, ConstructRoute->ReqPosRouteID,
                 PointsChanged))
@@ -12642,7 +12733,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
             NonSigRouteStartMarker->PlotOriginal(25, HiddenDisplay);
             if(AutoSigsFlag)
                 AutoRouteStartMarker->PlotOverlay(7, HiddenDisplay);
-            else if(ConsecSignalsRoute)
+            else if(PreferredRoute)  //added at v2.7.0, was ConsecSignalsRoute
                 SigRouteStartMarker->PlotOverlay(8, HiddenDisplay);
             else
                 NonSigRouteStartMarker->PlotOverlay(9, HiddenDisplay);
@@ -12686,7 +12777,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
                         {
                             if((Track->BarriersDownVector.at(x).HLoc == ITE.HLoc) && (Track->BarriersDownVector.at(x).VLoc == ITE.VLoc))
                             {
-                                if(Track->BarriersDownVector.at(x).ConsecSignals == 2)
+                                if(Track->BarriersDownVector.at(x).TypeOfRoute == 2)
                                 {
                                     Track->PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(0, BaseSpeedTag, ITE.HLoc, ITE.VLoc, HiddenDisplay, true); //true for manual = green
                                 }
@@ -13304,8 +13395,8 @@ void TInterface::SetLevel1Mode(int Caller)
         TrainController->MTBFHours = double(TrainController->AvHoursIntValue) / TTClockSpeed;
         if(EveryPrefDir->PrefDirSize() > 0)
         {
-            ConsecSignalsRoute = true;
-            PreferredRoute = true;
+            ConsecSignalsRoute = true;   //default starting conditions
+            PreferredRoute = true;       //default starting conditions
         }
         else // no PrefDirs
         {
@@ -13382,10 +13473,13 @@ void TInterface::SetLevel1Mode(int Caller)
         OAListBox->Items->Add(L"");
         OAListBox->Items->Add(L"");
         OAListBox->Items->Add(L"Left click");
-        OAListBox->Items->Add(L"headcode");
-        OAListBox->Items->Add(L"to locate train");
+        OAListBox->Items->Add(L"headcode to");
+        OAListBox->Items->Add(L"locate train");
         OAListBox->Items->Add(L"");
         OAListBox->Items->Add(L"");
+        OAListBox->Items->Add(L"Right click");
+        OAListBox->Items->Add(L"headcode for");
+        OAListBox->Items->Add(L"information");
         OAListBox->Items->Add(L"");
         OAListBox->Items->Add(L"");
         OAListBox->Items->Add(L"Left click and");
@@ -13442,10 +13536,13 @@ void TInterface::SetLevel1Mode(int Caller)
         OAListBox->Items->Add(L"");
         OAListBox->Items->Add(L"");
         OAListBox->Items->Add(L"Left click");
-        OAListBox->Items->Add(L"headcode");
-        OAListBox->Items->Add(L"to locate train");
+        OAListBox->Items->Add(L"headcode to");
+        OAListBox->Items->Add(L"locate train");
         OAListBox->Items->Add(L"");
         OAListBox->Items->Add(L"");
+        OAListBox->Items->Add(L"Right click");
+        OAListBox->Items->Add(L"headcode for");
+        OAListBox->Items->Add(L"information");
         OAListBox->Items->Add(L"");
         OAListBox->Items->Add(L"");
         OAListBox->Items->Add(L"Left click and");
@@ -14369,13 +14466,12 @@ void TInterface::ContinuationAutoSignals(int Caller, TDateTime TTClockTime)
 void TInterface::TrackTrainFloat(int Caller)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrackTrainFloat");
-
     TPoint MousePoint = Mouse->CursorPos;
     int ScreenX = MousePoint.x - MainScreen->ClientOrigin.x;
     int ScreenY = MousePoint.y - MainScreen->ClientOrigin.y;
 
-    if((ScreenX > (MainScreen->Width - 1)) || (ScreenY > (MainScreen->Height - 1)) || (ScreenX < 0) || (ScreenY < 0))
-    {
+    if(!OAListBoxRightMouseButtonDown && ((ScreenX > (MainScreen->Width - 1)) || (ScreenY > (MainScreen->Height - 1)) || (ScreenX < 0) || (ScreenY < 0)))
+    {//added !OAListBoxRightMouseButtonDown at v2.7.0 so can still obtain info & move to trains from OAListBox even if they are out of the main screen area
         FloatingPanel->Visible = false;
         Utilities->CallLogPop(1432);
         return;
@@ -14393,18 +14489,6 @@ void TInterface::TrackTrainFloat(int Caller)
         }
     }
 
-    if(OperatorActionPanel->Visible) // added at v2.3.0 as showed info from behind panel - thanks to Xeon who notified me in email of 15/10/19
-    {
-        if((MousePoint.x >= OperatorActionPanel->Left) && (MousePoint.x <= (OperatorActionPanel->Left + OperatorActionPanel->Width)) &&
-            ((MousePoint.y - ClientOrigin.y) >= OperatorActionPanel->Top) && ((MousePoint.y - ClientOrigin.y) <=
-            (OperatorActionPanel->Top + OperatorActionPanel->Height)))
-        { // dont show floating window if mouse over OperatorActionPanel
-            FloatingPanel->Visible = false;
-            Utilities->CallLogPop(2098);
-            return;
-        }
-    }
-
     if(TimetableEditPanel->Visible) // added at v2.5.1 as showed track info behind panel
     {
         if((MousePoint.x >= TimetableEditPanel->Left) && (MousePoint.x <= (TimetableEditPanel->Left + TimetableEditPanel->Width)) &&
@@ -14418,7 +14502,6 @@ void TInterface::TrackTrainFloat(int Caller)
     }
 
     AnsiString TrackFloat = "", TrainStatusFloat = "", TrainTTFloat = "";
-
     bool ShowTrackFloatFlag = false, ShowTrainStatusFloatFlag = false, ShowTrainTTFloatFlag = false;
     int HLoc, VLoc;
 
@@ -14429,7 +14512,20 @@ void TInterface::TrackTrainFloat(int Caller)
         Utilities->CallLogPop(1123);
         return;
     }
-    if(TrackInfoOnOffMenuItem->Caption == "Hide")
+
+    bool MouseOverOAPanel = false; // this flag added at v2.7.0 in place of prohibition of all floating windows (which was added at v2.3.0 when Xeon notified me in email of 15/10/19 that they were showing)
+    if(OperatorActionPanel->Visible)
+    {
+        if((MousePoint.x >= OperatorActionPanel->Left) && (MousePoint.x <= (OperatorActionPanel->Left + OperatorActionPanel->Width)) &&
+            ((MousePoint.y - ClientOrigin.y) >= OperatorActionPanel->Top) && ((MousePoint.y - ClientOrigin.y) <=
+            (OperatorActionPanel->Top + OperatorActionPanel->Height)))
+        {
+            MouseOverOAPanel = true;
+        }
+    }
+
+    if((TrackInfoOnOffMenuItem->Caption == "Hide") && !MouseOverOAPanel)
+    //MouseOverOAPanel condit added at v2.7.0 in place of prohibition of all floating windows (which was added at v2.3.0 when Xeon notified me in email of 15/10/19 that they were showing)
     {
         bool ActiveTrackFoundFlag = false, InactiveTrackFoundFlag = false, TwoTrack = false;
         AnsiString Length01Str = "", Length23Str = "", SpeedLimit01Str = "", SpeedLimit23Str = "";
@@ -14599,6 +14695,7 @@ void TInterface::TrackTrainFloat(int Caller)
     }
 // end of TrackFloat section
 
+    bool OAListBoxFloatRequired = false; //identifies which window needs the float
     if(Level1Mode == OperMode && ((TrainStatusInfoOnOffMenuItem->Caption == "Hide Status") || (TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")))
     // if caption is 'Hide' label is required
     {
@@ -14607,305 +14704,75 @@ void TInterface::TrackTrainFloat(int Caller)
         AnsiString FormatNoDPStr = "#######0";
 // AnsiString Format5DPStr = "####0.00000";     //temporary
         AnsiString MaxBrakeStr = ""; // , EntrySpeedStr="", HalfStr="", FullStr="", MaxAtHalfStr="";//test
-        AnsiString SpecialStr = "", MaxSpeedStr = "";
-        int VecPos = Track->GetVectorPositionFromTrackMap(6, HLoc, VLoc, FoundFlag);
-        if(FoundFlag)
+        AnsiString SpecialStr = "";
+        if(OperatorActionPanel->Visible)    //added after v2.6.1 to show floating window for trains in actions due list
         {
-            if(Track->TrackElementAt(450, VecPos).TrainIDOnElement > -1)
-            // if a bridge & 2 trains at that position will select the train with TrainIDOnElement set
+            if(OAListBox->MouseInClient && !OperatorActionPanel->MouseInClient && OAListBoxRightMouseButtonDown)
             {
-                TTrain Train = TrainController->TrainVectorAtIdent(1, Track->TrackElementAt(452, VecPos).TrainIDOnElement);
-                if(TrainStatusInfoOnOffMenuItem->Caption == "Hide Status")
+                int X = OAListBox->ScreenToClient(MousePoint).x;
+                int Y = OAListBox->ScreenToClient(MousePoint).y;
+                int TrainID = -1, ContinuationPos = -1;
+                if(GetTrainIDOrContinuationPosition(1, X, Y, TrainID, ContinuationPos))
                 {
-                    ShowTrainStatusFloatFlag = true;
-                    AnsiString HeadCode = "", ServiceReferenceInfo = "", Status = "", CurrSpeedStr = "", BrakePCStr = "", NextStopStr = "", TimeLeftStr = "",
-                        TimeToNextMovementStr = "", MassStr = "", PowerStr = "";
-                    double CurrSpeed;
-                    MassStr = AnsiString::FormatFloat(FormatNoDPStr, ((double)Train.Mass) / 1000); // Te
-                    PowerStr = AnsiString::FormatFloat(FormatNoDPStr, Train.PowerAtRail / 1000 / 0.8); // kW
-                    if(Train.BeingCalledOn)
-                        MaxSpeedStr = "30";
-                    else
-                        MaxSpeedStr = AnsiString::FormatFloat(FormatNoDPStr, Train.MaxRunningSpeed);
-                    TDateTime ElapsedDeltaT = TrainController->TTClockTime - Train.EntryTime;
-                    TDateTime FirstHalfTimeDeltaT = Train.ExitTimeHalf - Train.EntryTime;
-                    TDateTime SecondHalfTimeDeltaT = Train.ExitTimeFull - Train.EntryTime - FirstHalfTimeDeltaT;
-                    TDateTime TimeLeft;
-                    double BrakePCRate = Train.BrakeRate * 100.0 / Train.MaxBrakeRate;
-                    MaxBrakeStr = AnsiString::FormatFloat(FormatNoDPStr, (Train.MaxBrakeRate * Train.Mass / 9810));
-                    HeadCode = Train.HeadCode;
-                    if(Train.TrainDataEntryPtr->NumberOfTrains > 1) // Service reference information added at v0.6b
+                    OAListBoxFloatRequired = true;
+                    if(TrainStatusInfoOnOffMenuItem->Caption == "Hide Status")
                     {
-                        if(Train.RepeatNumber == 0)
-                        {
-                            if(HeadCode != Train.TrainDataEntryPtr->ServiceReference)
-                                ServiceReferenceInfo = "\nFirst service of ref. " + Train.TrainDataEntryPtr->ServiceReference;
-                            else
-                                ServiceReferenceInfo = "\nFirst service";
-                        }
-                        else if(HeadCode == Train.TrainDataEntryPtr->ServiceReference)
-                            ServiceReferenceInfo = "\nRepeat service no. " + AnsiString(Train.RepeatNumber);
-                        else
-                            ServiceReferenceInfo = "\nRepeat service no. " + AnsiString(Train.RepeatNumber) + " of ref. " +
-                                Train.TrainDataEntryPtr->ServiceReference;
+                        ShowTrainStatusFloatFlag = true;
                     }
-                    else
+                    if(TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")
                     {
-                        if(HeadCode != Train.TrainDataEntryPtr->ServiceReference)
-                            ServiceReferenceInfo = "\nService reference " + Train.TrainDataEntryPtr->ServiceReference;
+                        ShowTrainTTFloatFlag = true;
                     }
-                    if(Train.Stopped())
+                    if((TrainID > -1) && (ShowTrainStatusFloatFlag || ShowTrainTTFloatFlag))
                     {
-                        if(Train.SignallerStopped)
-                            Status = "Stopped on signaller's instruction"; // if stopped for any other reason that will diplay
-                        if(Train.NotInService)
-                            Status = "Not in service"; // not used so far but leave it in
-                        if(Train.StoppedAtBuffers)
-                            Status = "Stopped at buffers";
-                        if(Train.StoppedAtSignal)
-                            Status = "Stopped at signal";
-                        if(Train.StoppedForTrainInFront)
-                            Status = "Stopped - forward track occupied"; // before station stop as want to display station stop if that set
-                        if(Train.StoppedAtLocation)
-                            Status = "Stopped at " + Train.ActionVectorEntryPtr->LocationName;
-                        if((Train.StoppedAtLocation) && (Train.StoppedForTrainInFront))
-                            Status = "Stopped at " + Train.ActionVectorEntryPtr->LocationName + " + forward track occupied";
-                        if(Train.StoppedWithoutPower)
-                        {
-                            if(Train.TrainFailed)
-                                Status = "Stopped without power - train failed";
-                            else
-                                Status = "Stopped without power";
-                        }
-                        if(Train.StoppedAfterSPAD)
-                            Status = "Stopped - signal passed at danger";
-                        if(Train.Derailed)
-                            Status = "Derailed";
-                        if(Train.Crashed)
-                            Status = "Crashed";
-                        CurrSpeed = 0;
+                        TTrain Train = TrainController->TrainVectorAtIdent(53, TrainID);
+                        TrainStatusFloat = GetTrainStatusFloat(0, TrainID, FormatNoDPStr, SpecialStr);
+                        TrainTTFloat = Train.FloatingTimetableString(1, Train.ActionVectorEntryPtr);
                     }
-                    else if(Train.OneLengthAccelDecel)
+                    else if(ContinuationPos > -1)
                     {
-                        if(Train.FirstHalfMove)
-                        {
-                            Status = "Accelerating"; // just display a linear speed rise over half length
-                            BrakePCRate = 0; // reset to proper value during braking
-                            CurrSpeed = Train.EntrySpeed + ((Train.ExitSpeedHalf - Train.EntrySpeed) * (double(ElapsedDeltaT) / double(FirstHalfTimeDeltaT)));
-                        }
-                        else
-                        {
-                            BrakePCRate = Train.BrakeRate * 100.0 / Train.MaxBrakeRate;
-                            if(BrakePCRate < 55)
-                                Status = "Light braking";
-                            else if(BrakePCRate < 90)
-                                Status = "Heavy braking";
-                            else
-                                Status = "Emergency braking";
-                            CurrSpeed = Train.ExitSpeedHalf - 3.6 * (Train.BrakeRate * (TrainController->TTClockTime - Train.ExitTimeHalf) * 86400.0);
-                        }
+                        GetTrainFloatingInfoFromContinuation(0, ContinuationPos, FormatNoDPStr, SpecialStr, TrainStatusFloat, TrainTTFloat);
                     }
-                    else if(Train.BrakeRate > 0.01)
-                    {
-                        if(BrakePCRate < 55)
-                            Status = "Light braking";
-                        else if(BrakePCRate < 90)
-                            Status = "Heavy braking";
-                        else
-                            Status = "Emergency braking";
-                        CurrSpeed = Train.EntrySpeed - 3.6 * (Train.BrakeRate * ElapsedDeltaT * 86400.0);
-                    }
-
-                    else if((Train.BrakeRate <= 0.01) && (Train.ExitSpeedHalf > (Train.EntrySpeed + 0.01)) && Train.FirstHalfMove)
-                    {
-                        Status = "Accelerating"; // just display a linear speed rise over half length
-                        CurrSpeed = Train.EntrySpeed + ((Train.ExitSpeedHalf - Train.EntrySpeed) * (double(ElapsedDeltaT) / double(FirstHalfTimeDeltaT)));
-                    }
-
-                    else if((Train.BrakeRate <= 0.01) && (Train.ExitSpeedFull > (Train.ExitSpeedHalf + 0.01)) && !Train.FirstHalfMove)
-                    {
-                        Status = "Accelerating";
-                        CurrSpeed = Train.ExitSpeedHalf +
-                            ((Train.ExitSpeedFull - Train.ExitSpeedHalf) * (double(ElapsedDeltaT - FirstHalfTimeDeltaT) / double(SecondHalfTimeDeltaT)));
-                    }
-
-                    else if((Train.BrakeRate <= 0.01) && (Train.ExitSpeedFull <= Train.ExitSpeedHalf) && !Train.FirstHalfMove)
-                    {
-                        if(Train.PowerAtRail < 1)
-                        {
-                            if(Train.TrainFailed)
-                            {
-                                Status = "Coasting - train failed";
-                            }
-                            else
-                            {
-                                Status = "Coasting - no power";
-                            }
-                            CurrSpeed = Train.ExitSpeedFull;
-                        }
-                        else
-                        {
-                            Status = "Constant speed";
-                            CurrSpeed = Train.ExitSpeedFull;
-                        }
-                    }
-
-                    else // No braking, first half move, ExitSpeedHalf <= EntrySpeed
-                    {
-                        if(Train.PowerAtRail < 1) // as designed there is no way a vehicle can coast without having failed
-                        {
-                            if(Train.TrainFailed)
-                            {
-                                Status = "Coasting - train failed";
-                            }
-                            else
-                            {
-                                Status = "Coasting - no power";
-                            }
-                            CurrSpeed = Train.ExitSpeedHalf;
-                        }
-                        else
-                        {
-                            Status = "Constant speed";
-                            CurrSpeed = Train.ExitSpeedHalf;
-                        }
-                    }
-                    if(Train.TimetableFinished)
-                    {
-                        if(Train.TrainMode == Signaller)
-                            NextStopStr = "At signaller's discretion";
-                        else
-                            NextStopStr = "None";
-                    }
-                    else
-                        NextStopStr = Train.FloatingLabelNextString(0, Train.ActionVectorEntryPtr);
-                    if(Train.TrainMode == Signaller)
-                    {
-                        SpecialStr = "Train under signaller control" + AnsiString('\n');
-                    }
-                    else if(Train.BeingCalledOn && !Train.StoppedAtLocation)
-                    {
-                        SpecialStr = "Restricted speed - being called on" + AnsiString('\n');
-                    }
-
-                    double RemTimeHalf = 86400.0 * double(Train.ExitTimeHalf - TrainController->TTClockTime);
-                    if(RemTimeHalf < 0)
-                        RemTimeHalf = 0;
-                    double RemTimeFull = 86400.0 * double(Train.ExitTimeFull - TrainController->TTClockTime);
-                    if(RemTimeFull < 0)
-                        RemTimeFull = 0;
-                    if(RemTimeHalf > 0)
-                        TimeLeft = RemTimeHalf;
-                    else
-                        TimeLeft = RemTimeFull;
-                    TimeToNextMovementStr = "Time to next movement (sec) = " + TimeLeftStr.FormatFloat(FormatOneDPStr, TimeLeft);
-                    if(Train.Stopped())
-                        TimeToNextMovementStr = "";
-                    if(Train.Stopped())
-                    {
-                        TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " +
-                            MaxSpeedStr + "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr +
-                            Status + '\n' + "Next:  " + NextStopStr;
-                    }
-                    else
-                    {
-                        TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " +
-                            MaxSpeedStr + "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr +
-                            Status + ": " + CurrSpeedStr.FormatFloat(FormatNoDPStr, CurrSpeed) + "km/h" + '\n' + "Next: " + NextStopStr;
-                    }
-                }
-                if(TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")
-                {
-                    ShowTrainTTFloatFlag = true;
-                    TrainTTFloat = Train.FloatingTimetableString(0, Train.ActionVectorEntryPtr);
                 }
             }
+        }
 
-            else if(Track->TrackElementAt(666, VecPos).TrackType == Continuation)
-            // always give train information if a train present, but if not & either of train status or timetable info
-            // selected then give next expected train to enter, or 'No trains expected'
+
+        if(!OAListBoxFloatRequired) //condition added after v2.6.1 so only one floating window can show
+        {
+            int VecPos = Track->GetVectorPositionFromTrackMap(6, HLoc, VLoc, FoundFlag);
+            if(FoundFlag && !MouseOverOAPanel)   //MouseOverOAPanel added at v2.7.0 to prevent trains showimng behind OA  panel
             {
-                TrainStatusFloat = "No trains expected";
-                TrainTTFloat = "No timetable";
-                float EntrySpeed;
-                int LineSpeedLimit = Track->TrackElementAt(906, VecPos).SpeedLimit01; // speed only in 01 as a continuation
-                if(TrainStatusInfoOnOffMenuItem->Caption == "Hide Status")
-                    ShowTrainStatusFloatFlag = true;
-                if(TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")
-                    ShowTrainTTFloatFlag = true;
-                if(!TrainController->ContinuationTrainExpectationMultiMap.empty())
+                if(Track->TrackElementAt(450, VecPos).TrainIDOnElement > -1)
+                // if a bridge & 2 trains at that position will select the train with TrainIDOnElement set
                 {
-                    TTrainController::TContinuationTrainExpectationMultiMapIterator CTEIt = TrainController->ContinuationTrainExpectationMultiMap.begin();
-                    if(CTEIt != TrainController->ContinuationTrainExpectationMultiMap.end())
+                    int TrainID = Track->TrackElementAt(452, VecPos).TrainIDOnElement;
+                    if(TrainStatusInfoOnOffMenuItem->Caption == "Hide Status")
                     {
-                        while((CTEIt != TrainController->ContinuationTrainExpectationMultiMap.end()) && ((CTEIt->second.VectorPosition != VecPos) ||
-                            (CTEIt->second.TrainDataEntryPtr->TrainOperatingDataVector.at(CTEIt->second.RepeatNumber).RunningEntry != NotStarted)))
-                        {
-                            CTEIt++;
-                        }
-                        if(CTEIt != TrainController->ContinuationTrainExpectationMultiMap.end())
-                        {
-                            TTrainDataEntry *TTDEPtr = CTEIt->second.TrainDataEntryPtr;
-                            AnsiString ServiceReferenceInfo = "";
-                            // Repeat information
-                            if(TTDEPtr->NumberOfTrains > 1) // Service reference information
-                            {
-                                if(CTEIt->second.RepeatNumber == 0)
-                                {
-                                    if(CTEIt->second.HeadCode != TTDEPtr->ServiceReference)
-                                        ServiceReferenceInfo = "\nFirst service of ref. " + TTDEPtr->ServiceReference;
-                                    else
-                                        ServiceReferenceInfo = "\nFirst service";
-                                }
-                                else if(CTEIt->second.HeadCode == TTDEPtr->ServiceReference)
-                                    ServiceReferenceInfo = "\nRepeat service no. " + AnsiString(CTEIt->second.RepeatNumber);
-                                else
-                                    ServiceReferenceInfo = "\nRepeat service no. " + AnsiString(CTEIt->second.RepeatNumber) + " of ref. " +
-                                        TTDEPtr->ServiceReference;
-                            }
-                            else
-                            {
-                                if(CTEIt->second.HeadCode != TTDEPtr->ServiceReference)
-                                    ServiceReferenceInfo = "\nService reference " + TTDEPtr->ServiceReference;
-                            }
-                            if(TTDEPtr->ActionVector.at(0).SignallerControl) // entry at 0 is the start entry
-                            {
-                                SpecialStr = "\nTrain under signaller control";
-                                EntrySpeed = TTDEPtr->SignallerSpeed;
-                                if(EntrySpeed > LineSpeedLimit)
-                                    EntrySpeed = LineSpeedLimit;
-                            }
-                            else
-                            {
-                                EntrySpeed = TTDEPtr->StartSpeed;
-                                if(EntrySpeed > LineSpeedLimit)
-                                    EntrySpeed = LineSpeedLimit;
-                            }
-                            if((CTEIt->first + TDateTime(1.0 / 1440)) < TrainController->TTClockTime) // has to be at least 1 min late to show as late
-                            {
-                                TDateTime TempTime = CTEIt->first;
-// need this because CTEIt points to a const object and shouldn't use FormatString on a const object
-                                TrainStatusFloat = CTEIt->second.HeadCode + ": " + CTEIt->second.Description + ServiceReferenceInfo + "\nEntry speed " +
-                                    AnsiString::FormatFloat(FormatNoDPStr, EntrySpeed) + "km/h" + SpecialStr + "\nDelayed, was due at " +
-                                    Utilities->Format96HHMM(TempTime);
-                            }
-                            else
-                            {
-                                TDateTime TempTime = CTEIt->first;
-// need this because CTEIt points to a const object and shouldn't use FormatString on a const object
-                                TrainStatusFloat = CTEIt->second.HeadCode + ": " + CTEIt->second.Description + ServiceReferenceInfo + "\nEntry speed " +
-                                    AnsiString::FormatFloat(FormatNoDPStr, EntrySpeed) + "km/h" + SpecialStr + "\nExpected at " +
-                                    Utilities->Format96HHMM(TempTime);
-                            }
-                            if(TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")
-                            {
-                                if(!TTDEPtr->ActionVector.at(0).SignallerControl) // if signaller control there's no timetable & SpecialStr covers this
-                                {
-                                    TrainTTFloat = TrainController->ContinuationEntryFloatingTTString(0, TTDEPtr, CTEIt->second.RepeatNumber,
-                                        CTEIt->second.IncrementalMinutes, CTEIt->second.IncrementalDigits);
-                                }
-                            }
-                        }
+                        ShowTrainStatusFloatFlag = true;
+                        TrainStatusFloat = GetTrainStatusFloat(1, TrainID, FormatNoDPStr, SpecialStr);
+                    }
+                    if(TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")
+                    {
+                        ShowTrainTTFloatFlag = true;
+                        TTrain Train = TrainController->TrainVectorAtIdent(54, TrainID);
+                        TrainTTFloat = Train.FloatingTimetableString(0, Train.ActionVectorEntryPtr);
+                    }
+                }
+
+                else if(Track->TrackElementAt(666, VecPos).TrackType == Continuation)
+                // always give train information if a train present, but if not & either of train status or timetable info
+                // selected then give next expected train to enter, or 'No trains expected'
+                {
+                    TrainStatusFloat = "No trains expected";
+                    TrainTTFloat = "No timetable";
+                    if(TrainStatusInfoOnOffMenuItem->Caption == "Hide Status")
+                        ShowTrainStatusFloatFlag = true;
+                    if(TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")
+                        ShowTrainTTFloatFlag = true;
+                    if(!TrainController->ContinuationTrainExpectationMultiMap.empty())
+                    {
+                        GetTrainFloatingInfoFromContinuation(1, VecPos, FormatNoDPStr, SpecialStr, TrainStatusFloat, TrainTTFloat);
                     }
                 }
             }
@@ -14962,12 +14829,22 @@ void TInterface::TrackTrainFloat(int Caller)
             Caption = TrainStatusFloat + '\n' + '\n' + TrainTTFloat + '\n' + '\n' + TrackFloat;
     }
 
-    int Left = ScreenX + MainScreen->Left + 16; // so lhs of window is one element to the right of the mouse pos
+    int WindowOffsetLeft = 16;
+    int WindowOffsetRight = 16;
+    if(OAListBoxFloatRequired)
+    {
+        WindowOffsetLeft = 32;
+        WindowOffsetRight = 64;
+    }
 
+    FloatingLabel->Caption = Caption; //set this here so dimensions correct in calculations, moved from below at v2.7.0
+    FloatingPanel->Visible = true; //need this or dimensions still not valid, moved from below at v2.7.0
+
+    int Left = ScreenX + MainScreen->Left + WindowOffsetRight; // so lhs of window is WindowOffset to the right of the mouse pos
 // this offset is because window position is relative to the interface form, whereas ScreenX & Y are relative to the MainScreen, which is
 // offset 32 to the right and 95 down from the interface form
     if((Left + FloatingPanel->Width) > MainScreen->Left + MainScreen->Width)
-        Left = ScreenX - FloatingPanel->Width + 16; // so rhs of window is one element to the left of the mouse pos (+32 would be at mouse pos)
+        Left = ScreenX - FloatingPanel->Width + 32 - WindowOffsetLeft; // so rhs of window is 32 - WindowOffset to the left of the mouse pos (+32 would be at mouse pos)
     int Top = ScreenY + MainScreen->Top + 16; // so top of window is one element below the mouse pos (ScreenY + MainScreen->Top would be at mouse pos)
 
     if((Top + FloatingPanel->Height) > MainScreen->Top + MainScreen->Height)
@@ -14981,7 +14858,7 @@ void TInterface::TrackTrainFloat(int Caller)
             Top = 30;
         }
     }
-    if((Left != FloatingPanel->Left) || (Top != FloatingPanel->Top))
+/*    if((Left != FloatingPanel->Left) || (Top != FloatingPanel->Top))    //dropped at v2.7.0 as causes more flickler than allowing window to move with mouse
     {
         FloatingPanel->Visible = false; // so doesn't flicker when reposition
         FloatingPanel->Left = Left;
@@ -14989,11 +14866,304 @@ void TInterface::TrackTrainFloat(int Caller)
         Utilities->CallLogPop(1917);
         return;
     }
+*/
 
-    FloatingLabel->Caption = Caption;
-    FloatingPanel->Visible = true;
+    FloatingPanel->Left = Left; //new at v2.7.0 in place of above
+    FloatingPanel->Top = Top;
+
+//    FloatingLabel->Caption = Caption;  moved up at v2.7.0
+//    FloatingPanel->Visible = true; //  moved up at v2.7.0
     FloatingPanel->BringToFront();
     Utilities->CallLogPop(746);
+}
+
+// ---------------------------------------------------------------------------
+
+void TInterface::GetTrainFloatingInfoFromContinuation(int Caller, int VecPos, AnsiString FormatNoDPStr, AnsiString SpecialStr, AnsiString &TrainStatusFloat, AnsiString &TrainTTFloat)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetTrainFloatingInfoFromContinuation");
+    TTrainController::TContinuationTrainExpectationMultiMapIterator CTEIt = TrainController->ContinuationTrainExpectationMultiMap.begin();
+    int LineSpeedLimit = Track->TrackElementAt(906, VecPos).SpeedLimit01; // speed only in 01 as a continuation
+    float EntrySpeed;
+    if(CTEIt != TrainController->ContinuationTrainExpectationMultiMap.end())
+    {
+        while((CTEIt != TrainController->ContinuationTrainExpectationMultiMap.end()) && ((CTEIt->second.VectorPosition != VecPos) ||
+            (CTEIt->second.TrainDataEntryPtr->TrainOperatingDataVector.at(CTEIt->second.RepeatNumber).RunningEntry != NotStarted)))
+        {
+            CTEIt++;
+        }
+        if(CTEIt != TrainController->ContinuationTrainExpectationMultiMap.end())
+        {
+            TTrainDataEntry *TTDEPtr = CTEIt->second.TrainDataEntryPtr;
+            AnsiString ServiceReferenceInfo = "";
+            // Repeat information
+            if(TTDEPtr->NumberOfTrains > 1) // Service reference information
+            {
+                if(CTEIt->second.RepeatNumber == 0)
+                {
+                    if(CTEIt->second.HeadCode != TTDEPtr->ServiceReference)
+                        ServiceReferenceInfo = "\nFirst service of ref. " + TTDEPtr->ServiceReference;
+                    else
+                        ServiceReferenceInfo = "\nFirst service";
+                }
+                else if(CTEIt->second.HeadCode == TTDEPtr->ServiceReference)
+                    ServiceReferenceInfo = "\nRepeat service no. " + AnsiString(CTEIt->second.RepeatNumber);
+                else
+                    ServiceReferenceInfo = "\nRepeat service no. " + AnsiString(CTEIt->second.RepeatNumber) + " of ref. " +
+                        TTDEPtr->ServiceReference;
+            }
+            else
+            {
+                if(CTEIt->second.HeadCode != TTDEPtr->ServiceReference)
+                    ServiceReferenceInfo = "\nService reference " + TTDEPtr->ServiceReference;
+            }
+            if(TTDEPtr->ActionVector.at(0).SignallerControl) // entry at 0 is the start entry
+            {
+                SpecialStr = "\nTrain under signaller control";
+                EntrySpeed = TTDEPtr->SignallerSpeed;
+                if(EntrySpeed > LineSpeedLimit)
+                    EntrySpeed = LineSpeedLimit;
+            }
+            else
+            {
+                EntrySpeed = TTDEPtr->StartSpeed;
+                if(EntrySpeed > LineSpeedLimit)
+                    EntrySpeed = LineSpeedLimit;
+            }
+            if((CTEIt->first + TDateTime(1.0 / 1440)) < TrainController->TTClockTime) // has to be at least 1 min late to show as late
+            {
+                TDateTime TempTime = CTEIt->first;
+// need this because CTEIt points to a const object and shouldn't use FormatString on a const object
+                TrainStatusFloat = CTEIt->second.HeadCode + ": " + CTEIt->second.Description + ServiceReferenceInfo + "\nEntry speed " +
+                    AnsiString::FormatFloat(FormatNoDPStr, EntrySpeed) + "km/h" + SpecialStr + "\nDelayed, was due at " +
+                    Utilities->Format96HHMM(TempTime);
+            }
+            else
+            {
+                TDateTime TempTime = CTEIt->first;
+// need this because CTEIt points to a const object and shouldn't use FormatString on a const object
+                TrainStatusFloat = CTEIt->second.HeadCode + ": " + CTEIt->second.Description + ServiceReferenceInfo + "\nEntry speed " +
+                    AnsiString::FormatFloat(FormatNoDPStr, EntrySpeed) + "km/h" + SpecialStr + "\nExpected at " +
+                    Utilities->Format96HHMM(TempTime);
+            }
+            if(TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")
+            {
+                if(!TTDEPtr->ActionVector.at(0).SignallerControl) // if signaller control there's no timetable & SpecialStr covers this
+                {
+                    TrainTTFloat = TrainController->ContinuationEntryFloatingTTString(0, TTDEPtr, CTEIt->second.RepeatNumber,
+                        CTEIt->second.IncrementalMinutes, CTEIt->second.IncrementalDigits);
+                }
+            }
+        }
+    }
+    Utilities->CallLogPop(2262);
+}
+
+// ---------------------------------------------------------------------------
+
+AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString FormatNoDPStr, AnsiString SpecialStr) //new after v2.6.1 to make it easier to show also from actions due panel
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetTrainStatusFloat");
+    AnsiString HeadCode = "", ServiceReferenceInfo = "", Status = "", CurrSpeedStr = "", BrakePCStr = "", NextStopStr = "", TimeLeftStr = "",
+        TimeToNextMovementStr = "", MassStr = "", PowerStr = "";
+    AnsiString FormatOneDPStr = "####0.0", MaxBrakeStr = "", MaxSpeedStr = "", TrainStatusFloat;
+
+    double CurrSpeed;
+    TTrain Train = TrainController->TrainVectorAtIdent(1, TrainID);
+    MassStr = AnsiString::FormatFloat(FormatNoDPStr, ((double)Train.Mass) / 1000); // Te
+    PowerStr = AnsiString::FormatFloat(FormatNoDPStr, Train.PowerAtRail / 1000 / 0.8); // kW
+    if(Train.BeingCalledOn)
+        MaxSpeedStr = "30";
+    else
+        MaxSpeedStr = AnsiString::FormatFloat(FormatNoDPStr, Train.MaxRunningSpeed);
+    TDateTime ElapsedDeltaT = TrainController->TTClockTime - Train.EntryTime;
+    TDateTime FirstHalfTimeDeltaT = Train.ExitTimeHalf - Train.EntryTime;
+    TDateTime SecondHalfTimeDeltaT = Train.ExitTimeFull - Train.EntryTime - FirstHalfTimeDeltaT;
+    TDateTime TimeLeft;
+    double BrakePCRate = Train.BrakeRate * 100.0 / Train.MaxBrakeRate;
+    MaxBrakeStr = AnsiString::FormatFloat(FormatNoDPStr, (Train.MaxBrakeRate * Train.Mass / 9810));
+    HeadCode = Train.HeadCode;
+    if(Train.TrainDataEntryPtr->NumberOfTrains > 1) // Service reference information added at v0.6b
+    {
+        if(Train.RepeatNumber == 0)
+        {
+            if(HeadCode != Train.TrainDataEntryPtr->ServiceReference)
+                ServiceReferenceInfo = "\nFirst service of ref. " + Train.TrainDataEntryPtr->ServiceReference;
+            else
+                ServiceReferenceInfo = "\nFirst service";
+        }
+        else if(HeadCode == Train.TrainDataEntryPtr->ServiceReference)
+            ServiceReferenceInfo = "\nRepeat service no. " + AnsiString(Train.RepeatNumber);
+        else
+            ServiceReferenceInfo = "\nRepeat service no. " + AnsiString(Train.RepeatNumber) + " of ref. " +
+                Train.TrainDataEntryPtr->ServiceReference;
+    }
+    else
+    {
+        if(HeadCode != Train.TrainDataEntryPtr->ServiceReference)
+            ServiceReferenceInfo = "\nService reference " + Train.TrainDataEntryPtr->ServiceReference;
+    }
+    if(Train.Stopped())
+    {
+        if(Train.SignallerStopped)
+            Status = "Stopped on signaller's instruction"; // if stopped for any other reason that will diplay
+        if(Train.NotInService)
+            Status = "Not in service"; // not used so far but leave it in
+        if(Train.StoppedAtBuffers)
+            Status = "Stopped at buffers";
+        if(Train.StoppedAtSignal)
+            Status = "Stopped at signal";
+        if(Train.StoppedForTrainInFront)
+            Status = "Stopped - forward track occupied"; // before station stop as want to display station stop if that set
+        if(Train.StoppedAtLocation)
+            Status = "Stopped at " + Train.ActionVectorEntryPtr->LocationName;
+        if((Train.StoppedAtLocation) && (Train.StoppedForTrainInFront))
+            Status = "Stopped at " + Train.ActionVectorEntryPtr->LocationName + " + forward track occupied";
+        if(Train.StoppedWithoutPower)
+        {
+            if(Train.TrainFailed)
+                Status = "Stopped without power - train failed";
+            else
+                Status = "Stopped without power";
+        }
+        if(Train.StoppedAfterSPAD)
+            Status = "Stopped - signal passed at danger";
+        if(Train.Derailed)
+            Status = "Derailed";
+        if(Train.Crashed)
+            Status = "Crashed";
+        CurrSpeed = 0;
+    }
+    else if(Train.OneLengthAccelDecel)
+    {
+        if(Train.FirstHalfMove)
+        {
+            Status = "Accelerating"; // just display a linear speed rise over half length
+            BrakePCRate = 0; // reset to proper value during braking
+            CurrSpeed = Train.EntrySpeed + ((Train.ExitSpeedHalf - Train.EntrySpeed) * (double(ElapsedDeltaT) / double(FirstHalfTimeDeltaT)));
+        }
+        else
+        {
+            BrakePCRate = Train.BrakeRate * 100.0 / Train.MaxBrakeRate;
+            if(BrakePCRate < 55)
+                Status = "Light braking";
+            else if(BrakePCRate < 90)
+                Status = "Heavy braking";
+            else
+                Status = "Emergency braking";
+            CurrSpeed = Train.ExitSpeedHalf - 3.6 * (Train.BrakeRate * (TrainController->TTClockTime - Train.ExitTimeHalf) * 86400.0);
+        }
+    }
+    else if(Train.BrakeRate > 0.01)
+    {
+        if(BrakePCRate < 55)
+            Status = "Light braking";
+        else if(BrakePCRate < 90)
+            Status = "Heavy braking";
+        else
+            Status = "Emergency braking";
+        CurrSpeed = Train.EntrySpeed - 3.6 * (Train.BrakeRate * ElapsedDeltaT * 86400.0);
+    }
+
+    else if((Train.BrakeRate <= 0.01) && (Train.ExitSpeedHalf > (Train.EntrySpeed + 0.01)) && Train.FirstHalfMove)
+    {
+        Status = "Accelerating"; // just display a linear speed rise over half length
+        CurrSpeed = Train.EntrySpeed + ((Train.ExitSpeedHalf - Train.EntrySpeed) * (double(ElapsedDeltaT) / double(FirstHalfTimeDeltaT)));
+    }
+
+    else if((Train.BrakeRate <= 0.01) && (Train.ExitSpeedFull > (Train.ExitSpeedHalf + 0.01)) && !Train.FirstHalfMove)
+    {
+        Status = "Accelerating";
+        CurrSpeed = Train.ExitSpeedHalf +
+            ((Train.ExitSpeedFull - Train.ExitSpeedHalf) * (double(ElapsedDeltaT - FirstHalfTimeDeltaT) / double(SecondHalfTimeDeltaT)));
+    }
+
+    else if((Train.BrakeRate <= 0.01) && (Train.ExitSpeedFull <= Train.ExitSpeedHalf) && !Train.FirstHalfMove)
+    {
+        if(Train.PowerAtRail < 1)
+        {
+            if(Train.TrainFailed)
+            {
+                Status = "Coasting - train failed";
+            }
+            else
+            {
+                Status = "Coasting - no power";
+            }
+            CurrSpeed = Train.ExitSpeedFull;
+        }
+        else
+        {
+            Status = "Constant speed";
+            CurrSpeed = Train.ExitSpeedFull;
+        }
+    }
+
+    else // No braking, first half move, ExitSpeedHalf <= EntrySpeed
+    {
+        if(Train.PowerAtRail < 1) // as designed there is no way a vehicle can coast without having failed
+        {
+            if(Train.TrainFailed)
+            {
+                Status = "Coasting - train failed";
+            }
+            else
+            {
+                Status = "Coasting - no power";
+            }
+            CurrSpeed = Train.ExitSpeedHalf;
+        }
+        else
+        {
+            Status = "Constant speed";
+            CurrSpeed = Train.ExitSpeedHalf;
+        }
+    }
+    if(Train.TimetableFinished)
+    {
+        if(Train.TrainMode == Signaller)
+            NextStopStr = "At signaller's discretion";
+        else
+            NextStopStr = "None";
+    }
+    else
+        NextStopStr = Train.FloatingLabelNextString(0, Train.ActionVectorEntryPtr);
+    if(Train.TrainMode == Signaller)
+    {
+        SpecialStr = "Train under signaller control" + AnsiString('\n');
+    }
+    else if(Train.BeingCalledOn && !Train.StoppedAtLocation)
+    {
+        SpecialStr = "Restricted speed - being called on" + AnsiString('\n');
+    }
+
+    double RemTimeHalf = 86400.0 * double(Train.ExitTimeHalf - TrainController->TTClockTime);
+    if(RemTimeHalf < 0)
+        RemTimeHalf = 0;
+    double RemTimeFull = 86400.0 * double(Train.ExitTimeFull - TrainController->TTClockTime);
+    if(RemTimeFull < 0)
+        RemTimeFull = 0;
+    if(RemTimeHalf > 0)
+        TimeLeft = RemTimeHalf;
+    else
+        TimeLeft = RemTimeFull;
+    TimeToNextMovementStr = "Time to next movement (sec) = " + TimeLeftStr.FormatFloat(FormatOneDPStr, TimeLeft);
+    if(Train.Stopped())
+        TimeToNextMovementStr = "";
+    if(Train.Stopped())
+    {
+        TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " +
+            MaxSpeedStr + "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr +
+            Status + '\n' + "Next:  " + NextStopStr;
+    }
+    else
+    {
+        TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " +
+            MaxSpeedStr + "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr +
+            Status + ": " + CurrSpeedStr.FormatFloat(FormatNoDPStr, CurrSpeed) + "km/h" + '\n' + "Next: " + NextStopStr;
+    }
+    Utilities->CallLogPop(2263);
+    return TrainStatusFloat;
 }
 
 // ---------------------------------------------------------------------------
@@ -15201,7 +15371,7 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
         for(unsigned int x = 0; x < Track->ChangingLCVector.size(); x++)
         {
             bool Manual = false;
-            if(Track->ChangingLCVector.at(x).ConsecSignals == 2) //manual
+            if(Track->ChangingLCVector.at(x).TypeOfRoute == 2) //manual
             {
                 Manual = true;
             }
@@ -15219,13 +15389,13 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
                     else
                     {
                         Track->PlotLoweredLinkedLevelCrossingBarriers(0, Track->ChangingLCVector.at(x).BaseElementSpeedTag, H, V,
-                            Track->ChangingLCVector.at(x).ConsecSignals, Display, Manual);
+                            Track->ChangingLCVector.at(x).TypeOfRoute, Display, Manual);
                     }
                 }
                 else
                 {
                     Track->PlotLCBaseElementsOnly(2, Track->ChangingLCVector.at(x).BarrierState, Track->ChangingLCVector.at(x).BaseElementSpeedTag, H, V,
-                        Track->ChangingLCVector.at(x).ConsecSignals, Display);
+                        Track->ChangingLCVector.at(x).TypeOfRoute, Display);
                 }
             }
             else
@@ -15241,7 +15411,7 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
                 // barriers lowering
                 {
                     Track->PlotLoweredLinkedLevelCrossingBarriers(1, Track->ChangingLCVector.at(x).BaseElementSpeedTag, H, V,
-                        Track->ChangingLCVector.at(x).ConsecSignals, Display, Manual);
+                        Track->ChangingLCVector.at(x).TypeOfRoute, Display, Manual);
                     Track->SetLinkedLevelCrossingBarrierAttributes(5, H, V, 1); // only set attr to 1 when fully lowered
                     bool FoundFlag;
                     int TVPos = Track->GetVectorPositionFromTrackMap(46, H, V, FoundFlag);
@@ -15737,8 +15907,8 @@ void TInterface::ResetAll(int Caller)
     Level1Mode = BaseMode;
     SetLevel1Mode(26);
     RouteMode = None;
-    PreferredRoute = true;
-    ConsecSignalsRoute = true;
+    PreferredRoute = true;             //default starting conditions
+    ConsecSignalsRoute = true;         //default starting conditions
     DevelopmentPanel->Visible = false;
 
     MainScreen->Canvas->CopyMode = cmSrcCopy;
@@ -16005,6 +16175,11 @@ void TInterface::SaveSession(int Caller)
             Utilities->SaveFileInt(SessionFile, -1); // marker for end of failed trains
             Utilities->SaveFileString(SessionFile, "End of file at v2.4.0");
 // end of v2.4.0 addition
+
+// added at v2.7.0
+            Utilities->SaveFileBool(SessionFile, ConsecSignalsRoute);
+            Utilities->SaveFileString(SessionFile, "End of file at v2.7.0");
+// end of v2.7.0 addition
             SessionFile.close();
             TrainController->StopTTClockMessage(4, "Session saved: Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " +
                 RailwayTitle + "; " + TimetableTitle + ".ssn");
@@ -16181,6 +16356,7 @@ void TInterface::LoadSession(int Caller)
                         TrainController->AvHoursIntValue = 0;
                         TrainController->MTBFHours = 0;
                         SessionFile.close(); // no TrainController->AvHoursIntValue & no failed trains
+                        //at v2.7.0 if find eof then don't need a value for ConsecSignalsRoute as that loaded same as PreferredRoute in interface
                     }
                     else
                     {
@@ -16199,7 +16375,26 @@ void TInterface::LoadSession(int Caller)
                             TrainController->TrainVectorAtIdent(48, ID).OriginalPowerAtRail = PowerDouble;
                             ID = Utilities->LoadFileInt(SessionFile);
                         }
-                        SessionFile.close();
+                        //added at v2.7.0 - need value for ConsecSignalsRoute but might have eof here with older sessions so first test for that
+                        DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.4.0"  discarded
+                        SessionFile.get(TempChar);
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) // when emerge from here either have eof or '0' or '1'
+                        {
+                            SessionFile.get(TempChar);
+                        }
+                        if(!SessionFile.eof()) // not end of file
+                        {
+                            if((TempChar != '0') && (TempChar != '1'))
+                            {
+                                throw Exception("TempChar value = " + AnsiString(TempChar) + ", should be 0 or 1");
+                            }
+                            ConsecSignalsRoute = true;
+                            if(TempChar == '0')
+                            {
+                                ConsecSignalsRoute = false;
+                            }
+                        }
+                        SessionFile.close(); //
                     }
                     // deal with other settings
                     Display->DisplayOffsetH = TempDisplayOffsetH; // reset to saved values
@@ -16281,8 +16476,8 @@ void TInterface::SaveInterface(int Caller, std::ofstream &SessionFile)
     Utilities->SaveFileString(SessionFile, RailwayTitle);
     Utilities->SaveFileString(SessionFile, TimetableTitle);
     Utilities->SaveFileBool(SessionFile, PreferredRoute);
-    Utilities->SaveFileBool(SessionFile, ConsecSignalsRoute);
-    Utilities->SaveFileBool(SessionFile, AutoSigsFlag);
+    Utilities->SaveFileBool(SessionFile, PreferredRoute); //changed at v2.7.0, was ConsecSignalsRoute here but if different to PreferredRoute (as can be from v2.7.0) then have
+    Utilities->SaveFileBool(SessionFile, AutoSigsFlag);                 //error if try to load with an earlier prog version.  ConsecSignalsRoute now moved to end of session file
     Utilities->SaveFileInt(SessionFile, Display->DisplayOffsetH);
     Utilities->SaveFileInt(SessionFile, Display->DisplayOffsetV);
     Utilities->SaveFileInt(SessionFile, Display->DisplayOffsetHHome);
@@ -17704,7 +17899,8 @@ void TInterface::SetRouteButtonsInfoCaptionAndRouteNotStarted(int Caller)
         if(AutoSigsFlag)
         {
             AutoSigsButton->Enabled = false;
-            SigPrefButton->Enabled = true;
+            SigPrefConsecButton->Enabled = true;
+            SigPrefNonConsecButton->Enabled = true;
             UnrestrictedButton->Enabled = true;
             InfoPanel->Visible = true;
             if(Level2OperMode == PreStart)
@@ -17713,10 +17909,24 @@ void TInterface::SetRouteButtonsInfoCaptionAndRouteNotStarted(int Caller)
                 InfoPanel->Caption = "OPERATING:  Select AUTOMATIC SIGNAL ROUTE start signal, or left click points to change manually";
             InfoCaptionStore = InfoPanel->Caption;
         }
-        else if(ConsecSignalsRoute) // PreferredRoute always same as ConsecSignalsRoute
+        else if(PreferredRoute & ConsecSignalsRoute)  //added at v2.7.0, was just ConsecSignalsRoute
         {
             AutoSigsButton->Enabled = true;
-            SigPrefButton->Enabled = false;
+            SigPrefConsecButton->Enabled = false;
+            SigPrefNonConsecButton->Enabled = true;
+            UnrestrictedButton->Enabled = true;
+            InfoPanel->Visible = true;
+            if(Level2OperMode == PreStart)
+                InfoPanel->Caption = "PRE-START:  Select PREFERRED ROUTE start signal, or left click points to change manually";
+            else
+                InfoPanel->Caption = "OPERATING:  Select PREFERRED ROUTE start signal, or left click points to change manually";
+            InfoCaptionStore = InfoPanel->Caption;
+        }
+        else if(PreferredRoute & !ConsecSignalsRoute)  //added at v2.7.0
+        {
+            AutoSigsButton->Enabled = true;
+            SigPrefConsecButton->Enabled = true;
+            SigPrefNonConsecButton->Enabled = false;
             UnrestrictedButton->Enabled = true;
             InfoPanel->Visible = true;
             if(Level2OperMode == PreStart)
@@ -17728,7 +17938,8 @@ void TInterface::SetRouteButtonsInfoCaptionAndRouteNotStarted(int Caller)
         else
         {
             AutoSigsButton->Enabled = true;
-            SigPrefButton->Enabled = true;
+            SigPrefConsecButton->Enabled = true;
+            SigPrefNonConsecButton->Enabled = true;
             UnrestrictedButton->Enabled = false;
             InfoPanel->Visible = true;
             if(Level2OperMode == PreStart)
@@ -17741,7 +17952,8 @@ void TInterface::SetRouteButtonsInfoCaptionAndRouteNotStarted(int Caller)
     else
     {
         AutoSigsButton->Enabled = false;
-        SigPrefButton->Enabled = false;
+        SigPrefConsecButton->Enabled = false;
+        SigPrefNonConsecButton->Enabled = false;
         UnrestrictedButton->Enabled = false;
         InfoPanel->Visible = true;
         if(Level2OperMode == PreStart)
@@ -17791,7 +18003,8 @@ void TInterface::DisableRouteButtons(int Caller)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DisableRouteButtons");
     RouteCancelButton->Enabled = false;
     AutoSigsButton->Enabled = false;
-    SigPrefButton->Enabled = false;
+    SigPrefConsecButton->Enabled = false;
+    SigPrefNonConsecButton->Enabled = false;
     UnrestrictedButton->Enabled = false;
     Utilities->CallLogPop(1303);
 }

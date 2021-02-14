@@ -48,7 +48,7 @@ var class_t_train_controller =
     [ "EntryPos", "class_t_train_controller.html#aa60ab73bef848c5458cdf0217092aef8", null ],
     [ "FinishedOperation", "class_t_train_controller.html#a07d3d10bf08d4e916b652d676c917335", null ],
     [ "GetControllerTrainTime", "class_t_train_controller.html#a2713e7d4bb329d65df8b3fa0ad59b6cf", null ],
-    [ "GetExitLocationAndAt", "class_t_train_controller.html#ae6c904f201d8bb23b3c0714226244890", null ],
+    [ "GetExitLocationAndAt", "class_t_train_controller.html#a0114e517611ab24d3b947c1781130a23", null ],
     [ "GetRepeatHeadCode", "class_t_train_controller.html#afb0e8fd36435809350cb323ab9fe2213", null ],
     [ "GetRepeatTime", "class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7", null ],
     [ "IsSNTEntryLocated", "class_t_train_controller.html#a61cdbf0085d24c76aa84e7d5e1d11ead", null ],

@@ -193,7 +193,7 @@ __published: // IDE-managed Components
 // 'Operate railway' mode - buttons left to right
     TBitBtn *OperateButton;
     TBitBtn *AutoSigsButton;
-    TBitBtn *SigPrefButton;
+    TBitBtn *SigPrefConsecButton;
     TBitBtn *UnrestrictedButton;
     TBitBtn *RouteCancelButton;
     TBitBtn *PresetAutoSigRoutesButton;
@@ -651,6 +651,7 @@ __published: // IDE-managed Components
     TLabel *CPLabel6;
     TLabel *CPLabel7;
     TLabel *CPLabel8;
+    TBitBtn *SigPrefNonConsecButton;
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -773,7 +774,7 @@ __published: // IDE-managed Components
     void __fastcall SetLengthsButtonClick(TObject *Sender);
     void __fastcall ShowHideTTButtonClick(TObject *Sender);
     void __fastcall SigAspectButtonClick(TObject *Sender);
-    void __fastcall SigPrefButtonClick(TObject *Sender);
+    void __fastcall SigPrefNonConsecButtonClick(TObject *Sender);
     void __fastcall SpeedButtonClick(TObject *Sender);
     void __fastcall SubMinsButtonClick(TObject *Sender);
     void __fastcall TextOrUserGraphicGridButtonClick(TObject *Sender);
@@ -841,7 +842,10 @@ __published: // IDE-managed Components
     void __fastcall TTClockAdjustOKButtonClick(TObject *Sender);
     void __fastcall ConflictAnalysisButtonClick(TObject *Sender);
     void __fastcall CPCancelButtonClick(TObject *Sender);
-    void __fastcall CPGenFileButtonClick(TObject *Sender); // new at v2.4.0
+    void __fastcall CPGenFileButtonClick(TObject *Sender);
+    void __fastcall OAListBoxMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
+          int X, int Y);
+    void __fastcall SigPrefConsecButtonClick(TObject *Sender); // new at v2.4.0
 
 public: // AboutForm needs access to these
 
@@ -952,6 +956,8 @@ private:
 ///< true when the left mouse button is down
     bool NewEntryInPreparationFlag;
 ///< true when a new timetable entry is being prepared in the timetable editor
+    bool OAListBoxRightMouseButtonDown;
+///< flag set when right mouse button clicked over op action list box, so floating information window shows, reset on right button up or when BaseMode selected
     bool PasteWarningSentFlag;
 ///< indicates that the warning message about pasting overwriting the area has been given, so it won't be given again
     bool PreferredRoute;
@@ -1160,6 +1166,8 @@ bool AnyTTKeyFlagSet()
 
 // functions defined in .cpp file
 
+/// used for floating window to display train status
+    AnsiString GetTrainStatusFloat(int Caller, int TrainID, AnsiString FormatNoDPStr, AnsiString SpecialStr); //new after v2.6.1
 /// Search the timetable entry pointed to by TTCurrentEntryPtr and if any times (HH:MM) are present return true (checked in order to enable or not AddMinsButton & SubMinsButton)
     bool AreAnyTimesInCurrentEntry();
 /// Convert a stored timetable file (either as a stand alone file or within a session file) to a loaded timetable, return false for error
@@ -1177,7 +1185,9 @@ bool AnyTTKeyFlagSet()
 /// Erase a location name (providing it exists in LocationNameMultiMap) from TextVector, return true if text found & exists in LocationNameMultiMap, and if so return text position in &HPos & &VPos
     bool EraseLocationNameText(int Caller, AnsiString Name, int &HPos, int &VPos);
 /// Check integrity of a railway file prior to loading, return true for success
-    bool FileIntegrityCheck(int Caller, char *FileName) const ;
+    bool FileIntegrityCheck(int Caller, char *FileName) const;
+/// Used in actions due panel to identify the train or continuation
+    bool GetTrainIDOrContinuationPosition(int Caller, int X, int Y, int &TrainID, int &ContinuationPos); //added after v2.6.1 so can use for actions due floating window
 /// Called during gap setting to mark a gap with a red ellipse and ask user to select the corresponding gap, returns true if an unset gap found
     bool HighLightOneGap(int Caller, int &HLoc, int &VLoc);
 /// Checked during operation, returns true if so and PerformancePanel removed - not used from v2.2.0 as now allow floating panel & label to overlie performance panel
@@ -1218,6 +1228,8 @@ bool AnyTTKeyFlagSet()
     void ErrorLog(int Caller, AnsiString Message);
 /// Deal with any warning graphics that need to flash (call on, signal stop, crash etc), called during the ClockTimer function
     void FlashingGraphics(int Caller, TDateTime Now);
+/// Called when floating train info needed and train hasn't entered yet
+    void GetTrainFloatingInfoFromContinuation(int Caller, int VecPos, AnsiString FormatNoDPStr, AnsiString SpecialStr, AnsiString &TrainStatusFloat, AnsiString &TrainTTFloat); //new after v2.6.1
 /// Called during timetable editing to highlight in red a single entry in the list of all entries in the left hand long window
     void HighlightOneEntryInAllEntriesTTListBox(int Caller, int Position);
 /// In trackbuild display ground signal types on signal buttons

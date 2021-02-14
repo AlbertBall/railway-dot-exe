@@ -232,7 +232,7 @@ protected:
 ///< determines and loads EXNumber (see above)
     Graphics::TBitmap *GetDirectionPrefDirGraphicPtr() const ;
 ///< picks up the EntryDirectionGraphicPtr for preferred directions
-    Graphics::TBitmap *GetDirectionRouteGraphicPtr(bool AutoSigsFlag, bool ConsecSignalsRoute) const ;
+    Graphics::TBitmap *GetDirectionRouteGraphicPtr(bool AutoSigsFlag, bool PrefDirRoute) const ;
 ///< picks up the green or red route direction graphic
     Graphics::TBitmap *GetOriginalGraphicPtr();
 ///< picks up the original (non-flashing) graphic for use during route flashing
@@ -240,7 +240,7 @@ protected:
 ///< picks up the EXGraphicPtr for preferred directions
     Graphics::TBitmap *GetRouteAutoSigsGraphicPtr();
 ///< picks up the blue route graphic (not used - superseded by GetRouteGraphicPtr)
-    Graphics::TBitmap *GetRouteGraphicPtr(bool AutoSigsFlag, bool ConsecSignalsRoute);
+    Graphics::TBitmap *GetRouteGraphicPtr(bool AutoSigsFlag, bool PrefDirRoute);
 ///< picks up the appropriate route graphic
 
 public:
@@ -253,8 +253,8 @@ public:
 ///< false for Pref Dir, true for route
     bool AutoSignals;
 ///< marker within the route for an AutoSignal route element
-    bool ConsecSignals;
-///< marker within the route for ConsecSignalsRoute element
+    bool PrefDirRoute;
+///< marker within the route for preferred direction route element
 
 // inline functions
 
@@ -306,18 +306,18 @@ public:
 /// Returns route graphic
     Graphics::TBitmap *GetRouteEXGraphicPtr()
     {
-        return GetRouteGraphicPtr(AutoSignals, ConsecSignals);
+        return GetRouteGraphicPtr(AutoSignals, PrefDirRoute);
     }
 
 /// Default constructor, loads default values
     TPrefDirElement(): TTrackElement(), ELink(-1), ELinkPos(-1), XLink(-1), XLinkPos(-1), EXNumber(-1), TrackVectorPosition(-1), CheckCount(0), EXGraphicPtr(0),
-        EntryDirectionGraphicPtr(0), IsARoute(false), AutoSignals(false), ConsecSignals(false)
+        EntryDirectionGraphicPtr(0), IsARoute(false), AutoSignals(false), PrefDirRoute(false)
     {;
     }
 
 /// Constructs a PrefDirElement from a base TrackElement. Sets up the TrackElement values but leaves others as default values
     TPrefDirElement(TTrackElement Input): TTrackElement(Input), ELink(-1), ELinkPos(-1), XLink(-1), XLinkPos(-1), EXNumber(-1), TrackVectorPosition(-1),
-        CheckCount(0), EXGraphicPtr(0), EntryDirectionGraphicPtr(0), IsARoute(false), AutoSignals(false), ConsecSignals(false)
+        CheckCount(0), EXGraphicPtr(0), EntryDirectionGraphicPtr(0), IsARoute(false), AutoSignals(false), PrefDirRoute(false)
     {;
     }
 
@@ -527,7 +527,7 @@ of the flashing until the duration is reached, when the object is erased from th
     {
     public:
 
-        int ConsecSignals;
+        int TypeOfRoute;
 ///< route type - 0 = nonsignals, 1 = preferred direction (can't have autosigs), 2 no route, 2 added at v2.6.0 for manual operation
         bool ReducedTimePenalty;
 ///< marker that is set when a train is present on one of the elements of the LC - used to provide a 3 minute penalty allowance
@@ -651,8 +651,8 @@ of the flashing until the duration is reached, when the object is erased from th
 ///< true when LCs changing
     bool LCFoundInAutoSigsRoute;
 ///< true if found an LC during an automatic route search
-    bool LCFoundInAutoSigsRouteMessageGiven;
-///< true if message given to user, to avoid giving multiple times and to avoid other failure messages being given
+    bool SuppressRouteFailMessage;
+///< true if a message has been given in the search routine, to avoid giving multiple times and to avoid other failure messages being given
     bool LCFoundInRouteBuildingFlag;
 ///< true if a route set through an LC that is closed to trains (& therefore needs to be opened)
     bool PointFlashFlag;
@@ -861,7 +861,7 @@ of the flashing until the duration is reached, when the object is erased from th
 
 /// Used to check the validity of footcrossing links
     bool ActiveMapCheck(int Caller, int HLoc, int VLoc, int SpeedTag);
-/// Checks BarrierDownVector and returns true if there is one that is linked to the LC at H & V positions and is set to manual (ConsecSignals == 2), and returns the vector position in BDVectorPos
+/// Checks BarrierDownVector and returns true if there is one that is linked to the LC at H & V positions and is set to manual (TypeOfRoute == 2), and returns the vector position in BDVectorPos
     bool AnyLinkedBarrierDownVectorManual(int Caller, int HLoc, int VLoc, int &BDVectorPos);
 /// True if a route or train present on any linked level crossing element
     bool AnyLinkedLevelCrossingElementsWithRoutesOrTrains(int Caller, int HLoc, int VLoc, bool &TrainPresent);
@@ -907,7 +907,7 @@ of the flashing until the duration is reached, when the object is erased from th
     bool InactiveTrackElementPresentAtHV(int Caller, int HLoc, int VLoc);
 /// True if there is an element adjacent to LinkIn for element at HLoc & VLoc
     bool IsATrackElementAdjacentToLink(int Caller, int HLocIn, int VLocIn, int LinkIn);
-/// True if there is a vector entry at H & V that is set to manual (ConsecSignals == 2) and returns the vector position in BDVectorPos
+/// True if there is a vector entry at H & V that is set to manual (TypeOfRoute == 2) and returns the vector position in BDVectorPos
     bool IsBarrierDownVectorAtHVManual(int Caller, int HLoc, int VLoc, int &BDVectorPos);
 /// True if track at link positions [0] & [1] if FirstTrack true, else that at [2] & [3] in TrackElement has the default length
 /// and speed limit, return true if so
@@ -1071,9 +1071,9 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
     void PlotPastedTrackElementWithAttributes(int Caller, TTrackElement TempTrackElement, int HLocInput, int VLocInput, bool &TrackLinkingRequiredFlag,
         bool InternalChecks);
 /// Just replot the basic track elements at a level crossing (for flashing)
-    void PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseElementSpeedTag, int HLoc, int VLoc, int ConsecSignals, TDisplay *Disp);
+    void PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseElementSpeedTag, int HLoc, int VLoc, int TypeOfRoute, TDisplay *Disp);
 /// Plot & open (to trains) all level crossings linked to TrackElement (Manual true = manually lowered, colour is green)
-    void PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, int ConsecSignals, TDisplay *Disp, bool Manual);
+    void PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, int TypeOfRoute, TDisplay *Disp, bool Manual);
 /// Plot LC elements without any base elements, and set LCPlotted true - used in ClearandRebuildRailway (Manual true = manually lowered, colour is green)
     void PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp, bool Manual);
 /// Plot LC elements without any base elements, and set LCPlotted true - used in ClearandRebuildRailway
@@ -1126,7 +1126,7 @@ to bring the named location and timetable naming up to date with the deletion or
     void SearchForAndUpdateLocationName(int Caller, int HLoc, int VLoc, int SpeedTag);
 /// Work through all elements in TrackVector setting all lengths & speed limits to default values - including both tracks for 2-track elements
     void SetAllDefaultLengthsAndSpeedLimits(int Caller);
-/// Set ConsecSignals value to 2 to indicate barriers manually closed
+/// Set TypeOfRoute value to 2 to indicate barriers manually closed
     void SetBarriersDownLCToManual(int Caller, int HLoc, int VLoc);
 /// Convert the position values for the TrackElement into an identification string and load in ElementID
     void SetElementID(int Caller, TTrackElement &TrackElement);
@@ -1134,7 +1134,7 @@ to bring the named location and timetable naming up to date with the deletion or
     void SetLCAttributeAtHV(int Caller, int HLoc, int VLoc, int Attr);
 /// Set linked LC attributes; 0=closed to trains, 1 = open to trains, 2 = changing state = closed to trains
     void SetLinkedLevelCrossingBarrierAttributes(int Caller, int HLoc, int VLoc, int Attr);
-/// Set all ConsecSignals values to 2 for all linked LCs to indicate manually lowered
+/// Set all TypeOfRoute values to 2 for all linked LCs to indicate manually lowered
     void SetLinkedManualLCs(int Caller, int HLoc, int VLoc);
 /// Called when trying to link track and when a name changed when track already linked.
 /**Examines all track elements that have ActiveTrackElementName set, sums the number of consecutive elements with the same name,
@@ -1442,13 +1442,13 @@ public:
 /// Used when setting signal aspects for a route by working forwards through the route to see what the next forward signal aspects is, because this determines all the rearward signal aspects.
     bool FindForwardTargetSignalAttribute(int Caller, int &NextForwardLinkedRouteNumber, int &Attribute) const ;
 /// Set the starting conditions for a non-preferred (i.e. unrestricted) route selection beginning on HLoc & VLoc
-    bool GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute, bool Callon);
+    bool GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc, bool Callon);
 /// Try to find a set of linked tracks between the route start element and the one at HLoc & VLoc.  If find one return true, set &PointsChanged to true if any points need to be changed and &ReqPosRouteID to the route ID of the existing route to attach to, if there is one, and -1 if not
-    bool GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute, bool Callon, IDInt &ReqPosRouteID, bool &PointsChanged);
+    bool GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, bool Callon, IDInt &ReqPosRouteID, bool &PointsChanged);
 /// Set the starting conditions for a preferred direction or automatic signal route selection beginning on HLoc & VLoc
-    bool GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TOnePrefDir *EveryPrefDir, bool ConsecSignalsRoute, bool AutoSigsFlag);
+    bool GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TOnePrefDir *EveryPrefDir, bool AutoSigsFlag);
 /// Try to find a set of linked tracks that lie on preferred directions between the route start element and the one at HLoc & VLoc.  If find one return true, set &PointsChanged to true if any points need to be changed and &ReqPosRouteID to the route ID of the existing route to attach to, if there is one, and -1 if not
-    bool GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOnePrefDir *EveryPrefDir, bool ConsecSignalsRoute, bool AutoSigsFlag,
+    bool GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOnePrefDir *EveryPrefDir, bool ConsecSignals, bool AutoSigsFlag,
         IDInt &ReqPosRouteID, bool &PointsChanged);
 /// Called by GetNextNonPreferredRouteElement and GetNextPreferredRouteElement to check whether or not any points on the selected route need to be changed
     bool PointsToBeChanged(int Caller) const ;
@@ -1456,7 +1456,7 @@ public:
     bool SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrackElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID);
 /// Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called recursively
     bool SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID, TOnePrefDir *EveryPrefDir,
-        bool ConsecSignalsRoute, int EndSelectPosition, bool AutoSigsFlag);
+        bool ConsecSignals, int EndSelectPosition, bool AutoSigsFlag);
 /// Called by TAllRoutes::SetAllRearwardsSignals to set rearwards signals from a specified starting position.  If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects.
     bool SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribute, int PrefDirVectorStartPosition) const ;
 /// Called after a non-preferred (i.e. unrestricted) route has been selected and has finished flashing, to add it to the AllRoutesVector
@@ -1468,20 +1468,20 @@ public:
 /// Examines the route to see whether the element at H & V is in the route, and if not returns a ReturnFlag value of NotInRoute.
 /** If it is in a route but the element selected is invalid, then a message is given and returns with a ReturnFlag value of
 InRouteFalse.  Otherwise the route is truncated at and including the element that matches H & V with a ReturnFlag value of
-InRouteTrue.  Selection invalid if a train at or before the truncate point; select a bridge; trying to leave a single element; last
-element to be left not a signal (for ConsecSignalsRoute or has AutoSigsFlag set); last element to be left a bridge, points or crossover
-(for not ConsecSignalsRoute & AutoSigsFlag not set), or part of route locked. */
-    void GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute, TTruncateReturnType &ReturnFlag);
+InRouteTrue.  Selection invalid if select a bridge; trying to leave a single element; last
+element to be left not a signal (for PrefDirRoute or AutoSigsFlag set); last element to be left a bridge, points or crossover
+(for not PrefDirRoute & AutoSigsFlag not set), or part of route locked. */
+    void GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool PrefDirRoute, TTruncateReturnType &ReturnFlag);
 /// Used when creating a bitmap image to display the route colours and direction arrows (as on screen during operation) for an operating railway
     void RouteImageMarker(int Caller, Graphics::TBitmap *Bitmap) const ;
 /// After a route has been selected successfully this function sets all LC change values appropriately for the selected route type and location
-    void SetLCChangeValues(int Caller, bool ConsecSignalsRoute);
+    void SetLCChangeValues(int Caller, bool PrefDirRoute);
 /// Called when setting unrestricted routes to set the route element values appropriately after a successful search has been conducted.  It isn't needed for preferred routes because the element values are obtained from the already set preferred direction elements
     void SetRemainingSearchVectorValues(int Caller);
 /// After a route has been selected successfully this function sets all RouteFlash (see above) values appropriately for the selected route type and location
-    void SetRouteFlashValues(int Caller, bool AutoSigsFlag, bool ConsecSignalsRoute);
+    void SetRouteFlashValues(int Caller, bool AutoSigsFlag, bool PrefDirRoute);
 /// Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector so that the route displays with the correct colour
-    void SetRouteSearchVectorGraphics(int Caller, bool AutoSigsFlag, bool ConsecSignalsRoute);
+    void SetRouteSearchVectorGraphics(int Caller, bool AutoSigsFlag, bool PrefDirRoute);
 /// Called when setting a route to set all points appropriately
     void SetRoutePoints(int Caller) const ;
 /// Called when setting a route to set all points appropriately.  Also called when a new train is added at a position where a route has been set, when it is necessary to set the next rearwards signal to red, the next yellow etc
@@ -1616,9 +1616,9 @@ public:
     bool TAllRoutes::FindRouteNumberFromRoute2MultiMapNoErrors(int Caller, int HLoc, int VLoc, int ELink, int &RouteNumber);
 /// Examines all routes and for each uses GetRouteTruncateElement to see if the element at H & V is present in that route.
 /**  The ReturnFlag value indicates InRouteTrue (success), InRouteFalse (failure), or NotInRoute.  Messages are given in GetRouteTruncateElement.
-If successful the route is truncated at and including the element that matches H & V.  If ConsecSignalsRoute ensure only truncate to a signal, else prevent
+If successful the route is truncated at and including the element that matches H & V.  If PrefDirRoute ensure only truncate to a signal, else prevent
 truncation to a crossover, bridge or points, also prevent route being left less than 2 elements in length.*/
-    bool GetAllRoutesTruncateElement(int Caller, int HLoc, int VLoc, bool ConsecSignalsRoute);
+    bool GetAllRoutesTruncateElement(int Caller, int HLoc, int VLoc, bool PrefDirRoute);
 /// Checks whether the preferred direction element at TrackVectorPosition with XLinkPos value is in a locked route and returns true if so together with the element itself copied to &PrefDirElement & the LockedRouteVector position in &LockedVectorNumber
     bool IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(int Caller, int TrackVectorPosition, int XLinkPos, TPrefDirElement &PrefDirElement,
         int &LockedVectorNumber);

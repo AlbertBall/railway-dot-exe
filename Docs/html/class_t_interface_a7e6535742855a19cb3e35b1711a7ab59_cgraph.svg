@@ -389,7 +389,7 @@ var sectionId = 'dynsection-89';
 <!-- Node112 -->
 <g id="node43" class="node">
 <title>Node112</title>
-<g id="a_node43"><a xlink:href="class_t_track.html#aaf831691bef8e8f60a780502f21c6efe" target="_top" xlink:title="Just replot the basic track elements at a level crossing (for flashing)">
+<g id="a_node43"><a xlink:href="class_t_track.html#af3d75ea89bb62053003b7b1aaeeda15b" target="_top" xlink:title="Just replot the basic track elements at a level crossing (for flashing)">
 <polygon fill="white" stroke="red" points="564.5,-622.25 564.5,-641.25 729.5,-641.25 729.5,-622.25 564.5,-622.25"/>
 <text text-anchor="middle" x="647" y="-629.25" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::PlotLCBaseElementsOnly</text>
 </a>
@@ -404,7 +404,7 @@ var sectionId = 'dynsection-89';
 <!-- Node113 -->
 <g id="node44" class="node">
 <title>Node113</title>
-<g id="a_node44"><a xlink:href="class_t_track.html#a7aaf669a8c305c70cd0a598be82c1c44" target="_top" xlink:title="Plot &amp; open (to trains) all level crossings linked to TrackElement (Manual true = manually lowered,...">
+<g id="a_node44"><a xlink:href="class_t_track.html#a43db60c0e61f80db5e529aa926742818" target="_top" xlink:title="Plot &amp; open (to trains) all level crossings linked to TrackElement (Manual true = manually lowered,...">
 <polygon fill="white" stroke="red" points="580,-660.75 580,-690.75 714,-690.75 714,-660.75 580,-660.75"/>
 <text text-anchor="start" x="588" y="-678.75" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::PlotLoweredLinked</text>
 <text text-anchor="middle" x="647" y="-667.75" font-family="Helvetica,sans-Serif" font-size="10.00">LevelCrossingBarriers</text>

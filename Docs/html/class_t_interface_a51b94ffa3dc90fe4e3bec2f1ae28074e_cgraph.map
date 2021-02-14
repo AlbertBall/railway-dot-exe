@@ -1,0 +1,20 @@
+<map id="TInterface::GetTrainStatusFloat" name="TInterface::GetTrainStatusFloat">
+<area shape="rect" id="node1" title="used for floating window to display train status" alt="" coords="5,1077,179,1119"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1252,426,1399,453"/>
+<area shape="rect" id="node3" href="$class_t_train.html#a221da69cd80d206a06f840f4cd463cf9" title="Used in the floating window to display the &#39;Next&#39; action." alt="" coords="227,469,396,511"/>
+<area shape="rect" id="node9" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1252,781,1399,807"/>
+<area shape="rect" id="node16" href="$class_t_train.html#a2a2d78164c9dc1881b2c77526f04903f" title="True if the train has stopped for any reason." alt="" coords="255,1186,368,1213"/>
+<area shape="rect" id="node17" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="750,921,937,963"/>
+<area shape="rect" id="node4" href="$class_t_train.html#a781291ed1d591990b7615286462a2861" title="called during FloatingLabelNextString to find the next service departure time" alt="" coords="444,426,697,453"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8" title="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it..." alt="" coords="756,106,931,133"/>
+<area shape="rect" id="node10" href="$class_t_train_controller.html#a0114e517611ab24d3b947c1781130a23" title="Check all timetable names in ExitList, if all same return &quot; at [name]&quot; + AllowableExits = elements,..." alt="" coords="761,737,925,779"/>
+<area shape="rect" id="node12" href="$class_t_train_controller.html#afb0e8fd36435809350cb323ab9fe2213" title="Return the service headcode for the repeat service." alt="" coords="752,263,935,304"/>
+<area shape="rect" id="node14" href="$class_t_train.html#ad249f34f6862e604b8e141d1b25fe57d" title="Returns the timetable action time corresponding to &#39;Time&#39; for this train, i.e. it adjusts the time va..." alt="" coords="772,422,915,449"/>
+<area shape="rect" id="node15" href="$class_t_train.html#a935bb43db57a3f2b635be9dfc6a7988b" title="True when the train is stopped at a timetabled location." alt="" coords="766,665,921,691"/>
+<area shape="rect" id="node6" href="$class_t_train_controller.html#a2713e7d4bb329d65df8b3fa0ad59b6cf" title="Get the interval between repeats." alt="" coords="745,473,941,515"/>
+<area shape="rect" id="node7" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="1000,477,1193,503"/>
+<area shape="rect" id="node8" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="991,426,1202,453"/>
+<area shape="rect" id="node11" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="1015,781,1178,807"/>
+<area shape="rect" id="node13" href="$class_t_train_controller.html#a6fc210d266e7672ccc648c0a9ab4e542" title="Checks the last two characters in HeadCode and returns true if both are digits." alt="" coords="989,208,1204,249"/>
+<area shape="rect" id="node18" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="997,882,1196,909"/>
+</map>

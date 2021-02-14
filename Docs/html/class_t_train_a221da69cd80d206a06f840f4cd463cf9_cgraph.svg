@@ -128,7 +128,7 @@ var sectionId = 'dynsection-27';
 <!-- Node9 -->
 <g id="node9" class="node">
 <title>Node9</title>
-<g id="a_node9"><a xlink:href="class_t_train_controller.html#ae6c904f201d8bb23b3c0714226244890" target="_top" xlink:title="Check all timetable names in ExitList, if all same return &quot; at [name]&quot; else return &quot;&quot;....">
+<g id="a_node9"><a xlink:href="class_t_train_controller.html#a0114e517611ab24d3b947c1781130a23" target="_top" xlink:title="Check all timetable names in ExitList, if all same return &quot; at [name]&quot; + AllowableExits = elements,...">
 <polygon fill="white" stroke="black" points="401,-264.25 401,-294.25 524,-294.25 524,-264.25 401,-264.25"/>
 <text text-anchor="start" x="409" y="-282.25" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::GetExit</text>
 <text text-anchor="middle" x="462.5" y="-271.25" font-family="Helvetica,sans-Serif" font-size="10.00">LocationAndAt</text>

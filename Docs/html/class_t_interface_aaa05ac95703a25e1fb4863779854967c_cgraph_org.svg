@@ -537,7 +537,7 @@
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="class_t_pref_dir_element.html#a5d03028241e6c38e473882120d5bcc68" target="_top" xlink:title="picks up the green or red route direction graphic">
+<g id="a_node6"><a xlink:href="class_t_pref_dir_element.html#a3a31ae39854d89213a06010dcb8d2b34" target="_top" xlink:title="picks up the green or red route direction graphic">
 <polygon fill="white" stroke="black" points="592,-2244 592,-2274 739,-2274 739,-2244 592,-2244"/>
 <text text-anchor="start" x="600" y="-2262" font-family="Helvetica,sans-Serif" font-size="10.00">TPrefDirElement::GetDirection</text>
 <text text-anchor="middle" x="665.5" y="-2251" font-family="Helvetica,sans-Serif" font-size="10.00">RouteGraphicPtr</text>
@@ -559,7 +559,7 @@
 <!-- Node8 -->
 <g id="node8" class="node">
 <title>Node8</title>
-<g id="a_node8"><a xlink:href="class_t_pref_dir_element.html#ad58c8d4fa30c04fa9d8e84ae55c7ce61" target="_top" xlink:title="picks up the appropriate route graphic">
+<g id="a_node8"><a xlink:href="class_t_pref_dir_element.html#acc8674681c7b4eda8ce8551abdae9680" target="_top" xlink:title="picks up the appropriate route graphic">
 <polygon fill="white" stroke="red" points="598.5,-2293 598.5,-2323 732.5,-2323 732.5,-2293 598.5,-2293"/>
 <text text-anchor="start" x="606.5" y="-2311" font-family="Helvetica,sans-Serif" font-size="10.00">TPrefDirElement::GetRoute</text>
 <text text-anchor="middle" x="665.5" y="-2300" font-family="Helvetica,sans-Serif" font-size="10.00">GraphicPtr</text>

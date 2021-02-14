@@ -20,7 +20,7 @@
 <area shape="rect" id="node19" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="1246,614,1451,641"/>
 <area shape="rect" id="node20" href="$class_t_track.html#a28019284fc6a90e06fc4b27e011484fa" title="Return a pointer to the point fillet (the bit that appears to move when points are changed) for the p..." alt="" coords="1267,1385,1430,1412"/>
 <area shape="rect" id="node22" href="$class_t_all_routes.html#afbb161c646677f13755041b895a23982" title="Examines Route2MultiMap for the element at TrackVectorPosition with LinkPos (can be entry or exit)." alt="" coords="991,883,1167,924"/>
-<area shape="rect" id="node16" href="$class_t_track.html#a6635891513167223f4b9aadd0121c312" title="True if there is a vector entry at H &amp; V that is set to manual (ConsecSignals == 2) and returns the v..." alt="" coords="1255,731,1442,772"/>
+<area shape="rect" id="node16" href="$class_t_track.html#a6635891513167223f4b9aadd0121c312" title="True if there is a vector entry at H &amp; V that is set to manual (TypeOfRoute == 2) and returns the vec..." alt="" coords="1255,731,1442,772"/>
 <area shape="rect" id="node17" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="1015,673,1142,700"/>
 <area shape="rect" id="node21" href="$class_t_track_element.html#a100bff829c4dca820927affde4cb9e57" title="Used to log track parameters for call stack logging." alt="" coords="1507,1385,1677,1412"/>
 <area shape="rect" id="node25" href="$class_t_rail_graphics.html#af83b21217bb1c2a229bdf14b0d2ffd0d" title="as above but uses Scanline" alt="" coords="967,1211,1191,1252"/>

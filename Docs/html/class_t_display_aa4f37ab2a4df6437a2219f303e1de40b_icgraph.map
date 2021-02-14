@@ -10,8 +10,8 @@
 <area shape="rect" id="node28" href="$class_t_display.html#a63930b93b9883463cd9d779e86fefba2" title=" " alt="" coords="1339,1380,1498,1407"/>
 <area shape="rect" id="node29" href="$class_t_track.html#a8520abf65484aa83a28329a633836f97" title="Examine all elements in the TrackVector and if have a valid length mark the relevant track using Mark..." alt="" coords="1069,748,1217,775"/>
 <area shape="rect" id="node30" href="$class_t_train_controller.html#a2f9cd71b60b45de8380f5fad7bbd5dd8" title="Plots all trains on screen in zoomed&#45;out mode, state of &#39;Flash&#39; determines whether the flashing train..." alt="" coords="263,55,421,97"/>
-<area shape="rect" id="node31" href="$class_t_track.html#aaf831691bef8e8f60a780502f21c6efe" title="Just replot the basic track elements at a level crossing (for flashing)" alt="" coords="756,231,976,257"/>
-<area shape="rect" id="node32" href="$class_t_track.html#a7aaf669a8c305c70cd0a598be82c1c44" title="Plot &amp; open (to trains) all level crossings linked to TrackElement (Manual true = manually lowered,..." alt="" coords="777,282,955,323"/>
+<area shape="rect" id="node31" href="$class_t_track.html#af3d75ea89bb62053003b7b1aaeeda15b" title="Just replot the basic track elements at a level crossing (for flashing)" alt="" coords="756,231,976,257"/>
+<area shape="rect" id="node32" href="$class_t_track.html#a43db60c0e61f80db5e529aa926742818" title="Plot &amp; open (to trains) all level crossings linked to TrackElement (Manual true = manually lowered,..." alt="" coords="777,282,955,323"/>
 <area shape="rect" id="node33" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="1044,580,1241,607"/>
 <area shape="rect" id="node34" href="$class_t_graphic_element.html#a04ccc26451ff7d95dc3c5951b71f421e" title="Plot the overlay graphic on screen." alt="" coords="1045,945,1241,972"/>
 <area shape="rect" id="node35" href="$class_t_track.html#ad8a74040f61dffb16633deea5054deef" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway (..." alt="" coords="1039,799,1247,855"/>

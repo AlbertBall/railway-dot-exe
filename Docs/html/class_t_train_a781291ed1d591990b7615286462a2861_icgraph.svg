@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 862;
+var viewWidth = 1028;
 var viewHeight = 88;
 var sectionId = 'dynsection-16';
 </script>
@@ -54,13 +54,13 @@ var sectionId = 'dynsection-16';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>TTrain::CheckNewServiceDepartureTime</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-84 858,-84 858,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-84 1024,-84 1024,4 -4,4"/>
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="called during FloatingLabelNextString to find the next service departure time">
-<polygon fill="#bfbfbf" stroke="black" points="664,-30 664,-49 854,-49 854,-30 664,-30"/>
-<text text-anchor="middle" x="759" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">TTrain::CheckNewServiceDepartureTime</text>
+<polygon fill="#bfbfbf" stroke="black" points="830,-30 830,-49 1020,-49 1020,-30 830,-30"/>
+<text text-anchor="middle" x="925" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">TTrain::CheckNewServiceDepartureTime</text>
 </a>
 </g>
 </g>
@@ -68,84 +68,100 @@ var sectionId = 'dynsection-16';
 <g id="node2" class="node">
 <title>Node2</title>
 <g id="a_node2"><a xlink:href="class_t_train.html#a221da69cd80d206a06f840f4cd463cf9" target="_top" xlink:title="Used in the floating window to display the &#39;Next&#39; action.">
-<polygon fill="white" stroke="black" points="501,-49.5 501,-79.5 628,-79.5 628,-49.5 501,-49.5"/>
-<text text-anchor="start" x="509" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrain::FloatingLabelNext</text>
-<text text-anchor="middle" x="564.5" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00">String</text>
+<polygon fill="white" stroke="black" points="667,-47.5 667,-77.5 794,-77.5 794,-47.5 667,-47.5"/>
+<text text-anchor="start" x="675" y="-65.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrain::FloatingLabelNext</text>
+<text text-anchor="middle" x="730.5" y="-54.5" font-family="Helvetica,sans-Serif" font-size="10.00">String</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M674.55,-50.34C659.02,-52.35 643.04,-54.43 628.26,-56.35"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="675.21,-53.78 684.67,-49.02 674.31,-46.84 675.21,-53.78"/>
+<path fill="none" stroke="midnightblue" d="M834.03,-50.25C820.53,-51.86 806.86,-53.5 794.09,-55.02"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="834.8,-53.68 844.31,-49.02 833.97,-46.73 834.8,-53.68"/>
 </g>
-<!-- Node6 -->
-<g id="node6" class="node">
-<title>Node6</title>
-<g id="a_node6"><a xlink:href="class_t_train.html#a81bf61b47a2867f0c6901b1ea6f47177" target="_top" xlink:title="Used in the floating window to display the timetable.">
-<polygon fill="white" stroke="black" points="502,-0.5 502,-30.5 627,-30.5 627,-0.5 502,-0.5"/>
-<text text-anchor="start" x="510" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrain::FloatingTimetable</text>
-<text text-anchor="middle" x="564.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">String</text>
+<!-- Node7 -->
+<g id="node7" class="node">
+<title>Node7</title>
+<g id="a_node7"><a xlink:href="class_t_train.html#a81bf61b47a2867f0c6901b1ea6f47177" target="_top" xlink:title="Used in the floating window to display the timetable.">
+<polygon fill="white" stroke="black" points="503.5,-0.5 503.5,-30.5 628.5,-30.5 628.5,-0.5 503.5,-0.5"/>
+<text text-anchor="start" x="511.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrain::FloatingTimetable</text>
+<text text-anchor="middle" x="566" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">String</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node6 -->
-<g id="edge5" class="edge">
-<title>Node1&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M671.4,-28.7C656.51,-26.85 641.31,-24.95 627.24,-23.2"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="671.29,-32.22 681.64,-29.98 672.15,-25.27 671.29,-32.22"/>
+<!-- Node1&#45;&gt;Node7 -->
+<g id="edge6" class="edge">
+<title>Node1&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M819.52,-32.48C757.52,-28.31 681.04,-23.17 628.59,-19.64"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="819.52,-35.98 829.74,-33.16 819.99,-29 819.52,-35.98"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" target="_top" xlink:title="Controls the floating window function, called during the ClockTimer2 function.">
-<polygon fill="white" stroke="black" points="334,-30 334,-49 465,-49 465,-30 334,-30"/>
-<text text-anchor="middle" x="399.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::TrackTrainFloat</text>
+<g id="a_node3"><a xlink:href="class_t_interface.html#a51b94ffa3dc90fe4e3bec2f1ae28074e" target="_top" xlink:title="used for floating window to display train status">
+<polygon fill="white" stroke="black" points="501,-49.5 501,-79.5 631,-79.5 631,-49.5 501,-49.5"/>
+<text text-anchor="start" x="509" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::GetTrainStatus</text>
+<text text-anchor="middle" x="566" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00">Float</text>
 </a>
 </g>
 </g>
 <!-- Node2&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node2&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M490.82,-53.35C481.41,-51.91 471.84,-50.44 462.62,-49.03"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="490.53,-56.85 500.95,-54.91 491.59,-49.93 490.53,-56.85"/>
+<path fill="none" stroke="midnightblue" d="M656.42,-63.4C647.94,-63.5 639.34,-63.61 631,-63.71"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="656.72,-66.9 666.67,-63.27 656.63,-59.9 656.72,-66.9"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" target="_top" xlink:title="The main loop, called every clock tick via MasterClockTimer.">
-<polygon fill="white" stroke="black" points="179,-30 179,-49 298,-49 298,-30 179,-30"/>
-<text text-anchor="middle" x="238.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ClockTimer2</text>
+<g id="a_node4"><a xlink:href="class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" target="_top" xlink:title="Controls the floating window function, called during the ClockTimer2 function.">
+<polygon fill="white" stroke="black" points="334,-30 334,-49 465,-49 465,-30 334,-30"/>
+<text text-anchor="middle" x="399.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::TrackTrainFloat</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node3&#45;&gt;Node4</title>
-<path fill="none" stroke="midnightblue" d="M323.81,-39.5C315.22,-39.5 306.56,-39.5 298.23,-39.5"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="323.83,-43 333.83,-39.5 323.83,-36 323.83,-43"/>
+<path fill="none" stroke="midnightblue" d="M490.91,-53.24C481.6,-51.83 472.15,-50.39 463.05,-49.01"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="490.52,-56.72 500.93,-54.76 491.57,-49.8 490.52,-56.72"/>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="0,-30 0,-49 143,-49 143,-30 0,-30"/>
-<text text-anchor="middle" x="71.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::MasterClockTimer</text>
+<g id="a_node5"><a xlink:href="class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" target="_top" xlink:title="The main loop, called every clock tick via MasterClockTimer.">
+<polygon fill="white" stroke="black" points="179,-30 179,-49 298,-49 298,-30 179,-30"/>
+<text text-anchor="middle" x="238.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ClockTimer2</text>
 </a>
 </g>
 </g>
 <!-- Node4&#45;&gt;Node5 -->
 <g id="edge4" class="edge">
 <title>Node4&#45;&gt;Node5</title>
+<path fill="none" stroke="midnightblue" d="M323.81,-39.5C315.22,-39.5 306.56,-39.5 298.23,-39.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="323.83,-43 333.83,-39.5 323.83,-36 323.83,-43"/>
+</g>
+<!-- Node6 -->
+<g id="node6" class="node">
+<title>Node6</title>
+<g id="a_node6"><a xlink:href="class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="0,-30 0,-49 143,-49 143,-30 0,-30"/>
+<text text-anchor="middle" x="71.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::MasterClockTimer</text>
+</a>
+</g>
+</g>
+<!-- Node5&#45;&gt;Node6 -->
+<g id="edge5" class="edge">
+<title>Node5&#45;&gt;Node6</title>
 <path fill="none" stroke="midnightblue" d="M168.67,-39.5C160.22,-39.5 151.57,-39.5 143.09,-39.5"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="168.86,-43 178.86,-39.5 168.86,-36 168.86,-43"/>
 </g>
-<!-- Node6&#45;&gt;Node3 -->
-<g id="edge6" class="edge">
-<title>Node6&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M491.93,-26.04C483.03,-27.35 473.98,-28.68 465.2,-29.97"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="492.49,-29.49 501.88,-24.57 491.47,-22.57 492.49,-29.49"/>
+<!-- Node7&#45;&gt;Node4 -->
+<g id="edge7" class="edge">
+<title>Node7&#45;&gt;Node4</title>
+<path fill="none" stroke="midnightblue" d="M493.21,-25.97C483.84,-27.34 474.28,-28.74 465.04,-30.08"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="493.89,-29.41 503.28,-24.5 492.88,-22.49 493.89,-29.41"/>
 </g>
 </g>
 </svg>

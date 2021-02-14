@@ -838,8 +838,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     AnsiString ControllerCheckNewServiceDepartureTime(int Caller, TActionVectorIterator Ptr, int RptNum, TTrainDataEntry *TDEPtr, TTrainDataEntry *LinkedTrainDataPtr, int IncrementalMinutes, AnsiString RetStr);
 /// Build string for use in floating window for expected trains at continuations
     AnsiString ContinuationEntryFloatingTTString(int Caller, TTrainDataEntry *TTDEPtr, int RepeatNumber, int IncrementalMinutes, int IncrementalDigits);
-/// Check all timetable names in ExitList, if all same return " at [name]" else return "".  Used in floating label for Next action and in formatted timetables.
-    AnsiString GetExitLocationAndAt(int Caller, TExitList &ExitList) const ;
+/// Check all timetable names in ExitList, if all same return " at [name]" + AllowableExits = elements, else just return "" & AllowableExits = elements.  Used in floating label for Next action and in formatted timetables.
+    AnsiString GetExitLocationAndAt(int Caller, TExitList &ExitList, AnsiString &AllowedExits) const;
 /// Return the service headcode for the repeat service
     AnsiString GetRepeatHeadCode(int Caller, AnsiString BaseHeadCode, int RepeatNumber, int IncDigits);
 /// Introduce a new train to the railway, with the characteristics specified, returns true for success, if fails the EventType indicates the reason

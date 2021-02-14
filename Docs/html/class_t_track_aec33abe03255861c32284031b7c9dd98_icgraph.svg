@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 723;
 var viewHeight = 39;
-var sectionId = 'dynsection-244';
+var sectionId = 'dynsection-248';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -58,7 +58,7 @@ var sectionId = 'dynsection-244';
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title="Set ConsecSignals value to 2 to indicate barriers manually closed.">
+<g id="a_node1"><a xlink:title="Set TypeOfRoute value to 2 to indicate barriers manually closed.">
 <polygon fill="#bfbfbf" stroke="black" points="568,-0.5 568,-30.5 715,-30.5 715,-0.5 568,-0.5"/>
 <text text-anchor="start" x="576" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::SetBarriersDownLCTo</text>
 <text text-anchor="middle" x="641.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">Manual</text>
@@ -68,7 +68,7 @@ var sectionId = 'dynsection-244';
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_track.html#a603206eee65e4b536af10b048e3573c6" target="_top" xlink:title="Set all ConsecSignals values to 2 for all linked LCs to indicate manually lowered.">
+<g id="a_node2"><a xlink:href="class_t_track.html#a603206eee65e4b536af10b048e3573c6" target="_top" xlink:title="Set all TypeOfRoute values to 2 for all linked LCs to indicate manually lowered.">
 <polygon fill="white" stroke="black" points="388,-6 388,-25 532,-25 532,-6 388,-6"/>
 <text text-anchor="middle" x="460" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::SetLinkedManualLCs</text>
 </a>

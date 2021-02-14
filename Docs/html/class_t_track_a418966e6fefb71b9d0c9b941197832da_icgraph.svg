@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 1515;
 var viewHeight = 1652;
-var sectionId = 'dynsection-97';
+var sectionId = 'dynsection-99';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -769,7 +769,7 @@ var sectionId = 'dynsection-97';
 <!-- Node147 -->
 <g id="node25" class="node">
 <title>Node147</title>
-<g id="a_node25"><a xlink:href="class_t_one_route.html#a997f3cb02d8e03d0a12769b8eb903674" target="_top" xlink:title="Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc....">
+<g id="a_node25"><a xlink:href="class_t_one_route.html#a5ce1c3a064a656ca764b5ed98c63151a" target="_top" xlink:title="Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc....">
 <polygon fill="white" stroke="black" points="182,-825.5 182,-855.5 346,-855.5 346,-825.5 182,-825.5"/>
 <text text-anchor="start" x="190" y="-843.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::GetNextNonPreferred</text>
 <text text-anchor="middle" x="264" y="-832.5" font-family="Helvetica,sans-Serif" font-size="10.00">RouteElement</text>
@@ -785,7 +785,7 @@ var sectionId = 'dynsection-97';
 <!-- Node148 -->
 <g id="node26" class="node">
 <title>Node148</title>
-<g id="a_node26"><a xlink:href="class_t_one_route.html#af1794f576d8aff59f83992afc1c5acc2" target="_top" xlink:title="Try to find a set of linked tracks that lie on preferred directions between the route start element a...">
+<g id="a_node26"><a xlink:href="class_t_one_route.html#a974ac7ab4cb5e6a5df33a3d7b3563315" target="_top" xlink:title="Try to find a set of linked tracks that lie on preferred directions between the route start element a...">
 <polygon fill="white" stroke="red" points="391,-257.5 391,-287.5 537,-287.5 537,-257.5 391,-257.5"/>
 <text text-anchor="start" x="399" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::GetNextPreferred</text>
 <text text-anchor="middle" x="464" y="-264.5" font-family="Helvetica,sans-Serif" font-size="10.00">RouteElement</text>
@@ -801,7 +801,7 @@ var sectionId = 'dynsection-97';
 <!-- Node149 -->
 <g id="node27" class="node">
 <title>Node149</title>
-<g id="a_node27"><a xlink:href="class_t_one_route.html#a43513cae58e5d18979492cbe76b51f74" target="_top" xlink:title="Set the starting conditions for a non&#45;preferred (i.e. unrestricted) route selection beginning on HLoc...">
+<g id="a_node27"><a xlink:href="class_t_one_route.html#a13dd08bfcc95ea1296f9ac4fd699e94d" target="_top" xlink:title="Set the starting conditions for a non&#45;preferred (i.e. unrestricted) route selection beginning on HLoc...">
 <polygon fill="white" stroke="black" points="192.5,-740.5 192.5,-770.5 335.5,-770.5 335.5,-740.5 192.5,-740.5"/>
 <text text-anchor="start" x="200.5" y="-758.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::GetNonPreferred</text>
 <text text-anchor="middle" x="264" y="-747.5" font-family="Helvetica,sans-Serif" font-size="10.00">RouteStartElement</text>
@@ -817,7 +817,7 @@ var sectionId = 'dynsection-97';
 <!-- Node150 -->
 <g id="node28" class="node">
 <title>Node150</title>
-<g id="a_node28"><a xlink:href="class_t_one_route.html#a07ee58454e2f49b4f0d5d8e6a1a2d40f" target="_top" xlink:title="Set the starting conditions for a preferred direction or automatic signal route selection beginning o...">
+<g id="a_node28"><a xlink:href="class_t_one_route.html#ab7ac58fe51393873e9054ffa724bc118" target="_top" xlink:title="Set the starting conditions for a preferred direction or automatic signal route selection beginning o...">
 <polygon fill="white" stroke="red" points="188,-628.5 188,-658.5 340,-658.5 340,-628.5 188,-628.5"/>
 <text text-anchor="start" x="196" y="-646.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::GetPreferredRoute</text>
 <text text-anchor="middle" x="264" y="-635.5" font-family="Helvetica,sans-Serif" font-size="10.00">StartElement</text>
@@ -863,7 +863,7 @@ var sectionId = 'dynsection-97';
 <!-- Node153 -->
 <g id="node31" class="node">
 <title>Node153</title>
-<g id="a_node31"><a xlink:href="class_t_track.html#aaf831691bef8e8f60a780502f21c6efe" target="_top" xlink:title="Just replot the basic track elements at a level crossing (for flashing)">
+<g id="a_node31"><a xlink:href="class_t_track.html#af3d75ea89bb62053003b7b1aaeeda15b" target="_top" xlink:title="Just replot the basic track elements at a level crossing (for flashing)">
 <polygon fill="white" stroke="red" points="588.5,-587 588.5,-606 753.5,-606 753.5,-587 588.5,-587"/>
 <text text-anchor="middle" x="671" y="-594" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::PlotLCBaseElementsOnly</text>
 </a>
@@ -878,7 +878,7 @@ var sectionId = 'dynsection-97';
 <!-- Node154 -->
 <g id="node32" class="node">
 <title>Node154</title>
-<g id="a_node32"><a xlink:href="class_t_track.html#a7aaf669a8c305c70cd0a598be82c1c44" target="_top" xlink:title="Plot &amp; open (to trains) all level crossings linked to TrackElement (Manual true = manually lowered,...">
+<g id="a_node32"><a xlink:href="class_t_track.html#a43db60c0e61f80db5e529aa926742818" target="_top" xlink:title="Plot &amp; open (to trains) all level crossings linked to TrackElement (Manual true = manually lowered,...">
 <polygon fill="white" stroke="red" points="604,-449.5 604,-479.5 738,-479.5 738,-449.5 604,-449.5"/>
 <text text-anchor="start" x="612" y="-467.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::PlotLoweredLinked</text>
 <text text-anchor="middle" x="671" y="-456.5" font-family="Helvetica,sans-Serif" font-size="10.00">LevelCrossingBarriers</text>
@@ -959,7 +959,7 @@ var sectionId = 'dynsection-97';
 <!-- Node172 -->
 <g id="node37" class="node">
 <title>Node172</title>
-<g id="a_node37"><a xlink:href="class_t_one_route.html#a78f476e2ae0584ef8873414b53fd09b4" target="_top" xlink:title="Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called rec...">
+<g id="a_node37"><a xlink:href="class_t_one_route.html#ac20b954f16c606ccf5c9e513ab6908f6" target="_top" xlink:title="Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called rec...">
 <polygon fill="white" stroke="black" points="593.5,-164.5 593.5,-194.5 748.5,-194.5 748.5,-164.5 593.5,-164.5"/>
 <text text-anchor="start" x="601.5" y="-182.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::SearchForPreferred</text>
 <text text-anchor="middle" x="671" y="-171.5" font-family="Helvetica,sans-Serif" font-size="10.00">Route</text>

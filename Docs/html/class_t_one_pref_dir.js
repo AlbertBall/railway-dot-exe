@@ -3,7 +3,6 @@ var class_t_one_pref_dir =
     [ "TPrefDir4MultiMap", "class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc", null ],
     [ "TPrefDir4MultiMapEntry", "class_t_one_pref_dir.html#a05da09493d511df74b8e5b9a794c2e0b", null ],
     [ "TPrefDir4MultiMapIterator", "class_t_one_pref_dir.html#a37efac41fc00465b0569704517233d4e", null ],
-    [ "TPrefDirVector", "class_t_one_pref_dir.html#a7162736e4bbe36fbac7a57ce395fcd14", null ],
     [ "TPrefDirVectorConstIterator", "class_t_one_pref_dir.html#a53624ed7b429b42aa57cfe5551f5df71", null ],
     [ "TPrefDirVectorIterator", "class_t_one_pref_dir.html#a8a905cfdce2439be93d45b66339b7382", null ],
     [ "CalcDistanceAndSpeed", "class_t_one_pref_dir.html#abadb0c99b24d6dbfda371d96b308fc6e", null ],

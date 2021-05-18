@@ -146,9 +146,9 @@ var sectionId = 'dynsection-200';
 <path fill="none" stroke="midnightblue" d="M535.67,-1077.5C525.28,-1077.5 514.76,-1077.5 504.69,-1077.5"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="535.98,-1081 545.98,-1077.5 535.98,-1074 535.98,-1081"/>
 </g>
-<!-- Node105 -->
+<!-- Node106 -->
 <g id="node50" class="node">
-<title>Node105</title>
+<title>Node106</title>
 <g id="a_node50"><a xlink:href="class_t_interface.html#afeb3a4236e5cfa7e93d7d5167304f937" target="_top" xlink:title="Called during the ClockTimer2 function to set screen boundaries, buttons &amp; menu items.">
 <polygon fill="white" stroke="red" points="368,-1018.5 368,-1048.5 510,-1048.5 510,-1018.5 368,-1018.5"/>
 <text text-anchor="start" x="376" y="-1036.5" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::SetSaveMenuAnd</text>
@@ -156,9 +156,9 @@ var sectionId = 'dynsection-200';
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node105 -->
+<!-- Node3&#45;&gt;Node106 -->
 <g id="edge52" class="edge">
-<title>Node3&#45;&gt;Node105</title>
+<title>Node3&#45;&gt;Node106</title>
 <path fill="none" stroke="midnightblue" d="M568.26,-1065.47C547.32,-1060.25 522.58,-1054.09 500.43,-1048.57"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="567.65,-1068.93 578.2,-1067.95 569.35,-1062.14 567.65,-1068.93"/>
 </g>

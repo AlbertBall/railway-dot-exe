@@ -63,7 +63,7 @@ void __fastcall TAboutForm::AboutFormButtonClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 void __fastcall TAboutForm::FormClose(TObject *Sender,
-        TCloseAction &Action)
+                                      TCloseAction &Action)
 {
     if(Interface->Level1Mode == TInterface::OperMode)
     {
@@ -94,44 +94,48 @@ void __fastcall TAboutForm::SetAboutCaption()
             {
                 //strVersion.sprintf(L"%d.%d.%d (Build %d)",
                 strVersion.sprintf(L"%d.%d.%d",
-                        HIWORD(fi->dwFileVersionMS), LOWORD(fi->dwFileVersionMS),
-                        HIWORD(fi->dwFileVersionLS)
-                        //HIWORD(fi->dwFileVersionLS), LOWORD(fi->dwFileVersionLS)
-                        );
+                                   HIWORD(fi->dwFileVersionMS), LOWORD(fi->dwFileVersionMS),
+                                   HIWORD(fi->dwFileVersionLS)
+                                   //HIWORD(fi->dwFileVersionLS), LOWORD(fi->dwFileVersionLS)
+                                   );
             }
         }
-
         delete[] pBuffer;
     }
-
     AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
-            L"operate your own railway" + NL + NL +
-            L"Release: " + Interface->ProgramVersion + NL + NL +
-            L"Copyright © 2010-2021 Albert Ball" + NL +
-            L"with contributions from Stephen A Smith";
+        L"operate your own railway" + NL + NL +
+        L"Release: " + Interface->ProgramVersion + NL + NL +
+        L"Copyright ï¿½ 2010-2021 Albert Ball" + NL +
+        L"with contributions from Stephen A Smith";
 }
 //---------------------------------------------------------------------------
 void __fastcall TAboutForm::WebsiteLinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
-        TSysLinkType LinkType)
+                                                      TSysLinkType LinkType)
 {
     if(LinkType == sltURL)
+    {
         ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
+    }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TAboutForm::Attribution1LinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
-        TSysLinkType LinkType)
+                                                           TSysLinkType LinkType)
 {
     if(LinkType == sltURL)
+    {
         ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
+    }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TAboutForm::Attribution2LinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
-        TSysLinkType LinkType)
+                                                           TSysLinkType LinkType)
 {
     if(LinkType == sltURL)
+    {
         ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
+    }
 }
 //---------------------------------------------------------------------------
 

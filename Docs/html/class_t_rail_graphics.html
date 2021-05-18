@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.7.0</span>
+   &#160;<span id="projectnumber">v2.8.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -1649,7 +1649,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03579">3579</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03620">3620</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1715,7 +1715,7 @@ Here is the caller graph for this function:</div>
 <p>Change any pixels that are OldBackgroundColour in BitmapIn to NewBackgroundColour in BitmapOut</p>
 <p>Checks that the change is correct and sets ColourError if not (Windows will choose nearest matching colour if colour depth is incorrect and that will cause the error - lot of early problems due to this behaviour but all graphics now 256 colours) </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03398">3398</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03433">3433</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1775,7 +1775,7 @@ Here is the caller graph for this function:</div>
 
 <p>New function to do the same as the above but with fewer pixel changes - for use in LoadSession (&amp; PlotStartPosition) to avoid resource failures on loading many session trains. </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03432">3432</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03472">3472</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1830,7 +1830,7 @@ Here is the call graph for this function:</div>
 
 <p>as above but uses Scanline </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03468">3468</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03509">3509</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1889,7 +1889,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Change any pixels that are not BackgroundColour in BitmapIn to NewForegroundColour in BitmapOut Any that are BackgroundColour in BitmapIn are set to BackgroundColour in BitmapOut </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03326">3326</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03357">3357</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1949,7 +1949,7 @@ Here is the caller graph for this function:</div>
 
 <p>New function to do the same as the above but with fewer pixel changes - for use in LoadSession to avoid resource failures on loading many session trains. </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03348">3348</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03383">3383</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2008,7 +2008,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Change any pixels that are ColourToBeChanged in BitmapIn to NewColour in BitmapOut Any that are not ColourToBeChanged in BitmapIn are set to their original colour in BitmapOut </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03377">3377</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03412">3412</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2062,7 +2062,7 @@ Here is the caller graph for this function:</div>
 <p>Changes a graphic to become compatible with a new background colour</p>
 <p>Change any pixels that are OldTransparentColour in BitmapIn to NewTransparentColour in BitmapOut, if NewTransparentColour dark then change any black pixels in BitmapIn to white in BitmapOut, or if NewTransparentColour white then change any white pixels in BitmapIn to black in BitmapOut </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03276">3276</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03300">3300</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2104,7 +2104,7 @@ Here is the caller graph for this function:</div>
 
 <p>used in ChangeBackgroundColour3 to convert a named colour to a number for Scanline </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03504">3504</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l03545">3545</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2136,7 +2136,7 @@ Here is the caller graph for this function:</div>
 
 <p>Converts all signal graphics to opposite hand new at v2.3.0. </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l04307">4307</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l04354">4354</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2168,7 +2168,7 @@ Here is the caller graph for this function:</div>
 <p>Sets all the derived graphics to be compatible with a new transparent colour</p>
 <p>Used when changing the background from dark to light and vice versa. The derived graphics are the preferred direction and route graphics for tracks, underbridges, direction markers and all the point fillets. </p>
 
-<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l04136">4136</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_graphic_unit_8cpp_source.html#l04183">4183</a> of file <a class="el" href="_graphic_unit_8cpp_source.html">GraphicUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

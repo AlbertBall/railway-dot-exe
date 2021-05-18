@@ -309,7 +309,7 @@ class TRailGraphics
 public:
 
 // transparent graphics (incorporated in the resource file borland.res)
-        Graphics::TBitmap *AddPrefDir;
+    Graphics::TBitmap *AddPrefDir;
     Graphics::TBitmap *AddText;
     Graphics::TBitmap *AddTrack;
     Graphics::TBitmap *AutoSig;
@@ -1074,7 +1074,7 @@ public:
 /// colour depth is incorrect and that will cause the error - lot of early problems due to this behaviour but all graphics now
 /// 256 colours)
     void ChangeBackgroundColour(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap* BitmapOut, TColor NewBackgroundColour, TColor OldBackgroundColour,
-        bool &ColourError);
+                                bool &ColourError);
 /// New function to do the same as the above but with fewer pixel changes - for use in LoadSession (& PlotStartPosition) to avoid resource failures on loading many session trains
     void ChangeBackgroundColour2(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap* BitmapOut, TColor NewBackgroundColour, TColor OldBackgroundColour);
 /// as above but uses Scanline

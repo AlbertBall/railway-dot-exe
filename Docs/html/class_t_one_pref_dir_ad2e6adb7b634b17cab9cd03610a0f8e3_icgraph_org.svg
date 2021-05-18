@@ -50,9 +50,9 @@
 <path fill="none" stroke="midnightblue" d="M799.31,-613.97C770.29,-681.19 672.69,-907.28 646.51,-967.92"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="802.61,-615.16 803.36,-604.59 796.18,-612.38 802.61,-615.16"/>
 </g>
-<!-- Node105 -->
+<!-- Node106 -->
 <g id="node47" class="node">
-<title>Node105</title>
+<title>Node106</title>
 <g id="a_node47"><a xlink:href="class_t_one_pref_dir.html#ace0402792492c9da2551423f8287e41e" target="_top" xlink:title="Used when beginning a chain of preferred directions or element lengths. Enter with HLoc &amp; VLoc set to...">
 <polygon fill="white" stroke="black" points="392,-1896 392,-1926 533,-1926 533,-1896 392,-1896"/>
 <text text-anchor="start" x="400" y="-1914" font-family="Helvetica,sans-Serif" font-size="10.00">TOnePrefDir::GetPrefDirStart</text>
@@ -60,39 +60,39 @@
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node105 -->
+<!-- Node1&#45;&gt;Node106 -->
 <g id="edge54" class="edge">
-<title>Node1&#45;&gt;Node105</title>
+<title>Node1&#45;&gt;Node106</title>
 <path fill="none" stroke="midnightblue" d="M804.42,-614.48C786.24,-727.33 688.56,-1307.88 533,-1760 515.25,-1811.58 485.83,-1869.3 471.64,-1895.98"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="807.88,-614.96 806.01,-604.53 800.97,-613.85 807.88,-614.96"/>
 </g>
-<!-- Node106 -->
+<!-- Node107 -->
 <g id="node48" class="node">
-<title>Node106</title>
+<title>Node107</title>
 <g id="a_node48"><a xlink:href="class_t_one_pref_dir.html#a614933ff3958e4b8c9be9bc78159d9e8" target="_top" xlink:title="Old version of LoadPrefDir, used during development when the save format changed so the old files cou...">
 <polygon fill="white" stroke="black" points="569,-547.5 569,-566.5 709,-566.5 709,-547.5 569,-547.5"/>
 <text text-anchor="middle" x="639" y="-554.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOnePrefDir::LoadOldPrefDir</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node106 -->
+<!-- Node1&#45;&gt;Node107 -->
 <g id="edge56" class="edge">
-<title>Node1&#45;&gt;Node106</title>
+<title>Node1&#45;&gt;Node107</title>
 <path fill="none" stroke="midnightblue" d="M755.38,-583.18C731.77,-577.82 704.22,-571.57 681.96,-566.52"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="754.71,-586.61 765.23,-585.41 756.25,-579.79 754.71,-586.61"/>
 </g>
-<!-- Node107 -->
+<!-- Node108 -->
 <g id="node49" class="node">
-<title>Node107</title>
+<title>Node108</title>
 <g id="a_node49"><a xlink:href="class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d" target="_top" xlink:title="Load a vector and map of preferred directions from the file.">
 <polygon fill="white" stroke="black" points="576.5,-57.5 576.5,-76.5 701.5,-76.5 701.5,-57.5 576.5,-57.5"/>
 <text text-anchor="middle" x="639" y="-64.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOnePrefDir::LoadPrefDir</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node107 -->
+<!-- Node1&#45;&gt;Node108 -->
 <g id="edge57" class="edge">
-<title>Node1&#45;&gt;Node107</title>
+<title>Node1&#45;&gt;Node108</title>
 <path fill="none" stroke="midnightblue" d="M801.42,-575.82C774.09,-489.67 663.14,-139.94 643.11,-76.8"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="798.09,-576.91 804.45,-585.38 804.76,-574.79 798.09,-576.91"/>
 </g>
@@ -828,42 +828,42 @@
 <path fill="none" stroke="midnightblue" d="M224.36,-1834.43C218.15,-1836.6 211.93,-1838.81 206,-1841 171.89,-1853.57 132.9,-1869.45 108.86,-1879.42"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="225.76,-1837.65 234.07,-1831.08 223.48,-1831.03 225.76,-1837.65"/>
 </g>
-<!-- Node105&#45;&gt;Node8 -->
+<!-- Node106&#45;&gt;Node8 -->
 <g id="edge55" class="edge">
-<title>Node105&#45;&gt;Node8</title>
+<title>Node106&#45;&gt;Node8</title>
 <path fill="none" stroke="midnightblue" d="M399.88,-1928.85C378.36,-1935.08 354.44,-1942.01 333.8,-1947.99"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="400.95,-1932.18 409.58,-1926.04 399,-1925.46 400.95,-1932.18"/>
 </g>
-<!-- Node107&#45;&gt;Node3 -->
+<!-- Node108&#45;&gt;Node3 -->
 <g id="edge58" class="edge">
-<title>Node107&#45;&gt;Node3</title>
+<title>Node108&#45;&gt;Node3</title>
 <path fill="none" stroke="midnightblue" d="M566.03,-67C499.73,-67 402.54,-67 340.78,-67"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="566.4,-70.5 576.4,-67 566.4,-63.5 566.4,-70.5"/>
 </g>
-<!-- Node107&#45;&gt;Node25 -->
+<!-- Node108&#45;&gt;Node25 -->
 <g id="edge61" class="edge">
-<title>Node107&#45;&gt;Node25</title>
+<title>Node108&#45;&gt;Node25</title>
 <path fill="none" stroke="midnightblue" d="M566.08,-59.32C500.09,-52.28 403.48,-41.97 341.67,-35.37"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="566.08,-62.84 576.4,-60.42 566.82,-55.88 566.08,-62.84"/>
 </g>
-<!-- Node108 -->
+<!-- Node109 -->
 <g id="node50" class="node">
-<title>Node108</title>
+<title>Node109</title>
 <g id="a_node50"><a xlink:href="class_t_all_routes.html#adadd08bb4cbbcaeba918f20c6c103a39" target="_top" xlink:title="Loads the routes from a session file.">
 <polygon fill="white" stroke="black" points="401.5,-0.5 401.5,-19.5 523.5,-19.5 523.5,-0.5 401.5,-0.5"/>
 <text text-anchor="middle" x="462.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">TAllRoutes::LoadRoutes</text>
 </a>
 </g>
 </g>
-<!-- Node107&#45;&gt;Node108 -->
+<!-- Node108&#45;&gt;Node109 -->
 <g id="edge59" class="edge">
-<title>Node107&#45;&gt;Node108</title>
+<title>Node108&#45;&gt;Node109</title>
 <path fill="none" stroke="midnightblue" d="M599.26,-54.34C567.09,-43.84 522.03,-29.12 492.8,-19.57"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="598.2,-57.68 608.79,-57.46 600.37,-51.03 598.2,-57.68"/>
 </g>
-<!-- Node108&#45;&gt;Node25 -->
+<!-- Node109&#45;&gt;Node25 -->
 <g id="edge60" class="edge">
-<title>Node108&#45;&gt;Node25</title>
+<title>Node109&#45;&gt;Node25</title>
 <path fill="none" stroke="midnightblue" d="M391.14,-17.45C374.73,-19.19 357.4,-21.02 341.5,-22.7"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="391.65,-20.91 401.23,-16.38 390.92,-13.95 391.65,-20.91"/>
 </g>

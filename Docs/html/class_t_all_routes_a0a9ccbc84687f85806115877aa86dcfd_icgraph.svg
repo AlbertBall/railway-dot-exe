@@ -113,7 +113,7 @@ var sectionId = 'dynsection-37';
 <!-- Node9 -->
 <g id="node9" class="node">
 <title>Node9</title>
-<g id="a_node9"><a xlink:href="class_t_track.html#a54678551db16086c8d269808884075d2" target="_top" xlink:title="True if a route or train present on any linked level crossing element.">
+<g id="a_node9"><a xlink:href="class_t_track.html#a0a99f8e9b1b6fc3f629d6292f2e14308" target="_top" xlink:title="True if a route or train present on any linked level crossing element.">
 <polygon fill="white" stroke="black" points="883,-49.5 883,-79.5 1041,-79.5 1041,-49.5 883,-49.5"/>
 <text text-anchor="start" x="891" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::AnyLinkedLevelCrossing</text>
 <text text-anchor="middle" x="962" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00">ElementsWithRoutesOrTrains</text>

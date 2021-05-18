@@ -52,7 +52,7 @@ class TOneRoute;
 class TTrack;
 class TGraphicElement;
 
-class TInterface: public TForm
+class TInterface : public TForm
 {
 __published: // IDE-managed Components
 
@@ -471,7 +471,7 @@ __published: // IDE-managed Components
     TMenuItem *N3;
     TMenuItem *N4;
     TMenuItem *RailwayWebSiteMenuItem;
-// TMenuItem *PasteWithAttributesMenuItem;
+// TMenuItem *PasteWithAttributesMenuItem;  (dropped at 2.4.0 as all pastes are with attributes)
     TMenuItem *RotRightMenuItem; // new at v2.4.0
     TMenuItem *RotLeftMenuItem; // new at v2.4.0
     TMenuItem *SignallerJoinedByMenuItem; // new at v2.4.0
@@ -844,7 +844,7 @@ __published: // IDE-managed Components
     void __fastcall CPCancelButtonClick(TObject *Sender);
     void __fastcall CPGenFileButtonClick(TObject *Sender);
     void __fastcall OAListBoxMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
-          int X, int Y);
+                                       int X, int Y);
     void __fastcall SigPrefConsecButtonClick(TObject *Sender); // new at v2.4.0
 
 public: // AboutForm needs access to these
@@ -874,16 +874,19 @@ private:
 // Level 2 program modes (i.e. submodes from the level 1 modes)
     enum TLevel2OperMode
     {
-        NoOperMode, Operating, PreStart, Paused} Level2OperMode;
+        NoOperMode, Operating, PreStart, Paused
+    } Level2OperMode;
 
     enum TLevel2PrefDirMode
     {
-        NoPrefDirMode, PrefDirContinuing, PrefDirSelecting} Level2PrefDirMode;
+        NoPrefDirMode, PrefDirContinuing, PrefDirSelecting
+    } Level2PrefDirMode;
 
     enum TLevel2TrackMode
     {
         NoTrackMode, AddTrack, AddGraphic, SelectGraphic, GapSetting, AddText, MoveTextOrGraphic, AddLocationName, DistanceStart, DistanceContinuing,
-        TrackSelecting, CutMoving, CopyMoving, Pasting, Deleting} Level2TrackMode;
+        TrackSelecting, CutMoving, CopyMoving, Pasting, Deleting
+    } Level2TrackMode;
 
     enum
     {
@@ -899,6 +902,8 @@ private:
 // Timetable edit members
 
 // variables
+    AnsiString ClpBrdValid;
+///< set to RlyClpBrdCopy or RlyClpBrd_Cut when Windows Clipboard contains a valid railway segment
     AnsiString CopiedEntryStr;
 ///< a timetable entry that has been copied
     AnsiString CreateEditTTFileName;
@@ -930,10 +935,16 @@ private:
 ///< false during initial start up, true when all set up to allow MasterClock to start
     bool AutoSigsFlag;
 ///< true when AutoSig route building selected during operation
+    bool CancelSelectionFlag;
+///< used in case pasting to avoid RecoverClipboard call when set
+    bool ClipboardChecked;
+///< used to prevent Windows clipboard beng checked repeatedly
     bool ConsecSignalsRoute;
 ///< true when AutoSig or preferred route building selected during operation (always same state as PreferredRoute)
     bool CopiedEntryFlag;
 ///< true when CopiedEntryStr holds a timetable entry in the timetable editor
+    bool CopySelected;
+///< used to indicate whether copy or cut selected in edit menu - for clipboard pasting
     bool CtrlKey;
 ///< true when the CTRL key is pressed (see also ShiftKey)
     bool DirOpenError;
@@ -966,6 +977,8 @@ private:
 ///< used to select either ConvertAndAddPreferredRouteSearchVector or ConvertAndAddNonPreferredRouteSearchVector (could probably have used PreferredRoute instead)
     bool PreventGapOffsetResetting;
 ///< during gap setting gaps are highlighted in turn for the user to select the matching gap, but when returning from zoomout this flag prevents the highlighted gap from being redisplayed, as the user wants to see the screen that corresponds to the clicked position
+    bool RecoverClipboardMessageSent;
+///< indicates that the warning about pasting at top left in a new application has been given, so it won't be given again
     bool RlyFile;
 ///< indicates that a loaded railway file is ready for operation, i.e. is a valid .rly file
     bool RouteCancelFlag;
@@ -1069,7 +1082,7 @@ showing.  See DevHistory.txt for the version after v2.4.3 for details. */
 ///< as above for 'Y'
     int OverallDistance, OverallSpeedLimit;
 ///< used when setting track lengths, represents the overall distance covered by the selected elements
-                                              ///< and the overall speed limit, if the speed limits vary across the selection the value is set to -1
+    ///< and the overall speed limit, if the speed limits vary across the selection the value is set to -1
     int PerformancePanelDragStartX;
 ///< mouse 'X' position when the performance panel begins to be dragged
     int PerformancePanelDragStartY;
@@ -1109,7 +1122,6 @@ showing.  See DevHistory.txt for the version after v2.4.3 for details. */
 ///< used to store the original user graphic 'H' & 'V' positions for use during moving
     int WarningFlashCount;
 ///< increments each clock cycle to a max. of 4 then resets to 0, used to toggle bool WarningFlash - see above
-
     TCursor TempCursor;
 ///< stores the screen cursor while a temporary cursor (ususlly an hourglass) is displayed
 
@@ -1125,7 +1137,7 @@ showing.  See DevHistory.txt for the version after v2.4.3 for details. */
 
     THVPair SelectStartPair;
 ///< stores the starting 'H' & 'V' values as a C++ pair when an area of screen is selected via the 'Edit' and
-                                                                                        ///< 'Select' menu items
+    ///< 'Select' menu items
 
     TImage *HiddenScreen;
 ///< a hidden copy of the railway display screen used during ClearandRebuildRailway (see below) to avoid flicker
@@ -1157,12 +1169,12 @@ showing.  See DevHistory.txt for the version after v2.4.3 for details. */
 
 //inline function
 //true if any of the TT key flags are set
-bool AnyTTKeyFlagSet()
-     {
-         return (PreviousTTEntryKeyFlag || NextTTEntryKeyFlag || MoveTTEntryUpKeyFlag || MoveTTEntryDownKeyFlag || CopyTTEntryKeyFlag || CutTTEntryKeyFlag || PasteTTEntryKeyFlag
-                    || DeleteTTEntryKeyFlag || NewTTEntryKeyFlag || AZOrderKeyFlag || TTServiceSyntaxCheckKeyFlag || ValidateTimetableKeyFlag || SaveTTKeyFlag || SaveTTAsKeyFlag
-                    || RestoreTTKeyFlag || ExportTTKeyFlag || ConflictAnalysisKeyFlag);
-     }
+    bool AnyTTKeyFlagSet()
+    {
+        return (PreviousTTEntryKeyFlag || NextTTEntryKeyFlag || MoveTTEntryUpKeyFlag || MoveTTEntryDownKeyFlag || CopyTTEntryKeyFlag || CutTTEntryKeyFlag || PasteTTEntryKeyFlag
+                || DeleteTTEntryKeyFlag || NewTTEntryKeyFlag || AZOrderKeyFlag || TTServiceSyntaxCheckKeyFlag || ValidateTimetableKeyFlag || SaveTTKeyFlag || SaveTTAsKeyFlag
+                || RestoreTTKeyFlag || ExportTTKeyFlag || ConflictAnalysisKeyFlag);
+    }
 
 // functions defined in .cpp file
 
@@ -1236,6 +1248,8 @@ bool AnyTTKeyFlagSet()
     void LoadGroundSignalGlyphs(int Caller);
 /// Load the interface part of a session file
     void LoadInterface(int Caller, std::ifstream &SessionFile);
+/// Load system clipboard to allow cutting & pasting between separate railway applications
+    void LoadClipboard(int Caller); // new at v2.8.0
 /// In trackbuild display normal signal types on signal buttons
     void LoadNormalSignalGlyphs(int Caller);
 /// Load the performance file part of a sessionfile
@@ -1255,6 +1269,8 @@ is loaded fillowed by AvHoursIntValue then all failed trains if any. */
     void MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftState Shift, int X, int Y);
 /// Called when mouse button clicked in zoom-out mode
     void MainScreenMouseDown3(int Caller, TMouseButton Button, TShiftState Shift, int X, int Y);
+/// Recovers clipboard as track and text vectors
+    void RecoverClipboard(int Caller, bool &ValidResult); // new at v2.8.0
 /// Called during ClearEverything and on startup to reset all major railway data values
     void ResetAll(int Caller);
 /// Called whenever the railway is changed to deal with title displays (loaded railway and timetable) and set the FileChangedFlag so that user will be warned before it is deleted NonPrefDirChangesMade is true if the changes don't involve prefdirs
@@ -1282,7 +1298,7 @@ is loaded fillowed by AvHoursIntValue then all failed trains if any. */
 /// Enables or disables the initial Edit mode submenu items in PrefDir mode
     void SetInitialPrefDirModeEditMenu();
 /// Enables or disables the initial Edit mode submenu items in Track mode
-    void SetInitialTrackModeEditMenu();
+    void SetTrackModeEditMenu(int Caller);
 /// Sets the Level1 user mode, using the Level1Mode variable to determine the mode
     void SetLevel1Mode(int Caller);
 /// Sets the Level2OperMode user mode, using the Level2OperMode variable to determine the mode

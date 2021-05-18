@@ -2621,29 +2621,53 @@ TRailGraphics::TRailGraphics()
 TRailGraphics::~TRailGraphics()
 {
     for(int x = 0; x < 30; x++)
+    {
         delete LinkPrefDirGraphicsPtr[x];
+    }
     for(int x = 0; x < 30; x++)
+    {
         delete LinkNonSigRouteGraphicsPtr[x];
+    }
     for(int x = 0; x < 30; x++)
+    {
         delete LinkSigRouteGraphicsPtr[x];
+    }
     for(int x = 0; x < 30; x++)
+    {
         delete LinkRouteAutoSigsGraphicsPtr[x];
+    }
     for(int x = 0; x < 12; x++)
+    {
         delete BridgePrefDirGraphicsPtr[x];
+    }
     for(int x = 0; x < 12; x++)
+    {
         delete BridgeNonSigRouteGraphicsPtr[x];
+    }
     for(int x = 0; x < 12; x++)
+    {
         delete BridgeSigRouteGraphicsPtr[x];
+    }
     for(int x = 0; x < 12; x++)
+    {
         delete BridgeRouteAutoSigsGraphicsPtr[x];
+    }
     for(int x = 0; x < 10; x++)
+    {
         delete DirectionPrefDirGraphicsPtr[x];
+    }
     for(int x = 0; x < 10; x++)
+    {
         delete DirectionNonSigRouteGraphicsPtr[x];
+    }
     for(int x = 0; x < 10; x++)
+    {
         delete DirectionSigRouteGraphicsPtr[x];
+    }
     for(int x = 0; x < 10; x++)
+    {
         delete DirectionRouteAutoSigsGraphicsPtr[x];
+    }
     for(int x = 0; x < 32; x++)
     {
         delete PointModeGraphicsPtr[x][0];
@@ -3278,14 +3302,18 @@ void TRailGraphics::ChangeTransparentColour(Graphics::TBitmap *BitmapIn, Graphic
     // Change OldTransparentColour to NewTransparentColour, if NewTransparentColour not white change black to white
     // else change white to black
     if(NewTransparentColour == OldTransparentColour)
+    {
         return; // already stored
 
+    }
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ChangeTransparentColour," + AnsiString(NewTransparentColour) + "," +
-        AnsiString(OldTransparentColour));
+                                 AnsiString(OldTransparentColour));
     BitmapOut->Height = BitmapIn->Height;
     BitmapOut->Width = BitmapIn->Width;
     for(int x = 0; x < BitmapIn->Width; x++)
+    {
         for(int y = 0; y < BitmapIn->Height; y++)
+        {
             if(NewTransparentColour != clB5G5R5) // new is dark, old could be dark or light
             {
                 if(BitmapIn->Canvas->Pixels[x][y] == OldTransparentColour)
@@ -3293,7 +3321,7 @@ void TRailGraphics::ChangeTransparentColour(Graphics::TBitmap *BitmapIn, Graphic
                     BitmapOut->Canvas->Pixels[x][y] = NewTransparentColour;
                 }
                 else if(BitmapIn->Canvas->Pixels[x][y] == clB0G0R0)
-    // black - if OldTransparentColour was black (or any dark colour) then track will be white already
+                // black - if OldTransparentColour was black (or any dark colour) then track will be white already
                 {
                     BitmapOut->Canvas->Pixels[x][y] = clB5G5R5; // white
                 }
@@ -3303,7 +3331,8 @@ void TRailGraphics::ChangeTransparentColour(Graphics::TBitmap *BitmapIn, Graphic
                 }
             }
             else
-            { // new is white, old must be dark else new = old & wouldn't reach here
+            {
+                // new is white, old must be dark else new = old & wouldn't reach here
                 if(BitmapIn->Canvas->Pixels[x][y] == OldTransparentColour)
                 {
                     BitmapOut->Canvas->Pixels[x][y] = NewTransparentColour;
@@ -3317,6 +3346,8 @@ void TRailGraphics::ChangeTransparentColour(Graphics::TBitmap *BitmapIn, Graphic
                     BitmapOut->Canvas->Pixels[x][y] = BitmapIn->Canvas->Pixels[x][y];
                 }
             }
+        }
+    }
     BitmapOut->TransparentColor = NewTransparentColour;
     Utilities->CallLogPop(1795);
 }
@@ -3324,14 +3355,16 @@ void TRailGraphics::ChangeTransparentColour(Graphics::TBitmap *BitmapIn, Graphic
 // ---------------------------------------------------------------------------
 
 void TRailGraphics::ChangeForegroundColour(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut, TColor NewForegroundColour,
-    TColor BackgroundColour)
+                                           TColor BackgroundColour)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeForegroundColour," + AnsiString(NewForegroundColour) + "," +
-        AnsiString(BackgroundColour));
+                                 AnsiString(BackgroundColour));
     BitmapOut->Height = BitmapIn->Height;
     BitmapOut->Width = BitmapIn->Width;
     for(int x = 0; x < BitmapIn->Width; x++)
+    {
         for(int y = 0; y < BitmapIn->Height; y++)
+        {
             if(BitmapIn->Canvas->Pixels[x][y] != BackgroundColour)
             {
                 BitmapOut->Canvas->Pixels[x][y] = NewForegroundColour;
@@ -3340,16 +3373,18 @@ void TRailGraphics::ChangeForegroundColour(int Caller, Graphics::TBitmap *Bitmap
             {
                 BitmapOut->Canvas->Pixels[x][y] = BackgroundColour;
             }
+        }
+    }
     Utilities->CallLogPop(1480);
 }
 
 // ---------------------------------------------------------------------------
 
 void TRailGraphics::ChangeForegroundColour2(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut, TColor NewForegroundColour,
-    TColor BackgroundColour)
+                                            TColor BackgroundColour)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeForegroundColour2," + AnsiString(NewForegroundColour) + "," +
-        AnsiString(BackgroundColour));
+                                 AnsiString(BackgroundColour));
     Graphics::TBitmap *TempBitmapOut = new Graphics::TBitmap;
 
     TempBitmapOut->Assign(BitmapIn); // in case BitmapOut isn't fully defined at this stage
@@ -3377,7 +3412,7 @@ void TRailGraphics::ChangeForegroundColour2(int Caller, Graphics::TBitmap *Bitma
 void TRailGraphics::ChangeSpecificColour(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap *BitmapOut, TColor ColourToBeChanged, TColor NewColour)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeSpecificColour," + AnsiString(ColourToBeChanged) + "," +
-        AnsiString(NewColour));
+                                 AnsiString(NewColour));
     BitmapOut->Height = BitmapIn->Height;
     BitmapOut->Width = BitmapIn->Width;
     for(int x = 0; x < BitmapIn->Width; x++)
@@ -3396,16 +3431,17 @@ void TRailGraphics::ChangeSpecificColour(int Caller, Graphics::TBitmap *BitmapIn
 // ---------------------------------------------------------------------------
 
 void TRailGraphics::ChangeBackgroundColour(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap* BitmapOut, TColor NewBackgroundColour,
-    TColor OldBackgroundColour, bool &ColourError)
+                                           TColor OldBackgroundColour, bool &ColourError)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeBackgroundColour," + AnsiString(NewBackgroundColour) + "," +
-        AnsiString(OldBackgroundColour));
+                                 AnsiString(OldBackgroundColour));
     ColourError = false;
     BitmapOut->Height = BitmapIn->Height;
     BitmapOut->Width = BitmapIn->Width;
     bool OneChanged = false;
 
     for(int x = 0; x < BitmapIn->Width; x++)
+    {
         for(int y = 0; y < BitmapIn->Height; y++)
         {
             if(BitmapIn->Canvas->Pixels[x][y] == OldBackgroundColour)
@@ -3414,7 +3450,8 @@ void TRailGraphics::ChangeBackgroundColour(int Caller, Graphics::TBitmap *Bitmap
                 if(!OneChanged)
                 {
                     if(BitmapOut->Canvas->Pixels[x][y] != NewBackgroundColour)
-                    { // can be different if the palette of the pixel is different from that expected
+                    {
+                        // can be different if the palette of the pixel is different from that expected
                         ColourError = true;
 // throw Exception("BackgroundColour change incorrect - actual = " + AnsiString((int)BitmapOut->Canvas->Pixels[x][y]) + ", expected " + AnsiString((int)NewBackgroundColour));
                     }
@@ -3422,19 +3459,22 @@ void TRailGraphics::ChangeBackgroundColour(int Caller, Graphics::TBitmap *Bitmap
                 OneChanged = true;
             }
             else
+            {
                 BitmapOut->Canvas->Pixels[x][y] = BitmapIn->Canvas->Pixels[x][y];
+            }
         }
+    }
     Utilities->CallLogPop(1482);
 }
 
 // ---------------------------------------------------------------------------
 
 void TRailGraphics::ChangeBackgroundColour2(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap* BitmapOut, TColor NewBackgroundColour,
-    TColor OldBackgroundColour)
+                                            TColor OldBackgroundColour)
 {
 // superseded by ChangeBackgroundColour3 using direct pixel manipulation
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeBackgroundColour2," + AnsiString(NewBackgroundColour) + "," +
-        AnsiString(OldBackgroundColour));
+                                 AnsiString(OldBackgroundColour));
     Graphics::TBitmap *TempBitmapOut = new Graphics::TBitmap;
 
     TempBitmapOut->Assign(BitmapIn); // in case BitmapOut isn't fully defined at this stage
@@ -3455,7 +3495,8 @@ void TRailGraphics::ChangeBackgroundColour2(int Caller, Graphics::TBitmap *Bitma
                 {
                     TempBitmapOut->Canvas->Pixels[x][y] = BitmapIn->Canvas->Pixels[x][y];
                 }
-            }}
+            }
+        }
     }
 
     BitmapOut->Assign(TempBitmapOut);
@@ -3466,10 +3507,10 @@ void TRailGraphics::ChangeBackgroundColour2(int Caller, Graphics::TBitmap *Bitma
 // ---------------------------------------------------------------------------
 
 void TRailGraphics::ChangeBackgroundColour3(int Caller, Graphics::TBitmap *BitmapIn, Graphics::TBitmap* BitmapOut, TColor NewBackgroundColour,
-    TColor OldBackgroundColour)
+                                            TColor OldBackgroundColour)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ChangeBackgroundColour3" + AnsiString(NewBackgroundColour) + "," +
-        AnsiString(OldBackgroundColour));
+                                 AnsiString(OldBackgroundColour));
     Byte *SLPtrIn; // pointer to the ScanLine values in BitmapIn
     Byte *SLPtrOut; // pointer to the ScanLine values in TempBitmapOut
     Graphics::TBitmap *TempBitmapOut = new Graphics::TBitmap;
@@ -3571,7 +3612,7 @@ int TRailGraphics::ColNametoNumber(int Caller, TColor Colour)
         break;
     }
     Utilities->CallLogPop(2104);
-    return Number;
+    return(Number);
 }
 
 // ---------------------------------------------------------------------------
@@ -3579,8 +3620,10 @@ int TRailGraphics::ColNametoNumber(int Caller, TColor Colour)
 void TRailGraphics::ChangeAllTransparentColours(TColor NewTransparentColour, TColor OldTransparentColour)
 {
     if(NewTransparentColour == OldTransparentColour)
+    {
         return; // already stored
 
+    }
     ChangeTransparentColour(bm10, bm10, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(bm100, bm100, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(bm101, bm101, NewTransparentColour, OldTransparentColour);
@@ -4126,9 +4169,13 @@ void TRailGraphics::ChangeAllTransparentColours(TColor NewTransparentColour, TCo
 
 // change the grid to the nearest grey colour to the background
     if(NewTransparentColour != clB5G5R5)
+    {
         ChangeSpecificColour(1, GridBitmap, GridBitmap, clB4G4R4, clB1G1R1); // if already dark will ignore
+    }
     else
+    {
         ChangeSpecificColour(3, GridBitmap, GridBitmap, clB1G1R1, clB4G4R4); // if already light will ignore
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -4309,37 +4356,55 @@ void TRailGraphics::ConvertSignalsToOppositeHand(int Caller) // new at v2.3.0
 {
     Utilities->EventLog.push_back("ConvertSignalsToRightHand");
     if(Utilities->EventLog.size() > 1000)
+    {
         Utilities->EventLog.pop_front();
+    }
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ", ConvertSignalsToRightHand");
 
     Graphics::TBitmap* HorizSignalArray[18] =
-    {Plat68, Plat68Striped, Plat69, Plat69Striped, bm68CallingOn, bm68dblyellow, bm68grounddblred, bm68grounddblwhite, bm68green, bm68yellow, bm69CallingOn,
-        bm69dblyellow, bm69grounddblred, bm69grounddblwhite, bm69green, bm69yellow, gl68, gl69};
+    {
+        Plat68, Plat68Striped, Plat69, Plat69Striped, bm68CallingOn, bm68dblyellow, bm68grounddblred, bm68grounddblwhite, bm68green, bm68yellow, bm69CallingOn,
+        bm69dblyellow, bm69grounddblred, bm69grounddblwhite, bm69green, bm69yellow, gl68, gl69
+    };
 
     Graphics::TBitmap* VertSignalArray[18] =
-    {Plat70, Plat70Striped, Plat71, Plat71Striped, bm70CallingOn, bm70dblyellow, bm70grounddblred, bm70grounddblwhite, bm70green, bm70yellow, bm71CallingOn,
-        bm71dblyellow, bm71grounddblred, bm71grounddblwhite, bm71green, bm71yellow, gl70, gl71};
+    {
+        Plat70, Plat70Striped, Plat71, Plat71Striped, bm70CallingOn, bm70dblyellow, bm70grounddblred, bm70grounddblwhite, bm70green, bm70yellow, bm71CallingOn,
+        bm71dblyellow, bm71grounddblred, bm71grounddblwhite, bm71green, bm71yellow, gl70, gl71
+    };
 
     Graphics::TBitmap* BackDiagSignalArray[14] =
-    {bm72CallingOn, bm72dblyellow, bm72grounddblred, bm72grounddblwhite, bm72green, bm72yellow, bm75CallingOn, bm75dblyellow, bm75grounddblred,
-        bm75grounddblwhite, bm75green, bm75yellow, gl72, gl75};
+    {
+        bm72CallingOn, bm72dblyellow, bm72grounddblred, bm72grounddblwhite, bm72green, bm72yellow, bm75CallingOn, bm75dblyellow, bm75grounddblred,
+        bm75grounddblwhite, bm75green, bm75yellow, gl72, gl75
+    };
 
     Graphics::TBitmap* FwdDiagSignalArray[16] =
-    {bm73, bm73CallingOn, bm73dblyellow, bm73grounddblred, bm73grounddblwhite, bm73green, bm73yellow, bm74, bm74CallingOn, bm74dblyellow, bm74grounddblred,
-        bm74grounddblwhite, bm74green, bm74yellow, gl73, gl74};
+    {
+        bm73, bm73CallingOn, bm73dblyellow, bm73grounddblred, bm73grounddblwhite, bm73green, bm73yellow, bm74, bm74CallingOn, bm74dblyellow, bm74grounddblred,
+        bm74grounddblwhite, bm74green, bm74yellow, gl73, gl74
+    };
 
 // the following are the stay black glyphs for the speedbuttons
     Graphics::TBitmap* HorizSignalGlyphArray[4] =
-    {SpeedBut68NormBlackGlyph, SpeedBut69NormBlackGlyph, SpeedBut68GrndBlackGlyph, SpeedBut69GrndBlackGlyph};
+    {
+        SpeedBut68NormBlackGlyph, SpeedBut69NormBlackGlyph, SpeedBut68GrndBlackGlyph, SpeedBut69GrndBlackGlyph
+    };
 
     Graphics::TBitmap* VertSignalGlyphArray[4] =
-    {SpeedBut70NormBlackGlyph, SpeedBut71NormBlackGlyph, SpeedBut70GrndBlackGlyph, SpeedBut71GrndBlackGlyph};
+    {
+        SpeedBut70NormBlackGlyph, SpeedBut71NormBlackGlyph, SpeedBut70GrndBlackGlyph, SpeedBut71GrndBlackGlyph
+    };
 
     Graphics::TBitmap* BackDiagSignalGlyphArray[4] =
-    {SpeedBut72NormBlackGlyph, SpeedBut75NormBlackGlyph, SpeedBut72GrndBlackGlyph, SpeedBut75GrndBlackGlyph, };
+    {
+        SpeedBut72NormBlackGlyph, SpeedBut75NormBlackGlyph, SpeedBut72GrndBlackGlyph, SpeedBut75GrndBlackGlyph,
+    };
 
     Graphics::TBitmap* FwdDiagSignalGlyphArray[4] =
-    {SpeedBut73NormBlackGlyph, SpeedBut74NormBlackGlyph, SpeedBut73GrndBlackGlyph, SpeedBut74GrndBlackGlyph};
+    {
+        SpeedBut73NormBlackGlyph, SpeedBut74NormBlackGlyph, SpeedBut73GrndBlackGlyph, SpeedBut74GrndBlackGlyph
+    };
 
     Graphics::TBitmap* TmpBM;
 

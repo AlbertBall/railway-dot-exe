@@ -33,6 +33,6 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
             Application->ShowException(&exception);
         }
     }
-    return 0;
+    return(0);
 }
 //---------------------------------------------------------------------------

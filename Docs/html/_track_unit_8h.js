@@ -21,6 +21,7 @@ var _track_unit_8h =
     [ "DefaultTrackSpeedLimit", "_track_unit_8h.html#ab474c53083a12f5585481cc834b3c403", null ],
     [ "FirstUnusedSpeedTagNumber", "_track_unit_8h.html#a130ce29f5f90289595fcb4c38a659c8d", null ],
     [ "THVPair", "_track_unit_8h.html#a524d48fe8a394092b35867930a7cd2af", null ],
+    [ "TPrefDirVector", "_track_unit_8h.html#a79394e04a2435f7300aad79c757ae2ce", null ],
     [ "TConfiguration", "_track_unit_8h.html#a36b781e21f2a28baf728981a102f0c1d", [
       [ "NotSet", "_track_unit_8h.html#a36b781e21f2a28baf728981a102f0c1daf271cc6723424336df7064060973a62e", null ],
       [ "Connection", "_track_unit_8h.html#a36b781e21f2a28baf728981a102f0c1daa87099bc023406b980b79ea163ff02f5", null ],

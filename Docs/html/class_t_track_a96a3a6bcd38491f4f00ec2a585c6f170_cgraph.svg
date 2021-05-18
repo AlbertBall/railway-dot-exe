@@ -12,7 +12,7 @@
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title=" ">
+<g id="a_node1"><a xlink:title="Used in SearchForAndUpdateLocationName to check for adjacent named elements to a given element at HLo...">
 <polygon fill="#bfbfbf" stroke="black" points="0,-85.18 0,-104.18 133,-104.18 133,-85.18 0,-85.18"/>
 <text text-anchor="middle" x="66.5" y="-92.18" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::AdjNamedElement</text>
 </a>

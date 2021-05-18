@@ -31,13 +31,13 @@
 <text text-anchor="start" x="118.5" y="-433.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; Level2PrefDirMode</text>
 <text text-anchor="start" x="118.5" y="-422.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; Level2TrackMode</text>
 <text text-anchor="start" x="118.5" y="-411.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; RouteMode</text>
-<text text-anchor="start" x="118.5" y="-400.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CopiedEntryStr</text>
-<text text-anchor="start" x="118.5" y="-389.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CreateEditTTFileName</text>
-<text text-anchor="start" x="118.5" y="-378.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CreateEditTTTitle</text>
-<text text-anchor="start" x="118.5" y="-367.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CurDir</text>
-<text text-anchor="start" x="118.5" y="-356.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; DirectoryError</text>
-<text text-anchor="start" x="118.5" y="-345.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; InfoCaptionStore</text>
-<text text-anchor="start" x="118.5" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 123 more...</text>
+<text text-anchor="start" x="118.5" y="-400.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; ClpBrdValid</text>
+<text text-anchor="start" x="118.5" y="-389.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CopiedEntryStr</text>
+<text text-anchor="start" x="118.5" y="-378.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CreateEditTTFileName</text>
+<text text-anchor="start" x="118.5" y="-367.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CreateEditTTTitle</text>
+<text text-anchor="start" x="118.5" y="-356.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CurDir</text>
+<text text-anchor="start" x="118.5" y="-345.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; DirectoryError</text>
+<text text-anchor="start" x="118.5" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 128 more...</text>
 <text text-anchor="start" x="118.5" y="-323.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; RAILWAY_DIR_NAME</text>
 <text text-anchor="start" x="118.5" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; TIMETABLE_DIR_NAME</text>
 <text text-anchor="start" x="118.5" y="-301.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; PERFLOG_DIR_NAME</text>
@@ -67,7 +67,7 @@
 <text text-anchor="start" x="118.5" y="-40.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CheckInterface()</text>
 <text text-anchor="start" x="118.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CheckPerformanceFile()</text>
 <text text-anchor="start" x="118.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CheckTimetableFromSessionFile()</text>
-<text text-anchor="start" x="118.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 64 more...</text>
+<text text-anchor="start" x="118.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 66 more...</text>
 </a>
 </g>
 </g>
@@ -143,13 +143,13 @@
 <polygon fill="white" stroke="black" points="180,-1046.5 180,-1455.5 354,-1455.5 354,-1046.5 180,-1046.5"/>
 <text text-anchor="middle" x="267" y="-1443.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOnePrefDir</text>
 <polyline fill="none" stroke="black" points="180,-1436.5 354,-1436.5 "/>
-<text text-anchor="start" x="188" y="-1424.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowH</text>
-<text text-anchor="start" x="188" y="-1413.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighH</text>
-<text text-anchor="start" x="188" y="-1402.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowV</text>
-<text text-anchor="start" x="188" y="-1391.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighV</text>
-<text text-anchor="start" x="188" y="-1380.5" font-family="Helvetica,sans-Serif" font-size="10.00"># TotalSearchCount</text>
-<text text-anchor="start" x="188" y="-1369.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PrefDirVector</text>
-<text text-anchor="start" x="188" y="-1358.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchVector</text>
+<text text-anchor="start" x="188" y="-1424.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDirVector</text>
+<text text-anchor="start" x="188" y="-1413.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ SearchVector</text>
+<text text-anchor="start" x="188" y="-1402.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowH</text>
+<text text-anchor="start" x="188" y="-1391.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighH</text>
+<text text-anchor="start" x="188" y="-1380.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowV</text>
+<text text-anchor="start" x="188" y="-1369.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighV</text>
+<text text-anchor="start" x="188" y="-1358.5" font-family="Helvetica,sans-Serif" font-size="10.00"># TotalSearchCount</text>
 <text text-anchor="start" x="188" y="-1347.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PrefDirSearchLimit</text>
 <text text-anchor="start" x="188" y="-1336.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; PrefDir4MultiMap</text>
 <polyline fill="none" stroke="black" points="180,-1329.5 354,-1329.5 "/>

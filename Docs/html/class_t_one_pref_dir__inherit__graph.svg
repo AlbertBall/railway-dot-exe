@@ -62,13 +62,13 @@ var sectionId = 'dynsection-0';
 <polygon fill="#bfbfbf" stroke="black" points="1,-314.5 1,-723.5 175,-723.5 175,-314.5 1,-314.5"/>
 <text text-anchor="middle" x="88" y="-711.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOnePrefDir</text>
 <polyline fill="none" stroke="black" points="1,-704.5 175,-704.5 "/>
-<text text-anchor="start" x="9" y="-692.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowH</text>
-<text text-anchor="start" x="9" y="-681.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighH</text>
-<text text-anchor="start" x="9" y="-670.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowV</text>
-<text text-anchor="start" x="9" y="-659.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighV</text>
-<text text-anchor="start" x="9" y="-648.5" font-family="Helvetica,sans-Serif" font-size="10.00"># TotalSearchCount</text>
-<text text-anchor="start" x="9" y="-637.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PrefDirVector</text>
-<text text-anchor="start" x="9" y="-626.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchVector</text>
+<text text-anchor="start" x="9" y="-692.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDirVector</text>
+<text text-anchor="start" x="9" y="-681.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ SearchVector</text>
+<text text-anchor="start" x="9" y="-670.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowH</text>
+<text text-anchor="start" x="9" y="-659.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighH</text>
+<text text-anchor="start" x="9" y="-648.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowV</text>
+<text text-anchor="start" x="9" y="-637.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighV</text>
+<text text-anchor="start" x="9" y="-626.5" font-family="Helvetica,sans-Serif" font-size="10.00"># TotalSearchCount</text>
 <text text-anchor="start" x="9" y="-615.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PrefDirSearchLimit</text>
 <text text-anchor="start" x="9" y="-604.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; PrefDir4MultiMap</text>
 <polyline fill="none" stroke="black" points="1,-597.5 175,-597.5 "/>

@@ -11,8 +11,9 @@ Welcome to the railway.exe project, a railway simulator for Windows originally w
 - operate trains
 - add your own graphics
 - zoom-out for a wider display
+- and many other features
 
-A wide selection of track element types is available for building the railway, together with station elements consisting of platforms, concourses and footbridges.  Also available are non-station named location elements for sidings, works, depots, junction approaches and anything else that needs a name.  Location names are displayed on the railway in user-selectable font, style, size and colour.  In addition to named locations any other text may be added to the railway, again in any font, style, size and colour.  Location names and other text may be moved in order to improve the appearance of the railway and areas of track may be selected and cut, copied, pasted, deleted, mirrored and flipped etc.  Railway files may be saved and loaded in both development form during construction and in operational form on completion.  Track element lengths and line speed limits may be set individually, along tracks, or in areas by selection, as can preferred running directions.
+A wide selection of track element types is available for building the railway, together with station elements consisting of platforms, concourses and footbridges.  Also available are non-station named location elements for sidings, works, depots, junction approaches and anything else that needs a name.  Location names are displayed on the railway in user-selectable font, style, size and colour.  In addition to named locations any other text may be added to the railway, again in any font, style, size and colour.  Location names and other text may be moved in order to improve the appearance of the railway and areas of railway may be selected and cut, copied, pasted, deleted, mirrored and flipped etc.  Railway files may be saved and loaded in both development form during construction and in operational form on completion.  Track element lengths and line speed limits may be set individually, along tracks, or in areas by selection, as can preferred running directions.
 
 Trains may operate to a timetable developed using the internal timetable editor, or under signaller control.  Three types of route are available:
 
@@ -38,7 +39,7 @@ More recent suggestions are included in the file DevHistory.txt.
 
 'DeveloperGuide.pdf' in the 'master' branch provides a summary of program history, structure, operation and interfaces, and also explains the file structure.  Anyone wishing to contribute to further development should read 'CONTRIBUTING.md'.
 
-We can be contacted at railwayfeedback@gmail.com or via the website at http://www.railwayoperationsimulator.com/
+We can be contacted at railwayfeedback@gmail.com or via the website at www.railwayoperationsimulator.com
 
 Menu icons from Silk Icon Set 1.3 by Mark James used under Creative Commons Attribution 2.5 License http://creativecommons.org/licenses/by/2.5/
 

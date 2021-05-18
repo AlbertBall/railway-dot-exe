@@ -67,7 +67,7 @@ public:
     typedef std::vector<TFont*>TFontVector; // new at v2.3.0
 
     TTextVector TextVector, SelectTextVector; // TextVector contains all the railway's text items, SelectTextVector is used to store text items
-                                                        // that are captured during a screen segment selection
+    // that are captured during a screen segment selection
     TFontVector FontVector; // new at v2.3.0
 
 // inline functions

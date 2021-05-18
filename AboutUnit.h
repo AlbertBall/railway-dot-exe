@@ -35,33 +35,33 @@
 class TAboutForm : public TForm
 {
 __published:               // IDE-managed Components
-TButton * AboutFormButton; ///< The OK button
-TImage *ImageAppIcon;
-TLabel *AboutLabelCaption; ///< Version info displayed here
-TLabel *AboutLabelTitle;
-TLinkLabel *WebsiteLinkLabel;
-TLinkLabel *Attribution1LinkLabel;
-TLinkLabel *Attribution2LinkLabel;
-TLabel *Attribution1Label;
-TLabel *Attribution2Label;
+    TButton * AboutFormButton; ///< The OK button
+    TImage *ImageAppIcon;
+    TLabel *AboutLabelCaption; ///< Version info displayed here
+    TLabel *AboutLabelTitle;
+    TLinkLabel *WebsiteLinkLabel;
+    TLinkLabel *Attribution1LinkLabel;
+    TLinkLabel *Attribution2LinkLabel;
+    TLabel *Attribution1Label;
+    TLabel *Attribution2Label;
 /// Called when the form is first created (by WinMain). Sets the version info, then hides the form
-void __fastcall FormCreate(TObject *Sender);
+    void __fastcall FormCreate(TObject *Sender);
 /// Opens the About form
-void __fastcall AboutFormButtonClick(TObject *Sender);
+    void __fastcall AboutFormButtonClick(TObject *Sender);
 /// Called when the About form is closed. Restarts MasterClock if Level1Mode is OperMode
-void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+    void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 /// Sends the link to your default browser
-void __fastcall WebsiteLinkLabelLinkClick(TObject *Sender, const UnicodeString Link, TSysLinkType LinkType);
+    void __fastcall WebsiteLinkLabelLinkClick(TObject *Sender, const UnicodeString Link, TSysLinkType LinkType);
 /// Send the first attribution statement's link to your default browser
-void __fastcall Attribution1LinkLabelLinkClick(TObject *Sender, const UnicodeString Link, TSysLinkType LinkType);
+    void __fastcall Attribution1LinkLabelLinkClick(TObject *Sender, const UnicodeString Link, TSysLinkType LinkType);
 /// Send the second attribution statement's link to your default browser
-void __fastcall Attribution2LinkLabelLinkClick(TObject *Sender, const UnicodeString Link, TSysLinkType LinkType);
+    void __fastcall Attribution2LinkLabelLinkClick(TObject *Sender, const UnicodeString Link, TSysLinkType LinkType);
 private:    // User declarations
 /// Sets version details from the project options 'Version Info' values
-void __fastcall SetAboutCaption();
+    void __fastcall SetAboutCaption();
 public:     // User declarations
 /// The form constructor
-__fastcall TAboutForm(TComponent* Owner);
+    __fastcall TAboutForm(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
 

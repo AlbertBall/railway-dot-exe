@@ -1,52 +1,52 @@
 <map id="TInterface::SetCaption" name="TInterface::SetCaption">
-<area shape="rect" id="node1" title="Sets the railway and timetable titles at the top of the screen." alt="" coords="1636,296,1787,323"/>
-<area shape="rect" id="node2" href="$class_t_interface.html#a148e3f99d39f596dbd7d490403936154" title="Convert a stored timetable file (either as a stand alone file or within a session file) to a loaded t..." alt="" coords="707,121,878,162"/>
-<area shape="rect" id="node4" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="227,185,388,212"/>
-<area shape="rect" id="node7" href="$class_t_interface.html#a1c8fab7fa2f1be662f2d7418e95e3a63" title=" " alt="" coords="703,339,883,381"/>
-<area shape="rect" id="node8" href="$class_t_interface.html#a0cf35a6e4a6cfa72b63222acb51f9f74" title=" " alt="" coords="710,405,875,446"/>
-<area shape="rect" id="node9" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="713,288,872,315"/>
-<area shape="rect" id="node11" href="$class_t_interface.html#ac5e079dc6f8023485367f6db2e693caa" title="Called during ClearEverything and on startup to reset all major railway data values." alt="" coords="725,237,860,264"/>
-<area shape="rect" id="node15" href="$class_t_interface.html#a397ecca8b2fb1f85b265938a4e565de4" title="Called whenever the railway is changed to deal with title displays (loaded railway and timetable) and..." alt="" coords="1417,1971,1588,2013"/>
-<area shape="rect" id="node30" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="940,1284,1115,1311"/>
-<area shape="rect" id="node47" href="$class_t_interface.html#a1b3189e6a50555f5952652d12b978e57" title="Used to save a railway when not already saved &#45; e.g. when not already named or when the &#39;Save as&#39; men..." alt="" coords="697,2453,889,2480"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#a92d5a9e07b9362dee2296b7759a1c83d" title="Loads timetable into memory from a session file, true if successful." alt="" coords="463,55,633,97"/>
-<area shape="rect" id="node6" href="$class_t_interface.html#a15a2f5ad77e4f6c2b0cc6314224dfb78" title=" " alt="" coords="463,121,633,162"/>
-<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="5,211,164,237"/>
-<area shape="rect" id="node10" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="212,287,403,329"/>
-<area shape="rect" id="node12" href="$class_t_interface.html#a686430e962991bc32742399164187b62" title="First check whether a railway file has changed and if so ask user if really wants to close it without..." alt="" coords="460,237,636,264"/>
-<area shape="rect" id="node14" href="$class_t_interface.html#a0659e748042e378f3e325652c9c2e6d2" title="constructor" alt="" coords="477,717,619,744"/>
-<area shape="rect" id="node13" href="$class_t_interface.html#a928eba983ac5132e1ae7799f8330451e" title=" " alt="" coords="226,555,389,597"/>
-<area shape="rect" id="node16" href="$class_t_interface.html#af9cb95043f5276df55cb6809e104c93a" title=" " alt="" coords="712,470,873,511"/>
-<area shape="rect" id="node17" href="$class_t_interface.html#a3136530959237eaa57486f4f48357855" title=" " alt="" coords="707,535,878,577"/>
-<area shape="rect" id="node18" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="695,601,890,642"/>
-<area shape="rect" id="node19" href="$class_t_interface.html#a77c402ebf53d182c76821a44f5895d98" title=" " alt="" coords="1175,2270,1357,2311"/>
-<area shape="rect" id="node20" href="$class_t_interface.html#a8ed3d3631b2d3235f1e011d595909eec" title=" " alt="" coords="705,2387,880,2429"/>
-<area shape="rect" id="node21" href="$class_t_interface.html#a60bb5e1b59c75a6ce602cded9e406249" title=" " alt="" coords="1181,2387,1351,2429"/>
-<area shape="rect" id="node22" href="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b" title="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode." alt="" coords="1163,1979,1369,2005"/>
-<area shape="rect" id="node50" href="$class_t_interface.html#aab42b12ff3ba43ad2f70994b5399dd90" title=" " alt="" coords="705,2322,880,2363"/>
-<area shape="rect" id="node23" href="$class_t_interface.html#aa20c05bf2d6c23035a10a89796334d0f" title=" " alt="" coords="707,1865,879,1906"/>
-<area shape="rect" id="node24" href="$class_t_interface.html#a10494e62a7bb4e7114ab4d98e18499f1" title=" " alt="" coords="703,1930,882,1971"/>
-<area shape="rect" id="node25" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="703,1995,883,2037"/>
-<area shape="rect" id="node26" href="$class_t_interface.html#ad0fa9f32b059b346e066ab23d62a4bfc" title=" " alt="" coords="703,2061,882,2102"/>
-<area shape="rect" id="node27" href="$class_t_interface.html#a5e7eff5bd235780252147bb4878a4c95" title=" " alt="" coords="710,2126,875,2167"/>
-<area shape="rect" id="node28" href="$class_t_interface.html#ab34f55bab5984b72264d7275660a3463" title=" " alt="" coords="701,2191,884,2233"/>
-<area shape="rect" id="node29" href="$class_t_interface.html#aef9267dd01da25269797e2e8ca08a3f9" title=" " alt="" coords="708,2257,877,2298"/>
-<area shape="rect" id="node31" href="$class_t_interface.html#a30904d608111ce6452a9861d86b64267" title=" " alt="" coords="705,819,880,861"/>
-<area shape="rect" id="node32" href="$class_t_interface.html#a1b1a4260e251c9bd5f48fd6c3432e7a5" title=" " alt="" coords="699,885,886,926"/>
-<area shape="rect" id="node33" href="$class_t_interface.html#a0abab134f4994b02507e1e2d3f31cd77" title=" " alt="" coords="701,950,884,991"/>
-<area shape="rect" id="node34" href="$class_t_interface.html#a189a4b05f27d6b5ec8b9a90ec1a9cc50" title=" " alt="" coords="704,1015,881,1057"/>
-<area shape="rect" id="node35" href="$class_t_interface.html#a28579472104533fb5fd01066a22fbb5b" title=" " alt="" coords="707,1081,879,1122"/>
-<area shape="rect" id="node36" href="$class_t_interface.html#a237c151513ca8adca6cd1006cc2fc66f" title=" " alt="" coords="702,1146,883,1187"/>
-<area shape="rect" id="node37" href="$class_t_interface.html#a24d79aa4745e495daa07bb5ce412e75f" title=" " alt="" coords="705,1211,880,1253"/>
-<area shape="rect" id="node38" href="$class_t_interface.html#ab1799665ee1e4212186f80ab49acf1e1" title=" " alt="" coords="703,1277,882,1318"/>
-<area shape="rect" id="node39" href="$class_t_interface.html#a6fb1db3295ef42cb1b6f20bc142fa502" title=" " alt="" coords="707,1342,878,1383"/>
-<area shape="rect" id="node40" href="$class_t_interface.html#adc0dd871fdd70ff11ada7a0ddd549e8e" title=" " alt="" coords="693,1407,892,1449"/>
-<area shape="rect" id="node41" href="$class_t_interface.html#acd41ae8fa5d16248a867472d9c8ae646" title=" " alt="" coords="698,1473,887,1514"/>
-<area shape="rect" id="node42" href="$class_t_interface.html#abdd4a70649a10a29c9a069d040072808" title=" " alt="" coords="709,1538,877,1579"/>
-<area shape="rect" id="node43" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="710,1603,875,1645"/>
-<area shape="rect" id="node44" href="$class_t_interface.html#ab2a25d27dcbae558b8f9a4ac62937523" title=" " alt="" coords="699,1669,886,1710"/>
-<area shape="rect" id="node45" href="$class_t_interface.html#aa78089df3d8323be6fde98c0ee48424c" title=" " alt="" coords="696,1734,889,1775"/>
-<area shape="rect" id="node46" href="$class_t_interface.html#ab7c52bd31930036c95b9b71c2f1f0426" title=" " alt="" coords="705,1799,881,1841"/>
-<area shape="rect" id="node48" href="$class_t_interface.html#a0be281457630fce07fc19cdbbfde79b1" title=" " alt="" coords="455,2413,641,2454"/>
-<area shape="rect" id="node49" href="$class_t_interface.html#a4f373f26e99a3dc0bc7effc71ca25dc0" title=" " alt="" coords="451,2478,645,2519"/>
+<area shape="rect" id="node1" title="Sets the railway and timetable titles at the top of the screen." alt="" coords="1652,265,1803,292"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a148e3f99d39f596dbd7d490403936154" title="Convert a stored timetable file (either as a stand alone file or within a session file) to a loaded t..." alt="" coords="707,68,878,110"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="227,562,388,589"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#a1c8fab7fa2f1be662f2d7418e95e3a63" title=" " alt="" coords="703,134,883,175"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a0cf35a6e4a6cfa72b63222acb51f9f74" title=" " alt="" coords="710,199,875,240"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="713,316,872,342"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#ac5e079dc6f8023485367f6db2e693caa" title="Called during ClearEverything and on startup to reset all major railway data values." alt="" coords="725,265,860,292"/>
+<area shape="rect" id="node15" href="$class_t_interface.html#a397ecca8b2fb1f85b265938a4e565de4" title="Called whenever the railway is changed to deal with title displays (loaded railway and timetable) and..." alt="" coords="1433,1639,1604,1680"/>
+<area shape="rect" id="node30" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="948,1254,1123,1281"/>
+<area shape="rect" id="node46" href="$class_t_interface.html#a1b3189e6a50555f5952652d12b978e57" title="Used to save a railway when not already saved &#45; e.g. when not already named or when the &#39;Save as&#39; men..." alt="" coords="697,2404,889,2430"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a92d5a9e07b9362dee2296b7759a1c83d" title="Loads timetable into memory from a session file, true if successful." alt="" coords="463,68,633,110"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a15a2f5ad77e4f6c2b0cc6314224dfb78" title=" " alt="" coords="463,134,633,175"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="5,588,164,614"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="212,664,403,706"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#a686430e962991bc32742399164187b62" title="First check whether a railway file has changed and if so ask user if really wants to close it without..." alt="" coords="460,614,636,641"/>
+<area shape="rect" id="node14" href="$class_t_interface.html#a0659e748042e378f3e325652c9c2e6d2" title="constructor" alt="" coords="477,964,619,990"/>
+<area shape="rect" id="node13" href="$class_t_interface.html#a928eba983ac5132e1ae7799f8330451e" title=" " alt="" coords="226,1012,389,1054"/>
+<area shape="rect" id="node16" href="$class_t_interface.html#af9cb95043f5276df55cb6809e104c93a" title=" " alt="" coords="712,432,873,474"/>
+<area shape="rect" id="node17" href="$class_t_interface.html#a3136530959237eaa57486f4f48357855" title=" " alt="" coords="707,498,878,539"/>
+<area shape="rect" id="node18" href="$class_t_interface.html#ab34f55bab5984b72264d7275660a3463" title=" " alt="" coords="701,2336,884,2378"/>
+<area shape="rect" id="node19" href="$class_t_interface.html#ac666c9f62cdb68b29c2a7db123a43a28" title=" " alt="" coords="708,1814,877,1855"/>
+<area shape="rect" id="node20" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="695,1748,890,1790"/>
+<area shape="rect" id="node21" href="$class_t_interface.html#a77c402ebf53d182c76821a44f5895d98" title=" " alt="" coords="1191,1799,1373,1840"/>
+<area shape="rect" id="node22" href="$class_t_interface.html#aa439e164f7f2304477010985c2caabed" title=" " alt="" coords="713,1879,873,1920"/>
+<area shape="rect" id="node23" href="$class_t_interface.html#a9113d88b504cd30eb8dd6ecddde1c0ec" title=" " alt="" coords="699,2271,886,2312"/>
+<area shape="rect" id="node24" href="$class_t_interface.html#a8ed3d3631b2d3235f1e011d595909eec" title=" " alt="" coords="705,367,880,408"/>
+<area shape="rect" id="node25" href="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b" title="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode." alt="" coords="1179,1925,1385,1952"/>
+<area shape="rect" id="node49" href="$class_t_interface.html#aab42b12ff3ba43ad2f70994b5399dd90" title=" " alt="" coords="705,1944,880,1986"/>
+<area shape="rect" id="node50" href="$class_t_interface.html#ad0ce61f7a8050fb57d19ebd049fa8b49" title=" " alt="" coords="940,1748,1131,1774"/>
+<area shape="rect" id="node26" href="$class_t_interface.html#aa20c05bf2d6c23035a10a89796334d0f" title=" " alt="" coords="707,2010,879,2051"/>
+<area shape="rect" id="node27" href="$class_t_interface.html#a10494e62a7bb4e7114ab4d98e18499f1" title=" " alt="" coords="703,2075,882,2116"/>
+<area shape="rect" id="node28" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="703,2140,883,2182"/>
+<area shape="rect" id="node29" href="$class_t_interface.html#ad0fa9f32b059b346e066ab23d62a4bfc" title=" " alt="" coords="703,2206,882,2247"/>
+<area shape="rect" id="node31" href="$class_t_interface.html#a30904d608111ce6452a9861d86b64267" title=" " alt="" coords="705,1356,880,1398"/>
+<area shape="rect" id="node32" href="$class_t_interface.html#a1b1a4260e251c9bd5f48fd6c3432e7a5" title=" " alt="" coords="699,1422,886,1463"/>
+<area shape="rect" id="node33" href="$class_t_interface.html#a0abab134f4994b02507e1e2d3f31cd77" title=" " alt="" coords="701,1487,884,1528"/>
+<area shape="rect" id="node34" href="$class_t_interface.html#a189a4b05f27d6b5ec8b9a90ec1a9cc50" title=" " alt="" coords="704,1552,881,1594"/>
+<area shape="rect" id="node35" href="$class_t_interface.html#a28579472104533fb5fd01066a22fbb5b" title=" " alt="" coords="707,1618,879,1659"/>
+<area shape="rect" id="node36" href="$class_t_interface.html#a237c151513ca8adca6cd1006cc2fc66f" title=" " alt="" coords="702,1683,883,1724"/>
+<area shape="rect" id="node37" href="$class_t_interface.html#a24d79aa4745e495daa07bb5ce412e75f" title=" " alt="" coords="705,615,880,656"/>
+<area shape="rect" id="node38" href="$class_t_interface.html#ab1799665ee1e4212186f80ab49acf1e1" title=" " alt="" coords="703,680,882,722"/>
+<area shape="rect" id="node39" href="$class_t_interface.html#a6fb1db3295ef42cb1b6f20bc142fa502" title=" " alt="" coords="707,746,878,787"/>
+<area shape="rect" id="node40" href="$class_t_interface.html#adc0dd871fdd70ff11ada7a0ddd549e8e" title=" " alt="" coords="693,811,892,852"/>
+<area shape="rect" id="node41" href="$class_t_interface.html#acd41ae8fa5d16248a867472d9c8ae646" title=" " alt="" coords="698,876,887,918"/>
+<area shape="rect" id="node42" href="$class_t_interface.html#abdd4a70649a10a29c9a069d040072808" title=" " alt="" coords="709,942,877,983"/>
+<area shape="rect" id="node43" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="710,1007,875,1048"/>
+<area shape="rect" id="node44" href="$class_t_interface.html#ab2a25d27dcbae558b8f9a4ac62937523" title=" " alt="" coords="699,1072,886,1114"/>
+<area shape="rect" id="node45" href="$class_t_interface.html#aa78089df3d8323be6fde98c0ee48424c" title=" " alt="" coords="696,1138,889,1179"/>
+<area shape="rect" id="node47" href="$class_t_interface.html#a0be281457630fce07fc19cdbbfde79b1" title=" " alt="" coords="455,2363,641,2404"/>
+<area shape="rect" id="node48" href="$class_t_interface.html#a4f373f26e99a3dc0bc7effc71ca25dc0" title=" " alt="" coords="451,2428,645,2470"/>
 </map>

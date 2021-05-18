@@ -65,7 +65,7 @@ int TDisplay::DisplayZoomOutOffsetVHome = 0;
 // ---------------------------------------------------------------------------
 
 TDisplay::TDisplay(TImage* &Image, TMemo* &MemoBox, TLabel* &L1, TLabel* &L2, TLabel* &L3, TLabel* &L4, TLabel* &L5, TLabel* &L6, TLabel* &L7, TLabel* &L8,
-    TLabel* &L9, TLabel* &L10): Output(Image), PerformanceMemo(MemoBox), OutputLog1(L1), OutputLog2(L2), OutputLog3(L3), OutputLog4(L4), OutputLog5(L5),
+                   TLabel* &L9, TLabel* &L10) : Output(Image), PerformanceMemo(MemoBox), OutputLog1(L1), OutputLog2(L2), OutputLog3(L3), OutputLog4(L4), OutputLog5(L5),
     OutputLog6(L6), OutputLog7(L7), OutputLog8(L8), OutputLog9(L9), OutputLog10(L10)
 {
 // ensure the font type supports the size chosen or will default to nearest
@@ -85,8 +85,9 @@ TDisplay::TDisplay(TImage* &Image, TMemo* &MemoBox, TLabel* &L1, TLabel* &L2, TL
 void TDisplay::PlotOutput(int Caller, int HPos, int VPos, Graphics::TBitmap *PlotItem)
 {
     if(Display->ZoomOutFlag)
+    {
         return;
-
+    }
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotOutput," + AnsiString(HPos) + "," + AnsiString(VPos));
     Output->Canvas->Draw(HPos - (DisplayOffsetH * 16), VPos - (DisplayOffsetV * 16), PlotItem);
 // Update(); dropped as many operations too slow
@@ -98,10 +99,11 @@ void TDisplay::PlotOutput(int Caller, int HPos, int VPos, Graphics::TBitmap *Plo
 void TDisplay::PlotAndAddUserGraphic(int Caller, TUserGraphicItem UserGraphicItem)
 {
     if(Display->ZoomOutFlag)
+    {
         return;
-
+    }
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotAndAddUserGraphic," + AnsiString(UserGraphicItem.HPos) + "," +
-        AnsiString(UserGraphicItem.VPos));
+                                 AnsiString(UserGraphicItem.VPos));
     Output->Canvas->Draw(UserGraphicItem.HPos - (DisplayOffsetH * 16), UserGraphicItem.VPos - (DisplayOffsetV * 16), UserGraphicItem.UserGraphic->Graphic);
     Utilities->CallLogPop(2179);
 }
@@ -121,7 +123,7 @@ void TDisplay::PlotSmallOutput(int Caller, int HPos, int VPos, Graphics::TBitmap
 void TDisplay::Ellipse(int Caller, int HPos, int VPos, TColor Col)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",Ellipse," + AnsiString(HPos) + "," + AnsiString(VPos) + "," +
-        AnsiString(Col));
+                                 AnsiString(Col));
     TBrush *TempBrush = Output->Canvas->Brush;
 
     Output->Canvas->Brush->Style = bsClear;
@@ -129,7 +131,7 @@ void TDisplay::Ellipse(int Caller, int HPos, int VPos, TColor Col)
     Output->Canvas->Pen->Width = 2;
     Output->Canvas->Pen->Color = Col;
     Output->Canvas->Ellipse(HPos + 4 - (DisplayOffsetH * 16), VPos + 4 - (DisplayOffsetV * 16), HPos + 12 - (DisplayOffsetH * 16),
-        VPos + 12 - (DisplayOffsetV * 16));
+                            VPos + 12 - (DisplayOffsetV * 16));
     Output->Canvas->Brush = TempBrush;
     Update();
     Utilities->CallLogPop(1463);
@@ -152,7 +154,7 @@ void TDisplay::InvertElement(int Caller, int HPos, int VPos)
 void TDisplay::Rectangle(int Caller, int HPos, int VPos, TColor Col, int Size, int Width) // Size 0,2,4,6 for large to small
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",Rectangle," + AnsiString(HPos) + "," + AnsiString(VPos) + "," +
-        AnsiString(Col) + "," + AnsiString(Size));
+                                 AnsiString(Col) + "," + AnsiString(Size));
     TBrush *TempBrush = Output->Canvas->Brush;
 
     Output->Canvas->Brush->Style = bsClear;
@@ -160,7 +162,7 @@ void TDisplay::Rectangle(int Caller, int HPos, int VPos, TColor Col, int Size, i
     Output->Canvas->Pen->Width = Width;
     Output->Canvas->Pen->Color = Col;
     Output->Canvas->Rectangle(HPos + Size - (DisplayOffsetH * 16), VPos + Size - (DisplayOffsetV * 16), HPos + 16 - Size - (DisplayOffsetH * 16),
-        VPos + 16 - Size - (DisplayOffsetV * 16));
+                              VPos + 16 - Size - (DisplayOffsetV * 16));
     Output->Canvas->Brush = TempBrush;
     Update();
     Utilities->CallLogPop(1465);
@@ -191,9 +193,11 @@ void TDisplay::ClearDisplay(int Caller)
 void TDisplay::TextOut(int Caller, int HPos, int VPos, AnsiString TextString, TFont *Font)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextOut," + AnsiString(HPos) + "," + AnsiString(VPos) + "," +
-        TextString + "," + Font->Name);
+                                 TextString + "," + Font->Name);
     if((Font->Color < TColor(0)) || (Font->Color > TColor(0xFFFFFF)))
+    {
         Font->Color = clB0G0R0; // set to black for any of special windows colours
+    }
     TFont *TempInputFont = new TFont; // don't alter the original font or won't print black on images
     TFont *TempCanvasFont = new TFont; // store Output->Canvas font to put back later
 
@@ -202,7 +206,9 @@ void TDisplay::TextOut(int Caller, int HPos, int VPos, AnsiString TextString, TF
     if(Utilities->clTransparent != clB5G5R5) // dark background
     {
         if(TempInputFont->Color == clB0G0R0)
+        {
             TempInputFont->Color = clB5G5R5; // if font was black set it to white for for dark backgrounds
+        }
     }
     TBrush *TempBrush = Output->Canvas->Brush;
 
@@ -221,7 +227,7 @@ void TDisplay::TextOut(int Caller, int HPos, int VPos, AnsiString TextString, TF
 void TDisplay::GetRectangle(int Caller, TRect DestRect, TRect SourceRect, Graphics::TBitmap* &OriginalGraphic)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetRectangle," + AnsiString(DestRect.left) + "," +
-        AnsiString(DestRect.top) + "," + AnsiString(SourceRect.left) + "," + AnsiString(SourceRect.top));
+                                 AnsiString(DestRect.top) + "," + AnsiString(SourceRect.left) + "," + AnsiString(SourceRect.top));
     OriginalGraphic->Canvas->CopyRect(DestRect, Display->Output->Canvas, SourceRect);
     Utilities->CallLogPop(1470);
 }
@@ -241,8 +247,9 @@ void TDisplay::PlotBlank(int Caller, int HLoc, int VLoc)
 void TDisplay::PlotPointBlank(int Caller, int HLoc, int VLoc)
 {
     if(Display->ZoomOutFlag)
+    {
         return;
-
+    }
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotPointBlank," + AnsiString(HLoc) + "," + AnsiString(VLoc));
     Output->Canvas->Draw(((HLoc - DisplayOffsetH) * 16) + 3, ((VLoc - DisplayOffsetV) * 16) + 3, RailGraphics->bmPointBlank);
 // Update();
@@ -256,22 +263,23 @@ void TDisplay::PlotSignalBlank(int Caller, int HLoc, int VLoc, int SpeedTag, boo
 /*
       straight signals:
       straight signals:
-      N	16x7  hoff = 0, voff = 0	68    RHSigs   N<->S   E<->W   hoff 0, voff 9
-      S	16x7  hoff = 0, voff = 9	69                                  0       0
-      W	7x16  hoff = 0, voff = 0	70                                  9       0
-      E	7x16  hoff = 9, voff = 0	71                                  0       0
+      N    16x7  hoff = 0, voff = 0    68    RHSigs   N<->S   E<->W   hoff 0, voff 9
+      S    16x7  hoff = 0, voff = 9    69                                  0       0
+      W    7x16  hoff = 0, voff = 0    70                                  9       0
+      E    7x16  hoff = 9, voff = 0    71                                  0       0
       diagonal signals
-      SW	11x11  hoff = 0, voff = 5	72         SW<->NE  NW<->SE         5       0
-      NW	11x11  hoff = 0, voff = 0	73                                  5       5
-      SE	11x11  hoff = 5, voff = 5	74                                  0       0
-      NE	11x11  hoff = 5, voff = 0	75                                  0       5
+      SW    11x11  hoff = 0, voff = 5    72         SW<->NE  NW<->SE         5       0
+      NW    11x11  hoff = 0, voff = 0    73                                  5       5
+      SE    11x11  hoff = 5, voff = 5    74                                  0       0
+      NE    11x11  hoff = 5, voff = 0    75                                  0       5
 */
 
     if(Display->ZoomOutFlag)
+    {
         return;
-
+    }
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotSignalBlank," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," +
-        AnsiString(SpeedTag));
+                                 AnsiString(SpeedTag));
     if((SpeedTag > 75) || (SpeedTag < 68))
     {
         throw Exception("Error, not a signal in PlotSignalBlank");
@@ -279,23 +287,38 @@ void TDisplay::PlotSignalBlank(int Caller, int HLoc, int VLoc, int SpeedTag, boo
     if(RHSFlag) // new for v2.3.0.  Jusrt transpose speedtag numbers so can leave the rest as it is
     {
         if(SpeedTag == 68)
+        {
             SpeedTag = 69;
+        }
         else if(SpeedTag == 69)
+        {
             SpeedTag = 68;
+        }
         else if(SpeedTag == 70)
+        {
             SpeedTag = 71;
+        }
         else if(SpeedTag == 71)
+        {
             SpeedTag = 70;
+        }
         else if(SpeedTag == 72)
+        {
             SpeedTag = 75;
+        }
         else if(SpeedTag == 73)
+        {
             SpeedTag = 74;
+        }
         else if(SpeedTag == 74)
+        {
             SpeedTag = 73;
+        }
         else if(SpeedTag == 75)
+        {
             SpeedTag = 72;
+        }
     }
-
 /*
       SpeedTag    HOffset VOffset Graphic  Direction
       68              0       0     NS       W->E         RHSigs   N<->S   E<->W   hoff 0, voff 9
@@ -310,25 +333,41 @@ void TDisplay::PlotSignalBlank(int Caller, int HLoc, int VLoc, int SpeedTag, boo
     int HOffset = 0;
 
     if(SpeedTag > 73)
+    {
         HOffset = 5;
+    }
     else if(SpeedTag == 71)
+    {
         HOffset = 9;
+    }
     int VOffset = 0;
 
     if(SpeedTag == 69)
+    {
         VOffset = 9;
+    }
     else if(SpeedTag == 72)
+    {
         VOffset = 5;
+    }
     else if(SpeedTag == 74)
+    {
         VOffset = 5;
+    }
     Graphics::TBitmap *GraphicPtr;
 
     if(SpeedTag > 71)
+    {
         GraphicPtr = RailGraphics->bmDiagonalSignalBlank;
+    }
     else if(SpeedTag < 70)
+    {
         GraphicPtr = RailGraphics->bmStraightNSSignalBlank;
+    }
     else
+    {
         GraphicPtr = RailGraphics->bmStraightEWSignalBlank;
+    }
     Output->Canvas->Draw(((HLoc - DisplayOffsetH) * 16) + HOffset, ((VLoc - DisplayOffsetV) * 16) + VOffset, GraphicPtr);
 // Update();
     Utilities->CallLogPop(1475);
@@ -340,15 +379,15 @@ void TDisplay::PlotSignalBlankOnBitmap(int HLoc, int VLoc, int SpeedTag, Graphic
 {
 /*
       straight signals:
-      N	16x7  hoff = 0, voff = 0	68    RHSigs   N<->S   E<->W   hoff 0, voff 9
-      S	16x7  hoff = 0, voff = 9	69                                  0       0
-      W	7x16  hoff = 0, voff = 0	70                                  9       0
-      E	7x16  hoff = 9, voff = 0	71                                  0       0
+      N    16x7  hoff = 0, voff = 0    68    RHSigs   N<->S   E<->W   hoff 0, voff 9
+      S    16x7  hoff = 0, voff = 9    69                                  0       0
+      W    7x16  hoff = 0, voff = 0    70                                  9       0
+      E    7x16  hoff = 9, voff = 0    71                                  0       0
       diagonal signals
-      SW	11x11  hoff = 0, voff = 5	72         SW<->NE  NW<->SE         5       0
-      NW	11x11  hoff = 0, voff = 0	73                                  5       5
-      SE	11x11  hoff = 5, voff = 5	74                                  0       0
-      NE	11x11  hoff = 5, voff = 0	75                                  0       5
+      SW    11x11  hoff = 0, voff = 5    72         SW<->NE  NW<->SE         5       0
+      NW    11x11  hoff = 0, voff = 0    73                                  5       5
+      SE    11x11  hoff = 5, voff = 5    74                                  0       0
+      NE    11x11  hoff = 5, voff = 0    75                                  0       5
 */
 
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PlotSignalBlankOnBitmap," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," + AnsiString(SpeedTag));
@@ -359,23 +398,38 @@ void TDisplay::PlotSignalBlankOnBitmap(int HLoc, int VLoc, int SpeedTag, Graphic
     if(RHSFlag) // new for v2.3.0.  Jusrt transpose speedtag numbers so can leave the rest as it is
     {
         if(SpeedTag == 68)
+        {
             SpeedTag = 69;
+        }
         else if(SpeedTag == 69)
+        {
             SpeedTag = 68;
+        }
         else if(SpeedTag == 70)
+        {
             SpeedTag = 71;
+        }
         else if(SpeedTag == 71)
+        {
             SpeedTag = 70;
+        }
         else if(SpeedTag == 72)
+        {
             SpeedTag = 75;
+        }
         else if(SpeedTag == 73)
+        {
             SpeedTag = 74;
+        }
         else if(SpeedTag == 74)
+        {
             SpeedTag = 73;
+        }
         else if(SpeedTag == 75)
+        {
             SpeedTag = 72;
+        }
     }
-
 /*
       SpeedTag    HOffset VOffset Graphic  Direction
       68              0       0     NS       W->E         RHSigs   N<->S   E<->W   hoff 0, voff 9
@@ -390,25 +444,41 @@ void TDisplay::PlotSignalBlankOnBitmap(int HLoc, int VLoc, int SpeedTag, Graphic
     int HOffset = 0;
 
     if(SpeedTag > 73)
+    {
         HOffset = 5;
+    }
     else if(SpeedTag == 71)
+    {
         HOffset = 9;
+    }
     int VOffset = 0;
 
     if(SpeedTag == 69)
+    {
         VOffset = 9;
+    }
     else if(SpeedTag == 72)
+    {
         VOffset = 5;
+    }
     else if(SpeedTag == 74)
+    {
         VOffset = 5;
+    }
     Graphics::TBitmap *GraphicPtr;
 
     if(SpeedTag > 71)
+    {
         GraphicPtr = RailGraphics->bmDiagonalSignalBlank;
+    }
     else if(SpeedTag < 70)
+    {
         GraphicPtr = RailGraphics->bmStraightNSSignalBlank;
+    }
     else
+    {
         GraphicPtr = RailGraphics->bmStraightEWSignalBlank;
+    }
     Bitmap->Canvas->Draw(((HLoc - DisplayOffsetH) * 16) + HOffset, ((VLoc - DisplayOffsetV) * 16) + VOffset, GraphicPtr);
 // Update();
     Utilities->CallLogPop(1870);
@@ -432,12 +502,16 @@ void TDisplay::PlotDashedRect(int Caller, TRect Rect)
     Output->Canvas->Pen->Style = psDot;
     Output->Canvas->Pen->Width = 1;
     if(Utilities->clTransparent == clB5G5R5)
+    {
         Output->Canvas->Pen->Color = clB0G0R0; // black
+    }
     else
+    {
         Output->Canvas->Pen->Color = clB5G5R5; // white
+    }
     Output->Canvas->Brush->Style = bsClear;
     Output->Canvas->Rectangle((Rect.left - DisplayOffsetH) * 16, (Rect.top - DisplayOffsetV) * 16, (Rect.right - DisplayOffsetH) * 16,
-        (Rect.bottom - DisplayOffsetV) * 16);
+                              (Rect.bottom - DisplayOffsetV) * 16);
 // Update();
     Utilities->CallLogPop(1478);
 }

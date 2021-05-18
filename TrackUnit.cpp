@@ -60,7 +60,7 @@ TAllRoutes *AllRoutes;
 // Constructor to build TrackPieces from array
 
 TFixedTrackPiece::TFixedTrackPiece(int SpeedTagVal, TTrackType TrackTypeVal, int LkVal[4], TConfiguration ConfigVal[4], Graphics::TBitmap* GraphicPtrVal,
-    Graphics::TBitmap* SmallGraphicPtrVal): SpeedTag(SpeedTagVal), TrackType(TrackTypeVal), GraphicPtr(GraphicPtrVal), SmallGraphicPtr(SmallGraphicPtrVal)
+                                   Graphics::TBitmap* SmallGraphicPtrVal) : SpeedTag(SpeedTagVal), TrackType(TrackTypeVal), GraphicPtr(GraphicPtrVal), SmallGraphicPtr(SmallGraphicPtrVal)
 {
     for(int x = 0; x < 4; x++)
     {
@@ -70,30 +70,50 @@ TFixedTrackPiece::TFixedTrackPiece(int SpeedTagVal, TTrackType TrackTypeVal, int
 // NamedLocationElements 76, 77, 78, 79, 96, 129, 130, 131, 145 & 146  (platforms, concourses, footcrossings & named non-station locations)
     FixedNamedLocationElement = false; // underpasses (144 & 145 added at v2.3.1
     if(SpeedTagVal == 76)
+    {
         FixedNamedLocationElement = true;
+    }
     else if(SpeedTagVal == 77)
+    {
         FixedNamedLocationElement = true;
+    }
     else if(SpeedTagVal == 78)
+    {
         FixedNamedLocationElement = true;
+    }
     else if(SpeedTagVal == 79)
+    {
         FixedNamedLocationElement = true;
+    }
     else if(SpeedTagVal == 96)
+    {
         FixedNamedLocationElement = true;
+    }
     else if(SpeedTagVal == 129)
+    {
         FixedNamedLocationElement = true;
+    }
     else if(SpeedTagVal == 130)
+    {
         FixedNamedLocationElement = true;
+    }
     else if(SpeedTagVal == 131)
+    {
         FixedNamedLocationElement = true;
+    }
     else if(SpeedTagVal == 145)
+    {
         FixedNamedLocationElement = true;
+    }
     else if(SpeedTagVal == 146)
+    {
         FixedNamedLocationElement = true;
+    }
 }
 
 // ---------------------------------------------------------------------------
 
-TFixedTrackPiece::TFixedTrackPiece(): SpeedTag(0), TrackType(Erase), GraphicPtr(RailGraphics->bmSolidBgnd), SmallGraphicPtr(RailGraphics->smSolidBgnd),
+TFixedTrackPiece::TFixedTrackPiece() : SpeedTag(0), TrackType(Erase), GraphicPtr(RailGraphics->bmSolidBgnd), SmallGraphicPtr(RailGraphics->smSolidBgnd),
     FixedNamedLocationElement(false) // default values
 {
     for(int x = 0; x < 4; x++)
@@ -107,7 +127,7 @@ TFixedTrackPiece::TFixedTrackPiece(): SpeedTag(0), TrackType(Erase), GraphicPtr(
 void TFixedTrackPiece::PlotFixedTrackElement(int Caller, int HLocInput, int VLocInput) const
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotFixedTrackElement," + AnsiString(HLocInput) + "," +
-        AnsiString(VLocInput));
+                                 AnsiString(VLocInput));
     Display->PlotOutput(33, HLocInput * 16, VLocInput * 16, GraphicPtr);
     Utilities->CallLogPop(1331);
 }
@@ -121,9 +141,13 @@ void TFixedTrackPiece::PlotFixedTrackElement(int Caller, int HLocInput, int VLoc
 bool TTrackElement:: operator == (TTrackElement RHElement)
 {
     if((this->HLoc == RHElement.HLoc) && (this->VLoc == RHElement.VLoc) && (this->SpeedTag == RHElement.SpeedTag))
-        return true;
+    {
+        return(true);
+    }
     else
-        return false;
+    {
+        return(false);
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -131,15 +155,19 @@ bool TTrackElement:: operator == (TTrackElement RHElement)
 bool TTrackElement:: operator != (TTrackElement RHElement)
 {
     if((this->HLoc != RHElement.HLoc) || (this->VLoc != RHElement.VLoc) || (this->SpeedTag != RHElement.SpeedTag))
-        return true;
+    {
+        return(true);
+    }
     else
-        return false;
+    {
+        return(false);
+    }
 }
 
 // ---------------------------------------------------------------------------
 
 void TTrackElement::PlotVariableTrackElement(int Caller, TDisplay *Disp) const
-    // 'Variable' in the sense that element might be striped or non-striped
+// 'Variable' in the sense that element might be striped or non-striped
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotVariableTrackElement");
     Graphics::TBitmap *GraphicOutput = GraphicPtr;
@@ -200,12 +228,12 @@ void TTrackElement::PlotVariableTrackElement(int Caller, TDisplay *Disp) const
 // ---------------------------------------------------------------------------
 
 AnsiString TTrackElement::LogTrack(int Caller) const
-    // for debugging when passes as a call parameter
+// for debugging when passes as a call parameter
 {
     AnsiString LogString = "TrkEl:-," + AnsiString(ElementID) + "," + LocationName + "," + AnsiString(TrainIDOnElement) + "," +
         AnsiString(TrainIDOnBridgeTrackPos01) + "," + AnsiString(TrainIDOnBridgeTrackPos23) + ",EndTrkEl,";
 
-    return LogString;
+    return(LogString);
 }
 
 // ---------------------------------------------------------------------------
@@ -214,20 +242,20 @@ bool TMapComp:: operator()(const THVPair& lower, const THVPair& higher) const //
 {
     if(lower.second < higher.second)
     {
-        return true;
+        return(true);
     }
     else if(lower.second > higher.second)
     {
-        return false;
+        return(false);
     }
     else if(lower.second == higher.second)
     {
         if(lower.first < higher.first)
         {
-            return true;
+            return(true);
         }
     }
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -249,7 +277,7 @@ TPrefDirElement::TPrefDirElement(TTrackElement ElementIn, int ELinkIn, int ELink
 // ---------------------------------------------------------------------------
 
 AnsiString TPrefDirElement::LogPrefDir() const
-    // for debugging when passed as a call parameter
+// for debugging when passed as a call parameter
 {
     AnsiString LogString = "PthEl:-," + AnsiString(ELink) + "," + AnsiString(ELinkPos) + "," + AnsiString(XLink) + "," + AnsiString(XLinkPos) + "," +
         AnsiString(EXNumber) + "," + AnsiString(TrackVectorPosition) + "," + AnsiString((short)AutoSignals) + "," + AnsiString((short)PrefDirRoute) +
@@ -257,7 +285,7 @@ AnsiString TPrefDirElement::LogPrefDir() const
         AnsiString(TrainIDOnBridgeTrackPos23);
 
 // Track->TrackElementAt(73, TrackVectorPosition).LogTrack(12);
-    return LogString;
+    return(LogString);
 }
 
 // ---------------------------------------------------------------------------
@@ -279,32 +307,39 @@ bool TPrefDirElement::EntryExitNumber() // true for valid number
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",EntryExitNumber");
     int EXArray[16][2] =
     {{4, 6}, {2, 8}, // horizontal & vertical
-        {2, 4}, {6, 2}, {8, 6}, {4, 8}, // sharp curves
-        {1, 6}, {3, 8}, {9, 4}, {7, 2}, {1, 8}, {3, 4}, {9, 2}, {7, 6}, // loose curves
-        {1, 9}, {3, 7}}; // forward & reverse diagonals
+     {2, 4}, {6, 2}, {8, 6}, {4, 8},    // sharp curves
+     {1, 6}, {3, 8}, {9, 4}, {7, 2}, {1, 8}, {3, 4}, {9, 2}, {7, 6},    // loose curves
+     {1, 9}, {3, 7}};    // forward & reverse diagonals
 
     int EXNum = -1;
     int Entry, Exit;
 
     if(ELink > -1)
+    {
         Entry = ELink; // pick up simple elements even if ELink &/or XLink not set, as no ambiguity
+    }
     else if(Link[2] == -1)
+    {
         Entry = Link[0];
+    }
     else
     {
         Utilities->CallLogPop(122);
-        return false;
+        return(false);
     }
     if(XLink > -1)
+    {
         Exit = XLink;
+    }
     else if(Link[2] == -1)
+    {
         Exit = Link[1];
+    }
     else
     {
         Utilities->CallLogPop(123);
-        return false;
+        return(false);
     }
-
     for(int x = 0; x < 16; x++)
     {
         if((Entry == EXArray[x][0]) && (Exit == EXArray[x][1]) || (Entry == EXArray[x][1]) && (Exit == EXArray[x][0]))
@@ -315,9 +350,8 @@ bool TPrefDirElement::EntryExitNumber() // true for valid number
     if(EXNum == -1)
     {
         Utilities->CallLogPop(124);
-        return false;
+        return(false);
     }
-
     int BrNum = -1;
 
 /* The order for bridge entries & exits is as below.  Note that there are 3 of each type,
@@ -335,46 +369,74 @@ bool TPrefDirElement::EntryExitNumber() // true for valid number
         if(EXNum == 1)
         {
             if(SpeedTag == 49)
+            {
                 BrNum = 1 + 16;
+            }
             else if(SpeedTag == 54)
+            {
                 BrNum = 8 + 16;
+            }
             else if(SpeedTag == 55)
+            {
                 BrNum = 10 + 16;
+            }
         }
         else if(EXNum == 0)
         {
             if(SpeedTag == 48)
+            {
                 BrNum = 0 + 16;
+            }
             else if(SpeedTag == 58)
+            {
                 BrNum = 11 + 16;
+            }
             else if(SpeedTag == 59)
+            {
                 BrNum = 9 + 16;
+            }
         }
         else if(EXNum == 14)
         {
             if(SpeedTag == 50)
+            {
                 BrNum = 2 + 16;
+            }
             else if(SpeedTag == 52)
+            {
                 BrNum = 4 + 16;
+            }
             else if(SpeedTag == 57)
+            {
                 BrNum = 6 + 16;
+            }
         }
         else if(EXNum == 15)
         {
             if(SpeedTag == 51)
+            {
                 BrNum = 3 + 16;
+            }
             else if(SpeedTag == 53)
+            {
                 BrNum = 7 + 16;
+            }
             else if(SpeedTag == 56)
+            {
                 BrNum = 5 + 16;
+            }
         }
     }
     if(BrNum == -1)
+    {
         EXNumber = EXNum;
+    }
     else
+    {
         EXNumber = BrNum;
+    }
     Utilities->CallLogPop(125);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -386,53 +448,72 @@ Graphics::TBitmap *TPrefDirElement::GetOriginalGraphicPtr()
 */
 {
     if(SpeedTag == 64)
-        return RailGraphics->LinkGraphicsPtr[16]; // intercept diagonal buffers
+    {
+        return(RailGraphics->LinkGraphicsPtr[16]); // intercept diagonal buffers
 
+    }
     if(SpeedTag == 65)
-        return RailGraphics->LinkGraphicsPtr[17];
-
+    {
+        return(RailGraphics->LinkGraphicsPtr[17]);
+    }
     if(SpeedTag == 66)
-        return RailGraphics->LinkGraphicsPtr[18];
-
+    {
+        return(RailGraphics->LinkGraphicsPtr[18]);
+    }
     if(SpeedTag == 67)
-        return RailGraphics->LinkGraphicsPtr[19];
-
+    {
+        return(RailGraphics->LinkGraphicsPtr[19]);
+    }
     if(SpeedTag == 80)
-        return RailGraphics->LinkGraphicsPtr[20]; // intercept continuations
+    {
+        return(RailGraphics->LinkGraphicsPtr[20]); // intercept continuations
 
+    }
     if(SpeedTag == 81)
-        return RailGraphics->LinkGraphicsPtr[21];
-
+    {
+        return(RailGraphics->LinkGraphicsPtr[21]);
+    }
     if(SpeedTag == 82)
-        return RailGraphics->LinkGraphicsPtr[22];
-
+    {
+        return(RailGraphics->LinkGraphicsPtr[22]);
+    }
     if(SpeedTag == 83)
-        return RailGraphics->LinkGraphicsPtr[23];
-
+    {
+        return(RailGraphics->LinkGraphicsPtr[23]);
+    }
     if(SpeedTag == 84)
-        return RailGraphics->LinkGraphicsPtr[24];
-
+    {
+        return(RailGraphics->LinkGraphicsPtr[24]);
+    }
     if(SpeedTag == 85)
-        return RailGraphics->LinkGraphicsPtr[25];
-
+    {
+        return(RailGraphics->LinkGraphicsPtr[25]);
+    }
     if(SpeedTag == 86)
-        return RailGraphics->LinkGraphicsPtr[26];
-
+    {
+        return(RailGraphics->LinkGraphicsPtr[26]);
+    }
     if(SpeedTag == 87)
-        return RailGraphics->LinkGraphicsPtr[27];
-
+    {
+        return(RailGraphics->LinkGraphicsPtr[27]);
+    }
     if(SpeedTag == 129)
-        return RailGraphics->LinkGraphicsPtr[28]; // intercept under footbridges
+    {
+        return(RailGraphics->LinkGraphicsPtr[28]); // intercept under footbridges
 
+    }
     if(SpeedTag == 130)
-        return RailGraphics->LinkGraphicsPtr[29];
-
+    {
+        return(RailGraphics->LinkGraphicsPtr[29]);
+    }
     if(XLinkPos == -1) // not set, could be first element or last element = leading point
     {
 // check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or
 // Points & don't want to display these)
         if(Link[2] != -1)
-            return 0; // i.e. complex element, don't display
+        {
+            return(0); // i.e. complex element, don't display
+        }
         else
         {
             if(!EntryExitNumber())
@@ -441,17 +522,17 @@ Graphics::TBitmap *TPrefDirElement::GetOriginalGraphicPtr()
             }
             else
             {
-                return RailGraphics->LinkGraphicsPtr[EXNumber];
+                return(RailGraphics->LinkGraphicsPtr[EXNumber]);
             }
         }
     }
     if(EXNumber > 15) // underbridge
     {
-        return RailGraphics->BridgeGraphicsPtr[EXNumber - 16];
+        return(RailGraphics->BridgeGraphicsPtr[EXNumber - 16]);
     }
     else
     {
-        return RailGraphics->LinkGraphicsPtr[EXNumber];
+        return(RailGraphics->LinkGraphicsPtr[EXNumber]);
     }
 }
 
@@ -463,52 +544,71 @@ Graphics::TBitmap *TPrefDirElement::GetPrefDirGraphicPtr()
 */
 {
     if(SpeedTag == 64)
-        return RailGraphics->LinkPrefDirGraphicsPtr[16]; // intercept diagonal buffers
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[16]); // intercept diagonal buffers
 
+    }
     if(SpeedTag == 65)
-        return RailGraphics->LinkPrefDirGraphicsPtr[17];
-
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[17]);
+    }
     if(SpeedTag == 66)
-        return RailGraphics->LinkPrefDirGraphicsPtr[18];
-
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[18]);
+    }
     if(SpeedTag == 67)
-        return RailGraphics->LinkPrefDirGraphicsPtr[19];
-
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[19]);
+    }
     if(SpeedTag == 80)
-        return RailGraphics->LinkPrefDirGraphicsPtr[20]; // intercept continuations
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[20]); // intercept continuations
 
+    }
     if(SpeedTag == 81)
-        return RailGraphics->LinkPrefDirGraphicsPtr[21];
-
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[21]);
+    }
     if(SpeedTag == 82)
-        return RailGraphics->LinkPrefDirGraphicsPtr[22];
-
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[22]);
+    }
     if(SpeedTag == 83)
-        return RailGraphics->LinkPrefDirGraphicsPtr[23];
-
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[23]);
+    }
     if(SpeedTag == 84)
-        return RailGraphics->LinkPrefDirGraphicsPtr[24];
-
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[24]);
+    }
     if(SpeedTag == 85)
-        return RailGraphics->LinkPrefDirGraphicsPtr[25];
-
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[25]);
+    }
     if(SpeedTag == 86)
-        return RailGraphics->LinkPrefDirGraphicsPtr[26];
-
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[26]);
+    }
     if(SpeedTag == 87)
-        return RailGraphics->LinkPrefDirGraphicsPtr[27];
-
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[27]);
+    }
     if(SpeedTag == 129)
-        return RailGraphics->LinkPrefDirGraphicsPtr[28]; // intercept under footbridges
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[28]); // intercept under footbridges
 
+    }
     if(SpeedTag == 130)
-        return RailGraphics->LinkPrefDirGraphicsPtr[29];
-
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[29]);
+    }
     if(XLinkPos == -1) // not set, could be first element or last element = leading point
     {
 // check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or Points)
         if(Link[2] != -1)
-            return 0; // i.e. complex element, don't display
+        {
+            return(0); // i.e. complex element, don't display
+        }
         else
         {
             if(!EntryExitNumber())
@@ -516,15 +616,19 @@ Graphics::TBitmap *TPrefDirElement::GetPrefDirGraphicPtr()
                 throw Exception("Error in EntryExitNumber 5");
             }
             else
-                return RailGraphics->LinkPrefDirGraphicsPtr[EXNumber];
+            {
+                return(RailGraphics->LinkPrefDirGraphicsPtr[EXNumber]);
+            }
         }
     }
     if(EXNumber > 15) // underbridge
     {
-        return RailGraphics->BridgePrefDirGraphicsPtr[EXNumber - 16];
+        return(RailGraphics->BridgePrefDirGraphicsPtr[EXNumber - 16]);
     }
     else
-        return RailGraphics->LinkPrefDirGraphicsPtr[EXNumber];
+    {
+        return(RailGraphics->LinkPrefDirGraphicsPtr[EXNumber]);
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -537,52 +641,71 @@ Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool P
     if(!AutoSigsFlag && !PrefDirRoute)
     {
         if(SpeedTag == 64)
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[16]; // intercept diagonal buffers
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[16]); // intercept diagonal buffers
 
+        }
         if(SpeedTag == 65)
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[17];
-
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[17]);
+        }
         if(SpeedTag == 66)
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[18];
-
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[18]);
+        }
         if(SpeedTag == 67)
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[19];
-
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[19]);
+        }
         if(SpeedTag == 80)
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[20]; // intercept continuations
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[20]); // intercept continuations
 
+        }
         if(SpeedTag == 81)
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[21];
-
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[21]);
+        }
         if(SpeedTag == 82)
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[22];
-
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[22]);
+        }
         if(SpeedTag == 83)
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[23];
-
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[23]);
+        }
         if(SpeedTag == 84)
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[24];
-
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[24]);
+        }
         if(SpeedTag == 85)
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[25];
-
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[25]);
+        }
         if(SpeedTag == 86)
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[26];
-
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[26]);
+        }
         if(SpeedTag == 87)
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[27];
-
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[27]);
+        }
         if(SpeedTag == 129)
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[28]; // intercept under footbridges
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[28]); // intercept under footbridges
 
+        }
         if(SpeedTag == 130)
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[29];
-
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[29]);
+        }
         if(XLinkPos == -1) // not set, could be first element or last element = leading point
         {
             // check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or Points)
             if(Link[2] != -1)
-                return 0; // i.e. complex element, don't display
+            {
+                return(0); // i.e. complex element, don't display
+            }
             else
             {
                 if(!EntryExitNumber())
@@ -590,66 +713,89 @@ Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool P
                     throw Exception("Error in EntryExitNumber 6");
                 }
                 else
-                    return RailGraphics->LinkNonSigRouteGraphicsPtr[EXNumber];
+                {
+                    return(RailGraphics->LinkNonSigRouteGraphicsPtr[EXNumber]);
+                }
             }
         }
         if(EXNumber > 15) // underbridge
         {
-            return RailGraphics->BridgeNonSigRouteGraphicsPtr[EXNumber - 16];
+            return(RailGraphics->BridgeNonSigRouteGraphicsPtr[EXNumber - 16]);
         }
         else
-            return RailGraphics->LinkNonSigRouteGraphicsPtr[EXNumber];
+        {
+            return(RailGraphics->LinkNonSigRouteGraphicsPtr[EXNumber]);
+        }
     }
 
     else if(!AutoSigsFlag && PrefDirRoute)
     {
         if(SpeedTag == 64)
-            return RailGraphics->LinkSigRouteGraphicsPtr[16]; // intercept diagonal buffers
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[16]); // intercept diagonal buffers
 
+        }
         if(SpeedTag == 65)
-            return RailGraphics->LinkSigRouteGraphicsPtr[17];
-
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[17]);
+        }
         if(SpeedTag == 66)
-            return RailGraphics->LinkSigRouteGraphicsPtr[18];
-
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[18]);
+        }
         if(SpeedTag == 67)
-            return RailGraphics->LinkSigRouteGraphicsPtr[19];
-
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[19]);
+        }
         if(SpeedTag == 80)
-            return RailGraphics->LinkSigRouteGraphicsPtr[20]; // intercept continuations
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[20]); // intercept continuations
 
+        }
         if(SpeedTag == 81)
-            return RailGraphics->LinkSigRouteGraphicsPtr[21];
-
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[21]);
+        }
         if(SpeedTag == 82)
-            return RailGraphics->LinkSigRouteGraphicsPtr[22];
-
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[22]);
+        }
         if(SpeedTag == 83)
-            return RailGraphics->LinkSigRouteGraphicsPtr[23];
-
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[23]);
+        }
         if(SpeedTag == 84)
-            return RailGraphics->LinkSigRouteGraphicsPtr[24];
-
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[24]);
+        }
         if(SpeedTag == 85)
-            return RailGraphics->LinkSigRouteGraphicsPtr[25];
-
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[25]);
+        }
         if(SpeedTag == 86)
-            return RailGraphics->LinkSigRouteGraphicsPtr[26];
-
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[26]);
+        }
         if(SpeedTag == 87)
-            return RailGraphics->LinkSigRouteGraphicsPtr[27];
-
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[27]);
+        }
         if(SpeedTag == 129)
-            return RailGraphics->LinkSigRouteGraphicsPtr[28]; // intercept under footbridges
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[28]); // intercept under footbridges
 
+        }
         if(SpeedTag == 130)
-            return RailGraphics->LinkSigRouteGraphicsPtr[29];
-
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[29]);
+        }
         if(XLinkPos == -1) // not set, could be first element or last element = leading point
         {
             // check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or Points)
             if(Link[2] != -1)
-                return 0; // i.e. complex element, don't display
+            {
+                return(0); // i.e. complex element, don't display
+            }
             else
             {
                 if(!EntryExitNumber())
@@ -657,66 +803,89 @@ Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool P
                     throw Exception("Error in EntryExitNumber 10");
                 }
                 else
-                    return RailGraphics->LinkSigRouteGraphicsPtr[EXNumber];
+                {
+                    return(RailGraphics->LinkSigRouteGraphicsPtr[EXNumber]);
+                }
             }
         }
         if(EXNumber > 15) // underbridge
         {
-            return RailGraphics->BridgeSigRouteGraphicsPtr[EXNumber - 16];
+            return(RailGraphics->BridgeSigRouteGraphicsPtr[EXNumber - 16]);
         }
         else
-            return RailGraphics->LinkSigRouteGraphicsPtr[EXNumber];
+        {
+            return(RailGraphics->LinkSigRouteGraphicsPtr[EXNumber]);
+        }
     }
 
     else
     {
         if(SpeedTag == 64)
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[16]; // intercept diagonal buffers
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[16]); // intercept diagonal buffers
 
+        }
         if(SpeedTag == 65)
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[17];
-
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[17]);
+        }
         if(SpeedTag == 66)
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[18];
-
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[18]);
+        }
         if(SpeedTag == 67)
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[19];
-
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[19]);
+        }
         if(SpeedTag == 80)
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[20]; // intercept continuations
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[20]); // intercept continuations
 
+        }
         if(SpeedTag == 81)
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[21];
-
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[21]);
+        }
         if(SpeedTag == 82)
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[22];
-
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[22]);
+        }
         if(SpeedTag == 83)
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[23];
-
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[23]);
+        }
         if(SpeedTag == 84)
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[24];
-
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[24]);
+        }
         if(SpeedTag == 85)
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[25];
-
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[25]);
+        }
         if(SpeedTag == 86)
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[26];
-
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[26]);
+        }
         if(SpeedTag == 87)
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[27];
-
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[27]);
+        }
         if(SpeedTag == 129)
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[28]; // intercept under footbridges
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[28]); // intercept under footbridges
 
+        }
         if(SpeedTag == 130)
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[29];
-
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[29]);
+        }
         if(XLinkPos == -1) // not set, could be first element or last element = leading point
         {
             // check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or Points)
             if(Link[2] != -1)
-                return 0; // i.e. complex element, don't display
+            {
+                return(0); // i.e. complex element, don't display
+            }
             else
             {
                 if(!EntryExitNumber())
@@ -724,15 +893,19 @@ Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool P
                     throw Exception("Error in EntryExitNumber 11");
                 }
                 else
-                    return RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber];
+                {
+                    return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber]);
+                }
             }
         }
         if(EXNumber > 15) // underbridge
         {
-            return RailGraphics->BridgeRouteAutoSigsGraphicsPtr[EXNumber - 16];
+            return(RailGraphics->BridgeRouteAutoSigsGraphicsPtr[EXNumber - 16]);
         }
         else
-            return RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber];
+        {
+            return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber]);
+        }
     }
 }
 
@@ -744,52 +917,71 @@ Graphics::TBitmap *TPrefDirElement::GetRouteAutoSigsGraphicPtr()
 */
 {
     if(SpeedTag == 64)
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[16]; // intercept diagonal buffers
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[16]); // intercept diagonal buffers
 
+    }
     if(SpeedTag == 65)
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[17];
-
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[17]);
+    }
     if(SpeedTag == 66)
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[18];
-
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[18]);
+    }
     if(SpeedTag == 67)
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[19];
-
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[19]);
+    }
     if(SpeedTag == 80)
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[20]; // intercept continuations
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[20]); // intercept continuations
 
+    }
     if(SpeedTag == 81)
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[21];
-
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[21]);
+    }
     if(SpeedTag == 82)
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[22];
-
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[22]);
+    }
     if(SpeedTag == 83)
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[23];
-
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[23]);
+    }
     if(SpeedTag == 84)
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[24];
-
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[24]);
+    }
     if(SpeedTag == 85)
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[25];
-
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[25]);
+    }
     if(SpeedTag == 86)
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[26];
-
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[26]);
+    }
     if(SpeedTag == 87)
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[27];
-
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[27]);
+    }
     if(SpeedTag == 129)
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[28]; // intercept under footbridges
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[28]); // intercept under footbridges
 
+    }
     if(SpeedTag == 130)
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[29];
-
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[29]);
+    }
     if(XLinkPos == -1) // not set, could be first element or last element = leading point
     {
 // check if just a simple one in & one out & if so set graphic (otherwise Bridge, Crossover or Points)
         if(Link[2] != -1)
-            return 0; // i.e. complex element, don't display
+        {
+            return(0); // i.e. complex element, don't display
+        }
         else
         {
             if(!EntryExitNumber())
@@ -797,15 +989,19 @@ Graphics::TBitmap *TPrefDirElement::GetRouteAutoSigsGraphicPtr()
                 throw Exception("Error in EntryExitNumber 7");
             }
             else
-                return RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber];
+            {
+                return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber]);
+            }
         }
     }
     if(EXNumber > 15) // underbridge
     {
-        return RailGraphics->BridgeRouteAutoSigsGraphicsPtr[EXNumber - 16];
+        return(RailGraphics->BridgeRouteAutoSigsGraphicsPtr[EXNumber - 16]);
     }
     else
-        return RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber];
+    {
+        return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[EXNumber]);
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -816,7 +1012,9 @@ Graphics::TBitmap *TPrefDirElement::GetDirectionPrefDirGraphicPtr() const
 */
 {
     if((ELink > 0) && (ELink < 10) && (ELink != 5))
-        return RailGraphics->DirectionPrefDirGraphicsPtr[ELink];
+    {
+        return(RailGraphics->DirectionPrefDirGraphicsPtr[ELink]);
+    }
     else
     {
         throw Exception("Error in EntryExitNumber 8");
@@ -833,11 +1031,17 @@ Graphics::TBitmap *TPrefDirElement::GetDirectionRouteGraphicPtr(bool AutoSigsFla
     if((ELink > 0) && (ELink < 10) && (ELink != 5))
     {
         if(!AutoSigsFlag && !PrefDirRoute)
-            return RailGraphics->DirectionNonSigRouteGraphicsPtr[ELink];
+        {
+            return(RailGraphics->DirectionNonSigRouteGraphicsPtr[ELink]);
+        }
         else if(!AutoSigsFlag && PrefDirRoute)
-            return RailGraphics->DirectionSigRouteGraphicsPtr[ELink];
+        {
+            return(RailGraphics->DirectionSigRouteGraphicsPtr[ELink]);
+        }
         else
-            return RailGraphics->DirectionRouteAutoSigsGraphicsPtr[ELink];
+        {
+            return(RailGraphics->DirectionRouteAutoSigsGraphicsPtr[ELink]);
+        }
     }
     else
     {
@@ -853,9 +1057,13 @@ bool TPrefDirElement:: operator == (TPrefDirElement RHElement)
 */
 {
     if((this->TrackVectorPosition == RHElement.TrackVectorPosition) && (this->ELink == RHElement.ELink) && (this->XLink == RHElement.XLink))
-        return true;
+    {
+        return(true);
+    }
     else
-        return false;
+    {
+        return(false);
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -866,9 +1074,13 @@ bool TPrefDirElement:: operator != (TPrefDirElement RHElement)
 */
 {
     if((this->TrackVectorPosition == RHElement.TrackVectorPosition) && (this->ELink == RHElement.ELink) && (this->XLink == RHElement.XLink))
-        return false;
+    {
+        return(false);
+    }
     else
-        return true;
+    {
+        return(true);
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -921,8 +1133,12 @@ TTrack::TTrack()
       array number = (((Hnew - Hold)+1)*3) + ((Vnew - Vold)+1) */
 
     for(int x = 0; x < 9; x++)
+    {
         for(int y = 0; y < 2; y++)
+        {
             LinkCheckArray[x][y] = InternalLinkCheckArray[x][y];
+        }
+    }
 
 // Platform and default track element values
     TopPlatAllowed << 1 << 9 << 10 << 30 << 31 << 60 << 61 << 68 << 69 << 77 << 125 << 126 << 129 << 145;
@@ -931,7 +1147,7 @@ TTrack::TTrack()
     LeftPlatAllowed << 2 << 12 << 14 << 33 << 35 << 62 << 63 << 70 << 71 << 79 << 127 << 128 << 130 << 146;
     RightPlatAllowed << 2 << 11 << 13 << 32 << 34 << 62 << 63 << 70 << 71 << 78 << 127 << 128 << 130 << 146;
     NameAllowed << 1 << 2 << 3 << 4 << 5 << 6 << 20 << 21 << 22 << 23 << 24 << 25 << 26 << 27 // disallow diagonals, points, crossovers, bridges, gaps,
-        << 60 << 61 << 62 << 63  << 68  << 69  << 70  << 71 << 80 << 81 << 82 << 83 << 125 << 126 << 127 << 128; // diag continuations, diag buffers, footcrossings (diagonals may be OK
+    << 60 << 61 << 62 << 63  << 68  << 69  << 70  << 71 << 80 << 81 << 82 << 83 << 125 << 126 << 127 << 128;     // diag continuations, diag buffers, footcrossings (diagonals may be OK
     // but as can't link diagonal locations would need solid blocks to allow linkage & that would look untidy except for single
     // elements, & can always use straights so leave out.) Allow horiz & vert signals as from v2.6.0
     LevelCrossingAllowed << 1 << 2; // only allow on straight tracks without direction markers
@@ -941,27 +1157,31 @@ TTrack::TTrack()
     {{0, 0}, {-1, -1}, {0, -1}, {1, -1}, {-1, 0}, {0, 0}, {1, 0}, {-1, 1}, {0, 1}, {1, 1}};
 
     for(int x = 0; x < 10; x++)
+    {
         for(int y = 0; y < 2; y++)
+        {
             LinkHVArray[x][y] = HVArray[x][y];
+        }
+    }
     TrackFinished = false;
 // DistancesSet = false;
 
     TSigElement TempSigTable[40] = // original four aspect
     {{68, 0, RailGraphics->gl68}, {69, 0, RailGraphics->gl69}, {70, 0, RailGraphics->gl70}, {71, 0, RailGraphics->gl71}, {72, 0, RailGraphics->gl72},
-        {73, 0, RailGraphics->bm73}, {74, 0, RailGraphics->bm74}, {75, 0, RailGraphics->gl75},
+     {73, 0, RailGraphics->bm73}, {74, 0, RailGraphics->bm74}, {75, 0, RailGraphics->gl75},
 
-        {68, 1, RailGraphics->bm68yellow}, {69, 1, RailGraphics->bm69yellow}, {70, 1, RailGraphics->bm70yellow}, {71, 1, RailGraphics->bm71yellow},
-        {72, 1, RailGraphics->bm72yellow}, {73, 1, RailGraphics->bm73yellow}, {74, 1, RailGraphics->bm74yellow}, {75, 1, RailGraphics->bm75yellow},
+     {68, 1, RailGraphics->bm68yellow}, {69, 1, RailGraphics->bm69yellow}, {70, 1, RailGraphics->bm70yellow}, {71, 1, RailGraphics->bm71yellow},
+     {72, 1, RailGraphics->bm72yellow}, {73, 1, RailGraphics->bm73yellow}, {74, 1, RailGraphics->bm74yellow}, {75, 1, RailGraphics->bm75yellow},
 
-        {68, 2, RailGraphics->bm68dblyellow}, {69, 2, RailGraphics->bm69dblyellow}, {70, 2, RailGraphics->bm70dblyellow}, {71, 2, RailGraphics->bm71dblyellow},
-        {72, 2, RailGraphics->bm72dblyellow}, {73, 2, RailGraphics->bm73dblyellow}, {74, 2, RailGraphics->bm74dblyellow}, {75, 2, RailGraphics->bm75dblyellow},
+     {68, 2, RailGraphics->bm68dblyellow}, {69, 2, RailGraphics->bm69dblyellow}, {70, 2, RailGraphics->bm70dblyellow}, {71, 2, RailGraphics->bm71dblyellow},
+     {72, 2, RailGraphics->bm72dblyellow}, {73, 2, RailGraphics->bm73dblyellow}, {74, 2, RailGraphics->bm74dblyellow}, {75, 2, RailGraphics->bm75dblyellow},
 
-        {68, 3, RailGraphics->bm68green}, {69, 3, RailGraphics->bm69green}, {70, 3, RailGraphics->bm70green}, {71, 3, RailGraphics->bm71green},
-        {72, 3, RailGraphics->bm72green}, {73, 3, RailGraphics->bm73green}, {74, 3, RailGraphics->bm74green}, {75, 3, RailGraphics->bm75green},
+     {68, 3, RailGraphics->bm68green}, {69, 3, RailGraphics->bm69green}, {70, 3, RailGraphics->bm70green}, {71, 3, RailGraphics->bm71green},
+     {72, 3, RailGraphics->bm72green}, {73, 3, RailGraphics->bm73green}, {74, 3, RailGraphics->bm74green}, {75, 3, RailGraphics->bm75green},
 
-        {68, 4, RailGraphics->gl68}, {69, 4, RailGraphics->gl69}, // Attr 4 disused but leave in case re-instate
-        {70, 4, RailGraphics->gl70}, {71, 4, RailGraphics->gl71}, {72, 4, RailGraphics->gl72}, {73, 4, RailGraphics->bm73}, {74, 4, RailGraphics->bm74},
-        {75, 4, RailGraphics->gl75}};
+     {68, 4, RailGraphics->gl68}, {69, 4, RailGraphics->gl69},    // Attr 4 disused but leave in case re-instate
+     {70, 4, RailGraphics->gl70}, {71, 4, RailGraphics->gl71}, {72, 4, RailGraphics->gl72}, {73, 4, RailGraphics->bm73}, {74, 4, RailGraphics->bm74},
+     {75, 4, RailGraphics->gl75}};
 
     for(int x = 0; x < 40; x++)
     {
@@ -970,20 +1190,20 @@ TTrack::TTrack()
 
     TSigElement TempSigTableThreeAspect[40] =
     {{68, 0, RailGraphics->gl68}, {69, 0, RailGraphics->gl69}, {70, 0, RailGraphics->gl70}, {71, 0, RailGraphics->gl71}, {72, 0, RailGraphics->gl72},
-        {73, 0, RailGraphics->bm73}, {74, 0, RailGraphics->bm74}, {75, 0, RailGraphics->gl75},
+     {73, 0, RailGraphics->bm73}, {74, 0, RailGraphics->bm74}, {75, 0, RailGraphics->gl75},
 
-        {68, 1, RailGraphics->bm68yellow}, {69, 1, RailGraphics->bm69yellow}, {70, 1, RailGraphics->bm70yellow}, {71, 1, RailGraphics->bm71yellow},
-        {72, 1, RailGraphics->bm72yellow}, {73, 1, RailGraphics->bm73yellow}, {74, 1, RailGraphics->bm74yellow}, {75, 1, RailGraphics->bm75yellow},
+     {68, 1, RailGraphics->bm68yellow}, {69, 1, RailGraphics->bm69yellow}, {70, 1, RailGraphics->bm70yellow}, {71, 1, RailGraphics->bm71yellow},
+     {72, 1, RailGraphics->bm72yellow}, {73, 1, RailGraphics->bm73yellow}, {74, 1, RailGraphics->bm74yellow}, {75, 1, RailGraphics->bm75yellow},
 
-        {68, 2, RailGraphics->bm68green}, {69, 2, RailGraphics->bm69green}, {70, 2, RailGraphics->bm70green}, {71, 2, RailGraphics->bm71green},
-        {72, 2, RailGraphics->bm72green}, {73, 2, RailGraphics->bm73green}, {74, 2, RailGraphics->bm74green}, {75, 2, RailGraphics->bm75green},
+     {68, 2, RailGraphics->bm68green}, {69, 2, RailGraphics->bm69green}, {70, 2, RailGraphics->bm70green}, {71, 2, RailGraphics->bm71green},
+     {72, 2, RailGraphics->bm72green}, {73, 2, RailGraphics->bm73green}, {74, 2, RailGraphics->bm74green}, {75, 2, RailGraphics->bm75green},
 
-        {68, 3, RailGraphics->bm68green}, {69, 3, RailGraphics->bm69green}, {70, 3, RailGraphics->bm70green}, {71, 3, RailGraphics->bm71green},
-        {72, 3, RailGraphics->bm72green}, {73, 3, RailGraphics->bm73green}, {74, 3, RailGraphics->bm74green}, {75, 3, RailGraphics->bm75green},
+     {68, 3, RailGraphics->bm68green}, {69, 3, RailGraphics->bm69green}, {70, 3, RailGraphics->bm70green}, {71, 3, RailGraphics->bm71green},
+     {72, 3, RailGraphics->bm72green}, {73, 3, RailGraphics->bm73green}, {74, 3, RailGraphics->bm74green}, {75, 3, RailGraphics->bm75green},
 
-        {68, 4, RailGraphics->gl68}, {69, 4, RailGraphics->gl69}, // Attr 4 disused but leave in case re-instate
-        {70, 4, RailGraphics->gl70}, {71, 4, RailGraphics->gl71}, {72, 4, RailGraphics->gl72}, {73, 4, RailGraphics->bm73}, {74, 4, RailGraphics->bm74},
-        {75, 4, RailGraphics->gl75}};
+     {68, 4, RailGraphics->gl68}, {69, 4, RailGraphics->gl69},    // Attr 4 disused but leave in case re-instate
+     {70, 4, RailGraphics->gl70}, {71, 4, RailGraphics->gl71}, {72, 4, RailGraphics->gl72}, {73, 4, RailGraphics->bm73}, {74, 4, RailGraphics->bm74},
+     {75, 4, RailGraphics->gl75}};
 
     for(int x = 0; x < 40; x++)
     {
@@ -992,20 +1212,20 @@ TTrack::TTrack()
 
     TSigElement TempSigTableTwoAspect[40] =
     {{68, 0, RailGraphics->gl68}, {69, 0, RailGraphics->gl69}, {70, 0, RailGraphics->gl70}, {71, 0, RailGraphics->gl71}, {72, 0, RailGraphics->gl72},
-        {73, 0, RailGraphics->bm73}, {74, 0, RailGraphics->bm74}, {75, 0, RailGraphics->gl75},
+     {73, 0, RailGraphics->bm73}, {74, 0, RailGraphics->bm74}, {75, 0, RailGraphics->gl75},
 
-        {68, 1, RailGraphics->bm68green}, {69, 1, RailGraphics->bm69green}, {70, 1, RailGraphics->bm70green}, {71, 1, RailGraphics->bm71green},
-        {72, 1, RailGraphics->bm72green}, {73, 1, RailGraphics->bm73green}, {74, 1, RailGraphics->bm74green}, {75, 1, RailGraphics->bm75green},
+     {68, 1, RailGraphics->bm68green}, {69, 1, RailGraphics->bm69green}, {70, 1, RailGraphics->bm70green}, {71, 1, RailGraphics->bm71green},
+     {72, 1, RailGraphics->bm72green}, {73, 1, RailGraphics->bm73green}, {74, 1, RailGraphics->bm74green}, {75, 1, RailGraphics->bm75green},
 
-        {68, 2, RailGraphics->bm68green}, {69, 2, RailGraphics->bm69green}, {70, 2, RailGraphics->bm70green}, {71, 2, RailGraphics->bm71green},
-        {72, 2, RailGraphics->bm72green}, {73, 2, RailGraphics->bm73green}, {74, 2, RailGraphics->bm74green}, {75, 2, RailGraphics->bm75green},
+     {68, 2, RailGraphics->bm68green}, {69, 2, RailGraphics->bm69green}, {70, 2, RailGraphics->bm70green}, {71, 2, RailGraphics->bm71green},
+     {72, 2, RailGraphics->bm72green}, {73, 2, RailGraphics->bm73green}, {74, 2, RailGraphics->bm74green}, {75, 2, RailGraphics->bm75green},
 
-        {68, 3, RailGraphics->bm68green}, {69, 3, RailGraphics->bm69green}, {70, 3, RailGraphics->bm70green}, {71, 3, RailGraphics->bm71green},
-        {72, 3, RailGraphics->bm72green}, {73, 3, RailGraphics->bm73green}, {74, 3, RailGraphics->bm74green}, {75, 3, RailGraphics->bm75green},
+     {68, 3, RailGraphics->bm68green}, {69, 3, RailGraphics->bm69green}, {70, 3, RailGraphics->bm70green}, {71, 3, RailGraphics->bm71green},
+     {72, 3, RailGraphics->bm72green}, {73, 3, RailGraphics->bm73green}, {74, 3, RailGraphics->bm74green}, {75, 3, RailGraphics->bm75green},
 
-        {68, 4, RailGraphics->gl68}, {69, 4, RailGraphics->gl69}, // Attr 4 disused but leave in case re-instate
-        {70, 4, RailGraphics->gl70}, {71, 4, RailGraphics->gl71}, {72, 4, RailGraphics->gl72}, {73, 4, RailGraphics->bm73}, {74, 4, RailGraphics->bm74},
-        {75, 4, RailGraphics->gl75}};
+     {68, 4, RailGraphics->gl68}, {69, 4, RailGraphics->gl69},    // Attr 4 disused but leave in case re-instate
+     {70, 4, RailGraphics->gl70}, {71, 4, RailGraphics->gl71}, {72, 4, RailGraphics->gl72}, {73, 4, RailGraphics->bm73}, {74, 4, RailGraphics->bm74},
+     {75, 4, RailGraphics->gl75}};
 
     for(int x = 0; x < 40; x++)
     {
@@ -1014,24 +1234,24 @@ TTrack::TTrack()
 
     TSigElement TempSigTableGroundSignal[40] =
     {{68, 0, RailGraphics->bm68grounddblred}, {69, 0, RailGraphics->bm69grounddblred}, {70, 0, RailGraphics->bm70grounddblred},
-        {71, 0, RailGraphics->bm71grounddblred}, {72, 0, RailGraphics->bm72grounddblred}, {73, 0, RailGraphics->bm73grounddblred},
-        {74, 0, RailGraphics->bm74grounddblred}, {75, 0, RailGraphics->bm75grounddblred},
+     {71, 0, RailGraphics->bm71grounddblred}, {72, 0, RailGraphics->bm72grounddblred}, {73, 0, RailGraphics->bm73grounddblred},
+     {74, 0, RailGraphics->bm74grounddblred}, {75, 0, RailGraphics->bm75grounddblred},
 
-        {68, 1, RailGraphics->bm68grounddblwhite}, {69, 1, RailGraphics->bm69grounddblwhite}, {70, 1, RailGraphics->bm70grounddblwhite},
-        {71, 1, RailGraphics->bm71grounddblwhite}, {72, 1, RailGraphics->bm72grounddblwhite}, {73, 1, RailGraphics->bm73grounddblwhite},
-        {74, 1, RailGraphics->bm74grounddblwhite}, {75, 1, RailGraphics->bm75grounddblwhite},
+     {68, 1, RailGraphics->bm68grounddblwhite}, {69, 1, RailGraphics->bm69grounddblwhite}, {70, 1, RailGraphics->bm70grounddblwhite},
+     {71, 1, RailGraphics->bm71grounddblwhite}, {72, 1, RailGraphics->bm72grounddblwhite}, {73, 1, RailGraphics->bm73grounddblwhite},
+     {74, 1, RailGraphics->bm74grounddblwhite}, {75, 1, RailGraphics->bm75grounddblwhite},
 
-        {68, 2, RailGraphics->bm68grounddblwhite}, {69, 2, RailGraphics->bm69grounddblwhite}, {70, 2, RailGraphics->bm70grounddblwhite},
-        {71, 2, RailGraphics->bm71grounddblwhite}, {72, 2, RailGraphics->bm72grounddblwhite}, {73, 2, RailGraphics->bm73grounddblwhite},
-        {74, 2, RailGraphics->bm74grounddblwhite}, {75, 2, RailGraphics->bm75grounddblwhite},
+     {68, 2, RailGraphics->bm68grounddblwhite}, {69, 2, RailGraphics->bm69grounddblwhite}, {70, 2, RailGraphics->bm70grounddblwhite},
+     {71, 2, RailGraphics->bm71grounddblwhite}, {72, 2, RailGraphics->bm72grounddblwhite}, {73, 2, RailGraphics->bm73grounddblwhite},
+     {74, 2, RailGraphics->bm74grounddblwhite}, {75, 2, RailGraphics->bm75grounddblwhite},
 
-        {68, 3, RailGraphics->bm68grounddblwhite}, {69, 3, RailGraphics->bm69grounddblwhite}, {70, 3, RailGraphics->bm70grounddblwhite},
-        {71, 3, RailGraphics->bm71grounddblwhite}, {72, 3, RailGraphics->bm72grounddblwhite}, {73, 3, RailGraphics->bm73grounddblwhite},
-        {74, 3, RailGraphics->bm74grounddblwhite}, {75, 3, RailGraphics->bm75grounddblwhite},
+     {68, 3, RailGraphics->bm68grounddblwhite}, {69, 3, RailGraphics->bm69grounddblwhite}, {70, 3, RailGraphics->bm70grounddblwhite},
+     {71, 3, RailGraphics->bm71grounddblwhite}, {72, 3, RailGraphics->bm72grounddblwhite}, {73, 3, RailGraphics->bm73grounddblwhite},
+     {74, 3, RailGraphics->bm74grounddblwhite}, {75, 3, RailGraphics->bm75grounddblwhite},
 
-        {68, 4, RailGraphics->bm68grounddblred}, {69, 4, RailGraphics->bm69grounddblred}, // Attr 4 disused but leave in case re-instate
-        {70, 4, RailGraphics->bm70grounddblred}, {71, 4, RailGraphics->bm71grounddblred}, {72, 4, RailGraphics->bm72grounddblred},
-        {73, 4, RailGraphics->bm73grounddblred}, {74, 4, RailGraphics->bm74grounddblred}, {75, 4, RailGraphics->bm75grounddblred}};
+     {68, 4, RailGraphics->bm68grounddblred}, {69, 4, RailGraphics->bm69grounddblred},    // Attr 4 disused but leave in case re-instate
+     {70, 4, RailGraphics->bm70grounddblred}, {71, 4, RailGraphics->bm71grounddblred}, {72, 4, RailGraphics->bm72grounddblred},
+     {73, 4, RailGraphics->bm73grounddblred}, {74, 4, RailGraphics->bm74grounddblred}, {75, 4, RailGraphics->bm75grounddblred}};
 
     for(int x = 0; x < 40; x++)
     {
@@ -1060,175 +1280,223 @@ TTrack::TTrack()
 
     int Tag76[25][3] =
     {{-1, 0, 96}, // c    top plat
-        {1, 0, 96}, {0, -1, 96}, {0, 1, 96}, {-1, 0, 76}, // t
-        {1, 0, 76}, {0, -1, 76}, {0, 1, 76}, {-1, 0, 77}, // b
-        {1, 0, 77}, {0, -1, 77}, {0, 1, 77}, {0, 0, 77}, {-1, 0, 78}, // l
-        {1, 0, 78}, {0, -1, 78}, {0, 1, 78}, {-1, 0, 79}, // r
-        {1, 0, 79}, {0, -1, 79}, {0, 1, 79}, {0, -1, 129}, // v fb
-        {0, 0, 129}, {0, -1, 145}, // v up
-        {0, 0, 145}};
+     {1, 0, 96}, {0, -1, 96}, {0, 1, 96}, {-1, 0, 76},    // t
+     {1, 0, 76}, {0, -1, 76}, {0, 1, 76}, {-1, 0, 77},    // b
+     {1, 0, 77}, {0, -1, 77}, {0, 1, 77}, {0, 0, 77}, {-1, 0, 78},    // l
+     {1, 0, 78}, {0, -1, 78}, {0, 1, 78}, {-1, 0, 79},    // r
+     {1, 0, 79}, {0, -1, 79}, {0, 1, 79}, {0, -1, 129},    // v fb
+     {0, 0, 129}, {0, -1, 145},    // v up
+     {0, 0, 145}};
 
     for(int x = 0; x < 25; x++)
+    {
         for(int y = 0; y < 3; y++)
+        {
             Tag76Array[x][y] = Tag76[x][y];
+        }
+    }
 
     int Tag77[25][3] =
     {{-1, 0, 96}, // c     bot plat
-        {1, 0, 96}, {0, -1, 96}, {0, 1, 96}, {-1, 0, 76}, // t
-        {1, 0, 76}, {0, -1, 76}, {0, 1, 76}, {0, 0, 76}, {-1, 0, 77}, // b
-        {1, 0, 77}, {0, -1, 77}, {0, 1, 77}, {-1, 0, 78}, // l
-        {1, 0, 78}, {0, -1, 78}, {0, 1, 78}, {-1, 0, 79}, // r
-        {1, 0, 79}, {0, -1, 79}, {0, 1, 79}, {0, 1, 129}, // v fb
-        {0, 0, 129}, {0, 1, 145}, // v up
-        {0, 0, 145}};
+     {1, 0, 96}, {0, -1, 96}, {0, 1, 96}, {-1, 0, 76},    // t
+     {1, 0, 76}, {0, -1, 76}, {0, 1, 76}, {0, 0, 76}, {-1, 0, 77},    // b
+     {1, 0, 77}, {0, -1, 77}, {0, 1, 77}, {-1, 0, 78},    // l
+     {1, 0, 78}, {0, -1, 78}, {0, 1, 78}, {-1, 0, 79},    // r
+     {1, 0, 79}, {0, -1, 79}, {0, 1, 79}, {0, 1, 129},    // v fb
+     {0, 0, 129}, {0, 1, 145},    // v up
+     {0, 0, 145}};
 
     for(int x = 0; x < 25; x++)
+    {
         for(int y = 0; y < 3; y++)
+        {
             Tag77Array[x][y] = Tag77[x][y];
+        }
+    }
 
     int Tag78[25][3] =
     {{-1, 0, 96}, // c     left plat
-        {1, 0, 96}, {0, -1, 96}, {0, 1, 96}, {-1, 0, 76}, // t
-        {1, 0, 76}, {0, -1, 76}, {0, 1, 76}, {-1, 0, 77}, // b
-        {1, 0, 77}, {0, -1, 77}, {0, 1, 77}, {-1, 0, 78}, // l
-        {1, 0, 78}, {0, -1, 78}, {0, 1, 78}, {-1, 0, 79}, // r
-        {1, 0, 79}, {0, -1, 79}, {0, 1, 79}, {0, 0, 79}, {-1, 0, 130}, // h fb
-        {0, 0, 130}, {-1, 0, 146}, // h up
-        {0, 0, 146}};
+     {1, 0, 96}, {0, -1, 96}, {0, 1, 96}, {-1, 0, 76},    // t
+     {1, 0, 76}, {0, -1, 76}, {0, 1, 76}, {-1, 0, 77},    // b
+     {1, 0, 77}, {0, -1, 77}, {0, 1, 77}, {-1, 0, 78},    // l
+     {1, 0, 78}, {0, -1, 78}, {0, 1, 78}, {-1, 0, 79},    // r
+     {1, 0, 79}, {0, -1, 79}, {0, 1, 79}, {0, 0, 79}, {-1, 0, 130},    // h fb
+     {0, 0, 130}, {-1, 0, 146},    // h up
+     {0, 0, 146}};
 
     for(int x = 0; x < 25; x++)
+    {
         for(int y = 0; y < 3; y++)
+        {
             Tag78Array[x][y] = Tag78[x][y];
+        }
+    }
 
     int Tag79[25][3] =
     {{-1, 0, 96}, // c     right plat
-        {1, 0, 96}, {0, -1, 96}, {0, 1, 96}, {-1, 0, 76}, // t
-        {1, 0, 76}, {0, -1, 76}, {0, 1, 76}, {-1, 0, 77}, // b
-        {1, 0, 77}, {0, -1, 77}, {0, 1, 77}, {-1, 0, 78}, // l
-        {1, 0, 78}, {0, -1, 78}, {0, 1, 78}, {0, 0, 78}, {-1, 0, 79}, // r
-        {1, 0, 79}, {0, -1, 79}, {0, 1, 79}, {1, 0, 130}, // h fb
-        {0, 0, 130}, {1, 0, 146}, // h up
-        {0, 0, 146}};
+     {1, 0, 96}, {0, -1, 96}, {0, 1, 96}, {-1, 0, 76},    // t
+     {1, 0, 76}, {0, -1, 76}, {0, 1, 76}, {-1, 0, 77},    // b
+     {1, 0, 77}, {0, -1, 77}, {0, 1, 77}, {-1, 0, 78},    // l
+     {1, 0, 78}, {0, -1, 78}, {0, 1, 78}, {0, 0, 78}, {-1, 0, 79},    // r
+     {1, 0, 79}, {0, -1, 79}, {0, 1, 79}, {1, 0, 130},    // h fb
+     {0, 0, 130}, {1, 0, 146},    // h up
+     {0, 0, 146}};
 
     for(int x = 0; x < 25; x++)
+    {
         for(int y = 0; y < 3; y++)
+        {
             Tag79Array[x][y] = Tag79[x][y];
+        }
+    }
 
     int Tag96[28][3] =
     {{-1, 0, 96}, // c       //concourse
-        {1, 0, 96}, {0, -1, 96}, {0, 1, 96}, {-1, 0, 76}, // t
-        {1, 0, 76}, {0, -1, 76}, {0, 1, 76}, {-1, 0, 77}, // b
-        {1, 0, 77}, {0, -1, 77}, {0, 1, 77}, {-1, 0, 78}, // l
-        {1, 0, 78}, {0, -1, 78}, {0, 1, 78}, {-1, 0, 79}, // r
-        {1, 0, 79}, {0, -1, 79}, {0, 1, 79}, {0, 1, 129}, // v fb
-        {0, -1, 129}, {1, 0, 130}, // h fb
-        {-1, 0, 130}, {0, 1, 145}, // v up
-        {0, -1, 145}, {1, 0, 146}, // h up
-        {-1, 0, 146}};
+     {1, 0, 96}, {0, -1, 96}, {0, 1, 96}, {-1, 0, 76},    // t
+     {1, 0, 76}, {0, -1, 76}, {0, 1, 76}, {-1, 0, 77},    // b
+     {1, 0, 77}, {0, -1, 77}, {0, 1, 77}, {-1, 0, 78},    // l
+     {1, 0, 78}, {0, -1, 78}, {0, 1, 78}, {-1, 0, 79},    // r
+     {1, 0, 79}, {0, -1, 79}, {0, 1, 79}, {0, 1, 129},    // v fb
+     {0, -1, 129}, {1, 0, 130},    // h fb
+     {-1, 0, 130}, {0, 1, 145},    // v up
+     {0, -1, 145}, {1, 0, 146},    // h up
+     {-1, 0, 146}};
 
     for(int x = 0; x < 28; x++)
+    {
         for(int y = 0; y < 3; y++)
+        {
             Tag96Array[x][y] = Tag96[x][y];
+        }
+    }
 
     int Tag129[8][3] = // vert fb
     {{0, -1, 96}, // c
-        {0, -1, 77}, // b
-        {0, -1, 129}, // v fb
+     {0, -1, 77},    // b
+     {0, -1, 129},    // v fb
 
-        {0, 1, 96}, // c
-        {0, 1, 76}, // t
-        {0, 1, 129}, // v fb
+     {0, 1, 96},    // c
+     {0, 1, 76},    // t
+     {0, 1, 129},    // v fb
 
-        {0, 0, 76}, // t
-        {0, 0, 77}}; // b
+     {0, 0, 76},    // t
+     {0, 0, 77}};    // b
 
     for(int x = 0; x < 8; x++)
+    {
         for(int y = 0; y < 3; y++)
+        {
             Tag129Array[x][y] = Tag129[x][y];
+        }
+    }
 
     int Tag145[8][3] = // vert up
     {{0, -1, 96}, // c
-        {0, -1, 77}, // b
-        {0, -1, 145}, // v fb
+     {0, -1, 77},    // b
+     {0, -1, 145},    // v fb
 
-        {0, 1, 96}, // c
-        {0, 1, 76}, // t
-        {0, 1, 145}, // v fb
+     {0, 1, 96},    // c
+     {0, 1, 76},    // t
+     {0, 1, 145},    // v fb
 
-        {0, 0, 76}, // t
-        {0, 0, 77}}; // b
+     {0, 0, 76},    // t
+     {0, 0, 77}};    // b
 
     for(int x = 0; x < 8; x++)
+    {
         for(int y = 0; y < 3; y++)
+        {
             Tag145Array[x][y] = Tag145[x][y];
+        }
+    }
 
     int Tag130[8][3] = // hor fb
     {{-1, 0, 96}, // c
-        {-1, 0, 79}, // r
-        {-1, 0, 130}, // h fb
+     {-1, 0, 79},    // r
+     {-1, 0, 130},    // h fb
 
-        {1, 0, 96}, // c
-        {1, 0, 78}, // l
-        {1, 0, 130}, // h fb
+     {1, 0, 96},    // c
+     {1, 0, 78},    // l
+     {1, 0, 130},    // h fb
 
-        {0, 0, 78}, // l
-        {0, 0, 79}}; // r
+     {0, 0, 78},    // l
+     {0, 0, 79}};    // r
 
     for(int x = 0; x < 8; x++)
+    {
         for(int y = 0; y < 3; y++)
+        {
             Tag130Array[x][y] = Tag130[x][y];
+        }
+    }
 
     int Tag146[8][3] = // hor up
     {{-1, 0, 96}, // c
-        {-1, 0, 79}, // r
-        {-1, 0, 146}, // h fb
+     {-1, 0, 79},    // r
+     {-1, 0, 146},    // h fb
 
-        {1, 0, 96}, // c
-        {1, 0, 78}, // l
-        {1, 0, 146}, // h fb
+     {1, 0, 96},    // c
+     {1, 0, 78},    // l
+     {1, 0, 146},    // h fb
 
-        {0, 0, 78}, // l
-        {0, 0, 79}}; // r
+     {0, 0, 78},    // l
+     {0, 0, 79}};    // r
 
     for(int x = 0; x < 8; x++)
+    {
         for(int y = 0; y < 3; y++)
+        {
             Tag146Array[x][y] = Tag146[x][y];
+        }
+    }
 
     int Tag131[4][3] =
     {{-1, 0, 131}, // n
-        {1, 0, 131}, {0, -1, 131}, {0, 1, 131}};
+     {1, 0, 131}, {0, -1, 131}, {0, 1, 131}};
 
     for(int x = 0; x < 4; x++)
+    {
         for(int y = 0; y < 3; y++)
+        {
             Tag131Array[x][y] = Tag131[x][y];
+        }
+    }
 
     int InternalFlipArray[FirstUnusedSpeedTagNumber] =
-    {0, 1, 2, 5, 6, 3, 4, 9, 10, 7, 8, 13, 14, 11, 12, 15, 16, 17, 19, 18, 22, 23, 20, 21, 26, 27, 24, 25, 30, 31, 28, 29, 34, 35, 32, 33, 38, 39, 36, 37, 42,
+    {
+        0, 1, 2, 5, 6, 3, 4, 9, 10, 7, 8, 13, 14, 11, 12, 15, 16, 17, 19, 18, 22, 23, 20, 21, 26, 27, 24, 25, 30, 31, 28, 29, 34, 35, 32, 33, 38, 39, 36, 37, 42,
         43, 40, 41, 45, 44, 47, 46, 48, 49, 51, 50, 53, 52, 55, 54, 57, 56, 59, 58, 60, 61, 63, 62, 66, 67, 64, 65, 68, 69, 71, 70, 74, 75, 72, 73, 77, 76, 78,
         79, 80, 81, 83, 82, 86, 87, 84, 85, 88, 89, 91, 90, 94, 95, 92, 93, 96, 99, 100, 97, 98, 103, 104, 101, 102, 106, 105, 109, 110, 107, 108, 113, 114,
         111, 112, 117, 118, 115, 116, 119, 120, 121, 123, 122, 124, 125, 126, 128, 127, 129, 130, 131, 134, 133, 132, 135, 139, 138, 137, 136, 143, 142, 141,
-        140, 144, 145, 146};
+        140, 144, 145, 146
+    };
 
     int InternalMirrorArray[FirstUnusedSpeedTagNumber] =
-    {0, 1, 2, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 15, 16, 17, 19, 18, 21, 20, 23, 22, 25, 24, 27, 26, 29, 28, 31, 30, 33, 32, 35, 34, 37, 36, 39, 38, 41,
+    {
+        0, 1, 2, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 15, 16, 17, 19, 18, 21, 20, 23, 22, 25, 24, 27, 26, 29, 28, 31, 30, 33, 32, 35, 34, 37, 36, 39, 38, 41,
         40, 43, 42, 45, 44, 47, 46, 48, 49, 51, 50, 53, 52, 55, 54, 57, 56, 59, 58, 61, 60, 62, 63, 65, 64, 67, 66, 69, 68, 70, 71, 73, 72, 75, 74, 76, 77, 79,
         78, 81, 80, 82, 83, 85, 84, 87, 86, 89, 88, 90, 91, 93, 92, 95, 94, 96, 98, 97, 100, 99, 102, 101, 104, 103, 106, 105, 108, 107, 110, 109, 112, 111,
         114, 113, 116, 115, 118, 117, 119, 120, 124, 122, 123, 121, 126, 125, 127, 128, 129, 130, 131, 132, 135, 134, 133, 137, 136, 139, 138, 142, 143, 140,
-        141, 144, 145, 146};
+        141, 144, 145, 146
+    };
 
     int InternalRotRightArray[FirstUnusedSpeedTagNumber] =
-    {0, 2, 1, 4, 6, 3, 5, 14, 12, 13, 11, 7, 9, 8, 10, 15, 16, 17, 19, 18, 25, 27, 24, 26, 21, 23, 20, 22, 35, 33, 34, 32, 28, 30, 29, 31, 41, 43, 40, 42, 37,
+    {
+        0, 2, 1, 4, 6, 3, 5, 14, 12, 13, 11, 7, 9, 8, 10, 15, 16, 17, 19, 18, 25, 27, 24, 26, 21, 23, 20, 22, 35, 33, 34, 32, 28, 30, 29, 31, 41, 43, 40, 42, 37,
         39, 36, 38, 46, 47, 44, 45, 49, 48, 51, 50, 56, 57, 58, 59, 52, 53, 54, 55, 63, 62, 60, 61, 65, 67, 64, 66, 71, 70, 68, 69, 73, 75, 72, 74, 79, 78, 76,
         77, 83, 82, 80, 81, 85, 87, 84, 86, 91, 90, 88, 89, 93, 95, 92, 94, 96, 102, 104, 101, 103, 98, 100, 97, 99, 106, 105, 108, 110, 107, 109, 116, 118,
         115, 117, 112, 114, 111, 113, 120, 119, 122, 124, 121, 123, 127, 128, 126, 125, 130, 129, 131, 133, 134, 135, 132, 137, 138, 139, 136, 143, 142, 140,
-        141, 144, 146, 145};
+        141, 144, 146, 145
+    };
 
     int InternalRotLeftArray[FirstUnusedSpeedTagNumber] =
-    {0, 2, 1, 5, 3, 6, 4, 11, 13, 12, 14, 10, 8, 9, 7, 15, 16, 17, 19, 18, 26, 24, 27, 25, 22, 20, 23, 21, 32, 34, 33, 35, 31, 29, 30, 28, 42, 40, 43, 41, 38,
+    {
+        0, 2, 1, 5, 3, 6, 4, 11, 13, 12, 14, 10, 8, 9, 7, 15, 16, 17, 19, 18, 26, 24, 27, 25, 22, 20, 23, 21, 32, 34, 33, 35, 31, 29, 30, 28, 42, 40, 43, 41, 38,
         36, 39, 37, 46, 47, 44, 45, 49, 48, 51, 50, 56, 57, 58, 59, 52, 53, 54, 55, 62, 63, 61, 60, 66, 64, 67, 65, 70, 71, 69, 68, 74, 72, 75, 73, 78, 79, 77,
         76, 82, 83, 81, 80, 86, 84, 87, 85, 90, 91, 89, 88, 94, 92, 95, 93, 96, 103, 101, 104, 102, 99, 97, 100, 98, 106, 105, 109, 107, 110, 108, 117, 115,
         118, 116, 113, 111, 114, 112, 120, 119, 123, 121, 124, 122, 128, 127, 125, 126, 130, 129, 131, 135, 132, 133, 134, 139, 136, 137, 138, 142, 143, 141,
-        140, 144, 146, 145};
+        140, 144, 146, 145
+    };
 
     for(int x = 0; x < FirstUnusedSpeedTagNumber; x++)
     {
@@ -1285,7 +1553,8 @@ TTrack::TFixedTrackArray::TFixedTrackArray()
         RailGraphics->gl121, RailGraphics->gl122, RailGraphics->gl123, RailGraphics->gl124, RailGraphics->gl125, RailGraphics->gl126, RailGraphics->gl127,
         RailGraphics->gl128, RailGraphics->gl129, RailGraphics->gl130, RailGraphics->bmName, RailGraphics->bm132, RailGraphics->bm133, RailGraphics->bm134,
         RailGraphics->bm135, RailGraphics->bm136, RailGraphics->bm137, RailGraphics->bm138, RailGraphics->bm139, RailGraphics->bm140, RailGraphics->bm141,
-        RailGraphics->gl142, RailGraphics->gl143, RailGraphics->LCBothHor, RailGraphics->gl145, RailGraphics->gl146};
+        RailGraphics->gl142, RailGraphics->gl143, RailGraphics->LCBothHor, RailGraphics->gl145, RailGraphics->gl146
+    };
 
     Graphics::TBitmap *SmallTrackImageArray[FirstUnusedSpeedTagNumber] =
     {
@@ -1317,7 +1586,8 @@ TTrack::TFixedTrackArray::TFixedTrackArray()
 
 // track types
     TTrackType TrackTypeArray[FirstUnusedSpeedTagNumber] =
-    {Erase, // 1    0
+    {
+        Erase, // 1    0
         Simple, Simple, Simple, Simple, Simple, Simple, // 6    1-6
         Points, Points, Points, Points, Points, Points, Points, Points, // 8    7-14
         Crossover, Crossover, // 2    15-16
@@ -1346,95 +1616,87 @@ TTrack::TFixedTrackArray::TFixedTrackArray()
 // links
     int Links[FirstUnusedSpeedTagNumber][4] =
     {{-1, -1, -1, -1}, // erase element
-        {4, 6, -1, -1}, {2, 8, -1, -1}, {6, 8, -1, -1}, {4, 8, -1, -1}, {2, 6, -1, -1}, {2, 4, -1, -1}, // simple
-        {4, 6, 4, 2}, {6, 4, 6, 2}, {4, 6, 4, 8}, {6, 4, 6, 8}, {8, 2, 8, 4}, {8, 2, 8, 6}, {2, 8, 2, 4}, {2, 8, 2, 6}, // points
+     {4, 6, -1, -1}, {2, 8, -1, -1}, {6, 8, -1, -1}, {4, 8, -1, -1}, {2, 6, -1, -1}, {2, 4, -1, -1},    // simple
+     {4, 6, 4, 2}, {6, 4, 6, 2}, {4, 6, 4, 8}, {6, 4, 6, 8}, {8, 2, 8, 4}, {8, 2, 8, 6}, {2, 8, 2, 4}, {2, 8, 2, 6},    // points
 // points always have links 0 & 2 = lead, link 1 = trailing straight, link 3 = trailing diverging
-        {4, 6, 2, 8}, {1, 9, 3, 7}, // crossover links 0 & 1 = diagonal top left to Bottom right, then horizontal, then vertical
-        {-1, -1, -1, -1}, // unused
-        {3, 7, -1, -1}, {1, 9, -1, -1}, {7, 6, -1, -1}, {4, 9, -1, -1}, {1, 6, -1, -1}, {4, 3, -1, -1}, {3, 8, -1, -1}, {1, 8, -1, -1}, {2, 9, -1, -1},
-        {2, 7, -1, -1}, // simple
-        {4, 6, 4, 3}, {6, 4, 6, 1}, {4, 6, 4, 9}, {6, 4, 6, 7}, {8, 2, 8, 1}, {8, 2, 8, 3}, {2, 8, 2, 7}, {2, 8, 2, 9}, {9, 1, 9, 2}, {7, 3, 7, 2}, {3, 7, 3, 8
-        }, {1, 9, 1, 8}, {9, 1, 9, 4}, {7, 3, 7, 6}, {3, 7, 3, 4}, {1, 9, 1, 6}, // points
+     {4, 6, 2, 8}, {1, 9, 3, 7},    // crossover links 0 & 1 = diagonal top left to Bottom right, then horizontal, then vertical
+     {-1, -1, -1, -1},    // unused
+     {3, 7, -1, -1}, {1, 9, -1, -1}, {7, 6, -1, -1}, {4, 9, -1, -1}, {1, 6, -1, -1}, {4, 3, -1, -1}, {3, 8, -1, -1}, {1, 8, -1, -1}, {2, 9, -1, -1},
+     {2, 7, -1, -1},    // simple
+     {4, 6, 4, 3}, {6, 4, 6, 1}, {4, 6, 4, 9}, {6, 4, 6, 7}, {8, 2, 8, 1}, {8, 2, 8, 3}, {2, 8, 2, 7}, {2, 8, 2, 9}, {9, 1, 9, 2}, {7, 3, 7, 2}, {3, 7, 3, 8}, {1, 9, 1, 8}, {9, 1, 9, 4}, {7, 3, 7, 6}, {3, 7, 3, 4}, {1, 9, 1, 6}, // points
 // points always have links 0 & 2 = lead, link 1 = trailing straight (or left diverging if no straight), link 3 = trailing diverging
 // (or right diverging if no straight)
-        {1, 9, 2, 8}, {2, 8, 3, 7}, {4, 6, 3, 7}, {1, 9, 4, 6}, // crossover links 0 & 1 = diagonal top left to Bottom right, then horizontal, then vertical
-        {2, 8, 4, 6}, {4, 6, 2, 8}, {3, 7, 1, 9}, {1, 9, 3, 7}, {2, 8, 1, 9}, {2, 8, 3, 7}, {3, 7, 2, 8}, {1, 9, 2, 8}, {4, 6, 3, 7}, {4, 6, 1, 9}, {1, 9, 4, 6
-        }, {3, 7, 4, 6}, // bridge, links 2 & 3 = underbridge
-        {4, 6, -1, -1}, {6, 4, -1, -1}, {8, 2, -1, -1}, {2, 8, -1, -1}, {1, 9, -1, -1}, {3, 7, -1, -1}, {7, 3, -1, -1}, {9, 1, -1, -1
-        }, // buffers - position 0 = buffer
-        {4, 6, -1, -1}, {4, 6, -1, -1}, {2, 8, -1, -1}, {2, 8, -1, -1}, {1, 9, -1, -1}, {3, 7, -1, -1}, {3, 7, -1, -1}, {1, 9, -1, -1
-        }, // signals (need Config to determine signal end, see below)
-        {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, // platform
-        {4, 6, -1, -1}, {6, 4, -1, -1}, {8, 2, -1, -1}, {2, 8, -1, -1}, {1, 9, -1, -1}, {3, 7, -1, -1}, {7, 3, -1, -1}, {9, 1, -1, -1
-        }, // continuation - position 0 = continuation
-        {4, 6, -1, -1}, {6, 4, -1, -1}, {8, 2, -1, -1}, {2, 8, -1, -1}, {1, 9, -1, -1}, {3, 7, -1, -1}, {7, 3, -1, -1}, {9, 1, -1, -1
-        }, // gapjump - position 0 = gap
-        {-1, -1, -1, -1}, // Concourse
-        {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1},
-        {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1},
-        {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1},
-        {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, // Parapets
-        {4, 6, -1, -1}, {4, 6, -1, -1}, {2, 8, -1, -1}, {2, 8, -1, -1}, // arrows
-        {4, 6, -1, -1}, {2, 8, -1, -1}, // footbridges
-        {-1, -1, -1, -1}, // NamedNonStationLocation
-        {8, 1, 8, 3}, {4, 3, 4, 9}, {2, 9, 2, 7}, {6, 7, 6, 1}, {9, 4, 9, 2}, {7, 2, 7, 6}, {1, 6, 1, 8}, {3, 8, 3, 4}, // points without straight legs
+     {1, 9, 2, 8}, {2, 8, 3, 7}, {4, 6, 3, 7}, {1, 9, 4, 6},    // crossover links 0 & 1 = diagonal top left to Bottom right, then horizontal, then vertical
+     {2, 8, 4, 6}, {4, 6, 2, 8}, {3, 7, 1, 9}, {1, 9, 3, 7}, {2, 8, 1, 9}, {2, 8, 3, 7}, {3, 7, 2, 8}, {1, 9, 2, 8}, {4, 6, 3, 7}, {4, 6, 1, 9}, {1, 9, 4, 6}, {3, 7, 4, 6}, // bridge, links 2 & 3 = underbridge
+     {4, 6, -1, -1}, {6, 4, -1, -1}, {8, 2, -1, -1}, {2, 8, -1, -1}, {1, 9, -1, -1}, {3, 7, -1, -1}, {7, 3, -1, -1}, {9, 1, -1, -1}, // buffers - position 0 = buffer
+     {4, 6, -1, -1}, {4, 6, -1, -1}, {2, 8, -1, -1}, {2, 8, -1, -1}, {1, 9, -1, -1}, {3, 7, -1, -1}, {3, 7, -1, -1}, {1, 9, -1, -1}, // signals (need Config to determine signal end, see below)
+     {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1},    // platform
+     {4, 6, -1, -1}, {6, 4, -1, -1}, {8, 2, -1, -1}, {2, 8, -1, -1}, {1, 9, -1, -1}, {3, 7, -1, -1}, {7, 3, -1, -1}, {9, 1, -1, -1}, // continuation - position 0 = continuation
+     {4, 6, -1, -1}, {6, 4, -1, -1}, {8, 2, -1, -1}, {2, 8, -1, -1}, {1, 9, -1, -1}, {3, 7, -1, -1}, {7, 3, -1, -1}, {9, 1, -1, -1}, // gapjump - position 0 = gap
+     {-1, -1, -1, -1},    // Concourse
+     {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1},
+     {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1},
+     {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1},
+     {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1}, {-1, -1, -1, -1},    // Parapets
+     {4, 6, -1, -1}, {4, 6, -1, -1}, {2, 8, -1, -1}, {2, 8, -1, -1},    // arrows
+     {4, 6, -1, -1}, {2, 8, -1, -1},    // footbridges
+     {-1, -1, -1, -1},    // NamedNonStationLocation
+     {8, 1, 8, 3}, {4, 3, 4, 9}, {2, 9, 2, 7}, {6, 7, 6, 1}, {9, 4, 9, 2}, {7, 2, 7, 6}, {1, 6, 1, 8}, {3, 8, 3, 4},    // points without straight legs
 // these points have links 0 & 2 = lead, link 1 = LH trailing, link 3 = RH trailing
-        {3, 7, -1, -1}, {3, 7, -1, -1}, {1, 9, -1, -1}, {1, 9, -1, -1}, // arrowed diagonals
-        {-1, -1, -1, -1}, // level crossing
-        {4, 6, -1, -1}, {2, 8, -1, -1}, // underpasses/surface crossings
+     {3, 7, -1, -1}, {3, 7, -1, -1}, {1, 9, -1, -1}, {1, 9, -1, -1},    // arrowed diagonals
+     {-1, -1, -1, -1},    // level crossing
+     {4, 6, -1, -1}, {2, 8, -1, -1},    // underpasses/surface crossings
     };
 
     TConfiguration Configs[FirstUnusedSpeedTagNumber][4] =
     {{NotSet, NotSet, NotSet, NotSet}, // unused
-        {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet},
-        {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, // simple
-        {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail},
-        {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, // points
-        {CrossConn, CrossConn, CrossConn, CrossConn}, {CrossConn, CrossConn, CrossConn, CrossConn}, // crossover
-        {NotSet, NotSet, NotSet, NotSet}, // unused
-        {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet},
-        {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet},
-        {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet},
-        {Connection, Connection, NotSet, NotSet}, // simple
-        {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail},
-        {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail},
-        {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail},
-        {Lead, Trail, Lead, Trail}, // points
-        {CrossConn, CrossConn, CrossConn, CrossConn}, {CrossConn, CrossConn, CrossConn, CrossConn}, {CrossConn, CrossConn, CrossConn, CrossConn},
-        {CrossConn, CrossConn, CrossConn, CrossConn}, // crossover
-        {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under},
-        {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under},
-        {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under},
-        {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under}, // bridge
-        {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet},
-        {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, // buffers
-        {Connection, Signal, NotSet, NotSet}, {Signal, Connection, NotSet, NotSet}, {Signal, Connection, NotSet, NotSet}, {Connection, Signal, NotSet, NotSet},
-        {Signal, Connection, NotSet, NotSet}, {Signal, Connection, NotSet, NotSet}, {Connection, Signal, NotSet, NotSet}, {Connection, Signal, NotSet, NotSet
-        }, // signals (signal at exit end in forward direction)
-        {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, // platform
-        {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet},
-        {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet
-        }, // continuation
-        {Gap, Connection, NotSet, NotSet}, {Gap, Connection, NotSet, NotSet}, {Gap, Connection, NotSet, NotSet}, {Gap, Connection, NotSet, NotSet},
-        {Gap, Connection, NotSet, NotSet}, {Gap, Connection, NotSet, NotSet}, {Gap, Connection, NotSet, NotSet}, {Gap, Connection, NotSet, NotSet}, // gapjump
-        {NotSet, NotSet, NotSet, NotSet}, // Concourse
-        {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet},
-        {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet},
-        {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet},
-        {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet},
-        {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet},
-        {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet},
-        {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, // Parapets
-        {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet},
-        {Connection, Connection, NotSet, NotSet}, // Arrows
-        {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, // Footbridges
-        {NotSet, NotSet, NotSet, NotSet}, // NamedNonStationLocation
-        {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail},
-        {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, // points
-        {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet},
-        {Connection, Connection, NotSet, NotSet}, // Arrowed diagonals
-        {NotSet, NotSet, NotSet, NotSet}, // Level crossing
-        {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet} // Underpasses/surface crossings
+     {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet},
+     {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet},    // simple
+     {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail},
+     {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail},    // points
+     {CrossConn, CrossConn, CrossConn, CrossConn}, {CrossConn, CrossConn, CrossConn, CrossConn},    // crossover
+     {NotSet, NotSet, NotSet, NotSet},    // unused
+     {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet},
+     {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet},
+     {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet},
+     {Connection, Connection, NotSet, NotSet},    // simple
+     {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail},
+     {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail},
+     {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail},
+     {Lead, Trail, Lead, Trail},    // points
+     {CrossConn, CrossConn, CrossConn, CrossConn}, {CrossConn, CrossConn, CrossConn, CrossConn}, {CrossConn, CrossConn, CrossConn, CrossConn},
+     {CrossConn, CrossConn, CrossConn, CrossConn},    // crossover
+     {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under},
+     {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under},
+     {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under},
+     {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under}, {Connection, Connection, Under, Under},    // bridge
+     {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet},
+     {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet},    // buffers
+     {Connection, Signal, NotSet, NotSet}, {Signal, Connection, NotSet, NotSet}, {Signal, Connection, NotSet, NotSet}, {Connection, Signal, NotSet, NotSet},
+     {Signal, Connection, NotSet, NotSet}, {Signal, Connection, NotSet, NotSet}, {Connection, Signal, NotSet, NotSet}, {Connection, Signal, NotSet, NotSet}, // signals (signal at exit end in forward direction)
+     {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet},    // platform
+     {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet},
+     {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, {End, Connection, NotSet, NotSet}, // continuation
+     {Gap, Connection, NotSet, NotSet}, {Gap, Connection, NotSet, NotSet}, {Gap, Connection, NotSet, NotSet}, {Gap, Connection, NotSet, NotSet},
+     {Gap, Connection, NotSet, NotSet}, {Gap, Connection, NotSet, NotSet}, {Gap, Connection, NotSet, NotSet}, {Gap, Connection, NotSet, NotSet},    // gapjump
+     {NotSet, NotSet, NotSet, NotSet},    // Concourse
+     {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet},
+     {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet},
+     {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet},
+     {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet},
+     {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet},
+     {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet},
+     {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet}, {NotSet, NotSet, NotSet, NotSet},    // Parapets
+     {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet},
+     {Connection, Connection, NotSet, NotSet},    // Arrows
+     {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet},    // Footbridges
+     {NotSet, NotSet, NotSet, NotSet},    // NamedNonStationLocation
+     {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail},
+     {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail}, {Lead, Trail, Lead, Trail},    // points
+     {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet},
+     {Connection, Connection, NotSet, NotSet},    // Arrowed diagonals
+     {NotSet, NotSet, NotSet, NotSet},    // Level crossing
+     {Connection, Connection, NotSet, NotSet}, {Connection, Connection, NotSet, NotSet}    // Underpasses/surface crossings
     };
 
     for(int x = 0; x < 17; x++)
@@ -1450,7 +1712,7 @@ TTrack::TFixedTrackArray::TFixedTrackArray()
 }
 
 // ---------------------------------------------------------------------------
-TGraphicElement::TGraphicElement(): OverlayPlotted(false), OriginalLoaded(false), ScreenSourceSet(false), ScreenGraphicLoaded(false),
+TGraphicElement::TGraphicElement() : OverlayPlotted(false), OriginalLoaded(false), ScreenSourceSet(false), ScreenGraphicLoaded(false),
     ExistingGraphicLoaded(false), Width(16), Height(16)
 {
     OriginalGraphic = new Graphics::TBitmap;
@@ -1462,7 +1724,7 @@ TGraphicElement::TGraphicElement(): OverlayPlotted(false), OriginalLoaded(false)
 
 // ---------------------------------------------------------------------------
 
-TGraphicElement::TGraphicElement(int WidthIn, int HeightIn): OverlayPlotted(false), OriginalLoaded(false), ScreenSourceSet(false), ScreenGraphicLoaded(false),
+TGraphicElement::TGraphicElement(int WidthIn, int HeightIn) : OverlayPlotted(false), OriginalLoaded(false), ScreenSourceSet(false), ScreenGraphicLoaded(false),
     ExistingGraphicLoaded(false), Width(WidthIn), Height(HeightIn)
 {
     OriginalGraphic = new Graphics::TBitmap;
@@ -1536,7 +1798,7 @@ void TGraphicElement::LoadOriginalExistingGraphic(int Caller, int HOffset, int V
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadOriginalExistingGraphic," + AnsiString(HOffset) + "," +
-        AnsiString(VOffset) + "," + AnsiString(WidthIn) + "," + AnsiString(HeightIn));
+                                 AnsiString(VOffset) + "," + AnsiString(WidthIn) + "," + AnsiString(HeightIn));
     if(!OverlayLoaded)
     {
         throw Exception("Overlay not loaded in TGraphicElement::LoadOriginalExistingGraphic()");
@@ -1621,23 +1883,25 @@ bool TTrack::NoActiveOrInactiveTrack(int Caller)
     if(InactiveTrackVector.size() != 0)
     {
         Utilities->CallLogPop(1333);
-        return false;
+        return(false);
     }
     else if(TrackVector.size() == 0)
     {
         Utilities->CallLogPop(1334);
-        return true;
+        return(true);
     }
     else
     {
         for(unsigned int x = 0; x < TrackVector.size(); x++)
         {
             if((TrackVector.at(x).SpeedTag != 0))
+            {
                 TrackPresent = true;
+            }
         }
     }
     Utilities->CallLogPop(1335);
-    return !TrackPresent;
+    return(!TrackPresent);
 }
 
 // ---------------------------------------------------------------------------
@@ -1650,19 +1914,21 @@ bool TTrack::NoActiveTrack(int Caller)
     if(TrackVector.size() == 0)
     {
         Utilities->CallLogPop(1582);
-        return true;
+        return(true);
     }
     else
     {
         for(unsigned int x = 0; x < TrackVector.size(); x++)
         {
             if((TrackVector.at(x).SpeedTag != 0))
+            {
                 TrackPresent = true;
+            }
             break;
         }
     }
     Utilities->CallLogPop(1583);
-    return !TrackPresent;
+    return(!TrackPresent);
 }
 
 // ---------------------------------------------------------------------------
@@ -1670,7 +1936,7 @@ bool TTrack::NoActiveTrack(int Caller)
 void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &ErasedTrackVectorPosition, bool &TrackEraseSuccessfulFlag, bool InternalChecks)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",EraseTrackElement," + AnsiString(HLocInput) + "," +
-        AnsiString(VLocInput) + "," + AnsiString((short)InternalChecks));
+                                 AnsiString(VLocInput) + "," + AnsiString((short)InternalChecks));
     TrackEraseSuccessfulFlag = false;
 // TrackEraseSuccessfulFlag used for both track element and inactive element erase,
 // since have to match platforms as well as track
@@ -1704,7 +1970,6 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
                     }
                     LocationNameMultiMap.erase(SNIt);
                 }
-
                 TrackVector.erase(TrackVector.begin() + TrackMapPtr->second);
                 // ensure erase vector element before map element as iterator no longer valid after a map erase
                 TrackMap.erase(TrackMapPtr);
@@ -1719,8 +1984,10 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
                     if(TextHandler->FindText(1, SName, HPos, VPos))
                     {
                         if(TextHandler->TextErase(5, HPos, VPos, SName))
-                        {;
+                        {
+                            ;
                         } // condition not used
+
                     }
                 }
                 ErasedTrackVectorPosition = VecPos;
@@ -1728,7 +1995,6 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
             }
         }
     }
-
     if(InactiveTrackVector.size() != 0)
     {
         unsigned int VecPos;
@@ -1763,12 +2029,13 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
                 if(TextHandler->FindText(2, SName, HPos, VPos))
                 {
                     if(TextHandler->TextErase(6, HPos, VPos, SName))
-                    {;
+                    {
+                        ;
                     } // condition not used
+
                 }
             }
         }
-
         if(InactiveTrackVector.size() != 0) // need to check again as last access may have erased the last element
         {
             InactiveTrack2MultiMapIterator = InactiveTrack2MultiMap.find(InactiveTrackMapKeyPair); // may be up to 2 elements (platforms) at same location
@@ -1797,8 +2064,10 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
                     if(TextHandler->FindText(3, SName, HPos, VPos))
                     {
                         if(TextHandler->TextErase(7, HPos, VPos, SName))
-                        {;
+                        {
+                            ;
                         } // condition not used
+
                     }
                 }
             }
@@ -1821,12 +2090,12 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
 // ---------------------------------------------------------------------------
 
 void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &TrackLinkingRequiredFlag, bool InternalChecks)
-    // TrackLinkingRequiredFlag only relates to elements that require track linking after plotting - used to set TrackFinished
-    // to false in calling function. New at v2.2.0 new parameter 'Aspect' to ensure signals plotted with correct number of aspects (for pasting)
-    // and also when zero and combined with SignalPost to indicate that adding track rather than pasting
+// TrackLinkingRequiredFlag only relates to elements that require track linking after plotting - used to set TrackFinished
+// to false in calling function. New at v2.2.0 new parameter 'Aspect' to ensure signals plotted with correct number of aspects (for pasting)
+// and also when zero and combined with SignalPost to indicate that adding track rather than pasting
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotAndAddTrackElement," + AnsiString(CurrentTag) + "," +
-        AnsiString(HLocInput) + "," + AnsiString(VLocInput) + "," + AnsiString((short)InternalChecks));
+                                 AnsiString(HLocInput) + "," + AnsiString(VLocInput) + "," + AnsiString((short)InternalChecks));
     bool PlatAllowedFlag = false;
 
     TrackLinkingRequiredFlag = false;
@@ -1847,7 +2116,6 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
         Utilities->CallLogPop(429);
         return; // not assigned yet
     }
-
     TTrackElement TempTrackElement(FixedTrackArray.FixedTrackPiece[CurrentTag]);
 
     TempTrackElement.HLoc = HLocInput;
@@ -1878,15 +2146,22 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
             }
         }
         else if(Aspect == 1)
+        {
             TempTrackElement.SigAspect = TTrackElement::GroundSignal;
+        }
         else if(Aspect == 2)
+        {
             TempTrackElement.SigAspect = TTrackElement::TwoAspect;
+        }
         else if(Aspect == 3)
+        {
             TempTrackElement.SigAspect = TTrackElement::ThreeAspect;
+        }
         else
+        {
             TempTrackElement.SigAspect = TTrackElement::FourAspect;
+        }
     }
-
     bool FoundFlag = false, InactiveFoundFlag = false, NonStationOrLevelCrossingPresent = false, PlatformPresent = false;
     int VecPos = GetVectorPositionFromTrackMap(12, HLocInput, VLocInput, FoundFlag); // active track already there
     TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(5, HLocInput, VLocInput, InactiveFoundFlag); // inactive track already there
@@ -1895,27 +2170,33 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
     if(InactiveFoundFlag) // check if a LocationName already there & if so disallow platform
     {
         if(InactiveTrackElementAt(4, IMPair.first).TrackType == NamedNonStationLocation)
+        {
             NonStationOrLevelCrossingPresent = true;
+        }
         if(InactiveTrackElementAt(117, IMPair.first).TrackType == LevelCrossing)
+        {
             NonStationOrLevelCrossingPresent = true;
+        }
         if(InactiveTrackElementAt(5, IMPair.first).TrackType == Platform)
+        {
             PlatformPresent = true;
+        }
         // no need to check IMPair.second since if that exists it is because .first is a platform
         InactiveSpeedTag1 = InactiveTrackElementAt(6, IMPair.first).SpeedTag;
         InactiveSpeedTag2 = InactiveTrackElementAt(7, IMPair.second).SpeedTag; // note .first & .second will be same if only one present
     }
-
 // check platforms
     if(TempTrackElement.TrackType == Platform)
     {
         if(FoundFlag) // active track element already there
         {
             if(InactiveFoundFlag && ((TempTrackElement.SpeedTag == InactiveSpeedTag1) || (TempTrackElement.SpeedTag == InactiveSpeedTag2)))
-            {;
+            {
+                ;
             }
             // same platform type already there so above keeps PlatAllowedFlag false
             else if((TempTrackElement.SpeedTag == 76) && (TopPlatAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
-    // won't allow a same platform, as TopPlatAllowed not valid for a same platform <--NO, only checks active track, same plat disallowed by first line after if(FoundFlag)
+            // won't allow a same platform, as TopPlatAllowed not valid for a same platform <--NO, only checks active track, same plat disallowed by first line after if(FoundFlag)
             {
                 PlatAllowedFlag = true;
             }
@@ -1953,6 +2234,7 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
                 return;
             }
         } // if(FoundFlag)
+
         Utilities->CallLogPop(431);
         return;
     } // if platform
@@ -1961,7 +2243,7 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
     if(TempTrackElement.TrackType == NamedNonStationLocation)
     {
         if((FoundFlag && (NameAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag) ||
-            (!FoundFlag && !InactiveFoundFlag))
+           (!FoundFlag && !InactiveFoundFlag))
         // need to add && !NonStationOrLevelCrossingPresent, or better - !InactiveFoundFlag to above FoundFlag condition <-- OK done
         {
             TrackLinkingRequiredFlag = true; // needed in case have named a continuation, need to check if adjacent element named
@@ -1988,7 +2270,6 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
             return;
         }
     }
-
 // check if a level crossing - OK if placed on a plain straight track
     if(TempTrackElement.TrackType == LevelCrossing)
     {
@@ -2014,7 +2295,6 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
         Utilities->CallLogPop(434);
         return; // something already there (active or inactive track)
     }
-
 // add LocationName if a FixedNamedLocationElement by checking for any adjacent names, then give all linked named location
 // elements the same name - in case had linked 2 separately named locations - all get the one name that it finds
 // first from an adjacent element search, also non-named location elements at platform locations have timetable name set
@@ -2043,7 +2323,9 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
         TempTrackElement.PlotVariableTrackElement(1, Display); // all named locations already dealt with so no ambiguity between striped & non-striped
     }
     if((TempTrackElement.TrackType != Concourse) && (TempTrackElement.TrackType != Parapet))
+    {
         TrackLinkingRequiredFlag = true; // plats & NamedLocs aleady dealt with
+    }
     if(InternalChecks)
     {
         CheckMapAndTrack(2); // test
@@ -2056,11 +2338,11 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
 // ---------------------------------------------------------------------------
 
 void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement TempTrackElement, int HLocInput, int VLocInput, bool &TrackLinkingRequiredFlag,
-    bool InternalChecks)
-    // new at v2.2.0 - similar to above but keeping speed & length attributes (for pasting) and also pastes location names
+                                                  bool InternalChecks)
+// new at v2.2.0 - similar to above but keeping speed & length attributes (for pasting) and also pastes location names
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotPastedTrackElementWithAttributes," + AnsiString(HLocInput) + "," +
-        AnsiString(VLocInput) + "," + AnsiString((short)InternalChecks));
+                                 AnsiString(VLocInput) + "," + AnsiString((short)InternalChecks));
     bool PlatAllowedFlag = false;
 
     TrackLinkingRequiredFlag = false;
@@ -2072,13 +2354,14 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
         Utilities->CallLogPop(2063);
         return; // not assigned yet
     }
-
     TempTrackElement.HLoc = HLocInput;
     TempTrackElement.VLoc = VLocInput;
     for(int x = 0; x < 4; x++) // unset any gaps
     {
         if(TempTrackElement.Config[x] == Gap)
+        {
             TempTrackElement.ConnLinkPos[x] = -1;
+        }
         TempTrackElement.Conn[x] = -1;
     }
     SetElementID(5, TempTrackElement); // TempTrackElement is the one to be added
@@ -2099,27 +2382,33 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
     if(InactiveFoundFlag) // check if a LocationName already there & if so disallow platform
     {
         if(InactiveTrackElementAt(119, IMPair.first).TrackType == NamedNonStationLocation)
+        {
             NonStationOrLevelCrossingPresent = true;
+        }
         if(InactiveTrackElementAt(120, IMPair.first).TrackType == LevelCrossing)
+        {
             NonStationOrLevelCrossingPresent = true;
+        }
         if(InactiveTrackElementAt(121, IMPair.first).TrackType == Platform)
+        {
             PlatformPresent = true;
+        }
         // no need to check IMPair.second since if that exists it is because .first is a platform
         InactiveSpeedTag1 = InactiveTrackElementAt(122, IMPair.first).SpeedTag;
         InactiveSpeedTag2 = InactiveTrackElementAt(123, IMPair.second).SpeedTag; // note .first & .second will be same if only one present
     }
-
 // check platforms
     if(TempTrackElement.TrackType == Platform)
     {
         if(FoundFlag) // active track element already there
         {
             if(InactiveFoundFlag && ((TempTrackElement.SpeedTag == InactiveSpeedTag1) || (TempTrackElement.SpeedTag == InactiveSpeedTag2)))
-            {;
+            {
+                ;
             }
             // same platform type already there so above keeps PlatAllowedFlag false
             else if((TempTrackElement.SpeedTag == 76) && (TopPlatAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
-    // won't allow a same platform, as TopPlatAllowed not valid for a same platform <--NO, only checks active track, same plat disallowed by first line after if(FoundFlag)
+            // won't allow a same platform, as TopPlatAllowed not valid for a same platform <--NO, only checks active track, same plat disallowed by first line after if(FoundFlag)
             {
                 PlatAllowedFlag = true;
             }
@@ -2160,6 +2449,7 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
                 return;
             }
         } // if(FoundFlag)
+
         Utilities->CallLogPop(2065);
         return;
     } // if platform
@@ -2168,7 +2458,7 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
     if(TempTrackElement.TrackType == NamedNonStationLocation)
     {
         if((FoundFlag && (NameAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag) ||
-            (!FoundFlag && !InactiveFoundFlag))
+           (!FoundFlag && !InactiveFoundFlag))
         // need to add && !NonStationOrLevelCrossingPresent, or better - !InactiveFoundFlag to above FoundFlag condition <-- OK done
         {
             TrackLinkingRequiredFlag = true; // needed in case have named a continuation, need to check if adjacent element named
@@ -2198,7 +2488,6 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
             return;
         }
     }
-
 // check if a level crossing - OK if placed on a plain straight track
     if(TempTrackElement.TrackType == LevelCrossing)
     {
@@ -2224,7 +2513,6 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
         Utilities->CallLogPop(2070);
         return; // something already there (active or inactive track)
     }
-
 // add LocationName if a FixedNamedLocationElement by checking for any adjacent names, then give all linked named location
 // elements the same name - in case had linked 2 separately named locations - all get the one name that it finds
 // first from an adjacent element search, also non-named location elements at platform locations have timetable name set
@@ -2253,7 +2541,9 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
         TempTrackElement.PlotVariableTrackElement(6, Display); // all named locations already dealt with so no ambiguity between striped & non-striped
     }
     if((TempTrackElement.TrackType != Concourse) && (TempTrackElement.TrackType != Parapet))
+    {
         TrackLinkingRequiredFlag = true; // plats & NamedLocs aleady dealt with
+    }
     if(InternalChecks)
     {
         CheckMapAndTrack(12); // test
@@ -2266,9 +2556,9 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
 // ---------------------------------------------------------------------------
 
 bool TTrack::TryToConnectTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool GiveMessages)
-    // GiveMessages relates to the call to LinkTrack or  LinkTrackNoMessages
-    // return bool = true for success
-    // LocError = true for location error & HLoc & VLoc to be inverted
+// GiveMessages relates to the call to LinkTrack or  LinkTrackNoMessages
+// return bool = true for success
+// LocError = true for location error & HLoc & VLoc to be inverted
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TryToConnectTrack," + AnsiString((short)GiveMessages));
     LocError = false;
@@ -2276,14 +2566,16 @@ bool TTrack::TryToConnectTrack(int Caller, bool &LocError, int &HLoc, int &VLoc,
     if(TrackVector.size() == 0)
     {
         Utilities->CallLogPop(437);
-        return false;
+        return(false);
     }
     if(GapsUnset(7))
     {
         if(GiveMessages)
+        {
             ShowMessage("Gaps must be set before track can be validated");
+        }
         Utilities->CallLogPop(1135);
-        return false;
+        return(false);
     }
 // below sets all Conns and CLks to -1 except for gapjumps that match and are properly set,
 // returns true for any unset gaps
@@ -2304,7 +2596,7 @@ bool TTrack::TryToConnectTrack(int Caller, bool &LocError, int &HLoc, int &VLoc,
         if(!LinkTrack(1, LocError, HLoc, VLoc, false))
         {
             Utilities->CallLogPop(439);
-            return false;
+            return(false);
         }
     }
     else
@@ -2312,16 +2604,15 @@ bool TTrack::TryToConnectTrack(int Caller, bool &LocError, int &HLoc, int &VLoc,
         if(!LinkTrackNoMessages(1, false))
         {
             Utilities->CallLogPop(1131);
-            return false;
+            return(false);
         }
     }
-
 // here if pre-check successful
     if(!RepositionAndMapTrack(0))
     {
         ShowMessage("Error in RepositionAndMapTrack during TryToConnectTrack.  Railway file is corrupt, further use may cause a system crash");
         Utilities->CallLogPop(1138);
-        return false;
+        return(false);
     }
 // now perform the final assembly - FinalCall = true
     if(GiveMessages)
@@ -2329,7 +2620,7 @@ bool TTrack::TryToConnectTrack(int Caller, bool &LocError, int &HLoc, int &VLoc,
         if(!LinkTrack(2, LocError, HLoc, VLoc, true))
         {
             Utilities->CallLogPop(1116);
-            return false;
+            return(false);
         }
     }
     else
@@ -2337,10 +2628,9 @@ bool TTrack::TryToConnectTrack(int Caller, bool &LocError, int &HLoc, int &VLoc,
         if(!LinkTrackNoMessages(2, true))
         {
             Utilities->CallLogPop(1132);
-            return false;
+            return(false);
         }
     }
-
 // success
 
     PopulateLCVector(0);
@@ -2364,12 +2654,12 @@ bool TTrack::TryToConnectTrack(int Caller, bool &LocError, int &HLoc, int &VLoc,
         }
     }
     Utilities->CallLogPop(440);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
 bool TTrack::ErrorInTrackBeforeSetGaps(int Caller, int &HLoc, int &VLoc)
-    // unused - too time-consuming - double brute force search
+// unused - too time-consuming - double brute force search
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ErrorInTrackBeforeSetGaps");
     int NewHLoc, NewVLoc;
@@ -2380,11 +2670,17 @@ bool TTrack::ErrorInTrackBeforeSetGaps(int Caller, int &HLoc, int &VLoc)
         for(unsigned int y = 0; y < 4; y++) // check all links for each element
         {
             if(TrackVector.at(x).Link[y] <= 0)
+            {
                 continue; // no link
+            }
             if(TrackVector.at(x).Config[y] == End)
+            {
                 continue; // buffer or continuation
+            }
             if(TrackVector.at(x).Config[y] == Gap)
+            {
                 continue; // gap jump
+            }
             // get required H & V for track element joining link 'y'
             NewHLoc = TrackVector.at(x).HLoc + LinkHVArray[TrackVector.at(x).Link[y]][0];
             NewVLoc = TrackVector.at(x).VLoc + LinkHVArray[TrackVector.at(x).Link[y]][1];
@@ -2412,23 +2708,24 @@ bool TTrack::ErrorInTrackBeforeSetGaps(int Caller, int &HLoc, int &VLoc)
                         HLoc = TrackVector.at(x).HLoc;
                         VLoc = TrackVector.at(x).VLoc;
                         Utilities->CallLogPop(441);
-                        return true;
+                        return(true);
                     }
                     break; // success, so break out of 'z' loop
                 } // if((TrackVector.at(z).HLoc== NewHLoc) &&....
+
             } // for z...
-            // if there isn't a connection set the invert values for the offending element
+              // if there isn't a connection set the invert values for the offending element
             if(!ConnectionFoundFlag)
             {
                 HLoc = TrackVector.at(x).HLoc;
                 VLoc = TrackVector.at(x).VLoc;
                 Utilities->CallLogPop(442);
-                return true;
+                return(true);
             }
         } // for y....
     } // for x...
     Utilities->CallLogPop(443);
-    return false; // all OK
+    return(false); // all OK
 }
 
 // ---------------------------------------------------------------------------
@@ -2436,14 +2733,16 @@ bool TTrack::ErrorInTrackBeforeSetGaps(int Caller, int &HLoc, int &VLoc)
 bool TTrack::FindNonPlatformMatch(int Caller, int HLoc, int VLoc, int &Position, TTrackElement &TrackElement) // true if find one
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FindNonPlatformMatch," + AnsiString(HLoc) + "," + AnsiString(VLoc) +
-        TrackElement.LogTrack(0));
+                                 TrackElement.LogTrack(0));
     bool FoundFlag;
 
     Position = GetVectorPositionFromTrackMap(13, HLoc, VLoc, FoundFlag);
     if(FoundFlag)
+    {
         TrackElement = TrackVector.at(Position);
+    }
     Utilities->CallLogPop(444);
-    return FoundFlag;
+    return(FoundFlag);
 }
 
 // ---------------------------------------------------------------------------
@@ -2454,12 +2753,12 @@ bool TTrack::ReturnNextTrackElement(int Caller, TTrackElement &Next)
     if(NextTrackElementPtr >= TrackVector.end())
     {
         Utilities->CallLogPop(1336);
-        return false;
+        return(false);
     }
     Next = *NextTrackElementPtr;
     NextTrackElementPtr++;
     Utilities->CallLogPop(1337);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -2470,12 +2769,12 @@ bool TTrack::ReturnNextInactiveTrackElement(int Caller, TTrackElement &Next)
     if(NextTrackElementPtr >= InactiveTrackVector.end())
     {
         Utilities->CallLogPop(1338);
-        return false;
+        return(false);
     }
     Next = *NextTrackElementPtr;
     NextTrackElementPtr++;
     Utilities->CallLogPop(1339);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -2489,21 +2788,23 @@ int TTrack::NumberOfGaps(int Caller)
     if(TrackVector.size() == 0)
     {
         Utilities->CallLogPop(1340);
-        return 0;
+        return(0);
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         if(TrackVector.at(x).TrackType == GapJump)
+        {
             Count++;
+        }
     }
     Utilities->CallLogPop(1341);
-    return Count;
+    return(Count);
 }
 
 // ---------------------------------------------------------------------------
 bool TTrack::ResetConnClkCheckUnsetGapJumps(int Caller)
-    // above sets all Conns and CLks to -1 except for gapjumps that match and are properly set
-    // returns true for any unset gaps
+// above sets all Conns and CLks to -1 except for gapjumps that match and are properly set
+// returns true for any unset gaps
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ResetConnClkCheckUnsetGapJumps");
     bool UnsetGaps = false;
@@ -2511,7 +2812,7 @@ bool TTrack::ResetConnClkCheckUnsetGapJumps(int Caller)
     if(TrackVector.size() == 0)
     {
         Utilities->CallLogPop(445);
-        return false;
+        return(false);
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
@@ -2546,7 +2847,7 @@ bool TTrack::ResetConnClkCheckUnsetGapJumps(int Caller)
                 }
 
                 if(TrackVector.at(TrackVector.at(x).Conn[0]).TrackType != GapJump)
-    // check that the element pointed to by the gap link is a GapJump & if not clear Conns & CLks & reset Lk[0]
+                // check that the element pointed to by the gap link is a GapJump & if not clear Conns & CLks & reset Lk[0]
                 {
                     for(unsigned int y = 0; y < 4; y++)
                     {
@@ -2558,8 +2859,8 @@ bool TTrack::ResetConnClkCheckUnsetGapJumps(int Caller)
                 }
 // here if gap connection is itself a GapJump
                 if(TrackVector.at(TrackVector.at(x).Conn[0]).Conn[0] != (int)x)
-    // check that the element pointed to by the gap link is a GapJump & that its gap link points back to 'x'
-    // if not clear Conns & CLks & reset Lk[0]
+                // check that the element pointed to by the gap link is a GapJump & that its gap link points back to 'x'
+                // if not clear Conns & CLks & reset Lk[0]
                 {
                     for(unsigned int y = 0; y < 4; y++)
                     {
@@ -2573,9 +2874,10 @@ bool TTrack::ResetConnClkCheckUnsetGapJumps(int Caller)
 // hence no more action needed on these Conns & CLks
             }
         } // else //gap jump
+
     } // for x...
     Utilities->CallLogPop(446);
-    return UnsetGaps;
+    return(UnsetGaps);
 }
 
 // ---------------------------------------------------------------------------
@@ -2623,9 +2925,13 @@ void TTrack::LoadTrack(int Caller, std::ifstream& VecFile, bool &GraphicsFollow)
         {
             VecFile >> TempInt;
             if(TempInt == 0)
+            {
                 TrackElement.CallingOnSet = false;
+            }
             else
+            {
                 TrackElement.CallingOnSet = true;
+            }
         }
         VecFile >> TempInt;
         TrackElement.Length01 = TempInt;
@@ -2633,15 +2939,23 @@ void TTrack::LoadTrack(int Caller, std::ifstream& VecFile, bool &GraphicsFollow)
         TrackElement.Length23 = TempInt;
         VecFile >> TempInt;
         if((TempInt != -1) && (TempInt < 10))
+        {
             TempInt = 10; // added at v0.6 to ensure old railway speed limits at least 10km/h
+        }
         if((TempInt != -1) && (TempInt > TTrain::MaximumSpeedLimit))
+        {
             TempInt = TTrain::MaximumSpeedLimit; // added at v2.1.0 to limit max speed
+        }
         TrackElement.SpeedLimit01 = TempInt;
         VecFile >> TempInt;
         if((TempInt != -1) && (TempInt < 10))
+        {
             TempInt = 10; // added at v0.6 to ensure old railway speed limits at least 10km/h
+        }
         if((TempInt != -1) && (TempInt > TTrain::MaximumSpeedLimit))
+        {
             TempInt = TTrain::MaximumSpeedLimit; // added at v2.1.0 to limit max speed
+        }
         TrackElement.SpeedLimit23 = TempInt;
 
         TrackElement.LocationName = Utilities->LoadFileString(VecFile);
@@ -2669,7 +2983,9 @@ void TTrack::LoadTrack(int Caller, std::ifstream& VecFile, bool &GraphicsFollow)
             }
         }
         if(TrackElement.SpeedTag != 0)
+        {
             TrackPush(8, TrackElement); // don't save default elements (now dispensed with)
+        }
     }
     int NumberOfInactiveElements = 0;
 
@@ -2889,9 +3205,13 @@ void TTrack::SaveTrack(int Caller, std::ofstream& VecFile, bool GraphicsFollow)
         if(TrackElement.TrackType == SignalPost)
         {
             if(TrackElement.CallingOnSet)
+            {
                 VecFile << int(1) << '\n';
+            }
             else
+            {
                 VecFile << int(0) << '\n';
+            }
         }
         VecFile << TrackElement.Length01 << '\n';
         VecFile << TrackElement.Length23 << '\n';
@@ -2955,7 +3275,7 @@ bool TTrack::CheckTrackElementsInFile(int Caller, int &NumberOfActiveElements, b
     if((NumberOfActiveElements < 0) || (NumberOfActiveElements > 1000000)) // No of active elements (up to 500 screens all completely full!)
     {
         Utilities->CallLogPop(1513);
-        return false;
+        return(false);
     }
 // if(!Utilities->CheckAndCompareFileString(VecFile, "**Active elements**")) dropped at v2.4.0 as could have a '1' at the end if there are graphics
     AnsiString MarkerString;
@@ -2963,7 +3283,7 @@ bool TTrack::CheckTrackElementsInFile(int Caller, int &NumberOfActiveElements, b
     if(!Utilities->CheckAndReadFileString(VecFile, MarkerString)) // new version for v2.4.0
     {
         Utilities->CallLogPop(1758);
-        return false;
+        return(false);
     }
     if(MarkerString[MarkerString.Length()] == '1')
     {
@@ -2974,26 +3294,26 @@ bool TTrack::CheckTrackElementsInFile(int Caller, int &NumberOfActiveElements, b
         if(!Utilities->CheckFileInt(VecFile, x, x)) // TrackVectorNumber, must be 'x'
         {
             Utilities->CallLogPop(1759);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         int SpeedTag = TempInt;
         if((TempInt < 0) || (TempInt >= FirstUnusedSpeedTagNumber) || (TempInt == 17)) // Speedtag
         {
             Utilities->CallLogPop(1514);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if(((TempInt > 999999) || (TempInt < -1000001)) && (TempInt != -2000000000)) // HLoc
         {
             Utilities->CallLogPop(1495);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if(((TempInt > 999999) || (TempInt < -1000001)) && (TempInt != -2000000000)) // VLoc
         {
             Utilities->CallLogPop(1497);
-            return false;
+            return(false);
         }
         if((SpeedTag > 87) && (SpeedTag < 96)) // GapJumps 88-95 incl
         {
@@ -3001,23 +3321,23 @@ bool TTrack::CheckTrackElementsInFile(int Caller, int &NumberOfActiveElements, b
             if((TempInt < -1) || (TempInt > 3)) // ConnLinkPos[0]
             {
                 Utilities->CallLogPop(1499);
-                return false;
+                return(false);
             }
             VecFile >> TempInt;
             if((TempInt < -1) || (TempInt > 999999)) // Conn[0]
             {
                 Utilities->CallLogPop(1500);
-                return false;
+                return(false);
             }
         }
         if(((SpeedTag >= 7) && (SpeedTag <= 14)) || ((SpeedTag >= 28) && (SpeedTag <= 43)) || ((SpeedTag >= 132) && (SpeedTag <= 139)) ||
-            ((SpeedTag >= 68) && (SpeedTag <= 75)))
+           ((SpeedTag >= 68) && (SpeedTag <= 75)))
         {
             VecFile >> TempInt;
             if((TempInt < -1) || (TempInt > 5)) // Points & signal attribute
             {
                 Utilities->CallLogPop(1502);
-                return false;
+                return(false);
             }
         }
         if((SpeedTag >= 68) && (SpeedTag <= 75)) // signals
@@ -3026,47 +3346,47 @@ bool TTrack::CheckTrackElementsInFile(int Caller, int &NumberOfActiveElements, b
             if((TempInt != 0) && (TempInt != 1)) // CallingOnSet
             {
                 Utilities->CallLogPop(1155);
-                return false;
+                return(false);
             }
         }
         VecFile >> TempInt;
         if((TempInt < -1) || (TempInt > 999999)) // Length01
         {
             Utilities->CallLogPop(1503);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if((TempInt < -1) || (TempInt > 999999)) // Length23
         {
             Utilities->CallLogPop(1504);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if((TempInt < -1) || (TempInt > 999999)) // SpeedLimit01
         {
             Utilities->CallLogPop(1505);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if((TempInt < -1) || (TempInt > 999999)) // SpeedLimit23
         {
             Utilities->CallLogPop(1506);
-            return false;
+            return(false);
         }
         if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
         {
             Utilities->CallLogPop(1142);
-            return false; // LocationName
+            return(false); // LocationName
         }
         if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
         {
             Utilities->CallLogPop(1143);
-            return false; // ActiveTrackElementName
+            return(false); // ActiveTrackElementName
         }
         if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
         {
             Utilities->CallLogPop(1787);
-            return false; // marker
+            return(false); // marker
         }
     }
     int NumberOfInactiveElements = 0;
@@ -3075,51 +3395,51 @@ bool TTrack::CheckTrackElementsInFile(int Caller, int &NumberOfActiveElements, b
     if(NumberOfInactiveElements < 0) // No of active elements
     {
         Utilities->CallLogPop(1493);
-        return false;
+        return(false);
     }
     if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
     {
         Utilities->CallLogPop(1764);
-        return false; // **Inactive elements** marker
+        return(false); // **Inactive elements** marker
     }
     for(int x = 0; x < NumberOfInactiveElements; x++)
     {
         if(!Utilities->CheckFileInt(VecFile, x, x)) // TrackVectorNumber, must be 'x'
         {
             Utilities->CallLogPop(1765);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if((TempInt < 0) || (TempInt >= FirstUnusedSpeedTagNumber) || (TempInt == 17)) // Speedtag
         {
             Utilities->CallLogPop(1494);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if(((TempInt > 999999) || (TempInt < -1000001)) && (TempInt != -2000000000)) // HLoc
         {
             Utilities->CallLogPop(1496);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if(((TempInt > 999999) || (TempInt < -1000001)) && (TempInt != -2000000000)) // VLoc
         {
             Utilities->CallLogPop(1498);
-            return false;
+            return(false);
         }
         if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
         {
             Utilities->CallLogPop(1144);
-            return false; // LocationName
+            return(false); // LocationName
         }
         if(!(Utilities->CheckFileStringZeroDelimiter(VecFile)))
         {
             Utilities->CallLogPop(1788);
-            return false; // marker
+            return(false); // marker
         }
     }
     Utilities->CallLogPop(1507);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -3132,7 +3452,7 @@ bool TTrack::CheckUserGraphics(int Caller, std::ifstream &VecFile, UnicodeString
     if((NumberOfGraphics < 0) || (NumberOfGraphics > 100000)) // 100,000 should be plenty!
     {
         Utilities->CallLogPop(2168);
-        return false;
+        return(false);
     }
     // filename in Graphics folder, then HPos, then VPos
     AnsiString FileName = "", TempStr = "";
@@ -3146,58 +3466,58 @@ bool TTrack::CheckUserGraphics(int Caller, std::ifstream &VecFile, UnicodeString
             {
                 Utilities->CallLogPop(2169);
                 delete TempPicture;
-                return false;
+                return(false);
             }
             TempPicture->LoadFromFile(GraphicsPath + "\\" + FileName); // only loaded to check and catch errors
             delete TempPicture;
             if(!Utilities->CheckFileInt(VecFile, -2000000, 2000000)) // HPos, allow plenty of scope
             {
                 Utilities->CallLogPop(2170);
-                return false;
+                return(false);
             }
             if(!Utilities->CheckFileInt(VecFile, -2000000, 2000000)) // VPos
             {
                 Utilities->CallLogPop(2171);
-                return false;
+                return(false);
             }
         }
         catch(const EInvalidGraphic &e)
         {
             //move file pointer to end of graphic section for later checks in session files
             Utilities->CheckAndReadFileString(VecFile, TempStr); //get rid of HPos
-            Utilities->CheckAndReadFileString(VecFile, TempStr);//VPos
+            Utilities->CheckAndReadFileString(VecFile, TempStr); //VPos
             for(int y = x + 1; y < NumberOfGraphics; y++)
             {
-                Utilities->CheckAndReadFileString(VecFile, TempStr);//next FileName
-                Utilities->CheckAndReadFileString(VecFile, TempStr);//next VPos
-                Utilities->CheckAndReadFileString(VecFile, TempStr);//next VPos
+                Utilities->CheckAndReadFileString(VecFile, TempStr); //next FileName
+                Utilities->CheckAndReadFileString(VecFile, TempStr); //next VPos
+                Utilities->CheckAndReadFileString(VecFile, TempStr); //next VPos
             }
             ShowMessage(FileName +
-                " has an incorrect file format, user graphics can't be loaded. Ensure that all user graphic files are valid with extension .bmp, .gif, .jpg, or .png");
+                        " has an incorrect file format, user graphics can't be loaded. Ensure that all user graphic files are valid with extension .bmp, .gif, .jpg, or .png");
             Utilities->CallLogPop(2172);
             delete TempPicture;
-            return true;      //for these file errors allow railway or session to be loaded, changed at v2.6.0
+            return(true);      //for these file errors allow railway or session to be loaded, changed at v2.6.0
         }
         catch(const Exception &e)
         {
             //move file pointer to end of graphic section for later checks in session files
             Utilities->CheckAndReadFileString(VecFile, TempStr); //get rid of HPos
-            Utilities->CheckAndReadFileString(VecFile, TempStr);//VPos
+            Utilities->CheckAndReadFileString(VecFile, TempStr); //VPos
             for(int y = x + 1; y < NumberOfGraphics; y++)
             {
-                Utilities->CheckAndReadFileString(VecFile, TempStr);//next FileName
-                Utilities->CheckAndReadFileString(VecFile, TempStr);//next VPos
-                Utilities->CheckAndReadFileString(VecFile, TempStr);//next VPos
+                Utilities->CheckAndReadFileString(VecFile, TempStr); //next FileName
+                Utilities->CheckAndReadFileString(VecFile, TempStr); //next VPos
+                Utilities->CheckAndReadFileString(VecFile, TempStr); //next VPos
             }
             ShowMessage("Unable to load user graphic files, ensure that " + FileName +
-                " exists in the 'Graphics' folder and that it is has extension .bmp, .gif, .jpg, or .png.");
+                        " exists in the 'Graphics' folder and that it is has extension .bmp, .gif, .jpg, or .png.");
             Utilities->CallLogPop(2173);
             delete TempPicture;
-            return true;      //for these file errors allow railway or session to be loaded, changed at v2.6.0
+            return(true);      //for these file errors allow railway or session to be loaded, changed at v2.6.0
         }
     }
     Utilities->CallLogPop(2174);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -3258,46 +3578,46 @@ bool TTrack::CheckActiveLCVector(int Caller, std::ifstream &VecFile)
         if(!Utilities->CheckFileInt(VecFile, 0, 2))   //changed from bool at v2.6.0 to allow TypeOfRoute == 2 for barriers manually lowered
         {
             Utilities->CallLogPop(1970);
-            return false;
+            return(false);
         }
         if(!Utilities->CheckFileBool(VecFile))
         {
             Utilities->CallLogPop(1971);
-            return false;
+            return(false);
         }
         if(!Utilities->CheckFileInt(VecFile, 0, 3))
         {
             Utilities->CallLogPop(1972);
-            return false;
+            return(false);
         }
         if(!Utilities->CheckFileDouble(VecFile))
         {
             Utilities->CallLogPop(1973);
-            return false;
+            return(false);
         }
         if(!Utilities->CheckFileInt(VecFile, 1, 2))
         {
             Utilities->CallLogPop(1974);
-            return false;
+            return(false);
         }
         if(!Utilities->CheckFileInt(VecFile, -1000001, 999999))
         {
             Utilities->CallLogPop(1975);
-            return false;
+            return(false);
         }
         if(!Utilities->CheckFileInt(VecFile, -1000001, 999999))
         {
             Utilities->CallLogPop(1976);
-            return false;
+            return(false);
         }
         if(!Utilities->CheckFileDouble(VecFile))
         {
             Utilities->CallLogPop(1977);
-            return false;
+            return(false);
         }
     }
     Utilities->CallLogPop(1978);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -3345,7 +3665,7 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
             {
                 // only plot if on screen, to save time
                 if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
-                    ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
+                   ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
                 {
                     Next.PlotVariableTrackElement(2, Disp); // striped if not named
                 }
@@ -3361,16 +3681,24 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
         if(Next.GraphicPtr != 0) // don't think this should ever be 0 but leave as a safeguard
         {
             if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
-                ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
+               ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
             {
                 if(Next.TrackType == Points)
+                {
                     PlotPoints(5, Next, Disp, BothPointFilletsAndBasicLCs);
+                }
                 else if(Next.TrackType == SignalPost)
+                {
                     PlotSignal(9, Next, Disp);
+                }
                 else if(Next.TrackType == GapJump)
+                {
                     PlotGap(0, Next, Disp);
+                }
                 else
+                {
                     Next.PlotVariableTrackElement(3, Disp); // for footcrossings, may be striped or not
+                }
             }
         }
     }
@@ -3386,7 +3714,7 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
                 {
                     // only plot if on screen, to save time, & OK as plotting one by one here
                     if(((Next.HLoc - Display->DisplayOffsetH) >= 0) && ((Next.HLoc - Display->DisplayOffsetH) < Utilities->ScreenElementWidth) &&
-                        ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
+                       ((Next.VLoc - Display->DisplayOffsetV) >= 0) && ((Next.VLoc - Display->DisplayOffsetV) < Utilities->ScreenElementHeight))
                     {
                         if(GetTrackElementFromTrackMap(1, Next.HLoc, Next.VLoc).SpeedTag == 1)
                         {
@@ -3421,8 +3749,8 @@ void TTrack::RebuildUserGraphics(int Caller, TDisplay *Disp) // new at v2.4.0
     {
         UGI = UserGraphicVectorAt(4, x);
         if(((UGI.HPos + UGI.Width - (Display->DisplayOffsetH * 16)) >= 0) && ((UGI.HPos - (Display->DisplayOffsetH * 16)) <
-            (Utilities->ScreenElementWidth * 16)) && ((UGI.VPos + UGI.Height - (Display->DisplayOffsetV * 16)) >= 0) &&
-            ((UGI.VPos - (Display->DisplayOffsetV * 16)) < (Utilities->ScreenElementHeight * 16)))
+                                                                              (Utilities->ScreenElementWidth * 16)) && ((UGI.VPos + UGI.Height - (Display->DisplayOffsetV * 16)) >= 0) &&
+           ((UGI.VPos - (Display->DisplayOffsetV * 16)) < (Utilities->ScreenElementHeight * 16)))
         {
             Disp->PlotAndAddUserGraphic(0, UGI);
         }
@@ -3460,7 +3788,8 @@ void TTrack::WriteTrackToImage(int Caller, Graphics::TBitmap *Bitmap)
         if(Next.GraphicPtr != 0) // don't think this should ever be 0 but leave as a safeguard
         {
             if(Next.LocationName == "") // plot as named or unnamed (striped)
-            { // default is not striped
+            {
+                // default is not striped
                 switch(Next.SpeedTag)
                 {
                 case 76: // t platform
@@ -3534,23 +3863,23 @@ void TTrack::WriteTrackToImage(int Caller, Graphics::TBitmap *Bitmap)
                 if(Next.SpeedTag < 28)
                 {
                     Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16),
-                        RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 7][0]);
+                                         RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 7][0]);
                     Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16),
-                        RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 7][1]);
+                                         RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 7][1]);
                 }
                 else if(Next.SpeedTag < 132)
                 {
                     Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16),
-                        RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 20][0]);
+                                         RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 20][0]);
                     Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16),
-                        RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 20][1]);
+                                         RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 20][1]);
                 }
                 else
                 {
                     Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16),
-                        RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 108][0]);
+                                         RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 108][0]);
                     Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16),
-                        RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 108][1]);
+                                         RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 108][1]);
                 }
             }
             else if(Next.TrackType == GapJump) // plot as connected or unconnected
@@ -3632,23 +3961,39 @@ void TTrack::WriteTrackToImage(int Caller, Graphics::TBitmap *Bitmap)
                         // in PlatformOnSignalSide, which return true for platform NOT on signal side for rh sigs
                         int HOffset = 0;
                         if(Next.SpeedTag > 73)
+                        {
                             HOffset = 5;
+                        }
                         else if(Next.SpeedTag == 71)
+                        {
                             HOffset = 9;
+                        }
                         int VOffset = 0;
                         if(Next.SpeedTag == 69)
+                        {
                             VOffset = 9;
+                        }
                         else if(Next.SpeedTag == 72)
+                        {
                             VOffset = 5;
+                        }
                         else if(Next.SpeedTag == 74)
+                        {
                             VOffset = 5;
+                        }
                         Graphics::TBitmap *GraphicPtr;
                         if(Next.SpeedTag > 71)
+                        {
                             GraphicPtr = RailGraphics->bmDiagonalSignalBlank;
+                        }
                         else if(Next.SpeedTag < 70)
+                        {
                             GraphicPtr = RailGraphics->bmStraightNSSignalBlank;
+                        }
                         else
+                        {
                             GraphicPtr = RailGraphics->bmStraightEWSignalBlank;
+                        }
                         Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16) + HOffset, ((Next.VLoc - GetVLocMin()) * 16) + VOffset, GraphicPtr);
                         // plot special signal platform if present
                         Graphics::TBitmap* SignalPlatformGraphic;
@@ -3709,7 +4054,7 @@ void TTrack::WriteGraphicsToImage(int Caller, Graphics::TBitmap *Bitmap)
         {
             Bitmap->Canvas->CopyMode = cmSrcCopy;
             Bitmap->Canvas->Draw(UserGraphicVectorAt(26, x).HPos - (GetHLocMin() * 16), UserGraphicVectorAt(27, x).VPos - (GetVLocMin() * 16),
-                UserGraphicVectorAt(28, x).UserGraphic->Graphic);
+                                 UserGraphicVectorAt(28, x).UserGraphic->Graphic);
         }
     }
     Utilities->CallLogPop(2193);
@@ -3785,17 +4130,17 @@ void TTrack::WriteOperatingTrackToImage(int Caller, Graphics::TBitmap *Bitmap)
                 if(Next.SpeedTag < 28)
                 {
                     Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16),
-                        RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 7][Next.Attribute]);
+                                         RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 7][Next.Attribute]);
                 }
                 else if(Next.SpeedTag < 132)
                 {
                     Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16),
-                        RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 20][Next.Attribute]);
+                                         RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 20][Next.Attribute]);
                 }
                 else
                 {
                     Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16),
-                        RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 108][Next.Attribute]);
+                                         RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 108][Next.Attribute]);
                 }
             }
             else if(Next.TrackType == GapJump) // plot as connected
@@ -3844,23 +4189,39 @@ void TTrack::WriteOperatingTrackToImage(int Caller, Graphics::TBitmap *Bitmap)
                         // in PlatformOnSignalSide, which return true for platform NOT on signal side for rh sigs
                         int HOffset = 0;
                         if(Next.SpeedTag > 73)
+                        {
                             HOffset = 5;
+                        }
                         else if(Next.SpeedTag == 71)
+                        {
                             HOffset = 9;
+                        }
                         int VOffset = 0;
                         if(Next.SpeedTag == 69)
+                        {
                             VOffset = 9;
+                        }
                         else if(Next.SpeedTag == 72)
+                        {
                             VOffset = 5;
+                        }
                         else if(Next.SpeedTag == 74)
+                        {
                             VOffset = 5;
+                        }
                         Graphics::TBitmap *GraphicPtr;
                         if(Next.SpeedTag > 71)
+                        {
                             GraphicPtr = RailGraphics->bmDiagonalSignalBlank;
+                        }
                         else if(Next.SpeedTag < 70)
+                        {
                             GraphicPtr = RailGraphics->bmStraightNSSignalBlank;
+                        }
                         else
+                        {
                             GraphicPtr = RailGraphics->bmStraightEWSignalBlank;
+                        }
                         Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16) + HOffset, ((Next.VLoc - GetVLocMin()) * 16) + VOffset, GraphicPtr);
                         // plot special signal platform if present
                         Graphics::TBitmap* SignalPlatformGraphic;
@@ -3887,7 +4248,7 @@ void TTrack::WriteOperatingTrackToImage(int Caller, Graphics::TBitmap *Bitmap)
                             Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTable[x].SigPtr);
                         }
                         if((Next.CallingOnSet) && (Next.SigAspect != TTrackElement::GroundSignal))
-    // normal signal calling on, need to add extra graphic, basic red signal plotted above from SigTable
+                        // normal signal calling on, need to add extra graphic, basic red signal plotted above from SigTable
                         {
                             if(Next.SpeedTag == 68)
                             {
@@ -3930,7 +4291,7 @@ void TTrack::WriteOperatingTrackToImage(int Caller, Graphics::TBitmap *Bitmap)
                                 {
                                     // plot blank first, then plot platform if present - striped or not depending on LocationName being set
                                     Display->PlotSignalBlankOnBitmap(Next.HLoc - GetHLocMin(), Next.VLoc - GetVLocMin(), Next.SpeedTag, Bitmap,
-                                        Utilities->RHSignalFlag); // in case existing signal is a double yellow
+                                                                     Utilities->RHSignalFlag); // in case existing signal is a double yellow
                                     // plot special signal platform if present
                                     Graphics::TBitmap* SignalPlatformGraphic;
                                     if(PlatformOnSignalSide(4, Next.HLoc, Next.VLoc, Next.SpeedTag, SignalPlatformGraphic))
@@ -3972,7 +4333,9 @@ bool TTrack::FindAndHighlightAnUnsetGap(int Caller) // true if find one
         if(TrackVector.at(x).TrackType == GapJump)
         {
             if(TrackVector.at(x).Conn[0] > -1)
+            {
                 continue; // to next 'x' value as this element has already been set
+            }
             // here if identify a GapJump element not yet set
             GapPos = x;
             GapHLoc = TrackVector.at(x).HLoc;
@@ -3980,11 +4343,11 @@ bool TTrack::FindAndHighlightAnUnsetGap(int Caller) // true if find one
             // highlight it
             ShowSelectedGap(2, Display);
             Utilities->CallLogPop(469);
-            return true;
+            return(true);
         }
     }
     Utilities->CallLogPop(470);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -3992,29 +4355,29 @@ bool TTrack::FindAndHighlightAnUnsetGap(int Caller) // true if find one
 bool TTrack::FindSetAndDisplayMatchingGap(int Caller, int HLoc, int VLoc) // true if find one
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FindSetAndDisplayMatchingGap," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
     int Position;
     TTrackElement TrackElement;
 
     if(!(FindNonPlatformMatch(11, HLoc, VLoc, Position, TrackElement)))
     {
         Utilities->CallLogPop(471);
-        return false; // not found
+        return(false); // not found
     }
     if(TrackElement.TrackType != GapJump)
     {
         Utilities->CallLogPop(472);
-        return false; // found something but not a gap
+        return(false); // found something but not a gap
     }
     if(Position == GapPos)
     {
         Utilities->CallLogPop(473);
-        return false; // selected original gap
+        return(false); // selected original gap
     }
     if(TrackVector.at(Position).Conn[0] != -1)
     {
         Utilities->CallLogPop(474);
-        return false; // already selected
+        return(false); // already selected
     }
     TrackVector.at(Position).Conn[0] = GapPos; // set Conn[0] at Position to GapPos & ConnLinkPos[0] to 0
     TrackVector.at(Position).ConnLinkPos[0] = 0;
@@ -4023,19 +4386,19 @@ bool TTrack::FindSetAndDisplayMatchingGap(int Caller, int HLoc, int VLoc) // tru
 // now highlight the selected location
     Display->Ellipse(0, HLoc * 16, VLoc * 16, clB0G5R0);
     Utilities->CallLogPop(475);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
 
 bool TTrack::GapsUnset(int Caller)
-    // returns true if there are gaps and any are unset
+// returns true if there are gaps and any are unset
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GapsUnset");
     if(TrackVector.size() == 0)
     {
         Utilities->CallLogPop(476);
-        return false;
+        return(false);
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
@@ -4044,31 +4407,32 @@ bool TTrack::GapsUnset(int Caller)
             if(TrackVector.at(x).Conn[0] == -1) // unset if -1 (Gap always at position 0)
             {
                 Utilities->CallLogPop(477);
-                return true;
+                return(true);
             }
             else // set, but may not have matching element, or that element may not be set
             {
                 if(TrackVector.at(TrackVector.at(x).Conn[0]).TrackType != GapJump)
-    // check that the element pointed to by the gap link is a GapJump
+                // check that the element pointed to by the gap link is a GapJump
                 {
                     ShowMessage("Error - gap connected to a non-gap.  Railway file is corrupt, further use may cause a system crash");
                     Utilities->CallLogPop(1137);
-                    return false;
+                    return(false);
                 }
 // here if gap connection is itself a GapJump
                 if(TrackVector.at(TrackVector.at(x).Conn[0]).Conn[0] != (int)x)
-    // check that the element pointed to by the gap link is a GapJump & that its gap link
-    // points back to 'x'
+                // check that the element pointed to by the gap link is a GapJump & that its gap link
+                // points back to 'x'
                 {
                     Utilities->CallLogPop(478);
-                    return true;
+                    return(true);
                 }
 // here if gap connection itself points back to 'x' so these two GapJumps match properly
             }
         } // if(TrackVector.at(x).TrackType == GapJump)
+
     } // for x...
     Utilities->CallLogPop(479);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -4081,11 +4445,11 @@ bool TTrack::NoGaps(int Caller) // returns true if there are no gaps
         if(TrackVector.at(x).TrackType == GapJump)
         {
             Utilities->CallLogPop(1105);
-            return false;
+            return(false);
         }
     }
     Utilities->CallLogPop(1106);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -4098,7 +4462,7 @@ bool TTrack::NoNamedLocationElements(int Caller) // returns true if there are no
         if(InactiveTrackVector.at(x).FixedNamedLocationElement)
         {
             Utilities->CallLogPop(1107);
-            return false;
+            return(false);
         }
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
@@ -4106,18 +4470,18 @@ bool TTrack::NoNamedLocationElements(int Caller) // returns true if there are no
         if(TrackVector.at(x).FixedNamedLocationElement)
         {
             Utilities->CallLogPop(1108);
-            return false;
+            return(false);
         }
     }
     Utilities->CallLogPop(1109);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
 
 bool TTrack::LocationsNotNamed(int Caller)
-    // returns true if there are unnamed NamedLocationElements (includes footcrossings)
-    // returns false otherwise or if there are no NamedLocationElements
+// returns true if there are unnamed NamedLocationElements (includes footcrossings)
+// returns false otherwise or if there are no NamedLocationElements
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LocationsNotNamed");
     for(unsigned int x = 0; x < InactiveTrackVector.size(); x++)
@@ -4127,7 +4491,7 @@ bool TTrack::LocationsNotNamed(int Caller)
             if(InactiveTrackVector.at(x).LocationName == "")
             {
                 Utilities->CallLogPop(1110);
-                return true;
+                return(true);
             }
         }
     }
@@ -4138,12 +4502,12 @@ bool TTrack::LocationsNotNamed(int Caller)
             if(TrackVector.at(x).LocationName == "")
             {
                 Utilities->CallLogPop(1111);
-                return true;
+                return(true);
             }
         }
     }
     Utilities->CallLogPop(1112);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -4172,7 +4536,7 @@ void TTrack::ResetAnyNonMatchingGaps(int Caller)
             if(TrackVector.at(x).Conn[0] > -1) // set
             {
                 if(TrackVector.at(TrackVector.at(x).Conn[0]).TrackType != GapJump)
-    // check that the element pointed to by the gap link is a GapJump & if not clear Conns & CLks
+                // check that the element pointed to by the gap link is a GapJump & if not clear Conns & CLks
                 {
                     TrackVector.at(x).Conn[0] = -1;
                     TrackVector.at(x).ConnLinkPos[0] = -1;
@@ -4180,8 +4544,8 @@ void TTrack::ResetAnyNonMatchingGaps(int Caller)
                 }
 // here if gap connection is itself a GapJump
                 if(TrackVector.at(TrackVector.at(x).Conn[0]).Conn[0] != (int)x)
-    // check that the element pointed to by the gap link is a GapJump & that its gap link points back to 'x'
-    // if not clear Conns & CLks
+                // check that the element pointed to by the gap link is a GapJump & that its gap link points back to 'x'
+                // if not clear Conns & CLks
                 {
                     TrackVector.at(x).Conn[0] = -1;
                     TrackVector.at(x).ConnLinkPos[0] = -1;
@@ -4191,6 +4555,7 @@ void TTrack::ResetAnyNonMatchingGaps(int Caller)
 // hence no more action needed on these Conns & CLks
             }
         } // else //gap jump
+
     } // for x...
 // throw Exception("Test Exception");//test
     Utilities->CallLogPop(482);
@@ -4235,9 +4600,8 @@ bool TTrack::RepositionAndMapTrack(int Caller) // doesn't involve InactiveTrack
     {
         TrackMap.clear();
         Utilities->CallLogPop(485);
-        return true;
+        return(true);
     }
-
 // build new vector from map (map already in ascending order of locations & no erase elements in map)
     THVPair TrackMapKeyPair;
 
@@ -4260,13 +4624,14 @@ bool TTrack::RepositionAndMapTrack(int Caller) // doesn't involve InactiveTrack
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         if(TrackVector.at(x).TrackType != Erase)
+        {
             NonZeroCount++;
+        }
     }
     if(NewVector.size() != NonZeroCount)
     {
         throw Exception("Error - NewVector & NonZero TrackVector different sizes");
     }
-
     TrackVector = NewVector;
     TrackMap.clear(); // ready to rebuild map after repositioning of TrackVector elements
     TTrackMapEntry TrackMapEntry;
@@ -4298,10 +4663,10 @@ bool TTrack::RepositionAndMapTrack(int Caller) // doesn't involve InactiveTrack
     if(!ResetGapsFromGapMap(1))
     {
         Utilities->CallLogPop(489);
-        return false;
+        return(false);
     }
     Utilities->CallLogPop(490);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -4347,7 +4712,9 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
     for(unsigned int x = 0; x < TrackVector.size(); x++) // check all elements in turn
     {
         if(TrackVector.at(x).TrackType == Erase) //Erase isn't used any more as a track type
+        {
             continue; // skip blank elements
+        }
 // check footcrossing linkages
         if(TrackVector.at(x).TrackType == FootCrossing)
         {
@@ -4359,19 +4726,25 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                 VLoc = TrackVector.at(x).VLoc;
                 LocError = true;
                 Utilities->CallLogPop(493);
-                return false;
+                return(false);
             }
         }
         for(unsigned int y = 0; y < 4; y++) // check all links for each element
         {
             CheckForLinks = false;
             if(TrackVector.at(x).Link[y] <= 0)
+            {
                 continue; // no link
+            }
             if((TrackVector.at(x).TrackType == Buffers) && (TrackVector.at(x).Config[y] == End))
+            {
                 continue; // buffer
+            }
             if(TrackVector.at(x).Config[y] == Gap)
+            {
                 continue; // gaps set later from GapMap
 
+            }
             // get required H & V for track element joining link 'y'
             int NewHLoc = TrackVector.at(x).HLoc + LinkHVArray[TrackVector.at(x).Link[y]][0];
             int NewVLoc = TrackVector.at(x).VLoc + LinkHVArray[TrackVector.at(x).Link[y]][1];
@@ -4389,28 +4762,31 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                     throw Exception("Error in final track linkage - continuation adjacent to another element");
                 }
                 Utilities->CallLogPop(1539);
-                return false;
+                return(false);
             }
             if((TrackVector.at(x).TrackType == Continuation) && (TrackVector.at(x).Config[y] == End))
+            {
                 continue;
+            }
             if(ConnectionFoundFlag)
             {
                 TrackVector.at(x).Conn[y] = VecPos;
                 // find connecting link in the newly found track element if there is one & make buffer & adjacent signals check
                 bool LinkFoundFlag = false;
                 if((TrackVector.at(x).Config[1 - y] == Signal) && IsLCAtHV(50, TrackVector.at(VecPos).HLoc, TrackVector.at(VecPos).VLoc))
-                { // new in v2.4.0 - Krizar (Kristian Zarebski) found this error
+                {
+                    // new in v2.4.0 - Krizar (Kristian Zarebski) found this error
                     ShowMessage("Can't have an exit signal next to a level crossing - it can cause the train to foul the crossing in some circumstances");
                     // otherwise when single route element removed in front of train the LC will start to close and the train will crash
                 }
                 else if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost) || (TrackVector.at(x).TrackType == Crossover))
-                    && (TrackVector.at(VecPos).TrackType == Buffers))
+                        && (TrackVector.at(VecPos).TrackType == Buffers))
                 {
                     ShowMessage("Can't have points, crossover or signal next to buffers - need room for a train without fouling");
                     // need room for a train (2 elements) without fouling points or signals
                 }
                 else if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost) || (TrackVector.at(x).TrackType == Crossover) ||
-                    (TrackVector.at(x).TrackType == Bridge)) && (TrackVector.at(VecPos).TrackType == Continuation))
+                         (TrackVector.at(x).TrackType == Bridge)) && (TrackVector.at(VecPos).TrackType == Continuation))
                 {
                     ShowMessage("Can't have points, crossover, bridge or signal next to a continuation - it can cause route setting problems");
                     // route setting won't allow an end of route selection adjacent to an existing route, which would happen
@@ -4418,7 +4794,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                     // be named but needs the adjacent element named too
                 }
                 else if((TrackVector.at(x).TrackType == SignalPost) && (TrackVector.at(VecPos).TrackType == SignalPost) &&
-                    (TrackVector.at(x).SpeedTag == TrackVector.at(VecPos).SpeedTag))
+                        (TrackVector.at(x).SpeedTag == TrackVector.at(VecPos).SpeedTag))
                 {
                     ShowMessage("Can't have two same-direction signals adjacent to each other as there is no room for a train between them");
                     // can't join a route to an existing route where the second signal is in an existing route and the first signal is
@@ -4436,13 +4812,15 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                     ShowMessage("Can't have two level crossings adjacent to each other on the same track");
                 }
                 else
+                {
                     CheckForLinks = true;
+                }
                 if(CheckForLinks)
                 {
                     for(unsigned int a = 0; a < 4; a++)
                     {
                         if((TrackVector.at(VecPos).Link[a] == (10 - TrackVector.at(x).Link[y])) && (TrackVector.at(VecPos).Config[a] != End) &&
-                            (TrackVector.at(VecPos).Config[a] != Gap))
+                           (TrackVector.at(VecPos).Config[a] != Gap))
                         {
                             TrackVector.at(x).ConnLinkPos[y] = a;
                             // note - this ensures that if the connecting element is a leading point
@@ -4464,7 +4842,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                         throw Exception("Error in final track linkage - invalid link");
                     }
                     Utilities->CallLogPop(494);
-                    return false;
+                    return(false);
                 }
             }
             // if there isn't a connection set the invert values for the offending element
@@ -4478,27 +4856,36 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                     throw Exception("Error in final track linkage - connection not found");
                 }
                 Utilities->CallLogPop(495);
-                return false;
+                return(false);
             }
         }
     } // for(unsigned int x=0;x<TrackVector.size();x++)
 
     if(FinalCall)
+    {
         SetStationEntryStopLinkPosses(1);
-
+    }
 // final check
     bool ConnErrorFlag = false;
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         if((TrackVector.at(x).Link[0] > 0) && (TrackVector.at(x).Config[0] != End) && (TrackVector.at(x).Conn[0] == -1))
+        {
             ConnErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[1] > 0) && (TrackVector.at(x).Config[1] != End) && (TrackVector.at(x).Conn[1] == -1))
+        {
             ConnErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[2] > 0) && (TrackVector.at(x).Config[2] != End) && (TrackVector.at(x).Conn[2] == -1))
+        {
             ConnErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[3] > 0) && (TrackVector.at(x).Config[3] != End) && (TrackVector.at(x).Conn[3] == -1))
+        {
             ConnErrorFlag = true;
+        }
         if(FinalCall) // StationStopLinks only set during FinalCall so only check at FinalCall
         {
             if(TrackVector.at(x).ActiveTrackElementName == "")
@@ -4521,19 +4908,26 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
             throw Exception("ConnError in LinkTrack - Precheck");
         }
     }
-
     bool CLkErrorFlag = false;
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         if((TrackVector.at(x).Link[0] > 0) && (TrackVector.at(x).Config[0] != End) && (TrackVector.at(x).ConnLinkPos[0] == -1))
+        {
             CLkErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[1] > 0) && (TrackVector.at(x).Config[1] != End) && (TrackVector.at(x).ConnLinkPos[1] == -1))
+        {
             CLkErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[2] > 0) && (TrackVector.at(x).Config[2] != End) && (TrackVector.at(x).ConnLinkPos[2] == -1))
+        {
             CLkErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[3] > 0) && (TrackVector.at(x).Config[3] != End) && (TrackVector.at(x).ConnLinkPos[3] == -1))
+        {
             CLkErrorFlag = true;
+        }
     }
 
     if(CLkErrorFlag)
@@ -4547,16 +4941,21 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
             throw Exception("CLkError in LinkTrack - Precheck");
         }
     }
-
 // set element lengths to min of 20m
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         if(TrackVector.at(x).TrackType == Erase)
+        {
             continue; // skip blank elements
+        }
         if(TrackVector.at(x).Length01 < 20)
+        {
             TrackVector.at(x).Length01 = 20;
+        }
         if((TrackVector.at(x).Length23 < 20) && (TrackVector.at(x).Length23 != -1))
+        {
             TrackVector.at(x).Length23 = 20;
+        }
     }
 
     if(FinalCall) // ONLY at FinalCall, no point calling twice
@@ -4564,7 +4963,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
         CalcHLocMinEtc(3);
     }
     Utilities->CallLogPop(497);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -4575,27 +4974,34 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
     for(unsigned int x = 0; x < TrackVector.size(); x++) // check all elements in turn
     {
         if(TrackVector.at(x).TrackType == Erase)
+        {
             continue; // skip blank elements
 
+        }
 // check footcrossing linkages
         if(TrackVector.at(x).TrackType == FootCrossing)
         {
             if(!CheckFootCrossingLinks(3, TrackVector.at(x)))
             {
                 Utilities->CallLogPop(1127);
-                return false;
+                return(false);
             }
         }
-
         for(unsigned int y = 0; y < 4; y++) // check all links for each element
         {
             if(TrackVector.at(x).Link[y] <= 0)
+            {
                 continue; // no link
+            }
             if((TrackVector.at(x).TrackType == Buffers) && (TrackVector.at(x).Config[y] == End))
+            {
                 continue; // buffer
+            }
             if(TrackVector.at(x).Config[y] == Gap)
+            {
                 continue; // gaps set later from GapMap
 
+            }
             // get required H & V for track element joining link 'y'
             int NewHLoc = TrackVector.at(x).HLoc + LinkHVArray[TrackVector.at(x).Link[y]][0];
             int NewVLoc = TrackVector.at(x).VLoc + LinkHVArray[TrackVector.at(x).Link[y]][1];
@@ -4609,38 +5015,40 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
                     throw Exception("Error in final track linkage - continuation adjacent to another element");
                 }
                 Utilities->CallLogPop(1540);
-                return false;
+                return(false);
             }
             if((TrackVector.at(x).TrackType == Continuation) && (TrackVector.at(x).Config[y] == End))
+            {
                 continue;
+            }
             if(ConnectionFoundFlag)
             {
                 TrackVector.at(x).Conn[y] = VecPos;
                 bool LinkFoundFlag = false;
                 // find connecting link in the newly found track element if there is one & make checks
                 if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost) || (TrackVector.at(x).TrackType == Crossover)) &&
-                    (TrackVector.at(VecPos).TrackType == Buffers))
+                   (TrackVector.at(VecPos).TrackType == Buffers))
                 {
                     Utilities->CallLogPop(1541);
-                    return false;
+                    return(false);
                 }
                 else if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost) || (TrackVector.at(x).TrackType == Crossover) ||
-                    (TrackVector.at(x).TrackType == Bridge)) && (TrackVector.at(VecPos).TrackType == Continuation))
+                         (TrackVector.at(x).TrackType == Bridge)) && (TrackVector.at(VecPos).TrackType == Continuation))
                 {
                     Utilities->CallLogPop(1542);
-                    return false;
+                    return(false);
                 }
                 else if((TrackVector.at(x).TrackType == SignalPost) && (TrackVector.at(VecPos).TrackType == SignalPost) &&
-                    (TrackVector.at(x).SpeedTag == TrackVector.at(VecPos).SpeedTag))
+                        (TrackVector.at(x).SpeedTag == TrackVector.at(VecPos).SpeedTag))
                 {
                     Utilities->CallLogPop(1543);
-                    return false;
+                    return(false);
                 }
                 else if(IsLCAtHV(47, TrackVector.at(x).HLoc, TrackVector.at(x).VLoc) && IsLCAtHV(48, TrackVector.at(VecPos).HLoc, TrackVector.at(VecPos).VLoc))
                 // true if a level crossing is present at both x and VecPos - can't have two adjacent level crossings on the same track
                 {
                     Utilities->CallLogPop(1981);
-                    return false;
+                    return(false);
                 }
 /* remove this restriction now that not permitted to treat a named continuation as a location stop
                else if(TrackVector.at(x).TrackType == Continuation)
@@ -4676,7 +5084,7 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
                 for(unsigned int a = 0; a < 4; a++)
                 {
                     if((TrackVector.at(VecPos).Link[a] == (10 - TrackVector.at(x).Link[y])) && (TrackVector.at(VecPos).Config[a] != End) &&
-                        (TrackVector.at(VecPos).Config[a] != Gap))
+                       (TrackVector.at(VecPos).Config[a] != Gap))
                     {
                         TrackVector.at(x).ConnLinkPos[y] = a;
                         // note - this ensures that if the connecting element is a leading point
@@ -4693,7 +5101,7 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
                         throw Exception("Error in final track linkage in LinkTrackNoMessages - invalid link");
                     }
                     Utilities->CallLogPop(1128);
-                    return false;
+                    return(false);
                 }
             }
             else // if(ConnectionFoundFlag)
@@ -4703,27 +5111,36 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
                     throw Exception("Error in final track linkage in LinkTrackNoMessages - connection not found");
                 }
                 Utilities->CallLogPop(1129);
-                return false;
+                return(false);
             }
         }
     } // for(unsigned int x=0;x<TrackVector.size();x++)
 
     if(FinalCall)
+    {
         SetStationEntryStopLinkPosses(2);
-
+    }
 // final check
     bool ConnErrorFlag = false;
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         if((TrackVector.at(x).Link[0] > 0) && (TrackVector.at(x).Config[0] != End) && (TrackVector.at(x).Conn[0] == -1))
+        {
             ConnErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[1] > 0) && (TrackVector.at(x).Config[1] != End) && (TrackVector.at(x).Conn[1] == -1))
+        {
             ConnErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[2] > 0) && (TrackVector.at(x).Config[2] != End) && (TrackVector.at(x).Conn[2] == -1))
+        {
             ConnErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[3] > 0) && (TrackVector.at(x).Config[3] != End) && (TrackVector.at(x).Conn[3] == -1))
+        {
             ConnErrorFlag = true;
+        }
         if(FinalCall) // StationStopLinks only set during FinalCall so only check at FinalCall
         {
             if(TrackVector.at(x).ActiveTrackElementName == "")
@@ -4746,19 +5163,26 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
             throw Exception("ConnError in LinkTrack - Precheck");
         }
     }
-
     bool CLkErrorFlag = false;
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         if((TrackVector.at(x).Link[0] > 0) && (TrackVector.at(x).Config[0] != End) && (TrackVector.at(x).ConnLinkPos[0] == -1))
+        {
             CLkErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[1] > 0) && (TrackVector.at(x).Config[1] != End) && (TrackVector.at(x).ConnLinkPos[1] == -1))
+        {
             CLkErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[2] > 0) && (TrackVector.at(x).Config[2] != End) && (TrackVector.at(x).ConnLinkPos[2] == -1))
+        {
             CLkErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[3] > 0) && (TrackVector.at(x).Config[3] != End) && (TrackVector.at(x).ConnLinkPos[3] == -1))
+        {
             CLkErrorFlag = true;
+        }
     }
 
     if(CLkErrorFlag)
@@ -4772,16 +5196,21 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
             throw Exception("CLkError in LinkTrack - Precheck");
         }
     }
-
 // set element lengths to min of 20m
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         if(TrackVector.at(x).TrackType == Erase)
+        {
             continue; // skip blank elements
+        }
         if(TrackVector.at(x).Length01 < 20)
+        {
             TrackVector.at(x).Length01 = 20;
+        }
         if((TrackVector.at(x).Length23 < 20) && (TrackVector.at(x).Length23 != -1))
+        {
             TrackVector.at(x).Length23 = 20;
+        }
     }
 
     if(FinalCall) // ONLY at FinalCall, no point calling twice
@@ -4789,7 +5218,7 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
         CalcHLocMinEtc(7);
     }
     Utilities->CallLogPop(1130);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -4802,28 +5231,32 @@ bool TTrack::IsTrackLinked(int Caller) // not used any more
         if(TrackVector.at(x).TrackType == Erase)
         {
             Utilities->CallLogPop(498);
-            return false;
+            return(false);
         }
-
 // check foot linkages
         if(TrackVector.at(x).TrackType == FootCrossing)
         {
             if(!CheckFootCrossingLinks(2, TrackVector.at(x)))
             {
                 Utilities->CallLogPop(499);
-                return false;
+                return(false);
             }
         }
-
         for(unsigned int y = 0; y < 4; y++) // check all links for each element
         {
             if(TrackVector.at(x).Link[y] <= 0)
+            {
                 continue; // no link
+            }
             if(TrackVector.at(x).Config[y] == End)
+            {
                 continue; // buffer or continuation
+            }
             if(TrackVector.at(x).Config[y] == Gap)
+            {
                 continue; // gaps set later from GapMap
 
+            }
             // get required H & V for track element joining link 'y'
             int NewHLoc = TrackVector.at(x).HLoc + LinkHVArray[TrackVector.at(x).Link[y]][0];
             int NewVLoc = TrackVector.at(x).VLoc + LinkHVArray[TrackVector.at(x).Link[y]][1];
@@ -4836,28 +5269,28 @@ bool TTrack::IsTrackLinked(int Caller) // not used any more
                 // find connecting link in the newly found track element if there is one & make buffer check
                 bool LinkFoundFlag = false;
                 if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost) || (TrackVector.at(x).TrackType == Crossover)) &&
-                    (TrackVector.at(VecPos).TrackType == Buffers))
+                   (TrackVector.at(VecPos).TrackType == Buffers))
                 {
                     Utilities->CallLogPop(500);
-                    return false;
+                    return(false);
                 }
                 else if((TrackVector.at(x).TrackType == SignalPost) && (TrackVector.at(VecPos).TrackType == SignalPost) &&
-                    (TrackVector.at(x).SpeedTag == TrackVector.at(VecPos).SpeedTag))
+                        (TrackVector.at(x).SpeedTag == TrackVector.at(VecPos).SpeedTag))
                 {
                     Utilities->CallLogPop(501);
-                    return false;
+                    return(false);
                 }
                 else if((TrackVector.at(x).TrackType == SignalPost) && (TrackVector.at(VecPos).TrackType == Continuation))
                 {
                     Utilities->CallLogPop(502);
-                    return false;
+                    return(false);
                 }
                 else
                 {
                     for(unsigned int a = 0; a < 4; a++)
                     {
                         if((TrackVector.at(VecPos).Link[a] == (10 - TrackVector.at(x).Link[y])) && (TrackVector.at(VecPos).Config[a] != End) &&
-                            (TrackVector.at(VecPos).Config[a] != Gap))
+                           (TrackVector.at(VecPos).Config[a] != Gap))
                         {
                             TrackVector.at(x).ConnLinkPos[y] = a;
                             // note - this ensures that if the connecting element is a leading point
@@ -4871,13 +5304,13 @@ bool TTrack::IsTrackLinked(int Caller) // not used any more
                 if(!LinkFoundFlag)
                 {
                     Utilities->CallLogPop(503);
-                    return false;
+                    return(false);
                 }
             }
             else // if(ConnectionFoundFlag)
             {
                 Utilities->CallLogPop(504);
-                return false;
+                return(false);
             }
         }
     } // for(unsigned int x=0;x<TrackVector.size();x++)
@@ -4888,41 +5321,56 @@ bool TTrack::IsTrackLinked(int Caller) // not used any more
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         if((TrackVector.at(x).Link[0] > 0) && (TrackVector.at(x).Config[0] != End) && (TrackVector.at(x).Conn[0] == -1))
+        {
             ConnErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[1] > 0) && (TrackVector.at(x).Config[1] != End) && (TrackVector.at(x).Conn[1] == -1))
+        {
             ConnErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[2] > 0) && (TrackVector.at(x).Config[2] != End) && (TrackVector.at(x).Conn[2] == -1))
+        {
             ConnErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[3] > 0) && (TrackVector.at(x).Config[3] != End) && (TrackVector.at(x).Conn[3] == -1))
+        {
             ConnErrorFlag = true;
+        }
     }
     if(ConnErrorFlag)
     {
         Utilities->CallLogPop(505);
-        return false;
+        return(false);
     }
-
     bool CLkErrorFlag = false;
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         if((TrackVector.at(x).Link[0] > 0) && (TrackVector.at(x).Config[0] != End) && (TrackVector.at(x).ConnLinkPos[0] == -1))
+        {
             CLkErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[1] > 0) && (TrackVector.at(x).Config[1] != End) && (TrackVector.at(x).ConnLinkPos[1] == -1))
+        {
             CLkErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[2] > 0) && (TrackVector.at(x).Config[2] != End) && (TrackVector.at(x).ConnLinkPos[2] == -1))
+        {
             CLkErrorFlag = true;
+        }
         if((TrackVector.at(x).Link[3] > 0) && (TrackVector.at(x).Config[3] != End) && (TrackVector.at(x).ConnLinkPos[3] == -1))
+        {
             CLkErrorFlag = true;
+        }
     }
 
     if(CLkErrorFlag)
     {
         Utilities->CallLogPop(506);
-        return false;
+        return(false);
     }
     Utilities->CallLogPop(507);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -4965,7 +5413,7 @@ bool TTrack::ResetGapsFromGapMap(int Caller)
         }
     }
     Utilities->CallLogPop(510);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -4974,14 +5422,14 @@ void TTrack::TrackPush(int Caller, TTrackElement TrackElement)
 {
 // TIMPair MapEntry;
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrackPush," + AnsiString(TrackElement.HLoc) + "," +
-        AnsiString(TrackElement.VLoc) + "," + AnsiString(TrackElement.SpeedTag));
+                                 AnsiString(TrackElement.VLoc) + "," + AnsiString(TrackElement.SpeedTag));
     THVPair TrackMapKeyPair, InactiveTrackMapKeyPair;
     TTrackMapEntry TrackMapEntry, InactiveTrackMapEntry;
     TLocationNameMultiMapEntry LocationNameEntry;
 
     LocationNameEntry.first = TrackElement.LocationName;
     if((TrackElement.TrackType == Platform) || (TrackElement.TrackType == Concourse) || (TrackElement.TrackType == Parapet) ||
-        (TrackElement.TrackType == NamedNonStationLocation) || (TrackElement.TrackType == LevelCrossing))
+       (TrackElement.TrackType == NamedNonStationLocation) || (TrackElement.TrackType == LevelCrossing))
     {
 // check whether a similar element already at this position and if so ignore it (had error where allowed multiple NonStationNamedLocs)
 // could arise when loading old railways with multiple NonStationNamedLocs
@@ -4990,7 +5438,7 @@ void TTrack::TrackPush(int Caller, TTrackElement TrackElement)
         if(FoundFlag)
         {
             if((InactiveTrackElementAt(97, IMPair.first).SpeedTag == TrackElement.SpeedTag) || (InactiveTrackElementAt(98,
-                IMPair.second).SpeedTag == TrackElement.SpeedTag))
+                                                                                                                       IMPair.second).SpeedTag == TrackElement.SpeedTag))
             {
                 Utilities->CallLogPop(1813);
                 return;
@@ -5008,13 +5456,21 @@ void TTrack::TrackPush(int Caller, TTrackElement TrackElement)
             LocationNameMultiMap.insert(LocationNameEntry);
         }
         if(TrackElement.HLoc < HLocMin)
+        {
             HLocMin = TrackElement.HLoc;
+        }
         if(TrackElement.HLoc > HLocMax)
+        {
             HLocMax = TrackElement.HLoc;
+        }
         if(TrackElement.VLoc < VLocMin)
+        {
             VLocMin = TrackElement.VLoc;
+        }
         if(TrackElement.VLoc > VLocMax)
+        {
             VLocMax = TrackElement.VLoc;
+        }
     }
     else
     {
@@ -5044,13 +5500,21 @@ void TTrack::TrackPush(int Caller, TTrackElement TrackElement)
                 LocationNameMultiMap.insert(LocationNameEntry);
             }
             if(TrackElement.HLoc < HLocMin)
+            {
                 HLocMin = TrackElement.HLoc; // exclude erase elements as HLoc & VLoc set to -2000000000
+            }
             if(TrackElement.HLoc > HLocMax)
+            {
                 HLocMax = TrackElement.HLoc;
+            }
             if(TrackElement.VLoc < VLocMin)
+            {
                 VLocMin = TrackElement.VLoc;
+            }
             if(TrackElement.VLoc > VLocMax)
+            {
                 VLocMax = TrackElement.VLoc;
+            }
         }
     }
 // CheckMapAndTrack(6);//test               drop these to speed up, still checked outside this function
@@ -5066,7 +5530,7 @@ void TTrack::TrackPush(int Caller, TTrackElement TrackElement)
 int TTrack::GetVectorPositionFromTrackMap(int Caller, int HLoc, int VLoc, bool &FoundFlag)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetVectorPositionFromTrackMap," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
     THVPair TrackMapKeyPair;
 
     FoundFlag = false;
@@ -5078,13 +5542,13 @@ int TTrack::GetVectorPositionFromTrackMap(int Caller, int HLoc, int VLoc, bool &
     if(TrackMapPtr == TrackMap.end())
     {
         Utilities->CallLogPop(512);
-        return -1; // nothing found
+        return(-1); // nothing found
     }
     else
     {
         FoundFlag = true;
         Utilities->CallLogPop(513);
-        return TrackMapPtr->second;
+        return(TrackMapPtr->second);
     }
 }
 
@@ -5093,7 +5557,7 @@ int TTrack::GetVectorPositionFromTrackMap(int Caller, int HLoc, int VLoc, bool &
 TTrackElement &TTrack::GetTrackElementFromTrackMap(int Caller, int HLoc, int VLoc)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetTrackElementFromTrackMap," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
     THVPair TrackMapKeyPair;
     TTrackMapIterator TrackMapPtr;
 
@@ -5108,7 +5572,7 @@ TTrackElement &TTrack::GetTrackElementFromTrackMap(int Caller, int HLoc, int VLo
     else
     {
         Utilities->CallLogPop(1943);
-        return TrackElementAt(871, TrackMapPtr->second);
+        return(TrackElementAt(871, TrackMapPtr->second));
     }
 }
 
@@ -5117,7 +5581,7 @@ TTrackElement &TTrack::GetTrackElementFromTrackMap(int Caller, int HLoc, int VLo
 TTrackElement &TTrack::GetInactiveTrackElementFromTrackMap(int Caller, int HLoc, int VLoc)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetInactiveTrackElementFromTrackMap," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
     THVPair InactiveTrackMapKeyPair;
     TInactiveTrack2MultiMapIterator InactiveTrackMapPtr;
 
@@ -5132,7 +5596,7 @@ TTrackElement &TTrack::GetInactiveTrackElementFromTrackMap(int Caller, int HLoc,
     else
     {
         Utilities->CallLogPop(1949);
-        return InactiveTrackElementAt(34, InactiveTrackMapPtr->second);
+        return(InactiveTrackElementAt(34, InactiveTrackMapPtr->second));
     }
 }
 
@@ -5153,7 +5617,7 @@ bool TTrack::TrackElementPresentAtHV(int Caller, int HLoc, int VLoc)
         Present = false;
     }
     Utilities->CallLogPop(2057);
-    return Present;
+    return(Present);
 }
 
 // ---------------------------------------------------------------------------
@@ -5161,7 +5625,7 @@ bool TTrack::TrackElementPresentAtHV(int Caller, int HLoc, int VLoc)
 bool TTrack::InactiveTrackElementPresentAtHV(int Caller, int HLoc, int VLoc)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",InactiveTrackElementPresentAtHV," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
     bool Present = true;
     THVPair InactiveTrackMapKeyPair;
     TInactiveTrack2MultiMapIterator InactiveTrackMapPtr;
@@ -5174,17 +5638,17 @@ bool TTrack::InactiveTrackElementPresentAtHV(int Caller, int HLoc, int VLoc)
         Present = false;
     }
     Utilities->CallLogPop(2058);
-    return Present;
+    return(Present);
 }
 
 // ---------------------------------------------------------------------------
 
 TTrack::TIMPair TTrack::GetVectorPositionsFromInactiveTrackMap(int Caller, int HLoc, int VLoc, bool &FoundFlag)
-    // max number of elements is 2, for platforms
-    // note that both elements of RetPair may be the same, if only one present in map
+// max number of elements is 2, for platforms
+// note that both elements of RetPair may be the same, if only one present in map
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetVectorPositionsFromInactiveTrackMap," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
     THVPair InactiveTrackMapKeyPair;
     TIMPair RetPair;
     TInactiveTrackRange InactiveTrackRange;
@@ -5197,7 +5661,7 @@ TTrack::TIMPair TTrack::GetVectorPositionsFromInactiveTrackMap(int Caller, int H
         RetPair.first = 0;
         RetPair.second = 0;
         Utilities->CallLogPop(1815);
-        return RetPair; // map empty
+        return(RetPair); // map empty
     }
     InactiveTrackRange = InactiveTrack2MultiMap.equal_range(InactiveTrackMapKeyPair);
     if(InactiveTrackRange.first == InactiveTrackRange.second)
@@ -5205,7 +5669,7 @@ TTrack::TIMPair TTrack::GetVectorPositionsFromInactiveTrackMap(int Caller, int H
         RetPair.first = 0;
         RetPair.second = 0;
         Utilities->CallLogPop(514);
-        return RetPair; // nothing found
+        return(RetPair); // nothing found
     }
     else
     {
@@ -5213,7 +5677,7 @@ TTrack::TIMPair TTrack::GetVectorPositionsFromInactiveTrackMap(int Caller, int H
         RetPair.second = (--InactiveTrackRange.second)->second;
         FoundFlag = true;
         Utilities->CallLogPop(515);
-        return RetPair;
+        return(RetPair);
     }
 }
 
@@ -5223,7 +5687,7 @@ bool TTrack::MatchingPoint(int Caller, unsigned int TrackVectorPosition, unsigne
 {
 // only change where have adjacent points with their diverging links connected - not appropriate for non-straight points
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",MatchingPoint," + AnsiString(TrackVectorPosition) + "," +
-        AnsiString(DivergingPosition));
+                                 AnsiString(DivergingPosition));
     TTrackElement T1 = TrackElementAt(15, TrackVectorPosition);
     TTrackElement T2 = TrackElementAt(16, DivergingPosition);
     int SpeedTag1 = T1.SpeedTag;
@@ -5232,28 +5696,28 @@ bool TTrack::MatchingPoint(int Caller, unsigned int TrackVectorPosition, unsigne
     if(T1.Attribute != T2.Attribute)
     {
         Utilities->CallLogPop(516);
-        return false;
+        return(false);
     }
     if(((SpeedTag1 == 7) && (SpeedTag2 == 10)) || // straight track hor, diverging track vert
-        ((SpeedTag1 == 10) && (SpeedTag2 == 7)) || ((SpeedTag1 == 8) && (SpeedTag2 == 9)) || ((SpeedTag1 == 9) && (SpeedTag2 == 8)) ||
-        ((SpeedTag1 == 11) && (SpeedTag2 == 14)) || // straight track vert, diverging track hor
-        ((SpeedTag1 == 14) && (SpeedTag2 == 11)) || ((SpeedTag1 == 12) && (SpeedTag2 == 13)) || ((SpeedTag1 == 13) && (SpeedTag2 == 12)) ||
-        ((SpeedTag1 == 28) && (SpeedTag2 == 31)) || // straight track hor, diverging track 45 deg
-        ((SpeedTag1 == 31) && (SpeedTag2 == 28)) || ((SpeedTag1 == 29) && (SpeedTag2 == 30)) || ((SpeedTag1 == 30) && (SpeedTag2 == 29)) ||
-        ((SpeedTag1 == 32) && (SpeedTag2 == 35)) || // straight track vert, diverging track 45 deg
-        ((SpeedTag1 == 35) && (SpeedTag2 == 32)) || ((SpeedTag1 == 33) && (SpeedTag2 == 34)) || ((SpeedTag1 == 34) && (SpeedTag2 == 33)) ||
-        ((SpeedTag1 == 36) && (SpeedTag2 == 39)) || // straight track 45 deg, diverging track vert
-        ((SpeedTag1 == 39) && (SpeedTag2 == 36)) || ((SpeedTag1 == 37) && (SpeedTag2 == 38)) || ((SpeedTag1 == 38) && (SpeedTag2 == 37)) ||
-        ((SpeedTag1 == 40) && (SpeedTag2 == 43)) || // straight track 45 deg, diverging track hor
-        ((SpeedTag1 == 43) && (SpeedTag2 == 40)) || ((SpeedTag1 == 41) && (SpeedTag2 == 42)) || ((SpeedTag1 == 42) && (SpeedTag2 == 41)))
+       ((SpeedTag1 == 10) && (SpeedTag2 == 7)) || ((SpeedTag1 == 8) && (SpeedTag2 == 9)) || ((SpeedTag1 == 9) && (SpeedTag2 == 8)) ||
+       ((SpeedTag1 == 11) && (SpeedTag2 == 14)) ||  // straight track vert, diverging track hor
+       ((SpeedTag1 == 14) && (SpeedTag2 == 11)) || ((SpeedTag1 == 12) && (SpeedTag2 == 13)) || ((SpeedTag1 == 13) && (SpeedTag2 == 12)) ||
+       ((SpeedTag1 == 28) && (SpeedTag2 == 31)) ||  // straight track hor, diverging track 45 deg
+       ((SpeedTag1 == 31) && (SpeedTag2 == 28)) || ((SpeedTag1 == 29) && (SpeedTag2 == 30)) || ((SpeedTag1 == 30) && (SpeedTag2 == 29)) ||
+       ((SpeedTag1 == 32) && (SpeedTag2 == 35)) ||  // straight track vert, diverging track 45 deg
+       ((SpeedTag1 == 35) && (SpeedTag2 == 32)) || ((SpeedTag1 == 33) && (SpeedTag2 == 34)) || ((SpeedTag1 == 34) && (SpeedTag2 == 33)) ||
+       ((SpeedTag1 == 36) && (SpeedTag2 == 39)) ||  // straight track 45 deg, diverging track vert
+       ((SpeedTag1 == 39) && (SpeedTag2 == 36)) || ((SpeedTag1 == 37) && (SpeedTag2 == 38)) || ((SpeedTag1 == 38) && (SpeedTag2 == 37)) ||
+       ((SpeedTag1 == 40) && (SpeedTag2 == 43)) ||  // straight track 45 deg, diverging track hor
+       ((SpeedTag1 == 43) && (SpeedTag2 == 40)) || ((SpeedTag1 == 41) && (SpeedTag2 == 42)) || ((SpeedTag1 == 42) && (SpeedTag2 == 41)))
     {
         Utilities->CallLogPop(517);
-        return true;
+        return(true);
     }
     else
     {
         Utilities->CallLogPop(518);
-        return false;
+        return(false);
     }
 }
 
@@ -5274,7 +5738,7 @@ bool TTrack::MatchingPoint(int Caller, unsigned int TrackVectorPosition, unsigne
 // ---------------------------------------------------------------------------
 
 void TTrack::PlotGap(int Caller, TTrackElement TrackElement, TDisplay *Disp)
-    // no need to check corresponding gap, if that not set correctly it will be picked up in GapsUnset()
+// no need to check corresponding gap, if that not set correctly it will be picked up in GapsUnset()
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotGap," + TrackElement.LogTrack(1));
     if(TrackElement.TrackType != GapJump)
@@ -5382,17 +5846,17 @@ void TTrack::PlotPoints(int Caller, TTrackElement TrackElement, TDisplay *Disp, 
         if(TrackElement.SpeedTag < 28)
         {
             Disp->PlotOutput(75, TrackElement.HLoc * 16, TrackElement.VLoc * 16,
-                RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 7][TrackElement.Attribute]);
+                             RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 7][TrackElement.Attribute]);
         }
         else if(TrackElement.SpeedTag < 132)
         {
             Disp->PlotOutput(76, TrackElement.HLoc * 16, TrackElement.VLoc * 16,
-                RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 20][TrackElement.Attribute]);
+                             RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 20][TrackElement.Attribute]);
         }
         else
         {
             Disp->PlotOutput(72, TrackElement.HLoc * 16, TrackElement.VLoc * 16,
-                RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 108][TrackElement.Attribute]);
+                             RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 108][TrackElement.Attribute]);
         }
     }
 // replot platform if required
@@ -5401,7 +5865,8 @@ void TTrack::PlotPoints(int Caller, TTrackElement TrackElement, TDisplay *Disp, 
 
     IMPair = GetVectorPositionsFromInactiveTrackMap(15, TrackElement.HLoc, TrackElement.VLoc, FoundFlag);
     if(FoundFlag)
-    { // only one platform possible at points so only need to plot IMPair.first
+    {
+        // only one platform possible at points so only need to plot IMPair.first
         TTrackElement PlatElement = InactiveTrackElementAt(89, IMPair.first);
         PlatElement.PlotVariableTrackElement(5, Disp); // to plot as striped or non-striped depending on whether named or not
     }
@@ -5451,7 +5916,7 @@ void TTrack::PlotSignal(int Caller, TTrackElement TrackElement, TDisplay *Disp)
                 Disp->PlotOutput(58, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTable[x].SigPtr);
             }
             if((TrackElement.CallingOnSet) && (TrackElement.SigAspect != TTrackElement::GroundSignal))
-    // normal signal calling on, need to add extra graphic, basic red signal plotted above from SigTable
+            // normal signal calling on, need to add extra graphic, basic red signal plotted above from SigTable
             {
                 if(TrackElement.SpeedTag == 68)
                 {
@@ -5487,7 +5952,7 @@ void TTrack::PlotSignal(int Caller, TTrackElement TrackElement, TDisplay *Disp)
                 }
             }
             else if((TrackElement.CallingOnSet) && (TrackElement.SigAspect == TTrackElement::GroundSignal))
-    // ground signal calling on, need to use normal proceed aspect
+            // ground signal calling on, need to use normal proceed aspect
             {
                 for(int x = 0; x < 40; x++)
                 {
@@ -5579,7 +6044,7 @@ void TTrack::SetLinkedLevelCrossingBarrierAttributes(int Caller, int HLoc, int V
 {
 // Set attrs to 0=closed to trains; 1=open to trains; 2 = changing = closed to trains
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LowerLinkedLevelCrossingBarrierAttributes," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
 // find topmost LC, opening them all (to trains) in turn
     int UpStep = 0;
 
@@ -5658,7 +6123,8 @@ void TTrack::SetLinkedManualLCs(int Caller, int HLoc, int VLoc) //sets TypeOfRou
 // ---------------------------------------------------------------------------
 
 void TTrack::SetBarriersDownLCToManual(int Caller, int HLoc, int VLoc)
-{// Set TypeOfRoute value to 2 to indicate barriers manually closed
+{
+    // Set TypeOfRoute value to 2 to indicate barriers manually closed
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetBarriersDownLCToManual," + AnsiString(HLoc) + "," + AnsiString(VLoc));
     for(unsigned int x = 0; x < BarriersDownVector.size(); x++)
     {
@@ -5684,7 +6150,7 @@ bool TTrack::AnyLinkedBarrierDownVectorManual(int Caller, int HLoc, int VLoc, in
         if(IsBarrierDownVectorAtHVManual(0, HLoc, (VLoc + UpStep), BDVectorPos))
         {
             Utilities->CallLogPop(2244);
-            return true;
+            return(true);
         }
         UpStep--;
     }
@@ -5696,7 +6162,7 @@ bool TTrack::AnyLinkedBarrierDownVectorManual(int Caller, int HLoc, int VLoc, in
         if(IsBarrierDownVectorAtHVManual(1, HLoc, (VLoc + DownStep), BDVectorPos))
         {
             Utilities->CallLogPop(2245);
-            return true;
+            return(true);
         }
         DownStep++;
     }
@@ -5708,7 +6174,7 @@ bool TTrack::AnyLinkedBarrierDownVectorManual(int Caller, int HLoc, int VLoc, in
         if(IsBarrierDownVectorAtHVManual(2, (HLoc + LeftStep), VLoc, BDVectorPos))
         {
             Utilities->CallLogPop(2246);
-            return true;
+            return(true);
         }
         LeftStep--;
     }
@@ -5720,12 +6186,12 @@ bool TTrack::AnyLinkedBarrierDownVectorManual(int Caller, int HLoc, int VLoc, in
         if(IsBarrierDownVectorAtHVManual(3, (HLoc + RightStep), VLoc, BDVectorPos))
         {
             Utilities->CallLogPop(2247);
-            return true;
+            return(true);
         }
         RightStep++;
     }
     Utilities->CallLogPop(2248);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -5739,22 +6205,22 @@ bool TTrack::IsBarrierDownVectorAtHVManual(int Caller, int HLoc, int VLoc, int &
         {
             BDVectorPos = x;
             Utilities->CallLogPop(2249);
-            return true;
+            return(true);
         }
     }
     BDVectorPos = -1;
     Utilities->CallLogPop(2250);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
 
 void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, int TypeOfRoute, TDisplay *Disp, bool Manual)
-    // open to trains
-    // BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
+// open to trains
+// BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotLoweredLinkedLevelCrossingBarriers," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
     if(!IsLCAtHV(4, HLoc, VLoc))
     {
         throw Exception("Error, Wrong track type in PlotAndLowerLevelCrossingBarriers");
@@ -5939,9 +6405,13 @@ void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementS
             {
                 Disp->PlotOutput(147, HLoc * 16, (VLoc + x) * 16, RailGraphics->bmSolidBgnd);
                 if(x == 0)
+                {
                     Disp->PlotOutput(148, HLoc * 16, (VLoc + x) * 16, RouteGraphic);
+                }
                 else
+                {
                     Disp->PlotOutput(213, HLoc * 16, (VLoc + x) * 16, BaseGraphic);
+                }
                 if(!Manual)
                 {
                     Disp->PlotOutput(149, HLoc * 16, (VLoc + x) * 16, RailGraphics->LCPlain);
@@ -6155,10 +6625,10 @@ void TTrack::PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementS
 // ---------------------------------------------------------------------------
 
 void TTrack::PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp, bool Manual) // open to trains
-    // BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
+// BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers," +
-        AnsiString(HLoc) + "," + AnsiString(VLoc));
+                                 AnsiString(HLoc) + "," + AnsiString(VLoc));
     if(!IsLCAtHV(29, HLoc, VLoc))
     {
         throw Exception("Error, Wrong track type in PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers");
@@ -6316,10 +6786,10 @@ void TTrack::PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(int Caller
 // ---------------------------------------------------------------------------
 
 void TTrack::PlotRaisedLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp) // closed to trains
-    // BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
+// BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotRaisedLinkedLevelCrossingBarriers," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
     if(!IsLCAtHV(9, HLoc, VLoc))
     {
         throw Exception("Error, Wrong track type in PlotAndRaiseLevelCrossingBarriers");
@@ -6389,11 +6859,11 @@ void TTrack::PlotRaisedLinkedLevelCrossingBarriers(int Caller, int BaseElementSp
 // ---------------------------------------------------------------------------
 
 void TTrack::PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp)
-    // closed to trains
-    // BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
+// closed to trains
+// BaseElementSpeedTag: 1 = Horizontal track, 2 = vertical track
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers," +
-        AnsiString(HLoc) + "," + AnsiString(VLoc));
+                                 AnsiString(HLoc) + "," + AnsiString(VLoc));
     if(!IsLCAtHV(34, HLoc, VLoc))
     {
         throw Exception("Error, Wrong track type in PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers");
@@ -6482,9 +6952,10 @@ void TTrack::PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseEle
         {
             RouteGraphic = BaseGraphic;
         }
-
         if(State == Raising)
+        {
             RouteGraphic = BaseGraphic;
+        }
     }
     else
     {
@@ -6502,7 +6973,9 @@ void TTrack::PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseEle
             RouteGraphic = BaseGraphic; //manual
         }
         if(State == Raising)
+        {
             RouteGraphic = BaseGraphic;
+        }
     }
     int UpStep = 0;
 
@@ -6510,9 +6983,13 @@ void TTrack::PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseEle
     {
         Disp->PlotOutput(174, HLoc * 16, (VLoc + UpStep) * 16, RailGraphics->bmSolidBgnd);
         if(UpStep == 0)
+        {
             Disp->PlotOutput(175, HLoc * 16, (VLoc + UpStep) * 16, RouteGraphic);
+        }
         else
+        {
             Disp->PlotOutput(234, HLoc * 16, (VLoc + UpStep) * 16, BaseGraphic);
+        }
         UpStep--;
     }
 // now find bottommost LC, opening them all (to trains) in turn
@@ -6530,9 +7007,13 @@ void TTrack::PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseEle
     {
         Disp->PlotOutput(233, (HLoc + LeftStep) * 16, VLoc * 16, RailGraphics->bmSolidBgnd);
         if(LeftStep == 0)
+        {
             Disp->PlotOutput(235, (HLoc + LeftStep) * 16, VLoc * 16, RouteGraphic);
+        }
         else
+        {
             Disp->PlotOutput(236, (HLoc + LeftStep) * 16, VLoc * 16, BaseGraphic);
+        }
         LeftStep--;
     }
 // now find rightmost LC, opening them all (to trains) in turn
@@ -6560,20 +7041,20 @@ bool TTrack::IsLCBarrierDownAtHV(int Caller, int HLoc, int VLoc) // returns true
     if(!FoundFlag)
     {
         Utilities->CallLogPop(1898);
-        return false;
+        return(false);
     }
     if(InactiveTrackElementAt(100, IMPair.first).TrackType != LevelCrossing) // only need to check first as second can only be a platform
     {
         Utilities->CallLogPop(1899);
-        return false;
+        return(false);
     }
     if(InactiveTrackElementAt(103, IMPair.first).Attribute == 1)
     {
         Utilities->CallLogPop(1900);
-        return true;
+        return(true);
     }
     Utilities->CallLogPop(1901);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -6588,20 +7069,20 @@ bool TTrack::IsLCBarrierUpAtHV(int Caller, int HLoc, int VLoc) // returns true o
     if(!FoundFlag)
     {
         Utilities->CallLogPop(1922);
-        return false;
+        return(false);
     }
     if(InactiveTrackElementAt(110, IMPair.first).TrackType != LevelCrossing) // only need to check first as second can only be a platform
     {
         Utilities->CallLogPop(1923);
-        return false;
+        return(false);
     }
     if(InactiveTrackElementAt(111, IMPair.first).Attribute == 0)
     {
         Utilities->CallLogPop(1924);
-        return true;
+        return(true);
     }
     Utilities->CallLogPop(1925);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -6616,20 +7097,20 @@ bool TTrack::IsLCBarrierFlashingAtHV(int Caller, int HLoc, int VLoc)
     if(!FoundFlag)
     {
         Utilities->CallLogPop(1918);
-        return false;
+        return(false);
     }
     if(InactiveTrackElementAt(112, IMPair.first).TrackType != LevelCrossing) // only need to check first as second can only be a platform
     {
         Utilities->CallLogPop(1919);
-        return false;
+        return(false);
     }
     if(InactiveTrackElementAt(113, IMPair.first).Attribute == 2)
     {
         Utilities->CallLogPop(1920);
-        return true;
+        return(true);
     }
     Utilities->CallLogPop(1921);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -6644,15 +7125,15 @@ bool TTrack::IsLCAtHV(int Caller, int HLoc, int VLoc)
     if(!FoundFlag)
     {
         Utilities->CallLogPop(1902);
-        return false;
+        return(false);
     }
     if(InactiveTrackElementAt(101, IMPair.first).TrackType != LevelCrossing) // only need to check first as second can only be a platform
     {
         Utilities->CallLogPop(1903);
-        return false;
+        return(false);
     }
     Utilities->CallLogPop(1904);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -6660,7 +7141,7 @@ bool TTrack::IsLCAtHV(int Caller, int HLoc, int VLoc)
 void TTrack::SetLCAttributeAtHV(int Caller, int HLoc, int VLoc, int Attr)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetLCAttributeAtHV," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," +
-        AnsiString(Attr));
+                                 AnsiString(Attr));
     bool FoundFlag;
     TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(23, HLoc, VLoc, FoundFlag);
 
@@ -6697,11 +7178,11 @@ void TTrack::ResetLevelCrossings(int Caller)
 
 // ---------------------------------------------------------------------------
 
-bool TTrack::AnyLinkedLevelCrossingElementsWithRoutesOrTrains(int Caller, int HLoc, int VLoc, bool &TrainPresent)
+bool TTrack::AnyLinkedLevelCrossingElementsWithRoutesOrTrains(int Caller, int HLoc, int VLoc, TPrefDirVector SearchVector, bool &TrainPresent)
 {
-// return true if there is either a route set on any element or a train on any element
+// return true if there is either a route set or being set on any element or a train on any element
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AnyLinkedLevelCrossingElementsWithRoutesOrTrains," + AnsiString(HLoc) +
-        "," + AnsiString(VLoc));
+                                 "," + AnsiString(VLoc));
 
     THVPair TrackMapKeyPair;
     TTrack::TTrackMapIterator TrackMapPtr;
@@ -6717,16 +7198,21 @@ bool TTrack::AnyLinkedLevelCrossingElementsWithRoutesOrTrains(int Caller, int HL
         TrackMapKeyPair.second = VLoc + UpStep;
         TrackMapPtr = TrackMap.find(TrackMapKeyPair);
         if(AllRoutes->GetRouteTypeAndNumber(20, TrackMapPtr->second, 0, DummyRouteNumber) != TAllRoutes::NoRoute)
-    // use 0 for LinkPos, only 1 track element so 0 or 1 would be OK
+        // use 0 for LinkPos, only 1 track element so 0 or 1 would be OK
         {
             Utilities->CallLogPop(1932);
-            return true;
+            return(true);
         }
         if(TrackElementAt(867, TrackMapPtr->second).TrainIDOnElement != -1)
         {
             TrainPresent = true;
             Utilities->CallLogPop(1933);
-            return true;
+            return(true);
+        }
+        if(LCInSearchVector(0, HLoc, (VLoc + UpStep), SearchVector)) //route being set, added at v2.8.0
+        {
+            Utilities->CallLogPop(2274);
+            return(true);
         }
         UpStep--;
     }
@@ -6739,16 +7225,21 @@ bool TTrack::AnyLinkedLevelCrossingElementsWithRoutesOrTrains(int Caller, int HL
         TrackMapKeyPair.second = VLoc + DownStep;
         TrackMapPtr = TrackMap.find(TrackMapKeyPair);
         if(AllRoutes->GetRouteTypeAndNumber(21, TrackMapPtr->second, 0, DummyRouteNumber) != TAllRoutes::NoRoute)
-    // use 0 for LinkPos, only 1 track element so 0 or 1 would be OK
+        // use 0 for LinkPos, only 1 track element so 0 or 1 would be OK
         {
             Utilities->CallLogPop(1934);
-            return true;
+            return(true);
         }
         if(TrackElementAt(868, TrackMapPtr->second).TrainIDOnElement != -1)
         {
             TrainPresent = true;
             Utilities->CallLogPop(1935);
-            return true;
+            return(true);
+        }
+        if(LCInSearchVector(1, HLoc, (VLoc + DownStep), SearchVector)) //route being set, added at v2.8.0
+        {
+            Utilities->CallLogPop(2275);
+            return(true);
         }
         DownStep++;
     }
@@ -6761,16 +7252,21 @@ bool TTrack::AnyLinkedLevelCrossingElementsWithRoutesOrTrains(int Caller, int HL
         TrackMapKeyPair.second = VLoc;
         TrackMapPtr = TrackMap.find(TrackMapKeyPair);
         if(AllRoutes->GetRouteTypeAndNumber(22, TrackMapPtr->second, 0, DummyRouteNumber) != TAllRoutes::NoRoute)
-    // use 0 for LinkPos, only 1 track element so 0 or 1 would be OK
+        // use 0 for LinkPos, only 1 track element so 0 or 1 would be OK
         {
             Utilities->CallLogPop(1936);
-            return true;
+            return(true);
         }
         if(TrackElementAt(869, TrackMapPtr->second).TrainIDOnElement != -1)
         {
             TrainPresent = true;
             Utilities->CallLogPop(1937);
-            return true;
+            return(true);
+        }
+        if(LCInSearchVector(2, (HLoc + LeftStep), VLoc, SearchVector)) //route being set, added at v2.8.0
+        {
+            Utilities->CallLogPop(2276);
+            return(true);
         }
         LeftStep--;
     }
@@ -6783,20 +7279,42 @@ bool TTrack::AnyLinkedLevelCrossingElementsWithRoutesOrTrains(int Caller, int HL
         TrackMapKeyPair.second = VLoc;
         TrackMapPtr = TrackMap.find(TrackMapKeyPair);
         if(AllRoutes->GetRouteTypeAndNumber(23, TrackMapPtr->second, 0, DummyRouteNumber) != TAllRoutes::NoRoute)
-    // use 0 for LinkPos, only 1 track element so 0 or 1 would be OK
+        // use 0 for LinkPos, only 1 track element so 0 or 1 would be OK
         {
             Utilities->CallLogPop(1938);
-            return true;
+            return(true);
         }
         if(TrackElementAt(870, TrackMapPtr->second).TrainIDOnElement != -1)
         {
             TrainPresent = true;
             Utilities->CallLogPop(1939);
-            return true;
+            return(true);
+        }
+        if(LCInSearchVector(3, (HLoc + RightStep), VLoc, SearchVector)) //route being set, added at v2.8.0
+        {
+            Utilities->CallLogPop(2277);
+            return(true);
         }
         RightStep++;
     }
     Utilities->CallLogPop(1940);
+    return(false);
+}
+
+// ---------------------------------------------------------------------------
+
+bool TTrack::LCInSearchVector(int Caller, int HLoc, int VLoc, TPrefDirVector SearchVector)  //added at v2.8.0
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LCInSearchVector," + HLoc + "," + VLoc);
+    for(unsigned int x = 0; x < SearchVector.size(); x++)
+    {
+        if((TrackElementAt(1019, SearchVector.at(x).GetTrackVectorPosition()).HLoc == HLoc) && (TrackElementAt(1020, SearchVector.at(x).GetTrackVectorPosition()).VLoc == VLoc))
+        {
+            Utilities->CallLogPop(2278);
+            return true;
+        }
+    }
+    Utilities->CallLogPop(2279);
     return false;
 }
 
@@ -6812,18 +7330,18 @@ Graphics::TBitmap *TTrack::GetFilletGraphic(int Caller, TTrackElement TrackEleme
     if(TrackElement.SpeedTag < 28)
     {
         Utilities->CallLogPop(521);
-        return RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 7][TrackElement.Attribute];
+        return(RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 7][TrackElement.Attribute]);
     }
     else if(TrackElement.SpeedTag < 132)
     {
         Utilities->CallLogPop(522);
 // Utilities->CallLogPop callers 523 to 534 inc used to test pop failure
-        return RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 20][TrackElement.Attribute];
+        return(RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 20][TrackElement.Attribute]);
     }
     else
     {
         Utilities->CallLogPop(1537);
-        return RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 108][TrackElement.Attribute];
+        return(RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 108][TrackElement.Attribute]);
     }
 }
 
@@ -6849,7 +7367,7 @@ void TTrack::GetTrackLocsFromScreenPos(int Caller, int &HLoc, int &VLoc, int Scr
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetTrackLocsFromScreenPos," + AnsiString(ScreenPosH) + "," +
-        AnsiString(ScreenPosV));
+                                 AnsiString(ScreenPosV));
     HLoc = div(ScreenPosH, 16).quot + Display->DisplayOffsetH;
     VLoc = div(ScreenPosV, 16).quot + Display->DisplayOffsetV;
 // Utilities->CallLogPop callers 523 to 534 inc used to test pop failure
@@ -6864,7 +7382,7 @@ void TTrack::GetTruePositionsFromScreenPos(int Caller, int &HPos, int &VPos, int
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetTruePositionsFromScreenPos," + AnsiString(ScreenPosH) + "," +
-        AnsiString(ScreenPosV));
+                                 AnsiString(ScreenPosV));
     HPos = ScreenPosH + (Display->DisplayOffsetH * 16);
     VPos = ScreenPosV + (Display->DisplayOffsetV * 16);
     Utilities->CallLogPop(536);
@@ -6875,7 +7393,7 @@ void TTrack::GetTruePositionsFromScreenPos(int Caller, int &HPos, int &VPos, int
 void TTrack::GetScreenPositionsFromTruePos(int Caller, int &ScreenPosH, int &ScreenPosV, int HPosTrue, int VPosTrue)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetScreenPositionsFromTruePos," + AnsiString(HPosTrue) + "," +
-        AnsiString(VPosTrue));
+                                 AnsiString(VPosTrue));
     ScreenPosH = HPosTrue - (Display->DisplayOffsetH * 16);
     ScreenPosV = VPosTrue - (Display->DisplayOffsetV * 16);
     Utilities->CallLogPop(537);
@@ -6902,20 +7420,20 @@ void TTrack::CheckMapAndTrack(int Caller) // test
             if(!FoundFlag)
             {
                 throw Exception("CheckMapAndTrack Error - failed to find HLoc=" + (AnsiString)CheckElement.HLoc + " VLoc=" + (AnsiString)CheckElement.VLoc +
-                    " in TrackMap, Caller=" + (AnsiString)Caller);
+                                " in TrackMap, Caller=" + (AnsiString)Caller);
             }
             if(MapVecPos != (int)a)
             {
                 throw Exception("CheckMapAndTrack Error - MapVectorPosition failed at HLoc=" + (AnsiString)CheckElement.HLoc + " VLoc=" +
-                    (AnsiString)CheckElement.VLoc + " Map value=" + (AnsiString)MapVecPos + " TrackVectorPos value=" + (AnsiString)a + " Caller=" +
-                    (AnsiString)Caller);
+                                (AnsiString)CheckElement.VLoc + " Map value=" + (AnsiString)MapVecPos + " TrackVectorPos value=" + (AnsiString)a + " Caller=" +
+                                (AnsiString)Caller);
             }
         }
     }
     if(TrackVector.size() != (TrackMap.size() + Zeroes))
     {
         throw Exception("CheckMapAndTrack Error - Map Size=" + (AnsiString)TrackVector.size() + " TrackVectorSize=" + (AnsiString)TrackVector.size() +
-            " Caller=" + (AnsiString)Caller);
+                        " Caller=" + (AnsiString)Caller);
     }
     Utilities->CallLogPop(538);
     return;
@@ -6936,19 +7454,19 @@ void TTrack::CheckMapAndInactiveTrack(int Caller) // test
         if(!FoundFlag)
         {
             throw Exception("CheckMapAndInactiveTrack Error - failed to find HLoc=" + (AnsiString)CheckElement.HLoc + " VLoc=" + (AnsiString)CheckElement.VLoc +
-                " in InactiveMap, Caller=" + (AnsiString)Caller);
+                            " in InactiveMap, Caller=" + (AnsiString)Caller);
         }
         if((InactivePair.first != a) && (InactivePair.second != a))
         {
             throw Exception("CheckMapAndInactiveTrack Error - InactiveMapVectorPosition failed at HLoc=" + (AnsiString)CheckElement.HLoc + " VLoc=" +
-                (AnsiString)CheckElement.VLoc + " Inactive Map values=" + (AnsiString)InactivePair.first + " and " + (AnsiString)InactivePair.second +
-                " InactiveTrackVectorPos value=" + (AnsiString)a + " Caller=" + (AnsiString)Caller);
+                            (AnsiString)CheckElement.VLoc + " Inactive Map values=" + (AnsiString)InactivePair.first + " and " + (AnsiString)InactivePair.second +
+                            " InactiveTrackVectorPos value=" + (AnsiString)a + " Caller=" + (AnsiString)Caller);
         }
     }
     if(InactiveTrackVector.size() != InactiveTrack2MultiMap.size())
     {
         throw Exception("CheckMapAndInactiveTrack Error - Map Size=" + (AnsiString)TrackVector.size() + " TrackVectorSize=" + (AnsiString)TrackVector.size() +
-            " Caller=" + (AnsiString)Caller);
+                        " Caller=" + (AnsiString)Caller);
     }
     Utilities->CallLogPop(539);
 }
@@ -6994,12 +7512,14 @@ void TTrack::CheckGapMap(int Caller) // test
     {
         TTrackElement CheckElement = Track->TrackVector.at(a);
         if(CheckElement.TrackType == GapJump)
+        {
             GapCount++;
+        }
     }
     if((GapMap.size() * 2) != GapCount)
     {
         throw Exception("GapMap Error - Map Size * 2 =" + (AnsiString)(GapMap.size() * 2) + " GapCount=" + (AnsiString)GapCount + " Caller=" +
-            (AnsiString)Caller);
+                        (AnsiString)Caller);
     }
     Utilities->CallLogPop(540);
 }
@@ -7021,13 +7541,21 @@ void TTrack::SetElementID(int Caller, TTrackElement &TrackElement)
     AnsiString IDString;
 
     if(TrackElement.HLoc < 0)
+    {
         IDString = "N" + AnsiString(abs(TrackElement.HLoc)) + "-";
+    }
     else
+    {
         IDString = AnsiString(TrackElement.HLoc) + "-";
+    }
     if(TrackElement.VLoc < 0)
+    {
         IDString += "N" + AnsiString(abs(TrackElement.VLoc));
+    }
     else
+    {
         IDString += AnsiString(TrackElement.VLoc);
+    }
     TrackElement.ElementID = IDString;
     Utilities->CallLogPop(542);
 }
@@ -7050,31 +7578,39 @@ int TTrack::GetTrackVectorPositionFromString(int Caller, AnsiString String, bool
         if(x == String.Length())
         {
             if(GiveMessages)
+            {
                 ShowMessage("Error in track element identifier: <" + String + "> - no delimiter");
+            }
             Utilities->CallLogPop(543);
-            return -1;
+            return(-1);
         }
     }
     if(DelimPos == 1)
     {
         if(GiveMessages)
+        {
             ShowMessage("Error in track element identifier: <" + String + "> - No Horizontal value");
+        }
         Utilities->CallLogPop(544);
-        return -1;
+        return(-1);
     }
     if(DelimPos == String.Length())
     {
         if(GiveMessages)
+        {
             ShowMessage("Error in track element identifier <" + String + "> - No Vertical value");
+        }
         Utilities->CallLogPop(545);
-        return -1;
+        return(-1);
     }
     if((String[String.Length()] < '0') || (String[String.Length()] > '9'))
     {
         if(GiveMessages)
+        {
             ShowMessage("Error in track element identifier <" + String + "> - Last value is not a number");
+        }
         Utilities->CallLogPop(1508);
-        return -1;
+        return(-1);
     }
     int HLoc, VLoc;
 
@@ -7085,9 +7621,11 @@ int TTrack::GetTrackVectorPositionFromString(int Caller, AnsiString String, bool
             if((String.SubString(x, 1) < "0") || (String.SubString(x, 1) > "9"))
             {
                 if(GiveMessages)
+                {
                     ShowMessage("Invalid character in Horizontal value in track element identifier: <" + String + ">");
+                }
                 Utilities->CallLogPop(546);
-                return -1;
+                return(-1);
             }
         }
     }
@@ -7098,17 +7636,22 @@ int TTrack::GetTrackVectorPositionFromString(int Caller, AnsiString String, bool
             if((String.SubString(x, 1) < "0") || (String.SubString(x, 1) > "9"))
             {
                 if(GiveMessages)
+                {
                     ShowMessage("Invalid character in Horizontal value in track element identifier: <" + String + ">");
+                }
                 Utilities->CallLogPop(763);
-                return -1;
+                return(-1);
             }
         }
     }
     if(String.SubString(1, 1) == "N")
+    {
         HLoc = -(String.SubString(2, DelimPos - 2).ToInt());
+    }
     else
+    {
         HLoc = String.SubString(1, DelimPos - 1).ToInt();
-
+    }
     if(String.SubString(DelimPos + 1, 1) != "N")
     {
         for(int x = DelimPos + 1; x < String.Length() + 1; x++)
@@ -7116,9 +7659,11 @@ int TTrack::GetTrackVectorPositionFromString(int Caller, AnsiString String, bool
             if((String.SubString(x, 1) < "0") || (String.SubString(x, 1) > "9"))
             {
                 if(GiveMessages)
+                {
                     ShowMessage("Invalid character in Vertical value in track element identifier: <" + String + ">");
+                }
                 Utilities->CallLogPop(547);
-                return -1;
+                return(-1);
             }
         }
     }
@@ -7129,17 +7674,22 @@ int TTrack::GetTrackVectorPositionFromString(int Caller, AnsiString String, bool
             if((String.SubString(x, 1) < "0") || (String.SubString(x, 1) > "9"))
             {
                 if(GiveMessages)
+                {
                     ShowMessage("Invalid character in Vertical value in track element identifier: <" + String + ">");
+                }
                 Utilities->CallLogPop(764);
-                return -1;
+                return(-1);
             }
         }
     }
     if(String.SubString(DelimPos + 1, 1) == "N")
+    {
         VLoc = -(String.SubString(DelimPos + 2, String.Length() - DelimPos - 1).ToInt());
+    }
     else
+    {
         VLoc = String.SubString(DelimPos + 1, String.Length() - DelimPos).ToInt();
-
+    }
     THVPair HVPair(HLoc, VLoc);
     TTrackMapIterator TrackMapPtr;
 
@@ -7147,12 +7697,14 @@ int TTrack::GetTrackVectorPositionFromString(int Caller, AnsiString String, bool
     if(TrackMapPtr == TrackMap.end())
     {
         if(GiveMessages)
+        {
             ShowMessage("No track element corresponding to track element identifier: <" + String + ">");
+        }
         Utilities->CallLogPop(548);
-        return -1;
+        return(-1);
     }
     Utilities->CallLogPop(549);
-    return TrackMapPtr->second;
+    return(TrackMapPtr->second);
 }
 
 // ---------------------------------------------------------------------------
@@ -7163,101 +7715,101 @@ bool TTrack::CheckFootCrossingLinks(int Caller, TTrackElement &TrackElement)
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckFootCrossingLinks," + AnsiString(TrackElement.HLoc) + "," +
-        AnsiString(TrackElement.VLoc) + "," + AnsiString(TrackElement.SpeedTag));
+                                 AnsiString(TrackElement.VLoc) + "," + AnsiString(TrackElement.SpeedTag));
     int HLoc = TrackElement.HLoc;
     int VLoc = TrackElement.VLoc;
 
     if((TrackElement.SpeedTag != 129) && (TrackElement.SpeedTag != 130) && (TrackElement.SpeedTag != 145) && (TrackElement.SpeedTag != 146))
     {
         Utilities->CallLogPop(1821);
-        return false;
+        return(false);
     }
     if(TrackElement.SpeedTag == 129) // vertical footbridge
     {
         // check top connection
         if(!(InactiveMapCheck(1, HLoc, VLoc, 76) // top plat
-            || InactiveMapCheck(2, HLoc, VLoc - 1, 96) // concourse
-            || InactiveMapCheck(3, HLoc, VLoc - 1, 77) // bot plat
-            || ActiveMapCheck(4, HLoc, VLoc - 1, 129))) // vert footbridge
+             || InactiveMapCheck(2, HLoc, VLoc - 1, 96) // concourse
+             || InactiveMapCheck(3, HLoc, VLoc - 1, 77) // bot plat
+             || ActiveMapCheck(4, HLoc, VLoc - 1, 129))) // vert footbridge
         {
             Utilities->CallLogPop(550);
-            return false;
+            return(false);
         }
         // check bottom connection
         else if(!(InactiveMapCheck(4, HLoc, VLoc, 77) // bot plat
-            || InactiveMapCheck(5, HLoc, VLoc + 1, 96) // concourse
-            || InactiveMapCheck(6, HLoc, VLoc + 1, 76) // top plat
-            || ActiveMapCheck(1, HLoc, VLoc + 1, 129))) // vert footbridge
+                  || InactiveMapCheck(5, HLoc, VLoc + 1, 96) // concourse
+                  || InactiveMapCheck(6, HLoc, VLoc + 1, 76) // top plat
+                  || ActiveMapCheck(1, HLoc, VLoc + 1, 129))) // vert footbridge
         {
             Utilities->CallLogPop(551);
-            return false;
+            return(false);
         }
     }
     if(TrackElement.SpeedTag == 145) // vertical underpass
     {
         // check top connection
         if(!(InactiveMapCheck(13, HLoc, VLoc, 76) // top plat
-            || InactiveMapCheck(14, HLoc, VLoc - 1, 96) // concourse
-            || InactiveMapCheck(15, HLoc, VLoc - 1, 77) // bot plat
-            || ActiveMapCheck(5, HLoc, VLoc - 1, 145))) // vert u'pass
+             || InactiveMapCheck(14, HLoc, VLoc - 1, 96) // concourse
+             || InactiveMapCheck(15, HLoc, VLoc - 1, 77) // bot plat
+             || ActiveMapCheck(5, HLoc, VLoc - 1, 145))) // vert u'pass
         {
             Utilities->CallLogPop(2114);
-            return false;
+            return(false);
         }
         // check bottom connection
         else if(!(InactiveMapCheck(16, HLoc, VLoc, 77) // bot plat
-            || InactiveMapCheck(17, HLoc, VLoc + 1, 96) // concourse
-            || InactiveMapCheck(18, HLoc, VLoc + 1, 76) // top plat
-            || ActiveMapCheck(6, HLoc, VLoc + 1, 145))) // vert u'pass
+                  || InactiveMapCheck(17, HLoc, VLoc + 1, 96) // concourse
+                  || InactiveMapCheck(18, HLoc, VLoc + 1, 76) // top plat
+                  || ActiveMapCheck(6, HLoc, VLoc + 1, 145))) // vert u'pass
         {
             Utilities->CallLogPop(2115);
-            return false;
+            return(false);
         }
     }
     if(TrackElement.SpeedTag == 130) // hor footbridge
     {
         // check left connection
         if(!(InactiveMapCheck(19, HLoc, VLoc, 78) // left plat
-            || InactiveMapCheck(20, HLoc - 1, VLoc, 96) // concourse
-            || InactiveMapCheck(21, HLoc - 1, VLoc, 79) // right plat
-            || ActiveMapCheck(2, HLoc - 1, VLoc, 130))) // hor footbridge
+             || InactiveMapCheck(20, HLoc - 1, VLoc, 96) // concourse
+             || InactiveMapCheck(21, HLoc - 1, VLoc, 79) // right plat
+             || ActiveMapCheck(2, HLoc - 1, VLoc, 130))) // hor footbridge
         {
             Utilities->CallLogPop(552);
-            return false;
+            return(false);
         }
         // check right connection
         else if(!(InactiveMapCheck(22, HLoc, VLoc, 79) // right plat
-            || InactiveMapCheck(23, HLoc + 1, VLoc, 96) // concourse
-            || InactiveMapCheck(24, HLoc + 1, VLoc, 78) // left plat
-            || ActiveMapCheck(3, HLoc + 1, VLoc, 130))) // hor footbridge
+                  || InactiveMapCheck(23, HLoc + 1, VLoc, 96) // concourse
+                  || InactiveMapCheck(24, HLoc + 1, VLoc, 78) // left plat
+                  || ActiveMapCheck(3, HLoc + 1, VLoc, 130))) // hor footbridge
         {
             Utilities->CallLogPop(553);
-            return false;
+            return(false);
         }
     }
     if(TrackElement.SpeedTag == 146) // hor u'pass
     {
         // check left connection
         if(!(InactiveMapCheck(7, HLoc, VLoc, 78) // left plat
-            || InactiveMapCheck(8, HLoc - 1, VLoc, 96) // concourse
-            || InactiveMapCheck(9, HLoc - 1, VLoc, 79) // right plat
-            || ActiveMapCheck(7, HLoc - 1, VLoc, 146))) // hor u'pass
+             || InactiveMapCheck(8, HLoc - 1, VLoc, 96) // concourse
+             || InactiveMapCheck(9, HLoc - 1, VLoc, 79) // right plat
+             || ActiveMapCheck(7, HLoc - 1, VLoc, 146))) // hor u'pass
         {
             Utilities->CallLogPop(2116);
-            return false;
+            return(false);
         }
         // check right connection
         else if(!(InactiveMapCheck(10, HLoc, VLoc, 79) // right plat
-            || InactiveMapCheck(11, HLoc + 1, VLoc, 96) // concourse
-            || InactiveMapCheck(12, HLoc + 1, VLoc, 78) // left plat
-            || ActiveMapCheck(8, HLoc + 1, VLoc, 146))) // hor u'pass
+                  || InactiveMapCheck(11, HLoc + 1, VLoc, 96) // concourse
+                  || InactiveMapCheck(12, HLoc + 1, VLoc, 78) // left plat
+                  || ActiveMapCheck(8, HLoc + 1, VLoc, 146))) // hor u'pass
         {
             Utilities->CallLogPop(2117);
-            return false;
+            return(false);
         }
     }
     Utilities->CallLogPop(554);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -7268,11 +7820,11 @@ bool TTrack::InactiveMapCheck(int Caller, int HLoc, int VLoc, int SpeedTag)
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",InactiveMapCheck," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," +
-        AnsiString(SpeedTag));
+                                 AnsiString(SpeedTag));
     if(InactiveTrack2MultiMap.empty())
     {
         Utilities->CallLogPop(555);
-        return false;
+        return(false);
     }
     THVPair HVPair(HLoc, VLoc);
     TInactiveTrack2MultiMapIterator IMEnd = InactiveTrack2MultiMap.end();
@@ -7282,10 +7834,12 @@ bool TTrack::InactiveMapCheck(int Caller, int HLoc, int VLoc, int SpeedTag)
     if(HVRange.first == HVRange.second)
     {
         Utilities->CallLogPop(556);
-        return false;
+        return(false);
     }
     else
+    {
         HVIt1 = HVRange.first;
+    }
     TTrackElement Temp1, Temp2; // test
 
     Temp1 = InactiveTrackElementAt(8, HVIt1->second); // test
@@ -7295,15 +7849,15 @@ bool TTrack::InactiveMapCheck(int Caller, int HLoc, int VLoc, int SpeedTag)
         Temp2 = InactiveTrackElementAt(9, HVIt2->second); // test
     }
     if((InactiveTrackElementAt(10, HVIt1->second).SpeedTag == SpeedTag) || ((HVIt2 != IMEnd) && (InactiveTrackElementAt(11,
-        HVIt2->second).SpeedTag == SpeedTag)))
+                                                                                                                        HVIt2->second).SpeedTag == SpeedTag)))
     {
         Utilities->CallLogPop(557);
-        return true;
+        return(true);
     }
     else
     {
         Utilities->CallLogPop(558);
-        return false;
+        return(false);
     }
 }
 
@@ -7315,11 +7869,11 @@ bool TTrack::ActiveMapCheck(int Caller, int HLoc, int VLoc, int SpeedTag)
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ActiveMapCheck," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," +
-        AnsiString(SpeedTag));
+                                 AnsiString(SpeedTag));
     if(TrackMap.empty())
     {
         Utilities->CallLogPop(559);
-        return false;
+        return(false);
     }
     THVPair HVPair(HLoc, VLoc);
     TTrackMapIterator End = TrackMap.end();
@@ -7329,12 +7883,12 @@ bool TTrack::ActiveMapCheck(int Caller, int HLoc, int VLoc, int SpeedTag)
     if((It != End) && (TrackElementAt(19, It->second).SpeedTag == SpeedTag))
     {
         Utilities->CallLogPop(560);
-        return true;
+        return(true);
     }
     else
     {
         Utilities->CallLogPop(561);
-        return false;
+        return(false);
     }
 }
 
@@ -7506,24 +8060,26 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
         {
             int HPos, VPos; // not used but needed for FindText function
             if(CurrentElementNumber > -1) //up to & including 2.4.2 this was NewElement, which was the last one added during LNPendingList building above, so it could be
-                                         //repeatedly selected rather than the element under examination (LNPendingList.front()) & the front element text name wouldn't be erased.
-                                         //Using CurrentElementNumber ensures that all elements are examined &  have names erased if present
+                                          //repeatedly selected rather than the element under examination (LNPendingList.front()) & the front element text name wouldn't be erased.
+                                          //Using CurrentElementNumber ensures that all elements are examined &  have names erased if present
             {
-                AnsiString ExistingName = InactiveTrackElementAt(118, CurrentElementNumber).LocationName;//existing name of CurrentElement
+                AnsiString ExistingName = InactiveTrackElementAt(118, CurrentElementNumber).LocationName; //existing name of CurrentElement
                 if((ExistingName != "") && (ExistingName != LocationName))
                 {
                     if(LocationNameMultiMap.find(ExistingName) == Track->LocationNameMultiMap.end())
-                    {} // name not in LocationNameMultiMap, so don't erase from TextVector
+                    {
+                    }  // name not in LocationNameMultiMap, so don't erase from TextVector
                     else if(TextHandler->FindText(4, ExistingName, HPos, VPos)) // can't use 'EraseLocationNameText' as that function is in TInterface
                     {
                         if(TextHandler->TextErase(10, HPos, VPos, ExistingName))
-                        {;
+                        {
+                            ;
                         } // condition not used
+
                     }
                 }
             }
         }
-
         AddName(1, CurrentElement, LocationName); // add location name to current element, + timetable name to any
         // track at that loc
         THVPair HVPair(H, V);
@@ -7546,8 +8102,8 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
         SNRange.first--; // now pointing to before the first
         SNRange.second--; // now pointing to the last
         for(SNIterator = SNRange.second; SNIterator != SNRange.first; SNIterator--)
-        // Same elements are in Done map as in name map
         {
+            // Same elements are in Done map as in name map
             if(!ElementInLNDone2MultiMap(1, SNIterator->second))
             {
                 ErasedFlag = true;
@@ -7570,9 +8126,13 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
         }
     }
     if(ErasedFlag)
+    {
         RebuildLocationNameMultiMap(2);
+    }
     if(TrackFinished)
+    {
         SetStationEntryStopLinkPosses(3);
+    }
 // set here as well as in LinkTrack so don't have to link track just because a name added
 // if track not finished then will be set when track validated
 
@@ -7608,11 +8168,11 @@ bool TTrack::AdjElement(int Caller, int HLoc, int VLoc, int SpeedTag, int &Found
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AdjElement," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," +
-        AnsiString(SpeedTag));
+                                 AnsiString(SpeedTag));
     if(!NamedLocationElementAt(2, HLoc, VLoc))
     {
         Utilities->CallLogPop(948);
-        return false;
+        return(false);
     }
     bool FoundFlag;
     int Position = -1;
@@ -7631,7 +8191,7 @@ bool TTrack::AdjElement(int Caller, int HLoc, int VLoc, int SpeedTag, int &Found
                 {
                     FoundElement = MapPos;
                     Utilities->CallLogPop(563);
-                    return true;
+                    return(true);
                 }
             }
         }
@@ -7647,7 +8207,7 @@ bool TTrack::AdjElement(int Caller, int HLoc, int VLoc, int SpeedTag, int &Found
                 {
                     FoundElement = IMPair.first;
                     Utilities->CallLogPop(564);
-                    return true;
+                    return(true);
                 }
             }
             else if(InactiveTrackElementAt(13, IMPair.second).SpeedTag == SpeedTag)
@@ -7656,13 +8216,13 @@ bool TTrack::AdjElement(int Caller, int HLoc, int VLoc, int SpeedTag, int &Found
                 {
                     FoundElement = IMPair.second;
                     Utilities->CallLogPop(565);
-                    return true;
+                    return(true);
                 }
             }
         }
     }
     Utilities->CallLogPop(566);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -7713,7 +8273,7 @@ bool TTrack::ElementInLNDone2MultiMap(int Caller, int MapPos)
     if(LNDone2MultiMap.empty())
     {
         Utilities->CallLogPop(568);
-        return false;
+        return(false);
     }
     TLNDone2MultiMapIterator LNDone2MultiMapIterator;
 
@@ -7722,11 +8282,11 @@ bool TTrack::ElementInLNDone2MultiMap(int Caller, int MapPos)
         if(LNDone2MultiMapIterator->second == MapPos)
         {
             Utilities->CallLogPop(569);
-            return true;
+            return(true);
         }
     }
     Utilities->CallLogPop(570);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -7740,7 +8300,7 @@ bool TTrack::ElementInLNPendingList(int Caller, int MapPos)
     if(LNPendingList.empty())
     {
         Utilities->CallLogPop(571);
-        return false;
+        return(false);
     }
     TLNPendingListIterator LNPendingListIterator;
 
@@ -7749,11 +8309,11 @@ bool TTrack::ElementInLNPendingList(int Caller, int MapPos)
         if(*LNPendingListIterator == MapPos)
         {
             Utilities->CallLogPop(572);
-            return true;
+            return(true);
         }
     }
     Utilities->CallLogPop(573);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -7773,7 +8333,7 @@ bool TTrack::NamedLocationElementAt(int Caller, int HLoc, int VLoc)
         if(TrackElementAt(24, TrackMapPtr->second).FixedNamedLocationElement)
         {
             Utilities->CallLogPop(574);
-            return true;
+            return(true);
         }
     }
     if(InactiveTrack2MultiMapIterator != InactiveTrack2MultiMap.end())
@@ -7782,11 +8342,11 @@ bool TTrack::NamedLocationElementAt(int Caller, int HLoc, int VLoc)
         if(InactiveTrackElementAt(14, InactiveTrack2MultiMapIterator->second).FixedNamedLocationElement)
         {
             Utilities->CallLogPop(575);
-            return true;
+            return(true);
         }
     }
     Utilities->CallLogPop(576);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -7797,10 +8357,10 @@ bool TTrack::LocationNameAllocated(int Caller, AnsiString LocationName) // true 
     if(Track->LocationNameMultiMap.find(LocationName) != Track->LocationNameMultiMap.end())
     {
         Utilities->CallLogPop(1953);
-        return true;
+        return(true);
     }
     Utilities->CallLogPop(1954);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -7815,7 +8375,7 @@ bool TTrack::DuplicatedLocationName(int Caller, bool GiveMessage)
     if(LocationNameMultiMap.empty()) //no names so no duplicates
     {
         Utilities->CallLogPop(2254);
-        return false;
+        return(false);
     }
     AnsiString NameBeingChecked = LocationNameMultiMap.begin()->first; //first name to start with
     LNMMRg = LocationNameMultiMap.equal_range(NameBeingChecked);
@@ -7828,7 +8388,7 @@ bool TTrack::DuplicatedLocationName(int Caller, bool GiveMessage)
                 ShowMessage("Please note that more than one instance of " + NameBeingChecked + " was found.  Location names must be unique before the railway can be saved as a .rly file");
             }
             Utilities->CallLogPop(2255);
-            return true;
+            return(true);
         }
     }
     while(LNMMRg.second != LocationNameMultiMap.end()) //here LNMMRg still set to earlier name
@@ -7844,12 +8404,12 @@ bool TTrack::DuplicatedLocationName(int Caller, bool GiveMessage)
                     ShowMessage("Please note that more than one instance of " + NameBeingChecked + " was found.  Location names must be unique before the railway can be saved as a .rly file");
                 }
                 Utilities->CallLogPop(2256);
-                return true;
+                return(true);
             }
         }
     }
     Utilities->CallLogPop(2257);
-    return false;       //OK, no duplicates
+    return(false);       //OK, no duplicates
 }
 
 // ---------------------------------------------------------------------------
@@ -7946,11 +8506,11 @@ bool TTrack::PopulateHVPairsLinkedMapAndNoDuplicates(int Caller, TLocationNameMu
         if(!HVPLMIt->second)
         {
             Utilities->CallLogPop(2258);
-            return false;
+            return(false);
         }
     }
     Utilities->CallLogPop(2259);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -7965,7 +8525,7 @@ bool TTrack::TimetabledLocationNameAllocated(int Caller, AnsiString LocationName
     if(LocationName == "")
     {
         Utilities->CallLogPop(577);
-        return false;
+        return(false);
     }
 // new for v0.2b
 // compile ActiveTrackElementNameMap if !ActiveTrackElementNameMapCompiledFlag (added as a precaution, should be compiled when reach here)
@@ -7976,8 +8536,9 @@ bool TTrack::TimetabledLocationNameAllocated(int Caller, AnsiString LocationName
         for(unsigned int x = 0; x < TrackVector.size(); x++)
         {
             if((TrackVector.at(x).ActiveTrackElementName != "") && (ContinuationNameMap.find(TrackVector.at(x).ActiveTrackElementName))
-                == ContinuationNameMap.end())
-            { // exclude any name that appears in a continuation, error message given in tt validation if try to include such a name in a tt
+               == ContinuationNameMap.end())
+            {
+                // exclude any name that appears in a continuation, error message given in tt validation if try to include such a name in a tt
                 ActiveTrackElementNameMapEntry.first = Track->TrackVector.at(x).ActiveTrackElementName;
                 ActiveTrackElementNameMapEntry.second = 0; // this is a dummy value
                 ActiveTrackElementNameMap.insert(ActiveTrackElementNameMapEntry);
@@ -8026,7 +8587,9 @@ void TTrack::EraseLocationAndActiveTrackElementNames(int Caller, AnsiString Loca
         }
     }
     if(ErasedFlag)
+    {
         RebuildLocationNameMultiMap(3);
+    }
     CheckLocationNameMultiMap(3); // test
     Utilities->CallLogPop(579);
 }
@@ -8044,7 +8607,7 @@ void TTrack::SearchForAndUpdateLocationName(int Caller, int HLoc, int VLoc, int 
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SearchForAndUpdateLocationName," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc) + "," + AnsiString(SpeedTag));
+                                 AnsiString(VLoc) + "," + AnsiString(SpeedTag));
     LNPendingList.clear();
     AnsiString LocationName;
     int MapPos;
@@ -8086,7 +8649,6 @@ void TTrack::SearchForAndUpdateLocationName(int Caller, int HLoc, int VLoc, int 
             return;
         }
     }
-
     if(SpeedTag == 76) // top plat
     {
         for(int x = 0; x < 25; x++)
@@ -8220,7 +8782,7 @@ bool TTrack::AdjNamedElement(int Caller, int HLoc, int VLoc, int SpeedTag, AnsiS
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AdjNamedElement," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," +
-        AnsiString(SpeedTag));
+                                 AnsiString(SpeedTag));
     bool FoundFlag;
     TIMPair IMPair;
     TTrackVectorIterator TempElement;
@@ -8237,7 +8799,7 @@ bool TTrack::AdjNamedElement(int Caller, int HLoc, int VLoc, int SpeedTag, AnsiS
                 LocationName = TempElement->LocationName;
                 FoundElement = IMPair.first;
                 Utilities->CallLogPop(581);
-                return true;
+                return(true);
             }
         }
         else if(InactiveTrackElementAt(16, IMPair.second).SpeedTag == SpeedTag)
@@ -8248,11 +8810,10 @@ bool TTrack::AdjNamedElement(int Caller, int HLoc, int VLoc, int SpeedTag, AnsiS
                 LocationName = TempElement->LocationName;
                 FoundElement = IMPair.second;
                 Utilities->CallLogPop(582);
-                return true;
+                return(true);
             }
         }
     }
-
     Position = GetVectorPositionFromTrackMap(21, HLoc, VLoc, FoundFlag);
     if(FoundFlag)
     {
@@ -8264,12 +8825,12 @@ bool TTrack::AdjNamedElement(int Caller, int HLoc, int VLoc, int SpeedTag, AnsiS
                 LocationName = TempElement->LocationName;
                 FoundElement = -1 - Position;
                 Utilities->CallLogPop(583);
-                return true;
+                return(true);
             }
         }
     }
     Utilities->CallLogPop(584);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -8285,7 +8846,6 @@ void TTrack::CheckLocationNameMultiMap(int Caller) // test function
         Utilities->CallLogPop(2059);
         return;
     }
-
     AnsiString SName, TName, ErrorString;
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
@@ -8295,7 +8855,7 @@ void TTrack::CheckLocationNameMultiMap(int Caller) // test function
             if(TrackVector.at(x).TrackType != FootCrossing)
             {
                 throw Exception("Track element has FixedNamedLocationElement set but is not a footbridge/underpass in CheckLocationNameMultiMap, caller = " +
-                    AnsiString(Caller));
+                                AnsiString(Caller));
             }
             Count++;
         }
@@ -8305,11 +8865,11 @@ void TTrack::CheckLocationNameMultiMap(int Caller) // test function
         if(InactiveTrackVector.at(x).FixedNamedLocationElement)
         {
             if((InactiveTrackVector.at(x).TrackType != Platform) && (InactiveTrackVector.at(x).TrackType != NamedNonStationLocation) &&
-                (InactiveTrackVector.at(x).TrackType != Concourse))
+               (InactiveTrackVector.at(x).TrackType != Concourse))
             {
                 throw Exception
-                    ("Inactive track element has FixedNamedLocationElement set but is not a platform, concourse or named location in CheckLocationNameMultiMap, caller = " +
-                    AnsiString(Caller));
+                          ("Inactive track element has FixedNamedLocationElement set but is not a platform, concourse or named location in CheckLocationNameMultiMap, caller = " +
+                          AnsiString(Caller));
             }
             Count++;
         }
@@ -8317,9 +8877,8 @@ void TTrack::CheckLocationNameMultiMap(int Caller) // test function
     if(LocationNameMultiMap.size() != Count)
     {
         throw Exception("LocationNameMultiMap size = " + AnsiString(LocationNameMultiMap.size()) + " & Count = " + AnsiString(Count) +
-            " in CheckLocationNameMultiMap, caller = " + AnsiString(Caller));
+                        " in CheckLocationNameMultiMap, caller = " + AnsiString(Caller));
     }
-
 // check all entries in both vectors match entries in name multimap
     TLocationNameMultiMapIterator SNIt;
 
@@ -8336,7 +8895,7 @@ void TTrack::CheckLocationNameMultiMap(int Caller) // test function
             if(SNIt->second != -1 - (int)x)
             {
                 throw Exception("Elements different in name map & TrackVector in CheckLocationNameMultiMap for TrackVector check, caller = " +
-                    AnsiString(Caller));
+                                AnsiString(Caller));
             }
         }
         // check corresponding platform for all Timetable entries that aren't empty
@@ -8349,22 +8908,22 @@ void TTrack::CheckLocationNameMultiMap(int Caller) // test function
             if(FoundFlag)
             {
                 if((InactiveTrackElementAt(17, IMPair.first).TrackType != Platform) && (InactiveTrackElementAt(18, IMPair.second).TrackType != Platform) &&
-                    (InactiveTrackElementAt(19, IMPair.first).TrackType != NamedNonStationLocation))
+                   (InactiveTrackElementAt(19, IMPair.first).TrackType != NamedNonStationLocation))
                 {
                     throw Exception("Track element with ActiveTrackElementName but no plat/named loc at H " + AnsiString(TrackVector.at(x).HLoc) + " & V " +
-                        AnsiString(TrackVector.at(x).VLoc) + " in CheckLocationNameMultiMap, caller = " + AnsiString(Caller));
+                                    AnsiString(TrackVector.at(x).VLoc) + " in CheckLocationNameMultiMap, caller = " + AnsiString(Caller));
                 }
                 if((InactiveTrackElementAt(20, IMPair.first).LocationName != TName) && (InactiveTrackElementAt(21, IMPair.second).LocationName != TName))
                 {
                     throw Exception("Track element with ActiveTrackElementName " + TName + " but plat/named loc at H " + AnsiString(TrackVector.at(x).HLoc) +
-                        " & V " + AnsiString(TrackVector.at(x).VLoc) + " has different LocationName in CheckLocationNameMultiMap, caller = " +
-                        AnsiString(Caller));
+                                    " & V " + AnsiString(TrackVector.at(x).VLoc) + " has different LocationName in CheckLocationNameMultiMap, caller = " +
+                                    AnsiString(Caller));
                 }
             }
             else
             {
                 throw Exception("Track element with ActiveTrackElementName but no inactive element at H " + AnsiString(TrackVector.at(x).HLoc) + " & V " +
-                    AnsiString(TrackVector.at(x).VLoc) + " in CheckLocationNameMultiMap, caller = " + AnsiString(Caller));
+                                AnsiString(TrackVector.at(x).VLoc) + " in CheckLocationNameMultiMap, caller = " + AnsiString(Caller));
             }
         }
     }
@@ -8381,7 +8940,7 @@ void TTrack::CheckLocationNameMultiMap(int Caller) // test function
             if(SNIt->second != (int)x)
             {
                 throw Exception("Elements different in name map & TrackVector in CheckLocationNameMultiMap for TrackVector check, caller = " +
-                    AnsiString(Caller));
+                                AnsiString(Caller));
             }
         }
     }
@@ -8391,7 +8950,7 @@ void TTrack::CheckLocationNameMultiMap(int Caller) // test function
 // ---------------------------------------------------------------------------
 
 TTrack::TLocationNameMultiMapIterator TTrack::FindNamedElementInLocationNameMultiMap(int Caller, AnsiString LocationName, TTrackVectorIterator TrackElement,
-    AnsiString &ErrorString)
+                                                                                     AnsiString &ErrorString)
 {
 /*
       Searches the name map to check if the element pointed to by the TTrackVectorIterator has the name
@@ -8399,7 +8958,7 @@ TTrack::TLocationNameMultiMapIterator TTrack::FindNamedElementInLocationNameMult
       is set to an appropriate text to allow the calling function to report the error.  Otherwise it is set to "".
 */
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FindNamedElementInLocationNameMultiMap," + LocationName + "," +
-        AnsiString(TrackElement->HLoc) + "," + AnsiString(TrackElement->VLoc) + "," + AnsiString(TrackElement->SpeedTag));
+                                 AnsiString(TrackElement->HLoc) + "," + AnsiString(TrackElement->VLoc) + "," + AnsiString(TrackElement->SpeedTag));
     ErrorString = "";
     bool FoundFlag = false;
     TLocationNameMultiMapIterator SNIterator;
@@ -8409,7 +8968,7 @@ TTrack::TLocationNameMultiMapIterator TTrack::FindNamedElementInLocationNameMult
     {
         ErrorString = "Error, Name " + LocationName + " not found in map";
         Utilities->CallLogPop(586);
-        return SNRange.first;
+        return(SNRange.first);
     }
     else
     {
@@ -8423,7 +8982,7 @@ TTrack::TLocationNameMultiMapIterator TTrack::FindNamedElementInLocationNameMult
                 {
                     FoundFlag = true;
                     Utilities->CallLogPop(587);
-                    return SNIterator;
+                    return(SNIterator);
                 }
             }
             else
@@ -8434,15 +8993,17 @@ TTrack::TLocationNameMultiMapIterator TTrack::FindNamedElementInLocationNameMult
                 {
                     FoundFlag = true;
                     Utilities->CallLogPop(588);
-                    return SNIterator;
+                    return(SNIterator);
                 }
             }
         }
     }
     if(!FoundFlag)
+    {
         ErrorString = "Error, Name " + LocationName + " found but not at required element";
+    }
     Utilities->CallLogPop(589);
-    return SNIterator;
+    return(SNIterator);
 }
 
 // ---------------------------------------------------------------------------
@@ -8508,22 +9069,28 @@ void TTrack::DecrementValuesInInactiveTrackAndNameMaps(int Caller, unsigned int 
     if(!InactiveTrack2MultiMap.empty())
     {
         for(InactiveTrack2MultiMapIterator = InactiveTrack2MultiMap.begin(); InactiveTrack2MultiMapIterator != InactiveTrack2MultiMap.end();
-        InactiveTrack2MultiMapIterator++)
+            InactiveTrack2MultiMapIterator++)
         {
             if(InactiveTrack2MultiMapIterator->second > VecPos)
+            {
                 InactiveTrack2MultiMapIterator->second--;
+            }
             // can't be == VecPos as that position erased
         }
     }
     if(!LocationNameMultiMap.empty())
     {
         for(LocationNameMultiMapIterator = LocationNameMultiMap.begin(); LocationNameMultiMapIterator != LocationNameMultiMap.end();
-        LocationNameMultiMapIterator++)
+            LocationNameMultiMapIterator++)
         {
             if(LocationNameMultiMapIterator->second < 0)
+            {
                 continue; // deal with TrackVectors separately
+            }
             if(LocationNameMultiMapIterator->second > (int)VecPos)
+            {
                 LocationNameMultiMapIterator->second--;
+            }
         }
     }
     Utilities->CallLogPop(593);
@@ -8547,21 +9114,27 @@ void TTrack::DecrementValuesInGapsAndTrackAndNameMaps(int Caller, unsigned int V
         for(TrackMapIterator = TrackMap.begin(); TrackMapIterator != TrackMap.end(); TrackMapIterator++)
         {
             if(TrackMapIterator->second > VecPos)
+            {
                 TrackMapIterator->second--;
+            }
             // can't be == VecPos as that position erased
         }
     }
     if(!LocationNameMultiMap.empty())
     {
         for(LocationNameMultiMapIterator = LocationNameMultiMap.begin(); LocationNameMultiMapIterator != LocationNameMultiMap.end();
-        LocationNameMultiMapIterator++)
+            LocationNameMultiMapIterator++)
         {
             if(LocationNameMultiMapIterator->second >= 0)
+            {
                 continue; // deal with InactiveTrackVectors separately
+            }
             // (-1-VecPos)  VP   0  1  2  3  4  5  6  7
             // Val -1 -2 -3 -4 -5 -6 -7 -8
             if(LocationNameMultiMapIterator->second < -(int)(VecPos + 1))
+            {
                 LocationNameMultiMapIterator->second++;
+            }
         }
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
@@ -8576,11 +9149,15 @@ void TTrack::DecrementValuesInGapsAndTrackAndNameMaps(int Caller, unsigned int V
                 continue;
             }
             if(TkEl.Conn[0] > int(VecPos))
+            {
                 TkEl.Conn[0]--;
+            }
             if(TkEl.Conn[0] > -1) // don't use 'else' here, need to check the value whether changed or not
             {
                 if(TrackElementAt(709, TkEl.Conn[0]).TrackType != GapJump)
+                {
                     TkEl.Conn[0] = -1;
+                }
             }
         }
     }
@@ -8628,8 +9205,8 @@ void TTrack::RebuildLocationNameMultiMap(int Caller)
 // ---------------------------------------------------------------------------
 
 bool TTrack::NonFootCrossingNamedLocationExists(int Caller)
-    // Return true if there is a named location present in the railway
-    // ignores lone footcrossings, can't name these on their own & track won't link if there are any
+// Return true if there is a named location present in the railway
+// ignores lone footcrossings, can't name these on their own & track won't link if there are any
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NonFootCrossingNamedLocationExists");
     TTrackVectorIterator ITVI;
@@ -8637,18 +9214,18 @@ bool TTrack::NonFootCrossingNamedLocationExists(int Caller)
     if(InactiveTrackVector.empty())
     {
         Utilities->CallLogPop(1343);
-        return false;
+        return(false);
     }
     for(ITVI = InactiveTrackVector.begin(); ITVI != InactiveTrackVector.end(); ITVI++)
     {
         if((ITVI->TrackType == Platform) || (ITVI->TrackType == NamedNonStationLocation) || (ITVI->TrackType == Concourse))
         {
             Utilities->CallLogPop(1404);
-            return true;
+            return(true);
         }
     }
     Utilities->CallLogPop(1344);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -8689,16 +9266,20 @@ void TTrack::SetAllDefaultLengthsAndSpeedLimits(int Caller)
 // ---------------------------------------------------------------------------
 
 void TTrack::LengthMarker(int Caller, TDisplay *Disp)
-    // Examine all elements in the TrackVector and if have a valid length mark the relevant track using MarkOneLength.
+// Examine all elements in the TrackVector and if have a valid length mark the relevant track using MarkOneLength.
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LengthMarker");
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         TTrackElement TempElement = TrackVector.at(x);
         if(TempElement.Length01 > -1)
+        {
             MarkOneLength(1, TempElement, true, Disp); // need Length01 test in case there are erase elements (but shouldn't be after LinkTrack)
+        }
         if(TempElement.Length23 > -1)
+        {
             MarkOneLength(2, TempElement, false, Disp);
+        }
     }
     Disp->Update();
     Utilities->CallLogPop(618);
@@ -8716,7 +9297,7 @@ void TTrack::MarkOneLength(int Caller, TTrackElement TrackElement, bool FirstTra
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",MarkOneLength," + TrackElement.LogTrack(8) + "," +
-        AnsiString((short)FirstTrack));
+                                 AnsiString((short)FirstTrack));
     bool LengthDifferent = false, SpeedDifferent = false;
 
     if(IsElementDefaultLength(1, TrackElement, FirstTrack, LengthDifferent, SpeedDifferent))
@@ -8724,12 +9305,11 @@ void TTrack::MarkOneLength(int Caller, TTrackElement TrackElement, bool FirstTra
         Utilities->CallLogPop(619);
         return;
     }
-
     int EXArray[16][2] =
     {{4, 6}, {2, 8}, // horizontal & vertical
-        {2, 4}, {6, 2}, {8, 6}, {4, 8}, // sharp curves
-        {1, 6}, {3, 8}, {9, 4}, {7, 2}, {1, 8}, {3, 4}, {9, 2}, {7, 6}, // loose curves
-        {1, 9}, {3, 7}}; // forward & reverse diagonals
+     {2, 4}, {6, 2}, {8, 6}, {4, 8},    // sharp curves
+     {1, 6}, {3, 8}, {9, 4}, {7, 2}, {1, 8}, {3, 4}, {9, 2}, {7, 6},    // loose curves
+     {1, 9}, {3, 7}};    // forward & reverse diagonals
 
     int Index = -1, BrNum = -1, GrNum = -1, InLink, OutLink;
     Graphics::TBitmap *Bitmap;
@@ -8744,17 +9324,17 @@ void TTrack::MarkOneLength(int Caller, TTrackElement TrackElement, bool FirstTra
         InLink = TrackElement.Link[2];
         OutLink = TrackElement.Link[3];
     }
-
     for(int x = 0; x < 16; x++)
     {
         if((InLink == EXArray[x][0] && OutLink == EXArray[x][1]) || (InLink == EXArray[x][1] && OutLink == EXArray[x][0]))
+        {
             Index = x;
+        }
     }
     if(Index == -1)
     {
         throw Exception("Error, failed to find Index in TTrack::MarkOneLength");
     }
-
 /* The order for bridge entries & exits is as below.  Note that there are 3 of each type,
       the graphic for each of which is different because of the shape of the overbridge.  The basic
       entry/exit value is computed above, and this used to select only from elements with that entry/exit
@@ -8769,46 +9349,72 @@ void TTrack::MarkOneLength(int Caller, TTrackElement TrackElement, bool FirstTra
         if(Index == 1)
         {
             if(TrackElement.SpeedTag == 49)
+            {
                 BrNum = 1 + 16;
+            }
             else if(TrackElement.SpeedTag == 54)
+            {
                 BrNum = 8 + 16;
+            }
             else if(TrackElement.SpeedTag == 55)
+            {
                 BrNum = 10 + 16;
+            }
         }
         else if(Index == 0)
         {
             if(TrackElement.SpeedTag == 48)
+            {
                 BrNum = 0 + 16;
+            }
             else if(TrackElement.SpeedTag == 58)
+            {
                 BrNum = 11 + 16;
+            }
             else if(TrackElement.SpeedTag == 59)
+            {
                 BrNum = 9 + 16;
+            }
         }
         else if(Index == 14)
         {
             if(TrackElement.SpeedTag == 50)
+            {
                 BrNum = 2 + 16;
+            }
             else if(TrackElement.SpeedTag == 52)
+            {
                 BrNum = 4 + 16;
+            }
             else if(TrackElement.SpeedTag == 57)
+            {
                 BrNum = 6 + 16;
+            }
         }
         else if(Index == 15)
         {
             if(TrackElement.SpeedTag == 51)
+            {
                 BrNum = 3 + 16;
+            }
             else if(TrackElement.SpeedTag == 53)
+            {
                 BrNum = 7 + 16;
+            }
             else if(TrackElement.SpeedTag == 56)
+            {
                 BrNum = 5 + 16;
+            }
         }
     }
-
     if(!FirstTrack && (TrackElement.TrackType == Bridge))
+    {
         GrNum = BrNum;
+    }
     else
+    {
         GrNum = Index;
-
+    }
     if(LengthDifferent && SpeedDifferent) // blue - use autosig graphics
     {
         if(GrNum > 15) // underbridge
@@ -8816,38 +9422,65 @@ void TTrack::MarkOneLength(int Caller, TTrackElement TrackElement, bool FirstTra
             Bitmap = RailGraphics->BridgeRouteAutoSigsGraphicsPtr[GrNum - 16];
         }
         else
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[GrNum];
-
+        }
         if(TrackElement.SpeedTag == 64)
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[16]; // intercept diagonal buffers to show the buffer
+        }
         if(TrackElement.SpeedTag == 65)
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[17];
+        }
         if(TrackElement.SpeedTag == 66)
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[18];
+        }
         if(TrackElement.SpeedTag == 67)
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[19];
-
+        }
         if(TrackElement.SpeedTag == 80)
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[20]; // intercept continuations to show the dots
+        }
         if(TrackElement.SpeedTag == 81)
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[21];
+        }
         if(TrackElement.SpeedTag == 82)
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[22];
+        }
         if(TrackElement.SpeedTag == 83)
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[23];
+        }
         if(TrackElement.SpeedTag == 84)
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[24];
+        }
         if(TrackElement.SpeedTag == 85)
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[25];
+        }
         if(TrackElement.SpeedTag == 86)
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[26];
+        }
         if(TrackElement.SpeedTag == 87)
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[27];
-
+        }
         if(TrackElement.SpeedTag == 129)
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[28]; // intercept under footbridges
+        }
         if(TrackElement.SpeedTag == 130)
+        {
             Bitmap = RailGraphics->LinkRouteAutoSigsGraphicsPtr[29];
+        }
     }
 
     else if(LengthDifferent && !SpeedDifferent) // green - use pref sig graphics
@@ -8857,38 +9490,65 @@ void TTrack::MarkOneLength(int Caller, TTrackElement TrackElement, bool FirstTra
             Bitmap = RailGraphics->BridgeSigRouteGraphicsPtr[GrNum - 16];
         }
         else
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[GrNum];
-
+        }
         if(TrackElement.SpeedTag == 64)
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[16]; // intercept diagonal buffers to show the buffer
+        }
         if(TrackElement.SpeedTag == 65)
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[17];
+        }
         if(TrackElement.SpeedTag == 66)
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[18];
+        }
         if(TrackElement.SpeedTag == 67)
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[19];
-
+        }
         if(TrackElement.SpeedTag == 80)
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[20]; // intercept continuations to show the dots
+        }
         if(TrackElement.SpeedTag == 81)
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[21];
+        }
         if(TrackElement.SpeedTag == 82)
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[22];
+        }
         if(TrackElement.SpeedTag == 83)
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[23];
+        }
         if(TrackElement.SpeedTag == 84)
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[24];
+        }
         if(TrackElement.SpeedTag == 85)
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[25];
+        }
         if(TrackElement.SpeedTag == 86)
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[26];
+        }
         if(TrackElement.SpeedTag == 87)
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[27];
-
+        }
         if(TrackElement.SpeedTag == 129)
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[28]; // intercept under footbridges
+        }
         if(TrackElement.SpeedTag == 130)
+        {
             Bitmap = RailGraphics->LinkSigRouteGraphicsPtr[29];
+        }
     }
 
     else // SpeedDifferent only: red - use non sig graphics
@@ -8898,40 +9558,66 @@ void TTrack::MarkOneLength(int Caller, TTrackElement TrackElement, bool FirstTra
             Bitmap = RailGraphics->BridgeNonSigRouteGraphicsPtr[GrNum - 16];
         }
         else
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[GrNum];
-
+        }
         if(TrackElement.SpeedTag == 64)
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[16]; // intercept diagonal buffers to show the buffer
+        }
         if(TrackElement.SpeedTag == 65)
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[17];
+        }
         if(TrackElement.SpeedTag == 66)
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[18];
+        }
         if(TrackElement.SpeedTag == 67)
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[19];
-
+        }
         if(TrackElement.SpeedTag == 80)
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[20]; // intercept continuations to show the dots
+        }
         if(TrackElement.SpeedTag == 81)
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[21];
+        }
         if(TrackElement.SpeedTag == 82)
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[22];
+        }
         if(TrackElement.SpeedTag == 83)
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[23];
+        }
         if(TrackElement.SpeedTag == 84)
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[24];
+        }
         if(TrackElement.SpeedTag == 85)
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[25];
+        }
         if(TrackElement.SpeedTag == 86)
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[26];
+        }
         if(TrackElement.SpeedTag == 87)
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[27];
-
+        }
         if(TrackElement.SpeedTag == 129)
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[28]; // intercept under footbridges
+        }
         if(TrackElement.SpeedTag == 130)
+        {
             Bitmap = RailGraphics->LinkNonSigRouteGraphicsPtr[29];
+        }
     }
-
     Disp->PlotOutput(67, TrackElement.HLoc * 16, TrackElement.VLoc * 16, Bitmap);
     Utilities->CallLogPop(620);
 }
@@ -8944,7 +9630,7 @@ bool TTrack::IsElementDefaultLength(int Caller, TTrackElement &TrackElement, boo
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsElementTrackDefaultLength," + TrackElement.LogTrack(10) + "," +
-        AnsiString((short)FirstTrack));
+                                 AnsiString((short)FirstTrack));
     LengthDifferent = false;
     SpeedDifferent = false;
     if(((TrackElement.TrackType == Bridge) || (TrackElement.TrackType == Points) || (TrackElement.TrackType == Crossover)) && FirstTrack)
@@ -8960,10 +9646,10 @@ bool TTrack::IsElementDefaultLength(int Caller, TTrackElement &TrackElement, boo
         if(LengthDifferent || SpeedDifferent)
         {
             Utilities->CallLogPop(625);
-            return false;
+            return(false);
         }
         Utilities->CallLogPop(626);
-        return true;
+        return(true);
     }
 
     else if(((TrackElement.TrackType == Bridge) || (TrackElement.TrackType == Points) || (TrackElement.TrackType == Crossover)) && !FirstTrack)
@@ -8979,10 +9665,10 @@ bool TTrack::IsElementDefaultLength(int Caller, TTrackElement &TrackElement, boo
         if(LengthDifferent || SpeedDifferent)
         {
             Utilities->CallLogPop(627);
-            return false;
+            return(false);
         }
         Utilities->CallLogPop(628);
-        return true;
+        return(true);
     }
 
     else // any other 1 track element, including platforms being present
@@ -8998,64 +9684,64 @@ bool TTrack::IsElementDefaultLength(int Caller, TTrackElement &TrackElement, boo
         if(LengthDifferent || SpeedDifferent)
         {
             Utilities->CallLogPop(629);
-            return false;
+            return(false);
         }
         Utilities->CallLogPop(630);
-        return true;
+        return(true);
     }
 }
 
 // ---------------------------------------------------------------------------
 
 bool TTrack::IsPlatformOrNamedNonStationLocationPresent(int Caller, int HLoc, int VLoc)
-    // Check whether there is a platform or NamedNonStationLocation present at HLoc & VLoc, return true if so
+// Check whether there is a platform or NamedNonStationLocation present at HLoc & VLoc, return true if so
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsPlatformOrNamedNonStationLocationPresent," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
     bool FoundFlag;
     TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(11, HLoc, VLoc, FoundFlag);
 
     if(!FoundFlag)
     {
         Utilities->CallLogPop(633);
-        return false;
+        return(false);
     }
     if((InactiveTrackElementAt(42, IMPair.first).TrackType == Platform) || (InactiveTrackElementAt(91, IMPair.first).TrackType == NamedNonStationLocation))
     {
         Utilities->CallLogPop(634);
-        return true; // only need to check first since if second is a platform the the first must be too
+        return(true); // only need to check first since if second is a platform the the first must be too
     }
     else
     {
         Utilities->CallLogPop(635);
-        return false;
+        return(false);
     }
 }
 
 // ---------------------------------------------------------------------------
 
 bool TTrack::IsNamedNonStationLocationPresent(int Caller, int HLoc, int VLoc)
-    // Check whether there is a NamedNonStationLocation present at HLoc & VLoc, return true if so
+// Check whether there is a NamedNonStationLocation present at HLoc & VLoc, return true if so
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsNamedNonStationLocationPresent," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
     bool FoundFlag;
     TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(12, HLoc, VLoc, FoundFlag);
 
     if(!FoundFlag)
     {
         Utilities->CallLogPop(636);
-        return false;
+        return(false);
     }
     if(InactiveTrackElementAt(43, IMPair.first).TrackType == NamedNonStationLocation)
     {
         Utilities->CallLogPop(637);
-        return true; // only need to check first since only one used for NamedNonStationLocations
+        return(true); // only need to check first since only one used for NamedNonStationLocations
     }
     else
     {
         Utilities->CallLogPop(638);
-        return false;
+        return(false);
     }
 }
 
@@ -9091,11 +9777,11 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)
         TempElement = TrackVector.at(x);
         VecPos = x;
         if((TempElement.ActiveTrackElementName != "") && (TempElement.StationEntryStopLinkPos1 == -1))
-    // 2nd condition incl so don't re-examine elements with stop links set to 5
+        // 2nd condition incl so don't re-examine elements with stop links set to 5
         {
             TempName = TempElement.ActiveTrackElementName;
             if((TempElement.Conn[0] > -1) && (TempElement.Conn[1] > -1) && (TrackElementAt(44, TempElement.Conn[0]).ActiveTrackElementName == TempName) &&
-                (TrackElementAt(45, TempElement.Conn[1]).ActiveTrackElementName == TempName))
+               (TrackElementAt(45, TempElement.Conn[1]).ActiveTrackElementName == TempName))
             // an element linked at both ends where both links are also named elements
             // only Conn[0] & [1] relevant for ActiveTrackElementName elements (only 2-track named element is points, and only straight track relevant & this has 0 & 1 as entry/exit positions)
             {
@@ -9104,7 +9790,7 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)
             else // reached one end
             {
                 if((TempElement.Conn[0] > -1) && (TempElement.Conn[1] > -1) && (TrackElementAt(46, TempElement.Conn[0]).ActiveTrackElementName != TempName) &&
-                    (TrackElementAt(47, TempElement.Conn[1]).ActiveTrackElementName != TempName))
+                   (TrackElementAt(47, TempElement.Conn[1]).ActiveTrackElementName != TempName))
                 // single named element linked at both ends
                 {
                     TrackElementAt(48, VecPos).StationEntryStopLinkPos1 = 0;
@@ -9151,7 +9837,7 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)
                         // if a buffer then the named linkpos has to be 1
                         // already dealt with all types of single element so at least 2 linked named element
                         if(((TempElement.Conn[Dir] > -1) && (TempElement.Conn[1 - Dir] > -1) && (TrackElementAt(50,
-                            TempElement.Conn[1 - Dir]).ActiveTrackElementName != TempName)) || ((TempElement.TrackType == Buffers) && (Dir == 1)))
+                                                                                                                TempElement.Conn[1 - Dir]).ActiveTrackElementName != TempName)) || ((TempElement.TrackType == Buffers) && (Dir == 1)))
                         {
                             StartElement = TempElement;
                             StartVecPos = VecPos;
@@ -9162,7 +9848,7 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)
                             Count = 1;
                             // work along named elements until find the other end
                             while((TempElement.Conn[1 - EntryPos] > -1) && (TrackElementAt(53,
-                                TempElement.Conn[1 - EntryPos]).ActiveTrackElementName == TempName))
+                                                                                           TempElement.Conn[1 - EntryPos]).ActiveTrackElementName == TempName))
                             // at end of 'while' Count = length (in elements) of platform/nonstationloc, VecPos = vector number of far end
                             // which is the last named element that is track-linked to the rest of the location, it may be a buffer
                             // all stop link pos's are set to 5
@@ -9215,7 +9901,7 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)
                                 ReverseSet = true;
                             }
                             while((TempElement.Conn[1 - EntryPos] > -1) && (TrackElementAt(69,
-                                TempElement.Conn[1 - EntryPos]).ActiveTrackElementName == TempName) && (!ForwardSet || !ReverseSet))
+                                                                                           TempElement.Conn[1 - EntryPos]).ActiveTrackElementName == TempName) && (!ForwardSet || !ReverseSet))
                             {
                                 VecPos = TempElement.Conn[1 - EntryPos];
                                 int TempEntryPos = TempElement.ConnLinkPos[1 - EntryPos];
@@ -9266,23 +9952,37 @@ void TTrack::PlotSmallRailway(int Caller, TDisplay *Disp)
         if(Next.SmallGraphicPtr != 0) // don't think this should ever be 0 but leave as a safeguard
         {
             if(((Next.TrackType == Platform) || (Next.TrackType == Concourse) || (Next.TrackType == NamedNonStationLocation)) && (Next.LocationName == ""))
-    // need striped graphics
+            // need striped graphics
             {
                 if(Next.SpeedTag == 76)
+                {
                     Disp->PlotSmallOutput(11, Next.HLoc * 4, (Next.VLoc * 4), RailGraphics->sm76striped);
+                }
                 else if(Next.SpeedTag == 77)
+                {
                     Disp->PlotSmallOutput(12, Next.HLoc * 4, (Next.VLoc * 4), RailGraphics->sm77striped);
+                }
                 else if(Next.SpeedTag == 78)
+                {
                     Disp->PlotSmallOutput(13, Next.HLoc * 4, (Next.VLoc * 4), RailGraphics->sm78striped);
+                }
                 else if(Next.SpeedTag == 79)
+                {
                     Disp->PlotSmallOutput(14, Next.HLoc * 4, (Next.VLoc * 4), RailGraphics->sm79striped);
+                }
                 else if(Next.SpeedTag == 96)
+                {
                     Disp->PlotSmallOutput(15, Next.HLoc * 4, (Next.VLoc * 4), RailGraphics->sm96striped);
+                }
                 else if(Next.SpeedTag == 131)
+                {
                     Disp->PlotSmallOutput(16, Next.HLoc * 4, (Next.VLoc * 4), RailGraphics->sm131striped);
+                }
             }
             else
+            {
                 Disp->PlotSmallOutput(17, Next.HLoc * 4, (Next.VLoc * 4), Next.SmallGraphicPtr);
+            }
         }
     }
 
@@ -9294,12 +9994,18 @@ void TTrack::PlotSmallRailway(int Caller, TDisplay *Disp)
             if((Next.TrackType == FootCrossing) && (Next.LocationName == "")) // need striped graphics, use sm129 & 130 for 145 & 146
             {
                 if((Next.SpeedTag == 129) || (Next.SpeedTag == 145))
+                {
                     Disp->PlotSmallOutput(18, Next.HLoc * 4, (Next.VLoc * 4), RailGraphics->sm129striped);
+                }
                 else if((Next.SpeedTag == 130) || (Next.SpeedTag == 146))
+                {
                     Disp->PlotSmallOutput(19, Next.HLoc * 4, (Next.VLoc * 4), RailGraphics->sm130striped);
+                }
             }
             else
+            {
                 Disp->PlotSmallOutput(20, Next.HLoc * 4, (Next.VLoc * 4), Next.SmallGraphicPtr);
+            }
         }
     }
     Disp->Update();
@@ -9340,7 +10046,9 @@ void TTrack::TrackClear(int Caller)
         VLocMax = -2000000000;
     }
     else
+    {
         CalcHLocMinEtc(4);
+    }
     Utilities->CallLogPop(1347);
 }
 
@@ -9356,28 +10064,48 @@ void TTrack::CalcHLocMinEtc(int Caller)
     for(unsigned int x = 0; x < TrackVector.size(); x++) // check all elements in turn
     {
         if(TrackVector.at(x).SpeedTag == 0)
+        {
             continue; // skip erase elements or would interfere with Min & Max values
+        }
         if(TrackVector.at(x).HLoc - 1 < HLocMin)
+        {
             HLocMin = TrackVector.at(x).HLoc - 1; // add one all round
+        }
         if(TrackVector.at(x).HLoc + 1 > HLocMax)
+        {
             HLocMax = TrackVector.at(x).HLoc + 1;
+        }
         if(TrackVector.at(x).VLoc - 1 < VLocMin)
+        {
             VLocMin = TrackVector.at(x).VLoc - 1;
+        }
         if(TrackVector.at(x).VLoc + 1 > VLocMax)
+        {
             VLocMax = TrackVector.at(x).VLoc + 1;
+        }
     }
     for(unsigned int x = 0; x < InactiveTrackVector.size(); x++) // check all elements in turn
     {
         if(InactiveTrackVector.at(x).SpeedTag == 0)
+        {
             continue; // shouldn't be any inactive erase elements but include anyway
+        }
         if(InactiveTrackVector.at(x).HLoc - 1 < HLocMin)
+        {
             HLocMin = InactiveTrackVector.at(x).HLoc - 1; // add one all round
+        }
         if(InactiveTrackVector.at(x).HLoc + 1 > HLocMax)
+        {
             HLocMax = InactiveTrackVector.at(x).HLoc + 1;
+        }
         if(InactiveTrackVector.at(x).VLoc - 1 < VLocMin)
+        {
             VLocMin = InactiveTrackVector.at(x).VLoc - 1;
+        }
         if(InactiveTrackVector.at(x).VLoc + 1 > VLocMax)
+        {
             VLocMax = InactiveTrackVector.at(x).VLoc + 1;
+        }
     }
     for(unsigned int x = 0; x < TextHandler->TextVectorSize(10); x++) // check all elements in turn
     {
@@ -9390,24 +10118,40 @@ void TTrack::CalcHLocMinEtc(int Caller)
 */
         int TextH = TextHandler->TextPtrAt(0, x)->HPos, TextV = TextHandler->TextPtrAt(1, x)->VPos;
         if((TextH / 16) - 1 < HLocMin)
+        {
             HLocMin = (TextH / 16) - 1; // integer division will truncate so subtract 1 to ensure include the start
+        }
         if((TextH / 16) + 1 > HLocMax)
+        {
             HLocMax = (TextH / 16) + 1; // integer division will truncate so add 1 to ensure include the start
+        }
         if((TextV / 16) - 1 < VLocMin)
+        {
             VLocMin = (TextV / 16) - 1;
+        }
         if((TextV / 16) + 1 > VLocMax)
+        {
             VLocMax = (TextV / 16) + 1;
+        }
     }
     for(unsigned int x = 0; x < UserGraphicVector.size(); x++) // added at v2.4.0
     {
         if((UserGraphicVectorAt(5, x).HPos / 16) - 1 < HLocMin)
+        {
             HLocMin = (UserGraphicVectorAt(6, x).HPos / 16) - 1; // add one all round
+        }
         if(((UserGraphicVectorAt(7, x).HPos + UserGraphicVectorAt(8, x).Width) / 16) + 1 > HLocMax)
+        {
             HLocMax = ((UserGraphicVectorAt(9, x).HPos + UserGraphicVectorAt(10, x).Width) / 16) + 1;
+        }
         if((UserGraphicVectorAt(11, x).VPos / 16) - 1 < VLocMin)
+        {
             VLocMin = (UserGraphicVectorAt(12, x).VPos / 16) - 1;
+        }
         if(((UserGraphicVectorAt(13, x).VPos + UserGraphicVectorAt(14, x).Height) / 16) + 1 > VLocMax)
+        {
             VLocMax = ((UserGraphicVectorAt(15, x).VPos + UserGraphicVectorAt(16, x).Height) / 16) + 1;
+        }
     }
 
     Utilities->CallLogPop(641);
@@ -9416,7 +10160,7 @@ void TTrack::CalcHLocMinEtc(int Caller)
 // ---------------------------------------------------------------------------
 
 void TTrack::UserGraphicMove(int Caller, int HPosInput, int VPosInput, int &UserGraphicItem, int &UserGraphicMoveHPos, int &UserGraphicMoveVPos,
-    bool &UserGraphicFoundFlag)
+                             bool &UserGraphicFoundFlag)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UserGraphicMove," + AnsiString(HPosInput) + "," + AnsiString(VPosInput));
     TUserGraphicVector::iterator UserGraphicPtr;
@@ -9429,7 +10173,7 @@ void TTrack::UserGraphicMove(int Caller, int HPosInput, int VPosInput, int &User
         {
             x--;
             if((HPosInput >= (*UserGraphicPtr).HPos) && (HPosInput < ((*UserGraphicPtr).HPos + (*UserGraphicPtr).Width)) && (VPosInput >=
-                (*UserGraphicPtr).VPos) && (VPosInput < ((*UserGraphicPtr).VPos + (*UserGraphicPtr).Height)))
+                                                                                                                             (*UserGraphicPtr).VPos) && (VPosInput < ((*UserGraphicPtr).VPos + (*UserGraphicPtr).Height)))
             {
                 UserGraphicItem = x;
                 UserGraphicMoveHPos = (*UserGraphicPtr).HPos;
@@ -9438,8 +10182,10 @@ void TTrack::UserGraphicMove(int Caller, int HPosInput, int VPosInput, int &User
                 Utilities->CallLogPop(2177);
                 return;
             } // if ....
+
         } // for UserGraphicPtr...
     } // if !UserGraphicVector...
+
     Utilities->CallLogPop(2197);
 }
 
@@ -9448,7 +10194,7 @@ void TTrack::UserGraphicMove(int Caller, int HPosInput, int VPosInput, int &User
 Graphics::TBitmap *TTrack::RetrieveStripedNamedLocationGraphicsWhereRelevant(int Caller, TTrackElement TrackElement)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RetrieveStripedNamedLocationGraphicsWhereRelevant," +
-        TrackElement.LogTrack(11));
+                                 TrackElement.LogTrack(11));
     Graphics::TBitmap *GraphicOutput = RailGraphics->bmTransparentBgnd; // default value
     int SpeedTag = TrackElement.SpeedTag;
 
@@ -9503,7 +10249,7 @@ Graphics::TBitmap *TTrack::RetrieveStripedNamedLocationGraphicsWhereRelevant(int
         break;
     }
     Utilities->CallLogPop(642);
-    return GraphicOutput;
+    return(GraphicOutput);
 }
 
 // ---------------------------------------------------------------------------
@@ -9516,7 +10262,7 @@ TTrackElement &TTrack::TrackElementAt(int Caller, int At)
         throw Exception("Out of Range Error, vector size: " + AnsiString(TrackVector.size()) + ", At: " + AnsiString(At) + " in TrackElementAt");
     }
     Utilities->CallLogPop(643);
-    return TrackVector.at(At);
+    return(TrackVector.at(At));
 }
 
 // ---------------------------------------------------------------------------
@@ -9527,10 +10273,10 @@ TTrackElement &TTrack::InactiveTrackElementAt(int Caller, int At)
     if((At < 0) || ((unsigned int)At >= InactiveTrackVector.size()))
     {
         throw Exception("Out of Range Error, vector size: " + AnsiString(InactiveTrackVector.size()) + ", At: " + AnsiString(At) +
-            " in InactiveTrackElementAt");
+                        " in InactiveTrackElementAt");
     }
     Utilities->CallLogPop(644);
-    return InactiveTrackVector.at(At);
+    return(InactiveTrackVector.at(At));
 }
 
 // ---------------------------------------------------------------------------
@@ -9545,12 +10291,12 @@ bool TTrack::BlankElementAt(int Caller, int At) const
     if(TrackVector.at(At).SpeedTag == 0)
     {
         Utilities->CallLogPop(645);
-        return true;
+        return(true);
     }
     else
     {
         Utilities->CallLogPop(646);
-        return false;
+        return(false);
     }
 }
 
@@ -9573,22 +10319,26 @@ bool TTrack::OneNamedLocationLongEnoughForSplit(int Caller, AnsiString LocationN
     if(SNRange.first == SNRange.second)
     {
         Utilities->CallLogPop(972);
-        return false; // should have been caught earlier but include for completeness
+        return(false); // should have been caught earlier but include for completeness
     }
     for(SNIterator = SNRange.first; SNIterator != SNRange.second; SNIterator++)
     {
         if(SNIterator->second < 0)
+        {
             continue; // exclude footcrossings
+        }
         InactiveElement = InactiveTrackElementAt(47, SNIterator->second);
         if(InactiveElement.TrackType == Concourse)
+        {
             continue; // only interested in locations where ActiveTrackElementName may be set
+        }
         THVPair HVPair;
         HVPair.first = InactiveElement.HLoc;
         HVPair.second = InactiveElement.VLoc;
         if(TrackMap.find(HVPair) == TrackMap.end())
         {
             throw Exception
-                ("Error - failed to find element in TrackMap for a non-concourse element in LocationNameMultiMap in OneNamedLocationLongEnoughForSplit (1)");
+                      ("Error - failed to find element in TrackMap for a non-concourse element in LocationNameMultiMap in OneNamedLocationLongEnoughForSplit (1)");
         }
         int TVPos = TrackMap.find(HVPair)->second;
         FirstNamedElement = TrackElementAt(560, TVPos);
@@ -9617,7 +10367,7 @@ bool TTrack::OneNamedLocationLongEnoughForSplit(int Caller, AnsiString LocationN
                         if((FirstNamedLinkedElement.TrackType != Points) || (FirstNamedLinkedExitPos != 3))
                         {
                             Utilities->CallLogPop(1002);
-                            return true;
+                            return(true);
                         }
                     }
                 }
@@ -9642,24 +10392,25 @@ bool TTrack::OneNamedLocationLongEnoughForSplit(int Caller, AnsiString LocationN
                         if((FirstNamedLinkedElement.TrackType != Points) || (FirstNamedLinkedExitPos != 3))
                         {
                             Utilities->CallLogPop(1003);
-                            return true;
+                            return(true);
                         }
                     }
                 }
             }
-        }}
+        }
+    }
     Utilities->CallLogPop(1004);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
 bool TTrack::ThisNamedLocationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos,
-    int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos)
-    // for success need two linked named location elements, so that one element of each train can be at the location
-    // FirstNamedElementPos is the input vector position and the first (if successful) of the two linked named location elements,
-    // the second is SecondNamedElementPos, and the two linked elements are FirstNamedLinkedElementPos and SecondNamedLinkedElementPos.
-    // the two trains will occupy these 4 elements
-    // All are track vector positions, all but the input being references and set within the function.
+                                                 int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos)
+// for success need two linked named location elements, so that one element of each train can be at the location
+// FirstNamedElementPos is the input vector position and the first (if successful) of the two linked named location elements,
+// the second is SecondNamedElementPos, and the two linked elements are FirstNamedLinkedElementPos and SecondNamedLinkedElementPos.
+// the two trains will occupy these 4 elements
+// All are track vector positions, all but the input being references and set within the function.
 {
 /* Check sufficient elements (including TrackvectorPosition) with same ActiveTrackElementName linked together without any trailing point
       links and including the element FirstNamedElementPos to allow a train split.  Need at least two linked ActiveTrackElementNames, with
@@ -9668,7 +10419,7 @@ bool TTrack::ThisNamedLocationLongEnoughForSplit(int Caller, AnsiString Location
       splitting.
 */
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ThisNamedLocationLongEnoughForSplit," + LocationName +
-        AnsiString(FirstNamedElementPos));
+                                 AnsiString(FirstNamedElementPos));
     TTrackElement InactiveElement, FirstNamedElement, SecondNamedElement, FirstNamedLinkedElement, SecondNamedLinkedElement;
     int FirstNamedExitPos, SecondNamedExitPos, FirstNamedLinkedExitPos, SecondNamedLinkedEntryPos;
 
@@ -9681,15 +10432,19 @@ bool TTrack::ThisNamedLocationLongEnoughForSplit(int Caller, AnsiString Location
     if(SNRange.first == SNRange.second) // i.e. location name not in map
     {
         Utilities->CallLogPop(1005);
-        return false; // should have been caught earlier but include for completeness
+        return(false); // should have been caught earlier but include for completeness
     }
     for(SNIterator = SNRange.first; SNIterator != SNRange.second; SNIterator++)
     {
         if(SNIterator->second < 0)
+        {
             continue; // exclude footcrossings
+        }
         InactiveElement = InactiveTrackElementAt(69, SNIterator->second);
         if(InactiveElement.TrackType == Concourse)
+        {
             continue; // only interested in locations where ActiveTrackElementName may be set
+        }
         THVPair HVPair;
         HVPair.first = InactiveElement.HLoc;
         HVPair.second = InactiveElement.VLoc;
@@ -9704,13 +10459,15 @@ bool TTrack::ThisNamedLocationLongEnoughForSplit(int Caller, AnsiString Location
             else // for anything else throw the error
             {
                 throw Exception
-                    ("Error - failed to find element in TrackMap for a non-concourse element in LocationNameMultiMap in ThisNamedLocationLongEnoughForSplit (2)"
-                    );
+                          ("Error - failed to find element in TrackMap for a non-concourse element in LocationNameMultiMap in ThisNamedLocationLongEnoughForSplit (2)"
+                          );
             }
         }
         int TVPos = TrackMap.find(HVPair)->second;
         if(TVPos != FirstNamedElementPos)
+        {
             continue; // looking for an exact match
+        }
         FirstNamedElement = TrackElementAt(567, TVPos);
         // first check linked on both sides, skip the check if not
         if((FirstNamedElement.Conn[0] == -1) || (FirstNamedElement.Conn[1] == -1))
@@ -9740,7 +10497,7 @@ bool TTrack::ThisNamedLocationLongEnoughForSplit(int Caller, AnsiString Location
                             FirstNamedLinkedElementPos = FirstNamedElement.Conn[1 - FirstNamedExitPos];
                             SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
                             Utilities->CallLogPop(1006);
-                            return true;
+                            return(true);
                         }
                     }
                 }
@@ -9768,14 +10525,15 @@ bool TTrack::ThisNamedLocationLongEnoughForSplit(int Caller, AnsiString Location
                             FirstNamedLinkedElementPos = FirstNamedElement.Conn[1 - FirstNamedExitPos];
                             SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
                             Utilities->CallLogPop(1007);
-                            return true;
+                            return(true);
                         }
                     }
                 }
             }
-        }}
+        }
+    }
     Utilities->CallLogPop(1008);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -9791,17 +10549,19 @@ bool TTrack::OneNamedLocationElementAtLocation(int Caller, AnsiString LocationNa
         for(SNIterator = SNRange.first; SNIterator != SNRange.second; SNIterator++)
         {
             if(SNIterator->second < 0)
+            {
                 continue; // only looking for inactive (platform or NamedNonStationLocation) elements
+            }
             if((InactiveTrackElementAt(33, SNIterator->second).TrackType == Platform) || (InactiveTrackElementAt(81,
-                SNIterator->second).TrackType == NamedNonStationLocation))
+                                                                                                                 SNIterator->second).TrackType == NamedNonStationLocation))
             {
                 Utilities->CallLogPop(1121);
-                return true;
+                return(true);
             }
         }
     }
     Utilities->CallLogPop(848);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -9810,11 +10570,11 @@ bool TTrack::PlatformOnSignalSide(int Caller, int HLoc, int VLoc, int SpeedTag, 
 {
 // dropped special platforms at v0.6 as didn't show well against ground signals & not needed anyway as plats always plotted first where there are signals
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlatformOnSignalSide," + AnsiString(HLoc) + "," + AnsiString(VLoc) +
-        "," + AnsiString(SpeedTag));
+                                 "," + AnsiString(SpeedTag));
     if(!IsPlatformOrNamedNonStationLocationPresent(5, HLoc, VLoc)) // can't be a named location so no ambiguity
     {
         Utilities->CallLogPop(949);
-        return false;
+        return(false);
     }
     bool FoundFlag;
     TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(27, HLoc, VLoc, FoundFlag);
@@ -9830,9 +10590,13 @@ bool TTrack::PlatformOnSignalSide(int Caller, int HLoc, int VLoc, int SpeedTag, 
         if((InactiveTrackElementAt(22, IMPair.first).SpeedTag == 76) || (InactiveTrackElementAt(23, IMPair.second).SpeedTag == 76)) // top plat
         {
             if(InactiveTrackElementAt(49, IMPair.first).SpeedTag == 76)
+            {
                 IAElement = InactiveTrackElementAt(50, IMPair.first);
+            }
             else
+            {
                 IAElement = InactiveTrackElementAt(51, IMPair.second);
+            }
             if(IAElement.LocationName == "")
             {
 // SignalPlatformGraphic = RailGraphics->Plat68Striped;
@@ -9844,7 +10608,7 @@ bool TTrack::PlatformOnSignalSide(int Caller, int HLoc, int VLoc, int SpeedTag, 
                 SignalPlatformGraphic = RailGraphics->gl76;
             }
             Utilities->CallLogPop(950);
-            return true;
+            return(true);
         }
     }
     else if(SpeedTag == 69) // bot sig
@@ -9852,9 +10616,13 @@ bool TTrack::PlatformOnSignalSide(int Caller, int HLoc, int VLoc, int SpeedTag, 
         if((InactiveTrackElementAt(70, IMPair.first).SpeedTag == 77) || (InactiveTrackElementAt(75, IMPair.second).SpeedTag == 77)) // bot plat
         {
             if(InactiveTrackElementAt(76, IMPair.first).SpeedTag == 77)
+            {
                 IAElement = InactiveTrackElementAt(77, IMPair.first);
+            }
             else
+            {
                 IAElement = InactiveTrackElementAt(78, IMPair.second);
+            }
             if(IAElement.LocationName == "")
             {
 // SignalPlatformGraphic = RailGraphics->Plat69Striped;
@@ -9866,7 +10634,7 @@ bool TTrack::PlatformOnSignalSide(int Caller, int HLoc, int VLoc, int SpeedTag, 
                 SignalPlatformGraphic = RailGraphics->bm77;
             }
             Utilities->CallLogPop(951);
-            return true;
+            return(true);
         }
     }
     else if(SpeedTag == 70) // left sig
@@ -9874,9 +10642,13 @@ bool TTrack::PlatformOnSignalSide(int Caller, int HLoc, int VLoc, int SpeedTag, 
         if((InactiveTrackElementAt(52, IMPair.first).SpeedTag == 78) || (InactiveTrackElementAt(79, IMPair.second).SpeedTag == 78)) // left plat
         {
             if(InactiveTrackElementAt(80, IMPair.first).SpeedTag == 78)
+            {
                 IAElement = InactiveTrackElementAt(55, IMPair.first);
+            }
             else
+            {
                 IAElement = InactiveTrackElementAt(82, IMPair.second);
+            }
             if(IAElement.LocationName == "")
             {
 // SignalPlatformGraphic = RailGraphics->Plat70Striped;
@@ -9888,7 +10660,7 @@ bool TTrack::PlatformOnSignalSide(int Caller, int HLoc, int VLoc, int SpeedTag, 
                 SignalPlatformGraphic = RailGraphics->bm78;
             }
             Utilities->CallLogPop(952);
-            return true;
+            return(true);
         }
     }
     else if(SpeedTag == 71) // right sig
@@ -9896,9 +10668,13 @@ bool TTrack::PlatformOnSignalSide(int Caller, int HLoc, int VLoc, int SpeedTag, 
         if((InactiveTrackElementAt(83, IMPair.first).SpeedTag == 79) || (InactiveTrackElementAt(58, IMPair.second).SpeedTag == 79)) // right plat
         {
             if(InactiveTrackElementAt(84, IMPair.first).SpeedTag == 79)
+            {
                 IAElement = InactiveTrackElementAt(85, IMPair.first);
+            }
             else
+            {
                 IAElement = InactiveTrackElementAt(86, IMPair.second);
+            }
             if(IAElement.LocationName == "")
             {
 // SignalPlatformGraphic = RailGraphics->Plat71Striped;
@@ -9910,25 +10686,25 @@ bool TTrack::PlatformOnSignalSide(int Caller, int HLoc, int VLoc, int SpeedTag, 
                 SignalPlatformGraphic = RailGraphics->gl79;
             }
             Utilities->CallLogPop(953);
-            return true;
+            return(true);
         }
     }
     Utilities->CallLogPop(954);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
 
 bool TTrack::OtherTrainOnTrack(int Caller, int NextPos, int NextEntryPos, int OwnTrainID)
-    // returns true if another train on NextEntryPos track of element at NextPos, whether bridge or not
-    // false if not, if NextPos == -1, or if only own train on the track
+// returns true if another train on NextEntryPos track of element at NextPos, whether bridge or not
+// false if not, if NextPos == -1, or if only own train on the track
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",OtherTrainOnTrack," + AnsiString(NextPos) + "," +
-        AnsiString(NextEntryPos) + "," + AnsiString(OwnTrainID));
+                                 AnsiString(NextEntryPos) + "," + AnsiString(OwnTrainID));
     if(NextEntryPos < 0)
     {
         Utilities->CallLogPop(1348);
-        return false;
+        return(false);
     }
     TTrackElement TrackElement = TrackElementAt(713, NextPos);
 
@@ -9960,23 +10736,23 @@ TTrackElement &TTrack::SelectVectorAt(int Caller, int At)
         throw Exception("Out of Range Error, vector size: " + AnsiString(TrackVector.size()) + ", At: " + AnsiString(At) + " in SelectVectorAt");
     }
     Utilities->CallLogPop(1483);
-    return SelectVector.at(At);
+    return(SelectVector.at(At));
 }
 
 // ---------------------------------------------------------------------------
 
 bool TTrack::IsATrackElementAdjacentToLink(int Caller, int HLocIn, int VLocIn, int LinkIn)
-    // For element at HLoc & VLoc, returns true if there is an element adjacent to LinkIn
+// For element at HLoc & VLoc, returns true if there is an element adjacent to LinkIn
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsATrackElementAdjacentToLink," + AnsiString(HLocIn) + "," +
-        AnsiString(VLocIn) + "," + AnsiString(LinkIn));
+                                 AnsiString(VLocIn) + "," + AnsiString(LinkIn));
     bool FoundFlag = false;
     int NewHLoc = HLocIn + LinkHVArray[LinkIn][0];
     int NewVLoc = VLocIn + LinkHVArray[LinkIn][1];
 
     GetVectorPositionFromTrackMap(41, NewHLoc, NewVLoc, FoundFlag);
     Utilities->CallLogPop(1538);
-    return FoundFlag;
+    return(FoundFlag);
 }
 
 // ---------------------------------------------------------------------------
@@ -9996,11 +10772,17 @@ bool TTrack::FindHighestLowestAndLeftmostNamedElements(int Caller, AnsiString Na
             int V = InactiveTrackVector.at(x).VLoc;
             int H = InactiveTrackVector.at(x).HLoc;
             if(V > VLocHi)
+            {
                 VLocHi = V;
+            }
             if(V < VLocLo)
+            {
                 VLocLo = V;
+            }
             if(H < HLoc)
+            {
                 HLoc = H;
+            }
         }
     }
     if(FoundFlag)
@@ -10009,12 +10791,12 @@ bool TTrack::FindHighestLowestAndLeftmostNamedElements(int Caller, AnsiString Na
         VPosLo = 16 * VLocLo;
         HPos = 16 * HLoc;
         Utilities->CallLogPop(1562);
-        return true;
+        return(true);
     }
     else
     {
         Utilities->CallLogPop(1563);
-        return false;
+        return(false);
     }
 }
 
@@ -10025,7 +10807,7 @@ int TTrack::FindClosestLinkPosition(int Caller, int StartTVPosition, int EndTVPo
 // return the link array position for the element at StartTVPosition that gives the closest link to the element at EndTVPosition
 // NB the StartTVPosition is expected to be a single track element as only positions 0 & 1 are checked
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FindClosestLinkPosition," + AnsiString(StartTVPosition) + "," +
-        AnsiString(EndTVPosition));
+                                 AnsiString(EndTVPosition));
     TTrackElement &StartElement = TrackElementAt(839, StartTVPosition);
     TTrackElement &EndElement = TrackElementAt(840, EndTVPosition);
 
@@ -10044,21 +10826,22 @@ int TTrack::FindClosestLinkPosition(int Caller, int StartTVPosition, int EndTVPo
     if(Link0Squares <= Link1Squares)
     {
         Utilities->CallLogPop(1851);
-        return 0;
+        return(0);
     }
     else
     {
         Utilities->CallLogPop(1852);
-        return 1;
+        return(1);
     }
 }
 
 // ---------------------------------------------------------------------------
 
 int TTrack::GetAnyElementOppositeLinkPos(int Caller, int TrackVectorPosition, int LinkPos, bool &Derail)
-{ // element can be points or any other type
+{
+    // element can be points or any other type
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetAnyElementOppositeLinkPos," + AnsiString(TrackVectorPosition) + "," +
-        AnsiString(LinkPos));
+                                 AnsiString(LinkPos));
     Derail = false;
     TTrackElement &TE = Track->TrackElementAt(277, TrackVectorPosition);
 
@@ -10067,12 +10850,12 @@ int TTrack::GetAnyElementOppositeLinkPos(int Caller, int TrackVectorPosition, in
         if(TE.Attribute == 0)
         {
             Utilities->CallLogPop(663);
-            return 1; // Att == 0 & ExitPos == 1 represent straight
+            return(1); // Att == 0 & ExitPos == 1 represent straight
         }
         else
         {
             Utilities->CallLogPop(664);
-            return 3; // Att == 1 & ExitPos == 3 represent diverging
+            return(3); // Att == 1 & ExitPos == 3 represent diverging
         }
     }
     else if((TE.TrackType == Points) && (TE.Config[LinkPos] == Trail))
@@ -10080,45 +10863,45 @@ int TTrack::GetAnyElementOppositeLinkPos(int Caller, int TrackVectorPosition, in
         if((LinkPos == 1) && (TE.Attribute == 0))
         {
             Utilities->CallLogPop(665);
-            return 0; // Att == 0 represents straight
+            return(0); // Att == 0 represents straight
         }
         else if(LinkPos == 1)
         {
             Derail = true;
             Utilities->CallLogPop(666);
-            return 0;
+            return(0);
         }
         else if((LinkPos == 3) && (TE.Attribute == 1))
         {
             Utilities->CallLogPop(667);
-            return 0;
+            return(0);
         }
         else if(LinkPos == 3)
         {
             Derail = true;
             Utilities->CallLogPop(668);
-            return 0;
+            return(0);
         }
     }
     else if(LinkPos == 0)
     {
         Utilities->CallLogPop(669);
-        return 1;
+        return(1);
     }
     else if(LinkPos == 1)
     {
         Utilities->CallLogPop(670);
-        return 0;
+        return(0);
     }
     else if(LinkPos == 2)
     {
         Utilities->CallLogPop(671);
-        return 3;
+        return(3);
     }
     else if(LinkPos == 3)
     {
         Utilities->CallLogPop(672);
-        return 2;
+        return(2);
     }
     throw Exception("Error, failure in GetExitPos"); // should never reach here
 }
@@ -10151,7 +10934,7 @@ bool TTrack::TrainOnLink(int Caller, int HLoc, int VLoc, int Link, int &TrainID)
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrainOnLink," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," +
-        AnsiString(Link));
+                                 AnsiString(Link));
     bool FoundFlag;
 
     TrainID = -1;
@@ -10160,7 +10943,7 @@ bool TTrack::TrainOnLink(int Caller, int HLoc, int VLoc, int Link, int &TrainID)
     if(!FoundFlag)
     {
         Utilities->CallLogPop(2001);
-        return false;
+        return(false);
     }
     TTrackElement TE = TrackElementAt(882, VecPos);
 
@@ -10178,13 +10961,15 @@ bool TTrack::TrainOnLink(int Caller, int HLoc, int VLoc, int Link, int &TrainID)
                 TrainID = TE.TrainIDOnBridgeTrackPos23;
             }
             else
+            {
                 TrainID = -1; // shouldn't ever reach here but be safe
+            }
         }
     }
     if(TrainID == -1)
     {
         Utilities->CallLogPop(2002);
-        return false;
+        return(false);
     }
 // now get the train
     TTrain Train = TrainController->TrainVectorAtIdent(38, TrainID);
@@ -10192,11 +10977,11 @@ bool TTrack::TrainOnLink(int Caller, int HLoc, int VLoc, int Link, int &TrainID)
     if(Train.LinkOccupied(0, VecPos, Link)) // checks whether any part of train occupying Link on VecPos
     {
         Utilities->CallLogPop(2003);
-        return true;
+        return(true);
     }
     TrainID = -1;
     Utilities->CallLogPop(2004);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -10213,7 +10998,7 @@ bool TTrack::DiagonalFouledByTrain(int Caller, int HLoc, int VLoc, int DiagonalL
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DiagonalFouledByTrain," + AnsiString(HLoc) + "," + AnsiString(VLoc) +
-        "," + AnsiString(DiagonalLinkNumber));
+                                 "," + AnsiString(DiagonalLinkNumber));
     TrainID = -1;
     TPrefDirElement TempPrefDirElement;
     TAllRoutes::TRouteElementPair FirstPair, SecondPair;
@@ -10221,29 +11006,25 @@ bool TTrack::DiagonalFouledByTrain(int Caller, int HLoc, int VLoc, int DiagonalL
     if(((DiagonalLinkNumber == 1) && TrainOnLink(8, HLoc - 1, VLoc, 3, TrainID)) || ((DiagonalLinkNumber == 7) && TrainOnLink(9, HLoc - 1, VLoc, 9, TrainID)))
     {
         Utilities->CallLogPop(2027);
-        return true;
+        return(true);
     }
-
     if(((DiagonalLinkNumber == 1) && TrainOnLink(10, HLoc, VLoc - 1, 7, TrainID)) || ((DiagonalLinkNumber == 3) && TrainOnLink(11, HLoc, VLoc - 1, 9, TrainID)))
     {
         Utilities->CallLogPop(2028);
-        return true;
+        return(true);
     }
-
     if(((DiagonalLinkNumber == 3) && TrainOnLink(12, HLoc + 1, VLoc, 1, TrainID)) || ((DiagonalLinkNumber == 9) && TrainOnLink(13, HLoc + 1, VLoc, 7, TrainID)))
     {
         Utilities->CallLogPop(2029);
-        return true;
+        return(true);
     }
-
     if(((DiagonalLinkNumber == 7) && TrainOnLink(14, HLoc, VLoc + 1, 1, TrainID)) || ((DiagonalLinkNumber == 9) && TrainOnLink(15, HLoc, VLoc + 1, 3, TrainID)))
     {
         Utilities->CallLogPop(2030);
-        return true;
+        return(true);
     }
-
     Utilities->CallLogPop(2031);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -10309,7 +11090,6 @@ int TTrack::NumberOfPlatforms(int Caller, AnsiString LocationName)
         OnePlatList.push_back(NamePosList.back());
         NamePosList.pop_back(); //erase from NPV as done with it here
     }
-
     while(!OnePlatList.empty()) //loop to examine all linked elements
     {
         TempInt = OnePlatList.front();
@@ -10340,7 +11120,7 @@ int TTrack::NumberOfPlatforms(int Caller, AnsiString LocationName)
         }
     }
     Utilities->CallLogPop(2218);
-    return NumPlats;
+    return(NumPlats);
 }
 
 // ---------------------------------------------------------------------------
@@ -10355,7 +11135,7 @@ TUserGraphicItem &TTrack::UserGraphicVectorAt(int Caller, int At)
         throw Exception("Out of Range Error, vector size: " + AnsiString(UserGraphicVector.size()) + ", At: " + AnsiString(At) + " in UserGraphicVectorAt");
     }
     Utilities->CallLogPop(2194);
-    return UserGraphicVector.at(At);
+    return(UserGraphicVector.at(At));
 }
 
 // ---------------------------------------------------------------------------
@@ -10370,7 +11150,7 @@ int TOnePrefDir::LastElementNumber(int Caller) const
         throw Exception("Return value negative in call to LastElementNumber");
     }
     Utilities->CallLogPop(114);
-    return RetVal;
+    return(RetVal);
 }
 
 // ---------------------------------------------------------------------------
@@ -10384,7 +11164,7 @@ TOnePrefDir::TPrefDirVectorIterator TOnePrefDir::LastElementPtr(int Caller)
     TPrefDirVectorIterator RetIT = PrefDirVector.end() - 1;
 
     Utilities->CallLogPop(115);
-    return RetIT;
+    return(RetIT);
 }
 
 // ---------------------------------------------------------------------------
@@ -10396,7 +11176,7 @@ const TPrefDirElement &TOnePrefDir::GetFixedPrefDirElementAt(int Caller, int At)
         throw Exception("Out of Range Error, vector size: " + AnsiString(PrefDirVector.size()) + ", At: " + AnsiString(At) + " in GetFixedPrefDirElementAt");
     }
     Utilities->CallLogPop(116);
-    return PrefDirVector.at(At);
+    return(PrefDirVector.at(At));
 }
 
 // ---------------------------------------------------------------------------
@@ -10406,10 +11186,10 @@ TPrefDirElement &TOnePrefDir::GetModifiablePrefDirElementAt(int Caller, int At)
     if((At < 0) || ((unsigned int)At >= PrefDirVector.size()))
     {
         throw Exception("Out of Range Error, vector size: " + AnsiString(PrefDirVector.size()) + ", At: " + AnsiString(At) +
-            " in GetModifiablePrefDirElementAt");
+                        " in GetModifiablePrefDirElementAt");
     }
     Utilities->CallLogPop(117);
-    return PrefDirVector.at(At);
+    return(PrefDirVector.at(At));
 }
 
 // ---------------------------------------------------------------------------
@@ -10421,7 +11201,7 @@ const TPrefDirElement &TOnePrefDir::GetFixedSearchElementAt(int Caller, int At) 
         throw Exception("Out of Range Error, vector size: " + AnsiString(SearchVector.size()) + ", At: " + AnsiString(At) + " in GetFixedSearchElementAt");
     }
     Utilities->CallLogPop(118);
-    return SearchVector.at(At);
+    return(SearchVector.at(At));
 }
 
 // ---------------------------------------------------------------------------
@@ -10433,7 +11213,7 @@ TPrefDirElement &TOnePrefDir::GetModifiableSearchElementAt(int Caller, int At)
         throw Exception("Out of Range Error, vector size: " + AnsiString(SearchVector.size()) + ", At: " + AnsiString(At) + " in GetModifiableSearchElementAt");
     }
     Utilities->CallLogPop(119);
-    return SearchVector.at(At);
+    return(SearchVector.at(At));
 }
 
 // ---------------------------------------------------------------------------
@@ -10453,7 +11233,7 @@ bool TOnePrefDir::GetPrefDirStartElement(int Caller, int HLoc, int VLoc) // Retu
     if(!(Track->FindNonPlatformMatch(5, HLoc, VLoc, TrackVectorPosition, TrackElement)))
     {
         Utilities->CallLogPop(126);
-        return false;
+        return(false);
     }
 /* it can be points so drop the code below - all exits are checked, no assumptions are made about the exit position of the start element
       if(TrackElement.TrackType == Points)
@@ -10475,7 +11255,7 @@ bool TOnePrefDir::GetPrefDirStartElement(int Caller, int HLoc, int VLoc) // Retu
 // ConvertPrefDirSearchVector after 2nd element added
 
     Utilities->CallLogPop(128);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -10508,14 +11288,13 @@ bool TOnePrefDir::GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &Fi
     if(PrefDirVector.size() == 0)
     {
         Utilities->CallLogPop(129);
-        return false;
+        return(false);
     }
     if(!(Track->FindNonPlatformMatch(6, HLoc, VLoc, TrackVectorPosition, TrackElement)))
     {
         Utilities->CallLogPop(130);
-        return false;
+        return(false);
     }
-
 // set the search limits using the last stored element in PrefDirVector as the start point
 // set the H&V limits for the search, all points on search path must lie within 15 elements greater than the box of which the line between
 // start and finish is a diagonal line [dropped as not a good strategy because gaps interfered with direct line searches - instead
@@ -10533,7 +11312,6 @@ bool TOnePrefDir::GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &Fi
         SearchLimitLowH = TrackElement.HLoc - 15;
         SearchLimitHighH = StartPrefDirElement.HLoc + 15;
     }
-
     if(TrackElement.VLoc >= StartPrefDirElement.VLoc)
     {
         SearchLimitLowV = StartPrefDirElement.VLoc - 15;
@@ -10583,7 +11361,7 @@ bool TOnePrefDir::GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &Fi
                     FinishElement = true;
                 }
                 Utilities->CallLogPop(131);
-                return true;
+                return(true);
             }
         } // not an adjacent element
 
@@ -10603,19 +11381,19 @@ bool TOnePrefDir::GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &Fi
                         FinishElement = true;
                     }
                     Utilities->CallLogPop(132);
-                    return true;
+                    return(true);
                 }
             }
         } // here if checked all possible exits without success
         ShowMessage(
             "Unable to find a route to the selected element - may be unreachable, too far ahead, or invalid. Try selecting an end point closer to the start point.");
         Utilities->CallLogPop(133);
-        return false;
+        return(false);
     }
 // dealt above with LastPrefDirElement being the start element (which can be points)
 
     if((PrefDirVector.at(LastElementNumber(13)).TrackType == Points) && (PrefDirVector.at(LastElementNumber(14)).Config[PrefDirVector.at(LastElementNumber(15))
-        .ELinkPos] == Lead)) // leading point
+                                                                                                                        .ELinkPos] == Lead)) // leading point
     {
         if(PrefDirVector.at(LastElementNumber(16)).Conn[1] == TrackVectorPosition) // found it next to XLinkPos = 1
         {
@@ -10634,7 +11412,7 @@ bool TOnePrefDir::GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &Fi
                     FinishElement = true;
                 }
                 Utilities->CallLogPop(134);
-                return true;
+                return(true);
             }
         }
         if(PrefDirVector.at(LastElementNumber(23)).Conn[3] == TrackVectorPosition) // found it next to XLinkPos = 3
@@ -10653,7 +11431,7 @@ bool TOnePrefDir::GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &Fi
                     FinishElement = true;
                 }
                 Utilities->CallLogPop(135);
-                return true;
+                return(true);
             }
         }
 // above dealt with immediate finds for leading point,
@@ -10672,7 +11450,7 @@ bool TOnePrefDir::GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &Fi
                 FinishElement = true;
             }
             Utilities->CallLogPop(136);
-            return true;
+            return(true);
         }
         PrefDirVector.at(LastElementNumber(36)).XLinkPos = 3;
         PrefDirVector.at(LastElementNumber(37)).XLink = PrefDirVector.at(LastElementNumber(38)).Link[3];
@@ -10687,7 +11465,7 @@ bool TOnePrefDir::GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &Fi
                 FinishElement = true;
             }
             Utilities->CallLogPop(137);
-            return true;
+            return(true);
         }
 // here if failed to find match for leading point
         PrefDirVector.at(LastElementNumber(69)).CheckCount--; // to removed the earlier increments for XLinkPos & XLink
@@ -10695,7 +11473,7 @@ bool TOnePrefDir::GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &Fi
         ShowMessage(
             "Unable to find a route to the selected element - may be unreachable, too far ahead, or invalid. Try selecting an end point closer to the start point.");
         Utilities->CallLogPop(138);
-        return false;
+        return(false);
     }
 // leading point fully dealt with above
 // here with an ordinary element, just do an ordinary search - no need to search for an immediate find
@@ -10712,12 +11490,12 @@ bool TOnePrefDir::GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &Fi
             FinishElement = true;
         }
         Utilities->CallLogPop(139);
-        return true;
+        return(true);
     }
     ShowMessage(
         "Unable to find a route to the selected element - may be unreachable, too far ahead, or invalid. Try selecting an end point closer to the start point.");
     Utilities->CallLogPop(140);
-    return false; // failed to find required element
+    return(false); // failed to find required element
 }
 
 // ---------------------------------------------------------------------------
@@ -10738,7 +11516,7 @@ bool TOnePrefDir::SearchForPrefDir(int Caller, TTrackElement CurrentTrackElement
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SearchForPrefDir," + CurrentTrackElement.LogTrack(13) + "," +
-        AnsiString(XLinkPos) + "," + AnsiString(RequiredPosition));
+                                 AnsiString(XLinkPos) + "," + AnsiString(RequiredPosition));
     int VectorCount = 0;
 
     while(true)
@@ -10746,9 +11524,11 @@ bool TOnePrefDir::SearchForPrefDir(int Caller, TTrackElement CurrentTrackElement
         if(CurrentTrackElement.Config[XLinkPos] == End) // buffers or continuation
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(141);
-            return false;
+            return(false);
         }
         int NextPosition = CurrentTrackElement.Conn[XLinkPos];
         TTrackElement NextTrackElement = Track->TrackElementAt(74, NextPosition);
@@ -10759,13 +11539,21 @@ bool TOnePrefDir::SearchForPrefDir(int Caller, TTrackElement CurrentTrackElement
         SearchElement.ELink = SearchElement.Link[SearchElement.ELinkPos];
         int NextXLinkPos;
         if(SearchElement.ELinkPos == 0)
+        {
             NextXLinkPos = 1;
+        }
         if(SearchElement.ELinkPos == 1)
+        {
             NextXLinkPos = 0;
+        }
         if(SearchElement.ELinkPos == 2)
+        {
             NextXLinkPos = 3;
+        }
         if(SearchElement.ELinkPos == 3)
+        {
             NextXLinkPos = 2;
+        }
         if((SearchElement.TrackType != Points) || (SearchElement.Config[SearchElement.ELinkPos] != Lead))
         {
             SearchElement.XLink = SearchElement.Link[NextXLinkPos];
@@ -10780,7 +11568,7 @@ bool TOnePrefDir::SearchForPrefDir(int Caller, TTrackElement CurrentTrackElement
             VectorCount++; // not really needed but include for tidyness
             TotalSearchCount++;
             Utilities->CallLogPop(142);
-            return true;
+            return(true);
         }
 // check if PrefDirVector > 200 and if so reject further searches (to avoid possible problems in converting
 // very long vectors) - warning given in ConvertPrefDirSearchVector, though can still add elements one
@@ -10797,9 +11585,11 @@ bool TOnePrefDir::SearchForPrefDir(int Caller, TTrackElement CurrentTrackElement
         if((SearchElement.TrackType == Buffers) || (SearchElement.TrackType == Continuation))
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(143);
-            return false;
+            return(false);
         }
 // check if reached an earlier position on search PrefDir with same entry value
         for(unsigned int x = 0; x < SearchVector.size(); x++)
@@ -10807,9 +11597,11 @@ bool TOnePrefDir::SearchForPrefDir(int Caller, TTrackElement CurrentTrackElement
             if((SearchElement.TrackVectorPosition == SearchVector.at(x).TrackVectorPosition) && (SearchElement.ELink == SearchVector.at(x).ELink))
             {
                 for(int x = 0; x < VectorCount; x++)
+                {
                     SearchVector.erase(SearchVector.end() - 1);
+                }
                 Utilities->CallLogPop(144);
-                return false;
+                return(false);
             }
         }
 // check if reached an earlier position in the PrefDirVector with same entry value (without this can keep adding entries
@@ -10819,9 +11611,11 @@ bool TOnePrefDir::SearchForPrefDir(int Caller, TTrackElement CurrentTrackElement
             if((SearchElement.TrackVectorPosition == PrefDirVector.at(x).TrackVectorPosition) && (SearchElement.ELink == PrefDirVector.at(x).ELink))
             {
                 for(int x = 0; x < VectorCount; x++)
+                {
                     SearchVector.erase(SearchVector.end() - 1);
+                }
                 Utilities->CallLogPop(1417);
-                return false;
+                return(false);
             }
         }
 
@@ -10831,18 +11625,21 @@ bool TOnePrefDir::SearchForPrefDir(int Caller, TTrackElement CurrentTrackElement
         if(TotalSearchCount > PrefDirSearchLimit)
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(1691);
-            return false;
+            return(false);
         }
-
 // check if SearchVector reached 150, and if so reject, to save time in searching for PrefDirs
         if(SearchVector.size() > 150)
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(1418);
-            return false;
+            return(false);
         }
 // check if reached a leading point
         if((SearchElement.TrackType == Points) && (SearchElement.Config[SearchElement.ELinkPos] == Lead))
@@ -10859,7 +11656,7 @@ bool TOnePrefDir::SearchForPrefDir(int Caller, TTrackElement CurrentTrackElement
             if(SearchForPrefDir(8, NextTrackElement, 1, RequiredPosition))
             {
                 Utilities->CallLogPop(145);
-                return true;
+                return(true);
             }
             else
             {
@@ -10876,17 +11673,20 @@ bool TOnePrefDir::SearchForPrefDir(int Caller, TTrackElement CurrentTrackElement
                 if(SearchForPrefDir(9, NextTrackElement, 3, RequiredPosition))
                 {
                     Utilities->CallLogPop(146);
-                    return true;
+                    return(true);
                 }
                 else
                 {
                     for(int x = 0; x < VectorCount; x++)
+                    {
                         SearchVector.erase(SearchVector.end() - 1);
+                    }
                     Utilities->CallLogPop(147);
-                    return false;
+                    return(false);
                 }
             }
         } // if leading point
+
 // here if ordinary element, push it, inc vector & update CurrentTrackElement
 // ready for next element on PrefDir
         SearchVector.push_back(SearchElement);
@@ -10932,14 +11732,22 @@ void TOnePrefDir::ConvertPrefDirSearchVector(int Caller)
             }
             int ELinkPos;
             if(PrefDirVector.at(LastElementNumber(49)).XLinkPos == 0)
+            {
                 ELinkPos = 1; // use actual value rather than 'x' as may be a gap
+            }
             // with both ends linked to 1st searchvector element, & if XLink was set then x may not correspond
             if(PrefDirVector.at(LastElementNumber(50)).XLinkPos == 1)
+            {
                 ELinkPos = 0;
+            }
             if(PrefDirVector.at(LastElementNumber(51)).XLinkPos == 2)
+            {
                 ELinkPos = 3;
+            }
             if(PrefDirVector.at(LastElementNumber(52)).XLinkPos == 3)
+            {
                 ELinkPos = 2;
+            }
             if(PrefDirVector.at(LastElementNumber(53)).ELink == -1) // because was start element
             {
                 PrefDirVector.at(LastElementNumber(54)).ELink = PrefDirVector.at(LastElementNumber(55)).Link[ELinkPos];
@@ -10966,7 +11774,6 @@ void TOnePrefDir::ConvertPrefDirSearchVector(int Caller)
         {
             throw Exception("Error in EntryExitNumber 1");
         }
-
         PrefDirVector.at(LastElementNumber(61)).EXGraphicPtr = PrefDirVector.at(LastElementNumber(62)).GetPrefDirGraphicPtr();
         PrefDirVector.at(LastElementNumber(63)).EntryDirectionGraphicPtr = PrefDirVector.at(LastElementNumber(64)).GetDirectionPrefDirGraphicPtr();
         PrefDirVector.at(LastElementNumber(65)).CheckCount++;
@@ -10985,10 +11792,14 @@ void TOnePrefDir::ConvertPrefDirSearchVector(int Caller)
         PrefDirElement.XLinkPos = SearchElement.XLinkPos;
 // if XLink & XLinkPos not set don't account for them in CheckCount
         if(PrefDirElement.XLink == -1)
+        {
             PrefDirElement.CheckCount = 6; // Hloc, VLoc, SpeedTag, ELink, ELinkPos,
+        }
         // & TrackVectorPosition
         else
+        {
             PrefDirElement.CheckCount = 8; // Hloc, VLoc, SpeedTag, ELink, ELinkPos,
+        }
         // XLink, XLinkPos, TrackVectorPosition
 
 // set EXNumber (can't set EXNumber if XLink not set - if finished on a leading point
@@ -11010,8 +11821,10 @@ void TOnePrefDir::ConvertPrefDirSearchVector(int Caller)
     if((LastElementPtr(0)->TrackType == Buffers) || (LastElementPtr(1)->TrackType == Continuation))
     {
         if(ValidatePrefDir(2))
-        {;
+        {
+            ;
         } // error messages given within function
+
     }
     CheckPrefDir4MultiMap(3);
 /* drop this, check dropped from search
@@ -11036,12 +11849,12 @@ bool TOnePrefDir::EndPossible(int Caller, bool &LeadingPoints)
     if(PrefDirVector.empty())
     {
         Utilities->CallLogPop(1786);
-        return false; // should never be empty but allow for it for safety
+        return(false); // should never be empty but allow for it for safety
     }
     if(PrefDirVector.size() == 1)
     {
         Utilities->CallLogPop(149);
-        return false; // can't end if only one element
+        return(false); // can't end if only one element
     }
 /*
       if((PrefDirVector.at(LastElementNumber()).TrackType != Points) &&
@@ -11053,16 +11866,16 @@ bool TOnePrefDir::EndPossible(int Caller, bool &LeadingPoints)
 */
 // allow for anything but leading points
     if((PrefDirVector.at(LastElementNumber(66)).TrackType != Points) || (PrefDirVector.at(LastElementNumber(67)).ELinkPos == 1) ||
-        (PrefDirVector.at(LastElementNumber(71)).ELinkPos == 3))
+       (PrefDirVector.at(LastElementNumber(71)).ELinkPos == 3))
     {
         Utilities->CallLogPop(1776);
-        return true;
+        return(true);
     }
     else
     {
         LeadingPoints = true;
         Utilities->CallLogPop(151);
-        return false;
+        return(false);
     }
 }
 
@@ -11173,7 +11986,7 @@ bool TOnePrefDir::ValidatePrefDir(int Caller)
     else
     {
         Utilities->CallLogPop(153);
-        return true;
+        return(true);
     }
 }
 
@@ -11199,7 +12012,7 @@ bool TOnePrefDir::GetPrefDirTruncateElement(int Caller, int HLoc, int VLoc)
             if(PrefDirVector.size() == 0)
             {
                 Utilities->CallLogPop(154);
-                return true;
+                return(true);
             }
             if(PrefDirVector.size() == 1)
             {
@@ -11212,7 +12025,7 @@ bool TOnePrefDir::GetPrefDirTruncateElement(int Caller, int HLoc, int VLoc)
                 PrefDirVector.at(x - 1).EntryDirectionGraphicPtr = 0;
                 PrefDirVector.at(x - 1).CheckCount = PrefDirVector.at(x - 1).CheckCount - 5;
                 Utilities->CallLogPop(155);
-                return true;
+                return(true);
             }
             // here with truncate element not first element, so ELink & ELinkPos set
             // unset XLink & Pos if a leading point
@@ -11225,20 +12038,20 @@ bool TOnePrefDir::GetPrefDirTruncateElement(int Caller, int HLoc, int VLoc)
                 PrefDirVector.at(x - 1).EntryDirectionGraphicPtr = 0;
                 PrefDirVector.at(x - 1).CheckCount = PrefDirVector.at(x - 1).CheckCount - 3;
                 Utilities->CallLogPop(156);
-                return true;
+                return(true);
             }
             Utilities->CallLogPop(157);
-            return true;
+            return(true);
         }
     }
     Utilities->CallLogPop(158);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
 
 void TOnePrefDir::PrefDirMarker(int Caller, TPrefDirRoute PrefDirRoute, bool BuildingPrefDir, TDisplay *Disp)
-    const // PrefDirRoute = PrefDircall or routecall for PrefDir or route; true for BuildingPrefDir
+const     // PrefDirRoute = PrefDircall or routecall for PrefDir or route; true for BuildingPrefDir
 /*
       PrefDir and route track marker, including direction markers.  Function used for both PrefDirs (PrefDirRoute == PrefDirCall) and routes
       (PrefDirRoute == RouteCall).  The graphics for marker colours and direction are already stored in all PrefDirElements in
@@ -11249,7 +12062,7 @@ void TOnePrefDir::PrefDirMarker(int Caller, TPrefDirRoute PrefDirRoute, bool Bui
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PrefDirMarker," + AnsiString(PrefDirRoute) + "," +
-        AnsiString((short)BuildingPrefDir));
+                                 AnsiString((short)BuildingPrefDir));
     int HPos, VPos;
 
     if(PrefDirSize() == 0)
@@ -11275,7 +12088,7 @@ void TOnePrefDir::PrefDirMarker(int Caller, TPrefDirRoute PrefDirRoute, bool Bui
                 Disp->PlotOutput(13, (TempPrefDirElement.HLoc * 16), (TempPrefDirElement.VLoc * 16), TempPrefDirElement.EntryDirectionGraphicPtr);
             }
             else if((TempPrefDirElement.EntryDirectionGraphicPtr != 0) && (PrefDirRoute == RouteCall) && PrefDirSize() > 1)
-    // Route, no direction if a single element
+            // Route, no direction if a single element
             {
                 if(x == 0)
                 {
@@ -11322,7 +12135,6 @@ void TOnePrefDir::EveryPrefDirMarker(int Caller, TDisplay *Disp)
         Utilities->CallLogPop(1547);
         return;
     }
-
     int H, V, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3;
     bool FoundFlag;
     TPrefDir4MultiMapIterator MMIT = PrefDir4MultiMap.begin();
@@ -11335,15 +12147,24 @@ void TOnePrefDir::EveryPrefDirMarker(int Caller, TDisplay *Disp)
         GetVectorPositionsFromPrefDir4MultiMap(6, H, V, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
         // always found in order, any missing have PrefDirPosx == -1
         if(PrefDirPos0 > -1)
+        {
             PrefDirElement0 = GetFixedPrefDirElementAt(170, PrefDirPos0); // PrefDirPos0 should always be > -1 but leave as a precaution
+        }
         if(PrefDirPos1 > -1)
+        {
             PrefDirElement1 = GetFixedPrefDirElementAt(171, PrefDirPos1);
+        }
         if(PrefDirPos2 > -1)
+        {
             PrefDirElement2 = GetFixedPrefDirElementAt(172, PrefDirPos2);
+        }
         if(PrefDirPos3 > -1)
+        {
             PrefDirElement3 = GetFixedPrefDirElementAt(173, PrefDirPos3);
+        }
         if(PrefDirPos3 > -1) // 4 found, mark all PrefDirs bidirectional (operator == ensures no duplicates in ConsolidatePrefDirs)
-        { // need to plot all 4 in order to obtain all the direction graphics
+        {
+            // need to plot all 4 in order to obtain all the direction graphics
             Disp->PlotOutput(77, (H * 16), (V * 16), PrefDirElement0.GetRouteGraphicPtr(false, true)); // green
             Disp->PlotOutput(78, (H * 16), (V * 16), PrefDirElement0.GetDirectionRouteGraphicPtr(false, true)); // green
             Disp->PlotOutput(79, (H * 16), (V * 16), PrefDirElement1.GetRouteGraphicPtr(false, true)); // green
@@ -11360,7 +12181,8 @@ void TOnePrefDir::EveryPrefDirMarker(int Caller, TDisplay *Disp)
         else if(PrefDirPos2 > -1) // 3 found, one PrefDir bidirectional & other unidirectional
         {
             if(PrefDirElement0.EXNumber == PrefDirElement1.EXNumber)
-            { // 0 & 1 constitute the bidirectional PrefDir
+            {
+                // 0 & 1 constitute the bidirectional PrefDir
                 Disp->PlotOutput(89, (H * 16), (V * 16), PrefDirElement2.GetRouteGraphicPtr(false, false)); // red
                 Disp->PlotOutput(90, (H * 16), (V * 16), PrefDirElement2.GetDirectionRouteGraphicPtr(false, false)); // red
                 Disp->PlotOutput(85, (H * 16), (V * 16), PrefDirElement0.GetRouteGraphicPtr(false, true)); // green
@@ -11372,7 +12194,8 @@ void TOnePrefDir::EveryPrefDirMarker(int Caller, TDisplay *Disp)
                 MMIT++;
             }
             else if(PrefDirElement0.EXNumber == PrefDirElement2.EXNumber)
-            { // 0 & 2 constitute the bidirectional PrefDir
+            {
+                // 0 & 2 constitute the bidirectional PrefDir
                 Disp->PlotOutput(95, (H * 16), (V * 16), PrefDirElement1.GetRouteGraphicPtr(false, false)); // red
                 Disp->PlotOutput(96, (H * 16), (V * 16), PrefDirElement1.GetDirectionRouteGraphicPtr(false, false)); // red
                 Disp->PlotOutput(91, (H * 16), (V * 16), PrefDirElement0.GetRouteGraphicPtr(false, true)); // green
@@ -11384,7 +12207,8 @@ void TOnePrefDir::EveryPrefDirMarker(int Caller, TDisplay *Disp)
                 MMIT++;
             }
             else
-            { // 1 & 2 constitute the bidirectional PrefDir
+            {
+                // 1 & 2 constitute the bidirectional PrefDir
                 Disp->PlotOutput(101, (H * 16), (V * 16), PrefDirElement0.GetRouteGraphicPtr(false, false)); // red
                 Disp->PlotOutput(102, (H * 16), (V * 16), PrefDirElement0.GetDirectionRouteGraphicPtr(false, false)); // red
                 Disp->PlotOutput(97, (H * 16), (V * 16), PrefDirElement1.GetRouteGraphicPtr(false, true)); // green
@@ -11399,7 +12223,8 @@ void TOnePrefDir::EveryPrefDirMarker(int Caller, TDisplay *Disp)
         else if(PrefDirPos1 > -1) // 2 found, either 1 bidirectional or 2 unidirectional
         {
             if(PrefDirElement0.EXNumber == PrefDirElement1.EXNumber)
-            { // 0 & 1 constitute the bidirectional PrefDir
+            {
+                // 0 & 1 constitute the bidirectional PrefDir
                 Disp->PlotOutput(103, (H * 16), (V * 16), PrefDirElement0.GetRouteGraphicPtr(false, true)); // green
                 Disp->PlotOutput(104, (H * 16), (V * 16), PrefDirElement0.GetDirectionRouteGraphicPtr(false, true)); // green
                 Disp->PlotOutput(105, (H * 16), (V * 16), PrefDirElement1.GetRouteGraphicPtr(false, true)); // green
@@ -11408,7 +12233,8 @@ void TOnePrefDir::EveryPrefDirMarker(int Caller, TDisplay *Disp)
                 MMIT++;
             }
             else
-            { // 2 unidirectional PrefDirs
+            {
+                // 2 unidirectional PrefDirs
                 Disp->PlotOutput(107, (H * 16), (V * 16), PrefDirElement0.GetRouteGraphicPtr(false, false)); // red
                 Disp->PlotOutput(108, (H * 16), (V * 16), PrefDirElement0.GetDirectionRouteGraphicPtr(false, false)); // red
                 Disp->PlotOutput(109, (H * 16), (V * 16), PrefDirElement1.GetRouteGraphicPtr(false, false)); // red
@@ -11468,7 +12294,7 @@ void TOnePrefDir::LoadOldPrefDir(int Caller, std::ifstream &VecFile)
         {
             LoadPrefDirElement.EXGraphicPtr = LoadPrefDirElement.GetRouteGraphicPtr(LoadPrefDirElement.AutoSignals, LoadPrefDirElement.PrefDirRoute);
             LoadPrefDirElement.EntryDirectionGraphicPtr = LoadPrefDirElement.GetDirectionRouteGraphicPtr(LoadPrefDirElement.AutoSignals,
-                LoadPrefDirElement.PrefDirRoute);
+                                                                                                         LoadPrefDirElement.PrefDirRoute);
         }
         StorePrefDirElement(5, LoadPrefDirElement);
         Utilities->LoadFileString(VecFile); // marker
@@ -11518,7 +12344,7 @@ void TOnePrefDir::LoadPrefDir(int Caller, std::ifstream &VecFile)
         {
             LoadPrefDirElement.EXGraphicPtr = LoadPrefDirElement.GetRouteGraphicPtr(LoadPrefDirElement.AutoSignals, LoadPrefDirElement.PrefDirRoute);
             LoadPrefDirElement.EntryDirectionGraphicPtr = LoadPrefDirElement.GetDirectionRouteGraphicPtr(LoadPrefDirElement.AutoSignals,
-                LoadPrefDirElement.PrefDirRoute);
+                                                                                                         LoadPrefDirElement.PrefDirRoute);
         }
         StorePrefDirElement(0, LoadPrefDirElement);
         AnsiString MarkerString = Utilities->LoadFileString(VecFile); // marker
@@ -11543,50 +12369,50 @@ bool TOnePrefDir::CheckOnePrefDir(int Caller, int NumberOfActiveElements, std::i
     if((NumberOfPrefDirElements < 0) || (NumberOfPrefDirElements > 1000000))
     {
         Utilities->CallLogPop(1152);
-        return false;
+        return(false);
     }
     for(int x = 0; x < NumberOfPrefDirElements; x++)
     {
         if(!Utilities->CheckFileInt(VecFile, x, x)) // vector number
         {
             Utilities->CallLogPop(1766);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if((TempInt < 0) || (TempInt >= NumberOfActiveElements)) // TrackVectorPosition
         {
             Utilities->CallLogPop(163);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if((TempInt < -1) || (TempInt > 9)) // ELink
         {
             Utilities->CallLogPop(162);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if((TempInt < -1) || (TempInt > 3)) // ELinkPos
         {
             Utilities->CallLogPop(164);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if((TempInt < -1) || (TempInt > 9)) // XLink
         {
             Utilities->CallLogPop(165);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if((TempInt < -1) || (TempInt > 3)) // XLinkPos
         {
             Utilities->CallLogPop(166);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if((TempInt < -1) || (TempInt > 27)) // EXNumber
         {
             Utilities->CallLogPop(167);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if(TempInt != 9) // CheckCount - reduced to 11 after NextPrefDirElement dropped &
@@ -11594,34 +12420,34 @@ bool TOnePrefDir::CheckOnePrefDir(int Caller, int NumberOfActiveElements, std::i
                          // ELinkPos, XLink, XLinkPos & EXNumber
         {
             Utilities->CallLogPop(168);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if((TempInt != 0) && (TempInt != 1)) // RouteElement
         {
             Utilities->CallLogPop(1147);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if((TempInt != 0) && (TempInt != 1)) // AutoSignals
         {
             Utilities->CallLogPop(1510);
-            return false;
+            return(false);
         }
         VecFile >> TempInt;
         if((TempInt != 0) && (TempInt != 1)) // PrefDirRoute
         {
             Utilities->CallLogPop(1148);
-            return false;
+            return(false);
         }
         if(!Utilities->CheckFileStringZeroDelimiter(VecFile)) // marker
         {
             Utilities->CallLogPop(1700);
-            return false;
+            return(false);
         }
     }
     Utilities->CallLogPop(169);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -11699,11 +12525,13 @@ void TOnePrefDir::EraseFromPrefDirVectorAnd4MultiMap(int Caller, int HLoc, int V
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",EraseFromPrefDirVectorAnd4MultiMap," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
     int VecPos = GetOnePrefDirPosition(1, HLoc, VLoc);
 
     if(VecPos > -1)
+    {
         ErasePrefDirElementAt(2, VecPos); // max of 4 to be erased
+    }
     else
     {
         Utilities->CallLogPop(171);
@@ -11711,7 +12539,9 @@ void TOnePrefDir::EraseFromPrefDirVectorAnd4MultiMap(int Caller, int HLoc, int V
     }
     VecPos = GetOnePrefDirPosition(2, HLoc, VLoc);
     if(VecPos > -1)
+    {
         ErasePrefDirElementAt(3, VecPos);
+    }
     else
     {
         Utilities->CallLogPop(172);
@@ -11719,7 +12549,9 @@ void TOnePrefDir::EraseFromPrefDirVectorAnd4MultiMap(int Caller, int HLoc, int V
     }
     VecPos = GetOnePrefDirPosition(3, HLoc, VLoc);
     if(VecPos > -1)
+    {
         ErasePrefDirElementAt(4, VecPos);
+    }
     else
     {
         Utilities->CallLogPop(173);
@@ -11727,7 +12559,9 @@ void TOnePrefDir::EraseFromPrefDirVectorAnd4MultiMap(int Caller, int HLoc, int V
     }
     VecPos = GetOnePrefDirPosition(4, HLoc, VLoc);
     if(VecPos > -1)
+    {
         ErasePrefDirElementAt(5, VecPos);
+    }
     else
     {
         Utilities->CallLogPop(174);
@@ -11800,16 +12634,26 @@ void TOnePrefDir::ConsolidatePrefDirs(int Caller, TOnePrefDir *InputPrefDir)
         if(FoundFlag)
         {
             if((PrefDirPos0 > -1) && (TempElement == GetFixedPrefDirElementAt(8, PrefDirPos0)))
+            {
                 AlreadyPresent = true;
+            }
             if((PrefDirPos1 > -1) && (TempElement == GetFixedPrefDirElementAt(9, PrefDirPos1)))
+            {
                 AlreadyPresent = true;
+            }
             if((PrefDirPos2 > -1) && (TempElement == GetFixedPrefDirElementAt(10, PrefDirPos2)))
+            {
                 AlreadyPresent = true;
+            }
             if((PrefDirPos3 > -1) && (TempElement == GetFixedPrefDirElementAt(11, PrefDirPos3)))
+            {
                 AlreadyPresent = true;
+            }
         }
         if(!AlreadyPresent)
+        {
             StorePrefDirElement(4, TempElement);
+        }
     }
     CheckPrefDir4MultiMap(5);
     Utilities->CallLogPop(178);
@@ -11885,7 +12729,9 @@ void TOnePrefDir::CheckPrefDirAgainstTrackVector(int Caller)
         {
             TPrefDirElement PE = PrefDirVector.at(x);
             if(PE.TrackVectorPosition != VecPos)
+            {
                 DiscrepancyFound = true;
+            }
             if((PE.GetELinkPos() < 0) || (PE.GetELinkPos() > 3))
             {
                 DiscrepancyFound = true;
@@ -11908,7 +12754,9 @@ void TOnePrefDir::CheckPrefDirAgainstTrackVector(int Caller)
             }
         }
         else
+        {
             DiscrepancyFound = true;
+        }
     }
     if(DiscrepancyFound)
     {
@@ -11937,7 +12785,9 @@ bool TOnePrefDir::CheckPrefDirAgainstTrackVectorNoMessage(int Caller)
         {
             TPrefDirElement PE = PrefDirVector.at(x);
             if(PE.TrackVectorPosition != VecPos)
+            {
                 DiscrepancyFound = true;
+            }
             if((PE.GetELinkPos() < 0) || (PE.GetELinkPos() > 3))
             {
                 DiscrepancyFound = true;
@@ -11960,10 +12810,12 @@ bool TOnePrefDir::CheckPrefDirAgainstTrackVectorNoMessage(int Caller)
             }
         }
         else
+        {
             DiscrepancyFound = true;
+        }
     }
     Utilities->CallLogPop(1512);
-    return !DiscrepancyFound;
+    return(!DiscrepancyFound);
 }
 
 // ---------------------------------------------------------------------------
@@ -11985,19 +12837,19 @@ void TOnePrefDir::CheckPrefDir4MultiMap(int Caller) // test
         if(!FoundFlag)
         {
             throw Exception("CheckPrefDir4MultiMap Error - failed to find HLoc=" + (AnsiString)CheckElement.HLoc + " VLoc=" + (AnsiString)CheckElement.VLoc +
-                " in PrefDir4MultiMap, Caller=" + (AnsiString)Caller);
+                            " in PrefDir4MultiMap, Caller=" + (AnsiString)Caller);
         }
         if((PrefDir0 != (int)a) && (PrefDir1 != (int)a) && (PrefDir2 != (int)a) && (PrefDir3 != (int)a))
         {
             throw Exception("CheckPrefDir4MultiMap Error - MapVectorPosition failed at HLoc=" + (AnsiString)CheckElement.HLoc + " VLoc=" +
-                (AnsiString)CheckElement.VLoc + " Map values=" + (AnsiString)PrefDir0 + ", " + (AnsiString)PrefDir1 + ", " + (AnsiString)PrefDir2 + ", " +
-                (AnsiString)PrefDir3 + " PrefDirVectorPos value=" + (AnsiString)a + " Caller=" + (AnsiString)Caller);
+                            (AnsiString)CheckElement.VLoc + " Map values=" + (AnsiString)PrefDir0 + ", " + (AnsiString)PrefDir1 + ", " + (AnsiString)PrefDir2 + ", " +
+                            (AnsiString)PrefDir3 + " PrefDirVectorPos value=" + (AnsiString)a + " Caller=" + (AnsiString)Caller);
         }
     }
     if(PrefDirVector.size() != PrefDir4MultiMap.size())
     {
         throw Exception("CheckPrefDir4MultiMap Error - Map Size=" + (AnsiString)PrefDirVector.size() + " PrefDirVectorSize=" + (AnsiString)PrefDirVector.size()
-            + " Caller=" + (AnsiString)Caller);
+                        + " Caller=" + (AnsiString)Caller);
     }
     Utilities->CallLogPop(180);
 }
@@ -12005,7 +12857,7 @@ void TOnePrefDir::CheckPrefDir4MultiMap(int Caller) // test
 // ---------------------------------------------------------------------------
 
 void TOnePrefDir::GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, int VLoc, bool &FoundFlag, int &PrefDirPos0, int &PrefDirPos1, int &PrefDirPos2,
-    int &PrefDirPos3)
+                                                         int &PrefDirPos3)
 /*
       There are up to four elements at each H & V position in the PrefDirVector - two directions, and up to
       two tracks for 4-entry elements.  This function retrieves all elements that are present at a give H & V
@@ -12015,7 +12867,7 @@ void TOnePrefDir::GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, i
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetVectorPositionsFromPrefDir4MultiMap," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
     THVPair PrefDirMapKeyPair;
 
     PrefDirPos0 = -1;
@@ -12044,7 +12896,9 @@ void TOnePrefDir::GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, i
             return;
         }
         if(((ItPair.first->first).first == HLoc) && ((ItPair.first->first).second == VLoc))
+        {
             PrefDirPos1 = ItPair.first->second;
+        }
         ItPair.first++;
         if(ItPair.first == ItPair.second)
         {
@@ -12052,7 +12906,9 @@ void TOnePrefDir::GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, i
             return;
         }
         if(((ItPair.first->first).first == HLoc) && ((ItPair.first->first).second == VLoc))
+        {
             PrefDirPos2 = ItPair.first->second;
+        }
         ItPair.first++;
         if(ItPair.first == ItPair.second)
         {
@@ -12060,7 +12916,9 @@ void TOnePrefDir::GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, i
             return;
         }
         if(((ItPair.first->first).first == HLoc) && ((ItPair.first->first).second == VLoc))
+        {
             PrefDirPos3 = ItPair.first->second;
+        }
     }
     Utilities->CallLogPop(185);
 }
@@ -12121,13 +12979,15 @@ void TOnePrefDir::DecrementPrefDirElementNumbersInPrefDir4MultiMap(int Caller, u
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DecrementPrefDirElementNumbersInPrefDir4MultiMap," +
-        AnsiString(ErasedElementNumber));
+                                 AnsiString(ErasedElementNumber));
     if(!PrefDir4MultiMap.empty())
     {
         for(TPrefDir4MultiMapIterator MapPtr = PrefDir4MultiMap.begin(); MapPtr != PrefDir4MultiMap.end(); MapPtr++)
         {
             if(MapPtr->second > ErasedElementNumber)
+            {
                 MapPtr->second--;
+            }
         }
     }
     Utilities->CallLogPop(1450);
@@ -12159,7 +13019,7 @@ TOnePrefDir::TPrefDir4MultiMapIterator TOnePrefDir::GetExactMatchFrom4MultiMap(i
     if(ItPair.first == ItPair.second)
     {
         Utilities->CallLogPop(188);
-        return ItPair.first; // nothing found but have to return an iterator, FoundFlag indicates nothing found
+        return(ItPair.first); // nothing found but have to return an iterator, FoundFlag indicates nothing found
     }
     else
     {
@@ -12167,47 +13027,47 @@ TOnePrefDir::TPrefDir4MultiMapIterator TOnePrefDir::GetExactMatchFrom4MultiMap(i
         {
             FoundFlag = true;
             Utilities->CallLogPop(189);
-            return ItPair.first;
+            return(ItPair.first);
         }
         ItPair.first++;
         if(ItPair.first == ItPair.second)
         {
             Utilities->CallLogPop(190);
-            return ItPair.first; // nothing found
+            return(ItPair.first); // nothing found
         }
         if(ItPair.first->second == PrefDirVectorPosition)
         {
             FoundFlag = true;
             Utilities->CallLogPop(191);
-            return ItPair.first;
+            return(ItPair.first);
         }
         ItPair.first++;
         if(ItPair.first == ItPair.second)
         {
             Utilities->CallLogPop(192);
-            return ItPair.first; // nothing found
+            return(ItPair.first); // nothing found
         }
         if(ItPair.first->second == PrefDirVectorPosition)
         {
             FoundFlag = true;
             Utilities->CallLogPop(193);
-            return ItPair.first;
+            return(ItPair.first);
         }
         ItPair.first++;
         if(ItPair.first == ItPair.second)
         {
             Utilities->CallLogPop(194);
-            return ItPair.first; // nothing found
+            return(ItPair.first); // nothing found
         }
         if(ItPair.first->second == PrefDirVectorPosition)
         {
             FoundFlag = true;
             Utilities->CallLogPop(195);
-            return ItPair.first;
+            return(ItPair.first);
         }
     }
     Utilities->CallLogPop(196);
-    return ItPair.first; // nothing found
+    return(ItPair.first); // nothing found
 }
 
 // ---------------------------------------------------------------------------
@@ -12230,12 +13090,12 @@ int TOnePrefDir::GetOnePrefDirPosition(int Caller, int HLoc, int VLoc)
     if(ItPair.first == ItPair.second) // nothing found
     {
         Utilities->CallLogPop(197);
-        return -1;
+        return(-1);
     }
     else
     {
         Utilities->CallLogPop(198);
-        return ItPair.first->second;
+        return(ItPair.first->second);
     }
 }
 
@@ -12324,7 +13184,6 @@ void TOnePrefDir::CalcDistanceAndSpeed(int Caller, int &OverallDistance, int &Ov
         Utilities->CallLogPop(1491);
         return;
     }
-
     if((LastElementPtr(21)->TrackType == Points) && (LastElementPtr(22)->ELinkPos != 1) && (LastElementPtr(23)->ELinkPos != 3))
     {
         LeadingPointsAtLastElement = true;
@@ -12384,7 +13243,6 @@ void TOnePrefDir::WritePrefDirToImage(int Caller, Graphics::TBitmap *Bitmap)
         Utilities->CallLogPop(1564);
         return;
     }
-
     int H, V, HLoc, VLoc, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3;
     bool FoundFlag;
     TPrefDir4MultiMapIterator MMIT = PrefDir4MultiMap.begin();
@@ -12399,15 +13257,24 @@ void TOnePrefDir::WritePrefDirToImage(int Caller, Graphics::TBitmap *Bitmap)
         V = VLoc - Track->GetVLocMin();
         // always found in order, any missing have PrefDirPosx == -1
         if(PrefDirPos0 > -1)
+        {
             PrefDirElement0 = GetFixedPrefDirElementAt(174, PrefDirPos0); // PrefDirPos0 should always be > -1 but leave as a precaution
+        }
         if(PrefDirPos1 > -1)
+        {
             PrefDirElement1 = GetFixedPrefDirElementAt(175, PrefDirPos1);
+        }
         if(PrefDirPos2 > -1)
+        {
             PrefDirElement2 = GetFixedPrefDirElementAt(176, PrefDirPos2);
+        }
         if(PrefDirPos3 > -1)
+        {
             PrefDirElement3 = GetFixedPrefDirElementAt(177, PrefDirPos3);
+        }
         if(PrefDirPos3 > -1) // 4 found, mark all PrefDirs bidirectional (operator == ensures no duplicates in ConsolidatePrefDirs)
-        { // need to plot all 4 in order to obtain all the direction graphics
+        {
+            // need to plot all 4 in order to obtain all the direction graphics
             Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement0.GetRouteGraphicPtr(false, true)); // green
             Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement0.GetDirectionRouteGraphicPtr(false, true)); // green
             Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement1.GetRouteGraphicPtr(false, true)); // green
@@ -12424,7 +13291,8 @@ void TOnePrefDir::WritePrefDirToImage(int Caller, Graphics::TBitmap *Bitmap)
         else if(PrefDirPos2 > -1) // 3 found, one PrefDir bidirectional & other unidirectional
         {
             if(PrefDirElement0.EXNumber == PrefDirElement1.EXNumber)
-            { // 0 & 1 constitute the bidirectional PrefDir
+            {
+                // 0 & 1 constitute the bidirectional PrefDir
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement0.GetRouteGraphicPtr(false, true)); // green
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement0.GetDirectionRouteGraphicPtr(false, true)); // green
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement1.GetRouteGraphicPtr(false, true)); // green
@@ -12436,7 +13304,8 @@ void TOnePrefDir::WritePrefDirToImage(int Caller, Graphics::TBitmap *Bitmap)
                 MMIT++;
             }
             else if(PrefDirElement0.EXNumber == PrefDirElement2.EXNumber)
-            { // 0 & 2 constitute the bidirectional PrefDir
+            {
+                // 0 & 2 constitute the bidirectional PrefDir
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement0.GetRouteGraphicPtr(false, true)); // green
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement0.GetDirectionRouteGraphicPtr(false, true)); // green
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement2.GetRouteGraphicPtr(false, true)); // green
@@ -12448,7 +13317,8 @@ void TOnePrefDir::WritePrefDirToImage(int Caller, Graphics::TBitmap *Bitmap)
                 MMIT++;
             }
             else
-            { // 1 & 2 constitute the bidirectional PrefDir
+            {
+                // 1 & 2 constitute the bidirectional PrefDir
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement1.GetRouteGraphicPtr(false, true)); // green
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement1.GetDirectionRouteGraphicPtr(false, true)); // green
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement2.GetRouteGraphicPtr(false, true)); // green
@@ -12463,7 +13333,8 @@ void TOnePrefDir::WritePrefDirToImage(int Caller, Graphics::TBitmap *Bitmap)
         else if(PrefDirPos1 > -1) // 2 found, either 1 bidirectional or 2 unidirectional
         {
             if(PrefDirElement0.EXNumber == PrefDirElement1.EXNumber)
-            { // 0 & 1 constitute the bidirectional PrefDir
+            {
+                // 0 & 1 constitute the bidirectional PrefDir
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement0.GetRouteGraphicPtr(false, true)); // green
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement0.GetDirectionRouteGraphicPtr(false, true)); // green
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement1.GetRouteGraphicPtr(false, true)); // green
@@ -12472,7 +13343,8 @@ void TOnePrefDir::WritePrefDirToImage(int Caller, Graphics::TBitmap *Bitmap)
                 MMIT++;
             }
             else
-            { // 2 unidirectional PrefDirs
+            {
+                // 2 unidirectional PrefDirs
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement0.GetRouteGraphicPtr(false, false)); // red
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement0.GetDirectionRouteGraphicPtr(false, false)); // red
                 Bitmap->Canvas->Draw((H * 16), (V * 16), PrefDirElement1.GetRouteGraphicPtr(false, false)); // red
@@ -12506,49 +13378,56 @@ bool TOnePrefDir::PresetAutoRouteElementValid(int Caller, TPrefDirElement Elemen
     TPrefDirElement PrefDirElement0, PrefDirElement1, PrefDirElement2, PrefDirElement3;
 
     if((ElementIn.TrackType == Points) || (ElementIn.TrackType == Crossover) || (ElementIn.TrackType == Buffers) || (Track->IsLCAtHV(49, ElementIn.HLoc,
-        ElementIn.VLoc)))
+                                                                                                                                     ElementIn.VLoc)))
     {
         Utilities->CallLogPop(1982);
-        return false;
+        return(false);
     }
     if((ElementIn.TrackType == SignalPost) && (ElementIn.Config[EntryPos] == Signal)) // Signal is at exit end
     {
         Utilities->CallLogPop(1983);
-        return false;
+        return(false);
     }
     if((ElementIn.TrackType == SignalPost) && (ElementIn.SigAspect == TTrackElement::GroundSignal))
     {
         Utilities->CallLogPop(1995);
-        return false;
+        return(false);
     }
 // Now check that there is only a single prefdir set
     GetVectorPositionsFromPrefDir4MultiMap(8, ElementIn.HLoc, ElementIn.VLoc, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
 // always found in order, any missing have PrefDirPosx == -1
     if(PrefDirPos0 > -1)
+    {
         PrefDirElement0 = GetFixedPrefDirElementAt(213, PrefDirPos0); // PrefDirPos0 should always be > -1 but leave as a precaution
+    }
     if(PrefDirPos1 > -1)
+    {
         PrefDirElement1 = GetFixedPrefDirElementAt(214, PrefDirPos1);
+    }
     if(PrefDirPos2 > -1)
+    {
         PrefDirElement2 = GetFixedPrefDirElementAt(215, PrefDirPos2);
+    }
     if(PrefDirPos3 > -1)
+    {
         PrefDirElement3 = GetFixedPrefDirElementAt(216, PrefDirPos3);
-
+    }
     if(PrefDirPos3 > -1) // 4 found, all bidirectional
     {
         Utilities->CallLogPop(1984);
-        return false;
+        return(false);
     }
     else if(PrefDirPos2 > -1) // 3 found, one PrefDir bidirectional & other unidirectional
     {
         if((PrefDirElement0.XLinkPos == EntryPos) || (PrefDirElement1.XLinkPos == EntryPos) || (PrefDirElement2.XLinkPos == EntryPos))
         {
             Utilities->CallLogPop(1985);
-            return false;
+            return(false);
         }
         else
         {
             Utilities->CallLogPop(1986);
-            return true;
+            return(true);
         }
     }
     else if(PrefDirPos1 > -1) // 2 found, either 1 bidirectional or 2 unidirectional
@@ -12556,12 +13435,12 @@ bool TOnePrefDir::PresetAutoRouteElementValid(int Caller, TPrefDirElement Elemen
         if((PrefDirElement0.XLinkPos == EntryPos) || (PrefDirElement1.XLinkPos == EntryPos))
         {
             Utilities->CallLogPop(1987);
-            return false;
+            return(false);
         }
         else
         {
             Utilities->CallLogPop(1988);
-            return true;
+            return(true);
         }
     }
     else if(PrefDirPos0 > -1) // one found, make sure in correct direction
@@ -12569,18 +13448,18 @@ bool TOnePrefDir::PresetAutoRouteElementValid(int Caller, TPrefDirElement Elemen
         if(PrefDirElement0.XLinkPos == EntryPos)
         {
             Utilities->CallLogPop(1989);
-            return false;
+            return(false);
         }
         else
         {
             Utilities->CallLogPop(1990);
-            return true;
+            return(true);
         }
     }
     else
     {
         Utilities->CallLogPop(1991);
-        return false; // none found
+        return(false); // none found
     }
 }
 
@@ -12603,7 +13482,7 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
       for XLink = 9, potentially fouled diagonals are at H+1, V, Lk 7 & H, V+1 Lk 3
 */
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PresetAutoRouteDiagonalFouledByTrack," + ElementIn.HLoc + "," +
-        ElementIn.VLoc + "," + XLink);
+                                 ElementIn.VLoc + "," + XLink);
     int TrackVecPos;
     bool TrackFoundFlag;
     TTrackElement TempTrackElement;
@@ -12611,9 +13490,8 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
     if((XLink == 2) || (XLink == 4) || (XLink == 6) || (XLink == 8))
     {
         Utilities->CallLogPop(2047);
-        return false;
+        return(false);
     }
-
 // for XLink = 1, potentially fouled diagonals are at H-1, V, Lk 3 & H, V-1, Lk 7
     if(XLink == 1)
     {
@@ -12624,7 +13502,7 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
             if((TempTrackElement.Link[0] == 3) || (TempTrackElement.Link[1] == 3) || (TempTrackElement.Link[2] == 3) || (TempTrackElement.Link[3] == 3))
             {
                 Utilities->CallLogPop(2048);
-                return true;
+                return(true);
             }
         }
         TrackVecPos = Track->GetVectorPositionFromTrackMap(49, ElementIn.HLoc, ElementIn.VLoc - 1, TrackFoundFlag);
@@ -12634,11 +13512,10 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
             if((TempTrackElement.Link[0] == 7) || (TempTrackElement.Link[1] == 7) || (TempTrackElement.Link[2] == 7) || (TempTrackElement.Link[3] == 7))
             {
                 Utilities->CallLogPop(2049);
-                return true;
+                return(true);
             }
         }
     }
-
 // for XLink = 3, potentially fouled diagonals are at H+1, V, Lk 1 & H, V-1 Lk 9
     if(XLink == 3)
     {
@@ -12649,7 +13526,7 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
             if((TempTrackElement.Link[0] == 1) || (TempTrackElement.Link[1] == 1) || (TempTrackElement.Link[2] == 1) || (TempTrackElement.Link[3] == 1))
             {
                 Utilities->CallLogPop(2050);
-                return true;
+                return(true);
             }
         }
         TrackVecPos = Track->GetVectorPositionFromTrackMap(51, ElementIn.HLoc, ElementIn.VLoc - 1, TrackFoundFlag);
@@ -12659,11 +13536,10 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
             if((TempTrackElement.Link[0] == 9) || (TempTrackElement.Link[1] == 9) || (TempTrackElement.Link[2] == 9) || (TempTrackElement.Link[3] == 9))
             {
                 Utilities->CallLogPop(2051);
-                return true;
+                return(true);
             }
         }
     }
-
 // for XLink = 7, potentially fouled diagonals are at H-1, V, Lk 9 & H, V+1 Lk 1
     if(XLink == 7)
     {
@@ -12674,7 +13550,7 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
             if((TempTrackElement.Link[0] == 9) || (TempTrackElement.Link[1] == 9) || (TempTrackElement.Link[2] == 9) || (TempTrackElement.Link[3] == 9))
             {
                 Utilities->CallLogPop(2052);
-                return true;
+                return(true);
             }
         }
         TrackVecPos = Track->GetVectorPositionFromTrackMap(53, ElementIn.HLoc, ElementIn.VLoc + 1, TrackFoundFlag);
@@ -12684,11 +13560,10 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
             if((TempTrackElement.Link[0] == 1) || (TempTrackElement.Link[1] == 1) || (TempTrackElement.Link[2] == 1) || (TempTrackElement.Link[3] == 1))
             {
                 Utilities->CallLogPop(2053);
-                return true;
+                return(true);
             }
         }
     }
-
 // for XLink = 9, potentially fouled diagonals are at H+1, V, Lk 7 & H, V+1 Lk 3
     if(XLink == 9)
     {
@@ -12699,7 +13574,7 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
             if((TempTrackElement.Link[0] == 7) || (TempTrackElement.Link[1] == 7) || (TempTrackElement.Link[2] == 7) || (TempTrackElement.Link[3] == 7))
             {
                 Utilities->CallLogPop(2054);
-                return true;
+                return(true);
             }
         }
         TrackVecPos = Track->GetVectorPositionFromTrackMap(55, ElementIn.HLoc, ElementIn.VLoc + 1, TrackFoundFlag);
@@ -12709,12 +13584,12 @@ bool TOnePrefDir::PresetAutoRouteDiagonalFouledByTrack(int Caller, TPrefDirEleme
             if((TempTrackElement.Link[0] == 3) || (TempTrackElement.Link[1] == 3) || (TempTrackElement.Link[2] == 3) || (TempTrackElement.Link[3] == 3))
             {
                 Utilities->CallLogPop(2055);
-                return true;
+                return(true);
             }
         }
     }
     Utilities->CallLogPop(2056);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -12738,9 +13613,13 @@ bool TOnePrefDir::GetStartAndEndPrefDirElements(int Caller, TPrefDirElement &Sta
         LastIteratorValue++;
         ContFlag = false;
         if((PDVIt->TrackType != SignalPost) && (PDVIt->TrackType != Continuation))
+        {
             continue;
+        }
         if((PDVIt->TrackType == SignalPost) && (PDVIt->SigAspect == TTrackElement::GroundSignal))
+        {
             continue;
+        }
 // if(AllRoutes::TrackIsInARoute(, PDVIt->TrackVectorPosition, PDVIt->EntryPos) continue; //already in a route - no, don't check start position as if a signal might well be at end of an existing route
         // found a potential route start point
         if(PresetAutoRouteDiagonalFouledByTrack(0, *PDVIt, PDVIt->XLink)) // Added at v2.1.0
@@ -12763,7 +13642,7 @@ bool TOnePrefDir::GetStartAndEndPrefDirElements(int Caller, TPrefDirElement &Sta
             }
             StartElement = *PDVIt;
 // in Glenn Mitchell's error log (14/04/13) the offending signal start position was 4680, problem was it linked to a point with pref dirs set on through track but signal linked to
-                                   // diverging track on which there was no pref dir.  See below for 2 required changes.
+            // diverging track on which there was no pref dir.  See below for 2 required changes.
         }
         else
         {
@@ -12772,7 +13651,7 @@ bool TOnePrefDir::GetStartAndEndPrefDirElements(int Caller, TPrefDirElement &Sta
         // now track along until find a signal or continuation, checking validity for each element
         int NextTrackVectorPosition = PDVIt->Conn[PDVIt->GetXLinkPos()];
         GetVectorPositionsFromPrefDir4MultiMap(9, Track->TrackElementAt(878, NextTrackVectorPosition).HLoc,
-            Track->TrackElementAt(879, NextTrackVectorPosition).VLoc, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
+                                               Track->TrackElementAt(879, NextTrackVectorPosition).VLoc, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
         if(PrefDirPos0 == -1) // no continuing prefdir
         {
             continue;
@@ -12835,7 +13714,7 @@ bool TOnePrefDir::GetStartAndEndPrefDirElements(int Caller, TPrefDirElement &Sta
                 }
             }
             if((NextElement.TrackType == SignalPost) || (NextElement.TrackType == Continuation))
-    // can't be a gound signal as would have failed the validity test
+            // can't be a gound signal as would have failed the validity test
             {
                 EndElement = NextElement;
                 break;
@@ -12843,7 +13722,7 @@ bool TOnePrefDir::GetStartAndEndPrefDirElements(int Caller, TPrefDirElement &Sta
             // get the next element in the sequence
             NextTrackVectorPosition = NextElement.Conn[NextElement.GetXLinkPos()];
             GetVectorPositionsFromPrefDir4MultiMap(10, Track->TrackElementAt(880, NextTrackVectorPosition).HLoc,
-                Track->TrackElementAt(881, NextTrackVectorPosition).VLoc, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
+                                                   Track->TrackElementAt(881, NextTrackVectorPosition).VLoc, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
             if(PrefDirPos0 == -1) // no continuing prefdir
             {
                 ContFlag = true;
@@ -12897,7 +13776,9 @@ bool TOnePrefDir::GetStartAndEndPrefDirElements(int Caller, TPrefDirElement &Sta
             }
         }
         if(ContFlag)
+        {
             continue;
+        }
         // else have start and end elements set & all elements valid, so set up the route segment
         FoundElements = true;
         break;
@@ -12905,12 +13786,12 @@ bool TOnePrefDir::GetStartAndEndPrefDirElements(int Caller, TPrefDirElement &Sta
     if(FoundElements)
     {
         Utilities->CallLogPop(1992);
-        return true;
+        return(true);
     }
     else
     {
         Utilities->CallLogPop(1993);
-        return false;
+        return(false);
     }
 }
 
@@ -12933,7 +13814,7 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
       ConvertAndAdd.......
 */
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetPreferredRouteStartElement," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc) + "," + AnsiString((short)AutoSigsFlag));
+                                 AnsiString(VLoc) + "," + AnsiString((short)AutoSigsFlag));
     ClearRoute();
     int TrackVectorPosition;
     TTrackElement TrackElement;
@@ -12942,36 +13823,33 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
     if(!(Track->FindNonPlatformMatch(7, HLoc, VLoc, TrackVectorPosition, TrackElement)))
     {
         Utilities->CallLogPop(199);
-        return false;
+        return(false);
     }
     if(AutoSigsFlag && (TrackElement.TrackType == Buffers)) // added at v1.2.0
     {
         TrainController->StopTTClockMessage(80, "Can't create an automatic signal route from buffers");
         Utilities->CallLogPop(1996);
-        return false;
+        return(false);
     }
     else if((TrackElement.TrackType != SignalPost) && (TrackElement.TrackType != Buffers) && (TrackElement.TrackType != Continuation))
     {
         TrainController->StopTTClockMessage(7, "Must select a valid signal, buffers or continuation");
         Utilities->CallLogPop(200);
-        return false;
+        return(false);
     }
-
     if(Track->IsLCAtHV(18, HLoc, VLoc))
     {
         TrainController->StopTTClockMessage(73, "Can't start a route on a level crossing");
         Utilities->CallLogPop(1909);
-        return false;
+        return(false);
     }
-
 // check if selected a train & disallow if so
     if(TrackElement.TrainIDOnElement > -1)
     {
         TrainController->StopTTClockMessage(9, "Can't start a route on a train");
         Utilities->CallLogPop(202);
-        return false;
+        return(false);
     }
-
 // check if selected a locked route element & disallow (can only be a 2-track element so only need check XLinkPos values of 0 & 1
     TPrefDirElement PrefDirElement;
     int LockedVectorNumber;
@@ -12980,15 +13858,14 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
     {
         TrainController->StopTTClockMessage(10, "Can't start a route on a locked route");
         Utilities->CallLogPop(203);
-        return false;
+        return(false);
     }
     if(AllRoutes->IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(2, TrackVectorPosition, 1, PrefDirElement, LockedVectorNumber))
     {
         TrainController->StopTTClockMessage(11, "Can't start a route on a locked route");
         Utilities->CallLogPop(204);
-        return false;
+        return(false);
     }
-
     StartSelectionRouteID = IDInt(-1);
     StartRoutePosition = TrackVectorPosition; // actual route start - may be element following StartRouteSelectPosition if select a
 // signal in an autosig route & follow with a non-autosig route
@@ -13007,9 +13884,11 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
     int PrefDirPos3 = -1;
 
     EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(3, Track->TrackElementAt(84, StartRoutePosition).HLoc,
-        Track->TrackElementAt(85, StartRoutePosition).VLoc, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
+                                                         Track->TrackElementAt(85, StartRoutePosition).VLoc, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
     int PrefDirVecPos[4] =
-    {PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3};
+    {
+        PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3
+    };
 
     for(int x = 0; x < 4; x++)
     {
@@ -13018,10 +13897,10 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
         {
             // only allow the appropriate exit route to be searched
             if(((TrackElement.TrackType == SignalPost) && (EveryPrefDir->GetFixedPrefDirElementAt(15, b).Config[EveryPrefDir->GetFixedPrefDirElementAt(16,
-                b).XLinkPos] == Signal)) || ((TrackElement.TrackType == Buffers) && (EveryPrefDir->GetFixedPrefDirElementAt(17,
-                b).Config[EveryPrefDir->GetFixedPrefDirElementAt(18, b).XLinkPos] == Connection)) ||
-                ((TrackElement.TrackType == Continuation) && (EveryPrefDir->GetFixedPrefDirElementAt(19,
-                b).Config[EveryPrefDir->GetFixedPrefDirElementAt(20, b).XLinkPos] == Connection)))
+                                                                                                                                                       b).XLinkPos] == Signal)) || ((TrackElement.TrackType == Buffers) && (EveryPrefDir->GetFixedPrefDirElementAt(17,
+                                                                                                                                                                                                                                                                   b).Config[EveryPrefDir->GetFixedPrefDirElementAt(18, b).XLinkPos] == Connection)) ||
+               ((TrackElement.TrackType == Continuation) && (EveryPrefDir->GetFixedPrefDirElementAt(19,
+                                                                                                    b).Config[EveryPrefDir->GetFixedPrefDirElementAt(20, b).XLinkPos] == Connection)))
             {
                 InPrefDirFlag = true;
                 StartElement1 = EveryPrefDir->GetFixedPrefDirElementAt(21, b);
@@ -13037,11 +13916,10 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
     if(!InPrefDirFlag)
     {
         TrainController->StopTTClockMessage(12,
-            "Route and preferred direction mismatch. If no preferred direction then only red routes can be used. Green and blue route directions must correspond to the preferred direction.");
+                                            "Route and preferred direction mismatch. If no preferred direction then only red routes can be used. Green and blue route directions must correspond to the preferred direction.");
         Utilities->CallLogPop(205);
-        return false;
+        return(false);
     }
-
 // look for exact match in a route first - can't be a bridge so can use a simple 'find'
     TAllRoutes::TRouteElementPair DummyPair;
     TAllRoutes::TRouteElementPair RoutePair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(14, TrackElement.HLoc, TrackElement.VLoc, DummyPair);
@@ -13050,33 +13928,32 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
     {
         throw Exception("Selection in two routes - should never happen!");
     }
-
     if(RoutePair.first > -1) // no need to examine DummyPair as start element can only be in one route (bridges not allowed)
     {
         if(RoutePair.second != AllRoutes->GetFixedRouteAt(1, RoutePair.first).PrefDirSize() - 1) // not last element in existing route so no good
         {
             TrainController->StopTTClockMessage(13, "Can't start a route within or at the start of an existing route");
             Utilities->CallLogPop(206);
-            return false;
+            return(false);
         }
         TPrefDirElement RouteElement = AllRoutes->GetFixedRouteAt(2, RoutePair.first).GetFixedPrefDirElementAt(29, RoutePair.second);
         if(RouteElement.Conn[RouteElement.XLinkPos] < 0) // last element in existing route but nowhere to go!
         {
             TrainController->StopTTClockMessage(14, "No forward connection from this position");
             Utilities->CallLogPop(207);
-            return false;
+            return(false);
         }
         if((RouteElement.Config[RouteElement.XLinkPos] != End) && (AllRoutes->TrackIsInARoute(9, RouteElement.Conn[RouteElement.XLinkPos],
-            RouteElement.ConnLinkPos[RouteElement.XLinkPos])))
+                                                                                              RouteElement.ConnLinkPos[RouteElement.XLinkPos])))
         // last element in existing route but that route linked to another route (or a non-bridge 2-track element containing a route) so no good
         {
             TrainController->StopTTClockMessage(15, "Can't start a route at an element that links forward into an existing route");
             Utilities->CallLogPop(208);
-            return false;
+            return(false);
         }
         StartSelectionRouteID = IDInt(AllRoutes->GetFixedRouteAt(158, RoutePair.first).RouteID);
         StartElement1 = AllRoutes->GetFixedRouteAt(3, RoutePair.first).GetFixedPrefDirElementAt(30,
-            AllRoutes->GetFixedRouteAt(4, RoutePair.first).PrefDirSize() - 1); // last element
+                                                                                                AllRoutes->GetFixedRouteAt(4, RoutePair.first).PrefDirSize() - 1); // last element
         if(AutoSigsFlag)
         {
             StartElement1.AutoSignals = true;
@@ -13084,7 +13961,7 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
         StartElement1.PrefDirRoute = true;
         StartRoutePosition = StartElement1.TrackVectorPosition;
         Utilities->CallLogPop(209);
-        return true; // all retained values (StartElement1 & maybe 2; StartRoutePosition) set
+        return(true); // all retained values (StartElement1 & maybe 2; StartRoutePosition) set
     }
 
     else // no route started
@@ -13097,13 +13974,13 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
             {
                 TrainController->StopTTClockMessage(16, "Can't make selection adjacent to start of another route");
                 Utilities->CallLogPop(210);
-                return false;
+                return(false);
             }
             if((StartElement1.Conn[1] > -1) && (StartElement1.Conn[1] == FirstElement.TrackVectorPosition))
             {
                 TrainController->StopTTClockMessage(17, "Can't make selection adjacent to start of another route");
                 Utilities->CallLogPop(211);
-                return false;
+                return(false);
             }
         }
 
@@ -13115,19 +13992,19 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
             {
                 TrainController->StopTTClockMessage(18, "Can't start a route adjacent to the end of an existing route");
                 Utilities->CallLogPop(212);
-                return false;
+                return(false);
             }
         }
         SearchVector.push_back(StartElement1);
         Utilities->CallLogPop(213);
-        return true;
+        return(true);
     }
 }
 
 // ---------------------------------------------------------------------------
 
 bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOnePrefDir *EveryPrefDir, bool ConsecSignals, bool AutoSigsFlag,
-    IDInt &ReqPosRouteID, bool &PointsChanged)
+                                             IDInt &ReqPosRouteID, bool &PointsChanged)
 
 /*
       Return true if select valid next element, in which case the route is set & stored in SearchVector.  Return false for an invalid next element.
@@ -13161,7 +14038,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
 
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetNextPreferredRouteElement," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc) + "," + AnsiString((short)ConsecSignals) + "," + AnsiString((short)AutoSigsFlag));
+                                 AnsiString(VLoc) + "," + AnsiString((short)ConsecSignals) + "," + AnsiString((short)AutoSigsFlag));
     int EndPosition; // the position selected
 
     Track->LCFoundInAutoSigsRoute = false;
@@ -13174,21 +14051,19 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
     if(!(Track->FindNonPlatformMatch(8, HLoc, VLoc, EndPosition, TrackElement))) // return if can't find one
     {
         Utilities->CallLogPop(214);
-        return false;
+        return(false);
     }
-
     if(Track->IsLCAtHV(19, HLoc, VLoc))
     {
         TrainController->StopTTClockMessage(72, "Can't end a route on a level crossing");
         Utilities->CallLogPop(1908);
-        return false;
+        return(false);
     }
-
 // cancel selection if on original start element
     if(EndPosition == StartRoutePosition)
     {
         Utilities->CallLogPop(215);
-        return false;
+        return(false);
     }
     if(AutoSigsFlag)
     {
@@ -13196,24 +14071,22 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         {
             TrainController->StopTTClockMessage(19, "Can't create an automatic signal route into buffers");
             Utilities->CallLogPop(216);
-            return false;
+            return(false);
         }
     }
     if((TrackElement.TrackType != SignalPost) && (TrackElement.TrackType != Buffers) && (TrackElement.TrackType != Continuation))
     {
         TrainController->StopTTClockMessage(20, "Must select a valid signal, buffers or continuation");
         Utilities->CallLogPop(217);
-        return false;
+        return(false);
     }
-
 // check if train on element
     if(TrackElement.TrainIDOnElement > -1)
     {
         TrainController->StopTTClockMessage(22, "Can't end a route on a train");
         Utilities->CallLogPop(219);
-        return false;
+        return(false);
     }
-
 // disallow if not in EveryPrefDir & set EndElement(s)
     bool InPrefDirFlag = false;
 
@@ -13224,9 +14097,11 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
     int PrefDirPos3 = -1;
 
     EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(4, Track->TrackElementAt(86, EndPosition).HLoc, Track->TrackElementAt(87, EndPosition).VLoc, FoundFlag,
-        PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
+                                                         PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
     int PrefDirVecPos[4] =
-    {PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3};
+    {
+        PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3
+    };
 
     for(int x = 0; x < 4; x++)
     {
@@ -13235,19 +14110,22 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         {
             InPrefDirFlag = true;
             if(EndElement1.TrackVectorPosition == -1)
+            {
                 EndElement1 = EveryPrefDir->GetFixedPrefDirElementAt(33, b);
+            }
             else
+            {
                 EndElement2 = EveryPrefDir->GetFixedPrefDirElementAt(34, b);
+            }
         }
     }
     if(!InPrefDirFlag)
     {
         TrainController->StopTTClockMessage(23,
-            "Route and preferred direction mismatch. If no preferred direction then only red routes can be used. Green and blue route directions must correspond to the preferred direction.");
+                                            "Route and preferred direction mismatch. If no preferred direction then only red routes can be used. Green and blue route directions must correspond to the preferred direction.");
         Utilities->CallLogPop(220);
-        return false;
+        return(false);
     }
-
 // check if in an existing route - can't be a bridge so can use a simple 'find'
 // bool InRoute = false;
     TAllRoutes::TRouteElementPair DummyPair;
@@ -13259,25 +14137,24 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         {
             TrainController->StopTTClockMessage(24, "Can't end a route within or at the end of an existing route");
             Utilities->CallLogPop(221);
-            return false;
+            return(false);
         }
         TPrefDirElement RouteElement = AllRoutes->GetFixedRouteAt(8, RoutePair.first).GetFixedPrefDirElementAt(35, RoutePair.second);
 // if((RouteElement.Config[RouteElement.ELinkPos] != End) && (AllRoutes->TrackIsInARoute(, RouteElement.Conn[RouteElement.ELinkPos], RouteElement.ELinkPos)))
         if((RouteElement.Config[RouteElement.ELinkPos] != End) && (AllRoutes->TrackIsInARoute(10, RouteElement.Conn[RouteElement.ELinkPos],
-            RouteElement.ConnLinkPos[RouteElement.ELinkPos]))) // amended at v1.3.0 - had omitted ConnLinkPos - see above
+                                                                                              RouteElement.ConnLinkPos[RouteElement.ELinkPos]))) // amended at v1.3.0 - had omitted ConnLinkPos - see above
         // discovered when timetable building for Joshua Coupe's railway.  Also affects non-preferred routes - see below
         // first element in existing route but that route linked to another route (or a non-bridge 2-track element containing a route) so no good
         {
             TrainController->StopTTClockMessage(25, "Can't start a route within or at the end of an existing route");
             Utilities->CallLogPop(222);
-            return false;
+            return(false);
         }
         EndElement1 = RouteElement;
         EndElement2 = BlankElement; // only need the route element
         EndPosition = EndElement1.TrackVectorPosition;
         ReqPosRouteID = IDInt(AllRoutes->GetFixedRouteAt(160, RoutePair.first).RouteID);
     }
-
 // set the H&V limits for the search, all points on search path must lie within 15 elements greater than the box of which the line between
 // start and finish is a diagonal line [dropped as not a good strategy because gaps interfered with direct line searches - instead
 // introduced TotalSearchCount and now use that to limit searches. Leave in though in case rethink strategy later on]
@@ -13292,7 +14169,6 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         SearchLimitLowH = EndElement1.HLoc - 15;
         SearchLimitHighH = StartElement1.HLoc + 15;
     }
-
     if(EndElement1.VLoc >= StartElement1.VLoc)
     {
         SearchLimitLowV = StartElement1.VLoc - 15;
@@ -13320,31 +14196,30 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
 // if((EndElement1.Config[EndElement1.XLinkPos] != End) &&
 // (EndElement1.Conn[EndElement1.XLinkPos] == AdjPosition))
         if((EndElement1.Config[EndElement1.XLinkPos] != End) && (EndElement1.Conn[EndElement1.XLinkPos] == AdjPosition)
-            && // changed at v1.3.1 to allow a route end adjacent to an element with a route that doesn't link to the ending route
-            (EndElement1.ConnLinkPos[EndElement1.XLinkPos] == AdjLinkPos))
+           &&  // changed at v1.3.1 to allow a route end adjacent to an element with a route that doesn't link to the ending route
+           (EndElement1.ConnLinkPos[EndElement1.XLinkPos] == AdjLinkPos))
         {
             TrainController->StopTTClockMessage(26, "Can't end a route adjacent to the start of an existing route");
             Utilities->CallLogPop(223);
-            return false;
+            return(false);
         }
 // else if((EndElement2.TrackVectorPosition > -1) && (EndElement2.Config[EndElement2.XLinkPos] != End) &&
 // (EndElement2.Conn[EndElement2.XLinkPos] == AdjPosition))
         else if((EndElement2.TrackVectorPosition > -1) && (EndElement2.Config[EndElement2.XLinkPos] != End)
-            && // changed at v1.3.1 to allow a route end adjacent to an element with a route that doesn't link to the ending route
-            (EndElement2.Conn[EndElement2.XLinkPos] == AdjPosition) && (EndElement2.ConnLinkPos[EndElement2.XLinkPos] == AdjLinkPos))
+                && // changed at v1.3.1 to allow a route end adjacent to an element with a route that doesn't link to the ending route
+                (EndElement2.Conn[EndElement2.XLinkPos] == AdjPosition) && (EndElement2.ConnLinkPos[EndElement2.XLinkPos] == AdjLinkPos))
         {
             TrainController->StopTTClockMessage(27, "Can't end a route adjacent to the start of an existing route");
             Utilities->CallLogPop(224);
-            return false;
+            return(false);
         }
-
 // check if adjacent to end of a route & disallow
         TPrefDirElement EndOfRouteElement = AllRoutes->GetFixedRouteAt(10, a).GetFixedPrefDirElementAt(37, AllRoutes->GetFixedRouteAt(11, a).PrefDirSize() - 1);
         if((EndOfRouteElement.Config[EndOfRouteElement.XLinkPos] != End) && (EndOfRouteElement.Conn[EndOfRouteElement.XLinkPos] == EndPosition))
         {
             TrainController->StopTTClockMessage(28, "Can't end a route adjacent to the end of an existing route");
             Utilities->CallLogPop(225);
-            return false;
+            return(false);
         }
     }
 
@@ -13353,9 +14228,8 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
     {
         TrainController->StopTTClockMessage(29, "Can't select same route as started in");
         Utilities->CallLogPop(226);
-        return false;
+        return(false);
     }
-
 // check for a looping route
     if((ReqPosRouteID > -1) && (StartSelectionRouteID > -1))
     {
@@ -13363,17 +14237,16 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         {
             TrainController->StopTTClockMessage(69, "Can't create a route that loops back on itself");
             Utilities->CallLogPop(1844);
-            return false;
+            return(false);
         }
     }
-
 // if there's a StartSelectionRouteID StartElement1 will be set to the last entry in the selected route
 // so search from this element.  No need to add StartElement to the SearchVector since it already exists in a route
 // and don't want to add it again
     if(StartSelectionRouteID > -1)
     {
         if(SearchForPreferredRoute(0, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-            AutoSigsFlag))
+                                   AutoSigsFlag))
         {
             SetRouteSearchVectorGraphics(0, AutoSigsFlag, true); // change graphic colour to the route colour
             if(PointsToBeChanged(5))
@@ -13381,13 +14254,14 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
                 PointsChanged = true;
             }
             Utilities->CallLogPop(227);
-            return true;
+            return(true);
         }
         else if(!Track->SuppressRouteFailMessage)
-        {        //corrected at v2.7.0 - brackets were missed earlier so if SearchForPreferredRoute failed & else condition failed too then returned false with no message
+        {
+            //corrected at v2.7.0 - brackets were missed earlier so if SearchForPreferredRoute failed & else condition failed too then returned false with no message
             TrainController->StopTTClockMessage(30, Track->RouteFailMessage);
             Utilities->CallLogPop(228);
-            return false;
+            return(false);
         }
     }
     else
@@ -13400,7 +14274,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         if((StartElement1.XLinkPos > -1) && (StartElement1.Conn[StartElement1.XLinkPos] == EndPosition))
         {
             if(SearchForPreferredRoute(1, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                AutoSigsFlag))
+                                       AutoSigsFlag))
             {
                 SetRouteSearchVectorGraphics(1, AutoSigsFlag, true); // change graphic colour to the route colour
                 if(PointsToBeChanged(6))
@@ -13408,20 +14282,22 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(229);
-                return true;
+                return(true);
             }
             else
             {
                 if(!Track->SuppressRouteFailMessage)
+                {
                     TrainController->StopTTClockMessage(31, Track->RouteFailMessage);
+                }
                 Utilities->CallLogPop(230);
-                return false;
+                return(false);
             }
         }
         else if((StartElement2.XLinkPos > -1) && (StartElement2.Conn[StartElement2.XLinkPos] == EndPosition))
         {
             if(SearchForPreferredRoute(2, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                AutoSigsFlag))
+                                       AutoSigsFlag))
             {
                 SetRouteSearchVectorGraphics(2, AutoSigsFlag, true); // change graphic colour to the route colour
                 if(PointsToBeChanged(7))
@@ -13429,17 +14305,18 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(231);
-                return true;
+                return(true);
             }
             else
             {
                 if(!Track->SuppressRouteFailMessage)
+                {
                     TrainController->StopTTClockMessage(32, Track->RouteFailMessage);
+                }
                 Utilities->CallLogPop(232);
-                return false;
+                return(false);
             }
         }
-
         // now start off in the best direction
         int BestPos = Track->FindClosestLinkPosition(0, StartRoutePosition, EndPosition); // can only be 0 or 1
         // the following logic is very unstructured as extra bits have been added at different times and I'm reluctant to remove earlier bits in case
@@ -13449,7 +14326,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         {
             TotalSearchCount = 0; // added at v0.4f to give each exit direction a full chance to find required position
             if(SearchForPreferredRoute(3, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                AutoSigsFlag))
+                                       AutoSigsFlag))
             {
                 SetRouteSearchVectorGraphics(3, AutoSigsFlag, true); // change graphic colour to the route colour
                 if(PointsToBeChanged(8))
@@ -13457,13 +14334,13 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(233);
-                return true;
+                return(true);
             }
             else if(StartElement2.TrackVectorPosition > -1)
             {
                 TotalSearchCount = 0; // added at v0.4f to give each exit direction a full chance to find required position
                 if(SearchForPreferredRoute(4, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                    AutoSigsFlag))
+                                           AutoSigsFlag))
                 {
                     SetRouteSearchVectorGraphics(4, AutoSigsFlag, true); // change graphic colour to the route colour
                     if(PointsToBeChanged(9))
@@ -13471,7 +14348,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
                         PointsChanged = true;
                     }
                     Utilities->CallLogPop(234);
-                    return true;
+                    return(true);
                 }
             }
         }
@@ -13479,34 +14356,40 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         {
             TotalSearchCount = 0; // added at v0.4f to give each exit direction a full chance to find required position
             if(SearchForPreferredRoute(5, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                AutoSigsFlag))
+                                       AutoSigsFlag))
             {
                 SetRouteSearchVectorGraphics(6, AutoSigsFlag, true); // change graphic colour to the route colour
-                if(PointsToBeChanged(10));
+                if(PointsToBeChanged(10))
+                {
+                    ;
+                }
                 {
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(1857);
-                return true;
+                return(true);
             }
             else if(SearchForPreferredRoute(8, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                AutoSigsFlag))
+                                            AutoSigsFlag))
             {
                 SetRouteSearchVectorGraphics(7, AutoSigsFlag, true); // change graphic colour to the route colour
-                if(PointsToBeChanged(11));
+                if(PointsToBeChanged(11))
+                {
+                    ;
+                }
                 {
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(1858);
-                return true;
+                return(true);
             }
         }
         else if(StartElement1.XLinkPos == (1 - BestPos))
-    // added at v0.4d to use StartElement1 again with non-Best direction (may be only one & may not point in right direction)
+        // added at v0.4d to use StartElement1 again with non-Best direction (may be only one & may not point in right direction)
         {
             TotalSearchCount = 0; // added at v0.4f to give each exit direction a full chance to find required position
             if(SearchForPreferredRoute(9, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                AutoSigsFlag))
+                                       AutoSigsFlag))
             {
                 SetRouteSearchVectorGraphics(8, AutoSigsFlag, true); // change graphic colour to the route colour
                 if(PointsToBeChanged(12))
@@ -13514,14 +14397,16 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(1864);
-                return true;
+                return(true);
             }
         }
     }
     if(!Track->SuppressRouteFailMessage)
+    {
         TrainController->StopTTClockMessage(33, Track->RouteFailMessage);
+    }
     Utilities->CallLogPop(235);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -13540,18 +14425,18 @@ void TOneRoute::RouteImageMarker(int Caller, Graphics::TBitmap *Bitmap) const
         if(TempPrefDirElement.EXGraphicPtr != 0) // Note:  will be 0 if first element or last as leading point
         {
             Bitmap->Canvas->Draw((TempPrefDirElement.HLoc - Track->GetHLocMin()) * 16, (TempPrefDirElement.VLoc - Track->GetVLocMin()) * 16,
-                TempPrefDirElement.EXGraphicPtr);
+                                 TempPrefDirElement.EXGraphicPtr);
             if((TempPrefDirElement.EntryDirectionGraphicPtr != 0) && PrefDirSize() > 1) // Route, no direction if a single element
             {
                 if(x == 0)
                 {
                     Bitmap->Canvas->Draw((TempPrefDirElement.HLoc - Track->GetHLocMin()) * 16, (TempPrefDirElement.VLoc - Track->GetVLocMin()) * 16,
-                        TempPrefDirElement.EntryDirectionGraphicPtr);
+                                         TempPrefDirElement.EntryDirectionGraphicPtr);
                 }
                 if(x == (PrefDirSize() - 1))
                 {
                     Bitmap->Canvas->Draw((TempPrefDirElement.HLoc - Track->GetHLocMin()) * 16, (TempPrefDirElement.VLoc - Track->GetVLocMin()) * 16,
-                        TempPrefDirElement.EntryDirectionGraphicPtr);
+                                         TempPrefDirElement.EntryDirectionGraphicPtr);
                 }
             }
         }
@@ -13563,7 +14448,7 @@ void TOneRoute::RouteImageMarker(int Caller, Graphics::TBitmap *Bitmap) const
 // ---------------------------------------------------------------------------
 
 bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID,
-    TOnePrefDir *EveryPrefDir, bool ConsecSignals, int EndPosition, bool AutoSigsFlag)
+                                        TOnePrefDir *EveryPrefDir, bool ConsecSignals, int EndPosition, bool AutoSigsFlag)
 
 /*
       Brief:  similar to SearchForPrefDir but with a PrefDirElement instead of a TrackElement & with additional parameters.
@@ -13616,8 +14501,8 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
 
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SearchForPreferredRoute," + PrefDirElement.LogPrefDir() + "," +
-        AnsiString(XLinkPos) + "," + AnsiString(RequiredPosition) + "," + AnsiString(ReqPosRouteID.GetInt()) + "," + AnsiString(EndPosition) + "," +
-        AnsiString((short)AutoSigsFlag));
+                                 AnsiString(XLinkPos) + "," + AnsiString(RequiredPosition) + "," + AnsiString(ReqPosRouteID.GetInt()) + "," + AnsiString(EndPosition) + "," +
+                                 AnsiString((short)AutoSigsFlag));
     int VectorCount = 0;
     TPrefDirElement PrefDirElement1, PrefDirElement2, BlankElement;
 
@@ -13627,12 +14512,13 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
         if(AllRoutes->DiagonalFouledByRouteOrTrain(0, PrefDirElement.HLoc, PrefDirElement.VLoc, PrefDirElement.XLink))
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(2043);
-            return false;
+            return(false);
         }
     }
-
     bool FirstPass = true;
 
     while(true)
@@ -13644,16 +14530,20 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
         if(Track->IsLCBarrierFlashingAtHV(1, PrefDirElement.HLoc, PrefDirElement.VLoc)) // can't set a route through a flashing barrier
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(1926);
-            return false;
+            return(false);
         }
         if(PrefDirElement.Config[PrefDirElement.XLinkPos] == End) // buffers or continuation
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(236);
-            return false;
+            return(false);
         }
         if(!FirstPass && ConsecSignals && (PrefDirElement.Config[PrefDirElement.XLinkPos] == Signal))
         // reached a valid signal that isn't the required position, user should always select the next
@@ -13661,9 +14551,11 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
         // won't affect recurive searches as for them the first pass element is always a point
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(237);
-            return false;
+            return(false);
         }
         FirstPass = false;
         int NextPosition = PrefDirElement.Conn[XLinkPos];
@@ -13676,13 +14568,21 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
         // been a gap.  Now have all FixedTrackPiece & TrackElement values, + TrackVectorPosition, ELink & ELinkPos
         int NextXLinkPos;
         if(SearchElement.ELinkPos == 0)
+        {
             NextXLinkPos = 1;
+        }
         if(SearchElement.ELinkPos == 1)
+        {
             NextXLinkPos = 0;
+        }
         if(SearchElement.ELinkPos == 2)
+        {
             NextXLinkPos = 3;
+        }
         if(SearchElement.ELinkPos == 3)
+        {
             NextXLinkPos = 2;
+        }
         if((SearchElement.TrackType != Points) || (SearchElement.Config[SearchElement.ELinkPos] != Lead))
         {
             SearchElement.XLink = SearchElement.Link[NextXLinkPos];
@@ -13697,12 +14597,14 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             if(SearchElement.TrackVectorPosition == SearchVector.at(x).TrackVectorPosition)
             {
                 if((SearchElement.TrackType != Bridge) || ((SearchElement.TrackType == Bridge) && (SearchElement.ELink == SearchVector.at(x).ELink)))
-    // OK if a bridge & routes on different tracks
+                // OK if a bridge & routes on different tracks
                 {
                     for(int x = 0; x < VectorCount; x++)
+                    {
                         SearchVector.erase(SearchVector.end() - 1);
+                    }
                     Utilities->CallLogPop(238);
-                    return false;
+                    return(false);
                 }
             }
         }
@@ -13710,20 +14612,22 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
 // check if element in an existing route (OK if bridge & diff tracks, or start of an expected route)
         TAllRoutes::TRouteElementPair SecondPair;
         TAllRoutes::TRouteElementPair RoutePair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(16,
-            Track->TrackElementAt(89, SearchElement.TrackVectorPosition).HLoc, Track->TrackElementAt(90, SearchElement.TrackVectorPosition).VLoc, SecondPair);
+                                                                                                   Track->TrackElementAt(89, SearchElement.TrackVectorPosition).HLoc, Track->TrackElementAt(90, SearchElement.TrackVectorPosition).VLoc, SecondPair);
         if(RoutePair.first > -1)
         {
             // OK if it's a bridge & routes on different tracks (hard to see how can reach a bridge before another element in route as can't start on a bridge, but leave check in anyway)
             if(!((SearchElement.TrackType == Bridge) && (SearchElement.ELinkPos != AllRoutes->GetFixedRouteAt(12, RoutePair.first).GetFixedPrefDirElementAt(38,
-                RoutePair.second).ELinkPos)))
+                                                                                                                                                            RoutePair.second).ELinkPos)))
             {
                 // still OK if start of an expected route
                 if((ReqPosRouteID == IDInt(-1)) || ((int)RoutePair.first != AllRoutes->GetRouteVectorNumber(2, ReqPosRouteID)) || (RoutePair.second != 0))
                 {
                     for(int x = 0; x < VectorCount; x++)
+                    {
                         SearchVector.erase(SearchVector.end() - 1);
+                    }
                     Utilities->CallLogPop(239);
-                    return false; // only allow for start of an expected route
+                    return(false); // only allow for start of an expected route
                 }
             }
         }
@@ -13731,56 +14635,64 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
         {
             // OK if it's a bridge & routes on different tracks (hard to see how can reach a bridge before another element in route as can't start on a bridge, but leave check in anyway)
             if(!((SearchElement.TrackType == Bridge) && (SearchElement.ELinkPos != AllRoutes->GetFixedRouteAt(13, SecondPair.first).GetFixedPrefDirElementAt(39,
-                SecondPair.second).ELinkPos)))
+                                                                                                                                                             SecondPair.second).ELinkPos)))
             {
                 // still OK if start of an expected route
                 if((ReqPosRouteID == IDInt(-1)) || ((int)SecondPair.first != AllRoutes->GetRouteVectorNumber(3, ReqPosRouteID)) || (SecondPair.second != 0))
                 {
                     for(int x = 0; x < VectorCount; x++)
+                    {
                         SearchVector.erase(SearchVector.end() - 1);
+                    }
                     Utilities->CallLogPop(240);
-                    return false; // only allow for start of an expected route
+                    return(false); // only allow for start of an expected route
                 }
             }
         }
-
 // check if a train on element, unless a bridge & train on different track
 // OK of same train as start element - no drop this
 // if(SearchElement.TrainIDOnElement != StartSelectionTrainID)
         if((SearchElement.TrainIDOnElement > -1) && (SearchElement.TrackType != Bridge))
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(241);
-            return false;
+            return(false);
         }
         if((SearchElement.TrainIDOnElement > -1) && (SearchElement.TrackType == Bridge))
         {
             if((SearchElement.ELinkPos < 2) && (SearchElement.TrainIDOnBridgeTrackPos01 > -1))
             {
                 for(int x = 0; x < VectorCount; x++)
+                {
                     SearchVector.erase(SearchVector.end() - 1);
+                }
                 Utilities->CallLogPop(242);
-                return false;
+                return(false);
             }
             else if((SearchElement.ELinkPos > 1) && (SearchElement.TrainIDOnBridgeTrackPos23 > -1))
             {
                 for(int x = 0; x < VectorCount; x++)
+                {
                     SearchVector.erase(SearchVector.end() - 1);
+                }
                 Utilities->CallLogPop(243);
-                return false;
+                return(false);
             }
         }
-
 // check for a fouled diagonal (if not leading point - these checked later - leading point XLink == -1)
         if((SearchElement.XLink == 1) || (SearchElement.XLink == 3) || (SearchElement.XLink == 7) || (SearchElement.XLink == 9))
         {
             if(AllRoutes->DiagonalFouledByRouteOrTrain(7, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
             {
                 for(int x = 0; x < VectorCount; x++)
+                {
                     SearchVector.erase(SearchVector.end() - 1);
+                }
                 Utilities->CallLogPop(244);
-                return false;
+                return(false);
             }
         }
 // check element in EveryPrefDir with same ELink (XLink may not be set) & save up to 2 elements (for leading point & 2 trailing PrefDirs)
@@ -13795,9 +14707,11 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
         int PrefDirPos2 = -1;
         int PrefDirPos3 = -1;
         EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(5, Track->TrackElementAt(91, SearchElement.TrackVectorPosition).HLoc,
-            Track->TrackElementAt(92, SearchElement.TrackVectorPosition).VLoc, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
+                                                             Track->TrackElementAt(92, SearchElement.TrackVectorPosition).VLoc, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
         int PrefDirVecPos[4] =
-        {PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3};
+        {
+            PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3
+        };
         for(int x = 0; x < 4; x++)
         {
             int b = PrefDirVecPos[x];
@@ -13805,44 +14719,53 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             {
                 InPrefDirFlag = true;
                 if(PrefDirElement1.TrackVectorPosition == -1)
+                {
                     PrefDirElement1 = EveryPrefDir->GetFixedPrefDirElementAt(41, b);
+                }
                 else
+                {
                     PrefDirElement2 = EveryPrefDir->GetFixedPrefDirElementAt(42, b);
+                }
             }
         }
         if(!InPrefDirFlag)
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(245);
-            return false;
+            return(false);
         }
-
 // check if exceeds the search H & V limits - drop in favour of limiting TotalSearchCount
 // if((SearchElement.HLoc > SearchLimitHighH) || (SearchElement.HLoc < SearchLimitLowH) ||
 // (SearchElement.VLoc > SearchLimitHighV) ||(SearchElement.VLoc < SearchLimitLowV))
         if(TotalSearchCount > RouteSearchLimit)
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(1690);
-            return false;
+            return(false);
         }
-
 // check if found it
         if(SearchElement.TrackVectorPosition == RequiredPosition)
         {
 // need to ensure a signal/buffer/continuation
             if((SearchElement.Config[SearchElement.XLinkPos] != Signal) && (SearchElement.Config[SearchElement.XLinkPos] != End) &&
-                (SearchElement.Config[SearchElement.XLinkPos] != Continuation))
+               (SearchElement.Config[SearchElement.XLinkPos] != Continuation))
             {
                 TrainController->StopTTClockMessage(94, "Must select a valid signal, buffers or continuation"); //added at v2.7.0
                 Track->SuppressRouteFailMessage = true;
                 for(int x = 0; x < VectorCount; x++)
+                {
                     SearchVector.erase(SearchVector.end() - 1);
+                }
                 Utilities->CallLogPop(246);
-                return false;
+                return(false);
             } // if((SearchElement.Config[SearchElement.XLinkPos] != Signal).......
+
             if(AutoSigsFlag)
             {
                 PrefDirElement1.AutoSignals = true;
@@ -13856,31 +14779,38 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                     Track->SuppressRouteFailMessage = true;
                 }
                 for(int x = 0; x < VectorCount; x++)
+                {
                     SearchVector.erase(SearchVector.end() - 1);
+                }
                 Utilities->CallLogPop(1928);
-                return false;
+                return(false);
             }
             SearchVector.push_back(PrefDirElement1); // must be 1 as it's a simple element
             VectorCount++; // not really needed but include for tidyness
             TotalSearchCount++;
             Utilities->CallLogPop(247);
-            return true;
+            return(true);
         } // if(SearchElement.TrackVectorPosition == RequiredPosition)
+
 // check if a buffer or continuation (end of search on this leg if not found by now)
         if((SearchElement.TrackType == Buffers) || (SearchElement.TrackType == Continuation))
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(248);
-            return false;
+            return(false);
         }
 // check if SearchVector exceeds a size of 150
         if(SearchVector.size() > 150)
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(1420);
-            return false;
+            return(false);
         }
 // check if reached a leading point
         if((SearchElement.TrackType == Points) && (SearchElement.Config[SearchElement.ELinkPos] == Lead))
@@ -13889,11 +14819,17 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             int SearchPos1 = SearchElement.Attribute + 1;
             int SearchPos2;
             if(SearchPos1 == 2)
+            {
                 SearchPos1++;
+            }
             if(SearchPos1 == 1)
+            {
                 SearchPos2 = 3;
+            }
             else
+            {
                 SearchPos2 = 1;
+            }
             SearchElement.XLink = SearchElement.Link[SearchPos1];
             SearchElement.XLinkPos = SearchPos1;
             InPrefDirFlag = false;
@@ -13916,9 +14852,11 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                     if(AllRoutes->DiagonalFouledByRouteOrTrain(1, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
                     {
                         for(int x = 0; x < VectorCount; x++)
+                        {
                             SearchVector.erase(SearchVector.end() - 1);
+                        }
                         Utilities->CallLogPop(249);
-                        return false;
+                        return(false);
                     }
                 }
                 if(AutoSigsFlag)
@@ -13931,7 +14869,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                 TotalSearchCount++;
 // recursive search at XLinkPos of SearchPos1 (i.e. 'set' trailing exit)
                 if(SearchForPreferredRoute(6, SearchElement, SearchPos1, RequiredPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                    AutoSigsFlag))
+                                           AutoSigsFlag))
                 {
                     if(Track->LCFoundInAutoSigsRoute)
                     {
@@ -13941,12 +14879,14 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                             Track->SuppressRouteFailMessage = true;
                         }
                         for(int x = 0; x < VectorCount; x++)
+                        {
                             SearchVector.erase(SearchVector.end() - 1);
+                        }
                         Utilities->CallLogPop(1929);
-                        return false;
+                        return(false);
                     }
                     Utilities->CallLogPop(250);
-                    return true;
+                    return(true);
                 }
                 else
                 {
@@ -13969,9 +14909,11 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             else // failed to find a valid exit from the point
             {
                 for(int x = 0; x < VectorCount; x++)
+                {
                     SearchVector.erase(SearchVector.end() - 1);
+                }
                 Utilities->CallLogPop(251);
-                return false;
+                return(false);
             }
 // check for a fouled diagonal for leading point for XLinkPos == SearchPos2)
             if((SearchElement.XLink == 1) || (SearchElement.XLink == 3) || (SearchElement.XLink == 7) || (SearchElement.XLink == 9))
@@ -13979,9 +14921,11 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                 if(AllRoutes->DiagonalFouledByRouteOrTrain(2, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
                 {
                     for(int x = 0; x < VectorCount; x++)
+                    {
                         SearchVector.erase(SearchVector.end() - 1);
+                    }
                     Utilities->CallLogPop(252);
-                    return false;
+                    return(false);
                 }
             }
 // push element with XLink set to position [SearchPos2]
@@ -13995,7 +14939,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             TotalSearchCount++;
 // recursive search at XLinkPos of SearchPos2 (i.e. 'unset' trailing exit)
             if(SearchForPreferredRoute(7, SearchElement, SearchPos2, RequiredPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                AutoSigsFlag))
+                                       AutoSigsFlag))
             {
                 if(Track->LCFoundInAutoSigsRoute)
                 {
@@ -14005,21 +14949,26 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                         Track->SuppressRouteFailMessage = true;
                     }
                     for(int x = 0; x < VectorCount; x++)
+                    {
                         SearchVector.erase(SearchVector.end() - 1);
+                    }
                     Utilities->CallLogPop(1930);
-                    return false;
+                    return(false);
                 }
                 Utilities->CallLogPop(1592);
-                return true;
+                return(true);
             }
             else
             {
                 for(int x = 0; x < VectorCount; x++)
+                {
                     SearchVector.erase(SearchVector.end() - 1);
+                }
                 Utilities->CallLogPop(253);
-                return false;
+                return(false);
             }
         } // if leading point
+
 // here if ordinary element, push it, inc vector & update PrefDirElement ready for next element on PrefDir
         SearchElement = PrefDirElement1;
         if(AutoSigsFlag)
@@ -14073,7 +15022,7 @@ void TOneRoute::ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPos
 
 */
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ConvertAndAddPreferredRouteSearchVector," +
-        AnsiString(ReqPosRouteID.GetInt()) + "," + AnsiString((short)AutoSigsFlag));
+                                 AnsiString(ReqPosRouteID.GetInt()) + "," + AnsiString((short)AutoSigsFlag));
     if(SearchVector.size() < 1)
     {
         Utilities->CallLogPop(254);
@@ -14085,7 +15034,6 @@ void TOneRoute::ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPos
         Utilities->CallLogPop(255);
         return;
     }
-
     TAllRoutes::TLockedRouteClass LockedRouteObject;
 
     AllRoutes->LockedRouteFoundDuringRouteBuilding = false;
@@ -14102,10 +15050,10 @@ void TOneRoute::ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPos
 */
     {
         if((AutoSigsFlag && (AllRoutes->GetFixedRouteAtIDNumber(19, ReqPosRouteID).GetFixedPrefDirElementAt(46, 0).AutoSignals)) ||
-            (!AutoSigsFlag && !(AllRoutes->GetFixedRouteAtIDNumber(20, ReqPosRouteID).GetFixedPrefDirElementAt(47, 0).AutoSignals)))
+           (!AutoSigsFlag && !(AllRoutes->GetFixedRouteAtIDNumber(20, ReqPosRouteID).GetFixedPrefDirElementAt(47, 0).AutoSignals)))
         {
             for(unsigned int x = 1; x < AllRoutes->GetFixedRouteAtIDNumber(21, ReqPosRouteID).PrefDirSize();
-            x++) // start at 1 as first element already in SearchVector
+                x++) // start at 1 as first element already in SearchVector
             {
                 SearchVector.push_back(AllRoutes->GetFixedRouteAtIDNumber(22, ReqPosRouteID).GetFixedPrefDirElementAt(48, x));
             }
@@ -14131,7 +15079,6 @@ void TOneRoute::ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPos
             SearchVector.pop_back();
         }
     }
-
     if(StartSelectionRouteID > -1)
 /* if have StartSelectionRouteID:
       if both new and existing routes non-autosig, then add the new route to the existing route (start element not stored in searchvector)
@@ -14142,16 +15089,16 @@ void TOneRoute::ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPos
 */
     {
         if(AllRoutes->IsThereARouteAtIDNumber(0, StartSelectionRouteID))
-    // need to test because may have been removed by a train moving in the wrong direction between first and last route selections - added at v1.3.1
+        // need to test because may have been removed by a train moving in the wrong direction between first and last route selections - added at v1.3.1
         {
             if((AutoSigsFlag && (AllRoutes->GetFixedRouteAtIDNumber(26, StartSelectionRouteID).GetFixedPrefDirElementAt(52, 0).AutoSignals)) ||
-                (!AutoSigsFlag && !(AllRoutes->GetFixedRouteAtIDNumber(27, StartSelectionRouteID).GetFixedPrefDirElementAt(53, 0).AutoSignals)))
+               (!AutoSigsFlag && !(AllRoutes->GetFixedRouteAtIDNumber(27, StartSelectionRouteID).GetFixedPrefDirElementAt(53, 0).AutoSignals)))
             {
                 int RouteNumber = AllRoutes->GetRouteVectorNumber(0, StartSelectionRouteID);
                 for(unsigned int x = 0; x < SearchVector.size(); x++)
                 {
                     AllRoutes->AddRouteElement(1, GetFixedSearchElementAt(0, x).HLoc, GetFixedSearchElementAt(1, x).VLoc, GetFixedSearchElementAt(2, x).ELink,
-                        RouteNumber, GetFixedSearchElementAt(3, x));
+                                               RouteNumber, GetFixedSearchElementAt(3, x));
                     // find & store locked route truncate position in PrefDirVector for later use
                     if(AllRoutes->LockedRouteFoundDuringRouteBuilding)
                     {
@@ -14179,9 +15126,9 @@ void TOneRoute::ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPos
                     // now reset the signals for the locked route
                     AllRoutes->SetAllRearwardsSignals(9, 0, RouteNumber, TruncatePrefDirPosition);
                     for(int c = AllRoutes->GetFixedRouteAt(173, RouteNumber).PrefDirSize() - 1; c >= (int)TruncatePrefDirPosition;
-                    c--) // must use int for >= test to succeed when TruncatePrefDirPosition == 0
-                    // return all signals to red in route section to be truncated
+                        c--) // must use int for >= test to succeed when TruncatePrefDirPosition == 0
                     {
+                        // return all signals to red in route section to be truncated
                         TPrefDirElement PrefDirElement = AllRoutes->GetFixedRouteAt(174, RouteNumber).PrefDirVector.at(c);
                         TTrackElement & TrackElement = Track->TrackElementAt(812, PrefDirElement.TrackVectorPosition);
                         if(PrefDirElement.Config[PrefDirElement.XLinkPos] == Signal)
@@ -14200,7 +15147,7 @@ void TOneRoute::ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPos
             else if(AutoSigsFlag && !(AllRoutes->GetFixedRouteAtIDNumber(28, StartSelectionRouteID).GetFixedPrefDirElementAt(54, 0).AutoSignals))
             {
                 TPrefDirElement RouteElement = AllRoutes->GetFixedRouteAtIDNumber(29, StartSelectionRouteID).GetFixedPrefDirElementAt(55,
-                    AllRoutes->GetFixedRouteAtIDNumber(30, StartSelectionRouteID).PrefDirSize() - 1);
+                                                                                                                                      AllRoutes->GetFixedRouteAtIDNumber(30, StartSelectionRouteID).PrefDirSize() - 1);
                 RouteElement.AutoSignals = true;
                 RouteElement.EXGraphicPtr = RouteElement.GetRouteGraphicPtr(AutoSigsFlag, true);
                 RouteElement.EntryDirectionGraphicPtr = RouteElement.GetDirectionRouteGraphicPtr(AutoSigsFlag, true); // as above
@@ -14215,7 +15162,6 @@ void TOneRoute::ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPos
 // if new route non-autosig and existing route autosig, leave the existing route as it is, and just enter the new route into the
 // AllRoutesVector hence nothing to do here
     }
-
     PrefDirVector = SearchVector; // need to copy again since SearchVector may have been extended
     if(!ValidatePrefDir(5)) // validate PrefDir for all new route elements
     {
@@ -14264,7 +15210,7 @@ bool TOneRoute::GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc,
 
 */
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetNonPreferredRouteStartElement," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc) + "," + AnsiString((short)Callon));
+                                 AnsiString(VLoc) + "," + AnsiString((short)Callon));
     ClearRoute();
     int TrackVectorPosition;
     TTrackElement TrackElement;
@@ -14273,33 +15219,34 @@ bool TOneRoute::GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc,
     if(!(Track->FindNonPlatformMatch(9, HLoc, VLoc, TrackVectorPosition, TrackElement)))
     {
         Utilities->CallLogPop(258);
-        return false;
+        return(false);
     }
     if((TrackElement.TrackType == Points) || (TrackElement.TrackType == Bridge) || (TrackElement.TrackType == Crossover))
     {
         if(!Callon)
+        {
             TrainController->StopTTClockMessage(34, "Can't select points, bridge or crossover when route building");
+        }
 // makes later adjacent route checks too complicated
         Utilities->CallLogPop(259);
-        return false;
+        return(false);
     }
-
     if(Track->IsLCAtHV(21, HLoc, VLoc))
     {
         TrainController->StopTTClockMessage(74, "Can't start a route on a level crossing");
         Utilities->CallLogPop(1910);
-        return false;
+        return(false);
     }
-
 // check if selected a train & disallow if so
     if(TrackElement.TrainIDOnElement > -1)
     {
         if(!Callon)
+        {
             TrainController->StopTTClockMessage(35, "Can't start a route on a train");
+        }
         Utilities->CallLogPop(260);
-        return false;
+        return(false);
     }
-
 // check if selected a locked route element & disallow (can only be a 2-track element so only need check XLinkPos values of 0 & 1
     TPrefDirElement PrefDirElement;
     int LockedVectorNumber;
@@ -14307,18 +15254,21 @@ bool TOneRoute::GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc,
     if(AllRoutes->IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(3, TrackVectorPosition, 0, PrefDirElement, LockedVectorNumber))
     {
         if(!Callon)
+        {
             TrainController->StopTTClockMessage(36, "Can't start a route on a locked route");
+        }
         Utilities->CallLogPop(261);
-        return false;
+        return(false);
     }
     if(AllRoutes->IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(4, TrackVectorPosition, 1, PrefDirElement, LockedVectorNumber))
     {
         if(!Callon)
+        {
             TrainController->StopTTClockMessage(37, "Can't start a route on a locked route");
+        }
         Utilities->CallLogPop(262);
-        return false;
+        return(false);
     }
-
     StartSelectionRouteID = IDInt(-1);
 // AdjacentStartRouteNumber = -1;
     StartRoutePosition = TrackVectorPosition;
@@ -14366,34 +15316,40 @@ bool TOneRoute::GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc,
         if(RoutePair.second != AllRoutes->GetFixedRouteAt(31, RoutePair.first).PrefDirSize() - 1) // not last element in existing route so no good
         {
             if(!Callon)
+            {
                 TrainController->StopTTClockMessage(38, "Can't start a route within or at the start of an existing route");
+            }
             Utilities->CallLogPop(263);
-            return false;
+            return(false);
         }
         TPrefDirElement RouteElement = AllRoutes->GetFixedRouteAt(32, RoutePair.first).GetFixedPrefDirElementAt(56, RoutePair.second);
         if(RouteElement.Conn[RouteElement.XLinkPos] < 0) // last element in existing route but nowhere to go!
         {
             if(!Callon)
+            {
                 TrainController->StopTTClockMessage(39, "No forward connection from this position");
+            }
             Utilities->CallLogPop(264);
-            return false;
+            return(false);
         }
         if((RouteElement.Config[RouteElement.XLinkPos] != End) && (AllRoutes->TrackIsInARoute(11, RouteElement.Conn[RouteElement.XLinkPos],
-            RouteElement.ConnLinkPos[RouteElement.XLinkPos])))
+                                                                                              RouteElement.ConnLinkPos[RouteElement.XLinkPos])))
         // last element in existing route but that route linked to another route (or a non-bridge 2-track element containing a route) so no good
         {
             if(!Callon)
+            {
                 TrainController->StopTTClockMessage(40, "Can't start a route at an element that links forward into an existing route");
+            }
             Utilities->CallLogPop(265);
-            return false;
+            return(false);
         }
         StartSelectionRouteID = IDInt(AllRoutes->GetFixedRouteAt(162, RoutePair.first).RouteID);
         StartElement1 = AllRoutes->GetFixedRouteAt(33, RoutePair.first).GetFixedPrefDirElementAt(57,
-            AllRoutes->GetFixedRouteAt(34, RoutePair.first).PrefDirSize() - 1); // last element
+                                                                                                 AllRoutes->GetFixedRouteAt(34, RoutePair.first).PrefDirSize() - 1); // last element
         StartElement2 = BlankElement; // only use the route element
         StartRoutePosition = StartElement1.TrackVectorPosition;
         Utilities->CallLogPop(266);
-        return true; // all retained values set
+        return(true); // all retained values set
     }
 
     else // selection not in an existing route
@@ -14405,16 +15361,20 @@ bool TOneRoute::GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc,
             if((StartElement1.Conn[0] > -1) && (StartElement1.Conn[0] == FirstElement.TrackVectorPosition))
             {
                 if(!Callon)
+                {
                     TrainController->StopTTClockMessage(41, "Can't make selection adjacent to start of another route");
+                }
                 Utilities->CallLogPop(267);
-                return false;
+                return(false);
             }
             if((StartElement1.Conn[1] > -1) && (StartElement1.Conn[1] == FirstElement.TrackVectorPosition))
             {
                 if(!Callon)
+                {
                     TrainController->StopTTClockMessage(42, "Can't make selection adjacent to start of another route");
+                }
                 Utilities->CallLogPop(268);
-                return false;
+                return(false);
             }
         }
 // check if it's adjacent to end of an an existing route,
@@ -14424,9 +15384,11 @@ bool TOneRoute::GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc,
             if(LastElement.Conn[LastElement.XLinkPos] == StartRoutePosition)
             {
                 if(!Callon)
+                {
                     TrainController->StopTTClockMessage(43, "Can't start a route adjacent to the end of an existing route");
+                }
                 Utilities->CallLogPop(269);
-                return false;
+                return(false);
             }
         }
         // not in a route or adjacent to start or end of a route
@@ -14440,7 +15402,7 @@ bool TOneRoute::GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc,
         StartElement2 = BlankElement;
         SearchVector.push_back(StartElement1);
         Utilities->CallLogPop(270);
-        return true;
+        return(true);
     }
 }
 
@@ -14482,7 +15444,7 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
 {
 // get EndPosition
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetNextNonPreferredRouteElement," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
     int EndPosition;
 
     TotalSearchCount = 0;
@@ -14493,50 +15455,51 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
     if(!(Track->FindNonPlatformMatch(10, HLoc, VLoc, EndPosition, TrackElement))) // return if can't find one
     {
         Utilities->CallLogPop(271);
-        return false;
+        return(false);
     }
 // EndPosition = EndSelectPosition;
 // cancel selection if on original start element
     if(EndPosition == StartRoutePosition)
     {
         Utilities->CallLogPop(272);
-        return false;
+        return(false);
     }
-
     if(Track->IsLCAtHV(22, HLoc, VLoc))
     {
         TrainController->StopTTClockMessage(75, "Can't end a route on a level crossing");
         Utilities->CallLogPop(1911);
-        return false;
+        return(false);
     }
-
     if((TrackElement.TrackType == Points) && !Callon)
     {
         if(!Callon)
+        {
             TrainController->StopTTClockMessage(44, "Can't select points, bridge or crossover when route building");
+        }
 // makes later adjacent route checks too complicated
         Utilities->CallLogPop(273);
-        return false;
+        return(false);
     }
-
     if((TrackElement.TrackType == Bridge) || (TrackElement.TrackType == Crossover))
     {
         if(!Callon)
+        {
             TrainController->StopTTClockMessage(71, "Can't select points, bridge or crossover when route building");
+        }
 // makes later adjacent route checks too complicated
         Utilities->CallLogPop(1861);
-        return false;
+        return(false);
     }
-
 // check if train on element
     if(TrackElement.TrainIDOnElement > -1)
     {
         if(!Callon)
+        {
             TrainController->StopTTClockMessage(45, "Can't end a route on a train");
+        }
         Utilities->CallLogPop(274);
-        return false;
+        return(false);
     }
-
 // set the 2 EndElements corresponding to the 2 possible PrefDirs for the selected element (for safety reasons - to ensure EXNumber validity
 // check passed)
     TPrefDirElement EndElement1(TrackElement); // 1 & 2 for the 2 possible PrefDirs at this location
@@ -14577,7 +15540,6 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
         SearchLimitLowH = EndElement1.HLoc - 15;
         SearchLimitHighH = StartElement1.HLoc + 15;
     }
-
     if(EndElement1.VLoc >= StartElement1.VLoc)
     {
         SearchLimitLowV = StartElement1.VLoc - 15;
@@ -14588,7 +15550,6 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
         SearchLimitLowV = EndElement1.VLoc - 15;
         SearchLimitHighV = StartElement1.VLoc + 15;
     }
-
 /* dropped this for v0.4d - prevents ability to set routes for gaps that are widely separated, ok without it as search limited by SearchVector size
       check & TotalSearchCounts check
       if((abs(EndElement1.HLoc - StartElement1.HLoc) > 120) || (abs(EndElement1.VLoc - StartElement1.VLoc) > 120))
@@ -14610,27 +15571,30 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
         if(RoutePair.second != 0) // not first element in existing route so no good
         {
             if(!Callon)
+            {
                 TrainController->StopTTClockMessage(46, "Can't end a route within or at the end of an existing route");
+            }
             Utilities->CallLogPop(275);
-            return false;
+            return(false);
         }
         TPrefDirElement RouteElement = AllRoutes->GetFixedRouteAt(38, RoutePair.first).GetFixedPrefDirElementAt(60, RoutePair.second);
 // if((RouteElement.Config[RouteElement.ELinkPos] != End) && (AllRoutes->TrackIsInARoute(, RouteElement.Conn[RouteElement.ELinkPos], RouteElement.ELinkPos)))
         if((RouteElement.Config[RouteElement.ELinkPos] != End) && (AllRoutes->TrackIsInARoute(12, RouteElement.Conn[RouteElement.ELinkPos],
-            RouteElement.ConnLinkPos[RouteElement.ELinkPos]))) // amended at v1.3.0 - had omitted ConnLinkPos - see above
+                                                                                              RouteElement.ConnLinkPos[RouteElement.ELinkPos]))) // amended at v1.3.0 - had omitted ConnLinkPos - see above
         // first element in existing route but that route linked to another route (or a non-bridge 2-track element containing a route) so no good
         {
             if(!Callon)
+            {
                 TrainController->StopTTClockMessage(47, "Can't start a route within or at the end of an existing route");
+            }
             Utilities->CallLogPop(276);
-            return false;
+            return(false);
         }
         EndElement1 = AllRoutes->GetFixedRouteAt(39, RoutePair.first).GetFixedPrefDirElementAt(61, 0);
         EndElement2 = BlankElement; // only need the route element
         EndPosition = EndElement1.TrackVectorPosition;
         ReqPosRouteID = IDInt(AllRoutes->GetFixedRouteAt(161, RoutePair.first).RouteID);
     }
-
 // check if adjacent to start of an existing route and disallow (unless start of existing route is also the start of this route)
     for(unsigned int a = 0; a < AllRoutes->AllRoutesSize(); a++)
     {
@@ -14639,36 +15603,41 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
 // if((EndElement1.Config[EndElement1.XLinkPos] != End) && (EndElement1.Conn[EndElement1.XLinkPos] == AdjPosition)
 // && (AdjPosition != StartRoutePosition))
         if((EndElement1.Config[EndElement1.XLinkPos] != End) && (EndElement1.Conn[EndElement1.XLinkPos] == AdjPosition)
-            && // changed at v1.3.1 to allow a route end adjacent to an element with a route that doesn't link to the ending route
-            (EndElement1.ConnLinkPos[EndElement1.XLinkPos] == AdjLinkPos) && (AdjPosition != StartRoutePosition))
+           &&  // changed at v1.3.1 to allow a route end adjacent to an element with a route that doesn't link to the ending route
+           (EndElement1.ConnLinkPos[EndElement1.XLinkPos] == AdjLinkPos) && (AdjPosition != StartRoutePosition))
         {
             if(!Callon)
+            {
                 TrainController->StopTTClockMessage(48, "Can't end a route adjacent to the start of an existing route");
+            }
             Utilities->CallLogPop(277);
-            return false;
+            return(false);
         }
 // else if((EndElement2.TrackVectorPosition > -1) && (EndElement2.Config[EndElement2.XLinkPos] != End) &&
 // (EndElement2.Conn[EndElement2.XLinkPos] == AdjPosition) && (AdjPosition != StartRoutePosition))
         else if((EndElement2.TrackVectorPosition > -1) && (EndElement2.Config[EndElement2.XLinkPos] != End)
-            && // changed at v1.3.1 to allow a route end adjacent to an element with a route that doesn't link to the ending route
-            (EndElement2.Conn[EndElement2.XLinkPos] == AdjPosition) && (EndElement2.ConnLinkPos[EndElement2.XLinkPos] == AdjLinkPos) &&
-            (AdjPosition != StartRoutePosition))
+                && // changed at v1.3.1 to allow a route end adjacent to an element with a route that doesn't link to the ending route
+                (EndElement2.Conn[EndElement2.XLinkPos] == AdjPosition) && (EndElement2.ConnLinkPos[EndElement2.XLinkPos] == AdjLinkPos) &&
+                (AdjPosition != StartRoutePosition))
         {
             if(!Callon)
+            {
                 TrainController->StopTTClockMessage(49, "Can't end a route adjacent to the start of an existing route");
+            }
             Utilities->CallLogPop(278);
-            return false;
+            return(false);
         }
-
 // check if adjacent to end of a route & disallow (unless end of existing route is the start of this route - i.e. extending route by 1 element)
         TPrefDirElement EndOfRouteElement = AllRoutes->GetFixedRouteAt(41, a).GetFixedPrefDirElementAt(63, AllRoutes->GetFixedRouteAt(42, a).PrefDirSize() - 1);
         if((EndOfRouteElement.Config[EndOfRouteElement.XLinkPos] != End) && (EndOfRouteElement.Conn[EndOfRouteElement.XLinkPos] == EndPosition) &&
-            (EndOfRouteElement.TrackVectorPosition != StartRoutePosition))
+           (EndOfRouteElement.TrackVectorPosition != StartRoutePosition))
         {
             if(!Callon)
+            {
                 TrainController->StopTTClockMessage(50, "Can't end a route adjacent to the end of an existing route");
+            }
             Utilities->CallLogPop(279);
-            return false;
+            return(false);
         }
     }
 
@@ -14676,23 +15645,25 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
     if((ReqPosRouteID > -1) && (ReqPosRouteID == StartSelectionRouteID))
     {
         if(!Callon)
+        {
             TrainController->StopTTClockMessage(51, "Can't select same route as started in");
+        }
         Utilities->CallLogPop(280);
-        return false;
+        return(false);
     }
-
 // check for a looping route
     if((ReqPosRouteID > -1) && (StartSelectionRouteID > -1))
     {
         if(AllRoutes->CheckForLoopingRoute(1, EndElement1.GetTrackVectorPosition(), EndElement1.GetXLinkPos(), StartElement1.GetTrackVectorPosition()))
         {
             if(!Callon)
+            {
                 TrainController->StopTTClockMessage(70, "Can't create a route that loops back on itself");
+            }
             Utilities->CallLogPop(1845);
-            return false;
+            return(false);
         }
     }
-
 // if there's a StartSelectionRouteID StartElement1 will be set to the last entry in the selected route
 // so search from this element.
 
@@ -14708,14 +15679,16 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
                 PointsChanged = true;
             }
             Utilities->CallLogPop(281);
-            return true;
+            return(true);
         }
         else
         {
             if(!Callon)
+            {
                 TrainController->StopTTClockMessage(52, Track->RouteFailMessage);
+            }
             Utilities->CallLogPop(282);
-            return false;
+            return(false);
         }
     }
     else // no starting route, so StartElement1 only has basic values set & is in SearchVector, StartElement2 is blank
@@ -14732,14 +15705,16 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(283);
-                return true;
+                return(true);
             }
             else
             {
                 if(!Callon)
+                {
                     TrainController->StopTTClockMessage(53, Track->RouteFailMessage);
+                }
                 Utilities->CallLogPop(284);
-                return false;
+                return(false);
             }
         }
         else if(SearchVector.at(0).Conn[1] == EndPosition)
@@ -14752,14 +15727,16 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(285);
-                return true;
+                return(true);
             }
             else
             {
                 if(!Callon)
+                {
                     TrainController->StopTTClockMessage(54, Track->RouteFailMessage);
+                }
                 Utilities->CallLogPop(286);
-                return false;
+                return(false);
             }
         }
         // now start off in the best direction
@@ -14776,7 +15753,7 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(287);
-                return true;
+                return(true);
             }
         }
         if(SearchVector.at(0).Config[1 - BestPos] != End)
@@ -14790,14 +15767,16 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(288);
-                return true;
+                return(true);
             }
         }
     }
     if(!Callon)
+    {
         TrainController->StopTTClockMessage(55, Track->RouteFailMessage);
+    }
     Utilities->CallLogPop(289);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -14825,37 +15804,42 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SearchForNonPreferredRoute," + CurrentTrackElement.LogTrack(14) + "," +
-        AnsiString(XLinkPos) + "," + AnsiString(RequiredPosition) + "," + AnsiString() + "," + AnsiString(ReqPosRouteID.GetInt()));
+                                 AnsiString(XLinkPos) + "," + AnsiString(RequiredPosition) + "," + AnsiString() + "," + AnsiString(ReqPosRouteID.GetInt()));
     int VectorCount = 0;
 
 // check for a fouled diagonal for first element.  Added for v1.3.2
     if((CurrentTrackElement.Link[XLinkPos] == 1) || (CurrentTrackElement.Link[XLinkPos] == 3) || (CurrentTrackElement.Link[XLinkPos] == 7) ||
-        (CurrentTrackElement.Link[XLinkPos] == 9))
+       (CurrentTrackElement.Link[XLinkPos] == 9))
     {
         if(AllRoutes->DiagonalFouledByRouteOrTrain(8, CurrentTrackElement.HLoc, CurrentTrackElement.VLoc, CurrentTrackElement.Link[XLinkPos]))
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(2044);
-            return false;
+            return(false);
         }
     }
-
     while(true)
     {
         if(Track->IsLCBarrierFlashingAtHV(2, CurrentTrackElement.HLoc, CurrentTrackElement.VLoc)) // can't set a route through a flashing barrier
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(1927);
-            return false;
+            return(false);
         }
         if(CurrentTrackElement.Config[XLinkPos] == End) // buffers or continuation
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(290);
-            return false;
+            return(false);
         }
         int NextPosition = CurrentTrackElement.Conn[XLinkPos];
         TTrackElement NextTrackElement = Track->TrackElementAt(93, NextPosition);
@@ -14866,13 +15850,21 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
         SearchElement.ELink = SearchElement.Link[SearchElement.ELinkPos];
         int NextXLinkPos;
         if(SearchElement.ELinkPos == 0)
+        {
             NextXLinkPos = 1;
+        }
         if(SearchElement.ELinkPos == 1)
+        {
             NextXLinkPos = 0;
+        }
         if(SearchElement.ELinkPos == 2)
+        {
             NextXLinkPos = 3;
+        }
         if(SearchElement.ELinkPos == 3)
+        {
             NextXLinkPos = 2;
+        }
         if((SearchElement.TrackType != Points) || (SearchElement.Config[SearchElement.ELinkPos] != Lead))
         {
             SearchElement.XLink = SearchElement.Link[NextXLinkPos];
@@ -14888,12 +15880,14 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
             if(SearchElement.TrackVectorPosition == SearchVector.at(x).TrackVectorPosition)
             {
                 if((SearchElement.TrackType != Bridge) || ((SearchElement.TrackType == Bridge) && (SearchElement.ELink == SearchVector.at(x).ELink)))
-    // OK if it's a bridge & routes on different tracks
+                // OK if it's a bridge & routes on different tracks
                 {
                     for(int x = 0; x < VectorCount; x++)
+                    {
                         SearchVector.erase(SearchVector.end() - 1);
+                    }
                     Utilities->CallLogPop(291);
-                    return false;
+                    return(false);
                 }
             }
         }
@@ -14901,20 +15895,22 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
 // check if element in an existing route (OK if bridge & diff tracks, or start of an expected route)
         TAllRoutes::TRouteElementPair SecondPair;
         TAllRoutes::TRouteElementPair RoutePair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(3,
-            Track->TrackElementAt(94, SearchElement.TrackVectorPosition).HLoc, Track->TrackElementAt(95, SearchElement.TrackVectorPosition).VLoc, SecondPair);
+                                                                                                   Track->TrackElementAt(94, SearchElement.TrackVectorPosition).HLoc, Track->TrackElementAt(95, SearchElement.TrackVectorPosition).VLoc, SecondPair);
         if(RoutePair.first > -1)
         {
             // OK if it's a bridge & routes on different tracks (hard to see how can reach a bridge before another element in route as can't start on a bridge, but leave check in anyway)
             if(!((SearchElement.TrackType == Bridge) && (SearchElement.ELinkPos != AllRoutes->GetFixedRouteAt(43, RoutePair.first).GetFixedPrefDirElementAt(64,
-                RoutePair.second).ELinkPos)))
+                                                                                                                                                            RoutePair.second).ELinkPos)))
             {
                 // still OK if start of an expected route
                 if((ReqPosRouteID == IDInt(-1)) || ((int)RoutePair.first != AllRoutes->GetRouteVectorNumber(4, ReqPosRouteID)) || (RoutePair.second != 0))
                 {
                     for(int x = 0; x < VectorCount; x++)
+                    {
                         SearchVector.erase(SearchVector.end() - 1);
+                    }
                     Utilities->CallLogPop(292);
-                    return false; // only allow for start of an expected route
+                    return(false); // only allow for start of an expected route
                 }
             }
         }
@@ -14922,79 +15918,91 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
         {
             // OK if it's a bridge & routes on different tracks
             if(!((SearchElement.TrackType == Bridge) && (SearchElement.ELinkPos != AllRoutes->GetFixedRouteAt(44, SecondPair.first).GetFixedPrefDirElementAt(65,
-                SecondPair.second).ELinkPos)))
+                                                                                                                                                             SecondPair.second).ELinkPos)))
             {
                 // still OK if start of an expected route
                 if((ReqPosRouteID == IDInt(-1)) || ((int)SecondPair.first != AllRoutes->GetRouteVectorNumber(5, ReqPosRouteID)) || (SecondPair.second != 0))
                 {
                     for(int x = 0; x < VectorCount; x++)
+                    {
                         SearchVector.erase(SearchVector.end() - 1);
+                    }
                     Utilities->CallLogPop(293);
-                    return false; // only allow for start of an expected route
+                    return(false); // only allow for start of an expected route
                 }
             }
         }
-
 // check if a train on element, unless a bridge & train on different track
 // OK of same train as start element - no, drop this
 // if(SearchElement.TrainIDOnElement != StartSelectionTrainID)
         if((SearchElement.TrainIDOnElement > -1) && (SearchElement.TrackType != Bridge))
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(294);
-            return false;
+            return(false);
         }
         if((SearchElement.TrainIDOnElement > -1) && (SearchElement.TrackType == Bridge))
         {
             if((SearchElement.ELinkPos < 2) && (SearchElement.TrainIDOnBridgeTrackPos01 > -1))
             {
                 for(int x = 0; x < VectorCount; x++)
+                {
                     SearchVector.erase(SearchVector.end() - 1);
+                }
                 Utilities->CallLogPop(295);
-                return false;
+                return(false);
             }
             else if((SearchElement.ELinkPos > 1) && (SearchElement.TrainIDOnBridgeTrackPos23 > -1))
             {
                 for(int x = 0; x < VectorCount; x++)
+                {
                     SearchVector.erase(SearchVector.end() - 1);
+                }
                 Utilities->CallLogPop(296);
-                return false;
+                return(false);
             }
         }
-
 // check for a fouled diagonal (if not leading point - leading point XLink == -1)
         if((SearchElement.XLink == 1) || (SearchElement.XLink == 3) || (SearchElement.XLink == 7) || (SearchElement.XLink == 9))
         {
             if(AllRoutes->DiagonalFouledByRouteOrTrain(3, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
             {
                 for(int x = 0; x < VectorCount; x++)
+                {
                     SearchVector.erase(SearchVector.end() - 1);
+                }
                 Utilities->CallLogPop(297);
-                return false;
+                return(false);
             }
         }
-
 // check if exceeds the search H & V limits - drop in favour of limiting TotalSearchCount
 // if((SearchElement.HLoc > SearchLimitHighH) || (SearchElement.HLoc < SearchLimitLowH) ||
 // (SearchElement.VLoc > SearchLimitHighV) ||(SearchElement.VLoc < SearchLimitLowV))
         if(TotalSearchCount > RouteSearchLimit)
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(1689);
-            return false;
+            return(false);
         }
-
 // check if found it
         if(SearchElement.TrackVectorPosition == RequiredPosition)
         {
             if(SearchElement.TrackType == Points) // can only happen for platform element in CallingOnAllowed function
             {
                 if((SearchElement.ELinkPos == 1) || (SearchElement.ELinkPos == 3))
+                {
                     SearchElement.XLinkPos = 0; // select the straight track (for the platform)
+                }
                 else
+                {
                     SearchElement.XLinkPos = 1;
+                }
 // SearchElement.XLink = SearchElement.Link[XLinkPos];  WRONG!! NajamUddin found this error 17/01/11, XLinkPos is the function input parameter, should be SearchElement.XLinkPos
                 SearchElement.XLink = SearchElement.Link[SearchElement.XLinkPos]; // corrected for v0.6a
             }
@@ -15002,26 +16010,28 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
             VectorCount++; // not really needed but include for tidyness
             TotalSearchCount++;
             Utilities->CallLogPop(298);
-            return true;
+            return(true);
         }
 // Not the required element - check if a buffer or continuation
         if((SearchElement.TrackType == Buffers) || (SearchElement.TrackType == Continuation))
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(299);
-            return false;
+            return(false);
         }
-
 // check if SearchVector exceeds a size of 150
         if(SearchVector.size() > 150)
         {
             for(int x = 0; x < VectorCount; x++)
+            {
                 SearchVector.erase(SearchVector.end() - 1);
+            }
             Utilities->CallLogPop(1421);
-            return false;
+            return(false);
         }
-
 // check if reached a leading point
         if((SearchElement.TrackType == Points) && (SearchElement.Config[SearchElement.ELinkPos] == Lead))
         {
@@ -15029,11 +16039,17 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
             int SearchPos1 = SearchElement.Attribute + 1;
             int SearchPos2;
             if(SearchPos1 == 2)
+            {
                 SearchPos1++;
+            }
             if(SearchPos1 == 1)
+            {
                 SearchPos2 = 3;
+            }
             else
+            {
                 SearchPos2 = 1;
+            }
 // push element with XLink set to position [SearchPos1]
             SearchElement.XLink = SearchElement.Link[SearchPos1];
             SearchElement.XLinkPos = SearchPos1;
@@ -15043,9 +16059,11 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
                 if(AllRoutes->DiagonalFouledByRouteOrTrain(4, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
                 {
                     for(int x = 0; x < VectorCount; x++)
+                    {
                         SearchVector.erase(SearchVector.end() - 1);
+                    }
                     Utilities->CallLogPop(300);
-                    return false;
+                    return(false);
                 }
             }
             SearchVector.push_back(SearchElement);
@@ -15057,7 +16075,7 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
             if(SearchForNonPreferredRoute(6, NextTrackElement, SearchPos1, RequiredPosition, ReqPosRouteID))
             {
                 Utilities->CallLogPop(301);
-                return true;
+                return(true);
             }
             else
             {
@@ -15073,9 +16091,11 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
                     if(AllRoutes->DiagonalFouledByRouteOrTrain(5, SearchElement.HLoc, SearchElement.VLoc, SearchElement.XLink))
                     {
                         for(int x = 0; x < VectorCount; x++)
+                        {
                             SearchVector.erase(SearchVector.end() - 1);
+                        }
                         Utilities->CallLogPop(302);
-                        return false;
+                        return(false);
                     }
                 }
                 SearchVector.push_back(SearchElement);
@@ -15085,17 +16105,20 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
                 if(SearchForNonPreferredRoute(7, NextTrackElement, SearchPos2, RequiredPosition, ReqPosRouteID))
                 {
                     Utilities->CallLogPop(303);
-                    return true;
+                    return(true);
                 }
                 else
                 {
                     for(int x = 0; x < VectorCount; x++)
+                    {
                         SearchVector.erase(SearchVector.end() - 1);
+                    }
                     Utilities->CallLogPop(304);
-                    return false;
+                    return(false);
                 }
             }
         } // if leading point
+
 // here if ordinary element, push it, inc VectorCount & update CurrentTrackElement
 // ready for next element on route
         SearchVector.push_back(SearchElement);
@@ -15147,14 +16170,22 @@ void TOneRoute::SetRemainingSearchVectorValues(int Caller)
                 }
                 int ELinkPos;
                 if(SearchVector.at(0).XLinkPos == 0)
+                {
                     ELinkPos = 1; // use actual value rather than 'x' as may be a gap with both ends
+                }
                 // linked to 1st searchvector element, & if XLink was set then x may not correspond
                 if(SearchVector.at(0).XLinkPos == 1)
+                {
                     ELinkPos = 0;
+                }
                 if(SearchVector.at(0).XLinkPos == 2)
+                {
                     ELinkPos = 3;
+                }
                 if(SearchVector.at(0).XLinkPos == 3)
+                {
                     ELinkPos = 2;
+                }
                 if(SearchVector.at(0).ELink == -1) // because was start element, & can't be points, but could be a gap
                 {
                     SearchVector.at(0).ELink = SearchVector.at(0).Link[ELinkPos];
@@ -15210,7 +16241,7 @@ void TOneRoute::ConvertAndAddNonPreferredRouteSearchVector(int Caller, IDInt Req
 
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ConvertAndAddNonPreferredRouteSearchVector," +
-        AnsiString(ReqPosRouteID.GetInt()));
+                                 AnsiString(ReqPosRouteID.GetInt()));
     if(SearchVector.size() < 1)
     {
         Utilities->CallLogPop(306);
@@ -15222,7 +16253,6 @@ void TOneRoute::ConvertAndAddNonPreferredRouteSearchVector(int Caller, IDInt Req
         Utilities->CallLogPop(307);
         return;
     }
-
     TAllRoutes::TLockedRouteClass LockedRouteObject;
 
     AllRoutes->LockedRouteFoundDuringRouteBuilding = false;
@@ -15238,7 +16268,7 @@ void TOneRoute::ConvertAndAddNonPreferredRouteSearchVector(int Caller, IDInt Req
         if(!(AllRoutes->GetFixedRouteAtIDNumber(45, ReqPosRouteID).GetFixedPrefDirElementAt(66, 0).AutoSignals))
         {
             for(unsigned int x = 1; x < AllRoutes->GetFixedRouteAtIDNumber(46, ReqPosRouteID).PrefDirSize();
-            x++) // start at 1 as first element already in SearchVector
+                x++) // start at 1 as first element already in SearchVector
             {
                 SearchVector.push_back(AllRoutes->GetFixedRouteAtIDNumber(47, ReqPosRouteID).GetFixedPrefDirElementAt(67, x));
             }
@@ -15259,7 +16289,6 @@ void TOneRoute::ConvertAndAddNonPreferredRouteSearchVector(int Caller, IDInt Req
             SearchVector.pop_back();
         }
     }
-
     if(StartSelectionRouteID > -1)
 /* if have StartSelectionRouteID:
       if existing route non-autosig, then add the new route to the existing route (start element not stored in searchvector)
@@ -15267,7 +16296,7 @@ void TOneRoute::ConvertAndAddNonPreferredRouteSearchVector(int Caller, IDInt Req
 */
     {
         if(AllRoutes->IsThereARouteAtIDNumber(1, StartSelectionRouteID))
-    // need to test because may have been removed by a train moving in the wrong direction between first and last route selections - added at v1.3.1
+        // need to test because may have been removed by a train moving in the wrong direction between first and last route selections - added at v1.3.1
         {
             if(!(AllRoutes->GetFixedRouteAtIDNumber(49, StartSelectionRouteID).GetFixedPrefDirElementAt(69, 0).AutoSignals))
             {
@@ -15275,7 +16304,7 @@ void TOneRoute::ConvertAndAddNonPreferredRouteSearchVector(int Caller, IDInt Req
                 for(unsigned int x = 0; x < SearchVector.size(); x++)
                 {
                     AllRoutes->AddRouteElement(2, GetFixedSearchElementAt(4, x).HLoc, GetFixedSearchElementAt(5, x).VLoc, GetFixedSearchElementAt(6, x).ELink,
-                        RouteNumber, GetFixedSearchElementAt(7, x));
+                                               RouteNumber, GetFixedSearchElementAt(7, x));
                     // find & store locked route truncate position in PrefDirVector for later use
                     if(AllRoutes->LockedRouteFoundDuringRouteBuilding)
                     {
@@ -15303,9 +16332,9 @@ void TOneRoute::ConvertAndAddNonPreferredRouteSearchVector(int Caller, IDInt Req
                     // now reset the signals for the locked route
                     AllRoutes->SetAllRearwardsSignals(12, 0, RouteNumber, TruncatePrefDirPosition);
                     for(int c = AllRoutes->GetFixedRouteAt(177, RouteNumber).PrefDirSize() - 1; c >= (int)TruncatePrefDirPosition;
-                    c--) // must use int for >= test to succeed when TruncatePrefDirPosition == 0
-                    // return all signals to red in route section to be truncated
+                        c--) // must use int for >= test to succeed when TruncatePrefDirPosition == 0
                     {
+                        // return all signals to red in route section to be truncated
                         TPrefDirElement PrefDirElement = AllRoutes->GetFixedRouteAt(178, RouteNumber).PrefDirVector.at(c);
                         TTrackElement & TrackElement = Track->TrackElementAt(813, PrefDirElement.TrackVectorPosition);
                         if(PrefDirElement.Config[PrefDirElement.XLinkPos] == Signal)
@@ -15329,7 +16358,6 @@ void TOneRoute::ConvertAndAddNonPreferredRouteSearchVector(int Caller, IDInt Req
 // if new route non-autosig and existing route autosig, leave the existing route as it is, and just enter the new route into the AllRoutesVector
 // hence nothing to do here
     }
-
     PrefDirVector = SearchVector; // copy again prior to storing as a route as SearchVector may have been extended
     if(!ValidatePrefDir(8)) // validate PrefDir for all new route elements
     {
@@ -15407,13 +16435,13 @@ void TOneRoute::SetRouteSignals(int Caller) const
         // Note that LastElement can't be points but can be linked to points
         {
             if(AllRoutes->GetRouteTypeAndNumber(16, LastElement.Conn[LastElement.XLinkPos], LastElement.ConnLinkPos[LastElement.XLinkPos],
-                ForwardLinkedRouteNumber) != TAllRoutes::NoRoute)
+                                                ForwardLinkedRouteNumber) != TAllRoutes::NoRoute)
             {
                 if(ForwardLinkedRouteNumber > -1)
                 {
                     int NextForwardLinkedRouteNumber = -1;
                     while(!(AllRoutes->GetFixedRouteAt(171, ForwardLinkedRouteNumber).FindForwardTargetSignalAttribute(1, NextForwardLinkedRouteNumber,
-                        Attribute)))
+                                                                                                                       Attribute)))
                     {
                         ForwardLinkedRouteNumber = NextForwardLinkedRouteNumber;
                     }
@@ -15425,9 +16453,9 @@ void TOneRoute::SetRouteSignals(int Caller) const
         }
         int RouteNumber;
         TAllRoutes::TRouteType RouteType = AllRoutes->GetRouteTypeAndNumber(15, GetFixedPrefDirElementAt(187, 0).TrackVectorPosition,
-            GetFixedPrefDirElementAt(193, 0).XLinkPos, RouteNumber);
+                                                                            GetFixedPrefDirElementAt(193, 0).XLinkPos, RouteNumber);
         if(RouteType != TAllRoutes::NoRoute)
-    // it will be, above only used to get RouteNumber, can choose any element in the route so use GetFixedPrefDirElementAt
+        // it will be, above only used to get RouteNumber, can choose any element in the route so use GetFixedPrefDirElementAt
         {
             AllRoutes->SetAllRearwardsSignals(8, Attribute, RouteNumber, PrefDirSize() - 1);
         }
@@ -15438,7 +16466,8 @@ void TOneRoute::SetRouteSignals(int Caller) const
 // ---------------------------------------------------------------------------
 
 bool TOneRoute::PointsToBeChanged(int Caller) const
-{ // true if at any point in SearchVector points have to be changed
+{
+    // true if at any point in SearchVector points have to be changed
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PointsToBeChanged");
     if(!SearchVector.empty())
     {
@@ -15449,7 +16478,7 @@ bool TOneRoute::PointsToBeChanged(int Caller) const
                 if(Track->TrackElementAt(752, SearchPtr->TrackVectorPosition).Attribute != 0) // 0=straight or LH
                 {
                     Utilities->CallLogPop(1717);
-                    return true;
+                    return(true);
                 }
             }
             if((SearchPtr->TrackType == Points) && ((SearchPtr->ELinkPos == 3) || (SearchPtr->XLinkPos == 3))) // 3=diverging trailing
@@ -15457,13 +16486,13 @@ bool TOneRoute::PointsToBeChanged(int Caller) const
                 if(Track->TrackElementAt(753, SearchPtr->TrackVectorPosition).Attribute != 1) // 1=diverging or RH
                 {
                     Utilities->CallLogPop(1718);
-                    return true;
+                    return(true);
                 }
             }
         }
     }
     Utilities->CallLogPop(1719);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -15490,26 +16519,30 @@ bool TOneRoute::FindForwardTargetSignalAttribute(int Caller, int &NextForwardLin
         if(PrefDirVector.at(x).TrackType == Bridge)
         {
             if(PrefDirVector.at(x).XLinkPos < 2)
+            {
                 TrainID = Track->TrackElementAt(101, PrefDirVector.at(x).TrackVectorPosition).TrainIDOnBridgeTrackPos01;
+            }
             else
+            {
                 TrainID = Track->TrackElementAt(102, PrefDirVector.at(x).TrackVectorPosition).TrainIDOnBridgeTrackPos23;
+            }
         }
         if(TrainID != -1)
         {
             Utilities->CallLogPop(328);
-            return true;
+            return(true);
         }
         if(PrefDirVector.at(x).TrackType == Buffers)
         {
             Attribute = 1;
             Utilities->CallLogPop(329);
-            return true;
+            return(true);
         }
         if(PrefDirVector.at(x).TrackType == Continuation)
         {
             Attribute = 3;
             Utilities->CallLogPop(330);
-            return true;
+            return(true);
         }
         if(Track->IsLCAtHV(42, PrefDirVector.at(x).HLoc, PrefDirVector.at(x).VLoc))
         {
@@ -15517,16 +16550,18 @@ bool TOneRoute::FindForwardTargetSignalAttribute(int Caller, int &NextForwardLin
             {
                 Attribute = 0;
                 Utilities->CallLogPop(1950);
-                return true;
+                return(true);
             }
         }
         if(PrefDirVector.at(x).Config[PrefDirVector.at(x).XLinkPos] == Signal)
         {
             Attribute = Track->TrackElementAt(103, PrefDirVector.at(x).TrackVectorPosition).Attribute + 1;
             if(Attribute > 3)
+            {
                 Attribute = 3;
+            }
             Utilities->CallLogPop(331);
-            return true;
+            return(true);
         }
         if(x == PrefDirSize() - 1)
         {
@@ -15534,17 +16569,17 @@ bool TOneRoute::FindForwardTargetSignalAttribute(int Caller, int &NextForwardLin
             if(LastElement.Conn[LastElement.XLinkPos] > -1)
             {
                 if(AllRoutes->GetRouteTypeAndNumber(2, LastElement.Conn[LastElement.XLinkPos],
-                    Track->GetNonPointsOppositeLinkPos(LastElement.ConnLinkPos[LastElement.XLinkPos]), NextForwardLinkedRouteNumber) != TAllRoutes::NoRoute)
+                                                    Track->GetNonPointsOppositeLinkPos(LastElement.ConnLinkPos[LastElement.XLinkPos]), NextForwardLinkedRouteNumber) != TAllRoutes::NoRoute)
                 {
                     Attribute = 0;
                     Utilities->CallLogPop(332);
-                    return false;
+                    return(false);
                 }
             }
         }
     }
     Utilities->CallLogPop(333);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -15570,7 +16605,7 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRearwardsSignalsReturnFalseForTrain," + AnsiString(Attribute) + "," +
-        AnsiString(PrefDirVectorStartPosition));
+                                 AnsiString(PrefDirVectorStartPosition));
     Graphics::TBitmap *EXGraphicPtr = RailGraphics->bmTransparentBgnd; // default values
     Graphics::TBitmap *EntryDirectionGraphicPtr = RailGraphics->bmTransparentBgnd;
 // if no train between end of route and PrefDirVectorStartPosition, route not in ContinuationAutoSigVector
@@ -15585,9 +16620,13 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
             if(PrefDirPtr->TrackType == Bridge)
             {
                 if(PrefDirPtr->XLinkPos < 2)
+                {
                     TrainID = Track->TrackElementAt(105, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeTrackPos01;
+                }
                 else
+                {
                     TrainID = Track->TrackElementAt(106, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeTrackPos23;
+                }
             }
             if(TrainID != -1)
             {
@@ -15600,7 +16639,7 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
         if(!TrainController->ContinuationAutoSigVector.empty())
         {
             for(AutoSigVectorIT = TrainController->ContinuationAutoSigVector.begin(); AutoSigVectorIT < TrainController->ContinuationAutoSigVector.end();
-            AutoSigVectorIT++)
+                AutoSigVectorIT++)
             {
                 if(!AllRoutes->AllRoutesVector.empty())
                 {
@@ -15612,32 +16651,39 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
                 }
             }
         }
-
         if(AllRoutes->RouteTruncateFlag)
+        {
             SkipContinuationAndBufferAttributeChange = true;
-
+        }
         if(!SkipContinuationAndBufferAttributeChange)
         {
             if(PrefDirVector.back().TrackType == Buffers)
+            {
                 Attribute = 1; // treat buffer as red signal
+            }
             if(PrefDirVector.back().TrackType == Continuation)
+            {
                 Attribute = 3; // treat continuation as a green signal
+            }
         }
-
         for(TPrefDirVectorConstIterator PrefDirPtr = (PrefDirVector.begin() + PrefDirVectorStartPosition); PrefDirPtr >= PrefDirVector.begin(); PrefDirPtr--)
         {
             int TrainID = Track->TrackElementAt(107, PrefDirPtr->TrackVectorPosition).TrainIDOnElement;
             if(PrefDirPtr->TrackType == Bridge)
             {
                 if(PrefDirPtr->XLinkPos < 2)
+                {
                     TrainID = Track->TrackElementAt(108, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeTrackPos01;
+                }
                 else
+                {
                     TrainID = Track->TrackElementAt(109, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeTrackPos23;
+                }
             }
             if(TrainID != -1)
             {
                 Utilities->CallLogPop(334);
-                return false;
+                return(false);
             }
             // if find an LC that is closed to trains (or flashing - may be extending an earlier route with flashing LCs) then reset
             // the attribute to 0 so first signal behind the LC is red
@@ -15653,30 +16699,36 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
             if(PrefDirPtr->Config[PrefDirPtr->XLinkPos] == Signal)
             {
                 if((!AllRoutes->RouteTruncateFlag) || (PrefDirPtr != (PrefDirVector.begin() + PrefDirVectorStartPosition)) || PrefDirPtr->AutoSignals ||
-                    PrefDirPtr->PrefDirRoute)
+                   PrefDirPtr->PrefDirRoute)
                 {
                     if(Attribute < 3)
+                    {
                         Track->TrackElementAt(110, PrefDirPtr->TrackVectorPosition).Attribute = Attribute;
+                    }
                     else
+                    {
                         Track->TrackElementAt(111, PrefDirPtr->TrackVectorPosition).Attribute = 3; // green
+                    }
                     Track->PlotSignal(1, Track->TrackElementAt(112, PrefDirPtr->TrackVectorPosition), Display);
                     if(AllRoutes->GetRouteTypeAndGraphics(1, PrefDirPtr->TrackVectorPosition, PrefDirPtr->XLinkPos, EXGraphicPtr,
-                        EntryDirectionGraphicPtr) != TAllRoutes::NoRoute)
+                                                          EntryDirectionGraphicPtr) != TAllRoutes::NoRoute)
                     {
                         Display->PlotOutput(16, Track->TrackElementAt(113, PrefDirPtr->TrackVectorPosition).HLoc * 16,
-                            Track->TrackElementAt(114, PrefDirPtr->TrackVectorPosition).VLoc * 16, EXGraphicPtr);
+                                            Track->TrackElementAt(114, PrefDirPtr->TrackVectorPosition).VLoc * 16, EXGraphicPtr);
                         Display->PlotOutput(17, Track->TrackElementAt(115, PrefDirPtr->TrackVectorPosition).HLoc * 16,
-                            Track->TrackElementAt(116, PrefDirPtr->TrackVectorPosition).VLoc * 16, EntryDirectionGraphicPtr);
+                                            Track->TrackElementAt(116, PrefDirPtr->TrackVectorPosition).VLoc * 16, EntryDirectionGraphicPtr);
                     }
                     if(Attribute < 3)
+                    {
                         Attribute++;
+                    }
                     Display->Update(); // update after recent plots
                 }
             }
         }
     }
     Utilities->CallLogPop(335);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -15694,7 +16746,7 @@ void TOneRoute::GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool Pre
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetRouteTruncateElement," + AnsiString(HLoc) + "," + AnsiString(VLoc) +
-        "," + AnsiString((short)PrefDirRoute));
+                                 "," + AnsiString((short)PrefDirRoute));
     bool ElementInRoute = false;
     bool TrainOccupyingRoute = false;
 
@@ -15719,9 +16771,13 @@ void TOneRoute::GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool Pre
         if(PrefDirVector.at(b).TrackType == Bridge)
         {
             if(PrefDirVector.at(b).XLinkPos < 2)
+            {
                 TrainID = Track->TrackElementAt(118, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeTrackPos01;
+            }
             else
+            {
                 TrainID = Track->TrackElementAt(119, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeTrackPos23;
+            }
         }
         if(TrainID != -1)
         {
@@ -15787,7 +16843,6 @@ void TOneRoute::GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool Pre
                     }
                 }
             }
-
             int RouteNumber;
             AllRoutes->GetRouteTypeAndNumber(3, GetFixedPrefDirElementAt(84, 0).TrackVectorPosition, GetFixedPrefDirElementAt(85, 0).XLinkPos, RouteNumber);
 // Have to call RouteLockingRequired before SetAllRearwardsSignals because RouteLockingRequired tests the first rearward signal, if it is
@@ -15807,14 +16862,13 @@ void TOneRoute::GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool Pre
                     }
                 }
             }
-
             if(AllRoutes->RouteLockingRequired(0, RouteNumber, b) || TrainOccupyingRoute) // added TrainOccupyingRoute  at v2.1.0,
             // RouteLockingRequired only checks for trains approaching
             {
                 TrainController->StopTTClockFlag = true;
                 TrainController->RestartTime = TrainController->TTClockTime;
                 int button = Application->MessageBox(L"Train approaching or occupying route, YES to lock route (2 minutes to release), NO to cancel",
-                    L"Warning!", MB_YESNO | MB_ICONWARNING);
+                                                     L"Warning!", MB_YESNO | MB_ICONWARNING);
                 TrainController->BaseTime = TDateTime::CurrentDateTime();
                 TrainController->StopTTClockFlag = false;
                 if(button == IDNO)
@@ -15837,7 +16891,7 @@ void TOneRoute::GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool Pre
                 if(!AllRoutes->LockedRouteVector.empty())
                 {
                     for(TAllRoutes::TLockedRouteVectorIterator LRVIT = AllRoutes->LockedRouteVector.begin(); LRVIT < AllRoutes->LockedRouteVector.end();
-                    LRVIT++)
+                        LRVIT++)
                     {
                         if(LRVIT->RouteNumber == RouteNumber)
                         {
@@ -15848,11 +16902,13 @@ void TOneRoute::GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool Pre
                     }
                 }
                 if(!ExistingLockedRouteModified)
+                {
                     AllRoutes->LockedRouteVector.push_back(LockedRoute);
+                }
                 AllRoutes->SetAllRearwardsSignals(2, 0, RouteNumber, b);
                 for(int c = PrefDirSize() - 1; c >= (int)b; c--) // must use int for >= test to succeed when b == 0
-                // return all signals to red in route section to be truncated
                 {
+                    // return all signals to red in route section to be truncated
                     TPrefDirElement PrefDirElement = AllRoutes->GetFixedRouteAt(61, RouteNumber).PrefDirVector.at(c);
                     TTrackElement & TrackElement = Track->TrackElementAt(120, PrefDirElement.TrackVectorPosition);
                     if(PrefDirElement.Config[PrefDirElement.XLinkPos] == Signal)
@@ -15900,7 +16956,7 @@ void TOneRoute::ForceCancelRoute(int Caller)
     TrainController->RestartTime = TrainController->TTClockTime;
     int RouteNumber;
     TAllRoutes::TRouteType RouteType = AllRoutes->GetRouteTypeAndNumber(4, GetFixedPrefDirElementAt(86, 0).TrackVectorPosition,
-        GetFixedPrefDirElementAt(87, 0).XLinkPos, RouteNumber);
+                                                                        GetFixedPrefDirElementAt(87, 0).XLinkPos, RouteNumber);
 
     if(RouteType != TAllRoutes::NoRoute) // it won't be, above only used to get RouteNumber for setting rearwards signals
     {
@@ -15935,7 +16991,7 @@ void TOneRoute::SetRouteSearchVectorGraphics(int Caller, bool AutoSigsFlag, bool
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteSearchVectorGraphics," + AnsiString((short)AutoSigsFlag) + "," +
-        AnsiString((short)PrefDirRoute));
+                                 AnsiString((short)PrefDirRoute));
     if(SearchVector.empty())
     {
         Utilities->CallLogPop(1149);
@@ -15945,7 +17001,7 @@ void TOneRoute::SetRouteSearchVectorGraphics(int Caller, bool AutoSigsFlag, bool
     {
         GetModifiableSearchElementAt(1, b).EXGraphicPtr = GetModifiableSearchElementAt(2, b).GetRouteGraphicPtr(AutoSigsFlag, PrefDirRoute);
         GetModifiableSearchElementAt(3, b).EntryDirectionGraphicPtr = GetModifiableSearchElementAt(4, b).GetDirectionRouteGraphicPtr(AutoSigsFlag,
-            PrefDirRoute);
+                                                                                                                                     PrefDirRoute);
     }
     Utilities->CallLogPop(346);
 }
@@ -15960,7 +17016,7 @@ void TOneRoute::SetRouteFlashValues(int Caller, bool AutoSigsFlag, bool PrefDirR
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteAndLCChangeValues," + AnsiString((short)AutoSigsFlag) + "," +
-        AnsiString((short)PrefDirRoute));
+                                 AnsiString((short)PrefDirRoute));
     RouteFlash.RouteFlashVector.clear();
     TRouteFlashElement RouteFlashElement;
 
@@ -16031,7 +17087,9 @@ void TOneRoute::TRouteFlash::PlotRouteOverlay(int Caller)
         for(unsigned int x = 0; x < RouteFlashVector.size(); x++)
         {
             if(Track->TrackElementAt(123, RouteFlashVector.at(x).TrackVectorPosition).TrainIDOnElement > -1)
+            {
                 continue;
+            }
             Display->PlotOutput(20, RouteFlashVector.at(x).HLoc * 16, RouteFlashVector.at(x).VLoc * 16, RouteFlashVector.at(x).OverlayGraphic);
             Display->Update();
         }
@@ -16056,7 +17114,9 @@ void TOneRoute::TRouteFlash::PlotRouteOriginal(int Caller)
         for(unsigned int x = 0; x < RouteFlashVector.size(); x++)
         {
             if(Track->TrackElementAt(124, RouteFlashVector.at(x).TrackVectorPosition).TrainIDOnElement > -1)
+            {
                 continue;
+            }
             Display->PlotOutput(21, RouteFlashVector.at(x).HLoc * 16, RouteFlashVector.at(x).VLoc * 16, RouteFlashVector.at(x).OriginalGraphic);
             Display->Update();
         }
@@ -16075,7 +17135,7 @@ const TOneRoute &TAllRoutes::GetFixedRouteAt(int Caller, int At) const
         throw Exception("Out of Range Error, vector size: " + AnsiString(AllRoutesVector.size()) + ", At: " + AnsiString(At) + " in GetFixedRouteAt");
     }
     Utilities->CallLogPop(120);
-    return AllRoutesVector.at(At);
+    return(AllRoutesVector.at(At));
 }
 
 // ---------------------------------------------------------------------------
@@ -16089,7 +17149,7 @@ TOneRoute &TAllRoutes::GetModifiableRouteAt(int Caller, int At)
         throw Exception("Out of Range Error, vector size: " + AnsiString(AllRoutesVector.size()) + ", At: " + AnsiString(At) + " in GetModifiableRouteAt");
     }
     Utilities->CallLogPop(121);
-    return AllRoutesVector.at(At);
+    return(AllRoutesVector.at(At));
 }
 
 // ---------------------------------------------------------------------------
@@ -16132,7 +17192,7 @@ bool TAllRoutes::GetAllRoutesTruncateElement(int Caller, int HLoc, int VLoc, boo
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetAllRoutesTruncateElement," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc) + "," + AnsiString((short)PrefDirRoute));
+                                 AnsiString(VLoc) + "," + AnsiString((short)PrefDirRoute));
     for(unsigned int a = 0; a < AllRoutesSize(); a++)
     {
         TTruncateReturnType ReturnFlag;
@@ -16141,20 +17201,22 @@ bool TAllRoutes::GetAllRoutesTruncateElement(int Caller, int HLoc, int VLoc, boo
         GetModifiableRouteAt(7, a).GetRouteTruncateElement(0, HLoc, VLoc, PrefDirRoute, ReturnFlag);
         RouteTruncateFlag = false;
         if(ReturnFlag == NotInRoute)
+        {
             continue;
+        }
         else if(ReturnFlag == InRouteTrue)
         {
             Utilities->CallLogPop(352);
-            return true;
+            return(true);
         }
         else if(ReturnFlag == InRouteFalse)
         {
             Utilities->CallLogPop(353);
-            return false;
+            return(false);
         }
     }
     Utilities->CallLogPop(354);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -16166,11 +17228,11 @@ bool TAllRoutes::TrackIsInARoute(int Caller, int TrackVectorPosition, int LinkPo
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrackIsInARoute," + AnsiString(TrackVectorPosition) + "," +
-        AnsiString(LinkPos));
+                                 AnsiString(LinkPos));
     if(TrackVectorPosition == -1) // allows for continuation entries & exits
     {
         Utilities->CallLogPop(355);
-        return false;
+        return(false);
     }
     THVPair Route2MultiMapKeyPair;
 
@@ -16182,12 +17244,12 @@ bool TAllRoutes::TrackIsInARoute(int Caller, int TrackVectorPosition, int LinkPo
     if(Route2MultiMap.count(Route2MultiMapKeyPair) == 0) // none found
     {
         Utilities->CallLogPop(356);
-        return false;
+        return(false);
     }
     if(Track->TrackElementAt(706, TrackVectorPosition).TrackType != Bridge) // if not a bridge doesn't matter which track the route is on
     {
         Utilities->CallLogPop(1422);
-        return true;
+        return(true);
     }
     if(Route2MultiMap.count(Route2MultiMapKeyPair) == 1)
     {
@@ -16195,7 +17257,7 @@ bool TAllRoutes::TrackIsInARoute(int Caller, int TrackVectorPosition, int LinkPo
 // check actual link rather than just LinkPos, since if points LinkPos could be 0 or 2 so may not match ELinkPos or XLinkPos, but both refer to same link
 // realised after writing this that can't be points as would have been covered above, but leave anyway
         const TPrefDirElement &PrefDirElement1 = GetFixedRouteAt(64, Route2MultiMapIterator->second.first).GetFixedPrefDirElementAt(88,
-            Route2MultiMapIterator->second.second);
+                                                                                                                                    Route2MultiMapIterator->second.second);
         EntryLinkPos = PrefDirElement1.ELinkPos;
         ExitLinkPos = PrefDirElement1.XLinkPos;
         EntryLink = PrefDirElement1.Link[EntryLinkPos];
@@ -16203,27 +17265,27 @@ bool TAllRoutes::TrackIsInARoute(int Caller, int TrackVectorPosition, int LinkPo
         if(EntryLink == Track->TrackElementAt(127, TrackVectorPosition).Link[LinkPos])
         {
             Utilities->CallLogPop(357);
-            return true;
+            return(true);
         }
         if(ExitLink == Track->TrackElementAt(128, TrackVectorPosition).Link[LinkPos])
         {
             Utilities->CallLogPop(358);
-            return true;
+            return(true);
         }
     }
     if(Route2MultiMap.count(Route2MultiMapKeyPair) == 2) // if both tracks in route then must return true
     {
         Utilities->CallLogPop(1423);
-        return true;
+        return(true);
     }
     Utilities->CallLogPop(363);
-    return false; // none found
+    return(false); // none found
 }
 
 // ---------------------------------------------------------------------------
 
 TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndGraphics(int Caller, int TrackVectorPosition, int LinkPos, Graphics::TBitmap* &EXGraphicPtr,
-    Graphics::TBitmap* &EntryDirectionGraphicPtr)
+                                                           Graphics::TBitmap* &EntryDirectionGraphicPtr)
 /*
       Examines Route2MultiMap and if finds the element at TrackVectorPosition with LinkPos (can be entry or exit) returns the appropriate route
       type - NoRoute, NotAutoSigsRoute, or AutoSigsRoute.  If element not found then NoRoute is returned.  If element is in a route then the EXGraphicPtr
@@ -16233,13 +17295,13 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndGraphics(int Caller, int Track
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetRouteTypeAndGraphics," + AnsiString(TrackVectorPosition) + "," +
-        AnsiString(LinkPos));
+                                 AnsiString(LinkPos));
     EXGraphicPtr = RailGraphics->bmTransparentBgnd; // default value
     EntryDirectionGraphicPtr = RailGraphics->bmTransparentBgnd; // default value
     if(TrackVectorPosition == -1)
     {
         Utilities->CallLogPop(364);
-        return NoRoute; // allows for continuation entries & exits
+        return(NoRoute); // allows for continuation entries & exits
     }
     THVPair Route2MultiMapKeyPair;
 
@@ -16251,14 +17313,14 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndGraphics(int Caller, int Track
     if(Route2MultiMap.count(Route2MultiMapKeyPair) == 0)
     {
         Utilities->CallLogPop(365);
-        return NoRoute; // none found
+        return(NoRoute); // none found
     }
     if(Route2MultiMap.count(Route2MultiMapKeyPair) == 1)
     {
         Route2MultiMapIterator = Route2MultiMap.find(Route2MultiMapKeyPair);
 // check actual link rather than just LinkPos, since if points LinkPos could be 0 or 2 so may not match ELinkPos or XLinkPos, but both refer to same link
         const TPrefDirElement &PrefDirElement1 = GetFixedRouteAt(73, Route2MultiMapIterator->second.first).GetFixedPrefDirElementAt(97,
-            Route2MultiMapIterator->second.second);
+                                                                                                                                    Route2MultiMapIterator->second.second);
         EntryLinkPos = PrefDirElement1.ELinkPos;
         ExitLinkPos = PrefDirElement1.XLinkPos;
         EntryLink = PrefDirElement1.Link[EntryLinkPos];
@@ -16267,38 +17329,38 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndGraphics(int Caller, int Track
         {
             EXGraphicPtr = PrefDirElement1.EXGraphicPtr;
             if((Route2MultiMapIterator->second.second == 0) || (Route2MultiMapIterator->second.second == GetFixedRouteAt(74,
-                Route2MultiMapIterator->second.first).PrefDirSize() - 1))
+                                                                                                                         Route2MultiMapIterator->second.first).PrefDirSize() - 1))
             {
                 EntryDirectionGraphicPtr = PrefDirElement1.EntryDirectionGraphicPtr;
             }
             if(PrefDirElement1.AutoSignals)
             {
                 Utilities->CallLogPop(366);
-                return AutoSigsRoute;
+                return(AutoSigsRoute);
             }
             else
             {
                 Utilities->CallLogPop(367);
-                return NotAutoSigsRoute;
+                return(NotAutoSigsRoute);
             }
         }
         if(ExitLink == Track->TrackElementAt(136, TrackVectorPosition).Link[LinkPos])
         {
             EXGraphicPtr = PrefDirElement1.EXGraphicPtr;
             if((Route2MultiMapIterator->second.second == 0) || (Route2MultiMapIterator->second.second == GetFixedRouteAt(75,
-                Route2MultiMapIterator->second.first).PrefDirSize() - 1))
+                                                                                                                         Route2MultiMapIterator->second.first).PrefDirSize() - 1))
             {
                 EntryDirectionGraphicPtr = PrefDirElement1.EntryDirectionGraphicPtr;
             }
             if(PrefDirElement1.AutoSignals)
             {
                 Utilities->CallLogPop(368);
-                return AutoSigsRoute;
+                return(AutoSigsRoute);
             }
             else
             {
                 Utilities->CallLogPop(369);
-                return NotAutoSigsRoute;
+                return(NotAutoSigsRoute);
             }
         }
     }
@@ -16322,12 +17384,12 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndGraphics(int Caller, int Track
             if(PrefDirElement2.AutoSignals)
             {
                 Utilities->CallLogPop(370);
-                return AutoSigsRoute;
+                return(AutoSigsRoute);
             }
             else
             {
                 Utilities->CallLogPop(371);
-                return NotAutoSigsRoute;
+                return(NotAutoSigsRoute);
             }
         }
         if(ExitLink == Track->TrackElementAt(138, TrackVectorPosition).Link[LinkPos])
@@ -16340,15 +17402,14 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndGraphics(int Caller, int Track
             if(PrefDirElement2.AutoSignals)
             {
                 Utilities->CallLogPop(372);
-                return AutoSigsRoute;
+                return(AutoSigsRoute);
             }
             else
             {
                 Utilities->CallLogPop(373);
-                return NotAutoSigsRoute;
+                return(NotAutoSigsRoute);
             }
         }
-
         ItPair.second--; // the second iterator points one past the last matching value
         const TPrefDirElement &PrefDirElement3 = GetFixedRouteAt(79, ItPair.second->second.first).GetFixedPrefDirElementAt(99, ItPair.second->second.second);
         EntryLinkPos = PrefDirElement3.ELinkPos;
@@ -16365,12 +17426,12 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndGraphics(int Caller, int Track
             if(PrefDirElement3.AutoSignals)
             {
                 Utilities->CallLogPop(374);
-                return AutoSigsRoute;
+                return(AutoSigsRoute);
             }
             else
             {
                 Utilities->CallLogPop(375);
-                return NotAutoSigsRoute;
+                return(NotAutoSigsRoute);
             }
         }
         if(ExitLink == Track->TrackElementAt(140, TrackVectorPosition).Link[LinkPos])
@@ -16383,17 +17444,17 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndGraphics(int Caller, int Track
             if(PrefDirElement3.AutoSignals)
             {
                 Utilities->CallLogPop(376);
-                return AutoSigsRoute;
+                return(AutoSigsRoute);
             }
             else
             {
                 Utilities->CallLogPop(377);
-                return NotAutoSigsRoute;
+                return(NotAutoSigsRoute);
             }
         }
     }
     Utilities->CallLogPop(378);
-    return NoRoute; // none found
+    return(NoRoute); // none found
 }
 
 // ---------------------------------------------------------------------------
@@ -16404,12 +17465,12 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndNumber(int Caller, int TrackVe
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetRouteTypeAndNumber," + AnsiString(TrackVectorPosition) + "," +
-        AnsiString(LinkPos));
+                                 AnsiString(LinkPos));
     if(TrackVectorPosition == -1)
     {
         RouteNumber = -1;
         Utilities->CallLogPop(379);
-        return NoRoute; // allows for continuation & buffer entries & exits
+        return(NoRoute); // allows for continuation & buffer entries & exits
     }
     THVPair Route2MultiMapKeyPair;
 
@@ -16422,14 +17483,14 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndNumber(int Caller, int TrackVe
     {
         RouteNumber = -1;
         Utilities->CallLogPop(380);
-        return NoRoute; // none found
+        return(NoRoute); // none found
     }
     if(Route2MultiMap.count(Route2MultiMapKeyPair) == 1)
     {
         Route2MultiMapIterator = Route2MultiMap.find(Route2MultiMapKeyPair);
 // check actual link rather than just LinkPos, since if points LinkPos could be 0 or 2 so may not match ELinkPos or XLinkPos, but both refer to same link
         const TPrefDirElement &PrefDirElement1 = GetFixedRouteAt(82, Route2MultiMapIterator->second.first).GetFixedPrefDirElementAt(100,
-            Route2MultiMapIterator->second.second);
+                                                                                                                                    Route2MultiMapIterator->second.second);
         EntryLinkPos = PrefDirElement1.ELinkPos;
         ExitLinkPos = PrefDirElement1.XLinkPos;
         EntryLink = PrefDirElement1.Link[EntryLinkPos];
@@ -16440,12 +17501,12 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndNumber(int Caller, int TrackVe
             if(PrefDirElement1.AutoSignals)
             {
                 Utilities->CallLogPop(381);
-                return AutoSigsRoute;
+                return(AutoSigsRoute);
             }
             else
             {
                 Utilities->CallLogPop(382);
-                return NotAutoSigsRoute;
+                return(NotAutoSigsRoute);
             }
         }
         if(ExitLink == Track->TrackElementAt(144, TrackVectorPosition).Link[LinkPos])
@@ -16454,12 +17515,12 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndNumber(int Caller, int TrackVe
             if(PrefDirElement1.AutoSignals)
             {
                 Utilities->CallLogPop(383);
-                return AutoSigsRoute;
+                return(AutoSigsRoute);
             }
             else
             {
                 Utilities->CallLogPop(384);
-                return NotAutoSigsRoute;
+                return(NotAutoSigsRoute);
             }
         }
     }
@@ -16479,12 +17540,12 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndNumber(int Caller, int TrackVe
             if(PrefDirElement2.AutoSignals)
             {
                 Utilities->CallLogPop(385);
-                return AutoSigsRoute;
+                return(AutoSigsRoute);
             }
             else
             {
                 Utilities->CallLogPop(386);
-                return NotAutoSigsRoute;
+                return(NotAutoSigsRoute);
             }
         }
         if(ExitLink == Track->TrackElementAt(146, TrackVectorPosition).Link[LinkPos])
@@ -16493,15 +17554,14 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndNumber(int Caller, int TrackVe
             if(PrefDirElement2.AutoSignals)
             {
                 Utilities->CallLogPop(387);
-                return AutoSigsRoute;
+                return(AutoSigsRoute);
             }
             else
             {
                 Utilities->CallLogPop(388);
-                return NotAutoSigsRoute;
+                return(NotAutoSigsRoute);
             }
         }
-
         ItPair.second--; // the second iterator points one past the last matching value
         const TPrefDirElement &PrefDirElement3 = GetFixedRouteAt(84, ItPair.second->second.first).GetFixedPrefDirElementAt(102, ItPair.second->second.second);
         EntryLinkPos = PrefDirElement3.ELinkPos;
@@ -16514,12 +17574,12 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndNumber(int Caller, int TrackVe
             if(PrefDirElement3.AutoSignals)
             {
                 Utilities->CallLogPop(389);
-                return AutoSigsRoute;
+                return(AutoSigsRoute);
             }
             else
             {
                 Utilities->CallLogPop(390);
-                return NotAutoSigsRoute;
+                return(NotAutoSigsRoute);
             }
         }
         if(ExitLink == Track->TrackElementAt(148, TrackVectorPosition).Link[LinkPos])
@@ -16528,18 +17588,18 @@ TAllRoutes::TRouteType TAllRoutes::GetRouteTypeAndNumber(int Caller, int TrackVe
             if(PrefDirElement3.AutoSignals)
             {
                 Utilities->CallLogPop(391);
-                return AutoSigsRoute;
+                return(AutoSigsRoute);
             }
             else
             {
                 Utilities->CallLogPop(392);
-                return NotAutoSigsRoute;
+                return(NotAutoSigsRoute);
             }
         }
     }
     RouteNumber = -1;
     Utilities->CallLogPop(393);
-    return NoRoute; // none found
+    return(NoRoute); // none found
 }
 
 // ---------------------------------------------------------------------------
@@ -16562,7 +17622,7 @@ void TAllRoutes::StoreOneRoute(int Caller, TOneRoute *Route)
     for(unsigned int x = 0; x < Route->PrefDirSize(); x++)
     {
         AddRouteElement(0, Route->GetFixedPrefDirElementAt(127, x).HLoc, Route->GetFixedPrefDirElementAt(128, x).VLoc,
-            Route->GetFixedPrefDirElementAt(129, x).GetELink(), AllRoutesSize() - 1, Route->GetFixedPrefDirElementAt(130, x));
+                        Route->GetFixedPrefDirElementAt(129, x).GetELink(), AllRoutesSize() - 1, Route->GetFixedPrefDirElementAt(130, x));
     }
     int FirstVecPos = Route->GetFixedPrefDirElementAt(199, 0).TrackVectorPosition;
     int LastVecPos = Route->GetFixedPrefDirElementAt(200, (Route->PrefDirSize()) - 1).TrackVectorPosition;
@@ -16588,7 +17648,7 @@ void TAllRoutes::StoreOneRouteAfterSessionLoad(int Caller, TOneRoute *Route)
     for(unsigned int x = 0; x < Route->PrefDirSize(); x++)
     {
         AddRouteElement(3, Route->GetFixedPrefDirElementAt(189, x).HLoc, Route->GetFixedPrefDirElementAt(190, x).VLoc,
-            Route->GetFixedPrefDirElementAt(191, x).GetELink(), AllRoutesSize() - 1, Route->GetFixedPrefDirElementAt(192, x));
+                        Route->GetFixedPrefDirElementAt(191, x).GetELink(), AllRoutesSize() - 1, Route->GetFixedPrefDirElementAt(192, x));
     }
     Utilities->CallLogPop(1579);
 }
@@ -16636,7 +17696,6 @@ void TAllRoutes::ClearRouteDuringRouteBuildingAt(int Caller, int RouteNumber)
             }
         }
     }
-
     for(int x = (AllRoutes->GetFixedRouteAt(109, RouteNumber).PrefDirSize()) - 1; x >= 0; x--)
     {
         TPrefDirElement PrefDirElement = AllRoutes->GetFixedRouteAt(110, RouteNumber).GetFixedPrefDirElementAt(131, x);
@@ -16648,7 +17707,7 @@ void TAllRoutes::ClearRouteDuringRouteBuildingAt(int Caller, int RouteNumber)
 // ---------------------------------------------------------------------------
 
 TAllRoutes::TRouteElementPair TAllRoutes::FindRoutePairFromRoute2MultiMap(int Caller, int HLoc, int VLoc, int ELink,
-    TRoute2MultiMapIterator &Route2MultiMapIterator)
+                                                                          TRoute2MultiMapIterator &Route2MultiMapIterator)
 /*
       Examines Route2MultiMap and returns a TRouteElementPair if one is found with the passed values of H, V and ELink.
       Also returned as a reference is an iterator to the found element in the map to assist in erasing it.  Called by
@@ -16658,7 +17717,7 @@ TAllRoutes::TRouteElementPair TAllRoutes::FindRoutePairFromRoute2MultiMap(int Ca
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FindRoutePairFromRoute2MultiMap," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc) + "," + AnsiString(ELink));
+                                 AnsiString(VLoc) + "," + AnsiString(ELink));
     TRouteElementPair ReturnPair;
 
     ReturnPair.first = -1;
@@ -16679,14 +17738,13 @@ TAllRoutes::TRouteElementPair TAllRoutes::FindRoutePairFromRoute2MultiMap(int Ca
     {
         throw Exception("Failed to find Route2MultiMap element at HLoc = " + (AnsiString)HLoc + " VLoc = " + (AnsiString)VLoc);
     }
-
     if(GetFixedRouteAt(111, ItPair.first->second.first).GetFixedPrefDirElementAt(132, ItPair.first->second.second).GetELink() == ELink)
     {
         ReturnPair.first = ItPair.first->second.first;
         ReturnPair.second = ItPair.first->second.second;
         Route2MultiMapIterator = ItPair.first;
         Utilities->CallLogPop(396);
-        return ReturnPair;
+        return(ReturnPair);
     }
     ItPair.first++;
     if(ItPair.first == ItPair.second)
@@ -16699,10 +17757,10 @@ TAllRoutes::TRouteElementPair TAllRoutes::FindRoutePairFromRoute2MultiMap(int Ca
         ReturnPair.second = ItPair.first->second.second;
         Route2MultiMapIterator = ItPair.first;
         Utilities->CallLogPop(397);
-        return ReturnPair;
+        return(ReturnPair);
     }
     Utilities->CallLogPop(398);
-    return ReturnPair;
+    return(ReturnPair);
 }
 
 // ---------------------------------------------------------------------------
@@ -16717,7 +17775,7 @@ bool TAllRoutes::FindRouteNumberFromRoute2MultiMapNoErrors(int Caller, int HLoc,
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FindRouteNumberFromRoute2MultiMapNoErrors," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc) + "," + AnsiString(ELink));
+                                 AnsiString(VLoc) + "," + AnsiString(ELink));
     THVPair Route2MultiMapKeyPair;
 
     Route2MultiMapKeyPair.first = HLoc;
@@ -16730,34 +17788,31 @@ bool TAllRoutes::FindRouteNumberFromRoute2MultiMapNoErrors(int Caller, int HLoc,
     {
         RouteNumber = -1;
         Utilities->CallLogPop(2032);
-        return false;
+        return(false);
     }
-
     if(GetFixedRouteAt(205, ItPair.first->second.first).GetFixedPrefDirElementAt(241, ItPair.first->second.second).GetELink() == ELink)
     {
         RouteNumber = ItPair.first->second.first;
         Utilities->CallLogPop(2033);
-        return true;
+        return(true);
     }
-
     ItPair.first++;
 
     if(ItPair.first == ItPair.second)
     {
         RouteNumber = -1;
         Utilities->CallLogPop(2034);
-        return false;
+        return(false);
     }
-
     if(GetFixedRouteAt(206, ItPair.first->second.first).GetFixedPrefDirElementAt(242, ItPair.first->second.second).GetELink() == ELink)
     {
         RouteNumber = ItPair.first->second.first;
         Utilities->CallLogPop(2035);
-        return true;
+        return(true);
     }
     RouteNumber = -1;
     Utilities->CallLogPop(2036);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -16772,7 +17827,7 @@ void TAllRoutes::Route2MultiMapInsert(int Caller, int HLoc, int VLoc, int ELinkI
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",Route2MultiMapInsert," + AnsiString(HLoc) + "," + AnsiString(VLoc) +
-        "," + AnsiString(ELinkIn) + "," + AnsiString(RouteNumber) + "," + AnsiString(RouteElementNumber));
+                                 "," + AnsiString(ELinkIn) + "," + AnsiString(RouteNumber) + "," + AnsiString(RouteElementNumber));
     THVPair Route2MultiMapKeyPair;
 
     Route2MultiMapKeyPair.first = HLoc;
@@ -16790,11 +17845,11 @@ void TAllRoutes::Route2MultiMapInsert(int Caller, int HLoc, int VLoc, int ELinkI
     // true for element at H&V already included in map, has to be a bridge with existing route on opposite track to be valid
     {
         if(GetFixedRouteAt(113, Route2MultiMap.find(Route2MultiMapKeyPair)->second.first).GetFixedPrefDirElementAt(134,
-            Route2MultiMap.find(Route2MultiMapKeyPair)->second.second).GetELink() != ELinkIn)
+                                                                                                                   Route2MultiMap.find(Route2MultiMapKeyPair)->second.second).GetELink() != ELinkIn)
         // element already at H&V has different ELink to element to be inserted, so must be a bridge with existing route on opposite treack
         {
             if(GetFixedRouteAt(114, Route2MultiMap.find(Route2MultiMapKeyPair)->second.first).GetFixedPrefDirElementAt(135,
-                Route2MultiMap.find(Route2MultiMapKeyPair)->second.second).TrackType != Bridge)
+                                                                                                                       Route2MultiMap.find(Route2MultiMapKeyPair)->second.second).TrackType != Bridge)
             {
                 throw Exception("Error, bridge expected in Route2MultiMapInsert but not, at HLoc=" + AnsiString(HLoc) + " VLoc=" + AnsiString(VLoc));
             }
@@ -16807,7 +17862,9 @@ void TAllRoutes::Route2MultiMapInsert(int Caller, int HLoc, int VLoc, int ELinkI
         }
     }
     else
+    {
         Route2MultiMap.insert(Route2MultiMapEntry);
+    }
 // element at H&V not found in map so insert it
     Utilities->CallLogPop(399);
 }
@@ -16821,7 +17878,7 @@ TAllRoutes::TRouteElementPair TAllRoutes::GetRouteElementDataFromRoute2MultiMap(
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetRouteElementDataFromRoute2MultiMap," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc));
+                                 AnsiString(VLoc));
     TAllRoutes::TRouteElementPair TempPair;
 
     TempPair.first = -1;
@@ -16836,13 +17893,13 @@ TAllRoutes::TRouteElementPair TAllRoutes::GetRouteElementDataFromRoute2MultiMap(
     if(Route2MultiMap.count(Route2MultiMapKeyPair) == 0)
     {
         Utilities->CallLogPop(400);
-        return TempPair;
+        return(TempPair);
     }
     else if(Route2MultiMap.count(Route2MultiMapKeyPair) == 1)
     {
         Route2MultiMapIterator = Route2MultiMap.find(Route2MultiMapKeyPair);
         Utilities->CallLogPop(401);
-        return Route2MultiMapIterator->second;
+        return(Route2MultiMapIterator->second);
     }
     else if(Route2MultiMap.count(Route2MultiMapKeyPair) == 2)
     {
@@ -16850,10 +17907,10 @@ TAllRoutes::TRouteElementPair TAllRoutes::GetRouteElementDataFromRoute2MultiMap(
         TempPair = ItRange.first->second;
         SecondPair = (--ItRange.second)->second; // 2nd iterator points past the last value
         Utilities->CallLogPop(402);
-        return TempPair;
+        return(TempPair);
     }
     Utilities->CallLogPop(403);
-    return TempPair;
+    return(TempPair);
 }
 
 // ---------------------------------------------------------------------------
@@ -16876,22 +17933,22 @@ void TAllRoutes::CheckMapAndRoutes(int Caller) // test
             // failed to find element in multimap
             {
                 throw Exception("CheckMapAndRoutes Error - failed to find HLoc=" + (AnsiString)CheckElement.HLoc + " VLoc=" + (AnsiString)CheckElement.VLoc +
-                    " in Route2MultiMap, Caller=" + (AnsiString)Caller);
+                                " in Route2MultiMap, Caller=" + (AnsiString)Caller);
             }
             if((RouteElementPair.first != (int)a) && (SecondPair.first != (int)a))
             // neither pair has expected route number
             {
                 throw Exception("CheckMapAndRoutes Error - RouteNumber failed at HLoc=" + (AnsiString)CheckElement.HLoc + " VLoc=" +
-                    (AnsiString)CheckElement.VLoc + " Map value=" + (AnsiString)RouteElementPair.first + " Route value=" + (AnsiString)a + " Caller=" +
-                    (AnsiString)Caller);
+                                (AnsiString)CheckElement.VLoc + " Map value=" + (AnsiString)RouteElementPair.first + " Route value=" + (AnsiString)a + " Caller=" +
+                                (AnsiString)Caller);
             }
             if(((RouteElementPair.first != (int)a) || (RouteElementPair.second != b)) && ((SecondPair.first != (int)a) || (SecondPair.second != b)))
             // need one of pairs to match both RouteNumber and RouteElementNumber or fails
             {
                 throw Exception("CheckMapAndRoutes Error - PrefDirVectorNumber failed at HLoc=" + (AnsiString)CheckElement.HLoc + " VLoc=" +
-                    (AnsiString)CheckElement.VLoc + " 1st Map value RouteNum/ElementNum =" + (AnsiString)RouteElementPair.first + "/" +
-                    (AnsiString)RouteElementPair.second + " 2nd Map value =" + (AnsiString)SecondPair.first + "/" + (AnsiString)SecondPair.second +
-                    " Route value=" + (AnsiString)a + "/" + (AnsiString)b + " Caller=" + (AnsiString)Caller);
+                                (AnsiString)CheckElement.VLoc + " 1st Map value RouteNum/ElementNum =" + (AnsiString)RouteElementPair.first + "/" +
+                                (AnsiString)RouteElementPair.second + " 2nd Map value =" + (AnsiString)SecondPair.first + "/" + (AnsiString)SecondPair.second +
+                                " Route value=" + (AnsiString)a + "/" + (AnsiString)b + " Caller=" + (AnsiString)Caller);
             }
         }
     }
@@ -16905,7 +17962,7 @@ void TAllRoutes::CheckMapAndRoutes(int Caller) // test
     if(SizeVal != Route2MultiMap.size())
     {
         throw Exception("CheckMapAndRoutes Error - Map Size=" + (AnsiString)Route2MultiMap.size() + " RouteSize=" + (AnsiString)SizeVal + " Caller=" +
-            (AnsiString)Caller);
+                        (AnsiString)Caller);
     }
     Utilities->CallLogPop(404);
     return;
@@ -16926,7 +17983,9 @@ void TAllRoutes::DecrementRouteNumbersInRoute2MultiMap(int Caller, int RouteNumb
         for(TRoute2MultiMapIterator Route2MultiMapIterator = Route2MultiMap.begin(); Route2MultiMapIterator != Route2MultiMap.end(); Route2MultiMapIterator++)
         {
             if(Route2MultiMapIterator->second.first > RouteNumber)
+            {
                 Route2MultiMapIterator->second.first--;
+            }
         }
     }
     Utilities->CallLogPop(405);
@@ -16942,13 +18001,15 @@ void TAllRoutes::DecrementRouteElementNumbersInRoute2MultiMap(int Caller, int Ro
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DecrementRouteElementNumbersInRoute2MultiMap," +
-        AnsiString(RouteNumber) + "," + AnsiString(ErasedElementNumber));
+                                 AnsiString(RouteNumber) + "," + AnsiString(ErasedElementNumber));
     if(!Route2MultiMap.empty())
     {
         for(TRoute2MultiMapIterator Route2MultiMapIterator = Route2MultiMap.begin(); Route2MultiMapIterator != Route2MultiMap.end(); Route2MultiMapIterator++)
         {
             if((Route2MultiMapIterator->second.first == RouteNumber) && (Route2MultiMapIterator->second.second > ErasedElementNumber))
+            {
                 Route2MultiMapIterator->second.second--;
+            }
         }
     }
     Utilities->CallLogPop(406);
@@ -16966,7 +18027,7 @@ void TAllRoutes::RemoveRouteElement(int Caller, int HLoc, int VLoc, int ELink)
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RemoveRouteElement," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," +
-        AnsiString(ELink));
+                                 AnsiString(ELink));
     TRouteElementPair RequiredRoutePair; // RouteNumber & RouteElementNumber
     TRoute2MultiMapIterator Route2MultiMapIterator;
 
@@ -16985,7 +18046,6 @@ void TAllRoutes::RemoveRouteElement(int Caller, int HLoc, int VLoc, int ELink)
     {
         Track->TrackElementAt(158, PrefDirElement.TrackVectorPosition).Attribute = 0; // change forward signals back to red
     }
-
 // don't need the section below (a) because when a train removes elements from the front of a locked route, there is a test in
 // ApproachLocking to determine whether the element immediately nearer the start of the route to the element being removed is still
 // present, and of not the element removal stops; and (b) because it never worked anyway! - IsElementInLockedRoute.... uses Route2MultiMap
@@ -17002,7 +18062,7 @@ void TAllRoutes::RemoveRouteElement(int Caller, int HLoc, int VLoc, int ELink)
 
 // erase element from route
     GetModifiableRouteAt(8, RequiredRoutePair.first).EraseRouteElementAt(&(GetModifiableRouteAt(9, RequiredRoutePair.first).GetModifiablePrefDirElementAt(1,
-        RequiredRoutePair.second)));
+                                                                                                                                                          RequiredRoutePair.second)));
 // CheckMapAndRoutes();//test - drop - tested below
 
 // remove ContinuationAutoSig route if element is in one since if any part of it is truncated the continuation exit will be removed - must
@@ -17011,7 +18071,7 @@ void TAllRoutes::RemoveRouteElement(int Caller, int HLoc, int VLoc, int ELink)
     {
         TTrainController::TContinuationAutoSigVectorIterator AutoSigVectorIT;
         for(AutoSigVectorIT = TrainController->ContinuationAutoSigVector.end() - 1; AutoSigVectorIT >= TrainController->ContinuationAutoSigVector.begin();
-        AutoSigVectorIT--)
+            AutoSigVectorIT--)
         {
             if(AutoSigVectorIT->RouteNumber == RequiredRoutePair.first)
             {
@@ -17019,7 +18079,6 @@ void TAllRoutes::RemoveRouteElement(int Caller, int HLoc, int VLoc, int ELink)
             }
         }
     }
-
 // now if last element from a route was removed need to remove the route from the route vector and from the LockedRouteVector if exists,
 // and adjust all the corresponding route numbers
     if(GetModifiableRouteAt(10, RequiredRoutePair.first).PrefDirSize() == 0)
@@ -17048,15 +18107,16 @@ void TAllRoutes::RemoveRouteElement(int Caller, int HLoc, int VLoc, int ELink)
                 }
             }
         }
-
         if(!TrainController->ContinuationAutoSigVector.empty())
         {
             TTrainController::TContinuationAutoSigVectorIterator AutoSigVectorIT;
             for(AutoSigVectorIT = TrainController->ContinuationAutoSigVector.end() - 1; AutoSigVectorIT >= TrainController->ContinuationAutoSigVector.begin();
-            AutoSigVectorIT--)
+                AutoSigVectorIT--)
             {
                 if(AutoSigVectorIT->RouteNumber > RequiredRoutePair.first)
+                {
                     AutoSigVectorIT->RouteNumber--;
+                }
             }
         }
     }
@@ -17074,7 +18134,7 @@ void TAllRoutes::AddRouteElement(int Caller, int HLoc, int VLoc, int ELink, int 
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AddRouteElement," + AnsiString(HLoc) + "," + AnsiString(VLoc) + "," +
-        AnsiString(ELink) + "," + AnsiString(RouteNumber) + "," + RouteElement.LogPrefDir());
+                                 AnsiString(ELink) + "," + AnsiString(RouteNumber) + "," + RouteElement.LogPrefDir());
     GetModifiableRouteAt(11, RouteNumber).StoreRouteElementInPrefDirVector(RouteElement);
     Route2MultiMapInsert(0, HLoc, VLoc, ELink, RouteNumber, GetModifiableRouteAt(12, RouteNumber).PrefDirSize() - 1);
     Utilities->CallLogPop(408);
@@ -17092,7 +18152,7 @@ void TAllRoutes::SetTrailingSignalsOnAutoSigsRoute(int Caller, int TrackVectorPo
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTrailingSignalsOnAutoSigsRoute," + AnsiString(TrackVectorPosition) +
-        "," + AnsiString(XLinkPos));
+                                 "," + AnsiString(XLinkPos));
     TRouteElementPair RouteElementPair, SecondPair, RequiredPair;
     TTrackElement TE = Track->TrackElementAt(159, TrackVectorPosition);
 
@@ -17120,7 +18180,6 @@ void TAllRoutes::SetTrailingSignalsOnAutoSigsRoute(int Caller, int TrackVectorPo
             throw Exception("Failed to find element in route in SetTrailingSignalsOnAutoSigsRoute - 3");
         }
     }
-
 // new function
     SetAllRearwardsSignals(5, 0, RequiredPair.first, RequiredPair.second);
     Utilities->CallLogPop(409);
@@ -17142,7 +18201,7 @@ void TAllRoutes::SetTrailingSignalsOnContinuationRoute(int Caller, int RouteNumb
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTrailingSignalsOnContinuationRoute," + AnsiString(RouteNumber) + "," +
-        AnsiString(AccessNumber));
+                                 AnsiString(AccessNumber));
     TPrefDirElement RouteElement;
     int Attribute = AccessNumber + 1;
 // signal attributes:  0=red; 1=yellow; 2=double yellow; 3 = green
@@ -17157,7 +18216,7 @@ void TAllRoutes::SetTrailingSignalsOnContinuationRoute(int Caller, int RouteNumb
         throw Exception("Error - end element not continuation in SetTrailingSignalsOnContinuationRoute");
     }
     if(GetFixedRouteAt(124, RouteNumber).GetFixedPrefDirElementAt(142, x).Config[GetFixedRouteAt(125, RouteNumber).GetFixedPrefDirElementAt(143,
-        x).XLinkPos] != End)
+                                                                                                                                            x).XLinkPos] != End)
     {
         throw Exception("Error - end element a continuation in SetTrailingSignalsOnContinuationRoute but End not facing right way");
     }
@@ -17204,7 +18263,7 @@ void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumb
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetAllRearwardsSignals," + AnsiString(Attribute) + "," +
-        AnsiString(RouteNumber) + "," + AnsiString(RouteStartPosition));
+                                 AnsiString(RouteNumber) + "," + AnsiString(RouteStartPosition));
     TPrefDirElement FirstElement = GetFixedRouteAt(127, RouteNumber).GetFixedPrefDirElementAt(144, 0);
     int RearwardLinkedRouteNumber;
 
@@ -17215,11 +18274,13 @@ void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumb
         if(FirstElement.Conn[FirstElement.ELinkPos] > -1) // GetRouteTypeAndNumber tests for this but check here to avoid call if == -1
         {
             while(GetRouteTypeAndNumber(6, FirstElement.Conn[FirstElement.ELinkPos], FirstElement.ConnLinkPos[FirstElement.ELinkPos],
-                RearwardLinkedRouteNumber) != TAllRoutes::NoRoute)
+                                        RearwardLinkedRouteNumber) != TAllRoutes::NoRoute)
             {
                 if(!(GetFixedRouteAt(129, RearwardLinkedRouteNumber).SetRearwardsSignalsReturnFalseForTrain(2, Attribute, AllRoutes->GetFixedRouteAt(130,
-                    RearwardLinkedRouteNumber).PrefDirSize() - 1)))
+                                                                                                                                                     RearwardLinkedRouteNumber).PrefDirSize() - 1)))
+                {
                     break;
+                }
                 // in above the RouteSettingFlag is set to false because this call is for routes that lie behind the route that is being set so don't want to
                 // flash LCs on those routes
                 FirstElement = AllRoutes->GetFixedRouteAt(131, RearwardLinkedRouteNumber).GetFixedPrefDirElementAt(145, 0);
@@ -17240,12 +18301,18 @@ void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumb
             if(TrackElement.TrackType == Bridge)
             {
                 if(PrefDirElement.XLinkPos < 2)
+                {
                     TrainID = TrackElement.TrainIDOnBridgeTrackPos01;
+                }
                 else
+                {
                     TrainID = TrackElement.TrainIDOnBridgeTrackPos23;
+                }
             }
             if(TrainID == -1)
+            {
                 continue;
+            }
             else
             {
                 FoundTrain = true;
@@ -17256,22 +18323,28 @@ void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumb
         if(FoundTrain && (TrainPosition > 1)) // if TrainPosition 1 or less then no route behind the train so can stop
         {
             for(int x = TrainPosition; x >= 0; x--) // then step back from that position until find element behind the train - ignore any
-            // signals that the train itself is straddling, need the first signal behind the train to be set to red, when the train passes
-            // the signal it's straddling the rearwards signals will be reset again.  Even if there are two or more trains adjacent still
-            // need the element behind the rearmost train.
             {
+                // signals that the train itself is straddling, need the first signal behind the train to be set to red, when the train passes
+                // the signal it's straddling the rearwards signals will be reset again.  Even if there are two or more trains adjacent still
+                // need the element behind the rearmost train.
                 TPrefDirElement PrefDirElement = GetFixedRouteAt(133, RouteNumber).GetFixedPrefDirElementAt(147, x);
                 TTrackElement TrackElement = Track->TrackElementAt(161, PrefDirElement.TrackVectorPosition);
                 TrainID = TrackElement.TrainIDOnElement;
                 if(TrackElement.TrackType == Bridge)
                 {
                     if(PrefDirElement.XLinkPos < 2)
+                    {
                         TrainID = TrackElement.TrainIDOnBridgeTrackPos01;
+                    }
                     else
+                    {
                         TrainID = TrackElement.TrainIDOnBridgeTrackPos23;
+                    }
                 }
                 if(TrainID != -1)
+                {
                     continue; // still on train
+                }
                 else
                 {
                     BehindTrain = true;
@@ -17280,7 +18353,7 @@ void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumb
                 }
             }
             if(BehindTrain) // then carry out a recursive rearward signal setting behind the train &
-                                                                            // so on for as many trains as there are on the single route
+            // so on for as many trains as there are on the single route
             {
                 SetAllRearwardsSignals(7, 0, RouteNumber, BehindTrainPosition); // false because can't set a route where there is a train
                 // first signal behind train to be red
@@ -17299,7 +18372,7 @@ bool TAllRoutes::RouteLockingRequired(int Caller, int RouteNumber, int RouteTrun
       first signal is red, then OK
 */
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RouteLockingRequired," + AnsiString(RouteNumber) + "," +
-        AnsiString(RouteTruncatePosition));
+                                 AnsiString(RouteTruncatePosition));
     int SignalCount = 0, TrainID, RearwardLinkedRouteNumber, StartPosition = RouteTruncatePosition;
     TOneRoute CurrentRoute = GetFixedRouteAt(134, RouteNumber);
     TPrefDirElement PrefDirElement, FirstElement;
@@ -17316,53 +18389,58 @@ bool TAllRoutes::RouteLockingRequired(int Caller, int RouteNumber, int RouteTrun
             if(TrackElement.TrackType == Bridge)
             {
                 if(PrefDirElement.XLinkPos < 2)
+                {
                     TrainID = TrackElement.TrainIDOnBridgeTrackPos01;
+                }
                 else
+                {
                     TrainID = TrackElement.TrainIDOnBridgeTrackPos23;
+                }
             }
             if(TrainID > -1)
             {
                 if(TrainController->TrainVectorAtIdent(36, TrainID).Stopped())
-                {    //any trains further back in route will be protected by the red signal behind the stopped train
+                {
+                    //any trains further back in route will be protected by the red signal behind the stopped train
                     Utilities->CallLogPop(412);
-                    return false;
+                    return(false);
                 }
-               //added after v2.4.1 for trains facing the wrong way & moving but haven't moved a half element yet so route still intact
+                //added after v2.4.1 for trains facing the wrong way & moving but haven't moved a half element yet so route still intact
                 if(TrainController->TrainVectorAtIdent(49, TrainID).GetLeadElement() != PrefDirElement.TrackVectorPosition) //if it isn't then the train is facing the
-                                                                                                                               //other way & can cancel the route
+                                                                                                                            //other way & can cancel the route
                 {
                     Utilities->CallLogPop(2203);
-                    return false;
+                    return(false);
                 }
                 Utilities->CallLogPop(1961);  //otherwise need to lock the route as have found a train on the route (trains forward of the truncate point caught by
-                return true;                  //TrainOccupyingRoute which is outside this function but also causes route locking)
+                return(true);                  //TrainOccupyingRoute which is outside this function but also causes route locking)
             }
             if(PrefDirElement.Config[PrefDirElement.XLinkPos] == Signal) // XLinkPos because signal has to be facing same direction as PrefDir to count
             {
                 if(TrackElement.Attribute == 0)
                 {
                     Utilities->CallLogPop(413);
-                    return false; // OK, red signal in front of a train
+                    return(false); // OK, red signal in front of a train
                 }
                 SignalCount++;
                 if(SignalCount >= 3)
                 {
                     Utilities->CallLogPop(414);
-                    return false;
+                    return(false);
                 }
             }
             if(PrefDirElement.Config[PrefDirElement.ELinkPos] == End) // buffer or continuation & no train
             // ElinkPos because working back along PrefDir to beginning
             {
                 Utilities->CallLogPop(415);
-                return false; // test - set to true to create a locked buffer-ended route, false for normal use
+                return(false); // test - set to true to create a locked buffer-ended route, false for normal use
             }
         }
         //now look at linked rearwards routes
         FirstElement = CurrentRoute.GetFixedPrefDirElementAt(149, 0);
         StartPosition = CurrentRoute.PrefDirSize() - 1;
         if(GetRouteTypeAndNumber(7, FirstElement.Conn[FirstElement.ELinkPos], FirstElement.ConnLinkPos[FirstElement.ELinkPos],
-            RearwardLinkedRouteNumber) != TAllRoutes::NoRoute)
+                                 RearwardLinkedRouteNumber) != TAllRoutes::NoRoute)
         {
             CurrentRoute = GetFixedRouteAt(135, RearwardLinkedRouteNumber);
             ExamineRoute = true;
@@ -17376,26 +18454,30 @@ bool TAllRoutes::RouteLockingRequired(int Caller, int RouteNumber, int RouteTrun
             if(PriorTrackElement.TrackType == Bridge)
             {
                 if(FirstElement.ConnLinkPos[FirstElement.ELinkPos] < 2)
+                {
                     TrainID = PriorTrackElement.TrainIDOnBridgeTrackPos01;
+                }
                 else
+                {
                     TrainID = PriorTrackElement.TrainIDOnBridgeTrackPos23;
+                }
             }
             if(TrainID > -1)
             {
                 if(TrainController->TrainVectorAtIdent(37, TrainID).Stopped())
                 {
                     Utilities->CallLogPop(748);
-                    return false;
+                    return(false);
                 }
                 //added after v2.4.1 for trains facing the wrong way on the prior element & moving but haven't moved a half element yet
                 if(TrainController->TrainVectorAtIdent(50, TrainID).GetLeadElement() != FirstElement.Conn[FirstElement.ELinkPos]) //if it isn't then the train is facing the
-                                                                                                                               //other way & can cancel the route
+                                                                                                                                  //other way & can cancel the route
                 {
                     Utilities->CallLogPop(2204);
-                    return false;
+                    return(false);
                 }
                 Utilities->CallLogPop(1962);
-                return true;  //otherwise need to lock the route
+                return(true);  //otherwise need to lock the route
             }
             ExamineRoute = false;
         }
@@ -17403,23 +18485,23 @@ bool TAllRoutes::RouteLockingRequired(int Caller, int RouteNumber, int RouteTrun
 // if reach beginning of all rear routes without finding a train and there aren't 3 signals then truncate the route
 // as trains running on unrouted lines are already at risk of wrong points etc so no benefit locking the route
     Utilities->CallLogPop(416);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
 
 bool TAllRoutes::IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(int Caller, int TrackVectorPosition, int XLinkPos,
-    TPrefDirElement &PrefDirElement, int &LockedVectorNumber)
+                                                                              TPrefDirElement &PrefDirElement, int &LockedVectorNumber)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber," +
-        AnsiString(TrackVectorPosition) + "," + AnsiString(XLinkPos));
+                                 AnsiString(TrackVectorPosition) + "," + AnsiString(XLinkPos));
     TPrefDirElement InternalPrefDirElement; // blank element
 
     PrefDirElement = InternalPrefDirElement;
     if(LockedRouteVector.empty())
     {
         Utilities->CallLogPop(417);
-        return false;
+        return(false);
     }
 // make sure at least one locked route record is still valid - train may have removed it, if last element still present locked route still exists,
 // even if some elements have been removed from the front by a train
@@ -17428,8 +18510,9 @@ bool TAllRoutes::IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(in
     for(TLockedRouteVectorIterator LRVIT = LockedRouteVector.begin(); LRVIT < LockedRouteVector.end(); LRVIT++)
     {
         if(TrackIsInARoute(14, LRVIT->LastTrackVectorPosition, LRVIT->LastXLinkPos))
-        { // end of route can't be points, crossover or bridge so danger of route being on the other track of a 2-track element
-          // doesn't arise)
+        {
+            // end of route can't be points, crossover or bridge so danger of route being on the other track of a 2-track element
+            // doesn't arise)
             InLockedRoute = true;
             break;
         }
@@ -17437,9 +18520,8 @@ bool TAllRoutes::IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(in
     if(!InLockedRoute)
     {
         Utilities->CallLogPop(418);
-        return false;
+        return(false);
     }
-
     int RouteNumber, VectorCount = 0;
     TRouteType RouteType;
 
@@ -17447,13 +18529,15 @@ bool TAllRoutes::IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(in
     {
         RouteType = GetRouteTypeAndNumber(8, LRVIT->LastTrackVectorPosition, LRVIT->LastXLinkPos, RouteNumber);
         if(RouteType == NoRoute)
+        {
             continue;
+        }
         if((GetFixedRouteAt(137, RouteNumber).GetFixedPrefDirElementAt(150, GetFixedRouteAt(138, RouteNumber).PrefDirSize() - 1).TrackVectorPosition != (int)
             LRVIT->LastTrackVectorPosition) || (GetFixedRouteAt(139, RouteNumber).GetFixedPrefDirElementAt(151,
-            GetFixedRouteAt(140, RouteNumber).PrefDirSize() - 1).XLinkPos != LRVIT->LastXLinkPos))
+                                                                                                           GetFixedRouteAt(140, RouteNumber).PrefDirSize() - 1).XLinkPos != LRVIT->LastXLinkPos))
         {
             throw Exception
-                ("Error, last element in locked route doesn't correspond with last element in associated route in IsElementInLockedRouteGetPrefDirElement");
+                      ("Error, last element in locked route doesn't correspond with last element in associated route in IsElementInLockedRouteGetPrefDirElement");
         }
         for(int x = GetFixedRouteAt(141, RouteNumber).PrefDirSize() - 1; x >= 0; x--)
         {
@@ -17465,7 +18549,7 @@ bool TAllRoutes::IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(in
                     PrefDirElement = InternalPrefDirElement;
                     LockedVectorNumber = VectorCount;
                     Utilities->CallLogPop(419);
-                    return true;
+                    return(true);
                 }
             }
             else if(InternalPrefDirElement.TrackVectorPosition == (int)LRVIT->TruncateTrackVectorPosition)
@@ -17475,16 +18559,18 @@ bool TAllRoutes::IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(in
                     PrefDirElement = InternalPrefDirElement;
                     LockedVectorNumber = VectorCount;
                     Utilities->CallLogPop(420);
-                    return true;
+                    return(true);
                 }
                 else
+                {
                     break; // reached & tested LRVIT->TruncateTrackVectorPosition for a match so don't want to go any further for this route
+                }
             }
         }
         VectorCount++;
     }
     Utilities->CallLogPop(421);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -17497,7 +18583,7 @@ int TAllRoutes::GetRouteVectorNumber(int Caller, IDInt RouteID)
         if(GetFixedRouteAt(157, x).RouteID == RouteID.GetInt())
         {
             Utilities->CallLogPop(963);
-            return x;
+            return(x);
         }
     }
     throw Exception("Error, failed to find RouteID in GetRouteVectorNumber for ID: " + AnsiString(RouteID.GetInt()));
@@ -17506,8 +18592,8 @@ int TAllRoutes::GetRouteVectorNumber(int Caller, IDInt RouteID)
 // ---------------------------------------------------------------------------
 
 bool TAllRoutes::IsThereARouteAtIDNumber(int Caller, IDInt RouteID)
-    // added at v1.3.1 after an error was generated when operating Ian Walker's Chiltern Railway
-    // found to be due to a route having been removed by a train moving in the wrong direction after the route was selected but before it completed (i.e. route removed while flashing)
+// added at v1.3.1 after an error was generated when operating Ian Walker's Chiltern Railway
+// found to be due to a route having been removed by a train moving in the wrong direction after the route was selected but before it completed (i.e. route removed while flashing)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsThereARouteAtIDNumber," + AnsiString(RouteID.GetInt()));
     for(unsigned int x = 0; x < AllRoutesSize(); x++)
@@ -17515,11 +18601,11 @@ bool TAllRoutes::IsThereARouteAtIDNumber(int Caller, IDInt RouteID)
         if(GetFixedRouteAt(45, x).RouteID == RouteID.GetInt())
         {
             Utilities->CallLogPop(2039);
-            return true;
+            return(true);
         }
     }
     Utilities->CallLogPop(2040);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -17532,7 +18618,7 @@ const TOneRoute &TAllRoutes::GetFixedRouteAtIDNumber(int Caller, IDInt RouteID) 
         if(GetFixedRouteAt(163, x).RouteID == RouteID.GetInt())
         {
             Utilities->CallLogPop(964);
-            return GetFixedRouteAt(159, x);
+            return(GetFixedRouteAt(159, x));
         }
     }
     throw Exception("Error, failed to find RouteID in GetFixedRouteAtIDNumber for ID: " + AnsiString(RouteID.GetInt()));
@@ -17548,7 +18634,7 @@ TOneRoute &TAllRoutes::GetModifiableRouteAtIDNumber(int Caller, IDInt RouteID)
         if(GetFixedRouteAt(164, x).RouteID == RouteID.GetInt())
         {
             Utilities->CallLogPop(965);
-            return GetModifiableRouteAt(15, x);
+            return(GetModifiableRouteAt(15, x));
         }
     }
     throw Exception("Error, failed to find RouteID in GetModifiableRouteAtIDNumber for ID: " + AnsiString(RouteID.GetInt()));
@@ -17591,11 +18677,11 @@ bool TAllRoutes::LoadRoutes(int Caller, std::ifstream &InFile)
         else
         {
             Utilities->CallLogPop(1443);
-            return false;
+            return(false);
         }
     }
     Utilities->CallLogPop(1444);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -17607,14 +18693,14 @@ bool TAllRoutes::CheckRoutes(int Caller, int NumberOfActiveElements, std::ifstre
     if((NumberOfRoutes < 0) || (NumberOfRoutes > 5000))
     {
         Utilities->CallLogPop(1445);
-        return false;
+        return(false);
     }
     int NextID = Utilities->LoadFileInt(InFile);
 
     if((NextID < 0) || (NextID > 1000000))
     {
         Utilities->CallLogPop(1446);
-        return false;
+        return(false);
     }
     for(int x = 0; x < NumberOfRoutes; x++)
     {
@@ -17622,29 +18708,30 @@ bool TAllRoutes::CheckRoutes(int Caller, int NumberOfActiveElements, std::ifstre
         if((RouteID < 0) || (RouteID > 20000))
         {
             Utilities->CallLogPop(1447);
-            return false;
+            return(false);
         }
         TOneRoute OneRoute; // create an empty route so CheckOnePrefDir can be called
         if(!(OneRoute.CheckOnePrefDir(3, NumberOfActiveElements, InFile)))
         {
             Utilities->CallLogPop(1448);
-            return false;
+            return(false);
         }
     }
     Utilities->CallLogPop(1449);
-    return true;
+    return(true);
 }
 
 // ---------------------------------------------------------------------------
 
 bool TAllRoutes::CheckForLoopingRoute(int Caller, int EndPosition, int EndXLinkPos, int StartPosition)
-{ // return true for a loop
+{
+    // return true for a loop
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckForLoopingRoute," + AnsiString(EndPosition) + "," +
-        AnsiString(StartPosition));
+                                 AnsiString(StartPosition));
     if(EndPosition == StartPosition)
     {
         Utilities->CallLogPop(1839);
-        return true; // shouldn't happen but treat as a loop if does
+        return(true); // shouldn't happen but treat as a loop if does
     }
 // begin at EndPosition & EndXLinkPos & work forwards until reach end of route (return false) or StartElement (return true)
     int TVPos = EndPosition; //TVPos is the current element and NewTVPos is the element it connects to
@@ -17660,13 +18747,13 @@ bool TAllRoutes::CheckForLoopingRoute(int Caller, int EndPosition, int EndXLinkP
             if(NewLkPos == -1)
             {
                 Utilities->CallLogPop(1840);
-                return true; // shouldn't arise but treat as loop if does
+                return(true); // shouldn't arise but treat as loop if does
             }
         }
         else // reached a buffer or continuation
         {
             Utilities->CallLogPop(1841);
-            return false;
+            return(false);
         }
 //Error found by Xeon notified by email 13/10/20.
 //Need to make sure there is a route with the new entry link NewLkPos on the next element (TrackIsInARoute normally used where it doesn't matter which track a route
@@ -17680,7 +18767,7 @@ bool TAllRoutes::CheckForLoopingRoute(int Caller, int EndPosition, int EndXLinkP
         if(GetRouteTypeAndNumber(36, NewTVPos, NewLkPos, RouteNumber) == NoRoute)
         {
             Utilities->CallLogPop(2241);
-            return false;
+            return(false);
         }
         //now make the connected element the current element, read across the TV number and determine the exit link
         TVPos = NewTVPos;
@@ -17689,23 +18776,31 @@ bool TAllRoutes::CheckForLoopingRoute(int Caller, int EndPosition, int EndXLinkP
             if((NewLkPos == 0) || (NewLkPos == 2)) // leading points
             {
                 if(Track->TrackElementAt(829, TVPos).Attribute == 0)
+                {
                     LkPos = 1;
+                }
                 else
+                {
                     LkPos = 3;
+                }
             }
             else
+            {
                 LkPos = 0;
+            }
         }
         else
+        {
             LkPos = Track->GetNonPointsOppositeLinkPos(NewLkPos);
+        }
         if(TVPos == StartPosition)
         {
             Utilities->CallLogPop(1842);
-            return true; // it is a loop
+            return(true); // it is a loop
         }
     }
     Utilities->CallLogPop(1843);
-    return false; // reached end of route so not a loop
+    return(false); // reached end of route so not a loop
 }
 
 // ---------------------------------------------------------------------------
@@ -17730,7 +18825,7 @@ bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, in
     int TrainID; // not used in this function
 
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DiagonalFouledByRouteOrTrain," + AnsiString(HLoc) + "," +
-        AnsiString(VLoc) + "," + AnsiString(DiagonalLinkNumber));
+                                 AnsiString(VLoc) + "," + AnsiString(DiagonalLinkNumber));
     TPrefDirElement TempPrefDirElement;
     TAllRoutes::TRouteElementPair FirstPair, SecondPair;
 
@@ -17741,12 +18836,12 @@ bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, in
         if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
         {
             Utilities->CallLogPop(310);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
         {
             Utilities->CallLogPop(311);
-            return true;
+            return(true);
         }
     }
     if(SecondPair.first > -1)
@@ -17755,22 +18850,20 @@ bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, in
         if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
         {
             Utilities->CallLogPop(312);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
         {
             Utilities->CallLogPop(313);
-            return true;
+            return(true);
         }
     }
-
     if(((DiagonalLinkNumber == 1) && Track->TrainOnLink(0, HLoc - 1, VLoc, 3, TrainID)) || ((DiagonalLinkNumber == 7) && Track->TrainOnLink(1, HLoc - 1, VLoc,
-        9, TrainID)))
+                                                                                                                                            9, TrainID)))
     {
         Utilities->CallLogPop(1997);
-        return true;
+        return(true);
     }
-
     FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(5, HLoc, VLoc - 1, SecondPair);
     if(FirstPair.first > -1)
     {
@@ -17778,12 +18871,12 @@ bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, in
         if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
         {
             Utilities->CallLogPop(314);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
         {
             Utilities->CallLogPop(315);
-            return true;
+            return(true);
         }
     }
     if(SecondPair.first > -1)
@@ -17792,22 +18885,20 @@ bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, in
         if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
         {
             Utilities->CallLogPop(316);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
         {
             Utilities->CallLogPop(317);
-            return true;
+            return(true);
         }
     }
-
     if(((DiagonalLinkNumber == 1) && Track->TrainOnLink(2, HLoc, VLoc - 1, 7, TrainID)) || ((DiagonalLinkNumber == 3) && Track->TrainOnLink(3, HLoc, VLoc - 1,
-        9, TrainID)))
+                                                                                                                                            9, TrainID)))
     {
         Utilities->CallLogPop(1998);
-        return true;
+        return(true);
     }
-
     FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(6, HLoc + 1, VLoc, SecondPair);
     if(FirstPair.first > -1)
     {
@@ -17815,12 +18906,12 @@ bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, in
         if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
         {
             Utilities->CallLogPop(318);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
         {
             Utilities->CallLogPop(319);
-            return true;
+            return(true);
         }
     }
     if(SecondPair.first > -1)
@@ -17829,22 +18920,20 @@ bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, in
         if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
         {
             Utilities->CallLogPop(320);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
         {
             Utilities->CallLogPop(321);
-            return true;
+            return(true);
         }
     }
-
     if(((DiagonalLinkNumber == 3) && Track->TrainOnLink(4, HLoc + 1, VLoc, 1, TrainID)) || ((DiagonalLinkNumber == 9) && Track->TrainOnLink(5, HLoc + 1, VLoc,
-        7, TrainID)))
+                                                                                                                                            7, TrainID)))
     {
         Utilities->CallLogPop(1999);
-        return true;
+        return(true);
     }
-
     FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(7, HLoc, VLoc + 1, SecondPair);
     if(FirstPair.first > -1)
     {
@@ -17852,12 +18941,12 @@ bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, in
         if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
         {
             Utilities->CallLogPop(322);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
         {
             Utilities->CallLogPop(323);
-            return true;
+            return(true);
         }
     }
     if(SecondPair.first > -1)
@@ -17866,24 +18955,22 @@ bool TAllRoutes::DiagonalFouledByRouteOrTrain(int Caller, int HLoc, int VLoc, in
         if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
         {
             Utilities->CallLogPop(324);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
         {
             Utilities->CallLogPop(325);
-            return true;
+            return(true);
         }
     }
-
     if(((DiagonalLinkNumber == 7) && Track->TrainOnLink(6, HLoc, VLoc + 1, 1, TrainID)) || ((DiagonalLinkNumber == 9) && Track->TrainOnLink(7, HLoc, VLoc + 1,
-        3, TrainID)))
+                                                                                                                                            3, TrainID)))
     {
         Utilities->CallLogPop(2000);
-        return true;
+        return(true);
     }
-
     Utilities->CallLogPop(326);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -17900,7 +18987,7 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DiagonalFouledByRoute," + AnsiString(HLoc) + "," + AnsiString(VLoc) +
-        "," + AnsiString(DiagonalLinkNumber));
+                                 "," + AnsiString(DiagonalLinkNumber));
     TPrefDirElement TempPrefDirElement;
     TAllRoutes::TRouteElementPair FirstPair, SecondPair;
 
@@ -17911,12 +18998,12 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
         if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
         {
             Utilities->CallLogPop(2010);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
         {
             Utilities->CallLogPop(2011);
-            return true;
+            return(true);
         }
     }
     if(SecondPair.first > -1)
@@ -17925,15 +19012,14 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
         if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
         {
             Utilities->CallLogPop(2012);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
         {
             Utilities->CallLogPop(2013);
-            return true;
+            return(true);
         }
     }
-
     FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(18, HLoc, VLoc - 1, SecondPair);
     if(FirstPair.first > -1)
     {
@@ -17941,12 +19027,12 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
         if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
         {
             Utilities->CallLogPop(2014);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
         {
             Utilities->CallLogPop(2015);
-            return true;
+            return(true);
         }
     }
     if(SecondPair.first > -1)
@@ -17955,15 +19041,14 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
         if((DiagonalLinkNumber == 1) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
         {
             Utilities->CallLogPop(2016);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 9) || (TempPrefDirElement.XLink == 9)))
         {
             Utilities->CallLogPop(2017);
-            return true;
+            return(true);
         }
     }
-
     FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(19, HLoc + 1, VLoc, SecondPair);
     if(FirstPair.first > -1)
     {
@@ -17971,12 +19056,12 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
         if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
         {
             Utilities->CallLogPop(2018);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
         {
             Utilities->CallLogPop(2019);
-            return true;
+            return(true);
         }
     }
     if(SecondPair.first > -1)
@@ -17985,15 +19070,14 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
         if((DiagonalLinkNumber == 3) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
         {
             Utilities->CallLogPop(2020);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 7) || (TempPrefDirElement.XLink == 7)))
         {
             Utilities->CallLogPop(2021);
-            return true;
+            return(true);
         }
     }
-
     FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(20, HLoc, VLoc + 1, SecondPair);
     if(FirstPair.first > -1)
     {
@@ -18001,12 +19085,12 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
         if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
         {
             Utilities->CallLogPop(2022);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
         {
             Utilities->CallLogPop(2023);
-            return true;
+            return(true);
         }
     }
     if(SecondPair.first > -1)
@@ -18015,17 +19099,16 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
         if((DiagonalLinkNumber == 7) && ((TempPrefDirElement.ELink == 1) || (TempPrefDirElement.XLink == 1)))
         {
             Utilities->CallLogPop(2024);
-            return true;
+            return(true);
         }
         if((DiagonalLinkNumber == 9) && ((TempPrefDirElement.ELink == 3) || (TempPrefDirElement.XLink == 3)))
         {
             Utilities->CallLogPop(2025);
-            return true;
+            return(true);
         }
     }
-
     Utilities->CallLogPop(2026);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------

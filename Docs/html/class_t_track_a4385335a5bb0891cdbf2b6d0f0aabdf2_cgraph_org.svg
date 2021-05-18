@@ -686,7 +686,7 @@
 <!-- Node23 -->
 <g id="node23" class="node">
 <title>Node23</title>
-<g id="a_node23"><a xlink:href="class_t_track.html#a96a3a6bcd38491f4f00ec2a585c6f170" target="_top" xlink:title=" ">
+<g id="a_node23"><a xlink:href="class_t_track.html#a96a3a6bcd38491f4f00ec2a585c6f170" target="_top" xlink:title="Used in SearchForAndUpdateLocationName to check for adjacent named elements to a given element at HLo...">
 <polygon fill="white" stroke="black" points="747,-1074.77 747,-1093.77 880,-1093.77 880,-1074.77 747,-1074.77"/>
 <text text-anchor="middle" x="813.5" y="-1081.77" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::AdjNamedElement</text>
 </a>
@@ -830,7 +830,7 @@
 <!-- Node28 -->
 <g id="node28" class="node">
 <title>Node28</title>
-<g id="a_node28"><a xlink:href="class_t_track.html#a607c6164af3158c328dd7c3ae25236c7" target="_top" xlink:title=" ">
+<g id="a_node28"><a xlink:href="class_t_track.html#a607c6164af3158c328dd7c3ae25236c7" target="_top" xlink:title="Used during location naming to check for adjacent named elements to a given element at HLoc &amp; VLoc wi...">
 <polygon fill="white" stroke="black" points="573.5,-960.77 573.5,-979.77 675.5,-979.77 675.5,-960.77 573.5,-960.77"/>
 <text text-anchor="middle" x="624.5" y="-967.77" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::AdjElement</text>
 </a>

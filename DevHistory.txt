@@ -15,13 +15,28 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
+#55 From Metvor_Rules via Discord 07/05/21.  What if there was a rotation function for track pieces so you could just press R for example and the track/ platform would rotate by 45 or 90 degrees each button press.
+This would reduce the amount of unique parts so you don’t have to go back and forth selecting different track types.
+
+#54 From Krizar 25/04/21 via discord.  The simulation has the train phoning signaller mechanic already, so I was wondering how feasible it was to add something like this:
+https://en.wikipedia.org/wiki/Radio_Electronic_Token_Block#/media/File:West_Highland_Line_single_line_permssion_sign_-_Rannoch_south_01.jpg
+Radio Electronic Token Block
+Radio Electronic Token Block is a system of railway signalling used in the United Kingdom. It is a development of the physical token system for controlling traffic on single lines. The system is slightly similar to North American Direct Traffic Control, which unlike RETB does not have a cab display unit.
+Whereby you would just click a button saying "yep sure continue"
+so it would just be the equivalent of when a driver is stuck at a signal for too long and phones
+You could also simulate plunger pressing by the driver by having the train halt in front of the signal, there be a couple of seconds pause, then a white light display, or if it is a "whistle then continue" no light and just a pause
+Albert — Today at 14:28
+I'm struggling to see how simulating this situation would be different to the standard signaller command of 'Pass red signal'.  Or are you suggesting a separate alarm of some sort when a train had waited at a red signal for more than a certain time?
+KR/ZAR — Today at 14:31
+What I had in mind was pretty much what was already there except rather than it be treated like there is a problem (purple train etc) and there being a signal, just some other indicator that just asks for a token.
+
 #53 Suggestion from Wilsteady via discord 09/01/21.  New idea with rollingstock details - could there be a way to enter a Trains acceleration/deceleration instead of brake force? I can imagine it would be potentially a large change in how the program functions, but given many Wikipedia pages for trains give the Accel/Decel rates in m/s2 not the brake force, it means guessing the values required for the program to find one that works best for the timetable in place.
 
-#52.  Suggestion from Bill78 08/01/21 via discord.  I've been thinking about Speedbutton 17. Could it be made into a "reporting point?" Buy this, I mean a person could put one or more on any route and when any train crossed it, a notice would pop up on the notification area that "such-and-such train is at Reporting Point whatever." This way, it wouldn't be controlled by anything in a timetable, but simply be there and notify when a train crosses it. Leave the "W" in the timetable so certain trains will show a Warning, but SB17 would pop a Warning every time a train crosses it.
+#52 Suggestion from Bill78 08/01/21 via discord.  I've been thinking about Speedbutton 17. Could it be made into a "reporting point?" Buy this, I mean a person could put one or more on any route and when any train crossed it, a notice would pop up on the notification area that "such-and-such train is at Reporting Point whatever." This way, it wouldn't be controlled by anything in a timetable, but simply be there and notify when a train crosses it. Leave the "W" in the timetable so certain trains will show a Warning, but SB17 would pop a Warning every time a train crosses it.
 
 #52 [done].  Suggestion from josco 05/01/21 via discord.  No idea if this is doable but would it be possible to replicate the 'hover' menu from the trains in the actions due box? Thus when a train appears in the actions menu you could hover over the train and it would show you the train menu with timetable etc. This would be more user friendly in my view than clicking the train to then find out where it is in the map. This is not a crucial update but would be useful in my view. However if it is not doable nor a simple fix then I would leave alone!
 
-#51.  Suggestion from Wilsteady 24/12/20 via discord. Got another fun feature idea for consideration - Inbuilt native support for windows that if you double click on a .rly or .dev [or .ssn] file in Windows Explorer, it will open railway.exe with that file pre-loaded.
+#51 Suggestion from Wilsteady 24/12/20 via discord. Got another fun feature idea for consideration - Inbuilt native support for windows that if you double click on a .rly or .dev [or .ssn] file in Windows Explorer, it will open railway.exe with that file pre-loaded.
 
 #50 [Done].  Suggestion from Wilsteady 21/10/20 via Discord.  Don't know if this is a feature that already exists or not - It would be handy in the layout builder, to be able to Select an area, choose a particular track type, and have the system auto fill that space with that type. For example build a railway by selecting the location of each station, signal, turnout, etc, but don't add any 'straight' tracks. Then being able to select a long line, and having it pre-fill all the straight sections. Would be handy when building twin or quad track sections that don't vary other than a X-over or signal here or there.
 
@@ -98,7 +113,7 @@ I also think a even more graphical, almost block based timetable editor would re
 
 #16 & #17. Suggestions from Richard Gaede email of 22/08/14:-
 
-Allow cut and copied segments to be retained when a railway is cleared and a new one loaded, so that railways can be merged together
+[Done for two or more railway applications running at the same time] Allow cut and copied segments to be retained when a railway is cleared and a new one loaded, so that railways can be merged together
 
 [Done with 'actions due' panel] Have a drop-down list of running trains and their status and trains about to enter the system - to give a quick form of running train identification so they aren't forgotten and advance warning of future entries.
 
@@ -204,6 +219,44 @@ Multi-player facility over the internet.
 
 4) Version change information
 
+VERSION CHANGES AFTER v2.7.0 for v2.8.0
+
+Include on web version page:
+
+The main change in this version is the ability to use the Windows clipboard so that areas of railway that are cut or copied can be pasted into another railway application. The user manual and on-screen help have been modified to explain the process in section 3.5.
+
+Minor changes:
+
+1. After selecting an area of railway in track build mode the track elements now become visible so that the selected area can more easily be filled with a particular element.
+
+2. If an area of railway was cut and moved and then cancelled, it used to be pasted in the new position which wasn't appropriate, so now it's pasted back in its original position.
+
+3. It was found that if a route was set for a call-on into a platform where there was already a train, and that train changed direction, the route was cancelled. It happened because of an earlier change that cancelled stub routes ahead of a train when it changed direction and the excess route beyond the train was no longer wanted, but the route direction wasn't checked so any route was cancelled. Now the route direction is checked and only routes leading away from the train are cancelled.
+
+4. It was found that a route could be set across a level crossing that had only just begun to close to trains if the route setting was done very quickly. The final signal before the crossing stayed at red so trains would be protected but the route was present and shouldn't have been. The program check routine has now been modified to include routes that are in course of being set in addition to routes already set.
+
+Changes not included on web page:
+
+File specification changed to include the session file addition after v2.7.0 - should have been done for last version.
+
+Error in LC down time: Exeter log 11:34:28 gives 0.4mins & is later than 10:33:01 which gives 0.9mins. Problem is that the excess minutes are only calculated on exit from operation or program, whereas the session value is stored before that.  Best to assume that train will cross LC after the perf summary sent so deduct 3 mins from each down barrier.  If train does cross then accurate, if it doesn't then later play will increase the value, but in all cases the value can only increase in successive perf summaries.
+
+Create character buffers in Utilities.cpp using new but don't use delete[] - there were a lot of these spread throughout the program so memory leakage would occur, all ok now
+
+Manual doesn't explain how to delete a user graphic.  Keep existing arrangement but explain that have to select a graphic (any will do) then right click it.  In fact it does in section 3.1, but not in 3.2 - tidied up now
+
+Manual error: " it does not automatically open after a train has passed" - should be "close", maybe better to keep to barriers lowering & raising, check other sections for consistency - done
+
+Actions due time STILL too short for TL16 approaching Swanley - see session file. Due to not using GetRepeatTime for repeat departures, so departure time was too low,  Corrected now.
+
+In TTrainController::CalcOperatingAndNotStartedTrainLateness where AVEntryPtr is a combined arrival and departure and the arrival time is less than TTClockTime then it registers as 'failed to reach' even though the train has arrived and is stopped at the location.  Also late departures are included in the same calculation (for OperatingTrainArrDep) but these should really be included with late departures.  OK, added !Train.StoppedAtLocation as condition to rule out TimeTimeLocs where train has arrived.  Also dropped departures from both operating and not started trains and dropped divide by 2.
+
+In TTrain::CallingOnAllowed don't count the distance for the track element that the front of the train stands on, as it has already covered that distance, start at the next element.  Can use 'if(Distance > 4000 + LeadElementDistance) then all else stays same, but need to derive it from LeadElement which is a track vector position.
+
+Trains due to stop at next station still have too short a time in actions due panel!  See session 19/03/21 at 9:36 for FP03, due to stop at Chatham and times down but when stops time goes up to 2 minutes.  OK, changed (DistanceToStationStop < DistanceToRedSignal) to (DistanceToStationStop <= DistanceToRedSignal) in CalcTimeToAct
+
+Should only have a 'save' option for a railway after changing or moving text, graphics, copying or cutting.  It's function ResetChangedFileDataAndCaption that sets the option, and it's called too early for text and distances (& maybe others).  All checked & much better now.
+
 VERSION CHANGES AFTER v2.6.2 for v2.7.0
 
 This version incorporates a number of functional changes that will hopefully make operation easier as follows:
@@ -212,7 +265,7 @@ In response to Josco's suggestion via Discord of adding information to trains li
 
 There are now two options available when selecting preferred direction (green) routes.  The green route selection button is split into upper and lower halves, the upper half working as before where the route is built by clicking on each consecutive signal (or buffer/continuation at the ends) - this reflects normal practice.  The lower half button allows routes to be built from signal to any following signal (or buffer/continuation at the ends).  Routes built in this way must still follow preferred directions, so should be more accurate first time than unrestricted routes that don't have to follow preferred directions.  In fact this change was suggested by Bjorn years ago!
 
-When a train exits at a continuation and there are two or more possible exits to choose from, there is currently no way during operation to know which is/are designated as correct in the timetable.  The exit element identifier (ID) is shown only if the exit isn't named.  In this version the allowable exit IDs are listed in the timetable information window.  This change was prompted by my abysmal performance at the last signalling social when operating Liverpool St to Romford.  I repeatedly sent trains out from Romford on the slow line when they should have used the fast line.  I won't have that excuse in future so I'll have to find a new one!
+When a train exits at a continuation and there are two or more possible exits to choose from, there is currently no way during operation to know which is/are designated as correct in the timetable.  The exit element identifier (ID) is shown only if the exit isn't named.  In this version the allowable exit IDs are listed in the timetable information window.  This change was prompted by my abysmal performance at the last signalling social when operating Liverpool St to Romford.  I repeatedly sent trains out from Romford on the slow line when they should have used the fast line - don't tell anybody!  I won't have that excuse in future so I'll have to find a new one.
 
 When a train was stopped at a signal and a call-on offered and accepted, the time to act remained 'NOW' until it passed the signal.  That was inappropriate so now as soon as a call-on is accepted the train is removed from the list.
 
@@ -1417,18 +1470,18 @@ CHANGE OF VERSION: (updated November 2020 for the revised site)
 
 Prior to uploading:
 
-1 Increment version number & copyright year  (if required) in Project>Options & AboutUnit.cpp, & ensure references to it are included in source files
+1 Increment version number & copyright year  (if required) in Project>Options & AboutUnit.cpp, & ensure references to new version are included in source files (instead of 'after last version').
 2 Update Doxygen files & include graph legend link in pages.html, make sure flowcharts are in files folder & work ok
 3 Update manual & on-screen help if required
-4 Build & store to local Git repository tagged with latest release version
-5 Update readme file to reference latest release & update user manual reference & no. of pages if required
+4 Copy DevHistoryPending.txt to DevHistory.txt & ensure all extra text removed & version info changes made
+5 Build & store to local Git repository tagged with latest release version 
 6 Create a new directory 'Release vx.x.x' from earlier release & replace files as follows:
-	readme.txt
+	readme.txt (reference latest release & update user manual reference & no. of pages if required)
 	Manual vx.x.x .pdf (if updated)
 	Quick start.pdf (if updated)
 	Railways>railway.exe
 	Railway>Help.chm (if updated)
-	In Railway, check have 5 x dlls and 3 x bpls & GNU licence, & that all directories contain the expected files
+	In Railway, check have 5 x dlls and 3 x bpls & GNU licence, & that all directories contain the expected files & no extras created if had run from the release folder
 7 Zip the above as Release vx.x.x.zip
 
 On website:
@@ -1442,9 +1495,9 @@ On website:
 	Product data should already be 'Simple product'
 	TAuto Poster should be 'No', this a plugin that automatically posts to Twitter if set to 'Yes'
 10 Under 'General' tab
-	Click 'Add File' & enter url of the new zip
-	Move it to the top of the list
-	Make latest release '(stable)' and last one '(deprecated)'
+	Click 'Add File' & "Choose file" to enter url of the new zip, give it the version number as its name
+	Move it to the top of the list (need full window to move)
+	Make latest release the current version & last one deprecated
 	'Virtual' & 'Downloadable' boxes should already be ticked
 	Price should be 0.00
 	Download limit should be 'Unlimited'
@@ -1462,17 +1515,17 @@ On website:
 	Menu order should be 0
 	Enable reviews should be ticked
 15 Preview then update if all ok (best to select update first as otherwise preview shows last version)
-16 If Manual or Quick start changed upload the new versions to 'Media' as above and add by editing product 'Railway Operation Simulator manuals' as above, SKU is RailwayOS-Manuals. Alter text (short & full) to refer to new version. Update & preview.
+16 If Manual or Quick start or any other file changed upload the new versions to 'Media' as above and add by editing product 'Railway Operation Simulator manuals' as above, SKU is RailwayOS-Manuals. Alter text (short & full) to refer to new version. Update & preview.
 17 Go to 'Version Information' page (uses DiviBuilder), click 'settings' on 'Versions (Accordion)', copy last version then click 'settings' on it, add version number & date as title, then change all text to the new text.  Save the new addition, save changes then update the page & check ok.
 18 Download & check the new release & anything else that's changed
 19 Add a new post for the release with details of main changes - Categories: Railway Operation Simulator, news; Tags Railway Operation Simulator, year, v2x.x.x.  Add 'Download it here' with link to 'Railway Operation Simulator'. TAutoPost set to yes. Schedule release or release immediately.
 
 On GitHub:
 
-15 Update DevHistory.txt with relevant public information
+15 Update DevHistory.txt with relevant public information if not already done so
 16 Update all files on GitHub clone (after pulling latest commit), ensuring that the .md files are ok and that all doxygen docs included - check unversioned files for possible inclusion
-17 Commit the latest update locally & tag with release version
-18 Push to GitHub with 'include tags' ticked & an appropriate message
+17 Commit the latest update locally & tag with release version & message 'Update for vx.x.x'
+18 Push to GitHub with 'include tags' ticked
 19 Create a new release on GitHub & include the new zip file
 
 ADDING A NEW PROJECT TO THE USER WEBSITE: (updated November 2020 for the revised site)
@@ -1515,6 +1568,7 @@ ADDING A NEW PROJECT TO THE USER WEBSITE: (updated November 2020 for the revised
 	Menu order should be 0
 	Enable reviews should be ticked
 11 Save draft, preview, then publish if ok
+
 12 Create new post, add title 'Railway name' by 'Author'
 13 Add description text (not the image) and add 'Download it here' with 'here' linked to the product location
 14 Add the image as the 'Featured Image' - don't include in the main description

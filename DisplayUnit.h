@@ -95,100 +95,100 @@ public:
 /// Return the name of the default screen font
     AnsiString GetFontName()
     {
-        return Output->Canvas->Font->Name;
+        return(Output->Canvas->Font->Name);
     }
 
 /// Return the size of the default screen font
     int GetFontSize()
     {
-        return Output->Canvas->Font->Size;
+        return(Output->Canvas->Font->Size);
     }
 
 /// Return the height of the screen
     int Height()
     {
-        return Output->Height;
+        return(Output->Height);
     }
 
 /// Return the left pixel position of the screen
     int Left()
     {
-        return Output->Left;
+        return(Output->Left);
     }
 
 /// Return the top pixel position of the screen
     int Top()
     {
-        return Output->Top;
+        return(Output->Top);
     }
 
 /// Return the width of the screen
     int Width()
     {
-        return Output->Width;
+        return(Output->Width);
     }
 
 /// Return the current screen font
     TFont* GetFont()
     {
-        return Output->Canvas->Font;
+        return(Output->Canvas->Font);
     }
 
 /// Return a pointer to the screen image
     TImage *GetImage()
     {
-        return Output;
+        return(Output);
     }
 
     TLabel* GetOutputLog1()
     {
-        return OutputLog1;
+        return(OutputLog1);
     }
 
 ///< Return pointers to warning message logs (appear above the railway display during operation)
     TLabel* GetOutputLog2()
     {
-        return OutputLog2;
+        return(OutputLog2);
     }
 
     TLabel* GetOutputLog3()
     {
-        return OutputLog3;
+        return(OutputLog3);
     }
 
     TLabel* GetOutputLog4()
     {
-        return OutputLog4;
+        return(OutputLog4);
     }
 
     TLabel* GetOutputLog5()
     {
-        return OutputLog5;
+        return(OutputLog5);
     }
 
     TLabel* GetOutputLog6()
     {
-        return OutputLog6;
+        return(OutputLog6);
     }
 
     TLabel* GetOutputLog7()
     {
-        return OutputLog7;
+        return(OutputLog7);
     }
 
     TLabel* GetOutputLog8()
     {
-        return OutputLog8;
+        return(OutputLog8);
     }
 
     TLabel* GetOutputLog9()
     {
-        return OutputLog9;
+        return(OutputLog9);
     }
 
     TLabel* GetOutputLog10()
     {
-        return OutputLog10;
+        return(OutputLog10);
     }
 
 /// Set the screen cursor to 'Cur' (used to select an arrow or an hourglass)
@@ -228,7 +228,7 @@ public:
 /// Constructor, sets the screen image (MainScreen or HiddenScreen), the
 /// performance log panel and the warning message labels
     TDisplay::TDisplay(TImage* &Image, TMemo* &MemoBox, TLabel* &L1, TLabel* &L2, TLabel* &L3, TLabel* &L4, TLabel* &L5, TLabel* &L6, TLabel* &L7, TLabel* &L8,
-        TLabel* &L9, TLabel* &L10);
+                       TLabel* &L9, TLabel* &L10);
 /// Empty the rectangle defined by Rect
     void Clear(int Caller, TRect Rect);
 /// Empty the display

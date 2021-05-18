@@ -41,14 +41,16 @@ enum TActionEventType
     FailCrashed, FailDerailed, FailUnexpectedBuffers, FailUnexpectedExitRailway, FailMissedArrival, FailMissedSplit, FailMissedJBO, FailMissedJoinOther,
     FailMissedTerminate, FailMissedNewService, FailMissedExitRailway, FailMissedChangeDirection, FailMissedPass, FailCreateLockedRoute, FailEnterLockedRoute,
     WaitingForJBO, WaitingForFJO, FailBuffersPreventingStart, FailBufferCrash, FailLevelCrossingCrash, FailIncorrectExit, ShuttleFinishedRemainingHere,
-    RouteForceCancelled};
+    RouteForceCancelled
+};
 
 /// Used in LogAction when reporting a train action to the performance log & file
 enum TActionType
 {
     Arrive, Terminate, Depart, Create, Enter, Leave, FrontSplit, RearSplit, JoinedByOther, ChangeDirection, NewService, TakeSignallerControl,
     RestoreTimetableControl, RemoveTrain, SignallerMoveForwards, SignallerJoin, TrainFailure, // SignallerJoin, TrainFailure & RepairFailedTrain new at v2.4.0
-        RepairFailedTrain, SignallerChangeDirection, SignallerPassRedSignal, Pass, SignallerControlStop, SignallerStop, SignallerLeave, SignallerStepForward};
+    RepairFailedTrain, SignallerChangeDirection, SignallerPassRedSignal, Pass, SignallerControlStop, SignallerStop, SignallerLeave, SignallerStepForward
+};
 
 /// indicates train operating mode, 'None' for not in use
 enum TTrainMode
@@ -60,24 +62,29 @@ enum TTrainMode
 enum TTimetableFormatType
 {
     NoFormat, TimeLoc, TimeTimeLoc, TimeCmd, StartNew, TimeCmdHeadCode, FinRemHere, FNSNonRepeatToShuttle, SNTShuttle, SNSShuttle, SNSNonRepeatFromShuttle,
-    FSHNewService, Repeat, PassTime, ExitRailway};
+    FSHNewService, Repeat, PassTime, ExitRailway
+};
 
 enum TTimetableLocationType
 {
-    NoLocation, AtLocation, EnRoute, LocTypeForRepeatEntry};
+    NoLocation, AtLocation, EnRoute, LocTypeForRepeatEntry
+};
 
 enum TTimetableSequenceType
 {
-    NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry};
+    NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
+};
 
 enum TTimetableShuttleLinkType
 {
-    NoShuttleLink, NotAShuttleLink, ShuttleLink, ShuttleLinkTypeForRepeatEntry};
+    NoShuttleLink, NotAShuttleLink, ShuttleLink, ShuttleLinkTypeForRepeatEntry
+};
 
 /// contains status info for each train
 enum TRunningEntry
 {
-    NotStarted, Running, Exited};
+    NotStarted, Running, Exited
+};
 
 // ---------------------------------------------------------------------------
 
@@ -265,7 +272,8 @@ class TInterface; // declared here so TTrain can access it as a friend
 /// Defines the train position with respect to the track elements; three consecutive elements are Lead (front), Mid (middle) and Lag (rear), and a train is either fully on two of the elements (LeadMid or MidLag), or is straddling all three elements (LeadMidLag).  As the train moves forwards the element that was Lead becomes Mid and Mid becomes Lag.
 enum TStraddle
 {
-    MidLag, LeadMidLag, LeadMid};
+    MidLag, LeadMidLag, LeadMid
+};
 
 class TTrain
 {
@@ -430,7 +438,7 @@ private:
     bool SPADFlag;
 ///< set when running past a red signal without permission flags to indicate relevant stop conditions or pending stop conditions
     bool Derailed, DerailPending, Crashed, StoppedAtBuffers, StoppedAtSignal, StoppedAtLocation, SignallerStopped, StoppedAfterSPAD, StoppedForTrainInFront,
-        StoppedWithoutPower, NotInService;
+         StoppedWithoutPower, NotInService;
 
     int HOffset[4], VOffset[4];
 ///< each headcode character is an 8x8 pixel graphic and must be placed within a 16x16 pixel element, these values set the horizontal & vertical offsets of the top left hand corner character graphic relative to the 16x16 element
@@ -480,11 +488,11 @@ private:
 /// True when the train is stopped at a timetabled location
     bool TrainAtLocation(int Caller, AnsiString &LocationName);
 /// True if Element is a buffer and Exitpos is the buffer end
-    bool BufferAtExit(int Caller, int Element, int Exitpos) const ;
+    bool BufferAtExit(int Caller, int Element, int Exitpos) const;
 /// True if the train can be called on at its current position - see detail in .cpp file
     bool CallingOnAllowed(int Caller);
 /// True if Element is a continuation and Exitpos is the continuation end
-    bool ContinuationExit(int Caller, int Element, int Exitpos) const ;
+    bool ContinuationExit(int Caller, int Element, int Exitpos) const;
 /// True if train is on a bridge on trackpos 0 & 1
     bool IsTrainIDOnBridgeTrackPos01(int Caller, unsigned int TrackVectorPosition);
 /// True if train is on a bridge on trackpos 2 & 3
@@ -492,7 +500,7 @@ private:
 /// True if train service terminates at its current location
     bool IsTrainTerminating(int Caller);
 /// Returns true if EntryLink is 1, 2, 4 or 7, in these circumstances the front of the train (i.e. the character that is red or blue) is the last character of the headcode, otherwise it's the first character of the headcode
-    bool LowEntryValue(int EntryLink) const ;
+    bool LowEntryValue(int EntryLink) const;
 /// Returns true if any part of train on a continuation - called when checking for failures, prevent if on a continuation
     bool TrainOnContinuation(int Caller); // new at v2.4.0
 /// True for a train waiting to be joined when the joining train is adjacent
@@ -535,24 +543,24 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
 /// to foul points but train only becomes derailed when it moves fully onto the element)*/
     void GetLeadElement(int Caller);
 /// Sets HOffset & VOffset (see above) for a single headcode character depending on the Link value
-    void GetOffsetValues(int Caller, int &HOffset, int &VOffset, int Link) const ;
+    void GetOffsetValues(int Caller, int &HOffset, int &VOffset, int Link) const;
 /// Carry out the actions needed when a train is waiting to be joined by another train
     void JoinedBy(int Caller);
 /// Create one train with relevant member values from the sesion file
     void LoadOneSessionTrain(int Caller, std::ifstream &InFile);
 /// Send a message to the performance log and performance file, and if the message is flagged as a warning then it is also sent as a warning (in red at the top of the railway display area)
     void LogAction(int Caller, AnsiString HeadCode, AnsiString OtherHeadCode, TActionType ActionType, AnsiString LocationName, TDateTime TimetableNonRepeatTime,
-        bool Warning);
+                   bool Warning);
 /// Carry out the actions needed when a new shuttle service is created from a non-repeating (F-nshs) service
     void NewShuttleFromNonRepeatService(int Caller);
 /// Carry out the actions needed when a train forms a new service (code Fns)
     void NewTrainService(int Caller);
 /// Store the background bitmap pointer (BackgroundPtr - see above) prior to being overwritten by the train's headcode character, so that it can be replotted after the train has passed using PlotBackgroundGraphic.  Note that this doesn't pick up the actual graphic, it reconstructs the track graphic with autosigs route if set, so any text or user graphics at that position will be blanked out by the train until the next ClearandRebuildRailway
-    void PickUpBackgroundBitmap(int Caller, int HOffset, int VOffset, int Element, int EntryPos, Graphics::TBitmap *GraphicPtr) const ;
+    void PickUpBackgroundBitmap(int Caller, int HOffset, int VOffset, int Element, int EntryPos, Graphics::TBitmap *GraphicPtr) const;
 /// When a train moves off a bridge the other track may contain a route or have a train on it that has been obscured by this train.  This function checks and replots the original graphic if necessary
     void PlotAlternativeTrackRouteGraphic(int Caller, unsigned int LagElement, int LagELinkPos, int HOffset, int VOffset, TStraddle StraddleValue);
 /// Replot the graphic pointed to by BackgroundPtr (see above) after a train has passed
-    void PlotBackgroundGraphic(int Caller, int ArrayNumber, TDisplay *Disp) const ;
+    void PlotBackgroundGraphic(int Caller, int ArrayNumber, TDisplay *Disp) const;
 /// Plots the train and sets up all relevant members for a new train when it is introduced into the railway
     void PlotStartPosition(int Caller);
 /// Plots the train on the display in normal (zoomed-in) mode
@@ -603,7 +611,7 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
 /// Check whether the train has left the railway, so that it can be removed from the display at the next clock tick
     bool HasTrainGone()
     {
-        return TrainGone;
+        return(TrainGone);
     }
 
 public:
@@ -614,18 +622,21 @@ public:
     bool Stopped()
     {
         return (Crashed || Derailed || StoppedAtBuffers || StoppedAtSignal || StoppedAtLocation || SignallerStopped || StoppedAfterSPAD ||
-            StoppedForTrainInFront || StoppedWithoutPower || NotInService);
+                StoppedForTrainInFront || StoppedWithoutPower || NotInService);
     }
 /// get LeadElement - used in RouteLockingRequired in TrackUnit.cpp
-    int GetLeadElement() {return LeadElement;}
+    int GetLeadElement()
+    {
+        return( LeadElement);
+    }
 /// Added at v1.2.0: true if any part of train on specific link, false otherwise, including no link present & no TrackVectorNumber within Lead, Mid or Lag (public so Track->TrainOnLink can access it)
 
 /// functions in .cpp file
     bool LinkOccupied(int Caller, int TrackVectorPosition, int LinkNumber);
 /// Constructor, sets listed member values
     TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiString InputCode, int StartSpeed, int Mass, double MaxRunningSpeed,
-        double MaxBrakeRate, double PowerAtRail, TTrainMode TrainMode, TTrainDataEntry *TrainDataEntryPtr, int RepeatNumber, int IncrementalMinutes,
-        int IncrementalDigits, int SignallerMaxSpeed);
+           double MaxBrakeRate, double PowerAtRail, TTrainMode TrainMode, TTrainDataEntry *TrainDataEntryPtr, int RepeatNumber, int IncrementalMinutes,
+           int IncrementalDigits, int SignallerMaxSpeed);
 };
 
 // ---------------------------------------------------------------------------
@@ -649,7 +660,7 @@ public:
 /// Turns signals back to green in stages after a train has exited an autosig route at a continuation
     class TContinuationAutoSigEntry
     {
-    public:
+public:
         double FirstDelay, SecondDelay, ThirdDelay;
 ///< Delays in seconds before consecutive signal changes - these correspond to the times taken for trains to pass subsequent signals outside the boundaries of the railway.  After the third delay the signal nearest to the continuation that was red when the train passed it has changed to green
         int AccessNumber;
@@ -667,7 +678,7 @@ public:
 /// Class that stores data for trains expected at continuation entries (kept in a multimap - see below), used to display information in the floating window when mouse hovers over a continuation
     class TContinuationTrainExpectationEntry
     {
-    public:
+public:
         AnsiString Description;
 ///< service description
         AnsiString HeadCode;
@@ -779,10 +790,10 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     int UnexpectedExits;
     int NumFailures; // counts number of failed trains, added at v2.4.0
 ///< all these set to 0 in constructor
-    int OperatingTrainArrDep;
-///< total number of arrivals & departures for operating trains locations not reached yet
-    int NotStartedTrainArrDep;
-///< total number of arrivals & departures for trains that haven't started yet for locations not reached yet
+    int OperatingTrainLateArr;
+///< total number of arrivals & departures for operating trains locations not reached yet (changed from OperatingTrainArrDep after 2.7.0 as departures now omitted)
+    int NotStartedTrainLateArr;
+///< total number of arrivals & departures for trains that haven't started yet for locations not reached yet (changed from NotStartedTrainArrDep after 2.7.0 as departures now omitted)
     int LastTrainLoaded;
 ///<displays last train loaded from session file, used for debugging
     int AvHoursIntValue;
@@ -844,8 +855,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     AnsiString GetRepeatHeadCode(int Caller, AnsiString BaseHeadCode, int RepeatNumber, int IncDigits);
 /// Introduce a new train to the railway, with the characteristics specified, returns true for success, if fails the EventType indicates the reason
     bool AddTrain(int Caller, int RearPosition, int FrontPosition, AnsiString HeadCode, int StartSpeed, int Mass, double MaxRunningSpeed, double MaxBrakeRate,
-        double PowerAtRail, AnsiString ModeStr, TTrainDataEntry *TrainDataEntryPtr, int RepeatNumber, int IncrementalMinutes, int IncrementalDigits,
-        int SignallerSpeed, bool SignallerControl, TActionEventType &EventType);
+                  double PowerAtRail, AnsiString ModeStr, TTrainDataEntry *TrainDataEntryPtr, int RepeatNumber, int IncrementalMinutes, int IncrementalDigits,
+                  int SignallerSpeed, bool SignallerControl, TActionEventType &EventType);
 /// A shorthand function that returns true if the successor to a given timetable action command should be (or could be) an 'at location' command, used in timetable validation
     bool AtLocSuccessor(const TActionVectorEntry &AVEntry);
 /// Used to compile ExitList from a string list of element IDs, returns true for success or gives a message & returns false for failure, used in timetable validation
@@ -890,19 +901,19 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     bool ProcessOneTimetableLine(int Caller, int Count, AnsiString OneLine, bool &EndOfFile, bool FinalCall, bool GiveMessages, bool CheckLocationsExistInRailway);
 /// Determines whether two services are running in the same direction when they arrive or depart from Location
     bool SameDirection(int Caller, AnsiString Ref1, AnsiString Ref2, AnsiString Time1, AnsiString Time2, int RepeatNum1, int RepeatNum2, TServiceCallingLocsList List1,
-        TServiceCallingLocsList List2, AnsiString Location, bool Arrival);
+                       TServiceCallingLocsList List2, AnsiString Location, bool Arrival);
 /// Carry out further detailed timetable consistency checks, return true for success
     bool SecondPassActions(int Caller, bool GiveMessages);
 /// Parse a single timetable service action, return true for success
     bool SplitEntry(int Caller, AnsiString OneEntry, bool GiveMessages, bool CheckLocationsExistInRailway, AnsiString &First, AnsiString &Second,
-        AnsiString &Third, AnsiString &Fourth, int &RearStartOrRepeatMins, int &FrontStartPosition, TTimetableFormatType &TimetableFormatType,
-        TTimetableLocationType &LocationType, TTimetableSequenceType &SequenceType, TTimetableShuttleLinkType &ShuttleLinkType, TExitList &ExitList,
-        bool &Warning);
+                    AnsiString &Third, AnsiString &Fourth, int &RearStartOrRepeatMins, int &FrontStartPosition, TTimetableFormatType &TimetableFormatType,
+                    TTimetableLocationType &LocationType, TTimetableSequenceType &SequenceType, TTimetableShuttleLinkType &ShuttleLinkType, TExitList &ExitList,
+                    bool &Warning);
 /// Parse a timetable repeat entry, return true for success
     bool SplitRepeat(int Caller, AnsiString OneEntry, int &RearStartOrRepeatMins, int &FrontStartOrRepeatDigits, int &RepeatNumber, bool GiveMessages);
 /// Parse a train information entry, return true for success;  PowerAtRail changed to double& from int& at v2.4.0
     bool SplitTrainInfo(int Caller, AnsiString TrainInfoStr, AnsiString &HeadCode, AnsiString &Description, int &StartSpeed, int &MaxRunningSpeed, int &Mass,
-        double &MaxBrakeRate, double &PowerAtRail, int &SignallerSpeed, bool GiveMessages);
+                        double &MaxBrakeRate, double &PowerAtRail, int &SignallerSpeed, bool GiveMessages);
 /// Checks overall timetable integrity, calls many other specific checking functions, returns true for success
     bool TimetableIntegrityCheck(int Caller, char *FileName, bool GiveMessages, bool CheckLocationsExistInRailway);
 /// new at v2.4.0 return true if find the train (added at v2.4.0 as can select a removed train in OAListBox before it updates see LiWinDom error report via Discord on 23/04/20
@@ -911,7 +922,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     bool WithinTimeRange(int Caller, AnsiString Time1, AnsiString Time2, int MinuteRange);
 /// new v2.2.0, calcs distance to red signal, returns -1 for no signal found, for autosigs route after next red signal & other conditions, also totals up location stop times before the red signal and returns value in StopTime
     int CalcDistanceToRedSignalandStopTime(int Caller, int TrackVectorPosition, int TrackVectorPositionEntryPos, bool SigControlAndCanPassRedSignal,
-        TActionVectorEntry *AVPtr, AnsiString HeadCode, int TrainID, float &CurrentStopTime, float &LaterStopTime, float &RecoverableTime, int &AvTrackSpeed);
+                                           TActionVectorEntry *AVPtr, AnsiString HeadCode, int TrainID, float &CurrentStopTime, float &LaterStopTime, float &RecoverableTime, int &AvTrackSpeed);
 /// Return the track entry link (Link[]) array position for the given train on track element at track vector position TrackVectorNumber
     int EntryPos(int Caller, int TrainIDIn, int TrackVectorNumber);
 /// Get the interval between repeats

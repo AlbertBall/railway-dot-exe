@@ -31,6 +31,7 @@ Be nice to each other. Please report unacceptable behaviour to [railwayfeedback@
 ## I don't want to read this whole thing I just have a question!!!
 
 We have an official [website](http://www.railwayoperationsimulator.com) where you can ask questions via the [Contact](http://www.railwayoperationsimulator.com/contact) form, or simply [Email us](mailto:railwayfeedback@gmail.com).
+Better still join the Discord community via the Discord tab on the [website] (http://www.railwayoperationsimulator.com) and ask the question in the 'software-development' channel.
 
 ## What should I know before I get started as a contributor?
 

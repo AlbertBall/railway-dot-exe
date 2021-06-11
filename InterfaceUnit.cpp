@@ -96,13 +96,42 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
 
         // check for presence of directories, creation failure probably indicates that the
         // working folder is read-only
-        CurDir = GetCurrentDir();
+
+        CurDir = AnsiString(GetCurrentDir());
+//        ShowMessage("Curdir from GetCurrentDir() " + CurDir);    //these used to check behaviour outside the compiler
+        UnicodeString FullProgramName = GetModuleName(0);              // added after v2 8.0 to check executable exists
+//        ShowMessage("FullProgramName " + FullProgramName);
+        UnicodeString ProgramName = ExtractFileName(FullProgramName);  // as above
+//        ShowMessage("ProgramName " + ProgramName);
+        UnicodeString ProgramDirectoryName = ExtractFilePath(FullProgramName);  // as above
+//        ShowMessage("ProgramDirectoryName " + ProgramDirectoryName);
+
+        if(!FileExists(ProgramName))  //added at v2.9.0 after discovering the effect described below
+        {
+            if(!SetCurrentDir(ProgramDirectoryName)) //if false the current directory couldn't be changed
+            {
+                ShowMessage("The working directory does not contain the railway executable file so the program cannot "
+                "open. This is usually because the program has been selected via the right-click taskbar icon though it may "
+                "also happen in other circumstances. It is caused by the Windows operating system re-assigning the "
+                "working directory for some unknown reason, though whether or not it happens appears to depend on the "
+                "Windows update version.\n\n"
+                "To avoid this happening please open the program by double clicking the program icon on the desktop "
+                "if there is one, or the program icon shown in Windows Explorer.");
+                Application->Terminate();
+            }
+            else
+            {
+                CurDir = AnsiString(GetCurrentDir());
+            }
+        }
+
         if(!DirectoryExists(RAILWAY_DIR_NAME))
         {
             if(!CreateDir(RAILWAY_DIR_NAME))
             {
                 DirOpenError = true;
             }
+
         }
         if(!DirectoryExists(TIMETABLE_DIR_NAME))
         {
@@ -150,7 +179,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         {
             ShowMessage("Failed to create one or more of folders: " + RAILWAY_DIR_NAME + ", " + TIMETABLE_DIR_NAME + ", " + PERFLOG_DIR_NAME + ", " +
                         SESSION_DIR_NAME + ", " + IMAGE_DIR_NAME + ", " + FORMATTEDTT_DIR_NAME + ", " + USERGRAPHICS_DIR_NAME + ", " +
-                        "program operation may be restricted");
+                        "program operation will be restricted");
         }
         Application->HelpFile = AnsiString(CurDir + "\\Help.chm"); // added at v2.0.0 for .chm help file
 
@@ -180,6 +209,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         ConstructPrefDir = new TOnePrefDir;
         ConstructRoute = new TOneRoute;
         EveryPrefDir = new TOnePrefDir;
+        SelectPrefDir = new TOnePrefDir;
         TrainController = new TTrainController;
         SelectBitmap = new Graphics::TBitmap;
         SelectBitmap->PixelFormat = pf8bit;
@@ -526,6 +556,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         SignalStopImage->Picture->Bitmap->LoadFromResourceName(0, "SignalStopWarning");
         SPADImage->Picture->Bitmap->LoadFromResourceName(0, "SPADWarning");
         TrainFailedImage->Picture->Bitmap->LoadFromResourceName(0, "TrainFailedWarning"); // new at v2.4.0
+        ManualLCDownImage->Picture->Bitmap->LoadFromResourceName(0, "ManualLCDownImage"); // new at v2.9.0
 
         DistanceKey->Picture->Bitmap->LoadFromResourceName(0, "DistanceKey");
         PrefDirKey->Picture->Bitmap->LoadFromResourceName(0, "PrefDirKey");
@@ -723,6 +754,7 @@ __fastcall TInterface::~TInterface()
         delete SelectBitmap;
         delete TrainController;
         delete EveryPrefDir;
+        delete SelectPrefDir;
         delete ConstructRoute;
         delete ConstructPrefDir;
         delete AllRoutes;
@@ -789,7 +821,7 @@ void __fastcall TInterface::AppDeactivate(TObject *Sender)
             SetLevel2OperMode(2);
         }
         MasterClock->Enabled = false;
-        ClipboardChecked = false; // added at v2.8.0 to force a check of the clipboard (via ClockTimer2 & SetTrackModemenu)
+        ClipboardChecked = false; // added at v2.8.0 to force a check of the clipboard (via ClockTimer2 & SetTrackModeMenu)
     }
     catch(const Exception &e)
     {
@@ -807,6 +839,7 @@ void __fastcall TInterface::AppActivate(TObject *Sender)
         if(AllSetUpFlag)
         {
             MasterClock->Enabled = true;
+            ClipboardChecked = false; // at v2.9.0 added here too as for some unknown reason it doesn't always work when just in deactivate
         }
     }
     catch(const Exception &e)
@@ -1025,13 +1058,13 @@ void __fastcall TInterface::TrackOKButtonClick(TObject *Sender)
         }
         else
         {
-            // success ('TrackFinished' set in TryToConnectTrack)
+            // success so far as track is concerned ('TrackFinished' set in TryToConnectTrack)
             EveryPrefDir->RebuildPrefDirVector(0); // from TrackMap
-            ShowMessage("Successful Completion");
         }
 // success if reach here ('TrackFinished' set in TryToConnectTrack)
         if(Level2TrackMode == AddTrack)
         {
+            Level2TrackMode = AddTrack;
             Level1Mode = TrackMode;
             SetLevel1Mode(41);
             SetLevel2TrackMode(5);
@@ -1041,6 +1074,7 @@ void __fastcall TInterface::TrackOKButtonClick(TObject *Sender)
             Level1Mode = TrackMode;
             SetLevel1Mode(36); // back to TrackMode if not in AddTrack mode
         }
+        ShowMessage("Successful Completion");
         Utilities->CallLogPop(2);
     }
     catch(const Exception &e)
@@ -2731,13 +2765,14 @@ void __fastcall TInterface::SaveImageNoGridMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1535);
     }
-    catch(const Exception &e)
+    catch(const Exception &e) //non error catch
     {
         if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
         {
             Screen->Cursor = TCursor(-2); // Arrow;
             UnicodeString MessageStr = "Insufficient memory available to store this image";
             Application->MessageBox(MessageStr.c_str(), L"", MB_OK | MB_ICONWARNING);
+            Utilities->CallLogPop(2297);
         }
         else
         {
@@ -2829,13 +2864,14 @@ void __fastcall TInterface::SaveImageAndGridMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1536);
     }
-    catch(const Exception &e)
+    catch(const Exception &e) //non error catch
     {
         if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
         {
             Screen->Cursor = TCursor(-2); // Arrow;
             UnicodeString MessageStr = "Insufficient memory available to store this image";
             Application->MessageBox(MessageStr.c_str(), L"", MB_OK | MB_ICONWARNING);
+            Utilities->CallLogPop(2298);
         }
         else
         {
@@ -2919,13 +2955,14 @@ void __fastcall TInterface::SaveImageAndPrefDirsMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1566);
     }
-    catch(const Exception &e)
+    catch(const Exception &e) //non error catch
     {
         if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
         {
             Screen->Cursor = TCursor(-2); // Arrow;
             UnicodeString MessageStr = "Insufficient memory available to store this image";
             Application->MessageBox(MessageStr.c_str(), L"", MB_OK | MB_ICONWARNING);
+            Utilities->CallLogPop(2299);
         }
         else
         {
@@ -3046,13 +3083,14 @@ void __fastcall TInterface::SaveOperatingImageMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1703);
     }
-    catch(const Exception &e)
+    catch(const Exception &e) //non error catch
     {
         if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
         {
             Screen->Cursor = TCursor(-2); // Arrow;
             UnicodeString MessageStr = "Insufficient memory available to store this image";
             Application->MessageBox(MessageStr.c_str(), L"", MB_OK | MB_ICONWARNING);
+            Utilities->CallLogPop(2300);
         }
         else
         {
@@ -5982,7 +6020,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                 Track->EraseTrackElement(1, HLoc, VLoc, ErasedTrackVectorPosition, TrackEraseSuccessfulFlag, true);
                 if(TrackEraseSuccessfulFlag)
                 {
-                    if(ErasedTrackVectorPosition > -1)
+                    if(ErasedTrackVectorPosition > -1) //may have been an inactive element
                     {
                         EveryPrefDir->RealignAfterTrackErase(0, ErasedTrackVectorPosition);
                     }
@@ -6393,6 +6431,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
             Utilities->CallLogPop(67);
             return; // covers above else & included here in case any more usermodes added later
         }
+
 // Left Mouse Button Functions
         if(RouteCancelFlag)
         {
@@ -7796,7 +7835,7 @@ void __fastcall TInterface::MainScreenMouseUp(TObject *Sender, TMouseButton Butt
    rightmost and bottom HLoc & VLoc values, if 59 & 35 were used the right & bottom screen edges wouldn't be reached.  A TRect is then
    defined from SelectStartPair and the HLoc/VLoc values, Clearand... called to clear earlier rectangles, and a dashed edge drawn round
    the selection.
-   [New] This function can take some time so an houglass cursor is displayed.  The rectangle is fully defined, so the final screen X & Y
+   [New] This function can take some time so an hourglass cursor is displayed.  The rectangle is fully defined, so the final screen X & Y
    values are translated into HLoc & VLoc values (wrt whole railway) and SelectEndPair set using them.  The rectangle can be defined in any
    direction, so the end points may be before or after the starting points for both horizontal and vertical directions.  Therefore the
    rectangle that will be used subsequently - SelectRect - is defined from SelectStart and SelectEnd allowing for any direction.  Screen
@@ -7876,7 +7915,7 @@ void __fastcall TInterface::MainScreenMouseUp(TObject *Sender, TMouseButton Butt
                 SelectRect.top = Display->DisplayOffsetV;
             }
             Level2TrackMode = AddTrack; // Level1Mode must be TrackMode
-            SetLevel2TrackMode(69); // add all track elements so area can be filled with an element, must come before PlotDashedRect as calls Crearand...
+            SetLevel2TrackMode(69); // add all track elements so area can be filled with an element, must come before PlotDashedRect as calls Clearand...
             Level2TrackMode = TrackSelecting; // reset from AddTrack
             Display->PlotDashedRect(1, SelectRect);
             SelectBitmapHLoc = SelectRect.left;
@@ -7912,6 +7951,7 @@ void __fastcall TInterface::MainScreenMouseUp(TObject *Sender, TMouseButton Butt
                     SelectLengthsMenuItem->Enabled = false; // and that can only be used if track linked
                 }
                 SelectBiDirPrefDirsMenuItem->Visible = false;
+                CheckPrefDirConflictsMenuItem->Visible = false;
                 CancelSelectionMenuItem->Enabled = true;
                 // set SelectBitmap
                 SelectBitmap->Width = (SelectRect.right - SelectRect.left) * 16;
@@ -7931,6 +7971,7 @@ void __fastcall TInterface::MainScreenMouseUp(TObject *Sender, TMouseButton Butt
                 Track->SelectVectorClear();
                 TTrackElement TempElement; // default element
                 bool FoundFlag;
+                //store active elements
                 for(int x = SelectRect.left; x < SelectRect.right; x++)
                 {
                     for(int y = SelectRect.top; y < SelectRect.bottom; y++)
@@ -7960,6 +8001,41 @@ void __fastcall TInterface::MainScreenMouseUp(TObject *Sender, TMouseButton Butt
                             {
                                 TempElement = Track->InactiveTrackElementAt(31, IATVecPair.second);
                                 Track->SelectPush(TempElement);
+                            }
+                        }
+                    }
+                }
+
+                //store preferred directions //added at v2.9.0
+                int PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3;
+                TPrefDirElement TempPrefDirElement;
+                SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
+                for(int x = SelectRect.left; x < SelectRect.right; x++)
+                {
+                    for(int y = SelectRect.top; y < SelectRect.bottom; y++)
+                    {
+                        EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(11, x, y, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
+                        if(FoundFlag)
+                        {
+                            if(PrefDirPos0 > -1)
+                            {
+                                TempPrefDirElement = EveryPrefDir->GetModifiablePrefDirElementAt(2, PrefDirPos0);
+                                SelectPrefDir->ExternalStorePrefDirElement(6, TempPrefDirElement);
+                            }
+                            if(PrefDirPos1 > -1)
+                            {
+                                TempPrefDirElement = EveryPrefDir->GetModifiablePrefDirElementAt(3, PrefDirPos1);
+                                SelectPrefDir->ExternalStorePrefDirElement(7, TempPrefDirElement);
+                            }
+                            if(PrefDirPos2 > -1)
+                            {
+                                TempPrefDirElement = EveryPrefDir->GetModifiablePrefDirElementAt(4, PrefDirPos2);
+                                SelectPrefDir->ExternalStorePrefDirElement(8, TempPrefDirElement);
+                            }
+                            if(PrefDirPos3 > -1)
+                            {
+                                TempPrefDirElement = EveryPrefDir->GetModifiablePrefDirElementAt(5, PrefDirPos3);
+                                SelectPrefDir->ExternalStorePrefDirElement(9, TempPrefDirElement);
                             }
                         }
                     }
@@ -8105,6 +8181,7 @@ void __fastcall TInterface::MainScreenMouseUp(TObject *Sender, TMouseButton Butt
             else
             {
                 SelectBiDirPrefDirsMenuItem->Enabled = true;
+                CheckPrefDirConflictsMenuItem->Enabled = false;
                 CancelSelectionMenuItem->Enabled = true;
                 // don't need SelectBitmap for PrefDir selection
 
@@ -8689,6 +8766,32 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
         {
             TrainController->PlotAllTrainsInZoomOutMode(0, WarningFlash);
         }
+//deal with any manual LCs with barriers down in zoomout mode - these flash as reminder that need to re-open
+
+        ManualLCDownAttentionWarning =  false;
+        for(unsigned int x = 0; x < Track->BarriersDownVector.size(); x++)
+        {
+            if((Track->BarriersDownVector.at(x).BarrierState == TTrack::Down) && (Track->BarriersDownVector.at(x).TypeOfRoute == 2))
+            {//manual crossing down, but maybe a route across it
+                bool TrainPresent; //not used outside function
+                if(!Track->AnyLinkedLevelCrossingElementsWithRoutesOrTrains(2, Track->BarriersDownVector.at(x).HLoc, Track->BarriersDownVector.at(x).VLoc,
+                    ConstructRoute->SearchVector, TrainPresent)) //no warning raised if a route or train present
+                {
+                    ManualLCDownAttentionWarning =  true;
+                    if((WarningFlashCount == 0) && WarningFlash && Display->ZoomOutFlag)
+                    {
+                        Track->PlotSmallFlashingLinkedLevelCrossings(0, Track->BarriersDownVector.at(x).HLoc, Track->BarriersDownVector.at(x).VLoc,
+                            RailGraphics->smLC, Display);   //smLC
+                    }
+                    else if((WarningFlashCount == 0) && !WarningFlash && Display->ZoomOutFlag)
+                    {
+                        Track->PlotSmallFlashingLinkedLevelCrossings(1, Track->BarriersDownVector.at(x).HLoc, Track->BarriersDownVector.at(x).VLoc,
+                            RailGraphics->smSolidBgnd, Display);   //SMOrange
+                    }
+                }
+            }
+        }
+
 // Deal with any flashing graphics
         if((WarningFlashCount == 0) && !TrainController->StopTTClockFlag)
         {
@@ -8725,6 +8828,10 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
                     {
                         BufferAttentionImage->Visible = true;
                     }
+                    if(ManualLCDownAttentionWarning) //added at v2.9.0
+                    {
+                        ManualLCDownImage->Visible = true;
+                    }
                 }
                 else
                 {
@@ -8735,6 +8842,7 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
                     CallOnImage->Visible = false;
                     SignalStopImage->Visible = false;
                     BufferAttentionImage->Visible = false;
+                    ManualLCDownImage->Visible = false;
                 }
             }
             else
@@ -8746,6 +8854,7 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
                 CallOnImage->Visible = false;
                 SignalStopImage->Visible = false;
                 BufferAttentionImage->Visible = false;
+                ManualLCDownAttentionWarning = false;
             }
         } // if(WarningFlashCount == 0)
 
@@ -9431,6 +9540,7 @@ void __fastcall TInterface::ReselectMenuItemClick(TObject *Sender)
             SelectLengthsMenuItem->Enabled = false; // and that can only be used if track linked
         }
         SelectBiDirPrefDirsMenuItem->Visible = false;
+        CheckPrefDirConflictsMenuItem->Visible = false;
         CancelSelectionMenuItem->Enabled = true;
         mbLeftDown = false;
         // Level1Mode = TrackMode;
@@ -9518,6 +9628,45 @@ void __fastcall TInterface::FlipMenuItemClick(TObject *Sender)
             TE.SigAspect = Track->SelectVectorAt(43, x).SigAspect;
             Track->SelectVectorAt(26, x) = TE;
         }
+
+        int FlipLinkArray[10] = {0, 7, 8, 9, 4, 5, 6, 1, 2, 3}; //0 & 5 are never used
+
+        // now reset the pref dirs
+        for(unsigned int x = 0; x < SelectPrefDir->PrefDirSize(); x++)
+        {
+            int VLoc = VerSum - SelectPrefDir->PrefDirVector.at(x).VLoc;
+            int HLoc = SelectPrefDir->PrefDirVector.at(x).HLoc;
+            int ELink = FlipLinkArray[SelectPrefDir->PrefDirVector.at(x).GetELink()];
+            int XLink = FlipLinkArray[SelectPrefDir->PrefDirVector.at(x).GetXLink()];
+            TTrackElement TE = Track->BuildBasicElementFromSpeedTag(6, Track->FlipArray[SelectPrefDir->PrefDirVector.at(x).SpeedTag]);
+            TPrefDirElement PDE(TE);  //this has Link[4] and LinkPos[4]
+            PDE.HLoc = HLoc;
+            PDE.VLoc = VLoc;
+            PDE.SetELink(ELink);
+            PDE.SetXLink(XLink);
+            bool ELinkPosFound = false, XLinkPosFound = false; //these ensure that the link pos is set as low as possible for points
+            for(int x = 0; x < 4; x++)
+            {
+                if(!ELinkPosFound && (PDE.Link[x] == ELink))
+                {
+                    PDE.SetELinkPos(x);
+                    ELinkPosFound = true;
+                }
+                if(!XLinkPosFound && (PDE.Link[x] == XLink))
+                {
+                    PDE.SetXLinkPos(x);
+                    XLinkPosFound = true;
+                }
+            }
+            if(!PDE.EntryExitNumber() || !ELinkPosFound || !XLinkPosFound) //error if can't set the number or any link pos not set
+            {
+                SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
+                ShowMessage("Unable to re-orientate the preferred directions, these won't be set in the rotated selection");
+                break;
+            }
+            SelectPrefDir->PrefDirVector.at(x) = PDE;
+        }
+
         // reset values in SelectTextVector
         for(unsigned int x = 0; x < TextHandler->SelectTextVectorSize(0); x++)
         {
@@ -9574,6 +9723,45 @@ void __fastcall TInterface::MirrorMenuItemClick(TObject *Sender)
 // Track->SelectVectorAt(, x).HLoc = HorSum - Track->SelectVectorAt(, x).HLoc;
 // Track->SelectVectorAt(, x).SpeedTag = Track->MirrorArray[Track->SelectVectorAt(, x).SpeedTag];
         }
+
+        int MirrorLinkArray[10] = {0, 3, 2, 1, 6, 5, 4, 9, 8, 7}; //0 & 5 are never used
+
+        // now reset the pref dirs
+        for(unsigned int x = 0; x < SelectPrefDir->PrefDirSize(); x++)
+        {
+            int HLoc = HorSum - SelectPrefDir->PrefDirVector.at(x).HLoc;
+            int VLoc = SelectPrefDir->PrefDirVector.at(x).VLoc;
+            int ELink = MirrorLinkArray[SelectPrefDir->PrefDirVector.at(x).GetELink()];
+            int XLink = MirrorLinkArray[SelectPrefDir->PrefDirVector.at(x).GetXLink()];
+            TTrackElement TE = Track->BuildBasicElementFromSpeedTag(7, Track->MirrorArray[SelectPrefDir->PrefDirVector.at(x).SpeedTag]);
+            TPrefDirElement PDE(TE);  //this has Link[4] and LinkPos[4]
+            PDE.HLoc = HLoc;
+            PDE.VLoc = VLoc;
+            PDE.SetELink(ELink);
+            PDE.SetXLink(XLink);
+            bool ELinkPosFound = false, XLinkPosFound = false; //these ensure that the link pos is set as low as possible for points
+            for(int x = 0; x < 4; x++)
+            {
+                if(!ELinkPosFound && (PDE.Link[x] == ELink))
+                {
+                    PDE.SetELinkPos(x);
+                    ELinkPosFound = true;
+                }
+                if(!XLinkPosFound && (PDE.Link[x] == XLink))
+                {
+                    PDE.SetXLinkPos(x);
+                    XLinkPosFound = true;
+                }
+            }
+            if(!PDE.EntryExitNumber() || !ELinkPosFound || !XLinkPosFound) //error if can't set the number or any link pos not set
+            {
+                SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
+                ShowMessage("Unable to re-orientate the preferred directions, these won't be set in the rotated selection");
+                break;
+            }
+            SelectPrefDir->PrefDirVector.at(x) = PDE;
+        }
+
         // reset values in SelectTextVector
         for(unsigned int x = 0; x < TextHandler->SelectTextVectorSize(1); x++)
         {
@@ -9610,6 +9798,7 @@ void __fastcall TInterface::RotateMenuItemClick(TObject *Sender)
     {
         TrainController->LogEvent("Rotate180MenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",Rotate180MenuItemClick");
+
         // reset values in SelectVector
         int HorSum = SelectRect.left + SelectRect.right - 1;
         int VerSum = SelectRect.top + SelectRect.bottom - 1;
@@ -9637,6 +9826,45 @@ void __fastcall TInterface::RotateMenuItemClick(TObject *Sender)
 // TempEl.VLoc = VerSum - TempEl.VLoc;
 // TempEl.SpeedTag = Track->MirrorArray[Track->FlipArray[TempEl.SpeedTag]];
         }
+
+        int Rot180LinkArray[10] = {0, 9, 8, 7, 6, 5, 4, 3, 2, 1}; //0 & 5 are never used
+
+        // now reset the pref dirs
+        for(unsigned int x = 0; x < SelectPrefDir->PrefDirSize(); x++)
+        {
+            int HLoc = HorSum - SelectPrefDir->PrefDirVector.at(x).HLoc;
+            int VLoc = VerSum - SelectPrefDir->PrefDirVector.at(x).VLoc;
+            int ELink = Rot180LinkArray[SelectPrefDir->PrefDirVector.at(x).GetELink()];
+            int XLink = Rot180LinkArray[SelectPrefDir->PrefDirVector.at(x).GetXLink()];
+            TTrackElement TE = Track->BuildBasicElementFromSpeedTag(8, Track->MirrorArray[Track->FlipArray[SelectPrefDir->PrefDirVector.at(x).SpeedTag]]);
+            TPrefDirElement PDE(TE);  //this has Link[4] and LinkPos[4]
+            PDE.HLoc = HLoc;
+            PDE.VLoc = VLoc;
+            PDE.SetELink(ELink);
+            PDE.SetXLink(XLink);
+            bool ELinkPosFound = false, XLinkPosFound = false; //these ensure that the link pos is set as low as possible for points
+            for(int x = 0; x < 4; x++)
+            {
+                if(!ELinkPosFound && (PDE.Link[x] == ELink))
+                {
+                    PDE.SetELinkPos(x);
+                    ELinkPosFound = true;
+                }
+                if(!XLinkPosFound && (PDE.Link[x] == XLink))
+                {
+                    PDE.SetXLinkPos(x);
+                    XLinkPosFound = true;
+                }
+            }
+            if(!PDE.EntryExitNumber() || !ELinkPosFound || !XLinkPosFound) //error if can't set the number or any link pos not set
+            {
+                SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
+                ShowMessage("Unable to re-orientate the preferred directions, these won't be set in the rotated selection");
+                break;
+            }
+            SelectPrefDir->PrefDirVector.at(x) = PDE;
+        }
+
         // reset values in SelectTextVector
         for(unsigned int x = 0; x < TextHandler->SelectTextVectorSize(2); x++)
         {
@@ -9727,7 +9955,8 @@ void __fastcall TInterface::RotRightMenuItemClick(TObject *Sender)
         SelectBitmapVLoc = SelectRect.top;
         SelectBitmap->Width = (SelectRect.right - SelectRect.left) * 16;
         SelectBitmap->Height = (SelectRect.bottom - SelectRect.top) * 16;
-        // store track elements and text in select vectors
+
+        // store track elements and text in select vectors - have to store here because original selection might well have changed
         Track->SelectVectorClear();
         TTrackElement TempElement; // default element
         bool FoundFlag;
@@ -9764,6 +9993,42 @@ void __fastcall TInterface::RotRightMenuItemClick(TObject *Sender)
                 }
             }
         }
+
+        //store preferred directions //added at v2.9.0
+        int PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3;
+        TPrefDirElement TempPrefDirElement;
+        SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
+        for(int x = SelectRect.left; x < SelectRect.right; x++)
+        {
+            for(int y = SelectRect.top; y < SelectRect.bottom; y++)
+            {
+                EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(12, x, y, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
+                if(FoundFlag)
+                {
+                    if(PrefDirPos0 > -1)
+                    {
+                        TempPrefDirElement = EveryPrefDir->GetModifiablePrefDirElementAt(6, PrefDirPos0);
+                        SelectPrefDir->ExternalStorePrefDirElement(12, TempPrefDirElement);
+                    }
+                    if(PrefDirPos1 > -1)
+                    {
+                        TempPrefDirElement = EveryPrefDir->GetModifiablePrefDirElementAt(7, PrefDirPos1);
+                        SelectPrefDir->ExternalStorePrefDirElement(13, TempPrefDirElement);
+                    }
+                    if(PrefDirPos2 > -1)
+                    {
+                        TempPrefDirElement = EveryPrefDir->GetModifiablePrefDirElementAt(8, PrefDirPos2);
+                        SelectPrefDir->ExternalStorePrefDirElement(14, TempPrefDirElement);
+                    }
+                    if(PrefDirPos3 > -1)
+                    {
+                        TempPrefDirElement = EveryPrefDir->GetModifiablePrefDirElementAt(9, PrefDirPos3);
+                        SelectPrefDir->ExternalStorePrefDirElement(15, TempPrefDirElement);
+                    }
+                }
+            }
+        }
+
         // store text items
         int LowSelectHPos = SelectRect.left * 16;
         int HighSelectHPos = SelectRect.right * 16;
@@ -9836,6 +10101,45 @@ void __fastcall TInterface::RotRightMenuItemClick(TObject *Sender)
             TE.SigAspect = Track->SelectVectorAt(64, x).SigAspect;
             Track->SelectVectorAt(65, x) = TE;
         }
+
+        int RotRightLinkArray[10] = {0, 3, 6, 9, 2, 5, 8, 1, 4, 7}; //0 & 5 are never used
+
+        // now transform the pref dirs
+        for(unsigned int x = 0; x < SelectPrefDir->PrefDirSize(); x++)
+        {
+            int HLoc = SelectRect.bottom - 1 + SelectRect.left - SelectPrefDir->PrefDirVector.at(x).VLoc;
+            int VLoc = SelectRect.top - SelectRect.left + SelectPrefDir->PrefDirVector.at(x).HLoc;
+            int ELink = RotRightLinkArray[SelectPrefDir->PrefDirVector.at(x).GetELink()];
+            int XLink = RotRightLinkArray[SelectPrefDir->PrefDirVector.at(x).GetXLink()];
+            TTrackElement TE = Track->BuildBasicElementFromSpeedTag(9, Track->RotRightArray[SelectPrefDir->PrefDirVector.at(x).SpeedTag]);
+            TPrefDirElement PDE(TE);  //this has Link[4] and LinkPos[4] set
+            PDE.HLoc = HLoc;
+            PDE.VLoc = VLoc;
+            PDE.SetELink(ELink);
+            PDE.SetXLink(XLink);
+            bool ELinkPosFound = false, XLinkPosFound = false; //these ensure that the link pos is set as low as possible for points
+            for(int x = 0; x < 4; x++)
+            {
+                if(!ELinkPosFound && (PDE.Link[x] == ELink))
+                {
+                    PDE.SetELinkPos(x);
+                    ELinkPosFound = true;
+                }
+                if(!XLinkPosFound && (PDE.Link[x] == XLink))
+                {
+                    PDE.SetXLinkPos(x);
+                    XLinkPosFound = true;
+                }
+            }
+            if(!PDE.EntryExitNumber() || !ELinkPosFound || !XLinkPosFound) //error if can't set the number or any link pos not set
+            {
+                SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
+                ShowMessage("Unable to re-orientate the preferred directions, these won't be set in the rotated selection");
+                break;
+            }
+            SelectPrefDir->PrefDirVector.at(x) = PDE;
+        }
+
         // reset values in SelectTextVector
         for(unsigned int x = 0; x < TextHandler->SelectTextVectorSize(3); x++)
         {
@@ -9915,7 +10219,8 @@ void __fastcall TInterface::RotLeftMenuItemClick(TObject *Sender)
         SelectBitmapVLoc = SelectRect.top;
         SelectBitmap->Width = (SelectRect.right - SelectRect.left) * 16;
         SelectBitmap->Height = (SelectRect.bottom - SelectRect.top) * 16;
-        // store track elements and text in select vectors
+
+        // store track elements and text in select vectors - have to store here because original selection might well have changed
         Track->SelectVectorClear();
         TTrackElement TempElement; // default element
         bool FoundFlag;
@@ -9952,6 +10257,42 @@ void __fastcall TInterface::RotLeftMenuItemClick(TObject *Sender)
                 }
             }
         }
+
+        //store preferred directions //added at v2.9.0
+        int PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3;
+        TPrefDirElement TempPrefDirElement;
+        SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
+        for(int x = SelectRect.left; x < SelectRect.right; x++)
+        {
+            for(int y = SelectRect.top; y < SelectRect.bottom; y++)
+            {
+                EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(13, x, y, FoundFlag, PrefDirPos0, PrefDirPos1, PrefDirPos2, PrefDirPos3);
+                if(FoundFlag)
+                {
+                    if(PrefDirPos0 > -1)
+                    {
+                        TempPrefDirElement = EveryPrefDir->GetModifiablePrefDirElementAt(10, PrefDirPos0);
+                        SelectPrefDir->ExternalStorePrefDirElement(16, TempPrefDirElement);
+                    }
+                    if(PrefDirPos1 > -1)
+                    {
+                        TempPrefDirElement = EveryPrefDir->GetModifiablePrefDirElementAt(11, PrefDirPos1);
+                        SelectPrefDir->ExternalStorePrefDirElement(17, TempPrefDirElement);
+                    }
+                    if(PrefDirPos2 > -1)
+                    {
+                        TempPrefDirElement = EveryPrefDir->GetModifiablePrefDirElementAt(12, PrefDirPos2);
+                        SelectPrefDir->ExternalStorePrefDirElement(18, TempPrefDirElement);
+                    }
+                    if(PrefDirPos3 > -1)
+                    {
+                        TempPrefDirElement = EveryPrefDir->GetModifiablePrefDirElementAt(13, PrefDirPos3);
+                        SelectPrefDir->ExternalStorePrefDirElement(19, TempPrefDirElement);
+                    }
+                }
+            }
+        }
+
         // store text items
         int LowSelectHPos = SelectRect.left * 16;
         int HighSelectHPos = SelectRect.right * 16;
@@ -10024,6 +10365,45 @@ void __fastcall TInterface::RotLeftMenuItemClick(TObject *Sender)
             TE.SigAspect = Track->SelectVectorAt(72, x).SigAspect;
             Track->SelectVectorAt(73, x) = TE;
         }
+
+        int RotLeftLinkArray[10] = {0, 7, 4, 1, 8, 5, 2, 9, 6, 3}; //0 & 5 are never used
+
+        // now transform the pref dirs
+        for(unsigned int x = 0; x < SelectPrefDir->PrefDirSize(); x++)
+        {
+            int HLoc = SelectRect.left - SelectRect.top + SelectPrefDir->PrefDirVector.at(x).VLoc;
+            int VLoc = SelectRect.bottom - 1 + SelectRect.left - SelectPrefDir->PrefDirVector.at(x).HLoc;
+            int ELink = RotLeftLinkArray[SelectPrefDir->PrefDirVector.at(x).GetELink()];
+            int XLink = RotLeftLinkArray[SelectPrefDir->PrefDirVector.at(x).GetXLink()];
+            TTrackElement TE = Track->BuildBasicElementFromSpeedTag(10, Track->RotLeftArray[SelectPrefDir->PrefDirVector.at(x).SpeedTag]);
+            TPrefDirElement PDE(TE);  //this has Link[4] and LinkPos[4] set
+            PDE.HLoc = HLoc;
+            PDE.VLoc = VLoc;
+            PDE.SetELink(ELink);
+            PDE.SetXLink(XLink);
+            bool ELinkPosFound = false, XLinkPosFound = false; //these ensure that the link pos is set as low as possible for points
+            for(int x = 0; x < 4; x++)
+            {
+                if(!ELinkPosFound && (PDE.Link[x] == ELink))
+                {
+                    PDE.SetELinkPos(x);
+                    ELinkPosFound = true;
+                }
+                if(!XLinkPosFound && (PDE.Link[x] == XLink))
+                {
+                    PDE.SetXLinkPos(x);
+                    XLinkPosFound = true;
+                }
+            }
+            if(!PDE.EntryExitNumber() || !ELinkPosFound || !XLinkPosFound) //error if can't set the number or any link pos not set
+            {
+                SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
+                ShowMessage("Unable to re-orientate the preferred directions, these won't be set in the rotated selection");
+                break;
+            }
+            SelectPrefDir->PrefDirVector.at(x) = PDE;
+        }
+
         // reset values in SelectTextVector
         for(unsigned int x = 0; x < TextHandler->SelectTextVectorSize(4); x++)
         {
@@ -10190,6 +10570,7 @@ void __fastcall TInterface::SelectBiDirPrefDirsMenuItemClick(TObject *Sender)
 }
 
 // ---------------------------------------------------------------------------
+
 void __fastcall TInterface::CancelSelectionMenuItemClick(TObject *Sender)
 {
     try
@@ -10218,9 +10599,10 @@ void __fastcall TInterface::CancelSelectionMenuItemClick(TObject *Sender)
         Clipboard()->Close();
         Utilities->CallLogPop(1413);
     }
-    catch(const EClipboardException &e) // take no action
+    catch(const EClipboardException &e) // take no action  //non error catch
     {
 // Application->MessageBox(L"A clipboard error occurred in the cancel function", L"Message", MB_OK);
+        Utilities->CallLogPop(2314);
     }
     catch(const Exception &e)
     {
@@ -10229,6 +10611,415 @@ void __fastcall TInterface::CancelSelectionMenuItemClick(TObject *Sender)
 }
 
 // ---------------------------------------------------------------------------
+
+void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
+{
+//Conflicts consist of a preferred direction (PD) that links to a track element without a PD on it, or a PD that links to another PD that is set
+//in the wrong direction.  Points or crossovers with no PD set on one leg are ok as a PD on the other leg doesn't link to it.
+
+    try
+    {
+        TrainController->LogEvent("CheckPrefDirConflictsMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CheckPrefDirConflictsMenuItemClick");
+        bool FoundFlag; //not used
+        int PD0, PD1, PD2, PD3, HLoc, VLoc, LastHLoc = -2000000, LastVLoc = -2000000; //well outside any conceivable range
+        AnsiString TempInfo = InfoPanel->Caption;
+        if(EveryPrefDir->PrefDirSize() <= 0)
+        {
+            ShowMessage("No preferred directions set.");
+            Utilities->CallLogPop(2301);
+            return;
+        }
+        else
+        {   //iterate the map rather than the vector so that pref dirs at the same H & V are consecutive, & can prevent the same element showing more than once
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "Checking preferred directions - please wait";
+            InfoPanel->Update();
+            THVPair LastHVPair;
+            LastHVPair.first = -2000000; LastHVPair.second = -2000000; //well outside any conceivable range
+            Screen->Cursor = TCursor(-11); // Hourglass
+            for(TOnePrefDir::TPrefDir4MultiMapIterator PDMMIt = EveryPrefDir->PrefDir4MultiMap.begin(); PDMMIt != EveryPrefDir->PrefDir4MultiMap.end(); PDMMIt++)
+            {
+                bool BiDirLinkFound = true;
+                int LinkedPrefDirVectorNumber; //not used
+                THVPair CurrentHVPair = PDMMIt->first;
+                if(CurrentHVPair != LastHVPair)  //dont repeat for remaining elements at same position
+                {
+    //For bi-directional pref dirs as long as they link to another pref dir then ok, can't just link to a blank element
+                    EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(16, PDMMIt->first.first, PDMMIt->first.second, FoundFlag, PD0, PD1, PD2, PD3);
+                    if((PD0 > -1) && (PD1 > -1))
+                    {
+                        if((EveryPrefDir->PrefDirVector.at(PD0).GetELink() == EveryPrefDir->PrefDirVector.at(PD1).GetXLink()) &&
+                        (EveryPrefDir->PrefDirVector.at(PD0).GetXLink() == EveryPrefDir->PrefDirVector.at(PD1).GetELink()))
+                        {//PD0 & PD1 are bidirectional pref dirs, ensure pref dirs link at both ends, direction doesn't matter for linked pref dir
+                            if(!EveryPrefDir->FindLinkingPrefDir(0, PD0, EveryPrefDir->PrefDirVector.at(PD0).GetELinkPos(),
+                                EveryPrefDir->PrefDirVector.at(PD0).GetELink(), LinkedPrefDirVectorNumber))
+                            {
+                                BiDirLinkFound = false;
+                            }
+                            if(!EveryPrefDir->FindLinkingPrefDir(1, PD0, EveryPrefDir->PrefDirVector.at(PD0).GetXLinkPos(),
+                                EveryPrefDir->PrefDirVector.at(PD0).GetXLink(), LinkedPrefDirVectorNumber))
+                            {
+                                BiDirLinkFound = false;
+                            }
+                        }
+                    }
+                    if(BiDirLinkFound && (PD0 > -1) && (PD2 > -1))
+                    {
+                        if((EveryPrefDir->PrefDirVector.at(PD0).GetELink() == EveryPrefDir->PrefDirVector.at(PD2).GetXLink()) &&
+                        (EveryPrefDir->PrefDirVector.at(PD0).GetXLink() == EveryPrefDir->PrefDirVector.at(PD2).GetELink()))
+                        {
+                            if(!EveryPrefDir->FindLinkingPrefDir(2, PD0, EveryPrefDir->PrefDirVector.at(PD0).GetELinkPos(),
+                                EveryPrefDir->PrefDirVector.at(PD0).GetELink(), LinkedPrefDirVectorNumber))
+                            {
+                                BiDirLinkFound = false;
+                            }
+                            if(!EveryPrefDir->FindLinkingPrefDir(3, PD0, EveryPrefDir->PrefDirVector.at(PD0).GetXLinkPos(),
+                                EveryPrefDir->PrefDirVector.at(PD0).GetXLink(), LinkedPrefDirVectorNumber))
+                            {
+                                BiDirLinkFound = false;
+                            }
+                        }
+                    }
+                    if(BiDirLinkFound && (PD0 > -1) && (PD3 > -1))
+                    {
+                        if((EveryPrefDir->PrefDirVector.at(PD0).GetELink() == EveryPrefDir->PrefDirVector.at(PD3).GetXLink()) &&
+                        (EveryPrefDir->PrefDirVector.at(PD0).GetXLink() == EveryPrefDir->PrefDirVector.at(PD3).GetELink()))
+                        {
+                            if(!EveryPrefDir->FindLinkingPrefDir(4, PD0, EveryPrefDir->PrefDirVector.at(PD0).GetELinkPos(),
+                                EveryPrefDir->PrefDirVector.at(PD0).GetELink(), LinkedPrefDirVectorNumber))
+                            {
+                                BiDirLinkFound = false;
+                            }
+                            if(!EveryPrefDir->FindLinkingPrefDir(5, PD0, EveryPrefDir->PrefDirVector.at(PD0).GetXLinkPos(),
+                                EveryPrefDir->PrefDirVector.at(PD0).GetXLink(), LinkedPrefDirVectorNumber))
+                            {
+                                BiDirLinkFound = false;
+                            }
+                        }
+                    }
+                    if(BiDirLinkFound && (PD1 > -1) && (PD2 > -1))
+                    {
+                        if((EveryPrefDir->PrefDirVector.at(PD1).GetELink() == EveryPrefDir->PrefDirVector.at(PD2).GetXLink()) &&
+                        (EveryPrefDir->PrefDirVector.at(PD1).GetXLink() == EveryPrefDir->PrefDirVector.at(PD2).GetELink()))
+                        {
+                            if(!EveryPrefDir->FindLinkingPrefDir(6, PD1, EveryPrefDir->PrefDirVector.at(PD1).GetELinkPos(),
+                                EveryPrefDir->PrefDirVector.at(PD1).GetELink(), LinkedPrefDirVectorNumber))
+                            {
+                                BiDirLinkFound = false;
+                            }
+                            if(!EveryPrefDir->FindLinkingPrefDir(7, PD1, EveryPrefDir->PrefDirVector.at(PD1).GetXLinkPos(),
+                                EveryPrefDir->PrefDirVector.at(PD1).GetXLink(), LinkedPrefDirVectorNumber))
+                            {
+                                BiDirLinkFound = false;
+                            }
+                        }
+                    }
+                    if(BiDirLinkFound && (PD1 > -1) && (PD3 > -1))
+                    {
+                        if((EveryPrefDir->PrefDirVector.at(PD1).GetELink() == EveryPrefDir->PrefDirVector.at(PD3).GetXLink()) &&
+                        (EveryPrefDir->PrefDirVector.at(PD1).GetXLink() == EveryPrefDir->PrefDirVector.at(PD3).GetELink()))
+                        {
+                            if(!EveryPrefDir->FindLinkingPrefDir(8, PD1, EveryPrefDir->PrefDirVector.at(PD1).GetELinkPos(),
+                                EveryPrefDir->PrefDirVector.at(PD1).GetELink(), LinkedPrefDirVectorNumber))
+                            {
+                                BiDirLinkFound = false;
+                            }
+                            if(!EveryPrefDir->FindLinkingPrefDir(9, PD1, EveryPrefDir->PrefDirVector.at(PD1).GetXLinkPos(),
+                                EveryPrefDir->PrefDirVector.at(PD1).GetXLink(), LinkedPrefDirVectorNumber))
+                            {
+                                BiDirLinkFound = false;
+                            }
+                        }
+                    }
+                    if(BiDirLinkFound && (PD2 > -1) && (PD3 > -1))
+                    {
+                        if((EveryPrefDir->PrefDirVector.at(PD2).GetELink() == EveryPrefDir->PrefDirVector.at(PD3).GetXLink()) &&
+                        (EveryPrefDir->PrefDirVector.at(PD2).GetXLink() == EveryPrefDir->PrefDirVector.at(PD3).GetELink()))
+                        {
+                            if(!EveryPrefDir->FindLinkingPrefDir(10, PD2, EveryPrefDir->PrefDirVector.at(PD2).GetELinkPos(),
+                                EveryPrefDir->PrefDirVector.at(PD2).GetELink(), LinkedPrefDirVectorNumber))
+                            {
+                                BiDirLinkFound = false;
+                            }
+                            if(!EveryPrefDir->FindLinkingPrefDir(11, PD2, EveryPrefDir->PrefDirVector.at(PD2).GetXLinkPos(),
+                                EveryPrefDir->PrefDirVector.at(PD2).GetXLink(), LinkedPrefDirVectorNumber))
+                            {
+                                BiDirLinkFound = false;
+                            }
+                        }
+                    }
+                    if(!BiDirLinkFound)
+                    {
+                        HLoc = EveryPrefDir->PrefDirVector.at(PDMMIt->second).HLoc;
+                        VLoc = EveryPrefDir->PrefDirVector.at(PDMMIt->second).VLoc;
+                        if((LastHLoc != HLoc) || (LastVLoc != VLoc))
+                        {
+                            LastHLoc = HLoc;
+                            LastVLoc = VLoc;
+                            while((Display->DisplayOffsetH - HLoc) > 0)
+                            {
+                                Display->DisplayOffsetH -= (Utilities->ScreenElementWidth / 2); // use 30 instead of 60 so less likely to appear behind the message box
+                            }
+                            while((HLoc - Display->DisplayOffsetH) > (Utilities->ScreenElementWidth - 1))
+                            {
+                                Display->DisplayOffsetH += (Utilities->ScreenElementWidth / 2);
+                            }
+                            while((Display->DisplayOffsetV - VLoc) > 0)
+                            {
+                                Display->DisplayOffsetV -= (Utilities->ScreenElementHeight / 2); // use 18 instead of 36 so less likely to appear behind the message box
+                            }
+                            while((VLoc - Display->DisplayOffsetV) > (Utilities->ScreenElementHeight - 1))
+                            {
+                                Display->DisplayOffsetV += (Utilities->ScreenElementHeight / 2);
+                            }
+                            ClearandRebuildRailway(83);
+                            Display->InvertElement(1, HLoc * 16, VLoc * 16);
+                            Screen->Cursor = TCursor(-2); // Arrow
+                            int Button = Application->MessageBox(L"Possible mismatch in preferred direction links \n"
+                                                                  "at the position shown - see inverted element (may \n"
+                                                                  "be behind this message). \n\n"
+                                                                  "Click 'OK' to ignore and continue checking or \n"
+                                                                  "'Cancel' to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+                            ClearandRebuildRailway(84); // to clear inversion
+                            if(Button == IDCANCEL)
+                            {
+                                InfoPanel->Caption = TempInfo;
+                                Utilities->CallLogPop(2302);
+                                return;
+                            }
+                            Screen->Cursor = TCursor(-11); // Hourglass
+                            Display->Update();
+                        }
+                    }
+                }
+                LastHVPair = CurrentHVPair;
+
+                bool ELinkFound = false, BiDir = false;
+                int ELink = EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetELink();
+                int ELinkPos = EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetELinkPos();
+                if(EveryPrefDir->BiDirectionalPrefDir(0, PDMMIt)) //bi-directional pref dirs dealt with above so don't check & don't mark as a conflict
+                {
+                    BiDir = true;
+                    ELinkFound = true;
+                }
+                else if((ELink > -1) && (EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[ELinkPos] > -1))
+                {
+                    EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(17, Track->TrackElementAt(1023, EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[ELinkPos]).HLoc,
+                        Track->TrackElementAt(1024, EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[ELinkPos]).VLoc, FoundFlag, PD0, PD1, PD2, PD3);
+                    if((EveryPrefDir->PrefDirVector.at(PDMMIt->second).TrackType == GapJump) && (ELinkPos == 0)) //0 is the gap position
+                    {
+                        if(PD0 > -1)
+                        {
+                            if(EveryPrefDir->PrefDirVector.at(PD0).TrackType == GapJump)//the corresponding gap
+                            {
+                                if(EveryPrefDir->PrefDirVector.at(PD0).GetXLinkPos() == 0) // entry link is at the gap end so it corresponds
+                                ELinkFound = true;
+                            }
+                        }
+                        if(PD1 > -1)
+                        {
+                            if(EveryPrefDir->PrefDirVector.at(PD1).TrackType == GapJump)//can only be PD0 or PD1 for a gap
+                            {
+                                if(EveryPrefDir->PrefDirVector.at(PD1).GetXLinkPos() == 0) // entry link is at the gap end so it corresponds
+                                ELinkFound = true;
+                            }
+                        }
+                    }
+                    if(PD0 > -1)
+                    {
+                        if(EveryPrefDir->PrefDirVector.at(PD0).GetXLink() == (10 - ELink))
+                        {
+                            ELinkFound = true;
+                        }
+                    }
+                    if(PD1 > -1)
+                    {
+                        if(EveryPrefDir->PrefDirVector.at(PD1).GetXLink() == (10 - ELink))
+                        {
+                            ELinkFound = true;
+                        }
+                    }
+                    if(PD2 > -1)
+                    {
+                        if(EveryPrefDir->PrefDirVector.at(PD2).GetXLink() == (10 - ELink))
+                        {
+                            ELinkFound = true;
+                        }
+                    }
+                    if(PD3 > -1)
+                    {
+                        if(EveryPrefDir->PrefDirVector.at(PD3).GetXLink() == (10 - ELink))
+                        {
+                            ELinkFound = true;
+                        }
+                    }
+                }
+                if(!ELinkFound && (BiDir || (EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[ELinkPos] > -1)))
+                {
+                    HLoc = EveryPrefDir->PrefDirVector.at(PDMMIt->second).HLoc;
+                    VLoc = EveryPrefDir->PrefDirVector.at(PDMMIt->second).VLoc;
+                    if((LastHLoc != HLoc) || (LastVLoc != VLoc))
+                    {
+                        LastHLoc = HLoc;
+                        LastVLoc = VLoc;
+                        while((Display->DisplayOffsetH - HLoc) > 0)
+                        {
+                            Display->DisplayOffsetH -= (Utilities->ScreenElementWidth / 2); // use 30 instead of 60 so less likely to appear behind the message box
+                        }
+                        while((HLoc - Display->DisplayOffsetH) > (Utilities->ScreenElementWidth - 1))
+                        {
+                            Display->DisplayOffsetH += (Utilities->ScreenElementWidth / 2);
+                        }
+                        while((Display->DisplayOffsetV - VLoc) > 0)
+                        {
+                            Display->DisplayOffsetV -= (Utilities->ScreenElementHeight / 2); // use 18 instead of 36 so less likely to appear behind the message box
+                        }
+                        while((VLoc - Display->DisplayOffsetV) > (Utilities->ScreenElementHeight - 1))
+                        {
+                            Display->DisplayOffsetV += (Utilities->ScreenElementHeight / 2);
+                        }
+                        ClearandRebuildRailway(85);
+                        Display->InvertElement(2, HLoc * 16, VLoc * 16);
+                        Screen->Cursor = TCursor(-2); // Arrow
+                        int Button = Application->MessageBox(L"Possible mismatch in preferred direction links \n"
+                                                              "at the position shown - see inverted element (may \n"
+                                                              "be behind this message). \n\n"
+                                                              "Click 'OK' to ignore and continue checking or \n"
+                                                              "'Cancel' to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+                        ClearandRebuildRailway(86); // to clear inversion
+                        if(Button == IDCANCEL)
+                        {
+                            InfoPanel->Caption = TempInfo;
+                            Utilities->CallLogPop(2303);
+                            return;
+                        }
+                        Screen->Cursor = TCursor(-11); //Hourglass
+                        Display->Update();
+                    }
+                }
+
+                bool XLinkFound = false;
+                BiDir = false;
+                int XLink = EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetXLink();
+                int XLinkPos = EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetXLinkPos();
+                if(EveryPrefDir->BiDirectionalPrefDir(1, PDMMIt)) //bi-directional pref dirs dealt with above so don't check & don't mark as a conflict
+                {
+                    BiDir = true;
+                    XLinkFound = true;
+                }
+                else if((XLink > -1) && (EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[XLinkPos] > -1))
+                {
+                    EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(18, Track->TrackElementAt(1025, EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[XLinkPos]).HLoc,
+                        Track->TrackElementAt(1026, EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[XLinkPos]).VLoc, FoundFlag, PD0, PD1, PD2, PD3);
+                    if((EveryPrefDir->PrefDirVector.at(PDMMIt->second).TrackType == GapJump) && (XLinkPos == 0)) //0 is the gap position
+                    {
+                        if(PD0 > -1)
+                        {
+                            if(EveryPrefDir->PrefDirVector.at(PD0).TrackType == GapJump)//the corresponding gap
+                            {
+                                if(EveryPrefDir->PrefDirVector.at(PD0).GetELinkPos() == 0) // entry link is at the gap end so it corresponds
+                                XLinkFound = true;
+                            }
+                        }
+                        if(PD1 > -1)
+                        {
+                            if(EveryPrefDir->PrefDirVector.at(PD1).TrackType == GapJump)//can only be PD0 or PD1 for a gap
+                            {
+                                if(EveryPrefDir->PrefDirVector.at(PD1).GetELinkPos() == 0) // entry link is at the gap end so it corresponds
+                                XLinkFound = true;
+                            }
+                        }
+                    }
+                    if(PD0 > -1)
+                    {
+                        if(EveryPrefDir->PrefDirVector.at(PD0).GetELink() == (10 - XLink))
+                        {
+                            XLinkFound = true;
+                        }
+                    }
+                    if(PD1 > -1)
+                    {
+                        if(EveryPrefDir->PrefDirVector.at(PD1).GetELink() == (10 - XLink))
+                        {
+                            XLinkFound = true;
+                        }
+                    }
+                    if(PD2 > -1)
+                    {
+                        if(EveryPrefDir->PrefDirVector.at(PD2).GetELink() == (10 - XLink))
+                        {
+                            XLinkFound = true;
+                        }
+                    }
+                    if(PD3 > -1)
+                    {
+                        if(EveryPrefDir->PrefDirVector.at(PD3).GetELink() == (10 - XLink))
+                        {
+                            XLinkFound = true;
+                        }
+                    }
+                }
+                if(!XLinkFound && (EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[XLinkPos] > -1))
+                {
+                    HLoc = EveryPrefDir->PrefDirVector.at(PDMMIt->second).HLoc;
+                    VLoc = EveryPrefDir->PrefDirVector.at(PDMMIt->second).VLoc;
+                    if((LastHLoc != HLoc) || (LastVLoc != VLoc))
+                    {
+                        LastHLoc = HLoc;
+                        LastVLoc = VLoc;
+                        while((Display->DisplayOffsetH - HLoc) > 0)
+                        {
+                            Display->DisplayOffsetH -= (Utilities->ScreenElementWidth / 2); // use 30 instead of 60 so less likely to appear behind the message box
+                        }
+                        while((HLoc - Display->DisplayOffsetH) > (Utilities->ScreenElementWidth - 1))
+                        {
+                            Display->DisplayOffsetH += (Utilities->ScreenElementWidth / 2);
+                        }
+                        while((Display->DisplayOffsetV - VLoc) > 0)
+                        {
+                            Display->DisplayOffsetV -= (Utilities->ScreenElementHeight / 2); // use 18 instead of 36 so less likely to appear behind the message box
+                        }
+                        while((VLoc - Display->DisplayOffsetV) > (Utilities->ScreenElementHeight - 1))
+                        {
+                            Display->DisplayOffsetV += (Utilities->ScreenElementHeight / 2);
+                        }
+                        ClearandRebuildRailway(87);
+                        Display->InvertElement(3, HLoc * 16, VLoc * 16);
+                        Screen->Cursor = TCursor(-2); // Arrow
+                        int Button = Application->MessageBox(L"Possible mismatch in preferred direction links \n"
+                                                              "at the position shown - see inverted element (may \n"
+                                                              "be behind this message). \n\n"
+                                                              "Click 'OK' to ignore and continue checking or \n"
+                                                              "'Cancel' to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+                        ClearandRebuildRailway(88); // to clear inversion
+                        if(Button == IDCANCEL)
+                        {
+                            InfoPanel->Caption = TempInfo;
+                            Utilities->CallLogPop(2304);
+                            return;
+                        }
+                        Screen->Cursor = TCursor(-11); // Hourglass
+                        Display->Update();
+                    }
+                }
+            }
+        }
+        Screen->Cursor = TCursor(-2); // Arrow
+        ShowMessage("Finished");
+        InfoPanel->Caption = TempInfo;
+        Utilities->CallLogPop(2305);
+    }
+    catch(const Exception &e) //non error catch
+    {
+        Screen->Cursor = TCursor(-2); // Arrow
+        ShowMessage("Error in preferred direction checking, unable to complete the check");
+        Utilities->CallLogPop(2306);
+    }
+}
+
+//---------------------------------------------------------------------------
+
 void __fastcall TInterface::LoadTimetableMenuItemClick(TObject *Sender)
 {
     try
@@ -11982,9 +12773,10 @@ void __fastcall TInterface::SpeedEditBoxKeyUp(TObject *Sender, WORD &Key, TShift
         }
         Utilities->CallLogPop(1865);
     }
-    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash
+    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash //non error catch
     {
         SpeedVariableLabel->Caption = "Entry error";
+        Utilities->CallLogPop(2307);
     }
     catch(const Exception &e)
     {
@@ -12070,9 +12862,10 @@ void __fastcall TInterface::PowerEditBoxKeyUp(TObject *Sender, WORD &Key, TShift
         }
         Utilities->CallLogPop(1868);
     }
-    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash
+    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash  //non error catch
     {
         PowerVariableLabel->Caption = "Entry error";
+        Utilities->CallLogPop(2308);
     }
     catch(const Exception &e)
     {
@@ -12136,9 +12929,10 @@ void __fastcall TInterface::SpeedEditBox2KeyUp(TObject *Sender, WORD &Key, TShif
         }
         Utilities->CallLogPop(1866);
     }
-    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash
+    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash //non error catch
     {
         SpeedVariableLabel2->Caption = "Entry error";
+        Utilities->CallLogPop(2309);
     }
     catch(const Exception &e)
     {
@@ -12220,9 +13014,10 @@ void __fastcall TInterface::LengthEditKeyUp(TObject *Sender, WORD &Key, TShiftSt
         }
         Utilities->CallLogPop(1867);
     }
-    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash
+    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash  //non error catch
     {
         MetreVariableLabel->Caption = "Entry error";
+        Utilities->CallLogPop(2310);
     }
     catch(const Exception &e)
     {
@@ -13389,6 +14184,7 @@ bool TInterface::ClearEverything(int Caller)
 // these ensure that all persistent vectors, maps & multimaps etc are cleared
     delete TrainController;
     delete EveryPrefDir;
+    delete SelectPrefDir;
     delete ConstructRoute;
     delete ConstructPrefDir;
     delete AllRoutes;
@@ -13404,6 +14200,7 @@ bool TInterface::ClearEverything(int Caller)
     ConstructPrefDir = new TOnePrefDir;
     ConstructRoute = new TOneRoute;
     EveryPrefDir = new TOnePrefDir;
+    SelectPrefDir = new TOnePrefDir;
     TrainController = new TTrainController;
     PerformanceLogBox->Lines->Clear();
     ResetAll(1);
@@ -13868,6 +14665,7 @@ void TInterface::SetLevel1Mode(int Caller)
     } break;
 
     case PrefDirMode:
+        Screen->Cursor = TCursor(-11); //Hourglass in case many pref dirs
         Level2TrackMode = NoTrackMode;
         Level2PrefDirMode = NoPrefDirMode;
         Level2OperMode = NoOperMode;
@@ -13900,6 +14698,7 @@ void TInterface::SetLevel1Mode(int Caller)
         ClearandRebuildRailway(33); // to mark PrefDirs & clear earlier PrefDir markers
 // TimetableTitle = ""; no need to unload timetable if only PrefDirs being changed
 // SetCaption();
+        Screen->Cursor = TCursor(-2); //Arrow
         break;
 
     case OperMode: // if there are any PrefDirs, set to SigPref, else to NoSigNonPref; start in Paused mode
@@ -14329,6 +15128,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
         DeleteMenuItem->Enabled = false;
         SelectLengthsMenuItem->Enabled = false;
         SelectBiDirPrefDirsMenuItem->Visible = false;
+        CheckPrefDirConflictsMenuItem->Visible = false;
         CancelSelectionMenuItem->Enabled = true;
         SelectBitmapHLoc = SelectRect.left;
         SelectBitmapVLoc = SelectRect.top;
@@ -14342,7 +15142,6 @@ void TInterface::SetLevel2TrackMode(int Caller)
         // erase track elements within selected region
         Track->CopyFlag = false;
         bool EraseSuccessfulFlag, NeedToLink = false, TextChangesMade = false, GraphicChangesMade = false;
-        ;
         int ErasedTrackVectorPosition;
         Screen->Cursor = TCursor(-11);     // Hourglass;
         InfoPanel->Visible = true;
@@ -14355,7 +15154,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
                 Track->EraseTrackElement(2, H, V, ErasedTrackVectorPosition, EraseSuccessfulFlag, false);
                 if(EraseSuccessfulFlag)
                 {
-                    if(ErasedTrackVectorPosition > -1)
+                    if(ErasedTrackVectorPosition > -1) //may be an inactive element that was erased
                     {
                         EveryPrefDir->RealignAfterTrackErase(1, ErasedTrackVectorPosition);
                     }
@@ -14363,6 +15162,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
                 }
             }
         }
+
         // erase text elements within selected region
         int LowSelectHPos = SelectRect.left * 16;
         int HighSelectHPos = SelectRect.right * 16;
@@ -14422,6 +15222,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
         DeleteMenuItem->Enabled = false;
         SelectLengthsMenuItem->Enabled = false;
         SelectBiDirPrefDirsMenuItem->Visible = false;
+        CheckPrefDirConflictsMenuItem->Visible = false;
         CancelSelectionMenuItem->Enabled = true;
         SelectBitmapHLoc = SelectRect.left;
         SelectBitmapVLoc = SelectRect.top;
@@ -14554,12 +15355,34 @@ void TInterface::SetLevel2TrackMode(int Caller)
         }
 
         // add the new track elements
+        AnsiString LocName;
         for(unsigned int x = 0; x < Track->SelectVectorSize(); x++)
         {
             if(Track->CopyFlag)     // blank all names if copying, lengths & speedlimits stay
             {
                 Track->SelectVectorAt(80, x).LocationName = "";
                 Track->SelectVectorAt(81, x).ActiveTrackElementName = "";
+            }
+            else //cut, check if element has a name and if so remove same existing name from name map and track vector
+            {
+                LocName = Track->SelectVectorAt(82, x).LocationName;
+                if(LocName == "")
+                {
+                    LocName = Track->SelectVectorAt(83, x).ActiveTrackElementName;
+                }
+                if(LocName != "")
+                    {
+                    Track->EraseLocationAndActiveTrackElementNames(6, LocName); //this will keep erasing adjacent element names but the last one will be pasted and not erased
+                                                                                   //and that will name all linked elements so should work ok
+                    int HPos = 0, VPos = 0;
+                    if(TextHandler->FindText(5, LocName, HPos, VPos));
+                    {
+                        if(EraseLocationNameText(4, LocName, HPos, VPos))
+                        {
+                            ;
+                        } // condition not used
+                    }
+                }
             }
             bool InternalChecks = false;
 // if(Track->PastingWithAttributes) //new at v2.2.0 to select the new funtion & skip multimap checks //drop in v2.4.0
@@ -14568,7 +15391,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
                                                         TrackLinkingRequiredFlag, InternalChecks);
             // new at v2.2.0 & used in place of PlotAndAddTrackElement to keep length & speed values
 // }
-/* drop this in v2.4.0 as all pastes are past with attributes
+/* drop this in v2.4.0 as all pastes are with attributes
             else //'Aspect' parameter added to PlotAndAdd... at v2.2.0 so can plot signals correctly (always four-aspect before)
             {
                 int Aspect;
@@ -14585,6 +15408,36 @@ void TInterface::SetLevel2TrackMode(int Caller)
             {
                 NeedToLink = true;
             }
+        }
+
+        //add the pref dir elements, added at v2.9.0
+        int ATVecPos;
+        bool FoundFlag;
+        if(SelectPrefDir->PrefDirSize() > 0)     // skip iteration if empty
+        {
+            // keep contents valid in case reselect
+            for(TOnePrefDir::TPrefDirVectorIterator PDVIt = SelectPrefDir->PrefDirVector.begin(); PDVIt < SelectPrefDir->PrefDirVector.end();
+                PDVIt++)
+            {
+                PDVIt->HLoc += HDiff;     // for reselect
+                PDVIt->VLoc += VDiff;     // for reselect
+                //need to reset TrackVectorPosition in case any elements erased before linking, as if so EveryPrefDir can only be erased too if it has the correct TrackVectorPosition
+                ATVecPos = Track->GetVectorPositionFromTrackMap(60, PDVIt->HLoc, PDVIt->VLoc, FoundFlag);
+                if(!FoundFlag)
+                {
+                    throw Exception("Failed to find TrackVectorPosition in PrefDir setting for Paste");
+                }
+                PDVIt->SetTrackVectorPosition(ATVecPos);
+
+                //reset all Conns & ConnLinkPos values so won't be erased during a later cut, they  will be set in RebuildPrefDirVector which is called when track linked
+                for(int x = 0; x < 4; x++)
+                {
+                    PDVIt->Conn[x] = -1;
+                    PDVIt->ConnLinkPos[x] = -1;
+                }
+                EveryPrefDir->ExternalStorePrefDirElement(10, *PDVIt);
+            }
+            EveryPrefDir->CheckPrefDirAgainstTrackVector(1);
         }
 
         // add the new text items
@@ -14753,6 +15606,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
         Track->SelectVectorClear();
         TextHandler->SelectTextVector.clear();
         Track->SelectGraphicVector.clear();
+        SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
         Track->CheckMapAndTrack(10);     // test
         Track->CheckMapAndInactiveTrack(9);     // test
         Track->CheckLocationNameMultiMap(15);     // test
@@ -15975,9 +16829,9 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
 // following section checks to see if GapFlashFlag set & flashes the Gap graphics if so
 // Gap flashing is cancelled on any mousedown event
 
-// deal with flashing GapFlash graphics (only in basic mode so no need to check for trains)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FlashingGraphics");
+// deal with flashing GapFlash graphics (only in basic mode so no need to check for trains)
     if(Track->GapFlashFlag && !Display->ZoomOutFlag)
     {
         if(WarningFlash)
@@ -16164,7 +17018,7 @@ void TInterface::FlashingGraphics(int Caller, TDateTime Now)
             DivergingPointVectorPosition = -1;
         }
     }
-// deal with level crossings
+// deal with changing level crossings
     if(!Track->ChangingLCVector.empty() && (Level2OperMode != Paused))
     {
         int H;
@@ -19568,6 +20422,7 @@ void TInterface::SetTrackModeEditMenu(int Caller)
         ReselectMenuItem->Enabled = false;
     }
     SelectBiDirPrefDirsMenuItem->Visible = false;
+    CheckPrefDirConflictsMenuItem->Visible = false;
     CancelSelectionMenuItem->Enabled = true;
     SelectMenuItem->Enabled = true;
 
@@ -19603,7 +20458,9 @@ void TInterface::SetInitialPrefDirModeEditMenu()
     ReselectMenuItem->Visible = false;
 
     SelectBiDirPrefDirsMenuItem->Visible = true;
+    CheckPrefDirConflictsMenuItem->Visible = true;
     SelectBiDirPrefDirsMenuItem->Enabled = false;
+    CheckPrefDirConflictsMenuItem->Enabled = true;
     CancelSelectionMenuItem->Enabled = true;
     SelectMenuItem->Enabled = true;
 }
@@ -19874,10 +20731,11 @@ void TInterface::LoadUserGraphic(int Caller) // new at v2.4.0
         }
         Utilities->CallLogPop(2191);
     }
-    catch(const EInvalidGraphic &e)
+    catch(const EInvalidGraphic &e) //non error catch
     {
         ShowMessage(
             "Incorrect file format, the file can't be loaded.\nEnsure that the file you want is a valid graphic file with extension .bmp, .gif, .jpg, or .png");
+        Utilities->CallLogPop(2311);
     }
     catch(const Exception &e)
     {
@@ -20038,6 +20896,8 @@ void TInterface::LoadClipboard(int Caller) // new at v2.8.0
             wss << TextHandler->GetFontStyleAsInt(1, TTVIt->Font) << '\n';
         }
         wss << "$$$" << '\n'; // send text item end marker
+
+        //load select dimensions
         wss << SelectBitmap->Height;
         wss << '\n';
         wss << SelectBitmap->Width;
@@ -20046,7 +20906,32 @@ void TInterface::LoadClipboard(int Caller) // new at v2.8.0
         wss << '\n';
         wss << SelectRect.top;
         wss << '\n';
-        wss << "$$$" << '\n'; // send final marker
+        wss << "$$$" << '\n'; // send end of select dimension marker
+
+        //load preferred directions //added at v2.9.0
+        if(SelectPrefDir->PrefDirSize() > 0)     // skip load if empty
+        {
+            for(TOnePrefDir::TPrefDirVectorIterator PDVIt = SelectPrefDir->PrefDirVector.begin(); PDVIt < SelectPrefDir->PrefDirVector.end(); PDVIt++)
+            //Note that TrackVector Position won't be valid for a remote paste, it will be reset when pasted, also Conns & ConnLinkPosses set when
+            //track linked
+            {
+                wss << PDVIt->GetHLoc();
+                wss << '\n';
+                wss << PDVIt->GetVLoc();
+                wss << '\n';
+                wss << PDVIt->GetELink();
+                wss << '\n';
+                wss << PDVIt->GetELinkPos();
+                wss << '\n';
+                wss << PDVIt->GetXLink();
+                wss << '\n';
+                wss << PDVIt->GetXLinkPos();
+                wss << '\n';
+                wss << PDVIt->GetEXNumber();
+                wss << '\n';
+            }
+        }
+        wss << "$$$" << '\n'; // send pref dir end marker
         wss << '\0'; // has to end with NULL
 
         Clipboard()->Clear(); // clear the clipboard
@@ -20056,9 +20941,10 @@ void TInterface::LoadClipboard(int Caller) // new at v2.8.0
         Utilities->CallLogPop(2267);
     }
 
-    catch(const EClipboardException &e) // ignore access denials (but only seems to happen with recover), doesn't affect program
+    catch(const EClipboardException &e) // ignore access denials (but only seems to happen with recover), doesn't affect program //non error catch
     {
 // Application->MessageBox(L"A clipboard error occurred in loading the clipboard", L"Message", MB_OK);
+        Utilities->CallLogPop(2312);
     }
 
     catch(const Exception &e)
@@ -20103,6 +20989,9 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
         wchar_t LineString[100]; // big enough for any TrackVector entry
         wss.getline(LineString, 100); // RlyClpBrdCopy or ...Cut - discard it
         Track->SelectVector.clear();
+        TTrack::TTrackMap SelectTrackMap; //build map so can find TrackElement at required H  & V to build PrefDirElement from it //added at v2.9.0
+        THVPair SelectTrackMapKeyPair; //for above
+        TTrack::TTrackMapEntry SelectTrackMapEntry; //for above
         while(true) // recover active & inactive track
         {
             wss.getline(LineString, 100);
@@ -20189,6 +21078,11 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
                 TE.SigAspect = TTrackElement::GroundSignal;
             }
             Track->SelectVector.push_back(TE);
+            SelectTrackMapKeyPair.first = TE.HLoc;
+            SelectTrackMapKeyPair.second = TE.VLoc;
+            SelectTrackMapEntry.first = SelectTrackMapKeyPair;
+            SelectTrackMapEntry.second = Track->SelectVector.size() - 1;
+            SelectTrackMap.insert(SelectTrackMapEntry);
         }
 
         TextHandler->SelectTextVector.clear();
@@ -20230,6 +21124,7 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
             TextHandler->SelectTextVector.push_back(TI);
         }
 
+        // recover select dimensions
         wss.getline(LineString, 100);
         SelectBitmap->Height = AnsiString(LineString).ToInt();
         wss.getline(LineString, 100);
@@ -20243,22 +21138,58 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
         {
             MarkerCounter++;
         }
-        if(MarkerCounter == 3)
+
+        // recover pref dirs - after dimensions so that a clipboard loaded with this app will paste into an earlier version app without pref dirs
+        // if a clipboard loaded with an earlier app is pasted into this app then the marker will be wrong, an error message will be given but no crash
+        int TempHLoc, TempVLoc, TempELink, TempELinkPos, TempXLink, TempXLinkPos, TempEXNumber, ATVecPos;
+        bool FoundFlag;
+        SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
+        while(true)
+        {
+            wss.getline(LineString, 100);
+            if(AnsiString(LineString) == "$$$") // end of pref dir element marker
+            {
+                MarkerCounter++;
+                break;
+            }
+            // if not $$$ then it's the HLoc value
+            TempHLoc = AnsiString(LineString).ToInt();
+            wss.getline(LineString, 100);
+            TempVLoc = AnsiString(LineString).ToInt();
+            wss.getline(LineString, 100);
+            TempELink = AnsiString(LineString).ToInt();
+            wss.getline(LineString, 100);
+            TempELinkPos = AnsiString(LineString).ToInt();
+            wss.getline(LineString, 100);
+            TempXLink = AnsiString(LineString).ToInt();
+            wss.getline(LineString, 100);
+            TempXLinkPos = AnsiString(LineString).ToInt();
+            wss.getline(LineString, 100);
+            TempEXNumber = AnsiString(LineString).ToInt();
+            //build a pref dir element from these values and the corresponding TrackVectorPosition for HLoc & VLoc
+            TPrefDirElement TempPrefDirElement(Track->GetTrackElementFromAnyTrackMap(0, TempHLoc, TempVLoc, SelectTrackMap, Track->SelectVector));
+//            TempPrefDirElement.HLoc = TempHLoc;  //these already set from TrackElement
+//            TempPrefDirElement.VLoc = TempVLoc;
+            TempPrefDirElement.SetELink(TempELink);
+            TempPrefDirElement.SetELinkPos(TempELinkPos);
+            TempPrefDirElement.SetXLink(TempXLink);
+            TempPrefDirElement.SetXLinkPos(TempXLinkPos);
+            TempPrefDirElement.SetEXNumber(TempEXNumber);
+            SelectPrefDir->ExternalStorePrefDirElement(11, TempPrefDirElement);  //added 27/05 at v2.9.0
+        }
+
+        if(MarkerCounter == 4)
         {
             ValidResult = true;
         }
         Utilities->CallLogPop(2269);
     }
 
-    catch(const EClipboardException &e) // just reset ValidResult for access denials, doesn't affect program
+    catch(const Exception &e) //don't stop for any error in this section, just give bad clipboard message  //non error catch
     {
-// Application->MessageBox(L"A clipboard error occurred in recovering the clipboard", L"Message", MB_OK);
         ValidResult = false;
-    }
-
-    catch(const Exception &e)
-    {
-        ErrorLog(223, e.Message);
+        Utilities->CallLogPop(2313);
+//        ErrorLog(223, e.Message);
     }
 
 }
@@ -20329,3 +21260,4 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
 */
 
 // ---------------------------------------------------------------------------
+

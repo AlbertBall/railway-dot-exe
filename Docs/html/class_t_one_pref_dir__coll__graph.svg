@@ -16,28 +16,28 @@
 <polygon fill="#bfbfbf" stroke="black" points="0,-0.5 0,-409.5 174,-409.5 174,-0.5 0,-0.5"/>
 <text text-anchor="middle" x="87" y="-397.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOnePrefDir</text>
 <polyline fill="none" stroke="black" points="0,-390.5 174,-390.5 "/>
-<text text-anchor="start" x="8" y="-378.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDirVector</text>
-<text text-anchor="start" x="8" y="-367.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ SearchVector</text>
-<text text-anchor="start" x="8" y="-356.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowH</text>
-<text text-anchor="start" x="8" y="-345.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighH</text>
-<text text-anchor="start" x="8" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowV</text>
-<text text-anchor="start" x="8" y="-323.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighV</text>
-<text text-anchor="start" x="8" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00"># TotalSearchCount</text>
-<text text-anchor="start" x="8" y="-301.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PrefDirSearchLimit</text>
-<text text-anchor="start" x="8" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; PrefDir4MultiMap</text>
+<text text-anchor="start" x="8" y="-378.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDir4MultiMap</text>
+<text text-anchor="start" x="8" y="-367.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDirVector</text>
+<text text-anchor="start" x="8" y="-356.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ SearchVector</text>
+<text text-anchor="start" x="8" y="-345.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowH</text>
+<text text-anchor="start" x="8" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighH</text>
+<text text-anchor="start" x="8" y="-323.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowV</text>
+<text text-anchor="start" x="8" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighV</text>
+<text text-anchor="start" x="8" y="-301.5" font-family="Helvetica,sans-Serif" font-size="10.00"># TotalSearchCount</text>
+<text text-anchor="start" x="8" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PrefDirSearchLimit</text>
 <polyline fill="none" stroke="black" points="0,-283.5 174,-283.5 "/>
 <text text-anchor="start" x="8" y="-271.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDirSize()</text>
 <text text-anchor="start" x="8" y="-260.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ SearchVectorSize()</text>
 <text text-anchor="start" x="8" y="-249.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ ExternalClearPrefDirAnd4</text>
 <text text-anchor="start" x="8" y="-238.5" font-family="Helvetica,sans-Serif" font-size="10.00">MultiMap()</text>
-<text text-anchor="start" x="8" y="-227.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ CheckOnePrefDir()</text>
-<text text-anchor="start" x="8" y="-216.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ EndPossible()</text>
-<text text-anchor="start" x="8" y="-205.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetNextPrefDirElement()</text>
-<text text-anchor="start" x="8" y="-194.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetStartAndEndPrefDirElements()</text>
-<text text-anchor="start" x="8" y="-183.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetPrefDirStartElement()</text>
-<text text-anchor="start" x="8" y="-172.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetPrefDirTruncateElement()</text>
-<text text-anchor="start" x="8" y="-161.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ ValidatePrefDir()</text>
-<text text-anchor="start" x="8" y="-150.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 22 more...</text>
+<text text-anchor="start" x="8" y="-227.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ BiDirectionalPrefDir()</text>
+<text text-anchor="start" x="8" y="-216.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ CheckOnePrefDir()</text>
+<text text-anchor="start" x="8" y="-205.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ EndPossible()</text>
+<text text-anchor="start" x="8" y="-194.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ FindLinkingPrefDir()</text>
+<text text-anchor="start" x="8" y="-183.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetNextPrefDirElement()</text>
+<text text-anchor="start" x="8" y="-172.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetStartAndEndPrefDirElements()</text>
+<text text-anchor="start" x="8" y="-161.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetPrefDirStartElement()</text>
+<text text-anchor="start" x="8" y="-150.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 24 more...</text>
 <text text-anchor="start" x="8" y="-139.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PresetAutoRouteDiagonalFouled</text>
 <text text-anchor="start" x="8" y="-128.5" font-family="Helvetica,sans-Serif" font-size="10.00">ByTrack()</text>
 <text text-anchor="start" x="8" y="-117.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PresetAutoRouteElementValid()</text>

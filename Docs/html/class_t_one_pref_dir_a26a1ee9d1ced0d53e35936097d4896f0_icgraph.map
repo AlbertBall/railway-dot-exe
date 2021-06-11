@@ -1,26 +1,52 @@
 <map id="TOnePrefDir::LastElementNumber" name="TOnePrefDir::LastElementNumber">
-<area shape="rect" id="node1" title="Return the vector position of the last element in the vector (i.e. one less than the vector size)" alt="" coords="1453,128,1627,169"/>
-<area shape="rect" id="node2" href="$class_t_one_pref_dir.html#a482d1c69a674eec4db0190b78659c495" title="Called after a successful search to add the elements from the search vector to the pref dir vector." alt="" coords="1007,161,1174,203"/>
-<area shape="rect" id="node3" href="$class_t_one_pref_dir.html#a06cd3491535362fccbba4e76b9a120e9" title="Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linke..." alt="" coords="770,155,941,196"/>
-<area shape="rect" id="node6" href="$class_t_one_pref_dir.html#a7b81a1377e6269aafad6c25c929b2852" title="Used when setting preferred directions, true if able to finish at the last selected element (can&#39;t fi..." alt="" coords="1232,59,1405,86"/>
-<area shape="rect" id="node11" href="$class_t_one_pref_dir.html#ac5f8d2864f0510cf73cb9883b520ec9f" title="Store a single pref dir element in the vector &amp; map." alt="" coords="1233,271,1404,312"/>
-<area shape="rect" id="node4" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="519,188,713,229"/>
-<area shape="rect" id="node5" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="244,105,471,131"/>
-<area shape="rect" id="node7" href="$class_t_interface.html#af01b649aa75f881cbfd2f14a60533bcc" title="Sets the Level2PrefDirMode user mode, using the Level2PrefDirMode variable to determine the mode." alt="" coords="773,71,938,112"/>
-<area shape="rect" id="node8" href="$class_t_interface.html#a8c96de45b013362b03ad0e8725a7c64b" title="Called when mouse button clicked in zoom&#45;out mode." alt="" coords="519,5,713,47"/>
-<area shape="rect" id="node9" href="$class_t_interface.html#a6a0ecdd864e40a84b833014d4478d1e3" title=" " alt="" coords="526,71,706,112"/>
-<area shape="rect" id="node10" href="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc" title=" " alt="" coords="523,137,709,163"/>
-<area shape="rect" id="node12" href="$class_t_one_pref_dir.html#a65df51092983945e1fe3c20bf8917a39" title="Used when a preferred direction has been set to add all the elements to EveryPrefDir,..." alt="" coords="1007,395,1175,436"/>
-<area shape="rect" id="node15" href="$class_t_one_pref_dir.html#a5e8d14c19c70cafe968e7481b116a714" title="Store a single pref dir element in the vector &amp; map &#45; used by other classes." alt="" coords="1001,329,1180,371"/>
-<area shape="rect" id="node16" href="$class_t_one_pref_dir.html#ace0402792492c9da2551423f8287e41e" title="Used when beginning a chain of preferred directions or element lengths. Enter with HLoc &amp; VLoc set to..." alt="" coords="761,220,949,261"/>
-<area shape="rect" id="node17" href="$class_t_one_pref_dir.html#a614933ff3958e4b8c9be9bc78159d9e8" title="Old version of LoadPrefDir, used during development when the save format changed so the old files cou..." alt="" coords="997,278,1184,305"/>
-<area shape="rect" id="node18" href="$class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d" title="Load a vector and map of preferred directions from the file." alt="" coords="1007,515,1174,542"/>
-<area shape="rect" id="node13" href="$class_t_interface.html#a1b1a4260e251c9bd5f48fd6c3432e7a5" title=" " alt="" coords="762,424,949,465"/>
-<area shape="rect" id="node14" href="$class_t_interface.html#a8ed3d3631b2d3235f1e011d595909eec" title=" " alt="" coords="768,307,943,348"/>
-<area shape="rect" id="node19" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="776,591,935,618"/>
-<area shape="rect" id="node21" href="$class_t_all_routes.html#adadd08bb4cbbcaeba918f20c6c103a39" title="Loads the routes from a session file." alt="" coords="774,541,937,567"/>
-<area shape="rect" id="node22" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="535,511,697,538"/>
-<area shape="rect" id="node20" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="521,584,711,625"/>
-<area shape="rect" id="node23" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="278,511,437,538"/>
-<area shape="rect" id="node24" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,511,196,538"/>
+<area shape="rect" id="node1" title="Return the vector position of the last element in the vector (i.e. one less than the vector size)" alt="" coords="1976,1940,2149,1981"/>
+<area shape="rect" id="node2" href="$class_t_one_pref_dir.html#a482d1c69a674eec4db0190b78659c495" title="Called after a successful search to add the elements from the search vector to the pref dir vector." alt="" coords="1530,1973,1697,2015"/>
+<area shape="rect" id="node3" href="$class_t_one_pref_dir.html#a06cd3491535362fccbba4e76b9a120e9" title="Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linke..." alt="" coords="1293,2017,1463,2059"/>
+<area shape="rect" id="node6" href="$class_t_one_pref_dir.html#a7b81a1377e6269aafad6c25c929b2852" title="Used when setting preferred directions, true if able to finish at the last selected element (can&#39;t fi..." alt="" coords="1755,947,1928,974"/>
+<area shape="rect" id="node11" href="$class_t_one_pref_dir.html#ac5f8d2864f0510cf73cb9883b520ec9f" title="Store a single pref dir element in the vector &amp; map." alt="" coords="1756,2032,1927,2073"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="280,1399,475,1440"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="5,863,232,890"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#af01b649aa75f881cbfd2f14a60533bcc" title="Sets the Level2PrefDirMode user mode, using the Level2PrefDirMode variable to determine the mode." alt="" coords="540,309,705,351"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a8c96de45b013362b03ad0e8725a7c64b" title="Called when mouse button clicked in zoom&#45;out mode." alt="" coords="280,309,475,351"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#a6a0ecdd864e40a84b833014d4478d1e3" title=" " alt="" coords="287,223,467,264"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc" title=" " alt="" coords="285,375,470,402"/>
+<area shape="rect" id="node12" href="$class_t_one_pref_dir.html#a65df51092983945e1fe3c20bf8917a39" title="Used when a preferred direction has been set to add all the elements to EveryPrefDir,..." alt="" coords="792,2053,960,2095"/>
+<area shape="rect" id="node15" href="$class_t_one_pref_dir.html#a5e8d14c19c70cafe968e7481b116a714" title="Store a single pref dir element in the vector &amp; map &#45; used by other classes." alt="" coords="1524,952,1703,993"/>
+<area shape="rect" id="node47" href="$class_t_one_pref_dir.html#ace0402792492c9da2551423f8287e41e" title="Used when beginning a chain of preferred directions or element lengths. Enter with HLoc &amp; VLoc set to..." alt="" coords="1284,2261,1472,2303"/>
+<area shape="rect" id="node48" href="$class_t_one_pref_dir.html#a614933ff3958e4b8c9be9bc78159d9e8" title="Old version of LoadPrefDir, used during development when the save format changed so the old files cou..." alt="" coords="1520,2039,1707,2066"/>
+<area shape="rect" id="node49" href="$class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d" title="Load a vector and map of preferred directions from the file." alt="" coords="1049,2191,1216,2218"/>
+<area shape="rect" id="node13" href="$class_t_interface.html#a1b1a4260e251c9bd5f48fd6c3432e7a5" title=" " alt="" coords="529,2032,716,2073"/>
+<area shape="rect" id="node14" href="$class_t_interface.html#a8ed3d3631b2d3235f1e011d595909eec" title=" " alt="" coords="535,1967,710,2008"/>
+<area shape="rect" id="node16" href="$class_t_interface.html#a03280ee86df28a9a7cf4473cdf7b9f8b" title=" " alt="" coords="771,157,981,183"/>
+<area shape="rect" id="node17" href="$class_t_interface.html#ad815543d7314bbf5499e246b12983a3c" title="Recovers clipboard as track and text vectors." alt="" coords="1285,959,1471,986"/>
+<area shape="rect" id="node18" href="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b" title="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode." alt="" coords="1029,1010,1236,1037"/>
+<area shape="rect" id="node40" href="$class_t_interface.html#a3cf2db0424e05908b20a97130895d056" title=" " alt="" coords="531,427,715,468"/>
+<area shape="rect" id="node41" href="$class_t_interface.html#aa6e7359ece526e43589456e9a31851a0" title=" " alt="" coords="539,492,707,533"/>
+<area shape="rect" id="node19" href="$class_t_interface.html#aa20c05bf2d6c23035a10a89796334d0f" title=" " alt="" coords="537,977,709,1019"/>
+<area shape="rect" id="node20" href="$class_t_interface.html#a10494e62a7bb4e7114ab4d98e18499f1" title=" " alt="" coords="533,1043,712,1084"/>
+<area shape="rect" id="node21" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="533,1108,713,1149"/>
+<area shape="rect" id="node22" href="$class_t_interface.html#a424a7eb780461c1acb396feb21f52062" title=" " alt="" coords="789,461,963,503"/>
+<area shape="rect" id="node23" href="$class_t_interface.html#ae6e977c9dfdfbde9924ceefd19d7d0d3" title=" " alt="" coords="780,527,972,554"/>
+<area shape="rect" id="node24" href="$class_t_interface.html#aff2c1cd6ed2d45fdcf6392a85a6d9415" title=" " alt="" coords="786,579,966,620"/>
+<area shape="rect" id="node25" href="$class_t_interface.html#ad0fa9f32b059b346e066ab23d62a4bfc" title=" " alt="" coords="533,1173,712,1215"/>
+<area shape="rect" id="node26" href="$class_t_interface.html#add5fbdbceae6285c2cc440905b270491" title=" " alt="" coords="794,644,958,685"/>
+<area shape="rect" id="node27" href="$class_t_interface.html#a5e7eff5bd235780252147bb4878a4c95" title=" " alt="" coords="540,1239,705,1280"/>
+<area shape="rect" id="node28" href="$class_t_interface.html#ab34f55bab5984b72264d7275660a3463" title=" " alt="" coords="531,1457,714,1499"/>
+<area shape="rect" id="node29" href="$class_t_interface.html#ac04724e6b4eafc041ee65ce5168a82ae" title="Load a user&#45;defined graphic (bmp, gif, jpg, png)." alt="" coords="783,710,969,737"/>
+<area shape="rect" id="node30" href="$class_t_interface.html#aef9267dd01da25269797e2e8ca08a3f9" title=" " alt="" coords="538,1523,707,1564"/>
+<area shape="rect" id="node31" href="$class_t_interface.html#ac666c9f62cdb68b29c2a7db123a43a28" title=" " alt="" coords="538,1588,707,1629"/>
+<area shape="rect" id="node32" href="$class_t_interface.html#a4ee6afffbc33eab918cba315ab65ee6e" title=" " alt="" coords="788,761,964,803"/>
+<area shape="rect" id="node33" href="$class_t_interface.html#a13e8cd35a6f61caf6794791f1a4fe7f6" title=" " alt="" coords="523,1653,723,1695"/>
+<area shape="rect" id="node34" href="$class_t_interface.html#a4ef96184d97d0f9ff92e78328578e825" title=" " alt="" coords="787,827,965,868"/>
+<area shape="rect" id="node35" href="$class_t_interface.html#a7d0d3bbfab692ca3d26c1eea6ef24542" title=" " alt="" coords="791,944,961,985"/>
+<area shape="rect" id="node36" href="$class_t_interface.html#ac285c199f6c43151dbec9ba017a29bdc" title=" " alt="" coords="794,1061,958,1103"/>
+<area shape="rect" id="node37" href="$class_t_interface.html#aa439e164f7f2304477010985c2caabed" title=" " alt="" coords="543,1719,703,1760"/>
+<area shape="rect" id="node38" href="$class_t_interface.html#a9113d88b504cd30eb8dd6ecddde1c0ec" title=" " alt="" coords="529,1784,716,1825"/>
+<area shape="rect" id="node39" href="$class_t_interface.html#a02e91aba36e2b91354abd2884f658510" title=" " alt="" coords="785,1179,967,1220"/>
+<area shape="rect" id="node42" href="$class_t_interface.html#a19148984e07e16178b6a6898bcbcdf22" title=" " alt="" coords="535,1849,710,1891"/>
+<area shape="rect" id="node43" href="$class_t_interface.html#a4b0c482229c19b856a8c3f07815e5d7d" title=" " alt="" coords="527,860,718,901"/>
+<area shape="rect" id="node44" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="789,1447,963,1474"/>
+<area shape="rect" id="node45" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="543,1915,702,1942"/>
+<area shape="rect" id="node46" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="542,2199,703,2226"/>
+<area shape="rect" id="node50" href="$class_t_all_routes.html#adadd08bb4cbbcaeba918f20c6c103a39" title="Loads the routes from a session file." alt="" coords="795,2242,957,2269"/>
 </map>

@@ -5,7 +5,7 @@
 <area shape="rect" id="node4" href="$class_t_one_pref_dir.html" title="The basic preferred direction class, consisting of any number of elements with preferred directions s..." alt="" coords="245,596,477,1143"/>
 <area shape="rect" id="node5" href="$class_t_one_route.html" title="A descendent of TOnePrefDir used for routes. Used during contruction of a route (ConstructRoute) and ..." alt="" coords="489,1279,724,1576"/>
 <area shape="rect" id="node6" href="$class_t_one_route_1_1_t_route_flash.html" title="The flashing route." alt="" coords="501,816,669,923"/>
-<area shape="rect" id="node7" href="$class_t_pref_dir_element.html" title="Basic preferred direction or route element &#45; track element with additional members." alt="" coords="694,603,909,1135"/>
+<area shape="rect" id="node7" href="$class_t_pref_dir_element.html" title="Basic preferred direction or route element &#45; track element with additional members." alt="" coords="694,618,909,1121"/>
 <area shape="rect" id="node8" href="$class_t_track_element.html" title="Basic track elements as implemented in the overall railway layout." alt="" coords="705,249,897,547"/>
 <area shape="rect" id="node9" href="$class_t_fixed_track_piece.html" title=" " alt="" coords="699,5,903,200"/>
 <area shape="rect" id="node10" href="$class_i_d_int.html" title=" " alt="" coords="933,801,1038,937"/>

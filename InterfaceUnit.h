@@ -258,12 +258,14 @@ __published: // IDE-managed Components
 ///< the 'Press to exit' button on the error screen
 
 // warning icons shown during operation on the left hand side of the screen
-    TImage *BufferAttentionImage;
-    TImage *CallOnImage;
-    TImage *CrashImage;
-    TImage *DerailImage;
-    TImage *SignalStopImage;
-    TImage *SPADImage;
+    TImage *SignalStopImage;                  //top 125
+    TImage *BufferAttentionImage;             //2nd 155
+    TImage *CallOnImage;                      //3rd 185
+    TImage *SPADImage;                        //4th 215
+    TImage *CrashImage;                       //5th 245
+    TImage *DerailImage;                      //6th 275
+    TImage *TrainFailedImage;                 //7th 305 new at v2.4.0
+    TImage *ManualLCDownImage;                //8th 335 new 1t v2.9.0
 
     TImage *DistanceKey;
 ///< information panel displayed when setting distances & speed limits
@@ -439,6 +441,7 @@ __published: // IDE-managed Components
     TMenuItem *SelectLengthsMenuItem;
     TMenuItem *SelectBiDirPrefDirsMenuItem;
     TMenuItem *CancelSelectionMenuItem;
+    TMenuItem *CheckPrefDirConflictsMenuItem;
 
     TMenuItem *FloatingInfoMenu;
     TMenuItem *TrackInfoMenuItem;
@@ -477,7 +480,6 @@ __published: // IDE-managed Components
     TMenuItem *SignallerJoinedByMenuItem; // new at v2.4.0
     TMenuItem *RepairFailedTrainMenuItem;
 
-    TImage *TrainFailedImage; // new at v2.4.0
     TEdit *MTBFEditBox;
     TLabel *MTBFLabel;
     TPanel *UserGraphicReselectPanel;
@@ -845,7 +847,8 @@ __published: // IDE-managed Components
     void __fastcall CPGenFileButtonClick(TObject *Sender);
     void __fastcall OAListBoxMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
                                        int X, int Y);
-    void __fastcall SigPrefConsecButtonClick(TObject *Sender); // new at v2.4.0
+    void __fastcall SigPrefConsecButtonClick(TObject *Sender);
+    void __fastcall CheckPrefDirConflictsMenuItemClick(TObject *Sender);
 
 public: // AboutForm needs access to these
 
@@ -1146,7 +1149,8 @@ showing.  See DevHistory.txt for the version after v2.4.3 for details. */
 ///< the Pref Dir under construction
     TOnePrefDir *EveryPrefDir;
 ///< all the Pref Dir elements in the railway
-
+    TOnePrefDir *SelectPrefDir;
+///< Pref Dir elements in a selected region
     TOneRoute *ConstructRoute;
 ///< the route under construction
 
@@ -1206,6 +1210,8 @@ showing.  See DevHistory.txt for the version after v2.4.3 for details. */
     bool IsPerformancePanelObscuringFloatingLabel(int Caller);
 /// Loads timetable into memory from a session file, true if successful
     bool LoadTimetableFromSessionFile(int Caller, std::ifstream &SessionFile);
+/// Displays the manual LC down warning graphic in the panel on the LHS of the railway when there are no routes across it
+    bool ManualLCDownAttentionWarning;
 /// Examines a flashing route (i.e. one being set) and returns true if a moving train is detected on it and if so route setting is cancelled
     bool MovingTrainPresentOnFlashingRoute(int Caller);
 /// Returns true if there are no track elements and no text

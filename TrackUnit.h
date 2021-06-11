@@ -232,8 +232,6 @@ protected:
     bool operator != (TPrefDirElement RHElement);
 ///< non-equivalence operator
 
-    bool EntryExitNumber();
-///< determines and loads EXNumber (see above)
     Graphics::TBitmap *GetDirectionPrefDirGraphicPtr() const;
 ///< picks up the EntryDirectionGraphicPtr for preferred directions
     Graphics::TBitmap *GetDirectionRouteGraphicPtr(bool AutoSigsFlag, bool PrefDirRoute) const;
@@ -275,6 +273,18 @@ public:
         }
     }
 
+/// Returns HLoc  //added at v2.9.0 for clipboard storage
+    int GetHLoc() const
+    {
+        return(HLoc);
+    }
+
+/// Returns VLoc  //added at v2.9.0 for clipboard storage
+    int GetVLoc() const
+    {
+        return(VLoc);
+    }
+
 /// Returns ELink
     int GetELink() const
     {
@@ -299,6 +309,12 @@ public:
         return(XLinkPos);
     }
 
+/// Returns EXNumber     //added at v2.9.0 for clipboard storage
+    int GetEXNumber()
+    {
+        return(EXNumber);
+    }
+
 /// Returns TrackVectorPosition
     unsigned int GetTrackVectorPosition() const
     {
@@ -317,6 +333,42 @@ public:
         return(GetRouteGraphicPtr(AutoSignals, PrefDirRoute));
     }
 
+/// Used in pasting pref dirs
+    void SetTrackVectorPosition(int TVPos) // added at v2.9.0
+    {
+        TrackVectorPosition = TVPos;
+    }
+
+/// Used in pasting pref dirs
+    void SetELink(int input) // added at v2.9.0
+    {
+        ELink = input;
+    }
+
+/// Used in pasting pref dirs
+    void SetELinkPos(int input) // added at v2.9.0
+    {
+        ELinkPos = input;
+    }
+
+/// Used in pasting pref dirs
+    void SetXLink(int input) // added at v2.9.0
+    {
+        XLink = input;
+    }
+
+/// Used in pasting pref dirs
+    void SetXLinkPos(int input) // added at v2.9.0
+    {
+        XLinkPos = input;
+    }
+
+/// Used in pasting pref dirs
+    void SetEXNumber(int input) // added at v2.9.0
+    {
+        EXNumber = input;
+    }
+
 /// Default constructor, loads default values
     TPrefDirElement() : TTrackElement(), ELink(-1), ELinkPos(-1), XLink(-1), XLinkPos(-1), EXNumber(-1), TrackVectorPosition(-1), CheckCount(0), EXGraphicPtr(0),
         EntryDirectionGraphicPtr(0), IsARoute(false), AutoSignals(false), PrefDirRoute(false)
@@ -333,6 +385,8 @@ public:
 
 // external functions
 
+/// determines and loads EXNumber (see above)
+    bool EntryExitNumber();
 /// Sends a list of PrefDirElement values to Utilities->CallLog file for debugging purposes
     AnsiString LogPrefDir() const;
 /// Constructs a PrefDirElement from supplied values
@@ -516,19 +570,22 @@ private:
 ///< sets of valid TrackElements for placement of platforms and non-station named locations
 
 public:
-    enum TBarrierState
-///< state of barriers
-/**<Values for level crossings either changing state or with barriers down
-
-All LCs begin with barriers raised. i.e. closed to trains, that is the normal state.  When a route is set through an LC nothing happens until the
-route is set, then an active LC object is created by SetLCChangeValues (called by ConvertandAdd....  for lowering barriers) and added to the
+/*
+All LCs begin with barriers raised. i.e. closed to trains, that is the normal state.  When a route is set through an LC an active LC object is created
+by SetLCChangeValues (called by ConvertandAdd....  for lowering barriers) and added to the
 ChangingLCVector.  Once created 'FlashingGraphics' takes care of the flashing, until the duration is reached.  While flashing no further routes
 can be set through that LC and the first route can't be cancelled, hence the flashing only needs to cater for plotting the route on the one track that
 started the barrier lowering.  When the duration is reached, the object is transferred to a new vector BarriersDownVector, after the StartTime has been
 reset (to time the period for which the barriers are down - penalties are given for > 3 minutes), BarrierState changed to Down, and the object erased
 from ChangingLCVector.  When there is no route through an LC and no train on the track then the barriers are raised - in ClockTimer2 - when the
 BarriersDownVector object is copied back to ChangingLCVector with a new StartTime, BarrierState and ChangeDuration.  Again FlashingGraphics takes care
-of the flashing until the duration is reached, when the object is erased from the vector and the LC reverts to its normal (barriers raised) state. */
+of the flashing until the duration is reached, when the object is erased from the vector and the LC reverts to its normal (barriers raised) state.
+
+At v2.6.0 LCs could be lowered and raised manually, manual LCs are shown lowering and down as green and indicated by TypeOfRoute being 2.  A manual LC
+can't have a route set while changing; can't be opened while a route is set; and must be opened manually.*/
+
+    enum TBarrierState
+///< state of barriers, values for level crossings either changing state or with barriers up or down
     {
         Raising, Lowering, Up, Down
     };
@@ -1020,6 +1077,8 @@ exclude opposed buffers since these not linked.  Used in timetable integrity che
                                                                          AnsiString &ErrorString);
 /// Return a reference to the inactive element at HLoc & VLoc, if no element is found an error is thrown
     TTrackElement &GetInactiveTrackElementFromTrackMap(int Caller, int HLoc, int VLoc);
+/// Return a reference to the element at HLoc & VLoc for any map and any vector (used for SelectPrefDir in clipboard pref dir recovery
+    TTrackElement &GetTrackElementFromAnyTrackMap(int Caller, int HLoc, int VLoc, TTrackMap Map, TTrackVector Vector); //new at v2.9.0 for clipboard pref dirs
 /// Return a reference to the element at HLoc & VLoc, if no element is found an error is thrown
     TTrackElement &GetTrackElementFromTrackMap(int Caller, int HLoc, int VLoc);
 /// A range-checked version of InactiveTrackElement.at(At)
@@ -1093,6 +1152,8 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
     void PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp);
 /// Plot & close (to trains) all level crossings linked to TrackElement - always plots as red - auto
     void PlotRaisedLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp);
+/// Plots either a LC or a blank element to flash manual LCs in zoomout mode
+    void PlotSmallFlashingLinkedLevelCrossings(int Caller, int HLoc, int VLoc, Graphics::TBitmap *GraphicPtr, TDisplay *Disp);
 /// Plots a gap on screen - may be set or unset
     void PlotGap(int Caller, TTrackElement TrackElement, TDisplay *Disp);
 /// Plot points on screen according to how they are set (Attribute value), or, with both fillets if BothFillets is true (the fillet is the bit that appears to move when points are changed)
@@ -1204,7 +1265,7 @@ enum TPrefDirRoute
 /// The basic preferred direction class, consisting of any number of elements with preferred directions set. Used during setting up preferred directions and track lengths (ConstructPrefDir), and for all completed preferred directions in the railway (EveryPrefDir)
 class TOnePrefDir
 {
-private: // don't want descendant (TOneRoute) to access the PrefDir4MultiMap
+public: // don't want descendant (TOneRoute) to access the PrefDir4MultiMap
 
     typedef std::multimap<THVPair, unsigned int, TMapComp>TPrefDir4MultiMap;
 ///< HLoc&VLoc as a pair, and PrefDirVectorPosition, can be up to 4 values at any H&V
@@ -1214,6 +1275,7 @@ private: // don't want descendant (TOneRoute) to access the PrefDir4MultiMap
     TPrefDir4MultiMap PrefDir4MultiMap;
 ///< the pref dir multimap - up to 4 values (up to 2 tracks per element each with 2 directions)
 
+private:
 // inline functions
 
 /// Empty the existing vectors & map
@@ -1301,12 +1363,16 @@ public:
         ClearPrefDir();
     }
 
-// functions defined in .cpp file
+    // functions defined in .cpp file
 
+    /// Determines whether the preferred direction pointed to has another pref dir in the opposite direction set (returns true) or not
+    bool TOnePrefDir::BiDirectionalPrefDir(int Caller, TPrefDir4MultiMapIterator PDPtr);
 /// Called before PrefDir loading as part of the FileIntegrityCheck function in case there is an error in the file. Very similar to LoadPrefDir but with value checks instead of storage in PrefDirVector.
     bool CheckOnePrefDir(int Caller, int NumberOfActiveElements, std::ifstream &VecFile);
 /// Used when setting preferred directions, true if able to finish at the last selected element (can't finish if there is only one element or if end on leading points)
     bool EndPossible(int Caller, bool &LeadingPoints);
+/// Finds a pref dir element that links to another element at given vector number and link number & position, returns true if found with linked vector number, true if buffer or continuation with link at blank end & linked vector number = -1, or false if not found with vector number == -1
+    bool FindLinkingPrefDir(int Caller, int PrefDirVectorNumber, int LinkNumberPos, int LinkNumber, int &LinkedPrefDirVectorNumber);
 /// Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linked tracks between the last selected element and the one at HLoc & VLoc, and returns true if it finds one.  FinishElement is returned true if the element selected is a buffer or continuation - in which case the chain is complete
     bool GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &FinishElement);
 /// Called when searching for start and end PrefDirElements when setting up automatic signals routes in PreStart mode

@@ -687,6 +687,7 @@ var class_t_rail_graphics =
     [ "smBrightGreen", "class_t_rail_graphics.html#abbc00fabafed3b8f5d92c034c49128e0", null ],
     [ "smCaramel", "class_t_rail_graphics.html#aa537ba003493037fdb041ec7b539a0df", null ],
     [ "smCyan", "class_t_rail_graphics.html#a25f0ff5c8cff9f1a53075079c035ba12", null ],
+    [ "smLC", "class_t_rail_graphics.html#a9bd98bc67b13bf6a36f19a76456c1b3b", null ],
     [ "smLightBlue", "class_t_rail_graphics.html#af7f8dd211a322823fcad30c50fa4d928", null ],
     [ "smMagenta", "class_t_rail_graphics.html#a10d2a3355e749677a310dabe1f33307b", null ],
     [ "smName", "class_t_rail_graphics.html#a6f036fb066634cda9f061e951f5a0fd0", null ],

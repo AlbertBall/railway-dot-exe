@@ -90,28 +90,28 @@ var sectionId = 'dynsection-1';
 <polygon fill="white" stroke="black" points="0,-281.5 0,-690.5 174,-690.5 174,-281.5 0,-281.5"/>
 <text text-anchor="middle" x="87" y="-678.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOnePrefDir</text>
 <polyline fill="none" stroke="black" points="0,-671.5 174,-671.5 "/>
-<text text-anchor="start" x="8" y="-659.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDirVector</text>
-<text text-anchor="start" x="8" y="-648.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ SearchVector</text>
-<text text-anchor="start" x="8" y="-637.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowH</text>
-<text text-anchor="start" x="8" y="-626.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighH</text>
-<text text-anchor="start" x="8" y="-615.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowV</text>
-<text text-anchor="start" x="8" y="-604.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighV</text>
-<text text-anchor="start" x="8" y="-593.5" font-family="Helvetica,sans-Serif" font-size="10.00"># TotalSearchCount</text>
-<text text-anchor="start" x="8" y="-582.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PrefDirSearchLimit</text>
-<text text-anchor="start" x="8" y="-571.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; PrefDir4MultiMap</text>
+<text text-anchor="start" x="8" y="-659.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDir4MultiMap</text>
+<text text-anchor="start" x="8" y="-648.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDirVector</text>
+<text text-anchor="start" x="8" y="-637.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ SearchVector</text>
+<text text-anchor="start" x="8" y="-626.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowH</text>
+<text text-anchor="start" x="8" y="-615.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighH</text>
+<text text-anchor="start" x="8" y="-604.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitLowV</text>
+<text text-anchor="start" x="8" y="-593.5" font-family="Helvetica,sans-Serif" font-size="10.00"># SearchLimitHighV</text>
+<text text-anchor="start" x="8" y="-582.5" font-family="Helvetica,sans-Serif" font-size="10.00"># TotalSearchCount</text>
+<text text-anchor="start" x="8" y="-571.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PrefDirSearchLimit</text>
 <polyline fill="none" stroke="black" points="0,-564.5 174,-564.5 "/>
 <text text-anchor="start" x="8" y="-552.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDirSize()</text>
 <text text-anchor="start" x="8" y="-541.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ SearchVectorSize()</text>
 <text text-anchor="start" x="8" y="-530.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ ExternalClearPrefDirAnd4</text>
 <text text-anchor="start" x="8" y="-519.5" font-family="Helvetica,sans-Serif" font-size="10.00">MultiMap()</text>
-<text text-anchor="start" x="8" y="-508.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ CheckOnePrefDir()</text>
-<text text-anchor="start" x="8" y="-497.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ EndPossible()</text>
-<text text-anchor="start" x="8" y="-486.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetNextPrefDirElement()</text>
-<text text-anchor="start" x="8" y="-475.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetStartAndEndPrefDirElements()</text>
-<text text-anchor="start" x="8" y="-464.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetPrefDirStartElement()</text>
-<text text-anchor="start" x="8" y="-453.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetPrefDirTruncateElement()</text>
-<text text-anchor="start" x="8" y="-442.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ ValidatePrefDir()</text>
-<text text-anchor="start" x="8" y="-431.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 22 more...</text>
+<text text-anchor="start" x="8" y="-508.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ BiDirectionalPrefDir()</text>
+<text text-anchor="start" x="8" y="-497.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ CheckOnePrefDir()</text>
+<text text-anchor="start" x="8" y="-486.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ EndPossible()</text>
+<text text-anchor="start" x="8" y="-475.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ FindLinkingPrefDir()</text>
+<text text-anchor="start" x="8" y="-464.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetNextPrefDirElement()</text>
+<text text-anchor="start" x="8" y="-453.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetStartAndEndPrefDirElements()</text>
+<text text-anchor="start" x="8" y="-442.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetPrefDirStartElement()</text>
+<text text-anchor="start" x="8" y="-431.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 24 more...</text>
 <text text-anchor="start" x="8" y="-420.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PresetAutoRouteDiagonalFouled</text>
 <text text-anchor="start" x="8" y="-409.5" font-family="Helvetica,sans-Serif" font-size="10.00">ByTrack()</text>
 <text text-anchor="start" x="8" y="-398.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PresetAutoRouteElementValid()</text>
@@ -160,50 +160,48 @@ var sectionId = 'dynsection-1';
 <g id="node4" class="node">
 <title>Node4</title>
 <g id="a_node4"><a xlink:href="class_t_pref_dir_element.html" target="_top" xlink:title="Basic preferred direction or route element &#45; track element with additional members.">
-<polygon fill="white" stroke="black" points="336.5,-287 336.5,-685 497.5,-685 497.5,-287 336.5,-287"/>
-<text text-anchor="middle" x="417" y="-673" font-family="Helvetica,sans-Serif" font-size="10.00">TPrefDirElement</text>
-<polyline fill="none" stroke="black" points="336.5,-666 497.5,-666 "/>
-<text text-anchor="start" x="344.5" y="-654" font-family="Helvetica,sans-Serif" font-size="10.00">+ IsARoute</text>
-<text text-anchor="start" x="344.5" y="-643" font-family="Helvetica,sans-Serif" font-size="10.00">+ AutoSignals</text>
-<text text-anchor="start" x="344.5" y="-632" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDirRoute</text>
-<text text-anchor="start" x="344.5" y="-621" font-family="Helvetica,sans-Serif" font-size="10.00"># ELink</text>
-<text text-anchor="start" x="344.5" y="-610" font-family="Helvetica,sans-Serif" font-size="10.00"># ELinkPos</text>
-<text text-anchor="start" x="344.5" y="-599" font-family="Helvetica,sans-Serif" font-size="10.00"># XLink</text>
-<text text-anchor="start" x="344.5" y="-588" font-family="Helvetica,sans-Serif" font-size="10.00"># XLinkPos</text>
-<text text-anchor="start" x="344.5" y="-577" font-family="Helvetica,sans-Serif" font-size="10.00"># EXNumber</text>
-<text text-anchor="start" x="344.5" y="-566" font-family="Helvetica,sans-Serif" font-size="10.00"># TrackVectorPosition</text>
-<text text-anchor="start" x="344.5" y="-555" font-family="Helvetica,sans-Serif" font-size="10.00"># CheckCount</text>
-<text text-anchor="start" x="344.5" y="-544" font-family="Helvetica,sans-Serif" font-size="10.00"># EXGraphicPtr</text>
-<text text-anchor="start" x="344.5" y="-533" font-family="Helvetica,sans-Serif" font-size="10.00"># EntryDirectionGraphicPtr</text>
-<polyline fill="none" stroke="black" points="336.5,-526 497.5,-526 "/>
-<text text-anchor="start" x="344.5" y="-514" font-family="Helvetica,sans-Serif" font-size="10.00">+ IsPosition()</text>
-<text text-anchor="start" x="344.5" y="-503" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetELink()</text>
-<text text-anchor="start" x="344.5" y="-492" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetELinkPos()</text>
-<text text-anchor="start" x="344.5" y="-481" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetXLink()</text>
-<text text-anchor="start" x="344.5" y="-470" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetXLinkPos()</text>
-<text text-anchor="start" x="344.5" y="-459" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetTrackVectorPosition()</text>
-<text text-anchor="start" x="344.5" y="-448" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetEXGraphicPtr()</text>
-<text text-anchor="start" x="344.5" y="-437" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetRouteEXGraphicPtr()</text>
-<text text-anchor="start" x="344.5" y="-426" font-family="Helvetica,sans-Serif" font-size="10.00">+ TPrefDirElement()</text>
-<text text-anchor="start" x="344.5" y="-415" font-family="Helvetica,sans-Serif" font-size="10.00">+ TPrefDirElement()</text>
-<text text-anchor="start" x="344.5" y="-404" font-family="Helvetica,sans-Serif" font-size="10.00">+ LogPrefDir()</text>
-<text text-anchor="start" x="344.5" y="-393" font-family="Helvetica,sans-Serif" font-size="10.00">+ TPrefDirElement()</text>
+<polygon fill="white" stroke="black" points="336.5,-298 336.5,-674 497.5,-674 497.5,-298 336.5,-298"/>
+<text text-anchor="middle" x="417" y="-662" font-family="Helvetica,sans-Serif" font-size="10.00">TPrefDirElement</text>
+<polyline fill="none" stroke="black" points="336.5,-655 497.5,-655 "/>
+<text text-anchor="start" x="344.5" y="-643" font-family="Helvetica,sans-Serif" font-size="10.00">+ IsARoute</text>
+<text text-anchor="start" x="344.5" y="-632" font-family="Helvetica,sans-Serif" font-size="10.00">+ AutoSignals</text>
+<text text-anchor="start" x="344.5" y="-621" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDirRoute</text>
+<text text-anchor="start" x="344.5" y="-610" font-family="Helvetica,sans-Serif" font-size="10.00"># ELink</text>
+<text text-anchor="start" x="344.5" y="-599" font-family="Helvetica,sans-Serif" font-size="10.00"># ELinkPos</text>
+<text text-anchor="start" x="344.5" y="-588" font-family="Helvetica,sans-Serif" font-size="10.00"># XLink</text>
+<text text-anchor="start" x="344.5" y="-577" font-family="Helvetica,sans-Serif" font-size="10.00"># XLinkPos</text>
+<text text-anchor="start" x="344.5" y="-566" font-family="Helvetica,sans-Serif" font-size="10.00"># EXNumber</text>
+<text text-anchor="start" x="344.5" y="-555" font-family="Helvetica,sans-Serif" font-size="10.00"># TrackVectorPosition</text>
+<text text-anchor="start" x="344.5" y="-544" font-family="Helvetica,sans-Serif" font-size="10.00"># CheckCount</text>
+<text text-anchor="start" x="344.5" y="-533" font-family="Helvetica,sans-Serif" font-size="10.00"># EXGraphicPtr</text>
+<text text-anchor="start" x="344.5" y="-522" font-family="Helvetica,sans-Serif" font-size="10.00"># EntryDirectionGraphicPtr</text>
+<polyline fill="none" stroke="black" points="336.5,-515 497.5,-515 "/>
+<text text-anchor="start" x="344.5" y="-503" font-family="Helvetica,sans-Serif" font-size="10.00">+ IsPosition()</text>
+<text text-anchor="start" x="344.5" y="-492" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetHLoc()</text>
+<text text-anchor="start" x="344.5" y="-481" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetVLoc()</text>
+<text text-anchor="start" x="344.5" y="-470" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetELink()</text>
+<text text-anchor="start" x="344.5" y="-459" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetELinkPos()</text>
+<text text-anchor="start" x="344.5" y="-448" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetXLink()</text>
+<text text-anchor="start" x="344.5" y="-437" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetXLinkPos()</text>
+<text text-anchor="start" x="344.5" y="-426" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetEXNumber()</text>
+<text text-anchor="start" x="344.5" y="-415" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetTrackVectorPosition()</text>
+<text text-anchor="start" x="344.5" y="-404" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetEXGraphicPtr()</text>
+<text text-anchor="start" x="344.5" y="-393" font-family="Helvetica,sans-Serif" font-size="10.00">and 12 more...</text>
 <text text-anchor="start" x="344.5" y="-382" font-family="Helvetica,sans-Serif" font-size="10.00"># operator==()</text>
 <text text-anchor="start" x="344.5" y="-371" font-family="Helvetica,sans-Serif" font-size="10.00"># operator!=()</text>
-<text text-anchor="start" x="344.5" y="-360" font-family="Helvetica,sans-Serif" font-size="10.00"># EntryExitNumber()</text>
-<text text-anchor="start" x="344.5" y="-349" font-family="Helvetica,sans-Serif" font-size="10.00"># GetDirectionPrefDirGraphicPtr()</text>
-<text text-anchor="start" x="344.5" y="-338" font-family="Helvetica,sans-Serif" font-size="10.00"># GetDirectionRouteGraphicPtr()</text>
-<text text-anchor="start" x="344.5" y="-327" font-family="Helvetica,sans-Serif" font-size="10.00"># GetOriginalGraphicPtr()</text>
-<text text-anchor="start" x="344.5" y="-316" font-family="Helvetica,sans-Serif" font-size="10.00"># GetPrefDirGraphicPtr()</text>
-<text text-anchor="start" x="344.5" y="-305" font-family="Helvetica,sans-Serif" font-size="10.00"># GetRouteAutoSigsGraphicPtr()</text>
-<text text-anchor="start" x="344.5" y="-294" font-family="Helvetica,sans-Serif" font-size="10.00"># GetRouteGraphicPtr()</text>
+<text text-anchor="start" x="344.5" y="-360" font-family="Helvetica,sans-Serif" font-size="10.00"># GetDirectionPrefDirGraphicPtr()</text>
+<text text-anchor="start" x="344.5" y="-349" font-family="Helvetica,sans-Serif" font-size="10.00"># GetDirectionRouteGraphicPtr()</text>
+<text text-anchor="start" x="344.5" y="-338" font-family="Helvetica,sans-Serif" font-size="10.00"># GetOriginalGraphicPtr()</text>
+<text text-anchor="start" x="344.5" y="-327" font-family="Helvetica,sans-Serif" font-size="10.00"># GetPrefDirGraphicPtr()</text>
+<text text-anchor="start" x="344.5" y="-316" font-family="Helvetica,sans-Serif" font-size="10.00"># GetRouteAutoSigsGraphicPtr()</text>
+<text text-anchor="start" x="344.5" y="-305" font-family="Helvetica,sans-Serif" font-size="10.00"># GetRouteGraphicPtr()</text>
 </a>
 </g>
 </g>
 <!-- Node4&#45;&gt;Node1 -->
 <g id="edge3" class="edge">
 <title>Node4&#45;&gt;Node1</title>
-<path fill="none" stroke="#404040" d="M367.43,-286.71C363.31,-271.22 359.14,-255.84 355,-241 354.4,-238.86 353.8,-236.7 353.18,-234.53"/>
+<path fill="none" stroke="#404040" d="M370.4,-297.93C365.32,-278.67 360.13,-259.42 355,-241 354.4,-238.86 353.8,-236.7 353.18,-234.53"/>
 <polygon fill="none" stroke="#404040" points="353.13,-234.34 347.64,-229.67 349.83,-222.8 355.33,-227.48 353.13,-234.34"/>
 <text text-anchor="middle" x="396" y="-255" font-family="Helvetica,sans-Serif" font-size="10.00"> +StartElement1</text>
 <text text-anchor="middle" x="396" y="-244" font-family="Helvetica,sans-Serif" font-size="10.00">+StartElement2</text>
@@ -239,7 +237,7 @@ var sectionId = 'dynsection-1';
 <!-- Node5&#45;&gt;Node4 -->
 <g id="edge4" class="edge">
 <title>Node5&#45;&gt;Node4</title>
-<path fill="none" stroke="midnightblue" d="M417,-718.05C417,-707.31 417,-696.26 417,-685.08"/>
+<path fill="none" stroke="midnightblue" d="M417,-718C417,-703.78 417,-689.02 417,-674.15"/>
 <polygon fill="none" stroke="midnightblue" points="413.5,-718.25 417,-728.25 420.5,-718.25 413.5,-718.25"/>
 </g>
 <!-- Node6 -->

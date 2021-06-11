@@ -69,8 +69,7 @@ direction required towards the final element to be set
 and on the desired route, and continue in this way until the final element is
 reached. Sometimes, if there are two or more routes in different directions
 from the start position to the next selected position, the program may choose
-the wrong direction. In this case erase the selection as described below, then select the start position again,
-then select the element that is next to the start position in the desired
+the wrong direction. In this case erase the selection as described below, then select the start position again and select the element that is next to the start position in the desired
 direction. This will set the direction correctly and further points can be
 selected until the desired end point is reached. If there is only one route
 between the start and end points then the second element may be the end point.
@@ -79,7 +78,7 @@ away and a message given to this effect. To truncate part of a selected length
 just right click at the truncate point. To erase a selection truncate to the
 start point, and to cancel a start selection without making a second selection
 just click it again. Note that the selection can't end on leading points, because
-the program doesn't know which of the two legs to include.</p>
+the program doesn't know which of the two legs to include.  In this case select an element further along in order to add it.</p>
 
 <p>Note that if the railway is complex a message may say that a path can't be
 found to the selected element. This is usually because there are too may search
@@ -121,6 +120,12 @@ running in station areas to allow flexibility in routing trains.</p>
 
 <p>Note that if track is changed after PDs have been set, elements that have
 been changed and adjacent elements will have their PDs erased. In these circumstances it is recommended to go back to the 'set preferred directions' mode to check and reset the necessary directions.</p>
+
+<p>Another option available from the 'Edit' menu is 'Check Preferred Directions for Conflicts'.  This examines all PDs and highlights any elements that are not linked to other PDs or are set in opposite directions to adjacent PDs.  This is very useful for finding missing or conflicting links that can often be overlooked in a visual inspection.</p>
+
+<p>A situation that often arises is that a crossover is provided between two tracks that have PDs set in opposite directions.  If PDs are set on the crossover then there will be a conflict at one end, preventing a preferred direction route being set over it.  In these cases the crossover itself should not have PDs set because it is only to be used in unusual train movements.  The PD checker won't flag up missing PDs on crossovers.</p>
+
+<p>Another situation that can arise is that bidirectional PDs are set as far as a signal at a location but not beyond it, when trains are routed to the location then change direction before leaving it.  The PD checker will flag a possible conflict in these circumstances but the warning can be ignored by clicking 'OK', after which the checker will continue to check the remainder of the PDs.</p>
 
 </div>
 

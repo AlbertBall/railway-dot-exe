@@ -63,6 +63,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "ApproachLocking",
         "AreAnyTimesInCurrentEntry",
         "AtLocSuccessor",
+        "BiDirectionalPrefDir",
         "BlankElementAt",
         "BufferAtExit",
         "BuildBasicElementFromSpeedTag",
@@ -176,11 +177,13 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "FindClosestLinkPosition",
         "FindForwardTargetSignalAttribute",
         "FindHighestLowestAndLeftmostNamedElements",
+        "FindLinkingPrefDir",
         "FindNamedElementInLocationNameMultiMap",
         "FindNonPlatformMatch",
         "FindRouteNumberFromRoute2MultiMapNoErrors",
         "FindRoutePairFromRoute2MultiMap",
         "FindSetAndDisplayMatchingGap",
+        "FindText",
         "FinishedOperation",
         "FinishJoin",
         "FlashingGraphics",
@@ -224,6 +227,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "GetRouteTypeAndNumber",
         "GetRouteVectorNumber",
         "GetScreenPositionsFromTruePos",
+        "GetTrackElementFromAnyTrackMap",
         "GetTrackElementFromTrackMap",
         "GetTrackLocsFromScreenPos",
         "GetTrackVectorIteratorFromNamePosition",
@@ -351,6 +355,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "PlotSignal",
         "PlotSignalPlatforms",
         "PlotSignalBlank",
+        "PlotSmallFlashingLinkedLevelCrossings",
         "PlotSmallOutput",
         "PlotSmallRailway",
         "PlotSmallRedGap",
@@ -522,14 +527,13 @@ __fastcall TForm1::TForm1(TComponent* Owner)
     {
         FunctionString[x] = TempFunctionString[x];
     }
+    RadioButton2->Checked = true;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::StartAnalysisClick(TObject *Sender)
 {
     StartAnalysis->Enabled = false;
-//if(RadioButton1->Checked) Exit->Enabled = false;
-//if(RadioButton3->Checked) Exit->Enabled = false;
     if((RadioButton2->Checked) || (RadioButton3->Checked))
     {
         OutFile.open("CallerOutput.txt", std::ios_base::trunc); //to truncate the file

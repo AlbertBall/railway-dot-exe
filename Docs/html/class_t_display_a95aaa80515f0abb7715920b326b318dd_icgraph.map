@@ -1,24 +1,25 @@
 <map id="TDisplay::PlotSmallOutput" name="TDisplay::PlotSmallOutput">
-<area shape="rect" id="node1" title="Plot small (4x4) graphic PlotItem on the zoomed&#45;out display at HPos &amp; Vpos." alt="" coords="1223,361,1397,388"/>
-<area shape="rect" id="node2" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="457,225,644,252"/>
-<area shape="rect" id="node5" href="$class_t_track.html#af654985aa4d1c17684f91474fa03ed98" title="Plot on screen the zoomed&#45;out railway." alt="" coords="984,273,1155,300"/>
-<area shape="rect" id="node14" href="$class_t_track.html#ab831c2f47850f3a89678491475d52d29" title="Plot on screen in zoomed&#45;out mode and in gap setting mode a small red square corresponding to the gap..." alt="" coords="983,361,1155,388"/>
-<area shape="rect" id="node15" href="$class_t_train.html#aa3f3a500264ddca35c7fee35f22ffa1e" title="Plots the train on screen in zoomed&#45;out mode, state of &#39;Flash&#39; determines whether the flashing trains..." alt="" coords="964,448,1175,475"/>
-<area shape="rect" id="node17" href="$class_t_train.html#a439d2809c762a0981908a3b8a49520f2" title="Unplot train from screen in zoomed&#45;out mode." alt="" coords="983,566,1155,607"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="247,555,406,581"/>
-<area shape="rect" id="node4" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,555,196,581"/>
-<area shape="rect" id="node6" href="$class_t_interface.html#a3fe9878a003d343a06f09c8f421e5a3b" title=" " alt="" coords="726,48,882,75"/>
-<area shape="rect" id="node7" href="$class_t_interface.html#a19e64ee6952b0fd3c260eb05c14a34c8" title=" " alt="" coords="711,332,897,359"/>
-<area shape="rect" id="node8" href="$class_t_interface.html#abb268a3a209bc0d66111540c84345c1b" title=" " alt="" coords="692,99,916,125"/>
-<area shape="rect" id="node9" href="$class_t_interface.html#ad53c136eca39fddb0e7e49a4b7018f66" title=" " alt="" coords="705,383,903,425"/>
-<area shape="rect" id="node10" href="$class_t_interface.html#a358ab18cab57f8a5b5b850387039f822" title=" " alt="" coords="711,449,897,490"/>
-<area shape="rect" id="node11" href="$class_t_interface.html#aba3f772739d000bcbd8059181417a9b3" title=" " alt="" coords="707,201,901,242"/>
-<area shape="rect" id="node12" href="$class_t_interface.html#a714f1498bb6cbbd706f6ed0882c4b03d" title=" " alt="" coords="713,266,895,307"/>
-<area shape="rect" id="node13" href="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc" title=" " alt="" coords="458,504,643,531"/>
-<area shape="rect" id="node16" href="$class_t_train_controller.html#a2f9cd71b60b45de8380f5fad7bbd5dd8" title="Plots all trains on screen in zoomed&#45;out mode, state of &#39;Flash&#39; determines whether the flashing train..." alt="" coords="725,566,883,607"/>
-<area shape="rect" id="node18" href="$class_t_train.html#afd5d7ea375b8a878c31d81841acad159" title="This is a housekeeping function to delete train heap objects (bitmaps) explicitly rather than by usin..." alt="" coords="739,643,869,669"/>
-<area shape="rect" id="node19" href="$class_t_train_controller.html#a07d3d10bf08d4e916b652d676c917335" title="called when exiting operation mode to delete all trains and timetable data etc" alt="" coords="466,657,635,698"/>
-<area shape="rect" id="node21" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="467,605,634,632"/>
-<area shape="rect" id="node22" href="$class_t_train_controller.html#ad6cbfb50d0fddf2c6b43a1604da3b746" title="Destructor." alt="" coords="491,722,611,763"/>
-<area shape="rect" id="node20" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="244,657,409,698"/>
+<area shape="rect" id="node1" title="Plot small (4x4) graphic PlotItem on the zoomed&#45;out display at HPos &amp; Vpos." alt="" coords="1223,365,1397,392"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="457,5,644,32"/>
+<area shape="rect" id="node5" href="$class_t_track.html#aa15b97be2974589f11b8d56e741f7a59" title="Plots either a LC or a blank element to flash manual LCs in zoomout mode." alt="" coords="982,161,1157,202"/>
+<area shape="rect" id="node6" href="$class_t_track.html#af654985aa4d1c17684f91474fa03ed98" title="Plot on screen the zoomed&#45;out railway." alt="" coords="984,332,1155,359"/>
+<area shape="rect" id="node15" href="$class_t_track.html#ab831c2f47850f3a89678491475d52d29" title="Plot on screen in zoomed&#45;out mode and in gap setting mode a small red square corresponding to the gap..." alt="" coords="983,397,1155,424"/>
+<area shape="rect" id="node16" href="$class_t_train.html#aa3f3a500264ddca35c7fee35f22ffa1e" title="Plots the train on screen in zoomed&#45;out mode, state of &#39;Flash&#39; determines whether the flashing trains..." alt="" coords="964,511,1175,537"/>
+<area shape="rect" id="node18" href="$class_t_train.html#a439d2809c762a0981908a3b8a49520f2" title="Unplot train from screen in zoomed&#45;out mode." alt="" coords="983,625,1155,666"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="247,315,406,341"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,315,196,341"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#a3fe9878a003d343a06f09c8f421e5a3b" title=" " alt="" coords="726,157,882,184"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a19e64ee6952b0fd3c260eb05c14a34c8" title=" " alt="" coords="711,456,897,483"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#abb268a3a209bc0d66111540c84345c1b" title=" " alt="" coords="692,208,916,235"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#ad53c136eca39fddb0e7e49a4b7018f66" title=" " alt="" coords="705,507,903,549"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#a358ab18cab57f8a5b5b850387039f822" title=" " alt="" coords="711,259,897,301"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#aba3f772739d000bcbd8059181417a9b3" title=" " alt="" coords="707,325,901,366"/>
+<area shape="rect" id="node13" href="$class_t_interface.html#a714f1498bb6cbbd706f6ed0882c4b03d" title=" " alt="" coords="713,390,895,431"/>
+<area shape="rect" id="node14" href="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc" title=" " alt="" coords="458,523,643,549"/>
+<area shape="rect" id="node17" href="$class_t_train_controller.html#a2f9cd71b60b45de8380f5fad7bbd5dd8" title="Plots all trains on screen in zoomed&#45;out mode, state of &#39;Flash&#39; determines whether the flashing train..." alt="" coords="725,625,883,666"/>
+<area shape="rect" id="node19" href="$class_t_train.html#afd5d7ea375b8a878c31d81841acad159" title="This is a housekeeping function to delete train heap objects (bitmaps) explicitly rather than by usin..." alt="" coords="739,691,869,717"/>
+<area shape="rect" id="node20" href="$class_t_train_controller.html#a07d3d10bf08d4e916b652d676c917335" title="called when exiting operation mode to delete all trains and timetable data etc" alt="" coords="466,742,635,783"/>
+<area shape="rect" id="node22" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="467,691,634,717"/>
+<area shape="rect" id="node23" href="$class_t_train_controller.html#ad6cbfb50d0fddf2c6b43a1604da3b746" title="Destructor." alt="" coords="491,625,611,666"/>
+<area shape="rect" id="node21" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="244,742,409,783"/>
 </map>

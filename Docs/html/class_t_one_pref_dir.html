@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.8.0</span>
+   &#160;<span id="projectnumber">v2.9.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -91,9 +91,7 @@ $(document).ready(function(){initNavTree('class_t_one_pref_dir.html',''); initRe
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
-<a href="#pri-types">Private Types</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_t_one_pref_dir-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">TOnePrefDir Class Reference</div>  </div>
@@ -119,6 +117,13 @@ Collaboration diagram for TOnePrefDir:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
+<tr class="memitem:a940ba2bdbedb288c8188c1da5c4c79bc"><td class="memItemLeft" align="right" valign="top">typedef std::multimap&lt; <a class="el" href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">THVPair</a>, unsigned int, <a class="el" href="class_t_map_comp.html">TMapComp</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc">TPrefDir4MultiMap</a></td></tr>
+<tr class="memdesc:a940ba2bdbedb288c8188c1da5c4c79bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">HLoc&amp;VLoc as a pair, and PrefDirVectorPosition, can be up to 4 values at any H&amp;V.  <a href="class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc">More...</a><br /></td></tr>
+<tr class="separator:a940ba2bdbedb288c8188c1da5c4c79bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37efac41fc00465b0569704517233d4e"><td class="memItemLeft" align="right" valign="top">typedef std::multimap&lt; <a class="el" href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">THVPair</a>, unsigned int, <a class="el" href="class_t_map_comp.html">TMapComp</a> &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a37efac41fc00465b0569704517233d4e">TPrefDir4MultiMapIterator</a></td></tr>
+<tr class="separator:a37efac41fc00465b0569704517233d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05da09493d511df74b8e5b9a794c2e0b"><td class="memItemLeft" align="right" valign="top">typedef std::pair&lt; <a class="el" href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">THVPair</a>, unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a05da09493d511df74b8e5b9a794c2e0b">TPrefDir4MultiMapEntry</a></td></tr>
+<tr class="separator:a05da09493d511df74b8e5b9a794c2e0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a905cfdce2439be93d45b66339b7382"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="class_t_pref_dir_element.html">TPrefDirElement</a> &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a8a905cfdce2439be93d45b66339b7382">TPrefDirVectorIterator</a></td></tr>
 <tr class="separator:a8a905cfdce2439be93d45b66339b7382"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53624ed7b429b42aa57cfe5551f5df71"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="class_t_pref_dir_element.html">TPrefDirElement</a> &gt;::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a53624ed7b429b42aa57cfe5551f5df71">TPrefDirVectorConstIterator</a></td></tr>
@@ -135,12 +140,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abc09de3c32460a73d3de12625329210d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#abc09de3c32460a73d3de12625329210d">ExternalClearPrefDirAnd4MultiMap</a> ()</td></tr>
 <tr class="memdesc:abc09de3c32460a73d3de12625329210d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty the existing preferred direction vector &amp; map - for use by other classes.  <a href="class_t_one_pref_dir.html#abc09de3c32460a73d3de12625329210d">More...</a><br /></td></tr>
 <tr class="separator:abc09de3c32460a73d3de12625329210d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6430567fea2e1538448514903c1b2eca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a6430567fea2e1538448514903c1b2eca">BiDirectionalPrefDir</a> (int Caller, <a class="el" href="class_t_one_pref_dir.html#a37efac41fc00465b0569704517233d4e">TPrefDir4MultiMapIterator</a> PDPtr)</td></tr>
+<tr class="memdesc:a6430567fea2e1538448514903c1b2eca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the preferred direction pointed to has another pref dir in the opposite direction set (returns true) or not.  <a href="class_t_one_pref_dir.html#a6430567fea2e1538448514903c1b2eca">More...</a><br /></td></tr>
+<tr class="separator:a6430567fea2e1538448514903c1b2eca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1896affce3465b84cfd5128cca122639"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a1896affce3465b84cfd5128cca122639">CheckOnePrefDir</a> (int Caller, int NumberOfActiveElements, std::ifstream &amp;VecFile)</td></tr>
 <tr class="memdesc:a1896affce3465b84cfd5128cca122639"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before PrefDir loading as part of the FileIntegrityCheck function in case there is an error in the file. Very similar to LoadPrefDir but with value checks instead of storage in PrefDirVector.  <a href="class_t_one_pref_dir.html#a1896affce3465b84cfd5128cca122639">More...</a><br /></td></tr>
 <tr class="separator:a1896affce3465b84cfd5128cca122639"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b81a1377e6269aafad6c25c929b2852"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a7b81a1377e6269aafad6c25c929b2852">EndPossible</a> (int Caller, bool &amp;LeadingPoints)</td></tr>
 <tr class="memdesc:a7b81a1377e6269aafad6c25c929b2852"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used when setting preferred directions, true if able to finish at the last selected element (can't finish if there is only one element or if end on leading points)  <a href="class_t_one_pref_dir.html#a7b81a1377e6269aafad6c25c929b2852">More...</a><br /></td></tr>
 <tr class="separator:a7b81a1377e6269aafad6c25c929b2852"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe7f6088b7563714522882c10f6ae7f6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#abe7f6088b7563714522882c10f6ae7f6">FindLinkingPrefDir</a> (int Caller, int PrefDirVectorNumber, int LinkNumberPos, int LinkNumber, int &amp;LinkedPrefDirVectorNumber)</td></tr>
+<tr class="memdesc:abe7f6088b7563714522882c10f6ae7f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds a pref dir element that links to another element at given vector number and link number &amp; position, returns true if found with linked vector number, true if buffer or continuation with link at blank end &amp; linked vector number = -1, or false if not found with vector number == -1.  <a href="class_t_one_pref_dir.html#abe7f6088b7563714522882c10f6ae7f6">More...</a><br /></td></tr>
+<tr class="separator:abe7f6088b7563714522882c10f6ae7f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06cd3491535362fccbba4e76b9a120e9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a06cd3491535362fccbba4e76b9a120e9">GetNextPrefDirElement</a> (int Caller, int HLoc, int VLoc, bool &amp;FinishElement)</td></tr>
 <tr class="memdesc:a06cd3491535362fccbba4e76b9a120e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linked tracks between the last selected element and the one at HLoc &amp; VLoc, and returns true if it finds one. FinishElement is returned true if the element selected is a buffer or continuation - in which case the chain is complete.  <a href="class_t_one_pref_dir.html#a06cd3491535362fccbba4e76b9a120e9">More...</a><br /></td></tr>
 <tr class="separator:a06cd3491535362fccbba4e76b9a120e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -225,6 +236,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:aa6738f8f24fe0a417a84388c049b5e4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc">TPrefDir4MultiMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#aa6738f8f24fe0a417a84388c049b5e4c">PrefDir4MultiMap</a></td></tr>
+<tr class="memdesc:aa6738f8f24fe0a417a84388c049b5e4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">the pref dir multimap - up to 4 values (up to 2 tracks per element each with 2 directions)  <a href="class_t_one_pref_dir.html#aa6738f8f24fe0a417a84388c049b5e4c">More...</a><br /></td></tr>
+<tr class="separator:aa6738f8f24fe0a417a84388c049b5e4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2da871d689df7e78f430c5d354bb953"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_track_unit_8h.html#a79394e04a2435f7300aad79c757ae2ce">TPrefDirVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#ab2da871d689df7e78f430c5d354bb953">PrefDirVector</a></td></tr>
 <tr class="separator:ab2da871d689df7e78f430c5d354bb953"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d035366a044fc7d0e0a745762bd4664"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_track_unit_8h.html#a79394e04a2435f7300aad79c757ae2ce">TPrefDirVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a2d035366a044fc7d0e0a745762bd4664">SearchVector</a></td></tr>
@@ -269,16 +283,6 @@ Static Protected Attributes</h2></td></tr>
 <tr class="memdesc:a9fc8032fb9c525951620e7aafa067d45"><td class="mdescLeft">&#160;</td><td class="mdescRight">limit to the number of elements searched in attempting to find a preferred direction  <a href="class_t_one_pref_dir.html#a9fc8032fb9c525951620e7aafa067d45">More...</a><br /></td></tr>
 <tr class="separator:a9fc8032fb9c525951620e7aafa067d45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-types"></a>
-Private Types</h2></td></tr>
-<tr class="memitem:a940ba2bdbedb288c8188c1da5c4c79bc"><td class="memItemLeft" align="right" valign="top">typedef std::multimap&lt; <a class="el" href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">THVPair</a>, unsigned int, <a class="el" href="class_t_map_comp.html">TMapComp</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc">TPrefDir4MultiMap</a></td></tr>
-<tr class="memdesc:a940ba2bdbedb288c8188c1da5c4c79bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">HLoc&amp;VLoc as a pair, and PrefDirVectorPosition, can be up to 4 values at any H&amp;V.  <a href="class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc">More...</a><br /></td></tr>
-<tr class="separator:a940ba2bdbedb288c8188c1da5c4c79bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37efac41fc00465b0569704517233d4e"><td class="memItemLeft" align="right" valign="top">typedef std::multimap&lt; <a class="el" href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">THVPair</a>, unsigned int, <a class="el" href="class_t_map_comp.html">TMapComp</a> &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a37efac41fc00465b0569704517233d4e">TPrefDir4MultiMapIterator</a></td></tr>
-<tr class="separator:a37efac41fc00465b0569704517233d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05da09493d511df74b8e5b9a794c2e0b"><td class="memItemLeft" align="right" valign="top">typedef std::pair&lt; <a class="el" href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">THVPair</a>, unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a05da09493d511df74b8e5b9a794c2e0b">TPrefDir4MultiMapEntry</a></td></tr>
-<tr class="separator:a05da09493d511df74b8e5b9a794c2e0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:ad2e6adb7b634b17cab9cd03610a0f8e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#ad2e6adb7b634b17cab9cd03610a0f8e3">ClearPrefDir</a> ()</td></tr>
@@ -299,41 +303,27 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a056c475541b487ce13cb34dc43b1cf6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a056c475541b487ce13cb34dc43b1cf6f">DecrementPrefDirElementNumbersInPrefDir4MultiMap</a> (int Caller, unsigned int ErasedElementNumber)</td></tr>
 <tr class="memdesc:a056c475541b487ce13cb34dc43b1cf6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after ErasePrefDirElementAt to decrement the remaining PrefDirElementNumbers in 4MultiMap if they are greater than the erased value.  <a href="class_t_one_pref_dir.html#a056c475541b487ce13cb34dc43b1cf6f">More...</a><br /></td></tr>
 <tr class="separator:a056c475541b487ce13cb34dc43b1cf6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:aa6738f8f24fe0a417a84388c049b5e4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc">TPrefDir4MultiMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#aa6738f8f24fe0a417a84388c049b5e4c">PrefDir4MultiMap</a></td></tr>
-<tr class="memdesc:aa6738f8f24fe0a417a84388c049b5e4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">the pref dir multimap - up to 4 values (up to 2 tracks per element each with 2 directions)  <a href="class_t_one_pref_dir.html#aa6738f8f24fe0a417a84388c049b5e4c">More...</a><br /></td></tr>
-<tr class="separator:aa6738f8f24fe0a417a84388c049b5e4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The basic preferred direction class, consisting of any number of elements with preferred directions set. Used during setting up preferred directions and track lengths (ConstructPrefDir), and for all completed preferred directions in the railway (EveryPrefDir) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01205">1205</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01266">1266</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a940ba2bdbedb288c8188c1da5c4c79bc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a940ba2bdbedb288c8188c1da5c4c79bc">&#9670;&nbsp;</a></span>TPrefDir4MultiMap</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">typedef std::multimap&lt;<a class="el" href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">THVPair</a>, unsigned int, <a class="el" href="class_t_map_comp.html">TMapComp</a>&gt; <a class="el" href="class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc">TOnePrefDir::TPrefDir4MultiMap</a></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>HLoc&amp;VLoc as a pair, and PrefDirVectorPosition, can be up to 4 values at any H&amp;V. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01209">1209</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01270">1270</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -342,22 +332,14 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">typedef std::pair&lt;<a class="el" href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">THVPair</a>, unsigned int&gt; <a class="el" href="class_t_one_pref_dir.html#a05da09493d511df74b8e5b9a794c2e0b">TOnePrefDir::TPrefDir4MultiMapEntry</a></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01212">1212</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01273">1273</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -366,22 +348,14 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">typedef std::multimap&lt;<a class="el" href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">THVPair</a>, unsigned int, <a class="el" href="class_t_map_comp.html">TMapComp</a>&gt;::iterator <a class="el" href="class_t_one_pref_dir.html#a37efac41fc00465b0569704517233d4e">TOnePrefDir::TPrefDir4MultiMapIterator</a></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01211">1211</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01272">1272</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -397,7 +371,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01279">1279</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01341">1341</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -413,11 +387,55 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01278">1278</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01340">1340</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6430567fea2e1538448514903c1b2eca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6430567fea2e1538448514903c1b2eca">&#9670;&nbsp;</a></span>BiDirectionalPrefDir()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TOnePrefDir::BiDirectionalPrefDir </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_t_one_pref_dir.html#a37efac41fc00465b0569704517233d4e">TPrefDir4MultiMapIterator</a>&#160;</td>
+          <td class="paramname"><em>PDPtr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines whether the preferred direction pointed to has another pref dir in the opposite direction set (returns true) or not. </p>
+
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13110">13110</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a6430567fea2e1538448514903c1b2eca_cgraph.svg" width="640" height="92"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a6430567fea2e1538448514903c1b2eca_icgraph.svg" width="395" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
 <a id="abadb0c99b24d6dbfda371d96b308fc6e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abadb0c99b24d6dbfda371d96b308fc6e">&#9670;&nbsp;</a></span>CalcDistanceAndSpeed()</h2>
 
@@ -458,7 +476,7 @@ Private Attributes</h2></td></tr>
 
 <p>Used when setting element lengths, returns in &amp;OverallDistance the overall distance for the selected chain of elements and also the speed limit in &amp;OverallSpeedLimit, which is set to -1 if the speed limits vary over the chain. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13176">13176</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13407">13407</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -506,7 +524,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called before PrefDir loading as part of the FileIntegrityCheck function in case there is an error in the file. Very similar to LoadPrefDir but with value checks instead of storage in PrefDirVector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12358">12358</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12442">12442</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -546,7 +564,7 @@ Here is the caller graph for this function:</div>
 
 <p>Diagnostic validity check. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12823">12823</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12908">12908</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -578,7 +596,7 @@ Here is the caller graph for this function:</div>
 
 <p>Check loaded PrefDir against loaded track, and if discrepancies found give message &amp; clear EveryPrefDir &amp; PrefDir4MultiMap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12716">12716</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12800">12800</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -587,7 +605,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_ab79dc3f93a471d2182ce625fcac1ff2d_icgraph.svg" width="632" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_ab79dc3f93a471d2182ce625fcac1ff2d_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -610,7 +629,7 @@ Here is the caller graph for this function:</div>
 
 <p>Check loaded PrefDir against loaded track, and if discrepancies found clear EveryPrefDir &amp; PrefDir4MultiMap, messages are given by the calling routine. Return true for OK. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12771">12771</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12856">12856</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -649,11 +668,12 @@ Here is the caller graph for this function:</div>
 
 <p>Empty the existing vectors &amp; map. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01220">1220</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01282">1282</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_ad2e6adb7b634b17cab9cd03610a0f8e3_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_ad2e6adb7b634b17cab9cd03610a0f8e3_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -686,7 +706,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used when a preferred direction has been set to add all the elements to EveryPrefDir, except when they already exist in EveryPrefDir. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12619">12619</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12703">12703</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -726,7 +746,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called after a successful search to add the elements from the search vector to the pref dir vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11702">11702</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11786">11786</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -776,7 +796,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called after ErasePrefDirElementAt to decrement the remaining PrefDirElementNumbers in 4MultiMap if they are greater than the erased value. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12975">12975</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13206">13206</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -818,7 +838,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used when setting preferred directions, true if able to finish at the last selected element (can't finish if there is only one element or if end on leading points) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11841">11841</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11925">11925</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -866,7 +886,7 @@ Here is the caller graph for this function:</div>
 
 <p>Erase element at HLoc and VLoc from the PrefDirVector and from the 4MultiMap. Note that this entails erasing up to four elements (2 directions and 2 tracks for 4-entry elements). </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12521">12521</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12605">12605</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -916,7 +936,7 @@ Here is the caller graph for this function:</div>
 
 <p>Erase a single element from PrefDirVector and 4MultiMap, decrementing the remaining PrefDirElementNumbers in 4MultiMap if they are greater than the erased value. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12949">12949</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13180">13180</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -958,7 +978,7 @@ Here is the caller graph for this function:</div>
 
 <p>Similar to PrefDirMarker but used only to mark EveryPrefDir - red for unidirectional PrefDir &amp; green for bidirectional. Colours taken from the route colours. Plot red first so green overwrites for bidirectional points. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12126">12126</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12210">12210</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -967,7 +987,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a9b425a3ed8ef998e2366d13ad52bf08c_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a9b425a3ed8ef998e2366d13ad52bf08c_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -997,7 +1018,7 @@ Here is the caller graph for this function:</div>
 
 <p>Empty the existing preferred direction vector &amp; map - for use by other classes. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01299">1299</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01361">1361</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1006,7 +1027,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_abc09de3c32460a73d3de12625329210d_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_abc09de3c32460a73d3de12625329210d_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -1047,7 +1069,7 @@ Here is the caller graph for this function:</div>
 
 <p>Store a single pref dir element in the vector &amp; map - used by other classes. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01336">1336</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01402">1402</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1056,7 +1078,70 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a5e8d14c19c70cafe968e7481b116a714_icgraph.svg" width="412" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a5e8d14c19c70cafe968e7481b116a714_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+
+</div>
+</div>
+<a id="abe7f6088b7563714522882c10f6ae7f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe7f6088b7563714522882c10f6ae7f6">&#9670;&nbsp;</a></span>FindLinkingPrefDir()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TOnePrefDir::FindLinkingPrefDir </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>PrefDirVectorNumber</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>LinkNumberPos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>LinkNumber</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>LinkedPrefDirVectorNumber</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Finds a pref dir element that links to another element at given vector number and link number &amp; position, returns true if found with linked vector number, true if buffer or continuation with link at blank end &amp; linked vector number = -1, or false if not found with vector number == -1. </p>
+
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13013">13013</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_abe7f6088b7563714522882c10f6ae7f6_cgraph.svg" width="634" height="152"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_abe7f6088b7563714522882c10f6ae7f6_icgraph.svg" width="388" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 
 </div>
@@ -1103,7 +1188,7 @@ Here is the caller graph for this function:</div>
 
 <p>Retrieves a PrefDir4MultiMap iterator to the PrefDir element at PrefDirVectorPosition. Used during ErasePrefDirElementAt to erase the relevant element in the multimap. If nothing is found this is an error but the error message is given in the calling function. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12998">12998</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13229">13229</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1145,7 +1230,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return a non-modifiable element at PrefDirVector position 'At'. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11171">11171</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11255">11255</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1154,7 +1239,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a5b67e5aaa86d324229aedc68f32f32b8_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a5b67e5aaa86d324229aedc68f32f32b8_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -1187,7 +1273,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return a non-modifiable element at SearchVector position 'At'. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11196">11196</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11280">11280</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1229,11 +1315,17 @@ Here is the caller graph for this function:</div>
 
 <p>Return a modifiable element at PrefDirVector position 'At'. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11183">11183</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11267">11267</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_af5a2c955fa9c2584c683accbacb15f4c_cgraph.svg" width="384" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_af5a2c955fa9c2584c683accbacb15f4c_icgraph.svg" width="448" height="170"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 
 </div>
@@ -1266,7 +1358,7 @@ Here is the call graph for this function:</div>
 
 <p>Return a modifiable element at SearchVector position 'At'. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11208">11208</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11292">11292</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1320,7 +1412,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linked tracks between the last selected element and the one at HLoc &amp; VLoc, and returns true if it finds one. FinishElement is returned true if the element selected is a buffer or continuation - in which case the chain is complete. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11262">11262</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11346">11346</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1376,7 +1468,7 @@ Here is the caller graph for this function:</div>
 
 <p>Although there may be up to four entries at one H &amp; V position this function gets just one. It is used in EraseFromPrefDirVectorAnd4MultiMap by being called as many times as there are PrefDir elements at H &amp; V. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13075">13075</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13306">13306</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1424,7 +1516,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used when beginning a chain of preferred directions or element lengths. Enter with HLoc &amp; VLoc set to selected element &amp; check if selected element is a valid track element, return false if not, if it is, store it as the first entry in PrefDirVector and return true. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11220">11220</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11304">11304</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1472,7 +1564,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called during PrefDir build or distance setting. It truncates at &amp; including the first element in the PrefDir vector that matches H &amp; V. After the truncate the final element of the remaining PrefDir has its data members reset to the same defaults as would be the case if the PrefDir had been built up to that point - i.e. for first element or a leading point. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11995">11995</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12079">12079</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1526,7 +1618,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called when searching for start and end PrefDirElements when setting up automatic signals routes in PreStart mode. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13597">13597</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13828">13828</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1604,7 +1696,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return -1. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12859">12859</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12944">12944</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1613,7 +1705,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a820f6cc109de519289e6a63dac835ebc_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a820f6cc109de519289e6a63dac835ebc_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -1636,7 +1729,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the vector position of the last element in the vector (i.e. one less than the vector size) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11143">11143</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11227">11227</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1645,7 +1738,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a26a1ee9d1ced0d53e35936097d4896f0_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a26a1ee9d1ced0d53e35936097d4896f0_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -1668,7 +1762,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return a pointer to the last element in the vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11157">11157</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11241">11241</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1710,7 +1804,7 @@ Here is the caller graph for this function:</div>
 
 <p>Old version of LoadPrefDir, used during development when the save format changed so the old files could be loaded prior to resaving in the new format. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12259">12259</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12343">12343</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1747,7 +1841,7 @@ Here is the call graph for this function:</div>
 
 <p>Load a vector and map of preferred directions from the file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12308">12308</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12392">12392</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1802,7 +1896,7 @@ Here is the caller graph for this function:</div>
 <p>PrefDir and route track marker, including direction markers. </p>
 <p>Function used for both PrefDirs (PrefDirRoute == PrefDirCall) and routes (PrefDirRoute == RouteCall). The graphics for marker colours and direction are already stored in all PrefDirElements in <a class="el" href="class_t_one_pref_dir.html" title="The basic preferred direction class, consisting of any number of elements with preferred directions s...">TOnePrefDir</a> and <a class="el" href="class_t_one_route.html" title="A descendent of TOnePrefDir used for routes. Used during contruction of a route (ConstructRoute) and ...">TOneRoute</a>, and this function is called to display them, all in the case of a PrefDir, but for a route only the first and last elements have direction markers. No markers are displayed if a train is present on an element. Also no display if EXGraphicPtr not set. If building a PrefDir (BuildingPrefDir true) then the start and end rectangles are also displayed. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12053">12053</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12137">12137</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1811,7 +1905,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_aef8388386635d73a921fae7ce43f5214_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_aef8388386635d73a921fae7ce43f5214_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -1841,11 +1936,12 @@ Here is the caller graph for this function:</div>
 
 <p>Return the vector size. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01287">1287</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01349">1349</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a29d013bf730e23d27fdb2c390e3a14da_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a29d013bf730e23d27fdb2c390e3a14da_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -1893,7 +1989,7 @@ Here is the caller graph for this function:</div>
 <p>Called by GetStartAndEndPrefDirElements... </p>
 <p>which in turn is called by PresetAutoSigRoutesButtonClick. Checks for a diagonal link in the autosigsroute being fouled by an adjacent track with a corresponding link that meets at the diagonal link, and if it is it returns true and prevents the route being set. Note that adjacent track consisting of buffers, gaps and continuations at the diagonal link are also excluded though they need not be, but it makes the check code simpler and such adjacent track is untidy and can be modelled better anyway. Added at v2.1.0. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13468">13468</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13699">13699</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1949,7 +2045,7 @@ Here is the caller graph for this function:</div>
 
 <p>Checks ElementIn and returns true only if a single prefdir set at that H&amp;V, with EntryPos giving entry position, not points, crossovers, signals with wrong direction set, or buffers. Added at v1.2.0. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13368">13368</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13599">13599</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1991,7 +2087,7 @@ Here is the caller graph for this function:</div>
 
 <p>After a track element is erased the preferred direction elements are likely to be affected. This function erases any preferred direction elements that either correspond to the erased track element, or were linked to it. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13104">13104</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13335">13335</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2023,7 +2119,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called after the track vector has been rebuilt following linking, to rebuild the preferred direction vector to correspond to the element positions in the rebuilt track vector. Doesn't affect the preferred direction multimap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12676">12676</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12760">12760</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2065,7 +2161,7 @@ Here is the caller graph for this function:</div>
 
 <p>Save the preferred direction vector to a file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12455">12455</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12539">12539</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2074,7 +2170,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a3d115535b2e2d2ea05e210997a3f525c_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_a3d115535b2e2d2ea05e210997a3f525c_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -2107,7 +2204,7 @@ Here is the caller graph for this function:</div>
 
 <p>Save the search vector to a file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12488">12488</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12572">12572</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2169,7 +2266,7 @@ Here is the caller graph for this function:</div>
 
 <p>Try to find a selected element from a given start position. Enter with CurrentTrackElement stored in the PrefDirVector, XLinkPos set to the link to search on, &amp; SearchVector cleared unless entered recursively. Function is a continuous loop that exits when find required element (returns true) or reaches a buffer or continuation or otherwise fails a search condition (returns false). </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11503">11503</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11587">11587</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2208,7 +2305,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the vector size. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01293">1293</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01355">1355</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -2253,7 +2350,7 @@ Here is the caller graph for this function:</div>
 
 <p>Store a single pref dir element in the vector &amp; map. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l12928">12928</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13159">13159</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2262,7 +2359,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_ac5f8d2864f0510cf73cb9883b520ec9f_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_pref_dir_ac5f8d2864f0510cf73cb9883b520ec9f_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -2285,7 +2383,7 @@ Here is the caller graph for this function:</div>
 
 <p>Checks that all elements in PrefDirVector have been properly set, i.e. don't have their default values, and that every element is connected to the next element. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11884">11884</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l11968">11968</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2327,7 +2425,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used when creating a bitmap image to display preferred directions (as on screen during 'Set preferred direction' mode) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13238">13238</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13469">13469</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2347,24 +2445,16 @@ Here is the caller graph for this function:</div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc">TPrefDir4MultiMap</a> TOnePrefDir::PrefDir4MultiMap</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>the pref dir multimap - up to 4 values (up to 2 tracks per element each with 2 directions) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01214">1214</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01275">1275</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2390,7 +2480,7 @@ Here is the caller graph for this function:</div>
 
 <p>limit to the number of elements searched in attempting to find a preferred direction </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01242">1242</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01304">1304</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2406,7 +2496,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01281">1281</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01343">1343</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2430,7 +2520,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01250">1250</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01312">1312</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2454,7 +2544,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01252">1252</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01314">1314</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2478,7 +2568,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01249">1249</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01311">1311</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2502,7 +2592,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01251">1251</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01313">1313</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2520,7 +2610,7 @@ Here is the caller graph for this function:</div>
 
 <p>pref dir vectors, first is the main vector, second used to store search elements temporarily </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01281">1281</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01343">1343</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2546,7 +2636,7 @@ Here is the caller graph for this function:</div>
 
 <p>counts search elements, used to abort searches (prefdirs or routes) if reaches too high a value </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01254">1254</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01316">1316</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>

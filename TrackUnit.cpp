@@ -1581,7 +1581,7 @@ TTrack::TFixedTrackArray::TFixedTrackArray()
         RailGraphics->sm123, RailGraphics->sm124, RailGraphics->sm125, RailGraphics->sm126, RailGraphics->sm127, RailGraphics->sm128, RailGraphics->sm129,
         RailGraphics->sm130, RailGraphics->smName, RailGraphics->sm132, RailGraphics->sm133, RailGraphics->sm134, RailGraphics->sm135, RailGraphics->sm136,
         RailGraphics->sm137, RailGraphics->sm138, RailGraphics->sm139, RailGraphics->sm18, RailGraphics->sm18, RailGraphics->sm19, RailGraphics->sm19,
-        RailGraphics->smTransparent, RailGraphics->sm129, RailGraphics->sm130 // use small footbridges for underpasses
+        RailGraphics->smLC, RailGraphics->sm129, RailGraphics->sm130 // use small footbridges for underpasses
     };
 
 // track types
@@ -3071,7 +3071,7 @@ void TTrack::LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString Grap
                 UGI.Height = UGI.UserGraphic->Height;
                 UserGraphicVectorAt(1, x) = UGI;
             }
-            catch(const EInvalidGraphic &e)
+            catch(const EInvalidGraphic &e) //non error catch
             {
                 //message already sent in CheckUserGraphics
                 FileError = true;
@@ -3085,7 +3085,7 @@ void TTrack::LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString Grap
                     UserGraphicMap.clear();
                 }
             }
-            catch(const Exception &e)
+            catch(const Exception &e) //non error catch
             {
                 //message already sent in CheckUserGraphics
                 FileError = true;
@@ -3132,7 +3132,7 @@ void TTrack::LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString Grap
                     UGI.Height = UGI.UserGraphic->Height;
                     UserGraphicVectorAt(3, x) = UGI;
                 }
-                catch(const EInvalidGraphic &e)
+                catch(const EInvalidGraphic &e) //non error catch
                 {
                     //message already sent in CheckUserGraphics
                     FileError = true;
@@ -3146,7 +3146,7 @@ void TTrack::LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString Grap
                         UserGraphicMap.clear();
                     }
                 }
-                catch(const Exception &e)
+                catch(const Exception &e) //non error catch
                 {
                     //message already sent in CheckUserGraphics
                     FileError = true;
@@ -3481,7 +3481,7 @@ bool TTrack::CheckUserGraphics(int Caller, std::ifstream &VecFile, UnicodeString
                 return(false);
             }
         }
-        catch(const EInvalidGraphic &e)
+        catch(const EInvalidGraphic &e)  //non error catch
         {
             //move file pointer to end of graphic section for later checks in session files
             Utilities->CheckAndReadFileString(VecFile, TempStr); //get rid of HPos
@@ -3498,7 +3498,7 @@ bool TTrack::CheckUserGraphics(int Caller, std::ifstream &VecFile, UnicodeString
             delete TempPicture;
             return(true);      //for these file errors allow railway or session to be loaded, changed at v2.6.0
         }
-        catch(const Exception &e)
+        catch(const Exception &e) //non error catch
         {
             //move file pointer to end of graphic section for later checks in session files
             Utilities->CheckAndReadFileString(VecFile, TempStr); //get rid of HPos
@@ -4721,7 +4721,9 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
             if(!CheckFootCrossingLinks(1, TrackVector.at(x)))
             {
                 ShowMessage(
-                    "Footbridge or underpass connection error.  Each end must connect to a platform, concourse or other footbridge or underpass, and they can't connect to each other");
+                    "Footbridge or underpass connection error.  Each end must connect to a platform, concourse "
+                    "or other footbridge or underpass, and they can't connect to each other (i.e. a footbridge "
+                    "can't connect to an underpass or vice versa)");
                 HLoc = TrackVector.at(x).HLoc;
                 VLoc = TrackVector.at(x).VLoc;
                 LocError = true;
@@ -4962,6 +4964,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
     {
         CalcHLocMinEtc(3);
     }
+
     Utilities->CallLogPop(497);
     return(true);
 }
@@ -5573,6 +5576,30 @@ TTrackElement &TTrack::GetTrackElementFromTrackMap(int Caller, int HLoc, int VLo
     {
         Utilities->CallLogPop(1943);
         return(TrackElementAt(871, TrackMapPtr->second));
+    }
+}
+
+// ---------------------------------------------------------------------------
+
+TTrackElement &TTrack::GetTrackElementFromAnyTrackMap(int Caller, int HLoc, int VLoc, TTrackMap Map, TTrackVector Vector) //new at v2.9.0 for clipboard pref dirs
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetTrackElementFromAnyTrackMap," + AnsiString(HLoc) + "," +
+                                 AnsiString(VLoc));
+    THVPair MapKeyPair;
+    TTrackMapIterator MapPtr;
+
+    MapKeyPair.first = HLoc;
+    MapKeyPair.second = VLoc;
+    MapPtr = Map.find(MapKeyPair);
+    if(MapPtr == Map.end())
+    {
+        AnsiString Message = "Element not found at HLoc " + AnsiString(HLoc) + " and VLoc " + AnsiString(VLoc) + " in GetTrackElementFromAnyTrackMap";
+        throw Exception(Message);
+    }
+    else
+    {
+        Utilities->CallLogPop(2280);
+        return(Vector.at(MapPtr->second));
     }
 }
 
@@ -7316,6 +7343,62 @@ bool TTrack::LCInSearchVector(int Caller, int HLoc, int VLoc, TPrefDirVector Sea
     }
     Utilities->CallLogPop(2279);
     return false;
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::PlotSmallFlashingLinkedLevelCrossings(int Caller, int HLoc, int VLoc, Graphics::TBitmap *GraphicPtr, TDisplay *Disp)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotSmallFlashingLinkedLevelCrossings," +
+                                 AnsiString(HLoc) + "," + AnsiString(VLoc));
+    if(!IsLCAtHV(60, HLoc, VLoc))
+    {
+        throw Exception("PlotSmallFlashingLinkedLevelCrossings");
+    }
+
+// check for adjacent LCs
+    // find topmost LC
+    int UpStep = 0;
+    while(IsLCAtHV(61, HLoc, (VLoc + UpStep))) // will always find LC at UpStep == 0
+    {
+        UpStep--;
+    }
+    UpStep++;
+    // now find bottommost LC, opening them all (to trains) in turn
+    int DownStep = 1;
+    while(IsLCAtHV(62, HLoc, (VLoc + DownStep)))
+    {
+        DownStep++;
+    }
+    DownStep--;
+    // now plot graphics, UpStep is smallest & DownStep largest
+    for(int x = UpStep; x <= DownStep; x++)
+    {
+        Disp->PlotSmallOutput(24, HLoc * 4, (VLoc + x) * 4, GraphicPtr);
+    }
+
+    // find leftmost LC, closing them all (to trains) in turn
+    int LStep = 0;
+    while(IsLCAtHV(63, (HLoc + LStep), VLoc))
+    {
+        LStep--;
+    }
+    LStep++;
+    // now find rightmost LC, opening them all (to trains) in turn
+    int RStep = 1;
+    while(IsLCAtHV(64, (HLoc + RStep), VLoc))
+    {
+        RStep++;
+    }
+    RStep--;
+    // now plot graphics, LStep is smallest & RStep largest
+    for(int x = LStep; x <= RStep; x++)
+    {
+        Disp->PlotSmallOutput(25, (HLoc + x) * 4, VLoc * 4, GraphicPtr);
+    }
+    Display->Update();
+    Utilities->CallLogPop(2315);
+    return;
 }
 
 // ---------------------------------------------------------------------------
@@ -10259,6 +10342,7 @@ TTrackElement &TTrack::TrackElementAt(int Caller, int At)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrackElementAt," + AnsiString(At));
     if((At < 0) || ((unsigned int)At >= TrackVector.size()))
     {
+        Utilities->CallLogPop(2281);
         throw Exception("Out of Range Error, vector size: " + AnsiString(TrackVector.size()) + ", At: " + AnsiString(At) + " in TrackElementAt");
     }
     Utilities->CallLogPop(643);
@@ -12731,6 +12815,7 @@ void TOnePrefDir::CheckPrefDirAgainstTrackVector(int Caller)
             if(PE.TrackVectorPosition != VecPos)
             {
                 DiscrepancyFound = true;
+                break;
             }
             if((PE.GetELinkPos() < 0) || (PE.GetELinkPos() > 3))
             {
@@ -12859,7 +12944,7 @@ void TOnePrefDir::CheckPrefDir4MultiMap(int Caller) // test
 void TOnePrefDir::GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, int VLoc, bool &FoundFlag, int &PrefDirPos0, int &PrefDirPos1, int &PrefDirPos2,
                                                          int &PrefDirPos3)
 /*
-      There are up to four elements at each H & V position in the PrefDirVector - two directions, and up to
+      There are up to four elements at each H & V position in the PrefDirVector - two directions per track, and up to
       two tracks for 4-entry elements.  This function retrieves all elements that are present at a give H & V
       position.  FoundFlag indicates whether any or none have been found, and PrefDirPos0, 1, 2 & 3 contain
       the PrefDirVector positions, or -1 if not present.  The elements are always found in order, such that
@@ -12880,7 +12965,7 @@ void TOnePrefDir::GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, i
     std::pair<TPrefDir4MultiMapIterator, TPrefDir4MultiMapIterator>ItPair;
 
     ItPair = PrefDir4MultiMap.equal_range(PrefDirMapKeyPair);
-    if(ItPair.first == ItPair.second)
+    if(ItPair.first == ItPair.second) //none found
     {
         Utilities->CallLogPop(181);
         return;
@@ -12892,7 +12977,7 @@ void TOnePrefDir::GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, i
         ItPair.first++;
         if(ItPair.first == ItPair.second)
         {
-            Utilities->CallLogPop(182);
+            Utilities->CallLogPop(182);  //only one found
             return;
         }
         if(((ItPair.first->first).first == HLoc) && ((ItPair.first->first).second == VLoc))
@@ -12902,7 +12987,7 @@ void TOnePrefDir::GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, i
         ItPair.first++;
         if(ItPair.first == ItPair.second)
         {
-            Utilities->CallLogPop(183);
+            Utilities->CallLogPop(183);   //2 found
             return;
         }
         if(((ItPair.first->first).first == HLoc) && ((ItPair.first->first).second == VLoc))
@@ -12912,15 +12997,161 @@ void TOnePrefDir::GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, i
         ItPair.first++;
         if(ItPair.first == ItPair.second)
         {
-            Utilities->CallLogPop(184);
+            Utilities->CallLogPop(184); //3 found
             return;
         }
         if(((ItPair.first->first).first == HLoc) && ((ItPair.first->first).second == VLoc))
         {
-            PrefDirPos3 = ItPair.first->second;
+            PrefDirPos3 = ItPair.first->second;  //4 found
         }
     }
     Utilities->CallLogPop(185);
+}
+
+// ---------------------------------------------------------------------------
+
+bool TOnePrefDir::FindLinkingPrefDir(int Caller, int PrefDirVectorNumber, int LinkNumberPos, int LinkNumber, int &LinkedPrefDirVectorNumber)
+{ // Finds a pref dir element that links to another element at given vector number and link number & position, returns true if found with linked
+  // vector number, true if buffer or continuation with link at blank end & linked vector number = -1, or false if not found with vector number == -1
+    try
+    {
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FindLinkingPrefDir," + AnsiString(PrefDirVectorNumber)
+             + "," + AnsiString(LinkNumberPos));
+        bool FoundFlag;
+        int PD0, PD1, PD2, PD3;
+        if(PrefDirVector.at(PrefDirVectorNumber).Conn[LinkNumberPos] > -1)
+        {
+            GetVectorPositionsFromPrefDir4MultiMap(14, Track->TrackElementAt(1021, PrefDirVector.at(PrefDirVectorNumber).Conn[LinkNumberPos]).HLoc,
+                Track->TrackElementAt(1022, PrefDirVector.at(PrefDirVectorNumber).Conn[LinkNumberPos]).VLoc, FoundFlag,
+                PD0, PD1, PD2, PD3);
+            if(!FoundFlag)
+            {
+                Utilities->CallLogPop(2282);
+                return(false);
+            }
+            if((PrefDirVector.at(PrefDirVectorNumber).TrackType == GapJump) && (LinkNumberPos == 0)) //0 is the gap position
+            {
+                if(PD0 > -1)
+                {
+                    if(PrefDirVector.at(PD0).TrackType == GapJump)//links to a gap and there is a pref dir set on it, doesn't matter about the link position
+                    {
+                        LinkedPrefDirVectorNumber = PD0;
+                        Utilities->CallLogPop(2283);
+                        return(true);
+                    }
+                }
+                if(PD1 > -1)
+                {
+                    if(PrefDirVector.at(PD1).TrackType == GapJump)//can only be PD0 or PD1 for a gap
+                    {
+                        LinkedPrefDirVectorNumber = PD1;
+                        Utilities->CallLogPop(2284);
+                        return(true);
+                    }
+                }
+            }
+            if(PD0 > -1)
+            {
+                if((PrefDirVector.at(PD0).ELink == (10 - LinkNumber)) || (PrefDirVector.at(PD0).XLink == (10 - LinkNumber)))
+                {
+                    LinkedPrefDirVectorNumber = PD0;
+                    Utilities->CallLogPop(2285);
+                    return(true);
+                }
+            }
+            if(PD1 > -1)
+            {
+                if((PrefDirVector.at(PD1).ELink == (10 - LinkNumber)) || (PrefDirVector.at(PD1).XLink == (10 - LinkNumber)))
+                {
+                    LinkedPrefDirVectorNumber = PD1;
+                    Utilities->CallLogPop(2286);
+                    return(true);
+                }
+            }
+            if(PD2 > -1)
+            {
+                if((PrefDirVector.at(PD2).ELink == (10 - LinkNumber)) || (PrefDirVector.at(PD2).XLink == (10 - LinkNumber)))
+                {
+                    LinkedPrefDirVectorNumber = PD2;
+                    Utilities->CallLogPop(2287);
+                    return(true);
+                }
+            }
+            if(PD3 > -1)
+            {
+                if((PrefDirVector.at(PD3).ELink == (10 - LinkNumber)) || (PrefDirVector.at(PD3).XLink == (10 - LinkNumber)))
+                {
+                    LinkedPrefDirVectorNumber = PD3;
+                    Utilities->CallLogPop(2288);
+                    return(true);
+                }
+            }
+            LinkedPrefDirVectorNumber = -1;
+            Utilities->CallLogPop(2289);
+            return(false);
+        }
+        else //buffer or continuation, no link at position 0 but not a failure
+        {
+            LinkedPrefDirVectorNumber = -1;
+            Utilities->CallLogPop(2290);
+            return(true);
+        }
+    }
+    catch(const Exception &e)  //non error catch
+    {
+        LinkedPrefDirVectorNumber = -1;
+        Utilities->CallLogPop(2291);
+        return(false);
+    }
+}
+
+// ---------------------------------------------------------------------------
+
+bool TOnePrefDir::BiDirectionalPrefDir(int Caller, TPrefDir4MultiMapIterator PDPtr)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",BiDirectionalPrefDir");
+    bool FoundFlag; //not used
+    int PD0, PD1, PD2, PD3;
+    //recover all PDs at the H & V of PDPtr
+    GetVectorPositionsFromPrefDir4MultiMap(15, PDPtr->first.first, PDPtr->first.second, FoundFlag, PD0, PD1, PD2, PD3);
+
+    int ELink = PrefDirVector.at(PDPtr->second).GetELink();
+    int XLink = PrefDirVector.at(PDPtr->second).GetXLink();
+
+    if(PD0 > -1)  //ok if PDPtr->second == PD0 as won't find a match, same for others
+    {
+        if((PrefDirVector.at(PD0).GetELink() == XLink) && (PrefDirVector.at(PD0).GetXLink() == ELink))
+        {
+            Utilities->CallLogPop(2292);
+            return(true);
+        }
+    }
+    if(PD1 > -1)
+    {
+        if((PrefDirVector.at(PD1).GetELink() == XLink) && (PrefDirVector.at(PD1).GetXLink() == ELink))
+        {
+            Utilities->CallLogPop(2293);
+            return(true);
+        }
+    }
+    if(PD2 > -1)
+    {
+        if((PrefDirVector.at(PD2).GetELink() == XLink) && (PrefDirVector.at(PD2).GetXLink() == ELink))
+        {
+            Utilities->CallLogPop(2294);
+            return(true);
+        }
+    }
+    if(PD3 > -1)
+    {
+        if((PrefDirVector.at(PD3).GetELink() == XLink) && (PrefDirVector.at(PD3).GetXLink() == ELink))
+        {
+            Utilities->CallLogPop(2295);
+            return(true);
+        }
+    }
+    Utilities->CallLogPop(2296);
+    return(false);
 }
 
 // ---------------------------------------------------------------------------

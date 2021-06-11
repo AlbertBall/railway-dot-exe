@@ -2076,6 +2076,10 @@ TRailGraphics::TRailGraphics()
     smCyan->LoadFromResourceName(0, "smCyan");
     smCyan->Transparent = true;
     smCyan->TransparentColor = clB5G5R5;
+    smLC = new Graphics::TBitmap;      //added v2.9.0 to show in zoom out mode
+    smLC->LoadFromResourceName(0, "smLC");
+    smLC->Transparent = true;
+    smLC->TransparentColor = clB5G5R5;
     smLightBlue = new Graphics::TBitmap;
     smLightBlue->LoadFromResourceName(0, "smLightBlue");
     smLightBlue->Transparent = true;
@@ -3246,6 +3250,7 @@ TRailGraphics::~TRailGraphics()
     delete smBrightGreen;
     delete smCaramel;
     delete smCyan;
+    delete smLC;
     delete smLightBlue;
     delete smMagenta;
     delete smName;

@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.8.0</span>
+   &#160;<span id="projectnumber">v2.9.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -411,7 +411,7 @@ $(document).ready(function(){initNavTree('_utilities_8cpp_source.html',''); init
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        OutInt = TempInt;</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        <span class="keywordflow">return</span>(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    }</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <span class="keywordflow">catch</span>(<span class="keyword">const</span> EConvertError &amp;e)</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <span class="keywordflow">catch</span>(<span class="keyword">const</span> EConvertError &amp;e)  <span class="comment">//non error catch</span></div>
 <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    {</div>
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    }</div>
@@ -449,7 +449,7 @@ $(document).ready(function(){initNavTree('_utilities_8cpp_source.html',''); init
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        DoubleString.ToDouble(); <span class="comment">// throws EConvertError if fails</span></div>
 <div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        <span class="keywordflow">return</span>(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    }</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <span class="keywordflow">catch</span>(<span class="keyword">const</span> EConvertError &amp;e)</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <span class="keywordflow">catch</span>(<span class="keyword">const</span> EConvertError &amp;e) <span class="comment">//non error catch</span></div>
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    {</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    }</div>
@@ -479,7 +479,7 @@ $(document).ready(function(){initNavTree('_utilities_8cpp_source.html',''); init
 <div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        DoubleString.ToDouble(); <span class="comment">// throws EConvertError if fails</span></div>
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        <span class="keywordflow">return</span>(<span class="keyword">true</span>);</div>
 <div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    }</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="keywordflow">catch</span>(<span class="keyword">const</span> EConvertError &amp;e)</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="keywordflow">catch</span>(<span class="keyword">const</span> EConvertError &amp;e) <span class="comment">//non error catch</span></div>
 <div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    {</div>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
 <div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    }</div>

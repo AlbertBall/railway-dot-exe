@@ -321,7 +321,7 @@ bool TUtilities::CheckAndReadFileInt(std::ifstream &InFile, int Lowest, int High
         OutInt = TempInt;
         return(true);
     }
-    catch(const EConvertError &e)
+    catch(const EConvertError &e)  //non error catch
     {
         return(false);
     }
@@ -359,7 +359,7 @@ bool TUtilities::CheckFileDouble(std::ifstream &InFile)
         DoubleString.ToDouble(); // throws EConvertError if fails
         return(true);
     }
-    catch(const EConvertError &e)
+    catch(const EConvertError &e) //non error catch
     {
         return(false);
     }
@@ -389,7 +389,7 @@ bool TUtilities::CheckStringDouble(AnsiString &DoubleString)
         DoubleString.ToDouble(); // throws EConvertError if fails
         return(true);
     }
-    catch(const EConvertError &e)
+    catch(const EConvertError &e) //non error catch
     {
         return(false);
     }

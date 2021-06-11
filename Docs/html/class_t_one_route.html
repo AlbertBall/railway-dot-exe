@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.8.0</span>
+   &#160;<span id="projectnumber">v2.9.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -202,12 +202,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abc09de3c32460a73d3de12625329210d inherit pub_methods_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#abc09de3c32460a73d3de12625329210d">ExternalClearPrefDirAnd4MultiMap</a> ()</td></tr>
 <tr class="memdesc:abc09de3c32460a73d3de12625329210d inherit pub_methods_class_t_one_pref_dir"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty the existing preferred direction vector &amp; map - for use by other classes.  <a href="class_t_one_pref_dir.html#abc09de3c32460a73d3de12625329210d">More...</a><br /></td></tr>
 <tr class="separator:abc09de3c32460a73d3de12625329210d inherit pub_methods_class_t_one_pref_dir"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6430567fea2e1538448514903c1b2eca inherit pub_methods_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a6430567fea2e1538448514903c1b2eca">BiDirectionalPrefDir</a> (int Caller, <a class="el" href="class_t_one_pref_dir.html#a37efac41fc00465b0569704517233d4e">TPrefDir4MultiMapIterator</a> PDPtr)</td></tr>
+<tr class="memdesc:a6430567fea2e1538448514903c1b2eca inherit pub_methods_class_t_one_pref_dir"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the preferred direction pointed to has another pref dir in the opposite direction set (returns true) or not.  <a href="class_t_one_pref_dir.html#a6430567fea2e1538448514903c1b2eca">More...</a><br /></td></tr>
+<tr class="separator:a6430567fea2e1538448514903c1b2eca inherit pub_methods_class_t_one_pref_dir"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1896affce3465b84cfd5128cca122639 inherit pub_methods_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a1896affce3465b84cfd5128cca122639">CheckOnePrefDir</a> (int Caller, int NumberOfActiveElements, std::ifstream &amp;VecFile)</td></tr>
 <tr class="memdesc:a1896affce3465b84cfd5128cca122639 inherit pub_methods_class_t_one_pref_dir"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before PrefDir loading as part of the FileIntegrityCheck function in case there is an error in the file. Very similar to LoadPrefDir but with value checks instead of storage in PrefDirVector.  <a href="class_t_one_pref_dir.html#a1896affce3465b84cfd5128cca122639">More...</a><br /></td></tr>
 <tr class="separator:a1896affce3465b84cfd5128cca122639 inherit pub_methods_class_t_one_pref_dir"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b81a1377e6269aafad6c25c929b2852 inherit pub_methods_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a7b81a1377e6269aafad6c25c929b2852">EndPossible</a> (int Caller, bool &amp;LeadingPoints)</td></tr>
 <tr class="memdesc:a7b81a1377e6269aafad6c25c929b2852 inherit pub_methods_class_t_one_pref_dir"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used when setting preferred directions, true if able to finish at the last selected element (can't finish if there is only one element or if end on leading points)  <a href="class_t_one_pref_dir.html#a7b81a1377e6269aafad6c25c929b2852">More...</a><br /></td></tr>
 <tr class="separator:a7b81a1377e6269aafad6c25c929b2852 inherit pub_methods_class_t_one_pref_dir"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe7f6088b7563714522882c10f6ae7f6 inherit pub_methods_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#abe7f6088b7563714522882c10f6ae7f6">FindLinkingPrefDir</a> (int Caller, int PrefDirVectorNumber, int LinkNumberPos, int LinkNumber, int &amp;LinkedPrefDirVectorNumber)</td></tr>
+<tr class="memdesc:abe7f6088b7563714522882c10f6ae7f6 inherit pub_methods_class_t_one_pref_dir"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds a pref dir element that links to another element at given vector number and link number &amp; position, returns true if found with linked vector number, true if buffer or continuation with link at blank end &amp; linked vector number = -1, or false if not found with vector number == -1.  <a href="class_t_one_pref_dir.html#abe7f6088b7563714522882c10f6ae7f6">More...</a><br /></td></tr>
+<tr class="separator:abe7f6088b7563714522882c10f6ae7f6 inherit pub_methods_class_t_one_pref_dir"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06cd3491535362fccbba4e76b9a120e9 inherit pub_methods_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a06cd3491535362fccbba4e76b9a120e9">GetNextPrefDirElement</a> (int Caller, int HLoc, int VLoc, bool &amp;FinishElement)</td></tr>
 <tr class="memdesc:a06cd3491535362fccbba4e76b9a120e9 inherit pub_methods_class_t_one_pref_dir"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linked tracks between the last selected element and the one at HLoc &amp; VLoc, and returns true if it finds one. FinishElement is returned true if the element selected is a buffer or continuation - in which case the chain is complete.  <a href="class_t_one_pref_dir.html#a06cd3491535362fccbba4e76b9a120e9">More...</a><br /></td></tr>
 <tr class="separator:a06cd3491535362fccbba4e76b9a120e9 inherit pub_methods_class_t_one_pref_dir"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -313,6 +319,9 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:ad5c3066eea66bd42ea847f550e2b0589"><td class="mdescLeft">&#160;</td><td class="mdescRight">the class member that allows the route to flash during setting up (see <a class="el" href="class_t_one_route_1_1_t_route_flash.html" title="The flashing route.">TRouteFlash</a> above)  <a href="class_t_one_route.html#ad5c3066eea66bd42ea847f550e2b0589">More...</a><br /></td></tr>
 <tr class="separator:ad5c3066eea66bd42ea847f550e2b0589"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_t_one_pref_dir"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_t_one_pref_dir')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_t_one_pref_dir.html">TOnePrefDir</a></td></tr>
+<tr class="memitem:aa6738f8f24fe0a417a84388c049b5e4c inherit pub_attribs_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc">TPrefDir4MultiMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#aa6738f8f24fe0a417a84388c049b5e4c">PrefDir4MultiMap</a></td></tr>
+<tr class="memdesc:aa6738f8f24fe0a417a84388c049b5e4c inherit pub_attribs_class_t_one_pref_dir"><td class="mdescLeft">&#160;</td><td class="mdescRight">the pref dir multimap - up to 4 values (up to 2 tracks per element each with 2 directions)  <a href="class_t_one_pref_dir.html#aa6738f8f24fe0a417a84388c049b5e4c">More...</a><br /></td></tr>
+<tr class="separator:aa6738f8f24fe0a417a84388c049b5e4c inherit pub_attribs_class_t_one_pref_dir"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2da871d689df7e78f430c5d354bb953 inherit pub_attribs_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_track_unit_8h.html#a79394e04a2435f7300aad79c757ae2ce">TPrefDirVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#ab2da871d689df7e78f430c5d354bb953">PrefDirVector</a></td></tr>
 <tr class="separator:ab2da871d689df7e78f430c5d354bb953 inherit pub_attribs_class_t_one_pref_dir"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d035366a044fc7d0e0a745762bd4664 inherit pub_attribs_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_track_unit_8h.html#a79394e04a2435f7300aad79c757ae2ce">TPrefDirVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a2d035366a044fc7d0e0a745762bd4664">SearchVector</a></td></tr>
@@ -328,6 +337,13 @@ Static Public Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_class_t_one_pref_dir"><td colspan="2" onclick="javascript:toggleInherit('pub_types_class_t_one_pref_dir')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="class_t_one_pref_dir.html">TOnePrefDir</a></td></tr>
+<tr class="memitem:a940ba2bdbedb288c8188c1da5c4c79bc inherit pub_types_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top">typedef std::multimap&lt; <a class="el" href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">THVPair</a>, unsigned int, <a class="el" href="class_t_map_comp.html">TMapComp</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc">TPrefDir4MultiMap</a></td></tr>
+<tr class="memdesc:a940ba2bdbedb288c8188c1da5c4c79bc inherit pub_types_class_t_one_pref_dir"><td class="mdescLeft">&#160;</td><td class="mdescRight">HLoc&amp;VLoc as a pair, and PrefDirVectorPosition, can be up to 4 values at any H&amp;V.  <a href="class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc">More...</a><br /></td></tr>
+<tr class="separator:a940ba2bdbedb288c8188c1da5c4c79bc inherit pub_types_class_t_one_pref_dir"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37efac41fc00465b0569704517233d4e inherit pub_types_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top">typedef std::multimap&lt; <a class="el" href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">THVPair</a>, unsigned int, <a class="el" href="class_t_map_comp.html">TMapComp</a> &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a37efac41fc00465b0569704517233d4e">TPrefDir4MultiMapIterator</a></td></tr>
+<tr class="separator:a37efac41fc00465b0569704517233d4e inherit pub_types_class_t_one_pref_dir"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05da09493d511df74b8e5b9a794c2e0b inherit pub_types_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top">typedef std::pair&lt; <a class="el" href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">THVPair</a>, unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a05da09493d511df74b8e5b9a794c2e0b">TPrefDir4MultiMapEntry</a></td></tr>
+<tr class="separator:a05da09493d511df74b8e5b9a794c2e0b inherit pub_types_class_t_one_pref_dir"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a905cfdce2439be93d45b66339b7382 inherit pub_types_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="class_t_pref_dir_element.html">TPrefDirElement</a> &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a8a905cfdce2439be93d45b66339b7382">TPrefDirVectorIterator</a></td></tr>
 <tr class="separator:a8a905cfdce2439be93d45b66339b7382 inherit pub_types_class_t_one_pref_dir"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53624ed7b429b42aa57cfe5551f5df71 inherit pub_types_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="class_t_pref_dir_element.html">TPrefDirElement</a> &gt;::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a53624ed7b429b42aa57cfe5551f5df71">TPrefDirVectorConstIterator</a></td></tr>
@@ -368,7 +384,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A descendent of <a class="el" href="class_t_one_pref_dir.html" title="The basic preferred direction class, consisting of any number of elements with preferred directions s...">TOnePrefDir</a> used for routes. Used during contruction of a route (ConstructRoute) and also for all completed routes, when each route is saved as an entry in the AllRoutesVector (see <a class="el" href="class_t_all_routes.html" title="Handles data and functions relating to all routes on the railway.">TAllRoutes</a>) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01382">1382</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01448">1448</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a05ce65e80c2272a775f6497890d42b6b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a05ce65e80c2272a775f6497890d42b6b">&#9670;&nbsp;</a></span>ClearRoute()</h2>
@@ -395,7 +411,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Empty the route of any stored elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01433">1433</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01499">1499</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -432,7 +448,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called after a non-preferred (i.e. unrestricted) route has been selected and has finished flashing, to add it to the AllRoutesVector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16218">16218</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16449">16449</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -480,7 +496,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and has finished flashing, to add it to the AllRoutesVector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14989">14989</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15220">15220</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -520,7 +536,7 @@ Here is the caller graph for this function:</div>
 
 <p>Erase a single route element. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01440">1440</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01506">1506</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -558,7 +574,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used when setting signal aspects for a route by working forwards through the route to see what the next forward signal aspects is, because this determines all the rearward signal aspects. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16500">16500</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16731">16731</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -590,7 +606,7 @@ Here is the caller graph for this function:</div>
 
 <p>Cancel a route immediately if a train occupies it when travelling in the wrong direction (or occupies a crossover on a non-route line when the other track is in a route) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16944">16944</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17175">17175</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -656,7 +672,7 @@ Here is the caller graph for this function:</div>
 
 <p>Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc. If find one return true, set &amp;PointsChanged to true if any points need to be changed and &amp;ReqPosRouteID to the route ID of the existing route to attach to, if there is one, and -1 if not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15410">15410</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15641">15641</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -734,7 +750,7 @@ Here is the caller graph for this function:</div>
 
 <p>Try to find a set of linked tracks that lie on preferred directions between the route start element and the one at HLoc &amp; VLoc. If find one return true, set &amp;PointsChanged to true if any points need to be changed and &amp;ReqPosRouteID to the route ID of the existing route to attach to, if there is one, and -1 if not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14006">14006</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14237">14237</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -788,7 +804,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set the starting conditions for a non-preferred (i.e. unrestricted) route selection beginning on HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15183">15183</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15414">15414</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -848,7 +864,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set the starting conditions for a preferred direction or automatic signal route selection beginning on HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l13802">13802</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14033">14033</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -909,7 +925,7 @@ Here is the caller graph for this function:</div>
 <p>Examines the route to see whether the element at H &amp; V is in the route, and if not returns a ReturnFlag value of NotInRoute. </p>
 <p>If it is in a route but the element selected is invalid, then a message is given and returns with a ReturnFlag value of InRouteFalse. Otherwise the route is truncated at and including the element that matches H &amp; V with a ReturnFlag value of InRouteTrue. Selection invalid if select a bridge; trying to leave a single element; last element to be left not a signal (for PrefDirRoute or AutoSigsFlag set); last element to be left a bridge, points or crossover (for not PrefDirRoute &amp; AutoSigsFlag not set), or part of route locked. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16736">16736</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16967">16967</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -936,7 +952,7 @@ Here is the call graph for this function:</div>
 
 <p>Called by GetNextNonPreferredRouteElement and GetNextPreferredRouteElement to check whether or not any points on the selected route need to be changed. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16468">16468</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16699">16699</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -978,7 +994,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used when creating a bitmap image to display the route colours and direction arrows (as on screen during operation) for an operating railway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14414">14414</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14645">14645</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1033,7 +1049,7 @@ Here is the call graph for this function:</div>
 
 <p>Called by GetNextNonPreferredRouteElement to carry out the search for linked track, and also called recursively. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15784">15784</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16015">16015</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1117,7 +1133,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called recursively. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14450">14450</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14681">14681</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1159,7 +1175,7 @@ Here is the caller graph for this function:</div>
 
 <p>After a route has been selected successfully this function sets all LC change values appropriately for the selected route type and location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17039">17039</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17270">17270</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1207,7 +1223,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called by <a class="el" href="class_t_all_routes.html#ac6bd39457747eaa96476a8a87df15ac2" title="Set rearwards signals from the specified route starting position.">TAllRoutes::SetAllRearwardsSignals</a> to set rearwards signals from a specified starting position. If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16587">16587</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16818">16818</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1239,7 +1255,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called when setting unrestricted routes to set the route element values appropriately after a successful search has been conducted. It isn't needed for preferred routes because the element values are obtained from the already set preferred direction elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16134">16134</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16365">16365</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1287,7 +1303,7 @@ Here is the caller graph for this function:</div>
 
 <p>After a route has been selected successfully this function sets all RouteFlash (see above) values appropriately for the selected route type and location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17011">17011</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17242">17242</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1319,7 +1335,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called when setting a route to set all points appropriately. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16376">16376</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16607">16607</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1367,7 +1383,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector so that the route displays with the correct colour. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16988">16988</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17219">17219</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1399,7 +1415,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called when setting a route to set all points appropriately. Also called when a new train is added at a position where a route has been set, when it is necessary to set the next rearwards signal to red, the next yellow etc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16405">16405</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16636">16636</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1439,7 +1455,7 @@ Here is the caller graph for this function:</div>
 
 <p>Store a single route element in the PrefDirVector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01446">1446</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01512">1512</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1459,7 +1475,7 @@ Here is the caller graph for this function:</div>
 <p>session saves as routes in build are not saved in sessions </p>
 <p>the route ID number of the route that is being extended backwards during route building, not needed for </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01414">1414</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01480">1480</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1477,7 +1493,7 @@ Here is the caller graph for this function:</div>
 
 <p>the class member that allows the route to flash during setting up (see <a class="el" href="class_t_one_route_1_1_t_route_flash.html" title="The flashing route.">TRouteFlash</a> above) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01427">1427</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01493">1493</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1495,7 +1511,7 @@ Here is the caller graph for this function:</div>
 
 <p>the ID number of the route, this is needed for session saves </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01421">1421</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01487">1487</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1521,7 +1537,7 @@ Here is the caller graph for this function:</div>
 
 <p>limit to the number of elements searched in attempting to find a route </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01411">1411</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01477">1477</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1537,7 +1553,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01425">1425</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01491">1491</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1555,7 +1571,7 @@ Here is the caller graph for this function:</div>
 
 <p>the two preferred direction elements corresponding to the starting position of a new route </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01425">1425</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01491">1491</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1573,7 +1589,7 @@ Here is the caller graph for this function:</div>
 
 <p>TrackVectorPosition of the StartElement(s) set when the starting position of a new route is selected, note that although there may be two StartElements (as there can be two preferred directions on a single element), there is only one TrackVectorPosition as the element is the same for both. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01423">1423</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01489">1489</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1592,7 +1608,7 @@ Here is the caller graph for this function:</div>
 <p>needed for session saves as routes in build are not saved in sessions </p>
 <p>the route ID number of the route that is being extended forwards during route building, not </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01417">1417</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01483">1483</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>

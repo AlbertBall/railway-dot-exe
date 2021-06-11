@@ -219,6 +219,31 @@ Multi-player facility over the internet.
 
 4) Version change information
 
+VERSION CHANGES AFTER v2.8.0 for v2.9.0
+
+Include on web version page:
+
+This update represents a bit of a tidy-up - adding features that should ideally have been added earlier.
+
+The main addition is to include preferred directions (PDs) in selected railway areas for cutting, copying, rotating etc.  This omission had become an odd man out since the other track attributes were included some time ago.  It was left because although PD elements are derived from track elements the data they embody is stored separately from other track data, so new selection and manipulation functions were necessary to capture and manage them.  These functions are now included and work with all types of selection, including use of the Windows clipboard.
+
+Another addition is to include a check function able to find and highlight potential PD conflicts.  When building PDs it is very easy to miss short segments of track, especially on one leg of a set of points, leaving them without any PD and thereby preventing automatic and PD routes being set across them.  The check function is available in the 'Edit' menu in PD mode and is explained in section 4 of the manual and on-screen help.
+
+Level crossings are now included in zoom-out mode, and they are shown flashing for manual crossings that are open to trains without any routes across them.  This is to remind users to close them because heavy time penalties are incurred if they are forgotten - which I've done to my cost more than once!  To further remind users about such level crossings a warning icon is also shown flashing on the left hand side of the screen.
+
+Points to note that are not included on web page:
+
+Update Contributing.md to mention discord wrt having a question
+
+Lincoln - LS51 went from 2min to 3 min when stopped at Saxilby.  It's because MinsDelayed is only calculated at each logged action and is subtracted from later stop times, assuming the timetable is (reasonably) correct.  If more time is made up before the next station then the subtraction is inappropriate, but subtracted anyway and the time to act can be shorter than it should be.  This is corrected at the next logged action and the time can increase.  Similarly if there is a lot of make up time before the next but one (or more) stop, it won't be accounted for until that stop is the next stop.  Otherwise the calculation becomes too complicated.  Overall the time to act assumes the timetable is reasonably accurate with regard to timings, and if a long way off then so will the times to act.  But, in all cases as the time reduces it becomes more accurate.
+
+Error found in Mins Early calculation - error in Lincoln for LT01 when appeared - Mins Early was ~47mins & LaterStopTime was about same, so didn't show in Actions Due panel, but Mins Early should have been 0 or close to it.  Now corrected.
+
+Checked all catches that don't go to errorlog & added calllogpops where required. Some of these functions call external functions that have errorlog throws - but don't want to add pops in those functions as would lose the last call log item, but do want to allow for the catch coming from such a throw. Don't alter these - will have an extra item on the call log but that shouldn't be a problem.
+
+Added initial check that the executable exists in the working directory.  If not an attempt is made to change the working directory to the directory in which the executable resides, and if successful program execution continues normally, or if fails a message is given about the working directory being wrong and the program terminates.  It was found that sometimes the shift left click taskbar icon doesn't work (seems to only work if there's a desktop or a taskbar icon for the program), and if so right clicking gives an option to run the program, but if selected the working directory is changed to \Windows\System32 giving very odd effects.  The above mod corrects that behaviour by resetting the working directory.
+
+
 VERSION CHANGES AFTER v2.7.0 for v2.8.0
 
 Include on web version page:
@@ -1481,7 +1506,7 @@ Prior to uploading:
 	Quick start.pdf (if updated)
 	Railways>railway.exe
 	Railway>Help.chm (if updated)
-	In Railway, check have 5 x dlls and 3 x bpls & GNU licence, & that all directories contain the expected files & no extras created if had run from the release folder
+	In Railway, check have 5 x dlls and 3 x bpls & GNU licence, & that all directories contain the expected files & no extras created if had run from the release folder, especially NO config.txt
 7 Zip the above as Release vx.x.x.zip
 
 On website:
@@ -1518,7 +1543,7 @@ On website:
 16 If Manual or Quick start or any other file changed upload the new versions to 'Media' as above and add by editing product 'Railway Operation Simulator manuals' as above, SKU is RailwayOS-Manuals. Alter text (short & full) to refer to new version. Update & preview.
 17 Go to 'Version Information' page (uses DiviBuilder), click 'settings' on 'Versions (Accordion)', copy last version then click 'settings' on it, add version number & date as title, then change all text to the new text.  Save the new addition, save changes then update the page & check ok.
 18 Download & check the new release & anything else that's changed
-19 Add a new post for the release with details of main changes - Categories: Railway Operation Simulator, news; Tags Railway Operation Simulator, year, v2x.x.x.  Add 'Download it here' with link to 'Railway Operation Simulator'. TAutoPost set to yes. Schedule release or release immediately.
+19 Add a new post for the release with details of main changes - Categories: Railway Operation Simulator, news; Tags Railway Operation Simulator, year, v2x.x.x.  Add 'Download it here' with link to 'Railway Operation Simulator'. TAutoPost set to yes. Preview & schedule release or release immediately.
 
 On GitHub:
 

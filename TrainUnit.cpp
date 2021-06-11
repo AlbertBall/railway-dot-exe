@@ -8375,7 +8375,8 @@ float TTrain::CalcTimeToAct(int Caller) // only called for running trains
     int DistanceToRedSignal = 0;
     float TimeToAct = 0;
     float MinsEarly = 0;  //added at v2.6.1
-    TDateTime DepartureTime; //added at v2.6.1
+    TDateTime DepartureTime; //added at v2.6.1  //ArrivalTime used instead of this at v2.9.0 but still calculate it in case need it later for some reason
+    TDateTime ArrivalTime; //added at v2.9.0 as MinsEarly used DepartureTime which wasn't correct
 
     if(TrainFailed)
     {
@@ -8465,20 +8466,28 @@ float TTrain::CalcTimeToAct(int Caller) // only called for running trains
             //next to the stop platform and if so the two distances are the same and the station stop time isn't included. Also after 2.7.0 used GetRepeatTime... to calc
             //departure time because ActionVectorEntryPtr->DepartureTime is the base time and therefore incorrect for repeats.
             //first find departure time from the next stop
+            //at v2.9.0 changed MinsEarly calc to use ArrivalTime instead of departure time
             {
-                if(ActionVectorEntryPtr->FormatType == TimeTimeLoc)
+                if(ActionVectorEntryPtr->FormatType == TimeTimeLoc) //if already arrived then MinsEarly will be < 0 so becomes set to 0
                 {
+                    ArrivalTime = TrainController->GetRepeatTime(71, ActionVectorEntryPtr->ArrivalTime, RepeatNumber, IncrementalMinutes);
                     DepartureTime = TrainController->GetRepeatTime(69, ActionVectorEntryPtr->DepartureTime, RepeatNumber, IncrementalMinutes);
+                    MinsEarly = (double(ArrivalTime - TrainController->TTClockTime) * 86400 / 60) - (DistanceToStationStop * 3.6 / 60 / AvTrackSpeed);
                 }
-                else if((ActionVectorEntryPtr->FormatType == TimeLoc) && (ActionVectorEntryPtr->ArrivalTime != TDateTime(-1))) // must be an arrival
+                else if((ActionVectorEntryPtr->FormatType == TimeLoc) && (ActionVectorEntryPtr->ArrivalTime != TDateTime(-1))) // not arrived yet
                 {
+                    ArrivalTime = TrainController->GetRepeatTime(72, ActionVectorEntryPtr->ArrivalTime, RepeatNumber, IncrementalMinutes);
+                    MinsEarly = (double(ArrivalTime - TrainController->TTClockTime) * 86400 / 60) - (DistanceToStationStop * 3.6 / 60 / AvTrackSpeed);
                     if((ActionVectorEntryPtr + 1)->FormatType == TimeLoc)
                     {
                         // must be a departure
                         DepartureTime = TrainController->GetRepeatTime(70, (ActionVectorEntryPtr + 1)->DepartureTime, RepeatNumber, IncrementalMinutes);
                     }
                 }
-                MinsEarly = (double(DepartureTime - TrainController->TTClockTime) * 86400 / 60) - (DistanceToStationStop * 3.6 / 60 / AvTrackSpeed);
+                else if((ActionVectorEntryPtr->FormatType == TimeLoc) && (ActionVectorEntryPtr->ArrivalTime == TDateTime(-1))) //already arrived
+                {
+                    MinsEarly = 0;
+                }
                 if(MinsEarly < 0)
                 {
                     MinsEarly = 0;
@@ -17087,7 +17096,7 @@ j) all other finish entries (all link to another service) are ignored as will be
         return(true);
     }
 
-    catch(const Exception &e)
+    catch(const Exception &e) //non error catch
     {
         AnsiString TTErrorFileName = "Analysis Error.txt";
         TTErrorFileName = CurDir + "\\Formatted timetables\\" + TTErrorFileName;
@@ -17342,7 +17351,7 @@ AnsiString TTrainController::ConsolidateSARNTArrDep(int Caller, const AnsiString
         return(Output);
     }
 
-    catch(const Exception &e)
+    catch(const Exception &e)  //non error catch
     {
         AnalysisError = true;
         Utilities->CallLogPop(2227);
@@ -18693,8 +18702,8 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
                 {
                     bool StopRequired = false;
                     if(!Train.TimetableFinished && (Train.NameInTimetableBeforeCDT(16, Track->TrackElementAt(1005, CurrentElement).ActiveTrackElementName,
-                                                                                   StopRequired) > -1) && ((Track->TrackElementAt(1006, CurrentElement).StationEntryStopLinkPos1 == CurrentEntryPos) ||
-                                                                                                           (Track->TrackElementAt(1010, CurrentElement).StationEntryStopLinkPos2 == CurrentEntryPos)))
+                        StopRequired) > -1) && ((Track->TrackElementAt(1006, CurrentElement).StationEntryStopLinkPos1 == CurrentEntryPos) ||
+                        (Track->TrackElementAt(1010, CurrentElement).StationEntryStopLinkPos2 == CurrentEntryPos)))
                     {
                         // no need to add in the length of element to CumulativeLength
                         if(StopRequired)

@@ -878,6 +878,7 @@ public:
     Graphics::TBitmap *smBrightGreen;
     Graphics::TBitmap *smCaramel;
     Graphics::TBitmap *smCyan;
+    Graphics::TBitmap *smLC; //added v2.9.0 to show in zoom out mode
     Graphics::TBitmap *smLightBlue;
     Graphics::TBitmap *smMagenta;
     Graphics::TBitmap *smName;

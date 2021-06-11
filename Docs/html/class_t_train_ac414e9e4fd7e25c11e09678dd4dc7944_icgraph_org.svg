@@ -49,18 +49,18 @@
 <path fill="none" stroke="midnightblue" d="M624.67,-540.31C616.03,-541.29 607.37,-542.27 599.04,-543.21"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="625.23,-543.77 634.78,-539.17 624.45,-536.81 625.23,-543.77"/>
 </g>
-<!-- Node152 -->
+<!-- Node122 -->
 <g id="node50" class="node">
-<title>Node152</title>
+<title>Node122</title>
 <g id="a_node50"><a xlink:href="class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25" target="_top" xlink:title="Save a session file &#45; see LoadSession for details of additions to the session file.">
 <polygon fill="white" stroke="black" points="169,-0.5 169,-19.5 290,-19.5 290,-0.5 169,-0.5"/>
 <text text-anchor="middle" x="229.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::SaveSession</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node152 -->
+<!-- Node2&#45;&gt;Node122 -->
 <g id="edge51" class="edge">
-<title>Node2&#45;&gt;Node152</title>
+<title>Node2&#45;&gt;Node122</title>
 <path fill="none" stroke="midnightblue" d="M694.98,-506.81C653.24,-425.47 506.06,-159.56 304,-29 298.02,-25.14 291.3,-22.06 284.4,-19.61"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="691.89,-508.47 699.54,-515.8 698.13,-505.3 691.89,-508.47"/>
 </g>
@@ -792,15 +792,15 @@
 <path fill="none" stroke="midnightblue" d="M387.5,-1031.95C380.56,-962.16 357.03,-723.39 340,-526 335.6,-475.03 336.88,-106.19 304,-67 300.78,-63.16 296.9,-60.05 292.62,-57.52"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="384.06,-1032.72 388.53,-1042.32 391.02,-1032.03 384.06,-1032.72"/>
 </g>
-<!-- Node4&#45;&gt;Node152 -->
+<!-- Node4&#45;&gt;Node122 -->
 <g id="edge49" class="edge">
-<title>Node4&#45;&gt;Node152</title>
+<title>Node4&#45;&gt;Node122</title>
 <path fill="none" stroke="midnightblue" d="M387.46,-1031.95C380.38,-962.17 356.44,-723.44 340,-526 335.41,-470.82 339.46,-71.52 304,-29 300.2,-24.44 295.47,-20.9 290.24,-18.16"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="384.02,-1032.73 388.51,-1042.33 390.98,-1032.02 384.02,-1032.73"/>
 </g>
-<!-- Node152&#45;&gt;Node26 -->
+<!-- Node122&#45;&gt;Node26 -->
 <g id="edge50" class="edge">
-<title>Node152&#45;&gt;Node26</title>
+<title>Node122&#45;&gt;Node26</title>
 <path fill="none" stroke="midnightblue" d="M160.15,-24.22C158.32,-25.67 156.59,-27.26 155,-29 75.23,-116.25 62.31,-524.45 60.7,-592.4"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="162.26,-27.03 168.82,-18.7 158.5,-21.12 162.26,-27.03"/>
 </g>

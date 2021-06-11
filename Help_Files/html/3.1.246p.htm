@@ -98,7 +98,8 @@ The barriers take 30 seconds to lower and 10 seconds to rise. The first signal
 behind and facing the barriers stays red until the barriers are fully down.<br>
 <br>
 
-The second way is to left click it (provided that there is no route through it and no train on it).  This opens the crossing manually.  In this case the barriers begin to lower as before, but now the colour is green rather than red to indicate manual operation.  Signals behave as before.  Trains can cross with or without routes, and the crossing will remain open until closed manually, again by left clicking when there is no route across it.  A manually openend crossing will not close automatically after a train has passed because there may be other trains that need to use it.  Opening and closing times are as before.  A level crossing that is opened by a route cannot be closed manually.  The green colour is a reminder that the crossing is to be closed manually when no longer required, to avoid the heavy time penalty that would be incurred if forgotten.<br>
+The second way is to left click it (provided that there is no route through it and no train on it).  This opens the crossing manually.  In this case the barriers begin to lower as before, but now the colour is green rather than red to indicate manual operation.  Signals behave as before.  Trains can cross with or without routes, and the crossing will remain open until closed manually, again by left clicking when there is no route across it.  A manually openend crossing will not close automatically after a train has passed because there may be other trains that need to use it.  Opening and closing times are as before.  A level crossing that is opened by a route cannot be closed manually.  The green colour is a reminder that the crossing is to be closed manually when no longer required, to avoid the heavy time penalty that would be incurred if forgotten. To help in this respect if any manual crossing is open to trains without a route across it a warning icon <img width=24 height=24
+src="../images/ManualLCDownImage.bmp"> is shown flashing on the left hand side of the screen.  Also all such level crossings are shown flashing in zoom out mode.<br>
 <br>
 
 Level crossings display differently for barriers up and down, with barriers shown
@@ -109,9 +110,13 @@ be placed across any number of directly parallel tracks, but can only be placed
 on plain horizontal or vertical track elements. Note that level crossings
 cannot be placed adjacent to each other on the same track.<br>
 <br>
+
 Up to three minutes is allowed for the barriers to remain down before penalty times
 start clocking up, so it doesn't pay to set routes or open a crossing manually too far in advance of trains. If a barrier is lowered and then raised (by cancelling the route or manually) before any trains have passed, then the three minutes allowance isn't given,
-penalty times begin clocking up right away. Level crossings are treated as
+penalty times begin clocking up right away. Penalties are shown in the performance log summary (<A HREF="6.74szb.htm">see section 6.7</A>) as 'excess minutes of level crossing barrier down time'.  If several logs are created successively it might be noticed that this figure is lower in later logs than earlier ones.  This is because a log created when crossing barriers are down but before a train has passed doesn't deduct the three minutes allowance, whereas a later log created after the train has passed will include it. <br>
+<br>
+
+Level crossings are treated as
 being closed to trains in all states other than with barriers fully down, so
 if a train runs into one when the barriers are not fully down then there is a crash
 (it's assumed to have hit a road vehicle) and the train has to be removed by

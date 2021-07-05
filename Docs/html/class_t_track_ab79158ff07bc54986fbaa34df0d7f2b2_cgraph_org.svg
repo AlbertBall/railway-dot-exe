@@ -94,7 +94,7 @@
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" target="_top" xlink:title="A range&#45;checked version of TrackElement.at(At)">
+<g id="a_node5"><a xlink:href="class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" target="_top" xlink:title="A range&#45;checked version of TrackVector.at(At)">
 <polygon fill="white" stroke="black" points="356,-148.17 356,-167.17 478,-167.17 478,-148.17 356,-148.17"/>
 <text text-anchor="middle" x="417" y="-155.17" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::TrackElementAt</text>
 </a>
@@ -133,7 +133,7 @@
 <!-- Node7 -->
 <g id="node7" class="node">
 <title>Node7</title>
-<g id="a_node7"><a xlink:href="class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" target="_top" xlink:title="A range&#45;checked version of InactiveTrackElement.at(At)">
+<g id="a_node7"><a xlink:href="class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" target="_top" xlink:title="A range&#45;checked version of InactiveTrackVector.at(At)">
 <polygon fill="white" stroke="black" points="340,-34.17 340,-53.17 494,-53.17 494,-34.17 340,-34.17"/>
 <text text-anchor="middle" x="417" y="-41.17" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::InactiveTrackElementAt</text>
 </a>

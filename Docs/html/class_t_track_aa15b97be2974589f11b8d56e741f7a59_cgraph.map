@@ -6,5 +6,5 @@
 <area shape="rect" id="node7" href="$class_t_display.html#a95aaa80515f0abb7715920b326b318dd" title="Plot small (4x4) graphic PlotItem on the zoomed&#45;out display at HPos &amp; Vpos." alt="" coords="418,34,593,61"/>
 <area shape="rect" id="node8" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="231,354,352,381"/>
 <area shape="rect" id="node4" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="414,136,597,178"/>
-<area shape="rect" id="node6" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="403,202,608,229"/>
+<area shape="rect" id="node6" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="403,202,608,229"/>
 </map>

@@ -124,7 +124,7 @@
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" target="_top" xlink:title="A range&#45;checked version of InactiveTrackElement.at(At)">
+<g id="a_node6"><a xlink:href="class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" target="_top" xlink:title="A range&#45;checked version of InactiveTrackVector.at(At)">
 <polygon fill="white" stroke="black" points="332,-114.5 332,-133.5 486,-133.5 486,-114.5 332,-114.5"/>
 <text text-anchor="middle" x="409" y="-121.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::InactiveTrackElementAt</text>
 </a>

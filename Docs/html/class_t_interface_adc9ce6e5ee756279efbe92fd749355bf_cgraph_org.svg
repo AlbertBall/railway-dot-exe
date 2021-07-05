@@ -83,7 +83,7 @@
 <!-- Node11 -->
 <g id="node11" class="node">
 <title>Node11</title>
-<g id="a_node11"><a xlink:href="class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" target="_top" xlink:title="A range&#45;checked version of TrackElement.at(At)">
+<g id="a_node11"><a xlink:href="class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" target="_top" xlink:title="A range&#45;checked version of TrackVector.at(At)">
 <polygon fill="white" stroke="black" points="748.5,-108.81 748.5,-127.81 870.5,-127.81 870.5,-108.81 748.5,-108.81"/>
 <text text-anchor="middle" x="809.5" y="-115.81" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::TrackElementAt</text>
 </a>

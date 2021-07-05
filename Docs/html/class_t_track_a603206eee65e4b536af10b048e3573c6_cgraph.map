@@ -5,5 +5,5 @@
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="673,221,820,248"/>
 <area shape="rect" id="node7" href="$class_t_track.html#aec33abe03255861c32284031b7c9dd98" title="Set TypeOfRoute value to 2 to indicate barriers manually closed." alt="" coords="425,38,621,79"/>
 <area shape="rect" id="node4" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="431,155,614,197"/>
-<area shape="rect" id="node6" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="420,221,625,248"/>
+<area shape="rect" id="node6" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="420,221,625,248"/>
 </map>

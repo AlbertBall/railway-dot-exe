@@ -161,7 +161,7 @@ var sectionId = 'dynsection-100';
 <!-- Node8 -->
 <g id="node8" class="node">
 <title>Node8</title>
-<g id="a_node8"><a xlink:href="class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" target="_top" xlink:title="A range&#45;checked version of TrackElement.at(At)">
+<g id="a_node8"><a xlink:href="class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" target="_top" xlink:title="A range&#45;checked version of TrackVector.at(At)">
 <polygon fill="white" stroke="black" points="1130,-1115.45 1130,-1134.45 1252,-1134.45 1252,-1115.45 1130,-1115.45"/>
 <text text-anchor="middle" x="1191" y="-1122.45" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::TrackElementAt</text>
 </a>
@@ -654,7 +654,7 @@ var sectionId = 'dynsection-100';
 <!-- Node23 -->
 <g id="node23" class="node">
 <title>Node23</title>
-<g id="a_node23"><a xlink:href="class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" target="_top" xlink:title="A range&#45;checked version of InactiveTrackElement.at(At)">
+<g id="a_node23"><a xlink:href="class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" target="_top" xlink:title="A range&#45;checked version of InactiveTrackVector.at(At)">
 <polygon fill="white" stroke="black" points="1114,-1709.45 1114,-1728.45 1268,-1728.45 1268,-1709.45 1114,-1709.45"/>
 <text text-anchor="middle" x="1191" y="-1716.45" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::InactiveTrackElementAt</text>
 </a>

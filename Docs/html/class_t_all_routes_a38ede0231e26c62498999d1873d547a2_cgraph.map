@@ -4,7 +4,7 @@
 <area shape="rect" id="node3" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="471,136,647,177"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="707,278,853,304"/>
 <area shape="rect" id="node5" href="$class_t_train.html#a0675ea1dede706d5b0dd52264496865a" title="Called when a train is about to leave an element and move onto another." alt="" coords="237,303,400,330"/>
-<area shape="rect" id="node6" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="478,354,641,380"/>
+<area shape="rect" id="node6" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="478,354,641,380"/>
 <area shape="rect" id="node7" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="236,455,401,482"/>
 <area shape="rect" id="node8" href="$class_t_train.html#a2a2d78164c9dc1881b2c77526f04903f" title="True if the train has stopped for any reason." alt="" coords="262,506,375,532"/>
 <area shape="rect" id="node9" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="225,104,412,145"/>

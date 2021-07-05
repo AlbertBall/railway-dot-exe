@@ -3,14 +3,14 @@
 <area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="945,269,1092,295"/>
 <area shape="rect" id="node3" href="$class_t_all_routes.html#afbb161c646677f13755041b895a23982" title="Examines Route2MultiMap for the element at TrackVectorPosition with LinkPos (can be entry or exit)." alt="" coords="458,617,634,659"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="945,487,1092,514"/>
-<area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="713,741,876,767"/>
+<area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="713,741,876,767"/>
 <area shape="rect" id="node6" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="483,429,609,455"/>
 <area shape="rect" id="node9" href="$class_t_track.html#aad258b17c96ace0dbbad3754eb743274" title="True if an open (to trains) level crossing is found at H &amp; V." alt="" coords="448,523,644,550"/>
 <area shape="rect" id="node10" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="723,167,866,194"/>
 <area shape="rect" id="node11" href="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e" title="Plot signals on screen according to their aspect (Attribute value)" alt="" coords="272,218,400,245"/>
 <area shape="rect" id="node15" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="275,893,397,919"/>
 <area shape="rect" id="node7" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="703,421,886,463"/>
-<area shape="rect" id="node8" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="692,370,897,397"/>
+<area shape="rect" id="node8" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="692,370,897,397"/>
 <area shape="rect" id="node12" href="$class_t_track_element.html#a100bff829c4dca820927affde4cb9e57" title="Used to log track parameters for call stack logging." alt="" coords="461,218,631,245"/>
 <area shape="rect" id="node13" href="$class_t_display.html#a6e970089a9419e6bdd12576b6e860c95" title=" " alt="" coords="709,117,881,143"/>
 <area shape="rect" id="node14" href="$class_t_track.html#a2830b22db25712a80fa55b1546b5df9b" title="Plot platforms if any for a signal graphic &#45; plotted before signal so shows through transparent signa..." alt="" coords="455,319,637,346"/>

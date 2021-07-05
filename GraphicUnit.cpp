@@ -2425,7 +2425,7 @@ TRailGraphics::TRailGraphics()
 
 // These are the new glyphs for v2.3.0 that stay black, they are transparent, using the bottom LH corner pixel as the transparent colour
     SpeedBut68NormBlackGlyph = new Graphics::TBitmap;
-    SpeedBut68NormBlackGlyph->Assign(gl68); // changed after v2.3.0 from 'LoadFromResourceName' for consistency
+    SpeedBut68NormBlackGlyph->Assign(gl68); // changed at v2.3.1 from 'LoadFromResourceName' for consistency
     SpeedBut69NormBlackGlyph = new Graphics::TBitmap;
     SpeedBut69NormBlackGlyph->Assign(gl69);
     SpeedBut70NormBlackGlyph = new Graphics::TBitmap;
@@ -2785,53 +2785,53 @@ TRailGraphics::~TRailGraphics()
     delete bm65;
     delete bm68CallingOn;
     delete bm68dblyellow;
-    delete bm68grounddblred; // added after v2.3.0 (missed)
-    delete bm68grounddblwhite; // added after v2.3.0 (missed)
+    delete bm68grounddblred; // added at v2.3.1 (missed)
+    delete bm68grounddblwhite; // added at v2.3.1 (missed)
     delete bm68green;
     delete bm68yellow;
     delete bm69CallingOn;
     delete bm69dblyellow;
-    delete bm69grounddblred; // added after v2.3.0 (missed)
-    delete bm69grounddblwhite; // added after v2.3.0 (missed)
+    delete bm69grounddblred; // added at v2.3.1 (missed)
+    delete bm69grounddblwhite; // added at v2.3.1 (missed)
     delete bm69green;
     delete bm69yellow;
     delete bm7;
     delete bm70CallingOn;
     delete bm70dblyellow;
-    delete bm70grounddblred; // added after v2.3.0 (missed)
-    delete bm70grounddblwhite; // added after v2.3.0 (missed)
+    delete bm70grounddblred; // added at v2.3.1 (missed)
+    delete bm70grounddblwhite; // added at v2.3.1 (missed)
     delete bm70green;
     delete bm70yellow;
     delete bm71CallingOn;
     delete bm71dblyellow;
-    delete bm71grounddblred; // added after v2.3.0 (missed)
-    delete bm71grounddblwhite; // added after v2.3.0 (missed)
+    delete bm71grounddblred; // added at v2.3.1 (missed)
+    delete bm71grounddblwhite; // added at v2.3.1 (missed)
     delete bm71green;
     delete bm71yellow;
     delete bm72CallingOn;
     delete bm72dblyellow;
-    delete bm72grounddblred; // added after v2.3.0 (missed)
-    delete bm72grounddblwhite; // added after v2.3.0 (missed)
+    delete bm72grounddblred; // added at v2.3.1 (missed)
+    delete bm72grounddblwhite; // added at v2.3.1 (missed)
     delete bm72green;
     delete bm72yellow;
     delete bm73;
     delete bm73CallingOn;
     delete bm73dblyellow;
-    delete bm73grounddblred; // added after v2.3.0 (missed)
-    delete bm73grounddblwhite; // added after v2.3.0 (missed)
+    delete bm73grounddblred; // added at v2.3.1 (missed)
+    delete bm73grounddblwhite; // added at v2.3.1 (missed)
     delete bm73green;
     delete bm73yellow;
     delete bm74;
     delete bm74CallingOn;
     delete bm74dblyellow;
-    delete bm74grounddblred; // added after v2.3.0 (missed)
-    delete bm74grounddblwhite; // added after v2.3.0 (missed)
+    delete bm74grounddblred; // added at v2.3.1 (missed)
+    delete bm74grounddblwhite; // added at v2.3.1 (missed)
     delete bm74green;
     delete bm74yellow;
     delete bm75CallingOn;
     delete bm75dblyellow;
-    delete bm75grounddblred; // added after v2.3.0 (missed)
-    delete bm75grounddblwhite; // added after v2.3.0 (missed)
+    delete bm75grounddblred; // added at v2.3.1 (missed)
+    delete bm75grounddblwhite; // added at v2.3.1 (missed)
     delete bm75green;
     delete bm75yellow;
     delete bm77;
@@ -3279,23 +3279,23 @@ TRailGraphics::~TRailGraphics()
     delete LCRHSVerMan;
     delete LCTopHorMan;
 
-    delete SpeedBut68NormBlackGlyph; // added after v2.3.0 (missed)
-    delete SpeedBut69NormBlackGlyph; // added after v2.3.0 (missed)
-    delete SpeedBut70NormBlackGlyph; // added after v2.3.0 (missed)
-    delete SpeedBut71NormBlackGlyph; // added after v2.3.0 (missed)
-    delete SpeedBut72NormBlackGlyph; // added after v2.3.0 (missed)
-    delete SpeedBut73NormBlackGlyph; // added after v2.3.0 (missed)
-    delete SpeedBut74NormBlackGlyph; // added after v2.3.0 (missed)
-    delete SpeedBut75NormBlackGlyph; // added after v2.3.0 (missed)
+    delete SpeedBut68NormBlackGlyph; // added at v2.3.1 (missed)
+    delete SpeedBut69NormBlackGlyph; // added at v2.3.1 (missed)
+    delete SpeedBut70NormBlackGlyph; // added at v2.3.1 (missed)
+    delete SpeedBut71NormBlackGlyph; // added at v2.3.1 (missed)
+    delete SpeedBut72NormBlackGlyph; // added at v2.3.1 (missed)
+    delete SpeedBut73NormBlackGlyph; // added at v2.3.1 (missed)
+    delete SpeedBut74NormBlackGlyph; // added at v2.3.1 (missed)
+    delete SpeedBut75NormBlackGlyph; // added at v2.3.1 (missed)
 
-    delete SpeedBut68GrndBlackGlyph; // added after v2.3.0 (missed)
-    delete SpeedBut69GrndBlackGlyph; // added after v2.3.0 (missed)
-    delete SpeedBut70GrndBlackGlyph; // added after v2.3.0 (missed)
-    delete SpeedBut71GrndBlackGlyph; // added after v2.3.0 (missed)
-    delete SpeedBut72GrndBlackGlyph; // added after v2.3.0 (missed)
-    delete SpeedBut73GrndBlackGlyph; // added after v2.3.0 (missed)
-    delete SpeedBut74GrndBlackGlyph; // added after v2.3.0 (missed)
-    delete SpeedBut75GrndBlackGlyph; // added after v2.3.0 (missed)
+    delete SpeedBut68GrndBlackGlyph; // added at v2.3.1 (missed)
+    delete SpeedBut69GrndBlackGlyph; // added at v2.3.1 (missed)
+    delete SpeedBut70GrndBlackGlyph; // added at v2.3.1 (missed)
+    delete SpeedBut71GrndBlackGlyph; // added at v2.3.1 (missed)
+    delete SpeedBut72GrndBlackGlyph; // added at v2.3.1 (missed)
+    delete SpeedBut73GrndBlackGlyph; // added at v2.3.1 (missed)
+    delete SpeedBut74GrndBlackGlyph; // added at v2.3.1 (missed)
+    delete SpeedBut75GrndBlackGlyph; // added at v2.3.1 (missed)
 
     delete bmTransparentBgnd;
     delete GridBitmap;

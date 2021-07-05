@@ -1,5 +1,6 @@
 <map id="TTrack::NoActiveTrack" name="TTrack::NoActiveTrack">
 <area shape="rect" id="node1" title="True if there is no active track in the railway." alt="" coords="5,31,157,57"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="205,5,352,32"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="205,56,352,83"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="416,5,563,32"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="416,68,563,95"/>
+<area shape="rect" id="node4" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="205,31,368,57"/>
 </map>

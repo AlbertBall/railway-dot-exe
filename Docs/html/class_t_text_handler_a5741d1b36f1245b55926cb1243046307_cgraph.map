@@ -1,9 +1,11 @@
 <map id="TTextHandler::TextErase" name="TTextHandler::TextErase">
-<area shape="rect" id="node1" title="look for a text item in the vicinity of HPosInput &amp; VPosInput &amp; if TextToErase is null then erase any..." alt="" coords="5,102,171,129"/>
-<area shape="rect" id="node2" href="$class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9" title="Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent ..." alt="" coords="219,102,385,129"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="676,51,823,78"/>
-<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="676,153,823,179"/>
-<area shape="rect" id="node4" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="450,51,611,78"/>
-<area shape="rect" id="node6" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="433,102,628,129"/>
-<area shape="rect" id="node7" href="$class_t_track.html#a1092232428ee654facf8f53340c13f74" title="A range&#45;checked version of UserGraphicVector.at(At)" alt="" coords="435,153,627,179"/>
+<area shape="rect" id="node1" title="look for a text item in the vicinity of HPosInput &amp; VPosInput &amp; if TextToErase is null then erase any..." alt="" coords="5,168,171,195"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9" title="Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent ..." alt="" coords="219,168,385,195"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="687,117,833,144"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="687,219,833,245"/>
+<area shape="rect" id="node4" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="433,117,639,144"/>
+<area shape="rect" id="node6" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="455,168,617,195"/>
+<area shape="rect" id="node7" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="439,219,633,245"/>
+<area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="455,269,617,296"/>
+<area shape="rect" id="node9" href="$class_t_track.html#a1092232428ee654facf8f53340c13f74" title="A range&#45;checked version of UserGraphicVector.at(At)" alt="" coords="440,67,632,93"/>
 </map>

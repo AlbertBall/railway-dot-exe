@@ -219,6 +219,58 @@ Multi-player facility over the internet.
 
 4) Version change information
 
+VERSION CHANGES AFTER v2.9.0 for v2.9.1
+
+This is a bug fix release as a result of an error reported by Daniel Gill when rotating a segment of railway.  I have not been able to reproduce the fault but made improvements to the rotation and associated functions that seem to have cured it.  Also included are a couple of minor changes that were awaiting the next release as follows:-
+
+The 'Comment' entries in the timetable service list have been changed to show the first 15 characters of the actual comment as this is felt to be more meaningful.
+
+A timetable time has been added to all warning logs that are shown in red at the top of the screen.
+
+-> = mention on website (only a few as new version will be v2.9.1)
+
+/hundreds of TrackVector.at(  and InactiveTrackVector.at rather than TrackElementAt(Caller, ...  all done.
+
+/add more brackets in ExNumber function
+
+/use 'y' instead of 2 'x's in rotation of prefdirs (& maybe elsewhere)
+
+Daniel Gill error:  Drawn a blank here, nothing stands out as likely or even possible noting that the error occurred in the rot right function itself
+/seed an access fault and see if same - gives an EEFFACE error, access violation means prog is trying to access an area of memory reserved for another program
+
+/Access violation error in Isglassen05 error 31/07/20, due to attempt to access an empty vector address
+
+/look at all at's for track, prefdirs, text etc
+/what about cut & copy, any missing properties? No, all stored in vector AND MAP as is, but the SelectPrefDirMap isn't used
+/what about the pref dir map, when is that compiled? during paste
+/what about Selectvector, is there a map too or just a vector? Just a vector, no map
+
+/->added times with warning logs (in red at top of screen) for more info
+
+/->Changed "Comment" in timetable list box to * + actual comment truncated to list box width - so more meaningful
+
+/added a lot more instrumentation in rotate etc. to help find any more errors that arise in these functions
+
+/added all parameters for pref dirs when flipping etc in response to bug reported by Daniel Gill
+
+/added entry restriction for continuations when a route is set against it
+
+/Added headcode to warning message about 2 or more locations with same name in a service
+
+/Possible problem.  If have 2 or more services with same location name twice or more, and only show message for first, what about second & others? OK, have new panel giving all required information
+
+/Error in location ID in conflict file for Fer entries without a name. OK, had used 'N' instead of AnsiString('N') & gave odd results
+
+/Try to incorporate passes in conflict analysis - 2 entries in LocServiceTimesVector, 1st as arrival & atloc and 2nd as departure & atloc
+
+/Doesn't seem to be a penalty for late exits - ok added in, needed quite a lot of changes including new session file additions
+
+/Added message flags for location elements too long or short so only shown once
+
+/Altered hint for length conversion panel to include 1 mile = 80 chains, 1 chain = 22 yards
+
+/Altered code for finding timetabled location name in case train straddling two different location elements & only one in timetable
+
 VERSION CHANGES AFTER v2.8.0 for v2.9.0
 
 Include on web version page:
@@ -1495,31 +1547,28 @@ CHANGE OF VERSION: (updated November 2020 for the revised site)
 
 Prior to uploading:
 
-1 Increment version number & copyright year  (if required) in Project>Options & AboutUnit.cpp, & ensure references to new version are included in source files (instead of 'after last version').
-2 Update Doxygen files & include graph legend link in pages.html, make sure flowcharts are in files folder & work ok
-3 Update manual & on-screen help if required
-4 Copy DevHistoryPending.txt to DevHistory.txt & ensure all extra text removed & version info changes made
-5 Build & store to local Git repository tagged with latest release version 
-6 Create a new directory 'Release vx.x.x' from earlier release & replace files as follows:
+1 Increment version number & copyright year  (if required) in Project>Options & AboutUnit.cpp.  Do a final build & check.
+2 Update manual & on-screen help if required
+3 Create a new directory 'Release vx.x.x' from earlier release & replace files as follows:
 	readme.txt (reference latest release & update user manual reference & no. of pages if required)
 	Manual vx.x.x .pdf (if updated)
 	Quick start.pdf (if updated)
 	Railways>railway.exe
 	Railway>Help.chm (if updated)
 	In Railway, check have 5 x dlls and 3 x bpls & GNU licence, & that all directories contain the expected files & no extras created if had run from the release folder, especially NO config.txt
-7 Zip the above as Release vx.x.x.zip
+4 Zip the above as Release vx.x.x.zip
 
 On website:
 
-8 Upload new release version zip to 'Media'
-9 Go to 'Base Program'  & edit product 'Railway Operation Simulator' (normally on last page of 'All Products')
+5 Upload new release version zip to 'Media'
+6 Go to 'Base Program'  & edit product 'Railway Operation Simulator' (normally on last page of 'All Products')
 	Update text of page iaw readme.txt (short & full)
 	Category should already be 'Base Program & Documentation'
 	Tag should already be 'Railway Operation Simulator'
 	Image should already be in 'Product image'
 	Product data should already be 'Simple product'
 	TAuto Poster should be 'No', this a plugin that automatically posts to Twitter if set to 'Yes'
-10 Under 'General' tab
+7 Under 'General' tab
 	Click 'Add File' & "Choose file" to enter url of the new zip, give it the version number as its name
 	Move it to the top of the list (need full window to move)
 	Make latest release the current version & last one deprecated
@@ -1529,29 +1578,33 @@ On website:
 	Download expiry should be 'Never'
 	Tax status should be 'None'
 	Tax class  should be 'Zero rate'
-11 Under 'Inventory' tab
+8 Under 'Inventory' tab
 	SKU should be 'RailwayOS-Releases'
 	Stock status should be 'In stock'
 	Neither box should be ticked
-12 Under 'Linked Products' tab Upsells should be empty & Cross sells should be ROS Manuals & TT tutorials
-13 Should be nothing under 'Attributes' tab
-14 Under 'Advanced' tab
+9 Under 'Linked Products' tab Upsells should be empty & Cross sells should be ROS Manuals & TT tutorials
+10 Should be nothing under 'Attributes' tab
+11 Under 'Advanced' tab
 	Purchase note should say 'Please read the included instructions included in the .zip file before contacting us for support. The manuals and tutorials are also available for free download.'
 	Menu order should be 0
 	Enable reviews should be ticked
-15 Preview then update if all ok (best to select update first as otherwise preview shows last version)
-16 If Manual or Quick start or any other file changed upload the new versions to 'Media' as above and add by editing product 'Railway Operation Simulator manuals' as above, SKU is RailwayOS-Manuals. Alter text (short & full) to refer to new version. Update & preview.
-17 Go to 'Version Information' page (uses DiviBuilder), click 'settings' on 'Versions (Accordion)', copy last version then click 'settings' on it, add version number & date as title, then change all text to the new text.  Save the new addition, save changes then update the page & check ok.
-18 Download & check the new release & anything else that's changed
-19 Add a new post for the release with details of main changes - Categories: Railway Operation Simulator, news; Tags Railway Operation Simulator, year, v2x.x.x.  Add 'Download it here' with link to 'Railway Operation Simulator'. TAutoPost set to yes. Preview & schedule release or release immediately.
+12 Preview then update if all ok (best to select update first as otherwise preview shows last version)
+13 If Manual or Quick start or any other file changed upload the new versions to 'Media' as above and add by editing product 'Railway Operation Simulator manuals' as above, SKU is RailwayOS-Manuals. Alter text (short & full) to refer to new version. Update & preview.
+14 Go to 'Version Information' page (uses DiviBuilder), click 'settings' on 'Versions (Accordion)', copy last version then click 'settings' on it, add version number & date as title, then change all text to the new text.  Save the new addition, save changes then update the page & check ok.
+15 Download & check the new release & anything else that's changed
+16 Add a new post for the release with details of main changes - Categories: Railway Operation Simulator, news; Tags Railway Operation Simulator, year, v2x.x.x.  Add 'Download it here' with link to 'Railway Operation Simulator'. TAutoPost set to yes. Preview & schedule release or release immediately.
 
 On GitHub:
 
-15 Update DevHistory.txt with relevant public information if not already done so
-16 Update all files on GitHub clone (after pulling latest commit), ensuring that the .md files are ok and that all doxygen docs included - check unversioned files for possible inclusion
-17 Commit the latest update locally & tag with release version & message 'Update for vx.x.x'
-18 Push to GitHub with 'include tags' ticked
-19 Create a new release on GitHub & include the new zip file
+17 Ensure references to new version are included in source files (instead of 'after last version').
+18 Update Doxygen files & include graph legend link in pages.html (do a 'diff' from previous version & copy across), make sure flowcharts are in files folder & work ok
+19 Copy DevHistoryPending.txt to DevHistory.txt & ensure all extra text removed & version info changes made
+20 Build & store to local Git repository tagged with latest release version 
+21 Update DevHistory.txt with relevant public information if not already done so
+22 Update all files on GitHub clone (after pulling latest commit), ensuring that the .md files are ok and that all doxygen docs included - check unversioned files for possible inclusion
+23 Commit the latest update locally & tag with release version & message 'Update for vx.x.x'
+24 Push to GitHub with 'include tags' ticked
+25 Create a new release on GitHub & include the new zip file
 
 ADDING A NEW PROJECT TO THE USER WEBSITE: (updated November 2020 for the revised site)
 

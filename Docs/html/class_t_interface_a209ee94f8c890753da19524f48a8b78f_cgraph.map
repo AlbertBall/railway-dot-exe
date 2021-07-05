@@ -1,8 +1,9 @@
 <map id="TInterface::SetTrackModeEditMenu" name="TInterface::SetTrackModeEditMenu">
-<area shape="rect" id="node1" title="Enables or disables the initial Edit mode submenu items in Track mode." alt="" coords="5,54,176,95"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="661,32,808,59"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#a488e772a2e2a52820fdbe1d1695e0118" title="Returns true if there are no track elements and no text." alt="" coords="224,61,371,88"/>
-<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="661,91,808,117"/>
-<area shape="rect" id="node4" href="$class_t_track.html#ab20c55ecbc1801614695279daa8da0ba" title="True if there is no active or inactive track in the railway." alt="" coords="427,25,605,66"/>
-<area shape="rect" id="node6" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="419,91,613,117"/>
+<area shape="rect" id="node1" title="Enables or disables the initial Edit mode submenu items in Track mode." alt="" coords="5,87,176,128"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="887,37,1033,63"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a488e772a2e2a52820fdbe1d1695e0118" title="Returns true if there are no track elements and no text." alt="" coords="224,94,371,121"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="887,113,1033,139"/>
+<area shape="rect" id="node4" href="$class_t_track.html#ab20c55ecbc1801614695279daa8da0ba" title="True if there is no active or inactive track in the railway." alt="" coords="419,52,596,93"/>
+<area shape="rect" id="node7" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="644,150,839,177"/>
+<area shape="rect" id="node6" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="660,49,823,75"/>
 </map>

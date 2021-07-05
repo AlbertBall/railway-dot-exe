@@ -6,7 +6,7 @@
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1259,1004,1405,1031"/>
 <area shape="rect" id="node6" href="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a" title="Returns a constant reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ch..." alt="" coords="493,1151,687,1177"/>
 <area shape="rect" id="node7" href="$class_t_all_routes.html#a7eda7a4b535c7538e217bbbc4d878071" title="Retrieve up to two TRouteElementPair entries from Route2MultiMap at H &amp; V, the first as a function re..." alt="" coords="492,854,688,895"/>
-<area shape="rect" id="node11" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="1023,1135,1185,1161"/>
+<area shape="rect" id="node11" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1023,1135,1185,1161"/>
 <area shape="rect" id="node14" href="$class_i_d_int.html#a3c40e609e12caab2063aa7f3ff8b8ea7" title="get the internal integer" alt="" coords="307,945,397,972"/>
 <area shape="rect" id="node15" href="$class_t_all_routes.html#a1913c6b3db0107874816d94a4d77e7a8" title="Returns a route&#39;s position in AllRoutesVector from its ID, throws an error if a matching route isn&#39;t ..." alt="" coords="1011,1186,1197,1227"/>
 <area shape="rect" id="node16" href="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc" title="Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return &#45;1." alt="" coords="997,363,1211,405"/>
@@ -20,5 +20,5 @@
 <area shape="rect" id="node12" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="749,845,936,886"/>
 <area shape="rect" id="node13" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="1005,815,1203,841"/>
 <area shape="rect" id="node18" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="1013,597,1195,638"/>
-<area shape="rect" id="node19" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="1001,663,1207,689"/>
+<area shape="rect" id="node19" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="1001,663,1207,689"/>
 </map>

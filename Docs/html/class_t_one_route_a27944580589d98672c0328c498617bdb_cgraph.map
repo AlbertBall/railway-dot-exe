@@ -6,6 +6,6 @@
 <area shape="rect" id="node7" href="$class_t_track.html#a7331fe3693d4a1f2aa76817e66fba995" title="True if a closed (to trains) level crossing is found at H &amp; V." alt="" coords="525,170,705,197"/>
 <area shape="rect" id="node8" href="$class_t_track.html#a57723388cbfcaf525bf982d8e095949e" title="Set linked LC attributes; 0=closed to trains, 1 = open to trains, 2 = changing state = closed to trai..." alt="" coords="268,272,475,314"/>
 <area shape="rect" id="node4" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="767,188,950,230"/>
-<area shape="rect" id="node6" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="756,254,961,281"/>
+<area shape="rect" id="node6" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="756,254,961,281"/>
 <area shape="rect" id="node9" href="$class_t_track.html#a43c4adf8324c465b90bad0a4dd6761a2" title="Set LC attribute at H &amp; V; 0=closed to trains, 1 = open to trains, 2 = changing state = closed to tra..." alt="" coords="523,280,708,306"/>
 </map>

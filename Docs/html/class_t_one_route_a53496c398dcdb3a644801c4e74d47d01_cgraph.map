@@ -9,7 +9,7 @@
 <area shape="rect" id="node9" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1297,637,1473,679"/>
 <area shape="rect" id="node10" href="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a" title="Returns a constant reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ch..." alt="" coords="1289,855,1482,882"/>
 <area shape="rect" id="node11" href="$class_t_all_routes.html#ab23a53bd95aeb951108a004735b9a45e" title="When attaching a new route section to an existing route, it is sometimes necessary to erase the origi..." alt="" coords="1020,536,1215,577"/>
-<area shape="rect" id="node15" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="1565,1357,1728,1383"/>
+<area shape="rect" id="node15" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1565,1357,1728,1383"/>
 <area shape="rect" id="node16" href="$class_t_all_routes.html#a415c16a43e8e997c82226987e7bffc59" title="Returns a constant reference to the route with ID number RouteID. If no route is found with that ID a..." alt="" coords="1557,891,1737,932"/>
 <area shape="rect" id="node17" href="$class_t_one_pref_dir.html#a11543812cef66a28f4747fb3f8f33f47" title="Return a non&#45;modifiable element at SearchVector position &#39;At&#39;." alt="" coords="1549,956,1744,997"/>
 <area shape="rect" id="node18" href="$class_i_d_int.html#a3c40e609e12caab2063aa7f3ff8b8ea7" title="get the internal integer" alt="" coords="315,906,405,933"/>
@@ -33,7 +33,7 @@
 <area shape="rect" id="node26" href="$class_t_display.html#a6e970089a9419e6bdd12576b6e860c95" title=" " alt="" coords="1561,1610,1733,1637"/>
 <area shape="rect" id="node27" href="$class_t_track.html#a2830b22db25712a80fa55b1546b5df9b" title="Plot platforms if any for a signal graphic &#45; plotted before signal so shows through transparent signa..." alt="" coords="1294,2158,1477,2185"/>
 <area shape="rect" id="node28" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="1555,2285,1738,2327"/>
-<area shape="rect" id="node29" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="1544,2503,1749,2530"/>
+<area shape="rect" id="node29" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="1544,2503,1749,2530"/>
 <area shape="rect" id="node31" href="$class_t_one_route.html#a55e04e36f652344b5215f8a28143c4a3" title="Called by TAllRoutes::SetAllRearwardsSignals to set rearwards signals from a specified starting posit..." alt="" coords="741,1511,960,1552"/>
 <area shape="rect" id="node32" href="$class_t_all_routes.html#afbb161c646677f13755041b895a23982" title="Examines Route2MultiMap for the element at TrackVectorPosition with LinkPos (can be entry or exit)." alt="" coords="1297,1479,1473,1520"/>
 <area shape="rect" id="node33" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="1322,3077,1449,3103"/>

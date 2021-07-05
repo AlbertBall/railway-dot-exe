@@ -6,5 +6,5 @@
 <area shape="rect" id="node5" href="$class_t_train.html#a86107a63225b0500b29e049f13545fff" title="Called by TTrainController::WriteTrainsToImage (called by TInterface::SaveOperatingImage1Click) to ad..." alt="" coords="240,161,413,188"/>
 <area shape="rect" id="node6" href="$class_t_track.html#a5d25871e34f26d3c4c878fd4707ed375" title=" " alt="" coords="490,237,631,264"/>
 <area shape="rect" id="node7" href="$class_t_track.html#ac42bd1e1e148a91396310b1077d2d8e0" title=" " alt="" coords="490,136,631,162"/>
-<area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="479,186,642,213"/>
+<area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="479,186,642,213"/>
 </map>

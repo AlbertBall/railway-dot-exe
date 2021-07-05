@@ -12,7 +12,7 @@
 <area shape="rect" id="node13" href="$class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c" title="loads an int value from the file" alt="" coords="267,813,409,840"/>
 <area shape="rect" id="node14" href="$class_t_utilities.html#a0aac90f10a08736514da3b3e02129e1e" title="loads a string value from the file" alt="" coords="257,864,419,890"/>
 <area shape="rect" id="node15" href="$class_t_one_pref_dir.html#ac5f8d2864f0510cf73cb9883b520ec9f" title="Store a single pref dir element in the vector &amp; map." alt="" coords="253,178,423,219"/>
-<area shape="rect" id="node18" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="509,244,672,270"/>
+<area shape="rect" id="node18" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="509,244,672,270"/>
 <area shape="rect" id="node4" href="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc" title="Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return &#45;1." alt="" coords="484,295,697,336"/>
 <area shape="rect" id="node10" href="$class_t_pref_dir_element.html#ae8ee9f59578f80d23aebfdb9fff041d4" title="determines and loads EXNumber (see above)" alt="" coords="501,463,680,504"/>
 <area shape="rect" id="node16" href="$class_t_one_pref_dir.html#a26a1ee9d1ced0d53e35936097d4896f0" title="Return the vector position of the last element in the vector (i.e. one less than the vector size)" alt="" coords="504,178,677,219"/>

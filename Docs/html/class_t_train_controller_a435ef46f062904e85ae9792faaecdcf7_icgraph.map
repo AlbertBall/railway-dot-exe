@@ -1,7 +1,7 @@
 <map id="TTrainController::GetRepeatTime" name="TTrainController::GetRepeatTime">
 <area shape="rect" id="node1" title="Return the repeating service time." alt="" coords="1979,354,2189,381"/>
 <area shape="rect" id="node2" href="$class_t_train_controller.html#a0445987b1a355de3aef2c21b66d1ed8b" title="populate the ContinuationTrainExpectationMultiMap during timetable loading" alt="" coords="1709,69,1931,111"/>
-<area shape="rect" id="node3" href="$class_t_train_controller.html#a193bc964187b0ae255251d2c7136540a" title="Carry out further detailed timetable consistency checks, return true for success." alt="" coords="1453,71,1617,112"/>
+<area shape="rect" id="node3" href="$class_t_train_controller.html#af52f0033d498268c871980c17a8ddf36" title="Carry out further detailed timetable consistency checks, return true for success." alt="" coords="1453,71,1617,112"/>
 <area shape="rect" id="node6" href="$class_t_train_controller.html#aadffada34a23350d7773bc7735e423a1" title="calculates additional lateness values for trains that haven&#39;t reached their destinations yet" alt="" coords="1719,187,1921,228"/>
 <area shape="rect" id="node10" href="$class_t_train.html#ae34370de578ebd07a217c79d8b67312c" title="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa..." alt="" coords="927,303,1081,330"/>
 <area shape="rect" id="node13" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="685,607,820,634"/>

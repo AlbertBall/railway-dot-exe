@@ -12,7 +12,7 @@
 <area shape="rect" id="node13" href="$class_t_all_routes.html#aa92b37f73176fcf3454688bb15b9f64c" title="Checks whether the preferred direction element at TrackVectorPosition with XLinkPos value is in a loc..." alt="" coords="943,151,1208,207"/>
 <area shape="rect" id="node15" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="1284,383,1427,410"/>
 <area shape="rect" id="node16" href="$class_t_train.html#a5fdef825574f0e546ab25169e9f8445d" title="Plots the train on the display in normal (zoomed&#45;in) mode." alt="" coords="275,573,391,599"/>
-<area shape="rect" id="node21" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="994,637,1157,663"/>
+<area shape="rect" id="node21" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="994,637,1157,663"/>
 <area shape="rect" id="node22" href="$class_t_all_routes.html#aace498b67ccef13364a1afa1f5f15311" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="707,687,895,714"/>
 <area shape="rect" id="node23" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="982,896,1169,937"/>
 <area shape="rect" id="node9" href="$class_t_pref_dir_element.html#acc8674681c7b4eda8ce8551abdae9680" title="picks up the appropriate route graphic" alt="" coords="711,840,890,881"/>

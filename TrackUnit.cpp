@@ -342,7 +342,7 @@ bool TPrefDirElement::EntryExitNumber() // true for valid number
     }
     for(int x = 0; x < 16; x++)
     {
-        if((Entry == EXArray[x][0]) && (Exit == EXArray[x][1]) || (Entry == EXArray[x][1]) && (Exit == EXArray[x][0]))
+        if(((Entry == EXArray[x][0]) && (Exit == EXArray[x][1])) || ((Entry == EXArray[x][1]) && (Exit == EXArray[x][0]))) //added extra brackets round && segments at v2.9.1
         {
             EXNum = x;
         }
@@ -1894,7 +1894,7 @@ bool TTrack::NoActiveOrInactiveTrack(int Caller)
     {
         for(unsigned int x = 0; x < TrackVector.size(); x++)
         {
-            if((TrackVector.at(x).SpeedTag != 0))
+            if((TrackElementAt(1042, x).SpeedTag != 0))
             {
                 TrackPresent = true;
             }
@@ -1920,7 +1920,7 @@ bool TTrack::NoActiveTrack(int Caller)
     {
         for(unsigned int x = 0; x < TrackVector.size(); x++)
         {
-            if((TrackVector.at(x).SpeedTag != 0))
+            if((TrackElementAt(1043, x).SpeedTag != 0))
             {
                 TrackPresent = true;
             }
@@ -2195,20 +2195,20 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
                 ;
             }
             // same platform type already there so above keeps PlatAllowedFlag false
-            else if((TempTrackElement.SpeedTag == 76) && (TopPlatAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
+            else if((TempTrackElement.SpeedTag == 76) && (TopPlatAllowed.Contains(TrackElementAt(1044, VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
             // won't allow a same platform, as TopPlatAllowed not valid for a same platform <--NO, only checks active track, same plat disallowed by first line after if(FoundFlag)
             {
                 PlatAllowedFlag = true;
             }
-            else if((TempTrackElement.SpeedTag == 77) && (BotPlatAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
+            else if((TempTrackElement.SpeedTag == 77) && (BotPlatAllowed.Contains(TrackElementAt(1045, VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
             {
                 PlatAllowedFlag = true;
             }
-            else if((TempTrackElement.SpeedTag == 78) && (LeftPlatAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
+            else if((TempTrackElement.SpeedTag == 78) && (LeftPlatAllowed.Contains(TrackElementAt(1046, VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
             {
                 PlatAllowedFlag = true;
             }
-            else if((TempTrackElement.SpeedTag == 79) && (RightPlatAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
+            else if((TempTrackElement.SpeedTag == 79) && (RightPlatAllowed.Contains(TrackElementAt(1047, VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
             {
                 PlatAllowedFlag = true;
             }
@@ -2242,7 +2242,7 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
 // check if element is a LocationName - OK if placed on an allowable track element, or on a blank element
     if(TempTrackElement.TrackType == NamedNonStationLocation)
     {
-        if((FoundFlag && (NameAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag) ||
+        if((FoundFlag && (NameAllowed.Contains(TrackElementAt(1048, VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag) ||
            (!FoundFlag && !InactiveFoundFlag))
         // need to add && !NonStationOrLevelCrossingPresent, or better - !InactiveFoundFlag to above FoundFlag condition <-- OK done
         {
@@ -2273,10 +2273,10 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
 // check if a level crossing - OK if placed on a plain straight track
     if(TempTrackElement.TrackType == LevelCrossing)
     {
-        if(FoundFlag && (LevelCrossingAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag)
+        if(FoundFlag && (LevelCrossingAllowed.Contains(TrackElementAt(1049, VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag)
         {
             TrackPush(11, TempTrackElement);
-            PlotRaisedLinkedLevelCrossingBarriers(0, TrackVector.at(VecPos).SpeedTag, TempTrackElement.HLoc, TempTrackElement.VLoc, Display); //always plots red
+            PlotRaisedLinkedLevelCrossingBarriers(0, TrackElementAt(1050, VecPos).SpeedTag, TempTrackElement.HLoc, TempTrackElement.VLoc, Display); //always plots red
 // no need for reference to LC element as can't be open
             TrackLinkingRequiredFlag = true;
             Utilities->CallLogPop(1907);
@@ -2407,20 +2407,20 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
                 ;
             }
             // same platform type already there so above keeps PlatAllowedFlag false
-            else if((TempTrackElement.SpeedTag == 76) && (TopPlatAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
+            else if((TempTrackElement.SpeedTag == 76) && (TopPlatAllowed.Contains(TrackElementAt(1051, VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
             // won't allow a same platform, as TopPlatAllowed not valid for a same platform <--NO, only checks active track, same plat disallowed by first line after if(FoundFlag)
             {
                 PlatAllowedFlag = true;
             }
-            else if((TempTrackElement.SpeedTag == 77) && (BotPlatAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
+            else if((TempTrackElement.SpeedTag == 77) && (BotPlatAllowed.Contains(TrackElementAt(1052, VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
             {
                 PlatAllowedFlag = true;
             }
-            else if((TempTrackElement.SpeedTag == 78) && (LeftPlatAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
+            else if((TempTrackElement.SpeedTag == 78) && (LeftPlatAllowed.Contains(TrackElementAt(1053, VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
             {
                 PlatAllowedFlag = true;
             }
-            else if((TempTrackElement.SpeedTag == 79) && (RightPlatAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
+            else if((TempTrackElement.SpeedTag == 79) && (RightPlatAllowed.Contains(TrackElementAt(1054, VecPos).SpeedTag)) && !NonStationOrLevelCrossingPresent)
             {
                 PlatAllowedFlag = true;
             }
@@ -2457,7 +2457,7 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
 // check if element is a LocationName - OK if placed on an allowable track element, or on a blank element
     if(TempTrackElement.TrackType == NamedNonStationLocation)
     {
-        if((FoundFlag && (NameAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag) ||
+        if((FoundFlag && (NameAllowed.Contains(TrackElementAt(1055, VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag) ||
            (!FoundFlag && !InactiveFoundFlag))
         // need to add && !NonStationOrLevelCrossingPresent, or better - !InactiveFoundFlag to above FoundFlag condition <-- OK done
         {
@@ -2491,10 +2491,10 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
 // check if a level crossing - OK if placed on a plain straight track
     if(TempTrackElement.TrackType == LevelCrossing)
     {
-        if(FoundFlag && (LevelCrossingAllowed.Contains(TrackVector.at(VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag)
+        if(FoundFlag && (LevelCrossingAllowed.Contains(TrackElementAt(1056, VecPos).SpeedTag)) && !PlatformPresent && !InactiveFoundFlag)
         {
             TrackPush(14, TempTrackElement);
-            PlotRaisedLinkedLevelCrossingBarriers(3, TrackVector.at(VecPos).SpeedTag, TempTrackElement.HLoc, TempTrackElement.VLoc, Display); //always plots red
+            PlotRaisedLinkedLevelCrossingBarriers(3, TrackElementAt(1057, VecPos).SpeedTag, TempTrackElement.HLoc, TempTrackElement.VLoc, Display); //always plots red
 // no need for reference to LC element as can't be open
             TrackLinkingRequiredFlag = true;
             Utilities->CallLogPop(2068);
@@ -2646,9 +2646,9 @@ bool TTrack::TryToConnectTrack(int Caller, bool &LocError, int &HLoc, int &VLoc,
     ContinuationNameMap.clear();
     for(int x = 0; x < Track->TrackVectorSize(); x++)
     {
-        if((Track->TrackVector.at(x).TrackType == Continuation) && (Track->TrackVector.at(x).ActiveTrackElementName != ""))
+        if((Track->TrackElementAt(1058, x).TrackType == Continuation) && (Track->TrackElementAt(1059, x).ActiveTrackElementName != ""))
         {
-            TempMapPair.first = Track->TrackVector.at(x).ActiveTrackElementName;
+            TempMapPair.first = Track->TrackElementAt(1060, x).ActiveTrackElementName;
             TempMapPair.second = 'x'; // unused
             ContinuationNameMap.insert(TempMapPair);
         }
@@ -2669,35 +2669,35 @@ bool TTrack::ErrorInTrackBeforeSetGaps(int Caller, int &HLoc, int &VLoc)
     {
         for(unsigned int y = 0; y < 4; y++) // check all links for each element
         {
-            if(TrackVector.at(x).Link[y] <= 0)
+            if(TrackElementAt(1061, x).Link[y] <= 0)
             {
                 continue; // no link
             }
-            if(TrackVector.at(x).Config[y] == End)
+            if(TrackElementAt(1062, x).Config[y] == End)
             {
                 continue; // buffer or continuation
             }
-            if(TrackVector.at(x).Config[y] == Gap)
+            if(TrackElementAt(1063, x).Config[y] == Gap)
             {
                 continue; // gap jump
             }
             // get required H & V for track element joining link 'y'
-            NewHLoc = TrackVector.at(x).HLoc + LinkHVArray[TrackVector.at(x).Link[y]][0];
-            NewVLoc = TrackVector.at(x).VLoc + LinkHVArray[TrackVector.at(x).Link[y]][1];
+            NewHLoc = TrackElementAt(1064, x).HLoc + LinkHVArray[TrackElementAt(1065, x).Link[y]][0];
+            NewVLoc = TrackElementAt(1066, x).VLoc + LinkHVArray[TrackElementAt(1067, x).Link[y]][1];
             // find track element if present
             ConnectionFoundFlag = false;
             for(unsigned int z = 0; z < TrackVector.size(); z++)
             {
 // if(TrackElementAt(5, z).TrackType == Platform)
 // continue;   //skip platforms
-                if((TrackVector.at(z).HLoc == NewHLoc) && (TrackVector.at(z).VLoc == NewVLoc))
+                if((TrackElementAt(1068, z).HLoc == NewHLoc) && (TrackElementAt(1069, z).VLoc == NewVLoc))
                 {
                     ConnectionFoundFlag = true;
                     // find connecting link in the newly found track element if there is one
                     LinkFoundFlag = false;
                     for(unsigned int a = 0; a < 4; a++)
                     {
-                        if(TrackVector.at(z).Link[a] == (10 - TrackVector.at(x).Link[y]))
+                        if(TrackElementAt(1070, z).Link[a] == (10 - TrackElementAt(1071, x).Link[y]))
                         {
                             LinkFoundFlag = true;
                         }
@@ -2705,20 +2705,20 @@ bool TTrack::ErrorInTrackBeforeSetGaps(int Caller, int &HLoc, int &VLoc)
                     // if there isn't a corresponding link set the invert values for the offending element
                     if(!LinkFoundFlag)
                     {
-                        HLoc = TrackVector.at(x).HLoc;
-                        VLoc = TrackVector.at(x).VLoc;
+                        HLoc = TrackElementAt(1072, x).HLoc;
+                        VLoc = TrackElementAt(1073, x).VLoc;
                         Utilities->CallLogPop(441);
                         return(true);
                     }
                     break; // success, so break out of 'z' loop
-                } // if((TrackVector.at(z).HLoc== NewHLoc) &&....
+                } // if((TrackElementAt(, z).HLoc== NewHLoc) &&....
 
             } // for z...
               // if there isn't a connection set the invert values for the offending element
             if(!ConnectionFoundFlag)
             {
-                HLoc = TrackVector.at(x).HLoc;
-                VLoc = TrackVector.at(x).VLoc;
+                HLoc = TrackElementAt(1074, x).HLoc;
+                VLoc = TrackElementAt(1075, x).VLoc;
                 Utilities->CallLogPop(442);
                 return(true);
             }
@@ -2739,7 +2739,7 @@ bool TTrack::FindNonPlatformMatch(int Caller, int HLoc, int VLoc, int &Position,
     Position = GetVectorPositionFromTrackMap(13, HLoc, VLoc, FoundFlag);
     if(FoundFlag)
     {
-        TrackElement = TrackVector.at(Position);
+        TrackElement = TrackElementAt(1076, Position);
     }
     Utilities->CallLogPop(444);
     return(FoundFlag);
@@ -2792,7 +2792,7 @@ int TTrack::NumberOfGaps(int Caller)
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).TrackType == GapJump)
+        if(TrackElementAt(1077, x).TrackType == GapJump)
         {
             Count++;
         }
@@ -2816,24 +2816,24 @@ bool TTrack::ResetConnClkCheckUnsetGapJumps(int Caller)
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).TrackType != GapJump)
+        if(TrackElementAt(1078, x).TrackType != GapJump)
         {
             for(unsigned int y = 0; y < 4; y++)
             {
-                TrackVector.at(x).Conn[y] = -1;
-                TrackVector.at(x).ConnLinkPos[y] = -1;
+                TrackElementAt(1079, x).Conn[y] = -1;
+                TrackElementAt(1080, x).ConnLinkPos[y] = -1;
             }
         }
         else // GapJump
         {
-// int tempint = TrackVector.at(x).Conn[0);
+// int tempint = TrackElementAt(, x).Conn[0);
 
-            if(TrackVector.at(x).Conn[0] == -1) // unset if -1
+            if(TrackElementAt(1081, x).Conn[0] == -1) // unset if -1
             {
                 for(unsigned int y = 0; y < 4; y++)
                 {
-                    TrackVector.at(x).Conn[y] = -1;
-                    TrackVector.at(x).ConnLinkPos[y] = -1;
+                    TrackElementAt(1082, x).Conn[y] = -1;
+                    TrackElementAt(1083, x).ConnLinkPos[y] = -1;
                 }
                 UnsetGaps = true;
                 continue; // to next 'x'
@@ -2842,30 +2842,30 @@ bool TTrack::ResetConnClkCheckUnsetGapJumps(int Caller)
             {
                 for(unsigned int y = 1; y < 4; y++) // reset the non-gap values anyway, gap always at position 0
                 {
-                    TrackVector.at(x).Conn[y] = -1;
-                    TrackVector.at(x).ConnLinkPos[y] = -1;
+                    TrackElementAt(1084, x).Conn[y] = -1;
+                    TrackElementAt(1085, x).ConnLinkPos[y] = -1;
                 }
 
-                if(TrackVector.at(TrackVector.at(x).Conn[0]).TrackType != GapJump)
+                if(TrackElementAt(1086, TrackElementAt(1104, x).Conn[0]).TrackType != GapJump)
                 // check that the element pointed to by the gap link is a GapJump & if not clear Conns & CLks & reset Lk[0]
                 {
                     for(unsigned int y = 0; y < 4; y++)
                     {
-                        TrackVector.at(x).Conn[y] = -1;
-                        TrackVector.at(x).ConnLinkPos[y] = -1;
+                        TrackElementAt(1087, x).Conn[y] = -1;
+                        TrackElementAt(1088, x).ConnLinkPos[y] = -1;
                     }
                     UnsetGaps = true;
                     continue; // to next 'x'
                 }
 // here if gap connection is itself a GapJump
-                if(TrackVector.at(TrackVector.at(x).Conn[0]).Conn[0] != (int)x)
+                if(TrackElementAt(1089, TrackElementAt(1105, x).Conn[0]).Conn[0] != (int)x)
                 // check that the element pointed to by the gap link is a GapJump & that its gap link points back to 'x'
                 // if not clear Conns & CLks & reset Lk[0]
                 {
                     for(unsigned int y = 0; y < 4; y++)
                     {
-                        TrackVector.at(x).Conn[y] = -1;
-                        TrackVector.at(x).ConnLinkPos[y] = -1;
+                        TrackElementAt(1090, x).Conn[y] = -1;
+                        TrackElementAt(1091, x).ConnLinkPos[y] = -1;
                     }
                     UnsetGaps = true;
                     continue; // to next 'x'
@@ -3188,7 +3188,7 @@ void TTrack::SaveTrack(int Caller, std::ofstream& VecFile, bool GraphicsFollow)
     }
     for(unsigned int x = 0; x < (TrackVector.size()); x++)
     {
-        TrackElement = TrackVector.at(x);
+        TrackElement = TrackElementAt(1092, x);
         VecFile << x << '\n'; // this is the TrackVectorNumber - extra, so easier to identify in the file
         VecFile << TrackElement.SpeedTag << '\n';
         VecFile << TrackElement.HLoc << '\n';
@@ -3249,7 +3249,7 @@ void TTrack::SaveTrack(int Caller, std::ofstream& VecFile, bool GraphicsFollow)
     VecFile << "**Inactive elements**" << '\0' << '\n'; // extra
     for(unsigned int x = 0; x < (InactiveTrackVector.size()); x++)
     {
-        InactiveTrackElement = InactiveTrackVector.at(x);
+        InactiveTrackElement = InactiveTrackElementAt(136, x);
         VecFile << x << '\n'; // this is the Inactive TrackVectorNumber - extra
         VecFile << InactiveTrackElement.SpeedTag << '\n';
         VecFile << InactiveTrackElement.HLoc << '\n';
@@ -4330,16 +4330,16 @@ bool TTrack::FindAndHighlightAnUnsetGap(int Caller) // true if find one
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FindAndHighlightAnUnsetGap");
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).TrackType == GapJump)
+        if(TrackElementAt(1093, x).TrackType == GapJump)
         {
-            if(TrackVector.at(x).Conn[0] > -1)
+            if(TrackElementAt(1094, x).Conn[0] > -1)
             {
                 continue; // to next 'x' value as this element has already been set
             }
             // here if identify a GapJump element not yet set
             GapPos = x;
-            GapHLoc = TrackVector.at(x).HLoc;
-            GapVLoc = TrackVector.at(x).VLoc;
+            GapHLoc = TrackElementAt(1095, x).HLoc;
+            GapVLoc = TrackElementAt(1096, x).VLoc;
             // highlight it
             ShowSelectedGap(2, Display);
             Utilities->CallLogPop(469);
@@ -4374,15 +4374,15 @@ bool TTrack::FindSetAndDisplayMatchingGap(int Caller, int HLoc, int VLoc) // tru
         Utilities->CallLogPop(473);
         return(false); // selected original gap
     }
-    if(TrackVector.at(Position).Conn[0] != -1)
+    if(TrackElementAt(1097, Position).Conn[0] != -1)
     {
         Utilities->CallLogPop(474);
         return(false); // already selected
     }
-    TrackVector.at(Position).Conn[0] = GapPos; // set Conn[0] at Position to GapPos & ConnLinkPos[0] to 0
-    TrackVector.at(Position).ConnLinkPos[0] = 0;
-    TrackVector.at(GapPos).Conn[0] = Position; // set other one similarly
-    TrackVector.at(GapPos).ConnLinkPos[0] = 0;
+    TrackElementAt(1098, Position).Conn[0] = GapPos; // set Conn[0] at Position to GapPos & ConnLinkPos[0] to 0
+    TrackElementAt(1099, Position).ConnLinkPos[0] = 0;
+    TrackElementAt(1100, GapPos).Conn[0] = Position; // set other one similarly
+    TrackElementAt(1101, GapPos).ConnLinkPos[0] = 0;
 // now highlight the selected location
     Display->Ellipse(0, HLoc * 16, VLoc * 16, clB0G5R0);
     Utilities->CallLogPop(475);
@@ -4402,16 +4402,16 @@ bool TTrack::GapsUnset(int Caller)
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).TrackType == GapJump)
+        if(TrackElementAt(1102, x).TrackType == GapJump)
         {
-            if(TrackVector.at(x).Conn[0] == -1) // unset if -1 (Gap always at position 0)
+            if(TrackElementAt(1103, x).Conn[0] == -1) // unset if -1 (Gap always at position 0)
             {
                 Utilities->CallLogPop(477);
                 return(true);
             }
             else // set, but may not have matching element, or that element may not be set
             {
-                if(TrackVector.at(TrackVector.at(x).Conn[0]).TrackType != GapJump)
+                if(TrackElementAt(1106, TrackElementAt(1107, x).Conn[0]).TrackType != GapJump)
                 // check that the element pointed to by the gap link is a GapJump
                 {
                     ShowMessage("Error - gap connected to a non-gap.  Railway file is corrupt, further use may cause a system crash");
@@ -4419,7 +4419,7 @@ bool TTrack::GapsUnset(int Caller)
                     return(false);
                 }
 // here if gap connection is itself a GapJump
-                if(TrackVector.at(TrackVector.at(x).Conn[0]).Conn[0] != (int)x)
+                if(TrackElementAt(1108, TrackElementAt(1109, x).Conn[0]).Conn[0] != (int)x)
                 // check that the element pointed to by the gap link is a GapJump & that its gap link
                 // points back to 'x'
                 {
@@ -4428,7 +4428,7 @@ bool TTrack::GapsUnset(int Caller)
                 }
 // here if gap connection itself points back to 'x' so these two GapJumps match properly
             }
-        } // if(TrackVector.at(x).TrackType == GapJump)
+        } // if(TrackElementAt(, x).TrackType == GapJump)
 
     } // for x...
     Utilities->CallLogPop(479);
@@ -4442,7 +4442,7 @@ bool TTrack::NoGaps(int Caller) // returns true if there are no gaps
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NoGaps");
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).TrackType == GapJump)
+        if(TrackElementAt(1110, x).TrackType == GapJump)
         {
             Utilities->CallLogPop(1105);
             return(false);
@@ -4459,7 +4459,7 @@ bool TTrack::NoNamedLocationElements(int Caller) // returns true if there are no
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NoLocations");
     for(unsigned int x = 0; x < InactiveTrackVector.size(); x++)
     {
-        if(InactiveTrackVector.at(x).FixedNamedLocationElement)
+        if(InactiveTrackElementAt(137, x).FixedNamedLocationElement)
         {
             Utilities->CallLogPop(1107);
             return(false);
@@ -4467,7 +4467,7 @@ bool TTrack::NoNamedLocationElements(int Caller) // returns true if there are no
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).FixedNamedLocationElement)
+        if(TrackElementAt(1111, x).FixedNamedLocationElement)
         {
             Utilities->CallLogPop(1108);
             return(false);
@@ -4486,9 +4486,9 @@ bool TTrack::LocationsNotNamed(int Caller)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LocationsNotNamed");
     for(unsigned int x = 0; x < InactiveTrackVector.size(); x++)
     {
-        if(InactiveTrackVector.at(x).FixedNamedLocationElement)
+        if(InactiveTrackElementAt(138, x).FixedNamedLocationElement)
         {
-            if(InactiveTrackVector.at(x).LocationName == "")
+            if(InactiveTrackElementAt(139, x).LocationName == "")
             {
                 Utilities->CallLogPop(1110);
                 return(true);
@@ -4497,9 +4497,9 @@ bool TTrack::LocationsNotNamed(int Caller)
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).FixedNamedLocationElement)
+        if(TrackElementAt(1112, x).FixedNamedLocationElement)
         {
-            if(TrackVector.at(x).LocationName == "")
+            if(TrackElementAt(1113, x).LocationName == "")
             {
                 Utilities->CallLogPop(1111);
                 return(true);
@@ -4531,24 +4531,24 @@ void TTrack::ResetAnyNonMatchingGaps(int Caller)
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).TrackType == GapJump)
+        if(TrackElementAt(1114, x).TrackType == GapJump)
         {
-            if(TrackVector.at(x).Conn[0] > -1) // set
+            if(TrackElementAt(1115, x).Conn[0] > -1) // set
             {
-                if(TrackVector.at(TrackVector.at(x).Conn[0]).TrackType != GapJump)
+                if(TrackElementAt(1116, TrackElementAt(1117, x).Conn[0]).TrackType != GapJump)
                 // check that the element pointed to by the gap link is a GapJump & if not clear Conns & CLks
                 {
-                    TrackVector.at(x).Conn[0] = -1;
-                    TrackVector.at(x).ConnLinkPos[0] = -1;
+                    TrackElementAt(1118, x).Conn[0] = -1;
+                    TrackElementAt(1119, x).ConnLinkPos[0] = -1;
                     continue; // to next 'x'
                 }
 // here if gap connection is itself a GapJump
-                if(TrackVector.at(TrackVector.at(x).Conn[0]).Conn[0] != (int)x)
+                if(TrackElementAt(1120, TrackElementAt(1349, x).Conn[0]).Conn[0] != (int)x)
                 // check that the element pointed to by the gap link is a GapJump & that its gap link points back to 'x'
                 // if not clear Conns & CLks
                 {
-                    TrackVector.at(x).Conn[0] = -1;
-                    TrackVector.at(x).ConnLinkPos[0] = -1;
+                    TrackElementAt(1121, x).Conn[0] = -1;
+                    TrackElementAt(1122, x).ConnLinkPos[0] = -1;
                     continue; // to next 'x'
                 }
 // here if gap connection itself points back to 'x' so these two GapJumps match properly
@@ -4568,9 +4568,9 @@ void TTrack::ResetSignals(int Caller)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ResetSignals");
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).TrackType == SignalPost)
+        if(TrackElementAt(1123, x).TrackType == SignalPost)
         {
-            TrackVector.at(x).Attribute = 0;
+            TrackElementAt(1124, x).Attribute = 0;
         }
     }
     Utilities->CallLogPop(483);
@@ -4583,9 +4583,9 @@ void TTrack::ResetPoints(int Caller)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ResetPoints");
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).TrackType == Points)
+        if(TrackElementAt(1125, x).TrackType == Points)
         {
-            TrackVector.at(x).Attribute = 0;
+            TrackElementAt(1126, x).Attribute = 0;
         }
     }
     Utilities->CallLogPop(484);
@@ -4623,7 +4623,7 @@ bool TTrack::RepositionAndMapTrack(int Caller) // doesn't involve InactiveTrack
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).TrackType != Erase)
+        if(TrackElementAt(1127, x).TrackType != Erase)
         {
             NonZeroCount++;
         }
@@ -4638,8 +4638,8 @@ bool TTrack::RepositionAndMapTrack(int Caller) // doesn't involve InactiveTrack
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        TrackMapKeyPair.first = TrackVector.at(x).HLoc;
-        TrackMapKeyPair.second = TrackVector.at(x).VLoc;
+        TrackMapKeyPair.first = TrackElementAt(1128, x).HLoc;
+        TrackMapKeyPair.second = TrackElementAt(1129, x).VLoc;
         TrackMapEntry.first = TrackMapKeyPair;
         TrackMapEntry.second = x;
         if(!(TrackMap.insert(TrackMapEntry).second))
@@ -4652,8 +4652,8 @@ bool TTrack::RepositionAndMapTrack(int Caller) // doesn't involve InactiveTrack
     {
         for(unsigned int y = 0; y < 4; y++)
         {
-            TrackVector.at(x).Conn[y] = -1;
-            TrackVector.at(x).ConnLinkPos[y] = -1;
+            TrackElementAt(1130, x).Conn[y] = -1;
+            TrackElementAt(1131, x).ConnLinkPos[y] = -1;
         }
     }
     RebuildLocationNameMultiMap(1); // to ensure all position entries correct after track vector changes
@@ -4680,17 +4680,17 @@ void TTrack::BuildGapMapFromTrackVector(int Caller) // Map contains one entry fo
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).TrackType == GapJump)
+        if(TrackElementAt(1132, x).TrackType == GapJump)
         {
-            GapMapKeyPair.first = TrackVector.at(x).HLoc;
-            GapMapKeyPair.second = TrackVector.at(x).VLoc;
+            GapMapKeyPair.first = TrackElementAt(1133, x).HLoc;
+            GapMapKeyPair.second = TrackElementAt(1134, x).VLoc;
             GapMapEntry.first = GapMapKeyPair;
-            if(TrackVector.at(x).Conn[0] == -1)
+            if(TrackElementAt(1135, x).Conn[0] == -1)
             {
                 throw Exception("Error - Gap connection == -1  Can't build GapMap");
             }
-            GapMapValuePair.first = TrackElementAt(7, TrackVector.at(x).Conn[0]).HLoc;
-            GapMapValuePair.second = TrackElementAt(8, TrackVector.at(x).Conn[0]).VLoc;
+            GapMapValuePair.first = TrackElementAt(7, TrackElementAt(1136, x).Conn[0]).HLoc;
+            GapMapValuePair.second = TrackElementAt(8, TrackElementAt(1137, x).Conn[0]).VLoc;
             GapMapEntry.second = GapMapValuePair;
             if(GapMap.find(GapMapValuePair) == GapMap.end()) // if ValuePair already included as a key then result won't be end()
             {
@@ -4711,21 +4711,21 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
 
     for(unsigned int x = 0; x < TrackVector.size(); x++) // check all elements in turn
     {
-        if(TrackVector.at(x).TrackType == Erase) //Erase isn't used any more as a track type
+        if(TrackElementAt(1138, x).TrackType == Erase) //Erase isn't used any more as a track type
         {
             continue; // skip blank elements
         }
 // check footcrossing linkages
-        if(TrackVector.at(x).TrackType == FootCrossing)
+        if(TrackElementAt(1139, x).TrackType == FootCrossing)
         {
-            if(!CheckFootCrossingLinks(1, TrackVector.at(x)))
+            if(!CheckFootCrossingLinks(1, TrackElementAt(1140, x)))
             {
                 ShowMessage(
                     "Footbridge or underpass connection error.  Each end must connect to a platform, concourse "
                     "or other footbridge or underpass, and they can't connect to each other (i.e. a footbridge "
                     "can't connect to an underpass or vice versa)");
-                HLoc = TrackVector.at(x).HLoc;
-                VLoc = TrackVector.at(x).VLoc;
+                HLoc = TrackElementAt(1141, x).HLoc;
+                VLoc = TrackElementAt(1142, x).VLoc;
                 LocError = true;
                 Utilities->CallLogPop(493);
                 return(false);
@@ -4734,30 +4734,30 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
         for(unsigned int y = 0; y < 4; y++) // check all links for each element
         {
             CheckForLinks = false;
-            if(TrackVector.at(x).Link[y] <= 0)
+            if(TrackElementAt(1143, x).Link[y] <= 0)
             {
                 continue; // no link
             }
-            if((TrackVector.at(x).TrackType == Buffers) && (TrackVector.at(x).Config[y] == End))
+            if((TrackElementAt(1144, x).TrackType == Buffers) && (TrackElementAt(1145, x).Config[y] == End))
             {
                 continue; // buffer
             }
-            if(TrackVector.at(x).Config[y] == Gap)
+            if(TrackElementAt(1146, x).Config[y] == Gap)
             {
                 continue; // gaps set later from GapMap
 
             }
             // get required H & V for track element joining link 'y'
-            int NewHLoc = TrackVector.at(x).HLoc + LinkHVArray[TrackVector.at(x).Link[y]][0];
-            int NewVLoc = TrackVector.at(x).VLoc + LinkHVArray[TrackVector.at(x).Link[y]][1];
+            int NewHLoc = TrackElementAt(1147, x).HLoc + LinkHVArray[TrackElementAt(1148, x).Link[y]][0];
+            int NewVLoc = TrackElementAt(1149, x).VLoc + LinkHVArray[TrackElementAt(1150, x).Link[y]][1];
             // find track element if present
             bool ConnectionFoundFlag;
             int VecPos = GetVectorPositionFromTrackMap(14, NewHLoc, NewVLoc, ConnectionFoundFlag);
-            if((TrackVector.at(x).TrackType == Continuation) && (y == 0) && ConnectionFoundFlag)
+            if((TrackElementAt(1151, x).TrackType == Continuation) && (y == 0) && ConnectionFoundFlag)
             {
                 ShowMessage("Can't have a track element adjacent to a continuation exit");
-                HLoc = TrackVector.at(x).HLoc;
-                VLoc = TrackVector.at(x).VLoc;
+                HLoc = TrackElementAt(1152, x).HLoc;
+                VLoc = TrackElementAt(1153, x).VLoc;
                 LocError = true;
                 if(FinalCall)
                 {
@@ -4766,49 +4766,49 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                 Utilities->CallLogPop(1539);
                 return(false);
             }
-            if((TrackVector.at(x).TrackType == Continuation) && (TrackVector.at(x).Config[y] == End))
+            if((TrackElementAt(1154, x).TrackType == Continuation) && (TrackElementAt(1155, x).Config[y] == End))
             {
                 continue;
             }
             if(ConnectionFoundFlag)
             {
-                TrackVector.at(x).Conn[y] = VecPos;
+                TrackElementAt(1156, x).Conn[y] = VecPos;
                 // find connecting link in the newly found track element if there is one & make buffer & adjacent signals check
                 bool LinkFoundFlag = false;
-                if((TrackVector.at(x).Config[1 - y] == Signal) && IsLCAtHV(50, TrackVector.at(VecPos).HLoc, TrackVector.at(VecPos).VLoc))
+                if((TrackElementAt(1157, x).Config[1 - y] == Signal) && IsLCAtHV(50, TrackElementAt(1158, VecPos).HLoc, TrackElementAt(1350, VecPos).VLoc))
                 {
                     // new in v2.4.0 - Krizar (Kristian Zarebski) found this error
                     ShowMessage("Can't have an exit signal next to a level crossing - it can cause the train to foul the crossing in some circumstances");
                     // otherwise when single route element removed in front of train the LC will start to close and the train will crash
                 }
-                else if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost) || (TrackVector.at(x).TrackType == Crossover))
-                        && (TrackVector.at(VecPos).TrackType == Buffers))
+                else if(((TrackElementAt(1159, x).TrackType == Points) || (TrackElementAt(1160, x).TrackType == SignalPost) || (TrackElementAt(1161, x).TrackType == Crossover))
+                        && (TrackElementAt(1162, VecPos).TrackType == Buffers))
                 {
                     ShowMessage("Can't have points, crossover or signal next to buffers - need room for a train without fouling");
                     // need room for a train (2 elements) without fouling points or signals
                 }
-                else if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost) || (TrackVector.at(x).TrackType == Crossover) ||
-                         (TrackVector.at(x).TrackType == Bridge)) && (TrackVector.at(VecPos).TrackType == Continuation))
+                else if(((TrackElementAt(1163, x).TrackType == Points) || (TrackElementAt(1164, x).TrackType == SignalPost) || (TrackElementAt(1165, x).TrackType == Crossover) ||
+                         (TrackElementAt(1166, x).TrackType == Bridge)) && (TrackElementAt(1167, VecPos).TrackType == Continuation))
                 {
                     ShowMessage("Can't have points, crossover, bridge or signal next to a continuation - it can cause route setting problems");
                     // route setting won't allow an end of route selection adjacent to an existing route, which would happen
                     // if continuation next to a signal; also none of these can be a named location, and a continuation can
                     // be named but needs the adjacent element named too
                 }
-                else if((TrackVector.at(x).TrackType == SignalPost) && (TrackVector.at(VecPos).TrackType == SignalPost) &&
-                        (TrackVector.at(x).SpeedTag == TrackVector.at(VecPos).SpeedTag))
+                else if((TrackElementAt(1168, x).TrackType == SignalPost) && (TrackElementAt(1169, VecPos).TrackType == SignalPost) &&
+                        (TrackElementAt(1170, x).SpeedTag == TrackElementAt(1171, VecPos).SpeedTag))
                 {
                     ShowMessage("Can't have two same-direction signals adjacent to each other as there is no room for a train between them");
                     // can't join a route to an existing route where the second signal is in an existing route and the first signal is
                     // selected - appears as trying to select a signal that is not the next in line from the starting signal
                 }
-                else if((TrackVector.at(x).Config[y] == Signal) && (TrackVector.at(VecPos).TrackType == Bridge) && !OverrideAndHideSignalBridgeMessage)
+                else if((TrackElementAt(1172, x).Config[y] == Signal) && (TrackElementAt(1173, VecPos).TrackType == Bridge) && !OverrideAndHideSignalBridgeMessage)
                 {
                     ShowMessage("Signal facing a bridge - routes can't be truncated to this or other such signals.\n\nThis restriction can be removed or reinstated by pressing\nCTRL ALT 5.  When removed this message will not be shown again.");
                     // can't join a route to an existing route where the second signal is in an existing route and the first signal is
                     // selected - appears as trying to select a signal that is not the next in line from the starting signal
                 }
-                else if(IsLCAtHV(45, TrackVector.at(x).HLoc, TrackVector.at(x).VLoc) && IsLCAtHV(46, TrackVector.at(VecPos).HLoc, TrackVector.at(VecPos).VLoc))
+                else if(IsLCAtHV(45, TrackElementAt(1174, x).HLoc, TrackElementAt(1175, x).VLoc) && IsLCAtHV(46, TrackElementAt(1176, VecPos).HLoc, TrackElementAt(1177, VecPos).VLoc))
                 // true if a level crossing is present at both x and VecPos - can't have two adjacent level crossings on the same track
                 {
                     ShowMessage("Can't have two level crossings adjacent to each other on the same track");
@@ -4821,10 +4821,10 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                 {
                     for(unsigned int a = 0; a < 4; a++)
                     {
-                        if((TrackVector.at(VecPos).Link[a] == (10 - TrackVector.at(x).Link[y])) && (TrackVector.at(VecPos).Config[a] != End) &&
-                           (TrackVector.at(VecPos).Config[a] != Gap))
+                        if((TrackElementAt(1178, VecPos).Link[a] == (10 - TrackElementAt(1179, x).Link[y])) && (TrackElementAt(1180, VecPos).Config[a] != End) &&
+                           (TrackElementAt(1181, VecPos).Config[a] != Gap))
                         {
-                            TrackVector.at(x).ConnLinkPos[y] = a;
+                            TrackElementAt(1182, x).ConnLinkPos[y] = a;
                             // note - this ensures that if the connecting element is a leading point
                             // then the ConnLinkPos value is 0 rather than 2, since 'a' starts at 0
                             // (Points have the same link value for both [0] and [2])
@@ -4836,8 +4836,8 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                 // if there isn't a corresponding link, or buffer check fails, set the invert values for the offending element
                 if(!LinkFoundFlag)
                 {
-                    HLoc = TrackVector.at(x).HLoc;
-                    VLoc = TrackVector.at(x).VLoc;
+                    HLoc = TrackElementAt(1183, x).HLoc;
+                    VLoc = TrackElementAt(1184, x).VLoc;
                     LocError = true;
                     if(FinalCall)
                     {
@@ -4850,8 +4850,8 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
             // if there isn't a connection set the invert values for the offending element
             else // if(ConnectionFoundFlag)
             {
-                HLoc = TrackVector.at(x).HLoc;
-                VLoc = TrackVector.at(x).VLoc;
+                HLoc = TrackElementAt(1185, x).HLoc;
+                VLoc = TrackElementAt(1186, x).VLoc;
                 LocError = true;
                 if(FinalCall)
                 {
@@ -4872,27 +4872,27 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if((TrackVector.at(x).Link[0] > 0) && (TrackVector.at(x).Config[0] != End) && (TrackVector.at(x).Conn[0] == -1))
+        if((TrackElementAt(1187, x).Link[0] > 0) && (TrackElementAt(1188, x).Config[0] != End) && (TrackElementAt(1189, x).Conn[0] == -1))
         {
             ConnErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[1] > 0) && (TrackVector.at(x).Config[1] != End) && (TrackVector.at(x).Conn[1] == -1))
+        if((TrackElementAt(1190, x).Link[1] > 0) && (TrackElementAt(1191, x).Config[1] != End) && (TrackElementAt(1192, x).Conn[1] == -1))
         {
             ConnErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[2] > 0) && (TrackVector.at(x).Config[2] != End) && (TrackVector.at(x).Conn[2] == -1))
+        if((TrackElementAt(1193, x).Link[2] > 0) && (TrackElementAt(1194, x).Config[2] != End) && (TrackElementAt(1195, x).Conn[2] == -1))
         {
             ConnErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[3] > 0) && (TrackVector.at(x).Config[3] != End) && (TrackVector.at(x).Conn[3] == -1))
+        if((TrackElementAt(1196, x).Link[3] > 0) && (TrackElementAt(1197, x).Config[3] != End) && (TrackElementAt(1198, x).Conn[3] == -1))
         {
             ConnErrorFlag = true;
         }
         if(FinalCall) // StationStopLinks only set during FinalCall so only check at FinalCall
         {
-            if(TrackVector.at(x).ActiveTrackElementName == "")
+            if(TrackElementAt(1199, x).ActiveTrackElementName == "")
             {
-                if((TrackVector.at(x).StationEntryStopLinkPos1 != -1) || (TrackVector.at(x).StationEntryStopLinkPos2 != -1))
+                if((TrackElementAt(1200, x).StationEntryStopLinkPos1 != -1) || (TrackElementAt(1201, x).StationEntryStopLinkPos2 != -1))
                 {
                     throw Exception("Error, StationEntryStopLinkPos not -1 for unnamed element at TrackVectorPosition = " + AnsiString(x));
                 }
@@ -4914,19 +4914,19 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if((TrackVector.at(x).Link[0] > 0) && (TrackVector.at(x).Config[0] != End) && (TrackVector.at(x).ConnLinkPos[0] == -1))
+        if((TrackElementAt(1202, x).Link[0] > 0) && (TrackElementAt(1203, x).Config[0] != End) && (TrackElementAt(1204, x).ConnLinkPos[0] == -1))
         {
             CLkErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[1] > 0) && (TrackVector.at(x).Config[1] != End) && (TrackVector.at(x).ConnLinkPos[1] == -1))
+        if((TrackElementAt(1205, x).Link[1] > 0) && (TrackElementAt(1206, x).Config[1] != End) && (TrackElementAt(1207, x).ConnLinkPos[1] == -1))
         {
             CLkErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[2] > 0) && (TrackVector.at(x).Config[2] != End) && (TrackVector.at(x).ConnLinkPos[2] == -1))
+        if((TrackElementAt(1208, x).Link[2] > 0) && (TrackElementAt(1209, x).Config[2] != End) && (TrackElementAt(1210, x).ConnLinkPos[2] == -1))
         {
             CLkErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[3] > 0) && (TrackVector.at(x).Config[3] != End) && (TrackVector.at(x).ConnLinkPos[3] == -1))
+        if((TrackElementAt(1211, x).Link[3] > 0) && (TrackElementAt(1212, x).Config[3] != End) && (TrackElementAt(1213, x).ConnLinkPos[3] == -1))
         {
             CLkErrorFlag = true;
         }
@@ -4946,17 +4946,17 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
 // set element lengths to min of 20m
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).TrackType == Erase)
+        if(TrackElementAt(1214, x).TrackType == Erase)
         {
             continue; // skip blank elements
         }
-        if(TrackVector.at(x).Length01 < 20)
+        if(TrackElementAt(1215, x).Length01 < 20)
         {
-            TrackVector.at(x).Length01 = 20;
+            TrackElementAt(1216, x).Length01 = 20;
         }
-        if((TrackVector.at(x).Length23 < 20) && (TrackVector.at(x).Length23 != -1))
+        if((TrackElementAt(1217, x).Length23 < 20) && (TrackElementAt(1218, x).Length23 != -1))
         {
-            TrackVector.at(x).Length23 = 20;
+            TrackElementAt(1219, x).Length23 = 20;
         }
     }
 
@@ -4976,15 +4976,15 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LinkTrackNoMessages," + AnsiString((short)FinalCall));
     for(unsigned int x = 0; x < TrackVector.size(); x++) // check all elements in turn
     {
-        if(TrackVector.at(x).TrackType == Erase)
+        if(TrackElementAt(1220, x).TrackType == Erase)
         {
             continue; // skip blank elements
 
         }
 // check footcrossing linkages
-        if(TrackVector.at(x).TrackType == FootCrossing)
+        if(TrackElementAt(1221, x).TrackType == FootCrossing)
         {
-            if(!CheckFootCrossingLinks(3, TrackVector.at(x)))
+            if(!CheckFootCrossingLinks(3, TrackElementAt(1222, x)))
             {
                 Utilities->CallLogPop(1127);
                 return(false);
@@ -4992,26 +4992,26 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
         }
         for(unsigned int y = 0; y < 4; y++) // check all links for each element
         {
-            if(TrackVector.at(x).Link[y] <= 0)
+            if(TrackElementAt(1223, x).Link[y] <= 0)
             {
                 continue; // no link
             }
-            if((TrackVector.at(x).TrackType == Buffers) && (TrackVector.at(x).Config[y] == End))
+            if((TrackElementAt(1224, x).TrackType == Buffers) && (TrackElementAt(1225, x).Config[y] == End))
             {
                 continue; // buffer
             }
-            if(TrackVector.at(x).Config[y] == Gap)
+            if(TrackElementAt(1226, x).Config[y] == Gap)
             {
                 continue; // gaps set later from GapMap
 
             }
             // get required H & V for track element joining link 'y'
-            int NewHLoc = TrackVector.at(x).HLoc + LinkHVArray[TrackVector.at(x).Link[y]][0];
-            int NewVLoc = TrackVector.at(x).VLoc + LinkHVArray[TrackVector.at(x).Link[y]][1];
+            int NewHLoc = TrackElementAt(1227, x).HLoc + LinkHVArray[TrackElementAt(1228, x).Link[y]][0];
+            int NewVLoc = TrackElementAt(1229, x).VLoc + LinkHVArray[TrackElementAt(1230, x).Link[y]][1];
             // find track element if present
             bool ConnectionFoundFlag;
             int VecPos = GetVectorPositionFromTrackMap(38, NewHLoc, NewVLoc, ConnectionFoundFlag);
-            if((TrackVector.at(x).TrackType == Continuation) && (y == 0) && ConnectionFoundFlag)
+            if((TrackElementAt(1231, x).TrackType == Continuation) && (y == 0) && ConnectionFoundFlag)
             {
                 if(FinalCall)
                 {
@@ -5020,64 +5020,64 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
                 Utilities->CallLogPop(1540);
                 return(false);
             }
-            if((TrackVector.at(x).TrackType == Continuation) && (TrackVector.at(x).Config[y] == End))
+            if((TrackElementAt(1232, x).TrackType == Continuation) && (TrackElementAt(1233, x).Config[y] == End))
             {
                 continue;
             }
             if(ConnectionFoundFlag)
             {
-                TrackVector.at(x).Conn[y] = VecPos;
+                TrackElementAt(1234, x).Conn[y] = VecPos;
                 bool LinkFoundFlag = false;
                 // find connecting link in the newly found track element if there is one & make checks
-                if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost) || (TrackVector.at(x).TrackType == Crossover)) &&
-                   (TrackVector.at(VecPos).TrackType == Buffers))
+                if(((TrackElementAt(1235, x).TrackType == Points) || (TrackElementAt(1236, x).TrackType == SignalPost) || (TrackElementAt(1237, x).TrackType == Crossover)) &&
+                   (TrackElementAt(1238, VecPos).TrackType == Buffers))
                 {
                     Utilities->CallLogPop(1541);
                     return(false);
                 }
-                else if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost) || (TrackVector.at(x).TrackType == Crossover) ||
-                         (TrackVector.at(x).TrackType == Bridge)) && (TrackVector.at(VecPos).TrackType == Continuation))
+                else if(((TrackElementAt(1239, x).TrackType == Points) || (TrackElementAt(1240, x).TrackType == SignalPost) || (TrackElementAt(1241, x).TrackType == Crossover) ||
+                         (TrackElementAt(1242, x).TrackType == Bridge)) && (TrackElementAt(1243, VecPos).TrackType == Continuation))
                 {
                     Utilities->CallLogPop(1542);
                     return(false);
                 }
-                else if((TrackVector.at(x).TrackType == SignalPost) && (TrackVector.at(VecPos).TrackType == SignalPost) &&
-                        (TrackVector.at(x).SpeedTag == TrackVector.at(VecPos).SpeedTag))
+                else if((TrackElementAt(1244, x).TrackType == SignalPost) && (TrackElementAt(1245, VecPos).TrackType == SignalPost) &&
+                        (TrackElementAt(1246, x).SpeedTag == TrackElementAt(1247, VecPos).SpeedTag))
                 {
                     Utilities->CallLogPop(1543);
                     return(false);
                 }
-                else if(IsLCAtHV(47, TrackVector.at(x).HLoc, TrackVector.at(x).VLoc) && IsLCAtHV(48, TrackVector.at(VecPos).HLoc, TrackVector.at(VecPos).VLoc))
+                else if(IsLCAtHV(47, TrackElementAt(1248, x).HLoc, TrackElementAt(1249, x).VLoc) && IsLCAtHV(48, TrackElementAt(1250, VecPos).HLoc, TrackElementAt(1251, VecPos).VLoc))
                 // true if a level crossing is present at both x and VecPos - can't have two adjacent level crossings on the same track
                 {
                     Utilities->CallLogPop(1981);
                     return(false);
                 }
 /* remove this restriction now that not permitted to treat a named continuation as a location stop
-               else if(TrackVector.at(x).TrackType == Continuation)
+               else if(TrackElementAt(, x).TrackType == Continuation)
                    {
-                   int H = TrackVector.at(x).HLoc;
-                   int V = TrackVector.at(x).VLoc;
+                   int H = TrackElementAt(, x).HLoc;
+                   int V = TrackElementAt(, x).VLoc;
                    bool FoundFlag = false;
                    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(18, H, V, FoundFlag);
                    if(FoundFlag)
                        {
                        if(InactiveTrackElementAt(93, IMPair.first).TrackType == NamedNonStationLocation)
                            {
-                           int NewH = TrackElementAt(727, (TrackVector.at(x).Conn[1])).HLoc;
-                           int NewV = TrackElementAt(728, (TrackVector.at(x).Conn[1])).VLoc;
+                           int NewH = TrackElementAt(, (TrackElementAt(, x).Conn[1])).HLoc;
+                           int NewV = TrackElementAt(, (TrackElementAt(, x).Conn[1])).VLoc;
                            TIMPair NewIMPair = GetVectorPositionsFromInactiveTrackMap(19, NewH, NewV, FoundFlag);
                            if(FoundFlag)
                                {
                                if(InactiveTrackElementAt(94, NewIMPair.first).TrackType != NamedNonStationLocation)
                                    {
-                                   Utilities->CallLogPop(1544);
+                                   Utilities->CallLogPop();
                                    return false;
                                    }
                                }
                            else
                                {
-                               Utilities->CallLogPop(1545);
+                               Utilities->CallLogPop();
                                return false;
                                }
                            }
@@ -5086,10 +5086,10 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
 */
                 for(unsigned int a = 0; a < 4; a++)
                 {
-                    if((TrackVector.at(VecPos).Link[a] == (10 - TrackVector.at(x).Link[y])) && (TrackVector.at(VecPos).Config[a] != End) &&
-                       (TrackVector.at(VecPos).Config[a] != Gap))
+                    if((TrackElementAt(1252, VecPos).Link[a] == (10 - TrackElementAt(1253, x).Link[y])) && (TrackElementAt(1254, VecPos).Config[a] != End) &&
+                       (TrackElementAt(1255, VecPos).Config[a] != Gap))
                     {
-                        TrackVector.at(x).ConnLinkPos[y] = a;
+                        TrackElementAt(1256, x).ConnLinkPos[y] = a;
                         // note - this ensures that if the connecting element is a leading point
                         // then the ConnLinkPos value is 0 rather than 2, since 'a' starts at 0
                         // (Points have the same link value for both [0] and [2])
@@ -5128,27 +5128,27 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if((TrackVector.at(x).Link[0] > 0) && (TrackVector.at(x).Config[0] != End) && (TrackVector.at(x).Conn[0] == -1))
+        if((TrackElementAt(1257, x).Link[0] > 0) && (TrackElementAt(1258, x).Config[0] != End) && (TrackElementAt(1259, x).Conn[0] == -1))
         {
             ConnErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[1] > 0) && (TrackVector.at(x).Config[1] != End) && (TrackVector.at(x).Conn[1] == -1))
+        if((TrackElementAt(1260, x).Link[1] > 0) && (TrackElementAt(1261, x).Config[1] != End) && (TrackElementAt(1262, x).Conn[1] == -1))
         {
             ConnErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[2] > 0) && (TrackVector.at(x).Config[2] != End) && (TrackVector.at(x).Conn[2] == -1))
+        if((TrackElementAt(1263, x).Link[2] > 0) && (TrackElementAt(1264, x).Config[2] != End) && (TrackElementAt(1265, x).Conn[2] == -1))
         {
             ConnErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[3] > 0) && (TrackVector.at(x).Config[3] != End) && (TrackVector.at(x).Conn[3] == -1))
+        if((TrackElementAt(1266, x).Link[3] > 0) && (TrackElementAt(1267, x).Config[3] != End) && (TrackElementAt(1268, x).Conn[3] == -1))
         {
             ConnErrorFlag = true;
         }
         if(FinalCall) // StationStopLinks only set during FinalCall so only check at FinalCall
         {
-            if(TrackVector.at(x).ActiveTrackElementName == "")
+            if(TrackElementAt(1269, x).ActiveTrackElementName == "")
             {
-                if((TrackVector.at(x).StationEntryStopLinkPos1 != -1) || (TrackVector.at(x).StationEntryStopLinkPos2 != -1))
+                if((TrackElementAt(1270, x).StationEntryStopLinkPos1 != -1) || (TrackElementAt(1271, x).StationEntryStopLinkPos2 != -1))
                 {
                     throw Exception("Error, StationEntryStopLinkPos not -1 for unnamed element at TrackVectorPosition = " + AnsiString(x));
                 }
@@ -5170,19 +5170,19 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if((TrackVector.at(x).Link[0] > 0) && (TrackVector.at(x).Config[0] != End) && (TrackVector.at(x).ConnLinkPos[0] == -1))
+        if((TrackElementAt(1272, x).Link[0] > 0) && (TrackElementAt(1273, x).Config[0] != End) && (TrackElementAt(1274, x).ConnLinkPos[0] == -1))
         {
             CLkErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[1] > 0) && (TrackVector.at(x).Config[1] != End) && (TrackVector.at(x).ConnLinkPos[1] == -1))
+        if((TrackElementAt(1275, x).Link[1] > 0) && (TrackElementAt(1276, x).Config[1] != End) && (TrackElementAt(1277, x).ConnLinkPos[1] == -1))
         {
             CLkErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[2] > 0) && (TrackVector.at(x).Config[2] != End) && (TrackVector.at(x).ConnLinkPos[2] == -1))
+        if((TrackElementAt(1278, x).Link[2] > 0) && (TrackElementAt(1279, x).Config[2] != End) && (TrackElementAt(1280, x).ConnLinkPos[2] == -1))
         {
             CLkErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[3] > 0) && (TrackVector.at(x).Config[3] != End) && (TrackVector.at(x).ConnLinkPos[3] == -1))
+        if((TrackElementAt(1281, x).Link[3] > 0) && (TrackElementAt(1282, x).Config[3] != End) && (TrackElementAt(1283, x).ConnLinkPos[3] == -1))
         {
             CLkErrorFlag = true;
         }
@@ -5202,17 +5202,17 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
 // set element lengths to min of 20m
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).TrackType == Erase)
+        if(TrackElementAt(1284, x).TrackType == Erase)
         {
             continue; // skip blank elements
         }
-        if(TrackVector.at(x).Length01 < 20)
+        if(TrackElementAt(1285, x).Length01 < 20)
         {
-            TrackVector.at(x).Length01 = 20;
+            TrackElementAt(1286, x).Length01 = 20;
         }
-        if((TrackVector.at(x).Length23 < 20) && (TrackVector.at(x).Length23 != -1))
+        if((TrackElementAt(1287, x).Length23 < 20) && (TrackElementAt(1288, x).Length23 != -1))
         {
-            TrackVector.at(x).Length23 = 20;
+            TrackElementAt(1289, x).Length23 = 20;
         }
     }
 
@@ -5231,15 +5231,15 @@ bool TTrack::IsTrackLinked(int Caller) // not used any more
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsTrackLinked");
     for(unsigned int x = 0; x < TrackVector.size(); x++) // check all elements in turn
     {
-        if(TrackVector.at(x).TrackType == Erase)
+        if(TrackElementAt(1290, x).TrackType == Erase)
         {
             Utilities->CallLogPop(498);
             return(false);
         }
 // check foot linkages
-        if(TrackVector.at(x).TrackType == FootCrossing)
+        if(TrackElementAt(1291, x).TrackType == FootCrossing)
         {
-            if(!CheckFootCrossingLinks(2, TrackVector.at(x)))
+            if(!CheckFootCrossingLinks(2, TrackElementAt(1292, x)))
             {
                 Utilities->CallLogPop(499);
                 return(false);
@@ -5247,43 +5247,43 @@ bool TTrack::IsTrackLinked(int Caller) // not used any more
         }
         for(unsigned int y = 0; y < 4; y++) // check all links for each element
         {
-            if(TrackVector.at(x).Link[y] <= 0)
+            if(TrackElementAt(1293, x).Link[y] <= 0)
             {
                 continue; // no link
             }
-            if(TrackVector.at(x).Config[y] == End)
+            if(TrackElementAt(1294, x).Config[y] == End)
             {
                 continue; // buffer or continuation
             }
-            if(TrackVector.at(x).Config[y] == Gap)
+            if(TrackElementAt(1295, x).Config[y] == Gap)
             {
                 continue; // gaps set later from GapMap
 
             }
             // get required H & V for track element joining link 'y'
-            int NewHLoc = TrackVector.at(x).HLoc + LinkHVArray[TrackVector.at(x).Link[y]][0];
-            int NewVLoc = TrackVector.at(x).VLoc + LinkHVArray[TrackVector.at(x).Link[y]][1];
+            int NewHLoc = TrackElementAt(1296, x).HLoc + LinkHVArray[TrackElementAt(1297, x).Link[y]][0];
+            int NewVLoc = TrackElementAt(1298, x).VLoc + LinkHVArray[TrackElementAt(1299, x).Link[y]][1];
             // find track element if present
             bool ConnectionFoundFlag = false;
             int VecPos = GetVectorPositionFromTrackMap(15, NewHLoc, NewVLoc, ConnectionFoundFlag);
             if(ConnectionFoundFlag)
             {
-                TrackVector.at(x).Conn[y] = VecPos;
+                TrackElementAt(1300, x).Conn[y] = VecPos;
                 // find connecting link in the newly found track element if there is one & make buffer check
                 bool LinkFoundFlag = false;
-                if(((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == SignalPost) || (TrackVector.at(x).TrackType == Crossover)) &&
-                   (TrackVector.at(VecPos).TrackType == Buffers))
+                if(((TrackElementAt(1301, x).TrackType == Points) || (TrackElementAt(1302, x).TrackType == SignalPost) || (TrackElementAt(1303, x).TrackType == Crossover)) &&
+                   (TrackElementAt(1304, VecPos).TrackType == Buffers))
                 {
                     Utilities->CallLogPop(500);
                     return(false);
                 }
-                else if((TrackVector.at(x).TrackType == SignalPost) && (TrackVector.at(VecPos).TrackType == SignalPost) &&
-                        (TrackVector.at(x).SpeedTag == TrackVector.at(VecPos).SpeedTag))
+                else if((TrackElementAt(1305, x).TrackType == SignalPost) && (TrackElementAt(1306, VecPos).TrackType == SignalPost) &&
+                        (TrackElementAt(1307, x).SpeedTag == TrackElementAt(1308, VecPos).SpeedTag))
                 {
                     Utilities->CallLogPop(501);
                     return(false);
                 }
-                else if((TrackVector.at(x).TrackType == SignalPost) && (TrackVector.at(VecPos).TrackType == Continuation))
+                else if((TrackElementAt(1309, x).TrackType == SignalPost) && (TrackElementAt(1310, VecPos).TrackType == Continuation))
                 {
                     Utilities->CallLogPop(502);
                     return(false);
@@ -5292,10 +5292,10 @@ bool TTrack::IsTrackLinked(int Caller) // not used any more
                 {
                     for(unsigned int a = 0; a < 4; a++)
                     {
-                        if((TrackVector.at(VecPos).Link[a] == (10 - TrackVector.at(x).Link[y])) && (TrackVector.at(VecPos).Config[a] != End) &&
-                           (TrackVector.at(VecPos).Config[a] != Gap))
+                        if((TrackElementAt(1311, VecPos).Link[a] == (10 - TrackElementAt(1312, x).Link[y])) && (TrackElementAt(1313, VecPos).Config[a] != End) &&
+                           (TrackElementAt(1314, VecPos).Config[a] != Gap))
                         {
-                            TrackVector.at(x).ConnLinkPos[y] = a;
+                            TrackElementAt(1315, x).ConnLinkPos[y] = a;
                             // note - this ensures that if the connecting element is a leading point
                             // then the ConnLinkPos value is 0 rather than 2, since 'a' starts at 0
                             // (Points have the same link value for both [0] and [2])
@@ -5323,19 +5323,19 @@ bool TTrack::IsTrackLinked(int Caller) // not used any more
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if((TrackVector.at(x).Link[0] > 0) && (TrackVector.at(x).Config[0] != End) && (TrackVector.at(x).Conn[0] == -1))
+        if((TrackElementAt(1316, x).Link[0] > 0) && (TrackElementAt(1317, x).Config[0] != End) && (TrackElementAt(1318, x).Conn[0] == -1))
         {
             ConnErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[1] > 0) && (TrackVector.at(x).Config[1] != End) && (TrackVector.at(x).Conn[1] == -1))
+        if((TrackElementAt(1319, x).Link[1] > 0) && (TrackElementAt(1320, x).Config[1] != End) && (TrackElementAt(1321, x).Conn[1] == -1))
         {
             ConnErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[2] > 0) && (TrackVector.at(x).Config[2] != End) && (TrackVector.at(x).Conn[2] == -1))
+        if((TrackElementAt(1322, x).Link[2] > 0) && (TrackElementAt(1333, x).Config[2] != End) && (TrackElementAt(1334, x).Conn[2] == -1))
         {
             ConnErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[3] > 0) && (TrackVector.at(x).Config[3] != End) && (TrackVector.at(x).Conn[3] == -1))
+        if((TrackElementAt(1335, x).Link[3] > 0) && (TrackElementAt(1336, x).Config[3] != End) && (TrackElementAt(1337, x).Conn[3] == -1))
         {
             ConnErrorFlag = true;
         }
@@ -5349,19 +5349,19 @@ bool TTrack::IsTrackLinked(int Caller) // not used any more
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if((TrackVector.at(x).Link[0] > 0) && (TrackVector.at(x).Config[0] != End) && (TrackVector.at(x).ConnLinkPos[0] == -1))
+        if((TrackElementAt(1338, x).Link[0] > 0) && (TrackElementAt(1339, x).Config[0] != End) && (TrackElementAt(1340, x).ConnLinkPos[0] == -1))
         {
             CLkErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[1] > 0) && (TrackVector.at(x).Config[1] != End) && (TrackVector.at(x).ConnLinkPos[1] == -1))
+        if((TrackElementAt(1341, x).Link[1] > 0) && (TrackElementAt(1342, x).Config[1] != End) && (TrackElementAt(1343, x).ConnLinkPos[1] == -1))
         {
             CLkErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[2] > 0) && (TrackVector.at(x).Config[2] != End) && (TrackVector.at(x).ConnLinkPos[2] == -1))
+        if((TrackElementAt(1344, x).Link[2] > 0) && (TrackElementAt(1345, x).Config[2] != End) && (TrackElementAt(1346, x).ConnLinkPos[2] == -1))
         {
             CLkErrorFlag = true;
         }
-        if((TrackVector.at(x).Link[3] > 0) && (TrackVector.at(x).Config[3] != End) && (TrackVector.at(x).ConnLinkPos[3] == -1))
+        if((TrackElementAt(1347, x).Link[3] > 0) && (TrackElementAt(1394, x).Config[3] != End) && (TrackElementAt(1348, x).ConnLinkPos[3] == -1))
         {
             CLkErrorFlag = true;
         }
@@ -7192,10 +7192,10 @@ void TTrack::ResetLevelCrossings(int Caller)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ResetLevelCrossings");
     for(unsigned int x = 0; x < InactiveTrackVector.size(); x++)
     {
-        TTrackElement InactiveTrackElement = InactiveTrackVector.at(x);
+        TTrackElement InactiveTrackElement = InactiveTrackElementAt(140, x);
         if(InactiveTrackElement.TrackType == LevelCrossing)
         {
-            InactiveTrackVector.at(x).Attribute = 0;
+            InactiveTrackElementAt(141, x).Attribute = 0;
             // though this only resets the attributes the LC will display correctly when call Clearand.. in BaseMode
         }
     }
@@ -7338,11 +7338,11 @@ bool TTrack::LCInSearchVector(int Caller, int HLoc, int VLoc, TPrefDirVector Sea
         if((TrackElementAt(1019, SearchVector.at(x).GetTrackVectorPosition()).HLoc == HLoc) && (TrackElementAt(1020, SearchVector.at(x).GetTrackVectorPosition()).VLoc == VLoc))
         {
             Utilities->CallLogPop(2278);
-            return true;
+            return(true);
         }
     }
     Utilities->CallLogPop(2279);
-    return false;
+    return(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -7435,9 +7435,9 @@ void TTrack::ResetAllTrainIDElements(int Caller)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ResetAllTrainIDElements");
     for(unsigned int x = 0; x < TrackVector.size(); x++) // check all elements in turn
     {
-        TrackVector.at(x).TrainIDOnElement = -1;
-        TrackVector.at(x).TrainIDOnBridgeTrackPos01 = -1;
-        TrackVector.at(x).TrainIDOnBridgeTrackPos23 = -1;
+        TrackElementAt(1351, x).TrainIDOnElement = -1;
+        TrackElementAt(1352, x).TrainIDOnBridgeTrackPos01 = -1;
+        TrackElementAt(1353, x).TrainIDOnBridgeTrackPos23 = -1;
     }
     Utilities->CallLogPop(1342);
 }
@@ -7492,7 +7492,7 @@ void TTrack::CheckMapAndTrack(int Caller) // test
 
     for(unsigned int a = 0; a < TrackVector.size(); a++)
     {
-        TTrackElement CheckElement = Track->TrackVector.at(a);
+        TTrackElement CheckElement = Track->TrackElementAt(1354, a);
         if(CheckElement.SpeedTag == 0)
         {
             Zeroes++; // zeroed elements not saved in map
@@ -7532,7 +7532,7 @@ void TTrack::CheckMapAndInactiveTrack(int Caller) // test
 
     for(unsigned int a = 0; a < InactiveTrackVector.size(); a++)
     {
-        TTrackElement CheckElement = Track->InactiveTrackVector.at(a);
+        TTrackElement CheckElement = Track->InactiveTrackElementAt(142, a);
         InactivePair = GetVectorPositionsFromInactiveTrackMap(7, CheckElement.HLoc, CheckElement.VLoc, FoundFlag);
         if(!FoundFlag)
         {
@@ -7593,7 +7593,7 @@ void TTrack::CheckGapMap(int Caller) // test
 
     for(unsigned int a = 0; a < TrackVector.size(); a++)
     {
-        TTrackElement CheckElement = Track->TrackVector.at(a);
+        TTrackElement CheckElement = Track->TrackElementAt(1355, a);
         if(CheckElement.TrackType == GapJump)
         {
             GapCount++;
@@ -8030,7 +8030,7 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
     {
         CurrentElementNumber = LNPendingList.front();
         TTrackVectorIterator CurrentElement = GetTrackVectorIteratorFromNamePosition(1, CurrentElementNumber);
-        int NewElement; // = 2000000000;   //marker for unused //not needed after v1.1.4
+        int NewElement; // = 2000000000;   //marker for unused //not needed from v1.2.0 Beta onwards
         int H = CurrentElement->HLoc;
         int V = CurrentElement->VLoc;
         int Tag = CurrentElement->SpeedTag;
@@ -8230,9 +8230,9 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
     ContinuationNameMap.clear();
     for(int x = 0; x < Track->TrackVectorSize(); x++)
     {
-        if((Track->TrackVector.at(x).TrackType == Continuation) && (Track->TrackVector.at(x).ActiveTrackElementName != ""))
+        if((Track->TrackElementAt(1356, x).TrackType == Continuation) && (Track->TrackElementAt(1357, x).ActiveTrackElementName != ""))
         {
-            TempMapPair.first = Track->TrackVector.at(x).ActiveTrackElementName;
+            TempMapPair.first = Track->TrackElementAt(1358, x).ActiveTrackElementName;
             TempMapPair.second = 'x'; // unused
             ContinuationNameMap.insert(TempMapPair);
         }
@@ -8618,11 +8618,11 @@ bool TTrack::TimetabledLocationNameAllocated(int Caller, AnsiString LocationName
         ActiveTrackElementNameMap.clear();
         for(unsigned int x = 0; x < TrackVector.size(); x++)
         {
-            if((TrackVector.at(x).ActiveTrackElementName != "") && (ContinuationNameMap.find(TrackVector.at(x).ActiveTrackElementName))
+            if((TrackElementAt(1359, x).ActiveTrackElementName != "") && (ContinuationNameMap.find(TrackElementAt(1360, x).ActiveTrackElementName))
                == ContinuationNameMap.end())
             {
                 // exclude any name that appears in a continuation, error message given in tt validation if try to include such a name in a tt
-                ActiveTrackElementNameMapEntry.first = Track->TrackVector.at(x).ActiveTrackElementName;
+                ActiveTrackElementNameMapEntry.first = Track->TrackElementAt(1361, x).ActiveTrackElementName;
                 ActiveTrackElementNameMapEntry.second = 0; // this is a dummy value
                 ActiveTrackElementNameMap.insert(ActiveTrackElementNameMapEntry);
             }
@@ -8933,9 +8933,9 @@ void TTrack::CheckLocationNameMultiMap(int Caller) // test function
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).FixedNamedLocationElement)
+        if(TrackElementAt(1362, x).FixedNamedLocationElement)
         {
-            if(TrackVector.at(x).TrackType != FootCrossing)
+            if(TrackElementAt(1363, x).TrackType != FootCrossing)
             {
                 throw Exception("Track element has FixedNamedLocationElement set but is not a footbridge/underpass in CheckLocationNameMultiMap, caller = " +
                                 AnsiString(Caller));
@@ -8945,10 +8945,10 @@ void TTrack::CheckLocationNameMultiMap(int Caller) // test function
     }
     for(unsigned int x = 0; x < InactiveTrackVector.size(); x++)
     {
-        if(InactiveTrackVector.at(x).FixedNamedLocationElement)
+        if(InactiveTrackElementAt(143, x).FixedNamedLocationElement)
         {
-            if((InactiveTrackVector.at(x).TrackType != Platform) && (InactiveTrackVector.at(x).TrackType != NamedNonStationLocation) &&
-               (InactiveTrackVector.at(x).TrackType != Concourse))
+            if((InactiveTrackElementAt(144, x).TrackType != Platform) && (InactiveTrackElementAt(145, x).TrackType != NamedNonStationLocation) &&
+               (InactiveTrackElementAt(146, x).TrackType != Concourse))
             {
                 throw Exception
                           ("Inactive track element has FixedNamedLocationElement set but is not a platform, concourse or named location in CheckLocationNameMultiMap, caller = " +
@@ -8967,9 +8967,9 @@ void TTrack::CheckLocationNameMultiMap(int Caller) // test function
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).FixedNamedLocationElement)
+        if(TrackElementAt(1364, x).FixedNamedLocationElement)
         {
-            SName = TrackVector.at(x).LocationName;
+            SName = TrackElementAt(1365, x).LocationName;
             SNIt = FindNamedElementInLocationNameMultiMap(5, SName, TrackVector.begin() + x, ErrorString);
             if(ErrorString != "")
             {
@@ -8982,39 +8982,39 @@ void TTrack::CheckLocationNameMultiMap(int Caller) // test function
             }
         }
         // check corresponding platform for all Timetable entries that aren't empty
-        TName = TrackVector.at(x).ActiveTrackElementName;
+        TName = TrackElementAt(1366, x).ActiveTrackElementName;
         TIMPair IMPair;
         bool FoundFlag = false;
         if(TName != "")
         {
-            IMPair = GetVectorPositionsFromInactiveTrackMap(10, TrackVector.at(x).HLoc, TrackVector.at(x).VLoc, FoundFlag);
+            IMPair = GetVectorPositionsFromInactiveTrackMap(10, TrackElementAt(1367, x).HLoc, TrackElementAt(1368, x).VLoc, FoundFlag);
             if(FoundFlag)
             {
                 if((InactiveTrackElementAt(17, IMPair.first).TrackType != Platform) && (InactiveTrackElementAt(18, IMPair.second).TrackType != Platform) &&
                    (InactiveTrackElementAt(19, IMPair.first).TrackType != NamedNonStationLocation))
                 {
-                    throw Exception("Track element with ActiveTrackElementName but no plat/named loc at H " + AnsiString(TrackVector.at(x).HLoc) + " & V " +
-                                    AnsiString(TrackVector.at(x).VLoc) + " in CheckLocationNameMultiMap, caller = " + AnsiString(Caller));
+                    throw Exception("Track element with ActiveTrackElementName but no plat/named loc at H " + AnsiString(TrackElementAt(1369, x).HLoc) + " & V " +
+                                    AnsiString(TrackElementAt(1370, x).VLoc) + " in CheckLocationNameMultiMap, caller = " + AnsiString(Caller));
                 }
                 if((InactiveTrackElementAt(20, IMPair.first).LocationName != TName) && (InactiveTrackElementAt(21, IMPair.second).LocationName != TName))
                 {
-                    throw Exception("Track element with ActiveTrackElementName " + TName + " but plat/named loc at H " + AnsiString(TrackVector.at(x).HLoc) +
-                                    " & V " + AnsiString(TrackVector.at(x).VLoc) + " has different LocationName in CheckLocationNameMultiMap, caller = " +
+                    throw Exception("Track element with ActiveTrackElementName " + TName + " but plat/named loc at H " + AnsiString(TrackElementAt(1371, x).HLoc) +
+                                    " & V " + AnsiString(TrackElementAt(1372, x).VLoc) + " has different LocationName in CheckLocationNameMultiMap, caller = " +
                                     AnsiString(Caller));
                 }
             }
             else
             {
-                throw Exception("Track element with ActiveTrackElementName but no inactive element at H " + AnsiString(TrackVector.at(x).HLoc) + " & V " +
-                                AnsiString(TrackVector.at(x).VLoc) + " in CheckLocationNameMultiMap, caller = " + AnsiString(Caller));
+                throw Exception("Track element with ActiveTrackElementName but no inactive element at H " + AnsiString(TrackElementAt(1373, x).HLoc) + " & V " +
+                                AnsiString(TrackElementAt(1374, x).VLoc) + " in CheckLocationNameMultiMap, caller = " + AnsiString(Caller));
             }
         }
     }
     for(unsigned int x = 0; x < InactiveTrackVector.size(); x++)
     {
-        if(InactiveTrackVector.at(x).FixedNamedLocationElement)
+        if(InactiveTrackElementAt(147, x).FixedNamedLocationElement)
         {
-            SName = InactiveTrackVector.at(x).LocationName;
+            SName = InactiveTrackElementAt(148, x).LocationName;
             SNIt = FindNamedElementInLocationNameMultiMap(6, SName, InactiveTrackVector.begin() + x, ErrorString);
             if(ErrorString != "")
             {
@@ -9222,7 +9222,7 @@ void TTrack::DecrementValuesInGapsAndTrackAndNameMaps(int Caller, unsigned int V
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        TTrackElement &TkEl = TrackVector.at(x); // no need to check so use this to speed up
+        TTrackElement &TkEl = TrackElementAt(1375, x); // no need to check so use this to speed up
         if(TkEl.TrackType == GapJump)
         {
             // position 0 is the gap
@@ -9263,7 +9263,7 @@ void TTrack::RebuildLocationNameMultiMap(int Caller)
 
     for(unsigned int TVPos = 0; TVPos < TrackVector.size(); TVPos++)
     {
-        TrackElement = TrackVector.at(TVPos);
+        TrackElement = TrackElementAt(1376, TVPos);
         if(TrackElement.FixedNamedLocationElement)
         {
             LocationNameEntry.first = TrackElement.LocationName;
@@ -9274,7 +9274,7 @@ void TTrack::RebuildLocationNameMultiMap(int Caller)
 
     for(unsigned int ITVPos = 0; ITVPos < InactiveTrackVector.size(); ITVPos++)
     {
-        TrackElement = InactiveTrackVector.at(ITVPos);
+        TrackElement = InactiveTrackElementAt(149, ITVPos);
         if(TrackElement.FixedNamedLocationElement)
         {
             LocationNameEntry.first = TrackElement.LocationName;
@@ -9332,14 +9332,14 @@ void TTrack::SetAllDefaultLengthsAndSpeedLimits(int Caller)
         }
     }
 /* old function
-       if((TrackVector.at(x).TrackType == Points) || (TrackVector.at(x).TrackType == Crossover) || (TrackVector.at(x).TrackType == Bridge))
+       if((TrackElementAt(, x).TrackType == Points) || (TrackElementAt(, x).TrackType == Crossover) || (TrackElementAt(, x).TrackType == Bridge))
            {
-           SetOneDefaultTrackLength(2, TrackVector.at(x), 0);
-           SetOneDefaultTrackLength(3, TrackVector.at(x), 2);
+           SetOneDefaultTrackLength(2, TrackElementAt(, x), 0);
+           SetOneDefaultTrackLength(3, TrackElementAt(, x), 2);
            }
        else
            {
-           SetOneDefaultTrackLength(4, TrackVector.at(x), 0);
+           SetOneDefaultTrackLength(4, TrackElementAt(, x), 0);
            }
        }
 */
@@ -9354,7 +9354,7 @@ void TTrack::LengthMarker(int Caller, TDisplay *Disp)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LengthMarker");
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        TTrackElement TempElement = TrackVector.at(x);
+        TTrackElement TempElement = TrackElementAt(1377, x);
         if(TempElement.Length01 > -1)
         {
             MarkOneLength(1, TempElement, true, Disp); // need Length01 test in case there are erase elements (but shouldn't be after LinkTrack)
@@ -9850,14 +9850,14 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        TrackVector.at(x).StationEntryStopLinkPos1 = -1;
-        TrackVector.at(x).StationEntryStopLinkPos2 = -1;
+        TrackElementAt(1378, x).StationEntryStopLinkPos1 = -1;
+        TrackElementAt(1379, x).StationEntryStopLinkPos2 = -1;
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         ForwardSet = false;
         ReverseSet = false;
-        TempElement = TrackVector.at(x);
+        TempElement = TrackElementAt(1380, x);
         VecPos = x;
         if((TempElement.ActiveTrackElementName != "") && (TempElement.StationEntryStopLinkPos1 == -1))
         // 2nd condition incl so don't re-examine elements with stop links set to 5
@@ -10010,13 +10010,13 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackVector.at(x).StationEntryStopLinkPos1 == 5)
+        if(TrackElementAt(1381, x).StationEntryStopLinkPos1 == 5)
         {
-            TrackVector.at(x).StationEntryStopLinkPos1 = -1;
+            TrackElementAt(1382, x).StationEntryStopLinkPos1 = -1;
         }
-        if(TrackVector.at(x).StationEntryStopLinkPos2 == 5)
+        if(TrackElementAt(1383, x).StationEntryStopLinkPos2 == 5)
         {
-            TrackVector.at(x).StationEntryStopLinkPos2 = -1;
+            TrackElementAt(1384, x).StationEntryStopLinkPos2 = -1;
         }
     }
     Utilities->CallLogPop(639);
@@ -10146,48 +10146,48 @@ void TTrack::CalcHLocMinEtc(int Caller)
     VLocMax = -2000000000;
     for(unsigned int x = 0; x < TrackVector.size(); x++) // check all elements in turn
     {
-        if(TrackVector.at(x).SpeedTag == 0)
+        if(TrackElementAt(1385, x).SpeedTag == 0)
         {
             continue; // skip erase elements or would interfere with Min & Max values
         }
-        if(TrackVector.at(x).HLoc - 1 < HLocMin)
+        if(TrackElementAt(1386, x).HLoc - 1 < HLocMin)
         {
-            HLocMin = TrackVector.at(x).HLoc - 1; // add one all round
+            HLocMin = TrackElementAt(1387, x).HLoc - 1; // add one all round
         }
-        if(TrackVector.at(x).HLoc + 1 > HLocMax)
+        if(TrackElementAt(1388, x).HLoc + 1 > HLocMax)
         {
-            HLocMax = TrackVector.at(x).HLoc + 1;
+            HLocMax = TrackElementAt(1389, x).HLoc + 1;
         }
-        if(TrackVector.at(x).VLoc - 1 < VLocMin)
+        if(TrackElementAt(1390, x).VLoc - 1 < VLocMin)
         {
-            VLocMin = TrackVector.at(x).VLoc - 1;
+            VLocMin = TrackElementAt(1391, x).VLoc - 1;
         }
-        if(TrackVector.at(x).VLoc + 1 > VLocMax)
+        if(TrackElementAt(1392, x).VLoc + 1 > VLocMax)
         {
-            VLocMax = TrackVector.at(x).VLoc + 1;
+            VLocMax = TrackElementAt(1393, x).VLoc + 1;
         }
     }
     for(unsigned int x = 0; x < InactiveTrackVector.size(); x++) // check all elements in turn
     {
-        if(InactiveTrackVector.at(x).SpeedTag == 0)
+        if(InactiveTrackElementAt(150, x).SpeedTag == 0)
         {
             continue; // shouldn't be any inactive erase elements but include anyway
         }
-        if(InactiveTrackVector.at(x).HLoc - 1 < HLocMin)
+        if(InactiveTrackElementAt(151, x).HLoc - 1 < HLocMin)
         {
-            HLocMin = InactiveTrackVector.at(x).HLoc - 1; // add one all round
+            HLocMin = InactiveTrackElementAt(152, x).HLoc - 1; // add one all round
         }
-        if(InactiveTrackVector.at(x).HLoc + 1 > HLocMax)
+        if(InactiveTrackElementAt(153, x).HLoc + 1 > HLocMax)
         {
-            HLocMax = InactiveTrackVector.at(x).HLoc + 1;
+            HLocMax = InactiveTrackElementAt(162, x).HLoc + 1;
         }
-        if(InactiveTrackVector.at(x).VLoc - 1 < VLocMin)
+        if(InactiveTrackElementAt(154, x).VLoc - 1 < VLocMin)
         {
-            VLocMin = InactiveTrackVector.at(x).VLoc - 1;
+            VLocMin = InactiveTrackElementAt(155, x).VLoc - 1;
         }
-        if(InactiveTrackVector.at(x).VLoc + 1 > VLocMax)
+        if(InactiveTrackElementAt(156, x).VLoc + 1 > VLocMax)
         {
-            VLocMax = InactiveTrackVector.at(x).VLoc + 1;
+            VLocMax = InactiveTrackElementAt(157, x).VLoc + 1;
         }
     }
     for(unsigned int x = 0; x < TextHandler->TextVectorSize(10); x++) // check all elements in turn
@@ -10372,7 +10372,7 @@ bool TTrack::BlankElementAt(int Caller, int At) const
     {
         throw Exception("Out of Range Error, vector size: " + AnsiString(TrackVector.size()) + ", At: " + AnsiString(At) + " in BlankElementAt");
     }
-    if(TrackVector.at(At).SpeedTag == 0)
+    if(TrackVector.at(At).SpeedTag == 0) //have to use TrackVector.at because TrackElementAt is non-const
     {
         Utilities->CallLogPop(645);
         return(true);
@@ -10850,11 +10850,11 @@ bool TTrack::FindHighestLowestAndLeftmostNamedElements(int Caller, AnsiString Na
 
     for(unsigned int x = 0; x < InactiveTrackVector.size(); x++)
     {
-        if(InactiveTrackVector.at(x).LocationName == Name)
+        if(InactiveTrackElementAt(158, x).LocationName == Name)
         {
             FoundFlag = true;
-            int V = InactiveTrackVector.at(x).VLoc;
-            int H = InactiveTrackVector.at(x).HLoc;
+            int V = InactiveTrackElementAt(159, x).VLoc;
+            int H = InactiveTrackElementAt(160, x).HLoc;
             if(V > VLocHi)
             {
                 VLocHi = V;
@@ -10998,7 +10998,7 @@ void TTrack::PopulateLCVector(int Caller)
     LCVector.clear();
     for(unsigned int x = 0; x < InactiveTrackVector.size(); x++)
     {
-        if(InactiveTrackVector.at(x).TrackType == LevelCrossing)
+        if(InactiveTrackElementAt(161, x).TrackType == LevelCrossing)
         {
             LCVector.push_back(x);
         }
@@ -13011,19 +13011,20 @@ void TOnePrefDir::GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, i
 // ---------------------------------------------------------------------------
 
 bool TOnePrefDir::FindLinkingPrefDir(int Caller, int PrefDirVectorNumber, int LinkNumberPos, int LinkNumber, int &LinkedPrefDirVectorNumber)
-{ // Finds a pref dir element that links to another element at given vector number and link number & position, returns true if found with linked
-  // vector number, true if buffer or continuation with link at blank end & linked vector number = -1, or false if not found with vector number == -1
+{
+    // Finds a pref dir element that links to another element at given vector number and link number & position, returns true if found with linked
+    // vector number, true if buffer or continuation with link at blank end & linked vector number = -1, or false if not found with vector number == -1
     try
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FindLinkingPrefDir," + AnsiString(PrefDirVectorNumber)
-             + "," + AnsiString(LinkNumberPos));
+                                     + "," + AnsiString(LinkNumberPos));
         bool FoundFlag;
         int PD0, PD1, PD2, PD3;
         if(PrefDirVector.at(PrefDirVectorNumber).Conn[LinkNumberPos] > -1)
         {
             GetVectorPositionsFromPrefDir4MultiMap(14, Track->TrackElementAt(1021, PrefDirVector.at(PrefDirVectorNumber).Conn[LinkNumberPos]).HLoc,
-                Track->TrackElementAt(1022, PrefDirVector.at(PrefDirVectorNumber).Conn[LinkNumberPos]).VLoc, FoundFlag,
-                PD0, PD1, PD2, PD3);
+                                                   Track->TrackElementAt(1022, PrefDirVector.at(PrefDirVectorNumber).Conn[LinkNumberPos]).VLoc, FoundFlag,
+                                                   PD0, PD1, PD2, PD3);
             if(!FoundFlag)
             {
                 Utilities->CallLogPop(2282);
@@ -13033,7 +13034,7 @@ bool TOnePrefDir::FindLinkingPrefDir(int Caller, int PrefDirVectorNumber, int Li
             {
                 if(PD0 > -1)
                 {
-                    if(PrefDirVector.at(PD0).TrackType == GapJump)//links to a gap and there is a pref dir set on it, doesn't matter about the link position
+                    if(PrefDirVector.at(PD0).TrackType == GapJump) //links to a gap and there is a pref dir set on it, doesn't matter about the link position
                     {
                         LinkedPrefDirVectorNumber = PD0;
                         Utilities->CallLogPop(2283);
@@ -13042,7 +13043,7 @@ bool TOnePrefDir::FindLinkingPrefDir(int Caller, int PrefDirVectorNumber, int Li
                 }
                 if(PD1 > -1)
                 {
-                    if(PrefDirVector.at(PD1).TrackType == GapJump)//can only be PD0 or PD1 for a gap
+                    if(PrefDirVector.at(PD1).TrackType == GapJump) //can only be PD0 or PD1 for a gap
                     {
                         LinkedPrefDirVectorNumber = PD1;
                         Utilities->CallLogPop(2284);
@@ -17999,7 +18000,7 @@ TAllRoutes::TRouteElementPair TAllRoutes::FindRoutePairFromRoute2MultiMap(int Ca
 bool TAllRoutes::FindRouteNumberFromRoute2MultiMapNoErrors(int Caller, int HLoc, int VLoc, int ELink, int &RouteNumber) // new at v1.2.0
 /*
       Similar to above but returns a bool and no errors are reported for no route or element at H&V etc.
-      Examines Route2MultiMap and returns true if oa route is found with the passed values of H, V and ELink.
+      Examines Route2MultiMap and returns true if a route is found with the passed values of H, V and ELink.
       RouteNumber (route position in AllRoutes vector is returned as a reference.
       Called by TTrain::CheckAndCancelRouteForWrongEndEntry.  Note that only need ELink (as well as H & V) to
       identify uniquely, since only bridges can have two routes on them & their track ELinks are always different.
@@ -18636,7 +18637,7 @@ bool TAllRoutes::RouteLockingRequired(int Caller, int RouteNumber, int RouteTrun
                     Utilities->CallLogPop(412);
                     return(false);
                 }
-                //added after v2.4.1 for trains facing the wrong way & moving but haven't moved a half element yet so route still intact
+                //added at v2.4.2 for trains facing the wrong way & moving but haven't moved a half element yet so route still intact
                 if(TrainController->TrainVectorAtIdent(49, TrainID).GetLeadElement() != PrefDirElement.TrackVectorPosition) //if it isn't then the train is facing the
                                                                                                                             //other way & can cancel the route
                 {
@@ -18700,7 +18701,7 @@ bool TAllRoutes::RouteLockingRequired(int Caller, int RouteNumber, int RouteTrun
                     Utilities->CallLogPop(748);
                     return(false);
                 }
-                //added after v2.4.1 for trains facing the wrong way on the prior element & moving but haven't moved a half element yet
+                //added at v2.4.2 for trains facing the wrong way on the prior element & moving but haven't moved a half element yet
                 if(TrainController->TrainVectorAtIdent(50, TrainID).GetLeadElement() != FirstElement.Conn[FirstElement.ELinkPos]) //if it isn't then the train is facing the
                                                                                                                                   //other way & can cancel the route
                 {

@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1505,1470,1652,1497"/>
 <area shape="rect" id="node3" href="$class_t_train.html#a81bf61b47a2867f0c6901b1ea6f47177" title="Used in the floating window to display the timetable." alt="" coords="470,945,637,987"/>
 <area shape="rect" id="node9" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1505,751,1652,778"/>
-<area shape="rect" id="node11" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="1015,1163,1178,1190"/>
+<area shape="rect" id="node11" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1015,1163,1178,1190"/>
 <area shape="rect" id="node16" href="$class_t_track.html#ac57ebd0462a3e0d8323e7b5cbc0e20ca" title="Converse of GetScreenPositionsFromTruePos except that in this function HLoc &amp; VLoc are expressed in t..." alt="" coords="1260,879,1440,920"/>
 <area shape="rect" id="node17" href="$class_t_interface.html#adc9ce6e5ee756279efbe92fd749355bf" title="Called when floating train info needed and train hasn&#39;t entered yet." alt="" coords="228,508,409,549"/>
 <area shape="rect" id="node20" href="$class_t_interface.html#a8bf97b0604338d3a8b8432e070b7a669" title="Used in actions due panel to identify the train or continuation." alt="" coords="743,1569,905,1611"/>
@@ -11,7 +11,7 @@
 <area shape="rect" id="node24" href="$class_t_interface.html#a51b94ffa3dc90fe4e3bec2f1ae28074e" title="used for floating window to display train status" alt="" coords="232,1417,405,1459"/>
 <area shape="rect" id="node27" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="1263,1265,1437,1307"/>
 <area shape="rect" id="node28" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="1259,1433,1441,1475"/>
-<area shape="rect" id="node29" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="1247,1214,1453,1241"/>
+<area shape="rect" id="node29" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="1247,1214,1453,1241"/>
 <area shape="rect" id="node4" href="$class_t_train.html#a781291ed1d591990b7615286462a2861" title="called during FloatingLabelNextString to find the next service departure time" alt="" coords="697,726,951,753"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8" title="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it..." alt="" coords="1009,371,1184,398"/>
 <area shape="rect" id="node10" href="$class_t_train_controller.html#a0114e517611ab24d3b947c1781130a23" title="Check all timetable names in ExitList, if all same return &quot; at [name]&quot; + AllowableExits = elements,..." alt="" coords="742,945,906,987"/>

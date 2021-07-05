@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" href="$class_t_train_controller.html#aa895b60238810a9d134cd5b9c886da56" title="Introduce a new train to the railway, with the characteristics specified, returns true for success,..." alt="" coords="220,2899,391,2926"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1467,2126,1613,2153"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1467,2855,1613,2882"/>
-<area shape="rect" id="node11" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="1227,1853,1390,1879"/>
+<area shape="rect" id="node11" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1227,1853,1390,1879"/>
 <area shape="rect" id="node13" href="$class_t_train_controller.html#a9acd46962be476bc76c8d5ce59fff399" title="Send an error message to the performance log and file, and as a warning if appropriate." alt="" coords="960,3321,1139,3363"/>
 <area shape="rect" id="node20" href="$class_t_train.html#a493ab1c185d29bf28ec8fded2356e9fc" title="Send a message to the performance log and performance file, and if the message is flagged as a warnin..." alt="" coords="728,3485,851,3511"/>
 <area shape="rect" id="node22" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="1203,714,1414,741"/>

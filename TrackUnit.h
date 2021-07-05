@@ -232,19 +232,6 @@ protected:
     bool operator != (TPrefDirElement RHElement);
 ///< non-equivalence operator
 
-    Graphics::TBitmap *GetDirectionPrefDirGraphicPtr() const;
-///< picks up the EntryDirectionGraphicPtr for preferred directions
-    Graphics::TBitmap *GetDirectionRouteGraphicPtr(bool AutoSigsFlag, bool PrefDirRoute) const;
-///< picks up the green or red route direction graphic
-    Graphics::TBitmap *GetOriginalGraphicPtr();
-///< picks up the original (non-flashing) graphic for use during route flashing
-    Graphics::TBitmap *GetPrefDirGraphicPtr();
-///< picks up the EXGraphicPtr for preferred directions
-    Graphics::TBitmap *GetRouteAutoSigsGraphicPtr();
-///< picks up the blue route graphic (not used - superseded by GetRouteGraphicPtr)
-    Graphics::TBitmap *GetRouteGraphicPtr(bool AutoSigsFlag, bool PrefDirRoute);
-///< picks up the appropriate route graphic
-
 public:
 
     friend class TOnePrefDir;
@@ -315,8 +302,20 @@ public:
         return(EXNumber);
     }
 
+/// Returns CheckCount
+    int GetCheckCount() //added at v2.9.1
+    {
+        return(CheckCount);
+    }
+
 /// Returns TrackVectorPosition
     unsigned int GetTrackVectorPosition() const
+    {
+        return(TrackVectorPosition);
+    }
+
+/// Returns signed integer value of TrackVectorPosition  (used in flip, mirror etc for pref dirs) added at v2.9.1
+    int GetSignedIntTrackVectorPosition() const
     {
         return(TrackVectorPosition);
     }
@@ -337,6 +336,11 @@ public:
     void SetTrackVectorPosition(int TVPos) // added at v2.9.0
     {
         TrackVectorPosition = TVPos;
+    }
+
+    void SetCheckCount(int ChkCnt) //added at v2.9.1
+    {
+        CheckCount = ChkCnt;
     }
 
 /// Used in pasting pref dirs
@@ -369,6 +373,18 @@ public:
         EXNumber = input;
     }
 
+/// Used in pasting pref dirs
+    void SetEXGraphicPtr(Graphics::TBitmap *input) //added at v2.9.1
+    {
+        EXGraphicPtr = input;
+    }
+
+/// Used in pasting pref dirs
+    void SetEntryDirectionGraphicPtr(Graphics::TBitmap *input) //added at v2.9.1
+    {
+        EntryDirectionGraphicPtr = input;
+    }
+
 /// Default constructor, loads default values
     TPrefDirElement() : TTrackElement(), ELink(-1), ELinkPos(-1), XLink(-1), XLinkPos(-1), EXNumber(-1), TrackVectorPosition(-1), CheckCount(0), EXGraphicPtr(0),
         EntryDirectionGraphicPtr(0), IsARoute(false), AutoSignals(false), PrefDirRoute(false)
@@ -385,12 +401,26 @@ public:
 
 // external functions
 
-/// determines and loads EXNumber (see above)
     bool EntryExitNumber();
-/// Sends a list of PrefDirElement values to Utilities->CallLog file for debugging purposes
+///< determines and loads EXNumber (see above)
     AnsiString LogPrefDir() const;
-/// Constructs a PrefDirElement from supplied values
+///< Sends a list of PrefDirElement values to Utilities->CallLog file for debugging purposes
     TPrefDirElement(TTrackElement InputElement, int ELink, int ELinkPos, int XLink, int XLinkPos, int TrackVectorPosition);
+///< Constructs a PrefDirElement from supplied values
+    Graphics::TBitmap *GetDirectionPrefDirGraphicPtr() const;
+///< picks up the EntryDirectionGraphicPtr for preferred directions
+    Graphics::TBitmap *GetDirectionRouteGraphicPtr(bool AutoSigsFlag, bool PrefDirRoute) const;
+///< picks up the green or red route direction graphic
+    Graphics::TBitmap *GetOriginalGraphicPtr();
+///< picks up the original (non-flashing) graphic for use during route flashing
+    Graphics::TBitmap *GetPrefDirGraphicPtr();
+///< picks up the EXGraphicPtr for preferred directions
+    Graphics::TBitmap *GetRouteAutoSigsGraphicPtr();
+///< picks up the blue route graphic (not used - superseded by GetRouteGraphicPtr)
+    Graphics::TBitmap *GetRouteGraphicPtr(bool AutoSigsFlag, bool PrefDirRoute);
+///< picks up the appropriate route graphic
+
+
 };
 
 // ---------------------------------------------------------------------------
@@ -1081,11 +1111,11 @@ exclude opposed buffers since these not linked.  Used in timetable integrity che
     TTrackElement &GetTrackElementFromAnyTrackMap(int Caller, int HLoc, int VLoc, TTrackMap Map, TTrackVector Vector); //new at v2.9.0 for clipboard pref dirs
 /// Return a reference to the element at HLoc & VLoc, if no element is found an error is thrown
     TTrackElement &GetTrackElementFromTrackMap(int Caller, int HLoc, int VLoc);
-/// A range-checked version of InactiveTrackElement.at(At)
+/// A range-checked version of InactiveTrackVector.at(At)
     TTrackElement &InactiveTrackElementAt(int Caller, int At);
 /// A range-checked version of SelectVector.at(At)
     TTrackElement &SelectVectorAt(int Caller, int At);
-/// A range-checked version of TrackElement.at(At)
+/// A range-checked version of TrackVector.at(At)
     TTrackElement &TrackElementAt(int Caller, int At);
 /// Takes an adjusted vector position value from either vector (if active, Position = -TruePos -1, if inactive, Position = TruePos) and returns a pointer to the relevant element
     TTrackVectorIterator GetTrackVectorIteratorFromNamePosition(int Caller, int Position);
@@ -1576,7 +1606,7 @@ public:
 /// Handles routes that are locked because of approaching trains
     class TLockedRouteClass
     {
-public:
+    public:
         int RouteNumber;
 ///< the vector position number of the relevant route in AllRoutesVector
         unsigned int TruncateTrackVectorPosition;
@@ -1613,7 +1643,7 @@ public:
 /// Used to store relevant values when a call-on found, ready for plotting an unrestricted route
     class TCallonEntry
     {
-public:
+    public:
         bool RouteOrPartRouteSet;
 ///< whether or not a route or part route already plotted
         int RouteStartPosition;

@@ -3,5 +3,5 @@
 <area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="496,5,643,32"/>
 <area shape="rect" id="node3" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="275,81,448,108"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="496,81,643,108"/>
-<area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="280,31,443,57"/>
+<area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="280,31,443,57"/>
 </map>

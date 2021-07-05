@@ -6,5 +6,5 @@
 <area shape="rect" id="node5" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="243,89,417,131"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="479,97,625,123"/>
 <area shape="rect" id="node7" href="$class_t_pref_dir_element.html#a35cd9c18012bd537fa988a32c510b01b" title="Returns the XLink array position." alt="" coords="231,307,429,334"/>
-<area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="249,38,411,65"/>
+<area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="249,38,411,65"/>
 </map>

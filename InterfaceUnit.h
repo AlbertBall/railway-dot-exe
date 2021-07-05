@@ -654,6 +654,10 @@ __published: // IDE-managed Components
     TLabel *CPLabel7;
     TLabel *CPLabel8;
     TBitBtn *SigPrefNonConsecButton;
+    TPanel *TwoLocationNamePanel;
+    TLabel *TwoLocationNameLabel;
+    TButton *TwoLocationNameButton;
+    TCheckBox *TwoLocationNameCheckBox;
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -849,6 +853,7 @@ __published: // IDE-managed Components
                                        int X, int Y);
     void __fastcall SigPrefConsecButtonClick(TObject *Sender);
     void __fastcall CheckPrefDirConflictsMenuItemClick(TObject *Sender);
+    void __fastcall TwoLocationNameButtonClick(TObject *Sender);
 
 public: // AboutForm needs access to these
 
@@ -968,6 +973,12 @@ private:
 ///< true when a session load command has been given - implemented at next clock tick
     bool mbLeftDown;
 ///< true when the left mouse button is down
+    bool MMoveTrackSelFlag;      //these added at v2.9.1
+    bool MMovePrefDirSelFlag;
+    bool MMoveCopyCutSelPickedUpFlag;
+    bool MMoveTextGraphicTextFoundFlag;
+    bool MMoveTextGraphicUserGraphicFoundFlag;
+///< Mouse move flags to prevent repeated event logs
     bool NewEntryInPreparationFlag;
 ///< true when a new timetable entry is being prepared in the timetable editor
     bool OAListBoxRightMouseButtonDown;
@@ -1008,6 +1019,12 @@ private:
 ///< indicates that a text item has been found when clicking on a build screen during 'AddText' or 'MoveTextOrGraphic' modes
     bool TTClockAdjustWarningHide;
 ///< true if user opts not to show the timetable clock adjustment warning (false on starting the program)
+    bool TwoLocationNamePanelHide;
+///< true if user opts not to show the two location name warning (false on starting the program)
+    bool TooLongMessageSentFlag;
+///< indicates that the length of a location element might be too long (>200m), so it won't be given again
+    bool TooShortMessageSentFlag;
+///< indicates that the length of a location element might be too short (<50m), so it won't be given again
     bool UserGraphicFoundFlag;
 ///< indicates that a user graphic item has been found when clicking on a build screen for moving
     bool TimetableChangedFlag;
@@ -1030,7 +1047,7 @@ private:
 
 /**These are for Shift Key shortcuts. 'Click()' execution must occur separately to the keypress because Windows stores the key until after any directly linked key code
 is executed then selects the timetable entry that begins with the letter corresponding to the key.  Without this separation the list box is left with the wrong entry
-showing.  See DevHistory.txt for the version after v2.4.3 for details. */
+showing.  See DevHistory.txt for the version at v2.5.0 for details. */
     bool PreviousTTEntryKeyFlag;
     bool NextTTEntryKeyFlag;
     bool MoveTTEntryUpKeyFlag;
@@ -1183,7 +1200,7 @@ showing.  See DevHistory.txt for the version after v2.4.3 for details. */
 // functions defined in .cpp file
 
 /// used for floating window to display train status
-    AnsiString GetTrainStatusFloat(int Caller, int TrainID, AnsiString FormatNoDPStr, AnsiString SpecialStr); //new after v2.6.1
+    AnsiString GetTrainStatusFloat(int Caller, int TrainID, AnsiString FormatNoDPStr, AnsiString SpecialStr); //new at v2.6.2
 /// Search the timetable entry pointed to by TTCurrentEntryPtr and if any times (HH:MM) are present return true (checked in order to enable or not AddMinsButton & SubMinsButton)
     bool AreAnyTimesInCurrentEntry();
 /// Convert a stored timetable file (either as a stand alone file or within a session file) to a loaded timetable, return false for error
@@ -1203,7 +1220,7 @@ showing.  See DevHistory.txt for the version after v2.4.3 for details. */
 /// Check integrity of a railway file prior to loading, return true for success
     bool FileIntegrityCheck(int Caller, char *FileName) const;
 /// Used in actions due panel to identify the train or continuation
-    bool GetTrainIDOrContinuationPosition(int Caller, int X, int Y, int &TrainID, int &ContinuationPos); //added after v2.6.1 so can use for actions due floating window
+    bool GetTrainIDOrContinuationPosition(int Caller, int X, int Y, int &TrainID, int &ContinuationPos); //added at v2.6.2 so can use for actions due floating window
 /// Called during gap setting to mark a gap with a red ellipse and ask user to select the corresponding gap, returns true if an unset gap found
     bool HighLightOneGap(int Caller, int &HLoc, int &VLoc);
 /// Checked during operation, returns true if so and PerformancePanel removed - not used from v2.2.0 as now allow floating panel & label to overlie performance panel
@@ -1247,7 +1264,7 @@ showing.  See DevHistory.txt for the version after v2.4.3 for details. */
 /// Deal with any warning graphics that need to flash (call on, signal stop, crash etc), called during the ClockTimer function
     void FlashingGraphics(int Caller, TDateTime Now);
 /// Called when floating train info needed and train hasn't entered yet
-    void GetTrainFloatingInfoFromContinuation(int Caller, int VecPos, AnsiString FormatNoDPStr, AnsiString SpecialStr, AnsiString &TrainStatusFloat, AnsiString &TrainTTFloat); //new after v2.6.1
+    void GetTrainFloatingInfoFromContinuation(int Caller, int VecPos, AnsiString FormatNoDPStr, AnsiString SpecialStr, AnsiString &TrainStatusFloat, AnsiString &TrainTTFloat); //new at v2.6.2
 /// Called during timetable editing to highlight in red a single entry in the list of all entries in the left hand long window
     void HighlightOneEntryInAllEntriesTTListBox(int Caller, int Position);
 /// In trackbuild display ground signal types on signal buttons

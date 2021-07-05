@@ -3313,7 +3313,7 @@ void TTrain::CheckAndCancelRouteForWrongEndEntry(int Caller, int Element, int En
     for(unsigned int x = 0; x < AllRoutes->GetFixedRouteAt(155, RouteNumber).PrefDirSize(); x++)
     {
         RouteElement = AllRoutes->GetFixedRouteAt(156, RouteNumber).GetFixedPrefDirElementAt(165, x);
-        bool PointsAtElement = (Track->TrackElementAt(987, Element).TrackType == Points); // new after v2.4.1 for points check - Xeon repoted it 30/05/20. He found that for routes that
+        bool PointsAtElement = (Track->TrackElementAt(987, Element).TrackType == Points); // new at v2.4.2 for points check - Xeon repoted it 30/05/20. He found that for routes that
         if(RouteElement.GetTrackVectorPosition() == (unsigned int)Element) // cross bridges at both levels can have entrypos 0 & other exitpos 2 so if don't have this check can cancel a route wrongly
         {
             if(RouteElement.GetELinkPos() == EntryPos)
@@ -3637,7 +3637,7 @@ when Straddle == LeadMidLag
             ExitSpeedAtMaxBraking = sqrt((EntrySpeed * EntrySpeed) - 2 * MaxBrakeRate * FrontElementLength);
         }
         double SpeedToUse;
-        // use the highest of LimitingSpeed or ExitSpeedAtMaxBraking - added after v2.4.1 because trains entering at a continuation with zero (or very low) speed
+        // use the highest of LimitingSpeed or ExitSpeedAtMaxBraking - added at v2.4.2 because trains entering at a continuation with zero (or very low) speed
         // & 2 elements before signal caused ExitSpeedAtMaxBraking & hence DistanceAtHalfBraking and DistanceAtThreeQuarterBraking to be zero, so no restriction was recognised
         // for first element & train accelerated at maximum rate, then at 2nd element train couldn't brake in time and overran the signal - notified by Micke via Discord on 02/06/20
         if(ExitSpeedAtMaxBraking > LimitingSpeed)
@@ -4545,8 +4545,8 @@ bool TTrain::ClearToNextSignal(int Caller)
 
     for(unsigned int x = 0; x < Track->TrackVector.size(); x++)
     {
-        Track->TrackVector.at(x).TempTrackMarker01 = false;
-        Track->TrackVector.at(x).TempTrackMarker23 = false;
+        Track->TrackElementAt(1031, x).TempTrackMarker01 = false;
+        Track->TrackElementAt(1032, x).TempTrackMarker23 = false;
     }
     int CurrentTrackVectorPosition = LeadElement, NextTrackVectorPosition;
     int EntryPos = LeadEntryPos, ExitPos, NextEntryPos;
@@ -5286,6 +5286,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
         TrainController->EarlyArrivals++;
         TrainController->TotEarlyArrMins += abs(IntMinsLate);
     }
+
     else if((ActionType == Pass) && (IntMinsLate == 0))
     {
         TrainController->OnTimePasses++;
@@ -5300,7 +5301,23 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
         TrainController->EarlyPasses++;
         TrainController->TotEarlyPassMins += abs(IntMinsLate);
     }
-    else if((ActionType == Depart) && (IntMinsLate == 0))
+
+    else if((ActionType == Leave) && (IntMinsLate == 0)) //new at v2.9.1 as had been omitted in error earlier
+    {
+        TrainController->OnTimeExits++;
+    }
+    else if((ActionType == Leave) && (IntMinsLate > 0))
+    {
+        TrainController->LateExits++;
+        TrainController->TotLateExitMins += IntMinsLate;
+    }
+    else if((ActionType == Leave) && (IntMinsLate < 0))
+    {
+        TrainController->EarlyExits++;
+        TrainController->TotEarlyExitMins += abs(IntMinsLate);
+    }
+
+    else if((ActionType == Depart) && (IntMinsLate == 0)) //can't depart early
     {
         TrainController->OnTimeDeps++;
     }
@@ -8654,6 +8671,8 @@ TTrainController::TTrainController()
     TotEarlyArrMins = 0;
     TotLatePassMins = 0;
     TotEarlyPassMins = 0;
+    TotLateExitMins = 0; //added at v2.9.1
+    TotEarlyExitMins = 0; //added at v2.9.1
     TotLateDepMins = 0;
     ExcessLCDownMins = 0;
     TTClockTime = 0; // added for v0.6
@@ -9760,12 +9779,12 @@ bool TTrainController::TimetableIntegrityCheck(int Caller, char *FileName, bool 
     Track->ActiveTrackElementNameMap.clear();
     for(unsigned int x = 0; x < Track->TrackVector.size(); x++)
     {
-        // if((Track->TrackVector.at(x).ActiveTrackElementName != "") && (Track->TrackVector.at(x).TrackType != Continuation))
-        if((Track->TrackVector.at(x).ActiveTrackElementName != "") && (Track->ContinuationNameMap.find(Track->TrackVector.at(x).ActiveTrackElementName))
+        // if((Track->TrackElementAt(, x).ActiveTrackElementName != "") && (Track->TrackElementAt(, x).TrackType != Continuation))
+        if((Track->TrackElementAt(1033, x).ActiveTrackElementName != "") && (Track->ContinuationNameMap.find(Track->TrackElementAt(1034, x).ActiveTrackElementName))
            == Track->ContinuationNameMap.end())
         {
             // exclude any name that appears in a continuation, error message given in tt validation if try to include such a name in a tt
-            ActiveTrackElementNameMapEntry.first = Track->TrackVector.at(x).ActiveTrackElementName;
+            ActiveTrackElementNameMapEntry.first = Track->TrackElementAt(1035, x).ActiveTrackElementName;
             ActiveTrackElementNameMapEntry.second = 0; // this is a dummy value
             Track->ActiveTrackElementNameMap.insert(ActiveTrackElementNameMapEntry);
         }
@@ -11602,7 +11621,7 @@ bool TTrainController::SplitRepeat(int Caller, AnsiString OneEntry, int &RearSta
 
 // ---------------------------------------------------------------------------
 
-bool TTrainController::SecondPassActions(int Caller, bool GiveMessages)
+bool TTrainController::SecondPassActions(int Caller, bool GiveMessages, bool &TwoLocationFlag) //TwoLocationFlag added at v2.9.1
 /* Note that here the TrainDataVector has been compiled with FinalCall true in ProcessOneTimetableLine so work on the
            vector rather than the timetable
            Note also that for unlocated Snt entries the LocationType hasn't yet been set
@@ -11766,6 +11785,8 @@ bool TTrainController::SecondPassActions(int Caller, bool GiveMessages)
       Other successor errors will be caught later as all 'throws' changed to messages prior to the bulk of the sucessor checks
 */
 
+    TwoLocationList.clear(); //empty the list to begin with, added at v2.9.1
+    TwoLocationFlag = false; //added at v2.9.1
     for(unsigned int x = 0; x < TrainDataVector.size(); x++) // (1)
     {
         const TTrainDataEntry &TDEntry = TrainDataVector.at(x);
@@ -12537,16 +12558,15 @@ bool TTrainController::SecondPassActions(int Caller, bool GiveMessages)
                 }
                 else if(AVEntry.FormatType == TimeTimeLoc)
                 {
-                    if((AVEntry.LocationName == LastLocationName) && !TwoOrMoreLocationsWarningGiven && TTEditPanelVisible) //changed at v2.6.0 to allow loops & consecutive same locs
+                    if((AVEntry.LocationName == LastLocationName) && /*!TwoOrMoreLocationsWarningGiven && */ TTEditPanelVisible) //changed at v2.6.0 to allow loops & consecutive same locs
                     // last entry must be a departure or would have failed earlier
                     {
-                        ShowMessage("Two or more locations are the same without a change of direction between them.  Please correct if this is an error.\n\nThis warning will not be shown again.");
-                        TwoOrMoreLocationsWarningGiven = true;
-//                        SecondPassMessage(GiveMessages,
-//                            "Error in timetable - a location event in a timed arrival and departure is the same as the last location for: " + TDEntry.HeadCode);
-//                        TrainDataVector.clear();
-//                        Utilities->CallLogPop(825);
-//                        return false;
+                        TwoLocationList.insert(TwoLocationList.end(), TDEntry.ServiceReference); //added at v2.9.1
+                        TwoLocationFlag = true;
+//                        ShowMessage("Two or more locations are the same without a change of direction between them.  Please correct if this is an error.\n\nThis warning will not be shown again.");
+//                        TwoOrMoreLocationsWarningGiven = true;
+
+
                     }
                     LastLocationName = AVEntry.LocationName;
                     LastEntryIsAnArrival = false;
@@ -12611,16 +12631,13 @@ bool TTrainController::SecondPassActions(int Caller, bool GiveMessages)
                 }
                 else if(AVEntry.FormatType == TimeTimeLoc)
                 {
-                    if((AVEntry.LocationName == LastLocationName) && !TwoOrMoreLocationsWarningGiven && TTEditPanelVisible) //changed at v2.6.0 to allow loops & consecutive same locs
+                    if((AVEntry.LocationName == LastLocationName) && /*!TwoOrMoreLocationsWarningGiven && */ TTEditPanelVisible) //changed at v2.6.0 to allow loops & consecutive same locs
                     // last entry must be a departure or would have failed earlier
                     {
-                        ShowMessage("Two or more locations are the same without a change of direction between them.  Please correct if this is an error.\n\nThis warning will not be shown again.");
-                        TwoOrMoreLocationsWarningGiven = true;
-//                        SecondPassMessage(GiveMessages,
-//                            "Error in timetable - a location event in a timed arrival and departure is the same as the last location for: " + TDEntry.HeadCode);
-//                        TrainDataVector.clear();
-//                        Utilities->CallLogPop(830);
-//                        return false;
+                        TwoLocationList.insert(TwoLocationList.end(), TDEntry.ServiceReference); //added at v2.9.1
+                        TwoLocationFlag = true;
+//                        ShowMessage("Two or more locations are the same without a change of direction between them.  Please correct if this is an error.\n\nThis warning will not be shown again.");
+//                        TwoOrMoreLocationsWarningGiven = true;
                     }
                     LastLocationName = AVEntry.LocationName;
                     LastEntryIsAnArrival = false;
@@ -12698,14 +12715,12 @@ bool TTrainController::SecondPassActions(int Caller, bool GiveMessages)
                         {
                             break; // out of the 'a' & 'z' loops since the check is only valid up to a change of direction
                         }
-                        if((TDEntry.ActionVector.at(a).LocationName == LocationNameToBeChecked) && !TwoOrMoreLocationsWarningGiven && TTEditPanelVisible) //changed at v2.6.0 to allow loops & consecutive same locs
+                        if((TDEntry.ActionVector.at(a).LocationName == LocationNameToBeChecked) && /*!TwoOrMoreLocationsWarningGiven && */ TTEditPanelVisible) //changed at v2.6.0 to allow loops & consecutive same locs
                         {
-                            ShowMessage("Two or more locations are the same without a change of direction between them.  Please correct if this is an error.\n\nThis warning will not be shown again.");
-                            TwoOrMoreLocationsWarningGiven = true;
-                            //                            SecondPassMessage(GiveMessages, "Error in timetable - a location entry appears twice inappropriately for: " + TDEntry.HeadCode);
-                            //                            TrainDataVector.clear();
-                            //                            Utilities->CallLogPop(833);
-                            //                            return false;
+                            TwoLocationList.insert(TwoLocationList.end(), TDEntry.ServiceReference); //added at v2.9.1
+                            TwoLocationFlag = true;
+//                            ShowMessage("Two or more locations are the same without a change of direction between them.  Please correct if this is an error.\n\nThis warning will not be shown again.");
+//                            TwoOrMoreLocationsWarningGiven = true;
                         }
                     }
                     break; // out of the 'z' loop since have checked 'a' as far as need to
@@ -14017,6 +14032,25 @@ bool TTrainController::CheckStartAllowable(int Caller, int RearPosition, int Rea
             return(false);
         }
     }
+
+    //this section added at v2.9.1 to prevent entry for a train when there's a route set against it
+    int HLoc = Track->TrackElementAt(1027, RearPosition).HLoc;
+    int VLoc = Track->TrackElementAt(1028, RearPosition).VLoc;
+    int ELink = Track->TrackElementAt(1029, RearPosition).Link[RearExitPos]; //if route entry corresponds to RearExitPos then it's set against the train
+    int RouteNumber; //not used
+    if(Track->TrackElementAt(1030, RearPosition).TrackType == Continuation)
+    {
+        if(AllRoutes->FindRouteNumberFromRoute2MultiMapNoErrors(8, HLoc, VLoc, ELink, RouteNumber))
+        {
+            EventType = FailEntryRouteSetAgainst;
+            if(ReportFlag)
+            {
+                LogActionError(63, HeadCode, "", EventType, RearName);
+            }
+            Utilities->CallLogPop(2317);
+            return(false);
+        }
+    }
     Utilities->CallLogPop(939);
     return(true);
 }
@@ -14477,10 +14511,14 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
 // RouteForceCancelled:  06:00:10: ERROR: 2F43 forced a route cancellation by occupying it incorrectly at 46-N7
 // WaitingForJBO:  06:00:10: WARNING: 2F43 waiting to join 3F43 at Essex Road
 // WaitingForFJO:  06:00:10: WARNING: 2F43 waiting to be joined by 3F43 at Essex Road
+// FailEntryRouteSetAgainst:   06:00:10: WARNING: 2F43 can't enter railway, route set against it at entry position 57-N5
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LogActionError," + HeadCode + "," + OtherHeadCode + "," +
                                  AnsiString(ActionEventType) + "," + LocationID);
     AnsiString BaseLog = "", Prefix = "", ErrorLog = "", WarningStr = "";
+
+    TDateTime ActualTime = TrainController->TTClockTime; //moved from lower down at v2.9.1
+    AnsiString TimeAndHeadCode = Utilities->Format96HHMMSS(ActualTime) + " " + HeadCode; //added at v2.9.1 to give more info to user
 
     Prefix = " ERROR: ";
     if(ActionEventType == FailTrainEntry)
@@ -14488,35 +14526,42 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
         Prefix = " HELD: ";
         ErrorLog = " can't enter railway, train obstructing entry position ";
         WarningStr = " can't enter railway, train obstructing entry position ";
-        Display->WarningLog(1, HeadCode + WarningStr + LocationID);
+        Display->WarningLog(1, TimeAndHeadCode + WarningStr + LocationID);
+    }
+    else if(ActionEventType == FailEntryRouteSetAgainst)  //added at v2.9.1
+    {
+        Prefix = " HELD: ";
+        ErrorLog = " can't enter railway, route set against it at entry position ";
+        WarningStr = " can't enter railway, route set against it at entry position ";
+        Display->WarningLog(10, TimeAndHeadCode + WarningStr + LocationID);
     }
     else if(ActionEventType == FailCreateTrain)
     {
         Prefix = " HELD: ";
         ErrorLog = " can't be created, train obstructing ";
         WarningStr = " can't be created, train obstructing ";
-        Display->WarningLog(2, HeadCode + WarningStr + LocationID);
+        Display->WarningLog(2, TimeAndHeadCode + WarningStr + LocationID);
     }
     else if(ActionEventType == FailCreateLockedRoute)
     {
         Prefix = " HELD: ";
         ErrorLog = " can't be created on a locked route at ";
         WarningStr = " can't be created on a locked route at ";
-        Display->WarningLog(4, HeadCode + WarningStr + LocationID);
+        Display->WarningLog(4, TimeAndHeadCode + WarningStr + LocationID);
     }
     else if(ActionEventType == FailEnterLockedRoute)
     {
         Prefix = " HELD: ";
         ErrorLog = " can't enter on a locked route at ";
         WarningStr = " can't enter on a locked route at ";
-        Display->WarningLog(5, HeadCode + WarningStr + LocationID);
+        Display->WarningLog(5, TimeAndHeadCode + WarningStr + LocationID);
     }
     else if(ActionEventType == FailCreatePoints)
     {
         Prefix = " HELD: ";
         ErrorLog = " can't be created, diverging points at ";
         WarningStr = " can't be created, diverging points at ";
-        Display->WarningLog(3, HeadCode + WarningStr + LocationID);
+        Display->WarningLog(3, TimeAndHeadCode + WarningStr + LocationID);
     }
     else if(ActionEventType == FailUnexpectedExitRailway)
     {
@@ -14532,14 +14577,14 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
     {
         ErrorLog = " failed to split - location too short at ";
         WarningStr = " failed to split, location too short at ";
-        Display->WarningLog(6, HeadCode + WarningStr + LocationID);
+        Display->WarningLog(6, TimeAndHeadCode + WarningStr + LocationID);
     }
     else if(ActionEventType == FailSplitDueToOtherTrain)
     {
         Prefix = " HELD: ";
         ErrorLog = " unable to split - other train obstructing at ";
         WarningStr = " unable to split - other train obstructing at ";
-        Display->WarningLog(7, HeadCode + WarningStr + LocationID);
+        Display->WarningLog(7, TimeAndHeadCode + WarningStr + LocationID);
     }
     else if(ActionEventType == FailUnexpectedBuffers)
     {
@@ -14640,16 +14685,15 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
         Prefix = " WARNING: ";
         ErrorLog = " waiting to join " + OtherHeadCode + " at ";
         WarningStr = " waiting to join " + OtherHeadCode + " at ";
-        Display->WarningLog(8, HeadCode + WarningStr + LocationID);
+        Display->WarningLog(8, TimeAndHeadCode + WarningStr + LocationID);
     }
     else if(ActionEventType == WaitingForFJO)
     {
         Prefix = " WARNING: ";
         ErrorLog = " waiting to be joined by " + OtherHeadCode + " at ";
         WarningStr = " waiting to be joined by " + OtherHeadCode + " at ";
-        Display->WarningLog(9, HeadCode + WarningStr + LocationID);
+        Display->WarningLog(9, TimeAndHeadCode + WarningStr + LocationID);
     }
-    TDateTime ActualTime = TrainController->TTClockTime;
 
     BaseLog = Utilities->Format96HHMMSS(ActualTime) + Prefix + HeadCode;
     Display->PerformanceLog(4, BaseLog + ErrorLog + LocationID);
@@ -15824,20 +15868,22 @@ bool TTrainController::CreateTTAnalysisFile(int Caller, AnsiString RailwayTitle,
 
     try
     {
-        //New section after v2.4.3 for tt conflict analysis
+        //New section at v2.5.0 for tt conflict analysis
         /*
             typedef std::list<AnsiString> TServiceCallingLocsList;
-            typedef std::vector<TServiceCallingLocsList> TAllServiceCallingLocsMap;
+            typedef std::map<AnsiString, TServiceCallingLocsList> TAllServiceCallingLocsMap;
 
-            struct TLocServiceTimes
-            {
-                AnsiString Location;
-                AnsiString ServiceAndRepeatNum;
-                AnsiString AtLocTime;
-                AnsiString ArrTime;
-                AnsiString DepTime;
-            };
-            typedef std::vector<TLocServiceTimes> TLocServiceTimesVector;
+    /// Class used for timetable conflict file compilation
+        struct TLocServiceTimes
+        {
+            AnsiString Location;
+            AnsiString ServiceAndRepeatNum;
+            AnsiString AtLocTime;
+            AnsiString ArrTime;
+            AnsiString DepTime;
+            AnsiString FrhMarker;
+        };
+        typedef std::vector<TLocServiceTimes> TLocServiceTimesVector;
         */
 
         //first have to check through all the services and give each one a unique name, or the analysis won't recognise differences between services that have the same reference
@@ -15904,7 +15950,7 @@ bool TTrainController::CreateTTAnalysisFile(int Caller, AnsiString RailwayTitle,
                             AnsiString VString;
                             if(HLoc < 0)
                             {
-                                HString = 'N' + AnsiString(HLoc).SubString(2, AnsiString(HLoc).Length() - 1); //strip off '-'
+                                HString = AnsiString('N') + AnsiString(HLoc).SubString(2, AnsiString(HLoc).Length() - 1); //strip off '-'
                             }
                             else
                             {
@@ -15912,7 +15958,7 @@ bool TTrainController::CreateTTAnalysisFile(int Caller, AnsiString RailwayTitle,
                             }
                             if(VLoc < 0)
                             {
-                                VString = 'N' + AnsiString(VLoc).SubString(2, AnsiString(VLoc).Length() - 1); //strip off '-'
+                                VString = AnsiString('N') + AnsiString(VLoc).SubString(2, AnsiString(VLoc).Length() - 1); //strip off '-'
                             }
                             else
                             {
@@ -15973,7 +16019,7 @@ bool TTrainController::CreateTTAnalysisFile(int Caller, AnsiString RailwayTitle,
                         AnsiString VString;
                         if(HLoc < 0)
                         {
-                            HString = 'N' + AnsiString(HLoc).SubString(2, AnsiString(HLoc).Length() - 1); //strip off '-'
+                            HString = AnsiString('N') + AnsiString(HLoc).SubString(2, AnsiString(HLoc).Length() - 1); //strip off '-'
                         }
                         else
                         {
@@ -15981,7 +16027,7 @@ bool TTrainController::CreateTTAnalysisFile(int Caller, AnsiString RailwayTitle,
                         }
                         if(VLoc < 0)
                         {
-                            VString = 'N' + AnsiString(VLoc).SubString(2, AnsiString(VLoc).Length() - 1); //strip off '-'
+                            VString = AnsiString('N') + AnsiString(VLoc).SubString(2, AnsiString(VLoc).Length() - 1); //strip off '-'
                         }
                         else
                         {
@@ -16091,13 +16137,15 @@ bool TTrainController::CreateTTAnalysisFile(int Caller, AnsiString RailwayTitle,
 
 //build LocServiceTimesVector
 
-/*      struct TLocServiceTimes
+/*
+        struct TLocServiceTimes
         {
             AnsiString Location;
             AnsiString ServiceAndRepeatNum;
             AnsiString AtLocTime;
             AnsiString ArrTime;
             AnsiString DepTime;
+            AnsiString FrhMarker;
         };
         typedef std::vector<TLocServiceTimes> TLocServiceTimesVector;
 
@@ -16112,7 +16160,7 @@ b) an unlocated Snt: entry time becomes DepTime
 c) all other start entries: entry time becomes AtLoc, and all subsequent minutes entered too up to but not including a departure or a finish
 d) TimeLoc Arr: entry time becomes ArrTime, and all subsequent minutes entered too up to but not including a departure or a finish
 e) TimeLoc Dep: entry time becomes DepTime, checks if DepTime same as earlier ArrTime and if so all times go in as one entry
-f) TimeTimeLoc: Arrival time entered as ErrTime, a check if Arr & Dep same and if s go in as one entry, else all minutes between entered as AtLocs then DepTime
+f) TimeTimeLoc: Arrival time entered as ArrTime, a check if Arr & Dep same and if so go in as one entry, else all minutes between entered as AtLocs then DepTime
 g) ExitRailway (Fer): check if located and use LocationName if so. else use H & V positions, time becomes AtLocTime
 h) Frh: use the earlier vector time as the AtLocTime and set FrhMarker, and enter all minutes to end of timetable as AtLocs
 i) Frh-sh: for the last train use time as AtLocTime, set FrhMarker, and enter all minutes to end of timetable as AtLocs
@@ -16222,7 +16270,7 @@ j) all other finish entries (all link to another service) are ignored as will be
                                 AnsiString VString;
                                 if(HLoc < 0)
                                 {
-                                    HString = 'N' + AnsiString(HLoc).SubString(2, AnsiString(HLoc).Length() - 1); //strip off '-'
+                                    HString = AnsiString('N') + AnsiString(HLoc).SubString(2, AnsiString(HLoc).Length() - 1); //strip off '-'
                                 }
                                 else
                                 {
@@ -16230,7 +16278,7 @@ j) all other finish entries (all link to another service) are ignored as will be
                                 }
                                 if(VLoc < 0)
                                 {
-                                    VString = 'N' + AnsiString(VLoc).SubString(2, AnsiString(VLoc).Length() - 1); //strip off '-'
+                                    VString = AnsiString('N') + AnsiString(VLoc).SubString(2, AnsiString(VLoc).Length() - 1); //strip off '-'
                                 }
                                 else
                                 {
@@ -16289,7 +16337,7 @@ j) all other finish entries (all link to another service) are ignored as will be
                         }
                     }
 
-                    else if(AVE.FormatType == TimeLoc) //could be arr or dep, if ar5rival add in all mins to the departure or finish
+                    else if(AVE.FormatType == TimeLoc) //could be arr or dep, if arrival add in all mins to the departure or finish
                     {
                         TLSTEntry.Location = AVE.LocationName;
                         if(AVE.ArrivalTime > TDateTime(-1)) //one or other set, not both, in this case arrival
@@ -16410,9 +16458,22 @@ j) all other finish entries (all link to another service) are ignored as will be
                         }
                     }
 
+                    else if(AVE.FormatType == PassTime)  //added at v2.9.1
+                    { //adds 2 entries, 1st with PassTime as ArrTime and AtLocTime, 2nd with PassTime as AtLocTime & DepTime
+                        TLSTEntry.Location = AVE.LocationName;;
+                        TLSTEntry.AtLocTime = Utilities->Format96HHMM(GetRepeatTime(73, AVE.EventTime, y, IncMinutes));
+                        TLSTEntry.ArrTime = TLSTEntry.AtLocTime; //DepTime already set to null
+                        LocServiceTimesVector.push_back(TLSTEntry); //1st entry
+                        TLSTEntry.ArrTime = ""; //need to reset this to null
+                        TLSTEntry.DepTime = TLSTEntry.AtLocTime;
+                        LocServiceTimesVector.push_back(TLSTEntry); //2nd entry
+                    }
+
                     else if(AVE.FormatType == ExitRailway) //Fer
                     {
                         TLSTEntry.AtLocTime = Utilities->Format96HHMM(GetRepeatTime(55, AVE.EventTime, y, IncMinutes));
+                        //don't know which exit will be used during operation so use the first in ExitList, if several with different names then will
+                        //be wrong, but can't guess from here & most will have same name
                         AnsiString LName = Track->TrackElementAt(990, AVE.ExitList.front()).ActiveTrackElementName;
                         if(LName != "")
                         {
@@ -16426,7 +16487,7 @@ j) all other finish entries (all link to another service) are ignored as will be
                             AnsiString VString;
                             if(HLoc < 0)
                             {
-                                HString = 'N' + AnsiString(HLoc).SubString(2, AnsiString(HLoc).Length() - 1); //strip off '-'
+                                HString = AnsiString('N') + AnsiString(HLoc).SubString(2, AnsiString(HLoc).Length() - 1); //strip off '-'
                             }
                             else
                             {
@@ -16434,7 +16495,7 @@ j) all other finish entries (all link to another service) are ignored as will be
                             }
                             if(VLoc < 0)
                             {
-                                VString = 'N' + AnsiString(VLoc).SubString(2, AnsiString(VLoc).Length() - 1); //strip off '-'
+                                VString = AnsiString('N') + AnsiString(VLoc).SubString(2, AnsiString(VLoc).Length() - 1); //strip off '-'
                             }
                             else
                             {
@@ -16503,6 +16564,28 @@ j) all other finish entries (all link to another service) are ignored as will be
         std::sort(LocServiceTimesVector.begin(), LocServiceTimesVector.end(), &LocServiceTimesLocationSort); //LocServiceTimesLocationSort is a function pointer
         //LocServiceTimesVector now complete & sorted in location order
 
+///create LocServiceTimesVector output file for debugging purposes
+/*
+        std::ofstream LSTVFile("LSTVFile.txt");
+        for(TLocServiceTimesVector::iterator LSTVIt = LocServiceTimesVector.begin(); LSTVIt != LocServiceTimesVector.end(); LSTVIt++)
+        {
+            LSTVFile << LSTVIt->Location + '\n';
+            LSTVFile << LSTVIt->ServiceAndRepeatNum + '\n';
+            LSTVFile << "AtLocTime = " + LSTVIt->AtLocTime + '\n';
+            LSTVFile << "ArrTime = " + LSTVIt->ArrTime + '\n';
+            LSTVFile << "DepTime = " + LSTVIt->DepTime + '\n';
+            if(LSTVIt->FrhMarker == "")
+            {
+                LSTVFile << "Not Frh\n";
+            }
+            else
+            {
+                LSTVFile << LSTVIt->FrhMarker + '\n';
+            }
+            LSTVFile << '\n';
+        }
+        LSTVFile.close();
+*/
         //declare pointers for use in printouts
         TLocServiceTimesVector::iterator Ptr1, Ptr2;
 
@@ -16555,8 +16638,8 @@ j) all other finish entries (all link to another service) are ignored as will be
 
             //routine for arrivals - number of trains arriving within the specified range with services listed at the end
 
-            TTFile3 << "Arrival analysis: an asterisk means that the number of same approach code arrivals is equal to or greater than the number of platforms.\n";
-            TTFile3 << "If the total number of arrivals exceeds the number of platforms the 'Trains present at location analysis' will show an asterisk.\n\n";
+            TTFile3 << "Arrival & pass analysis: an asterisk means that the number of same approach code arrivals and passes is equal to or greater than the number of platforms.\n";
+            TTFile3 << "If the total number of arrivals and passes at the same time exceeds the number of platforms the 'Trains present at location analysis' will show an asterisk.\n\n";
             MinuteString = " minutes";
             AnsiString ServiceAndRepeatNumTotal = "", ServiceAndRepeatNumTotalOutput = "";
             if(ArrRange == 1)
@@ -16732,8 +16815,8 @@ j) all other finish entries (all link to another service) are ignored as will be
             }
 
             //routine for departures - number of trains departing within the specified range with services listed at the end
-            TTFile3 << "Departure analysis: an asterisk means that the number of same exit code departures is equal to or greater than the number of platforms.\n";
-            TTFile3 << "If the total number of departures exceeds the number of platforms the 'Trains present at location analysis' will show an asterisk.\n\n";
+            TTFile3 << "Departure & pass analysis: an asterisk means that the number of same exit code departures and passes is equal to or greater than the number of platforms.\n";
+            TTFile3 << "If the total number of departures and passes at the same time exceeds the number of platforms the 'Trains present at location analysis' will show an asterisk.\n\n";
             MinuteString = " minutes";
             AnsiString ServiceAndRepeatNumTotal = "", ServiceAndRepeatNumTotalOutput = "";
             if(DepRange == 1)
@@ -17838,6 +17921,8 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     AnsiString AvLatePassMins = "";
     AnsiString AvEarlyPassMins = "";
     AnsiString AvLateDepMins = "";
+    AnsiString AvLateExitMins = "";
+    AnsiString AvEarlyExitMins = "";
 
     if(LateArrivals > 0)
     {
@@ -17858,6 +17943,14 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     if(LateDeps > 0)
     {
         AvLateDepMins = FormatFloat(FormatStr, (TotLateDepMins / LateDeps));
+    }
+    if(LateExits > 0) //added at v2.9.1
+    {
+        AvLateExitMins = FormatFloat(FormatStr, (TotLateExitMins / LateExits));
+    }
+    if(EarlyExits > 0) //added at v2.9.1
+    {
+        AvEarlyExitMins = FormatFloat(FormatStr, (TotEarlyExitMins / EarlyExits));
     }
     PerfFile << '\n' << '\n' << "***************************************";
     PerfFile << '\n' << '\n' << "Performance summary:" << '\n';
@@ -17926,6 +18019,40 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     {
         PerfFile << EarlyPasses << " early passes" << '\n';
     }
+
+    if(OnTimeExits != 1)        //this batch added at v2.9.1
+    {
+        PerfFile << OnTimeExits << " on-time exits" << '\n';
+    }
+    else
+    {
+        PerfFile << OnTimeExits << " on-time exit" << '\n';
+    }
+    if(LateExits > 1)
+    {
+        PerfFile << LateExits << " late exits (average " << AvLateExitMins.c_str() << " min)" << '\n';
+    }
+    else if(LateExits == 1)
+    {
+        PerfFile << LateExits << " late exit (" << AvLateExitMins.c_str() << " min)" << '\n';
+    }
+    else
+    {
+        PerfFile << LateExits << " late exits" << '\n';
+    }
+    if(EarlyExits > 1)
+    {
+        PerfFile << EarlyExits << " early exits (average " << AvEarlyExitMins.c_str() << " min)" << '\n';
+    }
+    else if(EarlyExits == 1)
+    {
+        PerfFile << EarlyExits << " early exit (" << AvEarlyExitMins.c_str() << " min)" << '\n';
+    }
+    else
+    {
+        PerfFile << EarlyExits << " early exits" << '\n';
+    }
+
     if(OnTimeDeps != 1)
     {
         PerfFile << OnTimeDeps << " on-time departures" << '\n';
@@ -18071,12 +18198,13 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     bool DerailSPADFlag = false, CrashFlag = false;
 
     int OverallScorePercent = 100;
-    int TotArrDep = 0;
+    int TotArrDepExit = 0;
     double TotLateMinsFactor = 1;
     double MissedStopAndSPADRiskFactor = 1;
     double NetNegFactor = 1;
 
-    TotArrDep = OnTimeArrivals + LateArrivals + EarlyArrivals + OnTimeDeps + LateDeps + NotStartedTrainLateArr + OperatingTrainLateArr;
+    TotArrDepExit = OnTimeArrivals + LateArrivals + EarlyArrivals + OnTimeDeps + LateDeps + NotStartedTrainLateArr + OperatingTrainLateArr +
+            EarlyExits + LateExits + OnTimeExits; //exits added at v2.9.1
     // TotArrDep: total number of arrivals & departures including those for trains that haven't reached their destinations yet and are late
     // changed at v1.1.4 - calc was inside "if(OverallScorePercent == 100).." block so could remain 0 for SPADs & crashes, & then received the
     // 'no timetabled departures... message, which was inappropriate
@@ -18093,14 +18221,14 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     }
     if(OverallScorePercent == 100)
     {
-        if(TotArrDep > 0)
+        if(TotArrDepExit > 0)
         {
             TotLateMinsFactor =
-                exp((-0.1732) * (TotLateArrMins + TotLateDepMins + OperatingTrainLateMins + NotStartedTrainLateMins +
-                                 ((OtherMissedEvents + UnexpectedExits + ExcessLCDownMins) * 15)) / TotArrDep);
+                exp((-0.1732) * (TotLateArrMins + TotLateDepMins + OperatingTrainLateMins + NotStartedTrainLateMins + TotLateExitMins +
+                                 ((OtherMissedEvents + UnexpectedExits + ExcessLCDownMins) * 15)) / TotArrDepExit); //exits added at v2.9.1
             // TotLateMinsFactor: negative exponential factor based on overall average arr & dep minutes late (with OtherMissedEvents & UnexpectedExits
             // counting as 15 mins late each), where 4 mins late average = half, 8 mins late = a quarter etc
-            MissedStopAndSPADRiskFactor = exp((-17.33) * (MissedStops + SPADRisks + IncorrectExits) / TotArrDep);
+            MissedStopAndSPADRiskFactor = exp((-17.33) * (MissedStops + SPADRisks + IncorrectExits) / TotArrDepExit);
             // MissedEventAndSPADRiskFactor: negative exponential factor based on number of missed stops, SPAD risks & IncorrectExits as a proportion
             // of arrivals & departures, where 4% = half, 8% = a quarter etc
             NetNegFactor = TotLateMinsFactor * MissedStopAndSPADRiskFactor;
@@ -18108,7 +18236,7 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
             OverallScorePercent = 100 * NetNegFactor;
         }
     }
-    if((TotArrDep > 0) || DerailSPADFlag || CrashFlag)
+    if((TotArrDepExit > 0) || DerailSPADFlag || CrashFlag)
     // flag condits added at v1.1.4 - see above for what the error was
     {
         AnsiString OneFailureString = ", though the failure would account for some poor performance";
@@ -18195,7 +18323,7 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     }
     else
     {
-        PerfFile << "\nThere were no timetabled departures or arrivals so there is insufficient information to provide a performance score or rating" << '\n';
+        PerfFile << "\nThere were no timetabled departures, arrivals or exits so there is insufficient information to provide a performance score or rating" << '\n';
     }
     PerfFile << '\n' << "***************************************";
     Utilities->CallLogPop(1736);

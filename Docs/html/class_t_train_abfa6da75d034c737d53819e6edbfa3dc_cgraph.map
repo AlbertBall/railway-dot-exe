@@ -8,6 +8,6 @@
 <area shape="rect" id="node11" href="$class_t_train_controller.html#aba5615209a7dca921e968fca5c52c060" title="sends a message to the user and stops the timetable clock while it is displayed" alt="" coords="912,502,1107,544"/>
 <area shape="rect" id="node6" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="938,350,1081,376"/>
 <area shape="rect" id="node7" href="$class_t_train.html#a0e0ab54415645b04cbdeadd829d27898" title="When a train moves onto an element that element has its TrainIDOnElement value set to the TrainID val..." alt="" coords="431,303,604,330"/>
-<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="669,96,832,123"/>
+<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="669,96,832,123"/>
 <area shape="rect" id="node8" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="652,303,849,330"/>
 </map>

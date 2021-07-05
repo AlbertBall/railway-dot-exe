@@ -8,5 +8,5 @@
 <area shape="rect" id="node7" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="276,456,441,483"/>
 <area shape="rect" id="node8" href="$class_t_all_routes.html#aacbc3765d695c99cf64ad2826792508f" title="Erases the route element from Route2MultiMap and from the PrefDirVector." alt="" coords="248,240,469,267"/>
 <area shape="rect" id="node9" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="527,304,701,331"/>
-<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="533,203,695,229"/>
+<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="533,203,695,229"/>
 </map>

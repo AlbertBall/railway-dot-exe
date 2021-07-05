@@ -6,7 +6,7 @@
 <area shape="rect" id="node5" href="$class_t_track.html#a977285544a4e0b017ed5c9670ac38d87" title=" " alt="" coords="457,310,668,336"/>
 <area shape="rect" id="node6" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="475,426,650,468"/>
 <area shape="rect" id="node7" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="471,361,654,402"/>
-<area shape="rect" id="node8" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="460,192,665,219"/>
+<area shape="rect" id="node8" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="460,192,665,219"/>
 <area shape="rect" id="node9" href="$class_t_track.html#a198ba6486ccb7cdfb25bdd8c30451d06" title="True if the active or inactive TrackElement at HLoc &amp; VLoc has its FixedNamedLocationElement member t..." alt="" coords="189,142,409,168"/>
-<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="481,40,644,67"/>
+<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="481,40,644,67"/>
 </map>

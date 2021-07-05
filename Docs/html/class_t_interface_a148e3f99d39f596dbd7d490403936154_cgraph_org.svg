@@ -68,7 +68,7 @@
 <!-- Node22 -->
 <g id="node15" class="node">
 <title>Node22</title>
-<g id="a_node15"><a xlink:href="class_t_train_controller.html#a193bc964187b0ae255251d2c7136540a" target="_top" xlink:title="Carry out further detailed timetable consistency checks, return true for success.">
+<g id="a_node15"><a xlink:href="class_t_train_controller.html#af52f0033d498268c871980c17a8ddf36" target="_top" xlink:title="Carry out further detailed timetable consistency checks, return true for success.">
 <polygon fill="white" stroke="black" points="538,-2340.27 538,-2370.27 661,-2370.27 661,-2340.27 538,-2340.27"/>
 <text text-anchor="start" x="546" y="-2358.27" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::Second</text>
 <text text-anchor="middle" x="599.5" y="-2347.27" font-family="Helvetica,sans-Serif" font-size="10.00">PassActions</text>
@@ -881,7 +881,7 @@
 <g id="node35" class="node">
 <title>Node105</title>
 <g id="a_node35"><a xlink:href="class_t_track.html#a794daa0471b473e28ff24c87a92112dc" target="_top" xlink:title="True if there are gaps in the railway and any are unset.">
-<polygon fill="white" stroke="black" points="745.5,-698.77 745.5,-717.77 846.5,-717.77 846.5,-698.77 745.5,-698.77"/>
+<polygon fill="white" stroke="red" points="745.5,-698.77 745.5,-717.77 846.5,-717.77 846.5,-698.77 745.5,-698.77"/>
 <text text-anchor="middle" x="796" y="-705.77" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::GapsUnset</text>
 </a>
 </g>
@@ -926,7 +926,7 @@
 <g id="node38" class="node">
 <title>Node111</title>
 <g id="a_node38"><a xlink:href="class_t_track.html#a2eaa84532799b76a0b42cf6e2611224d" target="_top" xlink:title="True if there is no active track in the railway.">
-<polygon fill="white" stroke="black" points="739,-884.77 739,-903.77 853,-903.77 853,-884.77 739,-884.77"/>
+<polygon fill="white" stroke="red" points="739,-884.77 739,-903.77 853,-903.77 853,-884.77 739,-884.77"/>
 <text text-anchor="middle" x="796" y="-891.77" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::NoActiveTrack</text>
 </a>
 </g>
@@ -987,7 +987,7 @@
 <g id="node42" class="node">
 <title>Node115</title>
 <g id="a_node42"><a xlink:href="class_t_track.html#a1a5d8cf5f3a46667a745bfcf4c77ba9d" target="_top" xlink:title="Set all LC attributes to 0 (closed to trains)">
-<polygon fill="white" stroke="black" points="927,-934.77 927,-953.77 1070,-953.77 1070,-934.77 927,-934.77"/>
+<polygon fill="white" stroke="red" points="927,-934.77 927,-953.77 1070,-953.77 1070,-934.77 927,-934.77"/>
 <text text-anchor="middle" x="998.5" y="-941.77" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::ResetLevelCrossings</text>
 </a>
 </g>

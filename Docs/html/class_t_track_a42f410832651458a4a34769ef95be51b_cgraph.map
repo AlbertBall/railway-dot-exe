@@ -1,19 +1,19 @@
 <map id="TTrack::LinkTrackNoMessages" name="TTrack::LinkTrackNoMessages">
-<area shape="rect" id="node1" title="Attempt to link the track and return true if successful, don&#39;t issue any screen messages...." alt="" coords="5,510,207,536"/>
-<area shape="rect" id="node2" href="$class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9" title="Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent ..." alt="" coords="499,654,666,680"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="976,730,1123,756"/>
-<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="976,410,1123,436"/>
-<area shape="rect" id="node8" href="$class_t_track.html#ab79158ff07bc54986fbaa34df0d7f2b2" title="True if a footcrossing is linked properly at both ends." alt="" coords="257,352,440,393"/>
-<area shape="rect" id="node13" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="738,882,913,924"/>
-<area shape="rect" id="node14" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="519,510,646,536"/>
-<area shape="rect" id="node16" href="$class_t_track.html#a46b69ee08436c2ff5e41673df04bcf11" title="Called when trying to link track and when a name changed when track already linked." alt="" coords="255,426,443,468"/>
-<area shape="rect" id="node4" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="745,628,906,655"/>
-<area shape="rect" id="node6" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="728,679,923,706"/>
-<area shape="rect" id="node7" href="$class_t_track.html#a1092232428ee654facf8f53340c13f74" title="A range&#45;checked version of UserGraphicVector.at(At)" alt="" coords="729,831,921,858"/>
-<area shape="rect" id="node9" href="$class_t_track.html#a0b0e7c333d860841aed4b66b94a6a955" title="Used to check the validity of footcrossing links." alt="" coords="499,182,666,208"/>
-<area shape="rect" id="node11" href="$class_t_track.html#a23030c22d4c98706d1738205242646d9" title="Used to check the validity of footcrossing links." alt="" coords="495,359,670,386"/>
-<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="744,156,907,183"/>
-<area shape="rect" id="node12" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="723,410,928,436"/>
-<area shape="rect" id="node15" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="734,512,917,553"/>
-<area shape="rect" id="node17" href="$class_t_track.html#a7867a4b41fbc25f35eccab0b03cab9ed" title="True if a non&#45;station named location at HLoc &amp; VLoc." alt="" coords="491,426,675,468"/>
+<area shape="rect" id="node1" title="Attempt to link the track and return true if successful, don&#39;t issue any screen messages...." alt="" coords="5,549,207,576"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9" title="Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent ..." alt="" coords="499,660,666,687"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="976,816,1123,843"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="976,461,1123,488"/>
+<area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="744,968,907,995"/>
+<area shape="rect" id="node10" href="$class_t_track.html#ab79158ff07bc54986fbaa34df0d7f2b2" title="True if a footcrossing is linked properly at both ends." alt="" coords="257,574,440,615"/>
+<area shape="rect" id="node13" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="738,229,913,270"/>
+<area shape="rect" id="node14" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="519,360,646,387"/>
+<area shape="rect" id="node16" href="$class_t_track.html#a46b69ee08436c2ff5e41673df04bcf11" title="Called when trying to link track and when a name changed when track already linked." alt="" coords="255,509,443,550"/>
+<area shape="rect" id="node4" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="723,512,928,539"/>
+<area shape="rect" id="node6" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="745,664,906,691"/>
+<area shape="rect" id="node7" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="728,613,923,640"/>
+<area shape="rect" id="node9" href="$class_t_track.html#a1092232428ee654facf8f53340c13f74" title="A range&#45;checked version of UserGraphicVector.at(At)" alt="" coords="729,816,921,843"/>
+<area shape="rect" id="node11" href="$class_t_track.html#a0b0e7c333d860841aed4b66b94a6a955" title="Used to check the validity of footcrossing links." alt="" coords="499,861,666,888"/>
+<area shape="rect" id="node12" href="$class_t_track.html#a23030c22d4c98706d1738205242646d9" title="Used to check the validity of footcrossing links." alt="" coords="495,573,670,600"/>
+<area shape="rect" id="node15" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="734,294,917,335"/>
+<area shape="rect" id="node17" href="$class_t_track.html#a7867a4b41fbc25f35eccab0b03cab9ed" title="True if a non&#45;station named location at HLoc &amp; VLoc." alt="" coords="491,505,675,546"/>
 </map>

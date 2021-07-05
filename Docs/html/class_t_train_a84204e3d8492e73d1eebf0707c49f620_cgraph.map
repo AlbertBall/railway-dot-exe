@@ -4,7 +4,7 @@
 <area shape="rect" id="node3" href="$class_t_train.html#a493ab1c185d29bf28ec8fded2356e9fc" title="Send a message to the performance log and performance file, and if the message is flagged as a warnin..." alt="" coords="688,362,811,389"/>
 <area shape="rect" id="node7" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1401,844,1548,870"/>
 <area shape="rect" id="node10" href="$class_t_train.html#abfa6da75d034c737d53819e6edbfa3dc" title="Changes the train&#39;s background colour (e.g. to pale green if stopped at a station) Note that this use..." alt="" coords="204,802,372,843"/>
-<area shape="rect" id="node17" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="901,616,1064,642"/>
+<area shape="rect" id="node17" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="901,616,1064,642"/>
 <area shape="rect" id="node18" href="$class_t_train_controller.html#aba5615209a7dca921e968fca5c52c060" title="sends a message to the user and stops the timetable clock while it is displayed" alt="" coords="420,551,615,592"/>
 <area shape="rect" id="node19" href="$class_t_train.html#a2a2d78164c9dc1881b2c77526f04903f" title="True if the train has stopped for any reason." alt="" coords="231,1290,345,1317"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="1145,160,1338,186"/>

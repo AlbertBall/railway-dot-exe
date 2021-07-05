@@ -5,7 +5,7 @@
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="659,224,805,250"/>
 <area shape="rect" id="node5" href="$class_t_train.html#a439d2809c762a0981908a3b8a49520f2" title="Unplot train from screen in zoomed&#45;out mode." alt="" coords="185,158,357,199"/>
 <area shape="rect" id="node6" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="417,216,599,258"/>
-<area shape="rect" id="node7" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="405,64,611,90"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="405,64,611,90"/>
 <area shape="rect" id="node8" href="$class_t_display.html#a95aaa80515f0abb7715920b326b318dd" title="Plot small (4x4) graphic PlotItem on the zoomed&#45;out display at HPos &amp; Vpos." alt="" coords="421,114,595,141"/>
-<area shape="rect" id="node9" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="427,165,589,192"/>
+<area shape="rect" id="node9" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="427,165,589,192"/>
 </map>

@@ -26,7 +26,7 @@
 <text text-anchor="start" x="8" y="-488.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ FontButton</text>
 <text text-anchor="start" x="8" y="-477.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ TextOrUserGraphicGridButton</text>
 <text text-anchor="start" x="8" y="-466.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ SetLengthsButton</text>
-<text text-anchor="start" x="8" y="-455.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 466 more...</text>
+<text text-anchor="start" x="8" y="-455.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 470 more...</text>
 <text text-anchor="start" x="8" y="-444.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; Level2OperMode</text>
 <text text-anchor="start" x="8" y="-433.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; Level2PrefDirMode</text>
 <text text-anchor="start" x="8" y="-422.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; Level2TrackMode</text>
@@ -37,7 +37,7 @@
 <text text-anchor="start" x="8" y="-367.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CreateEditTTTitle</text>
 <text text-anchor="start" x="8" y="-356.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; CurDir</text>
 <text text-anchor="start" x="8" y="-345.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; DirectoryError</text>
-<text text-anchor="start" x="8" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 137 more...</text>
+<text text-anchor="start" x="8" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 145 more...</text>
 <text text-anchor="start" x="8" y="-323.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; RAILWAY_DIR_NAME</text>
 <text text-anchor="start" x="8" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; TIMETABLE_DIR_NAME</text>
 <text text-anchor="start" x="8" y="-301.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; PERFLOG_DIR_NAME</text>
@@ -56,7 +56,7 @@
 <text text-anchor="start" x="8" y="-161.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ CreateTimetableMenuItemClick()</text>
 <text text-anchor="start" x="8" y="-150.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ CutMenuItemClick()</text>
 <text text-anchor="start" x="8" y="-139.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ DeleteMenuItemClick()</text>
-<text text-anchor="start" x="8" y="-128.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 173 more...</text>
+<text text-anchor="start" x="8" y="-128.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 174 more...</text>
 <text text-anchor="start" x="8" y="-117.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; TInterface()</text>
 <text text-anchor="start" x="8" y="-106.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; ~TInterface()</text>
 <text text-anchor="start" x="8" y="-95.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; AnyTTKeyFlagSet()</text>

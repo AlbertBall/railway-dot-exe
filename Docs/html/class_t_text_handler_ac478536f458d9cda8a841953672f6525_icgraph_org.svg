@@ -79,39 +79,39 @@
 <path fill="none" stroke="midnightblue" d="M1142.05,-459.78C1093.31,-467.91 1019.14,-473.56 961,-448.5 908.66,-425.94 869.57,-365.04 855.85,-341.23"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1142.8,-463.2 1152.04,-458.02 1141.59,-456.31 1142.8,-463.2"/>
 </g>
-<!-- Node212 -->
+<!-- Node213 -->
 <g id="node47" class="node">
-<title>Node212</title>
+<title>Node213</title>
 <g id="a_node47"><a xlink:href="class_t_text_handler.html#af766ce44ed9a37e5a723a4ef3968ace0" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="961,-420 961,-439 1098,-439 1098,-420 961,-420"/>
 <text text-anchor="middle" x="1029.5" y="-427" font-family="Helvetica,sans-Serif" font-size="10.00">TTextHandler::SetNewHPos</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node212 -->
+<!-- Node1&#45;&gt;Node213 -->
 <g id="edge87" class="edge">
-<title>Node1&#45;&gt;Node212</title>
+<title>Node1&#45;&gt;Node213</title>
 <path fill="none" stroke="midnightblue" d="M1123.59,-440.35C1115.19,-439.37 1106.62,-438.37 1098.25,-437.4"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1123.39,-443.85 1133.73,-441.53 1124.2,-436.9 1123.39,-443.85"/>
 </g>
-<!-- Node213 -->
+<!-- Node214 -->
 <g id="node48" class="node">
-<title>Node213</title>
+<title>Node214</title>
 <g id="a_node48"><a xlink:href="class_t_text_handler.html#a65f0033d036358a5cb2ec5f4732e64ee" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="961,-382 961,-401 1098,-401 1098,-382 961,-382"/>
 <text text-anchor="middle" x="1029.5" y="-389" font-family="Helvetica,sans-Serif" font-size="10.00">TTextHandler::SetNewVPos</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node213 -->
+<!-- Node1&#45;&gt;Node214 -->
 <g id="edge88" class="edge">
-<title>Node1&#45;&gt;Node213</title>
+<title>Node1&#45;&gt;Node214</title>
 <path fill="none" stroke="midnightblue" d="M1161.97,-434.99C1143.51,-427.33 1119.63,-417.83 1098,-410.5 1088.08,-407.14 1077.21,-403.9 1067.15,-401.07"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1160.79,-438.29 1171.36,-438.93 1163.49,-431.84 1160.79,-438.29"/>
 </g>
-<!-- Node214 -->
+<!-- Node215 -->
 <g id="node49" class="node">
-<title>Node214</title>
+<title>Node215</title>
 <g id="a_node49"><a xlink:href="class_t_text_handler.html#a599c1a13d78b63a18ebc17550dfa9a0d" target="_top" xlink:title="change the HPos &amp; VPos values for all items in TextVector by the amount in HOffset and VOffset (unuse...">
 <polygon fill="white" stroke="black" points="966,-332.5 966,-362.5 1093,-362.5 1093,-332.5 966,-332.5"/>
 <text text-anchor="start" x="974" y="-350.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTextHandler::TextVector</text>
@@ -119,15 +119,15 @@
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node214 -->
+<!-- Node1&#45;&gt;Node215 -->
 <g id="edge89" class="edge">
-<title>Node1&#45;&gt;Node214</title>
+<title>Node1&#45;&gt;Node215</title>
 <path fill="none" stroke="midnightblue" d="M1176.18,-431.89C1157.94,-415.09 1127.77,-389.29 1098,-372.5 1091.47,-368.82 1084.29,-365.49 1077.13,-362.55"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1173.99,-434.63 1183.68,-438.9 1178.77,-429.51 1173.99,-434.63"/>
 </g>
-<!-- Node215 -->
+<!-- Node216 -->
 <g id="node50" class="node">
-<title>Node215</title>
+<title>Node216</title>
 <g id="a_node50"><a xlink:href="class_t_text_handler.html#a7d202827ae62cd288a07431579977539" target="_top" xlink:title="write all items in TextVector to the railway image in &#39;Bitmap&#39;">
 <polygon fill="white" stroke="black" points="421.5,-98.5 421.5,-128.5 553.5,-128.5 553.5,-98.5 421.5,-98.5"/>
 <text text-anchor="start" x="429.5" y="-116.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTextHandler::WriteTextTo</text>
@@ -135,9 +135,9 @@
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node215 -->
+<!-- Node1&#45;&gt;Node216 -->
 <g id="edge90" class="edge">
-<title>Node1&#45;&gt;Node215</title>
+<title>Node1&#45;&gt;Node216</title>
 <path fill="none" stroke="midnightblue" d="M1184.03,-429.8C1169.26,-402.43 1138.21,-351.59 1098,-322.5 925.34,-197.59 672.14,-142.85 553.87,-123.01"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1180.97,-431.51 1188.72,-438.73 1187.17,-428.25 1180.97,-431.51"/>
 </g>
@@ -1019,27 +1019,27 @@
 <path fill="none" stroke="midnightblue" d="M261.38,-368.34C243.38,-379.27 220.61,-395.64 206,-415.5 177.51,-454.22 191.58,-474.54 170,-517.5 146.88,-563.53 109.6,-612.74 93.64,-632.98"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="263.41,-371.21 270.28,-363.14 259.88,-365.16 263.41,-371.21"/>
 </g>
-<!-- Node215&#45;&gt;Node173 -->
+<!-- Node216&#45;&gt;Node173 -->
 <g id="edge91" class="edge">
-<title>Node215&#45;&gt;Node173</title>
+<title>Node216&#45;&gt;Node173</title>
 <path fill="none" stroke="midnightblue" d="M459.06,-92.05C437.08,-75.74 404.93,-53.75 374,-39.5 366.78,-36.17 358.99,-33.2 351.18,-30.57"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="457.15,-94.99 467.24,-98.21 461.36,-89.4 457.15,-94.99"/>
 </g>
-<!-- Node215&#45;&gt;Node174 -->
+<!-- Node216&#45;&gt;Node174 -->
 <g id="edge92" class="edge">
-<title>Node215&#45;&gt;Node174</title>
+<title>Node216&#45;&gt;Node174</title>
 <path fill="none" stroke="midnightblue" d="M416.77,-130.98C395.22,-136.38 371.69,-142.28 350.87,-147.49"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="417.67,-134.36 426.51,-128.53 415.96,-127.57 417.67,-134.36"/>
 </g>
-<!-- Node215&#45;&gt;Node175 -->
+<!-- Node216&#45;&gt;Node175 -->
 <g id="edge93" class="edge">
-<title>Node215&#45;&gt;Node175</title>
+<title>Node216&#45;&gt;Node175</title>
 <path fill="none" stroke="midnightblue" d="M411.28,-113.5C394.82,-113.5 377.45,-113.5 361.19,-113.5"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="411.4,-117 421.4,-113.5 411.4,-110 411.4,-117"/>
 </g>
-<!-- Node215&#45;&gt;Node176 -->
+<!-- Node216&#45;&gt;Node176 -->
 <g id="edge94" class="edge">
-<title>Node215&#45;&gt;Node176</title>
+<title>Node216&#45;&gt;Node176</title>
 <path fill="none" stroke="midnightblue" d="M416.77,-96.02C395.22,-90.62 371.69,-84.72 350.87,-79.51"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="415.96,-99.43 426.51,-98.47 417.67,-92.64 415.96,-99.43"/>
 </g>

@@ -12,10 +12,10 @@
 <area shape="rect" id="node21" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="716,1323,837,1350"/>
 <area shape="rect" id="node22" href="$class_t_track.html#a58a2afacadd0f564b474ac0faabc88d4" title="Return a reference to the inactive track element pointed to by NextTrackElementPtr (during zoomed&#45;in ..." alt="" coords="688,903,865,944"/>
 <area shape="rect" id="node23" href="$class_t_track.html#a90e1db27659603b72a703c017ee576c8" title="Return a reference to the active track element pointed to by NextTrackElementPtr (during zoomed&#45;in or..." alt="" coords="669,969,884,995"/>
-<area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="695,1019,858,1046"/>
+<area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="695,1019,858,1046"/>
 <area shape="rect" id="node7" href="$class_t_track_element.html#a100bff829c4dca820927affde4cb9e57" title="Used to log track parameters for call stack logging." alt="" coords="691,211,862,238"/>
 <area shape="rect" id="node10" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="685,465,868,507"/>
-<area shape="rect" id="node11" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="674,414,879,441"/>
+<area shape="rect" id="node11" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="674,414,879,441"/>
 <area shape="rect" id="node12" href="$class_t_display.html#aab35e517eba56f1c95f500958ce431ae" title=" " alt="" coords="693,531,860,558"/>
 <area shape="rect" id="node15" href="$class_t_display.html#a6e970089a9419e6bdd12576b6e860c95" title=" " alt="" coords="691,734,863,761"/>
 <area shape="rect" id="node16" href="$class_t_track.html#a2830b22db25712a80fa55b1546b5df9b" title="Plot platforms if any for a signal graphic &#45; plotted before signal so shows through transparent signa..." alt="" coords="430,414,613,441"/>

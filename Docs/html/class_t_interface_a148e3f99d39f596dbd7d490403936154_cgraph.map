@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1505,1412,1651,1439"/>
 <area shape="rect" id="node3" href="$class_t_train_controller.html#a5c51eb1e0018e189966ffdbc5d251990" title="Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if Fin..." alt="" coords="227,1304,395,1345"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1505,1944,1651,1971"/>
-<area shape="rect" id="node15" href="$class_t_train_controller.html#a193bc964187b0ae255251d2c7136540a" title="Carry out further detailed timetable consistency checks, return true for success." alt="" coords="723,385,887,426"/>
+<area shape="rect" id="node15" href="$class_t_train_controller.html#af52f0033d498268c871980c17a8ddf36" title="Carry out further detailed timetable consistency checks, return true for success." alt="" coords="723,385,887,426"/>
 <area shape="rect" id="node27" href="$class_t_interface.html#a974c6d5a224756b00ede1161e0fdf5f7" title="Sets the railway and timetable titles at the top of the screen." alt="" coords="475,1792,625,1819"/>
 <area shape="rect" id="node28" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="224,2778,399,2804"/>
 <area shape="rect" id="node4" href="$class_t_train_controller.html#a523077cf0c9c02c8cb56dab0af9b0e52" title="returns true if the time complies with requirements" alt="" coords="974,1514,1159,1556"/>

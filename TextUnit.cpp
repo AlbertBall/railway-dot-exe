@@ -209,8 +209,8 @@ void TTextHandler::EnterAndDisplayNewText(int Caller, TTextItem Text, int HPos, 
 void TTextHandler::TextMove(int Caller, int HPosInput, int VPosInput, int &TextItem, int &TextMoveHPos, int &TextMoveVPos, bool &TextFoundFlag)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextMove," + AnsiString(HPosInput) + "," + AnsiString(VPosInput));
-    TTextVectorIterator TextPtr;
 
+    TTextVectorIterator TextPtr;
     TextFoundFlag = false;
     if(!TextVector.empty())
     {
@@ -240,8 +240,8 @@ void TTextHandler::TextMove(int Caller, int HPosInput, int VPosInput, int &TextI
 bool TTextHandler::TextFound(int Caller, int HPosInput, int VPosInput, AnsiString& Text)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextFound," + AnsiString(HPosInput) + "," + AnsiString(VPosInput));
-    TTextVectorIterator TextPtr;
 
+    TTextVectorIterator TextPtr;
     if(TextHandler->TextVectorSize(1) == 0)
     {
         Utilities->CallLogPop(1311);
@@ -265,14 +265,14 @@ bool TTextHandler::TextFound(int Caller, int HPosInput, int VPosInput, AnsiStrin
 bool TTextHandler::TextErase(int Caller, int HPosInput, int VPosInput, AnsiString TextToErase) //if TextToErase is null then erase any text that is found, else erase TextToErase
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TextErase," + AnsiString(HPosInput) + "," + AnsiString(VPosInput) + "," + TextToErase);
-    TTextVectorIterator TextPtr;
 
+    TTextVectorIterator TextPtr;
     if(!TextVector.empty())
     {
         for(TextPtr = (TextVector.end() - 1); TextPtr >= TextVector.begin(); TextPtr--)
         {
 //            if((HPosInput >= TextPtr->HPos) && (HPosInput < (TextPtr->HPos + TextPtr->Font->Size)) && (VPosInput >= TextPtr->VPos) && (VPosInput <
-//                (TextPtr->VPos + (TextPtr->Font->Size) * 1.5)))  //changed this after v2.4.3 so all functions use the same values
+//                (TextPtr->VPos + (TextPtr->Font->Size) * 1.5)))  //changed this at v2.5.0 so all functions use the same values
             if((HPosInput >= TextPtr->HPos) && (HPosInput < (TextPtr->HPos + abs(TextPtr->Font->Height))) && (VPosInput >= TextPtr->VPos) && (VPosInput <
                                                                                                                                               (TextPtr->VPos + abs(TextPtr->Font->Height))))
 

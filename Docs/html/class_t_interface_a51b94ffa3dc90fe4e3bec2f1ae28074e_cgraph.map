@@ -14,7 +14,7 @@
 <area shape="rect" id="node6" href="$class_t_train_controller.html#a2713e7d4bb329d65df8b3fa0ad59b6cf" title="Get the interval between repeats." alt="" coords="745,473,941,515"/>
 <area shape="rect" id="node7" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="1000,477,1193,503"/>
 <area shape="rect" id="node8" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="991,426,1202,453"/>
-<area shape="rect" id="node11" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="1015,781,1178,807"/>
+<area shape="rect" id="node11" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1015,781,1178,807"/>
 <area shape="rect" id="node13" href="$class_t_train_controller.html#a6fc210d266e7672ccc648c0a9ab4e542" title="Checks the last two characters in HeadCode and returns true if both are digits." alt="" coords="989,208,1204,249"/>
 <area shape="rect" id="node18" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="997,882,1196,909"/>
 </map>

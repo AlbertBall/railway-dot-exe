@@ -14,7 +14,7 @@
 <area shape="rect" id="node10" href="$class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" title="Send Statement to the performance log on screen and to the file." alt="" coords="651,266,825,293"/>
 <area shape="rect" id="node11" href="$class_t_display.html#a604d491a723df459bdcd54a4b9d1d9f2" title="Display warning message Statement in the bottom left hand warning position and scroll other messages ..." alt="" coords="663,165,813,192"/>
 <area shape="rect" id="node9" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="633,520,843,546"/>
-<area shape="rect" id="node16" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="657,773,819,800"/>
+<area shape="rect" id="node16" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="657,773,819,800"/>
 <area shape="rect" id="node17" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="396,690,583,731"/>
 <area shape="rect" id="node18" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="639,672,837,698"/>
 </map>

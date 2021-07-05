@@ -1,7 +1,7 @@
 <map id="TTrain::PlotBackgroundGraphic" name="TTrain::PlotBackgroundGraphic">
 <area shape="rect" id="node1" title="Replot the graphic pointed to by BackgroundPtr (see above) after a train has passed." alt="" coords="5,31,208,57"/>
 <area shape="rect" id="node2" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="266,5,409,32"/>
-<area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="256,56,419,83"/>
+<area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="256,56,419,83"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="467,5,613,32"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="467,56,613,83"/>
 </map>

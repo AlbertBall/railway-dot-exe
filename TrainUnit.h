@@ -41,7 +41,7 @@ enum TActionEventType
     FailCrashed, FailDerailed, FailUnexpectedBuffers, FailUnexpectedExitRailway, FailMissedArrival, FailMissedSplit, FailMissedJBO, FailMissedJoinOther,
     FailMissedTerminate, FailMissedNewService, FailMissedExitRailway, FailMissedChangeDirection, FailMissedPass, FailCreateLockedRoute, FailEnterLockedRoute,
     WaitingForJBO, WaitingForFJO, FailBuffersPreventingStart, FailBufferCrash, FailLevelCrossingCrash, FailIncorrectExit, ShuttleFinishedRemainingHere,
-    RouteForceCancelled
+    RouteForceCancelled, FailEntryRouteSetAgainst
 };
 
 /// Used in LogAction when reporting a train action to the performance log & file
@@ -660,7 +660,7 @@ public:
 /// Turns signals back to green in stages after a train has exited an autosig route at a continuation
     class TContinuationAutoSigEntry
     {
-public:
+    public:
         double FirstDelay, SecondDelay, ThirdDelay;
 ///< Delays in seconds before consecutive signal changes - these correspond to the times taken for trains to pass subsequent signals outside the boundaries of the railway.  After the third delay the signal nearest to the continuation that was red when the train passed it has changed to green
         int AccessNumber;
@@ -678,7 +678,7 @@ public:
 /// Class that stores data for trains expected at continuation entries (kept in a multimap - see below), used to display information in the floating window when mouse hovers over a continuation
     class TContinuationTrainExpectationEntry
     {
-public:
+    public:
         AnsiString Description;
 ///< service description
         AnsiString HeadCode;
@@ -766,23 +766,28 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     float TotEarlyArrMins;
 ///< values for performance file summary
     float TotEarlyPassMins;
+    float TotEarlyExitMins;
     float TotLateArrMins;
     float TotLateDepMins;
     float TotLatePassMins;
+    float TotLateExitMins;
 
 // values for performance file summary
     int CrashedTrains;
     int Derailments;
     int EarlyArrivals;
     int EarlyPasses;
+    int EarlyExits; //added at v2.9.1
     int IncorrectExits;
     int LateArrivals;
     int LateDeps;
     int LatePasses;
+    int LateExits; //added at v2.9.1
     int MissedStops;
     int OnTimeArrivals;
     int OnTimeDeps;
     int OnTimePasses;
+    int OnTimeExits; //added at v2.9.1
     int OtherMissedEvents;
     int SPADEvents;
     int SPADRisks;
@@ -798,7 +803,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 ///<displays last train loaded from session file, used for debugging
     int AvHoursIntValue;
 ///<Input in MTBFEditBox in timetable hours, min value is 1 and max is 10,000. Here because performance file needs access
-
+    TServiceCallingLocsList TwoLocationList; //added at v2.9.1
+///<List of all ServiceRefs that have two or more same locations without a cdt between - loaded during SecondPassActions & displayed in Interface
     unsigned int OpTimeToActUpdateCounter;
 ///<new v2.2.0, incremented in Interface.cpp, controls updating for OpTimeToActPanel
     unsigned int OpActionPanelHintDelayCounter;
@@ -903,7 +909,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     bool SameDirection(int Caller, AnsiString Ref1, AnsiString Ref2, AnsiString Time1, AnsiString Time2, int RepeatNum1, int RepeatNum2, TServiceCallingLocsList List1,
                        TServiceCallingLocsList List2, AnsiString Location, bool Arrival);
 /// Carry out further detailed timetable consistency checks, return true for success
-    bool SecondPassActions(int Caller, bool GiveMessages);
+    bool SecondPassActions(int Caller, bool GiveMessages, bool &TwoLocationFlag); //TwoLocationFlag added at v2.9.1
 /// Parse a single timetable service action, return true for success
     bool SplitEntry(int Caller, AnsiString OneEntry, bool GiveMessages, bool CheckLocationsExistInRailway, AnsiString &First, AnsiString &Second,
                     AnsiString &Third, AnsiString &Fourth, int &RearStartOrRepeatMins, int &FrontStartPosition, TTimetableFormatType &TimetableFormatType,

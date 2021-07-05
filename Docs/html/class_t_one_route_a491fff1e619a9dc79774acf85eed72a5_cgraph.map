@@ -6,7 +6,7 @@
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1553,1161,1700,1188"/>
 <area shape="rect" id="node8" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="549,689,715,716"/>
 <area shape="rect" id="node9" href="$class_t_all_routes.html#a0a9ccbc84687f85806115877aa86dcfd" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="1053,1222,1229,1263"/>
-<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="1321,1186,1484,1213"/>
+<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1321,1186,1484,1213"/>
 <area shape="rect" id="node11" href="$class_t_one_pref_dir.html#a42862b2abcd0eb356982f4ce46922922" title="Return a pointer to the last element in the vector." alt="" coords="1307,157,1498,184"/>
 <area shape="rect" id="node12" href="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e" title="Plot signals on screen according to their aspect (Attribute value)" alt="" coords="822,484,950,510"/>
 <area shape="rect" id="node19" href="$class_t_all_routes.html#aacbc3765d695c99cf64ad2826792508f" title="Erases the route element from Route2MultiMap and from the PrefDirVector." alt="" coords="1031,1541,1252,1568"/>
@@ -18,7 +18,7 @@
 <area shape="rect" id="node15" href="$class_t_display.html#a6e970089a9419e6bdd12576b6e860c95" title=" " alt="" coords="1317,410,1489,437"/>
 <area shape="rect" id="node16" href="$class_t_track.html#a2830b22db25712a80fa55b1546b5df9b" title="Plot platforms if any for a signal graphic &#45; plotted before signal so shows through transparent signa..." alt="" coords="1050,672,1233,698"/>
 <area shape="rect" id="node17" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="1311,664,1494,706"/>
-<area shape="rect" id="node18" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="1300,730,1505,757"/>
+<area shape="rect" id="node18" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="1300,730,1505,757"/>
 <area shape="rect" id="node20" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="1316,1541,1489,1568"/>
 <area shape="rect" id="node22" href="$class_t_one_route.html#a55e04e36f652344b5215f8a28143c4a3" title="Called by TAllRoutes::SetAllRearwardsSignals to set rearwards signals from a specified starting posit..." alt="" coords="523,842,741,883"/>
 <area shape="rect" id="node23" href="$class_t_all_routes.html#afbb161c646677f13755041b895a23982" title="Examines Route2MultiMap for the element at TrackVectorPosition with LinkPos (can be entry or exit)." alt="" coords="1053,980,1229,1022"/>

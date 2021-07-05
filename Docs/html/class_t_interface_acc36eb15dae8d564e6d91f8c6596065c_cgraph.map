@@ -8,7 +8,7 @@
 <area shape="rect" id="node7" href="$class_t_pref_dir_element.html#a35cd9c18012bd537fa988a32c510b01b" title="Returns the XLink array position." alt="" coords="239,540,437,566"/>
 <area shape="rect" id="node8" href="$class_t_track.html#adbec6561f4ecd2fa1dabf3e41502b085" title="True if a non&#45;station named location or platform at HLoc &amp; VLoc." alt="" coords="247,259,429,300"/>
 <area shape="rect" id="node11" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="255,590,421,617"/>
-<area shape="rect" id="node12" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="508,157,671,184"/>
+<area shape="rect" id="node12" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="508,157,671,184"/>
 <area shape="rect" id="node9" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="498,259,681,300"/>
-<area shape="rect" id="node10" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="487,208,692,234"/>
+<area shape="rect" id="node10" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="487,208,692,234"/>
 </map>

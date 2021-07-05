@@ -4,7 +4,7 @@
 <area shape="rect" id="node3" href="$class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3" title="Build string for use in floating window for expected trains at continuations." alt="" coords="235,442,427,483"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8" title="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it..." alt="" coords="744,620,919,647"/>
 <area shape="rect" id="node9" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1240,565,1387,592"/>
-<area shape="rect" id="node11" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="1003,616,1166,643"/>
+<area shape="rect" id="node11" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1003,616,1166,643"/>
 <area shape="rect" id="node4" href="$class_t_train_controller.html#a247f01d67fe9697522c47ceebd53d9ae" title="Similar to TTrain::CheckNewServiceDepartureTime for use in ContinuationEntryFloatingTTString." alt="" coords="475,471,685,513"/>
 <area shape="rect" id="node6" href="$class_t_train_controller.html#a2713e7d4bb329d65df8b3fa0ad59b6cf" title="Get the interval between repeats." alt="" coords="733,381,929,422"/>
 <area shape="rect" id="node10" href="$class_t_train_controller.html#a0114e517611ab24d3b947c1781130a23" title="Check all timetable names in ExitList, if all same return &quot; at [name]&quot; + AllowableExits = elements,..." alt="" coords="749,503,913,545"/>

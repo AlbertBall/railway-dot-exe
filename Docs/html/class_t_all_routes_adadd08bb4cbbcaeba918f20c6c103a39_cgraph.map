@@ -8,7 +8,7 @@
 <area shape="rect" id="node4" href="$class_t_pref_dir_element.html#aa5944dedfb065d9e251c26b28fff69f6" title="Returns the ELink array position." alt="" coords="690,81,891,108"/>
 <area shape="rect" id="node5" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="703,284,878,326"/>
 <area shape="rect" id="node7" href="$class_t_pref_dir_element.html#a35cd9c18012bd537fa988a32c510b01b" title="Returns the XLink array position." alt="" coords="691,132,890,158"/>
-<area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="709,350,872,377"/>
+<area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="709,350,872,377"/>
 <area shape="rect" id="node11" href="$class_t_one_pref_dir.html#a8a7ddf3981800ec0df1225c9e5aa52c2" title="Diagnostic validity check." alt="" coords="442,532,625,574"/>
 <area shape="rect" id="node13" href="$class_t_one_pref_dir.html#ad2e6adb7b634b17cab9cd03610a0f8e3" title="Empty the existing vectors &amp; map." alt="" coords="449,598,618,625"/>
 <area shape="rect" id="node14" href="$class_t_pref_dir_element.html#a13526cb4ee94a708a7bfef517abaa605" title="picks up the EntryDirectionGraphicPtr for preferred directions" alt="" coords="435,650,631,691"/>

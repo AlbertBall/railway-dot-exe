@@ -1,11 +1,12 @@
 <map id="TAllRoutes::FindRouteNumberFromRoute2MultiMapNoErrors" name="TAllRoutes::FindRouteNumberFromRoute2MultiMapNoErrors">
-<area shape="rect" id="node1" title="If a route is present at H, V &amp; Elink returns true with RouteNumber giving vector position in AllRout..." alt="" coords="1511,99,1708,140"/>
-<area shape="rect" id="node2" href="$class_t_train.html#a50997f7e8138a7e6a147fe3b5ad21b84" title="Checks whether Element and EntryPos (where train is about to enter) is on an existing route (or cross..." alt="" coords="1264,99,1463,140"/>
-<area shape="rect" id="node3" href="$class_t_train_controller.html#aa895b60238810a9d134cd5b9c886da56" title="Introduce a new train to the railway, with the characteristics specified, returns true for success,..." alt="" coords="1045,55,1216,82"/>
-<area shape="rect" id="node5" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="665,55,800,82"/>
-<area shape="rect" id="node4" href="$class_t_train.html#ad666fb061d1da7c44a72ec963c2098aa" title="Carry out the actions needed when a train is to split from the front." alt="" coords="848,30,997,57"/>
-<area shape="rect" id="node6" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="451,30,617,57"/>
-<area shape="rect" id="node9" href="$class_t_train.html#ad64c5823265b0c611c2e5f0613317aa5" title="Carry out the actions needed when a train is to split from the rear." alt="" coords="849,81,996,107"/>
-<area shape="rect" id="node7" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,30,403,57"/>
-<area shape="rect" id="node8" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,30,196,57"/>
+<area shape="rect" id="node1" title="If a route is present at H, V &amp; Elink returns true with RouteNumber giving vector position in AllRout..." alt="" coords="1511,73,1708,114"/>
+<area shape="rect" id="node2" href="$class_t_train.html#a50997f7e8138a7e6a147fe3b5ad21b84" title="Checks whether Element and EntryPos (where train is about to enter) is on an existing route (or cross..." alt="" coords="1264,105,1463,146"/>
+<area shape="rect" id="node10" href="$class_t_train_controller.html#ab8d8cf015d4784f12585f0ead325e9bf" title="Called when trying to introduce a new train &#45; checks for points in correct orientation,..." alt="" coords="1271,39,1456,81"/>
+<area shape="rect" id="node3" href="$class_t_train_controller.html#aa895b60238810a9d134cd5b9c886da56" title="Introduce a new train to the railway, with the characteristics specified, returns true for success,..." alt="" coords="1045,47,1216,73"/>
+<area shape="rect" id="node5" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="665,53,800,80"/>
+<area shape="rect" id="node4" href="$class_t_train.html#ad666fb061d1da7c44a72ec963c2098aa" title="Carry out the actions needed when a train is to split from the front." alt="" coords="848,28,997,55"/>
+<area shape="rect" id="node6" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="451,28,617,55"/>
+<area shape="rect" id="node9" href="$class_t_train.html#ad64c5823265b0c611c2e5f0613317aa5" title="Carry out the actions needed when a train is to split from the rear." alt="" coords="849,79,996,105"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,28,403,55"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,28,196,55"/>
 </map>

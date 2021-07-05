@@ -3,5 +3,5 @@
 <area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="487,25,633,52"/>
 <area shape="rect" id="node3" href="$class_t_display.html#a95aaa80515f0abb7715920b326b318dd" title="Plot small (4x4) graphic PlotItem on the zoomed&#45;out display at HPos &amp; Vpos." alt="" coords="264,25,439,52"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="487,76,633,103"/>
-<area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="270,76,433,103"/>
+<area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="270,76,433,103"/>
 </map>

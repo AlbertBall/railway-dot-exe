@@ -7,7 +7,7 @@
 <area shape="rect" id="node8" href="$class_t_train.html#a439d2809c762a0981908a3b8a49520f2" title="Unplot train from screen in zoomed&#45;out mode." alt="" coords="231,262,403,303"/>
 <area shape="rect" id="node11" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="257,538,378,565"/>
 <area shape="rect" id="node4" href="$class_t_display.html#a95aaa80515f0abb7715920b326b318dd" title="Plot small (4x4) graphic PlotItem on the zoomed&#45;out display at HPos &amp; Vpos." alt="" coords="486,168,661,194"/>
-<area shape="rect" id="node6" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="492,218,655,245"/>
+<area shape="rect" id="node6" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="492,218,655,245"/>
 <area shape="rect" id="node9" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="482,320,665,362"/>
-<area shape="rect" id="node10" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="471,269,676,296"/>
+<area shape="rect" id="node10" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="471,269,676,296"/>
 </map>

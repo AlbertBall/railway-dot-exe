@@ -37,7 +37,7 @@
 <area shape="rect" id="node18" href="$class_t_train_controller.html#ab81acdc0c0ab6e1e321f64170f0f71af" title="save ContinuationAutoSigEntries to a session file" alt="" coords="979,2081,1174,2122"/>
 <area shape="rect" id="node19" href="$class_t_train_controller.html#a57a934999d63367128ca639b9ab3e3ce" title="save locked routes to a session file" alt="" coords="979,2146,1174,2188"/>
 <area shape="rect" id="node20" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="716,1619,915,1646"/>
-<area shape="rect" id="node34" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="995,499,1158,526"/>
+<area shape="rect" id="node34" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="995,499,1158,526"/>
 <area shape="rect" id="node37" href="$class_t_track.html#a1092232428ee654facf8f53340c13f74" title="A range&#45;checked version of UserGraphicVector.at(At)" alt="" coords="981,1138,1173,1164"/>
 <area shape="rect" id="node39" href="$class_t_rail_graphics.html#a5121c6d8b8fa69eefc293ca51cddce88" title=" " alt="" coords="730,538,901,580"/>
 <area shape="rect" id="node40" href="$class_t_track.html#aeb60286bc570dbafab64fe6dc06af2e4" title="Return a reference to the element at HLoc &amp; VLoc, if no element is found an error is thrown." alt="" coords="715,408,915,449"/>

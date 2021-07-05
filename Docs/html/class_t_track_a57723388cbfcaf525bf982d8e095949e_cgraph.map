@@ -5,5 +5,5 @@
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="747,213,893,240"/>
 <area shape="rect" id="node7" href="$class_t_track.html#a43c4adf8324c465b90bad0a4dd6761a2" title="Set LC attribute at H &amp; V; 0=closed to trains, 1 = open to trains, 2 = changing state = closed to tra..." alt="" coords="260,155,445,181"/>
 <area shape="rect" id="node4" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="505,206,687,247"/>
-<area shape="rect" id="node6" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="493,53,699,80"/>
+<area shape="rect" id="node6" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="493,53,699,80"/>
 </map>

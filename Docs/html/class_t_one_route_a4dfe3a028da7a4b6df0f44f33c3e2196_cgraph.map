@@ -7,11 +7,11 @@
 <area shape="rect" id="node12" href="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a" title="Returns a constant reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ch..." alt="" coords="495,393,689,420"/>
 <area shape="rect" id="node13" href="$class_t_all_routes.html#ac6bd39457747eaa96476a8a87df15ac2" title="Set rearwards signals from the specified route starting position." alt="" coords="245,535,435,576"/>
 <area shape="rect" id="node4" href="$class_t_track.html#aeb515d40cb9b08ed55ce877ffdbc51a5" title="Return the corresponding link position (track always occupies either links 0 &amp; 1 or 2 &amp; 3)" alt="" coords="1000,331,1203,372"/>
-<area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="1272,366,1435,393"/>
+<area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1272,366,1435,393"/>
 <area shape="rect" id="node8" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="1038,670,1165,697"/>
 <area shape="rect" id="node11" href="$class_t_track.html#aad258b17c96ace0dbbad3754eb743274" title="True if an open (to trains) level crossing is found at H &amp; V." alt="" coords="1003,721,1199,748"/>
 <area shape="rect" id="node9" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="1262,772,1445,814"/>
-<area shape="rect" id="node10" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="1251,721,1456,748"/>
+<area shape="rect" id="node10" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="1251,721,1456,748"/>
 <area shape="rect" id="node14" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1265,1194,1441,1235"/>
 <area shape="rect" id="node15" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="509,1244,675,1270"/>
 <area shape="rect" id="node16" href="$class_t_one_route.html#a55e04e36f652344b5215f8a28143c4a3" title="Called by TAllRoutes::SetAllRearwardsSignals to set rearwards signals from a specified starting posit..." alt="" coords="483,688,701,730"/>

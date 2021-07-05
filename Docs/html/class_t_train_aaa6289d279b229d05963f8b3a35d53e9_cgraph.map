@@ -5,5 +5,5 @@
 <area shape="rect" id="node4" href="$class_t_train.html#a7a54125a3a5052cb25e17014075a686b" title="Returns the number by which the train ActionVectorEntryPtr needs to be incremented to point to the lo..." alt="" coords="476,157,703,183"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="751,131,897,158"/>
 <area shape="rect" id="node6" href="$class_t_track.html#aeac90568597c9f13a27fa90c58f9041f" title="True if another train on NextEntryPos track of element at NextPos, whether bridge or not,..." alt="" coords="237,55,416,82"/>
-<area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="508,106,671,133"/>
+<area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="508,106,671,133"/>
 </map>

@@ -2,7 +2,7 @@
 <area shape="rect" id="node1" title="True for a train waiting to be joined when the joining train is adjacent." alt="" coords="5,86,181,127"/>
 <area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="711,41,857,68"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="711,117,857,144"/>
-<area shape="rect" id="node4" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="482,155,645,181"/>
+<area shape="rect" id="node4" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="482,155,645,181"/>
 <area shape="rect" id="node5" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="229,67,416,109"/>
 <area shape="rect" id="node6" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="464,53,663,80"/>
 </map>

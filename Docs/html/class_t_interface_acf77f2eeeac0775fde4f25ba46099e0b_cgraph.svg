@@ -192,7 +192,7 @@ var sectionId = 'dynsection-242';
 <g id="node34" class="node">
 <title>Node71</title>
 <g id="a_node34"><a xlink:href="class_t_track.html#a794daa0471b473e28ff24c87a92112dc" target="_top" xlink:title="True if there are gaps in the railway and any are unset.">
-<polygon fill="white" stroke="black" points="586.5,-656.5 586.5,-675.5 687.5,-675.5 687.5,-656.5 586.5,-656.5"/>
+<polygon fill="white" stroke="red" points="586.5,-656.5 586.5,-675.5 687.5,-675.5 687.5,-656.5 586.5,-656.5"/>
 <text text-anchor="middle" x="637" y="-663.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::GapsUnset</text>
 </a>
 </g>
@@ -237,7 +237,7 @@ var sectionId = 'dynsection-242';
 <g id="node37" class="node">
 <title>Node77</title>
 <g id="a_node37"><a xlink:href="class_t_track.html#a2eaa84532799b76a0b42cf6e2611224d" target="_top" xlink:title="True if there is no active track in the railway.">
-<polygon fill="white" stroke="black" points="580,-580.5 580,-599.5 694,-599.5 694,-580.5 580,-580.5"/>
+<polygon fill="white" stroke="red" points="580,-580.5 580,-599.5 694,-599.5 694,-580.5 580,-580.5"/>
 <text text-anchor="middle" x="637" y="-587.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::NoActiveTrack</text>
 </a>
 </g>
@@ -298,7 +298,7 @@ var sectionId = 'dynsection-242';
 <g id="node41" class="node">
 <title>Node81</title>
 <g id="a_node41"><a xlink:href="class_t_track.html#a1a5d8cf5f3a46667a745bfcf4c77ba9d" target="_top" xlink:title="Set all LC attributes to 0 (closed to trains)">
-<polygon fill="white" stroke="black" points="769.5,-226.5 769.5,-245.5 912.5,-245.5 912.5,-226.5 769.5,-226.5"/>
+<polygon fill="white" stroke="red" points="769.5,-226.5 769.5,-245.5 912.5,-245.5 912.5,-226.5 769.5,-226.5"/>
 <text text-anchor="middle" x="841" y="-233.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::ResetLevelCrossings</text>
 </a>
 </g>

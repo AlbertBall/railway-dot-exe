@@ -14,7 +14,7 @@
 <area shape="rect" id="node12" href="$class_t_track.html#af0a13922e664c99defc573f080956bb9" title="Checks BarrierDownVector and returns true if there is one that is linked to the LC at H &amp; V positions..." alt="" coords="548,2521,716,2563"/>
 <area shape="rect" id="node13" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="827,2427,953,2454"/>
 <area shape="rect" id="node14" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="1053,1688,1235,1729"/>
-<area shape="rect" id="node15" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="1041,2833,1247,2859"/>
+<area shape="rect" id="node15" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="1041,2833,1247,2859"/>
 <area shape="rect" id="node16" href="$class_t_track.html#a0a99f8e9b1b6fc3f629d6292f2e14308" title="True if a route or train present on any linked level crossing element." alt="" coords="527,2619,737,2660"/>
 <area shape="rect" id="node17" href="$class_t_one_pref_dir.html#abadb0c99b24d6dbfda371d96b308fc6e" title="Used when setting element lengths, returns in &amp;OverallDistance the overall distance for the selected ..." alt="" coords="801,1145,979,1187"/>
 <area shape="rect" id="node18" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1056,1469,1232,1511"/>

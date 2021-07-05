@@ -11,7 +11,7 @@
 <area shape="rect" id="node7" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="660,571,853,597"/>
 <area shape="rect" id="node8" href="$class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" title="Send Statement to the performance log on screen and to the file." alt="" coords="669,419,844,445"/>
 <area shape="rect" id="node9" href="$class_t_display.html#a604d491a723df459bdcd54a4b9d1d9f2" title="Display warning message Statement in the bottom left hand warning position and scroll other messages ..." alt="" coords="682,368,831,395"/>
-<area shape="rect" id="node13" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="675,200,838,227"/>
+<area shape="rect" id="node13" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="675,200,838,227"/>
 <area shape="rect" id="node14" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="415,251,601,293"/>
 <area shape="rect" id="node15" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="657,251,856,277"/>
 </map>

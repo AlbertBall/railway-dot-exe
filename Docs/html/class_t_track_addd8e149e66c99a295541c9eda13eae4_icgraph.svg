@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 1705;
 var viewHeight = 197;
-var sectionId = 'dynsection-257';
+var sectionId = 'dynsection-275';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -100,7 +100,7 @@ var sectionId = 'dynsection-257';
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="class_t_train_controller.html#a193bc964187b0ae255251d2c7136540a" target="_top" xlink:title="Carry out further detailed timetable consistency checks, return true for success.">
+<g id="a_node3"><a xlink:href="class_t_train_controller.html#af52f0033d498268c871980c17a8ddf36" target="_top" xlink:title="Carry out further detailed timetable consistency checks, return true for success.">
 <polygon fill="white" stroke="black" points="1029.5,-49.5 1029.5,-79.5 1152.5,-79.5 1152.5,-49.5 1029.5,-49.5"/>
 <text text-anchor="start" x="1037.5" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::Second</text>
 <text text-anchor="middle" x="1091" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00">PassActions</text>

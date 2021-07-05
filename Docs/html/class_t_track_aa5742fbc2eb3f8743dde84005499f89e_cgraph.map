@@ -7,5 +7,5 @@
 <area shape="rect" id="node6" href="$class_t_display.html#a6e970089a9419e6bdd12576b6e860c95" title=" " alt="" coords="429,38,601,64"/>
 <area shape="rect" id="node7" href="$class_t_track.html#a2830b22db25712a80fa55b1546b5df9b" title="Plot platforms if any for a signal graphic &#45; plotted before signal so shows through transparent signa..." alt="" coords="181,212,364,239"/>
 <area shape="rect" id="node8" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="423,190,606,232"/>
-<area shape="rect" id="node9" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="412,139,617,166"/>
+<area shape="rect" id="node9" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="412,139,617,166"/>
 </map>

@@ -1,12 +1,12 @@
 <map id="TTrack::AddName" name="TTrack::AddName">
-<area shape="rect" id="node1" title="TrackElement.LocationName becomes &#39;Name&#39; (for active and inactive elements) and, if TrackElement is a..." alt="" coords="5,335,132,361"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="671,211,817,237"/>
-<area shape="rect" id="node3" href="$class_t_track.html#aa081ea276995a63dfa00fc0ace24f5c5" title="Changes the LocationName in the name multimap to NewName at the location pointed to by the TLocationN..." alt="" coords="422,393,618,434"/>
-<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="671,291,817,317"/>
-<area shape="rect" id="node5" href="$class_t_track.html#aaf3f48b8df9877499aaf4c05f804426c" title="Validity test." alt="" coords="180,189,369,230"/>
-<area shape="rect" id="node6" href="$class_t_track.html#a694370e3ec67d43da1d8333e06d9ebba" title="Searches LocationNameMultiMap to check if the element pointed to by the TTrackVectorIterator has the ..." alt="" coords="429,42,611,83"/>
-<area shape="rect" id="node9" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="433,327,607,369"/>
-<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackElement.at(At)" alt="" coords="439,459,601,485"/>
-<area shape="rect" id="node7" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="429,159,611,201"/>
-<area shape="rect" id="node8" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="417,225,623,252"/>
+<area shape="rect" id="node1" title="TrackElement.LocationName becomes &#39;Name&#39; (for active and inactive elements) and, if TrackElement is a..." alt="" coords="5,262,132,288"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="671,203,817,230"/>
+<area shape="rect" id="node3" href="$class_t_track.html#aa081ea276995a63dfa00fc0ace24f5c5" title="Changes the LocationName in the name multimap to NewName at the location pointed to by the TLocationN..." alt="" coords="422,42,618,84"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="671,316,817,343"/>
+<area shape="rect" id="node5" href="$class_t_track.html#aaf3f48b8df9877499aaf4c05f804426c" title="Validity test." alt="" coords="180,254,369,296"/>
+<area shape="rect" id="node6" href="$class_t_track.html#a694370e3ec67d43da1d8333e06d9ebba" title="Searches LocationNameMultiMap to check if the element pointed to by the TTrackVectorIterator has the ..." alt="" coords="429,108,611,149"/>
+<area shape="rect" id="node9" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="439,392,601,419"/>
+<area shape="rect" id="node10" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="433,444,607,485"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="429,225,611,266"/>
+<area shape="rect" id="node8" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="417,291,623,318"/>
 </map>

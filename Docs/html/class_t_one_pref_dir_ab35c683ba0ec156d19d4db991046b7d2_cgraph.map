@@ -6,5 +6,5 @@
 <area shape="rect" id="node5" href="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc" title="Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return &#45;1." alt="" coords="427,40,640,82"/>
 <area shape="rect" id="node6" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="252,186,379,213"/>
 <area shape="rect" id="node7" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="442,208,625,250"/>
-<area shape="rect" id="node8" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackElement.at(At)" alt="" coords="431,157,636,184"/>
+<area shape="rect" id="node8" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="431,157,636,184"/>
 </map>

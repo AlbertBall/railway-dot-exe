@@ -265,7 +265,7 @@
 <g id="node34" class="node">
 <title>Node74</title>
 <g id="a_node34"><a xlink:href="class_t_track.html#a794daa0471b473e28ff24c87a92112dc" target="_top" xlink:title="True if there are gaps in the railway and any are unset.">
-<polygon fill="white" stroke="black" points="791.5,-305.08 791.5,-324.08 892.5,-324.08 892.5,-305.08 791.5,-305.08"/>
+<polygon fill="white" stroke="red" points="791.5,-305.08 791.5,-324.08 892.5,-324.08 892.5,-305.08 791.5,-305.08"/>
 <text text-anchor="middle" x="842" y="-312.08" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::GapsUnset</text>
 </a>
 </g>
@@ -310,7 +310,7 @@
 <g id="node37" class="node">
 <title>Node80</title>
 <g id="a_node37"><a xlink:href="class_t_track.html#a2eaa84532799b76a0b42cf6e2611224d" target="_top" xlink:title="True if there is no active track in the railway.">
-<polygon fill="white" stroke="black" points="785,-647.08 785,-666.08 899,-666.08 899,-647.08 785,-647.08"/>
+<polygon fill="white" stroke="red" points="785,-647.08 785,-666.08 899,-666.08 899,-647.08 785,-647.08"/>
 <text text-anchor="middle" x="842" y="-654.08" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::NoActiveTrack</text>
 </a>
 </g>
@@ -371,7 +371,7 @@
 <g id="node41" class="node">
 <title>Node84</title>
 <g id="a_node41"><a xlink:href="class_t_track.html#a1a5d8cf5f3a46667a745bfcf4c77ba9d" target="_top" xlink:title="Set all LC attributes to 0 (closed to trains)">
-<polygon fill="white" stroke="black" points="971.5,-2025.08 971.5,-2044.08 1114.5,-2044.08 1114.5,-2025.08 971.5,-2025.08"/>
+<polygon fill="white" stroke="red" points="971.5,-2025.08 971.5,-2044.08 1114.5,-2044.08 1114.5,-2025.08 971.5,-2025.08"/>
 <text text-anchor="middle" x="1043" y="-2032.08" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::ResetLevelCrossings</text>
 </a>
 </g>

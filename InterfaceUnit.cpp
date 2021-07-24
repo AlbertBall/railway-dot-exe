@@ -2630,7 +2630,7 @@ void TInterface::LoadRailway(int Caller, AnsiString LoadFileName)
     } // if(FileIntegrityCheck(LoadRailwayDialog->FileName.c_str()))
     else
     {
-        ShowMessage("File integrity check failed - unable to load");
+        ShowMessage("File integrity check failed - unable to load " + LoadFileName + ". Please check that the file exists and is spelled correctly.");
     }
     Utilities->CallLogPop(1774);
 }
@@ -3431,7 +3431,7 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
             }
             else
             {
-                ShowMessage("Failed to open timetable file, make sure it's not open in another application");
+                ShowMessage("Failed to open timetable file " + CreateEditTTFileName + ", make sure it's spelled correctly, it exists and isn't open in another application");
                 Utilities->CallLogPop(1597);
                 return;
             }
@@ -3479,7 +3479,7 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
             }
             else
             {
-                ShowMessage("Failed to open timetable file, make sure it's not open in another application");
+                ShowMessage("Failed to open timetable file " + CreateEditTTFileName + ", make sure it's spelled correctly, it exists and isn't open in another application");
                 Utilities->CallLogPop(1654);
                 return;
             }
@@ -4453,7 +4453,7 @@ void __fastcall TInterface::ValidateTimetableButtonClick(TObject *Sender)
             }
             else
             {
-                ShowMessage("Failed to open timetable file, make sure it's not open in another application");
+                ShowMessage("Failed to open timetable file, make sure it's spelled correctly, it exists and isn't open in another application");
             }
             Screen->Cursor = TCursor(-2); // Arrow
         } // if(TimetableIntegrityCheck
@@ -4688,7 +4688,7 @@ void __fastcall TInterface::RestoreTTButtonClick(TObject *Sender)
         }
         else
         {
-            ShowMessage("Failed to open timetable file, make sure it's not open in another application");
+            ShowMessage("Failed to open timetable file, make sure it's spelled correctly, it exists and isn't open in another application");
             Utilities->CallLogPop(1655);
             return;
         }
@@ -9701,6 +9701,8 @@ void __fastcall TInterface::FlipMenuItemClick(TObject *Sender)
             int ELink = FlipLinkArray[SelectPrefDir->PrefDirVector.at(x).GetELink()];
             int XLink = FlipLinkArray[SelectPrefDir->PrefDirVector.at(x).GetXLink()];
             TTrackElement TE = Track->BuildBasicElementFromSpeedTag(6, Track->FlipArray[SelectPrefDir->PrefDirVector.at(x).SpeedTag]);
+            //the above line caused errors when Track->GetTrackElementFromAnyTrackMap in RecoverClipboard had Vector passed in by value,
+            //causing a bad returned value for SpeedTag and other properties.  Passing it in by reference fixed it
             TPrefDirElement PDE(TE);  //this has Link[4]
             PDE.HLoc = HLoc;
             PDE.VLoc = VLoc;
@@ -9721,7 +9723,7 @@ void __fastcall TInterface::FlipMenuItemClick(TObject *Sender)
                 }
             }
             //set the CheckCount as before - added at v2.9.1
-            PDE.SetCheckCount(SelectPrefDir->PrefDirVector.at(x).GetCheckCount()); //should be 9
+            PDE.SetCheckCount(9); //explicitly set to 9 at v2.9.2
             PDE.SetEXGraphicPtr(PDE.GetPrefDirGraphicPtr());
             PDE.SetEntryDirectionGraphicPtr(PDE.GetDirectionPrefDirGraphicPtr());
 
@@ -9817,6 +9819,8 @@ void __fastcall TInterface::MirrorMenuItemClick(TObject *Sender)
             int ELink = MirrorLinkArray[SelectPrefDir->PrefDirVector.at(x).GetELink()];
             int XLink = MirrorLinkArray[SelectPrefDir->PrefDirVector.at(x).GetXLink()];
             TTrackElement TE = Track->BuildBasicElementFromSpeedTag(7, Track->MirrorArray[SelectPrefDir->PrefDirVector.at(x).SpeedTag]);
+            //the above line caused errors when Track->GetTrackElementFromAnyTrackMap in RecoverClipboard had Vector passed in by value,
+            //causing a bad returned value for SpeedTag and other properties.  Passing it in by reference fixed it
             TPrefDirElement PDE(TE);  //this has Link[4]
             PDE.HLoc = HLoc;
             PDE.VLoc = VLoc;
@@ -9837,7 +9841,7 @@ void __fastcall TInterface::MirrorMenuItemClick(TObject *Sender)
                 }
             }
             //set the CheckCount as before - added at v2.9.1
-            PDE.SetCheckCount(SelectPrefDir->PrefDirVector.at(x).GetCheckCount()); //should be 9
+            PDE.SetCheckCount(9); //explicitly set to 9 at v2.9.2
             PDE.SetEXGraphicPtr(PDE.GetPrefDirGraphicPtr());
             PDE.SetEntryDirectionGraphicPtr(PDE.GetDirectionPrefDirGraphicPtr());
             //set the TrackVectorPosition to correspond to the corresponding TrackElement added at v2.9.1
@@ -9939,6 +9943,8 @@ void __fastcall TInterface::RotateMenuItemClick(TObject *Sender)
             int ELink = Rot180LinkArray[SelectPrefDir->PrefDirVector.at(x).GetELink()];
             int XLink = Rot180LinkArray[SelectPrefDir->PrefDirVector.at(x).GetXLink()];
             TTrackElement TE = Track->BuildBasicElementFromSpeedTag(8, Track->MirrorArray[Track->FlipArray[SelectPrefDir->PrefDirVector.at(x).SpeedTag]]);
+            //the above line caused errors when Track->GetTrackElementFromAnyTrackMap in RecoverClipboard had Vector passed in by value,
+            //causing a bad returned value for SpeedTag and other properties.  Passing it in by reference fixed it
             TPrefDirElement PDE(TE);  //this has Link[4]
             PDE.HLoc = HLoc;
             PDE.VLoc = VLoc;
@@ -9959,7 +9965,7 @@ void __fastcall TInterface::RotateMenuItemClick(TObject *Sender)
                 }
             }
             //set the CheckCount as before - added at v2.9.1
-            PDE.SetCheckCount(SelectPrefDir->PrefDirVector.at(x).GetCheckCount()); //should be 9
+            PDE.SetCheckCount(9); //explicitly set to 9 at v2.9.2
             PDE.SetEXGraphicPtr(PDE.GetPrefDirGraphicPtr());
             PDE.SetEntryDirectionGraphicPtr(PDE.GetDirectionPrefDirGraphicPtr());
             //set the TrackVectorPosition to correspond to the corresponding TrackElement added at v2.9.1
@@ -10030,8 +10036,8 @@ void __fastcall TInterface::RotRightMenuItemClick(TObject *Sender)
 {
     try
     {
-        TrainController->LogEvent("RotateRight90MenuItemClick");
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RotateRight90MenuItemClick");
+        TrainController->LogEvent("RotateRightMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RotateRightMenuItemClick");
         Screen->Cursor = TCursor(-11); // Hourglass
         // check first if a square and if not give message & quit
         if((SelectRect.right - SelectRect.left) != (SelectRect.bottom - SelectRect.top))
@@ -10234,6 +10240,8 @@ void __fastcall TInterface::RotRightMenuItemClick(TObject *Sender)
             int ELink = RotRightLinkArray[SelectPrefDir->GetFixedPrefDirElementAt(252, x).GetELink()];
             int XLink = RotRightLinkArray[SelectPrefDir->GetFixedPrefDirElementAt(253, x).GetXLink()];
             TTrackElement TE = Track->BuildBasicElementFromSpeedTag(9, Track->RotRightArray[SelectPrefDir->GetFixedPrefDirElementAt(254, x).SpeedTag]);
+            //the above line caused errors when Track->GetTrackElementFromAnyTrackMap in RecoverClipboard had Vector passed in by value,
+            //causing a bad returned value for SpeedTag and other properties.  Passing it in by reference fixed it
             TPrefDirElement PDE(TE);  //this has Link[4]
             PDE.HLoc = HLoc;
             PDE.VLoc = VLoc;
@@ -10254,7 +10262,7 @@ void __fastcall TInterface::RotRightMenuItemClick(TObject *Sender)
                 }
             }
             //set the CheckCount as before - added at v2.9.1
-            PDE.SetCheckCount(SelectPrefDir->GetModifiablePrefDirElementAt(14, x).GetCheckCount()); //should be 9
+            PDE.SetCheckCount(9); //explicitly set to 9 at v2.9.2
             PDE.SetEXGraphicPtr(PDE.GetPrefDirGraphicPtr());
             PDE.SetEntryDirectionGraphicPtr(PDE.GetDirectionPrefDirGraphicPtr());
             //set the TrackVectorPosition to correspond to the corresponding TrackElement added at v2.9.1
@@ -10314,8 +10322,8 @@ void __fastcall TInterface::RotLeftMenuItemClick(TObject *Sender)
 {
     try
     {
-        TrainController->LogEvent("RotateLeft90MenuItemClick");
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RotateLeft90MenuItemClick");
+        TrainController->LogEvent("RotateLeftMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RotateLeftMenuItemClick");
         Screen->Cursor = TCursor(-11); // Hourglass;
         // check first if a square and if not give message & quit
         if((SelectRect.right - SelectRect.left) != (SelectRect.bottom - SelectRect.top))
@@ -10518,6 +10526,8 @@ void __fastcall TInterface::RotLeftMenuItemClick(TObject *Sender)
             int ELink = RotLeftLinkArray[SelectPrefDir->GetFixedPrefDirElementAt(257, x).GetELink()];
             int XLink = RotLeftLinkArray[SelectPrefDir->GetFixedPrefDirElementAt(258, x).GetXLink()];
             TTrackElement TE = Track->BuildBasicElementFromSpeedTag(10, Track->RotLeftArray[SelectPrefDir->GetFixedPrefDirElementAt(259, x).SpeedTag]);
+            //the above line caused errors when Track->GetTrackElementFromAnyTrackMap in RecoverClipboard had Vector passed in by value,
+            //causing a bad returned value for SpeedTag and other properties.  Passing it in by reference fixed it
             TPrefDirElement PDE(TE);  //this has Link[4] set
             PDE.HLoc = HLoc;
             PDE.VLoc = VLoc;
@@ -10538,7 +10548,7 @@ void __fastcall TInterface::RotLeftMenuItemClick(TObject *Sender)
                 }
             }
             //set the CheckCount as before - added at v2.9.1
-            PDE.SetCheckCount(SelectPrefDir->GetModifiablePrefDirElementAt(15, x).GetCheckCount()); //should be 9
+            PDE.SetCheckCount(9); //explicitly set to 9 at v2.9.2
             PDE.SetEXGraphicPtr(PDE.GetPrefDirGraphicPtr());
             PDE.SetEntryDirectionGraphicPtr(PDE.GetDirectionPrefDirGraphicPtr());
             //set the TrackVectorPosition to correspond to the corresponding TrackElement added at v2.9.1
@@ -11228,13 +11238,13 @@ void __fastcall TInterface::LoadTimetableMenuItemClick(TObject *Sender)
                 }
                 else
                 {
-                    ShowMessage("Failed to open timetable file, make sure it's not open in another application");
+                    ShowMessage("Failed to open timetable file, make sure it's spelled correctly, it exists and isn't open in another application");
                 }
                 Screen->Cursor = TCursor(-2); // Arrow
             } // if(TimetableIntegrityCheck
             else
             {
-                ShowMessage("Timetable preliminary integrity check failed - unable to load");
+                ShowMessage("Timetable integrity check failed - unable to load " + TimetableDialog->FileName + ". Please check that the file exists and is spelled correctly.");
             }
         } // if(TimetableDialog->Execute())
 
@@ -15000,6 +15010,9 @@ void TInterface::SetLevel1Mode(int Caller)
         TrainController->EarlyPasses = 0;
         TrainController->OnTimeDeps = 0;
         TrainController->LateDeps = 0;
+        TrainController->OnTimeExits = 0; //these 3 exits added at v2.9.2 - missed in error earlier
+        TrainController->LateExits = 0;
+        TrainController->EarlyExits = 0;
         TrainController->MissedStops = 0;
         TrainController->OtherMissedEvents = 0;
         TrainController->UnexpectedExits = 0;
@@ -15473,7 +15486,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
             }
             else
             {
-                Application->MessageBoxW(L"Unable to paste, clipboard does not contain a valid railway segment", L"Warning", MB_OK | MB_ICONWARNING);
+                Application->MessageBoxW(L"Unable to paste, clipboard is corrupt or does not contain a valid railway segment", L"Warning", MB_OK | MB_ICONWARNING);
                 CancelSelectionMenuItem->Click();     // reset clipboard etc
                 Utilities->CallLogPop(2272);
                 return;
@@ -15635,7 +15648,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
                 }
                 PDVIt->SetTrackVectorPosition(ATVecPos);
 
-                //reset all Conns & ConnLinkPos values so won't be erased during a later cut, they  will be set in RebuildPrefDirVector which is called when track linked
+                //reset all Conns & ConnLinkPos values so won't be erased during a later cut, they will be set in RebuildPrefDirVector which is called when track linked
                 for(int x = 0; x < 4; x++)
                 {
                     PDVIt->Conn[x] = -1;
@@ -18119,8 +18132,8 @@ void TInterface::SaveSession(int Caller)
             Utilities->SaveFileInt(SessionFile, TrainController->LateExits);
             Utilities->SaveFileDouble(SessionFile, double(TrainController->TotEarlyExitMins));
             Utilities->SaveFileDouble(SessionFile, double(TrainController->TotLateExitMins));
-            Utilities->SaveFileString(SessionFile, "End of file at v2.9.0");
-// end of at v2.9.1 additions
+            Utilities->SaveFileString(SessionFile, "End of file at v2.9.1");  //changed from '2.9.0' at v2.9.2
+// end of v2.9.1 additions
 
             SessionFile.close();
             TrainController->StopTTClockMessage(4, "Session saved: Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " +
@@ -18398,7 +18411,7 @@ void TInterface::LoadSession(int Caller)
             }
             else
             {
-                ShowMessage("Session file integrity check failed, unable to load session.");
+                ShowMessage("Session file integrity check failed, unable to load " + LoadSessionDialog->FileName);
             }
             Screen->Cursor = TCursor(-2); // Arrow;
         }
@@ -19559,7 +19572,7 @@ would probably have been easier.  To change it now though would cause compatibil
     else
     {
         InFile.close();
-        ShowMessage("Session file failed to open - reason not known, unable to load session.");
+//        ShowMessage("Session file failed to open, reason not known, unable to load session."); message given in calling function if returns false
         Utilities->CallLogPop(1263);
         return(false);
     }
@@ -20092,6 +20105,9 @@ void TInterface::SaveErrorFile()
    from & including ***ChangingLCVector*** to but excluding ***Timetable*** [if have ***No timetable loaded*** then can't use as a session file]
    from & including ***No editing timetable*** or ***Editing timetable - [title]***
    to but excluding ***TimetableClock***
+
+   need to think more about the later additions & include those but not the v2.8.0 additions (& ensure save trains & perf file)
+
    and save as a .ssn file.
 
    In order to load as a railway file: Note if error involves cut/copy etc with prefdirs then need to drop the check of CheckCount
@@ -20258,7 +20274,21 @@ void TInterface::SaveErrorFile()
         Utilities->SaveFileString(ErrorFile, "End of file at v2.4.1");
 // end of v2.4.1 addition
 
-// addition at v2.8.0 in case of clipboard errors
+// added at v2.7.0 - extras saved later in session file (added at v2.9.2)
+        Utilities->SaveFileBool(ErrorFile, ConsecSignalsRoute);
+        Utilities->SaveFileString(ErrorFile, "End of file at v2.7.0");
+// end of v2.7.0 addition
+
+// added at v2.9.1
+        Utilities->SaveFileInt(ErrorFile, TrainController->EarlyExits);
+        Utilities->SaveFileInt(ErrorFile, TrainController->OnTimeExits);
+        Utilities->SaveFileInt(ErrorFile, TrainController->LateExits);
+        Utilities->SaveFileDouble(ErrorFile, double(TrainController->TotEarlyExitMins));
+        Utilities->SaveFileDouble(ErrorFile, double(TrainController->TotLateExitMins));
+        Utilities->SaveFileString(ErrorFile, "End of v2.9.1 additions");  //changed from '2.9.0' at v2.9.2
+// end of v2.9.1 additions
+
+// addition at v2.8.0 in case of clipboard errors <-- keep at end of file as not wanted in a reconstructed session file
         Utilities->SaveFileInt(ErrorFile, SelectBitmap->Height); // extras for new clipboard functions
         Utilities->SaveFileInt(ErrorFile, SelectBitmap->Width);
         Utilities->SaveFileInt(ErrorFile, SelectBitmapHLoc); // paste location
@@ -20267,7 +20297,7 @@ void TInterface::SaveErrorFile()
         Utilities->SaveFileInt(ErrorFile, SelectRect.top);
         Utilities->SaveFileInt(ErrorFile, SelectRect.right);
         Utilities->SaveFileInt(ErrorFile, SelectRect.bottom);
-        Utilities->SaveFileString(ErrorFile, "End of file at v2.8.0");
+        Utilities->SaveFileString(ErrorFile, "End of clipboard additions");
 // end of 2.8.0 addition
         ErrorFile.close();
     }
@@ -20309,7 +20339,7 @@ void TInterface::SaveTempTimetableFile(int Caller, AnsiString InFileName)
         Delay(2, 50); // 50mSec delay between tries
         if(Count > 10)
         {
-            ShowMessage("Failed to open timetable file, make sure it's not open in another application");
+            ShowMessage("Failed to open timetable file, make sure it's spelled correctly, it exists and isn't open in another application");
             Utilities->CallLogPop(1400);
             return;
         }
@@ -21206,6 +21236,8 @@ void TInterface::LoadClipboard(int Caller) // new at v2.8.0
             {
                 //Note that TrackVector Position won't be valid for a remote paste, it will be reset when pasted, also Conns & ConnLinkPosses set when
                 //track linked
+                wss << PDVIt->GetTrackVectorPosition(); //added at v2.9.2 so all 9 of CheckCount properties loaded (SpeedTag loaded from TrackElement at HLoc & VLoc)
+                wss << '\n';
                 wss << PDVIt->GetHLoc();
                 wss << '\n';
                 wss << PDVIt->GetVLoc();
@@ -21275,15 +21307,19 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
             Utilities->CallLogPop(2268); // ValidResult == false
             return;
         }
-        int MarkerCounter = 0;
+        int MarkerCounter = 0; //If ever get a MarkerCounter value well outside expected range it's probably because some text is too long - see comment below
         ClpBrdValid = "";
-        wchar_t LineString[100]; // big enough for any TrackVector entry
+        wchar_t LineString[1000]; // should be big enough for any entry, (extended from 100 at v2.9.2) text can be long but hopefully not this long - won't
+            //recover the clipboard if longer but won't crash.  It has to be at least as big as the biggest getline number or the excess will overwrite other variables,
+            //this was discovered when MarkerCounter suddenly jumped from 1 to nearly 3000000 when Linesting loaded with text ~180 chars long with LineString limited
+            //to 100 chars
+
         wss.getline(LineString, 100); // RlyClpBrdCopy or ...Cut - discard it
         Track->SelectVector.clear();
         TTrack::TTrackMap SelectTrackMap; //build map so can find TrackElement at required H  & V to build PrefDirElement from it //added at v2.9.0
         THVPair SelectTrackMapKeyPair; //for above
         TTrack::TTrackMapEntry SelectTrackMapEntry; //for above
-        while(true) // recover active & inactive track
+        while(true) // recover active & inactive track (active first & top to bottom at leftmost position then again stepping right
         {
             wss.getline(LineString, 100);
             if(AnsiString(LineString) == "$$$") // end of track element marker
@@ -21369,11 +21405,15 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
                 TE.SigAspect = TTrackElement::GroundSignal;
             }
             Track->SelectVector.push_back(TE);
-            SelectTrackMapKeyPair.first = TE.HLoc;
-            SelectTrackMapKeyPair.second = TE.VLoc;
-            SelectTrackMapEntry.first = SelectTrackMapKeyPair;
-            SelectTrackMapEntry.second = Track->SelectVector.size() - 1;
-            SelectTrackMap.insert(SelectTrackMapEntry);
+            if((TE.TrackType != Concourse) && (TE.TrackType != Parapet) && (TE.TrackType != NamedNonStationLocation) && (TE.TrackType != Platform)
+                && (TE.TrackType != LevelCrossing)) //aded at v2.9.2 so only active elements added to SelectTrackMap
+            {
+                SelectTrackMapKeyPair.first = TE.HLoc;
+                SelectTrackMapKeyPair.second = TE.VLoc;
+                SelectTrackMapEntry.first = SelectTrackMapKeyPair;
+                SelectTrackMapEntry.second = Track->SelectVector.size() - 1;
+                SelectTrackMap.insert(SelectTrackMapEntry);
+            }
         }
 
         TextHandler->SelectTextVector.clear();
@@ -21381,7 +21421,7 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
         int FontSize, FontColour, FontCharset, FontStyle;
         while(true) // recover text
         {
-            wss.getline(LineString, 100);
+            wss.getline(LineString, 1000);
             if(AnsiString(LineString) == "$$$") // end of text marker
             {
                 MarkerCounter++;
@@ -21390,19 +21430,19 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
             // if not $$$ then it's the text string
             TTextItem TI;
             TI.TextString = AnsiString(LineString);
-            wss.getline(LineString, 100);
+            wss.getline(LineString, 1000);   //extended to 1000 from 100 for text items at v2.9.2
             TI.HPos = AnsiString(LineString).ToInt();
-            wss.getline(LineString, 100);
+            wss.getline(LineString, 1000);
             TI.VPos = AnsiString(LineString).ToInt();
-            wss.getline(LineString, 100);
+            wss.getline(LineString, 1000);
             FontName = AnsiString(LineString).c_str();
-            wss.getline(LineString, 100);
+            wss.getline(LineString, 1000);
             FontSize = AnsiString(LineString).ToInt();
-            wss.getline(LineString, 100);
+            wss.getline(LineString, 1000);
             FontColour = AnsiString(LineString).ToInt();
-            wss.getline(LineString, 100);
+            wss.getline(LineString, 1000);
             FontCharset = AnsiString(LineString).ToInt();
-            wss.getline(LineString, 100);
+            wss.getline(LineString, 1000);
             FontStyle = AnsiString(LineString).ToInt();
             // create a new font
             TFont *NewFont = new TFont;
@@ -21432,7 +21472,7 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
 
         // recover pref dirs - after dimensions so that a clipboard loaded with this app will paste into an earlier version app without pref dirs
         // if a clipboard loaded with an earlier app is pasted into this app then the marker will be wrong, an error message will be given but no crash
-        int TempHLoc, TempVLoc, TempELink, TempELinkPos, TempXLink, TempXLinkPos, TempEXNumber, ATVecPos;
+        int TempTVPos, TempHLoc, TempVLoc, TempELink, TempELinkPos, TempXLink, TempXLinkPos, TempEXNumber, ATVecPos;
         bool FoundFlag;
         SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
         while(true)
@@ -21443,7 +21483,9 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
                 MarkerCounter++;
                 break;
             }
-            // if not $$$ then it's the HLoc value
+            // if not $$$ then it's the TVPos value
+            TempTVPos = AnsiString(LineString).ToInt(); //added at v2.9.2 so all 9 CheckCount properties valid (SpeedTag loaded from corresponding TrackElement)
+            wss.getline(LineString, 100);
             TempHLoc = AnsiString(LineString).ToInt();
             wss.getline(LineString, 100);
             TempVLoc = AnsiString(LineString).ToInt();
@@ -21458,14 +21500,19 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
             wss.getline(LineString, 100);
             TempEXNumber = AnsiString(LineString).ToInt();
             //build a pref dir element from these values and the corresponding TrackVectorPosition for HLoc & VLoc
-            TPrefDirElement TempPrefDirElement(Track->GetTrackElementFromAnyTrackMap(0, TempHLoc, TempVLoc, SelectTrackMap, Track->SelectVector));
-//            TempPrefDirElement.HLoc = TempHLoc;  //these already set from TrackElement
+            TTrackElement TempElement = Track->GetTrackElementFromAnyTrackMap(0, TempHLoc, TempVLoc, SelectTrackMap, Track->SelectVector);
+            TPrefDirElement TempPrefDirElement(TempElement);
+//            TempPrefDirElement.HLoc = TempHLoc;  //these and SpeedTag already set from TempElement
 //            TempPrefDirElement.VLoc = TempVLoc;
+            TempPrefDirElement.SetTrackVectorPosition(TempTVPos); //added at v2.9.2 so all 9 CheckCount properties have values (SpeedTag loaded from corresponding TrackElement)
+                                                                  //TVPos only included for completeness & not valid yet, it will change to the correct value when pasted
+                                                                  //and change again when the track is linked
             TempPrefDirElement.SetELink(TempELink);
             TempPrefDirElement.SetELinkPos(TempELinkPos);
             TempPrefDirElement.SetXLink(TempXLink);
             TempPrefDirElement.SetXLinkPos(TempXLinkPos);
             TempPrefDirElement.SetEXNumber(TempEXNumber);
+            TempPrefDirElement.SetCheckCount(9); //added at v2.9.2
             SelectPrefDir->ExternalStorePrefDirElement(11, TempPrefDirElement);  //added 27/05 at v2.9.0
         }
 

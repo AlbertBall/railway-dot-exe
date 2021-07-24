@@ -5219,6 +5219,10 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     {
         double MinsLate = ((double)(ActualTime - GetTrainTime(1, TimetableNonRepeatTime))) * 1440;
         MinsDelayed = float(MinsLate);
+        if(ActionType == Pass) //added at v2.9.2 to prevent time to act increasing suddenly for early pass times then becoming 'NOW' when stops at signal
+        {
+            MinsDelayed = 0;
+        }
         // new v2.2.0 for OpActionPanel, can be positive or negative
         if(ActionType == Arrive)
         {
@@ -8655,6 +8659,9 @@ TTrainController::TTrainController()
     OnTimePasses = 0;
     LatePasses = 0;
     EarlyPasses = 0;
+    OnTimeExits = 0; //these 3 exits added at v2.9.2 - missed in error earlier
+    LateExits = 0;
+    EarlyExits = 0;
     OnTimeDeps = 0;
     LateDeps = 0;
     MissedStops = 0;
@@ -9885,7 +9892,7 @@ bool TTrainController::TimetableIntegrityCheck(int Caller, char *FileName, bool 
     } // if(TTBLFile.is_open())
     else
     {
-        TimetableMessage(GiveMessages, "Failed to open timetable file, make sure it's not open in another application");
+        TimetableMessage(GiveMessages, "Failed to open timetable file, make sure it's spelled correctly, it exists and isn't open in another application");
         Utilities->CallLogPop(2154);
         return(false);
     }
@@ -11007,7 +11014,7 @@ bool TTrainController::CheckHeadCodeValidity(int Caller, bool GiveMessages, Ansi
     if((HeadCode.Length() < 4) || (HeadCode.Length() > 8))
     {
         TimetableMessage(GiveMessages, "Headcode error in '" + HeadCode +
-                         "', length must be between 4 and 8 characters, and last 4 must be a legitimate headcode. This error can also be caused by omitting a service reference after Snt-sh, Sns-sh, Fns-sh or Frh-sh");
+                         "', length must be between 4 and 8 characters, and last 4 must be a legitimate headcode. This error can also be caused by omitting a service reference after Sns, Snt-sh, Sns-sh, Fns, Fns-sh or Frh-sh");
         Utilities->CallLogPop(1359);
         return(false);
     }
@@ -18204,7 +18211,7 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     double NetNegFactor = 1;
 
     TotArrDepExit = OnTimeArrivals + LateArrivals + EarlyArrivals + OnTimeDeps + LateDeps + NotStartedTrainLateArr + OperatingTrainLateArr +
-            EarlyExits + LateExits + OnTimeExits; //exits added at v2.9.1
+            EarlyExits + LateExits + OnTimeExits; //exits added at v2.9.1, passes not counted
     // TotArrDep: total number of arrivals & departures including those for trains that haven't reached their destinations yet and are late
     // changed at v1.1.4 - calc was inside "if(OverallScorePercent == 100).." block so could remain 0 for SPADs & crashes, & then received the
     // 'no timetabled departures... message, which was inappropriate

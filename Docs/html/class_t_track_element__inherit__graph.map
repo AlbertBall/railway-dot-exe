@@ -1,5 +1,5 @@
 <map id="TTrackElement" name="TTrackElement">
 <area shape="rect" id="node1" title="Basic track elements as implemented in the overall railway layout." alt="" coords="11,248,203,545"/>
-<area shape="rect" id="node3" href="$class_t_pref_dir_element.html" title="Basic preferred direction or route element &#45; track element with additional members." alt="" coords="17,593,197,1008"/>
+<area shape="rect" id="node3" href="$class_t_pref_dir_element.html" title="Basic preferred direction or route element &#45; track element with additional members." alt="" coords="19,593,196,1008"/>
 <area shape="rect" id="node2" href="$class_t_fixed_track_piece.html" title=" " alt="" coords="5,5,209,200"/>
 </map>

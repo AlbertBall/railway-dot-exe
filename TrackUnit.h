@@ -89,7 +89,6 @@ public: // everything uses these - should really have Gets & Sets but too many t
     int SpeedTag;
 ///< The element identification number - corresponds to the relevant SpeedButton->Tag
     int Link[4];
-
 ///< Track connection link values, max. of 4, unused = -1, top lh diag.=1, top=2, top rh diag.=3, left=4, right=6, bottom lh diag.=7, bottom=8, bottom rh diag.=9
     Graphics::TBitmap *GraphicPtr;
 ///< the track bitmap for display on the zoomed-in railway
@@ -258,6 +257,12 @@ public:
         {
             return(false);
         }
+    }
+
+/// Returns SpeedTag  //added at v2.9.2 for clipboard storage
+    int GetSpeedTag() const
+    {
+        return(SpeedTag);
     }
 
 /// Returns HLoc  //added at v2.9.0 for clipboard storage
@@ -1108,7 +1113,7 @@ exclude opposed buffers since these not linked.  Used in timetable integrity che
 /// Return a reference to the inactive element at HLoc & VLoc, if no element is found an error is thrown
     TTrackElement &GetInactiveTrackElementFromTrackMap(int Caller, int HLoc, int VLoc);
 /// Return a reference to the element at HLoc & VLoc for any map and any vector (used for SelectPrefDir in clipboard pref dir recovery
-    TTrackElement &GetTrackElementFromAnyTrackMap(int Caller, int HLoc, int VLoc, TTrackMap Map, TTrackVector Vector); //new at v2.9.0 for clipboard pref dirs
+    TTrackElement &GetTrackElementFromAnyTrackMap(int Caller, int HLoc, int VLoc, TTrackMap &Map, TTrackVector &Vector); //new at v2.9.0 for clipboard pref dirs & modified at v2.9.2 to make Map & Vector references
 /// Return a reference to the element at HLoc & VLoc, if no element is found an error is thrown
     TTrackElement &GetTrackElementFromTrackMap(int Caller, int HLoc, int VLoc);
 /// A range-checked version of InactiveTrackVector.at(At)

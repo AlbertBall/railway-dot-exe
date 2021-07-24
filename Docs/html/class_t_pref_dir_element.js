@@ -18,6 +18,7 @@ var class_t_pref_dir_element =
     [ "GetRouteEXGraphicPtr", "class_t_pref_dir_element.html#a9dfc04bfa3abf32eb043d771381f971a", null ],
     [ "GetRouteGraphicPtr", "class_t_pref_dir_element.html#acc8674681c7b4eda8ce8551abdae9680", null ],
     [ "GetSignedIntTrackVectorPosition", "class_t_pref_dir_element.html#a69817a345be27fcdb63440c52d6325f3", null ],
+    [ "GetSpeedTag", "class_t_pref_dir_element.html#ad78ebcea68dab9a9f7c0d90cb6322262", null ],
     [ "GetTrackVectorPosition", "class_t_pref_dir_element.html#a0edec31fc9787847e3b6240bab91783c", null ],
     [ "GetVLoc", "class_t_pref_dir_element.html#a3099bdf77186308e355ab2c98f489907", null ],
     [ "GetXLink", "class_t_pref_dir_element.html#a7c2e4d6a65bce13d02ec469f9ed21b64", null ],

@@ -1,52 +1,52 @@
 <map id="TInterface::PassRedSignalMenuItemClick" name="TInterface::PassRedSignalMenuItemClick">
-<area shape="rect" id="node1" title=" " alt="" coords="5,2652,180,2694"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1197,1697,1343,1724"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="247,912,382,938"/>
-<area shape="rect" id="node12" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1197,2118,1343,2145"/>
-<area shape="rect" id="node33" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="944,2590,1107,2617"/>
-<area shape="rect" id="node37" href="$class_t_train.html#a493ab1c185d29bf28ec8fded2356e9fc" title="Send a message to the performance log and performance file, and if the message is flagged as a warnin..." alt="" coords="475,3046,597,3073"/>
-<area shape="rect" id="node43" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="228,3401,401,3428"/>
-<area shape="rect" id="node44" href="$class_t_train.html#abfa6da75d034c737d53819e6edbfa3dc" title="Changes the train&#39;s background colour (e.g. to pale green if stopped at a station) Note that this use..." alt="" coords="231,2355,399,2396"/>
-<area shape="rect" id="node50" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="675,2692,861,2734"/>
-<area shape="rect" id="node4" href="$class_t_utilities.html#a9ca62e05ace8e6c4c33d377c26c48e55" title="creates a string of the form &#39;dd/mm/yyyy hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="449,810,623,837"/>
-<area shape="rect" id="node5" href="$class_t_display.html#a33f7067eea9e638bdc363bd0af70d7d5" title="Return a pointer to the screen image." alt="" coords="468,861,604,888"/>
-<area shape="rect" id="node6" href="$class_t_interface.html#a0109f801142d4fa3becae22e23b84163" title="Save the error log after an error has been thrown &#45; no need for a caller." alt="" coords="455,912,617,938"/>
-<area shape="rect" id="node7" href="$class_t_track.html#a6e1031277500eadfd3a0751e4ca4057b" title="Save all changing vector values (used for error file)" alt="" coords="923,469,1128,496"/>
-<area shape="rect" id="node9" href="$class_t_utilities.html#a92b5adfb8ad3a937a8d208bfd90a5741" title="converts the double value to a string (if double stored directly it is truncated to 6 digits) then st..." alt="" coords="1185,616,1355,642"/>
-<area shape="rect" id="node10" href="$class_t_utilities.html#a60531c6cb1a6a33dd71299d3a5b6cc21" title="stores the string value to the file, then a &#39;0&#39; delimiter then a CR" alt="" coords="1403,630,1565,657"/>
-<area shape="rect" id="node11" href="$class_t_utilities.html#a86ed634e8a9d7ca534a324954f4a7a2f" title="stores the int value to the file, then a CR" alt="" coords="1199,368,1341,394"/>
-<area shape="rect" id="node13" href="$class_t_interface.html#aee36e0cef9c182125b1095ceaf37a568" title="Save interface part of a session file." alt="" coords="944,368,1107,394"/>
-<area shape="rect" id="node14" href="$class_t_interface.html#a33d2ed7b588fb4cf12c410312e949299" title="Save performance file part of a session file." alt="" coords="921,1646,1129,1673"/>
-<area shape="rect" id="node15" href="$class_t_one_pref_dir.html#a3d115535b2e2d2ea05e210997a3f525c" title="Save the preferred direction vector to a file." alt="" coords="942,638,1109,679"/>
-<area shape="rect" id="node16" href="$class_t_all_routes.html#a4eeafc071c52e16eb1cbe5fb14b2561f" title="Save railway route information to a session file or an error file." alt="" coords="687,785,849,812"/>
-<area shape="rect" id="node17" href="$class_t_one_pref_dir.html#a8871c609a1586aa9c4f723afaccd2502" title="Save the search vector to a file." alt="" coords="922,418,1129,445"/>
-<area shape="rect" id="node18" href="$class_t_track.html#aabbf9502a68e95e1f9d0b8571d9fb57c" title="Save all vector values to the session file." alt="" coords="931,520,1120,562"/>
-<area shape="rect" id="node19" href="$class_t_train_controller.html#ab81acdc0c0ab6e1e321f64170f0f71af" title="save ContinuationAutoSigEntries to a session file" alt="" coords="928,820,1123,862"/>
-<area shape="rect" id="node20" href="$class_t_train_controller.html#a57a934999d63367128ca639b9ab3e3ce" title="save locked routes to a session file" alt="" coords="928,755,1123,796"/>
-<area shape="rect" id="node21" href="$class_t_train_controller.html#afa594bfc6b628d21d02a31c3a13c3a0a" title="save trains to a session file" alt="" coords="671,1035,865,1076"/>
-<area shape="rect" id="node23" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="926,2169,1125,2196"/>
-<area shape="rect" id="node24" href="$class_t_text_handler.html#a07441155bee467c9fb111b8332681466" title="save the railway&#39;s text to VecFile" alt="" coords="689,1722,847,1749"/>
-<area shape="rect" id="node28" href="$class_t_interface.html#af2ff1eef8152e33d0025ec7cd250fc08" title="Called when compiling the error log file, to save the loaded timetable if any and the timetable being..." alt="" coords="683,1436,853,1478"/>
-<area shape="rect" id="node30" href="$class_t_interface.html#af6cda9d0f26c60eb3810c2523b830c25" title="Called during a session save to save the current timetable in the session file, true if successful." alt="" coords="683,1167,853,1208"/>
-<area shape="rect" id="node31" href="$class_t_track.html#a0f681fc6b5da80d8d0480c44ea8e61a6" title="Save all active and inactive track elements to VecFile." alt="" coords="703,1928,833,1954"/>
-<area shape="rect" id="node34" href="$class_t_track.html#aa8b9c4770d989c047f7122844132dadc" title="save graphics" alt="" coords="680,937,856,964"/>
-<area shape="rect" id="node36" href="$class_t_train_controller.html#aba5615209a7dca921e968fca5c52c060" title="sends a message to the user and stops the timetable clock while it is displayed" alt="" coords="671,2115,865,2156"/>
-<area shape="rect" id="node8" href="$class_t_utilities.html#a06a211ebaa112f3fac0edc5b238ef876" title="stores &#39;1&#39; if the bool is true or &#39;0&#39; if false to the file, then a CR" alt="" coords="1193,513,1347,540"/>
-<area shape="rect" id="node22" href="$class_t_train.html#ac414e9e4fd7e25c11e09678dd4dc7944" title="Data for a single train is saved to a session file." alt="" coords="929,704,1121,730"/>
-<area shape="rect" id="node25" href="$class_t_text_handler.html#a19a5042d87a979d56ba4678bee8b2abb" title="retrieve the style of the font as a coded integer" alt="" coords="934,1951,1117,1992"/>
-<area shape="rect" id="node26" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="945,1748,1106,1774"/>
-<area shape="rect" id="node27" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="928,1798,1123,1825"/>
-<area shape="rect" id="node29" href="$class_t_interface.html#a7fa894f52a3cb9746e81166ec1a81bf3" title="Delays operation for the set time in milliseconds." alt="" coords="966,1444,1085,1470"/>
-<area shape="rect" id="node32" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="923,2017,1128,2044"/>
-<area shape="rect" id="node35" href="$class_t_track.html#a1092232428ee654facf8f53340c13f74" title="A range&#45;checked version of UserGraphicVector.at(At)" alt="" coords="929,1292,1121,1318"/>
-<area shape="rect" id="node38" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="929,3249,1122,3276"/>
-<area shape="rect" id="node39" href="$class_t_train.html#ad249f34f6862e604b8e141d1b25fe57d" title="Returns the timetable action time corresponding to &#39;Time&#39; for this train, i.e. it adjusts the time va..." alt="" coords="697,3148,839,3174"/>
-<area shape="rect" id="node41" href="$class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" title="Send Statement to the performance log on screen and to the file." alt="" coords="938,2996,1113,3022"/>
-<area shape="rect" id="node42" href="$class_t_display.html#a604d491a723df459bdcd54a4b9d1d9f2" title="Display warning message Statement in the bottom left hand warning position and scroll other messages ..." alt="" coords="951,3046,1100,3073"/>
-<area shape="rect" id="node40" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="920,3148,1131,3174"/>
-<area shape="rect" id="node45" href="$class_t_rail_graphics.html#a74d7dcd5e17ef156d8c216c8e524de11" title=" " alt="" coords="913,2271,1137,2312"/>
-<area shape="rect" id="node46" href="$class_t_train.html#a247bd95a7c648367736b116f553f4e54" title="Plot the train&#39;s headcode character corresponding to ArrayNumber." alt="" coords="455,2464,617,2490"/>
-<area shape="rect" id="node49" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="475,2312,597,2338"/>
-<area shape="rect" id="node47" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="954,2388,1097,2414"/>
-<area shape="rect" id="node48" href="$class_t_train.html#a0e0ab54415645b04cbdeadd829d27898" title="When a train moves onto an element that element has its TrainIDOnElement value set to the TrainID val..." alt="" coords="681,2641,855,2668"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,2719,180,2760"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1197,1723,1343,1750"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="247,1369,382,1395"/>
+<area shape="rect" id="node12" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1197,2398,1343,2425"/>
+<area shape="rect" id="node33" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="944,2819,1107,2846"/>
+<area shape="rect" id="node37" href="$class_t_train.html#a493ab1c185d29bf28ec8fded2356e9fc" title="Send a message to the performance log and performance file, and if the message is flagged as a warnin..." alt="" coords="475,3123,597,3150"/>
+<area shape="rect" id="node43" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="228,3427,401,3454"/>
+<area shape="rect" id="node44" href="$class_t_train.html#abfa6da75d034c737d53819e6edbfa3dc" title="Changes the train&#39;s background colour (e.g. to pale green if stopped at a station) Note that this use..." alt="" coords="231,2699,399,2740"/>
+<area shape="rect" id="node50" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="675,1864,861,1905"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a9ca62e05ace8e6c4c33d377c26c48e55" title="creates a string of the form &#39;dd/mm/yyyy hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="449,1318,623,1345"/>
+<area shape="rect" id="node5" href="$class_t_display.html#a33f7067eea9e638bdc363bd0af70d7d5" title="Return a pointer to the screen image." alt="" coords="468,1369,604,1395"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a0109f801142d4fa3becae22e23b84163" title="Save the error log after an error has been thrown &#45; no need for a caller." alt="" coords="455,871,617,898"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a6e1031277500eadfd3a0751e4ca4057b" title="Save all changing vector values (used for error file)" alt="" coords="923,443,1128,470"/>
+<area shape="rect" id="node8" href="$class_t_utilities.html#a06a211ebaa112f3fac0edc5b238ef876" title="stores &#39;1&#39; if the bool is true or &#39;0&#39; if false to the file, then a CR" alt="" coords="1193,502,1347,529"/>
+<area shape="rect" id="node9" href="$class_t_utilities.html#a92b5adfb8ad3a937a8d208bfd90a5741" title="converts the double value to a string (if double stored directly it is truncated to 6 digits) then st..." alt="" coords="1185,602,1355,629"/>
+<area shape="rect" id="node10" href="$class_t_utilities.html#a60531c6cb1a6a33dd71299d3a5b6cc21" title="stores the string value to the file, then a &#39;0&#39; delimiter then a CR" alt="" coords="1403,623,1565,650"/>
+<area shape="rect" id="node11" href="$class_t_utilities.html#a86ed634e8a9d7ca534a324954f4a7a2f" title="stores the int value to the file, then a CR" alt="" coords="1199,393,1341,419"/>
+<area shape="rect" id="node13" href="$class_t_interface.html#aee36e0cef9c182125b1095ceaf37a568" title="Save interface part of a session file." alt="" coords="944,393,1107,419"/>
+<area shape="rect" id="node14" href="$class_t_interface.html#a33d2ed7b588fb4cf12c410312e949299" title="Save performance file part of a session file." alt="" coords="921,1942,1129,1969"/>
+<area shape="rect" id="node15" href="$class_t_one_pref_dir.html#a3d115535b2e2d2ea05e210997a3f525c" title="Save the preferred direction vector to a file." alt="" coords="942,663,1109,704"/>
+<area shape="rect" id="node16" href="$class_t_all_routes.html#a4eeafc071c52e16eb1cbe5fb14b2561f" title="Save railway route information to a session file or an error file." alt="" coords="687,846,849,873"/>
+<area shape="rect" id="node17" href="$class_t_one_pref_dir.html#a8871c609a1586aa9c4f723afaccd2502" title="Save the search vector to a file." alt="" coords="922,611,1129,638"/>
+<area shape="rect" id="node18" href="$class_t_track.html#aabbf9502a68e95e1f9d0b8571d9fb57c" title="Save all vector values to the session file." alt="" coords="931,495,1120,536"/>
+<area shape="rect" id="node19" href="$class_t_train_controller.html#ab81acdc0c0ab6e1e321f64170f0f71af" title="save ContinuationAutoSigEntries to a session file" alt="" coords="928,897,1123,939"/>
+<area shape="rect" id="node20" href="$class_t_train_controller.html#a57a934999d63367128ca639b9ab3e3ce" title="save locked routes to a session file" alt="" coords="928,780,1123,821"/>
+<area shape="rect" id="node21" href="$class_t_train_controller.html#afa594bfc6b628d21d02a31c3a13c3a0a" title="save trains to a session file" alt="" coords="671,1073,865,1115"/>
+<area shape="rect" id="node23" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="926,1622,1125,1649"/>
+<area shape="rect" id="node24" href="$class_t_text_handler.html#a07441155bee467c9fb111b8332681466" title="save the railway&#39;s text to VecFile" alt="" coords="689,1521,847,1547"/>
+<area shape="rect" id="node28" href="$class_t_interface.html#af2ff1eef8152e33d0025ec7cd250fc08" title="Called when compiling the error log file, to save the loaded timetable if any and the timetable being..." alt="" coords="683,1572,853,1613"/>
+<area shape="rect" id="node30" href="$class_t_interface.html#af6cda9d0f26c60eb3810c2523b830c25" title="Called during a session save to save the current timetable in the session file, true if successful." alt="" coords="683,1203,853,1244"/>
+<area shape="rect" id="node31" href="$class_t_track.html#a0f681fc6b5da80d8d0480c44ea8e61a6" title="Save all active and inactive track elements to VecFile." alt="" coords="703,1981,833,2007"/>
+<area shape="rect" id="node34" href="$class_t_track.html#aa8b9c4770d989c047f7122844132dadc" title="save graphics" alt="" coords="680,1009,856,1035"/>
+<area shape="rect" id="node36" href="$class_t_train_controller.html#aba5615209a7dca921e968fca5c52c060" title="sends a message to the user and stops the timetable clock while it is displayed" alt="" coords="671,2032,865,2073"/>
+<area shape="rect" id="node22" href="$class_t_train.html#ac414e9e4fd7e25c11e09678dd4dc7944" title="Data for a single train is saved to a session file." alt="" coords="929,729,1121,755"/>
+<area shape="rect" id="node25" href="$class_t_text_handler.html#a19a5042d87a979d56ba4678bee8b2abb" title="retrieve the style of the font as a coded integer" alt="" coords="934,1825,1117,1867"/>
+<area shape="rect" id="node26" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="945,1723,1106,1750"/>
+<area shape="rect" id="node27" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="928,1774,1123,1801"/>
+<area shape="rect" id="node29" href="$class_t_interface.html#a7fa894f52a3cb9746e81166ec1a81bf3" title="Delays operation for the set time in milliseconds." alt="" coords="966,1673,1085,1699"/>
+<area shape="rect" id="node32" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="923,2449,1128,2475"/>
+<area shape="rect" id="node35" href="$class_t_track.html#a1092232428ee654facf8f53340c13f74" title="A range&#45;checked version of UserGraphicVector.at(At)" alt="" coords="929,1318,1121,1345"/>
+<area shape="rect" id="node38" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="929,3225,1122,3251"/>
+<area shape="rect" id="node39" href="$class_t_train.html#ad249f34f6862e604b8e141d1b25fe57d" title="Returns the timetable action time corresponding to &#39;Time&#39; for this train, i.e. it adjusts the time va..." alt="" coords="697,3123,839,3150"/>
+<area shape="rect" id="node41" href="$class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" title="Send Statement to the performance log on screen and to the file." alt="" coords="938,2921,1113,2947"/>
+<area shape="rect" id="node42" href="$class_t_display.html#a604d491a723df459bdcd54a4b9d1d9f2" title="Display warning message Statement in the bottom left hand warning position and scroll other messages ..." alt="" coords="951,3022,1100,3049"/>
+<area shape="rect" id="node40" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="920,2971,1131,2998"/>
+<area shape="rect" id="node45" href="$class_t_rail_graphics.html#a74d7dcd5e17ef156d8c216c8e524de11" title=" " alt="" coords="913,2500,1137,2541"/>
+<area shape="rect" id="node46" href="$class_t_train.html#a247bd95a7c648367736b116f553f4e54" title="Plot the train&#39;s headcode character corresponding to ArrayNumber." alt="" coords="455,2706,617,2733"/>
+<area shape="rect" id="node49" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="475,2831,597,2858"/>
+<area shape="rect" id="node47" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="954,2769,1097,2795"/>
+<area shape="rect" id="node48" href="$class_t_train.html#a0e0ab54415645b04cbdeadd829d27898" title="When a train moves onto an element that element has its TrainIDOnElement value set to the TrainID val..." alt="" coords="681,2757,855,2783"/>
 </map>

@@ -87,35 +87,35 @@ var sectionId = 'dynsection-0';
 <g id="node3" class="node">
 <title>Node3</title>
 <g id="a_node3"><a xlink:href="class_t_pref_dir_element.html" target="_top" xlink:title="Basic preferred direction or route element &#45; track element with additional members.">
-<polygon fill="white" stroke="black" points="9,-0.5 9,-310.5 144,-310.5 144,-0.5 9,-0.5"/>
+<polygon fill="white" stroke="black" points="10,-0.5 10,-310.5 143,-310.5 143,-0.5 10,-0.5"/>
 <text text-anchor="middle" x="76.5" y="-298.5" font-family="Helvetica,sans-Serif" font-size="10.00">TPrefDirElement</text>
-<polyline fill="none" stroke="black" points="9,-291.5 144,-291.5 "/>
-<text text-anchor="start" x="17" y="-279.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ IsARoute</text>
-<text text-anchor="start" x="17" y="-268.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ AutoSignals</text>
-<text text-anchor="start" x="17" y="-257.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDirRoute</text>
-<text text-anchor="start" x="17" y="-246.5" font-family="Helvetica,sans-Serif" font-size="10.00"># ELink</text>
-<text text-anchor="start" x="17" y="-235.5" font-family="Helvetica,sans-Serif" font-size="10.00"># ELinkPos</text>
-<text text-anchor="start" x="17" y="-224.5" font-family="Helvetica,sans-Serif" font-size="10.00"># XLink</text>
-<text text-anchor="start" x="17" y="-213.5" font-family="Helvetica,sans-Serif" font-size="10.00"># XLinkPos</text>
-<text text-anchor="start" x="17" y="-202.5" font-family="Helvetica,sans-Serif" font-size="10.00"># EXNumber</text>
-<text text-anchor="start" x="17" y="-191.5" font-family="Helvetica,sans-Serif" font-size="10.00"># TrackVectorPosition</text>
-<text text-anchor="start" x="17" y="-180.5" font-family="Helvetica,sans-Serif" font-size="10.00"># CheckCount</text>
-<text text-anchor="start" x="17" y="-169.5" font-family="Helvetica,sans-Serif" font-size="10.00"># EXGraphicPtr</text>
-<text text-anchor="start" x="17" y="-158.5" font-family="Helvetica,sans-Serif" font-size="10.00"># EntryDirectionGraphicPtr</text>
-<polyline fill="none" stroke="black" points="9,-151.5 144,-151.5 "/>
-<text text-anchor="start" x="17" y="-139.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ IsPosition()</text>
-<text text-anchor="start" x="17" y="-128.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetHLoc()</text>
-<text text-anchor="start" x="17" y="-117.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetVLoc()</text>
-<text text-anchor="start" x="17" y="-106.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetELink()</text>
-<text text-anchor="start" x="17" y="-95.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetELinkPos()</text>
-<text text-anchor="start" x="17" y="-84.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetXLink()</text>
-<text text-anchor="start" x="17" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetXLinkPos()</text>
-<text text-anchor="start" x="17" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetEXNumber()</text>
-<text text-anchor="start" x="17" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetCheckCount()</text>
-<text text-anchor="start" x="17" y="-40.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetTrackVectorPosition()</text>
-<text text-anchor="start" x="17" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 23 more...</text>
-<text text-anchor="start" x="17" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00"># operator==()</text>
-<text text-anchor="start" x="17" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00"># operator!=()</text>
+<polyline fill="none" stroke="black" points="10,-291.5 143,-291.5 "/>
+<text text-anchor="start" x="18" y="-279.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ IsARoute</text>
+<text text-anchor="start" x="18" y="-268.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ AutoSignals</text>
+<text text-anchor="start" x="18" y="-257.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PrefDirRoute</text>
+<text text-anchor="start" x="18" y="-246.5" font-family="Helvetica,sans-Serif" font-size="10.00"># ELink</text>
+<text text-anchor="start" x="18" y="-235.5" font-family="Helvetica,sans-Serif" font-size="10.00"># ELinkPos</text>
+<text text-anchor="start" x="18" y="-224.5" font-family="Helvetica,sans-Serif" font-size="10.00"># XLink</text>
+<text text-anchor="start" x="18" y="-213.5" font-family="Helvetica,sans-Serif" font-size="10.00"># XLinkPos</text>
+<text text-anchor="start" x="18" y="-202.5" font-family="Helvetica,sans-Serif" font-size="10.00"># EXNumber</text>
+<text text-anchor="start" x="18" y="-191.5" font-family="Helvetica,sans-Serif" font-size="10.00"># TrackVectorPosition</text>
+<text text-anchor="start" x="18" y="-180.5" font-family="Helvetica,sans-Serif" font-size="10.00"># CheckCount</text>
+<text text-anchor="start" x="18" y="-169.5" font-family="Helvetica,sans-Serif" font-size="10.00"># EXGraphicPtr</text>
+<text text-anchor="start" x="18" y="-158.5" font-family="Helvetica,sans-Serif" font-size="10.00"># EntryDirectionGraphicPtr</text>
+<polyline fill="none" stroke="black" points="10,-151.5 143,-151.5 "/>
+<text text-anchor="start" x="18" y="-139.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ IsPosition()</text>
+<text text-anchor="start" x="18" y="-128.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetSpeedTag()</text>
+<text text-anchor="start" x="18" y="-117.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetHLoc()</text>
+<text text-anchor="start" x="18" y="-106.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetVLoc()</text>
+<text text-anchor="start" x="18" y="-95.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetELink()</text>
+<text text-anchor="start" x="18" y="-84.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetELinkPos()</text>
+<text text-anchor="start" x="18" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetXLink()</text>
+<text text-anchor="start" x="18" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetXLinkPos()</text>
+<text text-anchor="start" x="18" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetEXNumber()</text>
+<text text-anchor="start" x="18" y="-40.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetCheckCount()</text>
+<text text-anchor="start" x="18" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 24 more...</text>
+<text text-anchor="start" x="18" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00"># operator==()</text>
+<text text-anchor="start" x="18" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00"># operator!=()</text>
 </a>
 </g>
 </g>

@@ -91,7 +91,7 @@ var class_t_track =
     [ "GetLocationName", "class_t_track.html#a2e0511d60228cefd27d9a52b8dd3cba4", null ],
     [ "GetNonPointsOppositeLinkPos", "class_t_track.html#aeb515d40cb9b08ed55ce877ffdbc51a5", null ],
     [ "GetScreenPositionsFromTruePos", "class_t_track.html#abda5d1209d5a197f1cefb851f567736d", null ],
-    [ "GetTrackElementFromAnyTrackMap", "class_t_track.html#aa1d73d7d6ddd74276950706c80fe2a39", null ],
+    [ "GetTrackElementFromAnyTrackMap", "class_t_track.html#a35c54dcf220beda612bcb8e65069af90", null ],
     [ "GetTrackElementFromTrackMap", "class_t_track.html#aeb60286bc570dbafab64fe6dc06af2e4", null ],
     [ "GetTrackLocsFromScreenPos", "class_t_track.html#ac57ebd0462a3e0d8323e7b5cbc0e20ca", null ],
     [ "GetTrackVectorIteratorFromNamePosition", "class_t_track.html#ae37fe26f1d8ed9ef0f498ae12347e0ac", null ],

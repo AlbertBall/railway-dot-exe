@@ -5581,8 +5581,8 @@ TTrackElement &TTrack::GetTrackElementFromTrackMap(int Caller, int HLoc, int VLo
 
 // ---------------------------------------------------------------------------
 
-TTrackElement &TTrack::GetTrackElementFromAnyTrackMap(int Caller, int HLoc, int VLoc, TTrackMap Map, TTrackVector Vector) //new at v2.9.0 for clipboard pref dirs
-{
+TTrackElement &TTrack::GetTrackElementFromAnyTrackMap(int Caller, int HLoc, int VLoc, TTrackMap &Map, TTrackVector &Vector) //new at v2.9.0 for clipboard pref dirs
+{                                                                                                                           //modded at v2.9.2 to make Map & Vector references
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetTrackElementFromAnyTrackMap," + AnsiString(HLoc) + "," +
                                  AnsiString(VLoc));
     THVPair MapKeyPair;
@@ -12402,7 +12402,7 @@ void TOnePrefDir::LoadPrefDir(int Caller, std::ifstream &VecFile)
     {
         VecFile >> TempInt; // PrefDirVectorPosition, not used in load
         VecFile >> TempInt; // TrackVectorPosition
-        TPrefDirElement LoadPrefDirElement(Track->TrackElementAt(781, TempInt));
+        TPrefDirElement LoadPrefDirElement(Track->TrackElementAt(781, TempInt)); //Loads all basic TrackElement values incl HLoc, VLoc & SpeedTag
         LoadPrefDirElement.TrackVectorPosition = TempInt;
         VecFile >> TempInt;
         LoadPrefDirElement.ELink = TempInt;
@@ -12545,8 +12545,8 @@ void TOnePrefDir::SavePrefDirVector(int Caller, std::ofstream &VecFile)
     for(int y = 0; y < NumberOfPrefDirElements; y++)
     {
         VecFile << y << '\n'; // extra
-        VecFile << PrefDirVector.at(y).TrackVectorPosition << '\n';
-        VecFile << PrefDirVector.at(y).ELink << '\n';
+        VecFile << PrefDirVector.at(y).TrackVectorPosition << '\n';  //When reloaded values for HLoc, VLoc & SpeedTag are derived from the TrackElement at TrackVectorPosition
+        VecFile << PrefDirVector.at(y).ELink << '\n';                //so all 9 critical values are set
         VecFile << PrefDirVector.at(y).ELinkPos << '\n';
         VecFile << PrefDirVector.at(y).XLink << '\n';
         VecFile << PrefDirVector.at(y).XLinkPos << '\n';
@@ -16828,9 +16828,11 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
       a route.
 
       Having received or modified Attribute as above, work backwards from the PrefDirVectorStartPosition until find a train - return false, or a
-      signal.  If find a signal (but see note below) set its Attribute to the current Attribute value up to a maximum of 3, and replot the signal as well as
-      the required route and direction (if required) graphics, then increment Attribute up to a max. of 3.  On completion Attribute is
-      passed back from the function as a reference.  If no train is found before the beginning of the route is reached the function returns true.
+      signal.  If find a signal set its Attribute to the current Attribute value up to a maximum of 3, and replot the signal as well as
+      the required route and direction (if required) graphics, then increment Attribute up to a max. of 3 [addition at v2.9.2: if signal or element beyond
+      it is in a locked route then set signal to red & change Attribute to 0 - this fault reported by Simon Banham 21/07/21 as an image]. and continue working
+      backwards for the next signal (or train - return false as before) and so on.  On completion Attribute is passed back from the function as a
+      reference.  If no train is found before the beginning of the route is reached the function returns true
 
       In setting signals skip the first position if it's a signal and if truncating - otherwise the truncated signal counts as the first red
       and the next rearwards signal becomes yellow, although it's the first in the route
@@ -16933,6 +16935,18 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
                 if((!AllRoutes->RouteTruncateFlag) || (PrefDirPtr != (PrefDirVector.begin() + PrefDirVectorStartPosition)) || PrefDirPtr->AutoSignals ||
                    PrefDirPtr->PrefDirRoute)
                 {
+//new section at v2.9.2 to check for pref dir element in a locked route, and if so set Attribute to 0 (red).  When emerge from locked route Attribute
+//still 0 so first signal behind it also stays red.  After that Attribute goes back to normal.
+                    int LockedVecNum = 0; //not used
+                    TPrefDirElement DummyPrefDir; //not used
+                    bool KeepAttributeAt0ForLockedRoute = false;
+                    if(AllRoutes->IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(15, PrefDirPtr->TrackVectorPosition, PrefDirPtr->XLinkPos, DummyPrefDir,
+                        LockedVecNum))
+                        {
+                            Attribute = 0;
+                            KeepAttributeAt0ForLockedRoute = true;
+                        }
+//end of addition
                     if(Attribute < 3)
                     {
                         Track->TrackElementAt(110, PrefDirPtr->TrackVectorPosition).Attribute = Attribute;
@@ -16950,7 +16964,7 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
                         Display->PlotOutput(17, Track->TrackElementAt(115, PrefDirPtr->TrackVectorPosition).HLoc * 16,
                                             Track->TrackElementAt(116, PrefDirPtr->TrackVectorPosition).VLoc * 16, EntryDirectionGraphicPtr);
                     }
-                    if(Attribute < 3)
+                    if((Attribute < 3) && !KeepAttributeAt0ForLockedRoute)
                     {
                         Attribute++;
                     }
@@ -18488,9 +18502,10 @@ void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumb
 
       Having received or modified Attribute as above, work backwards from the PrefDirVectorStartPosition until find a train - return false, or a
       signal.  If find a signal set its Attribute to the current Attribute value up to a maximum of 3, and replot the signal as well as
-      the required route and direction (if required) graphics, then increment Attribute up to a max. of 3 and continue working backwards
+      the required route and direction (if required) graphics, then increment Attribute up to a max. of 3 [addition at v2.9.2: if signal or element beyond
+      it is in a locked route then set signal to red & change Attribute to 0 - this fault reported by Simon Banham 21/07/21 as an image]. and continue working backwards
       for the next signal (or train - return false as before) and so on.  On completion Attribute is passed back from the function as a
-      reference.  If no train is found before the beginning of the route is reached the function returns true.
+      reference.  If no train is found before the beginning of the route is reached the function returns true
 
 */
 {

@@ -15,10 +15,17 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
-#55 From Metvor_Rules via Discord 07/05/21.  What if there was a rotation function for track pieces so you could just press R for example and the track/ platform would rotate by 45 or 90 degrees each button press.
+
+#57 & 58  From Simon Banham by email 18/07/21.  Allow users to specify the distribution of mass, brake force and power when trains split, with a default of 50/50 (as at present).
+
+Simplify the timetable conflict analysis file so it looks more like SimSig's analysis file with all movements in location order and warnings about potential conflicts.
+
+
+#56 From Metvor_Rules via Discord 07/05/21.  What if there was a rotation function for track pieces so you could just press R for example and the track/ platform would rotate by 45 or 90 degrees each button press.
 This would reduce the amount of unique parts so you don’t have to go back and forth selecting different track types.
 
-#54 From Krizar 25/04/21 via discord.  The simulation has the train phoning signaller mechanic already, so I was wondering how feasible it was to add something like this:
+
+#55 From Krizar 25/04/21 via discord.  The simulation has the train phoning signaller mechanic already, so I was wondering how feasible it was to add something like this:
 https://en.wikipedia.org/wiki/Radio_Electronic_Token_Block#/media/File:West_Highland_Line_single_line_permssion_sign_-_Rannoch_south_01.jpg
 Radio Electronic Token Block
 Radio Electronic Token Block is a system of railway signalling used in the United Kingdom. It is a development of the physical token system for controlling traffic on single lines. The system is slightly similar to North American Direct Traffic Control, which unlike RETB does not have a cab display unit.
@@ -30,17 +37,24 @@ I'm struggling to see how simulating this situation would be different to the st
 KR/ZAR — Today at 14:31
 What I had in mind was pretty much what was already there except rather than it be treated like there is a problem (purple train etc) and there being a signal, just some other indicator that just asks for a token.
 
-#53 Suggestion from Wilsteady via discord 09/01/21.  New idea with rollingstock details - could there be a way to enter a Trains acceleration/deceleration instead of brake force? I can imagine it would be potentially a large change in how the program functions, but given many Wikipedia pages for trains give the Accel/Decel rates in m/s2 not the brake force, it means guessing the values required for the program to find one that works best for the timetable in place.
 
-#52 Suggestion from Bill78 08/01/21 via discord.  I've been thinking about Speedbutton 17. Could it be made into a "reporting point?" Buy this, I mean a person could put one or more on any route and when any train crossed it, a notice would pop up on the notification area that "such-and-such train is at Reporting Point whatever." This way, it wouldn't be controlled by anything in a timetable, but simply be there and notify when a train crosses it. Leave the "W" in the timetable so certain trains will show a Warning, but SB17 would pop a Warning every time a train crosses it.
+#54 Suggestion from Wilsteady via discord 09/01/21.  New idea with rollingstock details - could there be a way to enter a Trains acceleration/deceleration instead of brake force? I can imagine it would be potentially a large change in how the program functions, but given many Wikipedia pages for trains give the Accel/Decel rates in m/s2 not the brake force, it means guessing the values required for the program to find one that works best for the timetable in place.
+
+
+#53 Suggestion from Bill78 08/01/21 via discord.  I've been thinking about Speedbutton 17. Could it be made into a "reporting point?" Buy this, I mean a person could put one or more on any route and when any train crossed it, a notice would pop up on the notification area that "such-and-such train is at Reporting Point whatever." This way, it wouldn't be controlled by anything in a timetable, but simply be there and notify when a train crosses it. Leave the "W" in the timetable so certain trains will show a Warning, but SB17 would pop a Warning every time a train crosses it.
+
 
 #52 [done].  Suggestion from josco 05/01/21 via discord.  No idea if this is doable but would it be possible to replicate the 'hover' menu from the trains in the actions due box? Thus when a train appears in the actions menu you could hover over the train and it would show you the train menu with timetable etc. This would be more user friendly in my view than clicking the train to then find out where it is in the map. This is not a crucial update but would be useful in my view. However if it is not doable nor a simple fix then I would leave alone!
 
+
 #51 Suggestion from Wilsteady 24/12/20 via discord. Got another fun feature idea for consideration - Inbuilt native support for windows that if you double click on a .rly or .dev [or .ssn] file in Windows Explorer, it will open railway.exe with that file pre-loaded.
+
 
 #50 [Done].  Suggestion from Wilsteady 21/10/20 via Discord.  Don't know if this is a feature that already exists or not - It would be handy in the layout builder, to be able to Select an area, choose a particular track type, and have the system auto fill that space with that type. For example build a railway by selecting the location of each station, signal, turnout, etc, but don't add any 'straight' tracks. Then being able to select a long line, and having it pre-fill all the straight sections. Would be handy when building twin or quad track sections that don't vary other than a X-over or signal here or there.
 
+
 #49.  Suggestion from Dan via Discord 12/08/20.  Include route availability with stock being given a specific value, and the lines having a corresponding value. The trains' value should be lower than or equal to the track's value, or it cannot run on that track. You may see it as RA then a number from 1 to 10
+
 
 #48. Suggestion from Wilsteady via discord 21/07/20.  Two I would love to see, is a two aspect yellow over green as a repeater signal, and a single aspect red signal.
 
@@ -218,6 +232,38 @@ Multi-player facility over the internet.
 -----------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.9.1 for v2.9.2
+
+I sincerely hope that this release cures the preferred direction problems associated with the Windows clipboard.  It seemed like a good idea to include preferred directions at v2.9.0 but given the trouble they've caused now I'm not so sure.
+
+One good thing is that one of the corrected bugs explains the error found by Daniel Gill at v2.9.0 in response to which the code was strengthened for v2.9.1, but it continued to bother me because I was unable (then) to reproduce it.
+
+I have tested this release extensively but still feel quite apprehensive, my fingers and everything else are well crossed!  Please let me know if you see any odd behaviour or send in any error reports if they are generated - thanks.
+
+I have also to confess to another error, not a bug this time but a plain blunder on my part.  I had noticed a while back that the performance log omitted exit counts - early, late and on time exits - so in an earlier release I included them, but forgot to initialise them all to zero!  A schoolboy howler!  I only noticed it recently but I'm sure others heve seen it too, with exit numbers listed in the hundreds of millions or even billions!  These have now been corrected.
+
+I was ready to release the new version when Simon Banham sent me an image of a railway with a locked route and signals on it all green!  That was clearly not right.  On investigation it was found to occur when a two segments of automatic signal routes had a segment of non-automatic signal route between them, and that route was locked.  When a train in advance of the locked route passed a signal all signals behind it were reset, but the resetting function failed to take account of the locked route so signals were reset as if it didn't exist.  Fortunately it was quite an easy fix, so that shouldn't happen again.  Thanks are due to Simon for pointing this error out.
+
+Other points not for website:
+/remove Beta from version
+/run final caller checker
+
+clipboard probs:
+/ - set all CheckCount values explicitly to 9
+/ - when using 'find' in SelectTrackMap there's an 'in principle' danger that an inactive element might be found - not in practice because active elements stored first so these take all the h & v slots rather than inactive elements, but shouldn't rely on this - find a way to only store active elements in the map - ok, screened out inactives using the 5 inactive TrackTypes
+/ - when LoadClipboard adds pref dirs it only explicity adds 7, missing TVPos and SpeedTag.  Should add these too so that CheckCount can legitimately be set to 9.  Best to use the original value for TVPos for consistency & tidiness if possible, though it will be reset when pasted and again later when the track is next linked.  Don't need SpeedTag as set from the corresponding TrackElement
+/ - check if Conns & ConnLinkPosses set in pref dirs when track linked, or if these stay as -1 - best if can be set properly.  Yes, these are all set in RebuildPrefDirVector when the track is linked
+
+/Simon Banham error 21/07/21:  Locked route had signals reset as if not locked when a train in advance passed a signal.  Corrected by adding check for locked routes in SetRearwardsSignalsReturnFalseForTrain
+
+/ problem with GetTrackElementFromAnyTrackMap returning element with wrong properties - caused by passing Vector in by value rather than reference, when it returned Vector went out of scope and was invalid.  Changed both Map & Vector to references & ok now (Map needn't be a reference but included it anyway)
+
+/ add name of file where can't load, ask to check spelling - done for railways, timetables & sessions
+/ added session file extras to error file & kept the v2.8.0 additions at the end as not wanted in a reconstructed session file
+/ 5N80 has too long an actions due time in first saved KC session - OK, needed to keep MinsDelayed at 0 for passes
+/ Had failed to zero the 3 exit parameters OnTimeExits, EarlyExits & LateExits when they were introduced <-- BAD ERROR
+
 
 VERSION CHANGES AFTER v2.9.0 for v2.9.1
 
@@ -1597,14 +1643,15 @@ On website:
 On GitHub:
 
 17 Ensure references to new version are included in source files (instead of 'after last version').
-18 Update Doxygen files & include graph legend link in pages.html (do a 'diff' from previous version & copy across), make sure flowcharts are in files folder & work ok
+18 Update Doxygen files (& Doxyfile itself with new version number) & include graph legend link in pages.html (do a 'diff' from previous version & copy across), make sure flowcharts are in files folder & work ok.  Add all new doxy files to local repo.
 19 Copy DevHistoryPending.txt to DevHistory.txt & ensure all extra text removed & version info changes made
-20 Build & store to local Git repository tagged with latest release version 
-21 Update DevHistory.txt with relevant public information if not already done so
-22 Update all files on GitHub clone (after pulling latest commit), ensuring that the .md files are ok and that all doxygen docs included - check unversioned files for possible inclusion
-23 Commit the latest update locally & tag with release version & message 'Update for vx.x.x'
-24 Push to GitHub with 'include tags' ticked
-25 Create a new release on GitHub & include the new zip file
+20 Update DevHistory.txt with relevant public information if not already done so & make read-only
+21 Build & store to local Git repository tagged with latest release version
+22 Pull latest commit from GitHub into GitHub clone 
+23 Update all files on GitHub clone, ensuring that the .md files are ok and that all doxygen docs included - check unversioned files for possible inclusion
+24 Commit the latest update locally & tag with release version & message 'Update for vx.x.x'
+25 Push to GitHub with 'include tags' ticked
+26 Create a new release on GitHub & include the new zip file
 
 ADDING A NEW PROJECT TO THE USER WEBSITE: (updated November 2020 for the revised site)
 

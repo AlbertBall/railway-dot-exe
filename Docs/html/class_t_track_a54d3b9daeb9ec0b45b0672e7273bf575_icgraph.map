@@ -1,7 +1,7 @@
 <map id="TTrack::GetTrackVectorPositionFromString" name="TTrack::GetTrackVectorPositionFromString">
 <area shape="rect" id="node1" title="Takes the ElementID value (an AnsiString) (e.g. &quot;8&#45;13&quot;, &quot;N43&#45;N127&quot;, etc) and returns the correspondin..." alt="" coords="2051,104,2257,145"/>
-<area shape="rect" id="node2" href="$class_t_train_controller.html#ae91c1a77699c9daf327938081eab2241" title="Used to compile ExitList from a string list of element IDs, returns true for success or gives a messa..." alt="" coords="1820,104,2000,145"/>
-<area shape="rect" id="node3" href="$class_t_train_controller.html#a9067975adc343b753d7eb882648c66bb" title="Parse a single timetable service action, return true for success." alt="" coords="1592,111,1769,138"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a3733e089b5f58d8b5e8355298653b53a" title="Used to compile ExitList from a string list of element IDs, returns true for success or gives a messa..." alt="" coords="1820,104,2000,145"/>
+<area shape="rect" id="node3" href="$class_t_train_controller.html#a23ca27d36d711136e0529ba8ae4f22f0" title="Parse a single timetable service action, return true for success." alt="" coords="1592,111,1769,138"/>
 <area shape="rect" id="node16" href="$class_t_train_controller.html#a5c9711cc69c8332cf7db5e0b2696ca45" title="A timetable validation function where train starting positions are checked for validity,..." alt="" coords="1817,169,2003,211"/>
 <area shape="rect" id="node4" href="$class_t_train_controller.html#a5c51eb1e0018e189966ffdbc5d251990" title="Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if Fin..." alt="" coords="1376,104,1544,145"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#a148e3f99d39f596dbd7d490403936154" title="Convert a stored timetable file (either as a stand alone file or within a session file) to a loaded t..." alt="" coords="1151,5,1322,47"/>

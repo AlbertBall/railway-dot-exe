@@ -148,7 +148,7 @@
 <!-- Node10 -->
 <g id="node10" class="node">
 <title>Node10</title>
-<g id="a_node10"><a xlink:href="class_t_train_controller.html#a0114e517611ab24d3b947c1781130a23" target="_top" xlink:title="Check all timetable names in ExitList, if all same return &quot; at [name]&quot; + AllowableExits = elements,...">
+<g id="a_node10"><a xlink:href="class_t_train_controller.html#ab6b9585304d792300f5ca7f9c7a0ad06" target="_top" xlink:title="Check all timetable names in ExitList, if all same return &quot; at [name]&quot; + AllowableExits = elements,...">
 <polygon fill="white" stroke="black" points="558,-182.31 558,-212.31 681,-212.31 681,-182.31 558,-182.31"/>
 <text text-anchor="start" x="566" y="-200.31" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::GetExit</text>
 <text text-anchor="middle" x="619.5" y="-189.31" font-family="Helvetica,sans-Serif" font-size="10.00">LocationAndAt</text>

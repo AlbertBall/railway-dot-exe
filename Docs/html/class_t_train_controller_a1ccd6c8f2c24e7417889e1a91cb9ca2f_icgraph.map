@@ -1,7 +1,7 @@
 <map id="TTrainController::CheckHeadCodeValidity" name="TTrainController::CheckHeadCodeValidity">
 <area shape="rect" id="node1" title="Returns true if the headcode complies with requirements." alt="" coords="2311,259,2497,300"/>
 <area shape="rect" id="node2" href="$class_t_train_controller.html#a4ab4b6a568064d27c65f0770e5a5ccd0" title="Examines the internal timetable (TrainDataVector) and creates from it a chronological (...." alt="" coords="2095,71,2254,112"/>
-<area shape="rect" id="node5" href="$class_t_train_controller.html#a9067975adc343b753d7eb882648c66bb" title="Parse a single timetable service action, return true for success." alt="" coords="1599,413,1777,439"/>
+<area shape="rect" id="node5" href="$class_t_train_controller.html#a23ca27d36d711136e0529ba8ae4f22f0" title="Parse a single timetable service action, return true for success." alt="" coords="1599,413,1777,439"/>
 <area shape="rect" id="node18" href="$class_t_train_controller.html#a53410afbc9dd5e8c2cd4a443bfb01034" title="Parse a train information entry, return true for success; PowerAtRail changed to double&amp; from int&amp; at..." alt="" coords="1838,137,2033,163"/>
 <area shape="rect" id="node19" href="$class_t_train_controller.html#a68d2124bc8f7df43e973299e0afb3dcd" title="Sends a message to the user if GiveMessages is true, including ServiceReference (see above) if not nu..." alt="" coords="2087,259,2263,300"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#ab7c52bd31930036c95b9b71c2f1f0426" title=" " alt="" coords="1847,5,2023,47"/>
@@ -18,7 +18,7 @@
 <area shape="rect" id="node10" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,199,403,226"/>
 <area shape="rect" id="node11" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,199,196,226"/>
 <area shape="rect" id="node15" href="$class_t_interface.html#a2f501868bbee2310af99bf2e8e265c59" title=" " alt="" coords="908,296,1097,337"/>
-<area shape="rect" id="node20" href="$class_t_train_controller.html#ae91c1a77699c9daf327938081eab2241" title="Used to compile ExitList from a string list of element IDs, returns true for success or gives a messa..." alt="" coords="1845,405,2025,447"/>
+<area shape="rect" id="node20" href="$class_t_train_controller.html#a3733e089b5f58d8b5e8355298653b53a" title="Used to compile ExitList from a string list of element IDs, returns true for success or gives a messa..." alt="" coords="1845,405,2025,447"/>
 <area shape="rect" id="node21" href="$class_t_train_controller.html#a1925032d5e41decf4befc07b35521d3c" title="Returns true if the location name complies with requirements." alt="" coords="1832,471,2039,512"/>
 <area shape="rect" id="node24" href="$class_t_train_controller.html#a5c9711cc69c8332cf7db5e0b2696ca45" title="A timetable validation function where train starting positions are checked for validity,..." alt="" coords="1843,340,2028,381"/>
 <area shape="rect" id="node25" href="$class_t_train_controller.html#a03d63b7579e50c092cca3b5200d9dafb" title="Parse a timetable repeat entry, return true for success." alt="" coords="1595,289,1781,315"/>

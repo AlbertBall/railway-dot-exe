@@ -1,6 +1,6 @@
 <map id="TTrainController::SameDirection" name="TTrainController::SameDirection">
 <area shape="rect" id="node1" title="Determines whether two services are running in the same direction when they arrive or depart from Loc..." alt="" coords="683,13,888,39"/>
 <area shape="rect" id="node2" href="$class_t_train_controller.html#a9529f225878cf4920b52914022f44c4e" title="Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for arrivals (bool..." alt="" coords="447,5,635,47"/>
-<area shape="rect" id="node3" href="$class_t_train_controller.html#a9271e33e06360d367f7fa01b30c6137f" title="Generate a timetable analysis file in the &#39;Formatted Timetables&#39; folder, return false if failed for a..." alt="" coords="240,5,399,47"/>
+<area shape="rect" id="node3" href="$class_t_train_controller.html#a6a7975052fcea4a8f0f72214a4a0f298" title="Generate a timetable analysis file in the &#39;Formatted Timetables&#39; folder, return false if failed for a..." alt="" coords="240,5,399,47"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#a6379037c7970acda71188947cb3ba6b2" title=" " alt="" coords="5,5,192,47"/>
 </map>

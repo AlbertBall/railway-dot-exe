@@ -90,9 +90,9 @@ enum TRunningEntry
 
 class TTrainDataEntry; // predeclared so TActionVectorEntry has access to it, description below
 
-typedef std::list<int>TExitList;
+typedef std::list<int>TNumList;
 ///< a list of valid train exit TrackVector positions for 'Fer' entries
-typedef TExitList::iterator TExitListIterator;
+typedef TNumList::iterator TNumListIterator;
 
 // ---------------------------------------------------------------------------
 
@@ -102,6 +102,8 @@ class TActionVectorEntry
 public:
     AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode;
 ///< string values for timetabled action entries, null on creation
+//Other HeadCode & NonRepeatingShuttleLinkHeadCode have service ref entered in ProcessOneTimetableLine but these are
+//changed back to basic HeadCodes as almost the final action in SecondPassActions (uses StripExcessFromHeadCode)
     bool SignallerControl;
 ///< indicates a train that is defined by the timetable as under signaller control
     bool Warning;
@@ -112,7 +114,7 @@ public:
 ///< dual-purpose variables used for the TrackVectorPositions of the rear and front train starting elements (for Snt) or for repeat minute & digit values in repeat entries
     TDateTime EventTime, ArrivalTime, DepartureTime;
 ///< relevant times at which the action is timetabled, zeroed on creation so change to -1 as a marker for 'not set'
-    TExitList ExitList;
+    TNumList ExitList;
 ///< the list of valid train exit TrackVector positions for 'Fer' entries (empty to begin with)
     TTimetableFormatType FormatType;
 ///< defines the timetable action type
@@ -179,7 +181,7 @@ typedef std::vector<TTrainOperatingData>TTrainOperatingDataVector;
 
 // ---------------------------------------------------------------------------
 
-/// Contains all data for a single train
+/// Contains all data for a single timetable service entry
 class TTrainDataEntry
 {
 public:
@@ -215,7 +217,7 @@ public:
 };
 
 typedef std::vector<TTrainDataEntry>TTrainDataVector;
-///< vector class for containing the whole timetable (the object is a member of TTrainController)
+///< vector class for containing the whole timetable - one entry per timetable service entry (the object is a member of TTrainController)
 // ---------------------------------------------------------------------------
 
 // formatted timetable types
@@ -856,7 +858,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 /// Build string for use in floating window for expected trains at continuations
     AnsiString ContinuationEntryFloatingTTString(int Caller, TTrainDataEntry *TTDEPtr, int RepeatNumber, int IncrementalMinutes, int IncrementalDigits);
 /// Check all timetable names in ExitList, if all same return " at [name]" + AllowableExits = elements, else just return "" & AllowableExits = elements.  Used in floating label for Next action and in formatted timetables.
-    AnsiString GetExitLocationAndAt(int Caller, TExitList &ExitList, AnsiString &AllowedExits) const;
+    AnsiString GetExitLocationAndAt(int Caller, TNumList &ExitList, AnsiString &AllowedExits) const;
 /// Return the service headcode for the repeat service
     AnsiString GetRepeatHeadCode(int Caller, AnsiString BaseHeadCode, int RepeatNumber, int IncDigits);
 /// Introduce a new train to the railway, with the characteristics specified, returns true for success, if fails the EventType indicates the reason
@@ -866,7 +868,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 /// A shorthand function that returns true if the successor to a given timetable action command should be (or could be) an 'at location' command, used in timetable validation
     bool AtLocSuccessor(const TActionVectorEntry &AVEntry);
 /// Used to compile ExitList from a string list of element IDs, returns true for success or gives a message & returns false for failure, used in timetable validation
-    bool CheckAndPopulateListOfIDs(int Caller, AnsiString IDSet, TExitList &ExitList, bool GiveMessages);
+    bool CheckAndPopulateListOfIDs(int Caller, AnsiString IDSet, TNumList &ExitList, bool GiveMessages);
 /// A timetable validation function where all service cross references are checked for validity and set pointers and train information, return true for success
     bool CheckCrossReferencesAndSetData(int Caller, AnsiString SoughtHeadCode, AnsiString SeekingHeadCode, bool Shuttle, bool GiveMessages);
 /// A timetable validation function where referenced services are checked for uniqueness, returns true for success
@@ -896,7 +898,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 /// returns true if the time complies with requirements
     bool CheckTimeValidity(int Caller, AnsiString TimeStr, TDateTime &Time);
 /// Generate a timetable analysis file in the 'Formatted Timetables' folder, return false if failed for any reason
-    bool CreateTTAnalysisFile(int Caller, AnsiString RailwayTitle, AnsiString TimetableTitle, AnsiString CurDir, bool ArrChecked, bool DepChecked, bool AtLocChecked, int ArrRange, int DepRange);
+    bool CreateTTAnalysisFile(int Caller, AnsiString RailwayTitle, AnsiString TimetableTitle, AnsiString CurDir, bool ArrChecked, bool DepChecked, bool AtLocChecked, bool DirChecked, int ArrRange, int DepRange);
 /// New trains introduced with 'Snt' may be at a timetabled location or elsewhere. This function checks and returns true for at a timetabled location.
     bool IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEntry, AnsiString &LocationName);
 /// Checks the last two characters in HeadCode and returns true if both are digits
@@ -913,7 +915,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 /// Parse a single timetable service action, return true for success
     bool SplitEntry(int Caller, AnsiString OneEntry, bool GiveMessages, bool CheckLocationsExistInRailway, AnsiString &First, AnsiString &Second,
                     AnsiString &Third, AnsiString &Fourth, int &RearStartOrRepeatMins, int &FrontStartPosition, TTimetableFormatType &TimetableFormatType,
-                    TTimetableLocationType &LocationType, TTimetableSequenceType &SequenceType, TTimetableShuttleLinkType &ShuttleLinkType, TExitList &ExitList,
+                    TTimetableLocationType &LocationType, TTimetableSequenceType &SequenceType, TTimetableShuttleLinkType &ShuttleLinkType, TNumList &ExitList,
                     bool &Warning);
 /// Parse a timetable repeat entry, return true for success
     bool SplitRepeat(int Caller, AnsiString OneEntry, int &RearStartOrRepeatMins, int &FrontStartOrRepeatDigits, int &RepeatNumber, bool GiveMessages);
@@ -939,6 +941,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     TTrain &TrainVectorAt(int Caller, int VecPos);
 /// Return a reference to the train with ID TrainID, carries out validity checking on TrainID
     TTrain &TrainVectorAtIdent(int Caller, int TrainID);
+////Return the TrainDataVector entry corresponding to ServiceReference, FinishType is 0 for end of service or 1 for a follow-on service
+    TTrainDataEntry GetServiceFromVector(AnsiString Caller, AnsiString ServiceReference, TTrainDataVector Vector, bool &FinishType, bool &FoundFlag);
 /// populate the ContinuationTrainExpectationMultiMap during timetable loading
     void BuildContinuationTrainExpectationMultiMap(int Caller);
 /// calculates additional lateness values for trains that haven't reached their destinations yet
@@ -979,6 +983,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     void SendPerformanceSummary(int Caller, std::ofstream &PerfFile);
 /// This sets all the warning flags (CrashWarning, DerailWarning etc) to their required states after a session file has been loaded
     void SetWarningFlags(int Caller);
+/// Outputs the single service vector for train direction analysis purposes in timetable conflict analysis
+    void SingleServiceOutput(int Caller, int SSVectorNumber, TNumList MarkerList, TTrainDataVector &SingleServiceVector, std::ofstream &VecFile);
 /// sends a message to the user and stops the timetable clock while it is displayed
     void StopTTClockMessage(int Caller, AnsiString Message);
 /// change an extended headcode to an ordinary 4 character headcode

@@ -2,8 +2,8 @@
 <area shape="rect" id="node1" title="Return a reference to the active track element pointed to by NextTrackElementPtr (during zoomed&#45;in or..." alt="" coords="2000,827,2215,854"/>
 <area shape="rect" id="node2" href="$class_t_track.html#af654985aa4d1c17684f91474fa03ed98" title="Plot on screen the zoomed&#45;out railway." alt="" coords="1532,221,1703,247"/>
 <area shape="rect" id="node11" href="$class_t_track.html#a12569ed581bb1c76c1d201b3cf013da7" title="Called by TInterface::ClearandRebuildRailway to replot all the active and inactive track elements and..." alt="" coords="1760,795,1952,822"/>
-<area shape="rect" id="node45" href="$class_t_track.html#afb6bf873ba2e4107cf462f9d42dbe33f" title="Called by TInterface::SaveOperatingImage1Click to add all track element graphics to the image file in..." alt="" coords="1762,849,1950,891"/>
-<area shape="rect" id="node47" href="$class_t_track.html#ab3530b4af2a4b2a9cd1c1b480a19298d" title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI..." alt="" coords="1765,955,1947,982"/>
+<area shape="rect" id="node45" href="$class_t_track.html#a98b1632a5246785adc1003ebcb3e91a4" title="Called by TInterface::SaveOperatingImage1Click to add all track &amp; text to the image file in their ope..." alt="" coords="1762,849,1950,891"/>
+<area shape="rect" id="node47" href="$class_t_track.html#a909e96ff6b77c266ab82313e30018cd4" title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI..." alt="" coords="1766,947,1946,988"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a3fe9878a003d343a06f09c8f421e5a3b" title=" " alt="" coords="1285,410,1441,437"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#a19e64ee6952b0fd3c260eb05c14a34c8" title=" " alt="" coords="1269,46,1456,73"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#abb268a3a209bc0d66111540c84345c1b" title=" " alt="" coords="1251,97,1475,123"/>

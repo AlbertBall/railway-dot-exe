@@ -1,7 +1,7 @@
 <map id="TTrack::PlatformOnSignalSide" name="TTrack::PlatformOnSignalSide">
-<area shape="rect" id="node1" title="Check whether there is a platform present at HLoc &amp; VLoc at the same side as the signal represented b..." alt="" coords="479,82,675,109"/>
-<area shape="rect" id="node2" href="$class_t_track.html#afb6bf873ba2e4107cf462f9d42dbe33f" title="Called by TInterface::SaveOperatingImage1Click to add all track element graphics to the image file in..." alt="" coords="243,25,431,67"/>
-<area shape="rect" id="node4" href="$class_t_track.html#ab3530b4af2a4b2a9cd1c1b480a19298d" title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI..." alt="" coords="246,111,427,138"/>
+<area shape="rect" id="node1" title="Check whether there is a platform present at HLoc &amp; VLoc at the same side as the signal represented b..." alt="" coords="479,79,675,106"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a98b1632a5246785adc1003ebcb3e91a4" title="Called by TInterface::SaveOperatingImage1Click to add all track &amp; text to the image file in their ope..." alt="" coords="243,23,431,64"/>
+<area shape="rect" id="node4" href="$class_t_track.html#a909e96ff6b77c266ab82313e30018cd4" title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI..." alt="" coords="247,104,427,145"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a4d75015545313004ffd5022c020f4edf" title=" " alt="" coords="15,5,185,47"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#a14d8976ee13c85f12eab634de845baf1" title=" " alt="" coords="14,71,186,112"/>
 <area shape="rect" id="node6" href="$class_t_interface.html#ab73377784e302350bcc4f1fed4f8d90a" title=" " alt="" coords="14,136,186,177"/>

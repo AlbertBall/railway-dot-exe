@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.9.2</span>
+   &#160;<span id="projectnumber">v2.10.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -105,7 +105,8 @@ Include dependency graph for TrainUnit.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_train_unit_8h__dep__incl.svg" width="380" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_train_unit_8h__dep__incl.svg" width="560" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 </div>
 <p><a href="_train_unit_8h_source.html">Go to the source code of this file.</a></p>
@@ -119,7 +120,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data for a specific train for use during operation.  <a href="class_t_train_operating_data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains all data for a single train.  <a href="class_t_train_data_entry.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains all data for a single timetable service entry.  <a href="class_t_train_data_entry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_train_formatted_entry.html">TOneTrainFormattedEntry</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single train timetable action for use in a formatted timetable.  <a href="class_t_one_train_formatted_entry.html#details">More...</a><br /></td></tr>
@@ -147,11 +148,11 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a1690f97d4f6dd77f9eab02bb3465b343"><td class="memItemLeft" align="right" valign="top">typedef std::list&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_train_unit_8h.html#a1690f97d4f6dd77f9eab02bb3465b343">TExitList</a></td></tr>
-<tr class="memdesc:a1690f97d4f6dd77f9eab02bb3465b343"><td class="mdescLeft">&#160;</td><td class="mdescRight">a list of valid train exit TrackVector positions for 'Fer' entries  <a href="_train_unit_8h.html#a1690f97d4f6dd77f9eab02bb3465b343">More...</a><br /></td></tr>
-<tr class="separator:a1690f97d4f6dd77f9eab02bb3465b343"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b5c8bc33d5f27cedc686258111c21cc"><td class="memItemLeft" align="right" valign="top">typedef TExitList::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_train_unit_8h.html#a5b5c8bc33d5f27cedc686258111c21cc">TExitListIterator</a></td></tr>
-<tr class="separator:a5b5c8bc33d5f27cedc686258111c21cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a071247becbfdd0d4af877d07e2aabf77"><td class="memItemLeft" align="right" valign="top">typedef std::list&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_train_unit_8h.html#a071247becbfdd0d4af877d07e2aabf77">TNumList</a></td></tr>
+<tr class="memdesc:a071247becbfdd0d4af877d07e2aabf77"><td class="mdescLeft">&#160;</td><td class="mdescRight">a list of valid train exit TrackVector positions for 'Fer' entries  <a href="_train_unit_8h.html#a071247becbfdd0d4af877d07e2aabf77">More...</a><br /></td></tr>
+<tr class="separator:a071247becbfdd0d4af877d07e2aabf77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17fb54418ed0171910a59dc159d81d6c"><td class="memItemLeft" align="right" valign="top">typedef TNumList::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_train_unit_8h.html#a17fb54418ed0171910a59dc159d81d6c">TNumListIterator</a></td></tr>
+<tr class="separator:a17fb54418ed0171910a59dc159d81d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b1395ed328e4835de16cc626e4e1c96"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="class_t_action_vector_entry.html">TActionVectorEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_train_unit_8h.html#a5b1395ed328e4835de16cc626e4e1c96">TActionVector</a></td></tr>
 <tr class="memdesc:a5b1395ed328e4835de16cc626e4e1c96"><td class="mdescLeft">&#160;</td><td class="mdescRight">contains all actions for a single train  <a href="_train_unit_8h.html#a5b1395ed328e4835de16cc626e4e1c96">More...</a><br /></td></tr>
 <tr class="separator:a5b1395ed328e4835de16cc626e4e1c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,7 +163,7 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:a091969be413497d46907d19d477285c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector containing operational data for each timetabled train including all repeats  <a href="_train_unit_8h.html#a091969be413497d46907d19d477285c9">More...</a><br /></td></tr>
 <tr class="separator:a091969be413497d46907d19d477285c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34932e266703946fbf02c69e1695c100"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="class_t_train_data_entry.html">TTrainDataEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_train_unit_8h.html#a34932e266703946fbf02c69e1695c100">TTrainDataVector</a></td></tr>
-<tr class="memdesc:a34932e266703946fbf02c69e1695c100"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector class for containing the whole timetable (the object is a member of <a class="el" href="class_t_train_controller.html" title="Handles all train and timetable activities, only one object created.">TTrainController</a>)  <a href="_train_unit_8h.html#a34932e266703946fbf02c69e1695c100">More...</a><br /></td></tr>
+<tr class="memdesc:a34932e266703946fbf02c69e1695c100"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector class for containing the whole timetable - one entry per timetable service entry (the object is a member of <a class="el" href="class_t_train_controller.html" title="Handles all train and timetable activities, only one object created.">TTrainController</a>)  <a href="_train_unit_8h.html#a34932e266703946fbf02c69e1695c100">More...</a><br /></td></tr>
 <tr class="separator:a34932e266703946fbf02c69e1695c100"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72ed0fed1e7750b3369ced01e8622c11"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="class_t_one_train_formatted_entry.html">TOneTrainFormattedEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_train_unit_8h.html#a72ed0fed1e7750b3369ced01e8622c11">TOneFormattedTrainVector</a></td></tr>
 <tr class="memdesc:a72ed0fed1e7750b3369ced01e8622c11"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector of formatted timetable actions for a single train  <a href="_train_unit_8h.html#a72ed0fed1e7750b3369ced01e8622c11">More...</a><br /></td></tr>
@@ -343,7 +344,7 @@ Variables</h2></td></tr>
 
 <p>contains all actions for a single train </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00151">151</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00153">153</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -361,7 +362,7 @@ Variables</h2></td></tr>
 
 <p>iterator </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00153">153</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00155">155</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -379,18 +380,18 @@ Variables</h2></td></tr>
 
 <p>vector of all timetabled trains for use in the formatted timetable </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00262">262</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00264">264</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
-<a id="a1690f97d4f6dd77f9eab02bb3465b343"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1690f97d4f6dd77f9eab02bb3465b343">&#9670;&nbsp;</a></span>TExitList</h2>
+<a id="a071247becbfdd0d4af877d07e2aabf77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a071247becbfdd0d4af877d07e2aabf77">&#9670;&nbsp;</a></span>TNumList</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::list&lt;int&gt; <a class="el" href="_train_unit_8h.html#a1690f97d4f6dd77f9eab02bb3465b343">TExitList</a></td>
+          <td class="memname">typedef std::list&lt;int&gt; <a class="el" href="_train_unit_8h.html#a071247becbfdd0d4af877d07e2aabf77">TNumList</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -401,14 +402,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a5b5c8bc33d5f27cedc686258111c21cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b5c8bc33d5f27cedc686258111c21cc">&#9670;&nbsp;</a></span>TExitListIterator</h2>
+<a id="a17fb54418ed0171910a59dc159d81d6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17fb54418ed0171910a59dc159d81d6c">&#9670;&nbsp;</a></span>TNumListIterator</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef TExitList::iterator <a class="el" href="_train_unit_8h.html#a5b5c8bc33d5f27cedc686258111c21cc">TExitListIterator</a></td>
+          <td class="memname">typedef TNumList::iterator <a class="el" href="_train_unit_8h.html#a17fb54418ed0171910a59dc159d81d6c">TNumListIterator</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -431,7 +432,7 @@ Variables</h2></td></tr>
 
 <p>vector of a timetabled train with all its repeats for use in the formatted timetable </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00246">246</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00248">248</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -449,7 +450,7 @@ Variables</h2></td></tr>
 
 <p>vector of formatted timetable actions for a single train </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00233">233</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00235">235</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -465,9 +466,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>vector class for containing the whole timetable (the object is a member of <a class="el" href="class_t_train_controller.html" title="Handles all train and timetable activities, only one object created.">TTrainController</a>) </p>
+<p>vector class for containing the whole timetable - one entry per timetable service entry (the object is a member of <a class="el" href="class_t_train_controller.html" title="Handles all train and timetable activities, only one object created.">TTrainController</a>) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00217">217</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00219">219</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -485,7 +486,7 @@ Variables</h2></td></tr>
 
 <p>vector containing operational data for each timetabled train including all repeats </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00177">177</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00179">179</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -630,7 +631,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a5cda232d9d09241685280b2cb9c8a389a2a00a8f6233eee2eb16869e3965f35b2"></a>LeadMid&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00273">273</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00275">275</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>

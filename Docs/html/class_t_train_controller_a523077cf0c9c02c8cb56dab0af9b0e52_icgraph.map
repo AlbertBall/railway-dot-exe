@@ -5,7 +5,7 @@
 <area shape="rect" id="node43" href="$class_t_interface.html#ad0934d754138e9d12f390d9c538448e1" title=" " alt="" coords="465,1651,640,1692"/>
 <area shape="rect" id="node46" href="$class_t_interface.html#a330394a04433ce8672a52c2a0a659ff0" title="Used during timetable editing funtions to compile the list of entries into the left hand long entry w..." alt="" coords="700,1977,889,2019"/>
 <area shape="rect" id="node47" href="$class_t_train_controller.html#a5c51eb1e0018e189966ffdbc5d251990" title="Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if Fin..." alt="" coords="711,2403,879,2444"/>
-<area shape="rect" id="node50" href="$class_t_train_controller.html#a9067975adc343b753d7eb882648c66bb" title="Parse a single timetable service action, return true for success." alt="" coords="1172,2097,1349,2123"/>
+<area shape="rect" id="node50" href="$class_t_train_controller.html#a23ca27d36d711136e0529ba8ae4f22f0" title="Parse a single timetable service action, return true for success." alt="" coords="1172,2097,1349,2123"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#a4502fb89b8be8afeaf2771fbe5d0cd75" title="Called during timetable editing whenever a change is made to the timetable, sets all the timetable bu..." alt="" coords="937,1333,1124,1359"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="707,1261,882,1287"/>
 <area shape="rect" id="node6" href="$class_t_interface.html#a1b1a4260e251c9bd5f48fd6c3432e7a5" title=" " alt="" coords="459,1403,646,1444"/>

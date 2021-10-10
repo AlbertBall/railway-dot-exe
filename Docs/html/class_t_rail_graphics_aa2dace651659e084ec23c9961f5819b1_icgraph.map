@@ -1,11 +1,11 @@
 <map id="TRailGraphics::ChangeForegroundColour" name="TRailGraphics::ChangeForegroundColour">
-<area shape="rect" id="node1" title=" " alt="" coords="1625,545,1845,586"/>
+<area shape="rect" id="node1" title=" " alt="" coords="1625,549,1845,590"/>
 <area shape="rect" id="node2" href="$class_t_train_controller.html#aa895b60238810a9d134cd5b9c886da56" title="Introduce a new train to the railway, with the characteristics specified, returns true for success,..." alt="" coords="1116,5,1287,32"/>
 <area shape="rect" id="node4" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="665,216,800,243"/>
 <area shape="rect" id="node9" href="$class_t_train.html#a43cd691f12297c4c13a19791329dd627" title="Plots the train and sets up all relevant members for a new train when it is introduced into the railw..." alt="" coords="1390,233,1553,260"/>
-<area shape="rect" id="node17" href="$class_t_rail_graphics.html#ae19696d461eea07c5444ed4c9714acf3" title=" " alt="" coords="1365,603,1577,645"/>
-<area shape="rect" id="node28" href="$class_t_interface.html#ab5b80c76a8cc8d2c87f21d323f61c1ce" title=" " alt="" coords="1389,669,1553,710"/>
-<area shape="rect" id="node29" href="$class_t_interface.html#aec12f0e481024f1268fad36e7188b7a4" title=" " alt="" coords="1380,734,1563,775"/>
+<area shape="rect" id="node17" href="$class_t_rail_graphics.html#ae19696d461eea07c5444ed4c9714acf3" title=" " alt="" coords="1365,610,1577,651"/>
+<area shape="rect" id="node28" href="$class_t_interface.html#ab5b80c76a8cc8d2c87f21d323f61c1ce" title=" " alt="" coords="1389,675,1553,717"/>
+<area shape="rect" id="node29" href="$class_t_interface.html#aec12f0e481024f1268fad36e7188b7a4" title=" " alt="" coords="1380,741,1563,782"/>
 <area shape="rect" id="node3" href="$class_t_train.html#ad666fb061d1da7c44a72ec963c2098aa" title="Carry out the actions needed when a train is to split from the front." alt="" coords="868,107,1017,133"/>
 <area shape="rect" id="node5" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="451,111,617,137"/>
 <area shape="rect" id="node8" href="$class_t_train.html#ad64c5823265b0c611c2e5f0613317aa5" title="Carry out the actions needed when a train is to split from the rear." alt="" coords="869,56,1016,83"/>
@@ -18,12 +18,12 @@
 <area shape="rect" id="node14" href="$class_t_train.html#ac6f5cda912103fda4da31bdca611e4b5" title="Carry out the actions needed to create either a new shuttle service or (if all repeats have finished)..." alt="" coords="1085,376,1317,403"/>
 <area shape="rect" id="node15" href="$class_t_train.html#affbb94aa088370056f8ca8c45a1fdd48" title="Unplots &amp; replots train, which checks for facing signal and sets StoppedAtSignal if req&#39;d." alt="" coords="1108,427,1295,469"/>
 <area shape="rect" id="node16" href="$class_t_interface.html#aaaf32c3c815553f7ba70698e0f0071bb" title=" " alt="" coords="852,427,1033,469"/>
-<area shape="rect" id="node18" href="$class_t_interface.html#a237c151513ca8adca6cd1006cc2fc66f" title=" " alt="" coords="1111,662,1292,703"/>
-<area shape="rect" id="node19" href="$class_t_interface.html#a24d79aa4745e495daa07bb5ce412e75f" title=" " alt="" coords="1114,727,1289,769"/>
-<area shape="rect" id="node20" href="$class_t_interface.html#a0659e748042e378f3e325652c9c2e6d2" title="constructor" alt="" coords="1130,793,1273,820"/>
-<area shape="rect" id="node21" href="$class_t_interface.html#a3a9f9cf4b530f7958ee3d14047fd951a" title=" " alt="" coords="1110,845,1293,886"/>
-<area shape="rect" id="node22" href="$class_t_track.html#afb6bf873ba2e4107cf462f9d42dbe33f" title="Called by TInterface::SaveOperatingImage1Click to add all track element graphics to the image file in..." alt="" coords="1107,545,1295,586"/>
-<area shape="rect" id="node24" href="$class_t_track.html#ab3530b4af2a4b2a9cd1c1b480a19298d" title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI..." alt="" coords="1111,611,1292,637"/>
+<area shape="rect" id="node18" href="$class_t_interface.html#a237c151513ca8adca6cd1006cc2fc66f" title=" " alt="" coords="1111,675,1292,717"/>
+<area shape="rect" id="node19" href="$class_t_interface.html#a24d79aa4745e495daa07bb5ce412e75f" title=" " alt="" coords="1114,741,1289,782"/>
+<area shape="rect" id="node20" href="$class_t_interface.html#a0659e748042e378f3e325652c9c2e6d2" title="constructor" alt="" coords="1130,807,1273,833"/>
+<area shape="rect" id="node21" href="$class_t_interface.html#a3a9f9cf4b530f7958ee3d14047fd951a" title=" " alt="" coords="1110,858,1293,899"/>
+<area shape="rect" id="node22" href="$class_t_track.html#a98b1632a5246785adc1003ebcb3e91a4" title="Called by TInterface::SaveOperatingImage1Click to add all track &amp; text to the image file in their ope..." alt="" coords="1107,545,1295,586"/>
+<area shape="rect" id="node24" href="$class_t_track.html#a909e96ff6b77c266ab82313e30018cd4" title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI..." alt="" coords="1111,610,1291,651"/>
 <area shape="rect" id="node23" href="$class_t_interface.html#a4d75015545313004ffd5022c020f4edf" title=" " alt="" coords="857,545,1028,586"/>
 <area shape="rect" id="node25" href="$class_t_interface.html#a14d8976ee13c85f12eab634de845baf1" title=" " alt="" coords="857,675,1029,717"/>
 <area shape="rect" id="node26" href="$class_t_interface.html#ab73377784e302350bcc4f1fed4f8d90a" title=" " alt="" coords="857,741,1029,782"/>

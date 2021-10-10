@@ -754,6 +754,8 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< true when LCs changing
     bool LCFoundInAutoSigsRoute;
 ///< true if found an LC during an automatic route search
+    bool NoPlatsMessageSent;
+///< used to send no platforms warning once only
     bool SuppressRouteFailMessage;
 ///< true if a message has been given in the search routine, to avoid giving multiple times and to avoid other failure messages being given
     bool LCFoundInRouteBuildingFlag;
@@ -1112,7 +1114,7 @@ exclude opposed buffers since these not linked.  Used in timetable integrity che
                                                                          AnsiString &ErrorString);
 /// Return a reference to the inactive element at HLoc & VLoc, if no element is found an error is thrown
     TTrackElement &GetInactiveTrackElementFromTrackMap(int Caller, int HLoc, int VLoc);
-/// Return a reference to the element at HLoc & VLoc for any map and any vector (used for SelectPrefDir in clipboard pref dir recovery
+/// Return a reference to the element at HLoc & VLoc for any map and any vector (used for SelectPrefDir in clipboard pref dir recovery)
     TTrackElement &GetTrackElementFromAnyTrackMap(int Caller, int HLoc, int VLoc, TTrackMap &Map, TTrackVector &Vector); //new at v2.9.0 for clipboard pref dirs & modified at v2.9.2 to make Map & Vector references
 /// Return a reference to the element at HLoc & VLoc, if no element is found an error is thrown
     TTrackElement &GetTrackElementFromTrackMap(int Caller, int HLoc, int VLoc);
@@ -1261,12 +1263,12 @@ doesn't apply).  For NamedNonStationLocations the stop points are at the end ele
 /// handles moving of user graphics
     void UserGraphicMove(int Caller, int HPosInput, int VPosInput, int &UserGraphicItem, int &UserGraphicMoveHPos, int &UserGraphicMoveVPos,
                          bool &UserGraphicFoundFlag);
-/// Called by TInterface::SaveOperatingImage1Click to add all track element graphics to the image file in their operating state
-    void WriteOperatingTrackToImage(int Caller, Graphics::TBitmap *Bitmap);
+/// Called by TInterface::SaveOperatingImage1Click to add all track & text to the image file in their operating state
+    void WriteOperatingTrackAndTextToImage(int Caller, Graphics::TBitmap *Bitmap);
 /// Called by SaveImageNoGridMenuItemClick, SaveImageAndGridMenuItemClick amd SaveImageAndPrefDirsMenuItemClick to add all track element graphics to the image file in their non-operating state
     void WriteGraphicsToImage(int Caller, Graphics::TBitmap *Bitmap);
-/// Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveImageAndPrefDirs1Click to add all track element graphics to the image file in their non-operating state
-    void WriteTrackToImage(int Caller, Graphics::TBitmap *Bitmap);
+/// Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveImageAndPrefDirs1Click to add all track & text to the image file in the non-operating state
+    void WriteTrackAndTextToImage(int Caller, Graphics::TBitmap *Bitmap);
 
 /// Constructor, only one object of this class
     TTrack();

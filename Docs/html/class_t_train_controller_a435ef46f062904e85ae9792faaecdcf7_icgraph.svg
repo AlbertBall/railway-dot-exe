@@ -176,7 +176,7 @@ var sectionId = 'dynsection-64';
 <!-- Node23 -->
 <g id="node18" class="node">
 <title>Node23</title>
-<g id="a_node18"><a xlink:href="class_t_train_controller.html#a9271e33e06360d367f7fa01b30c6137f" target="_top" xlink:title="Generate a timetable analysis file in the &#39;Formatted Timetables&#39; folder, return false if failed for a...">
+<g id="a_node18"><a xlink:href="class_t_train_controller.html#a6a7975052fcea4a8f0f72214a4a0f298" target="_top" xlink:title="Generate a timetable analysis file in the &#39;Formatted Timetables&#39; folder, return false if failed for a...">
 <polygon fill="white" stroke="black" points="884.5,-22.5 884.5,-52.5 1003.5,-52.5 1003.5,-22.5 884.5,-22.5"/>
 <text text-anchor="start" x="892.5" y="-40.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::Create</text>
 <text text-anchor="middle" x="944" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTAnalysisFile</text>

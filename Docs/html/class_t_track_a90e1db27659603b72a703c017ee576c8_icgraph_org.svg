@@ -51,10 +51,10 @@
 <!-- Node121 -->
 <g id="node45" class="node">
 <title>Node121</title>
-<g id="a_node45"><a xlink:href="class_t_track.html#afb6bf873ba2e4107cf462f9d42dbe33f" target="_top" xlink:title="Called by TInterface::SaveOperatingImage1Click to add all track element graphics to the image file in...">
+<g id="a_node45"><a xlink:href="class_t_track.html#a98b1632a5246785adc1003ebcb3e91a4" target="_top" xlink:title="Called by TInterface::SaveOperatingImage1Click to add all track &amp; text to the image file in their ope...">
 <polygon fill="white" stroke="black" points="1317.5,-866.42 1317.5,-896.42 1458.5,-896.42 1458.5,-866.42 1317.5,-866.42"/>
 <text text-anchor="start" x="1325.5" y="-884.42" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::WriteOperatingTrack</text>
-<text text-anchor="middle" x="1388" y="-873.42" font-family="Helvetica,sans-Serif" font-size="10.00">ToImage</text>
+<text text-anchor="middle" x="1388" y="-873.42" font-family="Helvetica,sans-Serif" font-size="10.00">AndTextToImage</text>
 </a>
 </g>
 </g>
@@ -67,17 +67,18 @@
 <!-- Node123 -->
 <g id="node47" class="node">
 <title>Node123</title>
-<g id="a_node47"><a xlink:href="class_t_track.html#ab3530b4af2a4b2a9cd1c1b480a19298d" target="_top" xlink:title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI...">
-<polygon fill="white" stroke="black" points="1320,-797.92 1320,-816.92 1456,-816.92 1456,-797.92 1320,-797.92"/>
-<text text-anchor="middle" x="1388" y="-804.92" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::WriteTrackToImage</text>
+<g id="a_node47"><a xlink:href="class_t_track.html#a909e96ff6b77c266ab82313e30018cd4" target="_top" xlink:title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI...">
+<polygon fill="white" stroke="black" points="1320.5,-793.42 1320.5,-823.42 1455.5,-823.42 1455.5,-793.42 1320.5,-793.42"/>
+<text text-anchor="start" x="1328.5" y="-811.42" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::WriteTrackAndText</text>
+<text text-anchor="middle" x="1388" y="-800.42" font-family="Helvetica,sans-Serif" font-size="10.00">ToImage</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node123 -->
 <g id="edge85" class="edge">
 <title>Node1&#45;&gt;Node123</title>
-<path fill="none" stroke="midnightblue" d="M1547.82,-889.17C1509.26,-869.32 1440.39,-833.87 1407.49,-816.93"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1546.44,-892.4 1556.94,-893.86 1549.65,-886.17 1546.44,-892.4"/>
+<path fill="none" stroke="midnightblue" d="M1547.49,-889.15C1512.83,-871.49 1454.06,-841.55 1418.65,-823.52"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1546.09,-892.36 1556.59,-893.78 1549.27,-886.13 1546.09,-892.36"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
@@ -981,8 +982,8 @@
 <!-- Node123&#45;&gt;Node124 -->
 <g id="edge86" class="edge">
 <title>Node123&#45;&gt;Node124</title>
-<path fill="none" stroke="midnightblue" d="M1309.78,-817.89C1297.7,-819.52 1285.34,-821.2 1273.62,-822.79"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1310.39,-821.34 1319.83,-816.52 1309.45,-814.4 1310.39,-821.34"/>
+<path fill="none" stroke="midnightblue" d="M1310.19,-818.4C1298.01,-819.98 1285.52,-821.6 1273.68,-823.14"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1310.87,-821.84 1320.34,-817.08 1309.97,-814.9 1310.87,-821.84"/>
 </g>
 <!-- Node125 -->
 <g id="node49" class="node">
@@ -997,8 +998,8 @@
 <!-- Node123&#45;&gt;Node125 -->
 <g id="edge87" class="edge">
 <title>Node123&#45;&gt;Node125</title>
-<path fill="none" stroke="midnightblue" d="M1309.78,-796.51C1297.7,-794.8 1285.34,-793.06 1273.62,-791.4"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1309.44,-800 1319.83,-797.93 1310.42,-793.06 1309.44,-800"/>
+<path fill="none" stroke="midnightblue" d="M1310.19,-797.13C1298.01,-795.34 1285.52,-793.51 1273.68,-791.77"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1309.93,-800.63 1320.34,-798.62 1310.95,-793.71 1309.93,-800.63"/>
 </g>
 <!-- Node126 -->
 <g id="node50" class="node">
@@ -1013,8 +1014,8 @@
 <!-- Node123&#45;&gt;Node126 -->
 <g id="edge88" class="edge">
 <title>Node123&#45;&gt;Node126</title>
-<path fill="none" stroke="midnightblue" d="M1358.79,-793.23C1337.43,-782.73 1307.21,-768.4 1280,-757.42 1272.38,-754.34 1264.19,-751.3 1256.2,-748.47"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1357.43,-796.46 1367.94,-797.76 1360.53,-790.18 1357.43,-796.46"/>
+<path fill="none" stroke="midnightblue" d="M1348.28,-788.64C1328.16,-778.71 1303.03,-766.82 1280,-757.42 1272.39,-754.31 1264.21,-751.26 1256.22,-748.42"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1346.92,-791.88 1357.43,-793.2 1350.04,-785.61 1346.92,-791.88"/>
 </g>
 </g>
 </svg>

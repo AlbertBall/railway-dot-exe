@@ -42,6 +42,8 @@
 #include <vector>
 #include <vcl.h>
 
+//#include "API.h"  dropped this in favour of forward class declaration below, included in .cpp file
+
 // ---------------------------------------------------------------------------
 
 typedef std::pair<int, int>THVPair;
@@ -51,6 +53,10 @@ class TOnePrefDir; // predeclarations
 class TOneRoute;
 class TTrack;
 class TGraphicElement;
+class API; //forward class declaration instead of including header  added at v2.10.0
+
+//API* session_api_;  moved from header to avoid AboutForm having access and defining _session_api_
+                    //as well as Interface and giving a warning, added at v2.10.0
 
 class TInterface : public TForm
 {
@@ -658,6 +664,8 @@ __published: // IDE-managed Components
     TLabel *TwoLocationNameLabel;
     TButton *TwoLocationNameButton;
     TCheckBox *TwoLocationNameCheckBox;
+    TLabel *CPLabel9;
+    TCheckBox *CPDirectionsCheckBox;
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -906,6 +914,10 @@ private:
 ///< typedef for the complete timetable as a list of AnsiStrings for use in edit timetable functions
     typedef std::vector<AnsiString>::iterator TTEVPtr;
 ///< typedef for pointers to entries in edit timetable functions
+
+// API tracking variables      //added at v2.10.0
+    int api_main_mode_;
+    int api_oper_mode_;
 
 // Timetable edit members
 

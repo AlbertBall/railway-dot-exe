@@ -1,4 +1,4 @@
 <map id="TTrainController::TContinuationTrainExpectationEntry" name="TTrainController::TContinuationTrainExpectationEntry">
 <area shape="rect" id="node1" title="Class that stores data for trains expected at continuation entries (kept in a multimap &#45; see below),..." alt="" coords="5,307,204,472"/>
-<area shape="rect" id="node2" href="$class_t_train_data_entry.html" title="Contains all data for a single train." alt="" coords="13,5,196,244"/>
+<area shape="rect" id="node2" href="$class_t_train_data_entry.html" title="Contains all data for a single timetable service entry." alt="" coords="13,5,196,244"/>
 </map>

@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 1697;
 var viewHeight = 186;
-var sectionId = 'dynsection-89';
+var sectionId = 'dynsection-95';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -68,7 +68,7 @@ var sectionId = 'dynsection-89';
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_train_controller.html#ae91c1a77699c9daf327938081eab2241" target="_top" xlink:title="Used to compile ExitList from a string list of element IDs, returns true for success or gives a messa...">
+<g id="a_node2"><a xlink:href="class_t_train_controller.html#a3733e089b5f58d8b5e8355298653b53a" target="_top" xlink:title="Used to compile ExitList from a string list of element IDs, returns true for success or gives a messa...">
 <polygon fill="white" stroke="black" points="1361,-73.5 1361,-103.5 1496,-103.5 1496,-73.5 1361,-73.5"/>
 <text text-anchor="start" x="1369" y="-91.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::CheckAnd</text>
 <text text-anchor="middle" x="1428.5" y="-80.5" font-family="Helvetica,sans-Serif" font-size="10.00">PopulateListOfIDs</text>
@@ -84,7 +84,7 @@ var sectionId = 'dynsection-89';
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="class_t_train_controller.html#a9067975adc343b753d7eb882648c66bb" target="_top" xlink:title="Parse a single timetable service action, return true for success.">
+<g id="a_node3"><a xlink:href="class_t_train_controller.html#a23ca27d36d711136e0529ba8ae4f22f0" target="_top" xlink:title="Parse a single timetable service action, return true for success.">
 <polygon fill="white" stroke="black" points="1190,-79 1190,-98 1323,-98 1323,-79 1190,-79"/>
 <text text-anchor="middle" x="1256.5" y="-86" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::SplitEntry</text>
 </a>

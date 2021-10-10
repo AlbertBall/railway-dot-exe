@@ -32,7 +32,7 @@
 <area shape="rect" id="node9" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="533,1136,699,1163"/>
 <area shape="rect" id="node10" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="278,1035,437,1062"/>
 <area shape="rect" id="node11" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,1035,196,1062"/>
-<area shape="rect" id="node15" href="$class_t_train_controller.html#a9067975adc343b753d7eb882648c66bb" title="Parse a single timetable service action, return true for success." alt="" coords="1325,1744,1502,1771"/>
+<area shape="rect" id="node15" href="$class_t_train_controller.html#a23ca27d36d711136e0529ba8ae4f22f0" title="Parse a single timetable service action, return true for success." alt="" coords="1325,1744,1502,1771"/>
 <area shape="rect" id="node16" href="$class_t_train_controller.html#a5c51eb1e0018e189966ffdbc5d251990" title="Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if Fin..." alt="" coords="1053,1740,1221,1781"/>
 <area shape="rect" id="node18" href="$class_t_one_route.html#a4dfe3a028da7a4b6df0f44f33c3e2196" title="Called when setting a route to set all points appropriately. Also called when a new train is added at..." alt="" coords="1041,1411,1233,1438"/>
 <area shape="rect" id="node19" href="$class_t_one_route.html#a53496c398dcdb3a644801c4e74d47d01" title="Called after a non&#45;preferred (i.e. unrestricted) route has been selected and has finished flashing,..." alt="" coords="765,1238,976,1280"/>

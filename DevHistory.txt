@@ -233,6 +233,93 @@ Multi-player facility over the internet.
 
 4) Version change information
 
+VERSION CHANGES AFTER v2.9.2 for v2.10.0
+
+This version fixes a few bugs and also incorporates a number of changes.
+
+New features:
+
+Krizar has added new files and program modifications that allow real-time information extraction during program operation.  These open up great potential for future development using external interacting programs.
+
+Another brainchild of Krizar's is the inclusion of a new folder in the zip called 'Metadata'.  Metadata is data about other data, or information about other information.  The folder contains two files, one for each of the two railways that come with the download - Birminham and Liverpool.  The files are of type .toml - 'Tom's obvious minimal language', which provides a format that is both human and computer-readable.  Going forward it is intended to make more use of computer file reading, so users are encouraged to provide these files with any new railways that they submit to the website.  More information about toml files can be found at https://toml.io/en/, and a list of country codes is provided at https://www.iso.org/obp/ui/#search/code.  
+
+The response to clicking a headcode in the 'Actions due' panel was always to move the viewpoint so the relevant train was centred on screen.  This was often found to be annoying for railways that mainly fit on a single screen, as the viewpoint had to be reset again manually afterwards.  Now, if the train is already visible on the current screen, the viewpoint isn't moved, the mouse position is all that is moved to hover over the train, wherever it is on the screen.  If the selected train isn't visible on the current screen then the viewpoint moves as before.
+
+A train direction analysis has now been included with the others when the 'Conflict analysis' button is clicked in the timetable editor.  This looks for (a) trains that are created facing buffers (as they often are if the rear and front element IDs are entered the wrong way round); (b) potentially missing changes of direction (cdt's) - expanding on single service missing cdt check in the timetable validator by examining all linked services; and (c) potentially unnecessary cdt entries, where a cdt is entered when the train is already facing the right way. 
+
+Undesirable behaviour:
+
+It was pointed out by Simon Banham that when a route is locked ahead of a train that is moving and positioned immediately in front of the signal that forms the start of the locked route it continues past it without a SPAD.  The signal turns red as is required but it has no effect on the train.  This wasn't strictly speaking a bug because the train was behaving as designed.  Although the train looked as if it hadn't yet passed the red signal the program regarded it as having done so, and already occupying the first half of the signal element, the next half-element move only being shown when the train had covered the distance to the half way point.  Nevertheless this reason couldn't justify what appeared to be wrong, so a modification was introduced to ensure that in these circumstances a SPAD would be triggered.  This was something that I hadn't previously noticed so thanks are due to Simon for pointing it out.
+
+Bugs:
+
+A screenshot was sent in by Albie Vowles showing a failed train with a green (stopped at a signal) background rather than an orange background when it was standing in front of a red signal.  Investigation revealed that this would happen when a train was awaiting a call-on into a station (purple background), and failed while waiting.  The train kept the purple background after the failure instead of changing to orange as it should have done, and when the call-on was no longer available (the train infront having left the station) the background changed to green as it would for a non-failed train.  It was corrected by disallowing a call-on for a failed train.  Thanks to Albie for reporting this error.
+
+Jason Bassett sent in an error file showing that timetable validation had failed where there was a non-station named location (blue elements) that included blue elements without track (as is quite normal) during the check for enough named elements to allow a split.  This error highlighted the fact that although concourses had been taken into account non-station named locations without track hadn't.  Once recognised it was relatively easy to fix by taking proper account of such elements.  Thanks to Jason for sending in the file.
+
+Sam Wainwright and later Bengt sent in error files that were generated when the Windows clipboard couldn't be accessed.  When developing the clipboard functions I had trapped all (or thought I had) clipboard errors in order to prevent a program crash, but just issue a message or do nothing instead depending on circumstances.  The clipboard is a resource that is shared between all applications so it can be changed outside the railway program and appear to it as if it is corrupt or inaccessible.  Such cases generate a clipboard error but it isn't a fatal error, at worst it's merely an inconvenience and often not even that, so it isn't appropriate to stop the program.  However Sam and Bengt found an instance where I had failed to trap one of these errors, and it was in a function that is called regularly by the system clock so the clipboard isn't necessarily even in use.  Happily it was easily fixed so it shouldn't happen again.  Thanks to Sam and Bengt for reporting this.
+
+The user manual and on-screen help have been updated to reflect these changes.
+
+
+other points not for website:
+
+/added new try... catch EClipboard... block in SetLevel2TrackMode (mainly for case Pasting)
+
+/discovered a missing '&' in line 'if((Level1Mode == TrackMode) && !SelectionValid & (ClpBrdValid != "RlyClpBrd_Cut") && (ClpBrdValid != "RlyClpBrdCopy"))' in ClockTimer2
+
+/Added Krizar's api files etc & credit given in in AboutForm
+
+/Preset autosigs not set if find a signal facing wrong way - mention in manual & help /done
+
+/Add perf log file info at start & when loading a pre-start session - gives railway, tt & start time
+
+/Give Fer exit locs in direction analysis /ok for 3.0.0 (added at end of SingleServiceOutput in TrainUnit.cpp)
+
+/changed (a == z + 1) in conflict analysis to (a <= (z + 2)) to allow for a cdt
+
+/Changed all operating panel key hints to lowercase as Shift is disabled in the function & change in user manual & help too
+
+/In Case OperMode add if(!EveryPrefDir->PrefDirVector.empty()) as a condition for enabling PresetAutoSigRoutesButton(InterfaceUnit.cpp)
+
+/added '&& !EveryPrefDir->PrefDirVector.empty() in conditions for PresetAutoSigRoutesButton->Enabled = true in SetSaveMenuAndButtons
+
+/Add warning that a station has concourses but no platforms or Blue locs with no track - won't appear in timetable
+
+/Arrange for images to show text on top of named locations
+
+/Remove all 7777s and call CallerChecker
+
+/Don't leave anything in TestFunction()
+
+/add logs where ignore EClipboardExceptions so can see if reach those points
+
+/Check where & why CallLogPop introduced before throw in TrackElementAt - intro on 02/06/21 at rev 3745fadb... with no explanation, just delete it.
+
+/Check all non-error catches & ensure all pop the call log properly - ok they do.
+
+/Remove the non-printable copyright symbol in v2.10.0 - not required anyway
+
+/Need to add GetServiceFromVector, TrackElementPresentAtHV, InactiveTrackElementPresentAtHV & SingleServiceOutput to caller checker
+
+/Add more explanation within the analysis file re directions
+
+/Alter text for splits to make clear whether original service or split service & maybe give sequence at start rather than just the service ref
+
+/Add more diagnostics to analysis error file to indicate where the error occurred
+
+Testing direction analysis:
+/- check same headcodes so have /1, /2 etc (LU Met BK, & Kings Cross same headcodes3.ttb [with KC PCR])
+/- try many other tts
+/- check old KC tt (with cdt errors)
+/- try multiple splits (Cornwall)
+/- check single service missing cdts
+
+/Remove TestFunction for failed train test
+
+/Try a release configuration instead of debug and see if it still needs .dlls and .bpls.  It doesn't but get a very large number of warnings of the sort 'variable X is declared but never used', when they all manifestly are used!  Unable to discover why so stick with debug configuration, there seems to be no detectable time penalty and the .dlls are easy enough to include. 
+
+
 VERSION CHANGES AFTER v2.9.1 for v2.9.2
 
 I sincerely hope that this release cures the preferred direction problems associated with the Windows clipboard.  It seemed like a good idea to include preferred directions at v2.9.0 but given the trouble they've caused now I'm not so sure.

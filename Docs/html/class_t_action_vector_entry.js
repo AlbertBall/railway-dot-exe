@@ -5,7 +5,7 @@ var class_t_action_vector_entry =
     [ "Command", "class_t_action_vector_entry.html#a570ca952f6414e838be644082f02eed1", null ],
     [ "DepartureTime", "class_t_action_vector_entry.html#a37c6ff0cda2672bbd60099487442fbb5", null ],
     [ "EventTime", "class_t_action_vector_entry.html#a07850a494d4c0c71e9579c21c1910b76", null ],
-    [ "ExitList", "class_t_action_vector_entry.html#ab1d7c2bc6c0dee48c74c3dd9c325ec4d", null ],
+    [ "ExitList", "class_t_action_vector_entry.html#ac299ac76aecfd5034ff914a002d5c029", null ],
     [ "FormatType", "class_t_action_vector_entry.html#aaa45fd77d7d5f19350a0a7a8fbc05b13", null ],
     [ "FrontStartOrRepeatDigits", "class_t_action_vector_entry.html#a8b84cb2a020cfb2f81a091f3bdc59ec4", null ],
     [ "LinkedTrainEntryPtr", "class_t_action_vector_entry.html#ab240a52305bd614f1921e86617687abf", null ],

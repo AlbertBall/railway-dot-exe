@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 510;
 var viewHeight = 186;
-var sectionId = 'dynsection-166';
+var sectionId = 'dynsection-176';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -59,41 +59,42 @@ var sectionId = 'dynsection-166';
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="Check whether there is a platform present at HLoc &amp; VLoc at the same side as the signal represented b...">
-<polygon fill="#bfbfbf" stroke="black" points="355,-101 355,-120 502,-120 502,-101 355,-101"/>
-<text text-anchor="middle" x="428.5" y="-108" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::PlatformOnSignalSide</text>
+<polygon fill="#bfbfbf" stroke="black" points="355,-103 355,-122 502,-122 502,-103 355,-103"/>
+<text text-anchor="middle" x="428.5" y="-110" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::PlatformOnSignalSide</text>
 </a>
 </g>
 </g>
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_track.html#afb6bf873ba2e4107cf462f9d42dbe33f" target="_top" xlink:title="Called by TInterface::SaveOperatingImage1Click to add all track element graphics to the image file in...">
-<polygon fill="white" stroke="black" points="178,-132.5 178,-162.5 319,-162.5 319,-132.5 178,-132.5"/>
-<text text-anchor="start" x="186" y="-150.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::WriteOperatingTrack</text>
-<text text-anchor="middle" x="248.5" y="-139.5" font-family="Helvetica,sans-Serif" font-size="10.00">ToImage</text>
+<g id="a_node2"><a xlink:href="class_t_track.html#a98b1632a5246785adc1003ebcb3e91a4" target="_top" xlink:title="Called by TInterface::SaveOperatingImage1Click to add all track &amp; text to the image file in their ope...">
+<polygon fill="white" stroke="black" points="178,-134.5 178,-164.5 319,-164.5 319,-134.5 178,-134.5"/>
+<text text-anchor="start" x="186" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::WriteOperatingTrack</text>
+<text text-anchor="middle" x="248.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">AndTextToImage</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M371.55,-122.13C354.9,-125.59 336.45,-129.43 319.05,-133.04"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="372.58,-125.49 381.66,-120.03 371.16,-118.64 372.58,-125.49"/>
+<path fill="none" stroke="midnightblue" d="M371.55,-124.13C354.9,-127.59 336.45,-131.43 319.05,-135.04"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="372.58,-127.49 381.66,-122.03 371.16,-120.64 372.58,-127.49"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="class_t_track.html#ab3530b4af2a4b2a9cd1c1b480a19298d" target="_top" xlink:title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI...">
-<polygon fill="white" stroke="black" points="180.5,-79 180.5,-98 316.5,-98 316.5,-79 180.5,-79"/>
-<text text-anchor="middle" x="248.5" y="-86" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::WriteTrackToImage</text>
+<g id="a_node4"><a xlink:href="class_t_track.html#a909e96ff6b77c266ab82313e30018cd4" target="_top" xlink:title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI...">
+<polygon fill="white" stroke="black" points="181,-73.5 181,-103.5 316,-103.5 316,-73.5 181,-73.5"/>
+<text text-anchor="start" x="189" y="-91.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::WriteTrackAndText</text>
+<text text-anchor="middle" x="248.5" y="-80.5" font-family="Helvetica,sans-Serif" font-size="10.00">ToImage</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node1&#45;&gt;Node4</title>
-<path fill="none" stroke="midnightblue" d="M344.73,-100.27C335.36,-99.11 325.9,-97.94 316.76,-96.81"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="344.49,-103.77 354.84,-101.52 345.35,-96.82 344.49,-103.77"/>
+<path fill="none" stroke="midnightblue" d="M346.76,-101.61C336.56,-100.24 326.21,-98.84 316.25,-97.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="346.52,-105.11 356.89,-102.98 347.45,-98.18 346.52,-105.11"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
@@ -108,8 +109,8 @@ var sectionId = 'dynsection-166';
 <!-- Node2&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node2&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M167.91,-154.3C156.97,-155.24 145.86,-156.19 135.26,-157.09"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="168.22,-157.79 177.89,-153.45 167.62,-150.81 168.22,-157.79"/>
+<path fill="none" stroke="midnightblue" d="M167.91,-155.4C156.97,-156.21 145.86,-157.03 135.26,-157.81"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="168.17,-158.89 177.89,-154.66 167.65,-151.9 168.17,-158.89"/>
 </g>
 <!-- Node5 -->
 <g id="node5" class="node">
@@ -124,8 +125,8 @@ var sectionId = 'dynsection-166';
 <!-- Node4&#45;&gt;Node5 -->
 <g id="edge4" class="edge">
 <title>Node4&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M170.54,-99.46C158.93,-101.12 147.06,-102.81 135.77,-104.42"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="171.24,-102.9 180.65,-98.02 170.26,-95.97 171.24,-102.9"/>
+<path fill="none" stroke="midnightblue" d="M170.71,-99.44C159,-101.11 147.04,-102.81 135.66,-104.43"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="171.49,-102.86 180.9,-97.99 170.51,-95.93 171.49,-102.86"/>
 </g>
 <!-- Node6 -->
 <g id="node6" class="node">
@@ -140,8 +141,8 @@ var sectionId = 'dynsection-166';
 <!-- Node4&#45;&gt;Node6 -->
 <g id="edge5" class="edge">
 <title>Node4&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M170.3,-77.94C158.7,-76.36 146.86,-74.74 135.6,-73.2"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="170.02,-81.44 180.4,-79.32 170.97,-74.5 170.02,-81.44"/>
+<path fill="none" stroke="midnightblue" d="M170.71,-78C159,-76.4 147.04,-74.76 135.66,-73.21"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="170.52,-81.51 180.9,-79.39 171.47,-74.57 170.52,-81.51"/>
 </g>
 <!-- Node7 -->
 <g id="node7" class="node">
@@ -156,8 +157,8 @@ var sectionId = 'dynsection-166';
 <!-- Node4&#45;&gt;Node7 -->
 <g id="edge6" class="edge">
 <title>Node4&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M219.29,-74.42C198.25,-64.15 168.65,-50.22 142,-39.5 134.37,-36.43 126.18,-33.4 118.19,-30.57"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="217.8,-77.59 228.32,-78.85 220.89,-71.3 217.8,-77.59"/>
+<path fill="none" stroke="midnightblue" d="M206.77,-69C187.33,-59.95 163.64,-49.27 142,-40.5 133.63,-37.11 124.6,-33.7 115.9,-30.54"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="205.41,-72.23 215.95,-73.3 208.38,-65.89 205.41,-72.23"/>
 </g>
 </g>
 </svg>

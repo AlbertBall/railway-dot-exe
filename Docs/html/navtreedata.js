@@ -58,20 +58,20 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_about_unit_8cpp.html",
-"_graphic_unit_8h_source.html",
-"class_t_all_routes.html#a3993d52ba2a60f04572838e2cbd78bbf",
-"class_t_interface.html#a13fee6fa07e4a4e195e8b9c7dd303db0",
-"class_t_interface.html#a54ddc802547860142f7dfe8929c57b66",
-"class_t_interface.html#a9cfdb7521877f2c7ab124d0e4f47a0f6",
-"class_t_interface.html#ae217ab17f77c5f5e6008cdd7d5059e5a",
-"class_t_pref_dir_element.html#a9fd01c7c6774198d7efe2c9e60ab59bf",
-"class_t_rail_graphics.html#a591afa41048d7ab000223c2e406237cf",
-"class_t_rail_graphics.html#ab0850986e4fca120ba030509cf2cc90c",
-"class_t_text_handler.html#a30f32d9d3267bc8c90298e0ecd3c26fd",
-"class_t_track.html#abda8a4b54dd7c5f2b559eed11a7bac9b",
-"class_t_train.html#abfa6da75d034c737d53819e6edbfa3dc",
-"class_t_utilities.html#a100a392ac8eeb3955796954a5afade36"
+"_a_p_i_8cpp.html",
+"_graphic_unit_8h.html#afad868bc5f493f8b90c72f764c5be884",
+"class_t_action_vector_entry.html#ae142e8e9d3a842c9b1d81bcd4e93e291",
+"class_t_interface.html#a0f47d9e893d3558de2e6d9082b3fadd0",
+"class_t_interface.html#a4f47c7fbc5c7fed553660681e9a9db13",
+"class_t_interface.html#a970fd0fd4d725c80c6e2c4cd0c27cf0c",
+"class_t_interface.html#ad790c19adcc686497455e79016486cd6",
+"class_t_pref_dir_element.html#a22ed5d6b16c6b53f7c3229231791d35e",
+"class_t_rail_graphics.html#a504454fa0fa55bd458d531916288df33",
+"class_t_rail_graphics.html#aa7beb045e776e4487131f1270152d8f6",
+"class_t_rail_graphics.html#af8a817f7e91f0898fb914273093750b1",
+"class_t_track.html#aa7b58c83ca1743ad3e4607ac0af9c71c",
+"class_t_train.html#aa7881a1af2b9f5e899ce02937325c3a3",
+"class_t_train_data_entry.html#a977ccbe485d557d4c4a597f5de2251c4"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

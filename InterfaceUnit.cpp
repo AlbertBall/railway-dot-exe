@@ -56,7 +56,7 @@
 #include "Utilities.h"
 #include "TrackUnit.h"
 #include "AboutUnit.h"
-#include <fstream>
+#include "API.h"        //added at v2.10.0
 #include <dirent.h>
 #include <Filectrl.hpp> //to check whether directories exist
 
@@ -67,6 +67,8 @@
 #pragma resource "*.dfm"
 
 TInterface *Interface;
+API *session_api_;  //moved from header to avoid AboutForm having access and defining _session_api_
+                    //as well as Interface and giving a warning, added at v2.10.0
 
 // Folder Names
 const UnicodeString TInterface::RAILWAY_DIR_NAME = "Railways";
@@ -225,10 +227,24 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         RecoverClipboardMessageSent = false; // added at v2.8.0
         TooLongMessageSentFlag = false; //added at v2.9.1
         TooShortMessageSentFlag = false; //added at v2.9.1
+        Track->NoPlatsMessageSent = false; //added at v2.10.0
 
         TrackInfoOnOffMenuItem->Caption = "Show"; // added here at v1.2.0 because dropped from ResetAll()
         TrainStatusInfoOnOffMenuItem->Caption = "Hide Status"; // changed at v2.0.0 so normally visible
         TrainTTInfoOnOffMenuItem->Caption = "Hide Timetable"; // as above
+
+        /* ======================= ROS Dummy API ===============================
+                    Connect API to track variables of interest, added at v2.10.0
+        */
+        session_api_ = new API(CurDir + "\\session.ini");
+        session_api_->add_metadata_str("railway", &RailwayTitle);
+        session_api_->add_metadata_str("timetable", &TimetableTitle);
+        session_api_->add_metadata_str("performance_file", &PerformanceFileName);
+        session_api_->add_metadata_int("main_mode", &api_main_mode_);
+        session_api_->add_metadata_int("operation_mode", &api_oper_mode_);
+
+        // =====================================================================
+
         ResetAll(0);
 
         TempTTFileName = "";
@@ -774,6 +790,7 @@ __fastcall TInterface::~TInterface()
         delete Display;
         delete RailGraphics;
         delete Utilities;
+        delete session_api_;        //added at v2.10.0
         DeleteFile(TempTTFileName); // added at v2.5.0 to prevent temporary files building up
     }
     catch(const Exception &e)
@@ -826,10 +843,10 @@ void __fastcall TInterface::AppDeactivate(TObject *Sender)
                 DivergingPointVectorPosition = -1;
                 Screen->Cursor = TCursor(-2); // Arrow
             }
-            Level2OperMode = Paused;
-            SetLevel2OperMode(2);
+            Level2OperMode = Paused;  //disable to stop pause
+            SetLevel2OperMode(2);   //disable to stop pause
         }
-        MasterClock->Enabled = false;
+        MasterClock->Enabled = false; //disable to stop pause
         ClipboardChecked = false; // added at v2.8.0 to force a check of the clipboard (via ClockTimer2 & SetTrackModeMenu)
     }
     catch(const Exception &e)
@@ -884,7 +901,7 @@ UnicodeString TInterface::GetVersion()
                 // HIWORD(fi->dwFileVersionLS), LOWORD(fi->dwFileVersionLS)
             }
         }
-        delete[]pBuffer;
+        delete[] pBuffer;
     }
     return(L" v" + strVersion);
 }
@@ -2593,6 +2610,7 @@ void TInterface::LoadRailway(int Caller, AnsiString LoadFileName)
                         Screen->Cursor = TCursor(-2); // Arrow
                         Level1Mode = BaseMode;
                         SetLevel1Mode(9);
+                        session_api_->dump();   // update session INI file    //added at v2.10.0
                         Utilities->CallLogPop(1136);
                         return;
                     }
@@ -2632,6 +2650,7 @@ void TInterface::LoadRailway(int Caller, AnsiString LoadFileName)
     {
         ShowMessage("File integrity check failed - unable to load " + LoadFileName + ". Please check that the file exists and is spelled correctly.");
     }
+    session_api_->dump();   // update session INI file  //added at v2.10.0
     Utilities->CallLogPop(1774);
 }
 
@@ -2771,9 +2790,8 @@ void __fastcall TInterface::SaveImageNoGridMenuItemClick(TObject *Sender)
 
         // write graphics first so text & track overwrite
         Track->WriteGraphicsToImage(0, RailwayImage);
-        // then write text so track overwrites
-        TextHandler->WriteTextToImage(0, RailwayImage);
-        Track->WriteTrackToImage(0, RailwayImage);
+        // then write track & text so text overwrites graphics & inactive elements //changed name & added text after inactives at v2.10.0
+        Track->WriteTrackAndTextToImage(0, RailwayImage);
 
         RailwayImage->SaveToFile(ImageFileName);
         delete RailwayImage;
@@ -2782,7 +2800,7 @@ void __fastcall TInterface::SaveImageNoGridMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1535);
     }
-    catch(const Exception &e) //non error catch
+    catch(const Exception &e) //non-error catch
     {
         if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
         {
@@ -2871,9 +2889,8 @@ void __fastcall TInterface::SaveImageAndGridMenuItemClick(TObject *Sender)
         }
         // write graphics next so text & track overwrite
         Track->WriteGraphicsToImage(1, RailwayImage);
-        // then write text so track overwrites
-        TextHandler->WriteTextToImage(1, RailwayImage);
-        Track->WriteTrackToImage(1, RailwayImage);
+        // then write track & text so text overwrites graphics & inactive elements
+        Track->WriteTrackAndTextToImage(1, RailwayImage);  //changed name & added text after inactives at v2.10.0
         RailwayImage->SaveToFile(ImageFileName);
         delete RailwayImage;
         TrainController->BaseTime = TDateTime::CurrentDateTime();
@@ -2881,7 +2898,7 @@ void __fastcall TInterface::SaveImageAndGridMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1536);
     }
-    catch(const Exception &e) //non error catch
+    catch(const Exception &e) //non-error catch
     {
         if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
         {
@@ -2961,9 +2978,8 @@ void __fastcall TInterface::SaveImageAndPrefDirsMenuItemClick(TObject *Sender)
 
         // write graphics first so text & track overwrite
         Track->WriteGraphicsToImage(2, RailwayImage);
-        // then write text so track overwrites
-        TextHandler->WriteTextToImage(2, RailwayImage);
-        Track->WriteTrackToImage(2, RailwayImage);
+        // then write track & text so text overwrites graphics & inactive elements
+        Track->WriteTrackAndTextToImage(2, RailwayImage); //changed name & added text after inactives at v2.10.0
         EveryPrefDir->WritePrefDirToImage(0, RailwayImage);
         RailwayImage->SaveToFile(ImageFileName);
         delete RailwayImage;
@@ -2972,7 +2988,7 @@ void __fastcall TInterface::SaveImageAndPrefDirsMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1566);
     }
-    catch(const Exception &e) //non error catch
+    catch(const Exception &e) //non-error catch
     {
         if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
         {
@@ -3056,9 +3072,8 @@ void __fastcall TInterface::SaveOperatingImageMenuItemClick(TObject *Sender)
 
         // write graphics first so text & track overwrite
         Track->WriteGraphicsToImage(3, RailwayImage);
-        // then write text so track overwrites
-        TextHandler->WriteTextToImage(3, RailwayImage);
-        Track->WriteOperatingTrackToImage(0, RailwayImage); // need points with single fillets, signals with colours, gaps all connected
+        // then write track and text so both overwrite graphics & text overwrites inactive elements
+        Track->WriteOperatingTrackAndTextToImage(0, RailwayImage); // need points with single fillets, signals with colours, gaps all connected
         AllRoutes->WriteAllRoutesToImage(0, RailwayImage);
 // add any locked route markers
         if(!AllRoutes->LockedRouteVector.empty())
@@ -3100,7 +3115,7 @@ void __fastcall TInterface::SaveOperatingImageMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1703);
     }
-    catch(const Exception &e) //non error catch
+    catch(const Exception &e) //non-error catch
     {
         if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
         {
@@ -3299,7 +3314,8 @@ void __fastcall TInterface::CreateTimetableMenuItemClick(TObject *Sender)
         NewEntryInPreparationFlag = false;
         CopiedEntryStr = "";
         TEVPtr = 0;
-        TTCurrentEntryPtr = 0, TTStartTimePtr = 0;
+        TTCurrentEntryPtr = 0;
+        TTStartTimePtr = 0;
         TTFirstServicePtr = 0;
         TTLastServicePtr = 0; // all set to null to begin with
 
@@ -3361,6 +3377,7 @@ void __fastcall TInterface::CreateTimetableMenuItemClick(TObject *Sender)
         }
         Level1Mode = TimetableMode;
         SetLevel1Mode(82);
+        session_api_->dump();   // update session INI file   //added at v2.10.0
         Utilities->CallLogPop(1595);
     }
     catch(const Exception &e)
@@ -3474,7 +3491,7 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
                     TimetableEditVector.push_back(OneLine);
                 }
                 TTBLFile.close();
-                delete[]TimetableEntryString;
+                delete[] TimetableEntryString;
                 // here with TimetableEditVector compiled
             }
             else
@@ -3538,6 +3555,7 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
         }
         Level1Mode = TimetableMode;
         SetLevel1Mode(83);
+        session_api_->dump();   // update session INI file   //added at v2.10.0
         Utilities->CallLogPop(1596);
     }
     catch(const Exception &e)
@@ -4683,7 +4701,7 @@ void __fastcall TInterface::RestoreTTButtonClick(TObject *Sender)
                 TimetableEditVector.push_back(OneLine);
             }
             TTBLFile.close();
-            delete[]TimetableEntryString;
+            delete[] TimetableEntryString;
             // here with TimetableEditVector compiled
         }
         else
@@ -4973,6 +4991,7 @@ void __fastcall TInterface::OAListBoxMouseUp(TObject *Sender, TMouseButton Butto
     {
         TrainController->LogEvent("OAListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y) + "," + AnsiString(Button)); // button may be right or left
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OAListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y));
+        int ScreenPosH, ScreenPosV;
         if(Track->RouteFlashFlag || Track->PointFlashFlag) // no action
         {
             Utilities->CallLogPop(2087);
@@ -4994,11 +5013,22 @@ void __fastcall TInterface::OAListBoxMouseUp(TObject *Sender, TMouseButton Butto
         {
             HPos = (Track->TrackElementAt(926, TrackVectorPosition).HLoc * 16);
             VPos = (Track->TrackElementAt(927, TrackVectorPosition).VLoc * 16);
-            // now want to set the offsets to display HPos & VPos in the centre of the screen
-            Display->DisplayOffsetH = (HPos - MainScreen->Width / 2) / 16; // ScreenPosH = HPos - (DisplayOffsetH * 16)
-            Display->DisplayOffsetV = (VPos - MainScreen->Height / 2) / 16;
-            int ScreenPosH = HPos - (Display->DisplayOffsetH * 16);
-            int ScreenPosV = VPos - (Display->DisplayOffsetV * 16);
+            //if train is already shown on the screen then don't move the viewpoint, if not then display it in the centre
+            //added at v2.10.0
+            if(((HPos - (Display->DisplayOffsetH * 16)) >= 0) && ((HPos - (Display->DisplayOffsetH * 16)) < MainScreen->Width) &&
+                    ((VPos - (Display->DisplayOffsetV * 16)) >= 0) && ((VPos - (Display->DisplayOffsetV * 16)) < MainScreen->Height)) // element on screen
+            {
+                ScreenPosH = HPos - (Display->DisplayOffsetH * 16);
+                ScreenPosV = VPos - (Display->DisplayOffsetV * 16);
+            }
+            else
+            {
+                // set the offsets to display HPos & VPos in the centre of the screen
+                Display->DisplayOffsetH = (HPos - MainScreen->Width / 2) / 16; // ScreenPosH = HPos - (DisplayOffsetH * 16)
+                Display->DisplayOffsetV = (VPos - MainScreen->Height / 2) / 16;
+                ScreenPosH = HPos - (Display->DisplayOffsetH * 16);
+                ScreenPosV = VPos - (Display->DisplayOffsetV * 16);
+            }
             if(Display->ZoomOutFlag) // panel displays in either zoom mode
             {
                 Display->ZoomOutFlag = false;
@@ -8412,8 +8442,9 @@ void TInterface::ClockTimer2(int Caller)
         }
         if(!ClipboardChecked)
         {
-            if((Level1Mode == TrackMode) && !SelectionValid & (ClpBrdValid != "RlyClpBrd_Cut") && (ClpBrdValid != "RlyClpBrdCopy"))
+            if((Level1Mode == TrackMode) && !SelectionValid && (ClpBrdValid != "RlyClpBrd_Cut") && (ClpBrdValid != "RlyClpBrdCopy"))
             // reset the menu for the new app (when !SelectionValid) & don't keep resetting when ClpBrdValid
+            //before 2.10.0 one '&' was missing before '(ClpBrdValid != "RlyClpBrd_Cut")' making it into an address which would always be > 0 i.e.true
             {
                 SetTrackModeEditMenu(2); // to reset the menu in case select a new app for pasting
                 ClipboardChecked = true;
@@ -8803,8 +8834,8 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
             TrainController->SignallerTrainRemovedOnAutoSigsRoute = false; // added at v1.3.0 to ensure doesn't persist beyond one call
         }
 
-        else if(Level2OperMode == Paused) // added at v2.5.0 to show actions due after a session file reloaded
-        {
+        else if((Level2OperMode == Paused) || (Level2OperMode == PreStart)) // added at v2.5.0 to show actions due after a session file reloaded
+        {                                                                   // modified at v3.0.0 to add PreStart
             if((TrainController->OpTimeToActUpdateCounter == 0) && (OperatorActionPanel->Visible))
             {
                 for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
@@ -10764,9 +10795,10 @@ void __fastcall TInterface::CancelSelectionMenuItemClick(TObject *Sender)
         Clipboard()->Close();
         Utilities->CallLogPop(1413);
     }
-    catch(const EClipboardException &e) // take no action  //non error catch
+    catch(const EClipboardException &e) //non-error catch - take no action
     {
 // Application->MessageBox(L"A clipboard error occurred in the cancel function", L"Message", MB_OK);
+        TrainController->LogEvent("EClipboardException in CancelSelectionMenuItemClick - message = " + e.Message);
         Utilities->CallLogPop(2314);
     }
     catch(const Exception &e)
@@ -11186,7 +11218,7 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
         InfoPanel->Caption = TempInfo;
         Utilities->CallLogPop(2305);
     }
-    catch(const Exception &e) //non error catch
+    catch(const Exception &e) //non-error catch
     {
         Screen->Cursor = TCursor(-2); // Arrow
         ShowMessage("Error in preferred direction checking, unable to complete the check");
@@ -12956,7 +12988,7 @@ void __fastcall TInterface::SpeedEditBoxKeyUp(TObject *Sender, WORD &Key, TShift
         }
         Utilities->CallLogPop(1865);
     }
-    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash //non error catch
+    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash //non-error catch
     {
         SpeedVariableLabel->Caption = "Entry error";
         Utilities->CallLogPop(2307);
@@ -13045,7 +13077,7 @@ void __fastcall TInterface::PowerEditBoxKeyUp(TObject *Sender, WORD &Key, TShift
         }
         Utilities->CallLogPop(1868);
     }
-    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash  //non error catch
+    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash  //non-error catch
     {
         PowerVariableLabel->Caption = "Entry error";
         Utilities->CallLogPop(2308);
@@ -13112,7 +13144,7 @@ void __fastcall TInterface::SpeedEditBox2KeyUp(TObject *Sender, WORD &Key, TShif
         }
         Utilities->CallLogPop(1866);
     }
-    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash //non error catch
+    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash //non-error catch
     {
         SpeedVariableLabel2->Caption = "Entry error";
         Utilities->CallLogPop(2309);
@@ -13197,7 +13229,7 @@ void __fastcall TInterface::LengthEditKeyUp(TObject *Sender, WORD &Key, TShiftSt
         }
         Utilities->CallLogPop(1867);
     }
-    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash  //non error catch
+    catch(const EConvertError &ec) // thrown for ToInt() conversion error; shouldn't occur but include to prevent a crash  //non-error catch
     {
         MetreVariableLabel->Caption = "Entry error";
         Utilities->CallLogPop(2310);
@@ -13815,7 +13847,7 @@ void __fastcall TInterface::MTBFEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftS
             }
             if(TooBigFlag)
             {
-                ShowMessage("Maximum value allowed is 10,000");
+                ShowMessage("Maximum value allowed is 9,999");
                 MTBFEditBox->Text = "";
                 TrainController->AvHoursIntValue = 0;
                 TrainController->MTBFHours = 0;
@@ -14031,7 +14063,7 @@ void __fastcall TInterface::CPGenFileButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("CPGenFileButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CPGenFileButtonClick");
-        if(!CPArrivalsCheckBox->Checked && !CPDeparturesCheckBox->Checked && !CPAtLocCheckBox->Checked)
+        if(!CPArrivalsCheckBox->Checked && !CPDeparturesCheckBox->Checked && !CPAtLocCheckBox->Checked && !CPDirectionsCheckBox->Checked)
         {
             ShowMessage("No boxes ticked!");
         }
@@ -14050,7 +14082,7 @@ void __fastcall TInterface::CPGenFileButtonClick(TObject *Sender)
                     }
                 }
                 if(TrainController->CreateTTAnalysisFile(0, RailwayTitle, TTTitle, CurDir, CPArrivalsCheckBox->Checked, CPDeparturesCheckBox->Checked,
-                                                         CPAtLocCheckBox->Checked, CPEditArrRange->Text.ToInt(), CPEditDepRange->Text.ToInt()))
+                                                         CPAtLocCheckBox->Checked, CPDirectionsCheckBox->Checked, CPEditArrRange->Text.ToInt(), CPEditDepRange->Text.ToInt()))
                 {
                     ShowMessage("Analysis complete and file created");
                 }
@@ -14921,7 +14953,14 @@ void TInterface::SetLevel1Mode(int Caller)
 
         CallingOnButton->Visible = false;
         PresetAutoSigRoutesButton->Visible = true;
-        PresetAutoSigRoutesButton->Enabled = true;
+        if(!EveryPrefDir->PrefDirVector.empty()) //condition added at v2.10.0
+        {
+            PresetAutoSigRoutesButton->Enabled = true;
+        }
+        else
+        {
+            PresetAutoSigRoutesButton->Enabled = false;
+        }
         InfoPanel->Visible = true;
         SigImagePanel->Visible = false; // new at v2.3.0
         ModeMenu->Enabled = false;
@@ -14994,6 +15033,8 @@ void TInterface::SetLevel1Mode(int Caller)
             ShowMessage("Performance logfile failed to open, logs won't be saved. Ensure that there is a folder named " + PERFLOG_DIR_NAME +
                         " in the folder where the 'Railway.exe' program file resides");
         }
+        Display->PerformanceLog(16, "Performance Log\nRailway: " + RailwayTitle + "\nTimetable: " + TimetableTitle + "\nStart Time: " +
+                TrainController->TimetableStartTime.FormatString("hh:nn"));
         SetPausedOrZoomedInfoCaption(3);
 // DisableRouteButtons(2); enable route setting or pre-start
 // DisablePanelsStoreMainMenuStates();
@@ -15151,6 +15192,8 @@ void TInterface::SetLevel1Mode(int Caller)
         SetLevel1Mode(29);
         break;
     }
+    api_main_mode_ = int(Level1Mode);   //added at v2.10.0
+    session_api_->dump();   // update session INI file
     Utilities->CallLogPop(103);
 }
 
@@ -15158,706 +15201,715 @@ void TInterface::SetLevel1Mode(int Caller)
 
 void TInterface::SetLevel2TrackMode(int Caller)
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetLevel2TrackMode");
-    if(Level1Mode != TrackMode)
+    try
     {
-        // No further recursion in BaseMode so OK
-        Level1Mode = BaseMode;
-        SetLevel1Mode(20);
-        Utilities->CallLogPop(1115);
-        return;
-    }
-    if(Level2TrackMode == NoTrackMode)
-    {
-        Utilities->CallLogPop(104);
-        return;
-    }
-    switch(Level2TrackMode) // use the data member
-    {
-    case AddTrack:
-        ResetCurrentSpeedButton(1);
-        InfoPanel->Visible = true;
-        InfoPanel->Caption = "ADDING TRACK:  Select element then left click to add it.  Right click an element to remove it.";
-        LengthConversionPanel->Visible = false; // in case had been in distance setting mode
-        SpeedConversionPanel->Visible = false; // in case had been in distance setting mode
-        TrackElementPanel->Visible = true;
-        TrackElementPanel->Enabled = true;
-        SigAspectButton->Visible = true;
-        SigAspectButton->Enabled = true;
-        ClearandRebuildRailway(34); // to replot grid if required & clear any other unwanted items
-        SetTrackBuildImages(4);
-        SetLengthsButton->Enabled = false;
-// section added at v2.8.0 so buttons show correctly after a paste
-        SetGapsButton->Enabled = false;
-        TrackOKButton->Enabled = false;
-        if(Track->GapsUnset(9))
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetLevel2TrackMode");
+        if(Level1Mode != TrackMode)
         {
-            SetGapsButton->Enabled = true;
-        }
-        // only enable if there are gaps still to be set (returns false for no track)
-        else
-        {
-            if(!(Track->NoActiveTrack(3)) && !(Track->IsTrackFinished()))
-            {
-                TrackOKButton->Enabled = true;
-            }
-            // TrackOK only enabled if track exists, there are no unset gaps, and track not finished
-        }
-// end of 2.8.0 addition
-        if(Track->IsTrackFinished()) // can only set lengths for several elements together if TrackFinished
-        {
-            SetLengthsButton->Enabled = true;
-        }
-        UserGraphicReselectPanel->Visible = false;
-        SelectLengthsFlag = false; // in case still set though probably won't be
-        EditMenu->Enabled = true; // added at v2.6.0 to allow edits for an empty screen so track elements can fill a selected area
-        break;
-
-    case AddGraphic:
-        InfoPanel->Visible = true;
-        InfoPanel->Caption = "ADDING GRAPHIC:  Left click layout to add SELECTED graphic, right click to remove ANY graphic.";
-        break;
-
-    case SelectGraphic:
-        InfoPanel->Visible = true;
-        InfoPanel->Caption = "SELECTING USER GRAPHIC:  Select the graphic file then add as many as necessary to the layout.";
-        break;
-
-    case GapSetting:
-        int HLoc, VLoc, Count;
-        Count = Track->NumberOfGaps(0);
-        if(div(Count, 2).rem == 1) // condition OK
-        {
-            ShowMessage("Can't connect, there are an odd number of gaps");
-            Level1Mode = TrackMode;
-            SetLevel1Mode(77);
-            Level2TrackMode = AddTrack;
-            // No further recursion in AddTrack so OK
-            SetLevel2TrackMode(40);
-            Utilities->CallLogPop(105);
+            // No further recursion in BaseMode so OK
+            Level1Mode = BaseMode;
+            SetLevel1Mode(20);
+            Utilities->CallLogPop(1115);
             return;
         }
-        if(!HighLightOneGap(2, HLoc, VLoc)) // condition OK
-        // need to call this here to start gap setting process off,
-        // called in MainScreenMouseDown hereafter.  Function returns false for either a LocError (links not yet
-        // complete) or no more gaps to be highlighted
+        if(Level2TrackMode == NoTrackMode)
         {
-            // shouldn't reach here as later gaps covered in MainScreenMouseDown but leave & give error message
-            ShowMessage("Error - Even number of gaps but all set after first call to HighLightOneGap");
-            Level1Mode = TrackMode;
-            SetLevel1Mode(78);
-            Level2TrackMode = AddTrack;
-            // No further recursion in AddTrack so OK
-            SetLevel2TrackMode(41);
-            Utilities->CallLogPop(106);
-            return; // all gaps set
+            Utilities->CallLogPop(104);
+            return;
         }
-        InfoPanel->Visible = true;
-        InfoPanel->Caption = "CONNECTING GAPS:  Click on connecting gap";
-        UserGraphicReselectPanel->Visible = false;
-        SetTrackBuildImages(5);
-        break;
-
-    case AddText:
-        InfoPanel->Visible = true;
-        InfoPanel->Caption = "ADDING/EDITING TEXT: Left click to add, right click first letter to erase, or left click first letter to edit)";
-        if(TextHandler->TextVectorSize(13) > 0)
+        switch(Level2TrackMode) // use the data member
         {
-            MoveTextOrGraphicButton->Enabled = true;
-        }
-        else
-        {
-            MoveTextOrGraphicButton->Enabled = false;
-        }
-        UserGraphicReselectPanel->Visible = false;
-        ClearandRebuildRailway(58); // to drop DistanceKey if was displayed
-        break;
-
-    case MoveTextOrGraphic:
-        InfoPanel->Visible = true;
-        InfoPanel->Caption = "MOVING TEXT OR GRAPHIC: If text left click first letter, if graphic left click anywhere, then drag";
-        UserGraphicReselectPanel->Visible = false;
-        ClearandRebuildRailway(59); // to drop DistanceKey if was displayed
-        break;
-
-    case AddLocationName:
-        InfoPanel->Visible = true;
-        InfoPanel->Caption = "NAMING LOCATIONS:  Click on location element to add or change name";
-        ClearandRebuildRailway(35); // to get rid of earlier red rectangle
-        UserGraphicReselectPanel->Visible = false;
-        SetTrackBuildImages(12);
-        break;
-
-    case DistanceStart:
-        InfoPanel->Visible = true;
-        InfoPanel->Caption = "DISTANCE/SPEED SETTING:  Select first location (only non-default elements marked)";
-        DistanceKey->Visible = true;
-        LengthConversionPanel->Visible = true;
-        SpeedConversionPanel->Visible = true;
-        UserGraphicReselectPanel->Visible = false;
-        ClearandRebuildRailway(36); // to get rid of earlier unwanted markings
-        break;
-
-    case DistanceContinuing:
-        InfoPanel->Visible = true;
-        if(ConstructPrefDir->PrefDirSize() == 1)
-        {
-            InfoPanel->Caption = "DISTANCE/SPEED SETTING:  Select next location";
-        }
-        else
-        {
-            InfoPanel->Caption = "DISTANCE/SPEED SETTING:  Continue or set values (overall length), or right click to cancel/truncate";
-        }
-        UserGraphicReselectPanel->Visible = false;
-        ClearandRebuildRailway(54); // to remove earlier end marker if present
-        break;
-
-    case TrackSelecting:
-        Track->CopyFlag = false;
-        if(!SelectionValid)
-        {
-            ResetSelectRect(); // so a viewpoint change before a new SelectRect chosen doesn't redisplay
-        }
-        // the old SelectRect (only called when entered from SelectMenuItemClick, & not from
-        // ReselectMenuItemClick)
-        InfoPanel->Visible = true;
-        InfoPanel->Caption = "SELECTING:  Select area - click left mouse && drag";
-        SelectMenuItem->Enabled = false;
-        ReselectMenuItem->Enabled = false;
-        CancelSelectionMenuItem->Enabled = true;
-        UserGraphicReselectPanel->Visible = false;
-        break;
-
-    case CopyMoving:
-        Track->CopyFlag = true;
-        InfoPanel->Visible = true;
-        InfoPanel->Caption = "COPYING:  Left click in selection && drag";
-        CutMenuItem->Enabled = false;
-        CopyMenuItem->Enabled = false;
-        FlipMenuItem->Enabled = false;
-        MirrorMenuItem->Enabled = false;
-        RotRightMenuItem->Enabled = false;
-        RotLeftMenuItem->Enabled = false;
-        RotateMenuItem->Enabled = false;
-        PasteMenuItem->Enabled = true;
-// PasteWithAttributesMenuItem->Enabled = false;  //new at v2.2.0 - don't allow the option if copying (dropped at 2.4.0 as all pastes are with attributes)
-        DeleteMenuItem->Enabled = false;
-        SelectLengthsMenuItem->Enabled = false;
-        SelectBiDirPrefDirsMenuItem->Visible = false;
-        CheckPrefDirConflictsMenuItem->Visible = false;
-        CancelSelectionMenuItem->Enabled = true;
-        SelectBitmapHLoc = SelectRect.left;
-        SelectBitmapVLoc = SelectRect.top;
-        SetTrackBuildImages(6);
-        UserGraphicReselectPanel->Visible = false;
-        break;
-
-    case CutMoving:
-    {
-        // have to use braces as otherwise the default case bypasses the initialisation of these local variables
-        // erase track elements within selected region
-        Track->CopyFlag = false;
-        bool EraseSuccessfulFlag, NeedToLink = false, TextChangesMade = false, GraphicChangesMade = false;
-        int ErasedTrackVectorPosition;
-        Screen->Cursor = TCursor(-11);     // Hourglass;
-        InfoPanel->Visible = true;
-        InfoPanel->Caption = "CUT PROCESSING: Please do not click the mouse";
-        InfoPanel->Update();
-        for(int H = SelectRect.left; H < SelectRect.right; H++)
-        {
-            for(int V = SelectRect.top; V < SelectRect.bottom; V++)
+        case AddTrack:
+            ResetCurrentSpeedButton(1);
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "ADDING TRACK:  Select element then left click to add it.  Right click an element to remove it.";
+            LengthConversionPanel->Visible = false; // in case had been in distance setting mode
+            SpeedConversionPanel->Visible = false; // in case had been in distance setting mode
+            TrackElementPanel->Visible = true;
+            TrackElementPanel->Enabled = true;
+            SigAspectButton->Visible = true;
+            SigAspectButton->Enabled = true;
+            ClearandRebuildRailway(34); // to replot grid if required & clear any other unwanted items
+            SetTrackBuildImages(4);
+            SetLengthsButton->Enabled = false;
+    // section added at v2.8.0 so buttons show correctly after a paste
+            SetGapsButton->Enabled = false;
+            TrackOKButton->Enabled = false;
+            if(Track->GapsUnset(9))
             {
-                Track->EraseTrackElement(2, H, V, ErasedTrackVectorPosition, EraseSuccessfulFlag, false);
-                if(EraseSuccessfulFlag)
-                {
-                    if(ErasedTrackVectorPosition > -1) //may be an inactive element that was erased
-                    {
-                        EveryPrefDir->RealignAfterTrackErase(1, ErasedTrackVectorPosition);
-                    }
-                    NeedToLink = true;
-                }
+                SetGapsButton->Enabled = true;
             }
-        }
-
-        // erase text elements within selected region
-        int LowSelectHPos = SelectRect.left * 16;
-        int HighSelectHPos = SelectRect.right * 16;
-        int LowSelectVPos = SelectRect.top * 16;
-        int HighSelectVPos = SelectRect.bottom * 16;
-        if(!TextHandler->TextVector.empty())     // skip iteration if empty else have an error
-        {
-            for(TTextHandler::TTextVectorIterator TextPtr = (TextHandler->TextVector.end() - 1); TextPtr >= TextHandler->TextVector.begin();
-                TextPtr--)     // reverse to prevent skipping during erase
+            // only enable if there are gaps still to be set (returns false for no track)
+            else
             {
-                if((TextPtr->HPos >= LowSelectHPos) && (TextPtr->HPos < HighSelectHPos) && (TextPtr->VPos >= LowSelectVPos) && (TextPtr->VPos <
-                                                                                                                                HighSelectVPos))
+                if(!(Track->NoActiveTrack(3)) && !(Track->IsTrackFinished()))
                 {
-                    if(TextHandler->TextErase(1, TextPtr->HPos, TextPtr->VPos, AnsiString("")))
-                    {
-                        ;
-                    }     // unused condition
-
-                    TextChangesMade = true;
+                    TrackOKButton->Enabled = true;
                 }
+                // TrackOK only enabled if track exists, there are no unset gaps, and track not finished
             }
-        }
-        // erase graphic elements that fall wholly within region to be overwritten
-        if(!Track->UserGraphicVector.empty())     // skip iteration if empty else have an error
-        {
-            for(TTrack::TUserGraphicVector::iterator GraphicPtr = (Track->UserGraphicVector.end() - 1); GraphicPtr >= Track->UserGraphicVector.begin();
-                GraphicPtr--)     // reverse to prevent skipping during erase
+    // end of 2.8.0 addition
+            if(Track->IsTrackFinished()) // can only set lengths for several elements together if TrackFinished
             {
-                if((GraphicPtr->HPos >= LowSelectHPos) && ((GraphicPtr->HPos + GraphicPtr->Width) < HighSelectHPos) && (GraphicPtr->VPos >= LowSelectVPos)
-                   && ((GraphicPtr->VPos + GraphicPtr->Height) < HighSelectVPos))
-                {
-                    Track->UserGraphicVector.erase(GraphicPtr);
-                    GraphicChangesMade = true;
-                }
+                SetLengthsButton->Enabled = true;
             }
-        }
-        Track->CheckMapAndTrack(11);     // test
-        Track->CheckMapAndInactiveTrack(10);     // test
-        Track->CheckLocationNameMultiMap(19);     // test
-        Screen->Cursor = TCursor(-2);     // Arrow;
-        // Track->SetTrackFinished(!NeedToLink);  This is an error (see Sam Wainwright email of 24/08/17 & devhistory.txt
-        // if track not linked to begin with then becomes linked if NeedToLink false
-        if(NeedToLink)
-        {
-            Track->SetTrackFinished(false);     // corrected for v2.1.0
-        }
-        InfoPanel->Caption = "CUTTING:  Left click in selection && drag";
-        CutMenuItem->Enabled = false;
-        CopyMenuItem->Enabled = false;
-        FlipMenuItem->Enabled = false;
-        MirrorMenuItem->Enabled = false;
-        RotRightMenuItem->Enabled = false;
-        RotLeftMenuItem->Enabled = false;
-        RotateMenuItem->Enabled = false;
-        PasteMenuItem->Enabled = true;
-// PasteWithAttributesMenuItem->Enabled = true;  //new at v2.2.0 - option enabled if cutting   (dropped at 2.4.0 as all pastes are with attributes)
-        DeleteMenuItem->Enabled = false;
-        SelectLengthsMenuItem->Enabled = false;
-        SelectBiDirPrefDirsMenuItem->Visible = false;
-        CheckPrefDirConflictsMenuItem->Visible = false;
-        CancelSelectionMenuItem->Enabled = true;
-        SelectBitmapHLoc = SelectRect.left;
-        SelectBitmapVLoc = SelectRect.top;
-        if(NeedToLink || TextChangesMade || GraphicChangesMade)
-        {
-            ResetChangedFileDataAndCaption(20, true);     // true for NonPrefDirChangesMade
-        }
-        ClearandRebuildRailway(37);     // to overplot the erased elements with SelectBitmap
-        UserGraphicReselectPanel->Visible = false;
-        SetTrackBuildImages(7);
-    } break;
+            UserGraphicReselectPanel->Visible = false;
+            SelectLengthsFlag = false; // in case still set though probably won't be
+            EditMenu->Enabled = true; // added at v2.6.0 to allow edits for an empty screen so track elements can fill a selected area
+            SetTrackModeEditMenu(6); //added at v2.10.0 to set menu items
+            break;
 
-    case Pasting:
-    {
-        // have to use braces as otherwise the default case bypasses the initialisation of these local variables
-        int HDiff = SelectBitmapHLoc - SelectRect.left;     // SelectBitmapHLoc/VLoc is the paste position & SelectRect.left/top is the original position
-        int VDiff = SelectBitmapVLoc - SelectRect.top;
-        if(!SelectionValid && !CancelSelectionFlag)     // may be pasting into a new application so use clipboard, new at v2.8.0
-        {
-            bool ValidResult;
-            RecoverClipboard(0, ValidResult);     // new at v2.8.0
-            if(ValidResult)
+        case AddGraphic:
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "ADDING GRAPHIC:  Left click layout to add SELECTED graphic, right click to remove ANY graphic.";
+            break;
+
+        case SelectGraphic:
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "SELECTING USER GRAPHIC:  Select the graphic file then add as many as necessary to the layout.";
+            break;
+
+        case GapSetting:
+            int HLoc, VLoc, Count;
+            Count = Track->NumberOfGaps(0);
+            if(div(Count, 2).rem == 1) // condition OK
             {
-                HDiff = Display->DisplayOffsetH - SelectRect.left;     // SelectRect.left & top recovered in clipboard
-                VDiff = Display->DisplayOffsetV - SelectRect.top;
-                SelectBitmapHLoc = Display->DisplayOffsetH;     // so the area to erase corresponds to the paste area (TLHC of screen = DisplayOffsetH & V)
-                SelectBitmapVLoc = Display->DisplayOffsetV;
-                SelectionValid = false;     // don't want reselect in new app after paste
-                Track->SetTrackFinished(false);     // would be set to false in other app but not in this so set it to false here
-                if(!RecoverClipboardMessageSent)
-                {
-                    UnicodeString MessageStr =
-                        "Please be aware of the relevant conditions when pasting " "a railway segment from a different application.\n"
-                        "These are set out in section 3.5 of the manual and " "on-screen help under the heading 'Pasting in an application "
-                        "after cutting or copying from a different application'.\n\n" "This warning will not be shown again.\n\n" "Proceed?";
-                    int button = Application->MessageBox(MessageStr.c_str(), L"Warning", MB_YESNO | MB_ICONWARNING);
-                    RecoverClipboardMessageSent = true;
-                    if(button == IDNO)
-                    {
-                        CancelSelectionMenuItem->Click();     // reset clipboard etc
-                        Utilities->CallLogPop(2271);
-                        return;
-                    }
-                }
+                ShowMessage("Can't connect, there are an odd number of gaps");
+                Level1Mode = TrackMode;
+                SetLevel1Mode(77);
+                Level2TrackMode = AddTrack;
+                // No further recursion in AddTrack so OK
+                SetLevel2TrackMode(40);
+                Utilities->CallLogPop(105);
+                return;
+            }
+            if(!HighLightOneGap(2, HLoc, VLoc)) // condition OK
+            // need to call this here to start gap setting process off,
+            // called in MainScreenMouseDown hereafter.  Function returns false for either a LocError (links not yet
+            // complete) or no more gaps to be highlighted
+            {
+                // shouldn't reach here as later gaps covered in MainScreenMouseDown but leave & give error message
+                ShowMessage("Error - Even number of gaps but all set after first call to HighLightOneGap");
+                Level1Mode = TrackMode;
+                SetLevel1Mode(78);
+                Level2TrackMode = AddTrack;
+                // No further recursion in AddTrack so OK
+                SetLevel2TrackMode(41);
+                Utilities->CallLogPop(106);
+                return; // all gaps set
+            }
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "CONNECTING GAPS:  Click on connecting gap";
+            UserGraphicReselectPanel->Visible = false;
+            SetTrackBuildImages(5);
+            break;
+
+        case AddText:
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "ADDING/EDITING TEXT: Left click to add, right click first letter to erase, or left click first letter to edit)";
+            if(TextHandler->TextVectorSize(13) > 0)
+            {
+                MoveTextOrGraphicButton->Enabled = true;
             }
             else
             {
-                Application->MessageBoxW(L"Unable to paste, clipboard is corrupt or does not contain a valid railway segment", L"Warning", MB_OK | MB_ICONWARNING);
-                CancelSelectionMenuItem->Click();     // reset clipboard etc
-                Utilities->CallLogPop(2272);
-                return;
+                MoveTextOrGraphicButton->Enabled = false;
             }
-        }
-        if(CancelSelectionFlag)     // plot cut area in original position in case moved
-        {
+            UserGraphicReselectPanel->Visible = false;
+            ClearandRebuildRailway(58); // to drop DistanceKey if was displayed
+            break;
+
+        case MoveTextOrGraphic:
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "MOVING TEXT OR GRAPHIC: If text left click first letter, if graphic left click anywhere, then drag";
+            UserGraphicReselectPanel->Visible = false;
+            ClearandRebuildRailway(59); // to drop DistanceKey if was displayed
+            break;
+
+        case AddLocationName:
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "NAMING LOCATIONS:  Click on location element to add or change name";
+            ClearandRebuildRailway(35); // to get rid of earlier red rectangle
+            UserGraphicReselectPanel->Visible = false;
+            SetTrackBuildImages(12);
+            break;
+
+        case DistanceStart:
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "DISTANCE/SPEED SETTING:  Select first location (only non-default elements marked)";
+            DistanceKey->Visible = true;
+            LengthConversionPanel->Visible = true;
+            SpeedConversionPanel->Visible = true;
+            UserGraphicReselectPanel->Visible = false;
+            ClearandRebuildRailway(36); // to get rid of earlier unwanted markings
+            break;
+
+        case DistanceContinuing:
+            InfoPanel->Visible = true;
+            if(ConstructPrefDir->PrefDirSize() == 1)
+            {
+                InfoPanel->Caption = "DISTANCE/SPEED SETTING:  Select next location";
+            }
+            else
+            {
+                InfoPanel->Caption = "DISTANCE/SPEED SETTING:  Continue or set values (overall length), or right click to cancel/truncate";
+            }
+            UserGraphicReselectPanel->Visible = false;
+            ClearandRebuildRailway(54); // to remove earlier end marker if present
+            break;
+
+        case TrackSelecting:
+            Track->CopyFlag = false;
+            if(!SelectionValid)
+            {
+                ResetSelectRect(); // so a viewpoint change before a new SelectRect chosen doesn't redisplay
+            }
+            // the old SelectRect (only called when entered from SelectMenuItemClick, & not from
+            // ReselectMenuItemClick)
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "SELECTING:  Select area - click left mouse && drag";
+            SelectMenuItem->Enabled = false;
+            ReselectMenuItem->Enabled = false;
+            CancelSelectionMenuItem->Enabled = true;
+            UserGraphicReselectPanel->Visible = false;
+            break;
+
+        case CopyMoving:
+            Track->CopyFlag = true;
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "COPYING:  Left click in selection && drag";
+            CutMenuItem->Enabled = false;
+            CopyMenuItem->Enabled = false;
+            FlipMenuItem->Enabled = false;
+            MirrorMenuItem->Enabled = false;
+            RotRightMenuItem->Enabled = false;
+            RotLeftMenuItem->Enabled = false;
+            RotateMenuItem->Enabled = false;
+            PasteMenuItem->Enabled = true;
+    // PasteWithAttributesMenuItem->Enabled = false;  //new at v2.2.0 - don't allow the option if copying (dropped at 2.4.0 as all pastes are with attributes)
+            DeleteMenuItem->Enabled = false;
+            SelectLengthsMenuItem->Enabled = false;
+            SelectBiDirPrefDirsMenuItem->Visible = false;
+            CheckPrefDirConflictsMenuItem->Visible = false;
+            CancelSelectionMenuItem->Enabled = true;
             SelectBitmapHLoc = SelectRect.left;
             SelectBitmapVLoc = SelectRect.top;
-            HDiff = 0;
-            VDiff = 0;
-        }
-        Clipboard()->Clear();     // already cleared & closed if recovered clipboard but not otherwise so clear & close here
-        Clipboard()->Close();
-        Track->SkipLocationNameMultiMapCheck = true;
-        ResetChangedFileDataAndCaption(17, true);
-        bool NeedToLink = false;
-        bool TrackLinkingRequiredFlag;
-        Screen->Cursor = TCursor(-11);     // Hourglass;
-        InfoPanel->Visible = true;
-        InfoPanel->Caption = "PASTING: Please wait";
-        InfoPanel->Update();
-// erase track elements
-        int LowSelectHLoc = SelectBitmapHLoc;
-        int HighSelectHLoc = SelectBitmapHLoc + (SelectBitmap->Width / 16);
-        int LowSelectVLoc = SelectBitmapVLoc;
-        int HighSelectVLoc = SelectBitmapVLoc + (SelectBitmap->Height / 16);
-        bool TrackEraseSuccessfulFlag;     // needed but not used here
-        int ErasedTrackVectorPosition;
-// new quick method of erasing, only need H & V values
-        for(int x = LowSelectHLoc; x < HighSelectHLoc; x++)
-        {
-            for(int y = LowSelectVLoc; y < HighSelectVLoc; y++)
-            {
-                Track->EraseTrackElement(5, x, y, ErasedTrackVectorPosition, TrackEraseSuccessfulFlag, false);
-                if(ErasedTrackVectorPosition > -1)
-                {
-                    EveryPrefDir->RealignAfterTrackErase(2, ErasedTrackVectorPosition);
-                }
-            }
-        }
+            SetTrackBuildImages(6);
+            UserGraphicReselectPanel->Visible = false;
+            break;
 
-// erase text elements that fall within region to be overwritten
-        int LowSelectHPos = SelectBitmapHLoc * 16;
-        int HighSelectHPos = (SelectBitmapHLoc * 16) + SelectBitmap->Width;
-        int LowSelectVPos = SelectBitmapVLoc * 16;
-        int HighSelectVPos = (SelectBitmapVLoc * 16) + SelectBitmap->Height;
-        if(!TextHandler->TextVector.empty())     // skip iteration if empty else have an error
+        case CutMoving:
         {
-            for(TTextHandler::TTextVectorIterator TextPtr = (TextHandler->TextVector.end() - 1); TextPtr >= TextHandler->TextVector.begin();
-                TextPtr--)     // reverse to prevent skipping during erase
+            // have to use braces as otherwise the default case bypasses the initialisation of these local variables
+            // erase track elements within selected region
+            Track->CopyFlag = false;
+            bool EraseSuccessfulFlag, NeedToLink = false, TextChangesMade = false, GraphicChangesMade = false;
+            int ErasedTrackVectorPosition;
+            Screen->Cursor = TCursor(-11);     // Hourglass;
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "CUT PROCESSING: Please do not click the mouse";
+            InfoPanel->Update();
+            for(int H = SelectRect.left; H < SelectRect.right; H++)
             {
-                if((TextPtr->HPos >= LowSelectHPos) && (TextPtr->HPos < HighSelectHPos) && (TextPtr->VPos >= LowSelectVPos) && (TextPtr->VPos <
-                                                                                                                                HighSelectVPos))
+                for(int V = SelectRect.top; V < SelectRect.bottom; V++)
                 {
-                    if(TextHandler->TextErase(2, TextPtr->HPos, TextPtr->VPos, AnsiString("")))
+                    Track->EraseTrackElement(2, H, V, ErasedTrackVectorPosition, EraseSuccessfulFlag, false);
+                    if(EraseSuccessfulFlag)
                     {
-                        ;
-                    }     // unused condition
-
-                }
-            }
-        }
-// erase graphic elements that fall wholly within region to be overwritten
-        if(!Track->UserGraphicVector.empty())     // skip iteration if empty else have an error
-        {
-            for(TTrack::TUserGraphicVector::iterator GraphicPtr = (Track->UserGraphicVector.end() - 1); GraphicPtr >= Track->UserGraphicVector.begin();
-                GraphicPtr--)     // reverse to prevent skipping during erase
-            {
-                if((GraphicPtr->HPos >= LowSelectHPos) && ((GraphicPtr->HPos + GraphicPtr->Width) < HighSelectHPos) && (GraphicPtr->VPos >= LowSelectVPos)
-                   && ((GraphicPtr->VPos + GraphicPtr->Height) < HighSelectVPos))
-                {
-                    Track->UserGraphicVector.erase(GraphicPtr);
-                }
-            }
-        }
-        // change the H & V values in SelectVector to the new positions in case Reselect chosen
-        for(unsigned int x = 0; x < Track->SelectVectorSize(); x++)
-        {
-            Track->SelectVectorAt(35, x).HLoc += HDiff;
-            Track->SelectVectorAt(1, x).VLoc += VDiff;
-        }
-
-        // add the new track elements
-        AnsiString LocName;
-        for(unsigned int x = 0; x < Track->SelectVectorSize(); x++)
-        {
-            if(Track->CopyFlag)     // blank all names if copying, lengths & speedlimits stay
-            {
-                Track->SelectVectorAt(80, x).LocationName = "";
-                Track->SelectVectorAt(81, x).ActiveTrackElementName = "";
-            }
-            else //cut, check if element has a name and if so remove same existing name from name map and track vector
-            {
-                LocName = Track->SelectVectorAt(82, x).LocationName;
-                if(LocName == "")
-                {
-                    LocName = Track->SelectVectorAt(83, x).ActiveTrackElementName;
-                }
-                if(LocName != "")
-                {
-                    Track->EraseLocationAndActiveTrackElementNames(6, LocName); //this will keep erasing adjacent element names but the last one will be pasted and not erased
-                                                                                //and that will name all linked elements so should work ok
-                    int HPos = 0, VPos = 0;
-                    if(TextHandler->FindText(5, LocName, HPos, VPos))
-                    {
-                        ;
+                        if(ErasedTrackVectorPosition > -1) //may be an inactive element that was erased
+                        {
+                            EveryPrefDir->RealignAfterTrackErase(1, ErasedTrackVectorPosition);
+                        }
+                        NeedToLink = true;
                     }
+                }
+            }
+
+            // erase text elements within selected region
+            int LowSelectHPos = SelectRect.left * 16;
+            int HighSelectHPos = SelectRect.right * 16;
+            int LowSelectVPos = SelectRect.top * 16;
+            int HighSelectVPos = SelectRect.bottom * 16;
+            if(!TextHandler->TextVector.empty())     // skip iteration if empty else have an error
+            {
+                for(TTextHandler::TTextVectorIterator TextPtr = (TextHandler->TextVector.end() - 1); TextPtr >= TextHandler->TextVector.begin();
+                    TextPtr--)     // reverse to prevent skipping during erase
+                {
+                    if((TextPtr->HPos >= LowSelectHPos) && (TextPtr->HPos < HighSelectHPos) && (TextPtr->VPos >= LowSelectVPos) && (TextPtr->VPos <
+                                                                                                                                    HighSelectVPos))
                     {
-                        if(EraseLocationNameText(4, LocName, HPos, VPos))
+                        if(TextHandler->TextErase(1, TextPtr->HPos, TextPtr->VPos, AnsiString("")))
                         {
                             ;
-                        } // condition not used
+                        }     // unused condition
+
+                        TextChangesMade = true;
                     }
                 }
             }
-            bool InternalChecks = false;
-// if(Track->PastingWithAttributes) //new at v2.2.0 to select the new funtion & skip multimap checks //drop in v2.4.0
-// {
-            Track->PlotPastedTrackElementWithAttributes(0, Track->SelectVectorAt(2, x), Track->SelectVectorAt(3, x).HLoc, Track->SelectVectorAt(4, x).VLoc,
-                                                        TrackLinkingRequiredFlag, InternalChecks);
-            // new at v2.2.0 & used in place of PlotAndAddTrackElement to keep length & speed values
-// }
-/* drop this in v2.4.0 as all pastes are with attributes
-            else //'Aspect' parameter added to PlotAndAdd... at v2.2.0 so can plot signals correctly (always four-aspect before)
+            // erase graphic elements that fall wholly within region to be overwritten
+            if(!Track->UserGraphicVector.empty())     // skip iteration if empty else have an error
             {
-                int Aspect;
-                if(Track->SelectVectorAt(15, x).TrackType != SignalPost) Aspect = 0;  //if an '0' value appears with a SignalPost then must be adding track
-                //this combination allows the funtion to distinguish between adding track and plotting with attributes
-                else if(Track->SelectVectorAt(16, x).SigAspect == TTrackElement::GroundSignal) Aspect = 1;
-                else if(Track->SelectVectorAt(17, x).SigAspect == TTrackElement::TwoAspect) Aspect = 2;
-                else if(Track->SelectVectorAt(18, x).SigAspect == TTrackElement::ThreeAspect) Aspect = 3;
-                else Aspect = 4;
-                Track->PlotAndAddTrackElement(2, Track->SelectVectorAt(19, x).SpeedTag, Aspect, Track->SelectVectorAt(20, x).HLoc, Track->SelectVectorAt(21, x).VLoc, TrackLinkingRequiredFlag, InternalChecks);
-            }
-*/
-            if(TrackLinkingRequiredFlag)
-            {
-                NeedToLink = true;
-            }
-        }
-
-        //add the pref dir elements, added at v2.9.0
-        int ATVecPos;
-        bool FoundFlag;
-        if(SelectPrefDir->PrefDirSize() > 0)     // skip iteration if empty
-        {
-            // keep contents valid in case reselect
-            for(TOnePrefDir::TPrefDirVectorIterator PDVIt = SelectPrefDir->PrefDirVector.begin(); PDVIt < SelectPrefDir->PrefDirVector.end();
-                PDVIt++)
-            {
-                PDVIt->HLoc += HDiff;     // for reselect
-                PDVIt->VLoc += VDiff;     // for reselect
-                //need to reset TrackVectorPosition in case any elements erased before linking, as if so EveryPrefDir can only be erased too if it has the correct TrackVectorPosition
-                ATVecPos = Track->GetVectorPositionFromTrackMap(60, PDVIt->HLoc, PDVIt->VLoc, FoundFlag);
-                if(!FoundFlag)
+                for(TTrack::TUserGraphicVector::iterator GraphicPtr = (Track->UserGraphicVector.end() - 1); GraphicPtr >= Track->UserGraphicVector.begin();
+                    GraphicPtr--)     // reverse to prevent skipping during erase
                 {
-                    throw Exception("Failed to find TrackVectorPosition in PrefDir setting for Paste");
-                }
-                PDVIt->SetTrackVectorPosition(ATVecPos);
-
-                //reset all Conns & ConnLinkPos values so won't be erased during a later cut, they will be set in RebuildPrefDirVector which is called when track linked
-                for(int x = 0; x < 4; x++)
-                {
-                    PDVIt->Conn[x] = -1;
-                    PDVIt->ConnLinkPos[x] = -1;
-                }
-                EveryPrefDir->ExternalStorePrefDirElement(10, *PDVIt);
-            }
-            EveryPrefDir->CheckPrefDirAgainstTrackVector(1);
-        }
-
-        // add the new text items
-        if(!TextHandler->SelectTextVector.empty())     // skip iteration if empty else have an error
-        {
-            for(TTextHandler::TTextVectorIterator TextPtr = TextHandler->SelectTextVector.begin(); TextPtr < TextHandler->SelectTextVector.end(); TextPtr++)
-            {
-                TextPtr->HPos += HDiff * 16;
-                TextPtr->VPos += VDiff * 16;
-                AnsiString TempString = TextPtr->TextString;
-                // have to create a new TextItem in order to create a new Font object
-/* drop in v2.4.0 as all pastes are paste with attributes
-                if(!Track->PastingWithAttributes) //new at v2.2.0 to deal with the new location prefix '##**'  //drop in v2.4.0
-                {
-                    if(TextPtr->TextString.SubString(1,4) != "##**") //added for named locations so can delete in a simple paste but
-                                                                     //use in PastingWithAttributes
+                    if((GraphicPtr->HPos >= LowSelectHPos) && ((GraphicPtr->HPos + GraphicPtr->Width) < HighSelectHPos) && (GraphicPtr->VPos >= LowSelectVPos)
+                       && ((GraphicPtr->VPos + GraphicPtr->Height) < HighSelectVPos))
                     {
-                        TTextItem TextItem(TextPtr->HPos, TextPtr->VPos, TextPtr->TextString, TextPtr->Font);
-                        TextHandler->TextVectorPush(0, TextItem); //if a normal paste include normal text but not location text
-                    }
-                    else TextPtr->TextString = "";  //delete the name for a simple paste
-                }
-*/
-// else //if pasting with attributes paste all text but strip the '##**' prefix if present
-// {
-                if(TextPtr->TextString.SubString(1, 4) == "##**")
-                {
-                    TempString = TextPtr->TextString.SubString(5, TextPtr->TextString.Length());     // don't change SelectTextVector value
-                    if(Track->CopyFlag)
-                    {
-                        TextPtr->TextString = "";     // change SelectTextVector value as reselect shouldn't have locations if copied
-                        TempString = "";
+                        Track->UserGraphicVector.erase(GraphicPtr);
+                        GraphicChangesMade = true;
                     }
                 }
-                TTextItem TextItem(TextPtr->HPos, TextPtr->VPos, TempString, TextPtr->Font);
-                TextHandler->TextVectorPush(4, TextItem);
-// }
             }
-        }
-        // add new graphic items
-        if(!Track->SelectGraphicVector.empty())     // skip iteration if empty else have an error
-        {
-            // keep contents of SelectVector valid in case reselect
-            for(TTrack::TUserGraphicVector::iterator GraphicPtr = Track->SelectGraphicVector.begin(); GraphicPtr < Track->SelectGraphicVector.end();
-                GraphicPtr++)
+            Track->CheckMapAndTrack(11);     // test
+            Track->CheckMapAndInactiveTrack(10);     // test
+            Track->CheckLocationNameMultiMap(19);     // test
+            Screen->Cursor = TCursor(-2);     // Arrow;
+            // Track->SetTrackFinished(!NeedToLink);  This is an error (see Sam Wainwright email of 24/08/17 & devhistory.txt
+            // if track not linked to begin with then becomes linked if NeedToLink false
+            if(NeedToLink)
             {
-                GraphicPtr->HPos += HDiff * 16;     // for reselect
-                GraphicPtr->VPos += VDiff * 16;     // for reselect
-                Track->UserGraphicVector.push_back(*GraphicPtr);
+                Track->SetTrackFinished(false);     // corrected for v2.1.0
             }
-        }
-        Track->SkipLocationNameMultiMapCheck = false;     // renamed in v2.4.0 - reset the flag after pasting complete, otherwise multimap checks always skipped
-        Track->CopyFlag = false;
-        Track->CheckMapAndTrack(7);     // test
-        Track->CheckMapAndInactiveTrack(7);     // test
-        Track->CheckLocationNameMultiMap(7);     // test
-        // Track->SetTrackFinished(!NeedToLink);  This is an error (see Sam Wainwright email of 24/08/17 & devhistory.txt
-        // if track not linked to begin with then becomes linked if NeedToLink false
-        if(NeedToLink)
-        {
-            Track->SetTrackFinished(false);     // corrected for v2.1.0
-        }
-        Screen->Cursor = TCursor(-2);     // Arrow;
-        SetTrackBuildImages(14);
-        ClearandRebuildRailway(38);
-        // Level1Mode = TrackMode; //dropped as prevents AddTrack being called to display track elements
-        // SetLevel1Mode(79);
-        SetTrackModeEditMenu(5);     // this is called from the above but is still needed to enable Select (& Reselect if pasted in same app) menu items
-        PasteMenuItem->Enabled = false;
-        UserGraphicReselectPanel->Visible = false;
-        if(Level2TrackMode != AddTrack)     // no need to set if already set in an earlier call
-        {
-            Level2TrackMode = AddTrack;
-            // No further recursion in AddTrack so OK
-            SetLevel2TrackMode(42);
-        }
-    } break;
+            InfoPanel->Caption = "CUTTING:  Left click in selection && drag";
+            CutMenuItem->Enabled = false;
+            CopyMenuItem->Enabled = false;
+            FlipMenuItem->Enabled = false;
+            MirrorMenuItem->Enabled = false;
+            RotRightMenuItem->Enabled = false;
+            RotLeftMenuItem->Enabled = false;
+            RotateMenuItem->Enabled = false;
+            PasteMenuItem->Enabled = true;
+    // PasteWithAttributesMenuItem->Enabled = true;  //new at v2.2.0 - option enabled if cutting   (dropped at 2.4.0 as all pastes are with attributes)
+            DeleteMenuItem->Enabled = false;
+            SelectLengthsMenuItem->Enabled = false;
+            SelectBiDirPrefDirsMenuItem->Visible = false;
+            CheckPrefDirConflictsMenuItem->Visible = false;
+            CancelSelectionMenuItem->Enabled = true;
+            SelectBitmapHLoc = SelectRect.left;
+            SelectBitmapVLoc = SelectRect.top;
+            if(NeedToLink || TextChangesMade || GraphicChangesMade)
+            {
+                ResetChangedFileDataAndCaption(20, true);     // true for NonPrefDirChangesMade
+            }
+            ClearandRebuildRailway(37);     // to overplot the erased elements with SelectBitmap
+            UserGraphicReselectPanel->Visible = false;
+            SetTrackBuildImages(7);
+        } break;
 
-    case Deleting:
-    {
-        // have to use braces as otherwise the default case bypasses the initialisation of these local variables
-        Track->CopyFlag = false;
-        UnicodeString MessageStr = "Selected area will be deleted - proceed?";
-        int button = Application->MessageBox(MessageStr.c_str(), L"Please confirm", MB_YESNO);
-        if(button == IDNO)
+        case Pasting:
         {
-            break;
-        }
-        bool EraseSuccessfulFlag, NeedToLink = false, TextChangesMade = false, GraphicChangesMade = false;
-        int ErasedTrackVectorPosition;
-        Screen->Cursor = TCursor(-11);     // Hourglass;
-        InfoPanel->Visible = true;
-        InfoPanel->Caption = "DELETING: Please wait";
-        InfoPanel->Update();
-        for(int H = SelectRect.left; H < SelectRect.right; H++)
-        {
-            for(int V = SelectRect.top; V < SelectRect.bottom; V++)
+            // have to use braces as otherwise the default case bypasses the initialisation of these local variables
+            int HDiff = SelectBitmapHLoc - SelectRect.left;     // SelectBitmapHLoc/VLoc is the paste position & SelectRect.left/top is the original position
+            int VDiff = SelectBitmapVLoc - SelectRect.top;
+            if(!SelectionValid && !CancelSelectionFlag)     // may be pasting into a new application so use clipboard, new at v2.8.0
             {
-                Track->EraseTrackElement(3, H, V, ErasedTrackVectorPosition, EraseSuccessfulFlag, false);
-                if(EraseSuccessfulFlag)
+                bool ValidResult;
+                RecoverClipboard(0, ValidResult);     // new at v2.8.0
+                if(ValidResult)
                 {
+                    HDiff = Display->DisplayOffsetH - SelectRect.left;     // SelectRect.left & top recovered in clipboard
+                    VDiff = Display->DisplayOffsetV - SelectRect.top;
+                    SelectBitmapHLoc = Display->DisplayOffsetH;     // so the area to erase corresponds to the paste area (TLHC of screen = DisplayOffsetH & V)
+                    SelectBitmapVLoc = Display->DisplayOffsetV;
+                    SelectionValid = false;     // don't want reselect in new app after paste
+                    Track->SetTrackFinished(false);     // would be set to false in other app but not in this so set it to false here
+                    if(!RecoverClipboardMessageSent)
+                    {
+                        UnicodeString MessageStr =
+                            "Please be aware of the relevant conditions when pasting " "a railway segment from a different application.\n"
+                            "These are set out in section 3.5 of the manual and " "on-screen help under the heading 'Pasting in an application "
+                            "after cutting or copying from a different application'.\n\n" "This warning will not be shown again.\n\n" "Proceed?";
+                        int button = Application->MessageBox(MessageStr.c_str(), L"Warning", MB_YESNO | MB_ICONWARNING);
+                        RecoverClipboardMessageSent = true;
+                        if(button == IDNO)
+                        {
+                            CancelSelectionMenuItem->Click();     // reset clipboard etc
+                            Utilities->CallLogPop(2271);
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    Application->MessageBoxW(L"Unable to paste (clipboard is invalid) - possibly because another application has changed it)", L"Warning", MB_OK | MB_ICONWARNING);
+                    CancelSelectionMenuItem->Click();     // reset clipboard etc
+                    TrainController->LogEvent("ValidResult false in case Pasting - probably due to error in RecoverClipboard - see earlier log");
+                    Utilities->CallLogPop(2272); //EClipboardException (here as search term only)
+                    return;
+                }
+            }
+            if(CancelSelectionFlag)     // plot cut area in original position in case moved
+            {
+                SelectBitmapHLoc = SelectRect.left;
+                SelectBitmapVLoc = SelectRect.top;
+                HDiff = 0;
+                VDiff = 0;
+            }
+            Clipboard()->Clear();     // already cleared & closed if recovered clipboard but not otherwise so clear & close here
+            Clipboard()->Close();
+            Track->SkipLocationNameMultiMapCheck = true;
+            ResetChangedFileDataAndCaption(17, true);
+            bool NeedToLink = false;
+            bool TrackLinkingRequiredFlag;
+            Screen->Cursor = TCursor(-11);     // Hourglass;
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "PASTING: Please wait";
+            InfoPanel->Update();
+    // erase track elements
+            int LowSelectHLoc = SelectBitmapHLoc;
+            int HighSelectHLoc = SelectBitmapHLoc + (SelectBitmap->Width / 16);
+            int LowSelectVLoc = SelectBitmapVLoc;
+            int HighSelectVLoc = SelectBitmapVLoc + (SelectBitmap->Height / 16);
+            bool TrackEraseSuccessfulFlag;     // needed but not used here
+            int ErasedTrackVectorPosition;
+    // new quick method of erasing, only need H & V values
+            for(int x = LowSelectHLoc; x < HighSelectHLoc; x++)
+            {
+                for(int y = LowSelectVLoc; y < HighSelectVLoc; y++)
+                {
+                    Track->EraseTrackElement(5, x, y, ErasedTrackVectorPosition, TrackEraseSuccessfulFlag, false);
                     if(ErasedTrackVectorPosition > -1)
                     {
-                        EveryPrefDir->RealignAfterTrackErase(3, ErasedTrackVectorPosition);
+                        EveryPrefDir->RealignAfterTrackErase(2, ErasedTrackVectorPosition);
                     }
+                }
+            }
+
+    // erase text elements that fall within region to be overwritten
+            int LowSelectHPos = SelectBitmapHLoc * 16;
+            int HighSelectHPos = (SelectBitmapHLoc * 16) + SelectBitmap->Width;
+            int LowSelectVPos = SelectBitmapVLoc * 16;
+            int HighSelectVPos = (SelectBitmapVLoc * 16) + SelectBitmap->Height;
+            if(!TextHandler->TextVector.empty())     // skip iteration if empty else have an error
+            {
+                for(TTextHandler::TTextVectorIterator TextPtr = (TextHandler->TextVector.end() - 1); TextPtr >= TextHandler->TextVector.begin();
+                    TextPtr--)     // reverse to prevent skipping during erase
+                {
+                    if((TextPtr->HPos >= LowSelectHPos) && (TextPtr->HPos < HighSelectHPos) && (TextPtr->VPos >= LowSelectVPos) && (TextPtr->VPos <
+                                                                                                                                    HighSelectVPos))
+                    {
+                        if(TextHandler->TextErase(2, TextPtr->HPos, TextPtr->VPos, AnsiString("")))
+                        {
+                            ;
+                        }     // unused condition
+
+                    }
+                }
+            }
+    // erase graphic elements that fall wholly within region to be overwritten
+            if(!Track->UserGraphicVector.empty())     // skip iteration if empty else have an error
+            {
+                for(TTrack::TUserGraphicVector::iterator GraphicPtr = (Track->UserGraphicVector.end() - 1); GraphicPtr >= Track->UserGraphicVector.begin();
+                    GraphicPtr--)     // reverse to prevent skipping during erase
+                {
+                    if((GraphicPtr->HPos >= LowSelectHPos) && ((GraphicPtr->HPos + GraphicPtr->Width) < HighSelectHPos) && (GraphicPtr->VPos >= LowSelectVPos)
+                       && ((GraphicPtr->VPos + GraphicPtr->Height) < HighSelectVPos))
+                    {
+                        Track->UserGraphicVector.erase(GraphicPtr);
+                    }
+                }
+            }
+            // change the H & V values in SelectVector to the new positions in case Reselect chosen
+            for(unsigned int x = 0; x < Track->SelectVectorSize(); x++)
+            {
+                Track->SelectVectorAt(35, x).HLoc += HDiff;
+                Track->SelectVectorAt(1, x).VLoc += VDiff;
+            }
+
+            // add the new track elements
+            AnsiString LocName;
+            for(unsigned int x = 0; x < Track->SelectVectorSize(); x++)
+            {
+                if(Track->CopyFlag)     // blank all names if copying, lengths & speedlimits stay
+                {
+                    Track->SelectVectorAt(80, x).LocationName = "";
+                    Track->SelectVectorAt(81, x).ActiveTrackElementName = "";
+                }
+                else //cut, check if element has a name and if so remove same existing name from name map and track vector
+                {
+                    LocName = Track->SelectVectorAt(82, x).LocationName;
+                    if(LocName == "")
+                    {
+                        LocName = Track->SelectVectorAt(83, x).ActiveTrackElementName;
+                    }
+                    if(LocName != "")
+                    {
+                        Track->EraseLocationAndActiveTrackElementNames(6, LocName); //this will keep erasing adjacent element names but the last one will be pasted and not erased
+                                                                                    //and that will name all linked elements so should work ok
+                        int HPos = 0, VPos = 0;
+                        if(TextHandler->FindText(5, LocName, HPos, VPos))
+                        {
+                            ;
+                        }
+                        {
+                            if(EraseLocationNameText(4, LocName, HPos, VPos))
+                            {
+                                ;
+                            } // condition not used
+                        }
+                    }
+                }
+                bool InternalChecks = false;
+    // if(Track->PastingWithAttributes) //new at v2.2.0 to select the new funtion & skip multimap checks //drop in v2.4.0
+    // {
+                Track->PlotPastedTrackElementWithAttributes(0, Track->SelectVectorAt(2, x), Track->SelectVectorAt(3, x).HLoc, Track->SelectVectorAt(4, x).VLoc,
+                                                            TrackLinkingRequiredFlag, InternalChecks);
+                // new at v2.2.0 & used in place of PlotAndAddTrackElement to keep length & speed values
+    // }
+    /* drop this in v2.4.0 as all pastes are with attributes
+                else //'Aspect' parameter added to PlotAndAdd... at v2.2.0 so can plot signals correctly (always four-aspect before)
+                {
+                    int Aspect;
+                    if(Track->SelectVectorAt(15, x).TrackType != SignalPost) Aspect = 0;  //if an '0' value appears with a SignalPost then must be adding track
+                    //this combination allows the funtion to distinguish between adding track and plotting with attributes
+                    else if(Track->SelectVectorAt(16, x).SigAspect == TTrackElement::GroundSignal) Aspect = 1;
+                    else if(Track->SelectVectorAt(17, x).SigAspect == TTrackElement::TwoAspect) Aspect = 2;
+                    else if(Track->SelectVectorAt(18, x).SigAspect == TTrackElement::ThreeAspect) Aspect = 3;
+                    else Aspect = 4;
+                    Track->PlotAndAddTrackElement(2, Track->SelectVectorAt(19, x).SpeedTag, Aspect, Track->SelectVectorAt(20, x).HLoc, Track->SelectVectorAt(21, x).VLoc, TrackLinkingRequiredFlag, InternalChecks);
+                }
+    */
+                if(TrackLinkingRequiredFlag)
+                {
                     NeedToLink = true;
                 }
             }
-        }
-        // erase text elements that fall within selected region
-        int LowSelectHPos = SelectRect.left * 16;
-        int HighSelectHPos = SelectRect.right * 16;
-        int LowSelectVPos = SelectRect.top * 16;
-        int HighSelectVPos = SelectRect.bottom * 16;
-        if(!TextHandler->TextVector.empty())     // skip iteration if empty else have an error
-        {
-            for(TTextHandler::TTextVectorIterator TextPtr = (TextHandler->TextVector.end() - 1); TextPtr >= TextHandler->TextVector.begin();
-                TextPtr--)     // reverse to prevent skipping during erase
-            {
-                AnsiString Check = TextPtr->TextString;
-                if((TextPtr->HPos >= LowSelectHPos) && (TextPtr->HPos < HighSelectHPos) && (TextPtr->VPos >= LowSelectVPos) && (TextPtr->VPos <
-                                                                                                                                HighSelectVPos))
-                {
-                    if(TextHandler->TextErase(3, TextPtr->HPos, TextPtr->VPos, AnsiString("")))
-                    {
-                        ;
-                    }     // unused condition
 
-                    TextChangesMade = true;
+            //add the pref dir elements, added at v2.9.0
+            int ATVecPos;
+            bool FoundFlag;
+            if(SelectPrefDir->PrefDirSize() > 0)     // skip iteration if empty
+            {
+                // keep contents valid in case reselect
+                for(TOnePrefDir::TPrefDirVectorIterator PDVIt = SelectPrefDir->PrefDirVector.begin(); PDVIt < SelectPrefDir->PrefDirVector.end();
+                    PDVIt++)
+                {
+                    PDVIt->HLoc += HDiff;     // for reselect
+                    PDVIt->VLoc += VDiff;     // for reselect
+                    //need to reset TrackVectorPosition in case any elements erased before linking, as if so EveryPrefDir can only be erased too if it has the correct TrackVectorPosition
+                    ATVecPos = Track->GetVectorPositionFromTrackMap(60, PDVIt->HLoc, PDVIt->VLoc, FoundFlag);
+                    if(!FoundFlag)
+                    {
+                        throw Exception("Failed to find TrackVectorPosition in PrefDir setting for Paste");
+                    }
+                    PDVIt->SetTrackVectorPosition(ATVecPos);
+
+                    //reset all Conns & ConnLinkPos values so won't be erased during a later cut, they will be set in RebuildPrefDirVector which is called when track linked
+                    for(int x = 0; x < 4; x++)
+                    {
+                        PDVIt->Conn[x] = -1;
+                        PDVIt->ConnLinkPos[x] = -1;
+                    }
+                    EveryPrefDir->ExternalStorePrefDirElement(10, *PDVIt);
+                }
+                EveryPrefDir->CheckPrefDirAgainstTrackVector(1);
+            }
+
+            // add the new text items
+            if(!TextHandler->SelectTextVector.empty())     // skip iteration if empty else have an error
+            {
+                for(TTextHandler::TTextVectorIterator TextPtr = TextHandler->SelectTextVector.begin(); TextPtr < TextHandler->SelectTextVector.end(); TextPtr++)
+                {
+                    TextPtr->HPos += HDiff * 16;
+                    TextPtr->VPos += VDiff * 16;
+                    AnsiString TempString = TextPtr->TextString;
+                    // have to create a new TextItem in order to create a new Font object
+    /* drop in v2.4.0 as all pastes are paste with attributes
+                    if(!Track->PastingWithAttributes) //new at v2.2.0 to deal with the new location prefix '##**'  //drop in v2.4.0
+                    {
+                        if(TextPtr->TextString.SubString(1,4) != "##**") //added for named locations so can delete in a simple paste but
+                                                                         //use in PastingWithAttributes
+                        {
+                            TTextItem TextItem(TextPtr->HPos, TextPtr->VPos, TextPtr->TextString, TextPtr->Font);
+                            TextHandler->TextVectorPush(0, TextItem); //if a normal paste include normal text but not location text
+                        }
+                        else TextPtr->TextString = "";  //delete the name for a simple paste
+                    }
+    */
+    // else //if pasting with attributes paste all text but strip the '##**' prefix if present
+    // {
+                    if(TextPtr->TextString.SubString(1, 4) == "##**")
+                    {
+                        TempString = TextPtr->TextString.SubString(5, TextPtr->TextString.Length());     // don't change SelectTextVector value
+                        if(Track->CopyFlag)
+                        {
+                            TextPtr->TextString = "";     // change SelectTextVector value as reselect shouldn't have locations if copied
+                            TempString = "";
+                        }
+                    }
+                    TTextItem TextItem(TextPtr->HPos, TextPtr->VPos, TempString, TextPtr->Font);
+                    TextHandler->TextVectorPush(4, TextItem);
+    // }
                 }
             }
-        }
-        // erase graphic elements that fall within selected region
-        if(!Track->UserGraphicVector.empty())     // skip iteration if empty else have an error
-        {
-
-// Isglassen05 (vilhelmgg@gmail.com) reported an error via email and attached an error file on 31/07/20.  The error was in the following line which was:
-
-// for(TTrack::TUserGraphicVector::iterator GraphicPtr = (Track->SelectGraphicVector.end() - 1); GraphicPtr >= Track->SelectGraphicVector.begin();
-// GraphicPtr--) // reverse to prevent skipping during erase
-
-// i.e if the railway included one or more user graphics but the SelectGraphicVector didn't include any, then GraphicPtr wouldn't point to anything and the program would fail
-// corrected 01/08/20 by using UserGraphicVector (as it should have been) for SelectGraphicVector.  New version v2.4.3.
-
-            for(TTrack::TUserGraphicVector::iterator GraphicPtr = (Track->UserGraphicVector.end() - 1); GraphicPtr >= Track->UserGraphicVector.begin();
-                GraphicPtr--)     // reverse to prevent skipping during erase
+            // add new graphic items
+            if(!Track->SelectGraphicVector.empty())     // skip iteration if empty else have an error
             {
-                if((GraphicPtr->HPos >= LowSelectHPos) && ((GraphicPtr->HPos + GraphicPtr->Width) < HighSelectHPos) && (GraphicPtr->VPos >= LowSelectVPos)
-                   && ((GraphicPtr->VPos + GraphicPtr->Height) < HighSelectVPos))
+                // keep contents of SelectVector valid in case reselect
+                for(TTrack::TUserGraphicVector::iterator GraphicPtr = Track->SelectGraphicVector.begin(); GraphicPtr < Track->SelectGraphicVector.end();
+                    GraphicPtr++)
                 {
-                    for(TTrack::TUserGraphicVector::iterator UserGraphicPtr = (Track->UserGraphicVector.end() - 1);
-                        UserGraphicPtr >= Track->UserGraphicVector.begin(); UserGraphicPtr--)     // reverse to prevent skipping during erase
+                    GraphicPtr->HPos += HDiff * 16;     // for reselect
+                    GraphicPtr->VPos += VDiff * 16;     // for reselect
+                    Track->UserGraphicVector.push_back(*GraphicPtr);
+                }
+            }
+            Track->SkipLocationNameMultiMapCheck = false;     // renamed in v2.4.0 - reset the flag after pasting complete, otherwise multimap checks always skipped
+            Track->CopyFlag = false;
+            Track->CheckMapAndTrack(7);     // test
+            Track->CheckMapAndInactiveTrack(7);     // test
+            Track->CheckLocationNameMultiMap(7);     // test
+            // Track->SetTrackFinished(!NeedToLink);  This is an error (see Sam Wainwright email of 24/08/17 & devhistory.txt
+            // if track not linked to begin with then becomes linked if NeedToLink false
+            if(NeedToLink)
+            {
+                Track->SetTrackFinished(false);     // corrected for v2.1.0
+            }
+            Screen->Cursor = TCursor(-2);     // Arrow;
+            SetTrackBuildImages(14);
+            ClearandRebuildRailway(38);
+            // Level1Mode = TrackMode; //dropped as prevents AddTrack being called to display track elements
+            // SetLevel1Mode(79);
+            SetTrackModeEditMenu(5);     // this is called from the above but is still needed to enable Select (& Reselect if pasted in same app) menu items
+            PasteMenuItem->Enabled = false;
+            UserGraphicReselectPanel->Visible = false;
+            if(Level2TrackMode != AddTrack)     // no need to set if already set in an earlier call
+            {
+                Level2TrackMode = AddTrack;
+                // No further recursion in AddTrack so OK
+                SetLevel2TrackMode(42);
+            }
+        } break;
+
+        case Deleting:
+        {
+            // have to use braces as otherwise the default case bypasses the initialisation of these local variables
+            Track->CopyFlag = false;
+            UnicodeString MessageStr = "Selected area will be deleted - proceed?";
+            int button = Application->MessageBox(MessageStr.c_str(), L"Please confirm", MB_YESNO);
+            if(button == IDNO)
+            {
+                break;
+            }
+            bool EraseSuccessfulFlag, NeedToLink = false, TextChangesMade = false, GraphicChangesMade = false;
+            int ErasedTrackVectorPosition;
+            Screen->Cursor = TCursor(-11);     // Hourglass;
+            InfoPanel->Visible = true;
+            InfoPanel->Caption = "DELETING: Please wait";
+            InfoPanel->Update();
+            for(int H = SelectRect.left; H < SelectRect.right; H++)
+            {
+                for(int V = SelectRect.top; V < SelectRect.bottom; V++)
+                {
+                    Track->EraseTrackElement(3, H, V, ErasedTrackVectorPosition, EraseSuccessfulFlag, false);
+                    if(EraseSuccessfulFlag)
                     {
-                        if((UserGraphicPtr->HPos == GraphicPtr->HPos) && (UserGraphicPtr->VPos == GraphicPtr->VPos) &&
-                           (UserGraphicPtr->Width == GraphicPtr->Width) && (UserGraphicPtr->Height == GraphicPtr->Height) &&
-                           (UserGraphicPtr->FileName == GraphicPtr->FileName))
+                        if(ErasedTrackVectorPosition > -1)
                         {
-                            Track->UserGraphicVector.erase(UserGraphicPtr);
-                            GraphicChangesMade = true;
+                            EveryPrefDir->RealignAfterTrackErase(3, ErasedTrackVectorPosition);
+                        }
+                        NeedToLink = true;
+                    }
+                }
+            }
+            // erase text elements that fall within selected region
+            int LowSelectHPos = SelectRect.left * 16;
+            int HighSelectHPos = SelectRect.right * 16;
+            int LowSelectVPos = SelectRect.top * 16;
+            int HighSelectVPos = SelectRect.bottom * 16;
+            if(!TextHandler->TextVector.empty())     // skip iteration if empty else have an error
+            {
+                for(TTextHandler::TTextVectorIterator TextPtr = (TextHandler->TextVector.end() - 1); TextPtr >= TextHandler->TextVector.begin();
+                    TextPtr--)     // reverse to prevent skipping during erase
+                {
+                    AnsiString Check = TextPtr->TextString;
+                    if((TextPtr->HPos >= LowSelectHPos) && (TextPtr->HPos < HighSelectHPos) && (TextPtr->VPos >= LowSelectVPos) && (TextPtr->VPos <
+                                                                                                                                    HighSelectVPos))
+                    {
+                        if(TextHandler->TextErase(3, TextPtr->HPos, TextPtr->VPos, AnsiString("")))
+                        {
+                            ;
+                        }     // unused condition
+
+                        TextChangesMade = true;
+                    }
+                }
+            }
+            // erase graphic elements that fall within selected region
+            if(!Track->UserGraphicVector.empty())     // skip iteration if empty else have an error
+            {
+
+    // Isglassen05 (vilhelmgg@gmail.com) reported an error via email and attached an error file on 31/07/20.  The error was in the following line which was:
+
+    // for(TTrack::TUserGraphicVector::iterator GraphicPtr = (Track->SelectGraphicVector.end() - 1); GraphicPtr >= Track->SelectGraphicVector.begin();
+    // GraphicPtr--) // reverse to prevent skipping during erase
+
+    // i.e if the railway included one or more user graphics but the SelectGraphicVector didn't include any, then GraphicPtr wouldn't point to anything and the program would fail
+    // corrected 01/08/20 by using UserGraphicVector (as it should have been) for SelectGraphicVector.  New version v2.4.3.
+
+                for(TTrack::TUserGraphicVector::iterator GraphicPtr = (Track->UserGraphicVector.end() - 1); GraphicPtr >= Track->UserGraphicVector.begin();
+                    GraphicPtr--)     // reverse to prevent skipping during erase
+                {
+                    if((GraphicPtr->HPos >= LowSelectHPos) && ((GraphicPtr->HPos + GraphicPtr->Width) < HighSelectHPos) && (GraphicPtr->VPos >= LowSelectVPos)
+                       && ((GraphicPtr->VPos + GraphicPtr->Height) < HighSelectVPos))
+                    {
+                        for(TTrack::TUserGraphicVector::iterator UserGraphicPtr = (Track->UserGraphicVector.end() - 1);
+                            UserGraphicPtr >= Track->UserGraphicVector.begin(); UserGraphicPtr--)     // reverse to prevent skipping during erase
+                        {
+                            if((UserGraphicPtr->HPos == GraphicPtr->HPos) && (UserGraphicPtr->VPos == GraphicPtr->VPos) &&
+                               (UserGraphicPtr->Width == GraphicPtr->Width) && (UserGraphicPtr->Height == GraphicPtr->Height) &&
+                               (UserGraphicPtr->FileName == GraphicPtr->FileName))
+                            {
+                                Track->UserGraphicVector.erase(UserGraphicPtr);
+                                GraphicChangesMade = true;
+                            }
                         }
                     }
                 }
             }
-        }
-        // clear the selectvectors
-        Track->SelectVectorClear();
-        TextHandler->SelectTextVector.clear();
-        Track->SelectGraphicVector.clear();
-        SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
-        Track->CheckMapAndTrack(10);     // test
-        Track->CheckMapAndInactiveTrack(9);     // test
-        Track->CheckLocationNameMultiMap(15);     // test
-        // Track->SetTrackFinished(!NeedToLink);  This is an error (see Sam Wainwright email of 24/08/17 & devhistory.txt
-        // if track not linked to begin with then becomes linked if NeedToLink false
-        if(NeedToLink)
-        {
-            Track->SetTrackFinished(false);     // corrected for v2.1.0
-        }
-        if(NeedToLink || TextChangesMade || GraphicChangesMade)
-        {
-            ResetChangedFileDataAndCaption(21, true);     // true for NonPrefDirChangesMade
-        }
-        Screen->Cursor = TCursor(-2);     // Arrow;
-        ClearandRebuildRailway(39);
-        Level1Mode = TrackMode;
-        SetLevel1Mode(80);
-        Level2TrackMode = AddTrack;
-        // No further recursion in AddTrack so OK
-        UserGraphicReselectPanel->Visible = false;
-        SetLevel2TrackMode(43);
-    } break;
+            // clear the selectvectors
+            Track->SelectVectorClear();
+            TextHandler->SelectTextVector.clear();
+            Track->SelectGraphicVector.clear();
+            SelectPrefDir->ExternalClearPrefDirAnd4MultiMap();
+            Track->CheckMapAndTrack(10);     // test
+            Track->CheckMapAndInactiveTrack(9);     // test
+            Track->CheckLocationNameMultiMap(15);     // test
+            // Track->SetTrackFinished(!NeedToLink);  This is an error (see Sam Wainwright email of 24/08/17 & devhistory.txt
+            // if track not linked to begin with then becomes linked if NeedToLink false
+            if(NeedToLink)
+            {
+                Track->SetTrackFinished(false);     // corrected for v2.1.0
+            }
+            if(NeedToLink || TextChangesMade || GraphicChangesMade)
+            {
+                ResetChangedFileDataAndCaption(21, true);     // true for NonPrefDirChangesMade
+            }
+            Screen->Cursor = TCursor(-2);     // Arrow;
+            ClearandRebuildRailway(39);
+            Level1Mode = TrackMode;
+            SetLevel1Mode(80);
+            Level2TrackMode = AddTrack;
+            // No further recursion in AddTrack so OK
+            UserGraphicReselectPanel->Visible = false;
+            SetLevel2TrackMode(43);
+        } break;
 
-    default:
-        // No further recursion in TrackMode so OK
-        Track->CopyFlag = false;
-        Level1Mode = TrackMode;
-        SetLevel1Mode(21);
-        UserGraphicReselectPanel->Visible = false;
-        break;
+        default:
+            // No further recursion in TrackMode so OK
+            Track->CopyFlag = false;
+            Level1Mode = TrackMode;
+            SetLevel1Mode(21);
+            UserGraphicReselectPanel->Visible = false;
+            break;
+        }
+        Utilities->CallLogPop(107);
     }
-    Utilities->CallLogPop(107);
+    catch (const EClipboardException &e) //non-error catch
+    {
+        TrainController->LogEvent("Clipboard error in SetLevel2TrackMode");
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -16113,6 +16165,8 @@ void TInterface::SetLevel2OperMode(int Caller)
         SetLevel1Mode(25);
         break;
     }
+    api_oper_mode_ = int(Level2OperMode);   //added at v2.10.0
+    session_api_->dump();   // update session INI file
     Utilities->CallLogPop(113);
 }
 
@@ -17346,7 +17400,7 @@ void TInterface::SetSaveMenuAndButtons(int Caller)
         }
         // set PresetAutoSigRoutesButton enabled or not
         // enable if PreStart & no routes set
-        if((Level2OperMode == PreStart) && (AllRoutes->AllRoutesVector.empty()))
+        if((Level2OperMode == PreStart) && (AllRoutes->AllRoutesVector.empty()) && !EveryPrefDir->PrefDirVector.empty())//added EveryPrefDir condition at v2.10.0
         {
             PresetAutoSigRoutesButton->Enabled = true;
         }
@@ -17811,6 +17865,7 @@ void TInterface::SetCaption(int Caller)
     {
         Caption = "Railway: " + RailwayTitle + "; Timetable: " + TimetableTitle;
     }
+    session_api_->dump();   // update session INI file  //added at v2.10.0
     Utilities->CallLogPop(1208);
 }
 
@@ -17922,6 +17977,7 @@ void TInterface::ResetAll(int Caller)
     CtrlKey = false;
     ShiftKey = false;
     ClipboardChecked = false;
+    session_api_->dump();   // update session INI file  //added at v2.10.0
     Utilities->CallLogPop(1209);
 }
 
@@ -18019,6 +18075,7 @@ void TInterface::ResetChangedFileDataAndCaption(int Caller, bool NonPrefDirChang
         TimetableTitle = ""; // should have been reset already during user mode change but include here also
         SetTrackBuildImages(15);
     }
+    session_api_->dump();   // update session INI file   //added at v2.10.0
     SetCaption(2);
     Utilities->CallLogPop(1210);
 }
@@ -18083,7 +18140,7 @@ void TInterface::SaveSession(int Caller)
             Track->SaveSessionBarriersDownVector(0, SessionFile);
             // save timetable
             Utilities->SaveFileString(SessionFile, "***Timetable***");
-            if(!(SaveTimetableToSessionFile(0, SessionFile, SessionFileStr)))
+            if(!(SaveTimetableToSessionFile(0, SessionFile, SessionFileStr))) //includes the timetable itself + TrainOperatingData
             {
                 SessionFile.close();
                 DeleteFile(SessionFileStr);
@@ -18566,6 +18623,7 @@ void TInterface::LoadInterface(int Caller, std::ifstream &SessionFile)
     TrainController->TotLatePassMins = Utilities->LoadFileDouble(SessionFile);
     TrainController->TotEarlyPassMins = Utilities->LoadFileDouble(SessionFile);
     TrainController->TotLateDepMins = Utilities->LoadFileDouble(SessionFile);
+    session_api_->dump();   // update session INI file  //added at v2.10.0
     Utilities->CallLogPop(1212);
 }
 
@@ -18844,7 +18902,7 @@ bool TInterface::SaveTimetableToSessionFile(int Caller, std::ofstream &SessionFi
             break;
         }
     }
-    delete[]Buffer;
+    delete[] Buffer;
     FileClose(Handle);
 
     SessionFile.close(); // close & re-open in append & text out mode as before so can write text
@@ -18909,7 +18967,7 @@ bool TInterface::SaveTimetableToErrorFile(int Caller, std::ofstream &ErrorFile, 
             break;
         }
     }
-    delete[]Buffer;
+    delete[] Buffer;
     FileClose(Handle);
 
     ErrorFile.close(); // close & re-open in append & text out mode as before so can write text
@@ -18965,7 +19023,7 @@ bool TInterface::LoadTimetableFromSessionFile(int Caller, std::ifstream &Session
         {
             TTBFile.close();
             DeleteFile(TempTTFileName);
-            delete[]Buffer;
+            delete[] Buffer;
             Utilities->CallLogPop(1222);
             return(false);
         }
@@ -18990,7 +19048,7 @@ bool TInterface::LoadTimetableFromSessionFile(int Caller, std::ifstream &Session
             {
                 TTBFile.close();
                 DeleteFile(TempTTFileName);
-                delete[]Buffer;
+                delete[] Buffer;
                 Utilities->CallLogPop(1223);
                 return(false);
             }
@@ -19008,7 +19066,7 @@ bool TInterface::LoadTimetableFromSessionFile(int Caller, std::ifstream &Session
             }
         }
         TTBFile.close();
-        delete[]Buffer;
+        delete[] Buffer;
 // SaveTempTimetableFile(1, TTBFileName); no need, already has required name
 // now create the internal timetable from the .tmp file
         bool GiveMessagesFalse = false;
@@ -19202,7 +19260,7 @@ bool TInterface::BuildTrainDataVectorForLoadFile(int Caller, std::ifstream &TTBL
         Count++;
     }
     TTBLFile.close();
-    delete[]TrainTimetableString;
+    delete[] TrainTimetableString;
     bool TwoLocationFlag; //not used in LoadFile
 // here when first pass actions completed successfully
     if(!TrainController->SecondPassActions(0, GiveMessages, TwoLocationFlag)) // Check for matching join/split HeadCodes, check increasing times & matching split/join
@@ -19303,7 +19361,7 @@ bool TInterface::BuildTrainDataVectorForValidateFile(int Caller, std::ifstream &
         Count++;
     }
     TTBLFile.close();
-    delete[]TrainTimetableString;
+    delete[] TrainTimetableString;
     bool TwoLocationFlag;
 // here when first pass actions completed successfully
     if(!TrainController->SecondPassActions(1, GiveMessages, TwoLocationFlag)) // Check for matching join/split HeadCodes, check increasing times & matching split/join
@@ -19877,14 +19935,22 @@ void TInterface::LoadPerformanceFile(int Caller, std::ifstream &InFile)
     InFile.get(TempChar); // '\n'
     InFile.getline(Buffer, 1000);
     TempString = AnsiString(Buffer);
-    while(TempString != "***End of performance file***")
+    if(TempString == "***End of performance file***") //added at v2.10.0
     {
-        PerformanceLogBox->Lines->Add(TempString);
-        Utilities->PerformanceFile << TempString.c_str() << '\n';
-        InFile.getline(Buffer, 1000);
-        TempString = AnsiString(Buffer);
+        Display->PerformanceLog(17, "Performance Log\nRailway: " + RailwayTitle + "\nTimetable: " + TimetableTitle + "\nStart Time: " +
+                TrainController->TimetableStartTime.FormatString("hh:nn"));
     }
-    delete[]Buffer;
+    else
+    {
+        while(TempString != "***End of performance file***")
+        {
+            PerformanceLogBox->Lines->Add(TempString);
+            Utilities->PerformanceFile << TempString.c_str() << '\n';
+            InFile.getline(Buffer, 1000);
+            TempString = AnsiString(Buffer);
+        }
+    }
+    delete[] Buffer;
     Utilities->CallLogPop(1295);
 }
 
@@ -20122,7 +20188,8 @@ void TInterface::SaveErrorFile()
    strip out ***Text*** including the \0
    strip out from & including  ***ConstructPrefDir PrefDirVector*** to & including ***PrefDirs*** (and the \0's)
    strip out ***UserGraphics*** including the \0  <--this is missing
-   strip out from & including  ***ConstructRoute PrefDirVector*** to the end of the file
+   strip out from & including the number preceding   ***ConstructRoute SearchVector*** to the end of the file
+   the last entry should be '************NUL CR LF' (after all the pref dirs)
    rename as .dev or .rly file
 
    BUT - note that signals (and points, though they won't show) will be set as they were left.  To reset to red, load a suitable timetable & select
@@ -20370,7 +20437,7 @@ void TInterface::SaveTempTimetableFile(int Caller, AnsiString InFileName)
         if(CountOut != CountIn)
         {
             ShowMessage("Error in writing to the temporary timetable file, sessions can't be saved - try again, may only be a temporary problem");
-            delete[]Buffer;
+            delete[] Buffer;
             FileClose(InHandle);
             FileClose(OutHandle);
             Utilities->CallLogPop(1402);
@@ -20381,7 +20448,7 @@ void TInterface::SaveTempTimetableFile(int Caller, AnsiString InFileName)
             break;
         }
     }
-    delete[]Buffer;
+    delete[] Buffer;
     FileClose(InHandle);
     FileClose(OutHandle);
     Utilities->CallLogPop(1403);
@@ -20667,6 +20734,7 @@ void TInterface::SaveAsSubroutine(int Caller)
         } // if(SaveRailwayDialog->Execute())
 
     }
+    session_api_->dump();   // update session INI file   //added at v2.10.0
     Utilities->CallLogPop(1546);
 }
 
@@ -20674,88 +20742,98 @@ void TInterface::SaveAsSubroutine(int Caller)
 
 void TInterface::SetTrackModeEditMenu(int Caller)
 {
-    // no need for caller or log as only setting values
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTrackModeEditMenu");
-    CutMenuItem->Visible = true;
-    CopyMenuItem->Visible = true;
-    FlipMenuItem->Visible = true;
-    MirrorMenuItem->Visible = true;
-    RotRightMenuItem->Visible = true;
-    RotLeftMenuItem->Visible = true;
-    RotateMenuItem->Visible = true;
-    PasteMenuItem->Visible = true;
-    DeleteMenuItem->Visible = true;
-    SelectLengthsMenuItem->Visible = true;
-    ReselectMenuItem->Visible = true;
-// Application->MessageBox(L"Running SetTrackModeEditMenu", L"Message", MB_OK);     //debug check
-    CutMenuItem->Enabled = false;
-    CopyMenuItem->Enabled = false;
-    FlipMenuItem->Enabled = false;
-    MirrorMenuItem->Enabled = false;
-    RotRightMenuItem->Enabled = false;
-    RotLeftMenuItem->Enabled = false;
-    RotateMenuItem->Enabled = false;
-    PasteMenuItem->Enabled = false;
-    EditMenu->Enabled = false;
-    System::WideChar ValidityBuffer[14];
-    Clipboard()->GetTextBuf(ValidityBuffer, 14);
-    ClpBrdValid = AnsiString(ValidityBuffer);
-    Clipboard()->Close();
-
-// new section for 2.8.0 in case have valid clipboard from another application
-    if(!SelectionValid)
+    try
     {
-        if(ClpBrdValid == "RlyClpBrdCopy")
+        // no need for caller or log as only setting values
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTrackModeEditMenu");
+        CutMenuItem->Visible = true;
+        CopyMenuItem->Visible = true;
+        FlipMenuItem->Visible = true;
+        MirrorMenuItem->Visible = true;
+        RotRightMenuItem->Visible = true;
+        RotLeftMenuItem->Visible = true;
+        RotateMenuItem->Visible = true;
+        PasteMenuItem->Visible = true;
+        DeleteMenuItem->Visible = true;
+        SelectLengthsMenuItem->Visible = true;
+        ReselectMenuItem->Visible = true;
+    // Application->MessageBox(L"Running SetTrackModeEditMenu", L"Message", MB_OK);     //debug check
+        CutMenuItem->Enabled = false;
+        CopyMenuItem->Enabled = false;
+        FlipMenuItem->Enabled = false;
+        MirrorMenuItem->Enabled = false;
+        RotRightMenuItem->Enabled = false;
+        RotLeftMenuItem->Enabled = false;
+        RotateMenuItem->Enabled = false;
+        PasteMenuItem->Enabled = false;
+        EditMenu->Enabled = false;
+        System::WideChar ValidityBuffer[14];
+        Clipboard()->GetTextBuf(ValidityBuffer, 14);
+        ClpBrdValid = AnsiString(ValidityBuffer);
+        Clipboard()->Close();
+
+    // new section for 2.8.0 in case have valid clipboard from another application
+        if(!SelectionValid)
         {
-            PasteMenuItem->Enabled = true;
-            if(Level1Mode == TrackMode)
+            if(ClpBrdValid == "RlyClpBrdCopy")
             {
-                EditMenu->Enabled = true;
+                PasteMenuItem->Enabled = true;
+                if(Level1Mode == TrackMode)
+                {
+                    EditMenu->Enabled = true;
+                }
+                CopySelected = true;
+                Track->CopyFlag = true;
+    // Level1Mode = TrackMode;
             }
-            CopySelected = true;
-            Track->CopyFlag = true;
-// Level1Mode = TrackMode;
+            else if(ClpBrdValid == "RlyClpBrd_Cut")
+            {
+                PasteMenuItem->Enabled = true;
+                if(Level1Mode == TrackMode)
+                {
+                    EditMenu->Enabled = true;
+                }
+                CopySelected = false;
+                Track->CopyFlag = false;
+    // Level1Mode = TrackMode;
+            }
         }
-        else if(ClpBrdValid == "RlyClpBrd_Cut")
+    // end of new section
+
+    // PasteWithAttributesMenuItem->Enabled = false; //new at v2.2.0   (dropped at 2.4.0 as all pastes are with attributes)
+        ClpBrdValid = "";
+        DeleteMenuItem->Enabled = false;
+        SelectLengthsMenuItem->Enabled = false;
+        if(SelectionValid)
         {
-            PasteMenuItem->Enabled = true;
-            if(Level1Mode == TrackMode)
-            {
-                EditMenu->Enabled = true;
-            }
-            CopySelected = false;
-            Track->CopyFlag = false;
-// Level1Mode = TrackMode;
+            ReselectMenuItem->Enabled = true;
         }
-    }
-// end of new section
+        else
+        {
+            ReselectMenuItem->Enabled = false;
+        }
+        SelectBiDirPrefDirsMenuItem->Visible = false;
+        CheckPrefDirConflictsMenuItem->Visible = false;
+        CancelSelectionMenuItem->Enabled = true;
+        SelectMenuItem->Enabled = true;
 
-// PasteWithAttributesMenuItem->Enabled = false; //new at v2.2.0   (dropped at 2.4.0 as all pastes are with attributes)
-    ClpBrdValid = "";
-    DeleteMenuItem->Enabled = false;
-    SelectLengthsMenuItem->Enabled = false;
-    if(SelectionValid)
-    {
-        ReselectMenuItem->Enabled = true;
+        if(NoRailway() && (TrackElementPanel->Visible == false)) //added latter condition at v2.10.0 so can use select to add track elements in bulk
+        {
+            SelectMenuItem->Enabled = false;
+        }
+        else if(Level1Mode == TrackMode)
+        {
+            EditMenu->Enabled = true;
+        }
+        Utilities->CallLogPop(2273);
     }
-    else
-    {
-        ReselectMenuItem->Enabled = false;
-    }
-    SelectBiDirPrefDirsMenuItem->Visible = false;
-    CheckPrefDirConflictsMenuItem->Visible = false;
-    CancelSelectionMenuItem->Enabled = true;
-    SelectMenuItem->Enabled = true;
 
-    if(NoRailway())
+    catch(const EClipboardException &e) //non-error catch - added at v2.10.0 after SamWainwright access denial error (08/09/21)
+                                        //also reported by Bengt on 03/10/21
     {
-        SelectMenuItem->Enabled = false;
+        TrainController->LogEvent("EClipboardException in SetTrackModeEditMenu - message = " + e.Message);
+        Utilities->CallLogPop(2321);
     }
-    else if(Level1Mode == TrackMode)
-    {
-        EditMenu->Enabled = true;
-    }
-    Utilities->CallLogPop(2273);
 }
 
 // ---------------------------------------------------------------------------
@@ -20872,7 +20950,7 @@ void TInterface::AddLocationNameText(int Caller, AnsiString Name, int HPos, int 
 
 // ---------------------------------------------------------------------------
 
-void TInterface::TestFunction()
+void TInterface::TestFunction()    //triggered by Alt Ctrl 4
 {
     try
     {
@@ -20901,6 +20979,11 @@ void TInterface::TestFunction()
           }
       }
 */
+
+//        TrainController->TrainVector.at(0).TrainFailurePending = true;
+//        TrainController->TrainVector.at(0).PowerAtRail = 0.08;
+//        TrainController->TrainVector.at(0).StoppedWithoutPower = true;
+
 
 // throw Exception("Test error");  //generate an error file
 
@@ -21052,7 +21135,7 @@ void TInterface::LoadUserGraphic(int Caller) // new at v2.4.0
         }
         Utilities->CallLogPop(2191);
     }
-    catch(const EInvalidGraphic &e) //non error catch
+    catch(const EInvalidGraphic &e) //non-error catch
     {
         ShowMessage(
             "Incorrect file format, the file can't be loaded.\nEnsure that the file you want is a valid graphic file with extension .bmp, .gif, .jpg, or .png");
@@ -21264,9 +21347,10 @@ void TInterface::LoadClipboard(int Caller) // new at v2.8.0
         Utilities->CallLogPop(2267);
     }
 
-    catch(const EClipboardException &e) // ignore access denials (but only seems to happen with recover), doesn't affect program //non error catch
+    catch(const EClipboardException &e) //non-error catch - ignore access denials (but only seems to happen with recover), doesn't affect program
     {
 // Application->MessageBox(L"A clipboard error occurred in loading the clipboard", L"Message", MB_OK);
+        TrainController->LogEvent("EClipboardException in LoadClipboard - message = " + e.Message);
         Utilities->CallLogPop(2312);
     }
 
@@ -21300,7 +21384,7 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
         wss << SelectVectorBuffer;
         ClpBrdValid = AnsiString(SelectVectorBuffer).SubString(1, 13);
         PasteMenuItem->Enabled = false;
-        delete[]SelectVectorBuffer;
+        delete[] SelectVectorBuffer;
 
         if((ClpBrdValid != AnsiString("RlyClpBrdCopy")) && (ClpBrdValid != AnsiString("RlyClpBrd_Cut")))
         {
@@ -21523,11 +21607,17 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
         Utilities->CallLogPop(2269);
     }
 
-    catch(const Exception &e) //don't stop for any error in this section, just give bad clipboard message  //non error catch
+    catch(const EClipboardException &e) //don't stop for any error in this section, just log it  //non-error catch
     {
         ValidResult = false;
+        TrainController->LogEvent("EClipboardException in RecoverClipboard - message = " + e.Message);
         Utilities->CallLogPop(2313);
-//        ErrorLog(223, e.Message);
+    }
+    catch(const Exception &e) //non-error catch - non-clipboard exception
+    {
+        ValidResult = false;
+        TrainController->LogEvent("non-clipboard exception in RecoverClipboard - message = " + e.Message);
+        Utilities->CallLogPop(2322);
     }
 
 }

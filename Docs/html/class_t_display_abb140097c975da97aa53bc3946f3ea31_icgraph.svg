@@ -22,10 +22,10 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_track.html#afb6bf873ba2e4107cf462f9d42dbe33f" target="_top" xlink:title="Called by TInterface::SaveOperatingImage1Click to add all track element graphics to the image file in...">
+<g id="a_node2"><a xlink:href="class_t_track.html#a98b1632a5246785adc1003ebcb3e91a4" target="_top" xlink:title="Called by TInterface::SaveOperatingImage1Click to add all track &amp; text to the image file in their ope...">
 <polygon fill="white" stroke="black" points="164,-0.5 164,-30.5 305,-30.5 305,-0.5 164,-0.5"/>
 <text text-anchor="start" x="172" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::WriteOperatingTrack</text>
-<text text-anchor="middle" x="234.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">ToImage</text>
+<text text-anchor="middle" x="234.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">AndTextToImage</text>
 </a>
 </g>
 </g>

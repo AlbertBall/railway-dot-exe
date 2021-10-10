@@ -5,10 +5,10 @@
 <area shape="rect" id="node4" href="$class_t_interface.html#a24d79aa4745e495daa07bb5ce412e75f" title=" " alt="" coords="249,71,424,112"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#a0659e748042e378f3e325652c9c2e6d2" title="constructor" alt="" coords="265,137,408,163"/>
 <area shape="rect" id="node6" href="$class_t_interface.html#a3a9f9cf4b530f7958ee3d14047fd951a" title=" " alt="" coords="245,188,428,229"/>
-<area shape="rect" id="node7" href="$class_t_track.html#afb6bf873ba2e4107cf462f9d42dbe33f" title="Called by TInterface::SaveOperatingImage1Click to add all track element graphics to the image file in..." alt="" coords="243,253,431,295"/>
-<area shape="rect" id="node9" href="$class_t_track.html#ab3530b4af2a4b2a9cd1c1b480a19298d" title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI..." alt="" coords="246,339,427,366"/>
-<area shape="rect" id="node8" href="$class_t_interface.html#a4d75015545313004ffd5022c020f4edf" title=" " alt="" coords="15,233,185,275"/>
-<area shape="rect" id="node10" href="$class_t_interface.html#a14d8976ee13c85f12eab634de845baf1" title=" " alt="" coords="14,299,186,340"/>
-<area shape="rect" id="node11" href="$class_t_interface.html#ab73377784e302350bcc4f1fed4f8d90a" title=" " alt="" coords="14,364,186,405"/>
-<area shape="rect" id="node12" href="$class_t_interface.html#a69b645fe4cc36d0bea7de3fca553bd6a" title=" " alt="" coords="5,429,195,471"/>
+<area shape="rect" id="node7" href="$class_t_track.html#a98b1632a5246785adc1003ebcb3e91a4" title="Called by TInterface::SaveOperatingImage1Click to add all track &amp; text to the image file in their ope..." alt="" coords="243,253,431,295"/>
+<area shape="rect" id="node9" href="$class_t_track.html#a909e96ff6b77c266ab82313e30018cd4" title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI..." alt="" coords="247,335,427,376"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a4d75015545313004ffd5022c020f4edf" title=" " alt="" coords="15,236,185,277"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a14d8976ee13c85f12eab634de845baf1" title=" " alt="" coords="14,301,186,343"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#ab73377784e302350bcc4f1fed4f8d90a" title=" " alt="" coords="14,367,186,408"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#a69b645fe4cc36d0bea7de3fca553bd6a" title=" " alt="" coords="5,432,195,473"/>
 </map>

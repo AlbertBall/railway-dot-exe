@@ -449,6 +449,7 @@ void TTextHandler::WriteTextToImage(int Caller, Graphics::TBitmap *Bitmap)
         AnsiString TextString = TextHandler->TextPtrAt(32, x)->TextString;
         TFont *TextFont = TextHandler->TextPtrAt(33, x)->Font;
         Bitmap->Canvas->Font->Assign(TextFont);
+        Bitmap->Canvas->Brush->Style = bsClear; // so text prints transparent <- added at v2.10.0
         Bitmap->Canvas->TextOut(HPos - (Track->GetHLocMin() * 16), VPos - (Track->GetVLocMin() * 16), TextString);
     }
     Utilities->CallLogPop(1534);

@@ -1,4 +1,4 @@
-//AboutUnit.cpp
+﻿//AboutUnit.cpp
 /*
       BEWARE OF COMMENTS in .cpp files:  they were accurate when written but have
       sometimes been overtaken by changes and not updated
@@ -105,8 +105,8 @@ void __fastcall TAboutForm::SetAboutCaption()
     AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
         L"operate your own railway" + NL + NL +
         L"Release: " + Interface->ProgramVersion + NL + NL +
-        L"Copyright � 2010-2021 Albert Ball" + NL +
-        L"with contributions from Stephen A Smith";
+        L"Copyright 2010-2021 Albert Ball" + NL +
+        L"with contributions from Stephen A Smith and Kristian Zarebski";
 }
 //---------------------------------------------------------------------------
 void __fastcall TAboutForm::WebsiteLinkLabelLinkClick(TObject *Sender, const UnicodeString Link,

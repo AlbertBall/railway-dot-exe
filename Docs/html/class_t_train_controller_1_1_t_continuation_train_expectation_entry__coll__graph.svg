@@ -31,7 +31,7 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_train_data_entry.html" target="_top" xlink:title="Contains all data for a single train.">
+<g id="a_node2"><a xlink:href="class_t_train_data_entry.html" target="_top" xlink:title="Contains all data for a single timetable service entry.">
 <polygon fill="white" stroke="black" points="6,-171.5 6,-349.5 143,-349.5 143,-171.5 6,-171.5"/>
 <text text-anchor="middle" x="74.5" y="-337.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainDataEntry</text>
 <polyline fill="none" stroke="black" points="6,-330.5 143,-330.5 "/>

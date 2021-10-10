@@ -1,8 +1,9 @@
 <map id="GraphicUnit.h" name="GraphicUnit.h">
-<area shape="rect" id="node1" title=" " alt="" coords="291,5,393,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="371,5,473,32"/>
 <area shape="rect" id="node2" href="$_display_unit_8cpp.html" title=" " alt="" coords="5,80,119,107"/>
 <area shape="rect" id="node3" href="$_graphic_unit_8cpp.html" title=" " alt="" coords="143,80,258,107"/>
 <area shape="rect" id="node4" href="$_interface_unit_8cpp.html" title=" " alt="" coords="283,80,401,107"/>
-<area shape="rect" id="node5" href="$_track_unit_8cpp.html" title=" " alt="" coords="425,80,528,107"/>
-<area shape="rect" id="node6" href="$_train_unit_8cpp.html" title=" " alt="" coords="553,80,651,107"/>
+<area shape="rect" id="node5" href="$_interface_unit2_810_80_8cpp.html" title=" " alt="" coords="426,80,581,107"/>
+<area shape="rect" id="node6" href="$_track_unit_8cpp.html" title=" " alt="" coords="605,80,708,107"/>
+<area shape="rect" id="node7" href="$_train_unit_8cpp.html" title=" " alt="" coords="733,80,831,107"/>
 </map>

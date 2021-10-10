@@ -32,7 +32,7 @@ private:    // User declarations
     int MissingNumArray[5000];
 
     static const int NumFiles = 14;
-    static const int NumberOfCalls = 473;
+    static const int NumberOfCalls = 477;
     AnsiString FileString[NumFiles];
     AnsiString FunctionString[NumberOfCalls];
 

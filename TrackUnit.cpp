@@ -1113,7 +1113,6 @@ TTrack::TTrack()
     VLocMax = -2000000000;
     SkipLocationNameMultiMapCheck = false; // new at v2.2.0, false is default value
     CopyFlag = false; // only true for copying, so names aren't copied
-
     AnsiString NL = '\n';
 
     RouteFailMessage = "Unable to set a route:" + NL + NL + "it may be unreachable; " + NL + NL +
@@ -2653,6 +2652,78 @@ bool TTrack::TryToConnectTrack(int Caller, bool &LocError, int &HLoc, int &VLoc,
             ContinuationNameMap.insert(TempMapPair);
         }
     }
+
+//check (provided TrackFinished is true) if any named (red) locations are without platforms, ie concourses only or concourses and foot crossings
+//(don't report blue areas without track as these unlikely to be mistakes)
+
+    if(TrackFinished)
+    {
+        AnsiString Name = "";
+        typedef std::list<AnsiString> TNoPlatsList;
+        TNoPlatsList::iterator NPLIt;
+        TNoPlatsList NoPlatsList;
+        typedef std::list<AnsiString> TLocNameList;
+        TLocNameList LocNameList; //single entry for each name
+        TLocationNameMultiMapRange MMRange;
+        TLocationNameMultiMapIterator TempIt;
+        for(TLocationNameMultiMapIterator LNMMIt = LocationNameMultiMap.begin(); LNMMIt != LocationNameMultiMap.end(); LNMMIt++)
+        {
+            LocNameList.push_back(LNMMIt->first);
+        }
+        LocNameList.sort();
+        LocNameList.unique();
+        for(TLocNameList::iterator LNLIt = LocNameList.begin(); LNLIt != LocNameList.end(); LNLIt++)
+        {
+            Name = *LNLIt;
+            MMRange = LocationNameMultiMap.equal_range(Name);
+            if(MMRange.first == MMRange.second) //can't find it - should always do but include as a safeguard
+            {
+                continue;
+            }
+            for(TLocationNameMultiMapIterator LNMMIt = MMRange.first; LNMMIt != MMRange.second; LNMMIt++)
+            {
+                if((LNMMIt->second) < 0) //active track element
+                {
+                    if(TrackElementAt(1401, -1 - LNMMIt->second).TrackType != FootCrossing)
+                    {
+                        break;
+                    }
+                }
+                else //inactive
+                {
+                    if(InactiveTrackElementAt(1402, LNMMIt->second).TrackType != Concourse)
+                    {
+                        break;
+                    }
+                }
+                TempIt = MMRange.second;
+                if(LNMMIt == --TempIt) //reached last named element & all concourses or foot crossings
+                {
+                    NoPlatsList.push_back(Name);
+                }
+            }
+        }
+        if(!NoPlatsList.empty())
+        {
+            AnsiString NoPlatsAnsiList = "";
+            for(NPLIt = NoPlatsList.begin(); NPLIt != NoPlatsList.end(); NPLIt++)
+            {
+                NoPlatsAnsiList += *NPLIt + '\n';
+            }
+            if(!NoPlatsMessageSent)
+            {
+                if(NoPlatsList.size() > 1)
+                {
+                    ShowMessage("Please note: the following locations have no platforms, trains won't be able to stop or pass there:-\n\n" + NoPlatsAnsiList + "\nThis message will not be shown again.");
+                }
+                else
+                {
+                    ShowMessage("Please note: the following location has no platforms, trains won't be able to stop or pass there:-\n\n" + NoPlatsAnsiList + "\nThis message will not be shown again.");
+                }
+                NoPlatsMessageSent = true;
+            }
+        }
+    }
     Utilities->CallLogPop(440);
     return(true);
 }
@@ -3761,12 +3832,12 @@ void TTrack::RebuildUserGraphics(int Caller, TDisplay *Disp) // new at v2.4.0
 
 // ---------------------------------------------------------------------------
 
-void TTrack::WriteTrackToImage(int Caller, Graphics::TBitmap *Bitmap)
+void TTrack::WriteTrackAndTextToImage(int Caller, Graphics::TBitmap *Bitmap) //added text after inactives at v2.10.0
 /*
       Note, have to plot inactives before track because track has to overwrite 'name' platforms (NamedLocationElements)
 */
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",WriteTrackToImage");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",WriteTrackAndTextToImage");
 // need to change graphics back to black on white if have a dark background
     TColor OldTransparentColour = Utilities->clTransparent;
 
@@ -3851,6 +3922,9 @@ void TTrack::WriteTrackToImage(int Caller, Graphics::TBitmap *Bitmap)
             Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16), GraphicOutput);
         }
     }
+
+    TextHandler->WriteTextToImage(0, Bitmap); //so overwrites inactive elements  //added at v2.10.0
+
 
     NextTrackElementPtr = TrackVector.begin();
     while(ReturnNextTrackElement(2, Next))
@@ -4062,13 +4136,13 @@ void TTrack::WriteGraphicsToImage(int Caller, Graphics::TBitmap *Bitmap)
 
 // ---------------------------------------------------------------------------
 
-void TTrack::WriteOperatingTrackToImage(int Caller, Graphics::TBitmap *Bitmap)
+void TTrack::WriteOperatingTrackAndTextToImage(int Caller, Graphics::TBitmap *Bitmap)
 /*
       Note, have to plot inactives before track because track has to overwrite 'name' platforms (NamedLocationElements)
       Here plot all named elements as non-striped, points with active fillet, signals as they are set, and gaps as connected
 */
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",WriteOperatingTrackToImage");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",WriteOperatingTrackAndTextToImage");
 // need to change graphics back to black on white if have a dark background
     TColor OldTransparentColour = Utilities->clTransparent;
 
@@ -4118,6 +4192,8 @@ void TTrack::WriteOperatingTrackToImage(int Caller, Graphics::TBitmap *Bitmap)
             Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16), GraphicOutput);
         }
     }
+
+    TextHandler->WriteTextToImage(1, Bitmap); //added at v2.10.0
 
     NextTrackElementPtr = TrackVector.begin();
     while(ReturnNextTrackElement(3, Next))
@@ -10342,7 +10418,7 @@ TTrackElement &TTrack::TrackElementAt(int Caller, int At)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrackElementAt," + AnsiString(At));
     if((At < 0) || ((unsigned int)At >= TrackVector.size()))
     {
-        Utilities->CallLogPop(2281);
+//        Utilities->CallLogPop(2281);  this shouldn't have been here
         throw Exception("Out of Range Error, vector size: " + AnsiString(TrackVector.size()) + ", At: " + AnsiString(At) + " in TrackElementAt");
     }
     Utilities->CallLogPop(643);
@@ -10413,6 +10489,10 @@ bool TTrack::OneNamedLocationLongEnoughForSplit(int Caller, AnsiString LocationN
         }
         InactiveElement = InactiveTrackElementAt(47, SNIterator->second);
         if(InactiveElement.TrackType == Concourse)
+        {
+            continue; // only interested in locations where ActiveTrackElementName may be set (not needed at v2.10.0 but leave in)
+        }
+        if(!TrackElementPresentAtHV(1, InactiveElement.HLoc, InactiveElement.VLoc)) //added at v2.10.0 in response to Jason Bassett error notified 14/08/21
         {
             continue; // only interested in locations where ActiveTrackElementName may be set
         }

@@ -1,52 +1,52 @@
 <map id="TInterface::RotRightMenuItemClick" name="TInterface::RotRightMenuItemClick">
-<area shape="rect" id="node1" title=" " alt="" coords="5,1200,173,1241"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,1267,173,1308"/>
 <area shape="rect" id="node2" href="$class_t_track.html#af507e9106aa12a670d6b09bd575cbfc3" title="Return a basic track element from the SpeedTag new at v2.2.0 &#45; needed because Interface doesn&#39;t have ..." alt="" coords="243,5,422,47"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1489,1311,1636,1338"/>
-<area shape="rect" id="node4" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="749,1355,929,1396"/>
-<area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1489,758,1636,785"/>
-<area shape="rect" id="node8" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1247,1129,1423,1171"/>
-<area shape="rect" id="node9" href="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc" title="Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return &#45;1." alt="" coords="1228,1515,1441,1556"/>
-<area shape="rect" id="node10" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="1252,1741,1417,1767"/>
-<area shape="rect" id="node11" href="$class_t_pref_dir_element.html#af00e0755cd716b4d101abbae02c73ca2" title="Returns ELink." alt="" coords="990,781,1169,807"/>
-<area shape="rect" id="node17" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1253,926,1416,953"/>
-<area shape="rect" id="node20" href="$class_t_pref_dir_element.html#ae8ee9f59578f80d23aebfdb9fff041d4" title="determines and loads EXNumber (see above)" alt="" coords="506,839,685,880"/>
-<area shape="rect" id="node21" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="528,122,663,149"/>
-<area shape="rect" id="node22" href="$class_t_one_pref_dir.html#abc09de3c32460a73d3de12625329210d" title="Empty the existing preferred direction vector &amp; map &#45; for use by other classes." alt="" coords="749,1827,928,1868"/>
-<area shape="rect" id="node23" href="$class_t_one_pref_dir.html#a5e8d14c19c70cafe968e7481b116a714" title="Store a single pref dir element in the vector &amp; map &#45; used by other classes." alt="" coords="749,957,928,999"/>
-<area shape="rect" id="node24" href="$class_t_pref_dir_element.html#a13526cb4ee94a708a7bfef517abaa605" title="picks up the EntryDirectionGraphicPtr for preferred directions" alt="" coords="235,847,431,888"/>
-<area shape="rect" id="node25" href="$class_t_one_pref_dir.html#af5a2c955fa9c2584c683accbacb15f4c" title="Return a modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1245,627,1424,668"/>
-<area shape="rect" id="node26" href="$class_t_pref_dir_element.html#a10b4ff375e779de7cc2a16344959bb31" title="picks up the EXGraphicPtr for preferred directions" alt="" coords="249,781,417,823"/>
-<area shape="rect" id="node27" href="$class_t_pref_dir_element.html#a69817a345be27fcdb63440c52d6325f3" title="Returns signed integer value of TrackVectorPosition (used in flip, mirror etc for pref dirs) added at..." alt="" coords="240,1015,425,1056"/>
-<area shape="rect" id="node28" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="751,1271,926,1312"/>
-<area shape="rect" id="node29" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="1243,692,1426,733"/>
-<area shape="rect" id="node30" href="$class_t_pref_dir_element.html#a7c2e4d6a65bce13d02ec469f9ed21b64" title="Returns XLink." alt="" coords="245,1182,421,1209"/>
-<area shape="rect" id="node31" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="1232,758,1437,785"/>
-<area shape="rect" id="node32" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="509,173,682,199"/>
-<area shape="rect" id="node33" href="$class_t_display.html#a09a60665a7a8c7b5d5c705a08086feec" title="Plot a dashed rectangle for the area defined by Rect, used when selecting display areas." alt="" coords="1247,809,1422,835"/>
-<area shape="rect" id="node34" href="$class_t_interface.html#a970fd0fd4d725c80c6e2c4cd0c27cf0c" title="SelectRect is the rectangle selected via the &#39;Edit&#39;menu, and this function sets left,..." alt="" coords="747,1137,931,1163"/>
-<area shape="rect" id="node35" href="$class_t_track.html#a512c7a382dec9379b6796c73363599e5" title="Store a TrackElement in the SelectVector." alt="" coords="265,1435,401,1462"/>
-<area shape="rect" id="node36" href="$class_t_text_handler.html#a7fa848c67afecfa5fd33d7fee4ab805b" title="return the text item at position &#39;At&#39; in SelectTextVector (carries out range checking)" alt="" coords="1251,860,1419,901"/>
-<area shape="rect" id="node37" href="$class_t_text_handler.html#a48c65d591fcb76f0a8e86c7f734849b2" title="return the number of items in SelectTextVector" alt="" coords="1251,1792,1419,1833"/>
-<area shape="rect" id="node38" href="$class_t_track.html#a9cddc7b9d02254d44e242ff14758d660" title="A range&#45;checked version of SelectVector.at(At)" alt="" coords="760,781,917,807"/>
-<area shape="rect" id="node39" href="$class_t_track.html#a3cae8cc2dc72d74cf0d24dbc4148c591" title="Return the number of selected active and inactive track elements (via menu items &#39;Edit&#39; and &#39;Select&#39;)" alt="" coords="994,730,1165,757"/>
-<area shape="rect" id="node40" href="$class_t_track.html#a212b9df26c2d6653b841912cd4557b8f" title=" " alt="" coords="751,1775,926,1802"/>
-<area shape="rect" id="node41" href="$class_t_pref_dir_element.html#afcbfdc783f474b0af225bb62813b14ff" title=" " alt="" coords="242,1811,423,1852"/>
-<area shape="rect" id="node42" href="$class_t_pref_dir_element.html#ae60a5ad2d608659523ba6d4238e620ab" title="Used in pasting pref dirs." alt="" coords="244,1877,421,1903"/>
-<area shape="rect" id="node43" href="$class_t_pref_dir_element.html#ab12b488d800f186b4de5c0808db5a966" title="Used in pasting pref dirs." alt="" coords="233,1927,433,1954"/>
-<area shape="rect" id="node44" href="$class_t_pref_dir_element.html#a42579610af1aab27ed738b14ab8d67e6" title="Used in pasting pref dirs." alt="" coords="245,1979,420,2020"/>
-<area shape="rect" id="node45" href="$class_t_pref_dir_element.html#a9b5ac544ec67825609720656350576ba" title="Used in pasting pref dirs." alt="" coords="221,2045,444,2071"/>
-<area shape="rect" id="node46" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="245,1486,420,1513"/>
-<area shape="rect" id="node47" href="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b" title="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode." alt="" coords="492,1334,699,1361"/>
-<area shape="rect" id="node48" href="$class_t_pref_dir_element.html#a5a16be326c5335d429b98c5e5767fd74" title="Used in pasting pref dirs." alt="" coords="245,2197,421,2239"/>
-<area shape="rect" id="node49" href="$class_t_pref_dir_element.html#a579e7a238caee09162ea809d9f349113" title="Used in pasting pref dirs." alt="" coords="245,2263,420,2290"/>
-<area shape="rect" id="node50" href="$class_t_pref_dir_element.html#a2d025cec62751649b22787cac4a201f1" title="Used in pasting pref dirs." alt="" coords="233,2314,432,2341"/>
-<area shape="rect" id="node5" href="$class_t_display.html#a8d990507ae0111e0b7890e8aa77fd76d" title="Empty the display." alt="" coords="1258,1413,1411,1439"/>
-<area shape="rect" id="node7" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="994,1355,1165,1396"/>
-<area shape="rect" id="node12" href="$class_t_pref_dir_element.html#aa5944dedfb065d9e251c26b28fff69f6" title="Returns the ELink array position." alt="" coords="979,1589,1180,1615"/>
-<area shape="rect" id="node13" href="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a" title="Returns a constant reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ch..." alt="" coords="1238,1311,1431,1338"/>
-<area shape="rect" id="node14" href="$class_t_graphic_element.html#aaf109e208515c9b9aaad753d829d25e9" title=" " alt="" coords="988,1421,1171,1447"/>
-<area shape="rect" id="node15" href="$class_t_track.html#abda5d1209d5a197f1cefb851f567736d" title="With large railways only part of the railway is displayed on screen, and this function converts true ..." alt="" coords="1242,1195,1427,1236"/>
-<area shape="rect" id="node16" href="$class_t_track.html#aeb60286bc570dbafab64fe6dc06af2e4" title="Return a reference to the element at HLoc &amp; VLoc, if no element is found an error is thrown." alt="" coords="979,933,1179,975"/>
-<area shape="rect" id="node18" href="$class_t_pref_dir_element.html#a0edec31fc9787847e3b6240bab91783c" title="Returns TrackVectorPosition." alt="" coords="991,1472,1168,1513"/>
-<area shape="rect" id="node19" href="$class_t_graphic_element.html#ad2780e85ae1e401bfbb6a7c37b15bea8" title=" " alt="" coords="988,1538,1171,1565"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1489,1218,1636,1245"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="749,1480,929,1521"/>
+<area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1489,663,1636,690"/>
+<area shape="rect" id="node8" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1247,1093,1423,1135"/>
+<area shape="rect" id="node9" href="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc" title="Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return &#45;1." alt="" coords="1228,1211,1441,1252"/>
+<area shape="rect" id="node10" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="1252,1858,1417,1885"/>
+<area shape="rect" id="node11" href="$class_t_pref_dir_element.html#af00e0755cd716b4d101abbae02c73ca2" title="Returns ELink." alt="" coords="990,898,1169,925"/>
+<area shape="rect" id="node17" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1253,890,1416,917"/>
+<area shape="rect" id="node20" href="$class_t_pref_dir_element.html#ae8ee9f59578f80d23aebfdb9fff041d4" title="determines and loads EXNumber (see above)" alt="" coords="506,747,685,788"/>
+<area shape="rect" id="node21" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="528,130,663,157"/>
+<area shape="rect" id="node22" href="$class_t_one_pref_dir.html#abc09de3c32460a73d3de12625329210d" title="Empty the existing preferred direction vector &amp; map &#45; for use by other classes." alt="" coords="749,1893,928,1935"/>
+<area shape="rect" id="node23" href="$class_t_one_pref_dir.html#a5e8d14c19c70cafe968e7481b116a714" title="Store a single pref dir element in the vector &amp; map &#45; used by other classes." alt="" coords="749,1024,928,1065"/>
+<area shape="rect" id="node24" href="$class_t_pref_dir_element.html#a13526cb4ee94a708a7bfef517abaa605" title="picks up the EntryDirectionGraphicPtr for preferred directions" alt="" coords="235,899,431,940"/>
+<area shape="rect" id="node25" href="$class_t_one_pref_dir.html#af5a2c955fa9c2584c683accbacb15f4c" title="Return a modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1245,224,1424,265"/>
+<area shape="rect" id="node26" href="$class_t_pref_dir_element.html#a10b4ff375e779de7cc2a16344959bb31" title="picks up the EXGraphicPtr for preferred directions" alt="" coords="249,964,417,1005"/>
+<area shape="rect" id="node27" href="$class_t_pref_dir_element.html#a69817a345be27fcdb63440c52d6325f3" title="Returns signed integer value of TrackVectorPosition (used in flip, mirror etc for pref dirs) added at..." alt="" coords="240,1081,425,1123"/>
+<area shape="rect" id="node28" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="751,901,926,943"/>
+<area shape="rect" id="node29" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="1243,656,1426,697"/>
+<area shape="rect" id="node30" href="$class_t_pref_dir_element.html#a7c2e4d6a65bce13d02ec469f9ed21b64" title="Returns XLink." alt="" coords="245,1249,421,1275"/>
+<area shape="rect" id="node31" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="1232,722,1437,749"/>
+<area shape="rect" id="node32" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="752,189,925,215"/>
+<area shape="rect" id="node33" href="$class_t_display.html#a09a60665a7a8c7b5d5c705a08086feec" title="Plot a dashed rectangle for the area defined by Rect, used when selecting display areas." alt="" coords="1247,773,1422,799"/>
+<area shape="rect" id="node34" href="$class_t_interface.html#a970fd0fd4d725c80c6e2c4cd0c27cf0c" title="SelectRect is the rectangle selected via the &#39;Edit&#39;menu, and this function sets left,..." alt="" coords="747,1262,931,1289"/>
+<area shape="rect" id="node35" href="$class_t_track.html#a512c7a382dec9379b6796c73363599e5" title="Store a TrackElement in the SelectVector." alt="" coords="265,1502,401,1529"/>
+<area shape="rect" id="node36" href="$class_t_text_handler.html#a7fa848c67afecfa5fd33d7fee4ab805b" title="return the text item at position &#39;At&#39; in SelectTextVector (carries out range checking)" alt="" coords="1251,824,1419,865"/>
+<area shape="rect" id="node37" href="$class_t_text_handler.html#a48c65d591fcb76f0a8e86c7f734849b2" title="return the number of items in SelectTextVector" alt="" coords="1251,1960,1419,2001"/>
+<area shape="rect" id="node38" href="$class_t_track.html#a9cddc7b9d02254d44e242ff14758d660" title="A range&#45;checked version of SelectVector.at(At)" alt="" coords="760,1198,917,1225"/>
+<area shape="rect" id="node39" href="$class_t_track.html#a3cae8cc2dc72d74cf0d24dbc4148c591" title="Return the number of selected active and inactive track elements (via menu items &#39;Edit&#39; and &#39;Select&#39;)" alt="" coords="994,847,1165,874"/>
+<area shape="rect" id="node40" href="$class_t_track.html#a212b9df26c2d6653b841912cd4557b8f" title=" " alt="" coords="751,1842,926,1869"/>
+<area shape="rect" id="node41" href="$class_t_pref_dir_element.html#afcbfdc783f474b0af225bb62813b14ff" title=" " alt="" coords="242,1807,423,1848"/>
+<area shape="rect" id="node42" href="$class_t_pref_dir_element.html#ae60a5ad2d608659523ba6d4238e620ab" title="Used in pasting pref dirs." alt="" coords="244,1873,421,1899"/>
+<area shape="rect" id="node43" href="$class_t_pref_dir_element.html#ab12b488d800f186b4de5c0808db5a966" title="Used in pasting pref dirs." alt="" coords="233,1923,433,1950"/>
+<area shape="rect" id="node44" href="$class_t_pref_dir_element.html#a42579610af1aab27ed738b14ab8d67e6" title="Used in pasting pref dirs." alt="" coords="245,1975,420,2016"/>
+<area shape="rect" id="node45" href="$class_t_pref_dir_element.html#a9b5ac544ec67825609720656350576ba" title="Used in pasting pref dirs." alt="" coords="221,2041,444,2067"/>
+<area shape="rect" id="node46" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="245,1603,420,1630"/>
+<area shape="rect" id="node47" href="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b" title="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode." alt="" coords="492,1350,699,1377"/>
+<area shape="rect" id="node48" href="$class_t_pref_dir_element.html#a5a16be326c5335d429b98c5e5767fd74" title="Used in pasting pref dirs." alt="" coords="245,2204,421,2245"/>
+<area shape="rect" id="node49" href="$class_t_pref_dir_element.html#a579e7a238caee09162ea809d9f349113" title="Used in pasting pref dirs." alt="" coords="245,2270,420,2297"/>
+<area shape="rect" id="node50" href="$class_t_pref_dir_element.html#a2d025cec62751649b22787cac4a201f1" title="Used in pasting pref dirs." alt="" coords="233,2321,432,2347"/>
+<area shape="rect" id="node5" href="$class_t_display.html#a8d990507ae0111e0b7890e8aa77fd76d" title="Empty the display." alt="" coords="1258,1495,1411,1522"/>
+<area shape="rect" id="node7" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="994,1269,1165,1311"/>
+<area shape="rect" id="node12" href="$class_t_pref_dir_element.html#aa5944dedfb065d9e251c26b28fff69f6" title="Returns the ELink array position." alt="" coords="979,1706,1180,1733"/>
+<area shape="rect" id="node13" href="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a" title="Returns a constant reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ch..." alt="" coords="1238,1394,1431,1421"/>
+<area shape="rect" id="node14" href="$class_t_graphic_element.html#aaf109e208515c9b9aaad753d829d25e9" title=" " alt="" coords="988,1538,1171,1565"/>
+<area shape="rect" id="node15" href="$class_t_track.html#abda5d1209d5a197f1cefb851f567736d" title="With large railways only part of the railway is displayed on screen, and this function converts true ..." alt="" coords="1242,1328,1427,1369"/>
+<area shape="rect" id="node16" href="$class_t_track.html#aeb60286bc570dbafab64fe6dc06af2e4" title="Return a reference to the element at HLoc &amp; VLoc, if no element is found an error is thrown." alt="" coords="979,1000,1179,1041"/>
+<area shape="rect" id="node18" href="$class_t_pref_dir_element.html#a0edec31fc9787847e3b6240bab91783c" title="Returns TrackVectorPosition." alt="" coords="991,1589,1168,1631"/>
+<area shape="rect" id="node19" href="$class_t_graphic_element.html#ad2780e85ae1e401bfbb6a7c37b15bea8" title=" " alt="" coords="988,1655,1171,1682"/>
 </map>

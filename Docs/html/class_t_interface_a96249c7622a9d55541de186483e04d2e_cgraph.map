@@ -1,52 +1,52 @@
 <map id="TInterface::LoadRailwayMenuItemClick" name="TInterface::LoadRailwayMenuItemClick">
-<area shape="rect" id="node1" title=" " alt="" coords="5,1721,196,1762"/>
-<area shape="rect" id="node2" href="$class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9" title="Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent ..." alt="" coords="1213,1484,1379,1511"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1709,948,1856,975"/>
-<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1709,1868,1856,1895"/>
-<area shape="rect" id="node10" href="$class_t_interface.html#a686430e962991bc32742399164187b62" title="First check whether a railway file has changed and if so ask user if really wants to close it without..." alt="" coords="244,1445,420,1472"/>
-<area shape="rect" id="node15" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="701,968,875,995"/>
-<area shape="rect" id="node34" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="265,2767,399,2793"/>
-<area shape="rect" id="node38" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="475,2108,634,2135"/>
-<area shape="rect" id="node50" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="245,2285,419,2312"/>
-<area shape="rect" id="node4" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="1453,1383,1659,1409"/>
-<area shape="rect" id="node6" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="1475,1484,1637,1511"/>
-<area shape="rect" id="node7" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="1459,1281,1653,1308"/>
-<area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1475,1180,1637,1207"/>
-<area shape="rect" id="node9" href="$class_t_track.html#a1092232428ee654facf8f53340c13f74" title="A range&#45;checked version of UserGraphicVector.at(At)" alt="" coords="1460,1956,1652,1983"/>
-<area shape="rect" id="node11" href="$class_t_display.html#a8d990507ae0111e0b7890e8aa77fd76d" title="Empty the display." alt="" coords="1479,489,1633,516"/>
-<area shape="rect" id="node12" href="$class_t_interface.html#ac5e079dc6f8023485367f6db2e693caa" title="Called during ClearEverything and on startup to reset all major railway data values." alt="" coords="487,1445,622,1472"/>
-<area shape="rect" id="node13" href="$class_t_display.html#adc2d6f29794735d5fdebd7b2dbece95d" title="Reset the zoomed&#45;in screen display to the &#39;Home&#39; position." alt="" coords="689,1703,887,1729"/>
-<area shape="rect" id="node14" href="$class_t_interface.html#a974c6d5a224756b00ede1161e0fdf5f7" title="Sets the railway and timetable titles at the top of the screen." alt="" coords="963,1383,1113,1409"/>
-<area shape="rect" id="node16" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="1206,711,1386,753"/>
-<area shape="rect" id="node17" href="$class_t_track.html#aa67be9f8ad9bd885f649b26962e0d41d" title="True if there is a platform, NamedNonStationLocation or Concourse present in the railway." alt="" coords="1451,693,1661,734"/>
-<area shape="rect" id="node18" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="1457,759,1655,785"/>
-<area shape="rect" id="node19" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="1473,591,1639,617"/>
-<area shape="rect" id="node20" href="$class_t_interface.html#ac0c9be911e93134ddda04ba498a8bd9c" title="Called during operation whenever the route type buttons need to be disabled, e.g. when paused." alt="" coords="1475,271,1637,313"/>
-<area shape="rect" id="node21" href="$class_t_one_pref_dir.html#abc09de3c32460a73d3de12625329210d" title="Empty the existing preferred direction vector &amp; map &#45; for use by other classes." alt="" coords="1207,423,1385,465"/>
-<area shape="rect" id="node22" href="$class_t_track.html#a794daa0471b473e28ff24c87a92112dc" title="True if there are gaps in the railway and any are unset." alt="" coords="1229,1113,1363,1140"/>
-<area shape="rect" id="node23" href="$class_t_track.html#a1a9f8ddecccd649195ede1ec027500d1" title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation." alt="" coords="943,1433,1133,1460"/>
-<area shape="rect" id="node25" href="$class_t_track.html#aa8386109483977bfaa97909747358149" title="Indicates whether or not the track has been successfully linked together." alt="" coords="1216,1045,1376,1072"/>
-<area shape="rect" id="node26" href="$class_t_track.html#a2eaa84532799b76a0b42cf6e2611224d" title="True if there is no active track in the railway." alt="" coords="1220,944,1372,971"/>
-<area shape="rect" id="node27" href="$class_t_interface.html#a488e772a2e2a52820fdbe1d1695e0118" title="Returns true if there are no track elements and no text." alt="" coords="965,1281,1111,1308"/>
-<area shape="rect" id="node28" href="$class_t_interface.html#ad91195c1ea742572c4579ea38fbd4eb3" title="Resets the CurrentSpeedButton variable to zero and the &#39;Down&#39; property to false." alt="" coords="1215,541,1377,582"/>
-<area shape="rect" id="node29" href="$class_t_track.html#a1a5d8cf5f3a46667a745bfcf4c77ba9d" title="Set all LC attributes to 0 (closed to trains)" alt="" coords="1201,1357,1391,1384"/>
-<area shape="rect" id="node30" href="$class_t_interface.html#ac0cd2df9b806fc8909c2dcc584442fb5" title="Enables or disables the initial Edit mode submenu items in PrefDir mode." alt="" coords="959,1095,1117,1137"/>
-<area shape="rect" id="node31" href="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b" title="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode." alt="" coords="935,943,1141,969"/>
-<area shape="rect" id="node33" href="$class_t_interface.html#ac24842680583df5ef46f3ece3bc76bb3" title="Sets the information panel message for zoom&#45;out or paused modes." alt="" coords="1451,911,1661,953"/>
-<area shape="rect" id="node24" href="$class_t_track.html#a1fe2aafdc89ee9d809e6949b121e468e" title="examines LocationNameMultiMap and returns true if there are two or more locations with the same name ..." alt="" coords="1189,2007,1403,2033"/>
-<area shape="rect" id="node32" href="$class_t_one_pref_dir.html#ab79dc3f93a471d2182ce625fcac1ff2d" title="Check loaded PrefDir against loaded track, and if discrepancies found give message &amp; clear EveryPrefD..." alt="" coords="1208,1165,1384,1206"/>
-<area shape="rect" id="node35" href="$class_t_utilities.html#a9ca62e05ace8e6c4c33d377c26c48e55" title="creates a string of the form &#39;dd/mm/yyyy hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="468,2868,641,2895"/>
-<area shape="rect" id="node36" href="$class_t_display.html#a33f7067eea9e638bdc363bd0af70d7d5" title="Return a pointer to the screen image." alt="" coords="487,2767,623,2793"/>
-<area shape="rect" id="node37" href="$class_t_interface.html#a0109f801142d4fa3becae22e23b84163" title="Save the error log after an error has been thrown &#45; no need for a caller." alt="" coords="473,2817,636,2844"/>
-<area shape="rect" id="node39" href="$class_t_interface.html#a1072fd152bca3234e6730efa17f84670" title="Check integrity of a railway file prior to loading, return true for success." alt="" coords="1479,1890,1633,1931"/>
-<area shape="rect" id="node40" href="$class_t_track.html#a750354d5deccaf7ccdbe8afe8f0f8e35" title=" " alt="" coords="715,2412,861,2439"/>
-<area shape="rect" id="node41" href="$class_t_track.html#a5d25871e34f26d3c4c878fd4707ed375" title=" " alt="" coords="717,2108,859,2135"/>
-<area shape="rect" id="node42" href="$class_t_track.html#a5c13595c171f5c7e4aaa6dfc18f4359f" title=" " alt="" coords="715,2159,861,2185"/>
-<area shape="rect" id="node43" href="$class_t_track.html#ac42bd1e1e148a91396310b1077d2d8e0" title=" " alt="" coords="717,2260,859,2287"/>
-<area shape="rect" id="node44" href="$class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c" title="loads an int value from the file" alt="" coords="1485,2513,1627,2540"/>
-<area shape="rect" id="node45" href="$class_t_utilities.html#a0aac90f10a08736514da3b3e02129e1e" title="loads a string value from the file" alt="" coords="1475,2412,1637,2439"/>
-<area shape="rect" id="node46" href="$class_t_track.html#a989be9c495abc0850c9237a845fa2846" title="new at v2.4.0, load user graphics" alt="" coords="1221,2311,1371,2337"/>
-<area shape="rect" id="node47" href="$class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d" title="Load a vector and map of preferred directions from the file." alt="" coords="1213,2260,1379,2287"/>
-<area shape="rect" id="node48" href="$class_t_text_handler.html#ab67bb7278c89557bf9cc8bef475afab5" title="load the railway&#39;s text from VecFile" alt="" coords="1217,2463,1375,2489"/>
-<area shape="rect" id="node49" href="$class_t_track.html#a09140dd23c45ccd541f056c3dd257c13" title="Load track elements (active &amp; inactive) from the file into the relevant vectors and maps,..." alt="" coords="1231,2513,1361,2540"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,1399,196,1440"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9" title="Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent ..." alt="" coords="1197,834,1363,861"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1693,860,1840,886"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1693,1601,1840,1628"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a686430e962991bc32742399164187b62" title="First check whether a railway file has changed and if so ask user if really wants to close it without..." alt="" coords="244,289,420,316"/>
+<area shape="rect" id="node16" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="701,1189,875,1216"/>
+<area shape="rect" id="node33" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="265,2614,399,2641"/>
+<area shape="rect" id="node37" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="475,1778,634,1805"/>
+<area shape="rect" id="node50" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="245,2716,419,2742"/>
+<area shape="rect" id="node4" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="1437,860,1643,886"/>
+<area shape="rect" id="node6" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="1459,758,1621,785"/>
+<area shape="rect" id="node7" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="1443,1028,1637,1054"/>
+<area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1459,1652,1621,1678"/>
+<area shape="rect" id="node9" href="$class_t_track.html#a1092232428ee654facf8f53340c13f74" title="A range&#45;checked version of UserGraphicVector.at(At)" alt="" coords="1444,1449,1636,1476"/>
+<area shape="rect" id="node11" href="$class_t_display.html#a8d990507ae0111e0b7890e8aa77fd76d" title="Empty the display." alt="" coords="1463,388,1617,414"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#ac5e079dc6f8023485367f6db2e693caa" title="Called during ClearEverything and on startup to reset all major railway data values." alt="" coords="487,466,622,493"/>
+<area shape="rect" id="node13" href="$class_a_p_i.html#abebc08c03ceec2b898d8fe877b0efcba" title="save currently recorded status data to INI file" alt="" coords="1239,885,1321,912"/>
+<area shape="rect" id="node14" href="$class_t_display.html#adc2d6f29794735d5fdebd7b2dbece95d" title="Reset the zoomed&#45;in screen display to the &#39;Home&#39; position." alt="" coords="689,542,887,569"/>
+<area shape="rect" id="node15" href="$class_t_interface.html#a974c6d5a224756b00ede1161e0fdf5f7" title="Sets the railway and timetable titles at the top of the screen." alt="" coords="955,644,1105,670"/>
+<area shape="rect" id="node17" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="1190,680,1370,722"/>
+<area shape="rect" id="node18" href="$class_t_track.html#aa67be9f8ad9bd885f649b26962e0d41d" title="True if there is a platform, NamedNonStationLocation or Concourse present in the railway." alt="" coords="1435,642,1645,683"/>
+<area shape="rect" id="node19" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="1441,540,1639,566"/>
+<area shape="rect" id="node20" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="1457,438,1623,465"/>
+<area shape="rect" id="node21" href="$class_t_interface.html#ac0c9be911e93134ddda04ba498a8bd9c" title="Called during operation whenever the route type buttons need to be disabled, e.g. when paused." alt="" coords="1459,1231,1621,1272"/>
+<area shape="rect" id="node22" href="$class_t_one_pref_dir.html#abc09de3c32460a73d3de12625329210d" title="Empty the existing preferred direction vector &amp; map &#45; for use by other classes." alt="" coords="941,1291,1119,1332"/>
+<area shape="rect" id="node23" href="$class_t_track.html#a794daa0471b473e28ff24c87a92112dc" title="True if there are gaps in the railway and any are unset." alt="" coords="1213,1600,1347,1626"/>
+<area shape="rect" id="node24" href="$class_t_track.html#a1a9f8ddecccd649195ede1ec027500d1" title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation." alt="" coords="935,1650,1125,1677"/>
+<area shape="rect" id="node26" href="$class_t_track.html#aa8386109483977bfaa97909747358149" title="Indicates whether or not the track has been successfully linked together." alt="" coords="1200,1650,1360,1677"/>
+<area shape="rect" id="node27" href="$class_t_track.html#a2eaa84532799b76a0b42cf6e2611224d" title="True if there is no active track in the railway." alt="" coords="1204,1513,1356,1540"/>
+<area shape="rect" id="node28" href="$class_t_interface.html#a488e772a2e2a52820fdbe1d1695e0118" title="Returns true if there are no track elements and no text." alt="" coords="957,1138,1103,1165"/>
+<area shape="rect" id="node29" href="$class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" title="Send Statement to the performance log on screen and to the file." alt="" coords="1453,1297,1627,1324"/>
+<area shape="rect" id="node30" href="$class_t_interface.html#ad91195c1ea742572c4579ea38fbd4eb3" title="Resets the CurrentSpeedButton variable to zero and the &#39;Down&#39; property to false." alt="" coords="1459,911,1621,952"/>
+<area shape="rect" id="node31" href="$class_t_track.html#a1a5d8cf5f3a46667a745bfcf4c77ba9d" title="Set all LC attributes to 0 (closed to trains)" alt="" coords="1185,986,1375,1013"/>
+<area shape="rect" id="node32" href="$class_t_interface.html#ac0cd2df9b806fc8909c2dcc584442fb5" title="Enables or disables the initial Edit mode submenu items in PrefDir mode." alt="" coords="951,1356,1109,1398"/>
+<area shape="rect" id="node25" href="$class_t_track.html#a1fe2aafdc89ee9d809e6949b121e468e" title="examines LocationNameMultiMap and returns true if there are two or more locations with the same name ..." alt="" coords="1173,1701,1387,1728"/>
+<area shape="rect" id="node34" href="$class_t_utilities.html#a9ca62e05ace8e6c4c33d377c26c48e55" title="creates a string of the form &#39;dd/mm/yyyy hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="468,2665,641,2692"/>
+<area shape="rect" id="node35" href="$class_t_display.html#a33f7067eea9e638bdc363bd0af70d7d5" title="Return a pointer to the screen image." alt="" coords="487,2716,623,2742"/>
+<area shape="rect" id="node36" href="$class_t_interface.html#a0109f801142d4fa3becae22e23b84163" title="Save the error log after an error has been thrown &#45; no need for a caller." alt="" coords="473,2564,636,2590"/>
+<area shape="rect" id="node38" href="$class_t_one_pref_dir.html#ab79dc3f93a471d2182ce625fcac1ff2d" title="Check loaded PrefDir against loaded track, and if discrepancies found give message &amp; clear EveryPrefD..." alt="" coords="1192,1795,1368,1836"/>
+<area shape="rect" id="node39" href="$class_t_interface.html#a1072fd152bca3234e6730efa17f84670" title="Check integrity of a railway file prior to loading, return true for success." alt="" coords="1463,271,1617,312"/>
+<area shape="rect" id="node40" href="$class_t_track.html#a750354d5deccaf7ccdbe8afe8f0f8e35" title=" " alt="" coords="715,1753,861,1780"/>
+<area shape="rect" id="node41" href="$class_t_track.html#a5d25871e34f26d3c4c878fd4707ed375" title=" " alt="" coords="717,1804,859,1830"/>
+<area shape="rect" id="node42" href="$class_t_track.html#a5c13595c171f5c7e4aaa6dfc18f4359f" title=" " alt="" coords="715,1854,861,1881"/>
+<area shape="rect" id="node43" href="$class_t_track.html#ac42bd1e1e148a91396310b1077d2d8e0" title=" " alt="" coords="717,1905,859,1932"/>
+<area shape="rect" id="node44" href="$class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c" title="loads an int value from the file" alt="" coords="1469,2260,1611,2286"/>
+<area shape="rect" id="node45" href="$class_t_utilities.html#a0aac90f10a08736514da3b3e02129e1e" title="loads a string value from the file" alt="" coords="1459,2209,1621,2236"/>
+<area shape="rect" id="node46" href="$class_t_track.html#a989be9c495abc0850c9237a845fa2846" title="new at v2.4.0, load user graphics" alt="" coords="1205,2108,1355,2134"/>
+<area shape="rect" id="node47" href="$class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d" title="Load a vector and map of preferred directions from the file." alt="" coords="1197,2057,1363,2084"/>
+<area shape="rect" id="node48" href="$class_t_text_handler.html#ab67bb7278c89557bf9cc8bef475afab5" title="load the railway&#39;s text from VecFile" alt="" coords="1201,2209,1359,2236"/>
+<area shape="rect" id="node49" href="$class_t_track.html#a09140dd23c45ccd541f056c3dd257c13" title="Load track elements (active &amp; inactive) from the file into the relevant vectors and maps,..." alt="" coords="1215,2260,1345,2286"/>
 </map>

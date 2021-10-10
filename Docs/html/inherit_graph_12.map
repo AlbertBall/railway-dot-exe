@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_t_one_route_1_1_t_route_flash.html" title="The flashing route." alt="" coords="5,5,173,32"/>
+<area shape="rect" id="node1" href="$class_t_one_pref_dir.html" title="The basic preferred direction class, consisting of any number of elements with preferred directions s..." alt="" coords="5,5,97,32"/>
+<area shape="rect" id="node2" href="$class_t_one_route.html" title="A descendent of TOnePrefDir used for routes. Used during contruction of a route (ConstructRoute) and ..." alt="" coords="145,5,232,32"/>
 </map>

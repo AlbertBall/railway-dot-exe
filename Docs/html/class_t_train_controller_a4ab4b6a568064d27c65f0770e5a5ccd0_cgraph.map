@@ -4,7 +4,7 @@
 <area shape="rect" id="node3" href="$class_t_train_controller.html#a1ccd6c8f2c24e7417889e1a91cb9ca2f" title="Returns true if the headcode complies with requirements." alt="" coords="457,5,643,47"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="720,325,867,351"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8" title="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it..." alt="" coords="216,610,391,637"/>
-<area shape="rect" id="node7" href="$class_t_train_controller.html#a0114e517611ab24d3b947c1781130a23" title="Check all timetable names in ExitList, if all same return &quot; at [name]&quot; + AllowableExits = elements,..." alt="" coords="221,205,385,247"/>
+<area shape="rect" id="node7" href="$class_t_train_controller.html#ab6b9585304d792300f5ca7f9c7a0ad06" title="Check all timetable names in ExitList, if all same return &quot; at [name]&quot; + AllowableExits = elements,..." alt="" coords="221,205,385,247"/>
 <area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="469,122,631,149"/>
 <area shape="rect" id="node9" href="$class_t_train_controller.html#afb0e8fd36435809350cb323ab9fe2213" title="Return the service headcode for the repeat service." alt="" coords="212,363,395,404"/>
 <area shape="rect" id="node11" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="445,509,655,535"/>

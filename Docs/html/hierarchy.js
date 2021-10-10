@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "API", "class_a_p_i.html", null ],
     [ "IDInt", "class_i_d_int.html", null ],
     [ "TActionVectorEntry", "class_t_action_vector_entry.html", null ],
     [ "TTrack::TActiveLevelCrossing", "class_t_track_1_1_t_active_level_crossing.html", null ],

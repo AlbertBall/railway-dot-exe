@@ -127,7 +127,7 @@
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="class_t_train_controller.html#a9067975adc343b753d7eb882648c66bb" target="_top" xlink:title="Parse a single timetable service action, return true for success.">
+<g id="a_node6"><a xlink:href="class_t_train_controller.html#a23ca27d36d711136e0529ba8ae4f22f0" target="_top" xlink:title="Parse a single timetable service action, return true for success.">
 <polygon fill="white" stroke="black" points="330,-726.66 330,-745.66 463,-745.66 463,-726.66 330,-726.66"/>
 <text text-anchor="middle" x="396.5" y="-733.66" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::SplitEntry</text>
 </a>
@@ -223,7 +223,7 @@
 <!-- Node7 -->
 <g id="node7" class="node">
 <title>Node7</title>
-<g id="a_node7"><a xlink:href="class_t_train_controller.html#ae91c1a77699c9daf327938081eab2241" target="_top" xlink:title="Used to compile ExitList from a string list of element IDs, returns true for success or gives a messa...">
+<g id="a_node7"><a xlink:href="class_t_train_controller.html#a3733e089b5f58d8b5e8355298653b53a" target="_top" xlink:title="Used to compile ExitList from a string list of element IDs, returns true for success or gives a messa...">
 <polygon fill="white" stroke="black" points="509,-819.16 509,-849.16 644,-849.16 644,-819.16 509,-819.16"/>
 <text text-anchor="start" x="517" y="-837.16" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::CheckAnd</text>
 <text text-anchor="middle" x="576.5" y="-826.16" font-family="Helvetica,sans-Serif" font-size="10.00">PopulateListOfIDs</text>

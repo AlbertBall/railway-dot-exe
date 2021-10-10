@@ -31,19 +31,11 @@ div.WordSection1
 
 <p class=MsoNormal><b>&nbsp;</b></p>
 
-<p class=MsoNormal>With long or complex timetables it is usually difficult to
-ensure that train timings don't conflict. For example two or more services might be scheduled
-to arrive at a location at the same time with only one platform available, or two or
-more services might be scheduled to depart from a location within a minute of each other
-when it takes two minutes to clear the next signal, or three services might be scheduled
-to occupy platforms at a location with only two platforms, each with room for
-only one train. Operating the services
-to check for conflicts is far from ideal as it can take a very long time,
-especially as most timetables run for several hours.</p>
+<p class=MsoNormal>With long or complex timetables it is usually difficult to ensure that train timings don't conflict. For example two or more services might be scheduled to arrive at or pass a location at the same time with only one platform available, or two or more services might be scheduled to pass or depart from a location within a minute of each other when it takes two minutes to clear the next signal, or three services might be scheduled to occupy platforms at a location with only two platforms, each with room for only one train.  Additionally, it is easy during timetable compilation to omit a necessary change of direction, when, instead of a train retracing its earlier route it is left stranded at buffers or moves away in the wrong direction.  Operating the services to check for these sorts of conflicts is far from ideal as it can take a very long time, especially as most timetables run for several hours.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
-<p class=MsoNormal>To help highlight conflicts the timetable editor includes an
+<p class=MsoNormal>To help highlight these situations the timetable editor includes an
 analysis facility, accessed by clicking the 'Conflict Analysis' button at the
 top of the editor next to the 'Timetable start time' box.  This is available
 when a railway has been loaded and its timetable opened in the editor and
@@ -55,17 +47,7 @@ validated.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
-<p class=MsoNormal>Clicking the button opens a new panel with options to
-analyse arrivals, departures, and trains at locations.  Arrivals and departures
-each include a box to specify the number of minutes within which scheduled
-arrivals or departures will be listed.  The arrival analysis lists events when
-two or more services are scheduled to arrive at a location within the number of
-minutes specified (0 minutes represents simultaneous arrival).  In each case
-relevant locations are listed in alphabetical order with the number of
-platforms at the location and the number of trains arriving, followed by the
-services involved with a repeat number if appropriate, the time that the
-service is due to arrive, and an approach code - explained later. Departure analysis is similar.  The service repeat number together with the first service reference (headcode + prefix if present) is given for ease of comparison with the entry in the timetable editor.  For two or more trains at a location the relevant services are listed together with the time at
-which they are there at the same time.</p>
+<p class=MsoNormal>Clicking the button opens a new panel with options to analyse arrivals, departures, trains at locations and directions.  Arrivals and departures each include a box to specify the number of minutes within which scheduled arrivals or departures will be listed.  The arrival analysis lists events when two or more services are scheduled to arrive at or pass a location within the number of minutes specified (0 minutes represents simultaneous arrival).  In each case relevant locations are listed in alphabetical order with the number of platforms at the location and the number of trains arriving or passing, followed by the services involved with a repeat number if appropriate, the time that the service is due to arrive or pass, and an approach code - explained later.  Departure analysis is similar.  The service repeat number together with the first service reference (headcode + prefix if present) is given for ease of comparison with the entry in the timetable editor.  For two or more trains at a location the relevant services are listed together with the time at which they are there at the same time.  Direction analysis examines train facing directions on creation and missing or unexpected changes of direction during operation.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
@@ -94,6 +76,22 @@ interpret the display as the appropriate service without making any change.</p>
 <p class=MsoNormal>&nbsp;</p>
 
 <p class=MsoNormal>An important point to note is that approach and exit codes apply only for services listed at a particular location within a particular time range - i.e. those that are listed on the same line.  They do not have a universal meaning.  Code A on one line might relate to one approach direction and code A on another line to a completely different approach direction - similarly for exit codes.  In fact it will be seen that the first service at any location is always allocated code A, both for arrivals and departures.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>The direction analysis is more detailed than that carried out during timetable validation, when attention is drawn to one or more locations listed in a service without a change of direction between them.  The direction analysis extends this by examining all services from initial creation to finish, including all changes of service (including shuttles), splits and joins.  In this way a missing change of direction will be highlighted when the same location appears twice without a change of direction between them even when the locations appear in different services.  Similarly unexpected changes of direction are highlighted where there are no locations on either side with the same name.  As for the other analyses it isn't perfect.  Linked services that are routed round a loop will have missing changes of direction highlighted even though the route is correct.  Also trains that enter a terminal station using one route, perhaps from a siding or depot, change direction and then leave on a different route, will have the direction change flagged as potentially unnecessary because there are no locations either side with the same name, though the movements are legitimate.  The aim is to highlight potential errors so they can be examined and either dismissed if they aren't errors, or corrected if they are.  The facing direction analysis examines the starting direction of a train on creation.  Trains facing buffers with no location before or at the buffers will be listed as potential errors.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>It will be seen that some potential errors are listed twice or more where they occur before one or more service splits.  This is because the service that splits to another service and continues is listed, and the services that represent each split service are listed separately.  In these cases there won't be as many potential errors as appear at first sight.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>After any corrections have been made as a result of examining the direction analysis it is best to run the analysis again to reveal any other potential errors that were masked earlier.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>Sometimes with a shuttle finishing service an additional change of direction will be needed for a train to reverse an earlier change of direction in the return shuttle, in cases where it continues forwards to a siding or depot.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 

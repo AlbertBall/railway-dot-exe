@@ -1,0 +1,20 @@
+<map id="TTrainController::CreateTTAnalysisFile" name="TTrainController::CreateTTAnalysisFile">
+<area shape="rect" id="node1" title="Generate a timetable analysis file in the &#39;Formatted Timetables&#39; folder, return false if failed for a..." alt="" coords="5,644,164,685"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="960,359,1107,386"/>
+<area shape="rect" id="node3" href="$class_t_train_controller.html#a9529f225878cf4920b52914022f44c4e" title="Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for arrivals (bool..." alt="" coords="212,673,400,715"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8" title="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it..." alt="" coords="719,765,894,791"/>
+<area shape="rect" id="node6" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="701,663,912,690"/>
+<area shape="rect" id="node7" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="960,461,1107,487"/>
+<area shape="rect" id="node8" href="$class_t_train_controller.html#a6a6c31e7ed5c4556e3a764617589c4fa" title="Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for AtLoc listing ..." alt="" coords="713,163,901,204"/>
+<area shape="rect" id="node9" href="$class_t_train_controller.html#aec41fd708090b0a55284c79f5d571595" title=" " alt="" coords="715,228,898,269"/>
+<area shape="rect" id="node10" href="$class_t_utilities.html#ae6df4b6a5d1398f57ff62799331351a8" title="takes &quot;HH:MM&quot; and increments it to &quot;HH:MX&quot;, where MX == MM + 1, incrementing the hour if necessary" alt="" coords="225,880,387,921"/>
+<area shape="rect" id="node11" href="$class_t_train_controller.html#aa4fadd479f2ba474793dd4fa0e3be14f" title=" " alt="" coords="215,945,397,987"/>
+<area shape="rect" id="node12" href="$class_t_train_controller.html#ab059fc7a9e528d0fd5caf87562b68bac" title=" " alt="" coords="215,1011,397,1052"/>
+<area shape="rect" id="node13" href="$class_t_train_controller.html#aac40bb413b2b9188de4e5305848691a3" title=" " alt="" coords="215,1076,397,1117"/>
+<area shape="rect" id="node14" href="$class_t_train_controller.html#af445a7430cbdf8dd7890eef8812d87b8" title=" " alt="" coords="215,1141,397,1183"/>
+<area shape="rect" id="node15" href="$class_t_track.html#aded8153d40ad58664e2a887316108add" title="Returns the number of separate platforms (not platform elements) at a given location,..." alt="" coords="459,359,642,386"/>
+<area shape="rect" id="node16" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="725,410,888,437"/>
+<area shape="rect" id="node17" href="$class_t_train_controller.html#aa92b0775f08a0f99bfe1e54796825df7" title="Outputs the single service vector for train direction analysis purposes in timetable conflict analysi..." alt="" coords="473,461,629,503"/>
+<area shape="rect" id="node18" href="$class_t_train_controller.html#a49a8dc4bb297d6d0ba93992f1be720b8" title="check whether the two times are within the range in minutes specified and return true if so...." alt="" coords="728,293,885,335"/>
+<area shape="rect" id="node4" href="$class_t_train_controller.html#a6bd2f1659b0f43b861ab1279af814f70" title="Determines whether two services are running in the same direction when they arrive or depart from Loc..." alt="" coords="448,677,653,703"/>
+</map>

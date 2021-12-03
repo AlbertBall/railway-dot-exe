@@ -20,6 +20,29 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/*
+The following notice relates to incorporation of Internet Direct (Indy) components used in the multiplayer functions under the BSD Licence.
+
+Portions of this software are Copyright (c) 1993 – 2018, Chad Z. Hower (Kudzu) and the Indy Pit Crew – http://www.IndyProject.org/
+
+License
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+    Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+        in the documentation, about box and/or other materials provided with the distribution.
+    No personal names or organizations names associated with the Indy project may be used to endorse or promote products derived from
+        this software without specific prior written permission of the specific individual or organization.
+
+THIS SOFTWARE IS PROVIDED BY Chad Z. Hower (Kudzu) and the Indy Pit Crew “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 // ---------------------------------------------------------------------------
 #ifndef InterfaceUnitH
 #define InterfaceUnitH
@@ -38,15 +61,24 @@
 #include <System.ImageList.hpp>
 #include <System.IOUtils.hpp>  //for directory manipulation
 #include <Vcl.ImgList.hpp>
+#include <IdBaseComponent.hpp>  //
+#include <IdComponent.hpp>      //
+#include <IdUDPBase.hpp>        //  These added automatically when added
+#include <IdUDPClient.hpp>      //  the IdClient components
+#include <IdGlobal.hpp>         //
+#include <IdSocketHandle.hpp>   //
+#include <IdException.hpp>      // These added from internet searches on 'EIdSocketError received on closing the app'
+#include <IdStack.hpp>
+#include <Vcl.Grids.hpp>        // needed for the multiplayer StringGrid
+#include <map>
+#include <list>
 #include <fstream>
 #include <vector>
 #include <vcl.h>
 
-//#include "API.h"  dropped this in favour of forward class declaration below, included in .cpp file
-
 // ---------------------------------------------------------------------------
 
-typedef std::pair<int, int>THVPair;
+typedef std::pair<short, short>THVShortPair; //also defined in TrainUnit.h but that isn't available from here
 ///< HLoc/VLoc position pair
 
 class TOnePrefDir; // predeclarations
@@ -54,9 +86,6 @@ class TOneRoute;
 class TTrack;
 class TGraphicElement;
 class API; //forward class declaration instead of including header  added at v2.10.0
-
-//API* session_api_;  moved from header to avoid AboutForm having access and defining _session_api_
-                    //as well as Interface and giving a warning, added at v2.10.0
 
 class TInterface : public TForm
 {
@@ -472,9 +501,10 @@ __published: // IDE-managed Components
     TMenuItem *MoveForwardsMenuItem;
     TMenuItem *PassRedSignalMenuItem;
     TMenuItem *StepForwardMenuItem;
+    TMenuItem *SkipTimetabledActionsMenuItem;
     TMenuItem *SignallerControlStopMenuItem;
     TMenuItem *RemoveTrainMenuItem;
-    TMenuItem *ConverttoRightHandSignalsMenuItem;
+    TMenuItem *ConvertToOtherHandSignalsMenuItem;
     TMenuItem *N1;
     TMenuItem *N2;
     TMenuItem *N3;
@@ -667,6 +697,57 @@ __published: // IDE-managed Components
     TLabel *CPLabel9;
     TCheckBox *CPDirectionsCheckBox;
 
+    //multiplayer items
+    TIdUDPClient *MPPlayerClient;
+    TMenuItem *MultiplayerMenu;
+    TMenuItem *HostCommands;
+    TMenuItem *N5;
+    TMenuItem *PlayerCommands;
+    TOpenDialog *LoadCouplingFileDialog;
+    TMenuItem *EndSimulationMenuItem;
+    TMenuItem *ExitSimulationMenuItem;
+    TMenuItem *SaveMultiplayerSessionMenuItem;
+    TMenuItem *JoinMultiplayerSessionMenuItem;
+    TPanel *MultiplayerPlayerPanel;
+    TLabel *MPCPLabel1;
+    TButton *MPCPCancelButton;
+    TButton *MPCPSendButton;
+    TEdit *MPCPPlayerNameEditBox;
+    TLabel *MPCPLabel3;
+    TButton *MPCPReadyToBeginButton;
+    TLabel *MPCPLabel4;
+    TImage *MPCPHostImage;
+    TMenuItem *MultiplayerHostSessionMenuItem;
+    TLabel *MPCPLabel2;
+    TPanel *MultiplayerHostPanel;
+    TLabel *MPHPLabel1;
+    TButton *MPHPCancelButton;
+    TButton *MPHPLoadCouplingFileButton;
+    TButton *MPHPStartButton;
+    TLabel *MPHPGeneralLabel;
+    TLabel *MPCPLabel5;
+    TLabel *MPCPLabel6;
+    TEdit *MPCPHostIPEditBox;
+    TEdit *MPCPHostPortEditBox;
+    TStringGrid *MultiplayerHostStringGrid; // Col 0 = UserName ("Player'n'" initially, Col 1 = RailwayName, Col 2 = Yes/No for player ready to start
+                                            // Row 0 = headings, Row 1 = blank, Row 3 etc = list
+    TLabel *MPCPLabel7;
+    TLabel *MPCPLabel8;
+    TLabel *MPHPLabel3;
+    TEdit *MPHPOwnPortEditBox;
+    TLabel *MPHPLabel2;
+    TEdit *MPHPOwnIPEditBox;
+    TLinkLabel *IPCheckLinkLabel;
+    TIdUDPClient *MPHostClient;
+    TMenuItem *N6;
+    TMenuItem *ReloadConfigMenuItem;
+    TMenuItem *ShowHideStringGridMenuItem;
+    TListBox *SkipTTActionsListBox;
+    TPanel *SkipListHeaderPanel;
+    TLabel *SkipListHeaderPanelLabel1;
+    TLabel *SkipListHeaderPanelLabel2;
+    TImage *SkipListExitImage;
+
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
     void __fastcall BlackBgndMenuItemClick(TObject *Sender);
@@ -840,7 +921,7 @@ __published: // IDE-managed Components
     void __fastcall OperatorActionButtonClick(TObject *Sender);
     void __fastcall OAListBoxMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall OperatorActionPanelStartDrag(TObject *Sender, TDragObject *&DragObject);
-    void __fastcall ConverttoRightHandSignalsMenuItemClick(TObject *Sender);
+    void __fastcall ConvertToOtherHandSignalsMenuItemClick(TObject *Sender);
     void __fastcall TTClockxEighthButtonClick(TObject *Sender);
     void __fastcall TTClockxSixteenthButtonClick(TObject *Sender);
     void __fastcall RotRightMenuItemClick(TObject *Sender); // new at v2.4.0
@@ -862,6 +943,29 @@ __published: // IDE-managed Components
     void __fastcall SigPrefConsecButtonClick(TObject *Sender);
     void __fastcall CheckPrefDirConflictsMenuItemClick(TObject *Sender);
     void __fastcall TwoLocationNameButtonClick(TObject *Sender);
+
+//multiplayer fastcalls
+    void __fastcall JoinMultiplayerSessionMenuItemClick(TObject *Sender);
+    void __fastcall MPCPSendButtonClick(TObject *Sender);
+    void __fastcall MPCPReadyToBeginButtonClick(TObject *Sender);
+    void __fastcall MPCPPlayerNameEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftState Shift);
+    void __fastcall MPCPCancelButtonClick(TObject *Sender);
+    void __fastcall MPHPLoadCouplingFileButtonClick(TObject *Sender);
+    void __fastcall MPHPCancelButtonClick(TObject *Sender);
+    void __fastcall MPHPStartButtonClick(TObject *Sender);
+    void __fastcall MultiplayerHostSessionMenuItemClick(TObject *Sender);
+    void __fastcall MPCPHostPortEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftState Shift);
+    void __fastcall MPCPHostIPEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftState Shift);
+    void __fastcall MPHPOwnIPEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftState Shift);
+    void __fastcall MPHPOwnPortEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftState Shift);
+    void __fastcall IPCheckLinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType);
+    void __fastcall ReloadConfigMenuItemClick(TObject *Sender);
+    void __fastcall ShowHideStringGridMenuItemClick(TObject *Sender);
+    void __fastcall SkipTimetabledActionsMenuItemClick(TObject *Sender);
+    void __fastcall SkipTTActionsListBoxMouseUp(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
+    void __fastcall SkipListExitImageClick(TObject *Sender);
 
 public: // AboutForm needs access to these
 
@@ -910,16 +1014,159 @@ private:
     } RouteMode;
 ///< route building modes
 
+// ---------------------------------------------------------------------------
+//multiplayer members
+
+    typedef std::pair<AnsiString, THVShortPair> TAnsiCouplingPair; //RailwayName + exit HV pair
+    typedef std::pair<TAnsiCouplingPair, TAnsiCouplingPair> TAnsiCouplingMapEntry;
+///<TAnsiCouplingMap... items are just used temporarily to load the CouplingFile into a RailwayName based map, but converted to RlyUserNumber based map when all railways listed
+    class TAnsiCouplingMapComp
+///< Map comparator based first on railway name then H then V
+    {
+        public:
+        bool operator()(const TAnsiCouplingPair& lower, const TAnsiCouplingPair& higher) const;
+    };
+
+    typedef std::map<TAnsiCouplingPair, TAnsiCouplingPair, TAnsiCouplingMapComp> TAnsiCouplingMap; //kept by host
+    typedef TAnsiCouplingMap::iterator TCMIt;
+    TAnsiCouplingMap AnsiCouplingMap;
+//coupling map functions
+    bool PopulateCouplingMap(AnsiString FileName, int &NumExt);
+    ///< Read couplingfile and convert into CouplingMap
+    short BuildOneRailwayCouplingMap(unsigned char PlayerNumber);
+    ///< store coupling map for a given railway name, return number of bytes needed for datagram
+//-----------------
+    typedef std::list<AnsiString> TRailwayList; //to determine number of players & build AllRailwaysCouplingMap
+    TRailwayList::iterator RLIt;
+    TRailwayList RailwayList;
+//-----------------
+    class TRlyUserInfo
+    { //stores all info & allows multiple searches
+        public:
+        unsigned char RlyUserNumber;    //allocated numbers start from 1
+        AnsiString RailwayName;
+        AnsiString UserName;
+        AnsiString UserIP;
+        short UserPort;
+
+        TRlyUserInfo();
+    };
+    typedef std::vector<TRlyUserInfo> TInfoVector;
+    typedef TInfoVector::iterator TIVIt;
+    TInfoVector InfoVector;
+    //info searche functions
+    bool RlyToNum(AnsiString RailwayName, unsigned char &RlyUserNumber);
+    bool UserToNum(AnsiString UserName, unsigned char &RlyUserNumber);
+    bool NumToRly(unsigned char RlyUserNumber, AnsiString &RailwayName);
+    bool NumToIPAndPort(unsigned char RlyUserNumber, AnsiString &UserIP, short UserPort);
+    bool UserToIPAndPort(AnsiString UserName, AnsiString &UserIP, short UserPort);
+// ----------------
+    class TServiceInfo  //12 bytes  corresponds to TExitInfo in TrainUnit
+    {
+        public:
+        AnsiString ServiceReference; //8 bytes max
+        short RepeatNumber; // (2 bytes)
+        short TimeToExitSecs; //time to exit in seconds
+
+        bool CheckOK();     //check for datagram validity
+        TServiceInfo(); //default constructor to initialise values to 8 spaces for ServiceReference & 0 for the others
+    };
+
+    typedef std::pair<unsigned char, THVShortPair> TNumHVPair; //translates to 17 bytes for datagram (allows up to 29 trains in 508 bytes - min datagram size)
+    typedef std::pair<TNumHVPair, TServiceInfo> TDynamicMapEntry;
+
+    class TDynamicMapComp
+    {   ///< Dynamic map comparator based on Num then H & V
+        public:
+        bool operator()(const TNumHVPair& lower, const TNumHVPair& higher) const;
+    };
+
+    typedef std::map<TNumHVPair, TServiceInfo, TDynamicMapComp> TDynamicMap; //corresponds to TTimeToExitMultiMap in TrainUnit but that can be in any order
+    typedef TDynamicMap::iterator TDMIt;
+
+    typedef std::pair<TNumHVPair, TNumHVPair> TCouplingPair;
+    typedef std::map<TNumHVPair, TNumHVPair, TDynamicMapComp> TCouplingMap;
+    typedef TCouplingMap::iterator TCMIterator;
+
+//variables
+    TDynamicMap DynMapToHost, DynMapFromHost, HostCombinedDynamicMap;
+    TCouplingPair AllRailwaysCouplingPair, OneRailwayCouplingPair;
+    TCouplingMap AllRailwaysCouplingMap, OneRailwayCouplingMap;
+    TDateTime LastHostDataReceived;
+    ///< player records this to allow updating when connection lost
+    int ConsecutiveSelfUpdates;
+    ///< counts time without an internet connection, cancels session for player if no contact for at least 5 minutes
+//functions
+    bool BuildDynamicMapFromPlayerDatagram(int Caller, TDynamicMap &DMap, TBytes Buffer, unsigned char &marker, AnsiString &UserName);
+    ///< Converse of BuildDatagramFromPlayerMap
+    bool BuildDynamicMapFromHostDatagram(int Caller, int TTTime, TDynamicMap &DMap, TBytes Buffer);
+    ///< converse of BuildDatagramFromHostMap
+    bool NumHVPairCheckOK(TNumHVPair NumHVPair);
+    ///<check for datagram validity
+    void BuildDatagramFromPlayerMap(int Caller, char marker, AnsiString UserName, TBytes &buffer, TDynamicMap DynamicMap);
+    ///< converts a player's dynamic map into a datagram; marker is a single digit to identify the datagram type; includes the username at the start & adds ';' delimiters for strings
+    void BuildDatagramFromHostMap(int Caller, TBytes &buffer, TDynamicMap DynamicMap);
+    ///< converts a host's dynamic map into a datagram; TTTime is a 4 byte timetable time in secs (allows up to 4 day's worth)
+    void HostHandshakingActions();
+    ///< called in ClockTimer2 if host multiplay in progress
+    void PlayerHandshakingActions();
+    ///< called in ClockTimer2 if player multiplay in progress
+    void UpdateDynamicMapFromTimeToExitMultiMap(int Caller, TDynamicMap &DMap);
+    ///< Convert TimeToExitMultiMap to an existing DynamicMap with all THVShortPairs listed
+    void RemovePlayerFromStringGridAndInfoVector(int Caller, AnsiString PlayerUserName);
+    ///<utility  to clear user name from string grid & infovector (used several times)
+//-----------------
+//other multiplayer variables
+    int NumPlayers; //Multiplayer participants including host
+    int PlayerFiveSecondTimer;
+    int PlayerOneSecondTimer;
+    int P5SCounter; //<--temporary
+    AnsiString EIdExceptionSource;
+    AnsiString MPCPUserName;
+    //host flags
+    bool HostMultiplayInProgressFlag;
+    bool CouplingFileLoadedFlag;
+    bool HostInSessionFlag;
+    //player flags
+    bool PlayerMultiplayInProgressFlag;
+    bool PlayerMakingInitialContactFlag;
+    bool PlayerReadyToBeginFlag;
+    bool PlayerCancelJoinFlag;
+    bool PlayerAwaitingHostStartFlag;
+    bool PlayerInSessionFlag;
+
+    unsigned char OwnRlyUserNumber;
+//other multiplayer functions
+    bool ConvertIDToPair(AnsiString HVID, THVShortPair &HVPair); //true for ok
+    ///< Utility used in PopulateCouplingMap for ID conversion
+    bool InvalidIPAddress(AnsiString Text);
+    ///< Checks Text and returns true if it's not an IP address
+    bool MultiplayerRailwayValid(AnsiString RailwayName, char &ErrorNumber);
+    ///< checks whether a railway loaded by a player is listed and available
+    void BuildDummyTestMap(TDynamicMap &DMap, std::ifstream &ExitFile); //<--temporary function for testing purposes
+
+// ---------------------------------------------------------------------------
+// Timetable edit members
+
     typedef std::vector<AnsiString>TTimetableEditVector;
 ///< typedef for the complete timetable as a list of AnsiStrings for use in edit timetable functions
     typedef std::vector<AnsiString>::iterator TTEVPtr;
 ///< typedef for pointers to entries in edit timetable functions
 
+// ---------------------------------------------------------------------------
+
 // API tracking variables      //added at v2.10.0
     int api_main_mode_;
     int api_oper_mode_;
 
-// Timetable edit members
+// ---------------------------------------------------------------------------
+
+//experimental elapsed time variables
+    double Start, End;
+    double ElapsedTime;
+    bool StartTimeSet;
+
+// ---------------------------------------------------------------------------
 
 // variables
     AnsiString ClpBrdValid;
@@ -958,7 +1205,7 @@ private:
     bool CancelSelectionFlag;
 ///< used in case pasting to avoid RecoverClipboard call when set
     bool ClipboardChecked;
-///< used to prevent Windows clipboard beng checked repeatedly
+///< used to prevent Windows clipboard being checked repeatedly
     bool ConsecSignalsRoute;
 ///< true when AutoSig or preferred route building selected during operation (always same state as PreferredRoute)
     bool CopiedEntryFlag;
@@ -1098,8 +1345,6 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
 ///< count up to 20 then resets - to check LCs & raise barriers if no route & no train present
     unsigned int TotalTicks;
 ///< total clock ticks
-    unsigned int MissedTicks;
-///< missed clock ticks
     int AllEntriesTTListBoxTopPosition;
 ///< stores the TopIndex property when keys are used to select items in the TT edit panel
     int LastNonCtrlOrShiftKeyDown;
@@ -1130,6 +1375,9 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
 ///< the original (prior to moving & after finished moving) VLoc value of Edit->Select & Edit->Reselect
     int SelectedTrainID;
 ///< used to store the train ID when right clicked for signaller control actions
+    int SkipTTTrainMousePosX;
+    int SkipTTTrainMousePosY;
+///< used to retain the mouse position on the train for SkipTimetabledActionsMenuItemClick
     int StartWholeRailwayMoveHPos;
 ///<mouse X position when start to move the whole railway
     int StartWholeRailwayMoveVPos;
@@ -1167,7 +1415,7 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
 // declarations for 4 of the 6 TGraphicElement pointers (*GapFlashGreen, *GapFlashRed in TTrack class so TTrain can access them)
     TGraphicElement *PointFlash, *AutoRouteStartMarker, *SigRouteStartMarker, *NonSigRouteStartMarker;
 
-    THVPair SelectStartPair;
+    THVShortPair SelectStartPair;
 ///< stores the starting 'H' & 'V' values as a C++ pair when an area of screen is selected via the 'Edit' and
     ///< 'Select' menu items
 
@@ -1277,6 +1525,8 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
     void FlashingGraphics(int Caller, TDateTime Now);
 /// Called when floating train info needed and train hasn't entered yet
     void GetTrainFloatingInfoFromContinuation(int Caller, int VecPos, AnsiString FormatNoDPStr, AnsiString SpecialStr, AnsiString &TrainStatusFloat, AnsiString &TrainTTFloat); //new at v2.6.2
+/// makes TTActionsListBox invisible (if it was visible) and resterts the tt clock
+    void HideTTActionsListBox(int Caller);
 /// Called during timetable editing to highlight in red a single entry in the list of all entries in the left hand long window
     void HighlightOneEntryInAllEntriesTTListBox(int Caller, int Position);
 /// In trackbuild display ground signal types on signal buttons
@@ -1285,6 +1535,8 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
     void LoadInterface(int Caller, std::ifstream &SessionFile);
 /// Load system clipboard to allow cutting & pasting between separate railway applications
     void LoadClipboard(int Caller); // new at v2.8.0
+/// Load the configuration file, only allow default track element length and speed limit to be loaded it it's not the first load
+    void LoadConfigFile(int Caller, bool FirstLoad);
 /// In trackbuild display normal signal types on signal buttons
     void LoadNormalSignalGlyphs(int Caller);
 /// Load the performance file part of a sessionfile
@@ -1320,6 +1572,8 @@ is loaded fillowed by AvHoursIntValue then all failed trains if any. */
     void SaveAsSubroutine(int Caller);
 /// Save the error log after an error has been thrown - no need for a caller
     void SaveErrorFile();
+/// Save Config.txt file to disk when program ends
+    void SaveConfigFile(int Caller);
 /// Save interface part of a session file
     void SaveInterface(int Caller, std::ofstream &SessionFile);
 /// Save performance file part of a session file
@@ -1354,6 +1608,8 @@ is loaded fillowed by AvHoursIntValue then all failed trains if any. */
     void SetTrackBuildImages(int Caller);
 /// Called during track building when setting distances, to calculate and set the individual track element lengths
     void SetTrackLengths(int Caller, int Distance, int SpeedLimit);
+/// makes TTActionsListBox visible and stops the tt clock
+    void ShowTTActionsListBox(int Caller);
 /// Unused
     void SignallerControl(int Caller);
 /// Called for diagnostic purposes when keys CTRL ALT 4 pressed

@@ -76,6 +76,10 @@
 			<param name="Local" value="html/3.54jhx.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Pasting from another railway.exe application">
+			<param name="Local" value="html\3.5.1.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Setting track element lengths and speed limits">
 			<param name="Local" value="html/3.64jhy.htm">
 			</OBJECT>
@@ -238,6 +242,10 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Train failures">
 			<param name="Local" value="html\6.11.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Skipping timetabled events">
+			<param name="Local" value="html\6.12.htm">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">

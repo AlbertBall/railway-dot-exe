@@ -27,7 +27,7 @@
 <text text-anchor="start" x="265" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ SuppressRouteFailMessage</text>
 <text text-anchor="start" x="265" y="-279.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ LCFoundInRouteBuildingFlag</text>
 <text text-anchor="start" x="265" y="-268.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PointFlashFlag</text>
-<text text-anchor="start" x="265" y="-257.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 34 more...</text>
+<text text-anchor="start" x="265" y="-257.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 37 more...</text>
 <text text-anchor="start" x="265" y="-246.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; TrackFinished</text>
 <text text-anchor="start" x="265" y="-235.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; GapPos</text>
 <text text-anchor="start" x="265" y="-224.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; GapHLoc</text>
@@ -50,7 +50,7 @@
 <text text-anchor="start" x="265" y="-40.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetHLocMax()</text>
 <text text-anchor="start" x="265" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetHLocMin()</text>
 <text text-anchor="start" x="265" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetVLocMax()</text>
-<text text-anchor="start" x="265" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 153 more...</text>
+<text text-anchor="start" x="265" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 154 more...</text>
 </a>
 </g>
 </g>
@@ -74,11 +74,11 @@
 <text text-anchor="start" x="8" y="-615.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 12 more...</text>
 <polyline fill="none" stroke="black" points="0,-608.5 144,-608.5 "/>
 <text text-anchor="start" x="8" y="-596.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ TTrackElement()</text>
-<text text-anchor="start" x="8" y="-585.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ TTrackElement()</text>
-<text text-anchor="start" x="8" y="-574.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ operator==()</text>
-<text text-anchor="start" x="8" y="-563.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ operator!=()</text>
-<text text-anchor="start" x="8" y="-552.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ LogTrack()</text>
-<text text-anchor="start" x="8" y="-541.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PlotVariableTrackElement()</text>
+<text text-anchor="start" x="8" y="-585.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ operator==()</text>
+<text text-anchor="start" x="8" y="-574.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ operator!=()</text>
+<text text-anchor="start" x="8" y="-563.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ LogTrack()</text>
+<text text-anchor="start" x="8" y="-552.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PlotVariableTrackElement()</text>
+<text text-anchor="start" x="8" y="-541.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ TTrackElement()</text>
 </a>
 </g>
 </g>

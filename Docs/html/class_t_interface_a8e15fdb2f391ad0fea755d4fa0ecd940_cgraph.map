@@ -1,0 +1,9 @@
+<map id="TInterface::PopulateCouplingMap" name="TInterface::PopulateCouplingMap">
+<area shape="rect" id="node1" title="Read couplingfile and convert into CouplingMap." alt="" coords="5,107,217,134"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="504,31,651,58"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a0f9ca7bb86622c8ce9297410e2faea0b" title=" " alt="" coords="271,31,450,58"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="504,107,651,134"/>
+<area shape="rect" id="node5" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="274,183,447,210"/>
+<area shape="rect" id="node6" href="$class_t_utilities.html#a0350456fd482593c424d125536b34093" title="reads a single line from the multiplayer coupling file, returns true for success with OutString conta..." alt="" coords="267,234,455,276"/>
+<area shape="rect" id="node7" href="$class_t_train_controller.html#ab0481dd8db0f3f99811f2cdc5b5dfd32" title="Strip both leading and trailing spaces at ends of Input and spaces before and after all commas and se..." alt="" coords="265,82,456,108"/>
+</map>

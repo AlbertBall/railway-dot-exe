@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.10.0</span>
+   &#160;<span id="projectnumber">v2.11.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -668,87 +668,296 @@ $(document).ready(function(){initNavTree('_utilities_8cpp_source.html',''); init
 <div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160; </div>
 <div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;<span class="comment">// ---------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160; </div>
-<div class="line"><a name="l00581"></a><span class="lineno"><a class="line" href="class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c">  581</a></span>&#160;AnsiString <a class="code" href="class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c">TUtilities::Format96HHMMSS</a>(TDateTime DateTime)</div>
-<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;<span class="comment">// Formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when it reaches 96</span></div>
-<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;{</div>
-<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;    AnsiString MinSecString = DateTime.FormatString(<span class="stringliteral">&quot;:nn:ss&quot;</span>);</div>
-<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;    <span class="keywordtype">int</span> Hours = (int)(((<span class="keywordtype">double</span>)(DateTime + 0.000006)) * 24); <span class="comment">// for v0.6 round up by ~0.5 sec to prevent undershooting</span></div>
-<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;    <span class="keywordflow">while</span>(Hours &gt;= 96)</div>
-<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;    {</div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;        Hours -= 96;</div>
-<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;    }</div>
-<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;    AnsiString HourString = AnsiString(Hours);</div>
-<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;    <span class="keywordflow">while</span>(HourString.Length() &lt; 2)</div>
+<div class="line"><a name="l00581"></a><span class="lineno"><a class="line" href="class_t_utilities.html#a3c79ab051602edf407b81a71d2e72119">  581</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_t_utilities.html#a3c79ab051602edf407b81a71d2e72119">TUtilities::CheckAndReadOneLineFromConfigFile</a>(std::ifstream &amp;InFile, AnsiString &amp;OutString)</div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;<span class="comment">// Reads the next item and checks it as a string value up to either the &#39;\0&#39; delimiter</span></div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;<span class="comment">// if there is one, in which case the &#39;\0&#39; is extracted but nothing more, or up to the next &#39;\n&#39;,</span></div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;<span class="comment">// in which case the &#39;\n&#39; is extracted.</span></div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;<span class="comment">// The item is then returned in OutString.</span></div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;{</div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;    <span class="keywordtype">char</span> TempChar;</div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;    <span class="keywordtype">char</span> *Buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[10000];</div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;    <span class="keywordtype">int</span> Count = 0;</div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;    InFile.get(TempChar);</div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;    <span class="keywordflow">while</span>((TempChar != <span class="charliteral">&#39;\0&#39;</span>) &amp;&amp; (TempChar != <span class="charliteral">&#39;\n&#39;</span>))</div>
 <div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;    {</div>
-<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;        HourString = <span class="stringliteral">&quot;0&quot;</span> + HourString;</div>
-<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;    }</div>
-<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;    <span class="keywordflow">return</span> (HourString + MinSecString);</div>
-<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;}</div>
-<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160; </div>
-<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;<span class="comment">// ---------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160; </div>
-<div class="line"><a name="l00600"></a><span class="lineno"><a class="line" href="class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8">  600</a></span>&#160;AnsiString <a class="code" href="class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8">TUtilities::Format96HHMM</a>(TDateTime DateTime)</div>
-<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;<span class="comment">// Formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it reaches 96</span></div>
-<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;{</div>
-<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;    AnsiString MinString = DateTime.FormatString(<span class="stringliteral">&quot;:nn&quot;</span>);</div>
-<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;    <span class="keywordtype">int</span> Hours = (int)(((<span class="keywordtype">double</span>)(DateTime + 0.0003)) * 24); <span class="comment">// for v0.6 round up by ~0.5min to prevent undershooting the hour in formatted tts</span></div>
-<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;    <span class="keywordflow">while</span>(Hours &gt;= 96)</div>
-<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;    {</div>
-<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;        Hours -= 96;</div>
-<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;    }</div>
-<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;    AnsiString HourString = AnsiString(Hours);</div>
-<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;    <span class="keywordflow">while</span>(HourString.Length() &lt; 2)</div>
-<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;    {</div>
-<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;        HourString = <span class="stringliteral">&quot;0&quot;</span> + HourString;</div>
-<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;    }</div>
-<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;    <span class="keywordflow">return</span> (HourString + MinString);</div>
-<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;}</div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160; </div>
-<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;<span class="comment">// ---------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160; </div>
-<div class="line"><a name="l00619"></a><span class="lineno"><a class="line" href="class_t_utilities.html#ae6df4b6a5d1398f57ff62799331351a8">  619</a></span>&#160;AnsiString <a class="code" href="class_t_utilities.html#ae6df4b6a5d1398f57ff62799331351a8">TUtilities::IncrementAnsiTimeOneMinute</a>(AnsiString TimeVal)</div>
-<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;{</div>
-<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;    AnsiString MinString = TimeVal.SubString(4,2);</div>
-<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;    AnsiString HourString = TimeVal.SubString(1,2);</div>
-<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;    <span class="keywordtype">int</span> Mins =  MinString.ToInt();</div>
-<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;    <span class="keywordtype">int</span> Hours = HourString.ToInt();</div>
-<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;    Mins++;</div>
-<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;    <span class="keywordflow">if</span>(Mins &gt; 59)</div>
-<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;    {</div>
-<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;        Mins = 0;</div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;        Hours++; <span class="comment">//don&#39;t need to worry about exceeding 96 hours as TT validity checker looks after that</span></div>
-<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;    }</div>
-<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;    MinString = AnsiString(Mins);</div>
-<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;    <span class="keywordflow">if</span>(MinString.Length() &lt; 2)</div>
-<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;    {</div>
-<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;        MinString = <span class="stringliteral">&quot;0&quot;</span> + MinString;</div>
-<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;    }</div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    HourString = AnsiString(Hours);</div>
-<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;    <span class="keywordflow">if</span>(HourString.Length() &lt; 2)</div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;    {</div>
-<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;        HourString = <span class="stringliteral">&quot;0&quot;</span> + HourString;</div>
-<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;    }</div>
-<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;    <span class="keywordflow">return</span>(HourString + <span class="stringliteral">&quot;:&quot;</span> + MinString);</div>
-<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;}</div>
-<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160; </div>
-<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;<span class="comment">// ---------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160; </div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;        <span class="keywordflow">if</span>((TempChar &gt;= 0) &amp;&amp; (TempChar &lt; 32) &amp;&amp; (TempChar != 9)) <span class="comment">//allow tabs &amp; normal text</span></div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;        {</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;            <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;            <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;        }</div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;        Buffer[Count] = TempChar;</div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;        Count++;</div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;        InFile.get(TempChar);</div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;        <span class="keywordflow">if</span>(InFile.fail())</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;        {</div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;            <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;            <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;        }</div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;    }</div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;    Buffer[Count] = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;    Count++;</div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;    Buffer[Count] = <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;    Count++;</div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;    OutString = AnsiString(Buffer);</div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;    <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;    <span class="keywordflow">return</span>(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;}</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160; </div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;<span class="comment">// ---------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160; </div>
+<div class="line"><a name="l00618"></a><span class="lineno"><a class="line" href="class_t_utilities.html#a0350456fd482593c424d125536b34093">  618</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_t_utilities.html#a0350456fd482593c424d125536b34093">TUtilities::ReadOneLineFromCouplingFile</a>(std::ifstream &amp;InFile, AnsiString &amp;OutString)</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;{</div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;    OutString = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;    <span class="keywordtype">char</span> TempChar;</div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;    <span class="keywordtype">char</span> *Buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[1200];</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;    <span class="keywordtype">int</span> Count = 0;</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;    InFile.get(TempChar); <span class="comment">//should be a letter or eof</span></div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;    <span class="keywordflow">if</span>(InFile.eof())</div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;    {</div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;        <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;        <span class="keywordflow">return</span>(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;    }</div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;    <span class="keywordflow">if</span>(InFile.fail())</div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;    {</div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;        <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;        <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;    }</div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;    <span class="keywordflow">while</span>(TempChar != <span class="charliteral">&#39;;&#39;</span>) <span class="comment">//reading first name</span></div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    {</div>
+<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;        Buffer[Count] = TempChar;</div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;        Count++;</div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;        <span class="keywordflow">if</span>(Count &gt; 1000)</div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;        {</div>
+<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;            <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;            <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;        }</div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;        InFile.get(TempChar);</div>
+<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;        <span class="keywordflow">if</span>(InFile.fail())</div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;        {</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;            <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;            <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;        }</div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;    }</div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;    <span class="comment">//here at semicolon after 1st name</span></div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;    Buffer[Count] = TempChar; <span class="comment">//1st semicolon</span></div>
+<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;    Count++;</div>
+<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;    InFile.get(TempChar);</div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;    <span class="keywordflow">if</span>(InFile.fail())</div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;    {</div>
+<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;        <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;        <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;    }</div>
+<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;    <span class="keywordflow">while</span>(TempChar != <span class="charliteral">&#39;;&#39;</span>) <span class="comment">//reading first exit ID</span></div>
+<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;    {</div>
+<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;        Buffer[Count] = TempChar;</div>
+<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;        Count++;</div>
+<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;        <span class="keywordflow">if</span>(Count &gt; 1000)</div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        {</div>
+<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;            <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;            <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;        }</div>
+<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;        InFile.get(TempChar);</div>
+<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;        <span class="keywordflow">if</span>(InFile.fail())</div>
+<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;        {</div>
+<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;            <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;            <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;        }</div>
+<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;    }</div>
+<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;    <span class="comment">//here at semicolon after 1st exit ID</span></div>
+<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;    Buffer[Count] = TempChar; <span class="comment">//add the semicolon</span></div>
+<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;    Count++;</div>
+<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;    InFile.get(TempChar);</div>
+<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;    <span class="keywordflow">if</span>(InFile.fail())</div>
+<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;    {</div>
+<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;        <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;        <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;    }</div>
+<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;    <span class="keywordflow">while</span>(TempChar != <span class="charliteral">&#39;;&#39;</span>) <span class="comment">//reading 2nd name</span></div>
+<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;    {</div>
+<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;        Buffer[Count] = TempChar;</div>
+<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;        Count++;</div>
+<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;        <span class="keywordflow">if</span>(Count &gt; 1000)</div>
+<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;        {</div>
+<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;            <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;            <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;        }</div>
+<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;        InFile.get(TempChar);</div>
+<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;        <span class="keywordflow">if</span>(InFile.fail())</div>
+<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;        {</div>
+<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;            <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;            <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;        }</div>
+<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;    }</div>
+<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;    <span class="comment">//here at semicolon after 2nd name</span></div>
+<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;    Buffer[Count] = TempChar; <span class="comment">//add the semicolon</span></div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;    Count++;</div>
+<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;    InFile.get(TempChar);</div>
+<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;    <span class="keywordflow">if</span>(InFile.fail())</div>
+<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;    {</div>
+<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;        <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;        <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;    }</div>
+<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;    <span class="keywordflow">while</span>(TempChar != <span class="charliteral">&#39;-&#39;</span>) <span class="comment">//reading 2nd exit ID, look for the dash</span></div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;    {</div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;        Buffer[Count] = TempChar;</div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;        Count++;</div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;        <span class="keywordflow">if</span>(Count &gt; 1000)</div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;        {</div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;            <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;            <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;        }</div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;        InFile.get(TempChar);</div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;        <span class="keywordflow">if</span>(InFile.fail())</div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;        {</div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;            <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;            <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;        }</div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;    }</div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;    <span class="comment">//here at dash in 2nd exit ID</span></div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;    Buffer[Count] = TempChar; <span class="comment">//add the dash</span></div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;    Count++;</div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;    InFile.get(TempChar); <span class="comment">//1st digit after the dash</span></div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;    <span class="keywordflow">if</span>(InFile.fail())</div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;    {</div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;        <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;        <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;    }</div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;    <span class="keywordflow">while</span>((TempChar &gt;= <span class="charliteral">&#39;0&#39;</span>) &amp;&amp; (TempChar &lt;= <span class="charliteral">&#39;9&#39;</span>))</div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;    {</div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;        Buffer[Count] = TempChar;</div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;        Count++;</div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;        <span class="keywordflow">if</span>(Count &gt; 1000)</div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;        {</div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;            <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;            <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;        }</div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;        TempChar = InFile.peek(); <span class="comment">//if a number, read it and continue, if a letter stop here (1st letter of 2nd line name), if a control  character extract it and stop</span></div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;        <span class="keywordflow">if</span>((TempChar &gt;= <span class="charliteral">&#39;0&#39;</span>) &amp;&amp; (TempChar &lt;= <span class="charliteral">&#39;9&#39;</span>)) <span class="comment">//number</span></div>
+<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;        {</div>
+<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;            InFile.get(TempChar);</div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;            <span class="keywordflow">if</span>(InFile.fail())</div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;            {</div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;                <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;                <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;            }</div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;            <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;        }</div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;        <span class="keywordflow">if</span>(TempChar &lt; <span class="charliteral">&#39; &#39;</span>) <span class="comment">//control character (less than space)</span></div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;        {</div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;            InFile.get(TempChar); <span class="comment">//extract it, but may be last so check for eof</span></div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;            <span class="keywordflow">if</span>(InFile.eof()) <span class="comment">//if so then have a full buffer so need to define OutString</span></div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;            {</div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;                Buffer[Count] = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;                Count++;</div>
+<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;                Buffer[Count] = <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;                Count++;</div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;                OutString = AnsiString(Buffer);</div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;                <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;                <span class="keywordflow">return</span>(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;            }</div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;            <span class="keywordflow">if</span>(InFile.fail())</div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;            {</div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;                <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;                <span class="keywordflow">return</span>(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;            }</div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;        }</div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;        <span class="comment">//anything other than a number or control character</span></div>
+<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;    }</div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;    <span class="comment">//here when line fully defined in Buffer &amp; file pointer at start of next line</span></div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;    Buffer[Count] = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;    Count++;</div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;    Buffer[Count] = <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;    Count++;</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;    OutString = AnsiString(Buffer);</div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;    <span class="keyword">delete</span>[] Buffer;</div>
+<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;    <span class="keywordflow">return</span>(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;}</div>
+<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160; </div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;<span class="comment">// ---------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160; </div>
+<div class="line"><a name="l00788"></a><span class="lineno"><a class="line" href="class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c">  788</a></span>&#160;AnsiString <a class="code" href="class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c">TUtilities::Format96HHMMSS</a>(TDateTime DateTime)</div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;<span class="comment">// Formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when it reaches 96</span></div>
+<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;{</div>
+<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;    AnsiString MinSecString = DateTime.FormatString(<span class="stringliteral">&quot;:nn:ss&quot;</span>);</div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;    <span class="keywordtype">int</span> Hours = (int)(((<span class="keywordtype">double</span>)(DateTime + 0.000006)) * 24); <span class="comment">// for v0.6 round up by ~0.5 sec to prevent undershooting</span></div>
+<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;    <span class="keywordflow">while</span>(Hours &gt;= 96)</div>
+<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;    {</div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;        Hours -= 96;</div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;    }</div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;    AnsiString HourString = AnsiString(Hours);</div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;    <span class="keywordflow">while</span>(HourString.Length() &lt; 2)</div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;    {</div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;        HourString = <span class="stringliteral">&quot;0&quot;</span> + HourString;</div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;    }</div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;    <span class="keywordflow">return</span> (HourString + MinSecString);</div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;}</div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160; </div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;<span class="comment">// ---------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160; </div>
+<div class="line"><a name="l00807"></a><span class="lineno"><a class="line" href="class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8">  807</a></span>&#160;AnsiString <a class="code" href="class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8">TUtilities::Format96HHMM</a>(TDateTime DateTime)</div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;<span class="comment">// Formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it reaches 96</span></div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;{</div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;    AnsiString MinString = DateTime.FormatString(<span class="stringliteral">&quot;:nn&quot;</span>);</div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;    <span class="keywordtype">int</span> Hours = (int)(((<span class="keywordtype">double</span>)(DateTime + 0.0003)) * 24); <span class="comment">// for v0.6 round up by ~0.5min to prevent undershooting the hour in formatted tts</span></div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;    <span class="keywordflow">while</span>(Hours &gt;= 96)</div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;    {</div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;        Hours -= 96;</div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;    }</div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    AnsiString HourString = AnsiString(Hours);</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;    <span class="keywordflow">while</span>(HourString.Length() &lt; 2)</div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;    {</div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;        HourString = <span class="stringliteral">&quot;0&quot;</span> + HourString;</div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;    }</div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;    <span class="keywordflow">return</span> (HourString + MinString);</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;}</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160; </div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;<span class="comment">// ---------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160; </div>
+<div class="line"><a name="l00826"></a><span class="lineno"><a class="line" href="class_t_utilities.html#ae6df4b6a5d1398f57ff62799331351a8">  826</a></span>&#160;AnsiString <a class="code" href="class_t_utilities.html#ae6df4b6a5d1398f57ff62799331351a8">TUtilities::IncrementAnsiTimeOneMinute</a>(AnsiString TimeVal)</div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;{</div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;    AnsiString MinString = TimeVal.SubString(4,2);</div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;    AnsiString HourString = TimeVal.SubString(1,2);</div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;    <span class="keywordtype">int</span> Mins =  MinString.ToInt();</div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    <span class="keywordtype">int</span> Hours = HourString.ToInt();</div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;    Mins++;</div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    <span class="keywordflow">if</span>(Mins &gt; 59)</div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;    {</div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;        Mins = 0;</div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;        Hours++; <span class="comment">//don&#39;t need to worry about exceeding 96 hours as TT validity checker looks after that</span></div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;    }</div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    MinString = AnsiString(Mins);</div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    <span class="keywordflow">if</span>(MinString.Length() &lt; 2)</div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    {</div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;        MinString = <span class="stringliteral">&quot;0&quot;</span> + MinString;</div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;    }</div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;    HourString = AnsiString(Hours);</div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;    <span class="keywordflow">if</span>(HourString.Length() &lt; 2)</div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;    {</div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;        HourString = <span class="stringliteral">&quot;0&quot;</span> + HourString;</div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;    }</div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;    <span class="keywordflow">return</span>(HourString + <span class="stringliteral">&quot;:&quot;</span> + MinString);</div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;}</div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160; </div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;<span class="comment">// ---------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_t_utilities_html_a0aac90f10a08736514da3b3e02129e1e"><div class="ttname"><a href="class_t_utilities.html#a0aac90f10a08736514da3b3e02129e1e">TUtilities::LoadFileString</a></div><div class="ttdeci">AnsiString LoadFileString(std::ifstream &amp;InFile)</div><div class="ttdoc">loads a string value from the file</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00190">Utilities.cpp:190</a></div></div>
 <div class="ttc" id="aclass_t_utilities_html_a8bc6745e0433d55022e016b6551f04a0"><div class="ttname"><a href="class_t_utilities.html#a8bc6745e0433d55022e016b6551f04a0">TUtilities::CheckFileStringZeroDelimiter</a></div><div class="ttdeci">bool CheckFileStringZeroDelimiter(std::ifstream &amp;InFile)</div><div class="ttdoc">checks that the value is a string ('0' only accepted as the delimiter), returns true for success</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00435">Utilities.cpp:435</a></div></div>
-<div class="ttc" id="aclass_t_utilities_html_ae6df4b6a5d1398f57ff62799331351a8"><div class="ttname"><a href="class_t_utilities.html#ae6df4b6a5d1398f57ff62799331351a8">TUtilities::IncrementAnsiTimeOneMinute</a></div><div class="ttdeci">AnsiString IncrementAnsiTimeOneMinute(AnsiString TimeVal)</div><div class="ttdoc">takes &quot;HH:MM&quot; and increments it to &quot;HH:MX&quot;, where MX == MM + 1, incrementing the hour if necessary</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00619">Utilities.cpp:619</a></div></div>
+<div class="ttc" id="aclass_t_utilities_html_ae6df4b6a5d1398f57ff62799331351a8"><div class="ttname"><a href="class_t_utilities.html#ae6df4b6a5d1398f57ff62799331351a8">TUtilities::IncrementAnsiTimeOneMinute</a></div><div class="ttdeci">AnsiString IncrementAnsiTimeOneMinute(AnsiString TimeVal)</div><div class="ttdoc">takes &quot;HH:MM&quot; and increments it to &quot;HH:MX&quot;, where MX == MM + 1, incrementing the hour if necessary</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00826">Utilities.cpp:826</a></div></div>
 <div class="ttc" id="aclass_t_utilities_html_ac970a0df84f5cb26ed962020b7dc2d6d"><div class="ttname"><a href="class_t_utilities.html#ac970a0df84f5cb26ed962020b7dc2d6d">TUtilities::LoadFileDouble</a></div><div class="ttdeci">double LoadFileDouble(std::ifstream &amp;InFile)</div><div class="ttdoc">loads a double value from the file (converts from a string to a double) and uses the local decimal po...</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00172">Utilities.cpp:172</a></div></div>
 <div class="ttc" id="a_utilities_8h_html"><div class="ttname"><a href="_utilities_8h.html">Utilities.h</a></div></div>
-<div class="ttc" id="aclass_t_utilities_html_a2dfbe3d4ed11770bc1a902b51afdc10c"><div class="ttname"><a href="class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c">TUtilities::Format96HHMMSS</a></div><div class="ttdeci">AnsiString Format96HHMMSS(TDateTime DateTime)</div><div class="ttdoc">formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when...</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00581">Utilities.cpp:581</a></div></div>
+<div class="ttc" id="aclass_t_utilities_html_a2dfbe3d4ed11770bc1a902b51afdc10c"><div class="ttname"><a href="class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c">TUtilities::Format96HHMMSS</a></div><div class="ttdeci">AnsiString Format96HHMMSS(TDateTime DateTime)</div><div class="ttdoc">formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when...</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00788">Utilities.cpp:788</a></div></div>
+<div class="ttc" id="aclass_t_utilities_html_a0350456fd482593c424d125536b34093"><div class="ttname"><a href="class_t_utilities.html#a0350456fd482593c424d125536b34093">TUtilities::ReadOneLineFromCouplingFile</a></div><div class="ttdeci">bool ReadOneLineFromCouplingFile(std::ifstream &amp;InFile, AnsiString &amp;OutString)</div><div class="ttdoc">reads a single line from the multiplayer coupling file, returns true for success with OutString conta...</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00618">Utilities.cpp:618</a></div></div>
 <div class="ttc" id="a_utilities_8cpp_html_a69ecaeba7a18032cf8a1d212b92d94f8"><div class="ttname"><a href="_utilities_8cpp.html#a69ecaeba7a18032cf8a1d212b92d94f8">Utilities</a></div><div class="ttdeci">TUtilities * Utilities</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00047">Utilities.cpp:47</a></div></div>
 <div class="ttc" id="aclass_t_utilities_html_ae1eddca13cc3c492839e131f40ec21c0"><div class="ttname"><a href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0">TUtilities::CallLogPop</a></div><div class="ttdeci">void CallLogPop(int Caller)</div><div class="ttdoc">pops the last entry off the call stack, throws an error if called when empty</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00050">Utilities.cpp:50</a></div></div>
 <div class="ttc" id="aclass_t_utilities_html_a06a211ebaa112f3fac0edc5b238ef876"><div class="ttname"><a href="class_t_utilities.html#a06a211ebaa112f3fac0edc5b238ef876">TUtilities::SaveFileBool</a></div><div class="ttdeci">void SaveFileBool(std::ofstream &amp;OutFile, bool SaveBool)</div><div class="ttdoc">stores '1' if the bool is true or '0' if false to the file, then a CR</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00108">Utilities.cpp:108</a></div></div>
-<div class="ttc" id="aclass_t_utilities_html_a6dc0e83b149563fdf43f068fd26cead8"><div class="ttname"><a href="class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8">TUtilities::Format96HHMM</a></div><div class="ttdeci">AnsiString Format96HHMM(TDateTime DateTime)</div><div class="ttdoc">formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it...</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00600">Utilities.cpp:600</a></div></div>
+<div class="ttc" id="aclass_t_utilities_html_a6dc0e83b149563fdf43f068fd26cead8"><div class="ttname"><a href="class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8">TUtilities::Format96HHMM</a></div><div class="ttdeci">AnsiString Format96HHMM(TDateTime DateTime)</div><div class="ttdoc">formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it...</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00807">Utilities.cpp:807</a></div></div>
 <div class="ttc" id="aclass_t_utilities_html_a7896a24d025c8164b2c8215944d072aa"><div class="ttname"><a href="class_t_utilities.html#a7896a24d025c8164b2c8215944d072aa">TUtilities::CheckFileString</a></div><div class="ttdeci">bool CheckFileString(std::ifstream &amp;InFile)</div><div class="ttdoc">checks that the value is a string ('0' or CR accepted as delimiters), returns true for success</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00399">Utilities.cpp:399</a></div></div>
 <div class="ttc" id="aclass_t_utilities_html_a86ed634e8a9d7ca534a324954f4a7a2f"><div class="ttname"><a href="class_t_utilities.html#a86ed634e8a9d7ca534a324954f4a7a2f">TUtilities::SaveFileInt</a></div><div class="ttdeci">void SaveFileInt(std::ofstream &amp;OutFile, int SaveInt)</div><div class="ttdoc">stores the int value to the file, then a CR</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00121">Utilities.cpp:121</a></div></div>
 <div class="ttc" id="aclass_t_utilities_html_a4d229af6e8943da1936bcbcc1c83846b"><div class="ttname"><a href="class_t_utilities.html#a4d229af6e8943da1936bcbcc1c83846b">TUtilities::CheckFileInt</a></div><div class="ttdeci">bool CheckFileInt(std::ifstream &amp;InFile, int Lowest, int Highest)</div><div class="ttdoc">checks that the value is an int lying between Lowest &amp; Highest (inclusive), returns true for success</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00238">Utilities.cpp:238</a></div></div>
-<div class="ttc" id="aclass_t_utilities_html_a0a0ef5bf2fc74c0026f2a8bec4151d37"><div class="ttname"><a href="class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37">TUtilities::CheckAndReadFileString</a></div><div class="ttdeci">bool CheckAndReadFileString(std::ifstream &amp;InFile, AnsiString &amp;OutString)</div><div class="ttdoc">checks that the value is a string ('0' or CR accepted as delimiters), returns true for success and re...</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00529">Utilities.cpp:529</a></div></div>
+<div class="ttc" id="aclass_t_utilities_html_a3c79ab051602edf407b81a71d2e72119"><div class="ttname"><a href="class_t_utilities.html#a3c79ab051602edf407b81a71d2e72119">TUtilities::CheckAndReadOneLineFromConfigFile</a></div><div class="ttdeci">bool CheckAndReadOneLineFromConfigFile(std::ifstream &amp;InFile, AnsiString &amp;OutString)</div><div class="ttdoc">similar to CheckAndReadFileString but allows tab characters and doesn't ignore initial   characters</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00581">Utilities.cpp:581</a></div></div>
+<div class="ttc" id="aclass_t_utilities_html_a0a0ef5bf2fc74c0026f2a8bec4151d37"><div class="ttname"><a href="class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37">TUtilities::CheckAndReadFileString</a></div><div class="ttdeci">bool CheckAndReadFileString(std::ifstream &amp;InFile, AnsiString &amp;OutString)</div><div class="ttdoc">checks that the value is a string ('0' or ' ' (CRLF) accepted as delimiters), returns true for succes...</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00529">Utilities.cpp:529</a></div></div>
 <div class="ttc" id="aclass_t_utilities_html_a92b5adfb8ad3a937a8d208bfd90a5741"><div class="ttname"><a href="class_t_utilities.html#a92b5adfb8ad3a937a8d208bfd90a5741">TUtilities::SaveFileDouble</a></div><div class="ttdeci">void SaveFileDouble(std::ofstream &amp;OutFile, double SaveDouble)</div><div class="ttdoc">converts the double value to a string (if double stored directly it is truncated to 6 digits) then st...</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00127">Utilities.cpp:127</a></div></div>
 <div class="ttc" id="aclass_t_utilities_html_aea3e330f1fd0c0e68c84a338bd5f6c3c"><div class="ttname"><a href="class_t_utilities.html#aea3e330f1fd0c0e68c84a338bd5f6c3c">TUtilities::CheckStringDouble</a></div><div class="ttdeci">bool CheckStringDouble(AnsiString &amp;DoubleString)</div><div class="ttdoc">checks the string represents a valid double value, returns true for success. Added at v2....</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00370">Utilities.cpp:370</a></div></div>
 <div class="ttc" id="aclass_t_utilities_html_a34bd6bb5305bc29afdf424f6d35a921c"><div class="ttname"><a href="class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c">TUtilities::TimeStamp</a></div><div class="ttdeci">AnsiString TimeStamp()</div><div class="ttdoc">creates a string of the form 'hh:mm:ss' for use in call &amp; event logging</div><div class="ttdef"><b>Definition:</b> <a href="_utilities_8cpp_source.html#l00073">Utilities.cpp:73</a></div></div>

@@ -34,12 +34,10 @@
 #include "DisplayUnit.h"                 //for UserGraphicVector
 
 #define FirstUnusedSpeedTagNumber    147 //defined value for use in array sizing etc
-#define DefaultTrackLength           100
-#define DefaultTrackSpeedLimit       200
 
 // ---------------------------------------------------------------------------
 
-typedef std::pair<int, int>THVPair;
+typedef std::pair<int, int> THVPair;
 ///< HLoc/VLoc position pair
 
 class TDisplay;
@@ -161,25 +159,6 @@ public: // everything uses these - should really have Gets & Sets but too many t
 
 // inline functions
 
-/// Constructor for specific type of element. Use very high neg. numbers as 'unset' values for HLoc & VLoc initially as can go high negatively legitimately, build from existing TTrackPiece with default values for extra members
-    TTrackElement(TFixedTrackPiece Input) : TFixedTrackPiece(Input), HLoc(-2000000000), VLoc(-2000000000), LocationName(""), ActiveTrackElementName(""),
-        Attribute(0), CallingOnSet(false), Length01(DefaultTrackLength), Length23(-1), SpeedLimit01(DefaultTrackSpeedLimit), SpeedLimit23(-1),
-        TrainIDOnElement(-1), TrainIDOnBridgeTrackPos01(-1), TrainIDOnBridgeTrackPos23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1),
-        SigAspect(FourAspect)
-    {
-        for(int x = 0; x < 4; x++)
-        {
-            ConnLinkPos[x] = -1;
-            Conn[x] = -1;
-        }
-        if((TrackType == Points) || (TrackType == Crossover) || (TrackType == Bridge))
-        {
-            Length23 = DefaultTrackLength;
-
-            SpeedLimit23 = DefaultTrackSpeedLimit;
-        }
-    }
-
 /// Constructor for non-specific default element. Use high neg numbers for 'unset' h & v as can go high negatively legitimately
     TTrackElement() : TFixedTrackPiece(), HLoc(-2000000000), VLoc(-2000000000), LocationName(""), ActiveTrackElementName(""), Attribute(0), CallingOnSet(false),
         Length01(-1), Length23(-1), SpeedLimit01(-1), SpeedLimit23(-1), TrainIDOnElement(-1), TrainIDOnBridgeTrackPos01(-1), TrainIDOnBridgeTrackPos23(-1),
@@ -202,6 +181,9 @@ public: // everything uses these - should really have Gets & Sets but too many t
 ///< Used to log track parameters for call stack logging
     void PlotVariableTrackElement(int Caller, TDisplay *Disp) const;
 ///< Plot the element on the display 'variable' indicates that the element may be named and if so may be plotted striped or solid depending on whether the name has been set
+
+/// Constructor for specific type of element. Use very high neg. numbers as 'unset' values for HLoc & VLoc initially as can go high negatively legitimately, build from existing TTrackPiece with default values for extra members
+    TTrackElement(TFixedTrackPiece Input);
 };
 
 // ---------------------------------------------------------------------------
@@ -718,6 +700,7 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< map of ActiveTrackElementNames compiled and used for populating the LocationNameComboBox during timetable creation or editing.  Used in place of LocationNameMultiMap as that can contain concourses and non-station named locations that aren't associated with any track.  The second 'int' entry is a dummy, only the list of AnsiString names is needed, and being a map it is automatically sorted and without duplicates.
     typedef TActiveTrackElementNameMap::iterator TActiveTrackElementNameIterator;
     typedef std::pair<AnsiString, int>TActiveTrackElementNameMapEntry;
+    typedef std::map<THVPair, Graphics::TBitmap*> TMultiplayerOverlayMap; //added for multiplayer
 
 /// Used as basic elements in a table of signals - see SigTable below
     struct TSigElement
@@ -772,7 +755,10 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< duration of the flash period when level crossing closing to trains
     float LevelCrossingBarrierDownFlashDuration;
 ///< duration of the flash period when level crossing opening
-
+    int DefaultTrackLength;
+///< length of each track element before being changed within the program (can be changed in config.txt)
+    int DefaultTrackSpeedLimit;
+///< speed limit of each track element before being changed within the program (can be changed in config.txt)
     int FlipArray[FirstUnusedSpeedTagNumber];
 ///< holds TrackElement SpeedTag values for 'flipping' via menu items 'Edit' & 'Flip'
     int GapFlashGreenPosition, GapFlashRedPosition;
@@ -782,11 +768,11 @@ can't have a route set while changing; can't be opened while a route is set; and
     int RotRightArray[FirstUnusedSpeedTagNumber];
 ///< holds TrackElement SpeedTag values for 'rotating right' via menu items 'Edit' & 'Rotate right'
     int RotLeftArray[FirstUnusedSpeedTagNumber];
-
 ///< holds TrackElement SpeedTag values for 'rotating left' via menu items 'Edit' & 'Rotate left'
     std::map<AnsiString, char>ContinuationNameMap;
-
 ///< map of all continuation names, char is a dummy
+    TMultiplayerOverlayMap MultiplayerOverlayMap; //added for multiplayer
+///< map of coupled continuations
     TActiveTrackElementNameMap ActiveTrackElementNameMap;
 ///< map of active track element names
     TActiveLCVector ChangingLCVector;
@@ -1114,7 +1100,7 @@ exclude opposed buffers since these not linked.  Used in timetable integrity che
                                                                          AnsiString &ErrorString);
 /// Return a reference to the inactive element at HLoc & VLoc, if no element is found an error is thrown
     TTrackElement &GetInactiveTrackElementFromTrackMap(int Caller, int HLoc, int VLoc);
-/// Return a reference to the element at HLoc & VLoc for any map and any vector (used for SelectPrefDir in clipboard pref dir recovery)
+/// Return a reference to the element at HLoc & VLoc for any map and any vector (used for SelectPrefDir in clipboard pref dir recovery
     TTrackElement &GetTrackElementFromAnyTrackMap(int Caller, int HLoc, int VLoc, TTrackMap &Map, TTrackVector &Vector); //new at v2.9.0 for clipboard pref dirs & modified at v2.9.2 to make Map & Vector references
 /// Return a reference to the element at HLoc & VLoc, if no element is found an error is thrown
     TTrackElement &GetTrackElementFromTrackMap(int Caller, int HLoc, int VLoc);
@@ -1176,6 +1162,8 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
     void MarkOneLength(int Caller, TTrackElement TE, bool FirstTrack, TDisplay *Disp);
 /// Called during track building or pasting, when an element identified by CurrentTag (i.e. its SpeedTag value) is to be placed at position HLocInput & VLocInput.  If the element can be placed it is displayed and added to the relevant vector, and if named its name is added to LocationNameMultiMap. At v2.2.0 'Aspect' added so can distinguish between adding and pasting track
     void PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &TrackPlottedFlag, bool InternalChecks);
+/// Plots a continuation on screen, may have overlays if a multiplayer session
+    void PlotContinuation(int Caller, TTrackElement TrackElement, TDisplay *Disp);
 ///new at v2.2.0 - as PlotAndAddTrackElement but keeping speed & length attributes (for pasting) and also pasting location names
     void PlotPastedTrackElementWithAttributes(int Caller, TTrackElement TempTrackElement, int HLocInput, int VLocInput, bool &TrackLinkingRequiredFlag,
                                               bool InternalChecks);
@@ -1640,7 +1628,7 @@ public:
 ///< the vector class that holds all locked routes
     typedef std::vector<TLockedRouteClass>::iterator TLockedRouteVectorIterator;
 
-    typedef std::pair<int, unsigned int>TRouteElementPair;
+    typedef std::pair<int, unsigned int> TRouteElementPair;
 ///< defines a specific element in a route, the first (int) value is the vector position in the AllRoutesVector, and the second (unsigned int) value is the vector position of the element in the route's PrefDirVector
     typedef std::multimap<THVPair, TRouteElementPair, TMapComp>TRoute2MultiMap;
 ///< the multimap class holding the elements of all routes in the railway.  The first entry is the HLoc & VLoc pair values of the route element, and the second is the TRouteElementPair defining the element.  There are a maximum of 2 elements per HLoc & VLoc location

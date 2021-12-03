@@ -103,7 +103,11 @@ public:
     bool CheckAndCompareFileString(std::ifstream &InFile, AnsiString InString);
     ///< checks that the value is a string ('0' or CR accepted as delimiters) and is the same as InString, returns true for success
     bool CheckAndReadFileString(std::ifstream &InFile, AnsiString &OutString);
-    ///< checks that the value is a string ('0' or CR accepted as delimiters), returns true for success and returns the value in OutString
+    ///< checks that the value is a string ('0' or '\n' (CRLF) accepted as delimiters), returns true for success and returns the value in OutString
+    bool CheckAndReadOneLineFromConfigFile(std::ifstream &InFile, AnsiString &OutString);
+    ///< similar to CheckAndReadFileString but allows tab characters and doesn't ignore initial \n characters
+    bool ReadOneLineFromCouplingFile(std::ifstream &InFile, AnsiString &OutString);
+    ///< reads a single line from the multiplayer coupling file, returns true for success with OutString containing the line
     AnsiString Format96HHMMSS(TDateTime DateTime);
     ///< formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 & resets when it reaches 96
     AnsiString Format96HHMM(TDateTime DateTime);

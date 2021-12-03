@@ -17,8 +17,6 @@ var _track_unit_8h =
     [ "TAllRoutes", "class_t_all_routes.html", "class_t_all_routes" ],
     [ "TLockedRouteClass", "class_t_all_routes_1_1_t_locked_route_class.html", "class_t_all_routes_1_1_t_locked_route_class" ],
     [ "TCallonEntry", "class_t_all_routes_1_1_t_callon_entry.html", "class_t_all_routes_1_1_t_callon_entry" ],
-    [ "DefaultTrackLength", "_track_unit_8h.html#af8f5c6574a11d87d40e08f2e10496021", null ],
-    [ "DefaultTrackSpeedLimit", "_track_unit_8h.html#ab474c53083a12f5585481cc834b3c403", null ],
     [ "FirstUnusedSpeedTagNumber", "_track_unit_8h.html#a130ce29f5f90289595fcb4c38a659c8d", null ],
     [ "THVPair", "_track_unit_8h.html#a524d48fe8a394092b35867930a7cd2af", null ],
     [ "TPrefDirVector", "_track_unit_8h.html#a79394e04a2435f7300aad79c757ae2ce", null ],

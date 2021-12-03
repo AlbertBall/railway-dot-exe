@@ -1,52 +1,52 @@
 <map id="TTrainController::TrainVectorAt" name="TTrainController::TrainVectorAt">
-<area shape="rect" id="node1" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="1529,800,1728,827"/>
-<area shape="rect" id="node2" href="$class_t_train_controller.html#aadffada34a23350d7773bc7735e423a1" title="calculates additional lateness values for trains that haven&#39;t reached their destinations yet" alt="" coords="1279,162,1481,204"/>
-<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="278,1188,437,1215"/>
-<area shape="rect" id="node7" href="$class_t_train_controller.html#aa60ab73bef848c5458cdf0217092aef8" title="Return the track entry link (Link[]) array position for the given train on track element at track vec..." alt="" coords="1293,800,1467,827"/>
-<area shape="rect" id="node9" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="533,922,699,948"/>
-<area shape="rect" id="node10" href="$class_t_train_controller.html#a07d3d10bf08d4e916b652d676c917335" title="called when exiting operation mode to delete all trains and timetable data etc" alt="" coords="788,24,957,65"/>
-<area shape="rect" id="node11" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="519,422,713,464"/>
-<area shape="rect" id="node13" href="$class_t_train_controller.html#a2f9cd71b60b45de8380f5fad7bbd5dd8" title="Plots all trains on screen in zoomed&#45;out mode, state of &#39;Flash&#39; determines whether the flashing train..." alt="" coords="793,590,952,632"/>
-<area shape="rect" id="node15" href="$class_t_train_controller.html#a0e16b9cb91bb29f83bffc7ae3461200d" title="new v2.2.0 for OperatorActionPanel" alt="" coords="791,1032,954,1073"/>
-<area shape="rect" id="node16" href="$class_t_train_controller.html#a47676de8fc677dbcabf565569cb1435c" title="plot all trains on the display" alt="" coords="1301,594,1459,636"/>
-<area shape="rect" id="node20" href="$class_t_interface.html#a0109f801142d4fa3becae22e23b84163" title="Save the error log after an error has been thrown &#45; no need for a caller." alt="" coords="1050,1992,1213,2019"/>
-<area shape="rect" id="node27" href="$class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25" title="Save a session file &#45; see LoadSession for details of additions to the session file." alt="" coords="535,2047,697,2074"/>
-<area shape="rect" id="node33" href="$class_t_train_controller.html#afa594bfc6b628d21d02a31c3a13c3a0a" title="save trains to a session file" alt="" coords="1283,1978,1477,2020"/>
-<area shape="rect" id="node34" href="$class_t_interface.html#afeb3a4236e5cfa7e93d7d5167304f937" title="Called during the ClockTimer2 function to set screen boundaries, buttons &amp; menu items." alt="" coords="778,220,967,261"/>
-<area shape="rect" id="node35" href="$class_t_train_controller.html#a29c49509e56368954ca3334a37648a7a" title="This sets all the warning flags (CrashWarning, DerailWarning etc) to their required states after a se..." alt="" coords="1286,406,1474,448"/>
-<area shape="rect" id="node36" href="$class_t_train_controller.html#ab98eb9e3dd43fb5028c6cda88ae929f2" title="new at v2.4.0 return true if find the train (added at v2.4.0 as can select a removed train in OAListB..." alt="" coords="1287,2044,1473,2085"/>
-<area shape="rect" id="node39" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="1287,1330,1473,1372"/>
-<area shape="rect" id="node48" href="$class_t_train_controller.html#a7e2abfcc38e51933883d959c4155aca0" title="unplot all trains from screen" alt="" coords="794,89,951,130"/>
-<area shape="rect" id="node49" href="$class_t_train_controller.html#aa5e441a9ec80e5076b2c05c2bb6f3fd3" title="Called by TInterface::SaveOperatingImage1Click) to write all trains to the image file." alt="" coords="1287,2262,1473,2304"/>
-<area shape="rect" id="node50" href="$class_t_train_controller.html#ad6cbfb50d0fddf2c6b43a1604da3b746" title="Destructor." alt="" coords="1320,2328,1440,2369"/>
-<area shape="rect" id="node3" href="$class_t_train_controller.html#af6c6e1e1236559f07b29b069d4377690" title="At the end of operation a summary of overall performance is sent to the performance file by this func..." alt="" coords="761,154,984,196"/>
-<area shape="rect" id="node4" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="533,154,699,196"/>
-<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,1363,196,1390"/>
-<area shape="rect" id="node8" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="805,980,940,1007"/>
-<area shape="rect" id="node12" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="244,710,471,736"/>
-<area shape="rect" id="node14" href="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc" title=" " alt="" coords="523,568,709,595"/>
-<area shape="rect" id="node17" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="1041,477,1221,518"/>
-<area shape="rect" id="node18" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="535,871,697,898"/>
-<area shape="rect" id="node19" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="785,438,960,464"/>
-<area shape="rect" id="node21" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="805,1388,940,1415"/>
-<area shape="rect" id="node22" href="$class_t_interface.html#aaaf32c3c815553f7ba70698e0f0071bb" title=" " alt="" coords="525,1090,707,1132"/>
-<area shape="rect" id="node23" href="$class_t_interface.html#a50478cade5cae721121f5902528987a7" title=" " alt="" coords="531,1156,701,1197"/>
-<area shape="rect" id="node24" href="$class_t_interface.html#ad7aaed58c91a9ad9598e17fa615024da" title=" " alt="" coords="529,1221,703,1262"/>
-<area shape="rect" id="node25" href="$class_t_interface.html#a921ff57bd9af8acdd79a7c99d4839218" title=" " alt="" coords="520,1440,712,1481"/>
-<area shape="rect" id="node26" href="$class_t_interface.html#ad3ddf42d51934815002002a770df766a" title=" " alt="" coords="537,1505,695,1546"/>
-<area shape="rect" id="node28" href="$class_t_interface.html#a2313bac2c5c5ac3f8b91c46166e35b97" title=" " alt="" coords="527,1570,705,1612"/>
-<area shape="rect" id="node29" href="$class_t_interface.html#ad493289c9c9aa2e4d4e39329e80cc47c" title=" " alt="" coords="529,973,703,1014"/>
-<area shape="rect" id="node30" href="$class_t_interface.html#a0cc484aa9bc0445312ef9191d8212f14" title=" " alt="" coords="521,1636,711,1677"/>
-<area shape="rect" id="node31" href="$class_t_interface.html#ab5b80c76a8cc8d2c87f21d323f61c1ce" title=" " alt="" coords="534,1701,698,1742"/>
-<area shape="rect" id="node32" href="$class_t_interface.html#aec12f0e481024f1268fad36e7188b7a4" title=" " alt="" coords="525,1766,707,1808"/>
-<area shape="rect" id="node37" href="$class_t_interface.html#a8bf97b0604338d3a8b8432e070b7a669" title="Used in actions due panel to identify the train or continuation." alt="" coords="1051,2044,1212,2085"/>
-<area shape="rect" id="node38" href="$class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" title="Controls the floating window function, called during the ClockTimer2 function." alt="" coords="785,1922,960,1948"/>
-<area shape="rect" id="node40" href="$class_t_train_controller.html#ad81afe17a036ab3f96c340ab75a2d8e2" title="new v2.2.0, calcs distance to red signal, returns &#45;1 for no signal found, for autosigs route after ne..." alt="" coords="1033,1170,1230,1212"/>
-<area shape="rect" id="node41" href="$class_t_train.html#a4524b72ef62ef2c1375f58fac05929ee" title="True if the train can be called on at its current position &#45; see detail in .cpp file." alt="" coords="1048,1054,1215,1080"/>
-<area shape="rect" id="node42" href="$class_t_interface.html#a51b94ffa3dc90fe4e3bec2f1ae28074e" title="used for floating window to display train status" alt="" coords="1045,1926,1218,1968"/>
-<area shape="rect" id="node43" href="$class_t_train.html#aa76cf279cc5cc86bccf44eae2a03df26" title=" " alt="" coords="785,809,960,850"/>
-<area shape="rect" id="node44" href="$class_t_interface.html#a1cd9f01bcbcc37fb31712b7007d04dac" title="Examines a flashing route (i.e. one being set) and returns true if a moving train is detected on it a..." alt="" coords="1032,1389,1231,1430"/>
-<area shape="rect" id="node45" href="$class_t_train.html#aa21e18b3085773ca8351c446911611c1" title="When a train moves off a bridge the other track may contain a route or have a train on it that has be..." alt="" coords="1041,1105,1221,1146"/>
-<area shape="rect" id="node46" href="$class_t_all_routes.html#a38ede0231e26c62498999d1873d547a2" title="Route locking is required (returns true) if a moving train is within 3 signals back from the RouteTru..." alt="" coords="1045,1454,1217,1496"/>
-<area shape="rect" id="node47" href="$class_t_track.html#a12d4069a6a201e13a83347c555a465b2" title="New at v1.2.0; checks whether a train present at input location and link and returns its ID if so." alt="" coords="1062,952,1201,979"/>
+<area shape="rect" id="node1" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="1529,627,1728,654"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#aadffada34a23350d7773bc7735e423a1" title="calculates additional lateness values for trains that haven&#39;t reached their destinations yet" alt="" coords="1279,213,1481,254"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="278,707,437,734"/>
+<area shape="rect" id="node7" href="$class_t_train_controller.html#aa60ab73bef848c5458cdf0217092aef8" title="Return the track entry link (Link[]) array position for the given train on track element at track vec..." alt="" coords="1293,652,1467,679"/>
+<area shape="rect" id="node9" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="533,747,699,774"/>
+<area shape="rect" id="node10" href="$class_t_train_controller.html#a07d3d10bf08d4e916b652d676c917335" title="called when exiting operation mode to delete all trains and timetable data etc" alt="" coords="788,78,957,120"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="519,1918,713,1960"/>
+<area shape="rect" id="node13" href="$class_t_train_controller.html#a2f9cd71b60b45de8380f5fad7bbd5dd8" title="Plots all trains on screen in zoomed&#45;out mode, state of &#39;Flash&#39; determines whether the flashing train..." alt="" coords="793,274,952,316"/>
+<area shape="rect" id="node15" href="$class_t_train_controller.html#a0e16b9cb91bb29f83bffc7ae3461200d" title="new v2.2.0 for OperatorActionPanel" alt="" coords="791,864,954,905"/>
+<area shape="rect" id="node16" href="$class_t_train_controller.html#adda46770e73214b896de94d98f9e2692" title="new for multiplayer" alt="" coords="791,645,954,686"/>
+<area shape="rect" id="node17" href="$class_t_train_controller.html#a47676de8fc677dbcabf565569cb1435c" title="plot all trains on the display" alt="" coords="1301,536,1459,577"/>
+<area shape="rect" id="node21" href="$class_t_interface.html#a0109f801142d4fa3becae22e23b84163" title="Save the error log after an error has been thrown &#45; no need for a caller." alt="" coords="1050,804,1213,831"/>
+<area shape="rect" id="node34" href="$class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25" title="Save a session file &#45; see LoadSession for details of additions to the session file." alt="" coords="1051,754,1212,780"/>
+<area shape="rect" id="node35" href="$class_t_train_controller.html#afa594bfc6b628d21d02a31c3a13c3a0a" title="save trains to a session file" alt="" coords="1283,805,1477,846"/>
+<area shape="rect" id="node36" href="$class_t_interface.html#afeb3a4236e5cfa7e93d7d5167304f937" title="Called during the ClockTimer2 function to set screen boundaries, buttons &amp; menu items." alt="" coords="778,13,967,54"/>
+<area shape="rect" id="node37" href="$class_t_train_controller.html#a29c49509e56368954ca3334a37648a7a" title="This sets all the warning flags (CrashWarning, DerailWarning etc) to their required states after a se..." alt="" coords="1286,401,1474,442"/>
+<area shape="rect" id="node38" href="$class_t_train_controller.html#ab98eb9e3dd43fb5028c6cda88ae929f2" title="new at v2.4.0 return true if find the train (added at v2.4.0 as can select a removed train in OAListB..." alt="" coords="1287,922,1473,964"/>
+<area shape="rect" id="node40" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="1287,1426,1473,1468"/>
+<area shape="rect" id="node48" href="$class_t_train_controller.html#a7e2abfcc38e51933883d959c4155aca0" title="unplot all trains from screen" alt="" coords="794,144,951,185"/>
+<area shape="rect" id="node49" href="$class_t_train_controller.html#aa5e441a9ec80e5076b2c05c2bb6f3fd3" title="Called by TInterface::SaveOperatingImage1Click) to write all trains to the image file." alt="" coords="1287,2065,1473,2106"/>
+<area shape="rect" id="node50" href="$class_t_train_controller.html#ad6cbfb50d0fddf2c6b43a1604da3b746" title="Destructor." alt="" coords="1320,2130,1440,2172"/>
+<area shape="rect" id="node3" href="$class_t_train_controller.html#af6c6e1e1236559f07b29b069d4377690" title="At the end of operation a summary of overall performance is sent to the performance file by this func..." alt="" coords="761,209,984,250"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="533,209,699,250"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,1062,196,1088"/>
+<area shape="rect" id="node8" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="805,812,940,839"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="244,1667,471,1694"/>
+<area shape="rect" id="node14" href="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc" title=" " alt="" coords="523,416,709,443"/>
+<area shape="rect" id="node18" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="1041,434,1221,476"/>
+<area shape="rect" id="node19" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="535,568,697,595"/>
+<area shape="rect" id="node20" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="785,442,960,468"/>
+<area shape="rect" id="node22" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="805,1408,940,1435"/>
+<area shape="rect" id="node23" href="$class_t_interface.html#aaaf32c3c815553f7ba70698e0f0071bb" title=" " alt="" coords="525,1112,707,1153"/>
+<area shape="rect" id="node24" href="$class_t_interface.html#a50478cade5cae721121f5902528987a7" title=" " alt="" coords="531,1177,701,1218"/>
+<area shape="rect" id="node25" href="$class_t_interface.html#ad7aaed58c91a9ad9598e17fa615024da" title=" " alt="" coords="529,1242,703,1284"/>
+<area shape="rect" id="node26" href="$class_t_interface.html#a921ff57bd9af8acdd79a7c99d4839218" title=" " alt="" coords="520,1461,712,1502"/>
+<area shape="rect" id="node27" href="$class_t_interface.html#ad3ddf42d51934815002002a770df766a" title=" " alt="" coords="537,1526,695,1568"/>
+<area shape="rect" id="node28" href="$class_t_interface.html#a2313bac2c5c5ac3f8b91c46166e35b97" title=" " alt="" coords="527,1592,705,1633"/>
+<area shape="rect" id="node29" href="$class_t_interface.html#ad493289c9c9aa2e4d4e39329e80cc47c" title=" " alt="" coords="529,2065,703,2106"/>
+<area shape="rect" id="node30" href="$class_t_interface.html#a40232083747ef274344eed7021c6f43c" title=" " alt="" coords="529,1657,703,1698"/>
+<area shape="rect" id="node31" href="$class_t_interface.html#aebb9a51773fbbaceb765a2df49472bfd" title=" " alt="" coords="531,1722,701,1764"/>
+<area shape="rect" id="node32" href="$class_t_interface.html#a0cc484aa9bc0445312ef9191d8212f14" title=" " alt="" coords="521,1788,711,1829"/>
+<area shape="rect" id="node33" href="$class_t_interface.html#ab5b80c76a8cc8d2c87f21d323f61c1ce" title=" " alt="" coords="534,1853,698,1894"/>
+<area shape="rect" id="node39" href="$class_t_interface.html#a8bf97b0604338d3a8b8432e070b7a669" title="Used in actions due panel to identify the train or continuation." alt="" coords="1051,856,1212,897"/>
+<area shape="rect" id="node41" href="$class_t_train_controller.html#a9fa0023214c894b378c929311da6c185" title="new v2.2.0 (DistanceToExit added for multiplayer), calcs distances to red signal &amp; exit,..." alt="" coords="1033,1140,1230,1181"/>
+<area shape="rect" id="node42" href="$class_t_train.html#a4524b72ef62ef2c1375f58fac05929ee" title="True if the train can be called on at its current position &#45; see detail in .cpp file." alt="" coords="1048,972,1215,999"/>
+<area shape="rect" id="node43" href="$class_t_interface.html#a51b94ffa3dc90fe4e3bec2f1ae28074e" title="used for floating window to display train status" alt="" coords="1045,1561,1218,1602"/>
+<area shape="rect" id="node44" href="$class_t_train.html#aa76cf279cc5cc86bccf44eae2a03df26" title=" " alt="" coords="785,2065,960,2106"/>
+<area shape="rect" id="node45" href="$class_t_interface.html#a1cd9f01bcbcc37fb31712b7007d04dac" title="Examines a flashing route (i.e. one being set) and returns true if a moving train is detected on it a..." alt="" coords="1032,1678,1231,1720"/>
+<area shape="rect" id="node46" href="$class_t_train.html#aa21e18b3085773ca8351c446911611c1" title="When a train moves off a bridge the other track may contain a route or have a train on it that has be..." alt="" coords="1041,1074,1221,1116"/>
+<area shape="rect" id="node47" href="$class_t_all_routes.html#a38ede0231e26c62498999d1873d547a2" title="Route locking is required (returns true) if a moving train is within 3 signals back from the RouteTru..." alt="" coords="1045,1796,1217,1837"/>
 </map>

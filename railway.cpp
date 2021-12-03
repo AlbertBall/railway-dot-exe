@@ -15,8 +15,8 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
         Application->MainFormOnTaskBar = true;
         Application->HelpFile = ".\\Help_Files\\Help.chm";
         Application->CreateForm(__classid(TInterface), &Interface);
-        Application->CreateForm(__classid(TAboutForm), &AboutForm);
-        Application->Run();
+         Application->CreateForm(__classid(TAboutForm), &AboutForm);
+         Application->Run();
     }
     catch (Exception &exception)
     {

@@ -228,6 +228,9 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TooLongMessageSentFlag = false; //added at v2.9.1
         TooShortMessageSentFlag = false; //added at v2.9.1
         Track->NoPlatsMessageSent = false; //added at v2.10.0
+        Track->DefaultTrackLength = 100;     //moved here at v2.11.0, may be changed in reading config.txt
+        Track->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
+
 
         TrackInfoOnOffMenuItem->Caption = "Show"; // added here at v1.2.0 because dropped from ResetAll()
         TrainStatusInfoOnOffMenuItem->Caption = "Hide Status"; // changed at v2.0.0 so normally visible
@@ -261,8 +264,6 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TrackElementPanel->Color = clB5G5R4;
         InfoPanel->Color = clB4G5R5;
 
-        LoadUserGraphicDialog->InitialDir = CurDir + "\\" + USERGRAPHICS_DIR_NAME; // not changeable
-
         Utilities->RHSignalFlag = false; // new at v2.3.0 for RH signals, always left hand on startup
         SigsOnLeftImage1->Picture->Bitmap->LoadFromResourceName(0, "SigsOnLeft");
         SigsOnLeftImage2->Picture->Bitmap->LoadFromResourceName(0, "SigsOnLeft");
@@ -277,107 +278,17 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         SigsOnRightImage1->Picture->Bitmap->TransparentColor = clB5G5R5;
         SigsOnRightImage2->Picture->Bitmap->TransparentColor = clB5G5R5;
 
-        SaveRailwayDialog->InitialDir = CurDir + "\\" + RAILWAY_DIR_NAME; // default locations if not updated from Config.txt
+        SaveRailwayDialog->InitialDir = CurDir + "\\" + RAILWAY_DIR_NAME; // default locations, may be changed when Config.txt loaded
         LoadRailwayDialog->InitialDir = CurDir + "\\" + RAILWAY_DIR_NAME;
         TimetableDialog->InitialDir = CurDir + "\\" + TIMETABLE_DIR_NAME;
         SaveTTDialog->InitialDir = CurDir + "\\" + TIMETABLE_DIR_NAME;
         LoadSessionDialog->InitialDir = CurDir + "\\" + SESSION_DIR_NAME;
+        LoadUserGraphicDialog->InitialDir = CurDir + "\\" + USERGRAPHICS_DIR_NAME; // not changeable
+        LoadCouplingFileDialog->InitialDir = CurDir; // not changeable
 
-        std::ifstream ConfigFile((CurDir + "\\Config.txt").c_str()); // added at v2.6.0 to set save & load directories for railways, timetables & session & to
-        if(ConfigFile.fail()) // no Config file                           //replace Signal.hnd, Background.col and GNU
-        {
-            ConverttoRightHandSignalsMenuItem->Caption = "Convert to Right Hand Signals";
-            SigImagePanel->Caption = "Signals will be on the left hand side of the track";
-            SigsOnLeftImage1->Visible = true;
-            SigsOnLeftImage2->Visible = true;
-            SigsOnRightImage1->Visible = false;
-            SigsOnRightImage2->Visible = false;
-            ShowMessage(
-                "This program is free software released under the terms of the GNU General Public License Version 3, as published by the Free Software Foundation. " "It may be used or redistributed in accordance with that license and is released in the hope that it will be useful, but WITHOUT ANY WARRANTY; "
-                "without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details - " "you should have received a copy along with this program but if not see <http://www.gnu.org/licenses/>."
-                );
-        }
-        else
-        {
-            AnsiString ConfigStr = "";
-            do
-            {
-                Utilities->CheckAndReadFileString(ConfigFile, ConfigStr);
-                if(ConfigFile.eof())
-                {
-                    break;
-                }
-                AnsiString ConfigValue = ConfigStr.SubString(9, ConfigStr.Length() - 8);
-                if(ConfigStr.SubString(1, 8) == "Signals=")
-                {
-                    if(ConfigValue == "right")
-                    {
-                        RailGraphics->ConvertSignalsToOppositeHand(1); // always left hand initially when start program, toggles Utilities->RHSignalFlag
-                        ConverttoRightHandSignalsMenuItem->Caption = "Convert to Left Hand Signals";
-                        if(Track->SignalAspectBuildMode == TTrack::GroundSignalBuild)
-                        {
-                            LoadGroundSignalGlyphs(1);
-                        }
-                        else
-                        {
-                            LoadNormalSignalGlyphs(1);
-                        }
-                        SigImagePanel->Caption = "Signals will be on the right hand side of the track";
-                        SigsOnLeftImage1->Visible = false;
-                        SigsOnLeftImage2->Visible = false;
-                        SigsOnRightImage1->Visible = true;
-                        SigsOnRightImage2->Visible = true;
-                    }
-                    else
-                    {
-                        ConverttoRightHandSignalsMenuItem->Caption = "Convert to Right Hand Signals";
-                        SigImagePanel->Caption = "Signals will be on the left hand side of the track";
-                        SigsOnLeftImage1->Visible = true;
-                        SigsOnLeftImage2->Visible = true;
-                        SigsOnRightImage1->Visible = false;
-                        SigsOnRightImage2->Visible = false;
-                    }
-                }
-                if(ConfigStr.SubString(1, 8) == "BgndCol=")
-                {
-                    // pick up transparent colour from file if there is one & set it to the stored value if it's valid else set to black
-                    Utilities->clTransparent = clB0G0R0; // default black background;
-                    if(ConfigValue == "white")
-                    {
-                        Utilities->clTransparent = TColor(0xFFFFFF);
-                    }
-                    else if(ConfigValue == "blue")
-                    {
-                        Utilities->clTransparent = TColor(0x330000);
-                    }
-                }
-                if(ConfigStr.SubString(1, 8) == "RLYLocn=")
-                {
-                    if(DirectoryExists(ConfigValue)) // e;se stays as original directory
-                    {
-                        SaveRailwayDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
-                        LoadRailwayDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
-                    }
-                }
-                else if(ConfigStr.SubString(1, 8) == "TTBLocn=")
-                {
-                    if(DirectoryExists(ConfigValue)) // e;se stays as original directory
-                    {
-                        TimetableDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
-                        SaveTTDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
-                    }
-                }
-                else if(ConfigStr.SubString(1, 8) == "SSNLocn=")
-                {
-                    if(DirectoryExists(ConfigValue)) // e;se stays as original directory
-                    {
-                        LoadSessionDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
-                    }
-                }
-            }
-            while(!ConfigFile.eof());
-            ConfigFile.close();
-        }
+        ReloadConfigMenuItem->Enabled = true;  //new at v2.11.0
+        LoadConfigFile(0, true); //true for first load
+
         SpeedButton1->Glyph->LoadFromResourceName(0, "gl1");
         SpeedButton2->Glyph->LoadFromResourceName(0, "gl2");
         SpeedButton3->Glyph->LoadFromResourceName(0, "gl3");
@@ -586,6 +497,9 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         LocationNamesNotSetImage->Picture->Bitmap->LoadFromResourceName(0, "LocNamesNotSetGraphic");
         LocationNamesSetImage->Picture->Bitmap->LoadFromResourceName(0, "LocNamesSetGraphic");
 
+        SkipListExitImage->Picture->Bitmap->LoadFromResourceName(0, "Exit"); //new at v2.11.0
+
+
 /* Don't need this - load icon directly into both Interface form & Application (via Project - Options - Application - Load Icon)
      RailwayIcon = new TPicture;
      RailwayIcon->Icon->LoadFromResourceName(0, "Icon1.ico");
@@ -665,7 +579,6 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         PositionalPanel->Top = MainScreen->Top; // changed at v2.4.0
         PositionalPanel->Height = MainScreen->Height; // changed at v2.4.0
         AllSetUpFlag = true;
-        MissedTicks = 0;
         TotalTicks = 0;
         Level1Mode = BaseMode;
         SetLevel1Mode(131); // to reset background colour mode menu choices
@@ -702,6 +615,21 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         MMoveCopyCutSelPickedUpFlag = false;
         MMoveTextGraphicTextFoundFlag = false;
         MMoveTextGraphicUserGraphicFoundFlag = false;
+        NumPlayers = 0; //Multiplayer integer
+        MultiplayerMenu->Enabled = false;
+        MultiplayerMenu->Visible = false; //<-- only until multiplayer added (also temproarily false in designer)
+        CouplingFileLoadedFlag = false;
+        PlayerMakingInitialContactFlag = false;
+        PlayerReadyToBeginFlag = false;
+        PlayerCancelJoinFlag = false;
+        PlayerAwaitingHostStartFlag = false;
+        HostInSessionFlag = false;
+        PlayerInSessionFlag = false;
+        StartTimeSet = false;
+        LastHostDataReceived = TDateTime(0);//initial value
+        ConsecutiveSelfUpdates = 0;
+        SkipTTActionsListBox->Visible = false;
+        SkipListHeaderPanel->Visible = false;
 
         SigImagePanel->Left = (Interface->Width - SigImagePanel->Width) / 2; // added for v2.3.0
 
@@ -746,31 +674,9 @@ __fastcall TInterface::~TInterface()
     // destructor
     try
     {
-        // rewrite ConfigFile with signal handedness, background colour & InitialDir values (may be same but no matter)
-        AnsiString ColourStr = "", SignalStr = "";
-        remove((CurDir + "\\Config.txt").c_str());
-        std::ofstream ConfigFile((CurDir + "\\Config.txt").c_str());
-        ColourStr = "black";
-        SignalStr = "left";
-        if(Utilities->clTransparent == TColor(0xFFFFFF))
-        {
-            ColourStr = "white";
-        }
-        else if(Utilities->clTransparent == TColor(0x330000))
-        {
-            ColourStr = "blue";
-        }
-        if(Utilities->RHSignalFlag)
-        {
-            SignalStr = "right";
-        }
-        ConfigFile << AnsiString("Signals=") << SignalStr << '\n';
-        ConfigFile << AnsiString("BgndCol=") << ColourStr << '\n';
-        ConfigFile << AnsiString("RLYLocn=") << AnsiString(LoadRailwayDialog->InitialDir) << '\n';
-        ConfigFile << AnsiString("TTBLocn=") << AnsiString(TimetableDialog->InitialDir) << '\n';
-        ConfigFile << AnsiString("SSNLocn=") << AnsiString(LoadSessionDialog->InitialDir) << '\n';
-        ConfigFile.close();
-
+        // rewrite ConfigFile with signal handedness, background colour, InitialDir values (may be same but no matter) & default track element length & speed limit
+        SaveConfigFile(0);   //added at v2.11.0
+        DeleteFile(TempTTFileName); // added at v2.5.0 to prevent temporary files building up
         SkipFormResizeEvent = true; // added at v2.1.0
         delete NonSigRouteStartMarker;
         delete SigRouteStartMarker;
@@ -791,7 +697,6 @@ __fastcall TInterface::~TInterface()
         delete RailGraphics;
         delete Utilities;
         delete session_api_;        //added at v2.10.0
-        DeleteFile(TempTTFileName); // added at v2.5.0 to prevent temporary files building up
     }
     catch(const Exception &e)
     {
@@ -843,10 +748,16 @@ void __fastcall TInterface::AppDeactivate(TObject *Sender)
                 DivergingPointVectorPosition = -1;
                 Screen->Cursor = TCursor(-2); // Arrow
             }
-            Level2OperMode = Paused;  //disable to stop pause
-            SetLevel2OperMode(2);   //disable to stop pause
+            if(!HostInSessionFlag && !PlayerInSessionFlag) //don't pause if multiplay in session
+            {
+                Level2OperMode = Paused;
+                SetLevel2OperMode(2);
+            }
         }
-        MasterClock->Enabled = false; //disable to stop pause
+        if(!HostMultiplayInProgressFlag && !PlayerMultiplayInProgressFlag)
+        {
+            MasterClock->Enabled = false; //keep enabled for comms in multiplayer
+        }
         ClipboardChecked = false; // added at v2.8.0 to force a check of the clipboard (via ClockTimer2 & SetTrackModeMenu)
     }
     catch(const Exception &e)
@@ -864,7 +775,7 @@ void __fastcall TInterface::AppActivate(TObject *Sender)
     {
         if(AllSetUpFlag)
         {
-            MasterClock->Enabled = true;
+            MasterClock->Enabled = true; //will already be enabled if no multiplay
             ClipboardChecked = false; // at v2.9.0 added here too as for some unknown reason it doesn't always work when just in deactivate
         }
     }
@@ -901,7 +812,7 @@ UnicodeString TInterface::GetVersion()
                 // HIWORD(fi->dwFileVersionLS), LOWORD(fi->dwFileVersionLS)
             }
         }
-        delete[] pBuffer;
+        delete[]pBuffer;
     }
     return(L" v" + strVersion);
 }
@@ -1569,14 +1480,14 @@ void __fastcall TInterface::LengthOKButtonClick(TObject *Sender)
 /* don't need this with new condition below
     if(SelectLengthsFlag && (Dist != -1) && (Dist < 20))
         {
-        ShowMessage("Track length value must be a minimum of 20m, setting to 20m");
+        ShowMessage("Track length value must be a minimum of 10m, setting to 10m");
         Dist = 20;
         }
 */
-        if(((Dist != -1) && (Dist < 20)) || ((SpeedLimit != -1) && (SpeedLimit < 10)) || ((SpeedLimit != -1) && (SpeedLimit > TTrain::MaximumSpeedLimit)))
+        if(((Dist != -1) && (Dist < 10)) || ((SpeedLimit != -1) && (SpeedLimit < 10)) || ((SpeedLimit != -1) && (SpeedLimit > TTrain::MaximumSpeedLimit)))
         // new limiting values for v0.6 (used only to fail at either value 0); added TTrain::MaxSpeedLimit at v2.1.0
         {
-            ShowMessage("Lengths must be 20m or more, and speeds must be between 10km/h and 400km/h"); // changed at v2.1.0 to limit max speed
+            ShowMessage("Lengths must be 10m or more, and speeds must be between 10km/h and 400km/h"); // changed at v2.1.0 to limit max speed
             Utilities->CallLogPop(15);
             return;
         }
@@ -1590,7 +1501,7 @@ void __fastcall TInterface::LengthOKButtonClick(TObject *Sender)
             int HighSelectVLoc = SelectBitmapVLoc + (SelectBitmap->Height / 16);
             bool FoundFlag;
             bool NamedLocPresent = false;
-            if((Dist != -1) && (Dist != DefaultTrackLength))
+            if((Dist != -1) && (Dist != Track->DefaultTrackLength))
             {
                 for(int x = LowSelectHLoc; x < HighSelectHLoc; x++)
                 {
@@ -1721,15 +1632,15 @@ void __fastcall TInterface::ResetDefaultLengthButtonClick(TObject *Sender)
                         int VecPos = Track->GetVectorPositionFromTrackMap(35, x, y, FoundFlag);
                         if(FoundFlag)
                         {
-                            Track->TrackElementAt(698, VecPos).Length01 = DefaultTrackLength;
+                            Track->TrackElementAt(698, VecPos).Length01 = Track->DefaultTrackLength;
                             if(Track->TrackElementAt(699, VecPos).Length23 != -1)
                             {
-                                Track->TrackElementAt(700, VecPos).Length23 = DefaultTrackLength;
+                                Track->TrackElementAt(700, VecPos).Length23 = Track->DefaultTrackLength;
                             }
-                            Track->TrackElementAt(701, VecPos).SpeedLimit01 = DefaultTrackSpeedLimit;
+                            Track->TrackElementAt(701, VecPos).SpeedLimit01 = Track->DefaultTrackSpeedLimit;
                             if(Track->TrackElementAt(702, VecPos).SpeedLimit23 != -1)
                             {
-                                Track->TrackElementAt(703, VecPos).SpeedLimit23 = DefaultTrackSpeedLimit;
+                                Track->TrackElementAt(703, VecPos).SpeedLimit23 = Track->DefaultTrackSpeedLimit;
                             }
                         }
                     }
@@ -1757,13 +1668,13 @@ void __fastcall TInterface::ResetDefaultLengthButtonClick(TObject *Sender)
                     {
                         if((PrefDirElement.GetELinkPos() < 2) && (PrefDirElement.GetXLinkPos() < 2)) // could be one of each for points
                         {
-                            TrackElement.Length01 = DefaultTrackLength;
-                            TrackElement.SpeedLimit01 = DefaultTrackSpeedLimit; // 200km/h = 125mph
+                            TrackElement.Length01 = Track->DefaultTrackLength;
+                            TrackElement.SpeedLimit01 = Track->DefaultTrackSpeedLimit; // 200km/h = 125mph
                         }
                         else
                         {
-                            TrackElement.Length23 = DefaultTrackLength;
-                            TrackElement.SpeedLimit23 = DefaultTrackSpeedLimit; // 200km/h = 125mph
+                            TrackElement.Length23 = Track->DefaultTrackLength;
+                            TrackElement.SpeedLimit23 = Track->DefaultTrackSpeedLimit; // 200km/h = 125mph
                         }
                     }
                     else // any other 1 track element, including platforms being present
@@ -1773,8 +1684,8 @@ void __fastcall TInterface::ResetDefaultLengthButtonClick(TObject *Sender)
                             throw Exception("Error, XLinkPos > 1 in SetOneDefaultTrackLength at " + AnsiString(TrackElement.HLoc) + " & " +
                                             AnsiString(TrackElement.VLoc));
                         }
-                        TrackElement.Length01 = DefaultTrackLength;
-                        TrackElement.SpeedLimit01 = DefaultTrackSpeedLimit; // 200km/h = 125mph
+                        TrackElement.Length01 = Track->DefaultTrackLength;
+                        TrackElement.SpeedLimit01 = Track->DefaultTrackSpeedLimit; // 200km/h = 125mph
                         TrackElement.Length23 = -1;
                         TrackElement.SpeedLimit23 = -1;
                     }
@@ -2476,7 +2387,7 @@ void __fastcall TInterface::LoadRailwayMenuItemClick(TObject *Sender)
         }
         // LoadRailwayDialog->Filter = "Development file (*.dev)|*.dev|Railway file (*.rly)|*.rly"; //as was
         // changed at v2.0.0 (Embarcadero change) to show all files together
-        LoadRailwayDialog->Filter = "Railway files (*.rly or *.dev)|*.rly; *.dev";
+        LoadRailwayDialog->Filter = "Railway file (*.rly or *.dev)|*.rly; *.dev";
         if(LoadRailwayDialog->Execute())
         {
             if(LoadRailwayDialog->InitialDir != TPath::GetDirectoryName(LoadRailwayDialog->FileName)) // new at v2.6.0 to retain a new directory
@@ -2800,7 +2711,7 @@ void __fastcall TInterface::SaveImageNoGridMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1535);
     }
-    catch(const Exception &e) //non-error catch
+    catch(const Exception &e) //non-error catch (partial)
     {
         if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
         {
@@ -2898,7 +2809,7 @@ void __fastcall TInterface::SaveImageAndGridMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1536);
     }
-    catch(const Exception &e) //non-error catch
+    catch(const Exception &e) //non-error catch (partial)
     {
         if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
         {
@@ -2988,7 +2899,7 @@ void __fastcall TInterface::SaveImageAndPrefDirsMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1566);
     }
-    catch(const Exception &e) //non-error catch
+    catch(const Exception &e) //non-error catch (partial)
     {
         if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
         {
@@ -3115,7 +3026,7 @@ void __fastcall TInterface::SaveOperatingImageMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1703);
     }
-    catch(const Exception &e) //non-error catch
+    catch(const Exception &e) //non-error catch (partial)
     {
         if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
         {
@@ -3491,7 +3402,7 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
                     TimetableEditVector.push_back(OneLine);
                 }
                 TTBLFile.close();
-                delete[] TimetableEntryString;
+                delete[]TimetableEntryString;
                 // here with TimetableEditVector compiled
             }
             else
@@ -4701,7 +4612,7 @@ void __fastcall TInterface::RestoreTTButtonClick(TObject *Sender)
                 TimetableEditVector.push_back(OneLine);
             }
             TTBLFile.close();
-            delete[] TimetableEntryString;
+            delete[]TimetableEntryString;
             // here with TimetableEditVector compiled
         }
         else
@@ -5013,10 +4924,35 @@ void __fastcall TInterface::OAListBoxMouseUp(TObject *Sender, TMouseButton Butto
         {
             HPos = (Track->TrackElementAt(926, TrackVectorPosition).HLoc * 16);
             VPos = (Track->TrackElementAt(927, TrackVectorPosition).VLoc * 16);
+//these checks added at v2.11.0 to centre train on display if it's under either of these panels
+//HPos relative to MainScreen, but panels relative to Interface form
+            bool ElementUnderOAPanel = false;
+            if(OperatorActionPanel->Visible)
+            {   //4 added because train position 4 right and below element position
+                if(((HPos - (Display->DisplayOffsetH * 16) + MainScreen->Left + 4) >= OperatorActionPanel->Left) &&
+                    ((HPos - (Display->DisplayOffsetH * 16) + MainScreen->Left + 4) <= (OperatorActionPanel->Left + OperatorActionPanel->Width)) &&
+                    ((VPos - (Display->DisplayOffsetV * 16) + MainScreen->Top + 4) >= OperatorActionPanel->Top) &&
+                    ((VPos - (Display->DisplayOffsetV * 16) + MainScreen->Top + 4) <= (OperatorActionPanel->Top + OperatorActionPanel->Height)))
+                {
+                    ElementUnderOAPanel = true;
+                }
+            }
+            bool ElementUnderPerformancePanel = false;
+            if(PerformancePanel->Visible)
+            {
+                if(((HPos - (Display->DisplayOffsetH * 16) + MainScreen->Left + 4) >= PerformancePanel->Left) &&
+                    ((HPos - (Display->DisplayOffsetH * 16) + MainScreen->Left + 4) <= (PerformancePanel->Left + PerformancePanel->Width)) &&
+                    ((VPos - (Display->DisplayOffsetV * 16) + MainScreen->Top + 4) >= PerformancePanel->Top) &&
+                    ((VPos - (Display->DisplayOffsetV * 16) + MainScreen->Top + 4) <= (PerformancePanel->Top + PerformancePanel->Height)))
+                {
+                    ElementUnderPerformancePanel = true;
+                }
+            }
             //if train is already shown on the screen then don't move the viewpoint, if not then display it in the centre
             //added at v2.10.0
             if(((HPos - (Display->DisplayOffsetH * 16)) >= 0) && ((HPos - (Display->DisplayOffsetH * 16)) < MainScreen->Width) &&
-                    ((VPos - (Display->DisplayOffsetV * 16)) >= 0) && ((VPos - (Display->DisplayOffsetV * 16)) < MainScreen->Height)) // element on screen
+                    ((VPos - (Display->DisplayOffsetV * 16)) >= 0) && ((VPos - (Display->DisplayOffsetV * 16)) < MainScreen->Height) &&
+                    !ElementUnderPerformancePanel && !ElementUnderOAPanel) // element on screen & not hidden behind a panel
             {
                 ScreenPosH = HPos - (Display->DisplayOffsetH * 16);
                 ScreenPosV = VPos - (Display->DisplayOffsetV * 16);
@@ -5354,7 +5290,7 @@ void __fastcall TInterface::AZOrderButtonClick(TObject *Sender)
             AZOrderButton->Caption = AnsiString("A-Z Order");
             AZOrderButton->Hint = AnsiString("Arrange services in alphabetical order       Toggle with Shift+ Z");
         }
-        TimetableChangedFlag = true;
+//        TimetableChangedFlag = true;   dropped for v2.11.0
         TimetableValidFlag = false;
         TimetableChangedInAZOrderFlag = false;
         Level1Mode = TimetableMode;
@@ -5996,6 +5932,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                      "," + AnsiString(Y));
         // unplot GapFlash graphics if plotted & cancel gap flashing if left mouse button pressed (so can move display with right mouse button)
         // but not in ZoomOut mode - so can switch between modes & keep gaps flashing
+        HideTTActionsListBox(0); //get rid of this for any click on screen
         if(Track->GapFlashFlag && !Display->ZoomOutFlag && (Button == mbLeft))
         {
             Track->GapFlashGreen->PlotOriginal(35, Display);
@@ -6011,6 +5948,8 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
             // this routine new at v2.1.0.  Allows railway moving for zoom-in mode when no element at HLoc & VLoc
             int Dummy; // unused in next function
             AnsiString Text = ""; // needed for TextFound but not used
+            SkipTTTrainMousePosX = X;
+            SkipTTTrainMousePosY = Y;
             if(!Track->TrackElementPresentAtHV(0, HLoc, VLoc) && !Track->InactiveTrackElementPresentAtHV(0, HLoc, VLoc) && !Track->UserGraphicPresentAtHV(0, X,
                                                                                                                                                           Y, Dummy) && !TextHandler->TextFound(0, X + (Display->DisplayOffsetH * 16), Y + (Display->DisplayOffsetV * 16), Text))
             {
@@ -6249,6 +6188,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 TakeSignallerControlMenuItem->Enabled = true;
                                 TimetableControlMenuItem->Enabled = false;
                                 ChangeDirectionMenuItem->Enabled = false;
+                                SkipTimetabledActionsMenuItem->Enabled = false;
                                 MoveForwardsMenuItem->Enabled = false;
                                 SignallerJoinedByMenuItem->Enabled = false;
                                 RepairFailedTrainMenuItem->Enabled = false;
@@ -6256,10 +6196,15 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 RemoveTrainMenuItem->Enabled = false;
                                 PassRedSignalMenuItem->Enabled = false;
                                 SignallerControlStopMenuItem->Enabled = false;
+                                if((Train.StoppedAtSignal || Train.StoppedAtLocation) && !Train.ActionsSkippedFlag)
+                                {
+                                    SkipTimetabledActionsMenuItem->Enabled = true;
+                                }
                             }
                             else // signaller mode
                             {
                                 TakeSignallerControlMenuItem->Enabled = false;
+                                SkipTimetabledActionsMenuItem->Enabled = false;
                                 if((Train.Crashed) || (Train.Derailed))
                                 {
                                     TimetableControlMenuItem->Enabled = false;
@@ -8333,7 +8278,6 @@ void __fastcall TInterface::MasterClockTimer(TObject *Sender)
         if(ErrorLogCalledFlag)
         {
             return; // don't continue after an error
-
         }
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MasterClockTimer");
         // put counter outside Clock2 as that may be missed
@@ -8367,10 +8311,28 @@ void __fastcall TInterface::MasterClockTimer(TObject *Sender)
             TrainController->TTClockTime = TDateTime(TTClockSpeed * RealTimeDouble) + TrainController->RestartTime;
 // TrainController->TTClockTime = TDateTime::CurrentDateTime() - TrainController->BaseTime + TrainController->RestartTime;
         }
-        TotalTicks++;
+
+/*
+//elapsed time investigations - lose ~20% of ticks when nothing loaded & ~30% for a busy session
+//even lose ~20% without ClockTimer2.  but this is when running in IDE, try outside - exactly the same.
+//see https://www.tek-tips.com/viewthread.cfm?qid=672717 - TTimer is very inaccurate, and the minimum interval is about 56ms because
+//of the PC clock frequency which is about 18Hz, so it always runs slow at short intervals.  In light of this the 30% loss for a busy
+//session isn't too bad, it represents about 12% loss in reality.
+        if(!StartTimeSet)
+        {
+            Start = double(GetTime());
+            StartTimeSet = true;
+        }
+        if(TotalTicks < 500)
+        {
+            TotalTicks++;
+            End = double(GetTime());
+            ElapsedTime = End - Start;
+        }
+*/
+
         if(Utilities->Clock2Stopped)
         {
-            MissedTicks++;
             Utilities->CallLogPop(774);
             return;
         }
@@ -8378,6 +8340,7 @@ void __fastcall TInterface::MasterClockTimer(TObject *Sender)
         ClockTimer2(0);
         Utilities->Clock2Stopped = false;
         Utilities->CallLogPop(73);
+
     }
     catch(const Exception &e)
     {
@@ -8429,7 +8392,6 @@ void TInterface::ClockTimer2(int Caller)
             }
            else ClockTimer2Count = 0; //reset to 0 so ensure full delay occurs before RestoreFocusPanel grabs focus from anything else
 */
-
         CallLogTickerLabel->Caption = Utilities->CallLog.size(); // diagnostic test function to ensure all CallLogs are popped - visibility
         // toggled by 'Ctrl Alt 2' when Interface form has focus
 
@@ -8450,6 +8412,9 @@ void TInterface::ClockTimer2(int Caller)
                 ClipboardChecked = true;
             }
         }
+// Update Displayed Clock - resets to 0 at 96hours
+        ClockLabel->Caption = Utilities->Format96HHMMSS(TrainController->TTClockTime);
+//timers
         TrainController->OpTimeToActUpdateCounter++;
 ///<new v2.2.0, controls 1 second updating for OpTimeToActPanel
         if(TrainController->OpTimeToActUpdateCounter >= 20)
@@ -8470,8 +8435,83 @@ void TInterface::ClockTimer2(int Caller)
         {
             TrainController->RandomFailureCounter = 0;
         }
-// Update Displayed Clock - resets to 0 at 96hours
-        ClockLabel->Caption = Utilities->Format96HHMMSS(TrainController->TTClockTime);
+
+        PlayerFiveSecondTimer++; // new for multiplayer for player send cycle
+        if(PlayerFiveSecondTimer >= 100)
+        {
+            PlayerFiveSecondTimer = 0;
+        }
+
+        PlayerOneSecondTimer++; // new for multiplayer for player cancel
+        if(PlayerOneSecondTimer >= 20)
+        {
+            PlayerOneSecondTimer = 0;
+        }
+
+//multiplayer functions
+
+        HostMultiplayInProgressFlag = false;
+        PlayerMultiplayInProgressFlag = false;
+        if(MultiplayerHostPanel->Visible || HostInSessionFlag)
+        {
+            HostMultiplayInProgressFlag = true;
+        }
+        else if(MultiplayerPlayerPanel->Visible || PlayerInSessionFlag)
+        {
+            PlayerMultiplayInProgressFlag = true;
+        }
+
+        if(Level2OperMode == PreStart)
+        {
+            if(!MultiplayerHostPanel->Visible && !MultiplayerPlayerPanel->Visible)
+            {
+                MultiplayerMenu->Enabled = true;
+                MultiplayerHostSessionMenuItem->Enabled = true;
+                SaveMultiplayerSessionMenuItem->Enabled = false;
+                EndSimulationMenuItem->Enabled = false;
+                ShowHideStringGridMenuItem->Enabled = false;
+                JoinMultiplayerSessionMenuItem->Enabled = true;
+                ExitSimulationMenuItem->Enabled = false;
+            }
+            else
+            {
+                MultiplayerMenu->Enabled = false;
+            }
+        }
+
+        if(HostInSessionFlag && !PlayerInSessionFlag)
+        {
+
+            MultiplayerMenu->Enabled = true;
+            MultiplayerHostSessionMenuItem->Enabled = false;
+            SaveMultiplayerSessionMenuItem->Enabled = true;
+            EndSimulationMenuItem->Enabled = true;
+            ShowHideStringGridMenuItem->Enabled = true;
+            JoinMultiplayerSessionMenuItem->Enabled = false;
+            ExitSimulationMenuItem->Enabled = false;
+        }
+        else if(!HostInSessionFlag && PlayerInSessionFlag)
+        {
+
+            MultiplayerMenu->Enabled = true;
+            MultiplayerHostSessionMenuItem->Enabled = false;
+            SaveMultiplayerSessionMenuItem->Enabled = false;
+            EndSimulationMenuItem->Enabled = false;
+            ShowHideStringGridMenuItem->Enabled = false;
+            JoinMultiplayerSessionMenuItem->Enabled = false;
+            ExitSimulationMenuItem->Enabled = true;
+        }
+
+        if(HostMultiplayInProgressFlag)
+        {
+            HostHandshakingActions();
+        }
+        else if(PlayerMultiplayInProgressFlag)
+        {
+            PlayerHandshakingActions();
+        }
+
+//end of multiplayer functions
 
 // Below added at v2.1.0 to ensure WholeRailwayMoving flag reset when not moving (when rh mouse button up) as sometimes misses
 // MouseUp events, probably due to a clash between a moving event and a mouse up event. Note that checks that both mouse buttons are up because
@@ -8631,7 +8671,7 @@ void TInterface::ClockTimer2(int Caller)
             (Mouse->CursorPos.x < (ClientOrigin.x + OutputLog10->Width + OutputLog10->Left)) && (Mouse->CursorPos.y >= ClientOrigin.y + OutputLog10->Top) &&
             (Mouse->CursorPos.y < (ClientOrigin.y + OutputLog10->Height + OutputLog10->Top)) && OutputLog10->Caption != "";
 
-        if(WH1 || WH2 || WH3 || WH4 || WH5 || WH6 || WH7 || WH8 || WH9 || WH10)
+        if(WH1 || WH2 || WH3 || WH4 || WH5 || WH6 || WH7 || WH8 || WH9 || WH10 || SkipTTActionsListBox->Visible)
         {
             if(!WarningHover)
             {
@@ -8671,6 +8711,10 @@ void TInterface::ClockTimer2(int Caller)
                     "; TrID23: " + AnsiString(TrackElement.TrainIDOnBridgeTrackPos23) + "; " + TrackElement.LocationName + "; " +
                     TrackElement.ActiveTrackElementName;
 // + "; OAHintCtr: " + TrainController->OpActionPanelHintDelayCounter;
+            }
+            else
+            {//below used in elapsed time investigations
+//                DevelopmentPanel->Caption = FormatFloat("#####00.000", (ElapsedTime * 3600 * 24)) + " " + AnsiString(TotalTicks);
             }
         }
         if(Level1Mode == TimetableMode)
@@ -8833,20 +8877,30 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
             }
             TrainController->SignallerTrainRemovedOnAutoSigsRoute = false; // added at v1.3.0 to ensure doesn't persist beyond one call
         }
-
         else if((Level2OperMode == Paused) || (Level2OperMode == PreStart)) // added at v2.5.0 to show actions due after a session file reloaded
-        {                                                                   // modified at v3.0.0 to add PreStart
+        {                                                                   // modified at v2.10.0 to add PreStart
+            THVShortPair ExitPair;
+            ExitPair.first = -1;
+            ExitPair.second = -1;
             if((TrainController->OpTimeToActUpdateCounter == 0) && (OperatorActionPanel->Visible))
             {
                 for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
                 {
-                    TrainController->TrainVectorAt(73, x).OpTimeToAct = TrainController->TrainVectorAt(74, x).CalcTimeToAct(1);
+                    float LastTimeToExit = TrainController->TrainVectorAt(78, x).TimeToExit;
+                    TrainController->TrainVectorAt(73, x).OpTimeToAct = TrainController->TrainVectorAt(74, x).CalcTimeToAct(1, LastTimeToExit, ExitPair);
+                    TrainController->TrainVectorAt(79, x).TimeToExit = LastTimeToExit; //this was updated in CalcTimeToAct
+                    TrainController->TrainVectorAt(80, x).ExitPair = ExitPair;
                 }
                 TrainController->RebuildOpTimeToActMultimap(1);
                 UpdateOperatorActionPanel(1);
             }
+            if(TrainController->OpTimeToActUpdateCounter == 0)
+            {
+                TrainController->RebuildTimeToExitMultiMap(1);
+            }
         }
-// plot trains in ZoomOut mode & flash trains where attention needed alternately on & off at each call
+
+        // plot trains in ZoomOut mode & flash trains where attention needed alternately on & off at each call
 // by examining Flash
         if((Level1Mode == OperMode) && (Display->ZoomOutFlag))
         {
@@ -9029,6 +9083,12 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
             }
         }
         Utilities->CallLogPop(81);
+    }
+    catch(const EIdException &e) //non-error catch
+//if no response from peer then get a 'connection reset by peer' message which isn't valid
+    {
+//        ShowMessage(EIdExceptionSource + " " + e.Message); //<--temporary - remove this message eventually
+        Utilities->CallLogPop(2406);
     }
     catch(const Exception &e)
     {
@@ -10795,7 +10855,7 @@ void __fastcall TInterface::CancelSelectionMenuItemClick(TObject *Sender)
         Clipboard()->Close();
         Utilities->CallLogPop(1413);
     }
-    catch(const EClipboardException &e) //non-error catch - take no action
+    catch(const EClipboardException &e) // take no action  //non-error catch
     {
 // Application->MessageBox(L"A clipboard error occurred in the cancel function", L"Message", MB_OK);
         TrainController->LogEvent("EClipboardException in CancelSelectionMenuItemClick - message = " + e.Message);
@@ -10833,16 +10893,16 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
             InfoPanel->Visible = true;
             InfoPanel->Caption = "Checking preferred directions - please wait";
             InfoPanel->Update();
-            THVPair LastHVPair;
-            LastHVPair.first = -2000000;
-            LastHVPair.second = -2000000;                              //well outside any conceivable range
+            THVShortPair LasTHVShortPair;
+            LasTHVShortPair.first = -2000000;
+            LasTHVShortPair.second = -2000000;                              //well outside any conceivable range
             Screen->Cursor = TCursor(-11); // Hourglass
             for(TOnePrefDir::TPrefDir4MultiMapIterator PDMMIt = EveryPrefDir->PrefDir4MultiMap.begin(); PDMMIt != EveryPrefDir->PrefDir4MultiMap.end(); PDMMIt++)
             {
                 bool BiDirLinkFound = true;
                 int LinkedPrefDirVectorNumber; //not used
-                THVPair CurrentHVPair = PDMMIt->first;
-                if(CurrentHVPair != LastHVPair)  //dont repeat for remaining elements at same position
+                THVShortPair CurrenTHVShortPair = PDMMIt->first;
+                if(CurrenTHVShortPair != LasTHVShortPair)  //dont repeat for remaining elements at same position
                 {
                     //For bi-directional pref dirs as long as they link to another pref dir then ok, can't just link to a blank element
                     EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(16, PDMMIt->first.first, PDMMIt->first.second, FoundFlag, PD0, PD1, PD2, PD3);
@@ -10993,7 +11053,7 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
                         }
                     }
                 }
-                LastHVPair = CurrentHVPair;
+                LasTHVShortPair = CurrenTHVShortPair;
 
                 bool ELinkFound = false, BiDir = false;
                 int ELink = EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetELink();
@@ -11741,6 +11801,319 @@ void __fastcall TInterface::RepairFailedTrainMenuItemClick(TObject *Sender)
 
 // ---------------------------------------------------------------------------
 
+void __fastcall TInterface::SkipTimetabledActionsMenuItemClick(TObject *Sender)
+{
+/* Only enable this for stopped at signal or stopped at location.
+
+If stopped at signal then next action will be TimeLoc arrival, TimeTimeLoc, Pass or Fer.
+
+If stopped at a location then next action will be TimeTimeLoc dep/TimeLoc dep/jbo/fsp/rsp/cdt/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs.
+
+FormatType:  NoFormat, TimeLoc, TimeTimeLoc, TimeCmd, StartNew, TimeCmdHeadCode, FinRemHere, FNSNonRepeatToShuttle, SNTShuttle, SNSShuttle,
+SNSNonRepeatFromShuttle, FSHNewService, Repeat, PassTime, ExitRailway
+
+SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
+*/
+    try
+    {
+        TrainController->LogEvent("SkipTimetabledActionsMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SkipTimetabledActionsMenuItemClick");
+        TTrain Train = TrainController->TrainVectorAtIdent(55, SelectedTrainID); //Train not modified here so don't need reference
+        SkipTTActionsListBox->Clear();
+        SkipTTActionsListBox->ExtendedSelect = false; //this and the next allow only one item to be selected
+        SkipTTActionsListBox->MultiSelect = false;
+
+        //populate the listbox
+        AnsiString TTStr = Train.FloatingTimetableString(2, Train.ActionVectorEntryPtr);
+        AnsiString OneLine;
+        int Count = 0;
+        int NewLinePos = TTStr.Pos('\n');
+        SkipTTActionsListBox->Width = 200;
+        SkipListHeaderPanel->Width = 200;
+        for(int x = 0; x < 30; x++)
+        {
+            if((TTStr.Length() > 1) && (NewLinePos <= TTStr.Length()) && (NewLinePos != 0)) //i.e. all lines apart from the last where there is no newline
+            {
+                OneLine = TTStr.SubString(1, NewLinePos);
+                if(OneLine == "")
+                {
+                    break; //break before Count increment
+                }
+                Count++;
+                SkipTTActionsListBox->Items->Add(OneLine);
+                TTStr = TTStr.SubString(NewLinePos + 1, TTStr.Length() - NewLinePos - 1);
+                NewLinePos = TTStr.Pos('\n');
+            }
+            else if((TTStr.Length() > 1) && (NewLinePos == 0) && ((TTStr.SubString(3, 1) == ':') || (TTStr.SubString(1, 5) == "Termi"))) //last line
+            {
+                OneLine = TTStr;
+                Count++;
+                SkipTTActionsListBox->Items->Add(OneLine);
+                break;
+            }
+            if(TTStr.Length() <2)
+            {
+                break;
+            }
+            AnsiString EndStr = OneLine.SubString(8, 5);
+            //need these last checks in case last floating line is an allowable exit or a new service departure time which aren't wanted in the skip list
+            if((EndStr == "Form ") || (EndStr == "Join ") || (EndStr == "Exit ")) //all these are preceded by a time & start at character 8
+            {
+                break;
+            }
+        }
+        if(Count == 0)
+        {
+            ShowMessage("No timetabled events");
+            Utilities->CallLogPop(2428);
+            return;
+        }
+        SkipTTActionsListBox->Height = (SkipTTActionsListBox->ItemHeight * Count) + 4;
+//position listbox
+        int Left = SkipTTTrainMousePosX + MainScreen->Left + 16; // so lhs of window is WindowOffset to the right of the mouse pos
+        if((Left + SkipTTActionsListBox->Width) > MainScreen->Left + MainScreen->Width)
+        {
+            Left = SkipTTTrainMousePosX - SkipTTActionsListBox->Width + 16;
+        }
+        int Top = SkipTTTrainMousePosY + MainScreen->Top + 16; // so top of window is one element below the mouse pos (ScreenY + MainScreen->Top would be at mouse pos)
+        if((Top + SkipTTActionsListBox->Height) > MainScreen->Top + MainScreen->Height)
+        {
+            Top = SkipTTTrainMousePosY - SkipTTActionsListBox->Height + 79; // so bottom of window is one element above the mouse pos (95 would be at mouse pos)
+            if(Top < 30)
+            {
+                Top = 30;
+            }
+        }
+        SkipTTActionsListBox->Left = Left; // new at v2.7.0 in place of above
+        SkipListHeaderPanel->Left = Left;
+        SkipTTActionsListBox->Top = Top;
+        SkipListHeaderPanel->Top = Top - 34; //this panel has a height of 34
+        ShowTTActionsListBox(0);
+        Utilities->CallLogPop(2418);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(241, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::SkipTTActionsListBoxMouseUp(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y)
+/*
+If stopped at signal then allowable next action will be TimeLoc arrival, TimeTimeLoc, Pass or Fer.
+
+If stopped at a location then save the depart time then allowable next action will be TimeLoc arrival, TimeTimeLoc, Pass or Fer.
+
+FormatType:  NoFormat, TimeLoc, TimeTimeLoc, TimeCmd, StartNew, TimeCmdHeadCode, FinRemHere, FNSNonRepeatToShuttle, SNTShuttle, SNSShuttle,
+SNSNonRepeatFromShuttle, FSHNewService, Repeat, PassTime, ExitRailway
+
+SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
+*/
+{
+    try
+    {
+        TrainController->LogEvent("SkipTTActionsListBoxMouseUp, " + AnsiString(X) + ',' + AnsiString(Y));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SkipTTActionsListBoxMouseUp");
+        TTrain &Train = TrainController->TrainVectorAtIdent(56, SelectedTrainID); //Train actionvectorptr advance here so need reference
+        Train.SkipPtrValue = 0;
+        if(SkipTTActionsListBox->Items->Text != "") //not empty
+        {
+            Train.SelSkipString = SkipTTActionsListBox->Items->Strings[SkipTTActionsListBox->ItemIndex]; //index starts at 0
+        }
+        if(Train.StoppedAtSignal)
+        {
+            //Calc cumulative dwell times that are skipped
+            int  Count = 0, PassNum = 0;
+            if(SkipTTActionsListBox->ItemIndex == 0)
+            {
+                ShowMessage("This is already the next event, nothing will be skipped");
+                Utilities->CallLogPop(2436);
+                return;
+            }
+            for(TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr; Count < SkipTTActionsListBox->ItemIndex; AVEPtr++)
+            {
+                if((AVEPtr->FormatType == TimeTimeLoc) && (AVEPtr->ArrivalTime != AVEPtr->DepartureTime))
+                {//arr & dep in a single AVEntry if different arr & dep times but two listings, if have same arr & dep time then only a single listing,
+                    Count += 2;
+                }
+                else
+                {
+                    Count++;
+                }
+                PassNum++;
+            }
+            AnsiString StartStr = Train.SelSkipString.SubString(8, 4);
+            if((StartStr != "Arri") && (StartStr != "Pass") && (StartStr != "Exit"))
+            {
+                ShowMessage("When stopped at a signal the selected next event must be 'Arrive...', 'Pass...', or 'Exit railway...'");
+                Utilities->CallLogPop(2429);
+                return;
+            }
+            //advance the pointer but ask for confirmation first
+            int button = Application->MessageBox(L"This will skip all events before the selection,\n\nOK to proceed?", L"", MB_YESNO);
+            if(button == IDYES)
+            {
+                Train.ActionVectorEntryPtr += PassNum;
+                AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " timetabled events skipped until " +
+                    SkipTTActionsListBox->Items->Strings[SkipTTActionsListBox->ItemIndex]; //last bit includes a newline so don't use PerformanceLog or will have two
+                Utilities->PerformanceFile << PerfStr.c_str() << '\n';
+                TrainController->SkippedTTEvents += (PassNum - 1);
+                Display->PerformanceMemo->Lines->Add(PerfStr);
+
+            }
+            HideTTActionsListBox(2);
+        }
+        else if(Train.StoppedAtLocation)
+        {
+            //Calc cumulative dwell times that are skipped
+            int  Count = 0, PassNum = 0;
+            TActionVectorEntry DepEntry;
+            Train.SkippedDeparture = false;
+            if(SkipTTActionsListBox->ItemIndex == 0)
+            {
+                ShowMessage("This is already the next event, nothing will be skipped");
+                Utilities->CallLogPop(2437);
+                return;
+            }
+            for(TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr; Count < SkipTTActionsListBox->ItemIndex; AVEPtr++) //Count < rather than == because incremented at end
+            {
+                if(AVEPtr->DepartureTime > TDateTime(0)) //departure action
+                {
+                    if(AVEPtr->LocationName == Train.ActionVectorEntryPtr->LocationName)
+                    {
+                        Train.SkippedDeparture = true;
+                    }
+                }
+                if((AVEPtr->FormatType == TimeTimeLoc) && (AVEPtr->ArrivalTime != AVEPtr->DepartureTime) && (AVEPtr != Train.ActionVectorEntryPtr))
+                {//arr & dep in a single AVEntry if different arr & dep times but two listings, if have same arr & dep time then only a single listing,
+                 //if first entry is a TimeTimeLoc departure then only one listing
+                    Count += 2;
+                }
+                else
+                {
+                    Count++;
+                }
+                PassNum++;
+            }
+            TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr + PassNum; //set to the selected action so can check if at same location
+            Train.TrainSkippedEvents = (PassNum - 1);
+            AnsiString StartStr = Train.SelSkipString.SubString(8, 4);
+            if(Train.SkippedDeparture && (AVEPtr->LocationName == Train.ActionVectorEntryPtr->LocationName) && (AVEPtr->ArrivalTime == TDateTime(-1)) && (AVEPtr->FormatType != PassTime))
+            { //if selected action is at same location and have already departed (i.e returned to it after leaving), then keep SkippedDep
+              //if arrive or pass
+                Train.SkippedDeparture = false;
+            }
+            if((StartStr != "Arri") && (StartStr != "Pass") && (StartStr != "Exit") && (AVEPtr->LocationName != Train.ActionVectorEntryPtr->LocationName))
+            {
+                ShowMessage("When stopped at a location the selected next event must either occur at the same location or be 'Arrive...', 'Pass...', or 'Exit railway...'");
+                Train.SkippedDeparture = false;
+                Train.SkipPtrValue = 0;
+                Utilities->CallLogPop(2435);
+                return;
+            }
+            if(Train.SkippedDeparture)
+            {
+                Train.SkipPtrValue = AVEPtr - &(Train.TrainDataEntryPtr->ActionVector.at(0)); //i.e. ActionVectorEntryPtr value above start
+            }                                                                                 //can't save pointer itself as will be stored in a session file
+            //advance the pointer but ask for confirmation first
+            UnicodeString Message = "This will skip all events before the selection.\n\nOK to proceed?";
+            if(Train.SkippedDeparture)
+            {
+                Message = "This will skip all events between the departure and the selection.\n\n"
+                    "Note that no more events may be skipped for this train until after\n"
+                    "it departs from the current location\n\nOK to proceed?";
+            }
+            int button = Application->MessageBox(Message.c_str(), L"", MB_YESNO);
+            if(button == IDYES)
+            {
+                if(!Train.SkippedDeparture)
+                {
+                    Train.ActionVectorEntryPtr += PassNum; //points to the next action, if a dep is skipped then the pointer is incremented later
+                    AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " timetabled events skipped until " +
+                        SkipTTActionsListBox->Items->Strings[SkipTTActionsListBox->ItemIndex]; //last bit includes a newline so don't use PerformanceLog or will have two
+                    TrainController->SkippedTTEvents += Train.TrainSkippedEvents; //TrainSkippedEvents is PassNum - 1
+                    Train.TrainSkippedEvents = 0;
+                    Utilities->PerformanceFile << PerfStr.c_str() << '\n';
+                    Display->PerformanceMemo->Lines->Add(PerfStr);
+                }
+                else
+                {
+                    Train.ActionsSkippedFlag = true; //set to prevent any further skips until after the departure
+                    AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " timetabled events skipped after the departure until " +
+                        SkipTTActionsListBox->Items->Strings[SkipTTActionsListBox->ItemIndex]; //last bit includes a newline so don't use PerformanceLog or will have two
+                    Utilities->PerformanceFile << PerfStr.c_str() << '\n';
+                    Display->PerformanceMemo->Lines->Add(PerfStr);
+                }
+            }
+            else
+            {
+                Train.SkippedDeparture = false;
+                Train.SkipPtrValue = 0;
+                Train.ActionsSkippedFlag = false;
+            }
+            HideTTActionsListBox(3);
+        }
+        Utilities->CallLogPop(2427);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(242, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::ShowTTActionsListBox(int Caller)  //TTClock stopped in ClockTimer2
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ShowTTActionsListBox");
+    if(SkipTTActionsListBox->Visible)
+    {
+        Utilities->CallLogPop(2430);
+        return;
+    }
+    SkipTTActionsListBox->Visible = true;
+    SkipListHeaderPanel->Visible = true;
+    SkipTTActionsListBox->BringToFront();
+    SkipListHeaderPanel->BringToFront();
+    Utilities->CallLogPop(2431);
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::HideTTActionsListBox(int Caller)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",HideTTActionsListBox");
+    if(!SkipTTActionsListBox->Visible)
+    {
+        Utilities->CallLogPop(2432);
+        return;
+    }
+    SkipTTActionsListBox->Visible = false;
+    SkipListHeaderPanel->Visible = false;
+    Utilities->CallLogPop(2433);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::SkipListExitImageClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("SkipListExitImageClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SkipListExitImageClick");
+        HideTTActionsListBox(4);
+        Utilities->CallLogPop(2434);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(243, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
 void __fastcall TInterface::SignallerControlStopMenuItemClick(TObject *Sender)
 {
     try
@@ -12301,7 +12674,8 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key, TShiftState 
             }
         }
 // Operating panel
-        if(Level1Mode == OperMode && OperatingPanel->Enabled && OperatingPanel->Visible && !Shift.Contains(ssShift) && !Shift.Contains(ssAlt))
+        if(Level1Mode == OperMode && OperatingPanel->Enabled && OperatingPanel->Visible && !Shift.Contains(ssShift) && !Shift.Contains(ssAlt) &&
+        !MultiplayerPlayerPanel->Visible) //last condition added as these letters can be added in the edit boxes
         {
             // use Shift.Contains(ssShift etc instead of ShiftKey as that not set if pressed second after Ctrl key pressed
             if(!Shift.Contains(ssCtrl))
@@ -13745,19 +14119,19 @@ void __fastcall TInterface::OperatorActionButtonClick(TObject *Sender)
 
 // ---------------------------------------------------------------------------
 
-void __fastcall TInterface::ConverttoRightHandSignalsMenuItemClick(TObject *Sender)
+void __fastcall TInterface::ConvertToOtherHandSignalsMenuItemClick(TObject *Sender)
 {
     try
     {
-        TrainController->LogEvent("ConverttoRightHandSignalsMenuItemClick");
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ConverttoRightHandSignalsMenuItemClick");
-        RailGraphics->ConvertSignalsToOppositeHand(2);
+        TrainController->LogEvent("ConvertToOtherHandSignalsMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ConvertToOtherHandSignalsMenuItemClick");
+        RailGraphics->ConvertSignalsToOppositeHand(0);
         if(Utilities->RHSignalFlag) // RH sigs after conversion
         {
-            ConverttoRightHandSignalsMenuItem->Caption = "Convert to Left Hand Signals";
+            ConvertToOtherHandSignalsMenuItem->Caption = "Convert to Left Hand Signals";
             if(Track->SignalAspectBuildMode == TTrack::GroundSignalBuild)
             {
-                LoadGroundSignalGlyphs(2);
+                LoadGroundSignalGlyphs(4);
             }
             else
             {
@@ -13768,19 +14142,10 @@ void __fastcall TInterface::ConverttoRightHandSignalsMenuItemClick(TObject *Send
             SigsOnLeftImage2->Visible = false;
             SigsOnRightImage1->Visible = true;
             SigsOnRightImage2->Visible = true;
-            std::ofstream SigFile((CurDir + "\\Signal.hnd").c_str());
-            if(SigFile.fail())
-            {
-                ShowMessage("Failed to store right hand signal setting, program will default to left hand signals when next loaded");
-            }
-            else
-            {
-                Utilities->SaveFileString(SigFile, "RHSignals");
-            }
         }
         else // LH sigs after conversion
         {
-            ConverttoRightHandSignalsMenuItem->Caption = "Convert to Right Hand Signals";
+            ConvertToOtherHandSignalsMenuItem->Caption = "Convert to Right Hand Signals";
             if(Track->SignalAspectBuildMode == TTrack::GroundSignalBuild)
             {
                 LoadGroundSignalGlyphs(3);
@@ -13794,15 +14159,6 @@ void __fastcall TInterface::ConverttoRightHandSignalsMenuItemClick(TObject *Send
             SigsOnRightImage2->Visible = false;
             SigsOnLeftImage1->Visible = true;
             SigsOnLeftImage2->Visible = true;
-            std::ofstream SigFile((CurDir + "\\Signal.hnd").c_str());
-            if(SigFile.fail())
-            {
-                // no need for message as will default to LH: ShowMessage("Failed to store left hand signal setting, program will default to left hand signals when next loaded");
-            }
-            else
-            {
-                Utilities->SaveFileString(SigFile, "LHSignals");
-            }
         }
         Utilities->CallLogPop(2097);
     }
@@ -13847,7 +14203,7 @@ void __fastcall TInterface::MTBFEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftS
             }
             if(TooBigFlag)
             {
-                ShowMessage("Maximum value allowed is 9,999");
+                ShowMessage("Maximum value allowed is 9999"); //changed from 10,000 at v 2.10.0 but length limited to 4 anyway so 'to big' shouldn't arise
                 MTBFEditBox->Text = "";
                 TrainController->AvHoursIntValue = 0;
                 TrainController->MTBFHours = 0;
@@ -14099,7 +14455,311 @@ void __fastcall TInterface::CPGenFileButtonClick(TObject *Sender)
 }
 
 // ---------------------------------------------------------------------------
-// end of fastcalls & directly associated functions
+
+void __fastcall TInterface::ReloadConfigMenuItemClick(TObject *Sender) //new for v2.11.0
+{
+    try
+    {
+        TrainController->LogEvent("ReloadConfigMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ReloadConfigMenuItemClick");
+        LoadConfigFile(1, false); //false as it's not the first load
+        Utilities->CallLogPop(2401);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(238, e.Message);
+    }
+}
+
+// ---------------------------------------------------------------------------
+
+void TInterface::LoadConfigFile(int Caller, bool FirstLoad)
+{
+    try
+    {
+        //throw Exception(""); to test error message
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadConfigFile," + AnsiString((unsigned char)FirstLoad));
+        int LengthInt, SpeedInt;
+        std::ifstream ConfigFile((CurDir + "\\Config.txt").c_str()); // added at v2.6.0 to set save & load directories for railways, timetables & session & to
+        if(ConfigFile.fail()) // no Config file                           //replace Signal.hnd, Background.col and GNU
+        {
+            if(FirstLoad) //added atv2.11.0 - may have changed to RH sigs so don't want it resetting to left when load a railway or session
+            {
+                ConvertToOtherHandSignalsMenuItem->Caption = "Convert to Right Hand Signals";
+                SigImagePanel->Caption = "Signals will be on the left hand side of the track";
+                SigsOnLeftImage1->Visible = true;
+                SigsOnLeftImage2->Visible = true;
+                SigsOnRightImage1->Visible = false;
+                SigsOnRightImage2->Visible = false;
+                ShowMessage(
+                    "This program is free software released under the terms of the GNU General Public License Version 3, as published by the Free Software Foundation. "
+                    " It may be used or redistributed in accordance with that license and is released in the hope that it will be useful, but WITHOUT ANY WARRANTY; "
+                    "without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details - "
+                    "you should have received a copy along with this program but if not see <http://www.gnu.org/licenses/>.");
+            }
+        }
+        else
+        {
+            AnsiString ConfigStr = "";
+            bool ContinueFlag = false;
+            do
+            {
+                if(Utilities->CheckAndReadOneLineFromConfigFile(ConfigFile, ConfigStr))
+                {
+                    if(ConfigFile.eof())
+                    {
+                        break;
+                    }
+    //changes at v2.11.0 to add default track lengths and speeds (for user editing) and to add comments
+    //                AnsiString ConfigValue = ConfigStr.SubString(9, ConfigStr.Length() - 8);
+                    if(ConfigStr == "")
+                    {
+                        continue; //ignore blank lines
+                    }
+                    if(ConfigStr[1] == '#')
+                    {
+                        continue; //ignore lines thet begin with ''#'
+                    }
+                    for(int x = 1; x <= ConfigStr.Length(); x++)
+                    {
+                        if(ConfigStr[x] == '#')
+                        {
+                            ConfigStr = ConfigStr.SubString(1, x - 1); //strip the '#' and all after it
+                            //get rid of all spaces & tabs at end of text (Trim() doesn't remove tabs)
+                            while((ConfigStr.SubString(ConfigStr.Length(), 1) == AnsiString(' ')) || (ConfigStr.SubString(ConfigStr.Length(), 1) == AnsiString('\t')))
+                            {
+                                ConfigStr = ConfigStr.SubString(1, ConfigStr.Length() - 1);
+                            }
+                            break;
+                        }
+                    }
+                    AnsiString ConfigValue = ConfigStr.SubString(9, ConfigStr.Length() - 8);
+                    if((ConfigStr.SubString(1, 8) == "Signals=") && FirstLoad)
+                    {
+                        //get rid of all spaces & tabs at beginning of text
+                        while((ConfigValue.SubString(1, 1) == AnsiString(' ')) || (ConfigValue.SubString(1, 1) == AnsiString('\t')))
+                        {
+                            ConfigValue = ConfigValue.SubString(2, ConfigValue.Length() - 1);
+                        }
+                        if((ConfigValue == "right") && !Utilities->RHSignalFlag)
+                        {
+                            RailGraphics->ConvertSignalsToOppositeHand(1); // toggles Utilities->RHSignalFlag in function (sigs always left hand on startup)
+                            ConvertToOtherHandSignalsMenuItem->Caption = "Convert to Left Hand Signals";
+                            if(Track->SignalAspectBuildMode == TTrack::GroundSignalBuild)
+                            {
+                                LoadGroundSignalGlyphs(1);
+                            }
+                            else
+                            {
+                                LoadNormalSignalGlyphs(1);
+                            }
+                            SigImagePanel->Caption = "Signals will be on the right hand side of the track";
+                            SigsOnLeftImage1->Visible = false;
+                            SigsOnLeftImage2->Visible = false;
+                            SigsOnRightImage1->Visible = true;
+                            SigsOnRightImage2->Visible = true;
+                        }
+                        else if((ConfigValue == "left") && Utilities->RHSignalFlag)
+                        {
+                            RailGraphics->ConvertSignalsToOppositeHand(2); // toggles Utilities->RHSignalFlag in function
+                            ConvertToOtherHandSignalsMenuItem->Caption = "Convert to Right Hand Signals";
+                            if(Track->SignalAspectBuildMode == TTrack::GroundSignalBuild)
+                            {
+                                LoadGroundSignalGlyphs(2);
+                            }
+                            else
+                            {
+                                LoadNormalSignalGlyphs(5);
+                            }
+                            SigImagePanel->Caption = "Signals will be on the left hand side of the track";
+                            SigsOnLeftImage1->Visible = true;
+                            SigsOnLeftImage2->Visible = true;
+                            SigsOnRightImage1->Visible = false;
+                            SigsOnRightImage2->Visible = false;
+                        }  //if not either of these then sigs already set as should be
+                    }
+                    if((ConfigStr.SubString(1, 8) == "BgndCol=") && FirstLoad)
+                    {
+                        // pick up transparent colour from file if there is one & set it to the stored value if it's valid else set to black
+                        Utilities->clTransparent = clB0G0R0; // default black background;
+                        if(ConfigValue == "white")
+                        {
+                            Utilities->clTransparent = TColor(0xFFFFFF);
+                        }
+                        else if(ConfigValue == "blue")
+                        {
+                            Utilities->clTransparent = TColor(0x330000);
+                        }
+                    }
+                    if((ConfigStr.SubString(1, 8) == "RLYLocn=") && FirstLoad)
+                    {
+                        if(DirectoryExists(ConfigValue)) // else stays as original directory
+                        {
+                            SaveRailwayDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
+                            LoadRailwayDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
+                        }
+                    }
+                    else if((ConfigStr.SubString(1, 8) == "TTBLocn=") && FirstLoad)
+                    {
+                        if(DirectoryExists(ConfigValue)) // else stays as original directory
+                        {
+                            TimetableDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
+                            SaveTTDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
+                        }
+                    }
+                    else if((ConfigStr.SubString(1, 8) == "SSNLocn=") && FirstLoad)
+                    {
+                        if(DirectoryExists(ConfigValue)) // else stays as original directory
+                        {
+                            LoadSessionDialog->InitialDir = ConfigStr.SubString(9, ConfigStr.Length() - 8);
+                        }
+                    }
+                    else if(ConfigStr.SubString(1, 8) == "Length =")
+                    {
+                        for(int x = 1; x <= ConfigValue.Length(); x++)
+                        {
+                            if((ConfigValue[x] < '0') || (ConfigValue[x] > '9'))
+                            {
+                                ContinueFlag = true; //ignore it if invalid
+                                break;
+                            }
+                        }
+                        if(ContinueFlag)
+                        {
+                            ContinueFlag = false;
+                            continue;
+                        }
+                        LengthInt = ConfigStr.SubString(9, ConfigStr.Length() - 8).ToInt();
+                        if(LengthInt < 10)
+                        {
+                            Track->DefaultTrackLength = 10;
+                        }
+                        if(LengthInt > 99999)
+                        {
+                            Track->DefaultTrackLength = 100;
+                        }
+                        else
+                        {
+                            Track->DefaultTrackLength = LengthInt;
+                        }
+                    }
+                    else if(ConfigStr.SubString(1, 8) == "Speed  =")
+                    {
+                        for(int x = 1; x <= ConfigValue.Length(); x++)
+                        {
+                            if((ConfigValue[x] < '0') || (ConfigValue[x] > '9'))
+                            {
+                                ContinueFlag = true; //ignore it if invalid
+                                break;
+                            }
+                        }
+                        if(ContinueFlag)
+                        {
+                            ContinueFlag = false;
+                            continue;
+                        }
+                        SpeedInt = ConfigStr.SubString(9, ConfigStr.Length() - 8).ToInt();
+                        if(SpeedInt < 10)
+                        {
+                            Track->DefaultTrackSpeedLimit = 10;
+                        }
+                        else if(SpeedInt > 400)
+                        {
+                            Track->DefaultTrackSpeedLimit = 400;
+                        }
+                        else
+                        {
+                            Track->DefaultTrackSpeedLimit = SpeedInt;
+                        }
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            while(!ConfigFile.eof());
+            ConfigFile.close();
+            Utilities->CallLogPop(2402);
+        }
+    }
+    catch(const Exception &e)
+    {
+        ShowMessage("Unable to load the configuration file, it appears to be corrupt.  It will be re-written correctly when the program closes.\n\n"
+                    "Default values will be used for the current session.");
+        Utilities->RHSignalFlag = false;
+        ConvertToOtherHandSignalsMenuItem->Caption = "Convert to Right Hand Signals";
+        SigImagePanel->Caption = "Signals will be on the left hand side of the track";
+        SigsOnLeftImage1->Visible = true;
+        SigsOnLeftImage2->Visible = true;
+        SigsOnRightImage1->Visible = false;
+        SigsOnRightImage2->Visible = false;
+        Utilities->clTransparent = clB0G0R0; // default black background;
+        SaveRailwayDialog->InitialDir = CurDir + "\\" + RAILWAY_DIR_NAME;
+        LoadRailwayDialog->InitialDir = CurDir + "\\" + RAILWAY_DIR_NAME;
+        TimetableDialog->InitialDir = CurDir + "\\" + TIMETABLE_DIR_NAME;
+        SaveTTDialog->InitialDir = CurDir + "\\" + TIMETABLE_DIR_NAME;
+        LoadSessionDialog->InitialDir = CurDir + "\\" + SESSION_DIR_NAME;
+        Track->DefaultTrackLength = 100;
+        Track->DefaultTrackSpeedLimit = 200;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::SaveConfigFile(int Caller)
+{
+    try
+    {
+        TrainController->LogEvent("SaveConfigFile");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SaveConfigFile");
+        // rewrite ConfigFile with signal handedness, background colour & InitialDir values (may be same but no matter)
+        AnsiString ColourStr = "", SignalStr = "", LengthStr = "", SpeedStr = "";
+        remove((CurDir + "\\Config.txt").c_str());
+        std::ofstream ConfigFile((CurDir + "\\Config.txt").c_str());
+        ColourStr = "black";
+        SignalStr = "left";
+        if((Track->DefaultTrackLength < 10) || (Track->DefaultTrackLength > 99999))
+        {
+            Track->DefaultTrackLength = 100;
+        }
+        if((Track->DefaultTrackSpeedLimit < 10) || (Track->DefaultTrackSpeedLimit > 400))
+        {
+            Track->DefaultTrackSpeedLimit = 200;
+        }
+        LengthStr = AnsiString(Track->DefaultTrackLength);
+        SpeedStr = AnsiString(Track->DefaultTrackSpeedLimit);
+        if(Utilities->clTransparent == TColor(0xFFFFFF))
+        {
+            ColourStr = "white";
+        }
+        else if(Utilities->clTransparent == TColor(0x330000))
+        {
+            ColourStr = "blue";
+        }
+        if(Utilities->RHSignalFlag)
+        {
+            SignalStr = "right";
+        }
+        ConfigFile << AnsiString("#This file contains a list of parameters that are saved after each use of the program and reloaded for the "
+                                 "next use.  Track element length and speed limit values after the = sign may be changed and the configuration file reloaded "
+                                 "during play, but please do not change anything else.  Comments begin with '#' and are ignored by the program.\n\n");
+        ConfigFile << AnsiString("Signals=") << SignalStr << '\n';
+        ConfigFile << AnsiString("BgndCol=") << ColourStr << '\n';
+        ConfigFile << AnsiString("RLYLocn=") << AnsiString(LoadRailwayDialog->InitialDir) << '\n';
+        ConfigFile << AnsiString("TTBLocn=") << AnsiString(TimetableDialog->InitialDir) << '\n';
+        ConfigFile << AnsiString("SSNLocn=") << AnsiString(LoadSessionDialog->InitialDir) << '\n';
+        ConfigFile << AnsiString("Length =") << LengthStr << "    #default track element length in metres (not less than 10)\n";
+        ConfigFile << AnsiString("Speed  =") << SpeedStr << "    #default track element speed limit in km/h (not less than 10 and not greater than 400)\n";
+        ConfigFile.close();
+        Utilities->CallLogPop(2439);
+    }
+    catch(const Exception &e)
+    {
+        ShowMessage("Unable to save configuration file, file won't be updated");
+    }
+}
+
 // ---------------------------------------------------------------------------
 
 void TInterface::SetTopIndex(int Caller)
@@ -14443,6 +15103,9 @@ bool TInterface::ClearEverything(int Caller)
     TrainController = new TTrainController;
     PerformanceLogBox->Lines->Clear();
     ResetAll(1);
+
+    LoadConfigFile(2, false); //reset default track element length &  speed limit (uninitialised when Track recreated), false as it's not the first load
+
     Utilities->CallLogPop(94);
     return(true);
 }
@@ -14687,15 +15350,24 @@ void TInterface::SetLevel1Mode(int Caller)
         FileMenu->Enabled = true;
         EditMenu->Enabled = false;
         BuildTrackMenuItem->Enabled = true;
+        MultiplayerMenu->Enabled = false;
+        CouplingFileLoadedFlag = false;
+        PlayerMakingInitialContactFlag = false;
+        PlayerReadyToBeginFlag = false;
+        PlayerCancelJoinFlag = false;
+        PlayerAwaitingHostStartFlag = false;
+        HostInSessionFlag = false;
+        PlayerInSessionFlag = false;
         SigAspectButton->Enabled = false;
         Track->ChangingLCVector.clear();
         Track->BarriersDownVector.clear();
         Track->ResetLevelCrossings(0);
-        ConverttoRightHandSignalsMenuItem->Enabled = false; // new at v2.3.0
+        ConvertToOtherHandSignalsMenuItem->Enabled = false; // new at v2.3.0
         SigImagePanel->Visible = false; // new at v2.3.0
         MTBFEditBox->Visible = false; // new at v2.4.0
         MTBFLabel->Visible = false;
         TTClockAdjustWarningPanel->Visible = false;
+        HideTTActionsListBox(1);
         if(Track->IsTrackFinished())
         {
             PlanPrefDirsMenuItem->Enabled = true;
@@ -14733,7 +15405,7 @@ void TInterface::SetLevel1Mode(int Caller)
             BlackBgndMenuItem->Enabled = false;
             WhiteBgndMenuItem->Enabled = false;
             BlueBgndMenuItem->Enabled = false;
-            ConverttoRightHandSignalsMenuItem->Enabled = true; // new at v2.3.0
+            ConvertToOtherHandSignalsMenuItem->Enabled = true; // new at v2.3.0
             SigImagePanel->Visible = true; // new at v2.3.0
             if(Utilities->clTransparent != TColor(0))
             {
@@ -14953,7 +15625,7 @@ void TInterface::SetLevel1Mode(int Caller)
 
         CallingOnButton->Visible = false;
         PresetAutoSigRoutesButton->Visible = true;
-        if(!EveryPrefDir->PrefDirVector.empty()) //condition added at v2.10.0
+        if(!EveryPrefDir->PrefDirVector.empty())//condition added at v2.10.0
         {
             PresetAutoSigRoutesButton->Enabled = true;
         }
@@ -15071,6 +15743,7 @@ void TInterface::SetLevel1Mode(int Caller)
         TrainController->TotEarlyExitMins = 0;
         TrainController->TotLateExitMins = 0;
         TrainController->ExcessLCDownMins = 0;
+        TrainController->SkippedTTEvents = 0;
 
         TrainController->OpActionPanelHintDelayCounter = 0; // new at v2.2.0 to reset hint delay
         OAListBox->Clear();
@@ -15909,6 +16582,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
     catch (const EClipboardException &e) //non-error catch
     {
         TrainController->LogEvent("Clipboard error in SetLevel2TrackMode");
+        Utilities->CallLogPop(2404);
     }
 }
 
@@ -16298,9 +16972,10 @@ void TInterface::TrackTrainFloat(int Caller)
     int ScreenX = MousePoint.x - MainScreen->ClientOrigin.x;
     int ScreenY = MousePoint.y - MainScreen->ClientOrigin.y;
 
-    if(!OAListBoxRightMouseButtonDown && ((ScreenX > (MainScreen->Width - 1)) || (ScreenY > (MainScreen->Height - 1)) || (ScreenX < 0) || (ScreenY < 0)))
+    if(SkipTTActionsListBox->Visible || (!OAListBoxRightMouseButtonDown && ((ScreenX > (MainScreen->Width - 1)) || (ScreenY > (MainScreen->Height - 1)) || (ScreenX < 0) || (ScreenY < 0))))
     {
         // added !OAListBoxRightMouseButtonDown at v2.7.0 so can still obtain info & move to trains from OAListBox even if they are out of the main screen area
+        // added SkipTTActionsListBox->Visible at v2.11.0 so floating window when thuis is displayed
         FloatingPanel->Visible = false;
         Utilities->CallLogPop(1432);
         return;
@@ -16537,7 +17212,6 @@ void TInterface::TrackTrainFloat(int Caller)
         bool FoundFlag;
         AnsiString FormatOneDPStr = "####0.0";
         AnsiString FormatNoDPStr = "#######0";
-// AnsiString Format5DPStr = "####0.00000";     //temporary
         AnsiString MaxBrakeStr = ""; // , EntrySpeedStr="", HalfStr="", FullStr="", MaxAtHalfStr="";//test
         AnsiString SpecialStr = "";
         if(OperatorActionPanel->Visible) // added at v2.6.2 to show floating window for trains in actions due list
@@ -17400,7 +18074,7 @@ void TInterface::SetSaveMenuAndButtons(int Caller)
         }
         // set PresetAutoSigRoutesButton enabled or not
         // enable if PreStart & no routes set
-        if((Level2OperMode == PreStart) && (AllRoutes->AllRoutesVector.empty()) && !EveryPrefDir->PrefDirVector.empty())//added EveryPrefDir condition at v2.10.0
+        if((Level2OperMode == PreStart) && (AllRoutes->AllRoutesVector.empty()) && !EveryPrefDir->PrefDirVector.empty())//last condition added at v2.10.0
         {
             PresetAutoSigRoutesButton->Enabled = true;
         }
@@ -17545,8 +18219,10 @@ void TInterface::SetSaveMenuAndButtons(int Caller)
     }
     if(Level1Mode == OperMode)
     {
-        if(Track->RouteFlashFlag || Track->PointFlashFlag || TTClockAdjPanel->Visible == true || TTClockAdjustWarningPanel->Visible == true)
+        if(Track->RouteFlashFlag || Track->PointFlashFlag || TTClockAdjPanel->Visible == true || TTClockAdjustWarningPanel->Visible == true ||
+                MultiplayerHostPanel->Visible == true || MultiplayerPlayerPanel->Visible == true || SkipTTActionsListBox->Visible)
         // TTClockAdjPanel added for v2.4.2 to keep it disabled after Clock2Stopped dropped
+        // host & player panels added for multiplayer
         {
             MTBFEditBox->Enabled = false;
             OperatingPanelEnabledFlag = false;
@@ -18191,7 +18867,27 @@ void TInterface::SaveSession(int Caller)
             Utilities->SaveFileDouble(SessionFile, double(TrainController->TotLateExitMins));
             Utilities->SaveFileString(SessionFile, "End of file at v2.9.1");  //changed from '2.9.0' at v2.9.2
 // end of v2.9.1 additions
-
+//added at v2.11.0
+//add SkippedTTEvents
+            Utilities->SaveFileInt(SessionFile, TrainController->SkippedTTEvents);
+// add data for trains in process of skipping timetable events (i.e. those with events after a future departure)
+            if(!TrainController->TrainVector.empty())
+            {
+                for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
+                {
+                    TTrain Train = TrainController->TrainVectorAt(82, x);
+                    if(Train.SkippedDeparture)
+                    {
+                        Utilities->SaveFileInt(SessionFile, Train.TrainID);
+                        Utilities->SaveFileBool(SessionFile, Train.SkippedDeparture);
+                        Utilities->SaveFileBool(SessionFile, Train.ActionsSkippedFlag);
+                        Utilities->SaveFileInt(SessionFile, Train.SkipPtrValue);
+                        Utilities->SaveFileInt(SessionFile, Train.TrainSkippedEvents);
+                    }
+                }
+            }
+            Utilities->SaveFileString(SessionFile, "End of file at v2.11.0");
+//end of 2.11.0 additions
             SessionFile.close();
             TrainController->StopTTClockMessage(4, "Session saved: Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " +
                                                 RailwayTitle + "; " + TimetableTitle + ".ssn");
@@ -18200,15 +18896,17 @@ void TInterface::SaveSession(int Caller)
         }
         else
         {
-            TrainController->StopTTClockMessage(5, "Session file failed to open - reason not known, session unable to be saved.");
+            TrainController->StopTTClockMessage(5, "Session file failed to open - reason not known, unable to save.");
         }
         TrainController->LastSessionSaveTTClockTime = TrainController->TTClockTime; // added at v2.5.0
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1141);
     }
-    catch(const Exception &e)
+    catch(const Exception &e) //non-error catch
     {
-        ErrorLog(40, e.Message);
+        TrainController->StopTTClockMessage(95, "Session file failed to save - reason not known.");
+        Screen->Cursor = TCursor(-2); // Arrow;
+        Utilities->CallLogPop(2440);
     }
 }
 
@@ -18357,10 +19055,10 @@ void TInterface::LoadSession(int Caller)
                     }
                     // now reload the performance file
                     LoadPerformanceFile(0, SessionFile);
-                    // addition at v2.4.0
+// addition at v2.4.0
                     char TempChar;
                     SessionFile.get(TempChar);
-                    while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) // when emerge from here either have eof or '*'
+                    while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) // get rid of all end of lines & emerge with eof or '*'
                     {
                         SessionFile.get(TempChar);
                     }
@@ -18369,10 +19067,9 @@ void TInterface::LoadSession(int Caller)
                         TrainController->AvHoursIntValue = 0;
                         TrainController->MTBFHours = 0;
                         SessionFile.close(); // no TrainController->AvHoursIntValue & no failed trains
-                        // at v2.7.0 if find eof then don't need a value for ConsecSignalsRoute as that loaded same as PreferredRoute in interface
+                        goto FINISHEDLOADING; //don't like goto's normally but necessary here to avoid multiple else's
                     }
-                    else //have v2.4.0 additions (train failures)
-                    {
+                    {   //remainder enclosed in a block so goto doesn't bypass initialisation of a local variable (DummyStr, ID etc.)
                         AnsiString DummyStr = Utilities->LoadFileString(SessionFile); // "**Additions after v2.3.1***"  discarded (first '*' loaded earlier)
                         TrainController->AvHoursIntValue = Utilities->LoadFileInt(SessionFile); // TrainController->AvHoursIntValue added at v2.4.0
                         TrainController->NumFailures = Utilities->LoadFileInt(SessionFile); // number of train failures
@@ -18388,49 +19085,119 @@ void TInterface::LoadSession(int Caller)
                             TrainController->TrainVectorAtIdent(48, ID).OriginalPowerAtRail = PowerDouble;
                             ID = Utilities->LoadFileInt(SessionFile);
                         }
-                        // added at v2.7.0 - need value for ConsecSignalsRoute but might have eof here with older sessions so first test for that
+//end of 2.4.0 addition
+// addition at v2.7.0 - need value for ConsecSignalsRoute but might have eof here with older sessions so first test for that
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.4.0"  discarded
-                        SessionFile.get(TempChar);
-                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) // when emerge from here either have eof or '0' or '1'
-                        {
-                            SessionFile.get(TempChar);
-                        }
-                        if(!SessionFile.eof()) // not end of file - have v2.7.0 addition
-                        {
-                            if((TempChar != '0') && (TempChar != '1'))
-                            {
-                                throw Exception("TempChar value = " + AnsiString(TempChar) + ", should be 0 or 1");
-                            }
-                            ConsecSignalsRoute = true;
-                            if(TempChar == '0')
-                            {
-                                ConsecSignalsRoute = false;
-                            }
-                        }
 
-                        DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.7.0"  discarded
                         SessionFile.get(TempChar);
-                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) // when emerge from here either have eof or '0' or '1'
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) // get rid of all end of lines & emerge with eof or '0' or '1'
                         {
                             SessionFile.get(TempChar);
                         }
-                        if(!SessionFile.eof()) // not end of file - have at v2.9.1 additions
+                        if(SessionFile.eof())
                         {
+                            SessionFile.close(); //ConsecSignalsRoute set to PrefDirRoute
+                            goto FINISHEDLOADING;
+                        }
+                        if((TempChar != '0') && (TempChar != '1'))
+                        {
+                            throw Exception("TempChar value = " + AnsiString(TempChar) + ", should be 0 or 1");
+                        }
+                        ConsecSignalsRoute = true;
+                        if(TempChar == '0')
+                        {
+                            ConsecSignalsRoute = false;
+                            // at v2.7.0 if find eof then don't need a value for ConsecSignalsRoute as that loaded during LoadInterface
+                        }
+                        DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.7.0"  discarded
+//end of 2.7.0 additions
+//additions at v2.9.1
+                        SessionFile.get(TempChar);
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) // get rid of all end of lines & emerge with 1st digit of EarlyExits as character
+                        {
+                            SessionFile.get(TempChar);
+                        }
+                        if(SessionFile.eof())
+                        {
+                            SessionFile.close();
+                            goto FINISHEDLOADING;
+                        }
                         //TempChar now contains the first digit of EarlyExits as an ASCII character, so get the rest up to CRLF
-                            AnsiString TempString = TempChar;
+                        TempString = TempChar;
+                        SessionFile.get(TempChar);
+                        while((TempChar != '\n') && (TempChar != '\0'))
+                        {
+                            TempString = TempString + TempChar;
+                            SessionFile.get(TempChar);
+                        }
+                        TrainController->EarlyExits = TempString.ToInt();
+                        TrainController->OnTimeExits = Utilities->LoadFileInt(SessionFile);
+                        TrainController->LateExits = Utilities->LoadFileInt(SessionFile);
+                        TrainController->TotEarlyExitMins = float(Utilities->LoadFileDouble(SessionFile));
+                        TrainController->TotLateExitMins = float(Utilities->LoadFileDouble(SessionFile));
+                        DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.9.1"  discarded
+//end of 2.9.1 additions
+//2.11.0 additions
+                        SessionFile.get(TempChar);
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
+                        {// get rid of all end of lines & emerge with eof or 1st digit of TrainController->SkippedTTEvents
+                            SessionFile.get(TempChar);
+                        }
+                        if(SessionFile.eof())
+                        {
+                            SessionFile.close();
+                            goto FINISHEDLOADING;
+                        }
+                        //TempChar now contains the first digit of SkippedTTEvents as a character, so get the rest up to CRLF
+                        TempString = TempChar;
+                        SessionFile.get(TempChar);
+                        while((TempChar != '\n') && (TempChar != '\0'))
+                        {
+                            TempString = TempString + TempChar;
+                            SessionFile.get(TempChar);
+                        }
+                        //here have SkippedTTEvents as AnsiString in TempString
+                        TrainController->SkippedTTEvents = TempString.ToInt();
+                        //now get the skip data for each train (may or may not be any)
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
+                        {// get rid of all end of lines & emerge with eof or 1st digit of TrainID
+                            SessionFile.get(TempChar);
+                        }
+                        if(SessionFile.eof())
+                        {
+                            SessionFile.close();
+                            goto FINISHEDLOADING;
+                        }
+                        //TempChar now contains the 1st digit of TrainID as a character
+                        TempString = TempChar;
+                        while(TempString != 'E') //'E' is 1st character of 'End of file at v2.11.0'
+                        {
                             SessionFile.get(TempChar);
                             while((TempChar != '\n') && (TempChar != '\0'))
                             {
                                 TempString = TempString + TempChar;
                                 SessionFile.get(TempChar);
                             }
-                            TrainController->EarlyExits = TempString.ToInt();
-                            TrainController->OnTimeExits = Utilities->LoadFileInt(SessionFile);
-                            TrainController->LateExits = Utilities->LoadFileInt(SessionFile);
-                            TrainController->TotEarlyExitMins = float(Utilities->LoadFileDouble(SessionFile));
-                            TrainController->TotLateExitMins = float(Utilities->LoadFileDouble(SessionFile));
+                            //here have TrainID as AnsiString in TempString
+                            TTrain &Train = TrainController->TrainVectorAtIdent(57, TempString.ToInt());
+                            Train.SkippedDeparture = Utilities->LoadFileBool(SessionFile);
+                            Train.ActionsSkippedFlag = Utilities->LoadFileBool(SessionFile);
+                            Train.SkipPtrValue = Utilities->LoadFileInt(SessionFile);
+                            Train.TrainSkippedEvents = Utilities->LoadFileInt(SessionFile);
+                            SessionFile.get(TempChar); //will be '\n', 'E' or 1st digit of next TrainID as character
+                            while((TempChar == '\n') || (TempChar == '\0'))
+                            {
+                                SessionFile.get(TempChar);
+                                TempString = TempChar;
+                            }
                         }
+                        DummyStr = Utilities->LoadFileString(SessionFile); // "nd of file at v2.11.0"  discarded ('E' already loaded)
+//end of 2.11.0 additions
+                        SessionFile.close();
+                    }
 
+                    FINISHEDLOADING: if(SessionFile.is_open())
+                    {
                         SessionFile.close();
                     }
                     // deal with other settings
@@ -18495,9 +19262,11 @@ void TInterface::LoadSession(int Caller)
             Application->MessageBox(MessageStr.c_str(), L"Out of memory", MB_OK | MB_ICONERROR);
             Application->Terminate();
         }
-        else
+        else  //non-error catch
         {
-            ErrorLog(41, e.Message);
+            TrainController->StopTTClockMessage(96, "Session file failed to load - may be corrupt.");
+            Screen->Cursor = TCursor(-2); // Arrow;
+            Utilities->CallLogPop(2441);
         }
     }
 }
@@ -18902,7 +19671,7 @@ bool TInterface::SaveTimetableToSessionFile(int Caller, std::ofstream &SessionFi
             break;
         }
     }
-    delete[] Buffer;
+    delete[]Buffer;
     FileClose(Handle);
 
     SessionFile.close(); // close & re-open in append & text out mode as before so can write text
@@ -18967,7 +19736,7 @@ bool TInterface::SaveTimetableToErrorFile(int Caller, std::ofstream &ErrorFile, 
             break;
         }
     }
-    delete[] Buffer;
+    delete[]Buffer;
     FileClose(Handle);
 
     ErrorFile.close(); // close & re-open in append & text out mode as before so can write text
@@ -19023,7 +19792,7 @@ bool TInterface::LoadTimetableFromSessionFile(int Caller, std::ifstream &Session
         {
             TTBFile.close();
             DeleteFile(TempTTFileName);
-            delete[] Buffer;
+            delete[]Buffer;
             Utilities->CallLogPop(1222);
             return(false);
         }
@@ -19048,7 +19817,7 @@ bool TInterface::LoadTimetableFromSessionFile(int Caller, std::ifstream &Session
             {
                 TTBFile.close();
                 DeleteFile(TempTTFileName);
-                delete[] Buffer;
+                delete[]Buffer;
                 Utilities->CallLogPop(1223);
                 return(false);
             }
@@ -19066,7 +19835,7 @@ bool TInterface::LoadTimetableFromSessionFile(int Caller, std::ifstream &Session
             }
         }
         TTBFile.close();
-        delete[] Buffer;
+        delete[]Buffer;
 // SaveTempTimetableFile(1, TTBFileName); no need, already has required name
 // now create the internal timetable from the .tmp file
         bool GiveMessagesFalse = false;
@@ -19260,7 +20029,7 @@ bool TInterface::BuildTrainDataVectorForLoadFile(int Caller, std::ifstream &TTBL
         Count++;
     }
     TTBLFile.close();
-    delete[] TrainTimetableString;
+    delete[]TrainTimetableString;
     bool TwoLocationFlag; //not used in LoadFile
 // here when first pass actions completed successfully
     if(!TrainController->SecondPassActions(0, GiveMessages, TwoLocationFlag)) // Check for matching join/split HeadCodes, check increasing times & matching split/join
@@ -19361,7 +20130,7 @@ bool TInterface::BuildTrainDataVectorForValidateFile(int Caller, std::ifstream &
         Count++;
     }
     TTBLFile.close();
-    delete[] TrainTimetableString;
+    delete[]TrainTimetableString;
     bool TwoLocationFlag;
 // here when first pass actions completed successfully
     if(!TrainController->SecondPassActions(1, GiveMessages, TwoLocationFlag)) // Check for matching join/split HeadCodes, check increasing times & matching split/join
@@ -20219,9 +20988,6 @@ void TInterface::SaveErrorFile()
         int ScreenY = Mouse->CursorPos.y - MainScreen->ClientOrigin.y;
         AnsiString MouseStr = "Posx: " + AnsiString(ScreenX) + "; Posy: " + AnsiString(ScreenY);
         Utilities->SaveFileString(ErrorFile, MouseStr);
-        Utilities->SaveFileInt(ErrorFile, MissedTicks);
-        Utilities->SaveFileInt(ErrorFile, TotalTicks);
-
 // save call stack
         Utilities->SaveFileString(ErrorFile, "***Call stack***");
         for(unsigned int x = 0; x < Utilities->CallLog.size(); x++)
@@ -20437,7 +21203,7 @@ void TInterface::SaveTempTimetableFile(int Caller, AnsiString InFileName)
         if(CountOut != CountIn)
         {
             ShowMessage("Error in writing to the temporary timetable file, sessions can't be saved - try again, may only be a temporary problem");
-            delete[] Buffer;
+            delete[]Buffer;
             FileClose(InHandle);
             FileClose(OutHandle);
             Utilities->CallLogPop(1402);
@@ -20448,7 +21214,7 @@ void TInterface::SaveTempTimetableFile(int Caller, AnsiString InFileName)
             break;
         }
     }
-    delete[] Buffer;
+    delete[]Buffer;
     FileClose(InHandle);
     FileClose(OutHandle);
     Utilities->CallLogPop(1403);
@@ -20458,7 +21224,7 @@ void TInterface::SaveTempTimetableFile(int Caller, AnsiString InFileName)
 
 void TInterface::SetTrackLengths(int Caller, int Distance, int SpeedLimit) // Distance & SpeedLimit are -1 for no change to that parameter
 /*
-                  Rules: Platforms are fixed length elements of 100m and aren't changed - no, see note below. Variable length elements can't be less than 20m.
+                  Rules: Platforms are fixed length elements of 100m and aren't changed - no, see note below. Variable length elements can't be less than 10m.
                   above changed in v2.4.0 to be variable as other track, but if <50m or >200m a warning is given
 
                   Enter with DistanceVector containing the PrefDir to be set, Distance containing the required sum of all element lengths,
@@ -20552,16 +21318,10 @@ void TInterface::SetTrackLengths(int Caller, int Distance, int SpeedLimit) // Di
             TooLongMessageSentFlag = true;   //added at v2.9.1
         }
     }
-/* if(NamedLocPresent)    as was
-       {
-               ShowMessage("Named location lengths won't be changed");
-       }
-*/
-
-    if((VarElements * 20) > Distance) // removed '+ FixedLength'
+    if((VarElements * 10) > Distance) // removed '+ FixedLength'
     {
-        ShowMessage("Required distance is less than the minimum, will set each element to the minimum (20m)");
-        Distance = (VarElements * 20); // removed '+ FixedLength'
+        ShowMessage("Required distance is less than the minimum, will set each element to the minimum (10m)");
+        Distance = (VarElements * 10); // removed '+ FixedLength'
     }
     if(VarElements == 0)
     {
@@ -20579,9 +21339,9 @@ void TInterface::SetTrackLengths(int Caller, int Distance, int SpeedLimit) // Di
         TTrackElement & TE = Track->TrackElementAt(35, Track->GetVectorPositionFromTrackMap(29, PrefDirElement.HLoc, PrefDirElement.VLoc, FoundFlag));
 // if(!Track->IsPlatformOrNamedNonStationLocationPresent(4, TE.HLoc, TE.VLoc)) //variable lengths  dropped in v2.4.0
 // {
-        if(NextLength < 20)
+        if(NextLength < 10)
         {
-            NextLength = 20; // added for safety
+            NextLength = 10; // added for safety
         }
         if(TE.TrackType == Points)
         {
@@ -20613,7 +21373,7 @@ void TInterface::SetTrackLengths(int Caller, int Distance, int SpeedLimit) // Di
         }
         else
         {
-            NextLength = 20;
+            NextLength = 10;
         }
 /* removed these as using integer division & that sometimes problematic.  None of these errors ever reported but be safe
                        if((RemainingDistance == 0) && (RemainingVarElements != 0))
@@ -20744,7 +21504,7 @@ void TInterface::SetTrackModeEditMenu(int Caller)
 {
     try
     {
-        // no need for caller or log as only setting values
+        // no need for log as only setting values
         Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTrackModeEditMenu");
         CutMenuItem->Visible = true;
         CopyMenuItem->Visible = true;
@@ -20827,7 +21587,6 @@ void TInterface::SetTrackModeEditMenu(int Caller)
         }
         Utilities->CallLogPop(2273);
     }
-
     catch(const EClipboardException &e) //non-error catch - added at v2.10.0 after SamWainwright access denial error (08/09/21)
                                         //also reported by Bengt on 03/10/21
     {
@@ -20954,41 +21713,162 @@ void TInterface::TestFunction()    //triggered by Alt Ctrl 4
 {
     try
     {
-/*
-        ShowMessage(
-           "Interface->Left + Interface->Width " + UnicodeString(Interface->Left + Interface->Width) +
-           "\nInterface->Left + MainScreen->Left + MainScreen->Width " +
-           UnicodeString(Interface->Left + MainScreen->Left + MainScreen->Width) +
-           "\n\nMainScreen->Width " + UnicodeString(MainScreen->Width) +
-           "\nMainScreen->Height " + UnicodeString(MainScreen->Height) +
-           "\nMainScreen->Top " + UnicodeString(MainScreen->Top) +
-           "\nMainScreen->Left " + UnicodeString(MainScreen->Left) +
-           " Right " + UnicodeString(MainScreen->Width + MainScreen->Left) +
-           "\n\nInterface->Width " + UnicodeString(Interface->Width) +
-           "\nInterface->Left " + UnicodeString(Interface->Left) +
-           "\nInterface->Top " + UnicodeString(Interface->Top) +
-           "\n\nScreenRightButton->Left " + UnicodeString(ScreenRightButton->Left)
-           );
-*/
-/*
-      for(unsigned int x=0; x<TrainController->TrainVector.size(); x++)
-      {
-          if((TrainController->TrainVectorAt(-1, x).HeadCode == "2K02") && (!TrainController->TrainVectorAt(-1, x).TrainOnContinuation(-1)))
-          {
-              TrainController->TrainVectorAt(-1, x).TrainFailurePending = true;
-          }
-      }
-*/
-
-//        TrainController->TrainVector.at(0).TrainFailurePending = true;
-//        TrainController->TrainVector.at(0).PowerAtRail = 0.08;
-//        TrainController->TrainVector.at(0).StoppedWithoutPower = true;
-
-
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
 // throw Exception("Test error");  //generate an error file
 
 // ShowMessage("MissedTicks = " + AnsiString(MissedTicks) + "; TotalTicks = " + AnsiString(TotalTicks));
 
+//DMIt->second.ServiceReference = TMMIt->second.ServiceReference;
+//DMIt->second.RepeatNumber = TMMIt->second.RepeatNumber;
+//DMIt->second.TimeToExitSecs = TMMIt->second.TimeToExitSecs;
+/*
+        std::ofstream POBMFile("POBMFile.csv");
+        TDynamicMap::iterator DMIt;
+        for(DMIt = DynMapToHost.begin(); DMIt != DynMapToHost.end(); DMIt++)
+        {
+            POBMFile << DMIt->first.first << ',' << DMIt->first.second << ',' << DMIt->second.ServiceReference << ','
+                      << DMIt->second.RepeatNumber << ',' << DMIt->second.TimeToExitSecs << '\n';
+        }
+        POBMFile.close();
+*/
+
+/*
+        std::ifstream ExitFile("ExitFile.txt");
+        std::ofstream OutMapFile1("OutMapFile1.csv");
+        std::ofstream OutMapFile2("OutMapFile2.csv");
+        std::ofstream OutBufFile1("OutBufFile1.csv");
+        std::ofstream OutBufFile2("OutBufFile2.csv");
+        AnsiString UserName = "";
+        unsigned char marker;
+        TDynamicMap DMap1, DMap2;
+        TDynamicMap::iterator DMIt;
+        TBytes Buffer1, Buffer2;
+        DMap1.clear();
+        BuildDummyTestMap(DMap1, ExitFile); //for Dan's Waterloo
+        UpdateDynamicMapFromTimeToExitMultiMap(2, DMap1);
+//DMap out
+        for(DMIt = DMap1.begin(); DMIt != DMap1.end(); DMIt++)
+        {
+            OutMapFile1 << DMIt->first.first << ',' << DMIt->first.second.first << ',' << DMIt->first.second.second << ',' << DMIt->second.ServiceReference << ','
+                      << DMIt->second.RepeatNumber << ',' << DMIt->second.TimeToExitSecs << '\n';
+        }
+//end of DMap
+        BuildDatagramFromPlayerMap(2, '3', "AB", Buffer1, DMap1); //buffer length is set within this function
+//Buffer out
+        OutBufFile1 << Buffer1[0] << ','; //marker
+        int y = 1;
+        while((Buffer1[y] != ';') && (y < 5)) //username, upt 4 chars, if less ';'  delimiter
+        {
+            OutBufFile1 << Buffer1[y];
+            y++;
+        }
+        if(Buffer1[y] == ';')
+        {
+            y++;
+        }
+        OutBufFile1 << ',';
+        //y now points to start of DMap data
+        while(y <= (Buffer1.Length - 9)) //9 bytes allows for ref to be null
+        {
+            OutBufFile1 <<  Buffer1[y] << ',' << Buffer1[y + 1] + (256 * Buffer1[y + 2]) << ',' << Buffer1[y + 3] + (256 * Buffer1[y + 4]) << ',';
+            y += 5;
+            int z = 0;
+            AnsiString ServRef = "        ";
+            while((Buffer1[y + z] != ';') && (z < 8))
+            {
+                ServRef[z + 1] = Buffer1[y + z];
+                z++;
+            }
+            ServRef = ServRef.Trim();
+            OutBufFile1 << ServRef << ',';
+            y += ServRef.Length();
+            if(Buffer1[y] == ';')
+            {
+                y++;
+            }
+            OutBufFile1 << Buffer1[y] + (256 * Buffer1[y + 1]) << ',' << Buffer1[y + 2] + (256 * Buffer1[y + 3]) << '\n';
+            y += 4;
+        }
+//end of Buffer out
+        DMap2.clear();
+        if(BuildDynamicMapFromPlayerDatagram(2, DMap2, Buffer1, marker, UserName))  //startpos = 4 as have '3AB;' a;ready in buffer
+//DMap out
+        {
+            for(DMIt = DMap2.begin(); DMIt != DMap2.end(); DMIt++)
+            {
+                OutMapFile2 << DMIt->first.first << ',' << DMIt->first.second.first << ',' << DMIt->first.second.second << ',' << DMIt->second.ServiceReference << ','
+                          << DMIt->second.RepeatNumber << ',' << DMIt->second.TimeToExitSecs << '\n';
+            }
+    //end of DMap out
+            BuildDatagramFromPlayerMap(3, '4', "ABC", Buffer2, DMap2); //buffer length is set within this function
+    //Buffer out
+            OutBufFile2 << Buffer2[0] << ','; //marker
+            y = 1;     //already declared above
+            while((Buffer2[y] != ';') && (y < 5)) //username, upt 4 chars, if less ';'  delimiter
+            {
+                OutBufFile2 << Buffer2[y];
+                y++;
+            }
+            if(Buffer2[y] == ';')
+            {
+                y++;
+            }
+            OutBufFile2 << ',';
+        }
+        else
+        {
+            ShowMessage("Error in BuildDynamicMapFromPlayerDatagram for DMap2 construction");
+        }
+        //y now points to start of DMap data
+    while(y <= (Buffer2.Length - 9)) //9 bytes allows for ref to be null
+        {
+            OutBufFile2 <<  Buffer2[y] << ',' << Buffer2[y + 1] + (256 * Buffer2[y + 2]) << ',' << Buffer2[y + 3] + (256 * Buffer2[y + 4]) << ',';
+            y += 5;
+            int z = 0;
+            AnsiString ServRef = "        ";
+            while((Buffer2[y + z] != ';') && (z < 8))
+            {
+                ServRef[z + 1] = Buffer2[y + z];
+                z++;
+            }
+            ServRef = ServRef.Trim();
+            OutBufFile2 << ServRef << ',';
+            y += ServRef.Length();
+            if(Buffer2[y] == ';')
+            {
+                y++;
+            }
+            OutBufFile2 << Buffer2[y] + (256 * Buffer2[y + 1]) << ',' << Buffer2[y + 2] + (256 * Buffer2[y + 3]) << '\n';
+            y += 4;
+        }
+//end of Buffer out
+
+        ExitFile.close();
+        OutMapFile1.close();
+        OutMapFile2.close();
+        OutBufFile1.close();
+        OutBufFile2.close();
+*/
+
+/*
+        for(DMIt = DMap1.begin(); DMIt != DMap1.end(); DMIt++)
+        {
+            OutMapFile << DMIt->first.first << ',' << DMIt->first.second << ',' << DMIt->second.ServiceReference << ','
+                      << DMIt->second.RepeatNumber << ',' << DMIt->second.TimeToExitSecs << '\n';
+        }
+        */
+
+/*
+        TCouplingMap::iterator CMMIt;
+        std::ofstream CMOutFile("CMOutFile.txt");
+        for(CMMIt = CouplingMap.begin(); CMMIt != CouplingMap.end(); CMMIt++)
+        {
+            CMOutFile << CMMIt->first.first.RailwayName << ';' << CMMIt->first.second.first << '-' << CMMIt->first.second.second << ';'
+                      << CMMIt->second.first.RailwayName << ';' << CMMIt->second.second.first << '-' << CMMIt->second.second.second << '\n';
+        }
+        CMOutFile.close();
+*/
+    Utilities->CallLogPop(2376);
     }
     catch(const Exception &e)
     {
@@ -20997,31 +21877,8 @@ void TInterface::TestFunction()    //triggered by Alt Ctrl 4
 }
 
 // ---------------------------------------------------------------------------
-/*
-  void TInterface::LoadNormalSignalGlyphs(int Caller)    //changed - see below
-  {
-   Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadNormalSignalGlyphs,");
-   SpeedButton68->Glyph->LoadFromResourceName(0, "gl68"); SpeedButton69->Glyph->LoadFromResourceName(0, "gl69");
-   SpeedButton70->Glyph->LoadFromResourceName(0, "gl70"); SpeedButton71->Glyph->LoadFromResourceName(0, "gl71");
-   SpeedButton72->Glyph->LoadFromResourceName(0, "gl72"); SpeedButton73->Glyph->LoadFromResourceName(0, "gl73");
-   SpeedButton74->Glyph->LoadFromResourceName(0, "gl74"); SpeedButton75->Glyph->LoadFromResourceName(0, "gl75");
-   Utilities->CallLogPop(**);
-  }
 
-  //---------------------------------------------------------------------------
-
-  void TInterface::LoadGroundSignalGlyphs(int Caller)    //changed - see below
-  {
-   Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadGroundSignalGlyphs,");
-   SpeedButton68->Glyph->LoadFromResourceName(0, "bm68grounddblred"); SpeedButton69->Glyph->LoadFromResourceName(0, "bm69grounddblred");
-   SpeedButton70->Glyph->LoadFromResourceName(0, "bm70grounddblred"); SpeedButton71->Glyph->LoadFromResourceName(0, "bm71grounddblred");
-   SpeedButton72->Glyph->LoadFromResourceName(0, "bm72grounddblred"); SpeedButton73->Glyph->LoadFromResourceName(0, "gl73grounddblred");
-   SpeedButton74->Glyph->LoadFromResourceName(0, "gl74grounddblred"); SpeedButton75->Glyph->LoadFromResourceName(0, "bm75grounddblred");
-   Utilities->CallLogPop(**);
-  }
-*/
-// ---------------------------------------------------------------------------
-void TInterface::LoadNormalSignalGlyphs(int Caller) // changed from the above at v2.3.0 so the signal glyphs change hands
+void TInterface::LoadNormalSignalGlyphs(int Caller)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadNormalSignalGlyphs,");
     SpeedButton68->Glyph = RailGraphics->SpeedBut68NormBlackGlyph;
@@ -21105,6 +21962,52 @@ void TInterface::UpdateOperatorActionPanel(int Caller) // new at v2.2.0
     Utilities->CallLogPop(2093);
 }
 
+// ---------------------------------------------------------------------------
+//below used in debugging TimeToExitMultiMap: replaces times to act in OpTimeToAct panel with headcodes and exit times (or exit locs) so they are visible
+//to use, uncomment this function and comment out the original above
+/*
+void TInterface::UpdateOperatorActionPanel(int Caller) // new at v2.2.0
+// limit it to 20 entries max
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UpdateOperatorActionPanel");
+    if(TrainController->OpActionPanelHintDelayCounter >= 60)
+    {
+        OAListBox->Clear();
+    }
+    if((!OperatorActionPanel->Visible) || TrainController->TimeToExitMultiMap.empty() || (TrainController->OpActionPanelHintDelayCounter < 60))
+    // new at v2.2.0
+    {
+        Utilities->CallLogPop(2386);
+        return;
+    }
+    AnsiString OpTimeToActDisplay;
+    AnsiString OpTimeToActString;
+    AnsiString HeadCode;
+    THVShortPair ExitPair;
+    float OpTimeToActFloat;
+//    TTrainController::THCandTrainPosParam HCandTrainPosParam;
+
+    TTimeToExitMultiMap::iterator TTEMMIt = TrainController->TimeToExitMultiMap.begin();
+    while(TTEMMIt != TrainController->TimeToExitMultiMap.end())
+    {
+        if(OAListBox->Items->Count >= 20)
+        {
+            break;
+        }
+        OpTimeToActFloat = float(TTEMMIt->second.TimeToExitSecs);
+        HeadCode = TTEMMIt->second.ServiceReference.Trim();
+        ExitPair = TTEMMIt->first;
+        if((OpTimeToActFloat > 0) && (OpTimeToActFloat < 3600))  //no display if outside these limits
+        {
+            OpTimeToActString = AnsiString(int(OpTimeToActFloat));//seconds
+            OpTimeToActDisplay = HeadCode + AnsiString(' ') + OpTimeToActString; //comment out one of these to display times or exits
+            OAListBox->Items->Add(OpTimeToActDisplay);
+        }
+        TTEMMIt++;
+    }
+    Utilities->CallLogPop(2377;
+}
+*/
 // ---------------------------------------------------------------------------
 
 void TInterface::LoadUserGraphic(int Caller) // new at v2.4.0
@@ -21384,7 +22287,7 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
         wss << SelectVectorBuffer;
         ClpBrdValid = AnsiString(SelectVectorBuffer).SubString(1, 13);
         PasteMenuItem->Enabled = false;
-        delete[] SelectVectorBuffer;
+        delete[]SelectVectorBuffer;
 
         if((ClpBrdValid != AnsiString("RlyClpBrdCopy")) && (ClpBrdValid != AnsiString("RlyClpBrd_Cut")))
         {
@@ -21401,7 +22304,7 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
         wss.getline(LineString, 100); // RlyClpBrdCopy or ...Cut - discard it
         Track->SelectVector.clear();
         TTrack::TTrackMap SelectTrackMap; //build map so can find TrackElement at required H  & V to build PrefDirElement from it //added at v2.9.0
-        THVPair SelectTrackMapKeyPair; //for above
+        THVShortPair SelectTrackMapKeyPair; //for above
         TTrack::TTrackMapEntry SelectTrackMapEntry; //for above
         while(true) // recover active & inactive track (active first & top to bottom at leftmost position then again stepping right
         {
@@ -21607,7 +22510,7 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
         Utilities->CallLogPop(2269);
     }
 
-    catch(const EClipboardException &e) //don't stop for any error in this section, just log it  //non-error catch
+    catch(const EClipboardException &e) //non-error catch - don't stop for any error in this section, just give bad clipboard message
     {
         ValidResult = false;
         TrainController->LogEvent("EClipboardException in RecoverClipboard - message = " + e.Message);
@@ -21618,11 +22521,2269 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
         ValidResult = false;
         TrainController->LogEvent("non-clipboard exception in RecoverClipboard - message = " + e.Message);
         Utilities->CallLogPop(2322);
+//        ErrorLog(223, e.Message);
     }
 
 }
 
 // ---------------------------------------------------------------------------
+//Multiplayer Code
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+//Host functions
+// ---------------------------------------------------------------------------
+
+void __fastcall TInterface::MultiplayerHostSessionMenuItemClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("MultiplayerHostSessionMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MultiplayerHostSessionMenuItemClick");
+        MultiplayerHostPanel->Visible = true;
+        MultiplayerHostPanel->Left = MainScreen->Left + (MainScreen->Width / 2) - (MultiplayerHostPanel->Width / 2);
+        MultiplayerHostPanel->Top = MainScreen->Top + 100;
+
+        MultiplayerHostSessionMenuItem->Enabled = false;
+        SaveMultiplayerSessionMenuItem->Enabled = false;
+        EndSimulationMenuItem->Enabled = false;
+        ShowHideStringGridMenuItem->Enabled = false;
+        JoinMultiplayerSessionMenuItem->Enabled = false;
+        ExitSimulationMenuItem->Enabled = false;
+        HostInSessionFlag = false;
+        CouplingFileLoadedFlag = false;
+        PlayerMakingInitialContactFlag = false;
+        PlayerReadyToBeginFlag = false;
+        PlayerCancelJoinFlag = false;
+        PlayerAwaitingHostStartFlag = false;
+        PlayerInSessionFlag = false;
+
+        MPHPLoadCouplingFileButton->Enabled = false;
+        MPHPCancelButton->Enabled = true;
+        MPHPStartButton->Enabled = false;
+        MPHPGeneralLabel->Caption = "Complete the boxes and press 'Enter' for each.";
+        MPHPOwnIPEditBox->Text = "0.0.0.0";//  <--temporary - change to "" for release
+        MPHPOwnPortEditBox->Text = "50000";//  <--temporary - change to "" for release
+        MPHPOwnIPEditBox->Enabled = true;
+        MPHPOwnPortEditBox->Enabled = true;
+        MPHostClient->Active = false;
+        Utilities->CallLogPop(2348);
+    }
+
+    catch(const EIdException &e) //non-error catch
+    {
+        ShowMessage("MultiplayerHostSessionMenuItemClick " + e.Message); //<--temporary
+        Utilities->CallLogPop(2407);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(226, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MPHPLoadCouplingFileButtonClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("MPHPLoadCouplingFileButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPHPLoadCouplingFileButtonClick");
+        LoadCouplingFileDialog->Filter = "Text file (*.txt)|*.txt";
+        if(LoadCouplingFileDialog->Execute()) //error messages given in PopulateCouplingMap
+        {
+            NumPlayers = 0;
+            TrainController->LogEvent("LoadCouplingFile " + AnsiString(LoadCouplingFileDialog->FileName));
+            if(PopulateCouplingMap(AnsiString(LoadCouplingFileDialog->FileName), NumPlayers))
+            {
+                MultiplayerHostStringGrid->RowCount = 1;    //clear it before loading or reloading
+                MultiplayerHostStringGrid->ColCount = 1;
+                MultiplayerHostStringGrid->Cells[0][0] = "";
+                MultiplayerHostStringGrid->Top = MultiplayerHostPanel->Top;
+                MultiplayerHostStringGrid->Width = 260;
+                MultiplayerHostStringGrid->Left = MultiplayerHostPanel->Left - MultiplayerHostStringGrid->Width - 10;
+                MultiplayerHostStringGrid->Height = (25 * NumPlayers) + 54;
+                if(MultiplayerHostStringGrid->Height > MainScreen->Height - 100)
+                {
+                    MultiplayerHostStringGrid->Height = MainScreen->Height - 120;
+                }
+                MultiplayerHostStringGrid->ColCount = 3;
+                MultiplayerHostStringGrid->RowCount = NumPlayers + 2; //2 = heading & blank row
+                MultiplayerHostStringGrid->ColWidths[1] = 128;
+                MultiplayerHostStringGrid->Cells[0][0] = "Player";
+                MultiplayerHostStringGrid->Cells[1][0] = "Railway";
+                MultiplayerHostStringGrid->Cells[2][0] = "Ready?";
+                bool RailwayFound = false;
+                for(RLIt = RailwayList.begin(); RLIt != RailwayList.end(); RLIt++)
+                {
+                    if(*RLIt != RailwayTitle)  //host's railway
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        RailwayFound = true;
+                        break;
+                    }
+                }
+                if(!RailwayFound)
+                {
+                    ShowMessage("Can't find '" + RailwayTitle + "' in coupling file - please load an appropriate railway and timetable or a pre-start session file");
+                    Utilities->CallLogPop(2349);
+                    return;
+                }
+                MultiplayerHostStringGrid->Visible = true;
+                MPHPLoadCouplingFileButton->Enabled = false;
+                MPHPGeneralLabel->Caption = "Awaiting player connections";
+                int GridCount = 2;  ;//row 1 is blank
+                InfoVector.clear();
+                TRlyUserInfo RlyUserInfo; //has default values
+                unsigned char x = 1; //numbers start at 1
+                //populate StringGrid & InfoVector with RailwayNames & numbers + "Host" as user in correct place
+                for(RLIt = RailwayList.begin(); RLIt != RailwayList.end(); RLIt++)//railways in order
+                {
+                    if(*RLIt == RailwayTitle) //host's railway
+                    {
+                        MultiplayerHostStringGrid->Cells[0][GridCount] = "Host";
+                        MultiplayerHostStringGrid->Cells[1][GridCount] = *RLIt;  //RailwayName
+                        MultiplayerHostStringGrid->Cells[2][GridCount] = "Yes";
+                        RlyUserInfo.RailwayName = *RLIt;  //RailwayName
+                        RlyUserInfo.UserName = "Host";
+                        RlyUserInfo.RlyUserNumber = x;
+                        InfoVector.push_back(RlyUserInfo);
+                        x++;
+                    }
+                    else
+                    {
+                        MultiplayerHostStringGrid->Cells[0][GridCount] = ""; //UserName
+                        MultiplayerHostStringGrid->Cells[1][GridCount] = *RLIt;  //RailwayName
+                        MultiplayerHostStringGrid->Cells[2][GridCount] = "No";
+                        RlyUserInfo.RailwayName = *RLIt;  //RailwayName
+                        RlyUserInfo.RlyUserNumber = x;
+                        InfoVector.push_back(RlyUserInfo);
+                        x++;
+                    }
+                    GridCount++;
+                }
+                CouplingFileLoadedFlag = true;
+                MPHostClient->Active = true;
+            }
+            //no need for 'else' - messages given in called functions
+        }
+        Utilities->CallLogPop(2324);
+    }
+    catch(const EIdException &e) //non-error catch
+    {
+        ShowMessage("MPHPLoadCouplingFileButtonClick " + e.Message); //<--temporary
+        Utilities->CallLogPop(2408);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(225, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MPHPCancelButtonClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("MPHPCancelButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPHPCancelButtonClick");
+        MPHostClient->Active = false;
+        MPHPOwnIPEditBox->Text = "";
+        MPHPOwnPortEditBox->Text = "";
+        MultiplayerHostPanel->Visible = false;
+        MultiplayerHostStringGrid->Visible = false;
+        MPHPStartButton->Enabled = false;
+//        AnsiCouplingMap.clear();  cleared in PopulateCouplingMap
+        CouplingFileLoadedFlag = false;
+        HostInSessionFlag = false;
+        Utilities->CallLogPop(2350);
+    }
+    catch(const EIdException &e) //non-error catch
+    {
+        ShowMessage("MPHPCancelButtonClick " + e.Message); //<--temporary
+        Utilities->CallLogPop(2409);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(227, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MPHPStartButtonClick(TObject *Sender)
+{
+    try
+    {
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPHPStartButtonClick");
+
+        ShowMessage("We're off!");  //<--temporary
+        MultiplayerHostPanel->Visible = false;
+        MultiplayerHostStringGrid->Visible = false;
+        HostInSessionFlag = true;
+        OperateButton->Click(); //start own session
+        Utilities->CallLogPop(2369);
+    }
+    catch(const EIdException &e) //non-error catch
+    {
+        ShowMessage("MPHPStartButtonClick " + e.Message); //<--temporary
+        Utilities->CallLogPop(2410);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(237, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MPHPOwnIPEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftState Shift)
+
+{
+    try
+    {
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPHPOwnIPEditBoxKeyUp," + AnsiString(Key));
+        if(Key == '\x0D') //CR
+        {
+            if(InvalidIPAddress(MPHPOwnIPEditBox->Text))
+            {
+                ShowMessage("Format should be 'a.b.c.d' where a, b, c, and d are numbers between 0 and 255.\n\nObtain the address from the host and enter exactly as given.");
+                MPHPOwnIPEditBox->Text = "";
+                Utilities->CallLogPop(2351);
+                return;
+            }
+            MPHPOwnIPEditBox->Enabled = false;
+            if(MPHPOwnPortEditBox->Enabled == false)
+            {
+                MPHostClient->BoundIP = MPHPOwnIPEditBox->Text;
+                MPHostClient->BoundPort = (unsigned short)MPHPOwnPortEditBox->Text.ToInt();
+                MPHPLoadCouplingFileButton->Enabled = true;
+                MPHPGeneralLabel->Caption = "Load coupling file";
+            }
+        }
+        else
+        {
+            for(int x = 1; x <= MPHPOwnIPEditBox->Text.Length(); x++)
+            {
+                if((MPHPOwnIPEditBox->Text[x] != '.') && ((MPHPOwnIPEditBox->Text[x] < '0') || (MPHPOwnIPEditBox->Text[x] > '9')))
+                {
+                    ShowMessage("Format should be 'a.b.c.d' where a, b, c, and d are numbers between 0 and 255.\n\nObtain the address from the host and enter exactly as given.");
+                    MPHPOwnIPEditBox->Text = "";
+                    Utilities->CallLogPop(2352);
+                    return;
+                }
+            }
+        }
+        Utilities->CallLogPop(2353);
+    }
+    catch(const EIdException &e) //non-error catch
+    {
+        ShowMessage("MPHPOwnIPEditBoxKeyUp " + e.Message); //<--temporary
+        Utilities->CallLogPop(2411);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(228, e.Message);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MPHPOwnPortEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftState Shift)
+
+{
+    try
+    {
+        TrainController->LogEvent("MPHPOwnPortEditBoxKeyUp," + AnsiString(Key));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPHPOwnPortEditBoxKeyUp," + AnsiString(Key));
+        if(Key == '\x0D') //CR
+        {
+            if((MPHPOwnPortEditBox->Text == "") || (MPHPOwnPortEditBox->Text.Length() < 5) || (MPHPOwnPortEditBox->Text.ToInt() < 49152) || (MPHPOwnPortEditBox->Text.ToInt() > 59999))
+            {
+                ShowMessage("Entry should be a number between 49152 and 59999.");
+                MPHPOwnPortEditBox->Text = "";
+                Utilities->CallLogPop(2354);
+                return;
+            }
+            MPHPOwnPortEditBox->Enabled = false;
+            if(MPHPOwnIPEditBox->Enabled == false)
+            {
+                MPHostClient->BoundIP = MPHPOwnIPEditBox->Text;
+                MPHostClient->BoundPort = (unsigned short)MPHPOwnPortEditBox->Text.ToInt();
+                MPHPLoadCouplingFileButton->Enabled = true;
+                MPHPGeneralLabel->Caption = "Load coupling file";
+            }
+        }
+        else
+        {
+            for(int x = 1; x <= MPHPOwnPortEditBox->Text.Length(); x++)
+            {
+                if((MPHPOwnPortEditBox->Text[x] < '0') || (MPHPOwnPortEditBox->Text[x] > '9'))
+                {
+                    ShowMessage("Entry should be a number between 49152 and 59999.");
+                    MPHPOwnPortEditBox->Text = "";
+                    Utilities->CallLogPop(2355);
+                    return;
+                }
+            }
+        }
+        Utilities->CallLogPop(2356);
+    }
+    catch(const EIdException &e) //non-error catch
+    {
+        ShowMessage("MPHPOwnPortEditBoxKeyUp " + e.Message); // <--temporary
+        Utilities->CallLogPop(2412);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(229, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::IPCheckLinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType)
+{
+    if(LinkType == sltURL)
+    {
+        ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::TAnsiCouplingMapComp:: operator()(const TAnsiCouplingPair& lower, const TAnsiCouplingPair& higher) const
+{
+    if(lower.first < higher.first)  //RailwayName
+    {
+        return(true);
+    }
+    else if(lower.first > higher.first)
+    {
+        return(false);
+    }
+    else if(lower.second.first < higher.second.first) //railway names same, lower H < higher H
+    {
+        return(true);
+    }
+    else if(lower.second.first > higher.second.first) //railway names same, lower H > Higher H
+    {
+        return(false);
+    }
+    else if(lower.second.second < higher.second.second) //railway names same, H values same, lower V < higher V
+    {
+        return(true);
+    }
+    else return(false); //railway names same, H values same, lower V > higher V or both V values same
+                        //both H & V values shouldn't be same for same railway but if for some reason they are then
+                        //the map will reject one of them as both comp(a, b) and comp(b, a) are false
+}
+
+// ---------------------------------------------------------------------------
+
+bool TInterface::TDynamicMapComp:: operator()(const TNumHVPair& lower, const TNumHVPair& higher) const
+{
+    if(lower.first < higher.first) //compare numbers
+    {
+        return(true);
+    }
+    else if(lower.first > higher.first)
+    {
+        return(false);
+    }
+    else if(lower.second.first < higher.second.first) //number values same (same railway/user), compare H values
+    {
+        return(true);
+    }
+    else if(lower.second.first > higher.second.first)
+    {
+        return(false);
+    }
+    else if(lower.second.second < higher.second.second) //number & H values same, compare V values
+    {
+        return(true);
+    }
+    else if(lower.second.second > higher.second.second)
+    {
+        return(false);
+    }
+    else return(false); //number + H & V values same, shouldn't be same for same railway but if for some reason they are then
+                        //the map will reject one of them as both comp(a, b) and comp(b, a) are false
+}
+
+// ---------------------------------------------------------------------------
+
+bool TInterface::PopulateCouplingMap(AnsiString FileName, int &NumExt)
+// read file CouplingMap.csv (in same directory as railway.exe) and build AnsiCouplingMap (based on railway name), AllRailwaysCouplingMap (based on
+//RlyUserNumber) & HostCombinedDynamicMap.  The maps have two sets of couplings so each railway/HVpair is a key
+{
+    TrainController->LogEvent("PopulateCouplingMap");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PopulateCouplingMap,FileName," + FileName); //no caller as only called once
+    AnsiString RailwayName1 = "", RailwayName2 = "", OneLine = "", ExitID1 = "", ExitID2 = "";
+    int HLoc1, HLoc2, VLoc1, VLoc2, CPos, NumRailways;
+    TAnsiCouplingPair AnsiCouplingPair1, AnsiCouplingPair2;
+    TAnsiCouplingMapEntry AnsiCouplingMapEntry;
+    AnsiCouplingMap.clear();
+    THVShortPair HVExitPair1, HVExitPair2;
+    std::ifstream TxtFile(FileName.c_str()); //railway1, HLoc, VLoc, railway2, HLoc, VLoc CRLF repeated
+    AnsiString SyntaxError = "Coupling file error - structure should consist of lines of 'R1; exit1ID; R2; exit2ID' and so on "
+                        "for all coupled exits, where R1 and R2 are railway names without the '.rly' extension, exit1ID is an "
+                        "exit ID in R1, and exit2ID is an exit ID in R2";
+    if(TxtFile.fail())
+    {
+        ShowMessage("Can't find the coupling file.  Please make sure it's located in the directory selected and has a .txt extension");
+        Utilities->CallLogPop(2325);
+        return(false);
+    }
+    while(!TxtFile.eof())
+    {
+        if(!Utilities->ReadOneLineFromCouplingFile(TxtFile, OneLine))
+        {
+            ShowMessage(SyntaxError);
+            TxtFile.close();
+            Utilities->CallLogPop(2326);
+            return(false);
+        }
+        if(TxtFile.eof() && (OneLine == ""))
+        {
+            break;
+        }
+        if(OneLine.AnsiPos(',') != 0)
+        {
+            ShowMessage(SyntaxError);
+            TxtFile.close();
+            Utilities->CallLogPop(2327);
+            return(false);
+        }
+        TrainController->StripSpaces(6, OneLine);
+    // strip both leading and trailing spaces at ends of line and spaces before and after all commas (and semicolons) within the line
+        if(OneLine != "")
+        {
+            int DelimPos = OneLine.Pos(';');
+            if(DelimPos < 2) //0 = can't find, 1 = first character is a comma - both errors
+            {
+                ShowMessage(SyntaxError);
+                TxtFile.close();
+                Utilities->CallLogPop(2328);
+                return(false);
+            }
+            else
+            {
+                RailwayName1 = OneLine.SubString(1, (DelimPos - 1));
+                OneLine = OneLine.SubString(DelimPos + 1, OneLine.Length() - DelimPos);  //OneLine is now the remainder
+                if(RailwayName1.LowerCase().SubString(RailwayName1.Length() - 3, 4) == ".rly")
+                {
+                    RailwayName1 = RailwayName1.SubString(1, RailwayName1.Length() - 4); //ignore .rly if present
+                }
+            }
+            DelimPos = OneLine.Pos(';');
+            if(DelimPos < 2) //0 = can't find, 1 = first character is a comma - both errors
+            {
+                ShowMessage(SyntaxError);
+                TxtFile.close();
+                Utilities->CallLogPop(2329);
+                return(false);
+            }
+            else
+            {
+                ExitID1 = OneLine.SubString(1, (DelimPos - 1));
+                OneLine = OneLine.SubString(DelimPos + 1, OneLine.Length() - DelimPos); //OneLine is now the remainder
+                if(!ConvertIDToPair(ExitID1, HVExitPair1))
+                {
+                    TxtFile.close();
+                    Utilities->CallLogPop(2330);
+                    return(false);
+                }
+            }
+            DelimPos = OneLine.Pos(';');
+            if(DelimPos < 2) //0 = can't find, 1 = first character is a comma - both errors
+            {
+                ShowMessage(SyntaxError);
+                TxtFile.close();
+                Utilities->CallLogPop(2331);
+                return(false);
+            }
+            else
+            {
+                RailwayName2 = OneLine.SubString(1, (DelimPos - 1));
+                OneLine = OneLine.SubString(DelimPos + 1, OneLine.Length() - DelimPos); //OneLine is now the remainder
+                if(RailwayName2.LowerCase().SubString(RailwayName2.Length() - 3, 4) == ".rly")
+                {
+                    RailwayName2 = RailwayName2.SubString(1, RailwayName2.Length() - 4); //ignore .rly if present
+                }
+            }
+            if(OneLine == "") //should now only contain Exit2ID
+            {
+                ShowMessage(SyntaxError);
+                TxtFile.close();
+                Utilities->CallLogPop(2332);
+                return(false);
+            }
+            else
+            {
+                ExitID2 = OneLine;
+                if(!ConvertIDToPair(ExitID2, HVExitPair2))
+                {
+                    TxtFile.close();
+                    Utilities->CallLogPop(2333);
+                    return(false);
+                }
+            }
+            AnsiCouplingPair1.first = RailwayName1;
+            AnsiCouplingPair1.second = HVExitPair1;
+            AnsiCouplingPair2.first = RailwayName2;
+            AnsiCouplingPair2.second = HVExitPair2;
+            AnsiCouplingMapEntry.first = AnsiCouplingPair1;
+            AnsiCouplingMapEntry.second = AnsiCouplingPair2;
+            AnsiCouplingMap.insert(AnsiCouplingMapEntry);
+            AnsiCouplingMapEntry.first = AnsiCouplingPair2;  //add entry for reversed pairs
+            AnsiCouplingMapEntry.second = AnsiCouplingPair1;
+            AnsiCouplingMap.insert(AnsiCouplingMapEntry);
+            RailwayList.push_back(RailwayName1);
+            RailwayList.push_back(RailwayName2);
+        }
+        else
+        {
+            continue; //ignore blank lines
+        }
+    }
+    TxtFile.close();
+    RailwayList.sort();
+    RailwayList.unique(); //remove duplicates
+    NumPlayers = RailwayList.size();
+//now convert to number based coupling map
+    AllRailwaysCouplingMap.clear();
+    TNumHVPair NumHVPair1, NumHVPair2;
+    for(TAnsiCouplingMap::iterator ACMIt = AnsiCouplingMap.begin(); ACMIt != AnsiCouplingMap.end(); ACMIt++)
+    {
+        int ListCounter = 1; //RlyUserNumbers start at 1
+        for(RLIt = RailwayList.begin(); RLIt != RailwayList.end(); RLIt++)
+        {
+            if(ACMIt->first.first == *RLIt)
+            {
+                NumHVPair1.first = ListCounter;
+                NumHVPair1.second = ACMIt->first.second;
+                break;
+            }
+            ListCounter++;
+        }
+        ListCounter = 1;
+        for(RLIt = RailwayList.begin(); RLIt != RailwayList.end(); RLIt++)
+        {
+            if(ACMIt->second.first == *RLIt)
+            {
+                NumHVPair2.first = ListCounter;
+                NumHVPair2.second = ACMIt->second.second;
+                break;
+            }
+            ListCounter++;
+        }
+        AllRailwaysCouplingPair.first = NumHVPair1;
+        AllRailwaysCouplingPair.second = NumHVPair2;
+        AllRailwaysCouplingMap.insert(AllRailwaysCouplingPair);  //includes reversed couplings
+    }
+//now build the HostCombinedDynamicMap without any service info
+    HostCombinedDynamicMap.clear();
+    TDynamicMapEntry DMEntry;
+    TServiceInfo ServiceInfo; //default values
+    for(TCMIterator CMIt = AllRailwaysCouplingMap.begin(); CMIt != AllRailwaysCouplingMap.end(); CMIt++)
+    {
+        DMEntry.first = CMIt->first;
+        DMEntry.second = ServiceInfo;
+        HostCombinedDynamicMap.insert(DMEntry);                  //includes reversed couplings
+    }
+    ShowMessage("File loaded successfully");
+    Utilities->CallLogPop(2334);
+    return(true);
+}
+
+// ---------------------------------------------------------------------------
+
+bool TInterface::ConvertIDToPair(AnsiString HVID, THVShortPair &HVPair) //true for ok
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ConvertIDToPair," + HVID); //no caller as only called twice & HVID identifies
+    AnsiString HString = "", VString = "";
+    if(HVID == "") //should be covered in calling function but include anyway
+    {
+        ShowMessage("Coupling file error - an exit ID is missing from the file");
+        Utilities->CallLogPop(2335);
+        return(false);
+    }
+    for(int x = 1; x <= HVID.Length(); x++)
+    {
+        char C = HVID[x];
+        if(((C < '0') || (C > '9')) && (C != 'N') && (C != '-'))
+        {
+            ShowMessage("Coupling file error - an exit ID contains illegal characters, can only include digits, '-' or 'N'");
+            Utilities->CallLogPop(2336);
+            return(false);
+        }
+    }
+    int DashPos = HVID.Pos('-');
+    if(DashPos == 0)
+    {
+        ShowMessage("Coupling file error - structure should consist of lines of 'R1, exit1 ID, R2, corresponding exit ID' and so on "
+                            "for all coupled exits, where R1 and R2 are railway names without the '.rly' extension");
+        Utilities->CallLogPop(2337);
+        return(false);
+    }
+    else
+    {
+        HString = HVID.SubString(1, DashPos - 1);
+        VString = HVID.SubString(DashPos + 1, HVID.Length() - DashPos);
+        if(HString[1] == 'N')
+        {
+            HString = HString.SubString(2, HString.Length() - 1);
+            HVPair.first = -HString.ToInt();
+        }
+        else
+        {
+            HVPair.first = HString.ToInt();
+        }
+        if(VString[1] == 'N')
+        {
+            VString = VString.SubString(2, VString.Length() - 1);
+            HVPair.second = -VString.ToInt();
+        }
+        else
+        {
+            HVPair.second = VString.ToInt();
+        }
+    }
+    Utilities->CallLogPop(2338);
+    return(true);
+}
+
+// ---------------------------------------------------------------------------
+
+bool TInterface::MultiplayerRailwayValid(AnsiString RailwayName, char &ErrorNumber)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "MultiplayerRailwayValid");
+    ErrorNumber = 0; //no error
+    bool Listed = false, Available = false, RetType = false;
+    for(int x = 2; x < NumPlayers + 2; x++)
+    {
+        if(RailwayName == MultiplayerHostStringGrid->Cells[1][x])
+        {
+            Listed = true;
+            if(MultiplayerHostStringGrid->Cells[0][x] == "")
+            {
+                Available = true;
+            }
+            break;
+        }
+    }
+    if(!Listed)
+    {
+        ErrorNumber = 1;
+    }
+    else if(!Available)
+    {
+        ErrorNumber = 2;
+    }
+    else
+    {
+        RetType = true;
+    }
+    Utilities->CallLogPop(2357);
+    return(RetType);
+}
+
+//---------------------------------------------------------------------------
+
+short TInterface::BuildOneRailwayCouplingMap(unsigned char PlayerNumber)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "BuildOneRailwayCouplingMap");
+    OneRailwayCouplingMap.clear();
+    TCouplingMap::iterator CMIt;
+    short Count = 0;
+    for(CMIt = AllRailwaysCouplingMap.begin(); CMIt != AllRailwaysCouplingMap.end(); CMIt++)
+    {
+        if(CMIt->first.first == PlayerNumber)
+        {
+            OneRailwayCouplingPair.first = CMIt->first; //own player number + H & V for own railway
+            OneRailwayCouplingPair.second = CMIt->second; //other player number & coupled H&V
+            OneRailwayCouplingMap.insert(OneRailwayCouplingPair);
+            Count++;
+        }
+    }
+    Utilities->CallLogPop(2378);
+    return(Count * 10); //this is the number of bytes to be entered into a datagram (apart from marker & username if they are required)
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::HostHandshakingActions()
+{ //host read & respond new for multiplayer - every cycle
+    try
+    {
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",HostHandshakingActions");
+        if(CouplingFileLoadedFlag)
+        {
+            EIdExceptionSource += " CouplingFileLoadedAwaitingPlayers";
+            UnicodeString Data = "";
+            UnicodeString PeerIP = "";
+            unsigned short PeerPort = 0;
+            unsigned char marker;
+            bool Found1 = false, Found2 = false;
+            AnsiString PlayerRailwayName, PlayerUserName;
+            char ErrorNumber; //indicates type of error 0 = ok, 1 = not listed, 2 = already taken
+            UnicodeString Message1 = "The railway doesn't appear in the coupled group - the host can advise which railways are valid";
+            UnicodeString Message2 = "The railway has already been allocated - the host can advise which are still available";
+            TBytes HostBuffer;
+            HostBuffer.Length = 8192; //have to set long enough initially, will reduce later
+            HostBuffer.Length = MPHostClient->ReceiveBuffer(HostBuffer, PeerIP, PeerPort, 10);
+            //will be of form 'marker' then UserName ';' RailwayName (marker is '1' for first contact, '2' for ready to begin, no space or delimieter before railway name)
+            MPHostClient->Active = false; //don't receive any messages until have dealt with this
+            if(HostBuffer.Length != 0)
+            {
+                if(HostBuffer[0] == '1') //player first contact, no binary content
+                {
+                    //check validity
+                    bool FoundFlag = false;
+                    for(int x = 1; x < HostBuffer.Length; x++)
+                    {
+                        if((HostBuffer[x] == ';') && (x > 1) && (x < (HostBuffer.Length - 1))) // ';' present and not first ot last character
+                        {
+                            FoundFlag = true;
+                            break;
+                        }
+                    }
+                    if(!FoundFlag)
+                    {
+                        Utilities->CallLogPop(2387);   //skip this loop
+                        return;
+                    }
+                    for(int x = 1; x < HostBuffer.Length; x++)
+                    {
+                        if((HostBuffer[x] < ' ') || (HostBuffer[x] > '~'))
+                        {
+                            MPHostClient->Active = true;
+                            Utilities->CallLogPop(2371);   //skip this loop
+                            return;
+                        }
+                    }
+                    Data = BytesToString(HostBuffer);
+                    int DelimPos = Data.Pos(';');
+                    PlayerUserName = Data.SubString(2, DelimPos - 2);
+                    PlayerRailwayName = Data.SubString(DelimPos + 1, Data.Length() - DelimPos);
+                    unsigned char PlayerNumber;
+                    if(!RlyToNum(PlayerRailwayName, PlayerNumber))
+                    {
+                        ShowMessage("Error in converting incoming information for player '" + PlayerUserName + "', ask player to cancel and join again");
+                        RemovePlayerFromStringGridAndInfoVector(0, PlayerUserName);
+                        MPHostClient->Active = true;
+                        Utilities->CallLogPop(2372);   //skip this loop
+                        return;
+                    }
+                    if(MultiplayerRailwayValid(PlayerRailwayName, ErrorNumber))
+                    {
+                    //host can accept or reject
+                        UnicodeString RejectString = PlayerUserName + " is asking to join with railway " + PlayerRailwayName + ". OK to join?";
+                        int button = Application->MessageBox(RejectString.c_str(), L"Request", MB_YESNO);
+                        if(button == IDNO)
+                        {
+                            MPHostClient->SendBuffer(PeerIP, PeerPort, ToBytes("The host did not accept your request to join"));
+                            MPHostClient->Active = false; //keep it false (send sets it to true)
+                        }
+                        else
+                        {
+                        //find correct slot in MultiplayerHostStringGrid & InfoVector & add username
+                            for(int x = 0; x < NumPlayers; x++)
+                            {
+                                if(MultiplayerHostStringGrid->Cells[1][x + 2] == PlayerRailwayName)
+                                {
+                                    MultiplayerHostStringGrid->Cells[0][x + 2] = PlayerUserName;
+                                    Found1 = true;
+                                    break;
+                                }
+                            }
+                            for(int x = 0; x < NumPlayers; x++)
+                            {
+                                if(InfoVector.at(x).RailwayName == PlayerRailwayName) //already have number
+                                {
+                                    InfoVector.at(x).UserName = PlayerUserName;
+                                    InfoVector.at(x).UserIP = PeerIP;
+                                    InfoVector.at(x).UserPort = PeerPort;
+                                    Found2 = true;
+                                    break;
+                                }
+                            }
+                            if(!Found1 || !Found2)
+                            {
+                                //error, should find both
+                                ShowMessage("Error in initial contact information for player '" + PlayerUserName + "', ask player to cancel and join again");
+                                RemovePlayerFromStringGridAndInfoVector(1, PlayerUserName);
+                                MPHostClient->Active = true;
+                                Utilities->CallLogPop(2373);   //skip this loop
+                                return;
+                            }
+// now send OwnRlyUserNumber + shortHVs then coupled number + short HVs (10 bytes total per exit/entry), no separators
+                            short NumBytes = BuildOneRailwayCouplingMap(PlayerNumber);
+                            TCouplingMap::iterator CMIt = OneRailwayCouplingMap.begin();
+                            TBytes HVbuffer;
+                            HVbuffer.Length = NumBytes;
+                            for(int x = 0; x < NumBytes; x += 10)
+                            {
+                                HVbuffer[x] = CMIt->first.first;  // = player's OwnRlyUserNumber
+                                HVbuffer[x + 1] = CMIt->first.second.first & 0x00FF;    //H low then high
+                                HVbuffer[x + 2] = (CMIt->first.second.first & 0xFF00) / 256;
+                                HVbuffer[x + 3] = CMIt->first.second.second & 0x00FF;    //V low then high
+                                HVbuffer[x + 4] = (CMIt->first.second.second & 0xFF00) / 256;
+
+                                HVbuffer[x + 5] = CMIt->second.first; //coupled railway usernumber
+                                HVbuffer[x + 6] = CMIt->second.second.first & 0x00FF;    //H low then high
+                                HVbuffer[x + 7] = (CMIt->second.second.first & 0xFF00) / 256;
+                                HVbuffer[x + 8] = CMIt->second.second.second & 0x00FF;    //V low then high
+                                HVbuffer[x + 9] = (CMIt->second.second.second & 0xFF00) / 256;
+                                CMIt++;
+                            }
+                            MPHostClient->SendBuffer(PeerIP, PeerPort, HVbuffer);
+                            MPHostClient->Active = false; //keep it false
+                        }
+                    }
+                    else
+                    {
+                        //send message that not listed (1) or already taken (2) - cancel panel and load a valid railway (ask host which ok)
+                        //send it outside the data receipt as data won't keep being sent from player
+                        if(ErrorNumber == 1)
+                        {
+                            MPHostClient->SendBuffer(PeerIP, PeerPort, ToBytes(Message1));
+                        }
+                        else if(ErrorNumber == 2)
+                        {
+                            MPHostClient->SendBuffer(PeerIP, PeerPort, ToBytes(Message2));
+                        }
+                        MPHostClient->Active = false; //keep it false (send sets it to true)
+                    }
+                }
+                else if(HostBuffer[0] == '2') //player second contact, marker = 2, username, then DynMapToHost in buffer form
+                {
+                    TDynamicMap::iterator DMIt, HMIt;
+                    if(BuildDynamicMapFromPlayerDatagram(0, DynMapToHost, HostBuffer, marker, PlayerUserName)) //this performs validity checks
+                    {
+//                  update HostCombinedDynamicMap. Won't alter anything here as no service information, but acts as a check that can find all elements
+                        for(DMIt = DynMapToHost.begin(); DMIt != DynMapToHost.end(); DMIt++) //unlikely to be in alphabetical order
+                        {
+                            HMIt = HostCombinedDynamicMap.find(DMIt->first); //should always find it
+                            if(HMIt != HostCombinedDynamicMap.end())
+                            {
+                                HMIt->second = DMIt->second;
+                            }
+                            else
+                            {
+                                ShowMessage("Failed to locate player information in host database for player '" + PlayerUserName + "', ask player to cancel and join again");
+                                RemovePlayerFromStringGridAndInfoVector(2, PlayerUserName);
+                                Utilities->CallLogPop(2374);   //skip this loop
+                                return;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Utilities->CallLogPop(2375);   //skip this loop
+                        return;
+                    }
+                //update StringGrid & InfoVector
+                    Found1 = false;
+                    Found2 = false;
+                    for(int x = 0; x < NumPlayers; x++)
+                    {
+                        if(MultiplayerHostStringGrid->Cells[0][x + 2] == PlayerUserName)
+                        {
+                            MultiplayerHostStringGrid->Cells[2][x + 2] = "Yes";
+                            Found1 = true;
+                        }
+                    }
+                    for(int x = 0; x < NumPlayers; x++)
+                    {
+                        if(InfoVector.at(x).UserName == PlayerUserName) //already have number
+                        {
+                            InfoVector.at(x).UserIP = PeerIP;
+                            InfoVector.at(x).UserPort = PeerPort;
+                            Found2 = true;
+                        }
+                    }
+                    if(!Found1 || !Found2)
+                    {
+                        //error, should find both
+                        ShowMessage("Error in 'ready to begin' contact information for player '" + PlayerUserName + "', ask player to cancel and join again");
+                        RemovePlayerFromStringGridAndInfoVector(3, PlayerUserName);
+                        Utilities->CallLogPop(2388);   //skip this loop
+                        return;
+                    }
+//                  now send return message to player
+                    TBytes HVbuffer;
+                    HVbuffer.Length = 22;
+                    UnicodeString Message = "Await simulation start";
+                    HVbuffer = ToBytes(Message);
+                    MPHostClient->SendBuffer(PeerIP, PeerPort, HVbuffer);
+                    MPHostClient->Active = false; //keep it false (send sets it to true)
+//check if all players ready to start, and if so enable the 'start session' button
+                    bool AllReady = true;
+                    for(int x = 0; x < NumPlayers; x++)
+                    {
+                        if(MultiplayerHostStringGrid->Cells[2][x + 2] != UnicodeString("Yes"))
+                        {
+                            AllReady = false;
+                        }
+                    }
+                    if(AllReady)
+                    {
+                        MPHPStartButton->Enabled = true;
+                    }
+                }
+                else if(HostBuffer[0] == '3') //player clicked cancel button
+                {
+                    for(int x = 1; x < HostBuffer.Length; x++) //validity check
+                    {
+                        if((HostBuffer[x] < ' ') || (HostBuffer[x] > '~'))
+                        {
+                            Utilities->CallLogPop(2392);   //skip this loop
+                            return;
+                        }
+                    }
+                    Data = BytesToString(HostBuffer); //message is '3' then username and nothing else
+                    PlayerUserName = Data.SubString(2, Data.Length() - 1);
+                    TBytes HVbuffer;
+                    HVbuffer.Length = 9;
+                    UnicodeString Message = "Cancelled";
+                    HVbuffer = ToBytes(Message);
+                    MPHostClient->SendBuffer(PeerIP, PeerPort, HVbuffer); //send response each time received but only show message etc. once
+                    MPHostClient->Active = false; //keep it false (send sets it to true)
+                    unsigned char RlyUserNumber;
+                    if(!UserToNum(PlayerUserName, RlyUserNumber)) //use this to check if already removed from vector
+                    {
+                        Utilities->CallLogPop(2391); //already removed from infovector so go no further
+                        return;
+                    }
+                    else
+                    {
+                        ShowMessage("Player '" + PlayerUserName + "', has cancelled the join request");
+                        RemovePlayerFromStringGridAndInfoVector(4, PlayerUserName);
+                        Utilities->CallLogPop(2389);
+                        return;
+                    }
+                }
+                else if(HostBuffer[0] == '4') //player awaiting start
+                {
+                    if(HostInSessionFlag)
+                    {
+                        for(int x = 1; x < HostBuffer.Length; x++) //validity check
+                        {
+                            if((HostBuffer[x] < ' ') || (HostBuffer[x] > '~'))
+                            {
+                                Utilities->CallLogPop(2393);   //skip this loop
+                                return;
+                            }
+                        }
+                        Data = BytesToString(HostBuffer); //message is '3' then username and nothing else
+                        PlayerUserName = Data.SubString(2, Data.Length() - 1);
+                        TBytes HVbuffer;
+                        HVbuffer.Length = 13;
+                        UnicodeString Message = "Start Session";
+                        HVbuffer = ToBytes(Message);
+                        MPHostClient->SendBuffer(PeerIP, PeerPort, HVbuffer); //send response each time received, eventually all players will start
+                                                                              //when players are in session they just message every 5 secs & get TTClock in response
+                        MPHostClient->Active = false; //keep it false (send sets it to true)
+                    }
+                    //else ignore
+                }
+                else if(HostBuffer[0] == '5') //in session
+                {
+                    TDynamicMap::iterator DMIt, HMIt;
+                    if(BuildDynamicMapFromPlayerDatagram(1, DynMapToHost, HostBuffer, marker, PlayerUserName)) //this performs validity checks
+                    {
+//                  update HostCombinedDynamicMap
+                        for(DMIt = DynMapToHost.begin(); DMIt != DynMapToHost.end(); DMIt++) //unlikely to be in alphabetical order
+                        {
+                            HMIt = HostCombinedDynamicMap.find(DMIt->first); //should always find it
+                            if(HMIt != HostCombinedDynamicMap.end())         //if not skip
+                            {
+                                HMIt->second = DMIt->second;
+                            }
+                        }
+                    }
+                    //construct DynMapFromHost & send as buffer along with TTClockTime, then at player end receive it and update TTClock etc
+                    unsigned char RlyUserNumber;
+                    if(!UserToNum(PlayerUserName, RlyUserNumber)) //get number from InfoVector
+                    {
+                        Utilities->CallLogPop(2395);   //skip this loop
+                        return;
+                    }
+                    DynMapFromHost.clear();
+                    bool LoadingFlag = false;
+                    HMIt = HostCombinedDynamicMap.begin();
+                    while(HMIt != HostCombinedDynamicMap.end())
+                    {
+                        if(HMIt->first.first == RlyUserNumber)
+                        {
+                            DynMapFromHost.insert(*HMIt);
+                            LoadingFlag = true;
+                        }
+                        if(LoadingFlag && (HMIt->first.first != RlyUserNumber))
+                        {
+                            break; //no point looking after last insert
+                        }
+                        HMIt++;
+                    }
+                    TBytes HVbuffer;
+                    HVbuffer.Length = 8192;
+                    BuildDatagramFromHostMap(0, HVbuffer, DynMapFromHost);  //length set at end of this function, this includes TTClockTime as 32 bit integer
+                    MPHostClient->SendBuffer(PeerIP, PeerPort, HVbuffer);
+                    MPHostClient->Active = false; //keep it false (send sets it to true)
+                }
+
+                //if hostbuffer[0] outside accepted range ignore
+            }
+            else
+            {
+                //nothing to read or error in datagram format - if error ignore & read next time it's sent
+            }
+        }
+    MPHostClient->Active = true;
+    Utilities->CallLogPop(2415);
+    }
+    catch(const EIdException &e) //non-error catch
+//if no response from peer then get a 'connection reset by peer' message which isn't valid
+    {
+        Utilities->CallLogPop(2414);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(239, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+//player functions
+//---------------------------------------------------------------------------
+
+
+void __fastcall TInterface::JoinMultiplayerSessionMenuItemClick(TObject *Sender) //player first action
+{
+    try
+    {
+        TrainController->LogEvent("JoinMultiplayerSessionMenuItemClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",JoinMultiplayerSessionMenuItemClick");
+        MultiplayerPlayerPanel->Visible = true;
+        MultiplayerPlayerPanel->Left = MainScreen->Left + (MainScreen->Width / 2) - (MultiplayerPlayerPanel->Width / 2);
+        MultiplayerPlayerPanel->Top = MainScreen->Top + 100;
+        MPPlayerClient->Active = false;
+        MPCPLabel2->Caption = "Complete the boxes and press 'Enter' for each.";  //top box
+        MPCPLabel4->Caption = "Joining request not yet sent";  //opp image
+        MPCPLabel7->Caption = "Only click 'Send' when the host is ready - the host will"; //lower box top
+        MPCPLabel8->Caption = "advise by communicating outside the game.";                //lower box bottom
+        MPCPLabel5->Caption = "Host IP address (obtain from host)";
+        MPCPLabel6->Caption = "Host port number (obtain from host)";
+        MPCPLabel3->Caption = "Player name (2 to 4 characters)";
+
+        MultiplayerHostSessionMenuItem->Enabled = false;
+        SaveMultiplayerSessionMenuItem->Enabled = false;
+        EndSimulationMenuItem->Enabled = false;
+        ShowHideStringGridMenuItem->Enabled = false;
+        JoinMultiplayerSessionMenuItem->Enabled = false;
+        ExitSimulationMenuItem->Enabled = false;
+        HostInSessionFlag = false;
+        CouplingFileLoadedFlag = false;
+        PlayerMakingInitialContactFlag = false;
+        PlayerReadyToBeginFlag = false;
+        PlayerCancelJoinFlag = false;
+        PlayerAwaitingHostStartFlag = false;
+        PlayerInSessionFlag = false;
+
+        MPCPHostIPEditBox->Visible = true;
+        MPCPHostPortEditBox->Visible = true;
+        MPCPPlayerNameEditBox->Visible = true;
+        MPCPHostImage->Visible = true;
+        MPCPHostImage->Picture->Assign(RailGraphics->SolidCircleRed);
+        MPCPSendButton->Enabled = false;
+        MPCPReadyToBeginButton->Enabled = false;
+        MPCPPlayerNameEditBox->Enabled = true;
+        MPCPHostPortEditBox->Enabled = true;
+        MPCPHostIPEditBox->Enabled = true;
+        MPCPPlayerNameEditBox->Text = "AB"; //  <--temporary - change to "" for release
+        MPCPHostPortEditBox->Text = "50000";//  <--temporary - change to "" for release
+        MPCPHostIPEditBox->Text = "127.0.0.1";//  <--temporary - change to "" for release
+        Utilities->CallLogPop(2358);
+    }
+
+    catch(const Exception &e)
+    {
+        ErrorLog(230, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MPCPSendButtonClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("MPCPSendButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPCPSendButtonClick");
+        MPCPLabel2->Caption = "Await host response then click 'Ready to begin'";
+        MPCPLabel4->Caption = "Awaiting host response";
+        MPCPLabel7->Caption = "";
+        MPCPLabel8->Caption = "";
+        MPCPHostImage->Picture->Assign(RailGraphics->SolidCircleYellow);
+        MPCPSendButton->Enabled = false;
+        PlayerMakingInitialContactFlag = true;
+        P5SCounter = 0; //temporary
+
+
+//send message every 10 seconds and listen for response
+//when response received give 'received message', give greem light, and 'click ready to bein' message
+
+
+        Utilities->CallLogPop(2359);
+    }
+
+    catch(const Exception &e)
+    {
+        ErrorLog(231, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MPCPCancelButtonClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("MPCPCancelButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPCPCancelButtonClick");
+        MPCPSendButton->Enabled = false;
+        MPCPReadyToBeginButton->Enabled = false;
+        MPCPPlayerNameEditBox->Text = "";
+        MPCPHostPortEditBox->Text = "";
+        MPCPHostIPEditBox->Text = "";
+        MultiplayerPlayerPanel->Visible = false;
+        PlayerMakingInitialContactFlag = false;
+        PlayerReadyToBeginFlag = false;
+        PlayerAwaitingHostStartFlag = false;
+        PlayerInSessionFlag = false;
+        PlayerCancelJoinFlag = true;
+        Track->MultiplayerOverlayMap.clear();
+        ClearandRebuildRailway(90);
+        Utilities->CallLogPop(2341);
+    }
+
+    catch(const Exception &e)
+    {
+        ErrorLog(236, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MPCPReadyToBeginButtonClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("MPCPReadyToBeginButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPCPReadyToBeginButtonClick");
+        int button = Application->MessageBox(L"This will transfer all timer controls to the host.\n\n  Click 'Yes' to wait for the host to start the simulation.\n\nOK to proceed?", L"Warning!", MB_YESNO | MB_ICONWARNING);
+        if(button == IDNO)
+        {
+            Utilities->CallLogPop(2339);
+            return;
+        }
+//transfer control etc
+        PlayerReadyToBeginFlag = true;
+//allow certain buttons but not timer controls
+        CallingOnButton->Enabled = true;
+        PresetAutoSigRoutesButton->Enabled = true;
+        AutoSigsButton->Enabled = true;
+        SigPrefConsecButton->Enabled = true;
+        SigPrefNonConsecButton->Enabled = true;
+        UnrestrictedButton->Enabled = true;
+        RouteCancelButton->Enabled = true;
+        PerformanceLogButton->Enabled = true;
+        OperatorActionButton->Enabled = true;
+        ExitOperationButton->Enabled = true;
+        OperateButton->Enabled = false;
+        SaveSessionButton->Enabled = false;
+        TTClockAdjButton->Enabled = false;
+
+    //await host acknowledgement
+        Utilities->CallLogPop(2340);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(232, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MPCPHostIPEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftState Shift)
+{
+    try
+    {
+        TrainController->LogEvent("MPCPIPEditBoxKeyUp," + AnsiString(Key));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPCPIPEditBoxKeyUp," + AnsiString(Key));
+        if(Key == '\x0D') //CR
+        {
+            if(InvalidIPAddress(MPCPHostIPEditBox->Text))
+            {
+                ShowMessage("Format should be 'a.b.c.d' where a, b, c, and d are numbers between 0 and 255.\n\nObtain the address from the host and enter exactly as given.");
+                MPCPHostIPEditBox->Text = "";
+                Utilities->CallLogPop(2360);
+                return;
+            }
+            else
+            {
+                MPCPHostIPEditBox->Enabled = false;
+                if((MPCPHostPortEditBox->Enabled == false) && (MPCPPlayerNameEditBox->Enabled == false))
+                {
+                    MPPlayerClient->Host = MPCPHostIPEditBox->Text;
+                    MPPlayerClient->Port = MPCPHostPortEditBox->Text.ToInt();
+                    MPCPSendButton->Enabled = true;
+                }
+            }
+        }
+        else
+        {
+            for(int x = 1; x <= MPCPHostIPEditBox->Text.Length(); x++)
+            {
+                if((MPCPHostIPEditBox->Text[x] != '.') && ((MPCPHostIPEditBox->Text[x] < '0') || (MPCPHostIPEditBox->Text[x] > '9')))
+                {
+                    ShowMessage("Format should be 'a.b.c.d' where a, b, c, and d are numbers between 0 and 255.\n\nObtain the address from the host and enter exactly as given.");
+                    MPCPHostIPEditBox->Text = "";
+                    Utilities->CallLogPop(2361);
+                    return;
+                }
+            }
+        }
+        Utilities->CallLogPop(2362);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(233, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MPCPHostPortEditBoxKeyUp(TObject *Sender, WORD &Key,
+          TShiftState Shift)
+{
+    try
+    {
+        TrainController->LogEvent("MPCPHostPortEditBoxKeyUp," + AnsiString(Key));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPCPHostPortEditBoxKeyUp," + AnsiString(Key));
+        if(Key == '\x0D') //CR
+        {
+            if((MPCPHostPortEditBox->Text == "") || (MPCPHostPortEditBox->Text.Length() < 5) || (MPCPHostPortEditBox->Text.ToInt() < 49152) || (MPCPHostPortEditBox->Text.ToInt() > 59999))
+            {
+                ShowMessage("Entry should be a number between 49152 and 59999.\n\nObtain the port number from the host and enter exactly as given.");
+                MPCPHostPortEditBox->Text = "";
+                Utilities->CallLogPop(2363);
+                return;
+            }
+            MPCPHostPortEditBox->Enabled = false;
+            if((MPCPHostIPEditBox->Enabled == false) && (MPCPPlayerNameEditBox->Enabled == false))
+            {
+                    MPPlayerClient->Host = MPCPHostIPEditBox->Text;
+                    MPPlayerClient->Port = MPCPHostPortEditBox->Text.ToInt();
+                    MPCPSendButton->Enabled = true;
+            }
+        }
+        else
+        {
+            for(int x = 1; x <= MPCPHostPortEditBox->Text.Length(); x++)
+            {
+                if((MPCPHostPortEditBox->Text[x] < '0') || (MPCPHostPortEditBox->Text[x] > '9'))
+                {
+                    ShowMessage("Entry should be a number between 49152 and 59999.\n\nObtain the port number from the host and enter exactly as given.");
+                    MPCPHostPortEditBox->Text = "";
+                    Utilities->CallLogPop(2364);
+                    return;
+                }
+            }
+        }
+        Utilities->CallLogPop(2365);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(234, e.Message);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MPCPPlayerNameEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftState Shift)
+{
+    try
+    {
+        TrainController->LogEvent("MPCPPlayerNameEditBoxKeyUp," + AnsiString(Key));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MPCPPlayerNameEditBoxKeyUp," + AnsiString(Key));
+        MPCPLabel3->Caption = "Player name (2 to 4 characters)";
+        if(MPCPPlayerNameEditBox->Text.Length() > 0)
+        {
+            if(Key == '\x0D') //CR
+            {
+                if(MPCPPlayerNameEditBox->Text.Length() < 2)
+                {
+                    ShowMessage("Entry should have at least two and at most four characters with no numbers or special characters.");
+                    MPCPPlayerNameEditBox->Text = "";
+                    Utilities->CallLogPop(2366);
+                    return;
+                }
+                else
+                {
+                    MPCPUserName = MPCPPlayerNameEditBox->Text;
+                    MPCPPlayerNameEditBox->Enabled = false;
+                    if((MPCPHostIPEditBox->Enabled == false) && (MPCPHostPortEditBox->Enabled == false))
+                    {
+                        MPPlayerClient->Host = MPCPHostIPEditBox->Text;
+                        MPPlayerClient->Port = MPCPHostPortEditBox->Text.ToInt();
+                        MPCPSendButton->Enabled = true;
+                    }
+                }
+            }
+            else
+            {
+                for(int x = 1; x <= MPCPPlayerNameEditBox->Text.Length(); x++)
+                {
+                    if((MPCPPlayerNameEditBox->Text[x] < 'A') || ((MPCPPlayerNameEditBox->Text[x] > 'Z') && (MPCPPlayerNameEditBox->Text[x] < 'a'))
+                                                || (MPCPPlayerNameEditBox->Text[x] > 'z'))
+                    {
+                        ShowMessage("Entry should have at least two and at most four characters with no numbers or special characters.");
+                        MPCPPlayerNameEditBox->Text = "";
+                        Utilities->CallLogPop(2367);
+                        return;
+                    }
+                }
+            }
+        }
+        Utilities->CallLogPop(2368);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(235, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::BuildDatagramFromPlayerMap(int Caller, char marker, AnsiString UserName, TBytes &buffer, TDynamicMap DynamicMap)
+{ //datagram contents: marker + username  + ;(if < 4 chars) + multiple[usernumber + H lower + H higher + V lower + V higher]
+  // all but marker & username from DynamicMap
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BuildDatagramFromPlayerMap, " + AnsiString(marker) + ',' + UserName);
+    int bufCounter;
+    buffer.Length = 8192; //initial value, reduced later
+    buffer[0] = marker;
+    for(bufCounter = 1; bufCounter <= UserName.Length(); bufCounter++)
+    {
+        buffer[bufCounter] = UserName[bufCounter];
+    }
+    if(UserName.Length() < 4)
+    {
+        buffer[bufCounter] = ';'; //marker for end of username
+        bufCounter++;
+    }
+//AnsiString DMIt->second.ServiceReference
+//short DMIt->second.RepeatNumber
+//short DMIt->second.TimeToExitSecs
+
+    for(TDynamicMap::iterator DMIt = DynamicMap.begin(); DMIt != DynamicMap.end(); DMIt++)
+    {
+        buffer[bufCounter] = DMIt->first.first;  //number
+        bufCounter++;
+        buffer[bufCounter] = DMIt->first.second.first & 0x00FF;  //H lower
+        bufCounter++;
+        buffer[bufCounter] = (DMIt->first.second.first & 0xFF00) / 256; //H higher
+        bufCounter++;
+        buffer[bufCounter] = DMIt->first.second.second & 0x00FF;  //V lower
+        bufCounter++;
+        buffer[bufCounter] = (DMIt->first.second.second & 0xFF00) / 256;  //v higher
+        bufCounter++;
+        DMIt->second.ServiceReference = DMIt->second.ServiceReference.Trim();
+        for(int x = 1; x <= DMIt->second.ServiceReference.Length(); x++)
+        {
+            buffer[bufCounter] = DMIt->second.ServiceReference[x];
+            bufCounter++;
+        }
+        if(DMIt->second.ServiceReference.Length() < 8)
+        {
+            buffer[bufCounter] = ';'; //marker for end of service ref
+            bufCounter++;
+        }
+        buffer[bufCounter] = DMIt->second.RepeatNumber & 0x00FF;
+        bufCounter++;
+        buffer[bufCounter] = (DMIt->second.RepeatNumber & 0xFF00) / 256;
+        bufCounter++;
+        buffer[bufCounter] = DMIt->second.TimeToExitSecs & 0x00FF;
+        bufCounter++;
+        buffer[bufCounter] = (DMIt->second.TimeToExitSecs & 0xFF00) / 256;
+        bufCounter++;
+/* add if need to limit buffer length
+        if(bufCounter > 490) //last value is 507 as starts at 0 & 17 max bytes for each loop, allows 29 exits/entries
+        {
+            break;
+        }
+*/
+    }
+    buffer.Length = bufCounter; //bufCounter incremented value = length since starts at 0
+    Utilities->CallLogPop(2379);
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::BuildDynamicMapFromPlayerDatagram(int Caller, TDynamicMap &DMap, TBytes Buffer, unsigned char &marker, AnsiString &UserName)
+{//datagrams of this type (most) are of form marker (1 byte), username (up to 4 bytes), then a series of TNumHVPairs
+//unlikely to be in alphabetical order, build map in same order as datagram
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BuildDynamicMapFromPlayerDatagram");
+    TDynamicMapEntry DMEntry;
+    TNumHVPair NumHVPair;
+    int y = 5; //highest NumHVPair start position
+    DMap.clear();
+    marker = Buffer[0];
+    UserName = "    ";
+    for(int x = 1; x < 5; x++)
+    {
+        if((Buffer[x] < ' ') || (Buffer[x] > '~'))
+        {
+            DMap.clear();
+            Utilities->CallLogPop(2380);
+            return(false);
+        }
+        if(Buffer[x] == ';')
+        {
+            break;
+        }
+    }
+    UserName[1] = Buffer[1]; //always at least 1 character
+    UserName[2] = Buffer[2];
+    if(UserName[2] == ';') //1 char only
+    {
+        UserName.Delete(2,3);
+        y = 3;
+    }
+    else
+    {
+        UserName[3] = Buffer[3];
+        if(UserName[3] == ';') //2 chars
+        {
+            UserName.Delete(3,2);
+            y = 4;
+        }
+        else
+        {
+            UserName[4] = Buffer[4];
+            if(UserName[4] == ';') //3 chars
+            {
+                UserName.Delete(4,1);
+                y = 5;
+            }
+        }
+    }
+    while(y < (Buffer.Length - 9))  //9 allows for zero length service ref
+    {
+        TServiceInfo ServInfo; //ServiceReference + RepeatNumber + TimeToExitSecs (need new default values for each loop)
+        NumHVPair.first = Buffer[y];    //number
+        NumHVPair.second.first = Buffer[y+ 1] + (256 * Buffer[y + 2]); //H
+        NumHVPair.second.second = Buffer[y + 3] + (256 * Buffer[y + 4]); //V
+        if(!NumHVPairCheckOK(NumHVPair))
+        {
+            DMap.clear();
+            Utilities->CallLogPop(2381);
+            return(false);
+        }
+        y += 5;
+        int z = 0;
+        while((Buffer[y + z] != ';') && (z < 8))
+        {
+            ServInfo.ServiceReference[z + 1] = Buffer[y + z];
+            z++;
+        }
+        ServInfo.ServiceReference = ServInfo.ServiceReference.Trim();
+        y += ServInfo.ServiceReference.Length();
+        if(Buffer[y] == ';')
+        {
+            y++; //skip past if there is one
+        }
+        ServInfo.RepeatNumber = Buffer[y] + (256 * Buffer[y + 1]);
+        ServInfo.TimeToExitSecs = Buffer[y + 2] + (256 * Buffer[y + 3]);
+        y += 4;
+        if(!ServInfo.CheckOK() && ServInfo.ServiceReference != "")
+        {
+            DMap.clear();
+            Utilities->CallLogPop(2382);
+            return(false);
+        }
+        DMEntry.first = NumHVPair;
+        DMEntry.second = ServInfo;
+        DMap.insert(DMEntry);
+    }
+    Utilities->CallLogPop(2383);
+    return(true);
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::BuildDatagramFromHostMap(int Caller, TBytes &buffer, TDynamicMap DynamicMap)
+{ //datagram contents: TTTime as 32 bit integer representing hundredths of a second + multiple[usernumber + H lower + H higher + V lower + V higher]
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BuildDatagramFromHostMap");
+    int bufCounter = 0;
+    buffer.Length = 8192; //initial value, reduced later
+    unsigned int TTTime = double(TrainController->TTClockTime) * 8640000;
+    buffer[0] = TTTime % 256;
+    TTTime /= 256;
+    buffer[1] = TTTime % 256;
+    TTTime /= 256;
+    buffer[2] = TTTime % 256;
+    TTTime /= 256;
+    buffer[3] = TTTime % 256;
+    bufCounter += 4;
+    for(TDynamicMap::iterator DMIt = DynamicMap.begin(); DMIt != DynamicMap.end(); DMIt++)
+    {
+        buffer[bufCounter] = DMIt->first.first;  //number
+        bufCounter++;
+        buffer[bufCounter] = DMIt->first.second.first & 0x00FF;  //H lower
+        bufCounter++;
+        buffer[bufCounter] = (DMIt->first.second.first & 0xFF00) / 256; //H higher
+        bufCounter++;
+        buffer[bufCounter] = DMIt->first.second.second & 0x00FF;  //V lower
+        bufCounter++;
+        buffer[bufCounter] = (DMIt->first.second.second & 0xFF00) / 256;  //v higher
+        bufCounter++;
+        DMIt->second.ServiceReference = DMIt->second.ServiceReference.Trim();
+        for(int x = 1; x <= DMIt->second.ServiceReference.Length(); x++)
+        {
+            buffer[bufCounter] = DMIt->second.ServiceReference[x];
+            bufCounter++;
+        }
+        if(DMIt->second.ServiceReference.Length() < 8)
+        {
+            buffer[bufCounter] = ';'; //marker for end of service ref
+            bufCounter++;
+        }
+        buffer[bufCounter] = DMIt->second.RepeatNumber & 0x00FF;
+        bufCounter++;
+        buffer[bufCounter] = (DMIt->second.RepeatNumber & 0xFF00) / 256;
+        bufCounter++;
+        buffer[bufCounter] = DMIt->second.TimeToExitSecs & 0x00FF;
+        bufCounter++;
+        buffer[bufCounter] = (DMIt->second.TimeToExitSecs & 0xFF00) / 256;
+        bufCounter++;
+    }
+    buffer.Length = bufCounter; //bufCounter incremented value = length since starts at 0
+    Utilities->CallLogPop(2394);
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::BuildDynamicMapFromHostDatagram(int Caller, int TTTime, TDynamicMap &DMap, TBytes Buffer)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BuildDynamicMapFromHostDatagram");
+    TDynamicMapEntry DMEntry;
+    TNumHVPair NumHVPair;
+    int y = 4; //NumHVPair start position
+    DMap.clear();
+    TTTime = Buffer[0] + (256 * Buffer[1]) + (65536 * Buffer[2]) + (16777216 * Buffer[3]);
+    if((TTTime < 0) || (TTTime > 34560000)) //34560000 = hundredths of a second in 4 x 24 hrs
+    {
+        DMap.clear();
+        Utilities->CallLogPop(2396);
+        return(false);
+    }
+    while(y < (Buffer.Length - 9))  //9 allows for zero length service ref
+    {
+        TServiceInfo ServInfo; //ServiceReference + RepeatNumber + TimeToExitSecs (need new default values for each loop)
+        NumHVPair.first = Buffer[y];    //number
+        if(NumHVPair.first != OwnRlyUserNumber)
+        {
+            DMap.clear();
+            Utilities->CallLogPop(2397);
+            return(false);
+        }
+        NumHVPair.second.first = Buffer[y+ 1] + (256 * Buffer[y + 2]); //H
+        NumHVPair.second.second = Buffer[y + 3] + (256 * Buffer[y + 4]); //V
+        if(!NumHVPairCheckOK(NumHVPair))
+        {
+            DMap.clear();
+            Utilities->CallLogPop(2398);
+            return(false);
+        }
+        y += 5;
+        int z = 0;
+        while((Buffer[y + z] != ';') && (z < 8))
+        {
+            ServInfo.ServiceReference[z + 1] = Buffer[y + z];
+            z++;
+        }
+        ServInfo.ServiceReference = ServInfo.ServiceReference.Trim();
+        y += ServInfo.ServiceReference.Length();
+        if(Buffer[y] == ';')
+        {
+            y++; //skip past if there is one
+        }
+        ServInfo.RepeatNumber = Buffer[y] + (256 * Buffer[y + 1]);
+        ServInfo.TimeToExitSecs = Buffer[y + 2] + (256 * Buffer[y + 3]);
+        y += 4;
+        if(!ServInfo.CheckOK() && ServInfo.ServiceReference != "")
+        {
+            DMap.clear();
+            Utilities->CallLogPop(2399);
+            return(false);
+        }
+        DMEntry.first = NumHVPair;
+        DMEntry.second = ServInfo;
+        DMap.insert(DMEntry);
+    }
+    Utilities->CallLogPop(2400);
+    return(true);
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::BuildDummyTestMap(TDynamicMap &DMap, std::ifstream &ExitFile) //<--temporary function for testing purposes
+{   //ExitFile is a list of H & V values as char[] integers with '\n' delimiters between each and between each pair
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BuildDummyTestMap");
+    TDynamicMapEntry DMapEntry;
+    TServiceInfo ServiceInfo; //null & zero values on construction
+    THVShortPair ShortPair;
+    unsigned char UserNum;
+    while(!ExitFile.eof())
+    {
+        ExitFile >> UserNum;   //number
+        UserNum -= 48; //convert from character to ordinal
+        if(ExitFile.eof()) //only get eof after an unsuccessful read attempt
+        {
+            continue;
+        }
+        ExitFile >> ShortPair.first;   //H
+        if(ExitFile.eof()) //only get eof after an unsuccessful read attempt
+        {
+            continue;
+        }
+        ExitFile >> ShortPair.second;  //V
+        if(ExitFile.eof())
+        {
+            continue;
+        }
+        DMapEntry.first.first = UserNum;
+        DMapEntry.first.second = ShortPair;
+        DMapEntry.second = ServiceInfo;
+        DMap.insert(DMapEntry);
+    }
+    Utilities->CallLogPop(2384);
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::UpdateDynamicMapFromTimeToExitMultiMap(int Caller, TDynamicMap &DMap)
+{
+//The player calls this prior to sending DynMapToHost, i.e. all the coupled linkages with railwaynumbers
+//typedef std::pair<TNumHVPair, TServiceInfo> TDynamicMapEntry;
+//typedef std::multimap<TNumHVPair, TExitInfo> TTimeToExitMultiMap;
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "UpdateDynamicMapFromTimeToExitMultiMap");
+    TDynamicMapEntry DMEntry;
+    TDynamicMap::iterator DMIt;
+    TNumHVPair NumHVPair;
+
+    TTimeToExitMultiMap::iterator TTEMMIt = TrainController->TimeToExitMultiMap.begin();
+    while(TTEMMIt != TrainController->TimeToExitMultiMap.end())
+    {
+        NumHVPair.first = OwnRlyUserNumber;
+        NumHVPair.second = TTEMMIt->first;
+        DMIt = DMap.find(NumHVPair);
+        if(DMIt != DMap.end()) //else skip it, not included in coupling map
+        {
+            DMIt->second.ServiceReference = TTEMMIt->second.ServiceReference.Trim();
+            DMIt->second.RepeatNumber = TTEMMIt->second.RepeatNumber;
+            DMIt->second.TimeToExitSecs = TTEMMIt->second.TimeToExitSecs;
+        }
+        TTEMMIt++;
+    }
+    Utilities->CallLogPop(2385);
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::InvalidIPAddress(AnsiString Text)
+{
+    try
+    {
+        int Dot1 = 0, Dot2 = 0, Dot3 = 0;
+        AnsiString Num1 = "",Num2 = "",Num3 = "",Num4 = "";
+        if(Text.Length() < 7)
+        {
+            return true;
+        }
+        for(int x = 1; x <= Text.Length(); x++)
+        {
+            if(Text[x] == '.')
+            {
+                if(Dot1 == 0)
+                {
+                    Dot1 = x;
+                }
+                else if(Dot2 == 0)
+                {
+                    Dot2 = x;
+                }
+                else if(Dot3 == 0)
+                {
+                    Dot3 = x;
+                }
+            }
+        }
+        if((Dot1 ==0) || (Dot2 ==0) || (Dot3 ==0))
+        {
+            return true; //less than 3 dots
+        }
+        if(Text.Length() == Dot3)
+        {
+            return true; //last dot at end
+        }
+        Num1 = Text.SubString(1, Dot1 - 1);
+        Num2 = Text.SubString(Dot1 + 1, Dot2 - Dot1 - 1);
+        Num3 = Text.SubString(Dot2 + 1, Dot3 - Dot2 - 1);
+        Num4 = Text.SubString(Dot3 + 1, Text.Length() - Dot3);
+        if((Num1 == "") || (Num2 == "") || (Num3 == "") || (Num4 == ""))
+        {
+            return true; //any number string empty
+        }
+        if((Num1.ToInt() > 255) ||(Num2.ToInt() > 255) ||(Num3.ToInt() > 255) ||(Num4.ToInt() > 255)) //EConvertError thrown if not an integer
+        {
+            return true;
+        }
+        if((Num1.ToInt() < 0) ||(Num2.ToInt() < 0) ||(Num3.ToInt() < 0) ||(Num4.ToInt() < 0))
+        {
+            return true;
+        }
+        return false;
+    }
+    catch(const EConvertError &e) //non-integer should have been caught earlier but include for completeness
+    {
+        return true;
+    }
+}
+
+//---------------------------------------------------------------------------
+
+TInterface::TServiceInfo::TServiceInfo()   //default constructor , same as TExitInfo() in TrainUnit
+{
+    ServiceReference = "        ";
+    RepeatNumber = 0;
+    TimeToExitSecs = -1;
+}
+
+//---------------------------------------------------------------------------
+
+TInterface::TRlyUserInfo::TRlyUserInfo()
+{
+    RlyUserNumber = 0; //allocated numbers start from 1
+    RailwayName = "";
+    UserName = "";
+    UserIP = "";
+    UserPort = 0;
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::RlyToNum(AnsiString RailwayName, unsigned char &RlyUserNumber)
+{
+    if(InfoVector.empty())
+    {
+        return(false);
+    }
+    TIVIt IVIt;
+    for(IVIt = InfoVector.begin(); IVIt  != InfoVector.end(); IVIt++)
+    {
+        if(IVIt->RailwayName == RailwayName)
+        {
+            RlyUserNumber = IVIt->RlyUserNumber;
+            return(true);
+        }
+    }
+    return(false);
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::UserToNum(AnsiString UserName, unsigned char &RlyUserNumber)
+{
+    if(InfoVector.empty())
+    {
+        return(false);
+    }
+    TIVIt IVIt;
+    for(IVIt = InfoVector.begin(); IVIt  != InfoVector.end(); IVIt++)
+    {
+        if(IVIt->UserName == UserName)
+        {
+            RlyUserNumber = IVIt->RlyUserNumber;
+            return(true);
+        }
+    }
+    return(false);
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::NumToRly(unsigned char RlyUserNumber, AnsiString &RailwayName)
+{
+    if(InfoVector.empty())
+    {
+        return(false);
+    }
+    TIVIt IVIt;
+    for(IVIt = InfoVector.begin(); IVIt  != InfoVector.end(); IVIt++)
+    {
+        if(IVIt->RlyUserNumber == RlyUserNumber)
+        {
+            RailwayName = IVIt->RailwayName;
+            return(true);
+        }
+    }
+    return(false);
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::UserToIPAndPort(AnsiString UserName, AnsiString &UserIP, short UserPort)
+{
+    if(InfoVector.empty())
+    {
+        return(false);
+    }
+    TIVIt IVIt;
+    for(IVIt = InfoVector.begin(); IVIt  != InfoVector.end(); IVIt++)
+    {
+        if(IVIt->UserName == UserName)
+        {
+            UserIP = IVIt->UserIP;
+            UserPort = IVIt->UserPort;
+            return(true);
+        }
+    }
+    return(false);
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::NumToIPAndPort(unsigned char RlyUserNumber, AnsiString &UserIP, short UserPort)
+{
+    if(InfoVector.empty())
+    {
+        return(false);
+    }
+    TIVIt IVIt;
+    for(IVIt = InfoVector.begin(); IVIt  != InfoVector.end(); IVIt++)
+    {
+        if(IVIt->RlyUserNumber == RlyUserNumber)
+        {
+            UserIP = IVIt->UserIP;
+            UserPort = IVIt->UserPort;
+            return(true);
+        }
+    }
+    return(false);
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::NumHVPairCheckOK(TNumHVPair NumHVPair)
+{
+    if(NumHVPair.first > 100)  //100 players max
+    {
+        return(false);
+    }
+    if((NumHVPair.second.first > 2000) || (NumHVPair.second.first < -2000))
+    {
+        return(false);
+    }
+    if((NumHVPair.second.second > 2000) || (NumHVPair.second.second < -2000))
+    {
+        return(false);
+    }
+    return(true);
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::TServiceInfo::CheckOK()
+{
+    if(!TrainController->CheckHeadCodeValidity(13, false, ServiceReference)) //false for no messages
+    {
+        return(false);
+    }
+    if((RepeatNumber < 0) || (RepeatNumber > 6000)) //allows minute repeats for 4 days
+    {
+        return(false);
+    }
+    if((TimeToExitSecs < -1) || (TimeToExitSecs > 3600))
+    {
+        return(false);
+    }
+    return(true);
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::RemovePlayerFromStringGridAndInfoVector(int Caller, AnsiString PlayerUserName)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RemovePlayerFromStringGridAndInfoVector, " + PlayerUserName);
+    for(int x = 0; x < NumPlayers; x++)
+    {
+        if(MultiplayerHostStringGrid->Cells[0][x + 2] == PlayerUserName)
+        {
+            MultiplayerHostStringGrid->Cells[0][x + 2] = "";
+            MultiplayerHostStringGrid->Cells[2][x + 2] = "No";
+            break;;
+        }
+    }
+    if(!InfoVector.empty())//clear InfoVector of all but railway name
+    {
+        for(int x = 0; x < NumPlayers; x++)
+        {
+            if(InfoVector.at(x).UserName == PlayerUserName)
+            {
+//                InfoVector.at(x).RlyUserNumber = 0;  //no, the number stays as is
+                InfoVector.at(x).UserName = "";
+                InfoVector.at(x).UserIP = "";
+                InfoVector.at(x).UserPort = 0;
+                break;;
+            }
+        }
+    }
+    Utilities->CallLogPop(2390);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::ShowHideStringGridMenuItemClick(TObject *Sender)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ShowHideStringGridMenuItemClick");
+    TrainController->LogEvent("ShowHideStringGridMenuItemClick");
+    if(MultiplayerHostStringGrid->Visible)
+    {
+        MultiplayerHostStringGrid->Visible = false;
+    }
+    else
+    {
+        MultiplayerHostStringGrid->Visible = true;
+    }
+    Utilities->CallLogPop(2413);
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::PlayerHandshakingActions()
+{
+    try
+    {
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PlayerHandshakingActions");
+        if(PlayerFiveSecondTimer == 0) //send at 5 sec intervals
+        {
+            EIdExceptionSource = "PlayerFiveSecondTimer";
+            if(PlayerMakingInitialContactFlag) //sends it every 5 secs until host responds & then PlayerMakingInitialContactFlag reset
+            {
+                EIdExceptionSource += " PlayerMakingInitialContactFlag";
+            //load datagram - Marker ('1') + UserName + ';' + RailwayName (no space or delimier between marker & railway name)
+                UnicodeString Data = UnicodeString('1') + MPCPUserName + UnicodeString(';') + RailwayTitle;
+                MPPlayerClient->Send(Data);
+            }
+            else if(PlayerReadyToBeginFlag)
+            {
+                EIdExceptionSource += " PlayerReadyToBeginFlag";
+            //load datagram - Marker = '2' + UserName + times to exit (service ref, exit H&V & time) from DynMapToHost
+                TBytes buffer;
+                UpdateDynamicMapFromTimeToExitMultiMap(0, DynMapToHost);
+                BuildDatagramFromPlayerMap(0, '2', MPCPUserName, buffer, DynMapToHost);
+                MPPlayerClient->SendBuffer(MPPlayerClient->Host, MPPlayerClient->Port, buffer);
+                ConsecutiveSelfUpdates = 0;
+                LastHostDataReceived = TDateTime(0);
+            }
+            else if(PlayerInSessionFlag)
+            {
+                EIdExceptionSource += " PlayerInSessionFlag5SecTimer";
+                TBytes buffer;
+                UpdateDynamicMapFromTimeToExitMultiMap(1, DynMapToHost);
+                BuildDatagramFromPlayerMap(1, '5', MPCPUserName, buffer, DynMapToHost);  //buffer length is set within this function
+                MPPlayerClient->SendBuffer(MPPlayerClient->Host, MPPlayerClient->Port, buffer);
+                //check last message time
+                if(((TDateTime::CurrentDateTime() - LastHostDataReceived) > TDateTime(0.00034722)) && (LastHostDataReceived > TDateTime(1))) //== 30secs
+                {
+                    //update all times to entry by 30 secs & have any enter that are due in that time (missed at least 4)
+                    //also when any train enters check that it's not already entered and ignore if so (Service ref + repeat number defines)
+                    ConsecutiveSelfUpdates++;
+                    if(ConsecutiveSelfUpdates > 10) //at least 5 minutes with no contact
+                    {
+                        //cancel session for this player
+                    }
+                }
+            }
+            else
+            {
+                //default, probably won't need it
+            }
+        }
+
+        if(PlayerOneSecondTimer == 10) //send at 1 sec intervals, use 10 so out of step with 5 sec timer
+        {
+            if(PlayerCancelJoinFlag) //send every second until acknowledged
+            {
+                //send message to host, marker = 3, username; nothing else, '3' tells host of the cancellation
+                EIdExceptionSource += " PlayerCancelJoinFlag";
+            //load datagram - Marker ('3') + UserName
+                UnicodeString Data = UnicodeString('3') + MPCPUserName;
+                MPPlayerClient->Send(Data);
+            }
+            else if(PlayerAwaitingHostStartFlag)
+            {
+                EIdExceptionSource += " PlayerAwaitingHostStartFlag";
+            //load datagram - Marker ('4') + UserName
+                UnicodeString Data = UnicodeString('4') + MPCPUserName;
+                MPPlayerClient->Send(Data);
+            }
+            else if(PlayerInSessionFlag)
+            {
+                EIdExceptionSource += " PlayerInSessionFlag1SecTimer";
+                UnicodeString Data = UnicodeString('6') + MPCPUserName;
+                MPPlayerClient->Send(Data);
+            }
+        }
+
+//here player checks for any messages from host - after intial contact or speed changes etc during multiplay (every cycle)
+        if(PlayerMakingInitialContactFlag) //receive
+        {
+            EIdExceptionSource = "PlayerMakingInitialContactFlag every cycle";
+//            UnicodeString HostMessage = MPPlayerClient->ReceiveString(10);
+            TBytes Buffer;
+            Buffer.Length = 8192; //have to set long enough initially, reduced later
+            Buffer.Length = MPPlayerClient->ReceiveBuffer(Buffer, 10);  //<-- ReceiveBuffer
+            if(Buffer.Length != 0)
+            {
+                PlayerMakingInitialContactFlag = false; //only if reply received
+                if((Buffer[0] == 'T') && (Buffer[1] == 'h') && (Buffer[2] == 'e')) //error message
+                {
+                    UnicodeString HostMessage = BytesToString(Buffer);
+                    ShowMessage(HostMessage);
+                    MPCPSendButton->Enabled = false;
+                    MPCPReadyToBeginButton->Enabled = false;
+                    MPCPPlayerNameEditBox->Text = "";
+                    MPCPHostPortEditBox->Text = "";
+                    MPCPHostIPEditBox->Text = "";
+                    PlayerReadyToBeginFlag = false;
+                    PlayerCancelJoinFlag = false;
+                    PlayerAwaitingHostStartFlag = false;
+                    PlayerInSessionFlag = false;
+                    MultiplayerPlayerPanel->Visible = false;
+                    Track->MultiplayerOverlayMap.clear();
+                    ClearandRebuildRailway(91);
+                }
+                else //receive 'raw' coupled map for this player - own NumHVPair + coupled NumHVPair with default service info
+                {    //compile initial DynMapFromHost & DynMapToHost, & add overlays to the coupled exit graphics
+                    TServiceInfo ServiceInfo; //default values
+                    THVShortPair ShortPair;
+                    unsigned char UserNumber;
+                    TDynamicMapEntry DMEntry;
+                    DynMapFromHost.clear();
+                    DynMapToHost.clear();
+                    OwnRlyUserNumber = Buffer[0];
+                    for(int x = 0; x < (Buffer.Length - 9); x += 10)
+                    {
+                        UserNumber = Buffer[x];
+                        ShortPair.first = Buffer[x + 1] + (256 * Buffer[x + 2]);
+                        ShortPair.second = Buffer[x + 3] + (256 * Buffer[x + 4]);
+                        DMEntry.first.first = UserNumber;
+                        DMEntry.first.second = ShortPair;
+                        DMEntry.second = ServiceInfo;
+                        DynMapFromHost.insert(DMEntry);
+                        UserNumber = Buffer[x + 5];
+                        ShortPair.first = Buffer[x + 6] + (256 * Buffer[x + 7]);
+                        ShortPair.second = Buffer[x + 8] + (256 * Buffer[x + 9]);
+                        DMEntry.first.first = UserNumber;
+                        DMEntry.first.second = ShortPair;
+                        DMEntry.second = ServiceInfo;
+                        DynMapToHost.insert(DMEntry);
+                    }
+                    //Build Track->MultiplayerOverlayMap from DynMapFromHost, it consists of key = THVPair & value = graphic pointer
+                    Track->MultiplayerOverlayMap.clear();
+                    for(TDMIt DMIt = DynMapFromHost.begin(); DMIt != DynMapFromHost.end(); DMIt++)
+                    {
+                        typedef std::pair<int, int> THLocVLocPair;
+                        THLocVLocPair HVPair;
+                        std::pair<THLocVLocPair, Graphics::TBitmap*> MPOMEntry;
+                        int SpeedTag;
+                        Graphics::TBitmap *GrPtr;
+                        HVPair.first = int(DMIt->first.second.first);
+                        HVPair.second = int(DMIt->first.second.second);
+                        SpeedTag = Track->GetTrackElementFromTrackMap(4, HVPair.first, HVPair.second).SpeedTag;
+                        if((SpeedTag < 80) || (SpeedTag > 87))
+                        {
+                            throw Exception("Error, SpeedTag not a continuation in DynMapFromHost, value is " + AnsiString(SpeedTag));
+                        }
+                        else if(SpeedTag == 80)
+                        {
+                            GrPtr = RailGraphics->CouplingExit4;
+                        }
+                        else if(SpeedTag == 81)
+                        {
+                            GrPtr = RailGraphics->CouplingExit6;
+                        }
+                        else if(SpeedTag == 82)
+                        {
+                            GrPtr = RailGraphics->CouplingExit8;
+                        }
+                        else if(SpeedTag == 83)
+                        {
+                            GrPtr = RailGraphics->CouplingExit2;
+                        }
+                        else if(SpeedTag == 84)
+                        {
+                            GrPtr = RailGraphics->CouplingExit1;
+                        }
+                        else if(SpeedTag == 85)
+                        {
+                            GrPtr = RailGraphics->CouplingExit3;
+                        }
+                        else if(SpeedTag == 86)
+                        {
+                            GrPtr = RailGraphics->CouplingExit7;
+                        }
+                        else if(SpeedTag == 87)
+                        {
+                            GrPtr = RailGraphics->CouplingExit9;
+                        }
+                        MPOMEntry.first = HVPair;
+                        MPOMEntry.second = GrPtr;
+                        Track->MultiplayerOverlayMap.insert(MPOMEntry);
+                    }
+                    ClearandRebuildRailway(89);
+                    MPCPLabel2->Caption = "When ready click 'Ready to begin'";  //top box
+                    MPCPLabel4->Caption = "Joining request accepted";     //opposite image
+                    MPCPLabel7->Caption = "";  //Lower box top
+                    MPCPLabel8->Caption = "";  //Lower box bottom
+                    MPCPHostImage->Picture->Assign(RailGraphics->SolidCircleGreen);
+                    MPCPReadyToBeginButton->Enabled = true;
+                }
+            }
+        }
+        else if(PlayerReadyToBeginFlag)
+        {
+            EIdExceptionSource = "PlayerReadyToBegin every cycle";
+            TBytes Buffer;
+            Buffer.Length = 8192; //have to set long enough initially, reduced later
+            Buffer.Length = MPPlayerClient->ReceiveBuffer(Buffer, 10);  //<-- ReceiveBuffer
+            if(Buffer.Length != 0)
+            {
+                if(BytesToString(Buffer) == "Await simulation start")
+                {
+                    PlayerReadyToBeginFlag = false;
+                    PlayerAwaitingHostStartFlag = true;
+                    MPCPReadyToBeginButton->Enabled = false;
+                    MPCPLabel2->Caption = "Awaiting simulation start";  //top box
+                    MPCPLabel4->Caption = "";  //opposite image
+                    MPCPLabel7->Caption = "";  //Lower box top
+                    MPCPLabel8->Caption = "";  //Lower box bottom
+                    MPCPLabel5->Caption = "";  //Host IP
+                    MPCPLabel6->Caption = "";  //Host Port
+                    MPCPLabel3->Caption = "";  //UserName
+                    MPCPHostIPEditBox->Visible = false;
+                    MPCPHostPortEditBox->Visible = false;
+                    MPCPPlayerNameEditBox->Visible = false;
+                    MPCPHostImage->Visible = false;
+                }
+                else
+                {
+                    //do nothing, leave PlayerReadyToStart true & send message again
+                }
+            }
+            else
+            {
+                //do nothing, leave PlayerReadyToStart true & send message again
+            }
+        }
+        else if(PlayerCancelJoinFlag)
+        {
+            EIdExceptionSource = "PlayerCancelJoinFlag every cycle";
+            TBytes Buffer;
+            Buffer.Length = 8192; //have to set long enough initially, reduced later
+            Buffer.Length = MPPlayerClient->ReceiveBuffer(Buffer, 10);  //<-- ReceiveBuffer
+            if(Buffer.Length != 0)
+            {
+                if(BytesToString(Buffer) == "Cancelled")
+                {
+                    PlayerCancelJoinFlag = false;
+                }
+            }
+        }
+        else if(PlayerAwaitingHostStartFlag) //await start message then clear the joining box, set PlayerMultiplayerInSession & reset PlayerAwaitingHostStart
+        {
+            EIdExceptionSource = "PlayerAwaitingHostStartFlag every cycle";
+            TBytes Buffer;
+            Buffer.Length = 8192; //have to set long enough initially, reduced later
+            Buffer.Length = MPPlayerClient->ReceiveBuffer(Buffer, 10);  //<-- ReceiveBuffer
+            if(Buffer.Length != 0)
+            {
+                if(BytesToString(Buffer) == "Start Session")
+                {
+                    PlayerAwaitingHostStartFlag = false;
+                    PlayerInSessionFlag = true;
+                    MultiplayerPlayerPanel->Visible = false;
+                    OperatingPanelLabel->Caption = "Operation";
+                    OperateButton->Click(); //keep speed etc. buttons disabled
+                }
+            }
+        }
+        else if(PlayerInSessionFlag)
+        {
+            EIdExceptionSource = "PlayerMultiplayerInSession every cycle";
+            TBytes Buffer;
+            int TTTime;
+            TDynamicMap DMap;
+            TDynamicMap::iterator DMIt, DMFHIt;
+            Buffer.Length = 8192; //have to set long enough initially, reduced later
+            Buffer.Length = MPPlayerClient->ReceiveBuffer(Buffer, 10); //<-- ReceiveBuffer
+            if(Buffer.Length != 0)
+            {
+                //here have DynMapFromHost as buffer with TTClockTime at start as 32 bit integer
+                ConsecutiveSelfUpdates = 0;
+                if(BuildDynamicMapFromHostDatagram(0, TTTime, DMap, Buffer)) //validity checks in this function
+                {
+                    //store TTTime & update DynMapFromHost, should be in proper order but don't rely on it
+                    TrainController->TTClockTime = double(TTTime) / 8640000;
+                    for(DMIt = DMap.begin(); DMIt != DMap.end(); DMIt++)
+                    {
+                        DMFHIt = DynMapFromHost.find(DMIt->first);
+                        if(DMFHIt != DynMapFromHost.end())
+                        {
+                            DMFHIt->second = DMIt->second;
+                        }
+                        //else skip it
+                    }
+                    LastHostDataReceived = TDateTime::CurrentDateTime();
+
+                    //now have TTClock updated  + service refs & times to entry in DynMapFromHost
+
+                }
+                //else skip it - catch up next time
+            }
+        }
+    Utilities->CallLogPop(2416);
+    }
+    catch(const EIdException &e) //non-error catch
+//if no response from peer then get a 'connection reset by peer' message which isn't valid
+    {
+        Utilities->CallLogPop(2417);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(240, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
 
 /*
    Problems with ifstream reading (see 'SessionFileIntegrityCheck(AnsiString FileName)' above):-
@@ -21688,5 +24849,6 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
 */
 
 // ---------------------------------------------------------------------------
+
 
 

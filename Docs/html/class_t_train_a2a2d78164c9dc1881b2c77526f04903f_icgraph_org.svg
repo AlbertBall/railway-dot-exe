@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_train.html#ae34370de578ebd07a217c79d8b67312c" target="_top" xlink:title="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa...">
+<g id="a_node2"><a xlink:href="class_t_train.html#af23c2a989fee528b3c87200dcd8c2c0b" target="_top" xlink:title="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa...">
 <polygon fill="white" stroke="black" points="743,-349 743,-368 858,-368 858,-349 743,-349"/>
 <text text-anchor="middle" x="800.5" y="-356" font-family="Helvetica,sans-Serif" font-size="10.00">TTrain::CalcTimeToAct</text>
 </a>

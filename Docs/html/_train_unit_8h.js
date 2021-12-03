@@ -1,5 +1,6 @@
 var _train_unit_8h =
 [
+    [ "TExitInfo", "class_t_exit_info.html", "class_t_exit_info" ],
     [ "TActionVectorEntry", "class_t_action_vector_entry.html", "class_t_action_vector_entry" ],
     [ "TTrainOperatingData", "class_t_train_operating_data.html", "class_t_train_operating_data" ],
     [ "TTrainDataEntry", "class_t_train_data_entry.html", "class_t_train_data_entry" ],
@@ -14,10 +15,13 @@ var _train_unit_8h =
     [ "TActionVector", "_train_unit_8h.html#a5b1395ed328e4835de16cc626e4e1c96", null ],
     [ "TActionVectorIterator", "_train_unit_8h.html#a1c433df1c6495c2199be919be7b57694", null ],
     [ "TAllFormattedTrains", "_train_unit_8h.html#a7996ca00e9edacd4c3fa4cebe91dc101", null ],
+    [ "THVShortPair", "_train_unit_8h.html#a18fdfcb79f178c9f540abd90585b102f", null ],
     [ "TNumList", "_train_unit_8h.html#a071247becbfdd0d4af877d07e2aabf77", null ],
     [ "TNumListIterator", "_train_unit_8h.html#a17fb54418ed0171910a59dc159d81d6c", null ],
     [ "TOneCompleteFormattedTrainVector", "_train_unit_8h.html#a41035fe647cdbc167c8b1740419ce98b", null ],
     [ "TOneFormattedTrainVector", "_train_unit_8h.html#a72ed0fed1e7750b3369ced01e8622c11", null ],
+    [ "TTimeToExitMultiMap", "_train_unit_8h.html#ab654eb37d4e64db216aa6a10442fbabf", null ],
+    [ "TTimeToExitMultiMapEntry", "_train_unit_8h.html#a702a9ae7ec2767c3d9f1326bb75f9fe3", null ],
     [ "TTrainDataVector", "_train_unit_8h.html#a34932e266703946fbf02c69e1695c100", null ],
     [ "TTrainOperatingDataVector", "_train_unit_8h.html#a091969be413497d46907d19d477285c9", null ],
     [ "TActionEventType", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0", [

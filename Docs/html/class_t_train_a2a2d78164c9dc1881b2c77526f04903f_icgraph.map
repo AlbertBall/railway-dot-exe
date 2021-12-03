@@ -1,6 +1,6 @@
 <map id="TTrain::Stopped" name="TTrain::Stopped">
 <area shape="rect" id="node1" title="True if the train has stopped for any reason." alt="" coords="1220,249,1333,275"/>
-<area shape="rect" id="node2" href="$class_t_train.html#ae34370de578ebd07a217c79d8b67312c" title="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa..." alt="" coords="996,71,1149,98"/>
+<area shape="rect" id="node2" href="$class_t_train.html#af23c2a989fee528b3c87200dcd8c2c0b" title="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa..." alt="" coords="996,71,1149,98"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,122,403,149"/>
 <area shape="rect" id="node5" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="758,122,893,149"/>
 <area shape="rect" id="node7" href="$class_t_interface.html#a51b94ffa3dc90fe4e3bec2f1ae28074e" title="used for floating window to display train status" alt="" coords="986,391,1159,432"/>

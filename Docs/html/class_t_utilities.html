@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.10.0</span>
+   &#160;<span id="projectnumber">v2.11.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -97,7 +97,8 @@ $(document).ready(function(){initNavTree('class_t_utilities.html',''); initResiz
 <div class="dynheader">
 Collaboration diagram for TUtilities:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities__coll__graph.svg" width="171" height="367"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities__coll__graph.svg" width="171" height="367"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -163,8 +164,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6a03c1597e2cc5d71c2f88ac36f11363"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks that the value is a string ('0' or CR accepted as delimiters) and is the same as InString, returns true for success  <a href="class_t_utilities.html#a6a03c1597e2cc5d71c2f88ac36f11363">More...</a><br /></td></tr>
 <tr class="separator:a6a03c1597e2cc5d71c2f88ac36f11363"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a0ef5bf2fc74c0026f2a8bec4151d37"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37">CheckAndReadFileString</a> (std::ifstream &amp;InFile, AnsiString &amp;OutString)</td></tr>
-<tr class="memdesc:a0a0ef5bf2fc74c0026f2a8bec4151d37"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks that the value is a string ('0' or CR accepted as delimiters), returns true for success and returns the value in OutString  <a href="class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37">More...</a><br /></td></tr>
+<tr class="memdesc:a0a0ef5bf2fc74c0026f2a8bec4151d37"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks that the value is a string ('0' or '<br  />
+' (CRLF) accepted as delimiters), returns true for success and returns the value in OutString  <a href="class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37">More...</a><br /></td></tr>
 <tr class="separator:a0a0ef5bf2fc74c0026f2a8bec4151d37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c79ab051602edf407b81a71d2e72119"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a3c79ab051602edf407b81a71d2e72119">CheckAndReadOneLineFromConfigFile</a> (std::ifstream &amp;InFile, AnsiString &amp;OutString)</td></tr>
+<tr class="memdesc:a3c79ab051602edf407b81a71d2e72119"><td class="mdescLeft">&#160;</td><td class="mdescRight">similar to CheckAndReadFileString but allows tab characters and doesn't ignore initial <br  />
+ characters  <a href="class_t_utilities.html#a3c79ab051602edf407b81a71d2e72119">More...</a><br /></td></tr>
+<tr class="separator:a3c79ab051602edf407b81a71d2e72119"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0350456fd482593c424d125536b34093"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a0350456fd482593c424d125536b34093">ReadOneLineFromCouplingFile</a> (std::ifstream &amp;InFile, AnsiString &amp;OutString)</td></tr>
+<tr class="memdesc:a0350456fd482593c424d125536b34093"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads a single line from the multiplayer coupling file, returns true for success with OutString containing the line  <a href="class_t_utilities.html#a0350456fd482593c424d125536b34093">More...</a><br /></td></tr>
+<tr class="separator:a0350456fd482593c424d125536b34093"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dfbe3d4ed11770bc1a902b51afdc10c"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c">Format96HHMMSS</a> (TDateTime DateTime)</td></tr>
 <tr class="memdesc:a2dfbe3d4ed11770bc1a902b51afdc10c"><td class="mdescLeft">&#160;</td><td class="mdescRight">formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when it reaches 96  <a href="class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c">More...</a><br /></td></tr>
 <tr class="separator:a2dfbe3d4ed11770bc1a902b51afdc10c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -315,7 +324,8 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_ab4b66aa7480fda73d554fe0bcca82b60_cgraph.svg" width="400" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_ab4b66aa7480fda73d554fe0bcca82b60_cgraph.svg" width="400" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -351,13 +361,54 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>checks that the value is a string ('0' or CR accepted as delimiters), returns true for success and returns the value in OutString </p>
+<p>checks that the value is a string ('0' or '<br  />
+' (CRLF) accepted as delimiters), returns true for success and returns the value in OutString </p>
 
 <p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00529">529</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a0a0ef5bf2fc74c0026f2a8bec4151d37_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a0a0ef5bf2fc74c0026f2a8bec4151d37_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a3c79ab051602edf407b81a71d2e72119"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c79ab051602edf407b81a71d2e72119">&#9670;&nbsp;</a></span>CheckAndReadOneLineFromConfigFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TUtilities::CheckAndReadOneLineFromConfigFile </td>
+          <td>(</td>
+          <td class="paramtype">std::ifstream &amp;&#160;</td>
+          <td class="paramname"><em>InFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString &amp;&#160;</td>
+          <td class="paramname"><em>OutString</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>similar to CheckAndReadFileString but allows tab characters and doesn't ignore initial <br  />
+ characters </p>
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00581">581</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a3c79ab051602edf407b81a71d2e72119_icgraph.svg" width="100%" height="488"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -384,7 +435,8 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a1b39fffcd392bfb0f5a2ca393de3a6bb_cgraph.svg" width="394" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a1b39fffcd392bfb0f5a2ca393de3a6bb_cgraph.svg" width="394" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -416,7 +468,8 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a5c7332a6b45894902f271f0ab9ab87db_cgraph.svg" width="408" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a5c7332a6b45894902f271f0ab9ab87db_cgraph.svg" width="408" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -464,7 +517,8 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a4d229af6e8943da1936bcbcc1c83846b_cgraph.svg" width="382" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a4d229af6e8943da1936bcbcc1c83846b_cgraph.svg" width="382" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -576,7 +630,8 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a9ca62e05ace8e6c4c33d377c26c48e55_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a9ca62e05ace8e6c4c33d377c26c48e55_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -621,11 +676,12 @@ Here is the caller graph for this function:</div>
 
 <p>formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it reaches 96 </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00600">600</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00807">807</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a6dc0e83b149563fdf43f068fd26cead8_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a6dc0e83b149563fdf43f068fd26cead8_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -648,11 +704,12 @@ Here is the caller graph for this function:</div>
 
 <p>formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when it reaches 96 </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00581">581</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00788">788</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a2dfbe3d4ed11770bc1a902b51afdc10c_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a2dfbe3d4ed11770bc1a902b51afdc10c_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -675,11 +732,12 @@ Here is the caller graph for this function:</div>
 
 <p>takes "HH:MM" and increments it to "HH:MX", where MX == MM + 1, incrementing the hour if necessary </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00619">619</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00826">826</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_ae6df4b6a5d1398f57ff62799331351a8_icgraph.svg" width="615" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_ae6df4b6a5d1398f57ff62799331351a8_icgraph.svg" width="615" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 
 </div>
@@ -706,7 +764,8 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a9a0ec4d0c686c71157c371d647824777_icgraph.svg" width="100%" height="547"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a9a0ec4d0c686c71157c371d647824777_icgraph.svg" width="100%" height="585"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -797,6 +856,44 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a0350456fd482593c424d125536b34093"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0350456fd482593c424d125536b34093">&#9670;&nbsp;</a></span>ReadOneLineFromCouplingFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TUtilities::ReadOneLineFromCouplingFile </td>
+          <td>(</td>
+          <td class="paramtype">std::ifstream &amp;&#160;</td>
+          <td class="paramname"><em>InFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnsiString &amp;&#160;</td>
+          <td class="paramname"><em>OutString</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>reads a single line from the multiplayer coupling file, returns true for success with OutString containing the line </p>
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00618">618</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a0350456fd482593c424d125536b34093_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+
+</div>
+</div>
 <a id="a06a211ebaa112f3fac0edc5b238ef876"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a06a211ebaa112f3fac0edc5b238ef876">&#9670;&nbsp;</a></span>SaveFileBool()</h2>
 
@@ -829,7 +926,8 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a06a211ebaa112f3fac0edc5b238ef876_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a06a211ebaa112f3fac0edc5b238ef876_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -871,7 +969,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a92b5adfb8ad3a937a8d208bfd90a5741_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a92b5adfb8ad3a937a8d208bfd90a5741_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -908,7 +1007,8 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a86ed634e8a9d7ca534a324954f4a7a2f_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a86ed634e8a9d7ca534a324954f4a7a2f_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -945,7 +1045,8 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a60531c6cb1a6a33dd71299d3a5b6cc21_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a60531c6cb1a6a33dd71299d3a5b6cc21_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>

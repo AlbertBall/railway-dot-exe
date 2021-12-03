@@ -872,6 +872,53 @@ TRailGraphics::TRailGraphics()
     ConcourseStriped->LoadFromResourceName(0, "ConcourseStriped");
     ConcourseStriped->Transparent = true;
     ConcourseStriped->TransparentColor = clB5G5R5;
+
+    CouplingExit1 = new Graphics::TBitmap;        //new multiplayer coupled exit graphics
+    CouplingExit1->LoadFromResourceName(0, "CouplingExit1");
+    CouplingExit1->Transparent = true;
+    CouplingExit1->TransparentColor = clB5G5R5;
+    CouplingExit2 = new Graphics::TBitmap;
+    CouplingExit2->LoadFromResourceName(0, "CouplingExit2");
+    CouplingExit2->Transparent = true;
+    CouplingExit2->TransparentColor = clB5G5R5;
+    CouplingExit3 = new Graphics::TBitmap;
+    CouplingExit3->LoadFromResourceName(0, "CouplingExit3");
+    CouplingExit3->Transparent = true;
+    CouplingExit3->TransparentColor = clB5G5R5;
+    CouplingExit4 = new Graphics::TBitmap;
+    CouplingExit4->LoadFromResourceName(0, "CouplingExit4");
+    CouplingExit4->Transparent = true;
+    CouplingExit4->TransparentColor = clB5G5R5;
+    CouplingExit6 = new Graphics::TBitmap;
+    CouplingExit6->LoadFromResourceName(0, "CouplingExit6");
+    CouplingExit6->Transparent = true;
+    CouplingExit6->TransparentColor = clB5G5R5;
+    CouplingExit7 = new Graphics::TBitmap;
+    CouplingExit7->LoadFromResourceName(0, "CouplingExit7");
+    CouplingExit7->Transparent = true;
+    CouplingExit7->TransparentColor = clB5G5R5;
+    CouplingExit8 = new Graphics::TBitmap;
+    CouplingExit8->LoadFromResourceName(0, "CouplingExit8");
+    CouplingExit8->Transparent = true;
+    CouplingExit8->TransparentColor = clB5G5R5;
+    CouplingExit9 = new Graphics::TBitmap;
+    CouplingExit9->LoadFromResourceName(0, "CouplingExit9");
+    CouplingExit9->Transparent = true;
+    CouplingExit9->TransparentColor = clB5G5R5;
+
+    SolidCircleRed = new Graphics::TBitmap;  //new solid circles for multiplayer
+    SolidCircleRed->LoadFromResourceName(0, "SolidCircleRed");
+    SolidCircleRed->Transparent = true;
+    SolidCircleRed->TransparentColor = clB5G5R5;
+    SolidCircleYellow = new Graphics::TBitmap;
+    SolidCircleYellow->LoadFromResourceName(0, "SolidCircleYellow");
+    SolidCircleYellow->Transparent = true;
+    SolidCircleYellow->TransparentColor = clB5G5R5;
+    SolidCircleGreen = new Graphics::TBitmap;
+    SolidCircleGreen->LoadFromResourceName(0, "SolidCircleGreen");
+    SolidCircleGreen->Transparent = true;
+    SolidCircleGreen->TransparentColor = clB5G5R5;
+
     ELk1 = new Graphics::TBitmap;
     ELk1->LoadFromResourceName(0, "ELk1");
     ELk1->Transparent = true;
@@ -2949,6 +2996,20 @@ TRailGraphics::~TRailGraphics()
     delete Concourse;
     delete ConcourseGlyph;
     delete ConcourseStriped;
+
+    delete CouplingExit1; //Multiplayer coupled exit graphics
+    delete CouplingExit2;
+    delete CouplingExit3;
+    delete CouplingExit4;
+    delete CouplingExit6;
+    delete CouplingExit7;
+    delete CouplingExit8;
+    delete CouplingExit9;
+
+    delete SolidCircleRed; //multiplayer panel images
+    delete SolidCircleYellow;
+    delete SolidCircleGreen;
+
     delete ELk1;
     delete ELk2;
     delete ELk3;
@@ -3833,6 +3894,16 @@ void TRailGraphics::ChangeAllTransparentColours(TColor NewTransparentColour, TCo
     ChangeTransparentColour(Concourse, Concourse, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(ConcourseGlyph, ConcourseGlyph, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(ConcourseStriped, ConcourseStriped, NewTransparentColour, OldTransparentColour);
+
+    ChangeTransparentColour(CouplingExit1, CouplingExit1, NewTransparentColour, OldTransparentColour); //Multiplayer coupled exit graphics
+    ChangeTransparentColour(CouplingExit2, CouplingExit2, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(CouplingExit3, CouplingExit3, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(CouplingExit4, CouplingExit4, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(CouplingExit6, CouplingExit6, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(CouplingExit7, CouplingExit7, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(CouplingExit8, CouplingExit8, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(CouplingExit9, CouplingExit9, NewTransparentColour, OldTransparentColour);
+
     ChangeTransparentColour(ELk1, ELk1, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(ELk2, ELk2, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(ELk3, ELk3, NewTransparentColour, OldTransparentColour);
@@ -4359,12 +4430,12 @@ void TRailGraphics::SetUpAllDerivitiveGraphics(TColor TransparentColour)
 void TRailGraphics::ConvertSignalsToOppositeHand(int Caller) // new at v2.3.0
 
 {
-    Utilities->EventLog.push_back("ConvertSignalsToRightHand");
+    Utilities->EventLog.push_back("ConvertSignalsToOppositeHand");
     if(Utilities->EventLog.size() > 1000)
     {
         Utilities->EventLog.pop_front();
     }
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ", ConvertSignalsToRightHand");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ", ConvertSignalsToOppositeHand");
 
     Graphics::TBitmap* HorizSignalArray[18] =
     {

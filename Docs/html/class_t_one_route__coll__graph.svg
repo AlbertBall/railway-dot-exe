@@ -220,11 +220,11 @@ var sectionId = 'dynsection-1';
 <text text-anchor="start" x="339" y="-809.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 12 more...</text>
 <polyline fill="none" stroke="black" points="331,-802.5 475,-802.5 "/>
 <text text-anchor="start" x="339" y="-790.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ TTrackElement()</text>
-<text text-anchor="start" x="339" y="-779.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ TTrackElement()</text>
-<text text-anchor="start" x="339" y="-768.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ operator==()</text>
-<text text-anchor="start" x="339" y="-757.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ operator!=()</text>
-<text text-anchor="start" x="339" y="-746.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ LogTrack()</text>
-<text text-anchor="start" x="339" y="-735.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PlotVariableTrackElement()</text>
+<text text-anchor="start" x="339" y="-779.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ operator==()</text>
+<text text-anchor="start" x="339" y="-768.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ operator!=()</text>
+<text text-anchor="start" x="339" y="-757.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ LogTrack()</text>
+<text text-anchor="start" x="339" y="-746.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PlotVariableTrackElement()</text>
+<text text-anchor="start" x="339" y="-735.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ TTrackElement()</text>
 </a>
 </g>
 </g>

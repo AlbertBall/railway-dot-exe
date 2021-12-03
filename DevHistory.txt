@@ -9,14 +9,19 @@ The structure is as follows:-
 3)  List of problems & odd behaviour for which I don't yet have solutions
 4)  Changes made for each successive version release
 5)  Release & website reminders
-6)  Historic development notes
+6)  Multiplayer experimentation notes
+7)  Historic development notes
 
 -----------------------
 
 1) Future change suggestions from users:
 
 
-#57 & 58  From Simon Banham by email 18/07/21.  Allow users to specify the distribution of mass, brake force and power when trains split, with a default of 50/50 (as at present).
+#59 & 60 Suggestions from Wilsteady via Discord, 28/10/21.
+1. being able to start the timetable from a fixed point in the day, not the nominated start time in the timetable. This is different from just using the +1hr button, as what i am looking for would include all trains to automatically be positioned according to that time. 
+2. [timetabled events added at v2.11.0 - addresses this to some extent] having the ability if there is a delay on the network or a train will be cancelled prior to it's destination, being able to select "Start next service now" from where it's current location is. Ideal if a train is halfway down a branch line and the signaller decides to cancel it halfway, and start the return trip. 
+
+#57 & 58  From Simon Banham by email 18/07/21.  Allow users to specify the distribution of mass, brake force and power when trains split, with a default of 50/50 (i.e. keep default as is).
 
 Simplify the timetable conflict analysis file so it looks more like SimSig's analysis file with all movements in location order and warnings about potential conflicts.
 
@@ -232,6 +237,77 @@ Multi-player facility over the internet.
 -----------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.10.0 for v2.11.0
+
+IMPORTANT NOTE: there are two new files in the Railway folder - IndyCore260.bpl and IndySystem260.bpl.  These must be copied to the folder on your computer where the new version of railway.exe resides or it won't work.
+
+The main change in this version is the ability to skip timetabled events in order to compensate for late running.  This feature is described in detail in the user manual and on-screen help in section 6.12.
+
+Other changes:
+
+If train is behind the performance or actions due panel when it is left-clicked in the list of actions due it is now centred on screen rather than just having mouse the arrow indicate where it is without any information.  This corrects an oversight in the last release.
+
+The minimum track element length has been reduced to 10m from 20m in response to user requests.
+
+The default track element length (100m) and speed limit (200km/h) have now been included in the configuration file Config.txt.  These can now be changed by editing that file (instructions are included in the file) and reloading it from the 'Mode' menu.  Note that background colour, signal handedness and default file locations can't be changed by direct editing.
+
+
+Own notes - not for website:
+
+Not related to skipping timetable actions
+
+/Create new branch 'Post v2.10.0 development' & use instead of 'Multiplayer experimentation' as both now combined
+
+/If train is behind a panel when click actions due it doesn't show properly - need to centre it on screen & explain in manual/help
+
+/Make next release 10m min distance, and may need to change some associated messages + help/manual
+
+/Put defaults in config.txt & have way of reloading config without having to restart + include explanatory comments (shouldn't need backwards compatibility as these files not shared).  These are currently in #define statements in TrackUnit.h
+
+/say questionable cdts instead of unexpected + change help/manual accordingly
+
+/check 7777s
+
+/investigate X628 in Bernina (ttb Rhb...) with new IsSntLocated function
+
+/Add LoadConfigFile to caller checker + HideTTActionsListBox & ShowTTActionsListBox
+
+/Make next version 2.11.0 in about box & check all instances of 3.0.0 and change to 2.11.0 if not assoc with multiplayer or 'for multiplayer' if not
+
+/Remove API files from caller checker as no callers /done for 2.11.0
+
+/have tt modified message if change to AZ order then back again without saving anything (have TimetableChangedFlag = true just before 'catch' in AZOrderButtonClick, is that necessary?   /dropped in v2.11.0
+
+/add need for .toml file in devhistory for new projects /done for 2.11.0
+
+Xchange all uses of '13' to component->item->height + bevelwidth * 4 or whatever required (no, leave as is since working ok - if problems arise in future then have this ability)
+
+
+Timetable action skipping:
+
+/add session data for trains in process of skipping
+
+/add 'skipped events' to performance log and include with 'other missed events' for the score.
+
+/try to skip at same location after depart and cdt elsewhere
+
+/drop track & train info if behind skip panel
+
+/Have panel above the skiplist with brief explanation + exit button (small square cross)
+
+/Keep skiplist visible if select wrong action so can quickly select another
+
+/disable all buttons when skiplist visible
+
+/take account of last line being after a finish & don't rely on no newline at end of it - stop at the finish or before if >30
+
+/only enable skiplist for trains stopped at sig or loc
+
+/deal with departure for stopped at loc & skip to after normal depart
+
+/add perflog message when skip actions
+
 
 VERSION CHANGES AFTER v2.9.2 for v2.10.0
 
@@ -1744,6 +1820,7 @@ ADDING A NEW PROJECT TO THE USER WEBSITE: (updated November 2020 for the revised
 
 1 Check works ok & no copyrighted information
 2 Create a .jpg image of the railway & upload it to 'Media'
+2a Create a .toml file and add to the zip
 3 Upload original or modified (if required) zip file to 'Media'
 [From here on it's easier to duplicate an earlier project then modify areas that need to be changed, but remember to reset the download count!]
 4 Select 'Add new product'
@@ -1794,7 +1871,106 @@ ADDING A NEW PROJECT TO THE USER WEBSITE: (updated November 2020 for the revised
 22 On Discord make author a creator if not already
 
 
-6) Historic development notes
+6) Multiplayer experimentation: [very tentative as yet]
+
+When add multiplayer:
+
+1) add "Portions of this software are Copyright (c) 1993 - 2018, Chad Z. Hower (Kudzu) and the Indy Pit Crew" as caption to Attribution3label 
+
+2) add "<a href="https://www.indyproject.org/">Indy Project</a>" to Attribution3LinkLabel & 
+"<a href="https://www.indyproject.org/license/bsd/">Indy BSD License</a>" to AttributionLinkLabel4
+
+3) reinstate these just above 'Menu items from Silk...'
+
+make sure have coupling map loaded before host handshaking
+
+-->Need to instrument both host & player to try to pin down why first contact to host not responded to, can use usual logs to do it and have a testfunction to print out to a file
+
+Need to have a non-modal messagebox for errors during play - use a panel (like SigImagePanel) with OK button to clear panel, game won't stop with panel visible (though kept running when ShowMessage up - something not understood here)
+
+ensure train can't be in two railways at same time (could fail in one and not other), ensure fully exited from one before entering other, but think about how to deal with temporarily failed internet comms
+
+don't leave anything in test function
+
+Need to check for errors when converting a datagram to a DynamicMap if run out of buffer before DMap complete - can check using buffer counter compared to buffer.length - return a bool & ignore if operating or send again if preparing
+
+Will need to add times to exit info to session file when allow session saves
+
+Need to change host actions after reading PlayerInboundMap - nothing in it yet so don't need to populate the combined map, but can preload all the combined maps from coupling map ready for operation & live info
+
+need to remove player info from string grid if anything goes wrong after initial contact made or ready to start, and message player to cancel & join again
+
+if player cancels after intial message or ready to start (or switches off computer - deactivates) send message to host so can remove from string grid & remove player from simulation
+
+sometimes have long wait for player join request, check number of times sent when deactivated - unclear why this happened but seems ok now
+
+need to send UserName with every datagram in case port has changed - just build it in when construct the datagram
+
+Disable Multiplayer menu when either panel up, but enable own ability to cancel during play
+
+Don't disable masterclock in deactivate whenever host or player in multiplay mode
+
+Catch all Id errors & during dev't give onscreen message. Had #10054 Connection reset by peer - investigate that - when cancel clicked in player & reported in host (host independent & player under debugger).
+
+Allow repeating trains to be out of order
+
+Need to check TimeToExit = -1 when stopped at a signal with an autoroute after it, should have a proper value
+
+Add RebuildTimeToExitMap to caller checker
+
+need to disable multiplayer menu if operate other than as multiplayer
+
+/Try to move m'player routines out of main clocktimer2 loop - have separate functions so not wasting time on all the if... statements
+
+work out how to communicate required info - TTClock out, train times to exit in + out again to relevant railway
+
+check how to deal with multiple server requests at same time
+
+Add acknowledgement of Indy in multiplayer (if get that far) as per licence - still to include in readme.txt (or in a separate file as is the creative commons licence + check if any other units than Interface use Indy cpts & include notice if they do.
+
+Need to deal with routers that re-allocate port numbers (see http://pibul23.psru.ac.th/~onbee/bee/Introduction%20to%20Multiplayer%20Game%20Programming.htm Network Address Translation section para beginning 'The third problem -- and a fairly rare one at that, but...'  But that doc is 2003 so things will have changed now.  Bjorn is the internet expert so may well be able to help with network problems.
+
+Check security issues with port forwarding, does virus prot'n still work?  Maybe it's a firewall bypassing issue?
+
+Prob won't work with Wine or on Macs, and behind VPNs (& maybe some firewalls/virus protection s/w)
+
+Sessions possible with multiplayer?
+
+Will need host to carry out a validation of all the railway exit locations & linkages
+
+If train failed to enter at all then no penalty for this user as fault lies with another user
+
+Would be good to allow signaller controlled trains to move between users, i.e. outside of timetable control, for example to pick up a failed train on another section.  It will arrive under the signaller control of the receiving user
+
+NB: spend more time on the design before coding - focus on practical features, e.g. TimeToExit may not be all that useful as communication can take place via discord - or have an extra 'delayed by xx mins' or 'delayed, arrival time not known' notices in the floating window
+
+Maybe have single railway + may operators like simsig.  Host has the master railway and overall control of speed, play/pause, route selection etc., with clients setting routes as normal & passing these to host to update host's railway & that updating all others with route and position information.  Maybe clients' railways just copies of host's railway, though need to vary viewpoint, zoom etc & have mouse click positions registered.
+
+run busy railway with lots of trains on laptop & pc to compare main loop execution times & compare with 20ms clock timer (prior to One PSB multiplayer)
+
+/PlayerInboundMap has entry information whereas PlayerOutboundMap has exit info, need to compile o/b map from several i/b maps, try to do some of computing on player computer to save host time
+
+/Use a different separator than comma for coupling file & call it .txt to avoid CR problem
+
+/Have host attempt to read every cycle, no need to wait
+
+/Getting multiple requests to join even with HostReadyToReceive.  Just because don't receive it doesn't mean messages aren't still being received at the internal buffer.  Need to flush it or stop listening somehow - set active to false while don't want messages - that works
+
+Xcheck why added pause to deactivate (not clear, probs only seemed to be points and routes flashing)
+
+/why doesn't ReadBuffer work?  It's because TIdBytes is a Delphi dynamic array type, which can't be used directly in C++Builder.  Use 'DynamicArray<Byte> buff' instead of 'TIdBytes buff', then set the length to something long enough, e.g. 'buff.Length = 100'.
+This works, ReadBuffer accepts the DynamicArray<Byte> type in place of TIdBytes.  Found this from the discussion at https://stackoverflow.com/questions/8378260/c-builder-tarraysystem-byte-not-compiling but added the Length setting myself to make it work.
+
+/check what the exception ignore list does - understanding incomplete, seems just to be the debugger that's involved, running outside the debugger prob ok.
+
+/ & X check that MissedTicks works by having delay in ClockTimer2 (prior to One PSB multiplayer) - it doesn't work! The timer must be in the main thread
+
+/if use this version for non-multiplayer ensure masterclock disabled in de-activate
+
+------------------------------
+
+
+7) Historic development notes
 
 02/07/10: Transferred all files to 'railway.exe Work Files' to mirror the (experimental) Subversion working file folder
 with local repository (on D: drive).  When familiar with Subversion just work in its working folder then transfer repository

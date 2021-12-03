@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 612;
 var viewHeight = 2238;
-var sectionId = 'dynsection-14';
+var sectionId = 'dynsection-15';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -445,9 +445,9 @@ var sectionId = 'dynsection-14';
 <!-- Node27 -->
 <g id="node26" class="node">
 <title>Node27</title>
-<g id="a_node26"><a xlink:href="class_t_interface.html#ad9449a5d1fa3eada816b8b66500d7d44" target="_top" xlink:title=" ">
+<g id="a_node26"><a xlink:href="class_t_interface.html#a7aca81081a7983f1389c923e95c7afee" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="158.5,-1124 158.5,-1154 294.5,-1154 294.5,-1124 158.5,-1124"/>
-<text text-anchor="start" x="166.5" y="-1142" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ConverttoRight</text>
+<text text-anchor="start" x="166.5" y="-1142" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ConvertToOther</text>
 <text text-anchor="middle" x="226.5" y="-1131" font-family="Helvetica,sans-Serif" font-size="10.00">HandSignalsMenuItemClick</text>
 </a>
 </g>

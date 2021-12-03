@@ -1,5 +1,5 @@
 <map id="TUtilities::CheckAndReadFileString" name="TUtilities::CheckAndReadFileString">
-<area shape="rect" id="node1" title="checks that the value is a string (&#39;0&#39; or CR accepted as delimiters), returns true for success and re..." alt="" coords="1681,451,1852,493"/>
+<area shape="rect" id="node1" title="checks that the value is a string (&#39;0&#39; or &#39; &#39; (CRLF) accepted as delimiters), returns true for succes..." alt="" coords="1681,426,1852,467"/>
 <area shape="rect" id="node2" href="$class_t_utilities.html#ab4b66aa7480fda73d554fe0bcca82b60" title="checks that the value is an int lying between Lowest &amp; Highest (inclusive), returns true for success ..." alt="" coords="1459,210,1629,251"/>
 <area shape="rect" id="node10" href="$class_t_interface.html#a1c76c13d451cb6955d77d37e68614811" title="Check the timetable file embedded within a session file &amp; return false for error, called during Sessi..." alt="" coords="1215,107,1394,149"/>
 <area shape="rect" id="node11" href="$class_t_utilities.html#a1b39fffcd392bfb0f5a2ca393de3a6bb" title="checks that the value is a bool returns true for success" alt="" coords="1462,433,1626,460"/>
@@ -9,7 +9,6 @@
 <area shape="rect" id="node19" href="$class_t_track.html#aaaeca0e8840e05572e9c27e76a04483a" title="True if TrackElements in the file are all valid." alt="" coords="1208,662,1401,703"/>
 <area shape="rect" id="node23" href="$class_t_track.html#af4ef9874b8b8208112da24ac282298b7" title="checks all user graphics &amp; returns true for success" alt="" coords="1212,779,1397,805"/>
 <area shape="rect" id="node24" href="$class_t_interface.html#ace78190347eb85b1048e5309075d04b0" title="Check the performance file embedded within a session file &amp; return false for error,..." alt="" coords="937,5,1155,32"/>
-<area shape="rect" id="node25" href="$class_t_interface.html#a0659e748042e378f3e325652c9c2e6d2" title="constructor" alt="" coords="1473,687,1615,713"/>
 <area shape="rect" id="node3" href="$class_t_train_controller.html#a96985493678231bbcad15b36c0c63579" title="Part of the session file integrity check for ContinuationAutoSigEntries, true for success." alt="" coords="1203,342,1407,383"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#a3904f26b67b9512507960187b37b6f7b" title="Checks session file integrity prior to loading, true for success." alt="" coords="689,373,889,414"/>
 <area shape="rect" id="node8" href="$class_t_train_controller.html#a4d5ebc5a4b6dda080840913822f3f238" title="Part of the session file integrity check for locked routes, true for success." alt="" coords="1203,225,1407,266"/>

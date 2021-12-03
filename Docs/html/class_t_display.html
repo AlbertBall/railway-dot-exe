@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.10.0</span>
+   &#160;<span id="projectnumber">v2.11.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -99,7 +99,8 @@ $(document).ready(function(){initNavTree('class_t_display.html',''); initResizab
 <div class="dynheader">
 Collaboration diagram for TDisplay:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_display__coll__graph.svg" width="218" height="528"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_display__coll__graph.svg" width="218" height="528"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -223,6 +224,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a4ecb842151b8cb4a56a72ec72b9ca682"><td class="memItemLeft" align="right" valign="top">TMemo *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#a4ecb842151b8cb4a56a72ec72b9ca682">PerformanceMemo</a></td></tr>
+<tr class="separator:a4ecb842151b8cb4a56a72ec72b9ca682"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ce29cc370b43313ff15bee9423bf338"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#a0ce29cc370b43313ff15bee9423bf338">ZoomOutFlag</a></td></tr>
 <tr class="memdesc:a0ce29cc370b43313ff15bee9423bf338"><td class="mdescLeft">&#160;</td><td class="mdescRight">true when zoomed-out  <a href="class_t_display.html#a0ce29cc370b43313ff15bee9423bf338">More...</a><br /></td></tr>
 <tr class="separator:a0ce29cc370b43313ff15bee9423bf338"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -279,10 +282,8 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a5bf597b689a283f16b1aae5fe79ad2ec"><td class="memItemLeft" align="right" valign="top">TLabel *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#a5bf597b689a283f16b1aae5fe79ad2ec">OutputLog9</a></td></tr>
 <tr class="separator:a5bf597b689a283f16b1aae5fe79ad2ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc194f2bc9eda7fe8de600098c85d2ac"><td class="memItemLeft" align="right" valign="top">TLabel *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#afc194f2bc9eda7fe8de600098c85d2ac">OutputLog10</a></td></tr>
+<tr class="memdesc:afc194f2bc9eda7fe8de600098c85d2ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to the panel that displays the performance log  <a href="class_t_display.html#afc194f2bc9eda7fe8de600098c85d2ac">More...</a><br /></td></tr>
 <tr class="separator:afc194f2bc9eda7fe8de600098c85d2ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ecb842151b8cb4a56a72ec72b9ca682"><td class="memItemLeft" align="right" valign="top">TMemo *&amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_display.html#a4ecb842151b8cb4a56a72ec72b9ca682">PerformanceMemo</a></td></tr>
-<tr class="memdesc:a4ecb842151b8cb4a56a72ec72b9ca682"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to the panel that displays the performance log  <a href="class_t_display.html#a4ecb842151b8cb4a56a72ec72b9ca682">More...</a><br /></td></tr>
-<tr class="separator:a4ecb842151b8cb4a56a72ec72b9ca682"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that manages all aspects of the display</p>
@@ -446,7 +447,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_a8d990507ae0111e0b7890e8aa77fd76d_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_a8d990507ae0111e0b7890e8aa77fd76d_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -477,7 +479,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set the screen cursor to 'Cur' (used to select an arrow or an hourglass) </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00195">195</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00196">196</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -530,7 +532,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_ac97de4f74b0b295de941320578d6da28_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_ac97de4f74b0b295de941320578d6da28_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -560,7 +563,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the current screen font. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00132">132</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00133">133</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -594,7 +597,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the name of the default screen font. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00096">96</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00097">97</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -623,7 +626,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the size of the default screen font. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00102">102</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00103">103</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -652,11 +655,12 @@ Here is the caller graph for this function:</div>
 
 <p>Return a pointer to the screen image. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00138">138</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00139">139</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_a33f7067eea9e638bdc363bd0af70d7d5_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_a33f7067eea9e638bdc363bd0af70d7d5_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -686,7 +690,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return pointers to warning message logs (appear above the railway display during operation) </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00143">143</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00144">144</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -718,7 +722,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00189">189</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00190">190</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -750,7 +754,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00149">149</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00150">150</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -782,7 +786,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00154">154</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00155">155</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -814,7 +818,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00159">159</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00160">160</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -846,7 +850,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00164">164</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00165">165</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -878,7 +882,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00169">169</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00170">170</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -910,7 +914,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00174">174</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00175">175</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -942,7 +946,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00179">179</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00180">180</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -974,7 +978,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00184">184</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00185">185</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1031,7 +1035,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_a2b408bc588565f7b0cdcb85edc7479b7_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_a2b408bc588565f7b0cdcb85edc7479b7_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -1061,7 +1066,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the height of the screen. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00108">108</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00109">109</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1169,7 +1174,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the left pixel position of the screen. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00114">114</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00115">115</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1269,7 +1274,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_a7dae1c6470743a7cb778a6f813c7f0cc_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_a7dae1c6470743a7cb778a6f813c7f0cc_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -1311,7 +1317,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_a60756c55ee44db2e876d0419417b9e25_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_a60756c55ee44db2e876d0419417b9e25_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -1450,7 +1457,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_a9ab49e52c7eb92b32ae2c34547183439_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_a9ab49e52c7eb92b32ae2c34547183439_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -1497,7 +1505,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_aab35e517eba56f1c95f500958ce431ae_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_aab35e517eba56f1c95f500958ce431ae_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -1556,7 +1565,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_a6e970089a9419e6bdd12576b6e860c95_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_a6e970089a9419e6bdd12576b6e860c95_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -1617,7 +1627,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_display_abb140097c975da97aa53bc3946f3ea31_icgraph.svg" width="638" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_display_abb140097c975da97aa53bc3946f3ea31_icgraph.svg" width="638" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 
 </div>
@@ -1767,7 +1778,7 @@ Here is the caller graph for this function:</div>
 
 <p>Reset the zoomed-in screen display to the 'Home' position. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00201">201</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00202">202</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1801,7 +1812,7 @@ Here is the caller graph for this function:</div>
 
 <p>Reset the zoomed-out screen display to the 'Home' position. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00208">208</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00209">209</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1836,7 +1847,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set the screen font to 'Font'. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00215">215</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00216">216</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1932,7 +1943,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_adfff17bfef798b07b1e6bbfc6f5e0822_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_adfff17bfef798b07b1e6bbfc6f5e0822_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -1962,7 +1974,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the top pixel position of the screen. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00120">120</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00121">121</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1996,11 +2008,12 @@ Here is the caller graph for this function:</div>
 
 <p>Repaint the screen display. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00221">221</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00222">222</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_aa4f37ab2a4df6437a2219f303e1de40b_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_display_aa4f37ab2a4df6437a2219f303e1de40b_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -2072,7 +2085,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the width of the screen. </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00126">126</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00127">127</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -2104,7 +2117,7 @@ Here is the caller graph for this function:</div>
 
 <p>the horizontal offset of the displayed screen </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00076">76</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00077">77</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2130,7 +2143,7 @@ Here is the caller graph for this function:</div>
 
 <p>the horizontal offset of the 'Home' display </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00080">80</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00081">81</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2156,7 +2169,7 @@ Here is the caller graph for this function:</div>
 
 <p>the vertical offset of the displayed screen </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00078">78</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00079">79</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2182,7 +2195,7 @@ Here is the caller graph for this function:</div>
 
 <p>the vertical offset of the 'Home' display </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00082">82</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00083">83</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2208,7 +2221,7 @@ Here is the caller graph for this function:</div>
 
 <p>the horizontal offset of the zoomed-out display </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00084">84</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00085">85</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2234,7 +2247,7 @@ Here is the caller graph for this function:</div>
 
 <p>the horizontal offset of the zoomed-out 'Home' display </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00088">88</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00089">89</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2260,7 +2273,7 @@ Here is the caller graph for this function:</div>
 
 <p>the verticalal offset of the zoomed-out display </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00086">86</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00087">87</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2286,7 +2299,7 @@ Here is the caller graph for this function:</div>
 
 <p>the vertical offset of the zoomed-out 'Home' display </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00090">90</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00091">91</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2361,6 +2374,8 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>pointer to the panel that displays the performance log </p>
 
 <p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00063">63</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
@@ -2563,24 +2578,14 @@ Here is the caller graph for this function:</div>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">TMemo* &amp; TDisplay::PerformanceMemo</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>pointer to the panel that displays the performance log </p>
-
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00064">64</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00068">68</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>
@@ -2598,7 +2603,7 @@ Here is the caller graph for this function:</div>
 
 <p>true when zoomed-out </p>
 
-<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00069">69</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_display_unit_8h_source.html#l00070">70</a> of file <a class="el" href="_display_unit_8h_source.html">DisplayUnit.h</a>.</p>
 
 </div>
 </div>

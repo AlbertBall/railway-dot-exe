@@ -1,0 +1,83 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+.MsoChpDefault
+	{font-family:"Calibri","sans-serif";}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:1.0cm 1.0cm 1.0cm 1.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-GB>
+
+<div class=WordSection1>
+
+<p class=MsoNormal><b>6.12     Skipping timetabled events</b></p>
+
+<p class=MsoNormal><b>&nbsp;</b></p>
+
+<p class=MsoNormal>When trains suffer delays it is often useful to be able to
+skip stops and other timetabled events in order to make up time and
+re-establish a normal schedule, especially when other services depend on
+connections.  This is normal practice on real railways.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>This can be done in the simulation for events within a
+service.  When operating (not paused) and a train is stopped at a signal or a
+location and is under timetable control, right click it to show the popup menu
+and select 'Skip timetabled event(s)'.  This gives a list of events from that
+point onwards, similar to timetable information in the floating window. 
+Lefi-clicking an event selects that event as the next, i.e. the selected event
+itself isn't skipped.  There have to be restrictions on events that can be
+selected related to where the train is at the time and where the selected event
+takes place.  </p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>1.  Trains stopped at a signal:</p>
+
+<p class=MsoNormal style='margin-left:36.0pt'>Only arrivals, passes or exit
+railway events can be selected since all others take place at locations and the
+train hasn't yet arrived at those locations.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>2.  Trains stopped at a location:</p>
+
+<p class=MsoNormal style='margin-left:36.0pt'>a) any event up to and including
+the departure from that location can be selected, when all events before the
+selection are skipped;</p>
+
+<p class=MsoNormal style='margin-left:36.0pt'>b) any event after the departure that
+is an arrival, pass or exit railway can be selected, when all events after the
+departure but before the selection are skipped.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>It isn't possible to skip the finish event, so trains that
+change to a different service at a location can't have the change of service
+brought forward to an earlier location, as is sometimes done in real practice. 
+This is because of the way that the timetable is structured - events can be
+skipped but can't be changed during operation.</p>
+
+</div>
+
+</body>
+
+</html>

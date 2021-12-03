@@ -61,10 +61,11 @@ private:
     TLabel* &OutputLog8;
     TLabel* &OutputLog9;
     TLabel* &OutputLog10;
-    TMemo* &PerformanceMemo;
 ///< pointer to the panel that displays the performance log
 
 public:
+
+    TMemo* &PerformanceMemo; //moved here from 'Private' so Interface can access it
 
     bool ZoomOutFlag;
 ///< true when zoomed-out

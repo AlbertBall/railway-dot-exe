@@ -102,11 +102,10 @@ void __fastcall TAboutForm::SetAboutCaption()
         }
         delete[] pBuffer;
     }
-    AboutLabelCaption->Caption = L"All the tools to design, build and" + NL +
-        L"operate your own railway" + NL + NL +
+
+    AboutLabelCaption->Caption = L"All the tools to design, build and operate your own railway" + NL + NL +
         L"Release: " + Interface->ProgramVersion + NL + NL +
-        L"Copyright 2010-2021 Albert Ball" + NL +
-        L"with contributions from Stephen A Smith and Kristian Zarebski";
+        L"Copyright (c) 2010 - 2021 Albert Ball\nwith contributions from Stephen A Smith and Kristian Zarebski";
 }
 //---------------------------------------------------------------------------
 void __fastcall TAboutForm::WebsiteLinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
@@ -131,6 +130,36 @@ void __fastcall TAboutForm::Attribution1LinkLabelLinkClick(TObject *Sender, cons
 
 void __fastcall TAboutForm::Attribution2LinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
                                                            TSysLinkType LinkType)
+{
+    if(LinkType == sltURL)
+    {
+        ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TAboutForm::Attribution3LinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType)
+{
+    if(LinkType == sltURL)
+    {
+        ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TAboutForm::AttributionLinkLabel4LinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType)
+{
+    if(LinkType == sltURL)
+    {
+        ::ShellExecute(Handle, NULL, Link.c_str(), NULL, NULL, SW_SHOWNORMAL);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TAboutForm::LinkLabel1LinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType)
 {
     if(LinkType == sltURL)
     {

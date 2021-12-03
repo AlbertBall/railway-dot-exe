@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_t_graphic_element.html" title="Allows a single Width x Height graphic to change and change back independently of the remaining displ..." alt="" coords="5,5,128,32"/>
+<area shape="rect" id="node1" href="$class_t_fixed_track_piece.html" title=" " alt="" coords="5,5,132,32"/>
+<area shape="rect" id="node2" href="$class_t_track_element.html" title="Basic track elements as implemented in the overall railway layout." alt="" coords="180,5,289,32"/>
+<area shape="rect" id="node3" href="$class_t_pref_dir_element.html" title="Basic preferred direction or route element &#45; track element with additional members." alt="" coords="337,5,453,32"/>
 </map>

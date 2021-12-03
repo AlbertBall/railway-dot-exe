@@ -7,6 +7,6 @@
 <area shape="rect" id="node8" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="490,223,637,250"/>
 <area shape="rect" id="node9" href="$class_t_track.html#aaaeca0e8840e05572e9c27e76a04483a" title="True if TrackElements in the file are all valid." alt="" coords="221,157,415,199"/>
 <area shape="rect" id="node10" href="$class_t_track.html#af4ef9874b8b8208112da24ac282298b7" title="checks all user graphics &amp; returns true for success" alt="" coords="225,223,411,250"/>
-<area shape="rect" id="node4" href="$class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37" title="checks that the value is a string (&#39;0&#39; or CR accepted as delimiters), returns true for success and re..." alt="" coords="697,267,868,308"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37" title="checks that the value is a string (&#39;0&#39; or &#39; &#39; (CRLF) accepted as delimiters), returns true for succes..." alt="" coords="697,267,868,308"/>
 <area shape="rect" id="node7" href="$class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c" title="loads an int value from the file" alt="" coords="492,122,635,149"/>
 </map>

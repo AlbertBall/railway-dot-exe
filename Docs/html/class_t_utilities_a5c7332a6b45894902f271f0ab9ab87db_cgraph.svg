@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37" target="_top" xlink:title="checks that the value is a string (&#39;0&#39; or CR accepted as delimiters), returns true for success and re...">
+<g id="a_node2"><a xlink:href="class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37" target="_top" xlink:title="checks that the value is a string (&#39;0&#39; or &#39; &#39; (CRLF) accepted as delimiters), returns true for succes...">
 <polygon fill="white" stroke="black" points="170,-0.5 170,-30.5 298,-30.5 298,-0.5 170,-0.5"/>
 <text text-anchor="start" x="178" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">TUtilities::CheckAndRead</text>
 <text text-anchor="middle" x="234" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">FileString</text>

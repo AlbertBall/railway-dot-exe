@@ -67,7 +67,7 @@ var sectionId = 'dynsection-58';
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_train_controller.html#ad81afe17a036ab3f96c340ab75a2d8e2" target="_top" xlink:title="new v2.2.0, calcs distance to red signal, returns &#45;1 for no signal found, for autosigs route after ne...">
+<g id="a_node2"><a xlink:href="class_t_train_controller.html#a9fa0023214c894b378c929311da6c185" target="_top" xlink:title="new v2.2.0 (DistanceToExit added for multiplayer), calcs distances to red signal &amp; exit,...">
 <polygon fill="white" stroke="black" points="863,-503.5 863,-533.5 1011,-533.5 1011,-503.5 863,-503.5"/>
 <text text-anchor="start" x="871" y="-521.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::CalcDistance</text>
 <text text-anchor="middle" x="937" y="-510.5" font-family="Helvetica,sans-Serif" font-size="10.00">ToRedSignalandStopTime</text>
@@ -129,7 +129,7 @@ var sectionId = 'dynsection-58';
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="class_t_train.html#ae34370de578ebd07a217c79d8b67312c" target="_top" xlink:title="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa...">
+<g id="a_node3"><a xlink:href="class_t_train.html#af23c2a989fee528b3c87200dcd8c2c0b" target="_top" xlink:title="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa...">
 <polygon fill="white" stroke="black" points="682.5,-541 682.5,-560 797.5,-560 797.5,-541 682.5,-541"/>
 <text text-anchor="middle" x="740" y="-548" font-family="Helvetica,sans-Serif" font-size="10.00">TTrain::CalcTimeToAct</text>
 </a>

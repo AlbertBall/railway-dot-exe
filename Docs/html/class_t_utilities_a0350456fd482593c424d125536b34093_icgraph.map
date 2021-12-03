@@ -1,0 +1,5 @@
+<map id="TUtilities::ReadOneLineFromCouplingFile" name="TUtilities::ReadOneLineFromCouplingFile">
+<area shape="rect" id="node1" title="reads a single line from the multiplayer coupling file, returns true for success with OutString conta..." alt="" coords="516,5,704,47"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a8e15fdb2f391ad0fea755d4fa0ecd940" title="Read couplingfile and convert into CouplingMap." alt="" coords="256,13,468,39"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a4080c828426c032b99d01e92f96ebe26" title=" " alt="" coords="5,5,208,47"/>
+</map>

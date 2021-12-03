@@ -44,6 +44,9 @@ __published:               // IDE-managed Components
     TLinkLabel *Attribution2LinkLabel;
     TLabel *Attribution1Label;
     TLabel *Attribution2Label;
+    TLabel *Attribution3Label;
+    TLinkLabel *Attribution3LinkLabel;
+    TLinkLabel *AttributionLinkLabel4;
 /// Called when the form is first created (by WinMain). Sets the version info, then hides the form
     void __fastcall FormCreate(TObject *Sender);
 /// Opens the About form
@@ -52,10 +55,16 @@ __published:               // IDE-managed Components
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 /// Sends the link to your default browser
     void __fastcall WebsiteLinkLabelLinkClick(TObject *Sender, const UnicodeString Link, TSysLinkType LinkType);
-/// Send the first attribution statement's link to your default browser
+/// Send the attribution statement's link to your default browser
     void __fastcall Attribution1LinkLabelLinkClick(TObject *Sender, const UnicodeString Link, TSysLinkType LinkType);
-/// Send the second attribution statement's link to your default browser
+/// Send the attribution statement's link to your default browser
     void __fastcall Attribution2LinkLabelLinkClick(TObject *Sender, const UnicodeString Link, TSysLinkType LinkType);
+/// Send the attribution statement's link to your default browser
+    void __fastcall Attribution3LinkLabelLinkClick(TObject *Sender, const UnicodeString Link, TSysLinkType LinkType);
+/// Send the attribution statement's link to your default browser
+    void __fastcall AttributionLinkLabel4LinkClick(TObject *Sender, const UnicodeString Link, TSysLinkType LinkType);
+    void __fastcall LinkLabel1LinkClick(TObject *Sender, const UnicodeString Link,
+          TSysLinkType LinkType);
 private:    // User declarations
 /// Sets version details from the project options 'Version Info' values
     void __fastcall SetAboutCaption();

@@ -1,10 +1,10 @@
 <map id="TTrain::NameInTimetableBeforeCDT" name="TTrain::NameInTimetableBeforeCDT">
 <area shape="rect" id="node1" title="Returns the number by which the train ActionVectorEntryPtr needs to be incremented to point to the lo..." alt="" coords="1860,132,2087,159"/>
-<area shape="rect" id="node2" href="$class_t_train_controller.html#ad81afe17a036ab3f96c340ab75a2d8e2" title="new v2.2.0, calcs distance to red signal, returns &#45;1 for no signal found, for autosigs route after ne..." alt="" coords="1156,41,1353,82"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a9fa0023214c894b378c929311da6c185" title="new v2.2.0 (DistanceToExit added for multiplayer), calcs distances to red signal &amp; exit,..." alt="" coords="1156,41,1353,82"/>
 <area shape="rect" id="node6" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="679,304,814,331"/>
 <area shape="rect" id="node9" href="$class_t_train.html#a4524b72ef62ef2c1375f58fac05929ee" title="True if the train can be called on at its current position &#45; see detail in .cpp file." alt="" coords="1643,107,1809,133"/>
 <area shape="rect" id="node10" href="$class_t_train.html#aaa6289d279b229d05963f8b3a35d53e9" title="Calculates train speeds and times for the element that the train is about to enter...." alt="" coords="1640,333,1812,374"/>
-<area shape="rect" id="node3" href="$class_t_train.html#ae34370de578ebd07a217c79d8b67312c" title="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa..." alt="" coords="915,5,1069,32"/>
+<area shape="rect" id="node3" href="$class_t_train.html#af23c2a989fee528b3c87200dcd8c2c0b" title="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa..." alt="" coords="915,5,1069,32"/>
 <area shape="rect" id="node8" href="$class_t_train_controller.html#a0e16b9cb91bb29f83bffc7ae3461200d" title="new v2.2.0 for OperatorActionPanel" alt="" coords="665,141,828,182"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,148,403,175"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,148,196,175"/>

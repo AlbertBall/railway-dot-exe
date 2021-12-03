@@ -1,4 +1,4 @@
 <map id="TUtilities::CheckFileInt" name="TUtilities::CheckFileInt">
 <area shape="rect" id="node1" title="checks that the value is an int lying between Lowest &amp; Highest (inclusive), returns true for success" alt="" coords="5,13,157,39"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37" title="checks that the value is a string (&#39;0&#39; or CR accepted as delimiters), returns true for success and re..." alt="" coords="205,5,376,47"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37" title="checks that the value is a string (&#39;0&#39; or &#39; &#39; (CRLF) accepted as delimiters), returns true for succes..." alt="" coords="205,5,376,47"/>
 </map>

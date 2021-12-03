@@ -96,12 +96,31 @@ typedef TNumList::iterator TNumListIterator;
 
 // ---------------------------------------------------------------------------
 
+///these added for multiplayer
+
+typedef std::pair<short, short> THVShortPair;
+
+class TExitInfo //corresponds to TServiceInfo in Interface  12 bytes
+{
+public:
+    AnsiString ServiceReference;
+    short RepeatNumber;
+    short TimeToExitSecs; //-1 = >= 60 mins
+
+    TExitInfo(); //default constructor to initialise values to 8 spaces or 0
+};
+
+typedef std::multimap<THVShortPair, TExitInfo> TTimeToExitMultiMap;
+typedef std::pair<THVShortPair, TExitInfo> TTimeToExitMultiMapEntry;
+
+// ---------------------------------------------------------------------------
+
 /// Contains a single train action in a timetable - repeat entry is also of this class though no train action is taken for it
 class TActionVectorEntry
 {
 public:
     AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode;
-///< string values for timetabled action entries, null on creation
+///< string values for timetabled event entries, null on creation
 //Other HeadCode & NonRepeatingShuttleLinkHeadCode have service ref entered in ProcessOneTimetableLine but these are
 //changed back to basic HeadCodes as almost the final action in SecondPassActions (uses StripExcessFromHeadCode)
     bool SignallerControl;
@@ -277,6 +296,8 @@ enum TStraddle
     MidLag, LeadMidLag, LeadMid
 };
 
+// ---------------------------------------------------------------------------
+
 class TTrain
 {
 private:
@@ -299,6 +320,10 @@ private:
 
     AnsiString HeadCode;
 ///< needs own HeadCode because repeat entries will differ from TrainDataEntry.HeadCode
+    bool SkippedDeparture;
+///< used to indicate that a departure is still awaited when later timetabled events are to be skipped
+    bool ActionsSkippedFlag;
+///< prevents any further skipping until after the next departure
     bool HoldAtLocationInTTMode;
 ///< true if actions are needed before train departs
     bool TimeTimeLocArrived;
@@ -336,7 +361,6 @@ private:
 ///< the speed of the train when introduced into the railway (in km/h)
     int LeadElement, LeadEntryPos, LeadExitPos, MidElement, MidEntryPos, MidExitPos, LagElement, LagEntryPos, LagExitPos;
 ///< TrackVector positions, & entry & exit connection positions for the elements that the train occupies
-
     int TrainID;
 ///< the train's identification number
 
@@ -344,8 +368,10 @@ private:
 ///< points to the current position in the timetable's TrainDataVector
     TActionVectorEntry *ActionVectorEntryPtr;
 ///< points to the current position in the ActionVector (a member of the TTrainDataEntry class)
-
-// train data
+    int SkipPtrValue;
+///< stores the pointer increment from first action in ActionVector for skipped actions when a departure is still awaited
+    int TrainSkippedEvents;
+///< stores the pointer increment from the current action in ActionVector for skipped actions when a departure is still awaited
     bool AllowedToPassRedSignal;
 ///< set when train has been called on, or when under signaller control and instructed to pass a red signal or to step forwards one element
     bool BeingCalledOn;
@@ -411,6 +437,8 @@ private:
 ///<new at v2.2.0 for operator time to act panel. Calculated in UpdateTrain
     float OpTimeToAct;
 ///<in minutes: new at v2.2.0 for operator time to act panel. Calculated in UpdateTrain, -1 indicates not to be displayed on panel
+    float TimeToExit;
+///<in minutes: new for multiplayer, -1 = > 60 mins
     float FirstLaterStopRecoverableTime;
 ///< this used to deduct from RecoverableTime when arrive at a location for OperatorActionpanel
     int FrontElementSpeedLimit, FrontElementLength;
@@ -426,7 +454,9 @@ private:
     TDateTime ReleaseTime, TRSTime;
 ///< location departure time and 'train ready to start' time (TRSTime is 10 seconds before the ReleaseTime)
     TDateTime LastActionTime;
-///< time of the last timetabled action, used to ensure at least a 30 second delay before the next action
+///< time of the last timetabled event, used to ensure at least a 30 second delay before the next action
+    THVShortPair ExitPair;
+///< H & V coordinates of the exit element related to TimeToExit, new for multiplayer
     TTrainMode TrainMode;
 ///< mode of operation - either Timetable (running under timetable control) or Signaller (running under signaller control)
 
@@ -466,6 +496,9 @@ private:
 ///< the background colour of the train's headcode graphics
     TStraddle Straddle;
 ///< the current Straddle value of the train (see TStraddle above)
+    UnicodeString SelSkipString;
+///< the selected timetable string when skipping timetabled events
+
 
 // functions defined in .cpp file
 
@@ -511,14 +544,14 @@ private:
     bool TrainToJoinIsAdjacent(int Caller, TTrain* &TrainToJoin);
 
 /// Returns the number by which the train ActionVectorEntryPtr needs to be incremented to point to the location arrival entry or passtime entry before a change of direction.
-/** Used to display missed actions when a stop or pass location has been reached before other timetabled actions have been carried out.
+/** Used to display missed actions when a stop or pass location has been reached before other timetabled events have been carried out.
 If can't find it, or Name is "", -1 is returned.  A change of direction is the limit of the search because a train may not stop at a
 location on the way out but stop on way back, and in these circumstances no actions have been missed.  Stop indicates whether the train
 will stop at (true) or pass (false) the location.*/
     int NameInTimetableBeforeCDT(int Caller, AnsiString Name, bool &Stop);
 
-///new v2.2.0 for operator action panel.  Calculates the time left for operator action to avoid unnecessary delays
-    float CalcTimeToAct(int Caller);
+///new v2.2.0 for operator action panel.  Calculates the time left for operator action to avoid unnecessary delays.  Added TimeToExit & ExitPair for multiplayer
+    float CalcTimeToAct(int Caller, float &TimeToExit, THVShortPair &ExitPair);
 /// Return a pointer to the graphic corresponding to the character 'CodeVhar'
     Graphics::TBitmap *SetOneGraphicCode(char CodeChar);
 
@@ -791,6 +824,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     int OnTimePasses;
     int OnTimeExits; //added at v2.9.1
     int OtherMissedEvents;
+    int SkippedTTEvents; //added at v2.11.0
     int SPADEvents;
     int SPADRisks;
     int TotArrDepPass;
@@ -928,17 +962,20 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     bool TrainExistsAtIdent(int Caller, int TrainID);
 /// check whether the two times are within the range in minutes specified and return true if so. For an equal time check MinuteRange = 0;
     bool WithinTimeRange(int Caller, AnsiString Time1, AnsiString Time2, int MinuteRange);
-/// new v2.2.0, calcs distance to red signal, returns -1 for no signal found, for autosigs route after next red signal & other conditions, also totals up location stop times before the red signal and returns value in StopTime
+/// new v2.2.0 (DistanceToExit added for multiplayer), calcs distances to red signal & exit, returns -1 for no signal found, for autosigs route after next red signal & other conditions, also totals up location stop times before the red signal and returns value in StopTime
     int CalcDistanceToRedSignalandStopTime(int Caller, int TrackVectorPosition, int TrackVectorPositionEntryPos, bool SigControlAndCanPassRedSignal,
-                                           TActionVectorEntry *AVPtr, AnsiString HeadCode, int TrainID, float &CurrentStopTime, float &LaterStopTime, float &RecoverableTime, int &AvTrackSpeed);
+                                           TActionVectorEntry *AVPtr, AnsiString HeadCode, int TrainID, float &CurrentStopTime, float &LaterStopTime,
+                                           float &RecoverableTime, int &AvTrackSpeed, int &DistanceToExit, THVShortPair &ExitPair);
 /// Return the track entry link (Link[]) array position for the given train on track element at track vector position TrackVectorNumber
     int EntryPos(int Caller, int TrainIDIn, int TrackVectorNumber);
 /// Get the interval between repeats
     TDateTime GetControllerTrainTime(int Caller, TDateTime Time, int RepeatNumber, int IncrementalMinutes);
 /// Return the repeating service time
-    TDateTime TTrainController::GetRepeatTime(int Caller, TDateTime BasicTime, int RepeatNumber, int IncMinutes);
+    TDateTime GetRepeatTime(int Caller, TDateTime BasicTime, int RepeatNumber, int IncMinutes);
 /// Return a reference to the train at position VecPos in the TrainVector, carries out range checking on VecPos
     TTrain &TrainVectorAt(int Caller, int VecPos);
+/// Map of times to exit & exit coordinates
+    TTimeToExitMultiMap TimeToExitMultiMap;
 /// Return a reference to the train with ID TrainID, carries out validity checking on TrainID
     TTrain &TrainVectorAtIdent(int Caller, int TrainID);
 ////Return the TrainDataVector entry corresponding to ServiceReference, FinishType is 0 for end of service or 1 for a follow-on service
@@ -967,6 +1004,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     void PlotAllTrainsInZoomOutMode(int Caller, bool Flash);
 /// new v2.2.0 for OperatorActionPanel
     void RebuildOpTimeToActMultimap(int Caller);
+/// new for multiplayer
+    void RebuildTimeToExitMultiMap(int Caller);
 /// plot all trains on the display
     void ReplotTrains(int Caller, TDisplay *Disp);
 /// save ContinuationAutoSigEntries to a session file

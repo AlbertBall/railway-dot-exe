@@ -1,7 +1,7 @@
 <map id="TTrack::GetNonPointsOppositeLinkPos" name="TTrack::GetNonPointsOppositeLinkPos">
 <area shape="rect" id="node1" title="Return the corresponding link position (track always occupies either links 0 &amp; 1 or 2 &amp; 3)" alt="" coords="2199,774,2401,816"/>
-<area shape="rect" id="node2" href="$class_t_train_controller.html#ad81afe17a036ab3f96c340ab75a2d8e2" title="new v2.2.0, calcs distance to red signal, returns &#45;1 for no signal found, for autosigs route after ne..." alt="" coords="1443,36,1640,77"/>
-<area shape="rect" id="node3" href="$class_t_train.html#ae34370de578ebd07a217c79d8b67312c" title="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa..." alt="" coords="1203,102,1357,128"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a9fa0023214c894b378c929311da6c185" title="new v2.2.0 (DistanceToExit added for multiplayer), calcs distances to red signal &amp; exit,..." alt="" coords="1443,36,1640,77"/>
+<area shape="rect" id="node3" href="$class_t_train.html#af23c2a989fee528b3c87200dcd8c2c0b" title="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa..." alt="" coords="1203,102,1357,128"/>
 <area shape="rect" id="node6" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="954,711,1089,738"/>
 <area shape="rect" id="node9" href="$class_t_train.html#a4524b72ef62ef2c1375f58fac05929ee" title="True if the train can be called on at its current position &#45; see detail in .cpp file." alt="" coords="1966,263,2133,290"/>
 <area shape="rect" id="node10" href="$class_t_all_routes.html#a12eedbd538ea1c2d3f204e5f2f62e1cd" title="Functions defined in .cpp file." alt="" coords="1705,1222,1900,1264"/>

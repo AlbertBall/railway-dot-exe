@@ -1249,6 +1249,11 @@
 		<param name="Local" value="html/5.2.1e41.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Skip timetabled events">
+		<param name="Name" value="Skipping timetabled events">
+		<param name="Local" value="html\6.12.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Slow down clock">
 		<param name="Name" value="Adjusting the timetable clock">
 		<param name="Local" value="html/6.94szd.htm">

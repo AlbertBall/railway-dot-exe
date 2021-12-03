@@ -238,6 +238,26 @@ AnsiString TTrackElement::LogTrack(int Caller) const
 
 // ---------------------------------------------------------------------------
 
+/// Constructor for specific type of element. Use very high neg. numbers as 'unset' values for HLoc & VLoc initially as can go high negatively legitimately, build from existing TTrackPiece with default values for extra members
+    TTrackElement::TTrackElement(TFixedTrackPiece Input) : TFixedTrackPiece(Input), HLoc(-2000000000), VLoc(-2000000000), LocationName(""), ActiveTrackElementName(""),
+        Attribute(0), CallingOnSet(false), Length01(Track->DefaultTrackLength), Length23(-1), SpeedLimit01(Track->DefaultTrackSpeedLimit), SpeedLimit23(-1),
+        TrainIDOnElement(-1), TrainIDOnBridgeTrackPos01(-1), TrainIDOnBridgeTrackPos23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1),
+        SigAspect(FourAspect)
+    {
+        for(int x = 0; x < 4; x++)
+        {
+            ConnLinkPos[x] = -1;
+            Conn[x] = -1;
+        }
+        if((TrackType == Points) || (TrackType == Crossover) || (TrackType == Bridge))
+        {
+            Length23 = Track->DefaultTrackLength;
+            SpeedLimit23 = Track->DefaultTrackSpeedLimit;
+        }
+    }
+
+// ---------------------------------------------------------------------------
+
 bool TMapComp:: operator()(const THVPair& lower, const THVPair& higher) const // HLoc  VLoc
 {
     if(lower.second < higher.second)
@@ -3142,7 +3162,7 @@ void TTrack::LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString Grap
                 UGI.Height = UGI.UserGraphic->Height;
                 UserGraphicVectorAt(1, x) = UGI;
             }
-            catch(const EInvalidGraphic &e) //non error catch
+            catch(const EInvalidGraphic &e) //non error catch - CallLogPop called at end of function
             {
                 //message already sent in CheckUserGraphics
                 FileError = true;
@@ -3156,7 +3176,7 @@ void TTrack::LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString Grap
                     UserGraphicMap.clear();
                 }
             }
-            catch(const Exception &e) //non error catch
+            catch(const Exception &e) //non error catch - CallLogPop called at end of function
             {
                 //message already sent in CheckUserGraphics
                 FileError = true;
@@ -3203,7 +3223,7 @@ void TTrack::LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString Grap
                     UGI.Height = UGI.UserGraphic->Height;
                     UserGraphicVectorAt(3, x) = UGI;
                 }
-                catch(const EInvalidGraphic &e) //non error catch
+                catch(const EInvalidGraphic &e) //non error catch - CallLogPop called at end of function
                 {
                     //message already sent in CheckUserGraphics
                     FileError = true;
@@ -3217,7 +3237,7 @@ void TTrack::LoadGraphics(int Caller, std::ifstream &VecFile, UnicodeString Grap
                         UserGraphicMap.clear();
                     }
                 }
-                catch(const Exception &e) //non error catch
+                catch(const Exception &e) //non error catch - CallLogPop called at end of function
                 {
                     //message already sent in CheckUserGraphics
                     FileError = true;
@@ -3765,6 +3785,10 @@ void TTrack::RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFille
                 else if(Next.TrackType == GapJump)
                 {
                     PlotGap(0, Next, Disp);
+                }
+                else if(Next.TrackType == Continuation) //added for multiplayer graphic overlays
+                {
+                    PlotContinuation(0, Next, Disp);
                 }
                 else
                 {
@@ -5019,20 +5043,20 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
             throw Exception("CLkError in LinkTrack - Precheck");
         }
     }
-// set element lengths to min of 20m
+// set element lengths to min of 10m
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         if(TrackElementAt(1214, x).TrackType == Erase)
         {
             continue; // skip blank elements
         }
-        if(TrackElementAt(1215, x).Length01 < 20)
+        if((TrackElementAt(1215, x).Length01 < 10) && (TrackElementAt(1435, x).Length01 != -1))
         {
-            TrackElementAt(1216, x).Length01 = 20;
+            TrackElementAt(1216, x).Length01 = 10;
         }
-        if((TrackElementAt(1217, x).Length23 < 20) && (TrackElementAt(1218, x).Length23 != -1))
+        if((TrackElementAt(1217, x).Length23 < 10) && (TrackElementAt(1218, x).Length23 != -1))
         {
-            TrackElementAt(1219, x).Length23 = 20;
+            TrackElementAt(1219, x).Length23 = 10;
         }
     }
 
@@ -5275,20 +5299,20 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
             throw Exception("CLkError in LinkTrack - Precheck");
         }
     }
-// set element lengths to min of 20m
+// set element lengths to min of 10m
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         if(TrackElementAt(1284, x).TrackType == Erase)
         {
             continue; // skip blank elements
         }
-        if(TrackElementAt(1285, x).Length01 < 20)
+        if((TrackElementAt(1285, x).Length01 < 10) && (TrackElementAt(1436, x).Length23 != -1))
         {
-            TrackElementAt(1286, x).Length01 = 20;
+            TrackElementAt(1286, x).Length01 = 10;
         }
-        if((TrackElementAt(1287, x).Length23 < 20) && (TrackElementAt(1288, x).Length23 != -1))
+        if((TrackElementAt(1287, x).Length23 < 10) && (TrackElementAt(1288, x).Length23 != -1))
         {
-            TrackElementAt(1289, x).Length23 = 20;
+            TrackElementAt(1289, x).Length23 = 10;
         }
     }
 
@@ -5913,6 +5937,26 @@ void TTrack::PlotGap(int Caller, TTrackElement TrackElement, TDisplay *Disp)
         Disp->PlotOutput(54, TrackElement.HLoc * 16, TrackElement.VLoc * 16, RailGraphics->gl95unset);
     }
     Utilities->CallLogPop(1101);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::PlotContinuation(int Caller, TTrackElement TrackElement, TDisplay *Disp) //added for multiplayer to add overlays where coupled
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotContinuation," + TrackElement.LogTrack(1));
+    TrackElement.PlotVariableTrackElement(7, Disp);
+    if(!MultiplayerOverlayMap.empty()) //if it is empty then no overlays needed   [map of key = THVPair, value = graphic pointer]
+    {
+        THVPair PosPair;
+        PosPair.first = TrackElement.HLoc;
+        PosPair.second = TrackElement.VLoc;
+        TMultiplayerOverlayMap::iterator MOMIt = MultiplayerOverlayMap.find(PosPair);
+        if(MOMIt != MultiplayerOverlayMap.end()) //if it is then no overlay is needed
+        {
+            Disp->PlotOutput(283, TrackElement.HLoc * 16, TrackElement.VLoc * 16, MOMIt->second);
+        }
+    }
+    Utilities->CallLogPop(2403);
 }
 
 // ---------------------------------------------------------------------------
@@ -9448,7 +9492,7 @@ void TTrack::LengthMarker(int Caller, TDisplay *Disp)
 
 void TTrack::MarkOneLength(int Caller, TTrackElement TrackElement, bool FirstTrack, TDisplay *Disp)
 /*
-      Rule:  Only marked if different in any way from the default values - length 100m and speed limit 200km/h
+      Rule:  Only marked if different in any way from the default values - length 100m and speed limit 200km/h normally but can be changed in Config.txt
       First check using IsElementTrackDefaultLength whether the relevant track is already set to the default values, and if so
       return as nothing further to do.  Otherwise pick up the appropriate bitmap (using the AutoSigRouteGraphicsPtr bitmaps)
       using the same technique as in TPrefDirElement::EntryExitNumber() & *TPrefDirElement::GetPrefDirGraphicPtr(), for the relevant
@@ -10418,7 +10462,7 @@ TTrackElement &TTrack::TrackElementAt(int Caller, int At)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrackElementAt," + AnsiString(At));
     if((At < 0) || ((unsigned int)At >= TrackVector.size()))
     {
-//        Utilities->CallLogPop(2281);  this shouldn't have been here
+//        Utilities->CallLogPop(2281);  this shouldn't be here, introduced 02/06/21 at revision 3745fadb... with no explanation
         throw Exception("Out of Range Error, vector size: " + AnsiString(TrackVector.size()) + ", At: " + AnsiString(At) + " in TrackElementAt");
     }
     Utilities->CallLogPop(643);

@@ -578,6 +578,213 @@ bool TUtilities::CheckAndReadFileString(std::ifstream &InFile, AnsiString &OutSt
 
 // ---------------------------------------------------------------------------
 
+bool TUtilities::CheckAndReadOneLineFromConfigFile(std::ifstream &InFile, AnsiString &OutString)
+// Reads the next item and checks it as a string value up to either the '\0' delimiter
+// if there is one, in which case the '\0' is extracted but nothing more, or up to the next '\n',
+// in which case the '\n' is extracted.
+// The item is then returned in OutString.
+{
+    char TempChar;
+    char *Buffer = new char[10000];
+    int Count = 0;
+    InFile.get(TempChar);
+    while((TempChar != '\0') && (TempChar != '\n'))
+    {
+        if((TempChar >= 0) && (TempChar < 32) && (TempChar != 9)) //allow tabs & normal text
+        {
+            delete[] Buffer;
+            return(false);
+        }
+        Buffer[Count] = TempChar;
+        Count++;
+        InFile.get(TempChar);
+        if(InFile.fail())
+        {
+            delete[] Buffer;
+            return(false);
+        }
+    }
+    Buffer[Count] = '\0';
+    Count++;
+    Buffer[Count] = '\n';
+    Count++;
+    OutString = AnsiString(Buffer);
+    delete[] Buffer;
+    return(true);
+}
+
+// ---------------------------------------------------------------------------
+
+bool TUtilities::ReadOneLineFromCouplingFile(std::ifstream &InFile, AnsiString &OutString)
+{
+    OutString = "";
+    char TempChar;
+    char *Buffer = new char[1200];
+    int Count = 0;
+    InFile.get(TempChar); //should be a letter or eof
+    if(InFile.eof())
+    {
+        delete[] Buffer;
+        return(true);
+    }
+    if(InFile.fail())
+    {
+        delete[] Buffer;
+        return(false);
+    }
+    while(TempChar != ';') //reading first name
+    {
+        Buffer[Count] = TempChar;
+        Count++;
+        if(Count > 1000)
+        {
+            delete[] Buffer;
+            return(false);
+        }
+        InFile.get(TempChar);
+        if(InFile.fail())
+        {
+            delete[] Buffer;
+            return(false);
+        }
+    }
+    //here at semicolon after 1st name
+    Buffer[Count] = TempChar; //1st semicolon
+    Count++;
+    InFile.get(TempChar);
+    if(InFile.fail())
+    {
+        delete[] Buffer;
+        return(false);
+    }
+    while(TempChar != ';') //reading first exit ID
+    {
+        Buffer[Count] = TempChar;
+        Count++;
+        if(Count > 1000)
+        {
+            delete[] Buffer;
+            return(false);
+        }
+        InFile.get(TempChar);
+        if(InFile.fail())
+        {
+            delete[] Buffer;
+            return(false);
+        }
+    }
+    //here at semicolon after 1st exit ID
+    Buffer[Count] = TempChar; //add the semicolon
+    Count++;
+    InFile.get(TempChar);
+    if(InFile.fail())
+    {
+        delete[] Buffer;
+        return(false);
+    }
+    while(TempChar != ';') //reading 2nd name
+    {
+        Buffer[Count] = TempChar;
+        Count++;
+        if(Count > 1000)
+        {
+            delete[] Buffer;
+            return(false);
+        }
+        InFile.get(TempChar);
+        if(InFile.fail())
+        {
+            delete[] Buffer;
+            return(false);
+        }
+    }
+    //here at semicolon after 2nd name
+    Buffer[Count] = TempChar; //add the semicolon
+    Count++;
+    InFile.get(TempChar);
+    if(InFile.fail())
+    {
+        delete[] Buffer;
+        return(false);
+    }
+    while(TempChar != '-') //reading 2nd exit ID, look for the dash
+    {
+        Buffer[Count] = TempChar;
+        Count++;
+        if(Count > 1000)
+        {
+            delete[] Buffer;
+            return(false);
+        }
+        InFile.get(TempChar);
+        if(InFile.fail())
+        {
+            delete[] Buffer;
+            return(false);
+        }
+    }
+    //here at dash in 2nd exit ID
+    Buffer[Count] = TempChar; //add the dash
+    Count++;
+    InFile.get(TempChar); //1st digit after the dash
+    if(InFile.fail())
+    {
+        delete[] Buffer;
+        return(false);
+    }
+    while((TempChar >= '0') && (TempChar <= '9'))
+    {
+        Buffer[Count] = TempChar;
+        Count++;
+        if(Count > 1000)
+        {
+            delete[] Buffer;
+            return(false);
+        }
+        TempChar = InFile.peek(); //if a number, read it and continue, if a letter stop here (1st letter of 2nd line name), if a control  character extract it and stop
+        if((TempChar >= '0') && (TempChar <= '9')) //number
+        {
+            InFile.get(TempChar);
+            if(InFile.fail())
+            {
+                delete[] Buffer;
+                return(false);
+            }
+            continue;
+        }
+        if(TempChar < ' ') //control character (less than space)
+        {
+            InFile.get(TempChar); //extract it, but may be last so check for eof
+            if(InFile.eof()) //if so then have a full buffer so need to define OutString
+            {
+                Buffer[Count] = '\0';
+                Count++;
+                Buffer[Count] = '\n';
+                Count++;
+                OutString = AnsiString(Buffer);
+                delete[] Buffer;
+                return(true);
+            }
+            if(InFile.fail())
+            {
+                delete[] Buffer;
+                return(false);
+            }
+        }
+        //anything other than a number or control character
+    }
+    //here when line fully defined in Buffer & file pointer at start of next line
+    Buffer[Count] = '\0';
+    Count++;
+    Buffer[Count] = '\n';
+    Count++;
+    OutString = AnsiString(Buffer);
+    delete[] Buffer;
+    return(true);
+}
+
+// ---------------------------------------------------------------------------
+
 AnsiString TUtilities::Format96HHMMSS(TDateTime DateTime)
 // Formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 & resets when it reaches 96
 {

@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.10.0</span>
+   &#160;<span id="projectnumber">v2.11.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -105,19 +105,30 @@ $(document).ready(function(){initNavTree('_interface_unit_8h.html',''); initResi
 <code>#include &lt;System.ImageList.hpp&gt;</code><br />
 <code>#include &lt;System.IOUtils.hpp&gt;</code><br />
 <code>#include &lt;Vcl.ImgList.hpp&gt;</code><br />
+<code>#include &lt;IdBaseComponent.hpp&gt;</code><br />
+<code>#include &lt;IdComponent.hpp&gt;</code><br />
+<code>#include &lt;IdUDPBase.hpp&gt;</code><br />
+<code>#include &lt;IdUDPClient.hpp&gt;</code><br />
+<code>#include &lt;IdGlobal.hpp&gt;</code><br />
+<code>#include &lt;IdSocketHandle.hpp&gt;</code><br />
+<code>#include &lt;IdException.hpp&gt;</code><br />
+<code>#include &lt;IdStack.hpp&gt;</code><br />
+<code>#include &lt;Vcl.Grids.hpp&gt;</code><br />
+<code>#include &lt;map&gt;</code><br />
+<code>#include &lt;list&gt;</code><br />
 <code>#include &lt;fstream&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;vcl.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for InterfaceUnit.h:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_interface_unit_8h__incl.svg" width="100%" height="384"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_interface_unit_8h__incl.svg" width="100%" height="384"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_interface_unit_8h__dep__incl.svg" width="438" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_interface_unit_8h__dep__incl.svg" width="259" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="_interface_unit_8h_source.html">Go to the source code of this file.</a></p>
@@ -126,12 +137,20 @@ This graph shows which files directly or indirectly include this file:</div>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface.html">TInterface</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface_1_1_t_ansi_coupling_map_comp.html">TInterface::TAnsiCouplingMapComp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; Map comparator based first on railway name then H then V  <a href="class_t_interface_1_1_t_ansi_coupling_map_comp.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface_1_1_t_rly_user_info.html">TInterface::TRlyUserInfo</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface_1_1_t_service_info.html">TInterface::TServiceInfo</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_interface_1_1_t_dynamic_map_comp.html">TInterface::TDynamicMapComp</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a524d48fe8a394092b35867930a7cd2af"><td class="memItemLeft" align="right" valign="top">typedef std::pair&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">THVPair</a></td></tr>
-<tr class="memdesc:a524d48fe8a394092b35867930a7cd2af"><td class="mdescLeft">&#160;</td><td class="mdescRight">HLoc/VLoc position pair.  <a href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">More...</a><br /></td></tr>
-<tr class="separator:a524d48fe8a394092b35867930a7cd2af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18fdfcb79f178c9f540abd90585b102f"><td class="memItemLeft" align="right" valign="top">typedef std::pair&lt; short, short &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interface_unit_8h.html#a18fdfcb79f178c9f540abd90585b102f">THVShortPair</a></td></tr>
+<tr class="separator:a18fdfcb79f178c9f540abd90585b102f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -139,21 +158,19 @@ Variables</h2></td></tr>
 <tr class="separator:a97ed7027ac734eaddf007596f34c2699"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="a524d48fe8a394092b35867930a7cd2af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a524d48fe8a394092b35867930a7cd2af">&#9670;&nbsp;</a></span>THVPair</h2>
+<a id="a18fdfcb79f178c9f540abd90585b102f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18fdfcb79f178c9f540abd90585b102f">&#9670;&nbsp;</a></span>THVShortPair</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::pair&lt;int, int&gt; <a class="el" href="_interface_unit_8h.html#a524d48fe8a394092b35867930a7cd2af">THVPair</a></td>
+          <td class="memname">typedef std::pair&lt;short, short&gt; <a class="el" href="_interface_unit_8h.html#a18fdfcb79f178c9f540abd90585b102f">THVShortPair</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>HLoc/VLoc position pair. </p>
-
-<p class="definition">Definition at line <a class="el" href="_interface_unit_8h_source.html#l00049">49</a> of file <a class="el" href="_interface_unit_8h_source.html">InterfaceUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_interface_unit_8h_source.html#l00081">81</a> of file <a class="el" href="_interface_unit_8h_source.html">InterfaceUnit.h</a>.</p>
 
 </div>
 </div>

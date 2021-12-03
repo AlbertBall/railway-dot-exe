@@ -6,6 +6,7 @@ var annotated_dup =
     [ "TActionVectorEntry", "class_t_action_vector_entry.html", "class_t_action_vector_entry" ],
     [ "TAllRoutes", "class_t_all_routes.html", "class_t_all_routes" ],
     [ "TDisplay", "class_t_display.html", "class_t_display" ],
+    [ "TExitInfo", "class_t_exit_info.html", "class_t_exit_info" ],
     [ "TFixedTrackPiece", "class_t_fixed_track_piece.html", "class_t_fixed_track_piece" ],
     [ "TGraphicElement", "class_t_graphic_element.html", "class_t_graphic_element" ],
     [ "TInterface", "class_t_interface.html", "class_t_interface" ],

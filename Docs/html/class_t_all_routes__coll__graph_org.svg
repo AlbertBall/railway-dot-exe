@@ -220,11 +220,11 @@
 <text text-anchor="start" x="339" y="-1200.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 12 more...</text>
 <polyline fill="none" stroke="black" points="331,-1193.5 475,-1193.5 "/>
 <text text-anchor="start" x="339" y="-1181.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ TTrackElement()</text>
-<text text-anchor="start" x="339" y="-1170.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ TTrackElement()</text>
-<text text-anchor="start" x="339" y="-1159.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ operator==()</text>
-<text text-anchor="start" x="339" y="-1148.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ operator!=()</text>
-<text text-anchor="start" x="339" y="-1137.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ LogTrack()</text>
-<text text-anchor="start" x="339" y="-1126.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PlotVariableTrackElement()</text>
+<text text-anchor="start" x="339" y="-1170.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ operator==()</text>
+<text text-anchor="start" x="339" y="-1159.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ operator!=()</text>
+<text text-anchor="start" x="339" y="-1148.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ LogTrack()</text>
+<text text-anchor="start" x="339" y="-1137.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PlotVariableTrackElement()</text>
+<text text-anchor="start" x="339" y="-1126.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ TTrackElement()</text>
 </a>
 </g>
 </g>

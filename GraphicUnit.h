@@ -548,6 +548,20 @@ public:
     Graphics::TBitmap *Concourse;
     Graphics::TBitmap *ConcourseGlyph;
     Graphics::TBitmap *ConcourseStriped;
+
+    Graphics::TBitmap *CouplingExit1;        //new multiplayer coupled exit graphics
+    Graphics::TBitmap *CouplingExit2;
+    Graphics::TBitmap *CouplingExit3;
+    Graphics::TBitmap *CouplingExit4;
+    Graphics::TBitmap *CouplingExit6;
+    Graphics::TBitmap *CouplingExit7;
+    Graphics::TBitmap *CouplingExit8;
+    Graphics::TBitmap *CouplingExit9;
+
+    Graphics::TBitmap *SolidCircleRed;       //new multiplayer panel images
+    Graphics::TBitmap *SolidCircleYellow;
+    Graphics::TBitmap *SolidCircleGreen;
+
     Graphics::TBitmap *ELk1;
     Graphics::TBitmap *ELk2;
     Graphics::TBitmap *ELk3;

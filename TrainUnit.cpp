@@ -4574,6 +4574,25 @@ int TTrain::NameInTimetableBeforeCDT(int Caller, AnsiString Name, bool &Stop)
         Utilities->CallLogPop(957);
         return(-1);
     }
+    TActionVectorEntry *Ptr = ActionVectorEntryPtr;
+/*added the following check at v2.11.1 because of a fault found in Kevin Smith's railway (notified 02/01/22).  CH01 started at
+Chester behind the stop position, but when it departed and this function was called it found Chester again with no cdt
+before it (it went round the Liverpool Loop), so it stopped again when it reached the stop position and reported all intermediate stops as having been
+missed.  This check is for the train just having departed from the station in question, and if it has then any further stations
+with the same name are ignored - i.e. it stops a train from stopping at the same station twice in succession.
+*/
+    if(Ptr > &TrainDataEntryPtr->ActionVector.at(0))
+    {
+        Ptr--;
+        if((Ptr->DepartureTime > TDateTime(-1)) && (Ptr->LocationName == Name))
+        {
+            if((Ptr->FormatType == TimeLoc) || (Ptr->FormatType == TimeTimeLoc))
+            {
+                Utilities->CallLogPop(2444);
+                return(-1);
+            }
+        }
+    }
     // start looking from current pointer position
     for(TActionVectorEntry *Ptr = ActionVectorEntryPtr; Ptr < &TrainDataEntryPtr->ActionVector.back(); Ptr++)
     {
@@ -8958,7 +8977,6 @@ void TTrainController::Operate(int Caller)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",Operate");
     bool ClockState = Utilities->Clock2Stopped;
-
     Utilities->Clock2Stopped = true;
     // new section dealing with Snt & Snt-sh additions
     // BUT don't add trains if points or route flashing [conditions added for Version 0.6 as a result of Najamuddin's error - 15/01/11] - wait until next
@@ -9057,24 +9075,33 @@ void TTrainController::Operate(int Caller)
             }
         }
     }
+
     // deal with running trains but abort if any vectors added, would probably be OK but don't risk a vector reallocation disrupting the
     // iteration, next cycle will catch up with any other pending updates
     if(!TrainVector.empty())
     {
         TrainAdded = false;
-        AllRoutes->CallonVector.clear();
-        // this will be rebuilt during the calls to UpdateTrain
+        AllRoutes->CallonVector.clear(); // this will be rebuilt during the calls to UpdateTrain
         for(unsigned int x = 0; x < TrainVector.size(); x++)
         {
             TrainVectorAt(33, x).UpdateTrain(0);
+         /* added HasTrainGone() condition below in v0.4c to prevent 2 trains both having TrainGone set in UpdateTrain
+         at the same time.  That caused the error Craig Weekes reported in November 2010 where 2 trains exited at the same time, and later the TrainVector
+         iterates in reverse to erase the second train to have gone (when the first train to have gone comes before the second in TrainVector),
+         but afterwards ReplotTrains iterates forwards and therefore replots the first train to have gone and therefore sets the TrainIDOnElement value
+         to the exited train, with nothing to reset it.  Hovering the mouse over that element with train information enabled causes an error because
+         the track element thinks the train is still there, whereas it is missing from the TrainVector.  BUT subsequently (in v2.11.1) changed RePlotTrains
+         so it doesn't plot trains with TrainGone set, but left this is as does no harm
+
+         Had another error notified by Kevin Smith on 02/01/22 where a train was manually removed in the same clock cycle as a train exited, and this caused
+         the same error as above.  Did a lot of experimenting but eventually cured it with two changes, first as above in RePlotTrains, and also below adding
+         a break; command after one TrainHasGone() dealt with.  There were introduced in v2.11.1 & seems ok now
+
+         These changes should deal with any number of TrainGone flags set in the same clock cycle - from exiting, manual removal, or joins
+         */
             if(TrainAdded || TrainVectorAt(35, x).HasTrainGone())
-            // added HasTrainGone() condition in v0.4c to prevent 2 trains both having TrainGone set
-            // at the same time.  That caused the error Craig Weekes reported in November 2010 where 2 trains exited at the same time, and later the TrainVector
-            // iterates in reverse to erase the second train to have gone, but afterwards ReplotTrains iterates forwards and therefore replots the first train to
-            // have gone and therefore sets the TrainIDOnElement value to the exited train, with nothing to reset it.  Hovering the mouse over that element with
-            // train information enabled causes an error because the track element thinks the train is still there, whereas it is missing from the TrainVector.
             {
-                break;
+                break; //only one exited train will be dealt with at a time (see below) so no point looking further
             }
         }
         // set warning flags
@@ -9207,8 +9234,9 @@ void TTrainController::Operate(int Caller)
                 Train.TrainDataEntryPtr->TrainOperatingDataVector.at(Train.RepeatNumber).RunningEntry = Exited;
                 Train.DeleteTrain(1);
                 TrainVector.erase(TrainVector.begin() + x);
-                ReplotTrains(1, Display);
-                // to reset ElementIDs for remaining trains when have removed a train
+                ReplotTrains(1, Display); //to reset ElementIDs for remaining trains when have removed a train
+                                          //NB: won't plot any trains with TrainGone flag set (changed at v2.11.1)
+                break; //added at v2.11.1 to ensure that only one train with TrainGone set is dealt with in one clock cycle
             }
         }
     }
@@ -9283,7 +9311,10 @@ void TTrainController::ReplotTrains(int Caller, TDisplay *Disp)
     {
         for(unsigned int x = 0; x < TrainVector.size(); x++)
         {
-            TrainVectorAt(51, x).PlotTrain(4, Disp);
+            if(!TrainVectorAt(84, x).HasTrainGone()) //added at v2.11.0 to prevent plotting a train pending removal & particularly to prevent TrainElementID's being reinstated
+            {                                        //see Kevin Smith error information for details
+                TrainVectorAt(51, x).PlotTrain(4, Disp);
+            }
         }
     }
     Utilities->CallLogPop(724);
@@ -9329,7 +9360,7 @@ bool TTrainController::AddTrain(int Caller, int RearPosition, int FrontPosition,
     LogEvent(AnsiString(Caller) + ",AddTrain," + AnsiString(RearPosition) + "," + AnsiString(FrontPosition) + "," + HeadCode + "," + AnsiString(StartSpeed) +
              "," + AnsiString(Mass) + "," + ModeStr);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",AddTrain," + AnsiString(RearPosition) + "," + AnsiString(FrontPosition) +
-                                 "," + HeadCode + "," + AnsiString(StartSpeed) + "," + AnsiString(Mass) + "," + ModeStr + "," + HeadCode);
+                                 "," + HeadCode + "," + AnsiString(StartSpeed) + "," + AnsiString(Mass) + "," + ModeStr); //at v2.11.1 dropped later headcode - was listed twice
 
     int RearExitPos = -1;
 
@@ -9377,6 +9408,8 @@ bool TTrainController::AddTrain(int Caller, int RearPosition, int FrontPosition,
     }
     TTrain *NewTrain = new TTrain(0, RearPosition, RearExitPos, HeadCode, StartSpeed, Mass, MaxRunningSpeed, MaxBrakeRate, PowerAtRail, TrainMode,
                                   TrainDataEntryPtr, RepeatNumber, IncrementalMinutes, IncrementalDigits, SignallerSpeed);
+
+    LogEvent("AddTrainSupplemental: Service Ref = " + TrainDataEntryPtr->ServiceReference + ", TrainID = " + AnsiString(NewTrain->TrainID)); //new at v2.11.1 so can relate headcode to ID
 
     NewTrain->ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0));
     // initialise here rather than in TTrain constructor as create trains
@@ -14792,7 +14825,7 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
 // RouteForceCancelled:  06:00:10: ERROR: 2F43 forced a route cancellation by occupying it incorrectly at 46-N7
 // WaitingForJBO:  06:00:10: WARNING: 2F43 waiting to join 3F43 at Essex Road
 // WaitingForFJO:  06:00:10: WARNING: 2F43 waiting to be joined by 3F43 at Essex Road
-// FailEntryRouteSetAgainst:   06:00:10: WARNING: 2F43 can't enter railway, route set against it at entry position 57-N5
+// FailEntryRouteSetAgainst:   06:00:10: WARNING: 2F43 can't enter railway, route set against it at entry position 57-N5         //added at v2.9.1
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LogActionError," + HeadCode + "," + OtherHeadCode + "," +
                                  AnsiString(ActionEventType) + "," + LocationID);
@@ -19673,11 +19706,20 @@ void TTrainController::RebuildOpTimeToActMultimap(int Caller)
             THVShortPair ExitPair;
             bool SigControlAndCanPassRedSignal = false; // doesn't apply for a continuation
 
+//at v2.11.0 found that with *AVPtr set to ...ActionVector.at(0) below instead of ...at(1) to stop signaller control trains throwing an error (because there is no ...at(1) -
+//discovered with Birmingham) the LaterStopTime isn't calculated and if a train does something other than depart after an arrival it is still listed in the actions due panel -
+//because it just calcs the distance to the red signal and converts that to a time.  So here (after v2.11.0) this new test is introduced to determine whether a train is a
+//signaller control train (when the ActionVector size is 1) or not (ActionVector size > 1), and the ...at(value) is set accordingly - 0 for signaller control or 1 if not.
+
+            int AtValue = 1;
+            if(CTEIt->second.TrainDataEntryPtr->ActionVector.size() == 1)
+            {
+                AtValue = 0;
+            }
             DistanceToRedSignal = CalcDistanceToRedSignalandStopTime(1, CTEIt->second.VectorPosition, 0,
-                                                                     // EntryPos always 0 for entering at a continuation
-                                                                     SigControlAndCanPassRedSignal, &CTEIt->second.TrainDataEntryPtr->ActionVector.at(0), //changed to ...at(0)
-                                                                     //from at(1) at v2.11.0 as signaller control threw an error - found when opening ActionsDue panel with B'ham (error had been present for some time)
-                                                                     HeadCode, TrainID, CurrentStopTime, LaterStopTime, RecoverableTime, AvTrackSpeed, DistanceToExit, ExitPair);
+                    // EntryPos always 0 for entering at a continuation
+                    SigControlAndCanPassRedSignal, &CTEIt->second.TrainDataEntryPtr->ActionVector.at(AtValue), //see above note
+                    HeadCode, TrainID, CurrentStopTime, LaterStopTime, RecoverableTime, AvTrackSpeed, DistanceToExit, ExitPair);
             // for above VectorPosition is the first element to have its length included in the sum, so for a continuation it's the continuation itself
             // for a train it's the one in front of LeadElement
             if(AvTrackSpeed < 30)

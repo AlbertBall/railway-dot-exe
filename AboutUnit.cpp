@@ -105,7 +105,7 @@ void __fastcall TAboutForm::SetAboutCaption()
 
     AboutLabelCaption->Caption = L"All the tools to design, build and operate your own railway" + NL + NL +
         L"Release: " + Interface->ProgramVersion + NL + NL +
-        L"Copyright (c) 2010 - 2021 Albert Ball\nwith contributions from Stephen A Smith and Kristian Zarebski";
+        L"Copyright (c) 2010 - 2022 Albert Ball\nwith contributions from Stephen A Smith and Kristian Zarebski";
 }
 //---------------------------------------------------------------------------
 void __fastcall TAboutForm::WebsiteLinkLabelLinkClick(TObject *Sender, const UnicodeString Link,

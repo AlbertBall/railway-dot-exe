@@ -42,7 +42,9 @@ enum TActionEventType
     FailMissedTerminate, FailMissedNewService, FailMissedExitRailway, FailMissedChangeDirection, FailMissedPass, FailCreateLockedRoute, FailEnterLockedRoute,
     WaitingForJBO, WaitingForFJO, FailBuffersPreventingStart, FailBufferCrash, FailLevelCrossingCrash, FailIncorrectExit, ShuttleFinishedRemainingHere,
     RouteForceCancelled, FailEntryRouteSetAgainst
-};
+};  // FailEntryRouteSetAgainst added at v2.9.1
+    //if add to these remember to change the integer value in session file integrity check (33 total here)
+    //Xeon notified error 07/01/22 when EventReported int value exceeded 30 (as it was in v2.11.0) for FailEntryRouteSetAgainst
 
 /// Used in LogAction when reporting a train action to the performance log & file
 enum TActionType

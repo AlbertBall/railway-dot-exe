@@ -4806,8 +4806,10 @@ void TTrack::BuildGapMapFromTrackVector(int Caller) // Map contains one entry fo
 bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool FinalCall)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LinkTrack," + AnsiString((short)FinalCall));
+
+//1st pass to check track element locations - split into 2 passes at v2.11.1 so positioning checked before linkages, requested by Dan(#4669) 18/12/21 via Discord
     LocError = false;
-    bool CheckForLinks = false;
+    bool TrackElementPositionsOK = true;
 
     for(unsigned int x = 0; x < TrackVector.size(); x++) // check all elements in turn
     {
@@ -4833,7 +4835,6 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
         }
         for(unsigned int y = 0; y < 4; y++) // check all links for each element
         {
-            CheckForLinks = false;
             if(TrackElementAt(1143, x).Link[y] <= 0)
             {
                 continue; // no link
@@ -4845,11 +4846,10 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
             if(TrackElementAt(1146, x).Config[y] == Gap)
             {
                 continue; // gaps set later from GapMap
-
             }
             // get required H & V for track element joining link 'y'
-            int NewHLoc = TrackElementAt(1147, x).HLoc + LinkHVArray[TrackElementAt(1148, x).Link[y]][0];
-            int NewVLoc = TrackElementAt(1149, x).VLoc + LinkHVArray[TrackElementAt(1150, x).Link[y]][1];
+            int NewHLoc = TrackElementAt(1437, x).HLoc + LinkHVArray[TrackElementAt(1148, x).Link[y]][0];
+            int NewVLoc = TrackElementAt(1438, x).VLoc + LinkHVArray[TrackElementAt(1150, x).Link[y]][1];
             // find track element if present
             bool ConnectionFoundFlag;
             int VecPos = GetVectorPositionFromTrackMap(14, NewHLoc, NewVLoc, ConnectionFoundFlag);
@@ -4872,20 +4872,21 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
             }
             if(ConnectionFoundFlag)
             {
-                TrackElementAt(1156, x).Conn[y] = VecPos;
+                TrackElementAt(1156, x).Conn[y] = VecPos; //<-- this sets the Conn value
                 // find connecting link in the newly found track element if there is one & make buffer & adjacent signals check
-                bool LinkFoundFlag = false;
                 if((TrackElementAt(1157, x).Config[1 - y] == Signal) && IsLCAtHV(50, TrackElementAt(1158, VecPos).HLoc, TrackElementAt(1350, VecPos).VLoc))
                 {
                     // new in v2.4.0 - Krizar (Kristian Zarebski) found this error
                     ShowMessage("Can't have an exit signal next to a level crossing - it can cause the train to foul the crossing in some circumstances");
                     // otherwise when single route element removed in front of train the LC will start to close and the train will crash
+                    TrackElementPositionsOK = false;
                 }
                 else if(((TrackElementAt(1159, x).TrackType == Points) || (TrackElementAt(1160, x).TrackType == SignalPost) || (TrackElementAt(1161, x).TrackType == Crossover))
                         && (TrackElementAt(1162, VecPos).TrackType == Buffers))
                 {
                     ShowMessage("Can't have points, crossover or signal next to buffers - need room for a train without fouling");
                     // need room for a train (2 elements) without fouling points or signals
+                    TrackElementPositionsOK = false;
                 }
                 else if(((TrackElementAt(1163, x).TrackType == Points) || (TrackElementAt(1164, x).TrackType == SignalPost) || (TrackElementAt(1165, x).TrackType == Crossover) ||
                          (TrackElementAt(1166, x).TrackType == Bridge)) && (TrackElementAt(1167, VecPos).TrackType == Continuation))
@@ -4894,6 +4895,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                     // route setting won't allow an end of route selection adjacent to an existing route, which would happen
                     // if continuation next to a signal; also none of these can be a named location, and a continuation can
                     // be named but needs the adjacent element named too
+                    TrackElementPositionsOK = false;
                 }
                 else if((TrackElementAt(1168, x).TrackType == SignalPost) && (TrackElementAt(1169, VecPos).TrackType == SignalPost) &&
                         (TrackElementAt(1170, x).SpeedTag == TrackElementAt(1171, VecPos).SpeedTag))
@@ -4901,54 +4903,103 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                     ShowMessage("Can't have two same-direction signals adjacent to each other as there is no room for a train between them");
                     // can't join a route to an existing route where the second signal is in an existing route and the first signal is
                     // selected - appears as trying to select a signal that is not the next in line from the starting signal
+                    TrackElementPositionsOK = false;
                 }
                 else if((TrackElementAt(1172, x).Config[y] == Signal) && (TrackElementAt(1173, VecPos).TrackType == Bridge) && !OverrideAndHideSignalBridgeMessage)
                 {
                     ShowMessage("Signal facing a bridge - routes can't be truncated to this or other such signals.\n\nThis restriction can be removed or reinstated by pressing\nCTRL ALT 5.  When removed this message will not be shown again.");
                     // can't join a route to an existing route where the second signal is in an existing route and the first signal is
                     // selected - appears as trying to select a signal that is not the next in line from the starting signal
+                    TrackElementPositionsOK = false;
                 }
                 else if(IsLCAtHV(45, TrackElementAt(1174, x).HLoc, TrackElementAt(1175, x).VLoc) && IsLCAtHV(46, TrackElementAt(1176, VecPos).HLoc, TrackElementAt(1177, VecPos).VLoc))
                 // true if a level crossing is present at both x and VecPos - can't have two adjacent level crossings on the same track
                 {
                     ShowMessage("Can't have two level crossings adjacent to each other on the same track");
+                    TrackElementPositionsOK = false;
                 }
-                else
-                {
-                    CheckForLinks = true;
-                }
-                if(CheckForLinks)
-                {
-                    for(unsigned int a = 0; a < 4; a++)
-                    {
-                        if((TrackElementAt(1178, VecPos).Link[a] == (10 - TrackElementAt(1179, x).Link[y])) && (TrackElementAt(1180, VecPos).Config[a] != End) &&
-                           (TrackElementAt(1181, VecPos).Config[a] != Gap))
-                        {
-                            TrackElementAt(1182, x).ConnLinkPos[y] = a;
-                            // note - this ensures that if the connecting element is a leading point
-                            // then the ConnLinkPos value is 0 rather than 2, since 'a' starts at 0
-                            // (Points have the same link value for both [0] and [2])
-                            LinkFoundFlag = true;
-                            break; // stop after first find or will find later link for leading point
-                        }
-                    }
-                }
-                // if there isn't a corresponding link, or buffer check fails, set the invert values for the offending element
-                if(!LinkFoundFlag)
+                // if failed then set the invert values for the offending element
+                if(!TrackElementPositionsOK)
                 {
                     HLoc = TrackElementAt(1183, x).HLoc;
                     VLoc = TrackElementAt(1184, x).VLoc;
                     LocError = true;
                     if(FinalCall)
                     {
-                        throw Exception("Error in final track linkage - invalid link");
+                        throw Exception("Error in track element positions in FinalCall");
                     }
                     Utilities->CallLogPop(494);
                     return(false);
                 }
             }
+            // no 'else' here, if there's no link then will be picked up in 2nd pass
+        }
+    } // for(unsigned int x=0;x<TrackVector.size();x++)
+
+
+//2nd pass - looking for missing connections
+    LocError = false;
+    for(unsigned int x = 0; x < TrackVector.size(); x++) // check all elements in turn
+    {
+        if(TrackElementAt(1439, x).TrackType == Erase) //Erase isn't used any more as a track type
+        {
+            continue; // skip blank elements
+        }
+        for(unsigned int y = 0; y < 4; y++) // check all links for each element
+        {
+            if(TrackElementAt(1440, x).Link[y] <= 0)
+            {
+                continue; // no link
+            }
+            if((TrackElementAt(1441, x).TrackType == Buffers) && (TrackElementAt(1442, x).Config[y] == End))
+            {
+                continue; // buffer
+            }
+            if(TrackElementAt(1443, x).Config[y] == Gap)
+            {
+                continue; // gaps set later from GapMap
+            }
+            if((TrackElementAt(1444, x).TrackType == Continuation) && (TrackElementAt(1445, x).Config[y] == End))
+            {
+                continue; //continuation
+            }
+            // get required H & V for track element joining link 'y'
+            int NewHLoc = TrackElementAt(1147, x).HLoc + LinkHVArray[TrackElementAt(1448, x).Link[y]][0];
+            int NewVLoc = TrackElementAt(1149, x).VLoc + LinkHVArray[TrackElementAt(1449, x).Link[y]][1];
+            // find track element if present
+            bool ConnectionFoundFlag;
+            bool LinkMatchFound = false;
+            int VecPos = GetVectorPositionFromTrackMap(66, NewHLoc, NewVLoc, ConnectionFoundFlag);
             // if there isn't a connection set the invert values for the offending element
-            else // if(ConnectionFoundFlag)
+            if(ConnectionFoundFlag) //set the ConnLinkPos values
+            {
+                for(unsigned int a = 0; a < 4; a++)
+                {
+                    if((TrackElementAt(1178, VecPos).Link[a] == (10 - TrackElementAt(1179, x).Link[y])) && (TrackElementAt(1180, VecPos).Config[a] != End) &&
+                       (TrackElementAt(1181, VecPos).Config[a] != Gap))
+                    {
+                        TrackElementAt(1182, x).ConnLinkPos[y] = a;
+                        // note - this ensures that if the connecting element is a leading point
+                        // then the ConnLinkPos value is 0 rather than 2, since 'a' starts at 0
+                        // (Points have the same link value for both [0] and [2])
+                        LinkMatchFound = true;
+                        break; // stop after first find or will find later link for leading point
+                    }
+                }
+                if(!LinkMatchFound)
+                {
+                    HLoc = TrackElementAt(1446, x).HLoc;
+                    VLoc = TrackElementAt(1447, x).VLoc;
+                    LocError = true;
+                    if(FinalCall)
+                    {
+                        throw Exception("Error in final track linkage -  - no matching link found");
+                    }
+                    Utilities->CallLogPop(495);
+                    return(false);
+                }
+            }
+            else //error
             {
                 HLoc = TrackElementAt(1185, x).HLoc;
                 VLoc = TrackElementAt(1186, x).VLoc;
@@ -4957,17 +5008,19 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                 {
                     throw Exception("Error in final track linkage - connection not found");
                 }
-                Utilities->CallLogPop(495);
+                Utilities->CallLogPop(2443);
                 return(false);
             }
         }
-    } // for(unsigned int x=0;x<TrackVector.size();x++)
+    }
+//end of 2nd pass
 
     if(FinalCall)
     {
         SetStationEntryStopLinkPosses(1);
     }
-// final check
+
+// confirmatiory checks that all ok - or throw error
     bool ConnErrorFlag = false;
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
@@ -5043,6 +5096,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
             throw Exception("CLkError in LinkTrack - Precheck");
         }
     }
+
 // set element lengths to min of 10m
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {

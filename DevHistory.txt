@@ -238,6 +238,47 @@ Multi-player facility over the internet.
 
 4) Version change information
 
+VERSION CHANGES AFTER v2.11.0 for v2.11.1
+
+This is mainly a bug-fix release but includes a small change requested by Dan (Discord DanG#4669) when track linking.
+
+Track linking change:
+
+In earlier versions in Track Build/Modify mode when the 'Link all track together' button was clicked missing links were checked first then when all links were ok track positioning was checked (e.g. signals too close to each other or to buffers).  This was found to be inconvenient because it required temporary buffers or continuations to be added to unconnected track ends before faulty positions could be found, and it's generally better to have correct positions before final linking is carried out.  It was a relatively simple matter to swap these checks around, so now track positions are checked first and when all are ok missing links are checked.
+
+Bugs:
+
+Kevin Smith sent an error log file after a program crash and at the same reported some odd behaviour.  These two issues were unconnected, so he found two bugs for the price of one - and both were quite challenging to sort out.
+
+Odd behaviour:  A train that was created at a station and due to depart after a few minutes did so with a clear route ahead, but immediately stopped again after moving just one track element.  This turned out to be due to a fault that was introduced when the program permitted the same location to be listed in a service twice or more with no change of direction between them.  That happens when there is a loop involved where the train loops back and retraces its steps back through the same stations, which it did in this case.  The train's starting position at the station just happened to lie behind the platform stop element (used to set the stop position when trains arrive in the normal way).  What happened was that the train departed, but only moved a single element before reaching the stop element, and since the station was listed again later in the service the program assumed it had missed all the intermediate stops and arrived in accordance with the later timetable entry - about 80 minutes early!  It was something I overlooked when modifying the program earlier, and I'm surprised it hasn't come to light before.  It was fixed by checking whether the last timetable action was a departure from the station in question, and if it was skipping the arrival procedure - i.e a train can't depart then immediately arrive at the same station.
+
+Program crash:  The error that caused this occurred when the mouse hovered over a train's position when there was no train there but the program thought there was.  It was due to a coincidence - Kevin manually removed a train at exactly the same time as another train left the railway - within the same clock cycle which lasts only 50mSec.  The function that handles trains leaving the railway can handle two trains exiting at continuations at exactly the same time but not one exiting and another being removed manually or joining another train.  This function has now been modified so that after it handles one train leaving (for whatever reason) it returns without looking for any others.  Any other that left at the same time has to await the next clock cycle before being dealt with, and if there are more than two (very unlikely) then they will be dealt with in successive clock cycles.  This won't be noticeable to the user as the interval between cycles is so short.
+
+Xeon reported a session file reloading error where a train had been unable to enter the railway because a route was set against it.  This potential failure had been present for some considerable time, and was due to my failing to update the session file integrity check function after adding this warning.  The function has now been updated in this release
+
+own notes - not for website
+
+/run callerchecker
+
+/Remove experimental code in UpdateTrain
+
+/need to set MaxRunningSpeed as min of the two trains for SignallerJoinedByMenuItemClick(), ok in timetabled joins.
+
+/need to add additions for v2.11.0 to error file before clipboard additions
+
+/need hourglass for tracklinking when click the button
+
+/add train ID numbers with service refs so can identify when errors occur (added supplementary LogEvent in AddTrain)
+
+/*Kevin Smith's faults notifoed 02/01/22: train stopping at Chester in error - added a check in NameInTimetableBeforeCDT - see function for explanation
+
+/*Kevin Smith's other error - program crash when moused over a train whose ID couldn't be found - see comments in TrainController::Operate
+
+/corrected error in time to act introduced in v2.11.0.  See note before CalcDistanceToRedSignal... in RebuildOpTimeToAct... in TrainUnit.cpp
+
+/*changed LinkTrack so track element position errors shown before missing links - requested by Dan (#4669) 19/12/21
+
+
 VERSION CHANGES AFTER v2.10.0 for v2.11.0
 
 IMPORTANT NOTE: there are two new files in the Railway folder - IndyCore260.bpl and IndySystem260.bpl.  These must be copied to the folder on your computer where the new version of railway.exe resides or it won't work.

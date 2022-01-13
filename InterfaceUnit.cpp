@@ -943,6 +943,7 @@ void __fastcall TInterface::TrackOKButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("TrackOKButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TrackOKButtonClick");
+        Screen->Cursor = TCursor(-11); // Hourglass;  //added at v2.11.1
         SelectionValid = false;
         ResetChangedFileDataAndCaption(0, true);
         bool LocError;
@@ -978,6 +979,7 @@ void __fastcall TInterface::TrackOKButtonClick(TObject *Sender)
                 SetLevel1Mode(39);
                 Level2TrackMode = AddTrack; // go to add track regardless of where started from
                 SetLevel2TrackMode(3);
+                Screen->Cursor = TCursor(-2); // Arrow //added at v2.11.1
                 Utilities->CallLogPop(0);
                 return;
             }
@@ -989,6 +991,7 @@ void __fastcall TInterface::TrackOKButtonClick(TObject *Sender)
                 SetLevel1Mode(40);
                 Level2TrackMode = AddTrack;
                 SetLevel2TrackMode(4); // go to add track regardless of where started from
+                Screen->Cursor = TCursor(-2); // Arrow //added at v2.11.1
                 Utilities->CallLogPop(1);
                 return;
             }
@@ -1012,6 +1015,7 @@ void __fastcall TInterface::TrackOKButtonClick(TObject *Sender)
             SetLevel1Mode(36); // back to TrackMode if not in AddTrack mode
         }
         ShowMessage("Successful Completion");
+        Screen->Cursor = TCursor(-2); // Arrow //added at v2.11.1
         Utilities->CallLogPop(2);
     }
     catch(const Exception &e)
@@ -11679,6 +11683,12 @@ void __fastcall TInterface::SignallerJoinedByMenuItemClick(TObject *Sender)
             double OtherBrakeForce = TrainToBeJoinedBy->MaxBrakeRate * TrainToBeJoinedBy->Mass;
             double OwnBrakeForce = ThisTrain.MaxBrakeRate * ThisTrain.Mass;
             double CombinedBrakeRate = (OtherBrakeForce + OwnBrakeForce) / (TrainToBeJoinedBy->Mass + ThisTrain.Mass);
+
+            // set new values for mass etc
+            if(ThisTrain.MaxRunningSpeed > TrainToBeJoinedBy->MaxRunningSpeed)      //this added at v2.11.1 as had been omitted before
+            {
+                ThisTrain.MaxRunningSpeed = TrainToBeJoinedBy->MaxRunningSpeed;
+            }
             ThisTrain.Mass += TrainToBeJoinedBy->Mass;
             ThisTrain.MaxBrakeRate = CombinedBrakeRate;
             ThisTrain.PowerAtRail += TrainToBeJoinedBy->PowerAtRail;
@@ -19952,7 +19962,8 @@ bool TInterface::CheckTimetableFromSessionFile(int Caller, std::ifstream &Sessio
                 Utilities->CallLogPop(1234);
                 return(false);
             }
-            if(!Utilities->CheckFileInt(SessionFile, 0, 30)) // EventReported
+            if(!Utilities->CheckFileInt(SessionFile, 0, 32)) // EventReported //increased to 32 at v2.11.1 due to Xeon error report 07/01/22 as there are 33
+                                                                              //event reports now (increased at v2.9.1)
             {
                 Utilities->CallLogPop(1235);
                 return(false);
@@ -20940,8 +20951,8 @@ void TInterface::SaveErrorFile()
    from & including ***ChangingLCVector*** to but excluding ***Timetable*** [if have ***No timetable loaded*** then can't use as a session file]
    from & including ***No editing timetable*** or ***Editing timetable - [title]***
    to but excluding ***TimetableClock***
-
-   need to think more about the later additions & include those but not the v2.8.0 additions (& ensure save trains & perf file)
+   from but excluding  End of file at v2.11.0
+   to end of file
 
    and save as a .ssn file.
 
@@ -21120,6 +21131,28 @@ void TInterface::SaveErrorFile()
         Utilities->SaveFileDouble(ErrorFile, double(TrainController->TotLateExitMins));
         Utilities->SaveFileString(ErrorFile, "End of v2.9.1 additions");  //changed from '2.9.0' at v2.9.2
 // end of v2.9.1 additions
+
+//added at v2.11.0
+//add SkippedTTEvents
+        Utilities->SaveFileInt(ErrorFile, TrainController->SkippedTTEvents);
+// add data for trains in process of skipping timetable events (i.e. those with events after a future departure)
+        if(!TrainController->TrainVector.empty())
+        {
+            for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
+            {
+                TTrain Train = TrainController->TrainVectorAt(83, x);
+                if(Train.SkippedDeparture)
+                {
+                    Utilities->SaveFileInt(ErrorFile, Train.TrainID);
+                    Utilities->SaveFileBool(ErrorFile, Train.SkippedDeparture);
+                    Utilities->SaveFileBool(ErrorFile, Train.ActionsSkippedFlag);
+                    Utilities->SaveFileInt(ErrorFile, Train.SkipPtrValue);
+                    Utilities->SaveFileInt(ErrorFile, Train.TrainSkippedEvents);
+                }
+            }
+        }
+        Utilities->SaveFileString(ErrorFile, "End of file at v2.11.0");
+//end of 2.11.0 additions
 
 // addition at v2.8.0 in case of clipboard errors <-- keep at end of file as not wanted in a reconstructed session file
         Utilities->SaveFileInt(ErrorFile, SelectBitmap->Height); // extras for new clipboard functions
@@ -21714,7 +21747,7 @@ void TInterface::TestFunction()    //triggered by Alt Ctrl 4
     try
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
-// throw Exception("Test error");  //generate an error file
+//        throw Exception("Test error");  //generate an error file
 
 // ShowMessage("MissedTicks = " + AnsiString(MissedTicks) + "; TotalTicks = " + AnsiString(TotalTicks));
 

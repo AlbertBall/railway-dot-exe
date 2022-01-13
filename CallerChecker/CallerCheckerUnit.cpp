@@ -601,9 +601,9 @@ void TForm1::AnalyseOneFunction(int &FunctionCount, int NumberOfCalls, AnsiStrin
             for(int x = 1; x< OneLine.Length() - FunctionString.Length() + 1; x++)
             {
                 if(OneLine.SubString(x,FunctionString.Length() + 1) == FunctionString + '(')
-                //rule out other functions that contain the sought function name (allow to be preceded by space, !, ., > or (
+                //rule out other functions that contain the sought function name (allow to be preceded by space, !, ., >, [ or (
                 {
-                    if((x == 1) || (OneLine[x-1] < '"') || (OneLine[x-1] == '.') || (OneLine[x-1] == '>') || (OneLine[x-1] == '('))
+                    if((x == 1) || (OneLine[x-1] < '"') || (OneLine[x-1] == '.') || (OneLine[x-1] == '>') || (OneLine[x-1] == '[') || (OneLine[x-1] == '('))
                     {
                         AnsiString NumberLineStr = OneLine.SubString(x + FunctionString.Length() + 1,OneLine.Length() - (x + FunctionString.Length() + 1));
                         AnsiString NumberString = "";

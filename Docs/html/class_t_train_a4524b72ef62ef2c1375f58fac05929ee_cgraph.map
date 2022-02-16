@@ -1,5 +1,5 @@
 <map id="TTrain::CallingOnAllowed" name="TTrain::CallingOnAllowed">
-<area shape="rect" id="node1" title="True if the train can be called on at its current position &#45; see detail in .cpp file." alt="" coords="5,861,172,888"/>
+<area shape="rect" id="node1" title="True if the train can be called on at its current position &#45; see detail in .cpp file." alt="" coords="5,887,172,913"/>
 <area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1168,376,1315,403"/>
 <area shape="rect" id="node3" href="$class_t_all_routes.html#a2341a7e860e716e60b733f45814e4499" title="The track geometry allows diagonals to cross without occupying the same track element,..." alt="" coords="230,339,413,381"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1168,645,1315,672"/>
@@ -8,7 +8,8 @@
 <area shape="rect" id="node14" href="$class_t_track.html#aeb515d40cb9b08ed55ce877ffdbc51a5" title="Return the corresponding link position (track always occupies either links 0 &amp; 1 or 2 &amp; 3)" alt="" coords="220,1131,423,1173"/>
 <area shape="rect" id="node15" href="$class_t_all_routes.html#a0a9ccbc84687f85806115877aa86dcfd" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="663,963,839,1005"/>
 <area shape="rect" id="node16" href="$class_t_train.html#a7a54125a3a5052cb25e17014075a686b" title="Returns the number by which the train ActionVectorEntryPtr needs to be incremented to point to the lo..." alt="" coords="893,69,1120,96"/>
-<area shape="rect" id="node17" href="$class_t_all_routes.html#aace498b67ccef13364a1afa1f5f15311" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="657,861,845,888"/>
+<area shape="rect" id="node17" href="$class_t_train.html#a77e1368fb80820dd2c3350858c28ceab" title=" " alt="" coords="225,1197,417,1224"/>
+<area shape="rect" id="node18" href="$class_t_all_routes.html#aace498b67ccef13364a1afa1f5f15311" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="657,861,845,888"/>
 <area shape="rect" id="node4" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="919,222,1095,263"/>
 <area shape="rect" id="node6" href="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a" title="Returns a constant reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ch..." alt="" coords="910,288,1103,315"/>
 <area shape="rect" id="node7" href="$class_t_all_routes.html#a7eda7a4b535c7538e217bbbc4d878071" title="Retrieve up to two TRouteElementPair entries from Route2MultiMap at H &amp; V, the first as a function re..." alt="" coords="909,339,1105,381"/>

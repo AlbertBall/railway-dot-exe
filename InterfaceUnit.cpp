@@ -570,8 +570,8 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         }
         SkipFormResizeEvent = true; // added at v2.1.0
         MasterClock->Enabled = true;
-        Visible = true; // make Interface form visible (set to false at design time)    autocalls FormResize so it is skipped
-        WindowState = wsMaximized; // need this for full screen at start                autocalls FormResize so it is skipped
+        Visible = true; // make Interface form visible (set to false at design time)    autocalls FormResize so it is skipped by SkipFormResizeEvent being true
+        WindowState = wsMaximized; // need this for full screen at start                autocalls FormResize so it is skipped by SkipFormResizeEvent being true
         MTBFEditBox->Left = MainScreen->Left + MainScreen->Width - MTBFEditBox->Width + 30; // new v2.4.0 30 is to place it above the positional panel
                                                                                             // has to come after Visible = true or doesn't show
         MTBFLabel->Left = MainScreen->Left + MainScreen->Width - MTBFEditBox->Width + 30 - 55; // new v2.4.0 placed above and to the left of MTBFEditBox
@@ -625,11 +625,12 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         PlayerAwaitingHostStartFlag = false;
         HostInSessionFlag = false;
         PlayerInSessionFlag = false;
-        StartTimeSet = false;
         LastHostDataReceived = TDateTime(0);//initial value
         ConsecutiveSelfUpdates = 0;
         SkipTTActionsListBox->Visible = false;
         SkipListHeaderPanel->Visible = false;
+        ElapsedTimeTestFunctionStart = false;
+        ElapsedTimerRunning = false;
 
         SigImagePanel->Left = (Interface->Width - SigImagePanel->Width) / 2; // added for v2.3.0
 
@@ -6153,27 +6154,30 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                 TrainController->LogEvent("mbRight + OperMode");
                 bool FoundFlag;
                 int VecPos = Track->GetVectorPositionFromTrackMap(1, HLoc, VLoc, FoundFlag);
-                if(FoundFlag && (Level2OperMode != PreStart)) // disallow signaller control in PreStart
+                if(FoundFlag && (Level2OperMode != PreStart)) // disallow train popup menu in PreStart
                 {
                     SelectedTrainID = Track->TrackElementAt(426, VecPos).TrainIDOnElement;
-                    // signaller control of train
+                    // display popup menu for the train
                     if(SelectedTrainID > -1)
                     {
-                        TTrain Train = TrainController->TrainVectorAtIdent(23, SelectedTrainID);
+                        TTrain &Train = TrainController->TrainVectorAtIdent(23, SelectedTrainID);
                         Train.LeavingUnderSigControlAtContinuation = false;
-                        if((Train.LeadElement == -1) || (Track->TrackElementAt(788, Train.LeadElement).Conn[Train.LeadExitPos] == -1))
+                        if(Train.TrainMode == Signaller)
                         {
-                            if(Train.TrainMode == Signaller)
+                            if((Train.LeadElement == -1) || (Track->TrackElementAt(788, Train.LeadElement).Conn[Train.LeadExitPos] == -1)) //train front off continuation or on it
                             {
+                                Train.LeavingUnderSigControlAtContinuation = true;
+                            }
+                            else if(!Train.Stopped() && (Track->TrackElementAt(1450, (Track->TrackElementAt(1451, Train.LeadElement).Conn[Train.LeadExitPos])).TrackType == Continuation))
+                            {                                                            //added at v2.12.0 to prevent popup menu when train moving and front next to continuation
                                 Train.LeavingUnderSigControlAtContinuation = true;
                             }
                         }
                         if((Train.Stopped()) || (Train.TrainFailed && !(Train.TrainMode == Signaller)) ||
                            ((Train.TrainMode == Signaller) && !Train.SignallerStoppingFlag && !Train.LeavingUnderSigControlAtContinuation &&
                             !Train.StepForwardFlag))
-                        // don't allow signaller popup menu in timetable mode unless stopped,
-                        // or when coming to a stop or leaving at a continuation when under signaller control
-                        // or when failed
+                        // don't allow signaller popup menu unless stopped, when failed in timetable mode, or in signaller mode provided that
+                        // train isn't stopping, leaving at a continuation or stepping forward
                         {
                             // don't allow selection if another stopped train at a bridge position
                             if(Track->TrackElementAt(630, VecPos).TrackType == Bridge)
@@ -6190,48 +6194,82 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                             if(Train.TrainMode == Timetable)
                             {
                                 TakeSignallerControlMenuItem->Enabled = true;
+                                TakeSignallerControlMenuItem->Visible = true;
                                 TimetableControlMenuItem->Enabled = false;
+                                TimetableControlMenuItem->Visible = false;
                                 ChangeDirectionMenuItem->Enabled = false;
+                                ChangeDirectionMenuItem->Visible = false;
                                 SkipTimetabledActionsMenuItem->Enabled = false;
+                                SkipTimetabledActionsMenuItem->Visible = false;
                                 MoveForwardsMenuItem->Enabled = false;
+                                MoveForwardsMenuItem->Visible = false;
                                 SignallerJoinedByMenuItem->Enabled = false;
+                                SignallerJoinedByMenuItem->Visible = false;
                                 RepairFailedTrainMenuItem->Enabled = false;
+                                RepairFailedTrainMenuItem->Visible = false;
                                 StepForwardMenuItem->Enabled = false;
+                                StepForwardMenuItem->Visible = false;
                                 RemoveTrainMenuItem->Enabled = false;
+                                RemoveTrainMenuItem->Visible = false;
                                 PassRedSignalMenuItem->Enabled = false;
+                                PassRedSignalMenuItem->Visible = false;
                                 SignallerControlStopMenuItem->Enabled = false;
-                                if((Train.StoppedAtSignal || Train.StoppedAtLocation) && !Train.ActionsSkippedFlag)
-                                {
+                                SignallerControlStopMenuItem->Visible = false;
+                                if((Train.StoppedAtSignal || Train.StoppedAtLocation) && !Train.ActionsSkippedFlag) //Exclude TreatPassAsTimeLocDeparture, otherwise skipping
+                                {                                                                                   //events causes problems that are best avoided
                                     SkipTimetabledActionsMenuItem->Enabled = true;
+                                    SkipTimetabledActionsMenuItem->Visible = true;
+                                }
+                                BecomeNewServiceMenuItem->Enabled = false;
+                                BecomeNewServiceMenuItem->Visible = false;
+                                if(IsBecomeNewServiceAvailable(0, SelectedTrainID, Train.FollowOnServiceRef))
+                                {
+                                    BecomeNewServiceMenuItem->Enabled = true;
+                                    BecomeNewServiceMenuItem->Visible = true;
                                 }
                             }
                             else // signaller mode
                             {
                                 TakeSignallerControlMenuItem->Enabled = false;
+                                TakeSignallerControlMenuItem->Visible = false;
                                 SkipTimetabledActionsMenuItem->Enabled = false;
+                                SkipTimetabledActionsMenuItem->Visible = false;
+                                BecomeNewServiceMenuItem->Enabled = false;
+                                BecomeNewServiceMenuItem->Visible = false;
                                 if((Train.Crashed) || (Train.Derailed))
                                 {
                                     TimetableControlMenuItem->Enabled = false;
+                                    TimetableControlMenuItem->Visible = false;
                                     ChangeDirectionMenuItem->Enabled = false;
+                                    ChangeDirectionMenuItem->Visible = false;
                                     MoveForwardsMenuItem->Enabled = false;
+                                    MoveForwardsMenuItem->Visible = false;
                                     SignallerJoinedByMenuItem->Enabled = false;
+                                    SignallerJoinedByMenuItem->Visible = false;
                                     RepairFailedTrainMenuItem->Enabled = false;
+                                    RepairFailedTrainMenuItem->Visible = false;
                                     StepForwardMenuItem->Enabled = false;
+                                    StepForwardMenuItem->Visible = false;
                                     PassRedSignalMenuItem->Enabled = false;
+                                    PassRedSignalMenuItem->Visible = false;
                                     SignallerControlStopMenuItem->Enabled = false;
+                                    SignallerControlStopMenuItem->Visible = false;
                                     RemoveTrainMenuItem->Enabled = true;
+                                    RemoveTrainMenuItem->Visible = true;
                                 }
                                 else if(Train.Stopped())
                                 {
                                     if(Train.TimetableFinished)
                                     {
                                         TimetableControlMenuItem->Enabled = false;
+                                        TimetableControlMenuItem->Visible = false;
                                     }
                                     else
                                     {
                                         if(Train.RestoreTimetableLocation == "") // en route
                                         {
                                             TimetableControlMenuItem->Enabled = true;
+                                            TimetableControlMenuItem->Visible = true;
                                         }
                                         else
                                         {
@@ -6248,98 +6286,134 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                             if(Train.RestoreTimetableLocation == LocName)
                                             {
                                                 TimetableControlMenuItem->Enabled = true;
+                                                TimetableControlMenuItem->Visible = true;
                                             }
                                             else
                                             {
                                                 TimetableControlMenuItem->Enabled = false;
+                                                TimetableControlMenuItem->Visible = false;
                                             }
                                         }
                                     }
 // don't allow ChangeDirection if lead or mid elements (but not lag or next) -1, or lead, mid, lag or next elements continuations
                                     ChangeDirectionMenuItem->Enabled = true;
+                                    ChangeDirectionMenuItem->Visible = true;
                                     if(Train.LeadElement > -1)
                                     {
                                         if(Track->TrackElementAt(794, Train.LeadElement).TrackType == Continuation)
                                         {
                                             ChangeDirectionMenuItem->Enabled = false;
+                                            ChangeDirectionMenuItem->Visible = false;
                                         }
-                                        if(Track->TrackElementAt(791, Train.LeadElement).Conn[Train.LeadExitPos] > -1)
+/* drop this at v2.12.0, allow cdt for train stopped & leadelement next to exit continuation
+                                        if(Track->TrackElementAt(, Train.LeadElement).Conn[Train.LeadExitPos] > -1)
                                         {
-                                            if(Track->TrackElementAt(792, (Track->TrackElementAt(793, Train.LeadElement).Conn[Train.LeadExitPos]))
-                                               .TrackType == Continuation)
+                                            if(Track->TrackElementAt(, (Track->TrackElementAt(, Train.LeadElement).Conn[Train.LeadExitPos])).TrackType == Continuation)
                                             {
                                                 ChangeDirectionMenuItem->Enabled = false;
+                                                ChangeDirectionMenuItem->Visible = false;
                                             }
                                         }
+*/
                                     }
                                     else
                                     {
                                         ChangeDirectionMenuItem->Enabled = false;
+                                        ChangeDirectionMenuItem->Visible = false;
                                     }
-                                    if(Train.MidElement > -1)
+                                    if(Train.MidElement > -1) //entering or exiting at a continuation
                                     {
                                         if(Track->TrackElementAt(795, Train.MidElement).TrackType == Continuation)
                                         {
                                             ChangeDirectionMenuItem->Enabled = false;
+                                            ChangeDirectionMenuItem->Visible = false;
                                         }
                                     }
                                     else
                                     {
                                         ChangeDirectionMenuItem->Enabled = false;
+                                        ChangeDirectionMenuItem->Visible = false;
                                     }
                                     if(Train.LagElement > -1)
                                     {
                                         if(Track->TrackElementAt(796, Train.LagElement).TrackType == Continuation)
                                         {
                                             ChangeDirectionMenuItem->Enabled = false;
+                                            ChangeDirectionMenuItem->Visible = false;
                                         }
                                     }
                                     RemoveTrainMenuItem->Enabled = true;
+                                    RemoveTrainMenuItem->Visible = true;
                                     SignallerControlStopMenuItem->Enabled = false;
+                                    SignallerControlStopMenuItem->Visible = false;
                                     SignallerJoinedByMenuItem->Enabled = false;
+                                    SignallerJoinedByMenuItem->Visible = false;
                                     RepairFailedTrainMenuItem->Enabled = false;
+                                    RepairFailedTrainMenuItem->Visible = false;
                                     StepForwardMenuItem->Enabled = false;
+                                    StepForwardMenuItem->Visible = false;
                                     MoveForwardsMenuItem->Enabled = false;
+                                    MoveForwardsMenuItem->Visible = false;
                                     PassRedSignalMenuItem->Enabled = false;
-                                    if(Train.AbleToMove(0))
-                                    {
+                                    PassRedSignalMenuItem->Visible = false;
+                                    if(Train.AbleToMove(0) && !Train.TreatPassAsTimeLocDeparture) //TreatPassAsTimeLocDeparture added at v2.12.0 to prevent signaller movements
+                                    {                                                             //for 'pseudo' TimeLoc departures
                                         MoveForwardsMenuItem->Enabled = true;
-                                        if(!Train.LeavingUnderSigControlAtContinuation)
-                                        {
-                                            StepForwardMenuItem->Enabled = true; // added 'if' condition for v1.3.2 due to Carwyn Thomas error,
+                                        MoveForwardsMenuItem->Visible = true;
+                                        if((!Train.LeavingUnderSigControlAtContinuation) && (Track->TrackElementAt(791, Train.LeadElement).Conn[Train.LeadExitPos] > -1))
+                                        {   //added check for adjacent element not being a continuation at v2.12.0 as dont allow step forward as wouldn't stop
+                                            if(Track->TrackElementAt(792, (Track->TrackElementAt(793, Train.LeadElement).Conn[Train.LeadExitPos])).TrackType != Continuation)
+                                            {
+                                             StepForwardMenuItem->Enabled = true; // added 'if' condition for v1.3.2 due to Carwyn Thomas error,
+                                             StepForwardMenuItem->Visible = true;
+                                            }
                                         }
                                     } // fails on trying to calc AutoSig time delay for resetting signals
 
-                                    if(Train.AbleToMoveButForSignal(0)) // may not be in AutoSigs route but disallow anyway as not needed at continuation
-                                    {
+                                    if(Train.AbleToMoveButForSignal(0) && !Train.TreatPassAsTimeLocDeparture) // may not be in AutoSigs route but disallow anyway as not needed at continuation
+                                    {                                                                         //TreatPassAsTimeLocDeparture addesd at v2.12.0 as above
                                         PassRedSignalMenuItem->Enabled = true;
+                                        PassRedSignalMenuItem->Visible = true;
                                         StepForwardMenuItem->Enabled = true;
+                                        StepForwardMenuItem->Visible = true;
                                     }
                                     TTrain *AdjacentTrain;
                                     if(Train.IsThereAnAdjacentTrain(0, AdjacentTrain))
                                     {
                                         SignallerJoinedByMenuItem->Enabled = true;
+                                        SignallerJoinedByMenuItem->Visible = true;
                                     }
                                     if(Train.TrainFailed)
                                     {
                                         RepairFailedTrainMenuItem->Enabled = true;
+                                        RepairFailedTrainMenuItem->Visible = true;
                                     }
                                 }
                                 else // train moving under signaller control - only permit restoration of TT control when stopped as could be in
                                      // mid move, & SetTrainMovementValues only intended to be called when stopped
                                 {
                                     TimetableControlMenuItem->Enabled = false;
+                                    TimetableControlMenuItem->Visible = false;
                                     ChangeDirectionMenuItem->Enabled = false;
+                                    ChangeDirectionMenuItem->Visible = false;
                                     RemoveTrainMenuItem->Enabled = false;
+                                    RemoveTrainMenuItem->Visible = false;
                                     MoveForwardsMenuItem->Enabled = false;
+                                    MoveForwardsMenuItem->Visible = false;
                                     SignallerJoinedByMenuItem->Enabled = false;
+                                    SignallerJoinedByMenuItem->Visible = false;
                                     RepairFailedTrainMenuItem->Enabled = false;
+                                    RepairFailedTrainMenuItem->Visible = false;
                                     PassRedSignalMenuItem->Enabled = false;
+                                    PassRedSignalMenuItem->Visible = false;
                                     StepForwardMenuItem->Enabled = false;
+                                    StepForwardMenuItem->Visible = false;
                                     SignallerControlStopMenuItem->Enabled = true;
+                                    SignallerControlStopMenuItem->Visible = true;
                                 }
                             }
                             TrainHeadCodeMenuItem->Caption = Train.HeadCode + ":";
+                            BecomeNewServiceMenuItem->Caption = "Terminate here and become follow-on service " + Train.FollowOnServiceRef;    //added at v2.12.0
                             TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
                             TrainController->RestartTime = TrainController->TTClockTime;
                             PopupMenu->Popup(MainScreen->Left + X, MainScreen->Top + Y + 43); // menu stops everything so reset timetable time when restarts,
@@ -8322,19 +8396,33 @@ void __fastcall TInterface::MasterClockTimer(TObject *Sender)
 //see https://www.tek-tips.com/viewthread.cfm?qid=672717 - TTimer is very inaccurate, and the minimum interval is about 56ms because
 //of the PC clock frequency which is about 18Hz, so it always runs slow at short intervals.  In light of this the 30% loss for a busy
 //session isn't too bad, it represents about 12% loss in reality.
-        if(!StartTimeSet)
+
+//Set breakpoint at int x = 4, load railway, start timer with Alt Ctrl 4 then check elapsed time when stops
+//no need to reload between checks,
+
+        if(ElapsedTimeTestFunctionStart) //set in test function CTRL ALT 4
         {
-            Start = double(GetTime());
-            StartTimeSet = true;
+            Start = double(GetTime()) * 86400; //secs
+            ElapsedTimerRunning = true;
+            TotalTicks = 0;
+            ElapsedTimeTestFunctionStart = false;
         }
-        if(TotalTicks < 500)
+
+        if(ElapsedTimerRunning && TotalTicks < 100) //should take 5secs at 50ms, it's about 6.25secs with nothing loaded
         {
             TotalTicks++;
-            End = double(GetTime());
-            ElapsedTime = End - Start;
         }
-*/
+        else if(ElapsedTimerRunning && TotalTicks >= 100)
+        {
+            End = double(GetTime()) * 86400;
+            ElapsedTimerRunning = false;
 
+            ElapsedTime = End - Start; //secs
+
+            int x = 4; //breakpoint
+        }   //TrainController->TrainVector.size() <- Ctrl copy & paste into debugger window to examine
+//end of elapsed time code
+*/
         if(Utilities->Clock2Stopped)
         {
             Utilities->CallLogPop(774);
@@ -8402,6 +8490,7 @@ void TInterface::ClockTimer2(int Caller)
         // set current time
         TDateTime Now = TrainController->TTClockTime;
 
+
         if(!OAListBox->MouseInClient) // added at v2.7.0 to reset this flag whenever mouse not in OAListBox
         {
             OAListBoxRightMouseButtonDown = false;
@@ -8418,6 +8507,7 @@ void TInterface::ClockTimer2(int Caller)
         }
 // Update Displayed Clock - resets to 0 at 96hours
         ClockLabel->Caption = Utilities->Format96HHMMSS(TrainController->TTClockTime);
+
 //timers
         TrainController->OpTimeToActUpdateCounter++;
 ///<new v2.2.0, controls 1 second updating for OpTimeToActPanel
@@ -8440,6 +8530,8 @@ void TInterface::ClockTimer2(int Caller)
             TrainController->RandomFailureCounter = 0;
         }
 
+//multiplayer functions - disabled at v2.12.0 as not needed yey
+/*
         PlayerFiveSecondTimer++; // new for multiplayer for player send cycle
         if(PlayerFiveSecondTimer >= 100)
         {
@@ -8451,8 +8543,6 @@ void TInterface::ClockTimer2(int Caller)
         {
             PlayerOneSecondTimer = 0;
         }
-
-//multiplayer functions
 
         HostMultiplayInProgressFlag = false;
         PlayerMultiplayInProgressFlag = false;
@@ -8514,7 +8604,7 @@ void TInterface::ClockTimer2(int Caller)
         {
             PlayerHandshakingActions();
         }
-
+*/
 //end of multiplayer functions
 
 // Below added at v2.1.0 to ensure WholeRailwayMoving flag reset when not moving (when rh mouse button up) as sometimes misses
@@ -8643,6 +8733,7 @@ void TInterface::ClockTimer2(int Caller)
             // PlotOutput returns if zoomed out, and the zoom out flag isn't reset until the end of Clearand.....
             // this was moved outside the for.. next.. loop in v0.6 as it could be called multiple times and slowed down operation (noticeable with a fast clock)
         }
+
 // stop clock if hover over a warning
         bool WH1 = (Mouse->CursorPos.x >= ClientOrigin.x + OutputLog1->Left) && (Mouse->CursorPos.x < (ClientOrigin.x + OutputLog1->Width + OutputLog1->Left))
             && (Mouse->CursorPos.y >= ClientOrigin.y + OutputLog1->Top) && (Mouse->CursorPos.y < (ClientOrigin.y + OutputLog1->Height + OutputLog1->Top))
@@ -11384,7 +11475,7 @@ void __fastcall TInterface::TakeSignallerControlMenuItemClick(TObject *Sender)
             LocName = Track->TrackElementAt(634, Train.MidElement).ActiveTrackElementName;
         }
         // store the value that allow restoration of tt control or not - RestoreTimetableLocation
-        if(Train.StoppedAtLocation && (LocName != ""))
+        if(Train.RevisedStoppedAtLoc() && (LocName != ""))
         {
             Train.RestoreTimetableLocation = LocName;
         }
@@ -11393,7 +11484,7 @@ void __fastcall TInterface::TakeSignallerControlMenuItemClick(TObject *Sender)
             Train.RestoreTimetableLocation = "";
         }
         // check whether need to offer 'pass red signal'
-        if(!Train.StoppedAtSignal && Train.StoppedAtLocation)
+        if(!Train.StoppedAtSignal && Train.RevisedStoppedAtLoc())
         {
             int NextElementPosition = Track->TrackElementAt(775, Train.LeadElement).Conn[Train.LeadExitPos];
             int NextEntryPos = Track->TrackElementAt(776, Train.LeadElement).ConnLinkPos[Train.LeadExitPos];
@@ -11458,7 +11549,7 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
         {
             LeadElementLocName = Track->TrackElementAt(646, Train.LeadElement).ElementID;
         }
-        if((LeadElementLocName == "") && (Train.MidElement > -1))
+        if((MidElementLocName == "") && (Train.MidElement > -1)) //changed from LeadElementLocName at v2.12.0 - must have been a mistake
         {
             MidElementLocName = Track->TrackElementAt(648, Train.MidElement).ElementID;
         }
@@ -11466,9 +11557,24 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
         {
             LocName = RequiredLocName;
         }
-        if((Train.ActionVectorEntryPtr->LocationType == AtLocation) && (LocName == Train.ActionVectorEntryPtr->LocationName))
+        else if(LeadElementLocName != "") //these two else ifs added at v2.12.0 as noticed that if a train is restored to tt control at
+        {                                 //a loc that isn't RequiredLocName then LocName is ""
+            LocName = LeadElementLocName; //LeadElement takes precedence if both named
+        }
+        else if(MidElementLocName != "")
         {
-            Train.StoppedAtLocation = true;
+            LocName = MidElementLocName;
+        }
+        if(((Train.ActionVectorEntryPtr->LocationType == AtLocation) || Train.TreatPassAsTimeLocDeparture) && (LocName == Train.ActionVectorEntryPtr->LocationName))
+        {//Train.TreatPassAsTimeLocDeparture added at v2.12.0 so background stays pale green after taking signaller control, as LocationType is EnRoute for a Pass
+            if(Train.TreatPassAsTimeLocDeparture)     //this if... else... segment added at v2.12.0 to ensure one or the other true but not both
+            {
+                Train.StoppedAtLocation = false;
+            }
+            else
+            {
+                Train.StoppedAtLocation = true;
+            }
             Train.StoppedAtSignal = false;
 // added at v2.7.0 as if had been stopped at signal before tt control restored then background colour would change to normal when signal cleared even when not due to depart
             Train.LastActionTime = TrainController->TTClockTime; // by itself this only affects trains that have still to arrive, if waiting to
@@ -11719,7 +11825,7 @@ void __fastcall TInterface::SignallerJoinedByMenuItemClick(TObject *Sender)
                 ThisTrain.StoppedWithoutPower = false;
             }
             ThisTrain.TrainFailed = false; // if had failed then no longer failed, even if joining train has no power
-            if(!ThisTrain.StoppedAtLocation)
+            if(!ThisTrain.RevisedStoppedAtLoc())
             {
                 // ok to call PlotTrainWithNewBackgroundColour here as PlotElements already set to Lead, Mid & Lag elements
                 ThisTrain.PlotTrainWithNewBackgroundColour(49, clSignallerStopped, Display);
@@ -11761,7 +11867,7 @@ void __fastcall TInterface::RepairFailedTrainMenuItemClick(TObject *Sender)
         Train.TrainFailed = false;
         Train.StoppedWithoutPower = false;
         Train.SignallerStopped = true;
-        if(!Train.StoppedAtLocation)
+        if(!Train.RevisedStoppedAtLoc())
         {
             // ok to call PlotTrainWithNewBackgroundColour here as PlotElements already set to Lead, Mid & Lag elements
             Train.PlotTrainWithNewBackgroundColour(51, clSignallerStopped, Display);
@@ -11935,7 +12041,7 @@ SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
         if(Train.StoppedAtSignal)
         {
             //Calc cumulative dwell times that are skipped
-            int  Count = 0, PassNum = 0;
+            int  Count = 0, PassNum = 0, SkippedEvents = 0;
             if(SkipTTActionsListBox->ItemIndex == 0)
             {
                 ShowMessage("This is already the next event, nothing will be skipped");
@@ -11953,6 +12059,15 @@ SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
                     Count++;
                 }
                 PassNum++;
+                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "pas") || ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime != TDateTime(-1))))
+                //don't count cdts, passes or departures as missed events (note that can't be a finish)
+                {
+                    continue;
+                }
+                else
+                {
+                    SkippedEvents++;
+                }
             }
             AnsiString StartStr = Train.SelSkipString.SubString(8, 4);
             if((StartStr != "Arri") && (StartStr != "Pass") && (StartStr != "Exit"))
@@ -11965,20 +12080,25 @@ SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
             int button = Application->MessageBox(L"This will skip all events before the selection,\n\nOK to proceed?", L"", MB_YESNO);
             if(button == IDYES)
             {
+                AnsiString SkipTTLBString  = AnsiString(SkipTTActionsListBox->Items->Strings[SkipTTActionsListBox->ItemIndex]); //added at v2.12.0 as doubt over newline in ListBox strings
+                if(SkipTTLBString[SkipTTLBString.Length()] == '\n') //strip the newline if there is one as one is added after PerfStr sent to PerformanceFile
+                {
+                    SkipTTLBString = SkipTTLBString.SubString(1, (SkipTTLBString.Length() - 1));
+                }
                 Train.ActionVectorEntryPtr += PassNum;
-                AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " timetabled events skipped until " +
-                    SkipTTActionsListBox->Items->Strings[SkipTTActionsListBox->ItemIndex]; //last bit includes a newline so don't use PerformanceLog or will have two
+                AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " " + AnsiString(SkippedEvents)
+                    + " timetabled events skipped until " + SkipTTLBString;
                 Utilities->PerformanceFile << PerfStr.c_str() << '\n';
-                TrainController->SkippedTTEvents += (PassNum - 1);
+                TrainController->SkippedTTEvents += SkippedEvents;
                 Display->PerformanceMemo->Lines->Add(PerfStr);
 
             }
             HideTTActionsListBox(2);
         }
-        else if(Train.StoppedAtLocation)
+        else if(Train.RevisedStoppedAtLoc())
         {
             //Calc cumulative dwell times that are skipped
-            int  Count = 0, PassNum = 0;
+            int  Count = 0, PassNum = 0, SkippedEvents = 0;
             TActionVectorEntry DepEntry;
             Train.SkippedDeparture = false;
             if(SkipTTActionsListBox->ItemIndex == 0)
@@ -12006,13 +12126,21 @@ SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
                     Count++;
                 }
                 PassNum++;
+                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "pas") || ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime > TDateTime(0))))
+                //don't count cdts, passes or departures as missed events (note that can't be a finish)
+                {
+                    continue;
+                }
+                else
+                {
+                    SkippedEvents++;
+                }
             }
             TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr + PassNum; //set to the selected action so can check if at same location
-            Train.TrainSkippedEvents = (PassNum - 1);
+            Train.TrainSkippedEvents = SkippedEvents;
             AnsiString StartStr = Train.SelSkipString.SubString(8, 4);
             if(Train.SkippedDeparture && (AVEPtr->LocationName == Train.ActionVectorEntryPtr->LocationName) && (AVEPtr->ArrivalTime == TDateTime(-1)) && (AVEPtr->FormatType != PassTime))
-            { //if selected action is at same location and have already departed (i.e returned to it after leaving), then keep SkippedDep
-              //if arrive or pass
+            { //if selected action is at same location and SkippedDeparture is true (i.e returned to it after leaving), then keep SkippedDep provided that the action is arrive or pass
                 Train.SkippedDeparture = false;
             }
             if((StartStr != "Arri") && (StartStr != "Pass") && (StartStr != "Exit") && (AVEPtr->LocationName != Train.ActionVectorEntryPtr->LocationName))
@@ -12038,12 +12166,18 @@ SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
             int button = Application->MessageBox(Message.c_str(), L"", MB_YESNO);
             if(button == IDYES)
             {
+                AnsiString SkipTTLBString  = AnsiString(SkipTTActionsListBox->Items->Strings[SkipTTActionsListBox->ItemIndex]); //added at v2.12.0 as doubt over newline in
+                //ListBox strings, mainly there is one but seemingly not always
+                if(SkipTTLBString[SkipTTLBString.Length()] == '\n') //strip the newline if there is one as one is added after PerfStr sent to PerformanceFile
+                {
+                    SkipTTLBString = SkipTTLBString.SubString(1, (SkipTTLBString.Length() - 1));
+                }
                 if(!Train.SkippedDeparture)
                 {
                     Train.ActionVectorEntryPtr += PassNum; //points to the next action, if a dep is skipped then the pointer is incremented later
                     AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " timetabled events skipped until " +
-                        SkipTTActionsListBox->Items->Strings[SkipTTActionsListBox->ItemIndex]; //last bit includes a newline so don't use PerformanceLog or will have two
-                    TrainController->SkippedTTEvents += Train.TrainSkippedEvents; //TrainSkippedEvents is PassNum - 1
+                        SkipTTLBString;
+                    TrainController->SkippedTTEvents += Train.TrainSkippedEvents;
                     Train.TrainSkippedEvents = 0;
                     Utilities->PerformanceFile << PerfStr.c_str() << '\n';
                     Display->PerformanceMemo->Lines->Add(PerfStr);
@@ -12051,8 +12185,8 @@ SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
                 else
                 {
                     Train.ActionsSkippedFlag = true; //set to prevent any further skips until after the departure
-                    AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " timetabled events skipped after the departure until " +
-                        SkipTTActionsListBox->Items->Strings[SkipTTActionsListBox->ItemIndex]; //last bit includes a newline so don't use PerformanceLog or will have two
+                    AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " " + AnsiString(Train.TrainSkippedEvents)
+                            + " timetabled events skipped after the departure until " + SkipTTLBString;
                     Utilities->PerformanceFile << PerfStr.c_str() << '\n';
                     Display->PerformanceMemo->Lines->Add(PerfStr);
                 }
@@ -12119,6 +12253,314 @@ void __fastcall TInterface::SkipListExitImageClick(TObject *Sender)
     catch(const Exception &e)
     {
         ErrorLog(243, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::BecomeNewServiceMenuItemClick(TObject *Sender) //added at v2.12.0
+{
+ //this is only accessible if the train is stopped at a location, there is a follow-on service (Fns, Fns-sh, Frh-sh, F-nshs) and that service stops at or passes the current
+ // location.  Change to new service immediately & set its ActionVectorEntryPtr to this location
+    try
+    {
+        TrainController->LogEvent("BecomeNewServiceClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BecomeNewServiceClick");
+        TTrain &Train = TrainController->TrainVectorAtIdent(58, SelectedTrainID);
+        TActionVectorEntry *NewServiceActionEntryPtr = Train.ActionVectorEntryPtr; //set initially to current position
+        while((NewServiceActionEntryPtr->Command != "Fns") && (NewServiceActionEntryPtr->Command != "Fns-sh") && (NewServiceActionEntryPtr->Command != "F-nshs"))
+        {
+            NewServiceActionEntryPtr++;
+            if(NewServiceActionEntryPtr > &Train.TrainDataEntryPtr->ActionVector.back()) //failed to find a new service
+            {
+                ShowMessage("No follow-on service found, option unavailable");
+                Utilities->CallLogPop(2445);
+                return;
+            }
+        }
+        int PtrAdvance = NewServiceActionEntryPtr - Train.ActionVectorEntryPtr;
+        AnsiString CurrentLocationName = Train.ActionVectorEntryPtr->LocationName;
+        UnicodeString MessageStr = "This action will skip all timetabled events until follow-on service " + Train.FollowOnServiceRef + " reaches this location\n\nOK to proceed?";
+        if(NewServiceActionEntryPtr->Command == "Fns")
+        {
+            TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
+            TrainController->RestartTime = TrainController->TTClockTime;
+            int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
+            TrainController->BaseTime = TDateTime::CurrentDateTime();
+            TrainController->StopTTClockFlag = false;
+            if(button == IDNO)
+            {
+                Train.FollowOnServiceRef = ""; //cancel this as finished with it
+                Utilities->CallLogPop(2446);
+                return;
+            }
+            SkipAllEventsBeforeNewService(0, SelectedTrainID, PtrAdvance);
+            Train.NewTrainService(1, true); //true for no logs
+        }
+        else if(NewServiceActionEntryPtr->Command == "Fns-sh")
+        {
+            TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
+            TrainController->RestartTime = TrainController->TTClockTime;
+            int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
+            TrainController->BaseTime = TDateTime::CurrentDateTime();
+            TrainController->StopTTClockFlag = false;
+            if(button == IDNO)
+            {
+                Train.FollowOnServiceRef = ""; //cancel this as finished with it
+                Utilities->CallLogPop(2447);
+                return;
+            }
+            SkipAllEventsBeforeNewService(1, SelectedTrainID, PtrAdvance);
+            Train.RepeatShuttleOrNewNonRepeatService(1, true); //true for no logs
+        }
+        else if(NewServiceActionEntryPtr->Command == "Frh-sh")
+        {
+            TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
+            TrainController->RestartTime = TrainController->TTClockTime;
+            int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
+            TrainController->BaseTime = TDateTime::CurrentDateTime();
+            TrainController->StopTTClockFlag = false;
+            if(button == IDNO)
+            {
+                Train.FollowOnServiceRef = ""; //cancel this as finished with it
+                Utilities->CallLogPop(2453);
+                return;
+            }
+            SkipAllEventsBeforeNewService(2, SelectedTrainID, PtrAdvance);
+            Train.RepeatShuttleOrRemainHere(1, true); //true for no logs;
+        }
+        else if(NewServiceActionEntryPtr->Command == "F-nshs")
+        {
+            TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
+            TrainController->RestartTime = TrainController->TTClockTime;
+            int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
+            TrainController->BaseTime = TDateTime::CurrentDateTime();
+            TrainController->StopTTClockFlag = false;
+            if(button == IDNO)
+            {
+                Train.FollowOnServiceRef = ""; //cancel this as finished with it
+                Utilities->CallLogPop(2448);
+                return;
+            }
+            SkipAllEventsBeforeNewService(3, SelectedTrainID, PtrAdvance);
+            Train.NewShuttleFromNonRepeatService(1, true); //true for no logs;
+        }
+        else //invalid, shouldn't have been possible to select it
+        {
+            ShowMessage("Option unavailable");
+        }
+
+        SkipEventsBeforeSameLoc(0, SelectedTrainID, CurrentLocationName); //same train ID when becomes new service
+        Train.DepartureTimeSet = false; //force a release time calculation in UpdateTrain
+        Train.EntrySpeed = 0;
+        Train.ExitSpeedHalf = 0;
+        Train.ExitSpeedFull = 0;
+        if(Train.ActionVectorEntryPtr->Command == "pas")
+        {
+            Train.StoppedAtLocation = false; //this is set in the functions called for the various finish types, so is reset here in the case of a pass
+            Train.ExitSpeedHalf = 30;        //so earlier versions will still identify it as moving.  exit speed will be recalculated for v2.12.0 & upwards
+            Train.ExitSpeedFull = 50;
+        }
+        Train.FollowOnServiceRef = ""; //cancel this as finished with it
+        Utilities->CallLogPop(2449);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(244, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::IsBecomeNewServiceAvailable(int Caller, int TrainID, AnsiString &NextServiceRef)
+{// 5 conditions: stopped at location, has power, no skipped departure pending, has follow-on service (Fns, Fns-sh, Frh-sh, F-nshs) and follow-on service stops at or passes this location
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ", BecomeNewServiceAvailable, " + AnsiString(TrainID));
+    const TTrain &Train = TrainController->TrainVectorAtIdent(61, SelectedTrainID);
+    bool Condition4Met = false;
+    TTrainDataEntry *NextServiceEntryPtr;
+    NextServiceRef = "";
+    if(Train.RevisedStoppedAtLoc() && (Train.PowerAtRail > 1) && !Train.SkippedDeparture) //conditions 1 to 3
+    {
+        for(TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr; AVEPtr <= &Train.TrainDataEntryPtr->ActionVector.back(); AVEPtr++)
+        {
+            if(AVEPtr->Command == "Fns")
+            {
+                Condition4Met = true;
+                NextServiceEntryPtr = AVEPtr->LinkedTrainEntryPtr;
+                NextServiceRef = NextServiceEntryPtr->ServiceReference;
+                break;
+            }
+            if(AVEPtr->Command == "Fns-sh")
+            {
+                Condition4Met = true;
+                if(Train.RepeatNumber >= (Train.TrainDataEntryPtr->NumberOfTrains - 1)) // finished all repeats
+                {
+                    NextServiceEntryPtr = AVEPtr->NonRepeatingShuttleLinkEntryPtr;
+                    NextServiceRef = NextServiceEntryPtr->ServiceReference;
+                }
+                else
+                {
+                    NextServiceEntryPtr = AVEPtr->LinkedTrainEntryPtr;
+                    NextServiceRef = NextServiceEntryPtr->ServiceReference;
+                }
+                break;
+            }
+            if(AVEPtr->Command == "Frh-sh")
+            {
+                if(Train.RepeatNumber >= (Train.TrainDataEntryPtr->NumberOfTrains - 1)) // finished all repeats
+                {
+                    break; //no follow-on service
+                }
+                else
+                {
+                Condition4Met = true;
+                NextServiceEntryPtr = AVEPtr->LinkedTrainEntryPtr;
+                NextServiceRef = NextServiceEntryPtr->ServiceReference;
+                break;
+                }
+            }
+            if(AVEPtr->Command == "F-nshs")
+            {
+                Condition4Met = true;
+                NextServiceEntryPtr = AVEPtr->LinkedTrainEntryPtr;
+                NextServiceRef = NextServiceEntryPtr->ServiceReference;
+                break;
+            }
+        }
+        if(Condition4Met) //condition 4
+        {
+            AnsiString CurLoc = Train.ActionVectorEntryPtr->LocationName;
+            for(TActionVectorEntry *AVEPtr = &NextServiceEntryPtr->ActionVector.at(0); AVEPtr <= &NextServiceEntryPtr->ActionVector.back(); AVEPtr++)
+            {
+                if(AVEPtr->LocationName == CurLoc)
+                {
+                    if((AVEPtr->FormatType == TimeTimeLoc) || ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->ArrivalTime > TDateTime(0))) || (AVEPtr->Command == "pas")                   )
+                    {
+                        Utilities->CallLogPop(2454);
+                        return(true); //all conditions met
+                    }
+                }
+            }
+        }
+    }
+    Utilities->CallLogPop(2455);
+    return(false); //one or more conditions not met
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::SkipAllEventsBeforeNewService(int Caller, int TrainID, int PtrAdvance) //added at v2.12.0
+{
+    try
+    {
+        TrainController->LogEvent("SkipAllEventsBeforNewService");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ", SkipAllEventsBeforNewService");
+        TTrain &Train = TrainController->TrainVectorAtIdent(59, TrainID);
+        TActionVectorEntry *NewServiceActionEntryPtr = Train.ActionVectorEntryPtr + PtrAdvance;
+        //Calc no. of skipped events
+        int  SkippedEvents = 0;
+        for(TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr; AVEPtr < NewServiceActionEntryPtr; AVEPtr++)
+        {
+            if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "pas") || (AVEPtr->SequenceType == Finish) ||
+                    ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime != TDateTime(-1))))
+            //don't count cdts, passes, finishes or departures as missed events (finish will be the new service and becomes new service at diff loc so it isn't missed)
+            {
+                continue;
+            }
+            else
+            {
+                SkippedEvents++;
+            }
+        }
+        //report the action
+        AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " manually advanced to follow-on service " + Train.FollowOnServiceRef + " at " +
+                Train.ActionVectorEntryPtr->LocationName;
+        Utilities->PerformanceFile << PerfStr.c_str() << '\n';
+        Display->PerformanceMemo->Lines->Add(PerfStr);
+        //advance the pointer
+        Train.ActionVectorEntryPtr = NewServiceActionEntryPtr; //points to the new service
+        PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " " + AnsiString(SkippedEvents)
+                + " timetabled events skipped before it became the new service";
+        TrainController->SkippedTTEvents += SkippedEvents;
+        Utilities->PerformanceFile << PerfStr.c_str() << '\n';
+        Display->PerformanceMemo->Lines->Add(PerfStr);
+        Utilities->CallLogPop(2450);
+        return;
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(245, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::SkipEventsBeforeSameLoc(int Caller, int TrainID, AnsiString LocationName) //added at v2.12.0
+{
+    try
+    {
+        TrainController->LogEvent("SkipEventsBeforeSameLoc");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ", SkipEventsBeforeSameLoc");
+        TTrain &Train = TrainController->TrainVectorAtIdent(60, TrainID);
+        bool LocFound = false;
+        //Calc no. of skipped events
+        int SkippedEvents = 0;
+        TActionVectorEntry *AVEPtr;
+        for(AVEPtr = Train.ActionVectorEntryPtr; AVEPtr <= &Train.TrainDataEntryPtr->ActionVector.back(); AVEPtr++)
+        {
+            if(AVEPtr->LocationName != LocationName)
+            {
+                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "pas") || ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime != TDateTime(-1))))
+                //don't count cdts, passes or departures as missed events (can't be a finish)
+                {
+                    continue;
+                }
+                else
+                {
+                    SkippedEvents++;
+                }
+            }
+            else if(AVEPtr->FormatType == TimeTimeLoc)
+            {
+                LocFound = true;
+                break;
+            }
+            else if(AVEPtr->Command == "pas")
+            {
+                Train.TreatPassAsTimeLocDeparture = true; //when true the pas is treated by the train as a TimeLoc departure
+                LocFound = true;
+                break;
+            }
+            else if(((AVEPtr->FormatType == TimeLoc) && (AVEPtr->ArrivalTime > TDateTime(-1))) || (AVEPtr->Command == "cdt")) //increment past arrival & cdt events
+            {                                                                                                                  //no skipped event as stops here
+                continue;
+            }
+            else
+            {
+                LocFound = true;
+                break;
+            }
+        }
+        if(!LocFound)
+        {
+            Utilities->CallLogPop(2451);
+            ShowMessage("New service location not found");
+            return;
+        }
+        //advance the pointer
+        Train.ActionVectorEntryPtr = AVEPtr;
+        Train.ChangeTrainDirection(1, true); //most times this will be appropriate, i.e changed direction from other service train, true for No Logs
+        AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " " + AnsiString(SkippedEvents)
+                + " timetabled events skipped before the new service arrived at " + LocationName;
+        TrainController->SkippedTTEvents += SkippedEvents;
+        Utilities->PerformanceFile << PerfStr.c_str() << '\n';
+        Display->PerformanceMemo->Lines->Add(PerfStr);
+        Utilities->CallLogPop(2452);
+        return;
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(246, e.Message);
     }
 }
 
@@ -17588,11 +18030,11 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
         {
             Status = "Stopped - forward track occupied"; // before station stop as want to display station stop if that set
         }
-        if(Train.StoppedAtLocation)
+        if(Train.RevisedStoppedAtLoc())
         {
             Status = "Stopped at " + Train.ActionVectorEntryPtr->LocationName;
         }
-        if((Train.StoppedAtLocation) && (Train.StoppedForTrainInFront))
+        if((Train.RevisedStoppedAtLoc()) && (Train.StoppedForTrainInFront))
         {
             Status = "Stopped at " + Train.ActionVectorEntryPtr->LocationName + " + forward track occupied";
         }
@@ -17737,7 +18179,7 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
     {
         SpecialStr = "Train under signaller control" + AnsiString('\n');
     }
-    else if(Train.BeingCalledOn && !Train.StoppedAtLocation)
+    else if(Train.BeingCalledOn && !Train.RevisedStoppedAtLoc())
     {
         SpecialStr = "Restricted speed - being called on" + AnsiString('\n');
     }
@@ -18847,8 +19289,17 @@ void TInterface::SaveSession(int Caller)
             SavePerformanceFile(0, SessionFile);
             Utilities->SaveFileString(SessionFile, "***End of performance file***");
 
-// addition at v2.4.0 to save TrainController->AvHoursIntValue + any future additions
+/* The following additions are for later program versions where new features need to be saved in sessions.
+In each case need to ensure that the following points are considered and dealt with:
+
+    1) New program works ok with old session files
+    2) Old programs work ok with extended session file
+    3) Check what happens to changed railway/track/trains/timetable etc when an old prog loads a new session file
+    4) Ensure that the last character saved for a record change can't be 'E' as that used to identify the end of the additions
+*/
             Utilities->SaveFileString(SessionFile, "***Additions after v2.3.1***");
+
+// additions at v2.4.0 to save TrainController->AvHoursIntValue
             Utilities->SaveFileInt(SessionFile, TrainController->AvHoursIntValue);
             Utilities->SaveFileInt(SessionFile, TrainController->NumFailures);
             Utilities->SaveFileString(SessionFile, "***Failed Trains***");
@@ -18862,14 +19313,14 @@ void TInterface::SaveSession(int Caller)
             }
             Utilities->SaveFileInt(SessionFile, -1); // marker for end of failed trains
             Utilities->SaveFileString(SessionFile, "End of file at v2.4.0");
-// end of v2.4.0 addition
+// end of v2.4.0 additions
 
-// added at v2.7.0
+// addition at v2.7.0
             Utilities->SaveFileBool(SessionFile, ConsecSignalsRoute);
             Utilities->SaveFileString(SessionFile, "End of file at v2.7.0");
 // end of v2.7.0 addition
 
-// added at v2.9.1
+// additions at v2.9.1
             Utilities->SaveFileInt(SessionFile, TrainController->EarlyExits);
             Utilities->SaveFileInt(SessionFile, TrainController->OnTimeExits);
             Utilities->SaveFileInt(SessionFile, TrainController->LateExits);
@@ -18877,10 +19328,10 @@ void TInterface::SaveSession(int Caller)
             Utilities->SaveFileDouble(SessionFile, double(TrainController->TotLateExitMins));
             Utilities->SaveFileString(SessionFile, "End of file at v2.9.1");  //changed from '2.9.0' at v2.9.2
 // end of v2.9.1 additions
-//added at v2.11.0
-//add SkippedTTEvents
+
+//additions at v2.11.0 - SkippedTTEvents
             Utilities->SaveFileInt(SessionFile, TrainController->SkippedTTEvents);
-// add data for trains in process of skipping timetable events (i.e. those with events after a future departure)
+            // add data for trains in process of skipping timetable events (i.e. those with events after a future departure)
             if(!TrainController->TrainVector.empty())
             {
                 for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
@@ -18897,7 +19348,23 @@ void TInterface::SaveSession(int Caller)
                 }
             }
             Utilities->SaveFileString(SessionFile, "End of file at v2.11.0");
-//end of 2.11.0 additions
+//end of v2.11.0 additions
+
+//additions at v2.12.0 - become new service early & treat pass as departure
+            if(!TrainController->TrainVector.empty())
+            {
+                for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
+                {
+                    TTrain Train = TrainController->TrainVectorAt(85, x);
+                    if(Train.TreatPassAsTimeLocDeparture) //this can only apply once for a single train (service repeats are separate trains)
+                    {
+                        Utilities->SaveFileInt(SessionFile, Train.TrainID);
+                    }
+                }
+            }
+            Utilities->SaveFileString(SessionFile, "End of file at v2.12.0");
+//end of v2.12.0 additions
+
             SessionFile.close();
             TrainController->StopTTClockMessage(4, "Session saved: Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " +
                                                 RailwayTitle + "; " + TimetableTitle + ".ssn");
@@ -19147,6 +19614,7 @@ void TInterface::LoadSession(int Caller)
                         TrainController->TotLateExitMins = float(Utilities->LoadFileDouble(SessionFile));
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.9.1"  discarded
 //end of 2.9.1 additions
+
 //2.11.0 additions
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
@@ -19178,7 +19646,7 @@ void TInterface::LoadSession(int Caller)
                             SessionFile.close();
                             goto FINISHEDLOADING;
                         }
-                        //TempChar now contains the 1st digit of TrainID as a character
+                        //TempChar now contains the 1st digit of TrainID as a character or 'E'
                         TempString = TempChar;
                         while(TempString != 'E') //'E' is 1st character of 'End of file at v2.11.0'
                         {
@@ -19194,19 +19662,57 @@ void TInterface::LoadSession(int Caller)
                             Train.ActionsSkippedFlag = Utilities->LoadFileBool(SessionFile);
                             Train.SkipPtrValue = Utilities->LoadFileInt(SessionFile);
                             Train.TrainSkippedEvents = Utilities->LoadFileInt(SessionFile);
-                            SessionFile.get(TempChar); //will be '\n', 'E' or 1st digit of next TrainID as character
-                            while((TempChar == '\n') || (TempChar == '\0'))
+                            SessionFile.get(TempChar); //will be '\n' as LoadFileInt doesn't extract newlines from the stream
+                            TempString = TempChar; //added at v2.12.0 as a safeguard in case not '\n' in which case it would retain its old value
+                            while((TempChar == '\n') || (TempChar == '\0'))  //get rid of any excess non-significant chars
                             {
-                                SessionFile.get(TempChar);
-                                TempString = TempChar;
+                                SessionFile.get(TempChar); //get the next one
+                                TempString = TempChar;     //when emerge this will be 'E' or 1st digit of TrainID
                             }
                         }
-                        DummyStr = Utilities->LoadFileString(SessionFile); // "nd of file at v2.11.0"  discarded ('E' already loaded)
+                        DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.11.0"  discarded ('E' already loaded)
 //end of 2.11.0 additions
+
+//additions at v2.12.0
+                        SessionFile.get(TempChar);
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
+                        {// get rid of all end of lines & emerge with eof or 1st digit of a TrainID or 'E'
+                            SessionFile.get(TempChar);
+                        }
+                        if(SessionFile.eof())
+                        {
+                            SessionFile.close();
+                            goto FINISHEDLOADING;
+                        }
+                        //TempChar now contains the first digit of the first train ID which requires TreatPassAsTimeLocDeparture to be set, or 'E' if none
+                        TempString = TempChar;
+                        while(TempString != 'E') //'E' is 1st character of 'End of file at v2.12.0'
+                        {
+                            SessionFile.get(TempChar);
+                            while((TempChar != '\n') && (TempChar != '\0'))
+                            {
+                                TempString = TempString + TempChar;
+                                SessionFile.get(TempChar);
+                            }
+                            //here have TrainID as AnsiString in TempString & '\n' in TempChar
+                            TTrain &Train = TrainController->TrainVectorAtIdent(62, TempString.ToInt());
+                            Train.TreatPassAsTimeLocDeparture = true;
+                            SessionFile.get(TempChar); //will be '\n' (if more than one) or 'E' or 1st digit of next TrainID as character
+                            TempString = TempChar;
+                            while((TempChar == '\n') || (TempChar == '\0'))  //get rid of any excess non-significant chars, unlikely to be any
+                            {
+                                SessionFile.get(TempChar); //get the next one
+                                TempString = TempChar;     //when emerge this will be 'E' or 1st digit of TrainID
+                            }
+                        }
+                        DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.12.0"  discarded ('E' already loaded)
+//end of additions at v2.12.0
+
                         SessionFile.close();
                     }
 
-                    FINISHEDLOADING: if(SessionFile.is_open())
+FINISHEDLOADING:
+                    if(SessionFile.is_open())
                     {
                         SessionFile.close();
                     }
@@ -21154,6 +21660,23 @@ void TInterface::SaveErrorFile()
         Utilities->SaveFileString(ErrorFile, "End of file at v2.11.0");
 //end of 2.11.0 additions
 
+//additions at v2.12.0 - become new service early & treat pass as departure
+        if(!TrainController->TrainVector.empty())
+        {
+            for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
+            {
+                TTrain Train = TrainController->TrainVectorAt(86, x);
+                if(Train.TreatPassAsTimeLocDeparture) //this can only apply once for a single train (service repeats are separate trains)
+                {
+                    Utilities->SaveFileInt(ErrorFile, Train.TrainID);
+                }
+            }
+        }
+        Utilities->SaveFileString(ErrorFile, "End of file at v2.12.0");
+//end of v2.12.0 additions
+
+
+//REMAINDER STAY AT END OF FILE
 // addition at v2.8.0 in case of clipboard errors <-- keep at end of file as not wanted in a reconstructed session file
         Utilities->SaveFileInt(ErrorFile, SelectBitmap->Height); // extras for new clipboard functions
         Utilities->SaveFileInt(ErrorFile, SelectBitmap->Width);
@@ -21748,6 +22271,11 @@ void TInterface::TestFunction()    //triggered by Alt Ctrl 4
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
 //        throw Exception("Test error");  //generate an error file
+
+//    ElapsedTimeTestFunctionStart = true; //for elapsed time investigations in MasterClockTimer
+
+
+
 
 // ShowMessage("MissedTicks = " + AnsiString(MissedTicks) + "; TotalTicks = " + AnsiString(TotalTicks));
 
@@ -24882,6 +25410,4 @@ void TInterface::PlayerHandshakingActions()
 */
 
 // ---------------------------------------------------------------------------
-
-
 

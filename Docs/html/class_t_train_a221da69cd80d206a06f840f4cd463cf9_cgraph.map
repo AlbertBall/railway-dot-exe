@@ -1,16 +1,17 @@
 <map id="TTrain::FloatingLabelNextString" name="TTrain::FloatingLabelNextString">
-<area shape="rect" id="node1" title="Used in the floating window to display the &#39;Next&#39; action." alt="" coords="5,342,175,383"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1031,649,1177,676"/>
-<area shape="rect" id="node3" href="$class_t_train.html#a781291ed1d591990b7615286462a2861" title="called during FloatingLabelNextString to find the next service departure time" alt="" coords="223,185,476,212"/>
-<area shape="rect" id="node4" href="$class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8" title="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it..." alt="" coords="535,55,709,81"/>
-<area shape="rect" id="node8" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1031,333,1177,360"/>
-<area shape="rect" id="node9" href="$class_t_train_controller.html#ab6b9585304d792300f5ca7f9c7a0ad06" title="Check all timetable names in ExitList, if all same return &quot; at [name]&quot; + AllowableExits = elements,..." alt="" coords="540,494,704,535"/>
-<area shape="rect" id="node11" href="$class_t_train_controller.html#afb0e8fd36435809350cb323ab9fe2213" title="Return the service headcode for the repeat service." alt="" coords="531,586,713,627"/>
-<area shape="rect" id="node13" href="$class_t_train.html#ad249f34f6862e604b8e141d1b25fe57d" title="Returns the timetable action time corresponding to &#39;Time&#39; for this train, i.e. it adjusts the time va..." alt="" coords="551,308,693,335"/>
-<area shape="rect" id="node14" href="$class_t_train.html#a935bb43db57a3f2b635be9dfc6a7988b" title="True when the train is stopped at a timetabled location." alt="" coords="545,425,699,452"/>
-<area shape="rect" id="node5" href="$class_t_train_controller.html#a2713e7d4bb329d65df8b3fa0ad59b6cf" title="Get the interval between repeats." alt="" coords="524,178,720,219"/>
-<area shape="rect" id="node6" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="779,207,972,233"/>
-<area shape="rect" id="node7" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="770,308,981,335"/>
-<area shape="rect" id="node10" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="794,511,957,537"/>
-<area shape="rect" id="node12" href="$class_t_train_controller.html#a6fc210d266e7672ccc648c0a9ab4e542" title="Checks the last two characters in HeadCode and returns true if both are digits." alt="" coords="768,613,983,654"/>
+<area shape="rect" id="node1" title="Used in the floating window to display the &#39;Next&#39; action." alt="" coords="5,541,175,582"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1007,351,1153,377"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8" title="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it..." alt="" coords="511,873,685,900"/>
+<area shape="rect" id="node4" href="$class_t_train_controller.html#ab6b9585304d792300f5ca7f9c7a0ad06" title="Check all timetable names in ExitList, if all same return &quot; at [name]&quot; + AllowableExits = elements,..." alt="" coords="516,321,680,362"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1007,645,1153,672"/>
+<area shape="rect" id="node7" href="$class_t_train.html#a7b2441ac62bba8e9cc46f7e0511e5695" title="called during FloatingLabelNextString to find the next service departure time &amp; next location" alt="" coords="223,649,452,676"/>
+<area shape="rect" id="node11" href="$class_t_train_controller.html#afb0e8fd36435809350cb323ab9fe2213" title="Return the service headcode for the repeat service." alt="" coords="507,475,689,517"/>
+<area shape="rect" id="node13" href="$class_t_train.html#ad249f34f6862e604b8e141d1b25fe57d" title="Returns the timetable action time corresponding to &#39;Time&#39; for this train, i.e. it adjusts the time va..." alt="" coords="527,725,669,752"/>
+<area shape="rect" id="node14" href="$class_t_train.html#a935bb43db57a3f2b635be9dfc6a7988b" title="True when the train is stopped at a timetabled location." alt="" coords="521,148,675,175"/>
+<area shape="rect" id="node6" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="770,300,933,327"/>
+<area shape="rect" id="node8" href="$class_t_train_controller.html#a2713e7d4bb329d65df8b3fa0ad59b6cf" title="Get the interval between repeats." alt="" coords="500,659,696,701"/>
+<area shape="rect" id="node9" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="755,772,948,799"/>
+<area shape="rect" id="node10" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="746,721,957,748"/>
+<area shape="rect" id="node12" href="$class_t_train_controller.html#a6fc210d266e7672ccc648c0a9ab4e542" title="Checks the last two characters in HeadCode and returns true if both are digits." alt="" coords="744,453,959,494"/>
+<area shape="rect" id="node15" href="$class_t_train.html#a77e1368fb80820dd2c3350858c28ceab" title=" " alt="" coords="755,47,947,73"/>
 </map>

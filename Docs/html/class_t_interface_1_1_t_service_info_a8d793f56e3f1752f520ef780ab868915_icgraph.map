@@ -1,9 +1,7 @@
 <map id="TInterface::TServiceInfo::CheckOK" name="TInterface::TServiceInfo::CheckOK">
-<area shape="rect" id="node1" title=" " alt="" coords="916,39,1071,80"/>
-<area shape="rect" id="node2" href="$class_t_interface.html#a9eecc715486e2c2f7adf3be4c3dfb7a4" title="converse of BuildDatagramFromHostMap" alt="" coords="699,5,866,47"/>
-<area shape="rect" id="node6" href="$class_t_interface.html#a3093de3a7faf5666443a5b8aba59ba7a" title="Converse of BuildDatagramFromPlayerMap." alt="" coords="697,71,868,112"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#a7026d6ca5ea0bad9f6e0f8a0494ff2c9" title="called in ClockTimer2 if player multiplay in progress" alt="" coords="451,5,649,47"/>
-<area shape="rect" id="node4" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,46,403,73"/>
-<area shape="rect" id="node5" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,46,196,73"/>
-<area shape="rect" id="node7" href="$class_t_interface.html#acac9a55c2f96cb2c2d0bb8b8f0bf3d19" title="called in ClockTimer2 if host multiplay in progress" alt="" coords="456,71,644,112"/>
+<area shape="rect" id="node1" title=" " alt="" coords="471,39,625,80"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a9eecc715486e2c2f7adf3be4c3dfb7a4" title="converse of BuildDatagramFromHostMap" alt="" coords="254,5,421,47"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a3093de3a7faf5666443a5b8aba59ba7a" title="Converse of BuildDatagramFromPlayerMap." alt="" coords="252,71,423,112"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a7026d6ca5ea0bad9f6e0f8a0494ff2c9" title="called in ClockTimer2 if player multiplay in progress" alt="" coords="5,5,204,47"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#acac9a55c2f96cb2c2d0bb8b8f0bf3d19" title="called in ClockTimer2 if host multiplay in progress" alt="" coords="11,71,199,112"/>
 </map>

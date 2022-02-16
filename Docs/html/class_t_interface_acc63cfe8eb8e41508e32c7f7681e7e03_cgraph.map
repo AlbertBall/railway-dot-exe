@@ -1,7 +1,7 @@
 <map id="TInterface::FormKeyDown" name="TInterface::FormKeyDown">
 <area shape="rect" id="node1" title=" " alt="" coords="5,1713,176,1739"/>
 <area shape="rect" id="node2" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="433,1687,568,1714"/>
-<area shape="rect" id="node37" href="$class_t_interface.html#a8d70d503d6aa655aea00771143cb5912" title="Called for diagnostic purposes when keys CTRL ALT 4 pressed." alt="" coords="224,1738,385,1765"/>
+<area shape="rect" id="node37" href="$class_t_interface.html#a8d70d503d6aa655aea00771143cb5912" title="&lt; used when change early to the next service (Fns, Fns&#45;sh, Frh&#45;sh or F&#45;nshs) to advance the action po..." alt="" coords="224,1738,385,1765"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a9ca62e05ace8e6c4c33d377c26c48e55" title="creates a string of the form &#39;dd/mm/yyyy hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="616,1637,789,1663"/>
 <area shape="rect" id="node4" href="$class_t_display.html#a33f7067eea9e638bdc363bd0af70d7d5" title="Return a pointer to the screen image." alt="" coords="635,1687,771,1714"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#a0109f801142d4fa3becae22e23b84163" title="Save the error log after an error has been thrown &#45; no need for a caller." alt="" coords="621,991,784,1018"/>

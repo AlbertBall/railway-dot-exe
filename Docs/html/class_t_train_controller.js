@@ -42,7 +42,7 @@ var class_t_train_controller =
     [ "ConsolidateSARNTArrDep", "class_t_train_controller.html#a9529f225878cf4920b52914022f44c4e", null ],
     [ "ConsolidateSARNTAtLoc", "class_t_train_controller.html#a6a6c31e7ed5c4556e3a764617589c4fa", null ],
     [ "ContinuationEntryFloatingTTString", "class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3", null ],
-    [ "ControllerCheckNewServiceDepartureTime", "class_t_train_controller.html#a247f01d67fe9697522c47ceebd53d9ae", null ],
+    [ "ControllerGetNewServiceDepartureInfo", "class_t_train_controller.html#aab94af5bb445fc36543e2c22d2986daa", null ],
     [ "CreateFormattedTimetable", "class_t_train_controller.html#a4ab4b6a568064d27c65f0770e5a5ccd0", null ],
     [ "CreateTTAnalysisFile", "class_t_train_controller.html#a6a7975052fcea4a8f0f72214a4a0f298", null ],
     [ "EntryPos", "class_t_train_controller.html#aa60ab73bef848c5458cdf0217092aef8", null ],

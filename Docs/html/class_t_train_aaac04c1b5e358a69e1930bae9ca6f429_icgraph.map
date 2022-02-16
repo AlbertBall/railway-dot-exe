@@ -1,0 +1,9 @@
+<map id="TTrain::ChangeTrainDirection" name="TTrain::ChangeTrainDirection">
+<area shape="rect" id="node1" title="Reverses the direction of motion of the train." alt="" coords="936,42,1124,69"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a528675bee2f8940b6fb3de82ebdd9cc1" title="&lt; used when change early to the next service (Fns, Fns&#45;sh, Frh&#45;sh or F&#45;nshs) to advance the action po..." alt="" coords="700,5,888,47"/>
+<area shape="rect" id="node4" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="727,71,861,98"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a0e9af41ff305fe2813385fce38b73206" title=" " alt="" coords="451,5,652,47"/>
+<area shape="rect" id="node5" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="468,71,635,98"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,71,403,98"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,71,196,98"/>
+</map>

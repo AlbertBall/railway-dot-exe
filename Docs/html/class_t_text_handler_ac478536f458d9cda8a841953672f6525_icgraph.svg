@@ -125,39 +125,39 @@ var sectionId = 'dynsection-33';
 <path fill="none" stroke="midnightblue" d="M1123.49,-340.78C1060.39,-344.28 968.65,-349.36 909.27,-352.65"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1123.96,-344.26 1133.75,-340.21 1123.58,-337.27 1123.96,-344.26"/>
 </g>
-<!-- Node232 -->
+<!-- Node235 -->
 <g id="node45" class="node">
-<title>Node232</title>
+<title>Node235</title>
 <g id="a_node45"><a xlink:href="class_t_text_handler.html#af766ce44ed9a37e5a723a4ef3968ace0" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="961,-270.4 961,-289.4 1098,-289.4 1098,-270.4 961,-270.4"/>
 <text text-anchor="middle" x="1029.5" y="-277.4" font-family="Helvetica,sans-Serif" font-size="10.00">TTextHandler::SetNewHPos</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node232 -->
+<!-- Node1&#45;&gt;Node235 -->
 <g id="edge81" class="edge">
-<title>Node1&#45;&gt;Node232</title>
+<title>Node1&#45;&gt;Node235</title>
 <path fill="none" stroke="midnightblue" d="M1156.53,-323.98C1126.54,-313.49 1084.94,-298.94 1057.87,-289.48"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1155.62,-327.37 1166.22,-327.36 1157.93,-320.76 1155.62,-327.37"/>
 </g>
-<!-- Node233 -->
+<!-- Node236 -->
 <g id="node46" class="node">
-<title>Node233</title>
+<title>Node236</title>
 <g id="a_node46"><a xlink:href="class_t_text_handler.html#a65f0033d036358a5cb2ec5f4732e64ee" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="961,-232.4 961,-251.4 1098,-251.4 1098,-232.4 961,-232.4"/>
 <text text-anchor="middle" x="1029.5" y="-239.4" font-family="Helvetica,sans-Serif" font-size="10.00">TTextHandler::SetNewVPos</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node233 -->
+<!-- Node1&#45;&gt;Node236 -->
 <g id="edge82" class="edge">
-<title>Node1&#45;&gt;Node233</title>
+<title>Node1&#45;&gt;Node236</title>
 <path fill="none" stroke="midnightblue" d="M1176.74,-320.07C1158.74,-302.88 1128.58,-276.57 1098,-260.9 1090.63,-257.13 1082.42,-254.02 1074.32,-251.49"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1174.51,-322.78 1184.11,-327.25 1179.39,-317.77 1174.51,-322.78"/>
 </g>
-<!-- Node234 -->
+<!-- Node237 -->
 <g id="node47" class="node">
-<title>Node234</title>
+<title>Node237</title>
 <g id="a_node47"><a xlink:href="class_t_text_handler.html#a599c1a13d78b63a18ebc17550dfa9a0d" target="_top" xlink:title="change the HPos &amp; VPos values for all items in TextVector by the amount in HOffset and VOffset (unuse...">
 <polygon fill="white" stroke="black" points="966,-182.9 966,-212.9 1093,-212.9 1093,-182.9 966,-182.9"/>
 <text text-anchor="start" x="974" y="-200.9" font-family="Helvetica,sans-Serif" font-size="10.00">TTextHandler::TextVector</text>
@@ -165,15 +165,15 @@ var sectionId = 'dynsection-33';
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node234 -->
+<!-- Node1&#45;&gt;Node237 -->
 <g id="edge83" class="edge">
-<title>Node1&#45;&gt;Node234</title>
+<title>Node1&#45;&gt;Node237</title>
 <path fill="none" stroke="midnightblue" d="M1182.38,-318.37C1166.55,-293.43 1135.26,-249.17 1098,-222.9 1092.59,-219.09 1086.52,-215.78 1080.31,-212.93"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1179.61,-320.54 1187.85,-327.2 1185.56,-316.85 1179.61,-320.54"/>
 </g>
-<!-- Node235 -->
+<!-- Node238 -->
 <g id="node48" class="node">
-<title>Node235</title>
+<title>Node238</title>
 <g id="a_node48"><a xlink:href="class_t_text_handler.html#a7d202827ae62cd288a07431579977539" target="_top" xlink:title="write all items in TextVector to the railway image in &#39;Bitmap&#39;">
 <polygon fill="white" stroke="black" points="603.5,-144.9 603.5,-174.9 735.5,-174.9 735.5,-144.9 603.5,-144.9"/>
 <text text-anchor="start" x="611.5" y="-162.9" font-family="Helvetica,sans-Serif" font-size="10.00">TTextHandler::WriteTextTo</text>
@@ -181,9 +181,9 @@ var sectionId = 'dynsection-33';
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node235 -->
+<!-- Node1&#45;&gt;Node238 -->
 <g id="edge84" class="edge">
-<title>Node1&#45;&gt;Node235</title>
+<title>Node1&#45;&gt;Node238</title>
 <path fill="none" stroke="midnightblue" d="M1123.62,-330.72C1076.82,-325.32 1014.26,-315.62 961,-298.9 857.78,-266.5 744.63,-203.67 695.53,-174.92"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1123.33,-334.21 1133.66,-331.84 1124.11,-327.25 1123.33,-334.21"/>
 </g>
@@ -797,18 +797,18 @@ var sectionId = 'dynsection-33';
 <path fill="none" stroke="midnightblue" d="M779.67,-355.9C670.65,-355.9 459.84,-355.9 354.35,-355.9"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="779.89,-359.4 789.89,-355.9 779.89,-352.4 779.89,-359.4"/>
 </g>
-<!-- Node231 -->
+<!-- Node234 -->
 <g id="node44" class="node">
-<title>Node231</title>
+<title>Node234</title>
 <g id="a_node44"><a xlink:href="class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25" target="_top" xlink:title="Save a session file &#45; see LoadSession for details of additions to the session file.">
 <polygon fill="white" stroke="black" points="427,-32.4 427,-51.4 548,-51.4 548,-32.4 427,-32.4"/>
 <text text-anchor="middle" x="487.5" y="-39.4" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::SaveSession</text>
 </a>
 </g>
 </g>
-<!-- Node137&#45;&gt;Node231 -->
+<!-- Node137&#45;&gt;Node234 -->
 <g id="edge79" class="edge">
-<title>Node137&#45;&gt;Node231</title>
+<title>Node137&#45;&gt;Node234</title>
 <path fill="none" stroke="midnightblue" d="M843.62,-336.16C832.2,-293.79 799.9,-193.23 738,-134.9 685.26,-85.21 603.57,-61.51 548.15,-50.59"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="840.29,-337.26 846.19,-346.06 847.07,-335.5 840.29,-337.26"/>
 </g>
@@ -933,9 +933,9 @@ var sectionId = 'dynsection-33';
 <path fill="none" stroke="midnightblue" d="M475.64,-438.44C450.36,-395.71 388.64,-292.82 374,-281.9 369.43,-278.5 364.39,-275.57 359.11,-273.06"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="472.75,-440.43 480.84,-447.26 478.78,-436.87 472.75,-440.43"/>
 </g>
-<!-- Node189 -->
+<!-- Node190 -->
 <g id="node39" class="node">
-<title>Node189</title>
+<title>Node190</title>
 <g id="a_node39"><a xlink:href="class_t_interface.html#a14d8976ee13c85f12eab634de845baf1" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="225.5,-193.9 225.5,-223.9 354.5,-223.9 354.5,-193.9 225.5,-193.9"/>
 <text text-anchor="start" x="233.5" y="-211.9" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::SaveImageAnd</text>
@@ -943,15 +943,15 @@ var sectionId = 'dynsection-33';
 </a>
 </g>
 </g>
-<!-- Node139&#45;&gt;Node189 -->
+<!-- Node139&#45;&gt;Node190 -->
 <g id="edge71" class="edge">
-<title>Node139&#45;&gt;Node189</title>
+<title>Node139&#45;&gt;Node190</title>
 <path fill="none" stroke="midnightblue" d="M474.56,-438.62C458.63,-413.75 430.08,-367.59 410,-325.9 390.76,-285.97 406.69,-262.84 374,-232.9 368.36,-227.74 361.67,-223.68 354.58,-220.49"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="471.83,-440.83 480.19,-447.34 477.71,-437.04 471.83,-440.83"/>
 </g>
-<!-- Node190 -->
+<!-- Node191 -->
 <g id="node40" class="node">
-<title>Node190</title>
+<title>Node191</title>
 <g id="a_node40"><a xlink:href="class_t_interface.html#ab73377784e302350bcc4f1fed4f8d90a" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="225.5,-144.9 225.5,-174.9 354.5,-174.9 354.5,-144.9 225.5,-144.9"/>
 <text text-anchor="start" x="233.5" y="-162.9" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::SaveImageAnd</text>
@@ -959,15 +959,15 @@ var sectionId = 'dynsection-33';
 </a>
 </g>
 </g>
-<!-- Node139&#45;&gt;Node190 -->
+<!-- Node139&#45;&gt;Node191 -->
 <g id="edge72" class="edge">
-<title>Node139&#45;&gt;Node190</title>
+<title>Node139&#45;&gt;Node191</title>
 <path fill="none" stroke="midnightblue" d="M473.78,-438.91C456.99,-414.41 427.51,-368.7 410,-325.9 385.34,-265.65 419.27,-230.7 374,-183.9 368.58,-178.3 361.93,-173.98 354.79,-170.66"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="470.96,-440.99 479.54,-447.21 476.71,-437 470.96,-440.99"/>
 </g>
-<!-- Node191 -->
+<!-- Node192 -->
 <g id="node41" class="node">
-<title>Node191</title>
+<title>Node192</title>
 <g id="a_node41"><a xlink:href="class_t_interface.html#a69b645fe4cc36d0bea7de3fca553bd6a" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="219,-95.9 219,-125.9 361,-125.9 361,-95.9 219,-95.9"/>
 <text text-anchor="start" x="227" y="-113.9" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::SaveImageNoGrid</text>
@@ -975,9 +975,9 @@ var sectionId = 'dynsection-33';
 </a>
 </g>
 </g>
-<!-- Node139&#45;&gt;Node191 -->
+<!-- Node139&#45;&gt;Node192 -->
 <g id="edge73" class="edge">
-<title>Node139&#45;&gt;Node191</title>
+<title>Node139&#45;&gt;Node192</title>
 <path fill="none" stroke="midnightblue" d="M473.38,-439.06C456.15,-414.74 426.18,-369.22 410,-325.9 379.78,-244.98 432.11,-198.82 374,-134.9 370.27,-130.8 365.88,-127.38 361.1,-124.53"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="470.63,-441.23 479.31,-447.3 476.31,-437.14 470.63,-441.23"/>
 </g>
@@ -987,9 +987,9 @@ var sectionId = 'dynsection-33';
 <path fill="none" stroke="midnightblue" d="M464.89,-441.28C442.82,-425.8 407.19,-402.14 374,-385.9 362.71,-380.38 350.14,-375.32 338.27,-370.99"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="463.02,-444.24 473.2,-447.17 467.06,-438.53 463.02,-444.24"/>
 </g>
-<!-- Node192 -->
+<!-- Node193 -->
 <g id="node43" class="node">
-<title>Node192</title>
+<title>Node193</title>
 <g id="a_node43"><a xlink:href="class_t_interface.html#a4d75015545313004ffd5022c020f4edf" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="226,-46.9 226,-76.9 354,-76.9 354,-46.9 226,-46.9"/>
 <text text-anchor="start" x="234" y="-64.9" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::SaveOperating</text>
@@ -997,21 +997,21 @@ var sectionId = 'dynsection-33';
 </a>
 </g>
 </g>
-<!-- Node139&#45;&gt;Node192 -->
+<!-- Node139&#45;&gt;Node193 -->
 <g id="edge75" class="edge">
-<title>Node139&#45;&gt;Node192</title>
+<title>Node139&#45;&gt;Node193</title>
 <path fill="none" stroke="midnightblue" d="M473.14,-439.15C455.64,-414.92 425.36,-369.52 410,-325.9 374.16,-224.17 445.05,-167.06 374,-85.9 368.57,-79.7 361.64,-75.05 354.1,-71.58"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="470.43,-441.37 479.17,-447.35 476.07,-437.22 470.43,-441.37"/>
 </g>
-<!-- Node231&#45;&gt;Node49 -->
+<!-- Node234&#45;&gt;Node49 -->
 <g id="edge80" class="edge">
-<title>Node231&#45;&gt;Node49</title>
+<title>Node234&#45;&gt;Node49</title>
 <path fill="none" stroke="midnightblue" d="M454.52,-28.78C396.55,-7.36 273.85,26.7 206,-36.9 160.75,-79.32 184.59,-533.63 170,-593.9 152.03,-668.13 107.41,-749.8 91.64,-777.28"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="453.31,-32.07 463.9,-32.35 455.8,-25.52 453.31,-32.07"/>
 </g>
-<!-- Node236 -->
+<!-- Node239 -->
 <g id="node49" class="node">
-<title>Node236</title>
+<title>Node239</title>
 <g id="a_node49"><a xlink:href="class_t_track.html#a98b1632a5246785adc1003ebcb3e91a4" target="_top" xlink:title="Called by TInterface::SaveOperatingImage1Click to add all track &amp; text to the image file in their ope...">
 <polygon fill="white" stroke="black" points="417,-70.9 417,-100.9 558,-100.9 558,-70.9 417,-70.9"/>
 <text text-anchor="start" x="425" y="-88.9" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::WriteOperatingTrack</text>
@@ -1019,15 +1019,15 @@ var sectionId = 'dynsection-33';
 </a>
 </g>
 </g>
-<!-- Node235&#45;&gt;Node236 -->
+<!-- Node238&#45;&gt;Node239 -->
 <g id="edge85" class="edge">
-<title>Node235&#45;&gt;Node236</title>
+<title>Node238&#45;&gt;Node239</title>
 <path fill="none" stroke="midnightblue" d="M622.16,-140.85C591.93,-128.42 553.03,-112.43 525,-100.91"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="621.06,-144.19 631.64,-144.75 623.72,-137.71 621.06,-144.19"/>
 </g>
-<!-- Node237 -->
+<!-- Node240 -->
 <g id="node50" class="node">
-<title>Node237</title>
+<title>Node240</title>
 <g id="a_node50"><a xlink:href="class_t_track.html#a909e96ff6b77c266ab82313e30018cd4" target="_top" xlink:title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI...">
 <polygon fill="white" stroke="black" points="420,-144.9 420,-174.9 555,-174.9 555,-144.9 420,-144.9"/>
 <text text-anchor="start" x="428" y="-162.9" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::WriteTrackAndText</text>
@@ -1035,33 +1035,33 @@ var sectionId = 'dynsection-33';
 </a>
 </g>
 </g>
-<!-- Node235&#45;&gt;Node237 -->
+<!-- Node238&#45;&gt;Node240 -->
 <g id="edge87" class="edge">
-<title>Node235&#45;&gt;Node237</title>
+<title>Node238&#45;&gt;Node240</title>
 <path fill="none" stroke="midnightblue" d="M593.2,-159.9C580.53,-159.9 567.46,-159.9 555.03,-159.9"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="593.26,-163.4 603.26,-159.9 593.26,-156.4 593.26,-163.4"/>
 </g>
-<!-- Node236&#45;&gt;Node192 -->
+<!-- Node239&#45;&gt;Node193 -->
 <g id="edge86" class="edge">
-<title>Node236&#45;&gt;Node192</title>
+<title>Node239&#45;&gt;Node193</title>
 <path fill="none" stroke="midnightblue" d="M406.58,-76.09C389.14,-73.95 370.9,-71.71 354.21,-69.66"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="406.4,-79.6 416.75,-77.34 407.25,-72.65 406.4,-79.6"/>
 </g>
-<!-- Node237&#45;&gt;Node189 -->
+<!-- Node240&#45;&gt;Node190 -->
 <g id="edge88" class="edge">
-<title>Node237&#45;&gt;Node189</title>
+<title>Node240&#45;&gt;Node190</title>
 <path fill="none" stroke="midnightblue" d="M416.77,-177.38C395.22,-182.78 371.69,-188.68 350.87,-193.9"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="417.67,-180.77 426.51,-174.94 415.96,-173.98 417.67,-180.77"/>
 </g>
-<!-- Node237&#45;&gt;Node190 -->
+<!-- Node240&#45;&gt;Node191 -->
 <g id="edge89" class="edge">
-<title>Node237&#45;&gt;Node190</title>
+<title>Node240&#45;&gt;Node191</title>
 <path fill="none" stroke="midnightblue" d="M409.52,-159.9C391.39,-159.9 372.27,-159.9 354.79,-159.9"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="409.77,-163.4 419.77,-159.9 409.77,-156.4 409.77,-163.4"/>
 </g>
-<!-- Node237&#45;&gt;Node191 -->
+<!-- Node240&#45;&gt;Node192 -->
 <g id="edge90" class="edge">
-<title>Node237&#45;&gt;Node191</title>
+<title>Node240&#45;&gt;Node192</title>
 <path fill="none" stroke="midnightblue" d="M416.77,-142.43C395.22,-137.03 371.69,-131.13 350.87,-125.91"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="415.96,-145.83 426.51,-144.87 417.67,-139.04 415.96,-145.83"/>
 </g>

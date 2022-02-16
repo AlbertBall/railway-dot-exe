@@ -27,7 +27,7 @@ div.WordSection1
 
 <div class=WordSection1>
 
-<p class=MsoNormal><b>6.12     Skipping timetabled events</b></p>
+<p class=MsoNormal><b>6.12	Skipping timetabled events & becoming a follow-on service early</b></p>
 
 <p class=MsoNormal><b>&nbsp;</b></p>
 
@@ -38,15 +38,11 @@ connections.  This is normal practice on real railways.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
-<p class=MsoNormal>This can be done in the simulation for events within a
-service.  When operating (not paused) and a train is stopped at a signal or a
-location and is under timetable control, right click it to show the popup menu
-and select 'Skip timetabled event(s)'.  This gives a list of events from that
-point onwards, similar to timetable information in the floating window. 
-Lefi-clicking an event selects that event as the next, i.e. the selected event
-itself isn't skipped.  There have to be restrictions on events that can be
-selected related to where the train is at the time and where the selected event
-takes place.  </p>
+<p class=MsoNormal>This can be done in the simulation in one of two ways: (a) skipping events within a service; and (b) terminating a service early and becoming the follow-on service at a location prior to that in the timetable.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>(a) Skipping events within a service.  When operating (not paused) and a train is stopped at a signal or a location and is under timetable control, right click it to show the popup menu and select 'Skip timetabled event(s)'.  This gives a list of events from that point onwards, similar to timetable information in the floating window.  Left-clicking an event selects that event as the next, i.e. the selected event itself isn't skipped.  There have to be restrictions on events that can be selected related to where the train is at the time and where the selected event takes place.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
@@ -60,21 +56,31 @@ train hasn't yet arrived at those locations.</p>
 
 <p class=MsoNormal>2.  Trains stopped at a location:</p>
 
-<p class=MsoNormal style='margin-left:36.0pt'>a) any event up to and including
+<p class=MsoNormal style='margin-left:36.0pt'>i) any event up to and including
 the departure from that location can be selected, when all events before the
 selection are skipped;</p>
 
-<p class=MsoNormal style='margin-left:36.0pt'>b) any event after the departure that
+<p class=MsoNormal style='margin-left:36.0pt'>ii) any event after the departure that
 is an arrival, pass or exit railway can be selected, when all events after the
 departure but before the selection are skipped.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
-<p class=MsoNormal>It isn't possible to skip the finish event, so trains that
-change to a different service at a location can't have the change of service
-brought forward to an earlier location, as is sometimes done in real practice. 
-This is because of the way that the timetable is structured - events can be
-skipped but can't be changed during operation.</p>
+<p class=MsoNormal>With this option it isn't possible to skip the finish event, so if a train is required to terminate early and become the follow-on service option (b) must be selected.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>(b)  Terminating a service early and becoming the follow-on service at a location prior to that in the timetable.  Several conditions need to be met for this option to be available:</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;&nbsp;&nbsp;The train must be operating under timetable (not signaller) control;</p><p>&nbsp;&nbsp;&nbsp;It must be stopped at a location and have power available;</p><p>&nbsp;&nbsp;&nbsp;The final event in the timetable must be to form a new service;</p><p>&nbsp;&nbsp;&nbsp;The new service must either stop at or pass the current location; and</p><p>&nbsp;&nbsp;&nbsp;No events have been skipped after the normal departure time.</p>			
+
+<p class=MsoNormal>In most cases these conditions are easily met.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>To select this option right click the stopped train and click 'Terminate here and become follow-on service xxxx' where 'xxxx' is the service reference for the next service.  A warning message is given pointing out that timetabled events will be skipped and offering the option to proceed or not.  Clicking 'Yes' immediately changes the service to the follow-on service, and the train will be facing the opposite direction.  This is normally what is required but if the direction change isn't wanted then it can be changed under signaller control in the normal way.</p>
 
 </div>
 

@@ -1,7 +1,8 @@
 <map id="TTrainController::CalcOperatingAndNotStartedTrainLateness" name="TTrainController::CalcOperatingAndNotStartedTrainLateness">
-<area shape="rect" id="node1" title="calculates additional lateness values for trains that haven&#39;t reached their destinations yet" alt="" coords="5,45,208,86"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="515,27,661,54"/>
-<area shape="rect" id="node3" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="256,27,467,54"/>
-<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="515,78,661,104"/>
-<area shape="rect" id="node5" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="262,78,461,104"/>
+<area shape="rect" id="node1" title="calculates additional lateness values for trains that haven&#39;t reached their destinations yet" alt="" coords="5,72,208,113"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="515,29,661,55"/>
+<area shape="rect" id="node3" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="256,79,467,106"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="515,79,661,106"/>
+<area shape="rect" id="node5" href="$class_t_train.html#a77e1368fb80820dd2c3350858c28ceab" title=" " alt="" coords="265,181,457,207"/>
+<area shape="rect" id="node6" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="262,29,461,55"/>
 </map>

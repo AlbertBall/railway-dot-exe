@@ -36,7 +36,7 @@
 <!-- Node37 -->
 <g id="node37" class="node">
 <title>Node37</title>
-<g id="a_node37"><a xlink:href="class_t_interface.html#a8d70d503d6aa655aea00771143cb5912" target="_top" xlink:title="Called for diagnostic purposes when keys CTRL ALT 4 pressed.">
+<g id="a_node37"><a xlink:href="class_t_interface.html#a8d70d503d6aa655aea00771143cb5912" target="_top" xlink:title="&lt; used when change early to the next service (Fns, Fns&#45;sh, Frh&#45;sh or F&#45;nshs) to advance the action po...">
 <polygon fill="white" stroke="black" points="164,-478.11 164,-497.11 285,-497.11 285,-478.11 164,-478.11"/>
 <text text-anchor="middle" x="224.5" y="-485.11" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::TestFunction</text>
 </a>

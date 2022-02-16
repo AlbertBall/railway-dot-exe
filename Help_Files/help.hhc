@@ -244,7 +244,7 @@
 			<param name="Local" value="html\6.11.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Skipping timetabled events">
+			<param name="Name" value="Skipping timetabled events &amp; becoming a follow-on service early">
 			<param name="Local" value="html\6.12.htm">
 			</OBJECT>
 	</UL>

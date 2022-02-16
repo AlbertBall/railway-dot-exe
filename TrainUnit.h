@@ -322,6 +322,8 @@ private:
 
     AnsiString HeadCode;
 ///< needs own HeadCode because repeat entries will differ from TrainDataEntry.HeadCode
+    AnsiString FollowOnServiceRef; //added at v2.12.0
+///< used for terminating a service early and becoming new follow-on service
     bool SkippedDeparture;
 ///< used to indicate that a departure is still awaited when later timetabled events are to be skipped
     bool ActionsSkippedFlag;
@@ -391,7 +393,7 @@ private:
     bool LastActionDelayFlag;
 ///< used when trains join to ensure that there is a 30 second delay before the actual join takes place after the two trains are adjacent to each other
     bool LeavingUnderSigControlAtContinuation;
-///< set when the train has reached an exit continuation when under signaller control, used to prevent the popup menu being given on right clicking (can cause ambiguities in positioning if try to give signaller commands when at or close to a continuation
+///< set when the train has reached an exit continuation when under signaller control, used to prevent the popup menu being given on right clicking (can cause ambiguities in positioning if try to give signaller commands when at or close to a continuation)
     bool OneLengthAccelDecel;
 ///< set when a train can only move forwards one element before stopping but needs to accelerate for the first half of the element
     bool SignallerRemoved;
@@ -406,8 +408,10 @@ private:
 ///< set when a 'train terminated' message has been logged, to prevent its being logged more than once
     bool TimetableFinished;
 ///< set when there are no more timetable actions
-    bool TrainFailed;
-///<added at v2.4.0 to indicate failure
+    bool TrainFailed; //added at v2.4.0
+///< indicates failure
+    bool TreatPassAsTimeLocDeparture; //added at v2.12.0
+///< only true when a train has become a follow-on service early and the follow-on service normally passes the location, true treats it as a departure
     double AValue;
 ///< this is a useful shorthand value in calculating speeds and transit times in SetTrainMovementValues [= sqrt(2*PowerAtRail/Mass)]
 
@@ -501,11 +505,17 @@ private:
     UnicodeString SelSkipString;
 ///< the selected timetable string when skipping timetabled events
 
+//inline functions
+    bool RevisedStoppedAtLoc() const  //added at v2.12.0
+    {
+        return(StoppedAtLocation || TreatPassAsTimeLocDeparture);
+///< This function is used in place of StoppedAtLocation in most places where it appeared so new service passes are treated as departures when terminationg trains early and becoming the follow-on service
+    }
 
 // functions defined in .cpp file
 
-/// called during FloatingLabelNextString to find the next service departure time
-    AnsiString CheckNewServiceDepartureTime(int Caller, TActionVectorEntry *Ptr, int RptNum, TTrainDataEntry *LinkedTrainDataPtr, AnsiString RetStr);
+/// called during FloatingLabelNextString to find the next service departure time & next location
+    AnsiString GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Ptr, int RptNum, TTrainDataEntry *LinkedTrainDataPtr, AnsiString RetStr);
 /// Used in the floating window to display the 'Next' action
     AnsiString FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr);
 /// Used in the floating window to display the timetable
@@ -561,7 +571,7 @@ will stop at (true) or pass (false) the location.*/
     TDateTime GetTrainTime(int Caller, TDateTime Time);
 
 /// Reverses the direction of motion of the train
-    void ChangeTrainDirection(int Caller);
+    void ChangeTrainDirection(int Caller, bool NoLogFlag); //NoLogFlag added at v2.12.0 for new service TT skips
 /// This is a housekeeping function to delete train heap objects (bitmaps) explicitly rather than by using a destructor.
 /**This is because vectors erase elements during internal operations & if TTrain had an explicit destructor that deleted the heap elements then it
 would be called when a vector element was erased. Calling the default TTrain destructor doesn't matter because all that does is release the memory of
@@ -589,9 +599,9 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
     void LogAction(int Caller, AnsiString HeadCode, AnsiString OtherHeadCode, TActionType ActionType, AnsiString LocationName, TDateTime TimetableNonRepeatTime,
                    bool Warning);
 /// Carry out the actions needed when a new shuttle service is created from a non-repeating (F-nshs) service
-    void NewShuttleFromNonRepeatService(int Caller);
+    void NewShuttleFromNonRepeatService(int Caller, bool NoLogFlag); //bool NoLogFlag added at v2.12.0 for new service TT skips
 /// Carry out the actions needed when a train forms a new service (code Fns)
-    void NewTrainService(int Caller);
+    void NewTrainService(int Caller, bool NoLogFlag); //bool NoLogFlag added at v2.12.0 for new service TT skips
 /// Store the background bitmap pointer (BackgroundPtr - see above) prior to being overwritten by the train's headcode character, so that it can be replotted after the train has passed using PlotBackgroundGraphic.  Note that this doesn't pick up the actual graphic, it reconstructs the track graphic with autosigs route if set, so any text or user graphics at that position will be blanked out by the train until the next ClearandRebuildRailway
     void PickUpBackgroundBitmap(int Caller, int HOffset, int VOffset, int Element, int EntryPos, Graphics::TBitmap *GraphicPtr) const;
 /// When a train moves off a bridge the other track may contain a route or have a train on it that has been obscured by this train.  This function checks and replots the original graphic if necessary
@@ -613,9 +623,9 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
 /// Sends the 'train terminated' message to the performance log and sets TimetableFinished to true
     void RemainHere(int Caller);
 /// Carry out the actions needed to create either a new shuttle service or (if all repeats have finished) a non-repeating shuttle finishing service (code is Fns-sh)
-    void RepeatShuttleOrNewNonRepeatService(int Caller);
+    void RepeatShuttleOrNewNonRepeatService(int Caller, bool NoLogFlag); //bool NoLogFlag added at v2.12.0 for new service TT skips
 /// Carry out the actions needed to create either a new shuttle service or (if all repeats have finished) to keep train at its current location (code is Frh-sh)
-    void RepeatShuttleOrRemainHere(int Caller);
+    void RepeatShuttleOrRemainHere(int Caller, bool NoLogFlag); //bool NoLogFlag added at v2.12.0 for new service TT skips
 /// After a train has moved off an element that element has its TrainIDOnElement value set back to -1 to indicate that a train is not present on it, but, if the element is a bridge then the action is more complex because the element's TrainIDOnBridgeTrackPos01 &/or TrainIDOnBridgeTrackPos23 values are involved
     void ResetTrainElementID(int Caller, unsigned int TrackVectorPosition, int EntryPos);
 /// Data for a single train is saved to a session file
@@ -659,7 +669,7 @@ public:
     bool Stopped()
     {
         return (Crashed || Derailed || StoppedAtBuffers || StoppedAtSignal || StoppedAtLocation || SignallerStopped || StoppedAfterSPAD ||
-                StoppedForTrainInFront || StoppedWithoutPower || NotInService);
+                StoppedForTrainInFront || StoppedWithoutPower || NotInService || TreatPassAsTimeLocDeparture); //added ' || TreatPassAsTimeLocDeparture' at v2.12.0
     }
 /// get LeadElement - used in RouteLockingRequired in TrackUnit.cpp
     int GetLeadElement()
@@ -889,8 +899,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     AnsiString ConsolidateSARNTArrDep(int Caller, const AnsiString Input, int &NumTrainsAtLoc, AnsiString Location, bool Arrival, bool &AnalysisError, int &MaxNumberOfSameDirections);
 /// Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for AtLoc listing (similar to ArrDep but doesn't include times in the input & don't need Location), also returns NumTrainsAtLoc after consolidation, used on creating the timetable conflict analysis file
     AnsiString ConsolidateSARNTAtLoc(int Caller, const AnsiString Input, int &NumTrainsAtLoc);
-/// Similar to TTrain::CheckNewServiceDepartureTime for use in ContinuationEntryFloatingTTString
-    AnsiString ControllerCheckNewServiceDepartureTime(int Caller, TActionVectorIterator Ptr, int RptNum, TTrainDataEntry *TDEPtr, TTrainDataEntry *LinkedTrainDataPtr, int IncrementalMinutes, AnsiString RetStr);
+/// Similar to TTrain::GetNewServiceDepartureInfo for use in ContinuationEntryFloatingTTString
+    AnsiString ControllerGetNewServiceDepartureInfo(int Caller, TActionVectorIterator Ptr, int RptNum, TTrainDataEntry *TDEPtr, TTrainDataEntry *LinkedTrainDataPtr, int IncrementalMinutes, AnsiString RetStr);
 /// Build string for use in floating window for expected trains at continuations
     AnsiString ContinuationEntryFloatingTTString(int Caller, TTrainDataEntry *TTDEPtr, int RepeatNumber, int IncrementalMinutes, int IncrementalDigits);
 /// Check all timetable names in ExitList, if all same return " at [name]" + AllowableExits = elements, else just return "" & AllowableExits = elements.  Used in floating label for Next action and in formatted timetables.

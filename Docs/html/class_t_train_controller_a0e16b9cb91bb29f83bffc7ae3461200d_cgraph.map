@@ -1,12 +1,13 @@
 <map id="TTrainController::RebuildOpTimeToActMultimap" name="TTrainController::RebuildOpTimeToActMultimap">
-<area shape="rect" id="node1" title="new v2.2.0 for OperatorActionPanel" alt="" coords="5,215,168,256"/>
-<area shape="rect" id="node2" href="$class_t_train_controller.html#a9fa0023214c894b378c929311da6c185" title="new v2.2.0 (DistanceToExit added for multiplayer), calcs distances to red signal &amp; exit,..." alt="" coords="216,215,413,256"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="987,125,1133,152"/>
-<area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="987,328,1133,354"/>
-<area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="744,74,907,101"/>
-<area shape="rect" id="node10" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="726,328,925,354"/>
-<area shape="rect" id="node4" href="$class_t_track.html#aeb515d40cb9b08ed55ce877ffdbc51a5" title="Return the corresponding link position (track always occupies either links 0 &amp; 1 or 2 &amp; 3)" alt="" coords="461,339,664,380"/>
-<area shape="rect" id="node5" href="$class_t_all_routes.html#a0a9ccbc84687f85806115877aa86dcfd" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="475,156,651,198"/>
-<area shape="rect" id="node8" href="$class_t_train.html#a7a54125a3a5052cb25e17014075a686b" title="Returns the number by which the train ActionVectorEntryPtr needs to be incremented to point to the lo..." alt="" coords="712,226,939,253"/>
-<area shape="rect" id="node9" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="469,274,656,315"/>
+<area shape="rect" id="node1" title="new v2.2.0 for OperatorActionPanel" alt="" coords="5,225,168,267"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a9fa0023214c894b378c929311da6c185" title="new v2.2.0 (DistanceToExit added for multiplayer), calcs distances to red signal &amp; exit,..." alt="" coords="216,225,413,267"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="987,333,1133,359"/>
+<area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="987,130,1133,157"/>
+<area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="744,79,907,106"/>
+<area shape="rect" id="node11" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="726,333,925,359"/>
+<area shape="rect" id="node4" href="$class_t_track.html#aeb515d40cb9b08ed55ce877ffdbc51a5" title="Return the corresponding link position (track always occupies either links 0 &amp; 1 or 2 &amp; 3)" alt="" coords="461,196,664,237"/>
+<area shape="rect" id="node5" href="$class_t_all_routes.html#a0a9ccbc84687f85806115877aa86dcfd" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="475,131,651,172"/>
+<area shape="rect" id="node8" href="$class_t_train.html#a7a54125a3a5052cb25e17014075a686b" title="Returns the number by which the train ActionVectorEntryPtr needs to be incremented to point to the lo..." alt="" coords="712,231,939,258"/>
+<area shape="rect" id="node9" href="$class_t_train.html#a77e1368fb80820dd2c3350858c28ceab" title=" " alt="" coords="467,379,659,406"/>
+<area shape="rect" id="node10" href="$class_t_train_controller.html#a4d5de42d6e9e92191241963599581210" title="Return a reference to the train with ID TrainID, carries out validity checking on TrainID." alt="" coords="469,313,656,355"/>
 </map>

@@ -13,16 +13,16 @@
 <area shape="rect" id="node8" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="5,1358,172,1385"/>
 <area shape="rect" id="node9" href="$class_t_train.html#ad64c5823265b0c611c2e5f0613317aa5" title="Carry out the actions needed when a train is to split from the rear." alt="" coords="445,1307,592,1334"/>
 <area shape="rect" id="node10" href="$class_t_interface.html#aaaf32c3c815553f7ba70698e0f0071bb" title=" " alt="" coords="688,173,869,215"/>
-<area shape="rect" id="node11" href="$class_t_train.html#a406c172a0ba96802ada1aa04d78948d0" title="Reverses the direction of motion of the train." alt="" coords="425,978,613,1005"/>
+<area shape="rect" id="node11" href="$class_t_train.html#aaac04c1b5e358a69e1930bae9ca6f429" title="Reverses the direction of motion of the train." alt="" coords="425,978,613,1005"/>
 <area shape="rect" id="node12" href="$class_t_train.html#a6c3479378d35f9041c38d80f03686b41" title="Carry out the actions needed when a train is waiting to be joined by another train." alt="" coords="719,1054,838,1081"/>
 <area shape="rect" id="node13" href="$class_t_interface.html#a50478cade5cae721121f5902528987a7" title=" " alt="" coords="694,291,863,332"/>
-<area shape="rect" id="node14" href="$class_t_train.html#a56fcfe4b9a3cef988bbeb4f4766372aa" title="Carry out the actions needed when a new shuttle service is created from a non&#45;repeating (F&#45;nshs) serv..." alt="" coords="427,160,611,201"/>
-<area shape="rect" id="node15" href="$class_t_train.html#a75a2e9017b96e2a8f2a1edbd01c2cd68" title="Carry out the actions needed when a train forms a new service (code Fns)" alt="" coords="439,265,599,291"/>
+<area shape="rect" id="node14" href="$class_t_train.html#a2bde9b347632a790874abfee29758d32" title="Carry out the actions needed when a new shuttle service is created from a non&#45;repeating (F&#45;nshs) serv..." alt="" coords="427,160,611,201"/>
+<area shape="rect" id="node15" href="$class_t_train.html#a68bda28987bb7b9d7e52b35abb2399de" title="Carry out the actions needed when a train forms a new service (code Fns)" alt="" coords="439,265,599,291"/>
 <area shape="rect" id="node16" href="$class_t_interface.html#ad7aaed58c91a9ad9598e17fa615024da" title=" " alt="" coords="691,560,866,601"/>
 <area shape="rect" id="node17" href="$class_t_interface.html#a921ff57bd9af8acdd79a7c99d4839218" title=" " alt="" coords="683,1460,875,1501"/>
 <area shape="rect" id="node18" href="$class_t_interface.html#ad3ddf42d51934815002002a770df766a" title=" " alt="" coords="699,625,858,667"/>
-<area shape="rect" id="node19" href="$class_t_train.html#a8262f447ec811db7e524c7bb885226c5" title="Carry out the actions needed to create either a new shuttle service or (if all repeats have finished)..." alt="" coords="425,341,612,383"/>
-<area shape="rect" id="node20" href="$class_t_train.html#ac6f5cda912103fda4da31bdca611e4b5" title="Carry out the actions needed to create either a new shuttle service or (if all repeats have finished)..." alt="" coords="403,407,635,434"/>
+<area shape="rect" id="node19" href="$class_t_train.html#a648f31ead801d51160c024f1ead459c8" title="Carry out the actions needed to create either a new shuttle service or (if all repeats have finished)..." alt="" coords="425,341,612,383"/>
+<area shape="rect" id="node20" href="$class_t_train.html#a1f4b4616c1167ff2ef83b2df48545c6b" title="Carry out the actions needed to create either a new shuttle service or (if all repeats have finished)..." alt="" coords="403,407,635,434"/>
 <area shape="rect" id="node21" href="$class_t_interface.html#a2313bac2c5c5ac3f8b91c46166e35b97" title=" " alt="" coords="690,691,867,732"/>
 <area shape="rect" id="node22" href="$class_t_interface.html#ad493289c9c9aa2e4d4e39329e80cc47c" title=" " alt="" coords="692,756,865,797"/>
 <area shape="rect" id="node23" href="$class_t_interface.html#a0cc484aa9bc0445312ef9191d8212f14" title=" " alt="" coords="683,821,874,863"/>

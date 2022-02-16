@@ -747,6 +747,7 @@ __published: // IDE-managed Components
     TLabel *SkipListHeaderPanelLabel1;
     TLabel *SkipListHeaderPanelLabel2;
     TImage *SkipListExitImage;
+    TMenuItem *BecomeNewServiceMenuItem;    //added at v2.12.0
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -966,6 +967,7 @@ __published: // IDE-managed Components
     void __fastcall SkipTTActionsListBoxMouseUp(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
     void __fastcall SkipListExitImageClick(TObject *Sender);
+    void __fastcall BecomeNewServiceMenuItemClick(TObject *Sender);
 
 public: // AboutForm needs access to these
 
@@ -1164,7 +1166,8 @@ private:
 //experimental elapsed time variables
     double Start, End;
     double ElapsedTime;
-    bool StartTimeSet;
+    bool ElapsedTimeTestFunctionStart;
+    bool ElapsedTimerRunning;
 
 // ---------------------------------------------------------------------------
 
@@ -1463,6 +1466,8 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
     AnsiString GetTrainStatusFloat(int Caller, int TrainID, AnsiString FormatNoDPStr, AnsiString SpecialStr); //new at v2.6.2
 /// Search the timetable entry pointed to by TTCurrentEntryPtr and if any times (HH:MM) are present return true (checked in order to enable or not AddMinsButton & SubMinsButton)
     bool AreAnyTimesInCurrentEntry();
+/// Check to see if a BecomeNewService popup otion is available - i.e stopped at location, has power, no skipped departure pending, follow-on service (Fns, Fns-sh, Frh-sh or F-nshs), and the follow-on service stops at or passes the location
+    bool IsBecomeNewServiceAvailable(int Caller, int TrainID, AnsiString &NextServiceRef);
 /// Convert a stored timetable file (either as a stand alone file or within a session file) to a loaded timetable, return false for error
     bool BuildTrainDataVectorForLoadFile(int Caller, std::ifstream &TTBLFile, bool GiveMessages, bool CheckLocationsExistInRailway, bool SessionFile);
 /// Check the integrity of a stored timetable file (either as a stand alone file or within a session file) return false for error
@@ -1613,6 +1618,10 @@ is loaded fillowed by AvHoursIntValue then all failed trains if any. */
 /// Unused
     void SignallerControl(int Caller);
 /// Called for diagnostic purposes when keys CTRL ALT 4 pressed
+    void SkipAllEventsBeforeNewService(int Caller, int TrainID, int PtrAdvance); //added at v2.12.0
+///< used when change early to the next service (Fns, Fns-sh, Frh-sh or F-nshs) to advance the action pointer and record the skipped events
+    void SkipEventsBeforeSameLoc(int Caller, int TrainID, AnsiString LocationName); //added at v2.12.0
+///< used when change early to the next service (Fns, Fns-sh, Frh-sh or F-nshs) to advance the action pointer and record the skipped events
     void TestFunction();
 /// Called during timetable editing whenever a change is made to the timetable, sets all the timetable buttons and windows to the required values
     void TimetableHandler();

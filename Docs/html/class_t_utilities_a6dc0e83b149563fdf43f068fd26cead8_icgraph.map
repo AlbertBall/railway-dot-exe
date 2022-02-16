@@ -1,22 +1,22 @@
 <map id="TUtilities::Format96HHMM" name="TUtilities::Format96HHMM">
-<area shape="rect" id="node1" title="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it..." alt="" coords="1456,243,1631,270"/>
-<area shape="rect" id="node2" href="$class_t_train.html#a781291ed1d591990b7615286462a2861" title="called during FloatingLabelNextString to find the next service departure time" alt="" coords="1155,54,1408,81"/>
-<area shape="rect" id="node3" href="$class_t_train.html#a221da69cd80d206a06f840f4cd463cf9" title="Used in the floating window to display the &#39;Next&#39; action." alt="" coords="926,27,1095,68"/>
-<area shape="rect" id="node8" href="$class_t_train.html#a81bf61b47a2867f0c6901b1ea6f47177" title="Used in the floating window to display the timetable." alt="" coords="927,96,1094,137"/>
-<area shape="rect" id="node10" href="$class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3" title="Build string for use in floating window for expected trains at continuations." alt="" coords="915,207,1107,248"/>
-<area shape="rect" id="node11" href="$class_t_interface.html#adc9ce6e5ee756279efbe92fd749355bf" title="Called when floating train info needed and train hasn&#39;t entered yet." alt="" coords="685,209,867,251"/>
-<area shape="rect" id="node12" href="$class_t_train_controller.html#a247f01d67fe9697522c47ceebd53d9ae" title="Similar to TTrain::CheckNewServiceDepartureTime for use in ContinuationEntryFloatingTTString." alt="" coords="1176,207,1387,248"/>
-<area shape="rect" id="node13" href="$class_t_train_controller.html#a4ab4b6a568064d27c65f0770e5a5ccd0" title="Examines the internal timetable (TrainDataVector) and creates from it a chronological (...." alt="" coords="1202,324,1361,365"/>
-<area shape="rect" id="node16" href="$class_t_train_controller.html#a6a7975052fcea4a8f0f72214a4a0f298" title="Generate a timetable analysis file in the &#39;Formatted Timetables&#39; folder, return false if failed for a..." alt="" coords="697,477,855,519"/>
-<area shape="rect" id="node18" href="$class_t_train_controller.html#a6bd2f1659b0f43b861ab1279af814f70" title="Determines whether two services are running in the same direction when they arrive or depart from Loc..." alt="" coords="1179,506,1384,533"/>
-<area shape="rect" id="node20" href="$class_t_train_controller.html#a6161618bda2a677f797eda9a9deeb9fa" title="diagnostic function to store all train data to a file for examination, not used normally" alt="" coords="1193,557,1369,599"/>
-<area shape="rect" id="node4" href="$class_t_interface.html#a51b94ffa3dc90fe4e3bec2f1ae28074e" title="used for floating window to display train status" alt="" coords="689,27,863,68"/>
-<area shape="rect" id="node5" href="$class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" title="Controls the floating window function, called during the ClockTimer2 function." alt="" coords="457,93,631,119"/>
-<area shape="rect" id="node6" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,93,403,119"/>
-<area shape="rect" id="node7" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,93,196,119"/>
-<area shape="rect" id="node9" href="$class_t_interface.html#a40232083747ef274344eed7021c6f43c" title=" " alt="" coords="689,144,863,185"/>
-<area shape="rect" id="node14" href="$class_t_interface.html#ab7c52bd31930036c95b9b71c2f1f0426" title=" " alt="" coords="923,324,1099,365"/>
-<area shape="rect" id="node15" href="$class_t_interface.html#a1bf4807428bf9fa4504be97d28642597" title=" " alt="" coords="925,389,1096,431"/>
-<area shape="rect" id="node17" href="$class_t_interface.html#a6379037c7970acda71188947cb3ba6b2" title=" " alt="" coords="451,477,637,519"/>
-<area shape="rect" id="node19" href="$class_t_train_controller.html#a9529f225878cf4920b52914022f44c4e" title="Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for arrivals (bool..." alt="" coords="917,507,1105,548"/>
+<area shape="rect" id="node1" title="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it..." alt="" coords="1432,255,1607,282"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3" title="Build string for use in floating window for expected trains at continuations." alt="" coords="915,336,1107,377"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#adc9ce6e5ee756279efbe92fd749355bf" title="Called when floating train info needed and train hasn&#39;t entered yet." alt="" coords="685,195,867,236"/>
+<area shape="rect" id="node7" href="$class_t_train_controller.html#aab94af5bb445fc36543e2c22d2986daa" title="Similar to TTrain::GetNewServiceDepartureInfo for use in ContinuationEntryFloatingTTString." alt="" coords="1176,336,1363,377"/>
+<area shape="rect" id="node8" href="$class_t_train_controller.html#a4ab4b6a568064d27c65f0770e5a5ccd0" title="Examines the internal timetable (TrainDataVector) and creates from it a chronological (...." alt="" coords="1190,219,1349,260"/>
+<area shape="rect" id="node11" href="$class_t_train_controller.html#a6a7975052fcea4a8f0f72214a4a0f298" title="Generate a timetable analysis file in the &#39;Formatted Timetables&#39; folder, return false if failed for a..." alt="" coords="697,424,855,465"/>
+<area shape="rect" id="node13" href="$class_t_train.html#a221da69cd80d206a06f840f4cd463cf9" title="Used in the floating window to display the &#39;Next&#39; action." alt="" coords="926,12,1095,53"/>
+<area shape="rect" id="node15" href="$class_t_train.html#a81bf61b47a2867f0c6901b1ea6f47177" title="Used in the floating window to display the timetable." alt="" coords="927,81,1094,123"/>
+<area shape="rect" id="node17" href="$class_t_train.html#a7b2441ac62bba8e9cc46f7e0511e5695" title="called during FloatingLabelNextString to find the next service departure time &amp; next location" alt="" coords="1155,59,1384,86"/>
+<area shape="rect" id="node18" href="$class_t_train_controller.html#a6bd2f1659b0f43b861ab1279af814f70" title="Determines whether two services are running in the same direction when they arrive or depart from Loc..." alt="" coords="1167,453,1372,479"/>
+<area shape="rect" id="node20" href="$class_t_train_controller.html#a6161618bda2a677f797eda9a9deeb9fa" title="diagnostic function to store all train data to a file for examination, not used normally" alt="" coords="1181,504,1357,545"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" title="Controls the floating window function, called during the ClockTimer2 function." alt="" coords="457,78,631,105"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,78,403,105"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,78,196,105"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#ab7c52bd31930036c95b9b71c2f1f0426" title=" " alt="" coords="923,205,1099,247"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a1bf4807428bf9fa4504be97d28642597" title=" " alt="" coords="925,271,1096,312"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#a6379037c7970acda71188947cb3ba6b2" title=" " alt="" coords="451,424,637,465"/>
+<area shape="rect" id="node14" href="$class_t_interface.html#a51b94ffa3dc90fe4e3bec2f1ae28074e" title="used for floating window to display train status" alt="" coords="689,12,863,53"/>
+<area shape="rect" id="node16" href="$class_t_interface.html#a40232083747ef274344eed7021c6f43c" title=" " alt="" coords="689,129,863,171"/>
+<area shape="rect" id="node19" href="$class_t_train_controller.html#a9529f225878cf4920b52914022f44c4e" title="Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for arrivals (bool..." alt="" coords="917,453,1105,495"/>
 </map>

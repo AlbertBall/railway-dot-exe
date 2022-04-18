@@ -1,7 +1,7 @@
 <map id="TTrain::CalcTimeToAct" name="TTrain::CalcTimeToAct">
 <area shape="rect" id="node1" title="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa..." alt="" coords="5,399,159,426"/>
 <area shape="rect" id="node2" href="$class_t_train_controller.html#a9fa0023214c894b378c929311da6c185" title="new v2.2.0 (DistanceToExit added for multiplayer), calcs distances to red signal &amp; exit,..." alt="" coords="207,392,404,433"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="977,250,1124,276"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="977,250,1124,276"/>
 <area shape="rect" id="node4" href="$class_t_track.html#aeb515d40cb9b08ed55ce877ffdbc51a5" title="Return the corresponding link position (track always occupies either links 0 &amp; 1 or 2 &amp; 3)" alt="" coords="452,530,655,572"/>
 <area shape="rect" id="node5" href="$class_t_all_routes.html#a0a9ccbc84687f85806115877aa86dcfd" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="465,144,641,185"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="977,402,1124,428"/>

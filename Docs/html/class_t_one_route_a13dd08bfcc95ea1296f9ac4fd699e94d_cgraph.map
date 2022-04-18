@@ -1,7 +1,7 @@
 <map id="TOneRoute::GetNonPreferredRouteStartElement" name="TOneRoute::GetNonPreferredRouteStartElement">
 <area shape="rect" id="node1" title="Set the starting conditions for a non&#45;preferred (i.e. unrestricted) route selection beginning on HLoc..." alt="" coords="5,787,196,829"/>
 <area shape="rect" id="node2" href="$class_t_all_routes.html#a438b71f3afbc2c8adb45b47f69cb3bb9" title="Returns the number of routes in the railway." alt="" coords="289,5,464,32"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="811,479,957,505"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="811,479,957,505"/>
 <area shape="rect" id="node4" href="$class_t_one_route.html#a05ce65e80c2272a775f6497890d42b6b" title="Empty the route of any stored elements." alt="" coords="297,1213,456,1240"/>
 <area shape="rect" id="node5" href="$class_t_pref_dir_element.html#ae8ee9f59578f80d23aebfdb9fff041d4" title="determines and loads EXNumber (see above)" alt="" coords="571,442,749,483"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="811,740,957,767"/>

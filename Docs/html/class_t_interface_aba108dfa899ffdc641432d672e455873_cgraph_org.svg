@@ -434,7 +434,7 @@
 <!-- Node7 -->
 <g id="node7" class="node">
 <title>Node7</title>
-<g id="a_node7"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="pops the last entry off the call stack, throws an error if called when empty">
+<g id="a_node7"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied">
 <polygon fill="white" stroke="black" points="834.5,-846.08 834.5,-865.08 944.5,-865.08 944.5,-846.08 834.5,-846.08"/>
 <text text-anchor="middle" x="889.5" y="-853.08" font-family="Helvetica,sans-Serif" font-size="10.00">TUtilities::CallLogPop</text>
 </a>

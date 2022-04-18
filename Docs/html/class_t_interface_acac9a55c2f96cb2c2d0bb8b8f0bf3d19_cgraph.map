@@ -1,7 +1,7 @@
 <map id="TInterface::HostHandshakingActions" name="TInterface::HostHandshakingActions">
 <area shape="rect" id="node1" title="called in ClockTimer2 if host multiplay in progress" alt="" coords="5,614,193,655"/>
 <area shape="rect" id="node2" href="$class_t_interface.html#a66a43f1695c6eb167ef239022863bdb4" title="converts a host&#39;s dynamic map into a datagram; TTTime is a 4 byte timetable time in secs (allows up t..." alt="" coords="943,631,1113,672"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1195,1194,1341,1221"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1195,1194,1341,1221"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1195,1574,1341,1601"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#a3093de3a7faf5666443a5b8aba59ba7a" title="Converse of BuildDatagramFromPlayerMap." alt="" coords="445,428,616,470"/>
 <area shape="rect" id="node10" href="$class_t_interface.html#acddf73f6a567129124bd69d6f81c4387" title="store coupling map for a given railway name, return number of bytes needed for datagram" alt="" coords="936,435,1120,476"/>

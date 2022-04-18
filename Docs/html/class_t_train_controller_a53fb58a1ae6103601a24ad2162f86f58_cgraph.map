@@ -1,6 +1,6 @@
 <map id="TTrainController::CheckSessionTrains" name="TTrainController::CheckSessionTrains">
 <area shape="rect" id="node1" title="Part of the session file integrity check for train entries, true for success." alt="" coords="5,86,209,127"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="285,5,431,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="285,5,431,32"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#ab4b66aa7480fda73d554fe0bcca82b60" title="checks that the value is an int lying between Lowest &amp; Highest (inclusive), returns true for success ..." alt="" coords="273,57,443,98"/>
 <area shape="rect" id="node5" href="$class_t_train.html#aad716bab6f8f4aa6dd49f35130d28dd9" title="Carries out an integrity check for the train section of a session file, if fails a message is given a..." alt="" coords="257,123,459,149"/>
 <area shape="rect" id="node10" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="285,173,431,200"/>

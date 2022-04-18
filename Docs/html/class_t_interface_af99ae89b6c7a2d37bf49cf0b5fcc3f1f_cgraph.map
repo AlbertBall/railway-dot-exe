@@ -26,7 +26,7 @@
 <area shape="rect" id="node31" href="$class_t_track.html#a0f681fc6b5da80d8d0480c44ea8e61a6" title="Save all active and inactive track elements to VecFile." alt="" coords="645,1287,774,1314"/>
 <area shape="rect" id="node34" href="$class_t_track.html#aa8b9c4770d989c047f7122844132dadc" title="save graphics" alt="" coords="621,954,797,980"/>
 <area shape="rect" id="node36" href="$class_t_train_controller.html#aba5615209a7dca921e968fca5c52c060" title="sends a message to the user and stops the timetable clock while it is displayed" alt="" coords="861,2038,1056,2080"/>
-<area shape="rect" id="node7" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1122,1211,1269,1238"/>
+<area shape="rect" id="node7" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1122,1211,1269,1238"/>
 <area shape="rect" id="node22" href="$class_t_train.html#ac414e9e4fd7e25c11e09678dd4dc7944" title="Data for a single train is saved to a session file." alt="" coords="863,724,1055,751"/>
 <area shape="rect" id="node25" href="$class_t_text_handler.html#a19a5042d87a979d56ba4678bee8b2abb" title="retrieve the style of the font as a coded integer" alt="" coords="867,1668,1050,1709"/>
 <area shape="rect" id="node26" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="878,1616,1039,1643"/>

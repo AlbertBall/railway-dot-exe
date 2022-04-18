@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 1084;
 var viewHeight = 2303;
-var sectionId = 'dynsection-271';
+var sectionId = 'dynsection-279';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -68,7 +68,7 @@ var sectionId = 'dynsection-271';
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="pops the last entry off the call stack, throws an error if called when empty">
+<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied">
 <polygon fill="white" stroke="black" points="966,-1367.5 966,-1386.5 1076,-1386.5 1076,-1367.5 966,-1367.5"/>
 <text text-anchor="middle" x="1021" y="-1374.5" font-family="Helvetica,sans-Serif" font-size="10.00">TUtilities::CallLogPop</text>
 </a>

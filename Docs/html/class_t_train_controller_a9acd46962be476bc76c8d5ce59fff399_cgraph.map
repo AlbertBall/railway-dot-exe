@@ -1,6 +1,6 @@
 <map id="TTrainController::LogActionError" name="TTrainController::LogActionError">
 <area shape="rect" id="node1" title="Send an error message to the performance log and file, and as a warning if appropriate." alt="" coords="5,72,184,114"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="473,29,620,56"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="473,29,620,56"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="232,181,425,208"/>
 <area shape="rect" id="node4" href="$class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" title="Send Statement to the performance log on screen and to the file." alt="" coords="241,80,416,106"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="473,80,620,106"/>

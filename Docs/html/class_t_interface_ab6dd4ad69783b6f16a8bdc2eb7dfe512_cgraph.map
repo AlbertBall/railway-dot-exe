@@ -1,6 +1,6 @@
 <map id="TInterface::SetLevel2OperMode" name="TInterface::SetLevel2OperMode">
 <area shape="rect" id="node1" title="Sets the Level2OperMode user mode, using the Level2OperMode variable to determine the mode." alt="" coords="5,1539,208,1566"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1545,985,1692,1011"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1545,985,1692,1011"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#ac0c9be911e93134ddda04ba498a8bd9c" title="Called during operation whenever the route type buttons need to be disabled, e.g. when paused." alt="" coords="521,177,684,219"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1545,1937,1692,1963"/>
 <area shape="rect" id="node5" href="$class_a_p_i.html#abebc08c03ceec2b898d8fe877b0efcba" title="save currently recorded status data to INI file" alt="" coords="817,395,900,422"/>

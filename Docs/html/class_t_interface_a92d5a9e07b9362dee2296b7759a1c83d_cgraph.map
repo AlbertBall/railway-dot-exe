@@ -1,7 +1,7 @@
 <map id="TInterface::LoadTimetableFromSessionFile" name="TInterface::LoadTimetableFromSessionFile">
 <area shape="rect" id="node1" title="Loads timetable into memory from a session file, true if successful." alt="" coords="5,2698,176,2739"/>
 <area shape="rect" id="node2" href="$class_t_interface.html#a148e3f99d39f596dbd7d490403936154" title="Convert a stored timetable file (either as a stand alone file or within a session file) to a loaded t..." alt="" coords="224,1678,395,1719"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1707,1835,1854,1861"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1707,1835,1854,1861"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1707,1341,1854,1368"/>
 <area shape="rect" id="node49" href="$class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c" title="loads an int value from the file" alt="" coords="238,2756,381,2783"/>
 <area shape="rect" id="node50" href="$class_t_train_controller.html#ac51af4807fe6bba453f8ab9bba42e2b5" title="Checks overall timetable integrity, calls many other specific checking functions, returns true for su..." alt="" coords="681,2725,857,2766"/>

@@ -1,6 +1,6 @@
 <map id="TInterface::ClearEverything" name="TInterface::ClearEverything">
 <area shape="rect" id="node1" title="First check whether a railway file has changed and if so ask user if really wants to close it without..." alt="" coords="5,2149,181,2176"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1697,1017,1844,1044"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1697,1017,1844,1044"/>
 <area shape="rect" id="node3" href="$class_t_display.html#a8d990507ae0111e0b7890e8aa77fd76d" title="Empty the display." alt="" coords="1458,2092,1611,2119"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1697,1873,1844,1900"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#aea22b6ff3a4a84bc400fc1382b1f403e" title="Load the configuration file, only allow default track element length and speed limit to be loaded it ..." alt="" coords="1181,2149,1351,2176"/>

@@ -1,6 +1,6 @@
 <map id="TTrain::TrainHasFailed" name="TTrain::TrainHasFailed">
 <area shape="rect" id="node1" title="Called when there is a random train failure." alt="" coords="5,558,156,585"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1401,438,1548,465"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1401,438,1548,465"/>
 <area shape="rect" id="node3" href="$class_t_train.html#a493ab1c185d29bf28ec8fded2356e9fc" title="Send a message to the performance log and performance file, and if the message is flagged as a warnin..." alt="" coords="688,362,811,389"/>
 <area shape="rect" id="node7" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1401,844,1548,870"/>
 <area shape="rect" id="node10" href="$class_t_train.html#abfa6da75d034c737d53819e6edbfa3dc" title="Changes the train&#39;s background colour (e.g. to pale green if stopped at a station) Note that this use..." alt="" coords="204,802,372,843"/>

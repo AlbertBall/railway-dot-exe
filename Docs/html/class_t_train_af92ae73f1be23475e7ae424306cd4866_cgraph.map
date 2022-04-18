@@ -1,7 +1,7 @@
 <map id="TTrain::PickUpBackgroundBitmap" name="TTrain::PickUpBackgroundBitmap">
 <area shape="rect" id="node1" title="Store the background bitmap pointer (BackgroundPtr &#45; see above) prior to being overwritten by the tra..." alt="" coords="5,407,181,448"/>
 <area shape="rect" id="node2" href="$class_t_track.html#af0a13922e664c99defc573f080956bb9" title="Checks BarrierDownVector and returns true if there is one that is linked to the LC at H &amp; V positions..." alt="" coords="229,234,397,275"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="935,194,1081,221"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="935,194,1081,221"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="935,405,1081,432"/>
 <area shape="rect" id="node7" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="681,70,863,111"/>
 <area shape="rect" id="node8" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="669,253,875,280"/>

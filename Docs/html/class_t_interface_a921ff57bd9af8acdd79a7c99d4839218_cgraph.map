@@ -1,6 +1,6 @@
 <map id="TInterface::RemoveTrainMenuItemClick" name="TInterface::RemoveTrainMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,2012,197,2053"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1291,1359,1438,1386"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1291,1359,1438,1386"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="277,1410,412,1436"/>
 <area shape="rect" id="node12" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1291,1620,1438,1647"/>
 <area shape="rect" id="node26" href="$class_t_pref_dir_element.html#af00e0755cd716b4d101abbae02c73ca2" title="Returns ELink." alt="" coords="255,1460,434,1487"/>

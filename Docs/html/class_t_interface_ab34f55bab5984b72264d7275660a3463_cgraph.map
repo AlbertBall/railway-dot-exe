@@ -1,6 +1,6 @@
 <map id="TInterface::LengthOKButtonClick" name="TInterface::LengthOKButtonClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,2372,188,2413"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1701,1131,1848,1158"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1701,1131,1848,1158"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="256,3256,391,3283"/>
 <area shape="rect" id="node7" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1701,2075,1848,2102"/>
 <area shape="rect" id="node8" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="1209,2130,1383,2172"/>

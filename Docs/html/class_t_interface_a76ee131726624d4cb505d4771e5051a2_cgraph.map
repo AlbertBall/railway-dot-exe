@@ -1,6 +1,6 @@
 <map id="TInterface::SelectNewGraphicClick" name="TInterface::SelectNewGraphicClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,1480,199,1522"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1510,1370,1657,1397"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1510,1370,1657,1397"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="517,1218,652,1245"/>
 <area shape="rect" id="node12" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1510,1698,1657,1725"/>
 <area shape="rect" id="node29" href="$class_t_interface.html#ac04724e6b4eafc041ee65ce5168a82ae" title="Load a user&#45;defined graphic (bmp, gif, jpg, png)." alt="" coords="247,1925,433,1952"/>

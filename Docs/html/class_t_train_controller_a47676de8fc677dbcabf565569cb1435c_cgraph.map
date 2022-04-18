@@ -1,6 +1,6 @@
 <map id="TTrainController::ReplotTrains" name="TTrainController::ReplotTrains">
 <area shape="rect" id="node1" title="plot all trains on the display" alt="" coords="5,251,163,293"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1297,169,1444,196"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1297,169,1444,196"/>
 <area shape="rect" id="node3" href="$class_t_train.html#a5fdef825574f0e546ab25169e9f8445d" title="Plots the train on the display in normal (zoomed&#45;in) mode." alt="" coords="211,309,327,336"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1297,499,1444,525"/>
 <area shape="rect" id="node11" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="1051,245,1249,272"/>

@@ -6,7 +6,7 @@
 <area shape="rect" id="node38" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="257,2708,391,2735"/>
 <area shape="rect" id="node42" href="$class_t_interface.html#a0f47d9e893d3558de2e6d9082b3fadd0" title="Clears any route start markers, enables or disables the route cancel button, and resets the informati..." alt="" coords="730,106,910,147"/>
 <area shape="rect" id="node43" href="$class_t_interface.html#ab6dd4ad69783b6f16a8bdc2eb7dfe512" title="Sets the Level2OperMode user mode, using the Level2OperMode variable to determine the mode." alt="" coords="223,2201,425,2228"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1509,1163,1656,1189"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1509,1163,1656,1189"/>
 <area shape="rect" id="node4" href="$class_t_display.html#a8d990507ae0111e0b7890e8aa77fd76d" title="Empty the display." alt="" coords="1283,1669,1437,1696"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1509,1415,1656,1441"/>
 <area shape="rect" id="node6" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="1007,1537,1177,1578"/>

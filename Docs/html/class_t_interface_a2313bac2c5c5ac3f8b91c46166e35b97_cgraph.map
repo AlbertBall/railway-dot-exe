@@ -1,6 +1,6 @@
 <map id="TInterface::SignallerControlStopMenuItemClick" name="TInterface::SignallerControlStopMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,423,183,464"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1186,1450,1333,1477"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1186,1450,1333,1477"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="250,649,385,676"/>
 <area shape="rect" id="node12" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1186,1130,1333,1157"/>
 <area shape="rect" id="node33" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="940,886,1103,913"/>

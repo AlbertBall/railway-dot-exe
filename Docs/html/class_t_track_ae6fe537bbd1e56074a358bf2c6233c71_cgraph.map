@@ -1,7 +1,7 @@
 <map id="TTrack::TrackClear" name="TTrack::TrackClear">
 <area shape="rect" id="node1" title="Empty the track and inactive track vectors, the corresponding track maps, and LocationNameMultiMap." alt="" coords="5,168,136,195"/>
 <area shape="rect" id="node2" href="$class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9" title="Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent ..." alt="" coords="184,168,351,195"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="652,118,799,144"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="652,118,799,144"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="652,219,799,246"/>
 <area shape="rect" id="node4" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="399,118,604,144"/>
 <area shape="rect" id="node6" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="421,168,582,195"/>

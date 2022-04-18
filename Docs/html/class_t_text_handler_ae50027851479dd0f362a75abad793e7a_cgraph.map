@@ -1,7 +1,7 @@
 <map id="TTextHandler::TextClear" name="TTextHandler::TextClear">
 <area shape="rect" id="node1" title="empties TextVector and sets all offsets back to zero if there is no active or inactive track" alt="" coords="5,507,167,533"/>
 <area shape="rect" id="node2" href="$class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9" title="Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent ..." alt="" coords="220,253,387,280"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="693,152,840,179"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="693,152,840,179"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="693,304,840,331"/>
 <area shape="rect" id="node10" href="$class_t_track.html#ab20c55ecbc1801614695279daa8da0ba" title="True if there is no active or inactive track in the railway." alt="" coords="215,394,392,435"/>
 <area shape="rect" id="node11" href="$class_t_track.html#a453e9074035359dc22be2b15913e4bab" title=" " alt="" coords="231,532,375,559"/>

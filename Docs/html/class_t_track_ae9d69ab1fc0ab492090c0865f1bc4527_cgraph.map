@@ -1,6 +1,6 @@
 <map id="TTrack::PlotContinuation" name="TTrack::PlotContinuation">
 <area shape="rect" id="node1" title="Plots a continuation on screen, may have overlays if a multiplayer session." alt="" coords="5,97,169,124"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="452,39,599,65"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="452,39,599,65"/>
 <area shape="rect" id="node3" href="$class_t_track_element.html#a100bff829c4dca820927affde4cb9e57" title="Used to log track parameters for call stack logging." alt="" coords="225,199,396,225"/>
 <area shape="rect" id="node4" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="239,97,382,124"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="452,97,599,124"/>

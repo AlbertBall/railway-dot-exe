@@ -1,6 +1,6 @@
 <map id="TInterface::PasteTTEntryButtonClick" name="TInterface::PasteTTEntryButtonClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,1534,171,1575"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1458,1052,1605,1079"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1458,1052,1605,1079"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a330394a04433ce8672a52c2a0a659ff0" title="Used during timetable editing funtions to compile the list of entries into the left hand long entry w..." alt="" coords="943,194,1132,235"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1458,1473,1605,1500"/>
 <area shape="rect" id="node8" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="477,2249,612,2276"/>

@@ -1,0 +1,7 @@
+<map id="TInterface::BypassPDCrossoverMismatch" name="TInterface::BypassPDCrossoverMismatch">
+<area shape="rect" id="node1" title="Check for bidir crossover between two single PD lines. Used in PD check function." alt="" coords="5,60,211,101"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="520,38,667,64"/>
+<area shape="rect" id="node3" href="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc" title="Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return &#45;1." alt="" coords="259,30,472,72"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="520,96,667,123"/>
+<area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="284,96,447,123"/>
+</map>

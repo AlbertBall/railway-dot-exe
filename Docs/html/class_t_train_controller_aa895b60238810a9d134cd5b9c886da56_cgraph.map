@@ -1,6 +1,6 @@
 <map id="TTrainController::AddTrain" name="TTrainController::AddTrain">
 <area shape="rect" id="node1" title="Introduce a new train to the railway, with the characteristics specified, returns true for success,..." alt="" coords="5,1726,176,1753"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1812,1374,1959,1401"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1812,1374,1959,1401"/>
 <area shape="rect" id="node3" href="$class_t_rail_graphics.html#aa2dace651659e084ec23c9961f5819b1" title=" " alt="" coords="959,1163,1179,1204"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1812,2444,1959,2470"/>
 <area shape="rect" id="node5" href="$class_t_train.html#a50997f7e8138a7e6a147fe3b5ad21b84" title="Checks whether Element and EntryPos (where train is about to enter) is on an existing route (or cross..." alt="" coords="224,2242,423,2283"/>

@@ -1,6 +1,6 @@
 <map id="TTrack::WriteOperatingTrackAndTextToImage" name="TTrack::WriteOperatingTrackAndTextToImage">
 <area shape="rect" id="node1" title="Called by TInterface::SaveOperatingImage1Click to add all track &amp; text to the image file in their ope..." alt="" coords="5,705,193,746"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1020,428,1167,455"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1020,428,1167,455"/>
 <area shape="rect" id="node3" href="$class_t_rail_graphics.html#a5121c6d8b8fa69eefc293ca51cddce88" title=" " alt="" coords="516,671,687,713"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1020,711,1167,737"/>
 <area shape="rect" id="node7" href="$class_t_track.html#a5d25871e34f26d3c4c878fd4707ed375" title=" " alt="" coords="790,1107,931,1133"/>

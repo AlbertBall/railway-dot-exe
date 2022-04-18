@@ -1,7 +1,7 @@
 <map id="TInterface::RecoverClipboard" name="TInterface::RecoverClipboard">
 <area shape="rect" id="node1" title="Recovers clipboard as track and text vectors." alt="" coords="5,578,192,605"/>
 <area shape="rect" id="node2" href="$class_t_track.html#af507e9106aa12a670d6b09bd575cbfc3" title="Return a basic track element from the SpeedTag new at v2.2.0 &#45; needed because Interface doesn&#39;t have ..." alt="" coords="253,5,432,47"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="963,181,1109,207"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="963,181,1109,207"/>
 <area shape="rect" id="node4" href="$class_t_one_pref_dir.html#abc09de3c32460a73d3de12625329210d" title="Empty the existing preferred direction vector &amp; map &#45; for use by other classes." alt="" coords="253,571,432,612"/>
 <area shape="rect" id="node6" href="$class_t_one_pref_dir.html#a5e8d14c19c70cafe968e7481b116a714" title="Store a single pref dir element in the vector &amp; map &#45; used by other classes." alt="" coords="253,261,432,303"/>
 <area shape="rect" id="node9" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="963,381,1109,407"/>

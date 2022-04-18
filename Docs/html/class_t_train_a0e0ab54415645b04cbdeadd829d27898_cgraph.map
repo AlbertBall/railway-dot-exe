@@ -1,6 +1,6 @@
 <map id="TTrain::SetTrainElementID" name="TTrain::SetTrainElementID">
 <area shape="rect" id="node1" title="When a train moves onto an element that element has its TrainIDOnElement value set to the TrainID val..." alt="" coords="5,144,179,170"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="683,93,829,120"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="683,93,829,120"/>
 <area shape="rect" id="node3" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="227,105,424,132"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="683,169,829,196"/>
 <area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="472,206,635,233"/>

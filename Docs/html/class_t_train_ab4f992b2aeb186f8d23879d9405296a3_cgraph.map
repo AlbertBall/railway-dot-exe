@@ -1,6 +1,6 @@
 <map id="TTrain::AbleToMoveButForSignal" name="TTrain::AbleToMoveButForSignal">
 <area shape="rect" id="node1" title="Indicates that a train is only prevented from moving by a signal &#45; used to allow appropriate popup me..." alt="" coords="5,45,180,86"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="665,27,812,53"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="665,27,812,53"/>
 <area shape="rect" id="node3" href="$class_t_track.html#aeac90568597c9f13a27fa90c58f9041f" title="True if another train on NextEntryPos track of element at NextPos, whether bridge or not,..." alt="" coords="228,77,407,104"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="665,128,812,155"/>
 <area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="455,27,617,53"/>

@@ -1,5 +1,5 @@
 <map id="TTrain::GetOffsetValues" name="TTrain::GetOffsetValues">
 <area shape="rect" id="node1" title="Sets HOffset &amp; VOffset (see above) for a single headcode character depending on the Link value." alt="" coords="5,31,165,57"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="213,5,360,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="213,5,360,32"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="213,56,360,83"/>
 </map>

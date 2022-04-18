@@ -1,6 +1,6 @@
 <map id="TTrack::PlotSmallRailway" name="TTrack::PlotSmallRailway">
 <area shape="rect" id="node1" title="Plot on screen the zoomed&#45;out railway." alt="" coords="5,126,176,153"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="487,70,633,97"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="487,70,633,97"/>
 <area shape="rect" id="node3" href="$class_t_display.html#a95aaa80515f0abb7715920b326b318dd" title="Plot small (4x4) graphic PlotItem on the zoomed&#45;out display at HPos &amp; Vpos." alt="" coords="244,38,419,65"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="487,125,633,152"/>
 <area shape="rect" id="node5" href="$class_t_track.html#a58a2afacadd0f564b474ac0faabc88d4" title="Return a reference to the inactive track element pointed to by NextTrackElementPtr (during zoomed&#45;in ..." alt="" coords="243,90,420,131"/>

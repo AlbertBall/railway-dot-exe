@@ -1,7 +1,7 @@
 <map id="TInterface::MoveForwardsMenuItemClick" name="TInterface::MoveForwardsMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,2087,175,2129"/>
 <area shape="rect" id="node2" href="$class_t_train.html#a659e6bf818f0cfac38728d4748408ee6" title="Indicates that a train is not prevented from moving &#45; used to allow appropriate popup menu options wh..." alt="" coords="699,2019,834,2045"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1202,1639,1349,1665"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1202,1639,1349,1665"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1202,1968,1349,1995"/>
 <area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="948,2171,1111,2197"/>
 <area shape="rect" id="node6" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="242,1779,377,1805"/>

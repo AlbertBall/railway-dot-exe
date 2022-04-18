@@ -1,6 +1,6 @@
 <map id="TInterface::SaveTimetableToSessionFile" name="TInterface::SaveTimetableToSessionFile">
 <area shape="rect" id="node1" title="Called during a session save to save the current timetable in the session file, true if successful." alt="" coords="5,76,176,117"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="435,7,581,34"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="435,7,581,34"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a7fa894f52a3cb9746e81166ec1a81bf3" title="Delays operation for the set time in milliseconds." alt="" coords="246,33,365,59"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="435,58,581,85"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a86ed634e8a9d7ca534a324954f4a7a2f" title="stores the int value to the file, then a CR" alt="" coords="234,134,377,161"/>

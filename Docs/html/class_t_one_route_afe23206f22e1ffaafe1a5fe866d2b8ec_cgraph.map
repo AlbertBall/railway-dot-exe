@@ -1,6 +1,6 @@
 <map id="TOneRoute::GetRouteTruncateElement" name="TOneRoute::GetRouteTruncateElement">
 <area shape="rect" id="node1" title="Examines the route to see whether the element at H &amp; V is in the route, and if not returns a ReturnFl..." alt="" coords="5,793,205,835"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1593,1626,1740,1653"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1593,1626,1740,1653"/>
 <area shape="rect" id="node3" href="$class_t_all_routes.html#a54e5483e7b01daf50436e3dcc8794e77" title="Diagnostic function &#45; checks equivalence for each route between entries in PrefDirVector and those in..." alt="" coords="781,683,999,710"/>
 <area shape="rect" id="node5" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1093,916,1269,957"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1593,859,1740,886"/>

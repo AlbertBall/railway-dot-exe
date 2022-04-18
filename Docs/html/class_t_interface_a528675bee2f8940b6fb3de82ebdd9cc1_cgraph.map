@@ -1,6 +1,6 @@
 <map id="TInterface::SkipEventsBeforeSameLoc" name="TInterface::SkipEventsBeforeSameLoc">
 <area shape="rect" id="node1" title="&lt; used when change early to the next service (Fns, Fns&#45;sh, Frh&#45;sh or F&#45;nshs) to advance the action po..." alt="" coords="5,2310,193,2351"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1506,1129,1653,1156"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1506,1129,1653,1156"/>
 <area shape="rect" id="node3" href="$class_t_train.html#aaac04c1b5e358a69e1930bae9ca6f429" title="Reverses the direction of motion of the train." alt="" coords="241,1184,429,1211"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1506,1871,1653,1897"/>
 <area shape="rect" id="node13" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="1483,119,1676,145"/>

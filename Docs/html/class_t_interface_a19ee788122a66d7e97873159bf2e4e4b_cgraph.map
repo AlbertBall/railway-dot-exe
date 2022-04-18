@@ -1,6 +1,6 @@
 <map id="TInterface::SetLevel2TrackMode" name="TInterface::SetLevel2TrackMode">
 <area shape="rect" id="node1" title="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode." alt="" coords="5,2214,212,2240"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1256,1164,1403,1191"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1256,1164,1403,1191"/>
 <area shape="rect" id="node3" href="$class_t_track.html#aaf3f48b8df9877499aaf4c05f804426c" title="Validity test." alt="" coords="761,709,951,750"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1256,1627,1403,1654"/>
 <area shape="rect" id="node9" href="$class_t_track.html#a6fa2d4f2c6c94e2c6b4f7218f5356108" title="Validity test." alt="" coords="757,541,955,582"/>

@@ -1,8 +1,0 @@
-<map id="TInterface::SetInitialTrackModeEditMenu" name="TInterface::SetInitialTrackModeEditMenu">
-<area shape="rect" id="node1" title="Enables or disables the initial Edit mode submenu items in Track mode." alt="" coords="5,35,173,76"/>
-<area shape="rect" id="node2" href="$class_t_interface.html#a488e772a2e2a52820fdbe1d1695e0118" title="Returns true if there are no track elements and no text." alt="" coords="221,42,368,69"/>
-<area shape="rect" id="node3" href="$class_t_track.html#ab20c55ecbc1801614695279daa8da0ba" title="True if there is no active or inactive track in the railway." alt="" coords="425,5,602,47"/>
-<area shape="rect" id="node6" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="416,71,611,98"/>
-<area shape="rect" id="node4" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="659,15,805,42"/>
-<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="659,67,805,94"/>
-</map>

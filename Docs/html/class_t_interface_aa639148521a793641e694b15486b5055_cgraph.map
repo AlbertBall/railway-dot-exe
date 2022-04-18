@@ -1,6 +1,6 @@
 <map id="TInterface::PresetAutoSigRoutesButtonClick" name="TInterface::PresetAutoSigRoutesButtonClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,2710,176,2751"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1003,1252,1149,1279"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1003,1252,1149,1279"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="227,965,407,1006"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1003,1623,1149,1649"/>
 <area shape="rect" id="node36" href="$class_t_one_route.html#a05ce65e80c2272a775f6497890d42b6b" title="Empty the route of any stored elements." alt="" coords="770,3095,929,3121"/>

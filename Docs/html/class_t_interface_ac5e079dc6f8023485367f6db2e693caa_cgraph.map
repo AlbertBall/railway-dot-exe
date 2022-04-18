@@ -1,7 +1,7 @@
 <map id="TInterface::ResetAll" name="TInterface::ResetAll">
 <area shape="rect" id="node1" title="Called during ClearEverything and on startup to reset all major railway data values." alt="" coords="5,1408,140,1435"/>
 <area shape="rect" id="node2" href="$class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9" title="Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent ..." alt="" coords="959,1783,1125,1809"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1464,1121,1611,1148"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1464,1121,1611,1148"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1464,1783,1611,1809"/>
 <area shape="rect" id="node10" href="$class_a_p_i.html#abebc08c03ceec2b898d8fe877b0efcba" title="save currently recorded status data to INI file" alt="" coords="742,167,825,193"/>
 <area shape="rect" id="node11" href="$class_t_interface.html#a170d7ac96ec862ba0c2587972f266407" title="In trackbuild display normal signal types on signal buttons." alt="" coords="1215,167,1406,209"/>

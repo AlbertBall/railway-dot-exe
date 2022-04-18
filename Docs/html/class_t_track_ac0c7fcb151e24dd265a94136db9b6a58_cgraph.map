@@ -1,6 +1,6 @@
 <map id="TTrack::IsTrackLinked" name="TTrack::IsTrackLinked">
 <area shape="rect" id="node1" title="True if track has been successfully linked (not used any more)" alt="" coords="5,312,155,339"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="909,105,1056,132"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="909,105,1056,132"/>
 <area shape="rect" id="node3" href="$class_t_track.html#ab79158ff07bc54986fbaa34df0d7f2b2" title="True if a footcrossing is linked properly at both ends." alt="" coords="203,246,385,287"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="909,308,1056,335"/>
 <area shape="rect" id="node6" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="677,308,840,335"/>

@@ -1,6 +1,6 @@
 <map id="TTrainController::CheckNonRepeatingShuttleLinksAndSetData" name="TTrainController::CheckNonRepeatingShuttleLinksAndSetData">
 <area shape="rect" id="node1" title="A timetable validation function where cross references are checked for validity for non&#45;repeating shu..." alt="" coords="5,57,228,98"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="504,8,651,35"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="504,8,651,35"/>
 <area shape="rect" id="node3" href="$class_t_train_controller.html#a45168500acc985a1573602e0c00a0d9a" title="The forward train is the finish shuttle entry &#39;Fns&#45;sh&#39;, the reverse (new non&#45;repeating service) time ..." alt="" coords="276,28,456,69"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="504,63,651,90"/>
 <area shape="rect" id="node5" href="$class_t_train_controller.html#a8df4599a1ae95093241fb707711af894" title="Give a user message during timetable integrity checking if GiveMessages is true, ignore if false." alt="" coords="284,145,448,186"/>

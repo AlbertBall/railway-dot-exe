@@ -1,6 +1,6 @@
 <map id="TTrack::CheckTrackElementsInFile" name="TTrack::CheckTrackElementsInFile">
 <area shape="rect" id="node1" title="True if TrackElements in the file are all valid." alt="" coords="5,129,199,170"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="259,5,406,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="259,5,406,32"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a0a0ef5bf2fc74c0026f2a8bec4151d37" title="checks that the value is a string (&#39;0&#39; or &#39; &#39; (CRLF) accepted as delimiters), returns true for succes..." alt="" coords="467,74,637,115"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a4d229af6e8943da1936bcbcc1c83846b" title="checks that the value is an int lying between Lowest &amp; Highest (inclusive), returns true for success" alt="" coords="257,107,409,133"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a8bc6745e0433d55022e016b6551f04a0" title="checks that the value is a string (&#39;0&#39; only accepted as the delimiter), returns true for success" alt="" coords="247,158,419,199"/>

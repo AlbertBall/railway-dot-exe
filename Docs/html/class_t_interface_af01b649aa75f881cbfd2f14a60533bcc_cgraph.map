@@ -1,6 +1,6 @@
 <map id="TInterface::SetLevel2PrefDirMode" name="TInterface::SetLevel2PrefDirMode">
 <area shape="rect" id="node1" title="Sets the Level2PrefDirMode user mode, using the Level2PrefDirMode variable to determine the mode." alt="" coords="5,2124,171,2166"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1225,1348,1372,1374"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1225,1348,1372,1374"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="456,1012,636,1054"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1225,1744,1372,1770"/>
 <area shape="rect" id="node35" href="$class_t_one_pref_dir.html#a7b81a1377e6269aafad6c25c929b2852" title="Used when setting preferred directions, true if able to finish at the last selected element (can&#39;t fi..." alt="" coords="721,2394,895,2421"/>

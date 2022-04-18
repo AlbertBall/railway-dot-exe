@@ -1,5 +1,5 @@
 <map id="TTrainController::StopTTClockMessage" name="TTrainController::StopTTClockMessage">
 <area shape="rect" id="node1" title="sends a message to the user and stops the timetable clock while it is displayed" alt="" coords="5,23,200,65"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="248,5,395,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="248,5,395,32"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="248,56,395,83"/>
 </map>

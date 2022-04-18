@@ -1,7 +1,7 @@
 <map id="TInterface::FlipMenuItemClick" name="TInterface::FlipMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,2333,169,2375"/>
 <area shape="rect" id="node2" href="$class_t_track.html#af507e9106aa12a670d6b09bd575cbfc3" title="Return a basic track element from the SpeedTag new at v2.2.0 &#45; needed because Interface doesn&#39;t have ..." alt="" coords="760,1901,939,1943"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1244,761,1391,787"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1244,761,1391,787"/>
 <area shape="rect" id="node4" href="$class_t_pref_dir_element.html#ae8ee9f59578f80d23aebfdb9fff041d4" title="determines and loads EXNumber (see above)" alt="" coords="505,220,684,261"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1244,1190,1391,1217"/>
 <area shape="rect" id="node6" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="261,2759,396,2786"/>

@@ -1,6 +1,6 @@
 <map id="TTrack::LengthMarker" name="TTrack::LengthMarker">
 <area shape="rect" id="node1" title="Examine all elements in the TrackVector and if have a valid length mark the relevant track using Mark..." alt="" coords="5,245,153,272"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="637,85,784,112"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="637,85,784,112"/>
 <area shape="rect" id="node3" href="$class_t_track.html#a6cab5ab84e10504ef1c9d39e931d42fe" title="Mark on screen a track element according to its length and speed limit if either of these differ from..." alt="" coords="201,115,363,141"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="637,195,784,221"/>
 <area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="413,245,575,272"/>

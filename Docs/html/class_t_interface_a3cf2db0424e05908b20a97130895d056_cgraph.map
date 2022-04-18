@@ -1,7 +1,7 @@
 <map id="TInterface::RotLeftMenuItemClick" name="TInterface::RotLeftMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,1267,189,1308"/>
 <area shape="rect" id="node2" href="$class_t_track.html#af507e9106aa12a670d6b09bd575cbfc3" title="Return a basic track element from the SpeedTag new at v2.2.0 &#45; needed because Interface doesn&#39;t have ..." alt="" coords="259,5,438,47"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1505,1218,1652,1245"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1505,1218,1652,1245"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="765,1480,945,1521"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1505,663,1652,690"/>
 <area shape="rect" id="node8" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1263,1093,1439,1135"/>

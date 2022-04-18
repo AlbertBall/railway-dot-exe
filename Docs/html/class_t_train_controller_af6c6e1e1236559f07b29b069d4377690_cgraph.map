@@ -1,9 +1,9 @@
 <map id="TTrainController::SendPerformanceSummary" name="TTrainController::SendPerformanceSummary">
-<area shape="rect" id="node1" title="At the end of operation a summary of overall performance is sent to the performance file by this func..." alt="" coords="5,97,228,138"/>
-<area shape="rect" id="node2" href="$class_t_train_controller.html#aadffada34a23350d7773bc7735e423a1" title="calculates additional lateness values for trains that haven&#39;t reached their destinations yet" alt="" coords="276,97,479,138"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="785,53,932,80"/>
-<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="785,180,932,207"/>
-<area shape="rect" id="node4" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="527,104,737,131"/>
-<area shape="rect" id="node6" href="$class_t_train.html#a77e1368fb80820dd2c3350858c28ceab" title=" " alt="" coords="536,53,728,80"/>
-<area shape="rect" id="node7" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="533,155,731,181"/>
+<area shape="rect" id="node1" title="At the end of operation a summary of overall performance is sent to the performance file by this func..." alt="" coords="5,145,228,187"/>
+<area shape="rect" id="node2" href="$class_t_train_controller.html#aadffada34a23350d7773bc7735e423a1" title="calculates additional lateness values for trains that haven&#39;t reached their destinations yet" alt="" coords="276,127,479,168"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="785,101,932,127"/>
+<area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="785,177,932,203"/>
+<area shape="rect" id="node7" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="533,214,731,241"/>
+<area shape="rect" id="node4" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="527,113,737,139"/>
+<area shape="rect" id="node6" href="$class_t_train.html#a77e1368fb80820dd2c3350858c28ceab" title=" " alt="" coords="536,62,728,89"/>
 </map>

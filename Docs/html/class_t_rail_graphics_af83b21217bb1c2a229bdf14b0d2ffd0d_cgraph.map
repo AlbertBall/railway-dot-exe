@@ -1,6 +1,6 @@
 <map id="TRailGraphics::ChangeBackgroundColour3" name="TRailGraphics::ChangeBackgroundColour3">
 <area shape="rect" id="node1" title="as above but uses Scanline" alt="" coords="5,25,229,66"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="500,5,647,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="500,5,647,32"/>
 <area shape="rect" id="node3" href="$class_t_rail_graphics.html#a654ae6c6b77e20d1625f1e52d04d9d69" title="used in ChangeBackgroundColour3 to convert a named colour to a number for Scanline" alt="" coords="277,25,452,66"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="500,60,647,87"/>
 </map>

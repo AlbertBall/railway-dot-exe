@@ -1,6 +1,6 @@
 <map id="TTextHandler::EnterAndDisplayNewText" name="TTextHandler::EnterAndDisplayNewText">
 <area shape="rect" id="node1" title="add Text to TextVector and display it on the screen" alt="" coords="5,74,208,115"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="503,5,649,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="503,5,649,32"/>
 <area shape="rect" id="node3" href="$class_t_display.html#adfff17bfef798b07b1e6bbfc6f5e0822" title="Display TextString at the defined position with the defined font." alt="" coords="292,56,419,83"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="503,56,649,83"/>
 <area shape="rect" id="node5" href="$class_t_text_handler.html#aa91cd392aacad3dbd69541b2ecad7f8e" title="push &amp;Text onto TextVector &amp; reset the size of the railway if necessary" alt="" coords="256,157,455,184"/>

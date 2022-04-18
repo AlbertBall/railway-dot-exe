@@ -1,6 +1,6 @@
 <map id="TTrainController::CheckStartAllowable" name="TTrainController::CheckStartAllowable">
 <area shape="rect" id="node1" title="Called when trying to introduce a new train &#45; checks for points in correct orientation,..." alt="" coords="5,288,191,329"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="797,245,944,271"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="797,245,944,271"/>
 <area shape="rect" id="node3" href="$class_t_all_routes.html#ac80a3ae43f749d401f470de711e8e4b0" title="If a route is present at H, V &amp; Elink returns true with RouteNumber giving vector position in AllRout..." alt="" coords="552,208,749,249"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="797,401,944,427"/>
 <area shape="rect" id="node5" href="$class_t_all_routes.html#aa92b37f73176fcf3454688bb15b9f64c" title="Checks whether the preferred direction element at TrackVectorPosition with XLinkPos value is in a loc..." alt="" coords="239,135,504,191"/>

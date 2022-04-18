@@ -1,6 +1,0 @@
-<map id="TTrack::WriteTrackToImage" name="TTrack::WriteTrackToImage">
-<area shape="rect" id="node1" title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI..." alt="" coords="243,78,424,105"/>
-<area shape="rect" id="node2" href="$class_t_interface.html#a14d8976ee13c85f12eab634de845baf1" title=" " alt="" coords="14,5,186,47"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#ab73377784e302350bcc4f1fed4f8d90a" title=" " alt="" coords="14,71,186,112"/>
-<area shape="rect" id="node4" href="$class_t_interface.html#a69b645fe4cc36d0bea7de3fca553bd6a" title=" " alt="" coords="5,136,195,177"/>
-</map>

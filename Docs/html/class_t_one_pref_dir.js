@@ -21,6 +21,7 @@ var class_t_one_pref_dir =
     [ "EveryPrefDirMarker", "class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c", null ],
     [ "ExternalClearPrefDirAnd4MultiMap", "class_t_one_pref_dir.html#abc09de3c32460a73d3de12625329210d", null ],
     [ "ExternalStorePrefDirElement", "class_t_one_pref_dir.html#a5e8d14c19c70cafe968e7481b116a714", null ],
+    [ "FindLinkingCompatiblePrefDir", "class_t_one_pref_dir.html#a54e50116bec37610fcb000bc21189471", null ],
     [ "FindLinkingPrefDir", "class_t_one_pref_dir.html#abe7f6088b7563714522882c10f6ae7f6", null ],
     [ "GetExactMatchFrom4MultiMap", "class_t_one_pref_dir.html#a8bc65b139325c45b57a9f43a9b3404a8", null ],
     [ "GetFixedPrefDirElementAt", "class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8", null ],

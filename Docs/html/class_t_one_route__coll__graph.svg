@@ -108,10 +108,10 @@ var sectionId = 'dynsection-1';
 <text text-anchor="start" x="8" y="-497.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ CheckOnePrefDir()</text>
 <text text-anchor="start" x="8" y="-486.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ EndPossible()</text>
 <text text-anchor="start" x="8" y="-475.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ FindLinkingPrefDir()</text>
-<text text-anchor="start" x="8" y="-464.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetNextPrefDirElement()</text>
-<text text-anchor="start" x="8" y="-453.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetStartAndEndPrefDirElements()</text>
-<text text-anchor="start" x="8" y="-442.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetPrefDirStartElement()</text>
-<text text-anchor="start" x="8" y="-431.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 24 more...</text>
+<text text-anchor="start" x="8" y="-464.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ FindLinkingCompatiblePrefDir()</text>
+<text text-anchor="start" x="8" y="-453.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetNextPrefDirElement()</text>
+<text text-anchor="start" x="8" y="-442.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetStartAndEndPrefDirElements()</text>
+<text text-anchor="start" x="8" y="-431.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 25 more...</text>
 <text text-anchor="start" x="8" y="-420.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PresetAutoRouteDiagonalFouled</text>
 <text text-anchor="start" x="8" y="-409.5" font-family="Helvetica,sans-Serif" font-size="10.00">ByTrack()</text>
 <text text-anchor="start" x="8" y="-398.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PresetAutoRouteElementValid()</text>

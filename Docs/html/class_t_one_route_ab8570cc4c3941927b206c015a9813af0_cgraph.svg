@@ -68,7 +68,7 @@ var sectionId = 'dynsection-37';
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="pops the last entry off the call stack, throws an error if called when empty">
+<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied">
 <polygon fill="white" stroke="black" points="532,-143 532,-162 642,-162 642,-143 532,-143"/>
 <text text-anchor="middle" x="587" y="-150" font-family="Helvetica,sans-Serif" font-size="10.00">TUtilities::CallLogPop</text>
 </a>

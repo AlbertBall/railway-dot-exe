@@ -4,7 +4,7 @@
 <area shape="rect" id="node8" href="$class_t_track.html#a794daa0471b473e28ff24c87a92112dc" title="True if there are gaps in the railway and any are unset." alt="" coords="541,289,676,316"/>
 <area shape="rect" id="node9" href="$class_t_track.html#aa8386109483977bfaa97909747358149" title="Indicates whether or not the track has been successfully linked together." alt="" coords="271,315,431,341"/>
 <area shape="rect" id="node10" href="$class_t_track.html#ad7d7ef450424ea6aab50db5445c6448c" title="True if there are unnamed NamedLocationElements (includes footcrossings)" alt="" coords="515,213,702,240"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1013,227,1160,253"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1013,227,1160,253"/>
 <area shape="rect" id="node4" href="$class_t_track.html#abd5dcc3c2beef43856091745c72d8317" title="Used in checking for duplicate location names after Bill78 (discord name) developed the ...." alt="" coords="505,147,712,189"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1013,151,1160,177"/>
 <area shape="rect" id="node5" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="760,163,965,189"/>

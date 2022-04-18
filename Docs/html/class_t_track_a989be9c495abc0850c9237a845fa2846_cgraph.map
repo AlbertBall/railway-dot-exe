@@ -1,6 +1,6 @@
 <map id="TTrack::LoadGraphics" name="TTrack::LoadGraphics">
 <area shape="rect" id="node1" title="new at v2.4.0, load user graphics" alt="" coords="5,88,155,115"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="443,114,589,140"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="443,114,589,140"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c" title="loads an int value from the file" alt="" coords="227,38,370,64"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a0aac90f10a08736514da3b3e02129e1e" title="loads a string value from the file" alt="" coords="217,88,380,115"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="443,176,589,203"/>

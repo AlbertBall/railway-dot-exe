@@ -1,6 +1,6 @@
 <map id="TInterface::SetLevel1Mode" name="TInterface::SetLevel1Mode">
 <area shape="rect" id="node1" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="5,936,180,962"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1280,1117,1427,1144"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1280,1117,1427,1144"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="495,1714,675,1755"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1280,1896,1427,1922"/>
 <area shape="rect" id="node9" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="1044,2752,1209,2778"/>

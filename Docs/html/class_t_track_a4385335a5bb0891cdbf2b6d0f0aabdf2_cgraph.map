@@ -1,6 +1,6 @@
 <map id="TTrack::PlotAndAddTrackElement" name="TTrack::PlotAndAddTrackElement">
 <area shape="rect" id="node1" title="Called during track building or pasting, when an element identified by CurrentTag (i...." alt="" coords="5,1230,224,1257"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1507,2185,1653,2212"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1507,2185,1653,2212"/>
 <area shape="rect" id="node3" href="$class_t_track.html#aaf3f48b8df9877499aaf4c05f804426c" title="Validity test." alt="" coords="995,1734,1185,1775"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1507,1292,1653,1318"/>
 <area shape="rect" id="node6" href="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da" title="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..." alt="" coords="1262,1226,1445,1267"/>

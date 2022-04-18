@@ -1,6 +1,6 @@
 <map id="TInterface::SaveTimetableToErrorFile" name="TInterface::SaveTimetableToErrorFile">
 <area shape="rect" id="node1" title="Called when compiling the error log file, to save the loaded timetable if any and the timetable being..." alt="" coords="5,49,176,90"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="435,5,581,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="435,5,581,32"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a7fa894f52a3cb9746e81166ec1a81bf3" title="Delays operation for the set time in milliseconds." alt="" coords="246,31,365,57"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="435,56,581,83"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a60531c6cb1a6a33dd71299d3a5b6cc21" title="stores the string value to the file, then a &#39;0&#39; delimiter then a CR" alt="" coords="224,132,387,159"/>

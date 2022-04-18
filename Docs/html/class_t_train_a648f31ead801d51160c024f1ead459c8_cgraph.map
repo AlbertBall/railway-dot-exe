@@ -1,6 +1,6 @@
 <map id="TTrain::RepeatShuttleOrNewNonRepeatService" name="TTrain::RepeatShuttleOrNewNonRepeatService">
 <area shape="rect" id="node1" title="Carry out the actions needed to create either a new shuttle service or (if all repeats have finished)..." alt="" coords="5,1502,192,1543"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1516,1264,1663,1291"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1516,1264,1663,1291"/>
 <area shape="rect" id="node3" href="$class_t_train_controller.html#afb0e8fd36435809350cb323ab9fe2213" title="Return the service headcode for the repeat service." alt="" coords="969,627,1152,669"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1516,1761,1663,1788"/>
 <area shape="rect" id="node6" href="$class_t_train.html#a493ab1c185d29bf28ec8fded2356e9fc" title="Send a message to the performance log and performance file, and if the message is flagged as a warnin..." alt="" coords="717,273,840,300"/>

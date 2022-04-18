@@ -1,6 +1,6 @@
 <map id="TTrack::PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers" name="TTrack::PlotPlainRaisedLinkedLevelCrossingBarriersAndSetMarkers">
 <area shape="rect" id="node1" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway." alt="" coords="5,271,243,312"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="757,114,904,141"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="757,114,904,141"/>
 <area shape="rect" id="node3" href="$class_t_track.html#a224071baecc50be0a643711bf9005db2" title="Return a reference to the inactive element at HLoc &amp; VLoc, if no element is found an error is thrown." alt="" coords="291,300,456,342"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="757,282,904,309"/>
 <area shape="rect" id="node6" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="310,249,437,276"/>

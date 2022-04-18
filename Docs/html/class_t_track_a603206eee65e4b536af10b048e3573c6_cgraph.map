@@ -1,6 +1,6 @@
 <map id="TTrack::SetLinkedManualLCs" name="TTrack::SetLinkedManualLCs">
 <area shape="rect" id="node1" title="Set all TypeOfRoute values to 2 for all linked LCs to indicate manually lowered." alt="" coords="5,104,197,131"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="673,104,820,131"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="673,104,820,131"/>
 <area shape="rect" id="node3" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="245,163,372,189"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="673,221,820,248"/>
 <area shape="rect" id="node7" href="$class_t_track.html#aec33abe03255861c32284031b7c9dd98" title="Set TypeOfRoute value to 2 to indicate barriers manually closed." alt="" coords="425,38,621,79"/>

@@ -1,6 +1,6 @@
 <map id="TInterface::ClearandRebuildRailway" name="TInterface::ClearandRebuildRailway">
 <area shape="rect" id="node1" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="5,1380,185,1422"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1048,1626,1195,1653"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1048,1626,1195,1653"/>
 <area shape="rect" id="node3" href="$class_t_display.html#a8d990507ae0111e0b7890e8aa77fd76d" title="Empty the display." alt="" coords="816,2748,969,2774"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1048,1985,1195,2012"/>
 <area shape="rect" id="node5" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="533,396,704,438"/>

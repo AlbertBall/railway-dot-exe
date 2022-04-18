@@ -1,6 +1,6 @@
 <map id="TInterface::DeleteOnePrefDirButtonClick" name="TInterface::DeleteOnePrefDirButtonClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,1386,176,1427"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1487,1268,1634,1294"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1487,1268,1634,1294"/>
 <area shape="rect" id="node3" href="$class_t_one_pref_dir.html#a8042c0e2fd7f9e39c3ca2a7bff7c68a4" title="Erase element at HLoc and VLoc from the PrefDirVector and from the 4MultiMap. Note that this entails ..." alt="" coords="457,668,643,710"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1487,1486,1634,1513"/>
 <area shape="rect" id="node9" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1217,818,1393,859"/>

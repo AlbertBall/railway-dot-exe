@@ -26,7 +26,7 @@
 <text text-anchor="start" x="115" y="-499.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ FontButton</text>
 <text text-anchor="start" x="115" y="-488.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ TextOrUserGraphicGridButton</text>
 <text text-anchor="start" x="115" y="-477.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ SetLengthsButton</text>
-<text text-anchor="start" x="115" y="-466.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 522 more...</text>
+<text text-anchor="start" x="115" y="-466.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 527 more...</text>
 <text text-anchor="start" x="115" y="-455.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; Level2OperMode</text>
 <text text-anchor="start" x="115" y="-444.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; Level2PrefDirMode</text>
 <text text-anchor="start" x="115" y="-433.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; Level2TrackMode</text>
@@ -37,7 +37,7 @@
 <text text-anchor="start" x="115" y="-378.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; InfoVector</text>
 <text text-anchor="start" x="115" y="-367.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; DynMapToHost</text>
 <text text-anchor="start" x="115" y="-356.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; DynMapFromHost</text>
-<text text-anchor="start" x="115" y="-345.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 174 more...</text>
+<text text-anchor="start" x="115" y="-345.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 175 more...</text>
 <text text-anchor="start" x="115" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; RAILWAY_DIR_NAME</text>
 <text text-anchor="start" x="115" y="-323.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; TIMETABLE_DIR_NAME</text>
 <text text-anchor="start" x="115" y="-312.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; PERFLOG_DIR_NAME</text>
@@ -56,7 +56,7 @@
 <text text-anchor="start" x="115" y="-172.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ CreateTimetableMenuItemClick()</text>
 <text text-anchor="start" x="115" y="-161.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ CutMenuItemClick()</text>
 <text text-anchor="start" x="115" y="-150.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ DeleteMenuItemClick()</text>
-<text text-anchor="start" x="115" y="-139.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 194 more...</text>
+<text text-anchor="start" x="115" y="-139.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 198 more...</text>
 <text text-anchor="start" x="115" y="-128.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; PopulateCouplingMap()</text>
 <text text-anchor="start" x="115" y="-117.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; BuildOneRailwayCouplingMap()</text>
 <text text-anchor="start" x="115" y="-106.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; RlyToNum()</text>
@@ -68,7 +68,7 @@
 <text text-anchor="start" x="115" y="-40.5" font-family="Helvetica,sans-Serif" font-size="10.00">Datagram()</text>
 <text text-anchor="start" x="115" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; BuildDynamicMapFromHostDatagram()</text>
 <text text-anchor="start" x="115" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; NumHVPairCheckOK()</text>
-<text text-anchor="start" x="115" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 93 more...</text>
+<text text-anchor="start" x="115" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 94 more...</text>
 </a>
 </g>
 </g>
@@ -162,10 +162,10 @@
 <text text-anchor="start" x="188" y="-1273.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ CheckOnePrefDir()</text>
 <text text-anchor="start" x="188" y="-1262.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ EndPossible()</text>
 <text text-anchor="start" x="188" y="-1251.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ FindLinkingPrefDir()</text>
-<text text-anchor="start" x="188" y="-1240.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetNextPrefDirElement()</text>
-<text text-anchor="start" x="188" y="-1229.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetStartAndEndPrefDirElements()</text>
-<text text-anchor="start" x="188" y="-1218.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetPrefDirStartElement()</text>
-<text text-anchor="start" x="188" y="-1207.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 24 more...</text>
+<text text-anchor="start" x="188" y="-1240.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ FindLinkingCompatiblePrefDir()</text>
+<text text-anchor="start" x="188" y="-1229.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetNextPrefDirElement()</text>
+<text text-anchor="start" x="188" y="-1218.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ GetStartAndEndPrefDirElements()</text>
+<text text-anchor="start" x="188" y="-1207.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 25 more...</text>
 <text text-anchor="start" x="188" y="-1196.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PresetAutoRouteDiagonalFouled</text>
 <text text-anchor="start" x="188" y="-1185.5" font-family="Helvetica,sans-Serif" font-size="10.00">ByTrack()</text>
 <text text-anchor="start" x="188" y="-1174.5" font-family="Helvetica,sans-Serif" font-size="10.00"># PresetAutoRouteElementValid()</text>

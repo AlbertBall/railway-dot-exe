@@ -1,6 +1,6 @@
 <map id="TTrain::CheckAndCancelRouteForWrongEndEntry" name="TTrain::CheckAndCancelRouteForWrongEndEntry">
 <area shape="rect" id="node1" title="Checks whether Element and EntryPos (where train is about to enter) is on an existing route (or cross..." alt="" coords="5,2009,204,2050"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1843,927,1989,954"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1843,927,1989,954"/>
 <area shape="rect" id="node3" href="$class_t_all_routes.html#ae3fb64509afc46d5871c7843c7769f88" title="As above but only checks for a route (may or may not be a train present (new at v1...." alt="" coords="1048,228,1231,269"/>
 <area shape="rect" id="node4" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1343,945,1519,986"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1843,1424,1989,1451"/>

@@ -1,6 +1,6 @@
 <map id="TTrain::SaveOneSessionTrain" name="TTrain::SaveOneSessionTrain">
 <area shape="rect" id="node1" title="Data for a single train is saved to a session file." alt="" coords="5,132,197,159"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="257,5,403,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="257,5,403,32"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a06a211ebaa112f3fac0edc5b238ef876" title="stores &#39;1&#39; if the bool is true or &#39;0&#39; if false to the file, then a CR" alt="" coords="253,56,407,83"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a92b5adfb8ad3a937a8d208bfd90a5741" title="converts the double value to a string (if double stored directly it is truncated to 6 digits) then st..." alt="" coords="245,107,415,133"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a60531c6cb1a6a33dd71299d3a5b6cc21" title="stores the string value to the file, then a &#39;0&#39; delimiter then a CR" alt="" coords="463,132,625,159"/>

@@ -1,6 +1,6 @@
 <map id="TInterface::FileIntegrityCheck" name="TInterface::FileIntegrityCheck">
 <area shape="rect" id="node1" title="Check integrity of a railway file prior to loading, return true for success." alt="" coords="5,157,159,199"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="490,71,637,98"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="490,71,637,98"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a4d229af6e8943da1936bcbcc1c83846b" title="checks that the value is an int lying between Lowest &amp; Highest (inclusive), returns true for success" alt="" coords="487,325,639,351"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a8bc6745e0433d55022e016b6551f04a0" title="checks that the value is a string (&#39;0&#39; only accepted as the delimiter), returns true for success" alt="" coords="477,5,649,47"/>
 <area shape="rect" id="node6" href="$class_t_text_handler.html#a9b78e10ef2f0907a845c0d8ed7ccdede" title="check the validity of text items in VecFile prior to loading, return true for success" alt="" coords="207,92,429,133"/>

@@ -1,7 +1,7 @@
 <map id="TTrack::TryToConnectTrack" name="TTrack::TryToConnectTrack">
 <area shape="rect" id="node1" title="Handles all tasks associated with track linking, returns true if successful (see also LinkTrack &amp; Lin..." alt="" coords="5,1127,187,1154"/>
 <area shape="rect" id="node2" href="$class_t_track.html#a1a3aca3dd4e4bdc7e4c3c254997c2c5a" title="Examine TrackVector and whenever find a new gap pair enter it into GapMap." alt="" coords="745,554,955,596"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1256,1004,1403,1031"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1256,1004,1403,1031"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1256,1834,1403,1860"/>
 <area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1024,772,1187,799"/>
 <area shape="rect" id="node6" href="$class_t_track.html#a6c4ff502fade845fc1b9011cc4532e3a" title="Validity test." alt="" coords="513,671,668,698"/>

@@ -1,6 +1,6 @@
 <map id="TOneRoute::SetRouteSignals" name="TOneRoute::SetRouteSignals">
 <area shape="rect" id="node1" title="Called when setting a route to set all points appropriately. Also called when a new train is added at..." alt="" coords="5,371,197,398"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1567,1040,1713,1067"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1567,1040,1713,1067"/>
 <area shape="rect" id="node3" href="$class_t_one_route.html#a4d92e68782eea0534a02e1b8176bc730" title="Used when setting signal aspects for a route by working forwards through the route to see what the ne..." alt="" coords="749,361,952,402"/>
 <area shape="rect" id="node5" href="$class_t_all_routes.html#a0a9ccbc84687f85806115877aa86dcfd" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="1045,265,1221,306"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1567,518,1713,544"/>

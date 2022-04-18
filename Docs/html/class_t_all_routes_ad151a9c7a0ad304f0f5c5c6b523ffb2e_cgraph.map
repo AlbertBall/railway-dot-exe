@@ -1,6 +1,6 @@
 <map id="TAllRoutes::CheckRoutes" name="TAllRoutes::CheckRoutes">
 <area shape="rect" id="node1" title="Performs an integrity check on the routes stored in a session file and returns false if there is an e..." alt="" coords="5,148,176,175"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="485,5,631,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="485,5,631,32"/>
 <area shape="rect" id="node3" href="$class_t_one_pref_dir.html#a1896affce3465b84cfd5128cca122639" title="Called before PrefDir loading as part of the FileIntegrityCheck function in case there is an error in..." alt="" coords="224,123,424,149"/>
 <area shape="rect" id="node7" href="$class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c" title="loads an int value from the file" alt="" coords="487,173,629,200"/>
 <area shape="rect" id="node8" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="485,224,631,251"/>

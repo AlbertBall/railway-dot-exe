@@ -1,6 +1,6 @@
 <map id="TInterface::MainScreenMouseDown3" name="TInterface::MainScreenMouseDown3">
 <area shape="rect" id="node1" title="Called when mouse button clicked in zoom&#45;out mode." alt="" coords="5,2654,200,2695"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1740,1074,1887,1101"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1740,1074,1887,1101"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="955,1372,1135,1414"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1740,1746,1887,1773"/>
 <area shape="rect" id="node35" href="$class_t_interface.html#ac0c9be911e93134ddda04ba498a8bd9c" title="Called during operation whenever the route type buttons need to be disabled, e.g. when paused." alt="" coords="708,2308,871,2350"/>

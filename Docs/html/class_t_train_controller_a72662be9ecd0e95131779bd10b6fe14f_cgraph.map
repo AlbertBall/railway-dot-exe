@@ -1,6 +1,6 @@
 <map id="TTrainController::CheckCrossReferencesAndSetData" name="TTrainController::CheckCrossReferencesAndSetData">
 <area shape="rect" id="node1" title="A timetable validation function where all service cross references are checked for validity and set p..." alt="" coords="5,332,196,373"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="748,251,895,278"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="748,251,895,278"/>
 <area shape="rect" id="node3" href="$class_t_train_controller.html#afe4a83b3b7ba6daa955ce5617d509d51" title="Check that shuttle link services have consistent times, true for success." alt="" coords="488,45,687,87"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="748,327,895,354"/>
 <area shape="rect" id="node5" href="$class_t_track.html#a7eba939947b4c035a191ecaaf1b0bb9a" title="True if there is at least one named location element with name &#39;LocationName&#39;, used in timetable inte..." alt="" coords="244,180,427,221"/>

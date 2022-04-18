@@ -1,7 +1,7 @@
 <map id="TOneRoute::GetPreferredRouteStartElement" name="TOneRoute::GetPreferredRouteStartElement">
 <area shape="rect" id="node1" title="Set the starting conditions for a preferred direction or automatic signal route selection beginning o..." alt="" coords="5,486,208,527"/>
 <area shape="rect" id="node2" href="$class_t_all_routes.html#a438b71f3afbc2c8adb45b47f69cb3bb9" title="Returns the number of routes in the railway." alt="" coords="301,5,476,32"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="831,519,977,545"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="831,519,977,545"/>
 <area shape="rect" id="node4" href="$class_t_one_route.html#a05ce65e80c2272a775f6497890d42b6b" title="Empty the route of any stored elements." alt="" coords="309,224,468,251"/>
 <area shape="rect" id="node5" href="$class_t_track.html#ad55e3329a208e84e9e7519cc024b7aec" title="True if find a non&#45;platform element at HLoc &amp; VLoc, and if so return its TrackVector position and a r..." alt="" coords="288,275,489,301"/>
 <area shape="rect" id="node7" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="831,685,977,712"/>

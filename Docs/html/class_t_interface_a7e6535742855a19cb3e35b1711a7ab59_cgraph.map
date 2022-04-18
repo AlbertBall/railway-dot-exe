@@ -1,6 +1,6 @@
 <map id="TInterface::FlashingGraphics" name="TInterface::FlashingGraphics">
 <area shape="rect" id="node1" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="5,1490,192,1517"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1296,1623,1443,1650"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1296,1623,1443,1650"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="255,2015,435,2056"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1296,2003,1443,2030"/>
 <area shape="rect" id="node10" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="1081,1699,1202,1726"/>

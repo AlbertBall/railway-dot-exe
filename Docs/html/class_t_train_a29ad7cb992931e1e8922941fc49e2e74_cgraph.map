@@ -1,6 +1,6 @@
 <map id="TTrain::SendMissedActionLogs" name="TTrain::SendMissedActionLogs">
 <area shape="rect" id="node1" title="Missed actions (see NameInTimetableBeforeCDT above) sent to the performance log and performance file." alt="" coords="5,184,208,211"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="724,83,871,110"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="724,83,871,110"/>
 <area shape="rect" id="node3" href="$class_t_train.html#a89e17b8d82633276576e365c980e718a" title="True if train service terminates at its current location." alt="" coords="494,32,665,59"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="724,260,871,287"/>
 <area shape="rect" id="node5" href="$class_t_train_controller.html#a9acd46962be476bc76c8d5ce59fff399" title="Send an error message to the performance log and file, and as a warning if appropriate." alt="" coords="256,177,435,218"/>

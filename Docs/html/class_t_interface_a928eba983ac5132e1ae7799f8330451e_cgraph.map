@@ -1,6 +1,6 @@
 <map id="TInterface::ClearAllMenuItemClick" name="TInterface::ClearAllMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,2347,168,2389"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1885,980,2031,1007"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1885,980,2031,1007"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a686430e962991bc32742399164187b62" title="First check whether a railway file has changed and if so ask user if really wants to close it without..." alt="" coords="216,2140,392,2167"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1885,1709,2031,1736"/>
 <area shape="rect" id="node17" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="634,1165,809,1192"/>

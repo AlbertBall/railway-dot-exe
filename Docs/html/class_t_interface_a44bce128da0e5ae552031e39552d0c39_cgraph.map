@@ -1,6 +1,6 @@
 <map id="TInterface::HighLightOneGap" name="TInterface::HighLightOneGap">
 <area shape="rect" id="node1" title="Called during gap setting to mark a gap with a red ellipse and ask user to select the corresponding g..." alt="" coords="5,2483,193,2510"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1283,1413,1429,1439"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1283,1413,1429,1439"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="241,1873,421,1915"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1283,1822,1429,1849"/>
 <area shape="rect" id="node48" href="$class_t_track.html#a411cfd944b75372ae56937d69fb8b1c5" title="True if there is an unset gap, and if so it is marked with a red circle, used during gap setting." alt="" coords="771,353,938,395"/>

@@ -1,6 +1,6 @@
 <map id="TDisplay::Rectangle" name="TDisplay::Rectangle">
 <area shape="rect" id="node1" title="Plot a rectangle at the defined position with colour Col &amp; size defined by Size." alt="" coords="5,81,144,108"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="192,5,339,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="192,5,339,32"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="192,56,339,83"/>
 <area shape="rect" id="node4" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="205,107,326,133"/>
 <area shape="rect" id="node5" href="$class_t_display.html#a39cee11613d156de0d1f5df923a02c8d" title="Return the width of the screen." alt="" coords="208,157,323,184"/>

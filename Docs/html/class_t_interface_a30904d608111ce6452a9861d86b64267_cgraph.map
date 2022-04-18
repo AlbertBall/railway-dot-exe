@@ -1,6 +1,6 @@
 <map id="TInterface::AddMinsButtonClick" name="TInterface::AddMinsButtonClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,1272,180,1313"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1467,1162,1614,1188"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1467,1162,1614,1188"/>
 <area shape="rect" id="node3" href="$class_t_train_controller.html#a523077cf0c9c02c8cb56dab0af9b0e52" title="returns true if the time complies with requirements" alt="" coords="1210,953,1395,994"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1467,1528,1614,1555"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="487,808,621,835"/>

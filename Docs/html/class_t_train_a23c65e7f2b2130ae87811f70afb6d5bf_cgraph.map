@@ -1,6 +1,6 @@
 <map id="TTrain::LoadOneSessionTrain" name="TTrain::LoadOneSessionTrain">
 <area shape="rect" id="node1" title="Create one train with relevant member values from the sesion file." alt="" coords="5,607,197,634"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1276,966,1423,993"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1276,966,1423,993"/>
 <area shape="rect" id="node3" href="$class_t_rail_graphics.html#ad6db946801b17d5d4b462bc2c95ebfbd" title="New function to do the same as the above but with fewer pixel changes &#45; for use in LoadSession to avo..." alt="" coords="996,1156,1216,1197"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1276,537,1423,563"/>
 <area shape="rect" id="node5" href="$class_t_train_controller.html#a1925032d5e41decf4befc07b35521d3c" title="Returns true if the location name complies with requirements." alt="" coords="469,549,676,591"/>

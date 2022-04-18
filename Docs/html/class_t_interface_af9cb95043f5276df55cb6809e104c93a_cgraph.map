@@ -1,6 +1,6 @@
 <map id="TInterface::DeleteAllPrefDirButtonClick" name="TInterface::DeleteAllPrefDirButtonClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,1966,167,2007"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1442,1501,1589,1528"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1442,1501,1589,1528"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="473,2293,608,2320"/>
 <area shape="rect" id="node12" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1442,1770,1589,1797"/>
 <area shape="rect" id="node21" href="$class_t_one_pref_dir.html#abc09de3c32460a73d3de12625329210d" title="Empty the existing preferred direction vector &amp; map &#45; for use by other classes." alt="" coords="692,1588,871,1630"/>

@@ -1,6 +1,6 @@
 <map id="TInterface::BlackBgndMenuItemClick" name="TInterface::BlackBgndMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,1471,187,1512"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1523,1109,1670,1136"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1523,1109,1670,1136"/>
 <area shape="rect" id="node3" href="$class_t_rail_graphics.html#a5121c6d8b8fa69eefc293ca51cddce88" title=" " alt="" coords="1005,99,1176,140"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1523,1492,1670,1518"/>
 <area shape="rect" id="node7" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="531,2393,665,2420"/>

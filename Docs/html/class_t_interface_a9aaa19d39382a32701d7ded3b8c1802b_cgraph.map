@@ -1,6 +1,6 @@
 <map id="TInterface::TrackTrainFloat" name="TInterface::TrackTrainFloat">
 <area shape="rect" id="node1" title="Controls the floating window function, called during the ClockTimer2 function." alt="" coords="5,1259,180,1285"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1481,736,1628,763"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1481,736,1628,763"/>
 <area shape="rect" id="node3" href="$class_t_train.html#a81bf61b47a2867f0c6901b1ea6f47177" title="Used in the floating window to display the timetable." alt="" coords="470,758,637,799"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1481,1592,1628,1619"/>
 <area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="991,925,1154,952"/>

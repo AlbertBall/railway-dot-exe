@@ -22,7 +22,7 @@
 <area shape="rect" id="node20" href="$class_t_train_controller.html#a57a934999d63367128ca639b9ab3e3ce" title="save locked routes to a session file" alt="" coords="1227,375,1421,416"/>
 <area shape="rect" id="node21" href="$class_t_train_controller.html#afa594bfc6b628d21d02a31c3a13c3a0a" title="save trains to a session file" alt="" coords="1227,827,1421,868"/>
 <area shape="rect" id="node22" href="$class_t_text_handler.html#a07441155bee467c9fb111b8332681466" title="save the railway&#39;s text to VecFile" alt="" coords="989,829,1147,856"/>
-<area shape="rect" id="node7" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1489,1770,1635,1797"/>
+<area shape="rect" id="node7" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1489,1770,1635,1797"/>
 <area shape="rect" id="node23" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="1227,1248,1421,1274"/>
 <area shape="rect" id="node26" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="978,2371,1158,2412"/>
 <area shape="rect" id="node27" href="$class_t_track.html#aa67be9f8ad9bd885f649b26962e0d41d" title="True if there is a platform, NamedNonStationLocation or Concourse present in the railway." alt="" coords="1219,2430,1429,2471"/>

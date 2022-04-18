@@ -1,6 +1,6 @@
 <map id="TOnePrefDir::CheckPrefDirAgainstTrackVector" name="TOnePrefDir::CheckPrefDirAgainstTrackVector">
 <area shape="rect" id="node1" title="Check loaded PrefDir against loaded track, and if discrepancies found give message &amp; clear EveryPrefD..." alt="" coords="5,148,181,189"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="479,38,625,65"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="479,38,625,65"/>
 <area shape="rect" id="node3" href="$class_t_one_pref_dir.html#ad2e6adb7b634b17cab9cd03610a0f8e3" title="Empty the existing vectors &amp; map." alt="" coords="245,206,415,233"/>
 <area shape="rect" id="node4" href="$class_t_pref_dir_element.html#aa5944dedfb065d9e251c26b28fff69f6" title="Returns the ELink array position." alt="" coords="229,257,431,283"/>
 <area shape="rect" id="node5" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="243,89,417,131"/>

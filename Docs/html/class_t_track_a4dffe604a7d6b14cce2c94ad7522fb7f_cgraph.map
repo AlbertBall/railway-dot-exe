@@ -1,6 +1,6 @@
 <map id="TTrack::ThisNamedLocationLongEnoughForSplit" name="TTrack::ThisNamedLocationLongEnoughForSplit">
 <area shape="rect" id="node1" title="See above under &#39;OneNamedLocationLongEnoughForSplit&#39;." alt="" coords="5,73,188,114"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="489,29,636,56"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="489,29,636,56"/>
 <area shape="rect" id="node3" href="$class_t_track.html#aeb515d40cb9b08ed55ce877ffdbc51a5" title="Return the corresponding link position (track always occupies either links 0 &amp; 1 or 2 &amp; 3)" alt="" coords="237,182,440,223"/>
 <area shape="rect" id="node4" href="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b" title="A range&#45;checked version of InactiveTrackVector.at(At)" alt="" coords="236,80,441,107"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="489,80,636,107"/>

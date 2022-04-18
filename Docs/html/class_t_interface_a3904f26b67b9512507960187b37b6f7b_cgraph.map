@@ -1,6 +1,6 @@
 <map id="TInterface::SessionFileIntegrityCheck" name="TInterface::SessionFileIntegrityCheck">
 <area shape="rect" id="node1" title="Checks session file integrity prior to loading, true for success." alt="" coords="5,652,205,694"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1267,1586,1413,1613"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1267,1586,1413,1613"/>
 <area shape="rect" id="node3" href="$class_t_track.html#a3ff62ece81af00462951a989f3cee4e5" title=" " alt="" coords="994,500,1189,526"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a5c7332a6b45894902f271f0ab9ab87db" title="checks that the value is a double, returns true for success" alt="" coords="1251,348,1429,374"/>
 <area shape="rect" id="node7" href="$class_t_utilities.html#a4d229af6e8943da1936bcbcc1c83846b" title="checks that the value is an int lying between Lowest &amp; Highest (inclusive), returns true for success" alt="" coords="1264,398,1416,425"/>

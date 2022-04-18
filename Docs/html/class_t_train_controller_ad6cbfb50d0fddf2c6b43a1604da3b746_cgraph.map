@@ -2,7 +2,7 @@
 <area shape="rect" id="node1" title="Destructor." alt="" coords="5,99,125,141"/>
 <area shape="rect" id="node2" href="$class_t_train.html#afd5d7ea375b8a878c31d81841acad159" title="This is a housekeeping function to delete train heap objects (bitmaps) explicitly rather than by usin..." alt="" coords="173,237,304,264"/>
 <area shape="rect" id="node11" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="577,5,775,32"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="827,157,973,184"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="827,157,973,184"/>
 <area shape="rect" id="node4" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="352,361,525,388"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="827,296,973,323"/>
 <area shape="rect" id="node6" href="$class_t_train.html#a439d2809c762a0981908a3b8a49520f2" title="Unplot train from screen in zoomed&#45;out mode." alt="" coords="353,230,525,271"/>

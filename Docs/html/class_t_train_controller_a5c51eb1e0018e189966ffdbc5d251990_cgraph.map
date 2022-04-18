@@ -1,6 +1,6 @@
 <map id="TTrainController::ProcessOneTimetableLine" name="TTrainController::ProcessOneTimetableLine">
 <area shape="rect" id="node1" title="Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if Fin..." alt="" coords="5,384,173,426"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1219,590,1365,617"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1219,590,1365,617"/>
 <area shape="rect" id="node3" href="$class_t_train_controller.html#a523077cf0c9c02c8cb56dab0af9b0e52" title="returns true if the time complies with requirements" alt="" coords="712,1316,897,1358"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1219,953,1365,980"/>
 <area shape="rect" id="node5" href="$class_t_train_controller.html#a23ca27d36d711136e0529ba8ae4f22f0" title="Parse a single timetable service action, return true for success." alt="" coords="221,754,399,781"/>

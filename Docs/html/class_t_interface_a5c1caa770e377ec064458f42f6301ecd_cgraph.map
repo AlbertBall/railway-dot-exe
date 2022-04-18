@@ -1,6 +1,6 @@
 <map id="TInterface::SetTrackBuildImages" name="TInterface::SetTrackBuildImages">
 <area shape="rect" id="node1" title="Sets the left screen images (track linked or not, gaps set or not, locations named or not) during rai..." alt="" coords="5,308,172,349"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="752,214,899,241"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="752,214,899,241"/>
 <area shape="rect" id="node3" href="$class_t_track.html#a794daa0471b473e28ff24c87a92112dc" title="True if there are gaps in the railway and any are unset." alt="" coords="268,125,403,151"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="752,391,899,418"/>
 <area shape="rect" id="node6" href="$class_t_track.html#aa8386109483977bfaa97909747358149" title="Indicates whether or not the track has been successfully linked together." alt="" coords="255,670,415,697"/>

@@ -1,6 +1,6 @@
 <map id="TInterface::MovingTrainPresentOnFlashingRoute" name="TInterface::MovingTrainPresentOnFlashingRoute">
 <area shape="rect" id="node1" title="Examines a flashing route (i.e. one being set) and returns true if a moving train is detected on it a..." alt="" coords="5,539,204,580"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1173,226,1320,253"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1173,226,1320,253"/>
 <area shape="rect" id="node3" href="$class_t_track.html#a3b4a2e8a16c61a4286fcf34adb000819" title="As DiagonalFouledByRouteOrTrain (in TAllRoutes) but only checks for a train (may or may not be a rout..." alt="" coords="267,371,442,412"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1173,488,1320,514"/>
 <area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="945,386,1107,413"/>

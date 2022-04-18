@@ -1,6 +1,6 @@
 <map id="TOnePrefDir::GetNextPrefDirElement" name="TOnePrefDir::GetNextPrefDirElement">
 <area shape="rect" id="node1" title="Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linke..." alt="" coords="5,738,176,779"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="949,384,1096,411"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="949,384,1096,411"/>
 <area shape="rect" id="node3" href="$class_t_one_pref_dir.html#a482d1c69a674eec4db0190b78659c495" title="Called after a successful search to add the elements from the search vector to the pref dir vector." alt="" coords="224,465,391,506"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="949,653,1096,680"/>
 <area shape="rect" id="node10" href="$class_t_one_pref_dir.html#a26a1ee9d1ced0d53e35936097d4896f0" title="Return the vector position of the last element in the vector (i.e. one less than the vector size)" alt="" coords="708,537,881,578"/>

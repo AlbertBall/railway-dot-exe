@@ -1,6 +1,6 @@
 <map id="TInterface::HomeButtonClick" name="TInterface::HomeButtonClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,2299,192,2325"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1044,1215,1191,1241"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1044,1215,1191,1241"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="254,1471,434,1513"/>
 <area shape="rect" id="node4" href="$class_t_display.html#a8d990507ae0111e0b7890e8aa77fd76d" title="Empty the display." alt="" coords="538,2247,691,2273"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1044,1600,1191,1627"/>

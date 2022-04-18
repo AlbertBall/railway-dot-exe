@@ -1,6 +1,6 @@
 <map id="TTextHandler::TextVectorResetPosition" name="TTextHandler::TextVectorResetPosition">
 <area shape="rect" id="node1" title="change the HPos &amp; VPos values for all items in TextVector by the amount in HOffset and VOffset (unuse..." alt="" coords="5,45,175,86"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="465,27,612,54"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="465,27,612,54"/>
 <area shape="rect" id="node3" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="239,27,401,54"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="465,78,612,104"/>
 <area shape="rect" id="node5" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="223,78,417,104"/>

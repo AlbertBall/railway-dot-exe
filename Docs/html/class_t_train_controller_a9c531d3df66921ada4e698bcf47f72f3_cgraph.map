@@ -1,6 +1,6 @@
 <map id="TTrainController::ContinuationEntryFloatingTTString" name="TTrainController::ContinuationEntryFloatingTTString">
 <area shape="rect" id="node1" title="Build string for use in floating window for expected trains at continuations." alt="" coords="5,256,197,297"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="987,255,1133,282"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="987,255,1133,282"/>
 <area shape="rect" id="node3" href="$class_t_train_controller.html#aab94af5bb445fc36543e2c22d2986daa" title="Similar to TTrain::GetNewServiceDepartureInfo for use in ContinuationEntryFloatingTTString." alt="" coords="245,197,432,238"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8" title="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it..." alt="" coords="491,52,665,79"/>
 <area shape="rect" id="node5" href="$class_t_train_controller.html#a2713e7d4bb329d65df8b3fa0ad59b6cf" title="Get the interval between repeats." alt="" coords="480,197,676,238"/>

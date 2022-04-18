@@ -5,7 +5,7 @@
 <area shape="rect" id="node13" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="1036,1700,1157,1727"/>
 <area shape="rect" id="node45" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="232,2763,367,2790"/>
 <area shape="rect" id="node49" href="$class_t_track.html#af654985aa4d1c17684f91474fa03ed98" title="Plot on screen the zoomed&#45;out railway." alt="" coords="737,2459,908,2486"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1252,1148,1399,1175"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1252,1148,1399,1175"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1252,1428,1399,1455"/>
 <area shape="rect" id="node6" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="737,1473,908,1514"/>
 <area shape="rect" id="node8" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1009,610,1185,652"/>

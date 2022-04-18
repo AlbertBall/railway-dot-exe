@@ -1,6 +1,6 @@
 <map id="TInterface::EditTimetableMenuItemClick" name="TInterface::EditTimetableMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,831,171,873"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1458,1235,1605,1261"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1458,1235,1605,1261"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a330394a04433ce8672a52c2a0a659ff0" title="Used during timetable editing funtions to compile the list of entries into the left hand long entry w..." alt="" coords="943,639,1132,681"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1458,1543,1605,1569"/>
 <area shape="rect" id="node8" href="$class_t_interface.html#a7fa894f52a3cb9746e81166ec1a81bf3" title="Delays operation for the set time in milliseconds." alt="" coords="1234,2727,1353,2753"/>

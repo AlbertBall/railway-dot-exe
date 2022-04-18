@@ -1,6 +1,6 @@
 <map id="TTrack::EraseLocationAndActiveTrackElementNames" name="TTrack::EraseLocationAndActiveTrackElementNames">
 <area shape="rect" id="node1" title="Examines LocationNameMultiMap and if the LocationName is found all elements at that H &amp; V (in both ac..." alt="" coords="5,340,184,381"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="733,194,880,221"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="733,194,880,221"/>
 <area shape="rect" id="node3" href="$class_t_track.html#aaf3f48b8df9877499aaf4c05f804426c" title="Validity test." alt="" coords="237,223,427,264"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="733,354,880,381"/>
 <area shape="rect" id="node8" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="501,303,664,330"/>

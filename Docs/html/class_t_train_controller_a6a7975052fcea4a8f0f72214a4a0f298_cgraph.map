@@ -1,6 +1,6 @@
 <map id="TTrainController::CreateTTAnalysisFile" name="TTrainController::CreateTTAnalysisFile">
 <area shape="rect" id="node1" title="Generate a timetable analysis file in the &#39;Formatted Timetables&#39; folder, return false if failed for a..." alt="" coords="5,644,164,685"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="960,359,1107,386"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="960,359,1107,386"/>
 <area shape="rect" id="node3" href="$class_t_train_controller.html#a9529f225878cf4920b52914022f44c4e" title="Removes duplicates from and sorts ServiceAndRepeatNumTotal into alphabetical order for arrivals (bool..." alt="" coords="212,673,400,715"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8" title="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it..." alt="" coords="719,765,894,791"/>
 <area shape="rect" id="node6" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="701,663,912,690"/>

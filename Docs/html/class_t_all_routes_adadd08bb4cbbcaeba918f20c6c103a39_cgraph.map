@@ -1,6 +1,6 @@
 <map id="TAllRoutes::LoadRoutes" name="TAllRoutes::LoadRoutes">
 <area shape="rect" id="node1" title="Loads the routes from a session file." alt="" coords="5,241,168,268"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="945,660,1092,686"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="945,660,1092,686"/>
 <area shape="rect" id="node3" href="$class_t_one_pref_dir.html#ab8c8ad293f45948986903a05302b2dc8" title="Check loaded PrefDir against loaded track, and if discrepancies found clear EveryPrefDir &amp; PrefDir4Mu..." alt="" coords="431,175,636,216"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="945,405,1092,432"/>
 <area shape="rect" id="node9" href="$class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c" title="loads an int value from the file" alt="" coords="462,241,605,268"/>

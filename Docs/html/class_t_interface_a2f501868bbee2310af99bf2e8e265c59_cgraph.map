@@ -1,7 +1,7 @@
 <map id="TInterface::ValidateTimetableButtonClick" name="TInterface::ValidateTimetableButtonClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,1343,195,1385"/>
 <area shape="rect" id="node2" href="$class_t_interface.html#a4ffe7e6eb2421577f670a52f556aef97" title="Check the integrity of a stored timetable file (either as a stand alone file or within a session file..." alt="" coords="483,2367,654,2409"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1487,1941,1633,1968"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1487,1941,1633,1968"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1487,1419,1633,1445"/>
 <area shape="rect" id="node18" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="263,196,397,223"/>
 <area shape="rect" id="node22" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="983,364,1156,391"/>

@@ -747,7 +747,12 @@ __published: // IDE-managed Components
     TLabel *SkipListHeaderPanelLabel1;
     TLabel *SkipListHeaderPanelLabel2;
     TImage *SkipListExitImage;
-    TMenuItem *BecomeNewServiceMenuItem;    //added at v2.12.0
+    TMenuItem *BecomeNewServiceMenuItem;
+    TMenuItem *DelayMenu; //these added at v2.13.0
+    TMenuItem *NoDelaysMenuItem;
+    TMenuItem *MinorDelaysMenuItem;
+    TMenuItem *ModerateDelaysMenuItem;
+    TMenuItem *MajorDelaysMenuItem;
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -968,6 +973,10 @@ __published: // IDE-managed Components
           TShiftState Shift, int X, int Y);
     void __fastcall SkipListExitImageClick(TObject *Sender);
     void __fastcall BecomeNewServiceMenuItemClick(TObject *Sender);
+    void __fastcall NoDelaysMenuItemClick(TObject *Sender);
+    void __fastcall MinorDelaysMenuItemClick(TObject *Sender);
+    void __fastcall ModerateDelaysMenuItemClick(TObject *Sender);
+    void __fastcall MajorDelaysMenuItemClick(TObject *Sender);
 
 public: // AboutForm needs access to these
 
@@ -1247,6 +1256,8 @@ private:
 ///< flag set when right mouse button clicked over op action list box, so floating information window shows, reset on right button up or when BaseMode selected
     bool PasteWarningSentFlag;
 ///< indicates that the warning message about pasting overwriting the area has been given, so it won't be given again
+    bool PrefDirConflictAdviceMessageSent;
+///< indicates that the advisory message drawing attention to the pref dir conflict checker has been given
     bool PreferredRoute;
 ///< true when AutoSig or preferred route building selected during operation (always same state as ConsecSignalsRoute)
     bool PreferredRouteFlag;
@@ -1472,6 +1483,13 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
     bool BuildTrainDataVectorForLoadFile(int Caller, std::ifstream &TTBLFile, bool GiveMessages, bool CheckLocationsExistInRailway, bool SessionFile);
 /// Check the integrity of a stored timetable file (either as a stand alone file or within a session file) return false for error
     bool BuildTrainDataVectorForValidateFile(int Caller, std::ifstream &TTBLFile, bool GiveMessages, bool CheckLocationsExistInRailway);
+/// Check for bidir crossover between two single PD lines.  Used in PD check function
+    bool BypassPDCrossoverMismatch(int Caller, int HLoc, int VLoc);
+/* If there's a crossover between two lines that each have single PDs set on them and the crossover has bidirectioal PDs then ordinarily a mismatch would be flagged
+for each crossover.  However since no PD route can be set over the crossover whatever PDs are set on them there's no point in flagging the mismatch.
+This function checks if the element passed in is a point with 3 PDs set (PD2 > -1 &  PD3 == -1), i.e. only one leg has a bidir PD, and that this bidir PD leg is connected
+to another point bidir leg with 3 PDs set.  If so it returns true, else false.*/
+
 /// Check the interface part of a session file & return false for error, called during SessionFileIntegrityCheck
     bool CheckInterface(int Caller, std::ifstream &SessionFile);
 /// Check the performance file embedded within a session file & return false for error, called during SessionFileIntegrityCheck

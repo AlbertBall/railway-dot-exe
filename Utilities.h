@@ -32,6 +32,11 @@
 
 // ---------------------------------------------------------------------------
 
+enum TDelayMode //added at v2.13.0.  Here so DelayMode retains value when ClearEverything called
+{
+    Nil, Minor, Moderate, Major
+};
+
 class TUtilities // single object incorporating general purpose data & functions for all units to access
 {
 public:
@@ -49,6 +54,9 @@ public:
     ///< width of display screen in elements
     int ScreenElementHeight;
     ///< height of display screen in elements
+    int CumulativeDelayedRandMinsAllTrains; //added at v2.13.0 (here so survives ClearEverything() when TrainController deleted and re-created)
+///< the running total of all random delays including knock-on delays for all trains, used to reduce total late mins in performance summary
+
 
     std::ofstream PerformanceFile;
     ///< the file where the performance log for a particular period of operation is saved
@@ -61,9 +69,11 @@ public:
     ///< creates a string of the form 'dd/mm/yyyy hh:mm:ss' for use in call & event logging
     AnsiString TimeStamp();
     ///< creates a string of the form 'hh:mm:ss' for use in call & event logging
-
     TColor clTransparent;
     ///< the display background colour, can be white, black or dark blue
+    TDelayMode DelayMode; //added at v2.13.0
+///< specifies whether no delays or minor, moderate or major random delays are to be applied
+
 
 // void LogEvent(AnsiString Str); //store Str to the event log - moved to TTrainController for v0.6 so can record the tt clock value
     void CallLogPop(int Caller);

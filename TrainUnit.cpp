@@ -225,6 +225,10 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     ActionsSkippedFlag = false;
     SkipPtrValue = 0;
     TrainSkippedEvents = 0;
+    DelayedRandMins = 0; //added at v2.13.0
+    NewDelay = 0; //added at v2.13.0
+    CumulativeDelayedRandMinsOneTrain = 0; //added at v2.13.0
+    ActualArrivalTime = TDateTime(0); //added at v2.13.0
     Utilities->CallLogPop(648);
 }
 
@@ -718,7 +722,7 @@ void TTrain::UpdateTrain(int Caller)
     }
     int RandRange = (TrainController->MTBFHours * 3600) / 53;
 
-    // MTBFHours is in timetable clock hours, min value is 1 & max value is 10,000 (integer values on input)
+    // MTBFHours is in timetable clock hours, min value is 1 & max value is 9,999 (integer values on input)
     // but double on use because it represents timetable clock time, so at 1/16 speed RandRange is * 16 (160,000 max) & at 16x speed its /16 (1/16 min)
     // i.e MTBFHours is Input value/TTClockSpeed (conversion is done in InterfaceUnit)
     if(int(TrainController->RandomFailureCounter) == (rand() % 1060))
@@ -737,9 +741,9 @@ void TTrain::UpdateTrain(int Caller)
         // (d) train terminated;
         // (e) crashed or derailed; or
         // (f) under signaller control and stopped.
-        // (g) TeatPassAsTimeLocDeparture is true  //added at v2.12.0
+        // (g) TreatPassAsTimeLocDeparture is true  //added at v2.12.0
         {
-            if(((random(RandRange)) == 0) && !TreatPassAsTimeLocDeparture) //!TreatPassAsTimeLocDeparture added at v2.12.0
+            if((random(RandRange) == 0) && !TreatPassAsTimeLocDeparture) //!TreatPassAsTimeLocDeparture added at v2.12.0
             // max value for RandRange is over 2x10^9
             {
                 // here if failure due
@@ -879,9 +883,131 @@ void TTrain::UpdateTrain(int Caller)
         if(!DepartureTimeSet && RevisedStoppedAtLoc())
         // && !StoppedAtBuffers) - drop this, set times whether or not at buffers
         {
-            if(ActionVectorEntryPtr->DepartureTime > TDateTime(-1))
+            if((ActionVectorEntryPtr->Command != "pas") && (ActionVectorEntryPtr->DepartureTime > TDateTime(-1)) && (ActualArrivalTime > TDateTime(0)))
             {
-                ReleaseTime = TrainController->GetRepeatTime(0, ActionVectorEntryPtr->DepartureTime, RepeatNumber, IncrementalMinutes);
+                AnsiString ReasonArray[24] = {"a driver is awaited","a guard is awaited","of a medical emergency","of a technical problem","of a security issue",
+                    "of a safety issue","of a disturbance","a train crew member has been taken ill","the driver has been taken ill","the guard has been taken ill",
+                    "a report has been received concerning safety","a shoe has been lost under the train","of a reported theft",
+                    "of an incident involving an animal","some luggage has been lost under the train","a minor repair is needed","a suspicious object has to be dealt with safely",
+                    "a door is stuck open","additional stock has to be attached","a security alert","of a train fault","of an operating incident","safety checks are required",
+                    "of a shortage of on train crew"};
+                //(ActionVectorEntryPtr->Command != "pas") added at v2.13.0 to rule out passes, though probably not needed
+                //(ActualArrivalTime > TDateTime(0)) added at v2.13.0 to ensure that it has been set and to dismiss trains that are present
+                //at start or have no departure time set.
+                NewDelay = 0; //section relating to random delays added at v2.13.0
+                TDateTime TimetableReleaseTime = TrainController->GetRepeatTime(0, ActionVectorEntryPtr->DepartureTime, RepeatNumber, IncrementalMinutes);  //Timetable value
+                TDateTime DwellTime = TimetableReleaseTime - ActualArrivalTime; //Timetable value
+                if(DwellTime < TDateTime(30.0 / 86400))
+                {
+                    DwellTime = TDateTime(30.0 / 86400); //Timetable value inc min dwell time
+                }
+                int random = rand() % 10000;
+                if((random != 0))
+                {
+                    if(Utilities->DelayMode == Minor)
+                    {
+                        if(random < 2000)
+                        {
+                            NewDelay = 1.5 * log(float(2000)/random);//minutes
+                        }
+                    }
+                    else if(Utilities->DelayMode == Moderate)
+                    {
+                        if(random < 3000)
+                        {
+                            NewDelay = 3 * log(float(3000)/random);
+                        }
+                    }
+                    else if(Utilities->DelayMode == Major)
+                    {
+                        if(random < 3500)
+                        {
+                            NewDelay = 6 * log(float(3500)/random);
+                        }
+                    }
+                }
+                if(NewDelay < 1)
+                {
+                    NewDelay = 0;
+                }
+                if(NewDelay < double(DwellTime) * 1440) //if less than scheduled dwell time then no additional delay
+                {
+                    NewDelay = 0;
+                }
+                else
+                {
+                    NewDelay -= double(DwellTime) * 1440;//reduce delay by dwell time
+                }
+                if(DelayedRandMins > 0)
+                {
+                    DelayedRandMins -= double(DwellTime) * 1440;//reduce knock-on random delay by dwell time
+                }
+                if(DelayedRandMins < 0)
+                {
+                    DelayedRandMins = 0;//can't be less than zero
+                }
+                if(NewDelay > DelayedRandMins)
+                {
+                    NewDelay -= DelayedRandMins;  //NewDelay is the additional delay over and above the existing knock-on delay (from earlier random delays)
+                                                  //the formula above already includes knock-on effects
+                    DelayedRandMins += NewDelay;  //the new total delay, knock-on + additional
+//                    CumulativeDelayedRandMinsOneTrain += DelayedRandMins;  //don't add here, add when depart, else this value can be > late mins
+                }
+                else
+                {
+                    NewDelay = 0;
+//                    CumulativeDelayedRandMinsOneTrain += DelayedRandMins;  //as above
+                }
+                ReleaseTime = LastActionTime + TDateTime(30.0 / 86400);  //earliest possible release time
+                if(ReleaseTime < ActualArrivalTime + TDateTime(NewDelay / 1440))
+                {
+                    ReleaseTime = ActualArrivalTime + TDateTime(NewDelay / 1440); //only add the additional delay
+                }
+                if(ReleaseTime < TimetableReleaseTime)
+                {
+                    ReleaseTime = TimetableReleaseTime;
+                }
+                if(DelayedRandMins > double(ReleaseTime - TimetableReleaseTime) * 1440)
+                {
+                    DelayedRandMins = double(ReleaseTime - TimetableReleaseTime) * 1440; //reduce this if time has been made up
+                }
+                if(int(NewDelay) > 0) //additional delay over and above knock-on effects from earlier random delays
+                {
+                    if(int(NewDelay) == 1)
+                    {
+                        Display->PerformanceLog(18, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + HeadCode + " delayed at " +
+                                ActionVectorEntryPtr->LocationName + " by 1 minute because of a minor technical issue");
+                    }
+                    else
+                    {
+                        if(NewDelay >= 10) //add warning if > 10 mins
+                        {
+                            int random2 = rand() % 24; //24 reasons
+                            AnsiString Reason = ReasonArray[random2];
+                            Display->WarningLog(11, HeadCode + " delayed at " + ActionVectorEntryPtr->LocationName + " by " +
+                                    AnsiString(int(NewDelay)) + " minutes");
+                            Display->PerformanceLog(19, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: " +
+                                    HeadCode + " delayed at " + ActionVectorEntryPtr->LocationName + " by " + AnsiString(int(NewDelay)) +
+                                    " minutes because " + Reason);
+                        }
+                        else
+                        {
+                            Display->PerformanceLog(20, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " +
+                                    HeadCode + " delayed at " + ActionVectorEntryPtr->LocationName + " by " + AnsiString(int(NewDelay)) +
+                                    " minutes because of a minor problem");
+                        }
+                    }
+                }
+                TRSTime = ReleaseTime - TDateTime(10.0 / 86400);
+                ActualArrivalTime = TDateTime(0); //only run through this section once per arrival
+                DepartureTimeSet = true;
+            }
+            else if(ActionVectorEntryPtr->DepartureTime > TDateTime(-1)) //as was, for trains that don't have an errival time set
+            {//if have skipped to a new service then DepartureTime will be set (in above segement when earlier train arrived)
+            //but ArrivalTime won't be set as it is reset to 0 at end of above segement when earlier train arrived, so this segement
+            //will run without any new random delays which might cause additional complications from mixing modifications
+                NewDelay = 0;
+                ReleaseTime = TrainController->GetRepeatTime(75, ActionVectorEntryPtr->DepartureTime, RepeatNumber, IncrementalMinutes);
                 if(ReleaseTime <= LastActionTime + TDateTime(30.0 / 86400))
                 {
                     ReleaseTime = LastActionTime + TDateTime(30.0 / 86400);
@@ -889,8 +1015,11 @@ void TTrain::UpdateTrain(int Caller)
                 TRSTime = ReleaseTime - TDateTime(10.0 / 86400);
                 DepartureTimeSet = true;
             }
-            if((ActionVectorEntryPtr->Command == "pas") && TreatPassAsTimeLocDeparture) //new segment at v2.12.0 to treat a pass as a departure
-            {
+            else if((ActionVectorEntryPtr->Command == "pas") && TreatPassAsTimeLocDeparture) //new segment at v2.12.0 to treat a pass as a departure
+            {//for when skip to a new service at a pass location. As above this also avoids new random delays, and will avoid above segment because
+            //departure time isn't set - it's an event time.  Again random delays in this situation might cause additional complications
+             //from mixing modifications.
+                NewDelay = 0;
                 ReleaseTime = TrainController->GetRepeatTime(74, ActionVectorEntryPtr->EventTime, RepeatNumber, IncrementalMinutes);
                 if(ReleaseTime <= LastActionTime + TDateTime(30.0 / 86400))
                 {
@@ -968,7 +1097,7 @@ void TTrain::UpdateTrain(int Caller)
                 {
                     TimetableFinished = true;
                 }
-                // other aspects of 'Fer' dealt with in TTrain::Update()
+                // other aspects of 'Fer' dealt with in TTrain::HasTrainGone()
                 else if(ActionVectorEntryPtr->Command == "F-nshs")
                 {
                     NewShuttleFromNonRepeatService(0, false);
@@ -1275,6 +1404,8 @@ void TTrain::UpdateTrain(int Caller)
                 DepartureTimeSet = false;
                 // no need to set LastActionTime for a departure
                 //deal here with departure pointer change, increment if SkippedDeparture
+                CumulativeDelayedRandMinsOneTrain += DelayedRandMins;  //only add these after late mins added (in LogAction)
+
                 if(SkippedDeparture)
                 {
                     TrainController->SkippedTTEvents += TrainSkippedEvents;
@@ -1358,7 +1489,8 @@ void TTrain::UpdateTrain(int Caller)
         Utilities->CallLogPop(656);
         return;
     }
-    // here when ready for next move
+
+    // HERE WHEN READY FOR NEXT MOVE
 
     //added at v2.10.0 to set SPADFlag if red signal immediately ahead (as it will be if in a locked route)
     //check if due to run past a red signal & if so set SPADFlag (SetTrainMovementValues & its SPAD check only called when arrive fully on 2 elements)
@@ -2130,6 +2262,7 @@ void TTrain::UpdateTrain(int Caller)
                                 // pale green
                             }
                             LogAction(8, HeadCode, "", Arrive, LocName, ActionVectorEntryPtr->ArrivalTime, ActionVectorEntryPtr->Warning);
+                            ActualArrivalTime = TrainController->TTClockTime;   //added at v2.13.0
                             if(ActionVectorEntryPtr->FormatType == TimeTimeLoc)
                             {
                                 TimeTimeLocArrived = true;
@@ -6286,12 +6419,14 @@ void TTrain::ChangeTrainDirection(int Caller, bool NoLogFlag)
         if(RouteType == TAllRoutes::NotAutoSigsRoute)
         {
             TOneRoute &OR = AllRoutes->GetModifiableRouteAt(28, RouteNumber);
+            int CorrectRouteID = OR.RouteID; //added at v2.13.0 as when last element removed & route removed from vector OR becomes the next route after the erased one and
+                                      //elements can continue to be removed from that route
             TTrackElement TE = Track->TrackElementAt(997, FirstRouteElementVecPos);
             if((TE.TrackType != SignalPost) && (TE.TrackType != Continuation)) //all autosigs routes have signalpost or continuation at 0 so they are automatically excluded
             {
                 bool FirstPass = true; //added at v2.8.0
-                while(OR.PrefDirSize() > 0) //remove the route up to but not including the next facing signal, in case a pref dir route extends to another signal
-                {
+                while((OR.PrefDirSize() > 0) && (OR.RouteID == CorrectRouteID)) //remove the route up to but not including the next facing signal, in case a pref dir route extends to another signal
+                {  // && (OR.RouteID == RouteID) added at v2.13.0 to prevent another route having elements removed
                     TPrefDirElement PDE = OR.GetFixedPrefDirElementAt(247, 0); //these will change at each element removal because OR is a reference to the real route
                     int TVPos2 = PDE.GetTrackVectorPosition();
                     if(FirstPass && (TVPos2 != FirstRouteElementVecPos)) //route is not directed away from cdt train, could be a call-on for another train (added at v2.8.0)
@@ -6322,7 +6457,7 @@ void TTrain::ChangeTrainDirection(int Caller, bool NoLogFlag)
 void TTrain::NewTrainService(int Caller, bool NoLogFlag) //, bool NoLogFlag added at v2.12.0 for new service tt skips
 // change to new train, give new service message
 //same RepeatNumber used for the new service
-{
+{ //Note that CumulativeDelayedRandMinsOneTrain carried forward from earlier train (parameter added at v2.13.0)
     TrainController->LogEvent("" + AnsiString(Caller) + ",NewTrainService" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NewTrainService" + "," + HeadCode);
     if(PowerAtRail < 1)
@@ -6625,6 +6760,7 @@ bool TTrain::TrainToBeJoinedByIsAdjacent(int Caller, TTrain* &TrainToBeJoinedBy)
 
 void TTrain::NewShuttleFromNonRepeatService(int Caller, bool NoLogFlag) //bool NoLogFlag added at v2.12.0 for new service TT skips)
 {  //same RepeatNumber (i.e. 0) used for the new shuttle
+//Note that CumulativeDelayedRandMinsOneTrain carried forward from earlier train (parameter added at v2.13.0)
     TrainController->LogEvent("" + AnsiString(Caller) + ",NewShuttleFromNonRepeatService" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",NewShuttleFromNonRepeatService" + "," + HeadCode);
     if(PowerAtRail < 1)
@@ -6669,7 +6805,7 @@ void TTrain::NewShuttleFromNonRepeatService(int Caller, bool NoLogFlag) //bool N
 
 void TTrain::RepeatShuttleOrRemainHere(int Caller, bool NoLogFlag) //bool NoLogFlag added at v2.12.0 for new service TT skips)
 // need to check whether all repeats finished or not
-{
+{  //Note that CumulativeDelayedRandMinsOneTrain carried forward from earlier train (parameter added at v2.13.0)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RepeatShuttleOrRemainHere" + "," + HeadCode);
     if(RemainHereLogNotSent) // to prevent repeated logs
     {
@@ -6733,7 +6869,7 @@ void TTrain::RepeatShuttleOrRemainHere(int Caller, bool NoLogFlag) //bool NoLogF
 // ---------------------------------------------------------------------------
 
 void TTrain::RepeatShuttleOrNewNonRepeatService(int Caller, bool NoLogFlag) //bool NoLogFlag added at v2.12.0 for new service TT skips
-{
+{   //Note that CumulativeDelayedRandMinsOneTrain carried forward from earlier train (parameter added at v2.13.0)
     TrainController->LogEvent("" + AnsiString(Caller) + ",RepeatShuttleOrNewNonRepeatService" + "," + HeadCode);
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RepeatShuttleOrNewNonRepeatService" + "," + HeadCode);
     if(PowerAtRail < 1)
@@ -6946,12 +7082,14 @@ void TTrain::SignallerChangeTrainDirection(int Caller)
         if(RouteType == TAllRoutes::NotAutoSigsRoute)
         {
             TOneRoute &OR = AllRoutes->GetModifiableRouteAt(29, RouteNumber);
+            int CorrectRouteID = OR.RouteID; //added at v2.13.0 as when last element removed & route removed from vector OR becomes the next route after the erased one and
+                                      //elements can continue to be removed from that route
             TTrackElement TE = Track->TrackElementAt(1001, FirstRouteElementVecPos);
             if((TE.TrackType != SignalPost) && (TE.TrackType != Continuation)) //all autosigs routes have signalpost or continuation at 0 so they are automatically excluded
             {
                 bool FirstPass = true; //added at v2.8.0
-                while(OR.PrefDirSize() > 0) //remove the route up to but not including the next facing signal, in case a route extends to another signal
-                {
+                while((OR.PrefDirSize() > 0) && (OR.RouteID == CorrectRouteID)) //remove the route up to but not including the next facing signal, in case a pref dir route extends to another signal
+                {  // && (OR.RouteID == RouteID) added at v2.13.0 to prevent another route having elements removed
                     TPrefDirElement PDE = OR.GetFixedPrefDirElementAt(248, 0); //these will change at each element removal because OR is a reference to the real route
                     int TVPos2 = PDE.GetTrackVectorPosition();
                     if(FirstPass && (TVPos2 != FirstRouteElementVecPos)) //route is not directed away from cdt train, could be a call-on for another train (added at v2.8.0)
@@ -7000,7 +7138,7 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
             }
             else
             {
-                RetStr = "Depart " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(3, Ptr->DepartureTime));
+                RetStr = "Depart " + Ptr->LocationName + " at or soon after " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(3, Ptr->DepartureTime));
             }
         }
         else // TrainMode == Signaller
@@ -7011,7 +7149,7 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
             }
             else
             {
-                RetStr = "Depart " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(36, Ptr->DepartureTime));
+                RetStr = "Depart " + Ptr->LocationName + " at or soon after " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(36, Ptr->DepartureTime));
             }
         }
     }
@@ -7021,7 +7159,7 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
     }
     else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime == TDateTime(-1)))
     {
-        RetStr = "Depart " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(5, Ptr->DepartureTime));
+        RetStr = "Depart " + Ptr->LocationName + " at or soon after " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(5, Ptr->DepartureTime));
     }
     else if((Ptr->FormatType == PassTime) && TreatPassAsTimeLocDeparture) //added at v2.12.0 for becoming new service early (see BecomeNewservice)
     {
@@ -7126,7 +7264,7 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
         }
         else if((AVI->Command == "Fer") && (TowardsLocation == "") && !AVI->ExitList.empty())
         {
-            TTrackElement TE = Track->TrackElementAt(7777, (AVI->ExitList.front()));
+            TTrackElement TE = Track->TrackElementAt(1452, (AVI->ExitList.front()));
             if(TE.ActiveTrackElementName != "")
             {
                 TowardsLocation = TE.ActiveTrackElementName;
@@ -7416,7 +7554,7 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
         }
     }
     Utilities->CallLogPop(1125);
-    return(RetStr);
+    return("Timetable:\n" + RetStr);
 }
 
 // ---------------------------------------------------------------------------
@@ -9381,6 +9519,7 @@ void TTrainController::Operate(int Caller)
                         Train.LogAction(31, Train.HeadCode, "", SignallerLeave, Loc, TDateTime(0), false); // false for Warning
                     }
                 }
+                Utilities->CumulativeDelayedRandMinsAllTrains += Train.CumulativeDelayedRandMinsOneTrain; //added at v2.13.0 for random delays
                 Train.TrainDataEntryPtr->TrainOperatingDataVector.at(Train.RepeatNumber).RunningEntry = Exited;
                 Train.DeleteTrain(1);
                 TrainVector.erase(TrainVector.begin() + x);
@@ -10029,7 +10168,7 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
         }
         else if((AVI->Command == "Fer") && (TowardsLocation == "") && !AVI->ExitList.empty())
         {
-            TTrackElement TE = Track->TrackElementAt(7777, (AVI->ExitList.front()));
+            TTrackElement TE = Track->TrackElementAt(1453, (AVI->ExitList.front()));
             if(TE.ActiveTrackElementName != "")
             {
                 TowardsLocation = TE.ActiveTrackElementName;
@@ -11498,9 +11637,9 @@ bool TTrainController::CheckHeadCodeValidity(int Caller, bool GiveMessages, Ansi
 // ---------------------------------------------------------------------------
 
 bool TTrainController::CheckAndPopulateListOfIDs(int Caller, AnsiString IDSet, TNumList &ExitList, bool GiveMessages)
-// set of legitimate track element IDs, separated by spaces, and at least 1 present
+// set of track element IDs, separated by spaces, and at least 1 present
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckSetOfIDs," + IDSet);
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckAndPopulateListOfIDs," + IDSet);  //had wrong title, changed at v2.13.0
     ExitList.clear();
     AnsiString CurrentID = "";
 
@@ -11519,6 +11658,23 @@ bool TTrainController::CheckAndPopulateListOfIDs(int Caller, AnsiString IDSet, T
             Utilities->CallLogPop(1522);
             return(false);
         }
+/*  don't use, error checks in GetTrackVectorPositionFromString instead
+        if(C == '-')  //this section added at v2.13.0 because of Amon Sadler's error file submitted 24/03/22
+        {
+            if((x==1) || (x == IDSet.Length()))
+            {
+                TimetableMessage(GiveMessages, "Illegal minus character ('-') in the set of element IDs following 'Fer' in '" + IDSet + "'");
+                Utilities->CallLogPop(2479);
+                return(false);
+            }
+            if((IDSet[x-1] < '0') || (IDSet[x-1] > '9') || (IDSet[x+1] < '0') || (IDSet[x+1] > '9'))
+            {
+                TimetableMessage(GiveMessages, "Illegal minus character ('-') in the set of element IDs following 'Fer' in '" + IDSet + "'");
+                Utilities->CallLogPop(2480);
+                return(false);
+            }
+        }
+*/
     }
     int Pos = IDSet.Pos(' '); // look for the first space
 
@@ -18214,7 +18370,7 @@ different to the train's front element name (whether null or not) (no report), a
                     BackwardList.clear();
                     ForwardList.clear();
                     const TActionVectorEntry &AVEntry = TDEntry.ActionVector.at(y);
-                    if((AVEntry.Command == "Fer") || (AVEntry.FormatType == Repeat) ||  //shouldn't be any repeats
+                    if((AVEntry.Command == "Fer") || (AVEntry.FormatType == Repeat) ||  //end of SSVector, shouldn't be any repeats
                         (AVEntry.Command == "Fjo") || (AVEntry.Command == "Frh") ||
                         (AVEntry.Command == "Frh-sh"))
                     {
@@ -18236,7 +18392,8 @@ different to the train's front element name (whether null or not) (no report), a
                             if(IntroLineNeeded)
                             {
                                 TTFile3 << "Questionable change of direction analysis.\n\n";
-                                TTFile3 << "For marked changes of direction there are no same-name locations listed both above and below.\n";
+                                TTFile3 << "For marked changes of direction there are no same-name locations listed both above (up to the start or another direction change)\n";
+                                TTFile3 << "and below (down to the end or another direction change) but not counting the change of direction location itself.\n\n";
                                 TTFile3 << "These changes of direction are probably valid for movements to and from depots but all should be checked to\n";
                                 TTFile3 << "make sure that none has been included incorrectly:\n\n";
                                 IntroLineNeeded = false;
@@ -19216,6 +19373,12 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     AnsiString AvLateExitMins = "";
     AnsiString AvEarlyExitMins = "";
 
+    //calculate remaining CumulativeDelayedRandMinsAllTrains for trains still in vector (CumulativeDelayedRandMinsAllTrains for exited or removed trains already accounted for)
+    for(unsigned int x = 0; x < TrainVector.size(); x++)
+    {
+        Utilities->CumulativeDelayedRandMinsAllTrains += int(TrainVectorAt(89, x).CumulativeDelayedRandMinsOneTrain);
+    }
+
     if(LateArrivals > 0)
     {
         AvLateArrMins = FormatFloat(FormatStr, (TotLateArrMins / LateArrivals));
@@ -19391,6 +19554,10 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     {
         PerfFile << FormattedExcessLCDownMins.c_str() << " excess minutes of level crossing barrier down time" << '\n';
     }
+    if(Utilities->CumulativeDelayedRandMinsAllTrains > 0) //added at v2.13.0
+    {
+        PerfFile << Utilities->CumulativeDelayedRandMinsAllTrains << " minutes lost due to random delays when stopped at locations" << '\n';
+    }
     if(MissedStops != 1)
     {
         PerfFile << MissedStops << " missed stops" << '\n';
@@ -19521,11 +19688,19 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     }
     if(OverallScorePercent == 100)
     {
+        int LatenessPenalty = TotLateArrMins + TotLateDepMins; //added at v2.13.0 for random delays
+        if(Utilities->CumulativeDelayedRandMinsAllTrains > LatenessPenalty)
+        {
+            LatenessPenalty = 0;
+        }
+        else
+        {
+            LatenessPenalty -= Utilities->CumulativeDelayedRandMinsAllTrains;
+        }
         if(TotArrDepExit > 0)
         {
-            TotLateMinsFactor =
-                exp((-0.1732) * (TotLateArrMins + TotLateDepMins + OperatingTrainLateMins + NotStartedTrainLateMins + TotLateExitMins +
-                                 ((OtherMissedEvents + SkippedTTEvents + UnexpectedExits + ExcessLCDownMins) * 15)) / TotArrDepExit); //exits added at v2.9.1
+            TotLateMinsFactor = exp((-0.1732) * (LatenessPenalty + OperatingTrainLateMins + NotStartedTrainLateMins + TotLateExitMins +
+                ((OtherMissedEvents + SkippedTTEvents + UnexpectedExits + ExcessLCDownMins) * 15)) / TotArrDepExit); //exits added at v2.9.1
             // TotLateMinsFactor: negative exponential factor based on overall average arr & dep minutes late (with OtherMissedEvents & UnexpectedExits
             // counting as 15 mins late each), where 4 mins late average = half, 8 mins late = a quarter etc
             MissedStopAndSPADRiskFactor = exp((-17.33) * (MissedStops + SPADRisks + IncorrectExits) / TotArrDepExit);
@@ -19626,6 +19801,7 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
         PerfFile << "\nThere were no timetabled departures, arrivals or exits so there is insufficient information to provide a performance score or rating" << '\n';
     }
     PerfFile << '\n' << "***************************************";
+    PerfFile.flush();
     Utilities->CallLogPop(1736);
 }
 

@@ -7822,146 +7822,155 @@ void TTrack::SetElementID(int Caller, TTrackElement &TrackElement)
 int TTrack::GetTrackVectorPositionFromString(int Caller, AnsiString String, bool GiveMessages)
 {
 // e.g. "8-13", "00008-13", "N43-N127", etc
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetTrackVectorPositionFromString, + String");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetTrackVectorPositionFromString," + String);  //String was inside " marks, corrected at v2.13.0
     int DelimPos;
-
-    for(int x = 1; x < String.Length() + 1; x++)
+try    //try..catch added at v2.13.0 following Amon Sadler's error file received on 24/03/22, had N-113-5 rather than N113-5
     {
-        if(String.IsDelimiter("-", x))
+        for(int x = 1; x < String.Length() + 1; x++)
         {
-            DelimPos = x;
-            break;
+            if(String.IsDelimiter("-", x))
+            {
+                DelimPos = x;
+                break;
+            }
+            if(x == String.Length())
+            {
+                if(GiveMessages)
+                {
+                    ShowMessage("Error in track element identifier: <" + String + "> - no delimiter");
+                }
+                Utilities->CallLogPop(543);
+                return(-1);
+            }
         }
-        if(x == String.Length())
+        if(DelimPos == 1)
         {
             if(GiveMessages)
             {
-                ShowMessage("Error in track element identifier: <" + String + "> - no delimiter");
+                ShowMessage("Error in track element identifier: <" + String + "> - No Horizontal value");
             }
-            Utilities->CallLogPop(543);
+            Utilities->CallLogPop(544);
             return(-1);
         }
-    }
-    if(DelimPos == 1)
-    {
-        if(GiveMessages)
+        if(DelimPos == String.Length())
         {
-            ShowMessage("Error in track element identifier: <" + String + "> - No Horizontal value");
+            if(GiveMessages)
+            {
+                ShowMessage("Error in track element identifier <" + String + "> - No Vertical value");
+            }
+            Utilities->CallLogPop(545);
+            return(-1);
         }
-        Utilities->CallLogPop(544);
-        return(-1);
-    }
-    if(DelimPos == String.Length())
-    {
-        if(GiveMessages)
+        if((String[String.Length()] < '0') || (String[String.Length()] > '9'))
         {
-            ShowMessage("Error in track element identifier <" + String + "> - No Vertical value");
+            if(GiveMessages)
+            {
+                ShowMessage("Error in track element identifier <" + String + "> - Last value is not a number");
+            }
+            Utilities->CallLogPop(1508);
+            return(-1);
         }
-        Utilities->CallLogPop(545);
-        return(-1);
-    }
-    if((String[String.Length()] < '0') || (String[String.Length()] > '9'))
-    {
-        if(GiveMessages)
-        {
-            ShowMessage("Error in track element identifier <" + String + "> - Last value is not a number");
-        }
-        Utilities->CallLogPop(1508);
-        return(-1);
-    }
-    int HLoc, VLoc;
+        int HLoc, VLoc;
 
-    if(String.SubString(1, 1) != "N")
-    {
-        for(int x = 1; x < DelimPos; x++)
+        if(String.SubString(1, 1) != "N")
         {
-            if((String.SubString(x, 1) < "0") || (String.SubString(x, 1) > "9"))
+            for(int x = 1; x < DelimPos; x++)
             {
-                if(GiveMessages)
+                if((String.SubString(x, 1) < "0") || (String.SubString(x, 1) > "9"))
                 {
-                    ShowMessage("Invalid character in Horizontal value in track element identifier: <" + String + ">");
+                    if(GiveMessages)
+                    {
+                        ShowMessage("Invalid character in Horizontal value in track element identifier: <" + String + ">");
+                    }
+                    Utilities->CallLogPop(546);
+                    return(-1);
                 }
-                Utilities->CallLogPop(546);
-                return(-1);
             }
         }
-    }
-    if(String.SubString(1, 1) == "N")
-    {
-        for(int x = 2; x < DelimPos; x++)
+        if(String.SubString(1, 1) == "N")
         {
-            if((String.SubString(x, 1) < "0") || (String.SubString(x, 1) > "9"))
+            for(int x = 2; x < DelimPos; x++)
             {
-                if(GiveMessages)
+                if((String.SubString(x, 1) < "0") || (String.SubString(x, 1) > "9"))
                 {
-                    ShowMessage("Invalid character in Horizontal value in track element identifier: <" + String + ">");
+                    if(GiveMessages)
+                    {
+                        ShowMessage("Invalid character in Horizontal value in track element identifier: <" + String + ">");
+                    }
+                    Utilities->CallLogPop(763);
+                    return(-1);
                 }
-                Utilities->CallLogPop(763);
-                return(-1);
             }
         }
-    }
-    if(String.SubString(1, 1) == "N")
-    {
-        HLoc = -(String.SubString(2, DelimPos - 2).ToInt());
-    }
-    else
-    {
-        HLoc = String.SubString(1, DelimPos - 1).ToInt();
-    }
-    if(String.SubString(DelimPos + 1, 1) != "N")
-    {
-        for(int x = DelimPos + 1; x < String.Length() + 1; x++)
+        if(String.SubString(1, 1) == "N")
         {
-            if((String.SubString(x, 1) < "0") || (String.SubString(x, 1) > "9"))
+            HLoc = -(String.SubString(2, DelimPos - 2).ToInt());
+        }
+        else
+        {
+            HLoc = String.SubString(1, DelimPos - 1).ToInt();
+        }
+        if(String.SubString(DelimPos + 1, 1) != "N")
+        {
+            for(int x = DelimPos + 1; x < String.Length() + 1; x++)
             {
-                if(GiveMessages)
+                if((String.SubString(x, 1) < "0") || (String.SubString(x, 1) > "9"))
                 {
-                    ShowMessage("Invalid character in Vertical value in track element identifier: <" + String + ">");
+                    if(GiveMessages)
+                    {
+                        ShowMessage("Invalid character in Vertical value in track element identifier: <" + String + ">");
+                    }
+                    Utilities->CallLogPop(547);
+                    return(-1);
                 }
-                Utilities->CallLogPop(547);
-                return(-1);
             }
         }
-    }
-    if(String.SubString(DelimPos + 1, 1) == "N")
-    {
-        for(int x = DelimPos + 2; x < String.Length() + 1; x++)
+        if(String.SubString(DelimPos + 1, 1) == "N")
         {
-            if((String.SubString(x, 1) < "0") || (String.SubString(x, 1) > "9"))
+            for(int x = DelimPos + 2; x < String.Length() + 1; x++)
             {
-                if(GiveMessages)
+                if((String.SubString(x, 1) < "0") || (String.SubString(x, 1) > "9"))
                 {
-                    ShowMessage("Invalid character in Vertical value in track element identifier: <" + String + ">");
+                    if(GiveMessages)
+                    {
+                        ShowMessage("Invalid character in Vertical value in track element identifier: <" + String + ">");
+                    }
+                    Utilities->CallLogPop(764);
+                    return(-1);
                 }
-                Utilities->CallLogPop(764);
-                return(-1);
             }
         }
-    }
-    if(String.SubString(DelimPos + 1, 1) == "N")
-    {
-        VLoc = -(String.SubString(DelimPos + 2, String.Length() - DelimPos - 1).ToInt());
-    }
-    else
-    {
-        VLoc = String.SubString(DelimPos + 1, String.Length() - DelimPos).ToInt();
-    }
-    THVPair HVPair(HLoc, VLoc);
-    TTrackMapIterator TrackMapPtr;
+        if(String.SubString(DelimPos + 1, 1) == "N")
+        {
+            VLoc = -(String.SubString(DelimPos + 2, String.Length() - DelimPos - 1).ToInt());
+        }
+        else
+        {
+            VLoc = String.SubString(DelimPos + 1, String.Length() - DelimPos).ToInt();
+        }
+        THVPair HVPair(HLoc, VLoc);
+        TTrackMapIterator TrackMapPtr;
 
-    TrackMapPtr = TrackMap.find(HVPair);
-    if(TrackMapPtr == TrackMap.end())
-    {
-        if(GiveMessages)
+        TrackMapPtr = TrackMap.find(HVPair);
+        if(TrackMapPtr == TrackMap.end())
         {
-            ShowMessage("No track element corresponding to track element identifier: <" + String + ">");
+            if(GiveMessages)
+            {
+                ShowMessage("No track element corresponding to track element identifier: <" + String + ">");
+            }
+            Utilities->CallLogPop(548);
+            return(-1);
         }
-        Utilities->CallLogPop(548);
+        Utilities->CallLogPop(549);
+        return(TrackMapPtr->second);
+    }
+    catch(const Exception &e) //non-error catch - catches any  errors not already caught above
+                             //(added at v2.13.0 following Amon Sadler's error file received on 24/03/22), had N-113-5 rather than N113-5
+    {
+        ShowMessage("Syntax error in track element identifier: <" + String + ">");
+        Utilities->CallLogPop(2481);
         return(-1);
     }
-    Utilities->CallLogPop(549);
-    return(TrackMapPtr->second);
 }
 
 // ---------------------------------------------------------------------------
@@ -13123,7 +13132,7 @@ void TOnePrefDir::GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, i
                                                          int &PrefDirPos3)
 /*
       There are up to four elements at each H & V position in the PrefDirVector - two directions per track, and up to
-      two tracks for 4-entry elements.  This function retrieves all elements that are present at a give H & V
+      two tracks for 4-entry elements.  This function retrieves all elements that are present at a given H & V
       position.  FoundFlag indicates whether any or none have been found, and PrefDirPos0, 1, 2 & 3 contain
       the PrefDirVector positions, or -1 if not present.  The elements are always found in order, such that
       if there is only one it will be in PrefDirPos0, if two they will be in PrefDirPos0 and PrefDirPos1 and so on.
@@ -13189,7 +13198,7 @@ void TOnePrefDir::GetVectorPositionsFromPrefDir4MultiMap(int Caller, int HLoc, i
 // ---------------------------------------------------------------------------
 
 bool TOnePrefDir::FindLinkingPrefDir(int Caller, int PrefDirVectorNumber, int LinkNumberPos, int LinkNumber, int &LinkedPrefDirVectorNumber)
-{
+{ //not used after modified the pref dir checking function at v2.13.0
     // Finds a pref dir element that links to another element at given vector number and link number & position, returns true if found with linked
     // vector number, true if buffer or continuation with link at blank end & linked vector number = -1, or false if not found with vector number == -1
     try
@@ -13280,6 +13289,109 @@ bool TOnePrefDir::FindLinkingPrefDir(int Caller, int PrefDirVectorNumber, int Li
     {
         LinkedPrefDirVectorNumber = -1;
         Utilities->CallLogPop(2291);
+        return(false);
+    }
+}
+
+// ---------------------------------------------------------------------------
+
+bool TOnePrefDir::FindLinkingCompatiblePrefDir(int Caller, int PrefDirVectorNumber, int LinkNumberPos, int LinkNumber, int &LinkedPrefDirVectorNumber)
+{ //not used after modified the pref dir checking function at v2.13.0
+    // Finds a pref dir element that links to another element at given vector number and link number & position, returns true if finds same direction pref dir with linked
+    // vector number, true if buffer or continuation with link at blank end & linked vector number = -1, or false if not found with vector number == -1
+    try
+    {
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FindLinkingCompatiblePrefDir," + AnsiString(PrefDirVectorNumber)
+                                     + "," + AnsiString(LinkNumberPos));
+        bool FoundFlag;
+        int PD0, PD1, PD2, PD3;
+        if(PrefDirVector.at(PrefDirVectorNumber).Conn[LinkNumberPos] > -1)
+        {
+            GetVectorPositionsFromPrefDir4MultiMap(31, Track->TrackElementAt(1463, PrefDirVector.at(PrefDirVectorNumber).Conn[LinkNumberPos]).HLoc,
+                                                   Track->TrackElementAt(1464, PrefDirVector.at(PrefDirVectorNumber).Conn[LinkNumberPos]).VLoc, FoundFlag,
+                                                   PD0, PD1, PD2, PD3);
+            if(!FoundFlag)
+            {
+                Utilities->CallLogPop(2468);
+                return(false);
+            }
+            if((PrefDirVector.at(PrefDirVectorNumber).TrackType == GapJump) && (LinkNumberPos == 0)) //0 is the gap position
+            { //only PD0 or 1 will be set, else have track linking error that will be found earlier
+                if(PD0 > -1)
+                {
+                    if((PrefDirVector.at(PD0).TrackType == GapJump) && ((PrefDirVector.at(PrefDirVectorNumber).ELink == (10 - PrefDirVector.at(PD0).XLink))
+                                                            || (PrefDirVector.at(PrefDirVectorNumber).XLink == (10 - PrefDirVector.at(PD0).ELink))))
+                    {
+                        LinkedPrefDirVectorNumber = PD0;
+                        Utilities->CallLogPop(2469);
+                        return(true);
+                    }
+                }
+                if(PD1 > -1)
+                {
+                    if((PrefDirVector.at(PD1).TrackType == GapJump) && ((PrefDirVector.at(PrefDirVectorNumber).ELink == (10 - PrefDirVector.at(PD1).XLink))
+                                                            || (PrefDirVector.at(PrefDirVectorNumber).XLink == (10 - PrefDirVector.at(PD1).ELink))))
+                    {
+                        LinkedPrefDirVectorNumber = PD1;
+                        Utilities->CallLogPop(2470);
+                        return(true);
+                    }
+                }
+                LinkedPrefDirVectorNumber = -1;
+                Utilities->CallLogPop(2471);
+                return(false);
+            }
+            if(PD0 > -1)
+            {
+                if((PrefDirVector.at(PD0).ELink == (10 - PrefDirVector.at(PrefDirVectorNumber).XLink)) || (PrefDirVector.at(PD0).XLink == (10 - PrefDirVector.at(PrefDirVectorNumber).ELink)))
+                {
+                    LinkedPrefDirVectorNumber = PD0;
+                    Utilities->CallLogPop(2472);
+                    return(true);
+                }
+            }
+            if(PD1 > -1)
+            {
+                if((PrefDirVector.at(PD1).ELink == (10 - PrefDirVector.at(PrefDirVectorNumber).XLink)) || (PrefDirVector.at(PD1).XLink == (10 - PrefDirVector.at(PrefDirVectorNumber).ELink)))
+                {
+                    LinkedPrefDirVectorNumber = PD1;
+                    Utilities->CallLogPop(2473);
+                    return(true);
+                }
+            }
+            if(PD2 > -1)
+            {
+                if((PrefDirVector.at(PD2).ELink == (10 - PrefDirVector.at(PrefDirVectorNumber).XLink)) || (PrefDirVector.at(PD2).XLink == (10 - PrefDirVector.at(PrefDirVectorNumber).ELink)))
+                {
+                    LinkedPrefDirVectorNumber = PD2;
+                    Utilities->CallLogPop(2474);
+                    return(true);
+                }
+            }
+            if(PD3 > -1)
+            {
+                if((PrefDirVector.at(PD3).ELink == (10 - PrefDirVector.at(PrefDirVectorNumber).XLink)) || (PrefDirVector.at(PD3).XLink == (10 - PrefDirVector.at(PrefDirVectorNumber).ELink)))
+                {
+                    LinkedPrefDirVectorNumber = PD3;
+                    Utilities->CallLogPop(2475);
+                    return(true);
+                }
+            }
+            LinkedPrefDirVectorNumber = -1;
+            Utilities->CallLogPop(2476);
+            return(false);
+        }
+        else //buffer or continuation, no link at position 0 but not a failure
+        {
+            LinkedPrefDirVectorNumber = -1;
+            Utilities->CallLogPop(2477);
+            return(true);
+        }
+    }
+    catch(const Exception &e)  //non error catch
+    {
+        LinkedPrefDirVectorNumber = -1;
+        Utilities->CallLogPop(2478);
         return(false);
     }
 }

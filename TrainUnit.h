@@ -367,7 +367,6 @@ private:
 ///< TrackVector positions, & entry & exit connection positions for the elements that the train occupies
     int TrainID;
 ///< the train's identification number
-
     TTrainDataEntry *TrainDataEntryPtr;
 ///< points to the current position in the timetable's TrainDataVector
     TActionVectorEntry *ActionVectorEntryPtr;
@@ -434,7 +433,12 @@ private:
 ///< the current train brake rate
     double SignallerStopBrakeRate;
 ///< the train brake rate when stopping under signaller control
-
+    double DelayedRandMins; //added at v2.13.0
+///< the remaining random delay at any point in time for the train
+    double NewDelay; //added at v2.13.0
+///< an additional random delay at a location
+    double CumulativeDelayedRandMinsOneTrain; //added at v2.13.0
+///< the running total of all random delays including knock-on delays for a single train, used to reduce total late mins in performance summary
     double PowerAtRail;
 ///< in Watts (taken as 80% of the train's Gross Power, i.e. that entered by the user)
     double OriginalPowerAtRail;
@@ -457,8 +461,8 @@ private:
 ///< used in train splitting operations to prevent too frequent checks for a location being long enough for a split after a failure message has already been given (doesn't need to stay failed as signaller can manoeuvre it to a better location)
     TDateTime EntryTime, ExitTimeHalf, ExitTimeFull;
 ///< times used in SetTrainMovementValues corresponding to the next element the train runs on
-    TDateTime ReleaseTime, TRSTime;
-///< location departure time and 'train ready to start' time (TRSTime is 10 seconds before the ReleaseTime)
+    TDateTime ReleaseTime, TRSTime, ActualArrivalTime;
+///< location departure time and 'train ready to start' time (TRSTime is 10 seconds before the ReleaseTime). ActualArrivalTime added at v2.13.0 for random delays
     TDateTime LastActionTime;
 ///< time of the last timetabled event, used to ensure at least a 30 second delay before the next action
     THVShortPair ExitPair;
@@ -858,7 +862,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     unsigned int OpActionPanelHintDelayCounter;
 ///<new v2.2.0 on start operation delays the op action panel headcode display for about 3 secs while hints shown
     unsigned int RandomFailureCounter;
-///< new at v2.4.0, resets after 53 seconds (53 prime so can trigger at any clock time)
+///< new at v2.4.0 for train failures, resets after 53 seconds (53 prime so can trigger at any clock time)
     TContinuationAutoSigVector ContinuationAutoSigVector;
 ///< vector for TContinuationAutoSigEntry objects
     TContinuationTrainExpectationMultiMap ContinuationTrainExpectationMultiMap;

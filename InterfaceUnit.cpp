@@ -92,7 +92,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = GetVersion();
+        ProgramVersion = GetVersion() + " Beta";
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -228,6 +228,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TooLongMessageSentFlag = false; //added at v2.9.1
         TooShortMessageSentFlag = false; //added at v2.9.1
         Track->NoPlatsMessageSent = false; //added at v2.10.0
+        PrefDirConflictAdviceMessageSent = false; //added at v2.13.0
         Track->DefaultTrackLength = 100;     //moved here at v2.11.0, may be changed in reading config.txt
         Track->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
 
@@ -631,6 +632,10 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         SkipListHeaderPanel->Visible = false;
         ElapsedTimeTestFunctionStart = false;
         ElapsedTimerRunning = false;
+        Utilities->DelayMode = Nil;
+        NoDelaysMenuItem->Enabled = false;
+        Utilities->CumulativeDelayedRandMinsAllTrains = 0; //added at v2.13.0
+        AllEntriesTTListBox->TopIndex = 0; //added at v2.13.0 to initialise the value (seemed to initialise to 0 without this but not documented)
 
         SigImagePanel->Left = (Interface->Width - SigImagePanel->Width) / 2; // added for v2.3.0
 
@@ -974,7 +979,8 @@ void __fastcall TInterface::TrackOKButtonClick(TObject *Sender)
                 }
                 ClearandRebuildRailway(0);
                 Display->InvertElement(0, HLoc * 16, VLoc * 16);
-                ShowMessage("Incomplete track or other error - see inverted element (may be behind this message)");
+                ShowMessage("Incomplete track or other error - see highlighted element (it may be behind this message "
+                            "which can be moved by left clicking the mouse in the title bar and dragging it).");
                 ClearandRebuildRailway(1); // to clear inversion
                 Level1Mode = TrackMode;
                 SetLevel1Mode(39);
@@ -6169,7 +6175,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 Train.LeavingUnderSigControlAtContinuation = true;
                             }
                             else if(!Train.Stopped() && (Track->TrackElementAt(1450, (Track->TrackElementAt(1451, Train.LeadElement).Conn[Train.LeadExitPos])).TrackType == Continuation))
-                            {                                                            //added at v2.12.0 to prevent popup menu when train moving and front next to continuation
+                            {                                                            //added at v2.13.0 to prevent popup menu when train moving and front next to continuation
                                 Train.LeavingUnderSigControlAtContinuation = true;
                             }
                         }
@@ -8530,7 +8536,7 @@ void TInterface::ClockTimer2(int Caller)
             TrainController->RandomFailureCounter = 0;
         }
 
-//multiplayer functions - disabled at v2.12.0 as not needed yey
+//multiplayer functions - disabled at v2.12.0 as not needed yet
 /*
         PlayerFiveSecondTimer++; // new for multiplayer for player send cycle
         if(PlayerFiveSecondTimer >= 100)
@@ -10966,15 +10972,20 @@ void __fastcall TInterface::CancelSelectionMenuItemClick(TObject *Sender)
 
 void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
 {
-//Conflicts consist of a preferred direction (PD) that links to a track element without a PD on it, or a PD that links to another PD that is set
-//in the wrong direction.  Points or crossovers with no PD set on one leg are ok as a PD on the other leg doesn't link to it.
+//Conflicts consist of track elements without PDs, a preferred direction (PD) that links to a track element without a PD on it, or a PD that links to
+//another PD that is set in the wrong direction.
 
+//function changed to become more comprehensive at v2.13.0
     try
     {
         TrainController->LogEvent("CheckPrefDirConflictsMenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CheckPrefDirConflictsMenuItemClick");
-        bool FoundFlag; //not used
-        int PD0, PD1, PD2, PD3, HLoc, VLoc, LastHLoc = -2000000, LastVLoc = -2000000; //well outside any conceivable range
+		bool FoundFlag;
+		int Count = 0;
+		UnicodeString CountWord = "There are several track elements without preferred directions.\n\n"
+                                  "Do you wish to highlight them (YES) or skip this part of the check (NO)?";
+
+		int PD0, PD1, PD2, PD3, HLoc, VLoc, LastHLoc = -2000000, LastVLoc = -2000000; //well outside any conceivable range
         AnsiString TempInfo = InfoPanel->Caption;
         if(EveryPrefDir->PrefDirSize() <= 0)
         {
@@ -10983,185 +10994,27 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
             return;
         }
         else
-        {
-            //iterate the map rather than the vector so that pref dirs at the same H & V are consecutive, & can prevent the same element showing more than once
-            InfoPanel->Visible = true;
-            InfoPanel->Caption = "Checking preferred directions - please wait";
-            InfoPanel->Update();
-            THVShortPair LasTHVShortPair;
-            LasTHVShortPair.first = -2000000;
-            LasTHVShortPair.second = -2000000;                              //well outside any conceivable range
-            Screen->Cursor = TCursor(-11); // Hourglass
-            for(TOnePrefDir::TPrefDir4MultiMapIterator PDMMIt = EveryPrefDir->PrefDir4MultiMap.begin(); PDMMIt != EveryPrefDir->PrefDir4MultiMap.end(); PDMMIt++)
-            {
-                bool BiDirLinkFound = true;
-                int LinkedPrefDirVectorNumber; //not used
-                THVShortPair CurrenTHVShortPair = PDMMIt->first;
-                if(CurrenTHVShortPair != LasTHVShortPair)  //dont repeat for remaining elements at same position
-                {
-                    //For bi-directional pref dirs as long as they link to another pref dir then ok, can't just link to a blank element
-                    EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(16, PDMMIt->first.first, PDMMIt->first.second, FoundFlag, PD0, PD1, PD2, PD3);
-                    if((PD0 > -1) && (PD1 > -1))
-                    {
-                        if((EveryPrefDir->PrefDirVector.at(PD0).GetELink() == EveryPrefDir->PrefDirVector.at(PD1).GetXLink()) &&
-                           (EveryPrefDir->PrefDirVector.at(PD0).GetXLink() == EveryPrefDir->PrefDirVector.at(PD1).GetELink()))
-                        {
-                            //PD0 & PD1 are bidirectional pref dirs, ensure pref dirs link at both ends, direction doesn't matter for linked pref dir
-                            if(!EveryPrefDir->FindLinkingPrefDir(0, PD0, EveryPrefDir->PrefDirVector.at(PD0).GetELinkPos(),
-                                                                 EveryPrefDir->PrefDirVector.at(PD0).GetELink(), LinkedPrefDirVectorNumber))
-                            {
-                                BiDirLinkFound = false;
-                            }
-                            if(!EveryPrefDir->FindLinkingPrefDir(1, PD0, EveryPrefDir->PrefDirVector.at(PD0).GetXLinkPos(),
-                                                                 EveryPrefDir->PrefDirVector.at(PD0).GetXLink(), LinkedPrefDirVectorNumber))
-                            {
-                                BiDirLinkFound = false;
-                            }
-                        }
-                    }
-                    if(BiDirLinkFound && (PD0 > -1) && (PD2 > -1))
-                    {
-                        if((EveryPrefDir->PrefDirVector.at(PD0).GetELink() == EveryPrefDir->PrefDirVector.at(PD2).GetXLink()) &&
-                           (EveryPrefDir->PrefDirVector.at(PD0).GetXLink() == EveryPrefDir->PrefDirVector.at(PD2).GetELink()))
-                        {
-                            if(!EveryPrefDir->FindLinkingPrefDir(2, PD0, EveryPrefDir->PrefDirVector.at(PD0).GetELinkPos(),
-                                                                 EveryPrefDir->PrefDirVector.at(PD0).GetELink(), LinkedPrefDirVectorNumber))
-                            {
-                                BiDirLinkFound = false;
-                            }
-                            if(!EveryPrefDir->FindLinkingPrefDir(3, PD0, EveryPrefDir->PrefDirVector.at(PD0).GetXLinkPos(),
-                                                                 EveryPrefDir->PrefDirVector.at(PD0).GetXLink(), LinkedPrefDirVectorNumber))
-                            {
-                                BiDirLinkFound = false;
-                            }
-                        }
-                    }
-                    if(BiDirLinkFound && (PD0 > -1) && (PD3 > -1))
-                    {
-                        if((EveryPrefDir->PrefDirVector.at(PD0).GetELink() == EveryPrefDir->PrefDirVector.at(PD3).GetXLink()) &&
-                           (EveryPrefDir->PrefDirVector.at(PD0).GetXLink() == EveryPrefDir->PrefDirVector.at(PD3).GetELink()))
-                        {
-                            if(!EveryPrefDir->FindLinkingPrefDir(4, PD0, EveryPrefDir->PrefDirVector.at(PD0).GetELinkPos(),
-                                                                 EveryPrefDir->PrefDirVector.at(PD0).GetELink(), LinkedPrefDirVectorNumber))
-                            {
-                                BiDirLinkFound = false;
-                            }
-                            if(!EveryPrefDir->FindLinkingPrefDir(5, PD0, EveryPrefDir->PrefDirVector.at(PD0).GetXLinkPos(),
-                                                                 EveryPrefDir->PrefDirVector.at(PD0).GetXLink(), LinkedPrefDirVectorNumber))
-                            {
-                                BiDirLinkFound = false;
-                            }
-                        }
-                    }
-                    if(BiDirLinkFound && (PD1 > -1) && (PD2 > -1))
-                    {
-                        if((EveryPrefDir->PrefDirVector.at(PD1).GetELink() == EveryPrefDir->PrefDirVector.at(PD2).GetXLink()) &&
-                           (EveryPrefDir->PrefDirVector.at(PD1).GetXLink() == EveryPrefDir->PrefDirVector.at(PD2).GetELink()))
-                        {
-                            if(!EveryPrefDir->FindLinkingPrefDir(6, PD1, EveryPrefDir->PrefDirVector.at(PD1).GetELinkPos(),
-                                                                 EveryPrefDir->PrefDirVector.at(PD1).GetELink(), LinkedPrefDirVectorNumber))
-                            {
-                                BiDirLinkFound = false;
-                            }
-                            if(!EveryPrefDir->FindLinkingPrefDir(7, PD1, EveryPrefDir->PrefDirVector.at(PD1).GetXLinkPos(),
-                                                                 EveryPrefDir->PrefDirVector.at(PD1).GetXLink(), LinkedPrefDirVectorNumber))
-                            {
-                                BiDirLinkFound = false;
-                            }
-                        }
-                    }
-                    if(BiDirLinkFound && (PD1 > -1) && (PD3 > -1))
-                    {
-                        if((EveryPrefDir->PrefDirVector.at(PD1).GetELink() == EveryPrefDir->PrefDirVector.at(PD3).GetXLink()) &&
-                           (EveryPrefDir->PrefDirVector.at(PD1).GetXLink() == EveryPrefDir->PrefDirVector.at(PD3).GetELink()))
-                        {
-                            if(!EveryPrefDir->FindLinkingPrefDir(8, PD1, EveryPrefDir->PrefDirVector.at(PD1).GetELinkPos(),
-                                                                 EveryPrefDir->PrefDirVector.at(PD1).GetELink(), LinkedPrefDirVectorNumber))
-                            {
-                                BiDirLinkFound = false;
-                            }
-                            if(!EveryPrefDir->FindLinkingPrefDir(9, PD1, EveryPrefDir->PrefDirVector.at(PD1).GetXLinkPos(),
-                                                                 EveryPrefDir->PrefDirVector.at(PD1).GetXLink(), LinkedPrefDirVectorNumber))
-                            {
-                                BiDirLinkFound = false;
-                            }
-                        }
-                    }
-                    if(BiDirLinkFound && (PD2 > -1) && (PD3 > -1))
-                    {
-                        if((EveryPrefDir->PrefDirVector.at(PD2).GetELink() == EveryPrefDir->PrefDirVector.at(PD3).GetXLink()) &&
-                           (EveryPrefDir->PrefDirVector.at(PD2).GetXLink() == EveryPrefDir->PrefDirVector.at(PD3).GetELink()))
-                        {
-                            if(!EveryPrefDir->FindLinkingPrefDir(10, PD2, EveryPrefDir->PrefDirVector.at(PD2).GetELinkPos(),
-                                                                 EveryPrefDir->PrefDirVector.at(PD2).GetELink(), LinkedPrefDirVectorNumber))
-                            {
-                                BiDirLinkFound = false;
-                            }
-                            if(!EveryPrefDir->FindLinkingPrefDir(11, PD2, EveryPrefDir->PrefDirVector.at(PD2).GetXLinkPos(),
-                                                                 EveryPrefDir->PrefDirVector.at(PD2).GetXLink(), LinkedPrefDirVectorNumber))
-                            {
-                                BiDirLinkFound = false;
-                            }
-                        }
-                    }
-                    if(!BiDirLinkFound)
-                    {
-                        HLoc = EveryPrefDir->PrefDirVector.at(PDMMIt->second).HLoc;
-                        VLoc = EveryPrefDir->PrefDirVector.at(PDMMIt->second).VLoc;
-                        if((LastHLoc != HLoc) || (LastVLoc != VLoc))
-                        {
-                            LastHLoc = HLoc;
-                            LastVLoc = VLoc;
-                            while((Display->DisplayOffsetH - HLoc) > 0)
-                            {
-                                Display->DisplayOffsetH -= (Utilities->ScreenElementWidth / 2); // use 30 instead of 60 so less likely to appear behind the message box
-                            }
-                            while((HLoc - Display->DisplayOffsetH) > (Utilities->ScreenElementWidth - 1))
-                            {
-                                Display->DisplayOffsetH += (Utilities->ScreenElementWidth / 2);
-                            }
-                            while((Display->DisplayOffsetV - VLoc) > 0)
-                            {
-                                Display->DisplayOffsetV -= (Utilities->ScreenElementHeight / 2); // use 18 instead of 36 so less likely to appear behind the message box
-                            }
-                            while((VLoc - Display->DisplayOffsetV) > (Utilities->ScreenElementHeight - 1))
-                            {
-                                Display->DisplayOffsetV += (Utilities->ScreenElementHeight / 2);
-                            }
-                            ClearandRebuildRailway(83);
-                            Display->InvertElement(1, HLoc * 16, VLoc * 16);
-                            Screen->Cursor = TCursor(-2); // Arrow
-                            int Button = Application->MessageBox(L"Possible mismatch in preferred direction links \n"
-                                                                 "at the position shown - see inverted element (may \n"
-                                                                 "be behind this message). \n\n"
-                                                                 "Click 'OK' to ignore and continue checking or \n"
-                                                                 "'Cancel' to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
-                            ClearandRebuildRailway(84); // to clear inversion
-                            if(Button == IDCANCEL)
-                            {
-                                InfoPanel->Caption = TempInfo;
-                                Utilities->CallLogPop(2302);
-                                return;
-                            }
-                            Screen->Cursor = TCursor(-11); // Hourglass
-                            Display->Update();
-                        }
-                    }
-                }
-                LasTHVShortPair = CurrenTHVShortPair;
+		{
+			InfoPanel->Visible = true;
+			InfoPanel->Caption = "Checking preferred directions - please wait";
+			InfoPanel->Update();
+			THVShortPair LasTHVShortPair;
+			LasTHVShortPair.first = -2000000;
+			LasTHVShortPair.second = -2000000; //well outside any conceivable range
+			Screen->Cursor = TCursor(-11); // Hourglass
+//check PDs, iterate the map rather than the vector so that pref dirs at the same H & V are consecutive, & can prevent the same element showing more than once
 
-                bool ELinkFound = false, BiDir = false;
-                int ELink = EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetELink();
-                int ELinkPos = EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetELinkPos();
-                if(EveryPrefDir->BiDirectionalPrefDir(0, PDMMIt)) //bi-directional pref dirs dealt with above so don't check & don't mark as a conflict
-                {
-                    BiDir = true;
-                    ELinkFound = true;
-                }
-                else if((ELink > -1) && (EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[ELinkPos] > -1))
-                {
-                    EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(17, Track->TrackElementAt(1023, EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[ELinkPos]).HLoc,
-                                                                         Track->TrackElementAt(1024, EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[ELinkPos]).VLoc, FoundFlag, PD0, PD1, PD2, PD3);
+			for(TOnePrefDir::TPrefDir4MultiMapIterator PDMMIt = EveryPrefDir->PrefDir4MultiMap.begin(); PDMMIt != EveryPrefDir->PrefDir4MultiMap.end(); PDMMIt++)
+			{
+				bool ELinkFound = false;//, BiDir = false;
+				int ELink = EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetELink();
+				int ELinkPos = EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetELinkPos();
+				int ThisElementHLoc = EveryPrefDir->PrefDirVector.at(PDMMIt->second).HLoc;
+                int ThisElementVLoc = EveryPrefDir->PrefDirVector.at(PDMMIt->second).VLoc;
+                if((ELink > -1) && (EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[ELinkPos] > -1))
+				{
+					EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(17, Track->TrackElementAt(1023, EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[ELinkPos]).HLoc,
+																		 Track->TrackElementAt(1024, EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[ELinkPos]).VLoc, FoundFlag, PD0, PD1, PD2, PD3);
                     if((EveryPrefDir->PrefDirVector.at(PDMMIt->second).TrackType == GapJump) && (ELinkPos == 0)) //0 is the gap position
                     {
                         if(PD0 > -1)
@@ -11185,9 +11038,26 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
                             }
                         }
                     }
+					if(EveryPrefDir->BiDirectionalPrefDir(0, PDMMIt) &&
+                            (Track->TrackElementAt(1454, EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetTrackVectorPosition()).
+                                Config[EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetELinkPos()] == Signal))
+                    {
+                        ELinkFound = true; // ok if this element is a signal at exit end
+                    }
+                    if(BypassPDCrossoverMismatch(0, ThisElementHLoc,  ThisElementVLoc))
+                    {
+                        ELinkFound = true; // ok to skip linked points with bidirs on both links and single PDs on other legs
+                    }
                     if(PD0 > -1)
                     {
                         if(EveryPrefDir->PrefDirVector.at(PD0).GetXLink() == (10 - ELink))
+                        {
+                            ELinkFound = true;
+                        }
+                        //ok if a signal at exit end of a single dir PD element for a conflict at the ELink end of a bidirectional PD element (applies for PD0 & 1 only)
+                        else if(EveryPrefDir->BiDirectionalPrefDir(1, PDMMIt) &&
+                            Track->TrackElementAt(1455, EveryPrefDir->PrefDirVector.at(PD0).GetTrackVectorPosition()).
+                                Config[EveryPrefDir->PrefDirVector.at(PD0).GetXLinkPos()] == Signal)
                         {
                             ELinkFound = true;
                         }
@@ -11198,8 +11068,15 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
                         {
                             ELinkFound = true;
                         }
+                        //as above ok if a signal at exit end of a single PD element for a conflict at the ELink end of a bidirectional PD element (applies for PD0 & 1 only)
+                        else if(EveryPrefDir->BiDirectionalPrefDir(2, PDMMIt) &&
+                            Track->TrackElementAt(1456, EveryPrefDir->PrefDirVector.at(PD0).GetTrackVectorPosition()).
+                                Config[EveryPrefDir->PrefDirVector.at(PD0).GetXLinkPos()] == Signal)
+                        {
+                            ELinkFound = true;
+                        }
                     }
-                    if(PD2 > -1)
+                    if(PD2 > -1) //if PD2/3 > -1 then can'#t be a signal
                     {
                         if(EveryPrefDir->PrefDirVector.at(PD2).GetXLink() == (10 - ELink))
                         {
@@ -11214,70 +11091,68 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
                         }
                     }
                 }
-                if(!ELinkFound && (BiDir || (EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[ELinkPos] > -1)))
-                {
-                    HLoc = EveryPrefDir->PrefDirVector.at(PDMMIt->second).HLoc;
-                    VLoc = EveryPrefDir->PrefDirVector.at(PDMMIt->second).VLoc;
-                    if((LastHLoc != HLoc) || (LastVLoc != VLoc))
-                    {
-                        LastHLoc = HLoc;
-                        LastVLoc = VLoc;
-                        while((Display->DisplayOffsetH - HLoc) > 0)
-                        {
-                            Display->DisplayOffsetH -= (Utilities->ScreenElementWidth / 2); // use 30 instead of 60 so less likely to appear behind the message box
-                        }
-                        while((HLoc - Display->DisplayOffsetH) > (Utilities->ScreenElementWidth - 1))
-                        {
-                            Display->DisplayOffsetH += (Utilities->ScreenElementWidth / 2);
-                        }
-                        while((Display->DisplayOffsetV - VLoc) > 0)
-                        {
-                            Display->DisplayOffsetV -= (Utilities->ScreenElementHeight / 2); // use 18 instead of 36 so less likely to appear behind the message box
-                        }
-                        while((VLoc - Display->DisplayOffsetV) > (Utilities->ScreenElementHeight - 1))
-                        {
-                            Display->DisplayOffsetV += (Utilities->ScreenElementHeight / 2);
-                        }
-                        ClearandRebuildRailway(85);
-                        Display->InvertElement(2, HLoc * 16, VLoc * 16);
-                        Screen->Cursor = TCursor(-2); // Arrow
-                        int Button = Application->MessageBox(L"Possible mismatch in preferred direction links \n"
-                                                             "at the position shown - see inverted element (may \n"
-                                                             "be behind this message). \n\n"
-                                                             "Click 'OK' to ignore and continue checking or \n"
-                                                             "'Cancel' to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
-                        ClearandRebuildRailway(86); // to clear inversion
-                        if(Button == IDCANCEL)
-                        {
-                            InfoPanel->Caption = TempInfo;
-                            Utilities->CallLogPop(2303);
-                            return;
-                        }
-                        Screen->Cursor = TCursor(-11); //Hourglass
-                        Display->Update();
-                    }
-                }
+                if(!ELinkFound && (EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[ELinkPos] > -1))
+				{
+					HLoc = EveryPrefDir->PrefDirVector.at(PDMMIt->second).HLoc;
+					VLoc = EveryPrefDir->PrefDirVector.at(PDMMIt->second).VLoc;
+					if((LastHLoc != HLoc) || (LastVLoc != VLoc))
+					{
+						LastHLoc = HLoc;
+						LastVLoc = VLoc;
+						while((Display->DisplayOffsetH - HLoc) > 0)
+						{
+							Display->DisplayOffsetH -= (Utilities->ScreenElementWidth / 2); // use 30 instead of 60 so less likely to appear behind the message box
+						}
+						while((HLoc - Display->DisplayOffsetH) > (Utilities->ScreenElementWidth - 1))
+						{
+							Display->DisplayOffsetH += (Utilities->ScreenElementWidth / 2);
+						}
+						while((Display->DisplayOffsetV - VLoc) > 0)
+						{
+							Display->DisplayOffsetV -= (Utilities->ScreenElementHeight / 2); // use 18 instead of 36 so less likely to appear behind the message box
+						}
+						while((VLoc - Display->DisplayOffsetV) > (Utilities->ScreenElementHeight - 1))
+						{
+							Display->DisplayOffsetV += (Utilities->ScreenElementHeight / 2);
+						}
+						ClearandRebuildRailway(85);
+						Display->InvertElement(2, HLoc * 16, VLoc * 16);
+						Screen->Cursor = TCursor(-2); // Arrow
+						int Button = Application->MessageBox(L"Preferred direction missing or a mismatch at a link\n"
+															 "between the highlighted element and an adjacent element.\n\n"
+															 "The highlighted element may be behind this message\n"
+															 "which can be moved by left clicking the mouse in the\n"
+															 "title bar and dragging it.\n\n"
+															 "The omission/mismatch may or may not matter depending\n"
+															 "on routing requirements during operation.\n\n"
+															 "Click 'OK' to ignore and continue checking or 'Cancel'\n"
+															 "to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+						ClearandRebuildRailway(86); // to clear inversion
+						if(Button == IDCANCEL)
+						{
+							InfoPanel->Caption = TempInfo;
+							Utilities->CallLogPop(2303);
+							return;
+						}
+						Screen->Cursor = TCursor(-11); //Hourglass
+						Display->Update();
+					}
+				}
 
-                bool XLinkFound = false;
-                BiDir = false;
-                int XLink = EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetXLink();
-                int XLinkPos = EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetXLinkPos();
-                if(EveryPrefDir->BiDirectionalPrefDir(1, PDMMIt)) //bi-directional pref dirs dealt with above so don't check & don't mark as a conflict
-                {
-                    BiDir = true;
-                    XLinkFound = true;
-                }
-                else if((XLink > -1) && (EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[XLinkPos] > -1))
-                {
-                    EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(18, Track->TrackElementAt(1025, EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[XLinkPos]).HLoc,
-                                                                         Track->TrackElementAt(1026, EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[XLinkPos]).VLoc, FoundFlag, PD0, PD1, PD2, PD3);
-                    if((EveryPrefDir->PrefDirVector.at(PDMMIt->second).TrackType == GapJump) && (XLinkPos == 0)) //0 is the gap position
-                    {
-                        if(PD0 > -1)
-                        {
-                            if(EveryPrefDir->PrefDirVector.at(PD0).TrackType == GapJump) //the corresponding gap
-                            {
-                                if(EveryPrefDir->PrefDirVector.at(PD0).GetELinkPos() == 0) // entry link is at the gap end so it corresponds
+				bool XLinkFound = false;
+				int XLink = EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetXLink();
+				int XLinkPos = EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetXLinkPos();
+				if((XLink > -1) && (EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[XLinkPos] > -1))
+				{
+					EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(18, Track->TrackElementAt(1025, EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[XLinkPos]).HLoc,
+																		 Track->TrackElementAt(1026, EveryPrefDir->PrefDirVector.at(PDMMIt->second).Conn[XLinkPos]).VLoc, FoundFlag, PD0, PD1, PD2, PD3);
+					if((EveryPrefDir->PrefDirVector.at(PDMMIt->second).TrackType == GapJump) && (XLinkPos == 0)) //0 is the gap position
+					{
+						if(PD0 > -1)
+						{
+							if(EveryPrefDir->PrefDirVector.at(PD0).TrackType == GapJump) //the corresponding gap
+							{
+								if(EveryPrefDir->PrefDirVector.at(PD0).GetELinkPos() == 0) // entry link is at the gap end so it corresponds
                                 {
                                     XLinkFound = true;
                                 }
@@ -11293,6 +11168,16 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
                                 }
                             }
                         }
+                    }
+                    if(EveryPrefDir->BiDirectionalPrefDir(3, PDMMIt) &&
+                            (Track->TrackElementAt(1457, EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetTrackVectorPosition()).
+                                Config[EveryPrefDir->PrefDirVector.at(PDMMIt->second).GetXLinkPos()] == Signal))
+                    {
+                        XLinkFound = true; // ok if this element is a signal at exit end
+                    }
+                    if(BypassPDCrossoverMismatch(1, ThisElementHLoc,  ThisElementVLoc))
+                    {
+                        XLinkFound = true; // ok to skip linked points with bidirs on both links and single PDs on other legs
                     }
                     if(PD0 > -1)
                     {
@@ -11350,11 +11235,15 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
                         ClearandRebuildRailway(87);
                         Display->InvertElement(3, HLoc * 16, VLoc * 16);
                         Screen->Cursor = TCursor(-2); // Arrow
-                        int Button = Application->MessageBox(L"Possible mismatch in preferred direction links \n"
-                                                             "at the position shown - see inverted element (may \n"
-                                                             "be behind this message). \n\n"
-                                                             "Click 'OK' to ignore and continue checking or \n"
-                                                             "'Cancel' to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+						int Button = Application->MessageBox(L"Preferred direction missing or a mismatch at a link\n"
+															 "between the highlighted element and an adjacent element.\n\n"
+                                                             "The highlighted element may be behind this message\n"
+                                                             "which can be moved by left clicking the mouse in the\n"
+                                                             "title bar and dragging it.\n\n"
+                                                             "The omission/mismatch may or may not matter depending\n"
+                                                             "on routing requirements during operation.\n\n"
+                                                             "Click 'OK' to ignore and continue checking or 'Cancel'\n"
+                                                             "to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
                         ClearandRebuildRailway(88); // to clear inversion
                         if(Button == IDCANCEL)
                         {
@@ -11366,19 +11255,359 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
                         Display->Update();
                     }
                 }
+			}
+//now check every track element to make sure there's a PD set on it. Get H&V for each, and if single track element ensure PD0 set, else make
+//sure both set, but first count them and if > 9 offer to skip
+			for(unsigned int x = 0; x < Track->TrackVector.size(); x++)
+			{
+				int HLoc = Track->TrackElementAt(1470, x).HLoc;
+				int VLoc = Track->TrackElementAt(1471, x).VLoc;
+				if((Track->TrackElementAt(1472, x).TrackType == Points) || (Track->TrackElementAt(1473, x).TrackType == Crossover) ||
+					(Track->TrackElementAt(1474, x).TrackType == Bridge))
+				{
+					EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(34, HLoc, VLoc, FoundFlag, PD0, PD1, PD2, PD3);
+					//check if either track with no PDs: !Foundflag == none, PD1 == -1 == only one, and last condition covers one having a bidir PD & other none
+					if(!FoundFlag) //none
+					{
+						Count += 2;
+					}
+					else if(PD1 == -1) // only one
+					{
+						Count++;
+					}
+					else if(((PD2 == -1) && (PD1 > -1) && (EveryPrefDir->PrefDirVector.at(PD1).GetELink() == EveryPrefDir->PrefDirVector.at(PD0).GetXLink()) &&
+						(EveryPrefDir->PrefDirVector.at(PD1).GetXLink() == EveryPrefDir->PrefDirVector.at(PD0).GetELink()))) //only one, other has bidirs
+					{
+						Count++;
+					}
+				}
+				else //single track element
+				{
+					EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(35, HLoc, VLoc, FoundFlag, PD0, PD1, PD2, PD3);
+					//check if either track with no PDs: !Foundflag == none, PD1 == -1 == only one, and last condition covers one having a bidir PD & other none
+					if(!FoundFlag)
+					{
+						Count++;
+					}
+				}
+			}
+			if(Count > 20)
+			{
+				CountWord = "There are many track elements without preferred directions.\n\n"
+							"Do you wish to highlight them (YES) or skip this part of the check (NO)?";
+			}
+			if(Count > 9)
+			{
+				Screen->Cursor = TCursor(-2); // Arrow
+				int Button = Application->MessageBox(CountWord.c_str(), L"Skip option", MB_YESNO);
+				ClearandRebuildRailway(96); // to clear inversion
+				if(Button == IDNO)
+				{
+					InfoPanel->Caption = TempInfo;
+					Utilities->CallLogPop(2484);
+					return;
+				}
+				Screen->Cursor = TCursor(-11); //Hourglass
+				Display->Update();
+			}
+//continue with the check if haven't returned
+			for(unsigned int x = 0; x < Track->TrackVector.size(); x++)
+			{
+				int HLoc = Track->TrackElementAt(1465, x).HLoc;
+				int VLoc = Track->TrackElementAt(1466, x).VLoc;
+				if((Track->TrackElementAt(1467, x).TrackType == Points) || (Track->TrackElementAt(1468, x).TrackType == Crossover) ||
+					(Track->TrackElementAt(1469, x).TrackType == Bridge))
+				{
+					EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(32, HLoc, VLoc, FoundFlag, PD0, PD1, PD2, PD3);
+					//check if either track with no PDs: !Foundflag == none, PD1 == -1 == only one, and last condition covers one having a bidir PD & other none
+					if(!FoundFlag || (PD1 == -1) || ((PD2 == -1) && (PD1 > -1) && (EveryPrefDir->PrefDirVector.at(PD1).GetELink() == EveryPrefDir->PrefDirVector.at(PD0).GetXLink()) &&
+						(EveryPrefDir->PrefDirVector.at(PD1).GetXLink() == EveryPrefDir->PrefDirVector.at(PD0).GetELink()))) //need to check both as points can meet just one with one PD on each track
+					{
+						if((LastHLoc != HLoc) || (LastVLoc != VLoc))
+						{
+							LastHLoc = HLoc;
+							LastVLoc = VLoc;
+							while((Display->DisplayOffsetH - HLoc) > 0)
+							{
+								Display->DisplayOffsetH -= (Utilities->ScreenElementWidth / 2); // use 30 instead of 60 so less likely to appear behind the message box
+							}
+							while((HLoc - Display->DisplayOffsetH) > (Utilities->ScreenElementWidth - 1))
+							{
+								Display->DisplayOffsetH += (Utilities->ScreenElementWidth / 2);
+							}
+							while((Display->DisplayOffsetV - VLoc) > 0)
+							{
+								Display->DisplayOffsetV -= (Utilities->ScreenElementHeight / 2); // use 18 instead of 36 so less likely to appear behind the message box
+							}
+							while((VLoc - Display->DisplayOffsetV) > (Utilities->ScreenElementHeight - 1))
+							{
+								Display->DisplayOffsetV += (Utilities->ScreenElementHeight / 2);
+							}
+							ClearandRebuildRailway(92);
+							Display->InvertElement(4, HLoc * 16, VLoc * 16);
+							Screen->Cursor = TCursor(-2); // Arrow
+							int Button = Application->MessageBox(L"Preferred direction mismatch at a link between the\n"
+																 "highlighted element and an adjacent element.\n\n"
+																 "The highlighted element may be behind this message\n"
+																 "which can be moved by left clicking the mouse in the\n"
+																 "title bar and dragging it.\n\n"
+																 "The mismatch may or may not matter depending on\n"
+																 "routing requirements during operation.\n\n"
+																 "Click 'OK' to ignore and continue checking or 'Cancel'\n"
+																 "to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+							ClearandRebuildRailway(93); // to clear inversion
+							if(Button == IDCANCEL)
+							{
+								InfoPanel->Caption = TempInfo;
+								Utilities->CallLogPop(2482);
+								return;
+							}
+							Screen->Cursor = TCursor(-11); //Hourglass
+							Display->Update();
+						}
+					}
+				}
+				else //single track element
+				{
+					EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(33, HLoc, VLoc, FoundFlag, PD0, PD1, PD2, PD3);
+					//check if either track with no PDs: !Foundflag == none, PD1 == -1 == only one, and last condition covers one having a bidir PD & other none
+					if(!FoundFlag)
+					{
+						if((LastHLoc != HLoc) || (LastVLoc != VLoc))
+						{
+							LastHLoc = HLoc;
+							LastVLoc = VLoc;
+							while((Display->DisplayOffsetH - HLoc) > 0)
+							{
+								Display->DisplayOffsetH -= (Utilities->ScreenElementWidth / 2); // use 30 instead of 60 so less likely to appear behind the message box
+							}
+							while((HLoc - Display->DisplayOffsetH) > (Utilities->ScreenElementWidth - 1))
+							{
+								Display->DisplayOffsetH += (Utilities->ScreenElementWidth / 2);
+							}
+							while((Display->DisplayOffsetV - VLoc) > 0)
+							{
+								Display->DisplayOffsetV -= (Utilities->ScreenElementHeight / 2); // use 18 instead of 36 so less likely to appear behind the message box
+							}
+							while((VLoc - Display->DisplayOffsetV) > (Utilities->ScreenElementHeight - 1))
+							{
+								Display->DisplayOffsetV += (Utilities->ScreenElementHeight / 2);
+							}
+							ClearandRebuildRailway(94);
+							Display->InvertElement(5, HLoc * 16, VLoc * 16);
+							Screen->Cursor = TCursor(-2); // Arrow
+							int Button = Application->MessageBox(L"Preferred direction mismatch at a link between the\n"
+																 "highlighted element and an adjacent element.\n\n"
+																 "The highlighted element may be behind this message\n"
+																 "which can be moved by left clicking the mouse in the\n"
+																 "title bar and dragging it.\n\n"
+																 "The mismatch may or may not matter depending on\n"
+																 "routing requirements during operation.\n\n"
+																 "Click 'OK' to ignore and continue checking or 'Cancel'\n"
+																 "to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+							ClearandRebuildRailway(95); // to clear inversion
+							if(Button == IDCANCEL)
+							{
+								InfoPanel->Caption = TempInfo;
+								Utilities->CallLogPop(2483);
+								return;
+							}
+							Screen->Cursor = TCursor(-11); //Hourglass
+							Display->Update();
+						}
+					}
+				}
+			}
+		}
+		Screen->Cursor = TCursor(-2); // Arrow
+		ShowMessage("Finished");
+		InfoPanel->Caption = TempInfo;
+		Utilities->CallLogPop(2305);
+	}
+	catch(const Exception &e) //non-error catch
+	{
+		Screen->Cursor = TCursor(-2); // Arrow
+		ShowMessage("Error in preferred direction checking, unable to complete the check");
+		Utilities->CallLogPop(2306);
+	}
+}
+
+//---------------------------------------------------------------------------
+
+bool TInterface::BypassPDCrossoverMismatch(int Caller, int HLoc, int VLoc)
+/* If there's a crossover between two lines that each have single PDs set on them and the crossover has bidirectioal PDs then ordinarily a mismatch would be flagged
+for each crossover.  However since no PD route can be set over the crossover whatever PDs are set on them there's no point in flagging the mismatch.
+This function checks if the element passed in is a point with 3 PDs set (PD2 > -1 &  PD3 == -1), i.e. only one leg has a bidir PD, and that this bidir PD leg is connected
+to another point bidir leg with 3 PDs set.  If so it returns true, else false.
+*/
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",BypassPDCrossoverMismatch " + AnsiString(HLoc) + "," + AnsiString(VLoc));
+    int PD0 = -1, PD1 = -1, PD2 = -1, PD3 = -1;
+    int PDLinked0 = -1, PDLinked1 = -1, PDLinked2 = -1, PDLinked3 = -1;
+    int BidirLinkPos = -1;
+    bool FoundFlag = false, BidirOnLink = false;
+    EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(19, HLoc, VLoc, FoundFlag, PD0, PD1, PD2, PD3);
+    if((PD0 == -1) || (PD2 == -1) || (PD3 > -1))
+    {
+        Utilities->CallLogPop(2457);
+        return false;
+    }
+    if(PD0 > -1)
+    {
+        if(EveryPrefDir->PrefDirVector.at(PD0).TrackType != Points)
+        {
+            Utilities->CallLogPop(2458);
+            return false;
+        }
+    }
+//here it's points with one bidir leg
+//now find the link [1] or [3] that corresponds to the bidir leg and check it's another point with the same characteristics
+    if((EveryPrefDir->PrefDirVector.at(PD0).GetXLink() == EveryPrefDir->PrefDirVector.at(PD1).GetELink()) &&
+            (EveryPrefDir->PrefDirVector.at(PD1).GetXLink() == EveryPrefDir->PrefDirVector.at(PD0).GetELink()))
+        {   // bidir leg is PD0 & PD1
+            if(EveryPrefDir->PrefDirVector.at(PD0).GetXLinkPos() == 1)
+            {
+                BidirLinkPos = 1;
+            }
+            else if(EveryPrefDir->PrefDirVector.at(PD0).GetXLinkPos() == 3)
+            {
+                BidirLinkPos = 3;
+            }
+            else if(EveryPrefDir->PrefDirVector.at(PD0).GetELinkPos() == 1)
+            {
+                BidirLinkPos = 1;
+            }
+            else if(EveryPrefDir->PrefDirVector.at(PD0).GetELinkPos() == 3)
+            {
+                BidirLinkPos = 3;
             }
         }
-        Screen->Cursor = TCursor(-2); // Arrow
-        ShowMessage("Finished");
-        InfoPanel->Caption = TempInfo;
-        Utilities->CallLogPop(2305);
-    }
-    catch(const Exception &e) //non-error catch
+    else if((EveryPrefDir->PrefDirVector.at(PD0).GetXLink() == EveryPrefDir->PrefDirVector.at(PD2).GetELink()) &&
+            (EveryPrefDir->PrefDirVector.at(PD2).GetXLink() == EveryPrefDir->PrefDirVector.at(PD0).GetELink()))
+        {   // bidir leg is PD0 & PD2
+            if(EveryPrefDir->PrefDirVector.at(PD0).GetXLinkPos() == 1)
+            {
+                BidirLinkPos = 1;
+            }
+            else if(EveryPrefDir->PrefDirVector.at(PD0).GetXLinkPos() == 3)
+            {
+                BidirLinkPos = 3;
+            }
+            else if(EveryPrefDir->PrefDirVector.at(PD0).GetELinkPos() == 1)
+            {
+                BidirLinkPos = 1;
+            }
+            else if(EveryPrefDir->PrefDirVector.at(PD0).GetELinkPos() == 3)
+            {
+                BidirLinkPos = 3;
+            }
+        }
+    else if((EveryPrefDir->PrefDirVector.at(PD2).GetXLink() == EveryPrefDir->PrefDirVector.at(PD1).GetELink()) &&
+            (EveryPrefDir->PrefDirVector.at(PD1).GetXLink() == EveryPrefDir->PrefDirVector.at(PD2).GetELink()))
+        {   // bidir leg is PD1 & PD2
+            if(EveryPrefDir->PrefDirVector.at(PD1).GetXLinkPos() == 1)
+            {
+                BidirLinkPos = 1;
+            }
+            else if(EveryPrefDir->PrefDirVector.at(PD1).GetXLinkPos() == 3)
+            {
+                BidirLinkPos = 3;
+            }
+            else if(EveryPrefDir->PrefDirVector.at(PD1).GetELinkPos() == 1)
+            {
+                BidirLinkPos = 1;
+            }
+            else if(EveryPrefDir->PrefDirVector.at(PD1).GetELinkPos() == 3)
+            {
+                BidirLinkPos = 3;
+            }
+        }
+    if((BidirLinkPos == -1) || (BidirLinkPos > 3))//shouldn't be
     {
-        Screen->Cursor = TCursor(-2); // Arrow
-        ShowMessage("Error in preferred direction checking, unable to complete the check");
-        Utilities->CallLogPop(2306);
+        Utilities->CallLogPop(2459);
+        return false;
     }
+//now find the linked element and check it's a point with 3 PDs set & link bidir
+    int TVPos = Track->TrackElementAt(1458, EveryPrefDir->PrefDirVector.at(PD0).GetTrackVectorPosition()).Conn[BidirLinkPos];
+    int TVLinkPos = Track->TrackElementAt(1459, EveryPrefDir->PrefDirVector.at(PD0).GetTrackVectorPosition()).ConnLinkPos[BidirLinkPos];
+    if(TVPos == -1)
+    {
+        Utilities->CallLogPop(2460);
+        return false;
+    }
+    if((TVLinkPos == 0) || (TVLinkPos == 2) || (TVLinkPos > 3))
+    {
+        Utilities->CallLogPop(2461);
+        return false;
+    }
+    if(Track->TrackElementAt(1460, TVPos).TrackType  != Points)
+    {
+        Utilities->CallLogPop(2462);
+        return false;
+    }
+    if((TVLinkPos != 1) && (TVLinkPos != 3)) //must be linked at trailing leg
+    {
+        Utilities->CallLogPop(2463);
+        return false;
+    }
+    EveryPrefDir->GetVectorPositionsFromPrefDir4MultiMap(20, Track->TrackElementAt(1462, TVPos).HLoc,
+         Track->TrackElementAt(1461, TVPos).VLoc, FoundFlag, PDLinked0, PDLinked1, PDLinked2, PDLinked3);
+    if(!FoundFlag)
+    {
+        Utilities->CallLogPop(2464);
+        return false;
+    }
+    if((PDLinked0 == -1) || (PDLinked2 == -1) || (PDLinked3 > -1)) //must have exactly 3 PDs
+    {
+        Utilities->CallLogPop(2465);
+        return false;
+    }
+//now need bidir PDs on linked leg
+    if((EveryPrefDir->PrefDirVector.at(PDLinked0).GetXLink() == EveryPrefDir->PrefDirVector.at(PDLinked1).GetELink()) &&
+        (EveryPrefDir->PrefDirVector.at(PDLinked0).GetELink() == EveryPrefDir->PrefDirVector.at(PDLinked1).GetXLink()))
+    {   //bidir leg is PDLinked0 & PDLinked1
+        if(EveryPrefDir->PrefDirVector.at(PDLinked0).GetXLinkPos() == TVLinkPos)
+        {
+            BidirOnLink = true;
+        }
+        if(EveryPrefDir->PrefDirVector.at(PDLinked0).GetELinkPos() == TVLinkPos)
+        {
+            BidirOnLink = true;
+        }
+
+    }
+    else if((EveryPrefDir->PrefDirVector.at(PDLinked0).GetXLink() == EveryPrefDir->PrefDirVector.at(PDLinked2).GetELink()) &&
+        (EveryPrefDir->PrefDirVector.at(PDLinked0).GetELink() == EveryPrefDir->PrefDirVector.at(PDLinked2).GetXLink()))
+    {   //bidir leg is PDLinked0 & PDLinked2
+        if(EveryPrefDir->PrefDirVector.at(PDLinked0).GetXLinkPos() == TVLinkPos)
+        {
+            BidirOnLink = true;
+        }
+        if(EveryPrefDir->PrefDirVector.at(PDLinked0).GetELinkPos() == TVLinkPos)
+        {
+            BidirOnLink = true;
+        }
+
+    }
+    else if((EveryPrefDir->PrefDirVector.at(PDLinked1).GetXLink() == EveryPrefDir->PrefDirVector.at(PDLinked2).GetELink()) &&
+        (EveryPrefDir->PrefDirVector.at(PDLinked1).GetELink() == EveryPrefDir->PrefDirVector.at(PDLinked2).GetXLink()))
+    {   //bidir leg is PDLinked0 & PDLinked2
+        if(EveryPrefDir->PrefDirVector.at(PDLinked1).GetXLinkPos() == TVLinkPos)
+        {
+            BidirOnLink = true;
+        }
+        if(EveryPrefDir->PrefDirVector.at(PDLinked1).GetELinkPos() == TVLinkPos)
+        {
+            BidirOnLink = true;
+        }
+    }
+    if(!BidirOnLink)
+    {
+        Utilities->CallLogPop(2466);
+        return false;
+    }
+    Utilities->CallLogPop(2467);
+    return true;
 }
 
 //---------------------------------------------------------------------------
@@ -12089,6 +12318,7 @@ SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
                 AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " " + AnsiString(SkippedEvents)
                     + " timetabled events skipped until " + SkipTTLBString;
                 Utilities->PerformanceFile << PerfStr.c_str() << '\n';
+                Utilities->PerformanceFile.flush();  //added at v2.13.0
                 TrainController->SkippedTTEvents += SkippedEvents;
                 Display->PerformanceMemo->Lines->Add(PerfStr);
 
@@ -12163,7 +12393,7 @@ SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
                     "Note that no more events may be skipped for this train until after\n"
                     "it departs from the current location\n\nOK to proceed?";
             }
-            int button = Application->MessageBox(Message.c_str(), L"", MB_YESNO);
+			int button = Application->MessageBox(Message.c_str(), L"", MB_YESNO);
             if(button == IDYES)
             {
                 AnsiString SkipTTLBString  = AnsiString(SkipTTActionsListBox->Items->Strings[SkipTTActionsListBox->ItemIndex]); //added at v2.12.0 as doubt over newline in
@@ -12180,6 +12410,7 @@ SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
                     TrainController->SkippedTTEvents += Train.TrainSkippedEvents;
                     Train.TrainSkippedEvents = 0;
                     Utilities->PerformanceFile << PerfStr.c_str() << '\n';
+                    Utilities->PerformanceFile.flush(); //added at v2.13.0
                     Display->PerformanceMemo->Lines->Add(PerfStr);
                 }
                 else
@@ -12188,6 +12419,7 @@ SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
                     AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " " + AnsiString(Train.TrainSkippedEvents)
                             + " timetabled events skipped after the departure until " + SkipTTLBString;
                     Utilities->PerformanceFile << PerfStr.c_str() << '\n';
+                    Utilities->PerformanceFile.flush(); //added at v2.13.0
                     Display->PerformanceMemo->Lines->Add(PerfStr);
                 }
             }
@@ -12476,6 +12708,7 @@ void TInterface::SkipAllEventsBeforeNewService(int Caller, int TrainID, int PtrA
         AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " manually advanced to follow-on service " + Train.FollowOnServiceRef + " at " +
                 Train.ActionVectorEntryPtr->LocationName;
         Utilities->PerformanceFile << PerfStr.c_str() << '\n';
+        Utilities->PerformanceFile.flush(); //added at v2.13.0
         Display->PerformanceMemo->Lines->Add(PerfStr);
         //advance the pointer
         Train.ActionVectorEntryPtr = NewServiceActionEntryPtr; //points to the new service
@@ -12483,6 +12716,7 @@ void TInterface::SkipAllEventsBeforeNewService(int Caller, int TrainID, int PtrA
                 + " timetabled events skipped before it became the new service";
         TrainController->SkippedTTEvents += SkippedEvents;
         Utilities->PerformanceFile << PerfStr.c_str() << '\n';
+        Utilities->PerformanceFile.flush(); //added at v2.13.0
         Display->PerformanceMemo->Lines->Add(PerfStr);
         Utilities->CallLogPop(2450);
         return;
@@ -12554,6 +12788,7 @@ void TInterface::SkipEventsBeforeSameLoc(int Caller, int TrainID, AnsiString Loc
                 + " timetabled events skipped before the new service arrived at " + LocationName;
         TrainController->SkippedTTEvents += SkippedEvents;
         Utilities->PerformanceFile << PerfStr.c_str() << '\n';
+        Utilities->PerformanceFile.flush(); //added at v2.13.0
         Display->PerformanceMemo->Lines->Add(PerfStr);
         Utilities->CallLogPop(2452);
         return;
@@ -15218,6 +15453,11 @@ void TInterface::SetTopIndex(int Caller)
 {
 // Set TopIndex to the proper value & also Selected so don't have a different selection to the highlighted entry
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTopIndex");
+    if((TTCurrentEntryPtr == 0) || TimetableEditVector.empty()) //added at v2.13.0 as a fix for mathstrains19 (discord name) error reported 13/04/22
+    {                                                           //without this it crashes at line before last with "List index out of bounds"
+        Utilities->CallLogPop(2485);
+        return;
+    }
     if((TTCurrentEntryPtr - TimetableEditVector.begin()) < AllEntriesTTListBox->TopIndex)
     {
         AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin();
@@ -15226,9 +15466,9 @@ void TInterface::SetTopIndex(int Caller)
     {
         AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin() - 45;
     }
-    else
+    else //leave AllEntriesTTListBox->TopIndex as it is
     {
-        AllEntriesTTListBox->TopIndex = AllEntriesTTListBox->TopIndex;
+//        AllEntriesTTListBox->TopIndex = AllEntriesTTListBox->TopIndex; //removed at v2.13.0 as serves no purpose
     }
     AllEntriesTTListBox->Selected[TTCurrentEntryPtr - TimetableEditVector.begin()] = true;
     Utilities->CallLogPop(2207);
@@ -15820,6 +16060,8 @@ void TInterface::SetLevel1Mode(int Caller)
         MTBFLabel->Visible = false;
         TTClockAdjustWarningPanel->Visible = false;
         HideTTActionsListBox(1);
+        DelayMenu->Visible = false;  //added at v2.13.0
+        DelayMenu->Enabled = false;
         if(Track->IsTrackFinished())
         {
             PlanPrefDirsMenuItem->Enabled = true;
@@ -15933,6 +16175,7 @@ void TInterface::SetLevel1Mode(int Caller)
         ClearandRebuildRailway(32); // to get rid of unwanted displays (eg distance markers)
         SetTrackBuildImages(13);
         ClipboardChecked = false;
+        Utilities->CumulativeDelayedRandMinsAllTrains = 0; //added at v2.13.0
         break;
 
     case TimetableMode:
@@ -16045,6 +16288,15 @@ void TInterface::SetLevel1Mode(int Caller)
         ModeMenu->Enabled = false;
         SigImagePanel->Visible = false; // new at v2.3.0
         FileMenu->Enabled = false;
+        if(!PrefDirConflictAdviceMessageSent)
+        {
+            ShowMessage("Preferred direction correctness can be difficult to check by eye\n"
+                        "alone, especially for large railways, so an automated conflict\n"
+                        "check is available in the 'Edit' menu when in preferred\n"
+                        "direction mode.\n\n"
+                        "This message will not be shown again.");
+            PrefDirConflictAdviceMessageSent = true;
+        }
 // set edit menu items
         SetInitialPrefDirModeEditMenu();
         AddPrefDirButton->Enabled = false;
@@ -16157,8 +16409,26 @@ void TInterface::SetLevel1Mode(int Caller)
             ShowMessage("Performance logfile failed to open, logs won't be saved. Ensure that there is a folder named " + PERFLOG_DIR_NAME +
                         " in the folder where the 'Railway.exe' program file resides");
         }
-        Display->PerformanceLog(16, "Performance Log\nRailway: " + RailwayTitle + "\nTimetable: " + TimetableTitle + "\nStart Time: " +
-                TrainController->TimetableStartTime.FormatString("hh:nn"));
+        Display->PerformanceLog(16, "Performance Log:");  //these statements separated at v2.13.0 as didn't separate in on-screen log
+        Display->PerformanceLog(7777, "Railway: " + RailwayTitle);
+        Display->PerformanceLog(7777, "Timetable: " + TimetableTitle);
+        Display->PerformanceLog(7777, "Start Time: " + TrainController->TimetableStartTime.FormatString("hh:nn"));
+        if(Utilities->DelayMode == Nil) //this section added at v2.13.0 for random delays
+        {
+            Display->PerformanceLog(7777, "No random delays selected");
+        }
+        else if(Utilities->DelayMode == Minor)
+        {
+            Display->PerformanceLog(7777, "Minor random delays selected");
+        }
+        else if(Utilities->DelayMode == Moderate)
+        {
+            Display->PerformanceLog(7777, "Moderate random delays selected");
+        }
+        else if(Utilities->DelayMode == Major)
+        {
+            Display->PerformanceLog(7777, "Major random delays selected");
+        }
         SetPausedOrZoomedInfoCaption(3);
 // DisableRouteButtons(2); enable route setting or pre-start
 // DisablePanelsStoreMainMenuStates();
@@ -16215,7 +16485,8 @@ void TInterface::SetLevel1Mode(int Caller)
         OAListBox->Items->Add(L"Left click and");
         OAListBox->Items->Add(L"hold grey area");
         OAListBox->Items->Add(L"to move panel");
-
+        DelayMenu->Visible = true; //the following added at v2.13.0
+        DelayMenu->Enabled = true;
         ClearandRebuildRailway(55); // so points display with one fillet
         break;
 
@@ -16226,6 +16497,8 @@ void TInterface::SetLevel1Mode(int Caller)
         Level2PrefDirMode = NoPrefDirMode;
         OperatingPanel->Visible = true;
         OperatingPanelLabel->Caption = "Operation";
+        DelayMenu->Visible = true;  //added at v2.13.0
+        DelayMenu->Enabled = true;
 
         CallingOnButton->Visible = true;
         PresetAutoSigRoutesButton->Visible = false;
@@ -16308,6 +16581,22 @@ void TInterface::SetLevel1Mode(int Caller)
             MTBFLabel->Visible = false;
             MTBFLabel->Caption = "Mean time between\ntrain failures in\ntimetable hours";
             TrainController->MTBFHours = 0;
+        }
+        if(Utilities->DelayMode == Nil) //this section added at v2.13.0 to indicate current state of random delays at start of session
+        {
+            Display->PerformanceLog(7777, "No random delays selected");
+        }
+        else if(Utilities->DelayMode == Minor)
+        {
+            Display->PerformanceLog(7777, "Minor random delays selected");
+        }
+        else if(Utilities->DelayMode == Moderate)
+        {
+            Display->PerformanceLog(7777, "Moderate random delays selected");
+        }
+        else if(Utilities->DelayMode == Major)
+        {
+            Display->PerformanceLog(7777, "Major random delays selected");
         }
         break;
 
@@ -17132,6 +17421,8 @@ void TInterface::SetLevel2OperMode(int Caller)
         Utilities->CallLogPop(112);
         return;
     }
+    DelayMenu->Visible = true; //these added at v2.13.0
+    DelayMenu->Enabled = true;
     CallingOnButton->Visible = true;
     PresetAutoSigRoutesButton->Visible = false;
     switch(Level2OperMode) // use the data member
@@ -18206,18 +18497,41 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
     {
         TimeToNextMovementStr = "";
     }
-    if(Train.Stopped())
+    if(Train.StoppedAtLocation && (Train.ActionVectorEntryPtr->DepartureTime > TDateTime(-1)))  //if departure not next action then ignore NewDelay
+    {                                                                                          //added at v2.13.0
+        if(int(Train.NewDelay) == 1)
+        {
+            TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
+                "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' +
+                "Additional delay here of 1 minute\nNext:  " +
+                NextStopStr;
+        }
+        else if(int(Train.NewDelay) > 1)
+        {
+            TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
+                "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' +
+                "Additional delay here of " + AnsiString(int(Train.NewDelay)) + " minutes\nNext:  " +
+                NextStopStr;
+        }
+        else
+        {
+            TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
+                "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' + "Next:  " +
+                NextStopStr;
+        }
+    }
+    else if(Train.Stopped()) //stopped anywhere else or not a departure next
     {
         TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
-            "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' + "Next:  " +
-            NextStopStr;
+            "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' + "Next timetabled action: " +
+            NextStopStr;       //changed to 'Next timetabled action:' at v2.13.0 instead of 'Next:' to make clear it doesn't include delays
     }
     else
     {
         TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
             "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + ": " +
-            CurrSpeedStr.FormatFloat(FormatNoDPStr, CurrSpeed) + "km/h" + '\n' + "Next: " + NextStopStr;
-    }
+            CurrSpeedStr.FormatFloat(FormatNoDPStr, CurrSpeed) + "km/h" + '\n' + "Next timetabled action: " + NextStopStr;
+    }                          //changed to 'Next timetabled action:' at v2.13.0 instead of 'Next:' to make clear it doesn't include delays
     Utilities->CallLogPop(2263);
     return(TrainStatusFloat);
 }
@@ -19365,6 +19679,20 @@ In each case need to ensure that the following points are considered and dealt w
             Utilities->SaveFileString(SessionFile, "End of file at v2.12.0");
 //end of v2.12.0 additions
 
+//additions at v2.13.0 - random location delays
+            Utilities->SaveFileInt(SessionFile, Utilities->CumulativeDelayedRandMinsAllTrains); //to allow for exited and removed trains
+//            Utilities->SaveFileInt(SessionFile, int(Utilities->DelayMode)); //restore mode on loading
+            for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
+            { //if empty will skip
+                TTrain Train = TrainController->TrainVectorAt(87, x);
+                Utilities->SaveFileDouble(SessionFile, Train.NewDelay);
+                Utilities->SaveFileDouble(SessionFile, Train.DelayedRandMins);
+                Utilities->SaveFileDouble(SessionFile, Train.CumulativeDelayedRandMinsOneTrain);
+                Utilities->SaveFileDouble(SessionFile, double(Train.ActualArrivalTime));
+                //ReleaseTime already loaded
+            }
+            Utilities->SaveFileString(SessionFile, "End of file at v2.13.0");
+//end of v2.13.0 additions
             SessionFile.close();
             TrainController->StopTTClockMessage(4, "Session saved: Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " +
                                                 RailwayTitle + "; " + TimetableTitle + ".ssn");
@@ -19707,6 +20035,39 @@ void TInterface::LoadSession(int Caller)
                         }
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.12.0"  discarded ('E' already loaded)
 //end of additions at v2.12.0
+
+//additions at v2.13.0
+                        SessionFile.get(TempChar);
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
+                        {// get rid of all end of lines & emerge with eof or 1st digit of CumulativeDelayedRandMinsAllTrains
+                            SessionFile.get(TempChar);
+                        }
+                        if(SessionFile.eof())
+                        {
+                            SessionFile.close();
+                            goto FINISHEDLOADING;
+                        }
+                        //TempChar now contains the first digit of CumulativeDelayedRandMinsAllTrains
+                        TempString = "";
+                        while((TempChar != '\n') && (TempChar != '\0'))
+                        {
+                            TempString = TempString + TempChar;
+                            SessionFile.get(TempChar);
+                        }
+                        //here have CumulativeDelayedRandMinsAllTrains as AnsiString in TempString & '\n' in TempChar
+                        Utilities->CumulativeDelayedRandMinsAllTrains = TempString.ToDouble(); //if invalid will fail with a non-error catch
+                        for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++) //trains already loaded, if no trains then load DummyStr
+                        { //if empty will skip
+                            double TempDouble;
+                            TTrain &Train = TrainController->TrainVectorAt(88, x);
+                            Train.NewDelay = Utilities->LoadFileDouble(SessionFile);
+                            Train.DelayedRandMins = Utilities->LoadFileDouble(SessionFile);
+                            Train.CumulativeDelayedRandMinsOneTrain = Utilities->LoadFileDouble(SessionFile);
+                            TempDouble = Utilities->LoadFileDouble(SessionFile);
+                            Train.ActualArrivalTime = TDateTime(TempDouble); //ReleaseTime already loaded
+                        }
+                        DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.13.0"  discarded
+//end of additions at v2.13.0
 
                         SessionFile.close();
                     }
@@ -21232,6 +21593,7 @@ void TInterface::LoadPerformanceFile(int Caller, std::ifstream &InFile)
         {
             PerformanceLogBox->Lines->Add(TempString);
             Utilities->PerformanceFile << TempString.c_str() << '\n';
+            Utilities->PerformanceFile.flush(); //added at v2.13.0
             InFile.getline(Buffer, 1000);
             TempString = AnsiString(Buffer);
         }
@@ -23086,8 +23448,56 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
     }
 
 }
-
 // ---------------------------------------------------------------------------
+
+void __fastcall TInterface::NoDelaysMenuItemClick(TObject *Sender)  //these added at v2.13.0
+{
+    NoDelaysMenuItem->Enabled = false;
+    MinorDelaysMenuItem->Enabled = true;
+    ModerateDelaysMenuItem->Enabled = true;
+    MajorDelaysMenuItem->Enabled = true;
+    DelayMenu->Caption = "No delays";
+    Display->PerformanceLog(7777, "No random delays selected");
+    Utilities->DelayMode = Nil;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MinorDelaysMenuItemClick(TObject *Sender)
+{
+    NoDelaysMenuItem->Enabled = true;
+    MinorDelaysMenuItem->Enabled = false;
+    ModerateDelaysMenuItem->Enabled = true;
+    MajorDelaysMenuItem->Enabled = true;
+    DelayMenu->Caption = "Minor delays";
+    Display->PerformanceLog(7777, "Minor random delays selected");
+    Utilities->DelayMode = Minor;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::ModerateDelaysMenuItemClick(TObject *Sender)
+{
+    NoDelaysMenuItem->Enabled = true;
+    MinorDelaysMenuItem->Enabled = true;
+    ModerateDelaysMenuItem->Enabled = false;
+    MajorDelaysMenuItem->Enabled = true;
+    DelayMenu->Caption = "Moderate delays";
+    Display->PerformanceLog(7777, "Moderate random delays selected");
+    Utilities->DelayMode = Moderate;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MajorDelaysMenuItemClick(TObject *Sender)
+{
+    NoDelaysMenuItem->Enabled = true;
+    MinorDelaysMenuItem->Enabled = true;
+    ModerateDelaysMenuItem->Enabled = true;
+    MajorDelaysMenuItem->Enabled = false;
+    DelayMenu->Caption = "Major delays";
+    Display->PerformanceLog(7777, "Major random delays selected");
+    Utilities->DelayMode = Major;
+}
+
+//---------------------------------------------------------------------------
 //Multiplayer Code
 // ---------------------------------------------------------------------------
 
@@ -25410,4 +25820,3 @@ void TInterface::PlayerHandshakingActions()
 */
 
 // ---------------------------------------------------------------------------
-

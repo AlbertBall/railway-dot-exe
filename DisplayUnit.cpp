@@ -522,6 +522,7 @@ void TDisplay::PerformanceLog(int Caller, AnsiString Statement)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PerformanceLog," + Statement);
     Utilities->PerformanceFile << Statement.c_str() << '\n';
+    Utilities->PerformanceFile.flush(); //added at v2.13.0
     PerformanceMemo->Lines->Add(Statement);
     Utilities->CallLogPop(1479);
 }

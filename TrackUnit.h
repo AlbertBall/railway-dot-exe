@@ -1170,7 +1170,7 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
 /// Just replot the basic track elements at a level crossing (for flashing)
     void PlotLCBaseElementsOnly(int Caller, TBarrierState State, int BaseElementSpeedTag, int HLoc, int VLoc, int TypeOfRoute, TDisplay *Disp);
 /// Plot & open (to trains) all level crossings linked to TrackElement (Manual true = manually lowered, colour is green)
-    void PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, int TypeOfRoute, TDisplay *Disp, bool Manual);
+	void PlotLoweredLinkedLevelCrossingBarriers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, int TypeOfRoute, TDisplay *Disp, bool Manual);
 /// Plot LC elements without any base elements, and set LCPlotted true - used in ClearandRebuildRailway (Manual true = manually lowered, colour is green)
     void PlotPlainLoweredLinkedLevelCrossingBarriersAndSetMarkers(int Caller, int BaseElementSpeedTag, int HLoc, int VLoc, TDisplay *Disp, bool Manual);
 /// Plot LC elements without any base elements, and set LCPlotted true - used in ClearandRebuildRailway
@@ -1390,7 +1390,7 @@ public:
 
     // functions defined in .cpp file
 
-    /// Determines whether the preferred direction pointed to has another pref dir in the opposite direction set (returns true) or not
+/// Determines whether the preferred direction pointed to has another pref dir in the opposite direction set (returns true) or not
     bool TOnePrefDir::BiDirectionalPrefDir(int Caller, TPrefDir4MultiMapIterator PDPtr);
 /// Called before PrefDir loading as part of the FileIntegrityCheck function in case there is an error in the file. Very similar to LoadPrefDir but with value checks instead of storage in PrefDirVector.
     bool CheckOnePrefDir(int Caller, int NumberOfActiveElements, std::ifstream &VecFile);
@@ -1398,6 +1398,8 @@ public:
     bool EndPossible(int Caller, bool &LeadingPoints);
 /// Finds a pref dir element that links to another element at given vector number and link number & position, returns true if found with linked vector number, true if buffer or continuation with link at blank end & linked vector number = -1, or false if not found with vector number == -1
     bool FindLinkingPrefDir(int Caller, int PrefDirVectorNumber, int LinkNumberPos, int LinkNumber, int &LinkedPrefDirVectorNumber);
+/// Finds a pref dir element that is compatible and links to another element at given vector number and link number & position, returns true if found with linked vector number, true if buffer or continuation with link at blank end & linked vector number = -1, or false if not found with vector number == -1
+    bool FindLinkingCompatiblePrefDir(int Caller, int PrefDirVectorNumber, int LinkNumberPos, int LinkNumber, int &LinkedPrefDirVectorNumber);
 /// Used when continuing a chain of preferred directions or element lengths. Tries to find a set of linked tracks between the last selected element and the one at HLoc & VLoc, and returns true if it finds one.  FinishElement is returned true if the element selected is a buffer or continuation - in which case the chain is complete
     bool GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &FinishElement);
 /// Called when searching for start and end PrefDirElements when setting up automatic signals routes in PreStart mode

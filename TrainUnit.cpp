@@ -926,6 +926,12 @@ void TTrain::UpdateTrain(int Caller)
                         }
                     }
                 }
+//double x = 1440.0 * double(TrainController->TTClockTime);   //result in minutes //these are for testing purposes
+//double y = 1440.0 * (Utilities->LastDelayTTClockTime + 5.0/1440.0); //as above
+                if(double(TrainController->TTClockTime) <= (Utilities->LastDelayTTClockTime + 5.0/1440.0)) //if within 5 mins of last delay for any train
+                {                                                                                      //then don't delay.  Added after v2.13.0 Beta
+                    NewDelay = 0;
+                }
                 if(NewDelay < 1)
                 {
                     NewDelay = 0;
@@ -973,26 +979,29 @@ void TTrain::UpdateTrain(int Caller)
                 }
                 if(int(NewDelay) > 0) //additional delay over and above knock-on effects from earlier random delays
                 {
+                    Utilities->LastDelayTTClockTime = double(TrainController->TTClockTime);
                     if(int(NewDelay) == 1)
                     {
-                        Display->PerformanceLog(18, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + HeadCode + " delayed at " +
+                        Display->WarningLog(7777, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + HeadCode + " delayed at " +
+                                ActionVectorEntryPtr->LocationName + " by 1 minute");
+                        Display->PerformanceLog(18, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: " + HeadCode + " delayed at " +
                                 ActionVectorEntryPtr->LocationName + " by 1 minute because of a minor technical issue");
                     }
                     else
                     {
-                        if(NewDelay >= 10) //add warning if > 10 mins
+                        Display->WarningLog(11, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + HeadCode + " delayed at " +
+                                ActionVectorEntryPtr->LocationName + " by " + AnsiString(int(NewDelay)) + " minutes");
+                        if(NewDelay >= 10) //give variable reasons for >= 10 mins
                         {
                             int random2 = rand() % 24; //24 reasons
                             AnsiString Reason = ReasonArray[random2];
-                            Display->WarningLog(11, HeadCode + " delayed at " + ActionVectorEntryPtr->LocationName + " by " +
-                                    AnsiString(int(NewDelay)) + " minutes");
                             Display->PerformanceLog(19, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: " +
                                     HeadCode + " delayed at " + ActionVectorEntryPtr->LocationName + " by " + AnsiString(int(NewDelay)) +
                                     " minutes because " + Reason);
                         }
                         else
                         {
-                            Display->PerformanceLog(20, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " +
+                            Display->PerformanceLog(20, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: " +
                                     HeadCode + " delayed at " + ActionVectorEntryPtr->LocationName + " by " + AnsiString(int(NewDelay)) +
                                     " minutes because of a minor problem");
                         }
@@ -5447,7 +5456,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     if(Warning)
     {
         BaseLog = Utilities->Format96HHMMSS(ActualTime) + " WARNING: " + HeadCode + ActionLog + OtherHeadCode + LocationName;
-        WarningBaseLog = HeadCode + ActionLog + OtherHeadCode + LocationName;
+        WarningBaseLog = Utilities->Format96HHMMSS(ActualTime) + ": " + HeadCode + ActionLog + OtherHeadCode + LocationName; //added time at v2.13.0
     }
     else
     {
@@ -15173,7 +15182,7 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
     AnsiString BaseLog = "", Prefix = "", ErrorLog = "", WarningStr = "";
 
     TDateTime ActualTime = TrainController->TTClockTime; //moved from lower down at v2.9.1
-    AnsiString TimeAndHeadCode = Utilities->Format96HHMMSS(ActualTime) + " " + HeadCode; //added at v2.9.1 to give more info to user
+    AnsiString TimeAndHeadCode = Utilities->Format96HHMMSS(ActualTime) + ": " + HeadCode; //added at v2.9.1 to give more info to user
 
     Prefix = " ERROR: ";
     if(ActionEventType == FailTrainEntry)

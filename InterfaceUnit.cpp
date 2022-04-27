@@ -92,7 +92,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = GetVersion() + " Beta";
+        ProgramVersion = GetVersion() + " Beta2";
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -16176,6 +16176,7 @@ void TInterface::SetLevel1Mode(int Caller)
         SetTrackBuildImages(13);
         ClipboardChecked = false;
         Utilities->CumulativeDelayedRandMinsAllTrains = 0; //added at v2.13.0
+        Utilities->LastDelayTTClockTime = 0;
         break;
 
     case TimetableMode:
@@ -16410,24 +16411,24 @@ void TInterface::SetLevel1Mode(int Caller)
                         " in the folder where the 'Railway.exe' program file resides");
         }
         Display->PerformanceLog(16, "Performance Log:");  //these statements separated at v2.13.0 as didn't separate in on-screen log
-        Display->PerformanceLog(7777, "Railway: " + RailwayTitle);
-        Display->PerformanceLog(7777, "Timetable: " + TimetableTitle);
-        Display->PerformanceLog(7777, "Start Time: " + TrainController->TimetableStartTime.FormatString("hh:nn"));
+        Display->PerformanceLog(21, "Railway: " + RailwayTitle);
+        Display->PerformanceLog(22, "Timetable: " + TimetableTitle);
+        Display->PerformanceLog(23, "Start Time: " + TrainController->TimetableStartTime.FormatString("hh:nn"));
         if(Utilities->DelayMode == Nil) //this section added at v2.13.0 for random delays
         {
-            Display->PerformanceLog(7777, "No random delays selected");
+            Display->PerformanceLog(24, "No random delays selected");
         }
         else if(Utilities->DelayMode == Minor)
         {
-            Display->PerformanceLog(7777, "Minor random delays selected");
+            Display->PerformanceLog(25, "Minor random delays selected");
         }
         else if(Utilities->DelayMode == Moderate)
         {
-            Display->PerformanceLog(7777, "Moderate random delays selected");
+            Display->PerformanceLog(26, "Moderate random delays selected");
         }
         else if(Utilities->DelayMode == Major)
         {
-            Display->PerformanceLog(7777, "Major random delays selected");
+            Display->PerformanceLog(27, "Major random delays selected");
         }
         SetPausedOrZoomedInfoCaption(3);
 // DisableRouteButtons(2); enable route setting or pre-start
@@ -16584,19 +16585,19 @@ void TInterface::SetLevel1Mode(int Caller)
         }
         if(Utilities->DelayMode == Nil) //this section added at v2.13.0 to indicate current state of random delays at start of session
         {
-            Display->PerformanceLog(7777, "No random delays selected");
+            Display->PerformanceLog(28, "No random delays selected");
         }
         else if(Utilities->DelayMode == Minor)
         {
-            Display->PerformanceLog(7777, "Minor random delays selected");
+            Display->PerformanceLog(29, "Minor random delays selected");
         }
         else if(Utilities->DelayMode == Moderate)
         {
-            Display->PerformanceLog(7777, "Moderate random delays selected");
+            Display->PerformanceLog(30, "Moderate random delays selected");
         }
         else if(Utilities->DelayMode == Major)
         {
-            Display->PerformanceLog(7777, "Major random delays selected");
+            Display->PerformanceLog(31, "Major random delays selected");
         }
         break;
 
@@ -19680,6 +19681,7 @@ In each case need to ensure that the following points are considered and dealt w
 //end of v2.12.0 additions
 
 //additions at v2.13.0 - random location delays
+//No need to save Utilities->LastDelayTTClockTime - makes little difference and would cause corruption in any v2.13.0 Beta sessions
             Utilities->SaveFileInt(SessionFile, Utilities->CumulativeDelayedRandMinsAllTrains); //to allow for exited and removed trains
 //            Utilities->SaveFileInt(SessionFile, int(Utilities->DelayMode)); //restore mode on loading
             for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
@@ -22634,11 +22636,10 @@ void TInterface::TestFunction()    //triggered by Alt Ctrl 4
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
 //        throw Exception("Test error");  //generate an error file
 
+//        TTrackElement &TE = Track->GetTrackElementFromTrackMap(7777, 402, 17); //test sudden speed limit application in front of train
+//        TE.SpeedLimit01 = 10;                                                  // ok, train brakes as hard as it can in front and passes at whatever speed, then accelerates again
+
 //    ElapsedTimeTestFunctionStart = true; //for elapsed time investigations in MasterClockTimer
-
-
-
-
 // ShowMessage("MissedTicks = " + AnsiString(MissedTicks) + "; TotalTicks = " + AnsiString(TotalTicks));
 
 //DMIt->second.ServiceReference = TMMIt->second.ServiceReference;
@@ -23457,7 +23458,7 @@ void __fastcall TInterface::NoDelaysMenuItemClick(TObject *Sender)  //these adde
     ModerateDelaysMenuItem->Enabled = true;
     MajorDelaysMenuItem->Enabled = true;
     DelayMenu->Caption = "No delays";
-    Display->PerformanceLog(7777, "No random delays selected");
+    Display->PerformanceLog(32, "No random delays selected");
     Utilities->DelayMode = Nil;
 }
 //---------------------------------------------------------------------------
@@ -23469,7 +23470,7 @@ void __fastcall TInterface::MinorDelaysMenuItemClick(TObject *Sender)
     ModerateDelaysMenuItem->Enabled = true;
     MajorDelaysMenuItem->Enabled = true;
     DelayMenu->Caption = "Minor delays";
-    Display->PerformanceLog(7777, "Minor random delays selected");
+    Display->PerformanceLog(33, "Minor random delays selected");
     Utilities->DelayMode = Minor;
 }
 //---------------------------------------------------------------------------
@@ -23481,7 +23482,7 @@ void __fastcall TInterface::ModerateDelaysMenuItemClick(TObject *Sender)
     ModerateDelaysMenuItem->Enabled = false;
     MajorDelaysMenuItem->Enabled = true;
     DelayMenu->Caption = "Moderate delays";
-    Display->PerformanceLog(7777, "Moderate random delays selected");
+    Display->PerformanceLog(34, "Moderate random delays selected");
     Utilities->DelayMode = Moderate;
 }
 //---------------------------------------------------------------------------
@@ -23493,7 +23494,7 @@ void __fastcall TInterface::MajorDelaysMenuItemClick(TObject *Sender)
     ModerateDelaysMenuItem->Enabled = true;
     MajorDelaysMenuItem->Enabled = false;
     DelayMenu->Caption = "Major delays";
-    Display->PerformanceLog(7777, "Major random delays selected");
+    Display->PerformanceLog(35, "Major random delays selected");
     Utilities->DelayMode = Major;
 }
 

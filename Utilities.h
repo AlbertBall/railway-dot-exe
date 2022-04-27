@@ -50,14 +50,14 @@ public:
     char DecimalPoint;
     ///< added at v2.4.0 so can use the local value in loaded session files
 
+    double LastDelayTTClockTime;
+    ///< Clock time at which the latest delay for any train occurred. Used to prevent new delays within 5 minutes of the last one, added after v2.13.0 Beta
     int ScreenElementWidth;
     ///< width of display screen in elements
     int ScreenElementHeight;
     ///< height of display screen in elements
-    int CumulativeDelayedRandMinsAllTrains; //added at v2.13.0 (here so survives ClearEverything() when TrainController deleted and re-created)
-///< the running total of all random delays including knock-on delays for all trains, used to reduce total late mins in performance summary
-
-
+    int CumulativeDelayedRandMinsAllTrains;
+    ///< the running total of all random delays including knock-on delays for all trains, used to reduce total late mins in performance summary (added at v2.13.0)
     std::ofstream PerformanceFile;
     ///< the file where the performance log for a particular period of operation is saved
     std::deque<AnsiString>CallLog;
@@ -71,8 +71,8 @@ public:
     ///< creates a string of the form 'hh:mm:ss' for use in call & event logging
     TColor clTransparent;
     ///< the display background colour, can be white, black or dark blue
-    TDelayMode DelayMode; //added at v2.13.0
-///< specifies whether no delays or minor, moderate or major random delays are to be applied
+    TDelayMode DelayMode;
+///< specifies whether no delays or minor, moderate or major random delays are to be applied (added at v2.13.0)
 
 
 // void LogEvent(AnsiString Str); //store Str to the event log - moved to TTrainController for v0.6 so can record the tt clock value

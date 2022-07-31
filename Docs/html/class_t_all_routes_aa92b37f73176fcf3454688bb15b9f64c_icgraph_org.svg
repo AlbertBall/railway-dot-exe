@@ -652,7 +652,7 @@
 <!-- Node37 -->
 <g id="node37" class="node">
 <title>Node37</title>
-<g id="a_node37"><a xlink:href="class_t_one_route.html#a4dfe3a028da7a4b6df0f44f33c3e2196" target="_top" xlink:title="Called when setting a route to set all points appropriately. Also called when a new train is added at...">
+<g id="a_node37"><a xlink:href="class_t_one_route.html#a4dfe3a028da7a4b6df0f44f33c3e2196" target="_top" xlink:title="Called when setting a route to set all signals appropriately. Also called when a new train is added a...">
 <polygon fill="white" stroke="black" points="1288,-183 1288,-202 1432,-202 1432,-183 1288,-183"/>
 <text text-anchor="middle" x="1360" y="-190" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::SetRouteSignals</text>
 </a>

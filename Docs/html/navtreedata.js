@@ -26,7 +26,7 @@ var NAVTREE =
 [
   [ "Railway Operation Simulator", "index.html", [
     [ "Contributing to railway-dot-exe", "md__c_o_n_t_r_i_b_u_t_i_n_g.html", null ],
-    [ "railway-dot-exe", "md__r_e_a_d_m_e.html", null ],
+    [ "Railway Operation Simulator (ROS)", "md__r_e_a_d_m_e.html", null ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -59,20 +59,20 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_a_p_i_8cpp.html",
-"_graphic_unit_8h.html#afad868bc5f493f8b90c72f764c5be884",
-"class_t_action_vector_entry.html#a5f4a663fd91b104c7f93990d79c16d1d",
-"class_t_interface.html#a0a8913634322bedba0e8e9e5e16ba181",
-"class_t_interface.html#a3db16b7382de5fdb2fbde90949026d8b",
-"class_t_interface.html#a7ae5cbf73af2af93c06473acc07bdcec",
-"class_t_interface.html#aba3f772739d000bcbd8059181417a9b3",
-"class_t_interface.html#af45a2819bd790f9f2027428d04186cbe",
-"class_t_rail_graphics.html#a063a8889d41cef26bdc6664bc01df4af",
-"class_t_rail_graphics.html#a653064b63073292f902e703cddbb4fd9",
-"class_t_rail_graphics.html#ab9c824df118929808afd6892475942e8",
-"class_t_text_item.html#a4c25a60852b8493f06d26e64241aa98f",
-"class_t_track.html#ad7d7ef450424ea6aab50db5445c6448c",
-"class_t_train.html#acee5980b53db6ad43e7b5225ad354457",
-"class_t_utilities.html#a10e6a4ee0aafcd732d1a2dc8a670466b"
+"_graphic_unit_8h.html#af487f8a8ed9b2becefef6ce32cfef11f",
+"class_t_about_form.html#adfcb216e6b70a6369dd33837e8875503",
+"class_t_interface.html#a0659e748042e378f3e325652c9c2e6d2",
+"class_t_interface.html#a3a1745cd5a327b9f5d518692b781ddc8",
+"class_t_interface.html#a762d579b6c0f8eab0cba73e8e39c4c8b",
+"class_t_interface.html#ab935f04ad4998566902a0e2c67f948c4",
+"class_t_interface.html#af3898a005ab350ebc7c01fcc26957cfd",
+"class_t_rail_graphics.html#a00e746faaf01affcf5c48b4a175595c1",
+"class_t_rail_graphics.html#a5c3392dd1ab2df6852f5894451a2086d",
+"class_t_rail_graphics.html#ab0850986e4fca120ba030509cf2cc90c",
+"class_t_text_handler.html#a07441155bee467c9fb111b8332681466",
+"class_t_track.html#aaf3f48b8df9877499aaf4c05f804426c",
+"class_t_train.html#a95a26f26e890d53e38f1f8067977ef0e",
+"class_t_train_controller_1_1_t_continuation_auto_sig_entry.html#ad393d737f9031743cabfc1fbd1ac6239"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

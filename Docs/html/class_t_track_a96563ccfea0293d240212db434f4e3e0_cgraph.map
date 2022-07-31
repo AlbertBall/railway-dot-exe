@@ -1,6 +1,6 @@
 <map id="TTrack::LoadBarriersDownVector" name="TTrack::LoadBarriersDownVector">
 <area shape="rect" id="node1" title="Load all BarriersDownVector values from SessionFile." alt="" coords="5,99,180,141"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="239,5,386,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="239,5,386,32"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a9a0ec4d0c686c71157c371d647824777" title="loads a bool value from the file" alt="" coords="235,56,390,83"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#ac970a0df84f5cb26ed962020b7dc2d6d" title="loads a double value from the file (converts from a string to a double) and uses the local decimal po..." alt="" coords="228,107,397,133"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c" title="loads an int value from the file" alt="" coords="241,157,384,184"/>

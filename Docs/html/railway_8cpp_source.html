@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.13.0 Beta</span>
+   &#160;<span id="projectnumber">v2.13.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -95,45 +95,55 @@ $(document).ready(function(){initNavTree('railway_8cpp_source.html',''); initRes
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;tchar.h&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//---------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="railway_8cpp.html#ae3832cc8ddefa153421ddfbf437211e4">    7</a></span>&#160;<a class="code" href="railway_8cpp.html#ae3832cc8ddefa153421ddfbf437211e4">USEFORM</a>(<span class="stringliteral">&quot;AboutUnit.cpp&quot;</span>, <a class="code" href="_about_unit_8cpp.html#afeda18bab07d814e4497b7fe8c70a234">AboutForm</a>);</div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="railway_8cpp.html#a503b682414714421d50c270b7ab5fa0f">    8</a></span>&#160;<a class="code" href="railway_8cpp.html#ae3832cc8ddefa153421ddfbf437211e4">USEFORM</a>(<span class="stringliteral">&quot;InterfaceUnit.cpp&quot;</span>, <a class="code" href="_interface_unit_8cpp.html#ab46f90e63fff00ad962f3392fd462332">Interface</a>);</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">//---------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="railway_8cpp.html#ac6afdc93da51ef483fb949cf0b350f6f">   10</a></span>&#160;<span class="keywordtype">int</span> WINAPI <a class="code" href="railway_8cpp.html#ac6afdc93da51ef483fb949cf0b350f6f">_tWinMain</a>(HINSTANCE, HINSTANCE, LPTSTR, <span class="keywordtype">int</span>)</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keywordflow">try</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        Application-&gt;Initialize();</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        Application-&gt;MainFormOnTaskBar = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        Application-&gt;HelpFile = <span class="stringliteral">&quot;.\\Help_Files\\Help.chm&quot;</span>;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        Application-&gt;CreateForm(__classid(<a class="code" href="class_t_interface.html">TInterface</a>), &amp;<a class="code" href="_interface_unit_8cpp.html#ab46f90e63fff00ad962f3392fd462332">Interface</a>);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;         Application-&gt;CreateForm(__classid(<a class="code" href="class_t_about_form.html">TAboutForm</a>), &amp;<a class="code" href="_about_unit_8cpp.html#afeda18bab07d814e4497b7fe8c70a234">AboutForm</a>);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;         Application-&gt;Run();</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    }</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordflow">catch</span> (Exception &amp;exception)</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    {</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        Application-&gt;ShowException(&amp;exception);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    }</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordflow">catch</span> (...)</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keywordflow">try</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keywordflow">throw</span> Exception(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        }</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordflow">catch</span> (Exception &amp;exception)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            Application-&gt;ShowException(&amp;exception);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        }</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordflow">return</span>(0);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//---------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="railway_8cpp.html#aa5b830fe4bb3c06369480484cc528e6c">    8</a></span>&#160;<a class="code" href="railway_8cpp.html#ae3832cc8ddefa153421ddfbf437211e4">USEFORM</a>(<span class="stringliteral">&quot;PerfLogUnit.cpp&quot;</span>, <a class="code" href="_perf_log_unit_8cpp.html#ac17faeb9c39bd4e1b05566e2e0bc86b0">PerfLogForm</a>);</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="railway_8cpp.html#a503b682414714421d50c270b7ab5fa0f">    9</a></span>&#160;<a class="code" href="railway_8cpp.html#ae3832cc8ddefa153421ddfbf437211e4">USEFORM</a>(<span class="stringliteral">&quot;InterfaceUnit.cpp&quot;</span>, <a class="code" href="_interface_unit_8cpp.html#ab46f90e63fff00ad962f3392fd462332">Interface</a>);</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="railway_8cpp.html#a12b6dc287753ca5642c409b0afbba6cc">   10</a></span>&#160;<a class="code" href="railway_8cpp.html#ae3832cc8ddefa153421ddfbf437211e4">USEFORM</a>(<span class="stringliteral">&quot;ActionsDueUnit.cpp&quot;</span>, <a class="code" href="_actions_due_unit_8cpp.html#a74bdf146bd61fa63900be71781ece574">ActionsDueForm</a>);</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">//---------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="railway_8cpp.html#ac6afdc93da51ef483fb949cf0b350f6f">   12</a></span>&#160;<span class="keywordtype">int</span> WINAPI <a class="code" href="railway_8cpp.html#ac6afdc93da51ef483fb949cf0b350f6f">_tWinMain</a>(HINSTANCE, HINSTANCE, LPTSTR, <span class="keywordtype">int</span>)</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordflow">try</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        Application-&gt;Initialize();</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        Application-&gt;MainFormOnTaskBar = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        Application-&gt;HelpFile = <span class="stringliteral">&quot;.\\Help_Files\\Help.chm&quot;</span>;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="comment">/*NB CreateForm() runs the form&#39;s constructor, so if another form is referenced in it that form must be created first,</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">        e.g. Interface before AboutForm (although InterfaceUnit.cpp includes AboutUnit.h the constructor doesn&#39;t reference it). */</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;         Application-&gt;CreateForm(__classid(<a class="code" href="class_t_interface.html">TInterface</a>), &amp;<a class="code" href="_interface_unit_8cpp.html#ab46f90e63fff00ad962f3392fd462332">Interface</a>);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;         Application-&gt;CreateForm(__classid(<a class="code" href="class_t_perf_log_form.html">TPerfLogForm</a>), &amp;<a class="code" href="_perf_log_unit_8cpp.html#ac17faeb9c39bd4e1b05566e2e0bc86b0">PerfLogForm</a>);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;         Application-&gt;CreateForm(__classid(<a class="code" href="class_t_about_form.html">TAboutForm</a>), &amp;<a class="code" href="_about_unit_8cpp.html#afeda18bab07d814e4497b7fe8c70a234">AboutForm</a>);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;         Application-&gt;CreateForm(__classid(<a class="code" href="class_t_actions_due_form.html">TActionsDueForm</a>), &amp;<a class="code" href="_actions_due_unit_8cpp.html#a74bdf146bd61fa63900be71781ece574">ActionsDueForm</a>);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;         Application-&gt;Run();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    }</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordflow">catch</span> (Exception &amp;exception)</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        Application-&gt;ShowException(&amp;exception);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordflow">catch</span> (...)</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordflow">try</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordflow">throw</span> Exception(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordflow">catch</span> (Exception &amp;exception)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            Application-&gt;ShowException(&amp;exception);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        }</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordflow">return</span>(0);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//---------------------------------------------------------------------------</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="a_perf_log_unit_8cpp_html_ac17faeb9c39bd4e1b05566e2e0bc86b0"><div class="ttname"><a href="_perf_log_unit_8cpp.html#ac17faeb9c39bd4e1b05566e2e0bc86b0">PerfLogForm</a></div><div class="ttdeci">TPerfLogForm * PerfLogForm</div><div class="ttdef"><b>Definition:</b> <a href="_perf_log_unit_8cpp_source.html#l00011">PerfLogUnit.cpp:11</a></div></div>
 <div class="ttc" id="arailway_8cpp_html_ae3832cc8ddefa153421ddfbf437211e4"><div class="ttname"><a href="railway_8cpp.html#ae3832cc8ddefa153421ddfbf437211e4">USEFORM</a></div><div class="ttdeci">USEFORM(&quot;AboutUnit.cpp&quot;, AboutForm)</div></div>
+<div class="ttc" id="a_actions_due_unit_8cpp_html_a74bdf146bd61fa63900be71781ece574"><div class="ttname"><a href="_actions_due_unit_8cpp.html#a74bdf146bd61fa63900be71781ece574">ActionsDueForm</a></div><div class="ttdeci">TActionsDueForm * ActionsDueForm</div><div class="ttdef"><b>Definition:</b> <a href="_actions_due_unit_8cpp_source.html#l00015">ActionsDueUnit.cpp:15</a></div></div>
 <div class="ttc" id="aclass_t_about_form_html"><div class="ttname"><a href="class_t_about_form.html">TAboutForm</a></div><div class="ttdoc">The small 'About' box selected from the Help menu.</div><div class="ttdef"><b>Definition:</b> <a href="_about_unit_8h_source.html#l00035">AboutUnit.h:36</a></div></div>
 <div class="ttc" id="aclass_t_interface_html"><div class="ttname"><a href="class_t_interface.html">TInterface</a></div><div class="ttdef"><b>Definition:</b> <a href="_interface_unit_8h_source.html#l00090">InterfaceUnit.h:91</a></div></div>
-<div class="ttc" id="a_interface_unit_8cpp_html_ab46f90e63fff00ad962f3392fd462332"><div class="ttname"><a href="_interface_unit_8cpp.html#ab46f90e63fff00ad962f3392fd462332">Interface</a></div><div class="ttdeci">TInterface * Interface</div><div class="ttdef"><b>Definition:</b> <a href="_interface_unit_8cpp_source.html#l00069">InterfaceUnit.cpp:69</a></div></div>
-<div class="ttc" id="arailway_8cpp_html_ac6afdc93da51ef483fb949cf0b350f6f"><div class="ttname"><a href="railway_8cpp.html#ac6afdc93da51ef483fb949cf0b350f6f">_tWinMain</a></div><div class="ttdeci">int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)</div><div class="ttdef"><b>Definition:</b> <a href="railway_8cpp_source.html#l00010">railway.cpp:10</a></div></div>
+<div class="ttc" id="a_interface_unit_8cpp_html_ab46f90e63fff00ad962f3392fd462332"><div class="ttname"><a href="_interface_unit_8cpp.html#ab46f90e63fff00ad962f3392fd462332">Interface</a></div><div class="ttdeci">TInterface * Interface</div><div class="ttdef"><b>Definition:</b> <a href="_interface_unit_8cpp_source.html#l00071">InterfaceUnit.cpp:71</a></div></div>
+<div class="ttc" id="arailway_8cpp_html_ac6afdc93da51ef483fb949cf0b350f6f"><div class="ttname"><a href="railway_8cpp.html#ac6afdc93da51ef483fb949cf0b350f6f">_tWinMain</a></div><div class="ttdeci">int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)</div><div class="ttdef"><b>Definition:</b> <a href="railway_8cpp_source.html#l00012">railway.cpp:12</a></div></div>
+<div class="ttc" id="aclass_t_actions_due_form_html"><div class="ttname"><a href="class_t_actions_due_form.html">TActionsDueForm</a></div><div class="ttdef"><b>Definition:</b> <a href="_actions_due_unit_8h_source.html#l00012">ActionsDueUnit.h:13</a></div></div>
 <div class="ttc" id="a_about_unit_8cpp_html_afeda18bab07d814e4497b7fe8c70a234"><div class="ttname"><a href="_about_unit_8cpp.html#afeda18bab07d814e4497b7fe8c70a234">AboutForm</a></div><div class="ttdeci">TAboutForm * AboutForm</div><div class="ttdef"><b>Definition:</b> <a href="_about_unit_8cpp_source.html#l00047">AboutUnit.cpp:47</a></div></div>
+<div class="ttc" id="aclass_t_perf_log_form_html"><div class="ttname"><a href="class_t_perf_log_form.html">TPerfLogForm</a></div><div class="ttdef"><b>Definition:</b> <a href="_perf_log_unit_8h_source.html#l00012">PerfLogUnit.h:13</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

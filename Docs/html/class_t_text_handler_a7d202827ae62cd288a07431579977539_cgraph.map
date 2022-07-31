@@ -1,6 +1,6 @@
 <map id="TTextHandler::WriteTextToImage" name="TTextHandler::WriteTextToImage">
 <area shape="rect" id="node1" title="write all items in TextVector to the railway image in &#39;Bitmap&#39;" alt="" coords="5,101,181,143"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="472,33,619,59"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="472,33,619,59"/>
 <area shape="rect" id="node3" href="$class_t_track.html#a5d25871e34f26d3c4c878fd4707ed375" title=" " alt="" coords="256,185,397,211"/>
 <area shape="rect" id="node4" href="$class_t_track.html#ac42bd1e1e148a91396310b1077d2d8e0" title=" " alt="" coords="256,235,397,262"/>
 <area shape="rect" id="node5" href="$class_t_text_handler.html#ac478536f458d9cda8a841953672f6525" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="246,33,407,59"/>

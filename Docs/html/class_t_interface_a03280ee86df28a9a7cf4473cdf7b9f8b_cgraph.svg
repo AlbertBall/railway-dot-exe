@@ -82,7 +82,7 @@ var sectionId = 'dynsection-169';
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied">
+<g id="a_node3"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="pops the last entry off the call stack, throws an error if called when empty">
 <polygon fill="white" stroke="black" points="1144,-1265.25 1144,-1284.25 1254,-1284.25 1254,-1265.25 1144,-1265.25"/>
 <text text-anchor="middle" x="1199" y="-1272.25" font-family="Helvetica,sans-Serif" font-size="10.00">TUtilities::CallLogPop</text>
 </a>
@@ -372,9 +372,9 @@ var sectionId = 'dynsection-169';
 <path fill="none" stroke="midnightblue" d="M82.07,-493.39C100.77,-580.22 240.06,-1227.35 266.26,-1349.05"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="262.91,-1350.11 268.43,-1359.15 269.75,-1348.64 262.91,-1350.11"/>
 </g>
-<!-- Node193 -->
+<!-- Node194 -->
 <g id="node50" class="node">
-<title>Node193</title>
+<title>Node194</title>
 <g id="a_node50"><a xlink:href="class_t_interface.html#a209ee94f8c890753da19524f48a8b78f" target="_top" xlink:title="Enables or disables the initial Edit mode submenu items in Track mode.">
 <polygon fill="white" stroke="red" points="391,-234.75 391,-264.75 519,-264.75 519,-234.75 391,-234.75"/>
 <text text-anchor="start" x="399" y="-252.75" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::SetTrackMode</text>
@@ -382,9 +382,9 @@ var sectionId = 'dynsection-169';
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node193 -->
+<!-- Node1&#45;&gt;Node194 -->
 <g id="edge166" class="edge">
-<title>Node1&#45;&gt;Node193</title>
+<title>Node1&#45;&gt;Node194</title>
 <path fill="none" stroke="midnightblue" d="M82.14,-473.93C90.06,-440.18 121.09,-328.37 194,-279.75 248.81,-243.21 324.93,-238.44 380.64,-241.17"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="380.61,-244.67 390.79,-241.76 381.01,-237.68 380.61,-244.67"/>
 </g>
@@ -809,7 +809,7 @@ var sectionId = 'dynsection-169';
 <!-- Node63 -->
 <g id="node34" class="node">
 <title>Node63</title>
-<g id="a_node34"><a xlink:href="class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" target="_top" xlink:title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker.">
+<g id="a_node34"><a xlink:href="class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" target="_top" xlink:title="&lt; Sets the information panel message for zoom&#45;out or paused modes">
 <polygon fill="white" stroke="red" points="953.5,-2099.75 953.5,-2129.75 1088.5,-2129.75 1088.5,-2099.75 953.5,-2099.75"/>
 <text text-anchor="start" x="961.5" y="-2117.75" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ClearandRebuild</text>
 <text text-anchor="middle" x="1021" y="-2106.75" font-family="Helvetica,sans-Serif" font-size="10.00">Railway</text>
@@ -1053,9 +1053,9 @@ var sectionId = 'dynsection-169';
 <path fill="none" stroke="midnightblue" d="M278.01,-1378.38C292.43,-1402.74 333.73,-1467.41 385,-1502.75 391.17,-1507.01 398.18,-1510.58 405.3,-1513.56"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="404.42,-1516.97 415.01,-1517.25 406.91,-1510.42 404.42,-1516.97"/>
 </g>
-<!-- Node55&#45;&gt;Node193 -->
+<!-- Node55&#45;&gt;Node194 -->
 <g id="edge160" class="edge">
-<title>Node55&#45;&gt;Node193</title>
+<title>Node55&#45;&gt;Node194</title>
 <path fill="none" stroke="midnightblue" d="M273.66,-1358.9C281.56,-1291.99 328.97,-897.35 385,-578.75 405.09,-464.52 435.58,-329.36 448.21,-274.62"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="451.64,-275.3 450.48,-264.77 444.82,-273.72 451.64,-275.3"/>
 </g>
@@ -1515,21 +1515,21 @@ var sectionId = 'dynsection-169';
 <path fill="none" stroke="midnightblue" d="M1044.29,-850.56C1078.08,-827.51 1141.92,-783.99 1175.71,-760.95"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1177.72,-763.82 1184.01,-755.29 1173.77,-758.04 1177.72,-763.82"/>
 </g>
-<!-- Node193&#45;&gt;Node3 -->
+<!-- Node194&#45;&gt;Node3 -->
 <g id="edge161" class="edge">
-<title>Node193&#45;&gt;Node3</title>
+<title>Node194&#45;&gt;Node3</title>
 <path fill="none" stroke="midnightblue" d="M460.03,-265.03C472.14,-311.67 508.43,-456.44 525,-578.75 533.59,-642.19 518.75,-1105.67 561,-1153.75 580.02,-1175.4 976.11,-1239.82 1133.93,-1264.75"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1133.55,-1268.23 1143.97,-1266.34 1134.64,-1261.32 1133.55,-1268.23"/>
 </g>
-<!-- Node193&#45;&gt;Node5 -->
+<!-- Node194&#45;&gt;Node5 -->
 <g id="edge163" class="edge">
-<title>Node193&#45;&gt;Node5</title>
+<title>Node194&#45;&gt;Node5</title>
 <path fill="none" stroke="midnightblue" d="M485.76,-234.63C538.69,-208.65 653.36,-156.44 757,-136.75 907.21,-108.22 984.73,-34.46 1101,-133.75 1193.56,-212.8 1198.28,-630.33 1198.12,-726.15"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1194.62,-726.18 1198.09,-736.19 1201.62,-726.21 1194.62,-726.18"/>
 </g>
-<!-- Node193&#45;&gt;Node50 -->
+<!-- Node194&#45;&gt;Node50 -->
 <g id="edge162" class="edge">
-<title>Node193&#45;&gt;Node50</title>
+<title>Node194&#45;&gt;Node50</title>
 <path fill="none" stroke="midnightblue" d="M519.06,-249.75C534.08,-249.75 550.25,-249.75 565.72,-249.75"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="565.77,-253.25 575.77,-249.75 565.77,-246.25 565.77,-253.25"/>
 </g>

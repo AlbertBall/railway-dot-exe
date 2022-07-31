@@ -1,7 +1,7 @@
 <map id="TTrainController::RebuildOpTimeToActMultimap" name="TTrainController::RebuildOpTimeToActMultimap">
-<area shape="rect" id="node1" title="new v2.2.0 for OperatorActionPanel" alt="" coords="5,225,168,267"/>
+<area shape="rect" id="node1" title="new v2.2.0 for OperatorActionPanel (OperatorActionPanel changed for ActionsDueForm at v2...." alt="" coords="5,225,168,267"/>
 <area shape="rect" id="node2" href="$class_t_train_controller.html#a9fa0023214c894b378c929311da6c185" title="new v2.2.0 (DistanceToExit added for multiplayer), calcs distances to red signal &amp; exit,..." alt="" coords="216,225,413,267"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="987,333,1133,359"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="987,333,1133,359"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="987,130,1133,157"/>
 <area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="744,79,907,106"/>
 <area shape="rect" id="node11" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="726,333,925,359"/>

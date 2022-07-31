@@ -12,7 +12,7 @@
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title="new at v2.4.0 return true if find the train (added at v2.4.0 as can select a removed train in OAListB...">
+<g id="a_node1"><a xlink:title="new at v2.4.0 return true if find the train (added at v2.4.0 as can select a removed train in Actions...">
 <polygon fill="#bfbfbf" stroke="black" points="0,-23 0,-53 139,-53 139,-23 0,-23"/>
 <text text-anchor="start" x="8" y="-41" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::TrainExists</text>
 <text text-anchor="middle" x="69.5" y="-30" font-family="Helvetica,sans-Serif" font-size="10.00">AtIdent</text>
@@ -22,7 +22,7 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied">
+<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="pops the last entry off the call stack, throws an error if called when empty">
 <polygon fill="white" stroke="black" points="360,-47.5 360,-66.5 470,-66.5 470,-47.5 360,-47.5"/>
 <text text-anchor="middle" x="415" y="-54.5" font-family="Helvetica,sans-Serif" font-size="10.00">TUtilities::CallLogPop</text>
 </a>

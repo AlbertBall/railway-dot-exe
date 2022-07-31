@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.13.0 Beta</span>
+   &#160;<span id="projectnumber">v2.13.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -102,14 +102,12 @@ $(document).ready(function(){initNavTree('class_t_one_route.html',''); initResiz
 <div class="dynheader">
 Inheritance diagram for TOneRoute:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for TOneRoute:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -147,18 +145,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a974ac7ab4cb5e6a5df33a3d7b3563315"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a974ac7ab4cb5e6a5df33a3d7b3563315">GetNextPreferredRouteElement</a> (int Caller, int HLoc, int VLoc, <a class="el" href="class_t_one_pref_dir.html">TOnePrefDir</a> *EveryPrefDir, bool ConsecSignals, bool AutoSigsFlag, <a class="el" href="class_i_d_int.html">IDInt</a> &amp;<a class="el" href="class_t_one_route.html#aee7b2c91e9920bbb59c84cb562f0680a">ReqPosRouteID</a>, bool &amp;PointsChanged)</td></tr>
 <tr class="memdesc:a974ac7ab4cb5e6a5df33a3d7b3563315"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to find a set of linked tracks that lie on preferred directions between the route start element and the one at HLoc &amp; VLoc. If find one return true, set &amp;PointsChanged to true if any points need to be changed and &amp;ReqPosRouteID to the route ID of the existing route to attach to, if there is one, and -1 if not.  <a href="class_t_one_route.html#a974ac7ab4cb5e6a5df33a3d7b3563315">More...</a><br /></td></tr>
 <tr class="separator:a974ac7ab4cb5e6a5df33a3d7b3563315"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a077235e61d88fb865f5f9eaf09f275e6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a077235e61d88fb865f5f9eaf09f275e6">PointsToBeChanged</a> (int Caller) const</td></tr>
-<tr class="memdesc:a077235e61d88fb865f5f9eaf09f275e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called by GetNextNonPreferredRouteElement and GetNextPreferredRouteElement to check whether or not any points on the selected route need to be changed.  <a href="class_t_one_route.html#a077235e61d88fb865f5f9eaf09f275e6">More...</a><br /></td></tr>
-<tr class="separator:a077235e61d88fb865f5f9eaf09f275e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59270c9b68d679ea29086216c21decfb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a59270c9b68d679ea29086216c21decfb">SearchForNonPreferredRoute</a> (int Caller, <a class="el" href="class_t_track_element.html">TTrackElement</a> CurrentTrackElement, int XLinkPos, int RequiredPosition, <a class="el" href="class_i_d_int.html">IDInt</a> <a class="el" href="class_t_one_route.html#aee7b2c91e9920bbb59c84cb562f0680a">ReqPosRouteID</a>)</td></tr>
-<tr class="memdesc:a59270c9b68d679ea29086216c21decfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called by GetNextNonPreferredRouteElement to carry out the search for linked track, and also called recursively.  <a href="class_t_one_route.html#a59270c9b68d679ea29086216c21decfb">More...</a><br /></td></tr>
-<tr class="separator:a59270c9b68d679ea29086216c21decfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac20b954f16c606ccf5c9e513ab6908f6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#ac20b954f16c606ccf5c9e513ab6908f6">SearchForPreferredRoute</a> (int Caller, <a class="el" href="class_t_pref_dir_element.html">TPrefDirElement</a> PrefDirElement, int XLinkPos, int RequiredPosition, <a class="el" href="class_i_d_int.html">IDInt</a> <a class="el" href="class_t_one_route.html#aee7b2c91e9920bbb59c84cb562f0680a">ReqPosRouteID</a>, <a class="el" href="class_t_one_pref_dir.html">TOnePrefDir</a> *EveryPrefDir, bool ConsecSignals, int EndSelectPosition, bool AutoSigsFlag)</td></tr>
-<tr class="memdesc:ac20b954f16c606ccf5c9e513ab6908f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called recursively.  <a href="class_t_one_route.html#ac20b954f16c606ccf5c9e513ab6908f6">More...</a><br /></td></tr>
-<tr class="separator:ac20b954f16c606ccf5c9e513ab6908f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7f8f09d6f6f662457d26c170fce9301"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#ac7f8f09d6f6f662457d26c170fce9301">PointsToBeChanged</a> (int Caller, int &amp;NewFailedPointsTVPos) const</td></tr>
+<tr class="separator:ac7f8f09d6f6f662457d26c170fce9301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69c8690ba3aae40ff99a5d2a629ba321"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a69c8690ba3aae40ff99a5d2a629ba321">SearchForNonPreferredRoute</a> (int Caller, <a class="el" href="class_t_track_element.html">TTrackElement</a> CurrentTrackElement, int XLinkPos, int RequiredPosition, <a class="el" href="class_i_d_int.html">IDInt</a> <a class="el" href="class_t_one_route.html#aee7b2c91e9920bbb59c84cb562f0680a">ReqPosRouteID</a>, bool RecursiveCall)</td></tr>
+<tr class="memdesc:a69c8690ba3aae40ff99a5d2a629ba321"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called by GetNextNonPreferredRouteElement to carry out the search for linked track, and also called recursively, if recursive RecursiveCall is true (added at v2.13.0)  <a href="class_t_one_route.html#a69c8690ba3aae40ff99a5d2a629ba321">More...</a><br /></td></tr>
+<tr class="separator:a69c8690ba3aae40ff99a5d2a629ba321"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bbf0add5e8c2b88fb09cb1be158d9ad"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a3bbf0add5e8c2b88fb09cb1be158d9ad">SearchForPreferredRoute</a> (int Caller, <a class="el" href="class_t_pref_dir_element.html">TPrefDirElement</a> PrefDirElement, int XLinkPos, int RequiredPosition, <a class="el" href="class_i_d_int.html">IDInt</a> <a class="el" href="class_t_one_route.html#aee7b2c91e9920bbb59c84cb562f0680a">ReqPosRouteID</a>, <a class="el" href="class_t_one_pref_dir.html">TOnePrefDir</a> *EveryPrefDir, bool ConsecSignals, int EndSelectPosition, bool AutoSigsFlag, bool RecursiveCall)</td></tr>
+<tr class="memdesc:a3bbf0add5e8c2b88fb09cb1be158d9ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called recursively, if recursive RecursiveCall is true (added at v2.13.0)  <a href="class_t_one_route.html#a3bbf0add5e8c2b88fb09cb1be158d9ad">More...</a><br /></td></tr>
+<tr class="separator:a3bbf0add5e8c2b88fb09cb1be158d9ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55e04e36f652344b5215f8a28143c4a3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a55e04e36f652344b5215f8a28143c4a3">SetRearwardsSignalsReturnFalseForTrain</a> (int Caller, int &amp;Attribute, int PrefDirVectorStartPosition) const</td></tr>
 <tr class="memdesc:a55e04e36f652344b5215f8a28143c4a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called by <a class="el" href="class_t_all_routes.html#ac6bd39457747eaa96476a8a87df15ac2" title="Set rearwards signals from the specified route starting position.">TAllRoutes::SetAllRearwardsSignals</a> to set rearwards signals from a specified starting position. If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects.  <a href="class_t_one_route.html#a55e04e36f652344b5215f8a28143c4a3">More...</a><br /></td></tr>
 <tr class="separator:a55e04e36f652344b5215f8a28143c4a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4177e4c0c4d6817515cb19f4f7e1427b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a4177e4c0c4d6817515cb19f4f7e1427b">SignalHasFailed</a> (int Caller)</td></tr>
+<tr class="memdesc:a4177e4c0c4d6817515cb19f4f7e1427b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check incorporated in route search routines after have found a legitimate route, returns false for signal failure &amp; deals with graphics &amp; messages.  <a href="class_t_one_route.html#a4177e4c0c4d6817515cb19f4f7e1427b">More...</a><br /></td></tr>
+<tr class="separator:a4177e4c0c4d6817515cb19f4f7e1427b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53496c398dcdb3a644801c4e74d47d01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a53496c398dcdb3a644801c4e74d47d01">ConvertAndAddNonPreferredRouteSearchVector</a> (int Caller, <a class="el" href="class_i_d_int.html">IDInt</a> <a class="el" href="class_t_one_route.html#aee7b2c91e9920bbb59c84cb562f0680a">ReqPosRouteID</a>)</td></tr>
 <tr class="memdesc:a53496c398dcdb3a644801c4e74d47d01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after a non-preferred (i.e. unrestricted) route has been selected and has finished flashing, to add it to the AllRoutesVector.  <a href="class_t_one_route.html#a53496c398dcdb3a644801c4e74d47d01">More...</a><br /></td></tr>
 <tr class="separator:a53496c398dcdb3a644801c4e74d47d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,7 +190,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:afc6dafc4713c2b10c9e21b28fac20430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when setting a route to set all points appropriately.  <a href="class_t_one_route.html#afc6dafc4713c2b10c9e21b28fac20430">More...</a><br /></td></tr>
 <tr class="separator:afc6dafc4713c2b10c9e21b28fac20430"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4dfe3a028da7a4b6df0f44f33c3e2196"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a4dfe3a028da7a4b6df0f44f33c3e2196">SetRouteSignals</a> (int Caller) const</td></tr>
-<tr class="memdesc:a4dfe3a028da7a4b6df0f44f33c3e2196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when setting a route to set all points appropriately. Also called when a new train is added at a position where a route has been set, when it is necessary to set the next rearwards signal to red, the next yellow etc.  <a href="class_t_one_route.html#a4dfe3a028da7a4b6df0f44f33c3e2196">More...</a><br /></td></tr>
+<tr class="memdesc:a4dfe3a028da7a4b6df0f44f33c3e2196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when setting a route to set all signals appropriately. Also called when a new train is added at a position where a route has been set, when it is necessary to set the next rearwards signal to red, the next yellow etc.  <a href="class_t_one_route.html#a4dfe3a028da7a4b6df0f44f33c3e2196">More...</a><br /></td></tr>
 <tr class="separator:a4dfe3a028da7a4b6df0f44f33c3e2196"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_t_one_pref_dir"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_t_one_pref_dir')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_t_one_pref_dir.html">TOnePrefDir</a></td></tr>
 <tr class="memitem:a29d013bf730e23d27fdb2c390e3a14da inherit pub_methods_class_t_one_pref_dir"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da">PrefDirSize</a> () const</td></tr>
@@ -387,7 +387,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A descendent of <a class="el" href="class_t_one_pref_dir.html" title="The basic preferred direction class, consisting of any number of elements with preferred directions s...">TOnePrefDir</a> used for routes. Used during contruction of a route (ConstructRoute) and also for all completed routes, when each route is saved as an entry in the AllRoutesVector (see <a class="el" href="class_t_all_routes.html" title="Handles data and functions relating to all routes on the railway.">TAllRoutes</a>) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01475">1475</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01511">1511</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a05ce65e80c2272a775f6497890d42b6b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a05ce65e80c2272a775f6497890d42b6b">&#9670;&nbsp;</a></span>ClearRoute()</h2>
@@ -414,12 +414,11 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Empty the route of any stored elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01526">1526</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01562">1562</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a05ce65e80c2272a775f6497890d42b6b_icgraph.svg" width="100%" height="532"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a05ce65e80c2272a775f6497890d42b6b_icgraph.svg" width="100%" height="532"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -452,18 +451,16 @@ Here is the caller graph for this function:</div>
 
 <p>Called after a non-preferred (i.e. unrestricted) route has been selected and has finished flashing, to add it to the AllRoutesVector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16740">16740</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17145">17145</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a53496c398dcdb3a644801c4e74d47d01_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a53496c398dcdb3a644801c4e74d47d01_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a53496c398dcdb3a644801c4e74d47d01_icgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a53496c398dcdb3a644801c4e74d47d01_icgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -502,18 +499,16 @@ Here is the caller graph for this function:</div>
 
 <p>Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and has finished flashing, to add it to the AllRoutesVector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15511">15511</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15811">15811</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a36ba8adc8b4a47908ee4e1b8e75792ca_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a36ba8adc8b4a47908ee4e1b8e75792ca_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a36ba8adc8b4a47908ee4e1b8e75792ca_icgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a36ba8adc8b4a47908ee4e1b8e75792ca_icgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -544,7 +539,7 @@ Here is the caller graph for this function:</div>
 
 <p>Erase a single route element. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01533">1533</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01569">1569</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -582,18 +577,16 @@ Here is the caller graph for this function:</div>
 
 <p>Used when setting signal aspects for a route by working forwards through the route to see what the next forward signal aspects is, because this determines all the rearward signal aspects. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17022">17022</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17483">17483</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a4d92e68782eea0534a02e1b8176bc730_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a4d92e68782eea0534a02e1b8176bc730_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a4d92e68782eea0534a02e1b8176bc730_icgraph.svg" width="100%" height="595"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a4d92e68782eea0534a02e1b8176bc730_icgraph.svg" width="100%" height="595"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -616,18 +609,16 @@ Here is the caller graph for this function:</div>
 
 <p>Cancel a route immediately if a train occupies it when travelling in the wrong direction (or occupies a crossover on a non-route line when the other track is in a route) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17480">17480</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17947">17947</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a491fff1e619a9dc79774acf85eed72a5_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a491fff1e619a9dc79774acf85eed72a5_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a491fff1e619a9dc79774acf85eed72a5_icgraph.svg" width="100%" height="410"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a491fff1e619a9dc79774acf85eed72a5_icgraph.svg" width="100%" height="410"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -684,18 +675,16 @@ Here is the caller graph for this function:</div>
 
 <p>Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc. If find one return true, set &amp;PointsChanged to true if any points need to be changed and &amp;ReqPosRouteID to the route ID of the existing route to attach to, if there is one, and -1 if not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15932">15932</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16232">16232</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a5ce1c3a064a656ca764b5ed98c63151a_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a5ce1c3a064a656ca764b5ed98c63151a_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a5ce1c3a064a656ca764b5ed98c63151a_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a5ce1c3a064a656ca764b5ed98c63151a_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -764,18 +753,16 @@ Here is the caller graph for this function:</div>
 
 <p>Try to find a set of linked tracks that lie on preferred directions between the route start element and the one at HLoc &amp; VLoc. If find one return true, set &amp;PointsChanged to true if any points need to be changed and &amp;ReqPosRouteID to the route ID of the existing route to attach to, if there is one, and -1 if not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14528">14528</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14702">14702</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a974ac7ab4cb5e6a5df33a3d7b3563315_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a974ac7ab4cb5e6a5df33a3d7b3563315_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a974ac7ab4cb5e6a5df33a3d7b3563315_icgraph.svg" width="100%" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a974ac7ab4cb5e6a5df33a3d7b3563315_icgraph.svg" width="100%" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -820,18 +807,16 @@ Here is the caller graph for this function:</div>
 
 <p>Set the starting conditions for a non-preferred (i.e. unrestricted) route selection beginning on HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15705">15705</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16005">16005</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a13dd08bfcc95ea1296f9ac4fd699e94d_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a13dd08bfcc95ea1296f9ac4fd699e94d_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a13dd08bfcc95ea1296f9ac4fd699e94d_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a13dd08bfcc95ea1296f9ac4fd699e94d_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -882,18 +867,16 @@ Here is the caller graph for this function:</div>
 
 <p>Set the starting conditions for a preferred direction or automatic signal route selection beginning on HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14324">14324</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14499">14499</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_ab7ac58fe51393873e9054ffa724bc118_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_ab7ac58fe51393873e9054ffa724bc118_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_ab7ac58fe51393873e9054ffa724bc118_icgraph.svg" width="100%" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_ab7ac58fe51393873e9054ffa724bc118_icgraph.svg" width="100%" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -945,18 +928,17 @@ Here is the caller graph for this function:</div>
 <p>Examines the route to see whether the element at H &amp; V is in the route, and if not returns a ReturnFlag value of NotInRoute. </p>
 <p>If it is in a route but the element selected is invalid, then a message is given and returns with a ReturnFlag value of InRouteFalse. Otherwise the route is truncated at and including the element that matches H &amp; V with a ReturnFlag value of InRouteTrue. Selection invalid if select a bridge; trying to leave a single element; last element to be left not a signal (for PrefDirRoute or AutoSigsFlag set); last element to be left a bridge, points or crossover (for not PrefDirRoute &amp; AutoSigsFlag not set), or part of route locked. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17272">17272</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17739">17739</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_afe23206f22e1ffaafe1a5fe866d2b8ec_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_afe23206f22e1ffaafe1a5fe866d2b8ec_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
 </div>
-<a id="a077235e61d88fb865f5f9eaf09f275e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a077235e61d88fb865f5f9eaf09f275e6">&#9670;&nbsp;</a></span>PointsToBeChanged()</h2>
+<a id="ac7f8f09d6f6f662457d26c170fce9301"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7f8f09d6f6f662457d26c170fce9301">&#9670;&nbsp;</a></span>PointsToBeChanged()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -965,26 +947,33 @@ Here is the call graph for this function:</div>
           <td class="memname">bool TOneRoute::PointsToBeChanged </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>Caller</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramname"><em>Caller</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>NewFailedPointsTVPos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Called by GetNextNonPreferredRouteElement and GetNextPreferredRouteElement to check whether or not any points on the selected route need to be changed. Also gives every set of points that needs to change the chance to fail, and if so returns the TV position, added at v2.13.0 </p>
 
-<p>Called by GetNextNonPreferredRouteElement and GetNextPreferredRouteElement to check whether or not any points on the selected route need to be changed. </p>
-
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16990">16990</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17395">17395</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a077235e61d88fb865f5f9eaf09f275e6_cgraph.svg" width="630" height="100"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_ac7f8f09d6f6f662457d26c170fce9301_cgraph.svg" width="100%" height="502"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a077235e61d88fb865f5f9eaf09f275e6_icgraph.svg" width="100%" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_ac7f8f09d6f6f662457d26c170fce9301_icgraph.svg" width="100%" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1017,18 +1006,17 @@ Here is the caller graph for this function:</div>
 
 <p>Used when creating a bitmap image to display the route colours and direction arrows (as on screen during operation) for an operating railway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14936">14936</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15168">15168</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_one_route_aa36c801460b594ec96af1779d633d739_cgraph.svg" width="428" height="240"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_one_route_aa36c801460b594ec96af1779d633d739_cgraph.svg" width="428" height="240"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a59270c9b68d679ea29086216c21decfb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59270c9b68d679ea29086216c21decfb">&#9670;&nbsp;</a></span>SearchForNonPreferredRoute()</h2>
+<a id="a69c8690ba3aae40ff99a5d2a629ba321"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69c8690ba3aae40ff99a5d2a629ba321">&#9670;&nbsp;</a></span>SearchForNonPreferredRoute()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1061,7 +1049,13 @@ Here is the call graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="class_i_d_int.html">IDInt</a>&#160;</td>
-          <td class="paramname"><em>ReqPosRouteID</em>&#160;</td>
+          <td class="paramname"><em>ReqPosRouteID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>RecursiveCall</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1071,26 +1065,24 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Called by GetNextNonPreferredRouteElement to carry out the search for linked track, and also called recursively. </p>
+<p>Called by GetNextNonPreferredRouteElement to carry out the search for linked track, and also called recursively, if recursive RecursiveCall is true (added at v2.13.0) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16306">16306</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16648">16648</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a59270c9b68d679ea29086216c21decfb_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a69c8690ba3aae40ff99a5d2a629ba321_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a59270c9b68d679ea29086216c21decfb_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a69c8690ba3aae40ff99a5d2a629ba321_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
 </div>
-<a id="ac20b954f16c606ccf5c9e513ab6908f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac20b954f16c606ccf5c9e513ab6908f6">&#9670;&nbsp;</a></span>SearchForPreferredRoute()</h2>
+<a id="a3bbf0add5e8c2b88fb09cb1be158d9ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bbf0add5e8c2b88fb09cb1be158d9ad">&#9670;&nbsp;</a></span>SearchForPreferredRoute()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1147,7 +1139,13 @@ Here is the caller graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>AutoSigsFlag</em>&#160;</td>
+          <td class="paramname"><em>AutoSigsFlag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>RecursiveCall</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1157,20 +1155,18 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called recursively. </p>
+<p>Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called recursively, if recursive RecursiveCall is true (added at v2.13.0) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14972">14972</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15204">15204</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_ac20b954f16c606ccf5c9e513ab6908f6_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a3bbf0add5e8c2b88fb09cb1be158d9ad_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_ac20b954f16c606ccf5c9e513ab6908f6_icgraph.svg" width="100%" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a3bbf0add5e8c2b88fb09cb1be158d9ad_icgraph.svg" width="100%" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1203,18 +1199,16 @@ Here is the caller graph for this function:</div>
 
 <p>After a route has been selected successfully this function sets all LC change values appropriately for the selected route type and location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17575">17575</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18042">18042</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a27944580589d98672c0328c498617bdb_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a27944580589d98672c0328c498617bdb_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a27944580589d98672c0328c498617bdb_icgraph.svg" width="100%" height="427"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a27944580589d98672c0328c498617bdb_icgraph.svg" width="100%" height="427"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1253,18 +1247,16 @@ Here is the caller graph for this function:</div>
 
 <p>Called by <a class="el" href="class_t_all_routes.html#ac6bd39457747eaa96476a8a87df15ac2" title="Set rearwards signals from the specified route starting position.">TAllRoutes::SetAllRearwardsSignals</a> to set rearwards signals from a specified starting position. If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17109">17109</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17570">17570</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a55e04e36f652344b5215f8a28143c4a3_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a55e04e36f652344b5215f8a28143c4a3_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a55e04e36f652344b5215f8a28143c4a3_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a55e04e36f652344b5215f8a28143c4a3_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1287,18 +1279,16 @@ Here is the caller graph for this function:</div>
 
 <p>Called when setting unrestricted routes to set the route element values appropriately after a successful search has been conducted. It isn't needed for preferred routes because the element values are obtained from the already set preferred direction elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16656">16656</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17061">17061</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a8f8fe8f852dd24cf8d12933f22b5750c_cgraph.svg" width="100%" height="523"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a8f8fe8f852dd24cf8d12933f22b5750c_cgraph.svg" width="100%" height="523"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a8f8fe8f852dd24cf8d12933f22b5750c_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a8f8fe8f852dd24cf8d12933f22b5750c_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1337,18 +1327,16 @@ Here is the caller graph for this function:</div>
 
 <p>After a route has been selected successfully this function sets all RouteFlash (see above) values appropriately for the selected route type and location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17547">17547</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18014">18014</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a767d992d3794bbd31c8641e9ecb5f7dd_cgraph.svg" width="100%" height="525"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a767d992d3794bbd31c8641e9ecb5f7dd_cgraph.svg" width="100%" height="525"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a767d992d3794bbd31c8641e9ecb5f7dd_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a767d992d3794bbd31c8641e9ecb5f7dd_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1371,18 +1359,16 @@ Here is the caller graph for this function:</div>
 
 <p>Called when setting a route to set all points appropriately. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16898">16898</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17303">17303</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_afc6dafc4713c2b10c9e21b28fac20430_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_afc6dafc4713c2b10c9e21b28fac20430_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_afc6dafc4713c2b10c9e21b28fac20430_icgraph.svg" width="100%" height="427"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_afc6dafc4713c2b10c9e21b28fac20430_icgraph.svg" width="100%" height="427"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1421,18 +1407,16 @@ Here is the caller graph for this function:</div>
 
 <p>Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector so that the route displays with the correct colour. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17524">17524</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17991">17991</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_ab8570cc4c3941927b206c015a9813af0_cgraph.svg" width="100%" height="496"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_ab8570cc4c3941927b206c015a9813af0_cgraph.svg" width="100%" height="496"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_ab8570cc4c3941927b206c015a9813af0_icgraph.svg" width="100%" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_ab8570cc4c3941927b206c015a9813af0_icgraph.svg" width="100%" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1453,20 +1437,50 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Called when setting a route to set all points appropriately. Also called when a new train is added at a position where a route has been set, when it is necessary to set the next rearwards signal to red, the next yellow etc. </p>
+<p>Called when setting a route to set all signals appropriately. Also called when a new train is added at a position where a route has been set, when it is necessary to set the next rearwards signal to red, the next yellow etc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16927">16927</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17332">17332</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a4dfe3a028da7a4b6df0f44f33c3e2196_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a4dfe3a028da7a4b6df0f44f33c3e2196_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a4dfe3a028da7a4b6df0f44f33c3e2196_icgraph.svg" width="100%" height="595"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a4dfe3a028da7a4b6df0f44f33c3e2196_icgraph.svg" width="100%" height="595"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+
+</div>
+</div>
+<a id="a4177e4c0c4d6817515cb19f4f7e1427b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4177e4c0c4d6817515cb19f4f7e1427b">&#9670;&nbsp;</a></span>SignalHasFailed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TOneRoute::SignalHasFailed </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Caller</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check incorporated in route search routines after have found a legitimate route, returns false for signal failure &amp; deals with graphics &amp; messages. </p>
+
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18133">18133</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a4177e4c0c4d6817515cb19f4f7e1427b_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a4177e4c0c4d6817515cb19f4f7e1427b_icgraph.svg" width="100%" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1497,7 +1511,7 @@ Here is the caller graph for this function:</div>
 
 <p>Store a single route element in the PrefDirVector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01539">1539</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01575">1575</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1517,7 +1531,7 @@ Here is the caller graph for this function:</div>
 <p>session saves as routes in build are not saved in sessions </p>
 <p>the route ID number of the route that is being extended backwards during route building, not needed for </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01507">1507</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01543">1543</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1535,7 +1549,7 @@ Here is the caller graph for this function:</div>
 
 <p>the class member that allows the route to flash during setting up (see <a class="el" href="class_t_one_route_1_1_t_route_flash.html" title="The flashing route.">TRouteFlash</a> above) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01520">1520</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01556">1556</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1553,7 +1567,7 @@ Here is the caller graph for this function:</div>
 
 <p>the ID number of the route, this is needed for session saves </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01514">1514</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01550">1550</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1579,7 +1593,7 @@ Here is the caller graph for this function:</div>
 
 <p>limit to the number of elements searched in attempting to find a route </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01504">1504</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01540">1540</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1595,7 +1609,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01518">1518</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01554">1554</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1613,7 +1627,7 @@ Here is the caller graph for this function:</div>
 
 <p>the two preferred direction elements corresponding to the starting position of a new route </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01518">1518</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01554">1554</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1631,7 +1645,7 @@ Here is the caller graph for this function:</div>
 
 <p>TrackVectorPosition of the StartElement(s) set when the starting position of a new route is selected, note that although there may be two StartElements (as there can be two preferred directions on a single element), there is only one TrackVectorPosition as the element is the same for both. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01516">1516</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01552">1552</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1650,7 +1664,7 @@ Here is the caller graph for this function:</div>
 <p>needed for session saves as routes in build are not saved in sessions </p>
 <p>the route ID number of the route that is being extended forwards during route building, not </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01510">1510</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01546">1546</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>

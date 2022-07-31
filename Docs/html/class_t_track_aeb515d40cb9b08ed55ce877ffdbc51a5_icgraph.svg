@@ -261,7 +261,7 @@ var sectionId = 'dynsection-83';
 <!-- Node8 -->
 <g id="node8" class="node">
 <title>Node8</title>
-<g id="a_node8"><a xlink:href="class_t_train_controller.html#a0e16b9cb91bb29f83bffc7ae3461200d" target="_top" xlink:title="new v2.2.0 for OperatorActionPanel">
+<g id="a_node8"><a xlink:href="class_t_train_controller.html#a0e16b9cb91bb29f83bffc7ae3461200d" target="_top" xlink:title="new v2.2.0 for OperatorActionPanel (OperatorActionPanel changed for ActionsDueForm at v2....">
 <polygon fill="white" stroke="black" points="519,-938.5 519,-968.5 641,-968.5 641,-938.5 519,-938.5"/>
 <text text-anchor="start" x="527" y="-956.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::Rebuild</text>
 <text text-anchor="middle" x="580" y="-945.5" font-family="Helvetica,sans-Serif" font-size="10.00">OpTimeToActMultimap</text>
@@ -443,7 +443,7 @@ var sectionId = 'dynsection-83';
 <!-- Node18 -->
 <g id="node18" class="node">
 <title>Node18</title>
-<g id="a_node18"><a xlink:href="class_t_one_route.html#a4dfe3a028da7a4b6df0f44f33c3e2196" target="_top" xlink:title="Called when setting a route to set all points appropriately. Also called when a new train is added at...">
+<g id="a_node18"><a xlink:href="class_t_one_route.html#a4dfe3a028da7a4b6df0f44f33c3e2196" target="_top" xlink:title="Called when setting a route to set all signals appropriately. Also called when a new train is added a...">
 <polygon fill="white" stroke="black" points="1112,-715 1112,-734 1256,-734 1256,-715 1112,-715"/>
 <text text-anchor="middle" x="1184" y="-722" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::SetRouteSignals</text>
 </a>

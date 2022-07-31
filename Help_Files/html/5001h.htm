@@ -45,10 +45,10 @@ div.WordSection1
 'Important points' set out in <a href="5.111w8h.htm">section 5.11</a>. These
 summarise some important aspects that will help to avoid errors.</p>
 
-<p>Program-readable timetables normally reside in the 'Program timetables' folder in the working folder and have a '.ttb' extension.  Users can change this folder by navigating to a different location and either saving or loading a timetable file.  The selected location will be retained in Config.txt when the program closes and will be reloaded when the program restarts.</p>
+<p>Program-readable timetables normally reside in the 'Program timetables' folder in the working folder and have a '.ttb' extension.  Users can change this folder by navigating to a different location and either saving or loading a timetable file.  The selected location will be retained in Config.txt when ROS closes and will be reloaded when it restarts.</p>
 
 <p>Timetables are readable using the timetable
-editor within the program, selected via the menu using 'Mode' then 'Create
+editor within ROS, selected via the menu using 'Mode' then 'Create
 timetable' to construct a new one, or 'Edit timetable' to read or change an
 existing one. For full editing capability, including the ability to validate
 the timetable, the completed railway ('.rly' file) that the timetable relates
@@ -68,10 +68,10 @@ editor, and are listed in the smaller window on the left with one line per
 entry. The program-readable timetable begins with an entry consisting of a
 timetable start time in the format HH:MM (hours and minutes). No text may
 precede this start time, but text may follow it though following text is
-ignored by the program.</p>
+ignored by the editor.</p>
 
 <p>Subsequent entries represent trains and services, but an entry beginning
-with '*' may be used as a comment, and is ignored by the program. When either a
+with '*' may be used as a comment, and is ignored by the editor. When either a
 blank line is found, or no more lines, the program-readable timetable ends.
 Entries preceding the timetable start time (marked '-' in the window on the
 left of the editor) or following the end of the program-readable part (marked
@@ -192,20 +192,19 @@ used.</p>
 <p>For the example above (2V31) the second line is <span style='color:blue'>07:00;Snt;N19-29
 N20-29</span>.</p>
 
-<p>This tells the program that at 07:00 a new train is required (Start new
+<p>This tells ROS that at 07:00 a new train is required (Start new
 train), located with the rear of the train on track element N19-29 and the
 front on N20-29 (trains always occupy two track elements). The train is moving
 when it is created because its starting speed is 150km/h.</p>
 
 <p>The next line is <span style='color:blue'>07:03;pas;Kings Norton Approach
-(NE)</span>, which tells the program that at 07:03 the train is expected to
+(NE)</span>, which tells ROS that at 07:03 the train is expected to
 pass (<span style='color:blue'>pas</span>) Kings Norton Approach (NE). This name ' Kings Norton Approach (NE)' must be a named location that must have this exact name.</p>
 <p>The next line is <span style='color:blue'>07:05;Fer;N89-39 N89-40</span>, which tells
-the program that at 07:05 the train is expected to finish by exiting the
+ROS that at 07:05 the train is expected to finish by exiting the
 railway (<span style='color:blue'>F</span>inish <span style='color:blue'>e</span>xit
 <span style='color:blue'>r</span>ailway) at either track element N89-39 or
-N89-40. The last line <span style='color:blue'>R;30;2;12</span> tells the
-program to repeat (<b><u><span style='color:blue'>R</span></u></b><span
+N89-40. The last line <span style='color:blue'>R;30;2;12</span> tells ROS to repeat (<b><u><span style='color:blue'>R</span></u></b><span
 style='color:blue'>;30;2;12</span>) the service every 30 minutes (<span
 style='color:blue'>R;<b><u>30</u></b>;2;12</span>), with the last two
 characters of the headcode increasing by 2 for each repeat (<span
@@ -312,15 +311,15 @@ style='color:blue'>R;30;2;<b><u>12</u></b></span>).</p>
 <p>This is a new train as before, but the starting speed is zero, and the track
 elements 140-32 and 139-32 correspond to a platform at Tyseley, so the train
 begins at 07:00 stopped at Tyseley. The next line <span style='color:blue'>07:01;Tyseley
-</span>tells the program that the train departs at 07:01 from Tyseley, then <span
-style='color:blue'>07:03;07:04;Small Heath</span> tells the program that the
+</span>tells ROS that the train departs at 07:01 from Tyseley, then <span
+style='color:blue'>07:03;07:04;Small Heath</span> tells ROS that the
 train arrives at 07:03 at Small Heath then departs at 07:04. This line could be
 split into two separate lines <span style='color:blue'>07:03;Small Heath </span>and
 <span style='color:blue'>07:04;Small Heath </span>if preferred, it means
-exactly the same to the program. If a line consists of a time and a location,
-the program determines whether the time represents arrival or departure from
+exactly the same to ROS. If a line consists of a time and a location,
+ROS determines whether the time represents arrival or departure from
 the context. Line <span style='color:blue'>07:07;07:07;Moor Street </span>tells
-the program that the train both arrives at and departs from Moor Street at
+ROS that the train both arrives at and departs from Moor Street at
 07:07. The train won't depart as soon as it has arrived however, because a
 minimum period of 30 seconds must elapse between any two consecutive events.
 Therefore, if the train arrives early, say at 07:05, then it will wait until 07:07
@@ -329,10 +328,10 @@ seconds (i.e. 07:07:30), and if it arrives at any later time it will depart 30
 seconds later. In other words a train will never depart before a scheduled
 time, but may depart at any time after that time depending on its arrival time,
 with a minimum wait period of 30 seconds. Line <span style='color:blue'>07:10;Snow
-Hill </span>tells the program that the train will arrive at Snow Hill at 07:10;
-line <span style='color:blue'>07:11;cdt </span>tells the program that the train
+Hill </span>tells ROS that the train will arrive at Snow Hill at 07:10;
+line <span style='color:blue'>07:11;cdt </span>tells ROS that the train
 changes direction (change direction of train) at 07:11, then the final line <span
-style='color:blue'>07:12;Fns;2K15 </span>tells the program that the train
+style='color:blue'>07:12;Fns;2K15 </span>tells ROS that the train
 finishes at 07:12 and forms a new service with headcode 2K15 (<span
 style='color:blue'>F</span>inish <span style='color:blue'>n</span>ew <span
 style='color:blue'>s</span>ervice). Another service entry will be needed to

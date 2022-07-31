@@ -37,7 +37,7 @@
 #include <vector>
 #include <algorithm> //for sort
 #include <vcl.h>
-#include <stdlib.h> //for rand()
+#include <stdlib.h> //for rand() & random()
 #include <math.hpp> //for speed & performance calcs
 
 #pragma hdrstop
@@ -45,7 +45,8 @@
 #include "TrainUnit.h"
 #include "TrackUnit.h"
 #include "GraphicUnit.h"
-#include "DisplayUnit.h"
+//#include "DisplayUnit.h" included in TrackUnit.h
+#include "PerfLogUnit.h"
 #include "Utilities.h"
 
 // ---------------------------------------------------------------------------
@@ -229,6 +230,7 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     NewDelay = 0; //added at v2.13.0
     CumulativeDelayedRandMinsOneTrain = 0; //added at v2.13.0
     ActualArrivalTime = TDateTime(0); //added at v2.13.0
+    LastSigPassedFailed = false; //added at v2.13.0
     Utilities->CallLogPop(648);
 }
 
@@ -434,7 +436,7 @@ void TTrain::PlotStartPosition(int Caller)
                 }
                 if(StoppedAtLocation && (TrainMode == Signaller))
                 {
-                    // set both StoppedAtLocation & StoppedAtSignal, so that 'pass red signal' is offered in popup menu rather than move
+                    // set both StoppedAtLocation & StoppedAtSignal, so that 'pass stop signal' is offered in popup menu rather than move
                     // forwards, but don't change the background colour so still shows as stopped at location
                     StoppedAtSignal = true;
                 }
@@ -729,7 +731,7 @@ void TTrain::UpdateTrain(int Caller)
     // RandomFailureCounter value is fixed for a full cycle of train updates so this
     // makes sure there's no bunching of failures as there is for a fixed comparison number
     // or a small range of comparison numbers.  True every 53 secs (real time) on average rand()
-    // gives a random number between 0 and 32767 (defined as RAND_MAX in stdlib.h)
+    // gives a random number between 0 and 16384 (defined as RAND_MAX in stdlib.h)
     {
         if(!TrainFailed && !TrainOnContinuation(0) && (RandRange > 0) && (PowerAtRail > 1) && !((TrainMode == Timetable) && TimetableFinished)
            && !Crashed && !Derailed && !((TrainMode == Signaller) && Stopped()))
@@ -899,37 +901,36 @@ void TTrain::UpdateTrain(int Caller)
                 TDateTime DwellTime = TimetableReleaseTime - ActualArrivalTime; //Timetable value
                 if(DwellTime < TDateTime(30.0 / 86400))
                 {
-                    DwellTime = TDateTime(30.0 / 86400); //Timetable value inc min dwell time
+                    DwellTime = TDateTime(30.0 / 86400);
                 }
-                int random = rand() % 10000;
-                if((random != 0))
+                int randval = random(10000);
+                if(randval != 0)  //if randval == 0 or DelayMode == Nil then NewDelay will be 0 as set above
                 {
                     if(Utilities->DelayMode == Minor)
                     {
-                        if(random < 2000)
+                        if(randval < Utilities->MinorDelayCutoff)
                         {
-                            NewDelay = 1.5 * log(float(2000)/random);//minutes
+                            NewDelay = Utilities->MinorDelayFactor * log(Utilities->MinorDelayCutoff/randval);//minutes (confusingly log in C++Builder gives the natural logarithm)
                         }
                     }
                     else if(Utilities->DelayMode == Moderate)
                     {
-                        if(random < 3000)
+                        if(randval < Utilities->ModerateDelayCutoff)
                         {
-                            NewDelay = 3 * log(float(3000)/random);
+                            NewDelay = Utilities->ModerateDelayFactor * log(Utilities->ModerateDelayCutoff/randval);
                         }
                     }
                     else if(Utilities->DelayMode == Major)
                     {
-                        if(random < 3500)
+                        if(randval < Utilities->MajorDelayCutoff)
                         {
-                            NewDelay = 6 * log(float(3500)/random);
+                            NewDelay = Utilities->MajorDelayFactor * log(Utilities->MajorDelayCutoff/randval);
                         }
                     }
                 }
-//double x = 1440.0 * double(TrainController->TTClockTime);   //result in minutes //these are for testing purposes
-//double y = 1440.0 * (Utilities->LastDelayTTClockTime + 5.0/1440.0); //as above
+//NewDelay = 25; //test
                 if(double(TrainController->TTClockTime) <= (Utilities->LastDelayTTClockTime + 5.0/1440.0)) //if within 5 mins of last delay for any train
-                {                                                                                      //then don't delay.  Added after v2.13.0 Beta
+                {                                                                                      //then don't delay.  Added at v2.13.0
                     NewDelay = 0;
                 }
                 if(NewDelay < 1)
@@ -964,27 +965,35 @@ void TTrain::UpdateTrain(int Caller)
                     NewDelay = 0;
 //                    CumulativeDelayedRandMinsOneTrain += DelayedRandMins;  //as above
                 }
-                ReleaseTime = LastActionTime + TDateTime(30.0 / 86400);  //earliest possible release time
-                if(ReleaseTime < ActualArrivalTime + TDateTime(NewDelay / 1440))
+                ReleaseTime = LastActionTime + TDateTime(NewDelay / 1440);  //earliest possible release time
+                if(NewDelay < 0.5) //less than the 30 secs min interval
                 {
-                    ReleaseTime = ActualArrivalTime + TDateTime(NewDelay / 1440); //only add the additional delay
+                    ReleaseTime = LastActionTime + TDateTime(30.0 / 86400);
                 }
                 if(ReleaseTime < TimetableReleaseTime)
                 {
-                    ReleaseTime = TimetableReleaseTime;
+                    ReleaseTime = TimetableReleaseTime; //back to correct time
+                    NewDelay = 0;
+                    DelayedRandMins = 0;
                 }
                 if(DelayedRandMins > double(ReleaseTime - TimetableReleaseTime) * 1440)
                 {
                     DelayedRandMins = double(ReleaseTime - TimetableReleaseTime) * 1440; //reduce this if time has been made up
                 }
+
+                if(DelayedRandMins < NewDelay) //may be if reduced above, but if so need to reduce NewDelay also
+                {
+                    NewDelay = DelayedRandMins;
+                }
+                //may be possible to simplify all the above but as it seems to work ok leave as is
                 if(int(NewDelay) > 0) //additional delay over and above knock-on effects from earlier random delays
                 {
                     Utilities->LastDelayTTClockTime = double(TrainController->TTClockTime);
                     if(int(NewDelay) == 1)
                     {
-                        Display->WarningLog(7777, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + HeadCode + " delayed at " +
+                        Display->WarningLog(12, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + HeadCode + " delayed at " +
                                 ActionVectorEntryPtr->LocationName + " by 1 minute");
-                        Display->PerformanceLog(18, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: " + HeadCode + " delayed at " +
+                        PerfLogForm->PerformanceLog(18, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: " + HeadCode + " delayed at " +
                                 ActionVectorEntryPtr->LocationName + " by 1 minute because of a minor technical issue");
                     }
                     else
@@ -993,15 +1002,15 @@ void TTrain::UpdateTrain(int Caller)
                                 ActionVectorEntryPtr->LocationName + " by " + AnsiString(int(NewDelay)) + " minutes");
                         if(NewDelay >= 10) //give variable reasons for >= 10 mins
                         {
-                            int random2 = rand() % 24; //24 reasons
-                            AnsiString Reason = ReasonArray[random2];
-                            Display->PerformanceLog(19, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: " +
+                            int randval2 = rand() % 24; //24 reasons
+                            AnsiString Reason = ReasonArray[randval2];
+                            PerfLogForm->PerformanceLog(19, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: " +
                                     HeadCode + " delayed at " + ActionVectorEntryPtr->LocationName + " by " + AnsiString(int(NewDelay)) +
                                     " minutes because " + Reason);
                         }
                         else
                         {
-                            Display->PerformanceLog(20, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: " +
+                            PerfLogForm->PerformanceLog(20, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: " +
                                     HeadCode + " delayed at " + ActionVectorEntryPtr->LocationName + " by " + AnsiString(int(NewDelay)) +
                                     " minutes because of a minor problem");
                         }
@@ -1014,8 +1023,9 @@ void TTrain::UpdateTrain(int Caller)
             else if(ActionVectorEntryPtr->DepartureTime > TDateTime(-1)) //as was, for trains that don't have an errival time set
             {//if have skipped to a new service then DepartureTime will be set (in above segement when earlier train arrived)
             //but ArrivalTime won't be set as it is reset to 0 at end of above segement when earlier train arrived, so this segement
-            //will run without any new random delays which might cause additional complications from mixing modifications
+            //will run without any random delays which might cause additional complications from mixing modifications and best avoided.
                 NewDelay = 0;
+                DelayedRandMins = 0;
                 ReleaseTime = TrainController->GetRepeatTime(75, ActionVectorEntryPtr->DepartureTime, RepeatNumber, IncrementalMinutes);
                 if(ReleaseTime <= LastActionTime + TDateTime(30.0 / 86400))
                 {
@@ -1025,10 +1035,11 @@ void TTrain::UpdateTrain(int Caller)
                 DepartureTimeSet = true;
             }
             else if((ActionVectorEntryPtr->Command == "pas") && TreatPassAsTimeLocDeparture) //new segment at v2.12.0 to treat a pass as a departure
-            {//for when skip to a new service at a pass location. As above this also avoids new random delays, and will avoid above segment because
+            {//for when skip to a new service at a pass location. As above this also avoids any random delays, and will avoid above segment because
             //departure time isn't set - it's an event time.  Again random delays in this situation might cause additional complications
-             //from mixing modifications.
+             //from mixing modifications so best avoided.
                 NewDelay = 0;
+                DelayedRandMins = 0;
                 ReleaseTime = TrainController->GetRepeatTime(74, ActionVectorEntryPtr->EventTime, RepeatNumber, IncrementalMinutes);
                 if(ReleaseTime <= LastActionTime + TDateTime(30.0 / 86400))
                 {
@@ -1705,23 +1716,23 @@ void TTrain::UpdateTrain(int Caller)
             }
         }
         // remove route elements if not autosigs - this section moved from below, was under LagElement > -1 condition but needs to cover LagElement == -1
-        if(AllRoutes->GetRouteTypeAndGraphics(2, LeadElement, LeadEntryPos, EXGraphicPtr, EntryDirectionGraphicPtr) == TAllRoutes::NotAutoSigsRoute)
+        if((AllRoutes->GetRouteTypeAndGraphics(2, LeadElement, LeadEntryPos, EXGraphicPtr, EntryDirectionGraphicPtr) == TAllRoutes::NotAutoSigsRoute))
         // Trains may not be in a route
         // Since Straddle = LeadMidLag at this point the train is going to move fully off the existing Lag & fully onto existing Lead element during this function
         {
-            // NB if LeadElement == -1 then the above test returns false
+            // NB if LeadElement == -1 then the above test returns NoRoute
             int TempH = Track->TrackElementAt(213, LeadElement).HLoc;
             int TempV = Track->TrackElementAt(214, LeadElement).VLoc;
             int TempELink = Track->TrackElementAt(215, LeadElement).Link[LeadEntryPos];
             TAllRoutes::TRouteElementPair FirstPair, SecondPair;
             FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(10, TempH, TempV, SecondPair);
             if((FirstPair.first > -1) && (AllRoutes->GetFixedRouteAt(143, FirstPair.first).GetFixedPrefDirElementAt(153,
-                                                                                                                    FirstPair.second).GetELink() == TempELink))
+                FirstPair.second).GetELink() == TempELink))
             {
                 AllRoutes->RemoveRouteElement(10, TempH, TempV, TempELink);
             }
             else if((SecondPair.first > -1) && (AllRoutes->GetFixedRouteAt(144, SecondPair.first).GetFixedPrefDirElementAt(154,
-                                                                                                                           SecondPair.second).GetELink() == TempELink))
+                 SecondPair.second).GetELink() == TempELink))
             {
                 AllRoutes->RemoveRouteElement(11, TempH, TempV, TempELink);
             }
@@ -1735,12 +1746,12 @@ void TTrain::UpdateTrain(int Caller)
             TAllRoutes::TRouteElementPair FirstPair, SecondPair;
             FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(11, TempH, TempV, SecondPair);
             if((FirstPair.first > -1) && (AllRoutes->GetFixedRouteAt(145, FirstPair.first).GetFixedPrefDirElementAt(155,
-                                                                                                                    FirstPair.second).GetELink() == TempELink))
+                FirstPair.second).GetELink() == TempELink))
             {
                 AllRoutes->RemoveRouteElement(12, TempH, TempV, TempELink);
             }
             else if((SecondPair.first > -1) && (AllRoutes->GetFixedRouteAt(146, SecondPair.first).GetFixedPrefDirElementAt(156,
-                                                                                                                           SecondPair.second).GetELink() == TempELink))
+                SecondPair.second).GetELink() == TempELink))
             {
                 AllRoutes->RemoveRouteElement(13, TempH, TempV, TempELink);
             }
@@ -1754,12 +1765,12 @@ void TTrain::UpdateTrain(int Caller)
             TAllRoutes::TRouteElementPair FirstPair, SecondPair;
             FirstPair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(12, TempH, TempV, SecondPair);
             if((FirstPair.first > -1) && (AllRoutes->GetFixedRouteAt(147, FirstPair.first).GetFixedPrefDirElementAt(157,
-                                                                                                                    FirstPair.second).GetELink() == TempELink))
+                FirstPair.second).GetELink() == TempELink))
             {
                 AllRoutes->RemoveRouteElement(14, TempH, TempV, TempELink);
             }
             else if((SecondPair.first > -1) && (AllRoutes->GetFixedRouteAt(148, SecondPair.first).GetFixedPrefDirElementAt(158,
-                                                                                                                           SecondPair.second).GetELink() == TempELink))
+                SecondPair.second).GetELink() == TempELink))
             {
                 AllRoutes->RemoveRouteElement(15, TempH, TempV, TempELink);
             }
@@ -1887,11 +1898,34 @@ void TTrain::UpdateTrain(int Caller)
             // above covers for exiting at continuation, need XLinkPos check to exclude entering at a continuation
             if(LeadElement > -1)
             {
-                if(Track->TrackElementAt(224, LeadElement).Config[LeadExitPos] == Signal)
+                TTrackElement &TE = Track->TrackElementAt(224, LeadElement); //added at v2.13.0 for brevity
+                if(TE.Config[LeadExitPos] == Signal)
                 // changed to lead so reset early
                 {
-                    Track->TrackElementAt(225, LeadElement).Attribute = 0; // red
-                    Track->TrackElementAt(671, LeadElement).CallingOnSet = false;
+                    LastSigPassedFailed = false; //used to cancel route elements up to next signal for autosigs route
+                    TE.Attribute = 0; // red
+                    int RouteNumber; //only used for autosigs routes
+                    //add chance to fail when train passes a signal
+                    if((random(Utilities->SignalChangeEventsPerFailure) == 0) && !TE.Failed && (Utilities->DelayMode != Nil) &&
+                        (TrainMode == Timetable) && !TE.CallingOnSet) //can't fail twice and a calling on signal can't fail
+                    {
+                        TTrack::TInfrastructureFailureEntry IFE;
+                        IFE.TVPos = LeadElement;
+                        TE.Failed = true;
+                        Display->WarningLog(19, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Signal failed at " + TE.ElementID);
+                        PerfLogForm->PerformanceLog(42, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: Signal failed at " + TE.ElementID);
+                        TrainController->StopTTClockMessage(129, "Signal at " + TE.ElementID +
+                            " failed when changing aspect.\nTrains can only pass under signaller control.");
+                        AllRoutes->RebuildRailwayFlag = true; //force ClearandRebuildRailway at next clock tick
+                        LastSigPassedFailed = true;
+        //set repair time, random value in minutes between 10 and 179
+                        double FailureMinutes = double(random(Utilities->MaxRandomRepairTime) + Utilities->FixedMinRepairTime); //between 10 and 179 minutes at random
+                        TDateTime RepairTime = TrainController->TTClockTime + TDateTime(FailureMinutes / 1440);
+                        IFE.RepairTime = RepairTime;
+                        IFE.FailureTime = TrainController->TTClockTime;
+                        Track->FailedSignalsVector.push_back(IFE); //rearwards signals will be set when LagElement leaves signal
+                    }
+                    TE.CallingOnSet = false;
                     // don't plot if zoomed out
                     if(!Display->ZoomOutFlag)
                     {
@@ -1902,6 +1936,7 @@ void TTrain::UpdateTrain(int Caller)
             }
             if(Track->TrackElementAt(521, LagElement).Config[LagExitPos] == Signal)
             {
+                AllRoutes->RebuildRailwayFlag = true; //added at v2.13.0 to replot signal after train left in case it had failed
                 if(AllRoutes->GetRouteTypeAndGraphics(5, LagElement, LagEntryPos, EXGraphicPtr, EntryDirectionGraphicPtr) == TAllRoutes::AutoSigsRoute)
                 {
                     Display->PlotOutput(23, Track->TrackElementAt(227, LagElement).HLoc * 16, Track->TrackElementAt(228, LagElement).VLoc * 16, EXGraphicPtr);
@@ -1950,7 +1985,7 @@ void TTrain::UpdateTrain(int Caller)
                     AllRoutes->GetRouteTypeAndNumber(30, LeadElement, LeadEntryPos, RouteNumber2);
                     // already know it's an autosigsroute, this is just to get the RouteNumber
                     if((TrainMode == Signaller) && (RouteNumber2 != RouteNumber))
-                    // note that if not in a route (as likely) then RouteNumber2 set to -1          )
+                    // note that if not in a route (as likely) then RouteNumber2 set to -1
                     {
                         AllRoutes->GetFixedRouteAt(217, RouteNumber).SetRouteSignals(10);
                         // this was in the 1.3.0 addition but without the condition
@@ -2579,7 +2614,6 @@ void TTrain::GetLeadElement(int Caller)
         {
             LeadExitPos = 3;
         }
-
         else if((LeadEntryPos == 1) && (Track->TrackElementAt(274, LeadElement).Attribute == 0))
         {
             LeadExitPos = 0;
@@ -3161,9 +3195,9 @@ bool TTrain::IsTrainIDOnBridgeTrackPos01(int Caller, unsigned int TrackVectorPos
         return(false);
     }
     // if(Track->TrackElementAt(304, TrackVectorPosition).TrainIDOnElement != TrainID) return false; No, if a bridge could be one of 2 TrainIDs
-    if(Track->TrackElementAt(305, TrackVectorPosition).TrainIDOnBridgeTrackPos01 == TrainID)
+    if(Track->TrackElementAt(305, TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 == TrainID)
     {
-        if(Track->TrackElementAt(306, TrackVectorPosition).TrainIDOnBridgeTrackPos23 == TrainID)
+        if(Track->TrackElementAt(306, TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 == TrainID)
         {
             throw Exception("Error, same train on two different bridge tracks");
         }
@@ -3193,7 +3227,7 @@ bool TTrain::IsTrainIDOnBridgeTrackPos23(int Caller, unsigned int TrackVectorPos
         return(false);
     }
     // if(Track->TrackElementAt(308, TrackVectorPosition).TrainIDOnElement != TrainID) return false; No, if a bridge could be one of 2 TrainIDs
-    if(Track->TrackElementAt(309, TrackVectorPosition).TrainIDOnBridgeTrackPos23 == TrainID)
+    if(Track->TrackElementAt(309, TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 == TrainID)
     {
         // don't carry out check for train on tracks 0 & 1 else will enter an infinite loop if train on both
         Utilities->CallLogPop(687);
@@ -3232,11 +3266,11 @@ void TTrain::SetTrainElementID(int Caller, unsigned int TrackVectorPosition, int
         }
         if(EntryPos < 2)
         {
-            Track->TrackElementAt(312, TrackVectorPosition).TrainIDOnBridgeTrackPos01 = TrainID;
+            Track->TrackElementAt(312, TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = TrainID;
         }
         else
         {
-            Track->TrackElementAt(313, TrackVectorPosition).TrainIDOnBridgeTrackPos23 = TrainID;
+            Track->TrackElementAt(313, TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 = TrainID;
         }
     }
     Utilities->CallLogPop(690);
@@ -3260,21 +3294,21 @@ void TTrain::ResetTrainElementID(int Caller, unsigned int TrackVectorPosition, i
         }
         if(EntryPos < 2)
         {
-            Track->TrackElementAt(316, TrackVectorPosition).TrainIDOnBridgeTrackPos01 = -1;
+            Track->TrackElementAt(316, TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = -1;
         }
         else
         {
-            Track->TrackElementAt(317, TrackVectorPosition).TrainIDOnBridgeTrackPos23 = -1;
+            Track->TrackElementAt(317, TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 = -1;
         }
-        if((EntryPos < 2) && (Track->TrackElementAt(318, TrackVectorPosition).TrainIDOnBridgeTrackPos23 > -1))
+        if((EntryPos < 2) && (Track->TrackElementAt(318, TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 > -1))
         // i.e. other train on track 2&3
         {
-            Track->TrackElementAt(319, TrackVectorPosition).TrainIDOnElement = Track->TrackElementAt(320, TrackVectorPosition).TrainIDOnBridgeTrackPos23;
+            Track->TrackElementAt(319, TrackVectorPosition).TrainIDOnElement = Track->TrackElementAt(320, TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
         }
-        else if((EntryPos > 1) && (Track->TrackElementAt(321, TrackVectorPosition).TrainIDOnBridgeTrackPos01 > -1))
+        else if((EntryPos > 1) && (Track->TrackElementAt(321, TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 > -1))
         // i.e. other train on track 1&2
         {
-            Track->TrackElementAt(322, TrackVectorPosition).TrainIDOnElement = Track->TrackElementAt(323, TrackVectorPosition).TrainIDOnBridgeTrackPos01;
+            Track->TrackElementAt(322, TrackVectorPosition).TrainIDOnElement = Track->TrackElementAt(323, TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
         }
         else
         {
@@ -3373,16 +3407,16 @@ void TTrain::PlotAlternativeTrackRouteGraphic(int Caller, unsigned int ElementVe
     }
     if(ElementEntryPos > 1) // other train is on track 01
     {
-        if(Track->TrackElementAt(336, ElementVecNum).TrainIDOnBridgeTrackPos01 > -1)
+        if(Track->TrackElementAt(336, ElementVecNum).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 > -1)
         {
-            TrainController->TrainVectorAtIdent(31, Track->TrackElementAt(337, ElementVecNum).TrainIDOnBridgeTrackPos01).PlotTrain(2, Display);
+            TrainController->TrainVectorAtIdent(31, Track->TrackElementAt(337, ElementVecNum).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01).PlotTrain(2, Display);
         }
     }
     else // other train is on track 23
     {
-        if(Track->TrackElementAt(338, ElementVecNum).TrainIDOnBridgeTrackPos23 > -1)
+        if(Track->TrackElementAt(338, ElementVecNum).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 > -1)
         {
-            TrainController->TrainVectorAtIdent(32, Track->TrackElementAt(339, ElementVecNum).TrainIDOnBridgeTrackPos23).PlotTrain(3, Display);
+            TrainController->TrainVectorAtIdent(32, Track->TrackElementAt(339, ElementVecNum).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23).PlotTrain(3, Display);
         }
     }
     Utilities->CallLogPop(696);
@@ -3840,7 +3874,7 @@ when Straddle == LeadMidLag
 
 // check if running past a red signal without permission
     if((Track->TrackElementAt(352, CurrentTrackVectorPosition).Config[Track->GetNonPointsOppositeLinkPos(EntryPos)] == Signal) && (Track->TrackElementAt(353,
-                                                                                                                                                         CurrentTrackVectorPosition).Attribute == 0) && (EntrySpeed > 1) && !AllowedToPassRedSignal)
+        CurrentTrackVectorPosition).Attribute == 0) && (EntrySpeed > 1) && !AllowedToPassRedSignal)
     {
         SPADFlag = true; // user has to intervene to reset & restart after spad
     }
@@ -4815,7 +4849,7 @@ bool TTrain::ClearToNextSignal(int Caller)
             break;
         }
         if((EntryPos < 2) && (Track->TrackElementAt(386, CurrentTrackVectorPosition).Config[1 - EntryPos] == Signal) && (Track->TrackElementAt(529,
-                                                                                                                                               CurrentTrackVectorPosition).Attribute != 4)) // Attr 4 == call-on signal
+            CurrentTrackVectorPosition).Attribute != 4)) // Attr 4 == call-on signal
         {
             ReturnVal = 3;
             break;
@@ -5239,11 +5273,11 @@ bool TTrain::IsThereAnAdjacentTrain(int Caller, TTrain *&TrainToBeJoinedBy)
         {
             if(Track->TrackElementAt(970, LeadElement).ConnLinkPos[LeadExitPos] > 1)
             {
-                TrainToBeJoinedByID = FrontAdjacentTrackElement.TrainIDOnBridgeTrackPos23;
+                TrainToBeJoinedByID = FrontAdjacentTrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
             }
             else
             {
-                TrainToBeJoinedByID = FrontAdjacentTrackElement.TrainIDOnBridgeTrackPos01;
+                TrainToBeJoinedByID = FrontAdjacentTrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
             }
         }
         else
@@ -5258,11 +5292,11 @@ bool TTrain::IsThereAnAdjacentTrain(int Caller, TTrain *&TrainToBeJoinedBy)
         {
             if(Track->TrackElementAt(971, MidElement).ConnLinkPos[MidEntryPos] > 1)
             {
-                TrainToBeJoinedByID = RearAdjacentTrackElement.TrainIDOnBridgeTrackPos23;
+                TrainToBeJoinedByID = RearAdjacentTrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
             }
             else
             {
-                TrainToBeJoinedByID = RearAdjacentTrackElement.TrainIDOnBridgeTrackPos01;
+                TrainToBeJoinedByID = RearAdjacentTrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
             }
         }
         else
@@ -5315,7 +5349,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
           RemoveTrain:  06:05:40: 2F46 REMOVED FROM RAILWAY at Old Street
           SignallerMoveForwards  06:05:40: 2F46 received signaller authority to proceed
           SignallerChangeDirection  06:05:40: 2F46 changed direction under signaller control at Old Street
-          SignallerPassRedSignal  06:05:40: 2F46 received signaller authority to pass red signal
+          SignallerPassRedSignal  06:05:40: 2F46 received signaller authority to pass stop signal
           SignallerJoin 06:05:40: 2F46 joined under signaller control by 3D54 at Old Street    //new at v2.4.0
           TrainFailure 06:05:40: 2F46 suffered an onboard power failure at Old Street    //new at v2.4.0
           RepairFailedTrain 06:05:40: 2F46 failure repaired at Old Street    //new at v2.4.0
@@ -5421,7 +5455,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     }
     if(ActionType == SignallerPassRedSignal)
     {
-        ActionLog = " received signaller authority to pass red signal";
+        ActionLog = " received signaller authority to pass stop signal";
     }
     if(ActionType == SignallerControlStop)
     {
@@ -5522,11 +5556,11 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
             PerfLog = "," + PerfLog;
             // if a position add a comma to separate vertical position number from number of minutes (better appearance)
         }
-        Display->PerformanceLog(0, BaseLog + PerfLog);
+        PerfLogForm->PerformanceLog(0, BaseLog + PerfLog);
     }
     else
     {
-        Display->PerformanceLog(1, BaseLog);
+        PerfLogForm->PerformanceLog(1, BaseLog);
     }
     if(Warning)
     {
@@ -5849,11 +5883,11 @@ void TTrain::FrontTrainSplit(int Caller)
 
     if((RearMostElement.TrackType == Bridge) && (RearTrainExitPos > 1))
     {
-        TrainIDOnRearOfRearTrain = RearMostElement.TrainIDOnBridgeTrackPos23;
+        TrainIDOnRearOfRearTrain = RearMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
     }
     else if((RearMostElement.TrackType == Bridge) && (RearTrainExitPos < 2))
     {
-        TrainIDOnRearOfRearTrain = RearMostElement.TrainIDOnBridgeTrackPos01;
+        TrainIDOnRearOfRearTrain = RearMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
     }
     else
     {
@@ -5869,11 +5903,11 @@ void TTrain::FrontTrainSplit(int Caller)
 
     if((FrontMostElement.TrackType == Bridge) && (FrontTrainExitPos > 1))
     {
-        TrainIDOnFrontOfFrontTrain = FrontMostElement.TrainIDOnBridgeTrackPos23;
+        TrainIDOnFrontOfFrontTrain = FrontMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
     }
     else if((FrontMostElement.TrackType == Bridge) && (FrontTrainExitPos < 2))
     {
-        TrainIDOnFrontOfFrontTrain = FrontMostElement.TrainIDOnBridgeTrackPos01;
+        TrainIDOnFrontOfFrontTrain = FrontMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
     }
     else
     {
@@ -6157,11 +6191,11 @@ void TTrain::RearTrainSplit(int Caller)
 
     if((RearMostElement.TrackType == Bridge) && (RearTrainExitPos > 1))
     {
-        TrainIDOnRearOfRearTrain = RearMostElement.TrainIDOnBridgeTrackPos23;
+        TrainIDOnRearOfRearTrain = RearMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
     }
     else if((RearMostElement.TrackType == Bridge) && (RearTrainExitPos < 2))
     {
-        TrainIDOnRearOfRearTrain = RearMostElement.TrainIDOnBridgeTrackPos01;
+        TrainIDOnRearOfRearTrain = RearMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
     }
     else
     {
@@ -6177,11 +6211,11 @@ void TTrain::RearTrainSplit(int Caller)
 
     if((FrontMostElement.TrackType == Bridge) && (FrontTrainExitPos > 1))
     {
-        TrainIDOnFrontOfFrontTrain = FrontMostElement.TrainIDOnBridgeTrackPos23;
+        TrainIDOnFrontOfFrontTrain = FrontMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
     }
     else if((FrontMostElement.TrackType == Bridge) && (FrontTrainExitPos < 2))
     {
-        TrainIDOnFrontOfFrontTrain = FrontMostElement.TrainIDOnBridgeTrackPos01;
+        TrainIDOnFrontOfFrontTrain = FrontMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
     }
     else
     {
@@ -6299,7 +6333,7 @@ void TTrain::FinishJoin(int Caller)
     {
         if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != WaitingForJBO)
         {
-            // Display->PerformanceLog(2, TrainController->TTClockTime.FormatString("hh:nn:ss") + ": " + HeadCode + " waiting to join " + JBOHeadCode + " at " + ActionVectorEntryPtr->LocationName);
+            // PerfLogForm->PerformanceLog(2, TrainController->TTClockTime.FormatString("hh:nn:ss") + ": " + HeadCode + " waiting to join " + JBOHeadCode + " at " + ActionVectorEntryPtr->LocationName);
             TrainController->LogActionError(51, HeadCode, JBOHeadCode, WaitingForJBO, ActionVectorEntryPtr->LocationName);
             TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = WaitingForJBO;
         }
@@ -6335,7 +6369,7 @@ void TTrain::JoinedBy(int Caller)
     {
         if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != WaitingForFJO)
         {
-            // Display->PerformanceLog(3, TrainController->TTClockTime.FormatString("hh:nn:ss") + ": " + HeadCode + " waiting to be joined by " + FJOHeadCode + " at " + ActionVectorEntryPtr->LocationName);
+            // PerfLogForm->PerformanceLog(3, TrainController->TTClockTime.FormatString("hh:nn:ss") + ": " + HeadCode + " waiting to be joined by " + FJOHeadCode + " at " + ActionVectorEntryPtr->LocationName);
             TrainController->LogActionError(52, HeadCode, FJOHeadCode, WaitingForFJO, ActionVectorEntryPtr->LocationName);
             TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = WaitingForFJO;
         }
@@ -6517,7 +6551,7 @@ void TTrain::RemainHere(int Caller)
     }
     if(!TerminatedMessageSent)
     {
-        Display->PerformanceLog(5, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + HeadCode + " terminated at " +
+        PerfLogForm->PerformanceLog(5, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + HeadCode + " terminated at " +
                                 ActionVectorEntryPtr->LocationName);
         LastActionTime = TrainController->TTClockTime;
         TerminatedMessageSent = true;
@@ -7008,12 +7042,12 @@ bool TTrain::AbleToMove(int Caller)
                 Able = true;
                 StoppedForTrainInFront = false;
             }
-            else if((TrackElement.TrackType == Bridge) && (FrontEntryPos < 2) && (TrackElement.TrainIDOnBridgeTrackPos01 == -1))
+            else if((TrackElement.TrackType == Bridge) && (FrontEntryPos < 2) && (TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 == -1))
             {
                 Able = true;
                 StoppedForTrainInFront = false;
             }
-            else if((TrackElement.TrackType == Bridge) && (FrontEntryPos > 1) && (TrackElement.TrainIDOnBridgeTrackPos23 == -1))
+            else if((TrackElement.TrackType == Bridge) && (FrontEntryPos > 1) && (TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 == -1))
             {
                 Able = true;
                 StoppedForTrainInFront = false;
@@ -7132,6 +7166,260 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
                                  ",FloatingLabelNextString" + "," + HeadCode);
     AnsiString RetStr = "", LocationName = "";
 
+    if(int(DelayedRandMins) > 0)
+    {
+        if((Ptr->Command != "") && (Ptr->Command[1] == 'S'))
+        {
+            throw Exception("Error - start entry in FloatingLabelNextString");
+        }
+        if(Ptr->FormatType == TimeTimeLoc)
+        {
+            if(TrainMode == Timetable)
+            {
+                if(!TrainAtLocation(0, LocationName) || (LocationName != Ptr->LocationName))
+                // not arrived yet in tt mode
+                {
+                    RetStr = "Arrive " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(GetTrainTime(2, Ptr->ArrivalTime + TDateTime(DelayedRandMins/1440)));
+                }
+                else
+                {
+                    RetStr = "Depart " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(3, Ptr->DepartureTime));
+                }
+            }
+            else // TrainMode == Signaller
+            {
+                if(!DepartureTimeSet) // not arrived yet
+                {
+                    RetStr = "Arrive " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(GetTrainTime(45, Ptr->ArrivalTime + TDateTime(DelayedRandMins/1440)));
+                }
+                else
+                {
+                    RetStr = "Depart " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(36, Ptr->DepartureTime));
+                }
+            }
+        }
+        else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime != TDateTime(-1)))
+        {
+            RetStr = "Arrive " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(GetTrainTime(4, Ptr->ArrivalTime + TDateTime(DelayedRandMins/1440)));
+        }
+        else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime == TDateTime(-1)))
+        {
+            RetStr = "Depart " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(5, Ptr->DepartureTime));
+        }
+        else if((Ptr->FormatType == PassTime) && TreatPassAsTimeLocDeparture) //added at v2.12.0 for becoming new service early (see BecomeNewservice)
+        {
+            RetStr = "Depart " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(GetTrainTime(46, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+        }
+        else if(Ptr->FormatType == PassTime) //must come after 'else if((Ptr->FormatType == PassTime) && TreatPassAsTimeLocDeparture)'
+        {
+            RetStr = "Pass " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(GetTrainTime(31, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+        }
+        else if(Ptr->Command == "Fns")
+        {
+            RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(8, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " +
+                Ptr->LocationName + " approx. " + Utilities->Format96HHMM(GetTrainTime(6, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = GetNewServiceDepartureInfo(0, Ptr, RepeatNumber, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+        }
+        else if(Ptr->Command == "F-nshs")
+        {
+            RetStr = "Forms new service " + Ptr->NonRepeatingShuttleLinkHeadCode + " at " + Ptr->LocationName + " approx. " +
+                Utilities->Format96HHMM(GetTrainTime(32, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = GetNewServiceDepartureInfo(1, Ptr, 0, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+            //note that use LinkedTrainEntryPtr and not NonRepeatingShuttleLinkEntryPtr because the forward link from the feeder is LinkedTrainEntryPtr.
+            //NonRepeatingShuttleLinkEntryPtr is in the shuttle's ActionVector to point back to the feeder.
+            //NonRepeatingShuttleLinkEntryPtr is used below from the last shuttle as the forward link to the finishing service
+        }
+        else if((Ptr->Command == "Fns-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1))) // not last repeat number
+        {
+            RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(9, Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " +
+                Ptr->LocationName + " approx. " + Utilities->Format96HHMM(GetTrainTime(7, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            // use RepeatNumber+1 as it's the repeat number of the NEXT shuttle service that is relevant
+            RetStr = GetNewServiceDepartureInfo(2, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+        }
+        else if((Ptr->Command == "Fns-sh") && (RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))) // last repeat number
+        {
+            RetStr = "Forms new service " + Ptr->NonRepeatingShuttleLinkHeadCode,
+            +" at " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(GetTrainTime(8, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = GetNewServiceDepartureInfo(3, Ptr, 0, Ptr->NonRepeatingShuttleLinkEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+        }
+        else if((Ptr->Command == "Frh-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1))) // not last repeat number
+        {
+            RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(10, Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " +
+                Ptr->LocationName + " approx. " + Utilities->Format96HHMM(GetTrainTime(9, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            // use RepeatNumber+1 as it's the repeat number of the NEXT shuttle service that is relevant
+            RetStr = GetNewServiceDepartureInfo(4, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+        }
+        else if((Ptr->Command == "Frh-sh") && (RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))) // last repeat number
+        {
+            RetStr ="None, train terminated at " + Ptr->LocationName;
+        }
+        else if(Ptr->Command == "Frh")
+        {
+            RetStr = "None, train terminated at " + Ptr->LocationName;
+        }
+        else if(Ptr->Command == "Fer")
+        {
+            AnsiString AllowedExits = "";
+            RetStr = "Exit railway" + TrainController->GetExitLocationAndAt(1, Ptr->ExitList, AllowedExits) + " approx. " + Utilities->Format96HHMM(GetTrainTime(10, Ptr->EventTime + TDateTime(DelayedRandMins/1440))) + AllowedExits;
+        }
+        else if(Ptr->Command == "Fjo")
+        {
+            RetStr = "Join " + TrainController->GetRepeatHeadCode(11, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName + " approx. " +
+                Utilities->Format96HHMM(GetTrainTime(11, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+        }
+        else if(Ptr->Command == "jbo")
+        {
+            RetStr = "Joined by " + TrainController->GetRepeatHeadCode(12, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
+                " approx. " + Utilities->Format96HHMM(GetTrainTime(12, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+        }
+        else if(Ptr->Command == "fsp")
+        {
+            RetStr = "Front split to " + TrainController->GetRepeatHeadCode(13, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
+                " approx. " + Utilities->Format96HHMM(GetTrainTime(13, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+        }
+        else if(Ptr->Command == "rsp")
+        {
+            RetStr = "Rear split to " + TrainController->GetRepeatHeadCode(14, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
+                " approx. " + Utilities->Format96HHMM(GetTrainTime(14, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+        }
+        else if(Ptr->Command == "cdt")
+        {
+            RetStr = "Change direction at " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(GetTrainTime(15, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+        }
+    }
+    else
+    {
+        if((Ptr->Command != "") && (Ptr->Command[1] == 'S'))
+        {
+            throw Exception("Error - start entry in FloatingLabelNextString");
+        }
+        if(Ptr->FormatType == TimeTimeLoc)
+        {
+            if(TrainMode == Timetable)
+            {
+                if(!TrainAtLocation(3, LocationName) || (LocationName != Ptr->LocationName))
+                // not arrived yet in tt mode
+                {
+                    RetStr = "Arrive " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(48, Ptr->ArrivalTime));
+                }
+                else
+                {
+                    RetStr = "Depart " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(3, Ptr->DepartureTime));
+                }
+            }
+            else // TrainMode == Signaller
+            {
+                if(!DepartureTimeSet) // not arrived yet
+                {
+                    RetStr = "Arrive " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(49, Ptr->ArrivalTime));
+                }
+                else
+                {
+                    RetStr = "Depart " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(36, Ptr->DepartureTime));
+                }
+            }
+        }
+        else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime != TDateTime(-1)))
+        {
+            RetStr = "Arrive " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(50, Ptr->ArrivalTime));
+        }
+        else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime == TDateTime(-1)))
+        {
+            RetStr = "Depart " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(5, Ptr->DepartureTime));
+        }
+        else if((Ptr->FormatType == PassTime) && TreatPassAsTimeLocDeparture) //added at v2.12.0 for becoming new service early (see BecomeNewservice)
+        {
+            RetStr = "Depart " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(51, Ptr->EventTime));
+        }
+        else if(Ptr->FormatType == PassTime) //must come after 'else if((Ptr->FormatType == PassTime) && TreatPassAsTimeLocDeparture)'
+        {
+            RetStr = "Pass " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(52, Ptr->EventTime));
+        }
+        else if(Ptr->Command == "Fns")
+        {
+            RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(53, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " +
+                Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(53, Ptr->EventTime));
+            RetStr = GetNewServiceDepartureInfo(10, Ptr, RepeatNumber, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+        }
+        else if(Ptr->Command == "F-nshs")
+        {
+            RetStr = "Forms new service " + Ptr->NonRepeatingShuttleLinkHeadCode + " at " + Ptr->LocationName + " at " +
+                Utilities->Format96HHMM(GetTrainTime(54, Ptr->EventTime));
+            RetStr = GetNewServiceDepartureInfo(12, Ptr, 0, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+            //note that use LinkedTrainEntryPtr and not NonRepeatingShuttleLinkEntryPtr because the forward link from the feeder is LinkedTrainEntryPtr.
+            //NonRepeatingShuttleLinkEntryPtr is in the shuttle's ActionVector to point back to the feeder.
+            //NonRepeatingShuttleLinkEntryPtr is used below from the last shuttle as the forward link to the finishing service
+        }
+        else if((Ptr->Command == "Fns-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1))) // not last repeat number
+        {
+            RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(54, Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " +
+                Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(55, Ptr->EventTime));
+            // use RepeatNumber+1 as it's the repeat number of the NEXT shuttle service that is relevant
+            RetStr = GetNewServiceDepartureInfo(14, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+        }
+        else if((Ptr->Command == "Fns-sh") && (RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))) // last repeat number
+        {
+            RetStr = "Forms new service " + Ptr->NonRepeatingShuttleLinkHeadCode,
+            +" at " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(56, Ptr->EventTime));
+            RetStr = GetNewServiceDepartureInfo(16, Ptr, 0, Ptr->NonRepeatingShuttleLinkEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+        }
+        else if((Ptr->Command == "Frh-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1))) // not last repeat number
+        {
+            RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(55, Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " +
+                Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(57, Ptr->EventTime));
+            // use RepeatNumber+1 as it's the repeat number of the NEXT shuttle service that is relevant
+            RetStr = GetNewServiceDepartureInfo(18, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+        }
+        else if((Ptr->Command == "Frh-sh") && (RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))) // last repeat number
+        {
+            RetStr ="None, train terminated at " + Ptr->LocationName;
+        }
+        else if(Ptr->Command == "Frh")
+        {
+            RetStr = "None, train terminated at " + Ptr->LocationName;
+        }
+        else if(Ptr->Command == "Fer")
+        {
+            AnsiString AllowedExits = "";
+            RetStr = "Exit railway" + TrainController->GetExitLocationAndAt(4, Ptr->ExitList, AllowedExits) + " at " + Utilities->Format96HHMM(GetTrainTime(62, Ptr->EventTime)) + AllowedExits;
+        }
+        else if(Ptr->Command == "Fjo")
+        {
+            RetStr = "Join " + TrainController->GetRepeatHeadCode(56, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName + " at " +
+                Utilities->Format96HHMM(GetTrainTime(58, Ptr->EventTime));
+        }
+        else if(Ptr->Command == "jbo")
+        {
+            RetStr = "Joined by " + TrainController->GetRepeatHeadCode(57, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
+                " at " + Utilities->Format96HHMM(GetTrainTime(59, Ptr->EventTime));
+        }
+        else if(Ptr->Command == "fsp")
+        {
+            RetStr = "Front split to " + TrainController->GetRepeatHeadCode(58, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
+                " at " + Utilities->Format96HHMM(GetTrainTime(60, Ptr->EventTime));
+        }
+        else if(Ptr->Command == "rsp")
+        {
+            RetStr = "Rear split to " + TrainController->GetRepeatHeadCode(59, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
+                " at " + Utilities->Format96HHMM(GetTrainTime(61, Ptr->EventTime));
+        }
+        else if(Ptr->Command == "cdt")
+        {
+            RetStr = "Change direction at " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(63, Ptr->EventTime));
+        }
+    }
+    Utilities->CallLogPop(1124);
+    return(RetStr);
+}
+
+// ---------------------------------------------------------------------------
+/* as was
+AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - &TrainDataEntryPtr->ActionVector.front()) +
+                                 ",FloatingLabelNextString" + "," + HeadCode);
+    AnsiString RetStr = "", LocationName = "";
+
     if((Ptr->Command != "") && (Ptr->Command[1] == 'S'))
     {
         throw Exception("Error - start entry in FloatingLabelNextString");
@@ -7140,78 +7428,78 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
     {
         if(TrainMode == Timetable)
         {
-            if(!TrainAtLocation(0, LocationName) || (LocationName != Ptr->LocationName))
+            if(!TrainAtLocation(, LocationName) || (LocationName != Ptr->LocationName))
             // not arrived yet in tt mode
             {
-                RetStr = "Arrive " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(2, Ptr->ArrivalTime));
+                RetStr = "Arrive " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(, Ptr->ArrivalTime));
             }
             else
             {
-                RetStr = "Depart " + Ptr->LocationName + " at or soon after " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(3, Ptr->DepartureTime));
+                RetStr = "Depart " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(, Ptr->DepartureTime));
             }
         }
         else // TrainMode == Signaller
         {
             if(!DepartureTimeSet) // not arrived yet
             {
-                RetStr = "Arrive " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(45, Ptr->ArrivalTime));
+                RetStr = "Arrive " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(, Ptr->ArrivalTime));
             }
             else
             {
-                RetStr = "Depart " + Ptr->LocationName + " at or soon after " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(36, Ptr->DepartureTime));
+                RetStr = "Depart " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(, Ptr->DepartureTime));
             }
         }
     }
     else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime != TDateTime(-1)))
     {
-        RetStr = "Arrive " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(4, Ptr->ArrivalTime));
+        RetStr = "Arrive " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(, Ptr->ArrivalTime));
     }
     else if((Ptr->FormatType == TimeLoc) && (Ptr->ArrivalTime == TDateTime(-1)))
     {
-        RetStr = "Depart " + Ptr->LocationName + " at or soon after " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(5, Ptr->DepartureTime));
+        RetStr = "Depart " + Ptr->LocationName + " approx. " + Utilities->Format96HHMM(ReleaseTime);//GetTrainTime(, Ptr->DepartureTime));
     }
     else if((Ptr->FormatType == PassTime) && TreatPassAsTimeLocDeparture) //added at v2.12.0 for becoming new service early (see BecomeNewservice)
     {
-        RetStr = "Depart " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(46, Ptr->EventTime));
+        RetStr = "Depart " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(, Ptr->EventTime));
     }
     else if(Ptr->FormatType == PassTime) //must come after 'else if((Ptr->FormatType == PassTime) && TreatPassAsTimeLocDeparture)'
     {
-        RetStr = "Pass " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(31, Ptr->EventTime));
+        RetStr = "Pass " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(, Ptr->EventTime));
     }
     else if(Ptr->Command == "Fns")
     {
-        RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(8, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " +
-            Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(6, Ptr->EventTime));
-        RetStr = GetNewServiceDepartureInfo(0, Ptr, RepeatNumber, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+        RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " +
+            Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(, Ptr->EventTime));
+        RetStr = GetNewServiceDepartureInfo(, Ptr, RepeatNumber, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
     }
     else if(Ptr->Command == "F-nshs")
     {
         RetStr = "Forms new service " + Ptr->NonRepeatingShuttleLinkHeadCode + " at " + Ptr->LocationName + " at " +
-            Utilities->Format96HHMM(GetTrainTime(32, Ptr->EventTime));
-        RetStr = GetNewServiceDepartureInfo(1, Ptr, 0, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+            Utilities->Format96HHMM(GetTrainTime(, Ptr->EventTime));
+        RetStr = GetNewServiceDepartureInfo(, Ptr, 0, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
         //note that use LinkedTrainEntryPtr and not NonRepeatingShuttleLinkEntryPtr because the forward link from the feeder is LinkedTrainEntryPtr.
         //NonRepeatingShuttleLinkEntryPtr is in the shuttle's ActionVector to point back to the feeder.
         //NonRepeatingShuttleLinkEntryPtr is used below from the last shuttle as the forward link to the finishing service
     }
     else if((Ptr->Command == "Fns-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1))) // not last repeat number
     {
-        RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(9, Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " +
-            Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(7, Ptr->EventTime));
+        RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(, Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " +
+            Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(, Ptr->EventTime));
         // use RepeatNumber+1 as it's the repeat number of the NEXT shuttle service that is relevant
-        RetStr = GetNewServiceDepartureInfo(2, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+        RetStr = GetNewServiceDepartureInfo(, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
     }
     else if((Ptr->Command == "Fns-sh") && (RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))) // last repeat number
     {
         RetStr = "Forms new service " + Ptr->NonRepeatingShuttleLinkHeadCode,
-        +" at " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(8, Ptr->EventTime));
-        RetStr = GetNewServiceDepartureInfo(3, Ptr, 0, Ptr->NonRepeatingShuttleLinkEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+        +" at " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(, Ptr->EventTime));
+        RetStr = GetNewServiceDepartureInfo(, Ptr, 0, Ptr->NonRepeatingShuttleLinkEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
     }
     else if((Ptr->Command == "Frh-sh") && (RepeatNumber < (TrainDataEntryPtr->NumberOfTrains - 1))) // not last repeat number
     {
-        RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(10, Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " +
-            Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(9, Ptr->EventTime));
+        RetStr = "Forms new service " + TrainController->GetRepeatHeadCode(, Ptr->OtherHeadCode, RepeatNumber + 1, IncrementalDigits) + " at " +
+            Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(, Ptr->EventTime));
         // use RepeatNumber+1 as it's the repeat number of the NEXT shuttle service that is relevant
-        RetStr = GetNewServiceDepartureInfo(4, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
+        RetStr = GetNewServiceDepartureInfo(, Ptr, RepeatNumber + 1, Ptr->LinkedTrainEntryPtr, RetStr); //if there is a next service this adds the new service departure time to RetStr
     }
     else if((Ptr->Command == "Frh-sh") && (RepeatNumber >= (TrainDataEntryPtr->NumberOfTrains - 1))) // last repeat number
     {
@@ -7224,36 +7512,36 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
     else if(Ptr->Command == "Fer")
     {
         AnsiString AllowedExits = "";
-        RetStr = "Exit railway" + TrainController->GetExitLocationAndAt(1, Ptr->ExitList, AllowedExits) + " at " + Utilities->Format96HHMM(GetTrainTime(10, Ptr->EventTime)) + AllowedExits;
+        RetStr = "Exit railway" + TrainController->GetExitLocationAndAt(, Ptr->ExitList, AllowedExits) + " at " + Utilities->Format96HHMM(GetTrainTime(, Ptr->EventTime)) + AllowedExits;
     }
     else if(Ptr->Command == "Fjo")
     {
-        RetStr = "Join " + TrainController->GetRepeatHeadCode(11, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName + " at " +
-            Utilities->Format96HHMM(GetTrainTime(11, Ptr->EventTime));
+        RetStr = "Join " + TrainController->GetRepeatHeadCode(, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName + " at " +
+            Utilities->Format96HHMM(GetTrainTime(, Ptr->EventTime));
     }
     else if(Ptr->Command == "jbo")
     {
-        RetStr = "Joined by " + TrainController->GetRepeatHeadCode(12, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
-            " at " + Utilities->Format96HHMM(GetTrainTime(12, Ptr->EventTime));
+        RetStr = "Joined by " + TrainController->GetRepeatHeadCode(, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
+            " at " + Utilities->Format96HHMM(GetTrainTime(, Ptr->EventTime));
     }
     else if(Ptr->Command == "fsp")
     {
-        RetStr = "Front split to " + TrainController->GetRepeatHeadCode(13, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
-            " at " + Utilities->Format96HHMM(GetTrainTime(13, Ptr->EventTime));
+        RetStr = "Front split to " + TrainController->GetRepeatHeadCode(, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
+            " at " + Utilities->Format96HHMM(GetTrainTime(, Ptr->EventTime));
     }
     else if(Ptr->Command == "rsp")
     {
-        RetStr = "Rear split to " + TrainController->GetRepeatHeadCode(14, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
-            " at " + Utilities->Format96HHMM(GetTrainTime(14, Ptr->EventTime));
+        RetStr = "Rear split to " + TrainController->GetRepeatHeadCode(, Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName +
+            " at " + Utilities->Format96HHMM(GetTrainTime(, Ptr->EventTime));
     }
     else if(Ptr->Command == "cdt")
     {
-        RetStr = "Change direction at " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(15, Ptr->EventTime));
+        RetStr = "Change direction at " + Ptr->LocationName + " at " + Utilities->Format96HHMM(GetTrainTime(, Ptr->EventTime));
     }
-    Utilities->CallLogPop(1124);
+    Utilities->CallLogPop();
     return(RetStr);
 }
-
+*/
 // ---------------------------------------------------------------------------
 
 AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Ptr, int RptNum, TTrainDataEntry *LinkedTrainDataPtr, AnsiString RetStr)
@@ -8930,7 +9218,7 @@ float TTrain::CalcTimeToAct(int Caller, float &TimeToExit, THVShortPair &ExitPai
                   because the ActionVector name never matches a future station.  Hence all dwell times are omitted until the train lands fully
                   on two elements.  To avoid this when Straddle is LeadMidLag the first element to be measured is set to the lead element, so
                   before the train has stopped the current station is still recognised as a future stop.
-                  In signaller mode stops don't count, and if pass red signal command is given then when have LeadMidLag the current element
+                  In signaller mode stops don't count, and if pass stop signal command is given then when have LeadMidLag the current element
                   becomes the signal, and the time to act indication becomes 'NOW'.
 */
         {
@@ -9365,8 +9653,8 @@ void TTrainController::Operate(int Caller)
 //end elasped time segment
         AllRoutes->CallonVector.clear(); // this will be rebuilt during the calls to UpdateTrain
 //elapsed time  segment
-//Display->PerformanceLog(-1, "\n Train vector size: " + AnsiString(TrainVector.size()) + '\n');
-//Display->PerformanceLog(-1, "Start time list");
+//PerfLogForm->PerformanceLog(-1, "\n Train vector size: " + AnsiString(TrainVector.size()) + '\n');
+//PerfLogForm->PerformanceLog(-1, "Start time list");
 //end elapsed time  segment
         for(unsigned int x = 0; x < TrainVector.size(); x++)
         {
@@ -9377,7 +9665,7 @@ void TTrainController::Operate(int Caller)
 //elapsed time  segment
 //End = double(GetTime()) * 86400;
 //ElapsedTimeReport = TrainVectorAt(-1, x).TrainDataEntryPtr->ServiceReference + AnsiString(" ") + AnsiString(int((End - Start) * 1000)); //msecs
-//Display->PerformanceLog(-1, ElapsedTimeReport);
+//PerfLogForm->PerformanceLog(-1, ElapsedTimeReport);
 //end elapsed time  segment
 
 //end elapsed time investigations
@@ -9645,7 +9933,7 @@ void TTrainController::UnplotTrains(int Caller)
             TrainVectorAt(52, x).UnplotTrain(10);
         }
     }
-    Track->ResetAllTrainIDElements(0);
+    Track->ResetAllTrainIDsAndFailedPointOrigSpeedLimits(0);
     Utilities->CallLogPop(725);
 }
 
@@ -9986,8 +10274,8 @@ TTrain &TTrainController::TrainVectorAtIdent(int Caller, int TrainID)
 // ---------------------------------------------------------------------------
 
 bool TTrainController::TrainExistsAtIdent(int Caller, int TrainID)
-// return true if find the train (added at v2.4.0 as can select a removed train
-// in OAListBox before it updates - reported by LiWinDom in error report 23/04/20)
+// return true if find the train (added at v2.4.0 as can select a removed train in
+// ActionsDueListBox before it updates - reported by LiWinDom in error report 23/04/20)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrainExistsAtIdent," + AnsiString(TrainID));
     for(unsigned int x = 0; x < TrainVector.size(); x++)
@@ -10070,13 +10358,13 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(6, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 TrainController->GetRepeatHeadCode(46, Ptr->OtherHeadCode, RepNum, IncDig) + " at " + Ptr->LocationName;
-            PartStr = ControllerGetNewServiceDepartureInfo(0, Ptr, RepNum, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to PartStr
+            PartStr = ControllerGetNewServiceDepartureInfo(11, Ptr, RepNum, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to PartStr
         }
         else if(Ptr->Command == "F-nshs")
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(7, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 Ptr->NonRepeatingShuttleLinkHeadCode + " at " + Ptr->LocationName;
-            PartStr = ControllerGetNewServiceDepartureInfo(1, Ptr, 0, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
+            PartStr = ControllerGetNewServiceDepartureInfo(13, Ptr, 0, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
             //note that use LinkedTrainEntryPtr and not NonRepeatingShuttleLinkEntryPtr because the forward link from the feeder is LinkedTrainEntryPtr.
             //NonRepeatingShuttleLinkEntryPtr is in the shuttle's ActionVector to point back to the feeder.
             //NonRepeatingShuttleLinkEntryPtr is used below from the last shuttle as the forward link to the finishing service
@@ -10087,20 +10375,20 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(8, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 TrainController->GetRepeatHeadCode(47, Ptr->OtherHeadCode, RepNum + 1, IncDig) + " at " + Ptr->LocationName;
             // use RepNum+1 because it's the repeat number of the NEXT shuttle service that is relevant
-            PartStr = ControllerGetNewServiceDepartureInfo(2, Ptr, RepNum + 1, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
+            PartStr = ControllerGetNewServiceDepartureInfo(15, Ptr, RepNum + 1, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
         }
         else if((Ptr->Command == "Fns-sh") && (RepNum >= (TTDEPtr->NumberOfTrains - 1))) // last repeat number
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(9, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 Ptr->NonRepeatingShuttleLinkHeadCode, +" at " + Ptr->LocationName;
-            PartStr = ControllerGetNewServiceDepartureInfo(3, Ptr, 0, TTDEPtr, Ptr->NonRepeatingShuttleLinkEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
+            PartStr = ControllerGetNewServiceDepartureInfo(17, Ptr, 0, TTDEPtr, Ptr->NonRepeatingShuttleLinkEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
         }
         else if((Ptr->Command == "Frh-sh") && (RepNum < (TTDEPtr->NumberOfTrains - 1))) // not the last repeat number
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(10, Ptr->EventTime, RepNum, IncMins)) + ": Form new service " +
                 TrainController->GetRepeatHeadCode(48, Ptr->OtherHeadCode, RepNum + 1, IncDig) + " at " + Ptr->LocationName;
             // use RepNum+1 because it's the repeat number of the NEXT shuttle service that is relevant
-            PartStr = ControllerGetNewServiceDepartureInfo(4, Ptr, RepNum + 1, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
+            PartStr = ControllerGetNewServiceDepartureInfo(19, Ptr, RepNum + 1, TTDEPtr, Ptr->LinkedTrainEntryPtr, IncMins, PartStr); //if there is a next service this adds the new service departure time to RetStr
         }
         else if((Ptr->Command == "Frh-sh") && (RepNum >= (TTDEPtr->NumberOfTrains - 1))) // last repeat number
         {
@@ -13660,7 +13948,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         }
     }
 
-    // SaveTrainDataVectorToFile(0);//test
+    // SaveTrainDataVectorToFile(0);//for testing purposes
     BuildContinuationTrainExpectationMultiMap(0);
     Utilities->CallLogPop(782);
     return(true);
@@ -14601,7 +14889,7 @@ bool TTrainController::CheckStartAllowable(int Caller, int RearPosition, int Rea
     }
     if(RearType == Bridge)
     {
-        if((RearExitPos > 1) && (RearTrackElement.TrainIDOnBridgeTrackPos23 > -1))
+        if((RearExitPos > 1) && (RearTrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 > -1))
         {
             if(ReportFlag)
             {
@@ -14610,7 +14898,7 @@ bool TTrainController::CheckStartAllowable(int Caller, int RearPosition, int Rea
             Utilities->CallLogPop(942);
             return(false);
         }
-        if((RearExitPos < 2) && (RearTrackElement.TrainIDOnBridgeTrackPos01 > -1))
+        if((RearExitPos < 2) && (RearTrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 > -1))
         {
             if(ReportFlag)
             {
@@ -14622,7 +14910,7 @@ bool TTrainController::CheckStartAllowable(int Caller, int RearPosition, int Rea
     }
     if(FrontType == Bridge)
     {
-        if((FrontEntryPos > 1) && (FrontTrackElement.TrainIDOnBridgeTrackPos23 > -1))
+        if((FrontEntryPos > 1) && (FrontTrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 > -1))
         {
             if(ReportFlag)
             {
@@ -14638,7 +14926,7 @@ bool TTrainController::CheckStartAllowable(int Caller, int RearPosition, int Rea
             Utilities->CallLogPop(944);
             return(false);
         }
-        if((FrontEntryPos < 2) && (FrontTrackElement.TrainIDOnBridgeTrackPos01 > -1))
+        if((FrontEntryPos < 2) && (FrontTrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 > -1))
         {
             if(ReportFlag)
             {
@@ -15360,15 +15648,15 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
     }
 
     BaseLog = Utilities->Format96HHMMSS(ActualTime) + Prefix + HeadCode;
-    Display->PerformanceLog(4, BaseLog + ErrorLog + LocationID);
+    PerfLogForm->PerformanceLog(4, BaseLog + ErrorLog + LocationID);
     Utilities->CallLogPop(1371);
 }
 
 // ---------------------------------------------------------------------------
 
-void TTrainController::SaveTrainDataVectorToFile(int Caller) // test
+void TTrainController::SaveTrainDataVectorToFile(int Caller)
 {
-/*
+/*    //for testing purposes
       TrainDataEntry
       AnsiString HeadCode, Description;//null on creation
       int StartSpeed, MaxRunningSpeed;//both kph
@@ -16723,8 +17011,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         }
         //AllServiceCallingLocsMap built
         SequenceLog += "2\n";
-        //test validity of AllServiceCallingLocsMap
-/*
+/*  this sequence is to test the validity of AllServiceCallingLocsMap
         AnsiString TestFile = CurDir + "\\Formatted timetables\\TestFile; " + RailwayTitle + "; " + TimetableTitle + ".txt";
         std::ofstream Test(TestFile.c_str());
 
@@ -17246,8 +17533,9 @@ j) all other finish entries (all link to another service) are ignored as will be
         std::sort(LocServiceTimesVector.begin(), LocServiceTimesVector.end(), &LocServiceTimesLocationSort); //LocServiceTimesLocationSort is a function pointer
         //LocServiceTimesVector now complete & sorted in location order
 
-///create LocServiceTimesVector output file for debugging purposes
 /*
+//start of debugging section
+///create LocServiceTimesVector output file for debugging purposes
         std::ofstream LSTVFile("LSTVFile.txt");
         for(TLocServiceTimesVector::iterator LSTVIt = LocServiceTimesVector.begin(); LSTVIt != LocServiceTimesVector.end(); LSTVIt++)
         {
@@ -17267,7 +17555,9 @@ j) all other finish entries (all link to another service) are ignored as will be
             LSTVFile << '\n';
         }
         LSTVFile.close();
+//end of debugging section
 */
+
         //declare pointers for use in printouts
         TLocServiceTimesVector::iterator Ptr1, Ptr2;
 
@@ -17295,7 +17585,8 @@ j) all other finish entries (all link to another service) are ignored as will be
         TTFile3 << "See user manual or on-screen help section 5.12 for detailed information.\n\n\n";
         SequenceLog += "6\n";
 
-/*     print out TrainDataVectorCopy for debugging purposes
+/*
+//print out TrainDataVectorCopy for debugging purposes NB THIS USES TDateTime.TimeString, which rolls over at 24 hours, use Format96 instead
 std::ofstream TDVCFile("TDVCFile.txt");
 for(TTrainDataVector::iterator TDVCIt = TrainDataVectorCopy.begin(); TDVCIt != TrainDataVectorCopy.end(); TDVCIt++)
 {
@@ -17336,8 +17627,8 @@ for(TTrainDataVector::iterator TDVCIt = TrainDataVectorCopy.begin(); TDVCIt != T
     TDVCFile << '\n';
 }
 TDVCFile.close();
-
 */
+
         //arrivals
         if(ArrChecked)
         {
@@ -17734,6 +18025,7 @@ TDVCFile.close();
                 NumPlats = 0;
                 NumPlatsAtThisLocCalculated = false;
                 FrhCount = 0;
+
                 while((Ptr2->Location != Ptr1->Location) || ((Ptr1->Location == "") && (Ptr2->Location == "")))
                 {
                     PreviousService = "";
@@ -18544,17 +18836,17 @@ void TTrainController::SingleServiceOutput(int Caller, int SSVectorNumber, TNumL
             {
                 AnsiString RearID = Track->TrackElementAt(1397, AVE.RearStartOrRepeatMins).ElementID;
                 AnsiString FrontID = Track->TrackElementAt(1398, AVE.FrontStartOrRepeatDigits).ElementID;
-                VecFile << Marker << AnsiString(AVE.EventTime.TimeString()) << ' ' << AVE.Command << ' ' << RearID << ' ' << FrontID << '\n';
+                VecFile << Marker << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << RearID << ' ' << FrontID << '\n';
             }
             if(AVE.FormatType == SNTShuttle)
             {
                 AnsiString RearID = Track->TrackElementAt(1399, AVE.RearStartOrRepeatMins).ElementID;
                 AnsiString FrontID = Track->TrackElementAt(1400, AVE.FrontStartOrRepeatDigits).ElementID;
-                VecFile << Marker << AnsiString(AVE.EventTime.TimeString()) << ' ' << AVE.Command << ' ' << RearID << ' ' << FrontID << ' ' << AVE.OtherHeadCode << '\n';
+                VecFile << Marker << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << RearID << ' ' << FrontID << ' ' << AVE.OtherHeadCode << '\n';
             }
             if(AVE.FormatType == SNSShuttle) //should all have been converted to chr
             {
-                VecFile << Marker << AnsiString(AVE.EventTime.TimeString()) << ' ' << AVE.Command << ' ' << AVE.OtherHeadCode << ' ' << AVE.NonRepeatingShuttleLinkHeadCode << '\n';
+                VecFile << Marker << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << AVE.OtherHeadCode << ' ' << AVE.NonRepeatingShuttleLinkHeadCode << '\n';
             }
             if(AVE.FormatType == Repeat) //shouldn't be any repeats, only here to show if any have been copied
             {
@@ -18584,24 +18876,24 @@ void TTrainController::SingleServiceOutput(int Caller, int SSVectorNumber, TNumL
                         AVE.OtherHeadCode = "";
                     }
                 }
-                VecFile << Marker << AnsiString(AVE.EventTime.TimeString()) << ' ' << AVE.Command << ' ' << AVE.OtherHeadCode << '\n';
+                VecFile << Marker << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << AVE.OtherHeadCode << '\n';
                 AVE = AVHolder;
             }
             else if((AVE.FormatType == TimeLoc) && (AVE.ArrivalTime != TDateTime(-1)))
             {
-                VecFile << Marker << AnsiString(AVE.ArrivalTime.TimeString()) << " Arr " << AVE.LocationName << '\n';
+                VecFile << Marker << Utilities->Format96HHMM(AVE.ArrivalTime) << " Arr " << AVE.LocationName << '\n';
             }
             else if((AVE.FormatType == TimeLoc) && (AVE.DepartureTime != TDateTime(-1)))
             {
-                VecFile << Marker << AnsiString(AVE.DepartureTime.TimeString()) << " Dep " << AVE.LocationName << '\n';
+                VecFile << Marker << Utilities->Format96HHMM(AVE.DepartureTime) << " Dep " << AVE.LocationName << '\n';
             }
             else if(AVE.FormatType == TimeTimeLoc)
             {
-                VecFile << Marker << AnsiString(AVE.ArrivalTime.TimeString()) << ' ' << AnsiString(AVE.DepartureTime.TimeString()) << ' ' << AVE.LocationName << '\n';
+                VecFile << Marker << Utilities->Format96HHMM(AVE.ArrivalTime) << ' ' << Utilities->Format96HHMM(AVE.DepartureTime) << ' ' << AVE.LocationName << '\n';
             }
             else if(AVE.FormatType == PassTime)
             {
-                VecFile << Marker << AnsiString(AVE.EventTime.TimeString()) << ' ' << "Pass" << ' ' << AVE.LocationName << '\n';
+                VecFile << Marker << Utilities->Format96HHMM(AVE.EventTime) << ' ' << "Pass" << ' ' << AVE.LocationName << '\n';
             }
             else if(AVE.FormatType == ExitRailway) //ListOfExits added at v2.10.0
             {
@@ -18610,7 +18902,7 @@ void TTrainController::SingleServiceOutput(int Caller, int SSVectorNumber, TNumL
                 {
                     ListOfExits += AnsiString(Track->TrackElementAt(1432, *NLIt).ElementID) + ' ';
                 }
-                VecFile << Marker << AnsiString(AVE.EventTime.TimeString()) << " Fer " << ListOfExits <<'\n';
+                VecFile << Marker << Utilities->Format96HHMM(AVE.EventTime) << " Fer " << ListOfExits <<'\n';
             }
             else if(AVE.FormatType == FinRemHere)
             {
@@ -19971,9 +20263,9 @@ void TTrainController::CalcOperatingAndNotStartedTrainLateness(int Caller)
 // ---------------------------------------------------------------------------
 
 void TTrainController::RebuildOpTimeToActMultimap(int Caller)
-// new v2.2.0 for OperatorActionPanel
+// new v2.2.0 for OperatorActionPanel (OperatorActionPanel changed for ActionsDueForm at v2.13.0)
 // clears entries then adds values for running trains then for continuation entries
-// dont limit size here as need to check all trains (OAListBox is limited to 20 trains in Interface.cpp)
+// dont limit size here as need to check all trains (ActionsDueListBox is limited to 20 trains in Interface.cpp)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RebuildOpTimeToActMultimap");
     OpTimeToActMultiMap.clear();
@@ -20323,7 +20615,7 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
             CurrentAttribute = Track->TrackElementAt(944, CurrentElement).Attribute;
         }
         else if((TrainID > -1) && (TrainVectorAtIdent(40, TrainID).TrainMode == Timetable)) // ignore signallercontrol or will
-        // give 'NOW' indication after allowed to pass red signal when LeadMidLag (AllowedToPassRedSignal reset by this point)
+        // give 'NOW' indication after allowed to pass stop signal when LeadMidLag (AllowedToPassRedSignal reset by this point)
         {
             Utilities->CallLogPop(2084);
             return(0);
@@ -20433,11 +20725,11 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
         {
             if(CurrentEntryPos > 1)
             {
-                TrainOnElement = TE.TrainIDOnBridgeTrackPos23;
+                TrainOnElement = TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
             }
             else
             {
-                TrainOnElement = TE.TrainIDOnBridgeTrackPos01;
+                TrainOnElement = TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
             }
         }
         if((TrainOnElement > -1) && (TrainOnElement != TrainID))

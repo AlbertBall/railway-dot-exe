@@ -1,6 +1,6 @@
 <map id="TOnePrefDir::RealignAfterTrackErase" name="TOnePrefDir::RealignAfterTrackErase">
 <area shape="rect" id="node1" title="After a track element is erased the preferred direction elements are likely to be affected...." alt="" coords="5,423,176,465"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="979,119,1125,145"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="979,119,1125,145"/>
 <area shape="rect" id="node3" href="$class_t_one_pref_dir.html#aa191ffa7fa23838043d34d9b02cd7bcb" title="Erase a single element from PrefDirVector and 4MultiMap, decrementing the remaining PrefDirElementNum..." alt="" coords="224,311,397,353"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="979,352,1125,379"/>
 <area shape="rect" id="node10" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="228,563,393,589"/>

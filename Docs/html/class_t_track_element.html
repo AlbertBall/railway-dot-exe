@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.13.0 Beta</span>
+   &#160;<span id="projectnumber">v2.13.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -101,14 +101,12 @@ $(document).ready(function(){initNavTree('class_t_track_element.html',''); initR
 <div class="dynheader">
 Inheritance diagram for TTrackElement:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_track_element__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_track_element__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for TTrackElement:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_track_element__coll__graph.svg" width="215" height="551"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_track_element__coll__graph.svg" width="215" height="551"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -171,8 +169,11 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a1712299f9cb22bb7afbe54e5a781f8ec"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#a1712299f9cb22bb7afbe54e5a781f8ec">TempTrackMarker01</a></td></tr>
 <tr class="separator:a1712299f9cb22bb7afbe54e5a781f8ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0d0c071e2a124e9143e5c7bc2009805"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#ab0d0c071e2a124e9143e5c7bc2009805">TempTrackMarker23</a></td></tr>
-<tr class="memdesc:ab0d0c071e2a124e9143e5c7bc2009805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility markers for program use.  <a href="class_t_track_element.html#ab0d0c071e2a124e9143e5c7bc2009805">More...</a><br /></td></tr>
+<tr class="memdesc:ab0d0c071e2a124e9143e5c7bc2009805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility markers for program use, not used from v2.12.0.  <a href="class_t_track_element.html#ab0d0c071e2a124e9143e5c7bc2009805">More...</a><br /></td></tr>
 <tr class="separator:ab0d0c071e2a124e9143e5c7bc2009805"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7566dddad899aeb75beb5a983cf7e3c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#ac7566dddad899aeb75beb5a983cf7e3c">Failed</a></td></tr>
+<tr class="memdesc:ac7566dddad899aeb75beb5a983cf7e3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">New parameter added at v2.13.0 for failed points &amp; TSRs.  <a href="class_t_track_element.html#ac7566dddad899aeb75beb5a983cf7e3c">More...</a><br /></td></tr>
+<tr class="separator:ac7566dddad899aeb75beb5a983cf7e3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16594caf5c9e6a35bd4120ad639b8cc2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#a16594caf5c9e6a35bd4120ad639b8cc2">Attribute</a></td></tr>
 <tr class="memdesc:a16594caf5c9e6a35bd4120ad639b8cc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">special variable used only for points, signals &amp; level crossings, ignored otherwise; points 0=set to go straight, 1=set to diverge, where both legs diverge 0=set to left fork; signals: 0=red; 1=yellow; 2=double yellow; 3 = green; Level crossing: 0 = raised barriers = closed to trains; 1 = lowered barriers = open to trains; 2 = changing state = closed to trains  <a href="class_t_track_element.html#a16594caf5c9e6a35bd4120ad639b8cc2">More...</a><br /></td></tr>
 <tr class="separator:a16594caf5c9e6a35bd4120ad639b8cc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,11 +204,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:af6b589b13c3b59adb3c493816316ffe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f6319bc1752da843be71f1024774ace"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#a5f6319bc1752da843be71f1024774ace">TrainIDOnElement</a></td></tr>
 <tr class="separator:a5f6319bc1752da843be71f1024774ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9751b1ee4085deff881cd8f39bbd293b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#a9751b1ee4085deff881cd8f39bbd293b">TrainIDOnBridgeTrackPos01</a></td></tr>
-<tr class="separator:a9751b1ee4085deff881cd8f39bbd293b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3d8b1fef605f7ef4e6b09360abbb528"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#aa3d8b1fef605f7ef4e6b09360abbb528">TrainIDOnBridgeTrackPos23</a></td></tr>
-<tr class="memdesc:aa3d8b1fef605f7ef4e6b09360abbb528"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to the TrainID value when a train is present on the element, bridges can have two trains present so the ...01 and ...23 values give the TrainIDs for track with link positions [0] &amp; [1], and [2] &amp; [3] respectively, set to -1 if no train present.  <a href="class_t_track_element.html#aa3d8b1fef605f7ef4e6b09360abbb528">More...</a><br /></td></tr>
-<tr class="separator:aa3d8b1fef605f7ef4e6b09360abbb528"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb084fba3f720515d1fb8daf8a9bc606"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#afb084fba3f720515d1fb8daf8a9bc606">TrainIDOnBridgeOrFailedPointOrigSpeedLimit01</a></td></tr>
+<tr class="separator:afb084fba3f720515d1fb8daf8a9bc606"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9af64c78ddd52fb5dad20d8e3c169ba3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#a9af64c78ddd52fb5dad20d8e3c169ba3">TrainIDOnBridgeOrFailedPointOrigSpeedLimit23</a></td></tr>
+<tr class="separator:a9af64c78ddd52fb5dad20d8e3c169ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa16c9130eef5e434146b9100781b0600"><td class="memItemLeft" align="right" valign="top">enum TTrackElement:: { ... } &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#aa16c9130eef5e434146b9100781b0600">SigAspect</a></td></tr>
 <tr class="separator:aa16c9130eef5e434146b9100781b0600"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_t_fixed_track_piece"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_t_fixed_track_piece')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_t_fixed_track_piece.html">TFixedTrackPiece</a></td></tr>
@@ -256,7 +256,7 @@ Public Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="abbbcaeb3e062e962d53337965d4fcaada2bd86ecdd8bef353ad0fbc41d480251e"></a>GroundSignal&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00154">154</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00157">157</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -286,7 +286,7 @@ Public Attributes</h2></td></tr>
 
 <p>Constructor for non-specific default element. Use high neg numbers for 'unset' h &amp; v as can go high negatively legitimately. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00163">163</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00166">166</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -308,7 +308,7 @@ Public Attributes</h2></td></tr>
 
 <p>Constructor for specific type of element. Use very high neg. numbers as 'unset' values for HLoc &amp; VLoc initially as can go high negatively legitimately, build from existing TTrackPiece with default values for extra members. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l00242">242</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l00248">248</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -331,12 +331,11 @@ Public Attributes</h2></td></tr>
 
 <p>Used to log track parameters for call stack logging. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l00230">230</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l00236">236</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_track_element_a100bff829c4dca820927affde4cb9e57_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_track_element_a100bff829c4dca820927affde4cb9e57_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -359,7 +358,7 @@ Here is the caller graph for this function:</div>
 
 <p>non-equivalence operator </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l00155">155</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l00156">156</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -381,7 +380,7 @@ Here is the caller graph for this function:</div>
 
 <p>equivalence operator </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l00141">141</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l00142">142</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 
 </div>
 </div>
@@ -413,18 +412,16 @@ Here is the caller graph for this function:</div>
 
 <p>Plot the element on the display 'variable' indicates that the element may be named and if so may be plotted striped or solid depending on whether the name has been set. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l00169">169</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l00170">170</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_track_element_a453377f8db5e108cb274464333e1100f_cgraph.svg" width="392" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_track_element_a453377f8db5e108cb274464333e1100f_cgraph.svg" width="392" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_track_element_a453377f8db5e108cb274464333e1100f_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_track_element_a453377f8db5e108cb274464333e1100f_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -462,7 +459,7 @@ Here is the caller graph for this function:</div>
 
 <p>special variable used only for points, signals &amp; level crossings, ignored otherwise; points 0=set to go straight, 1=set to diverge, where both legs diverge 0=set to left fork; signals: 0=red; 1=yellow; 2=double yellow; 3 = green; Level crossing: 0 = raised barriers = closed to trains; 1 = lowered barriers = open to trains; 2 = changing state = closed to trains </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00140">140</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00142">142</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -498,7 +495,7 @@ Here is the caller graph for this function:</div>
 
 <p>Connecting element position in TrackVector, set to -1 if no connecting link or if track not linked. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00142">142</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00144">144</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -516,7 +513,7 @@ Here is the caller graph for this function:</div>
 
 <p>Connecting element link position (i.e. array positions of the connecting element links, in same order as Link[4]) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00144">144</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00146">146</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -538,6 +535,24 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="ac7566dddad899aeb75beb5a983cf7e3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7566dddad899aeb75beb5a983cf7e3c">&#9670;&nbsp;</a></span>Failed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrackElement::Failed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>New parameter added at v2.13.0 for failed points &amp; TSRs. </p>
+
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00140">140</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+
+</div>
+</div>
 <a id="a0d0e30d5e7b76d90fb737316d50efdd0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d0e30d5e7b76d90fb737316d50efdd0">&#9670;&nbsp;</a></span>HLoc</h2>
 
@@ -550,7 +565,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00146">146</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00148">148</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -584,7 +599,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00148">148</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00150">150</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -600,7 +615,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00148">148</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00150">150</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -648,7 +663,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00148">148</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00150">150</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -666,7 +681,7 @@ Here is the caller graph for this function:</div>
 
 <p>Element lengths and speed limits, ...01 is for the track with link positions [0] and [1], ...23 for [2] and [3], set to -1 if not used (lengths in m &amp; speed limits in km/h) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00148">148</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00150">150</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -682,7 +697,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00150">150</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00152">152</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -700,7 +715,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used for track at platforms and non-station named locations to mark the train front element stop position, there are two for the two directions of travel, set to -1 if not used. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00150">150</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00152">152</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -732,43 +747,42 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Utility markers for program use. </p>
+<p>Utility markers for program use, not used from v2.12.0. </p>
 
 <p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00138">138</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
-<a id="a9751b1ee4085deff881cd8f39bbd293b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9751b1ee4085deff881cd8f39bbd293b">&#9670;&nbsp;</a></span>TrainIDOnBridgeTrackPos01</h2>
+<a id="afb084fba3f720515d1fb8daf8a9bc606"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb084fba3f720515d1fb8daf8a9bc606">&#9670;&nbsp;</a></span>TrainIDOnBridgeOrFailedPointOrigSpeedLimit01</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int TTrackElement::TrainIDOnBridgeTrackPos01</td>
+          <td class="memname">int TTrackElement::TrainIDOnBridgeOrFailedPointOrigSpeedLimit01</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00152">152</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00154">154</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
-<a id="aa3d8b1fef605f7ef4e6b09360abbb528"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3d8b1fef605f7ef4e6b09360abbb528">&#9670;&nbsp;</a></span>TrainIDOnBridgeTrackPos23</h2>
+<a id="a9af64c78ddd52fb5dad20d8e3c169ba3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9af64c78ddd52fb5dad20d8e3c169ba3">&#9670;&nbsp;</a></span>TrainIDOnBridgeOrFailedPointOrigSpeedLimit23</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int TTrackElement::TrainIDOnBridgeTrackPos23</td>
+          <td class="memname">int TTrackElement::TrainIDOnBridgeOrFailedPointOrigSpeedLimit23</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Set to the TrainID value for a bridge when a train is present on the element, bridges can have two trains present so the ...01 and ...23 values give the TrainIDs for track with link positions [0] &amp; [1], and [2] &amp; [3] respectively, set to -1 if no train present For a failed point store the original speedlimits, names changed at v2.13.0 to cater for failed points </p>
 
-<p>Set to the TrainID value when a train is present on the element, bridges can have two trains present so the ...01 and ...23 values give the TrainIDs for track with link positions [0] &amp; [1], and [2] &amp; [3] respectively, set to -1 if no train present. </p>
-
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00152">152</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00154">154</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -784,7 +798,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00152">152</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00154">154</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -802,7 +816,7 @@ Here is the caller graph for this function:</div>
 
 <p>The h &amp; v locations in the railway (top lh corner of the first build screen = 0,0) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00146">146</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00148">148</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>

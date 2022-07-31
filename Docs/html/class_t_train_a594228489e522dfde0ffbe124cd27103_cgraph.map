@@ -1,6 +1,6 @@
 <map id="TTrain::SetHeadCodeGraphics" name="TTrain::SetHeadCodeGraphics">
 <area shape="rect" id="node1" title="Set the four HeadCodeGrPtr[4] pointers to the appropriate character graphics with the current backgro..." alt="" coords="5,184,203,211"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="765,38,912,64"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="765,38,912,64"/>
 <area shape="rect" id="node3" href="$class_t_rail_graphics.html#af83b21217bb1c2a229bdf14b0d2ffd0d" title="as above but uses Scanline" alt="" coords="251,89,475,130"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="765,155,912,182"/>
 <area shape="rect" id="node6" href="$class_t_train.html#ad7831e71f0c68933df4aea6661a77be5" title="Return a pointer to the graphic corresponding to the character &#39;CodeVhar&#39;." alt="" coords="271,294,455,320"/>

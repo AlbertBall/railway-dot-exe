@@ -41,11 +41,12 @@
 #pragma hdrstop
 
 #include "TrackUnit.h"
-#include "Utilities.h"
-// #include "DisplayUnit.h" included in header file
-#include "GraphicUnit.h"
-#include "TextUnit.h"
 #include "TrainUnit.h"
+#include "GraphicUnit.h"
+//#include "DisplayUnit.h" included in TrackUnit.h
+#include "TextUnit.h"
+#include "PerfLogUnit.h"
+#include "Utilities.h"
 
 #pragma package(smart_init)
 // ---------------------------------------------------------------------------
@@ -222,6 +223,11 @@ void TTrackElement::PlotVariableTrackElement(int Caller, TDisplay *Disp) const
         }
     }
     Disp->PlotOutput(34, HLoc * 16, VLoc * 16, GraphicOutput);
+    //deal with TSRs
+    if((TrackType == Simple) && Failed) //added at v2.13.0
+    {
+       Disp->GetImage()->Canvas->Draw((HLoc - Display->DisplayOffsetH) * 16, (VLoc - Display->DisplayOffsetV) * 16, RailGraphics->BlackOctagon); //indicates that it has failed
+    }
     Utilities->CallLogPop(1332);
 }
 
@@ -231,7 +237,7 @@ AnsiString TTrackElement::LogTrack(int Caller) const
 // for debugging when passes as a call parameter
 {
     AnsiString LogString = "TrkEl:-," + AnsiString(ElementID) + "," + LocationName + "," + AnsiString(TrainIDOnElement) + "," +
-        AnsiString(TrainIDOnBridgeTrackPos01) + "," + AnsiString(TrainIDOnBridgeTrackPos23) + ",EndTrkEl,";
+        AnsiString(TrainIDOnBridgeOrFailedPointOrigSpeedLimit01) + "," + AnsiString(TrainIDOnBridgeOrFailedPointOrigSpeedLimit23) + ",EndTrkEl,";
 
     return(LogString);
 }
@@ -241,9 +247,10 @@ AnsiString TTrackElement::LogTrack(int Caller) const
 /// Constructor for specific type of element. Use very high neg. numbers as 'unset' values for HLoc & VLoc initially as can go high negatively legitimately, build from existing TTrackPiece with default values for extra members
     TTrackElement::TTrackElement(TFixedTrackPiece Input) : TFixedTrackPiece(Input), HLoc(-2000000000), VLoc(-2000000000), LocationName(""), ActiveTrackElementName(""),
         Attribute(0), CallingOnSet(false), Length01(Track->DefaultTrackLength), Length23(-1), SpeedLimit01(Track->DefaultTrackSpeedLimit), SpeedLimit23(-1),
-        TrainIDOnElement(-1), TrainIDOnBridgeTrackPos01(-1), TrainIDOnBridgeTrackPos23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1),
+        TrainIDOnElement(-1), TrainIDOnBridgeOrFailedPointOrigSpeedLimit01(-1), TrainIDOnBridgeOrFailedPointOrigSpeedLimit23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1),
         SigAspect(FourAspect)
     {
+        Failed = false; //added at v2.13.0
         for(int x = 0; x < 4; x++)
         {
             ConnLinkPos[x] = -1;
@@ -301,8 +308,8 @@ AnsiString TPrefDirElement::LogPrefDir() const
 {
     AnsiString LogString = "PthEl:-," + AnsiString(ELink) + "," + AnsiString(ELinkPos) + "," + AnsiString(XLink) + "," + AnsiString(XLinkPos) + "," +
         AnsiString(EXNumber) + "," + AnsiString(TrackVectorPosition) + "," + AnsiString((short)AutoSignals) + "," + AnsiString((short)PrefDirRoute) +
-        ",ElementID," + AnsiString(ElementID) + "," + LocationName + "," + AnsiString(TrainIDOnElement) + "," + AnsiString(TrainIDOnBridgeTrackPos01) + "," +
-        AnsiString(TrainIDOnBridgeTrackPos23);
+        ",ElementID," + AnsiString(ElementID) + "," + LocationName + "," + AnsiString(TrainIDOnElement) + "," + AnsiString(TrainIDOnBridgeOrFailedPointOrigSpeedLimit01) + "," +
+        AnsiString(TrainIDOnBridgeOrFailedPointOrigSpeedLimit23);
 
 // Track->TrackElementAt(73, TrackVectorPosition).LogTrack(12);
     return(LogString);
@@ -663,7 +670,6 @@ Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool P
         if(SpeedTag == 64)
         {
             return(RailGraphics->LinkNonSigRouteGraphicsPtr[16]); // intercept diagonal buffers
-
         }
         if(SpeedTag == 65)
         {
@@ -680,7 +686,6 @@ Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool P
         if(SpeedTag == 80)
         {
             return(RailGraphics->LinkNonSigRouteGraphicsPtr[20]); // intercept continuations
-
         }
         if(SpeedTag == 81)
         {
@@ -713,7 +718,6 @@ Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool P
         if(SpeedTag == 129)
         {
             return(RailGraphics->LinkNonSigRouteGraphicsPtr[28]); // intercept under footbridges
-
         }
         if(SpeedTag == 130)
         {
@@ -753,7 +757,6 @@ Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool P
         if(SpeedTag == 64)
         {
             return(RailGraphics->LinkSigRouteGraphicsPtr[16]); // intercept diagonal buffers
-
         }
         if(SpeedTag == 65)
         {
@@ -770,7 +773,6 @@ Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool P
         if(SpeedTag == 80)
         {
             return(RailGraphics->LinkSigRouteGraphicsPtr[20]); // intercept continuations
-
         }
         if(SpeedTag == 81)
         {
@@ -803,7 +805,6 @@ Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool P
         if(SpeedTag == 129)
         {
             return(RailGraphics->LinkSigRouteGraphicsPtr[28]); // intercept under footbridges
-
         }
         if(SpeedTag == 130)
         {
@@ -843,7 +844,6 @@ Graphics::TBitmap *TPrefDirElement::GetRouteGraphicPtr(bool AutoSigsFlag, bool P
         if(SpeedTag == 64)
         {
             return(RailGraphics->LinkRouteAutoSigsGraphicsPtr[16]); // intercept diagonal buffers
-
         }
         if(SpeedTag == 65)
         {
@@ -1135,7 +1135,7 @@ TTrack::TTrack()
     CopyFlag = false; // only true for copying, so names aren't copied
     AnsiString NL = '\n';
 
-    RouteFailMessage = "Unable to set a route:" + NL + NL + "it may be unreachable; " + NL + NL +
+    RouteFailMessage = "Unable to set a route:" + NL + NL + "it may be unreachable, perhaps because of failed points; " + NL + NL +
         "reachable but with too many different directions leading away from the start point  - set some points on the route required; " + NL + NL +
         "blocked by a train, another route or a changing level crossing; " + NL + NL +
         "or invalid - possibly due to a preferred direction mismatch, or a missed signal in a blue route or green route restricted to consecutive signals.";
@@ -1275,6 +1275,15 @@ TTrack::TTrack()
     for(int x = 0; x < 40; x++)
     {
         SigTableGroundSignal[x] = TempSigTableGroundSignal[x];
+    }
+
+    TSigElement TempFailedSigTable[8] = // added at v2.13.0
+    {{68, 0, RailGraphics->FSig68}, {69, 0, RailGraphics->FSig69}, {70, 0, RailGraphics->FSig70}, {71, 0, RailGraphics->FSig71}, {72, 0, RailGraphics->FSig72},
+     {73, 0, RailGraphics->FSig73}, {74, 0, RailGraphics->FSig74}, {75, 0, RailGraphics->FSig75}};
+
+    for(int x = 0; x < 8; x++)
+    {
+        FailedSigTable[x] = TempFailedSigTable[x];
     }
 
 /*
@@ -4242,6 +4251,12 @@ void TTrack::WriteOperatingTrackAndTextToImage(int Caller, Graphics::TBitmap *Bi
                     Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16),
                                          RailGraphics->PointModeGraphicsPtr[Next.SpeedTag - 108][Next.Attribute]);
                 }
+                if(Next.Failed) //added at v2.13.0
+                {
+                    Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16),
+                                         RailGraphics->BlackOctagon);
+                }
+
             }
             else if(Next.TrackType == GapJump) // plot as connected
             {
@@ -4329,88 +4344,102 @@ void TTrack::WriteOperatingTrackAndTextToImage(int Caller, Graphics::TBitmap *Bi
                         {
                             Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SignalPlatformGraphic);
                         }
-                        // now plot signal (double yellow overwrites most of signal platform if present)
-                        // below amended for version 0.6
-                        if(Next.SigAspect == TTrackElement::ThreeAspect)
+                        if(!Next.Failed)
                         {
-                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableThreeAspect[x].SigPtr);
-                        }
-                        else if(Next.SigAspect == TTrackElement::TwoAspect)
-                        {
-                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableTwoAspect[x].SigPtr);
-                        }
-                        else if(Next.SigAspect == TTrackElement::GroundSignal)
-                        {
-                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableGroundSignal[x].SigPtr);
-                        }
-                        else // 4 aspect
-                        {
-                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTable[x].SigPtr);
-                        }
-                        if((Next.CallingOnSet) && (Next.SigAspect != TTrackElement::GroundSignal))
-                        // normal signal calling on, need to add extra graphic, basic red signal plotted above from SigTable
-                        {
-                            if(Next.SpeedTag == 68)
+                            // now plot signal (double yellow overwrites most of signal platform if present)
+                            // below amended for version 0.6
+                            if(Next.SigAspect == TTrackElement::ThreeAspect)
                             {
-                                Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm68CallingOn);
+                                Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableThreeAspect[x].SigPtr);
                             }
-                            if(Next.SpeedTag == 69)
+                            else if(Next.SigAspect == TTrackElement::TwoAspect)
                             {
-                                Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm69CallingOn);
+                                Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableTwoAspect[x].SigPtr);
                             }
-                            if(Next.SpeedTag == 70)
+                            else if(Next.SigAspect == TTrackElement::GroundSignal)
                             {
-                                Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm70CallingOn);
+                                Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableGroundSignal[x].SigPtr);
                             }
-                            if(Next.SpeedTag == 71)
+                            else // 4 aspect
                             {
-                                Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm71CallingOn);
+                                Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTable[x].SigPtr);
                             }
-                            if(Next.SpeedTag == 72)
+                            if((Next.CallingOnSet) && (Next.SigAspect != TTrackElement::GroundSignal))
+                            // normal signal calling on, need to add extra graphic, basic red signal plotted above from SigTable
                             {
-                                Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm72CallingOn);
-                            }
-                            if(Next.SpeedTag == 73)
-                            {
-                                Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm73CallingOn);
-                            }
-                            if(Next.SpeedTag == 74)
-                            {
-                                Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm74CallingOn);
-                            }
-                            if(Next.SpeedTag == 75)
-                            {
-                                Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm75CallingOn);
-                            }
-                        }
-                        else if((Next.CallingOnSet) && (Next.SigAspect == TTrackElement::GroundSignal)) // ground signal calling on, use normal proceed aspect
-                        {
-                            for(int x = 0; x < 40; x++)
-                            {
-                                if((SigTableGroundSignal[x].SpeedTag == Next.SpeedTag) && (SigTable[x].Attribute == 1)) // use attr 1 for proceed
+                                if(Next.SpeedTag == 68)
                                 {
-                                    // plot blank first, then plot platform if present - striped or not depending on LocationName being set
-                                    Display->PlotSignalBlankOnBitmap(Next.HLoc - GetHLocMin(), Next.VLoc - GetVLocMin(), Next.SpeedTag, Bitmap,
-                                                                     Utilities->RHSignalFlag); // in case existing signal is a double yellow
-                                    // plot special signal platform if present
-                                    Graphics::TBitmap* SignalPlatformGraphic;
-                                    if(PlatformOnSignalSide(4, Next.HLoc, Next.VLoc, Next.SpeedTag, SignalPlatformGraphic))
-                                    {
-                                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SignalPlatformGraphic);
-                                    }
-                                    // now plot signal
-                                    Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableGroundSignal[x].SigPtr);
-                                    break;
+                                    Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm68CallingOn);
+                                }
+                                if(Next.SpeedTag == 69)
+                                {
+                                    Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm69CallingOn);
+                                }
+                                if(Next.SpeedTag == 70)
+                                {
+                                    Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm70CallingOn);
+                                }
+                                if(Next.SpeedTag == 71)
+                                {
+                                    Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm71CallingOn);
+                                }
+                                if(Next.SpeedTag == 72)
+                                {
+                                    Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm72CallingOn);
+                                }
+                                if(Next.SpeedTag == 73)
+                                {
+                                    Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm73CallingOn);
+                                }
+                                if(Next.SpeedTag == 74)
+                                {
+                                    Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm74CallingOn);
+                                }
+                                if(Next.SpeedTag == 75)
+                                {
+                                    Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->bm75CallingOn);
                                 }
                             }
+                            else if((Next.CallingOnSet) && (Next.SigAspect == TTrackElement::GroundSignal)) // ground signal calling on, use normal proceed aspect
+                            {
+                                for(int x = 0; x < 40; x++)
+                                {
+                                    if((SigTableGroundSignal[x].SpeedTag == Next.SpeedTag) && (SigTable[x].Attribute == 1)) // use attr 1 for proceed
+                                    {
+                                        // plot blank first, then plot platform if present - striped or not depending on LocationName being set
+                                        Display->PlotSignalBlankOnBitmap(Next.HLoc - GetHLocMin(), Next.VLoc - GetVLocMin(), Next.SpeedTag, Bitmap,
+                                                                         Utilities->RHSignalFlag); // in case existing signal is a double yellow
+                                        // plot special signal platform if present
+                                        Graphics::TBitmap* SignalPlatformGraphic;
+                                        if(PlatformOnSignalSide(4, Next.HLoc, Next.VLoc, Next.SpeedTag, SignalPlatformGraphic))
+                                        {
+                                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SignalPlatformGraphic);
+                                        }
+                                        // now plot signal
+                                        Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, SigTableGroundSignal[x].SigPtr);
+                                        break;
+                                    }
+                                }
+                            }
+                            break;
                         }
-                        break;
+                        else  //added at v2.13.0
+                        {
+                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, FailedSigTable[x % 5].SigPtr);
+                            Bitmap->Canvas->Draw((Next.HLoc - GetHLocMin()) * 16, (Next.VLoc - GetVLocMin()) * 16, RailGraphics->BlackOctagon);
+                            break;
+                        }
                     }
                 }
             }
             else
             {
                 Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16), Next.GraphicPtr);
+                if(Next.Failed) //added at v2.13.0
+                {
+                    Bitmap->Canvas->Draw(((Next.HLoc - GetHLocMin()) * 16), ((Next.VLoc - GetVLocMin()) * 16),
+                                         RailGraphics->BlackOctagon);
+                }
             }
         }
     }
@@ -4671,6 +4700,8 @@ void TTrack::ResetSignals(int Caller)
         if(TrackElementAt(1123, x).TrackType == SignalPost)
         {
             TrackElementAt(1124, x).Attribute = 0;
+            TrackElementAt(1514, x).Failed = false;
+            FailedSignalsVector.clear();
         }
     }
     Utilities->CallLogPop(483);
@@ -4686,6 +4717,8 @@ void TTrack::ResetPoints(int Caller)
         if(TrackElementAt(1125, x).TrackType == Points)
         {
             TrackElementAt(1126, x).Attribute = 0;
+            TrackElementAt(1515, x).Failed = false;
+            FailedPointsVector.clear();
         }
     }
     Utilities->CallLogPop(484);
@@ -5864,7 +5897,7 @@ TTrack::TIMPair TTrack::GetVectorPositionsFromInactiveTrackMap(int Caller, int H
 
 // ---------------------------------------------------------------------------
 
-bool TTrack::MatchingPoint(int Caller, unsigned int TrackVectorPosition, unsigned int DivergingPosition)
+bool TTrack::MatchingPoint(int Caller, unsigned int TrackVectorPosition, unsigned int DivergingPosition) //changed at v2.13.0 to return true for failed but matching points
 {
 // only change where have adjacent points with their diverging links connected - not appropriate for non-straight points
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",MatchingPoint," + AnsiString(TrackVectorPosition) + "," +
@@ -5874,7 +5907,7 @@ bool TTrack::MatchingPoint(int Caller, unsigned int TrackVectorPosition, unsigne
     int SpeedTag1 = T1.SpeedTag;
     int SpeedTag2 = T2.SpeedTag;
 
-    if(T1.Attribute != T2.Attribute)
+    if((T1.Attribute) != (T2.Attribute))
     {
         Utilities->CallLogPop(516);
         return(false);
@@ -6042,23 +6075,42 @@ void TTrack::PlotPoints(int Caller, TTrackElement TrackElement, TDisplay *Disp, 
             Disp->PlotOutput(71, TrackElement.HLoc * 16, TrackElement.VLoc * 16, RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 108][1]);
         }
     }
-    else
+    else if(!TrackElement.Failed) //not failed
     {
         if(TrackElement.SpeedTag < 28)
         {
             Disp->PlotOutput(75, TrackElement.HLoc * 16, TrackElement.VLoc * 16,
-                             RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 7][TrackElement.Attribute]);
+                             RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 7][TrackElement.Attribute]); //0 to 7 incl after subtraction
         }
         else if(TrackElement.SpeedTag < 132)
         {
             Disp->PlotOutput(76, TrackElement.HLoc * 16, TrackElement.VLoc * 16,
-                             RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 20][TrackElement.Attribute]);
+                             RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 20][TrackElement.Attribute]); //8 to 23 incl after subtraction
         }
         else
         {
             Disp->PlotOutput(72, TrackElement.HLoc * 16, TrackElement.VLoc * 16,
-                             RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 108][TrackElement.Attribute]);
+                             RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 108][TrackElement.Attribute]); //24 to 31 incl after subtraction
         }
+    }
+    else //failed in fixed position
+    {
+        if(TrackElement.SpeedTag < 28)
+        {
+            Disp->PlotOutput(284, TrackElement.HLoc * 16, TrackElement.VLoc * 16,
+                             RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 7][TrackElement.Attribute]); //0 to 7 incl after subtraction
+        }
+        else if(TrackElement.SpeedTag < 132)
+        {
+            Disp->PlotOutput(285, TrackElement.HLoc * 16, TrackElement.VLoc * 16,
+                             RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 20][TrackElement.Attribute]); //8 to 23 incl after subtraction
+        }
+        else
+        {
+            Disp->PlotOutput(286, TrackElement.HLoc * 16, TrackElement.VLoc * 16,
+                             RailGraphics->PointModeGraphicsPtr[TrackElement.SpeedTag - 108][TrackElement.Attribute]); //24 to 31 incl after subtraction
+        }
+        Disp->GetImage()->Canvas->Draw((TrackElement.HLoc - Display->DisplayOffsetH) * 16, (TrackElement.VLoc - Display->DisplayOffsetV) * 16, RailGraphics->BlackOctagon); //indicates that it has failed
     }
 // replot platform if required
     TIMPair IMPair;
@@ -6084,92 +6136,110 @@ void TTrack::PlotSignal(int Caller, TTrackElement TrackElement, TDisplay *Disp)
     {
         throw Exception("Error, Wrong track type in PlotSignal");
     }
-    for(int x = 0; x < 40; x++)
+    if(!TrackElement.Failed) //added at v2.13.0
     {
-        if((SigTable[x].SpeedTag == TrackElement.SpeedTag) && (SigTable[x].Attribute == TrackElement.Attribute))
+        for(int x = 0; x < 40; x++)
         {
-            // plot blank first, then plot platform if present - striped or not depending on LocationName being set
-            Disp->PlotSignalBlank(0, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, Utilities->RHSignalFlag);
-// in case existing signal is a double yellow
-            // plot platforms if present
-// Graphics::TBitmap* SignalPlatformGraphic;
-// if(PlatformOnSignalSide(0, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, SignalPlatformGraphic))
-// Above dropped at v2.3.0.  Now plot either or both platforms if present regardless of which side they are on.  The platforms will
-// be consistent with the signal graphic as can't enter an inappropriate platform.  The new right hand signal option caused platforms
-// to not be plotted with the above function.
-            PlotSignalPlatforms(0, TrackElement.HLoc, TrackElement.VLoc, Disp); // if no platforms nothing is plotted
-            // now plot signal (double yellow overwrites most of signal platform if present)
-            // additions at version 0.6 for other aspects & ground sigs
-            if(TrackElement.SigAspect == TTrackElement::ThreeAspect)
+            if((SigTable[x].SpeedTag == TrackElement.SpeedTag) && (SigTable[x].Attribute == TrackElement.Attribute))
             {
-                Disp->PlotOutput(117, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTableThreeAspect[x].SigPtr);
-            }
-            else if(TrackElement.SigAspect == TTrackElement::TwoAspect)
-            {
-                Disp->PlotOutput(118, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTableTwoAspect[x].SigPtr);
-            }
-            else if(TrackElement.SigAspect == TTrackElement::GroundSignal)
-            {
-                Disp->PlotOutput(119, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTableGroundSignal[x].SigPtr);
-            }
-            else // 4 aspect
-            {
-                Disp->PlotOutput(58, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTable[x].SigPtr);
-            }
-            if((TrackElement.CallingOnSet) && (TrackElement.SigAspect != TTrackElement::GroundSignal))
-            // normal signal calling on, need to add extra graphic, basic red signal plotted above from SigTable
-            {
-                if(TrackElement.SpeedTag == 68)
+                // plot blank first, then plot platform if present - striped or not depending on LocationName being set
+                Disp->PlotSignalBlank(0, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, Utilities->RHSignalFlag);
+    // in case existing signal is a double yellow
+                // plot platforms if present
+    // Graphics::TBitmap* SignalPlatformGraphic;
+    // if(PlatformOnSignalSide(0, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, SignalPlatformGraphic))
+    // Above dropped at v2.3.0.  Now plot either or both platforms if present regardless of which side they are on.  The platforms will
+    // be consistent with the signal graphic as can't enter an inappropriate platform.  The new right hand signal option caused platforms
+    // to not be plotted with the above function.
+                PlotSignalPlatforms(0, TrackElement.HLoc, TrackElement.VLoc, Disp); // if no platforms nothing is plotted
+                // now plot signal (double yellow overwrites most of signal platform if present)
+                // additions at version 0.6 for other aspects & ground sigs
+                if(TrackElement.SigAspect == TTrackElement::ThreeAspect)
                 {
-                    Disp->PlotOutput(59, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm68CallingOn);
+                    Disp->PlotOutput(117, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTableThreeAspect[x].SigPtr);
                 }
-                if(TrackElement.SpeedTag == 69)
+                else if(TrackElement.SigAspect == TTrackElement::TwoAspect)
                 {
-                    Disp->PlotOutput(60, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm69CallingOn);
+                    Disp->PlotOutput(118, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTableTwoAspect[x].SigPtr);
                 }
-                if(TrackElement.SpeedTag == 70)
+                else if(TrackElement.SigAspect == TTrackElement::GroundSignal)
                 {
-                    Disp->PlotOutput(61, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm70CallingOn);
+                    Disp->PlotOutput(119, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTableGroundSignal[x].SigPtr);
                 }
-                if(TrackElement.SpeedTag == 71)
+                else // 4 aspect
                 {
-                    Disp->PlotOutput(62, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm71CallingOn);
+                    Disp->PlotOutput(58, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTable[x].SigPtr);
                 }
-                if(TrackElement.SpeedTag == 72)
+                if((TrackElement.CallingOnSet) && (TrackElement.SigAspect != TTrackElement::GroundSignal))
+                // normal signal calling on, need to add extra graphic, basic red signal plotted above from SigTable
                 {
-                    Disp->PlotOutput(63, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm72CallingOn);
-                }
-                if(TrackElement.SpeedTag == 73)
-                {
-                    Disp->PlotOutput(64, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm73CallingOn);
-                }
-                if(TrackElement.SpeedTag == 74)
-                {
-                    Disp->PlotOutput(65, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm74CallingOn);
-                }
-                if(TrackElement.SpeedTag == 75)
-                {
-                    Disp->PlotOutput(66, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm75CallingOn);
-                }
-            }
-            else if((TrackElement.CallingOnSet) && (TrackElement.SigAspect == TTrackElement::GroundSignal))
-            // ground signal calling on, need to use normal proceed aspect
-            {
-                for(int x = 0; x < 40; x++)
-                {
-                    if((SigTableGroundSignal[x].SpeedTag == TrackElement.SpeedTag) && (SigTable[x].Attribute == 1)) // use attr 1 for proceed
+                    if(TrackElement.SpeedTag == 68)
                     {
-                        // plot blank first, then plot platform if present - striped or not depending on LocationName being set
-                        Disp->PlotSignalBlank(1, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, Utilities->RHSignalFlag);
-                        // plot special signal platform if present
-                        Graphics::TBitmap* SignalPlatformGraphic;
-                        PlotSignalPlatforms(1, TrackElement.HLoc, TrackElement.VLoc, Disp);
-                        // now plot signal
-                        Disp->PlotOutput(123, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTableGroundSignal[x].SigPtr);
+                        Disp->PlotOutput(59, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm68CallingOn);
+                    }
+                    if(TrackElement.SpeedTag == 69)
+                    {
+                        Disp->PlotOutput(60, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm69CallingOn);
+                    }
+                    if(TrackElement.SpeedTag == 70)
+                    {
+                        Disp->PlotOutput(61, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm70CallingOn);
+                    }
+                    if(TrackElement.SpeedTag == 71)
+                    {
+                        Disp->PlotOutput(62, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm71CallingOn);
+                    }
+                    if(TrackElement.SpeedTag == 72)
+                    {
+                        Disp->PlotOutput(63, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm72CallingOn);
+                    }
+                    if(TrackElement.SpeedTag == 73)
+                    {
+                        Disp->PlotOutput(64, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm73CallingOn);
+                    }
+                    if(TrackElement.SpeedTag == 74)
+                    {
+                        Disp->PlotOutput(65, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm74CallingOn);
+                    }
+                    if(TrackElement.SpeedTag == 75)
+                    {
+                        Disp->PlotOutput(66, (TrackElement.HLoc * 16), (TrackElement.VLoc * 16), RailGraphics->bm75CallingOn);
                     }
                 }
+                else if((TrackElement.CallingOnSet) && (TrackElement.SigAspect == TTrackElement::GroundSignal))
+                // ground signal calling on, need to use normal proceed aspect
+                {
+                    for(int x = 0; x < 40; x++)
+                    {
+                        if((SigTableGroundSignal[x].SpeedTag == TrackElement.SpeedTag) && (SigTable[x].Attribute == 1)) // use attr 1 for proceed
+                        {
+                            // plot blank first, then plot platform if present - striped or not depending on LocationName being set
+                            Disp->PlotSignalBlank(1, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, Utilities->RHSignalFlag);
+                            // plot special signal platform if present
+                            Graphics::TBitmap* SignalPlatformGraphic;
+                            PlotSignalPlatforms(1, TrackElement.HLoc, TrackElement.VLoc, Disp);
+                            // now plot signal
+                            Disp->PlotOutput(123, TrackElement.HLoc * 16, TrackElement.VLoc * 16, SigTableGroundSignal[x].SigPtr);
+                        }
+                    }
+                }
+                break;
             }
-            break;
+        }
+    }
+    else //failed added at v2.13.0
+    {
+        for(int x = 0; x < 8; x++)
+        {
+            if(FailedSigTable[x].SpeedTag == TrackElement.SpeedTag)
+            {
+                // plot blank first, then plot platform if present - striped or not depending on LocationName being set
+                Disp->PlotSignalBlank(2, TrackElement.HLoc, TrackElement.VLoc, TrackElement.SpeedTag, Utilities->RHSignalFlag);
+                PlotSignalPlatforms(2, TrackElement.HLoc, TrackElement.VLoc, Disp); // if no platforms nothing is plotted
+                Disp->PlotOutput(287, TrackElement.HLoc * 16, TrackElement.VLoc * 16, FailedSigTable[x].SigPtr);
+                Disp->GetImage()->Canvas->Draw((TrackElement.HLoc - Display->DisplayOffsetH) * 16, (TrackElement.VLoc - Display->DisplayOffsetV) * 16, RailGraphics->BlackOctagon); //indicates that it has failed
+                break;
+            }
         }
     }
     Utilities->CallLogPop(520);
@@ -7604,14 +7674,14 @@ Graphics::TBitmap *TTrack::GetFilletGraphic(int Caller, TTrackElement TrackEleme
 
 // ---------------------------------------------------------------------------
 
-void TTrack::ResetAllTrainIDElements(int Caller)
+void TTrack::ResetAllTrainIDsAndFailedPointOrigSpeedLimits(int Caller)
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ResetAllTrainIDElements");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ResetAllTrainIDsAndFailedPointOrigSpeedLimits");
     for(unsigned int x = 0; x < TrackVector.size(); x++) // check all elements in turn
     {
         TrackElementAt(1351, x).TrainIDOnElement = -1;
-        TrackElementAt(1352, x).TrainIDOnBridgeTrackPos01 = -1;
-        TrackElementAt(1353, x).TrainIDOnBridgeTrackPos23 = -1;
+        TrackElementAt(1352, x).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = -1;
+        TrackElementAt(1353, x).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 = -1;
     }
     Utilities->CallLogPop(1342);
 }
@@ -10988,12 +11058,12 @@ bool TTrack::OtherTrainOnTrack(int Caller, int NextPos, int NextEntryPos, int Ow
     if(NextEntryPos > 1)
     {
         Utilities->CallLogPop(1350);
-        return ((TrackElement.TrainIDOnBridgeTrackPos23 > -1) && (TrackElement.TrainIDOnBridgeTrackPos23 != OwnTrainID));
+        return ((TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 > -1) && (TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 != OwnTrainID));
     }
     else
     {
         Utilities->CallLogPop(1351);
-        return ((TrackElement.TrainIDOnBridgeTrackPos01 > -1) && (TrackElement.TrainIDOnBridgeTrackPos01 != OwnTrainID));
+        return ((TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 > -1) && (TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 != OwnTrainID));
     }
 }
 
@@ -11225,11 +11295,11 @@ bool TTrack::TrainOnLink(int Caller, int HLoc, int VLoc, int Link, int &TrainID)
         {
             if((TE.Link[0] == Link) || (TE.Link[1] == Link))
             {
-                TrainID = TE.TrainIDOnBridgeTrackPos01;
+                TrainID = TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
             }
             else if((TE.Link[2] == Link) || (TE.Link[3] == Link))
             {
-                TrainID = TE.TrainIDOnBridgeTrackPos23;
+                TrainID = TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
             }
             else
             {
@@ -11395,6 +11465,112 @@ int TTrack::NumberOfPlatforms(int Caller, AnsiString LocationName)
 }
 
 // ---------------------------------------------------------------------------
+
+void TTrack::RepairFailedSignals(TFailedElementVector::iterator FPVIt) //added at v2.13.0
+{//repair Signals pointed to by FPVIt
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RepairFailedSignals," + AnsiString(FPVIt->TVPos));
+    TTrackElement &TE = Track->TrackElementAt(1516, FPVIt->TVPos);
+    if(TE.TrackType != SignalPost)
+    {
+        throw Exception("Element at " + AnsiString(FPVIt->TVPos) + " not signal in RepairFailedSignals");
+    }
+    if(!TE.Failed)
+    {
+        throw Exception("Signals not failed at " + AnsiString(FPVIt->TVPos) + " in RepairFailedSignals");
+    }
+    TE.Failed = false;
+    //set to correct aspect
+    int RouteNumber;
+    if(AllRoutes->GetRouteTypeAndNumber(40, FPVIt->TVPos, 0, RouteNumber) != TAllRoutes::NoRoute) //otherwise Attribute already 0 so will plot red
+    {                                                                                   // 0 for LinkPos ok as a signal so only one track
+        AllRoutes->AllRoutesVector.at(RouteNumber).SetRouteSignals(11);
+    }
+    //erase from vector
+    Track->FailedSignalsVector.erase(FPVIt);
+
+    Display->WarningLog(20, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Signal at " + TE.ElementID + " restored to full working order");
+    PerfLogForm->PerformanceLog(43, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Signal at " + TE.ElementID + " restored to full working order");
+    TrainController->StopTTClockMessage(130, "Signal at " + TE.ElementID + " restored to full working order.");
+    AllRoutes->RebuildRailwayFlag = true;
+    // to force ClearandRebuildRailway at next clock tick if not in zoom-out mode, to plot Signals without failed graphic
+    Utilities->CallLogPop(2519);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::RepairFailedPoints(TFailedElementVector::iterator FPVIt) //added at v2.13.0
+{//repair points pointed to by FPVIt
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RepairFailedPoints," + AnsiString(FPVIt->TVPos));
+    TTrackElement &TE = Track->TrackElementAt(1505, FPVIt->TVPos);
+    if(TE.TrackType != Points)
+    {
+        throw Exception("Element at " + AnsiString(FPVIt->TVPos) + " not points in RepairFailedPoints");
+    }
+    if(!TE.Failed)
+    {
+        throw Exception("Points not failed at " + AnsiString(FPVIt->TVPos) + " in RepairFailedPoints");
+    }
+    TE.Failed = false;
+    TE.SpeedLimit01 = TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
+    TE.SpeedLimit23 = TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
+    TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = -1;
+    TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 = -1;
+    //erase from vector
+    Track->FailedPointsVector.erase(FPVIt);
+
+    Display->WarningLog(15, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Points at " + TE.ElementID + " restored to full working order");
+    PerfLogForm->PerformanceLog(38, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Points at " + TE.ElementID + " restored to full working order");
+    TrainController->StopTTClockMessage(123, "Points at " + TE.ElementID + " restored to full working order.");
+    AllRoutes->RebuildRailwayFlag = true;
+    // to force ClearandRebuildRailway at next clock tick if not in zoom-out mode, to plot points without failed graphic
+    Utilities->CallLogPop(2518);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::RepairTSR(TFailedElementVector::iterator FPVIt) //added at v2.13.0
+{//repair points pointed to by FPVIt
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RepairTSR," + AnsiString(FPVIt->TVPos));
+    TTrackElement &TE = Track->TrackElementAt(1535, FPVIt->TVPos);
+    if(TE.TrackType != Simple)
+    {
+        throw Exception("Element at " + AnsiString(FPVIt->TVPos) + " not simple in RepairFailedPoints");
+    }
+    if(!TE.Failed)
+    {
+        throw Exception("No TSR at " + AnsiString(FPVIt->TVPos) + " in RepairTSR");
+    }
+    TE.Failed = false;
+    TE.SpeedLimit01 = TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
+    TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = -1;
+    //erase from vector
+    Track->TSRVector.erase(FPVIt);
+
+    Display->WarningLog(21, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Temporary Speed Restriction at " + TE.ElementID + " lifted, track restored to full working order");
+    PerfLogForm->PerformanceLog(44, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Temporary Speed Restriction at " + TE.ElementID + " lifted, track restored to full working order");
+    TrainController->StopTTClockMessage(131, "Temporary Speed Restriction at " + TE.ElementID + " lifted, track restored to full working order.");
+    AllRoutes->RebuildRailwayFlag = true;
+    // to force ClearandRebuildRailway at next clock tick if not in zoom-out mode, to plot points without failed graphic
+    Utilities->CallLogPop(2520);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::PopulateSimpleVector(int Caller)
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PopulateSimpleVector");
+    SimpleVector.clear();
+    for(unsigned int x = 0; x < TrackVector.size(); x++)
+    {
+        if(TrackElementAt(1517, x).TrackType == Simple)
+        {
+            SimpleVector.push_back(int(x));
+        }
+    }
+    Utilities->CallLogPop(2521);
+}
+
+// ---------------------------------------------------------------------------
 // UserGraphic, PrefDir & Route functions
 // ---------------------------------------------------------------------------
 
@@ -11534,15 +11710,14 @@ bool TOnePrefDir::GetNextPrefDirElement(int Caller, int HLoc, int VLoc, bool &Fi
 
 /*
       Enter with HLoc & VLoc set to selected element.  If not a track element or if PrefDirVector empty return false.
-      Examine the last element in the PrefDirvector, if ELink not set (start element) do an immediate
+      Examine the last element in the PrefDirVector, if ELink not set (start element) do an immediate
       check for an adjacent find (i.e. find selected element), & if succeed use SearchForPrefDir with that as XLinkPos to deal
-      with setting the PrefDir vector, & return true.  Also set FinishElement if found element was a buffer or continuation,
-      so that the calling function knows that the PrefDir is complete.
+      with setting the PrefDir vector, & return true.
       If last element was the start element but no immediate find, search on each valid exit pos in turn, using
-      SearchForPrefDir to examine all branches.  If succeed set PrefDirvector & finishelement as appropriate.
+      SearchForPrefDir to examine all branches.  If succeed set PrefDirVector.
       Otherwise (last element not start element) check if last element was a leading point (if so can't be first element)
       & check again for an immediate find on either XLinkPos values 1 & 3, using SearchForPrefDir &
-      ConvertPrefDirSearchVector to set PrefDirVector.  Set FinishElement appropriately.
+      ConvertPrefDirSearchVector to set PrefDirVector.
       If a leading point but not an immediate find use SearchForPrefDir on the XLinkPos values 1 & 3 in turn.
       If it wasn't a leading point just use XLinkPos value corresponding to XLink & Search on that.  If don't
       find the required element return false.  CheckCount is used to keep track of set values to allow check later.
@@ -14437,8 +14612,7 @@ bool TOneRoute::GetPreferredRouteStartElement(int Caller, int HLoc, int VLoc, TO
 
     if(!InPrefDirFlag)
     {
-        TrainController->StopTTClockMessage(12,
-                                            "Route and preferred direction mismatch. If no preferred direction then only red routes can be used. Green and blue route directions must correspond to the preferred direction.");
+        TrainController->StopTTClockMessage(12, "Route and preferred direction mismatch. If no preferred direction then only red routes can be used. Green and blue route directions must correspond to the preferred direction.");
         Utilities->CallLogPop(205);
         return(false);
     }
@@ -14562,6 +14736,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetNextPreferredRouteElement," + AnsiString(HLoc) + "," +
                                  AnsiString(VLoc) + "," + AnsiString((short)ConsecSignals) + "," + AnsiString((short)AutoSigsFlag));
     int EndPosition; // the position selected
+    int NewFailedPointsTVPos = -1; //added at v2.13.0 for point failures
 
     Track->LCFoundInAutoSigsRoute = false;
     Track->SuppressRouteFailMessage = false;
@@ -14643,8 +14818,7 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
     }
     if(!InPrefDirFlag)
     {
-        TrainController->StopTTClockMessage(23,
-                                            "Route and preferred direction mismatch. If no preferred direction then only red routes can be used. Green and blue route directions must correspond to the preferred direction.");
+        TrainController->StopTTClockMessage(23, "Route and preferred direction mismatch. If no preferred direction then only red routes can be used. Green and blue route directions must correspond to the preferred direction.");
         Utilities->CallLogPop(220);
         return(false);
     }
@@ -14768,11 +14942,19 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
     if(StartSelectionRouteID > -1)
     {
         if(SearchForPreferredRoute(0, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                                   AutoSigsFlag))
+                                   AutoSigsFlag, false))
         {
             SetRouteSearchVectorGraphics(0, AutoSigsFlag, true); // change graphic colour to the route colour
-            if(PointsToBeChanged(5))
+            if(PointsToBeChanged(5, NewFailedPointsTVPos))
             {
+                if(NewFailedPointsTVPos > -1)
+                {
+                    TTrackElement TE = Track->TrackElementAt(1478, NewFailedPointsTVPos);
+                    TrainController->StopTTClockMessage(97, "Points at " + TE.ElementID +
+                        " failed during route setting.\nTry to find a different route.");
+                    Utilities->CallLogPop(2488);
+                    return(false);
+                }
                 PointsChanged = true;
             }
             Utilities->CallLogPop(227);
@@ -14796,11 +14978,19 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         if((StartElement1.XLinkPos > -1) && (StartElement1.Conn[StartElement1.XLinkPos] == EndPosition))
         {
             if(SearchForPreferredRoute(1, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                                       AutoSigsFlag))
+                                       AutoSigsFlag, false))
             {
                 SetRouteSearchVectorGraphics(1, AutoSigsFlag, true); // change graphic colour to the route colour
-                if(PointsToBeChanged(6))
+                if(PointsToBeChanged(6, NewFailedPointsTVPos))
                 {
+                    if(NewFailedPointsTVPos > -1)
+                    {
+                        TTrackElement TE = Track->TrackElementAt(1480, NewFailedPointsTVPos);
+                        TrainController->StopTTClockMessage(99, "Points at " + TE.ElementID +
+                            " failed during route setting.\nTry to find a different route.");
+                        Utilities->CallLogPop(2490);
+                        return(false);
+                    }
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(229);
@@ -14819,11 +15009,19 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         else if((StartElement2.XLinkPos > -1) && (StartElement2.Conn[StartElement2.XLinkPos] == EndPosition))
         {
             if(SearchForPreferredRoute(2, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                                       AutoSigsFlag))
+                                       AutoSigsFlag, false))
             {
                 SetRouteSearchVectorGraphics(2, AutoSigsFlag, true); // change graphic colour to the route colour
-                if(PointsToBeChanged(7))
+                if(PointsToBeChanged(7, NewFailedPointsTVPos))
                 {
+                    if(NewFailedPointsTVPos > -1)
+                    {
+                        TTrackElement TE = Track->TrackElementAt(1482, NewFailedPointsTVPos);
+                        TrainController->StopTTClockMessage(101, "Points at " + TE.ElementID +
+                            " failed during route setting.\nTry to find a different route.");
+                        Utilities->CallLogPop(2492);
+                        return(false);
+                    }
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(231);
@@ -14848,11 +15046,19 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         {
             TotalSearchCount = 0; // added at v0.4f to give each exit direction a full chance to find required position
             if(SearchForPreferredRoute(3, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                                       AutoSigsFlag))
+                                       AutoSigsFlag, false))
             {
                 SetRouteSearchVectorGraphics(3, AutoSigsFlag, true); // change graphic colour to the route colour
-                if(PointsToBeChanged(8))
+                if(PointsToBeChanged(8, NewFailedPointsTVPos))
                 {
+                    if(NewFailedPointsTVPos > -1)
+                    {
+                        TTrackElement TE = Track->TrackElementAt(1484, NewFailedPointsTVPos);
+                        TrainController->StopTTClockMessage(103, "Points at " + TE.ElementID +
+                            " failed during route setting.\nTry to find a different route.");
+                        Utilities->CallLogPop(2494);
+                        return(false);
+                    }
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(233);
@@ -14862,13 +15068,21 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
             {
                 TotalSearchCount = 0; // added at v0.4f to give each exit direction a full chance to find required position
                 if(SearchForPreferredRoute(4, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                                           AutoSigsFlag))
+                                           AutoSigsFlag, false))
                 {
                     SetRouteSearchVectorGraphics(4, AutoSigsFlag, true); // change graphic colour to the route colour
-                    if(PointsToBeChanged(9))
+                if(PointsToBeChanged(9, NewFailedPointsTVPos))
+                {
+                    if(NewFailedPointsTVPos > -1)
                     {
-                        PointsChanged = true;
+                        TTrackElement TE = Track->TrackElementAt(1486, NewFailedPointsTVPos);
+                        TrainController->StopTTClockMessage(105, "Points at " + TE.ElementID +
+                            " failed during route setting.\nTry to find a different route.");
+                        Utilities->CallLogPop(2496);
+                        return(false);
                     }
+                    PointsChanged = true;
+                }
                     Utilities->CallLogPop(234);
                     return(true);
                 }
@@ -14878,28 +15092,38 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         {
             TotalSearchCount = 0; // added at v0.4f to give each exit direction a full chance to find required position
             if(SearchForPreferredRoute(5, StartElement2, StartElement2.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                                       AutoSigsFlag))
+                                       AutoSigsFlag, false))
             {
                 SetRouteSearchVectorGraphics(6, AutoSigsFlag, true); // change graphic colour to the route colour
-                if(PointsToBeChanged(10))
+                if(PointsToBeChanged(10, NewFailedPointsTVPos))
                 {
-                    ;
-                }
-                {
+                    if(NewFailedPointsTVPos > -1)
+                    {
+                        TTrackElement TE = Track->TrackElementAt(1488, NewFailedPointsTVPos);
+                        TrainController->StopTTClockMessage(107, "Points at " + TE.ElementID +
+                            " failed during route setting.\nTry to find a different route.");
+                        Utilities->CallLogPop(2498);
+                        return(false);
+                    }
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(1857);
                 return(true);
             }
             else if(SearchForPreferredRoute(8, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                                            AutoSigsFlag))
+                                            AutoSigsFlag, false))
             {
                 SetRouteSearchVectorGraphics(7, AutoSigsFlag, true); // change graphic colour to the route colour
-                if(PointsToBeChanged(11))
+                if(PointsToBeChanged(11, NewFailedPointsTVPos))
                 {
-                    ;
-                }
-                {
+                    if(NewFailedPointsTVPos > -1)
+                    {
+                        TTrackElement TE = Track->TrackElementAt(1490, NewFailedPointsTVPos);
+                        TrainController->StopTTClockMessage(109, "Points at " + TE.ElementID +
+                            " failed during route setting.\nTry to find a different route.");
+                        Utilities->CallLogPop(2500);
+                        return(false);
+                    }
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(1858);
@@ -14911,11 +15135,19 @@ bool TOneRoute::GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOn
         {
             TotalSearchCount = 0; // added at v0.4f to give each exit direction a full chance to find required position
             if(SearchForPreferredRoute(9, StartElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                                       AutoSigsFlag))
+                                       AutoSigsFlag, false))
             {
                 SetRouteSearchVectorGraphics(8, AutoSigsFlag, true); // change graphic colour to the route colour
-                if(PointsToBeChanged(12))
+                if(PointsToBeChanged(12, NewFailedPointsTVPos))
                 {
+                    if(NewFailedPointsTVPos > -1)
+                    {
+                        TTrackElement TE = Track->TrackElementAt(1492, NewFailedPointsTVPos);
+                        TrainController->StopTTClockMessage(111, "Points at " + TE.ElementID +
+                            " failed during route setting.\nTry to find a different route.");
+                        Utilities->CallLogPop(2502);
+                        return(false);
+                    }
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(1864);
@@ -14970,8 +15202,7 @@ void TOneRoute::RouteImageMarker(int Caller, Graphics::TBitmap *Bitmap) const
 // ---------------------------------------------------------------------------
 
 bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID,
-                                        TOnePrefDir *EveryPrefDir, bool ConsecSignals, int EndPosition, bool AutoSigsFlag)
-
+                                        TOnePrefDir *EveryPrefDir, bool ConsecSignals, int EndPosition, bool AutoSigsFlag, bool RecursiveCall)
 /*
       Brief:  similar to SearchForPrefDir but with a PrefDirElement instead of a TrackElement & with additional parameters.
       PrefDirElement is the starting element from which to search, it is NOT stored in searchvector during this function.  If it's an
@@ -15111,7 +15342,8 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
 // note that may be buffers, continuation or gap
             SearchElement.XLinkPos = NextXLinkPos;
         }
-// can't set XLink or XLinkPos yet if the element is a leading point.
+
+// can't set XLink or XLinkPos yet if the element is a non-failed leading point.
 
 // check if reached an earlier position on search PrefDir (was OK in SearchForPrefDir if entry values different, but not OK for a route)
         for(unsigned int x = 0; x < SearchVector.size(); x++)
@@ -15185,7 +15417,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
         }
         if((SearchElement.TrainIDOnElement > -1) && (SearchElement.TrackType == Bridge))
         {
-            if((SearchElement.ELinkPos < 2) && (SearchElement.TrainIDOnBridgeTrackPos01 > -1))
+            if((SearchElement.ELinkPos < 2) && (SearchElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 > -1))
             {
                 for(int x = 0; x < VectorCount; x++)
                 {
@@ -15194,7 +15426,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                 Utilities->CallLogPop(242);
                 return(false);
             }
-            else if((SearchElement.ELinkPos > 1) && (SearchElement.TrainIDOnBridgeTrackPos23 > -1))
+            else if((SearchElement.ELinkPos > 1) && (SearchElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 > -1))
             {
                 for(int x = 0; x < VectorCount; x++)
                 {
@@ -15310,6 +15542,15 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             SearchVector.push_back(PrefDirElement1); // must be 1 as it's a simple element
             VectorCount++; // not really needed but include for tidyness
             TotalSearchCount++;
+            if(!RecursiveCall && SignalHasFailed(0)) //added at v2.13.0
+            {
+                for(int x = 0; x < VectorCount; x++)
+                {
+                    SearchVector.erase(SearchVector.end() - 1);
+                }
+                Utilities->CallLogPop(2522);
+                return(false);
+            }
             Utilities->CallLogPop(247);
             return(true);
         } // if(SearchElement.TrackVectorPosition == RequiredPosition)
@@ -15334,8 +15575,49 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             Utilities->CallLogPop(1420);
             return(false);
         }
-// check if reached a leading point
-        if((SearchElement.TrackType == Points) && (SearchElement.Config[SearchElement.ELinkPos] == Lead))
+//deal with failed points, added at v2.13.0
+        if((SearchElement.TrackType == Points) && (SearchElement.Config[SearchElement.ELinkPos] == Lead) && Track->TrackElementAt(1518, SearchElement.TrackVectorPosition).Failed) //leading entry
+        {
+            if(Track->TrackElementAt(1519, SearchElement.TrackVectorPosition).Attribute == 0)
+            {
+                SearchElement.XLinkPos = 1;
+                SearchElement.XLink = SearchElement.Link[SearchElement.XLinkPos];
+                PrefDirElement1.XLinkPos = 1; //need PrefDirElement1 set too as SearchElement set to it ready for next loop
+                PrefDirElement1.XLink = SearchElement.Link[SearchElement.XLinkPos];
+                PrefDirElement1.EntryExitNumber(); //to set EXNumber correctly as XLink might have changed for original
+            }
+            else
+            {
+                SearchElement.XLinkPos = 3;
+                SearchElement.XLink = SearchElement.Link[SearchElement.XLinkPos];
+                PrefDirElement1.XLinkPos = 3; //need PrefDirElement1 set too as SearchElement set to it ready for next loop
+                PrefDirElement1.XLink = SearchElement.Link[SearchElement.XLinkPos];
+                PrefDirElement1.EntryExitNumber(); //to set EXNumber correctly as XLink might have changed for original
+            }
+        }
+        else if((SearchElement.TrackType == Points) && (SearchElement.Config[SearchElement.ELinkPos] == Trail) && Track->TrackElementAt(1520, SearchElement.TrackVectorPosition).Failed) //trailing entry
+        {
+            if((Track->TrackElementAt(1521, SearchElement.TrackVectorPosition).Attribute == 0) && (SearchElement.ELinkPos == 3)) //can't go any further
+            {
+                for(int x = 0; x < VectorCount; x++)
+                {
+                    SearchVector.erase(SearchVector.end() - 1);
+                }
+                Utilities->CallLogPop(2514);
+                return(false);
+            }
+            if((Track->TrackElementAt(1522, SearchElement.TrackVectorPosition).Attribute == 1) && (SearchElement.ELinkPos == 1)) //can't go any further
+            {
+                for(int x = 0; x < VectorCount; x++)
+                {
+                    SearchVector.erase(SearchVector.end() - 1);
+                }
+                Utilities->CallLogPop(2515);
+                return(false);
+            }
+        }
+// check if reached a non-failed leading point
+        if((SearchElement.TrackType == Points) && (SearchElement.Config[SearchElement.ELinkPos] == Lead) && !Track->TrackElementAt(1523, SearchElement.TrackVectorPosition).Failed)
         {
 // XLink set to points 'set' position - Attribute == 0, SearchPos1 = 1 & SearchPos2 = 3; Attribute == 1, SearchPos1 = 3 & SearchPos2 = 1;
             int SearchPos1 = SearchElement.Attribute + 1;
@@ -15391,7 +15673,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                 TotalSearchCount++;
 // recursive search at XLinkPos of SearchPos1 (i.e. 'set' trailing exit)
                 if(SearchForPreferredRoute(6, SearchElement, SearchPos1, RequiredPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                                           AutoSigsFlag))
+                                           AutoSigsFlag, true))
                 {
                     if(Track->LCFoundInAutoSigsRoute)
                     {
@@ -15405,6 +15687,15 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                             SearchVector.erase(SearchVector.end() - 1);
                         }
                         Utilities->CallLogPop(1929);
+                        return(false);
+                    }
+                    if(!RecursiveCall && SignalHasFailed(1)) //added at v2.13.0
+                    {
+                        for(int x = 0; x < VectorCount; x++)
+                        {
+                            SearchVector.erase(SearchVector.end() - 1);
+                        }
+                        Utilities->CallLogPop(2523);
                         return(false);
                     }
                     Utilities->CallLogPop(250);
@@ -15461,7 +15752,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             TotalSearchCount++;
 // recursive search at XLinkPos of SearchPos2 (i.e. 'unset' trailing exit)
             if(SearchForPreferredRoute(7, SearchElement, SearchPos2, RequiredPosition, ReqPosRouteID, EveryPrefDir, ConsecSignals, EndPosition,
-                                       AutoSigsFlag))
+                                       AutoSigsFlag, true))
             {
                 if(Track->LCFoundInAutoSigsRoute)
                 {
@@ -15475,6 +15766,15 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                         SearchVector.erase(SearchVector.end() - 1);
                     }
                     Utilities->CallLogPop(1930);
+                    return(false);
+                }
+                if(!RecursiveCall && SignalHasFailed(2)) //added at v2.13.0
+                {
+                    for(int x = 0; x < VectorCount; x++)
+                    {
+                        SearchVector.erase(SearchVector.end() - 1);
+                    }
+                    Utilities->CallLogPop(2524);
                     return(false);
                 }
                 Utilities->CallLogPop(1592);
@@ -15491,7 +15791,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             }
         } // if leading point
 
-// here if ordinary element, push it, inc vector & update PrefDirElement ready for next element on PrefDir
+// here if ordinary element or failed points, push it, inc vector & update PrefDirElement ready for next element on PrefDir
         SearchElement = PrefDirElement1;
         if(AutoSigsFlag)
         {
@@ -15968,11 +16268,13 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetNextNonPreferredRouteElement," + AnsiString(HLoc) + "," +
                                  AnsiString(VLoc));
     int EndPosition;
+    int NewFailedPointsTVPos = -1; //added at v2.13.0 for point failures
 
     TotalSearchCount = 0;
     ReqPosRouteID = IDInt(-1); // for not used
     TTrackElement TrackElement;
     TPrefDirElement BlankElement;
+    Track->SuppressRouteFailMessage = false;
 
     if(!(Track->FindNonPlatformMatch(10, HLoc, VLoc, EndPosition, TrackElement))) // return if can't find one
     {
@@ -16193,11 +16495,19 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
 
     if(StartSelectionRouteID > -1)
     {
-        if(SearchForNonPreferredRoute(0, TempElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID))
+        if(SearchForNonPreferredRoute(0, TempElement1, StartElement1.XLinkPos, EndPosition, ReqPosRouteID, false))
         {
             SetRemainingSearchVectorValues(3);
-            if(PointsToBeChanged(0))
+            if(PointsToBeChanged(0, NewFailedPointsTVPos))
             {
+                if(NewFailedPointsTVPos > -1)
+                {
+                    TTrackElement TE = Track->TrackElementAt(1494, NewFailedPointsTVPos);
+                    TrainController->StopTTClockMessage(113, "Points at " + TE.ElementID +
+                        " failed during route setting.\nTry to find a different route.");
+                    Utilities->CallLogPop(2504);
+                    return(false);
+                }
                 PointsChanged = true;
             }
             Utilities->CallLogPop(281);
@@ -16205,7 +16515,7 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
         }
         else
         {
-            if(!Callon)
+            if(!Callon && !Track->SuppressRouteFailMessage)
             {
                 TrainController->StopTTClockMessage(52, Track->RouteFailMessage);
             }
@@ -16219,11 +16529,19 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
 // check if selection adjacent to start element and if so use that
         if(SearchVector.at(0).Conn[0] == EndPosition)
         {
-            if(SearchForNonPreferredRoute(1, TempElement1, 0, EndPosition, ReqPosRouteID))
+            if(SearchForNonPreferredRoute(1, TempElement1, 0, EndPosition, ReqPosRouteID, false))
             {
                 SetRemainingSearchVectorValues(4);
-                if(PointsToBeChanged(1))
+                if(PointsToBeChanged(1, NewFailedPointsTVPos))
                 {
+                    if(NewFailedPointsTVPos > -1)
+                    {
+                        TTrackElement TE = Track->TrackElementAt(1496, NewFailedPointsTVPos);
+                        TrainController->StopTTClockMessage(115, "Points at " + TE.ElementID +
+                            " failed during route setting.\nTry to find a different route.");
+                        Utilities->CallLogPop(2506);
+                        return(false);
+                    }
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(283);
@@ -16231,7 +16549,7 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
             }
             else
             {
-                if(!Callon)
+                if(!Callon && !Track->SuppressRouteFailMessage)
                 {
                     TrainController->StopTTClockMessage(53, Track->RouteFailMessage);
                 }
@@ -16241,11 +16559,19 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
         }
         else if(SearchVector.at(0).Conn[1] == EndPosition)
         {
-            if(SearchForNonPreferredRoute(2, TempElement1, 1, EndPosition, ReqPosRouteID))
+            if(SearchForNonPreferredRoute(2, TempElement1, 1, EndPosition, ReqPosRouteID, false))
             {
                 SetRemainingSearchVectorValues(5);
-                if(PointsToBeChanged(2))
+                if(PointsToBeChanged(2, NewFailedPointsTVPos))
                 {
+                    if(NewFailedPointsTVPos > -1)
+                    {
+                        TTrackElement TE = Track->TrackElementAt(1498, NewFailedPointsTVPos);
+                        TrainController->StopTTClockMessage(117, "Points at " + TE.ElementID +
+                            " failed during route setting.\nTry to find a different route.");
+                        Utilities->CallLogPop(2508);
+                        return(false);
+                    }
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(285);
@@ -16253,7 +16579,7 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
             }
             else
             {
-                if(!Callon)
+                if(!Callon && !Track->SuppressRouteFailMessage)
                 {
                     TrainController->StopTTClockMessage(54, Track->RouteFailMessage);
                 }
@@ -16267,11 +16593,19 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
         if(SearchVector.at(0).Config[BestPos] != End)
         {
             TotalSearchCount = 0; // added at v0.4f to give each exit direction a full chance to find required position
-            if(SearchForNonPreferredRoute(3, TempElement1, BestPos, EndPosition, ReqPosRouteID))
+            if(SearchForNonPreferredRoute(3, TempElement1, BestPos, EndPosition, ReqPosRouteID, false))
             {
                 SetRemainingSearchVectorValues(6);
-                if(PointsToBeChanged(3))
+                if(PointsToBeChanged(3, NewFailedPointsTVPos))
                 {
+                    if(NewFailedPointsTVPos > -1)
+                    {
+                        TTrackElement TE = Track->TrackElementAt(1500, NewFailedPointsTVPos);
+                        TrainController->StopTTClockMessage(119, "Points at " + TE.ElementID +
+                            " failed during route setting.\nTry to find a different route.");
+                        Utilities->CallLogPop(2510);
+                        return(false);
+                    }
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(287);
@@ -16281,11 +16615,19 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
         if(SearchVector.at(0).Config[1 - BestPos] != End)
         {
             TotalSearchCount = 0; // added at v0.4f to give each exit direction a full chance to find required position
-            if(SearchForNonPreferredRoute(4, TempElement1, (1 - BestPos), EndPosition, ReqPosRouteID))
+            if(SearchForNonPreferredRoute(4, TempElement1, (1 - BestPos), EndPosition, ReqPosRouteID, false))
             {
                 SetRemainingSearchVectorValues(7);
-                if(PointsToBeChanged(4))
+                if(PointsToBeChanged(4, NewFailedPointsTVPos))
                 {
+                    if(NewFailedPointsTVPos > -1)
+                    {
+                        TTrackElement TE = Track->TrackElementAt(1502, NewFailedPointsTVPos);
+                        TrainController->StopTTClockMessage(121, "Points at " + TE.ElementID +
+                            " failed during route setting.\nTry to find a different route.");
+                        Utilities->CallLogPop(2512);
+                        return(false);
+                    }
                     PointsChanged = true;
                 }
                 Utilities->CallLogPop(288);
@@ -16293,7 +16635,7 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
             }
         }
     }
-    if(!Callon)
+    if(!Callon && !Track->SuppressRouteFailMessage)
     {
         TrainController->StopTTClockMessage(55, Track->RouteFailMessage);
     }
@@ -16303,7 +16645,7 @@ bool TOneRoute::GetNextNonPreferredRouteElement(int Caller, int HLoc, int VLoc, 
 
 // ---------------------------------------------------------------------------
 
-bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrackElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID)
+bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrackElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID, bool RecursiveCall)
 /*
       This is very similar to the preferred route search, but without the need to ensure all elements are in EveryPrefDir.
       Returns true for successful search with SearchVector containing the new route elements.  Enter with CurrentTrackElement
@@ -16468,7 +16810,7 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
         }
         if((SearchElement.TrainIDOnElement > -1) && (SearchElement.TrackType == Bridge))
         {
-            if((SearchElement.ELinkPos < 2) && (SearchElement.TrainIDOnBridgeTrackPos01 > -1))
+            if((SearchElement.ELinkPos < 2) && (SearchElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 > -1))
             {
                 for(int x = 0; x < VectorCount; x++)
                 {
@@ -16477,7 +16819,7 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
                 Utilities->CallLogPop(295);
                 return(false);
             }
-            else if((SearchElement.ELinkPos > 1) && (SearchElement.TrainIDOnBridgeTrackPos23 > -1))
+            else if((SearchElement.ELinkPos > 1) && (SearchElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 > -1))
             {
                 for(int x = 0; x < VectorCount; x++)
                 {
@@ -16531,6 +16873,15 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
             SearchVector.push_back(SearchElement);
             VectorCount++; // not really needed but include for tidyness
             TotalSearchCount++;
+            if(!RecursiveCall && SignalHasFailed(3)) //added at v2.13.0
+            {
+                for(int x = 0; x < VectorCount; x++)
+                {
+                    SearchVector.erase(SearchVector.end() - 1);
+                }
+                Utilities->CallLogPop(2525);
+                return(false);
+            }
             Utilities->CallLogPop(298);
             return(true);
         }
@@ -16554,9 +16905,45 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
             Utilities->CallLogPop(1421);
             return(false);
         }
-// check if reached a leading point
-        if((SearchElement.TrackType == Points) && (SearchElement.Config[SearchElement.ELinkPos] == Lead))
+//deal with failed points, added at v2.13.0
+        if((SearchElement.TrackType == Points) && (SearchElement.Config[SearchElement.ELinkPos] == Lead) && Track->TrackElementAt(1524, SearchElement.TrackVectorPosition).Failed) //leading entry
         {
+            if(Track->TrackElementAt(1525, SearchElement.TrackVectorPosition).Attribute == 0)
+            {
+                SearchElement.XLinkPos = 1;
+                SearchElement.XLink = SearchElement.Link[SearchElement.XLinkPos];
+            }
+            else
+            {
+                SearchElement.XLinkPos = 3;
+                SearchElement.XLink = SearchElement.Link[SearchElement.XLinkPos];
+            }
+        }
+        else if((SearchElement.TrackType == Points) && (SearchElement.Config[SearchElement.ELinkPos] == Trail) && Track->TrackElementAt(1526, SearchElement.TrackVectorPosition).Failed) //trailing entry
+        {
+            if((Track->TrackElementAt(1527, SearchElement.TrackVectorPosition).Attribute == 0) && (SearchElement.ELinkPos == 3)) //can't go any further
+            {
+                for(int x = 0; x < VectorCount; x++)
+                {
+                    SearchVector.erase(SearchVector.end() - 1);
+                }
+                Utilities->CallLogPop(2533);
+                return(false);
+            }
+            if((Track->TrackElementAt(1528, SearchElement.TrackVectorPosition).Attribute == 1) && (SearchElement.ELinkPos == 1)) //can't go any further
+            {
+                for(int x = 0; x < VectorCount; x++)
+                {
+                    SearchVector.erase(SearchVector.end() - 1);
+                }
+                Utilities->CallLogPop(2534);
+                return(false);
+            }
+        }
+
+// check if reached a non-failed leading point
+        if((SearchElement.TrackType == Points) && (SearchElement.Config[SearchElement.ELinkPos] == Lead) && !SearchElement.Failed)
+        {       //added !Failed condition at v2.13.0 to exclude failed points
 // XLink set to points 'set' position - Attribute == 0, SearchPos1 = 1 & SearchPos2 = 3; Attribute == 1, SearchPos1 = 3 & SearchPos2 = 1;
             int SearchPos1 = SearchElement.Attribute + 1;
             int SearchPos2;
@@ -16594,8 +16981,17 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
 // recursive search at XLinkPos of SearchPos1 (i.e. 'set' trailing exit)
 // Note that NextTrackElement is the TTrackElement that the TPrefDirElement SearchElement is constructed from.  Can't use SearchElement in the
 // recursive search as has to be a TTrackElement for non-preferred route searches
-            if(SearchForNonPreferredRoute(6, NextTrackElement, SearchPos1, RequiredPosition, ReqPosRouteID))
+            if(SearchForNonPreferredRoute(6, NextTrackElement, SearchPos1, RequiredPosition, ReqPosRouteID, true))
             {
+                if(!RecursiveCall && SignalHasFailed(4)) //added at v2.13.0
+                {
+                    for(int x = 0; x < VectorCount; x++)
+                    {
+                        SearchVector.erase(SearchVector.end() - 1);
+                    }
+                    Utilities->CallLogPop(2526);
+                    return(false);
+                }
                 Utilities->CallLogPop(301);
                 return(true);
             }
@@ -16624,8 +17020,17 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
                 VectorCount++;
                 TotalSearchCount++;
 // recursive search at XLinkPos of SearchPos2 (i.e. 'unset' trailing exit)
-                if(SearchForNonPreferredRoute(7, NextTrackElement, SearchPos2, RequiredPosition, ReqPosRouteID))
+                if(SearchForNonPreferredRoute(7, NextTrackElement, SearchPos2, RequiredPosition, ReqPosRouteID, true))
                 {
+                    if(!RecursiveCall && SignalHasFailed(5)) //added at v2.13.0
+                    {
+                        for(int x = 0; x < VectorCount; x++)
+                        {
+                            SearchVector.erase(SearchVector.end() - 1);
+                        }
+                        Utilities->CallLogPop(2527);
+                        return(false);
+                    }
                     Utilities->CallLogPop(303);
                     return(true);
                 }
@@ -16907,12 +17312,12 @@ void TOneRoute::SetRoutePoints(int Caller) const
     {
         for(TPrefDirVectorConstIterator PrefDirPtr = (PrefDirVector.end() - 1); PrefDirPtr >= PrefDirVector.begin(); PrefDirPtr--)
         {
-            if((PrefDirPtr->TrackType == Points) && ((PrefDirPtr->ELinkPos == 1) || (PrefDirPtr->XLinkPos == 1))) // 1=straight trailing
+            if((PrefDirPtr->TrackType == Points) && ((PrefDirPtr->ELinkPos == 1) || (PrefDirPtr->XLinkPos == 1))) //1=straight trailing
             {
                 Track->TrackElementAt(96, PrefDirPtr->TrackVectorPosition).Attribute = 0; // 0=straight
                 Track->PlotPoints(3, Track->TrackElementAt(97, PrefDirPtr->TrackVectorPosition), Display, false);
             }
-            if((PrefDirPtr->TrackType == Points) && ((PrefDirPtr->ELinkPos == 3) || (PrefDirPtr->XLinkPos == 3))) // 3=diverging trailing
+            if((PrefDirPtr->TrackType == Points) && ((PrefDirPtr->ELinkPos == 3) || (PrefDirPtr->XLinkPos == 3))) //3=diverging trailing
             {
                 Track->TrackElementAt(98, PrefDirPtr->TrackVectorPosition).Attribute = 1; // 1=diverging
                 Track->PlotPoints(4, Track->TrackElementAt(99, PrefDirPtr->TrackVectorPosition), Display, false);
@@ -16987,34 +17392,90 @@ void TOneRoute::SetRouteSignals(int Caller) const
 
 // ---------------------------------------------------------------------------
 
-bool TOneRoute::PointsToBeChanged(int Caller) const
+bool TOneRoute::PointsToBeChanged(int Caller, int &NewFailedPointsTVPos) const
 {
-    // true if at any point in SearchVector points have to be changed
+    //true if at any point in SearchVector points have to be changed,
+    //changed to give every point to be changed in route to have a chance of failure, but if one fails then don't look any further
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PointsToBeChanged");
+    NewFailedPointsTVPos = -1; //default value for no new failure
+    bool PointsChanged = false;
     if(!SearchVector.empty())
     {
         for(TPrefDirVectorConstIterator SearchPtr = SearchVector.begin(); SearchPtr != SearchVector.end(); SearchPtr++)
         {
-            if((SearchPtr->TrackType == Points) && ((SearchPtr->ELinkPos == 1) || (SearchPtr->XLinkPos == 1))) // 1=straight trailing
+            TTrackElement &TE = Track->TrackElementAt(1504, SearchPtr->TrackVectorPosition);
+    //check for an existing failed point where needs to change to make the route
+            int Attr = TE.Attribute;
+            if((SearchPtr->TrackType == Points) && ((SearchPtr->ELinkPos == 1) || (SearchPtr->XLinkPos == 1))) // 1=want to go straight
             {
-                if(Track->TrackElementAt(752, SearchPtr->TrackVectorPosition).Attribute != 0) // 0=straight or LH
+                if(Attr == 1) //currently set to diverge
                 {
-                    Utilities->CallLogPop(1717);
-                    return(true);
+                //here add new failure possibility at v2.13.0
+                    if(Utilities->DelayMode != Nil)
+                    {
+                        if((random(Utilities->PointChangeEventsPerFailure) == 0) && !TE.Failed) //can't fail twice, but if failed should already have been picked up during search
+                        {
+                            TTrack::TInfrastructureFailureEntry IFE;
+                            NewFailedPointsTVPos = SearchPtr->TrackVectorPosition;
+                            IFE.TVPos = NewFailedPointsTVPos;
+                            TE.Failed = true;
+                            TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = TE.SpeedLimit01; //store these values temporarily, points aren't bridges so can use these
+                            TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 = TE.SpeedLimit23;
+                            TE.SpeedLimit01 = 10; //values while failed
+                            TE.SpeedLimit23 = 10;
+                            Display->WarningLog(13, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Points failed at " + TE.ElementID);
+                            PerfLogForm->PerformanceLog(36, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: Points failed at " + TE.ElementID);
+                            AllRoutes->RebuildRailwayFlag = true; //force ClearandRebuildRailway at next clock tick
+    //set repair time, random value in minutes between 10 and 179
+                            double FailureMinutes = double(random(Utilities->MaxRandomRepairTime) + Utilities->FixedMinRepairTime); //between 10 and 179 minutes at random
+                            TDateTime RepairTime = TrainController->TTClockTime + TDateTime(FailureMinutes / 1440);
+                            IFE.RepairTime = RepairTime;
+                            IFE.FailureTime = TrainController->TTClockTime;
+                            Track->FailedPointsVector.push_back(IFE);
+                            Utilities->CallLogPop(1717);
+                            return(true); //return so only allow one failure per route
+                        }
+                    }
+                    PointsChanged = true; //this is used for setting the flash time
                 }
             }
-            if((SearchPtr->TrackType == Points) && ((SearchPtr->ELinkPos == 3) || (SearchPtr->XLinkPos == 3))) // 3=diverging trailing
+            if((SearchPtr->TrackType == Points) && ((SearchPtr->ELinkPos == 3) || (SearchPtr->XLinkPos == 3))) // 3=want to diverge
             {
-                if(Track->TrackElementAt(753, SearchPtr->TrackVectorPosition).Attribute != 1) // 1=diverging or RH
+                if(Attr == 0) //currently set to go straight
                 {
-                    Utilities->CallLogPop(1718);
-                    return(true);
+                //here add failure possibility at v2.13.0
+                    if(Utilities->DelayMode != Nil)
+                    {
+                        if((random(Utilities->PointChangeEventsPerFailure) == 0) && !TE.Failed) //can't fail twice, but if failed should already have been picked up during search
+                        {
+                            TTrack::TInfrastructureFailureEntry IFE;
+                            NewFailedPointsTVPos = SearchPtr->TrackVectorPosition;
+                            IFE.TVPos = NewFailedPointsTVPos;
+                            TE.Failed= true;
+                            TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = TE.SpeedLimit01; //store these values temporarily, points aren't bridges so can use these
+                            TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 = TE.SpeedLimit23;
+                            TE.SpeedLimit01 = 10; //values while failed
+                            TE.SpeedLimit23 = 10;
+                            Display->WarningLog(14, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Points failed at " + TE.ElementID);
+                            PerfLogForm->PerformanceLog(37, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: Points failed at " + TE.ElementID);
+                            AllRoutes->RebuildRailwayFlag = true; //force ClearandRebuildRailway at next clock tick
+    //set repair time, random value in minutes between 10 and 179
+                            double FailureMinutes = double(random(Utilities->MaxRandomRepairTime) + Utilities->FixedMinRepairTime);
+                            TDateTime RepairTime = TrainController->TTClockTime + TDateTime(FailureMinutes / 1440);
+                            IFE.RepairTime = RepairTime;
+                            IFE.FailureTime = TrainController->TTClockTime;
+                            Track->FailedPointsVector.push_back(IFE);
+                            Utilities->CallLogPop(1718);
+                            return(true); //only allow one failure per route
+                        }
+                    }
+                    PointsChanged = true;
                 }
             }
         }
     }
     Utilities->CallLogPop(1719);
-    return(false);
+    return(PointsChanged);
 }
 
 // ---------------------------------------------------------------------------
@@ -17042,11 +17503,11 @@ bool TOneRoute::FindForwardTargetSignalAttribute(int Caller, int &NextForwardLin
         {
             if(PrefDirVector.at(x).XLinkPos < 2)
             {
-                TrainID = Track->TrackElementAt(101, PrefDirVector.at(x).TrackVectorPosition).TrainIDOnBridgeTrackPos01;
+                TrainID = Track->TrackElementAt(101, PrefDirVector.at(x).TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
             }
             else
             {
-                TrainID = Track->TrackElementAt(102, PrefDirVector.at(x).TrackVectorPosition).TrainIDOnBridgeTrackPos23;
+                TrainID = Track->TrackElementAt(102, PrefDirVector.at(x).TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
             }
         }
         if(TrainID != -1)
@@ -17145,11 +17606,11 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
             {
                 if(PrefDirPtr->XLinkPos < 2)
                 {
-                    TrainID = Track->TrackElementAt(105, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeTrackPos01;
+                    TrainID = Track->TrackElementAt(105, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
                 }
                 else
                 {
-                    TrainID = Track->TrackElementAt(106, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeTrackPos23;
+                    TrainID = Track->TrackElementAt(106, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
                 }
             }
             if(TrainID != -1)
@@ -17197,11 +17658,11 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
             {
                 if(PrefDirPtr->XLinkPos < 2)
                 {
-                    TrainID = Track->TrackElementAt(108, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeTrackPos01;
+                    TrainID = Track->TrackElementAt(108, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
                 }
                 else
                 {
-                    TrainID = Track->TrackElementAt(109, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeTrackPos23;
+                    TrainID = Track->TrackElementAt(109, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
                 }
             }
             if(TrainID != -1)
@@ -17236,7 +17697,13 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
                             Attribute = 0;
                             KeepAttributeAt0ForLockedRoute = true;
                         }
-//end of addition
+//end of v2.9.2 addition
+
+                    if(Track->TrackElementAt(1529, PrefDirPtr->TrackVectorPosition).Failed) //addition at v2.13.0 for signal failures
+                    {
+                        Attribute = 0; //stays at 0
+                    }
+
                     if(Attribute < 3)
                     {
                         Track->TrackElementAt(110, PrefDirPtr->TrackVectorPosition).Attribute = Attribute;
@@ -17308,11 +17775,11 @@ void TOneRoute::GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool Pre
         {
             if(PrefDirVector.at(b).XLinkPos < 2)
             {
-                TrainID = Track->TrackElementAt(118, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeTrackPos01;
+                TrainID = Track->TrackElementAt(118, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
             }
             else
             {
-                TrainID = Track->TrackElementAt(119, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeTrackPos23;
+                TrainID = Track->TrackElementAt(119, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
             }
         }
         if(TrainID != -1)
@@ -17551,7 +18018,7 @@ void TOneRoute::SetRouteFlashValues(int Caller, bool AutoSigsFlag, bool PrefDirR
       TOneRoute.
 */
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteAndLCChangeValues," + AnsiString((short)AutoSigsFlag) + "," +
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteFlashValues," + AnsiString((short)AutoSigsFlag) + "," +
                                  AnsiString((short)PrefDirRoute));
     RouteFlash.RouteFlashVector.clear();
     TRouteFlashElement RouteFlashElement;
@@ -17663,6 +18130,98 @@ void TOneRoute::TRouteFlash::PlotRouteOriginal(int Caller)
 
 // ---------------------------------------------------------------------------
 
+bool TOneRoute::SignalHasFailed(int Caller) //added at v2.13.0
+{
+/*enter with SearchVector fully populated & with a legitimate route found, return true for failure.
+Look along SearchVector backwards, skip first signal found (i.e. last in route), but for all others
+including first signal in route offer chance to fail (since they all change aspect), but if find any failed point
+where no route available (i.e. a dead end, points checked after search in PointsToBeChanged) then return false - i.e. don't
+allow signal failure in an unviable route. If fail (i.e. prior to returning true), alter graphic, send
+messages, and allocate a repair time similar to points) */
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SignalHasFailed");
+    if(Utilities->DelayMode == Nil)
+    {
+        Utilities->CallLogPop(2528);
+        return(false);
+    }
+    bool FirstSignalFound = false;
+    for(TPrefDirVector::iterator PDVIt = SearchVector.end() - 1; PDVIt >= SearchVector.begin(); PDVIt--)
+    {
+        TTrackElement &TE = Track->TrackElementAt(1530, PDVIt->TrackVectorPosition);
+//check for a failed point where needs to change to make the route
+//shouldn't be any but check to be safe
+        int Attr = TE.Attribute;
+        if(PDVIt->TrackType == Points)
+        {
+            if((PDVIt->ELinkPos == 1) || (PDVIt->XLinkPos == 1)) // 1=want to go straight
+            {
+                if(Attr == 1) //currently set to diverge
+                {
+                    if(TE.Failed)
+                    {
+                        Utilities->CallLogPop(2529);
+                        return(false); //return without further checking
+                    }
+                }
+            }
+            else if((PDVIt->ELinkPos == 3) || (PDVIt->XLinkPos == 3)) // 3=want to diverge
+            {
+                if(Attr == 0) //currently set to go straight
+                {
+                    if(TE.Failed)
+                    {
+                        Utilities->CallLogPop(2530);
+                        return(false); //return without further checking
+                    }
+                }
+            }
+        }
+        if((PDVIt->Config[PDVIt->XLinkPos] == Signal) && (TE.SigAspect == TTrackElement::GroundSignal))
+        {
+            continue; //ground signals don't fail
+        }
+        if(!FirstSignalFound && (PDVIt->Config[PDVIt->XLinkPos] == Signal))
+        {
+            FirstSignalFound = true; //if being called then this is the calling on signal and don't want that to fail
+            continue;
+        }
+        else if(FirstSignalFound && (PDVIt->Config[PDVIt->XLinkPos] == Signal))
+        {
+            if((random(Utilities->SignalChangeEventsPerFailure) == 0) && !TE.Failed) //can't fail twice
+            {
+                TTrack::TInfrastructureFailureEntry IFE;
+                IFE.TVPos = PDVIt->TrackVectorPosition;
+                TE.Failed = true;
+                TE.Attribute = 0; //stop aspect
+                Display->WarningLog(22, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Signal failed at " + TE.ElementID);
+                PerfLogForm->PerformanceLog(45, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: Signal failed at " + TE.ElementID);
+                TrainController->StopTTClockMessage(132, "Signal at " + TE.ElementID +
+                    " failed when changing aspect.\nTrains can only pass under signaller control.");
+                AllRoutes->RebuildRailwayFlag = true; //force ClearandRebuildRailway at next clock tick
+//set repair time, random value in minutes between 10 and 179
+                double FailureMinutes = double(random(Utilities->MaxRandomRepairTime) + Utilities->FixedMinRepairTime); //between 10 and 179 minutes at random
+                TDateTime RepairTime = TrainController->TTClockTime + TDateTime(FailureMinutes / 1440);
+                IFE.RepairTime = RepairTime;
+                IFE.FailureTime = TrainController->TTClockTime;
+                Track->FailedSignalsVector.push_back(IFE);
+                Track->SuppressRouteFailMessage = true;
+                int RouteNumber; //not used
+                if(AllRoutes->GetRouteTypeAndNumber(41, IFE.TVPos, 0, RouteNumber) != TAllRoutes::NoRoute) //otherwise Attribute already 0 so will plot red
+                {                                                                                   // 0 for LinkPos ok as a signal so only one track
+                    AllRoutes->AllRoutesVector.at(RouteNumber).SetRouteSignals(12);
+                }
+                Utilities->CallLogPop(2535);
+                return(true); //return so only allow one failure per route
+            }
+        }
+    }
+    Utilities->CallLogPop(2531);
+    return(false);
+}
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
 const TOneRoute &TAllRoutes::GetFixedRouteAt(int Caller, int At) const
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetFixedRouteAt," + AnsiString(At));
@@ -17674,7 +18233,6 @@ const TOneRoute &TAllRoutes::GetFixedRouteAt(int Caller, int At) const
     return(AllRoutesVector.at(At));
 }
 
-// ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 
 TOneRoute &TAllRoutes::GetModifiableRouteAt(int Caller, int At)
@@ -18811,10 +19369,10 @@ void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumb
         if(FirstElement.Conn[FirstElement.ELinkPos] > -1) // GetRouteTypeAndNumber tests for this but check here to avoid call if == -1
         {
             while(GetRouteTypeAndNumber(6, FirstElement.Conn[FirstElement.ELinkPos], FirstElement.ConnLinkPos[FirstElement.ELinkPos],
-                                        RearwardLinkedRouteNumber) != TAllRoutes::NoRoute)
+                    RearwardLinkedRouteNumber) != TAllRoutes::NoRoute)
             {
                 if(!(GetFixedRouteAt(129, RearwardLinkedRouteNumber).SetRearwardsSignalsReturnFalseForTrain(2, Attribute, AllRoutes->GetFixedRouteAt(130,
-                                                                                                                                                     RearwardLinkedRouteNumber).PrefDirSize() - 1)))
+                    RearwardLinkedRouteNumber).PrefDirSize() - 1)))
                 {
                     break;
                 }
@@ -18839,11 +19397,11 @@ void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumb
             {
                 if(PrefDirElement.XLinkPos < 2)
                 {
-                    TrainID = TrackElement.TrainIDOnBridgeTrackPos01;
+                    TrainID = TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
                 }
                 else
                 {
-                    TrainID = TrackElement.TrainIDOnBridgeTrackPos23;
+                    TrainID = TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
                 }
             }
             if(TrainID == -1)
@@ -18871,11 +19429,11 @@ void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumb
                 {
                     if(PrefDirElement.XLinkPos < 2)
                     {
-                        TrainID = TrackElement.TrainIDOnBridgeTrackPos01;
+                        TrainID = TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
                     }
                     else
                     {
-                        TrainID = TrackElement.TrainIDOnBridgeTrackPos23;
+                        TrainID = TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
                     }
                 }
                 if(TrainID != -1)
@@ -18927,11 +19485,11 @@ bool TAllRoutes::RouteLockingRequired(int Caller, int RouteNumber, int RouteTrun
             {
                 if(PrefDirElement.XLinkPos < 2)
                 {
-                    TrainID = TrackElement.TrainIDOnBridgeTrackPos01;
+                    TrainID = TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
                 }
                 else
                 {
-                    TrainID = TrackElement.TrainIDOnBridgeTrackPos23;
+                    TrainID = TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
                 }
             }
             if(TrainID > -1)
@@ -18992,11 +19550,11 @@ bool TAllRoutes::RouteLockingRequired(int Caller, int RouteNumber, int RouteTrun
             {
                 if(FirstElement.ConnLinkPos[FirstElement.ELinkPos] < 2)
                 {
-                    TrainID = PriorTrackElement.TrainIDOnBridgeTrackPos01;
+                    TrainID = PriorTrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
                 }
                 else
                 {
-                    TrainID = PriorTrackElement.TrainIDOnBridgeTrackPos23;
+                    TrainID = PriorTrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
                 }
             }
             if(TrainID > -1)
@@ -19649,3 +20207,5 @@ bool TAllRoutes::DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int Diago
 }
 
 // ---------------------------------------------------------------------------
+
+

@@ -1,7 +1,7 @@
 <map id="TAllRoutes::CheckMapAndRoutes" name="TAllRoutes::CheckMapAndRoutes">
 <area shape="rect" id="node1" title="Diagnostic function &#45; checks equivalence for each route between entries in PrefDirVector and those in..." alt="" coords="5,144,224,171"/>
 <area shape="rect" id="node2" href="$class_t_all_routes.html#a438b71f3afbc2c8adb45b47f69cb3bb9" title="Returns the number of routes in the railway." alt="" coords="281,5,456,32"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="513,115,660,141"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="513,115,660,141"/>
 <area shape="rect" id="node4" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="281,107,457,149"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="513,173,660,200"/>
 <area shape="rect" id="node6" href="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a" title="Returns a constant reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ch..." alt="" coords="272,173,465,200"/>

@@ -9,6 +9,7 @@ var _track_unit_8h =
     [ "TTrack", "class_t_track.html", "class_t_track" ],
     [ "TFixedTrackArray", "class_t_track_1_1_t_fixed_track_array.html", "class_t_track_1_1_t_fixed_track_array" ],
     [ "TActiveLevelCrossing", "class_t_track_1_1_t_active_level_crossing.html", "class_t_track_1_1_t_active_level_crossing" ],
+    [ "TInfrastructureFailureEntry", "struct_t_track_1_1_t_infrastructure_failure_entry.html", "struct_t_track_1_1_t_infrastructure_failure_entry" ],
     [ "TSigElement", "struct_t_track_1_1_t_sig_element.html", "struct_t_track_1_1_t_sig_element" ],
     [ "TOnePrefDir", "class_t_one_pref_dir.html", "class_t_one_pref_dir" ],
     [ "TOneRoute", "class_t_one_route.html", "class_t_one_route" ],

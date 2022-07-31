@@ -344,6 +344,7 @@ public:
     Graphics::TBitmap *BlackArrowLeft;
     Graphics::TBitmap *BlackArrowRight;
     Graphics::TBitmap *BlackArrowUp;
+    Graphics::TBitmap *BlackCircle;  //added at v2.13.0
     Graphics::TBitmap *bm10;
     Graphics::TBitmap *bm100;
     Graphics::TBitmap *bm101;
@@ -570,6 +571,7 @@ public:
     Graphics::TBitmap *ELk7;
     Graphics::TBitmap *ELk8;
     Graphics::TBitmap *ELk9;
+    Graphics::TBitmap *BlackOctagon;  //added at v2.13.0
     Graphics::TBitmap *GapsNotSetGraphic;
     Graphics::TBitmap *GapsSetGraphic;
     Graphics::TBitmap *gl1;
@@ -909,6 +911,23 @@ public:
     Graphics::TBitmap *UnderVFootbridge;
     Graphics::TBitmap *ZoomIn;
     Graphics::TBitmap *ZoomOut;
+
+    Graphics::TBitmap *FSig68; //failed signal graphics added at v2.13.0
+    Graphics::TBitmap *FSig69;
+    Graphics::TBitmap *FSig70;
+    Graphics::TBitmap *FSig71;
+    Graphics::TBitmap *FSig72;
+    Graphics::TBitmap *FSig73;
+    Graphics::TBitmap *FSig74;
+    Graphics::TBitmap *FSig75;
+    Graphics::TBitmap *FGSig68;
+    Graphics::TBitmap *FGSig69;
+    Graphics::TBitmap *FGSig70;
+    Graphics::TBitmap *FGSig71;
+    Graphics::TBitmap *FGSig72;
+    Graphics::TBitmap *FGSig73;
+    Graphics::TBitmap *FGSig74;
+    Graphics::TBitmap *FGSig75;
 
 // The following are created as new bitmaps from existing .bmp files
     Graphics::TBitmap *bmTransparentBgnd;

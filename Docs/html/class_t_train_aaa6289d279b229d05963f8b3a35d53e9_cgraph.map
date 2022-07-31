@@ -1,6 +1,6 @@
 <map id="TTrain::SetTrainMovementValues" name="TTrain::SetTrainMovementValues">
 <area shape="rect" id="node1" title="Calculates train speeds and times for the element that the train is about to enter...." alt="" coords="5,124,177,165"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="751,43,897,70"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="751,43,897,70"/>
 <area shape="rect" id="node3" href="$class_t_track.html#aeb515d40cb9b08ed55ce877ffdbc51a5" title="Return the corresponding link position (track always occupies either links 0 &amp; 1 or 2 &amp; 3)" alt="" coords="225,259,428,300"/>
 <area shape="rect" id="node4" href="$class_t_train.html#a7a54125a3a5052cb25e17014075a686b" title="Returns the number by which the train ActionVectorEntryPtr needs to be incremented to point to the lo..." alt="" coords="476,157,703,183"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="751,131,897,158"/>

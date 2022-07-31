@@ -1,6 +1,6 @@
 <map id="TOneRoute::SetLCChangeValues" name="TOneRoute::SetLCChangeValues">
 <area shape="rect" id="node1" title="After a route has been selected successfully this function sets all LC change values appropriately fo..." alt="" coords="5,221,220,248"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1009,137,1156,164"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1009,137,1156,164"/>
 <area shape="rect" id="node3" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="552,225,679,252"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1009,305,1156,332"/>
 <area shape="rect" id="node7" href="$class_t_track.html#a7331fe3693d4a1f2aa76817e66fba995" title="True if a closed (to trains) level crossing is found at H &amp; V." alt="" coords="525,170,705,197"/>

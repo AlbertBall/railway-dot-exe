@@ -41,7 +41,7 @@
 
 #include "TextUnit.h"
 #include "TrackUnit.h"
-#include "DisplayUnit.h"
+//#include "DisplayUnit.h" included in TrackUnit.h
 #include "Utilities.h"
 
 // ---------------------------------------------------------------------------

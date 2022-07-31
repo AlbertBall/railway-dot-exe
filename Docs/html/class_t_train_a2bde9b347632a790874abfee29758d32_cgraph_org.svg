@@ -22,7 +22,7 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied">
+<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="pops the last entry off the call stack, throws an error if called when empty">
 <polygon fill="white" stroke="black" points="1325,-1492.17 1325,-1511.17 1435,-1511.17 1435,-1492.17 1325,-1492.17"/>
 <text text-anchor="middle" x="1380" y="-1499.17" font-family="Helvetica,sans-Serif" font-size="10.00">TUtilities::CallLogPop</text>
 </a>
@@ -186,9 +186,9 @@
 <!-- Node8 -->
 <g id="node8" class="node">
 <title>Node8</title>
-<g id="a_node8"><a xlink:href="class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" target="_top" xlink:title="Send Statement to the performance log on screen and to the file.">
-<polygon fill="white" stroke="black" points="1138.5,-2162.17 1138.5,-2181.17 1269.5,-2181.17 1269.5,-2162.17 1138.5,-2162.17"/>
-<text text-anchor="middle" x="1204" y="-2169.17" font-family="Helvetica,sans-Serif" font-size="10.00">TDisplay::PerformanceLog</text>
+<g id="a_node8"><a xlink:href="class_t_perf_log_form.html#a72f06bf03353c15c94ceefbf420ff7b4" target="_top" xlink:title="Send Statement to the performance log on screen and to the file.">
+<polygon fill="white" stroke="black" points="1127,-2162.17 1127,-2181.17 1281,-2181.17 1281,-2162.17 1127,-2162.17"/>
+<text text-anchor="middle" x="1204" y="-2169.17" font-family="Helvetica,sans-Serif" font-size="10.00">TPerfLogForm::PerformanceLog</text>
 </a>
 </g>
 </g>
@@ -261,13 +261,13 @@
 <!-- Node8&#45;&gt;Node2 -->
 <g id="edge13" class="edge">
 <title>Node8&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M1269.58,-2165.79C1276.9,-2162.74 1283.64,-2158.51 1289,-2152.67 1376.41,-2057.49 1379.6,-1621.01 1379.17,-1521.78"/>
+<path fill="none" stroke="midnightblue" d="M1277.19,-2162.03C1281.55,-2159.5 1285.56,-2156.42 1289,-2152.67 1376.41,-2057.49 1379.6,-1621.01 1379.17,-1521.78"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1382.67,-1521.6 1379.11,-1511.62 1375.67,-1521.64 1382.67,-1521.6"/>
 </g>
 <!-- Node8&#45;&gt;Node7 -->
 <g id="edge14" class="edge">
 <title>Node8&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M1269.64,-2166.38C1277.04,-2163.25 1283.79,-2158.84 1289,-2152.67 1337.09,-2095.7 1319.6,-1557.03 1325,-1482.67 1341.26,-1258.7 1369.06,-987.64 1376.89,-912.7"/>
+<path fill="none" stroke="midnightblue" d="M1277.93,-2162.12C1282.06,-2159.56 1285.82,-2156.44 1289,-2152.67 1337.09,-2095.7 1319.6,-1557.03 1325,-1482.67 1341.26,-1258.7 1369.06,-987.64 1376.89,-912.7"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="1380.41,-912.7 1377.97,-902.39 1373.45,-911.97 1380.41,-912.7"/>
 </g>
 <!-- Node9&#45;&gt;Node2 -->

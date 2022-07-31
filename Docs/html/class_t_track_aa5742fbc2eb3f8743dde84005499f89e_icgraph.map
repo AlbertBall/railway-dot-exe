@@ -47,6 +47,6 @@
 <area shape="rect" id="node43" href="$class_t_interface.html#aa6e7359ece526e43589456e9a31851a0" title=" " alt="" coords="723,814,891,855"/>
 <area shape="rect" id="node44" href="$class_t_interface.html#a6a0ecdd864e40a84b833014d4478d1e3" title=" " alt="" coords="717,1519,897,1560"/>
 <area shape="rect" id="node45" href="$class_t_interface.html#a19148984e07e16178b6a6898bcbcdf22" title=" " alt="" coords="719,1584,894,1626"/>
-<area shape="rect" id="node47" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="1243,662,1423,703"/>
+<area shape="rect" id="node47" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="1243,662,1423,703"/>
 <area shape="rect" id="node50" href="$class_t_all_routes.html#ac6bd39457747eaa96476a8a87df15ac2" title="Set rearwards signals from the specified route starting position." alt="" coords="1239,147,1428,188"/>
 </map>

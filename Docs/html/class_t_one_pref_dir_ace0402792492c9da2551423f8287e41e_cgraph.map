@@ -1,6 +1,6 @@
 <map id="TOnePrefDir::GetPrefDirStartElement" name="TOnePrefDir::GetPrefDirStartElement">
 <area shape="rect" id="node1" title="Used when beginning a chain of preferred directions or element lengths. Enter with HLoc &amp; VLoc set to..." alt="" coords="5,367,193,408"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="723,143,869,170"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="723,143,869,170"/>
 <area shape="rect" id="node3" href="$class_t_one_pref_dir.html#ad2e6adb7b634b17cab9cd03610a0f8e3" title="Empty the existing vectors &amp; map." alt="" coords="257,555,427,582"/>
 <area shape="rect" id="node4" href="$class_t_track.html#ad55e3329a208e84e9e7519cc024b7aec" title="True if find a non&#45;platform element at HLoc &amp; VLoc, and if so return its TrackVector position and a r..." alt="" coords="241,173,443,199"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="723,315,869,342"/>

@@ -1,5 +1,5 @@
 <map id="TInterface" name="TInterface">
-<area shape="rect" id="node1" title=" " alt="" coords="148,1741,404,2552"/>
+<area shape="rect" id="node1" title=" " alt="" coords="148,1741,404,2567"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,1389,64,1466"/>
 <area shape="rect" id="node3" href="$class_t_graphic_element.html" title="Allows a single Width x Height graphic to change and change back independently of the remaining displ..." alt="" coords="89,1220,295,1635"/>
 <area shape="rect" id="node4" href="$class_t_one_pref_dir.html" title="The basic preferred direction class, consisting of any number of elements with preferred directions s..." alt="" coords="245,596,477,1143"/>

@@ -1,6 +1,6 @@
 <map id="TTrain::JoinedBy" name="TTrain::JoinedBy">
 <area shape="rect" id="node1" title="Carry out the actions needed when a train is waiting to be joined by another train." alt="" coords="5,828,124,854"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="893,444,1040,470"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="893,444,1040,470"/>
 <area shape="rect" id="node3" href="$class_t_train_controller.html#afb0e8fd36435809350cb323ab9fe2213" title="Return the service headcode for the repeat service." alt="" coords="398,984,581,1026"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="893,773,1040,800"/>
 <area shape="rect" id="node6" href="$class_t_train.html#a493ab1c185d29bf28ec8fded2356e9fc" title="Send a message to the performance log and performance file, and if the message is flagged as a warnin..." alt="" coords="199,317,321,344"/>
@@ -11,7 +11,7 @@
 <area shape="rect" id="node4" href="$class_t_train_controller.html#a6fc210d266e7672ccc648c0a9ab4e542" title="Checks the last two characters in HeadCode and returns true if both are digits." alt="" coords="631,875,845,916"/>
 <area shape="rect" id="node7" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="641,317,835,344"/>
 <area shape="rect" id="node8" href="$class_t_train.html#ad249f34f6862e604b8e141d1b25fe57d" title="Returns the timetable action time corresponding to &#39;Time&#39; for this train, i.e. it adjusts the time va..." alt="" coords="418,368,561,394"/>
-<area shape="rect" id="node10" href="$class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" title="Send Statement to the performance log on screen and to the file." alt="" coords="651,266,825,293"/>
+<area shape="rect" id="node10" href="$class_t_perf_log_form.html#a72f06bf03353c15c94ceefbf420ff7b4" title="Send Statement to the performance log on screen and to the file." alt="" coords="635,266,841,293"/>
 <area shape="rect" id="node11" href="$class_t_display.html#a604d491a723df459bdcd54a4b9d1d9f2" title="Display warning message Statement in the bottom left hand warning position and scroll other messages ..." alt="" coords="663,165,813,192"/>
 <area shape="rect" id="node9" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="633,520,843,546"/>
 <area shape="rect" id="node16" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="657,773,819,800"/>

@@ -1,52 +1,52 @@
 <map id="TTrainController::SaveSessionTrains" name="TTrainController::SaveSessionTrains">
-<area shape="rect" id="node1" title="save trains to a session file" alt="" coords="675,1362,869,1403"/>
-<area shape="rect" id="node2" href="$class_t_interface.html#a0109f801142d4fa3becae22e23b84163" title="Save the error log after an error has been thrown &#45; no need for a caller." alt="" coords="464,1395,627,1421"/>
-<area shape="rect" id="node50" href="$class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25" title="Save a session file &#45; see LoadSession for details of additions to the session file." alt="" coords="255,675,416,701"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="268,1395,403,1421"/>
+<area shape="rect" id="node1" title="save trains to a session file" alt="" coords="675,1375,869,1417"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a0109f801142d4fa3becae22e23b84163" title="Save the error log after an error has been thrown &#45; no need for a caller." alt="" coords="464,1408,627,1435"/>
+<area shape="rect" id="node50" href="$class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25" title="Save a session file &#45; see LoadSession for details of additions to the session file." alt="" coords="255,681,416,708"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="268,1408,403,1435"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#a7ccec66d1d0a81f124397af39f43da32" title=" " alt="" coords="17,57,195,98"/>
-<area shape="rect" id="node5" href="$class_t_interface.html#adfe259347a82aae9fc9538bba9c51cb8" title=" " alt="" coords="17,123,195,149"/>
-<area shape="rect" id="node6" href="$class_t_interface.html#a30904d608111ce6452a9861d86b64267" title=" " alt="" coords="19,174,193,215"/>
-<area shape="rect" id="node7" href="$class_t_interface.html#a1b1a4260e251c9bd5f48fd6c3432e7a5" title=" " alt="" coords="13,239,199,281"/>
-<area shape="rect" id="node8" href="$class_t_interface.html#a0abab134f4994b02507e1e2d3f31cd77" title=" " alt="" coords="15,305,197,346"/>
-<area shape="rect" id="node9" href="$class_t_interface.html#aa20c05bf2d6c23035a10a89796334d0f" title=" " alt="" coords="20,370,192,411"/>
-<area shape="rect" id="node10" href="$class_t_interface.html#a10494e62a7bb4e7114ab4d98e18499f1" title=" " alt="" coords="17,435,195,477"/>
-<area shape="rect" id="node11" href="$class_t_interface.html#a189a4b05f27d6b5ec8b9a90ec1a9cc50" title=" " alt="" coords="17,501,195,542"/>
-<area shape="rect" id="node12" href="$class_t_interface.html#af99ae89b6c7a2d37bf49cf0b5fcc3f1f" title=" " alt="" coords="29,567,183,593"/>
-<area shape="rect" id="node13" href="$class_t_interface.html#a75f68c918750c0e007ea7a85d718e2ab" title=" " alt="" coords="21,617,191,644"/>
-<area shape="rect" id="node14" href="$class_t_interface.html#a36ad38f4b485bba874129aeb3a20d926" title=" " alt="" coords="17,669,195,710"/>
-<area shape="rect" id="node15" href="$class_t_interface.html#a28579472104533fb5fd01066a22fbb5b" title=" " alt="" coords="20,734,192,775"/>
-<area shape="rect" id="node16" href="$class_t_interface.html#a0e9af41ff305fe2813385fce38b73206" title=" " alt="" coords="5,799,207,841"/>
-<area shape="rect" id="node17" href="$class_t_interface.html#a237c151513ca8adca6cd1006cc2fc66f" title=" " alt="" coords="15,865,197,906"/>
-<area shape="rect" id="node18" href="$class_t_interface.html#a24d79aa4745e495daa07bb5ce412e75f" title=" " alt="" coords="19,930,193,971"/>
-<area shape="rect" id="node19" href="$class_t_interface.html#ab1799665ee1e4212186f80ab49acf1e1" title=" " alt="" coords="17,995,195,1037"/>
-<area shape="rect" id="node20" href="$class_t_interface.html#ae758bf4183bb5aa2a7cd83e06acd89b6" title=" " alt="" coords="16,1061,196,1102"/>
-<area shape="rect" id="node21" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="16,1126,196,1167"/>
-<area shape="rect" id="node22" href="$class_t_interface.html#a6fb1db3295ef42cb1b6f20bc142fa502" title=" " alt="" coords="21,1191,191,1233"/>
-<area shape="rect" id="node23" href="$class_t_interface.html#aaaf32c3c815553f7ba70698e0f0071bb" title=" " alt="" coords="15,1257,197,1298"/>
-<area shape="rect" id="node24" href="$class_t_interface.html#a928eba983ac5132e1ae7799f8330451e" title=" " alt="" coords="25,1322,187,1363"/>
-<area shape="rect" id="node25" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="27,5,185,32"/>
-<area shape="rect" id="node26" href="$class_t_interface.html#a77b4d0c5298ea6b8968af152fd8b7b8b" title=" " alt="" coords="17,1387,195,1429"/>
-<area shape="rect" id="node27" href="$class_t_interface.html#a7aca81081a7983f1389c923e95c7afee" title=" " alt="" coords="15,1453,197,1494"/>
-<area shape="rect" id="node28" href="$class_t_interface.html#a424a7eb780461c1acb396feb21f52062" title=" " alt="" coords="19,1518,193,1559"/>
-<area shape="rect" id="node29" href="$class_t_interface.html#adc0dd871fdd70ff11ada7a0ddd549e8e" title=" " alt="" coords="7,1583,205,1625"/>
-<area shape="rect" id="node30" href="$class_t_interface.html#a117ba58c37a617edeeb033fcdff841e9" title=" " alt="" coords="15,1649,197,1690"/>
-<area shape="rect" id="node31" href="$class_t_interface.html#a6379037c7970acda71188947cb3ba6b2" title=" " alt="" coords="13,1714,199,1755"/>
-<area shape="rect" id="node32" href="$class_t_interface.html#a1c8fab7fa2f1be662f2d7418e95e3a63" title=" " alt="" coords="16,1779,196,1821"/>
-<area shape="rect" id="node33" href="$class_t_interface.html#ae6e977c9dfdfbde9924ceefd19d7d0d3" title=" " alt="" coords="10,1845,202,1872"/>
-<area shape="rect" id="node34" href="$class_t_interface.html#acd41ae8fa5d16248a867472d9c8ae646" title=" " alt="" coords="11,1897,201,1938"/>
-<area shape="rect" id="node35" href="$class_t_interface.html#af9cb95043f5276df55cb6809e104c93a" title=" " alt="" coords="25,1962,187,2003"/>
-<area shape="rect" id="node36" href="$class_t_interface.html#aff2c1cd6ed2d45fdcf6392a85a6d9415" title=" " alt="" coords="16,2027,196,2069"/>
-<area shape="rect" id="node37" href="$class_t_interface.html#a3136530959237eaa57486f4f48357855" title=" " alt="" coords="21,2093,191,2134"/>
-<area shape="rect" id="node38" href="$class_t_interface.html#abdd4a70649a10a29c9a069d040072808" title=" " alt="" coords="22,2158,190,2199"/>
-<area shape="rect" id="node39" href="$class_t_interface.html#ac53c02024590fc44371ed3b7efc3ddde" title=" " alt="" coords="21,2224,191,2251"/>
-<area shape="rect" id="node40" href="$class_t_interface.html#a0cf35a6e4a6cfa72b63222acb51f9f74" title=" " alt="" coords="23,2275,189,2317"/>
-<area shape="rect" id="node41" href="$class_t_interface.html#a9cfdb7521877f2c7ab124d0e4f47a0f6" title=" " alt="" coords="23,2341,189,2382"/>
-<area shape="rect" id="node42" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="23,2406,189,2447"/>
-<area shape="rect" id="node43" href="$class_t_interface.html#ab2a25d27dcbae558b8f9a4ac62937523" title=" " alt="" coords="13,2471,199,2513"/>
-<area shape="rect" id="node44" href="$class_t_interface.html#ad0fa9f32b059b346e066ab23d62a4bfc" title=" " alt="" coords="17,2537,195,2578"/>
-<area shape="rect" id="node45" href="$class_t_interface.html#aa78089df3d8323be6fde98c0ee48424c" title=" " alt="" coords="9,2602,203,2643"/>
-<area shape="rect" id="node46" href="$class_t_interface.html#ab7c52bd31930036c95b9b71c2f1f0426" title=" " alt="" coords="18,2667,194,2709"/>
-<area shape="rect" id="node47" href="$class_t_interface.html#a1bf4807428bf9fa4504be97d28642597" title=" " alt="" coords="21,2733,191,2774"/>
-<area shape="rect" id="node48" href="$class_t_interface.html#add5fbdbceae6285c2cc440905b270491" title=" " alt="" coords="24,2798,188,2839"/>
-<area shape="rect" id="node49" href="$class_t_interface.html#a167410ef8c1ebe53abd0afee71943ecf" title=" " alt="" coords="17,2864,195,2891"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a30904d608111ce6452a9861d86b64267" title=" " alt="" coords="19,122,193,163"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a1b1a4260e251c9bd5f48fd6c3432e7a5" title=" " alt="" coords="13,187,199,229"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#a0abab134f4994b02507e1e2d3f31cd77" title=" " alt="" coords="15,253,197,294"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#aa20c05bf2d6c23035a10a89796334d0f" title=" " alt="" coords="20,318,192,359"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#a10494e62a7bb4e7114ab4d98e18499f1" title=" " alt="" coords="17,383,195,425"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a189a4b05f27d6b5ec8b9a90ec1a9cc50" title=" " alt="" coords="17,449,195,490"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#af99ae89b6c7a2d37bf49cf0b5fcc3f1f" title=" " alt="" coords="29,515,183,541"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#a75f68c918750c0e007ea7a85d718e2ab" title=" " alt="" coords="21,565,191,592"/>
+<area shape="rect" id="node13" href="$class_t_interface.html#a36ad38f4b485bba874129aeb3a20d926" title=" " alt="" coords="17,617,195,658"/>
+<area shape="rect" id="node14" href="$class_t_interface.html#a28579472104533fb5fd01066a22fbb5b" title=" " alt="" coords="20,682,192,723"/>
+<area shape="rect" id="node15" href="$class_t_interface.html#a0e9af41ff305fe2813385fce38b73206" title=" " alt="" coords="5,747,207,789"/>
+<area shape="rect" id="node16" href="$class_t_interface.html#a237c151513ca8adca6cd1006cc2fc66f" title=" " alt="" coords="15,813,197,854"/>
+<area shape="rect" id="node17" href="$class_t_interface.html#a24d79aa4745e495daa07bb5ce412e75f" title=" " alt="" coords="19,878,193,919"/>
+<area shape="rect" id="node18" href="$class_t_interface.html#ab1799665ee1e4212186f80ab49acf1e1" title=" " alt="" coords="17,943,195,985"/>
+<area shape="rect" id="node19" href="$class_t_interface.html#ae758bf4183bb5aa2a7cd83e06acd89b6" title=" " alt="" coords="16,1009,196,1050"/>
+<area shape="rect" id="node20" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="16,1074,196,1115"/>
+<area shape="rect" id="node21" href="$class_t_interface.html#a6fb1db3295ef42cb1b6f20bc142fa502" title=" " alt="" coords="21,1139,191,1181"/>
+<area shape="rect" id="node22" href="$class_t_interface.html#aaaf32c3c815553f7ba70698e0f0071bb" title=" " alt="" coords="15,1205,197,1246"/>
+<area shape="rect" id="node23" href="$class_t_interface.html#a928eba983ac5132e1ae7799f8330451e" title=" " alt="" coords="25,1270,187,1311"/>
+<area shape="rect" id="node24" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="27,5,185,32"/>
+<area shape="rect" id="node25" href="$class_t_interface.html#a77b4d0c5298ea6b8968af152fd8b7b8b" title=" " alt="" coords="17,1335,195,1377"/>
+<area shape="rect" id="node26" href="$class_t_interface.html#a7aca81081a7983f1389c923e95c7afee" title=" " alt="" coords="15,1401,197,1442"/>
+<area shape="rect" id="node27" href="$class_t_interface.html#a424a7eb780461c1acb396feb21f52062" title=" " alt="" coords="19,1466,193,1507"/>
+<area shape="rect" id="node28" href="$class_t_interface.html#adc0dd871fdd70ff11ada7a0ddd549e8e" title=" " alt="" coords="7,1531,205,1573"/>
+<area shape="rect" id="node29" href="$class_t_interface.html#a117ba58c37a617edeeb033fcdff841e9" title=" " alt="" coords="15,1597,197,1638"/>
+<area shape="rect" id="node30" href="$class_t_interface.html#a6379037c7970acda71188947cb3ba6b2" title=" " alt="" coords="13,1662,199,1703"/>
+<area shape="rect" id="node31" href="$class_t_interface.html#a1c8fab7fa2f1be662f2d7418e95e3a63" title=" " alt="" coords="16,1727,196,1769"/>
+<area shape="rect" id="node32" href="$class_t_interface.html#ae6e977c9dfdfbde9924ceefd19d7d0d3" title=" " alt="" coords="10,1793,202,1820"/>
+<area shape="rect" id="node33" href="$class_t_interface.html#acd41ae8fa5d16248a867472d9c8ae646" title=" " alt="" coords="11,1845,201,1886"/>
+<area shape="rect" id="node34" href="$class_t_interface.html#af9cb95043f5276df55cb6809e104c93a" title=" " alt="" coords="25,1910,187,1951"/>
+<area shape="rect" id="node35" href="$class_t_interface.html#aff2c1cd6ed2d45fdcf6392a85a6d9415" title=" " alt="" coords="16,1975,196,2017"/>
+<area shape="rect" id="node36" href="$class_t_interface.html#a3136530959237eaa57486f4f48357855" title=" " alt="" coords="21,2041,191,2082"/>
+<area shape="rect" id="node37" href="$class_t_interface.html#abdd4a70649a10a29c9a069d040072808" title=" " alt="" coords="22,2106,190,2147"/>
+<area shape="rect" id="node38" href="$class_t_interface.html#ac53c02024590fc44371ed3b7efc3ddde" title=" " alt="" coords="21,2172,191,2199"/>
+<area shape="rect" id="node39" href="$class_t_interface.html#a0cf35a6e4a6cfa72b63222acb51f9f74" title=" " alt="" coords="23,2223,189,2265"/>
+<area shape="rect" id="node40" href="$class_t_interface.html#a9cfdb7521877f2c7ab124d0e4f47a0f6" title=" " alt="" coords="23,2289,189,2330"/>
+<area shape="rect" id="node41" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="23,2354,189,2395"/>
+<area shape="rect" id="node42" href="$class_t_interface.html#ab2a25d27dcbae558b8f9a4ac62937523" title=" " alt="" coords="13,2419,199,2461"/>
+<area shape="rect" id="node43" href="$class_t_interface.html#ad0fa9f32b059b346e066ab23d62a4bfc" title=" " alt="" coords="17,2485,195,2526"/>
+<area shape="rect" id="node44" href="$class_t_interface.html#aa78089df3d8323be6fde98c0ee48424c" title=" " alt="" coords="9,2550,203,2591"/>
+<area shape="rect" id="node45" href="$class_t_interface.html#ab7c52bd31930036c95b9b71c2f1f0426" title=" " alt="" coords="18,2615,194,2657"/>
+<area shape="rect" id="node46" href="$class_t_interface.html#a1bf4807428bf9fa4504be97d28642597" title=" " alt="" coords="21,2681,191,2722"/>
+<area shape="rect" id="node47" href="$class_t_interface.html#add5fbdbceae6285c2cc440905b270491" title=" " alt="" coords="24,2746,188,2787"/>
+<area shape="rect" id="node48" href="$class_t_interface.html#a167410ef8c1ebe53abd0afee71943ecf" title=" " alt="" coords="17,2812,195,2839"/>
+<area shape="rect" id="node49" href="$class_t_interface.html#ad1418f26381a91c4333c3947585ed60e" title=" " alt="" coords="31,2863,181,2889"/>
 </map>

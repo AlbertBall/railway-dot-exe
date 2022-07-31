@@ -1,52 +1,52 @@
 <map id="TDisplay::PlotOutput" name="TDisplay::PlotOutput">
-<area shape="rect" id="node1" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="1591,1030,1733,1057"/>
-<area shape="rect" id="node2" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="540,964,720,1006"/>
-<area shape="rect" id="node24" href="$class_t_one_route.html#a53496c398dcdb3a644801c4e74d47d01" title="Called after a non&#45;preferred (i.e. unrestricted) route has been selected and has finished flashing,..." alt="" coords="792,1027,1003,1068"/>
-<area shape="rect" id="node25" href="$class_t_one_route.html#a36ba8adc8b4a47908ee4e1b8e75792ca" title="Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and ..." alt="" coords="537,670,723,711"/>
-<area shape="rect" id="node26" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="1088,838,1259,879"/>
-<area shape="rect" id="node27" href="$class_t_one_route.html#afe23206f22e1ffaafe1a5fe866d2b8ec" title="Examines the route to see whether the element at H &amp; V is in the route, and if not returns a ReturnFl..." alt="" coords="797,1092,997,1134"/>
-<area shape="rect" id="node28" href="$class_t_display.html#a63930b93b9883463cd9d779e86fefba2" title=" " alt="" coords="551,1721,709,1748"/>
-<area shape="rect" id="node29" href="$class_t_track.html#a6cab5ab84e10504ef1c9d39e931d42fe" title="Mark on screen a track element according to its length and speed limit if either of these differ from..." alt="" coords="1361,1688,1522,1714"/>
-<area shape="rect" id="node30" href="$class_t_train.html#aa21e18b3085773ca8351c446911611c1" title="When a train moves off a bridge the other track may contain a route or have a train on it that has be..." alt="" coords="1351,1470,1531,1511"/>
-<area shape="rect" id="node31" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="830,1536,965,1562"/>
-<area shape="rect" id="node32" href="$class_t_train.html#abb6bb7d2024ac59230cbaff2ec3ee999" title="Replot the graphic pointed to by BackgroundPtr (see above) after a train has passed." alt="" coords="1340,1536,1543,1562"/>
-<area shape="rect" id="node33" href="$class_t_track.html#ae9d69ab1fc0ab492090c0865f1bc4527" title="Plots a continuation on screen, may have overlays if a multiplayer session." alt="" coords="1359,954,1523,981"/>
-<area shape="rect" id="node34" href="$class_t_track.html#a12569ed581bb1c76c1d201b3cf013da7" title="Called by TInterface::ClearandRebuildRailway to replot all the active and inactive track elements and..." alt="" coords="801,965,993,992"/>
-<area shape="rect" id="node35" href="$class_t_fixed_track_piece.html#a13eca615770d45f35bb808eaa264fda9" title="Plot the element on the railway display at position HLocInput &amp; VLocInput." alt="" coords="1347,1739,1536,1780"/>
-<area shape="rect" id="node36" href="$class_t_track.html#aa638a7e118fb22e648d89adbe814a4a1" title="Plots a gap on screen &#45; may be set or unset." alt="" coords="1115,1005,1231,1032"/>
-<area shape="rect" id="node37" href="$class_t_track.html#af3d75ea89bb62053003b7b1aaeeda15b" title="Just replot the basic track elements at a level crossing (for flashing)" alt="" coords="520,197,740,224"/>
-<area shape="rect" id="node38" href="$class_t_track.html#a43db60c0e61f80db5e529aa926742818" title="Plot &amp; open (to trains) all level crossings linked to TrackElement (Manual true = manually lowered,..." alt="" coords="1084,248,1263,290"/>
-<area shape="rect" id="node39" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="799,584,996,610"/>
-<area shape="rect" id="node40" href="$class_t_graphic_element.html#a04ccc26451ff7d95dc3c5951b71f421e" title="Plot the overlay graphic on screen." alt="" coords="799,736,995,762"/>
-<area shape="rect" id="node41" href="$class_t_track.html#ad8a74040f61dffb16633deea5054deef" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway (..." alt="" coords="1069,1354,1277,1410"/>
-<area shape="rect" id="node42" href="$class_t_track.html#a1f59015a92ef00604156a44011b4f4c8" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway." alt="" coords="1055,1288,1292,1330"/>
-<area shape="rect" id="node43" href="$class_t_track.html#af56adb319c7003b8ddac8e55afaee3d2" title="Plot points on screen according to how they are set (Attribute value), or, with both fillets if BothF..." alt="" coords="1109,685,1238,712"/>
-<area shape="rect" id="node44" href="$class_t_track.html#adbaf9ab8b709af9d194603892ac91133" title="Plot &amp; close (to trains) all level crossings linked to TrackElement &#45; always plots as red &#45; auto." alt="" coords="545,299,715,340"/>
-<area shape="rect" id="node45" href="$class_t_one_route_1_1_t_route_flash.html#a08346a8f10834cc575c175238c7e84ae" title="display the original (non route&#45;coloured) graphic" alt="" coords="546,66,714,107"/>
-<area shape="rect" id="node46" href="$class_t_one_route_1_1_t_route_flash.html#a0292e6d0f38d48da408bb85a60f17944" title="display the overlay (route&#45;coloured) graphic" alt="" coords="546,131,714,172"/>
-<area shape="rect" id="node47" href="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e" title="Plot signals on screen according to their aspect (Attribute value)" alt="" coords="1109,1158,1237,1185"/>
-<area shape="rect" id="node48" href="$class_t_one_route.html#a55e04e36f652344b5215f8a28143c4a3" title="Called by TAllRoutes::SetAllRearwardsSignals to set rearwards signals from a specified starting posit..." alt="" coords="788,1260,1007,1302"/>
-<area shape="rect" id="node49" href="$class_t_track.html#a2830b22db25712a80fa55b1546b5df9b" title="Plot platforms if any for a signal graphic &#45; plotted before signal so shows through transparent signa..." alt="" coords="1350,1208,1533,1234"/>
-<area shape="rect" id="node50" href="$class_t_train.html#a247bd95a7c648367736b116f553f4e54" title="Plot the train&#39;s headcode character corresponding to ArrayNumber." alt="" coords="1361,1586,1522,1613"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#a75f68c918750c0e007ea7a85d718e2ab" title=" " alt="" coords="275,466,445,493"/>
-<area shape="rect" id="node4" href="$class_t_interface.html#a0a89df44c20c9e2c096e66e2950c79a6" title="Function that deals with approach locking during ClockTimer2 function." alt="" coords="267,634,453,661"/>
-<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="23,693,182,720"/>
-<area shape="rect" id="node6" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="270,803,450,844"/>
-<area shape="rect" id="node7" href="$class_t_interface.html#ac41a9993a63b3b5b6a8acb30e8f606f5" title=" " alt="" coords="279,1671,441,1712"/>
-<area shape="rect" id="node8" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="267,365,453,392"/>
-<area shape="rect" id="node9" href="$class_t_interface.html#a3fe9878a003d343a06f09c8f421e5a3b" title=" " alt="" coords="282,869,438,896"/>
-<area shape="rect" id="node10" href="$class_t_interface.html#a44bce128da0e5ae552031e39552d0c39" title="Called during gap setting to mark a gap with a red ellipse and ask user to select the corresponding g..." alt="" coords="266,1138,454,1165"/>
-<area shape="rect" id="node11" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="5,1346,200,1387"/>
-<area shape="rect" id="node12" href="$class_t_interface.html#a19e64ee6952b0fd3c260eb05c14a34c8" title=" " alt="" coords="267,920,453,946"/>
-<area shape="rect" id="node13" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="279,752,441,778"/>
-<area shape="rect" id="node14" href="$class_t_interface.html#a8c96de45b013362b03ad0e8725a7c64b" title="Called when mouse button clicked in zoom&#45;out mode." alt="" coords="263,971,457,1012"/>
-<area shape="rect" id="node15" href="$class_t_interface.html#abb268a3a209bc0d66111540c84345c1b" title=" " alt="" coords="248,1088,472,1114"/>
-<area shape="rect" id="node16" href="$class_t_interface.html#acbfe5d5234713c3537cc5ca3ef17bda6" title=" " alt="" coords="259,1190,461,1231"/>
-<area shape="rect" id="node17" href="$class_t_interface.html#a54c8faaf7d1d8f0456114676fd20a17f" title=" " alt="" coords="258,1256,462,1282"/>
-<area shape="rect" id="node18" href="$class_t_interface.html#a7026d6ca5ea0bad9f6e0f8a0494ff2c9" title="called in ClockTimer2 if player multiplay in progress" alt="" coords="261,1307,459,1348"/>
-<area shape="rect" id="node19" href="$class_t_interface.html#aa639148521a793641e694b15486b5055" title=" " alt="" coords="275,518,445,559"/>
-<area shape="rect" id="node20" href="$class_t_interface.html#a3cf2db0424e05908b20a97130895d056" title=" " alt="" coords="268,1372,452,1414"/>
-<area shape="rect" id="node21" href="$class_t_interface.html#aa6e7359ece526e43589456e9a31851a0" title=" " alt="" coords="276,1438,444,1479"/>
-<area shape="rect" id="node22" href="$class_t_interface.html#ad53c136eca39fddb0e7e49a4b7018f66" title=" " alt="" coords="261,1503,459,1544"/>
-<area shape="rect" id="node23" href="$class_t_interface.html#a05d882d712519bd79267e4ce5a52269c" title=" " alt="" coords="265,686,455,727"/>
+<area shape="rect" id="node1" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="1591,963,1733,989"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="540,883,720,925"/>
+<area shape="rect" id="node24" href="$class_t_one_route.html#a53496c398dcdb3a644801c4e74d47d01" title="Called after a non&#45;preferred (i.e. unrestricted) route has been selected and has finished flashing,..." alt="" coords="792,1323,1003,1365"/>
+<area shape="rect" id="node25" href="$class_t_one_route.html#a36ba8adc8b4a47908ee4e1b8e75792ca" title="Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and ..." alt="" coords="537,618,723,659"/>
+<area shape="rect" id="node26" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="1088,989,1259,1030"/>
+<area shape="rect" id="node27" href="$class_t_one_route.html#afe23206f22e1ffaafe1a5fe866d2b8ec" title="Examines the route to see whether the element at H &amp; V is in the route, and if not returns a ReturnFl..." alt="" coords="797,1090,997,1131"/>
+<area shape="rect" id="node28" href="$class_t_display.html#a63930b93b9883463cd9d779e86fefba2" title=" " alt="" coords="551,1608,709,1635"/>
+<area shape="rect" id="node29" href="$class_t_track.html#a6cab5ab84e10504ef1c9d39e931d42fe" title="Mark on screen a track element according to its length and speed limit if either of these differ from..." alt="" coords="1361,1612,1522,1639"/>
+<area shape="rect" id="node30" href="$class_t_train.html#aa21e18b3085773ca8351c446911611c1" title="When a train moves off a bridge the other track may contain a route or have a train on it that has be..." alt="" coords="1351,1546,1531,1587"/>
+<area shape="rect" id="node31" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="830,1444,965,1471"/>
+<area shape="rect" id="node32" href="$class_t_train.html#abb6bb7d2024ac59230cbaff2ec3ee999" title="Replot the graphic pointed to by BackgroundPtr (see above) after a train has passed." alt="" coords="1340,1393,1543,1420"/>
+<area shape="rect" id="node33" href="$class_t_track.html#ae9d69ab1fc0ab492090c0865f1bc4527" title="Plots a continuation on screen, may have overlays if a multiplayer session." alt="" coords="1359,668,1523,695"/>
+<area shape="rect" id="node34" href="$class_t_track.html#a12569ed581bb1c76c1d201b3cf013da7" title="Called by TInterface::ClearandRebuildRailway to replot all the active and inactive track elements and..." alt="" coords="801,744,993,771"/>
+<area shape="rect" id="node35" href="$class_t_fixed_track_piece.html#a13eca615770d45f35bb808eaa264fda9" title="Plot the element on the railway display at position HLocInput &amp; VLocInput." alt="" coords="1347,1663,1536,1705"/>
+<area shape="rect" id="node36" href="$class_t_track.html#aa638a7e118fb22e648d89adbe814a4a1" title="Plots a gap on screen &#45; may be set or unset." alt="" coords="1115,719,1231,745"/>
+<area shape="rect" id="node37" href="$class_t_track.html#af3d75ea89bb62053003b7b1aaeeda15b" title="Just replot the basic track elements at a level crossing (for flashing)" alt="" coords="520,196,740,223"/>
+<area shape="rect" id="node38" href="$class_t_track.html#a43db60c0e61f80db5e529aa926742818" title="Plot &amp; open (to trains) all level crossings linked to TrackElement (Manual true = manually lowered,..." alt="" coords="1084,247,1263,289"/>
+<area shape="rect" id="node39" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="799,465,996,492"/>
+<area shape="rect" id="node40" href="$class_t_graphic_element.html#a04ccc26451ff7d95dc3c5951b71f421e" title="Plot the overlay graphic on screen." alt="" coords="799,937,995,964"/>
+<area shape="rect" id="node41" href="$class_t_track.html#ad8a74040f61dffb16633deea5054deef" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway (..." alt="" coords="1069,1055,1277,1111"/>
+<area shape="rect" id="node42" href="$class_t_track.html#a1f59015a92ef00604156a44011b4f4c8" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway." alt="" coords="1055,821,1292,862"/>
+<area shape="rect" id="node43" href="$class_t_track.html#af56adb319c7003b8ddac8e55afaee3d2" title="Plot points on screen according to how they are set (Attribute value), or, with both fillets if BothF..." alt="" coords="1109,567,1238,593"/>
+<area shape="rect" id="node44" href="$class_t_track.html#adbaf9ab8b709af9d194603892ac91133" title="Plot &amp; close (to trains) all level crossings linked to TrackElement &#45; always plots as red &#45; auto." alt="" coords="545,298,715,339"/>
+<area shape="rect" id="node45" href="$class_t_one_route_1_1_t_route_flash.html#a08346a8f10834cc575c175238c7e84ae" title="display the original (non route&#45;coloured) graphic" alt="" coords="546,65,714,106"/>
+<area shape="rect" id="node46" href="$class_t_one_route_1_1_t_route_flash.html#a0292e6d0f38d48da408bb85a60f17944" title="display the overlay (route&#45;coloured) graphic" alt="" coords="546,130,714,171"/>
+<area shape="rect" id="node47" href="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e" title="Plot signals on screen according to their aspect (Attribute value)" alt="" coords="1109,1191,1237,1217"/>
+<area shape="rect" id="node48" href="$class_t_one_route.html#a55e04e36f652344b5215f8a28143c4a3" title="Called by TAllRoutes::SetAllRearwardsSignals to set rearwards signals from a specified starting posit..." alt="" coords="788,1258,1007,1299"/>
+<area shape="rect" id="node49" href="$class_t_track.html#a2830b22db25712a80fa55b1546b5df9b" title="Plot platforms if any for a signal graphic &#45; plotted before signal so shows through transparent signa..." alt="" coords="1350,1191,1533,1217"/>
+<area shape="rect" id="node50" href="$class_t_train.html#a247bd95a7c648367736b116f553f4e54" title="Plot the train&#39;s headcode character corresponding to ArrayNumber." alt="" coords="1361,1444,1522,1471"/>
+<area shape="rect" id="node3" href="$class_t_actions_due_form.html#ac44cd181601f65f5944910f931c5d343" title=" " alt="" coords="271,1090,449,1131"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a75f68c918750c0e007ea7a85d718e2ab" title=" " alt="" coords="275,376,445,403"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a0a89df44c20c9e2c096e66e2950c79a6" title="Function that deals with approach locking during ClockTimer2 function." alt="" coords="267,493,453,520"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="23,519,182,545"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="270,1155,450,1197"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#ac41a9993a63b3b5b6a8acb30e8f606f5" title=" " alt="" coords="279,1491,441,1533"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="267,275,453,301"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a3fe9878a003d343a06f09c8f421e5a3b" title=" " alt="" coords="282,1221,438,1248"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#a44bce128da0e5ae552031e39552d0c39" title="Called during gap setting to mark a gap with a red ellipse and ask user to select the corresponding g..." alt="" coords="266,1323,454,1349"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="5,1433,200,1474"/>
+<area shape="rect" id="node13" href="$class_t_interface.html#a19e64ee6952b0fd3c260eb05c14a34c8" title=" " alt="" coords="267,1272,453,1299"/>
+<area shape="rect" id="node14" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="279,544,441,571"/>
+<area shape="rect" id="node15" href="$class_t_interface.html#a8c96de45b013362b03ad0e8725a7c64b" title="Called when mouse button clicked in zoom&#45;out mode." alt="" coords="263,1374,457,1415"/>
+<area shape="rect" id="node16" href="$class_t_interface.html#abb268a3a209bc0d66111540c84345c1b" title=" " alt="" coords="248,1440,472,1467"/>
+<area shape="rect" id="node17" href="$class_t_interface.html#acbfe5d5234713c3537cc5ca3ef17bda6" title=" " alt="" coords="259,595,461,637"/>
+<area shape="rect" id="node18" href="$class_t_interface.html#a7026d6ca5ea0bad9f6e0f8a0494ff2c9" title="called in ClockTimer2 if player multiplay in progress" alt="" coords="261,661,459,702"/>
+<area shape="rect" id="node19" href="$class_t_interface.html#aa639148521a793641e694b15486b5055" title=" " alt="" coords="275,427,445,469"/>
+<area shape="rect" id="node20" href="$class_t_interface.html#a3cf2db0424e05908b20a97130895d056" title=" " alt="" coords="268,726,452,767"/>
+<area shape="rect" id="node21" href="$class_t_interface.html#aa6e7359ece526e43589456e9a31851a0" title=" " alt="" coords="276,791,444,833"/>
+<area shape="rect" id="node22" href="$class_t_interface.html#ad53c136eca39fddb0e7e49a4b7018f66" title=" " alt="" coords="261,857,459,898"/>
+<area shape="rect" id="node23" href="$class_t_interface.html#a05d882d712519bd79267e4ce5a52269c" title=" " alt="" coords="265,922,455,963"/>
 </map>

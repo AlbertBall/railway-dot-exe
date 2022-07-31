@@ -20,9 +20,12 @@ var hierarchy =
     ] ],
     [ "TForm", null, [
       [ "TAboutForm", "class_t_about_form.html", null ],
-      [ "TInterface", "class_t_interface.html", null ]
+      [ "TActionsDueForm", "class_t_actions_due_form.html", null ],
+      [ "TInterface", "class_t_interface.html", null ],
+      [ "TPerfLogForm", "class_t_perf_log_form.html", null ]
     ] ],
     [ "TGraphicElement", "class_t_graphic_element.html", null ],
+    [ "TTrack::TInfrastructureFailureEntry", "struct_t_track_1_1_t_infrastructure_failure_entry.html", null ],
     [ "TAllRoutes::TLockedRouteClass", "class_t_all_routes_1_1_t_locked_route_class.html", null ],
     [ "TTrainController::TLocServiceTimes", "struct_t_train_controller_1_1_t_loc_service_times.html", null ],
     [ "TMapComp", "class_t_map_comp.html", null ],

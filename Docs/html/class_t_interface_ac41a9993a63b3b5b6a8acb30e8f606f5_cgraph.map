@@ -1,12 +1,12 @@
 <map id="TInterface::CheckPrefDirConflictsMenuItemClick" name="TInterface::CheckPrefDirConflictsMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,2864,168,2905"/>
 <area shape="rect" id="node2" href="$class_t_one_pref_dir.html#a6430567fea2e1538448514903c1b2eca" title="Determines whether the preferred direction pointed to has another pref dir in the opposite direction ..." alt="" coords="743,3079,916,3120"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1257,1378,1404,1405"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1257,1378,1404,1405"/>
 <area shape="rect" id="node4" href="$class_t_one_pref_dir.html#a820f6cc109de519289e6a63dac835ebc" title="Return up to 4 vector positions for a given HLoc &amp; VLoc; unused values return &#45;1." alt="" coords="996,2965,1209,3007"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1257,1821,1404,1847"/>
 <area shape="rect" id="node6" href="$class_t_interface.html#aba2779e0510602873e1a7e0ea7144235" title="Check for bidir crossover between two single PD lines. Used in PD check function." alt="" coords="727,2864,932,2905"/>
 <area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1021,957,1184,983"/>
-<area shape="rect" id="node8" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="216,1228,396,1269"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="216,1228,396,1269"/>
 <area shape="rect" id="node15" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="1020,119,1185,146"/>
 <area shape="rect" id="node16" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="1042,1581,1163,1607"/>
 <area shape="rect" id="node49" href="$class_t_display.html#a63930b93b9883463cd9d779e86fefba2" title=" " alt="" coords="750,2930,909,2957"/>
@@ -27,7 +27,7 @@
 <area shape="rect" id="node27" href="$class_t_graphic_element.html#ac12f60cb52eefdc86eaa504419eb138d" title="Load original graphic from the screen for point flashing or route start markers." alt="" coords="728,612,931,653"/>
 <area shape="rect" id="node29" href="$class_t_all_routes.html#af0a34aa05027527d256566ae52600583" title="Calls PrefDirMarker for all routes, with RouteCall set to identify a route call, and BuildingPrefDir ..." alt="" coords="1013,1159,1192,1186"/>
 <area shape="rect" id="node30" href="$class_t_track.html#aa67be9f8ad9bd885f649b26962e0d41d" title="True if there is a platform, NamedNonStationLocation or Concourse present in the railway." alt="" coords="997,1211,1208,1252"/>
-<area shape="rect" id="node31" href="$class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc" title=" " alt="" coords="1025,1327,1180,1354"/>
+<area shape="rect" id="node31" href="$class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc" title="Plot the graphic at the railway (not screen) position set by HPos &amp; VPos." alt="" coords="1025,1327,1180,1354"/>
 <area shape="rect" id="node32" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="731,1951,928,1978"/>
 <area shape="rect" id="node33" href="$class_t_graphic_element.html#a04ccc26451ff7d95dc3c5951b71f421e" title="Plot the overlay graphic on screen." alt="" coords="731,1901,927,1927"/>
 <area shape="rect" id="node34" href="$class_t_track.html#ad8a74040f61dffb16633deea5054deef" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway (..." alt="" coords="725,1799,933,1855"/>

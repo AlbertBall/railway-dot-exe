@@ -1,6 +1,6 @@
 var class_t_display =
 [
-    [ "TDisplay", "class_t_display.html#a72cbdba53131a636da2c656f6025574b", null ],
+    [ "TDisplay", "class_t_display.html#ab34b9c853e7e348cce8e9c19507d9f04", null ],
     [ "Clear", "class_t_display.html#ab96c1fdec64997a8c252704ea6c231bf", null ],
     [ "ClearDisplay", "class_t_display.html#a8d990507ae0111e0b7890e8aa77fd76d", null ],
     [ "Cursor", "class_t_display.html#abf4de4c2478e8e9d29316fa0e2b6cf8c", null ],
@@ -24,7 +24,6 @@ var class_t_display =
     [ "HideWarningLog", "class_t_display.html#ab77f8f220d8c0f3fbdcc96a616b969e6", null ],
     [ "InvertElement", "class_t_display.html#a63930b93b9883463cd9d779e86fefba2", null ],
     [ "Left", "class_t_display.html#a1b2004c2d76614da605291b06863f340", null ],
-    [ "PerformanceLog", "class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71", null ],
     [ "PlotAbsolute", "class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc", null ],
     [ "PlotAndAddUserGraphic", "class_t_display.html#a60756c55ee44db2e876d0419417b9e25", null ],
     [ "PlotBlank", "class_t_display.html#ad601661fd4cd79a47b4c80ae77f901a9", null ],
@@ -63,6 +62,5 @@ var class_t_display =
     [ "OutputLog7", "class_t_display.html#a1b134b87e594c2cd261210023fd11161", null ],
     [ "OutputLog8", "class_t_display.html#a9de95aeb0787e6c535cf6622b3a87d8d", null ],
     [ "OutputLog9", "class_t_display.html#a5bf597b689a283f16b1aae5fe79ad2ec", null ],
-    [ "PerformanceMemo", "class_t_display.html#a4ecb842151b8cb4a56a72ec72b9ca682", null ],
     [ "ZoomOutFlag", "class_t_display.html#a0ce29cc370b43313ff15bee9423bf338", null ]
 ];

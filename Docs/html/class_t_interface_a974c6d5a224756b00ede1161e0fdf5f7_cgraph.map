@@ -1,6 +1,6 @@
 <map id="TInterface::SetCaption" name="TInterface::SetCaption">
 <area shape="rect" id="node1" title="Sets the railway and timetable titles at the top of the screen." alt="" coords="5,56,156,83"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="204,5,351,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="204,5,351,32"/>
 <area shape="rect" id="node3" href="$class_a_p_i.html#abebc08c03ceec2b898d8fe877b0efcba" title="save currently recorded status data to INI file" alt="" coords="236,56,319,83"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="204,107,351,133"/>
 </map>

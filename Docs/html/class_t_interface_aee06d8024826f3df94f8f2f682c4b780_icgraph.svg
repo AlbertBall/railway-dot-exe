@@ -12,7 +12,7 @@
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title="makes TTActionsListBox visible and stops the tt clock">
+<g id="a_node1"><a xlink:title="makes TTActionsListBox visible">
 <polygon fill="#bfbfbf" stroke="black" points="167,-0.5 167,-30.5 299,-30.5 299,-0.5 167,-0.5"/>
 <text text-anchor="start" x="175" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ShowTTActions</text>
 <text text-anchor="middle" x="233" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">ListBox</text>

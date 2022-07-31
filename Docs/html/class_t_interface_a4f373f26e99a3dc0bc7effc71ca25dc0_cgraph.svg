@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 1379;
 var viewHeight = 2617;
-var sectionId = 'dynsection-258';
+var sectionId = 'dynsection-253';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -68,7 +68,7 @@ var sectionId = 'dynsection-258';
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied">
+<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="pops the last entry off the call stack, throws an error if called when empty">
 <polygon fill="white" stroke="black" points="1094.5,-1187.01 1094.5,-1206.01 1204.5,-1206.01 1204.5,-1187.01 1094.5,-1187.01"/>
 <text text-anchor="middle" x="1149.5" y="-1194.01" font-family="Helvetica,sans-Serif" font-size="10.00">TUtilities::CallLogPop</text>
 </a>
@@ -1446,7 +1446,7 @@ var sectionId = 'dynsection-258';
 <!-- Node49 -->
 <g id="node46" class="node">
 <title>Node49</title>
-<g id="a_node46"><a xlink:href="class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" target="_top" xlink:title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker.">
+<g id="a_node46"><a xlink:href="class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" target="_top" xlink:title="&lt; Sets the information panel message for zoom&#45;out or paused modes">
 <polygon fill="white" stroke="red" points="902.5,-343.51 902.5,-373.51 1037.5,-373.51 1037.5,-343.51 902.5,-343.51"/>
 <text text-anchor="start" x="910.5" y="-361.51" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ClearandRebuild</text>
 <text text-anchor="middle" x="970" y="-350.51" font-family="Helvetica,sans-Serif" font-size="10.00">Railway</text>
@@ -1494,7 +1494,7 @@ var sectionId = 'dynsection-258';
 <!-- Node111 -->
 <g id="node49" class="node">
 <title>Node111</title>
-<g id="a_node49"><a xlink:href="class_t_interface.html#ab2b7fa09f178490f2bde9a6caf323f30" target="_top" xlink:title="makes TTActionsListBox invisible (if it was visible) and resterts the tt clock">
+<g id="a_node49"><a xlink:href="class_t_interface.html#ab2b7fa09f178490f2bde9a6caf323f30" target="_top" xlink:title="makes TTActionsListBox invisible (if it was visible)">
 <polygon fill="white" stroke="black" points="906,-441.51 906,-471.51 1034,-471.51 1034,-441.51 906,-441.51"/>
 <text text-anchor="start" x="914" y="-459.51" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::HideTTActions</text>
 <text text-anchor="middle" x="970" y="-448.51" font-family="Helvetica,sans-Serif" font-size="10.00">ListBox</text>

@@ -1,5 +1,5 @@
 <map id="TOneRoute::SetRouteSignals" name="TOneRoute::SetRouteSignals">
-<area shape="rect" id="node1" title="Called when setting a route to set all points appropriately. Also called when a new train is added at..." alt="" coords="1441,204,1633,231"/>
+<area shape="rect" id="node1" title="Called when setting a route to set all signals appropriately. Also called when a new train is added a..." alt="" coords="1441,204,1633,231"/>
 <area shape="rect" id="node2" href="$class_t_train_controller.html#aa895b60238810a9d134cd5b9c886da56" title="Introduce a new train to the railway, with the characteristics specified, returns true for success,..." alt="" coords="1203,103,1373,130"/>
 <area shape="rect" id="node4" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="711,52,846,79"/>
 <area shape="rect" id="node5" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="451,154,617,180"/>

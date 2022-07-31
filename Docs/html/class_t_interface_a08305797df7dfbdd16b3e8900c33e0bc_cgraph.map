@@ -1,7 +1,7 @@
 <map id="TInterface::ZoomButtonClick" name="TInterface::ZoomButtonClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,595,191,621"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1731,1845,1877,1872"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="946,1558,1126,1599"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1731,1845,1877,1872"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="946,1558,1126,1599"/>
 <area shape="rect" id="node4" href="$class_t_display.html#a8d990507ae0111e0b7890e8aa77fd76d" title="Empty the display." alt="" coords="1501,687,1654,713"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1731,1052,1877,1079"/>
 <area shape="rect" id="node35" href="$class_t_interface.html#ac0c9be911e93134ddda04ba498a8bd9c" title="Called during operation whenever the route type buttons need to be disabled, e.g. when paused." alt="" coords="699,1499,861,1541"/>
@@ -17,7 +17,7 @@
 <area shape="rect" id="node45" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="452,725,627,752"/>
 <area shape="rect" id="node46" href="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b" title="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode." alt="" coords="677,413,883,440"/>
 <area shape="rect" id="node47" href="$class_t_interface.html#a209ee94f8c890753da19524f48a8b78f" title="Enables or disables the initial Edit mode submenu items in Track mode." alt="" coords="951,275,1121,317"/>
-<area shape="rect" id="node48" href="$class_t_interface.html#ac24842680583df5ef46f3ece3bc76bb3" title="Sets the information panel message for zoom&#45;out or paused modes." alt="" coords="675,566,885,607"/>
+<area shape="rect" id="node48" href="$class_t_interface.html#ac24842680583df5ef46f3ece3bc76bb3" title=" " alt="" coords="675,566,885,607"/>
 <area shape="rect" id="node49" href="$class_t_interface.html#a89cc1839f77c2a867714cb52bd8d5cfe" title="Enables or disables the route type buttons depending on the route mode, sets the information panel me..." alt="" coords="933,646,1139,687"/>
 <area shape="rect" id="node50" href="$class_t_interface.html#af01b649aa75f881cbfd2f14a60533bcc" title="Sets the Level2PrefDirMode user mode, using the Level2PrefDirMode variable to determine the mode." alt="" coords="239,773,404,814"/>
 <area shape="rect" id="node6" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="1220,1449,1391,1490"/>
@@ -37,7 +37,7 @@
 <area shape="rect" id="node20" href="$class_t_graphic_element.html#ac12f60cb52eefdc86eaa504419eb138d" title="Load original graphic from the screen for point flashing or route start markers." alt="" coords="1476,1242,1679,1283"/>
 <area shape="rect" id="node21" href="$class_t_all_routes.html#af0a34aa05027527d256566ae52600583" title="Calls PrefDirMarker for all routes, with RouteCall set to identify a route call, and BuildingPrefDir ..." alt="" coords="1488,2149,1667,2176"/>
 <area shape="rect" id="node22" href="$class_t_track.html#aa67be9f8ad9bd885f649b26962e0d41d" title="True if there is a platform, NamedNonStationLocation or Concourse present in the railway." alt="" coords="1472,738,1683,779"/>
-<area shape="rect" id="node23" href="$class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc" title=" " alt="" coords="1500,1023,1655,1049"/>
+<area shape="rect" id="node23" href="$class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc" title="Plot the graphic at the railway (not screen) position set by HPos &amp; VPos." alt="" coords="1500,1023,1655,1049"/>
 <area shape="rect" id="node24" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="1207,1565,1404,1592"/>
 <area shape="rect" id="node25" href="$class_t_graphic_element.html#a04ccc26451ff7d95dc3c5951b71f421e" title="Plot the overlay graphic on screen." alt="" coords="1207,1899,1403,1925"/>
 <area shape="rect" id="node26" href="$class_t_track.html#ad8a74040f61dffb16633deea5054deef" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway (..." alt="" coords="1201,1819,1409,1875"/>

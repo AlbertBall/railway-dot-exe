@@ -1,5 +1,5 @@
 <map id="TInterface::HideTTActionsListBox" name="TInterface::HideTTActionsListBox">
-<area shape="rect" id="node1" title="makes TTActionsListBox invisible (if it was visible) and resterts the tt clock" alt="" coords="751,2221,921,2262"/>
+<area shape="rect" id="node1" title="makes TTActionsListBox invisible (if it was visible)" alt="" coords="751,2221,921,2262"/>
 <area shape="rect" id="node2" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="283,2838,477,2879"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="528,1469,703,1496"/>
 <area shape="rect" id="node49" href="$class_t_interface.html#ad4d8e814a9e7699cacee627c638d7926" title=" " alt="" coords="537,2250,693,2291"/>

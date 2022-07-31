@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.13.0 Beta</span>
+   &#160;<span id="projectnumber">v2.13.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -97,8 +97,7 @@ $(document).ready(function(){initNavTree('class_t_utilities.html',''); initResiz
 <div class="dynheader">
 Collaboration diagram for TUtilities:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities__coll__graph.svg" width="214" height="411"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities__coll__graph.svg" width="232" height="411"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -110,7 +109,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a34bd6bb5305bc29afdf424f6d35a921c"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a string of the form 'hh:mm:ss' for use in call &amp; event logging  <a href="class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c">More...</a><br /></td></tr>
 <tr class="separator:a34bd6bb5305bc29afdf424f6d35a921c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1eddca13cc3c492839e131f40ec21c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0">CallLogPop</a> (int Caller)</td></tr>
-<tr class="memdesc:ae1eddca13cc3c492839e131f40ec21c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; specifies whether no delays or minor, moderate or major random delays are to be applied  <a href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0">More...</a><br /></td></tr>
+<tr class="memdesc:ae1eddca13cc3c492839e131f40ec21c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">pops the last entry off the call stack, throws an error if called when empty  <a href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0">More...</a><br /></td></tr>
 <tr class="separator:ae1eddca13cc3c492839e131f40ec21c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a100a392ac8eeb3955796954a5afade36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a100a392ac8eeb3955796954a5afade36">FileDiagnostics</a> (AnsiString Input)</td></tr>
 <tr class="memdesc:a100a392ac8eeb3955796954a5afade36"><td class="mdescLeft">&#160;</td><td class="mdescRight">sends Input to 'TestFile.csv', this is a diagnostic function used during development  <a href="class_t_utilities.html#a100a392ac8eeb3955796954a5afade36">More...</a><br /></td></tr>
@@ -183,9 +182,53 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae6df4b6a5d1398f57ff62799331351a8"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#ae6df4b6a5d1398f57ff62799331351a8">IncrementAnsiTimeOneMinute</a> (AnsiString TimeVal)</td></tr>
 <tr class="memdesc:ae6df4b6a5d1398f57ff62799331351a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">takes "HH:MM" and increments it to "HH:MX", where MX == MM + 1, incrementing the hour if necessary  <a href="class_t_utilities.html#ae6df4b6a5d1398f57ff62799331351a8">More...</a><br /></td></tr>
 <tr class="separator:ae6df4b6a5d1398f57ff62799331351a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accca240b71d4081a33e9a7080f661779"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#accca240b71d4081a33e9a7080f661779">TUtilities</a> ()</td></tr>
+<tr class="separator:accca240b71d4081a33e9a7080f661779"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:ac90efde52aee911e415d52e7ac6227ad"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#ac90efde52aee911e415d52e7ac6227ad">MinorDelayCutoff</a></td></tr>
+<tr class="separator:ac90efde52aee911e415d52e7ac6227ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3194f06722e68ce72f9968f5f85e3c8f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a3194f06722e68ce72f9968f5f85e3c8f">ModerateDelayCutoff</a></td></tr>
+<tr class="separator:a3194f06722e68ce72f9968f5f85e3c8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcf1e36ba4cce8470285d047c8b9cb13"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#afcf1e36ba4cce8470285d047c8b9cb13">MajorDelayCutoff</a></td></tr>
+<tr class="separator:afcf1e36ba4cce8470285d047c8b9cb13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bb794804a4bec3887d63adca9db5dac"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a9bb794804a4bec3887d63adca9db5dac">MinorDelayFactor</a></td></tr>
+<tr class="separator:a9bb794804a4bec3887d63adca9db5dac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4232af5a39f009bc8cbb7bfc4663142a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a4232af5a39f009bc8cbb7bfc4663142a">ModerateDelayFactor</a></td></tr>
+<tr class="separator:a4232af5a39f009bc8cbb7bfc4663142a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67ecc5fc0071c86a3126e63d265020b1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a67ecc5fc0071c86a3126e63d265020b1">MajorDelayFactor</a></td></tr>
+<tr class="separator:a67ecc5fc0071c86a3126e63d265020b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6de32a7421601aab5689cabbb7dde465"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a6de32a7421601aab5689cabbb7dde465">NilPointChangeEventsPerFailure</a></td></tr>
+<tr class="separator:a6de32a7421601aab5689cabbb7dde465"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a244b2f44fa9ea31371c076cfc0262e04"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a244b2f44fa9ea31371c076cfc0262e04">NilSignalChangeEventsPerFailure</a></td></tr>
+<tr class="separator:a244b2f44fa9ea31371c076cfc0262e04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac7fbaa73f50fb32b5efe38d071a2eb4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#aac7fbaa73f50fb32b5efe38d071a2eb4">NilMTBTSRs</a></td></tr>
+<tr class="separator:aac7fbaa73f50fb32b5efe38d071a2eb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d56c83b95531e26b1c62dd6771f6b11"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a9d56c83b95531e26b1c62dd6771f6b11">MinorPointChangeEventsPerFailure</a></td></tr>
+<tr class="separator:a9d56c83b95531e26b1c62dd6771f6b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dba9ac5efb64fb83bc6b36770749298"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a7dba9ac5efb64fb83bc6b36770749298">MinorSignalChangeEventsPerFailure</a></td></tr>
+<tr class="separator:a7dba9ac5efb64fb83bc6b36770749298"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a388cc790966733382ddc173f748ab6d6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a388cc790966733382ddc173f748ab6d6">MinorMTBTSRs</a></td></tr>
+<tr class="separator:a388cc790966733382ddc173f748ab6d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac98d33b8d5845ad74b54d6b7c92d95a7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#ac98d33b8d5845ad74b54d6b7c92d95a7">ModeratePointChangeEventsPerFailure</a></td></tr>
+<tr class="separator:ac98d33b8d5845ad74b54d6b7c92d95a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20ae7bf91b93f29bafb37ead829b7d28"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a20ae7bf91b93f29bafb37ead829b7d28">ModerateSignalChangeEventsPerFailure</a></td></tr>
+<tr class="separator:a20ae7bf91b93f29bafb37ead829b7d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2a4f55a8b3315c479133290032998e8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#aa2a4f55a8b3315c479133290032998e8">ModerateMTBTSRs</a></td></tr>
+<tr class="separator:aa2a4f55a8b3315c479133290032998e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3be63951eee57df78cf0bd96c9a1b9a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#ab3be63951eee57df78cf0bd96c9a1b9a">MajorPointChangeEventsPerFailure</a></td></tr>
+<tr class="separator:ab3be63951eee57df78cf0bd96c9a1b9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a074fc0a3b1d6dbfd514357209eea756b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a074fc0a3b1d6dbfd514357209eea756b">MajorSignalChangeEventsPerFailure</a></td></tr>
+<tr class="separator:a074fc0a3b1d6dbfd514357209eea756b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4509aa6dd1d0f6b69db8008070f3dbab"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a4509aa6dd1d0f6b69db8008070f3dbab">MajorMTBTSRs</a></td></tr>
+<tr class="separator:a4509aa6dd1d0f6b69db8008070f3dbab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7abd82dfb74ba9706cde72a9ba3c014"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#ae7abd82dfb74ba9706cde72a9ba3c014">RepairDiagnosisTime</a></td></tr>
+<tr class="separator:ae7abd82dfb74ba9706cde72a9ba3c014"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53cd396b37abddd24064eaa524d89db0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a53cd396b37abddd24064eaa524d89db0">MaxRandomRepairTime</a></td></tr>
+<tr class="separator:a53cd396b37abddd24064eaa524d89db0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabf10d10edc0fd28bb2890d70f9b02ee"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#aabf10d10edc0fd28bb2890d70f9b02ee">FixedMinRepairTime</a></td></tr>
+<tr class="separator:aabf10d10edc0fd28bb2890d70f9b02ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fd0d8e0ec95309b508fd37fa541555e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a0fd0d8e0ec95309b508fd37fa541555e">Clock2Stopped</a></td></tr>
 <tr class="memdesc:a0fd0d8e0ec95309b508fd37fa541555e"><td class="mdescLeft">&#160;</td><td class="mdescRight">when true the main loop - Interface-&gt;ClockTimer2 - is stopped  <a href="class_t_utilities.html#a0fd0d8e0ec95309b508fd37fa541555e">More...</a><br /></td></tr>
 <tr class="separator:a0fd0d8e0ec95309b508fd37fa541555e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,6 +241,18 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a19e0b3570b0171a37d2e6a963d06e977"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a19e0b3570b0171a37d2e6a963d06e977">DecimalPoint</a></td></tr>
 <tr class="memdesc:a19e0b3570b0171a37d2e6a963d06e977"><td class="mdescLeft">&#160;</td><td class="mdescRight">added at v2.4.0 so can use the local value in loaded session files  <a href="class_t_utilities.html#a19e0b3570b0171a37d2e6a963d06e977">More...</a><br /></td></tr>
 <tr class="separator:a19e0b3570b0171a37d2e6a963d06e977"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60411e55bbf7ac96ad02d4146af0e4c6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a60411e55bbf7ac96ad02d4146af0e4c6">LastDelayTTClockTime</a></td></tr>
+<tr class="memdesc:a60411e55bbf7ac96ad02d4146af0e4c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clock time at which the latest delay for any train occurred. Used to prevent new delays within 5 minutes of the last one, added at v2.13.0.  <a href="class_t_utilities.html#a60411e55bbf7ac96ad02d4146af0e4c6">More...</a><br /></td></tr>
+<tr class="separator:a60411e55bbf7ac96ad02d4146af0e4c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a66f04e962a1253b1bb899f718f2026"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a0a66f04e962a1253b1bb899f718f2026">MTBTSRs</a></td></tr>
+<tr class="memdesc:a0a66f04e962a1253b1bb899f718f2026"><td class="mdescLeft">&#160;</td><td class="mdescRight">temporary speed restriction, units /day/simple element added at v2.13.0  <a href="class_t_utilities.html#a0a66f04e962a1253b1bb899f718f2026">More...</a><br /></td></tr>
+<tr class="separator:a0a66f04e962a1253b1bb899f718f2026"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81cdc4810af7fb4d2efd80a1abe92a7d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a81cdc4810af7fb4d2efd80a1abe92a7d">PointChangeEventsPerFailure</a></td></tr>
+<tr class="memdesc:a81cdc4810af7fb4d2efd80a1abe92a7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of points changes between failures - reciprocal of failure probability per change  <a href="class_t_utilities.html#a81cdc4810af7fb4d2efd80a1abe92a7d">More...</a><br /></td></tr>
+<tr class="separator:a81cdc4810af7fb4d2efd80a1abe92a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59f6343f504ae8402ea9d966dafc8ebb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a59f6343f504ae8402ea9d966dafc8ebb">SignalChangeEventsPerFailure</a></td></tr>
+<tr class="memdesc:a59f6343f504ae8402ea9d966dafc8ebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of signal changes between failures - reciprocal of failure probability per change  <a href="class_t_utilities.html#a59f6343f504ae8402ea9d966dafc8ebb">More...</a><br /></td></tr>
+<tr class="separator:a59f6343f504ae8402ea9d966dafc8ebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9422864dc36c3d98ad952f10026c572"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#ac9422864dc36c3d98ad952f10026c572">ScreenElementWidth</a></td></tr>
 <tr class="memdesc:ac9422864dc36c3d98ad952f10026c572"><td class="mdescLeft">&#160;</td><td class="mdescRight">width of display screen in elements  <a href="class_t_utilities.html#ac9422864dc36c3d98ad952f10026c572">More...</a><br /></td></tr>
 <tr class="separator:ac9422864dc36c3d98ad952f10026c572"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -205,9 +260,10 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a45d9703729a28c2fb2638539fa909e81"><td class="mdescLeft">&#160;</td><td class="mdescRight">height of display screen in elements  <a href="class_t_utilities.html#a45d9703729a28c2fb2638539fa909e81">More...</a><br /></td></tr>
 <tr class="separator:a45d9703729a28c2fb2638539fa909e81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9965ae79442fbb5b1ce5ba1043dd144d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a9965ae79442fbb5b1ce5ba1043dd144d">CumulativeDelayedRandMinsAllTrains</a></td></tr>
+<tr class="memdesc:a9965ae79442fbb5b1ce5ba1043dd144d"><td class="mdescLeft">&#160;</td><td class="mdescRight">the running total of all random delays including knock-on delays for all trains, used to reduce total late mins in performance summary (added at v2.13.0)  <a href="class_t_utilities.html#a9965ae79442fbb5b1ce5ba1043dd144d">More...</a><br /></td></tr>
 <tr class="separator:a9965ae79442fbb5b1ce5ba1043dd144d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc7cd1d066ac7942ad6c1239b3c25eee"><td class="memItemLeft" align="right" valign="top">std::ofstream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#acc7cd1d066ac7942ad6c1239b3c25eee">PerformanceFile</a></td></tr>
-<tr class="memdesc:acc7cd1d066ac7942ad6c1239b3c25eee"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; the running total of all random delays including knock-on delays for all trains, used to reduce total late mins in performance summary  <a href="class_t_utilities.html#acc7cd1d066ac7942ad6c1239b3c25eee">More...</a><br /></td></tr>
+<tr class="memdesc:acc7cd1d066ac7942ad6c1239b3c25eee"><td class="mdescLeft">&#160;</td><td class="mdescRight">the file where the performance log for a particular period of operation is saved  <a href="class_t_utilities.html#acc7cd1d066ac7942ad6c1239b3c25eee">More...</a><br /></td></tr>
 <tr class="separator:acc7cd1d066ac7942ad6c1239b3c25eee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf6c3e70d5fbf58720ff0d9f80de5bde"><td class="memItemLeft" align="right" valign="top">std::deque&lt; AnsiString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#abf6c3e70d5fbf58720ff0d9f80de5bde">CallLog</a></td></tr>
 <tr class="memdesc:abf6c3e70d5fbf58720ff0d9f80de5bde"><td class="mdescLeft">&#160;</td><td class="mdescRight">call stack store, saved to the errorlog for diagnostic purposes  <a href="class_t_utilities.html#abf6c3e70d5fbf58720ff0d9f80de5bde">More...</a><br /></td></tr>
@@ -215,16 +271,48 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ace6be5cece5f2e271c0b85a9d2f51917"><td class="memItemLeft" align="right" valign="top">std::deque&lt; AnsiString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#ace6be5cece5f2e271c0b85a9d2f51917">EventLog</a></td></tr>
 <tr class="memdesc:ace6be5cece5f2e271c0b85a9d2f51917"><td class="mdescLeft">&#160;</td><td class="mdescRight">event store, saved to the errorlog for diagnostic purposes  <a href="class_t_utilities.html#ace6be5cece5f2e271c0b85a9d2f51917">More...</a><br /></td></tr>
 <tr class="separator:ace6be5cece5f2e271c0b85a9d2f51917"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a522d39d776b620c84be9d0b4eb9f52a0"><td class="memItemLeft" align="right" valign="top">TDateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a522d39d776b620c84be9d0b4eb9f52a0">LastTSRCheckTime</a></td></tr>
+<tr class="memdesc:a522d39d776b620c84be9d0b4eb9f52a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">time of last TSR check, used every 5 minutes, added at v2.13.0  <a href="class_t_utilities.html#a522d39d776b620c84be9d0b4eb9f52a0">More...</a><br /></td></tr>
+<tr class="separator:a522d39d776b620c84be9d0b4eb9f52a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89b8716bbc78332d40427ed688ce56bd"><td class="memItemLeft" align="right" valign="top">TColor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a89b8716bbc78332d40427ed688ce56bd">clTransparent</a></td></tr>
 <tr class="memdesc:a89b8716bbc78332d40427ed688ce56bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">the display background colour, can be white, black or dark blue  <a href="class_t_utilities.html#a89b8716bbc78332d40427ed688ce56bd">More...</a><br /></td></tr>
 <tr class="separator:a89b8716bbc78332d40427ed688ce56bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31e0e69b53b598580277d76a474c0e3e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_utilities_8h.html#a90aecfc4f47c8d044781e5bb2f120d3b">TDelayMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_utilities.html#a31e0e69b53b598580277d76a474c0e3e">DelayMode</a></td></tr>
+<tr class="memdesc:a31e0e69b53b598580277d76a474c0e3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">specifies whether no delays or minor, moderate or major random delays are to be applied (added at v2.13.0)  <a href="class_t_utilities.html#a31e0e69b53b598580277d76a474c0e3e">More...</a><br /></td></tr>
 <tr class="separator:a31e0e69b53b598580277d76a474c0e3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00040">40</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="accca240b71d4081a33e9a7080f661779"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accca240b71d4081a33e9a7080f661779">&#9670;&nbsp;</a></span>TUtilities()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TUtilities::TUtilities </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00161">161</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae1eddca13cc3c492839e131f40ec21c0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae1eddca13cc3c492839e131f40ec21c0">&#9670;&nbsp;</a></span>CallLogPop()</h2>
 
@@ -241,7 +329,6 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>&lt; specifies whether no delays or minor, moderate or major random delays are to be applied </p>
 <p>pops the last entry off the call stack, throws an error if called when empty </p>
 
 <p class="definition">Definition at line <a class="el" href="_utilities_8cpp_source.html#l00050">50</a> of file <a class="el" href="_utilities_8cpp_source.html">Utilities.cpp</a>.</p>
@@ -280,8 +367,7 @@ Public Attributes</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a6a03c1597e2cc5d71c2f88ac36f11363_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a6a03c1597e2cc5d71c2f88ac36f11363_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -330,14 +416,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_ab4b66aa7480fda73d554fe0bcca82b60_cgraph.svg" width="400" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_ab4b66aa7480fda73d554fe0bcca82b60_cgraph.svg" width="400" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_ab4b66aa7480fda73d554fe0bcca82b60_icgraph.svg" width="100%" height="525"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_ab4b66aa7480fda73d554fe0bcca82b60_icgraph.svg" width="100%" height="525"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -375,8 +459,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a0a0ef5bf2fc74c0026f2a8bec4151d37_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a0a0ef5bf2fc74c0026f2a8bec4151d37_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -414,8 +497,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a3c79ab051602edf407b81a71d2e72119_icgraph.svg" width="100%" height="488"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a3c79ab051602edf407b81a71d2e72119_icgraph.svg" width="100%" height="488"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -442,14 +524,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a1b39fffcd392bfb0f5a2ca393de3a6bb_cgraph.svg" width="394" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a1b39fffcd392bfb0f5a2ca393de3a6bb_cgraph.svg" width="394" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a1b39fffcd392bfb0f5a2ca393de3a6bb_icgraph.svg" width="100%" height="416"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a1b39fffcd392bfb0f5a2ca393de3a6bb_icgraph.svg" width="100%" height="416"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -476,14 +556,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a5c7332a6b45894902f271f0ab9ab87db_cgraph.svg" width="408" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a5c7332a6b45894902f271f0ab9ab87db_cgraph.svg" width="408" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a5c7332a6b45894902f271f0ab9ab87db_icgraph.svg" width="100%" height="543"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a5c7332a6b45894902f271f0ab9ab87db_icgraph.svg" width="100%" height="543"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -526,14 +604,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a4d229af6e8943da1936bcbcc1c83846b_cgraph.svg" width="382" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a4d229af6e8943da1936bcbcc1c83846b_cgraph.svg" width="382" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a4d229af6e8943da1936bcbcc1c83846b_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a4d229af6e8943da1936bcbcc1c83846b_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -560,8 +636,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a7896a24d025c8164b2c8215944d072aa_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a7896a24d025c8164b2c8215944d072aa_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -588,8 +663,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a8bc6745e0433d55022e016b6551f04a0_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a8bc6745e0433d55022e016b6551f04a0_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -616,8 +690,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_aea3e330f1fd0c0e68c84a338bd5f6c3c_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_aea3e330f1fd0c0e68c84a338bd5f6c3c_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -643,8 +716,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a9ca62e05ace8e6c4c33d377c26c48e55_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a9ca62e05ace8e6c4c33d377c26c48e55_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -721,8 +793,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a2dfbe3d4ed11770bc1a902b51afdc10c_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a2dfbe3d4ed11770bc1a902b51afdc10c_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -749,8 +820,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_ae6df4b6a5d1398f57ff62799331351a8_icgraph.svg" width="615" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_ae6df4b6a5d1398f57ff62799331351a8_icgraph.svg" width="615" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -777,8 +847,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a9a0ec4d0c686c71157c371d647824777_icgraph.svg" width="100%" height="585"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a9a0ec4d0c686c71157c371d647824777_icgraph.svg" width="100%" height="585"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -805,14 +874,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_ac970a0df84f5cb26ed962020b7dc2d6d_cgraph.svg" width="391" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_ac970a0df84f5cb26ed962020b7dc2d6d_cgraph.svg" width="391" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_ac970a0df84f5cb26ed962020b7dc2d6d_icgraph.svg" width="100%" height="554"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_ac970a0df84f5cb26ed962020b7dc2d6d_icgraph.svg" width="100%" height="554"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -839,8 +906,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a84bf39701305cf4814377d178d0fec8c_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a84bf39701305cf4814377d178d0fec8c_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -867,8 +933,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a0aac90f10a08736514da3b3e02129e1e_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a0aac90f10a08736514da3b3e02129e1e_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -905,8 +970,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a0350456fd482593c424d125536b34093_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a0350456fd482593c424d125536b34093_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -943,8 +1007,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a06a211ebaa112f3fac0edc5b238ef876_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a06a211ebaa112f3fac0edc5b238ef876_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -981,14 +1044,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a92b5adfb8ad3a937a8d208bfd90a5741_cgraph.svg" width="391" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a92b5adfb8ad3a937a8d208bfd90a5741_cgraph.svg" width="391" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a92b5adfb8ad3a937a8d208bfd90a5741_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a92b5adfb8ad3a937a8d208bfd90a5741_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1025,8 +1086,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a86ed634e8a9d7ca534a324954f4a7a2f_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a86ed634e8a9d7ca534a324954f4a7a2f_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1063,8 +1123,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a60531c6cb1a6a33dd71299d3a5b6cc21_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_utilities_a60531c6cb1a6a33dd71299d3a5b6cc21_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1105,7 +1164,7 @@ Here is the caller graph for this function:</div>
 
 <p>call stack store, saved to the errorlog for diagnostic purposes </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00063">63</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00095">95</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -1123,7 +1182,7 @@ Here is the caller graph for this function:</div>
 
 <p>when true the main loop - Interface-&gt;ClockTimer2 - is stopped </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00043">43</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00069">69</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -1141,7 +1200,7 @@ Here is the caller graph for this function:</div>
 
 <p>the display background colour, can be white, black or dark blue </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00072">72</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00105">105</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -1157,7 +1216,9 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00057">57</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p>the running total of all random delays including knock-on delays for all trains, used to reduce total late mins in performance summary (added at v2.13.0) </p>
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00091">91</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -1175,7 +1236,7 @@ Here is the caller graph for this function:</div>
 
 <p>added at v2.4.0 so can use the local value in loaded session files </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00050">50</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00076">76</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -1191,7 +1252,9 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00074">74</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p>specifies whether no delays or minor, moderate or major random delays are to be applied (added at v2.13.0) </p>
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00107">107</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -1209,7 +1272,381 @@ Here is the caller graph for this function:</div>
 
 <p>event store, saved to the errorlog for diagnostic purposes </p>
 
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00097">97</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="aabf10d10edc0fd28bb2890d70f9b02ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabf10d10edc0fd28bb2890d70f9b02ee">&#9670;&nbsp;</a></span>FixedMinRepairTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::FixedMinRepairTime</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00066">66</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a60411e55bbf7ac96ad02d4146af0e4c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60411e55bbf7ac96ad02d4146af0e4c6">&#9670;&nbsp;</a></span>LastDelayTTClockTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double TUtilities::LastDelayTTClockTime</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Clock time at which the latest delay for any train occurred. Used to prevent new delays within 5 minutes of the last one, added at v2.13.0. </p>
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00079">79</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a522d39d776b620c84be9d0b4eb9f52a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a522d39d776b620c84be9d0b4eb9f52a0">&#9670;&nbsp;</a></span>LastTSRCheckTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TDateTime TUtilities::LastTSRCheckTime</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>time of last TSR check, used every 5 minutes, added at v2.13.0 </p>
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00099">99</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="afcf1e36ba4cce8470285d047c8b9cb13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcf1e36ba4cce8470285d047c8b9cb13">&#9670;&nbsp;</a></span>MajorDelayCutoff</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TUtilities::MajorDelayCutoff</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00046">46</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a67ecc5fc0071c86a3126e63d265020b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67ecc5fc0071c86a3126e63d265020b1">&#9670;&nbsp;</a></span>MajorDelayFactor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TUtilities::MajorDelayFactor</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00049">49</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a4509aa6dd1d0f6b69db8008070f3dbab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4509aa6dd1d0f6b69db8008070f3dbab">&#9670;&nbsp;</a></span>MajorMTBTSRs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::MajorMTBTSRs</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00062">62</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="ab3be63951eee57df78cf0bd96c9a1b9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3be63951eee57df78cf0bd96c9a1b9a">&#9670;&nbsp;</a></span>MajorPointChangeEventsPerFailure</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::MajorPointChangeEventsPerFailure</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00060">60</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a074fc0a3b1d6dbfd514357209eea756b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a074fc0a3b1d6dbfd514357209eea756b">&#9670;&nbsp;</a></span>MajorSignalChangeEventsPerFailure</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::MajorSignalChangeEventsPerFailure</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00061">61</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a53cd396b37abddd24064eaa524d89db0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53cd396b37abddd24064eaa524d89db0">&#9670;&nbsp;</a></span>MaxRandomRepairTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::MaxRandomRepairTime</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 <p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00065">65</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="ac90efde52aee911e415d52e7ac6227ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac90efde52aee911e415d52e7ac6227ad">&#9670;&nbsp;</a></span>MinorDelayCutoff</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TUtilities::MinorDelayCutoff</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00044">44</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a9bb794804a4bec3887d63adca9db5dac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bb794804a4bec3887d63adca9db5dac">&#9670;&nbsp;</a></span>MinorDelayFactor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TUtilities::MinorDelayFactor</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00047">47</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a388cc790966733382ddc173f748ab6d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a388cc790966733382ddc173f748ab6d6">&#9670;&nbsp;</a></span>MinorMTBTSRs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::MinorMTBTSRs</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00056">56</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a9d56c83b95531e26b1c62dd6771f6b11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d56c83b95531e26b1c62dd6771f6b11">&#9670;&nbsp;</a></span>MinorPointChangeEventsPerFailure</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::MinorPointChangeEventsPerFailure</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00054">54</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a7dba9ac5efb64fb83bc6b36770749298"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7dba9ac5efb64fb83bc6b36770749298">&#9670;&nbsp;</a></span>MinorSignalChangeEventsPerFailure</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::MinorSignalChangeEventsPerFailure</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00055">55</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a3194f06722e68ce72f9968f5f85e3c8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3194f06722e68ce72f9968f5f85e3c8f">&#9670;&nbsp;</a></span>ModerateDelayCutoff</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TUtilities::ModerateDelayCutoff</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00045">45</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a4232af5a39f009bc8cbb7bfc4663142a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4232af5a39f009bc8cbb7bfc4663142a">&#9670;&nbsp;</a></span>ModerateDelayFactor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TUtilities::ModerateDelayFactor</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00048">48</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="aa2a4f55a8b3315c479133290032998e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2a4f55a8b3315c479133290032998e8">&#9670;&nbsp;</a></span>ModerateMTBTSRs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::ModerateMTBTSRs</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00059">59</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="ac98d33b8d5845ad74b54d6b7c92d95a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac98d33b8d5845ad74b54d6b7c92d95a7">&#9670;&nbsp;</a></span>ModeratePointChangeEventsPerFailure</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::ModeratePointChangeEventsPerFailure</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00057">57</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a20ae7bf91b93f29bafb37ead829b7d28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20ae7bf91b93f29bafb37ead829b7d28">&#9670;&nbsp;</a></span>ModerateSignalChangeEventsPerFailure</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::ModerateSignalChangeEventsPerFailure</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00058">58</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a0a66f04e962a1253b1bb899f718f2026"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a66f04e962a1253b1bb899f718f2026">&#9670;&nbsp;</a></span>MTBTSRs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double TUtilities::MTBTSRs</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>temporary speed restriction, units /day/simple element added at v2.13.0 </p>
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00081">81</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="aac7fbaa73f50fb32b5efe38d071a2eb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac7fbaa73f50fb32b5efe38d071a2eb4">&#9670;&nbsp;</a></span>NilMTBTSRs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::NilMTBTSRs</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00053">53</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a6de32a7421601aab5689cabbb7dde465"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6de32a7421601aab5689cabbb7dde465">&#9670;&nbsp;</a></span>NilPointChangeEventsPerFailure</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::NilPointChangeEventsPerFailure</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00051">51</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a244b2f44fa9ea31371c076cfc0262e04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a244b2f44fa9ea31371c076cfc0262e04">&#9670;&nbsp;</a></span>NilSignalChangeEventsPerFailure</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::NilSignalChangeEventsPerFailure</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00052">52</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -1225,10 +1662,43 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>&lt; the running total of all random delays including knock-on delays for all trains, used to reduce total late mins in performance summary </p>
 <p>the file where the performance log for a particular period of operation is saved </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00061">61</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00093">93</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a81cdc4810af7fb4d2efd80a1abe92a7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81cdc4810af7fb4d2efd80a1abe92a7d">&#9670;&nbsp;</a></span>PointChangeEventsPerFailure</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::PointChangeEventsPerFailure</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>number of points changes between failures - reciprocal of failure probability per change </p>
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00083">83</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="ae7abd82dfb74ba9706cde72a9ba3c014"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7abd82dfb74ba9706cde72a9ba3c014">&#9670;&nbsp;</a></span>RepairDiagnosisTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float TUtilities::RepairDiagnosisTime</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00064">64</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -1246,7 +1716,7 @@ Here is the caller graph for this function:</div>
 
 <p>new at v2.3.0 false=LH signals </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00045">45</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00071">71</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -1264,7 +1734,7 @@ Here is the caller graph for this function:</div>
 
 <p>height of display screen in elements </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00055">55</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00089">89</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -1282,7 +1752,7 @@ Here is the caller graph for this function:</div>
 
 <p>width of display screen in elements </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00053">53</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00087">87</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>
@@ -1300,7 +1770,25 @@ Here is the caller graph for this function:</div>
 
 <p>flag to indicate whether the call to setlocale() in <a class="el" href="_interface_unit_8cpp.html">InterfaceUnit.cpp</a> succeeded or not </p>
 
-<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00047">47</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00073">73</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
+
+</div>
+</div>
+<a id="a59f6343f504ae8402ea9d966dafc8ebb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59f6343f504ae8402ea9d966dafc8ebb">&#9670;&nbsp;</a></span>SignalChangeEventsPerFailure</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TUtilities::SignalChangeEventsPerFailure</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>number of signal changes between failures - reciprocal of failure probability per change </p>
+
+<p class="definition">Definition at line <a class="el" href="_utilities_8h_source.html#l00085">85</a> of file <a class="el" href="_utilities_8h_source.html">Utilities.h</a>.</p>
 
 </div>
 </div>

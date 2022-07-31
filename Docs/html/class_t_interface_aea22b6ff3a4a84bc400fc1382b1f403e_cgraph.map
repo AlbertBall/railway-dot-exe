@@ -1,6 +1,6 @@
 <map id="TInterface::LoadConfigFile" name="TInterface::LoadConfigFile">
 <area shape="rect" id="node1" title="Load the configuration file, only allow default track element length and speed limit to be loaded it ..." alt="" coords="5,146,176,173"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="469,85,616,111"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="469,85,616,111"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a3c79ab051602edf407b81a71d2e72119" title="similar to CheckAndReadFileString but allows tab characters and doesn&#39;t ignore initial &#160;&#160;characters" alt="" coords="237,288,408,329"/>
 <area shape="rect" id="node4" href="$class_t_rail_graphics.html#a2a9f6885adeb46f1f8825ac02eaf30b0" title="Converts all signal graphics to opposite hand new at v2.3.0." alt="" coords="224,40,421,81"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="469,142,616,169"/>

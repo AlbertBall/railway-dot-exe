@@ -163,6 +163,12 @@
             <DependentOn>AboutUnit.h</DependentOn>
             <BuildOrder>3</BuildOrder>
         </CppCompile>
+        <CppCompile Include="ActionsDueUnit.cpp">
+            <Form>ActionsDueForm</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>ActionsDueUnit.h</DependentOn>
+            <BuildOrder>14</BuildOrder>
+        </CppCompile>
         <CppCompile Include="API.cpp">
             <DependentOn>API.h</DependentOn>
             <BuildOrder>12</BuildOrder>
@@ -183,6 +189,12 @@
             <FormType>dfm</FormType>
             <DependentOn>InterfaceUnit.h</DependentOn>
             <BuildOrder>6</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="PerfLogUnit.cpp">
+            <Form>PerfLogForm</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>PerfLogUnit.h</DependentOn>
+            <BuildOrder>13</BuildOrder>
         </CppCompile>
         <CppCompile Include="railway.cpp">
             <BuildOrder>0</BuildOrder>
@@ -211,7 +223,9 @@
             <BuildOrder>10</BuildOrder>
         </CppCompile>
         <FormResources Include="AboutUnit.dfm"/>
+        <FormResources Include="PerfLogUnit.dfm"/>
         <FormResources Include="InterfaceUnit.dfm"/>
+        <FormResources Include="ActionsDueUnit.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -264,8 +278,9 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx64\libcgcrtl.dylib" Class="DependencyModule">
-                    <Platform Name="OSX64">
+                <DeployFile LocalName=".\Win32\Debug\railway.tds" Configuration="Debug" Class="DebugSymbols">
+                    <Platform Name="Win32">
+                        <RemoteName>railway.tds</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -389,9 +404,8 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName=".\Win32\Debug\railway.tds" Configuration="Debug" Class="DebugSymbols">
-                    <Platform Name="Win32">
-                        <RemoteName>railway.tds</RemoteName>
+                <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx64\libcgcrtl.dylib" Class="DependencyModule">
+                    <Platform Name="OSX64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

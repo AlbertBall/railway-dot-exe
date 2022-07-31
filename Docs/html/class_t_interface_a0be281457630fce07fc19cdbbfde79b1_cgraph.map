@@ -1,6 +1,6 @@
 <map id="TInterface::SaveAsMenuItemClick" name="TInterface::SaveAsMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,1916,192,1957"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1457,1636,1603,1663"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1457,1636,1603,1663"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="500,491,635,518"/>
 <area shape="rect" id="node12" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1457,2276,1603,2303"/>
 <area shape="rect" id="node35" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="481,3270,654,3296"/>
@@ -44,9 +44,9 @@
 <area shape="rect" id="node40" href="$class_t_track.html#a794daa0471b473e28ff24c87a92112dc" title="True if there are gaps in the railway and any are unset." alt="" coords="971,2848,1106,2875"/>
 <area shape="rect" id="node41" href="$class_t_track.html#aa8386109483977bfaa97909747358149" title="Indicates whether or not the track has been successfully linked together." alt="" coords="959,2950,1119,2976"/>
 <area shape="rect" id="node42" href="$class_t_track.html#ad7d7ef450424ea6aab50db5445c6448c" title="True if there are unnamed NamedLocationElements (includes footcrossings)" alt="" coords="945,2696,1132,2723"/>
-<area shape="rect" id="node46" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="1201,2429,1381,2470"/>
+<area shape="rect" id="node46" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="1201,2429,1381,2470"/>
 <area shape="rect" id="node47" href="$class_t_interface.html#ac0c9be911e93134ddda04ba498a8bd9c" title="Called during operation whenever the route type buttons need to be disabled, e.g. when paused." alt="" coords="1209,2494,1372,2536"/>
 <area shape="rect" id="node48" href="$class_t_one_pref_dir.html#abc09de3c32460a73d3de12625329210d" title="Empty the existing preferred direction vector &amp; map &#45; for use by other classes." alt="" coords="709,2697,887,2738"/>
-<area shape="rect" id="node49" href="$class_t_interface.html#ab2b7fa09f178490f2bde9a6caf323f30" title="makes TTActionsListBox invisible (if it was visible) and resterts the tt clock" alt="" coords="1205,2210,1376,2252"/>
+<area shape="rect" id="node49" href="$class_t_interface.html#ab2b7fa09f178490f2bde9a6caf323f30" title="makes TTActionsListBox invisible (if it was visible)" alt="" coords="1205,2210,1376,2252"/>
 <area shape="rect" id="node50" href="$class_t_track.html#a2eaa84532799b76a0b42cf6e2611224d" title="True if there is no active track in the railway." alt="" coords="963,2646,1115,2672"/>
 </map>

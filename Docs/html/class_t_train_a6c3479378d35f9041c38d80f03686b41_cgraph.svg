@@ -67,7 +67,7 @@ var sectionId = 'dynsection-48';
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied">
+<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="pops the last entry off the call stack, throws an error if called when empty">
 <polygon fill="white" stroke="black" points="666,-563.1 666,-582.1 776,-582.1 776,-563.1 666,-563.1"/>
 <text text-anchor="middle" x="721" y="-570.1" font-family="Helvetica,sans-Serif" font-size="10.00">TUtilities::CallLogPop</text>
 </a>
@@ -273,17 +273,17 @@ var sectionId = 'dynsection-48';
 <!-- Node10 -->
 <g id="node10" class="node">
 <title>Node10</title>
-<g id="a_node10"><a xlink:href="class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" target="_top" xlink:title="Send Statement to the performance log on screen and to the file.">
-<polygon fill="white" stroke="black" points="484,-696.1 484,-715.1 615,-715.1 615,-696.1 484,-696.1"/>
-<text text-anchor="middle" x="549.5" y="-703.1" font-family="Helvetica,sans-Serif" font-size="10.00">TDisplay::PerformanceLog</text>
+<g id="a_node10"><a xlink:href="class_t_perf_log_form.html#a72f06bf03353c15c94ceefbf420ff7b4" target="_top" xlink:title="Send Statement to the performance log on screen and to the file.">
+<polygon fill="white" stroke="black" points="472.5,-696.1 472.5,-715.1 626.5,-715.1 626.5,-696.1 472.5,-696.1"/>
+<text text-anchor="middle" x="549.5" y="-703.1" font-family="Helvetica,sans-Serif" font-size="10.00">TPerfLogForm::PerformanceLog</text>
 </a>
 </g>
 </g>
 <!-- Node6&#45;&gt;Node10 -->
 <g id="edge18" class="edge">
 <title>Node6&#45;&gt;Node10</title>
-<path fill="none" stroke="midnightblue" d="M237.2,-674.3C254.61,-676.77 274.71,-679.48 293,-681.6 353.65,-688.65 422.6,-695.03 473.57,-699.44"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="473.58,-702.95 483.84,-700.32 474.17,-695.98 473.58,-702.95"/>
+<path fill="none" stroke="midnightblue" d="M237.2,-674.3C254.61,-676.77 274.71,-679.48 293,-681.6 349.31,-688.15 412.76,-694.12 462.34,-698.46"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="462.12,-701.96 472.38,-699.34 462.73,-694.98 462.12,-701.96"/>
 </g>
 <!-- Node11 -->
 <g id="node11" class="node">
@@ -354,7 +354,7 @@ var sectionId = 'dynsection-48';
 <!-- Node10&#45;&gt;Node5 -->
 <g id="edge20" class="edge">
 <title>Node10&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M615.02,-696.95C620.54,-694.29 625.66,-690.9 630,-686.6 636.29,-680.38 697.82,-420.03 715.36,-345.41"/>
+<path fill="none" stroke="midnightblue" d="M616.93,-695.99C621.72,-693.49 626.17,-690.4 630,-686.6 636.29,-680.38 697.82,-420.03 715.36,-345.41"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="718.82,-345.98 717.7,-335.44 712,-344.38 718.82,-345.98"/>
 </g>
 <!-- Node11&#45;&gt;Node2 -->

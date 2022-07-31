@@ -63,9 +63,9 @@ int TDisplay::DisplayZoomOutOffsetHHome = 0;
 int TDisplay::DisplayZoomOutOffsetVHome = 0;
 
 // ---------------------------------------------------------------------------
-
-TDisplay::TDisplay(TImage* &Image, TMemo* &MemoBox, TLabel* &L1, TLabel* &L2, TLabel* &L3, TLabel* &L4, TLabel* &L5, TLabel* &L6, TLabel* &L7, TLabel* &L8,
-                   TLabel* &L9, TLabel* &L10) : Output(Image), PerformanceMemo(MemoBox), OutputLog1(L1), OutputLog2(L2), OutputLog3(L3), OutputLog4(L4), OutputLog5(L5),
+//removed TMemo* &MemoBox at v2.13.0 when created new performance log form
+TDisplay::TDisplay(TImage* &Image, TLabel* &L1, TLabel* &L2, TLabel* &L3, TLabel* &L4, TLabel* &L5, TLabel* &L6, TLabel* &L7, TLabel* &L8,
+                   TLabel* &L9, TLabel* &L10) : Output(Image), OutputLog1(L1), OutputLog2(L2), OutputLog3(L3), OutputLog4(L4), OutputLog5(L5),
     OutputLog6(L6), OutputLog7(L7), OutputLog8(L8), OutputLog9(L9), OutputLog10(L10)
 {
 // ensure the font type supports the size chosen or will default to nearest
@@ -518,17 +518,7 @@ void TDisplay::PlotDashedRect(int Caller, TRect Rect)
 
 // ---------------------------------------------------------------------------
 
-void TDisplay::PerformanceLog(int Caller, AnsiString Statement)
-{
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PerformanceLog," + Statement);
-    Utilities->PerformanceFile << Statement.c_str() << '\n';
-    Utilities->PerformanceFile.flush(); //added at v2.13.0
-    PerformanceMemo->Lines->Add(Statement);
-    Utilities->CallLogPop(1479);
-}
-
-// ---------------------------------------------------------------------------
-
+// relocated PerformanceLog function to PerfLogForm at v2.13.0 when created new performance log form
 void TDisplay::WarningLog(int Caller, AnsiString Statement)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",WarningLog," + Statement);
@@ -582,3 +572,4 @@ void TDisplay::ShowWarningLog(int Caller)
 }
 
 // ---------------------------------------------------------------------------
+

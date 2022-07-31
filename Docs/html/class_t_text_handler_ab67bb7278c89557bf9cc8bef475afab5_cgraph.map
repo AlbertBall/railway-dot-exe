@@ -1,6 +1,6 @@
 <map id="TTextHandler::LoadText" name="TTextHandler::LoadText">
 <area shape="rect" id="node1" title="load the railway&#39;s text from VecFile" alt="" coords="5,138,164,165"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="459,7,605,34"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="459,7,605,34"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c" title="loads an int value from the file" alt="" coords="240,214,383,241"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a0aac90f10a08736514da3b3e02129e1e" title="loads a string value from the file" alt="" coords="230,265,393,291"/>
 <area shape="rect" id="node5" href="$class_t_text_handler.html#a11c7049a10f03f7bd56e6b32eb23b766" title="used in loading from a file" alt="" coords="220,47,403,88"/>

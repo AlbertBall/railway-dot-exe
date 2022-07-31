@@ -12,7 +12,7 @@
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title="Called when setting a route to set all points appropriately. Also called when a new train is added at...">
+<g id="a_node1"><a xlink:title="Called when setting a route to set all signals appropriately. Also called when a new train is added a...">
 <polygon fill="#bfbfbf" stroke="black" points="1077,-118 1077,-137 1221,-137 1221,-118 1077,-118"/>
 <text text-anchor="middle" x="1149" y="-125" font-family="Helvetica,sans-Serif" font-size="10.00">TOneRoute::SetRouteSignals</text>
 </a>

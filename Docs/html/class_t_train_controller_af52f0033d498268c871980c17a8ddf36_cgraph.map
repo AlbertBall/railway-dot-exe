@@ -2,7 +2,7 @@
 <area shape="rect" id="node1" title="Carry out further detailed timetable consistency checks, return true for success." alt="" coords="5,1017,169,1058"/>
 <area shape="rect" id="node2" href="$class_t_train_controller.html#a7fbe0dc297130da79bcfa3503c6c51c1" title="A shorthand function that returns true if the successor to a given timetable action command should be..." alt="" coords="220,5,436,32"/>
 <area shape="rect" id="node3" href="$class_t_train_controller.html#a0445987b1a355de3aef2c21b66d1ed8b" title="populate the ContinuationTrainExpectationMultiMap during timetable loading" alt="" coords="217,517,439,558"/>
-<area shape="rect" id="node4" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1031,1031,1177,1057"/>
+<area shape="rect" id="node4" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1031,1031,1177,1057"/>
 <area shape="rect" id="node7" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1031,680,1177,707"/>
 <area shape="rect" id="node8" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="493,107,703,133"/>
 <area shape="rect" id="node10" href="$class_t_train_controller.html#a72662be9ecd0e95131779bd10b6fe14f" title="A timetable validation function where all service cross references are checked for validity and set p..." alt="" coords="233,1017,423,1058"/>

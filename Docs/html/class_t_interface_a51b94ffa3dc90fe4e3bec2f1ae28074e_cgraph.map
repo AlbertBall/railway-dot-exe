@@ -1,6 +1,6 @@
 <map id="TInterface::GetTrainStatusFloat" name="TInterface::GetTrainStatusFloat">
 <area shape="rect" id="node1" title="used for floating window to display train status" alt="" coords="5,1017,179,1059"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1228,471,1375,498"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1228,471,1375,498"/>
 <area shape="rect" id="node3" href="$class_t_train.html#a221da69cd80d206a06f840f4cd463cf9" title="Used in the floating window to display the &#39;Next&#39; action." alt="" coords="227,504,396,545"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1228,725,1375,751"/>
 <area shape="rect" id="node16" href="$class_t_train.html#a77e1368fb80820dd2c3350858c28ceab" title=" " alt="" coords="977,927,1169,954"/>

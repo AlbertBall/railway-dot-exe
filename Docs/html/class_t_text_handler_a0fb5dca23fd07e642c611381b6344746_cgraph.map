@@ -1,6 +1,6 @@
 <map id="TTextHandler::FindText" name="TTextHandler::FindText">
 <area shape="rect" id="node1" title="look in TextVector for text item &#39;Name&#39;, and if found return true and return its position in &amp;HPos an..." alt="" coords="5,31,161,57"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="452,5,599,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="452,5,599,32"/>
 <area shape="rect" id="node3" href="$class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f" title="return the number of items in TextVector" alt="" coords="209,31,404,57"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="452,68,599,95"/>
 </map>

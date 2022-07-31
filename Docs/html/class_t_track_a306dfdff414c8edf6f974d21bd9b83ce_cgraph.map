@@ -1,6 +1,6 @@
 <map id="TTrack::AddName" name="TTrack::AddName">
 <area shape="rect" id="node1" title="TrackElement.LocationName becomes &#39;Name&#39; (for active and inactive elements) and, if TrackElement is a..." alt="" coords="5,262,132,288"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="671,203,817,230"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="671,203,817,230"/>
 <area shape="rect" id="node3" href="$class_t_track.html#aa081ea276995a63dfa00fc0ace24f5c5" title="Changes the LocationName in the name multimap to NewName at the location pointed to by the TLocationN..." alt="" coords="422,42,618,84"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="671,316,817,343"/>
 <area shape="rect" id="node5" href="$class_t_track.html#aaf3f48b8df9877499aaf4c05f804426c" title="Validity test." alt="" coords="180,254,369,296"/>

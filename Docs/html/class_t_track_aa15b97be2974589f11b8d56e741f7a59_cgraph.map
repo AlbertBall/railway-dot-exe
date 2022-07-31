@@ -1,6 +1,6 @@
 <map id="TTrack::PlotSmallFlashingLinkedLevelCrossings" name="TTrack::PlotSmallFlashingLinkedLevelCrossings">
 <area shape="rect" id="node1" title="Plots either a LC or a blank element to flash manual LCs in zoomout mode." alt="" coords="5,166,180,207"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="656,85,803,112"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="656,85,803,112"/>
 <area shape="rect" id="node3" href="$class_t_track.html#a73e781d0ada0b77618b886557f79b115" title="True if a level crossing is found at H &amp; V." alt="" coords="228,173,355,200"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="656,202,803,229"/>
 <area shape="rect" id="node7" href="$class_t_display.html#a95aaa80515f0abb7715920b326b318dd" title="Plot small (4x4) graphic PlotItem on the zoomed&#45;out display at HPos &amp; Vpos." alt="" coords="418,34,593,61"/>

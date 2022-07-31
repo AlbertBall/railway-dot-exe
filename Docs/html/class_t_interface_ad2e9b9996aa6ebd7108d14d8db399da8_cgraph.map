@@ -1,6 +1,6 @@
 <map id="TInterface::LoadInterface" name="TInterface::LoadInterface">
 <area shape="rect" id="node1" title="Load the interface part of a session file." alt="" coords="5,157,168,184"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="227,5,374,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="227,5,374,32"/>
 <area shape="rect" id="node3" href="$class_a_p_i.html#abebc08c03ceec2b898d8fe877b0efcba" title="save currently recorded status data to INI file" alt="" coords="259,56,342,83"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a9a0ec4d0c686c71157c371d647824777" title="loads a bool value from the file" alt="" coords="223,107,378,133"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#ac970a0df84f5cb26ed962020b7dc2d6d" title="loads a double value from the file (converts from a string to a double) and uses the local decimal po..." alt="" coords="216,157,385,184"/>

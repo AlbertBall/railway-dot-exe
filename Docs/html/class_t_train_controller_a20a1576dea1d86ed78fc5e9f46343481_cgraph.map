@@ -1,17 +1,17 @@
 <map id="TTrainController::Operate" name="TTrainController::Operate">
 <area shape="rect" id="node1" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="5,1816,172,1843"/>
 <area shape="rect" id="node2" href="$class_t_train_controller.html#aa895b60238810a9d134cd5b9c886da56" title="Introduce a new train to the railway, with the characteristics specified, returns true for success,..." alt="" coords="220,1359,391,1385"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1467,2215,1613,2241"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1467,2215,1613,2241"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1467,2743,1613,2769"/>
 <area shape="rect" id="node11" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="1227,2591,1390,2617"/>
 <area shape="rect" id="node13" href="$class_t_train_controller.html#a9acd46962be476bc76c8d5ce59fff399" title="Send an error message to the performance log and file, and as a warning if appropriate." alt="" coords="960,3621,1139,3662"/>
 <area shape="rect" id="node20" href="$class_t_train.html#a493ab1c185d29bf28ec8fded2356e9fc" title="Send a message to the performance log and performance file, and if the message is flagged as a warnin..." alt="" coords="728,3889,851,3916"/>
 <area shape="rect" id="node22" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="1203,3839,1414,3865"/>
-<area shape="rect" id="node29" href="$class_t_one_route.html#a4dfe3a028da7a4b6df0f44f33c3e2196" title="Called when setting a route to set all points appropriately. Also called when a new train is added at..." alt="" coords="439,1881,631,1908"/>
+<area shape="rect" id="node29" href="$class_t_one_route.html#a4dfe3a028da7a4b6df0f44f33c3e2196" title="Called when setting a route to set all signals appropriately. Also called when a new train is added a..." alt="" coords="439,1881,631,1908"/>
 <area shape="rect" id="node31" href="$class_t_train.html#afd5d7ea375b8a878c31d81841acad159" title="This is a housekeeping function to delete train heap objects (bitmaps) explicitly rather than by usin..." alt="" coords="724,4345,855,4372"/>
 <area shape="rect" id="node33" href="$class_t_train_controller.html#afb0e8fd36435809350cb323ab9fe2213" title="Return the service headcode for the repeat service." alt="" coords="958,415,1141,457"/>
 <area shape="rect" id="node35" href="$class_t_train.html#af95a34f2334cb991841c24997d445ae3" title="Check whether the train has left the railway, so that it can be removed from the display at the next ..." alt="" coords="232,4665,379,4692"/>
-<area shape="rect" id="node36" href="$class_t_train_controller.html#a0e16b9cb91bb29f83bffc7ae3461200d" title="new v2.2.0 for OperatorActionPanel" alt="" coords="453,1663,616,1705"/>
+<area shape="rect" id="node36" href="$class_t_train_controller.html#a0e16b9cb91bb29f83bffc7ae3461200d" title="new v2.2.0 for OperatorActionPanel (OperatorActionPanel changed for ActionsDueForm at v2...." alt="" coords="453,1663,616,1705"/>
 <area shape="rect" id="node38" href="$class_t_train_controller.html#aa09adf9c442406cccc270d6703867a1d" title="Return a reference to the train at position VecPos in the TrainVector, carries out range checking on ..." alt="" coords="1209,231,1408,257"/>
 <area shape="rect" id="node39" href="$class_t_train_controller.html#adda46770e73214b896de94d98f9e2692" title="new for multiplayer" alt="" coords="968,298,1131,339"/>
 <area shape="rect" id="node40" href="$class_t_train_controller.html#a47676de8fc677dbcabf565569cb1435c" title="plot all trains on the display" alt="" coords="971,130,1128,171"/>
@@ -34,7 +34,7 @@
 <area shape="rect" id="node27" href="$class_t_all_routes.html#aacbc3765d695c99cf64ad2826792508f" title="Erases the route element from Route2MultiMap and from the PrefDirVector." alt="" coords="679,3329,900,3356"/>
 <area shape="rect" id="node28" href="$class_t_all_routes.html#ac6bd39457747eaa96476a8a87df15ac2" title="Set rearwards signals from the specified route starting position." alt="" coords="955,1546,1144,1587"/>
 <area shape="rect" id="node14" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="1212,4041,1405,4068"/>
-<area shape="rect" id="node15" href="$class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" title="Send Statement to the performance log on screen and to the file." alt="" coords="1221,3569,1396,3596"/>
+<area shape="rect" id="node15" href="$class_t_perf_log_form.html#a72f06bf03353c15c94ceefbf420ff7b4" title="Send Statement to the performance log on screen and to the file." alt="" coords="1206,3569,1411,3596"/>
 <area shape="rect" id="node16" href="$class_t_display.html#a604d491a723df459bdcd54a4b9d1d9f2" title="Display warning message Statement in the bottom left hand warning position and scroll other messages ..." alt="" coords="1234,3519,1383,3545"/>
 <area shape="rect" id="node21" href="$class_t_train.html#ad249f34f6862e604b8e141d1b25fe57d" title="Returns the timetable action time corresponding to &#39;Time&#39; for this train, i.e. it adjusts the time va..." alt="" coords="978,4143,1121,4169"/>
 <area shape="rect" id="node26" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="1479,521,1601,548"/>

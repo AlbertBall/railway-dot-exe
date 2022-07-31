@@ -9,7 +9,7 @@
 <area shape="rect" id="node35" href="$class_t_track.html#af56adb319c7003b8ddac8e55afaee3d2" title="Plot points on screen according to how they are set (Attribute value), or, with both fillets if BothF..." alt="" coords="1527,874,1656,901"/>
 <area shape="rect" id="node41" href="$class_t_track.html#aa5742fbc2eb3f8743dde84005499f89e" title="Plot signals on screen according to their aspect (Attribute value)" alt="" coords="1527,1093,1655,1119"/>
 <area shape="rect" id="node47" href="$class_t_track.html#a10027e5b78eb6dfdc246613d78aab53e" title="Return a pointer to the striped (i.e. when unnamed) graphic corresponding to TrackElement,..." alt="" coords="1749,1255,1959,1296"/>
-<area shape="rect" id="node48" href="$class_t_one_route.html#a59270c9b68d679ea29086216c21decfb" title="Called by GetNextNonPreferredRouteElement to carry out the search for linked track,..." alt="" coords="1739,568,1969,609"/>
+<area shape="rect" id="node48" href="$class_t_one_route.html#a69c8690ba3aae40ff99a5d2a629ba321" title="Called by GetNextNonPreferredRouteElement to carry out the search for linked track,..." alt="" coords="1739,568,1969,609"/>
 <area shape="rect" id="node49" href="$class_t_one_pref_dir.html#a82c6a19d67ada7059491afae05ced4a4" title="Try to find a selected element from a given start position. Enter with CurrentTrackElement stored in ..." alt="" coords="1492,621,1691,647"/>
 <area shape="rect" id="node50" href="$class_t_track.html#a31296f2176bd672769e1852ca90ddd51" title="Convert the position values for the TrackElement into an identification string and load in ElementID." alt="" coords="1517,785,1666,811"/>
 <area shape="rect" id="node3" href="$class_t_track.html#a6c4ff502fade845fc1b9011cc4532e3a" title="Validity test." alt="" coords="477,71,632,98"/>
@@ -34,7 +34,7 @@
 <area shape="rect" id="node23" href="$class_t_train.html#a43cd691f12297c4c13a19791329dd627" title="Plots the train and sets up all relevant members for a new train when it is introduced into the railw..." alt="" coords="1253,1642,1416,1669"/>
 <area shape="rect" id="node24" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="742,1381,877,1407"/>
 <area shape="rect" id="node27" href="$class_t_track.html#a8520abf65484aa83a28329a633836f97" title="Examine all elements in the TrackVector and if have a valid length mark the relevant track using Mark..." alt="" coords="1261,1490,1409,1517"/>
-<area shape="rect" id="node28" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="982,1068,1162,1109"/>
+<area shape="rect" id="node28" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="982,1068,1162,1109"/>
 <area shape="rect" id="node29" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="716,929,903,955"/>
 <area shape="rect" id="node30" href="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b" title="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode." alt="" coords="706,1030,913,1057"/>
 <area shape="rect" id="node31" href="$class_t_interface.html#ab1487b7a54ebacf27d7b980c65723d18" title=" " alt="" coords="459,1030,650,1057"/>

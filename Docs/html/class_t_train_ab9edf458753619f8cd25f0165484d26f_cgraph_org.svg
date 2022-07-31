@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied">
+<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="pops the last entry off the call stack, throws an error if called when empty">
 <polygon fill="white" stroke="black" points="680,-505.33 680,-524.33 790,-524.33 790,-505.33 680,-505.33"/>
 <text text-anchor="middle" x="735" y="-512.33" font-family="Helvetica,sans-Serif" font-size="10.00">TUtilities::CallLogPop</text>
 </a>
@@ -196,17 +196,17 @@
 <!-- Node8 -->
 <g id="node8" class="node">
 <title>Node8</title>
-<g id="a_node8"><a xlink:href="class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" target="_top" xlink:title="Send Statement to the performance log on screen and to the file.">
-<polygon fill="white" stroke="black" points="498,-341.33 498,-360.33 629,-360.33 629,-341.33 498,-341.33"/>
-<text text-anchor="middle" x="563.5" y="-348.33" font-family="Helvetica,sans-Serif" font-size="10.00">TDisplay::PerformanceLog</text>
+<g id="a_node8"><a xlink:href="class_t_perf_log_form.html#a72f06bf03353c15c94ceefbf420ff7b4" target="_top" xlink:title="Send Statement to the performance log on screen and to the file.">
+<polygon fill="white" stroke="black" points="486.5,-341.33 486.5,-360.33 640.5,-360.33 640.5,-341.33 486.5,-341.33"/>
+<text text-anchor="middle" x="563.5" y="-348.33" font-family="Helvetica,sans-Serif" font-size="10.00">TPerfLogForm::PerformanceLog</text>
 </a>
 </g>
 </g>
 <!-- Node6&#45;&gt;Node8 -->
 <g id="edge11" class="edge">
 <title>Node6&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M444.09,-350.83C458.15,-350.83 473.09,-350.83 487.46,-350.83"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="487.8,-354.33 497.8,-350.83 487.8,-347.33 487.8,-354.33"/>
+<path fill="none" stroke="midnightblue" d="M444.09,-350.83C454.43,-350.83 465.25,-350.83 475.97,-350.83"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="476.2,-354.33 486.2,-350.83 476.2,-347.33 476.2,-354.33"/>
 </g>
 <!-- Node9 -->
 <g id="node9" class="node">

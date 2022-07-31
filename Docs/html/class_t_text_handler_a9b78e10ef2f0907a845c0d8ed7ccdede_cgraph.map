@@ -1,6 +1,6 @@
 <map id="TTextHandler::CheckTextElementsInFile" name="TTextHandler::CheckTextElementsInFile">
 <area shape="rect" id="node1" title="check the validity of text items in VecFile prior to loading, return true for success" alt="" coords="5,86,228,127"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="289,5,435,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="289,5,435,32"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a8bc6745e0433d55022e016b6551f04a0" title="checks that the value is a string (&#39;0&#39; only accepted as the delimiter), returns true for success" alt="" coords="276,57,448,98"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c" title="loads an int value from the file" alt="" coords="291,123,433,149"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="289,173,435,200"/>

@@ -1,6 +1,6 @@
 <map id="TOnePrefDir::EraseFromPrefDirVectorAnd4MultiMap" name="TOnePrefDir::EraseFromPrefDirVectorAnd4MultiMap">
 <area shape="rect" id="node1" title="Erase element at HLoc and VLoc from the PrefDirVector and from the 4MultiMap. Note that this entails ..." alt="" coords="5,425,192,467"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="995,141,1141,167"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="995,141,1141,167"/>
 <area shape="rect" id="node3" href="$class_t_one_pref_dir.html#aa191ffa7fa23838043d34d9b02cd7bcb" title="Erase a single element from PrefDirVector and 4MultiMap, decrementing the remaining PrefDirElementNum..." alt="" coords="240,304,413,345"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="995,377,1141,403"/>
 <area shape="rect" id="node10" href="$class_t_one_pref_dir.html#a200fd1dc1cffc400160b8d2147278752" title="Although there may be up to four entries at one H &amp; V position this function gets just one...." alt="" coords="731,403,915,444"/>

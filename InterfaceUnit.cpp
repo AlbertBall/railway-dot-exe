@@ -50,12 +50,14 @@
 
 #include "InterfaceUnit.h"
 #include "GraphicUnit.h"
-#include "DisplayUnit.h"
+//#include "DisplayUnit.h" included in TrackUnit.h
 #include "TextUnit.h"
 #include "TrainUnit.h"
-#include "Utilities.h"
 #include "TrackUnit.h"
 #include "AboutUnit.h"
+#include "PerfLogUnit.h" //added at v2.13.0 for Performance log form
+#include "ActionsDueUnit.h" //added at v2.13.0 for ActionsDue form
+#include "Utilities.h"
 #include "API.h"        //added at v2.10.0
 #include <dirent.h>
 #include <Filectrl.hpp> //to check whether directories exist
@@ -92,7 +94,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = GetVersion() + " Beta2";
+        ProgramVersion = GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -196,14 +198,14 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         MainScreen->Width = DispW * 16;
         MainScreen->Height = DispH * 16;
 
-        Display = new TDisplay(MainScreen, PerformanceLogBox, OutputLog1, OutputLog2, OutputLog3, OutputLog4, OutputLog5, OutputLog6, OutputLog7, OutputLog8,
+        Display = new TDisplay(MainScreen, OutputLog1, OutputLog2, OutputLog3, OutputLog4, OutputLog5, OutputLog6, OutputLog7, OutputLog8,
                                OutputLog9, OutputLog10);
         Utilities->ScreenElementWidth = DispW;
         Utilities->ScreenElementHeight = DispH;
         HiddenScreen = new TImage(Interface);
         HiddenScreen->Width = MainScreen->Width;
         HiddenScreen->Height = MainScreen->Height;
-        HiddenDisplay = new TDisplay(HiddenScreen, PerformanceLogBox, OutputLog1, OutputLog2, OutputLog3, OutputLog4, OutputLog5, OutputLog6, OutputLog7,
+        HiddenDisplay = new TDisplay(HiddenScreen, OutputLog1, OutputLog2, OutputLog3, OutputLog4, OutputLog5, OutputLog6, OutputLog7,
                                      OutputLog8, OutputLog9, OutputLog10);
         TextHandler = new TTextHandler;
         Track = new TTrack;
@@ -588,8 +590,6 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         SelectedGraphicFileName = ""; // only set to null here so always has a value after use LoadUserGraphic
 
         FloatingPanel->Color = TColor(0xF0FFFF); // new v2.2.0, corrects floating panel background colour in Windows 10
-        PerformancePanel->Color = TColor(0xCCCCCC); // new v2.2.0 as above
-        OperatorActionPanel->Color = TColor(0xCCCCCC); // new v2.2.0 as above
         DevelopmentPanel->Color = TColor(0xCCCCCC); // new v2.2.0 as above
         TTStartTimeBox->Color = TColor(0x99FFFF); // cream
         HighlightPanel->Color = TColor(0x33CCFF);
@@ -634,6 +634,9 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         ElapsedTimerRunning = false;
         Utilities->DelayMode = Nil;
         NoDelaysMenuItem->Enabled = false;
+        Utilities->MTBTSRs = Utilities->NilMTBTSRs;          //set high initially
+        Utilities->SignalChangeEventsPerFailure = Utilities->NilSignalChangeEventsPerFailure; //set high initially
+        Utilities->PointChangeEventsPerFailure = Utilities->NilPointChangeEventsPerFailure; //set high initially
         Utilities->CumulativeDelayedRandMinsAllTrains = 0; //added at v2.13.0
         AllEntriesTTListBox->TopIndex = 0; //added at v2.13.0 to initialise the value (seemed to initialise to 0 without this but not documented)
 
@@ -643,6 +646,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         Utilities->DecimalPoint = '.'; // default case is full stop
         char *LocalNumericInformation = setlocale(LC_NUMERIC, ""); // need this to set lconv to the environment's numeric format
         Utilities->SetLocaleResultOK = true;
+        FirstPerfLogFormDisplay = true; //added at v2.13.0 for Performance log form
         if(LocalNumericInformation == "") // call failed, don't change decimal point in Utilities.cpp
         {
             Utilities->SetLocaleResultOK = false;
@@ -2305,16 +2309,24 @@ void __fastcall TInterface::PerformanceLogButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("PerformanceLogButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PerformanceLogButtonClick");
-        if(!ShowPerformancePanel)
+        if(!ShowPerfLogForm) //changed at v2.13.0 for Performance log form, so starts on bottom LH corner on first startup
+						     //but retains current position thereafter
         {
-            ShowPerformancePanel = true;
-            PerformancePanel->Visible = true;
+            ShowPerfLogForm = true;
+            PerfLogForm->Visible = true;
+            if(FirstPerfLogFormDisplay) //initial position of PerfLogForm
+            {
+                PerfLogForm->Top = Screen->Height - PerfLogForm->Height - 32; //-32 to avoid overlapping taskbar
+                PerfLogForm->Left = 0;
+                FirstPerfLogFormDisplay = false;
+            }
             PerformanceLogButton->Glyph->LoadFromResourceName(0, "HideLog");
+
         }
         else
         {
-            ShowPerformancePanel = false;
-            PerformancePanel->Visible = false;
+            ShowPerfLogForm = false;
+            PerfLogForm->Visible = false;
             PerformanceLogButton->Glyph->LoadFromResourceName(0, "ShowLog");
         }
         Utilities->CallLogPop(1177);
@@ -2324,6 +2336,47 @@ void __fastcall TInterface::PerformanceLogButtonClick(TObject *Sender)
         ErrorLog(36, e.Message);
     }
 }
+// ---------------------------------------------------------------------------
+
+void __fastcall TInterface::OperatorActionButtonClick(TObject *Sender)
+{
+    try
+    {
+        TrainController->LogEvent("OperatorActionButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OperatorActionButtonClick");
+        if(!ShowActionsDueForm)
+        {
+            ShowActionsDueForm = true;
+            if(FirstActionsDueFormDisplay) //initial position of PerfLogForm
+            {
+                ActionsDueForm->Top = Screen->Height - ActionsDueForm->Height - 32; //-32 to avoid overlapping taskbar;
+                ActionsDueForm->Left = Screen->Width - ActionsDueForm->Width;
+                FirstActionsDueFormDisplay = false;
+            }
+            else
+            {
+                ActionsDueForm->Top = ADFTop;
+                ActionsDueForm->Left = ADFLeft;
+            }
+            ActionsDueForm->Visible = true;
+            TrainController->OpActionPanelVisible = true;
+            OperatorActionButton->Glyph->LoadFromResourceName(0, "HideOpActionPanel");
+        }
+        else
+        {
+            ShowActionsDueForm = false;
+            ActionsDueForm->Visible = false;
+            TrainController->OpActionPanelVisible = false;
+            OperatorActionButton->Glyph->LoadFromResourceName(0, "ShowOpActionPanel");
+        }
+        Utilities->CallLogPop(2073);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(199, e.Message);
+    }
+}
+
 // ---------------------------------------------------------------------------
 
 void __fastcall TInterface::ExitOperationButtonClick(TObject *Sender)
@@ -2356,19 +2409,15 @@ void __fastcall TInterface::ExitOperationButtonClick(TObject *Sender)
         PreferredRoute = true; // default starting conditions
         ConsecSignalsRoute = true; // default starting conditions
         AllRoutes->AllRoutesClear();
-        ShowPerformancePanel = false;
+        ShowPerfLogForm = false;
         PerformanceLogButton->Glyph->LoadFromResourceName(0, "ShowLog");
-        ShowOperatorActionPanel = false; // new at v2.2.0
+        ShowActionsDueForm = false; // new at v2.2.0
         OperatorActionButton->Glyph->LoadFromResourceName(0, "ShowOpActionPanel"); // new v2.2.0
-        PerformanceLogBox->Lines->Clear();
-        PerformancePanel->Visible = false;
-        PerformancePanel->Top = MainScreen->Top + MainScreen->Height - PerformancePanel->Height;
-        PerformancePanel->Left = MainScreen->Left;
+        PerfLogForm->PerformanceLogBox->Lines->Clear();
+        PerfLogForm->Visible = false;
 // TipButton->Glyph->LoadFromResourceName(0, "ShowLog"); //'Trains in play' new at v2.2.0
-        OAListBox->Clear();
-        OperatorActionPanel->Visible = false;
-        OperatorActionPanel->Top = MainScreen->Top + MainScreen->Height - OperatorActionPanel->Height;
-        OperatorActionPanel->Left = MainScreen->Left + MainScreen->Width - OperatorActionPanel->Width;
+        ActionsDueForm->ActionsDueListBox->Clear();
+        ActionsDueForm->Visible = false;
         ;
         TrainController->ContinuationAutoSigVector.clear();
         AllRoutes->LockedRouteVector.clear();
@@ -2722,19 +2771,12 @@ void __fastcall TInterface::SaveImageNoGridMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1535);
     }
-    catch(const Exception &e) //non-error catch (partial)
+    catch(const Exception &e) //non-error catch //modified at v2.13.0 to catch all errors
     {
-        if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
-        {
-            Screen->Cursor = TCursor(-2); // Arrow;
-            UnicodeString MessageStr = "Insufficient memory available to store this image";
-            Application->MessageBox(MessageStr.c_str(), L"", MB_OK | MB_ICONWARNING);
-            Utilities->CallLogPop(2297);
-        }
-        else
-        {
-            ErrorLog(42, e.Message);
-        }
+        Screen->Cursor = TCursor(-2); // Arrow;
+        UnicodeString MessageStr = "Unable to write the image to file, it may be too big";
+        Application->MessageBox(MessageStr.c_str(), L"", MB_OK | MB_ICONWARNING);
+        Utilities->CallLogPop(2297);
     }
 }
 
@@ -2820,19 +2862,12 @@ void __fastcall TInterface::SaveImageAndGridMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1536);
     }
-    catch(const Exception &e) //non-error catch (partial)
+    catch(const Exception &e) //non-error catch //modified at v2.13.0 to catch all errors
     {
-        if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
-        {
-            Screen->Cursor = TCursor(-2); // Arrow;
-            UnicodeString MessageStr = "Insufficient memory available to store this image";
-            Application->MessageBox(MessageStr.c_str(), L"", MB_OK | MB_ICONWARNING);
-            Utilities->CallLogPop(2298);
-        }
-        else
-        {
-            ErrorLog(43, e.Message);
-        }
+        Screen->Cursor = TCursor(-2); // Arrow;
+        UnicodeString MessageStr = "Unable to write the image to file, it may be too big";
+        Application->MessageBox(MessageStr.c_str(), L"", MB_OK | MB_ICONWARNING);
+        Utilities->CallLogPop(2298);
     }
 }
 // ---------------------------------------------------------------------------
@@ -2910,19 +2945,12 @@ void __fastcall TInterface::SaveImageAndPrefDirsMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1566);
     }
-    catch(const Exception &e) //non-error catch (partial)
+    catch(const Exception &e) //non-error catch  //modified at v2.13.0 to catch all errors
     {
-        if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
-        {
-            Screen->Cursor = TCursor(-2); // Arrow;
-            UnicodeString MessageStr = "Insufficient memory available to store this image";
-            Application->MessageBox(MessageStr.c_str(), L"", MB_OK | MB_ICONWARNING);
-            Utilities->CallLogPop(2299);
-        }
-        else
-        {
-            ErrorLog(45, e.Message);
-        }
+        Screen->Cursor = TCursor(-2); // Arrow;
+        UnicodeString MessageStr = "Unable to write the image to file, it may be too big";
+        Application->MessageBox(MessageStr.c_str(), L"", MB_OK | MB_ICONWARNING);
+        Utilities->CallLogPop(2299);
     }
 }
 // ---------------------------------------------------------------------------
@@ -3037,19 +3065,12 @@ void __fastcall TInterface::SaveOperatingImageMenuItemClick(TObject *Sender)
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1703);
     }
-    catch(const Exception &e) //non-error catch (partial)
+    catch(const Exception &e) //non-error catch  //modified at v2.13.0 to catch all errors
     {
-        if(e.Message.Pos("torage") > 0) // 'storage', avoid capitals as may be OS dependent
-        {
-            Screen->Cursor = TCursor(-2); // Arrow;
-            UnicodeString MessageStr = "Insufficient memory available to store this image";
-            Application->MessageBox(MessageStr.c_str(), L"", MB_OK | MB_ICONWARNING);
-            Utilities->CallLogPop(2300);
-        }
-        else
-        {
-            ErrorLog(113, e.Message); // NB: DO NOT CHANGE THIS ERROR NUMBER - THE DISPLAYED MESSAGE DEPENDS ON IT
-        }
+        Screen->Cursor = TCursor(-2); // Arrow;
+        UnicodeString MessageStr = "Unable to write the image to file, it may be too big";
+        Application->MessageBox(MessageStr.c_str(), L"", MB_OK | MB_ICONWARNING);
+        Utilities->CallLogPop(2540);
     }
 }
 
@@ -4871,10 +4892,22 @@ void __fastcall TInterface::AllEntriesTTListBoxMouseUp(TObject *Sender, TMouseBu
             Utilities->CallLogPop(1688);
             return;
         }
-        // find item required - 13 pixels per line of text
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
                                                     // position changing in AllEntriesTTListBox
-        if((TopPos + (Y / 13)) >= AllEntriesTTListBox->Items->Count)
+
+//substituted for the below
+        int LBIndex = AllEntriesTTListBox->ItemAtPos(TPoint(X,Y), true);
+        if(LBIndex == -1)
+        {
+            TTCurrentEntryPtr = TimetableEditVector.end() - 1;
+        }
+        else
+        {
+            TTCurrentEntryPtr = TimetableEditVector.begin() + LBIndex;
+        }
+//dropped at v2.13.0 as unreliable on high resolution monitors
+        // find item required - 13 pixels per line of text
+/*        if((TopPos + (Y / 13)) >= AllEntriesTTListBox->Items->Count)
         {
             TTCurrentEntryPtr = TimetableEditVector.end() - 1;
         }
@@ -4882,6 +4915,7 @@ void __fastcall TInterface::AllEntriesTTListBoxMouseUp(TObject *Sender, TMouseBu
         {
             TTCurrentEntryPtr = TimetableEditVector.begin() + (Y / 13) + TopPos;
         }
+*/
         int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin(); // save the old position
         CompileAllEntriesMemoAndSetPointers(9);
 // reset the TTCurrentEntryPtr after CompileAllEntriesMemoAndSetPointers
@@ -4902,164 +4936,6 @@ void __fastcall TInterface::AllEntriesTTListBoxMouseUp(TObject *Sender, TMouseBu
     {
         ErrorLog(103, e.Message);
     }
-}
-
-// ---------------------------------------------------------------------------
-
-void __fastcall TInterface::OAListBoxMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-// Mouseup rather than Mousedown so shows floating label when over selected train
-    try
-    {
-        TrainController->LogEvent("OAListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y) + "," + AnsiString(Button)); // button may be right or left
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OAListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y));
-        int ScreenPosH, ScreenPosV;
-        if(Track->RouteFlashFlag || Track->PointFlashFlag) // no action
-        {
-            Utilities->CallLogPop(2087);
-            return;
-        }
-        if(TrainController->OpTimeToActMultiMap.empty())
-        {
-            Utilities->CallLogPop(2088);
-            return;
-        }
-        int HPos, VPos, TrainID = -1, TrackVectorPosition = -1;
-        if(!GetTrainIDOrContinuationPosition(0, X, Y, TrainID, TrackVectorPosition))
-        {
-            OAListBoxRightMouseButtonDown = false; // so resets when button over blank area
-            Utilities->CallLogPop(2260);
-            return;
-        }
-        if(Button == mbLeft) // added at v2.7.0 to keep right button for train information
-        {
-            HPos = (Track->TrackElementAt(926, TrackVectorPosition).HLoc * 16);
-            VPos = (Track->TrackElementAt(927, TrackVectorPosition).VLoc * 16);
-//these checks added at v2.11.0 to centre train on display if it's under either of these panels
-//HPos relative to MainScreen, but panels relative to Interface form
-            bool ElementUnderOAPanel = false;
-            if(OperatorActionPanel->Visible)
-            {   //4 added because train position 4 right and below element position
-                if(((HPos - (Display->DisplayOffsetH * 16) + MainScreen->Left + 4) >= OperatorActionPanel->Left) &&
-                    ((HPos - (Display->DisplayOffsetH * 16) + MainScreen->Left + 4) <= (OperatorActionPanel->Left + OperatorActionPanel->Width)) &&
-                    ((VPos - (Display->DisplayOffsetV * 16) + MainScreen->Top + 4) >= OperatorActionPanel->Top) &&
-                    ((VPos - (Display->DisplayOffsetV * 16) + MainScreen->Top + 4) <= (OperatorActionPanel->Top + OperatorActionPanel->Height)))
-                {
-                    ElementUnderOAPanel = true;
-                }
-            }
-            bool ElementUnderPerformancePanel = false;
-            if(PerformancePanel->Visible)
-            {
-                if(((HPos - (Display->DisplayOffsetH * 16) + MainScreen->Left + 4) >= PerformancePanel->Left) &&
-                    ((HPos - (Display->DisplayOffsetH * 16) + MainScreen->Left + 4) <= (PerformancePanel->Left + PerformancePanel->Width)) &&
-                    ((VPos - (Display->DisplayOffsetV * 16) + MainScreen->Top + 4) >= PerformancePanel->Top) &&
-                    ((VPos - (Display->DisplayOffsetV * 16) + MainScreen->Top + 4) <= (PerformancePanel->Top + PerformancePanel->Height)))
-                {
-                    ElementUnderPerformancePanel = true;
-                }
-            }
-            //if train is already shown on the screen then don't move the viewpoint, if not then display it in the centre
-            //added at v2.10.0
-            if(((HPos - (Display->DisplayOffsetH * 16)) >= 0) && ((HPos - (Display->DisplayOffsetH * 16)) < MainScreen->Width) &&
-                    ((VPos - (Display->DisplayOffsetV * 16)) >= 0) && ((VPos - (Display->DisplayOffsetV * 16)) < MainScreen->Height) &&
-                    !ElementUnderPerformancePanel && !ElementUnderOAPanel) // element on screen & not hidden behind a panel
-            {
-                ScreenPosH = HPos - (Display->DisplayOffsetH * 16);
-                ScreenPosV = VPos - (Display->DisplayOffsetV * 16);
-            }
-            else
-            {
-                // set the offsets to display HPos & VPos in the centre of the screen
-                Display->DisplayOffsetH = (HPos - MainScreen->Width / 2) / 16; // ScreenPosH = HPos - (DisplayOffsetH * 16)
-                Display->DisplayOffsetV = (VPos - MainScreen->Height / 2) / 16;
-                ScreenPosH = HPos - (Display->DisplayOffsetH * 16);
-                ScreenPosV = VPos - (Display->DisplayOffsetV * 16);
-            }
-            if(Display->ZoomOutFlag) // panel displays in either zoom mode
-            {
-                Display->ZoomOutFlag = false;
-                SetPausedOrZoomedInfoCaption(6);
-            }
-            ClearandRebuildRailway(72); // if was zoomed out this displays the track because until ZoomOutFlag reset PlotOutput plots nothing
-            TPoint MainScreenPoint(ScreenPosH + 8, ScreenPosV + 8); // new v2.2.0 add 8 to centre pointer in element
-            TPoint CursPos = MainScreen->ClientToScreen(MainScreenPoint); // accurate funtion to convert from local to global co-ordinates
-            Mouse->CursorPos = CursPos;
-        }
-        else // mbRight, reset OAListBoxRightMouseButtonDown
-        {
-            OAListBoxRightMouseButtonDown = false;
-        }
-        Utilities->CallLogPop(2090);
-    }
-    catch(const Exception &e)
-    {
-        ErrorLog(200, e.Message);
-    }
-}
-
-// ---------------------------------------------------------------------------
-
-void __fastcall TInterface::OAListBoxMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-    try
-    {
-        TrainController->LogEvent("OAListBoxMouseDown," + AnsiString(X) + "," + AnsiString(Y));
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OAListBoxMouseDown");
-        if(Button == mbRight)
-        {
-            OAListBoxRightMouseButtonDown = true;
-        }
-        Utilities->CallLogPop(2264);
-    }
-    catch(const Exception &e)
-    {
-        ErrorLog(220, e.Message);
-    }
-}
-
-// ---------------------------------------------------------------------------
-
-bool TInterface::GetTrainIDOrContinuationPosition(int Caller, int X, int Y, int &TrainID, int &TrackVectorPosition)
-// returns true if value(s) valid
-{
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",GetTrainIDOrContinuationPosition");
-    TTrainController::TOpTimeToActMultiMapIterator OACurrentEntryPtr;
-    // find item required - 13 pixels per line of text
-    int TopPos = OAListBox->TopIndex;
-    int OAIndex;
-    if((TopPos + (Y / 13)) >= OAListBox->Items->Count) // if click beyond end of list ignore
-    {
-        Utilities->CallLogPop(2089);
-        return(false);
-    }
-    else
-    {
-        OACurrentEntryPtr = TrainController->OpTimeToActMultiMap.begin();
-        std::advance(OACurrentEntryPtr, ((Y / 13) + TopPos));
-    }
-    int TrainIDorTVPos = OACurrentEntryPtr->second.second;
-    if(TrainIDorTVPos >= 0) // running train, so value is the TrainID
-    {
-        if(TrainController->TrainExistsAtIdent(0, TrainIDorTVPos)) // added at v2.4.0 in case train removed but still in OA list as not updated yet
-        // see LiWinDom error report on Discord 23/04/20. Also needed for click OAListBox before any trains show,
-        // as notified by Rokas Serys by email on 16/05/20
-        {
-            TrainID = TrainIDorTVPos;
-            TrackVectorPosition = TrainController->TrainVectorAtIdent(43, TrainIDorTVPos).LeadElement;
-        }
-        else
-        {
-            Utilities->CallLogPop(2155); // if not there then ignore
-            return(false);
-        }
-    }
-    else // train to enter at a continuation, so value is -TVPos of continuation - 1
-    {
-        TrackVectorPosition = -(TrainIDorTVPos + 1);
-    }
-    Utilities->CallLogPop(2261);
-    return(true);
 }
 
 // ---------------------------------------------------------------------------
@@ -5589,7 +5465,7 @@ void TInterface::DisplayOneTTLineInPanel(int Caller, AnsiString Data, bool Servi
 // ---------------------------------------------------------------------------
 
 void TInterface::HighlightOneEntryInAllEntriesTTListBox(int Caller, int Position)
-{
+{ //not used from v2.13.0 as clicking an entry does all that is required
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",HighlightOneEntryInAllEntriesTTListBox," + AnsiString(Position));
     if(TimetableEditVector.empty() || (AllEntriesTTListBox->Items->Count == 0))
     {
@@ -5772,120 +5648,6 @@ void __fastcall TInterface::TrainTTInfoOnOffMenuItemClick(TObject *Sender)
     catch(const Exception &e)
     {
         ErrorLog(142, e.Message);
-    }
-}
-
-// ---------------------------------------------------------------------------
-// Dragging Functions
-// ---------------------------------------------------------------------------
-void __fastcall TInterface::AcceptDragging(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept)
-{
-// allow in zoom out mode
-    try
-    {
-// TrainController->LogEvent("AcceptDragging"); drop this, have too  many
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AcceptDragging");
-        if((Source == PerformancePanel) || (Source == PerformancePanelLabel) || (Source == PerformanceLogBox))
-        {
-            Accept = true;
-            int PPLeft = PerformancePanel->Left;
-            int PPTop = PerformancePanel->Left;
-
-            PPLeft = Mouse->CursorPos.x - PerformancePanelDragStartX;
-            PPTop = Mouse->CursorPos.y - PerformancePanelDragStartY;
-            if((PPLeft + PerformancePanel->Width) < 32)
-            {
-                PPLeft = 32 - PerformancePanel->Width;
-            }
-            if(PPLeft > (MainScreen->Left + MainScreen->Width))
-            {
-                PPLeft = MainScreen->Left + MainScreen->Width;
-            }
-            if((PPTop + PerformancePanel->Height) < MainScreen->Top)
-            {
-                PPTop = MainScreen->Top - PerformancePanel->Height;
-            }
-            if(PPTop > (MainScreen->Top + MainScreen->Height - 20))
-            {
-                PPTop = MainScreen->Top + MainScreen->Height - 20;
-            }
-            PerformancePanel->Left = PPLeft;
-            PerformancePanel->Top = PPTop;
-        }
-        else if((Source == OperatorActionPanel) || (Source == OAPanelLabel))
-        // not the listbox because that used for selecting trains
-        {
-            Accept = true;
-            int OALeft = OperatorActionPanel->Left;
-            int OATop = OperatorActionPanel->Left;
-
-            OALeft = Mouse->CursorPos.x - OperatorActionPanelDragStartX;
-            OATop = Mouse->CursorPos.y - OperatorActionPanelDragStartY;
-            if((OALeft + OperatorActionPanel->Width) < 32)
-            {
-                OALeft = 32 - OperatorActionPanel->Width;
-            }
-            if(OALeft > (MainScreen->Left + MainScreen->Width))
-            {
-                OALeft = MainScreen->Left + MainScreen->Width;
-            }
-            if((OATop + OperatorActionPanel->Height) < MainScreen->Top)
-            {
-                OATop = MainScreen->Top - OperatorActionPanel->Height;
-            }
-            if(OATop > (MainScreen->Top + MainScreen->Height - 20))
-            {
-                OATop = MainScreen->Top + MainScreen->Height - 20;
-            }
-            OperatorActionPanel->Left = OALeft;
-            OperatorActionPanel->Top = OATop;
-        }
-        else
-        {
-            Accept = false;
-        }
-        Utilities->CallLogPop(1186);
-    }
-    catch(const Exception &e)
-    {
-        ErrorLog(143, e.Message);
-    }
-}
-
-// ---------------------------------------------------------------------------
-void __fastcall TInterface::PerformancePanelStartDrag(TObject *Sender, TDragObject *&DragObject)
-{
-// allow in zoom out mode
-    try
-    {
-        TrainController->LogEvent("PerformancePanelStartDrag");
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PerformancePanelStartDrag");
-        PerformancePanelDragStartX = Mouse->CursorPos.x - PerformancePanel->Left;
-        PerformancePanelDragStartY = Mouse->CursorPos.y - PerformancePanel->Top;
-        Utilities->CallLogPop(1187);
-    }
-    catch(const Exception &e)
-    {
-        ErrorLog(144, e.Message);
-    }
-}
-// ---------------------------------------------------------------------------
-
-void __fastcall TInterface::OperatorActionPanelStartDrag(TObject *Sender, TDragObject *&DragObject) // new v2.2.0
-
-{
-// allow in zoom out mode
-    try
-    {
-        TrainController->LogEvent("OperatorActionPanelStartDrag");
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OperatorActionPanelStartDrag");
-        OperatorActionPanelDragStartX = Mouse->CursorPos.x - OperatorActionPanel->Left;
-        OperatorActionPanelDragStartY = Mouse->CursorPos.y - OperatorActionPanel->Top;
-        Utilities->CallLogPop(2091);
-    }
-    catch(const Exception &e)
-    {
-        ErrorLog(201, e.Message);
     }
 }
 
@@ -6188,8 +5950,8 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                             // don't allow selection if another stopped train at a bridge position
                             if(Track->TrackElementAt(630, VecPos).TrackType == Bridge)
                             {
-                                int TrainID01 = Track->TrackElementAt(631, VecPos).TrainIDOnBridgeTrackPos01;
-                                int TrainID23 = Track->TrackElementAt(632, VecPos).TrainIDOnBridgeTrackPos23;
+                                int TrainID01 = Track->TrackElementAt(631, VecPos).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
+                                int TrainID23 = Track->TrackElementAt(632, VecPos).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
                                 if((TrainID01 > -1) && (TrainID23 > -1))
                                 {
                                     TrainController->StopTTClockMessage(0, "Can't select a train at a bridge when another train is at the same bridge");
@@ -6703,6 +6465,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                     ConstructPrefDir->PrefDirMarker(3, PrefDirCall, true, Display);
                     OverallDistance = 0, OverallSpeedLimit = -1;
                     ConstructPrefDir->CalcDistanceAndSpeed(1, OverallDistance, OverallSpeedLimit, LeadingPointsAtLastElement);
+                    /*drop this condition as don't want to finish automatically because may have found an inappropriate path, changed at v2.13.0
                     if(FinishElement)
                     {
                         TrackLengthPanel->Visible = true;
@@ -6725,8 +6488,8 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                         Screen->Cursor = TCursor(-2); // Arrow
                         Utilities->CallLogPop(1527);
                         return;
-                    }
-                    else
+                    } */
+//                    else
                     {
                         if(!LeadingPointsAtLastElement)
                         {
@@ -6997,7 +6760,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                 {
                     ConstructPrefDir->PrefDirMarker(10, PrefDirCall, true, Display);
                     ResetChangedFileDataAndCaption(16, false); // moved after 2.7.0 to here
-                    if(FinishElement)
+                    /*drop this condisiton as don't want to finish automatically because may have found an inappropriate path, changed at v2.13.0
                     {
                         ShowMessage("Preferred direction added");
                         EveryPrefDir->ConsolidatePrefDirs(1, ConstructPrefDir); // at 31
@@ -7007,7 +6770,8 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                         Utilities->CallLogPop(57);
                         return;
                     }
-                    else
+                    */
+//                    else
                     {
                         Level2PrefDirMode = PrefDirContinuing;
                         SetLevel2PrefDirMode(2);
@@ -7219,7 +6983,6 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 return;
                             }
                             PointFlash->SetScreenHVSource(1, TrackElement.HLoc * 16, TrackElement.VLoc * 16);
-
 /*
                                This used to try to allow any linked trailing edges to cause both points to change, but no good if
                                there are two adjacent crossovers, where both trailing edges are linked to two different points.
@@ -7262,26 +7025,126 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                             TTrackElement DivergingElement = Track->TrackElementAt(433, TrackElement.Conn[3]);
                             int DivergingPosition = TrackElement.Conn[3];
                             if((DivergingElement.TrackType == Points) && (DivergingElement.Conn[3] == Position) && (Track->MatchingPoint(1, Position,
-                                                                                                                                         DivergingPosition))) // full match inc same attributes
+                                 DivergingPosition))) // full match inc same attributes
                             {
                                 if(AllRoutes->TrackIsInARoute(4, DivergingPosition, 0))
                                 {
                                     TrainController->StopTTClockMessage(2, "Linked points locked");
                                 }
-                                else
+                                else if(Track->TrackElementAt(1506, Position).Failed) //this point failed
                                 {
-                                    Track->PointFlashFlag = true;
-                                    PointFlashVectorPosition = Position;
-                                    DivergingPointVectorPosition = DivergingPosition;
-                                    PointFlashStartTime = TrainController->TTClockTime;
+                                    TrainController->StopTTClockMessage(124, "Points failed, unable to change");
+                                }
+                                else //this point may still fail
+                                {
+                                    //not failed when mouse down, but either may fail in trying to change
+                                    {
+                                        bool SkipFlashing = false;
+                                        if(Utilities->DelayMode != Nil)
+                                        {
+                                            if(random(Utilities->PointChangeEventsPerFailure) == 0)
+                                            {
+                                                TTrack::TInfrastructureFailureEntry IFE;
+                                                TTrackElement &TE = Track->TrackElementAt(1507, Position); //this point
+                                                IFE.TVPos = Position;
+                                                TE.Failed = true; //new value to signify failed & can't be changed (keeps original value as last bit)
+                                                TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = TE.SpeedLimit01; //store these values temporarily, points aren't bridges so can use these
+                                                TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 = TE.SpeedLimit23;
+                                                TE.SpeedLimit01 = 10; //values while failed
+                                                TE.SpeedLimit23 = 10;
+                                                Display->WarningLog(16, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Points failed at " + TE.ElementID);
+                                                PerfLogForm->PerformanceLog(39, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: Points failed at " + TE.ElementID);
+                                                AllRoutes->RebuildRailwayFlag = true; //force ClearandRebuildRailway at next clock tick
+                        //set repair time, random value in minutes between 10 and 179
+                                                double FailureMinutes = double(random(Utilities->MaxRandomRepairTime) + Utilities->FixedMinRepairTime);
+                                                TDateTime RepairTime = TrainController->TTClockTime + TDateTime(FailureMinutes / 1440);
+                                                IFE.RepairTime = RepairTime;
+                                                IFE.FailureTime = TrainController->TTClockTime;
+                                                Track->FailedPointsVector.push_back(IFE);
+                                                SkipFlashing = true;
+                                                TrainController->StopTTClockMessage(125, "Points at " + TE.ElementID + " failed during an attempt to change manually.");
+                                            }
+                                            if(random(Utilities->PointChangeEventsPerFailure) == 0)
+                                            {
+                                                TTrack::TInfrastructureFailureEntry IFE;
+                                                TTrackElement &TE = Track->TrackElementAt(1508, DivergingPosition); //diverging point
+                                                if(!TE.Failed) //can't fail twice
+                                                {
+                                                    IFE.TVPos = DivergingPosition;
+                                                    TE.Failed = true; //new value to signify failed & can't be changed (keeps original value as last bit)
+                                                    TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = TE.SpeedLimit01; //store these values temporarily, points aren't bridges so can use these
+                                                    TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 = TE.SpeedLimit23;
+                                                    TE.SpeedLimit01 = 10; //values while failed
+                                                    TE.SpeedLimit23 = 10;
+                                                    Display->WarningLog(17, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Points failed at " + TE.ElementID);
+                                                    PerfLogForm->PerformanceLog(40, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: Points failed at " + TE.ElementID);
+                                                    AllRoutes->RebuildRailwayFlag = true; //force ClearandRebuildRailway at next clock tick
+                            //set repair time, random value in minutes between 10 and 179
+                                                    double FailureMinutes = double(random(Utilities->MaxRandomRepairTime) + Utilities->FixedMinRepairTime);
+                                                    TDateTime RepairTime = TrainController->TTClockTime + TDateTime(FailureMinutes / 1440);
+                                                    IFE.RepairTime = RepairTime;
+                                                    IFE.FailureTime = TrainController->TTClockTime;
+                                                    Track->FailedPointsVector.push_back(IFE);
+                                                    SkipFlashing = true;
+                                                    TrainController->StopTTClockMessage(126, "Points at " + TE.ElementID + " failed during an attempt to change manually.");
+                                                }
+                                            }
+                                        }
+                                        if(!SkipFlashing)
+                                        {
+                                            Track->PointFlashFlag = true;
+                                            PointFlashVectorPosition = Position;
+                                            if(!Track->TrackElementAt(1509, DivergingPosition).Failed) //don't change if failed
+                                            {
+                                                DivergingPointVectorPosition = DivergingPosition;
+                                            }
+                                            PointFlashStartTime = TrainController->TTClockTime;
+                                        }
+                                    }
                                 }
                             }
-                            else // no matching point, just change this point
+                            else // no matching point, just change this point, but it might fail
                             {
-                                Track->PointFlashFlag = true;
-                                PointFlashVectorPosition = Position;
-                                DivergingPointVectorPosition = -1;
-                                PointFlashStartTime = TrainController->TTClockTime;
+                                if(Track->TrackElementAt(1510, Position).Failed) //this point failed
+                                {
+                                    TrainController->StopTTClockMessage(127, "Points failed, unable to change");
+                                }
+                                else
+                                {
+                                    bool SkipFlashing = false;
+                                    if(Utilities->DelayMode != Nil)
+                                    {
+                                        if(random(Utilities->PointChangeEventsPerFailure) == 0)
+                                        {
+                                            TTrack::TInfrastructureFailureEntry IFE;
+                                            TTrackElement &TE = Track->TrackElementAt(1511, Position); //this point
+                                            IFE.TVPos = Position;
+                                            TE.Failed = true; //new value to signify failed & can't be changed (keeps original value as last bit)
+                                            TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = TE.SpeedLimit01; //store these values temporarily, points aren't bridges so can use these
+                                            TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 = TE.SpeedLimit23;
+                                            TE.SpeedLimit01 = 10; //values while failed
+                                            TE.SpeedLimit23 = 10;
+                                            Display->WarningLog(18, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Points failed at " + TE.ElementID);
+                                            PerfLogForm->PerformanceLog(41, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: Points failed at " + TE.ElementID);
+                                            AllRoutes->RebuildRailwayFlag = true; //force ClearandRebuildRailway at next clock tick
+                    //set repair time, random value in minutes between 10 and 179
+                                            double FailureMinutes = double(random(Utilities->MaxRandomRepairTime) + Utilities->FixedMinRepairTime);
+                                            TDateTime RepairTime = TrainController->TTClockTime + TDateTime(FailureMinutes / 1440);
+                                            IFE.RepairTime = RepairTime;
+                                            IFE.FailureTime = TrainController->TTClockTime;
+                                            Track->FailedPointsVector.push_back(IFE);
+                                            TrainController->StopTTClockMessage(128, "Points at " + TE.ElementID + " failed during an attempt to change manually.");
+                                            SkipFlashing = true;
+                                        }
+                                    }
+                                    if(!SkipFlashing)
+                                    {
+                                        Track->PointFlashFlag = true;
+                                        PointFlashVectorPosition = Position;
+                                        DivergingPointVectorPosition = -1;
+                                        PointFlashStartTime = TrainController->TTClockTime;
+                                    }
+                                }
                             }
                         }
 
@@ -8496,10 +8359,84 @@ void TInterface::ClockTimer2(int Caller)
         // set current time
         TDateTime Now = TrainController->TTClockTime;
 
+        if((ActionsDueForm->Visible) && (LCResetCounter == 0)) //set every second, LCResetCounter used for convenience as that  resets every second
+        {                                                      //delay is
+            ADFTop = ActionsDueForm->Top; //stores the ADForm position for re-use when becomes visible.  This form intermittently jumped to other monitor
+            ADFLeft = ActionsDueForm->Left; //but hasn't done it recently.  This is a safeguard to hopefully prevent it in future.
+        }
 
-        if(!OAListBox->MouseInClient) // added at v2.7.0 to reset this flag whenever mouse not in OAListBox
+        //repair any failed infrastructure
+        //points
+        if(!Track->FailedPointsVector.empty() && (Level2OperMode != Paused) && !TrainController->StopTTClockFlag) //don't repair if clock stopped or adj panel open
         {
-            OAListBoxRightMouseButtonDown = false;
+            for(TTrack::TFailedElementVector::iterator FPVIt = Track->FailedPointsVector.begin(); FPVIt < Track->FailedPointsVector.end(); FPVIt++)
+            {
+                if(Now > FPVIt->RepairTime)
+                {
+                    Track->RepairFailedPoints(FPVIt);
+                    break; //stop after repaired one as erased from vector, if others then will repair in later clock cycles
+                }
+            }
+        }
+        //signals
+        if(!Track->FailedSignalsVector.empty() && (Level2OperMode != Paused) && !TrainController->StopTTClockFlag) //don't repair if clock stopped or adj panel open
+        {
+            for(TTrack::TFailedElementVector::iterator FPVIt = Track->FailedSignalsVector.begin(); FPVIt < Track->FailedSignalsVector.end(); FPVIt++)
+            {
+                if(Now > FPVIt->RepairTime)
+                {
+                    Track->RepairFailedSignals(FPVIt);
+                    break; //stop after repaired one as erased from vector, if others then will repair in later clock cycles
+                }
+            }
+        }
+        //TSRs
+        if(!Track->TSRVector.empty() && (Level2OperMode != Paused) && !TrainController->StopTTClockFlag) //don't repair if clock stopped or adj panel open
+        {
+            for(TTrack::TFailedElementVector::iterator FPVIt = Track->TSRVector.begin(); FPVIt < Track->TSRVector.end(); FPVIt++)
+            {
+                if(Now > FPVIt->RepairTime)
+                {
+                    Track->RepairTSR(FPVIt);
+                    break; //stop after repaired one as erased from vector, if others then will repair in later clock cycles
+                }
+            }
+        }
+
+//check if Temporary Speed Restriction (TSR) needed - check every 5 minutes of timetable time - added at v2.13.0
+        if((TrainController->TTClockTime - Utilities->LastTSRCheckTime) > TDateTime(5.0 / 1440))
+        {
+            //check due now
+            if((Utilities->DelayMode != Nil) && !Track->SimpleVector.empty() && (Level2OperMode != Paused) && !TrainController->StopTTClockFlag)
+            {
+                Utilities->LastTSRCheckTime = TrainController->TTClockTime;
+                if(random(Utilities->MTBTSRs * 288 / Track->SimpleVector.size()) == 0) //chance of one failure in the railway with MTBTSRs in days/simple element (288 = no. of 5mins/day)
+                {
+                    //now identify the specific simple element
+                    int SimpleTVPos = Track->SimpleVector.at(random(Track->SimpleVector.size())); //vector of simple elements in the railway
+                    TTrackElement &TE = Track->TrackElementAt(1531, SimpleTVPos);
+                    TTrack::TInfrastructureFailureEntry IFE;
+                    IFE.TVPos = SimpleTVPos;
+                    TE.Failed = true;
+                    TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = TE.SpeedLimit01; //store these values temporarily, points aren't bridges so can use these
+                    TE.SpeedLimit01 = 10; //value while failed
+                    Display->WarningLog(23, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Temporary Speed Restriction at " + TE.ElementID);
+                    PerfLogForm->PerformanceLog(46, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: Temporary Speed Restriction at " + TE.ElementID);
+                    TrainController->StopTTClockMessage(133, "Temporary Speed Restriction imposed at " + TE.ElementID +
+                        "\nSpeed limit of 10km/hour applies until track repaired.");
+                    AllRoutes->RebuildRailwayFlag = true; //force ClearandRebuildRailway at next clock tick
+    //set repair time, random value in minutes between 10 and 179
+                    double FailureMinutes = double(random(Utilities->MaxRandomRepairTime) + Utilities->FixedMinRepairTime); //between 10 and 179 minutes at random
+                    TDateTime RepairTime = TrainController->TTClockTime + TDateTime(FailureMinutes / 1440);
+                    IFE.RepairTime = RepairTime;
+                    IFE.FailureTime = TrainController->TTClockTime;
+                    Track->TSRVector.push_back(IFE);
+                }
+            }
+        }
+        if(!ActionsDueForm->ActionsDueListBox->MouseInClient) // added at v2.7.0 to reset this flag whenever mouse not in ActionsDueListBox
+        {
+            ActionsDueForm->ActionsDueListBoxRightMouseButtonDown = false;
         }
         if(!ClipboardChecked)
         {
@@ -8521,7 +8458,7 @@ void TInterface::ClockTimer2(int Caller)
         {
             TrainController->OpTimeToActUpdateCounter = 0;
         }
-        if(OperatorActionPanel->Visible)
+        if(ActionsDueForm->Visible)
         {
             TrainController->OpActionPanelHintDelayCounter++;
         }
@@ -8808,8 +8745,8 @@ void TInterface::ClockTimer2(int Caller)
             {
                 DevelopmentPanel->Caption = MouseStr + "; TVPos: " + AnsiString(Position) + "; H: " + AnsiString(HLoc) + "; V: " + AnsiString(VLoc) +
                     "; SpTg: " + AnsiString(TrackElement.SpeedTag) + "; Type: " + Type[TrackElement.TrackType] + "; Att: " + AnsiString(TrackElement.Attribute)
-                    + "; TrID: " + AnsiString(TrackElement.TrainIDOnElement) + "; TrID01: " + AnsiString(TrackElement.TrainIDOnBridgeTrackPos01) +
-                    "; TrID23: " + AnsiString(TrackElement.TrainIDOnBridgeTrackPos23) + "; " + TrackElement.LocationName + "; " +
+                    + "; TrID: " + AnsiString(TrackElement.TrainIDOnElement) + "; TrID01: " + AnsiString(TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01) +
+                    "; TrID23: " + AnsiString(TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23) + "; " + TrackElement.LocationName + "; " +
                     TrackElement.ActiveTrackElementName;
 // + "; OAHintCtr: " + TrainController->OpActionPanelHintDelayCounter;
             }
@@ -8828,12 +8765,12 @@ likely to be set to the wrong position since when ...Selected... runs it sets To
 the entry that the mouse is now on rather than the one that was chosen.
 Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any flag set so when Copy or any other key function runs the top index is correct
 */
-            if((GetKeyState(VK_LBUTTON) >= 0) && (GetKeyState(VK_RBUTTON) >= 0) && (TTCurrentEntryPtr > 0))
+            if((GetKeyState(VK_LBUTTON) >= 0) && (GetKeyState(VK_RBUTTON) >= 0) && (TTCurrentEntryPtr > 0)) //no mouse key down & pointer > 0
             // high order bit set to 1 when button down, so arithmetically it is negative
             {
                 // TTCurrentEntryPtr == 0 when create a timetable
-                AllEntriesTTListBox->Selected[TTCurrentEntryPtr - TimetableEditVector.begin()] = true;
-            }
+                AllEntriesTTListBox->Selected[TTCurrentEntryPtr - TimetableEditVector.begin()] = true; //selects the current entry &
+            }                                                                                          //makes it visible in the listbox
             if(AnyTTKeyFlagSet()) // true if any of the below flags set
             {
                 AllEntriesTTListBox->TopIndex = AllEntriesTTListBoxTopPosition; // reset it to the value before the key press changes it (see FormKeyDown)
@@ -8941,6 +8878,8 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
                 ConflictAnalysisKeyFlag = false;
             }
 // highlight timetable entry if in tt mode (have to call this regularly so will scroll with the listbox)
+//dropped at v2.13.0 as clicking an entry does all that is required
+/*
             if(!TimetableEditVector.empty() && (TTCurrentEntryPtr > 0))
             {
                 HighlightOneEntryInAllEntriesTTListBox(1, TTCurrentEntryPtr - TimetableEditVector.begin());
@@ -8949,7 +8888,9 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
             {
                 HighlightOneEntryInAllEntriesTTListBox(2, 0);
             }
+*/
         }
+
 // set cursor
         if(Track->PointFlashFlag || Track->RouteFlashFlag)
         {
@@ -8972,9 +8913,9 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
         {
             TrainController->Operate(0); // ensure this called AFTER the single element route removal to ensure any single elements removed
                                          // prior to CallingOnAllowed being called (in UpdateTrain) as that sets a route from the stop signal
-            if((TrainController->OpTimeToActUpdateCounter == 0) && (OperatorActionPanel->Visible))
+            if((TrainController->OpTimeToActUpdateCounter == 0) && (ActionsDueForm->Visible))
             {
-                UpdateOperatorActionPanel(0); // new at v2.2.0 to update panel when train OpTimeToAct updated (updated earlier)
+                UpdateActionsDuePanel(0); // new at v2.2.0 to update panel when train OpTimeToAct updated (updated earlier)
             }
             TrainController->SignallerTrainRemovedOnAutoSigsRoute = false; // added at v1.3.0 to ensure doesn't persist beyond one call
         }
@@ -8983,7 +8924,7 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
             THVShortPair ExitPair;
             ExitPair.first = -1;
             ExitPair.second = -1;
-            if((TrainController->OpTimeToActUpdateCounter == 0) && (OperatorActionPanel->Visible))
+            if((TrainController->OpTimeToActUpdateCounter == 0) && (ActionsDueForm->Visible))
             {
                 for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
                 {
@@ -8993,7 +8934,7 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
                     TrainController->TrainVectorAt(80, x).ExitPair = ExitPair;
                 }
                 TrainController->RebuildOpTimeToActMultimap(1);
-                UpdateOperatorActionPanel(1);
+                UpdateActionsDuePanel(1);
             }
             if(TrainController->OpTimeToActUpdateCounter == 0)
             {
@@ -9123,31 +9064,42 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
             FloatingPanel->Visible = false;
         }
         // PerformanceLog check function
-/*
-        if(IsPerformancePanelObscuringFloatingLabel(0) && (ShowPerformancePanel))
+
+        if(IsPerfLogFormObscuringFloatingLabel(0) && (ShowPerfLogForm))
         {
-            PerformancePanel->Visible = false;
+            PerfLogForm->Visible = false;
         }
         else
         {
-*/
-        if(ShowPerformancePanel)
+            if(ShowPerfLogForm)
+            {
+                PerfLogForm->Visible = true;
+            }
+            else
+            {
+                PerfLogForm->Visible = false;
+            }
+        }
+        if(IsActionsDueFormObscuringFloatingLabel(0) && (ShowActionsDueForm))
         {
-            PerformancePanel->Visible = true;
+            ActionsDueForm->Visible = false;
         }
         else
         {
-            PerformancePanel->Visible = false;
+            if(ShowActionsDueForm)
+            {
+                if(ActionsDueForm->Visible == false)
+                {
+                    ActionsDueForm->Top = ADFTop;
+                    ActionsDueForm->Left = ADFLeft;
+                }
+                ActionsDueForm->Visible = true;
+            }
+            else
+            {
+                ActionsDueForm->Visible = false;
+            }
         }
-        if(ShowOperatorActionPanel)
-        {
-            OperatorActionPanel->Visible = true;
-        }
-        else
-        {
-            OperatorActionPanel->Visible = false;
-        }
-// }
 
         // check if a moving train is present on a route-under-construction start element & cancel it if so
         if(RouteMode == RouteContinuing)
@@ -10982,7 +10934,7 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CheckPrefDirConflictsMenuItemClick");
 		bool FoundFlag;
 		int Count = 0;
-		UnicodeString CountWord = "There are several track elements without preferred directions.\n\n"
+		UnicodeString CountWord = "There are some track elements without preferred directions.\n\n"
                                   "Do you wish to highlight them (YES) or skip this part of the check (NO)?";
 
 		int PD0, PD1, PD2, PD3, HLoc, VLoc, LastHLoc = -2000000, LastVLoc = -2000000; //well outside any conceivable range
@@ -11118,15 +11070,15 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
 						ClearandRebuildRailway(85);
 						Display->InvertElement(2, HLoc * 16, VLoc * 16);
 						Screen->Cursor = TCursor(-2); // Arrow
-						int Button = Application->MessageBox(L"Preferred direction missing or a mismatch at a link\n"
-															 "between the highlighted element and an adjacent element.\n\n"
-															 "The highlighted element may be behind this message\n"
-															 "which can be moved by left clicking the mouse in the\n"
-															 "title bar and dragging it.\n\n"
-															 "The omission/mismatch may or may not matter depending\n"
-															 "on routing requirements during operation.\n\n"
-															 "Click 'OK' to ignore and continue checking or 'Cancel'\n"
-															 "to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+						int Button = Application->MessageBox(L"Preferred direction mismatch at a link between the\n"
+															 "highlighted element and an adjacent element.\n\n"
+                                                             "The highlighted element may be behind this message\n"
+                                                             "which can be moved by left clicking the mouse in the\n"
+                                                             "title bar and dragging it.\n\n"
+                                                             "The mismatch may or may not matter depending\n"
+                                                             "on routing requirements during operation.\n\n"
+                                                             "Click 'OK' to ignore and continue checking or 'Cancel'\n"
+                                                             "to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
 						ClearandRebuildRailway(86); // to clear inversion
 						if(Button == IDCANCEL)
 						{
@@ -11235,12 +11187,12 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
                         ClearandRebuildRailway(87);
                         Display->InvertElement(3, HLoc * 16, VLoc * 16);
                         Screen->Cursor = TCursor(-2); // Arrow
-						int Button = Application->MessageBox(L"Preferred direction missing or a mismatch at a link\n"
-															 "between the highlighted element and an adjacent element.\n\n"
+						int Button = Application->MessageBox(L"Preferred direction mismatch at a link between the\n"
+															 "highlighted element and an adjacent element.\n\n"
                                                              "The highlighted element may be behind this message\n"
                                                              "which can be moved by left clicking the mouse in the\n"
                                                              "title bar and dragging it.\n\n"
-                                                             "The omission/mismatch may or may not matter depending\n"
+                                                             "The mismatch may or may not matter depending\n"
                                                              "on routing requirements during operation.\n\n"
                                                              "Click 'OK' to ignore and continue checking or 'Cancel'\n"
                                                              "to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
@@ -11296,7 +11248,7 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
 				CountWord = "There are many track elements without preferred directions.\n\n"
 							"Do you wish to highlight them (YES) or skip this part of the check (NO)?";
 			}
-			if(Count > 9)
+			if(Count > 2)
 			{
 				Screen->Cursor = TCursor(-2); // Arrow
 				int Button = Application->MessageBox(CountWord.c_str(), L"Skip option", MB_YESNO);
@@ -11304,6 +11256,7 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
 				if(Button == IDNO)
 				{
 					InfoPanel->Caption = TempInfo;
+            		ShowMessage("Finished");
 					Utilities->CallLogPop(2484);
 					return;
 				}
@@ -11346,15 +11299,14 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
 							ClearandRebuildRailway(92);
 							Display->InvertElement(4, HLoc * 16, VLoc * 16);
 							Screen->Cursor = TCursor(-2); // Arrow
-							int Button = Application->MessageBox(L"Preferred direction mismatch at a link between the\n"
-																 "highlighted element and an adjacent element.\n\n"
-																 "The highlighted element may be behind this message\n"
-																 "which can be moved by left clicking the mouse in the\n"
-																 "title bar and dragging it.\n\n"
-																 "The mismatch may or may not matter depending on\n"
-																 "routing requirements during operation.\n\n"
-																 "Click 'OK' to ignore and continue checking or 'Cancel'\n"
-																 "to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+                            int Button = Application->MessageBox(L"Preferred direction missing at the highlighted element.\n\n"
+                                                                 "The highlighted element may be behind this message\n"
+                                                                 "which can be moved by left clicking the mouse in the\n"
+                                                                 "title bar and dragging it.\n\n"
+                                                                 "The omission may or may not matter depending\n"
+                                                                 "on routing requirements during operation.\n\n"
+                                                                 "Click 'OK' to ignore and continue checking or 'Cancel'\n"
+                                                                 "to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
 							ClearandRebuildRailway(93); // to clear inversion
 							if(Button == IDCANCEL)
 							{
@@ -11396,15 +11348,14 @@ void __fastcall TInterface::CheckPrefDirConflictsMenuItemClick(TObject *Sender)
 							ClearandRebuildRailway(94);
 							Display->InvertElement(5, HLoc * 16, VLoc * 16);
 							Screen->Cursor = TCursor(-2); // Arrow
-							int Button = Application->MessageBox(L"Preferred direction mismatch at a link between the\n"
-																 "highlighted element and an adjacent element.\n\n"
-																 "The highlighted element may be behind this message\n"
-																 "which can be moved by left clicking the mouse in the\n"
-																 "title bar and dragging it.\n\n"
-																 "The mismatch may or may not matter depending on\n"
-																 "routing requirements during operation.\n\n"
-																 "Click 'OK' to ignore and continue checking or 'Cancel'\n"
-																 "to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
+                            int Button = Application->MessageBox(L"Preferred direction missing at the highlighted element.\n\n"
+                                                                 "The highlighted element may be behind this message\n"
+                                                                 "which can be moved by left clicking the mouse in the\n"
+                                                                 "title bar and dragging it.\n\n"
+                                                                 "The omission may or may not matter depending\n"
+                                                                 "on routing requirements during operation.\n\n"
+                                                                 "Click 'OK' to ignore and continue checking or 'Cancel'\n"
+                                                                 "to allow correction.", L"Warning", MB_OKCANCEL | MB_ICONWARNING);
 							ClearandRebuildRailway(95); // to clear inversion
 							if(Button == IDCANCEL)
 							{
@@ -11712,7 +11663,7 @@ void __fastcall TInterface::TakeSignallerControlMenuItemClick(TObject *Sender)
         {
             Train.RestoreTimetableLocation = "";
         }
-        // check whether need to offer 'pass red signal'
+        // check whether need to offer 'pass stop signal'
         if(!Train.StoppedAtSignal && Train.RevisedStoppedAtLoc())
         {
             int NextElementPosition = Track->TrackElementAt(775, Train.LeadElement).Conn[Train.LeadExitPos];
@@ -11722,7 +11673,7 @@ void __fastcall TInterface::TakeSignallerControlMenuItemClick(TObject *Sender)
                 if((Track->TrackElementAt(777, NextElementPosition).Config[Track->GetNonPointsOppositeLinkPos(NextEntryPos)] == Signal) &&
                    (Track->TrackElementAt(778, NextElementPosition).Attribute == 0))
                 {
-                    // set both StoppedAtLocation & StoppedAtSignal, so that 'pass red signal' is offered in popup menu rather than move
+                    // set both StoppedAtLocation & StoppedAtSignal, so that 'pass stop signal' is offered in popup menu rather than move
                     // forwards, but don't change the background colour so still shows as stopped at location
                     Train.StoppedAtSignal = true;
                 }
@@ -11809,7 +11760,8 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
             Train.LastActionTime = TrainController->TTClockTime; // by itself this only affects trains that have still to arrive, if waiting to
                                                                  // depart the departure time & TRS time have already been calculated so need to
                                                                  // force a recalculation - see below
-            Train.DepartureTimeSet = false; // force it to be recalculated based on new LastActionTime (if waiting to arrive this is false anyway)
+//            Train.DepartureTimeSet = false; // force it to be recalculated based on new LastActionTime (if waiting to arrive this is false anyway)
+//can't use the above after random delays introduced, as lose the delay when restore tt control (see FinsburyPark [discord name] error noted below)
             if(!Train.TrainFailed)
             {
                 Train.PlotTrainWithNewBackgroundColour(28, clStationStopBackground, Display); // pale green
@@ -11827,6 +11779,15 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
                 Train.LogAction(29, Train.HeadCode, "", Arrive, LocName, Train.ActionVectorEntryPtr->ArrivalTime, Train.ActionVectorEntryPtr->Warning);
                 Train.TimeTimeLocArrived = true;
                 // NB: No need for 'Train.ActionVectorEntryPtr++' because still to act on the departure time
+            }
+
+            TActionVectorEntry *AVE = Train.ActionVectorEntryPtr;
+            if((AVE->DepartureTime >= TDateTime(0)) && ((AVE->FormatType == TimeLoc) || (AVE->FormatType == TimeTimeLoc)))
+            {
+                if((Train.ReleaseTime - Train.LastActionTime) < TDateTime(30.0 / 86400)) //due to release in less than 30 seconds, added at v2.13.0 to correct
+                {                                                                      //FinsburyPark (discord name) error reported 29/05/22
+                    Train.ReleaseTime = Train.LastActionTime + TDateTime(30.0 / 86400);
+                }
             }
         }
         else
@@ -12013,6 +11974,25 @@ void __fastcall TInterface::SignallerJoinedByMenuItemClick(TObject *Sender)
                 Utilities->CallLogPop(2157);
                 return;
             }
+            AnsiString UnableToJoinIfWaitingToJoinMessage = "Can't join two trains that are waiting to join under\n"
+                                             "timetable control. Manoeuvre them both to the join\n"
+                                             "location, make sure they are adjacent, and restore\n"
+                                             "timetable control.";
+            //add condition for Micke's error reported 19/05/22 by email (add as 2 conditions for simplicity)
+            if((TrainToBeJoinedBy->ActionVectorEntryPtr->Command == "Fjo") &&
+                (TrainToBeJoinedBy->ActionVectorEntryPtr->LinkedTrainEntryPtr->ServiceReference == ThisTrain.TrainDataEntryPtr->ServiceReference))
+            {
+                ShowMessage(UnableToJoinIfWaitingToJoinMessage);
+                Utilities->CallLogPop(2536);
+                return;
+            }
+            if((TrainToBeJoinedBy->ActionVectorEntryPtr->Command == "jbo") &&
+                (TrainToBeJoinedBy->ActionVectorEntryPtr->LinkedTrainEntryPtr->ServiceReference == ThisTrain.TrainDataEntryPtr->ServiceReference))
+            {
+                ShowMessage(UnableToJoinIfWaitingToJoinMessage);
+                Utilities->CallLogPop(2537);
+                return;
+            }
             AnsiString TrainToBeJoinedByHeadCode = TrainToBeJoinedBy->HeadCode;
             // set new values for mass etc
             double OtherBrakeForce = TrainToBeJoinedBy->MaxBrakeRate * TrainToBeJoinedBy->Mass;
@@ -12179,10 +12159,16 @@ SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
         {
             if((TTStr.Length() > 1) && (NewLinePos <= TTStr.Length()) && (NewLinePos != 0)) //i.e. all lines apart from the last where there is no newline
             {
-                OneLine = TTStr.SubString(1, NewLinePos);
-                if(OneLine == "")
+                OneLine = TTStr.SubString(1, NewLinePos); //includes the newline
+                if(OneLine == "\n")
                 {
                     break; //break before Count increment
+                }
+                if(OneLine == "Timetable:\n") //update TTStr & Newline but don't increment Count  //added at v2.13.0 as 'Timetable:' added
+                {
+                    TTStr = TTStr.SubString(NewLinePos + 1, TTStr.Length() - NewLinePos - 1);
+                    NewLinePos = TTStr.Pos('\n');
+                    continue;
                 }
                 Count++;
                 SkipTTActionsListBox->Items->Add(OneLine);
@@ -12316,11 +12302,11 @@ SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
                 }
                 Train.ActionVectorEntryPtr += PassNum;
                 AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " " + AnsiString(SkippedEvents)
-                    + " timetabled events skipped until " + SkipTTLBString;
+                    + " significant events skipped until " + SkipTTLBString;
                 Utilities->PerformanceFile << PerfStr.c_str() << '\n';
                 Utilities->PerformanceFile.flush();  //added at v2.13.0
                 TrainController->SkippedTTEvents += SkippedEvents;
-                Display->PerformanceMemo->Lines->Add(PerfStr);
+                PerfLogForm->PerformanceLogBox->Lines->Add(PerfStr);
 
             }
             HideTTActionsListBox(2);
@@ -12356,8 +12342,10 @@ SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
                     Count++;
                 }
                 PassNum++;
-                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "pas") || ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime > TDateTime(0))))
-                //don't count cdts, passes or departures as missed events (note that can't be a finish)
+                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "pas") ||
+                    ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime > TDateTime(0))) ||
+                    (Train.SkippedDeparture && (AVEPtr == Train.ActionVectorEntryPtr)))
+                //don't count cdts, passes or departures as missed events (note that can't be a finish), or first departure if SkippedDeparture is true
                 {
                     continue;
                 }
@@ -12405,22 +12393,22 @@ SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
                 if(!Train.SkippedDeparture)
                 {
                     Train.ActionVectorEntryPtr += PassNum; //points to the next action, if a dep is skipped then the pointer is incremented later
-                    AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " timetabled events skipped until " +
-                        SkipTTLBString;
+                    AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " " +
+                        AnsiString(Train.TrainSkippedEvents) + " significant events skipped until " + SkipTTLBString;
                     TrainController->SkippedTTEvents += Train.TrainSkippedEvents;
                     Train.TrainSkippedEvents = 0;
                     Utilities->PerformanceFile << PerfStr.c_str() << '\n';
                     Utilities->PerformanceFile.flush(); //added at v2.13.0
-                    Display->PerformanceMemo->Lines->Add(PerfStr);
+                    PerfLogForm->PerformanceLogBox->Lines->Add(PerfStr);
                 }
                 else
                 {
                     Train.ActionsSkippedFlag = true; //set to prevent any further skips until after the departure
-                    AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " " + AnsiString(Train.TrainSkippedEvents)
-                            + " timetabled events skipped after the departure until " + SkipTTLBString;
+                    AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " " +
+                        AnsiString(Train.TrainSkippedEvents) + " significant events skipped after the departure until " + SkipTTLBString;
                     Utilities->PerformanceFile << PerfStr.c_str() << '\n';
                     Utilities->PerformanceFile.flush(); //added at v2.13.0
-                    Display->PerformanceMemo->Lines->Add(PerfStr);
+                    PerfLogForm->PerformanceLogBox->Lines->Add(PerfStr);
                 }
             }
             else
@@ -12709,15 +12697,15 @@ void TInterface::SkipAllEventsBeforeNewService(int Caller, int TrainID, int PtrA
                 Train.ActionVectorEntryPtr->LocationName;
         Utilities->PerformanceFile << PerfStr.c_str() << '\n';
         Utilities->PerformanceFile.flush(); //added at v2.13.0
-        Display->PerformanceMemo->Lines->Add(PerfStr);
+        PerfLogForm->PerformanceLogBox->Lines->Add(PerfStr);
         //advance the pointer
         Train.ActionVectorEntryPtr = NewServiceActionEntryPtr; //points to the new service
         PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " " + AnsiString(SkippedEvents)
-                + " timetabled events skipped before it became the new service";
+                + " significant events skipped before it became the new service";
         TrainController->SkippedTTEvents += SkippedEvents;
         Utilities->PerformanceFile << PerfStr.c_str() << '\n';
         Utilities->PerformanceFile.flush(); //added at v2.13.0
-        Display->PerformanceMemo->Lines->Add(PerfStr);
+        PerfLogForm->PerformanceLogBox->Lines->Add(PerfStr);
         Utilities->CallLogPop(2450);
         return;
     }
@@ -12785,11 +12773,11 @@ void TInterface::SkipEventsBeforeSameLoc(int Caller, int TrainID, AnsiString Loc
         Train.ActionVectorEntryPtr = AVEPtr;
         Train.ChangeTrainDirection(1, true); //most times this will be appropriate, i.e changed direction from other service train, true for No Logs
         AnsiString PerfStr = Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": " + Train.HeadCode + " " + AnsiString(SkippedEvents)
-                + " timetabled events skipped before the new service arrived at " + LocationName;
+                + " significant events skipped before the new service arrived at " + LocationName;
         TrainController->SkippedTTEvents += SkippedEvents;
         Utilities->PerformanceFile << PerfStr.c_str() << '\n';
         Utilities->PerformanceFile.flush(); //added at v2.13.0
-        Display->PerformanceMemo->Lines->Add(PerfStr);
+        PerfLogForm->PerformanceLogBox->Lines->Add(PerfStr);
         Utilities->CallLogPop(2452);
         return;
     }
@@ -12978,11 +12966,11 @@ void __fastcall TInterface::RemoveTrainMenuItemClick(TObject *Sender)
             {
                 if(Train.LeadExitPos > 1)
                 {
-                    TrackElementPtr->TrainIDOnBridgeTrackPos23 = -1;
+                    TrackElementPtr->TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 = -1;
                 }
                 else
                 {
-                    TrackElementPtr->TrainIDOnBridgeTrackPos01 = -1;
+                    TrackElementPtr->TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = -1;
                 }
             }
             else
@@ -13057,11 +13045,11 @@ void __fastcall TInterface::RemoveTrainMenuItemClick(TObject *Sender)
             {
                 if(Train.MidExitPos > 1)
                 {
-                    TrackElementPtr->TrainIDOnBridgeTrackPos23 = -1;
+                    TrackElementPtr->TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 = -1;
                 }
                 else
                 {
-                    TrackElementPtr->TrainIDOnBridgeTrackPos01 = -1;
+                    TrackElementPtr->TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = -1;
                 }
             }
             else
@@ -13125,22 +13113,6 @@ void __fastcall TInterface::ErrorButtonClick(TObject *Sender)
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TInterface::PerformancePanelLabelStartDrag(TObject *Sender, TDragObject *&DragObject)
-{
-    try
-    {
-        TrainController->LogEvent("PerformancePanelLabelStartDrag");
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PerformancePanelLabelStartDrag");
-        PerformancePanelDragStartX = Mouse->CursorPos.x - PerformancePanel->Left;
-        PerformancePanelDragStartY = Mouse->CursorPos.y - PerformancePanel->Top;
-        Utilities->CallLogPop(1202);
-    }
-    catch(const Exception &e)
-    {
-        ErrorLog(165, e.Message);
-    }
-}
-// ---------------------------------------------------------------------------
 
 void __fastcall TInterface::FormClose(TObject *Sender, TCloseAction &Action)
 {
@@ -13201,6 +13173,7 @@ void __fastcall TInterface::FormClose(TObject *Sender, TCloseAction &Action)
                     return;
                 }
             }
+            PerfLogForm->Close();
             TrainController->SendPerformanceSummary(1, Utilities->PerformanceFile);
             Utilities->PerformanceFile.close();
         }
@@ -14743,10 +14716,10 @@ void __fastcall TInterface::FormResize(TObject *Sender) // new at v2.1.0
             Utilities->ScreenElementHeight = DispH;
             HiddenScreen->Width = MainScreen->Width;
             HiddenScreen->Height = MainScreen->Height;
-            PerformancePanel->Top = MainScreen->Top + MainScreen->Height - PerformancePanel->Height;
-            PerformancePanel->Left = MainScreen->Left;
-            OperatorActionPanel->Top = MainScreen->Top + MainScreen->Height - OperatorActionPanel->Height; // new at v2.2.0
-            OperatorActionPanel->Left = MainScreen->Left + MainScreen->Width - OperatorActionPanel->Width;
+//            PerfLogForm->Top = Screen->Height - PerfLogForm->Height - 32; //-32 to avoid overlapping taskbar  dropped these after Beta5a so keep last positions
+//            PerfLogForm->Left = 0;
+//            ActionsDueForm->Top = Screen->Height -ActionsDueForm->Height - 32; //-32 to avoid overlapping taskbar;;
+//            ActionsDueForm->Left = Screen->Width - ActionsDueForm->Width;
             SigImagePanel->Left = (Interface->Width - SigImagePanel->Width) / 2; // added for v2.3.0
             DevelopmentPanel->Top = MainScreen->Top + MainScreen->Height - DevelopmentPanel->Height; // new v2.2.0
             DevelopmentPanel->Left = MainScreen->Left + MainScreen->Width - DevelopmentPanel->Width; // new v2.2.0
@@ -14771,36 +14744,6 @@ void __fastcall TInterface::FormResize(TObject *Sender) // new at v2.1.0
     catch(const Exception &e)
     {
         ErrorLog(197, e.Message);
-    }
-}
-
-// ---------------------------------------------------------------------------
-
-void __fastcall TInterface::OperatorActionButtonClick(TObject *Sender)
-{
-    try
-    {
-        TrainController->LogEvent("OperatorActionButtonClick");
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",OperatorActionButtonClick");
-        if(!ShowOperatorActionPanel)
-        {
-            ShowOperatorActionPanel = true;
-            OperatorActionPanel->Visible = true;
-            TrainController->OpActionPanelVisible = true;
-            OperatorActionButton->Glyph->LoadFromResourceName(0, "HideOpActionPanel");
-        }
-        else
-        {
-            ShowOperatorActionPanel = false;
-            OperatorActionPanel->Visible = false;
-            TrainController->OpActionPanelVisible = false;
-            OperatorActionButton->Glyph->LoadFromResourceName(0, "ShowOpActionPanel");
-        }
-        Utilities->CallLogPop(2073);
-    }
-    catch(const Exception &e)
-    {
-        ErrorLog(199, e.Message);
     }
 }
 
@@ -15793,7 +15736,7 @@ bool TInterface::ClearEverything(int Caller)
     EveryPrefDir = new TOnePrefDir;
     SelectPrefDir = new TOnePrefDir;
     TrainController = new TTrainController;
-    PerformanceLogBox->Lines->Clear();
+    PerfLogForm->PerformanceLogBox->Lines->Clear();
     ResetAll(1);
 
     LoadConfigFile(2, false); //reset default track element length &  speed limit (uninitialised when Track recreated), false as it's not the first load
@@ -15924,11 +15867,11 @@ bool TInterface::MovingTrainPresentOnFlashingRoute(int Caller)
         {
             if(PrefDirElement.GetXLinkPos() < 2)
             {
-                TrainID = Track->TrackElementAt(486, PrefDirElement.GetTrackVectorPosition()).TrainIDOnBridgeTrackPos01;
+                TrainID = Track->TrackElementAt(486, PrefDirElement.GetTrackVectorPosition()).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
             }
             else
             {
-                TrainID = Track->TrackElementAt(487, PrefDirElement.GetTrackVectorPosition()).TrainIDOnBridgeTrackPos23;
+                TrainID = Track->TrackElementAt(487, PrefDirElement.GetTrackVectorPosition()).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
             }
         }
         else
@@ -16176,7 +16119,13 @@ void TInterface::SetLevel1Mode(int Caller)
         SetTrackBuildImages(13);
         ClipboardChecked = false;
         Utilities->CumulativeDelayedRandMinsAllTrains = 0; //added at v2.13.0
+        Utilities->LastTSRCheckTime = TDateTime(0); //added at v2.13.0 (and below) to SimpleVector.clear();
         Utilities->LastDelayTTClockTime = 0;
+        Utilities->LastTSRCheckTime = TDateTime(0);
+        Track->FailedPointsVector.clear();
+        Track->FailedSignalsVector.clear();
+        Track->TSRVector.clear();
+        Track->SimpleVector.clear();
         break;
 
     case TimetableMode:
@@ -16325,6 +16274,7 @@ void TInterface::SetLevel1Mode(int Caller)
         Level2TrackMode = NoTrackMode;
         Level2PrefDirMode = NoPrefDirMode;
         Level2OperMode = PreStart;
+        Track->PopulateSimpleVector(0);
         OperatingPanel->Visible = true;
         OperatingPanelLabel->Caption = "Operation";
 
@@ -16383,9 +16333,9 @@ void TInterface::SetLevel1Mode(int Caller)
         OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
         ExitOperationButton->Enabled = true;
         TTClockAdjButton->Enabled = true;
-        ShowPerformancePanel = false;
+        ShowPerfLogForm = false;
         PerformanceLogButton->Glyph->LoadFromResourceName(0, "ShowLog");
-        ShowOperatorActionPanel = false; // new at v2.2.0
+        ShowActionsDueForm = false; // new at v2.2.0
         OperatorActionButton->Glyph->LoadFromResourceName(0, "ShowOpActionPanel"); // new v2.2.0
 
         SetRouteButtonsInfoCaptionAndRouteNotStarted(2);
@@ -16410,25 +16360,25 @@ void TInterface::SetLevel1Mode(int Caller)
             ShowMessage("Performance logfile failed to open, logs won't be saved. Ensure that there is a folder named " + PERFLOG_DIR_NAME +
                         " in the folder where the 'Railway.exe' program file resides");
         }
-        Display->PerformanceLog(16, "Performance Log:");  //these statements separated at v2.13.0 as didn't separate in on-screen log
-        Display->PerformanceLog(21, "Railway: " + RailwayTitle);
-        Display->PerformanceLog(22, "Timetable: " + TimetableTitle);
-        Display->PerformanceLog(23, "Start Time: " + TrainController->TimetableStartTime.FormatString("hh:nn"));
+        PerfLogForm->PerformanceLog(16, "Performance Log:");  //these statements separated at v2.13.0 as didn't separate in on-screen log
+        PerfLogForm->PerformanceLog(21, "Railway: " + RailwayTitle);
+        PerfLogForm->PerformanceLog(22, "Timetable: " + TimetableTitle);
+        PerfLogForm->PerformanceLog(23, "Start Time: " + TrainController->TimetableStartTime.FormatString("hh:nn"));
         if(Utilities->DelayMode == Nil) //this section added at v2.13.0 for random delays
         {
-            Display->PerformanceLog(24, "No random delays selected");
+            PerfLogForm->PerformanceLog(24, "No random delays selected");
         }
         else if(Utilities->DelayMode == Minor)
         {
-            Display->PerformanceLog(25, "Minor random delays selected");
+            PerfLogForm->PerformanceLog(25, "Minor random delays selected");
         }
         else if(Utilities->DelayMode == Moderate)
         {
-            Display->PerformanceLog(26, "Moderate random delays selected");
+            PerfLogForm->PerformanceLog(26, "Moderate random delays selected");
         }
         else if(Utilities->DelayMode == Major)
         {
-            Display->PerformanceLog(27, "Major random delays selected");
+            PerfLogForm->PerformanceLog(27, "Major random delays selected");
         }
         SetPausedOrZoomedInfoCaption(3);
 // DisableRouteButtons(2); enable route setting or pre-start
@@ -16469,23 +16419,24 @@ void TInterface::SetLevel1Mode(int Caller)
         TrainController->SkippedTTEvents = 0;
 
         TrainController->OpActionPanelHintDelayCounter = 0; // new at v2.2.0 to reset hint delay
-        OAListBox->Clear();
-        OAListBox->Items->Add(L""); // hints for OpActionPanel
-        OAListBox->Items->Add(L"");
-        OAListBox->Items->Add(L"");
-        OAListBox->Items->Add(L"Left click");
-        OAListBox->Items->Add(L"headcode to");
-        OAListBox->Items->Add(L"locate train");
-        OAListBox->Items->Add(L"");
-        OAListBox->Items->Add(L"");
-        OAListBox->Items->Add(L"Right click");
-        OAListBox->Items->Add(L"headcode for");
-        OAListBox->Items->Add(L"information");
-        OAListBox->Items->Add(L"");
-        OAListBox->Items->Add(L"");
-        OAListBox->Items->Add(L"Left click and");
-        OAListBox->Items->Add(L"hold grey area");
-        OAListBox->Items->Add(L"to move panel");
+        ActionsDueForm->ActionsDueListBox->Clear();
+        ActionsDueForm->ActionsDueListBox->Items->Add(L""); // hints for OpActionPanel
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"Left click");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"headcode to");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"locate train");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"Right click");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"headcode for");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"information");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"Left click and");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"hold \"Actions");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"Due\" label");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"to move panel");
         DelayMenu->Visible = true; //the following added at v2.13.0
         DelayMenu->Enabled = true;
         ClearandRebuildRailway(55); // so points display with one fillet
@@ -16496,6 +16447,7 @@ void TInterface::SetLevel1Mode(int Caller)
 // Level2OperMode = Paused; this is now loaded during LoadInterface & could be PreStart of Paused
         Level2TrackMode = NoTrackMode;
         Level2PrefDirMode = NoPrefDirMode;
+        Track->PopulateSimpleVector(1);
         OperatingPanel->Visible = true;
         OperatingPanelLabel->Caption = "Operation";
         DelayMenu->Visible = true;  //added at v2.13.0
@@ -16538,26 +16490,27 @@ void TInterface::SetLevel1Mode(int Caller)
         TTClockSpeed = 1;
         TTClockSpeedLabel->Caption = "x1";
         TrainController->SetWarningFlags(0);
-        ShowPerformancePanel = false; // added at v2.2.0
-        ShowOperatorActionPanel = false; // new at v2.2.0
+        ShowPerfLogForm = false; // original (ShowPerformancePanel) added at v2.2.0, changed at v2.13.0
+        ShowActionsDueForm = false; // new at v2.2.0
         TrainController->OpActionPanelHintDelayCounter = 0; // new at v2.2.0 to reset hint delay
-        OAListBox->Clear();
-        OAListBox->Items->Add(L""); // hints for OpActionPanel
-        OAListBox->Items->Add(L"");
-        OAListBox->Items->Add(L"");
-        OAListBox->Items->Add(L"Left click");
-        OAListBox->Items->Add(L"headcode to");
-        OAListBox->Items->Add(L"locate train");
-        OAListBox->Items->Add(L"");
-        OAListBox->Items->Add(L"");
-        OAListBox->Items->Add(L"Right click");
-        OAListBox->Items->Add(L"headcode for");
-        OAListBox->Items->Add(L"information");
-        OAListBox->Items->Add(L"");
-        OAListBox->Items->Add(L"");
-        OAListBox->Items->Add(L"Left click and");
-        OAListBox->Items->Add(L"hold grey area");
-        OAListBox->Items->Add(L"to move panel");
+        ActionsDueForm->ActionsDueListBox->Clear();
+        ActionsDueForm->ActionsDueListBox->Items->Add(L""); // hints for OpActionPanel
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"Left click");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"headcode to");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"locate train");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"Right click");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"headcode for");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"information");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"Left click and");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"hold \"Actions");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"Due\" label");
+        ActionsDueForm->ActionsDueListBox->Items->Add(L"to move panel");
         if((TrainController->AvHoursIntValue > 0) || (Level2OperMode == PreStart)) // only visible if already set or if still in prestart mode
         {
             MTBFEditBox->Visible = true;
@@ -16585,19 +16538,19 @@ void TInterface::SetLevel1Mode(int Caller)
         }
         if(Utilities->DelayMode == Nil) //this section added at v2.13.0 to indicate current state of random delays at start of session
         {
-            Display->PerformanceLog(28, "No random delays selected");
+            PerfLogForm->PerformanceLog(28, "No random delays selected on reloading session");
         }
         else if(Utilities->DelayMode == Minor)
         {
-            Display->PerformanceLog(29, "Minor random delays selected");
+            PerfLogForm->PerformanceLog(29, "Minor random delays selected on reloading session");
         }
         else if(Utilities->DelayMode == Moderate)
         {
-            Display->PerformanceLog(30, "Moderate random delays selected");
+            PerfLogForm->PerformanceLog(30, "Moderate random delays selected on reloading session");
         }
         else if(Utilities->DelayMode == Major)
         {
-            Display->PerformanceLog(31, "Major random delays selected");
+            PerfLogForm->PerformanceLog(31, "Major random delays selected on reloading session");
         }
         break;
 
@@ -17478,39 +17431,39 @@ void TInterface::SetLevel2OperMode(int Caller)
             // send message to performance log
             if(TTClockSpeed == 2)
             {
-                Display->PerformanceLog(6, TimeMessage + "Timetable clock speed changed to twice normal");
+                PerfLogForm->PerformanceLog(6, TimeMessage + "Timetable clock speed changed to twice normal");
             }
             else if(TTClockSpeed == 4)
             {
-                Display->PerformanceLog(7, TimeMessage + "Timetable clock speed changed to four times normal");
+                PerfLogForm->PerformanceLog(7, TimeMessage + "Timetable clock speed changed to four times normal");
             }
             else if(TTClockSpeed == 8)
             {
-                Display->PerformanceLog(8, TimeMessage + "Timetable clock speed changed to eight times normal");
+                PerfLogForm->PerformanceLog(8, TimeMessage + "Timetable clock speed changed to eight times normal");
             }
             else if(TTClockSpeed == 16)
             {
-                Display->PerformanceLog(9, TimeMessage + "Timetable clock speed changed to sixteen times normal");
+                PerfLogForm->PerformanceLog(9, TimeMessage + "Timetable clock speed changed to sixteen times normal");
             }
             else if(TTClockSpeed == 0.5)
             {
-                Display->PerformanceLog(10, TimeMessage + "Timetable clock speed changed to half normal");
+                PerfLogForm->PerformanceLog(10, TimeMessage + "Timetable clock speed changed to half normal");
             }
             else if(TTClockSpeed == 0.25)
             {
-                Display->PerformanceLog(11, TimeMessage + "Timetable clock speed changed to quarter normal");
+                PerfLogForm->PerformanceLog(11, TimeMessage + "Timetable clock speed changed to quarter normal");
             }
             else if(TTClockSpeed == 0.125)
             {
-                Display->PerformanceLog(14, TimeMessage + "Timetable clock speed changed to one eighth normal");
+                PerfLogForm->PerformanceLog(14, TimeMessage + "Timetable clock speed changed to one eighth normal");
             }
             else if(TTClockSpeed == 0.0625)
             {
-                Display->PerformanceLog(15, TimeMessage + "Timetable clock speed changed to one sixteenth normal");
+                PerfLogForm->PerformanceLog(15, TimeMessage + "Timetable clock speed changed to one sixteenth normal");
             }
             else
             {
-                Display->PerformanceLog(12, TimeMessage + "Timetable clock speed changed to normal");
+                PerfLogForm->PerformanceLog(12, TimeMessage + "Timetable clock speed changed to normal");
             }
         }
         double TTClockTimeChange = double(TrainController->RestartTime) - PauseEntryRestartTime;
@@ -17536,7 +17489,7 @@ void TInterface::SetLevel2OperMode(int Caller)
             {
                 TimeMessage += "Timetable clock incremented by " + AnsiString(HoursIncrease) + "h " + AnsiString(MinsIncrease) + "m";
             }
-            Display->PerformanceLog(13, TimeMessage);
+            PerfLogForm->PerformanceLog(13, TimeMessage);
         }
         WarningHover = false;
         SetRouteButtonsInfoCaptionAndRouteNotStarted(4);
@@ -17713,28 +17666,39 @@ void TInterface::TrackTrainFloat(int Caller)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",TrackTrainFloat");
     TPoint MousePoint = Mouse->CursorPos;
-    int ScreenX = MousePoint.x - MainScreen->ClientOrigin.x;
+    int ScreenX = MousePoint.x - MainScreen->ClientOrigin.x; //mouse position wrt MainScreen
     int ScreenY = MousePoint.y - MainScreen->ClientOrigin.y;
 
-    if(SkipTTActionsListBox->Visible || (!OAListBoxRightMouseButtonDown && ((ScreenX > (MainScreen->Width - 1)) || (ScreenY > (MainScreen->Height - 1)) || (ScreenX < 0) || (ScreenY < 0))))
+    if(SkipTTActionsListBox->Visible ||
+        (!ActionsDueForm->ActionsDueListBoxRightMouseButtonDown &&
+            ((ScreenX > (MainScreen->Width - 1)) || (ScreenY > (MainScreen->Height - 1)) || (ScreenX < 0) || (ScreenY < 0)))) //button up & mouse outside mainscreen
     {
-        // added !OAListBoxRightMouseButtonDown at v2.7.0 so can still obtain info & move to trains from OAListBox even if they are out of the main screen area
-        // added SkipTTActionsListBox->Visible at v2.11.0 so floating window when thuis is displayed
+        // added !ActionsDueListBoxRightMouseButtonDown at v2.7.0 so can still obtain info & move to trains from ActionsDueListBox even if they are out of the main screen area
+        // added SkipTTActionsListBox->Visible at v2.11.0 so no floating window when this is displayed
         FloatingPanel->Visible = false;
         Utilities->CallLogPop(1432);
         return;
     }
-    if(PerformancePanel->Visible)
-    {
-        if((MousePoint.x >= PerformancePanel->Left) && (MousePoint.x <= (PerformancePanel->Left + PerformancePanel->Width)) &&
-           ((MousePoint.y - ClientOrigin.y) >= PerformancePanel->Top) && ((MousePoint.y - ClientOrigin.y) <=
-                                                                          (PerformancePanel->Top + PerformancePanel->Height)))
-        {
-            // dont show floating window if mouse over performance panel
-            FloatingPanel->Visible = false;
-            Utilities->CallLogPop(1715);
-            return;
-        }
+
+// mouse in ActionsDueForm if absolute mouseposX >= adfleft && mouseposX <= adfleft + adfwidth && mouseposY >= adftop && mouseposY <= adftop + adfheight
+    if(ActionsDueForm->Visible && (MousePoint.x >= ActionsDueForm->Left) && (MousePoint.x <= (ActionsDueForm->Left + ActionsDueForm->Width)) &&
+        (MousePoint.y >= ActionsDueForm->Top) && (MousePoint.y <= (ActionsDueForm->Top + ActionsDueForm->Height)) &&
+        !ActionsDueForm->ActionsDueListBoxRightMouseButtonDown)
+    {   //added at v2.13.0 so floating window not shown if mouse inside ActionsDue Form & right button not down in listbox
+        FloatingPanel->Visible = false;
+        Utilities->CallLogPop(2240);
+        return;
+    }
+// mouse in PerfLogForm if absolute mouseposX >= plfleft && mouseposX <= plfleft + plfwidth && mouseposY >= plftop && mouseposY <= plftop + plfheight
+    if(PerfLogForm->Visible && (MousePoint.x >= PerfLogForm->Left) && (MousePoint.x <= (PerfLogForm->Left + PerfLogForm->Width)) &&
+        (MousePoint.y >= PerfLogForm->Top) && (MousePoint.y <= (PerfLogForm->Top + PerfLogForm->Height)) &&
+        !ActionsDueForm->ActionsDueListBoxRightMouseButtonDown)
+//    if(PerfLogForm->MouseInClient || PerfLogForm->PerformanceLogBox->MouseInClient)
+    {   //added at v2.13.0 so floating window not shown if mouse inside PerfLogForm & right button not down in ADForm listbox
+        //(MouseInClient was ok but changed to match ActionsDueForm)
+        FloatingPanel->Visible = false;
+        Utilities->CallLogPop(2538);
+        return;
     }
     if(TimetableEditPanel->Visible) // added at v2.5.1 as showed track info behind panel
     {
@@ -17744,7 +17708,7 @@ void TInterface::TrackTrainFloat(int Caller)
         {
             // dont show floating window if mouse over TimetableEditPanel
             FloatingPanel->Visible = false;
-            Utilities->CallLogPop(2240);
+            Utilities->CallLogPop(2541);
             return;
         }
     }
@@ -17761,11 +17725,12 @@ void TInterface::TrackTrainFloat(int Caller)
     }
     bool MouseOverOAPanel = false;
 // this flag added at v2.7.0 in place of prohibition of all floating windows (which was added at v2.3.0 when Xeon notified me in email of 15/10/19 that they were showing)
-    if(OperatorActionPanel->Visible)
+//so track info not shown when mouse over OA panel (as now can right click panel to show train info)
+    if(ActionsDueForm->Visible)  //changed to ..Form instead of ..Panel at v2.13.0
     {
-        if((MousePoint.x >= OperatorActionPanel->Left) && (MousePoint.x <= (OperatorActionPanel->Left + OperatorActionPanel->Width)) &&
-           ((MousePoint.y - ClientOrigin.y) >= OperatorActionPanel->Top) && ((MousePoint.y - ClientOrigin.y) <=
-                                                                             (OperatorActionPanel->Top + OperatorActionPanel->Height)))
+        if((MousePoint.x >= ActionsDueForm->Left) && (MousePoint.x <= (ActionsDueForm->Left + ActionsDueForm->Width)) &&
+           ((MousePoint.y - ClientOrigin.y) >= ActionsDueForm->Top) && ((MousePoint.y - ClientOrigin.y) <=
+           (ActionsDueForm->Top + ActionsDueForm->Height)))
         {
             MouseOverOAPanel = true;
         }
@@ -17895,12 +17860,10 @@ void TInterface::TrackTrainFloat(int Caller)
             {
                 TrackFloat = "Location = " + ATrackSN + '\n' + LengthAndSpeedCaption + '\n' + "ID = " + AnsiString(ActiveTrackElement.ElementID);
             }
-
             else if(InactiveTrackFoundFlag) // no timetable name yet but unnamed inactive element at same location (can't be a parapet if active element there)
             {
                 TrackFloat = "Location unnamed\n" + LengthAndSpeedCaption + '\n' + "ID = " + AnsiString(ActiveTrackElement.ElementID);
             }
-
             else // no timetable or location name, just track
             {
                 TrackFloat = LengthAndSpeedCaption + '\n' + "Track Element ID = " + AnsiString(ActiveTrackElement.ElementID);
@@ -17924,6 +17887,120 @@ void TInterface::TrackTrainFloat(int Caller)
                     SigAspectString = "\nFour-aspect signal";
                 }
                 TrackFloat += SigAspectString;
+            }
+//failed points info added at v2.13.0
+            if((ActiveTrackElement.TrackType == Points) && ActiveTrackElement.Failed) //failed points
+            {
+                AnsiString RepairTimeStr;
+                TDateTime Now = TrainController->TTClockTime;
+                for(TTrack::TFailedElementVector::iterator FPVIt = Track->FailedPointsVector.begin(); FPVIt != Track->FailedPointsVector.end(); FPVIt++)
+                {
+                    if(ActiveVecPos == FPVIt->TVPos) //found the failed point
+                    {
+                        if((Now - FPVIt->FailureTime) <= TDateTime(Utilities->RepairDiagnosisTime/1440)) //less than 5 minutes since failed - type of failure not yet identified
+                        {
+                            RepairTimeStr = "not yet known.";
+                        }
+                        else if((FPVIt->RepairTime - Now) <= TDateTime(10.0/1440))
+                        {
+                            RepairTimeStr = "only a few minutes.";
+                        }
+                        else if((FPVIt->RepairTime - Now) <= TDateTime(30.0/1440))
+                        {
+                            RepairTimeStr = "30 minutes or less.";
+                        }
+                        else if((FPVIt->RepairTime - Now) <= TDateTime(60.0/1440))
+                        {
+                            RepairTimeStr = "30 minutes to an hour.";
+                        }
+                        else if((FPVIt->RepairTime - Now) <= TDateTime(120.0/1440))
+                        {
+                            RepairTimeStr = "1 to 2 hours.";
+                        }
+                        else if((FPVIt->RepairTime - Now) > TDateTime(120.0/1440))
+                        {
+                            RepairTimeStr = "over 2 hours.";
+                        }
+                        break; //no point looking further
+                    }
+                }
+                TrackFloat += "\nPoints failed. Repair time " + RepairTimeStr;
+            }
+//failed signals info added at v2.13.0
+            if((ActiveTrackElement.TrackType == SignalPost) && ActiveTrackElement.Failed) //failed signals
+            {
+                AnsiString RepairTimeStr;
+                TDateTime Now = TrainController->TTClockTime;
+                for(TTrack::TFailedElementVector::iterator FPVIt = Track->FailedSignalsVector.begin(); FPVIt != Track->FailedSignalsVector.end(); FPVIt++)
+                {
+                    if(ActiveVecPos == FPVIt->TVPos) //found the failed signal
+                    {
+                        if((Now - FPVIt->FailureTime) <= TDateTime(Utilities->RepairDiagnosisTime/1440)) //less than 5 minutes since failed - type of failure not yet identified
+                        {
+                            RepairTimeStr = "not yet known.";
+                        }
+                        else if((FPVIt->RepairTime - Now) <= TDateTime(10.0/1440))
+                        {
+                            RepairTimeStr = "only a few minutes.";
+                        }
+                        else if((FPVIt->RepairTime - Now) <= TDateTime(30.0/1440))
+                        {
+                            RepairTimeStr = "30 minutes or less.";
+                        }
+                        else if((FPVIt->RepairTime - Now) <= TDateTime(60.0/1440))
+                        {
+                            RepairTimeStr = "30 minutes to an hour.";
+                        }
+                        else if((FPVIt->RepairTime - Now) <= TDateTime(120.0/1440))
+                        {
+                            RepairTimeStr = "1 to 2 hours.";
+                        }
+                        else if((FPVIt->RepairTime - Now) > TDateTime(120.0/1440))
+                        {
+                            RepairTimeStr = "over 2 hours.";
+                        }
+                        break; //no point looking further
+                    }
+                }
+                TrackFloat += "\nSignal failed. Repair time " + RepairTimeStr;
+            }
+//TSR info added at v2.13.0
+            if((ActiveTrackElement.TrackType == Simple) && ActiveTrackElement.Failed) //TSR
+            {
+                AnsiString RepairTimeStr;
+                TDateTime Now = TrainController->TTClockTime;
+                for(TTrack::TFailedElementVector::iterator FPVIt = Track->TSRVector.begin(); FPVIt != Track->TSRVector.end(); FPVIt++)
+                {
+                    if(ActiveVecPos == FPVIt->TVPos) //found the TSR
+                    {
+                        if((Now - FPVIt->FailureTime) <= TDateTime(Utilities->RepairDiagnosisTime/1440)) //less than 5 minutes since failed - type of failure not yet identified
+                        {
+                            RepairTimeStr = "not yet known.";
+                        }
+                        else if((FPVIt->RepairTime - Now) <= TDateTime(10.0/1440))
+                        {
+                            RepairTimeStr = "only a few minutes.";
+                        }
+                        else if((FPVIt->RepairTime - Now) <= TDateTime(30.0/1440))
+                        {
+                            RepairTimeStr = "30 minutes or less.";
+                        }
+                        else if((FPVIt->RepairTime - Now) <= TDateTime(60.0/1440))
+                        {
+                            RepairTimeStr = "30 minutes to an hour.";
+                        }
+                        else if((FPVIt->RepairTime - Now) <= TDateTime(120.0/1440))
+                        {
+                            RepairTimeStr = "1 to 2 hours.";
+                        }
+                        else if((FPVIt->RepairTime - Now) > TDateTime(120.0/1440))
+                        {
+                            RepairTimeStr = "over 2 hours.";
+                        }
+                        break; //no point looking further
+                    }
+                }
+                TrackFloat += "\nTemporary Speed Restriction in place. Restoration time " + RepairTimeStr;
             }
         } // if(ActiveFoundFlag)
         else if(InactiveTrackFoundFlag) // inactive element but no active element,
@@ -17949,25 +18026,25 @@ void TInterface::TrackTrainFloat(int Caller)
     }
 // end of TrackFloat section
 
-    bool OAListBoxFloatRequired = false; // identifies which window needs the float
+    bool ActionsDueListBoxFloatRequired = false; // identifies which window needs the float
     if(Level1Mode == OperMode && ((TrainStatusInfoOnOffMenuItem->Caption == "Hide Status") || (TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")))
     // if caption is 'Hide' label is required
     {
         bool FoundFlag;
         AnsiString FormatOneDPStr = "####0.0";
         AnsiString FormatNoDPStr = "#######0";
-        AnsiString MaxBrakeStr = ""; // , EntrySpeedStr="", HalfStr="", FullStr="", MaxAtHalfStr="";//test
+        AnsiString MaxBrakeStr = "";
         AnsiString SpecialStr = "";
-        if(OperatorActionPanel->Visible) // added at v2.6.2 to show floating window for trains in actions due list
+        if(ActionsDueForm->Visible) // added at v2.6.2 to show floating window for trains in actions due list
         {
-            if(OAListBox->MouseInClient && !OperatorActionPanel->MouseInClient && OAListBoxRightMouseButtonDown)
+            if(ActionsDueForm->ActionsDueListBox->MouseInClient && !ActionsDueForm->ActionsDuePanel->MouseInClient && ActionsDueForm->ActionsDueListBoxRightMouseButtonDown)
             {
-                int X = OAListBox->ScreenToClient(MousePoint).x;
-                int Y = OAListBox->ScreenToClient(MousePoint).y;
+                int X = ActionsDueForm->ActionsDueListBox->ScreenToClient(MousePoint).x;
+                int Y = ActionsDueForm->ActionsDueListBox->ScreenToClient(MousePoint).y;
                 int TrainID = -1, ContinuationPos = -1;
                 if(GetTrainIDOrContinuationPosition(1, X, Y, TrainID, ContinuationPos))
                 {
-                    OAListBoxFloatRequired = true;
+                    ActionsDueListBoxFloatRequired = true;
                     if(TrainStatusInfoOnOffMenuItem->Caption == "Hide Status")
                     {
                         ShowTrainStatusFloatFlag = true;
@@ -17989,7 +18066,7 @@ void TInterface::TrackTrainFloat(int Caller)
                 }
             }
         }
-        if(!OAListBoxFloatRequired) // condition added at v2.6.2 so only one floating window can show
+        if(!ActionsDueListBoxFloatRequired) // condition added at v2.6.2 so only one floating window can show
         {
             int VecPos = Track->GetVectorPositionFromTrackMap(6, HLoc, VLoc, FoundFlag);
             if(FoundFlag && !MouseOverOAPanel) // MouseOverOAPanel added at v2.7.0 to prevent trains showimng behind OA  panel
@@ -18100,10 +18177,25 @@ void TInterface::TrackTrainFloat(int Caller)
     }
     int WindowOffsetLeft = 16;
     int WindowOffsetRight = 16;
-    if(OAListBoxFloatRequired)
+    if(ActionsDueListBoxFloatRequired)
     {
-        WindowOffsetLeft = 32;
-        WindowOffsetRight = 64;
+        if((ActionsDueForm->Left >= (Interface->Left + Interface->Width)) || ((ActionsDueForm->Left + ActionsDueForm->Width) <= Interface->Left) ||
+            (ActionsDueForm->Top >= (Interface->Top + Interface->Height)) || ((ActionsDueForm->Top + ActionsDueForm->Height) <= Interface->Top))
+            //AD form outside interface so floating window in TRH corner of mainscreen
+        {
+            FloatingLabel->Caption = Caption; //added here as return in this function, see below for information
+            FloatingPanel->Visible = true;
+            FloatingPanel->Left = MainScreen->Left + MainScreen->Width - FloatingPanel->Width;
+            FloatingPanel->Top = MainScreen->Top;
+            FloatingPanel->BringToFront();
+            Utilities->CallLogPop(2544);
+            return;
+        }
+        else
+        {
+            WindowOffsetLeft = 96; //was 32;
+            WindowOffsetRight = 96; //was 64;
+        }
     }
     FloatingLabel->Caption = Caption; // set this here so dimensions correct in calculations, moved from below at v2.7.0
     FloatingPanel->Visible = true; // need this or dimensions still not valid, moved from below at v2.7.0
@@ -18129,7 +18221,7 @@ void TInterface::TrackTrainFloat(int Caller)
             Top = 30;
         }
     }
-/* if((Left != FloatingPanel->Left) || (Top != FloatingPanel->Top))    //dropped at v2.7.0 as causes more flickler than allowing window to move with mouse
+/* if((Left != FloatingPanel->Left) || (Top != FloatingPanel->Top))    //dropped at v2.7.0 as causes more flicker than allowing window to move with mouse
     {
         FloatingPanel->Visible = false; // so doesn't flicker when reposition
         FloatingPanel->Left = Left;
@@ -18494,6 +18586,19 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
         TimeLeft = RemTimeFull;
     }
     TimeToNextMovementStr = "Time to next movement (sec) = " + TimeLeftStr.FormatFloat(FormatOneDPStr, TimeLeft);
+    //addition at v2.13.0
+    AnsiString OverallDelayString = AnsiString('\n');
+    if(int(Train.DelayedRandMins) > 0)
+    {
+        if(int(Train.DelayedRandMins) > 1)
+        {
+            OverallDelayString = AnsiString("\nTotal random delay ") + AnsiString(int(Train.DelayedRandMins)) + AnsiString(" minutes\n");
+        }
+        else
+        {
+            OverallDelayString = AnsiString("\nTotal random delay 1 minute\n");
+        }
+    }
     if(Train.Stopped())
     {
         TimeToNextMovementStr = "";
@@ -18504,34 +18609,33 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
         {
             TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
                 "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' +
-                "Additional delay here of 1 minute\nNext:  " +
-                NextStopStr;
+                "New random delay here of 1 minute" + OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
         }
         else if(int(Train.NewDelay) > 1)
         {
             TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
                 "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' +
-                "Additional delay here of " + AnsiString(int(Train.NewDelay)) + " minutes\nNext:  " +
-                NextStopStr;
+                "New random delay here of " + AnsiString(int(Train.NewDelay)) + " minutes" + OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
         }
-        else
+        else //int(NewDelay) == 0
         {
             TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
-                "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' + "Next:  " +
-                NextStopStr;
+                "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status +
+                OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
         }
     }
     else if(Train.Stopped()) //stopped anywhere else or not a departure next
     {
         TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
-            "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' + "Next timetabled action: " +
-            NextStopStr;       //changed to 'Next timetabled action:' at v2.13.0 instead of 'Next:' to make clear it doesn't include delays
+            "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status +
+            OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
+            //changed to 'Next timetabled action:' at v2.13.0 instead of 'Next:' to make clear it doesn't include delays
     }
     else
     {
         TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
             "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + ": " +
-            CurrSpeedStr.FormatFloat(FormatNoDPStr, CurrSpeed) + "km/h" + '\n' + "Next timetabled action: " + NextStopStr;
+            CurrSpeedStr.FormatFloat(FormatNoDPStr, CurrSpeed) + "km/h" + OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
     }                          //changed to 'Next timetabled action:' at v2.13.0 instead of 'Next:' to make clear it doesn't include delays
     Utilities->CallLogPop(2263);
     return(TrainStatusFloat);
@@ -18540,11 +18644,63 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
 // ---------------------------------------------------------------------------
 
 void TInterface::FlashingGraphics(int Caller, TDateTime Now)
-// following section checks to see if GapFlashFlag set & flashes the Gap graphics if so
-// Gap flashing is cancelled on any mousedown event
-
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FlashingGraphics");
+//deal with any failed track elements - flash in zoom-out mode - added at v2.13.0
+    if(Display->ZoomOutFlag)
+    {
+        if(!Track->FailedPointsVector.empty())
+        {
+            for(unsigned int x = 0; x < Track->FailedPointsVector.size(); x++)
+            {
+                if(WarningFlash)
+                {
+                    Display->PlotSmallOutput(26, Track->TrackElementAt(1536, Track->FailedPointsVector.at(x).TVPos).HLoc * 4,
+                        Track->TrackElementAt(1542, Track->FailedPointsVector.at(x).TVPos).VLoc * 4, RailGraphics->smBlack);
+                }
+                else
+                {
+                    Display->PlotSmallOutput(27, Track->TrackElementAt(1537, Track->FailedPointsVector.at(x).TVPos).HLoc * 4,
+                        Track->TrackElementAt(1543, Track->FailedPointsVector.at(x).TVPos).VLoc * 4, RailGraphics->smSolidBgnd);
+                }
+            }
+        }
+        if(!Track->FailedSignalsVector.empty())
+        {
+            for(unsigned int x = 0; x < Track->FailedSignalsVector.size(); x++)
+            {
+                if(WarningFlash)
+                {
+                    Display->PlotSmallOutput(28, Track->TrackElementAt(1538, Track->FailedSignalsVector.at(x).TVPos).HLoc * 4,
+                        Track->TrackElementAt(1544, Track->FailedSignalsVector.at(x).TVPos).VLoc * 4, RailGraphics->smBlack);
+                }
+                else
+                {
+                    Display->PlotSmallOutput(29, Track->TrackElementAt(1539, Track->FailedSignalsVector.at(x).TVPos).HLoc * 4,
+                        Track->TrackElementAt(1545, Track->FailedSignalsVector.at(x).TVPos).VLoc * 4, RailGraphics->smSolidBgnd);
+                }
+            }
+        }
+        if(!Track->TSRVector.empty())
+        {
+            for(unsigned int x = 0; x < Track->TSRVector.size(); x++)
+            {
+                if(WarningFlash)
+                {
+                    Display->PlotSmallOutput(30, Track->TrackElementAt(1540, Track->TSRVector.at(x).TVPos).HLoc * 4,
+                        Track->TrackElementAt(1546, Track->TSRVector.at(x).TVPos).VLoc * 4, RailGraphics->smBlack);
+                }
+                else
+                {
+                    Display->PlotSmallOutput(31, Track->TrackElementAt(1541, Track->TSRVector.at(x).TVPos).HLoc * 4,
+                        Track->TrackElementAt(1547, Track->TSRVector.at(x).TVPos).VLoc * 4, RailGraphics->smSolidBgnd);
+                }
+            }
+        }
+    }
+
+// following section checks to see if GapFlashFlag set & flashes the Gap graphics if so
+// Gap flashing is cancelled on any mousedown event
 // deal with flashing GapFlash graphics (only in basic mode so no need to check for trains)
     if(Track->GapFlashFlag && !Display->ZoomOutFlag)
     {
@@ -19199,8 +19355,8 @@ void TInterface::ErrorLog(int Caller, AnsiString Message)
         DeleteFile(TempTTFileName);
     }
     Display->GetImage()->Visible = false;
-    PerformancePanel->Visible = false;
-    OperatorActionPanel->Visible = false; // new v2.2.0
+    PerfLogForm->Visible = false;
+    ActionsDueForm->Visible = false; // new v2.2.0
     TrackBuildPanel->Visible = false;
     TrackElementPanel->Visible = false;
     LocationNameTextBox->Visible = false;
@@ -19240,14 +19396,7 @@ void TInterface::ErrorLog(int Caller, AnsiString Message)
     OutputLog8->Caption = "";
     OutputLog9->Caption = "";
     OutputLog10->Caption = "";
-    if(Caller == 113)
-    {
-        ErrorMessageStoreImage->Visible = true;
-    }
-    else
-    {
-        ErrorMessage->Visible = true;
-    }
+    ErrorMessage->Visible = true;
     ErrorButton->Visible = true;
     Screen->Cursor = TCursor(-2); // Arrow; - in case was an hourglass
 // No need for Utilities->CallLogPop as the call log deque has already been written to file & the next action
@@ -19256,18 +19405,18 @@ void TInterface::ErrorLog(int Caller, AnsiString Message)
 
 // ---------------------------------------------------------------------------
 
-bool TInterface::IsPerformancePanelObscuringFloatingLabel(int Caller)
-// not used from v2.2.0 as now allow floating panel & label to overlie performance panel
+bool TInterface::IsPerfLogFormObscuringFloatingLabel(int Caller)
+// reinstated at v2.13.0 with new form for PerfLogForm //not used from v2.2.0 as now allow floating panel & label to overlie performance panel
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsPerformancePanelObscuringFloatingLabel");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsPerfLogFormObscuringFloatingLabel");
     if(FloatingPanel->Visible == false)
     {
         Utilities->CallLogPop(1205);
         return(false);
     }
-// pptop >= flbot, ppbot <= fltop, ppleft >= flright, ppright <= flleft
-    if((PerformancePanel->Top >= (FloatingPanel->Top + FloatingPanel->Height)) || ((PerformancePanel->Top + PerformancePanel->Height) <= FloatingPanel->Top) ||
-       (PerformancePanel->Left >= (FloatingPanel->Left + FloatingPanel->Width)) || ((PerformancePanel->Left + PerformancePanel->Width) <= FloatingPanel->Left))
+// ok if pftop >= flbot, pfbot <= fltop, pfleft >= flright, pfright <= flleft
+    if((PerfLogForm->Top >= (FloatingPanel->ClientOrigin.y + FloatingPanel->Height)) || ((PerfLogForm->Top + PerfLogForm->Height) <= (FloatingPanel->ClientOrigin.y)) ||
+       (PerfLogForm->Left >= (FloatingPanel->ClientOrigin.x + FloatingPanel->Width)) || ((PerfLogForm->Left + PerfLogForm->Width) <= (FloatingPanel->ClientOrigin.x)))
     {
         Utilities->CallLogPop(1206);
         return(false);
@@ -19278,6 +19427,32 @@ bool TInterface::IsPerformancePanelObscuringFloatingLabel(int Caller)
         return(true);
     }
 }
+
+// ---------------------------------------------------------------------------
+
+bool TInterface::IsActionsDueFormObscuringFloatingLabel(int Caller)
+// new at v2.13.0
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsActionsDueFormObscuringFloatingLabel");
+    if(FloatingPanel->Visible == false)
+    {
+        Utilities->CallLogPop(2539);
+        return(false);
+    }
+// ok if adftop >= flbot, adfbot <= fltop, adfleft >= flright, adfright <= flleft
+    if((ActionsDueForm->Top >= (FloatingPanel->ClientOrigin.y + FloatingPanel->Height)) || ((ActionsDueForm->Top + ActionsDueForm->Height) <= (FloatingPanel->ClientOrigin.y)) ||
+       (ActionsDueForm->Left >= (FloatingPanel->ClientOrigin.x + FloatingPanel->Width)) || ((ActionsDueForm->Left + ActionsDueForm->Width) <= (FloatingPanel->ClientOrigin.x)))
+    {
+        Utilities->CallLogPop(2542);
+        return(false);
+    }
+    else
+    {
+        Utilities->CallLogPop(2543);
+        return(true);
+    }
+}
+
 // ---------------------------------------------------------------------------
 
 void TInterface::SetCaption(int Caller)
@@ -19400,10 +19575,6 @@ void TInterface::ResetAll(int Caller)
     TempFont->Color = clB0G0R0;
     TempFont->Charset = (TFontCharset)(0);
     MainScreen->Canvas->Font->Assign(TempFont);
-    PerformancePanel->Top = MainScreen->Top + MainScreen->Height - PerformancePanel->Height;
-    PerformancePanel->Left = MainScreen->Left;
-    OperatorActionPanel->Top = MainScreen->Top + MainScreen->Height - OperatorActionPanel->Height; // new v2.2.0
-    OperatorActionPanel->Left = MainScreen->Left + MainScreen->Width - OperatorActionPanel->Width;
     ;                                                                                                // new v2.2.0
     // ScreenRightButton->Left = MainScreen->Width + MainScreen->Left;  //Button values changed at v2.1.0 to allow for screen resizing
     // ScreenLeftButton->Left = ScreenRightButton->Left;
@@ -19680,10 +19851,9 @@ In each case need to ensure that the following points are considered and dealt w
             Utilities->SaveFileString(SessionFile, "End of file at v2.12.0");
 //end of v2.12.0 additions
 
-//additions at v2.13.0 - random location delays
+//additions at v2.13.0 - random delays
 //No need to save Utilities->LastDelayTTClockTime - makes little difference and would cause corruption in any v2.13.0 Beta sessions
             Utilities->SaveFileInt(SessionFile, Utilities->CumulativeDelayedRandMinsAllTrains); //to allow for exited and removed trains
-//            Utilities->SaveFileInt(SessionFile, int(Utilities->DelayMode)); //restore mode on loading
             for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
             { //if empty will skip
                 TTrain Train = TrainController->TrainVectorAt(87, x);
@@ -19692,6 +19862,35 @@ In each case need to ensure that the following points are considered and dealt w
                 Utilities->SaveFileDouble(SessionFile, Train.CumulativeDelayedRandMinsOneTrain);
                 Utilities->SaveFileDouble(SessionFile, double(Train.ActualArrivalTime));
                 //ReleaseTime already loaded
+            }
+            //save failed point info
+            Utilities->SaveFileInt(SessionFile, Track->FailedPointsVector.size()); //number of failed points
+            for(unsigned int x = 0; x < Track->FailedPointsVector.size(); x++)
+            { //if empty will skip, when reload set Failed to true & SpeedLimits to 10km/h
+                TTrackElement &TE = Track->TrackElementAt(1512, Track->FailedPointsVector.at(x).TVPos);
+                Utilities->SaveFileInt(SessionFile, Track->FailedPointsVector.at(x).TVPos);
+                Utilities->SaveFileInt(SessionFile, TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01);
+                Utilities->SaveFileInt(SessionFile, TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23);
+                Utilities->SaveFileDouble(SessionFile, double(Track->FailedPointsVector.at(x).FailureTime));
+                Utilities->SaveFileDouble(SessionFile, double(Track->FailedPointsVector.at(x).RepairTime));
+            }
+            //save failed signal info
+            Utilities->SaveFileInt(SessionFile, Track->FailedSignalsVector.size()); //number of failed signals
+            for(unsigned int x = 0; x < Track->FailedSignalsVector.size(); x++)
+            { //if empty will skip, when reload set Failed to true
+                Utilities->SaveFileInt(SessionFile, Track->FailedSignalsVector.at(x).TVPos);
+                Utilities->SaveFileDouble(SessionFile, double(Track->FailedSignalsVector.at(x).FailureTime));
+                Utilities->SaveFileDouble(SessionFile, double(Track->FailedSignalsVector.at(x).RepairTime));
+            }
+            //save TSR info
+            Utilities->SaveFileInt(SessionFile, Track->TSRVector.size()); //number of TSRs
+            for(unsigned int x = 0; x < Track->TSRVector.size(); x++)
+            { //if empty will skip, when reload set Failed to true & SpeedLimit to 10km/h
+                TTrackElement &TE = Track->TrackElementAt(1532, Track->TSRVector.at(x).TVPos);
+                Utilities->SaveFileInt(SessionFile, Track->TSRVector.at(x).TVPos);
+                Utilities->SaveFileInt(SessionFile, TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01);
+                Utilities->SaveFileDouble(SessionFile, double(Track->TSRVector.at(x).FailureTime));
+                Utilities->SaveFileDouble(SessionFile, double(Track->TSRVector.at(x).RepairTime));
             }
             Utilities->SaveFileString(SessionFile, "End of file at v2.13.0");
 //end of v2.13.0 additions
@@ -19784,6 +19983,14 @@ void TInterface::LoadSession(int Caller)
                     // load track elements
                     TempString = Utilities->LoadFileString(SessionFile); // ***Track***"
                     Track->LoadTrack(4, SessionFile, GraphicsFollow);
+                    if(!Track->IsTrackFinished()) //added at v2.13.0, should have been included earlier
+                    {
+                        SessionFile.close();
+                        Screen->Cursor = TCursor(-2); // Arrow;
+                        ShowMessage("Track not linked, session can't be loaded");
+                        Utilities->CallLogPop(2532);
+                        return;
+                    }
                     // load text elements
                     TempString = Utilities->LoadFileString(SessionFile); // ***Text***"
                     TextHandler->LoadText(1, SessionFile);
@@ -19860,18 +20067,18 @@ void TInterface::LoadSession(int Caller)
                         ShowMessage("Performance logfile failed to open, logs won't be saved. Ensure that there is a folder named " + PERFLOG_DIR_NAME +
                                     " in the folder where the 'Railway.exe' program file resides");
                     }
-                    // now reload the performance file
+                    // now reload the performance file (also populates PerformanceLogBox)
                     LoadPerformanceFile(0, SessionFile);
-// addition at v2.4.0
+// addition at v2.4.0 (train failures)
                     char TempChar;
                     SessionFile.get(TempChar);
                     while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) // get rid of all end of lines & emerge with eof or '*'
                     {
                         SessionFile.get(TempChar);
                     }
-                    if(SessionFile.eof()) // end of file
+                    if(SessionFile.eof()) // old session file
                     {
-                        TrainController->AvHoursIntValue = 0;
+                        TrainController->AvHoursIntValue = 0;  //initialise these for new prog
                         TrainController->MTBFHours = 0;
                         SessionFile.close(); // no TrainController->AvHoursIntValue & no failed trains
                         goto FINISHEDLOADING; //don't like goto's normally but necessary here to avoid multiple else's
@@ -19901,7 +20108,7 @@ void TInterface::LoadSession(int Caller)
                         {
                             SessionFile.get(TempChar);
                         }
-                        if(SessionFile.eof())
+                        if(SessionFile.eof()) //old session file
                         {
                             SessionFile.close(); //ConsecSignalsRoute set to PrefDirRoute
                             goto FINISHEDLOADING;
@@ -19918,14 +20125,19 @@ void TInterface::LoadSession(int Caller)
                         }
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.7.0"  discarded
 //end of 2.7.0 additions
-//additions at v2.9.1
+//additions at v2.9.1 - added exit information for performance log (should have been included earlier)
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0'))) // get rid of all end of lines & emerge with 1st digit of EarlyExits as character
                         {
                             SessionFile.get(TempChar);
                         }
-                        if(SessionFile.eof())
+                        if(SessionFile.eof()) //old session file
                         {
+                            TrainController->EarlyExits = 0;    //initialise for new prog - added at v2.13.0, should heve been here before
+                            TrainController->OnTimeExits = 0;
+                            TrainController->LateExits = 0;
+                            TrainController->TotEarlyExitMins = 0;
+                            TrainController->TotLateExitMins = 0;
                             SessionFile.close();
                             goto FINISHEDLOADING;
                         }
@@ -19945,15 +20157,16 @@ void TInterface::LoadSession(int Caller)
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.9.1"  discarded
 //end of 2.9.1 additions
 
-//2.11.0 additions
+//2.11.0 additions - skip timetabled events
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
                         {// get rid of all end of lines & emerge with eof or 1st digit of TrainController->SkippedTTEvents
                             SessionFile.get(TempChar);
                         }
-                        if(SessionFile.eof())
+                        if(SessionFile.eof()) //old session file
                         {
-                            SessionFile.close();
+                            TrainController->SkippedTTEvents = 0; //initialise for new prog, added at v2.13.0, should have been here earlier
+                            SessionFile.close();                  //no need to initialise train data as initialised during LoadSessionTrains
                             goto FINISHEDLOADING;
                         }
                         //TempChar now contains the first digit of SkippedTTEvents as a character, so get the rest up to CRLF
@@ -19971,7 +20184,7 @@ void TInterface::LoadSession(int Caller)
                         {// get rid of all end of lines & emerge with eof or 1st digit of TrainID
                             SessionFile.get(TempChar);
                         }
-                        if(SessionFile.eof())
+                        if(SessionFile.eof()) //no train skip data
                         {
                             SessionFile.close();
                             goto FINISHEDLOADING;
@@ -20003,15 +20216,15 @@ void TInterface::LoadSession(int Caller)
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.11.0"  discarded ('E' already loaded)
 //end of 2.11.0 additions
 
-//additions at v2.12.0
+//additions at v2.12.0 - change to new service early
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
                         {// get rid of all end of lines & emerge with eof or 1st digit of a TrainID or 'E'
                             SessionFile.get(TempChar);
                         }
-                        if(SessionFile.eof())
+                        if(SessionFile.eof()) //old session file
                         {
-                            SessionFile.close();
+                            SessionFile.close();  //no need to initialise train data as initialised during LoadSessionTrains
                             goto FINISHEDLOADING;
                         }
                         //TempChar now contains the first digit of the first train ID which requires TreatPassAsTimeLocDeparture to be set, or 'E' if none
@@ -20038,15 +20251,16 @@ void TInterface::LoadSession(int Caller)
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.12.0"  discarded ('E' already loaded)
 //end of additions at v2.12.0
 
-//additions at v2.13.0
+//additions at v2.13.0 - random delays - location delays, failed points & signals
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
                         {// get rid of all end of lines & emerge with eof or 1st digit of CumulativeDelayedRandMinsAllTrains
                             SessionFile.get(TempChar);
                         }
-                        if(SessionFile.eof())
+                        if(SessionFile.eof()) //old session file
                         {
-                            SessionFile.close();
+                            Utilities->CumulativeDelayedRandMinsAllTrains = 0; //initialised for new prog
+                            SessionFile.close(); //no need to initialise train data or Track.Failed as initialised during LoadSessionTrains and LoadTrack
                             goto FINISHEDLOADING;
                         }
                         //TempChar now contains the first digit of CumulativeDelayedRandMinsAllTrains
@@ -20068,9 +20282,59 @@ void TInterface::LoadSession(int Caller)
                             TempDouble = Utilities->LoadFileDouble(SessionFile);
                             Train.ActualArrivalTime = TDateTime(TempDouble); //ReleaseTime already loaded
                         }
+                        //load failed point info
+                        int TempInt, VecSize;
+                        double TempDouble;
+                        VecSize = Utilities->LoadFileInt(SessionFile); //number of failed points
+                        TTrack::TInfrastructureFailureEntry FPVE;
+                        for(int x = 0; x < VecSize; x++)
+                        {
+                            TempInt = Utilities->LoadFileInt(SessionFile); //TVPos
+                            TTrackElement &TE = Track->TrackElementAt(1513, TempInt);
+                            TE.Failed = true;
+                            FPVE.TVPos = TempInt;
+                            TempInt = Utilities->LoadFileInt(SessionFile); //TrainIDOnBridgeOrFailedPointOrigSpeedLimit01
+                            TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = TempInt;
+                            TempInt = Utilities->LoadFileInt(SessionFile); //TrainIDOnBridgeOrFailedPointOrigSpeedLimit23
+                            TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 = TempInt;
+                            TempDouble = Utilities->LoadFileDouble(SessionFile); //FailureTime
+                            FPVE.FailureTime = TempDouble;
+                            TempDouble = Utilities->LoadFileDouble(SessionFile); //RepairTime
+                            FPVE.RepairTime = TempDouble;
+                            Track->FailedPointsVector.push_back(FPVE);
+                        }
+                        //load failed signal info
+                        VecSize = Utilities->LoadFileInt(SessionFile); //number of failed points
+                        for(int x = 0; x < VecSize; x++)
+                        {
+                            TempInt = Utilities->LoadFileInt(SessionFile); //TVPos
+                            TTrackElement &TE = Track->TrackElementAt(1533, TempInt);
+                            TE.Failed = true;
+                            FPVE.TVPos = TempInt;
+                            TempDouble = Utilities->LoadFileDouble(SessionFile); //FailureTime
+                            FPVE.FailureTime = TempDouble;
+                            TempDouble = Utilities->LoadFileDouble(SessionFile); //RepairTime
+                            FPVE.RepairTime = TempDouble;
+                            Track->FailedSignalsVector.push_back(FPVE);
+                        }
+                        //load TSR info
+                        VecSize = Utilities->LoadFileInt(SessionFile); //number of TSRs
+                        for(int x = 0; x < VecSize; x++)
+                        {
+                            TempInt = Utilities->LoadFileInt(SessionFile); //TVPos
+                            TTrackElement &TE = Track->TrackElementAt(1534, TempInt);
+                            TE.Failed = true;
+                            FPVE.TVPos = TempInt;
+                            TempInt = Utilities->LoadFileInt(SessionFile); //TrainIDOnBridgeOrFailedPointOrigSpeedLimit01
+                            TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = TempInt;
+                            TempDouble = Utilities->LoadFileDouble(SessionFile); //FailureTime
+                            FPVE.FailureTime = TempDouble;
+                            TempDouble = Utilities->LoadFileDouble(SessionFile); //RepairTime
+                            FPVE.RepairTime = TempDouble;
+                            Track->TSRVector.push_back(FPVE);
+                        }
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.13.0"  discarded
 //end of additions at v2.13.0
-
                         SessionFile.close();
                     }
 
@@ -21586,14 +21850,14 @@ void TInterface::LoadPerformanceFile(int Caller, std::ifstream &InFile)
     TempString = AnsiString(Buffer);
     if(TempString == "***End of performance file***") //added at v2.10.0
     {
-        Display->PerformanceLog(17, "Performance Log\nRailway: " + RailwayTitle + "\nTimetable: " + TimetableTitle + "\nStart Time: " +
+        PerfLogForm->PerformanceLog(17, "Performance Log\nRailway: " + RailwayTitle + "\nTimetable: " + TimetableTitle + "\nStart Time: " +
                 TrainController->TimetableStartTime.FormatString("hh:nn"));
     }
     else
     {
         while(TempString != "***End of performance file***")
         {
-            PerformanceLogBox->Lines->Add(TempString);
+            PerfLogForm->PerformanceLogBox->Lines->Add(TempString);
             Utilities->PerformanceFile << TempString.c_str() << '\n';
             Utilities->PerformanceFile.flush(); //added at v2.13.0
             InFile.getline(Buffer, 1000);
@@ -21640,7 +21904,7 @@ bool TInterface::CheckPerformanceFile(int Caller, std::ifstream &InFile)
 void TInterface::SavePerformanceFile(int Caller, std::ofstream &OutFile)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SavePerformanceFile");
-    AnsiString Text = PerformanceLogBox->Text;
+    AnsiString Text = PerfLogForm->PerformanceLogBox->Text;
 
     while(Text != "")
     {
@@ -22629,170 +22893,13 @@ void TInterface::AddLocationNameText(int Caller, AnsiString Name, int HPos, int 
 
 // ---------------------------------------------------------------------------
 
-void TInterface::TestFunction()    //triggered by Alt Ctrl 4
+void TInterface::TestFunction()    //triggered by Ctrl Alt 4
 {
     try
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
-//        throw Exception("Test error");  //generate an error file
-
-//        TTrackElement &TE = Track->GetTrackElementFromTrackMap(7777, 402, 17); //test sudden speed limit application in front of train
-//        TE.SpeedLimit01 = 10;                                                  // ok, train brakes as hard as it can in front and passes at whatever speed, then accelerates again
-
-//    ElapsedTimeTestFunctionStart = true; //for elapsed time investigations in MasterClockTimer
-// ShowMessage("MissedTicks = " + AnsiString(MissedTicks) + "; TotalTicks = " + AnsiString(TotalTicks));
-
-//DMIt->second.ServiceReference = TMMIt->second.ServiceReference;
-//DMIt->second.RepeatNumber = TMMIt->second.RepeatNumber;
-//DMIt->second.TimeToExitSecs = TMMIt->second.TimeToExitSecs;
-/*
-        std::ofstream POBMFile("POBMFile.csv");
-        TDynamicMap::iterator DMIt;
-        for(DMIt = DynMapToHost.begin(); DMIt != DynMapToHost.end(); DMIt++)
-        {
-            POBMFile << DMIt->first.first << ',' << DMIt->first.second << ',' << DMIt->second.ServiceReference << ','
-                      << DMIt->second.RepeatNumber << ',' << DMIt->second.TimeToExitSecs << '\n';
-        }
-        POBMFile.close();
-*/
-
-/*
-        std::ifstream ExitFile("ExitFile.txt");
-        std::ofstream OutMapFile1("OutMapFile1.csv");
-        std::ofstream OutMapFile2("OutMapFile2.csv");
-        std::ofstream OutBufFile1("OutBufFile1.csv");
-        std::ofstream OutBufFile2("OutBufFile2.csv");
-        AnsiString UserName = "";
-        unsigned char marker;
-        TDynamicMap DMap1, DMap2;
-        TDynamicMap::iterator DMIt;
-        TBytes Buffer1, Buffer2;
-        DMap1.clear();
-        BuildDummyTestMap(DMap1, ExitFile); //for Dan's Waterloo
-        UpdateDynamicMapFromTimeToExitMultiMap(2, DMap1);
-//DMap out
-        for(DMIt = DMap1.begin(); DMIt != DMap1.end(); DMIt++)
-        {
-            OutMapFile1 << DMIt->first.first << ',' << DMIt->first.second.first << ',' << DMIt->first.second.second << ',' << DMIt->second.ServiceReference << ','
-                      << DMIt->second.RepeatNumber << ',' << DMIt->second.TimeToExitSecs << '\n';
-        }
-//end of DMap
-        BuildDatagramFromPlayerMap(2, '3', "AB", Buffer1, DMap1); //buffer length is set within this function
-//Buffer out
-        OutBufFile1 << Buffer1[0] << ','; //marker
-        int y = 1;
-        while((Buffer1[y] != ';') && (y < 5)) //username, upt 4 chars, if less ';'  delimiter
-        {
-            OutBufFile1 << Buffer1[y];
-            y++;
-        }
-        if(Buffer1[y] == ';')
-        {
-            y++;
-        }
-        OutBufFile1 << ',';
-        //y now points to start of DMap data
-        while(y <= (Buffer1.Length - 9)) //9 bytes allows for ref to be null
-        {
-            OutBufFile1 <<  Buffer1[y] << ',' << Buffer1[y + 1] + (256 * Buffer1[y + 2]) << ',' << Buffer1[y + 3] + (256 * Buffer1[y + 4]) << ',';
-            y += 5;
-            int z = 0;
-            AnsiString ServRef = "        ";
-            while((Buffer1[y + z] != ';') && (z < 8))
-            {
-                ServRef[z + 1] = Buffer1[y + z];
-                z++;
-            }
-            ServRef = ServRef.Trim();
-            OutBufFile1 << ServRef << ',';
-            y += ServRef.Length();
-            if(Buffer1[y] == ';')
-            {
-                y++;
-            }
-            OutBufFile1 << Buffer1[y] + (256 * Buffer1[y + 1]) << ',' << Buffer1[y + 2] + (256 * Buffer1[y + 3]) << '\n';
-            y += 4;
-        }
-//end of Buffer out
-        DMap2.clear();
-        if(BuildDynamicMapFromPlayerDatagram(2, DMap2, Buffer1, marker, UserName))  //startpos = 4 as have '3AB;' a;ready in buffer
-//DMap out
-        {
-            for(DMIt = DMap2.begin(); DMIt != DMap2.end(); DMIt++)
-            {
-                OutMapFile2 << DMIt->first.first << ',' << DMIt->first.second.first << ',' << DMIt->first.second.second << ',' << DMIt->second.ServiceReference << ','
-                          << DMIt->second.RepeatNumber << ',' << DMIt->second.TimeToExitSecs << '\n';
-            }
-    //end of DMap out
-            BuildDatagramFromPlayerMap(3, '4', "ABC", Buffer2, DMap2); //buffer length is set within this function
-    //Buffer out
-            OutBufFile2 << Buffer2[0] << ','; //marker
-            y = 1;     //already declared above
-            while((Buffer2[y] != ';') && (y < 5)) //username, upt 4 chars, if less ';'  delimiter
-            {
-                OutBufFile2 << Buffer2[y];
-                y++;
-            }
-            if(Buffer2[y] == ';')
-            {
-                y++;
-            }
-            OutBufFile2 << ',';
-        }
-        else
-        {
-            ShowMessage("Error in BuildDynamicMapFromPlayerDatagram for DMap2 construction");
-        }
-        //y now points to start of DMap data
-    while(y <= (Buffer2.Length - 9)) //9 bytes allows for ref to be null
-        {
-            OutBufFile2 <<  Buffer2[y] << ',' << Buffer2[y + 1] + (256 * Buffer2[y + 2]) << ',' << Buffer2[y + 3] + (256 * Buffer2[y + 4]) << ',';
-            y += 5;
-            int z = 0;
-            AnsiString ServRef = "        ";
-            while((Buffer2[y + z] != ';') && (z < 8))
-            {
-                ServRef[z + 1] = Buffer2[y + z];
-                z++;
-            }
-            ServRef = ServRef.Trim();
-            OutBufFile2 << ServRef << ',';
-            y += ServRef.Length();
-            if(Buffer2[y] == ';')
-            {
-                y++;
-            }
-            OutBufFile2 << Buffer2[y] + (256 * Buffer2[y + 1]) << ',' << Buffer2[y + 2] + (256 * Buffer2[y + 3]) << '\n';
-            y += 4;
-        }
-//end of Buffer out
-
-        ExitFile.close();
-        OutMapFile1.close();
-        OutMapFile2.close();
-        OutBufFile1.close();
-        OutBufFile2.close();
-*/
-
-/*
-        for(DMIt = DMap1.begin(); DMIt != DMap1.end(); DMIt++)
-        {
-            OutMapFile << DMIt->first.first << ',' << DMIt->first.second << ',' << DMIt->second.ServiceReference << ','
-                      << DMIt->second.RepeatNumber << ',' << DMIt->second.TimeToExitSecs << '\n';
-        }
-        */
-
-/*
-        TCouplingMap::iterator CMMIt;
-        std::ofstream CMOutFile("CMOutFile.txt");
-        for(CMMIt = CouplingMap.begin(); CMMIt != CouplingMap.end(); CMMIt++)
-        {
-            CMOutFile << CMMIt->first.first.RailwayName << ';' << CMMIt->first.second.first << '-' << CMMIt->first.second.second << ';'
-                      << CMMIt->second.first.RailwayName << ';' << CMMIt->second.second.first << '-' << CMMIt->second.second.second << '\n';
-        }
-        CMOutFile.close();
-*/
-    Utilities->CallLogPop(2376);
+    //test code here
+        Utilities->CallLogPop(2376);
     }
     catch(const Exception &e)
     {
@@ -22834,15 +22941,15 @@ void TInterface::LoadGroundSignalGlyphs(int Caller) // changed from the above at
 
 // ---------------------------------------------------------------------------
 
-void TInterface::UpdateOperatorActionPanel(int Caller) // new at v2.2.0
+void TInterface::UpdateActionsDuePanel(int Caller) // new at v2.2.0
 // limit it to 20 entries max
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UpdateOperatorActionPanel");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UpdateActionsDuePanel");
     if(TrainController->OpActionPanelHintDelayCounter >= 60)
     {
-        OAListBox->Clear();
+        ActionsDueForm->ActionsDueListBox->Clear();
     }
-    if((!OperatorActionPanel->Visible) || TrainController->OpTimeToActMultiMap.empty() || (TrainController->OpActionPanelHintDelayCounter < 60))
+    if((!ActionsDueForm->Visible) || TrainController->OpTimeToActMultiMap.empty() || (TrainController->OpActionPanelHintDelayCounter < 60))
     // new at v2.2.0
     {
         Utilities->CallLogPop(2092);
@@ -22857,13 +22964,23 @@ void TInterface::UpdateOperatorActionPanel(int Caller) // new at v2.2.0
     TrainController->OpTimeToActMultiMapIterator = TrainController->OpTimeToActMultiMap.begin();
     while(TrainController->OpTimeToActMultiMapIterator != TrainController->OpTimeToActMultiMap.end())
     {
-        if(OAListBox->Items->Count >= 20)
+        if(ActionsDueForm->ActionsDueListBox->Items->Count >= 20)
         {
             break;
         }
         OpTimeToActFloat = TrainController->OpTimeToActMultiMapIterator->first;
         HCandTrainPosParam = TrainController->OpTimeToActMultiMapIterator->second;
         HeadCode = HCandTrainPosParam.first;
+        //additions at v2.13.0 to show delayed trains in actions due list
+        if(HCandTrainPosParam.second >= 0)
+            {
+                TTrain Train = TrainController->TrainVectorAtIdent(63, HCandTrainPosParam.second); //doesn't need to be a reference here
+                if(int(Train.DelayedRandMins) > 0)
+                {
+                    HeadCode += AnsiString('+'); //changed from 'd' to this on suggestion from Micke(Commuterpop) at v2.13.0
+                }
+            }
+        //end of additions at v2.13.0
         if(OpTimeToActFloat < 0.25) // 15 secs estimated
         {
             OpTimeToActString = "NOW";
@@ -22879,7 +22996,7 @@ void TInterface::UpdateOperatorActionPanel(int Caller) // new at v2.2.0
         if(OpTimeToActFloat < 60)
         {
             OpTimeToActDisplay = HeadCode + AnsiString('\t') + OpTimeToActString;
-            OAListBox->Items->Add(OpTimeToActDisplay); // original
+            ActionsDueForm->ActionsDueListBox->Items->Add(OpTimeToActDisplay); // original
         }
         TrainController->OpTimeToActMultiMapIterator++;
     }
@@ -22890,15 +23007,15 @@ void TInterface::UpdateOperatorActionPanel(int Caller) // new at v2.2.0
 //below used in debugging TimeToExitMultiMap: replaces times to act in OpTimeToAct panel with headcodes and exit times (or exit locs) so they are visible
 //to use, uncomment this function and comment out the original above
 /*
-void TInterface::UpdateOperatorActionPanel(int Caller) // new at v2.2.0
+void TInterface::UpdateActionsDuePanel(int Caller) // new at v2.2.0
 // limit it to 20 entries max
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UpdateOperatorActionPanel");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",UpdateActionsDuePanel");
     if(TrainController->OpActionPanelHintDelayCounter >= 60)
     {
-        OAListBox->Clear();
+        ActionsDueListBox->Clear();
     }
-    if((!OperatorActionPanel->Visible) || TrainController->TimeToExitMultiMap.empty() || (TrainController->OpActionPanelHintDelayCounter < 60))
+    if((!ActionsDuePanel->Visible) || TrainController->TimeToExitMultiMap.empty() || (TrainController->OpActionPanelHintDelayCounter < 60))
     // new at v2.2.0
     {
         Utilities->CallLogPop(2386);
@@ -22914,7 +23031,7 @@ void TInterface::UpdateOperatorActionPanel(int Caller) // new at v2.2.0
     TTimeToExitMultiMap::iterator TTEMMIt = TrainController->TimeToExitMultiMap.begin();
     while(TTEMMIt != TrainController->TimeToExitMultiMap.end())
     {
-        if(OAListBox->Items->Count >= 20)
+        if(ActionsDueListBox->Items->Count >= 20)
         {
             break;
         }
@@ -22925,7 +23042,7 @@ void TInterface::UpdateOperatorActionPanel(int Caller) // new at v2.2.0
         {
             OpTimeToActString = AnsiString(int(OpTimeToActFloat));//seconds
             OpTimeToActDisplay = HeadCode + AnsiString(' ') + OpTimeToActString; //comment out one of these to display times or exits
-            OAListBox->Items->Add(OpTimeToActDisplay);
+            ActionsDueListBox->Items->Add(OpTimeToActDisplay);
         }
         TTEMMIt++;
     }
@@ -23034,10 +23151,12 @@ void TInterface::LoadClipboard(int Caller) // new at v2.8.0
             wss << '\n';
             wss << TTVIt->LCPlotted;
             wss << '\n';
+/* dropped at v2.13.0, not used from 2.12.0
             wss << TTVIt->TempTrackMarker01;
             wss << '\n';
             wss << TTVIt->TempTrackMarker23;
             wss << '\n';
+*/
             wss << TTVIt->Attribute;
             wss << '\n'; // all ints from here except last which is an enum
             wss << TTVIt->Conn[0];
@@ -23074,9 +23193,9 @@ void TInterface::LoadClipboard(int Caller) // new at v2.8.0
             wss << '\n';
             wss << TTVIt->TrainIDOnElement;
             wss << '\n';
-            wss << TTVIt->TrainIDOnBridgeTrackPos01;
+            wss << TTVIt->TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
             wss << '\n';
-            wss << TTVIt->TrainIDOnBridgeTrackPos23;
+            wss << TTVIt->TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
             wss << '\n';
             wss << int(TTVIt->SigAspect);
             wss << '\n'; // enum
@@ -23251,11 +23370,12 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
             TE.CallingOnSet = AnsiString(LineString).ToInt();
             wss.getline(LineString, 100);
             TE.LCPlotted = AnsiString(LineString).ToInt();
+/* dropped at v2.13.0, not used from 2.12.0
             wss.getline(LineString, 100);
             TE.TempTrackMarker01 = AnsiString(LineString).ToInt();
             wss.getline(LineString, 100);
             TE.TempTrackMarker23 = AnsiString(LineString).ToInt();
-
+*/
             wss.getline(LineString, 100);
             TE.Attribute = AnsiString(LineString).ToInt();
             wss.getline(LineString, 100);
@@ -23293,9 +23413,9 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
             wss.getline(LineString, 100);
             TE.TrainIDOnElement = AnsiString(LineString).ToInt();
             wss.getline(LineString, 100);
-            TE.TrainIDOnBridgeTrackPos01 = AnsiString(LineString).ToInt();
+            TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = AnsiString(LineString).ToInt();
             wss.getline(LineString, 100);
-            TE.TrainIDOnBridgeTrackPos23 = AnsiString(LineString).ToInt();
+            TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 = AnsiString(LineString).ToInt();
 
             wss.getline(LineString, 100);
             int temp = AnsiString(LineString).ToInt();
@@ -23457,8 +23577,11 @@ void __fastcall TInterface::NoDelaysMenuItemClick(TObject *Sender)  //these adde
     MinorDelaysMenuItem->Enabled = true;
     ModerateDelaysMenuItem->Enabled = true;
     MajorDelaysMenuItem->Enabled = true;
+    Utilities->PointChangeEventsPerFailure = Utilities->NilPointChangeEventsPerFailure;
+    Utilities->SignalChangeEventsPerFailure = Utilities->NilSignalChangeEventsPerFailure;
+    Utilities->MTBTSRs = Utilities->NilMTBTSRs;
     DelayMenu->Caption = "No delays";
-    Display->PerformanceLog(32, "No random delays selected");
+    PerfLogForm->PerformanceLog(32, "No random delays selected");
     Utilities->DelayMode = Nil;
 }
 //---------------------------------------------------------------------------
@@ -23469,8 +23592,11 @@ void __fastcall TInterface::MinorDelaysMenuItemClick(TObject *Sender)
     MinorDelaysMenuItem->Enabled = false;
     ModerateDelaysMenuItem->Enabled = true;
     MajorDelaysMenuItem->Enabled = true;
+    Utilities->PointChangeEventsPerFailure = Utilities->MinorPointChangeEventsPerFailure;
+    Utilities->SignalChangeEventsPerFailure = Utilities->MinorSignalChangeEventsPerFailure;
+    Utilities->MTBTSRs = Utilities->MinorMTBTSRs;
     DelayMenu->Caption = "Minor delays";
-    Display->PerformanceLog(33, "Minor random delays selected");
+    PerfLogForm->PerformanceLog(33, "Minor random delays selected");
     Utilities->DelayMode = Minor;
 }
 //---------------------------------------------------------------------------
@@ -23481,8 +23607,11 @@ void __fastcall TInterface::ModerateDelaysMenuItemClick(TObject *Sender)
     MinorDelaysMenuItem->Enabled = true;
     ModerateDelaysMenuItem->Enabled = false;
     MajorDelaysMenuItem->Enabled = true;
+    Utilities->PointChangeEventsPerFailure = Utilities->ModeratePointChangeEventsPerFailure;
+    Utilities->SignalChangeEventsPerFailure = Utilities->ModerateSignalChangeEventsPerFailure;
+    Utilities->MTBTSRs = Utilities->ModerateMTBTSRs;
     DelayMenu->Caption = "Moderate delays";
-    Display->PerformanceLog(34, "Moderate random delays selected");
+    PerfLogForm->PerformanceLog(34, "Moderate random delays selected");
     Utilities->DelayMode = Moderate;
 }
 //---------------------------------------------------------------------------
@@ -23493,12 +23622,73 @@ void __fastcall TInterface::MajorDelaysMenuItemClick(TObject *Sender)
     MinorDelaysMenuItem->Enabled = true;
     ModerateDelaysMenuItem->Enabled = true;
     MajorDelaysMenuItem->Enabled = false;
+    Utilities->PointChangeEventsPerFailure = Utilities->MajorPointChangeEventsPerFailure;
+    Utilities->SignalChangeEventsPerFailure = Utilities->MajorSignalChangeEventsPerFailure;
+    Utilities->MTBTSRs = Utilities->MajorMTBTSRs;
     DelayMenu->Caption = "Major delays";
-    Display->PerformanceLog(35, "Major random delays selected");
+    PerfLogForm->PerformanceLog(35, "Major random delays selected");
     Utilities->DelayMode = Major;
 }
 
 //---------------------------------------------------------------------------
+
+bool TInterface::GetTrainIDOrContinuationPosition(int Caller, int X, int Y, int &TrainID, int &TrackVectorPosition)
+// returns true if value(s) valid
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",GetTrainIDOrContinuationPosition");
+    TTrainController::TOpTimeToActMultiMapIterator OACurrentEntryPtr;
+//    int TopPos = ActionsDueForm->ActionsDueListBox->TopIndex;
+
+//substituted for the below
+    int OAIndex = ActionsDueForm->ActionsDueListBox->ItemAtPos(TPoint(X,Y), true);
+    if(OAIndex == -1)
+    {
+        Utilities->CallLogPop(2089);
+        return(false);
+    }
+    else
+    {
+        OACurrentEntryPtr = TrainController->OpTimeToActMultiMap.begin();
+        std::advance(OACurrentEntryPtr, OAIndex);
+    }
+//dropped at v2.13.0 as unreliable on high resolution monitors
+/*    if((TopPos + (Y / 13)) >= ActionsDueForm->ActionsDueListBox->Items->Count) // if click beyond end of list ignore
+    {
+        Utilities->CallLogPop();
+        return(false);
+    }
+    else
+    {
+        OACurrentEntryPtr = TrainController->OpTimeToActMultiMap.begin();
+        std::advance(OACurrentEntryPtr, ((Y / 13) + TopPos));
+    }
+*/
+
+    int TrainIDorTVPos = OACurrentEntryPtr->second.second;
+    if(TrainIDorTVPos >= 0) // running train, so value is the TrainID
+    {
+        if(TrainController->TrainExistsAtIdent(0, TrainIDorTVPos)) // added at v2.4.0 in case train removed but still in OA list as not updated yet
+        // see LiWinDom error report on Discord 23/04/20. Also needed for click ActionsDueListBox before any trains show,
+        // as notified by Rokas Serys by email on 16/05/20
+        {
+            TrainID = TrainIDorTVPos;
+            TrackVectorPosition = TrainController->TrainVectorAtIdent(43, TrainIDorTVPos).GetLeadElement();
+        }
+        else
+        {
+            Utilities->CallLogPop(2155); // if not there then ignore
+            return(false);
+        }
+    }
+    else // train to enter at a continuation, so value is -TVPos of continuation - 1
+    {
+        TrackVectorPosition = -(TrainIDorTVPos + 1);
+    }
+    Utilities->CallLogPop(2261);
+    return(true);
+}
+
+// ---------------------------------------------------------------------------
 //Multiplayer Code
 // ---------------------------------------------------------------------------
 
@@ -25821,3 +26011,4 @@ void TInterface::PlayerHandshakingActions()
 */
 
 // ---------------------------------------------------------------------------
+

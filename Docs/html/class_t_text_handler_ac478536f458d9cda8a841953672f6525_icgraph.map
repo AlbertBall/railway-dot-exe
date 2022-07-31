@@ -1,52 +1,52 @@
 <map id="TTextHandler::TextPtrAt" name="TTextHandler::TextPtrAt">
-<area shape="rect" id="node1" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="1517,1205,1679,1232"/>
-<area shape="rect" id="node2" href="$class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9" title="Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent ..." alt="" coords="1295,336,1461,363"/>
-<area shape="rect" id="node29" href="$class_t_interface.html#abb268a3a209bc0d66111540c84345c1b" title=" " alt="" coords="280,969,504,996"/>
-<area shape="rect" id="node30" href="$class_t_text_handler.html#a30f32d9d3267bc8c90298e0ecd3c26fd" title="display all text items in TextVector on the screen" alt="" coords="1289,879,1467,921"/>
-<area shape="rect" id="node33" href="$class_t_text_handler.html#a07441155bee467c9fb111b8332681466" title="save the railway&#39;s text to VecFile" alt="" coords="1059,1180,1217,1207"/>
-<area shape="rect" id="node45" href="$class_t_text_handler.html#af766ce44ed9a37e5a723a4ef3968ace0" title=" " alt="" coords="1287,1281,1469,1308"/>
-<area shape="rect" id="node46" href="$class_t_text_handler.html#a65f0033d036358a5cb2ec5f4732e64ee" title=" " alt="" coords="1287,1332,1469,1359"/>
-<area shape="rect" id="node47" href="$class_t_text_handler.html#a599c1a13d78b63a18ebc17550dfa9a0d" title="change the HPos &amp; VPos values for all items in TextVector by the amount in HOffset and VOffset (unuse..." alt="" coords="1293,1383,1463,1425"/>
-<area shape="rect" id="node48" href="$class_t_text_handler.html#a7d202827ae62cd288a07431579977539" title="write all items in TextVector to the railway image in &#39;Bitmap&#39;" alt="" coords="810,1434,986,1475"/>
-<area shape="rect" id="node3" href="$class_t_track.html#aa7b58c83ca1743ad3e4607ac0af9c71c" title="Erases all active and inactive track elements at HLocInput &amp; VLocInput from the vectors,..." alt="" coords="807,707,989,733"/>
-<area shape="rect" id="node12" href="$class_t_interface.html#a03280ee86df28a9a7cf4473cdf7b9f8b" title=" " alt="" coords="287,437,497,464"/>
-<area shape="rect" id="node13" href="$class_t_track.html#a17b6095b0c8de0e1493eeebd6d534247" title="Attempt to link the track and return true if successful, if unsuccessful return error flag and positi..." alt="" coords="1075,83,1201,109"/>
-<area shape="rect" id="node16" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="313,184,471,211"/>
-<area shape="rect" id="node17" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="23,278,214,319"/>
-<area shape="rect" id="node18" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="311,285,473,312"/>
-<area shape="rect" id="node20" href="$class_t_track.html#a42f410832651458a4a34769ef95be51b" title="Attempt to link the track and return true if successful, don&#39;t issue any screen messages...." alt="" coords="1037,133,1239,160"/>
-<area shape="rect" id="node21" href="$class_t_interface.html#ac5e079dc6f8023485367f6db2e693caa" title="Called during ClearEverything and on startup to reset all major railway data values." alt="" coords="831,437,965,464"/>
-<area shape="rect" id="node24" href="$class_t_text_handler.html#ae50027851479dd0f362a75abad793e7a" title="empties TextVector and sets all offsets back to zero if there is no active or inactive track" alt="" coords="1057,589,1219,616"/>
-<area shape="rect" id="node25" href="$class_t_text_handler.html#a5741d1b36f1245b55926cb1243046307" title="look for a text item in the vicinity of HPosInput &amp; VPosInput &amp; if TextToErase is null then erase any..." alt="" coords="1055,539,1221,565"/>
-<area shape="rect" id="node28" href="$class_t_track.html#ae6fe537bbd1e56074a358bf2c6233c71" title="Empty the track and inactive track vectors, the corresponding track maps, and LocationNameMultiMap." alt="" coords="1073,184,1203,211"/>
-<area shape="rect" id="node4" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="295,539,489,581"/>
-<area shape="rect" id="node6" href="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b" title="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode." alt="" coords="552,691,759,717"/>
-<area shape="rect" id="node5" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="5,888,232,915"/>
-<area shape="rect" id="node7" href="$class_t_interface.html#aa20c05bf2d6c23035a10a89796334d0f" title=" " alt="" coords="306,773,478,814"/>
-<area shape="rect" id="node8" href="$class_t_interface.html#a10494e62a7bb4e7114ab4d98e18499f1" title=" " alt="" coords="303,838,481,879"/>
-<area shape="rect" id="node9" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="302,903,482,945"/>
-<area shape="rect" id="node10" href="$class_t_interface.html#a424a7eb780461c1acb396feb21f52062" title=" " alt="" coords="305,707,479,749"/>
-<area shape="rect" id="node11" href="$class_t_interface.html#ae6e977c9dfdfbde9924ceefd19d7d0d3" title=" " alt="" coords="296,656,488,683"/>
-<area shape="rect" id="node14" href="$class_t_track.html#ac1dc75f1df6278c62f13e23469b80982" title="Handles all tasks associated with track linking, returns true if successful (see also LinkTrack &amp; Lin..." alt="" coords="807,133,989,160"/>
-<area shape="rect" id="node15" href="$class_t_track.html#a09140dd23c45ccd541f056c3dd257c13" title="Load track elements (active &amp; inactive) from the file into the relevant vectors and maps,..." alt="" coords="591,184,720,211"/>
-<area shape="rect" id="node19" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="39,605,198,632"/>
-<area shape="rect" id="node22" href="$class_t_interface.html#a686430e962991bc32742399164187b62" title="First check whether a railway file has changed and if so ask user if really wants to close it without..." alt="" coords="567,387,743,413"/>
-<area shape="rect" id="node23" href="$class_t_interface.html#a0659e748042e378f3e325652c9c2e6d2" title="constructor" alt="" coords="321,488,463,515"/>
-<area shape="rect" id="node26" href="$class_t_track.html#a433736aed04f76b3d0c39f0696c3bb18" title="All platform, concourse, footcrossing &amp; non&#45;station named location elements are able to have a Locati..." alt="" coords="807,488,989,515"/>
-<area shape="rect" id="node27" href="$class_t_interface.html#a2bb21fd8e1e90095cf68d63a57e938ec" title="Erase a location name (providing it exists in LocationNameMultiMap) from TextVector,..." alt="" coords="813,641,983,682"/>
-<area shape="rect" id="node31" href="$class_t_track.html#a12569ed581bb1c76c1d201b3cf013da7" title="Called by TInterface::ClearandRebuildRailway to replot all the active and inactive track elements and..." alt="" coords="1042,837,1234,864"/>
-<area shape="rect" id="node32" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="808,758,988,799"/>
-<area shape="rect" id="node34" href="$class_t_interface.html#a1b3189e6a50555f5952652d12b978e57" title="Used to save a railway when not already saved &#45; e.g. when not already named or when the &#39;Save as&#39; men..." alt="" coords="559,1245,751,1272"/>
-<area shape="rect" id="node36" href="$class_t_interface.html#a4f373f26e99a3dc0bc7effc71ca25dc0" title=" " alt="" coords="295,1303,489,1345"/>
-<area shape="rect" id="node37" href="$class_t_interface.html#a0109f801142d4fa3becae22e23b84163" title="Save the error log after an error has been thrown &#45; no need for a caller." alt="" coords="817,1075,979,1101"/>
-<area shape="rect" id="node42" href="$class_t_interface.html#a7699c9c408064623d335d3452b60f289" title=" " alt="" coords="307,1173,477,1214"/>
-<area shape="rect" id="node44" href="$class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25" title="Save a session file &#45; see LoadSession for details of additions to the session file." alt="" coords="575,1599,736,1625"/>
-<area shape="rect" id="node35" href="$class_t_interface.html#a0be281457630fce07fc19cdbbfde79b1" title=" " alt="" coords="299,1238,485,1279"/>
-<area shape="rect" id="node38" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="588,1045,723,1072"/>
-<area shape="rect" id="node39" href="$class_t_interface.html#a14d8976ee13c85f12eab634de845baf1" title=" " alt="" coords="306,1369,478,1410"/>
-<area shape="rect" id="node40" href="$class_t_interface.html#ab73377784e302350bcc4f1fed4f8d90a" title=" " alt="" coords="306,1434,478,1475"/>
-<area shape="rect" id="node41" href="$class_t_interface.html#a69b645fe4cc36d0bea7de3fca553bd6a" title=" " alt="" coords="297,1499,487,1541"/>
-<area shape="rect" id="node43" href="$class_t_interface.html#a4d75015545313004ffd5022c020f4edf" title=" " alt="" coords="307,1565,477,1606"/>
-<area shape="rect" id="node49" href="$class_t_track.html#a98b1632a5246785adc1003ebcb3e91a4" title="Called by TInterface::SaveOperatingImage1Click to add all track &amp; text to the image file in their ope..." alt="" coords="561,1533,749,1574"/>
-<area shape="rect" id="node50" href="$class_t_track.html#a909e96ff6b77c266ab82313e30018cd4" title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI..." alt="" coords="565,1434,745,1475"/>
+<area shape="rect" id="node1" title="return the text item at position &#39;At&#39; in TextVector (carries out range checking)" alt="" coords="1524,1169,1685,1195"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a20a28eaf0308f7aedcfc78ba9eeadea9" title="Examine TrackVector, InactiveTrackVector and TextVector, and set the values that indicate the extent ..." alt="" coords="1301,287,1468,314"/>
+<area shape="rect" id="node29" href="$class_t_interface.html#abb268a3a209bc0d66111540c84345c1b" title=" " alt="" coords="280,1099,504,1126"/>
+<area shape="rect" id="node30" href="$class_t_text_handler.html#a30f32d9d3267bc8c90298e0ecd3c26fd" title="display all text items in TextVector on the screen" alt="" coords="1295,884,1474,925"/>
+<area shape="rect" id="node33" href="$class_t_text_handler.html#a07441155bee467c9fb111b8332681466" title="save the railway&#39;s text to VecFile" alt="" coords="1065,1219,1224,1246"/>
+<area shape="rect" id="node41" href="$class_t_text_handler.html#af766ce44ed9a37e5a723a4ef3968ace0" title=" " alt="" coords="1293,1194,1476,1221"/>
+<area shape="rect" id="node42" href="$class_t_text_handler.html#a65f0033d036358a5cb2ec5f4732e64ee" title=" " alt="" coords="1293,1245,1476,1271"/>
+<area shape="rect" id="node43" href="$class_t_text_handler.html#a599c1a13d78b63a18ebc17550dfa9a0d" title="change the HPos &amp; VPos values for all items in TextVector by the amount in HOffset and VOffset (unuse..." alt="" coords="1300,1296,1469,1337"/>
+<area shape="rect" id="node44" href="$class_t_text_handler.html#a7d202827ae62cd288a07431579977539" title="write all items in TextVector to the railway image in &#39;Bitmap&#39;" alt="" coords="1297,1397,1473,1439"/>
+<area shape="rect" id="node3" href="$class_t_track.html#aa7b58c83ca1743ad3e4607ac0af9c71c" title="Erases all active and inactive track elements at HLocInput &amp; VLocInput from the vectors,..." alt="" coords="810,566,993,593"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#a03280ee86df28a9a7cf4473cdf7b9f8b" title=" " alt="" coords="287,531,497,558"/>
+<area shape="rect" id="node13" href="$class_t_track.html#a17b6095b0c8de0e1493eeebd6d534247" title="Attempt to link the track and return true if successful, if unsuccessful return error flag and positi..." alt="" coords="1082,161,1207,187"/>
+<area shape="rect" id="node16" href="$class_t_interface.html#a95c3545a30171ca5a08e34c58160079c" title="Load a railway file. The Active elements marker now has a &#39;1&#39; at the end if there are user graphics t..." alt="" coords="313,211,471,238"/>
+<area shape="rect" id="node17" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="23,255,214,296"/>
+<area shape="rect" id="node18" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="311,262,473,289"/>
+<area shape="rect" id="node20" href="$class_t_track.html#a42f410832651458a4a34769ef95be51b" title="Attempt to link the track and return true if successful, don&#39;t issue any screen messages...." alt="" coords="1044,211,1245,238"/>
+<area shape="rect" id="node21" href="$class_t_interface.html#ac5e079dc6f8023485367f6db2e693caa" title="Called during ClearEverything and on startup to reset all major railway data values." alt="" coords="834,363,969,390"/>
+<area shape="rect" id="node24" href="$class_t_text_handler.html#ae50027851479dd0f362a75abad793e7a" title="empties TextVector and sets all offsets back to zero if there is no active or inactive track" alt="" coords="1064,110,1225,137"/>
+<area shape="rect" id="node25" href="$class_t_text_handler.html#a5741d1b36f1245b55926cb1243046307" title="look for a text item in the vicinity of HPosInput &amp; VPosInput &amp; if TextToErase is null then erase any..." alt="" coords="1062,554,1227,581"/>
+<area shape="rect" id="node28" href="$class_t_track.html#ae6fe537bbd1e56074a358bf2c6233c71" title="Empty the track and inactive track vectors, the corresponding track maps, and LocationNameMultiMap." alt="" coords="1079,262,1210,289"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="295,465,489,507"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b" title="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode." alt="" coords="552,667,759,694"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="5,710,232,737"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#aa20c05bf2d6c23035a10a89796334d0f" title=" " alt="" coords="306,765,478,807"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a10494e62a7bb4e7114ab4d98e18499f1" title=" " alt="" coords="303,831,481,872"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="302,583,482,624"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a424a7eb780461c1acb396feb21f52062" title=" " alt="" coords="305,648,479,689"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#ae6e977c9dfdfbde9924ceefd19d7d0d3" title=" " alt="" coords="296,714,488,741"/>
+<area shape="rect" id="node14" href="$class_t_track.html#ac1dc75f1df6278c62f13e23469b80982" title="Handles all tasks associated with track linking, returns true if successful (see also LinkTrack &amp; Lin..." alt="" coords="811,211,992,238"/>
+<area shape="rect" id="node15" href="$class_t_track.html#a09140dd23c45ccd541f056c3dd257c13" title="Load track elements (active &amp; inactive) from the file into the relevant vectors and maps,..." alt="" coords="591,211,720,238"/>
+<area shape="rect" id="node19" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="39,998,198,1025"/>
+<area shape="rect" id="node22" href="$class_t_interface.html#a686430e962991bc32742399164187b62" title="First check whether a railway file has changed and if so ask user if really wants to close it without..." alt="" coords="567,363,743,390"/>
+<area shape="rect" id="node23" href="$class_t_interface.html#a0659e748042e378f3e325652c9c2e6d2" title="constructor" alt="" coords="321,414,463,441"/>
+<area shape="rect" id="node26" href="$class_t_track.html#a433736aed04f76b3d0c39f0696c3bb18" title="All platform, concourse, footcrossing &amp; non&#45;station named location elements are able to have a Locati..." alt="" coords="810,465,993,491"/>
+<area shape="rect" id="node27" href="$class_t_interface.html#a2bb21fd8e1e90095cf68d63a57e938ec" title="Erase a location name (providing it exists in LocationNameMultiMap) from TextVector,..." alt="" coords="817,617,986,659"/>
+<area shape="rect" id="node31" href="$class_t_track.html#a12569ed581bb1c76c1d201b3cf013da7" title="Called by TInterface::ClearandRebuildRailway to replot all the active and inactive track elements and..." alt="" coords="1049,814,1241,841"/>
+<area shape="rect" id="node32" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="811,735,991,776"/>
+<area shape="rect" id="node34" href="$class_t_interface.html#a1b3189e6a50555f5952652d12b978e57" title="Used to save a railway when not already saved &#45; e.g. when not already named or when the &#39;Save as&#39; men..." alt="" coords="559,1295,751,1322"/>
+<area shape="rect" id="node36" href="$class_t_interface.html#a4f373f26e99a3dc0bc7effc71ca25dc0" title=" " alt="" coords="295,1333,489,1375"/>
+<area shape="rect" id="node37" href="$class_t_interface.html#a0109f801142d4fa3becae22e23b84163" title="Save the error log after an error has been thrown &#45; no need for a caller." alt="" coords="820,1143,983,1170"/>
+<area shape="rect" id="node39" href="$class_t_interface.html#a7699c9c408064623d335d3452b60f289" title=" " alt="" coords="307,1151,477,1192"/>
+<area shape="rect" id="node40" href="$class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25" title="Save a session file &#45; see LoadSession for details of additions to the session file." alt="" coords="575,1245,736,1271"/>
+<area shape="rect" id="node35" href="$class_t_interface.html#a0be281457630fce07fc19cdbbfde79b1" title=" " alt="" coords="299,1216,485,1257"/>
+<area shape="rect" id="node38" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="588,867,723,894"/>
+<area shape="rect" id="node45" href="$class_t_track.html#a98b1632a5246785adc1003ebcb3e91a4" title="Called by TInterface::SaveOperatingImage1Click to add all track &amp; text to the image file in their ope..." alt="" coords="1051,1397,1239,1439"/>
+<area shape="rect" id="node47" href="$class_t_track.html#a909e96ff6b77c266ab82313e30018cd4" title="Called by TInterface::SaveImageNoGrid1Click, TInterface::SaveImageAndGrid1Click and TInterface::SaveI..." alt="" coords="1055,1495,1235,1536"/>
+<area shape="rect" id="node46" href="$class_t_interface.html#a4d75015545313004ffd5022c020f4edf" title=" " alt="" coords="816,1397,987,1439"/>
+<area shape="rect" id="node48" href="$class_t_interface.html#a14d8976ee13c85f12eab634de845baf1" title=" " alt="" coords="815,1593,987,1635"/>
+<area shape="rect" id="node49" href="$class_t_interface.html#ab73377784e302350bcc4f1fed4f8d90a" title=" " alt="" coords="815,1463,987,1504"/>
+<area shape="rect" id="node50" href="$class_t_interface.html#a69b645fe4cc36d0bea7de3fca553bd6a" title=" " alt="" coords="807,1528,996,1569"/>
 </map>

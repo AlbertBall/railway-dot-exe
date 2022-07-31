@@ -1,6 +1,6 @@
 <map id="TInterface::UserGraphicButtonClick" name="TInterface::UserGraphicButtonClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,1845,201,1886"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1510,1380,1657,1407"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1510,1380,1657,1407"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="778,183,913,209"/>
 <area shape="rect" id="node12" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1510,1764,1657,1791"/>
 <area shape="rect" id="node13" href="$class_t_interface.html#ac04724e6b4eafc041ee65ce5168a82ae" title="Load a user&#45;defined graphic (bmp, gif, jpg, png)." alt="" coords="249,1877,436,1904"/>
@@ -20,7 +20,7 @@
 <area shape="rect" id="node18" href="$class_t_track.html#a4045fe3f4a71f30a137a7e4581d39231" title="Validity test." alt="" coords="1005,705,1192,732"/>
 <area shape="rect" id="node19" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="1261,741,1435,782"/>
 <area shape="rect" id="node20" href="$class_t_one_pref_dir.html#ab79dc3f93a471d2182ce625fcac1ff2d" title="Check loaded PrefDir against loaded track, and if discrepancies found give message &amp; clear EveryPrefD..." alt="" coords="1011,487,1187,529"/>
-<area shape="rect" id="node21" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="1009,2995,1189,3037"/>
+<area shape="rect" id="node21" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="1009,2995,1189,3037"/>
 <area shape="rect" id="node22" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="1265,2564,1431,2591"/>
 <area shape="rect" id="node24" href="$class_t_track.html#a13a1cc9770c8729d04ad4c0130f91634" title="Examines LocationNameMultiMap and if the LocationName is found all elements at that H &amp; V (in both ac..." alt="" coords="1009,925,1188,966"/>
 <area shape="rect" id="node25" href="$class_t_interface.html#a2bb21fd8e1e90095cf68d63a57e938ec" title="Erase a location name (providing it exists in LocationNameMultiMap) from TextVector,..." alt="" coords="761,1381,930,1422"/>

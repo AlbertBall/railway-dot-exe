@@ -40,6 +40,32 @@ enum TDelayMode //added at v2.13.0.  Here so DelayMode retains value when ClearE
 class TUtilities // single object incorporating general purpose data & functions for all units to access
 {
 public:
+//delay & track element failure parameters
+    float MinorDelayCutoff;
+    float ModerateDelayCutoff;
+    float MajorDelayCutoff;
+    float MinorDelayFactor;
+    float ModerateDelayFactor;
+    float MajorDelayFactor;
+
+    int NilPointChangeEventsPerFailure;
+    int NilSignalChangeEventsPerFailure;
+    int NilMTBTSRs;
+    int MinorPointChangeEventsPerFailure;
+    int MinorSignalChangeEventsPerFailure;
+    int MinorMTBTSRs;
+    int ModeratePointChangeEventsPerFailure;
+    int ModerateSignalChangeEventsPerFailure;
+    int ModerateMTBTSRs;
+    int MajorPointChangeEventsPerFailure;
+    int MajorSignalChangeEventsPerFailure;
+    int MajorMTBTSRs;
+
+    float RepairDiagnosisTime;  //these are all in minutes
+    int MaxRandomRepairTime;
+    int FixedMinRepairTime;
+
+//other variables
     bool Clock2Stopped;
     ///< when true the main loop - Interface->ClockTimer2 - is stopped
     bool RHSignalFlag;
@@ -51,7 +77,13 @@ public:
     ///< added at v2.4.0 so can use the local value in loaded session files
 
     double LastDelayTTClockTime;
-    ///< Clock time at which the latest delay for any train occurred. Used to prevent new delays within 5 minutes of the last one, added after v2.13.0 Beta
+    ///< Clock time at which the latest delay for any train occurred. Used to prevent new delays within 5 minutes of the last one, added at v2.13.0
+    double MTBTSRs;
+    ///<temporary speed restriction, units /day/simple element added at v2.13.0
+    int PointChangeEventsPerFailure;
+    ///< number of points changes between failures - reciprocal of failure probability per change
+    int SignalChangeEventsPerFailure;
+    ///< number of signal changes between failures - reciprocal of failure probability per change
     int ScreenElementWidth;
     ///< width of display screen in elements
     int ScreenElementHeight;
@@ -64,7 +96,8 @@ public:
     ///< call stack store, saved to the errorlog for diagnostic purposes
     std::deque<AnsiString>EventLog;
     ///< event store, saved to the errorlog for diagnostic purposes
-
+    TDateTime LastTSRCheckTime;
+    ///< time of last TSR check, used every 5 minutes, added at v2.13.0
     AnsiString DateTimeStamp();
     ///< creates a string of the form 'dd/mm/yyyy hh:mm:ss' for use in call & event logging
     AnsiString TimeStamp();
@@ -74,7 +107,7 @@ public:
     TDelayMode DelayMode;
 ///< specifies whether no delays or minor, moderate or major random delays are to be applied (added at v2.13.0)
 
-
+//functions
 // void LogEvent(AnsiString Str); //store Str to the event log - moved to TTrainController for v0.6 so can record the tt clock value
     void CallLogPop(int Caller);
     ///< pops the last entry off the call stack, throws an error if called when empty
@@ -124,6 +157,32 @@ public:
     ///< formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 & resets when it reaches 96
     AnsiString IncrementAnsiTimeOneMinute(AnsiString TimeVal);
     ///< takes "HH:MM" and increments it to "HH:MX", where MX == MM + 1, incrementing the hour if necessary
+//constructor
+    TUtilities()
+    {
+        MinorDelayCutoff = 2000.0;  //if random(10000) > 2000 there is no delay
+        ModerateDelayCutoff = 3000.0;
+        MajorDelayCutoff = 3500.0;
+        MinorDelayFactor = 1.5; //multiplication factor for log(MinorDelayCutoff/randval) where randval is 1 to 1999
+        ModerateDelayFactor = 3.0;
+        MajorDelayFactor = 6.0;
+        NilPointChangeEventsPerFailure = 1000000; //these set high but not used for no delays
+        NilSignalChangeEventsPerFailure = 1000000;
+        NilMTBTSRs = 1000000;
+        MinorPointChangeEventsPerFailure = 1000;
+        MinorSignalChangeEventsPerFailure = 2000;
+        MinorMTBTSRs = 200; //once every 200 days per simple element
+        ModeratePointChangeEventsPerFailure = 400;
+        ModerateSignalChangeEventsPerFailure = 1000;
+        ModerateMTBTSRs = 100;
+        MajorPointChangeEventsPerFailure = 200;
+        MajorSignalChangeEventsPerFailure = 500;
+        MajorMTBTSRs = 50;
+        RepairDiagnosisTime = 5.0;
+        MaxRandomRepairTime = 170;
+        FixedMinRepairTime = 10;
+
+    }
 };
 
 // ---------------------------------------------------------------------------

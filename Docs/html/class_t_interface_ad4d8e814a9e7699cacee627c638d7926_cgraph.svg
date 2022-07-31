@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 1152;
 var viewHeight = 2011;
-var sectionId = 'dynsection-329';
+var sectionId = 'dynsection-324';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -68,7 +68,7 @@ var sectionId = 'dynsection-329';
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied">
+<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="pops the last entry off the call stack, throws an error if called when empty">
 <polygon fill="white" stroke="black" points="867.5,-1001.74 867.5,-1020.74 977.5,-1020.74 977.5,-1001.74 867.5,-1001.74"/>
 <text text-anchor="middle" x="922.5" y="-1008.74" font-family="Helvetica,sans-Serif" font-size="10.00">TUtilities::CallLogPop</text>
 </a>
@@ -113,7 +113,7 @@ var sectionId = 'dynsection-329';
 <!-- Node37 -->
 <g id="node37" class="node">
 <title>Node37</title>
-<g id="a_node37"><a xlink:href="class_t_interface.html#ab2b7fa09f178490f2bde9a6caf323f30" target="_top" xlink:title="makes TTActionsListBox invisible (if it was visible) and resterts the tt clock">
+<g id="a_node37"><a xlink:href="class_t_interface.html#ab2b7fa09f178490f2bde9a6caf323f30" target="_top" xlink:title="makes TTActionsListBox invisible (if it was visible)">
 <polygon fill="white" stroke="black" points="681,-358.24 681,-388.24 809,-388.24 809,-358.24 681,-358.24"/>
 <text text-anchor="start" x="689" y="-376.24" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::HideTTActions</text>
 <text text-anchor="middle" x="745" y="-365.24" font-family="Helvetica,sans-Serif" font-size="10.00">ListBox</text>

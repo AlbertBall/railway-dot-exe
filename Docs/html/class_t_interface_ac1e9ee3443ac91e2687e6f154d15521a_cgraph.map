@@ -1,6 +1,6 @@
 <map id="TInterface::SigAspectButtonClick" name="TInterface::SigAspectButtonClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,1900,189,1941"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1190,1335,1337,1362"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1190,1335,1337,1362"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="257,1932,391,1959"/>
 <area shape="rect" id="node12" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1190,1503,1337,1530"/>
 <area shape="rect" id="node37" href="$class_t_interface.html#a3f17b5281842894e9cd477b4351a6c9f" title="In trackbuild display ground signal types on signal buttons." alt="" coords="931,1874,1123,1916"/>

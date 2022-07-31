@@ -1,7 +1,7 @@
 <map id="TInterface::MirrorMenuItemClick" name="TInterface::MirrorMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,2333,181,2375"/>
 <area shape="rect" id="node2" href="$class_t_track.html#af507e9106aa12a670d6b09bd575cbfc3" title="Return a basic track element from the SpeedTag new at v2.2.0 &#45; needed because Interface doesn&#39;t have ..." alt="" coords="772,1901,951,1943"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1256,761,1403,787"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1256,761,1403,787"/>
 <area shape="rect" id="node4" href="$class_t_pref_dir_element.html#ae8ee9f59578f80d23aebfdb9fff041d4" title="determines and loads EXNumber (see above)" alt="" coords="517,220,696,261"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1256,1190,1403,1217"/>
 <area shape="rect" id="node6" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="273,2759,408,2786"/>
@@ -33,7 +33,7 @@
 <area shape="rect" id="node29" href="$class_t_track.html#a6fa2d4f2c6c94e2c6b4f7218f5356108" title="Validity test." alt="" coords="763,759,960,800"/>
 <area shape="rect" id="node30" href="$class_t_track.html#a4045fe3f4a71f30a137a7e4581d39231" title="Validity test." alt="" coords="768,1145,955,1171"/>
 <area shape="rect" id="node31" href="$class_t_one_pref_dir.html#ab79dc3f93a471d2182ce625fcac1ff2d" title="Check loaded PrefDir against loaded track, and if discrepancies found give message &amp; clear EveryPrefD..." alt="" coords="773,1449,949,1491"/>
-<area shape="rect" id="node32" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="1014,1785,1194,1827"/>
+<area shape="rect" id="node32" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="1014,1785,1194,1827"/>
 <area shape="rect" id="node33" href="$class_t_track.html#a13a1cc9770c8729d04ad4c0130f91634" title="Examines LocationNameMultiMap and if the LocationName is found all elements at that H &amp; V (in both ac..." alt="" coords="772,1028,951,1069"/>
 <area shape="rect" id="node34" href="$class_t_interface.html#a2bb21fd8e1e90095cf68d63a57e938ec" title="Erase a location name (providing it exists in LocationNameMultiMap) from TextVector,..." alt="" coords="777,337,946,379"/>
 <area shape="rect" id="node35" href="$class_t_text_handler.html#a0fb5dca23fd07e642c611381b6344746" title="look in TextVector for text item &#39;Name&#39;, and if found return true and return its position in &amp;HPos an..." alt="" coords="1026,457,1182,483"/>

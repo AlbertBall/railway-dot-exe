@@ -16,6 +16,117 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
+#76 from Benjwri via discord 27/07/22
+On the subject of ASR's, is there anything that can be done to stop the entire ASR past a signal being deleted when you cancel a route at it, or some way that could be come up with  to only cancel an ASR between 2 signals?
+
+Albert 27/07/22
+I understand your wish and others have asked the same thing [#72], but it's a lot more complicated than you might think from a programming point of view.
+
+Internally every route has its own identifier, so truncating from a signal forwards just shortens a single existing route (with similar shortening when trains cancel non-ASR route elements from the back as they progress along the track).  To strip a segment of route from the middle leaves two separate routes, requiring a new route to be created from part of an existing one either at the front or the back.  How to handle factors such as a) trains that are already on the route; b) signal aspects; c) cancellation of a segment that crosses a gap; and d) any continuations that are involved all require special attention.
+
+If all that isn't daunting enough it is made more complicated still for ASRs when they are linked to non-ASR routes either at the front or the back or both (which have their own separate identifiers).  In this case the existing compound ASR/non-ASR route must be internally modified to take account of the new ASR route that has just been created, and will probably need to be recreated internally, again with all the above factors being considered.
+
+As you might guess I have already given this some thought and decided that it can't be done easily.  It will likely require a host of special purpose functions, each of which might conflict with existing functions, with the associated likelihood of many new errors being generated that will highlight internal mismatches that might well be very difficult to fix.
+
+There is also the user interface complication to consider, in that when truncating a route the user must now be given at least two options - truncate the whole route or just part of it.  The same facility is also likely to be wanted for non-ASR routes too.
+
+And if that isn't enough it also undermines my original aim of keeping ASRs in place, once they have been set as mentioned above.
+
+In your case with 22tph I suggest using non-ASR routes where trains need to turn round and running the simulation at a slower speed.  I think there must be plenty of scope here as 22tph of timetable clock time equates to less than 1.5tph of real time at 1/16th speed, so a comfortable intermediate speed should be acceptable, maybe 1/4 speed?
+
+#74 & 75 from Andrekoener via discord 27/07/22
+Here are two suggestions to further improve already great features that have been introduced in the past:
+
+1. Action Panel - Displaying the full Service reference (including prefixes if they are used) in the action panel. I regularly use headcode prefixes on my shuttle services, which basically means that all trains of a specific line going in the same direction have the same 4-digit headcode. This however results in the action panel showing many different entries with the same name, causing a lot of confusion and clicking the same service over and over again (e.g. when they are intentionally being held somewhere). By displaying the whole service reference (incl. prefix) in the action panel, one could differ between different trains without right-clicking all of them.
+
+
+2. For setting preferred direction routes (the green ones), it has recently been made possible to be set to any following signal. I am wondering if this is also possible when setting automatic signal routes? This would come in handy when an (especially longer) automatic route needs to be cancelled for whatever reason and re-set again afterwards.
+
+Albert 27/07/22
+Thanks for your suggestions.
+
+Point 1: The full reference can be seen in the train status information for trains whose reference is more than just the headcode - available by mouse clicking in the action panel (providing train status information is turned on, which it is by default).  I had hoped that this was sufficient to reconcile situations where more than one train in the list had the same headcode but clearly for you it doesn't.  The downside of having the full reference in the panel itself is that it is likely to confuse people who aren't familiar with service references, as many aren't who just want to operate railways without delving into the finer details of timetable construction.  I try to maintain a balance between complexity and ease of use (and don't always succeed!), usually by keeping the interface as simple as possible (it's still pretty complex) but providing extra features for those who want them without complicating the interface.  Is it not possible to use different headcodes for your services?
+
+Point 2: My aim with automatic signal routes (ASRs) was that these should be set once and not changed thereafter.  Very often there are several trains on long stretches of an ASR so that cancelling it can lead to emergency braking and SPADs, which is very undesirable and will incur heavy performance penalties.  I'm reluctant therefore to add features that make ASR setting as easy as setting preferred direction or unrestricted routes.
+
+#73 from Micke(Commuterpop) via discord 21/07/22
+My recommendation is to consider the part about "noise" in part 3; it will add a lot of realism (and annoyance) in an hopefully low effort. [“Noise”, 1-2 minutes:  Not, or hardly, noticeable in the statistics, but adding workload to the traffic controller, and the most common.
+Switches not initially in control – fixed by throwing them back and forth.
+Signals not in order – if not 100% functional they show red. They might change when the aspect changes, or after recalling and set them again (for reasons, see delays part 1 )
+These events could be simulated by adding delays for 1-2 minutes. At a larger station 1 minute add a bit of stress; at 2 minutes you have to actively make desicions, you have to consider and perhaps change order of some trains. During rush hour this might cause a long chain of changing of tracks etc. so don’t underestimate this one.
+
+Albert - 22/07/22
+With regard to noise, I understand what you are saying and as an engineer can well understand these sorts of faults.  There are two reasons why I would hesitate to try to simulate them, at least for now.  Firstly they will require yet more programming effort and from an initial survey I think that effort could be quite significant.  Secondly they will add another layer of complexity to an already complex program, requiring special instructions to the user about cycling points in the hope of clearing a point failure and cancelling and resetting routes in the hope of clearing a signal failure.  New users already have trouble understanding how everything works and a change of this sort may well create a lot of confusion and requests for help, especially for non-engineers who don't appreciate that engineered systems suffer from such faults.
+
+For now I'd prefer to keep 'noise faults' on the wish-list for possible future consideration rather than try to incorporate them in the next release, which already includes a lot of new stuff that might well throw up several new errors when used much more widely and require early attention - the more additions the more likely such errors will be.
+
+#72 from FinsburyPark via discord 30/06/22:
+On a seperate note may I please request a feature as just had a situation where it would come useful, that being said I believe there would be a few other uses as well.
+Essentially when you truncate a routing is it possible to have a version that takes out just a single signal block rather than following a whole routing?
+Couple main reasons, firstly being for example a quad mainline with several crossovers between fasts and slows, however normally always have the automatic signals on due to the rare usage of them. However in the case of (for example) signal failure it would be useful to be able to truncate the routing over just the junctions so that one can let trains go from slow to fast (or vice versa) and not have to truncate a large amount of the route. Attached a diagram to hopefully show this better ??
+Second reason of a similar nature is if there is a once a day freight train that enters / exits the route from a terminal that comes of a main running route, instead of either having manually signal every train through / once the freight arrives truncate a lot of the succeeding track to allow it to arrive / leave, it would be useful to just truncate the signal block that the junction is in so that the auto signals can be used until the fright arrives, the junction can then be truncated and the fright can go across into/out of the terminal, before the main lines revert to auto signals. Also will give an example to show this.
+
+Now of course not expecting this to be implemented, to be honest not sure the feasibility of it as not a coding sort of person, so apologies if it is asking too much. Thanks for reading anyways and look forward to a potential response
+
+Albert - 30/06/22 
+I would argue that those segments shouldn't be automatic signal routes (ASRs).  ASRs can be set initially by clicking the 'Preset automatic signal routes' button, which should never set a route across a junction.  Very often it is ok to supplement these preset routes with others where junctions aren't used, but in the cases you cite the junctions are used, even if only rarely, so setting ASRs is bound to lead to problems.  In fact once set ASRs should never need to be changed.
+I recognise your concern that since many more trains don't use the junction than do, it would be convenient only to intervene for those few trains than for the many.  However my aim with modifications has always been for functionality rather than convenience, and here the functionality already exists to do whatever is required.
+I know this isn't what you want to hear, but I hope you can understand my lack of enthusiasm for program modifications that don't add new features but only duplicate existing features, albeit more conveniently.
+
+#71 NumberHunter91 via discord 21/05/22: would it be possible to be able to use this [the flashing signal icon] to see what trains are currently stuck at signals? even if they are not on the 'Action Due' list + and also in line with that the other symbols that can appear down that side of the screen to be able to list/take you to the train(s) causing it to appear
+
+Albert — 22/05/22 at 07:43
+What would you use that information for and @Dan how would it help a lot? Trains that require action are already in the actions due list, those at signals on automatic routes will sort themselves out when the obstruction clears, and trains that are at signals/available for call-on/crashed or derailed etc. have bright colours in zoomed-in mode and are flashing in zoomed-out mode so they can easily be identified. I'll add your suggestion to the ever growing wish list but I am unwilling to spend (usually considerable) time adding a feature that is already available by other means. Genuine and helpful new features I do consider, but I remain to be convinced that this would add anything that isn't already provided. 
+
+#70 jkwok678 via discord 07/04/22:  Would non-random delays be in your design scope [for random delays]? E.g. a delay at a specific time.
+
+Albert — Today at 09:18
+I'm not sure what this means.  Non-random delays can be incorporated into timetables, or, for a non-timetabled delay a train can be held by taking signaller control and then restoring timetable control after whatever delay is needed.  I'm probably missing something and if so please let me know, thanks.
+
+jkwok678 — Today at 09:29
+So maybe you could make a scenario where a certain train has delayed and then you just deal with the fallout from that, but now that I think about it, that can be done with session files
+Could blocked lines be apart of this update as well? E.g. The fast lines have been blocked by a fallen tree, we can only use slow lines
+
+Albert — Today at 09:42
+I'm just trying to incorporate random delays at locations for now.  That's proving quite tricky as more changes are needed than I first thought of; e.g. the train information window needs to let the player know what's going on, and there are potential impacts on skipped events and early service terminations - I'm still trying to figure those out.  Random track and other infrastructure failures need to be handled differently, so I'm leaving those for now in order to get this bit right.
+
+#69 Squishy via Discord — 17/03/22:  Can we get rid of the "must select a valid signal, buffers or continuation" or other related prompts that pop up. happens so much with my 1440p screen and me clumsily trying to click on a valid signal
+
+Albert — 17/03/22 at 08:21
+I'd be very reluctant to dispense with the warning as users might not realise that a route had not been set. Also they might genuinely be trying to set a route to an invalid element. I know it must be more difficult with a high resolution screen but with a warning the user knows that something has gone wrong.
+
+Squishy! — 17/03/22 at 12:06
+That’s fair enough. Possibly in the future there could be a settings/options stack? Of course with a range of different settings and maybe a expert mode toggle box or something. I don’t know, it’s just a suggestion anyway 
+
+#68 from Micke(Commuterpop) via Discord 14/03/22: I agree with @jkwok678. As a former traffic controller/leader/train dispatcher/whatever you'll call it, the delays and disturbances made the job fun, in the way that it gave variation to the job and made your and your colleagues adrenaline pump (Don't tell passengers that; they'll get the wrong impression). The days when everything was on time was boring.
+
+With delays of different kind you give your old favourite simulations new life, and you get the opportunity to use the splendid new function from 2.12: terminate and become follow-on service. I say it again, this is a really big upgrade to ROS. (Is there anybody want me to write a little piece on it to give inspiration?)
+
+To get some random delays, different from the last time, I sometimes leave the sim running while going to make some tea.
+
+Albert — 15/03/2022
+It seems that there is some demand for random delays so I'll give it some more thought.  Coding issues aside though I'm not sure how best to go about it.  Temporary speed restrictions will only cause delays to specific sections, which to my mind could be simulated by holding a train at a red signal for some time - or going off and making some tea!  Maybe random delays at each station stop would be better, but then I would need to know probabilities for no delay, up to 1m delay, up to 5m delay etc up to maybe 1h, because they won't be linear (i.e. short delays will be a lot more probable than long delays - hopefully).  In maths jargon this is a probability density function, and I don't know what it is or how it varies between different types of railway.  Additionally would all trains and stops be subject to the same probabilities, or just some services or just some stops?  The more I think about it the more complicated it seems.  Any thoughts (the simpler the better) would be appreciated!
+
+jkwok678 — 15/03/2022
+Could you add the functionality into maybe a tab/ screen just before you run the simulation? Where you could set those probabilities?
+Albert — 15/03/2022
+I think you're thinking in terms of implementation rather than design.  If random station stop delays are the right way to go (and I'm not at all sure they are) then what is needed is a function to generate a distribution of probabilities for a whole range of time intervals, and I don't know what that function should be.  Asking users to set a range of probabilities I think would be asking too much of most people and could lead to some very unrealistic situations.  In any case if a user wants a train to wait longer at a station than it should then it can be taken under signaller control and restored to timetable control after whatever delay the user wants.  In a situation like this the first thing is to specify what is wanted in considerably more detail than just 'include some random delays', and only then start to think about how to implement it.  As yet it's not at all clear to me what that specification should be.
+
+josco — Today at 07:24
+Regarding the delays I do use the inbuilt function at present and would welcome the signal failure type option if possible. If it's of any interest, what I sometimes do is force some slow running trains. I do this by opening up the scenario ttb and alter a number of random trains. I lower their max speed or power/mass/brake figures to whatever I think and do a 'save as'. When running this amended ttb it does give a different challenge as you will have slower running trains (including slower running continuation services). Appreciate it's not the solution as being sought here but it may be of interest to some.
+
+#67 from Wilsteady 05/03/22 via Discord:  Hopefully this ones an easy request - Ability to manually add mid-operation a train to the network to act as a fixed protection block. Situation being for example, I have a particular network already created along with matching timetable, and I'd like to run it with their being a temporary track possession taking place for works, for say three hours. Instead of duplicating the timetable and adding a new 'dummy' service to sit stationery for a set period of time, I'd love to have the ability to right click on a section of track and select 'add new possession' or similar, which would place a 'dummy' train at the start of that automatic block section, same as some CTC systems work.
+
+Albert:
+I think the ability to achieve what you want is already available though not in the way that you suggest. If in your timetable you create trains under signaller control (manual section 5.2.1) at various sidings with easy access to the line sections where engineering possessions are likely to be required, then they can be brought out under signaller control and occupy the line for as long as they are needed.  Would that meet the requirement do you think?
+
+Wilsteady:
+Not exactly as there isn't necessarily a physical train there in practice, so it wouldn't be coming from somewhere or going to somewhere. Intention is to simulate various Local Possession Authorities being issued whilst the simulation is already running.
+
+Albert:
+I fear that achieving it in a way that doesn't involve a simulated physical train would require a great deal of programming.  The situation on your own railway might be straightforward but as ROS allows a high level of build flexibility the program needs to anticipate all situations that might arise in practice (however realistic or unrealistic), and deal with them in a controlled way.  I can foresee many potential problems and confess that I can't immediately see a way in which it could be done.  In your original request you proposed adding a train mid-operation, which deviates from reality, so my suggestion just added to that by using a signaller controlled train for the purpose, and I still think that would be the simplest approach.
+
+#66 from jkwok via Discord 03/03/22: Allow the addition of temporary speed restrictions to sections of track to provide another time-keeping challenge.
 
 #65 from Sharknose via Discord 13/02/22: A config setting would be nice that could shut off ROS opening maximized. On a 4K 31-inch monitor, it's like being hit with a search light if I have white background turned on.
 
@@ -26,7 +137,7 @@ The second one to tell Windows to open said program in reference to the first en
 And then, perhaps the final one, the similarly named *.ttb file to open with it.
 What would be possible, in my opinion, is that if both the *.rly file and *.ttb file are of the same name [Caveat: This would mean that there would be a strict naming convention.], or if a *.ttb file of the same name exits, it will be loaded automatically with/after the *.rly file.
 
---> A possible solution I see would be: If a *.rly file is loaded the program runs a check to see if there is a *.ttb file of the same name, and if so, it will load it. If not, then it does nothing like it does now.  Consider searching everywhere under ROS main folder.
+A possible solution I see would be: If a *.rly file is loaded the program runs a check to see if there is a *.ttb file of the same name, and if so, it will load it. If not, then it does nothing like it does now.  Consider searching everywhere under ROS main folder.
 
 
 #63 From Krizar via Discord 02/02/22:  Useful if could automatically load ROS by clicking .rly, .dev or .ssn files (same as #51)
@@ -244,7 +355,7 @@ Option to use & display imperial units as well as metric units.
 Ability to record and replay sessions.
 Signalbox mode where individual signals and points are operated directly, perhaps via a graphical lever frame, with user-defined interlocking.
 Sound effects, e.g. enter a track ID & hear trains & station announcements at that location.
-Random failures of signals & points.
+Random failures of signals & points. [done]
 Variable train lengths.
 Restricted routes - DC 3 & 4 rail; AC; tube stock etc.
 Multi-player facility over the internet.
@@ -263,6 +374,141 @@ Multi-player facility over the internet.
 -----------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.12.0 for v2.13.0
+
+New features:
+
+The main new features in this release are random delays at locations, random points and signal failures, and temporary speed restrictions.  These are described in section 6.13 of the user manual and on-screen help.
+
+The Actions Due and Performance logs look the same as before but now they are Windows forms rather than panels, and as such can be moved outside the main display area.  This will be useful for those with high resolution monitors where ROS doesn't fill the entire display area, and for those with two or more monitors.
+
+More detailed preferred direction checks have been incorporated to help identify discontinuities that are hard to spot by visual inspection.
+
+A 'flush' command now follows every write to the performance log so that external inspection tools have access to up to date information.
+
+Several Beta versions available on Discord preceded this release to allow wider testing in the community and I am grateful for the work done by members and for their suggestions and error reports.  The result is better for their input.
+
+Please don't try to load any session files saved by Beta versions prior to Beta4 because they are likely to fail.  Code for forward and backward compatibility had not been completed in those versions.
+
+Bug fixes:
+
+
+There have been quite a number of bugs reported since the last release as follows:-
+
+An error in the timetable validator was found to cause a crash when track element identifiers contained unexpected characters.  The situation should merely have reported the syntax error which it now does, rather than crashing the program.  Thanks to Amon Sadler for reporting this error.
+
+An error in the timetable 'New Entry' function was found to occur with an empty timetable when the keyboard shortcut was used rather than the button.  The program failed to make the necessary check which it now does.  Thanks to mathstrains19 for reporting this error. 
+
+An error was found when joining two trains under signaller control when they should have joined under timetable control.  This situation is now detected and a message given rather than the program crashing.  Thanks to Micke(Commuterpop) for reporting this error.
+
+It was found that a train at a station that had suffered a random delay could have the delay removed by taking signaller control.  This happened on restoration of timetable control and was caused by that function forcing a recalculation of the train's departure time which bypassed any existing random delay.  It was a relatively easy fix to avoid the recalculation and carry out the necessary actions within the timetable restoration function itself.  Thanks to FinsburyPark for reporting this error.
+
+Another error was found by FinsburyPark when skipping timetabled events, where one more event was skipped than should have been.  This was found to be due to my having added the word 'Timetable' in the floating information window to make it clear that the times listed didn't take account of random delays.  The program however interpreted it as a timetabled event that needed to be skipped, with the result that one too many events were skipped.  Once identified it was a simple matter to make the program ignore this line.  Thanks again to FinsburyPark for reporting this error.
+
+This wasn't really a program bug as such but a further anomaly caused by Windows' management of high resolution monitors.  The 'Actions Due' panel displayed larger than it should have done, resulting in the wrong train being identified on clicking a headcode in the list.  The solution is to override high display settings in program compatibility mode.  In response to this I strengthened the advice in the 'High Resolution Monitor Scaling Issues' page of the website.  Thanks to josco for reporting this issue.
+
+
+Own notes (not for website):
+
+/Check why FloatingTimetableString misses newlines after arr&dep from Essex Road for 2J17 in KC - it's the compiler, it doesn't show newlines until width of display area exceeded
+
+/Sort out FinsburyPark error where skipped one too many in skip timetabled actions - ok, was due to adding 'Timetable:' in floating window.
+
+/Acknowledge FP error as above in version information
+
+/TT Skipped events is one too many as count the departure even when don't skip it - ok skipped this as a skipped event
+
+/Try to keep RH mouse button in ADF even when overlaps the PLF - ok, added new condition in PLF to allow RH mousedown in ADF
+
+/If select a train from actions due form (adf) and its floating window overlaps and hides the adf, when the adf reappears it is on the other monitor in the same position as it was on the first monitor.  This didn't happen when tried on following day so couldn't test. Changed DefaultMonitor property to dmDeskTop from dmActiveForm for both adf and plf, that might be better.  Also stored existing position of ADF every second when visible & reloaded when became visible.  Hopefully that will override if it happens again.
+
+/Move code for right clicking train in adf from Interface (it's in TrackTrainFloat function right after the track float section, but deal with later code that prevents conflicting floating windows using !OAListBoxFloatRequired & is right after the adf right click function.  Didn't need to move code, just amended values and put floating window in bott lh corner of screen when adf outside interface.
+
+/Manual:  mention new actions due & perf log form behaviour
+
+/Manual: mention centring of trains when using actions due - tell user not to have panels over centre of screen
+
+/in release notes say don't load sessions saved with any earlier beta version before Beta4
+
+/drop automatic PD (& distance/speed) additions for buffers and continuations as may have chosen wrong path
+
+/manual: check if PD/distance/speed mentioned in manual wrt buffers & continuations & drop if so
+
+/added flashing failed elements (points, signals & TSRs) in zoomout mode
+
+/Add const values for RepairDiagnosisTime, RepairMinTime, RepairMaxTime & any others that are currently explicit in the code
+
+/useful if could make actions due & perf log separate forms see sepatare docs for these
+
+/update manual & help for 2.13.0
+
+/manual '+' char in actions due list = subject to delay
+
+/credit FinsburyPark (discord name) with finding the error in timetable restoration (cancelled random delays) in version info
+
+/Add fix for Micke's error (19/05/22) 
+
+/refer to Micke's 19/05/22 error in the version information at the next release.
+
+/add note in PD setting in manual/help - see Wherry lines - legitimate PDs even though get a mismatch, because the bidir PDs are named so trains can change direction here and signal is then facing
+
+/mention flush for perf file (Krizar request) in version info
+
+/mention mathstrains19 error and fix (use this name, not own name) in version info
+
+/Add random location delays at next release 
+
+/add random delay info in manual & help.
+
+/Added times for all warnings (some had them and some not)
+
+/Acknowledge Amon Sadler in next release in version info
+
+/Added a check function in GetTrackVectorPositionFromString for any errors not caught explicitly - solves Amon Sadler's bug from error file sent 24/03/22
+
+/add FindLinkingPrefDir & FindLinkingCompatiblePrefDir to caller checker
+
+/deal with 7777s
+
+/add BypassPDCrossoverMismatch to callerchecker list
+
+/try to exclude points linked by legs 1 or 3 with bidir on that leg & single dir on other leg that link to other point at legs 1 or 3 with bidir on that leg & single dir on its other leg
+
+/change manual/help when changed
+
+/modified route removal after a change of direction (both timetable & signaller), as was, when this happened and the end element was a continuation the next route in AllRoutesVector was removed also because after removal the origninal route was erased from the vector so the route reference in the vector now pointed to the succeeding one. The test for the prefdir being zero was never met, because as soon as it was xero it was removed from the vector.
+
+/clarified explanation for questionable direction change analysis
+
+/strengthened the pref dir checking function to include more checks for bidirectional link compatibility
+
+/Need to allow same direction signals for above but not those in opposite pref dir - see Croydon, may need to alter the messages?  OK & message altered
+
+/give message up front in sig pref mode to draw attn to conflict analysis because difficult to see probs by eye, only show once
+
+/check if manual needs altering - ok amended
+
+/dropped TempTrackMarker01 & 23 as not needed after v2.12.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 VERSION CHANGES AFTER v2.11.1 for v2.12.0
 

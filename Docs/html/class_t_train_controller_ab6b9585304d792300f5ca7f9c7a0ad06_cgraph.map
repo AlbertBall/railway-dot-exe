@@ -1,6 +1,6 @@
 <map id="TTrainController::GetExitLocationAndAt" name="TTrainController::GetExitLocationAndAt">
 <area shape="rect" id="node1" title="Check all timetable names in ExitList, if all same return &quot; at [name]&quot; + AllowableExits = elements,..." alt="" coords="5,23,169,65"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="428,5,575,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="428,5,575,32"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="428,68,575,95"/>
 <area shape="rect" id="node4" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="217,31,380,57"/>
 </map>

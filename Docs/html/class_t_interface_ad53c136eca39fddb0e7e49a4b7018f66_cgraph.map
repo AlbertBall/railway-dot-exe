@@ -1,7 +1,7 @@
 <map id="TInterface::ScreenDownButtonClick" name="TInterface::ScreenDownButtonClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,535,203,576"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1293,1217,1440,1243"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="251,1856,431,1897"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1293,1217,1440,1243"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="251,1856,431,1897"/>
 <area shape="rect" id="node4" href="$class_t_display.html#a8d990507ae0111e0b7890e8aa77fd76d" title="Empty the display." alt="" coords="787,567,941,594"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1293,1579,1440,1606"/>
 <area shape="rect" id="node42" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="273,2938,408,2965"/>
@@ -26,7 +26,7 @@
 <area shape="rect" id="node25" href="$class_t_graphic_element.html#ac12f60cb52eefdc86eaa504419eb138d" title="Load original graphic from the screen for point flashing or route start markers." alt="" coords="1037,1985,1239,2027"/>
 <area shape="rect" id="node26" href="$class_t_all_routes.html#af0a34aa05027527d256566ae52600583" title="Calls PrefDirMarker for all routes, with RouteCall set to identify a route call, and BuildingPrefDir ..." alt="" coords="1049,2634,1227,2661"/>
 <area shape="rect" id="node27" href="$class_t_track.html#aa67be9f8ad9bd885f649b26962e0d41d" title="True if there is a platform, NamedNonStationLocation or Concourse present in the railway." alt="" coords="1033,1209,1243,1251"/>
-<area shape="rect" id="node28" href="$class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc" title=" " alt="" coords="1061,2583,1215,2610"/>
+<area shape="rect" id="node28" href="$class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc" title="Plot the graphic at the railway (not screen) position set by HPos &amp; VPos." alt="" coords="1061,2583,1215,2610"/>
 <area shape="rect" id="node29" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="765,1529,963,1555"/>
 <area shape="rect" id="node30" href="$class_t_graphic_element.html#a04ccc26451ff7d95dc3c5951b71f421e" title="Plot the overlay graphic on screen." alt="" coords="766,1798,962,1825"/>
 <area shape="rect" id="node31" href="$class_t_track.html#ad8a74040f61dffb16633deea5054deef" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway (..." alt="" coords="760,1849,968,1905"/>

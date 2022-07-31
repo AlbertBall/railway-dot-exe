@@ -2,6 +2,6 @@
 <area shape="rect" id="node1" title=" " alt="" coords="5,39,176,80"/>
 <area shape="rect" id="node2" href="$class_t_rail_graphics.html#ac4e48e6ee19e01724adb0d490762d548" title=" " alt="" coords="235,5,436,47"/>
 <area shape="rect" id="node5" href="$class_t_rail_graphics.html#a89a3e3a91129c4d02f4606478781b519" title=" " alt="" coords="224,71,447,112"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="495,17,641,43"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="495,17,641,43"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="495,71,641,98"/>
 </map>

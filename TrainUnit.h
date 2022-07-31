@@ -391,6 +391,8 @@ private:
 ///< true when the train has joined another train following an 'Fjo' timetable command or a signaller join (when set the train is removed from the display at the next clock tick)
     bool LastActionDelayFlag;
 ///< used when trains join to ensure that there is a 30 second delay before the actual join takes place after the two trains are adjacent to each other
+    bool LastSigPassedFailed;
+///< flag used to erase route elements in an autosigs route after a failed signal
     bool LeavingUnderSigControlAtContinuation;
 ///< set when the train has reached an exit continuation when under signaller control, used to prevent the popup menu being given on right clicking (can cause ambiguities in positioning if try to give signaller commands when at or close to a continuation)
     bool OneLengthAccelDecel;
@@ -433,12 +435,12 @@ private:
 ///< the current train brake rate
     double SignallerStopBrakeRate;
 ///< the train brake rate when stopping under signaller control
-    double DelayedRandMins; //added at v2.13.0
-///< the remaining random delay at any point in time for the train
-    double NewDelay; //added at v2.13.0
-///< an additional random delay at a location
-    double CumulativeDelayedRandMinsOneTrain; //added at v2.13.0
-///< the running total of all random delays including knock-on delays for a single train, used to reduce total late mins in performance summary
+    double DelayedRandMins;
+///< the remaining random delay at any point in time for the train (added at v2.13.0)
+    double NewDelay;
+///< an additional random delay at a location (added at v2.13.0)
+    double CumulativeDelayedRandMinsOneTrain;
+///< the running total of all random delays including knock-on delays for a single train, used to reduce total late mins in performance summary (added at v2.13.0)
     double PowerAtRail;
 ///< in Watts (taken as 80% of the train's Gross Power, i.e. that entered by the user)
     double OriginalPowerAtRail;
@@ -450,7 +452,7 @@ private:
     float TimeToExit;
 ///<in minutes: new for multiplayer, -1 = > 60 mins
     float FirstLaterStopRecoverableTime;
-///< this used to deduct from RecoverableTime when arrive at a location for OperatorActionpanel
+///< this used to deduct from RecoverableTime when arrive at a location for OperatorActionpanel (OperatorActionPanel changed for ActionsDueForm at v2.13.0)
     int FrontElementSpeedLimit, FrontElementLength;
 ///< values associated with the element immediately in front of the train (speed in km/h, length in m)
     int Mass;
@@ -717,7 +719,7 @@ public:
         int AccessNumber;
 ///< the number of times the signal changing function has been accessed - starts at 0 and increments after each change
         int RouteNumber;
-///< the AllRoutesVector position of the route that the continuation is in
+///< the AllRoutesVector position of the route
         TDateTime PassoutTime;
 ///< the timetable clock time at which the train exits from the continuation
     };
@@ -806,8 +808,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 ///<Message flags in TT checks to stop being given twice
 
     double MTBFHours;
-///<Mean time between failures in timetable clock hours
-
+///<Mean time between train failures in timetable clock hours
     float NotStartedTrainLateMins;
 ///< total late minutes of trains that haven't started yet on exit operation for locations not reached yet
     float OperatingTrainLateMins;
@@ -974,7 +975,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
                         double &MaxBrakeRate, double &PowerAtRail, int &SignallerSpeed, bool GiveMessages);
 /// Checks overall timetable integrity, calls many other specific checking functions, returns true for success
     bool TimetableIntegrityCheck(int Caller, char *FileName, bool GiveMessages, bool CheckLocationsExistInRailway);
-/// new at v2.4.0 return true if find the train (added at v2.4.0 as can select a removed train in OAListBox before it updates see LiWinDom error report via Discord on 23/04/20
+/// new at v2.4.0 return true if find the train (added at v2.4.0 as can select a removed train in ActionsDueListBox before it updates see LiWinDom error report via Discord on 23/04/20
     bool TrainExistsAtIdent(int Caller, int TrainID);
 /// check whether the two times are within the range in minutes specified and return true if so. For an equal time check MinuteRange = 0;
     bool WithinTimeRange(int Caller, AnsiString Time1, AnsiString Time2, int MinuteRange);
@@ -1018,7 +1019,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     void Operate(int Caller);
 /// Plots all trains on screen in zoomed-out mode, state of 'Flash' determines whether the flashing trains are plotted or not
     void PlotAllTrainsInZoomOutMode(int Caller, bool Flash);
-/// new v2.2.0 for OperatorActionPanel
+/// new v2.2.0 for OperatorActionPanel (OperatorActionPanel changed for ActionsDueForm at v2.13.0)
     void RebuildOpTimeToActMultimap(int Caller);
 /// new for multiplayer
     void RebuildTimeToExitMultiMap(int Caller);

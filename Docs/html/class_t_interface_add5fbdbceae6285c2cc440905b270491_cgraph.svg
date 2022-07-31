@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 1054;
 var viewHeight = 2279;
-var sectionId = 'dynsection-108';
+var sectionId = 'dynsection-106';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -84,7 +84,7 @@ var sectionId = 'dynsection-108';
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied">
+<g id="a_node3"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="pops the last entry off the call stack, throws an error if called when empty">
 <polygon fill="white" stroke="black" points="929,-1685.5 929,-1704.5 1039,-1704.5 1039,-1685.5 929,-1685.5"/>
 <text text-anchor="middle" x="984" y="-1692.5" font-family="Helvetica,sans-Serif" font-size="10.00">TUtilities::CallLogPop</text>
 </a>
@@ -710,7 +710,7 @@ var sectionId = 'dynsection-108';
 <!-- Node65 -->
 <g id="node32" class="node">
 <title>Node65</title>
-<g id="a_node32"><a xlink:href="class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" target="_top" xlink:title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker.">
+<g id="a_node32"><a xlink:href="class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" target="_top" xlink:title="&lt; Sets the information panel message for zoom&#45;out or paused modes">
 <polygon fill="white" stroke="red" points="747.5,-906 747.5,-936 882.5,-936 882.5,-906 747.5,-906"/>
 <text text-anchor="start" x="755.5" y="-924" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ClearandRebuild</text>
 <text text-anchor="middle" x="815" y="-913" font-family="Helvetica,sans-Serif" font-size="10.00">Railway</text>

@@ -26,23 +26,23 @@
 <area shape="rect" id="node43" href="$class_t_interface.html#aec12f0e481024f1268fad36e7188b7a4" title=" " alt="" coords="1497,1092,1680,1133"/>
 <area shape="rect" id="node22" href="$class_t_train.html#a4978a3050ca943076eb6cbd03eeee1d4" title="Unplot train from screen in zoomed&#45;in mode." alt="" coords="1295,469,1425,495"/>
 <area shape="rect" id="node23" href="$class_t_train_controller.html#a7e2abfcc38e51933883d959c4155aca0" title="unplot all trains from screen" alt="" coords="1032,520,1189,561"/>
-<area shape="rect" id="node25" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="763,1776,943,1817"/>
-<area shape="rect" id="node26" href="$class_t_interface.html#a75f68c918750c0e007ea7a85d718e2ab" title=" " alt="" coords="514,1630,683,1657"/>
-<area shape="rect" id="node27" href="$class_t_interface.html#a0a89df44c20c9e2c096e66e2950c79a6" title="Function that deals with approach locking during ClockTimer2 function." alt="" coords="505,1914,692,1941"/>
-<area shape="rect" id="node28" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="509,1681,689,1723"/>
-<area shape="rect" id="node29" href="$class_t_interface.html#ac41a9993a63b3b5b6a8acb30e8f606f5" title=" " alt="" coords="517,1747,680,1788"/>
-<area shape="rect" id="node30" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="505,1346,692,1373"/>
-<area shape="rect" id="node31" href="$class_t_interface.html#a3fe9878a003d343a06f09c8f421e5a3b" title=" " alt="" coords="521,1863,677,1890"/>
-<area shape="rect" id="node32" href="$class_t_interface.html#a44bce128da0e5ae552031e39552d0c39" title="Called during gap setting to mark a gap with a red ellipse and ask user to select the corresponding g..." alt="" coords="505,2066,693,2093"/>
-<area shape="rect" id="node33" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="244,2008,439,2049"/>
-<area shape="rect" id="node34" href="$class_t_interface.html#a19e64ee6952b0fd3c260eb05c14a34c8" title=" " alt="" coords="505,2015,692,2042"/>
-<area shape="rect" id="node35" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="518,1397,679,1423"/>
-<area shape="rect" id="node36" href="$class_t_interface.html#a8c96de45b013362b03ad0e8725a7c64b" title="Called when mouse button clicked in zoom&#45;out mode." alt="" coords="501,2117,696,2159"/>
-<area shape="rect" id="node37" href="$class_t_interface.html#abb268a3a209bc0d66111540c84345c1b" title=" " alt="" coords="487,2183,711,2210"/>
-<area shape="rect" id="node38" href="$class_t_interface.html#acbfe5d5234713c3537cc5ca3ef17bda6" title=" " alt="" coords="497,2235,700,2276"/>
-<area shape="rect" id="node39" href="$class_t_interface.html#a54c8faaf7d1d8f0456114676fd20a17f" title=" " alt="" coords="497,1447,701,1474"/>
-<area shape="rect" id="node40" href="$class_t_interface.html#a7026d6ca5ea0bad9f6e0f8a0494ff2c9" title="called in ClockTimer2 if player multiplay in progress" alt="" coords="499,1499,698,1540"/>
-<area shape="rect" id="node41" href="$class_t_interface.html#aa639148521a793641e694b15486b5055" title=" " alt="" coords="513,1564,684,1605"/>
+<area shape="rect" id="node25" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="763,1793,943,1835"/>
+<area shape="rect" id="node26" href="$class_t_actions_due_form.html#ac44cd181601f65f5944910f931c5d343" title=" " alt="" coords="509,1644,688,1685"/>
+<area shape="rect" id="node27" href="$class_t_interface.html#a75f68c918750c0e007ea7a85d718e2ab" title=" " alt="" coords="514,1710,683,1737"/>
+<area shape="rect" id="node28" href="$class_t_interface.html#a0a89df44c20c9e2c096e66e2950c79a6" title="Function that deals with approach locking during ClockTimer2 function." alt="" coords="505,1994,692,2021"/>
+<area shape="rect" id="node29" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="509,1761,689,1803"/>
+<area shape="rect" id="node30" href="$class_t_interface.html#ac41a9993a63b3b5b6a8acb30e8f606f5" title=" " alt="" coords="517,1827,680,1868"/>
+<area shape="rect" id="node31" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="505,1346,692,1373"/>
+<area shape="rect" id="node32" href="$class_t_interface.html#a3fe9878a003d343a06f09c8f421e5a3b" title=" " alt="" coords="521,1943,677,1970"/>
+<area shape="rect" id="node33" href="$class_t_interface.html#a44bce128da0e5ae552031e39552d0c39" title="Called during gap setting to mark a gap with a red ellipse and ask user to select the corresponding g..." alt="" coords="505,2146,693,2173"/>
+<area shape="rect" id="node34" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="244,2088,439,2129"/>
+<area shape="rect" id="node35" href="$class_t_interface.html#a19e64ee6952b0fd3c260eb05c14a34c8" title=" " alt="" coords="505,2095,692,2122"/>
+<area shape="rect" id="node36" href="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2" title="Load a session file." alt="" coords="518,1397,679,1423"/>
+<area shape="rect" id="node37" href="$class_t_interface.html#a8c96de45b013362b03ad0e8725a7c64b" title="Called when mouse button clicked in zoom&#45;out mode." alt="" coords="501,2197,696,2239"/>
+<area shape="rect" id="node38" href="$class_t_interface.html#abb268a3a209bc0d66111540c84345c1b" title=" " alt="" coords="487,2263,711,2290"/>
+<area shape="rect" id="node39" href="$class_t_interface.html#acbfe5d5234713c3537cc5ca3ef17bda6" title=" " alt="" coords="497,1448,700,1489"/>
+<area shape="rect" id="node40" href="$class_t_interface.html#a7026d6ca5ea0bad9f6e0f8a0494ff2c9" title="called in ClockTimer2 if player multiplay in progress" alt="" coords="499,1513,698,1555"/>
+<area shape="rect" id="node41" href="$class_t_interface.html#aa639148521a793641e694b15486b5055" title=" " alt="" coords="513,1579,684,1620"/>
 <area shape="rect" id="node45" href="$class_t_interface.html#a50478cade5cae721121f5902528987a7" title=" " alt="" coords="1504,444,1673,485"/>
 <area shape="rect" id="node46" href="$class_t_interface.html#ad7aaed58c91a9ad9598e17fa615024da" title=" " alt="" coords="1501,509,1676,551"/>
 <area shape="rect" id="node47" href="$class_t_interface.html#ad3ddf42d51934815002002a770df766a" title=" " alt="" coords="1509,575,1668,616"/>

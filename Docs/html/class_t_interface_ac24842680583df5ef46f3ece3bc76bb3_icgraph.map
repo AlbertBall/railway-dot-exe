@@ -1,11 +1,11 @@
 <map id="TInterface::SetPausedOrZoomedInfoCaption" name="TInterface::SetPausedOrZoomedInfoCaption">
-<area shape="rect" id="node1" title="Sets the information panel message for zoom&#45;out or paused modes." alt="" coords="783,2195,993,2236"/>
-<area shape="rect" id="node2" href="$class_t_interface.html#a8c96de45b013362b03ad0e8725a7c64b" title="Called when mouse button clicked in zoom&#45;out mode." alt="" coords="284,5,479,47"/>
-<area shape="rect" id="node4" href="$class_t_interface.html#a54c8faaf7d1d8f0456114676fd20a17f" title=" " alt="" coords="531,2303,735,2330"/>
-<area shape="rect" id="node5" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="545,1515,720,1542"/>
+<area shape="rect" id="node1" title=" " alt="" coords="757,1508,968,1549"/>
+<area shape="rect" id="node2" href="$class_t_actions_due_form.html#ac44cd181601f65f5944910f931c5d343" title=" " alt="" coords="531,1399,709,1440"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a8c96de45b013362b03ad0e8725a7c64b" title="Called when mouse button clicked in zoom&#45;out mode." alt="" coords="284,5,479,47"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="533,1515,707,1542"/>
 <area shape="rect" id="node49" href="$class_t_interface.html#ab6dd4ad69783b6f16a8bdc2eb7dfe512" title="Sets the Level2OperMode user mode, using the Level2OperMode variable to determine the mode." alt="" coords="280,2838,483,2865"/>
 <area shape="rect" id="node50" href="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc" title=" " alt="" coords="289,2889,474,2915"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="5,339,232,366"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094" title=" " alt="" coords="5,339,232,366"/>
 <area shape="rect" id="node6" href="$class_t_interface.html#a30904d608111ce6452a9861d86b64267" title=" " alt="" coords="294,724,469,765"/>
 <area shape="rect" id="node7" href="$class_t_interface.html#a1b1a4260e251c9bd5f48fd6c3432e7a5" title=" " alt="" coords="288,789,475,831"/>
 <area shape="rect" id="node8" href="$class_t_interface.html#a0abab134f4994b02507e1e2d3f31cd77" title=" " alt="" coords="290,855,473,896"/>

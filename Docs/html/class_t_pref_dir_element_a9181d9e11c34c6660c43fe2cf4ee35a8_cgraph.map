@@ -1,6 +1,6 @@
 <map id="TPrefDirElement::GetOriginalGraphicPtr" name="TPrefDirElement::GetOriginalGraphicPtr">
 <area shape="rect" id="node1" title="picks up the original (non&#45;flashing) graphic for use during route flashing" alt="" coords="5,23,195,65"/>
 <area shape="rect" id="node2" href="$class_t_pref_dir_element.html#ae8ee9f59578f80d23aebfdb9fff041d4" title="determines and loads EXNumber (see above)" alt="" coords="243,23,421,65"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="469,5,616,32"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="469,5,616,32"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="469,56,616,83"/>
 </map>

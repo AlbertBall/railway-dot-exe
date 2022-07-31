@@ -33,7 +33,7 @@
 <area shape="rect" id="node33" href="$class_t_one_route.html#a36ba8adc8b4a47908ee4e1b8e75792ca" title="Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and ..." alt="" coords="1471,967,1657,1009"/>
 <area shape="rect" id="node34" href="$class_t_one_route.html#a491fff1e619a9dc79774acf85eed72a5" title="Cancel a route immediately if a train occupies it when travelling in the wrong direction (or occupies..." alt="" coords="1717,873,1920,900"/>
 <area shape="rect" id="node36" href="$class_t_one_route.html#afe23206f22e1ffaafe1a5fe866d2b8ec" title="Examines the route to see whether the element at H &amp; V is in the route, and if not returns a ReturnFl..." alt="" coords="1719,807,1919,849"/>
-<area shape="rect" id="node37" href="$class_t_one_route.html#a4dfe3a028da7a4b6df0f44f33c3e2196" title="Called when setting a route to set all points appropriately. Also called when a new train is added at..." alt="" coords="1723,924,1915,951"/>
+<area shape="rect" id="node37" href="$class_t_one_route.html#a4dfe3a028da7a4b6df0f44f33c3e2196" title="Called when setting a route to set all signals appropriately. Also called when a new train is added a..." alt="" coords="1723,924,1915,951"/>
 <area shape="rect" id="node32" href="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59" title="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..." alt="" coords="1220,960,1407,987"/>
 <area shape="rect" id="node35" href="$class_t_train.html#a50997f7e8138a7e6a147fe3b5ad21b84" title="Checks whether Element and EntryPos (where train is about to enter) is on an existing route (or cross..." alt="" coords="1465,647,1663,689"/>
 </map>

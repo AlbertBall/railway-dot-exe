@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 1429;
 var viewHeight = 2610;
-var sectionId = 'dynsection-25';
+var sectionId = 'dynsection-24';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -68,7 +68,7 @@ var sectionId = 'dynsection-25';
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied">
+<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="pops the last entry off the call stack, throws an error if called when empty">
 <polygon fill="white" stroke="black" points="1144.5,-1559.18 1144.5,-1578.18 1254.5,-1578.18 1254.5,-1559.18 1144.5,-1559.18"/>
 <text text-anchor="middle" x="1199.5" y="-1566.18" font-family="Helvetica,sans-Serif" font-size="10.00">TUtilities::CallLogPop</text>
 </a>
@@ -1135,17 +1135,17 @@ var sectionId = 'dynsection-25';
 <!-- Node43 -->
 <g id="node34" class="node">
 <title>Node43</title>
-<g id="a_node34"><a xlink:href="class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" target="_top" xlink:title="Send Statement to the performance log on screen and to the file.">
-<polygon fill="white" stroke="black" points="952,-1673.18 952,-1692.18 1083,-1692.18 1083,-1673.18 952,-1673.18"/>
-<text text-anchor="middle" x="1017.5" y="-1680.18" font-family="Helvetica,sans-Serif" font-size="10.00">TDisplay::PerformanceLog</text>
+<g id="a_node34"><a xlink:href="class_t_perf_log_form.html#a72f06bf03353c15c94ceefbf420ff7b4" target="_top" xlink:title="Send Statement to the performance log on screen and to the file.">
+<polygon fill="white" stroke="black" points="940.5,-1673.18 940.5,-1692.18 1094.5,-1692.18 1094.5,-1673.18 940.5,-1673.18"/>
+<text text-anchor="middle" x="1017.5" y="-1680.18" font-family="Helvetica,sans-Serif" font-size="10.00">TPerfLogForm::PerformanceLog</text>
 </a>
 </g>
 </g>
 <!-- Node39&#45;&gt;Node43 -->
 <g id="edge104" class="edge">
 <title>Node39&#45;&gt;Node43</title>
-<path fill="none" stroke="midnightblue" d="M688.86,-1671.26C751.63,-1673.45 865.76,-1677.42 941.37,-1680.06"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="941.65,-1683.57 951.77,-1680.42 941.9,-1676.58 941.65,-1683.57"/>
+<path fill="none" stroke="midnightblue" d="M688.86,-1671.26C748.57,-1673.34 854.76,-1677.04 930.05,-1679.66"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="930.34,-1683.18 940.46,-1680.03 930.59,-1676.18 930.34,-1683.18"/>
 </g>
 <!-- Node44 -->
 <g id="node35" class="node">

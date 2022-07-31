@@ -1,7 +1,7 @@
 <map id="TInterface::TimetableControlMenuItemClick" name="TInterface::TimetableControlMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,2083,188,2124"/>
 <area shape="rect" id="node2" href="$class_t_train.html#a659e6bf818f0cfac38728d4748408ee6" title="Indicates that a train is not prevented from moving &#45; used to allow appropriate popup menu options wh..." alt="" coords="713,2065,847,2092"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1215,1526,1362,1553"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1215,1526,1362,1553"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1215,1906,1362,1933"/>
 <area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="961,1982,1124,2009"/>
 <area shape="rect" id="node6" href="$class_t_rail_graphics.html#aa2dace651659e084ec23c9961f5819b1" title=" " alt="" coords="933,2404,1153,2446"/>
@@ -38,7 +38,7 @@
 <area shape="rect" id="node31" href="$class_t_train_controller.html#aba5615209a7dca921e968fca5c52c060" title="sends a message to the user and stops the timetable clock while it is displayed" alt="" coords="683,1578,877,1619"/>
 <area shape="rect" id="node33" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="946,2977,1139,3004"/>
 <area shape="rect" id="node34" href="$class_t_train.html#ad249f34f6862e604b8e141d1b25fe57d" title="Returns the timetable action time corresponding to &#39;Time&#39; for this train, i.e. it adjusts the time va..." alt="" coords="709,2926,851,2953"/>
-<area shape="rect" id="node36" href="$class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" title="Send Statement to the performance log on screen and to the file." alt="" coords="955,2521,1130,2548"/>
+<area shape="rect" id="node36" href="$class_t_perf_log_form.html#a72f06bf03353c15c94ceefbf420ff7b4" title="Send Statement to the performance log on screen and to the file." alt="" coords="940,2521,1145,2548"/>
 <area shape="rect" id="node37" href="$class_t_display.html#a604d491a723df459bdcd54a4b9d1d9f2" title="Display warning message Statement in the bottom left hand warning position and scroll other messages ..." alt="" coords="968,2724,1117,2750"/>
 <area shape="rect" id="node35" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="937,2825,1148,2852"/>
 <area shape="rect" id="node40" href="$class_t_train.html#a247bd95a7c648367736b116f553f4e54" title="Plot the train&#39;s headcode character corresponding to ArrayNumber." alt="" coords="463,2166,625,2193"/>

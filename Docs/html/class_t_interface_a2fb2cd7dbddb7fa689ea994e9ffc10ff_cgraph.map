@@ -1,7 +1,7 @@
 <map id="TInterface::CancelSelectionMenuItemClick" name="TInterface::CancelSelectionMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,2400,185,2441"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1479,1245,1625,1271"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="713,1189,893,1231"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1479,1245,1625,1271"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="713,1189,893,1231"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1479,1526,1625,1553"/>
 <area shape="rect" id="node35" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="253,2749,388,2775"/>
 <area shape="rect" id="node39" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="716,2597,889,2623"/>
@@ -26,7 +26,7 @@
 <area shape="rect" id="node20" href="$class_t_graphic_element.html#ac12f60cb52eefdc86eaa504419eb138d" title="Load original graphic from the screen for point flashing or route start markers." alt="" coords="1228,1435,1431,1476"/>
 <area shape="rect" id="node21" href="$class_t_all_routes.html#af0a34aa05027527d256566ae52600583" title="Calls PrefDirMarker for all routes, with RouteCall set to identify a route call, and BuildingPrefDir ..." alt="" coords="1240,1383,1419,1410"/>
 <area shape="rect" id="node22" href="$class_t_track.html#aa67be9f8ad9bd885f649b26962e0d41d" title="True if there is a platform, NamedNonStationLocation or Concourse present in the railway." alt="" coords="956,229,1167,271"/>
-<area shape="rect" id="node23" href="$class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc" title=" " alt="" coords="1252,1501,1407,1527"/>
+<area shape="rect" id="node23" href="$class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc" title="Plot the graphic at the railway (not screen) position set by HPos &amp; VPos." alt="" coords="1252,1501,1407,1527"/>
 <area shape="rect" id="node24" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="963,543,1160,570"/>
 <area shape="rect" id="node25" href="$class_t_graphic_element.html#a04ccc26451ff7d95dc3c5951b71f421e" title="Plot the overlay graphic on screen." alt="" coords="963,594,1159,621"/>
 <area shape="rect" id="node26" href="$class_t_track.html#ad8a74040f61dffb16633deea5054deef" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway (..." alt="" coords="957,762,1165,818"/>
@@ -45,7 +45,7 @@
 <area shape="rect" id="node43" href="$class_a_p_i.html#abebc08c03ceec2b898d8fe877b0efcba" title="save currently recorded status data to INI file" alt="" coords="518,2327,601,2354"/>
 <area shape="rect" id="node44" href="$class_t_one_pref_dir.html#abc09de3c32460a73d3de12625329210d" title="Empty the existing preferred direction vector &amp; map &#45; for use by other classes." alt="" coords="713,2277,892,2319"/>
 <area shape="rect" id="node45" href="$class_t_track.html#a794daa0471b473e28ff24c87a92112dc" title="True if there are gaps in the railway and any are unset." alt="" coords="735,2125,870,2151"/>
-<area shape="rect" id="node46" href="$class_t_interface.html#ab2b7fa09f178490f2bde9a6caf323f30" title="makes TTActionsListBox invisible (if it was visible) and resterts the tt clock" alt="" coords="1244,171,1415,212"/>
+<area shape="rect" id="node46" href="$class_t_interface.html#ab2b7fa09f178490f2bde9a6caf323f30" title="makes TTActionsListBox invisible (if it was visible)" alt="" coords="1244,171,1415,212"/>
 <area shape="rect" id="node47" href="$class_t_track.html#a1a9f8ddecccd649195ede1ec027500d1" title="Indicates whether or not the railway is ready for saving as a &#39;.rly&#39; file and for operation." alt="" coords="464,2074,655,2101"/>
 <area shape="rect" id="node48" href="$class_t_track.html#aa8386109483977bfaa97909747358149" title="Indicates whether or not the track has been successfully linked together." alt="" coords="723,2074,883,2101"/>
 <area shape="rect" id="node49" href="$class_t_track.html#a2eaa84532799b76a0b42cf6e2611224d" title="True if there is no active track in the railway." alt="" coords="727,2226,879,2253"/>

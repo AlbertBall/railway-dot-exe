@@ -1,6 +1,6 @@
 <map id="TInterface::LoadUserGraphic" name="TInterface::LoadUserGraphic">
 <area shape="rect" id="node1" title="Load a user&#45;defined graphic (bmp, gif, jpg, png)." alt="" coords="5,1850,192,1877"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1269,1302,1415,1329"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1269,1302,1415,1329"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="534,257,669,284"/>
 <area shape="rect" id="node12" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1269,1657,1415,1684"/>
 <area shape="rect" id="node15" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="1019,3070,1192,3097"/>
@@ -20,7 +20,7 @@
 <area shape="rect" id="node19" href="$class_t_track.html#a4045fe3f4a71f30a137a7e4581d39231" title="Validity test." alt="" coords="761,846,948,873"/>
 <area shape="rect" id="node20" href="$class_t_track.html#aa0812972d1ae27198c5fbca8aa7b6134" title="Returns the track vector position corresponding to the Hloc &amp; VLoc positions, FoundFlag indicates whe..." alt="" coords="1018,866,1193,907"/>
 <area shape="rect" id="node21" href="$class_t_one_pref_dir.html#ab79dc3f93a471d2182ce625fcac1ff2d" title="Check loaded PrefDir against loaded track, and if discrepancies found give message &amp; clear EveryPrefD..." alt="" coords="767,511,943,552"/>
-<area shape="rect" id="node22" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="765,2719,945,2760"/>
+<area shape="rect" id="node22" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="765,2719,945,2760"/>
 <area shape="rect" id="node23" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="1023,2652,1188,2678"/>
 <area shape="rect" id="node24" href="$class_t_track.html#a13a1cc9770c8729d04ad4c0130f91634" title="Examines LocationNameMultiMap and if the LocationName is found all elements at that H &amp; V (in both ac..." alt="" coords="765,948,944,990"/>
 <area shape="rect" id="node25" href="$class_t_interface.html#a2bb21fd8e1e90095cf68d63a57e938ec" title="Erase a location name (providing it exists in LocationNameMultiMap) from TextVector,..." alt="" coords="517,1412,686,1454"/>

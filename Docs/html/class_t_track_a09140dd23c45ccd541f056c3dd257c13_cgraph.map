@@ -1,6 +1,6 @@
 <map id="TTrack::LoadTrack" name="TTrack::LoadTrack">
 <area shape="rect" id="node1" title="Load track elements (active &amp; inactive) from the file into the relevant vectors and maps,..." alt="" coords="5,2467,135,2493"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1433,1101,1580,1128"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1433,1101,1580,1128"/>
 <area shape="rect" id="node3" href="$class_t_utilities.html#a84bf39701305cf4814377d178d0fec8c" title="loads an int value from the file" alt="" coords="202,3151,345,3177"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a0aac90f10a08736514da3b3e02129e1e" title="loads a string value from the file" alt="" coords="192,3201,355,3228"/>
 <area shape="rect" id="node5" href="$class_t_track.html#a31296f2176bd672769e1852ca90ddd51" title="Convert the position values for the TrackElement into an identification string and load in ElementID." alt="" coords="953,2455,1102,2481"/>

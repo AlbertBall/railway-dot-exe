@@ -60,6 +60,10 @@ TRailGraphics::TRailGraphics()
     bm10->LoadFromResourceName(0, "bm10");
     bm10->Transparent = true;
     bm10->TransparentColor = clB5G5R5;
+    BlackCircle = new Graphics::TBitmap; //these new at v2.13.0
+    BlackCircle->LoadFromResourceName(0, "BlackCircle");
+    BlackCircle->Transparent = true;
+    BlackCircle->TransparentColor = clB5G5R5;
     bm100 = new Graphics::TBitmap;
     bm100->LoadFromResourceName(0, "bm100");
     bm100->Transparent = true;
@@ -951,6 +955,10 @@ TRailGraphics::TRailGraphics()
     ELk9->LoadFromResourceName(0, "ELk9");
     ELk9->Transparent = true;
     ELk9->TransparentColor = clB5G5R5;
+    BlackOctagon = new Graphics::TBitmap; //these new at v2.13.0
+    BlackOctagon->LoadFromResourceName(0, "BlackOctagon");
+    BlackOctagon->Transparent = true;
+    BlackOctagon->TransparentColor = clB5G5R5;
     gl1 = new Graphics::TBitmap;
     gl1->LoadFromResourceName(0, "gl1");
     gl1->Transparent = true;
@@ -2176,6 +2184,73 @@ TRailGraphics::TRailGraphics()
     UnderVFootbridge->Transparent = true;
     UnderVFootbridge->TransparentColor = clB5G5R5;
 
+    //failed signal graphics at v2.13.0
+    FSig68 = new Graphics::TBitmap;
+    FSig68->LoadFromResourceName(0, "FSig68");
+    FSig68->Transparent = true;
+    FSig68->TransparentColor = clB5G5R5;
+    FSig69 = new Graphics::TBitmap;
+    FSig69->LoadFromResourceName(0, "FSig69");
+    FSig69->Transparent = true;
+    FSig69->TransparentColor = clB5G5R5;
+    FSig70 = new Graphics::TBitmap;
+    FSig70->LoadFromResourceName(0, "FSig70");
+    FSig70->Transparent = true;
+    FSig70->TransparentColor = clB5G5R5;
+    FSig71 = new Graphics::TBitmap;
+    FSig71->LoadFromResourceName(0, "FSig71");
+    FSig71->Transparent = true;
+    FSig71->TransparentColor = clB5G5R5;
+    FSig72 = new Graphics::TBitmap;
+    FSig72->LoadFromResourceName(0, "FSig72");
+    FSig72->Transparent = true;
+    FSig72->TransparentColor = clB5G5R5;
+    FSig73 = new Graphics::TBitmap;
+    FSig73->LoadFromResourceName(0, "FSig73");
+    FSig73->Transparent = true;
+    FSig73->TransparentColor = clB5G5R5;
+    FSig74 = new Graphics::TBitmap;
+    FSig74->LoadFromResourceName(0, "FSig74");
+    FSig74->Transparent = true;
+    FSig74->TransparentColor = clB5G5R5;
+    FSig75 = new Graphics::TBitmap;
+    FSig75->LoadFromResourceName(0, "FSig75");
+    FSig75->Transparent = true;
+    FSig75->TransparentColor = clB5G5R5;
+
+    FGSig68 = new Graphics::TBitmap;
+    FGSig68->LoadFromResourceName(0, "FGSig68");
+    FGSig68->Transparent = true;
+    FGSig68->TransparentColor = clB5G5R5;
+    FGSig69 = new Graphics::TBitmap;
+    FGSig69->LoadFromResourceName(0, "FGSig69");
+    FGSig69->Transparent = true;
+    FGSig69->TransparentColor = clB5G5R5;
+    FGSig70 = new Graphics::TBitmap;
+    FGSig70->LoadFromResourceName(0, "FGSig70");
+    FGSig70->Transparent = true;
+    FGSig70->TransparentColor = clB5G5R5;
+    FGSig71 = new Graphics::TBitmap;
+    FGSig71->LoadFromResourceName(0, "FGSig71");
+    FGSig71->Transparent = true;
+    FGSig71->TransparentColor = clB5G5R5;
+    FGSig72 = new Graphics::TBitmap;
+    FGSig72->LoadFromResourceName(0, "FGSig72");
+    FGSig72->Transparent = true;
+    FGSig72->TransparentColor = clB5G5R5;
+    FGSig73 = new Graphics::TBitmap;
+    FGSig73->LoadFromResourceName(0, "FGSig73");
+    FGSig73->Transparent = true;
+    FGSig73->TransparentColor = clB5G5R5;
+    FGSig74 = new Graphics::TBitmap;
+    FGSig74->LoadFromResourceName(0, "FGSig74");
+    FGSig74->Transparent = true;
+    FGSig74->TransparentColor = clB5G5R5;
+    FGSig75 = new Graphics::TBitmap;
+    FGSig75->LoadFromResourceName(0, "FGSig75");
+    FGSig75->Transparent = true;
+    FGSig75->TransparentColor = clB5G5R5;
+
     // extra from bmSolidBgnd bitmap file but transparent
     bmTransparentBgnd = new Graphics::TBitmap;
     bmTransparentBgnd->LoadFromResourceName(0, "bmSolidBgnd");
@@ -2725,6 +2800,7 @@ TRailGraphics::~TRailGraphics()
         delete PointModeGraphicsPtr[x][1];
     }
 
+    delete BlackCircle; //added at v2.13.0
     delete bm10;
     delete bm100;
     delete bm101;
@@ -3018,6 +3094,7 @@ TRailGraphics::~TRailGraphics()
     delete ELk7;
     delete ELk8;
     delete ELk9;
+    delete BlackOctagon;
     delete gl1;
     delete gl10;
     delete gl100;
@@ -3339,6 +3416,23 @@ TRailGraphics::~TRailGraphics()
     delete LCPlainMan;
     delete LCRHSVerMan;
     delete LCTopHorMan;
+
+    delete FSig68; //failed signals added at v2.13.0
+    delete FSig69;
+    delete FSig70;
+    delete FSig71;
+    delete FSig72;
+    delete FSig73;
+    delete FSig74;
+    delete FSig75;
+    delete FGSig68;
+    delete FGSig69;
+    delete FGSig70;
+    delete FGSig71;
+    delete FGSig72;
+    delete FGSig73;
+    delete FGSig74;
+    delete FGSig75;
 
     delete SpeedBut68NormBlackGlyph; // added at v2.3.1 (missed)
     delete SpeedBut69NormBlackGlyph; // added at v2.3.1 (missed)
@@ -3690,6 +3784,7 @@ void TRailGraphics::ChangeAllTransparentColours(TColor NewTransparentColour, TCo
         return; // already stored
 
     }
+    ChangeTransparentColour(BlackCircle, BlackCircle, NewTransparentColour, OldTransparentColour); //added at v2.13.0
     ChangeTransparentColour(bm10, bm10, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(bm100, bm100, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(bm101, bm101, NewTransparentColour, OldTransparentColour);
@@ -3912,6 +4007,7 @@ void TRailGraphics::ChangeAllTransparentColours(TColor NewTransparentColour, TCo
     ChangeTransparentColour(ELk7, ELk7, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(ELk8, ELk8, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(ELk9, ELk9, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(BlackOctagon, BlackOctagon, NewTransparentColour, OldTransparentColour); //added at v2.13.0
     ChangeTransparentColour(gl1, gl1, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(gl10, gl10, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(gl100, gl100, NewTransparentColour, OldTransparentColour);
@@ -4215,6 +4311,23 @@ void TRailGraphics::ChangeAllTransparentColours(TColor NewTransparentColour, TCo
     ChangeTransparentColour(UnderHFootbridge, UnderHFootbridge, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(UnderVFootbridge, UnderVFootbridge, NewTransparentColour, OldTransparentColour);
 
+    ChangeTransparentColour(FSig68, FSig68, NewTransparentColour, OldTransparentColour); //failed signals, added at v2.13.0
+    ChangeTransparentColour(FSig69, FSig69, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(FSig70, FSig70, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(FSig71, FSig71, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(FSig72, FSig72, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(FSig73, FSig73, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(FSig74, FSig74, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(FSig75, FSig75, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(FGSig68, FGSig68, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(FGSig69, FGSig69, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(FGSig70, FGSig70, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(FGSig71, FGSig71, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(FGSig72, FGSig72, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(FGSig73, FGSig73, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(FGSig74, FGSig74, NewTransparentColour, OldTransparentColour);
+    ChangeTransparentColour(FGSig75, FGSig75, NewTransparentColour, OldTransparentColour);
+
     // The following are created as new bitmaps from existing  files
     ChangeTransparentColour(bmTransparentBgnd, bmTransparentBgnd, NewTransparentColour, OldTransparentColour);
     ChangeTransparentColour(GridBitmap, GridBitmap, NewTransparentColour, OldTransparentColour);
@@ -4437,28 +4550,28 @@ void TRailGraphics::ConvertSignalsToOppositeHand(int Caller) // new at v2.3.0
     }
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ", ConvertSignalsToOppositeHand");
 
-    Graphics::TBitmap* HorizSignalArray[18] =
+    Graphics::TBitmap* HorizSignalArray[22] =
     {
         Plat68, Plat68Striped, Plat69, Plat69Striped, bm68CallingOn, bm68dblyellow, bm68grounddblred, bm68grounddblwhite, bm68green, bm68yellow, bm69CallingOn,
-        bm69dblyellow, bm69grounddblred, bm69grounddblwhite, bm69green, bm69yellow, gl68, gl69
+        bm69dblyellow, bm69grounddblred, bm69grounddblwhite, bm69green, bm69yellow, gl68, gl69, FSig68, FSig69, FGSig68, FGSig69
     };
 
-    Graphics::TBitmap* VertSignalArray[18] =
+    Graphics::TBitmap* VertSignalArray[22] =
     {
         Plat70, Plat70Striped, Plat71, Plat71Striped, bm70CallingOn, bm70dblyellow, bm70grounddblred, bm70grounddblwhite, bm70green, bm70yellow, bm71CallingOn,
-        bm71dblyellow, bm71grounddblred, bm71grounddblwhite, bm71green, bm71yellow, gl70, gl71
+        bm71dblyellow, bm71grounddblred, bm71grounddblwhite, bm71green, bm71yellow, gl70, gl71, FSig70, FSig71, FGSig70, FGSig71
     };
 
-    Graphics::TBitmap* BackDiagSignalArray[14] =
+    Graphics::TBitmap* BackDiagSignalArray[18] =
     {
         bm72CallingOn, bm72dblyellow, bm72grounddblred, bm72grounddblwhite, bm72green, bm72yellow, bm75CallingOn, bm75dblyellow, bm75grounddblred,
-        bm75grounddblwhite, bm75green, bm75yellow, gl72, gl75
+        bm75grounddblwhite, bm75green, bm75yellow, gl72, gl75, FSig72, FSig75, FGSig72, FGSig75
     };
 
-    Graphics::TBitmap* FwdDiagSignalArray[16] =
+    Graphics::TBitmap* FwdDiagSignalArray[20] =
     {
         bm73, bm73CallingOn, bm73dblyellow, bm73grounddblred, bm73grounddblwhite, bm73green, bm73yellow, bm74, bm74CallingOn, bm74dblyellow, bm74grounddblred,
-        bm74grounddblwhite, bm74green, bm74yellow, gl73, gl74
+        bm74grounddblwhite, bm74green, bm74yellow, gl73, gl74, FSig73, FSig73, FGSig74, FGSig74
     };
 
 // the following are the stay black glyphs for the speedbuttons
@@ -4487,7 +4600,7 @@ void TRailGraphics::ConvertSignalsToOppositeHand(int Caller) // new at v2.3.0
     TmpBM = new Graphics::TBitmap;
     TmpBM->Assign(bmTransparentBgnd); // current background colour as transparent colour
 
-    for(int x = 0; x < 18; x++)
+    for(int x = 0; x < 22; x++)
     {
         for(int i = 0; i < 16; i++)
         {
@@ -4500,7 +4613,7 @@ void TRailGraphics::ConvertSignalsToOppositeHand(int Caller) // new at v2.3.0
     }
 
     TmpBM->Assign(bmTransparentBgnd); // current background colour as transparent colour
-    for(int x = 0; x < 18; x++)
+    for(int x = 0; x < 22; x++)
     {
         for(int i = 0; i < 16; i++)
         {
@@ -4513,7 +4626,7 @@ void TRailGraphics::ConvertSignalsToOppositeHand(int Caller) // new at v2.3.0
     }
 
     TmpBM->Assign(bmTransparentBgnd); // current background colour as transparent colour
-    for(int x = 0; x < 14; x++)
+    for(int x = 0; x < 18; x++)
     {
         for(int i = 0; i < 16; i++)
         {
@@ -4526,7 +4639,7 @@ void TRailGraphics::ConvertSignalsToOppositeHand(int Caller) // new at v2.3.0
     }
 
     TmpBM->Assign(bmTransparentBgnd);
-    for(int x = 0; x < 16; x++)
+    for(int x = 0; x < 20; x++)
     {
         for(int i = 0; i < 16; i++)
         {

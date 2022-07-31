@@ -113,6 +113,7 @@ var class_t_train =
     [ "LagExitPos", "class_t_train.html#a79b51b68b8e6c0f48330aaf3a99ee5c6", null ],
     [ "LastActionDelayFlag", "class_t_train.html#a1b53d5506e8a5bdfd55286ae2dc2d3f2", null ],
     [ "LastActionTime", "class_t_train.html#a1887a95dd5762926ac67d244dd471e45", null ],
+    [ "LastSigPassedFailed", "class_t_train.html#a8c8a2e1b4e9b34edc3debda6c99b3101", null ],
     [ "LeadElement", "class_t_train.html#abba9596f03b731ba4055f4d3591f5b0e", null ],
     [ "LeadEntryPos", "class_t_train.html#ae5acbf95c32fbf654e4f68417032edad", null ],
     [ "LeadExitPos", "class_t_train.html#af92045cb9d4cb0fa368d1541e4fb2780", null ],

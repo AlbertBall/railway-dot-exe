@@ -1,6 +1,6 @@
 <map id="TTextHandler::TextVectorPush" name="TTextHandler::TextVectorPush">
 <area shape="rect" id="node1" title="push &amp;Text onto TextVector &amp; reset the size of the railway if necessary" alt="" coords="5,183,204,209"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="252,5,399,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="252,5,399,32"/>
 <area shape="rect" id="node3" href="$class_t_track.html#a750354d5deccaf7ccdbe8afe8f0f8e35" title=" " alt="" coords="253,56,398,83"/>
 <area shape="rect" id="node4" href="$class_t_track.html#a5c13595c171f5c7e4aaa6dfc18f4359f" title=" " alt="" coords="253,107,398,133"/>
 <area shape="rect" id="node5" href="$class_t_track.html#a453e9074035359dc22be2b15913e4bab" title=" " alt="" coords="253,157,397,184"/>

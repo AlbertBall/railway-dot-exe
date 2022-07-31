@@ -1,7 +1,7 @@
 <map id="TTrack::CheckFootCrossingLinks" name="TTrack::CheckFootCrossingLinks">
 <area shape="rect" id="node1" title="True if a footcrossing is linked properly at both ends." alt="" coords="5,82,188,123"/>
 <area shape="rect" id="node2" href="$class_t_track.html#a0b0e7c333d860841aed4b66b94a6a955" title="Used to check the validity of footcrossing links." alt="" coords="240,69,407,96"/>
-<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="712,51,859,77"/>
+<area shape="rect" id="node3" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="712,51,859,77"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="712,203,859,229"/>
 <area shape="rect" id="node6" href="$class_t_track.html#a23030c22d4c98706d1738205242646d9" title="Used to check the validity of footcrossing links." alt="" coords="236,165,411,192"/>
 <area shape="rect" id="node5" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="480,51,643,77"/>

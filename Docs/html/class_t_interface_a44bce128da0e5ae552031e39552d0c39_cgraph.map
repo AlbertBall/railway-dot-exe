@@ -1,7 +1,7 @@
 <map id="TInterface::HighLightOneGap" name="TInterface::HighLightOneGap">
 <area shape="rect" id="node1" title="Called during gap setting to mark a gap with a red ellipse and ask user to select the corresponding g..." alt="" coords="5,2483,193,2510"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1283,1413,1429,1439"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="241,1873,421,1915"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1283,1413,1429,1439"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="241,1873,421,1915"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1283,1822,1429,1849"/>
 <area shape="rect" id="node48" href="$class_t_track.html#a411cfd944b75372ae56937d69fb8b1c5" title="True if there is an unset gap, and if so it is marked with a red circle, used during gap setting." alt="" coords="771,353,938,395"/>
 <area shape="rect" id="node49" href="$class_t_track.html#a400d338422973dd209eb14ba2f621617" title=" " alt="" coords="259,3135,403,3162"/>
@@ -24,7 +24,7 @@
 <area shape="rect" id="node25" href="$class_t_graphic_element.html#ac12f60cb52eefdc86eaa504419eb138d" title="Load original graphic from the screen for point flashing or route start markers." alt="" coords="753,708,956,749"/>
 <area shape="rect" id="node27" href="$class_t_all_routes.html#af0a34aa05027527d256566ae52600583" title="Calls PrefDirMarker for all routes, with RouteCall set to identify a route call, and BuildingPrefDir ..." alt="" coords="1039,766,1217,793"/>
 <area shape="rect" id="node28" href="$class_t_track.html#aa67be9f8ad9bd885f649b26962e0d41d" title="True if there is a platform, NamedNonStationLocation or Concourse present in the railway." alt="" coords="1023,817,1233,859"/>
-<area shape="rect" id="node29" href="$class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc" title=" " alt="" coords="1051,1873,1205,1899"/>
+<area shape="rect" id="node29" href="$class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc" title="Plot the graphic at the railway (not screen) position set by HPos &amp; VPos." alt="" coords="1051,1873,1205,1899"/>
 <area shape="rect" id="node30" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="756,2339,953,2366"/>
 <area shape="rect" id="node31" href="$class_t_graphic_element.html#a04ccc26451ff7d95dc3c5951b71f421e" title="Plot the overlay graphic on screen." alt="" coords="757,2441,953,2467"/>
 <area shape="rect" id="node32" href="$class_t_track.html#ad8a74040f61dffb16633deea5054deef" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway (..." alt="" coords="751,2091,959,2147"/>

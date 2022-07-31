@@ -1,6 +1,6 @@
 <map id="TInterface::ExportTTMenuItemClick" name="TInterface::ExportTTMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,1616,176,1657"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1187,935,1333,962"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1187,935,1333,962"/>
 <area shape="rect" id="node3" href="$class_t_train_controller.html#a4ab4b6a568064d27c65f0770e5a5ccd0" title="Examines the internal timetable (TrainDataVector) and creates from it a chronological (...." alt="" coords="453,460,611,501"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1187,1547,1333,1574"/>
 <area shape="rect" id="node14" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="243,1725,378,1751"/>

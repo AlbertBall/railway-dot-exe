@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.13.0 Beta</span>
+   &#160;<span id="projectnumber">v2.13.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -89,6 +89,9 @@ $(document).ready(function(){initNavTree('functions_t.html',''); initResizable()
 <h3><a id="index_t"></a>- t -</h3><ul>
 <li>TAboutForm()
 : <a class="el" href="class_t_about_form.html#a5f857ee166c84e44aa329cbf5e2b9400">TAboutForm</a>
+</li>
+<li>TActionsDueForm()
+: <a class="el" href="class_t_actions_due_form.html#a571d9871fffb7ba8f6e92ab0d8f27b5b">TActionsDueForm</a>
 </li>
 <li>TActionVectorEntry()
 : <a class="el" href="class_t_action_vector_entry.html#a2f3969c630acb3f7a346ced7a601502f">TActionVectorEntry</a>
@@ -203,7 +206,7 @@ $(document).ready(function(){initNavTree('functions_t.html',''); initResizable()
 : <a class="el" href="class_t_interface.html#aa54b12bea83801816596b02b8125fb80">TInterface</a>
 </li>
 <li>TDisplay()
-: <a class="el" href="class_t_display.html#a72cbdba53131a636da2c656f6025574b">TDisplay</a>
+: <a class="el" href="class_t_display.html#ab34b9c853e7e348cce8e9c19507d9f04">TDisplay</a>
 </li>
 <li>TDMIt
 : <a class="el" href="class_t_interface.html#ae5552cc0cccf427e6f6d4e814730151e">TInterface</a>
@@ -315,6 +318,9 @@ $(document).ready(function(){initNavTree('functions_t.html',''); initResizable()
 </li>
 <li>TextVectorSize()
 : <a class="el" href="class_t_text_handler.html#a7dfd4e30235878fb01e7387715e0cb0f">TTextHandler</a>
+</li>
+<li>TFailedElementVector
+: <a class="el" href="class_t_track.html#af00463391c1a44df2a94e1b80c6afad8">TTrack</a>
 </li>
 <li>TFixedTrackArray()
 : <a class="el" href="class_t_track_1_1_t_fixed_track_array.html#a0fd7c1a4d4b9f09704a39c40bd202462">TTrack::TFixedTrackArray</a>
@@ -573,6 +579,9 @@ $(document).ready(function(){initNavTree('functions_t.html',''); initResizable()
 <li>TotLatePassMins
 : <a class="el" href="class_t_train_controller.html#a152c4fe878eaaeb483b739b232059767">TTrainController</a>
 </li>
+<li>TPerfLogForm()
+: <a class="el" href="class_t_perf_log_form.html#a8e221ed16ed56696a40afa5b0a6c1cb8">TPerfLogForm</a>
+</li>
 <li>TPrefDir4MultiMap
 : <a class="el" href="class_t_one_pref_dir.html#a940ba2bdbedb288c8188c1da5c4c79bc">TOnePrefDir</a>
 </li>
@@ -726,11 +735,11 @@ $(document).ready(function(){initNavTree('functions_t.html',''); initResizable()
 : <a class="el" href="class_t_train.html#a95a26f26e890d53e38f1f8067977ef0e">TTrain</a>
 , <a class="el" href="class_t_train_operating_data.html#aa75dba204a2655d41e74c42694e92b81">TTrainOperatingData</a>
 </li>
-<li>TrainIDOnBridgeTrackPos01
-: <a class="el" href="class_t_track_element.html#a9751b1ee4085deff881cd8f39bbd293b">TTrackElement</a>
+<li>TrainIDOnBridgeOrFailedPointOrigSpeedLimit01
+: <a class="el" href="class_t_track_element.html#afb084fba3f720515d1fb8daf8a9bc606">TTrackElement</a>
 </li>
-<li>TrainIDOnBridgeTrackPos23
-: <a class="el" href="class_t_track_element.html#aa3d8b1fef605f7ef4e6b09360abbb528">TTrackElement</a>
+<li>TrainIDOnBridgeOrFailedPointOrigSpeedLimit23
+: <a class="el" href="class_t_track_element.html#a9af64c78ddd52fb5dad20d8e3c169ba3">TTrackElement</a>
 </li>
 <li>TrainIDOnElement
 : <a class="el" href="class_t_track_element.html#a5f6319bc1752da843be71f1024774ace">TTrackElement</a>
@@ -815,6 +824,15 @@ $(document).ready(function(){initNavTree('functions_t.html',''); initResizable()
 </li>
 <li>TServiceInfo()
 : <a class="el" href="class_t_interface_1_1_t_service_info.html#ac50cc9823dc279ff660aae7cd35439a3">TInterface::TServiceInfo</a>
+</li>
+<li>TSimpleVector
+: <a class="el" href="class_t_track.html#a231be5e38073a2768735cf2df876197d">TTrack</a>
+</li>
+<li>TSRFlag
+: <a class="el" href="class_t_track.html#af59e7516fff36689068a0c70bc13c479">TTrack</a>
+</li>
+<li>TSRVector
+: <a class="el" href="class_t_track.html#a92d3525239018cd5752763141015bf55">TTrack</a>
 </li>
 <li>TTClockAdd10mButton
 : <a class="el" href="class_t_interface.html#a8823b74bcb53b02854a70c245cd0b198">TInterface</a>
@@ -1098,6 +1116,12 @@ $(document).ready(function(){initNavTree('functions_t.html',''); initResizable()
 </li>
 <li>TUserGraphicVector
 : <a class="el" href="class_t_track.html#aa9914d5a09bcdfea0774fd09bb2a54ab">TTrack</a>
+</li>
+<li>TUtilities()
+: <a class="el" href="class_t_utilities.html#accca240b71d4081a33e9a7080f661779">TUtilities</a>
+</li>
+<li>TVPos
+: <a class="el" href="struct_t_track_1_1_t_infrastructure_failure_entry.html#a72a8ceee25feb71e9a6c2b7b4bacdf5f">TTrack::TInfrastructureFailureEntry</a>
 </li>
 <li>TwoAspect
 : <a class="el" href="class_t_track_element.html#abbbcaeb3e062e962d53337965d4fcaada23f2f489a6ddcca4bd95877b8d7c2002">TTrackElement</a>

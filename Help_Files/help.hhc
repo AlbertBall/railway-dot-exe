@@ -76,7 +76,7 @@
 			<param name="Local" value="html/3.54jhx.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Pasting from another railway.exe application">
+			<param name="Name" value="Pasting in an application after cutting or copying from another railway.exe application">
 			<param name="Local" value="html\3.5.1.htm">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
@@ -246,6 +246,10 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Skipping timetabled events &amp; becoming a follow-on service early">
 			<param name="Local" value="html\6.12.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Random delays">
+			<param name="Local" value="html\6.13.htm">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">

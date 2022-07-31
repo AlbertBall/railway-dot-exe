@@ -1,14 +1,16 @@
-# railway-dot-exe
+# Railway Operation Simulator (ROS)
 
-Welcome to the railway.exe project, a railway simulator for Windows originally written in Borland's C++ Builder 4 Professional and now updated to work with Embarcadero's C++ Builder Starter Edition v10.3.  Development to date has resulted in a complete and usable program that provides options to:
+Welcome to the ROS project, a railway simulator for Windows originally written in Borland's C++ Builder 4 Professional and now updated to work with Embarcadero's C++ Builder Community Edition v10.4.  Development to date has resulted in a complete and usable program that provides options to:
 
 - build a railway of any size
 - add text of any available colour, font and size
 - set preferred and bi-directional running directions
 - allow random train failures
+- allow random train delays, failures of signals and points, and temporary speed restrictions
 - choose light or dark backgrounds
-- develop timetables with shuttle services, changes in direction, splits, joins, and repeating services
+- develop timetables with splits, joins, follow-on services, changes in direction, shuttles and repeating services.
 - operate trains
+- save and reload an operating session at any time
 - add your own graphics
 - zoom-out for a wider display
 - and many other features
@@ -30,7 +32,6 @@ Although the program is fully usable now, there remains great potential for furt
 - ability to record and replay sessions
 - signalbox mode where individual signals and points are operated directly, perhaps via a graphical lever frame, with user-defined interlocking
 - sound effects, e.g. enter a track ID & hear trains & station announcements at that location
-- random failures of signals & points, etc.
 - variable train lengths
 - restricted routes - e.g. DC 3 & 4 rail, 25kV AC, tube lines, etc.
 - multi-player operation over the internet

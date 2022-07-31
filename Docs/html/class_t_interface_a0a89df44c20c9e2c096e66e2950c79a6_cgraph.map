@@ -1,9 +1,9 @@
 <map id="TInterface::ApproachLocking" name="TInterface::ApproachLocking">
 <area shape="rect" id="node1" title="Function that deals with approach locking during ClockTimer2 function." alt="" coords="5,2203,192,2230"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1281,1508,1428,1535"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1281,1508,1428,1535"/>
 <area shape="rect" id="node3" href="$class_t_all_routes.html#a54e5483e7b01daf50436e3dcc8794e77" title="Diagnostic function &#45; checks equivalence for each route between entries in PrefDirVector and those in..." alt="" coords="744,383,963,410"/>
 <area shape="rect" id="node6" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1281,1914,1428,1940"/>
-<area shape="rect" id="node9" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="240,1830,420,1872"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="240,1830,420,1872"/>
 <area shape="rect" id="node45" href="$class_t_all_routes.html#aace498b67ccef13364a1afa1f5f15311" title="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..." alt="" coords="759,2602,947,2628"/>
 <area shape="rect" id="node46" href="$class_t_all_routes.html#a8b522eb0d7aa415c3648d464c2885484" title="Returns a modifiable reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ..." alt="" coords="1041,165,1213,206"/>
 <area shape="rect" id="node47" href="$class_t_one_pref_dir.html#a42862b2abcd0eb356982f4ce46922922" title="Return a pointer to the last element in the vector." alt="" coords="1031,2939,1222,2966"/>
@@ -29,7 +29,7 @@
 <area shape="rect" id="node27" href="$class_t_graphic_element.html#ac12f60cb52eefdc86eaa504419eb138d" title="Load original graphic from the screen for point flashing or route start markers." alt="" coords="752,565,955,606"/>
 <area shape="rect" id="node29" href="$class_t_all_routes.html#af0a34aa05027527d256566ae52600583" title="Calls PrefDirMarker for all routes, with RouteCall set to identify a route call, and BuildingPrefDir ..." alt="" coords="1037,754,1216,780"/>
 <area shape="rect" id="node30" href="$class_t_track.html#aa67be9f8ad9bd885f649b26962e0d41d" title="True if there is a platform, NamedNonStationLocation or Concourse present in the railway." alt="" coords="1021,2284,1232,2325"/>
-<area shape="rect" id="node31" href="$class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc" title=" " alt="" coords="1049,2771,1204,2798"/>
+<area shape="rect" id="node31" href="$class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc" title="Plot the graphic at the railway (not screen) position set by HPos &amp; VPos." alt="" coords="1049,2771,1204,2798"/>
 <area shape="rect" id="node32" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="755,1011,952,1038"/>
 <area shape="rect" id="node33" href="$class_t_graphic_element.html#a04ccc26451ff7d95dc3c5951b71f421e" title="Plot the overlay graphic on screen." alt="" coords="755,1559,951,1586"/>
 <area shape="rect" id="node34" href="$class_t_track.html#ad8a74040f61dffb16633deea5054deef" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway (..." alt="" coords="749,2042,957,2098"/>

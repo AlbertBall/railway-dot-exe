@@ -65,8 +65,7 @@ private:
 
 public:
 
-    TMemo* &PerformanceMemo; //moved here from 'Private' so Interface can access it
-
+//    TMemo* PerformanceMemo; //dropped at v2.13.0 when created new performance log form
     bool ZoomOutFlag;
 ///< true when zoomed-out
 
@@ -227,8 +226,8 @@ public:
 // functions defined in .cpp file
 
 /// Constructor, sets the screen image (MainScreen or HiddenScreen), the
-/// performance log panel and the warning message labels
-    TDisplay::TDisplay(TImage* &Image, TMemo* &MemoBox, TLabel* &L1, TLabel* &L2, TLabel* &L3, TLabel* &L4, TLabel* &L5, TLabel* &L6, TLabel* &L7, TLabel* &L8,
+/// main display image and warning message labels
+    TDisplay::TDisplay(TImage* &Image, TLabel* &L1, TLabel* &L2, TLabel* &L3, TLabel* &L4, TLabel* &L5, TLabel* &L6, TLabel* &L7, TLabel* &L8,
                        TLabel* &L9, TLabel* &L10);
 /// Empty the rectangle defined by Rect
     void Clear(int Caller, TRect Rect);
@@ -244,10 +243,7 @@ public:
 /// Display the track element at HPos & VPos inverted (used to show an offending element
 /// when trying to connect track
     void InvertElement(int Caller, int HPos, int VPos);
-/// Send Statement to the performance log on screen and to the file
-    void PerformanceLog(int Caller, AnsiString Statement);
-/// Plot the graphic at the railway (not screen) position
-/// set by HPos & VPos
+/// Plot the graphic at the railway (not screen) position set by HPos & VPos
     void PlotAbsolute(int Caller, int HPos, int VPos, Graphics::TBitmap *PlotItem);
 /// Plot a blank track element at HLoc & VLoc
     void PlotBlank(int Caller, int HLoc, int VLoc);

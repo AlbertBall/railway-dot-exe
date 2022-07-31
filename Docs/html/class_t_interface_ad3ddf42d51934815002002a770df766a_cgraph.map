@@ -1,6 +1,6 @@
 <map id="TInterface::RepairFailedTrainMenuItemClick" name="TInterface::RepairFailedTrainMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,2490,164,2531"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1210,1617,1357,1644"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1210,1617,1357,1644"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="241,1769,375,1796"/>
 <area shape="rect" id="node12" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1210,1870,1357,1897"/>
 <area shape="rect" id="node29" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="956,2630,1119,2657"/>
@@ -38,7 +38,7 @@
 <area shape="rect" id="node25" href="$class_t_text_handler.html#a19a5042d87a979d56ba4678bee8b2abb" title="retrieve the style of the font as a coded integer" alt="" coords="946,1348,1129,1390"/>
 <area shape="rect" id="node33" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="941,2377,1134,2404"/>
 <area shape="rect" id="node34" href="$class_t_train.html#ad249f34f6862e604b8e141d1b25fe57d" title="Returns the timetable action time corresponding to &#39;Time&#39; for this train, i.e. it adjusts the time va..." alt="" coords="703,2377,846,2404"/>
-<area shape="rect" id="node36" href="$class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" title="Send Statement to the performance log on screen and to the file." alt="" coords="950,2124,1125,2150"/>
+<area shape="rect" id="node36" href="$class_t_perf_log_form.html#a72f06bf03353c15c94ceefbf420ff7b4" title="Send Statement to the performance log on screen and to the file." alt="" coords="935,2124,1140,2150"/>
 <area shape="rect" id="node37" href="$class_t_display.html#a604d491a723df459bdcd54a4b9d1d9f2" title="Display warning message Statement in the bottom left hand warning position and scroll other messages ..." alt="" coords="963,2529,1112,2556"/>
 <area shape="rect" id="node35" href="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7" title="Return the repeating service time." alt="" coords="932,2428,1143,2454"/>
 <area shape="rect" id="node40" href="$class_t_rail_graphics.html#a74d7dcd5e17ef156d8c216c8e524de11" title=" " alt="" coords="925,2834,1149,2875"/>

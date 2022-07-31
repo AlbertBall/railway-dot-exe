@@ -1,6 +1,6 @@
 <map id="TInterface::SetSaveMenuAndButtons" name="TInterface::SetSaveMenuAndButtons">
 <area shape="rect" id="node1" title="Called during the ClockTimer2 function to set screen boundaries, buttons &amp; menu items." alt="" coords="5,692,195,734"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1251,320,1397,346"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1251,320,1397,346"/>
 <area shape="rect" id="node3" href="$class_t_track.html#a750354d5deccaf7ccdbe8afe8f0f8e35" title=" " alt="" coords="265,776,411,802"/>
 <area shape="rect" id="node4" href="$class_t_track.html#a5d25871e34f26d3c4c878fd4707ed375" title=" " alt="" coords="267,826,409,853"/>
 <area shape="rect" id="node5" href="$class_t_track.html#a5c13595c171f5c7e4aaa6dfc18f4359f" title=" " alt="" coords="265,877,411,904"/>

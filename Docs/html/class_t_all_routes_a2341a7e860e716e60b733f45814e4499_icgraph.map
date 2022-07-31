@@ -1,8 +1,8 @@
 <map id="TAllRoutes::DiagonalFouledByRouteOrTrain" name="TAllRoutes::DiagonalFouledByRouteOrTrain">
 <area shape="rect" id="node1" title="The track geometry allows diagonals to cross without occupying the same track element,..." alt="" coords="1307,57,1489,98"/>
 <area shape="rect" id="node2" href="$class_t_train.html#a4524b72ef62ef2c1375f58fac05929ee" title="True if the train can be called on at its current position &#45; see detail in .cpp file." alt="" coords="1060,5,1227,32"/>
-<area shape="rect" id="node7" href="$class_t_one_route.html#a59270c9b68d679ea29086216c21decfb" title="Called by GetNextNonPreferredRouteElement to carry out the search for linked track,..." alt="" coords="1028,57,1259,98"/>
-<area shape="rect" id="node11" href="$class_t_one_route.html#ac20b954f16c606ccf5c9e513ab6908f6" title="Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called rec..." alt="" coords="1040,122,1247,163"/>
+<area shape="rect" id="node7" href="$class_t_one_route.html#a69c8690ba3aae40ff99a5d2a629ba321" title="Called by GetNextNonPreferredRouteElement to carry out the search for linked track,..." alt="" coords="1028,57,1259,98"/>
+<area shape="rect" id="node11" href="$class_t_one_route.html#a3bbf0add5e8c2b88fb09cb1be158d9ad" title="Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called rec..." alt="" coords="1040,122,1247,163"/>
 <area shape="rect" id="node3" href="$class_t_train.html#a89ad640ecf8f5163c40727b4e28575fc" title="Major function called at each clock tick for each train &amp; handles all train movement &amp; associated act..." alt="" coords="803,5,938,32"/>
 <area shape="rect" id="node4" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="533,5,699,32"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="278,5,437,32"/>

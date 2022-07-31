@@ -1,8 +1,8 @@
 <map id="TTrainController::TrainExistsAtIdent" name="TTrainController::TrainExistsAtIdent">
-<area shape="rect" id="node1" title="new at v2.4.0 return true if find the train (added at v2.4.0 as can select a removed train in OAListB..." alt="" coords="912,23,1097,65"/>
-<area shape="rect" id="node2" href="$class_t_interface.html#a8bf97b0604338d3a8b8432e070b7a669" title="Used in actions due panel to identify the train or continuation." alt="" coords="703,23,864,65"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#a54c8faaf7d1d8f0456114676fd20a17f" title=" " alt="" coords="451,5,655,32"/>
-<area shape="rect" id="node4" href="$class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" title="Controls the floating window function, called during the ClockTimer2 function." alt="" coords="465,56,640,83"/>
-<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,56,403,83"/>
-<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,56,196,83"/>
+<area shape="rect" id="node1" title="new at v2.4.0 return true if find the train (added at v2.4.0 as can select a removed train in Actions..." alt="" coords="887,35,1072,76"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a67d3c81296085e3b657e7d05dca94e23" title="Used in actions due panel to identify the train or continuation, added at v2.6.2 so can use for actio..." alt="" coords="677,35,839,76"/>
+<area shape="rect" id="node3" href="$class_t_actions_due_form.html#ac44cd181601f65f5944910f931c5d343" title=" " alt="" coords="451,5,629,47"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" title="Controls the floating window function, called during the ClockTimer2 function." alt="" coords="453,71,627,98"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,71,403,98"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,71,196,98"/>
 </map>

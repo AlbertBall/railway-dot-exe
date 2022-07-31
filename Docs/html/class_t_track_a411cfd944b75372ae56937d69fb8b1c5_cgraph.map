@@ -1,6 +1,6 @@
 <map id="TTrack::FindAndHighlightAnUnsetGap" name="TTrack::FindAndHighlightAnUnsetGap">
 <area shape="rect" id="node1" title="True if there is an unset gap, and if so it is marked with a red circle, used during gap setting." alt="" coords="5,87,172,129"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="655,5,801,32"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="655,5,801,32"/>
 <area shape="rect" id="node3" href="$class_t_track.html#a7fe1e2c641e38da6ab3fdbf20e529d2c" title="Called during gap setting to mark a gap with a red circle &#45; after which the program awaits user selec..." alt="" coords="220,68,396,95"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="655,132,801,159"/>
 <area shape="rect" id="node7" href="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f" title="A range&#45;checked version of TrackVector.at(At)" alt="" coords="444,157,607,184"/>

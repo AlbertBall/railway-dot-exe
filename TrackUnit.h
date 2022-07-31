@@ -136,7 +136,9 @@ public: // everything uses these - should really have Gets & Sets but too many t
     bool LCPlotted;
 ///< Utility marker to avoid plotting every element of a multitrack LC during ClearandRebuildRailway
     bool TempTrackMarker01, TempTrackMarker23;
-///< Utility markers for program use
+///< Utility markers for program use, not used from v2.12.0
+    bool Failed;
+///< New parameter added at v2.13.0 for failed points & TSRs
     int Attribute;
 ///< special variable used only for points, signals & level crossings, ignored otherwise; points 0=set to go straight, 1=set to diverge, where both legs diverge 0=set to left fork; signals:  0=red; 1=yellow; 2=double yellow; 3 = green; Level crossing: 0 = raised barriers = closed to trains; 1 = lowered barriers = open to trains; 2 = changing state = closed to trains
     int Conn[4];
@@ -149,8 +151,9 @@ public: // everything uses these - should really have Gets & Sets but too many t
 ///< Element lengths and speed limits, ...01 is for the track with link positions [0] and [1], ...23 for [2] and [3], set to -1 if not used (lengths in m & speed limits in km/h)
     int StationEntryStopLinkPos1, StationEntryStopLinkPos2;
 ///< Used for track at platforms and non-station named locations to mark the train front element stop position, there are two for the two directions of travel, set to -1 if not used
-    int TrainIDOnElement, TrainIDOnBridgeTrackPos01, TrainIDOnBridgeTrackPos23;
-///< Set to the TrainID value when a train is present on the element, bridges can have two trains present so the ...01 and ...23 values give the TrainIDs for track with link positions [0] & [1], and [2] & [3] respectively, set to -1 if no train present
+    int TrainIDOnElement, TrainIDOnBridgeOrFailedPointOrigSpeedLimit01, TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
+///< Set to the TrainID value for a bridge when a train is present on the element, bridges can have two trains present so the ...01 and ...23 values give the TrainIDs for track with link positions [0] & [1], and [2] & [3] respectively, set to -1 if no train present
+///< For a failed point store the original speedlimits, names changed at v2.13.0 to cater for failed points
     enum
 ///< added at version 0.6
     {
@@ -161,8 +164,8 @@ public: // everything uses these - should really have Gets & Sets but too many t
 
 /// Constructor for non-specific default element. Use high neg numbers for 'unset' h & v as can go high negatively legitimately
     TTrackElement() : TFixedTrackPiece(), HLoc(-2000000000), VLoc(-2000000000), LocationName(""), ActiveTrackElementName(""), Attribute(0), CallingOnSet(false),
-        Length01(-1), Length23(-1), SpeedLimit01(-1), SpeedLimit23(-1), TrainIDOnElement(-1), TrainIDOnBridgeTrackPos01(-1), TrainIDOnBridgeTrackPos23(-1),
-        StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1), SigAspect(FourAspect)
+        Length01(-1), Length23(-1), SpeedLimit01(-1), SpeedLimit23(-1), TrainIDOnElement(-1), TrainIDOnBridgeOrFailedPointOrigSpeedLimit01(-1),
+        TrainIDOnBridgeOrFailedPointOrigSpeedLimit23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1), SigAspect(FourAspect)
     {
         for(int x = 0; x < 4; x++)
         {
@@ -644,6 +647,7 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< vector of TrackElements
     typedef std::vector<TTrackElement>::iterator TTrackVectorIterator;
 ///< iterator for TTrackVector
+
     typedef std::map<AnsiString, TPicture*>TUserGraphicMap;
 ///< map of filenames as key and TPicture* as value. This holds all the TPicture pointers created when a user graphic is selected
     typedef std::pair<AnsiString, TPicture*>TUserGraphicMapEntry;
@@ -702,6 +706,17 @@ can't have a route set while changing; can't be opened while a route is set; and
     typedef std::pair<AnsiString, int>TActiveTrackElementNameMapEntry;
     typedef std::map<THVPair, Graphics::TBitmap*> TMultiplayerOverlayMap; //added for multiplayer
 
+    struct TInfrastructureFailureEntry //added at v2.13.0
+    {
+        int TVPos;
+        TDateTime FailureTime;
+        TDateTime RepairTime;
+    };
+
+    typedef std::vector<TInfrastructureFailureEntry>TFailedElementVector; //added at v2.13.0
+
+    typedef std::vector<int> TSimpleVector; //added at v2.13.0
+
 /// Used as basic elements in a table of signals - see SigTable below
     struct TSigElement
     {
@@ -722,6 +737,9 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< new at version 0.6 for two aspect
     TSigElement SigTableGroundSignal[40];
 ///< new at version 0.6 for ground signals
+
+    TSigElement FailedSigTable[8];
+///< table of failed signals added at v2.13.0
 
     AnsiString RouteFailMessage;
 
@@ -751,6 +769,10 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///<changed from PastingWithAttributes in v2.4.0 as all pastes are now with attributes - needed to suppress multimap checks while pasting
     bool OverrideAndHideSignalBridgeMessage;
 ///<if false signals facing bridges are not permitted, but can be set to true using CTRL ALT 5
+    bool SignalFailedFlag;
+///<indicates at least one signal has failed
+    bool TSRFlag;
+///<indicates at least one element has a temporary speed restriction
     float LevelCrossingBarrierUpFlashDuration;
 ///< duration of the flash period when level crossing closing to trains
     float LevelCrossingBarrierDownFlashDuration;
@@ -769,6 +791,8 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< holds TrackElement SpeedTag values for 'rotating right' via menu items 'Edit' & 'Rotate right'
     int RotLeftArray[FirstUnusedSpeedTagNumber];
 ///< holds TrackElement SpeedTag values for 'rotating left' via menu items 'Edit' & 'Rotate left'
+    TFailedElementVector FailedPointsVector, FailedSignalsVector, TSRVector;
+///< vector of failed points with track vector positions & repair times for use in failure handling (new at v2.13.0)
     std::map<AnsiString, char>ContinuationNameMap;
 ///< map of all continuation names, char is a dummy
     TMultiplayerOverlayMap MultiplayerOverlayMap; //added for multiplayer
@@ -793,7 +817,10 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< list of location name elements awaiting processing (see type for more information above)
     TLocationNameMultiMap LocationNameMultiMap;
 ///< multimap of location names (see type for more information above)
+    TSimpleVector SimpleVector;
+///< vector of simple element track vector positions
     TUserGraphicVector UserGraphicVector, SelectGraphicVector;
+///< vectors of user graphics
     TUserGraphicMap UserGraphicMap;
 ///<the map of graphic filenames as key and TPicture* as values
     TTrackMap TrackMap;
@@ -831,10 +858,10 @@ can't have a route set while changing; can't be opened while a route is set; and
         UGIVectorPos = 0;
         for(int x = (UserGraphicVector.size() - 1); x >= 0; x--) // go downwards because may erase the element identified
         {
-            if((HPos >= (UserGraphicVectorAt(18, x).HPos - (Display->DisplayOffsetH * 16))) && (HPos < (UserGraphicVectorAt(19,
-                                                                                                                            x).HPos + UserGraphicVectorAt(20, x).Width - (Display->DisplayOffsetH * 16))) && (VPos >= (UserGraphicVectorAt(21,
-                                                                                                                                                                                                                                           x).VPos - (Display->DisplayOffsetV * 16))) && (VPos < (UserGraphicVectorAt(22, x).VPos + UserGraphicVectorAt(23,
-                                                                                                                                                                                                                                                                                                                                                        x).Height - (Display->DisplayOffsetV * 16))))
+            if((HPos >= (UserGraphicVectorAt(18, x).HPos - (Display->DisplayOffsetH * 16))) && (HPos < (UserGraphicVectorAt(19, x).HPos +
+                UserGraphicVectorAt(20, x).Width - (Display->DisplayOffsetH * 16))) && (VPos >= (UserGraphicVectorAt(21, x).VPos -
+                (Display->DisplayOffsetV * 16))) && (VPos < (UserGraphicVectorAt(22, x).VPos + UserGraphicVectorAt(23, x).Height -
+                (Display->DisplayOffsetV * 16))))
             {
                 UGIVectorPos = x;
                 return(true);
@@ -1193,14 +1220,23 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
     void PlotSmallRedGap(int Caller);
 /// Add all LCs to LCVector - note that this contains all LC elements whether linked to others or not
     void PopulateLCVector(int Caller);
+/// clear then add all simple element track vector positions to the vector, added at v2.13.0
+    void PopulateSimpleVector(int Caller);
 /// Clears the existing LocationNameMultiMap and rebuilds it from TrackVector and InactiveTrackVector. Called after the track is linked as many of the vector positions are likely to change - called from RepositionAndMapTrack(); after names are changed in EraseLocationAndActiveTrackElementNames; and after the name changes in EnterLocationName.
     void RebuildLocationNameMultiMap(int Caller);
 /// Called by TInterface::ClearandRebuildRailway to replot all the active and inactive track elements and text, BothPointFillets indicates whether points are to be plotted according to how they are set - for operation, or with both fillets - when not operating or during development (the fillet is the bit that appears to move when points are changed)
     void RebuildTrackAndText(int Caller, TDisplay *Disp, bool BothPointFilletsAndBasicLCs);
 /// rebuild user graphics
     void RebuildUserGraphics(int Caller, TDisplay *Disp);
-/// Track elements have members that indicates whether and on what track a train is present (TrainIDOnElement, TrainIDOnBridgeTrackPos01 and TrainIDOnBridgeTrackPos23).  This function resets them all to their non-train-present state of -1. Called by TTrainController::UnplotTrains
-    void ResetAllTrainIDElements(int Caller);
+/// restore points to unfailed state, added at v2.13.0
+    void RepairFailedPoints(TFailedElementVector::iterator FPVIt);
+/// restore signal to unfailed state, added at v2.13.0
+    void RepairFailedSignals(TFailedElementVector::iterator FPVIt);
+/// remove TSR, added at v2.13.0
+    void RepairTSR(TFailedElementVector::iterator FPVIt);
+/// Track elements have members that indicate whether and on what track a train is present (TrainIDOnElement, TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 and TrainIDOnBridgeOrFailedPointOrigSpeedLimit23).  This function resets them all to their non-train-present state of -1. Called by TTrainController::UnplotTrains
+/// Also used for failed points to store original speedlimits
+    void ResetAllTrainIDsAndFailedPointOrigSpeedLimits(int Caller);
 /// Called by EraseTrackElement after the element has been erased and the vector positions changed, in order to reset a matching gaps if the erased element was a set gap
     void ResetAnyNonMatchingGaps(int Caller);
 /// Set all LC attributes to 0 (closed to trains)
@@ -1478,7 +1514,7 @@ public:
 /// A single flashing element of a route that flashes during setting
     class TRouteFlashElement
     {
-public:
+    public:
         int HLoc, VLoc, TrackVectorPosition;
 ///< element values
         Graphics::TBitmap *OriginalGraphic, *OverlayGraphic;
@@ -1489,7 +1525,7 @@ public:
 /// The flashing route
     class TRouteFlash
     {
-public:
+    public:
         std::vector<TRouteFlashElement>RouteFlashVector;
         bool OverlayPlotted;
 ///< flag indicating the graphic that is currently displayed, true for the overlay (route-coloured)
@@ -1555,15 +1591,18 @@ public:
 /// Try to find a set of linked tracks that lie on preferred directions between the route start element and the one at HLoc & VLoc.  If find one return true, set &PointsChanged to true if any points need to be changed and &ReqPosRouteID to the route ID of the existing route to attach to, if there is one, and -1 if not
     bool GetNextPreferredRouteElement(int Caller, int HLoc, int VLoc, TOnePrefDir *EveryPrefDir, bool ConsecSignals, bool AutoSigsFlag,
                                       IDInt &ReqPosRouteID, bool &PointsChanged);
-/// Called by GetNextNonPreferredRouteElement and GetNextPreferredRouteElement to check whether or not any points on the selected route need to be changed
-    bool PointsToBeChanged(int Caller) const;
-/// Called by GetNextNonPreferredRouteElement to carry out the search for linked track, and also called recursively
-    bool SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrackElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID);
-/// Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called recursively
+/// Called by GetNextNonPreferredRouteElement and GetNextPreferredRouteElement to check whether or not any points on the selected route need to be changed.
+/// Also gives every set of points that needs to change the chance to fail, and if so returns the TV position, added at v2.13.0
+    bool PointsToBeChanged(int Caller, int &NewFailedPointsTVPos) const;
+/// Called by GetNextNonPreferredRouteElement to carry out the search for linked track, and also called recursively, if recursive RecursiveCall is true (added at v2.13.0)
+    bool SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrackElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID, bool RecursiveCall);
+/// Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called recursively, if recursive RecursiveCall is true (added at v2.13.0)
     bool SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID, TOnePrefDir *EveryPrefDir,
-                                 bool ConsecSignals, int EndSelectPosition, bool AutoSigsFlag);
+                                 bool ConsecSignals, int EndSelectPosition, bool AutoSigsFlag, bool RecursiveCall);
 /// Called by TAllRoutes::SetAllRearwardsSignals to set rearwards signals from a specified starting position.  If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects.
     bool SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribute, int PrefDirVectorStartPosition) const;
+/// Check incorporated in route search routines after have found a legitimate route, returns false for signal failure & deals with graphics & messages
+    bool SignalHasFailed(int Caller); //added at v2.13.0
 /// Called after a non-preferred (i.e. unrestricted) route has been selected and has finished flashing, to add it to the AllRoutesVector
     void ConvertAndAddNonPreferredRouteSearchVector(int Caller, IDInt ReqPosRouteID);
 /// Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and has finished flashing, to add it to the AllRoutesVector
@@ -1589,7 +1628,7 @@ element to be left not a signal (for PrefDirRoute or AutoSigsFlag set); last ele
     void SetRouteSearchVectorGraphics(int Caller, bool AutoSigsFlag, bool PrefDirRoute);
 /// Called when setting a route to set all points appropriately
     void SetRoutePoints(int Caller) const;
-/// Called when setting a route to set all points appropriately.  Also called when a new train is added at a position where a route has been set, when it is necessary to set the next rearwards signal to red, the next yellow etc
+/// Called when setting a route to set all signals appropriately.  Also called when a new train is added at a position where a route has been set, when it is necessary to set the next rearwards signal to red, the next yellow etc.
     void SetRouteSignals(int Caller) const;
 };
 
@@ -1719,7 +1758,7 @@ public:
 /// As above but only checks for a route (may or may not be a train present (new at v1.2.0)
     bool DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber);
 /// If a route is present at H, V & Elink returns true with RouteNumber giving vector position in AllRoutes vector.  Returns false for anything else including no element or route at H & V etc. New at v1.2.0
-    bool TAllRoutes::FindRouteNumberFromRoute2MultiMapNoErrors(int Caller, int HLoc, int VLoc, int ELink, int &RouteNumber);
+    bool FindRouteNumberFromRoute2MultiMapNoErrors(int Caller, int HLoc, int VLoc, int ELink, int &RouteNumber);
 /// Examines all routes and for each uses GetRouteTruncateElement to see if the element at H & V is present in that route.
 /**  The ReturnFlag value indicates InRouteTrue (success), InRouteFalse (failure), or NotInRoute.  Messages are given in GetRouteTruncateElement.
 If successful the route is truncated at and including the element that matches H & V.  If PrefDirRoute ensure only truncate to a signal, else prevent

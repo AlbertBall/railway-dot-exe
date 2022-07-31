@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 1229;
 var viewHeight = 2258;
-var sectionId = 'dynsection-49';
+var sectionId = 'dynsection-48';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -68,7 +68,7 @@ var sectionId = 'dynsection-49';
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied">
+<g id="a_node2"><a xlink:href="class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" target="_top" xlink:title="pops the last entry off the call stack, throws an error if called when empty">
 <polygon fill="white" stroke="black" points="944.5,-1183.98 944.5,-1202.98 1054.5,-1202.98 1054.5,-1183.98 944.5,-1183.98"/>
 <text text-anchor="middle" x="999.5" y="-1190.98" font-family="Helvetica,sans-Serif" font-size="10.00">TUtilities::CallLogPop</text>
 </a>
@@ -1014,17 +1014,17 @@ var sectionId = 'dynsection-49';
 <!-- Node41 -->
 <g id="node34" class="node">
 <title>Node41</title>
-<g id="a_node34"><a xlink:href="class_t_display.html#a92bea1eb27a17c6c7f902858d4115d71" target="_top" xlink:title="Send Statement to the performance log on screen and to the file.">
-<polygon fill="white" stroke="black" points="752,-746.98 752,-765.98 883,-765.98 883,-746.98 752,-746.98"/>
-<text text-anchor="middle" x="817.5" y="-753.98" font-family="Helvetica,sans-Serif" font-size="10.00">TDisplay::PerformanceLog</text>
+<g id="a_node34"><a xlink:href="class_t_perf_log_form.html#a72f06bf03353c15c94ceefbf420ff7b4" target="_top" xlink:title="Send Statement to the performance log on screen and to the file.">
+<polygon fill="white" stroke="black" points="740.5,-746.98 740.5,-765.98 894.5,-765.98 894.5,-746.98 740.5,-746.98"/>
+<text text-anchor="middle" x="817.5" y="-753.98" font-family="Helvetica,sans-Serif" font-size="10.00">TPerfLogForm::PerformanceLog</text>
 </a>
 </g>
 </g>
 <!-- Node37&#45;&gt;Node41 -->
 <g id="edge106" class="edge">
 <title>Node37&#45;&gt;Node41</title>
-<path fill="none" stroke="midnightblue" d="M457.85,-822.92C479.34,-817.13 507.66,-809.85 533,-804.48 603.37,-789.55 684.34,-776.22 741.69,-767.42"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="742.39,-770.85 751.75,-765.88 741.34,-763.93 742.39,-770.85"/>
+<path fill="none" stroke="midnightblue" d="M457.85,-822.92C479.34,-817.13 507.66,-809.85 533,-804.48 603.02,-789.62 683.55,-776.35 740.84,-767.55"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="741.54,-770.98 750.9,-766.01 740.49,-764.06 741.54,-770.98"/>
 </g>
 <!-- Node42 -->
 <g id="node35" class="node">
@@ -1089,7 +1089,7 @@ var sectionId = 'dynsection-49';
 <!-- Node41&#45;&gt;Node2 -->
 <g id="edge107" class="edge">
 <title>Node41&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M883.1,-764.15C889.36,-766.96 895.17,-770.65 900,-775.48 907.33,-782.78 976.05,-1091.91 994.15,-1173.76"/>
+<path fill="none" stroke="midnightblue" d="M887.03,-766.07C891.79,-768.58 896.19,-771.68 900,-775.48 907.33,-782.78 976.05,-1091.91 994.15,-1173.76"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="990.78,-1174.74 996.36,-1183.75 997.62,-1173.23 990.78,-1174.74"/>
 </g>
 <!-- Node41&#45;&gt;Node12 -->

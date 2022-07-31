@@ -5,7 +5,7 @@
 <area shape="rect" id="node9" href="$class_t_train.html#a4524b72ef62ef2c1375f58fac05929ee" title="True if the train can be called on at its current position &#45; see detail in .cpp file." alt="" coords="1681,103,1848,130"/>
 <area shape="rect" id="node10" href="$class_t_train.html#aaa6289d279b229d05963f8b3a35d53e9" title="Calculates train speeds and times for the element that the train is about to enter...." alt="" coords="1679,329,1851,371"/>
 <area shape="rect" id="node3" href="$class_t_train.html#af23c2a989fee528b3c87200dcd8c2c0b" title="new v2.2.0 for operator action panel. Calculates the time left for operator action to avoid unnecessa..." alt="" coords="954,53,1107,79"/>
-<area shape="rect" id="node8" href="$class_t_train_controller.html#a0e16b9cb91bb29f83bffc7ae3461200d" title="new v2.2.0 for OperatorActionPanel" alt="" coords="685,5,847,47"/>
+<area shape="rect" id="node8" href="$class_t_train_controller.html#a0e16b9cb91bb29f83bffc7ae3461200d" title="new v2.2.0 for OperatorActionPanel (OperatorActionPanel changed for ActionsDueForm at v2...." alt="" coords="685,5,847,47"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,71,403,98"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,71,196,98"/>
 <area shape="rect" id="node7" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="451,133,617,159"/>

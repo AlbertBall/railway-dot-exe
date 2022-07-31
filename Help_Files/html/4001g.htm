@@ -53,7 +53,7 @@ div.WordSection1
 
 <p>PDs are the directions that trains travel in during normal operation. Most
 signals are set along PDs, and special arrangements are generally needed to
-allow trains to travel in non-PDs. Track elements in this program's railways
+allow trains to travel in non-PDs. Track elements in ROS's railways
 may have PDs set either way, both ways, or not set. </p>
 
 <p>The method used to set PDs is the same as that used to set lengths and speed
@@ -68,25 +68,18 @@ start of the section to have a PD set, then left click another element in the
 direction required towards the final element to be set
 and on the desired route, and continue in this way until the final element is
 reached. Sometimes, if there are two or more routes in different directions
-from the start position to the next selected position, the program may choose
+from the start position to the next selected position, ROS may choose
 the wrong direction. In this case erase the selection as described below, then select the start position again and select the element that is next to the start position in the desired
 direction. This will set the direction correctly and further points can be
 selected until the desired end point is reached. If there is only one route
 between the start and end points then the second element may be the end point.
-If the end point is a continuation or a buffer, the section is added straight
-away and a message given to this effect. To truncate part of a selected length
-just right click at the truncate point. To erase a selection truncate to the
-start point, and to cancel a start selection without making a second selection
-just click it again. Note that the selection can't end on leading points, because
-the program doesn't know which of the two legs to include.  In this case select an element further along in order to add it.</p>
+To truncate part of a selected length just right click at the truncate point. To erase a selection completely truncate to the start point, and to cancel a start selection without making a second selection just click it again. Note that the selection can't end on leading points, because
+ROS doesn't know which of the two legs to include.  In this case select an element further along in order to add it.</p>
 
 <p>Note that if the railway is complex a message may say that a path can't be
 found to the selected element. This is usually because there are too may search
 paths from the last selected element and the search is becoming too long. In
-these circumstances select an element nearer to the last selected element. Note
-also that if there is more than one route between the selected elements then
-the program may choose the wrong one. In this case truncate back to the last correct 
-selection and choose an element where there is only a single route available.</p>
+these circumstances select an element nearer to the last selected element.</p>
 
 <p>At each position relevant buttons will be available consisting of <img
 width=24 height=24 src="../images/RailSim2_ADDPREFDIR.gif"> 'add section' to
@@ -121,11 +114,33 @@ running in station areas to allow flexibility in routing trains.</p>
 <p>Note that if track is changed after PDs have been set, elements that have
 been changed and adjacent elements will have their PDs erased. In these circumstances it is recommended to go back to the 'set preferred directions' mode to check and reset the necessary directions.</p>
 
-<p>Another option available from the 'Edit' menu is 'Check Preferred Directions for Conflicts'.  This examines all PDs and highlights any elements that are not linked to other PDs or are set in opposite directions to adjacent PDs.  This is very useful for finding missing or conflicting links that can often be overlooked in a visual inspection.</p>
+<p>Another option available from the 'Edit' menu is 'Check Preferred Directions for Conflicts'.  This examines all track elements and PDs, and highlights track elements without PDs, PDs that are not linked to other PDs, or PDs that are set in opposite directions to adjacent PDs.  This is very useful for finding missing or conflicting links that are easily overlooked in a visual inspection.  It is important to recognise that not all highlighted conflicts require changes, many can be dismissed after inspection shows them not to matter.</p>
 
-<p>A situation that often arises is that a crossover is provided between two tracks that have PDs set in opposite directions.  If PDs are set on the crossover then there will be a conflict at one end, preventing a preferred direction route being set over it.  In these cases the crossover itself should not have PDs set because it is only to be used in unusual train movements.  The PD checker won't flag up missing PDs on crossovers.</p>
+<p> Example situations:</p>
 
-<p>Another situation that can arise is that bidirectional PDs are set as far as a signal at a location but not beyond it, when trains are routed to the location then change direction before leaving it.  The PD checker will flag a possible conflict in these circumstances but the warning can be ignored by clicking 'OK', after which the checker will continue to check the remainder of the PDs.</p>
+<p></p>
+
+<p><img width=101 height=30 src="../images/PDExample1.jpg"> Conflicts are reported but no action need be taken because only unrestricted routes are possible between parallel tracks with opposite PDs regardless of whether PDs are set on them or not.</p>
+
+<p></p>
+
+<p><img width=104 height=31 src="../images/PDExample2.jpg">  Although there is no matching PD for the top diverging leg in the leftwards direction and no matching PD for the bottom diverging leg in the rightwards direction the checker doesn't report any conflicts. In this situation these mismatches don't matter because a preferred direction route can never be set across the diverging legs with single direction PDs in opposite directions on the parallel tracks, regardless of whether or not any PDs are set on them.</p>
+
+<p></p>
+
+<p><img width=88 height=33 src="../images/PDExample3.jpg"> No conflict is reported in either of these situations.  Although there are mismatches where the bidirectional PDs meet the single direction PDs no conflict is reported because preferred direction routes can be set from the left to the signals to allow trains to change direction.  This is a frequent requirement.</p>
+
+<p></p>
+
+<p><img width=91 height=18 src="../images/PDExample2.jpg"> No conflict is reported here for the same reason as above - a preferred direction route can be set from the left to the signal to allow a train to change direction.</p>
+
+<p></p>
+
+<p><img width=91 height=19 src="../images/PDExample2.jpg"> A conflict is reported here because the signal element has a PD in the opposite direction to the direction of travel of the signal, so it isn't possible to set a preferred route from the left to the signal.</p>
+
+<p></p>
+
+<p><img width=102 height=15 src="../images/PD with named loc after signal.jpg"> A conflict is reported but since the segment in advance of the signal is named it allows trains from the left to reach the named location prior to changing direction and returning.  Therefore no action is needed.</p>
 
 </div>
 

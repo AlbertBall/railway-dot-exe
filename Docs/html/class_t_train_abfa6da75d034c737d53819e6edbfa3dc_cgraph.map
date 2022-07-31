@@ -1,6 +1,6 @@
 <map id="TTrain::PlotTrainWithNewBackgroundColour" name="TTrain::PlotTrainWithNewBackgroundColour">
 <area shape="rect" id="node1" title="Changes the train&#39;s background colour (e.g. to pale green if stopped at a station) Note that this use..." alt="" coords="5,477,173,518"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1169,172,1316,199"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1169,172,1316,199"/>
 <area shape="rect" id="node3" href="$class_t_rail_graphics.html#a74d7dcd5e17ef156d8c216c8e524de11" title=" " alt="" coords="897,568,1121,609"/>
 <area shape="rect" id="node4" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1169,455,1316,482"/>
 <area shape="rect" id="node5" href="$class_t_train.html#a247bd95a7c648367736b116f553f4e54" title="Plot the train&#39;s headcode character corresponding to ArrayNumber." alt="" coords="221,356,383,383"/>

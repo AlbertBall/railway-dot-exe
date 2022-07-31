@@ -1,6 +1,6 @@
 <map id="TInterface::SkipAllEventsBeforeNewService" name="TInterface::SkipAllEventsBeforeNewService">
 <area shape="rect" id="node1" title="Called for diagnostic purposes when keys CTRL ALT 4 pressed." alt="" coords="5,2350,172,2391"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1193,1236,1339,1263"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1193,1236,1339,1263"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="249,2433,384,2460"/>
 <area shape="rect" id="node12" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1193,1641,1339,1668"/>
 <area shape="rect" id="node37" href="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c" title="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 &amp; resets when..." alt="" coords="220,2484,413,2511"/>

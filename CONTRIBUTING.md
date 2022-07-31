@@ -89,12 +89,11 @@ Although the program is fully usable now, there remains great potential for furt
 * multi-player operation over the internet
 * signalbox mode where individual signals and points are operated directly, perhaps via a graphical lever frame, with user-defined interlocking
 * sound effects, e.g. enter a track ID & hear trains & station announcements at that location
-* random failures of signals & points etc, and random delay times at stations
 * variable train lengths
-* restricted routes – e.g. DC 3 & 4 rail, 25kV AC, tube lines and so on
+* restricted routes ??? e.g. DC 3 & 4 rail, 25kV AC, tube lines and so on
 * etc. etc.
 
-So… there’s plenty still to do… what are you waiting for?
+So there's plenty still to do, what are you waiting for?
 
 ## Styleguides
 

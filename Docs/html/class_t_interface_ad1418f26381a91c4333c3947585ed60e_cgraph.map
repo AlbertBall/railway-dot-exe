@@ -1,6 +1,6 @@
 <map id="TInterface::FormClose" name="TInterface::FormClose">
 <area shape="rect" id="node1" title=" " alt="" coords="5,1016,155,1043"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1177,1459,1323,1486"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1177,1459,1323,1486"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="203,1795,337,1822"/>
 <area shape="rect" id="node12" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1177,954,1323,980"/>
 <area shape="rect" id="node37" href="$class_t_train_controller.html#af6c6e1e1236559f07b29b069d4377690" title="At the end of operation a summary of overall performance is sent to the performance file by this func..." alt="" coords="385,465,608,506"/>

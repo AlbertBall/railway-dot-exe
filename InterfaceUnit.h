@@ -337,8 +337,6 @@ __published: // IDE-managed Components
     TLabel *OutputLog9;
     TLabel *OutputLog10;
 
-    TLabel *PerformancePanelLabel;
-///< label at the top of PerformancePanel
     TLabel *PrefDirPanelLabel;
 ///< label to the left of PrefDirPanel
     TLabel *ServiceCodeLabel;
@@ -366,9 +364,6 @@ __published: // IDE-managed Components
     TLabel *TTClockSpeedLabel;
     TLabel *TTClockAdjustLabel1;
     TLabel *TTClockAdjustLabel2;
-///< timetable clock labels
-
-    TLabel *OAPanelLabel;
     TLabel *FloatingLabel;
 ///< the floating window that displays track & train information
 
@@ -408,8 +403,6 @@ __published: // IDE-managed Components
 ///< the orange bar that displays the current timetable entry in AllEntriesTTListBox
     TPanel *InfoPanel;
 ///< the general information panel (with blue 'i' symbol)
-    TPanel *PerformancePanel;
-///< displays the operating performance log
     TPanel *TrackElementPanel;
 ///< panel containing the track/location/parapet element buttons
     TPanel *TrackLengthPanel;
@@ -419,7 +412,6 @@ __published: // IDE-managed Components
     TPanel *FloatingPanel;
 ///<new for v2.2.0 where label sits in it and it autosizes to the label. Labels are not TWinControls so they always underlie panels which are, so using a panel allows it to overlie other panels. With this there is no need to hide the performance panel when the floating panel obscures it.
     TPanel *PositionalPanel;
-    TPanel *OperatorActionPanel;
 ///< new v2.2.0 panel housing the OAListBox with list of trains and times to act
     TPanel *SigImagePanel;
 ///< new at v2.3.0 for handed signals
@@ -433,15 +425,11 @@ __published: // IDE-managed Components
 ///< the text of the error message for failure to draw trains in SaveOperatingImage
     TMemo *OneEntryTimetableMemo;
 ///< the single service editing and display area on the right hand side of the timetable edit screen
-    TMemo *PerformanceLogBox;
-///< the performance log displayed during operation
     TMemo *TTInfoMemo;
 ///< timetable help text displayed on the timetable edit screen
 
     TListBox *AllEntriesTTListBox;
-///< the list of service entries displayed on the left hand side of the timetable edit screen
-    TListBox *OAListBox;
-///< Operator action list, sits inside OperatorActionPanel and lists trains in ascending order of time to act
+///< Operator action list, sits inside ActionsDuePanel and lists trains in ascending order of time to act
 
     TMenuItem *FileMenu;
     TMenuItem *LoadRailwayMenuItem;
@@ -806,7 +794,6 @@ __published: // IDE-managed Components
     void __fastcall TimetableControlMenuItemClick(TObject *Sender);
 
 // mouse actions
-    void __fastcall AcceptDragging(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept);
     void __fastcall AllEntriesTTListBoxMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall MainScreenMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall MainScreenMouseMove(TObject *Sender, TShiftState Shift, int X, int Y);
@@ -821,8 +808,6 @@ __published: // IDE-managed Components
     void __fastcall OutputLog7MouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall OutputLog8MouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall OutputLog9MouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
-    void __fastcall PerformancePanelLabelStartDrag(TObject *Sender, TDragObject *&DragObject);
-    void __fastcall PerformancePanelStartDrag(TObject *Sender, TDragObject *&DragObject);
 
 // button actions
     void __fastcall AddMinsButtonClick(TObject *Sender);
@@ -925,8 +910,6 @@ __published: // IDE-managed Components
     void __fastcall PowerToggleButtonClick(TObject *Sender);
     void __fastcall SpeedToggleButton2Click(TObject *Sender);
     void __fastcall OperatorActionButtonClick(TObject *Sender);
-    void __fastcall OAListBoxMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
-    void __fastcall OperatorActionPanelStartDrag(TObject *Sender, TDragObject *&DragObject);
     void __fastcall ConvertToOtherHandSignalsMenuItemClick(TObject *Sender);
     void __fastcall TTClockxEighthButtonClick(TObject *Sender);
     void __fastcall TTClockxSixteenthButtonClick(TObject *Sender);
@@ -944,8 +927,6 @@ __published: // IDE-managed Components
     void __fastcall ConflictAnalysisButtonClick(TObject *Sender);
     void __fastcall CPCancelButtonClick(TObject *Sender);
     void __fastcall CPGenFileButtonClick(TObject *Sender);
-    void __fastcall OAListBoxMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
-                                       int X, int Y);
     void __fastcall SigPrefConsecButtonClick(TObject *Sender);
     void __fastcall CheckPrefDirConflictsMenuItemClick(TObject *Sender);
     void __fastcall TwoLocationNameButtonClick(TObject *Sender);
@@ -978,6 +959,7 @@ __published: // IDE-managed Components
     void __fastcall ModerateDelaysMenuItemClick(TObject *Sender);
     void __fastcall MajorDelaysMenuItemClick(TObject *Sender);
 
+
 public: // AboutForm needs access to these
 
     enum TLevel1Mode
@@ -990,6 +972,24 @@ public: // AboutForm needs access to these
 
     UnicodeString GetVersion();
 ///< determined automatically from the project options 'Version Info'
+
+//ActionsDueForm needs access to these
+    bool ShowPerfLogForm;
+///< true when the 'show performance panel' button has been clicked during operation
+
+    void SetPausedOrZoomedInfoCaption(int Caller); //ActionsDueForm needs access
+///< Sets the information panel message for zoom-out or paused modes
+    void ClearandRebuildRailway(int Caller);
+///< Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker
+    bool FirstActionsDueFormDisplay;
+///< places ActionsDueForm at bottom RHS when first displayed
+    bool TInterface::GetTrainIDOrContinuationPosition(int Caller, int X, int Y, int &TrainID, int &TrackVectorPosition);
+///< Used in actions due panel to identify the train or continuation, added at v2.6.2 so can use for actions due floating window
+    int ADFTop;
+///< stores the ADForm position for re-use when made visible.
+    int ADFLeft;
+///< stores the ADForm position for re-use when made visible.
+
 
 private:
 
@@ -1112,6 +1112,10 @@ private:
     ///< Converse of BuildDatagramFromPlayerMap
     bool BuildDynamicMapFromHostDatagram(int Caller, int TTTime, TDynamicMap &DMap, TBytes Buffer);
     ///< converse of BuildDatagramFromHostMap
+    bool IsActionsDueFormObscuringFloatingLabel(int Caller);
+    ///< function to determine if floating label behind actions due form, returns true if so
+    bool IsPerfLogFormObscuringFloatingLabel(int Caller);
+    ///< function to determine if floating label behind performance log, returns true if so
     bool NumHVPairCheckOK(TNumHVPair NumHVPair);
     ///<check for datagram validity
     void BuildDatagramFromPlayerMap(int Caller, char marker, AnsiString UserName, TBytes &buffer, TDynamicMap DynamicMap);
@@ -1209,7 +1213,6 @@ private:
 ///< used to record the current timetable entry when changing to AZ order or back to original order
     AnsiString SelectedGraphicFileName;
 ///< filename for selected graphic set during LoadGraphic
-
     bool AllSetUpFlag;
 ///< false during initial start up, true when all set up to allow MasterClock to start
     bool AutoSigsFlag;
@@ -1236,6 +1239,8 @@ private:
 ///< true when a loaded railway file has changed (used to warn user if opts to exit without saving)
     bool FillSelectionMessageSentFlag;
 ///< indicates that the message about filling a selected area with a chosen track element has been given, so it won't be given again
+    bool FirstPerfLogFormDisplay;
+///< places PerfLogForm at bottom LHS when first displayed
     bool LCManualLowerBarriersMessageSent;
 ///< indicates that the manual LC operation message has been given, so it won't be given again
     bool LengthWarningSentFlag;
@@ -1282,8 +1287,6 @@ private:
 ///< true when a valid selected screen area has been clicked after a 'Copy' or 'Cut' selected in the 'Edit' menu
     bool ShiftKey;
 ///< true when the SHIFT key is pressed (see also CtrlKey)
-    bool ShowPerformancePanel;
-///< true when the 'show performance panel' button has been clicked during operation
     bool SkipFormResizeEvent;
 ///< added at v2.1.0 to avoid calling the event during startup and shutdown
     bool TempCursorSet;
@@ -1306,7 +1309,7 @@ private:
 ///< indicates that a 'Validate timetable' button click in the timetable editor has succeeded
     bool TimetableChangedInAZOrderFlag;
 ///< used to give a warning message that changes will be discarded if proceed
-    bool ShowOperatorActionPanel;
+    bool ShowActionsDueForm;
 ///< true when the 'trains needing action' button has been clicked during operation (new at v2.2.0)
     bool TTEntryChangedFlag;
 ///< true when a timetable entry that is displayed in the timetable entry edit window has changed
@@ -1367,17 +1370,9 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
 ///< the new (during & at end of moving) HLoc value of Edit->Select & Edit->Reselect
     int NewSelectBitmapVLoc;
 ///< as above for VLoc
-    int OperatorActionPanelDragStartX;
-///< mouse 'X' position when the OperatorActionPanel begins to be dragged
-    int OperatorActionPanelDragStartY;
-///< as above for 'Y'
     int OverallDistance, OverallSpeedLimit;
 ///< used when setting track lengths, represents the overall distance covered by the selected elements
     ///< and the overall speed limit, if the speed limits vary across the selection the value is set to -1
-    int PerformancePanelDragStartX;
-///< mouse 'X' position when the performance panel begins to be dragged
-    int PerformancePanelDragStartY;
-///< as above for 'Y'
     int PointFlashVectorPosition, DivergingPointVectorPosition;
     int SelectBitmapHLoc;
 ///< the original (prior to moving & after finished moving) HLoc value of Edit->Select & Edit->Reselect
@@ -1502,12 +1497,8 @@ to another point bidir leg with 3 PDs set.  If so it returns true, else false.*/
     bool EraseLocationNameText(int Caller, AnsiString Name, int &HPos, int &VPos);
 /// Check integrity of a railway file prior to loading, return true for success
     bool FileIntegrityCheck(int Caller, char *FileName) const;
-/// Used in actions due panel to identify the train or continuation
-    bool GetTrainIDOrContinuationPosition(int Caller, int X, int Y, int &TrainID, int &ContinuationPos); //added at v2.6.2 so can use for actions due floating window
 /// Called during gap setting to mark a gap with a red ellipse and ask user to select the corresponding gap, returns true if an unset gap found
     bool HighLightOneGap(int Caller, int &HLoc, int &VLoc);
-/// Checked during operation, returns true if so and PerformancePanel removed - not used from v2.2.0 as now allow floating panel & label to overlie performance panel
-    bool IsPerformancePanelObscuringFloatingLabel(int Caller);
 /// Loads timetable into memory from a session file, true if successful
     bool LoadTimetableFromSessionFile(int Caller, std::ifstream &SessionFile);
 /// Displays the manual LC down warning graphic in the panel on the LHS of the railway when there are no routes across it
@@ -1526,8 +1517,6 @@ to another point bidir leg with 3 PDs set.  If so it returns true, else false.*/
     void AddLocationNameText(int Caller, AnsiString Name, int HPos, int VPos, bool UseEnteredPosition);
 /// Function that deals with approach locking during ClockTimer2 function
     void ApproachLocking(int Caller, TDateTime Now);
-/// Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker
-    void ClearandRebuildRailway(int Caller);
 /// The main loop, called every clock tick via MasterClockTimer
     void ClockTimer2(int Caller);
 /// Used during timetable editing funtions to compile the list of entries into the left hand long entry window and also to set the timetable entry pointers TEVPtr, TTStartTimePtr, TTFirstServicePtr, and TTLastServicePtr
@@ -1548,9 +1537,9 @@ to another point bidir leg with 3 PDs set.  If so it returns true, else false.*/
     void FlashingGraphics(int Caller, TDateTime Now);
 /// Called when floating train info needed and train hasn't entered yet
     void GetTrainFloatingInfoFromContinuation(int Caller, int VecPos, AnsiString FormatNoDPStr, AnsiString SpecialStr, AnsiString &TrainStatusFloat, AnsiString &TrainTTFloat); //new at v2.6.2
-/// makes TTActionsListBox invisible (if it was visible) and resterts the tt clock
+/// makes TTActionsListBox invisible (if it was visible)
     void HideTTActionsListBox(int Caller);
-/// Called during timetable editing to highlight in red a single entry in the list of all entries in the left hand long window
+/// Called during timetable editing to highlight a single entry in the list of all entries in the left hand long window
     void HighlightOneEntryInAllEntriesTTListBox(int Caller, int Position);
 /// In trackbuild display ground signal types on signal buttons
     void LoadGroundSignalGlyphs(int Caller);
@@ -1570,7 +1559,7 @@ to another point bidir leg with 3 PDs set.  If so it returns true, else false.*/
 /**The structure of session files has changed due to 'patching' as later mods have needed inclusion
 The version line ("version + : ***Interface***" ) now ends with a floating point value for excess level crossing down minutes - had been overlooked when this
 performance measure was first introduced.  The **Active elements** marker now has a '1' at the end if there are user graphics to be loaded, and this is
-inlcuded in railway files also, and if there are they are loaded after the preferred directions.  After the end of the performance file "***Additions after v2.3.1***"
+included in railway files also, and if there are they are loaded after the preferred directions.  After the end of the performance file "***Additions after v2.3.1***"
 is loaded fillowed by AvHoursIntValue then all failed trains if any. */
     void LoadSession(int Caller);
 /// Load a user-defined graphic (bmp, gif, jpg, png).
@@ -1619,8 +1608,6 @@ is loaded fillowed by AvHoursIntValue then all failed trains if any. */
     void SetLevel2PrefDirMode(int Caller);
 /// Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode
     void SetLevel2TrackMode(int Caller);
-/// Sets the information panel message for zoom-out or paused modes
-    void SetPausedOrZoomedInfoCaption(int Caller);
 /// Enables or disables the route type buttons depending on the route mode, sets the information panel message accordingly, and sets the route to 'not started'
     void SetRouteButtonsInfoCaptionAndRouteNotStarted(int Caller);
 /// Called during the ClockTimer2 function to set screen boundaries, buttons & menu items
@@ -1631,7 +1618,7 @@ is loaded fillowed by AvHoursIntValue then all failed trains if any. */
     void SetTrackBuildImages(int Caller);
 /// Called during track building when setting distances, to calculate and set the individual track element lengths
     void SetTrackLengths(int Caller, int Distance, int SpeedLimit);
-/// makes TTActionsListBox visible and stops the tt clock
+/// makes TTActionsListBox visible
     void ShowTTActionsListBox(int Caller);
 /// Unused
     void SignallerControl(int Caller);
@@ -1646,7 +1633,7 @@ is loaded fillowed by AvHoursIntValue then all failed trains if any. */
 /// Controls the floating window function, called during the ClockTimer2 function
     void TrackTrainFloat(int Caller);
 /// Called every 5 secs to update the panel (if visible)
-    void UpdateOperatorActionPanel(int Caller);
+    void UpdateActionsDuePanel(int Caller);
 };
 
 // ---------------------------------------------------------------------------

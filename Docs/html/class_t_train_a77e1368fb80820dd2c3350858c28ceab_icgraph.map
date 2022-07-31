@@ -12,7 +12,7 @@
 <area shape="rect" id="node21" href="$class_t_interface.html#aebb9a51773fbbaceb765a2df49472bfd" title=" " alt="" coords="1239,593,1409,634"/>
 <area shape="rect" id="node22" href="$class_t_interface.html#ab5b80c76a8cc8d2c87f21d323f61c1ce" title=" " alt="" coords="1242,658,1406,700"/>
 <area shape="rect" id="node23" href="$class_t_train.html#a935bb43db57a3f2b635be9dfc6a7988b" title="True when the train is stopped at a timetabled location." alt="" coords="1247,280,1401,307"/>
-<area shape="rect" id="node8" href="$class_t_train_controller.html#a0e16b9cb91bb29f83bffc7ae3461200d" title="new v2.2.0 for OperatorActionPanel" alt="" coords="705,164,868,205"/>
+<area shape="rect" id="node8" href="$class_t_train_controller.html#a0e16b9cb91bb29f83bffc7ae3461200d" title="new v2.2.0 for OperatorActionPanel (OperatorActionPanel changed for ActionsDueForm at v2...." alt="" coords="705,164,868,205"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="244,188,403,215"/>
 <area shape="rect" id="node5" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,188,196,215"/>
 <area shape="rect" id="node7" href="$class_t_train_controller.html#a20a1576dea1d86ed78fc5e9f46343481" title="called every clock tick to introduce new trains and update existing trains" alt="" coords="455,163,621,190"/>

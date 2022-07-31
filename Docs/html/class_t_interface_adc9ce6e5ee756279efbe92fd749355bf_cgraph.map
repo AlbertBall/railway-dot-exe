@@ -1,6 +1,6 @@
 <map id="TInterface::GetTrainFloatingInfoFromContinuation" name="TInterface::GetTrainFloatingInfoFromContinuation">
 <area shape="rect" id="node1" title="Called when floating train info needed and train hasn&#39;t entered yet." alt="" coords="5,94,187,135"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1216,195,1363,221"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1216,195,1363,221"/>
 <area shape="rect" id="node3" href="$class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3" title="Build string for use in floating window for expected trains at continuations." alt="" coords="235,275,427,317"/>
 <area shape="rect" id="node5" href="$class_t_utilities.html#a6dc0e83b149563fdf43f068fd26cead8" title="formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 &amp; resets when it..." alt="" coords="720,144,895,171"/>
 <area shape="rect" id="node9" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1216,557,1363,584"/>

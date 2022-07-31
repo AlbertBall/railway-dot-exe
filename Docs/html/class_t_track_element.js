@@ -16,6 +16,7 @@ var class_t_track_element =
     [ "Conn", "class_t_track_element.html#a9551c6d789485c121203be6d51e4781f", null ],
     [ "ConnLinkPos", "class_t_track_element.html#a93a9094a1833fced2891c012bc46a4ea", null ],
     [ "ElementID", "class_t_track_element.html#ae780fef4d1277dfeeec0b770ae8b0919", null ],
+    [ "Failed", "class_t_track_element.html#ac7566dddad899aeb75beb5a983cf7e3c", null ],
     [ "HLoc", "class_t_track_element.html#a0d0e30d5e7b76d90fb737316d50efdd0", null ],
     [ "LCPlotted", "class_t_track_element.html#a98afdb315f58e533e4bea22314dd428f", null ],
     [ "Length01", "class_t_track_element.html#a63978116296522c989ee9e4257988ce6", null ],
@@ -28,8 +29,8 @@ var class_t_track_element =
     [ "StationEntryStopLinkPos2", "class_t_track_element.html#af6b589b13c3b59adb3c493816316ffe1", null ],
     [ "TempTrackMarker01", "class_t_track_element.html#a1712299f9cb22bb7afbe54e5a781f8ec", null ],
     [ "TempTrackMarker23", "class_t_track_element.html#ab0d0c071e2a124e9143e5c7bc2009805", null ],
-    [ "TrainIDOnBridgeTrackPos01", "class_t_track_element.html#a9751b1ee4085deff881cd8f39bbd293b", null ],
-    [ "TrainIDOnBridgeTrackPos23", "class_t_track_element.html#aa3d8b1fef605f7ef4e6b09360abbb528", null ],
+    [ "TrainIDOnBridgeOrFailedPointOrigSpeedLimit01", "class_t_track_element.html#afb084fba3f720515d1fb8daf8a9bc606", null ],
+    [ "TrainIDOnBridgeOrFailedPointOrigSpeedLimit23", "class_t_track_element.html#a9af64c78ddd52fb5dad20d8e3c169ba3", null ],
     [ "TrainIDOnElement", "class_t_track_element.html#a5f6319bc1752da843be71f1024774ace", null ],
     [ "VLoc", "class_t_track_element.html#a0d9a1c95d1c1aedd0ffec4d24772cfbc", null ]
 ];

@@ -326,6 +326,11 @@
 		<param name="Local" value="html/2.14gc1.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Delays">
+		<param name="Name" value="Random delays">
+		<param name="Local" value="html\6.13.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Delete preferred direction">
 		<param name="Name" value="Setting preferred directions (PDs)">
 		<param name="Local" value="html/4001g.htm">
@@ -1001,6 +1006,11 @@
 		<param name="Name" value="Railway image files">
 		<param name="Name" value="Files">
 		<param name="Local" value="html/2.34gc3.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Random delays">
+		<param name="Name" value="Random delays">
+		<param name="Local" value="html\6.13.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Random failures">

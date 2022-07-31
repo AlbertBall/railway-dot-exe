@@ -1,4 +1,4 @@
 <map id="TInterface::ShowTTActionsListBox" name="TInterface::ShowTTActionsListBox">
-<area shape="rect" id="node1" title="makes TTActionsListBox visible and stops the tt clock" alt="" coords="228,5,404,47"/>
+<area shape="rect" id="node1" title="makes TTActionsListBox visible" alt="" coords="228,5,404,47"/>
 <area shape="rect" id="node2" href="$class_t_interface.html#a40232083747ef274344eed7021c6f43c" title=" " alt="" coords="5,5,180,47"/>
 </map>

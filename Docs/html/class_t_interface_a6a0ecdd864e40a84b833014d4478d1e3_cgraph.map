@@ -1,6 +1,6 @@
 <map id="TInterface::SelectMenuItemClick" name="TInterface::SelectMenuItemClick">
 <area shape="rect" id="node1" title=" " alt="" coords="5,429,185,470"/>
-<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="&lt; specifies whether no delays or minor, moderate or major random delays are to be applied" alt="" coords="1695,2121,1842,2148"/>
+<area shape="rect" id="node2" href="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0" title="pops the last entry off the call stack, throws an error if called when empty" alt="" coords="1695,2121,1842,2148"/>
 <area shape="rect" id="node3" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="963,183,1098,209"/>
 <area shape="rect" id="node12" href="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c" title="creates a string of the form &#39;hh:mm:ss&#39; for use in call &amp; event logging" alt="" coords="1695,1415,1842,1441"/>
 <area shape="rect" id="node13" href="$class_t_train_controller.html#ac88477499edd24550fae9b90b5561ed1" title="store Str to the event log &#45; moved from TUtilities for v0.6 so can record the tt clock value" alt="" coords="1197,588,1371,615"/>
@@ -14,7 +14,7 @@
 <area shape="rect" id="node9" href="$class_t_utilities.html#a92b5adfb8ad3a937a8d208bfd90a5741" title="converts the double value to a string (if double stored directly it is truncated to 6 digits) then st..." alt="" coords="1684,81,1853,108"/>
 <area shape="rect" id="node10" href="$class_t_utilities.html#a60531c6cb1a6a33dd71299d3a5b6cc21" title="stores the string value to the file, then a &#39;0&#39; delimiter then a CR" alt="" coords="1901,132,2064,159"/>
 <area shape="rect" id="node11" href="$class_t_utilities.html#a86ed634e8a9d7ca534a324954f4a7a2f" title="stores the int value to the file, then a CR" alt="" coords="1697,132,1840,159"/>
-<area shape="rect" id="node15" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker." alt="" coords="1194,2965,1374,3006"/>
+<area shape="rect" id="node15" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="1194,2965,1374,3006"/>
 <area shape="rect" id="node17" href="$class_t_one_pref_dir.html#a7b81a1377e6269aafad6c25c929b2852" title="Used when setting preferred directions, true if able to finish at the last selected element (can&#39;t fi..." alt="" coords="1447,436,1620,463"/>
 <area shape="rect" id="node18" href="$class_t_interface.html#a970fd0fd4d725c80c6e2c4cd0c27cf0c" title="SelectRect is the rectangle selected via the &#39;Edit&#39;menu, and this function sets left,..." alt="" coords="939,537,1123,564"/>
 <area shape="rect" id="node19" href="$class_t_interface.html#acf77f2eeeac0775fde4f25ba46099e0b" title="Sets the Level1 user mode, using the Level1Mode variable to determine the mode." alt="" coords="447,1263,621,1289"/>

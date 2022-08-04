@@ -231,8 +231,8 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TooShortMessageSentFlag = false; //added at v2.9.1
         Track->NoPlatsMessageSent = false; //added at v2.10.0
         PrefDirConflictAdviceMessageSent = false; //added at v2.13.0
-        Track->DefaultTrackLength = 100;     //moved here at v2.11.0, may be changed in reading config.txt
-        Track->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
+        Utilities->DefaultTrackLength = 100;     //moved here at v2.11.0, may be changed in reading config.txt //changed at v2.13.1
+        Utilities->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
 
 
         TrackInfoOnOffMenuItem->Caption = "Show"; // added here at v1.2.0 because dropped from ResetAll()
@@ -288,9 +288,13 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         LoadSessionDialog->InitialDir = CurDir + "\\" + SESSION_DIR_NAME;
         LoadUserGraphicDialog->InitialDir = CurDir + "\\" + USERGRAPHICS_DIR_NAME; // not changeable
         LoadCouplingFileDialog->InitialDir = CurDir; // not changeable
-
         ReloadConfigMenuItem->Enabled = true;  //new at v2.11.0
-        LoadConfigFile(0, true); //true for first load
+        bool NoConfig = false;
+        LoadConfigFile(0, true, NoConfig); //true for first load
+        if(NoConfig)
+        {
+            SaveConfigFile(0);  //added at v2.13.1 so always have a config file
+        }
 
         SpeedButton1->Glyph->LoadFromResourceName(0, "gl1");
         SpeedButton2->Glyph->LoadFromResourceName(0, "gl2");
@@ -685,7 +689,7 @@ __fastcall TInterface::~TInterface()
     try
     {
         // rewrite ConfigFile with signal handedness, background colour, InitialDir values (may be same but no matter) & default track element length & speed limit
-        SaveConfigFile(0);   //added at v2.11.0
+        SaveConfigFile(1);   //added at v2.11.0
         DeleteFile(TempTTFileName); // added at v2.5.0 to prevent temporary files building up
         SkipFormResizeEvent = true; // added at v2.1.0
         delete NonSigRouteStartMarker;
@@ -1516,7 +1520,7 @@ void __fastcall TInterface::LengthOKButtonClick(TObject *Sender)
             int HighSelectVLoc = SelectBitmapVLoc + (SelectBitmap->Height / 16);
             bool FoundFlag;
             bool NamedLocPresent = false;
-            if((Dist != -1) && (Dist != Track->DefaultTrackLength))
+            if((Dist != -1) && (Dist != Utilities->DefaultTrackLength))
             {
                 for(int x = LowSelectHLoc; x < HighSelectHLoc; x++)
                 {
@@ -1647,15 +1651,15 @@ void __fastcall TInterface::ResetDefaultLengthButtonClick(TObject *Sender)
                         int VecPos = Track->GetVectorPositionFromTrackMap(35, x, y, FoundFlag);
                         if(FoundFlag)
                         {
-                            Track->TrackElementAt(698, VecPos).Length01 = Track->DefaultTrackLength;
+                            Track->TrackElementAt(698, VecPos).Length01 = Utilities->DefaultTrackLength;
                             if(Track->TrackElementAt(699, VecPos).Length23 != -1)
                             {
-                                Track->TrackElementAt(700, VecPos).Length23 = Track->DefaultTrackLength;
+                                Track->TrackElementAt(700, VecPos).Length23 = Utilities->DefaultTrackLength;
                             }
-                            Track->TrackElementAt(701, VecPos).SpeedLimit01 = Track->DefaultTrackSpeedLimit;
+                            Track->TrackElementAt(701, VecPos).SpeedLimit01 = Utilities->DefaultTrackSpeedLimit;
                             if(Track->TrackElementAt(702, VecPos).SpeedLimit23 != -1)
                             {
-                                Track->TrackElementAt(703, VecPos).SpeedLimit23 = Track->DefaultTrackSpeedLimit;
+                                Track->TrackElementAt(703, VecPos).SpeedLimit23 = Utilities->DefaultTrackSpeedLimit;
                             }
                         }
                     }
@@ -1683,13 +1687,13 @@ void __fastcall TInterface::ResetDefaultLengthButtonClick(TObject *Sender)
                     {
                         if((PrefDirElement.GetELinkPos() < 2) && (PrefDirElement.GetXLinkPos() < 2)) // could be one of each for points
                         {
-                            TrackElement.Length01 = Track->DefaultTrackLength;
-                            TrackElement.SpeedLimit01 = Track->DefaultTrackSpeedLimit; // 200km/h = 125mph
+                            TrackElement.Length01 = Utilities->DefaultTrackLength;
+                            TrackElement.SpeedLimit01 = Utilities->DefaultTrackSpeedLimit; // 200km/h = 125mph
                         }
                         else
                         {
-                            TrackElement.Length23 = Track->DefaultTrackLength;
-                            TrackElement.SpeedLimit23 = Track->DefaultTrackSpeedLimit; // 200km/h = 125mph
+                            TrackElement.Length23 = Utilities->DefaultTrackLength;
+                            TrackElement.SpeedLimit23 = Utilities->DefaultTrackSpeedLimit; // 200km/h = 125mph
                         }
                     }
                     else // any other 1 track element, including platforms being present
@@ -1699,8 +1703,8 @@ void __fastcall TInterface::ResetDefaultLengthButtonClick(TObject *Sender)
                             throw Exception("Error, XLinkPos > 1 in SetOneDefaultTrackLength at " + AnsiString(TrackElement.HLoc) + " & " +
                                             AnsiString(TrackElement.VLoc));
                         }
-                        TrackElement.Length01 = Track->DefaultTrackLength;
-                        TrackElement.SpeedLimit01 = Track->DefaultTrackSpeedLimit; // 200km/h = 125mph
+                        TrackElement.Length01 = Utilities->DefaultTrackLength;
+                        TrackElement.SpeedLimit01 = Utilities->DefaultTrackSpeedLimit; // 200km/h = 125mph
                         TrackElement.Length23 = -1;
                         TrackElement.SpeedLimit23 = -1;
                     }
@@ -15092,7 +15096,8 @@ void __fastcall TInterface::ReloadConfigMenuItemClick(TObject *Sender) //new for
     {
         TrainController->LogEvent("ReloadConfigMenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ReloadConfigMenuItemClick");
-        LoadConfigFile(1, false); //false as it's not the first load
+        bool NoConfig; //not used
+        LoadConfigFile(1, false, NoConfig); //false as it's not the first load
         Utilities->CallLogPop(2401);
     }
     catch(const Exception &e)
@@ -15103,16 +15108,18 @@ void __fastcall TInterface::ReloadConfigMenuItemClick(TObject *Sender) //new for
 
 // ---------------------------------------------------------------------------
 
-void TInterface::LoadConfigFile(int Caller, bool FirstLoad)
+void TInterface::LoadConfigFile(int Caller, bool FirstLoad, bool &NoConfigFile)
 {
     try
     {
         //throw Exception(""); to test error message
         Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",LoadConfigFile," + AnsiString((unsigned char)FirstLoad));
         int LengthInt, SpeedInt;
+        NoConfigFile = false;
         std::ifstream ConfigFile((CurDir + "\\Config.txt").c_str()); // added at v2.6.0 to set save & load directories for railways, timetables & session & to
         if(ConfigFile.fail()) // no Config file                           //replace Signal.hnd, Background.col and GNU
         {
+            NoConfigFile = true;
             if(FirstLoad) //added atv2.11.0 - may have changed to RH sigs so don't want it resetting to left when load a railway or session
             {
                 ConvertToOtherHandSignalsMenuItem->Caption = "Convert to Right Hand Signals";
@@ -15262,15 +15269,15 @@ void TInterface::LoadConfigFile(int Caller, bool FirstLoad)
                         LengthInt = ConfigStr.SubString(9, ConfigStr.Length() - 8).ToInt();
                         if(LengthInt < 10)
                         {
-                            Track->DefaultTrackLength = 10;
+                            Utilities->DefaultTrackLength = 10;
                         }
                         if(LengthInt > 99999)
                         {
-                            Track->DefaultTrackLength = 100;
+                            Utilities->DefaultTrackLength = 100;
                         }
                         else
                         {
-                            Track->DefaultTrackLength = LengthInt;
+                            Utilities->DefaultTrackLength = LengthInt;
                         }
                     }
                     else if(ConfigStr.SubString(1, 8) == "Speed  =")
@@ -15291,15 +15298,15 @@ void TInterface::LoadConfigFile(int Caller, bool FirstLoad)
                         SpeedInt = ConfigStr.SubString(9, ConfigStr.Length() - 8).ToInt();
                         if(SpeedInt < 10)
                         {
-                            Track->DefaultTrackSpeedLimit = 10;
+                            Utilities->DefaultTrackSpeedLimit = 10;
                         }
                         else if(SpeedInt > 400)
                         {
-                            Track->DefaultTrackSpeedLimit = 400;
+                            Utilities->DefaultTrackSpeedLimit = 400;
                         }
                         else
                         {
-                            Track->DefaultTrackSpeedLimit = SpeedInt;
+                            Utilities->DefaultTrackSpeedLimit = SpeedInt;
                         }
                     }
                 }
@@ -15310,8 +15317,8 @@ void TInterface::LoadConfigFile(int Caller, bool FirstLoad)
             }
             while(!ConfigFile.eof());
             ConfigFile.close();
-            Utilities->CallLogPop(2402);
         }
+        Utilities->CallLogPop(2402);  //moved here from inside 'else' at v2.13.1
     }
     catch(const Exception &e)
     {
@@ -15330,8 +15337,8 @@ void TInterface::LoadConfigFile(int Caller, bool FirstLoad)
         TimetableDialog->InitialDir = CurDir + "\\" + TIMETABLE_DIR_NAME;
         SaveTTDialog->InitialDir = CurDir + "\\" + TIMETABLE_DIR_NAME;
         LoadSessionDialog->InitialDir = CurDir + "\\" + SESSION_DIR_NAME;
-        Track->DefaultTrackLength = 100;
-        Track->DefaultTrackSpeedLimit = 200;
+        Utilities->DefaultTrackLength = 100;
+        Utilities->DefaultTrackSpeedLimit = 200;
     }
 }
 
@@ -15349,16 +15356,16 @@ void TInterface::SaveConfigFile(int Caller)
         std::ofstream ConfigFile((CurDir + "\\Config.txt").c_str());
         ColourStr = "black";
         SignalStr = "left";
-        if((Track->DefaultTrackLength < 10) || (Track->DefaultTrackLength > 99999))
+        if((Utilities->DefaultTrackLength < 10) || (Utilities->DefaultTrackLength > 99999))
         {
-            Track->DefaultTrackLength = 100;
+            Utilities->DefaultTrackLength = 100;
         }
-        if((Track->DefaultTrackSpeedLimit < 10) || (Track->DefaultTrackSpeedLimit > 400))
+        if((Utilities->DefaultTrackSpeedLimit < 10) || (Utilities->DefaultTrackSpeedLimit > 400))
         {
-            Track->DefaultTrackSpeedLimit = 200;
+            Utilities->DefaultTrackSpeedLimit = 200;
         }
-        LengthStr = AnsiString(Track->DefaultTrackLength);
-        SpeedStr = AnsiString(Track->DefaultTrackSpeedLimit);
+        LengthStr = AnsiString(Utilities->DefaultTrackLength);
+        SpeedStr = AnsiString(Utilities->DefaultTrackSpeedLimit);
         if(Utilities->clTransparent == TColor(0xFFFFFF))
         {
             ColourStr = "white";
@@ -15738,8 +15745,8 @@ bool TInterface::ClearEverything(int Caller)
     TrainController = new TTrainController;
     PerfLogForm->PerformanceLogBox->Lines->Clear();
     ResetAll(1);
-
-    LoadConfigFile(2, false); //reset default track element length &  speed limit (uninitialised when Track recreated), false as it's not the first load
+    bool NoConfig; //not used
+    LoadConfigFile(2, false, NoConfig); //reset default track element length &  speed limit (uninitialised when Track recreated), false as it's not the first load
 
     Utilities->CallLogPop(94);
     return(true);
@@ -22085,7 +22092,7 @@ void TInterface::SaveErrorFile()
    from & including ***ChangingLCVector*** to but excluding ***Timetable*** [if have ***No timetable loaded*** then can't use as a session file]
    from & including ***No editing timetable*** or ***Editing timetable - [title]***
    to but excluding ***TimetableClock***
-   from but excluding  End of file at v2.11.0
+   from but excluding  End of file at vx.x.x
    to end of file
 
    and save as a .ssn file.
@@ -22303,6 +22310,50 @@ void TInterface::SaveErrorFile()
         Utilities->SaveFileString(ErrorFile, "End of file at v2.12.0");
 //end of v2.12.0 additions
 
+
+//additions at v2.13.0 - random delays
+//No need to save Utilities->LastDelayTTClockTime - makes little difference and would cause corruption in any v2.13.0 Beta sessions
+        Utilities->SaveFileInt(ErrorFile, Utilities->CumulativeDelayedRandMinsAllTrains); //to allow for exited and removed trains
+        for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
+        { //if empty will skip
+            TTrain Train = TrainController->TrainVectorAt(87, x);
+            Utilities->SaveFileDouble(ErrorFile, Train.NewDelay);
+            Utilities->SaveFileDouble(ErrorFile, Train.DelayedRandMins);
+            Utilities->SaveFileDouble(ErrorFile, Train.CumulativeDelayedRandMinsOneTrain);
+            Utilities->SaveFileDouble(ErrorFile, double(Train.ActualArrivalTime));
+            //ReleaseTime already loaded
+        }
+        //save failed point info
+        Utilities->SaveFileInt(ErrorFile, Track->FailedPointsVector.size()); //number of failed points
+        for(unsigned int x = 0; x < Track->FailedPointsVector.size(); x++)
+        { //if empty will skip, when reload set Failed to true & SpeedLimits to 10km/h
+            TTrackElement &TE = Track->TrackElementAt(1512, Track->FailedPointsVector.at(x).TVPos);
+            Utilities->SaveFileInt(ErrorFile, Track->FailedPointsVector.at(x).TVPos);
+            Utilities->SaveFileInt(ErrorFile, TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01);
+            Utilities->SaveFileInt(ErrorFile, TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23);
+            Utilities->SaveFileDouble(ErrorFile, double(Track->FailedPointsVector.at(x).FailureTime));
+            Utilities->SaveFileDouble(ErrorFile, double(Track->FailedPointsVector.at(x).RepairTime));
+        }
+        //save failed signal info
+        Utilities->SaveFileInt(ErrorFile, Track->FailedSignalsVector.size()); //number of failed signals
+        for(unsigned int x = 0; x < Track->FailedSignalsVector.size(); x++)
+        { //if empty will skip, when reload set Failed to true
+            Utilities->SaveFileInt(ErrorFile, Track->FailedSignalsVector.at(x).TVPos);
+            Utilities->SaveFileDouble(ErrorFile, double(Track->FailedSignalsVector.at(x).FailureTime));
+            Utilities->SaveFileDouble(ErrorFile, double(Track->FailedSignalsVector.at(x).RepairTime));
+        }
+        //save TSR info
+        Utilities->SaveFileInt(ErrorFile, Track->TSRVector.size()); //number of TSRs
+        for(unsigned int x = 0; x < Track->TSRVector.size(); x++)
+        { //if empty will skip, when reload set Failed to true & SpeedLimit to 10km/h
+            TTrackElement &TE = Track->TrackElementAt(1532, Track->TSRVector.at(x).TVPos);
+            Utilities->SaveFileInt(ErrorFile, Track->TSRVector.at(x).TVPos);
+            Utilities->SaveFileInt(ErrorFile, TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01);
+            Utilities->SaveFileDouble(ErrorFile, double(Track->TSRVector.at(x).FailureTime));
+            Utilities->SaveFileDouble(ErrorFile, double(Track->TSRVector.at(x).RepairTime));
+        }
+        Utilities->SaveFileString(ErrorFile, "End of file at v2.13.0");
+//end of v2.13.0 additions
 
 //REMAINDER STAY AT END OF FILE
 // addition at v2.8.0 in case of clipboard errors <-- keep at end of file as not wanted in a reconstructed session file

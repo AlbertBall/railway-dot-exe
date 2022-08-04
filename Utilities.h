@@ -80,6 +80,10 @@ public:
     ///< Clock time at which the latest delay for any train occurred. Used to prevent new delays within 5 minutes of the last one, added at v2.13.0
     double MTBTSRs;
     ///<temporary speed restriction, units /day/simple element added at v2.13.0
+    int DefaultTrackLength;
+    ///< length of each track element before being changed within the program (can be changed in config.txt) (moved here at v2.13.1 so doesn't change)
+    int DefaultTrackSpeedLimit;
+    ///< speed limit of each track element before being changed within the program (can be changed in config.txt)
     int PointChangeEventsPerFailure;
     ///< number of points changes between failures - reciprocal of failure probability per change
     int SignalChangeEventsPerFailure;

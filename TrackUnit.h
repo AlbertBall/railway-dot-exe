@@ -167,6 +167,7 @@ public: // everything uses these - should really have Gets & Sets but too many t
         Length01(-1), Length23(-1), SpeedLimit01(-1), SpeedLimit23(-1), TrainIDOnElement(-1), TrainIDOnBridgeOrFailedPointOrigSpeedLimit01(-1),
         TrainIDOnBridgeOrFailedPointOrigSpeedLimit23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1), SigAspect(FourAspect)
     {
+        Failed = false; //added at v2.13.1
         for(int x = 0; x < 4; x++)
         {
             ConnLinkPos[x] = -1;
@@ -777,10 +778,6 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< duration of the flash period when level crossing closing to trains
     float LevelCrossingBarrierDownFlashDuration;
 ///< duration of the flash period when level crossing opening
-    int DefaultTrackLength;
-///< length of each track element before being changed within the program (can be changed in config.txt)
-    int DefaultTrackSpeedLimit;
-///< speed limit of each track element before being changed within the program (can be changed in config.txt)
     int FlipArray[FirstUnusedSpeedTagNumber];
 ///< holds TrackElement SpeedTag values for 'flipping' via menu items 'Edit' & 'Flip'
     int GapFlashGreenPosition, GapFlashRedPosition;

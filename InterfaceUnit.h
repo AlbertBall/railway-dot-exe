@@ -1547,8 +1547,8 @@ to another point bidir leg with 3 PDs set.  If so it returns true, else false.*/
     void LoadInterface(int Caller, std::ifstream &SessionFile);
 /// Load system clipboard to allow cutting & pasting between separate railway applications
     void LoadClipboard(int Caller); // new at v2.8.0
-/// Load the configuration file, only allow default track element length and speed limit to be loaded it it's not the first load
-    void LoadConfigFile(int Caller, bool FirstLoad);
+/// Load the configuration file, only allow default track element length and speed limit to be loaded it it's not the first load, NoConfigFile added at v2.13.1
+    void LoadConfigFile(int Caller, bool FirstLoad, bool &NoConfigFile);
 /// In trackbuild display normal signal types on signal buttons
     void LoadNormalSignalGlyphs(int Caller);
 /// Load the performance file part of a sessionfile

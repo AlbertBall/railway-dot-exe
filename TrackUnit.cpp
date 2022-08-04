@@ -246,7 +246,7 @@ AnsiString TTrackElement::LogTrack(int Caller) const
 
 /// Constructor for specific type of element. Use very high neg. numbers as 'unset' values for HLoc & VLoc initially as can go high negatively legitimately, build from existing TTrackPiece with default values for extra members
     TTrackElement::TTrackElement(TFixedTrackPiece Input) : TFixedTrackPiece(Input), HLoc(-2000000000), VLoc(-2000000000), LocationName(""), ActiveTrackElementName(""),
-        Attribute(0), CallingOnSet(false), Length01(Track->DefaultTrackLength), Length23(-1), SpeedLimit01(Track->DefaultTrackSpeedLimit), SpeedLimit23(-1),
+        Attribute(0), CallingOnSet(false), Length01(Utilities->DefaultTrackLength), Length23(-1), SpeedLimit01(Utilities->DefaultTrackSpeedLimit), SpeedLimit23(-1),
         TrainIDOnElement(-1), TrainIDOnBridgeOrFailedPointOrigSpeedLimit01(-1), TrainIDOnBridgeOrFailedPointOrigSpeedLimit23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1),
         SigAspect(FourAspect)
     {
@@ -258,8 +258,8 @@ AnsiString TTrackElement::LogTrack(int Caller) const
         }
         if((TrackType == Points) || (TrackType == Crossover) || (TrackType == Bridge))
         {
-            Length23 = Track->DefaultTrackLength;
-            SpeedLimit23 = Track->DefaultTrackSpeedLimit;
+            Length23 = Utilities->DefaultTrackLength;
+            SpeedLimit23 = Utilities->DefaultTrackSpeedLimit;
         }
     }
 
@@ -9576,12 +9576,12 @@ void TTrack::SetAllDefaultLengthsAndSpeedLimits(int Caller)
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         TTrackElement &TE = TrackElementAt(718, x);
-        TE.Length01 = DefaultTrackLength;
-        TE.SpeedLimit01 = DefaultTrackSpeedLimit;
+        TE.Length01 = Utilities->DefaultTrackLength;
+        TE.SpeedLimit01 = Utilities->DefaultTrackSpeedLimit;
         if((TE.TrackType == Points) || (TE.TrackType == Crossover) || (TE.TrackType == Bridge))
         {
-            TE.Length23 = DefaultTrackLength;
-            TE.SpeedLimit23 = DefaultTrackSpeedLimit;
+            TE.Length23 = Utilities->DefaultTrackLength;
+            TE.SpeedLimit23 = Utilities->DefaultTrackSpeedLimit;
         }
     }
 /* old function
@@ -9971,11 +9971,11 @@ bool TTrack::IsElementDefaultLength(int Caller, TTrackElement &TrackElement, boo
     SpeedDifferent = false;
     if(((TrackElement.TrackType == Bridge) || (TrackElement.TrackType == Points) || (TrackElement.TrackType == Crossover)) && FirstTrack)
     {
-        if(TrackElement.Length01 != DefaultTrackLength)
+        if(TrackElement.Length01 != Utilities->DefaultTrackLength)
         {
             LengthDifferent = true;
         }
-        if(TrackElement.SpeedLimit01 != DefaultTrackSpeedLimit)
+        if(TrackElement.SpeedLimit01 != Utilities->DefaultTrackSpeedLimit)
         {
             SpeedDifferent = true;
         }
@@ -9990,11 +9990,11 @@ bool TTrack::IsElementDefaultLength(int Caller, TTrackElement &TrackElement, boo
 
     else if(((TrackElement.TrackType == Bridge) || (TrackElement.TrackType == Points) || (TrackElement.TrackType == Crossover)) && !FirstTrack)
     {
-        if(TrackElement.Length23 != DefaultTrackLength)
+        if(TrackElement.Length23 != Utilities->DefaultTrackLength)
         {
             LengthDifferent = true;
         }
-        if(TrackElement.SpeedLimit23 != DefaultTrackSpeedLimit)
+        if(TrackElement.SpeedLimit23 != Utilities->DefaultTrackSpeedLimit)
         {
             SpeedDifferent = true;
         }
@@ -10009,11 +10009,11 @@ bool TTrack::IsElementDefaultLength(int Caller, TTrackElement &TrackElement, boo
 
     else // any other 1 track element, including platforms being present
     {
-        if(TrackElement.Length01 != DefaultTrackLength)
+        if(TrackElement.Length01 != Utilities->DefaultTrackLength)
         {
             LengthDifferent = true;
         }
-        if(TrackElement.SpeedLimit01 != DefaultTrackSpeedLimit)
+        if(TrackElement.SpeedLimit01 != Utilities->DefaultTrackSpeedLimit)
         {
             SpeedDifferent = true;
         }

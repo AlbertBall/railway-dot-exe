@@ -375,6 +375,23 @@ Multi-player facility over the internet.
 
 4) Version change information
 
+VERSION CHANGES AFTER v2.13.0 for v2.13.1
+
+This update is needed to correct an error relating to the configuration file.
+
+If file Config.txt is absent then under some circumstances the default values for track element length and speed limit are not set correctly, leading to saved railways failing to reload or to an error file being generated.
+
+The error was discovered independently by two users Jason and Jade, and I am grateful to them both for reporting it.
+
+Own notes (not for website)
+
+/saved config.txt if absent on loading program and moved default values for track length and speed limit to utilities so values retained when ClearEverything called
+
+/add 2.13.0 session additions to error file save function (maybe can save whole sessionfile?)
+
+/make Failed = false in constructor for non-specific default track element in TrackUnit.h
+
+
 VERSION CHANGES AFTER v2.12.0 for v2.13.0
 
 New features:

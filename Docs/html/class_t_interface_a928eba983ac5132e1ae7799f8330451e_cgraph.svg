@@ -185,7 +185,7 @@ var sectionId = 'dynsection-56';
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="class_t_interface.html#aea22b6ff3a4a84bc400fc1382b1f403e" target="_top" xlink:title="Load the configuration file, only allow default track element length and speed limit to be loaded it ...">
+<g id="a_node6"><a xlink:href="class_t_interface.html#ade24330dfa6566e615ca18e1aa8f168c" target="_top" xlink:title="Load the configuration file, only allow default track element length and speed limit to be loaded it ...">
 <polygon fill="white" stroke="black" points="1030,-532.5 1030,-551.5 1158,-551.5 1158,-532.5 1030,-532.5"/>
 <text text-anchor="middle" x="1094" y="-539.5" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::LoadConfigFile</text>
 </a>

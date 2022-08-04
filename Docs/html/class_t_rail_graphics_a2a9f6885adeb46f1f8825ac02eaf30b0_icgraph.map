@@ -1,7 +1,7 @@
 <map id="TRailGraphics::ConvertSignalsToOppositeHand" name="TRailGraphics::ConvertSignalsToOppositeHand">
 <area shape="rect" id="node1" title="Converts all signal graphics to opposite hand new at v2.3.0." alt="" coords="1143,123,1340,164"/>
 <area shape="rect" id="node2" href="$class_t_interface.html#a7aca81081a7983f1389c923e95c7afee" title=" " alt="" coords="913,93,1095,135"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#aea22b6ff3a4a84bc400fc1382b1f403e" title="Load the configuration file, only allow default track element length and speed limit to be loaded it ..." alt="" coords="919,159,1089,186"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#ade24330dfa6566e615ca18e1aa8f168c" title="Load the configuration file, only allow default track element length and speed limit to be loaded it ..." alt="" coords="919,159,1089,186"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#a686430e962991bc32742399164187b62" title="First check whether a railway file has changed and if so ask user if really wants to close it without..." alt="" coords="689,101,865,127"/>
 <area shape="rect" id="node10" href="$class_t_interface.html#a7ac4799ce42a2c22b27bce4854bb26af" title=" " alt="" coords="696,152,859,193"/>
 <area shape="rect" id="node11" href="$class_t_interface.html#a0659e748042e378f3e325652c9c2e6d2" title="constructor" alt="" coords="706,218,849,245"/>

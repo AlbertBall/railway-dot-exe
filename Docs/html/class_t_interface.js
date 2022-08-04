@@ -161,7 +161,7 @@ var class_t_interface =
     [ "LengthEditKeyUp", "class_t_interface.html#a53206fd4d6f35c1f1981f018cf3a53df", null ],
     [ "LengthOKButtonClick", "class_t_interface.html#ab34f55bab5984b72264d7275660a3463", null ],
     [ "LoadClipboard", "class_t_interface.html#a93054ca431a8665409bc9a11b7c82a72", null ],
-    [ "LoadConfigFile", "class_t_interface.html#aea22b6ff3a4a84bc400fc1382b1f403e", null ],
+    [ "LoadConfigFile", "class_t_interface.html#ade24330dfa6566e615ca18e1aa8f168c", null ],
     [ "LoadGroundSignalGlyphs", "class_t_interface.html#a3f17b5281842894e9cd477b4351a6c9f", null ],
     [ "LoadInterface", "class_t_interface.html#ad2e9b9996aa6ebd7108d14d8db399da8", null ],
     [ "LoadNormalSignalGlyphs", "class_t_interface.html#a170d7ac96ec862ba0c2587972f266407", null ],

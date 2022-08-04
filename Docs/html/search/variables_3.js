@@ -1,8 +1,8 @@
 var searchData=
 [
   ['decimalpoint_4927',['DecimalPoint',['../class_t_utilities.html#a19e0b3570b0171a37d2e6a963d06e977',1,'TUtilities']]],
-  ['defaulttracklength_4928',['DefaultTrackLength',['../class_t_track.html#a5bc2d957d5186cea2665343a11f56eac',1,'TTrack']]],
-  ['defaulttrackspeedlimit_4929',['DefaultTrackSpeedLimit',['../class_t_track.html#a53bb6ccc8b6ee04f317def305a012d60',1,'TTrack']]],
+  ['defaulttracklength_4928',['DefaultTrackLength',['../class_t_utilities.html#aaeccf1b6ca36bf04ab127e8830a506a9',1,'TUtilities']]],
+  ['defaulttrackspeedlimit_4929',['DefaultTrackSpeedLimit',['../class_t_utilities.html#a86440fb6b545f487bcfeb0575fdbc06c',1,'TUtilities']]],
   ['delayedrandmins_4930',['DelayedRandMins',['../class_t_train.html#a5929356cd2c8f0884dd6f8711f08269e',1,'TTrain']]],
   ['delaymenu_4931',['DelayMenu',['../class_t_interface.html#ab935f04ad4998566902a0e2c67f948c4',1,'TInterface']]],
   ['delaymode_4932',['DelayMode',['../class_t_utilities.html#a31e0e69b53b598580277d76a474c0e3e',1,'TUtilities']]],

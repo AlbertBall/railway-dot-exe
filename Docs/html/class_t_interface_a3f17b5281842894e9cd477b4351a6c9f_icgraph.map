@@ -1,7 +1,7 @@
 <map id="TInterface::LoadGroundSignalGlyphs" name="TInterface::LoadGroundSignalGlyphs">
 <area shape="rect" id="node1" title="In trackbuild display ground signal types on signal buttons." alt="" coords="1145,152,1337,193"/>
 <area shape="rect" id="node2" href="$class_t_interface.html#a7aca81081a7983f1389c923e95c7afee" title=" " alt="" coords="915,93,1096,135"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#aea22b6ff3a4a84bc400fc1382b1f403e" title="Load the configuration file, only allow default track element length and speed limit to be loaded it ..." alt="" coords="920,159,1091,186"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#ade24330dfa6566e615ca18e1aa8f168c" title="Load the configuration file, only allow default track element length and speed limit to be loaded it ..." alt="" coords="920,159,1091,186"/>
 <area shape="rect" id="node12" href="$class_t_interface.html#ac1e9ee3443ac91e2687e6f154d15521a" title=" " alt="" coords="913,211,1097,252"/>
 <area shape="rect" id="node4" href="$class_t_interface.html#a686430e962991bc32742399164187b62" title="First check whether a railway file has changed and if so ask user if really wants to close it without..." alt="" coords="689,101,865,127"/>
 <area shape="rect" id="node10" href="$class_t_interface.html#a7ac4799ce42a2c22b27bce4854bb26af" title=" " alt="" coords="696,152,859,193"/>

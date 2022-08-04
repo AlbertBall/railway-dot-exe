@@ -1,4 +1,5 @@
 <map id="TInterface::SaveConfigFile" name="TInterface::SaveConfigFile">
-<area shape="rect" id="node1" title="Save Config.txt file to disk when program ends." alt="" coords="204,5,375,32"/>
-<area shape="rect" id="node2" href="$class_t_interface.html#aba108dfa899ffdc641432d672e455873" title="destructor" alt="" coords="5,5,156,32"/>
+<area shape="rect" id="node1" title="Save Config.txt file to disk when program ends." alt="" coords="204,31,375,57"/>
+<area shape="rect" id="node2" href="$class_t_interface.html#a0659e748042e378f3e325652c9c2e6d2" title="constructor" alt="" coords="9,5,152,32"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#aba108dfa899ffdc641432d672e455873" title="destructor" alt="" coords="5,56,156,83"/>
 </map>

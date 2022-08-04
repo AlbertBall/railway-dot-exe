@@ -222,8 +222,6 @@ var class_t_track =
     [ "ChangingLCVector", "class_t_track.html#af81ededf353294c66fbdcc4c20ba545f", null ],
     [ "ContinuationNameMap", "class_t_track.html#a4cade2b1cabb095c4a52efc729efb44f", null ],
     [ "CopyFlag", "class_t_track.html#aa2c236c1233263052beef41c3459ebd1", null ],
-    [ "DefaultTrackLength", "class_t_track.html#a5bc2d957d5186cea2665343a11f56eac", null ],
-    [ "DefaultTrackSpeedLimit", "class_t_track.html#a53bb6ccc8b6ee04f317def305a012d60", null ],
     [ "DistanceContinuingElement", "class_t_track.html#a8a68b341049d8b5c05b626fed08cdb33", null ],
     [ "DistanceSearchVector", "class_t_track.html#a5a8edb559dc624c4bcab8ac2d61d83eb", null ],
     [ "DistanceStartElement", "class_t_track.html#a87d65b786df282006e60c97826095892", null ],

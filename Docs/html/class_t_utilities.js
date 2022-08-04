@@ -32,6 +32,8 @@ var class_t_utilities =
     [ "clTransparent", "class_t_utilities.html#a89b8716bbc78332d40427ed688ce56bd", null ],
     [ "CumulativeDelayedRandMinsAllTrains", "class_t_utilities.html#a9965ae79442fbb5b1ce5ba1043dd144d", null ],
     [ "DecimalPoint", "class_t_utilities.html#a19e0b3570b0171a37d2e6a963d06e977", null ],
+    [ "DefaultTrackLength", "class_t_utilities.html#aaeccf1b6ca36bf04ab127e8830a506a9", null ],
+    [ "DefaultTrackSpeedLimit", "class_t_utilities.html#a86440fb6b545f487bcfeb0575fdbc06c", null ],
     [ "DelayMode", "class_t_utilities.html#a31e0e69b53b598580277d76a474c0e3e", null ],
     [ "EventLog", "class_t_utilities.html#ace6be5cece5f2e271c0b85a9d2f51917", null ],
     [ "FixedMinRepairTime", "class_t_utilities.html#aabf10d10edc0fd28bb2890d70f9b02ee", null ],

@@ -73,7 +73,7 @@ var sectionId = 'dynsection-0';
 <text text-anchor="start" x="265" y="-290.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ SuppressRouteFailMessage</text>
 <text text-anchor="start" x="265" y="-279.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ LCFoundInRouteBuildingFlag</text>
 <text text-anchor="start" x="265" y="-268.5" font-family="Helvetica,sans-Serif" font-size="10.00">+ PointFlashFlag</text>
-<text text-anchor="start" x="265" y="-257.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 43 more...</text>
+<text text-anchor="start" x="265" y="-257.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 41 more...</text>
 <text text-anchor="start" x="265" y="-246.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; TrackFinished</text>
 <text text-anchor="start" x="265" y="-235.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; GapPos</text>
 <text text-anchor="start" x="265" y="-224.5" font-family="Helvetica,sans-Serif" font-size="10.00">&#45; GapHLoc</text>

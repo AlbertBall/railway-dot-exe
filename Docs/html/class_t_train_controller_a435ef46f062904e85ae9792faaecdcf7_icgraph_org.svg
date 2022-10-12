@@ -405,7 +405,7 @@
 <!-- Node30 -->
 <g id="node25" class="node">
 <title>Node30</title>
-<g id="a_node25"><a xlink:href="class_t_train.html#a7b2441ac62bba8e9cc46f7e0511e5695" target="_top" xlink:title="called during FloatingLabelNextString to find the next service departure time &amp; next location">
+<g id="a_node25"><a xlink:href="class_t_train.html#a62f0a2254b8a6fcc0a0d7a827c9853f6" target="_top" xlink:title="called during FloatingLabelNextString to find the next service departure time &amp; next location (last b...">
 <polygon fill="white" stroke="black" points="1052,-312 1052,-331 1224,-331 1224,-312 1052,-312"/>
 <text text-anchor="middle" x="1138" y="-319" font-family="Helvetica,sans-Serif" font-size="10.00">TTrain::GetNewServiceDepartureInfo</text>
 </a>

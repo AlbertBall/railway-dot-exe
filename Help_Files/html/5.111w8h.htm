@@ -72,7 +72,7 @@ speed is zero; or (b) the train is a signaller-controlled train, its starting
 point is a location, and its starting speed is zero.</u></b></p>
 
 <p><b>6. Note that although a time-location (HH:MM;Location name) event can
-represent an arrival or a departure (ROS will determine which from the
+represent an arrival or a departure (RailOS will determine which from the
 context), it cannot be both. If both an arrival and a departure from the same
 location is required without any events inbetween then a time-time-location
 event (HH:MM;HH:MM;Location) can be used, where the first time is the arrival and the second the departure. The times can be the same, in which case
@@ -81,7 +81,7 @@ departure will be 30 seconds after arrival, or different.</b></p>
 <p><b>7. The only way for a service to link back to a service whose first train
 is earlier than the linking service is by using a shuttle.</b></p>
 
-<p><b>8. ROS only works in metric units but conversion facilities are
+<p><b>8. RailOS only works in metric units but conversion facilities are
 included to change speeds in miles per hour to kilometres per hour, and
 horsepower to kilowatts, and vice versa.</b></p>
 

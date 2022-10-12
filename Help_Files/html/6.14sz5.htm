@@ -90,10 +90,10 @@ train the sooner the signal changes.</p>
 appropriate track linking them. The strategy used is to search from start to
 end, following points initially in their 'set' direction, and beginning the
 search in the direction that moves closer to the end point. If there is more
-than one valid route between the selected start and end points then ROS
+than one valid route between the selected start and end points then RailOS
 may select either depending on how the points are set. To force a particular
 selection set the points for the favoured route. Similarly if it is found that
-ROS cannot find a suitable route even though you know there is one,
+RailOS cannot find a suitable route even though you know there is one,
 probably because there are facing points with so many ways out that the search
 takes too long, then set one or more points for the desired route. Note though
 that sometimes a preferred direction or automatic signal route can't be set
@@ -107,9 +107,9 @@ of the route to cancel it completely. When truncating automatic signal and
 preferred direction routes, the truncate point must immediately follow a
 signal, so that the route that is left ends at a signal. Note that a route that
 consists of a mixture of preferred direction and unrestricted route sections is
-regarded by ROS as a single route, which may be cancelled as a whole.
+regarded by RailOS as a single route, which may be cancelled as a whole.
 However a route that consists of a mixture of automatic and other types of
-route sections is regarded by ROS as a series of separate routes, with
+route sections is regarded by RailOS as a series of separate routes, with
 automatic signal sections being individual routes, and mixtures of others
 similarly being regarded as individual but separate routes. In these
 circumstances when a route is cancelled, just the relevant section is
@@ -118,7 +118,7 @@ routes always take precedence and include the signals at both ends. Therefore,
 if a section of automatic signal route is cancelled, the signal that represents
 the boundary between it and the other type of route is removed when the
 automatic signal route is removed. This leaves the other route with a missing
-signal, and a new section of route can't be created to include it because ROS won't permit a route to end next to an existing route. Hence the other
+signal, and a new section of route can't be created to include it because RailOS won't permit a route to end next to an existing route. Hence the other
 section of route must be cancelled also.</p>
 
 <p> If a signal is placed immediately before and facing a bridge, a warning message is given on trying to link the track, because bridges can't be used as truncate points so the route can't be truncated to that signal. Bridges can't be used as truncate points because they are potentially ambiguous as they can have two routes set on them. An option to ignore the warning is offered and accepted by using a specific key combination.</p>
@@ -135,7 +135,7 @@ and/or to crash into the new train.</p>
 
 <p>Try to avoid creating automatic signal routes where they may need to be
 cancelled. The above situation gives one reason, but another is when the route
-runs into a cul-de-sac. ROS will provide some protection here in that it 
+runs into a cul-de-sac. RailOS will provide some protection here in that it 
 won't allow an automatic signal route into buffers.</p>
 
 <p>To cancel a preferred direction or unrestricted route directly in front of a

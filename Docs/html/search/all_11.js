@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['railway_20operation_20simulator_20_28ros_29_2144',['Railway Operation Simulator (ROS)',['../md__r_e_a_d_m_e.html',1,'']]],
+  ['railway_20operation_20simulator_20_28railos_29_2144',['Railway Operation Simulator (RailOS)',['../md__r_e_a_d_m_e.html',1,'']]],
   ['railgraphics_2145',['RailGraphics',['../_graphic_unit_8cpp.html#ad29d511e4459e72d5bc60744d70a0f8c',1,'RailGraphics():&#160;GraphicUnit.cpp'],['../_graphic_unit_8h.html#ad29d511e4459e72d5bc60744d70a0f8c',1,'RailGraphics():&#160;GraphicUnit.cpp']]],
   ['railway_2ecpp_2146',['railway.cpp',['../railway_8cpp.html',1,'']]],
   ['railway_5fdir_5fname_2147',['RAILWAY_DIR_NAME',['../class_t_interface.html#ac1f7b61cf25b7d795b86b6982118bcbd',1,'TInterface']]],

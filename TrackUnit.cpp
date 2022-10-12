@@ -11529,7 +11529,7 @@ void TTrack::RepairFailedPoints(TFailedElementVector::iterator FPVIt) //added at
 // ---------------------------------------------------------------------------
 
 void TTrack::RepairTSR(TFailedElementVector::iterator FPVIt) //added at v2.13.0
-{//repair points pointed to by FPVIt
+{//repair TSR pointed to by FPVIt
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",RepairTSR," + AnsiString(FPVIt->TVPos));
     TTrackElement &TE = Track->TrackElementAt(1535, FPVIt->TVPos);
     if(TE.TrackType != Simple)

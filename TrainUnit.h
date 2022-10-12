@@ -520,8 +520,8 @@ private:
 
 // functions defined in .cpp file
 
-/// called during FloatingLabelNextString to find the next service departure time & next location
-    AnsiString GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Ptr, int RptNum, TTrainDataEntry *LinkedTrainDataPtr, AnsiString RetStr);
+/// called during FloatingLabelNextString to find the next service departure time & next location (last bool added at v2.13.2)
+    AnsiString GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Ptr, int RptNum, TTrainDataEntry *LinkedTrainDataPtr, AnsiString RetStr, bool TimetableTime);
 /// Used in the floating window to display the 'Next' action
     AnsiString FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr);
 /// Used in the floating window to display the timetable

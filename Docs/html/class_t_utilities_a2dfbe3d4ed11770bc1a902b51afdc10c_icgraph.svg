@@ -485,7 +485,7 @@ var sectionId = 'dynsection-17';
 <!-- Node9 -->
 <g id="node7" class="node">
 <title>Node9</title>
-<g id="a_node7"><a xlink:href="class_t_train.html#a7b2441ac62bba8e9cc46f7e0511e5695" target="_top" xlink:title="called during FloatingLabelNextString to find the next service departure time &amp; next location">
+<g id="a_node7"><a xlink:href="class_t_train.html#a62f0a2254b8a6fcc0a0d7a827c9853f6" target="_top" xlink:title="called during FloatingLabelNextString to find the next service departure time &amp; next location (last b...">
 <polygon fill="white" stroke="black" points="1065,-1791 1065,-1810 1237,-1810 1237,-1791 1065,-1791"/>
 <text text-anchor="middle" x="1151" y="-1798" font-family="Helvetica,sans-Serif" font-size="10.00">TTrain::GetNewServiceDepartureInfo</text>
 </a>

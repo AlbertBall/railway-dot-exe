@@ -23,7 +23,7 @@
 <area shape="rect" id="node19" href="$class_t_interface.html#a6379037c7970acda71188947cb3ba6b2" title=" " alt="" coords="911,1965,1097,2007"/>
 <area shape="rect" id="node21" href="$class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3" title="Build string for use in floating window for expected trains at continuations." alt="" coords="1168,1727,1360,1768"/>
 <area shape="rect" id="node24" href="$class_t_train_controller.html#aab94af5bb445fc36543e2c22d2986daa" title="Similar to TTrain::GetNewServiceDepartureInfo for use in ContinuationEntryFloatingTTString." alt="" coords="1429,1747,1616,1788"/>
-<area shape="rect" id="node25" href="$class_t_train.html#a7b2441ac62bba8e9cc46f7e0511e5695" title="called during FloatingLabelNextString to find the next service departure time &amp; next location" alt="" coords="1408,1594,1637,1621"/>
+<area shape="rect" id="node25" href="$class_t_train.html#a62f0a2254b8a6fcc0a0d7a827c9853f6" title="called during FloatingLabelNextString to find the next service departure time &amp; next location (last b..." alt="" coords="1408,1594,1637,1621"/>
 <area shape="rect" id="node22" href="$class_t_interface.html#adc9ce6e5ee756279efbe92fd749355bf" title="Called when floating train info needed and train hasn&#39;t entered yet." alt="" coords="913,1727,1095,1768"/>
 <area shape="rect" id="node23" href="$class_t_interface.html#a9aaa19d39382a32701d7ded3b8c1802b" title="Controls the floating window function, called during the ClockTimer2 function." alt="" coords="665,1613,840,1639"/>
 <area shape="rect" id="node26" href="$class_t_train.html#a221da69cd80d206a06f840f4cd463cf9" title="Used in the floating window to display the &#39;Next&#39; action." alt="" coords="1179,1544,1349,1585"/>

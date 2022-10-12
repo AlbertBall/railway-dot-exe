@@ -138,7 +138,7 @@ public: // everything uses these - should really have Gets & Sets but too many t
     bool TempTrackMarker01, TempTrackMarker23;
 ///< Utility markers for program use, not used from v2.12.0
     bool Failed;
-///< New parameter added at v2.13.0 for failed points & TSRs
+///< New parameter added at v2.13.0 for failed points, signals & TSRs
     int Attribute;
 ///< special variable used only for points, signals & level crossings, ignored otherwise; points 0=set to go straight, 1=set to diverge, where both legs diverge 0=set to left fork; signals:  0=red; 1=yellow; 2=double yellow; 3 = green; Level crossing: 0 = raised barriers = closed to trains; 1 = lowered barriers = open to trains; 2 = changing state = closed to trains
     int Conn[4];

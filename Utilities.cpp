@@ -808,8 +808,8 @@ AnsiString TUtilities::Format96HHMM(TDateTime DateTime)
 // Formats a TDateTime into an AnsiString of the form hh:mm where hh runs from 00 to 95 & resets when it reaches 96
 {
     AnsiString MinString = DateTime.FormatString(":nn");  //original routine, could overshoot hours in actions due panel
-    int Hours = (int)(((double)(DateTime + 0.0003)) * 24); // for v0.6 round up by ~0.5min to prevent undershooting the hour in formatted tts
-    while(Hours >= 96)
+    int Hours = (int)(((double)(DateTime + 0.000006)) * 24); // for v0.6 round up by ~0.5min to prevent undershooting the hour in formatted tts
+    while(Hours >= 96)                                       //at v2.13.2 changed from 0.0003 to 0.000006 (~0.5min to ~0.5sec) to prevent overshooting the hour
     {
         Hours -= 96;
     }

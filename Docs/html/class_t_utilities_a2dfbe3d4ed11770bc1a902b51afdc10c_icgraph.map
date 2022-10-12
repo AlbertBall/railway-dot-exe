@@ -27,7 +27,7 @@
 <area shape="rect" id="node3" href="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f" title=" " alt="" coords="5,1863,196,1889"/>
 <area shape="rect" id="node5" href="$class_t_train_controller.html#a9c531d3df66921ada4e698bcf47f72f3" title="Build string for use in floating window for expected trains at continuations." alt="" coords="1165,67,1357,109"/>
 <area shape="rect" id="node6" href="$class_t_train_controller.html#aab94af5bb445fc36543e2c22d2986daa" title="Similar to TTrain::GetNewServiceDepartureInfo for use in ContinuationEntryFloatingTTString." alt="" coords="1447,97,1633,138"/>
-<area shape="rect" id="node7" href="$class_t_train.html#a7b2441ac62bba8e9cc46f7e0511e5695" title="called during FloatingLabelNextString to find the next service departure time &amp; next location" alt="" coords="1425,163,1655,189"/>
+<area shape="rect" id="node7" href="$class_t_train.html#a62f0a2254b8a6fcc0a0d7a827c9853f6" title="called during FloatingLabelNextString to find the next service departure time &amp; next location (last b..." alt="" coords="1425,163,1655,189"/>
 <area shape="rect" id="node8" href="$class_t_train.html#a221da69cd80d206a06f840f4cd463cf9" title="Used in the floating window to display the &#39;Next&#39; action." alt="" coords="1177,221,1346,262"/>
 <area shape="rect" id="node9" href="$class_t_train.html#a81bf61b47a2867f0c6901b1ea6f47177" title="Used in the floating window to display the timetable." alt="" coords="1178,155,1345,197"/>
 <area shape="rect" id="node12" href="$class_t_train_controller.html#aa895b60238810a9d134cd5b9c886da56" title="Introduce a new train to the railway, with the characteristics specified, returns true for success,..." alt="" coords="1176,1080,1347,1107"/>

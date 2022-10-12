@@ -26,7 +26,7 @@ var NAVTREE =
 [
   [ "Railway Operation Simulator", "index.html", [
     [ "Contributing to railway-dot-exe", "md__c_o_n_t_r_i_b_u_t_i_n_g.html", null ],
-    [ "Railway Operation Simulator (ROS)", "md__r_e_a_d_m_e.html", null ],
+    [ "Railway Operation Simulator (RailOS)", "md__r_e_a_d_m_e.html", null ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],

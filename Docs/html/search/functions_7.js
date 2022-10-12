@@ -37,7 +37,7 @@ var searchData=
   ['getmodifiablerouteat_3828',['GetModifiableRouteAt',['../class_t_all_routes.html#a8b522eb0d7aa415c3648d464c2885484',1,'TAllRoutes']]],
   ['getmodifiablerouteatidnumber_3829',['GetModifiableRouteAtIDNumber',['../class_t_all_routes.html#a22bbb69a96356c26848fe9c6b154f387',1,'TAllRoutes']]],
   ['getmodifiablesearchelementat_3830',['GetModifiableSearchElementAt',['../class_t_one_pref_dir.html#a6724a8304760eb6107bddc60a269595b',1,'TOnePrefDir']]],
-  ['getnewservicedepartureinfo_3831',['GetNewServiceDepartureInfo',['../class_t_train.html#a7b2441ac62bba8e9cc46f7e0511e5695',1,'TTrain']]],
+  ['getnewservicedepartureinfo_3831',['GetNewServiceDepartureInfo',['../class_t_train.html#a62f0a2254b8a6fcc0a0d7a827c9853f6',1,'TTrain']]],
   ['getnextnonpreferredrouteelement_3832',['GetNextNonPreferredRouteElement',['../class_t_one_route.html#a5ce1c3a064a656ca764b5ed98c63151a',1,'TOneRoute']]],
   ['getnextprefdirelement_3833',['GetNextPrefDirElement',['../class_t_one_pref_dir.html#a06cd3491535362fccbba4e76b9a120e9',1,'TOnePrefDir']]],
   ['getnextpreferredrouteelement_3834',['GetNextPreferredRouteElement',['../class_t_one_route.html#a974ac7ab4cb5e6a5df33a3d7b3563315',1,'TOneRoute']]],

@@ -1163,7 +1163,7 @@
 <!-- Node40 -->
 <g id="node39" class="node">
 <title>Node40</title>
-<g id="a_node39"><a xlink:href="class_t_train.html#a7b2441ac62bba8e9cc46f7e0511e5695" target="_top" xlink:title="called during FloatingLabelNextString to find the next service departure time &amp; next location">
+<g id="a_node39"><a xlink:href="class_t_train.html#a62f0a2254b8a6fcc0a0d7a827c9853f6" target="_top" xlink:title="called during FloatingLabelNextString to find the next service departure time &amp; next location (last b...">
 <polygon fill="white" stroke="black" points="333,-269.6 333,-288.6 505,-288.6 505,-269.6 333,-269.6"/>
 <text text-anchor="middle" x="419" y="-276.6" font-family="Helvetica,sans-Serif" font-size="10.00">TTrain::GetNewServiceDepartureInfo</text>
 </a>

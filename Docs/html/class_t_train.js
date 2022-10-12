@@ -18,7 +18,7 @@ var class_t_train =
     [ "FrontTrainSplit", "class_t_train.html#ad666fb061d1da7c44a72ec963c2098aa", null ],
     [ "GetLeadElement", "class_t_train.html#a2d7fea8a3bda2b2047b403ac4c9d0437", null ],
     [ "GetLeadElement", "class_t_train.html#a0675ea1dede706d5b0dd52264496865a", null ],
-    [ "GetNewServiceDepartureInfo", "class_t_train.html#a7b2441ac62bba8e9cc46f7e0511e5695", null ],
+    [ "GetNewServiceDepartureInfo", "class_t_train.html#a62f0a2254b8a6fcc0a0d7a827c9853f6", null ],
     [ "GetOffsetValues", "class_t_train.html#aa973b7a0ecaef5077fd56398419f9104", null ],
     [ "GetTrainHeadCode", "class_t_train.html#a63b0884e315178879369c82ee7fd2cb8", null ],
     [ "GetTrainTime", "class_t_train.html#ad249f34f6862e604b8e141d1b25fe57d", null ],

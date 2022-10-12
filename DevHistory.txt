@@ -16,6 +16,58 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
+#82 from Krizar via discord 06/10/22
+What about a button in the timetable editor that flips the destination order for you?
+
+My response: I'll add it to the list for consideration but I'm having a break from RailOS after the random delays/point & signal failures/TSRs as that was quite a long and intense period. I wonder though if Daniel's json2 program might be able to do it more easily - any thoughts @Dan ?
+
+Dan 07/10/22: The timetable editor I was working on could probably do it quite easily. I've forgotten about that, it's probably ready for a beta release.
+Oh, nevermind. I did do a release.
+
+#81 From SentinelJade via discord on 13/09/22
+It would be cool if there were a way for the program to take the info one has put in and then to write it to a space-time graph.
+
+My response: I seem to recall that someone did some work on developing space-time graphs in the dim and distant past but don't remember whether or not it came to fruition.  Presumably not as it wasn't added as a utility.  I think it's on the wish-list but I'll check and add it if not.  The program doesn't take account of gradients or the effect of curves, though track speed limits can be set.  Gradients are less of a problem with electric and diesel traction as they are designed to have enough power to cope.
+
+#80 From Micke(Commuterpop) 09/09/22 via discord:
+A question about time for stops. I've been through the manual, and it seems that the minimum stop time is 30 seconds.
+I'm pretty sure we've been discussing that at some time, didn't we?
+The option to decrease the time or adjust it.
+
+My response (after a lot of user discussion, some for and some against):
+This topic has certainly generated a lot of discussion!  The 30 seconds minimum delay in the program isn't just for stops, it applies between any two stationary train events - direction changes, splits, joins etc.  I have to admit that I didn't do any research on the subject, it just seemed like a reasonable time to allow.  In the UK I think the LU must have the shortest dwell times, and I found this video https://www.youtube.com/watch?v=d2g9HlwoC-s which gave these times in seconds: 17, 25, 27, 35, 27, 23, 17, 30, 23, and 19 for the first 10 stops, averaging 24.3.  Bearing in mind too that all these are shown at relatively slack times I'm inclined to think that 30 seconds is a reasonable minimum even for the underground, and probably much too short for surface lines (which can be lengthened of course where necessary in increments of whole minutes).   I can appreciate that other countries will have shorter times in some cases but only by a quarter minute or so.  I'll add it to the suggestions list but confess that given these observations I don't feel much enthusiasm for making any changes.
+
+These three were sent in by Csaba by email on 16 April this year (2022) and I had somehow missed them, so here they are, better late than never I suppose (?)
+#79, #78 & #77
+1) Is there any plan to introduce crossings with automatic working? At the moment, I use the non-station named location option to indicate that there is an automatic crossing through a track whenever it's appropriate.
+
+2) For single track working, introducing a slot request/give option would be welcome.
+
+3) As you might have noticed, I rather like to include into my timetable loco run arounds for loco hauled services (both passenger and freight), as well as freight shunting movements such as taking up or leaving wagons. When splitting trains, tonnage, power and break power are all halved and this makes the simulation slightly less realistic. I vaguely remember that this has been discussed before. Is there any plan to allow the timetable editor to split trains into unequal parts? Similarly, are you planning to introduce the length into the train description?
+
+My response to him today 08/09/22 (omitting my apologies for the late response!)
+These are very sensible suggestions that I think have all been requested by others, and I would love to include them.
+
+My problem is that I have far more feature requests than I have time to devote to them - 76 requests at the last count!  I do add features every now and again (last lot relating to random delays and track element failures) but as the core program development team consists of just me (others develop very useful utilities) the requests increase faster than my ability to attend to them.
+
+On the one hand it's very gratifying that people enjoy the program so much that they want to see it improved, but on the other it's very frustrating that I am unable to respond positively to all requests.
+
+I do keep a list of all suggestions and revisit it periodically, and will add yours - albeit a bit late!
+
+My strategy for adding features (when I have time available) is to consider:
+(a) the level of demand - the higher the demand the more consideration it gets;
+(b) whether it represents a new feature or a convenience - priority given to new features unless a convenience is very easy to incorporate;
+(c) the ease of modification - the easier the more likely to be incorporated;
+(d) the potential for disrupting stable aspects of the program - the more likely this is the more wary I am of tackling it; and
+(e) the degree of complexity it adds for the user - new users often find the current interface quite overwhelming.
+
+(a) and (b) are relatively easy to assess, and your requests are quite high in demand and represent genuinely new features.  (c) and (d) are very much harder to assess, and even after starting a modification unforeseen effects, sometimes in what would appear to be completely unrelated parts of the code, often emerge that are quite difficult and time consuming to deal with.  Several of these cropped up with the timetable event skipping functions and with the random delays and track element failures, and there are still some that have emerged more recently that took time to correct and are awaiting incorporation in a later release.  This is the reason I am reluctant to announce any new features in advance.  It's quite possible that unwanted effects can emerge late in development that raise the difficulty level immensely, sometimes to the point of scuppering the whole intent.
+
+Some requests appear to be quite simple, and requestors sometimes tell me how simple they will be to incorporate, but little do they know!  For example I have had several people ask for three-way points, and from a graphical point of view they would indeed be relatively simple to add and would enhance the appearance and reality of a railway considerably, but the programming to deal with three routes across a track element rather than the current maximum of two would require a major rewrite of much of the program.  That maximum of two routes across a track element is a fundamental aspect of the program's design, so that is one that I have had to turn down sadly.
+
+I always deal with errors and program faults as soon as possible, so when these occur any improvements have to be put on hold, sometimes for weeks at a time.
+
+
 #76 from Benjwri via discord 27/07/22
 On the subject of ASR's, is there anything that can be done to stop the entire ASR past a signal being deleted when you cancel a route at it, or some way that could be come up with  to only cancel an ASR between 2 signals?
 
@@ -323,7 +375,7 @@ Have a 'Touch mode' where when activated the buttons are bigger for easier opera
 
 2) Own thoughts:-
 
-Expand railway file spec to include .ssn & .ttb files as well
+[done] Expand railway file spec to include .ssn & .ttb files as well
 
 Allow front end route cancellation by clicking element before signal for green & blue, check how to do it for red - maybe have left click for remove from front, right click for remove from back (looks complex)
 
@@ -349,7 +401,7 @@ OK: Times beyond 24hrs show as hh:mm:ss in .csv formatted timetables but not in 
 
 General improvement possibilities (some also suggested by users):
 
-Three-way points.
+Three-way points (not really feasible with current structure).
 Automatic route setting.
 Option to use & display imperial units as well as metric units.
 Ability to record and replay sessions.
@@ -374,6 +426,53 @@ Multi-player facility over the internet.
 -----------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.13.1 for v2.13.2
+
+This release corrects a number of bugs and inappropriate behaviours as follows:
+
+A temporary speed restriction could be applied immediately a session was loaded prior to play starting.  A new condition prevents this, though one could still be applied as soon as play starts.
+
+A train on an automatic signals route that was stopped at or approaching a failed signal didn't show in the actions due list.  This has now been corrected.
+
+A train stopped under signaller control without power had an action due time of 'NOW' and a normal background colour.  This wasn't appropriate so now it isn't included in the actions due list and the background colour is caramel - stopped under signaller control.
+
+It was found that the estimated action time for the 'next' action in the train information window was often incorrect.  This has been made more accurate when an estimate can be given and no time is provided when it can't.
+
+After making the actions due panel movable outside the railway screen area the main area often lost focus, causing some shortcut keys to become inactive.  Regular checks are now made within the program for mouse position so that whenever it is within the main screen area it regains focus and the shortcut keys work as before.
+
+Thomas Groenewold submitted an error file that showed that a specific track element had suffered two temporary speed restrictions (TSRs) and both were stored.  That wasn't appropriate.  The error was thrown when the second TSR reached its repair time but was found not to be in the failed state.  Only one TSR can now apply at any time to a track element, as already applies for points and signals.  Thanks to Thomas for reporting this error.
+
+All references to 'ROS' as the abbreviation for Railway Operation Simulator have now been changed to 'RailOS', to avoid conflict with the same abbreviation that is for Robot Operating System.  If anyone finds any that have been missed please let me know - thanks.
+
+BummerDude69 noticed that the CTRL and SHIFT keys were missing from the shortcut key listing in the manual and on-screen help for adjusting the viewpoint position movement amount.  These have now been included and thanks are due to BummerDude69 for pointing it out.
+
+Own notes (not for website)
+
+/Add mention of CTRL & SHIFT keys in the shortcut key listing for viewpoint positioning
+
+/credit BummerDude69 with finding the above omission
+
+/Add date in readme file for 2.13.2 release
+
+/Corrected Thomas Groenewold error (submitted error file 24/09/22) where same element subjected to TSR twice, failed when tried to repair second time as .Failed was false so it threw an error.  Added check for already failed (should have done that earlier as had already done for points & signals). Credit Thomas in version info when release.
+
+/added focus to Interface whenever mouse within it & inactive - so form key down works for track info & probably others too
+
+/Detailed check of correctness for 'next' string after all mods - see below
+
+/added random delay when display actual departure time for new service shown in info window (not for timetable time) + added non-random delay in 'next' display for fsp/rsp/jbo & departures + added delays in FloatingLabelNextString, dropped many estimated arrival & other times in floating next string, now just say 'arrive at location'
+
+/found that the displayed departure time in train info was an hour too high - due to Format96HHMM(TDateTime DateTime) adding ~0.5 mins to prevent undershooting the hour, changed to adding ~0.5 secs to avoid both undershooting and overshooting except in very rare occasions when within last half second of an hour change
+
+/added time delay between JoinedBy event logs (after seeing Micke's 080922 error file) to prevent too many being given, and added an event log when a JoinedBy event successful (internal only, not for publication)
+
+/Discovered when testing Micke's railway that a stopped train under signaller control without power has an action due of NOW and normal background colour.  Added new conditions so that a train stopped without power that hasn't failed doesn't show in actions due, and a train stopped without power under sig control is shown with stopped under signaller control background.
+
+/Train on autosigs route stopped at failed signal doesn't show in actions due, even if route very short & no train in front.  Also doesn't show while moving with failed signal in front even if a short route. But if failed signal is last in the route then it does show, while moving and when stopped.  OK, added !Failed condition when check for autosigs route after signal with attribute == 0, 3 places, 2 in CalcDistanceToRedSignalandStopTime and once in CalcTimeTo Act.
+
+/TSR could be applied immediately on loading a session before play clicked - ok new condition added
+
 
 VERSION CHANGES AFTER v2.13.0 for v2.13.1
 
@@ -2166,32 +2265,34 @@ have self-checking and normal release versions - if poss record the call stack)
 
 5) Release & website reminders:
 
-CHANGE OF VERSION: (updated November 2020 for the revised site)
+CHANGE OF VERSION: (updated 31/08/22)
 
 Prior to uploading:
 
-1 Increment version number & copyright year  (if required) in Project>Options & AboutUnit.cpp.  Do a final build & check.
-2 Update manual & on-screen help if required
-3 Create a new directory 'Release vx.x.x' from earlier release & replace files as follows:
-	readme.txt (reference latest release & update user manual reference & no. of pages if required + add new header with @version etc as added to v2.11.1 though not released with that version)
+1. Check that all callers have unique numbers and that no 'after vx.y.z comments left in code'
+2 Increment version number & copyright year (if required) in Project>Options & AboutUnit.cpp.  Do a final build & check that the 'About' box gives the correct release version.
+3 Update manual & on-screen help if required
+4 Check if any new .dll or .bpl files needed (likely to if there's a new compiler version)
+5 Create a new directory 'Release vx.x.x' from earlier release & replace files as follows:
+	readme.txt (reference latest release & update user manual reference & no. of pages if required)
 	Manual vx.x.x .pdf (if updated)
 	Quick start.pdf (if updated)
 	Railways>railway.exe
 	Railway>Help.chm (if updated)
-	In Railway, check have 5 x dlls and 3 x bpls & GNU licence, & that all directories contain the expected files & no extras created if had run from the release folder, especially NO config.txt
-4 Zip the above as Release vx.x.x.zip
+	In Railway, check have 5 x dlls and 5 x bpls (for compiler v10.4) + GNU licence + session.ini + metadata files for B'ham & L'pool, and that all directories contain the expected files & no extras (will be if had run from the release folder), especially make sure there's NO config.txt
+6 Zip the above as Release vx.x.x.zip
 
 On website:
 
-5 Upload new release version zip to 'Media'
-6 Go to 'Base Program'  & edit product 'Railway Operation Simulator' (normally on last page of 'All Products')
+7 Upload new release version zip to 'Media'
+8 Go to 'Base Program'  & edit product 'Railway Operation Simulator' (normally on last page of 'All Products')
 	Update text of page iaw readme.txt (short & full)
 	Category should already be 'Base Program & Documentation'
 	Tag should already be 'Railway Operation Simulator'
 	Image should already be in 'Product image'
 	Product data should already be 'Simple product'
 	TAuto Poster should be 'No', this a plugin that automatically posts to Twitter if set to 'Yes'
-7 Under 'General' tab
+9 Under 'General' tab
 	Click 'Add File' & "Choose file" to enter url of the new zip, give it the version number as its name
 	Move it to the top of the list (need full window to move)
 	Make latest release the current version & last one deprecated
@@ -2201,21 +2302,21 @@ On website:
 	Download expiry should be 'Never'
 	Tax status should be 'None'
 	Tax class  should be 'Zero rate'
-8 Under 'Inventory' tab
+10 Under 'Inventory' tab
 	SKU should be 'RailwayOS-Releases'
 	Stock status should be 'In stock'
 	Neither box should be ticked
-9 Under 'Linked Products' tab Upsells should be empty & Cross sells should be ROS Manuals & TT tutorials
-10 Should be nothing under 'Attributes' tab
-11 Under 'Advanced' tab
-	Purchase note should say 'Please read the included instructions included in the .zip file before contacting us for support. The manuals and tutorials are also available for free download.'
+11 Under 'Linked Products' tab Upsells should be empty & Cross sells should be ROS Manuals & TT tutorials
+12 Should be nothing under 'Attributes' tab
+13 Under 'Advanced' tab
+	Purchase note should say 'Please read the instructions included in the .zip file before contacting us for support. The manuals and tutorials are also available for free download.'
 	Menu order should be 0
 	Enable reviews should be ticked
-12 Preview then update if all ok (best to select update first as otherwise preview shows last version)
-13 If Manual or Quick start or any other file changed upload the new versions to 'Media' as above and add by editing product 'Railway Operation Simulator manuals' as above, SKU is RailwayOS-Manuals. Alter text (short & full) to refer to new version. Update & preview.
-14 Go to 'Version Information' page (uses DiviBuilder), click 'settings' on 'Versions (Accordion)', copy last version then click 'settings' on it, add version number & date as title, then change all text to the new text.  Save the new addition, save changes then update the page & check ok.
-15 Download & check the new release & anything else that's changed
-16 Add a new post for the release with details of main changes - Categories: Railway Operation Simulator, news; Tags Railway Operation Simulator, year, v2x.x.x.  Add 'Download it here' with link to 'Railway Operation Simulator'. TAutoPost set to yes. Preview & schedule release or release immediately.
+14 Preview then update if all ok (best to select update first as otherwise preview shows last version)
+15 If Manual or Quick start or any other file changed upload the new versions to 'Media' as above and add by editing product 'Railway Operation Simulator manuals' as above (also on last page of products), SKU is RailwayOS-Manuals. Alter text (short & full) to refer to new version. Update & preview. 
+16 Go to 'Version Information' page (uses DiviBuilder), click 'settings' on 'Versions (Accordion)', copy last version then click 'settings' on it, add version number & date as title, then change all text to the new text.  Save the new addition, save changes then update the page & check ok.
+17 Download & check the new release & anything else that's changed
+18 Add a new post for the release with details of main changes - Categories: Railway Operation Simulator, news; Tags Railway Operation Simulator, year, v2x.x.x.  Add 'Download it here' with link to 'Railway Operation Simulator'. TAutoPost set to yes. Preview & schedule release or release immediately.
 
 On GitHub:
 
@@ -2230,28 +2331,25 @@ On GitHub:
 25 Push to GitHub with 'include tags' ticked
 26 Create a new release on GitHub & include the new zip file
 
-ADDING A NEW PROJECT TO THE USER WEBSITE: (updated November 2020 for the revised site)
+ADDING A NEW PROJECT TO THE USER WEBSITE: (updated 31/08/22)
 
-1 Check works ok & no copyrighted information
-2 Create a .jpg image of the railway & upload it to 'Media'
-2a Create a .toml file and add to the zip
-3 Upload original or modified (if required) zip file to 'Media'
-[From here on it's easier to duplicate an earlier project then modify areas that need to be changed, but remember to reset the download count!]
-4 Select 'Add new product'
+1 Check works ok & no copyrighted information (advise creator if need to change anything)
+2 If there's a .toml file update the release date & change it in the zip file
+3 Upload image to 'Media' (preferably in .jpg form as it's much smaller)
+4 Upload original or modified zip file to 'Media'
+5 Select 'Add new product'
 	Add title from email form - just the railway name (author is in the tag)
 	Add text from email description (required to be provided by form)
 	Add short description from email (required to be provided by form)
 	Add image in sidebar
 	Tick Category Community Projects + appropriate location/fantasy or add a new category if required
-	Add Tags Community Project, Community Projects, Author (use name from form), geographic information - same as category or additional - include anything people might search on
+	Add Tags Community Project, Community Projects, Author (use creator name from form), geographic information - same as category or additional - include anything people might search on
 	TAuto Post -> 'No' (only set to yes for the news post)
-	Page layout -> No Sidebar'
-	Hide Nav Before Scroll -> 'Default'
 
-5 Under 'Product data'
+6 Under 'Product data'
 	Simple product, tick Virtual & Downloadable
 
-6 Under 'Product data/General' tab
+7 Under 'Product data/General' tab
 	Price 0.00
 	Sale price blank
 	Set the url for the new project in 'Downloadable files' & for name just give version, usually v1.0 but check email form
@@ -2259,30 +2357,30 @@ ADDING A NEW PROJECT TO THE USER WEBSITE: (updated November 2020 for the revised
 	Download expiry 'Never'
 	Tax status 'None'
 	Tax class  'Zero rate'
-7 Under 'Inventory' tab
+8 Under 'Inventory' tab
 	SKU should be 'cp-xxx' where xxx = railway name (use lower case & dashes in place of blanks)
 	Manage stock? box not ticked
 	Stock status 'In stock'
 	Tick Sold individually box
-8 Under 'Linked Products' Upsells & Cross sells should be empty
-9 Should be nothing under 'Attributes' tab
-10 Under 'Advanced' tab
+9 Under 'Linked Products' Upsells & Cross sells should be empty
+10 Should be nothing under 'Attributes' tab
+11 Under 'Advanced' tab
 	Purchase note should be empty
 	Menu order should be 0
 	Enable reviews should be ticked
-11 Save draft, preview, then publish if ok
+12 Save draft, preview, then publish if ok
 
-12 Create new post, add title 'Railway name' by 'Author'
-13 Add description text (not the image) and add 'Download it here' with 'here' linked to the product location
-14 Add the image as the 'Featured Image' - don't include in the main description
-15 Set TAuto Poster to 'Yes'
-16 Categories: News & Railway Projects, Tags: year, author & Railway Projects
-17 Make sure 'Allow comments' is ticked
-18 Set sheduled date if not immediate
-19 Save draft, preview, check & if ok check TAuto Post still 'yes' (oddly it sometimes reverts to 'no') then either publish or schedule
-20 Final check that all links work (in preview if scheduled for future), including from home screen where this project should be the latest (unless scheduled), & that it downloads ok
-21 Make user a contributor if not already
-22 On Discord make author a creator if not already
+13 Create new post, add title 'Railway name' by 'Author'
+14 Add description text (not the image) and add 'Download it here' with 'here' linked to the product location
+15 Add the image as the 'Featured Image' - don't include in the main description
+16 Set TAuto Poster to 'Yes'
+17 Categories: News & Railway Projects, Tags: year, author (use creator name from form) & Railway Projects
+18 Make sure 'Allow comments' is ticked
+19 Set scheduled date if not immediate
+20 Save draft, preview, check & if ok, check TAuto Post still 'yes' (oddly it sometimes reverts to 'no') then either publish or schedule
+21 Final check that all links work (in preview if scheduled for future), including from home screen where this project should be the latest (unless scheduled), & that it downloads ok
+22 Make user a contributor if not already
+23 On Discord make author a creator if not already
 
 
 6) Multiplayer experimentation: [very tentative as yet]

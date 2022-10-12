@@ -8411,30 +8411,34 @@ void TInterface::ClockTimer2(int Caller)
         if((TrainController->TTClockTime - Utilities->LastTSRCheckTime) > TDateTime(5.0 / 1440))
         {
             //check due now
-            if((Utilities->DelayMode != Nil) && !Track->SimpleVector.empty() && (Level2OperMode != Paused) && !TrainController->StopTTClockFlag)
-            {
+            if((Utilities->DelayMode != Nil) && !Track->SimpleVector.empty() && (Level2OperMode != Paused) && (Level2OperMode != PreStart) && !TrainController->StopTTClockFlag)
+            {                                                                                 //(Level2OperMode != PreStart) added at v2.13.2 to prevent a TSR before starts
                 Utilities->LastTSRCheckTime = TrainController->TTClockTime;
                 if(random(Utilities->MTBTSRs * 288 / Track->SimpleVector.size()) == 0) //chance of one failure in the railway with MTBTSRs in days/simple element (288 = no. of 5mins/day)
                 {
                     //now identify the specific simple element
                     int SimpleTVPos = Track->SimpleVector.at(random(Track->SimpleVector.size())); //vector of simple elements in the railway
                     TTrackElement &TE = Track->TrackElementAt(1531, SimpleTVPos);
-                    TTrack::TInfrastructureFailureEntry IFE;
-                    IFE.TVPos = SimpleTVPos;
-                    TE.Failed = true;
-                    TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = TE.SpeedLimit01; //store these values temporarily, points aren't bridges so can use these
-                    TE.SpeedLimit01 = 10; //value while failed
-                    Display->WarningLog(23, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Temporary Speed Restriction at " + TE.ElementID);
-                    PerfLogForm->PerformanceLog(46, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: Temporary Speed Restriction at " + TE.ElementID);
-                    TrainController->StopTTClockMessage(133, "Temporary Speed Restriction imposed at " + TE.ElementID +
-                        "\nSpeed limit of 10km/hour applies until track repaired.");
-                    AllRoutes->RebuildRailwayFlag = true; //force ClearandRebuildRailway at next clock tick
-    //set repair time, random value in minutes between 10 and 179
-                    double FailureMinutes = double(random(Utilities->MaxRandomRepairTime) + Utilities->FixedMinRepairTime); //between 10 and 179 minutes at random
-                    TDateTime RepairTime = TrainController->TTClockTime + TDateTime(FailureMinutes / 1440);
-                    IFE.RepairTime = RepairTime;
-                    IFE.FailureTime = TrainController->TTClockTime;
-                    Track->TSRVector.push_back(IFE);
+                    if(!TE.Failed) //skip if already failed, added at v2.13.2 in response to Thomas Groenewold error file sent in 24/09/22
+                    {              //error file showed that the same element had failed twice, so after repaired the first time .Failed was set to false
+                                   //but the element remained in the TSRVector and crashed when tried to repair a second time
+                        TTrack::TInfrastructureFailureEntry IFE;
+                        IFE.TVPos = SimpleTVPos;
+                        TE.Failed = true;
+                        TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = TE.SpeedLimit01; //store these values temporarily, points aren't bridges so can use these
+                        TE.SpeedLimit01 = 10; //value while failed
+                        Display->WarningLog(23, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Temporary Speed Restriction at " + TE.ElementID);
+                        PerfLogForm->PerformanceLog(46, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: Temporary Speed Restriction at " + TE.ElementID);
+                        TrainController->StopTTClockMessage(133, "Temporary Speed Restriction imposed at " + TE.ElementID +
+                            "\nSpeed limit of 10km/hour applies until track repaired.");
+                        AllRoutes->RebuildRailwayFlag = true; //force ClearandRebuildRailway at next clock tick
+        //set repair time, random value in minutes between 10 and 179
+                        double FailureMinutes = double(random(Utilities->MaxRandomRepairTime) + Utilities->FixedMinRepairTime); //between 10 and 179 minutes at random
+                        TDateTime RepairTime = TrainController->TTClockTime + TDateTime(FailureMinutes / 1440);
+                        IFE.RepairTime = RepairTime;
+                        IFE.FailureTime = TrainController->TTClockTime;
+                        Track->TSRVector.push_back(IFE);
+                    }
                 }
             }
         }
@@ -8728,6 +8732,17 @@ void TInterface::ClockTimer2(int Caller)
             TrainController->BaseTime = TDateTime::CurrentDateTime();
             TrainController->StopTTClockFlag = false;
         }
+
+        //below added at v2.13.2 so focus restored after actions due or perflog windows take focus by enabling, disabling or
+        //moving.  Otherwise the track info shortcut keys don't work (& probably others)
+        bool MouseInInterface = ((Mouse->CursorPos.x >= ClientOrigin.x) && (Mouse->CursorPos.x < (ClientOrigin.x + Interface->Width))
+        && (Mouse->CursorPos.y >= ClientOrigin.y) && (Mouse->CursorPos.y < (ClientOrigin.y + Interface->Height)));
+
+        if(!Interface->Active && MouseInInterface)
+        {
+            Interface->SetFocus();
+        }
+
 // development panel - visibility toggled by 'Ctrl Alt 3' when Interface form has focus
         if(DevelopmentPanel->Visible)
         {
@@ -11981,7 +11996,8 @@ void __fastcall TInterface::SignallerJoinedByMenuItemClick(TObject *Sender)
             AnsiString UnableToJoinIfWaitingToJoinMessage = "Can't join two trains that are waiting to join under\n"
                                              "timetable control. Manoeuvre them both to the join\n"
                                              "location, make sure they are adjacent, and restore\n"
-                                             "timetable control.";
+                                             "timetable control. They will then join at the timetabled\n"
+                                             "time, or if that has passed then after 30 seconds.";
             //add condition for Micke's error reported 19/05/22 by email (add as 2 conditions for simplicity)
             if((TrainToBeJoinedBy->ActionVectorEntryPtr->Command == "Fjo") &&
                 (TrainToBeJoinedBy->ActionVectorEntryPtr->LinkedTrainEntryPtr->ServiceReference == ThisTrain.TrainDataEntryPtr->ServiceReference))
@@ -16126,9 +16142,9 @@ void TInterface::SetLevel1Mode(int Caller)
         SetTrackBuildImages(13);
         ClipboardChecked = false;
         Utilities->CumulativeDelayedRandMinsAllTrains = 0; //added at v2.13.0
-        Utilities->LastTSRCheckTime = TDateTime(0); //added at v2.13.0 (and below) to SimpleVector.clear();
+        Utilities->LastTSRCheckTime = TDateTime(0); //added at v2.13.0
         Utilities->LastDelayTTClockTime = 0;
-        Utilities->LastTSRCheckTime = TDateTime(0);
+//        Utilities->LastTSRCheckTime = TDateTime(0); removed at v2.13.2 as redundant (covered above)
         Track->FailedPointsVector.clear();
         Track->FailedSignalsVector.clear();
         Track->TSRVector.clear();
@@ -22316,7 +22332,7 @@ void TInterface::SaveErrorFile()
         Utilities->SaveFileInt(ErrorFile, Utilities->CumulativeDelayedRandMinsAllTrains); //to allow for exited and removed trains
         for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
         { //if empty will skip
-            TTrain Train = TrainController->TrainVectorAt(87, x);
+            TTrain Train = TrainController->TrainVectorAt(90, x);
             Utilities->SaveFileDouble(ErrorFile, Train.NewDelay);
             Utilities->SaveFileDouble(ErrorFile, Train.DelayedRandMins);
             Utilities->SaveFileDouble(ErrorFile, Train.CumulativeDelayedRandMinsOneTrain);
@@ -22327,7 +22343,7 @@ void TInterface::SaveErrorFile()
         Utilities->SaveFileInt(ErrorFile, Track->FailedPointsVector.size()); //number of failed points
         for(unsigned int x = 0; x < Track->FailedPointsVector.size(); x++)
         { //if empty will skip, when reload set Failed to true & SpeedLimits to 10km/h
-            TTrackElement &TE = Track->TrackElementAt(1512, Track->FailedPointsVector.at(x).TVPos);
+            TTrackElement &TE = Track->TrackElementAt(1551, Track->FailedPointsVector.at(x).TVPos);
             Utilities->SaveFileInt(ErrorFile, Track->FailedPointsVector.at(x).TVPos);
             Utilities->SaveFileInt(ErrorFile, TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01);
             Utilities->SaveFileInt(ErrorFile, TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23);
@@ -22346,7 +22362,7 @@ void TInterface::SaveErrorFile()
         Utilities->SaveFileInt(ErrorFile, Track->TSRVector.size()); //number of TSRs
         for(unsigned int x = 0; x < Track->TSRVector.size(); x++)
         { //if empty will skip, when reload set Failed to true & SpeedLimit to 10km/h
-            TTrackElement &TE = Track->TrackElementAt(1532, Track->TSRVector.at(x).TVPos);
+            TTrackElement &TE = Track->TrackElementAt(1552, Track->TSRVector.at(x).TVPos);
             Utilities->SaveFileInt(ErrorFile, Track->TSRVector.at(x).TVPos);
             Utilities->SaveFileInt(ErrorFile, TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01);
             Utilities->SaveFileDouble(ErrorFile, double(Track->TSRVector.at(x).FailureTime));
@@ -22949,7 +22965,8 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
     try
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
-    //test code here
+     //test code here
+     //throw Exception("Test error"); //for testing the error file
         Utilities->CallLogPop(2376);
     }
     catch(const Exception &e)

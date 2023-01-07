@@ -424,6 +424,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "ResetLevelCrossings",
         "ResetPoints",
         "ResetSignals",
+        "ResetTSRs",
         "ResetTrainElementID",
         "RetrieveStripedNamedLocationGraphicsWhereRelevant",
         "ReturnNextInactiveTrackElement",

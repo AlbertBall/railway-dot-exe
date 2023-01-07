@@ -999,6 +999,8 @@ void TTrain::UpdateTrain(int Caller)
                                 ActionVectorEntryPtr->LocationName + " by 1 minute");
                         PerfLogForm->PerformanceLog(18, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: " + HeadCode + " delayed at " +
                                 ActionVectorEntryPtr->LocationName + " by 1 minute because of a minor technical issue");
+                        TrainController->StopTTClockMessage(140, HeadCode + " delayed at " +
+                                ActionVectorEntryPtr->LocationName + " by 1 minute because of a minor technical issue");
                     }
                     else
                     {
@@ -1011,11 +1013,15 @@ void TTrain::UpdateTrain(int Caller)
                             PerfLogForm->PerformanceLog(19, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: " +
                                     HeadCode + " delayed at " + ActionVectorEntryPtr->LocationName + " by " + AnsiString(int(NewDelay)) +
                                     " minutes because " + Reason);
+                            TrainController->StopTTClockMessage(141, HeadCode + " delayed at " + ActionVectorEntryPtr->LocationName + " by " + AnsiString(int(NewDelay)) +
+                                    " minutes because " + Reason);
                         }
                         else
                         {
                             PerfLogForm->PerformanceLog(20, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: " +
                                     HeadCode + " delayed at " + ActionVectorEntryPtr->LocationName + " by " + AnsiString(int(NewDelay)) +
+                                    " minutes because of a minor problem");
+                            TrainController->StopTTClockMessage(142, HeadCode + " delayed at " + ActionVectorEntryPtr->LocationName + " by " + AnsiString(int(NewDelay)) +
                                     " minutes because of a minor problem");
                         }
                     }
@@ -1367,6 +1373,10 @@ void TTrain::UpdateTrain(int Caller)
             {
                 PlotTrainWithNewBackgroundColour(19, clTRSBackground, Display); // light pink
             }
+            else //added at v2.14.0 as if a train ready to depart (pink b'gnd) taken under sig control then restored to tt control b'gnd stayed pink,
+            {    //even though release time now 30 seconds after tt control restored
+                PlotTrainWithNewBackgroundColour(54, clStationStopBackground, Display); // light green
+            }
             if(TrainController->TTClockTime >= ReleaseTime)
             {
                 // value updated at every scheduled departure & arrival
@@ -1533,7 +1543,8 @@ void TTrain::UpdateTrain(int Caller)
                     {
                         TIFExitPos = 1;
                     }
-                    if((TIF.Config[TIFExitPos] == Signal) && TIF.Attribute == 0 && (ExitSpeedHalf > 1) && !AllowedToPassRedSignal) //use ExitSpeedHalf as may have been stopped at signal so entryspeed is 0
+                    if((TIF.Config[TIFExitPos] == Signal) && TIF.Attribute == 0 && (ExitSpeedHalf > 1) && !AllowedToPassRedSignal && !TIF.CallingOnSet) //use ExitSpeedHalf as may have been stopped at signal so entryspeed is 0
+                                      //!TIF.CallingOnSet added at v2.14.0
                     {
                         SPADFlag = true; // user has to intervene to reset & restart after spad
                     }
@@ -1910,8 +1921,8 @@ void TTrain::UpdateTrain(int Caller)
                     TE.Attribute = 0; // red
                     int RouteNumber; //only used for autosigs routes
                     //add chance to fail when train passes a signal
-                    if((random(Utilities->SignalChangeEventsPerFailure) == 0) && !TE.Failed && (Utilities->DelayMode != Nil) &&
-                        (TrainMode == Timetable) && !TE.CallingOnSet) //can't fail twice and a calling on signal can't fail
+                    if((random(Utilities->SignalChangeEventsPerFailure) == 0) && !TE.Failed && (Utilities->FailureMode != FNil) &&
+                        (TrainMode == Timetable) && !TE.CallingOnSet) //can't fail twice, calling on signal can't fail
                     {
                         TTrack::TInfrastructureFailureEntry IFE;
                         IFE.TVPos = LeadElement;
@@ -3877,9 +3888,10 @@ when Straddle == LeadMidLag
 */
 
 // check if running past a red signal without permission
-    if((Track->TrackElementAt(352, CurrentTrackVectorPosition).Config[Track->GetNonPointsOppositeLinkPos(EntryPos)] == Signal) && (Track->TrackElementAt(353,
-        CurrentTrackVectorPosition).Attribute == 0) && (EntrySpeed > 1) && !AllowedToPassRedSignal)
-    {
+    if((Track->TrackElementAt(352, CurrentTrackVectorPosition).Config[Track->GetNonPointsOppositeLinkPos(EntryPos)] == Signal) &&
+        (Track->TrackElementAt(353, CurrentTrackVectorPosition).Attribute == 0) && (EntrySpeed > 1) && !AllowedToPassRedSignal &&
+        !Track->TrackElementAt(1553, CurrentTrackVectorPosition).CallingOnSet)
+    {    //CallingOnSet added at v2.14.0
         SPADFlag = true; // user has to intervene to reset & restart after spad
     }
     if(!SPADFlag)
@@ -11334,6 +11346,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
         TTimetableLocationType LocationType;
         TTimetableShuttleLinkType ShuttleLinkType;
         bool FinishFlag = false;
+        bool NewTrain = false;//added at v2.14.0 to record created trains for later zero power checks
         for(int x = 0; x < CommaCount + 1; x++)
         {
             if((CommaCount == 0) || (x < CommaCount))
@@ -11366,6 +11379,10 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                     Utilities->CallLogPop(756);
                     return(false);
                 }
+                if((Second == "Snt") || (Second == "Snt-sh")) //added at v2.14.0, see above
+                {
+                    NewTrain = true;
+                }
                 // check if warning for Frh or Fjo & reject
                 if(Warning && (Second == "Frh"))
                 {
@@ -11380,6 +11397,32 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                     Utilities->CallLogPop(1794);
                     return(false);
                 }
+                //below added at v2.14.0 to prevent unpowered trains attempting to be joined by (Second == jbo), split (Second -- fsp or rsp),
+                //or change direction.  Form a new service dealt with below for zero power as it's a finish event.
+                if(NewTrain && (PowerAtRail < 1) && (Second == "jbo"))
+                {
+                    TimetableMessage(GiveMessages, "Error in line - '" + OneEntry +
+                                     "': a train created without power can't 'be joined by' another train (i.e. can't include command 'jbo'), "
+                                     "use command 'Fjo' (i.e. 'join' another train) instead immediately after the line containing 'Snt', and use "
+                                     "command 'jbo' for the train it is to join.");
+                    Utilities->CallLogPop(2545);
+                    return(false);
+                }
+                if(NewTrain && (PowerAtRail < 1) && ((Second == "fsp") || (Second == "rsp")))
+                {
+                    TimetableMessage(GiveMessages, "Error in line - '" + OneEntry +
+                                     "': a train created without power can't split.");
+                    Utilities->CallLogPop(2546);
+                    return(false);
+                }
+                if(NewTrain && (PowerAtRail < 1) && (Second == "cdt"))
+                {
+                    TimetableMessage(GiveMessages, "Error in line - '" + OneEntry +
+                                     "': a train created without power can't change direction under timetable control.");
+                    Utilities->CallLogPop(2547);
+                    return(false);
+                }
+                //end of new additions
                 if(x == 0) // should be start event
                 {
                     if(SequenceType != Start)
@@ -11591,6 +11634,15 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                         Utilities->CallLogPop(757);
                         return(false);
                     }
+                    //below added at v2.14.0 to prevent unpowered trains attempting to form a new service.
+                    if(NewTrain && (PowerAtRail < 1) && ((Second == "Fns") || (Second == "Frh-sh") || (Second == "Fns-sh") || (Second == "F-nshs")))
+                    {
+                        TimetableMessage(GiveMessages, "Error in line - '" + OneEntry +
+                                         "': a train created without power can't form a new service.");
+                        Utilities->CallLogPop(2548);
+                        return(false);
+                    }
+                    //end of new additions
                     if(SequenceType != Finish)
                     {
                         TimetableMessage(GiveMessages, "Error in timetable - last event should be a finish: '" + OneEntry + "'");
@@ -16076,7 +16128,7 @@ void TTrainController::SaveTrainDataVectorToFile(int Caller)
 
 void TTrainController::StopTTClockMessage(int Caller, AnsiString Message)
 // ShowMessage stops everything so this function used where a message is needed when may be in Operating mode.
-// The timetable Restart and BaseTimes are reset so the timetable clock stops & restarts when 'OK' button pressed
+// The timetable Restart and BaseTimes are reset so the timetable clock stops & restarts when 'OK' button pressed (in ClockTimer2 when StopTTClockFlag is false)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",StopTTClockMessage," + Message);
     StopTTClockFlag = true;    // so TTClock stopped during MasterClockTimer function

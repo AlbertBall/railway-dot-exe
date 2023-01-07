@@ -84,7 +84,7 @@ var sectionId = 'dynsection-18';
 <!-- Node7 -->
 <g id="node6" class="node">
 <title>Node7</title>
-<g id="a_node6"><a xlink:href="class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" target="_top" xlink:title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ...">
+<g id="a_node6"><a xlink:href="class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" target="_top" xlink:title="Similar to PrefDirMarker but used only to display EveryPrefDir &#45; red for unidirectional PrefDir &amp; gre...">
 <polygon fill="white" stroke="black" points="1344.5,-485.5 1344.5,-515.5 1472.5,-515.5 1472.5,-485.5 1344.5,-485.5"/>
 <text text-anchor="start" x="1352.5" y="-503.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOnePrefDir::EveryPrefDir</text>
 <text text-anchor="middle" x="1408.5" y="-492.5" font-family="Helvetica,sans-Serif" font-size="10.00">Marker</text>

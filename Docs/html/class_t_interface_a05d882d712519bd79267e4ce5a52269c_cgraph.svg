@@ -48,7 +48,7 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 1077;
 var viewHeight = 2322;
-var sectionId = 'dynsection-275';
+var sectionId = 'dynsection-279';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
@@ -171,7 +171,7 @@ var sectionId = 'dynsection-275';
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" target="_top" xlink:title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ...">
+<g id="a_node6"><a xlink:href="class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" target="_top" xlink:title="Similar to PrefDirMarker but used only to display EveryPrefDir &#45; red for unidirectional PrefDir &amp; gre...">
 <polygon fill="white" stroke="black" points="574,-796 574,-826 702,-826 702,-796 574,-796"/>
 <text text-anchor="start" x="582" y="-814" font-family="Helvetica,sans-Serif" font-size="10.00">TOnePrefDir::EveryPrefDir</text>
 <text text-anchor="middle" x="638" y="-803" font-family="Helvetica,sans-Serif" font-size="10.00">Marker</text>
@@ -402,7 +402,7 @@ var sectionId = 'dynsection-275';
 <!-- Node30 -->
 <g id="node27" class="node">
 <title>Node30</title>
-<g id="a_node27"><a xlink:href="class_t_all_routes.html#af0a34aa05027527d256566ae52600583" target="_top" xlink:title="Calls PrefDirMarker for all routes, with RouteCall set to identify a route call, and BuildingPrefDir ...">
+<g id="a_node27"><a xlink:href="class_t_all_routes.html#af0a34aa05027527d256566ae52600583" target="_top" xlink:title="Calls PrefDirMarker to display all routes, with RouteCall set to identify a route call,...">
 <polygon fill="white" stroke="black" points="776,-218.5 776,-237.5 910,-237.5 910,-218.5 776,-218.5"/>
 <text text-anchor="middle" x="843" y="-225.5" font-family="Helvetica,sans-Serif" font-size="10.00">TAllRoutes::MarkAllRoutes</text>
 </a>
@@ -511,7 +511,7 @@ var sectionId = 'dynsection-275';
 <!-- Node41 -->
 <g id="node36" class="node">
 <title>Node41</title>
-<g id="a_node36"><a xlink:href="class_t_one_pref_dir.html#aef8388386635d73a921fae7ce43f5214" target="_top" xlink:title="PrefDir and route track marker, including direction markers.">
+<g id="a_node36"><a xlink:href="class_t_one_pref_dir.html#aef8388386635d73a921fae7ce43f5214" target="_top" xlink:title="PrefDir and route track display function, including direction markers.">
 <polygon fill="white" stroke="black" points="776,-1278.5 776,-1297.5 910,-1297.5 910,-1278.5 776,-1278.5"/>
 <text text-anchor="middle" x="843" y="-1285.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOnePrefDir::PrefDirMarker</text>
 </a>

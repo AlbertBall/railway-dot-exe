@@ -53,7 +53,7 @@ div.WordSection1
 
 <p>Three types of route are available by left clicking the appropriate button:
 automatic signal routes <img width=24 height=24
-src="../images/RailSim2_AUTOSIG.gif"> (blue button), preferred direction routes
+src="../images/RailSim2_AUTOSIG.gif"> (two half-size blue buttons), preferred direction routes
 <img width=24 height=24 src="../images/RailSim2_PREFSIG.gif"> (two half-size green buttons),
 and unrestricted routes <img width=24 height=24
 src="../images/RailSim2_NONSIG.gif"> (red button). Automatic signal and
@@ -67,7 +67,7 @@ and last elements of the route. A route that does not involve any point changes
 will be set in about half a second, but if point changes are needed then about
 2.5 seconds are required. In 'Pre-start' mode routes are set instantly.</p>
 
-<p>Preferred direction routes can be set in two different ways.  For authentic operation they should be set from a signal, buffer or continuation to the next signal, buffer or continuation (top half-size button), but to allow for quicker route setting they can be set from a signal, buffer or continuation to any following signal, buffer or continuation - intermediate signals can be skipped (bottom half-size button).  Automatic signal routes must be set from a signal, buffer or continuation to the next signal, buffer or continuation.</p>
+<p>Preferred direction (green) and automatic signa (blue) routes can be set in two different ways.  For authentic operation they should be set from a signal or continuation (or buffer for preferred direction) to the next signal/continuation/buffer - top half-size buttons, but to allow for quicker route setting they can be set from a signal/continuation/buffer to any following signal/continuation/buffer (intermediate signals being skipped) - bottom half-size buttons.</p>
 
 <p>Preferred direction routes and unrestricted routes are cancelled automatically as a
 train runs along them, and all signals passed change to red. Automatic signal
@@ -78,7 +78,7 @@ absence of any following trains) at the same time the next earlier signal
 changes to yellow, the next earlier signal to that one changes to double
 yellow, and the next earlier one to green. That is for four-aspect signals,
 three-aspect signals omit the double yellow and two-aspect signals omit both
-yellow aspects. In this way trains may proceed from section to section without
+yellow aspects. Facing ground signals clear but don't affect the aspect changes for non-ground signals. In this way trains may proceed from section to section without
 intervention by the signaller. If an automatic signal route ends at a
 continuation then when trains pass the last signal it changes to red as normal,
 and after a time interval it will change (for four-aspect signals) to yellow,
@@ -95,10 +95,7 @@ may select either depending on how the points are set. To force a particular
 selection set the points for the favoured route. Similarly if it is found that
 RailOS cannot find a suitable route even though you know there is one,
 probably because there are facing points with so many ways out that the search
-takes too long, then set one or more points for the desired route. Note though
-that sometimes a preferred direction or automatic signal route can't be set
-because the preferred directions won't allow it, and that isn't necessarily
-obvious during operation, so it's advisable to make sure that preferred directions are set on all tracks that are to be used in normal operation.</p>
+takes too long, then set one or more facing points for the desired route beginning with those closest to the start point. Note though that sometimes a preferred direction or automatic signal route can't be set because the preferred directions won't allow it, and that isn't necessarily obvious during operation, so it's advisable to make sure that preferred directions are set on all tracks that are to be used in normal operation.</p>
 
 <p>When selected, routes may be truncated or cancelled, by left clicking the
 'route cancel' <img width=24 height=24 src="../images/RailSim2_ROUTECANCEL.gif"> button

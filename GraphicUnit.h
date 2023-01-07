@@ -326,6 +326,8 @@ public:
     Graphics::TBitmap *PictureImage;
     Graphics::TBitmap *PrefTop;
     Graphics::TBitmap *PrefBottom;
+    Graphics::TBitmap *AutoTop; //added at v2.14.0
+    Graphics::TBitmap *AutoBottom; //added at v2.14.0
     Graphics::TBitmap *RouteCancel;
     Graphics::TBitmap *SaveRailway;
     Graphics::TBitmap *SaveSession;

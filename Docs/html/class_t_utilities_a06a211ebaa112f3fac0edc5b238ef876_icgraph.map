@@ -1,52 +1,52 @@
 <map id="TUtilities::SaveFileBool" name="TUtilities::SaveFileBool">
-<area shape="rect" id="node1" title="stores &#39;1&#39; if the bool is true or &#39;0&#39; if false to the file, then a CR" alt="" coords="1203,1897,1357,1923"/>
-<area shape="rect" id="node2" href="$class_t_track.html#a6e1031277500eadfd3a0751e4ca4057b" title="Save all changing vector values (used for error file)" alt="" coords="949,1753,1154,1779"/>
-<area shape="rect" id="node3" href="$class_t_interface.html#a0109f801142d4fa3becae22e23b84163" title="Save the error log after an error has been thrown &#45; no need for a caller." alt="" coords="495,1853,657,1879"/>
-<area shape="rect" id="node42" href="$class_t_interface.html#aee36e0cef9c182125b1095ceaf37a568" title="Save interface part of a session file." alt="" coords="721,2029,884,2055"/>
-<area shape="rect" id="node43" href="$class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25" title="Save a session file &#45; see LoadSession for details of additions to the session file." alt="" coords="495,2079,657,2106"/>
-<area shape="rect" id="node44" href="$class_t_train.html#ac414e9e4fd7e25c11e09678dd4dc7944" title="Data for a single train is saved to a session file." alt="" coords="955,1882,1147,1909"/>
-<area shape="rect" id="node46" href="$class_t_one_pref_dir.html#a3d115535b2e2d2ea05e210997a3f525c" title="Save the preferred direction vector to a file." alt="" coords="968,2173,1135,2215"/>
-<area shape="rect" id="node49" href="$class_t_one_pref_dir.html#a8871c609a1586aa9c4f723afaccd2502" title="Save the search vector to a file." alt="" coords="948,1813,1155,1839"/>
-<area shape="rect" id="node50" href="$class_t_track.html#aabbf9502a68e95e1f9d0b8571d9fb57c" title="Save all vector values to the session file." alt="" coords="708,1963,897,2004"/>
-<area shape="rect" id="node4" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="283,1167,418,1194"/>
-<area shape="rect" id="node5" href="$class_t_interface.html#a7ccec66d1d0a81f124397af39f43da32" title=" " alt="" coords="17,567,195,608"/>
-<area shape="rect" id="node6" href="$class_t_interface.html#a30904d608111ce6452a9861d86b64267" title=" " alt="" coords="19,632,193,673"/>
-<area shape="rect" id="node7" href="$class_t_interface.html#a1b1a4260e251c9bd5f48fd6c3432e7a5" title=" " alt="" coords="13,697,199,739"/>
-<area shape="rect" id="node8" href="$class_t_interface.html#a0abab134f4994b02507e1e2d3f31cd77" title=" " alt="" coords="15,763,197,804"/>
-<area shape="rect" id="node9" href="$class_t_interface.html#aa20c05bf2d6c23035a10a89796334d0f" title=" " alt="" coords="20,828,192,869"/>
-<area shape="rect" id="node10" href="$class_t_interface.html#a10494e62a7bb4e7114ab4d98e18499f1" title=" " alt="" coords="17,893,195,935"/>
-<area shape="rect" id="node11" href="$class_t_interface.html#a189a4b05f27d6b5ec8b9a90ec1a9cc50" title=" " alt="" coords="17,959,195,1000"/>
-<area shape="rect" id="node12" href="$class_t_interface.html#af99ae89b6c7a2d37bf49cf0b5fcc3f1f" title=" " alt="" coords="29,1025,183,1051"/>
-<area shape="rect" id="node13" href="$class_t_interface.html#a75f68c918750c0e007ea7a85d718e2ab" title=" " alt="" coords="21,1075,191,1102"/>
-<area shape="rect" id="node14" href="$class_t_interface.html#a36ad38f4b485bba874129aeb3a20d926" title=" " alt="" coords="17,1127,195,1168"/>
-<area shape="rect" id="node15" href="$class_t_interface.html#a28579472104533fb5fd01066a22fbb5b" title=" " alt="" coords="20,1192,192,1233"/>
-<area shape="rect" id="node16" href="$class_t_interface.html#a0e9af41ff305fe2813385fce38b73206" title=" " alt="" coords="5,1257,207,1299"/>
-<area shape="rect" id="node17" href="$class_t_interface.html#a237c151513ca8adca6cd1006cc2fc66f" title=" " alt="" coords="15,1323,197,1364"/>
-<area shape="rect" id="node18" href="$class_t_interface.html#a24d79aa4745e495daa07bb5ce412e75f" title=" " alt="" coords="19,1388,193,1429"/>
-<area shape="rect" id="node19" href="$class_t_interface.html#ab1799665ee1e4212186f80ab49acf1e1" title=" " alt="" coords="17,1453,195,1495"/>
-<area shape="rect" id="node20" href="$class_t_interface.html#ae758bf4183bb5aa2a7cd83e06acd89b6" title=" " alt="" coords="16,1519,196,1560"/>
-<area shape="rect" id="node21" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="16,1584,196,1625"/>
-<area shape="rect" id="node22" href="$class_t_interface.html#a6fb1db3295ef42cb1b6f20bc142fa502" title=" " alt="" coords="21,1649,191,1691"/>
-<area shape="rect" id="node23" href="$class_t_interface.html#aaaf32c3c815553f7ba70698e0f0071bb" title=" " alt="" coords="15,1715,197,1756"/>
-<area shape="rect" id="node24" href="$class_t_interface.html#a928eba983ac5132e1ae7799f8330451e" title=" " alt="" coords="25,1780,187,1821"/>
-<area shape="rect" id="node25" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="27,2173,185,2199"/>
-<area shape="rect" id="node26" href="$class_t_interface.html#a77b4d0c5298ea6b8968af152fd8b7b8b" title=" " alt="" coords="17,1845,195,1887"/>
-<area shape="rect" id="node27" href="$class_t_interface.html#a7aca81081a7983f1389c923e95c7afee" title=" " alt="" coords="15,1911,197,1952"/>
-<area shape="rect" id="node28" href="$class_t_interface.html#a424a7eb780461c1acb396feb21f52062" title=" " alt="" coords="19,1976,193,2017"/>
-<area shape="rect" id="node29" href="$class_t_interface.html#adc0dd871fdd70ff11ada7a0ddd549e8e" title=" " alt="" coords="7,2041,205,2083"/>
-<area shape="rect" id="node30" href="$class_t_interface.html#a117ba58c37a617edeeb033fcdff841e9" title=" " alt="" coords="15,2107,197,2148"/>
-<area shape="rect" id="node31" href="$class_t_interface.html#a6379037c7970acda71188947cb3ba6b2" title=" " alt="" coords="13,5,199,47"/>
-<area shape="rect" id="node32" href="$class_t_interface.html#a1c8fab7fa2f1be662f2d7418e95e3a63" title=" " alt="" coords="16,71,196,112"/>
-<area shape="rect" id="node33" href="$class_t_interface.html#ae6e977c9dfdfbde9924ceefd19d7d0d3" title=" " alt="" coords="10,137,202,163"/>
-<area shape="rect" id="node34" href="$class_t_interface.html#acd41ae8fa5d16248a867472d9c8ae646" title=" " alt="" coords="11,188,201,229"/>
-<area shape="rect" id="node35" href="$class_t_interface.html#af9cb95043f5276df55cb6809e104c93a" title=" " alt="" coords="25,253,187,295"/>
-<area shape="rect" id="node36" href="$class_t_interface.html#aff2c1cd6ed2d45fdcf6392a85a6d9415" title=" " alt="" coords="16,319,196,360"/>
-<area shape="rect" id="node37" href="$class_t_interface.html#a3136530959237eaa57486f4f48357855" title=" " alt="" coords="21,384,191,425"/>
-<area shape="rect" id="node38" href="$class_t_interface.html#abdd4a70649a10a29c9a069d040072808" title=" " alt="" coords="22,449,190,491"/>
-<area shape="rect" id="node39" href="$class_t_interface.html#ac53c02024590fc44371ed3b7efc3ddde" title=" " alt="" coords="21,515,191,542"/>
-<area shape="rect" id="node40" href="$class_t_interface.html#a4f373f26e99a3dc0bc7effc71ca25dc0" title=" " alt="" coords="9,2289,203,2331"/>
-<area shape="rect" id="node41" href="$class_t_interface.html#a7699c9c408064623d335d3452b60f289" title=" " alt="" coords="21,2224,191,2265"/>
-<area shape="rect" id="node45" href="$class_t_train_controller.html#afa594bfc6b628d21d02a31c3a13c3a0a" title="save trains to a session file" alt="" coords="705,1845,900,1887"/>
-<area shape="rect" id="node47" href="$class_t_interface.html#a1b3189e6a50555f5952652d12b978e57" title="Used to save a railway when not already saved &#45; e.g. when not already named or when the &#39;Save as&#39; men..." alt="" coords="255,2282,447,2309"/>
-<area shape="rect" id="node48" href="$class_t_all_routes.html#a4eeafc071c52e16eb1cbe5fb14b2561f" title="Save railway route information to a session file or an error file." alt="" coords="721,2130,884,2157"/>
+<area shape="rect" id="node1" title="stores &#39;1&#39; if the bool is true or &#39;0&#39; if false to the file, then a CR" alt="" coords="1177,1794,1332,1821"/>
+<area shape="rect" id="node2" href="$class_t_track.html#a6e1031277500eadfd3a0751e4ca4057b" title="Save all changing vector values (used for error file)" alt="" coords="923,1650,1129,1677"/>
+<area shape="rect" id="node3" href="$class_t_interface.html#a0109f801142d4fa3becae22e23b84163" title="Save the error log after an error has been thrown &#45; no need for a caller." alt="" coords="453,1750,616,1777"/>
+<area shape="rect" id="node41" href="$class_t_interface.html#aee36e0cef9c182125b1095ceaf37a568" title="Save interface part of a session file." alt="" coords="696,1926,859,1953"/>
+<area shape="rect" id="node42" href="$class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25" title="Save a session file &#45; see LoadSession for details of additions to the session file." alt="" coords="454,1977,615,2003"/>
+<area shape="rect" id="node43" href="$class_t_train.html#ac414e9e4fd7e25c11e09678dd4dc7944" title="Data for a single train is saved to a session file." alt="" coords="930,1779,1122,1806"/>
+<area shape="rect" id="node45" href="$class_t_one_pref_dir.html#a3d115535b2e2d2ea05e210997a3f525c" title="Save the preferred direction vector to a file." alt="" coords="943,2071,1109,2112"/>
+<area shape="rect" id="node49" href="$class_t_one_pref_dir.html#a8871c609a1586aa9c4f723afaccd2502" title="Save the search vector to a file." alt="" coords="923,1710,1129,1737"/>
+<area shape="rect" id="node50" href="$class_t_track.html#aabbf9502a68e95e1f9d0b8571d9fb57c" title="Save all vector values to the session file." alt="" coords="683,1860,872,1901"/>
+<area shape="rect" id="node4" href="$class_t_interface.html#a4f3a25665e2266441217849f947a1adf" title="The error logging routine, called when an error is detected." alt="" coords="255,1147,389,1174"/>
+<area shape="rect" id="node5" href="$class_t_interface.html#a7ccec66d1d0a81f124397af39f43da32" title=" " alt="" coords="17,384,195,425"/>
+<area shape="rect" id="node6" href="$class_t_interface.html#a30904d608111ce6452a9861d86b64267" title=" " alt="" coords="19,449,193,491"/>
+<area shape="rect" id="node7" href="$class_t_interface.html#a1b1a4260e251c9bd5f48fd6c3432e7a5" title=" " alt="" coords="13,515,199,556"/>
+<area shape="rect" id="node8" href="$class_t_interface.html#a0abab134f4994b02507e1e2d3f31cd77" title=" " alt="" coords="15,580,197,621"/>
+<area shape="rect" id="node9" href="$class_t_interface.html#aa20c05bf2d6c23035a10a89796334d0f" title=" " alt="" coords="20,645,192,687"/>
+<area shape="rect" id="node10" href="$class_t_interface.html#a10494e62a7bb4e7114ab4d98e18499f1" title=" " alt="" coords="17,711,195,752"/>
+<area shape="rect" id="node11" href="$class_t_interface.html#a189a4b05f27d6b5ec8b9a90ec1a9cc50" title=" " alt="" coords="17,776,195,817"/>
+<area shape="rect" id="node12" href="$class_t_interface.html#af99ae89b6c7a2d37bf49cf0b5fcc3f1f" title=" " alt="" coords="29,842,183,869"/>
+<area shape="rect" id="node13" href="$class_t_interface.html#a75f68c918750c0e007ea7a85d718e2ab" title=" " alt="" coords="21,893,191,919"/>
+<area shape="rect" id="node14" href="$class_t_interface.html#a36ad38f4b485bba874129aeb3a20d926" title=" " alt="" coords="17,944,195,985"/>
+<area shape="rect" id="node15" href="$class_t_interface.html#a28579472104533fb5fd01066a22fbb5b" title=" " alt="" coords="20,1009,192,1051"/>
+<area shape="rect" id="node16" href="$class_t_interface.html#a0e9af41ff305fe2813385fce38b73206" title=" " alt="" coords="5,1075,207,1116"/>
+<area shape="rect" id="node17" href="$class_t_interface.html#a237c151513ca8adca6cd1006cc2fc66f" title=" " alt="" coords="15,1140,197,1181"/>
+<area shape="rect" id="node18" href="$class_t_interface.html#a24d79aa4745e495daa07bb5ce412e75f" title=" " alt="" coords="19,1205,193,1247"/>
+<area shape="rect" id="node19" href="$class_t_interface.html#ab1799665ee1e4212186f80ab49acf1e1" title=" " alt="" coords="17,1271,195,1312"/>
+<area shape="rect" id="node20" href="$class_t_interface.html#ae758bf4183bb5aa2a7cd83e06acd89b6" title=" " alt="" coords="16,1336,196,1377"/>
+<area shape="rect" id="node21" href="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff" title=" " alt="" coords="16,1401,196,1443"/>
+<area shape="rect" id="node22" href="$class_t_interface.html#a6fb1db3295ef42cb1b6f20bc142fa502" title=" " alt="" coords="21,1467,191,1508"/>
+<area shape="rect" id="node23" href="$class_t_interface.html#aaaf32c3c815553f7ba70698e0f0071bb" title=" " alt="" coords="15,1532,197,1573"/>
+<area shape="rect" id="node24" href="$class_t_interface.html#a928eba983ac5132e1ae7799f8330451e" title=" " alt="" coords="25,1597,187,1639"/>
+<area shape="rect" id="node25" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="27,2171,185,2198"/>
+<area shape="rect" id="node26" href="$class_t_interface.html#a77b4d0c5298ea6b8968af152fd8b7b8b" title=" " alt="" coords="17,1663,195,1704"/>
+<area shape="rect" id="node27" href="$class_t_interface.html#a7aca81081a7983f1389c923e95c7afee" title=" " alt="" coords="15,1728,197,1769"/>
+<area shape="rect" id="node28" href="$class_t_interface.html#a424a7eb780461c1acb396feb21f52062" title=" " alt="" coords="19,1793,193,1835"/>
+<area shape="rect" id="node29" href="$class_t_interface.html#adc0dd871fdd70ff11ada7a0ddd549e8e" title=" " alt="" coords="7,1859,205,1900"/>
+<area shape="rect" id="node30" href="$class_t_interface.html#a117ba58c37a617edeeb033fcdff841e9" title=" " alt="" coords="15,1924,197,1965"/>
+<area shape="rect" id="node31" href="$class_t_interface.html#a6379037c7970acda71188947cb3ba6b2" title=" " alt="" coords="13,1989,199,2031"/>
+<area shape="rect" id="node32" href="$class_t_interface.html#a1c8fab7fa2f1be662f2d7418e95e3a63" title=" " alt="" coords="16,2055,196,2096"/>
+<area shape="rect" id="node33" href="$class_t_interface.html#ae6e977c9dfdfbde9924ceefd19d7d0d3" title=" " alt="" coords="10,2121,202,2147"/>
+<area shape="rect" id="node34" href="$class_t_interface.html#acd41ae8fa5d16248a867472d9c8ae646" title=" " alt="" coords="11,5,201,47"/>
+<area shape="rect" id="node35" href="$class_t_interface.html#af9cb95043f5276df55cb6809e104c93a" title=" " alt="" coords="25,71,187,112"/>
+<area shape="rect" id="node36" href="$class_t_interface.html#aff2c1cd6ed2d45fdcf6392a85a6d9415" title=" " alt="" coords="16,136,196,177"/>
+<area shape="rect" id="node37" href="$class_t_interface.html#a3136530959237eaa57486f4f48357855" title=" " alt="" coords="21,201,191,243"/>
+<area shape="rect" id="node38" href="$class_t_interface.html#abdd4a70649a10a29c9a069d040072808" title=" " alt="" coords="22,267,190,308"/>
+<area shape="rect" id="node39" href="$class_t_interface.html#ac53c02024590fc44371ed3b7efc3ddde" title=" " alt="" coords="21,333,191,359"/>
+<area shape="rect" id="node40" href="$class_t_interface.html#a7699c9c408064623d335d3452b60f289" title=" " alt="" coords="21,2223,191,2264"/>
+<area shape="rect" id="node44" href="$class_t_train_controller.html#afa594bfc6b628d21d02a31c3a13c3a0a" title="save trains to a session file" alt="" coords="680,1743,875,1784"/>
+<area shape="rect" id="node46" href="$class_t_interface.html#a1b3189e6a50555f5952652d12b978e57" title="Used to save a railway when not already saved &#45; e.g. when not already named or when the &#39;Save as&#39; men..." alt="" coords="681,2179,873,2206"/>
+<area shape="rect" id="node47" href="$class_t_interface.html#a4f373f26e99a3dc0bc7effc71ca25dc0" title=" " alt="" coords="437,2143,632,2184"/>
+<area shape="rect" id="node48" href="$class_t_all_routes.html#a4eeafc071c52e16eb1cbe5fb14b2561f" title="Save railway route information to a session file or an error file." alt="" coords="696,2027,859,2054"/>
 </map>

@@ -5,7 +5,7 @@
 <area shape="rect" id="node4" href="$class_t_interface.html#aba2779e0510602873e1a7e0ea7144235" title="Check for bidir crossover between two single PD lines. Used in PD check function." alt="" coords="980,141,1185,183"/>
 <area shape="rect" id="node5" href="$class_t_one_pref_dir.html#a8a7ddf3981800ec0df1225c9e5aa52c2" title="Diagnostic validity check." alt="" coords="991,325,1174,367"/>
 <area shape="rect" id="node6" href="$class_t_one_pref_dir.html#a65df51092983945e1fe3c20bf8917a39" title="Used when a preferred direction has been set to add all the elements to EveryPrefDir,..." alt="" coords="744,184,912,225"/>
-<area shape="rect" id="node22" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="997,1168,1168,1209"/>
+<area shape="rect" id="node22" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to display EveryPrefDir &#45; red for unidirectional PrefDir &amp; gre..." alt="" coords="997,1168,1168,1209"/>
 <area shape="rect" id="node37" href="$class_t_interface.html#a3cf2db0424e05908b20a97130895d056" title=" " alt="" coords="475,1588,659,1629"/>
 <area shape="rect" id="node38" href="$class_t_interface.html#aa6e7359ece526e43589456e9a31851a0" title=" " alt="" coords="483,1653,651,1695"/>
 <area shape="rect" id="node41" href="$class_t_one_pref_dir.html#a54e50116bec37610fcb000bc21189471" title="Finds a pref dir element that is compatible and links to another element at given vector number and l..." alt="" coords="999,1369,1166,1411"/>

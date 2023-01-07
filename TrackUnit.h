@@ -153,7 +153,7 @@ public: // everything uses these - should really have Gets & Sets but too many t
 ///< Used for track at platforms and non-station named locations to mark the train front element stop position, there are two for the two directions of travel, set to -1 if not used
     int TrainIDOnElement, TrainIDOnBridgeOrFailedPointOrigSpeedLimit01, TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
 ///< Set to the TrainID value for a bridge when a train is present on the element, bridges can have two trains present so the ...01 and ...23 values give the TrainIDs for track with link positions [0] & [1], and [2] & [3] respectively, set to -1 if no train present
-///< For a failed point store the original speedlimits, names changed at v2.13.0 to cater for failed points
+///< For a failed point store the original speedlimits, names changed at v2.13.0 to cater for failed points (OK as these not used for points, only bridges)
     enum
 ///< added at version 0.6
     {
@@ -739,7 +739,7 @@ can't have a route set while changing; can't be opened while a route is set; and
     TSigElement SigTableGroundSignal[40];
 ///< new at version 0.6 for ground signals
 
-    TSigElement FailedSigTable[8];
+    TSigElement FailedSigTable[8], FailedGroundSigTable[8];
 ///< table of failed signals added at v2.13.0
 
     AnsiString RouteFailMessage;
@@ -1238,10 +1238,12 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
     void ResetAnyNonMatchingGaps(int Caller);
 /// Set all LC attributes to 0 (closed to trains)
     void ResetLevelCrossings(int Caller);
-/// Called on exit from operation to reset all points to non-diverging or to left fork (Attribute = 0)
+/// Called on exit from operation to reset all points to non-diverging or to left fork (Attribute = 0), failed to false & clear FailedPointsVector
     void ResetPoints(int Caller);
-/// Called on exit from operation to reset all signals to red (Attribute = 0)
+/// Called on exit from operation to reset all signals to red (Attribute = 0), failed to false & clear FailedSignalVector
     void ResetSignals(int Caller);
+/// Called on exit from operation to reset failed to false for all simple track elements & clear TSRVector (//added at v2.14.0)
+    void ResetTSRs(int Caller);
 /// Save all changing vector values (used for error file)
     void SaveChangingLCVector(int Caller, std::ofstream &OutFile);
 /// Save all vector values to the session file
@@ -1470,7 +1472,7 @@ public:
     void LoadOldPrefDir(int Caller, std::ifstream &VecFile);
 /// Load a vector and map of preferred directions from the file
     void LoadPrefDir(int Caller, std::ifstream &VecFile);
-/// PrefDir and route track marker, including direction markers.
+/// PrefDir and route track display function, including direction markers.
 /**  Function used for both PrefDirs (PrefDirRoute == PrefDirCall) and routes (PrefDirRoute == RouteCall).
 The graphics for marker colours and direction are already stored in all PrefDirElements in TOnePrefDir and TOneRoute, and this
 function is called to display them, all in the case of a PrefDir, but for a route only the first and last elements have direction
@@ -1494,7 +1496,7 @@ PrefDir (BuildingPrefDir true) then the start and end rectangles are also displa
     void ConsolidatePrefDirs(int Caller, TOnePrefDir *InputPrefDir);
 /// Erase element at HLoc and VLoc from the PrefDirVector and from the 4MultiMap. Note that this entails erasing up to four elements (2 directions and 2 tracks for 4-entry elements).
     void EraseFromPrefDirVectorAnd4MultiMap(int Caller, int HLoc, int VLoc);
-/// Similar to PrefDirMarker but used only to mark EveryPrefDir - red for unidirectional PrefDir & green for bidirectional. Colours taken from the route colours. Plot red first so green overwrites for bidirectional points.
+/// Similar to PrefDirMarker but used only to display EveryPrefDir - red for unidirectional PrefDir & green for bidirectional. Colours taken from the route colours. Plot red first so green overwrites for bidirectional points.
     void EveryPrefDirMarker(int Caller, TDisplay *Disp);
 /// After a track element is erased the preferred direction elements are likely to be affected. This function erases any preferred direction elements that either correspond to the erased track element, or were linked to it
     void RealignAfterTrackErase(int Caller, int ErasedTrackVectorPosition);
@@ -1595,7 +1597,7 @@ public:
     bool SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrackElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID, bool RecursiveCall);
 /// Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called recursively, if recursive RecursiveCall is true (added at v2.13.0)
     bool SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID, TOnePrefDir *EveryPrefDir,
-                                 bool ConsecSignals, int EndSelectPosition, bool AutoSigsFlag, bool RecursiveCall);
+        bool ConsecSignals, int EndSelectPosition, bool AutoSigsFlag, bool RecursiveCall);
 /// Called by TAllRoutes::SetAllRearwardsSignals to set rearwards signals from a specified starting position.  If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects.
     bool SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribute, int PrefDirVectorStartPosition) const;
 /// Check incorporated in route search routines after have found a legitimate route, returns false for signal failure & deals with graphics & messages
@@ -1814,7 +1816,7 @@ so that it can be re-established later.*/
     void DecrementRouteElementNumbersInRoute2MultiMap(int Caller, int RouteNumber, unsigned int ErasedElementNumber);
 /// After a route has been erased from AllRoutesVector and its entries from Route2MultiMap, this function examines all the remaining entries in Route2MultiMap to see if their RouteNumbers exceed that for the erased route.  Where this is so the RouteNumber is decremented.
     void DecrementRouteNumbersInRoute2MultiMap(int Caller, int RouteNumber);
-/// Calls PrefDirMarker for all routes, with RouteCall set to identify a route call, and BuildingPrefDir false.
+/// Calls PrefDirMarker to display all routes, with RouteCall set to identify a route call, and BuildingPrefDir false.
     void MarkAllRoutes(int Caller, TDisplay *Disp);
 /// Erases the route element from Route2MultiMap and from the PrefDirVector.
     void RemoveRouteElement(int Caller, int HLoc, int VLoc, int ELink);

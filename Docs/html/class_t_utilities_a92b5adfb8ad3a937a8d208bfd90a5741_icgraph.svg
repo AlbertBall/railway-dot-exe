@@ -94,54 +94,54 @@ var sectionId = 'dynsection-27';
 <path fill="none" stroke="midnightblue" d="M908.51,-673.99C894.91,-703.52 864.17,-759.38 818,-782 683.85,-847.72 622.51,-823.73 482,-773 445.16,-759.7 410.66,-727.1 394.92,-710.73"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="911.76,-675.31 912.6,-664.75 905.35,-672.48 911.76,-675.31"/>
 </g>
-<!-- Node191 -->
+<!-- Node186 -->
 <g id="node44" class="node">
-<title>Node191</title>
+<title>Node186</title>
 <g id="a_node44"><a xlink:href="class_t_interface.html#aee36e0cef9c182125b1095ceaf37a568" target="_top" xlink:title="Save interface part of a session file.">
 <polygon fill="white" stroke="black" points="494,-525.5 494,-544.5 616,-544.5 616,-525.5 494,-525.5"/>
 <text text-anchor="middle" x="555" y="-532.5" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::SaveInterface</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node191 -->
+<!-- Node1&#45;&gt;Node186 -->
 <g id="edge44" class="edge">
-<title>Node1&#45;&gt;Node191</title>
+<title>Node1&#45;&gt;Node186</title>
 <path fill="none" stroke="midnightblue" d="M894.77,-639.62C875.44,-626.57 845.98,-608.25 818,-597 751.32,-570.19 670.23,-553.22 616.09,-543.94"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="892.92,-642.59 903.15,-645.36 896.88,-636.82 892.92,-642.59"/>
 </g>
-<!-- Node192 -->
+<!-- Node187 -->
 <g id="node45" class="node">
-<title>Node192</title>
+<title>Node187</title>
 <g id="a_node45"><a xlink:href="class_t_interface.html#a3362cfff4fa746fdb4871fe9d6c5ba25" target="_top" xlink:title="Save a session file &#45; see LoadSession for details of additions to the session file.">
 <polygon fill="white" stroke="black" points="324.5,-569.5 324.5,-588.5 445.5,-588.5 445.5,-569.5 324.5,-569.5"/>
 <text text-anchor="middle" x="385" y="-576.5" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::SaveSession</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node192 -->
+<!-- Node1&#45;&gt;Node187 -->
 <g id="edge52" class="edge">
-<title>Node1&#45;&gt;Node192</title>
+<title>Node1&#45;&gt;Node187</title>
 <path fill="none" stroke="midnightblue" d="M904.89,-636.66C888.61,-612.59 856.59,-570.94 818,-550 742.6,-509.08 713.45,-523.59 628,-516 563.37,-510.26 544.17,-497.42 482,-516 446.86,-526.5 412.64,-554.45 396.17,-569.35"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="902.11,-638.8 910.53,-645.23 907.96,-634.95 902.11,-638.8"/>
 </g>
-<!-- Node193 -->
+<!-- Node188 -->
 <g id="node46" class="node">
-<title>Node193</title>
+<title>Node188</title>
 <g id="a_node46"><a xlink:href="class_t_train.html#ac414e9e4fd7e25c11e09678dd4dc7944" target="_top" xlink:title="Data for a single train is saved to a session file.">
 <polygon fill="white" stroke="black" points="669,-708.5 669,-727.5 813,-727.5 813,-708.5 669,-708.5"/>
 <text text-anchor="middle" x="741" y="-715.5" font-family="Helvetica,sans-Serif" font-size="10.00">TTrain::SaveOneSessionTrain</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node193 -->
+<!-- Node1&#45;&gt;Node188 -->
 <g id="edge48" class="edge">
-<title>Node1&#45;&gt;Node193</title>
+<title>Node1&#45;&gt;Node188</title>
 <path fill="none" stroke="midnightblue" d="M880.18,-668.11C846.85,-680.15 798.26,-697.69 768.47,-708.45"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="881.78,-671.26 890,-664.57 879.4,-664.67 881.78,-671.26"/>
 </g>
-<!-- Node195 -->
+<!-- Node190 -->
 <g id="node48" class="node">
-<title>Node195</title>
+<title>Node190</title>
 <g id="a_node48"><a xlink:href="class_t_track.html#aabbf9502a68e95e1f9d0b8571d9fb57c" target="_top" xlink:title="Save all vector values to the session file.">
 <polygon fill="white" stroke="black" points="484,-662 484,-692 626,-692 626,-662 484,-662"/>
 <text text-anchor="start" x="492" y="-680" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::SaveSessionBarriers</text>
@@ -149,15 +149,15 @@ var sectionId = 'dynsection-27';
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node195 -->
+<!-- Node1&#45;&gt;Node190 -->
 <g id="edge53" class="edge">
-<title>Node1&#45;&gt;Node195</title>
+<title>Node1&#45;&gt;Node190</title>
 <path fill="none" stroke="midnightblue" d="M843.37,-659.46C779.91,-663.34 688.64,-668.91 626.08,-672.72"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="843.94,-662.93 853.71,-658.83 843.51,-655.95 843.94,-662.93"/>
 </g>
-<!-- Node196 -->
+<!-- Node191 -->
 <g id="node49" class="node">
-<title>Node196</title>
+<title>Node191</title>
 <g id="a_node49"><a xlink:href="class_t_train_controller.html#ab81acdc0c0ab6e1e321f64170f0f71af" target="_top" xlink:title="save ContinuationAutoSigEntries to a session file">
 <polygon fill="white" stroke="black" points="482,-613 482,-643 628,-643 628,-613 482,-613"/>
 <text text-anchor="start" x="490" y="-631" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::SaveSession</text>
@@ -165,15 +165,15 @@ var sectionId = 'dynsection-27';
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node196 -->
+<!-- Node1&#45;&gt;Node191 -->
 <g id="edge56" class="edge">
-<title>Node1&#45;&gt;Node196</title>
+<title>Node1&#45;&gt;Node191</title>
 <path fill="none" stroke="midnightblue" d="M843.49,-649.53C780.77,-644.83 690.81,-638.1 628.3,-633.41"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="843.47,-653.04 853.71,-650.3 844,-646.06 843.47,-653.04"/>
 </g>
-<!-- Node197 -->
+<!-- Node192 -->
 <g id="node50" class="node">
-<title>Node197</title>
+<title>Node192</title>
 <g id="a_node50"><a xlink:href="class_t_train_controller.html#a57a934999d63367128ca639b9ab3e3ce" target="_top" xlink:title="save locked routes to a session file">
 <polygon fill="white" stroke="black" points="482,-564 482,-594 628,-594 628,-564 482,-564"/>
 <text text-anchor="start" x="490" y="-582" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::SaveSession</text>
@@ -181,9 +181,9 @@ var sectionId = 'dynsection-27';
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node197 -->
+<!-- Node1&#45;&gt;Node192 -->
 <g id="edge59" class="edge">
-<title>Node1&#45;&gt;Node197</title>
+<title>Node1&#45;&gt;Node192</title>
 <path fill="none" stroke="midnightblue" d="M866.81,-643.09C851.21,-639.44 833.9,-635.46 818,-632 753.95,-618.05 680.82,-603.36 628.13,-592.99"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="866.25,-646.56 876.78,-645.44 867.85,-639.74 866.25,-646.56"/>
 </g>
@@ -766,57 +766,57 @@ var sectionId = 'dynsection-27';
 <!-- Node42 -->
 <g id="node40" class="node">
 <title>Node42</title>
-<g id="a_node40"><a xlink:href="class_t_interface.html#a0cf35a6e4a6cfa72b63222acb51f9f74" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="13.5,-39 13.5,-69 137.5,-69 137.5,-39 13.5,-39"/>
-<text text-anchor="start" x="21.5" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::EditTimetable</text>
-<text text-anchor="middle" x="75.5" y="-46" font-family="Helvetica,sans-Serif" font-size="10.00">MenuItemClick</text>
+<g id="a_node40"><a xlink:href="class_t_interface.html#a9cfdb7521877f2c7ab124d0e4f47a0f6" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="13,-39 13,-69 138,-69 138,-39 13,-39"/>
+<text text-anchor="start" x="21" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ExitMenuItem</text>
+<text text-anchor="middle" x="75.5" y="-46" font-family="Helvetica,sans-Serif" font-size="10.00">Click</text>
 </a>
 </g>
 </g>
 <!-- Node4&#45;&gt;Node42 -->
 <g id="edge39" class="edge">
 <title>Node4&#45;&gt;Node42</title>
-<path fill="none" stroke="midnightblue" d="M235.68,-871.19C230.63,-752.92 202.23,-142.88 151,-79 147.33,-74.42 142.79,-70.68 137.78,-67.62"/>
+<path fill="none" stroke="midnightblue" d="M235.68,-871.19C230.63,-752.92 202.23,-142.88 151,-79 147.41,-74.53 143,-70.85 138.13,-67.83"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="232.19,-871.49 236.11,-881.34 239.19,-871.2 232.19,-871.49"/>
 </g>
 <!-- Node43 -->
 <g id="node41" class="node">
 <title>Node43</title>
-<g id="a_node41"><a xlink:href="class_t_interface.html#a9cfdb7521877f2c7ab124d0e4f47a0f6" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="13,-1811 13,-1841 138,-1841 138,-1811 13,-1811"/>
-<text text-anchor="start" x="21" y="-1829" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ExitMenuItem</text>
-<text text-anchor="middle" x="75.5" y="-1818" font-family="Helvetica,sans-Serif" font-size="10.00">Click</text>
+<g id="a_node41"><a xlink:href="class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="13.5,-1811 13.5,-1841 137.5,-1841 137.5,-1811 13.5,-1811"/>
+<text text-anchor="start" x="21.5" y="-1829" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ExitOperation</text>
+<text text-anchor="middle" x="75.5" y="-1818" font-family="Helvetica,sans-Serif" font-size="10.00">ButtonClick</text>
 </a>
 </g>
 </g>
 <!-- Node4&#45;&gt;Node43 -->
 <g id="edge40" class="edge">
 <title>Node4&#45;&gt;Node43</title>
-<path fill="none" stroke="midnightblue" d="M235.93,-910.81C232.13,-1037.41 208.8,-1730 151,-1802 147.43,-1806.45 143.02,-1810.09 138.15,-1813.06"/>
+<path fill="none" stroke="midnightblue" d="M235.93,-910.81C232.13,-1037.41 208.8,-1730 151,-1802 147.34,-1806.56 142.81,-1810.26 137.8,-1813.27"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="239.43,-910.75 236.23,-900.65 232.44,-910.54 239.43,-910.75"/>
 </g>
 <!-- Node44 -->
 <g id="node42" class="node">
 <title>Node44</title>
-<g id="a_node42"><a xlink:href="class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="13.5,-1762 13.5,-1792 137.5,-1792 137.5,-1762 13.5,-1762"/>
-<text text-anchor="start" x="21.5" y="-1780" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ExitOperation</text>
-<text text-anchor="middle" x="75.5" y="-1769" font-family="Helvetica,sans-Serif" font-size="10.00">ButtonClick</text>
+<g id="a_node42"><a xlink:href="class_t_interface.html#ab2a25d27dcbae558b8f9a4ac62937523" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="5.5,-1762 5.5,-1792 145.5,-1792 145.5,-1762 5.5,-1762"/>
+<text text-anchor="start" x="13.5" y="-1780" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ExitPrefDirButton</text>
+<text text-anchor="middle" x="75.5" y="-1769" font-family="Helvetica,sans-Serif" font-size="10.00">Click</text>
 </a>
 </g>
 </g>
 <!-- Node4&#45;&gt;Node44 -->
 <g id="edge41" class="edge">
 <title>Node4&#45;&gt;Node44</title>
-<path fill="none" stroke="midnightblue" d="M235.82,-910.88C231.44,-1033.6 205.73,-1685.19 151,-1753 147.33,-1757.55 142.79,-1761.24 137.78,-1764.25"/>
+<path fill="none" stroke="midnightblue" d="M235.82,-910.88C231.44,-1033.6 205.73,-1685.19 151,-1753 148.27,-1756.38 145.06,-1759.3 141.53,-1761.8"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="239.32,-910.81 236.18,-900.69 232.33,-910.56 239.32,-910.81"/>
 </g>
 <!-- Node45 -->
 <g id="node43" class="node">
 <title>Node45</title>
-<g id="a_node43"><a xlink:href="class_t_interface.html#ab2a25d27dcbae558b8f9a4ac62937523" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="5.5,-1713 5.5,-1743 145.5,-1743 145.5,-1713 5.5,-1713"/>
-<text text-anchor="start" x="13.5" y="-1731" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ExitPrefDirButton</text>
+<g id="a_node43"><a xlink:href="class_t_interface.html#ad0fa9f32b059b346e066ab23d62a4bfc" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="8.5,-1713 8.5,-1743 142.5,-1743 142.5,-1713 8.5,-1713"/>
+<text text-anchor="start" x="16.5" y="-1731" font-family="Helvetica,sans-Serif" font-size="10.00">TInterface::ExitTrackButton</text>
 <text text-anchor="middle" x="75.5" y="-1720" font-family="Helvetica,sans-Serif" font-size="10.00">Click</text>
 </a>
 </g>
@@ -827,27 +827,27 @@ var sectionId = 'dynsection-27';
 <path fill="none" stroke="midnightblue" d="M235.69,-910.84C230.72,-1029.31 202.67,-1640.36 151,-1704 148.26,-1707.38 145.04,-1710.28 141.5,-1712.79"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="239.2,-910.82 236.12,-900.68 232.2,-910.53 239.2,-910.82"/>
 </g>
-<!-- Node191&#45;&gt;Node3 -->
+<!-- Node186&#45;&gt;Node3 -->
 <g id="edge45" class="edge">
-<title>Node191&#45;&gt;Node3</title>
+<title>Node186&#45;&gt;Node3</title>
 <path fill="none" stroke="midnightblue" d="M490.5,-548.78C487.53,-550.34 484.67,-552.07 482,-554 468.78,-563.54 410.58,-659.85 391.84,-691.2"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="492.05,-551.92 499.72,-544.62 489.16,-545.54 492.05,-551.92"/>
 </g>
-<!-- Node191&#45;&gt;Node192 -->
+<!-- Node186&#45;&gt;Node187 -->
 <g id="edge46" class="edge">
-<title>Node191&#45;&gt;Node192</title>
+<title>Node186&#45;&gt;Node187</title>
 <path fill="none" stroke="midnightblue" d="M507.59,-547.15C480.71,-554.2 447.35,-562.93 422.38,-569.47"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="508.76,-550.47 517.55,-544.55 506.99,-543.7 508.76,-550.47"/>
 </g>
-<!-- Node192&#45;&gt;Node26 -->
+<!-- Node187&#45;&gt;Node26 -->
 <g id="edge47" class="edge">
-<title>Node192&#45;&gt;Node26</title>
+<title>Node187&#45;&gt;Node26</title>
 <path fill="none" stroke="midnightblue" d="M381.83,-558.96C372.02,-478.77 324.54,-178.13 151,-29 146.34,-25 140.95,-21.82 135.25,-19.3"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="378.38,-559.62 383.01,-569.15 385.33,-558.81 378.38,-559.62"/>
 </g>
-<!-- Node194 -->
+<!-- Node189 -->
 <g id="node47" class="node">
-<title>Node194</title>
+<title>Node189</title>
 <g id="a_node47"><a xlink:href="class_t_train_controller.html#afa594bfc6b628d21d02a31c3a13c3a0a" target="_top" xlink:title="save trains to a session file">
 <polygon fill="white" stroke="black" points="482,-711 482,-741 628,-741 628,-711 482,-711"/>
 <text text-anchor="start" x="490" y="-729" font-family="Helvetica,sans-Serif" font-size="10.00">TTrainController::SaveSession</text>
@@ -855,57 +855,57 @@ var sectionId = 'dynsection-27';
 </a>
 </g>
 </g>
-<!-- Node193&#45;&gt;Node194 -->
+<!-- Node188&#45;&gt;Node189 -->
 <g id="edge49" class="edge">
-<title>Node193&#45;&gt;Node194</title>
+<title>Node188&#45;&gt;Node189</title>
 <path fill="none" stroke="midnightblue" d="M658.75,-721.53C648.56,-721.98 638.2,-722.43 628.16,-722.86"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="659.02,-725.02 668.86,-721.09 658.72,-718.03 659.02,-725.02"/>
 </g>
-<!-- Node194&#45;&gt;Node3 -->
+<!-- Node189&#45;&gt;Node3 -->
 <g id="edge50" class="edge">
-<title>Node194&#45;&gt;Node3</title>
+<title>Node189&#45;&gt;Node3</title>
 <path fill="none" stroke="midnightblue" d="M471.67,-713.75C463.03,-712.46 454.37,-711.17 446.04,-709.94"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="471.37,-717.24 481.78,-715.25 472.4,-710.32 471.37,-717.24"/>
 </g>
-<!-- Node194&#45;&gt;Node192 -->
+<!-- Node189&#45;&gt;Node187 -->
 <g id="edge51" class="edge">
-<title>Node194&#45;&gt;Node192</title>
+<title>Node189&#45;&gt;Node187</title>
 <path fill="none" stroke="midnightblue" d="M488.63,-706.23C486.34,-704.9 484.12,-703.5 482,-702 437.08,-670.28 403.04,-611.52 390.86,-588.55"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="487.27,-709.47 497.76,-710.94 490.48,-703.24 487.27,-709.47"/>
 </g>
-<!-- Node195&#45;&gt;Node3 -->
+<!-- Node190&#45;&gt;Node3 -->
 <g id="edge54" class="edge">
-<title>Node195&#45;&gt;Node3</title>
+<title>Node190&#45;&gt;Node3</title>
 <path fill="none" stroke="midnightblue" d="M473.7,-688.47C464.42,-689.8 455.08,-691.13 446.13,-692.41"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="474.32,-691.92 483.73,-687.04 473.33,-684.99 474.32,-691.92"/>
 </g>
-<!-- Node195&#45;&gt;Node192 -->
+<!-- Node190&#45;&gt;Node187 -->
 <g id="edge55" class="edge">
-<title>Node195&#45;&gt;Node192</title>
+<title>Node190&#45;&gt;Node187</title>
 <path fill="none" stroke="midnightblue" d="M492.72,-658.18C489.03,-656.55 485.43,-654.83 482,-653 447.64,-634.7 412.8,-604.21 396.13,-588.7"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="491.41,-661.42 501.99,-662 494.08,-654.95 491.41,-661.42"/>
 </g>
-<!-- Node196&#45;&gt;Node3 -->
+<!-- Node191&#45;&gt;Node3 -->
 <g id="edge57" class="edge">
-<title>Node196&#45;&gt;Node3</title>
+<title>Node191&#45;&gt;Node3</title>
 <path fill="none" stroke="midnightblue" d="M497.87,-646.69C492.47,-648.73 487.11,-650.85 482,-653 453.84,-664.87 422.36,-681.23 403.37,-691.46"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="499.39,-649.86 507.57,-643.13 496.98,-643.29 499.39,-649.86"/>
 </g>
-<!-- Node196&#45;&gt;Node192 -->
+<!-- Node191&#45;&gt;Node187 -->
 <g id="edge58" class="edge">
-<title>Node196&#45;&gt;Node192</title>
+<title>Node191&#45;&gt;Node187</title>
 <path fill="none" stroke="midnightblue" d="M492.43,-610.04C467.41,-602.75 439.53,-594.61 418.58,-588.5"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="491.64,-613.46 502.22,-612.9 493.6,-606.74 491.64,-613.46"/>
 </g>
-<!-- Node197&#45;&gt;Node3 -->
+<!-- Node192&#45;&gt;Node3 -->
 <g id="edge60" class="edge">
-<title>Node197&#45;&gt;Node3</title>
+<title>Node192&#45;&gt;Node3</title>
 <path fill="none" stroke="midnightblue" d="M492.41,-598.19C488.81,-599.98 485.31,-601.92 482,-604 442.91,-628.64 407.67,-672.02 393.1,-691.3"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="493.91,-601.35 501.55,-594.02 491,-594.99 493.91,-601.35"/>
 </g>
-<!-- Node197&#45;&gt;Node192 -->
+<!-- Node192&#45;&gt;Node187 -->
 <g id="edge61" class="edge">
-<title>Node197&#45;&gt;Node192</title>
+<title>Node192&#45;&gt;Node187</title>
 <path fill="none" stroke="midnightblue" d="M471.52,-579C462.75,-579 453.96,-579 445.53,-579"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="471.78,-582.5 481.78,-579 471.78,-575.5 471.78,-582.5"/>
 </g>

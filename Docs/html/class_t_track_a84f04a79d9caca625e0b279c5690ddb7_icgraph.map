@@ -1,4 +1,4 @@
 <map id="TTrack::ResetPoints" name="TTrack::ResetPoints">
-<area shape="rect" id="node1" title="Called on exit from operation to reset all points to non&#45;diverging or to left fork (Attribute = 0)" alt="" coords="219,13,359,39"/>
+<area shape="rect" id="node1" title="Called on exit from operation to reset all points to non&#45;diverging or to left fork (Attribute = 0),..." alt="" coords="219,13,359,39"/>
 <area shape="rect" id="node2" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="5,5,171,47"/>
 </map>

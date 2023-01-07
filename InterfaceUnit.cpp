@@ -231,6 +231,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TooShortMessageSentFlag = false; //added at v2.9.1
         Track->NoPlatsMessageSent = false; //added at v2.10.0
         PrefDirConflictAdviceMessageSent = false; //added at v2.13.0
+        TrainLeaveWarningSent = false; //added at v2.14.0
         Utilities->DefaultTrackLength = 100;     //moved here at v2.11.0, may be changed in reading config.txt //changed at v2.13.1
         Utilities->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
 
@@ -238,6 +239,8 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TrackInfoOnOffMenuItem->Caption = "Show"; // added here at v1.2.0 because dropped from ResetAll()
         TrainStatusInfoOnOffMenuItem->Caption = "Hide Status"; // changed at v2.0.0 so normally visible
         TrainTTInfoOnOffMenuItem->Caption = "Hide Timetable"; // as above
+        NoDelaysMenuItem->Enabled = false;
+        NoFailuresMenuItem->Enabled = false;
 
         /* ======================= ROS Dummy API ===============================
                     Connect API to track variables of interest, added at v2.10.0
@@ -446,7 +449,8 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         AddPrefDirButton->Glyph->LoadFromResourceName(0, "AddPrefDir");
         AddTextButton->Glyph->LoadFromResourceName(0, "AddText");
         AddTrackButton->Glyph->LoadFromResourceName(0, "AddTrack");
-        AutoSigsButton->Glyph->LoadFromResourceName(0, "AutoSig");
+        AutoSigsButton->Glyph->LoadFromResourceName(0, "AutoTop");
+        SigAutoNonConsecButton->Glyph->LoadFromResourceName(0, "AutoBottom");
         CallingOnButton->Glyph->LoadFromResourceName(0, "CallingOn");
         DeleteAllPrefDirButton->Glyph->LoadFromResourceName(0, "ClearAllPrefDir");
         DeleteOnePrefDirButton->Glyph->LoadFromResourceName(0, "ClearOnePrefDir");
@@ -637,7 +641,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         ElapsedTimeTestFunctionStart = false;
         ElapsedTimerRunning = false;
         Utilities->DelayMode = Nil;
-        NoDelaysMenuItem->Enabled = false;
+        Utilities->FailureMode = FNil;
         Utilities->MTBTSRs = Utilities->NilMTBTSRs;          //set high initially
         Utilities->SignalChangeEventsPerFailure = Utilities->NilSignalChangeEventsPerFailure; //set high initially
         Utilities->PointChangeEventsPerFailure = Utilities->NilPointChangeEventsPerFailure; //set high initially
@@ -1208,19 +1212,23 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key, TShift
             if(Track->LocationNameAllocated(1, LocationNameTextBox->Text) && (ExistingName != LocationNameTextBox->Text))
             {
                 // name allocated to a different location
-                UnicodeString MessageStr = UnicodeString("Another location named '") + LocationNameTextBox->Text +
-                    UnicodeString("' already exists.  If you continue its name will be erased.  Do you wish to continue?");
-                int button = Application->MessageBox(MessageStr.c_str(), L"Warning!", MB_YESNO | MB_ICONWARNING);
-                if(button == IDNO)
-                {
-                    Track->LNPendingList.clear(); // get rid of existing entry
-                    Screen->Cursor = TCursor(-2); // Arrow
-                    Level1Mode = TrackMode;
-                    SetLevel1Mode(48);
-                    Level2TrackMode = AddLocationName;
-                    SetLevel2TrackMode(12);
-                    Utilities->CallLogPop(6);
-                    return;
+
+                if(LocationNameTextBox->Text != "") //if new name is NULL then don't give message but carry out all other
+                {                                   //functions - added at v2.14.0
+                    UnicodeString MessageStr = UnicodeString("Another location named '") + LocationNameTextBox->Text +
+                        UnicodeString("' already exists.  If you continue its name will be erased.  Do you wish to continue?");
+                    int button = Application->MessageBox(MessageStr.c_str(), L"Warning!", MB_YESNO | MB_ICONWARNING);
+                    if(button == IDNO)
+                    {
+                        Track->LNPendingList.clear(); // get rid of existing entry
+                        Screen->Cursor = TCursor(-2); // Arrow
+                        Level1Mode = TrackMode;
+                        SetLevel1Mode(48);
+                        Level2TrackMode = AddLocationName;
+                        SetLevel2TrackMode(12);
+                        Utilities->CallLogPop(6);
+                        return;
+                    }
                 }
                 Track->EraseLocationAndActiveTrackElementNames(1, LocationNameTextBox->Text);
                 Track->EnterLocationName(1, LocationNameTextBox->Text, false);
@@ -2132,6 +2140,7 @@ void __fastcall TInterface::AutoSigsButtonClick(TObject *Sender)
         ConsecSignalsRoute = true;
 
         AutoSigsButton->Enabled = false;
+        SigAutoNonConsecButton->Enabled = true;
         SigPrefConsecButton->Enabled = true;
         SigPrefNonConsecButton->Enabled = true;
         UnrestrictedButton->Enabled = true;
@@ -2160,18 +2169,60 @@ void __fastcall TInterface::AutoSigsButtonClick(TObject *Sender)
 
 // ---------------------------------------------------------------------------
 
+void __fastcall TInterface::SigAutoNonConsecButtonClick(TObject *Sender)
+// must have PrefDirs to be available
+{
+    try
+    {
+        TrainController->LogEvent("SigAutoNonConsecButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SigAutoNonConsecButtonClick");
+        AutoSigsFlag = true;
+        PreferredRoute = true;
+        ConsecSignalsRoute = false;
+
+        AutoSigsButton->Enabled = true;
+        SigAutoNonConsecButton->Enabled = false;
+        SigPrefConsecButton->Enabled = true;
+        SigPrefNonConsecButton->Enabled = true;
+        UnrestrictedButton->Enabled = true;
+
+        InfoPanel->Visible = true;
+        if(Level2OperMode == PreStart)
+        {
+            InfoPanel->Caption = "PRE-START:  Select AUTOMATIC SIGNAL ROUTE start signal, or left click points to change manually";
+        }
+        else
+        {
+            InfoPanel->Caption = "OPERATING:  Select AUTOMATIC SIGNAL ROUTE start signal, or left click points to change manually";
+        }
+        InfoCaptionStore = InfoPanel->Caption;
+        AutoRouteStartMarker->PlotOriginal(46, Display); // if overlay not plotted will ignore
+        SigRouteStartMarker->PlotOriginal(47, Display); // if overlay not plotted will ignore
+        NonSigRouteStartMarker->PlotOriginal(48, Display); // if overlay not plotted will ignore
+        RouteMode = RouteNotStarted;
+        Utilities->CallLogPop(2556);
+    }
+    catch(const Exception &e)
+    {
+        ErrorLog(247, e.Message);
+    }
+}
+
+//---------------------------------------------------------------------------
+
 void __fastcall TInterface::SigPrefConsecButtonClick(TObject *Sender)
 // must have PrefDirs to be available
 {
     try
     {
-        TrainController->LogEvent("SigPrefButtonClick");
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SigPrefButtonClick");
+        TrainController->LogEvent("SigPrefConsecButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SigPrefConsecButtonClick");
         AutoSigsFlag = false;
         PreferredRoute = true;
         ConsecSignalsRoute = true;
 
         AutoSigsButton->Enabled = true;
+        SigAutoNonConsecButton->Enabled = true;
         SigPrefConsecButton->Enabled = false;
         SigPrefNonConsecButton->Enabled = true;
         UnrestrictedButton->Enabled = true;
@@ -2205,13 +2256,14 @@ void __fastcall TInterface::SigPrefNonConsecButtonClick(TObject *Sender)
 {
     try
     {
-        TrainController->LogEvent("SigPrefButtonClick");
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SigPrefButtonClick");
+        TrainController->LogEvent("SigPrefNonConsecButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",SigPrefNonConsecButtonClick");
         AutoSigsFlag = false;
         PreferredRoute = true;
         ConsecSignalsRoute = false;
 
         AutoSigsButton->Enabled = true;
+        SigAutoNonConsecButton->Enabled = true;
         SigPrefConsecButton->Enabled = true;
         SigPrefNonConsecButton->Enabled = false;
         UnrestrictedButton->Enabled = true;
@@ -2243,14 +2295,15 @@ void __fastcall TInterface::UnrestrictedButtonClick(TObject *Sender)
 {
     try
     {
-        TrainController->LogEvent("NoSigNonPrefButtonClick");
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",NoSigNonPrefButtonClick");
+        TrainController->LogEvent("UnrestrictedButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",UnrestrictedButtonClick");
         AutoSigsFlag = false;
         PreferredRoute = false;
         ConsecSignalsRoute = false;
         if(EveryPrefDir->PrefDirSize() > 0)
         {
             AutoSigsButton->Enabled = true;
+            SigAutoNonConsecButton->Enabled = true;
             SigPrefConsecButton->Enabled = true;
             SigPrefNonConsecButton->Enabled = true;
             UnrestrictedButton->Enabled = false;
@@ -2258,6 +2311,7 @@ void __fastcall TInterface::UnrestrictedButtonClick(TObject *Sender)
         else
         {
             AutoSigsButton->Enabled = false;
+            SigAutoNonConsecButton->Enabled = false;
             SigPrefConsecButton->Enabled = false;
             SigPrefNonConsecButton->Enabled = false;
             UnrestrictedButton->Enabled = false;
@@ -2403,8 +2457,9 @@ void __fastcall TInterface::ExitOperationButtonClick(TObject *Sender)
                 return;
             }
         }
-        Track->ResetSignals(1);
-        Track->ResetPoints(1);
+        Track->ResetSignals(0);
+        Track->ResetPoints(0);
+        Track->ResetTSRs(0);  //added at v2.14.0
         TrainController->SendPerformanceSummary(0, Utilities->PerformanceFile); // must come before trains finished becuase examines the train vectors
         Utilities->PerformanceFile.close();
         TrainController->UnplotTrains(1);
@@ -2471,9 +2526,12 @@ void __fastcall TInterface::LoadRailwayMenuItemClick(TObject *Sender)
         SetLevel1Mode(11); // calls Clearand... to plot the new railway
         Utilities->CallLogPop(31);
     }
-    catch(const Exception &e)
+    catch(const Exception &e)  //made a non-error catch at v2.14.0 following Albie Vowles error of 15/12/22
     {
-        ErrorLog(17, e.Message);
+        TrainController->StopTTClockMessage(134, "Railway file failed to load - may be corrupt.\nError message: " + e.Message);
+        Screen->Cursor = TCursor(-2); // Arrow;
+        Utilities->CallLogPop(2551);
+//        ErrorLog(17, e.Message);
     }
 }
 // ---------------------------------------------------------------------------
@@ -2623,8 +2681,8 @@ void TInterface::LoadRailway(int Caller, AnsiString LoadFileName)
     } // if(FileIntegrityCheck(LoadRailwayDialog->FileName.c_str()))
     else
     {
-        ShowMessage("File integrity check failed - unable to load " + LoadFileName + ". Please check that the file exists and is spelled correctly.");
-    }
+        ShowMessage("File integrity check failed - unable to load " + LoadFileName + ". If the file exists and is spelled correctly then it is probably corrupt.");
+    }   //message clarified at v2.14.0
     session_api_->dump();   // update session INI file  //added at v2.10.0
     Utilities->CallLogPop(1774);
 }
@@ -2693,9 +2751,12 @@ void __fastcall TInterface::SaveAsMenuItemClick(TObject *Sender)
         SaveAsSubroutine(0);
         Utilities->CallLogPop(32);
     }
-    catch(const Exception &e)
+    catch(const Exception &e) //non-error catch added at v2.14.0
     {
-        ErrorLog(18, e.Message);
+        Screen->Cursor = TCursor(-2); // Arrow;
+        UnicodeString MessageStr = "Unable to save\nError message: " + e.Message;
+        Utilities->CallLogPop(2552);
+//        ErrorLog(18, e.Message);
     }
 }
 
@@ -3133,9 +3194,11 @@ void __fastcall TInterface::SaveHeaderMenu1Click(TObject *Sender)
         }
         Utilities->CallLogPop(1552);
     }
-    catch(const Exception &e)
+    catch(const Exception &e) //non-error catch added at 2.14.0
     {
-        ErrorLog(44, e.Message);
+        TrainController->StopTTClockMessage(135, "Save failed\nError message: " + e.Message);
+        Screen->Cursor = TCursor(-2); // Arrow;
+//        ErrorLog(44, e.Message);
     }
 }
 
@@ -3505,9 +3568,12 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
         session_api_->dump();   // update session INI file   //added at v2.10.0
         Utilities->CallLogPop(1596);
     }
-    catch(const Exception &e)
+    catch(const Exception &e) //non-error catch added at v2.14.0
     {
-        ErrorLog(48, e.Message);
+        TrainController->StopTTClockMessage(139, "Timetable failed to load - may be corrupt.\nError message: " + e.Message);
+        Screen->Cursor = TCursor(-2); // Arrow;
+        Utilities->CallLogPop(2555);
+//        ErrorLog(48, e.Message);
     }
 }
 // ---------------------------------------------------------------------------
@@ -4275,9 +4341,11 @@ void __fastcall TInterface::SaveTTButtonClick(TObject *Sender)
         SetLevel1Mode(97);
         Utilities->CallLogPop(1623);
     }
-    catch(const Exception &e)
+    catch(const Exception &e) //non-error catch
     {
-        ErrorLog(60, e.Message);
+        TrainController->StopTTClockMessage(136, "Timetable failed to save\nError message: " + e.Message);  //added after v2.14.0
+        Screen->Cursor = TCursor(-2); // Arrow;
+//        ErrorLog(60, e.Message);
     }
 }
 // ---------------------------------------------------------------------------
@@ -6829,8 +6897,8 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                         if(TrainController->TrainVectorAt(8, x).CallingOnFlag)
                         {
                             if((Track->TrackElementAt(428, TrainController->TrainVectorAt(26, x).LeadElement).Conn[TrainController->TrainVectorAt(27,
-                                                                                                                                                  x).LeadExitPos] == Position) && (TrackElement.Config[Track->TrackElementAt(429, TrainController->TrainVectorAt(28,
-                                                                                                                                                                                                                                                                 x).LeadElement).ConnLinkPos[TrainController->TrainVectorAt(12, x).LeadExitPos]] == Connection))
+                                x).LeadExitPos] == Position) && (TrackElement.Config[Track->TrackElementAt(429, TrainController->TrainVectorAt(28,
+                                x).LeadElement).ConnLinkPos[TrainController->TrainVectorAt(12, x).LeadExitPos]] == Connection))
                             {
                                 // found it!
 /*
@@ -7044,7 +7112,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                     //not failed when mouse down, but either may fail in trying to change
                                     {
                                         bool SkipFlashing = false;
-                                        if(Utilities->DelayMode != Nil)
+                                        if(Utilities->FailureMode != FNil)
                                         {
                                             if(random(Utilities->PointChangeEventsPerFailure) == 0)
                                             {
@@ -7116,7 +7184,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 else
                                 {
                                     bool SkipFlashing = false;
-                                    if(Utilities->DelayMode != Nil)
+                                    if(Utilities->FailureMode != FNil)
                                     {
                                         if(random(Utilities->PointChangeEventsPerFailure) == 0)
                                         {
@@ -8407,14 +8475,19 @@ void TInterface::ClockTimer2(int Caller)
             }
         }
 
-//check if Temporary Speed Restriction (TSR) needed - check every 5 minutes of timetable time - added at v2.13.0
-        if((TrainController->TTClockTime - Utilities->LastTSRCheckTime) > TDateTime(5.0 / 1440))
+//check if Temporary Speed Restriction (TSR) needed - check every minute of timetable time - added at v2.13.0   //changed from 5 mins to 1 min at v2.14.0
+        if((TrainController->TTClockTime - Utilities->LastTSRCheckTime) > TDateTime(1.0 / 1440))
         {
             //check due now
-            if((Utilities->DelayMode != Nil) && !Track->SimpleVector.empty() && (Level2OperMode != Paused) && (Level2OperMode != PreStart) && !TrainController->StopTTClockFlag)
+            if((Utilities->FailureMode != FNil) && !Track->SimpleVector.empty() && (Level2OperMode != Paused) && (Level2OperMode != PreStart) && !TrainController->StopTTClockFlag)
             {                                                                                 //(Level2OperMode != PreStart) added at v2.13.2 to prevent a TSR before starts
                 Utilities->LastTSRCheckTime = TrainController->TTClockTime;
-                if(random(Utilities->MTBTSRs * 288 / Track->SimpleVector.size()) == 0) //chance of one failure in the railway with MTBTSRs in days/simple element (288 = no. of 5mins/day)
+                int TSRRandVal = (Utilities->MTBTSRs * 1440) / Track->SimpleVector.size();  //1440 = no. of mins/day
+                if(TSRRandVal < 2)
+                {
+                    TSRRandVal = 2; //in case so many simple elements that one fails every minute, this gives at least 2 mins between failures
+                }
+                if(random(TSRRandVal) == 0) //chance of one failure in the railway with MTBTSRs in days/simple element
                 {
                     //now identify the specific simple element
                     int SimpleTVPos = Track->SimpleVector.at(random(Track->SimpleVector.size())); //vector of simple elements in the railway
@@ -9066,7 +9139,7 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
         if(AllRoutes->RebuildRailwayFlag && !Display->ZoomOutFlag)
         {
             ClearandRebuildRailway(16);
-            AllRoutes->RebuildRailwayFlag = false;
+//            AllRoutes->RebuildRailwayFlag = false;  //dropped at v2.14.0 & moved to ClearandRebuildRailway so it isn't called again if it is called before reaching this location
         }
         // deal with approach locking
         ApproachLocking(0, TrainController->TTClockTime);
@@ -11630,16 +11703,20 @@ void __fastcall TInterface::LoadTimetableMenuItemClick(TObject *Sender)
             } // if(TimetableIntegrityCheck
             else
             {
-                ShowMessage("Timetable integrity check failed - unable to load " + TimetableDialog->FileName + ". Please check that the file exists and is spelled correctly.");
+                ShowMessage("Timetable integrity check failed - unable to load " + TimetableDialog->FileName + ". If the file exists and is spelled correctly then it probably contains errors - check in 'Edit timetable' mode.");
+                //message clarified at v2.14.0
             }
         } // if(TimetableDialog->Execute())
 
         // else ShowMessage("Load Aborted");
         Utilities->CallLogPop(752);
     }
-    catch(const Exception &e)
+    catch(const Exception &e)  //made a non-error catch at v2.14.0 following Albie Vowles error of 15/12/22
     {
-        ErrorLog(34, e.Message);
+        TrainController->StopTTClockMessage(137, "Timetable file failed to load - may be corrupt.\nError message: " + e.Message);
+        Screen->Cursor = TCursor(-2); // Arrow;
+        Utilities->CallLogPop(2553);
+//        ErrorLog(34, e.Message);
     }
 }
 
@@ -11806,6 +11883,7 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
                 if((Train.ReleaseTime - Train.LastActionTime) < TDateTime(30.0 / 86400)) //due to release in less than 30 seconds, added at v2.13.0 to correct
                 {                                                                      //FinsburyPark (discord name) error reported 29/05/22
                     Train.ReleaseTime = Train.LastActionTime + TDateTime(30.0 / 86400);
+                    Train.TRSTime = Train.ReleaseTime - TDateTime(10.0/86400);  //added at v2.14.0 as this needs to be reset too to plot correct train b'gnd colour
                 }
             }
         }
@@ -11917,6 +11995,22 @@ void __fastcall TInterface::MoveForwardsMenuItemClick(TObject *Sender)
         TrainController->LogEvent("MoveForwardsMenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MoveForwardsMenuItemClick");
         TTrain &Train = TrainController->TrainVectorAtIdent(20, SelectedTrainID);
+        if(Train.StoppedAtLocation && (Train.ActionVectorEntryPtr->DepartureTime > TDateTime(-1)) && !TrainLeaveWarningSent) //added at v2.14.0
+        {
+            UnicodeString MessageStr = "Please be aware that a train moved from a location prior to its departure time must be returned to that location "
+                                       "in order to restore timetable control\n\nThis message won't be shown again\n\nOK to continue, Cancel to abort";
+            TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
+            TrainController->RestartTime = TrainController->TTClockTime;
+            int button = Application->MessageBox(MessageStr.c_str(), L"", MB_OKCANCEL);
+            TrainLeaveWarningSent = true;
+            TrainController->BaseTime = TDateTime::CurrentDateTime();
+            TrainController->StopTTClockFlag = false;
+            if(button == IDCANCEL)
+            {
+                Utilities->CallLogPop(2557);
+                return;
+            }
+        }
         Train.SignallerStoppingFlag = false;
         if(!Train.AbleToMove(2))
         {
@@ -12850,6 +12944,22 @@ void __fastcall TInterface::PassRedSignalMenuItemClick(TObject *Sender)
         TrainController->LogEvent("PassRedSignalMenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PassRedSignalMenuItemClick");
         TTrain &Train = TrainController->TrainVectorAtIdent(21, SelectedTrainID);
+        if(Train.StoppedAtLocation && (Train.ActionVectorEntryPtr->DepartureTime > TDateTime(-1)) && !TrainLeaveWarningSent) //added at v2.14.0
+        {
+            UnicodeString MessageStr = "Please be aware that a train moved from a location prior to its departure time must be returned to that location "
+                                       "in order to restore timetable control\n\nThis message won't be shown again\n\nOK to continue, Cancel to abort";
+            TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
+            TrainController->RestartTime = TrainController->TTClockTime;
+            int button = Application->MessageBox(MessageStr.c_str(), L"", MB_OKCANCEL);
+            TrainLeaveWarningSent = true;
+            TrainController->BaseTime = TDateTime::CurrentDateTime();
+            TrainController->StopTTClockFlag = false;
+            if(button == IDCANCEL)
+            {
+                Utilities->CallLogPop(2558);
+                return;
+            }
+        }
         Train.SignallerStoppingFlag = false;
         int NextElementPos = Track->TrackElementAt(712, Train.LeadElement).Conn[Train.LeadExitPos];
         if(NextElementPos < 0)
@@ -12893,6 +13003,22 @@ void __fastcall TInterface::StepForwardMenuItemClick(TObject *Sender)
         TrainController->LogEvent("StepForwardMenuItemClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",StepForwardMenuItemClick");
         TTrain &Train = TrainController->TrainVectorAtIdent(24, SelectedTrainID);
+        if(Train.StoppedAtLocation && (Train.ActionVectorEntryPtr->DepartureTime > TDateTime(-1)) && !TrainLeaveWarningSent) //added at v2.14.0
+        {
+            UnicodeString MessageStr = "Please be aware that a train moved from a location prior to its departure time must be returned to (or still be at) that location "
+                                       "in order to restore timetable control\n\nThis message won't be shown again\n\nOK to continue, Cancel to abort";
+            TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
+            TrainController->RestartTime = TrainController->TTClockTime;
+            int button = Application->MessageBox(MessageStr.c_str(), L"", MB_OKCANCEL);
+            TrainLeaveWarningSent = true;
+            TrainController->BaseTime = TDateTime::CurrentDateTime();
+            TrainController->StopTTClockFlag = false;
+            if(button == IDCANCEL)
+            {
+                Utilities->CallLogPop(2559);
+                return;
+            }
+        }
         Train.SignallerStoppingFlag = false;
         Train.SignallerStopped = false;
         Train.StoppedAtLocation = false; // may have started at station in signaller mode and also at a red signal, in this case both SignallerStopped
@@ -13395,15 +13521,19 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key, TShiftState 
                 {
                     TTClockAdjButton->Click();
                 }
-                if(AutoSigsButton->Visible && AutoSigsButton->Enabled && Key == '1') // route buttons - autosigs
+                if(AutoSigsButton->Visible && AutoSigsButton->Enabled && Key == '1') // route buttons - autosigs consec
                 {
                     AutoSigsButton->Click();
                 }
-                if(SigPrefConsecButton->Visible && SigPrefConsecButton->Enabled && Key == '2') // route buttons - prefdir
+                if(SigAutoNonConsecButton->Visible && SigAutoNonConsecButton->Enabled && Key == '4') // route buttons - autosigs non-consec added at v2.14.0
+                {
+                    SigAutoNonConsecButton->Click();
+                }
+                if(SigPrefConsecButton->Visible && SigPrefConsecButton->Enabled && Key == '2') // route buttons - prefdir consec
                 {
                     SigPrefConsecButton->Click();
                 }
-                if(SigPrefNonConsecButton->Visible && SigPrefNonConsecButton->Enabled && Key == '4') // added at v2.7.0 for prefdir & any following signal
+                if(SigPrefNonConsecButton->Visible && SigPrefNonConsecButton->Enabled && Key == '5') // added at v2.7.0 for prefdir & any following signal
                 {
                     SigPrefNonConsecButton->Click();
                 }
@@ -15449,6 +15579,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
 
     Utilities->Clock2Stopped = true;
     HiddenDisplay->ClearDisplay(6);
+    AllRoutes->RebuildRailwayFlag = false; //moved here at v2.14.0 from ClockTimer2 so this function not called twice when called before ClockTimer2 triggered
     Track->RebuildUserGraphics(0, HiddenDisplay); // new at v2.4.0, plot first so all else overwrites, including the grid if selected
     if(ScreenGridFlag && (Level1Mode == TrackMode))
     {
@@ -15544,6 +15675,7 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
     {
         HiddenDisplay->PlotOutput(9, SelectBitmapHLoc * 16, SelectBitmapVLoc * 16, SelectBitmap);
     }
+
     if(Level1Mode == OperMode)
     {
         AllRoutes->MarkAllRoutes(0, HiddenDisplay);
@@ -16028,6 +16160,8 @@ void TInterface::SetLevel1Mode(int Caller)
         HideTTActionsListBox(1);
         DelayMenu->Visible = false;  //added at v2.13.0
         DelayMenu->Enabled = false;
+        FailureMenu->Visible = false;  //added at v2.14.0
+        FailureMenu->Enabled = false;
         if(Track->IsTrackFinished())
         {
             PlanPrefDirsMenuItem->Enabled = true;
@@ -16142,7 +16276,7 @@ void TInterface::SetLevel1Mode(int Caller)
         SetTrackBuildImages(13);
         ClipboardChecked = false;
         Utilities->CumulativeDelayedRandMinsAllTrains = 0; //added at v2.13.0
-        Utilities->LastTSRCheckTime = TDateTime(0); //added at v2.13.0
+//        Utilities->LastTSRCheckTime = TDateTime(0); //added at v2.13.0 //removed at v2.14.0, now value set to TTClockTime when start operation or load session
         Utilities->LastDelayTTClockTime = 0;
 //        Utilities->LastTSRCheckTime = TDateTime(0); removed at v2.13.2 as redundant (covered above)
         Track->FailedPointsVector.clear();
@@ -16371,6 +16505,7 @@ void TInterface::SetLevel1Mode(int Caller)
         TTClockSpeedLabel->Caption = "x1";
         TrainController->TTClockTime = TrainController->TimetableStartTime;
         TrainController->LastSessionSaveTTClockTime = TrainController->TimetableStartTime; // added at v2.5.0
+        Utilities->LastTSRCheckTime = TrainController->TTClockTime; //added at v2.14.0 so don't have any TSRs until 1 min after start
 
         PerformanceFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
         // format "16/06/2009 20:55:17"
@@ -16389,19 +16524,35 @@ void TInterface::SetLevel1Mode(int Caller)
         PerfLogForm->PerformanceLog(23, "Start Time: " + TrainController->TimetableStartTime.FormatString("hh:nn"));
         if(Utilities->DelayMode == Nil) //this section added at v2.13.0 for random delays
         {
-            PerfLogForm->PerformanceLog(24, "No random delays selected");
+            PerfLogForm->PerformanceLog(24, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": No random delays selected");
         }
         else if(Utilities->DelayMode == Minor)
         {
-            PerfLogForm->PerformanceLog(25, "Minor random delays selected");
+            PerfLogForm->PerformanceLog(25, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Minor random delays selected");
         }
         else if(Utilities->DelayMode == Moderate)
         {
-            PerfLogForm->PerformanceLog(26, "Moderate random delays selected");
+            PerfLogForm->PerformanceLog(26, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Moderate random delays selected");
         }
         else if(Utilities->DelayMode == Major)
         {
-            PerfLogForm->PerformanceLog(27, "Major random delays selected");
+            PerfLogForm->PerformanceLog(27, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Major random delays selected");
+        }
+        if(Utilities->FailureMode == FNil) //this section added at v2.14.0 for random failure
+        {
+            PerfLogForm->PerformanceLog(47, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": No random failures selected");
+        }
+        else if(Utilities->FailureMode == FMinor)
+        {
+            PerfLogForm->PerformanceLog(48, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Minor random failures selected");
+        }
+        else if(Utilities->FailureMode == FModerate)
+        {
+            PerfLogForm->PerformanceLog(49, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Moderate random failures selected");
+        }
+        else if(Utilities->FailureMode == FMajor)
+        {
+            PerfLogForm->PerformanceLog(50, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Major random failures selected");
         }
         SetPausedOrZoomedInfoCaption(3);
 // DisableRouteButtons(2); enable route setting or pre-start
@@ -16462,6 +16613,8 @@ void TInterface::SetLevel1Mode(int Caller)
         ActionsDueForm->ActionsDueListBox->Items->Add(L"to move panel");
         DelayMenu->Visible = true; //the following added at v2.13.0
         DelayMenu->Enabled = true;
+        FailureMenu->Visible = true; //the following added at v2.14.0
+        FailureMenu->Enabled = true;
         ClearandRebuildRailway(55); // so points display with one fillet
         break;
 
@@ -16475,6 +16628,8 @@ void TInterface::SetLevel1Mode(int Caller)
         OperatingPanelLabel->Caption = "Operation";
         DelayMenu->Visible = true;  //added at v2.13.0
         DelayMenu->Enabled = true;
+        FailureMenu->Visible = true;  //added at v2.14.0
+        FailureMenu->Enabled = true;
 
         CallingOnButton->Visible = true;
         PresetAutoSigRoutesButton->Visible = false;
@@ -16509,6 +16664,7 @@ void TInterface::SetLevel1Mode(int Caller)
         TrainController->TTClockTime = TrainController->RestartTime;
         PauseEntryRestartTime = double(TrainController->RestartTime);
         TrainController->LastSessionSaveTTClockTime = TrainController->TTClockTime; // added at v2.5.0
+        Utilities->LastTSRCheckTime = TrainController->TTClockTime; //added at v2.14.0 so don't have any TSRs until 1 min after start
         PauseEntryTTClockSpeed = 1;
         TTClockSpeed = 1;
         TTClockSpeedLabel->Caption = "x1";
@@ -16558,22 +16714,6 @@ void TInterface::SetLevel1Mode(int Caller)
             MTBFLabel->Visible = false;
             MTBFLabel->Caption = "Mean time between\ntrain failures in\ntimetable hours";
             TrainController->MTBFHours = 0;
-        }
-        if(Utilities->DelayMode == Nil) //this section added at v2.13.0 to indicate current state of random delays at start of session
-        {
-            PerfLogForm->PerformanceLog(28, "No random delays selected on reloading session");
-        }
-        else if(Utilities->DelayMode == Minor)
-        {
-            PerfLogForm->PerformanceLog(29, "Minor random delays selected on reloading session");
-        }
-        else if(Utilities->DelayMode == Moderate)
-        {
-            PerfLogForm->PerformanceLog(30, "Moderate random delays selected on reloading session");
-        }
-        else if(Utilities->DelayMode == Major)
-        {
-            PerfLogForm->PerformanceLog(31, "Major random delays selected on reloading session");
         }
         break;
 
@@ -16908,7 +17048,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
                     if(!RecoverClipboardMessageSent)
                     {
                         UnicodeString MessageStr =
-                            "Please be aware of the relevant conditions when pasting " "a railway segment from a different application.\n"
+                            "Please be aware of the relevant conditions when pasting a railway segment from a different application.\n"
                             "These are set out in section 3.5 of the manual and " "on-screen help under the heading 'Pasting in an application "
                             "after cutting or copying from a different application'.\n\n" "This warning will not be shown again.\n\n" "Proceed?";
                         int button = Application->MessageBox(MessageStr.c_str(), L"Warning", MB_YESNO | MB_ICONWARNING);
@@ -17400,6 +17540,8 @@ void TInterface::SetLevel2OperMode(int Caller)
     }
     DelayMenu->Visible = true; //these added at v2.13.0
     DelayMenu->Enabled = true;
+    FailureMenu->Visible = true; //these added at v2.14.0
+    FailureMenu->Enabled = true;
     CallingOnButton->Visible = true;
     PresetAutoSigRoutesButton->Visible = false;
     switch(Level2OperMode) // use the data member
@@ -19874,7 +20016,7 @@ In each case need to ensure that the following points are considered and dealt w
             Utilities->SaveFileString(SessionFile, "End of file at v2.12.0");
 //end of v2.12.0 additions
 
-//additions at v2.13.0 - random delays
+//additions at v2.13.0 - random delays & failures
 //No need to save Utilities->LastDelayTTClockTime - makes little difference and would cause corruption in any v2.13.0 Beta sessions
             Utilities->SaveFileInt(SessionFile, Utilities->CumulativeDelayedRandMinsAllTrains); //to allow for exited and removed trains
             for(unsigned int x = 0; x < TrainController->TrainVector.size(); x++)
@@ -19917,6 +20059,44 @@ In each case need to ensure that the following points are considered and dealt w
             }
             Utilities->SaveFileString(SessionFile, "End of file at v2.13.0");
 //end of v2.13.0 additions
+
+//additions at v2.14.0 - delays and failures separated & now saved with session
+            if(Utilities->DelayMode == Minor)
+            {
+                Utilities->SaveFileInt(SessionFile, 1);
+            }
+            else if(Utilities->DelayMode == Moderate)
+            {
+                Utilities->SaveFileInt(SessionFile, 2);
+            }
+            else if(Utilities->DelayMode == Major)
+            {
+                Utilities->SaveFileInt(SessionFile, 3);
+            }
+            else
+            {
+                Utilities->SaveFileInt(SessionFile, 0);
+            }
+            if(Utilities->FailureMode == FMinor)
+            {
+                Utilities->SaveFileInt(SessionFile, 1);
+            }
+            else if(Utilities->FailureMode == FModerate)
+            {
+                Utilities->SaveFileInt(SessionFile, 2);
+            }
+            else if(Utilities->FailureMode == FMajor)
+            {
+                Utilities->SaveFileInt(SessionFile, 3);
+            }
+            else
+            {
+                Utilities->SaveFileInt(SessionFile, 0);
+            }
+            Utilities->SaveFileString(SessionFile, "End of file at v2.14.0");
+//end of v2.14.0 additions
+//IF ADD MORE PARAMETERS REMEMBER TO ADD TO ERROR FILE TOO, BUT CHANGE 'SessionFile' to 'ErrorFile'
+
             SessionFile.close();
             TrainController->StopTTClockMessage(4, "Session saved: Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " +
                                                 RailwayTitle + "; " + TimetableTitle + ".ssn");
@@ -19931,11 +20111,11 @@ In each case need to ensure that the following points are considered and dealt w
         Screen->Cursor = TCursor(-2); // Arrow
         Utilities->CallLogPop(1141);
     }
-    catch(const Exception &e) //non-error catch
+    catch(const Exception &e) //non-error catch at v2.14.0
     {
-        TrainController->StopTTClockMessage(95, "Session file failed to save - reason not known.");
+        TrainController->StopTTClockMessage(138, "Session file failed to save\nError message: " + e.Message);
         Screen->Cursor = TCursor(-2); // Arrow;
-        Utilities->CallLogPop(2440);
+        Utilities->CallLogPop(2554);
     }
 }
 
@@ -20189,7 +20369,7 @@ void TInterface::LoadSession(int Caller)
                         if(SessionFile.eof()) //old session file
                         {
                             TrainController->SkippedTTEvents = 0; //initialise for new prog, added at v2.13.0, should have been here earlier
-                            SessionFile.close();                  //no need to initialise train data as initialised during LoadSessionTrains
+                            SessionFile.close();                  //no need to initialise train data as initialised during creation of a new train
                             goto FINISHEDLOADING;
                         }
                         //TempChar now contains the first digit of SkippedTTEvents as a character, so get the rest up to CRLF
@@ -20247,7 +20427,7 @@ void TInterface::LoadSession(int Caller)
                         }
                         if(SessionFile.eof()) //old session file
                         {
-                            SessionFile.close();  //no need to initialise train data as initialised during LoadSessionTrains
+                            SessionFile.close(); //no need to initialise train data as initialised during creation of a new train
                             goto FINISHEDLOADING;
                         }
                         //TempChar now contains the first digit of the first train ID which requires TreatPassAsTimeLocDeparture to be set, or 'E' if none
@@ -20263,18 +20443,18 @@ void TInterface::LoadSession(int Caller)
                             //here have TrainID as AnsiString in TempString & '\n' in TempChar
                             TTrain &Train = TrainController->TrainVectorAtIdent(62, TempString.ToInt());
                             Train.TreatPassAsTimeLocDeparture = true;
-                            SessionFile.get(TempChar); //will be '\n' (if more than one) or 'E' or 1st digit of next TrainID as character
+                            SessionFile.get(TempChar); //will be 'E' or 1st digit of next TrainID as character if more than one, or \n if more than one \n character
                             TempString = TempChar;
                             while((TempChar == '\n') || (TempChar == '\0'))  //get rid of any excess non-significant chars, unlikely to be any
                             {
                                 SessionFile.get(TempChar); //get the next one
-                                TempString = TempChar;     //when emerge this will be 'E' or 1st digit of TrainID
+                                TempString = TempChar;
                             }
                         }
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.12.0"  discarded ('E' already loaded)
 //end of additions at v2.12.0
 
-//additions at v2.13.0 - random delays - location delays, failed points & signals
+//additions at v2.13.0 - random delays - location delays, failed points & signals  (DelayMode not saved here, but saved later with FailureMode)
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
                         {// get rid of all end of lines & emerge with eof or 1st digit of CumulativeDelayedRandMinsAllTrains
@@ -20358,6 +20538,142 @@ void TInterface::LoadSession(int Caller)
                         }
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.13.0"  discarded
 //end of additions at v2.13.0
+
+//additions at v2.14.0 - delays and failures
+                        SessionFile.get(TempChar);
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
+                        {// get rid of all end of lines & emerge with eof or digit that represents DelayMode (0, 1, 2 or 3)
+                            SessionFile.get(TempChar);
+                        }
+                        if(SessionFile.eof()) //old session file, initialise delays & failures to none
+                        {
+                            NoDelaysMenuItem->Enabled = false;
+                            MinorDelaysMenuItem->Enabled = true;
+                            ModerateDelaysMenuItem->Enabled = true;
+                            MajorDelaysMenuItem->Enabled = true;
+                            DelayMenu->Caption = "No delays";
+                            PerfLogForm->PerformanceLog(51, Utilities->Format96HHMMSS(TrainController->RestartTime) + ": No random delays selected on loading session");
+                            Utilities->DelayMode = Nil;
+
+                            NoFailuresMenuItem->Enabled = false;
+                            MinorFailuresMenuItem->Enabled = true;
+                            ModerateFailuresMenuItem->Enabled = true;
+                            MajorFailuresMenuItem->Enabled = true;
+                            Utilities->PointChangeEventsPerFailure = Utilities->NilPointChangeEventsPerFailure;
+                            Utilities->SignalChangeEventsPerFailure = Utilities->NilSignalChangeEventsPerFailure;
+                            Utilities->MTBTSRs = Utilities->NilMTBTSRs;
+                            FailureMenu->Caption = "No failures";
+                            PerfLogForm->PerformanceLog(52, Utilities->Format96HHMMSS(TrainController->RestartTime) + ": No random failures selected on loading session");
+                            Utilities->FailureMode = FNil;
+                            SessionFile.close();
+                            goto FINISHEDLOADING;
+                        }
+                        //TempChar now contains the digit that represents DelayMode (0, 1, 2 or 3)
+                        if(TempChar == '0')
+                        {
+                            NoDelaysMenuItem->Enabled = false;
+                            MinorDelaysMenuItem->Enabled = true;
+                            ModerateDelaysMenuItem->Enabled = true;
+                            MajorDelaysMenuItem->Enabled = true;
+                            DelayMenu->Caption = "No delays";
+                            PerfLogForm->PerformanceLog(53, Utilities->Format96HHMMSS(TrainController->RestartTime) + ": No random delays selected on loading session");
+                            Utilities->DelayMode = Nil;
+                        }
+                        else if(TempChar == '1')
+                        {
+                            NoDelaysMenuItem->Enabled = true;
+                            MinorDelaysMenuItem->Enabled = false;
+                            ModerateDelaysMenuItem->Enabled = true;
+                            MajorDelaysMenuItem->Enabled = true;
+                            DelayMenu->Caption = "Minor delays";
+                            PerfLogForm->PerformanceLog(54, Utilities->Format96HHMMSS(TrainController->RestartTime) + ": Minor random delays selected on loading session");
+                            Utilities->DelayMode = Minor;
+                        }
+                        else if(TempChar == '2')
+                        {
+                            NoDelaysMenuItem->Enabled = true;
+                            MinorDelaysMenuItem->Enabled = true;
+                            ModerateDelaysMenuItem->Enabled = false;
+                            MajorDelaysMenuItem->Enabled = true;
+                            DelayMenu->Caption = "Moderate delays";
+                            PerfLogForm->PerformanceLog(55, Utilities->Format96HHMMSS(TrainController->RestartTime) + ": Moderate random delays selected on loading session");
+                            Utilities->DelayMode = Moderate;
+                        }
+                        else if(TempChar == '3')
+                        {
+                            NoDelaysMenuItem->Enabled = true;
+                            MinorDelaysMenuItem->Enabled = true;
+                            ModerateDelaysMenuItem->Enabled = true;
+                            MajorDelaysMenuItem->Enabled = false;
+                            DelayMenu->Caption = "Major delays";
+                            PerfLogForm->PerformanceLog(56, Utilities->Format96HHMMSS(TrainController->RestartTime) + ": Major random delays selected on loading session");
+                            Utilities->DelayMode = Major;
+                        }
+                        else
+                        {
+                            throw Exception("Session file DelayMode not in range");   //non-error catch later
+                        }
+                        SessionFile.get(TempChar); //should be '\n'
+                        SessionFile.get(TempChar); //FailureMode
+                        if(TempChar == '0')
+                        {
+                            NoFailuresMenuItem->Enabled = false;
+                            MinorFailuresMenuItem->Enabled = true;
+                            ModerateFailuresMenuItem->Enabled = true;
+                            MajorFailuresMenuItem->Enabled = true;
+                            Utilities->PointChangeEventsPerFailure = Utilities->NilPointChangeEventsPerFailure;
+                            Utilities->SignalChangeEventsPerFailure = Utilities->NilSignalChangeEventsPerFailure;
+                            Utilities->MTBTSRs = Utilities->NilMTBTSRs;
+                            FailureMenu->Caption = "No failures";
+                            PerfLogForm->PerformanceLog(57, Utilities->Format96HHMMSS(TrainController->RestartTime) + ": No random failures selected on loading session");
+                            Utilities->FailureMode = FNil;
+                        }
+                        else if(TempChar == '1')
+                        {
+                            NoFailuresMenuItem->Enabled = true;
+                            MinorFailuresMenuItem->Enabled = false;
+                            ModerateFailuresMenuItem->Enabled = true;
+                            MajorFailuresMenuItem->Enabled = true;
+                            Utilities->PointChangeEventsPerFailure = Utilities->MinorPointChangeEventsPerFailure;
+                            Utilities->SignalChangeEventsPerFailure = Utilities->MinorSignalChangeEventsPerFailure;
+                            Utilities->MTBTSRs = Utilities->MinorMTBTSRs;
+                            FailureMenu->Caption = "Minor failures";
+                            PerfLogForm->PerformanceLog(58, Utilities->Format96HHMMSS(TrainController->RestartTime) + ": Minor random failures selected on loading session");
+                            Utilities->FailureMode = FMinor;
+                        }
+                        else if(TempChar == '2')
+                        {
+                            NoFailuresMenuItem->Enabled = true;
+                            MinorFailuresMenuItem->Enabled = true;
+                            ModerateFailuresMenuItem->Enabled = false;
+                            MajorFailuresMenuItem->Enabled = true;
+                            Utilities->PointChangeEventsPerFailure = Utilities->ModeratePointChangeEventsPerFailure;
+                            Utilities->SignalChangeEventsPerFailure = Utilities->ModerateSignalChangeEventsPerFailure;
+                            Utilities->MTBTSRs = Utilities->ModerateMTBTSRs;
+                            FailureMenu->Caption = "Moderate failures";
+                            PerfLogForm->PerformanceLog(59, Utilities->Format96HHMMSS(TrainController->RestartTime) + ": Moderate random failures selected on loading session");
+                            Utilities->FailureMode = FModerate;
+                        }
+                        else if(TempChar == '3')
+                        {
+                            NoFailuresMenuItem->Enabled = true;
+                            MinorFailuresMenuItem->Enabled = true;
+                            ModerateFailuresMenuItem->Enabled = true;
+                            MajorFailuresMenuItem->Enabled = false;
+                            Utilities->PointChangeEventsPerFailure = Utilities->MajorPointChangeEventsPerFailure;
+                            Utilities->SignalChangeEventsPerFailure = Utilities->MajorSignalChangeEventsPerFailure;
+                            Utilities->MTBTSRs = Utilities->MajorMTBTSRs;
+                            FailureMenu->Caption = "Major failures";
+                            PerfLogForm->PerformanceLog(60, Utilities->Format96HHMMSS(TrainController->RestartTime) + ": Major random failures selected on loading session");
+                            Utilities->FailureMode = FMajor;
+                        }
+                        else
+                        {
+                            throw Exception("Session file FailureMode not in range"); //non-error catch later
+                        }
+                        SessionFile.get(TempChar); //should be '\n'
+                        DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.14.0"  discarded
+//end of v2.14.0 additions
                         SessionFile.close();
                     }
 
@@ -20396,6 +20712,16 @@ FINISHEDLOADING:
                     }
                     RlyFile = true;
                     SetCaption(3);
+                    TrainController->ReplotTrains(2, Display); //to set track elements with train IDs
+                   //now routes and trains loaded and TrainIDs set (in ReplotTrains) set all the signals as a session file saved before v2.14.0 will have incorrect
+                   //aspects if there are facing ground signals on a route new at v2.14.0
+                    if(AllRoutes->AllRoutesVector.size() > 0)
+                    {
+                        for(TAllRoutes::TAllRoutesVectorIterator ARVIt = AllRoutes->AllRoutesVector.begin(); ARVIt < AllRoutes->AllRoutesVector.end(); ARVIt++)
+                        {
+                            ARVIt->SetRouteSignals(13);
+                        }
+                    }
                     ClearandRebuildRailway(42);
                 }
             }
@@ -20428,9 +20754,9 @@ FINISHEDLOADING:
             Application->MessageBox(MessageStr.c_str(), L"Out of memory", MB_OK | MB_ICONERROR);
             Application->Terminate();
         }
-        else  //non-error catch
+        else  //non-error catch at v2.14.0
         {
-            TrainController->StopTTClockMessage(96, "Session file failed to load - may be corrupt.");
+            TrainController->StopTTClockMessage(96, "Session file failed to load - may be corrupt.\nError message: " + e.Message);
             Screen->Cursor = TCursor(-2); // Arrow;
             Utilities->CallLogPop(2441);
         }
@@ -21953,9 +22279,10 @@ void TInterface::SetRouteButtonsInfoCaptionAndRouteNotStarted(int Caller)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteButtonsInfoCaptionAndRouteNotStarted");
     if(EveryPrefDir->PrefDirSize() > 0)
     {
-        if(AutoSigsFlag)
+        if(AutoSigsFlag && ConsecSignalsRoute)
         {
             AutoSigsButton->Enabled = false;
+            SigAutoNonConsecButton->Enabled = true;
             SigPrefConsecButton->Enabled = true;
             SigPrefNonConsecButton->Enabled = true;
             UnrestrictedButton->Enabled = true;
@@ -21970,9 +22297,28 @@ void TInterface::SetRouteButtonsInfoCaptionAndRouteNotStarted(int Caller)
             }
             InfoCaptionStore = InfoPanel->Caption;
         }
-        else if(PreferredRoute & ConsecSignalsRoute) // added at v2.7.0, was just ConsecSignalsRoute
+        else if(AutoSigsFlag && !ConsecSignalsRoute) //added at v2.14.0
         {
             AutoSigsButton->Enabled = true;
+            SigAutoNonConsecButton->Enabled = false;
+            SigPrefConsecButton->Enabled = true;
+            SigPrefNonConsecButton->Enabled = true;
+            UnrestrictedButton->Enabled = true;
+            InfoPanel->Visible = true;
+            if(Level2OperMode == PreStart)
+            {
+                InfoPanel->Caption = "PRE-START:  Select AUTOMATIC SIGNAL ROUTE start signal, or left click points to change manually";
+            }
+            else
+            {
+                InfoPanel->Caption = "OPERATING:  Select AUTOMATIC SIGNAL ROUTE start signal, or left click points to change manually";
+            }
+            InfoCaptionStore = InfoPanel->Caption;
+        }
+        else if(PreferredRoute && ConsecSignalsRoute) // added at v2.7.0, was just ConsecSignalsRoute
+        {
+            AutoSigsButton->Enabled = true;
+            SigAutoNonConsecButton->Enabled = true;
             SigPrefConsecButton->Enabled = false;
             SigPrefNonConsecButton->Enabled = true;
             UnrestrictedButton->Enabled = true;
@@ -21987,9 +22333,10 @@ void TInterface::SetRouteButtonsInfoCaptionAndRouteNotStarted(int Caller)
             }
             InfoCaptionStore = InfoPanel->Caption;
         }
-        else if(PreferredRoute&!ConsecSignalsRoute) // added at v2.7.0
+        else if(PreferredRoute && !ConsecSignalsRoute) // added at v2.7.0
         {
             AutoSigsButton->Enabled = true;
+            SigAutoNonConsecButton->Enabled = true;
             SigPrefConsecButton->Enabled = true;
             SigPrefNonConsecButton->Enabled = false;
             UnrestrictedButton->Enabled = true;
@@ -22004,9 +22351,10 @@ void TInterface::SetRouteButtonsInfoCaptionAndRouteNotStarted(int Caller)
             }
             InfoCaptionStore = InfoPanel->Caption;
         }
-        else
+        else  //unrestricted route
         {
             AutoSigsButton->Enabled = true;
+            SigAutoNonConsecButton->Enabled = true;
             SigPrefConsecButton->Enabled = true;
             SigPrefNonConsecButton->Enabled = true;
             UnrestrictedButton->Enabled = false;
@@ -22025,6 +22373,7 @@ void TInterface::SetRouteButtonsInfoCaptionAndRouteNotStarted(int Caller)
     else
     {
         AutoSigsButton->Enabled = false;
+        SigAutoNonConsecButton->Enabled = false;
         SigPrefConsecButton->Enabled = false;
         SigPrefNonConsecButton->Enabled = false;
         UnrestrictedButton->Enabled = false;
@@ -22080,6 +22429,7 @@ void TInterface::DisableRouteButtons(int Caller)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",DisableRouteButtons");
     RouteCancelButton->Enabled = false;
     AutoSigsButton->Enabled = false;
+    SigAutoNonConsecButton->Enabled = false;
     SigPrefConsecButton->Enabled = false;
     SigPrefNonConsecButton->Enabled = false;
     UnrestrictedButton->Enabled = false;
@@ -22095,9 +22445,8 @@ void TInterface::SaveErrorFile()
    In order to reload as a session file:
 
    NB:  Don't change it to a .txt file, as the '\0' characters [shown as a small square in wordpad] will be changed to spaces if it is subsequently saved
-   strip out:-
 
-   [since adding user graphics after prefdirs need to take this into account]
+   strip out:-
 
    up to but excluding  ***Interface***
    from & including  ***ConstructPrefDir PrefDirVector***
@@ -22124,8 +22473,8 @@ void TInterface::SaveErrorFile()
    the next line after the two insertions should contain the number of active elements.
    strip out ***Text*** including the \0
    strip out from & including  ***ConstructPrefDir PrefDirVector*** to & including ***PrefDirs*** (and the \0's)
-   strip out ***UserGraphics*** including the \0  <--this is missing
-   strip out from & including the number preceding   ***ConstructRoute SearchVector*** to the end of the file
+   strip out ***UserGraphics*** including the \0  <--this will be missing if none
+   strip out from & including ***ConstructRoute PrefDirVector*** including the \0 to the end of the file
    the last entry should be '************NUL CR LF' (after all the pref dirs)
    rename as .dev or .rly file
 
@@ -22140,8 +22489,8 @@ void TInterface::SaveErrorFile()
 
    set wordwrap to window on
    strip out all to and including ***Timetable*** or ***Editing timetable.... depending which is to be saved
-   ensure any text before start time ends with /0, otherwise don't need the \0
-   strip out all after the final /0 immediately before ***End*** or ***End of timetable***, but ensure leave the final /0
+   ensure any text before start time ends with \0, otherwise don't need the \0
+   strip out all after the final \0 immediately before ***End*** or ***End of timetable***, but ensure leave the final \0
    save as a .ttb file
 */
 
@@ -22326,7 +22675,6 @@ void TInterface::SaveErrorFile()
         Utilities->SaveFileString(ErrorFile, "End of file at v2.12.0");
 //end of v2.12.0 additions
 
-
 //additions at v2.13.0 - random delays
 //No need to save Utilities->LastDelayTTClockTime - makes little difference and would cause corruption in any v2.13.0 Beta sessions
         Utilities->SaveFileInt(ErrorFile, Utilities->CumulativeDelayedRandMinsAllTrains); //to allow for exited and removed trains
@@ -22370,9 +22718,45 @@ void TInterface::SaveErrorFile()
         }
         Utilities->SaveFileString(ErrorFile, "End of file at v2.13.0");
 //end of v2.13.0 additions
+//additions at v2.14.0 - delays and failures
+            if(Utilities->DelayMode == Minor)
+            {
+                Utilities->SaveFileInt(ErrorFile, 1);
+            }
+            else if(Utilities->DelayMode == Moderate)
+            {
+                Utilities->SaveFileInt(ErrorFile, 2);
+            }
+            else if(Utilities->DelayMode == Major)
+            {
+                Utilities->SaveFileInt(ErrorFile, 3);
+            }
+            else
+            {
+                Utilities->SaveFileInt(ErrorFile, 0);
+            }
+            if(Utilities->FailureMode == FMinor)
+            {
+                Utilities->SaveFileInt(ErrorFile, 1);
+            }
+            else if(Utilities->FailureMode == FModerate)
+            {
+                Utilities->SaveFileInt(ErrorFile, 2);
+            }
+            else if(Utilities->FailureMode == FMajor)
+            {
+                Utilities->SaveFileInt(ErrorFile, 3);
+            }
+            else
+            {
+                Utilities->SaveFileInt(ErrorFile, 0);
+            }
+            Utilities->SaveFileString(ErrorFile, "End of file at v2.14.0");
+//end of v2.14.0 additions
 
 //REMAINDER STAY AT END OF FILE
-// addition at v2.8.0 in case of clipboard errors <-- keep at end of file as not wanted in a reconstructed session file
+// addition at v2.8.0 in case of clipboard
+// errors <-- keep at end of file as not wanted in a reconstructed session file
         Utilities->SaveFileInt(ErrorFile, SelectBitmap->Height); // extras for new clipboard functions
         Utilities->SaveFileInt(ErrorFile, SelectBitmap->Width);
         Utilities->SaveFileInt(ErrorFile, SelectBitmapHLoc); // paste location
@@ -23645,11 +24029,8 @@ void __fastcall TInterface::NoDelaysMenuItemClick(TObject *Sender)  //these adde
     MinorDelaysMenuItem->Enabled = true;
     ModerateDelaysMenuItem->Enabled = true;
     MajorDelaysMenuItem->Enabled = true;
-    Utilities->PointChangeEventsPerFailure = Utilities->NilPointChangeEventsPerFailure;
-    Utilities->SignalChangeEventsPerFailure = Utilities->NilSignalChangeEventsPerFailure;
-    Utilities->MTBTSRs = Utilities->NilMTBTSRs;
     DelayMenu->Caption = "No delays";
-    PerfLogForm->PerformanceLog(32, "No random delays selected");
+    PerfLogForm->PerformanceLog(32, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": No random delays selected");
     Utilities->DelayMode = Nil;
 }
 //---------------------------------------------------------------------------
@@ -23660,11 +24041,8 @@ void __fastcall TInterface::MinorDelaysMenuItemClick(TObject *Sender)
     MinorDelaysMenuItem->Enabled = false;
     ModerateDelaysMenuItem->Enabled = true;
     MajorDelaysMenuItem->Enabled = true;
-    Utilities->PointChangeEventsPerFailure = Utilities->MinorPointChangeEventsPerFailure;
-    Utilities->SignalChangeEventsPerFailure = Utilities->MinorSignalChangeEventsPerFailure;
-    Utilities->MTBTSRs = Utilities->MinorMTBTSRs;
     DelayMenu->Caption = "Minor delays";
-    PerfLogForm->PerformanceLog(33, "Minor random delays selected");
+    PerfLogForm->PerformanceLog(33, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Minor random delays selected");
     Utilities->DelayMode = Minor;
 }
 //---------------------------------------------------------------------------
@@ -23675,11 +24053,8 @@ void __fastcall TInterface::ModerateDelaysMenuItemClick(TObject *Sender)
     MinorDelaysMenuItem->Enabled = true;
     ModerateDelaysMenuItem->Enabled = false;
     MajorDelaysMenuItem->Enabled = true;
-    Utilities->PointChangeEventsPerFailure = Utilities->ModeratePointChangeEventsPerFailure;
-    Utilities->SignalChangeEventsPerFailure = Utilities->ModerateSignalChangeEventsPerFailure;
-    Utilities->MTBTSRs = Utilities->ModerateMTBTSRs;
     DelayMenu->Caption = "Moderate delays";
-    PerfLogForm->PerformanceLog(34, "Moderate random delays selected");
+    PerfLogForm->PerformanceLog(34, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Moderate random delays selected");
     Utilities->DelayMode = Moderate;
 }
 //---------------------------------------------------------------------------
@@ -23690,12 +24065,73 @@ void __fastcall TInterface::MajorDelaysMenuItemClick(TObject *Sender)
     MinorDelaysMenuItem->Enabled = true;
     ModerateDelaysMenuItem->Enabled = true;
     MajorDelaysMenuItem->Enabled = false;
+    DelayMenu->Caption = "Major delays";
+    PerfLogForm->PerformanceLog(35, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Major random delays selected");
+    Utilities->DelayMode = Major;
+}
+
+// ---------------------------------------------------------------------------
+
+void __fastcall TInterface::NoFailuresMenuItemClick(TObject *Sender)
+{
+    NoFailuresMenuItem->Enabled = false;
+    MinorFailuresMenuItem->Enabled = true;
+    ModerateFailuresMenuItem->Enabled = true;
+    MajorFailuresMenuItem->Enabled = true;
+    Utilities->PointChangeEventsPerFailure = Utilities->NilPointChangeEventsPerFailure;
+    Utilities->SignalChangeEventsPerFailure = Utilities->NilSignalChangeEventsPerFailure;
+    Utilities->MTBTSRs = Utilities->NilMTBTSRs;
+    FailureMenu->Caption = "No failures";
+    PerfLogForm->PerformanceLog(61, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": No random failures selected");
+    Utilities->FailureMode = FNil;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MinorFailuresMenuItemClick(TObject *Sender)
+{
+    NoFailuresMenuItem->Enabled = true;
+    MinorFailuresMenuItem->Enabled = false;
+    ModerateFailuresMenuItem->Enabled = true;
+    MajorFailuresMenuItem->Enabled = true;
+    Utilities->PointChangeEventsPerFailure = Utilities->MinorPointChangeEventsPerFailure;
+    Utilities->SignalChangeEventsPerFailure = Utilities->MinorSignalChangeEventsPerFailure;
+    Utilities->MTBTSRs = Utilities->MinorMTBTSRs;
+    FailureMenu->Caption = "Minor failures";
+    PerfLogForm->PerformanceLog(62, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Minor random failures selected");
+    Utilities->FailureMode = FMinor;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::ModerateFailuresMenuItemClick(TObject *Sender)
+{
+    NoFailuresMenuItem->Enabled = true;
+    MinorFailuresMenuItem->Enabled = true;
+    ModerateFailuresMenuItem->Enabled = false;
+    MajorFailuresMenuItem->Enabled = true;
+    Utilities->PointChangeEventsPerFailure = Utilities->ModeratePointChangeEventsPerFailure;
+    Utilities->SignalChangeEventsPerFailure = Utilities->ModerateSignalChangeEventsPerFailure;
+    Utilities->MTBTSRs = Utilities->ModerateMTBTSRs;
+    FailureMenu->Caption = "Moderate failures";
+    PerfLogForm->PerformanceLog(63, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Moderate random failures selected");
+    Utilities->FailureMode = FModerate;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TInterface::MajorFailuresMenuItemClick(TObject *Sender)
+{
+    NoFailuresMenuItem->Enabled = true;
+    MinorFailuresMenuItem->Enabled = true;
+    ModerateFailuresMenuItem->Enabled = true;
+    MajorFailuresMenuItem->Enabled = false;
     Utilities->PointChangeEventsPerFailure = Utilities->MajorPointChangeEventsPerFailure;
     Utilities->SignalChangeEventsPerFailure = Utilities->MajorSignalChangeEventsPerFailure;
     Utilities->MTBTSRs = Utilities->MajorMTBTSRs;
-    DelayMenu->Caption = "Major delays";
-    PerfLogForm->PerformanceLog(35, "Major random delays selected");
-    Utilities->DelayMode = Major;
+    FailureMenu->Caption = "Major failures";
+    PerfLogForm->PerformanceLog(64, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Major random failures selected");
+    Utilities->FailureMode = FMajor;
 }
 
 //---------------------------------------------------------------------------
@@ -26078,5 +26514,5 @@ void TInterface::PlayerHandshakingActions()
    Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file position then close and reopen it.
 */
 
-// ---------------------------------------------------------------------------
+
 

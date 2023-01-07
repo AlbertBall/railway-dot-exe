@@ -179,7 +179,7 @@ var sectionId = 'dynsection-111';
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" target="_top" xlink:title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ...">
+<g id="a_node6"><a xlink:href="class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" target="_top" xlink:title="Similar to PrefDirMarker but used only to display EveryPrefDir &#45; red for unidirectional PrefDir &amp; gre...">
 <polygon fill="white" stroke="black" points="549,-1539 549,-1569 677,-1569 677,-1539 549,-1539"/>
 <text text-anchor="start" x="557" y="-1557" font-family="Helvetica,sans-Serif" font-size="10.00">TOnePrefDir::EveryPrefDir</text>
 <text text-anchor="middle" x="613" y="-1546" font-family="Helvetica,sans-Serif" font-size="10.00">Marker</text>
@@ -401,7 +401,7 @@ var sectionId = 'dynsection-111';
 <!-- Node30 -->
 <g id="node27" class="node">
 <title>Node30</title>
-<g id="a_node27"><a xlink:href="class_t_all_routes.html#af0a34aa05027527d256566ae52600583" target="_top" xlink:title="Calls PrefDirMarker for all routes, with RouteCall set to identify a route call, and BuildingPrefDir ...">
+<g id="a_node27"><a xlink:href="class_t_all_routes.html#af0a34aa05027527d256566ae52600583" target="_top" xlink:title="Calls PrefDirMarker to display all routes, with RouteCall set to identify a route call,...">
 <polygon fill="white" stroke="black" points="751.5,-1175.5 751.5,-1194.5 885.5,-1194.5 885.5,-1175.5 751.5,-1175.5"/>
 <text text-anchor="middle" x="818.5" y="-1182.5" font-family="Helvetica,sans-Serif" font-size="10.00">TAllRoutes::MarkAllRoutes</text>
 </a>
@@ -510,7 +510,7 @@ var sectionId = 'dynsection-111';
 <!-- Node41 -->
 <g id="node36" class="node">
 <title>Node41</title>
-<g id="a_node36"><a xlink:href="class_t_one_pref_dir.html#aef8388386635d73a921fae7ce43f5214" target="_top" xlink:title="PrefDir and route track marker, including direction markers.">
+<g id="a_node36"><a xlink:href="class_t_one_pref_dir.html#aef8388386635d73a921fae7ce43f5214" target="_top" xlink:title="PrefDir and route track display function, including direction markers.">
 <polygon fill="white" stroke="black" points="751.5,-1968.5 751.5,-1987.5 885.5,-1987.5 885.5,-1968.5 751.5,-1968.5"/>
 <text text-anchor="middle" x="818.5" y="-1975.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOnePrefDir::PrefDirMarker</text>
 </a>

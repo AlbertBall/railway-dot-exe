@@ -1,4 +1,4 @@
 <map id="TTrack::ResetSignals" name="TTrack::ResetSignals">
-<area shape="rect" id="node1" title="Called on exit from operation to reset all signals to red (Attribute = 0)" alt="" coords="219,13,365,39"/>
+<area shape="rect" id="node1" title="Called on exit from operation to reset all signals to red (Attribute = 0), failed to false &amp; clear Fa..." alt="" coords="219,13,365,39"/>
 <area shape="rect" id="node2" href="$class_t_interface.html#a3e59d6f1f39ffe34a9d6e7bf930acbff" title=" " alt="" coords="5,5,171,47"/>
 </map>

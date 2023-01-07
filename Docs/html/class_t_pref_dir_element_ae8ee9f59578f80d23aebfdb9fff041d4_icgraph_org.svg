@@ -530,7 +530,7 @@
 <!-- Node31 -->
 <g id="node30" class="node">
 <title>Node31</title>
-<g id="a_node30"><a xlink:href="class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" target="_top" xlink:title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ...">
+<g id="a_node30"><a xlink:href="class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" target="_top" xlink:title="Similar to PrefDirMarker but used only to display EveryPrefDir &#45; red for unidirectional PrefDir &amp; gre...">
 <polygon fill="white" stroke="black" points="810.5,-619.5 810.5,-649.5 938.5,-649.5 938.5,-619.5 810.5,-619.5"/>
 <text text-anchor="start" x="818.5" y="-637.5" font-family="Helvetica,sans-Serif" font-size="10.00">TOnePrefDir::EveryPrefDir</text>
 <text text-anchor="middle" x="874.5" y="-626.5" font-family="Helvetica,sans-Serif" font-size="10.00">Marker</text>

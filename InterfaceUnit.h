@@ -741,6 +741,12 @@ __published: // IDE-managed Components
     TMenuItem *MinorDelaysMenuItem;
     TMenuItem *ModerateDelaysMenuItem;
     TMenuItem *MajorDelaysMenuItem;
+    TMenuItem *FailureMenu;  //these added at v2.14.0
+    TMenuItem *NoFailuresMenuItem;
+    TMenuItem *MinorFailuresMenuItem;
+    TMenuItem *ModerateFailuresMenuItem;
+    TMenuItem *MajorFailuresMenuItem;
+    TBitBtn *SigAutoNonConsecButton;
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -958,6 +964,11 @@ __published: // IDE-managed Components
     void __fastcall MinorDelaysMenuItemClick(TObject *Sender);
     void __fastcall ModerateDelaysMenuItemClick(TObject *Sender);
     void __fastcall MajorDelaysMenuItemClick(TObject *Sender);
+    void __fastcall NoFailuresMenuItemClick(TObject *Sender);
+    void __fastcall MinorFailuresMenuItemClick(TObject *Sender);
+    void __fastcall ModerateFailuresMenuItemClick(TObject *Sender);
+    void __fastcall MajorFailuresMenuItemClick(TObject *Sender);
+    void __fastcall SigAutoNonConsecButtonClick(TObject *Sender);
 
 
 public: // AboutForm needs access to these
@@ -1222,7 +1233,7 @@ private:
     bool ClipboardChecked;
 ///< used to prevent Windows clipboard being checked repeatedly
     bool ConsecSignalsRoute;
-///< true when AutoSig or preferred route building selected during operation (always same state as PreferredRoute)
+///< true for signal to next signal, true or false for autosigs & prefdir routes, and always false for unrestricted
     bool CopiedEntryFlag;
 ///< true when CopiedEntryStr holds a timetable entry in the timetable editor
     bool CopySelected;
@@ -1293,6 +1304,8 @@ private:
 ///< indicates that a screen cursor has been stored in TempCursor for redisplay after a temporary cursor (usually an hourglass) has been displayed
     bool TextFoundFlag;
 ///< indicates that a text item has been found when clicking on a build screen during 'AddText' or 'MoveTextOrGraphic' modes
+    bool TrainLeaveWarningSent;
+///< indicates that a train under signaller control leaving a location when awaiting departure warning that it must be returned to restore timetable control has been sent
     bool TTClockAdjustWarningHide;
 ///< true if user opts not to show the timetable clock adjustment warning (false on starting the program)
     bool TwoLocationNamePanelHide;

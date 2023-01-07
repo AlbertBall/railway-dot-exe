@@ -12,7 +12,7 @@
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title="PrefDir and route track marker, including direction markers.">
+<g id="a_node1"><a xlink:title="PrefDir and route track display function, including direction markers.">
 <polygon fill="#bfbfbf" stroke="black" points="1315,-1381 1315,-1400 1449,-1400 1449,-1381 1315,-1381"/>
 <text text-anchor="middle" x="1382" y="-1388" font-family="Helvetica,sans-Serif" font-size="10.00">TOnePrefDir::PrefDirMarker</text>
 </a>

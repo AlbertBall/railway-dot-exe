@@ -19,7 +19,7 @@ A wide selection of track element types is available for building the railway, t
 
 Trains may operate to a timetable developed using the internal timetable editor, or under signaller control.  Three types of route are available:
 
-1. Automatic signal routes:  set signal to signal in preferred directions, the route is retained after trains pass and signals automatically return to green in stages as blocks ahead are cleared
+1. Automatic signal routes:  set signal to signal or from signal to any following signal in preferred directions, the route is retained after trains pass and signals automatically return to green in stages as blocks ahead are cleared
 2. Preferred direction routes:  set signal to signal or from signal to any following signal in preferred directions, and the route is cleared as trains pass
 3. Unrestricted routes:  set from most types of track element to other track elements in any direction.  The route is cleared as trains pass
 

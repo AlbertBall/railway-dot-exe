@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv=Content-Type content="text/html; charset=windows-1252">
 <meta name=Generator content="Microsoft Word 14 (filtered)">
-<title>Random delays</title>
+<title>Random delays, point and signal failures, and temporary speed restrictions</title>
 <style>
 <!--
  /* Style Definitions */
@@ -28,19 +28,20 @@ div.WordSection1
 
 <div class=WordSection1>
 
-<p class=MsoNormal><b>6.13	Random delays</b></p>
+<p class=MsoNormal><b>6.13	Random delays, point and signal failures, and temporary speed restrictions</b></p>
 
 <p class=MsoNormal><b>&nbsp;</b></p>
 
-<p class=MsoNormal>Delays occur regularly on real railways and can also occur in RailOS if selected.  The most frequent are delays at stations and other locations from a wide variety of causes, followed by trackside delays caused by events such as signal and point failures, and temporary speed restrictions (TSRs) imposed for engineering work, trespassers, animals on the track and so on.</p>
+<p class=MsoNormal>Delays occur regularly on real railways and can also occur in RailOS if selected.  The most frequent are delays at stations and other locations from a wide variety of causes.  Points and signals can also fail, and temporary speed restrictions (TSRs) are often imposed for engineering work, trespassers, animals on the track and so on.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
-<p class=MsoNormal>Four options are offered: none (the default setting), minor, moderate and major, selectable at any time during operation by a menu tab.  Delays at locations are at frequencies that vary inversely with duration, such that short delays are common and longer delays less common.  Point failures can occur any time they change state, either by route setting or manually, and signal failures can occur any time they change aspect.  Temporary speed restrictions occur randomly at any time.  In all cases the delay, failure and TSR frequencies increase with increasing selection from minor to major.</p>
+<p class=MsoNormal>Four options are offered each for delays and failures: none (the default setting), minor, moderate and major, selectable at any time during operation by a menu tab.  Delays at locations are at frequencies that vary inversely with duration, such that short delays are common and longer delays less common.  Point failures can occur any time they change state, either by route setting or manually, and signal failures can occur any time they change aspect.  Temporary speed restrictions occur randomly at any time.  In all cases the delay, failure and TSR frequencies increase with increasing selection from minor to major (see 'Delay and failure data' below). For most railways a reasonable balance of delays and failures will be found with the same setting for each - i.e minor delays with minor failures and the same for moderate and major.  However flexibility is provided with different settings where it is thought to be more appropriate for particular railways.
+</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
-<p class=MsoNormal>Failures and TSRs are indicated by a black (white background) or white (dark background) rounded square around the element.</p>
+<p class=MsoNormal>Failures and TSRs are indicated by a black (white background) or white (dark background) rounded square around the failed element.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
@@ -60,7 +61,43 @@ div.WordSection1
 
 <p class=MsoNormal>&nbsp;</p>
 
-<p class=MsoNormal>The delay selection remains in place until it is changed by the user or RailOS closes.  It is not saved with sessions, so a reloaded session will be subject to the selection already in place.</p>			
+<p class=MsoNormal>The delay and failure selections in place when a session is saved are recorded in the file and reinstated when the session is reloaded.</p>
+
+<p></p>	
+
+<p class=MsoNormal><u>Delay and failure data:<o:p></o:p></u></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal><span style='mso-tab-count:2'>                        </span>Minor<span
+style='mso-spacerun:yes'>   </span>Moderate<span style='mso-spacerun:yes'>  
+</span>Major<o:p></o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<p class=MsoNormal>Points<span style='mso-spacerun:yes'>               </span>1000<span
+style='mso-spacerun:yes'>        </span>400<span
+style='mso-spacerun:yes'>         </span>200<span style='mso-spacerun:yes'>  
+</span>direction change events per failure<o:p></o:p></p>
+
+<p class=MsoNormal>Signals<span style='mso-spacerun:yes'>             </span>2000<span
+style='mso-spacerun:yes'>      </span>1000<span
+style='mso-spacerun:yes'>         </span>500<span style='mso-spacerun:yes'>  
+</span>aspect changes per failure<o:p></o:p></p>
+
+<p class=MsoNormal>TSRs<span style='mso-spacerun:yes'>                  </span>200<span
+style='mso-spacerun:yes'>        </span>100<span
+style='mso-spacerun:yes'>           </span>50<span style='mso-spacerun:yes'>  
+</span>days between restrictions per plain track element<o:p></o:p></p>
+
+<p class=MsoNormal>Delays<span style='mso-spacerun:yes'>             </span>1 -
+11<span style='mso-spacerun:yes'>   </span><span
+style='mso-spacerun:yes'>  </span>1 - 24<span style='mso-spacerun:yes'>  
+</span><span style='mso-spacerun:yes'> </span><span
+style='mso-spacerun:yes'> </span>1 - 49 minutes (the longer the delay the less
+frequently it occurs)<o:p></o:p></p>
+
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
 
 </div>
 

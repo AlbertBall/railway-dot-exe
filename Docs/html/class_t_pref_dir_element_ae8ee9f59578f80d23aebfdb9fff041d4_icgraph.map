@@ -27,7 +27,7 @@
 <area shape="rect" id="node16" href="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e" title=" " alt="" coords="539,1164,730,1206"/>
 <area shape="rect" id="node19" href="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5" title="The main loop, called every clock tick via MasterClockTimer." alt="" coords="298,920,457,946"/>
 <area shape="rect" id="node27" href="$class_t_one_route.html#a36ba8adc8b4a47908ee4e1b8e75792ca" title="Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and ..." alt="" coords="810,635,997,676"/>
-<area shape="rect" id="node30" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="1086,628,1257,670"/>
+<area shape="rect" id="node30" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to display EveryPrefDir &#45; red for unidirectional PrefDir &amp; gre..." alt="" coords="1086,628,1257,670"/>
 <area shape="rect" id="node43" href="$class_t_pref_dir_element.html#a9dfc04bfa3abf32eb043d771381f971a" title="Returns route graphic." alt="" coords="1082,446,1261,487"/>
 <area shape="rect" id="node45" href="$class_t_one_route.html#ab8570cc4c3941927b206c015a9813af0" title="Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector so that the..." alt="" coords="1076,336,1267,378"/>
 <area shape="rect" id="node48" href="$class_t_one_pref_dir.html#af87440e0ace47b20c8a874c51b314064" title="Used when creating a bitmap image to display preferred directions (as on screen during &#39;Set preferred..." alt="" coords="1086,511,1257,552"/>

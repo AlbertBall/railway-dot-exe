@@ -15,7 +15,7 @@
 <area shape="rect" id="node7" href="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a" title="Returns a constant reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ch..." alt="" coords="1030,1255,1223,1282"/>
 <area shape="rect" id="node8" href="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da" title="Return the vector size." alt="" coords="1044,906,1209,932"/>
 <area shape="rect" id="node10" href="$class_t_display.html#a8d990507ae0111e0b7890e8aa77fd76d" title="Empty the display." alt="" coords="1050,602,1203,628"/>
-<area shape="rect" id="node11" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="768,1138,939,1180"/>
+<area shape="rect" id="node11" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to display EveryPrefDir &#45; red for unidirectional PrefDir &amp; gre..." alt="" coords="768,1138,939,1180"/>
 <area shape="rect" id="node15" href="$class_t_display.html#a9ab49e52c7eb92b32ae2c34547183439" title="Plot the graphic at screen position HPos &amp; VPos." alt="" coords="1055,1458,1198,1484"/>
 <area shape="rect" id="node16" href="$class_t_display.html#aa4f37ab2a4df6437a2219f303e1de40b" title="Repaint the screen display." alt="" coords="1066,1660,1187,1687"/>
 <area shape="rect" id="node17" href="$class_t_pref_dir_element.html#af00e0755cd716b4d101abbae02c73ca2" title="Returns ELink." alt="" coords="488,1888,667,1915"/>
@@ -27,14 +27,14 @@
 <area shape="rect" id="node24" href="$class_t_graphic_element.html#ad2780e85ae1e401bfbb6a7c37b15bea8" title=" " alt="" coords="486,2208,669,2235"/>
 <area shape="rect" id="node25" href="$class_t_track.html#a8520abf65484aa83a28329a633836f97" title="Examine all elements in the TrackVector and if have a valid length mark the relevant track using Mark..." alt="" coords="503,1736,651,1763"/>
 <area shape="rect" id="node27" href="$class_t_graphic_element.html#ac12f60cb52eefdc86eaa504419eb138d" title="Load original graphic from the screen for point flashing or route start markers." alt="" coords="752,565,955,606"/>
-<area shape="rect" id="node29" href="$class_t_all_routes.html#af0a34aa05027527d256566ae52600583" title="Calls PrefDirMarker for all routes, with RouteCall set to identify a route call, and BuildingPrefDir ..." alt="" coords="1037,754,1216,780"/>
+<area shape="rect" id="node29" href="$class_t_all_routes.html#af0a34aa05027527d256566ae52600583" title="Calls PrefDirMarker to display all routes, with RouteCall set to identify a route call,..." alt="" coords="1037,754,1216,780"/>
 <area shape="rect" id="node30" href="$class_t_track.html#aa67be9f8ad9bd885f649b26962e0d41d" title="True if there is a platform, NamedNonStationLocation or Concourse present in the railway." alt="" coords="1021,2284,1232,2325"/>
 <area shape="rect" id="node31" href="$class_t_display.html#a7dae1c6470743a7cb778a6f813c7f0cc" title="Plot the graphic at the railway (not screen) position set by HPos &amp; VPos." alt="" coords="1049,2771,1204,2798"/>
 <area shape="rect" id="node32" href="$class_t_graphic_element.html#ad9e23ba031b1110126227d301b59ffc7" title="Plot the original graphic on screen." alt="" coords="755,1011,952,1038"/>
 <area shape="rect" id="node33" href="$class_t_graphic_element.html#a04ccc26451ff7d95dc3c5951b71f421e" title="Plot the overlay graphic on screen." alt="" coords="755,1559,951,1586"/>
 <area shape="rect" id="node34" href="$class_t_track.html#ad8a74040f61dffb16633deea5054deef" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway (..." alt="" coords="749,2042,957,2098"/>
 <area shape="rect" id="node37" href="$class_t_track.html#a1f59015a92ef00604156a44011b4f4c8" title="Plot LC elements without any base elements, and set LCPlotted true &#45; used in ClearandRebuildRailway." alt="" coords="735,1976,972,2017"/>
-<area shape="rect" id="node38" href="$class_t_one_pref_dir.html#aef8388386635d73a921fae7ce43f5214" title="PrefDir and route track marker, including direction markers." alt="" coords="1037,2568,1216,2595"/>
+<area shape="rect" id="node38" href="$class_t_one_pref_dir.html#aef8388386635d73a921fae7ce43f5214" title="PrefDir and route track display function, including direction markers." alt="" coords="1037,2568,1216,2595"/>
 <area shape="rect" id="node39" href="$class_t_track.html#a12569ed581bb1c76c1d201b3cf013da7" title="Called by TInterface::ClearandRebuildRailway to replot all the active and inactive track elements and..." alt="" coords="481,1508,673,1535"/>
 <area shape="rect" id="node41" href="$class_t_track.html#aab8f4096e7cd62d7afc16c1ef706131c" title="rebuild user graphics" alt="" coords="758,1863,949,1890"/>
 <area shape="rect" id="node42" href="$class_t_train_controller.html#a47676de8fc677dbcabf565569cb1435c" title="plot all trains on the display" alt="" coords="1048,2822,1205,2864"/>

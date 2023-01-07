@@ -1,7 +1,7 @@
 <map id="TPrefDirElement::GetDirectionRouteGraphicPtr" name="TPrefDirElement::GetDirectionRouteGraphicPtr">
 <area shape="rect" id="node1" title="picks up the green or red route direction graphic" alt="" coords="2039,220,2235,261"/>
 <area shape="rect" id="node2" href="$class_t_one_route.html#a36ba8adc8b4a47908ee4e1b8e75792ca" title="Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and ..." alt="" coords="1550,5,1737,47"/>
-<area shape="rect" id="node7" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="1810,476,1981,517"/>
+<area shape="rect" id="node7" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to display EveryPrefDir &#45; red for unidirectional PrefDir &amp; gre..." alt="" coords="1810,476,1981,517"/>
 <area shape="rect" id="node42" href="$class_t_one_pref_dir.html#a614933ff3958e4b8c9be9bc78159d9e8" title="Old version of LoadPrefDir, used during development when the save format changed so the old files cou..." alt="" coords="1802,198,1989,225"/>
 <area shape="rect" id="node43" href="$class_t_one_pref_dir.html#a0779c9edd1ba268356590aac4719166d" title="Load a vector and map of preferred directions from the file." alt="" coords="1022,185,1189,211"/>
 <area shape="rect" id="node45" href="$class_t_one_route.html#ab8570cc4c3941927b206c015a9813af0" title="Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector so that the..." alt="" coords="1800,249,1991,291"/>

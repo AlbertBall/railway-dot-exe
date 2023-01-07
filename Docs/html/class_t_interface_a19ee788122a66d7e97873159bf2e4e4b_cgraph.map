@@ -45,7 +45,7 @@
 <area shape="rect" id="node14" href="$class_t_pref_dir_element.html#aa5944dedfb065d9e251c26b28fff69f6" title="Returns the ELink array position." alt="" coords="1005,1703,1206,1730"/>
 <area shape="rect" id="node15" href="$class_t_pref_dir_element.html#a35cd9c18012bd537fa988a32c510b01b" title="Returns the XLink array position." alt="" coords="1006,1906,1205,1932"/>
 <area shape="rect" id="node17" href="$class_t_display.html#a8d990507ae0111e0b7890e8aa77fd76d" title="Empty the display." alt="" coords="1029,1164,1182,1191"/>
-<area shape="rect" id="node18" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to mark EveryPrefDir &#45; red for unidirectional PrefDir &amp; green ..." alt="" coords="771,1637,941,1678"/>
+<area shape="rect" id="node18" href="$class_t_one_pref_dir.html#a9b425a3ed8ef998e2366d13ad52bf08c" title="Similar to PrefDirMarker but used only to display EveryPrefDir &#45; red for unidirectional PrefDir &amp; gre..." alt="" coords="771,1637,941,1678"/>
 <area shape="rect" id="node19" href="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8" title="Return a non&#45;modifiable element at PrefDirVector position &#39;At&#39;." alt="" coords="1017,1418,1193,1460"/>
 <area shape="rect" id="node21" href="$class_t_pref_dir_element.html#af00e0755cd716b4d101abbae02c73ca2" title="Returns ELink." alt="" coords="767,1535,945,1562"/>
 <area shape="rect" id="node22" href="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a" title="Returns a constant reference to the route at AllRoutesVector position &#39;At&#39;, after performing range ch..." alt="" coords="1009,1114,1202,1140"/>

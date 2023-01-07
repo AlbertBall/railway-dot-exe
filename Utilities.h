@@ -37,6 +37,11 @@ enum TDelayMode //added at v2.13.0.  Here so DelayMode retains value when ClearE
     Nil, Minor, Moderate, Major
 };
 
+enum TFailureMode //added at v2.14.0.  Here so FailureMode retains value when ClearEverything called
+{
+    FNil, FMinor, FModerate, FMajor
+};
+
 class TUtilities // single object incorporating general purpose data & functions for all units to access
 {
 public:
@@ -101,7 +106,7 @@ public:
     std::deque<AnsiString>EventLog;
     ///< event store, saved to the errorlog for diagnostic purposes
     TDateTime LastTSRCheckTime;
-    ///< time of last TSR check, used every 5 minutes, added at v2.13.0
+    ///< time of last TSR check, used every minute, added at v2.13.0  //change from 5 mins to 1 min at v2.14.0
     AnsiString DateTimeStamp();
     ///< creates a string of the form 'dd/mm/yyyy hh:mm:ss' for use in call & event logging
     AnsiString TimeStamp();
@@ -109,7 +114,9 @@ public:
     TColor clTransparent;
     ///< the display background colour, can be white, black or dark blue
     TDelayMode DelayMode;
-///< specifies whether no delays or minor, moderate or major random delays are to be applied (added at v2.13.0)
+    ///< specifies whether no delays or minor, moderate or major random delays are to be applied (added at v2.13.0)
+    TFailureMode FailureMode;
+    ///< specifies whether no failures or minor, moderate or major random failures are to be applied (added at v2.14.0)
 
 //functions
 // void LogEvent(AnsiString Str); //store Str to the event log - moved to TTrainController for v0.6 so can record the tt clock value

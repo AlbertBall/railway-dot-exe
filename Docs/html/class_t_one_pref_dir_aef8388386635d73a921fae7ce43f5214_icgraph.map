@@ -1,5 +1,5 @@
 <map id="TOnePrefDir::PrefDirMarker" name="TOnePrefDir::PrefDirMarker">
-<area shape="rect" id="node1" title="PrefDir and route track marker, including direction markers." alt="" coords="1759,1017,1937,1044"/>
+<area shape="rect" id="node1" title="PrefDir and route track display function, including direction markers." alt="" coords="1759,1017,1937,1044"/>
 <area shape="rect" id="node2" href="$class_t_interface.html#aaa05ac95703a25e1fb4863779854967c" title="&lt; Sets the information panel message for zoom&#45;out or paused modes" alt="" coords="1531,1971,1711,2012"/>
 <area shape="rect" id="node14" href="$class_t_interface.html#abf07d5edc1507de381825f17620748b2" title="Called when mouse button clicked in zoom&#45;in mode." alt="" coords="280,651,475,692"/>
 <area shape="rect" id="node3" href="$class_t_actions_due_form.html#ac44cd181601f65f5944910f931c5d343" title=" " alt="" coords="1281,158,1460,199"/>

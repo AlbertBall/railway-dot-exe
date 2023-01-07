@@ -12,7 +12,7 @@
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title="Called on exit from operation to reset all signals to red (Attribute = 0)">
+<g id="a_node1"><a xlink:title="Called on exit from operation to reset all signals to red (Attribute = 0), failed to false &amp; clear Fa...">
 <polygon fill="#bfbfbf" stroke="black" points="160,-6 160,-25 270,-25 270,-6 160,-6"/>
 <text text-anchor="middle" x="215" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">TTrack::ResetSignals</text>
 </a>

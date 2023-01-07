@@ -36,6 +36,7 @@ var class_t_utilities =
     [ "DefaultTrackSpeedLimit", "class_t_utilities.html#a86440fb6b545f487bcfeb0575fdbc06c", null ],
     [ "DelayMode", "class_t_utilities.html#a31e0e69b53b598580277d76a474c0e3e", null ],
     [ "EventLog", "class_t_utilities.html#ace6be5cece5f2e271c0b85a9d2f51917", null ],
+    [ "FailureMode", "class_t_utilities.html#a4547c5b6eab3a823c6558a53a6974073", null ],
     [ "FixedMinRepairTime", "class_t_utilities.html#aabf10d10edc0fd28bb2890d70f9b02ee", null ],
     [ "LastDelayTTClockTime", "class_t_utilities.html#a60411e55bbf7ac96ad02d4146af0e4c6", null ],
     [ "LastTSRCheckTime", "class_t_utilities.html#a522d39d776b620c84be9d0b4eb9f52a0", null ],

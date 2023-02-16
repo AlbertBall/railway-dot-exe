@@ -72,9 +72,9 @@ enum TTimetableLocationType
     NoLocation, AtLocation, EnRoute, LocTypeForRepeatEntry
 };
 
-enum TTimetableSequenceType
+enum TTimetableSequenceType //at v2.15.0 added 'Sequence' after Start, Finish & Intermediate because had ambiguity with 'Start' declared as double in InterfaceUnit.h
 {
-    NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
+    NoSequence, StartSequence, FinishSequence, IntermediateSequence, SequTypeForRepeatEntry
 };
 
 enum TTimetableShuttleLinkType
@@ -100,7 +100,7 @@ typedef TNumList::iterator TNumListIterator;
 
 ///these added for multiplayer
 
-typedef std::pair<short, short> THVShortPair;
+typedef std::pair<int, int> THVShortPair;
 
 class TExitInfo //corresponds to TServiceInfo in Interface  12 bytes
 {
@@ -132,7 +132,7 @@ public:
     int NumberOfRepeats;
 ///< the number of repeating services
     int RearStartOrRepeatMins, FrontStartOrRepeatDigits;
-///< dual-purpose variables used for the TrackVectorPositions of the rear and front train starting elements (for Snt) or for repeat minute & digit values in repeat entries
+///< dual-purpose variables used for the TrackVectorPositions of the rear and front train starting elements (for Snt or Snt-sh) or for repeat minute & digit values in repeat entries
     TDateTime EventTime, ArrivalTime, DepartureTime;
 ///< relevant times at which the action is timetabled, zeroed on creation so change to -1 as a marker for 'not set'
     TNumList ExitList;
@@ -314,8 +314,12 @@ private:
 ///< kg (i.e. 10,000 tonnes)
     static const int MaximumPowerLimit = 100000000;
 ///< Watts (i.e. 100MW)
-    static const int MaximumSpeedLimit = 400;
+
+public:
+    static const int MaximumSpeedLimit = 400;  //so TTrack can access it
 ///< km/h
+
+private:
 
     static int NextTrainID;
 ///< the ID value to be used for the next train that is created, static so that it doesn't need an object to call it and its value is independent of the objects
@@ -788,6 +792,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 
     AnsiString LastTTTime;
 ///< Stores the last time used in the timetable as an AnsiString - used for timetable analysis
+    AnsiString MinsToAnsiTime(int Input);
+///< converts an integer minute value to string "HH:MM"  added at v2.15.0
     AnsiString ServiceReference;
 ///< String used to display the offending service in timetable error messages
     bool CrashWarning, DerailWarning, SPADWarning, CallOnWarning, SignalStopWarning, BufferAttentionWarning, TrainFailedWarning;
@@ -872,8 +878,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 ///<added v2.2.0 for Op time to act display
     TOpTimeToActMultiMapIterator OpTimeToActMultiMapIterator;
 ///<added v2.2.0 for Op time to act display
-    TTrainDataVector TrainDataVector;
-///< vector containing the internal timetable
+    TTrainDataVector TrainDataVector, TrainDataVectorCopy;
+///< vector containing the internal timetable, the copy is used for conflict analysis only
     TTrainVector TrainVector;
 ///< vector containing all trains currently in the railway
 
@@ -995,8 +1001,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     TTimeToExitMultiMap TimeToExitMultiMap;
 /// Return a reference to the train with ID TrainID, carries out validity checking on TrainID
     TTrain &TrainVectorAtIdent(int Caller, int TrainID);
-////Return the TrainDataVector entry corresponding to ServiceReference, FinishType is 0 for end of service or 1 for a follow-on service
-    TTrainDataEntry GetServiceFromVector(AnsiString Caller, AnsiString ServiceReference, TTrainDataVector Vector, bool &FinishType, bool &FoundFlag);
+/// Return the TrainDataVector entry corresponding to ServiceReference, FinishType is 0 for end of service or 1 for a follow-on service
+    TTrainDataEntry GetServiceFromVector(AnsiString Caller, AnsiString HeadCode, TTrainDataVector Vector, bool &FinishType, bool &FoundFlag);
 /// populate the ContinuationTrainExpectationMultiMap during timetable loading
     void BuildContinuationTrainExpectationMultiMap(int Caller);
 /// calculates additional lateness values for trains that haven't reached their destinations yet
@@ -1055,9 +1061,9 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     void WriteTrainsToImage(int Caller, Graphics::TBitmap *Bitmap);
 
 /// Constructor
-    TTrainController::TTrainController();
+    TTrainController();
 /// Destructor
-    TTrainController::~TTrainController();
+    ~TTrainController();
 };
 
 // ---------------------------------------------------------------------------

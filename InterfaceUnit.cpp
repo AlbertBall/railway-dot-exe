@@ -90,7 +90,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
     {
         Screen->Cursor = TCursor(-11); // Hourglass
         DirOpenError = false;
-        AllSetUpFlag = false; // flag to prevent MasterClock from being enabled when application activates if there has been an error during
+        AllSetUpFlag = false; //flag to prevent MasterClock from being enabled when application activates if there has been an error during
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
@@ -110,7 +110,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         UnicodeString ProgramDirectoryName = ExtractFilePath(FullProgramName);  // as above
 //        ShowMessage("ProgramDirectoryName " + ProgramDirectoryName);
 
-        if(!FileExists(ProgramName))  //added at v2.9.0 after discovering the effect described below
+        if(!FileExists(ProgramName))  //added at v2.9.0 after discovering the effect described in the message
         {
             if(!SetCurrentDir(ProgramDirectoryName)) //if false the current directory couldn't be changed
             {
@@ -232,6 +232,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         Track->NoPlatsMessageSent = false; //added at v2.10.0
         PrefDirConflictAdviceMessageSent = false; //added at v2.13.0
         TrainLeaveWarningSent = false; //added at v2.14.0
+        InvertTTEntryMessageSent = false; //added at v2.15.0
         Utilities->DefaultTrackLength = 100;     //moved here at v2.11.0, may be changed in reading config.txt //changed at v2.13.1
         Utilities->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
 
@@ -608,9 +609,9 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TrainController->MTBFHours = 0;
         TrainController->TwoOrMoreLocationsWarningGiven = false;
         CancelSelectionFlag = false;
-        TTStartTimePtr = 0;
-        TTFirstServicePtr = 0;
-        TTLastServicePtr = 0;
+        TTStartTimePtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, best to initialise to an invalid location to force errors if not set properly
+        TTFirstServicePtr = TimetableEditVector.end();
+        TTLastServicePtr = TimetableEditVector.end();
         Track->OverrideAndHideSignalBridgeMessage = false; // added at v2.5.1 to allow facing signals before bridges - with a warning
         ConflictPanel->Visible = false;
         TTClockAdjustWarningPanel->Visible = false;
@@ -655,7 +656,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         char *LocalNumericInformation = setlocale(LC_NUMERIC, ""); // need this to set lconv to the environment's numeric format
         Utilities->SetLocaleResultOK = true;
         FirstPerfLogFormDisplay = true; //added at v2.13.0 for Performance log form
-        if(LocalNumericInformation == "") // call failed, don't change decimal point in Utilities.cpp
+        if(AnsiString(LocalNumericInformation).Length() == 0) // call failed, don't change decimal point in Utilities.cpp
         {
             Utilities->SetLocaleResultOK = false;
         }
@@ -3099,7 +3100,7 @@ void __fastcall TInterface::SaveOperatingImageMenuItemClick(TObject *Sender)
                 int x = Route.PrefDirSize() - 1;
                 bool BreakFlag = false;
                 TPrefDirElement PrefDirElement = Route.GetFixedPrefDirElementAt(188, x);
-                while(PrefDirElement.GetTrackVectorPosition() != LRVIT->TruncateTrackVectorPosition)
+                while(PrefDirElement.GetTrackVectorPosition() != LRVIT->RearTrackVectorPosition)
                 {
                     RailwayImage->Canvas->Draw((PrefDirElement.HLoc - Track->GetHLocMin()) * 16, (PrefDirElement.VLoc - Track->GetVLocMin()) * 16,
                                                RailGraphics->LockedRouteCancelPtr[PrefDirElement.GetELink()]);
@@ -3114,7 +3115,7 @@ void __fastcall TInterface::SaveOperatingImageMenuItemClick(TObject *Sender)
                 }
                 if(!BreakFlag)
                 {
-                    if(PrefDirElement.GetTrackVectorPosition() == LRVIT->TruncateTrackVectorPosition)
+                    if(PrefDirElement.GetTrackVectorPosition() == LRVIT->RearTrackVectorPosition)
                     {
                         RailwayImage->Canvas->Draw((PrefDirElement.HLoc - Track->GetHLocMin()) * 16, (PrefDirElement.VLoc - Track->GetVLocMin()) * 16,
                                                    RailGraphics->LockedRouteCancelPtr[PrefDirElement.GetELink()]);
@@ -3323,11 +3324,11 @@ void __fastcall TInterface::CreateTimetableMenuItemClick(TObject *Sender)
         CopiedEntryFlag = false;
         NewEntryInPreparationFlag = false;
         CopiedEntryStr = "";
-        TEVPtr = 0;
-        TTCurrentEntryPtr = 0;
-        TTStartTimePtr = 0;
-        TTFirstServicePtr = 0;
-        TTLastServicePtr = 0; // all set to null to begin with
+        TEVPtr = TimetableEditVector.end();
+        TTCurrentEntryPtr = TimetableEditVector.end();
+        TTStartTimePtr = TimetableEditVector.end();
+        TTFirstServicePtr = TimetableEditVector.end();
+        TTLastServicePtr = TimetableEditVector.end();
 
 // populate LocationNameComboBox if a railway is loaded, but first compile the ActiveTrackElementNameMap
         TTrack::TActiveTrackElementNameMapEntry ActiveTrackElementNameMapEntry;
@@ -3425,10 +3426,10 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
         TimetableTitle = ""; // unload any loaded timetable.  Moved here from below at v2.1.0 for consistency with CreateTimetable
         TrainController->TrainDataVector.clear(); // unload any loaded timetable.  Moved here from below at v2.1.0 for consistency with CreateTimetable
         SetCaption(8); // added at v2.1.0 as formerly retained earlier loaded tt name in error
-        TEVPtr = 0;
-        TTCurrentEntryPtr = 0, TTStartTimePtr = 0;
-        TTFirstServicePtr = 0;
-        TTLastServicePtr = 0; // all set to null to begin with
+        TEVPtr = TimetableEditVector.end();
+        TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr = TimetableEditVector.end();
+        TTFirstServicePtr = TimetableEditVector.end();
+        TTLastServicePtr = TimetableEditVector.end();
         if(TimetableDialog->Execute())
         {
             if(TimetableDialog->InitialDir != TPath::GetDirectoryName(TimetableDialog->FileName)) // new at v2.6.0 to retain a new directory
@@ -3615,7 +3616,7 @@ void __fastcall TInterface::NextTTEntryButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("NextTTEntryButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",NextTTEntryButtonClick");
-        if((TTCurrentEntryPtr == 0) || TimetableEditVector.empty())
+        if((TTCurrentEntryPtr == TimetableEditVector.end()) || TimetableEditVector.empty())
         {
             Utilities->CallLogPop(1683);
             return;
@@ -3656,7 +3657,7 @@ void __fastcall TInterface::PreviousTTEntryButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("PreviousTTEntryButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PreviousTTEntryButtonClick");
-        if((TTCurrentEntryPtr == 0) || TimetableEditVector.empty())
+        if((TTCurrentEntryPtr == TimetableEditVector.end()) || TimetableEditVector.empty())
         {
             Utilities->CallLogPop(1684);
             return;
@@ -3733,7 +3734,7 @@ void __fastcall TInterface::AddMinsButtonClick(TObject *Sender)
                 ValidFlag = false;
             }
         }
-        if((TTCurrentEntryPtr == 0) || (*TTCurrentEntryPtr == "") || (AddSubMinsBox->Text == "") || !ValidFlag)
+        if((TTCurrentEntryPtr == TimetableEditVector.end()) || (*TTCurrentEntryPtr == "") || (AddSubMinsBox->Text == "") || !ValidFlag)
         {
             Utilities->CallLogPop(1649);
             return;
@@ -3817,7 +3818,7 @@ void __fastcall TInterface::SubMinsButtonClick(TObject *Sender)
                 ValidFlag = false;
             }
         }
-        if((TTCurrentEntryPtr == 0) || (*TTCurrentEntryPtr == "") || (AddSubMinsBox->Text == "") || !ValidFlag)
+        if((TTCurrentEntryPtr == TimetableEditVector.end()) || (*TTCurrentEntryPtr == "") || (AddSubMinsBox->Text == "") || !ValidFlag)
         {
             Utilities->CallLogPop(1659);
             return;
@@ -3884,7 +3885,7 @@ void __fastcall TInterface::CopyTTEntryButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("CopyTTEntryButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CopyTTEntryButtonClick");
-        if(TTCurrentEntryPtr == 0)
+        if(TTCurrentEntryPtr == TimetableEditVector.end())
         {
             Utilities->CallLogPop(1636);
             return;
@@ -3916,13 +3917,380 @@ void __fastcall TInterface::CopyTTEntryButtonClick(TObject *Sender)
 }
 // ---------------------------------------------------------------------------
 
+void __fastcall TInterface::InvertTTEntryButtonClick(TObject *Sender) //added at v2.15.0
+{
+    try
+    {
+        TrainController->LogEvent("InvertTTEntryButtonClick");
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",InvertTTEntryButtonClick");
+        TTimetableEditVector InputVector, OutputVector, OutputVector2, TimeVector1, TimeVector2; //TTimetableEditVector is an ansistring vector type so convenient to use
+        typedef std::vector<int> TMinVector;
+        TMinVector MinVector;
+        AnsiString OneLine = *TTCurrentEntryPtr, SubStr, First, Second, Third, Fourth, TrainDataLine, NewEntry;
+        int RearStartOrRepeatMins, FrontStartOrRepeatDigits;
+        TTimetableFormatType FormatType;
+        TTimetableLocationType LocationType;
+        TTimetableSequenceType SequenceType;
+        TTimetableShuttleLinkType ShuttleLinkType;
+        TNumList ExitList;
+        bool Warning, RepeatFlag = false;
+        int Count = 1; // anything > 0 OK as if 0 still seeking a start time in ProcessOne...
+        bool EndOfFile = false;
+        bool FinalCallFalse = false;
+        bool GiveMessagesFalse = false;
+        bool CheckLocationsExistInRailwayFalse = false;
+        TrainController->StripSpaces(7, *TTCurrentEntryPtr);
+        if(!TrainController->ProcessOneTimetableLine(7, Count, *TTCurrentEntryPtr, EndOfFile, FinalCallFalse, GiveMessagesFalse, CheckLocationsExistInRailwayFalse))
+        // return true for success
+        {
+            ShowMessage("There seem to be one or more errors in the syntax for the selected entry.\n\nPlease correct before inverting. ");
+            Utilities->CallLogPop(2560);
+            return;
+        }
+        else //Syntax ok
+        {    //parse the entry (*TTCurrentEntryPtr) storing all the valid lines in an ansistring vector
+            while(true) //button only enabled if a legitimate service is highlighted
+            {
+                int Pos = OneLine.Pos(',');
+                if(Pos == 0)//no more commas found so remainder is the last, unless there is no remainder
+                {
+                    if(OneLine.Length() > 0)
+                    {
+                        InputVector.push_back(OneLine);
+                    }
+                    break;
+                }
+                else
+                {
+                    SubStr = OneLine.SubString(1, Pos - 1);
+                    InputVector.push_back(SubStr);
+                    if(Pos == OneLine.Length()) //reached end and ends with a comma, probably not allowed but keep just in case
+                    {
+                        break;
+                    }
+                    OneLine = OneLine.SubString(Pos + 1, OneLine.Length() - Pos);
+                    continue;
+                }
+            }
+            //here with InputVector populated, weed out any invalid entries
+/*
+NewEntry = "";   //populated
+for(TTEVPtr IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
+{
+    NewEntry += *IPVIt + ',';
+}
+CopiedEntryStr = NewEntry; //this is needed for pasting as a new entry
+PasteTTEntryButton->Click(); //paste it after the current entry
+*/
+
+            TDateTime TimeVal; //not used
+            if(InputVector.size() > 0)
+            {
+                for(TTEVPtr IPVIt = InputVector.end() - 1; IPVIt >= InputVector.begin(); IPVIt--) //backwards so can erase invalid entries
+                {
+                    if(((*IPVIt)[1] == 'R') && (IPVIt == InputVector.end() - 1))// repeat, erase it (must be last entry
+                    {
+                        RepeatFlag = true;
+                        InputVector.erase(IPVIt);
+                        continue;
+                    }
+                    if(IPVIt == InputVector.begin()) // store for later then erase train data line
+                    {
+                        TrainDataLine = *IPVIt;
+                        InputVector.erase(IPVIt);
+                        break;
+                    }
+                    if(TrainController->SplitEntry(2, *IPVIt, GiveMessagesFalse, CheckLocationsExistInRailwayFalse, First, Second,
+                                  Third, Fourth, RearStartOrRepeatMins, FrontStartOrRepeatDigits, FormatType,
+                                  LocationType, SequenceType, ShuttleLinkType, ExitList, Warning))
+                    {
+                        if((!TrainController->CheckTimeValidity(34, First, TimeVal)) && (FormatType != FinRemHere)) //Frh has no time so don't want to erase this
+                        {
+                            InputVector.erase(IPVIt);
+                            continue;
+                        }
+                        if((FormatType == TimeLoc) || (FormatType == TimeTimeLoc) || (FormatType == PassTime))
+                        {
+                            continue;
+                        }
+                        if((Second == "jbo") || (Second == "fsp") || (Second == "rsp") || (Second == "cdt"))
+                        {
+                            continue;
+                        }
+                        if((SequenceType == FinishSequence) || (SequenceType == StartSequence))//keep these so have start & finish times to use (modified) as inverted finish & start times
+                        {
+                            continue;
+                        }
+                        InputVector.erase(IPVIt); //if none (should only be repeats & they are dealt with above, but keep for safety's sake) of above then erase
+                        continue;
+                    }
+                    else
+                    {
+                        InputVector.erase(IPVIt); //if fails when split then erase
+                        continue;
+                    }
+                }
+            }
+            if(InputVector.size() == 0)
+            {
+                ShowMessage("Can't find any actions to invert!");
+                Utilities->CallLogPop(2561);
+                return;
+            }
+            if(InputVector.size() == 1)
+            {
+                ShowMessage("Only one action so there's nothing to invert!");
+                Utilities->CallLogPop(2562);
+                return;
+            }
+            //now have InputVector populated in order with legitimate entries & it isn't empty, change all TimeTimeLocs to 2 x TimeLocs & Finish to TimeLoc
+/*
+NewEntry = ""; //weeded out
+for(TTEVPtr IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
+{
+    NewEntry += *IPVIt + ',';
+}
+CopiedEntryStr = NewEntry; //this is needed for pasting as a new entry
+PasteTTEntryButton->Click(); //paste it after the current entry
+*/
+
+            while(true) //have to restart the search after every insertion as the vector may change location
+            {
+                bool TimeTimeLocFound = false;
+                AnsiString LastTimeVal = "";
+                for(TTEVPtr IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
+                {
+                    if((*IPVIt)[1] == 'W') // warning
+                    {
+                        *IPVIt = (*IPVIt).SubString(2, (*IPVIt).Length() - 1);
+                        // strip it off
+                    }
+                    if(TrainController->SplitEntry(3, *IPVIt, GiveMessagesFalse, CheckLocationsExistInRailwayFalse, First, Second,
+                                  Third, Fourth, RearStartOrRepeatMins, FrontStartOrRepeatDigits, FormatType,
+                                  LocationType, SequenceType, ShuttleLinkType, ExitList, Warning))
+                    {
+                        if(FormatType == TimeTimeLoc)
+                        {
+                            LastTimeVal = Second;
+                            AnsiString Arrival = First + ";" + Third;
+                            AnsiString Departure = Second + ";" + Third;
+                            *IPVIt = Departure; //substitute for original entry
+                            InputVector.insert(IPVIt, Arrival); //insertion is before current pointer position, hence arrival
+                            TimeTimeLocFound = true;
+                            break; //from for.. next.. loop
+                        }
+                        else if(SequenceType == StartSequence)
+                        {
+                            *IPVIt = First + ";<Service finish command>";
+                            LastTimeVal = First;
+                            continue; //to next IPVIt value
+                        }
+                        else if(FormatType == FinRemHere)
+                        {
+                            *IPVIt = LastTimeVal + ";<Service start command>";
+                            break; //from for.. next.. loop, will also break from While loop as TimeTimeLoc won't have been found
+                        }
+                        else if((SequenceType == FinishSequence) && (FormatType != FinRemHere))
+                        {
+                            *IPVIt = First + ";<Service start command>";
+                            break; //from for.. next.. loop, will also break from While loop as TimeTimeLoc won't have been found
+                        }
+                        else
+                        {
+                            LastTimeVal = First;
+                            continue; //to next IPVIt value
+                        }
+                    }
+                    else
+                    {
+                        //shouldn't reach here but if do then abort
+                        ShowMessage("Unable to invert this entry");
+                        Utilities->CallLogPop(2563);
+                        return;
+                    }
+                }
+                if(TimeTimeLocFound)
+                {
+                    continue; //repeat the while loop
+                }
+                else
+                {
+                    break; //from while loop
+                }
+            }
+            //InputVector now complete
+
+/*
+NewEntry = ""; //start & finish added & all TimeLocs
+for(TTEVPtr IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
+{
+    NewEntry += *IPVIt + ',';
+}
+CopiedEntryStr = NewEntry; //this is needed for pasting as a new entry
+PasteTTEntryButton->Click(); //paste it after the current entry
+*/
+
+            //populate OutputVector in reverse
+            for(TTEVPtr IPVIt = InputVector.end() - 1; IPVIt >= InputVector.begin(); IPVIt--)
+            {
+                OutputVector.push_back(*IPVIt);
+            }
+            //extract all times in same order into TimeVector1
+            for(TTEVPtr OPVIt = OutputVector.begin(); OPVIt < OutputVector.end(); OPVIt++)
+            {
+                TimeVector1.push_back((*OPVIt).SubString(1, 5));
+            }
+            //convert times to integers
+            for(TTEVPtr TVIt = TimeVector1.begin(); TVIt < TimeVector1.end(); TVIt++)
+            {
+                int Mins, Hrs;
+                Mins = (*TVIt).SubString(4, 2).ToInt();
+                Hrs = (*TVIt).SubString(1, 2).ToInt();
+                MinVector.push_back(Mins + (Hrs * 60));
+            }
+            //zero all wrt first time
+            for(TMinVector::iterator MVIt = MinVector.begin(); MVIt < MinVector.end(); MVIt++)
+            {
+                int StartVal;
+                if(MVIt == MinVector.begin())
+                {
+                    StartVal = *MVIt;
+                }
+                *MVIt -= StartVal;
+            }
+            //change sign of all negative integers
+            for(TMinVector::iterator MVIt = MinVector.begin(); MVIt < MinVector.end(); MVIt++)
+            {
+                *MVIt = abs(*MVIt);
+            }
+            //put these values back into OutVector after changing back to AnsiStrings
+            for(unsigned int x = 0; x < MinVector.size(); x++)
+            {
+                AnsiString AnsiTimeVal = TrainController->MinsToAnsiTime(MinVector.at(x));
+                AnsiString OutVal = OutputVector.at(x);
+                AnsiString NewOutVal = AnsiTimeVal + OutputVector.at(x).SubString(6, OutputVector.at(x).Length() - 5);
+                OutputVector.at(x) = NewOutVal;
+            }
+/*
+NewEntry = "";
+for(TTEVPtr PVIt = OutputVector.begin(); PVIt < OutputVector.end(); PVIt++)
+{
+    NewEntry += *PVIt + ',';
+}
+CopiedEntryStr = NewEntry; //this is needed for pasting as a new entry
+PasteTTEntryButton->Click(); //paste it after the current entry
+*/
+
+            //convert successive TimeLocs to TimeTimeLocs and substitute text for linked service reference
+            bool FirstTimeLocRegistered = false;
+            AnsiString ArrivalTime, DepartureTime, FirstTimeLoc, FirstLocation;
+            for(TTEVPtr OPVIt = OutputVector.begin(); OPVIt < OutputVector.end(); OPVIt++)
+            {
+                if(TrainController->SplitEntry(4, *OPVIt, GiveMessagesFalse, CheckLocationsExistInRailwayFalse, First, Second,
+                              Third, Fourth, RearStartOrRepeatMins, FrontStartOrRepeatDigits, FormatType,
+                              LocationType, SequenceType, ShuttleLinkType, ExitList, Warning))
+                {
+                    if((FormatType != TimeLoc) || (OPVIt == OutputVector.begin()) || (OPVIt == OutputVector.end() - 1)) // first & last entries are start & finish but show as TimeLocs so capture it here
+                    {
+                        if(FirstTimeLocRegistered)
+                        {
+                            OutputVector2.push_back(FirstTimeLoc); //push this first as not followed by a second TimeLoc
+                        }
+                        FirstTimeLocRegistered = false;
+                        if((Second == "jbo") || (Second == "fsp") || (Second == "rsp"))
+                        {
+                            OutputVector2.push_back(First + AnsiString(';') + Second + ";<linked service reference>");
+                        }
+                        else
+                        {
+                            OutputVector2.push_back(*OPVIt);
+                        }
+                    }
+                    else
+                    {
+                        if(!FirstTimeLocRegistered)
+                        {
+                            ArrivalTime = (*OPVIt).SubString(1, 5);
+                            FirstTimeLocRegistered = true;
+                            FirstTimeLoc = *OPVIt;
+                            FirstLocation = (*OPVIt).SubString(7, (*OPVIt).Length() - 6);
+                        }
+                        else
+                        {
+                            if(FirstLocation == (*OPVIt).SubString(7, (*OPVIt).Length() - 6)) //locations same
+                            {
+                                DepartureTime = (*OPVIt).SubString(1, 5);
+                                OutputVector2.push_back(ArrivalTime + AnsiString(';') + DepartureTime + AnsiString(';') + FirstLocation);
+                                FirstTimeLocRegistered = false;
+                            }
+                            else
+                            {
+                                OutputVector2.push_back(FirstTimeLoc); //earlier one was a TimeLoc on its own
+                                ArrivalTime = (*OPVIt).SubString(1, 5);  //now register the current TimeLoc entry
+                                FirstTimeLocRegistered = true;
+                                FirstTimeLoc = *OPVIt;
+                                FirstLocation = (*OPVIt).SubString(7, (*OPVIt).Length() - 6);
+                                FirstTimeLocRegistered = true;
+                            }
+                        }
+                    }
+                }
+            }
+            //add in train data & repeat command if RepeatFlag true
+            AnsiString Remainder = "";
+            int Pos = TrainDataLine.Pos(';'); //find first semicolon (will be after the service ref)
+            TrainDataLine = TrainDataLine.SubString(Pos + 1, TrainDataLine.Length() - Pos); //chop off the service ref
+            Pos = TrainDataLine.Pos(';'); //find semicolon after the description (if none then no train data)
+            if((Pos != 0) && (Pos != TrainDataLine.Length())) //data present, if not then Remainder == ""
+            {
+                Remainder = TrainDataLine.SubString(Pos, TrainDataLine.Length() - Pos + 1); //chop off the description but leave the semicolon after it
+            }
+            TrainDataLine = "<Service ref>;<Description>" + Remainder;
+            OutputVector2.insert(OutputVector2.begin(), TrainDataLine);
+            if(RepeatFlag)
+            {
+                OutputVector2.insert(OutputVector2.end(), "<Repeat command if required>");
+            }
+            // convert to a timetable entry - single string
+
+            NewEntry = "";
+            for(TTEVPtr OPVIt = OutputVector2.begin(); OPVIt < OutputVector2.end(); OPVIt++)
+            {
+                NewEntry += *OPVIt + ',';
+            }
+
+            if(!InvertTTEntryMessageSent)
+            {
+                ShowMessage("The events in the highlighted service will be listed in reverse order and pasted and highlighted as the next entry. "
+                    "Train data, transit and dwell times match the current entry but the start time is 00:00, ready to be adjusted using the 'Add mins' function "
+                    "with a value corresponding to the required start time in minutes.\n\nService reference, description, start, finish and repeat "
+                    "commands and linked service references remain to be added (indicated by '<...>'), and if this is to be a follow-on service then "
+                    "the train data must be removed.\n\nThis message will not be shown again.");
+                InvertTTEntryMessageSent = true;
+            }
+
+            CopiedEntryStr = NewEntry; //this is needed for pasting as a new entry
+            PasteTTEntryButton->Click(); //paste it after the current entry
+            Utilities->CallLogPop(2564);
+        }
+    }
+    catch(const Exception &e) //non-error catch
+    {
+        ShowMessage("Unable to invert this entry.  Error message = " + e.Message);
+        Utilities->CallLogPop(2565);
+        return;
+    }
+}
+
+// ---------------------------------------------------------------------------
+
 void __fastcall TInterface::CutTTEntryButtonClick(TObject *Sender)
 {
     try
     {
         TrainController->LogEvent("CutTTEntryButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CutTTEntryButtonClick");
-        if(TTCurrentEntryPtr == 0) // || (*TTCurrentEntryPtr == ""))//safeguard
+        if(TTCurrentEntryPtr == TimetableEditVector.end()) // || (*TTCurrentEntryPtr == ""))//safeguard
         {
             Utilities->CallLogPop(1674);
             return;
@@ -3937,10 +4305,10 @@ void __fastcall TInterface::CutTTEntryButtonClick(TObject *Sender)
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
         TTEntryChangedFlag = false;
-        TEVPtr = 0;
-        TTCurrentEntryPtr = 0, TTStartTimePtr = 0;
-        TTFirstServicePtr = 0;
-        TTLastServicePtr = 0; // all set to null to begin with
+        TEVPtr = TimetableEditVector.end();
+        TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr = TimetableEditVector.end();
+        TTFirstServicePtr = TimetableEditVector.end();
+        TTLastServicePtr = TimetableEditVector.end();
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
         // position changing in AllEntriesTTListBox
         AllEntriesTTListBox->Clear();
@@ -3962,7 +4330,7 @@ void __fastcall TInterface::CutTTEntryButtonClick(TObject *Sender)
         {
             TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos - 1;
         }
-        if(TTCurrentEntryPtr == 0)
+        if(TTCurrentEntryPtr == TimetableEditVector.end())
         {
             OneEntryTimetableMemo->Clear();
         }
@@ -3995,7 +4363,7 @@ void __fastcall TInterface::PasteTTEntryButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("PasteTTEntryButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PasteTTEntryButtonClick");
-        if(TTCurrentEntryPtr == 0) // || (CopiedEntryStr == "")) allow blank copies
+        if(TTCurrentEntryPtr == TimetableEditVector.end()) // || (CopiedEntryStr == "")) allow blank copies
         {
             Utilities->CallLogPop(1637);
             return;
@@ -4006,10 +4374,10 @@ void __fastcall TInterface::PasteTTEntryButtonClick(TObject *Sender)
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
         TTEntryChangedFlag = false;
-        TEVPtr = 0;
-        TTCurrentEntryPtr = 0, TTStartTimePtr = 0;
-        TTFirstServicePtr = 0;
-        TTLastServicePtr = 0; // all set to null to begin with
+        TEVPtr = TimetableEditVector.end();
+        TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr =
+        TTFirstServicePtr = TimetableEditVector.end();
+        TTLastServicePtr = TimetableEditVector.end();
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
         // position changing in AllEntriesTTListBox
         AllEntriesTTListBox->Clear();
@@ -4054,7 +4422,7 @@ void __fastcall TInterface::DeleteTTEntryButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("DeleteTTEntryButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",DeleteTTEntryButtonClick");
-        if(TTCurrentEntryPtr == 0)
+        if(TTCurrentEntryPtr == TimetableEditVector.end())
         {
             Utilities->CallLogPop(1645);
             return;
@@ -4075,10 +4443,10 @@ void __fastcall TInterface::DeleteTTEntryButtonClick(TObject *Sender)
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
         TTEntryChangedFlag = false;
-        TEVPtr = 0;
-        TTCurrentEntryPtr = 0, TTStartTimePtr = 0;
-        TTFirstServicePtr = 0;
-        TTLastServicePtr = 0; // all set to null to begin with
+        TEVPtr = TimetableEditVector.end();
+        TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr = TimetableEditVector.end();
+        TTFirstServicePtr = TimetableEditVector.end();
+        TTLastServicePtr = TimetableEditVector.end();
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
         // position changing in AllEntriesTTListBox
         AllEntriesTTListBox->Clear();
@@ -4100,7 +4468,7 @@ void __fastcall TInterface::DeleteTTEntryButtonClick(TObject *Sender)
         {
             TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos - 1;
         }
-        if(TTCurrentEntryPtr == 0)
+        if(TTCurrentEntryPtr == TimetableEditVector.end())
         {
             OneEntryTimetableMemo->Clear();
         }
@@ -4143,7 +4511,7 @@ void __fastcall TInterface::SaveTTEntryButtonClick(TObject *Sender)
 */
         AnsiString TempStr = "";
         bool ActiveLine = false;
-        if(TTCurrentEntryPtr > 0)
+        if(TTCurrentEntryPtr != TimetableEditVector.end())
         {
             if(*TTCurrentEntryPtr != "")
             {
@@ -4194,7 +4562,7 @@ void __fastcall TInterface::SaveTTEntryButtonClick(TObject *Sender)
         TimetableChangedFlag = true;
         TTEntryChangedFlag = false;
         int TopPos;
-        if(TTCurrentEntryPtr == 0)
+        if(TTCurrentEntryPtr == TimetableEditVector.end())
         {
             NewEntryInPreparationFlag = true;
         }
@@ -4220,7 +4588,7 @@ void __fastcall TInterface::SaveTTEntryButtonClick(TObject *Sender)
         else
         {
             NewEntryInPreparationFlag = false;
-            if(TTCurrentEntryPtr != 0)
+            if(TTCurrentEntryPtr != TimetableEditVector.end())
             {
                 int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin(); // vector pointers unreliable after an insert
                 TimetableEditVector.insert(TTCurrentEntryPtr + 1, TempStr); // inserts before the indicated pointer position, which may be at the end
@@ -4343,7 +4711,7 @@ void __fastcall TInterface::SaveTTButtonClick(TObject *Sender)
     }
     catch(const Exception &e) //non-error catch
     {
-        TrainController->StopTTClockMessage(136, "Timetable failed to save\nError message: " + e.Message);  //added after v2.14.0
+        TrainController->StopTTClockMessage(136, "Timetable failed to save\nError message: " + e.Message);  //added at v2.15.0
         Screen->Cursor = TCursor(-2); // Arrow;
 //        ErrorLog(60, e.Message);
     }
@@ -4511,7 +4879,7 @@ void __fastcall TInterface::MoveTTEntryUpButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("MoveTTEntryUpButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MoveTTEntryUpButtonClick");
-        if(TTCurrentEntryPtr == 0)
+        if(TTCurrentEntryPtr == TimetableEditVector.end())
         {
             Utilities->CallLogPop(1634);
             return;
@@ -4573,7 +4941,7 @@ void __fastcall TInterface::MoveTTEntryDownButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("MoveTTEntryDownButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MoveTTEntryDownButtonClick");
-        if(TTCurrentEntryPtr == 0)
+        if(TTCurrentEntryPtr == TimetableEditVector.end())
         {
             Utilities->CallLogPop(1635);
             return;
@@ -4698,10 +5066,10 @@ void __fastcall TInterface::RestoreTTButtonClick(TObject *Sender)
             AllEntriesTTListBox->Clear();
             TTStartTimeBox->Text = "";
             AddSubMinsBox->Text = "";
-            TEVPtr = 0;
-            TTCurrentEntryPtr = 0, TTStartTimePtr = 0;
-            TTFirstServicePtr = 0;
-            TTLastServicePtr = 0; // all set to null to begin with
+            TEVPtr = TimetableEditVector.end();
+            TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr = TimetableEditVector.end();
+            TTFirstServicePtr = TimetableEditVector.end();
+            TTLastServicePtr = TimetableEditVector.end();
             char *TimetableEntryString = new char[10000];
             while(true)
             {
@@ -4858,7 +5226,7 @@ void __fastcall TInterface::LocationNameComboBoxClick(TObject *Sender)
     {
         TrainController->LogEvent("LocationNameComboBoxClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LocationNameComboBoxClick");
-        if(TTStartTimePtr != 0)
+        if(TTStartTimePtr != TimetableEditVector.end())
         {
             LocationNameComboBox->SelectAll();
             int SelPos = OneEntryTimetableMemo->SelStart;
@@ -4954,7 +5322,7 @@ void __fastcall TInterface::AllEntriesTTListBoxMouseUp(TObject *Sender, TMouseBu
     {
         TrainController->LogEvent("AllEntriesTTListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y));
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AllEntriesTTListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y));
-        if((TTCurrentEntryPtr == 0) || TimetableEditVector.empty())
+        if((TTCurrentEntryPtr == TimetableEditVector.end()) || TimetableEditVector.empty())
         {
             Utilities->CallLogPop(1687);
             return;
@@ -5020,13 +5388,13 @@ void TInterface::CompileAllEntriesMemoAndSetPointers(int Caller)
     } Segment;
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CompileAllEntriesMemoAndSetPointers");
     AllEntriesTTListBox->Clear();
-    TEVPtr = 0;
-    TTStartTimePtr = 0;
-    TTFirstServicePtr = 0;
-    TTLastServicePtr = 0; // all set to null to begin with
+    TEVPtr = TimetableEditVector.end();
+    TTStartTimePtr = TimetableEditVector.end();
+    TTFirstServicePtr = TimetableEditVector.end();
+    TTLastServicePtr = TimetableEditVector.end();
     if(TimetableEditVector.empty())
     {
-        TTCurrentEntryPtr = 0;
+        TTCurrentEntryPtr = TimetableEditVector.end();
         Utilities->CallLogPop(1681);
         return;
     }
@@ -5077,7 +5445,7 @@ void TInterface::CompileAllEntriesMemoAndSetPointers(int Caller)
                     TrainController->StripSpaces(5, *TEVPtr);
                     ConvertCRLFsToCommas(0, *TEVPtr); // This needed because an entry intended as a service might have skipped the conversion in
                     // SaveTTEntryButtonClick - see comment in that function
-                    if(TTFirstServicePtr == 0)
+                    if(TTFirstServicePtr == TimetableEditVector.end())
                     {
                         TTFirstServicePtr = TEVPtr;
                     }
@@ -5157,7 +5525,7 @@ void TInterface::CompileAllEntriesMemoAndSetPointers(int Caller)
             continue;
         }
     }
-    if(TTStartTimePtr == 0)
+    if(TTStartTimePtr == TimetableEditVector.end())
     {
         TTStartTimeBox->Text = "";
     }
@@ -5186,12 +5554,12 @@ void __fastcall TInterface::AZOrderButtonClick(TObject *Sender)
             TTSelectedEntry = *TTCurrentEntryPtr;
             OriginalTimetableEditVector = TimetableEditVector;
             SortStart = TimetableEditVector.begin(); // if no start time set sort from beginning
-            if(TTFirstServicePtr != NULL)
+            if(TTFirstServicePtr != TimetableEditVector.end())
             {
                 SortStart = TTFirstServicePtr;
             }
             SortEnd = TimetableEditVector.end(); // if no last service set sort to end
-            if(TTLastServicePtr != NULL)
+            if(TTLastServicePtr != TimetableEditVector.end())
             {
                 SortEnd = TTLastServicePtr + 1;
             }
@@ -5333,6 +5701,7 @@ void TInterface::TimetableHandler()
     ValidateTimetableButton->Enabled = false;
     AZOrderButton->Enabled = false;
     TTServiceSyntaxCheckButton->Enabled = false;
+    InvertTTEntryButton->Enabled = false;
     NewTTEntryButton->Enabled = false;
     MoveTTEntryUpButton->Enabled = false;
     MoveTTEntryDownButton->Enabled = false;
@@ -5359,7 +5728,7 @@ void TInterface::TimetableHandler()
     {
         TimetableNameLabel->Caption = "Editing timetable: " + CreateEditTTTitle;
     }
-    if(TTStartTimePtr != 0) // Null means start time not yet set
+    if(TTStartTimePtr != TimetableEditVector.end()) // Null means start time not yet set
     {
         TTStartTimeBox->Text = (*TTStartTimePtr).SubString(1, 5); // 1st 5 chars = time if validity check OK
     }
@@ -5415,7 +5784,7 @@ void TInterface::TimetableHandler()
             ExportTTButton->Enabled = true;
             ConflictAnalysisButton->Enabled = true;
         }
-        if(TTCurrentEntryPtr != 0)
+        if(TTCurrentEntryPtr != TimetableEditVector.end())
         {
             CopyTTEntryButton->Enabled = true;
             CutTTEntryButton->Enabled = true;
@@ -5433,7 +5802,7 @@ void TInterface::TimetableHandler()
         {
             NewTTEntryButton->Enabled = true;
         }
-        if((TTCurrentEntryPtr > 0) && !TimetableEditVector.empty())
+        if((TTCurrentEntryPtr != TimetableEditVector.end()) && !TimetableEditVector.empty())
         {
             if((TimetableEditVector.end() - 1) > TTCurrentEntryPtr)
             {
@@ -5446,13 +5815,14 @@ void TInterface::TimetableHandler()
                 MoveTTEntryUpButton->Enabled = true;
             }
         }
-        if(TTCurrentEntryPtr > 0)
+        if(TTCurrentEntryPtr != TimetableEditVector.end())
         {
             if(*TTCurrentEntryPtr != "")
             {
                 if((TTCurrentEntryPtr >= TTFirstServicePtr) && (TTCurrentEntryPtr <= TTLastServicePtr) && ((*TTCurrentEntryPtr)[1] != '*'))
                 {
                     TTServiceSyntaxCheckButton->Enabled = true;
+                    InvertTTEntryButton->Enabled = true;
                 }
             }
         }
@@ -5461,7 +5831,7 @@ void TInterface::TimetableHandler()
             PasteTTEntryButton->Enabled = true;
         }
         OneEntryTimetableMemo->Clear(); // don't clear if Entry changed
-        if(TTCurrentEntryPtr > 0)
+        if(TTCurrentEntryPtr != TimetableEditVector.end())
         {
 // if(*TTCurrentEntryPtr != "")  leave this out or fails to highlight blank line entries
             if((TTCurrentEntryPtr > TTStartTimePtr) && (TTCurrentEntryPtr <= TTLastServicePtr) && ((*TTCurrentEntryPtr)[1] != '*'))
@@ -5584,7 +5954,7 @@ void TInterface::HighlightOneEntryInAllEntriesTTListBox(int Caller, int Position
 // ---------------------------------------------------------------------------
 bool TInterface::AreAnyTimesInCurrentEntry()
 {
-    if((TTCurrentEntryPtr == 0) || (*TTCurrentEntryPtr == ""))
+    if((TTCurrentEntryPtr == TimetableEditVector.end()) || (*TTCurrentEntryPtr == ""))
     {
         return(false);
     }
@@ -5732,7 +6102,13 @@ void __fastcall TInterface::MainScreenMouseDown(TObject *Sender, TMouseButton Bu
 // have to allow in zoom out mode
     try
     {
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MainScreenMouseDown," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
+        AnsiString AnsiButton = "mbLeft";
+        if(Button == mbRight)
+        {
+            AnsiButton = "mbRight";
+        }
+
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MainScreenMouseDown," + AnsiButton + "," + AnsiString(X) + "," + AnsiString(Y));
         bool ClockState = Utilities->Clock2Stopped;
         Utilities->Clock2Stopped = true;
 
@@ -5772,8 +6148,13 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
 {
     try
     {
-        TrainController->LogEvent("MainScreenMouseDown2," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",MainScreenMouseDown2," + AnsiString(Button) + "," + AnsiString(X) +
+        AnsiString AnsiButton = "mbLeft";
+        if(Button == mbRight)
+        {
+            AnsiButton = "mbRight";
+        }
+        TrainController->LogEvent("MainScreenMouseDown2," + AnsiButton + "," + AnsiString(X) + "," + AnsiString(Y));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",MainScreenMouseDown2," + AnsiButton + "," + AnsiString(X) +
                                      "," + AnsiString(Y));
         // unplot GapFlash graphics if plotted & cancel gap flashing if left mouse button pressed (so can move display with right mouse button)
         // but not in ZoomOut mode - so can switch between modes & keep gaps flashing
@@ -6281,7 +6662,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                     // stop clock as sometimes takes several seconds
                     TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
                     TrainController->RestartTime = TrainController->TTClockTime;
-                    if(AllRoutes->GetAllRoutesTruncateElement(0, HLoc, VLoc, ConsecSignalsRoute)) // updates LockedRouteClass
+                    if(AllRoutes->SearchAllRoutesAndTruncate(0, HLoc, VLoc, PreferredRoute)) // updates LockedRouteClass
                     {
                         ClearandRebuildRailway(6); // to replot new shorter route
                     }
@@ -7477,8 +7858,14 @@ void TInterface::MainScreenMouseDown3(int Caller, TMouseButton Button, TShiftSta
 // NB: DisplayZoomOutOffsetH & V take account of the Min & Max H & V values so don't need these again
     try
     {
-        TrainController->LogEvent("MainScreenMouseDown3," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",MainScreenMouseDown3," + AnsiString(Button) + "," + AnsiString(X) +
+        AnsiString AnsiButton = "mbLeft";
+        if(Button == mbRight)
+        {
+            AnsiButton = "mbRight";
+        }
+
+        TrainController->LogEvent("MainScreenMouseDown3," + AnsiButton + "," + AnsiString(X) + "," + AnsiString(Y));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",MainScreenMouseDown3," + AnsiButton + "," + AnsiString(X) +
                                      "," + AnsiString(Y));
         if(Button != mbLeft)
         {
@@ -7893,8 +8280,13 @@ void __fastcall TInterface::MainScreenMouseUp(TObject *Sender, TMouseButton Butt
 */
     try
     {
-        TrainController->LogEvent("MainScreenMouseUp," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
-        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MainScreenMouseUp," + AnsiString(Button) + "," + AnsiString(X) + "," + AnsiString(Y));
+        AnsiString AnsiButton = "mbLeft";
+        if(Button == mbRight)
+        {
+            AnsiButton = "mbRight";
+        }
+        TrainController->LogEvent("MainScreenMouseUp," + AnsiButton + "," + AnsiString(X) + "," + AnsiString(Y));
+        Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MainScreenMouseUp," + AnsiButton + "," + AnsiString(X) + "," + AnsiString(Y));
         WholeRailwayMoving = false; // added at v2.1.0
         Screen->Cursor = TCursor(-2); // Arrow; (to reset from four arrows when moving) added at v2.1.0
         MMoveTrackSelFlag = false;
@@ -8833,13 +9225,30 @@ void TInterface::ClockTimer2(int Caller)
             AnsiString MouseStr = "Posx: " + AnsiString(ScreenX) + "; Posy: " + AnsiString(ScreenY);
             DevelopmentPanel->Caption = CurDir + " " + MouseStr;
             Track->GetTrackLocsFromScreenPos(7, HLoc, VLoc, ScreenX, ScreenY);
+
+            AnsiString InARoute = "No";    //added at v2.15.0 for diagnostics
+            THVPair HVPair;
+            HVPair.first = HLoc;
+            HVPair.second = VLoc;
+            int RouteNumber = 0;
+            unsigned int RoutePrefDirPos = 0;
+            TAllRoutes::TRoute2MultiMapIterator R2It;
+
             if(Track->FindNonPlatformMatch(1, HLoc, VLoc, Position, TrackElement))
             {
+                if(AllRoutes->TrackIsInARoute(21, Position, 0)) //added at v2.15.0 for diagnostics
+                {
+                    InARoute = "Yes";
+                    R2It = AllRoutes->Route2MultiMap.find(HVPair);
+                    RouteNumber = R2It->second.first;
+                    RoutePrefDirPos = R2It->second.second;
+                }
+
                 DevelopmentPanel->Caption = MouseStr + "; TVPos: " + AnsiString(Position) + "; H: " + AnsiString(HLoc) + "; V: " + AnsiString(VLoc) +
                     "; SpTg: " + AnsiString(TrackElement.SpeedTag) + "; Type: " + Type[TrackElement.TrackType] + "; Att: " + AnsiString(TrackElement.Attribute)
                     + "; TrID: " + AnsiString(TrackElement.TrainIDOnElement) + "; TrID01: " + AnsiString(TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01) +
                     "; TrID23: " + AnsiString(TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23) + "; " + TrackElement.LocationName + "; " +
-                    TrackElement.ActiveTrackElementName;
+                    TrackElement.ActiveTrackElementName + "; InRoute " + InARoute + "; RtNum " + RouteNumber + "; PDVecPos " + RoutePrefDirPos;
 // + "; OAHintCtr: " + TrainController->OpActionPanelHintDelayCounter;
             }
             else
@@ -8857,7 +9266,7 @@ likely to be set to the wrong position since when ...Selected... runs it sets To
 the entry that the mouse is now on rather than the one that was chosen.
 Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any flag set so when Copy or any other key function runs the top index is correct
 */
-            if((GetKeyState(VK_LBUTTON) >= 0) && (GetKeyState(VK_RBUTTON) >= 0) && (TTCurrentEntryPtr > 0)) //no mouse key down & pointer > 0
+            if((GetKeyState(VK_LBUTTON) >= 0) && (GetKeyState(VK_RBUTTON) >= 0) && (TTCurrentEntryPtr != TimetableEditVector.end())) //no mouse key down & pointer > 0
             // high order bit set to 1 when button down, so arithmetically it is negative
             {
                 // TTCurrentEntryPtr == 0 when create a timetable
@@ -8896,6 +9305,12 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
                 CopyTTEntryButton->Click();
                 SetTopIndex(4);
                 CopyTTEntryKeyFlag = false;
+            }
+            else if(InvertTTEntryKeyFlag)
+            {
+                InvertTTEntryButton->Click();
+                SetTopIndex(19);
+                InvertTTEntryKeyFlag = false;
             }
             else if(CutTTEntryKeyFlag)
             {
@@ -8972,7 +9387,7 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
 // highlight timetable entry if in tt mode (have to call this regularly so will scroll with the listbox)
 //dropped at v2.13.0 as clicking an entry does all that is required
 /*
-            if(!TimetableEditVector.empty() && (TTCurrentEntryPtr > 0))
+            if(!TimetableEditVector.empty() && (TTCurrentEntryPtr != TimetableEditVector.end()))
             {
                 HighlightOneEntryInAllEntriesTTListBox(1, TTCurrentEntryPtr - TimetableEditVector.begin());
             }
@@ -11998,7 +12413,7 @@ void __fastcall TInterface::MoveForwardsMenuItemClick(TObject *Sender)
         if(Train.StoppedAtLocation && (Train.ActionVectorEntryPtr->DepartureTime > TDateTime(-1)) && !TrainLeaveWarningSent) //added at v2.14.0
         {
             UnicodeString MessageStr = "Please be aware that a train moved from a location prior to its departure time must be returned to that location "
-                                       "in order to restore timetable control\n\nThis message won't be shown again\n\nOK to continue, Cancel to abort";
+                                       "in order to restore timetable control\n\nThis message will not be shown again\n\nOK to continue, Cancel to abort";
             TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
             TrainController->RestartTime = TrainController->TTClockTime;
             int button = Application->MessageBox(MessageStr.c_str(), L"", MB_OKCANCEL);
@@ -12251,7 +12666,7 @@ If stopped at a location then next action will be TimeTimeLoc dep/TimeLoc dep/jb
 FormatType:  NoFormat, TimeLoc, TimeTimeLoc, TimeCmd, StartNew, TimeCmdHeadCode, FinRemHere, FNSNonRepeatToShuttle, SNTShuttle, SNSShuttle,
 SNSNonRepeatFromShuttle, FSHNewService, Repeat, PassTime, ExitRailway
 
-SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
+SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, SequTypeForRepeatEntry
 */
     try
     {
@@ -12354,7 +12769,7 @@ If stopped at a location then save the depart time then allowable next action wi
 FormatType:  NoFormat, TimeLoc, TimeTimeLoc, TimeCmd, StartNew, TimeCmdHeadCode, FinRemHere, FNSNonRepeatToShuttle, SNTShuttle, SNSShuttle,
 SNSNonRepeatFromShuttle, FSHNewService, Repeat, PassTime, ExitRailway
 
-SequenceType: NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry
+SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, SequTypeForRepeatEntry
 */
 {
     try
@@ -12795,7 +13210,7 @@ void TInterface::SkipAllEventsBeforeNewService(int Caller, int TrainID, int PtrA
         int  SkippedEvents = 0;
         for(TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr; AVEPtr < NewServiceActionEntryPtr; AVEPtr++)
         {
-            if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "pas") || (AVEPtr->SequenceType == Finish) ||
+            if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "pas") || (AVEPtr->SequenceType == FinishSequence) ||
                     ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime != TDateTime(-1))))
             //don't count cdts, passes, finishes or departures as missed events (finish will be the new service and becomes new service at diff loc so it isn't missed)
             {
@@ -12947,7 +13362,7 @@ void __fastcall TInterface::PassRedSignalMenuItemClick(TObject *Sender)
         if(Train.StoppedAtLocation && (Train.ActionVectorEntryPtr->DepartureTime > TDateTime(-1)) && !TrainLeaveWarningSent) //added at v2.14.0
         {
             UnicodeString MessageStr = "Please be aware that a train moved from a location prior to its departure time must be returned to that location "
-                                       "in order to restore timetable control\n\nThis message won't be shown again\n\nOK to continue, Cancel to abort";
+                                       "in order to restore timetable control\n\nThis message will not be shown again\n\nOK to continue, Cancel to abort";
             TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
             TrainController->RestartTime = TrainController->TTClockTime;
             int button = Application->MessageBox(MessageStr.c_str(), L"", MB_OKCANCEL);
@@ -13006,7 +13421,7 @@ void __fastcall TInterface::StepForwardMenuItemClick(TObject *Sender)
         if(Train.StoppedAtLocation && (Train.ActionVectorEntryPtr->DepartureTime > TDateTime(-1)) && !TrainLeaveWarningSent) //added at v2.14.0
         {
             UnicodeString MessageStr = "Please be aware that a train moved from a location prior to its departure time must be returned to (or still be at) that location "
-                                       "in order to restore timetable control\n\nThis message won't be shown again\n\nOK to continue, Cancel to abort";
+                                       "in order to restore timetable control\n\nThis message will not be shown again\n\nOK to continue, Cancel to abort";
             TrainController->StopTTClockFlag = true; // so TTClock stopped during MasterClockTimer function
             TrainController->RestartTime = TrainController->TTClockTime;
             int button = Application->MessageBox(MessageStr.c_str(), L"", MB_OKCANCEL);
@@ -13376,7 +13791,7 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key, TShiftState 
             {
                 TMsgDlgButtons Buttons;
                 Buttons << mbYes << mbNo;
-                if(MessageDlg("Do you wish to allow facing signals next to bridges?  If so please be aware that routes cannot be truncated to these signals.",
+                if(MessageDlg("Do you wish to allow signals next to bridges?  If so please be aware that routes cannot be truncated to these signals.",
                               mtWarning, Buttons, 0) == mrYes)
                 {
                     Track->OverrideAndHideSignalBridgeMessage = true;
@@ -13742,6 +14157,10 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key, TShiftState 
                 if(CopyTTEntryButton->Enabled && (Key == 'C' || Key == 'c'))
                 {
                     CopyTTEntryKeyFlag = true;
+                }
+                if(InvertTTEntryButton->Enabled && (Key == 'J' || Key == 'j'))
+                {
+                    InvertTTEntryKeyFlag = true;
                 }
                 if(CutTTEntryButton->Enabled && (Key == 'X' || Key == 'x'))
                 {
@@ -15549,7 +15968,7 @@ void TInterface::SetTopIndex(int Caller)
 {
 // Set TopIndex to the proper value & also Selected so don't have a different selection to the highlighted entry
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTopIndex");
-    if((TTCurrentEntryPtr == 0) || TimetableEditVector.empty()) //added at v2.13.0 as a fix for mathstrains19 (discord name) error reported 13/04/22
+    if((TTCurrentEntryPtr == TimetableEditVector.end()) || TimetableEditVector.empty()) //added at v2.13.0 as a fix for mathstrains19 (discord name) error reported 13/04/22
     {                                                           //without this it crashes at line before last with "List index out of bounds"
         Utilities->CallLogPop(2485);
         return;
@@ -15692,10 +16111,23 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
                     continue;
                 }
                 TOneRoute Route = AllRoutes->GetFixedRouteAt(0, LRVIT->RouteNumber);
-                int x = Route.PrefDirSize() - 1;
+//                int x = Route.PrefDirSize() - 1;
+//here need to find the PrefDirVector position for Route that corresponds to LRVIT->LastTrackVectorPosition
+                int FrontPDPos = -1;  //added at v2.15.0 for front truncation
+                for(int x = (Route.PrefDirSize() - 1); x >= 0; x--)
+                {
+                    if(Route.GetFixedPrefDirElementAt(262, x).GetTrackVectorPosition() == LRVIT->LastTrackVectorPosition)
+                    {
+                        FrontPDPos = x;
+                    }
+                }
+                if(FrontPDPos == -1)
+                {
+                    throw Exception("Failed to find LastTrackVectorPosition in Clearand... for a locked route");
+                }
                 bool BreakFlag = false;
-                TPrefDirElement PrefDirElement = Route.GetFixedPrefDirElementAt(1, x);
-                while(PrefDirElement.GetTrackVectorPosition() != LRVIT->TruncateTrackVectorPosition)
+                TPrefDirElement PrefDirElement = Route.GetFixedPrefDirElementAt(1, FrontPDPos);
+                while(PrefDirElement.GetTrackVectorPosition() != LRVIT->RearTrackVectorPosition)
                 {
                     HiddenDisplay->PlotOutput(10, (PrefDirElement.HLoc) * 16, (PrefDirElement.VLoc) * 16,
                                               RailGraphics->LockedRouteCancelPtr[PrefDirElement.GetELink()]);
@@ -15705,19 +16137,19 @@ void TInterface::ClearandRebuildRailway(int Caller) // now uses HiddenScreen to 
                         BreakFlag = true;
                         break; // train removed earlier element from route so stop here
                     }
-                    x--;
-                    if(x < 0) // added after Albie Vowles reported error on 14/08/20 by email
+                    FrontPDPos--;
+                    if(FrontPDPos < 0) // added after Albie Vowles reported error on 14/08/20 by email
                     {
                         // it means that part of the route (including that at the truncate point) has been cancelled, in this case by a train running past the signal
                         BreakFlag = true;
 // at danger and cancelling the route elements in front of it.  The locked route is now too short and this 'while' loop won't find
                         break; // it, so x keeps decrementing and when it becomes -1 an error is thrown.  This addition prevents the error.
                     }
-                    PrefDirElement = Route.GetFixedPrefDirElementAt(2, x);
+                    PrefDirElement = Route.GetFixedPrefDirElementAt(2, FrontPDPos);
                 }
                 if(!BreakFlag)
                 {
-                    if(PrefDirElement.GetTrackVectorPosition() == LRVIT->TruncateTrackVectorPosition)
+                    if(PrefDirElement.GetTrackVectorPosition() == LRVIT->RearTrackVectorPosition)
                     {
                         HiddenDisplay->PlotOutput(11, (PrefDirElement.HLoc) * 16, (PrefDirElement.VLoc) * 16,
                                                   RailGraphics->LockedRouteCancelPtr[PrefDirElement.GetELink()]);
@@ -16837,7 +17269,7 @@ void TInterface::SetLevel2TrackMode(int Caller)
 
         case AddText:
             InfoPanel->Visible = true;
-            InfoPanel->Caption = "ADDING/EDITING TEXT: Left click to add, right click first letter to erase, or left click first letter to edit)";
+            InfoPanel->Caption = "ADDING/EDITING TEXT: Left click to add, right click first letter to erase, or left click first letter to edit";
             if(TextHandler->TextVectorSize(13) > 0)
             {
                 MoveTextOrGraphicButton->Enabled = true;
@@ -17721,11 +18153,15 @@ void TInterface::ApproachLocking(int Caller, TDateTime TTClockTime)
             if(AllRoutes->TrackIsInARoute(5, LRVIT->LastTrackVectorPosition, LRVIT->LastXLinkPos))
             {
                 TOneRoute &Route = AllRoutes->GetModifiableRouteAt(0, LRVIT->RouteNumber);
+                //below added at v2.15.0
+                TPrefDirElement LastPDElement = Route.GetFixedPrefDirElementAt(265, Route.PrefDirSize() - 1); //these will persist after the actual PDElements have been removed
+                TPrefDirElement FirstPDElement = Route.GetFixedPrefDirElementAt(266, 0);
+                //end of section added at v2.15.0
                 if((TTClockTime - LRVIT->LockStartTime) > TDateTime(LockDelay / 86400))
                 {
-                    TrainController->LogEvent("LockedRouteRemoved," + AnsiString(LRVIT->TruncateTrackVectorPosition) + "," +
+                    TrainController->LogEvent("LockedRouteRemoved," + AnsiString(LRVIT->RearTrackVectorPosition) + "," +
                                               AnsiString(LRVIT->LastTrackVectorPosition));
-                    while(Route.LastElementPtr(9)->GetTrackVectorPosition() != LRVIT->TruncateTrackVectorPosition)
+                    while(Route.LastElementPtr(9)->GetTrackVectorPosition() != LRVIT->RearTrackVectorPosition)
                     {
                         // examine the element one earlier in the route than the last
                         if(!(AllRoutes->TrackIsInARoute(6, Route.LastElementPtr(10)->Conn[Route.LastElementPtr(11)->GetELinkPos()],
@@ -17741,12 +18177,16 @@ void TInterface::ApproachLocking(int Caller, TDateTime TTClockTime)
                     }
                     if(!BreakFlag)
                     {
-                        // still need to remove the element at the TruncateTrackVectorPosition
-                        if(Route.LastElementPtr(17)->GetTrackVectorPosition() == LRVIT->TruncateTrackVectorPosition)
+                        // still need to remove the element at the RearTrackVectorPosition
+                        if(Route.LastElementPtr(17)->GetTrackVectorPosition() == LRVIT->RearTrackVectorPosition)
                         {
                             AllRoutes->RemoveRouteElement(2, Route.LastElementPtr(18)->HLoc, Route.LastElementPtr(19)->VLoc,
                                                           Route.LastElementPtr(20)->GetELink());
                         }
+                    }
+                    if(LastPDElement.AutoSignals) //only reclaim sigs for blue routes - added at v2.15.0
+                    {
+                        Route.ReclaimSignalsForNonAutoSigRoutes(2, LastPDElement, FirstPDElement);
                     }
                     AllRoutes->CheckMapAndRoutes(10); // test
                     AllRoutes->LockedRouteVector.erase(LRVIT);
@@ -18507,7 +18947,7 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetTrainStatusFloat");
     AnsiString HeadCode = "", ServiceReferenceInfo = "", Status = "", CurrSpeedStr = "", BrakePCStr = "", NextStopStr = "", TimeLeftStr = "",
                TimeToNextMovementStr = "", MassStr = "", PowerStr = "";
-    AnsiString FormatOneDPStr = "####0.0", MaxBrakeStr = "", MaxSpeedStr = "", TrainStatusFloat;
+    AnsiString FormatOneDPStr = "####0.0", MaxBrakeStr = "", MaxSpeedStr = "", MaxMPHStr = "", TrainStatusFloat; //MaxMPHStr added at v2.15.0
 
     double CurrSpeed;
     TTrain Train = TrainController->TrainVectorAtIdent(1, TrainID);
@@ -18516,10 +18956,12 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
     if(Train.BeingCalledOn)
     {
         MaxSpeedStr = "30";
+        MaxMPHStr = "19mph";
     }
     else
     {
         MaxSpeedStr = AnsiString::FormatFloat(FormatNoDPStr, Train.MaxRunningSpeed);
+        MaxMPHStr = AnsiString::FormatFloat(FormatNoDPStr, (Train.MaxRunningSpeed * 5 / 8)) + "mph";
     }
     TDateTime ElapsedDeltaT = TrainController->TTClockTime - Train.EntryTime;
     TDateTime FirstHalfTimeDeltaT = Train.ExitTimeHalf - Train.EntryTime;
@@ -18635,7 +19077,7 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
             {
                 Status = "Emergency braking";
             }
-            CurrSpeed = Train.ExitSpeedHalf - 3.6 * (Train.BrakeRate * (TrainController->TTClockTime - Train.ExitTimeHalf) * 86400.0);
+            CurrSpeed = Train.ExitSpeedHalf - 3.6 * (Train.BrakeRate * double(TrainController->TTClockTime - Train.ExitTimeHalf) * 86400.0);
         }
     }
     else if(Train.BrakeRate > 0.01)
@@ -18652,7 +19094,7 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
         {
             Status = "Emergency braking";
         }
-        CurrSpeed = Train.EntrySpeed - 3.6 * (Train.BrakeRate * ElapsedDeltaT * 86400.0);
+        CurrSpeed = Train.EntrySpeed - 3.6 * (Train.BrakeRate * double(ElapsedDeltaT) * 86400.0);
     }
 
     else if((Train.BrakeRate <= 0.01) && (Train.ExitSpeedHalf > (Train.EntrySpeed + 0.01)) && Train.FirstHalfMove)
@@ -18750,7 +19192,7 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
     {
         TimeLeft = RemTimeFull;
     }
-    TimeToNextMovementStr = "Time to next movement (sec) = " + TimeLeftStr.FormatFloat(FormatOneDPStr, TimeLeft);
+    TimeToNextMovementStr = "Time to next movement (sec) = " + TimeLeftStr.FormatFloat(FormatOneDPStr, double(TimeLeft));
     //addition at v2.13.0
     AnsiString OverallDelayString = AnsiString('\n');
     if(int(Train.DelayedRandMins) > 0)
@@ -18768,39 +19210,41 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
     {
         TimeToNextMovementStr = "";
     }
+
     if(Train.StoppedAtLocation && (Train.ActionVectorEntryPtr->DepartureTime > TDateTime(-1)))  //if departure not next action then ignore NewDelay
     {                                                                                          //added at v2.13.0
         if(int(Train.NewDelay) == 1)
         {
             TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
-                "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' +
+                "km/h (" + MaxMPHStr + "); Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' +
                 "New random delay here of 1 minute" + OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
         }
         else if(int(Train.NewDelay) > 1)
         {
             TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
-                "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' +
+                "km/h (" + MaxMPHStr + "); Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' +
                 "New random delay here of " + AnsiString(int(Train.NewDelay)) + " minutes" + OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
         }
         else //int(NewDelay) == 0
         {
             TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
-                "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status +
+                "km/h (" + MaxMPHStr + "); Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status +
                 OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
         }
     }
     else if(Train.Stopped()) //stopped anywhere else or not a departure next
     {
         TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
-            "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status +
+            "km/h (" + MaxMPHStr + "); Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status +
             OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
             //changed to 'Next timetabled action:' at v2.13.0 instead of 'Next:' to make clear it doesn't include delays
     }
-    else
+    else //added mph at v2.15.0
     {
         TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
-            "km/h; Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + ": " +
-            CurrSpeedStr.FormatFloat(FormatNoDPStr, CurrSpeed) + "km/h" + OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
+            "km/h (" + MaxMPHStr + "); Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + ": " +
+            CurrSpeedStr.FormatFloat(FormatNoDPStr, CurrSpeed) + "km/h (" + CurrSpeedStr.FormatFloat(FormatNoDPStr, (CurrSpeed * 5 / 8)) + "mph)" +
+            OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
     }                          //changed to 'Next timetabled action:' at v2.13.0 instead of 'Next:' to make clear it doesn't include delays
     Utilities->CallLogPop(2263);
     return(TrainStatusFloat);
@@ -19695,7 +20139,7 @@ void TInterface::ResetAll(int Caller)
     FloatingPanel->Visible = false;
     OverallDistance = 0;
     OverallSpeedLimit = -1;
-    AllRoutes->RouteTruncateFlag = false;
+    AllRoutes->RouteBackTruncateFlag = false;
     CallingOnButton->Down = false;
     Display->ZoomOutFlag = false;
     ScreenGridFlag = false;
@@ -23350,6 +23794,20 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
      //test code here
+/*
+        if(Level1Mode == TimetableMode)  //Invert timetable entry test
+        {
+
+            TTCurrentEntryPtr = TimetableEditVector.begin();
+            InvertTTEntryButton->Click();
+            while(TTCurrentEntryPtr < (TimetableEditVector.end() - 1))
+            {
+                TTCurrentEntryPtr++;
+                InvertTTEntryButton->Click();
+            }
+        }
+*/
+
      //throw Exception("Test error"); //for testing the error file
         Utilities->CallLogPop(2376);
     }
@@ -26514,5 +26972,5 @@ void TInterface::PlayerHandshakingActions()
    Overall conclusion:  Avoid all tellg's & seekg's.  If need to reset a file position then close and reopen it.
 */
 
-
+//---------------------------------------------------------------------------
 

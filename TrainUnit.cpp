@@ -1839,17 +1839,17 @@ void TTrain::UpdateTrain(int Caller)
                         if(NewLastElement == -1)
                         // this will catch buffers or any other connection failure
                         {
-                            throw Exception("Error, Connection = -1 in Continuation loop in UpdateTrain");
-                        }
-                        NewLastExitPos = Track->TrackElementAt(688, LastElement).ConnLinkPos[Track->GetNonPointsOppositeLinkPos(LastExitPos)];
-                        if(NewLastExitPos == -1)
+                            break; //throw Exception("Error, Connection = -1 in Continuation loop in UpdateTrain");   //dropped at v2.15.0 because of Brent Mackie's error file of
+                        }                                                                                             //10/02/23, had two continuations linked with no signal between
+                        NewLastExitPos = Track->TrackElementAt(688, LastElement).ConnLinkPos[Track->GetNonPointsOppositeLinkPos(LastExitPos)]; //so when train exited this routine tracked
+                        if(NewLastExitPos == -1)                                                                      //back to the entry continuation which had no further connection - doesn't need to be an error at all!
                         {
-                            throw Exception("Error, ConnLinkPos = -1 in Continuation loop in UpdateTrain");
+                            break; //throw Exception("Error, ConnLinkPos = -1 in Continuation loop in UpdateTrain"); //dropped at v2.15.0 because of Brent Mackie's error file of 10/02/23 , see above
                         }
                         LastElement = NewLastElement;
                         LastExitPos = NewLastExitPos;
                     }
-                    // if at signal add this in too
+                    // if at signal add this in too (may not be signal if 'break;' encountered but doesn't matter)
                     if(CumDistance < 1200)
                     {
                         CumDistance += Track->TrackElementAt(689, LastElement).Length01; // only need 01 for signal
@@ -5968,7 +5968,8 @@ void TTrain::FrontTrainSplit(int Caller)
     LastActionTime = TrainController->TTClockTime;
 
     Mass = Mass / 2;
-    MaxBrakeRate = MaxBrakeRate / 2;
+//    MaxBrakeRate = MaxBrakeRate / 2;  this was wrong - want brake rate to stay the same, brake force is halved but that not a train parameter
+//    and when needed it's calculated from rate & mass - changed at v2.15.0
     PowerAtRail = PowerAtRail / 2;
     AValue = sqrt(2 * PowerAtRail / Mass);
     // shouldn't change but include in case not set earlier
@@ -6276,7 +6277,8 @@ void TTrain::RearTrainSplit(int Caller)
     LastActionTime = TrainController->TTClockTime;
     Mass = Mass / 2;
     // TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).Mass = Mass;
-    MaxBrakeRate = MaxBrakeRate / 2;
+//    MaxBrakeRate = MaxBrakeRate / 2;  this was wrong - want brake rate to stay the same, brake force is halved but that not a train parameter
+//    and when needed it's calculated from rate & mass - changed at v2.15.0
     // TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).MaxBrakeRate = MaxBrakeRate;
     PowerAtRail = PowerAtRail / 2;
     // TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).PowerAtRail = PowerAtRail;
@@ -7021,7 +7023,7 @@ bool TTrain::IsTrainTerminating(int Caller)
                 Utilities->CallLogPop(1083);
                 return(false);
             }
-            else if((ActionVectorEntryPtr + x)->SequenceType == Finish)
+            else if((ActionVectorEntryPtr + x)->SequenceType == FinishSequence)
             {
                 Utilities->CallLogPop(1084);
                 return(true);
@@ -10702,7 +10704,7 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
 
 AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TActionVectorIterator Ptr, int RptNum, TTrainDataEntry *TDEPtr, TTrainDataEntry *LinkedTrainDataPtr, int IncrementalMinutes, AnsiString RetStr)
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - &TDEPtr->ActionVector.front()) + ","
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - TDEPtr->ActionVector.begin()) + ","
                                  + AnsiString(RptNum) + ",ControllerGetNewServiceDepartureInfo," + TDEPtr->HeadCode);
     AnsiString DepTime = "", EventTime = "";
     bool CDTFlag = false; //reports if train changes direction before departs
@@ -11425,7 +11427,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                 //end of new additions
                 if(x == 0) // should be start event
                 {
-                    if(SequenceType != Start)
+                    if(SequenceType != StartSequence)
                     {
                         TimetableMessage(GiveMessages, "Error in timetable - First event not a start event: '" + OneEntry + "'");
                         Utilities->CallLogPop(784);
@@ -11475,7 +11477,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                         }
                     }
                 }
-                if(SequenceType == Finish)
+                if(SequenceType == FinishSequence)
                 {
                     FinishFlag = true;
                     // marker for only permitted additional entry being a repeat, only needed if the
@@ -11643,7 +11645,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                         return(false);
                     }
                     //end of new additions
-                    if(SequenceType != Finish)
+                    if(SequenceType != FinishSequence)
                     {
                         TimetableMessage(GiveMessages, "Error in timetable - last event should be a finish: '" + OneEntry + "'");
                         Utilities->CallLogPop(785);
@@ -11841,7 +11843,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
     if(OneEntry == "Frh")
     {
         FormatType = FinRemHere;
-        SequenceType = Finish;
+        SequenceType = FinishSequence;
         LocationType = AtLocation;
         ShuttleLinkType = NotAShuttleLink;
         Second = "Frh";
@@ -11897,7 +11899,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
             return(false);
         }
         FormatType = TimeTimeLoc;
-        SequenceType = Intermediate;
+        SequenceType = IntermediateSequence;
         LocationType = AtLocation;
         ShuttleLinkType = NotAShuttleLink;
         Utilities->CallLogPop(914);
@@ -11912,7 +11914,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
             FormatType = TimeCmd;
             ShuttleLinkType = NotAShuttleLink;
             LocationType = AtLocation;
-            SequenceType = Intermediate;
+            SequenceType = IntermediateSequence;
             Utilities->CallLogPop(915);
             return(true);
         }
@@ -11925,13 +11927,13 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         {
             FormatType = TimeLoc;
             LocationType = AtLocation;
-            SequenceType = Intermediate;
+            SequenceType = IntermediateSequence;
             ShuttleLinkType = NotAShuttleLink;
             Utilities->CallLogPop(917);
             return(true);
         }
     }
-    // here if second segment is a command, with a third & maybe fourth segments as details
+    // here if second segment is a command, with a third & maybe fourthanalysis segments as details
     if((Pos != 4) && (Pos != 7) && (Pos != 8))
     {
         Utilities->CallLogPop(918);
@@ -11977,7 +11979,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         if(Second == "Snt")
         {
             FormatType = StartNew;
-            SequenceType = Start;
+            SequenceType = StartSequence;
             LocationType = NoLocation;
             // can't be set until know whether located or not - done in SecondPassActions
             ShuttleLinkType = NotAShuttleLink;
@@ -11986,7 +11988,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         {
             FormatType = SNTShuttle;
             LocationType = AtLocation;
-            SequenceType = Start;
+            SequenceType = StartSequence;
             ShuttleLinkType = ShuttleLink;
             if(!CheckHeadCodeValidity(0, GiveMessages, Fourth))
             {
@@ -12001,7 +12003,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
     {
         FormatType = SNSShuttle;
         LocationType = AtLocation;
-        SequenceType = Start;
+        SequenceType = StartSequence;
         ShuttleLinkType = ShuttleLink;
         if(!CheckHeadCodeValidity(1, GiveMessages, Third))
         {
@@ -12020,7 +12022,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
     {
         FormatType = FNSNonRepeatToShuttle;
         LocationType = AtLocation;
-        SequenceType = Finish;
+        SequenceType = FinishSequence;
         ShuttleLinkType = ShuttleLink;
         if(!CheckHeadCodeValidity(3, GiveMessages, Third))
         {
@@ -12034,7 +12036,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
     {
         FormatType = SNSNonRepeatFromShuttle;
         LocationType = AtLocation;
-        SequenceType = Start;
+        SequenceType = StartSequence;
         ShuttleLinkType = ShuttleLink;
         if(!CheckHeadCodeValidity(4, GiveMessages, Third))
         {
@@ -12048,7 +12050,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
     {
         FormatType = FSHNewService;
         LocationType = AtLocation;
-        SequenceType = Finish;
+        SequenceType = FinishSequence;
         ShuttleLinkType = ShuttleLink;
         if(!CheckHeadCodeValidity(5, GiveMessages, Third))
         {
@@ -12068,7 +12070,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
     {
         FormatType = PassTime;
         LocationType = EnRoute;
-        SequenceType = Intermediate;
+        SequenceType = IntermediateSequence;
         ShuttleLinkType = NotAShuttleLink;
         if(!CheckLocationValidity(2, Third, GiveMessages, CheckLocationsExistInRailway))
         {
@@ -12084,7 +12086,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
     {
         FormatType = ExitRailway;
         LocationType = EnRoute;
-        SequenceType = Finish;
+        SequenceType = FinishSequence;
         ShuttleLinkType = NotAShuttleLink;
         if(CheckLocationsExistInRailway)
         {
@@ -12121,15 +12123,15 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
     }
     if((Second == "Fns") || (Second == "Fjo") || (Second == "Frh-sh"))
     {
-        SequenceType = Finish;
+        SequenceType = FinishSequence;
     }
     if((Second == "jbo") || (Second == "fsp") || (Second == "rsp"))
     {
-        SequenceType = Intermediate;
+        SequenceType = IntermediateSequence;
     }
     if((Second == "Sfs") || (Second == "Sns"))
     {
-        SequenceType = Start;
+        SequenceType = StartSequence;
     }
     Utilities->CallLogPop(924);
     return(true);
@@ -13066,7 +13068,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
     {
         const TTrainDataEntry &TDEntry = TrainDataVector.at(x);
         TActionVectorEntry AVEntry0 = TrainDataVector.at(x).ActionVector.at(0);
-        if(AVEntry0.SequenceType != Start)
+        if(AVEntry0.SequenceType != StartSequence)
         {
             SecondPassMessage(GiveMessages, "Error in timetable - the first event must be a start for: " + TDEntry.HeadCode);
             TrainDataVector.clear();
@@ -13079,7 +13081,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         {
             TActionVectorEntry AVEntry1 = TrainDataVector.at(x).ActionVector.at(1);
             // must be a second entry if first not signallercontrol
-            if((AVEntry1.SequenceType == Finish) && ((AVEntry1.Command == "Fns-sh") || (AVEntry1.Command == "Frh-sh")))
+            if((AVEntry1.SequenceType == FinishSequence) && ((AVEntry1.Command == "Fns-sh") || (AVEntry1.Command == "Frh-sh")))
             {
                 SecondPassMessage(GiveMessages, "Error in timetable - finish events Fns-sh and Frh-sh not permitted immediately after an Snt entry for: " +
                                   TDEntry.HeadCode);
@@ -13095,7 +13097,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         for(unsigned int y = 0; y < TrainDataVector.at(x).ActionVector.size(); y++)
         {
             const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
-            if((AVEntry.SequenceType == Start) && (y != 0))
+            if((AVEntry.SequenceType == StartSequence) && (y != 0))
             {
                 SecondPassMessage(GiveMessages, "Error in timetable - a start event is present that is not the first event for: " + TDEntry.HeadCode);
                 TrainDataVector.clear();
@@ -13131,7 +13133,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             }
             if(y == (TrainDataVector.at(x).ActionVector.size() - 1))
             {
-                if((AVEntry.FormatType != Repeat) && (AVEntry.SequenceType != Finish))
+                if((AVEntry.FormatType != Repeat) && (AVEntry.SequenceType != FinishSequence))
                 {
                     SecondPassMessage(GiveMessages, "Error in timetable - the last item must be either a finish event or a repeat for: " + TDEntry.HeadCode);
                     TrainDataVector.clear();
@@ -13141,7 +13143,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 if(AVEntry.FormatType == Repeat)
                 {
                     const TActionVectorEntry &LastAVEntry = TrainDataVector.at(x).ActionVector.at(y - 1);
-                    if(LastAVEntry.SequenceType != Finish)
+                    if(LastAVEntry.SequenceType != FinishSequence)
                     {
                         SecondPassMessage(GiveMessages, "Error in timetable - the last event before the repeat must be a finish for: " + TDEntry.HeadCode);
                         TrainDataVector.clear();
@@ -13158,7 +13160,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         for(unsigned int y = 0; y < TrainDataVector.at(x).ActionVector.size(); y++)
         {
             const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
-            if(AVEntry.SequenceType == Finish)
+            if(AVEntry.SequenceType == FinishSequence)
             {
                 if((y != (TrainDataVector.at(x).ActionVector.size() - 1)) && (y != (TrainDataVector.at(x).ActionVector.size() - 2)))
                 {
@@ -13252,7 +13254,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             }
         }
         // check other start successors
-        else if(AVEntry0.SequenceType == Start)
+        else if(AVEntry0.SequenceType == StartSequence)
         {
             const TActionVectorEntry &AVEntry1 = TrainDataVector.at(x).ActionVector.at(1);
             // at least 2 entries present checked in integrity check so (1) valid
@@ -13304,7 +13306,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         for(unsigned int y = 0; y < TrainDataVector.at(x).ActionVector.size(); y++)
         {
             const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
-            if((AVEntry.FormatType == TimeLoc) || ((AVEntry.SequenceType == Start) && (AVEntry.LocationType == AtLocation)))
+            if((AVEntry.FormatType == TimeLoc) || ((AVEntry.SequenceType == StartSequence) && (AVEntry.LocationType == AtLocation)))
             {
                 if(AVEntry.LocationName == "")
                 // if TimeLoc turns out to be a TimeLoc departure then will emerge & be rejected in successor checks for TimeLocs
@@ -13341,7 +13343,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         for(unsigned int y = 0; y < TrainDataVector.at(x).ActionVector.size(); y++)
         {
             const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
-            if((AVEntry.SequenceType == Finish) && (AVEntry.Command != "F-nshs"))
+            if((AVEntry.SequenceType == FinishSequence) && (AVEntry.Command != "F-nshs"))
             {
                 if(y < (TrainDataVector.at(x).ActionVector.size() - 1))
                 // i.e at least one more, must be a repeat
@@ -15357,7 +15359,6 @@ bool TTrainController::CheckNonRepeatingShuttleLinksAndSetData(int Caller, AnsiS
 // check for proper non-repeating link cross references and that they have no repeats & that times are consistent
 
 /* Double crosslink (shuttle) table:
-
 Command   Format                    OtherHead                        NonRepeating-  LinkTrain-   NonRepeating-   Decsription
                                     Code                             ShuttleLink-   EntryPtr     ShuttleLink-
                                                                      HeadCode                    EntryPtr
@@ -15528,13 +15529,13 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
 /* it's allowed to have a different description
       if((ForwardEntryPtr->Command == "F-nshs") || (ForwardEntryPtr->Command == "Sns-fsh"))//i.e. a non repeating link to or from the shuttle service
       {
-      if((MainTrainDataPtr->Description != "") && (OtherTrainDataPtr->Description != "") && (MainTrainDataPtr->Description != OtherTrainDataPtr->Description))
-      {
-      SecondPassMessage(GiveMessages, "Error in timetable - the non repeating link service " + NonRepeatingHeadCode + " has a different description to the corresponding shuttle service " + MainHeadCode);
-      TrainDataVector.clear();
-      Utilities->CallLogPop(1072);
-      return false;
-      }
+          if((MainTrainDataPtr->Description != "") && (OtherTrainDataPtr->Description != "") && (MainTrainDataPtr->Description != OtherTrainDataPtr->Description))
+          {
+              SecondPassMessage(GiveMessages, "Error in timetable - the non repeating link service " + NonRepeatingHeadCode + " has a different description to the corresponding shuttle service " + MainHeadCode);
+              TrainDataVector.clear();
+              Utilities->CallLogPop(1072);
+              return false;
+          }
       }
 */
     if(ForwardEntryPtr->Command == "Sns-sh")
@@ -15720,6 +15721,32 @@ void TTrainController::SecondPassMessage(bool GiveMessages, AnsiString Message)
         return;
     }
     ShowMessage(Message);
+}
+
+// ---------------------------------------------------------------------------
+
+AnsiString TTrainController::MinsToAnsiTime(int Input) //added at v2.15.0
+{
+    TrainController->LogEvent("MinsToAnsiTime");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MinsToAnsiTime," + Input);
+    int Mins = Input, Hrs = 0;
+    while(Mins > 59)
+    {
+        Mins -= 60;
+        Hrs++;
+    }
+    AnsiString AnsiMins = AnsiString(Mins);
+    if(AnsiMins.Length() == 1)
+    {
+        AnsiMins = "0" + AnsiMins;
+    }
+    AnsiString AnsiHrs = AnsiString(Hrs);
+    if(AnsiHrs.Length() == 1)
+    {
+        AnsiHrs = "0" + AnsiHrs;
+    }
+    Utilities->CallLogPop(2577);
+    return(AnsiHrs + ':' + AnsiMins);
 }
 
 // $$$$$$$$$$$$$$$$$$$$$$$ End of Timetable Functions $$$$$$$$$$$$$$$$$$$$$$$
@@ -16213,7 +16240,7 @@ void TTrainController::SaveSessionLockedRoutes(int Caller, std::ofstream &Sessio
     for(unsigned int x = 0; x < AllRoutes->LockedRouteVector.size(); x++)
     {
         Utilities->SaveFileInt(SessionFile, AllRoutes->LockedRouteVector.at(x).RouteNumber);
-        Utilities->SaveFileInt(SessionFile, AllRoutes->LockedRouteVector.at(x).TruncateTrackVectorPosition);
+        Utilities->SaveFileInt(SessionFile, AllRoutes->LockedRouteVector.at(x).RearTrackVectorPosition);
         Utilities->SaveFileInt(SessionFile, AllRoutes->LockedRouteVector.at(x).LastTrackVectorPosition);
         Utilities->SaveFileInt(SessionFile, AllRoutes->LockedRouteVector.at(x).LastXLinkPos);
         Utilities->SaveFileDouble(SessionFile, double(AllRoutes->LockedRouteVector.at(x).LockStartTime));
@@ -16232,7 +16259,7 @@ void TTrainController::LoadSessionLockedRoutes(int Caller, std::ifstream &Sessio
     for(int x = 0; x < LockedRouteVectorSize; x++)
     {
         LockedRouteObject.RouteNumber = Utilities->LoadFileInt(SessionFile);
-        LockedRouteObject.TruncateTrackVectorPosition = Utilities->LoadFileInt(SessionFile);
+        LockedRouteObject.RearTrackVectorPosition = Utilities->LoadFileInt(SessionFile);
         LockedRouteObject.LastTrackVectorPosition = Utilities->LoadFileInt(SessionFile);
         LockedRouteObject.LastXLinkPos = Utilities->LoadFileInt(SessionFile);
         double LockStartTimeDouble = Utilities->LoadFileDouble(SessionFile);
@@ -16700,11 +16727,11 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
                   enum TTimetableFormatType {NoFormat, TimeLoc, TimeTimeLoc, TimeCmd, StartNew, TimeCmdHeadCode, FinRemHere,
                   FNSNonRepeatToShuttle, SNTShuttle, SNSShuttle, SNSNonRepeatFromShuttle, FSHNewService, Repeat, PassTime,
                   ExitRailway};
-                  enum TTimetableSequenceType {NoSequence, Start, Finish, Intermediate, SequTypeForRepeatEntry};
+                  enum TTimetableSequenceType {NoSequence, StartSequence, FinishSequence, IntermediateSequence, SequTypeForRepeatEntry};
                   enum TTimetableLocationType {NoLocation, AtLocation, EnRoute, LocTypeForRepeatEntry};
                   enum TTimetableShuttleLinkType {NoShuttleLink, NotAShuttleLink, ShuttleLink, ShuttleLinkTypeForRepeatEntry};
 */
-                if(ActionVectorEntry.SequenceType == Start)
+                if(ActionVectorEntry.SequenceType == StartSequence)
                 {
                     if(ActionVectorEntry.FormatType == StartNew)
                     {
@@ -16805,7 +16832,7 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
                             Utilities->Format96HHMM(GetRepeatTime(23, ActionVectorEntry.EventTime, y, IncMinutes));
                     }
                 }
-                else if(ActionVectorEntry.SequenceType == Intermediate)
+                else if(ActionVectorEntry.SequenceType == IntermediateSequence)
                 {
                     if(ActionVectorEntry.FormatType == TimeTimeLoc)
                     {
@@ -16866,7 +16893,7 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
                         TimeStr = Utilities->Format96HHMM(GetRepeatTime(12, ActionVectorEntry.EventTime, y, IncMinutes));
                     }
                 }
-                else if(ActionVectorEntry.SequenceType == Finish)
+                else if(ActionVectorEntry.SequenceType == FinishSequence)
                 {
                     if(ActionVectorEntry.Command == "Fns")
                     {
@@ -17150,7 +17177,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         //first have to check through all the services and give each one a unique name, or the analysis won't recognise differences between services that have the same reference
         //to do that need a new TrainDataVector as don't want to change anything in the original.  TrainDataVectorCopy is used for building AllServiceCallingLocsMap & LocServiceTimesVector
 
-        TTrainDataVector TrainDataVectorCopy = TrainDataVector; //don't need it on heap as TrainController is on the heap.  Didn't need others in CreatFormattedTimetables but leave as is.
+//create TrainDataVectorCopy and populate service refs with /1, /2 etc
+        TrainDataVectorCopy = TrainDataVector; //don't need it on heap as TrainController is on the heap.  Didn't need others in CreatFormattedTimetables but leave as is.
         TTrainDataVector::iterator TDVIt, TDVCopyIt;
         int Suffix = 0;
         int IteratorNumber = 0;
@@ -17161,14 +17189,88 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             Suffix = 0;
             for(TDVCopyIt = TrainDataVectorCopy.begin() + IteratorNumber; TDVCopyIt != TrainDataVectorCopy.end(); TDVCopyIt++)
             {
-                if(TDVCopyIt->ServiceReference == TDVIt->ServiceReference)
+                if(TDVCopyIt->HeadCode == TDVIt->HeadCode)
                 {
                     Suffix++;                        //first value is 1
                     AnsiSuffix = AnsiString(Suffix);
-                    TDVCopyIt->ServiceReference = TDVIt->ServiceReference + "/" + AnsiSuffix;
+                    TDVCopyIt->ServiceReference = TDVIt->HeadCode + "/" + AnsiSuffix; //set both the HeadCode + any forward slashes and numbers, this is because sometimes
+                    TDVCopyIt->HeadCode = TDVIt->HeadCode + "/" + AnsiSuffix;         //service refs are used and sometimes H/Cs, so need them to be the same,
+                }                                                                     //they are all unique at this point anyway
+            }
+        }
+//now make all linked pointers in ActionVectorEntries point to links in the vector copy (still point to original vector at this stage)
+//and set the linked headcodes to the correct values - all unique at this point
+        int Increment = 0, SlashPos;
+        TActionVectorIterator AVEIt;
+        AnsiString LinkedHeadCode;
+
+        for(TDVCopyIt = TrainDataVectorCopy.begin(); TDVCopyIt != TrainDataVectorCopy.end(); TDVCopyIt++)
+        {
+            for(AVEIt = TDVCopyIt->ActionVector.begin(); AVEIt != TDVCopyIt->ActionVector.end(); AVEIt++)
+            {
+                if(AVEIt->LinkedTrainEntryPtr != NULL)
+                {
+                    Increment = AVEIt->LinkedTrainEntryPtr - &TrainDataVector.at(0);
+                    AVEIt->LinkedTrainEntryPtr = &TrainDataVectorCopy.at(0) + Increment;
+                    //now set AVEIt->OtherHeadCode to the linked headcodes with /1, /2 etc
+                    //but note that these ARE HeadCodes and not service refs, so need to strip off any prefixes from the linked service refs
+                    LinkedHeadCode = (*AVEIt->LinkedTrainEntryPtr).ServiceReference;
+                    //now count from back until reach a '/' character or a non-integer character, if reach non-integer first then no '/' present at end of H/c (but may be one earlier as a prefix)
+                    SlashPos = 0;
+                    for(int x = LinkedHeadCode.Length(); x > 0; x--)
+                    {
+                        if(LinkedHeadCode[x] == '/')
+                        {
+                            SlashPos = LinkedHeadCode.Length() - x + 1;
+                            break;
+                        }
+                        else if((LinkedHeadCode[x] != '0') && (LinkedHeadCode[x] != '1') && (LinkedHeadCode[x] != '2') && (LinkedHeadCode[x] != '3') &&
+                                (LinkedHeadCode[x] != '4') && (LinkedHeadCode[x] != '5') && (LinkedHeadCode[x] != '6') && (LinkedHeadCode[x] != '7') &&
+                                (LinkedHeadCode[x] != '8') && (LinkedHeadCode[x] != '8'))
+                        {
+                            break;
+                        }
+                    }
+                    //now strip off any prefix
+                    AVEIt->OtherHeadCode = LinkedHeadCode.SubString(LinkedHeadCode.Length() - 3 - SlashPos, 4 + SlashPos);
+                }
+                else
+                {
+                    AVEIt->OtherHeadCode = "";
+                }
+                if(AVEIt->NonRepeatingShuttleLinkEntryPtr != NULL)
+                {
+                    Increment = AVEIt->NonRepeatingShuttleLinkEntryPtr - &TrainDataVector.at(0);
+                    AVEIt->NonRepeatingShuttleLinkEntryPtr = &TrainDataVectorCopy.at(0) + Increment;
+                    //now set AVEIt->NonRepeatingShuttleLinkHeadCode to the linked headcodes with /1, /2 etc
+                    //but note that these ARE HeadCodes and not service refs, so need to strip off any prefixes from the linked service refs
+                    LinkedHeadCode = (*AVEIt->NonRepeatingShuttleLinkEntryPtr).ServiceReference;
+                    //now count from back until reach a '/' character or a non-integer character, if reach non-integer first then no '/' present at end of H/c (but may be one earlier as a prefix)
+                    SlashPos = 0;
+                    for(int x = LinkedHeadCode.Length(); x > 0; x--)
+                    {
+                        if(LinkedHeadCode[x] == '/')
+                        {
+                            SlashPos = LinkedHeadCode.Length() - x + 1;
+                            break;
+                        }
+                        else if((LinkedHeadCode[x] != '0') && (LinkedHeadCode[x] != '1') && (LinkedHeadCode[x] != '2') && (LinkedHeadCode[x] != '3') &&
+                                (LinkedHeadCode[x] != '4') && (LinkedHeadCode[x] != '5') && (LinkedHeadCode[x] != '6') && (LinkedHeadCode[x] != '7') &&
+                                (LinkedHeadCode[x] != '8') && (LinkedHeadCode[x] != '8'))
+                        {
+                            break;
+                        }
+                    }
+                    //now strip off any prefix
+                    AVEIt->NonRepeatingShuttleLinkHeadCode = LinkedHeadCode.SubString(LinkedHeadCode.Length() - 3 - SlashPos, 4 + SlashPos);
+                }
+                else
+                {
+                    AVEIt->NonRepeatingShuttleLinkHeadCode = "";
                 }
             }
         }
+        //from here only TrainDataVectorCopy used
         SequenceLog += "1\n";
         //build AllServiceCallingLocsMap, it only uses the base service reference (with /1, /2 etc suffixes) as later times are calculated from the repeat number
         TServiceCallingLocsList ServiceCallingLocsList;
@@ -17229,7 +17331,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                         }
                     }
                 }
-                else if(AVE.SequenceType == Start) //other start entries, all located
+                else if(AVE.SequenceType == StartSequence) //other start entries, all located
                 {
                     ServiceCallingLocsList.push_back(AVE.LocationName);
                 }
@@ -17250,11 +17352,11 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 }
                 else if(AVE.Command == "cdt") //list if not next to start or finish
                 {
-                    if(ActionVector.at(z-1).SequenceType == Start)
+                    if(ActionVector.at(z-1).SequenceType == StartSequence)
                     {
                         continue;
                     }
-                    else if(ActionVector.at(z+1).SequenceType == Finish) //although deal with Fer entries cdt (train stopped) can't precede FER (train moving)
+                    else if(ActionVector.at(z+1).SequenceType == FinishSequence) //although deal with Fer entries cdt (train stopped) can't precede FER (train moving)
                     {
                         continue;
                     }
@@ -17303,7 +17405,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         }
         //AllServiceCallingLocsMap built
         SequenceLog += "2\n";
-/*  this sequence is to test the validity of AllServiceCallingLocsMap
+/*
+//  this sequence is to test the validity of AllServiceCallingLocsMap
         AnsiString TestFile = CurDir + "\\Formatted timetables\\TestFile; " + RailwayTitle + "; " + TimetableTitle + ".txt";
         std::ofstream Test(TestFile.c_str());
 
@@ -17327,9 +17430,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         Utilities->CallLogPop();
         return true;
 */
-
         //initialise variables before calc LastTTTime & build LocServiceTimesVector
-        if(TrainDataVector.empty())
+        if(TrainDataVectorCopy.empty())
         {
             ShowMessage("Unable to create a program-readable timetable - please check the timetable file validity");
             Utilities->CallLogPop(2209);
@@ -17410,7 +17512,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         typedef std::vector<TLocServiceTimes> TLocServiceTimesVector;
 
 This works as follows:
-ServiceAndRepeatNum is taken from the TrainDataVector as it is the same for all actionvector entries
+ServiceAndRepeatNum is taken from the TrainDataVectorCopy as it is the same for all actionvector entries
 Location is taken from ActionVectorEntry.LocationName if there is one, or from the H & V locations if not (e.g. at an unnamed Fer)
 AtLocTime is always entered either on its own or with ArrTime or DepTime as appropriate
 
@@ -17485,7 +17587,7 @@ j) all other finish entries (all link to another service) are ignored as will be
                                     FoundStopTime = Utilities->Format96HHMM(GetRepeatTime(62, ActionVector.at(a).DepartureTime, y, IncMinutes));
                                     break;
                                 }
-                                if(ActionVector.at(a).SequenceType == Finish) //finish catered in a later test
+                                if(ActionVector.at(a).SequenceType == FinishSequence) //finish catered in a later test
                                 {
                                     FoundStopTime = Utilities->Format96HHMM(GetRepeatTime(63, ActionVector.at(a).EventTime, y, IncMinutes));
                                     break;
@@ -17552,7 +17654,7 @@ j) all other finish entries (all link to another service) are ignored as will be
                         }
                     }
 
-                    else if(AVE.SequenceType == Start) //other start entries, all located
+                    else if(AVE.SequenceType == StartSequence) //other start entries, all located
                     {
                         TLSTEntry.Location = AVE.LocationName;
                         TLSTEntry.AtLocTime = Utilities->Format96HHMM(GetRepeatTime(50, AVE.EventTime, y, IncMinutes));
@@ -17566,7 +17668,7 @@ j) all other finish entries (all link to another service) are ignored as will be
                                 FoundStopTime = Utilities->Format96HHMM(GetRepeatTime(64, ActionVector.at(a).DepartureTime, y, IncMinutes));
                                 break;
                             }
-                            if(ActionVector.at(a).SequenceType == Finish) //finish catered in a later test
+                            if(ActionVector.at(a).SequenceType == FinishSequence) //finish catered in a later test
                             {
                                 FoundStopTime = Utilities->Format96HHMM(GetRepeatTime(65, ActionVector.at(a).EventTime, y, IncMinutes));
                                 break;
@@ -17574,7 +17676,7 @@ j) all other finish entries (all link to another service) are ignored as will be
                         }
                         if(FoundStopTime == "")
                         {
-                            throw Exception("Failure to determine FoundStopTime for SequenceType == Start");
+                            throw Exception("Failure to determine FoundStopTime for SequenceType == StartSequence");
                         }
                         int WhileCount = 0;
                         while(true)
@@ -17592,7 +17694,7 @@ j) all other finish entries (all link to another service) are ignored as will be
                             LocServiceTimesVector.push_back(TLSTEntry);
                             if(WhileCount > 2000)
                             {
-                                throw Exception("While loop failed to break in 2000 loops for SequenceType == Start");
+                                throw Exception("While loop failed to break in 2000 loops for SequenceType == StartSequence");
                             }
                         }
                     }
@@ -17615,10 +17717,10 @@ j) all other finish entries (all link to another service) are ignored as will be
                                     FoundStopTime = Utilities->Format96HHMM(GetRepeatTime(66, ActionVector.at(a).DepartureTime, y, IncMinutes));
                                     break;
                                 }
-                                if(ActionVector.at(a).SequenceType == Finish) //finish catered for in a later test
+                                if(ActionVector.at(a).SequenceType == FinishSequence) //finish catered for in a later test
                                 {
                                     FoundStopTime = Utilities->Format96HHMM(GetRepeatTime(67, ActionVector.at(a).EventTime, y, IncMinutes));
-                                    if((a <= (z + 2)) && (FoundStopTime == TLSTEntry.ArrTime) && ((ActionVector.at(a).LinkedTrainEntryPtr > 0) || (ActionVector.at(a).NonRepeatingShuttleLinkEntryPtr > 0)))
+                                    if((a <= (z + 2)) && (FoundStopTime == TLSTEntry.ArrTime) && ((ActionVector.at(a).LinkedTrainEntryPtr != NULL) || (ActionVector.at(a).NonRepeatingShuttleLinkEntryPtr != NULL)))
                                     //finish immediately after arrival at same time, and a forward linked service. Added at v2.6.0 to prevent two linked trains being listed at same location
                                     //at v2.10.0 changed (a == z + 1) to (a <= (z + 2)) as can have a cdt between, this allows for that
                                     {
@@ -17630,7 +17732,7 @@ j) all other finish entries (all link to another service) are ignored as will be
                             }
                             if(FoundStopTime == "")
                             {
-                                throw Exception("Failure to determine FoundStopTime for SequenceType == Start");
+                                throw Exception("Failure to determine FoundStopTime for SequenceType == StartSequence");
                             }
                             if(!SkipAddingMinutes)
                             {
@@ -17650,7 +17752,7 @@ j) all other finish entries (all link to another service) are ignored as will be
                                     LocServiceTimesVector.push_back(TLSTEntry);
                                     if(WhileCount > 2000)
                                     {
-                                        throw Exception("While loop failed to break in 2000 loops for SequenceType == Start");
+                                        throw Exception("While loop failed to break in 2000 loops for SequenceType == StartSequence");
                                     }
                                 }
                             }
@@ -17813,7 +17915,7 @@ j) all other finish entries (all link to another service) are ignored as will be
                         }
                     }
 
-                    else if(AVE.SequenceType == Finish)  //other finish types - all located & all link to another service
+                    else if(AVE.SequenceType == FinishSequence)  //other finish types - all located & all link to another service
                     {
                         //nothing is done here as the entry will be listed at this time under the new service reference
                     }
@@ -17827,8 +17929,9 @@ j) all other finish entries (all link to another service) are ignored as will be
 
 /*
 //start of debugging section
-///create LocServiceTimesVector output file for debugging purposes
-        std::ofstream LSTVFile("LSTVFile.txt");
+//create LocServiceTimesVector output file for debugging purposes
+        AnsiString LSTVTestFile = CurDir + "\\Formatted timetables\\LSTVTestFile; " + RailwayTitle + "; " + TimetableTitle + ".txt";
+        std::ofstream LSTVFile(LSTVTestFile.c_str());
         for(TLocServiceTimesVector::iterator LSTVIt = LocServiceTimesVector.begin(); LSTVIt != LocServiceTimesVector.end(); LSTVIt++)
         {
             LSTVFile << LSTVIt->Location + '\n';
@@ -17847,9 +17950,10 @@ j) all other finish entries (all link to another service) are ignored as will be
             LSTVFile << '\n';
         }
         LSTVFile.close();
+        Utilities->CallLogPop();
+        return(true);
 //end of debugging section
 */
-
         //declare pointers for use in printouts
         TLocServiceTimesVector::iterator Ptr1, Ptr2;
 
@@ -17878,8 +17982,30 @@ j) all other finish entries (all link to another service) are ignored as will be
         SequenceLog += "6\n";
 
 /*
-//print out TrainDataVectorCopy for debugging purposes NB THIS USES TDateTime.TimeString, which rolls over at 24 hours, use Format96 instead
-std::ofstream TDVCFile("TDVCFile.txt");
+//print out TrainDataVectorCopy & TrainDataVector for debugging purposes, TrainDataVectorCopy first
+
+// Double crosslink (shuttle) table:
+//Command   Format                    OtherHead                        NonRepeating-  LinkTrain-   NonRepeating-   Decsription
+//                                    Code                             ShuttleLink-   EntryPtr     ShuttleLink-
+//                                                                     HeadCode                    EntryPtr
+
+//Snt-sh  SNTShuttle                  Y (rtn shuttle)                  N              Y (rtn sh)   N               Simple shuttle - no feeder service
+//Frh-sh  TimeCmdHeadCode             Y (outwd shuttle)                N              Y (outwd sh) N               Simple shuttle - no finishing service
+//F-nshs  FNSNonRepeatToShuttle       N (shld be Y for outwd shuttle)  Y (shld be N)  Y (correct)  N (correct)     Feeder service link to shuttle
+//Sns-sh  SNSShuttle                  Y (rtn shuttle)                  Y (feeder)     Y (rtn)      Y (fdr)         Shuttle link from feeder service
+//Sns-fsh SNSNonRepeatFromShuttle     N (shld be Y for rtn shuttle)    Y (shld be N)  Y (correct)  N (correct)     Finishing service link from shuttle
+//Fns-sh  FSHNewService               Y (outwd shuttle)                Y (finishing)  Y (outwd sh) Y (finish)      Shuttle link to finishing service
+//
+//Note:  Any shuttle start can have any finish - feeder and finish, neither, feeder but no finish & vice versa.
+
+//NOTE: from above for F-nshs & Sns-fsh in the TrainDataVectorCopy the OtherLinkedHeadCode will be correct as it is derived from LinkTrainEntryPtr which is correct
+//but for the original TrainDataVector the OtherLinkedHeadCode will be incorrect, hence have to use the NonRepeatingShuttleLinkHeadCode as that is the correct one
+//these were errors when first coded but work ok, just keep in mind when making any changes
+
+std::ofstream TDVCFile((CurDir + "\\Formatted timetables\\Conflict Analysis " + TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss") + "; " + RailwayTitle + "; " + TimetableTitle + " TrainDataVectorCopy.txt").c_str());
+AnsiString OHC = "", NRHC = "";
+AnsiString OLk = "", NRLk = "";
+TDVCFile << "Note that for the TrainDataVectorCopy OH and OLk should always be the same, as OH is derived from OHLk; and similarly for NR and NRLk\n\n";
 for(TTrainDataVector::iterator TDVCIt = TrainDataVectorCopy.begin(); TDVCIt != TrainDataVectorCopy.end(); TDVCIt++)
 {
     TDVCFile << TDVCIt->ServiceReference + '\n';
@@ -17887,40 +18013,197 @@ for(TTrainDataVector::iterator TDVCIt = TrainDataVectorCopy.begin(); TDVCIt != T
     for(unsigned int x = 0; x < TDVCIt->ActionVector.size(); x++)
     {
         TActionVectorEntry AVE = TDVCIt->ActionVector.at(x);
-        if((AVE.FormatType == TimeCmd) || (AVE.FormatType == TimeCmdHeadCode) || (AVE.FormatType == FNSNonRepeatToShuttle) || (AVE.FormatType == FSHNewService))
+        if(AVE.OtherHeadCode == "")
         {
-            TDVCFile << AnsiString(AVE.EventTime.TimeString()) << ' ' << AVE.Command << ' ' << AVE.OtherHeadCode <<  ' ' << AVE.NonRepeatingShuttleLinkHeadCode << '\n';
+            OHC = "OH 0";
+        }
+        else
+        {
+            OHC = "OH " + AVE.OtherHeadCode;
+        }
+        if(AVE.NonRepeatingShuttleLinkHeadCode == "")
+        {
+            NRHC = "NR 0";
+        }
+        else
+        {
+            NRHC = "NR " + AVE.NonRepeatingShuttleLinkHeadCode;
+        }
+        if(TDVCIt->ActionVector.at(x).LinkedTrainEntryPtr == 0)
+        {
+            OLk = "OLk 0";
+        }
+        else
+        {
+            OLk = "OLk " + TDVCIt->ActionVector.at(x).LinkedTrainEntryPtr->ServiceReference;
+        }
+        if(TDVCIt->ActionVector.at(x).NonRepeatingShuttleLinkEntryPtr == 0)
+        {
+            NRLk = "NRLk 0";
+        }
+        else
+        {
+            NRLk = "NRLk " + TDVCIt->ActionVector.at(x).NonRepeatingShuttleLinkEntryPtr->ServiceReference;
+        }
+
+        if(AVE.FormatType == TimeCmd) //cdt only
+        {
+            TDVCFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << '\n';
+        }
+        if((AVE.FormatType == TimeCmdHeadCode) || (AVE.FormatType == FNSNonRepeatToShuttle))
+        {
+            TDVCFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << OHC << ' ' << NRHC << ' ' << OLk << ' ' << NRLk << '\n';
+        }
+        else if((AVE.FormatType == FSHNewService) || (AVE.FormatType == SNSShuttle)) //these should have 2 linked services
+        {
+            TDVCFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << OHC <<  ' ' << NRHC << ' ' << OLk << ' ' << NRLk << '\n';
+        }
+        else if(AVE.FormatType == SNSNonRepeatFromShuttle)
+        {
+            TDVCFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << OHC << ' ' << NRHC << ' ' << OLk << ' ' << NRLk << '\n';
+        }
+        else if(AVE.FormatType == StartNew)
+        {
+            TDVCFile << Utilities->Format96HHMM(AVE.EventTime) << " Snt RearStartID " << Track->TrackElementAt(-1, AVE.RearStartOrRepeatMins).ElementID
+                <<  " FrontStartID " << Track->TrackElementAt(-2, AVE.FrontStartOrRepeatDigits).ElementID << '\n';
+        }
+        else if(AVE.FormatType == SNTShuttle)
+        {
+            TDVCFile << Utilities->Format96HHMM(AVE.EventTime) << " Snt-sh RearStartID " << Track->TrackElementAt(-3, AVE.RearStartOrRepeatMins).ElementID
+                <<  " FrontStartID " << Track->TrackElementAt(-4, AVE.FrontStartOrRepeatDigits).ElementID << '\n';
         }
         else if((AVE.FormatType == TimeLoc) && (AVE.ArrivalTime != TDateTime(-1)))
         {
-            TDVCFile << AnsiString(AVE.ArrivalTime.TimeString()) << " Arr " << AVE.LocationName << '\n';
+            TDVCFile << Utilities->Format96HHMM(AVE.ArrivalTime) << " Arr " << AVE.LocationName <<  '\n';
         }
         else if((AVE.FormatType == TimeLoc) && (AVE.DepartureTime != TDateTime(-1)))
         {
-            TDVCFile << AnsiString(AVE.DepartureTime.TimeString()) << " Dep " << AVE.LocationName << '\n';
+            TDVCFile << Utilities->Format96HHMM(AVE.DepartureTime) << " Dep " << AVE.LocationName <<  '\n';
         }
         else if(AVE.FormatType == TimeTimeLoc)
         {
-            TDVCFile << AnsiString(AVE.ArrivalTime.TimeString()) << ' ' << AnsiString(AVE.DepartureTime.TimeString()) << ' ' << AVE.LocationName << '\n';
+            TDVCFile << Utilities->Format96HHMM(AVE.ArrivalTime) << ' ' << Utilities->Format96HHMM(AVE.DepartureTime) << ' ' << AVE.LocationName <<  '\n';
         }
         else if(AVE.FormatType == PassTime)
         {
-            TDVCFile << AnsiString(AVE.EventTime.TimeString()) << ' ' << "Pass" << ' ' << AVE.LocationName << '\n';
+            TDVCFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << "Pass" << ' ' << AVE.LocationName <<  '\n';
         }
         else if(AVE.FormatType == ExitRailway)
         {
-            TDVCFile << AnsiString(AVE.EventTime.TimeString()) << " Fer" << '\n';
+            TDVCFile << Utilities->Format96HHMM(AVE.EventTime) << " Fer" <<  '\n';
         }
         else if(AVE.FormatType == FinRemHere)
         {
-            TDVCFile << "Frh" << '\n';
+            TDVCFile << "Frh" <<  '\n';
         }
     }
     TDVCFile << '\n';
 }
 TDVCFile.close();
-*/
 
+//print out original TrainDataVector for comparison
+std::ofstream TDVFile((CurDir + "\\Formatted timetables\\Conflict Analysis " + TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss") + "; " + RailwayTitle + "; " + TimetableTitle + " TrainDataVector.txt").c_str());
+TDVFile << "Note that in the TrainDataVector, non-repeating shuttle link services F-nshs and Sns-fsh use the non-repeating headcode (NR) values for the corresponding "
+            "shuttle headcodes when it should be the other headcode (OH), and the other headcode is unused.  The link values are the right way round.  Also OH & NR "
+            "values ARE headcodes and not service references, but OLk and NRLk values are service references.\n\n";
+//F-nshs  FNSNonRepeatToShuttle       N (shld be Y for outwd shuttle)  Y (shld be N)  Y (correct)  N (correct)     Feeder service link to shuttle
+//Sns-fsh SNSNonRepeatFromShuttle     N (shld be Y for rtn shuttle)    Y (shld be N)  Y (correct)  N (correct)     Finishing service link from shuttle
+for(TTrainDataVector::iterator TDVIt = TrainDataVector.begin(); TDVIt != TrainDataVector.end(); TDVIt++)
+{
+    TDVFile << TDVIt->ServiceReference + '\n';
+    TDVFile << TDVIt->Description + '\n';
+    for(unsigned int x = 0; x < TDVIt->ActionVector.size(); x++)
+    {
+        TActionVectorEntry AVE = TDVIt->ActionVector.at(x);
+        if(AVE.OtherHeadCode == "")
+        {
+            OHC = "OH 0";
+        }
+        else
+        {
+            OHC = "OH " + AVE.OtherHeadCode;
+        }
+        if(AVE.NonRepeatingShuttleLinkHeadCode == "")
+        {
+            NRHC = "NR 0";
+        }
+        else
+        {
+            NRHC = "NR " + AVE.NonRepeatingShuttleLinkHeadCode;
+        }
+        if(TDVIt->ActionVector.at(x).LinkedTrainEntryPtr == 0)
+        {
+            OLk = "OLk 0";
+        }
+        else
+        {
+            OLk = "OLk " + TDVIt->ActionVector.at(x).LinkedTrainEntryPtr->ServiceReference;
+        }
+        if(TDVIt->ActionVector.at(x).NonRepeatingShuttleLinkEntryPtr == 0)
+        {
+            NRLk = "NRLk 0";
+        }
+        else
+        {
+            NRLk = "NRLk " + TDVIt->ActionVector.at(x).NonRepeatingShuttleLinkEntryPtr->ServiceReference;
+        }
+
+        if(AVE.FormatType == TimeCmd) //cdt only
+        {
+            TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << '\n';
+        }
+        if((AVE.FormatType == TimeCmdHeadCode) || (AVE.FormatType == FNSNonRepeatToShuttle))
+        {
+            TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << OHC << ' ' << NRHC << ' ' << OLk << ' ' << NRLk << '\n';
+        }
+        else if((AVE.FormatType == FSHNewService) || (AVE.FormatType == SNSShuttle)) //these should have 2 linked services
+        {
+            TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << OHC << ' ' << NRHC << ' ' << OLk << ' ' << NRLk << '\n';
+        }
+        else if(AVE.FormatType == SNSNonRepeatFromShuttle)
+        {
+            TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << OHC << ' ' << NRHC << ' ' << OLk << ' ' << NRLk << '\n';
+        }
+        else if(AVE.FormatType == StartNew)
+        {
+            TDVFile << Utilities->Format96HHMM(AVE.EventTime) << " Snt RearStartID " << Track->TrackElementAt(-5, AVE.RearStartOrRepeatMins).ElementID
+                <<  " FrontStartID " << Track->TrackElementAt(-6, AVE.FrontStartOrRepeatDigits).ElementID << '\n';
+        }
+        else if(AVE.FormatType == SNTShuttle)
+        {
+            TDVFile << Utilities->Format96HHMM(AVE.EventTime) << " Snt-sh RearStartID " << Track->TrackElementAt(-7, AVE.RearStartOrRepeatMins).ElementID
+                <<  " FrontStartID " << Track->TrackElementAt(-8, AVE.FrontStartOrRepeatDigits).ElementID << '\n';
+        }
+        else if((AVE.FormatType == TimeLoc) && (AVE.ArrivalTime != TDateTime(-1)))
+        {
+            TDVFile << Utilities->Format96HHMM(AVE.ArrivalTime) << " Arr " << AVE.LocationName <<  '\n';
+        }
+        else if((AVE.FormatType == TimeLoc) && (AVE.DepartureTime != TDateTime(-1)))
+        {
+            TDVFile << Utilities->Format96HHMM(AVE.DepartureTime) << " Dep " << AVE.LocationName <<  '\n';
+        }
+        else if(AVE.FormatType == TimeTimeLoc)
+        {
+            TDVFile << Utilities->Format96HHMM(AVE.ArrivalTime) << ' ' << Utilities->Format96HHMM(AVE.DepartureTime) << ' ' << AVE.LocationName <<  '\n';
+        }
+        else if(AVE.FormatType == PassTime)
+        {
+            TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << "Pass" << ' ' << AVE.LocationName <<  '\n';
+        }
+        else if(AVE.FormatType == ExitRailway)
+        {
+            TDVFile << Utilities->Format96HHMM(AVE.EventTime) << " Fer" <<  '\n';
+        }
+        else if(AVE.FormatType == FinRemHere)
+        {
+            TDVFile << "Frh" <<  '\n';
+        }
+    }
+    TDVFile << '\n';
+}
+TDVFile.close();
+//end of debugging
+*/
         //arrivals
         if(ArrChecked)
         {
@@ -18472,7 +18755,9 @@ TDVCFile.close();
             //end of simultaneous AtLocs
         }
         SequenceLog += "9\n";
+
 /*
+//start of debugging section
         //print out the full vector here for testing purposes
             TTFile3 << "Full LocServiceTimesVector\n\n";
             TTFile3 << "Location,AtLocTime,ArrTime,DepTime,ServiceAndRepeatNum,Description\n\n";
@@ -18483,7 +18768,9 @@ TDVCFile.close();
             }
 
             TTFile3 << "\n\n\n";
+//end of debugging
 */
+
 /*cdt analysis - added at v2.10.0
 2 pass system:  1st extract as a single service all Snt (or Snt-sh) starts, with Fns/Sns links combined (and F-nshs/Sns-sh) (though add a new
 changeover code [chr XXXX - 'change ref + new reference] until come to Fjo, Frh, Frh-sh, Fer (ignore exit loc as can't stop there), ignore jbos &
@@ -18512,7 +18799,7 @@ First create a new TrainDataVector from earlier copy as above with single servic
                 TTrainDataEntry TDE = TrainDataVectorCopy.at(x);
                 if(TDE.ActionVector.at(TDE.ActionVector.size() - 1).FormatType == Repeat)
                 {
-                    TDE.ActionVector.erase(&TDE.ActionVector.back()); //strip repeat entry if present
+                    TDE.ActionVector.erase(TDE.ActionVector.end() - 1); //strip repeat entry if present
                 }
                 const TActionVector &AV = TDE.ActionVector;
                 if((AV.at(0).Command == "Snt") || (AV.at(0).Command == "Snt-sh"))
@@ -18617,7 +18904,7 @@ First create a new TrainDataVector from earlier copy as above with single servic
                                 {
                                     PartServiceVector.at(0).ActionVector.push_back(TempEntry.ActionVector.at(y));
                                     SingleServiceVector.push_back(PartServiceVector.at(0)); //push the complete entry
-                                    PartServiceVector.erase(&PartServiceVector.at(0));
+                                    PartServiceVector.erase(PartServiceVector.begin());
                                     break; //from y loop
                                 }
                                 else if((TempEntry.ActionVector.at(y).Command == "fsp") || (TempEntry.ActionVector.at(y).Command == "rsp"))
@@ -18678,7 +18965,7 @@ First create a new TrainDataVector from earlier copy as above with single servic
             if(!PartServiceVector.empty())
             {
                 SequenceLog += "12\n";
-                throw Exception("PartServiceVector should be empty here - size = " + PartServiceVector.size());
+                throw Exception("PartServiceVector should be empty here - size = " + AnsiString(PartServiceVector.size()));
             }
             SequenceLog += "13\n";
     /*
@@ -18733,7 +19020,7 @@ different to the train's front element name (whether null or not) (no report), a
                 if(TDE.ActionVector.at(TDE.ActionVector.size() - 1).FormatType == Repeat)
                 {
                     SequenceLog += "13a\n";
-                    throw Exception("Repeat entry present in SingleServiceVector at position " + x);
+                    throw Exception("Repeat entry present in SingleServiceVector at position " + AnsiString(x));
                 }
                 const TActionVector &AV = TDE.ActionVector;
                 if((AV.at(0).Command == "Snt") || (AV.at(0).Command == "Snt-sh"))
@@ -18854,7 +19141,7 @@ different to the train's front element name (whether null or not) (no report), a
             {
                 const TTrainDataEntry &TDEntry = SingleServiceVector.at(x);
                 unsigned int y = 0;
-                int FirstInstance = 9999, SecondInstance = 9999; //9999 ensures wont be marked if not changed
+                int FirstInstance = 9999, SecondInstance = 9999; //9999 ensures won't be marked if not changed
                 bool FullBreak = false;
                 MarkerList.clear();
                 const TActionVectorEntry &AVEntry0 = TDEntry.ActionVector.at(0);
@@ -19063,6 +19350,7 @@ different to the train's front element name (whether null or not) (no report), a
                 TTFile3 << '\n';
             }
 /*
+//debug section
 //print all SSVector for diagnostic purposes
             TTFile3 << "Whole SSVector\n\n";
             TNumList EmptyList;
@@ -19070,6 +19358,7 @@ different to the train's front element name (whether null or not) (no report), a
             {
                 SingleServiceOutput(, x, EmptyList, SingleServiceVector, TTFile3);
             }
+//end of debug section
 */
         }
         SequenceLog += "15\n";
@@ -19208,14 +19497,15 @@ void TTrainController::SingleServiceOutput(int Caller, int SSVectorNumber, TNumL
 
 // ---------------------------------------------------------------------------
 
-TTrainDataEntry TTrainController::GetServiceFromVector(AnsiString Caller, AnsiString ServiceReference, TTrainDataVector Vector, bool &FinishType, bool &FoundFlag)
+TTrainDataEntry TTrainController::GetServiceFromVector(AnsiString Caller, AnsiString HeadCode, TTrainDataVector Vector, bool &FinishType, bool &FoundFlag)
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetServiceFromVector," + ServiceReference);
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",GetServiceFromVector," + HeadCode);
     FoundFlag = false;
     FinishType = true;
     for(unsigned int x = 0; x < Vector.size(); x++)
     {
-        if(Vector.at(x).ServiceReference == ServiceReference)
+//        AnsiString ThisRef = Vector.at(x).ServiceReference;
+        if(Vector.at(x).ServiceReference == HeadCode)
         {
             if(Vector.at(x).ActionVector.at(Vector.at(x).ActionVector.size() - 1).FormatType == Repeat) //shouldn't be any repeats
             {
@@ -19534,7 +19824,7 @@ bool TTrainController::SameDirection(int Caller, AnsiString Ref1In, AnsiString R
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SameDirection," + Ref1In + "," + Ref2In  + "," + Time1 + "," + Time2 + "," +
                                  AnsiString(RepeatNum1) + "," + AnsiString(RepeatNum2) + "," + Location);
 
-    std::list<AnsiString>::iterator LP1 = 0, LP2 = 0, ListPtr1 = 0, ListPtr2 = 0, LocPtr1 = 0, LocPtr2 = 0;     //LP1 & 2 are temporary pointers, ListPtrs are
+    std::list<AnsiString>::iterator LP1, LP2, ListPtr1, ListPtr2, LocPtr1, LocPtr2;     //LP1 & 2 are temporary pointers, ListPtrs are
     //general list pointers, LocPtrs point to Location in the two lists
 
     //first find the relevant values for LocPtr1 & LocPtr2 taking account of cdts and times
@@ -19546,6 +19836,9 @@ bool TTrainController::SameDirection(int Caller, AnsiString Ref1In, AnsiString R
 
     //first need to strip off /1, /2 etc if present from Ref1 & Ref2 (leave Ref1In & Ref2In for error message & retain value as target in finding the correct reference for cdts)
     int Ref1Target = 0, Ref1Count = 0;
+    int Ref2Target = 0, Ref2Count = 0;
+
+/* drop this after retained slashes in ServiceRef
     int SlashPos = Ref1.Pos('/');
     if(SlashPos > 0)     //if 0 Ref1 == Ref1In & target stays  at 0
     {
@@ -19559,6 +19852,8 @@ bool TTrainController::SameDirection(int Caller, AnsiString Ref1In, AnsiString R
         Ref2Target = Ref2.SubString(SlashPos + 1, Ref2.Length() - SlashPos).ToInt();
         Ref2 = Ref2.SubString(1, SlashPos - 1);     //truncate up to but omit '/'
     }
+*/
+
     for(ListPtr1 = List1.begin(); ListPtr1 != List1.end(); ListPtr1++)     //note that when this routine entered Ref1In &  Ref2In are already set to the correct services,
     {
         //even if others have same names. But if there are cdt's then need to refind the correct service
@@ -19576,7 +19871,7 @@ bool TTrainController::SameDirection(int Caller, AnsiString Ref1In, AnsiString R
                 IncMinutes = -1;
                 FirstServiceTime = TDateTime(-1);
                 bool BreakFlag = false;
-                for(TTrainDataVector::iterator TDVIt = TrainDataVector.begin(); TDVIt != TrainDataVector.end(); TDVIt++)
+                for(TTrainDataVector::iterator TDVIt = TrainDataVectorCopy.begin(); TDVIt != TrainDataVectorCopy.end(); TDVIt++)
                 {
                     if(TDVIt->ServiceReference == Ref1)
                     {
@@ -19666,7 +19961,7 @@ bool TTrainController::SameDirection(int Caller, AnsiString Ref1In, AnsiString R
                 IncMinutes = -1;
                 FirstServiceTime = TDateTime(-1);
                 bool BreakFlag = false;
-                for(TTrainDataVector::iterator TDVIt = TrainDataVector.begin(); TDVIt != TrainDataVector.end(); TDVIt++)
+                for(TTrainDataVector::iterator TDVIt = TrainDataVectorCopy.begin(); TDVIt != TrainDataVectorCopy.end(); TDVIt++)
                 {
                     if(TDVIt->ServiceReference == Ref2)
                     {
@@ -19941,7 +20236,7 @@ AnsiString TTrainController::GetExitLocationAndAt(int Caller, TNumList &ExitList
   Utilities->CallLogPop();
   return false;
   }
-  else if((AVPtr + x)->SequenceType == Finish)
+  else if((AVPtr + x)->SequenceType == FinishSequence)
   {
   Utilities->CallLogPop();
   return true;

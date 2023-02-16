@@ -285,7 +285,7 @@
 #define clB5G5R4    (TColor)0xFFFFCC //38e  b3
 #define clB5G5R5    (TColor)0xFFFFFF //392  d7
 
-// train background colour definitions                                         offset  colour
+// train background colour definitions                                           offset  colour
 // hex    no.
 #define clBufferAttentionNeeded    (TColor)0xFFFF00 //cyan           16776960d     37e    23
 #define clBufferStopBackground     (TColor)0xFFFFCC //pale cyan      16777164d     38e    b3
@@ -1096,9 +1096,9 @@ public:
     Graphics::TBitmap *SpeedBut75GrndBlackGlyph;
 
 // functions
-    TRailGraphics::TRailGraphics();
+    TRailGraphics();
 ///< constructor
-    TRailGraphics::~TRailGraphics();
+    ~TRailGraphics();
 ///< destructor
 /// Changes all graphics to become compatible with a new background colour
 ///

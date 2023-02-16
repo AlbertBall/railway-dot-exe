@@ -78,7 +78,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // ---------------------------------------------------------------------------
 
-typedef std::pair<short, short>THVShortPair; //also defined in TrainUnit.h but that isn't available from here
+typedef std::pair<int, int>THVShortPair; //also defined in TrainUnit.h but that isn't available from here
 ///< HLoc/VLoc position pair
 
 class TOnePrefDir; // predeclarations
@@ -747,6 +747,7 @@ __published: // IDE-managed Components
     TMenuItem *ModerateFailuresMenuItem;
     TMenuItem *MajorFailuresMenuItem;
     TBitBtn *SigAutoNonConsecButton;
+    TButton *InvertTTEntryButton;
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -969,6 +970,7 @@ __published: // IDE-managed Components
     void __fastcall ModerateFailuresMenuItemClick(TObject *Sender);
     void __fastcall MajorFailuresMenuItemClick(TObject *Sender);
     void __fastcall SigAutoNonConsecButtonClick(TObject *Sender);
+    void __fastcall InvertTTEntryButtonClick(TObject *Sender);
 
 
 public: // AboutForm needs access to these
@@ -994,7 +996,7 @@ public: // AboutForm needs access to these
 ///< Clear screen and rebuild it from stored data, uses HiddenScreen to avoid flicker
     bool FirstActionsDueFormDisplay;
 ///< places ActionsDueForm at bottom RHS when first displayed
-    bool TInterface::GetTrainIDOrContinuationPosition(int Caller, int X, int Y, int &TrainID, int &TrackVectorPosition);
+    bool GetTrainIDOrContinuationPosition(int Caller, int X, int Y, int &TrainID, int &TrackVectorPosition);
 ///< Used in actions due panel to identify the train or continuation, added at v2.6.2 so can use for actions due floating window
     int ADFTop;
 ///< stores the ADForm position for re-use when made visible.
@@ -1252,6 +1254,8 @@ private:
 ///< indicates that the message about filling a selected area with a chosen track element has been given, so it won't be given again
     bool FirstPerfLogFormDisplay;
 ///< places PerfLogForm at bottom LHS when first displayed
+    bool InvertTTEntryMessageSent;
+///< indicates that the invert entry timetable message won't be given again
     bool LCManualLowerBarriersMessageSent;
 ///< indicates that the manual LC operation message has been given, so it won't be given again
     bool LengthWarningSentFlag;
@@ -1342,6 +1346,7 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
     bool MoveTTEntryUpKeyFlag;
     bool MoveTTEntryDownKeyFlag;
     bool CopyTTEntryKeyFlag;
+    bool InvertTTEntryKeyFlag;
     bool CutTTEntryKeyFlag;
     bool PasteTTEntryKeyFlag;
     bool DeleteTTEntryKeyFlag;
@@ -1474,9 +1479,9 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
 //true if any of the TT key flags are set
     bool AnyTTKeyFlagSet()
     {
-        return (PreviousTTEntryKeyFlag || NextTTEntryKeyFlag || MoveTTEntryUpKeyFlag || MoveTTEntryDownKeyFlag || CopyTTEntryKeyFlag || CutTTEntryKeyFlag || PasteTTEntryKeyFlag
-                || DeleteTTEntryKeyFlag || NewTTEntryKeyFlag || AZOrderKeyFlag || TTServiceSyntaxCheckKeyFlag || ValidateTimetableKeyFlag || SaveTTKeyFlag || SaveTTAsKeyFlag
-                || RestoreTTKeyFlag || ExportTTKeyFlag || ConflictAnalysisKeyFlag);
+        return (PreviousTTEntryKeyFlag || NextTTEntryKeyFlag || MoveTTEntryUpKeyFlag || MoveTTEntryDownKeyFlag || CopyTTEntryKeyFlag || InvertTTEntryKeyFlag
+                || CutTTEntryKeyFlag || PasteTTEntryKeyFlag || DeleteTTEntryKeyFlag || NewTTEntryKeyFlag || AZOrderKeyFlag || TTServiceSyntaxCheckKeyFlag
+                || ValidateTimetableKeyFlag || SaveTTKeyFlag || SaveTTAsKeyFlag || RestoreTTKeyFlag || ExportTTKeyFlag || ConflictAnalysisKeyFlag);
     }
 
 // functions defined in .cpp file

@@ -227,7 +227,7 @@ public:
 
 /// Constructor, sets the screen image (MainScreen or HiddenScreen), the
 /// main display image and warning message labels
-    TDisplay::TDisplay(TImage* &Image, TLabel* &L1, TLabel* &L2, TLabel* &L3, TLabel* &L4, TLabel* &L5, TLabel* &L6, TLabel* &L7, TLabel* &L8,
+    TDisplay(TImage* &Image, TLabel* &L1, TLabel* &L2, TLabel* &L3, TLabel* &L4, TLabel* &L5, TLabel* &L6, TLabel* &L7, TLabel* &L8,
                        TLabel* &L9, TLabel* &L10);
 /// Empty the rectangle defined by Rect
     void Clear(int Caller, TRect Rect);

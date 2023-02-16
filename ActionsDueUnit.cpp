@@ -62,8 +62,13 @@ void __fastcall TActionsDueForm::ActionsDueListBoxMouseUp(TObject *Sender, TMous
           TShiftState Shift, int X, int Y)
 {
 // Mouseup rather than Mousedown so shows floating label when over selected train
-    TrainController->LogEvent("ActionsDueListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y) + "," + AnsiString(Button)); // button may be right or left
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ActionsDueListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y));
+    AnsiString AnsiButton = "mbLeft";
+    if(Button == mbRight)
+    {
+        AnsiButton = "mbRight";
+    }
+    TrainController->LogEvent("ActionsDueListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y) + "," + AnsiButton); // button may be right or left
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ActionsDueListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y) + "," + AnsiButton);
     int ScreenPosH, ScreenPosV;
     if(Track->RouteFlashFlag || Track->PointFlashFlag) // no action
     {

@@ -100,25 +100,18 @@ takes too long, then set one or more facing points for the desired route beginni
 <p>When selected, routes may be truncated or cancelled, by left clicking the
 'route cancel' <img width=24 height=24 src="../images/RailSim2_ROUTECANCEL.gif"> button
 and then right clicking the track element to truncate to, or the start element
-of the route to cancel it completely. When truncating automatic signal and
-preferred direction routes, the truncate point must immediately follow a
-signal, so that the route that is left ends at a signal. Note that a route that
-consists of a mixture of preferred direction and unrestricted route sections is
+of the route to cancel it completely. Routes can be truncated from the start, by right clicking the element immediately in advance of a facing signal, or from the end, by right clicking the element immediately in rear of a facing signal.  For unrestricted routes right clicking any element except one immediately in advance of a facing signal will truncate it from the end.</p>
+
+<p>Routes that consist of a mixture of preferred direction and unrestricted route sections are
 regarded by RailOS as a single route, which may be cancelled as a whole.
 However a route that consists of a mixture of automatic and other types of
 route sections is regarded by RailOS as a series of separate routes, with
 automatic signal sections being individual routes, and mixtures of others
 similarly being regarded as individual but separate routes. In these
 circumstances when a route is cancelled, just the relevant section is
-cancelled. This may sometimes cause problems because the automatic signal
-routes always take precedence and include the signals at both ends. Therefore,
-if a section of automatic signal route is cancelled, the signal that represents
-the boundary between it and the other type of route is removed when the
-automatic signal route is removed. This leaves the other route with a missing
-signal, and a new section of route can't be created to include it because RailOS won't permit a route to end next to an existing route. Hence the other
-section of route must be cancelled also.</p>
+cancelled.</p>
 
-<p> If a signal is placed immediately before and facing a bridge, a warning message is given on trying to link the track, because bridges can't be used as truncate points so the route can't be truncated to that signal. Bridges can't be used as truncate points because they are potentially ambiguous as they can have two routes set on them. An option to ignore the warning is offered and accepted by using a specific key combination.</p>
+<p> If a signal is placed immediately before or after a bridge, a warning message is given on trying to link the track, because bridges can't be used as truncate points so the route can't be truncated to that signal. Bridges can't be used as truncate points because they are potentially ambiguous as they can have two routes set on them. An option to ignore the warning is offered and accepted by using a specific key combination.</p>
 
 <p>Note that a train that runs in the wrong direction on any part of a route
 will cancel the whole of that route and all signals will change to red

@@ -83,7 +83,7 @@ public:
     } // change the value of VPos to NewVPos for
 
 // the text item at position TextItem in TextVector
-    TTextHandler::~TTextHandler() // destructor
+    ~TTextHandler() // destructor
     {
         FontVector.clear();
         TextVector.clear();
@@ -112,7 +112,7 @@ public:
     unsigned int TextVectorSize(int Caller);
 ///< return the number of items in TextVector
 
-    TFontStyles TTextHandler::SetFontStyleFromInt(int Caller, int Input);
+    TFontStyles SetFontStyleFromInt(int Caller, int Input);
 ///< used in loading from a file
     void EnterAndDisplayNewText(int Caller, TTextItem Text, int HPos, int VPos);
 ///< add Text to TextVector and display it on the screen

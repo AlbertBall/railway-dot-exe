@@ -87,7 +87,7 @@ public: // everything uses these - should really have Gets & Sets but too many t
     int SpeedTag;
 ///< The element identification number - corresponds to the relevant SpeedButton->Tag
     int Link[4];
-///< Track connection link values, max. of 4, unused = -1, top lh diag.=1, top=2, top rh diag.=3, left=4, right=6, bottom lh diag.=7, bottom=8, bottom rh diag.=9
+///< Track connection link values, max. of 4, unused = -1, top lh diag = 1, top = 2, top rh diag = 3, left = 4, right = 6, bottom lh diag = 7, bottom = 8, bottom rh diag = 9
     Graphics::TBitmap *GraphicPtr;
 ///< the track bitmap for display on the zoomed-in railway
     Graphics::TBitmap *SmallGraphicPtr;
@@ -181,7 +181,7 @@ public: // everything uses these - should really have Gets & Sets but too many t
 ///< equivalence operator
     bool operator != (TTrackElement RHElement);
 ///< non-equivalence operator
-    AnsiString TTrackElement::LogTrack(int Caller) const;
+    AnsiString LogTrack(int Caller) const;
 ///< Used to log track parameters for call stack logging
     void PlotVariableTrackElement(int Caller, TDisplay *Disp) const;
 ///< Plot the element on the display 'variable' indicates that the element may be named and if so may be plotted striped or solid depending on whether the name has been set
@@ -410,7 +410,8 @@ public:
 ///< picks up the blue route graphic (not used - superseded by GetRouteGraphicPtr)
     Graphics::TBitmap *GetRouteGraphicPtr(bool AutoSigsFlag, bool PrefDirRoute);
 ///< picks up the appropriate route graphic
-
+    int GetRouteColour(Graphics::TBitmap *EXG);
+///< finds the route colour for a specific prefdir element with EXGraphicPtr EXG
 
 };
 
@@ -521,13 +522,13 @@ public:
     }
 
 /// Constructor that sets the internal integer to the input value. The 'explicit' prefix is used to force a compiler error if the input value is an IDInt, which would be a program error (otherwise it would be implicitly converted to an int)
-    explicit IDInt::IDInt(int Int)
+    explicit IDInt(int Int)
     {
         InternalInt = Int;
     }
 
 /// Default constructor, internal integer set to -1
-    IDInt::IDInt()
+    IDInt()
     {
         InternalInt = -1;
     }
@@ -631,7 +632,7 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< VLoc value for found level crossing element
         TDateTime StartTime;
 ///< stores the starting time for level crossing changing
-        TActiveLevelCrossing::TActiveLevelCrossing();
+        TActiveLevelCrossing();
 ///< constructor, sets default values
     };
 
@@ -1251,7 +1252,7 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
 /// Save all active and inactive track elements to VecFile
     void SaveTrack(int Caller, std::ofstream& VecFile, bool GraphicsFollow);
 /// save graphics
-    void TTrack::SaveUserGraphics(int Caller, std::ofstream &VecFile);
+    void SaveUserGraphics(int Caller, std::ofstream &VecFile);
 /// Checks all locations that are adjacent to the one entered for linked named location elements.
 /**If any LocationName is found in any of the linked elements, that name is used for all elements that are now linked to it. The location entered doesn't need
 to be a FixedNamedLocationElement and there doesn't even need to be an element there.
@@ -1426,7 +1427,7 @@ public:
     // functions defined in .cpp file
 
 /// Determines whether the preferred direction pointed to has another pref dir in the opposite direction set (returns true) or not
-    bool TOnePrefDir::BiDirectionalPrefDir(int Caller, TPrefDir4MultiMapIterator PDPtr);
+    bool BiDirectionalPrefDir(int Caller, TPrefDir4MultiMapIterator PDPtr);
 /// Called before PrefDir loading as part of the FileIntegrityCheck function in case there is an error in the file. Very similar to LoadPrefDir but with value checks instead of storage in PrefDirVector.
     bool CheckOnePrefDir(int Caller, int NumberOfActiveElements, std::ifstream &VecFile);
 /// Used when setting preferred directions, true if able to finish at the last selected element (can't finish if there is only one element or if end on leading points)
@@ -1564,12 +1565,13 @@ public:
         SearchVector.clear();
     }
 
-/// Erase a single route element
-    void EraseRouteElementAt(TPrefDirElement *RouteElementPtr)
-    {
-        PrefDirVector.erase(RouteElementPtr);
+/// Erase a single route element  - don't need this now incorporated in .cpp file
+/*
+    void EraseRouteElementAt(unsigned int RouteElementNumber)
+    {   //changed for 64bit version
+                PrefDirVector.erase(PrefDirVector.begin() + RouteElementNumber);
     }
-
+*/
 /// Store a single route element in the PrefDirVector
     void StoreRouteElementInPrefDirVector(TPrefDirElement LoadPrefDirElement)
     {
@@ -1608,13 +1610,15 @@ public:
     void ConvertAndAddPreferredRouteSearchVector(int Caller, IDInt ReqPosRouteID, bool AutoSigsFlag);
 /// Cancel a route immediately if a train occupies it when travelling in the wrong direction (or occupies a crossover on a non-route line when the other track is in a route)
     void ForceCancelRoute(int Caller);
+/// Adds signal to front/end of green or red routes when blue route truncated or removed
+    void ReclaimSignalsForNonAutoSigRoutes(int caller, TPrefDirElement LastPDElement, TPrefDirElement FirstPDElement);
 /// Examines the route to see whether the element at H & V is in the route, and if not returns a ReturnFlag value of NotInRoute.
 /** If it is in a route but the element selected is invalid, then a message is given and returns with a ReturnFlag value of
 InRouteFalse.  Otherwise the route is truncated at and including the element that matches H & V with a ReturnFlag value of
 InRouteTrue.  Selection invalid if select a bridge; trying to leave a single element; last
 element to be left not a signal (for PrefDirRoute or AutoSigsFlag set); last element to be left a bridge, points or crossover
 (for not PrefDirRoute & AutoSigsFlag not set), or part of route locked. */
-    void GetRouteTruncateElement(int Caller, int HLoc, int VLoc, bool PrefDirRoute, TTruncateReturnType &ReturnFlag);
+    void TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute, TTruncateReturnType &ReturnFlag);
 /// Used when creating a bitmap image to display the route colours and direction arrows (as on screen during operation) for an operating railway
     void RouteImageMarker(int Caller, Graphics::TBitmap *Bitmap) const;
 /// After a route has been selected successfully this function sets all LC change values appropriately for the selected route type and location
@@ -1644,10 +1648,10 @@ public:
     public:
         int RouteNumber;
 ///< the vector position number of the relevant route in AllRoutesVector
-        unsigned int TruncateTrackVectorPosition;
-///< the TrackVector position of the element selected for truncation
+        unsigned int RearTrackVectorPosition;
+///< the TrackVector position of the rearmost element selected for truncation (this will be truncated)
         unsigned int LastTrackVectorPosition;
-///< the TrackVector position of the last (i.e. most forward) element in the route
+///< the TrackVector position of the last (i.e. most forward) element in the route (this will be truncated)
         int LastXLinkPos;
 ///< the XLinkPos value of the last (i.e. most forward) element in the route
         TDateTime LockStartTime;
@@ -1687,7 +1691,7 @@ public:
 ///< the first platform trackvectorposition
 
 /// Constructor
-        TCallonEntry::TCallonEntry(bool RouteOrPartRouteSetIP, int RouteStartPositionIP, int PlatformPositionIP)
+        TCallonEntry(bool RouteOrPartRouteSetIP, int RouteStartPositionIP, int PlatformPositionIP)
         {
             RouteOrPartRouteSet = RouteOrPartRouteSetIP;
             RouteStartPosition = RouteStartPositionIP;
@@ -1705,15 +1709,15 @@ public:
 // existing linked route which is erased prior to its elements being added to the new route.  The locked route is erased in
 // ClearRouteDuringRouteBuildingAt, and is reinstated in ConvertAndAddPreferredRouteSearchVector or ConvertAndAddNonPreferredRouteSearchVector.
     int LockedRouteLastXLinkPos;
-    unsigned int LockedRouteTruncateTrackVectorPosition;
+    unsigned int LockedRouteRearTrackVectorPosition;
     unsigned int LockedRouteLastTrackVectorPosition;
     TDateTime LockedRouteLockStartTime;
 // end of locked route values
 
     bool RebuildRailwayFlag;
 ///< this is set whenever a route has to be cancelled forcibly in order to force a ClearandRebuildRailway at the next clock tick if not in zoom-out mode to clear the now cancelled route on the display
-    bool RouteTruncateFlag;
-///< used to flag the fact that a route is being truncated on order to change the behaviour of signal aspect setting in SetRearwardsSignalsReturnFalseForTrain
+    bool RouteBackTruncateFlag;
+///< used to flag the fact that a route is being truncated from the back in order to change the behaviour of signal aspect setting in SetRearwardsSignalsReturnFalseForTrain
 
     const float LevelCrossingBarrierUpDelay;
 ///< the full value in seconds for which the level crossing flashes prior to closing to trains
@@ -1758,11 +1762,11 @@ public:
     bool DiagonalFouledByRoute(int Caller, int HLoc, int VLoc, int DiagonalLinkNumber);
 /// If a route is present at H, V & Elink returns true with RouteNumber giving vector position in AllRoutes vector.  Returns false for anything else including no element or route at H & V etc. New at v1.2.0
     bool FindRouteNumberFromRoute2MultiMapNoErrors(int Caller, int HLoc, int VLoc, int ELink, int &RouteNumber);
-/// Examines all routes and for each uses GetRouteTruncateElement to see if the element at H & V is present in that route.
-/**  The ReturnFlag value indicates InRouteTrue (success), InRouteFalse (failure), or NotInRoute.  Messages are given in GetRouteTruncateElement.
+/// Examines all routes and for each uses TruncateRoute to see if the element at H & V is present in that route.
+/**  The ReturnFlag value indicates InRouteTrue (success), InRouteFalse (failure), or NotInRoute.  Messages are given in TruncateRoute.
 If successful the route is truncated at and including the element that matches H & V.  If PrefDirRoute ensure only truncate to a signal, else prevent
 truncation to a crossover, bridge or points, also prevent route being left less than 2 elements in length.*/
-    bool GetAllRoutesTruncateElement(int Caller, int HLoc, int VLoc, bool PrefDirRoute);
+    bool SearchAllRoutesAndTruncate(int Caller, int HLoc, int VLoc, bool PrefDirRoute);
 /// Checks whether the preferred direction element at TrackVectorPosition with XLinkPos value is in a locked route and returns true if so together with the element itself copied to &PrefDirElement & the LockedRouteVector position in &LockedVectorNumber
     bool IsElementInLockedRouteGetPrefDirElementGetLockedVectorNumber(int Caller, int TrackVectorPosition, int XLinkPos, TPrefDirElement &PrefDirElement,
                                                                       int &LockedVectorNumber);
@@ -1770,7 +1774,7 @@ truncation to a crossover, bridge or points, also prevent route being left less 
     bool IsThereARouteAtIDNumber(int Caller, IDInt RouteID);
 /// Loads the routes from a session file
     bool LoadRoutes(int Caller, std::ifstream &InFile);
-/// Route locking is required (returns true) if a moving train is within 3 signals back from the RouteTruncatePosition (on the route itself or on any linked routes, or on the element immediately before the start of the route or linked route - this because train cancels route elements that it touches) unless the first signal is red, then OK
+/// Route locking is required (returns true) if a moving train is within 3 signals back from the RouteTruncatePosition on the route itself or on any linked routes, unless the first signal back is red, or a train on the element immediately before the start of the rearmost linked route (i.e. not on a route but about to enter the rearmost linked route) - this because train cancels route elements that it touches)
     bool RouteLockingRequired(int Caller, int RouteNumber, int RouteTruncatePosition);
 /// Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit) is found it returns true (for crossovers & points returns true whichever track the route is on), else returns false.
     bool TrackIsInARoute(int Caller, int TrackVectorPosition, int LinkPos);
@@ -1809,7 +1813,7 @@ CallingOnAllowed*/
 /**This function erases all elements in the route at RouteNumber using TAllRoutes->RemoveRouteElement to clear elements from Route2MultiMap
 and from the PrefDirVector.  Since all elements for the route are removed RemoveRouteElement also clears the Route from AllRoutesVector.
 Route numbers are decremented in the map for route numbers that are greater than the route number that is removed.  The LockedRouteVector
-as also searched and if any relate to the route that has been cleared they are erased too, but the fact that one has been found is recorded
+is also searched and if any relate to the route that has been cleared they are erased too, but the fact that one has been found is recorded
 so that it can be re-established later.*/
     void ClearRouteDuringRouteBuildingAt(int Caller, int RouteNumber);
 /// After a route element has been erased from the relevant PrefDirVector and from Route2MultiMap, this function examines all the remaining entries in Route2MultiMap with the same RouteNumber as that for the erased element.  Where a RouteElementNumber exceeds that for the erased element it is decremented.
@@ -1847,8 +1851,8 @@ turn using AddRouteElement, which uses HLoc, VLoc, ELink and RouteNumber to prov
     void WriteAllRoutesToImage(int Caller, Graphics::TBitmap *Bitmap);
 
 /// Constructor
-    TAllRoutes::TAllRoutes() : LevelCrossingBarrierUpDelay(10.0), LevelCrossingBarrierDownDelay(30.0), PointsDelay(2.5), SignalsDelay(0.5),
-        RebuildRailwayFlag(false)
+    TAllRoutes() : LevelCrossingBarrierUpDelay(10.0), LevelCrossingBarrierDownDelay(30.0), PointsDelay(2.5), SignalsDelay(0.5),
+        RebuildRailwayFlag(false), RouteBackTruncateFlag(false)
     {
         ;
     }

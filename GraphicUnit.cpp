@@ -3709,67 +3709,67 @@ int TRailGraphics::ColNametoNumber(int Caller, TColor Colour)
 
     switch(Colour)
     {
-    case clB0G0R0: // black
-        Number = 0x0;
-        break;
+        case clB0G0R0: // black
+            Number = 0x0;
+            break;
 
-    case clB5G5R5: // white
-        Number = 0xd7;
-        break;
+        case clB5G5R5: // white
+            Number = 0xd7;
+            break;
 
-    case clBufferAttentionNeeded:
-        Number = 0x23;
-        break;
+        case clBufferAttentionNeeded:
+            Number = 0x23;
+            break;
 
-    case clBufferStopBackground:
-        Number = 0xb3;
-        break;
+        case clBufferStopBackground:
+            Number = 0xb3;
+            break;
 
-    case clCallOnBackground:
-        Number = 0xbf;
-        break;
+        case clCallOnBackground:
+            Number = 0xbf;
+            break;
 
-    case clCrashedBackground: // covers DerailedBackground because that has the same colour number
-        Number = 0xb4;
-        break;
+        case clCrashedBackground: // covers DerailedBackground because that has the same colour number
+            Number = 0xb4;
+            break;
 
-    case clNormalBackground:
-        Number = 0xac;
-        break;
+        case clNormalBackground:
+            Number = 0xac;
+            break;
 
-    case clSignallerStopped:
-        Number = 0xcf;
-        break;
+        case clSignallerStopped:
+            Number = 0xcf;
+            break;
 
-    case clSignalStopBackground:
-        Number = 0x66;
-        break;
+        case clSignalStopBackground:
+            Number = 0x66;
+            break;
 
-    case clSPADBackground:
-        Number = 0xd2;
-        break;
+        case clSPADBackground:
+            Number = 0xd2;
+            break;
 
-    case clStationStopBackground:
-        Number = 0xb2;
-        break;
+        case clStationStopBackground:
+            Number = 0xb2;
+            break;
 
-    case clStoppedTrainInFront:
-        Number = 0x83;
-        break;
+        case clStoppedTrainInFront:
+            Number = 0x83;
+            break;
 
-    case clTRSBackground:
-        Number = 0xd1;
-        break;
+        case clTRSBackground:
+            Number = 0xd1;
+            break;
 
-    case clTrainFailedBackground: // added at v2.4.0
-        Number = 0xc0;
-        break;
+        case clTrainFailedBackground: // added at v2.4.0
+            Number = 0xc0;
+            break;
 
-    default:
-// UnicodeString MessageStr = "Can't find required colour - normal background colour will be used.");
-// Application->MessageBox(MessageStr.c_str(), L"", MB_OK);  don't give message as can be called when operating (need StopTTClockMessage)
-        Number = 0xac; // normal background
-        break;
+        default:
+    // UnicodeString MessageStr = "Can't find required colour - normal background colour will be used.");
+    // Application->MessageBox(MessageStr.c_str(), L"", MB_OK);  don't give message as can be called when operating (need StopTTClockMessage)
+            Number = 0xac; // normal background
+            break;
     }
     Utilities->CallLogPop(2104);
     return(Number);

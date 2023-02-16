@@ -258,6 +258,32 @@ void TDisplay::PlotPointBlank(int Caller, int HLoc, int VLoc)
 
 // ---------------------------------------------------------------------------
 
+int TDisplay::RHSOffset(int initial_position)
+{
+      switch(initial_position) {
+			case 68:
+				return 69;
+			case 69:
+				return 68;
+			case 70:
+				return 71;
+			case 71:
+				return 70;
+			case 72:
+				return 75;
+			case 73:
+				return 74;
+			case 74:
+				return 73;
+			case 75:
+				return 72;
+			default:
+				return initial_position;
+		}
+}
+
+// ---------------------------------------------------------------------------
+
 void TDisplay::PlotSignalBlank(int Caller, int HLoc, int VLoc, int SpeedTag, bool RHSFlag)
 {
 /*
@@ -284,40 +310,9 @@ void TDisplay::PlotSignalBlank(int Caller, int HLoc, int VLoc, int SpeedTag, boo
     {
         throw Exception("Error, not a signal in PlotSignalBlank");
     }
-    if(RHSFlag) // new for v2.3.0.  Jusrt transpose speedtag numbers so can leave the rest as it is
-    {
-        if(SpeedTag == 68)
-        {
-            SpeedTag = 69;
-        }
-        else if(SpeedTag == 69)
-        {
-            SpeedTag = 68;
-        }
-        else if(SpeedTag == 70)
-        {
-            SpeedTag = 71;
-        }
-        else if(SpeedTag == 71)
-        {
-            SpeedTag = 70;
-        }
-        else if(SpeedTag == 72)
-        {
-            SpeedTag = 75;
-        }
-        else if(SpeedTag == 73)
-        {
-            SpeedTag = 74;
-        }
-        else if(SpeedTag == 74)
-        {
-            SpeedTag = 73;
-        }
-        else if(SpeedTag == 75)
-        {
-            SpeedTag = 72;
-        }
+	if(RHSFlag) // new for v2.3.0.  Just transpose speedtag numbers so can leave the rest as it is
+	{
+		SpeedTag = RHSOffset(SpeedTag);
     }
 /*
       SpeedTag    HOffset VOffset Graphic  Direction
@@ -395,40 +390,9 @@ void TDisplay::PlotSignalBlankOnBitmap(int HLoc, int VLoc, int SpeedTag, Graphic
     {
         throw Exception("Error, not a signal in PlotSignalBlankOnBitmap");
     }
-    if(RHSFlag) // new for v2.3.0.  Jusrt transpose speedtag numbers so can leave the rest as it is
-    {
-        if(SpeedTag == 68)
-        {
-            SpeedTag = 69;
-        }
-        else if(SpeedTag == 69)
-        {
-            SpeedTag = 68;
-        }
-        else if(SpeedTag == 70)
-        {
-            SpeedTag = 71;
-        }
-        else if(SpeedTag == 71)
-        {
-            SpeedTag = 70;
-        }
-        else if(SpeedTag == 72)
-        {
-            SpeedTag = 75;
-        }
-        else if(SpeedTag == 73)
-        {
-            SpeedTag = 74;
-        }
-        else if(SpeedTag == 74)
-        {
-            SpeedTag = 73;
-        }
-        else if(SpeedTag == 75)
-        {
-            SpeedTag = 72;
-        }
+	if(RHSFlag) // new for v2.3.0.  Just transpose speedtag numbers so can leave the rest as it is
+	{
+		SpeedTag = RHSOffset(SpeedTag);
     }
 /*
       SpeedTag    HOffset VOffset Graphic  Direction

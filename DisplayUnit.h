@@ -213,7 +213,7 @@ public:
 
 /// Set the screen font to 'Font'
     void SetFont(TFont* Font)
-    {
+	{
         Output->Canvas->Font->Assign(Font);
     }
 
@@ -221,7 +221,10 @@ public:
     void Update()
     {
         Output->Update();
-    }
+	}
+
+/// Signal Position RHS SpeedTag Offset
+	int RHSOffset(int initial_position);
 
 // functions defined in .cpp file
 

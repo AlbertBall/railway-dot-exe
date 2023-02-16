@@ -404,6 +404,8 @@ public:
 ///< picks up the green or red route direction graphic
     Graphics::TBitmap *GetOriginalGraphicPtr();
 ///< picks up the original (non-flashing) graphic for use during route flashing
+	Graphics::TBitmap *GraphicFromSpeedTag(int speed_tag);
+///< retrieves the graphic for a given speed tag
     Graphics::TBitmap *GetPrefDirGraphicPtr();
 ///< picks up the EXGraphicPtr for preferred directions
     Graphics::TBitmap *GetRouteAutoSigsGraphicPtr();

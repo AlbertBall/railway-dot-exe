@@ -107,7 +107,7 @@ public:
     TTextItem *TextPtrAt(int Caller, int At);
 ///< return the text item at position 'At' in TextVector (carries out range checking)
 
-    unsigned int SelectTextVectorSize(int Caller);
+	unsigned int SelectTextVectorSize(int Caller);
 ///< return the number of items in SelectTextVector
     unsigned int TextVectorSize(int Caller);
 ///< return the number of items in TextVector

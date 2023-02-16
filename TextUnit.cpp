@@ -69,22 +69,14 @@ TTextItem::TTextItem(int H, int V, AnsiString T, TFont * &FontPointer) // constr
         TextHandler->FontVector.push_back(NewFont);
     }
     else
-    {
-        bool FoundPointer = false;
-        for(unsigned int x = 0; x < TextHandler->FontVector.size(); x++)
-        {
-            if(TextHandler->FontSame(0, TextHandler->FontVector.at(x), NewFont))
-            {
-                RequiredPointer = TextHandler->FontVector.at(x);
-                FoundPointer = true;
-                delete NewFont;
-                break;
-            }
-        }
-        if(!FoundPointer)
-        {
-            TextHandler->FontVector.push_back(NewFont);
-        }
+	{
+		auto iterator = std::find_if(
+			TextHandler->FontVector.begin(),
+			TextHandler->FontVector.end(),
+			[&NewFont](auto x){return TextHandler->FontSame(0, x, NewFont);}
+		);
+
+        RequiredPointer = (iterator != TextHandler->FontVector.end()) ? *iterator : nullptr;
     }
     FontPointer = RequiredPointer;
     Utilities->CallLogPop(2105);
@@ -338,25 +330,27 @@ void TTextHandler::SaveText(int Caller, std::ofstream& VecFile)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SaveText");
     int NumberOfTextElements = TextVectorSize(2);
 
-    Utilities->SaveFileInt(VecFile, NumberOfTextElements);
-    for(unsigned int x = 0; x < (TextVectorSize(3)); x++)
-    {
-        VecFile << TextPtrAt(8, x)->HPos << '\n';
-        VecFile << TextPtrAt(9, x)->VPos << '\n';
-        Utilities->SaveFileString(VecFile, TextPtrAt(10, x)->TextString);
-        Utilities->SaveFileString(VecFile, TextPtrAt(11, x)->Font->Name);
-        VecFile << TextPtrAt(12, x)->Font->Size << '\n';
-        if((int(TextPtrAt(37, x)->Font->Color) < 0) || (int(TextPtrAt(38, x)->Font->Color) > 0xFFFFFF))
-        {
-            // if set to any of the special 'windows' colours save it as black
-            VecFile << '0' << '\n';
-        }
-        else
-        {
-            VecFile << TextPtrAt(13, x)->Font->Color << '\n';
-        }
-        VecFile << (int)(TextPtrAt(14, x)->Font->Charset) << '\n'; // save as 'int' (would be unsigned char else) so 'n' can act as proper delimiter
-        VecFile << GetFontStyleAsInt(0, TextPtrAt(15, x)->Font) << '\n';
+	Utilities->SaveFileInt(VecFile, NumberOfTextElements);
+
+	for(auto text_item : TextVector)
+	{
+		VecFile << text_item.HPos << std::endl;
+		VecFile << text_item.VPos << std::endl;
+		Utilities->SaveFileString(VecFile, text_item.TextString);
+		Utilities->SaveFileString(VecFile, text_item.Font->Name);
+		VecFile << text_item.Font->Size << std::endl;
+
+		if(text_item.Font->Color < 0 || static_cast<int>(text_item.Font->Color) > 0xFFFFFF)
+		{
+			// if set to any of the special 'windows' colours save it as black
+			VecFile << '0' << std::endl;
+		}
+		else
+		{
+         	VecFile << text_item.Font->Color << std::endl;
+		}
+		VecFile << static_cast<int>(text_item.Font->Charset) << std::endl; // save as 'int' (would be unsigned char else) so 'n' can act as proper delimiter
+		VecFile << GetFontStyleAsInt(0, text_item.Font) << std::endl;
     }
     Utilities->CallLogPop(1318);
 }
@@ -424,14 +418,11 @@ bool TTextHandler::CheckTextElementsInFile(int Caller, std::ifstream& VecFile)
 
 void TTextHandler::RebuildFromTextVector(int Caller, TDisplay *Disp)
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RebuildFromTextVector");
-    for(unsigned int x = 0; x < (TextHandler->TextVectorSize(4)); x++)
-    {
-        int HPos = TextHandler->TextPtrAt(16, x)->HPos;
-        int VPos = TextHandler->TextPtrAt(17, x)->VPos;
-        AnsiString TextString = TextHandler->TextPtrAt(18, x)->TextString;
-        TFont *TextFont = TextHandler->TextPtrAt(19, x)->Font;
-        Disp->TextOut(1, HPos, VPos, TextString, TextFont); // colour changed to white if was black & dark background in TDisplay::TextOut
+	Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RebuildFromTextVector");
+
+	for(auto text_item : TextHandler->TextVector)
+	{
+		Disp->TextOut(1, text_item.HPos, text_item.VPos, text_item.TextString, text_item.Font); // colour changed to white if was black & dark background in TDisplay::TextOut
     }
     Disp->Update();
     Utilities->CallLogPop(1327);
@@ -442,15 +433,15 @@ void TTextHandler::RebuildFromTextVector(int Caller, TDisplay *Disp)
 void TTextHandler::WriteTextToImage(int Caller, Graphics::TBitmap *Bitmap)
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",WriteTextToImage");
-    for(unsigned int x = 0; x < (TextHandler->TextVectorSize(11)); x++)
+    for(auto text_item : TextHandler->TextVector)
     {
-        int HPos = TextHandler->TextPtrAt(30, x)->HPos;
-        int VPos = TextHandler->TextPtrAt(31, x)->VPos;
-        AnsiString TextString = TextHandler->TextPtrAt(32, x)->TextString;
-        TFont *TextFont = TextHandler->TextPtrAt(33, x)->Font;
-        Bitmap->Canvas->Font->Assign(TextFont);
+        Bitmap->Canvas->Font->Assign(text_item.Font);
         Bitmap->Canvas->Brush->Style = bsClear; // so text prints transparent <- added at v2.10.0
-        Bitmap->Canvas->TextOut(HPos - (Track->GetHLocMin() * 16), VPos - (Track->GetVLocMin() * 16), TextString);
+		Bitmap->Canvas->TextOut(
+			text_item.HPos - (Track->GetHLocMin() * 16),
+			text_item.VPos - (Track->GetVLocMin() * 16),
+			text_item.TextString
+		);
     }
     Utilities->CallLogPop(1534);
 }
@@ -572,7 +563,7 @@ TTextItem *TTextHandler::SelectTextPtrAt(int Caller, int At)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(At) + ",SelectTextPtrAt");
     if((At < 0) || ((unsigned int)At >= SelectTextVector.size()))
     {
-        throw Exception("At value outside range of SelectTextVector in SelectTextPtrAt");
+		throw Exception("At value outside range of SelectTextVector in SelectTextPtrAt");
     }
     TTextItem *TempItem = &(SelectTextVector.at(At));
 

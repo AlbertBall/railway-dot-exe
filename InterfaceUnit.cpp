@@ -19237,7 +19237,6 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
         TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
             "km/h (" + MaxMPHStr + "); Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status +
             OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
-            //changed to 'Next timetabled action:' at v2.13.0 instead of 'Next:' to make clear it doesn't include delays
     }
     else //added mph at v2.15.0
     {
@@ -19245,7 +19244,7 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
             "km/h (" + MaxMPHStr + "); Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + ": " +
             CurrSpeedStr.FormatFloat(FormatNoDPStr, CurrSpeed) + "km/h (" + CurrSpeedStr.FormatFloat(FormatNoDPStr, (CurrSpeed * 5 / 8)) + "mph)" +
             OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
-    }                          //changed to 'Next timetabled action:' at v2.13.0 instead of 'Next:' to make clear it doesn't include delays
+    }
     Utilities->CallLogPop(2263);
     return(TrainStatusFloat);
 }

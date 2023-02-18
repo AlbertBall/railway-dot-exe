@@ -14720,12 +14720,17 @@ bool TTrainController::CheckCrossReferencesAndSetData(int Caller, AnsiString Mai
         {
             ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
             ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
+/*
             if((MainTrainDataPtr->MaxRunningSpeed > 5) && (MainTrainDataPtr->MaxRunningSpeed < OtherTrainDataPtr->MaxRunningSpeed))
             {
-                OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed;
-            }
-            // added test for > 5 [5 used instead of 0 because of possible floating point errors - though unlikely] above at v1.3.1 because the train will have a zero MaxRunningSpeed if it continues from another service - its max speed is set when it takes over from the other service
-            // notified of this problem by Ian Walker in his email of 25/03/13.  Probably redundant anyway because the max speed is reduced at the changeover if the 'joined by' train's max speed is less.
+                OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed; //this should only be set when the trins join
+            }   not when internal timetable being compiled. Dropped at v2.15.0 when Brent Mackie reported error on 18/02/23 via discord
+
+            //added test for > 5 [5 used instead of 0 because of possible floating point errors - though unlikely] above at v1.3.1 because the train will have a
+            //zero MaxRunningSpeed if it continues from another service - its max speed is set when it takes over from the other service
+            //notified of this problem by Ian Walker in his email of 25/03/13.  Probably redundant anyway because the max speed is reduced at the changeover if the
+            //'joined by' train's max speed is less.
+*/
         }
     }
     if(ForwardShuttleStart)

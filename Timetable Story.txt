@@ -1,0 +1,53 @@
+The RailOS Timetable Story:
+
+Once upon a time, a long long time ago (before first release, probably 2008 or 2009) I embarked on developing an in-program timetable editor.  Before that the intention was to have users develop their own timetables using Excel or any spreadsheet program that could create .csv (comma separated variable) files.  There were two issues with that approach:  firstly it would be hard to explain to users unfamiliar with spreadsheets how to create timetables; and secondly too much flexibility was available in that a .csv file could contain practically anything, valid or invalid, and the program would have to handle all invalid entries and give error messages that at least attempted to make sense.  An in-program editor allowed the program to retain control, and give error messages during internal compilation (i.e. when the program translated the user-created text into the form that it needs to operate the timetable.
+
+In the early days I tried to make the timetable do whatever the user might want.  The only restrictions were impossible things relating to moving or stationary trains, e.g. a stationary train can't arrive somewhere else before it's departed from its current location; a moving train can't change direction, split or join; etc.  That led to all sorts of problems during operation, most relating to linked services, and it soon became clear that many more restrictions would be needed to prevent them.  Until that point the validator worked on the basis that unless there was a specific reason to prevent something then it was allowed.  The problems caused me to reverse that approach such that unless there was a specific reason to allow something then is was disallowed.  The result is what you see now, dozens of error messages that have you tearing your hair out and attacking the computer with a lump hammer (me too sometimes)!  BUT, a timetable that finally validates is very likely to work without crashing the program, and to my mind that's much bigger upside than all the frustration beforehand is a downside.
+
+I extract from code comments below the list of allowable successors - i.e. timetable commands that are allowed to (immediately) follow earlier commands.  Hopefully the list will show what is and isn't allowed.  First a few words of explanation: 
+
+1) Snt entries may be located (stationary) or unlocated (moving).  It will be classed as moving even if its start speed is zero unless it's at a named location and something happens at that location - cdt, departure, split etc.  For example a train that starts at King's Cross with zero speed, where the first action after the Snt command is to arrive at Finsbury Park, is moving, and will start to accelerate immediately.
+
+2) TimeLoc entries represent arrivals OR departures, they consist of a time followed by a location.
+
+3) TimeTimeLoc entries represent arrivals AND departures, they consist of an arrival time followed by a departure time followed by a location.
+
+4) Where '(new)' appears this is something that has been added at some stage (I should really have given the version number).
+
+5) Hopefully all else will be clear - please ask if not.
+
+Allowable successors:-
+Snt unlocated ->  Fer, TimeLoc (arr), TimeTimeLoc, (new) pas; No others
+Snt located -> No starts, no finishes except Frh & Fjo (as of v2.0.0), no repeat, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK
+Snt-sh -> No starts, finishes, repeats, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK
+Sfs ->  No starts, finishes, repeats, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK (must have a TimeLoc departure somewhere in sequence to set location, else fails)
+Sns ->  No starts, finishes, repeats, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK (must have a TimeLoc departure somewhere in sequence to set location, else fails)
+Sns-sh -> No starts, finishes, repeats, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK (must have a TimeLoc departure somewhere in sequence to set location, else fails)
+Sns-fsh -> No starts, finishes, repeats, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK (must have a TimeLoc departure somewhere in sequence to set location, else fails)
+Fns ->  R only
+F-nshs ->  Nothing (no repeats permitted)
+Fjo ->  R only
+Frh ->  R only
+Fer ->  R only
+Frh-sh ->  R only
+Fns-sh ->  R only
+jbo ->  No starts, finishes, repeats, splits, pas or TimeTimeLoc; TimeLoc (dep), jbo or cdt OK
+fsp ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK
+rsp ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK
+cdt ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK
+TimeLoc (arr) ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK
+TimeLoc (dep) ->  Fer, TimeLoc (arr), or TimeTimeLoc, (new) pas OK, no others
+TimeTimeLoc ->  Fer, TimeLoc (arr), or TimeTimeLoc, (new) pas OK, no others (new) pas -> Fer, TimeLoc (arr), or TimeTimeLoc, (new) pas OK, no others
+Repeat ->  Nothing
+
+When things are disallowed there are usually ways round them.  For example an Sfs entry that ideally should be followed by Frh, can have a TimeLoc departure time set way ahead at say 90:00 (the clock can run up to 95:59 - 4 days of operation), arrive somewhere else at a later time, then Frh.  Not ideal I know but it keeps the validator happy and the train will stay put (unless operation continues for 4 days (!)  In this and other cases there has to be a TimeLoc departure somewhere in the sequence so the validator knows where the train is.  Although in principle it could be deduced from the linked service, the validator works in two separate passes, and linkages are dealt with in the second pass, so it would add considerable programming complications.  In other cases where Frh is required but not allowed the train can change direction first, then the Frh is allowed.
+
+One question that gave rise to this note was the inability to split a train immediately after creation by an Snt entry.  The error message indicated that the train was unlocated (see point 1 above), so the train was classed as moving, and a moving train can't split.  A located Snt entry should be able to split immediately, I suggest checking that the start location corresponds to the required location - let me know if problems persist.
+
+I hope that explains some of the background.  Timetabling represents one of the biggest segments of the program, occupying well in excess of 5,000 lines of code.  It's far from perfect but with a willingness to apply workarounds there are few things that can't be done at all.
+
+
+Albert
+19 February 2023
+
+

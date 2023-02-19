@@ -1,0 +1,10 @@
+/Win64
+/Win32
+/__history
+/__recovery
+/__astcache
+/CallerChecker/__history
+/CallerChecker/__recovery
+/CallerChecker/Win32
+/CallerChecker/__astcache
+/railway.~dsk

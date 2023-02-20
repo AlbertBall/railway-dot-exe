@@ -5000,7 +5000,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
                     // selected - appears as trying to select a signal that is not the next in line from the starting signal
                     TrackElementPositionsOK = false;
                 }
-//removed at v2.15.0 as now have a warning for bridge either side of a signal
+//removed at v2.15.0 as now have a warning for bridge either side of a signal, see below
 /*                else if((TrackElementAt(1172, x).Config[y] == Signal) && (TrackElementAt(1173, VecPos).TrackType == Bridge) && !OverrideAndHideSignalBridgeMessage)
                 {
                     ShowMessage("Bridge next to a signal - routes can't be truncated to this or other such signals.\n\nThis restriction can be removed or reinstated by pressing\nCTRL ALT 5.  When removed this message will not be shown again.");

@@ -14723,7 +14723,7 @@ bool TTrainController::CheckCrossReferencesAndSetData(int Caller, AnsiString Mai
 /*
             if((MainTrainDataPtr->MaxRunningSpeed > 5) && (MainTrainDataPtr->MaxRunningSpeed < OtherTrainDataPtr->MaxRunningSpeed))
             {
-                OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed; //this should only be set when the trins join
+                OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed; //this should only be set when the trains join
             }   not when internal timetable being compiled. Dropped at v2.15.0 when Brent Mackie reported error on 18/02/23 via discord
 
             //added test for > 5 [5 used instead of 0 because of possible floating point errors - though unlikely] above at v1.3.1 because the train will have a

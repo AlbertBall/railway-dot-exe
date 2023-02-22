@@ -4969,7 +4969,16 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
             {
                 TrackElementAt(1156, x).Conn[y] = VecPos; //<-- this sets the Conn value
                 // find connecting link in the newly found track element if there is one & make buffer & adjacent signals check
-                if((TrackElementAt(1157, x).Config[1 - y] == Signal) && IsLCAtHV(50, TrackElementAt(1158, VecPos).HLoc, TrackElementAt(1350, VecPos).VLoc))
+
+                bool ExitSignal = false;
+                if(y < 2) //changed at v2.15.0 as 64 bit version failed at ...Config[1 - y]... (32 bit less strict and let it go)
+                {
+                    if(TrackElementAt(1157, x).Config[1 - y] == Signal)
+                    {
+                        ExitSignal = true;
+                    }
+                }
+                if(ExitSignal && IsLCAtHV(50, TrackElementAt(1158, VecPos).HLoc, TrackElementAt(1350, VecPos).VLoc))
                 {
                     // new in v2.4.0 - Krizar (Kristian Zarebski) found this error
                     ShowMessage("Can't have an exit signal next to a level crossing - it can cause the train to foul the crossing in some circumstances");

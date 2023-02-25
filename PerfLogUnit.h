@@ -8,6 +8,7 @@
 #include <Vcl.StdCtrls.hpp>
 #include <Vcl.Forms.hpp>
 #include <Vcl.ExtCtrls.hpp>
+#include <windows.h>            //needed for 64 bit compilation
 //---------------------------------------------------------------------------
 class TPerfLogForm : public TForm
 {

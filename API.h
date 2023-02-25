@@ -17,6 +17,7 @@
 #include "System.IniFiles.hpp"
 
 #include <map>
+#include <windows.h>            //needed for 64 bit compilation
 
 /*! **************************************************************************
  * @class API

@@ -29,6 +29,7 @@
 #include <vcl.h>
 #include <fstream>
 #include <locale.h> //to check local decimal point character, added at v2.4.0
+#include <windows.h>            //needed for 64 bit compilation
 
 // ---------------------------------------------------------------------------
 

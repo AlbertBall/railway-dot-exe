@@ -26,6 +26,7 @@
 // ---------------------------------------------------------------------------
 #include <vcl.h>
 #include <memory> //for smart pointer
+#include <windows.h>            //needed for 64 bit compilation
 
 class TUserGraphicItem
 {

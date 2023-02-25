@@ -37,7 +37,7 @@
 #include <vector>
 #include <algorithm>  //for std::find
 #include <vcl.h>
-
+#include <windows.h>
 #pragma hdrstop
 
 #include "TrackUnit.h"

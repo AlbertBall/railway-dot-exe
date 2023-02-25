@@ -31,6 +31,7 @@
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
 #include <Graphics.hpp>
+#include <windows.h>            //needed for 64 bit compilation
 // ---------------------------------------------------------------------------
 // colour definitions based on the 216 web safe colours. All the graphics in the resource file use these colours
 #define clB0G0R0    (TColor)0x000000 //offset, hex values 36  colour number 00

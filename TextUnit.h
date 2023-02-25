@@ -27,6 +27,7 @@
 #include <vector>
 #include <fstream>  //for file saving & loading
 #include <vcl.h>
+#include <windows.h>            //needed for 64 bit compilation
 
 class TDisplay; // predeclaration
 

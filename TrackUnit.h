@@ -32,6 +32,7 @@
 #include <list>
 #include <utility>                       //for pair
 #include "DisplayUnit.h"                 //for UserGraphicVector
+#include <windows.h>            //needed for 64 bit compilation
 
 #define FirstUnusedSpeedTagNumber    147 //defined value for use in array sizing etc
 

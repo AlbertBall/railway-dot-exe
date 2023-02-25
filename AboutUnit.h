@@ -30,6 +30,7 @@
 #include <Forms.hpp>
 #include <ExtCtrls.hpp>
 #include <Graphics.hpp>
+#include <windows.h>            //needed for 64 bit compilation
 //---------------------------------------------------------------------------
 /// The small 'About' box selected from the Help menu
 class TAboutForm : public TForm

@@ -28,7 +28,7 @@
 #include <map>
 #include <vcl.h>
 #include <list>
-
+#include <windows.h>            //needed for 64 bit compilation
 // ---------------------------------------------------------------------------
 
 /// Predeclared to allow access, full declaration in DisplayUnit

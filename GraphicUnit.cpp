@@ -3707,6 +3707,69 @@ int TRailGraphics::ColNametoNumber(int Caller, TColor Colour)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ColNametoNumber" + AnsiString(Colour));
     int Number;
 
+    if(Colour == clB0G0R0) // black       //used these in place of case statements because 64 bit compiler issued warnings
+    {                                     //that not using the enum names, and several fell inbetween the enum names
+        Number = 0x0;
+    }
+    else if(Colour == clB5G5R5) // white
+    {
+        Number = 0xd7;
+    }
+    else if(Colour == clBufferAttentionNeeded)
+    {
+        Number = 0x23;
+    }
+    else if(Colour == clBufferStopBackground)
+    {
+        Number = 0xb3;
+    }
+    else if(Colour == clCallOnBackground)
+    {
+        Number = 0xbf;
+    }
+    else if(Colour == clCrashedBackground) // covers DerailedBackground because that has the same colour number
+    {
+        Number = 0xb4;
+    }
+    else if(Colour == clNormalBackground)
+    {
+        Number = 0xac;
+    }
+    else if(Colour == clSignallerStopped)
+    {
+        Number = 0xcf;
+    }
+    else if(Colour == clSignalStopBackground)
+    {
+        Number = 0x66;
+    }
+    else if(Colour == clSPADBackground)
+    {
+        Number = 0xd2;
+    }
+    else if(Colour == clStationStopBackground)
+    {
+        Number = 0xb2;
+    }
+    else if(Colour == clStoppedTrainInFront)
+    {
+        Number = 0x83;
+    }
+    else if(Colour == clTRSBackground)
+    {
+        Number = 0xd1;
+    }
+    else if(Colour == clTrainFailedBackground) // added at v2.4.0
+    {
+        Number = 0xc0;
+    }
+    else
+    {
+        Number = 0xac; // normal background
+    }
+
+
+/*
     switch(Colour)
     {
         case clB0G0R0: // black
@@ -3770,7 +3833,7 @@ int TRailGraphics::ColNametoNumber(int Caller, TColor Colour)
     // Application->MessageBox(MessageStr.c_str(), L"", MB_OK);  don't give message as can be called when operating (need StopTTClockMessage)
             Number = 0xac; // normal background
             break;
-    }
+*/
     Utilities->CallLogPop(2104);
     return(Number);
 }

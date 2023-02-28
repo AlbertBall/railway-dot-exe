@@ -13004,7 +13004,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
       2) if first actionvector entry not SignallerControl then must have at least one more actionvector entry
       3) if first actionvector entry is SignallerControl then must have no more actionvector entries except a repeat
       4) first entry must be a start;
-      4a) if first entry is Snt and not signallercontrol and second is a finish then it must be either Frh or Fjo
+      4a) if first entry is Snt and not signallercontrol and second is a finish then it can't be Fns-sh or Frh-sh
       4b) if first entry is Sns and not signallercontrol and second is a finish then it must be either Frh or Fjo
       5) a start must be the first entry;
       6) a repeat entry must be the last;
@@ -13347,7 +13347,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             }
             else
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - an 'Fns' finish must be preceded by an arrival, see " + TrainDataVector.at(x).ServiceReference);
+                SecondPassMessage(GiveMessages, "Error in timetable - an 'Fns' finish must be preceded by an event whose location has already been named, see " + TrainDataVector.at(x).ServiceReference);
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2581);
                 return(false);
@@ -13355,7 +13355,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         }
         if(FnsFoundFlag && !LocFoundFlag)
         {
-            SecondPassMessage(GiveMessages, "Error in timetable - an 'Fns' finish must be preceded by an arrival, see " + TrainDataVector.at(x).ServiceReference);
+            SecondPassMessage(GiveMessages, "Error in timetable - an 'Fns' finish must be preceded by an event whose location has already been named, see " + TrainDataVector.at(x).ServiceReference);
             TrainDataVector.clear();
             Utilities->CallLogPop(2582);
             return(false);
@@ -15174,8 +15174,8 @@ void TTrainController::StripSpaces(int Caller, AnsiString &Input)
 }
 
 // ---------------------------------------------------------------------------
-
-bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEntry, AnsiString &LocationName)
+/*
+bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEntry, AnsiString &LocationName)  //new experimental version (more restricted)
 // checks if an Snt or Snt-sh entry with zero starting speed is at a named location that a later event is located at or is followed by a timed departure
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsSNTEntryLocated," + AnsiString(TDEntry.HeadCode));
@@ -15242,6 +15242,98 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
         Utilities->CallLogPop(2594);
         return(true);
     }
+}
+*/
+// ---------------------------------------------------------------------------
+
+bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEntry, AnsiString &LocationName)  //this is the original version
+// checks if an Snt or Snt-sh entry with zero starting speed is followed (somewhere, not necessarily immediately) by a TimeLoc & has the same LocationName
+// and if so returns true.  Also returns true for Snt, not Snt-sh, if at least 1 start element is a location & the entry is either
+// a signaller control entry & speed is zero or it is followed immediately by Frh or Fjo (mod at v2.0.0 for empty stock pickup).
+// Always return false for entry at a continuation (may be named but not a stop location).  Note that no successor validity checks
+// are done in this function, they must be done elsewhere.
+//a starting speed > 0 always returns false
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsSNTEntryLocated," + AnsiString(TDEntry.HeadCode));
+    const TActionVectorEntry &AVEntry0 = TDEntry.ActionVector.at(0);
+    LocationName = "";
+    if(TDEntry.StartSpeed > 0)
+    {
+        Utilities->CallLogPop(1784);
+        return(false);
+    }
+    if((AVEntry0.Command != "Snt") && (AVEntry0.Command != "Snt-sh"))
+    {
+        throw Exception("Error, first entry not 'Snt' or 'Snt-sh' in IsSNTEntryLocated");
+    }
+    if(Track->TrackElementAt(506, AVEntry0.RearStartOrRepeatMins).TrackType == Continuation)
+    {
+        Utilities->CallLogPop(852);
+        return(false);
+    }
+    AnsiString LocRear = Track->TrackElementAt(507, AVEntry0.RearStartOrRepeatMins).ActiveTrackElementName;
+    AnsiString LocFront = Track->TrackElementAt(508, AVEntry0.FrontStartOrRepeatDigits).ActiveTrackElementName;
+
+    if(LocRear != "")
+    {
+        LocationName = LocRear;
+    }
+    else
+    {
+        LocationName = LocFront;
+    }
+    if(LocationName == "")
+    {
+        Utilities->CallLogPop(1036);
+        return(false);
+    }
+    if(AVEntry0.SignallerControl)
+    {
+        Utilities->CallLogPop(1773);
+        return(true);
+    }
+// here if not a signaller start entry so must be at least one more entry, and it must be at the same location as the Snt to be located
+
+//Ok                          Not ok          continue
+
+//Frh if Snt                  Frh-sh          cdt
+//Fns if Snt                  Fns-sh          fsp or rsp
+//Fjo if Snt                  TimeTimeLoc     jbo
+//F-nshs if Snt               pas
+//TimeLoc dep                 Fer
+//                            TimeLoc arr
+
+    for(unsigned int y = 0; y < TDEntry.ActionVector.size(); y++)
+    {
+        const TActionVectorEntry &AVEntry = TDEntry.ActionVector.at(y);
+        if(((AVEntry.Command == "Frh") || (AVEntry.Command == "Fjo") || (AVEntry.Command == "F-nshs") || (AVEntry.Command == "Fns")) && (AVEntry0.Command == "Snt")) // added Fjo at v2.0.0 for empty stock
+        {
+            Utilities->CallLogPop(1037);
+            return(true);
+        }
+        if((AVEntry.FormatType == TimeLoc) && (AVEntry.LocationName == LocationName)) //will be a departure if same name- times not set yet so can't use them to confirm
+        {
+            Utilities->CallLogPop(2442);
+            return(true);
+        }
+        if((AVEntry.FormatType == TimeLoc) && (AVEntry.LocationName != LocationName)) //arrival, not located
+        {
+            Utilities->CallLogPop(2438);
+            return(false);
+        }
+        if((AVEntry.Command == "Fer") || (AVEntry.Command == "pas") || (AVEntry.Command == "Fns-sh") || (AVEntry.Command == "Frh-sh") || (AVEntry.FormatType == TimeTimeLoc))
+        {
+            Utilities->CallLogPop(854);
+            return(false);
+        }
+        if((AVEntry.Command == "cdt") || (AVEntry.Command == "fsp") || (AVEntry.Command == "rsp") || (AVEntry.Command == "jbo"))
+        {
+            continue;
+        }
+    }
+    Utilities->CallLogPop(855);
+    return(false);
+
 }
 
 // ---------------------------------------------------------------------------

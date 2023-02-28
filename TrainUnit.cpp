@@ -12101,10 +12101,8 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         Utilities->CallLogPop(1520);
         return(true);
     }
-//    if(Second == "fsp")
 
-
-
+//    if((Second == "fsp") || (Second == "fsp")) then there can optiaonlly be a fourth: xx-yy where xx = percentage mass & yy = percentage power in the split train
 
     // all remainder must be TimeCmdHeadCode types to be valid
     if((Second != "Fns") && (Second != "Fjo") && (Second != "jbo") && (Second != "fsp") && (Second != "rsp") && (Second != "Sfs") && (Second != "Sns") &&

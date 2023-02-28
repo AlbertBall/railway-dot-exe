@@ -11934,7 +11934,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
             return(true);
         }
     }
-    // here if second segment is a command, with a third & maybe fourthanalysis segments as details
+    // here if second segment is a command, with a third & maybe fourth segments
     if((Pos != 4) && (Pos != 7) && (Pos != 8))
     {
         Utilities->CallLogPop(918);
@@ -11955,6 +11955,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         Third = Remainder.SubString(1, Pos - 1);
         Fourth = Remainder.SubString(Pos + 1, Remainder.Length() - Pos);
     }
+
     if((Second == "Snt") || (Second == "Snt-sh"))
     // third has to be 2 element idents with a space between
     {
@@ -12100,6 +12101,11 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         Utilities->CallLogPop(1520);
         return(true);
     }
+//    if(Second == "fsp")
+
+
+
+
     // all remainder must be TimeCmdHeadCode types to be valid
     if((Second != "Fns") && (Second != "Fjo") && (Second != "jbo") && (Second != "fsp") && (Second != "rsp") && (Second != "Sfs") && (Second != "Sns") &&
        (Second != "Frh-sh"))
@@ -13083,9 +13089,9 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         {
             TActionVectorEntry AVEntry1 = TrainDataVector.at(x).ActionVector.at(1);
             // must be a second entry if first not signallercontrol
-            if((AVEntry1.SequenceType == FinishSequence) && (AVEntry1.Command != "Frh") && (AVEntry1.Command != "Fjo"))
+            if((AVEntry1.SequenceType == FinishSequence) && ((AVEntry1.Command == "Fns-sh") || (AVEntry1.Command == "Frh-sh")))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - only 'Frh' or 'Fjo' finish events are permitted immediately after an Snt entry for: " +
+                SecondPassMessage(GiveMessages, "Error in timetable - finish events Fns-sh and Frh-sh not permitted immediately after an Snt entry for: " +
                                   TDEntry.HeadCode);
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2046);
@@ -13101,7 +13107,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 SecondPassMessage(GiveMessages, "Error in timetable - only 'Frh' or 'Fjo' finish events are permitted immediately after an Sns entry for: " +
                                   TDEntry.HeadCode);
                 TrainDataVector.clear();
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2580);
                 return(false);
             }
         }
@@ -13334,7 +13340,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 LocFoundFlag = true;
                 AVEntryFns->LocationName = TrainDataVector.at(x).ActionVector.at(y).LocationName;
-                double EVT = double(AVEntryFns->EventTime);  //test
+//                double EVT = double(AVEntryFns->EventTime);  //test
                 break; //name found
             }
             if(TrainDataVector.at(x).ActionVector.at(y).LocationType == AtLocation) //not named yet
@@ -13345,7 +13351,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 SecondPassMessage(GiveMessages, "Error in timetable - an 'Fns' finish must be preceded by an arrival, see " + TrainDataVector.at(x).ServiceReference);
                 TrainDataVector.clear();
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2581);
                 return(false);
             }
         }
@@ -13353,7 +13359,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         {
             SecondPassMessage(GiveMessages, "Error in timetable - an 'Fns' finish must be preceded by an arrival, see " + TrainDataVector.at(x).ServiceReference);
             TrainDataVector.clear();
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2582);
             return(false);
         }
     }
@@ -13378,7 +13384,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 SecondPassMessage(GiveMessages, "Error in timetable - insufficient actions follwing an 'Sns' event for: " + TDEntry.HeadCode);
                 TrainDataVector.clear();
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2583);
                 return(false);
             }
             TActionVectorEntry AVEntry1 = TDEntry.ActionVector.at(1);
@@ -13387,7 +13393,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 SecondPassMessage(GiveMessages, "Error in timetable - an 'Sns' entry is followed by an illegal event for: " + TDEntry.HeadCode +
                                   ". The event isn't valid for a stationary train.");
                 TrainDataVector.clear();
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2584);
                 return(false);
             }
             if((AVEntry1.SequenceType == StartSequence) || ((AVEntry1.SequenceType == FinishSequence) && (AVEntry1.Command != "Frh") && (AVEntry1.Command != "Fjo")) ||
@@ -13395,13 +13401,13 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 SecondPassMessage(GiveMessages, "Error in timetable - an 'Sns' entry is followed by an illegal event for: " + TDEntry.HeadCode);
                 TrainDataVector.clear();
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2585);
                 return(false);
             }
 
             //now set the location and location type
             TDateTime SnsEventTime = AVEntry0.EventTime;
-            double EVT = double(SnsEventTime); //test
+//            double EVT = double(SnsEventTime); //test
             AnsiString  SnsServiceRef = TDEntry.ServiceReference;
             bool BreakFlag = false;
             for(unsigned int y = 0; y < TrainDataVector.size(); y++)
@@ -13444,7 +13450,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 {
                     SecondPassMessage(GiveMessages, "Error in timetable - an 'Sfs' action must be followed by a departure and arrival before another split, see " + TrainDataVector.at(x).ServiceReference);
                     TrainDataVector.clear();
-                    Utilities->CallLogPop(7777);
+                    Utilities->CallLogPop(2586);
                     return(false);
                 }
             }
@@ -13496,7 +13502,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 SecondPassMessage(GiveMessages, "Error in timetable - insufficient actions follwing an 'Sfs' event for: " + TDEntry.HeadCode);
                 TrainDataVector.clear();
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2587);
                 return(false);
             }
             TActionVectorEntry AVEntry1 = TDEntry.ActionVector.at(1);
@@ -13505,7 +13511,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 SecondPassMessage(GiveMessages, "Error in timetable - an 'Sfs' entry is followed by an illegal event for: " + TDEntry.HeadCode +
                                   ". The event isn't valid for a stationary train.");
                 TrainDataVector.clear();
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2588);
                 return(false);
             }
             if((AVEntry1.SequenceType == StartSequence) || ((AVEntry1.SequenceType == FinishSequence) && (AVEntry1.Command != "Frh") && (AVEntry1.Command != "Fjo")) ||
@@ -13513,7 +13519,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 SecondPassMessage(GiveMessages, "Error in timetable - an 'Sfs' entry is followed by an illegal event for: " + TDEntry.HeadCode);
                 TrainDataVector.clear();
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2589);
                 return(false);
             }
 
@@ -15185,7 +15191,7 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
     if((AVEntry0.Command != "Snt") && (AVEntry0.Command != "Snt-sh"))
     {
 //        throw Exception("Error, first entry not 'Snt' or 'Snt-sh' in IsSNTEntryLocated"); //dropped at v2.15.0, no need for an exception
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2590);
         return(false);
     }
     if(Track->TrackElementAt(506, AVEntry0.RearStartOrRepeatMins).TrackType == Continuation)
@@ -15211,7 +15217,7 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
     }
     if(AVEntry0.SignallerControl)
     {
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2591);
         return(true);
     }
 // here if not a signaller start entry so must be at least one more entry, can't test for AtLocation as a TimeLoc always AtLoc but might be an arrival
@@ -15224,18 +15230,18 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
         if((AVEntry1.Command == "Frh") || (AVEntry1.Command == "cdt") || (AVEntry1.Command == "jbo") || (AVEntry1.Command == "fsp") || (AVEntry1.Command == "rsp") ||
              (AVEntry1.Command == "Fjo") || ((AVEntry1.FormatType == TimeLoc) && (AVEntry1.LocationName == LocationName)))
         {
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2592);
             return(true);
         }
         else
         {
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2593);
             return(false);
         }
     }
     else
     {
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2594);
         return(true);
     }
 }
@@ -18223,7 +18229,7 @@ j) all other finish entries (all link to another service) are ignored as will be
         TTFile3 << "See user manual or on-screen help section 5.12 for detailed information.\n\n\n";
         SequenceLog += "6\n";
 
-
+/*
 //print out TrainDataVectorCopy & TrainDataVector for debugging purposes, TrainDataVectorCopy first
 
 // Double crosslink (shuttle) table:
@@ -18445,7 +18451,7 @@ for(TTrainDataVector::iterator TDVIt = TrainDataVector.begin(); TDVIt != TrainDa
 }
 TDVFile.close();
 //end of debugging
-
+*/
         //arrivals
         if(ArrChecked)
         {

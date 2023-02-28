@@ -12118,7 +12118,7 @@ void __fastcall TInterface::LoadTimetableMenuItemClick(TObject *Sender)
             } // if(TimetableIntegrityCheck
             else
             {
-                ShowMessage("Timetable integrity check failed - unable to load " + TimetableDialog->FileName + ". If the file exists and is spelled correctly then it probably contains errors - check in 'Edit timetable' mode.");
+                ShowMessage("Timetable integrity check failed - unable to load " + TimetableDialog->FileName + ". If the file exists, is spelled correctly, and is appropriate for this railway, then it probably contains errors - check in 'Edit timetable' mode.");
                 //message clarified at v2.14.0
             }
         } // if(TimetableDialog->Execute())
@@ -13922,6 +13922,7 @@ void __fastcall TInterface::FormKeyDown(TObject *Sender, WORD &Key, TShiftState 
                 }
                 if(CallingOnButton->Visible && CallingOnButton->Enabled && (Key == 'O' || Key == 'o'))
                 {
+                    CallingOnButton->Down = true; //added at v2.15.0 as key doesn't work without this - don't understand why
                     CallingOnButton->Click();
                 }
                 if(OperatorActionButton->Visible && OperatorActionButton->Enabled && (Key == 'D' || Key == 'd'))

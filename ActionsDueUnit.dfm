@@ -20,13 +20,13 @@ object ActionsDueForm: TActionsDueForm
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Name = 'Arial'
   Font.Style = [fsBold]
   OldCreateOrder = False
   Visible = True
   OnCreate = FormCreate
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   object ActionsDuePanel: TPanel
     Left = 0
     Top = 0
@@ -39,13 +39,13 @@ object ActionsDueForm: TActionsDueForm
       Left = 32
       Top = 4
       Width = 30
-      Height = 13
+      Height = 14
       Caption = '(mins) '
       DragMode = dmAutomatic
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -11
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Arial'
       Font.Style = []
       ParentFont = False
       WordWrap = True

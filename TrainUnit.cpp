@@ -1115,6 +1115,12 @@ void TTrain::UpdateTrain(int Caller)
                 {
                     ChangeTrainDirection(0, false);
                 }
+                else if(ActionVectorEntryPtr->Command == "dsc")
+                {
+                    TrainDataEntryPtr->Description = ActionVectorEntryPtr->NewDescription;
+                    LogAction(7777, HeadCode, "", ChangeDescription, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+                    ActionVectorEntryPtr++;
+                }
                 else if(ActionVectorEntryPtr->Command == "Fns")
                 {
                     NewTrainService(0, false);
@@ -5357,6 +5363,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
           RearSplit:  06:05:40: 2F46 split from rear to 3D54 at Old Street 1 minute late
           JoinedByOther:  06:05:40: 2F46 joined by 3D54 at Old Street 1 minute late
           ChangeDirection:  06:05:40: 2F46 changed direction at Old Street 1 minute late
+          ChangeDescription:  06:05:40: 2F46 changed its description to 'NewDescription' at Old Street 1 minute late
           NewService:  06:05:40: 2F46 became new service 3D54 at Old Street 1 minute late
           TakeManualControl:  06:05:40: 2F46 taken under signaller control at Old Street
           RestoreTimetableControl:  06:05:40: 2F46 restored to timetable control at Old Street
@@ -5409,6 +5416,10 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     if(ActionType == Enter)
     {
         ActionLog = " entered railway at ";
+    }
+    if(ActionType == ChangeDescription)
+    {
+        ActionLog = " changed its description to " + TrainDataEntryPtr->Description + " at ";
     }
     if(ActionType == Leave)
     {
@@ -5951,6 +5962,7 @@ void TTrain::FrontTrainSplit(int Caller)
     // Hence deal with existing train while it references a valid entry in the vector, but retain the Old ActionVectorEntryPtr in a separate
     // variable as it is needed for setting up the new train
     TActionVectorEntry *OldActionVectorEntryPtr = ActionVectorEntryPtr;
+    AnsiString OriginalDescription = TrainDataEntryPtr->Description;  //new at v2.15.0 to record earlier service description
 
     UnplotTrain(0);
     StartSpeed = 0;
@@ -5964,16 +5976,43 @@ void TTrain::FrontTrainSplit(int Caller)
     PlotStartPosition(3);
     PlotTrainWithNewBackgroundColour(14, clStationStopBackground, Display);
     LogAction(9, HeadCode, OtherHeadCode, FrontSplit, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
-    ActionVectorEntryPtr++;
+//    ActionVectorEntryPtr++;  moved lower down at v2.15.0 because of new section below
     LastActionTime = TrainController->TTClockTime;
 
-    Mass = Mass / 2;
-//    MaxBrakeRate = MaxBrakeRate / 2;  this was wrong - want brake rate to stay the same, brake force is halved but that not a train parameter
-//    and when needed it's calculated from rate & mass - changed at v2.15.0
-    PowerAtRail = PowerAtRail / 2;
-    AValue = sqrt(2 * PowerAtRail / Mass);
-    // shouldn't change but include in case not set earlier
+    //new at v2.15.0 for unequal split in mass & power
+    int NewTrainMass;
+    double NewTrainPowerAtRail;
+    if(ActionVectorEntryPtr->SplitDistribution != "")
+    {
+        int pos = ActionVectorEntryPtr->SplitDistribution.Pos('-');
+        int MassPercent = ActionVectorEntryPtr->SplitDistribution.SubString(1, pos - 1).ToInt(); //validity checked during validation
+        int PowerPercent = ActionVectorEntryPtr->SplitDistribution.SubString(pos + 1, ActionVectorEntryPtr->SplitDistribution.Length() - pos).ToInt();
+        NewTrainMass = Mass * double(MassPercent)/100.0;
+        Mass = Mass - NewTrainMass;
+        NewTrainPowerAtRail = PowerAtRail * double(PowerPercent)/100.0;
+        if(NewTrainPowerAtRail == 0)
+        {
+            NewTrainPowerAtRail = 0.08; //min value represents 0
+        }
+        PowerAtRail = PowerAtRail - NewTrainPowerAtRail;
+        AValue = sqrt(2 * PowerAtRail / Mass);
+    }
+    else
+    {
+        Mass = Mass / 2;
+        NewTrainMass = Mass;
+        // TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).Mass = Mass;
+    //    MaxBrakeRate = MaxBrakeRate / 2;  this was wrong - want brake rate to stay the same, brake force is halved but that not a train parameter
+    //    and when needed it's calculated from rate & mass - changed at v2.15.0
+        // TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).MaxBrakeRate = MaxBrakeRate;
+        PowerAtRail = PowerAtRail / 2;
+        NewTrainPowerAtRail = PowerAtRail;
+        // TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).PowerAtRail = PowerAtRail;
+        AValue = sqrt(2 * PowerAtRail / Mass);
+        // shouldn't change but include in case not set earlier
+    }
 
+    ActionVectorEntryPtr++; //moved here at v2.15.0
     // create new front train
 /*
       TrainController::AddTrain(int RearPosition, int FrontPosition, AnsiString HeadCode, int StartSpeed, int Mass,
@@ -5983,7 +6022,7 @@ void TTrain::FrontTrainSplit(int Caller)
     // same Mass, MaxBrakeRate & PowerAtRail as this train's halved values, and same MaxRunningSpeed as this train
     TActionEventType EventType = NoEvent;
 
-    if(!TrainController->AddTrain(0, FrontTrainRearPosition, FrontTrainFrontPosition, OtherHeadCode, 0, Mass, MaxRunningSpeed, MaxBrakeRate, PowerAtRail,
+    if(!TrainController->AddTrain(0, FrontTrainRearPosition, FrontTrainFrontPosition, OtherHeadCode, 0, NewTrainMass, MaxRunningSpeed, MaxBrakeRate, NewTrainPowerAtRail,
                                   "Timetable", OldActionVectorEntryPtr->LinkedTrainEntryPtr, RepeatNumber, IncrementalMinutes, IncrementalDigits, SignallerMaxSpeed, false, EventType))
     // false for SignallerControl
     {
@@ -5993,6 +6032,12 @@ void TTrain::FrontTrainSplit(int Caller)
         // when other train moves away
         return;
     }
+
+    if(!OldActionVectorEntryPtr->LinkedTrainEntryPtr->ExplicitDescription) //new at v2.15.0 see above
+    {
+        OldActionVectorEntryPtr->LinkedTrainEntryPtr->Description = OriginalDescription;
+    }
+
     // Note data in 'this' now probably invalid as there has been a new addition to the TrainVector, so the train is likely to have a new address, hence make no more changes for the current train
     // see mods in UpdateTrain for v1.3.2
     TrainController->TrainAdded = true;
@@ -6260,7 +6305,7 @@ void TTrain::RearTrainSplit(int Caller)
     // Hence deal with existing train while it references a valid entry in the vector, but retain the Old ActionVectorEntryPtr in a separate
     // variable as it is needed for setting up the new train
     TActionVectorEntry *OldActionVectorEntryPtr = ActionVectorEntryPtr;
-
+    AnsiString OriginalDescription = TrainDataEntryPtr->Description;  //new at v2.15.0 to record earlier service description
     UnplotTrain(1);
     StartSpeed = 0;
     RearStartElement = FrontTrainRearPosition;
@@ -6273,17 +6318,43 @@ void TTrain::RearTrainSplit(int Caller)
     PlotStartPosition(4);
     PlotTrainWithNewBackgroundColour(15, clStationStopBackground, Display);
     LogAction(10, HeadCode, OtherHeadCode, RearSplit, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
-    ActionVectorEntryPtr++;
+//    ActionVectorEntryPtr++;  moved lower down at v2.15.0 because of new section below
     LastActionTime = TrainController->TTClockTime;
-    Mass = Mass / 2;
-    // TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).Mass = Mass;
-//    MaxBrakeRate = MaxBrakeRate / 2;  this was wrong - want brake rate to stay the same, brake force is halved but that not a train parameter
-//    and when needed it's calculated from rate & mass - changed at v2.15.0
-    // TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).MaxBrakeRate = MaxBrakeRate;
-    PowerAtRail = PowerAtRail / 2;
-    // TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).PowerAtRail = PowerAtRail;
-    AValue = sqrt(2 * PowerAtRail / Mass);
-    // shouldn't change but include in case not set earlier
+
+    //new at v2.15.0 for unequal split in mass & power
+    int NewTrainMass;
+    double NewTrainPowerAtRail;
+    if(ActionVectorEntryPtr->SplitDistribution != "")
+    {
+        int pos = ActionVectorEntryPtr->SplitDistribution.Pos('-');
+        int MassPercent = ActionVectorEntryPtr->SplitDistribution.SubString(1, pos - 1).ToInt(); //validity checked during validation
+        int PowerPercent = ActionVectorEntryPtr->SplitDistribution.SubString(pos + 1, ActionVectorEntryPtr->SplitDistribution.Length() - pos).ToInt();
+        NewTrainMass = Mass * double(MassPercent)/100.0;
+        Mass = Mass - NewTrainMass;
+        NewTrainPowerAtRail = PowerAtRail * double(PowerPercent)/100.0;
+        if(NewTrainPowerAtRail == 0)
+        {
+            NewTrainPowerAtRail = 0.08; //min value represents 0
+        }
+        PowerAtRail = PowerAtRail - NewTrainPowerAtRail ;
+        AValue = sqrt(2 * PowerAtRail / Mass);
+    }
+    else
+    {
+        Mass = Mass / 2;
+        NewTrainMass = Mass;
+        // TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).Mass = Mass;
+    //    MaxBrakeRate = MaxBrakeRate / 2;  this was wrong - want brake rate to stay the same, brake force is halved but that not a train parameter
+    //    and when needed it's calculated from rate & mass - changed at v2.15.0
+        // TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).MaxBrakeRate = MaxBrakeRate;
+        PowerAtRail = PowerAtRail / 2;
+        NewTrainPowerAtRail = PowerAtRail;
+        // TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).PowerAtRail = PowerAtRail;
+        AValue = sqrt(2 * PowerAtRail / Mass);
+        // shouldn't change but include in case not set earlier
+    }
+
+    ActionVectorEntryPtr++; //moved here at v2.15.0
 
     // create new rear train
 /*
@@ -6294,7 +6365,7 @@ void TTrain::RearTrainSplit(int Caller)
     // same Mass, MaxBrakeRate & PowerAtRail as this train's halved values, and same MaxRunningSpeed as this train
     TActionEventType EventType = NoEvent;
 
-    if(!TrainController->AddTrain(1, RearTrainRearPosition, RearTrainFrontPosition, OtherHeadCode, 0, Mass, MaxRunningSpeed, MaxBrakeRate, PowerAtRail,
+    if(!TrainController->AddTrain(1, RearTrainRearPosition, RearTrainFrontPosition, OtherHeadCode, 0, NewTrainMass, MaxRunningSpeed, MaxBrakeRate, NewTrainPowerAtRail,
                                   "Timetable", OldActionVectorEntryPtr->LinkedTrainEntryPtr, RepeatNumber, IncrementalMinutes, IncrementalDigits, SignallerMaxSpeed, false, EventType))
     // false for SignallerControl
     {
@@ -6303,6 +6374,11 @@ void TTrain::RearTrainSplit(int Caller)
         // another train, in which case a message will have been sent to the perf log, also might well clear later
         // when other train moves away
         return;
+    }
+
+    if(!OldActionVectorEntryPtr->LinkedTrainEntryPtr->ExplicitDescription) //new at v2.15.0 see above (after addtrain & return)
+    {
+        OldActionVectorEntryPtr->LinkedTrainEntryPtr->Description = OriginalDescription;
     }
     // Note data in 'this' now probably invalid as there has been a new addition to the TrainVector, so the train is likely to have a new address, hence make no more changes for the current train
     // see mods in UpdateTrain for v1.3.2
@@ -6540,6 +6616,8 @@ void TTrain::NewTrainService(int Caller, bool NoLogFlag) //, bool NoLogFlag adde
     }
     AnsiString NewHeadCode = TrainController->GetRepeatHeadCode(5, ActionVectorEntryPtr->OtherHeadCode, RepeatNumber, IncrementalDigits);
 
+    AnsiString OldDescription = TrainDataEntryPtr->Description;  //new at v2.15.0 to record earlier service description
+
     if(!NoLogFlag)
     {
         LogAction(13, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
@@ -6553,6 +6631,10 @@ void TTrain::NewTrainService(int Caller, bool NoLogFlag) //, bool NoLogFlag adde
     TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).RunningEntry = Running;
     ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0));
     HeadCode = NewHeadCode;
+    if(!TrainDataEntryPtr->ExplicitDescription) //new at v2.15.0 see above
+    {
+        TrainDataEntryPtr->Description = OldDescription;
+    }
     StoppedAtLocation = true;
     PlotStartPosition(5);
     PlotTrainWithNewBackgroundColour(21, clStationStopBackground, Display);
@@ -6639,6 +6721,11 @@ void TTrain::SendMissedActionLogs(int Caller, int IncNum, TActionVectorEntry *Pt
             else if(Ptr->Command == "jbo")
             {
                 TrainController->LogActionError(15, HeadCode, "", FailMissedJBO, Ptr->LocationName);
+            }
+            // dsc
+            else if(Ptr->Command == "dsc") //new at v2.15.0
+            {
+                TrainController->LogActionError(7777, HeadCode, "", FailMissedDSC, Ptr->LocationName);
             }
             // Errors - have reached a station stop point (before a cdt) during Train->Update() so intervening actions can't
             // be starts, finishes or cdt
@@ -6748,6 +6835,11 @@ void TTrain::SendMissedActionLogs(int Caller, int IncNum, TActionVectorEntry *Pt
             {
                 TrainController->LogActionError(24, HeadCode, "", FailMissedJBO, Ptr->LocationName);
             }
+            // dsc
+            else if(Ptr->Command == "dsc") //new at v2.15.0
+            {
+//                TrainController->LogActionError(7777, HeadCode, "", FailMissedDSC, Ptr->LocationName); don't count as a missed event
+            }
             // cdt
             else if(Ptr->Command == "cdt")
             {
@@ -6842,6 +6934,7 @@ void TTrain::NewShuttleFromNonRepeatService(int Caller, bool NoLogFlag) //bool N
         return;
     }
     AnsiString NewHeadCode = ActionVectorEntryPtr->NonRepeatingShuttleLinkHeadCode;
+    AnsiString OldDescription = TrainDataEntryPtr->Description;  //new at v2.15.0 to record earlier service description
 
     if(!NoLogFlag)
     {
@@ -6856,6 +6949,10 @@ void TTrain::NewShuttleFromNonRepeatService(int Caller, bool NoLogFlag) //bool N
     TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).RunningEntry = Running;
     ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0));
     HeadCode = NewHeadCode;
+    if(!TrainDataEntryPtr->ExplicitDescription) //new at v2.15.0 see above
+    {
+        TrainDataEntryPtr->Description = OldDescription;
+    }
     IncrementalMinutes = TrainDataEntryPtr->ActionVector.back().RearStartOrRepeatMins;
     IncrementalDigits = TrainDataEntryPtr->ActionVector.back().FrontStartOrRepeatDigits;
     StoppedAtLocation = true;
@@ -6959,6 +7056,7 @@ void TTrain::RepeatShuttleOrNewNonRepeatService(int Caller, bool NoLogFlag) //bo
             LogAction(17, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
         }
         RepeatNumber = 0;
+        AnsiString OldDescription = TrainDataEntryPtr->Description;  //new at v2.15.0 to record earlier service description
         UnplotTrain(6);
         RearStartElement = MidElement;
         RearStartExitPos = MidExitPos;
@@ -6968,6 +7066,10 @@ void TTrain::RepeatShuttleOrNewNonRepeatService(int Caller, bool NoLogFlag) //bo
         TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).RunningEntry = Running; // but note that RepeatNumber = 0
         ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0));
         HeadCode = NewHeadCode;
+        if(!TrainDataEntryPtr->ExplicitDescription) //new at v2.15.0 see above
+        {
+            TrainDataEntryPtr->Description = OldDescription;
+        }
         StoppedAtLocation = true;
         PlotStartPosition(9);
         PlotTrainWithNewBackgroundColour(24, clStationStopBackground, Display); // pale green
@@ -7325,6 +7427,10 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         {
             RetStr = "Change direction at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(15, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
         }
+        else if(Ptr->Command == "dsc")
+        {
+            RetStr = "Change description at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(7777, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+        }
     }
     else if(TrainController->TTClockTime > ActionTime) //condition added at v2.13.2 for trains that are delayed other than suffering a random delay
     {
@@ -7446,6 +7552,10 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         {
             RetStr = "Change direction at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(TrainController->TTClockTime);
         }
+        else if(Ptr->Command == "dsc")
+        {
+            RetStr = "Change description at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(TrainController->TTClockTime);
+        }
     }
     else //train not delayed
     {
@@ -7566,6 +7676,10 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         else if(Ptr->Command == "cdt")
         {
             RetStr = "Change direction at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(63, Ptr->EventTime));
+        }
+        else if(Ptr->Command == "dsc")
+        {
+            RetStr = "Change description at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(7777, Ptr->EventTime));
         }
     }
     Utilities->CallLogPop(1124);
@@ -7759,9 +7873,9 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
             Utilities->CallLogPop(2234);
             return(RetStr);
         }
-        if(AVI->Command == "jbo")
+        if(AVI->Command == "dsc")
         {
-            TDateTime TTTime = TrainController->GetControllerTrainTime(20, AVI->EventTime, RptNum, IncrementalMinutes);
+            TDateTime TTTime = TrainController->GetControllerTrainTime(7777, AVI->EventTime, RptNum, IncrementalMinutes);
             if((DelayedRandMins >= 1) && !TimetableTime)
             {
                 EventTime = Utilities->Format96HHMM(TTTime + TDateTime(DelayedRandMins/1440));
@@ -7774,8 +7888,8 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
             {
                 EventTime = Utilities->Format96HHMM(TTTime);
             }
-            RetStr += "\nNew service joined by " + AVI->OtherHeadCode + " at approx. " + EventTime;
-            Utilities->CallLogPop(2235);
+            RetStr += "\nNew service changes its description at approx. " + EventTime;
+            Utilities->CallLogPop(7777);
             return(RetStr);
         }
         if((AVI->FormatType == TimeLoc) && (AVI->DepartureTime > TDateTime(-1))) //departure time set
@@ -8053,16 +8167,36 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
         else if(Ptr->Command == "fsp")
         {
             PartStr = Utilities->Format96HHMM(GetTrainTime(27, Ptr->EventTime)) + ": Front split to " + TrainController->GetRepeatHeadCode(20,
-                                                                                                                                           Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;
+                       Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;
+            if(Ptr->SplitDistribution != "")
+            {
+                PartStr+= ", split mass%-Power% = " + Ptr->SplitDistribution;
+            }
+            else
+            {
+                PartStr+= ", split mass%-Power% = 50-50";
+            }
         }
         else if(Ptr->Command == "rsp")
         {
             PartStr = Utilities->Format96HHMM(GetTrainTime(28, Ptr->EventTime)) + ": Rear split to " + TrainController->GetRepeatHeadCode(21,
-                                                                                                                                          Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;
+                       Ptr->OtherHeadCode, RepeatNumber, IncrementalDigits) + " at " + Ptr->LocationName;
+            if(Ptr->SplitDistribution != "")
+            {
+                PartStr+= ", split mass%-Power% = " + Ptr->SplitDistribution;
+            }
+            else
+            {
+                PartStr+= ", split mass%-Power% = 50-50";
+            }
         }
         else if(Ptr->Command == "cdt")
         {
             PartStr = Utilities->Format96HHMM(GetTrainTime(29, Ptr->EventTime)) + ": Change direction at " + Ptr->LocationName;
+        }
+        else if(Ptr->Command == "dsc")
+        {
+            PartStr = Utilities->Format96HHMM(GetTrainTime(7777, Ptr->EventTime)) + ": Change description at " + Ptr->LocationName;
         }
         if(RetStr != "")
         {
@@ -10682,6 +10816,10 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
         {
             PartStr = Utilities->Format96HHMM(GetControllerTrainTime(16, Ptr->EventTime, RepNum, IncMins)) + ": Change direction at " + Ptr->LocationName;
         }
+        else if(Ptr->Command == "dsc")
+        {
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(7777, Ptr->EventTime, RepNum, IncMins)) + ": Change description at " + Ptr->LocationName;
+        }
         if(RetStr != "")
         {
             RetStr = RetStr + '\n' + PartStr;
@@ -10742,6 +10880,13 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
             EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(21, AVI->EventTime, RptNum, IncrementalMinutes));
             RetStr += "\nNew service splits at " + EventTime;
             Utilities->CallLogPop(2237);
+            return(RetStr);
+        }
+        if(AVI->Command == "dsc")
+        {
+            EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(7777, AVI->EventTime, RptNum, IncrementalMinutes));
+            RetStr += "\nNew service changes its description at " + EventTime;
+            Utilities->CallLogPop(7777);
             return(RetStr);
         }
         if(AVI->Command == "jbo")
@@ -10825,6 +10970,7 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
   HH:MM;Sns-fsh;NonRepeatingShuttleLinkHeadCode               }SNSNonRepeatFromShuttle }
 
   HH:MM;Command (cdt)                                         }TimeCmd                 }
+  HH:MM;Command;Description (dsc)                             }TimeCmdDescription      }
   HH:MM;Location (arr & dep)                                  }TimeLoc                 }
   HH:MM;HH:MM;Location                                        }TimeTimeLoc             }
   HH:MM;pas;Location                                          }PassTime                }
@@ -10838,6 +10984,7 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
 
   Command only:                               Frh
   Time;Command:                               cdt
+  Time;Command;Description                    dsc
   Time;Command;Headcode:                      Sfs Sns jbo fsp rsp Fns Fjo Frh-sh F-nshs Sns-fsh
   Time;Command;2 Element IDs:                 Snt
   Time;Comand;n Element IDs:                  Fer
@@ -10847,7 +10994,7 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
   Time;Location                               Arr Dep
   Time;Time;Location                          Arr & dep together
 
-  9  Single entries:    Snt (located or unlocated); pas; cdt; TimeLoc arr & dep; TimeTimeLoc; Fer; Frh
+  10  Non-linked entries:    Snt (located or unlocated); pas; cdt; dsc; TimeLoc arr & dep; TimeTimeLoc; Fer; Frh
 
   9  1x Linked entries: Non-shuttle:  fsp or rsp -> Sfs; Fns -> Sns; Fjo -> jbo; times must match, headcodes must match
   Shuttle: F-nshs -> Sns-sh: times match, F-nshs HeadCode matches Sns-sh 2nd Headcode;
@@ -10865,7 +11012,7 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
 
   Successor state     Type
 
-  Snt located         AtLoc         )          Snt AtLoc successors:  TimeLoc dep/jbo/fsp/rsp/cdt/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs;
+  Snt located         AtLoc         )          Snt AtLoc successors:  TimeLoc dep/jbo/fsp/rsp/cdt/dsc/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs;
   Snt Unlocated       Moving        )          Snt Moving successors: TimeLoc arr/TimeTimeLoc/pas/Fer;
   Sfs                 AtLoc         )
   Sns                 AtLoc         ) Start
@@ -10878,6 +11025,7 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
   fsp                 AtLoc                       )
   rsp                 AtLoc                       ) Intermediate
   cdt                 AtLoc                       )
+  dsc                 AtLoc                       )
   TimeLoc arr         Moving (bef), AtLoc (aft)   )
   TimeLoc dep         AtLoc  (bef), Moving (aft)  )
   TimeTimeLoc         Moving                      )
@@ -10903,6 +11051,7 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
   fsp                 Front split
   rsp                 Rear split
   cdt                 Change direction of train
+  dsc                 Change description of train
   TimeLoc arr         Arrival
   TimeLoc dep         Departure
   TimeTimeLoc         Arrival and departure
@@ -11071,6 +11220,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
 
           Format                                                       FormatType
           [W]HH:MM;Command (cdt)                                         }TimeCmd                 }
+          [W]HH:MM;dsc;new description                                   }TimeCmdDescription      }
           [W]HH:MM;Fer;set of allowable IDs                              }ExitRailway             }
           [W]HH:MM;pas;Location                                          }PassTime                }
           [W]HH:MM;Snt;RearStartIdent FrontStartIdent                    }StartNew                }
@@ -11133,6 +11283,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
           rsp (TimeCmdHeadCode) = Rear Split = a new train splits away from rear of this train, both trains in same direction, details = new headcode  (create
           new train - that train's starting information must correspond)
           cdt (TimeCmd) = Change Direction of Train = change direction, no details needed & no train creation
+          dsc (TimeCmdDescription) = Change description of train = new description only, no train creation
 
           Finish commands:-
           Fns (TimeCmdHeadCode) = Finish New Service = finish, form new service in same direction, details = new headcode (no train
@@ -11287,6 +11438,11 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
             TempTrainDataEntry.HeadCode = HeadCode;
             TempTrainDataEntry.ServiceReference = HeadCode;
             TempTrainDataEntry.Description = Description;
+            TempTrainDataEntry.ExplicitDescription = false;
+            if(Description != "")
+            {
+                TempTrainDataEntry.ExplicitDescription = true;
+            }
             TempTrainDataEntry.StartSpeed = StartSpeed;
             TempTrainDataEntry.Mass = Mass;
             TempTrainDataEntry.MaxRunningSpeed = MaxRunningSpeed;
@@ -11576,7 +11732,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                         ActionVectorEntry.OtherHeadCode = Third;
                         ActionVectorEntry.NonRepeatingShuttleLinkHeadCode = Fourth;
                     }
-                    else if(FormatType == TimeCmdHeadCode)
+                    else if(FormatType == TimeCmdHeadCode) //fsp/rsp is TimeCmdHeadCode but may have a Fourth - see below
                     {
                         if(CheckTimeValidity(8, First, ActionVectorEntry.EventTime))
                         {
@@ -11584,6 +11740,10 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                         }
                         ActionVectorEntry.Command = Second;
                         ActionVectorEntry.OtherHeadCode = Third;
+                        if((Fourth != "") && ((Second == "fsp") || (Second == "rsp"))) //new at v2.15.0 & checked in SplitEntry
+                        {
+                            ActionVectorEntry.SplitDistribution = Fourth;
+                        }
                     }
                     else if((FormatType == FNSNonRepeatToShuttle) || (FormatType == SNSNonRepeatFromShuttle))
                     {
@@ -11607,6 +11767,15 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                     else if(FormatType == FinRemHere)
                     {
                         ActionVectorEntry.Command = Second;
+                    }
+                    else if(FormatType == TimeCmdDescription) //new at v2.15.0
+                    {
+                        if(CheckTimeValidity(7777, First, ActionVectorEntry.EventTime))
+                        {
+                            ;
+                        }
+                        ActionVectorEntry.Command = Second;
+                        ActionVectorEntry.NewDescription = Third;
                     }
                     TempTrainDataEntry.ActionVector.push_back(ActionVectorEntry);
                 }
@@ -12101,8 +12270,32 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         Utilities->CallLogPop(1520);
         return(true);
     }
+    if(Second == "dsc") //new at v2.15.0 - change description
+    {
+        if(Third.Length() > 60)
+        {
+            TimetableMessage(GiveMessages, "Train description too long, limit of 60 characters in '" + Third + "'");
+            Utilities->CallLogPop(7777);
+            return(false);
+        }
+        for(int x = 1; x < Third.Length() + 1; x++)
+        {
+            if((Third[x] < ' ') || (Third[x] > '~'))
+            {
+                TimetableMessage(GiveMessages, "Train description contains invalid characters in '" + Third + "'");
+                Utilities->CallLogPop(7777);
+                return(false);
+            }
+        }
+        FormatType = TimeCmdDescription;
+        LocationType = AtLocation;
+        SequenceType = IntermediateSequence;
+        ShuttleLinkType = NotAShuttleLink;
+        Utilities->CallLogPop(1520);
+        return(true);
+    }
 
-//    if((Second == "fsp") || (Second == "fsp")) then there can optiaonlly be a fourth: xx-yy where xx = percentage mass & yy = percentage power in the split train
+//    if((Second == "fsp") || (Second == "fsp")) then there can optionlly be a fourth: xx-yy where xx = percentage mass & yy = percentage power in the split train
 
     // all remainder must be TimeCmdHeadCode types to be valid
     if((Second != "Fns") && (Second != "Fjo") && (Second != "jbo") && (Second != "fsp") && (Second != "rsp") && (Second != "Sfs") && (Second != "Sns") &&
@@ -12138,7 +12331,61 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
     {
         SequenceType = StartSequence;
     }
+   //new at v2.15.0 to allow splits to have different characteristics - Fourth specifies: AA-BB where AA & BB can be 1 or 2 digits, AA is percentage mass
+    if((Fourth != "") && ((Second == "fsp") || (Second == "rsp")))                                          //& BB is percentage power allocated to the split off train
+    {
+        if(!CheckFourthValidityForSplit(Fourth, GiveMessages))
+        {
+            Utilities->CallLogPop(7777);
+            return(false);
+        }
+    }
     Utilities->CallLogPop(924);
+    return(true);
+}
+
+// ---------------------------------------------------------------------------
+
+bool TTrainController::CheckFourthValidityForSplit(AnsiString SplitDistributionString, bool GiveMessages)   //new at v2.15.0
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CheckFourthValidityForSplit," + SplitDistributionString);
+    bool ErrorFlag = false;
+    int x, y;
+    if((SplitDistributionString.Length() > 5) || (SplitDistributionString.Length() < 3))
+    {
+        ErrorFlag = true;
+    }
+    int pos = SplitDistributionString.Pos('-');
+    if(pos == 0)
+    {
+        ErrorFlag = true;
+    }
+    else
+    {
+        AnsiString MassStr = SplitDistributionString.SubString(1, pos - 1);
+        AnsiString PowerStr = SplitDistributionString.SubString(pos + 1, SplitDistributionString.Length() - pos);
+        try  //allows for one or two digit percentages
+        {
+            int x = MassStr.ToInt();
+            int y = PowerStr.ToInt();
+            if((x > 99) || (x < 1) || (y > 100) || (y < 0))
+            {
+                ErrorFlag = true;
+            }
+        }
+        catch(const Exception &e)  //non-error catch
+        {
+            ErrorFlag = true;
+        }
+    }
+    if(ErrorFlag)
+    {
+        TimetableMessage(GiveMessages, "Error in split distribution " + SplitDistributionString + ", should be 'AA-BB' where AA is the percentage mass (min 1, max 99) and BB the percentage " +
+                                       "power for the new split-off train");
+        Utilities->CallLogPop(7777);
+        return(false);
+    }
+    Utilities->CallLogPop(7777);
     return(true);
 }
 
@@ -12902,7 +13149,7 @@ bool TTrainController::SecondPassActions(int Caller, bool GiveMessages, bool &Tw
 
            Allowable successors:-
            Snt unlocated ->  Fer, TimeLoc (arr), TimeTimeLoc, (new) pas; No others
-           Snt located -> No starts, no finishes except Frh & Fjo (as of v2.0.0), no repeat, pas, TimeTimeLoc or TimeLoc arr; any other cmd or TimeLoc (dep) OK
+           Snt located -> No starts, no finishes except Frh, Fjo (as of v2.0.0), Fns, and F-nshs, no repeat, pas, TimeTimeLoc or TimeLoc arr; any other cmd or TimeLoc (dep) OK
            Snt-sh -> No starts, finishes, repeats, pas or TimeTimeLoc; any other cmd or TimeLoc (dep) OK
            Sfs ->  No starts, finishes except Frh & Fjo (as of v2.15.0), repeats, pas, TimeTimeLoc, TimeLoc arr, rsp, fsp; any other cmd or TimeLoc (dep) OK [
                 must have departure & arrival before another split]
@@ -12922,6 +13169,7 @@ bool TTrainController::SecondPassActions(int Caller, bool GiveMessages, bool &Tw
            fsp ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK [must be preceded by an event whose location is set]
            rsp ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK [must be preceded by an event whose location is set]
            cdt ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK
+           dsc ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK
            TimeLoc (arr) ->  No starts, repeats, Fer, pas or TimeTimeLoc; TimeLoc (dep) or any other OK
            TimeLoc (dep) ->  Fer, TimeLoc (arr), or TimeTimeLoc, (new) pas OK, no others
            TimeTimeLoc ->  Fer, TimeLoc (arr), or TimeTimeLoc, (new) pas OK, no others
@@ -13697,6 +13945,25 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                     return(false);
                 }
             }
+            if(AVEntry.Command == "dsc")
+            {
+                if(y >= (TrainDataVector.at(x).ActionVector.size() - 1))
+                {
+                    SecondPassMessage(GiveMessages, "Error in timetable - a 'dsc' can't be the last event for: " + TDEntry.HeadCode);
+                    TrainDataVector.clear();
+                    Utilities->CallLogPop(7777);
+                    return(false);
+                }
+                const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y + 1);
+                if(!AtLocSuccessor(AVEntry2))
+                {
+                    SecondPassMessage(GiveMessages, "Error in timetable - a 'dsc' is followed by an illegal event for: " + TDEntry.HeadCode +
+                                      ". The event isn't valid for a stationary train.");
+                    TrainDataVector.clear();
+                    Utilities->CallLogPop(7777);
+                    return(false);
+                }
+            }
             if(AVEntry.FormatType == TimeTimeLoc)
             {
                 if(y >= (TrainDataVector.at(x).ActionVector.size() - 1))
@@ -14028,8 +14295,8 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                         return(false);
                     }
                 }
-                else if(AVEntry.FormatType == TimeCmd)
-                // cdt is the only TimeCmd
+                else if((AVEntry.FormatType == TimeCmd) || (AVEntry.FormatType == TimeCmdDescription))
+                // cdt is the only TimeCmd & dsc is the only TimeCmdDescription
                 {
                     if(AVEntry.LocationName != LastLocationName)
                     {
@@ -14518,11 +14785,11 @@ bool TTrainController::MovingSuccessor(const TActionVectorEntry &AVEntry)
 }
 
 // ---------------------------------------------------------------------------
-// AtLoc successors:  TimeLoc dep/jbo/fsp/rsp/cdt/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs;
+// AtLoc successors:  TimeLoc dep/jbo/fsp/rsp/cdt/dsc/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs;
 bool TTrainController::AtLocSuccessor(const TActionVectorEntry &AVEntry)
 {
     return ((AVEntry.FormatType == TimeLoc) || (AVEntry.Command == "jbo") || (AVEntry.Command == "fsp") || (AVEntry.Command == "rsp") ||
-            (AVEntry.Command == "cdt") || (AVEntry.Command == "Frh") || (AVEntry.Command == "Fns") || (AVEntry.Command == "Fjo") || (AVEntry.Command == "Frh-sh") ||
+            (AVEntry.Command == "cdt") || (AVEntry.Command == "dsc") || (AVEntry.Command == "Frh") || (AVEntry.Command == "Fns") || (AVEntry.Command == "Fjo") || (AVEntry.Command == "Frh-sh") ||
             (AVEntry.Command == "Fns-sh") || (AVEntry.Command == "F-nshs"));
 }
 
@@ -15246,7 +15513,7 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
 */
 // ---------------------------------------------------------------------------
 
-bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEntry, AnsiString &LocationName)  //this is the original version
+bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEntry, AnsiString &LocationName)  //this is the original version re-instated at v2.15.0 Beta6
 // checks if an Snt or Snt-sh entry with zero starting speed is followed (somewhere, not necessarily immediately) by a TimeLoc & has the same LocationName
 // and if so returns true.  Also returns true for Snt, not Snt-sh, if at least 1 start element is a location & the entry is either
 // a signaller control entry & speed is zero or it is followed immediately by Frh or Fjo (mod at v2.0.0 for empty stock pickup).
@@ -15299,7 +15566,7 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
 //Frh if Snt                  Frh-sh          cdt
 //Fns if Snt                  Fns-sh          fsp or rsp
 //Fjo if Snt                  TimeTimeLoc     jbo
-//F-nshs if Snt               pas
+//F-nshs if Snt               pas             dsc
 //TimeLoc dep                 Fer
 //                            TimeLoc arr
 
@@ -15326,7 +15593,7 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
             Utilities->CallLogPop(854);
             return(false);
         }
-        if((AVEntry.Command == "cdt") || (AVEntry.Command == "fsp") || (AVEntry.Command == "rsp") || (AVEntry.Command == "jbo"))
+        if((AVEntry.Command == "cdt") || (AVEntry.Command == "dsc") || (AVEntry.Command == "fsp") || (AVEntry.Command == "rsp") || (AVEntry.Command == "jbo"))
         {
             continue;
         }
@@ -16108,6 +16375,7 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
 // FailMissedArrival: 06:00:10: ERROR: 2F43 failed to stop at Essex Road;
 // FailMissedSplit: 06:00:10: ERROR: 2F43 failed to split at Essex Road
 // FailMissedJBO: 06:00:10: ERROR: 2F43 failed to be joined by join other train at Essex Road
+// FailMissedDSC: 06:00:10: ERROR: 2F43 failed to change its description at Essex Road
 // FailMissedJoinOther:  06:00:10: ERROR: 2F43 failed to join other train at Essex Road
 // FailMissedTerminate:  06:00:10: ERROR: 2F43 failed to terminate at Essex Road
 // FailMissedNewService:  06:00:10: ERROR: 2F43 failed to form new service at Essex Road
@@ -16213,6 +16481,11 @@ void TTrainController::LogActionError(int Caller, AnsiString HeadCode, AnsiStrin
     {
         ErrorLog = " failed to be joined by other train at ";
         OtherMissedEvents++;
+    }
+    else if(ActionEventType == FailMissedDSC) //new at v2.15.0
+    {
+        ErrorLog = " failed to change its description at ";
+//        OtherMissedEvents++;    shouldn't count
     }
     else if(ActionEventType == FailMissedJoinOther)
     {
@@ -17215,13 +17488,27 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
                     }
                     else if(ActionVectorEntry.Command == "fsp")
                     {
-                        PartStr = "Splits from front at " + ActionVectorEntry.LocationName + " to form";
+                        if(ActionVectorEntry.SplitDistribution != "") //new at v2.15.0
+                        {
+                            PartStr = "Splits from front [mass%-power% = " + ActionVectorEntry.SplitDistribution + "] at " + ActionVectorEntry.LocationName + " to form";
+                        }
+                        else
+                        {
+                            PartStr = "Splits from front [mass%-power% = 50-50] at " + ActionVectorEntry.LocationName + " to form";
+                        }
                         TimeStr = GetRepeatHeadCode(38, ActionVectorEntry.OtherHeadCode, y, IncDigits) + " at " +
                             Utilities->Format96HHMM(GetRepeatTime(10, ActionVectorEntry.EventTime, y, IncMinutes));
                     }
                     else if(ActionVectorEntry.Command == "rsp")
                     {
-                        PartStr = "Splits from rear at " + ActionVectorEntry.LocationName + " to form";
+                        if(ActionVectorEntry.SplitDistribution != "") //new at v2.15.0
+                        {
+                            PartStr = "Splits from front [mass%-power% = " + ActionVectorEntry.SplitDistribution + "] at " + ActionVectorEntry.LocationName + " to form";
+                        }
+                        else
+                        {
+                            PartStr = "Splits from front [mass%-power% = 50-50] at " + ActionVectorEntry.LocationName + " to form";
+                        }
                         TimeStr = GetRepeatHeadCode(39, ActionVectorEntry.OtherHeadCode, y, IncDigits) + " at " +
                             Utilities->Format96HHMM(GetRepeatTime(11, ActionVectorEntry.EventTime, y, IncMinutes));
                     }
@@ -17229,6 +17516,11 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
                     {
                         PartStr = "Changes direction at " + ActionVectorEntry.LocationName;
                         TimeStr = Utilities->Format96HHMM(GetRepeatTime(12, ActionVectorEntry.EventTime, y, IncMinutes));
+                    }
+                    else if(ActionVectorEntry.Command == "dsc")
+                    {
+                        PartStr = "Changes description at " + ActionVectorEntry.LocationName;
+                        TimeStr = Utilities->Format96HHMM(GetRepeatTime(7777, ActionVectorEntry.EventTime, y, IncMinutes));
                     }
                 }
                 else if(ActionVectorEntry.SequenceType == FinishSequence)
@@ -19321,6 +19613,7 @@ First create a new TrainDataVector from earlier copy as above with single servic
       HH:MM;Sns-fsh;NonRepeatingShuttleLinkHeadCode               }SNSNonRepeatFromShuttle }
 
       HH:MM;Command (cdt)                                         }TimeCmd                 }
+      HH:MM;Command;new description (dsc)                         }TimeCmdDescription      }
       HH:MM;Location (arr & dep)                                  }TimeLoc                 }
       HH:MM;HH:MM;Location                                        }TimeTimeLoc             }
       HH:MM;pas;Location                                          }PassTime                }
@@ -19334,6 +19627,7 @@ First create a new TrainDataVector from earlier copy as above with single servic
 
       Command only:                               Frh
       Time;Command:                               cdt
+      Time;Command;new description:               dsc
       Time;Command;Headcode:                      Sfs Sns jbo fsp rsp Fns Fjo Frh-sh F-nshs Sns-fsh
       Time;Command;2 Element IDs:                 Snt
       Time;Comand;n Element IDs:                  Fer

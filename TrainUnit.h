@@ -38,10 +38,10 @@ class TDisplay;
 enum TActionEventType
 {
     NoEvent, FailTrainEntry, FailCreateTrain, FailCreateOnRoute, FailCreatePoints, FailSPAD, FailLockedRoute, FailLocTooShort, FailSplitDueToOtherTrain,
-    FailCrashed, FailDerailed, FailUnexpectedBuffers, FailUnexpectedExitRailway, FailMissedArrival, FailMissedSplit, FailMissedJBO, FailMissedJoinOther,
+    FailCrashed, FailDerailed, FailUnexpectedBuffers, FailUnexpectedExitRailway, FailMissedArrival, FailMissedSplit, FailMissedJBO, FailMissedDSC, FailMissedJoinOther,
     FailMissedTerminate, FailMissedNewService, FailMissedExitRailway, FailMissedChangeDirection, FailMissedPass, FailCreateLockedRoute, FailEnterLockedRoute,
     WaitingForJBO, WaitingForFJO, FailBuffersPreventingStart, FailBufferCrash, FailLevelCrossingCrash, FailIncorrectExit, ShuttleFinishedRemainingHere,
-    RouteForceCancelled, FailEntryRouteSetAgainst
+    RouteForceCancelled, FailEntryRouteSetAgainst  //FailMissedDSC new at v2.15.0
 };  // FailEntryRouteSetAgainst added at v2.9.1
     //if add to these remember to change the integer value in session file integrity check (33 total here)
     //Xeon notified error 07/01/22 when EventReported int value exceeded 30 (as it was in v2.11.0) for FailEntryRouteSetAgainst
@@ -51,7 +51,8 @@ enum TActionType
 {
     Arrive, Terminate, Depart, Create, Enter, Leave, FrontSplit, RearSplit, JoinedByOther, ChangeDirection, NewService, TakeSignallerControl,
     RestoreTimetableControl, RemoveTrain, SignallerMoveForwards, SignallerJoin, TrainFailure, // SignallerJoin, TrainFailure & RepairFailedTrain new at v2.4.0
-    RepairFailedTrain, SignallerChangeDirection, SignallerPassRedSignal, Pass, SignallerControlStop, SignallerStop, SignallerLeave, SignallerStepForward
+    RepairFailedTrain, SignallerChangeDirection, SignallerPassRedSignal, Pass, SignallerControlStop, SignallerStop, SignallerLeave, SignallerStepForward,
+    ChangeDescription
 };
 
 /// indicates train operating mode, 'None' for not in use
@@ -64,7 +65,7 @@ enum TTrainMode
 enum TTimetableFormatType
 {
     NoFormat, TimeLoc, TimeTimeLoc, TimeCmd, StartNew, TimeCmdHeadCode, FinRemHere, FNSNonRepeatToShuttle, SNTShuttle, SNSShuttle, SNSNonRepeatFromShuttle,
-    FSHNewService, Repeat, PassTime, ExitRailway
+    FSHNewService, Repeat, PassTime, ExitRailway, TimeCmdDescription //TimeCmdDescription new at v2.15.0 for change of description
 };
 
 enum TTimetableLocationType
@@ -121,7 +122,7 @@ typedef std::pair<THVShortPair, TExitInfo> TTimeToExitMultiMapEntry;
 class TActionVectorEntry
 {
 public:
-    AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode;
+    AnsiString LocationName, Command, OtherHeadCode, NonRepeatingShuttleLinkHeadCode, SplitDistribution, NewDescription; //SplitDistribution & NewDescription new at v2.15.0
 ///< string values for timetabled event entries, null on creation
 //Other HeadCode & NonRepeatingShuttleLinkHeadCode have service ref entered in ProcessOneTimetableLine but these are
 //changed back to basic HeadCodes as almost the final action in SecondPassActions (uses StripExcessFromHeadCode)
@@ -208,6 +209,8 @@ class TTrainDataEntry
 public:
     AnsiString HeadCode, ServiceReference, Description;
 ///< headcode is the first train's headcode, rest are calculated from repeat information; ServiceReference is the full (up to 8 characters) reference from the timetable (added at V0.6b)
+    bool ExplicitDescription;
+///< true if a description is given for the train, if only headcode given for a follow-on service then false, and train takes description of earlier service
     double MaxBrakeRate;
 ///< in metres/sec/sec
     double MaxRunningSpeed;
@@ -930,6 +933,8 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
     bool CheckCrossReferencesAndSetData(int Caller, AnsiString SoughtHeadCode, AnsiString SeekingHeadCode, bool Shuttle, bool GiveMessages);
 /// A timetable validation function where referenced services are checked for uniqueness, returns true for success
     bool CheckForDuplicateCrossReferences(int Caller, AnsiString MainHeadCode, AnsiString SecondHeadCode, bool GiveMessages);
+/// Checks fourth segment in timetable for train splits - percentage mass then '-' then percentage power of split train
+    bool CheckFourthValidityForSplit(AnsiString SplitDistributionString, bool GiveMessages);
 /// Returns true if the headcode complies with requirements
     bool CheckHeadCodeValidity(int Caller, bool GiveMessages, AnsiString HeadCode);
 /// Returns true if the location name complies with requirements

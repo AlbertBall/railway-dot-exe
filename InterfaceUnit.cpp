@@ -524,14 +524,15 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
             "Start new non-repeating shuttle finish service" + NL + "Start new shuttle train at a timetabled stop" + NL +
             "Start new shuttle service from a feeder";
 
-        const AnsiString TTLabelStr2 = "Pass" + NL + "Be joined by another train" + NL + "Front split" + NL + "Rear split" + NL + "Change direction of train";
+        const AnsiString TTLabelStr2 = "Pass" + NL + "Be joined by another train" + NL + "Front split" + NL + "Rear split" + NL + "Change direction of train" +
+            NL + "Change service description";
 
         const AnsiString TTLabelStr3 = "Finish && form a new service" + NL + "Finish && join another train" + NL + "Finish && exit railway" + NL +
             "Finish && repeat shuttle, finally remain here" + NL + "Finish && repeat shuttle, finally form a finishing service" + NL +
             "Finish non-repeating shuttle feeder service" + NL + "Finish && remain here";
 
         const AnsiString TTLabelStr4 = "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL +
-            "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "     " +
+            "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "HH:MM" + NL + "     " +
             NL + "R";
 
         const AnsiString TTLabelStr5 = "HH:MM ';' Location" + NL + "HH:MM ';' HH:MM ';' Location";
@@ -539,7 +540,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         const AnsiString TTLabelStr6 = "+ rear element ID - space - front element ID [+ optional ';S']" + NL + "+ ref. of the train that splits" + NL +
             "+ other service ref." + NL + "+ shuttle service ref." + NL + "+ rear element ID - space - front element ID ';' linked shuttle ref." + NL +
             "+ linked shuttle service ref. ';' feeder service ref." + NL + "+ location" + NL + "+ joining train ref." + NL + "+ new service ref." + NL +
-            "+ new service ref." + NL + "    " + NL + "+ new service ref." + NL + "+ ref. of train to join" + NL +
+            "+ new service ref." + NL + "    " + NL + "+ new description" + NL + "+ ref. of train to join" + NL +
             "+ list of valid exit element IDs (at least 1) separated by spaces" + NL + "+ linked shuttle service ref.";
 
         const AnsiString TTLabelStr7 = "Arrival OR departure time (program will determine which from the context) + location." + NL +
@@ -4013,7 +4014,7 @@ PasteTTEntryButton->Click(); //paste it after the current entry
                         {
                             continue;
                         }
-                        if((Second == "jbo") || (Second == "fsp") || (Second == "rsp") || (Second == "cdt"))
+                        if((Second == "jbo") || (Second == "fsp") || (Second == "rsp") || (Second == "cdt") || (Second == "dsc"))
                         {
                             continue;
                         }
@@ -12661,7 +12662,7 @@ void __fastcall TInterface::SkipTimetabledActionsMenuItemClick(TObject *Sender)
 
 If stopped at signal then next action will be TimeLoc arrival, TimeTimeLoc, Pass or Fer.
 
-If stopped at a location then next action will be TimeTimeLoc dep/TimeLoc dep/jbo/fsp/rsp/cdt/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs.
+If stopped at a location then next action will be TimeTimeLoc dep/TimeLoc dep/jbo/fsp/rsp/cdt/dsc/Frh/Fns/Fjo/Frh-sh/Fns-sh/F-nshs.
 
 FormatType:  NoFormat, TimeLoc, TimeTimeLoc, TimeCmd, StartNew, TimeCmdHeadCode, FinRemHere, FNSNonRepeatToShuttle, SNTShuttle, SNSShuttle,
 SNSNonRepeatFromShuttle, FSHNewService, Repeat, PassTime, ExitRailway
@@ -12803,8 +12804,8 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
                     Count++;
                 }
                 PassNum++;
-                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "pas") || ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime != TDateTime(-1))))
-                //don't count cdts, passes or departures as missed events (note that can't be a finish)
+                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc") || (AVEPtr->Command == "pas") || ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime != TDateTime(-1))))
+                //don't count cdts, dscs, passes or departures as missed events (note that can't be a finish)
                 {
                     continue;
                 }
@@ -12871,10 +12872,10 @@ SequenceType: NoSequence, StartSequence, FinishSequence, IntermediateSequence, S
                     Count++;
                 }
                 PassNum++;
-                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "pas") ||
+                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc") || (AVEPtr->Command == "pas") ||
                     ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime > TDateTime(0))) ||
                     (Train.SkippedDeparture && (AVEPtr == Train.ActionVectorEntryPtr)))
-                //don't count cdts, passes or departures as missed events (note that can't be a finish), or first departure if SkippedDeparture is true
+                //don't count cdts, dscs, passes or departures as missed events (note that can't be a finish), or first departure if SkippedDeparture is true
                 {
                     continue;
                 }
@@ -13210,9 +13211,9 @@ void TInterface::SkipAllEventsBeforeNewService(int Caller, int TrainID, int PtrA
         int  SkippedEvents = 0;
         for(TActionVectorEntry *AVEPtr = Train.ActionVectorEntryPtr; AVEPtr < NewServiceActionEntryPtr; AVEPtr++)
         {
-            if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "pas") || (AVEPtr->SequenceType == FinishSequence) ||
+            if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc") || (AVEPtr->Command == "pas") || (AVEPtr->SequenceType == FinishSequence) ||
                     ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime != TDateTime(-1))))
-            //don't count cdts, passes, finishes or departures as missed events (finish will be the new service and becomes new service at diff loc so it isn't missed)
+            //don't count cdts, dscs, passes, finishes or departures as missed events (finish will be the new service and becomes new service at diff loc so it isn't missed)
             {
                 continue;
             }
@@ -13261,8 +13262,8 @@ void TInterface::SkipEventsBeforeSameLoc(int Caller, int TrainID, AnsiString Loc
         {
             if(AVEPtr->LocationName != LocationName)
             {
-                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "pas") || ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime != TDateTime(-1))))
-                //don't count cdts, passes or departures as missed events (can't be a finish)
+                if((AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc") || (AVEPtr->Command == "pas") || ((AVEPtr->FormatType == TimeLoc) && (AVEPtr->DepartureTime != TDateTime(-1))))
+                //don't count cdts, dscs, passes or departures as missed events (can't be a finish)
                 {
                     continue;
                 }
@@ -13282,8 +13283,8 @@ void TInterface::SkipEventsBeforeSameLoc(int Caller, int TrainID, AnsiString Loc
                 LocFound = true;
                 break;
             }
-            else if(((AVEPtr->FormatType == TimeLoc) && (AVEPtr->ArrivalTime > TDateTime(-1))) || (AVEPtr->Command == "cdt")) //increment past arrival & cdt events
-            {                                                                                                                  //no skipped event as stops here
+            else if(((AVEPtr->FormatType == TimeLoc) && (AVEPtr->ArrivalTime > TDateTime(-1))) || (AVEPtr->Command == "cdt") || (AVEPtr->Command == "dsc"))
+            {                                                                              //increment past arrival, cdt & dsc events, no skipped event as stops here
                 continue;
             }
             else

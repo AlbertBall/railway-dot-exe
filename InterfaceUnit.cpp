@@ -247,11 +247,12 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
                     Connect API to track variables of interest, added at v2.10.0
         */
         session_api_ = new API(CurDir + "\\session.ini");
-        session_api_->add_metadata_str("railway", &RailwayTitle);
-        session_api_->add_metadata_str("timetable", &TimetableTitle);
+		session_api_->add_metadata_str("railway", &RailwayTitle);
+		session_api_->add_metadata_str("timetable", &TimetableTitle);
         session_api_->add_metadata_str("performance_file", &PerformanceFileName);
         session_api_->add_metadata_int("main_mode", &api_main_mode_);
-        session_api_->add_metadata_int("operation_mode", &api_oper_mode_);
+		session_api_->add_metadata_int("operation_mode", &api_oper_mode_);
+		session_api_->write_string("program_version", GetVersion()); // API v1.2
 
         // =====================================================================
 
@@ -684,7 +685,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         MessageDlg(Message, mtError, But, 0); // this message given first in case can't create the error log
         ErrorLog(115, e.Message);
         Application->Terminate();
-    }
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -2517,7 +2518,7 @@ void __fastcall TInterface::LoadRailwayMenuItemClick(TObject *Sender)
                 SaveRailwayDialog->InitialDir = TPath::GetDirectoryName(LoadRailwayDialog->FileName);
             }
             TrainController->LogEvent("LoadRailway " + AnsiString(LoadRailwayDialog->FileName));
-            LoadRailway(0, AnsiString(LoadRailwayDialog->FileName));
+			LoadRailway(0, AnsiString(LoadRailwayDialog->FileName));
         }
         // else ShowMessage("Load Aborted"); drop this
         // Display->Update(); //display updated in ClearandRebuildRailway
@@ -2668,7 +2669,7 @@ void TInterface::LoadRailway(int Caller, AnsiString LoadFileName)
             {
                 if(AnsiString(LoadRailwayDialog->FileName)[x] == '\\')
                 {
-                    RailwayTitle = AnsiString(LoadRailwayDialog->FileName).SubString(x + 1, AnsiString(LoadRailwayDialog->FileName).Length() - x - 4);
+					RailwayTitle = AnsiString(LoadRailwayDialog->FileName).SubString(x + 1, AnsiString(LoadRailwayDialog->FileName).Length() - x - 4);
                     TimetableTitle = "";
                     SetCaption(6);
                     break;
@@ -2685,7 +2686,9 @@ void TInterface::LoadRailway(int Caller, AnsiString LoadFileName)
     {
         ShowMessage("File integrity check failed - unable to load " + LoadFileName + ". If the file exists and is spelled correctly then it is probably corrupt.");
     }   //message clarified at v2.14.0
-    session_api_->dump();   // update session INI file  //added at v2.10.0
+	session_api_->write_string("railway_file", LoadRailwayDialog->FileName); // API v1.2
+    session_api_->find_metadata_file(); // API v1.2
+	session_api_->dump();   // update session INI file  //added at v2.10.0
     Utilities->CallLogPop(1774);
 }
 
@@ -3455,7 +3458,8 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
                         Utilities->CallLogPop(1612);
                         return;
                     }
-                }
+				}
+                session_api_->write_string("timetable_file", TimetableDialog->FileName); // API v1.2
                 TTBLFile.close();
             }
             else
@@ -20200,7 +20204,8 @@ void TInterface::ResetAll(int Caller)
     delete TempFont;
     CtrlKey = false;
     ShiftKey = false;
-    ClipboardChecked = false;
+	ClipboardChecked = false;
+    session_api_->reset_all(); // API v1.2
     session_api_->dump();   // update session INI file  //added at v2.10.0
     Utilities->CallLogPop(1209);
 }
@@ -20594,8 +20599,8 @@ void TInterface::LoadSession(int Caller)
             Screen->Cursor = TCursor(-11); // Hourglass;
             if(SessionFileIntegrityCheck(0, AnsiString(LoadSessionDialog->FileName).c_str()))
             // if(true)
-            {
-                std::ifstream SessionFile(AnsiString(LoadSessionDialog->FileName).c_str());
+			{
+				std::ifstream SessionFile(AnsiString(LoadSessionDialog->FileName).c_str());
                 if(!(SessionFile.fail()))
                 {
                     TrainController->AvHoursIntValue = 0; // initial value set at v2.4.0 in case not changed later
@@ -20681,21 +20686,25 @@ void TInterface::LoadSession(int Caller)
                         TempString = Utilities->LoadFileString(SessionFile); // "***Timetable***"
                     }
                     // load timetable (marker "***Timetable***" already loaded)
-                    if(!(LoadTimetableFromSessionFile(0, SessionFile)))
-                    {
+					if(!(LoadTimetableFromSessionFile(0, SessionFile)))
+					{
                         SessionFile.close();
                         Screen->Cursor = TCursor(-2); // Arrow;
                         ShowMessage("Unable to load timetable section of the session file, session can't be loaded");
                         Utilities->CallLogPop(1151);
                         return;
-                    }
+					}
                     // TimetableTitle should be loaded at this stage - check
                     if(TimetableTitle == "")
                     {
                         SessionFile.close();
                         Screen->Cursor = TCursor(-2); // Arrow;
                         throw Exception("TimetableTitle null in LoadSession");
-                    }
+					}
+
+					session_api_->write_string("session_file", LoadSessionDialog->FileName); // API v1.2
+                    session_api_->find_metadata_file(); // API v1.2
+
                     // load timetable clock
                     TempString = Utilities->LoadFileString(SessionFile); // ***TimetableClock***
                     TrainController->RestartTime = TDateTime(Utilities->LoadFileDouble(SessionFile)); // ClockTime set in RestartSessionOperMode;

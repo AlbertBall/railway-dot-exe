@@ -15,8 +15,13 @@
 
 #include "System.hpp"
 #include "System.IniFiles.hpp"
+#include "System.SysUtils.hpp"
+#include "System.AnsiStrings.hpp"
+#include "System.IOUtils.hpp"
 
 #include <map>
+#include <vector>
+#include <algorithm>
 #include <windows.h>            //needed for 64 bit compilation
 
 /*! **************************************************************************
@@ -30,28 +35,49 @@
 class API
 {
      private:
-        AnsiString file_path_;
+		AnsiString file_path_;
+		std::vector<AnsiString> reset_excludes_;
         std::map<AnsiString, AnsiString*> metadata_str_;
         std::map<AnsiString, bool*> metadata_bool_;
-        std::map<AnsiString, int*> metadata_int_;
+		std::map<AnsiString, int*> metadata_int_;
+        std::map<AnsiString, AnsiString> train_statuses_;
      public:
         /*! ******************************************************************
         * @brief construct an API object using creating the given INI file
         *
         * @param file_name path of INI file to save collected data to
         *********************************************************************/
-        API(const AnsiString& file_name);
+		API(const AnsiString& file_name);
 
         /*! ******************************************************************
-        * @brief add pointer to string variable to monitor value
-        *
-        * Adds the specified string variable to be tracked, storing a pointer
-        * to access the value within a mapping.
-        *
-        * @param label key to save recorded information under
-        * @param data pointer to string variable to track
-        *********************************************************************/
-        void add_metadata_str(const AnsiString& label, AnsiString* data);
+		* @brief reset all variables
+		*
+        * Does not reset variables within the 'reset_excludes_' member
+		*
+		* sets all data to be empty
+		*
+		*********************************************************************/
+		void reset_all();
+
+		/*! ******************************************************************
+		* @brief tries to find a metadata file for the currently session
+		*
+		* This assumes that the TOML file has been named after the loaded
+		* loaded railway file.
+		*
+		*********************************************************************/
+		void find_metadata_file();
+
+		/*! ******************************************************************
+		* @brief add pointer to string variable to monitor value
+		*
+		* Adds the specified string variable to be tracked, storing a pointer
+		* to access the value within a mapping.
+		*
+		* @param label key to save recorded information under
+		* @param data pointer to string variable to track
+		*********************************************************************/
+		void add_metadata_str(const AnsiString& label, AnsiString* data);
 
         /*! ******************************************************************
         * @brief add pointer to boolean variable to monitor value
@@ -64,16 +90,52 @@ class API
         *********************************************************************/
         void add_metadata_bool(const AnsiString& label, bool* data);
 
+		/*! ******************************************************************
+		* @brief add pointer to integer variable to monitor value
+		*
+		* Adds the specified integer variable to be tracked, storing a pointer
+		* to access the value within a mapping.
+		*
+		* @param label key to save recorded information under
+		* @param data pointer to integer variable to track
+		*********************************************************************/
+		void add_metadata_int(const AnsiString& label, int* data);
+
         /*! ******************************************************************
-        * @brief add pointer to integer variable to monitor value
-        *
-        * Adds the specified integer variable to be tracked, storing a pointer
-        * to access the value within a mapping.
-        *
-        * @param label key to save recorded information under
-        * @param data pointer to integer variable to track
-        *********************************************************************/
-        void add_metadata_int(const AnsiString& label, int* data);
+		* @brief write a string directly to the metadata
+		*
+		* Rather than tracking a string variable using a pointer write it
+		* directly, this is useful in cases where the value is only a temporary
+        * and so is not kept within the global scope.
+		*
+		* @param label key to save recorded information under
+		* @param string data to write
+		*********************************************************************/
+		void write_string(const AnsiString& label, const AnsiString& data);
+
+        /*! ******************************************************************
+		* @brief write an integer directly to the metadata
+		*
+		* Rather than tracking a string variable using a pointer write it
+		* directly, this is useful in cases where the value is only a temporary
+        * and so is not kept within the global scope.
+		*
+		* @param label key to save recorded information under
+		* @param integer data to write
+		*********************************************************************/
+		void write_int(const AnsiString& label, const int& data);
+
+        /*! ******************************************************************
+		* @brief write a boolean directly to the metadata
+		*
+		* Rather than tracking a string variable using a pointer write it
+		* directly, this is useful in cases where the value is only a temporary
+        * and so is not kept within the global scope.
+		*
+		* @param label key to save recorded information under
+		* @param bool data to write
+		*********************************************************************/
+		void write_bool(const AnsiString& label, const bool& data);
 
         /*! ******************************************************************
         * @brief save currently recorded status data to INI file

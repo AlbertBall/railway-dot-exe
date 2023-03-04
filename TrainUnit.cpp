@@ -13198,7 +13198,6 @@ bool TTrainController::SecondPassActions(int Caller, bool GiveMessages, bool &Tw
            element at each end, or length of 3 & 1 extra element at either end
            Check all TimeLocs have either Arr or Dep times set and EventTime == -1
            Check all Cmds have EventTime set & Arr & Dep times = -1
-           Check all Sfs & Sns entries followed somewhere in sequence by a TimeLoc departure
            Check all locations except unlocated Snts, Fers and Repeats have a LocationName
 
            Give messages in function if errors detected and clear the vector.  Return false for failure.

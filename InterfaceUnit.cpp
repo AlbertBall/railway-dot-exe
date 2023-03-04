@@ -252,7 +252,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         session_api_->add_metadata_str("performance_file", &PerformanceFileName);
         session_api_->add_metadata_int("main_mode", &api_main_mode_);
 		session_api_->add_metadata_int("operation_mode", &api_oper_mode_);
-		session_api_->write_string("program_version", GetVersion());
+		session_api_->write_string("program_version", GetVersion()); // API v1.2
 
         // =====================================================================
 
@@ -2686,8 +2686,8 @@ void TInterface::LoadRailway(int Caller, AnsiString LoadFileName)
     {
         ShowMessage("File integrity check failed - unable to load " + LoadFileName + ". If the file exists and is spelled correctly then it is probably corrupt.");
     }   //message clarified at v2.14.0
-	session_api_->write_string("railway_file", LoadRailwayDialog->FileName);
-    session_api_->find_metadata_file();
+	session_api_->write_string("railway_file", LoadRailwayDialog->FileName); // API v1.2
+    session_api_->find_metadata_file(); // API v1.2
 	session_api_->dump();   // update session INI file  //added at v2.10.0
     Utilities->CallLogPop(1774);
 }
@@ -3459,7 +3459,7 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
                         return;
                     }
 				}
-                session_api_->write_string("timetable_file", TimetableDialog->FileName);
+                session_api_->write_string("timetable_file", TimetableDialog->FileName); // API v1.2
                 TTBLFile.close();
             }
             else
@@ -20205,7 +20205,7 @@ void TInterface::ResetAll(int Caller)
     CtrlKey = false;
     ShiftKey = false;
 	ClipboardChecked = false;
-    session_api_->reset_all();
+    session_api_->reset_all(); // API v1.2
     session_api_->dump();   // update session INI file  //added at v2.10.0
     Utilities->CallLogPop(1209);
 }
@@ -20702,8 +20702,8 @@ void TInterface::LoadSession(int Caller)
                         throw Exception("TimetableTitle null in LoadSession");
 					}
 
-					session_api_->write_string("session_file", LoadSessionDialog->FileName);
-                    session_api_->find_metadata_file();
+					session_api_->write_string("session_file", LoadSessionDialog->FileName); // API v1.2
+                    session_api_->find_metadata_file(); // API v1.2
 
                     // load timetable clock
                     TempString = Utilities->LoadFileString(SessionFile); // ***TimetableClock***

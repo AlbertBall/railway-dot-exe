@@ -73,7 +73,7 @@ TDisplay::TDisplay(TImage* &Image, TLabel* &L1, TLabel* &L2, TLabel* &L3, TLabel
 // Lydian 7pt fits in 8 pixels high & isn't bad for small font
 // Kartika 10pt is clear & fits in 8 pixels (height 12.5)
     Output->Canvas->Font->Style.Clear();
-    Output->Canvas->Font->Name = "MS Sans Serif";
+    Output->Canvas->Font->Name = "Arial";
     Output->Canvas->Font->Size = 10;
     Output->Canvas->Font->Color = clB0G0R0;
     Output->Canvas->Font->Charset = (TFontCharset)(0);

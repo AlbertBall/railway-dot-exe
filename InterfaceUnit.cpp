@@ -2572,7 +2572,7 @@ void TInterface::LoadRailway(int Caller, AnsiString LoadFileName)
 
             TFont *TempFont = new TFont; // if try to alter MainScreen->Canvas->Font directly it won't change the style for some reason
             TempFont->Style.Clear();
-            TempFont->Name = "MS Sans Serif"; // reset font, else stays set to last displayed text font
+            TempFont->Name = "Arial"; // reset font, else stays set to last displayed text font
             TempFont->Size = 10;
             TempFont->Color = clB0G0R0;
             TempFont->Charset = (TFontCharset)(0);
@@ -20180,7 +20180,7 @@ void TInterface::ResetAll(int Caller)
     TFont *TempFont = new TFont; // if try to alter MainScreen->Canvas->Font directly it won't change the style for some reason
 
     TempFont->Style.Clear();
-    TempFont->Name = "MS Sans Serif"; // reset font, else stays set to last displayed text font
+    TempFont->Name = "Arial"; // reset font, else stays set to last displayed text font
     TempFont->Size = 10;
     TempFont->Color = clB0G0R0;
     TempFont->Charset = (TFontCharset)(0);

@@ -5419,7 +5419,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     }
     if(ActionType == ChangeDescription)
     {
-        ActionLog = " changed its description to " + TrainDataEntryPtr->Description + " at ";
+        ActionLog = " changed its description to '" + TrainDataEntryPtr->Description + "' at ";
     }
     if(ActionType == Leave)
     {

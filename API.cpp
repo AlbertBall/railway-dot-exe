@@ -6,6 +6,7 @@
  ****************************************************************************/
 #pragma hdrstop
 #include "API.h"
+#include <fstream>
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -43,10 +44,38 @@ void API::write_bool(const AnsiString& label, const bool& data)
 void API::find_metadata_file()
 {
 	try {
-		// if no railway has been loaded do nothing
-		if(metadata_str_.find("railway_file") == metadata_str_.end()) return;
-		if(metadata_str_.find("railway") == metadata_str_.end()) return;
-		const AnsiString railways_dir_ = ExtractFilePath(*metadata_str_["railway_file"]);
+		AnsiString search_file_;
+
+        // If the current railway is unknown do nothing
+		if(metadata_str_.find("railway") == metadata_str_.end())
+		{
+			return;
+		}
+
+        std::ofstream outs("C:\\Users\\kzare\\temp.log");
+
+		// identify the root directory for the current project, it could be in
+        // RailOS itself or be from a separate package folder
+		if(
+			metadata_str_.find("railway_file") != metadata_str_.end() &&
+			*metadata_str_["railway_file"] != ""
+		)
+		{
+		   search_file_ = *metadata_str_["railway_file"];
+		}
+		else if(metadata_str_.find("session_file") != metadata_str_.end() &&
+			*metadata_str_["session_file"] != ""
+		)
+		{
+		   search_file_ = *metadata_str_["session_file"];
+		}
+		else
+		{
+			// Failed to find so do nothing
+            return;
+		}
+
+		const AnsiString railways_dir_ = ExtractFilePath(search_file_);
 		AnsiString root_dir_ = TDirectory::GetParent(TDirectory::GetParent(railways_dir_));
 
 		const AnsiString file_name_label_ = StringReplace(*metadata_str_["railway"], " ", "_", TReplaceFlags() <<rfReplaceAll);
@@ -66,40 +95,61 @@ void API::find_metadata_file()
 }
 void API::dump()
 {
-    try
-    {
-        if(file_path_.IsEmpty()) return;  // Do not interrupt ROS if no file specified
-        TIniFile* ini_file_ = new TIniFile(file_path_);
-        if(!ini_file_) return;  // Do not interrupt ROS if failure
-        std::map<AnsiString, AnsiString*>::iterator it_str = metadata_str_.begin();
-        while(it_str != metadata_str_.end())
-        {
-            const AnsiString data_ = (it_str->second) ? *(it_str->second) : AnsiString("");
-            ini_file_->WriteString("session", it_str->first, data_);
-            it_str++;
-        }
-        std::map<AnsiString, bool*>::iterator it_bool = metadata_bool_.begin();
-        while(it_bool != metadata_bool_.end())
-        {
-            const bool data_ = (it_bool->second) ? *(it_bool->second) : false;
-            ini_file_->WriteBool("session", it_bool->first, data_);
-            it_bool++;
-        }
-        std::map<AnsiString, int*>::iterator it_int = metadata_int_.begin();
-        while(it_int != metadata_int_.end())
-        {
-            const int data_ = (it_int->second) ? *(it_int->second) : -1;
-            ini_file_->WriteInteger("session", it_int->first, data_);
-            it_int++;
+	try
+	{
+		if(file_path_.IsEmpty()) return;  // Do not interrupt ROS if no file specified
+		TIniFile* ini_file_ = new TIniFile(file_path_);
+		if(!ini_file_) return;  // Do not interrupt ROS if failure
+		std::map<AnsiString, AnsiString*>::iterator it_str = metadata_str_.begin();
+		while(it_str != metadata_str_.end())
+		{
+			const AnsiString data_ = (it_str->second) ? *(it_str->second) : AnsiString("");
+			ini_file_->WriteString("session", it_str->first, data_);
+			it_str++;
 		}
-        if(ini_file_) delete ini_file_;
-    }
+		std::map<AnsiString, bool*>::iterator it_bool = metadata_bool_.begin();
+		while(it_bool != metadata_bool_.end())
+		{
+			const bool data_ = (it_bool->second) ? *(it_bool->second) : false;
+			ini_file_->WriteBool("session", it_bool->first, data_);
+            it_bool++;
+		}
+        std::map<AnsiString, int*>::iterator it_int = metadata_int_.begin();
+		while(it_int != metadata_int_.end())
+		{
+            const int data_ = (it_int->second) ? *(it_int->second) : -1;
+			ini_file_->WriteInteger("session", it_int->first, data_);
+			it_int++;
+		}
+		if(ini_file_) delete ini_file_;
+	}
 	catch(Exception &e)
 	{
 		//no action for API errors
 		return;
 	}
 }
+
+void API::reset_all()
+{
+	try
+	{
+
+		std::map<AnsiString, AnsiString*>::iterator it_str = metadata_str_.begin();
+		while(it_str != metadata_str_.end())
+		{
+            (*it_str->second) = AnsiString();
+			it_str++;
+		}
+	}
+	catch(Exception &e)
+	{
+		//no action for API errors
+		return;
+	}
+}
+
+
 API::~API()
 {
     TIniFile* ini_file_ = new TIniFile(file_path_);

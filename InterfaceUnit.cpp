@@ -20204,7 +20204,8 @@ void TInterface::ResetAll(int Caller)
     delete TempFont;
     CtrlKey = false;
     ShiftKey = false;
-    ClipboardChecked = false;
+	ClipboardChecked = false;
+    session_api_->reset_all();
     session_api_->dump();   // update session INI file  //added at v2.10.0
     Utilities->CallLogPop(1209);
 }
@@ -20702,6 +20703,7 @@ void TInterface::LoadSession(int Caller)
 					}
 
 					session_api_->write_string("session_file", LoadSessionDialog->FileName);
+                    session_api_->find_metadata_file();
 
                     // load timetable clock
                     TempString = Utilities->LoadFileString(SessionFile); // ***TimetableClock***

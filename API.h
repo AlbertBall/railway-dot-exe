@@ -48,11 +48,19 @@ class API
 		API(const AnsiString& file_name);
 
         /*! ******************************************************************
+		* @brief reset all variables
+		*
+		* sets all data to be empty
+		*
+		*********************************************************************/
+		void reset_all();
+
+		/*! ******************************************************************
 		* @brief tries to find a metadata file for the currently session
 		*
 		* This assumes that the TOML file has been named after the loaded
-        * loaded railway file.
-        *
+		* loaded railway file.
+		*
 		*********************************************************************/
 		void find_metadata_file();
 

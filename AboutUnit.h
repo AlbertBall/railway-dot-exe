@@ -30,16 +30,16 @@
 #include <Forms.hpp>
 #include <ExtCtrls.hpp>
 #include <Graphics.hpp>
-#include <windows.h>
-#include <Vcl.Imaging.pngimage.hpp>            //needed for 64 bit compilation
+#include <windows.h>            //needed for 64 bit compilation
 //---------------------------------------------------------------------------
 /// The small 'About' box selected from the Help menu
 class TAboutForm : public TForm
 {
 __published:               // IDE-managed Components
     TButton * AboutFormButton; ///< The OK button
-	TImage *ImageAppIcon;
-    TLabel *AboutLabelCaption;
+    TImage *ImageAppIcon;
+    TLabel *AboutLabelCaption; ///< Version info displayed here
+    TLabel *AboutLabelTitle;
     TLinkLabel *WebsiteLinkLabel;
     TLinkLabel *Attribution1LinkLabel;
     TLinkLabel *Attribution2LinkLabel;
@@ -48,8 +48,6 @@ __published:               // IDE-managed Components
     TLabel *Attribution3Label;
     TLinkLabel *Attribution3LinkLabel;
     TLinkLabel *AttributionLinkLabel4;
-	TLabel *Label1;
-	TLinkLabel *LinkLabel1;
 /// Called when the form is first created (by WinMain). Sets the version info, then hides the form
     void __fastcall FormCreate(TObject *Sender);
 /// Opens the About form

@@ -12,12 +12,12 @@ object PerfLogForm: TPerfLogForm
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'Arial'
+  Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
   PixelsPerInch = 96
-  TextHeight = 14
+  TextHeight = 13
   object PerformanceLogBox: TMemo
     Left = 0
     Top = 20

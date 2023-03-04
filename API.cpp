@@ -15,6 +15,7 @@ API::API(const AnsiString& file_name)
    // Print something if program is opened
    TIniFile* ini_file_ = new TIniFile(file_path_);
    ini_file_->WriteBool("session", "running", true);
+   reset_excludes_.push_back("program_version");
 }
 void API::add_metadata_str(const AnsiString& label, AnsiString* data)
 {
@@ -135,7 +136,10 @@ void API::reset_all()
 		std::map<AnsiString, AnsiString*>::iterator it_str = metadata_str_.begin();
 		while(it_str != metadata_str_.end())
 		{
-            (*it_str->second) = AnsiString();
+			if(std::find(reset_excludes_.begin(), reset_excludes_.end(), it_str->first) == reset_excludes_.end())
+			{
+                (*it_str->second) = AnsiString();
+			}
 			it_str++;
 		}
 	}

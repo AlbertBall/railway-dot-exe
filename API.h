@@ -21,6 +21,7 @@
 
 #include <map>
 #include <vector>
+#include <algorithm>
 #include <windows.h>            //needed for 64 bit compilation
 
 /*! **************************************************************************
@@ -35,6 +36,7 @@ class API
 {
      private:
 		AnsiString file_path_;
+		std::vector<AnsiString> reset_excludes_;
         std::map<AnsiString, AnsiString*> metadata_str_;
         std::map<AnsiString, bool*> metadata_bool_;
 		std::map<AnsiString, int*> metadata_int_;
@@ -49,6 +51,8 @@ class API
 
         /*! ******************************************************************
 		* @brief reset all variables
+		*
+        * Does not reset variables within the 'reset_excludes_' member
 		*
 		* sets all data to be empty
 		*

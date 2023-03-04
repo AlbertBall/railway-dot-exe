@@ -6,7 +6,6 @@
  ****************************************************************************/
 #pragma hdrstop
 #include "API.h"
-#include <fstream>
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -51,8 +50,6 @@ void API::find_metadata_file()
 		{
 			return;
 		}
-
-        std::ofstream outs("C:\\Users\\kzare\\temp.log");
 
 		// identify the root directory for the current project, it could be in
         // RailOS itself or be from a separate package folder

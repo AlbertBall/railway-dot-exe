@@ -1118,7 +1118,7 @@ void TTrain::UpdateTrain(int Caller)
                 else if(ActionVectorEntryPtr->Command == "dsc")
                 {
                     TrainDataEntryPtr->Description = ActionVectorEntryPtr->NewDescription;
-                    LogAction(7777, HeadCode, "", ChangeDescription, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+                    LogAction(37, HeadCode, "", ChangeDescription, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
                     ActionVectorEntryPtr++;
                 }
                 else if(ActionVectorEntryPtr->Command == "Fns")
@@ -6725,7 +6725,7 @@ void TTrain::SendMissedActionLogs(int Caller, int IncNum, TActionVectorEntry *Pt
             // dsc
             else if(Ptr->Command == "dsc") //new at v2.15.0
             {
-                TrainController->LogActionError(7777, HeadCode, "", FailMissedDSC, Ptr->LocationName);
+                TrainController->LogActionError(64, HeadCode, "", FailMissedDSC, Ptr->LocationName);
             }
             // Errors - have reached a station stop point (before a cdt) during Train->Update() so intervening actions can't
             // be starts, finishes or cdt
@@ -6838,7 +6838,7 @@ void TTrain::SendMissedActionLogs(int Caller, int IncNum, TActionVectorEntry *Pt
             // dsc
             else if(Ptr->Command == "dsc") //new at v2.15.0
             {
-//                TrainController->LogActionError(7777, HeadCode, "", FailMissedDSC, Ptr->LocationName); don't count as a missed event
+//                TrainController->LogActionError(65, HeadCode, "", FailMissedDSC, Ptr->LocationName); don't count as a missed event
             }
             // cdt
             else if(Ptr->Command == "cdt")
@@ -7429,7 +7429,7 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         }
         else if(Ptr->Command == "dsc")
         {
-            RetStr = "Change description at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(7777, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
+            RetStr = "Change description at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(65, Ptr->EventTime + TDateTime(DelayedRandMins/1440)));
         }
     }
     else if(TrainController->TTClockTime > ActionTime) //condition added at v2.13.2 for trains that are delayed other than suffering a random delay
@@ -7679,7 +7679,7 @@ AnsiString TTrain::FloatingLabelNextString(int Caller, TActionVectorEntry *Ptr)
         }
         else if(Ptr->Command == "dsc")
         {
-            RetStr = "Change description at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(7777, Ptr->EventTime));
+            RetStr = "Change description at " + Ptr->LocationName + " at approx. " + Utilities->Format96HHMM(GetTrainTime(66, Ptr->EventTime));
         }
     }
     Utilities->CallLogPop(1124);
@@ -7875,7 +7875,7 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
         }
         if(AVI->Command == "dsc")
         {
-            TDateTime TTTime = TrainController->GetControllerTrainTime(7777, AVI->EventTime, RptNum, IncrementalMinutes);
+            TDateTime TTTime = TrainController->GetControllerTrainTime(26, AVI->EventTime, RptNum, IncrementalMinutes);
             if((DelayedRandMins >= 1) && !TimetableTime)
             {
                 EventTime = Utilities->Format96HHMM(TTTime + TDateTime(DelayedRandMins/1440));
@@ -7889,7 +7889,7 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
                 EventTime = Utilities->Format96HHMM(TTTime);
             }
             RetStr += "\nNew service changes its description at approx. " + EventTime;
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2595);
             return(RetStr);
         }
         if((AVI->FormatType == TimeLoc) && (AVI->DepartureTime > TDateTime(-1))) //departure time set
@@ -8196,7 +8196,7 @@ AnsiString TTrain::FloatingTimetableString(int Caller, TActionVectorEntry *Ptr)
         }
         else if(Ptr->Command == "dsc")
         {
-            PartStr = Utilities->Format96HHMM(GetTrainTime(7777, Ptr->EventTime)) + ": Change description at " + Ptr->LocationName;
+            PartStr = Utilities->Format96HHMM(GetTrainTime(67, Ptr->EventTime)) + ": Change description at " + Ptr->LocationName;
         }
         if(RetStr != "")
         {
@@ -10818,7 +10818,7 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
         }
         else if(Ptr->Command == "dsc")
         {
-            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(7777, Ptr->EventTime, RepNum, IncMins)) + ": Change description at " + Ptr->LocationName;
+            PartStr = Utilities->Format96HHMM(GetControllerTrainTime(27, Ptr->EventTime, RepNum, IncMins)) + ": Change description at " + Ptr->LocationName;
         }
         if(RetStr != "")
         {
@@ -10884,9 +10884,9 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
         }
         if(AVI->Command == "dsc")
         {
-            EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(7777, AVI->EventTime, RptNum, IncrementalMinutes));
+            EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(28, AVI->EventTime, RptNum, IncrementalMinutes));
             RetStr += "\nNew service changes its description at " + EventTime;
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2581);
             return(RetStr);
         }
         if(AVI->Command == "jbo")
@@ -11770,7 +11770,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
                     }
                     else if(FormatType == TimeCmdDescription) //new at v2.15.0
                     {
-                        if(CheckTimeValidity(7777, First, ActionVectorEntry.EventTime))
+                        if(CheckTimeValidity(35, First, ActionVectorEntry.EventTime))
                         {
                             ;
                         }
@@ -12275,7 +12275,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         if(Third.Length() > 60)
         {
             TimetableMessage(GiveMessages, "Train description too long, limit of 60 characters in '" + Third + "'");
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2582);
             return(false);
         }
         for(int x = 1; x < Third.Length() + 1; x++)
@@ -12283,7 +12283,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
             if((Third[x] < ' ') || (Third[x] > '~'))
             {
                 TimetableMessage(GiveMessages, "Train description contains invalid characters in '" + Third + "'");
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2583);
                 return(false);
             }
         }
@@ -12291,7 +12291,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         LocationType = AtLocation;
         SequenceType = IntermediateSequence;
         ShuttleLinkType = NotAShuttleLink;
-        Utilities->CallLogPop(1520);
+        Utilities->CallLogPop(2604);
         return(true);
     }
 
@@ -12336,7 +12336,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
     {
         if(!CheckFourthValidityForSplit(Fourth, GiveMessages))
         {
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2584);
             return(false);
         }
     }
@@ -12382,10 +12382,10 @@ bool TTrainController::CheckFourthValidityForSplit(AnsiString SplitDistributionS
     {
         TimetableMessage(GiveMessages, "Error in split distribution " + SplitDistributionString + ", should be 'AA-BB' where AA is the percentage mass (min 1, max 99) and BB the percentage " +
                                        "power for the new split-off train");
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2585);
         return(false);
     }
-    Utilities->CallLogPop(7777);
+    Utilities->CallLogPop(2601);
     return(true);
 }
 
@@ -13596,7 +13596,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 SecondPassMessage(GiveMessages, "Error in timetable - an 'Fns' finish must be preceded by an event whose location has already been named, see " + TrainDataVector.at(x).ServiceReference);
                 TrainDataVector.clear();
-                Utilities->CallLogPop(2581);
+                Utilities->CallLogPop(2596);
                 return(false);
             }
         }
@@ -13604,7 +13604,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         {
             SecondPassMessage(GiveMessages, "Error in timetable - an 'Fns' finish must be preceded by an event whose location has already been named, see " + TrainDataVector.at(x).ServiceReference);
             TrainDataVector.clear();
-            Utilities->CallLogPop(2582);
+            Utilities->CallLogPop(2597);
             return(false);
         }
     }
@@ -13629,7 +13629,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 SecondPassMessage(GiveMessages, "Error in timetable - insufficient actions follwing an 'Sns' event for: " + TDEntry.HeadCode);
                 TrainDataVector.clear();
-                Utilities->CallLogPop(2583);
+                Utilities->CallLogPop(2598);
                 return(false);
             }
             TActionVectorEntry AVEntry1 = TDEntry.ActionVector.at(1);
@@ -13638,7 +13638,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 SecondPassMessage(GiveMessages, "Error in timetable - an 'Sns' entry is followed by an illegal event for: " + TDEntry.HeadCode +
                                   ". The event isn't valid for a stationary train.");
                 TrainDataVector.clear();
-                Utilities->CallLogPop(2584);
+                Utilities->CallLogPop(2599);
                 return(false);
             }
             if((AVEntry1.SequenceType == StartSequence) || ((AVEntry1.SequenceType == FinishSequence) && (AVEntry1.Command != "Frh") && (AVEntry1.Command != "Fjo")) ||
@@ -13646,7 +13646,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 SecondPassMessage(GiveMessages, "Error in timetable - an 'Sns' entry is followed by an illegal event for: " + TDEntry.HeadCode);
                 TrainDataVector.clear();
-                Utilities->CallLogPop(2585);
+                Utilities->CallLogPop(2600);
                 return(false);
             }
 
@@ -13950,7 +13950,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 {
                     SecondPassMessage(GiveMessages, "Error in timetable - a 'dsc' can't be the last event for: " + TDEntry.HeadCode);
                     TrainDataVector.clear();
-                    Utilities->CallLogPop(7777);
+                    Utilities->CallLogPop(2602);
                     return(false);
                 }
                 const TActionVectorEntry &AVEntry2 = TrainDataVector.at(x).ActionVector.at(y + 1);
@@ -13959,7 +13959,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                     SecondPassMessage(GiveMessages, "Error in timetable - a 'dsc' is followed by an illegal event for: " + TDEntry.HeadCode +
                                       ". The event isn't valid for a stationary train.");
                     TrainDataVector.clear();
-                    Utilities->CallLogPop(7777);
+                    Utilities->CallLogPop(2603);
                     return(false);
                 }
             }
@@ -15449,22 +15449,22 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
     LocationName = "";
     if(TDEntry.StartSpeed > 0)
     {
-        Utilities->CallLogPop(1784);
+        Utilities->CallLogPop();
         return(false);
     }
     if((AVEntry0.Command != "Snt") && (AVEntry0.Command != "Snt-sh"))
     {
 //        throw Exception("Error, first entry not 'Snt' or 'Snt-sh' in IsSNTEntryLocated"); //dropped at v2.15.0, no need for an exception
-        Utilities->CallLogPop(2590);
+        Utilities->CallLogPop();
         return(false);
     }
-    if(Track->TrackElementAt(506, AVEntry0.RearStartOrRepeatMins).TrackType == Continuation)
+    if(Track->TrackElementAt(,AVEntry0.RearStartOrRepeatMins).TrackType == Continuation)
     {
-        Utilities->CallLogPop(852);
+        Utilities->CallLogPop();
         return(false);
     }
-    AnsiString LocRear = Track->TrackElementAt(507, AVEntry0.RearStartOrRepeatMins).ActiveTrackElementName;
-    AnsiString LocFront = Track->TrackElementAt(508, AVEntry0.FrontStartOrRepeatDigits).ActiveTrackElementName;
+    AnsiString LocRear = Track->TrackElementAt(, AVEntry0.RearStartOrRepeatMins).ActiveTrackElementName;
+    AnsiString LocFront = Track->TrackElementAt(, AVEntry0.FrontStartOrRepeatDigits).ActiveTrackElementName;
 
     if(LocRear != "")
     {
@@ -15476,12 +15476,12 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
     }
     if(LocationName == "")
     {
-        Utilities->CallLogPop(1036);
+        Utilities->CallLogPop();
         return(false);
     }
     if(AVEntry0.SignallerControl)
     {
-        Utilities->CallLogPop(2591);
+        Utilities->CallLogPop();
         return(true);
     }
 // here if not a signaller start entry so must be at least one more entry, can't test for AtLocation as a TimeLoc always AtLoc but might be an arrival
@@ -15494,18 +15494,18 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
         if((AVEntry1.Command == "Frh") || (AVEntry1.Command == "cdt") || (AVEntry1.Command == "jbo") || (AVEntry1.Command == "fsp") || (AVEntry1.Command == "rsp") ||
              (AVEntry1.Command == "Fjo") || ((AVEntry1.FormatType == TimeLoc) && (AVEntry1.LocationName == LocationName)))
         {
-            Utilities->CallLogPop(2592);
+            Utilities->CallLogPop();
             return(true);
         }
         else
         {
-            Utilities->CallLogPop(2593);
+            Utilities->CallLogPop();
             return(false);
         }
     }
     else
     {
-        Utilities->CallLogPop(2594);
+        Utilities->CallLogPop();
         return(true);
     }
 }
@@ -17519,7 +17519,7 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
                     else if(ActionVectorEntry.Command == "dsc")
                     {
                         PartStr = "Changes description at " + ActionVectorEntry.LocationName;
-                        TimeStr = Utilities->Format96HHMM(GetRepeatTime(7777, ActionVectorEntry.EventTime, y, IncMinutes));
+                        TimeStr = Utilities->Format96HHMM(GetRepeatTime(76, ActionVectorEntry.EventTime, y, IncMinutes));
                     }
                 }
                 else if(ActionVectorEntry.SequenceType == FinishSequence)

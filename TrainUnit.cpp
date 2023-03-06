@@ -1119,6 +1119,7 @@ void TTrain::UpdateTrain(int Caller)
                 {
                     TrainDataEntryPtr->Description = ActionVectorEntryPtr->NewDescription;
                     LogAction(37, HeadCode, "", ChangeDescription, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+                    LastActionTime = TrainController->TTClockTime;
                     ActionVectorEntryPtr++;
                 }
                 else if(ActionVectorEntryPtr->Command == "Fns")

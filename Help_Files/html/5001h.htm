@@ -220,7 +220,7 @@ style='color:blue'>R;30;2;<b><u>12</u></b></span>).</p>
   <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
   padding:0cm 5.4pt 0cm 5.4pt'>
   <p><span style='font-size:11.0pt;color:blue'>2K14;Shirley to
-  Kidderminster;0;120;250;25;2500</span></p>
+  Birmingham Snow Hill;0;120;250;25;2500</span></p>
   </td>
   <td width=293 valign=top style='width:219.7pt;border:solid windowtext 1.0pt;
   border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
@@ -282,6 +282,17 @@ style='color:blue'>R;30;2;<b><u>12</u></b></span>).</p>
   padding:0cm 5.4pt 0cm 5.4pt'>
   <p><span style='font-size:11.0pt;color:#009900'>Arr. location</span></p>
   </td>
+ </tr> 
+ <tr>
+  <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:blue'>07:11;dsc;Birmingham Snow Hill to Shirley</span></p>
+  </td>
+  <td width=293 valign=top style='width:219.7pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p><span style='font-size:11.0pt;color:#009900'>Change service description</span></p>
+  </td>
  </tr>
  <tr>
   <td width=349 valign=top style='width:261.85pt;border:solid windowtext 1.0pt;
@@ -328,14 +339,14 @@ seconds (i.e. 07:07:30), and if it arrives at any later time it will depart 30
 seconds later. In other words a train will never depart before a scheduled
 time, but may depart at any time after that time depending on its arrival time,
 with a minimum wait period of 30 seconds. Line <span style='color:blue'>07:10;Snow
-Hill </span>tells RailOS that the train will arrive at Snow Hill at 07:10;
-line <span style='color:blue'>07:11;cdt </span>tells RailOS that the train
-changes direction (change direction of train) at 07:11, then the final line <span
+Hill </span>tells RailOS that the train will arrive at Snow Hill at 07:10; line <span style='color:blue'>
+07:11;dsc;Birmingham Snow Hill to Shirley </span>changes the service description to 'Birmingham Snow Hill to Shirley', and line <span style='color:blue'>07:11;cdt </span>tells RailOS that the train
+changes direction (change direction of train) at 07:11.  The final line <span
 style='color:blue'>07:12;Fns;2K15 </span>tells RailOS that the train
 finishes at 07:12 and forms a new service with headcode 2K15 (<span
 style='color:blue'>F</span>inish <span style='color:blue'>n</span>ew <span
 style='color:blue'>s</span>ervice). Another service entry will be needed to
-take up the story for 2K15. Service codes - <span style='color:blue'>Snt, Fns,
+take up the story for 2K15. Note that if this new service has a description in its first line then that description will override the earlier one, but if it has no description, just a headcode, then the earlier description will apply. Service codes - <span style='color:blue'>Snt, Fns,
 cdt </span>etc - use capital '<span style='color:blue'>S</span>' for '<span
 style='color:blue'>S</span>tart' events, capital '<span style='color:blue'>F</span>'
 for '<span style='color:blue'>F</span>inish' events, and small letters for

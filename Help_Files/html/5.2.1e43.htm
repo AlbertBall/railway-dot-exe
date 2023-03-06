@@ -109,19 +109,14 @@ given and the train will need to be moved under signaller control to find an
 appropriate platform. To be safe it is best to ensure that platforms where splits are to occur are several elements long. A second thing to beware of is to try to ensure that
 after a split both trains lie behind a protecting signal. If one of the trains
 straddles a signal, then that signal does not provide any protection, and when
-the train's departure time is reached it will depart without a route having
+the train's departure time is reached it will depart possibly without a route having
 been set. Note that because the number of train elements that will be standing
 at platforms is maximised, it may be necessary to move an obstructing train
 further away than would appear to be strictly necessary, but when it has been
 moved sufficiently the split will occur.</p>
 
-<p>When trains split the mass, power and braking force are split evenly between
-them (so the performance remains the same), and the maximum running speed is
-the same for the new service as the original.</p>
-
-<p>For services that split it is best to avoid descriptions that include the
-number of cars. The original service description doesn't change during
-operation so such descriptions will become incorrect after a split.</p>
+<p>When trains split the proportion of mass and power that are transferred to the split-off train can vary between 1% and 99% for the mass, and between 0% and 100% for the power.  0% for power is useful when dropping off wagons or coaching stock.  To apply this feature a fourth element is added to the end of the split command e.g. 09:48;fsp;0D00;25-35.  In this example the split-off train has 25% of the original mass leaving the train that splits with 75%, and has 35% of the power leaving the train that splits with 65%.  In all cases the brake force remains in the same proportion as the mass so braking performance stays the same as for the original train.  The maximum speed also remains the same as for the original train.  If no fourth element is provided the mass and power split evenly between the two. 
+</p>
 
 <p>See <a href="5.111w8h.htm">section 5.11</a> for some important aspects that
 will help to avoid errors.</p>

@@ -12351,7 +12351,7 @@ bool TTrainController::CheckFourthValidityForSplit(AnsiString SplitDistributionS
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CheckFourthValidityForSplit," + SplitDistributionString);
     bool ErrorFlag = false;
     int x, y;
-    if((SplitDistributionString.Length() > 5) || (SplitDistributionString.Length() < 3))
+    if((SplitDistributionString.Length() > 6 ) || (SplitDistributionString.Length() < 3))
     {
         ErrorFlag = true;
     }
@@ -15439,77 +15439,6 @@ void TTrainController::StripSpaces(int Caller, AnsiString &Input)
     Utilities->CallLogPop(861);
 }
 
-// ---------------------------------------------------------------------------
-/*
-bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEntry, AnsiString &LocationName)  //new experimental version (more restricted)
-// checks if an Snt or Snt-sh entry with zero starting speed is at a named location that a later event is located at or is followed by a timed departure
-{
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",IsSNTEntryLocated," + AnsiString(TDEntry.HeadCode));
-    const TActionVectorEntry &AVEntry0 = TDEntry.ActionVector.at(0);
-    LocationName = "";
-    if(TDEntry.StartSpeed > 0)
-    {
-        Utilities->CallLogPop();
-        return(false);
-    }
-    if((AVEntry0.Command != "Snt") && (AVEntry0.Command != "Snt-sh"))
-    {
-//        throw Exception("Error, first entry not 'Snt' or 'Snt-sh' in IsSNTEntryLocated"); //dropped at v2.15.0, no need for an exception
-        Utilities->CallLogPop();
-        return(false);
-    }
-    if(Track->TrackElementAt(,AVEntry0.RearStartOrRepeatMins).TrackType == Continuation)
-    {
-        Utilities->CallLogPop();
-        return(false);
-    }
-    AnsiString LocRear = Track->TrackElementAt(, AVEntry0.RearStartOrRepeatMins).ActiveTrackElementName;
-    AnsiString LocFront = Track->TrackElementAt(, AVEntry0.FrontStartOrRepeatDigits).ActiveTrackElementName;
-
-    if(LocRear != "")
-    {
-        LocationName = LocRear;
-    }
-    else
-    {
-        LocationName = LocFront;
-    }
-    if(LocationName == "")
-    {
-        Utilities->CallLogPop();
-        return(false);
-    }
-    if(AVEntry0.SignallerControl)
-    {
-        Utilities->CallLogPop();
-        return(true);
-    }
-// here if not a signaller start entry so must be at least one more entry, can't test for AtLocation as a TimeLoc always AtLoc but might be an arrival
-// so test explicitly
-
-    const TActionVectorEntry &AVEntry1 = TDEntry.ActionVector.at(1);
-//Snt located -> No starts, no finishes except Frh & Fjo (as of v2.0.0), no repeat, pas, TimeTimeLoc or TimeLoc arr; any other cmd or TimeLoc (dep) OK
-    if(AVEntry0.Command == "Snt")
-    {
-        if((AVEntry1.Command == "Frh") || (AVEntry1.Command == "cdt") || (AVEntry1.Command == "jbo") || (AVEntry1.Command == "fsp") || (AVEntry1.Command == "rsp") ||
-             (AVEntry1.Command == "Fjo") || ((AVEntry1.FormatType == TimeLoc) && (AVEntry1.LocationName == LocationName)))
-        {
-            Utilities->CallLogPop();
-            return(true);
-        }
-        else
-        {
-            Utilities->CallLogPop();
-            return(false);
-        }
-    }
-    else
-    {
-        Utilities->CallLogPop();
-        return(true);
-    }
-}
-*/
 // ---------------------------------------------------------------------------
 
 bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEntry, AnsiString &LocationName)  //this is the original version re-instated at v2.15.0 Beta6

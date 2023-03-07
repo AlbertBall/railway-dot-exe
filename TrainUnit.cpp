@@ -7874,7 +7874,7 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
             Utilities->CallLogPop(2234);
             return(RetStr);
         }
-        if(AVI->Command == "dsc")
+        if(AVI->Command == "jbo") //added at v2.15.0, only beed this & splits to be reported
         {
             TDateTime TTTime = TrainController->GetControllerTrainTime(26, AVI->EventTime, RptNum, IncrementalMinutes);
             if((DelayedRandMins >= 1) && !TimetableTime)
@@ -7889,7 +7889,7 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
             {
                 EventTime = Utilities->Format96HHMM(TTTime);
             }
-            RetStr += "\nNew service changes its description at approx. " + EventTime;
+            RetStr += "\nNew service joined by another service at approx. " + EventTime;
             Utilities->CallLogPop(2595);
             return(RetStr);
         }

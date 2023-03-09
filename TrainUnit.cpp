@@ -6593,6 +6593,7 @@ void TTrain::ChangeTrainDirection(int Caller, bool NoLogFlag)
             }
         }
     }
+    StoppedForTrainInFront = false;
     Utilities->CallLogPop(1012);
 }
 
@@ -7874,7 +7875,7 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
             Utilities->CallLogPop(2234);
             return(RetStr);
         }
-        if(AVI->Command == "jbo") //added at v2.15.0, only beed this & splits to be reported
+        if(AVI->Command == "jbo") //added at v2.15.0
         {
             TDateTime TTTime = TrainController->GetControllerTrainTime(26, AVI->EventTime, RptNum, IncrementalMinutes);
             if((DelayedRandMins >= 1) && !TimetableTime)
@@ -7889,8 +7890,52 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
             {
                 EventTime = Utilities->Format96HHMM(TTTime);
             }
-            RetStr += "\nNew service joined by another service at approx. " + EventTime;
+            RetStr += "\nNew service joined by " + AVI->OtherHeadCode + " at approx. " + EventTime;
             Utilities->CallLogPop(2595);
+            return(RetStr);
+        }
+        if((AVI->Command == "Fns") || (AVI->Command == "F-nshs") || (AVI->Command == "Fns-sh")) //added at v2.15.0
+        {
+            TDateTime TTTime = TrainController->GetControllerTrainTime(26, AVI->EventTime, RptNum, IncrementalMinutes);
+            if((DelayedRandMins >= 1) && !TimetableTime)
+            {
+                EventTime = Utilities->Format96HHMM(TTTime + TDateTime(DelayedRandMins/1440));
+            }
+            else if((TrainController->TTClockTime > TTTime) && !TimetableTime)
+            {
+                EventTime = Utilities->Format96HHMM(TrainController->TTClockTime);
+            }
+            else  //((DelayedRandMins == 0) && (TTClockTime <= TTTime)) || TimetableTime
+            {
+                EventTime = Utilities->Format96HHMM(TTTime);
+            }
+            RetStr += "\nNew service finishes and forms another new service at approx. " + EventTime;
+            Utilities->CallLogPop(7777);
+            return(RetStr);
+        }
+        if(AVI->Command == "Fjo") //added at v2.15.0
+        {
+            TDateTime TTTime = TrainController->GetControllerTrainTime(26, AVI->EventTime, RptNum, IncrementalMinutes);
+            if((DelayedRandMins >= 1) && !TimetableTime)
+            {
+                EventTime = Utilities->Format96HHMM(TTTime + TDateTime(DelayedRandMins/1440));
+            }
+            else if((TrainController->TTClockTime > TTTime) && !TimetableTime)
+            {
+                EventTime = Utilities->Format96HHMM(TrainController->TTClockTime);
+            }
+            else  //((DelayedRandMins == 0) && (TTClockTime <= TTTime)) || TimetableTime
+            {
+                EventTime = Utilities->Format96HHMM(TTTime);
+            }
+            RetStr += "\nNew service finishes and joins " + AVI->OtherHeadCode + " at approx. " + EventTime;
+            Utilities->CallLogPop(7777);
+            return(RetStr);
+        }
+        if(AVI->Command == "Frh") //added at v2.15.0
+        {
+            RetStr += "\nNew service finishes and remains at the location.";
+            Utilities->CallLogPop(7777);
             return(RetStr);
         }
         if((AVI->FormatType == TimeLoc) && (AVI->DepartureTime > TDateTime(-1))) //departure time set
@@ -10842,7 +10887,7 @@ AnsiString TTrainController::ContinuationEntryFloatingTTString(int Caller, TTrai
 // ---------------------------------------------------------------------------
 
 AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TActionVectorIterator Ptr, int RptNum, TTrainDataEntry *TDEPtr, TTrainDataEntry *LinkedTrainDataPtr, int IncrementalMinutes, AnsiString RetStr)
-{
+{ //no delays as train not entered yet
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + "," + AnsiString(Ptr - TDEPtr->ActionVector.begin()) + ","
                                  + AnsiString(RptNum) + ",ControllerGetNewServiceDepartureInfo," + TDEPtr->HeadCode);
     AnsiString DepTime = "", EventTime = "";
@@ -10883,18 +10928,31 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
             Utilities->CallLogPop(2237);
             return(RetStr);
         }
-        if(AVI->Command == "dsc")
-        {
-            EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(28, AVI->EventTime, RptNum, IncrementalMinutes));
-            RetStr += "\nNew service changes its description at " + EventTime;
-            Utilities->CallLogPop(2581);
-            return(RetStr);
-        }
         if(AVI->Command == "jbo")
         {
             EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(22, AVI->EventTime, RptNum, IncrementalMinutes));
             RetStr += "\nNew service joined by " + AVI->OtherHeadCode + " at " + EventTime;
             Utilities->CallLogPop(2238);
+            return(RetStr);
+        }
+        if((AVI->Command == "Fns") || (AVI->Command == "F-nshs") || (AVI->Command == "Fns-sh"))
+        {
+            EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(22, AVI->EventTime, RptNum, IncrementalMinutes));
+            RetStr += "\nNew service finishes and forms another new service at " + EventTime;
+            Utilities->CallLogPop(7777);
+            return(RetStr);
+        }
+        if(AVI->Command == "Fjo")
+        {
+            EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(22, AVI->EventTime, RptNum, IncrementalMinutes));
+            RetStr += "\nNew service finishes and joins " + AVI->OtherHeadCode + " at " + EventTime;
+            Utilities->CallLogPop(7777);
+            return(RetStr);
+        }
+        if(AVI->Command == "Frh")
+        {
+            RetStr += "\nNew service finishes and remains at location.";
+            Utilities->CallLogPop(7777);
             return(RetStr);
         }
         if((AVI->FormatType == TimeLoc) && (AVI->DepartureTime > TDateTime(-1))) //departure time set
@@ -11436,6 +11494,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
         {
             // store Train info - conversions done in SplitTrainInfo
             // only headcode mandatory for continuing services
+            //HeadCode = ServiceReference until final section of SecondPassActions
             TempTrainDataEntry.HeadCode = HeadCode;
             TempTrainDataEntry.ServiceReference = HeadCode;
             TempTrainDataEntry.Description = Description;
@@ -13554,6 +13613,95 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         }
     }
 
+//carry out preliminary check on service ref linkages without setting any data - added at v2.15.0 as can be location errors if linked trains not present
+//first check for duplicates then linkages (also checked later but leave that in)
+    for(unsigned int x = 0; x < TrainDataVector.size(); x++)
+    {
+        const TTrainDataEntry &TDEntry = TrainDataVector.at(x);
+        for(unsigned int y = 0; y < TrainDataVector.at(x).ActionVector.size(); y++)
+        {
+            const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
+            if(AVEntry.OtherHeadCode != "")
+            {
+                if(!CheckForDuplicateCrossReferences(0, TDEntry.HeadCode, AVEntry.OtherHeadCode, GiveMessages))
+                {
+                    Utilities->CallLogPop(1584);
+                    return(false); // error message given in called function
+                }
+            }
+            if(AVEntry.NonRepeatingShuttleLinkHeadCode != "")
+            {
+                if(!CheckForDuplicateCrossReferences(1, TDEntry.HeadCode, AVEntry.NonRepeatingShuttleLinkHeadCode, GiveMessages))
+                {
+                    Utilities->CallLogPop(1585);
+                    return(false); // error message given in called function
+                }
+            }
+        }
+    }
+//cross reference check
+    for(unsigned int x = 0; x < TrainDataVector.size(); x++)
+    {
+        const TTrainDataEntry &TDEntry = TrainDataVector.at(x);
+        for(unsigned int y = 0; y < TrainDataVector.at(x).ActionVector.size(); y++)
+        {
+            const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
+            if((AVEntry.Command != "Sns-sh") && (AVEntry.Command != "Snt-sh") && (AVEntry.Command != "Fns-sh") && (AVEntry.Command != "Frh-sh"))
+            {
+                if(AVEntry.OtherHeadCode != "")
+                {
+                    if(!CheckCrossReferencesAndSetData(0, TDEntry.HeadCode, AVEntry.OtherHeadCode, false, false, GiveMessages))
+                    // false = non-shuttle
+                    {
+                        Utilities->CallLogPop(864);
+                        return(false); // error message given in called function
+                    }
+                }
+            }
+        }
+    }
+
+// now repeat the check just for the shuttles
+    for(unsigned int x = 0; x < TrainDataVector.size(); x++)
+    {
+        const TTrainDataEntry &TDEntry = TrainDataVector.at(x);
+        for(unsigned int y = 0; y < TrainDataVector.at(x).ActionVector.size(); y++)
+        {
+            const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
+            if((AVEntry.Command == "Sns-sh") || (AVEntry.Command == "Snt-sh") || (AVEntry.Command == "Fns-sh") || (AVEntry.Command == "Frh-sh"))
+            {
+                if(AVEntry.OtherHeadCode != "")
+                {
+                    if(!CheckCrossReferencesAndSetData(1, TDEntry.HeadCode, AVEntry.OtherHeadCode, true, false, GiveMessages))
+                    // true = shuttle
+                    {
+                        Utilities->CallLogPop(1100);
+                        return(false); // error message given in called function
+                    }
+                }
+            }
+        }
+    }
+
+// check for proper non-repeating link cross references and that they have no repeats & that times are consistent
+    for(unsigned int x = 0; x < TrainDataVector.size(); x++)
+    {
+        const TTrainDataEntry &TDEntry = TrainDataVector.at(x);
+        for(unsigned int y = 0; y < TrainDataVector.at(x).ActionVector.size(); y++)
+        {
+            const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
+            if(AVEntry.NonRepeatingShuttleLinkHeadCode != "")
+            {
+                if(!CheckNonRepeatingShuttleLinksAndSetData(0, TDEntry.HeadCode, AVEntry.NonRepeatingShuttleLinkHeadCode, false, GiveMessages))
+                {
+                    Utilities->CallLogPop(1060);
+                    return(false); // error message given in called function
+                }
+            }
+        }
+    }
+
+
 //at v2.15.0 we want to set Sns, Sfs location names, but to set Sns & Sfs first need the linked Fns & fsp/rsp to have locations set as they aren't yet,
 //and before v2.15.0 they were set from the corresponding Sns & Sfs locations, which in turn were set from later TimeLoc departures.  At v2.15.0 it is required to have
 //these commands followed by Frh & Fjo, so this is why we need the linked Fns & fsp/rsp to have locations set first.  Now all Fns will have a TimeLoc before, so
@@ -14562,7 +14710,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 if(AVEntry.OtherHeadCode != "")
                 {
-                    if(!CheckCrossReferencesAndSetData(0, TDEntry.HeadCode, AVEntry.OtherHeadCode, false, GiveMessages))
+                    if(!CheckCrossReferencesAndSetData(0, TDEntry.HeadCode, AVEntry.OtherHeadCode, false, true, GiveMessages))
                     // false = non-shuttle
                     {
                         Utilities->CallLogPop(864);
@@ -14584,7 +14732,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 if(AVEntry.OtherHeadCode != "")
                 {
-                    if(!CheckCrossReferencesAndSetData(1, TDEntry.HeadCode, AVEntry.OtherHeadCode, true, GiveMessages))
+                    if(!CheckCrossReferencesAndSetData(1, TDEntry.HeadCode, AVEntry.OtherHeadCode, true, true, GiveMessages))
                     // true = shuttle
                     {
                         Utilities->CallLogPop(1100);
@@ -14604,7 +14752,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
             if(AVEntry.NonRepeatingShuttleLinkHeadCode != "")
             {
-                if(!CheckNonRepeatingShuttleLinksAndSetData(0, TDEntry.HeadCode, AVEntry.NonRepeatingShuttleLinkHeadCode, GiveMessages))
+                if(!CheckNonRepeatingShuttleLinksAndSetData(0, TDEntry.HeadCode, AVEntry.NonRepeatingShuttleLinkHeadCode, true, GiveMessages))
                 {
                     Utilities->CallLogPop(1060);
                     return(false); // error message given in called function
@@ -14907,7 +15055,7 @@ bool TTrainController::CheckForDuplicateCrossReferences(int Caller, AnsiString M
 
 // ---------------------------------------------------------------------------
 
-bool TTrainController::CheckCrossReferencesAndSetData(int Caller, AnsiString MainHeadCode, AnsiString OtherHeadCode, bool Shuttle, bool GiveMessages)
+bool TTrainController::CheckCrossReferencesAndSetData(int Caller, AnsiString MainHeadCode, AnsiString OtherHeadCode, bool Shuttle, bool SetDataAndCheckLocations, bool GiveMessages)
 /* Return false for no find or more than one find, check correct types of link
           First run through all trains whose headcode is the MainHeadCode (may be > 1) & for each entry whose
           'other' is OtherHeadCode increment a forward counter.  Keep a pointer to the 'OtherHeadCode' entry for use later
@@ -15048,29 +15196,32 @@ bool TTrainController::CheckCrossReferencesAndSetData(int Caller, AnsiString Mai
         Utilities->CallLogPop(1059);
         return(false);
     }
-    if(ForwardEntryPtr->LocationName == "")
+    if(SetDataAndCheckLocations)
     {
-        SecondPassMessage(GiveMessages, "Error in timetable - location error in cross referenced trains " + MainHeadCode + " and " + OtherHeadCode +
-                          ".  One or other service does not have a location set");
-        TrainDataVector.clear();
-        Utilities->CallLogPop(526);
-        return(false);
-    }
-    if(ReverseEntryPtr->LocationName == "")
-    {
-        SecondPassMessage(GiveMessages, "Error in timetable - location error in cross referenced trains " + MainHeadCode + " and " + OtherHeadCode +
-                          ".  One or other service does not have a location set");
-        TrainDataVector.clear();
-        Utilities->CallLogPop(527);
-        return(false);
-    }
-    if(ForwardEntryPtr->LocationName != ReverseEntryPtr->LocationName)
-    {
-        SecondPassMessage(GiveMessages, "Error in timetable - cross referenced train " + OtherHeadCode +
-                          " is at a different location to the referencing train " + MainHeadCode);
-        TrainDataVector.clear();
-        Utilities->CallLogPop(842);
-        return(false);
+        if(ForwardEntryPtr->LocationName == "")
+        {
+            SecondPassMessage(GiveMessages, "Error in timetable - location error in cross referenced trains " + MainHeadCode + " and " + OtherHeadCode +
+                              ".  One or other service does not have a location set");
+            TrainDataVector.clear();
+            Utilities->CallLogPop(526);
+            return(false);
+        }
+        if(ReverseEntryPtr->LocationName == "")
+        {
+            SecondPassMessage(GiveMessages, "Error in timetable - location error in cross referenced trains " + MainHeadCode + " and " + OtherHeadCode +
+                              ".  One or other service does not have a location set");
+            TrainDataVector.clear();
+            Utilities->CallLogPop(527);
+            return(false);
+        }
+        if(ForwardEntryPtr->LocationName != ReverseEntryPtr->LocationName)
+        {
+            SecondPassMessage(GiveMessages, "Error in timetable - cross referenced train " + OtherHeadCode +
+                              " is at a different location to the referencing train " + MainHeadCode);
+            TrainDataVector.clear();
+            Utilities->CallLogPop(842);
+            return(false);
+        }
     }
     // ignore shuttle repeat links for first time check
     if(!Shuttle)
@@ -15158,32 +15309,35 @@ bool TTrainController::CheckCrossReferencesAndSetData(int Caller, AnsiString Mai
         }
         else
         {
-            if(!(Track->TimetabledLocationNameAllocated(4, ForwardEntryPtr->LocationName)))
+            if(SetDataAndCheckLocations)
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - can't find timetabled location '" + ForwardEntryPtr->LocationName + "' in railway - perhaps there are concourses without platforms?");
-                TrainDataVector.clear();
-                Utilities->CallLogPop(849);
-                return(false);
-            }
-            if(!(Track->OneNamedLocationElementAtLocation(0, ForwardEntryPtr->LocationName)))
-            {
-                SecondPassMessage(GiveMessages, "Error in timetable - can't find any named location elements at '" + ForwardEntryPtr->LocationName + "' - perhaps there are concourses without platforms?");
-                TrainDataVector.clear();
-                Utilities->CallLogPop(850);
-                return(false);
-            }
-            if(!(Track->OneNamedLocationLongEnoughForSplit(0, ForwardEntryPtr->LocationName)))
-            {
-                SecondPassMessage(GiveMessages, "Error in timetable - location too short to split a train at " + ForwardEntryPtr->LocationName);
-                TrainDataVector.clear();
-                Utilities->CallLogPop(846);
-                return(false);
-            }
-            ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
-            ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
-            if(OtherTrainDataPtr->Description == "")
-            {
-                OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
+                if(!(Track->TimetabledLocationNameAllocated(4, ForwardEntryPtr->LocationName)))
+                {
+                    SecondPassMessage(GiveMessages, "Error in timetable - can't find timetabled location '" + ForwardEntryPtr->LocationName + "' in railway - perhaps there are concourses without platforms?");
+                    TrainDataVector.clear();
+                    Utilities->CallLogPop(849);
+                    return(false);
+                }
+                if(!(Track->OneNamedLocationElementAtLocation(0, ForwardEntryPtr->LocationName)))
+                {
+                    SecondPassMessage(GiveMessages, "Error in timetable - can't find any named location elements at '" + ForwardEntryPtr->LocationName + "' - perhaps there are concourses without platforms?");
+                    TrainDataVector.clear();
+                    Utilities->CallLogPop(850);
+                    return(false);
+                }
+                if(!(Track->OneNamedLocationLongEnoughForSplit(0, ForwardEntryPtr->LocationName)))
+                {
+                    SecondPassMessage(GiveMessages, "Error in timetable - location too short to split a train at " + ForwardEntryPtr->LocationName);
+                    TrainDataVector.clear();
+                    Utilities->CallLogPop(846);
+                    return(false);
+                }
+                ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
+                ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
+                if(OtherTrainDataPtr->Description == "")
+                {
+                    OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
+                }
             }
             // NB: May not be set if main train is a service continuation without a description, if so can't do much about it but doesn't affect operation, just the train information display
             OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed;
@@ -15213,11 +15367,14 @@ bool TTrainController::CheckCrossReferencesAndSetData(int Caller, AnsiString Mai
         }
         else
         {
-            ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
-            ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
-            if(OtherTrainDataPtr->Description == "")
+            if(SetDataAndCheckLocations)
             {
-                OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
+                ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
+                ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
+                if(OtherTrainDataPtr->Description == "")
+                {
+                    OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
+                }
             }
             // Probably redundant as this is continued from the earlier service when the changeover happens (also may not be set here yet if a service continuation)
             OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed;
@@ -15247,8 +15404,11 @@ bool TTrainController::CheckCrossReferencesAndSetData(int Caller, AnsiString Mai
         }
         else
         {
-            ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
-            ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
+            if(SetDataAndCheckLocations)
+            {
+                ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
+                ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
+            }
 /*
             if((MainTrainDataPtr->MaxRunningSpeed > 5) && (MainTrainDataPtr->MaxRunningSpeed < OtherTrainDataPtr->MaxRunningSpeed))
             {
@@ -15289,8 +15449,11 @@ bool TTrainController::CheckCrossReferencesAndSetData(int Caller, AnsiString Mai
         }
         else
         {
-            ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
-            ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
+            if(SetDataAndCheckLocations)
+            {
+                ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
+                ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
+            }
 /* don't need LinkedTrainEntryPtr for 'OtherTrain' & don't need data transfer as this is done in the
               non-repeating link for Sns-sh & is provided at the outset for Snt-sh
 */
@@ -15889,8 +16052,8 @@ bool TTrainController::CheckShuttleRepeatTime(int Caller, TDateTime ForwardEvent
 
 // ---------------------------------------------------------------------------
 
-bool TTrainController::CheckNonRepeatingShuttleLinksAndSetData(int Caller, AnsiString MainHeadCode, AnsiString NonRepeatingHeadCode, bool GiveMessages)
-// check for proper non-repeating link cross references and that they have no repeats & that times are consistent
+bool TTrainController::CheckNonRepeatingShuttleLinksAndSetData(int Caller, AnsiString MainHeadCode, AnsiString NonRepeatingHeadCode, bool SetDataAndCheckLocations, bool GiveMessages)
+// check for proper non-repeating link cross references and that they have no repeats & that times are consistent, set links if SetDataAndCheckLocations true
 
 /* Double crosslink (shuttle) table:
 Command   Format                    OtherHead                        NonRepeating-  LinkTrain-   NonRepeating-   Decsription
@@ -15999,29 +16162,32 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         Utilities->CallLogPop(1065);
         return(false);
     }
-    if(ForwardEntryPtr->LocationName == "")
+    if(SetDataAndCheckLocations)
     {
-        SecondPassMessage(GiveMessages, "Error in timetable - location error in cross referenced trains " + MainHeadCode + " and " + NonRepeatingHeadCode +
-                          ".  One or other service does not have a location set");
-        TrainDataVector.clear();
-        Utilities->CallLogPop(1066);
-        return(false);
-    }
-    if(ReverseEntryPtr->LocationName == "")
-    {
-        SecondPassMessage(GiveMessages, "Error in timetable - location error in cross referenced trains " + MainHeadCode + " and " + NonRepeatingHeadCode +
-                          ".  One or other service does not have a location set");
-        TrainDataVector.clear();
-        Utilities->CallLogPop(1067);
-        return(false);
-    }
-    if(ForwardEntryPtr->LocationName != ReverseEntryPtr->LocationName)
-    {
-        SecondPassMessage(GiveMessages, "Error in timetable - cross referenced train " + NonRepeatingHeadCode +
-                          " is at a different location to the referencing train " + MainHeadCode);
-        TrainDataVector.clear();
-        Utilities->CallLogPop(1068);
-        return(false);
+        if(ForwardEntryPtr->LocationName == "")
+        {
+            SecondPassMessage(GiveMessages, "Error in timetable - location error in cross referenced trains " + MainHeadCode + " and " + NonRepeatingHeadCode +
+                              ".  One or other service does not have a location set");
+            TrainDataVector.clear();
+            Utilities->CallLogPop(1066);
+            return(false);
+        }
+        if(ReverseEntryPtr->LocationName == "")
+        {
+            SecondPassMessage(GiveMessages, "Error in timetable - location error in cross referenced trains " + MainHeadCode + " and " + NonRepeatingHeadCode +
+                              ".  One or other service does not have a location set");
+            TrainDataVector.clear();
+            Utilities->CallLogPop(1067);
+            return(false);
+        }
+        if(ForwardEntryPtr->LocationName != ReverseEntryPtr->LocationName)
+        {
+            SecondPassMessage(GiveMessages, "Error in timetable - cross referenced train " + NonRepeatingHeadCode +
+                              " is at a different location to the referencing train " + MainHeadCode);
+            TrainDataVector.clear();
+            Utilities->CallLogPop(1068);
+            return(false);
+        }
     }
     if(ForwardEntryPtr->Command == "F-nshs")
     // i.e. the non repeating link into the shuttle service
@@ -16095,11 +16261,14 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         }
         else
         {
-            ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
-            ReverseEntryPtr->NonRepeatingShuttleLinkEntryPtr = MainTrainDataPtr;
-            if(OtherTrainDataPtr->Description == "")
+            if(SetDataAndCheckLocations)
             {
-                OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
+                ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
+                ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
+                if(OtherTrainDataPtr->Description == "")
+                {
+                    OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
+                }
             }
             // Probably redundant as this is continued from the earlier service when the changeover happens (also may not be set here yet if a service continuation)
             OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed;
@@ -16131,17 +16300,19 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
         }
         else
         {
-            ForwardEntryPtr->NonRepeatingShuttleLinkEntryPtr = OtherTrainDataPtr;
-            // links to the non-repeating non-shuttle linked service
-            ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
-            // needed for creating formatted timetable
-            if(OtherTrainDataPtr->Description == "")
+            if(SetDataAndCheckLocations)
             {
-                OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
+                ForwardEntryPtr->NonRepeatingShuttleLinkEntryPtr = OtherTrainDataPtr;
+                // links to the non-repeating non-shuttle linked service
+                ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
+                // needed for creating formatted timetable
+                if(OtherTrainDataPtr->Description == "")
+                {
+                    OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
+                }
             }
             // Probably redundant as this is continued from the earlier service when the changeover happens (also may not be set here yet if a service continuation)
             OtherTrainDataPtr->MaxRunningSpeed = MainTrainDataPtr->MaxRunningSpeed;
-            // Probably redundant as this is continued from the earlier service when the changeover happens (also may not be set here yet if a service continuation)
         }
     }
     Utilities->CallLogPop(1077);

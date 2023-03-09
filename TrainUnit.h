@@ -930,7 +930,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 /// Used to compile ExitList from a string list of element IDs, returns true for success or gives a message & returns false for failure, used in timetable validation
     bool CheckAndPopulateListOfIDs(int Caller, AnsiString IDSet, TNumList &ExitList, bool GiveMessages);
 /// A timetable validation function where all service cross references are checked for validity and set pointers and train information, return true for success
-    bool CheckCrossReferencesAndSetData(int Caller, AnsiString SoughtHeadCode, AnsiString SeekingHeadCode, bool Shuttle, bool GiveMessages);
+    bool CheckCrossReferencesAndSetData(int Caller, AnsiString SoughtHeadCode, AnsiString SeekingHeadCode, bool Shuttle, bool SetDataAndCheckLocations, bool GiveMessages);
 /// A timetable validation function where referenced services are checked for uniqueness, returns true for success
     bool CheckForDuplicateCrossReferences(int Caller, AnsiString MainHeadCode, AnsiString SecondHeadCode, bool GiveMessages);
 /// Checks fourth segment in timetable for train splits - percentage mass then '-' then percentage power of split train
@@ -940,7 +940,7 @@ since OA panel only rebuilt every 2 secs when mouseup on panel the train could b
 /// Returns true if the location name complies with requirements
     bool CheckLocationValidity(int Caller, AnsiString LocStr, bool GiveMessages, bool CheckLocationsExistInRailway);
 /// A timetable validation function where cross references are checked for validity for non-repeating shuttle links, pointers and train information are set, returns true for success
-    bool CheckNonRepeatingShuttleLinksAndSetData(int Caller, AnsiString MainHeadCode, AnsiString NonRepeatingHeadCode, bool GiveMessages);
+    bool CheckNonRepeatingShuttleLinksAndSetData(int Caller, AnsiString MainHeadCode, AnsiString NonRepeatingHeadCode, bool SetDataAndCheckLocations, bool GiveMessages);
 /// The forward train is the finish shuttle entry 'Fns-sh', the reverse (new non-repeating service) time must = Forward time + (RepeatMins * RepeatNumber), return true for success
     bool CheckNonRepeatingShuttleLinkTime(int Caller, TDateTime ReverseEventTime, TDateTime ForwardEventTime, int RepeatMins, int RepeatNumber);
 /// Part of the session file integrity check for ContinuationAutoSigEntries, true for success

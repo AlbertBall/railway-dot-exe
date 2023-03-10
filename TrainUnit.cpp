@@ -7877,7 +7877,7 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
         }
         if(AVI->Command == "jbo") //added at v2.15.0
         {
-            TDateTime TTTime = TrainController->GetControllerTrainTime(26, AVI->EventTime, RptNum, IncrementalMinutes);
+            TDateTime TTTime = TrainController->GetControllerTrainTime(28, AVI->EventTime, RptNum, IncrementalMinutes);
             if((DelayedRandMins >= 1) && !TimetableTime)
             {
                 EventTime = Utilities->Format96HHMM(TTTime + TDateTime(DelayedRandMins/1440));
@@ -7896,7 +7896,7 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
         }
         if((AVI->Command == "Fns") || (AVI->Command == "F-nshs") || (AVI->Command == "Fns-sh")) //added at v2.15.0
         {
-            TDateTime TTTime = TrainController->GetControllerTrainTime(26, AVI->EventTime, RptNum, IncrementalMinutes);
+            TDateTime TTTime = TrainController->GetControllerTrainTime(29, AVI->EventTime, RptNum, IncrementalMinutes);
             if((DelayedRandMins >= 1) && !TimetableTime)
             {
                 EventTime = Utilities->Format96HHMM(TTTime + TDateTime(DelayedRandMins/1440));
@@ -7910,7 +7910,7 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
                 EventTime = Utilities->Format96HHMM(TTTime);
             }
             RetStr += "\nNew service finishes and forms another new service at approx. " + EventTime;
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2615);
             return(RetStr);
         }
         if(AVI->Command == "Fjo") //added at v2.15.0
@@ -7929,13 +7929,13 @@ AnsiString TTrain::GetNewServiceDepartureInfo(int Caller, TActionVectorEntry *Pt
                 EventTime = Utilities->Format96HHMM(TTTime);
             }
             RetStr += "\nNew service finishes and joins " + AVI->OtherHeadCode + " at approx. " + EventTime;
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2605);
             return(RetStr);
         }
         if(AVI->Command == "Frh") //added at v2.15.0
         {
             RetStr += "\nNew service finishes and remains at the location.";
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2606);
             return(RetStr);
         }
         if((AVI->FormatType == TimeLoc) && (AVI->DepartureTime > TDateTime(-1))) //departure time set
@@ -10930,29 +10930,29 @@ AnsiString TTrainController::ControllerGetNewServiceDepartureInfo(int Caller, TA
         }
         if(AVI->Command == "jbo")
         {
-            EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(22, AVI->EventTime, RptNum, IncrementalMinutes));
+            EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(30, AVI->EventTime, RptNum, IncrementalMinutes));
             RetStr += "\nNew service joined by " + AVI->OtherHeadCode + " at " + EventTime;
             Utilities->CallLogPop(2238);
             return(RetStr);
         }
         if((AVI->Command == "Fns") || (AVI->Command == "F-nshs") || (AVI->Command == "Fns-sh"))
         {
-            EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(22, AVI->EventTime, RptNum, IncrementalMinutes));
+            EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(31, AVI->EventTime, RptNum, IncrementalMinutes));
             RetStr += "\nNew service finishes and forms another new service at " + EventTime;
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2607);
             return(RetStr);
         }
         if(AVI->Command == "Fjo")
         {
             EventTime = Utilities->Format96HHMM(TrainController->GetControllerTrainTime(22, AVI->EventTime, RptNum, IncrementalMinutes));
             RetStr += "\nNew service finishes and joins " + AVI->OtherHeadCode + " at " + EventTime;
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2608);
             return(RetStr);
         }
         if(AVI->Command == "Frh")
         {
             RetStr += "\nNew service finishes and remains at location.";
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2609);
             return(RetStr);
         }
         if((AVI->FormatType == TimeLoc) && (AVI->DepartureTime > TDateTime(-1))) //departure time set
@@ -13623,17 +13623,17 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
             if(AVEntry.OtherHeadCode != "")
             {
-                if(!CheckForDuplicateCrossReferences(0, TDEntry.HeadCode, AVEntry.OtherHeadCode, GiveMessages))
+                if(!CheckForDuplicateCrossReferences(2, TDEntry.HeadCode, AVEntry.OtherHeadCode, GiveMessages))
                 {
-                    Utilities->CallLogPop(1584);
+                    Utilities->CallLogPop(2610);
                     return(false); // error message given in called function
                 }
             }
             if(AVEntry.NonRepeatingShuttleLinkHeadCode != "")
             {
-                if(!CheckForDuplicateCrossReferences(1, TDEntry.HeadCode, AVEntry.NonRepeatingShuttleLinkHeadCode, GiveMessages))
+                if(!CheckForDuplicateCrossReferences(3, TDEntry.HeadCode, AVEntry.NonRepeatingShuttleLinkHeadCode, GiveMessages))
                 {
-                    Utilities->CallLogPop(1585);
+                    Utilities->CallLogPop(2611);
                     return(false); // error message given in called function
                 }
             }
@@ -13650,10 +13650,10 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 if(AVEntry.OtherHeadCode != "")
                 {
-                    if(!CheckCrossReferencesAndSetData(0, TDEntry.HeadCode, AVEntry.OtherHeadCode, false, false, GiveMessages))
+                    if(!CheckCrossReferencesAndSetData(2, TDEntry.HeadCode, AVEntry.OtherHeadCode, false, false, GiveMessages))
                     // false = non-shuttle
                     {
-                        Utilities->CallLogPop(864);
+                        Utilities->CallLogPop(2612);
                         return(false); // error message given in called function
                     }
                 }
@@ -13672,10 +13672,10 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 if(AVEntry.OtherHeadCode != "")
                 {
-                    if(!CheckCrossReferencesAndSetData(1, TDEntry.HeadCode, AVEntry.OtherHeadCode, true, false, GiveMessages))
+                    if(!CheckCrossReferencesAndSetData(3, TDEntry.HeadCode, AVEntry.OtherHeadCode, true, false, GiveMessages))
                     // true = shuttle
                     {
-                        Utilities->CallLogPop(1100);
+                        Utilities->CallLogPop(2613);
                         return(false); // error message given in called function
                     }
                 }
@@ -13692,9 +13692,9 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
             if(AVEntry.NonRepeatingShuttleLinkHeadCode != "")
             {
-                if(!CheckNonRepeatingShuttleLinksAndSetData(0, TDEntry.HeadCode, AVEntry.NonRepeatingShuttleLinkHeadCode, false, GiveMessages))
+                if(!CheckNonRepeatingShuttleLinksAndSetData(1, TDEntry.HeadCode, AVEntry.NonRepeatingShuttleLinkHeadCode, false, GiveMessages))
                 {
-                    Utilities->CallLogPop(1060);
+                    Utilities->CallLogPop(2614);
                     return(false); // error message given in called function
                 }
             }

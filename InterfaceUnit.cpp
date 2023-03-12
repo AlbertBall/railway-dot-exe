@@ -94,7 +94,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS64 " + GetVersion();
+        ProgramVersion = "RailOS32 " + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -9536,7 +9536,7 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
                     }
                     else //this removes all when no warnings, as would stay visible if StopFlashFlag true
                     {
-                        CrashImage->Visible = false;
+                        FlashControlButton->Visible = false; //added at v2.15.0
                         DerailImage->Visible = false;
                         SPADImage->Visible = false;
                         TrainFailedImage->Visible = false;
@@ -9544,10 +9544,9 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
                         SignalStopImage->Visible = false;
                         BufferAttentionImage->Visible = false;
                         ManualLCDownImage->Visible = false;
-                        FlashControlButton->Visible = false; //added at v2.15.0
                     }
                 }
-                else if(!StopFlashFlag) //added at v2.15.0
+                else if(!StopFlashFlag) //!WarningFlash, added at v2.15.0
                 {
                     CrashImage->Visible = false;
                     DerailImage->Visible = false;
@@ -9557,6 +9556,41 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
                     SignalStopImage->Visible = false;
                     BufferAttentionImage->Visible = false;
                     ManualLCDownImage->Visible = false;
+                }
+                else //!WarningFlash & StopFlashFlag, need to remove image if the warning is absent
+                {
+                    if(!TrainController->CrashWarning)
+                    {
+                        CrashImage->Visible = false;
+                    }
+                    if(!TrainController->DerailWarning)
+                    {
+                        DerailImage->Visible = false;
+                    }
+                    if(!TrainController->SPADWarning)
+                    {
+                        SPADImage->Visible = false;
+                    }
+                    if(!TrainController->TrainFailedWarning)
+                    {
+                        TrainFailedImage->Visible = false;
+                    }
+                    if(!TrainController->CallOnWarning)
+                    {
+                        CallOnImage->Visible = false;
+                    }
+                    if(!TrainController->SignalStopWarning)
+                    {
+                        SignalStopImage->Visible = false;
+                    }
+                    if(!TrainController->BufferAttentionWarning)
+                    {
+                        BufferAttentionImage->Visible = false;
+                    }
+                    if(!ManualLCDownAttentionWarning) //added at v2.9.0
+                    {
+                        ManualLCDownImage->Visible = false;
+                    }
                 }
             }
             else

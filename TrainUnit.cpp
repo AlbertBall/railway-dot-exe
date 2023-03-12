@@ -10123,7 +10123,7 @@ void TTrainController::Operate(int Caller)
                 break; //only one exited train will be dealt with at a time (see below) so no point looking further
             }
         }
-        // set warning flags
+        // set warning flags  (ManualLCDownAttentionWarning dealt with in InterfaceUnit)
         CrashWarning = false;
         DerailWarning = false;
         SPADWarning = false;

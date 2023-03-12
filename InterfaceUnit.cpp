@@ -94,7 +94,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion();
+        ProgramVersion = "RailOS64 " + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -460,6 +460,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         ExitPrefDirButton->Glyph->LoadFromResourceName(0, "Exit");
         ExitTrackButton->Glyph->LoadFromResourceName(0, "Exit");
         ExitTTModeButton->Glyph->LoadFromResourceName(0, "Exit");
+        FlashControlButton->Glyph->LoadFromResourceName(0, "NoFlash");   //added at v2.15.0
         FontButton->Glyph->LoadFromResourceName(0, "FontGraphic");
         HomeButton->Glyph->LoadFromResourceName(0, "Home");
         LocationNameButton->Glyph->LoadFromResourceName(0, "NameLocs");
@@ -650,6 +651,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         Utilities->PointChangeEventsPerFailure = Utilities->NilPointChangeEventsPerFailure; //set high initially
         Utilities->CumulativeDelayedRandMinsAllTrains = 0; //added at v2.13.0
         AllEntriesTTListBox->TopIndex = 0; //added at v2.13.0 to initialise the value (seemed to initialise to 0 without this but not documented)
+        FlashControlButton->Visible = false; //added at v2.15.0
 
         SigImagePanel->Left = (Interface->Width - SigImagePanel->Width) / 2; // added for v2.3.0
 
@@ -9527,8 +9529,25 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
                     {
                         ManualLCDownImage->Visible = true;
                     }
+                    if((TrainController->CrashWarning) || (TrainController->DerailWarning) || (TrainController->SPADWarning) || (TrainController->TrainFailedWarning) ||
+                          (TrainController->CallOnWarning) || (TrainController->SignalStopWarning) || (TrainController->BufferAttentionWarning) || (ManualLCDownAttentionWarning))
+                    {  //if any warnings visible then button is visible, else not
+                        FlashControlButton->Visible = true; //added at v2.15.0
+                    }
+                    else //this removes all when no warnings, as would stay visible if StopFlashFlag true
+                    {
+                        CrashImage->Visible = false;
+                        DerailImage->Visible = false;
+                        SPADImage->Visible = false;
+                        TrainFailedImage->Visible = false;
+                        CallOnImage->Visible = false;
+                        SignalStopImage->Visible = false;
+                        BufferAttentionImage->Visible = false;
+                        ManualLCDownImage->Visible = false;
+                        FlashControlButton->Visible = false; //added at v2.15.0
+                    }
                 }
-                else
+                else if(!StopFlashFlag) //added at v2.15.0
                 {
                     CrashImage->Visible = false;
                     DerailImage->Visible = false;
@@ -9550,6 +9569,7 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
                 SignalStopImage->Visible = false;
                 BufferAttentionImage->Visible = false;
                 ManualLCDownAttentionWarning = false;
+                FlashControlButton->Visible = false; //added at v2.15.0
             }
         } // if(WarningFlashCount == 0)
 
@@ -16600,6 +16620,8 @@ void TInterface::SetLevel1Mode(int Caller)
         DelayMenu->Enabled = false;
         FailureMenu->Visible = false;  //added at v2.14.0
         FailureMenu->Enabled = false;
+        FlashControlButton->Visible = false; //added at v2.15.0
+        StopFlashFlag = false;
         if(Track->IsTrackFinished())
         {
             PlanPrefDirsMenuItem->Enabled = true;
@@ -17068,7 +17090,6 @@ void TInterface::SetLevel1Mode(int Caller)
         DelayMenu->Enabled = true;
         FailureMenu->Visible = true;  //added at v2.14.0
         FailureMenu->Enabled = true;
-
         CallingOnButton->Visible = true;
         PresetAutoSigRoutesButton->Visible = false;
         InfoPanel->Visible = true;
@@ -24604,6 +24625,22 @@ void __fastcall TInterface::MajorFailuresMenuItemClick(TObject *Sender)
 
 //---------------------------------------------------------------------------
 
+void __fastcall TInterface::FlashControlButtonClick(TObject *Sender) //added at v2.15.0
+{
+    if(StopFlashFlag)
+    {
+        StopFlashFlag = false;
+        FlashControlButton->Glyph->LoadFromResourceName(0, "NoFlash");
+    }
+    else
+    {
+        StopFlashFlag = true;
+        FlashControlButton->Glyph->LoadFromResourceName(0, "Flash");
+    }
+}
+
+//---------------------------------------------------------------------------
+
 bool TInterface::GetTrainIDOrContinuationPosition(int Caller, int X, int Y, int &TrainID, int &TrackVectorPosition)
 // returns true if value(s) valid
 {
@@ -26983,5 +27020,6 @@ void TInterface::PlayerHandshakingActions()
 */
 
 //---------------------------------------------------------------------------
+
 
 

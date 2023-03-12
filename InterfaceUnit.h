@@ -750,6 +750,7 @@ __published: // IDE-managed Components
     TBitBtn *SigAutoNonConsecButton;
     TButton *InvertTTEntryButton;
     TButton *Button1;
+    TBitBtn *FlashControlButton;  //added at v2.15.0
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -973,6 +974,7 @@ __published: // IDE-managed Components
     void __fastcall MajorFailuresMenuItemClick(TObject *Sender);
     void __fastcall SigAutoNonConsecButtonClick(TObject *Sender);
     void __fastcall InvertTTEntryButtonClick(TObject *Sender);
+    void __fastcall FlashControlButtonClick(TObject *Sender);  //added at v2.15.0
 
 
 public: // AboutForm needs access to these
@@ -1304,6 +1306,8 @@ private:
 ///< true when a valid selected screen area has been clicked after a 'Copy' or 'Cut' selected in the 'Edit' menu
     bool ShiftKey;
 ///< true when the SHIFT key is pressed (see also CtrlKey)
+    bool StopFlashFlag;
+///< true to stop stopped at signal warning image from flashing
     bool SkipFormResizeEvent;
 ///< added at v2.1.0 to avoid calling the event during startup and shutdown
     bool TempCursorSet;

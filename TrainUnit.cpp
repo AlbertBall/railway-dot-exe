@@ -14002,37 +14002,15 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
     }
     // all location names should now be set
 
-//check that jbo, cdt and dsc commands all named or give error message
+//now test for any unnamed AtLoc entries where Command != "" and give message if find any
     for(unsigned int x = 0; x < TrainDataVector.size(); x++)
     {
         for(unsigned int y = 0; y < TrainDataVector.at(x).ActionVector.size(); y++)
         {
             const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
-            if((AVEntry.Command == "jbo") || (AVEntry.Command == "cdt") || (AVEntry.Command == "dsc"))
+            if((AVEntry.LocationType == AtLocation) && (AVEntry.LocationName == "") && (AVEntry.Command != ""))
             {
-                if(AVEntry.LocationName == "")
-                {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a 'jbo', 'cdt' or 'dsc' event must be preceded by an event at the same location that has an identified location name, normally an arrival, see " + TrainDataVector.at(x).ServiceReference);
-                    TrainDataVector.clear();
-                    Utilities->CallLogPop(2618);
-                    return(false);
-                }
-            }
-        }
-    }
-
-
-//now test for any unnamed AtLoc entries and give message if find any
-    for(unsigned int x = 0; x < TrainDataVector.size(); x++)
-    {
-        for(unsigned int y = 0; y < TrainDataVector.at(x).ActionVector.size(); y++)
-        {
-            const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
-            if((AVEntry.LocationType == AtLocation) && (AVEntry.LocationName == ""))
-            {
-                SecondPassMessage(GiveMessages, "Error in timetable - an entry at a location does not have a location name in " + TrainDataVector.at(x).ServiceReference +
-                    ". Please save your railway and timetable and ask @Albert for help via the Discord help channel as this situation should not arise.  It indicates that "
-                    "there is a validation check missing.");
+                SecondPassMessage(GiveMessages, "Error in timetable - event " + AVEntry.Command + " must be preceded by an event at the same location that has an identified location name, normally an arrival, see " + TrainDataVector.at(x).ServiceReference);
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2619);
                 return(false);

@@ -1,0 +1,26 @@
+digraph "API::reset_all"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="API::reset_all",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="reset all variables"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TInterface::ResetAll",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ac5e079dc6f8023485367f6db2e693caa",tooltip="Called during ClearEverything and on startup to reset all major railway data values."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TInterface::ClearEverything",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a686430e962991bc32742399164187b62",tooltip="First check whether a railway file has changed and if so ask user if really wants to close it without..."];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TInterface::ClearAllMenu\lItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a928eba983ac5132e1ae7799f8330451e",tooltip=" "];
+  Node3 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TInterface::ClockTimer2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5",tooltip="The main loop, called every clock tick via MasterClockTimer."];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TInterface::MasterClockTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f",tooltip=" "];
+  Node3 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TInterface::LoadRailwayMenu\lItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a96249c7622a9d55541de186483e04d2e",tooltip=" "];
+  Node3 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="TInterface::LoadSession",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2",tooltip="Load a session file."];
+  Node8 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="TInterface::TInterface",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a0659e748042e378f3e325652c9c2e6d2",tooltip="constructor"];
+}

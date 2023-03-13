@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.14.0</span>
+   &#160;<span id="projectnumber">v2.15.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -100,7 +100,8 @@ $(document).ready(function(){initNavTree('class_a_p_i.html',''); initResizable()
 <div class="dynheader">
 Collaboration diagram for API:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_a_p_i__coll__graph.svg" width="166" height="206"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 0 -->
+</div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -108,6 +109,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aea05113c3d6e4567708faedd0496a1e7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#aea05113c3d6e4567708faedd0496a1e7">API</a> (const AnsiString &amp;file_name)</td></tr>
 <tr class="memdesc:aea05113c3d6e4567708faedd0496a1e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">construct an <a class="el" href="class_a_p_i.html" title="a class which handles the fetching of information from the ROS interface via pointers to variables of...">API</a> object using creating the given INI file  <a href="class_a_p_i.html#aea05113c3d6e4567708faedd0496a1e7">More...</a><br /></td></tr>
 <tr class="separator:aea05113c3d6e4567708faedd0496a1e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a2f4241ce0a02bea5b9c5bd4129382e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#a3a2f4241ce0a02bea5b9c5bd4129382e">reset_all</a> ()</td></tr>
+<tr class="memdesc:a3a2f4241ce0a02bea5b9c5bd4129382e"><td class="mdescLeft">&#160;</td><td class="mdescRight">reset all variables  <a href="class_a_p_i.html#a3a2f4241ce0a02bea5b9c5bd4129382e">More...</a><br /></td></tr>
+<tr class="separator:a3a2f4241ce0a02bea5b9c5bd4129382e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9709328b5821e6ae094c10770bc5a498"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#a9709328b5821e6ae094c10770bc5a498">find_metadata_file</a> ()</td></tr>
+<tr class="memdesc:a9709328b5821e6ae094c10770bc5a498"><td class="mdescLeft">&#160;</td><td class="mdescRight">tries to find a metadata file for the currently session  <a href="class_a_p_i.html#a9709328b5821e6ae094c10770bc5a498">More...</a><br /></td></tr>
+<tr class="separator:a9709328b5821e6ae094c10770bc5a498"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac531383de112e6ecfe732c72028f31df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#ac531383de112e6ecfe732c72028f31df">add_metadata_str</a> (const AnsiString &amp;label, AnsiString *data)</td></tr>
 <tr class="memdesc:ac531383de112e6ecfe732c72028f31df"><td class="mdescLeft">&#160;</td><td class="mdescRight">add pointer to string variable to monitor value  <a href="class_a_p_i.html#ac531383de112e6ecfe732c72028f31df">More...</a><br /></td></tr>
 <tr class="separator:ac531383de112e6ecfe732c72028f31df"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,6 +124,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6d770c4a39e262a9a364a430ac7587f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#a6d770c4a39e262a9a364a430ac7587f6">add_metadata_int</a> (const AnsiString &amp;label, int *data)</td></tr>
 <tr class="memdesc:a6d770c4a39e262a9a364a430ac7587f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">add pointer to integer variable to monitor value  <a href="class_a_p_i.html#a6d770c4a39e262a9a364a430ac7587f6">More...</a><br /></td></tr>
 <tr class="separator:a6d770c4a39e262a9a364a430ac7587f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24df4bf6f49e4f42353f4bd04268d4eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#a24df4bf6f49e4f42353f4bd04268d4eb">write_string</a> (const AnsiString &amp;label, const AnsiString &amp;data)</td></tr>
+<tr class="memdesc:a24df4bf6f49e4f42353f4bd04268d4eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">write a string directly to the metadata  <a href="class_a_p_i.html#a24df4bf6f49e4f42353f4bd04268d4eb">More...</a><br /></td></tr>
+<tr class="separator:a24df4bf6f49e4f42353f4bd04268d4eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4039467fe2652d5826f10224608cd56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#ae4039467fe2652d5826f10224608cd56">write_int</a> (const AnsiString &amp;label, const int &amp;data)</td></tr>
+<tr class="memdesc:ae4039467fe2652d5826f10224608cd56"><td class="mdescLeft">&#160;</td><td class="mdescRight">write an integer directly to the metadata  <a href="class_a_p_i.html#ae4039467fe2652d5826f10224608cd56">More...</a><br /></td></tr>
+<tr class="separator:ae4039467fe2652d5826f10224608cd56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12de5384d7783f93cf7b3a19fa0d8e74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#a12de5384d7783f93cf7b3a19fa0d8e74">write_bool</a> (const AnsiString &amp;label, const bool &amp;data)</td></tr>
+<tr class="memdesc:a12de5384d7783f93cf7b3a19fa0d8e74"><td class="mdescLeft">&#160;</td><td class="mdescRight">write a boolean directly to the metadata  <a href="class_a_p_i.html#a12de5384d7783f93cf7b3a19fa0d8e74">More...</a><br /></td></tr>
+<tr class="separator:a12de5384d7783f93cf7b3a19fa0d8e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abebc08c03ceec2b898d8fe877b0efcba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#abebc08c03ceec2b898d8fe877b0efcba">dump</a> ()</td></tr>
 <tr class="memdesc:abebc08c03ceec2b898d8fe877b0efcba"><td class="mdescLeft">&#160;</td><td class="mdescRight">save currently recorded status data to INI file  <a href="class_a_p_i.html#abebc08c03ceec2b898d8fe877b0efcba">More...</a><br /></td></tr>
 <tr class="separator:abebc08c03ceec2b898d8fe877b0efcba"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,19 +144,23 @@ Public Member Functions</h2></td></tr>
 Private Attributes</h2></td></tr>
 <tr class="memitem:ab8c8347a7be811af2f0c102c2eb3b236"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#ab8c8347a7be811af2f0c102c2eb3b236">file_path_</a></td></tr>
 <tr class="separator:ab8c8347a7be811af2f0c102c2eb3b236"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77a81598cc3233ba0a21f98aa29889af"><td class="memItemLeft" align="right" valign="top">std::vector&lt; AnsiString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#a77a81598cc3233ba0a21f98aa29889af">reset_excludes_</a></td></tr>
+<tr class="separator:a77a81598cc3233ba0a21f98aa29889af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ea0e900d0f4bf06ba25587a034f8f4f"><td class="memItemLeft" align="right" valign="top">std::map&lt; AnsiString, AnsiString * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#a4ea0e900d0f4bf06ba25587a034f8f4f">metadata_str_</a></td></tr>
 <tr class="separator:a4ea0e900d0f4bf06ba25587a034f8f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a398a165383bd7158830ee2f0a98e89a5"><td class="memItemLeft" align="right" valign="top">std::map&lt; AnsiString, bool * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#a398a165383bd7158830ee2f0a98e89a5">metadata_bool_</a></td></tr>
 <tr class="separator:a398a165383bd7158830ee2f0a98e89a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adafb7d74cbe7709debfb54be4d482d4e"><td class="memItemLeft" align="right" valign="top">std::map&lt; AnsiString, int * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#adafb7d74cbe7709debfb54be4d482d4e">metadata_int_</a></td></tr>
 <tr class="separator:adafb7d74cbe7709debfb54be4d482d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade75f7ec04482591f5ec32e1348bfb86"><td class="memItemLeft" align="right" valign="top">std::map&lt; AnsiString, AnsiString &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_i.html#ade75f7ec04482591f5ec32e1348bfb86">train_statuses_</a></td></tr>
+<tr class="separator:ade75f7ec04482591f5ec32e1348bfb86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>a class which handles the fetching of information from the ROS interface via pointers to variables of interest </p>
 <hr  />
 <p>The <a class="el" href="class_a_p_i.html" title="a class which handles the fetching of information from the ROS interface via pointers to variables of...">API</a> class dumps variables of interest from ROS interface instance to an INI file so the metadata can be read by an external program </p>
 
-<p class="definition">Definition at line <a class="el" href="_a_p_i_8h_source.html#l00029">29</a> of file <a class="el" href="_a_p_i_8h_source.html">API.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8h_source.html#l00035">35</a> of file <a class="el" href="_a_p_i_8h_source.html">API.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aea05113c3d6e4567708faedd0496a1e7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aea05113c3d6e4567708faedd0496a1e7">&#9670;&nbsp;</a></span>API()</h2>
@@ -167,7 +187,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00014">14</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00012">12</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
 
 </div>
 </div>
@@ -190,7 +210,7 @@ Private Attributes</h2></td></tr>
 <hr  />
 <p> When ROS is closed the destructor additionally clears all keys within the INI file except the 'running' status which is set to 0 </p>
 
-<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00088">88</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00154">154</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
 
 </div>
 </div>
@@ -232,7 +252,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00027">27</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00024">24</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
 
 </div>
 </div>
@@ -273,7 +293,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00032">32</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00028">28</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -319,7 +339,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00022">22</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00020">20</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -347,11 +367,205 @@ Here is the caller graph for this function:</div>
 <hr  />
 <p> Iterates through all metadata mappings saving the results to the INI file specified during definition. </p>
 
-<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00037">37</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00094">94</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_a_p_i_abebc08c03ceec2b898d8fe877b0efcba_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a9709328b5821e6ae094c10770bc5a498"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9709328b5821e6ae094c10770bc5a498">&#9670;&nbsp;</a></span>find_metadata_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void API::find_metadata_file </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>tries to find a metadata file for the currently session </p>
+<hr  />
+<p> This assumes that the TOML file has been named after the loaded loaded railway file. </p>
+
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00044">44</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 1 -->
+</div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 2 -->
+</div>
+</div>
+
+</div>
+</div>
+<a id="a3a2f4241ce0a02bea5b9c5bd4129382e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a2f4241ce0a02bea5b9c5bd4129382e">&#9670;&nbsp;</a></span>reset_all()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void API::reset_all </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>reset all variables </p>
+<hr  />
+<p> Does not reset variables within the 'reset_excludes_' member</p>
+<p>sets all data to be empty </p>
+
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00131">131</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 3 -->
+</div>
+</div>
+
+</div>
+</div>
+<a id="a12de5384d7783f93cf7b3a19fa0d8e74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12de5384d7783f93cf7b3a19fa0d8e74">&#9670;&nbsp;</a></span>write_bool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void API::write_bool </td>
+          <td>(</td>
+          <td class="paramtype">const AnsiString &amp;&#160;</td>
+          <td class="paramname"><em>label</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool &amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>write a boolean directly to the metadata </p>
+<hr  />
+<p> Rather than tracking a string variable using a pointer write it directly, this is useful in cases where the value is only a temporary and so is not kept within the global scope.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">label</td><td>key to save recorded information under </td></tr>
+    <tr><td class="paramname">bool</td><td>data to write </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00040">40</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ae4039467fe2652d5826f10224608cd56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4039467fe2652d5826f10224608cd56">&#9670;&nbsp;</a></span>write_int()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void API::write_int </td>
+          <td>(</td>
+          <td class="paramtype">const AnsiString &amp;&#160;</td>
+          <td class="paramname"><em>label</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int &amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>write an integer directly to the metadata </p>
+<hr  />
+<p> Rather than tracking a string variable using a pointer write it directly, this is useful in cases where the value is only a temporary and so is not kept within the global scope.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">label</td><td>key to save recorded information under </td></tr>
+    <tr><td class="paramname">integer</td><td>data to write </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00036">36</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a24df4bf6f49e4f42353f4bd04268d4eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24df4bf6f49e4f42353f4bd04268d4eb">&#9670;&nbsp;</a></span>write_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void API::write_string </td>
+          <td>(</td>
+          <td class="paramtype">const AnsiString &amp;&#160;</td>
+          <td class="paramname"><em>label</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const AnsiString &amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>write a string directly to the metadata </p>
+<hr  />
+<p> Rather than tracking a string variable using a pointer write it directly, this is useful in cases where the value is only a temporary and so is not kept within the global scope.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">label</td><td>key to save recorded information under </td></tr>
+    <tr><td class="paramname">string</td><td>data to write </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8cpp_source.html#l00032">32</a> of file <a class="el" href="_a_p_i_8cpp_source.html">API.cpp</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 4 -->
+</div>
 </div>
 
 </div>
@@ -377,7 +591,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_a_p_i_8h_source.html#l00032">32</a> of file <a class="el" href="_a_p_i_8h_source.html">API.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8h_source.html#l00038">38</a> of file <a class="el" href="_a_p_i_8h_source.html">API.h</a>.</p>
 
 </div>
 </div>
@@ -401,7 +615,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_a_p_i_8h_source.html#l00034">34</a> of file <a class="el" href="_a_p_i_8h_source.html">API.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8h_source.html#l00041">41</a> of file <a class="el" href="_a_p_i_8h_source.html">API.h</a>.</p>
 
 </div>
 </div>
@@ -425,7 +639,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_a_p_i_8h_source.html#l00035">35</a> of file <a class="el" href="_a_p_i_8h_source.html">API.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8h_source.html#l00042">42</a> of file <a class="el" href="_a_p_i_8h_source.html">API.h</a>.</p>
 
 </div>
 </div>
@@ -449,7 +663,55 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_a_p_i_8h_source.html#l00033">33</a> of file <a class="el" href="_a_p_i_8h_source.html">API.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8h_source.html#l00040">40</a> of file <a class="el" href="_a_p_i_8h_source.html">API.h</a>.</p>
+
+</div>
+</div>
+<a id="a77a81598cc3233ba0a21f98aa29889af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77a81598cc3233ba0a21f98aa29889af">&#9670;&nbsp;</a></span>reset_excludes_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;AnsiString&gt; API::reset_excludes_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8h_source.html#l00039">39</a> of file <a class="el" href="_a_p_i_8h_source.html">API.h</a>.</p>
+
+</div>
+</div>
+<a id="ade75f7ec04482591f5ec32e1348bfb86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade75f7ec04482591f5ec32e1348bfb86">&#9670;&nbsp;</a></span>train_statuses_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;AnsiString, AnsiString&gt; API::train_statuses_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_a_p_i_8h_source.html#l00043">43</a> of file <a class="el" href="_a_p_i_8h_source.html">API.h</a>.</p>
 
 </div>
 </div>

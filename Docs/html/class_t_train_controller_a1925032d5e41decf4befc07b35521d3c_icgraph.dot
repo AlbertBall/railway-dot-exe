@@ -1,0 +1,47 @@
+digraph "TTrainController::CheckLocationValidity"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="TTrainController::CheckLocation\lValidity",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Returns true if the location name complies with requirements."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TTrain::LoadOneSessionTrain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a23c65e7f2b2130ae87811f70afb6d5bf",tooltip="Create one train with relevant member values from the sesion file."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TTrainController::LoadSession\lTrains",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a853ddf9799c9fd7063c81ffa1dc754d7",tooltip="load trains from a session file"];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TInterface::LoadSession",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2",tooltip="Load a session file."];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TInterface::ClockTimer2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5",tooltip="The main loop, called every clock tick via MasterClockTimer."];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TInterface::MasterClockTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f",tooltip=" "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TTrainController::SplitEntry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a23ca27d36d711136e0529ba8ae4f22f0",tooltip="Parse a single timetable service action, return true for success."];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="TInterface::InvertTTEntry\lButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ac725de40241ecbcb4bf72733dad52f4e",tooltip=" "];
+  Node7 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="TTrainController::Process\lOneTimetableLine",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a5c51eb1e0018e189966ffdbc5d251990",tooltip="Carry out preliminary (mainly syntax) validity checks on a single timetable service entry and (if Fin..."];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="TInterface::BuildTrainData\lVectorForLoadFile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a148e3f99d39f596dbd7d490403936154",tooltip="Convert a stored timetable file (either as a stand alone file or within a session file) to a loaded t..."];
+  Node10 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="TInterface::LoadTimetable\lFromSessionFile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a92d5a9e07b9362dee2296b7759a1c83d",tooltip="Loads timetable into memory from a session file, true if successful."];
+  Node11 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="TInterface::SessionFileIntegrity\lCheck",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a3904f26b67b9512507960187b37b6f7b",tooltip="Checks session file integrity prior to loading, true for success."];
+  Node12 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="TInterface::LoadTimetable\lMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a15a2f5ad77e4f6c2b0cc6314224dfb78",tooltip=" "];
+  Node9 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="TInterface::BuildTrainData\lVectorForValidateFile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a4ffe7e6eb2421577f670a52f556aef97",tooltip="Check the integrity of a stored timetable file (either as a stand alone file or within a session file..."];
+  Node14 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="TInterface::ValidateTimetable\lButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a2f501868bbee2310af99bf2e8e265c59",tooltip=" "];
+  Node9 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="TTrainController::Timetable\lIntegrityCheck",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#ac51af4807fe6bba453f8ab9bba42e2b5",tooltip="Checks overall timetable integrity, calls many other specific checking functions, returns true for su..."];
+  Node16 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="TInterface::TTServiceSyntax\lCheckButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a003b10236c2b4316dc57be370c715c44",tooltip=" "];
+}

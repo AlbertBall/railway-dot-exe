@@ -15,7 +15,7 @@ var _train_unit_8h =
     [ "TActionVector", "_train_unit_8h.html#a5b1395ed328e4835de16cc626e4e1c96", null ],
     [ "TActionVectorIterator", "_train_unit_8h.html#a1c433df1c6495c2199be919be7b57694", null ],
     [ "TAllFormattedTrains", "_train_unit_8h.html#a7996ca00e9edacd4c3fa4cebe91dc101", null ],
-    [ "THVShortPair", "_train_unit_8h.html#a18fdfcb79f178c9f540abd90585b102f", null ],
+    [ "THVShortPair", "_train_unit_8h.html#abfa9cc7ad3c20c6db69bf5b961dff7a2", null ],
     [ "TNumList", "_train_unit_8h.html#a071247becbfdd0d4af877d07e2aabf77", null ],
     [ "TNumListIterator", "_train_unit_8h.html#a17fb54418ed0171910a59dc159d81d6c", null ],
     [ "TOneCompleteFormattedTrainVector", "_train_unit_8h.html#a41035fe647cdbc167c8b1740419ce98b", null ],
@@ -41,6 +41,7 @@ var _train_unit_8h =
       [ "FailMissedArrival", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0ac31fd87dbd9287ea41057ff89b772c74", null ],
       [ "FailMissedSplit", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a9ec985adca56377bee653abc86d421bc", null ],
       [ "FailMissedJBO", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a084e91a8ba15fd328019432c35ee59d0", null ],
+      [ "FailMissedDSC", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a3562809adac58da4ad21387a72ba2917", null ],
       [ "FailMissedJoinOther", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a75bee92a1a42fc899a40fe837abc0233", null ],
       [ "FailMissedTerminate", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a638a78fc71e54f454c93c05b0093ffc0", null ],
       [ "FailMissedNewService", "_train_unit_8h.html#a104a5f74e30e41accec915e67effa5c0a78bc9cc345b444d25d201715d4e542a9", null ],
@@ -84,7 +85,8 @@ var _train_unit_8h =
       [ "SignallerControlStop", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119ba3b569a1b15450d89afb70b2b3d1e6469", null ],
       [ "SignallerStop", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119ba545fc7f1fad74b135feaf4b8372d9d10", null ],
       [ "SignallerLeave", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119ba002e867717d56b4bdf893cf64c678e82", null ],
-      [ "SignallerStepForward", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119bada1ac6cff1decf4dd20d5a646f122e46", null ]
+      [ "SignallerStepForward", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119bada1ac6cff1decf4dd20d5a646f122e46", null ],
+      [ "ChangeDescription", "_train_unit_8h.html#a7c5b1b115c43502bc514202b4bf3119baf68333138ec628faeecc4d352dff5389", null ]
     ] ],
     [ "TRunningEntry", "_train_unit_8h.html#aaf2c83bd41bf67311ac0a35578586703", [
       [ "NotStarted", "_train_unit_8h.html#aaf2c83bd41bf67311ac0a35578586703a4f19a59941d30ed46801ad82c37d19ba", null ],
@@ -111,7 +113,8 @@ var _train_unit_8h =
       [ "FSHNewService", "_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500ba461002e24a1420d5788c7be836b86a1c", null ],
       [ "Repeat", "_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500ba93634d32da4cb8f0204b4f8929fda514", null ],
       [ "PassTime", "_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500ba455a425a4b32988e6dd1ba4ee357156c", null ],
-      [ "ExitRailway", "_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500bab8813fc229828841b4d8a49de8285fb2", null ]
+      [ "ExitRailway", "_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500bab8813fc229828841b4d8a49de8285fb2", null ],
+      [ "TimeCmdDescription", "_train_unit_8h.html#ae4bb5438f82cb1de18a0bcb5bef8500bafcc2feb76bb58ad016c91a2ebc2b9d59", null ]
     ] ],
     [ "TTimetableLocationType", "_train_unit_8h.html#a8a7a7be0e192ee77b9403a0c4a0f4fae", [
       [ "NoLocation", "_train_unit_8h.html#a8a7a7be0e192ee77b9403a0c4a0f4faead3d310ae3daecfa3b63062e90e1b8e3f", null ],
@@ -121,9 +124,9 @@ var _train_unit_8h =
     ] ],
     [ "TTimetableSequenceType", "_train_unit_8h.html#ab78fef54d64b11053299bdb3da1a014d", [
       [ "NoSequence", "_train_unit_8h.html#ab78fef54d64b11053299bdb3da1a014da0be54f667304df68319b2494a49ff666", null ],
-      [ "Start", "_train_unit_8h.html#ab78fef54d64b11053299bdb3da1a014dabd5f9c956752ce4dc707b4624b3a36f7", null ],
-      [ "Finish", "_train_unit_8h.html#ab78fef54d64b11053299bdb3da1a014da7afd97a7b6273be9dcbad0e4e25b8eae", null ],
-      [ "Intermediate", "_train_unit_8h.html#ab78fef54d64b11053299bdb3da1a014daf8dcb4f22628cdc6439ce01a42c37818", null ],
+      [ "StartSequence", "_train_unit_8h.html#ab78fef54d64b11053299bdb3da1a014da13f1315665b096deb3ac5358a236834f", null ],
+      [ "FinishSequence", "_train_unit_8h.html#ab78fef54d64b11053299bdb3da1a014daf7f52fd774ee99841bcb3f4b81038471", null ],
+      [ "IntermediateSequence", "_train_unit_8h.html#ab78fef54d64b11053299bdb3da1a014da76a22cb43dc6ba9e4c39aacb8aecaec9", null ],
       [ "SequTypeForRepeatEntry", "_train_unit_8h.html#ab78fef54d64b11053299bdb3da1a014dab74b821f1ff392a1a1828f0dc10657d9", null ]
     ] ],
     [ "TTimetableShuttleLinkType", "_train_unit_8h.html#a0ca2bd84884a11b19393757fcd5f5b7b", [

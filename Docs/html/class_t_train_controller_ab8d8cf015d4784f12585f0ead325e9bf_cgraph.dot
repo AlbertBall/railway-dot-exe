@@ -1,0 +1,41 @@
+digraph "TTrainController::CheckStartAllowable"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="TTrainController::CheckStart\lAllowable",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Called when trying to introduce a new train - checks for points in correct orientation,..."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TUtilities::CallLogPop",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0",tooltip="pops the last entry off the call stack, throws an error if called when empty"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TAllRoutes::FindRouteNumber\lFromRoute2MultiMapNoErrors",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_all_routes.html#ac80a3ae43f749d401f470de711e8e4b0",tooltip="If a route is present at H, V & Elink returns true with RouteNumber giving vector position in AllRout..."];
+  Node3 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TUtilities::TimeStamp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c",tooltip="creates a string of the form 'hh:mm:ss' for use in call & event logging"];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TAllRoutes::IsElementInLocked\lRouteGetPrefDirElementGetLockedVector\lNumber",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_all_routes.html#aa92b37f73176fcf3454688bb15b9f64c",tooltip="Checks whether the preferred direction element at TrackVectorPosition with XLinkPos value is in a loc..."];
+  Node5 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TOnePrefDir::PrefDirSize",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#a29d013bf730e23d27fdb2c390e3a14da",tooltip="Return the vector size."];
+  Node5 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TTrainController::LogAction\lError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a9acd46962be476bc76c8d5ce59fff399",tooltip="Send an error message to the performance log and file, and as a warning if appropriate."];
+  Node7 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="TUtilities::Format96HHMMSS",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c",tooltip="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 & resets when..."];
+  Node7 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="TPerfLogForm::PerformanceLog",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_perf_log_form.html#a72f06bf03353c15c94ceefbf420ff7b4",tooltip="Send Statement to the performance log on screen and to the file."];
+  Node9 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="TDisplay::WarningLog",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_display.html#a604d491a723df459bdcd54a4b9d1d9f2",tooltip="Display warning message Statement in the bottom left hand warning position and scroll other messages ..."];
+  Node10 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="TTrack::TrackElementAt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f",tooltip="A range-checked version of TrackVector.at(At)"];
+  Node11 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

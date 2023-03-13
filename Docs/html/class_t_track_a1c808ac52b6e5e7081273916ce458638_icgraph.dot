@@ -1,0 +1,38 @@
+digraph "TTrack::TrackElementPresentAtHV"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="TTrack::TrackElementPresentAtHV",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="New at v1.2.0; true if a track element present (not inactive elements - see InactiveTrackElementPrese..."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TInterface::MainScreenMouse\lDown2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#abf07d5edc1507de381825f17620748b2",tooltip="Called when mouse button clicked in zoom-in mode."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TInterface::MainScreenMouseDown",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TTrack::OneNamedLocation\lLongEnoughForSplit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a9d209cb6e24f67ba12020440a5e42347",tooltip=" "];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TTrainController::CheckCross\lReferencesAndSetData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a36581d2c8663849c6d19b65542c8fa4c",tooltip="A timetable validation function where all service cross references are checked for validity and set p..."];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TTrainController::Second\lPassActions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#af52f0033d498268c871980c17a8ddf36",tooltip="Carry out further detailed timetable consistency checks, return true for success."];
+  Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TInterface::BuildTrainData\lVectorForLoadFile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a148e3f99d39f596dbd7d490403936154",tooltip="Convert a stored timetable file (either as a stand alone file or within a session file) to a loaded t..."];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="TInterface::LoadTimetable\lFromSessionFile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a92d5a9e07b9362dee2296b7759a1c83d",tooltip="Loads timetable into memory from a session file, true if successful."];
+  Node8 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="TInterface::LoadSession",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a636b1b4bd29f2678a3290ed2d282f1c2",tooltip="Load a session file."];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="TInterface::ClockTimer2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a6139ffb52492eb89e5487a8a3cd647b5",tooltip="The main loop, called every clock tick via MasterClockTimer."];
+  Node10 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="TInterface::MasterClockTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f",tooltip=" "];
+  Node8 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="TInterface::SessionFileIntegrity\lCheck",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a3904f26b67b9512507960187b37b6f7b",tooltip="Checks session file integrity prior to loading, true for success."];
+  Node12 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="TInterface::LoadTimetable\lMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a15a2f5ad77e4f6c2b0cc6314224dfb78",tooltip=" "];
+  Node6 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="TInterface::BuildTrainData\lVectorForValidateFile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a4ffe7e6eb2421577f670a52f556aef97",tooltip="Check the integrity of a stored timetable file (either as a stand alone file or within a session file..."];
+  Node14 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="TInterface::ValidateTimetable\lButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a2f501868bbee2310af99bf2e8e265c59",tooltip=" "];
+}

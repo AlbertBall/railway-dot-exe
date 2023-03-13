@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.14.0</span>
+   &#160;<span id="projectnumber">v2.15.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -103,12 +103,14 @@ $(document).ready(function(){initNavTree('class_t_pref_dir_element.html',''); in
 <div class="dynheader">
 Inheritance diagram for TPrefDirElement:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_pref_dir_element__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><!-- SVG 0 -->
+</div>
 </div>
 <div class="dynheader">
 Collaboration diagram for TPrefDirElement:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_pref_dir_element__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><!-- SVG 1 -->
+</div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -214,6 +216,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acc8674681c7b4eda8ce8551abdae9680"><td class="memItemLeft" align="right" valign="top">Graphics::TBitmap *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_pref_dir_element.html#acc8674681c7b4eda8ce8551abdae9680">GetRouteGraphicPtr</a> (bool AutoSigsFlag, bool <a class="el" href="class_t_pref_dir_element.html#a5a889170d4b9df824ec3646ba57bdfaf">PrefDirRoute</a>)</td></tr>
 <tr class="memdesc:acc8674681c7b4eda8ce8551abdae9680"><td class="mdescLeft">&#160;</td><td class="mdescRight">picks up the appropriate route graphic  <a href="class_t_pref_dir_element.html#acc8674681c7b4eda8ce8551abdae9680">More...</a><br /></td></tr>
 <tr class="separator:acc8674681c7b4eda8ce8551abdae9680"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a219b4ab8ef8593aff5f2cfb748362537"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_pref_dir_element.html#a219b4ab8ef8593aff5f2cfb748362537">GetRouteColour</a> (Graphics::TBitmap *EXG)</td></tr>
+<tr class="memdesc:a219b4ab8ef8593aff5f2cfb748362537"><td class="mdescLeft">&#160;</td><td class="mdescRight">finds the route colour for a specific prefdir element with EXGraphicPtr EXG  <a href="class_t_pref_dir_element.html#a219b4ab8ef8593aff5f2cfb748362537">More...</a><br /></td></tr>
+<tr class="separator:a219b4ab8ef8593aff5f2cfb748362537"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_t_track_element"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_t_track_element')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_t_track_element.html">TTrackElement</a></td></tr>
 <tr class="memitem:a0f269bad77fe6988e0c2e0a542410d0e inherit pub_methods_class_t_track_element"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#a0f269bad77fe6988e0c2e0a542410d0e">TTrackElement</a> ()</td></tr>
 <tr class="memdesc:a0f269bad77fe6988e0c2e0a542410d0e inherit pub_methods_class_t_track_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for non-specific default element. Use high neg numbers for 'unset' h &amp; v as can go high negatively legitimately.  <a href="class_t_track_element.html#a0f269bad77fe6988e0c2e0a542410d0e">More...</a><br /></td></tr>
@@ -323,7 +328,7 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:ad4f1d13f7b7c0dc13ad378706aa55238 inherit pub_attribs_class_t_fixed_track_piece"><td class="mdescLeft">&#160;</td><td class="mdescRight">The element identification number - corresponds to the relevant SpeedButton-&gt;Tag.  <a href="class_t_fixed_track_piece.html#ad4f1d13f7b7c0dc13ad378706aa55238">More...</a><br /></td></tr>
 <tr class="separator:ad4f1d13f7b7c0dc13ad378706aa55238 inherit pub_attribs_class_t_fixed_track_piece"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f604279e2311669576eb9bf36d8cfee inherit pub_attribs_class_t_fixed_track_piece"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_fixed_track_piece.html#a6f604279e2311669576eb9bf36d8cfee">Link</a> [4]</td></tr>
-<tr class="memdesc:a6f604279e2311669576eb9bf36d8cfee inherit pub_attribs_class_t_fixed_track_piece"><td class="mdescLeft">&#160;</td><td class="mdescRight">Track connection link values, max. of 4, unused = -1, top lh diag.=1, top=2, top rh diag.=3, left=4, right=6, bottom lh diag.=7, bottom=8, bottom rh diag.=9.  <a href="class_t_fixed_track_piece.html#a6f604279e2311669576eb9bf36d8cfee">More...</a><br /></td></tr>
+<tr class="memdesc:a6f604279e2311669576eb9bf36d8cfee inherit pub_attribs_class_t_fixed_track_piece"><td class="mdescLeft">&#160;</td><td class="mdescRight">Track connection link values, max. of 4, unused = -1, top lh diag = 1, top = 2, top rh diag = 3, left = 4, right = 6, bottom lh diag = 7, bottom = 8, bottom rh diag = 9.  <a href="class_t_fixed_track_piece.html#a6f604279e2311669576eb9bf36d8cfee">More...</a><br /></td></tr>
 <tr class="separator:a6f604279e2311669576eb9bf36d8cfee inherit pub_attribs_class_t_fixed_track_piece"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a8cecb1cf81e95b1ee665dedc4c2465 inherit pub_attribs_class_t_fixed_track_piece"><td class="memItemLeft" align="right" valign="top">Graphics::TBitmap *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_fixed_track_piece.html#a2a8cecb1cf81e95b1ee665dedc4c2465">GraphicPtr</a></td></tr>
 <tr class="memdesc:a2a8cecb1cf81e95b1ee665dedc4c2465 inherit pub_attribs_class_t_fixed_track_piece"><td class="mdescLeft">&#160;</td><td class="mdescRight">the track bitmap for display on the zoomed-in railway  <a href="class_t_fixed_track_piece.html#a2a8cecb1cf81e95b1ee665dedc4c2465">More...</a><br /></td></tr>
@@ -396,7 +401,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Basic preferred direction or route element - track element with additional members. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00198">198</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00199">199</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab65391b0967a01b2d1b6450ff5ee85a7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab65391b0967a01b2d1b6450ff5ee85a7">&#9670;&nbsp;</a></span>TPrefDirElement() <span class="overload">[1/3]</span></h2>
@@ -423,7 +428,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Default constructor, loads default values. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00380">380</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00381">381</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -453,7 +458,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Constructs a PrefDirElement from a base TrackElement. Sets up the TrackElement values but leaves others as default values. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00387">387</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00388">388</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -545,7 +550,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_pref_dir_element_ae8ee9f59578f80d23aebfdb9fff041d4_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 2 -->
 </div>
 </div>
 
@@ -576,7 +581,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns CheckCount. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00297">297</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00298">298</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -638,8 +643,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_pref_dir_element_a3a31ae39854d89213a06010dcb8d2b34_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_pref_dir_element_a3a31ae39854d89213a06010dcb8d2b34_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -669,7 +673,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns ELink. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00267">267</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00268">268</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -703,7 +707,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns the ELink array position. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00273">273</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00274">274</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -737,7 +741,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns EXGraphicPtr for preferred directions. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00315">315</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00316">316</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -771,7 +775,7 @@ Here is the call graph for this function:</div>
 
 <p>Returns EXNumber //added at v2.9.0 for clipboard storage. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00291">291</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00292">292</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -800,7 +804,7 @@ Here is the call graph for this function:</div>
 
 <p>Returns HLoc //added at v2.9.0 for clipboard storage. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00255">255</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00256">256</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -892,6 +896,40 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a219b4ab8ef8593aff5f2cfb748362537"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a219b4ab8ef8593aff5f2cfb748362537">&#9670;&nbsp;</a></span>GetRouteColour()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TPrefDirElement::GetRouteColour </td>
+          <td>(</td>
+          <td class="paramtype">Graphics::TBitmap *&#160;</td>
+          <td class="paramname"><em>EXG</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>finds the route colour for a specific prefdir element with EXGraphicPtr EXG </p>
+
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l01108">1108</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 3 -->
+</div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 4 -->
+</div>
+</div>
+
+</div>
+</div>
 <a id="a9dfc04bfa3abf32eb043d771381f971a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9dfc04bfa3abf32eb043d771381f971a">&#9670;&nbsp;</a></span>GetRouteEXGraphicPtr()</h2>
 
@@ -917,7 +955,7 @@ Here is the call graph for this function:</div>
 
 <p>Returns route graphic. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00321">321</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00322">322</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -968,7 +1006,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_pref_dir_element_acc8674681c7b4eda8ce8551abdae9680_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 5 -->
 </div>
 </div>
 
@@ -999,7 +1037,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns signed integer value of TrackVectorPosition (used in flip, mirror etc for pref dirs) added at v2.9.1. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00309">309</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00310">310</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1033,7 +1071,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns SpeedTag //added at v2.9.2 for clipboard storage. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00249">249</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00250">250</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1062,7 +1100,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns TrackVectorPosition. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00303">303</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00304">304</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1096,7 +1134,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns VLoc //added at v2.9.0 for clipboard storage. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00261">261</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00262">262</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1125,7 +1163,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns XLink. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00279">279</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00280">280</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1159,7 +1197,7 @@ Here is the caller graph for this function:</div>
 
 <p>Returns the XLink array position. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00285">285</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00286">286</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1194,7 +1232,7 @@ Here is the caller graph for this function:</div>
 
 <p>Position check. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00236">236</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00237">237</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1219,7 +1257,8 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_pref_dir_element_a473c0faabe4d0fb8c4296c9c70dbe7d3_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><!-- SVG 6 -->
+</div>
 </div>
 
 </div>
@@ -1308,7 +1347,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00332">332</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00333">333</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1343,7 +1382,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used in pasting pref dirs. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00338">338</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00339">339</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1378,7 +1417,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used in pasting pref dirs. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00344">344</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00345">345</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1413,7 +1452,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used in pasting pref dirs. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00374">374</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00375">375</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1448,7 +1487,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used in pasting pref dirs. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00368">368</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00369">369</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1483,7 +1522,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used in pasting pref dirs. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00362">362</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00363">363</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1518,7 +1557,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used in pasting pref dirs. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00327">327</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00328">328</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1553,7 +1592,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used in pasting pref dirs. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00350">350</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00351">351</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1588,7 +1627,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used in pasting pref dirs. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00356">356</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00357">357</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1618,7 +1657,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00224">224</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00225">225</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1642,7 +1681,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00222">222</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00223">223</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1666,7 +1705,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00223">223</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00224">224</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1685,7 +1724,7 @@ Here is the caller graph for this function:</div>
 
 <p>marker within the route for an AutoSignal route element </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00228">228</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00229">229</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1711,7 +1750,7 @@ Here is the caller graph for this function:</div>
 
 <p>internal check value used when building preferred directions </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00210">210</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00211">211</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1735,7 +1774,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00202">202</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00203">203</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1761,7 +1800,7 @@ Here is the caller graph for this function:</div>
 
 <p>entry link number &amp; array position </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00202">202</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00203">203</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1787,7 +1826,7 @@ Here is the caller graph for this function:</div>
 
 <p>pointers to the appropriate entry/exit graphic, or direction marker graphic, for preferred directions and routes </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00212">212</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00213">213</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1811,7 +1850,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00212">212</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00213">213</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1837,7 +1876,7 @@ Here is the caller graph for this function:</div>
 
 <p>used to facilitate identification of the appropriate preferred direction or route graphic </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00206">206</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00207">207</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1855,7 +1894,7 @@ Here is the caller graph for this function:</div>
 
 <p>false for Pref Dir, true for route </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00226">226</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00227">227</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1873,7 +1912,7 @@ Here is the caller graph for this function:</div>
 
 <p>marker within the route for preferred direction route element </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00230">230</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00231">231</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1899,7 +1938,7 @@ Here is the caller graph for this function:</div>
 
 <p>TrackVectorPosition of the corresponding track element. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00208">208</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00209">209</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1923,7 +1962,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00204">204</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00205">205</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1949,7 +1988,7 @@ Here is the caller graph for this function:</div>
 
 <p>exit link number &amp; array position </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00204">204</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00205">205</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>

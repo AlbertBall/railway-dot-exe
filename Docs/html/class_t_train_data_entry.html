@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.14.0</span>
+   &#160;<span id="projectnumber">v2.15.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -100,7 +100,8 @@ $(document).ready(function(){initNavTree('class_t_train_data_entry.html',''); in
 <div class="dynheader">
 Collaboration diagram for TTrainDataEntry:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_train_data_entry__coll__graph.svg" width="194" height="250"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 0 -->
+</div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -118,6 +119,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aea5870826c3c6815472e86d82b0c9fe7"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_data_entry.html#aea5870826c3c6815472e86d82b0c9fe7">Description</a></td></tr>
 <tr class="memdesc:aea5870826c3c6815472e86d82b0c9fe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">headcode is the first train's headcode, rest are calculated from repeat information; ServiceReference is the full (up to 8 characters) reference from the timetable (added at V0.6b)  <a href="class_t_train_data_entry.html#aea5870826c3c6815472e86d82b0c9fe7">More...</a><br /></td></tr>
 <tr class="separator:aea5870826c3c6815472e86d82b0c9fe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5371b4c18c08f286ffa794e371631d4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_data_entry.html#af5371b4c18c08f286ffa794e371631d4">ExplicitDescription</a></td></tr>
+<tr class="memdesc:af5371b4c18c08f286ffa794e371631d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">true if a description is given for the train, if only headcode given for a follow-on service then false, and train takes description of earlier service  <a href="class_t_train_data_entry.html#af5371b4c18c08f286ffa794e371631d4">More...</a><br /></td></tr>
+<tr class="separator:af5371b4c18c08f286ffa794e371631d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d7e696d79ee15cae196c0197fed3821"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_data_entry.html#a3d7e696d79ee15cae196c0197fed3821">MaxBrakeRate</a></td></tr>
 <tr class="memdesc:a3d7e696d79ee15cae196c0197fed3821"><td class="mdescLeft">&#160;</td><td class="mdescRight">in metres/sec/sec  <a href="class_t_train_data_entry.html#a3d7e696d79ee15cae196c0197fed3821">More...</a><br /></td></tr>
 <tr class="separator:a3d7e696d79ee15cae196c0197fed3821"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,7 +153,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains all data for a single timetable service entry. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00206">206</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00207">207</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9e3a221ec9be3d20ee37c6c4d001ffa4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9e3a221ec9be3d20ee37c6c4d001ffa4">&#9670;&nbsp;</a></span>TTrainDataEntry()</h2>
@@ -176,7 +180,7 @@ Public Attributes</h2></td></tr>
 
 <p>Constructor with default values. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00232">232</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00235">235</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -195,7 +199,7 @@ Public Attributes</h2></td></tr>
 
 <p>all the actions for the train </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00225">225</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00228">228</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -213,7 +217,25 @@ Public Attributes</h2></td></tr>
 
 <p>headcode is the first train's headcode, rest are calculated from repeat information; ServiceReference is the full (up to 8 characters) reference from the timetable (added at V0.6b) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00209">209</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00210">210</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+
+</div>
+</div>
+<a id="af5371b4c18c08f286ffa794e371631d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5371b4c18c08f286ffa794e371631d4">&#9670;&nbsp;</a></span>ExplicitDescription</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TTrainDataEntry::ExplicitDescription</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>true if a description is given for the train, if only headcode given for a follow-on service then false, and train takes description of earlier service </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00212">212</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -229,7 +251,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00209">209</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00210">210</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -247,7 +269,7 @@ Public Attributes</h2></td></tr>
 
 <p>in kg </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00217">217</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00220">220</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -265,7 +287,7 @@ Public Attributes</h2></td></tr>
 
 <p>in metres/sec/sec </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00211">211</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00214">214</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -283,7 +305,7 @@ Public Attributes</h2></td></tr>
 
 <p>in km/h </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00213">213</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00216">216</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -301,7 +323,7 @@ Public Attributes</h2></td></tr>
 
 <p>number of repeats + 1 </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00219">219</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00222">222</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -319,7 +341,7 @@ Public Attributes</h2></td></tr>
 
 <p>in Watts (taken as 80% of the train's Gross Power, i.e. that entered by the user) </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00215">215</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00218">218</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -335,7 +357,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00209">209</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00210">210</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -353,7 +375,7 @@ Public Attributes</h2></td></tr>
 
 <p>in km/h for use when under signaller control </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00221">221</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00224">224</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -371,7 +393,7 @@ Public Attributes</h2></td></tr>
 
 <p>in km/h </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00223">223</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00226">226</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -389,7 +411,7 @@ Public Attributes</h2></td></tr>
 
 <p>operating information for the train including all its repeats </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00227">227</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00230">230</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>

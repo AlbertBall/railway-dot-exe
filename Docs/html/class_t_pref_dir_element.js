@@ -15,6 +15,7 @@ var class_t_pref_dir_element =
     [ "GetOriginalGraphicPtr", "class_t_pref_dir_element.html#a9181d9e11c34c6660c43fe2cf4ee35a8", null ],
     [ "GetPrefDirGraphicPtr", "class_t_pref_dir_element.html#a10b4ff375e779de7cc2a16344959bb31", null ],
     [ "GetRouteAutoSigsGraphicPtr", "class_t_pref_dir_element.html#aee43c641cd4a0550b55105a08ba2cef2", null ],
+    [ "GetRouteColour", "class_t_pref_dir_element.html#a219b4ab8ef8593aff5f2cfb748362537", null ],
     [ "GetRouteEXGraphicPtr", "class_t_pref_dir_element.html#a9dfc04bfa3abf32eb043d771381f971a", null ],
     [ "GetRouteGraphicPtr", "class_t_pref_dir_element.html#acc8674681c7b4eda8ce8551abdae9680", null ],
     [ "GetSignedIntTrackVectorPosition", "class_t_pref_dir_element.html#a69817a345be27fcdb63440c52d6325f3", null ],

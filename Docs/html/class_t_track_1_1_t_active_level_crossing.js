@@ -1,6 +1,6 @@
 var class_t_track_1_1_t_active_level_crossing =
 [
-    [ "TActiveLevelCrossing::TActiveLevelCrossing", "class_t_track_1_1_t_active_level_crossing.html#adc74855a4f0cb115cef8be85b1288f15", null ],
+    [ "TActiveLevelCrossing", "class_t_track_1_1_t_active_level_crossing.html#aa3d932c710e20c44b0fcf55c5c7e0ba8", null ],
     [ "BarrierState", "class_t_track_1_1_t_active_level_crossing.html#ae6a3eed6fc68f1e65a59a3da36a3d4cb", null ],
     [ "BaseElementSpeedTag", "class_t_track_1_1_t_active_level_crossing.html#aaca7018cee472ba2b5df1589caa071f7", null ],
     [ "ChangeDuration", "class_t_track_1_1_t_active_level_crossing.html#af45c2e8c0f427b23e655cdce00cebbb8", null ],

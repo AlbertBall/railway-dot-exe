@@ -1,0 +1,10 @@
+digraph "TActionVectorEntry"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{TActionVectorEntry\n|+ LocationName\l+ Command\l+ OtherHeadCode\l+ NonRepeatingShuttleLinkHeadCode\l+ SplitDistribution\l+ NewDescription\l+ SignallerControl\l+ Warning\l+ NumberOfRepeats\l+ RearStartOrRepeatMins\land 9 more...\l|+ TActionVectorEntry()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Contains a single train action in a timetable - repeat entry is also of this class though no train ac..."];
+  Node2 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +NonRepeatingShuttleLink\lEntryPtr\n+LinkedTrainEntryPtr" ,arrowhead="odiamond",fontname="Helvetica"];
+  Node2 [label="{TTrainDataEntry\n|+ HeadCode\l+ ServiceReference\l+ Description\l+ ExplicitDescription\l+ MaxBrakeRate\l+ MaxRunningSpeed\l+ PowerAtRail\l+ Mass\l+ NumberOfTrains\l+ SignallerSpeed\l+ StartSpeed\l+ ActionVector\l+ TrainOperatingDataVector\l|+ TTrainDataEntry()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_data_entry.html",tooltip="Contains all data for a single timetable service entry."];
+}

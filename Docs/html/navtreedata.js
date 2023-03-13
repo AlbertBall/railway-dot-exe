@@ -60,20 +60,20 @@ var NAVTREEINDEX =
 [
 "_a_p_i_8cpp.html",
 "_graphic_unit_8h.html#af487f8a8ed9b2becefef6ce32cfef11f",
-"class_t_about_form.html#abdd67a08928e805f8ddc6bc0d2514820",
-"class_t_interface.html#a057577c6ccc0c2481f988943314072c4",
-"class_t_interface.html#a385aad759095e361345488b206cd0bc3",
-"class_t_interface.html#a73469c99a1af6adaa1047fa86cab28bc",
-"class_t_interface.html#ab5cba8a680964448bc5ca1b44cce5b09",
-"class_t_interface.html#aefe8c85a36e64f78a69e5cde5ba13727",
-"class_t_pref_dir_element.html#abd5216cdea57fef10f5e31633f9ef1e2",
-"class_t_rail_graphics.html#a56f1776fc3b800273d04793fb0dc6ee6",
-"class_t_rail_graphics.html#aa9bc4fd99a6401f1439016a930dfaf27",
-"class_t_rail_graphics.html#af8a817f7e91f0898fb914273093750b1",
-"class_t_track.html#aa2c236c1233263052beef41c3459ebd1",
-"class_t_train.html#a81ce8c5ef67c55f2b2954ddddaf095f8",
-"class_t_train_controller.html#af25f4d9be4644eab1e042751b1738f98",
-"railway_8cpp.html#ae3832cc8ddefa153421ddfbf437211e4"
+"class_t_about_form.html#a56e844bc7dd524d48c13cc1d7b5d0aeb",
+"class_t_interface.html#a0257d71852d8a759124a21549fa98b0e",
+"class_t_interface.html#a36ad38f4b485bba874129aeb3a20d926",
+"class_t_interface.html#a6e2f9185f4f0b20e6d311fcc65263d0c",
+"class_t_interface.html#ab0cdc0f538f6f6744776ef7198cadb43",
+"class_t_interface.html#aec12f0e481024f1268fad36e7188b7a4",
+"class_t_pref_dir_element.html#a579e7a238caee09162ea809d9f349113",
+"class_t_rail_graphics.html#a4fb5bab37318ed7c15f90da9957e3931",
+"class_t_rail_graphics.html#aa35e6363b01e557c7ec995ff23d4469f",
+"class_t_rail_graphics.html#af29331426bded4c2d87131f3ebe24fba",
+"class_t_track.html#a9519d6fa40b71bfcad4d5383634d73dd",
+"class_t_train.html#a659e6bf818f0cfac38728d4748408ee6",
+"class_t_train_controller.html#aba5615209a7dca921e968fca5c52c060",
+"globals_g.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

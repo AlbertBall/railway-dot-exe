@@ -13586,7 +13586,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             // at least 2 entries present checked in integrity check so (1) valid
             if(!AtLocSuccessor(AVEntry1))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - 'Sfs', 'Sns', 'Sns-sh' or 'Sns-fsh' followed by an illegal event for: " +
+                SecondPassMessage(GiveMessages, "Error in timetable - 'Sfs', 'Sns', 'Sns-sh', 'Snt-fsh' or 'Sns-fsh' followed by an illegal event for: " +
                                   TDEntry.HeadCode + ". The event isn't valid for a stationary train.");
                 TrainDataVector.clear();
                 Utilities->CallLogPop(793);
@@ -14002,7 +14002,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
     }
     // all location names should now be set
 
-//now test for any unnamed AtLoc entries where Command != "" and give message if find any
+//now test for any unnamed AtLoc entries where Command != "" and give message if find any - shouldn't find any if above checks comprehensive
     for(unsigned int x = 0; x < TrainDataVector.size(); x++)
     {
         for(unsigned int y = 0; y < TrainDataVector.at(x).ActionVector.size(); y++)
@@ -14010,10 +14010,29 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
             if((AVEntry.LocationType == AtLocation) && (AVEntry.LocationName == "") && (AVEntry.Command != ""))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - event " + AVEntry.Command + " must be preceded by an event at the same location that has an identified location name, normally an arrival, see " + TrainDataVector.at(x).ServiceReference);
-                TrainDataVector.clear();
-                Utilities->CallLogPop(2619);
-                return(false);
+                if((AVEntry.Command == "jbo") || (AVEntry.Command == "fsp") || (AVEntry.Command == "rsp") || (AVEntry.Command == "cdt") || (AVEntry.Command == "dsc"))
+                {
+                    SecondPassMessage(GiveMessages, "Error in timetable - '" + AVEntry.Command + "' must be preceded by an event at the same location that has an identified location name, normally an arrival, see " + TrainDataVector.at(x).ServiceReference);
+                    TrainDataVector.clear();
+                    Utilities->CallLogPop(2619);
+                    return(false);
+                }
+                else if((AVEntry.Command == "Sns") || (AVEntry.Command == "Sfs") || (AVEntry.Command == "Sns-fsh") || (AVEntry.Command == "Snt-sh") || (AVEntry.Command == "Sns-sh"))
+                {
+                    SecondPassMessage(GiveMessages, "Error in timetable - the location of the '" + AVEntry.Command + "' event in service " + TrainDataVector.at(x).ServiceReference + " can't be identified. " +
+                                                    "Please make sure that the finish event of the service that links to this event is preceded by an "
+                                                    "event at the same location that has an identified location name, normally an arrival.");
+                    TrainDataVector.clear();
+                    Utilities->CallLogPop(2620);
+                    return(false);
+                }
+                else if((AVEntry.Command == "Fns") || (AVEntry.Command == "Fjo") || (AVEntry.Command == "Frh-sh") || (AVEntry.Command == "Fns-sh") || (AVEntry.Command == "F-nshs"))
+                {
+                    SecondPassMessage(GiveMessages, "Error in timetable - '" + AVEntry.Command + "must be preceded by an event at the same location that has an identified location name, normally an arrival, see " + TrainDataVector.at(x).ServiceReference);
+                    TrainDataVector.clear();
+                    Utilities->CallLogPop(2621);
+                    return(false);
+                }
             }
         }
     }

@@ -1118,7 +1118,7 @@ void TTrain::UpdateTrain(int Caller)
                 else if(ActionVectorEntryPtr->Command == "dsc")
                 {
                     TrainDataEntryPtr->Description = ActionVectorEntryPtr->NewDescription;
-                    LogAction(37, HeadCode, "", ChangeDescription, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+                    LogAction(37, HeadCode, "", ChangeDescription, ActionVectorEntryPtr->LocationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
                     LastActionTime = TrainController->TTClockTime;
                     ActionVectorEntryPtr++;
                 }
@@ -1430,16 +1430,16 @@ void TTrain::UpdateTrain(int Caller)
                 if(ActionVectorEntryPtr->FormatType == TimeTimeLoc)
                 {
                     TimeTimeLocArrived = false;
-                    LogAction(27, HeadCode, "", Depart, StationName, ActionVectorEntryPtr->DepartureTime, false);
+                    LogAction(27, HeadCode, "", Depart, StationName, "", ActionVectorEntryPtr->DepartureTime, false);
                     // no warning for TimeTimeLoc departure
                 }
                 else if(TreatPassAsTimeLocDeparture) //added at v2.12.0 so late/early/on time mins recorded accurately
                 {
-                    LogAction(36, HeadCode, "", Depart, StationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning); //EventTime because the real event is a pass
+                    LogAction(36, HeadCode, "", Depart, StationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning); //EventTime because the real event is a pass
                 }
                 else //must be TimeLoc departure
                 {
-                    LogAction(6, HeadCode, "", Depart, StationName, ActionVectorEntryPtr->DepartureTime, ActionVectorEntryPtr->Warning);
+                    LogAction(6, HeadCode, "", Depart, StationName, "", ActionVectorEntryPtr->DepartureTime, ActionVectorEntryPtr->Warning);
                 }
                 TreatPassAsTimeLocDeparture = false; //added at v2.12.0, reset after train departs
                 DepartureTimeSet = false;
@@ -1657,7 +1657,7 @@ void TTrain::UpdateTrain(int Caller)
                 {
                     Loc = "at " + Loc;
                 }
-                LogAction(30, HeadCode, "", SignallerStop, Loc, TrainController->TTClockTime, false); // false for warning
+                LogAction(30, HeadCode, "", SignallerStop, Loc, "", TrainController->TTClockTime, false); // false for warning
             }
         }
         if(LeadElement > -1) // if an exit continuation then not set
@@ -2327,7 +2327,7 @@ void TTrain::UpdateTrain(int Caller)
                                 PlotTrainWithNewBackgroundColour(12, clStationStopBackground, Display);
                                 // pale green
                             }
-                            LogAction(8, HeadCode, "", Arrive, LocName, ActionVectorEntryPtr->ArrivalTime, ActionVectorEntryPtr->Warning);
+                            LogAction(8, HeadCode, "", Arrive, LocName, "", ActionVectorEntryPtr->ArrivalTime, ActionVectorEntryPtr->Warning);
                             ActualArrivalTime = TrainController->TTClockTime;   //added at v2.13.0
                             if(ActionVectorEntryPtr->FormatType == TimeTimeLoc)
                             {
@@ -2339,7 +2339,7 @@ void TTrain::UpdateTrain(int Caller)
                         }
                         else
                         {
-                            LogAction(25, HeadCode, "", Pass, LocName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+                            LogAction(25, HeadCode, "", Pass, LocName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
                         }
                         if((ActionVectorEntryPtr->FormatType == TimeLoc) || (ActionVectorEntryPtr->FormatType == PassTime))
                         {
@@ -5346,7 +5346,7 @@ bool TTrain::IsThereAnAdjacentTrain(int Caller, TTrain *&TrainToBeJoinedBy)
 
 // ---------------------------------------------------------------------------
 
-void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadCode, TActionType ActionType, AnsiString LocationName,
+void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadCode, TActionType ActionType, AnsiString LocationName, AnsiString SplitDistribution,
                        TDateTime TimetableNonRepeatTime, bool Warning)
 /*
           Time = timetable time, the time adjustments for repeat trains is carried out internally
@@ -5360,8 +5360,8 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
           Create:  06:05:40: 2F46 created at Old Street 1 minute late
           Enter:  06:05:40: 2F46 entered railway at Old Street 1 minute late
           Leave:  06:05:40: 2F46 left railway at 57-N4 1 minute late
-          FrontSplit:  06:05:40: 2F46 split from front to 3D54 at Old Street 1 minute late
-          RearSplit:  06:05:40: 2F46 split from rear to 3D54 at Old Street 1 minute late
+          FrontSplit:  06:05:40: 2F46 split mass%-Power% = 10-50 from front to 3D54 at Old Street 1 minute late
+          RearSplit:  06:05:40: 2F46 split mass%-Power% = 10-50 from rear to 3D54 at Old Street 1 minute late
           JoinedByOther:  06:05:40: 2F46 joined by 3D54 at Old Street 1 minute late
           ChangeDirection:  06:05:40: 2F46 changed direction at Old Street 1 minute late
           ChangeDescription:  06:05:40: 2F46 changed its description to 'NewDescription' at Old Street 1 minute late
@@ -5428,11 +5428,11 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     }
     if(ActionType == FrontSplit)
     {
-        ActionLog = " split from front to ";
+        ActionLog = " split mass%-Power% = " + SplitDistribution + " from front to ";
     }
     if(ActionType == RearSplit)
     {
-        ActionLog = " split from rear to ";
+        ActionLog = " split mass%-Power% = " + SplitDistribution + " from rear to ";
     }
     if(ActionType == JoinedByOther)
     {
@@ -5700,7 +5700,7 @@ void TTrain::TrainHasFailed(int Caller)
         StoppedWithoutPower = true;
     }
     TrainController->NumFailures++;
-    LogAction(33, HeadCode, "", TrainFailure, LocName, TDateTime(0), true);
+    LogAction(33, HeadCode, "", TrainFailure, LocName, "", TDateTime(0), true);
     // true for warning, TDateTime not used
     Utilities->CallLogPop(2136);
 }
@@ -5976,7 +5976,7 @@ void TTrain::FrontTrainSplit(int Caller)
     }
     PlotStartPosition(3);
     PlotTrainWithNewBackgroundColour(14, clStationStopBackground, Display);
-    LogAction(9, HeadCode, OtherHeadCode, FrontSplit, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+    LogAction(9, HeadCode, OtherHeadCode, FrontSplit, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->SplitDistribution, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
 //    ActionVectorEntryPtr++;  moved lower down at v2.15.0 because of new section below
     LastActionTime = TrainController->TTClockTime;
 
@@ -6318,7 +6318,7 @@ void TTrain::RearTrainSplit(int Caller)
     }
     PlotStartPosition(4);
     PlotTrainWithNewBackgroundColour(15, clStationStopBackground, Display);
-    LogAction(10, HeadCode, OtherHeadCode, RearSplit, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+    LogAction(10, HeadCode, OtherHeadCode, RearSplit, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->SplitDistribution, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
 //    ActionVectorEntryPtr++;  moved lower down at v2.15.0 because of new section below
     LastActionTime = TrainController->TTClockTime;
 
@@ -6511,7 +6511,7 @@ void TTrain::JoinedBy(int Caller)
     TrainController->LogEvent("" + AnsiString(Caller) + "," + HeadCode + ",Joined By," + FJOHeadCode); //added at v2.13.2 to provide more information
     // this will cause other train to be deleted
     TrainToBeJoinedBy->JoinedOtherTrainFlag = true;
-    LogAction(11, HeadCode, FJOHeadCode, JoinedByOther, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+    LogAction(11, HeadCode, FJOHeadCode, JoinedByOther, ActionVectorEntryPtr->LocationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
     ActionVectorEntryPtr++;
     LastActionTime = TrainController->TTClockTime;
     Utilities->CallLogPop(1034);
@@ -6546,7 +6546,7 @@ void TTrain::ChangeTrainDirection(int Caller, bool NoLogFlag)
     // plot same as was - should always be pale green
     if(!NoLogFlag)
     {
-        LogAction(12, HeadCode, "", ChangeDirection, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+        LogAction(12, HeadCode, "", ChangeDirection, ActionVectorEntryPtr->LocationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
         ActionVectorEntryPtr++;
     }
     LastActionTime = TrainController->TTClockTime;
@@ -6622,7 +6622,7 @@ void TTrain::NewTrainService(int Caller, bool NoLogFlag) //, bool NoLogFlag adde
 
     if(!NoLogFlag)
     {
-        LogAction(13, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+        LogAction(13, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
     }
     UnplotTrain(3);
     RearStartElement = MidElement;
@@ -6940,7 +6940,7 @@ void TTrain::NewShuttleFromNonRepeatService(int Caller, bool NoLogFlag) //bool N
 
     if(!NoLogFlag)
     {
-        LogAction(15, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+        LogAction(15, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
     }
     UnplotTrain(4);
     RearStartElement = MidElement;
@@ -6983,7 +6983,7 @@ void TTrain::RepeatShuttleOrRemainHere(int Caller, bool NoLogFlag) //bool NoLogF
     {
         if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != ShuttleFinishedRemainingHere)
         {   //no need to suppress this LogAction because BecomeNewService won't be available in this case
-            LogAction(26, HeadCode, "", Terminate, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+            LogAction(26, HeadCode, "", Terminate, ActionVectorEntryPtr->LocationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
             TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = ShuttleFinishedRemainingHere;
             TerminatedMessageSent = true;
             // no need to clear message as no more actions
@@ -7010,7 +7010,7 @@ void TTrain::RepeatShuttleOrRemainHere(int Caller, bool NoLogFlag) //bool NoLogF
 
     if(!NoLogFlag)
     {
-        LogAction(16, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+        LogAction(16, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
     }
     RepeatNumber++;
     UnplotTrain(5);
@@ -7055,7 +7055,7 @@ void TTrain::RepeatShuttleOrNewNonRepeatService(int Caller, bool NoLogFlag) //bo
         AnsiString NewHeadCode = ActionVectorEntryPtr->NonRepeatingShuttleLinkHeadCode;
         if(!NoLogFlag)
         {
-            LogAction(17, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+            LogAction(17, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
         }
         RepeatNumber = 0;
         AnsiString OldDescription = TrainDataEntryPtr->Description;  //new at v2.15.0 to record earlier service description
@@ -7088,7 +7088,7 @@ void TTrain::RepeatShuttleOrNewNonRepeatService(int Caller, bool NoLogFlag) //bo
 
     if(!NoLogFlag)
     {
-        LogAction(18, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+        LogAction(18, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
     }
     RepeatNumber++;
     UnplotTrain(7);
@@ -10230,7 +10230,7 @@ void TTrainController::Operate(int Caller)
                     }
                     if(CorrectExit)
                     {
-                        Train.LogAction(19, Train.HeadCode, "", Leave, Loc, AVEntryPtr->EventTime, AVEntryPtr->Warning);
+                        Train.LogAction(19, Train.HeadCode, "", Leave, Loc, "", AVEntryPtr->EventTime, AVEntryPtr->Warning);
                     }
                     else
                     {
@@ -10247,7 +10247,7 @@ void TTrainController::Operate(int Caller)
                     }
                     else
                     {
-                        Train.LogAction(31, Train.HeadCode, "", SignallerLeave, Loc, TDateTime(0), false); // false for Warning
+                        Train.LogAction(31, Train.HeadCode, "", SignallerLeave, Loc, "", TDateTime(0), false); // false for Warning
                     }
                 }
                 Utilities->CumulativeDelayedRandMinsAllTrains += Train.CumulativeDelayedRandMinsOneTrain; //added at v2.13.0 for random delays
@@ -10462,7 +10462,7 @@ bool TTrainController::AddTrain(int Caller, int RearPosition, int FrontPosition,
             NewTrain->StoppedAtLocation = true;
             NewTrain->PlotStartPosition(0);
             NewTrain->PlotTrainWithNewBackgroundColour(13, clStationStopBackground, Display); // pale green
-            NewTrain->LogAction(20, NewTrain->HeadCode, "", Create, NewTrain->ActionVectorEntryPtr->LocationName, NewTrain->ActionVectorEntryPtr->EventTime,
+            NewTrain->LogAction(20, NewTrain->HeadCode, "", Create, NewTrain->ActionVectorEntryPtr->LocationName, "", NewTrain->ActionVectorEntryPtr->EventTime,
                                 NewTrain->ActionVectorEntryPtr->Warning);
             if(!SignallerControl) // don't advance if SignalControlEntry
             {
@@ -10477,7 +10477,7 @@ bool TTrainController::AddTrain(int Caller, int RearPosition, int FrontPosition,
             NewTrain->StoppedAtLocation = true;
             NewTrain->PlotStartPosition(10);
             NewTrain->PlotTrainWithNewBackgroundColour(18, clStationStopBackground, Display); // pale green
-            NewTrain->LogAction(21, NewTrain->HeadCode, "", Create, NewTrain->ActionVectorEntryPtr->LocationName, NewTrain->ActionVectorEntryPtr->EventTime,
+            NewTrain->LogAction(21, NewTrain->HeadCode, "", Create, NewTrain->ActionVectorEntryPtr->LocationName, "", NewTrain->ActionVectorEntryPtr->EventTime,
                                 NewTrain->ActionVectorEntryPtr->Warning);
             if(!SignallerControl) // don't advance if SignalControlEntry
             {
@@ -10501,11 +10501,11 @@ bool TTrainController::AddTrain(int Caller, int RearPosition, int FrontPosition,
         }
         if(TE.TrackType == Continuation)
         {
-            NewTrain->LogAction(22, NewTrain->HeadCode, "", Enter, Loc, NewTrain->ActionVectorEntryPtr->EventTime, NewTrain->ActionVectorEntryPtr->Warning);
+            NewTrain->LogAction(22, NewTrain->HeadCode, "", Enter, Loc, "", NewTrain->ActionVectorEntryPtr->EventTime, NewTrain->ActionVectorEntryPtr->Warning);
         }
         else
         {
-            NewTrain->LogAction(23, NewTrain->HeadCode, "", Create, Loc, NewTrain->ActionVectorEntryPtr->EventTime, NewTrain->ActionVectorEntryPtr->Warning);
+            NewTrain->LogAction(23, NewTrain->HeadCode, "", Create, Loc, "", NewTrain->ActionVectorEntryPtr->EventTime, NewTrain->ActionVectorEntryPtr->Warning);
         }
         if(!SignallerControl) // don't advance if SignalControlEntry
         {

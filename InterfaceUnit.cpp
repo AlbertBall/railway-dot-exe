@@ -12258,7 +12258,7 @@ void __fastcall TInterface::TakeSignallerControlMenuItemClick(TObject *Sender)
         {
             LocName = Track->TrackElementAt(636, Train.MidElement).ElementID;
         }
-        Train.LogAction(0, Train.HeadCode, "", TakeSignallerControl, LocName, TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
+        Train.LogAction(0, Train.HeadCode, "", TakeSignallerControl, LocName, "", TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
         Utilities->CallLogPop(1772);
     }
     catch(const Exception &e)
@@ -12340,13 +12340,13 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
             if((Train.ActionVectorEntryPtr->FormatType == TimeLoc) && (Train.ActionVectorEntryPtr->ArrivalTime >= TDateTime(0)))
             {
                 // Timetable indicates that train still waiting to arrive for a TimeLoc arrival so send message and mark as arrived
-                Train.LogAction(28, Train.HeadCode, "", Arrive, LocName, Train.ActionVectorEntryPtr->ArrivalTime, Train.ActionVectorEntryPtr->Warning);
+                Train.LogAction(28, Train.HeadCode, "", Arrive, LocName, "", Train.ActionVectorEntryPtr->ArrivalTime, Train.ActionVectorEntryPtr->Warning);
                 Train.ActionVectorEntryPtr++; // advance pointer past arrival  //added at v1.2.0
             }
             else if((Train.ActionVectorEntryPtr->FormatType == TimeTimeLoc) && !(Train.TimeTimeLocArrived))
             {
                 // Timetable indicates that train still waiting to arrive for a TimeTimeLoc arrival so send message and mark as arrived
-                Train.LogAction(29, Train.HeadCode, "", Arrive, LocName, Train.ActionVectorEntryPtr->ArrivalTime, Train.ActionVectorEntryPtr->Warning);
+                Train.LogAction(29, Train.HeadCode, "", Arrive, LocName, "", Train.ActionVectorEntryPtr->ArrivalTime, Train.ActionVectorEntryPtr->Warning);
                 Train.TimeTimeLocArrived = true;
                 // NB: No need for 'Train.ActionVectorEntryPtr++' because still to act on the departure time
             }
@@ -12414,7 +12414,7 @@ void __fastcall TInterface::TimetableControlMenuItemClick(TObject *Sender)
                 // TrainController->LogActionError(42, Train.HeadCode, "", SignalHold, Track->TrackElementAt(757, NextElementPos).ElementID);
             }
         }
-        Train.LogAction(1, Train.HeadCode, "", RestoreTimetableControl, LocName, TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
+        Train.LogAction(1, Train.HeadCode, "", RestoreTimetableControl, LocName, "", TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
         Utilities->CallLogPop(1195);
     }
     catch(const Exception &e)
@@ -12452,7 +12452,7 @@ void __fastcall TInterface::ChangeDirectionMenuItemClick(TObject *Sender)
         {
             LocName = Track->TrackElementAt(640, Train.MidElement).ElementID;
         }
-        Train.LogAction(2, Train.HeadCode, "", SignallerChangeDirection, LocName, TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
+        Train.LogAction(2, Train.HeadCode, "", SignallerChangeDirection, LocName, "", TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
         Utilities->CallLogPop(1196);
     }
     catch(const Exception &e)
@@ -12527,7 +12527,7 @@ void __fastcall TInterface::MoveForwardsMenuItemClick(TObject *Sender)
         {
             Train.SetTrainMovementValues(19, Train.LagElement, Train.LagEntryPos); // Use LagElement for calcs if Lag is a continuation
         }
-        Train.LogAction(3, Train.HeadCode, "", SignallerMoveForwards, "", TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
+        Train.LogAction(3, Train.HeadCode, "", SignallerMoveForwards, "", "", TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
         Utilities->CallLogPop(1198);
     }
     catch(const Exception &e)
@@ -12633,7 +12633,7 @@ void __fastcall TInterface::SignallerJoinedByMenuItemClick(TObject *Sender)
                 ThisTrain.PlotTrainWithNewBackgroundColour(50, clStationStopBackground, Display);
             }
             ThisTrain.SignallerStopped = true; // maybe as well as stopped without power, thought that takes precedence in floating window
-            ThisTrain.LogAction(34, ThisTrain.HeadCode, TrainToBeJoinedBy->HeadCode, SignallerJoin, LocName, TDateTime(0), false); // TDateTime isn't used
+            ThisTrain.LogAction(34, ThisTrain.HeadCode, TrainToBeJoinedBy->HeadCode, SignallerJoin, LocName, "", TDateTime(0), false); // TDateTime isn't used
             ThisTrain.ZeroPowerNoFrontSplitMessage = false; // added at v2.4.0, no need to include TrainToBeJoinedBy as that will be removed
             ThisTrain.ZeroPowerNoRearSplitMessage = false;
             ThisTrain.FailedTrainNoFinishJoinMessage = false;
@@ -12694,7 +12694,7 @@ void __fastcall TInterface::RepairFailedTrainMenuItemClick(TObject *Sender)
         {
             LocName = Track->TrackElementAt(986, Train.MidElement).ElementID;
         }
-        Train.LogAction(35, Train.HeadCode, "", RepairFailedTrain, LocName, TrainController->TTClockTime, false); // false for no warning
+        Train.LogAction(35, Train.HeadCode, "", RepairFailedTrain, LocName, "", TrainController->TTClockTime, false); // false for no warning
         Train.ZeroPowerNoFrontSplitMessage = false;
         Train.ZeroPowerNoRearSplitMessage = false;
         Train.FailedTrainNoFinishJoinMessage = false;
@@ -13391,7 +13391,7 @@ void __fastcall TInterface::SignallerControlStopMenuItemClick(TObject *Sender)
             {
                 Train.SignallerStoppingFlag = true;
                 Train.SignallerStopBrakeRate = 0;
-                Train.LogAction(24, Train.HeadCode, "", SignallerControlStop, "", TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
+                Train.LogAction(24, Train.HeadCode, "", SignallerControlStop, "", "", TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
             }
             else
             {
@@ -13460,7 +13460,7 @@ void __fastcall TInterface::PassRedSignalMenuItemClick(TObject *Sender)
         // ok to call PlotTrainWithNewBackgroundColour here as PlotElements already set to Lead, Mid & Lag elements
         Train.PlotTrainWithNewBackgroundColour(32, clNormalBackground, Display);
         Train.AllowedToPassRedSignal = true;
-        Train.LogAction(4, Train.HeadCode, "", SignallerPassRedSignal, "", TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
+        Train.LogAction(4, Train.HeadCode, "", SignallerPassRedSignal, "", "", TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
         Utilities->CallLogPop(1199);
     }
     catch(const Exception &e)
@@ -13504,7 +13504,7 @@ void __fastcall TInterface::StepForwardMenuItemClick(TObject *Sender)
         Train.AllowedToPassRedSignal = true; // in case at a signal, will clear when half-way into next element whether a signal or not
         // ok to call PlotTrainWithNewBackgroundColour here as PlotElements already set to Lead, Mid & Lag elements
         Train.PlotTrainWithNewBackgroundColour(46, clNormalBackground, Display);
-        Train.LogAction(32, Train.HeadCode, "", SignallerStepForward, "", TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
+        Train.LogAction(32, Train.HeadCode, "", SignallerStepForward, "", "", TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
         int NextElementPos = -1;
 // addition for v1.3.2 due to Carwyn Thomas error: can't select StepForwardMenuItem if exiting at a continuation but leave this in anyway
         int NextEntryPos = -1; // ---ditto---
@@ -13706,7 +13706,7 @@ void __fastcall TInterface::RemoveTrainMenuItemClick(TObject *Sender)
                 }
             }
         }
-        Train.LogAction(5, Train.HeadCode, "", RemoveTrain, LocName, TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
+        Train.LogAction(5, Train.HeadCode, "", RemoveTrain, LocName, "", TDateTime(0), false); // TDateTime is a dummy entry, false for no warning
         if(Train.ActionVectorEntryPtr->Command != "Frh") // if remaining at location no point in sending 'failed to terminate' message
         {
             Train.SendMissedActionLogs(0, -1, Train.ActionVectorEntryPtr); // -1 is a marker for send messages for all remaining

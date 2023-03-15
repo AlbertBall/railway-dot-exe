@@ -609,7 +609,7 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
 /// Create one train with relevant member values from the sesion file
     void LoadOneSessionTrain(int Caller, std::ifstream &InFile);
 /// Send a message to the performance log and performance file, and if the message is flagged as a warning then it is also sent as a warning (in red at the top of the railway display area)
-    void LogAction(int Caller, AnsiString HeadCode, AnsiString OtherHeadCode, TActionType ActionType, AnsiString LocationName, TDateTime TimetableNonRepeatTime,
+    void LogAction(int Caller, AnsiString HeadCode, AnsiString OtherHeadCode, TActionType ActionType, AnsiString LocationName, AnsiString SplitDistribution, TDateTime TimetableNonRepeatTime,
                    bool Warning);
 /// Carry out the actions needed when a new shuttle service is created from a non-repeating (F-nshs) service
     void NewShuttleFromNonRepeatService(int Caller, bool NoLogFlag); //bool NoLogFlag added at v2.12.0 for new service TT skips

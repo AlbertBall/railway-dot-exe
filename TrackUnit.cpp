@@ -4760,10 +4760,14 @@ void TTrack::ResetPoints(int Caller)
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ResetPoints");
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackElementAt(1125, x).TrackType == Points)
+        if((TrackElementAt(1125, x).TrackType == Points) && (TrackElementAt(1571, x).Failed))
         {
             TrackElementAt(1126, x).Attribute = 0;
             TrackElementAt(1515, x).Failed = false;
+            TrackElementAt(1567, x).SpeedLimit01 = TrackElementAt(1574, x).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;  //added at v2.15.0
+            TrackElementAt(1568, x).SpeedLimit23 = TrackElementAt(1575, x).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;  //added at v2.15.0
+            TrackElementAt(1569, x).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = -1;                                    //added at v2.15.0
+            TrackElementAt(1570, x).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 = -1;                                    //added at v2.15.0
         }
     }
     FailedPointsVector.clear();
@@ -4777,9 +4781,11 @@ void TTrack::ResetTSRs(int Caller)  //added at v2.14.0
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ResetTSRs");
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        if(TrackElementAt(1554, x).TrackType == Simple)
+        if((TrackElementAt(1554, x).TrackType == Simple) && (TrackElementAt(1555, x).Failed))
         {
-            TrackElementAt(1555, x).Failed = false;
+            TrackElementAt(1556, x).Failed = false;
+            TrackElementAt(1572, x).SpeedLimit01 = TrackElementAt(1576, x).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;   //added at v2.15.0
+            TrackElementAt(1573, x).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = -1;                                     //added at v2.15.0
         }
     }
     TSRVector.clear();

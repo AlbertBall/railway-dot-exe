@@ -8897,7 +8897,7 @@ void TInterface::ClockTimer2(int Caller)
                         TTrack::TInfrastructureFailureEntry IFE;
                         IFE.TVPos = SimpleTVPos;
                         TE.Failed = true;
-                        TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = TE.SpeedLimit01; //store these values temporarily, points aren't bridges so can use these
+                        TE.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 = TE.SpeedLimit01; //store these values temporarily, simple elements aren't bridges so can use these
                         TE.SpeedLimit01 = 10; //value while failed
                         Display->WarningLog(23, Utilities->Format96HHMMSS(TrainController->TTClockTime) + ": Temporary Speed Restriction at " + TE.ElementID);
                         PerfLogForm->PerformanceLog(46, Utilities->Format96HHMMSS(TrainController->TTClockTime) + " WARNING: Temporary Speed Restriction at " + TE.ElementID);

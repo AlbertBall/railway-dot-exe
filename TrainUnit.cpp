@@ -13409,7 +13409,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             TActionVectorEntry AVEntry1 = TrainDataVector.at(x).ActionVector.at(1);
             if((AVEntry1.SequenceType == FinishSequence) && (AVEntry1.Command != "Frh") && (AVEntry1.Command != "Fjo"))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - only 'Frh' or 'Fjo' finish events are permitted immediately after an 'Sns' or 'Sfs' entry for: " +
+                SecondPassMessage(GiveMessages, "Error in timetable - only 'Frh' or 'Fjo' finish events are permitted immediately after an 'Sns' or 'Sfs' event for: " +
                                   TDEntry.HeadCode);
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2580);
@@ -13796,7 +13796,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             TActionVectorEntry AVEntry1 = TDEntry.ActionVector.at(1);
             if(!AtLocSuccessor(AVEntry1))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sns' entry is followed by an illegal event for: " + TDEntry.HeadCode +
+                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sns' event is followed by an illegal event for: " + TDEntry.HeadCode +
                                   ". The event isn't valid for a stationary train.");
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2599);
@@ -13805,7 +13805,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             if((AVEntry1.SequenceType == StartSequence) || ((AVEntry1.SequenceType == FinishSequence) && (AVEntry1.Command != "Frh") && (AVEntry1.Command != "Fjo")) ||
                             (AVEntry1.FormatType == Repeat))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sns' entry is followed by an illegal event for: " + TDEntry.HeadCode);
+                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sns' event is followed by an illegal event for: " + TDEntry.HeadCode);
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2600);
                 return(false);
@@ -13855,7 +13855,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 }
                 else if((TrainDataVector.at(x).ActionVector.at(y).Command == "fsp") || (TrainDataVector.at(x).ActionVector.at(y).Command == "rsp"))
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - an 'Sfs' action must be followed by a departure and arrival before another split, see " + TrainDataVector.at(x).ServiceReference);
+                    SecondPassMessage(GiveMessages, "Error in timetable - an 'Sfs' event must be followed by a departure and arrival before another split, see " + TrainDataVector.at(x).ServiceReference);
                     TrainDataVector.clear();
                     Utilities->CallLogPop(2586);
                     return(false);
@@ -13934,7 +13934,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             TActionVectorEntry AVEntry1 = TDEntry.ActionVector.at(1);
             if(!AtLocSuccessor(AVEntry1))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sfs' entry is followed by an illegal event for: " + TDEntry.HeadCode +
+                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sfs' event is followed by an illegal event for: " + TDEntry.HeadCode +
                                   ". The event isn't valid for a stationary train.");
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2588);
@@ -13943,7 +13943,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             if((AVEntry1.SequenceType == StartSequence) || ((AVEntry1.SequenceType == FinishSequence) && (AVEntry1.Command != "Frh") && (AVEntry1.Command != "Fjo")) ||
                             (AVEntry1.FormatType == Repeat))
             {
-                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sfs' entry is followed by an illegal event for: " + TDEntry.HeadCode);
+                SecondPassMessage(GiveMessages, "Error in timetable - an 'Sfs' event is followed by an illegal event for: " + TDEntry.HeadCode);
                 TrainDataVector.clear();
                 Utilities->CallLogPop(2589);
                 return(false);
@@ -14068,7 +14068,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 {
                     if(TrainDataVector.at(x).ActionVector.at(y + 1).FormatType != Repeat)
                     {
-                        SecondPassMessage(GiveMessages, "Error in timetable - only a repeat can follow a finish entry for: " + TDEntry.HeadCode);
+                        SecondPassMessage(GiveMessages, "Error in timetable - only a repeat can follow a finish event for: " + TDEntry.HeadCode);
                         TrainDataVector.clear();
                         Utilities->CallLogPop(798);
                         return(false);
@@ -14348,22 +14348,22 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 if(AVEntry.EventTime != TDateTime(-1))
                 {
-                    throw Exception("Timetable error, TimeLoc entry has EventTime not -1 for " + TDEntry.HeadCode);
+                    throw Exception("Timetable error, TimeLoc event has EventTime not -1 for " + TDEntry.HeadCode);
                 }
                 if((AVEntry.ArrivalTime == TDateTime(-1)) && (AVEntry.DepartureTime == TDateTime(-1)))
                 {
-                    throw Exception("Timetable error, TimeLoc entry has neither arrival nor departure time set for " + TDEntry.HeadCode);
+                    throw Exception("Timetable error, TimeLoc event has neither arrival nor departure time set for " + TDEntry.HeadCode);
                 }
             }
             if(AVEntry.FormatType == TimeTimeLoc)
             {
                 if(AVEntry.EventTime != TDateTime(-1))
                 {
-                    throw Exception("Timetable error, TimeTimeLoc entry has EventTime not -1 for " + TDEntry.HeadCode);
+                    throw Exception("Timetable error, TimeTimeLoc event has EventTime not -1 for " + TDEntry.HeadCode);
                 }
                 if((AVEntry.ArrivalTime == TDateTime(-1)) || (AVEntry.DepartureTime == TDateTime(-1)))
                 {
-                    throw Exception("Timetable error, TimeTimeLoc entry has either arrival or departure time not set for " + TDEntry.HeadCode);
+                    throw Exception("Timetable error, TimeTimeLoc event has either arrival or departure time not set for " + TDEntry.HeadCode);
                 }
             }
             if((AVEntry.FormatType == TimeCmd) || (AVEntry.FormatType == TimeCmdHeadCode) || (AVEntry.FormatType == StartNew) ||
@@ -14372,18 +14372,18 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 if(AVEntry.EventTime == TDateTime(-1))
                 {
-                    throw Exception("Timetable error, Cmd or PassTime entry has EventTime not set for " + TDEntry.HeadCode);
+                    throw Exception("Timetable error, Cmd or PassTime event has EventTime not set for " + TDEntry.HeadCode);
                 }
                 if((AVEntry.ArrivalTime != TDateTime(-1)) || (AVEntry.DepartureTime != TDateTime(-1)))
                 {
-                    throw Exception("Timetable error, Cmd or PassTime entry has either arrival or departure time set for " + TDEntry.HeadCode);
+                    throw Exception("Timetable error, Cmd or PassTime event has either arrival or departure time set for " + TDEntry.HeadCode);
                 }
             }
             if(AVEntry.FormatType == Repeat)
             {
                 if((AVEntry.EventTime != TDateTime(-1)) || (AVEntry.ArrivalTime != TDateTime(-1)) || (AVEntry.DepartureTime != TDateTime(-1)))
                 {
-                    throw Exception("Timetable error, Repeat entry has a time set for " + TDEntry.HeadCode);
+                    throw Exception("Timetable error, Repeat event has a time set for " + TDEntry.HeadCode);
                 }
             }
         }
@@ -14481,7 +14481,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             LastLocationName = TrainDataVector.at(x).ActionVector.at(0).LocationName; // should be ""
             if(LastLocationName != "")
             {
-                throw Exception("Timetable error, moving Snt entry has LocationName set for " + TDEntry.HeadCode);
+                throw Exception("Timetable error, moving Snt event has LocationName set for " + TDEntry.HeadCode);
             }
             for(unsigned int y = 1; y < TrainDataVector.at(x).ActionVector.size();
                 y++) // note that immediate successor to a moving Snt can only be a Moving type
@@ -14700,7 +14700,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
             if((AVEntry.LocationName == "") && (AVEntry.Command != "Snt") && (AVEntry.Command != "Fer") && (AVEntry.FormatType != Repeat))
             {
-                throw Exception("Error, non- 'Snt', 'Fer' or Repeat entry doesn't have a location name set for " + TDEntry.HeadCode);
+                throw Exception("Error, non- 'Snt', 'Fer' or Repeat event doesn't have a location name set for " + TDEntry.HeadCode);
             }
             AnsiString LocName = "";
             // dummy, only used so can call IsSNTEntryLocated
@@ -14708,14 +14708,14 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 if(AVEntry.LocationName == "")
                 {
-                    throw Exception("Error, 'Snt' entry at a stop location doesn't have a location name set for " + TDEntry.HeadCode);
+                    throw Exception("Error, 'Snt' event at a stop location doesn't have a location name set for " + TDEntry.HeadCode);
                 }
             }
             if((AVEntry.Command == "Snt") && !(IsSNTEntryLocated(2, TrainDataVector.at(x), LocName)))
             {
                 if(AVEntry.LocationName != "")
                 {
-                    throw Exception("Error, 'Snt' unlocated entry has a location name set for " + TDEntry.HeadCode);
+                    throw Exception("Error, 'Snt' unlocated event has a location name set for " + TDEntry.HeadCode);
                 }
             }
         }
@@ -14849,19 +14849,19 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             const TActionVectorEntry &AVEntry = TrainDataVector.at(x).ActionVector.at(y);
             if(AVEntry.FormatType == NoFormat)
             {
-                throw Exception("Error - timetable ActionVector entry no. " + AnsiString(y) + " has FormatType unset for: " + TDEntry.HeadCode);
+                throw Exception("Error - timetable ActionVector event no. " + AnsiString(y) + " has FormatType unset for: " + TDEntry.HeadCode);
             }
             else if(AVEntry.SequenceType == NoSequence)
             {
-                throw Exception("Error - timetable ActionVector entry no. " + AnsiString(y) + " has SequenceType unset for: " + TDEntry.HeadCode);
+                throw Exception("Error - timetable ActionVector event no. " + AnsiString(y) + " has SequenceType unset for: " + TDEntry.HeadCode);
             }
             else if(AVEntry.LocationType == NoLocation)
             {
-                throw Exception("Error - timetable ActionVector entry no. " + AnsiString(y) + " has LocationType unset for: " + TDEntry.HeadCode);
+                throw Exception("Error - timetable ActionVector event no. " + AnsiString(y) + " has LocationType unset for: " + TDEntry.HeadCode);
             }
             else if(AVEntry.ShuttleLinkType == NoShuttleLink)
             {
-                throw Exception("Error - timetable ActionVector entry no. " + AnsiString(y) + " has ShuttleLinkType unset for: " + TDEntry.HeadCode);
+                throw Exception("Error - timetable ActionVector event no. " + AnsiString(y) + " has ShuttleLinkType unset for: " + TDEntry.HeadCode);
             }
         }
     }
@@ -14948,7 +14948,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 if(((double)GetRepeatTime(33, TrainDataVector.at(x).ActionVector.at(y).EventTime, NumRepeats, IncMinutes) >= 3.9994))
                 // 3d 23h 59m = 3.9993055556
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a repeat entry time exceeds 95h 59m, see service " + HC);
+                    SecondPassMessage(GiveMessages, "Error in timetable - a repeat event time exceeds 95h 59m, see service " + HC);
                     TrainDataVector.clear();
                     Utilities->CallLogPop(1819);
                     return(false);
@@ -14959,7 +14959,7 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 if(((double)GetRepeatTime(34, TrainDataVector.at(x).ActionVector.at(y).EventTime, NumRepeats, IncMinutes) >= 3.9994))
                 // 3d 23h 59m = 3.9993055556
                 {
-                    SecondPassMessage(GiveMessages, "Error in timetable - a repeat entry time exceeds 95h 59m, see service " + HC);
+                    SecondPassMessage(GiveMessages, "Error in timetable - a repeat event time exceeds 95h 59m, see service " + HC);
                     TrainDataVector.clear();
                     Utilities->CallLogPop(1820);
                     return(false);
@@ -15683,7 +15683,7 @@ bool TTrainController::IsSNTEntryLocated(int Caller, const TTrainDataEntry &TDEn
     }
     if((AVEntry0.Command != "Snt") && (AVEntry0.Command != "Snt-sh"))
     {
-        throw Exception("Error, first entry not 'Snt' or 'Snt-sh' in IsSNTEntryLocated");
+        throw Exception("Error, first event not 'Snt' or 'Snt-sh' in IsSNTEntryLocated");
     }
     if(Track->TrackElementAt(506, AVEntry0.RearStartOrRepeatMins).TrackType == Continuation)
     {

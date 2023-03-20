@@ -9205,12 +9205,20 @@ void TInterface::ClockTimer2(int Caller)
             TrainController->StopTTClockFlag = false;
         }
 
+/* dropped after v2.15.0 as it hid the help screen and still made the navigation keys cycle round panels if a panel button had been pressed - e.g. click
+pause or run and it cycled round the operate panel buttons
+
         //below added at v2.13.2 so focus restored after actions due or perflog windows take focus by enabling, disabling or
         //moving.  Otherwise the track info shortcut keys don't work (& probably others)
         bool MouseInInterface = ((Mouse->CursorPos.x >= ClientOrigin.x) && (Mouse->CursorPos.x < (ClientOrigin.x + Interface->Width))
         && (Mouse->CursorPos.y >= ClientOrigin.y) && (Mouse->CursorPos.y < (ClientOrigin.y + Interface->Height)));
 
         if(!Interface->Active && MouseInInterface)
+        {
+            Interface->SetFocus();
+        }
+*/
+        if(ActionsDueForm->Active || PerfLogForm->Active) //in place of above after v2.15.0
         {
             Interface->SetFocus();
         }
@@ -27054,6 +27062,7 @@ void TInterface::PlayerHandshakingActions()
 */
 
 //---------------------------------------------------------------------------
+
 
 
 

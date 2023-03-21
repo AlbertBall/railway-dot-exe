@@ -6705,6 +6705,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 Track->GapFlashRed->LoadOriginalExistingGraphic(2, 4, 4, 8, 8,
                                                                                 Track->TrackElementAt(439, Track->GapFlashRedPosition).GraphicPtr);
                                 Track->GapFlashFlag = true;
+                                ClearandRebuildRailway(98); //added after v2.15.0 to clear any existing highlighted gaps
                             }
                         }
                     }
@@ -6735,6 +6736,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                                               Track->TrackElementAt(810, Track->GapFlashRedPosition).VLoc * 16);
                         Track->GapFlashRed->LoadOriginalExistingGraphic(4, 4, 4, 8, 8, Track->TrackElementAt(811, Track->GapFlashRedPosition).GraphicPtr);
                         Track->GapFlashFlag = true;
+                        ClearandRebuildRailway(97); //added after v2.15.0 to clear any existing highlighted gaps
                     }
                 }
             }

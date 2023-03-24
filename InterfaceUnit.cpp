@@ -542,7 +542,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         const AnsiString TTLabelStr6 = "+ rear element ID - space - front element ID [+ optional ';S']" + NL + "+ ref. of the train that splits" + NL +
             "+ other service ref." + NL + "+ shuttle service ref." + NL + "+ rear element ID - space - front element ID ';' linked shuttle ref." + NL +
             "+ linked shuttle service ref. ';' feeder service ref." + NL + "+ location" + NL + "+ joining train ref." + NL + "+ new service ref." + NL +
-            "+ new service ref." + NL + "    " + NL + "+ new description" + NL + "+ ref. of train to join" + NL +
+            "+ new service ref." + NL + "    " + NL + "+ new description" + NL + "+ new service ref." + NL + "+ ref. of train to join" + NL +
             "+ list of valid exit element IDs (at least 1) separated by spaces" + NL + "+ linked shuttle service ref.";
 
         const AnsiString TTLabelStr7 = "Arrival OR departure time (program will determine which from the context) + location." + NL +

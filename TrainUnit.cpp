@@ -11418,7 +11418,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
         if(Count > 0)
         {
             EndOfFile = true;
-            // returns true for a blank line - treated as end of file
+            // returns true for a blank line (or a line of all commas) - treated as end of file
             Utilities->CallLogPop(1018);
             return(true);
         }
@@ -16467,7 +16467,7 @@ void TTrainController::TimetableMessage(bool GiveMessages, AnsiString Message)
     // if(ServiceReference == "") ShowMessage(Message);
     if(!CheckHeadCodeValidity(12, false, ServiceReference))
     {
-        ShowMessage(Message);
+        ShowMessage(ServiceReference + "(not a valid service ref.): " + Message); //amended after v2.15.0 to give information on 'service' so can find it in lh list
     }
     // changed from above at v2.3.0 as a meaningless value for 'Timetable invalid - unable to find a valid start time on its own line' (uses last entry text)
     // false means don't give messages within the function

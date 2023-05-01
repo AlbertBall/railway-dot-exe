@@ -17897,6 +17897,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
         if(TruncatePDElementPos == 0)
         {
             TruncateType = FullTruncate;
+            AllRoutes->RouteBackTruncateFlag = true; //Added after v2.15.0: FullTruncate is also a form of BackTruncate as far as the flag is concerned for SetAllRearwardsSignals
         }
         else
         {
@@ -17909,7 +17910,6 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             {
                 TruncateType = BackTruncate;
                 AllRoutes->RouteBackTruncateFlag = true;
-
             }
         }
     }

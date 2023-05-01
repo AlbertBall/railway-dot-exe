@@ -286,7 +286,7 @@ void TTrain::PlotStartPosition(int Caller)
 /*
           Plots the train starting position on screen.  Note that the check for starting on straight points &
           on wrongly set points is carried out in TrainControllerUnit [but have to allow for starting on points because
-          ChangeDirection calls this function.].  Train starts on Lead & Mid elements & Straddle = LeadMid unless
+          ChangeDirection calls this function].  Train starts on Lead & Mid elements & Straddle = LeadMid unless
           entering at a continuation in which case Straddle = MidLag & train not plotted immediately.
           Set the headcode graphics pointers from the headcode text, then check whether starting at a
           continuation.  If so set Mid & Lag elements to -1 so they won't be plotted, and set Lead values

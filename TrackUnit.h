@@ -1540,7 +1540,8 @@ public:
 
     static const int RouteSearchLimit = 30000;
 ///< limit to the number of elements searched in attempting to find a route
-
+    bool QuitAllRecursiveSearchesFlag;
+///<used during searching for preferred routes when no more recursive calls are required, added after v2.15.0
     IDInt ReqPosRouteID;
 ///< the route ID number of the route that is being extended backwards during route building, not needed for
     ///< session saves as routes in build are not saved in sessions

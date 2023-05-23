@@ -16,61 +16,6 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
-#95 fitzburger96 — 23/03/23 at 23:15
-It may be helpful if hovering over a station (or individual platform if JamieT's suggestion [#94] is taken up) could display the next service/s due to stop there. At busy junction stations it could help with planning train paths in advance 
-KR/ZAR — 23/03/23 at 23:23
-This would be interesting and I would say for both non-station and station locations
-fitzburger96 — 24/03/23 at 00:09
-The actions due panel would probably have the required programming, or it could be extrapolated directly from the timetables. But it would only need to show the next 30 minutes for instance
-BWJM — 24/03/23 at 05:01
-The game doesn't do platform assignments without making them individual stations.  I'm not sure I'd want to see that change.
-
-Your idea of being able to hover over a location and see the next actions occurring there is interesting, but I can see it getting out of hand quickly, particularly with busy stations.  You have all types of actions to consider including arrivals, departures, direction changes, terminations, new services, splits, joins, passes and now even description changes.  At a busy station, you could have 10 different services all having some action occurring in the next five minutes.  For arrivals, you could have any number of services due to stop at that location.  Do you just show the next 10 actions due at that location, one per service, or do you show all services whose next due actions are at that location?  What about a service who is due to stop at that location but it's not their next action (ie: they still have to depart their current location first).  See how this gets crazy quick?  There are a million what-ifs to consider, nevermind data overload and keeping it useful.
-Albert — 24/03/23 at 09:20
-I'll add this to the wishlist but BWJM is right, platforms aren't distinguished within the program and frankly trying to build in recognition of them would be a major task that would in my view far exceed any benefit that would be gained - and it would require the user to designate them at build time making that task more complex.  It doesn't sound unreasonable to give station information (live boards) without platform assignments but bearing in mind BWJM's comments it would need to be restricted maybe to just simple arrivals and departures.  It's something to think about for the future.  I recall Dan working on a browser-based departure board some time ago but it's not (yet) amongst the utilities - did that project bear fruit @Dan ?
-Dan — 24/03/23 at 11:07
-Yes, that was coming along, and I think it works somewhat okay. (Although the most recent changes have probably broken it.)
-I would like to redo it as a desktop application.
-I don't have time at the moment, but I am still keen to work on that idea.
-Albert — 24/03/23 at 11:09
-Nice one!  It'll save me a job :-)
-
-#94JamieT — 21/03/2023 18:00
-Sort of related to the idea of messages, I was thinking would it be possible to add a short syntax onto the end of location entries in the timetable? The scenarios I thought this might be useful for would be if you have more than one station with several platforms in one project, being able to specify a platform number allocation for each station per individual train. Another idea would be several lines (e.g. fast, slow etc) and you could specify the line a train takes at a named location. So, with the floating train window, it would appear: HH:MM:Arrive at [Station Name] [Platform X] or HH:MM Pass [Location Name] [Fast Line]. Another one to add to the wishlist for the future?
-KR/ZAR — 21/03/2023 18:02
-You can do this with the latest version kind of, you can use desc to change the description to show the platform of the next calling point
-Until now I've only been able to do this for the last station on a time table eg. "Stratford to Richmond platform 7" but now I could have this update to "Stratford to Richmond 'via Canonbury Platform 3'"
-The latter bit changing every time it calls at a place
-Platform allocation is and I believe should remain an optional suggestion more than enforced, as is the case in reality, trains are booked to platforms but often due to unforeseen circumstances they can be sent elsewhere ??
-JamieT — 21/03/2023 18:07
-That is true, I will experiment with changing the description for my next project and see how best I could implement platform and line allocations
-BWJM — 21/03/2023 18:09
-I agree that changing the description would be a good solution here based on the details shared.
-KR/ZAR — 21/03/2023 18:12
-For the second part I guess something like "via New Cross Up Main" etc
-You would need to use non-station locations to label the lines and stagger them so they dont overlap into one location
-Sorry got two ideas mixed into one
-You would not need those for the description, they would be if you instead wanted to use pas etc
-BWJM — 21/03/2023 18:14
-I was just about to correct you but I'm a little slow on my phone.
-You're right... named locations are not required in this use case. Just label the platforms or tracks.
-JamieT — 21/03/2023 18:17
-I think having too many named locations clutters the railway a bit for my liking which is why I've not really gone down that route
-KR/ZAR — 21/03/2023 18:18
-Yh that is more if you have a smaller scale
-
-#93 from BWJM — 18/03/23 via discord at 09:17
-I wish there was a way to display a message to the user at a specified time.
-Attention! A traffic collision on King St. has caused a disruption in services. Trains are now returning north at Green crossover and returning south at Cameron.
-
-The timetable syntax could be easy - it would be its own "service", just like the initial starting time, and might look like this:
-11:37;Attention! A traffic collision...
-
-You could even add an optional parameter to determine whether or not the message pauses the simulation when it appears. 
-
-Albert — 18/03/23 at 09:52
-The best that can be done at present is the 'W' warning that can be attached to most timetabled events, to display in the top warning panel.  I'll add it to the wishlist for future consideration.
-
 #92 from Krizar via discord 11/03/23
 KR/ZAR — Today at 09:43
 [Done at 2.15.0]Currently when a train is held at a signal it will flash at you until you make a route for it, this can be a problem when the service isn't due to be at the next calling point for another N mins, especially for freight as these are regularly held at signals. What would be nice to have is the ability to right click a train and say "wait N mins and contact me again", I think Simsig has this?
@@ -624,46 +569,6 @@ Multi-player facility over the internet.
 
 4) Version change information
 
-VERSION CHANGES AFTER v2.15.0 for v2.15.1
-
-This is largely a bug fix version:  the only behavioural change is an improvement in the warnings given when using timetable alphabetical mode.  These make it much less likely that an alphabetical timetable will overwrite a non-alphabetical version in error.
-
-Bugs fixed:
-
-On-screen help was hidden behind the main screen, it now displays in front as it should.  No-one complained about this so it must not be used very often.
-
-Gap graphics persisted after flashing during build and operation, now corrected.
-
-It was possible to have multiple "Must select valid signal..." messages during route searches in some circumstances.  The reason was traced to a particular feature of the search function which has now been amended to ensure that the message is only displayed once.
-
-It was found that when truncating a route that leads to buffers or continuation, the signal in a linked rear route didn't change to red as it should.  This was a bug introduced in v2.15.0 that has now been corrected.
-
-When testing a new railway (Crewe) it was found that trains waiting to enter at a continuation could crash even though the route was protected by a signal if an earlier train was removed under signaller control.  This was traced to an error in the removal function and has now been corrected.
-
-
-Not for website:
-
-/Minor changes needed to web readme file.
-
-/Note:  Micke (Commuterpop) reported an anomaly with the actions due panel - it was shorter and narroer than it should be, only showed 16 trains, and had a vertical scrollbar that obscured the times when there were > 16 trains.  It was eventually traced to a 125% scaling factor in the Windows display settings, when set to 100% all worked as it should.
-
-/error: can have multiple "Must select valid signal..." messages during route searches for pref dirs and non-pref dirs when find required element but it's not valid, because when search 'set' points position and fail, only remove one element and go on the check 'unset' position, but if have found the required position then it keeps failing on subsequent recursive calls.  It doesn't go on for ever but it can go on several times depending on how many points there are on the route. Found on Crewe when setting route from UDL to first signal (facing wrong direction) from Stoke Link.
-
-/Manual: point out for locked routes that ground sigs don't count, no matter how many there are the route will be locked if truncated + explain why
-
-/error: when truncating a route that leads to buffers or continuation, the signal in a linked rear route didn't change to red - was because had failed to use RouteBackTruncateFlag for full truncate (which is a form of back truncation).  Now corrected
-
-/Improved warnings for AZ order
-
-/When developing crewe & testing train that starts at basford hall and moves out at 10:05 I think - gresty green - udl - potteries loop & out at stoke link and moved time forward to 10:05, removed trains wanting to enter at stoke link but had a crash after removed 2nd or third, seemed to have removed train still present when new train entered, also didn't have the confirmation screen, maybe the crash overrode it somehow?  Corrected by dropping the TrainID removal during RemoveTrainMenuItemClick - see notes in that function 
-
-/Help screen hidden behind main screen ok done for next release
-
-/on-screen help still includes railway.exe, should be RailOS32/64.exe - manual changed on website but help still same as is the release on Github
-
-/gap graphics persist after flashing during build and operation - corrected
-
-
 VERSION CHANGES AFTER v2.14.0 for v2.15.0
 
 New features:
@@ -1014,6 +919,24 @@ Own notes (not for website):
 /check if manual needs altering - ok amended
 
 /dropped TempTrackMarker01 & 23 as not needed after v2.12.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 VERSION CHANGES AFTER v2.11.1 for v2.12.0
@@ -2661,15 +2584,11 @@ Prior to uploading:
 
 1 Check that all callers have unique numbers and that no 'after vx.y.z comments left in code'
 
-2 Increment version number in Project>Options for both 32bit debug & 64bit release versions & copyright year (if required) in AboutUnit.cpp.
+2 Increment version number & copyright year (if required) in Project>Options & AboutUnit.cpp.
 
-3 Add 32 or 64 to appropriate version information in InterfaceUnit.cpp prior to compilation for each build & check when click 'About'.
+3 Add 32 or 64 to appropriate version information prior to compilation for each build & check when click 'About'.
 
 4 Check if any new .dll or .bpl files needed (likely to if there's a new compiler version)
-
-4a If help and/or manual updated include in both own-use win32 & 64 versions and in release win32 & 64 versions.
-
-4b Make sure DevHistoryPending.txt is up to date and copy it to DevHistory.txt
 
 5 Use debug version for 32bit release & include 5 x .dll files and 5 x .bpl files from the Win32 debug folder.  NB .dll & .bpl have same names but very different so don't confuse them - use Project Deployment to ensure correct versions.  Change railway.exe to RailOS32.exe so no ambiguity.
 
@@ -2694,16 +2613,15 @@ Prior to uploading:
 	Railway>Help.chm (if updated)
 	In Railway, check have appropriate dlls and bpls as above + GNU licence + session.ini + metadata files for B'ham & L'pool, and that all directories contain the expected files & no extras (will be if had run from the release folder), especially make sure there's NO config.txt
 
-13 Zip the above as RailOS32 vx.x.x.zip & RailOS64 vx.x.x.zip
+13 Zip the above as RailOS32 v2.15.0.zip & RailOS64 v2.15.0.zip
 
 
 On website:
 
-1 Upload new release version zips for 32 & 64 bits to 'Media' + any other modified files - Manual, Quick Start, FileSpec etc.
+1 Upload new release version zips for 32 & 64 bits to 'Media'
 
-2 Go to All Products, select category 'Base Program & Documentation' & click 'Filter', edit product 'Railway Operation Simulator (RailOS)'
-	Update full text of page iaw readme.txt [E:\Programming work\GitHub v2.15.1\railway-dot-exe\Readme for website download page.txt] & bold the important notes
-	Update short text if required  
+2 Go to category 'Base Program & Documentation'  & edit product 'Railway Operation Simulator (RailOS)' (Select correct category & search)
+	Update text of page iaw readme.txt (short & full)
 	Category should already be 'Base Program & Documentation'
 	Tag should already be 'Railway Operation Simulator'
 	Image should already be in 'Product image'
@@ -2711,7 +2629,7 @@ On website:
 	TAuto Poster should be 'No', this a plugin that automatically posts to Twitter if set to 'Yes'
 
 3 Under 'General' tab
-	Click 'Add File' & "Choose file" to enter url of each of the the new zips (32 & 64bits), give it the version number as its name
+	Click 'Add File' & "Choose file" to enter url of the new zip, give it the version number as its name
 	Move it to the top of the list (need full window to move)
 	Make latest release the current version & last one deprecated
 	'Virtual' & 'Downloadable' boxes should already be ticked
@@ -2734,11 +2652,11 @@ On website:
 	Menu order should be 0
 	Enable reviews should be ticked
 
-7 Preview then update if all ok (best to select update first as otherwise preview shows last version), download & check correct
+7 Preview then update if all ok (best to select update first as otherwise preview shows last version)
 
-8. add earlier versions to archived programs and delete from current page
+8. add last but one version to archived programs and delete from current page
 
-9 If Manual or Quick start or any other file changed upload the new versions to 'Media' as above and add by editing product 'Railway Operation Simulator manuals' as above (select correct category & search), SKU is RailwayOS-Manuals. Alter text (short & full) to refer to new version. Update & preview.  Delete any earlier versions & add to 'Archived Documentation' 
+9 If Manual or Quick start or any other file changed upload the new versions to 'Media' as above and add by editing product 'Railway Operation Simulator manuals' as above (select correct category & search), SKU is RailwayOS-Manuals. Alter text (short & full) to refer to new version. Update & preview. 
 
 10 Go to 'Version Information' page (uses DiviBuilder), click 'settings' on 'Versions (Accordion)', copy last version then click 'settings' on it, add version number & date as title, then change all text to the new text.  Save the new addition, save changes then update the page & check ok.
 
@@ -2768,13 +2686,13 @@ On GitHub:
 
 10 Push to GitHub with 'include tags' ticked
 
-11 Create a new release on GitHub & include the new zip file(s)
+11 Create a new release on GitHub & include the new zip file
 
 
 ADDING A NEW PROJECT TO THE USER WEBSITE: (updated 31/08/22)
 
 1 Check works ok & no copyrighted information (advise creator if need to change anything)
-2 Add a metadata file - set correct release date & create new zip file
+2 Add a metadata file inc minimum railos version needed, correct the release date & create new zip file
 3 Upload image to 'Media' (preferably in .jpg form as it's much smaller)
 4 Upload original or modified zip file to 'Media'
 5 Select 'Add new product'

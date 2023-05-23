@@ -113,5 +113,6 @@ var searchData=
   ['avhoursintvalue_111',['AvHoursIntValue',['../class_t_train_controller.html#a7a9d906ba9e0cc15322f7ac5d467f28f',1,'TTrainController']]],
   ['azorderbutton_112',['AZOrderButton',['../class_t_interface.html#acb32a9d7b25e6f1ee4507a2fb52f5711',1,'TInterface']]],
   ['azorderbuttonclick_113',['AZOrderButtonClick',['../class_t_interface.html#a28579472104533fb5fd01066a22fbb5b',1,'TInterface']]],
-  ['azorderkeyflag_114',['AZOrderKeyFlag',['../class_t_interface.html#a615ed7f6c50dfba7281fdc379c42c81d',1,'TInterface']]]
+  ['azorderkeyflag_114',['AZOrderKeyFlag',['../class_t_interface.html#a615ed7f6c50dfba7281fdc379c42c81d',1,'TInterface']]],
+  ['azwarningsent_115',['AZWarningSent',['../class_t_interface.html#aed5a4743374c6a12f4ba17ff3f6c52a7',1,'TInterface']]]
 ];

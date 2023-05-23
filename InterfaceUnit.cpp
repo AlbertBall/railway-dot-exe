@@ -233,8 +233,8 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         PrefDirConflictAdviceMessageSent = false; //added at v2.13.0
         TrainLeaveWarningSent = false; //added at v2.14.0
         InvertTTEntryMessageSent = false; //added at v2.15.0
-        AZWarningSent = false; //added after v2.15.0
-        TTAZSaveWarningNotRequired = false; //added after v2.15.0
+        AZWarningSent = false; //added at v2.15.1
+        TTAZSaveWarningNotRequired = false; //added at v2.15.1
         Utilities->DefaultTrackLength = 100;     //moved here at v2.11.0, may be changed in reading config.txt //changed at v2.13.1
         Utilities->DefaultTrackSpeedLimit = 200; //moved here at v2.11.0, may be changed in reading config.txt
 
@@ -4666,7 +4666,7 @@ void __fastcall TInterface::SaveTTButtonClick(TObject *Sender)
             Utilities->CallLogPop(1685);
             return;
         }
-        if(AZOrderButton->Caption == AnsiString("Original Order")) //new after v2.15.0
+        if(AZOrderButton->Caption == AnsiString("Original Order")) //new at v2.15.1
         {
             UnicodeString MessageStr =
                 "This will save the timetable in alphabetical order and the original order will be lost.  If this is what is required "
@@ -6731,7 +6731,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                 Track->GapFlashRed->LoadOriginalExistingGraphic(2, 4, 4, 8, 8,
                                                                                 Track->TrackElementAt(439, Track->GapFlashRedPosition).GraphicPtr);
                                 Track->GapFlashFlag = true;
-                                ClearandRebuildRailway(98); //added after v2.15.0 to clear any existing highlighted gaps
+                                ClearandRebuildRailway(98); //added at v2.15.1 to clear any existing highlighted gaps
                             }
                         }
                     }
@@ -6762,7 +6762,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                                               Track->TrackElementAt(810, Track->GapFlashRedPosition).VLoc * 16);
                         Track->GapFlashRed->LoadOriginalExistingGraphic(4, 4, 4, 8, 8, Track->TrackElementAt(811, Track->GapFlashRedPosition).GraphicPtr);
                         Track->GapFlashFlag = true;
-                        ClearandRebuildRailway(97); //added after v2.15.0 to clear any existing highlighted gaps
+                        ClearandRebuildRailway(97); //added at v2.15.1 to clear any existing highlighted gaps
                     }
                 }
             }
@@ -9233,7 +9233,7 @@ void TInterface::ClockTimer2(int Caller)
             TrainController->StopTTClockFlag = false;
         }
 
-/* dropped after v2.15.0 as it hid the help screen and still made the navigation keys cycle round panels if a panel button had been pressed - e.g. click
+/* dropped at v2.15.1 as it hid the help screen and still made the navigation keys cycle round panels if a panel button had been pressed - e.g. click
 pause or run and it cycled round the operate panel buttons
 
         //below added at v2.13.2 so focus restored after actions due or perflog windows take focus by enabling, disabling or
@@ -9246,7 +9246,7 @@ pause or run and it cycled round the operate panel buttons
             Interface->SetFocus();
         }
 */
-        if(ActionsDueForm->Active || PerfLogForm->Active) //in place of above after v2.15.0
+        if(ActionsDueForm->Active || PerfLogForm->Active) //in place of above at v2.15.1
         {
             Interface->SetFocus();
         }
@@ -13631,7 +13631,7 @@ void __fastcall TInterface::RemoveTrainMenuItemClick(TObject *Sender)
             }
             else
             {
-//                TrackElementPtr->TrainIDOnElement = -1;  //dropped after v2.15.0, this needs to stay until removed during TTrainController::Operate
+//                TrackElementPtr->TrainIDOnElement = -1;  //dropped at v2.15.1, this needs to stay until removed during TTrainController::Operate
                                               //else another train can enter, e.g. if removed from a continuation when other trains overdue for entry,
                                               //this happened (for LeadElement > -1) when testing Crewe when a subsequent train entered, then
                                               //the ID was removed when the removed train next cleared it during TTrainController::Operate allowing
@@ -13715,7 +13715,7 @@ void __fastcall TInterface::RemoveTrainMenuItemClick(TObject *Sender)
             }
             else
             {
-//                TrackElementPtr->TrainIDOnElement = -1;  //dropped after v2.15.0, this needs to stay until removed during TTrainController::Operate
+//                TrackElementPtr->TrainIDOnElement = -1;  //dropped at v2.15.1, this needs to stay until removed during TTrainController::Operate
                                               //else another train can enter, e.g. if removed from a continuation when other trains overdue for entry,
                                               //this happened (for leadElement - see above) when testing Crewe when a subsequent train entered, then
                                               //the ID was removed when the removed train next cleared it during TTrainController::Operate allowing
@@ -24004,7 +24004,7 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
         }
 */
 
-     //throw Exception("Test error"); //for testing the error file
+      //throw Exception("Test error"); //for testing the error file
         Utilities->CallLogPop(2376);
     }
     catch(const Exception &e)

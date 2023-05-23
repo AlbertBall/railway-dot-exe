@@ -1,0 +1,32 @@
+digraph "TTrain::LogAction"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="TTrain::LogAction",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Send a message to the performance log and performance file, and if the message is flagged as a warnin..."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TUtilities::CallLogPop",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0",tooltip="pops the last entry off the call stack, throws an error if called when empty"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TUtilities::Format96HHMMSS",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c",tooltip="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 & resets when..."];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TTrain::GetTrainTime",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#ad249f34f6862e604b8e141d1b25fe57d",tooltip="Returns the timetable action time corresponding to 'Time' for this train, i.e. it adjusts the time va..."];
+  Node4 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TTrainController::GetRepeatTime",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a435ef46f062904e85ae9792faaecdcf7",tooltip="Return the repeating service time."];
+  Node5 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TUtilities::TimeStamp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c",tooltip="creates a string of the form 'hh:mm:ss' for use in call & event logging"];
+  Node4 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TPerfLogForm::PerformanceLog",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_perf_log_form.html#a72f06bf03353c15c94ceefbf420ff7b4",tooltip="Send Statement to the performance log on screen and to the file."];
+  Node7 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="TDisplay::WarningLog",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_display.html#a604d491a723df459bdcd54a4b9d1d9f2",tooltip="Display warning message Statement in the bottom left hand warning position and scroll other messages ..."];
+  Node8 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

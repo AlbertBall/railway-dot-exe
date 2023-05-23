@@ -8,14 +8,22 @@ Welcome to the RailOS project, a railway simulator for Windows originally writte
 - allow random train failures
 - allow random train delays, failures of signals and points, and temporary speed restrictions
 - choose light or dark backgrounds
-- develop timetables with splits, joins, follow-on services, changes in direction, shuttles and repeating services.
+- develop timetables with splits, joins, follow-on services, changes in direction, shuttles and repeating services
 - operate trains
 - save and reload an operating session at any time
 - add your own graphics
 - zoom-out for a wider display
 - and many other features
 
-A wide selection of track element types is available for building the railway, together with station elements consisting of platforms, concourses and footbridges.  Also available are non-station named location elements for sidings, works, depots, junction approaches and anything else that needs a name.  Location names are displayed on the railway in user-selectable font, style, size and colour.  In addition to named locations any other text may be added to the railway, again in any font, style, size and colour.  Location names and other text may be moved in order to improve the appearance of the railway and areas of railway may be selected and cut, copied, pasted, deleted, mirrored and flipped etc.  Railway files may be saved and loaded in both development form during construction and in operational form on completion.  Track element lengths and line speed limits may be set individually, along tracks, or in areas by selection, as can preferred running directions.
+A wide selection of track types is available for building the railway, together with station elements
+consisting of platforms, concourses, footbridges and underpasses. Also available are non-station
+named locations for sidings, works, depots, junction approaches and anything else that needs a
+name. Location names and other text are displayed in user-selectable font, style, size and colour.
+Location names and other text may be moved in order to improve the appearance of the railway
+and areas of track may be selected and cut, copied, pasted, deleted, mirrored, flipped and rotated.
+Railway files may be saved and loaded in both development form during construction and in
+operational form on completion. Track element lengths and line speed limits may be set
+individually, along tracks, or in areas by selection, as can preferred running directions.
 
 Trains may operate to a timetable developed using the internal timetable editor, or under signaller control.  Three types of route are available:
 
@@ -24,6 +32,8 @@ Trains may operate to a timetable developed using the internal timetable editor,
 3. Unrestricted routes:  set from most types of track element to other track elements in any direction.  The route is cleared as trains pass
 
 In addition trains will run on track that has no route set, but they are then much more vulnerable to derailments and crashes.
+
+Signalling can be two, three or four-aspect, and ground signals are also available.
 
 Although the program is fully usable now, there remains great potential for further development.  Some ideas include:
 

@@ -15362,7 +15362,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                                  AnsiString(XLinkPos) + "," + AnsiString(RequiredPosition) + "," + AnsiString(ReqPosRouteID.GetInt()) + "," + AnsiString(EndPosition) + "," +
                                  AnsiString((short)AutoSigsFlag) + "," + AnsiString((short)RecursiveCall));
     int VectorCount = 0;
-    if(!RecursiveCall) //added after v2.15.0
+    if(!RecursiveCall) //added at v2.15.1
     {
         QuitAllRecursiveSearchesFlag = false;
     }
@@ -15624,7 +15624,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                 {
                     SearchVector.erase(SearchVector.end() - 1);
                 }
-                QuitAllRecursiveSearchesFlag = true;  //added after v2.15.0 (to stop several same messages being given)
+                QuitAllRecursiveSearchesFlag = true;  //added at v2.15.1 (to stop several same messages being given)
                 Utilities->CallLogPop(246);
                 return(false);
             } // if((SearchElement.Config[SearchElement.XLinkPos] != Signal).......
@@ -15645,7 +15645,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                 {
                     SearchVector.erase(SearchVector.end() - 1);
                 }
-                QuitAllRecursiveSearchesFlag = true;  //added after v2.15.0
+                QuitAllRecursiveSearchesFlag = true;  //added at v2.15.1
                 Utilities->CallLogPop(1928);
                 return(false);
             }
@@ -15814,7 +15814,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                 else
                 {
 // remove leading point with XLinkPos [1]
-                    if(!QuitAllRecursiveSearchesFlag)  //added after v2.15.0
+                    if(!QuitAllRecursiveSearchesFlag)  //added at v2.15.1
                     {
                         SearchVector.erase(SearchVector.end() - 1);
                         VectorCount--;
@@ -17915,7 +17915,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
         if(TruncatePDElementPos == 0)
         {
             TruncateType = FullTruncate;
-            AllRoutes->RouteBackTruncateFlag = true; //Added after v2.15.0: FullTruncate is also a form of BackTruncate as far as the flag is concerned for SetAllRearwardsSignals
+            AllRoutes->RouteBackTruncateFlag = true; //Added at v2.15.1: FullTruncate is also a form of BackTruncate as far as the flag is concerned for SetAllRearwardsSignals
         }
         else
         {
@@ -17980,7 +17980,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
     {
         for(unsigned int b = 0; b < PrefDirSize(); b++) //search forwards
         {
-            int TrainID = Track->TrackElementAt(1556, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnElement;
+            int TrainID = Track->TrackElementAt(1577, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnElement;
             if(PrefDirVector.at(b).TrackType == Bridge)
             {
                 if(PrefDirVector.at(b).XLinkPos < 2)

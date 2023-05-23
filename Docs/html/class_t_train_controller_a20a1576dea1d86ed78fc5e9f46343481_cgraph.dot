@@ -72,7 +72,7 @@ digraph "TTrainController::Operate"
   Node2 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node2 -> Node45 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node2 -> Node53 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node53 [label="TTrain::LogAction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a493ab1c185d29bf28ec8fded2356e9fc",tooltip="Send a message to the performance log and performance file, and if the message is flagged as a warnin..."];
+  Node53 [label="TTrain::LogAction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#aa3cf379140cb396c57454801dbd6e6ab",tooltip="Send a message to the performance log and performance file, and if the message is flagged as a warnin..."];
   Node53 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node53 -> Node48 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node53 -> Node54 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

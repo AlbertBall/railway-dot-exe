@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.15.0</span>
+   &#160;<span id="projectnumber">v2.15.1</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -303,6 +303,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:aac291f4829ef0570b124bda994488e21"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#aac291f4829ef0570b124bda994488e21">QuitAllRecursiveSearchesFlag</a></td></tr>
+<tr class="memdesc:aac291f4829ef0570b124bda994488e21"><td class="mdescLeft">&#160;</td><td class="mdescRight">used during searching for preferred routes when no more recursive calls are required, added at v2.15.1  <a href="class_t_one_route.html#aac291f4829ef0570b124bda994488e21">More...</a><br /></td></tr>
+<tr class="separator:aac291f4829ef0570b124bda994488e21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee7b2c91e9920bbb59c84cb562f0680a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_i_d_int.html">IDInt</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#aee7b2c91e9920bbb59c84cb562f0680a">ReqPosRouteID</a></td></tr>
 <tr class="memdesc:aee7b2c91e9920bbb59c84cb562f0680a"><td class="mdescLeft">&#160;</td><td class="mdescRight">session saves as routes in build are not saved in sessions  <a href="class_t_one_route.html#aee7b2c91e9920bbb59c84cb562f0680a">More...</a><br /></td></tr>
 <tr class="separator:aee7b2c91e9920bbb59c84cb562f0680a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -416,7 +419,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Empty the route of any stored elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01563">1563</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01564">1564</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -453,7 +456,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called after a non-preferred (i.e. unrestricted) route has been selected and has finished flashing, to add it to the AllRoutesVector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17243">17243</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17267">17267</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -502,7 +505,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called after a preferred (i.e. preferred direction or automatic signals) route has been selected and has finished flashing, to add it to the AllRoutesVector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15909">15909</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15933">15933</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -551,7 +554,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used when setting signal aspects for a route by working forwards through the route to see what the next forward signal aspects is, because this determines all the rearward signal aspects. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17582">17582</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17606">17606</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -583,7 +586,7 @@ Here is the caller graph for this function:</div>
 
 <p>Cancel a route immediately if a train occupies it when travelling in the wrong direction (or occupies a crossover on a non-route line when the other track is in a route) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18434">18434</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18458">18458</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -650,7 +653,7 @@ Here is the caller graph for this function:</div>
 
 <p>Try to find a set of linked tracks between the route start element and the one at HLoc &amp; VLoc. If find one return true, set &amp;PointsChanged to true if any points need to be changed and &amp;ReqPosRouteID to the route ID of the existing route to attach to, if there is one, and -1 if not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16330">16330</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16354">16354</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -728,7 +731,7 @@ Here is the caller graph for this function:</div>
 
 <p>Try to find a set of linked tracks that lie on preferred directions between the route start element and the one at HLoc &amp; VLoc. If find one return true, set &amp;PointsChanged to true if any points need to be changed and &amp;ReqPosRouteID to the route ID of the existing route to attach to, if there is one, and -1 if not. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14801">14801</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14807">14807</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -782,7 +785,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set the starting conditions for a non-preferred (i.e. unrestricted) route selection beginning on HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16103">16103</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16127">16127</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -843,7 +846,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set the starting conditions for a preferred direction or automatic signal route selection beginning on HLoc &amp; VLoc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14598">14598</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l14604">14604</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -885,7 +888,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Called by GetNextNonPreferredRouteElement and GetNextPreferredRouteElement to check whether or not any points on the selected route need to be changed. Also gives every set of points that needs to change the chance to fail, and if so returns the TV position, added at v2.13.0 </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17494">17494</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17518">17518</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -933,7 +936,7 @@ Here is the caller graph for this function:</div>
 
 <p>Adds signal to front/end of green or red routes when blue route truncated or removed. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18308">18308</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18332">18332</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -977,7 +980,7 @@ Here is the caller graph for this function:</div>
 
 <p>Used when creating a bitmap image to display the route colours and direction arrows (as on screen during operation) for an operating railway. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15267">15267</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15273">15273</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1038,7 +1041,7 @@ Here is the call graph for this function:</div>
 
 <p>Called by GetNextNonPreferredRouteElement to carry out the search for linked track, and also called recursively, if recursive RecursiveCall is true (added at v2.13.0) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16746">16746</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l16770">16770</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1128,7 +1131,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called recursively, if recursive RecursiveCall is true (added at v2.13.0) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15303">15303</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l15309">15309</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1170,7 +1173,7 @@ Here is the caller graph for this function:</div>
 
 <p>After a route has been selected successfully this function sets all LC change values appropriately for the selected route type and location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18538">18538</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18562">18562</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1218,7 +1221,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called by <a class="el" href="class_t_all_routes.html#ac6bd39457747eaa96476a8a87df15ac2" title="Set rearwards signals from the specified route starting position.">TAllRoutes::SetAllRearwardsSignals</a> to set rearwards signals from a specified starting position. If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17674">17674</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17698">17698</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1252,7 +1255,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called when setting unrestricted routes to set the route element values appropriately after a successful search has been conducted. It isn't needed for preferred routes because the element values are obtained from the already set preferred direction elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17159">17159</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17183">17183</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1300,7 +1303,7 @@ Here is the caller graph for this function:</div>
 
 <p>After a route has been selected successfully this function sets all RouteFlash (see above) values appropriately for the selected route type and location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18510">18510</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18534">18534</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1332,7 +1335,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called when setting a route to set all points appropriately. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17401">17401</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17425">17425</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1380,7 +1383,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector so that the route displays with the correct colour. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18487">18487</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18511">18511</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1412,7 +1415,7 @@ Here is the caller graph for this function:</div>
 
 <p>Called when setting a route to set all signals appropriately. Also called when a new train is added at a position where a route has been set, when it is necessary to set the next rearwards signal to red, the next yellow etc. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17430">17430</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17454">17454</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1445,7 +1448,7 @@ Here is the caller graph for this function:</div>
 
 <p>Check incorporated in route search routines after have found a legitimate route, returns false for signal failure &amp; deals with graphics &amp; messages. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18629">18629</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18653">18653</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1486,7 +1489,7 @@ Here is the caller graph for this function:</div>
 <p>Erase a single route element - don't need this now incorporated in .cpp file. </p>
 <p>Store a single route element in the PrefDirVector </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01577">1577</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01578">1578</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1537,7 +1540,7 @@ Here is the caller graph for this function:</div>
 <p>Examines the route to see whether the element at H &amp; V is in the route, and if not returns a ReturnFlag value of NotInRoute. </p>
 <p>If it is in a route but the element selected is invalid, then a message is given and returns with a ReturnFlag value of InRouteFalse. Otherwise the route is truncated at and including the element that matches H &amp; V with a ReturnFlag value of InRouteTrue. Selection invalid if select a bridge; trying to leave a single element; last element to be left not a signal (for PrefDirRoute or AutoSigsFlag set); last element to be left a bridge, points or crossover (for not PrefDirRoute &amp; AutoSigsFlag not set), or part of route locked. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17851">17851</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17875">17875</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1548,6 +1551,24 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="aac291f4829ef0570b124bda994488e21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac291f4829ef0570b124bda994488e21">&#9670;&nbsp;</a></span>QuitAllRecursiveSearchesFlag</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TOneRoute::QuitAllRecursiveSearchesFlag</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>used during searching for preferred routes when no more recursive calls are required, added at v2.15.1 </p>
+
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01543">1543</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+
+</div>
+</div>
 <a id="aee7b2c91e9920bbb59c84cb562f0680a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aee7b2c91e9920bbb59c84cb562f0680a">&#9670;&nbsp;</a></span>ReqPosRouteID</h2>
 
@@ -1563,7 +1584,7 @@ Here is the call graph for this function:</div>
 <p>session saves as routes in build are not saved in sessions </p>
 <p>the route ID number of the route that is being extended backwards during route building, not needed for </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01544">1544</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01545">1545</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1581,7 +1602,7 @@ Here is the call graph for this function:</div>
 
 <p>the class member that allows the route to flash during setting up (see <a class="el" href="class_t_one_route_1_1_t_route_flash.html" title="The flashing route.">TRouteFlash</a> above) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01557">1557</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01558">1558</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1599,7 +1620,7 @@ Here is the call graph for this function:</div>
 
 <p>the ID number of the route, this is needed for session saves </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01551">1551</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01552">1552</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1641,7 +1662,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01555">1555</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01556">1556</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1659,7 +1680,7 @@ Here is the call graph for this function:</div>
 
 <p>the two preferred direction elements corresponding to the starting position of a new route </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01555">1555</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01556">1556</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1677,7 +1698,7 @@ Here is the call graph for this function:</div>
 
 <p>TrackVectorPosition of the StartElement(s) set when the starting position of a new route is selected, note that although there may be two StartElements (as there can be two preferred directions on a single element), there is only one TrackVectorPosition as the element is the same for both. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01553">1553</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01554">1554</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>
@@ -1696,7 +1717,7 @@ Here is the call graph for this function:</div>
 <p>needed for session saves as routes in build are not saved in sessions </p>
 <p>the route ID number of the route that is being extended forwards during route building, not </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01547">1547</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l01548">1548</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
 </div>
 </div>

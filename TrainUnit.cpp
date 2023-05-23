@@ -16467,7 +16467,7 @@ void TTrainController::TimetableMessage(bool GiveMessages, AnsiString Message)
     // if(ServiceReference == "") ShowMessage(Message);
     if(!CheckHeadCodeValidity(12, false, ServiceReference))
     {
-        ShowMessage(ServiceReference + "(not a valid service ref.): " + Message); //amended after v2.15.0 to give information on 'service' so can find it in lh list
+        ShowMessage(ServiceReference + "(not a valid service ref.): " + Message); //amended at v2.15.1 to give information on 'service' so can find it in lh list
     }
     // changed from above at v2.3.0 as a meaningless value for 'Timetable invalid - unable to find a valid start time on its own line' (uses last entry text)
     // false means don't give messages within the function

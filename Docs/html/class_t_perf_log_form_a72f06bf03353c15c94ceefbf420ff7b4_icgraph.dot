@@ -17,7 +17,7 @@ digraph "TPerfLogForm::PerformanceLog"
   Node5 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node6 [label="TTrain::LogAction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a493ab1c185d29bf28ec8fded2356e9fc",tooltip="Send a message to the performance log and performance file, and if the message is flagged as a warnin..."];
+  Node6 [label="TTrain::LogAction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#aa3cf379140cb396c57454801dbd6e6ab",tooltip="Send a message to the performance log and performance file, and if the message is flagged as a warnin..."];
   Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node7 [label="TTrainController::AddTrain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#aa895b60238810a9d134cd5b9c886da56",tooltip="Introduce a new train to the railway, with the characteristics specified, returns true for success,..."];
   Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

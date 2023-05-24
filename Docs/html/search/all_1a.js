@@ -1,10 +1,16 @@
 var searchData=
 [
-  ['_7eapi_3520',['~API',['../class_a_p_i.html#a583ec65b542b44e4b7013f5fc830fdcd',1,'API']]],
-  ['_7etgraphicelement_3521',['~TGraphicElement',['../class_t_graphic_element.html#af7a475400bc15a5ab41bf1b3d345dc31',1,'TGraphicElement']]],
-  ['_7etinterface_3522',['~TInterface',['../class_t_interface.html#aba108dfa899ffdc641432d672e455873',1,'TInterface']]],
-  ['_7etrailgraphics_3523',['~TRailGraphics',['../class_t_rail_graphics.html#ad243415e657236ecca97fa1d064cf127',1,'TRailGraphics']]],
-  ['_7ettexthandler_3524',['~TTextHandler',['../class_t_text_handler.html#aab03bea00b30f17935d58d144a25f15a',1,'TTextHandler']]],
-  ['_7ettrack_3525',['~TTrack',['../class_t_track.html#aefdbe7fe9d1092aa9c543a0bb16c84a0',1,'TTrack']]],
-  ['_7ettraincontroller_3526',['~TTrainController',['../class_t_train_controller.html#ad6cbfb50d0fddf2c6b43a1604da3b746',1,'TTrainController']]]
+  ['zeropowernocdtmessage_3510',['ZeroPowerNoCDTMessage',['../class_t_train.html#a57f56f345b299028f4a783840c85c0f5',1,'TTrain']]],
+  ['zeropowernofrontsplitmessage_3511',['ZeroPowerNoFrontSplitMessage',['../class_t_train.html#a22a2a82c0f7efdd65f4fb662c0b9703d',1,'TTrain']]],
+  ['zeropowernojoinedbymessage_3512',['ZeroPowerNoJoinedByMessage',['../class_t_train.html#a22a6798e75da1bbfa5e95cff229351c4',1,'TTrain']]],
+  ['zeropowernonewservicemessage_3513',['ZeroPowerNoNewServiceMessage',['../class_t_train.html#a029b78aeafbc2566f0d545c7a696e8d9',1,'TTrain']]],
+  ['zeropowernonewshuttlefromnonrepeatmessage_3514',['ZeroPowerNoNewShuttleFromNonRepeatMessage',['../class_t_train.html#a3e44d705924a2004f6da30d611fb5df9',1,'TTrain']]],
+  ['zeropowernorearsplitmessage_3515',['ZeroPowerNoRearSplitMessage',['../class_t_train.html#a3bb863564a1c047c7d39ac199cc58c8a',1,'TTrain']]],
+  ['zeropowernorepeatshuttlemessage_3516',['ZeroPowerNoRepeatShuttleMessage',['../class_t_train.html#af5c83ea3dc79030aae0d0c911b4fd951',1,'TTrain']]],
+  ['zeropowernorepeatshuttleornewservicemessage_3517',['ZeroPowerNoRepeatShuttleOrNewServiceMessage',['../class_t_train.html#a648acac4ac06cce4d37427c4adce9a63',1,'TTrain']]],
+  ['zoombutton_3518',['ZoomButton',['../class_t_interface.html#a94e5fcaf5fa82c8f1672ac86d76bbea1',1,'TInterface']]],
+  ['zoombuttonclick_3519',['ZoomButtonClick',['../class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc',1,'TInterface']]],
+  ['zoomin_3520',['ZoomIn',['../class_t_rail_graphics.html#af767c8d2a83580c11319d91a0b953f7b',1,'TRailGraphics']]],
+  ['zoomout_3521',['ZoomOut',['../class_t_rail_graphics.html#a19ac80f2d47148d7779f51ea3cdb2d5f',1,'TRailGraphics']]],
+  ['zoomoutflag_3522',['ZoomOutFlag',['../class_t_display.html#a0ce29cc370b43313ff15bee9423bf338',1,'TDisplay']]]
 ];

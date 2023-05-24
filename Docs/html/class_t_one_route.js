@@ -26,6 +26,7 @@ var class_t_one_route =
     [ "SignalHasFailed", "class_t_one_route.html#a4177e4c0c4d6817515cb19f4f7e1427b", null ],
     [ "StoreRouteElementInPrefDirVector", "class_t_one_route.html#a7c359f022e985fbec06f5518bc9046b3", null ],
     [ "TruncateRoute", "class_t_one_route.html#a431473ce9a2ef6c49781ab84c972a641", null ],
+    [ "QuitAllRecursiveSearchesFlag", "class_t_one_route.html#aac291f4829ef0570b124bda994488e21", null ],
     [ "ReqPosRouteID", "class_t_one_route.html#aee7b2c91e9920bbb59c84cb562f0680a", null ],
     [ "RouteFlash", "class_t_one_route.html#ad5c3066eea66bd42ea847f550e2b0589", null ],
     [ "RouteID", "class_t_one_route.html#a75f84f2ad79c985ff7b664cfecdab376", null ],

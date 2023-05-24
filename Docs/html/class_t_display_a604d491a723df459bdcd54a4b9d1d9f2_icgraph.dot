@@ -11,7 +11,7 @@ digraph "TDisplay::WarningLog"
   Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node3 [label="TInterface::MasterClockTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ace30a12d923fc7fb489afabb0a09aa4f",tooltip=" "];
   Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node4 [label="TTrain::LogAction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a493ab1c185d29bf28ec8fded2356e9fc",tooltip="Send a message to the performance log and performance file, and if the message is flagged as a warnin..."];
+  Node4 [label="TTrain::LogAction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#aa3cf379140cb396c57454801dbd6e6ab",tooltip="Send a message to the performance log and performance file, and if the message is flagged as a warnin..."];
   Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node5 [label="TTrainController::AddTrain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#aa895b60238810a9d134cd5b9c886da56",tooltip="Introduce a new train to the railway, with the characteristics specified, returns true for success,..."];
   Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

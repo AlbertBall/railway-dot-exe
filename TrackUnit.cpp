@@ -15360,8 +15360,12 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SearchForPreferredRoute," + PrefDirElement.LogPrefDir() + "," +
                                  AnsiString(XLinkPos) + "," + AnsiString(RequiredPosition) + "," + AnsiString(ReqPosRouteID.GetInt()) + "," + AnsiString(EndPosition) + "," +
-                                 AnsiString((short)AutoSigsFlag));
+                                 AnsiString((short)AutoSigsFlag) + "," + AnsiString((short)RecursiveCall));
     int VectorCount = 0;
+    if(!RecursiveCall) //added at v2.15.1
+    {
+        QuitAllRecursiveSearchesFlag = false;
+    }
     TPrefDirElement PrefDirElement1, PrefDirElement2, BlankElement;
 
 // check for a fouled diagonal for first element.  Added for v1.3.2
@@ -15620,6 +15624,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                 {
                     SearchVector.erase(SearchVector.end() - 1);
                 }
+                QuitAllRecursiveSearchesFlag = true;  //added at v2.15.1 (to stop several same messages being given)
                 Utilities->CallLogPop(246);
                 return(false);
             } // if((SearchElement.Config[SearchElement.XLinkPos] != Signal).......
@@ -15640,6 +15645,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                 {
                     SearchVector.erase(SearchVector.end() - 1);
                 }
+                QuitAllRecursiveSearchesFlag = true;  //added at v2.15.1
                 Utilities->CallLogPop(1928);
                 return(false);
             }
@@ -15808,8 +15814,20 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                 else
                 {
 // remove leading point with XLinkPos [1]
-                    SearchVector.erase(SearchVector.end() - 1);
-                    VectorCount--;
+                    if(!QuitAllRecursiveSearchesFlag)  //added at v2.15.1
+                    {
+                        SearchVector.erase(SearchVector.end() - 1);
+                        VectorCount--;
+                    }
+                    else
+                    {
+                        for(int x = 0; x < VectorCount; x++)
+                        {
+                            SearchVector.erase(SearchVector.end() - 1);
+                        }
+                        Utilities->CallLogPop(2626);
+                        return(false);
+                    }
                 }
             }
 // XLink set to position [SearchPos2]
@@ -17897,6 +17915,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
         if(TruncatePDElementPos == 0)
         {
             TruncateType = FullTruncate;
+            AllRoutes->RouteBackTruncateFlag = true; //Added at v2.15.1: FullTruncate is also a form of BackTruncate as far as the flag is concerned for SetAllRearwardsSignals
         }
         else
         {
@@ -17909,7 +17928,6 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
             {
                 TruncateType = BackTruncate;
                 AllRoutes->RouteBackTruncateFlag = true;
-
             }
         }
     }
@@ -17962,7 +17980,7 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
     {
         for(unsigned int b = 0; b < PrefDirSize(); b++) //search forwards
         {
-            int TrainID = Track->TrackElementAt(1556, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnElement;
+            int TrainID = Track->TrackElementAt(1577, PrefDirVector.at(b).TrackVectorPosition).TrainIDOnElement;
             if(PrefDirVector.at(b).TrackType == Bridge)
             {
                 if(PrefDirVector.at(b).XLinkPos < 2)

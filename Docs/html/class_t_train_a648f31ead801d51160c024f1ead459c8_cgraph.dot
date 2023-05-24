@@ -18,7 +18,7 @@ digraph "TTrain::RepeatShuttleOrNewNonRepeatService"
   Node5 [label="TUtilities::TimeStamp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c",tooltip="creates a string of the form 'hh:mm:ss' for use in call & event logging"];
   Node3 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node6 [label="TTrain::LogAction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#a493ab1c185d29bf28ec8fded2356e9fc",tooltip="Send a message to the performance log and performance file, and if the message is flagged as a warnin..."];
+  Node6 [label="TTrain::LogAction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#aa3cf379140cb396c57454801dbd6e6ab",tooltip="Send a message to the performance log and performance file, and if the message is flagged as a warnin..."];
   Node6 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node7 [label="TUtilities::Format96HHMMSS",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a2dfbe3d4ed11770bc1a902b51afdc10c",tooltip="formats a TDateTime into an AnsiString of the form hh:mm:ss where hh runs from 00 to 95 & resets when..."];

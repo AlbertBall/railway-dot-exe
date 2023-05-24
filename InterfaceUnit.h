@@ -1234,6 +1234,8 @@ private:
 ///< false during initial start up, true when all set up to allow MasterClock to start
     bool AutoSigsFlag;
 ///< true when AutoSig route building selected during operation
+    bool AZWarningSent;
+///< true when warning about alphabetical timetable order has been given
     bool CancelSelectionFlag;
 ///< used in case pasting to avoid RecoverClipboard call when set
     bool ClipboardChecked;
@@ -1316,6 +1318,8 @@ private:
 ///< indicates that a text item has been found when clicking on a build screen during 'AddText' or 'MoveTextOrGraphic' modes
     bool TrainLeaveWarningSent;
 ///< indicates that a train under signaller control leaving a location when awaiting departure warning that it must be returned to restore timetable control has been sent
+    bool TTAZSaveWarningNotRequired;
+///< if false a warning is given when attempting to save a timetable in alphabetical order, if the save proceeds then this is set to true and the warning is not given again
     bool TTClockAdjustWarningHide;
 ///< true if user opts not to show the timetable clock adjustment warning (false on starting the program)
     bool TwoLocationNamePanelHide;

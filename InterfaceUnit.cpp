@@ -3332,7 +3332,7 @@ void __fastcall TInterface::CreateTimetableMenuItemClick(TObject *Sender)
         CopiedEntryFlag = false;
         NewEntryInPreparationFlag = false;
         CopiedEntryStr = "";
-        TEVPtr = TimetableEditVector.end();
+        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
         TTCurrentEntryPtr = TimetableEditVector.end();
         TTStartTimePtr = TimetableEditVector.end();
         TTFirstServicePtr = TimetableEditVector.end();
@@ -3434,8 +3434,9 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
         TimetableTitle = ""; // unload any loaded timetable.  Moved here from below at v2.1.0 for consistency with CreateTimetable
         TrainController->TrainDataVector.clear(); // unload any loaded timetable.  Moved here from below at v2.1.0 for consistency with CreateTimetable
         SetCaption(8); // added at v2.1.0 as formerly retained earlier loaded tt name in error
-        TEVPtr = TimetableEditVector.end();
-        TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr = TimetableEditVector.end();
+        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+        TTCurrentEntryPtr = TimetableEditVector.end();
+        TTStartTimePtr = TimetableEditVector.end();
         TTFirstServicePtr = TimetableEditVector.end();
         TTLastServicePtr = TimetableEditVector.end();
         if(TimetableDialog->Execute())
@@ -4314,8 +4315,9 @@ void __fastcall TInterface::CutTTEntryButtonClick(TObject *Sender)
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
         TTEntryChangedFlag = false;
-        TEVPtr = TimetableEditVector.end();
-        TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr = TimetableEditVector.end();
+        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+        TTCurrentEntryPtr = TimetableEditVector.end();
+        TTStartTimePtr = TimetableEditVector.end();
         TTFirstServicePtr = TimetableEditVector.end();
         TTLastServicePtr = TimetableEditVector.end();
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
@@ -4383,8 +4385,9 @@ void __fastcall TInterface::PasteTTEntryButtonClick(TObject *Sender)
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
         TTEntryChangedFlag = false;
-        TEVPtr = TimetableEditVector.end();
-        TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr =
+        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+        TTCurrentEntryPtr = TimetableEditVector.end();
+        TTStartTimePtr = TimetableEditVector.end();
         TTFirstServicePtr = TimetableEditVector.end();
         TTLastServicePtr = TimetableEditVector.end();
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
@@ -4452,8 +4455,9 @@ void __fastcall TInterface::DeleteTTEntryButtonClick(TObject *Sender)
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
         TTEntryChangedFlag = false;
-        TEVPtr = TimetableEditVector.end();
-        TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr = TimetableEditVector.end();
+        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+        TTCurrentEntryPtr = TimetableEditVector.end();
+        TTStartTimePtr = TimetableEditVector.end();
         TTFirstServicePtr = TimetableEditVector.end();
         TTLastServicePtr = TimetableEditVector.end();
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
@@ -5093,8 +5097,9 @@ void __fastcall TInterface::RestoreTTButtonClick(TObject *Sender)
             AllEntriesTTListBox->Clear();
             TTStartTimeBox->Text = "";
             AddSubMinsBox->Text = "";
-            TEVPtr = TimetableEditVector.end();
-            TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr = TimetableEditVector.end();
+            TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+            TTCurrentEntryPtr = TimetableEditVector.end();
+            TTStartTimePtr = TimetableEditVector.end();
             TTFirstServicePtr = TimetableEditVector.end();
             TTLastServicePtr = TimetableEditVector.end();
             char *TimetableEntryString = new char[10000];
@@ -5415,7 +5420,7 @@ void TInterface::CompileAllEntriesMemoAndSetPointers(int Caller)
     } Segment;
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CompileAllEntriesMemoAndSetPointers");
     AllEntriesTTListBox->Clear();
-    TEVPtr = TimetableEditVector.end();
+    TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
     TTStartTimePtr = TimetableEditVector.end();
     TTFirstServicePtr = TimetableEditVector.end();
     TTLastServicePtr = TimetableEditVector.end();
@@ -5866,9 +5871,9 @@ void TInterface::TimetableHandler()
         OneEntryTimetableMemo->Clear(); // don't clear if Entry changed
         if(TTCurrentEntryPtr != TimetableEditVector.end())
         {
-// if(*TTCurrentEntryPtr != "")  leave this out or fails to highlight blank line entries
-            if((TTCurrentEntryPtr > TTStartTimePtr) && (TTCurrentEntryPtr <= TTLastServicePtr) && ((*TTCurrentEntryPtr)[1] != '*'))
-            {
+//    if(*TTCurrentEntryPtr != "")  don't use this here as fails to highlight blank line entries, but need to add it in next condition or can have error (Cameron020723errorlog.err)
+            if((TTCurrentEntryPtr > TTStartTimePtr) && (TTCurrentEntryPtr <= TTLastServicePtr) && (*TTCurrentEntryPtr != "") && ((*TTCurrentEntryPtr)[1] != '*'))
+            {                                                                                   //added (*TTCurrentEntryPtr != "") after v2.15.1 due to Cameron's error noted above
                 bool ServiceEntry = true;
                 DisplayOneTTLineInPanel(0, *TTCurrentEntryPtr, ServiceEntry);
             }

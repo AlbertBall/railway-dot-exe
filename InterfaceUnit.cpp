@@ -94,7 +94,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion();
+        ProgramVersion = "RailOS32 Experimental version allowing more characters in location names";// + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -1312,6 +1312,7 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key, TShift
                     Utilities->CallLogPop(776);
                     return;
                 }
+
                 if(LocStr.Length() > 50)
                 {
                     Screen->Cursor = TCursor(-2); // Arrow
@@ -1326,12 +1327,15 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key, TShift
                 for(int x = 1; x <= LocStr.Length(); x++)
                 {
                     char Ch = LocStr[x];
-                    if((Ch != ' ') && (Ch != '&') && (Ch != '(') && (Ch != ')') && (Ch != ':') && (Ch != 39) && (Ch != '.') && (Ch != '-') && (Ch != '+') &&
-                       (Ch != '/') && ((Ch < '0') || (Ch > '9')) && ((Ch < 'A') || (Ch > 'Z')) && ((Ch < 'a') || (Ch > 'z')))
+//                    if((Ch != ' ') && (Ch != '&') && (Ch != '(') && (Ch != ')') && (Ch != ':') && (Ch != 39) && (Ch != '.') && (Ch != '-') && (Ch != '+') &&
+//                       (Ch != '/') && ((Ch < '0') || (Ch > '9')) && ((Ch < 'A') || (Ch > 'Z')) && ((Ch < 'a') || (Ch > 'z')))
+// Above removed for experimental version where allow any character except first 32 control characters & ';' or ','
+                    if(((Ch < 32) && (Ch >= 0)) || (Ch == ',') || (Ch == ';'))
                     {
                         Screen->Cursor = TCursor(-2); // Arrow
                         ShowMessage(
-                            "Location name contains one or more invalid characters, must be alphanumeric, brackets, space, full stop, colon, inverted comma, '-', '+', '/' or '&&'");
+//                            "Location name contains one or more invalid characters, must be alphanumeric, brackets, space, full stop, colon, inverted comma, '-', '+', '/' or '&&'"); //excess removed for experimental version
+                            "Location name contains one or more invalid characters - must not contain control characters, ';' or ','");
                         Level1Mode = TrackMode;
                         SetLevel1Mode(52);
                         Level2TrackMode = AddLocationName;
@@ -3451,14 +3455,15 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
             std::ifstream TTBLFile(CreateEditTTFileName.c_str(), std::ios_base::binary); // open in binary to examine each character
             if(TTBLFile.is_open())
             {
-                // check doesn't contain any non-ascii characters except CR, LF & '\0', and isn't empty
+                // check doesn't contain any non-ascii characters except CR, LF & '\0', and isn't empty <- not for experimental version
                 char c;
                 while(!TTBLFile.eof())
                 {
                     TTBLFile.get(c);
-                    if((c < 32) && (c != 13) && (c != 10) && (c != '\0')) // char is signed by default so values > 127 will be caught as treated as -ve
+//                    if((c < 32) && (c != 13) && (c != 10) && (c != '\0')) // char is signed by default so values > 127 will be caught as treated as -ve
+                    if((c < 32) && (c >= 1)) //have to allow NULLs
                     {
-                        ShowMessage("Timetable file is empty or contains non-ascii characters, codes must be between 20 and 127, or CR or LF");
+                        ShowMessage("Timetable file contains invalid control characters");
                         TTBLFile.close();
                         Utilities->CallLogPop(1612);
                         return;

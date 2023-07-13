@@ -12340,7 +12340,8 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         }
         for(int x = 1; x < Third.Length() + 1; x++)
         {
-            if((Third[x] < ' ') || (Third[x] > '~'))
+//            if((Third[x] < ' ') || (Third[x] > '~')) changed for experimental version
+            if((Third[x] < ' ') && (Third[x] >= 0))
             {
                 TimetableMessage(GiveMessages, "Train description contains invalid characters in '" + Third + "'");
                 Utilities->CallLogPop(2583);
@@ -12454,7 +12455,7 @@ bool TTrainController::CheckFourthValidityForSplit(AnsiString SplitDistributionS
 bool TTrainController::CheckLocationValidity(int Caller, AnsiString LocStr, bool GiveMessages, bool CheckLocationsExistInRailway)
 {
     // check that the location name exists in the railway (only if CheckLocationsExistInRailway is true), doesn't begin with a number
-    // and contains no special characters
+    // and contains no special characters     <- can contain specials for experimental version
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckLocationValidity," + LocStr);
     if(LocStr == "")
     {
@@ -12464,19 +12465,19 @@ bool TTrainController::CheckLocationValidity(int Caller, AnsiString LocStr, bool
     if((LocStr[1] >= '0') && (LocStr[1] <= '9'))
     {
         Utilities->CallLogPop(1354);
-        return(false); // can't begin with a number
+        return(false); // can't begin with a number or regarded as a time entry in SplitEntry
     }
     for(int x = 1; x < LocStr.Length() + 1; x++)
     {
-        if(LocStr[x] < ' ')
+        if(((LocStr[x] < ' ') && (LocStr[x] >= 0)) || (LocStr[x] == ',') || (LocStr[x] == ';')) //changed for experimental version
         {
             Utilities->CallLogPop(1355);
-            return(false); // contains a special character
+            return(false); // contains a special character or ',' or ';'
         }
-        if(LocStr[x] > 'z')
+        if(LocStr[x] > 'z') //dropped for experimental version
         {
-            Utilities->CallLogPop(1356);
-            return(false); // contains a character outside the standard ASCII set
+//            Utilities->CallLogPop(1356);
+//            return(false); // contains a character outside the standard ASCII set
         }
     }
     // check exists in railway location list if CheckLocationsExistInRailway is true
@@ -12700,7 +12701,8 @@ bool TTrainController::SplitTrainInfo(int Caller, AnsiString TrainInfoStr, AnsiS
         }
         for(int x = 1; x < Description.Length() + 1; x++)
         {
-            if((Description[x] < ' ') || (Description[x] > '~'))
+//            if((Description[x] < ' ') || (Description[x] > '~')) changed for experimental version
+            if((Description[x] < ' ') && (Description[x] >= 0))
             {
                 TimetableMessage(GiveMessages, "Train description contains invalid characters in '" + TrainInfoStr + "'");
                 Utilities->CallLogPop(885);
@@ -12736,7 +12738,8 @@ bool TTrainController::SplitTrainInfo(int Caller, AnsiString TrainInfoStr, AnsiS
     }
     for(int x = 1; x < Description.Length() + 1; x++)
     {
-        if((Description[x] < ' ') || (Description[x] > 126))
+//        if((Description[x] < ' ') || (Description[x] > 126)) changed for experimental version
+        if((Description[x] < ' ') && (Description[x] >= 0))
         {
             TimetableMessage(GiveMessages, "Train description contains invalid characters in '" + TrainInfoStr + "'");
             Utilities->CallLogPop(889);

@@ -94,7 +94,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 Experimental version allowing more characters in location names";// + GetVersion();
+        ProgramVersion = "RailOS32 Post v2.15.1";// + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -1301,10 +1301,11 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key, TShift
                 LocStr = LocStr.SubString(2, LocStr.Length()-1);
                 }
 */
-                if((LocStr != "") && (LocStr[1] >= '0') && (LocStr[1] <= '9')) // can't begin with a number
+//                if((LocStr != "") && (LocStr[1] >= '0') && (LocStr[1] <= '9')) // changed after v2.15.1 to allow locs to begin with digits but not 'digit-digit-colon'
+                if((LocStr.Length() >= 3) && (LocStr[1] >= '0') && (LocStr[1] <= '9') && (LocStr[2] >= '0') && (LocStr[2] <= '9') && (LocStr[3] == ':'))
                 {
                     Screen->Cursor = TCursor(-2); // Arrow
-                    ShowMessage("Location name can't begin with a number");
+                    ShowMessage("Location name can't begin with 'digit-digit-colon' as that is treated as the start of a time entry");
                     Level1Mode = TrackMode;
                     SetLevel1Mode(51);
                     Level2TrackMode = AddLocationName;
@@ -1329,12 +1330,12 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key, TShift
                     char Ch = LocStr[x];
 //                    if((Ch != ' ') && (Ch != '&') && (Ch != '(') && (Ch != ')') && (Ch != ':') && (Ch != 39) && (Ch != '.') && (Ch != '-') && (Ch != '+') &&
 //                       (Ch != '/') && ((Ch < '0') || (Ch > '9')) && ((Ch < 'A') || (Ch > 'Z')) && ((Ch < 'a') || (Ch > 'z')))
-// Above removed for experimental version where allow any character except first 32 control characters & ';' or ','
+// Above removed after v2.15.1 to allow extended characters in location names
                     if(((Ch < 32) && (Ch >= 0)) || (Ch == ',') || (Ch == ';'))
                     {
                         Screen->Cursor = TCursor(-2); // Arrow
                         ShowMessage(
-//                            "Location name contains one or more invalid characters, must be alphanumeric, brackets, space, full stop, colon, inverted comma, '-', '+', '/' or '&&'"); //excess removed for experimental version
+//                            "Location name contains one or more invalid characters, must be alphanumeric, brackets, space, full stop, colon, inverted comma, '-', '+', '/' or '&&'"); //changed after v2.15.1 to allow extended characters in location names
                             "Location name contains one or more invalid characters - must not contain control characters, ';' or ','");
                         Level1Mode = TrackMode;
                         SetLevel1Mode(52);
@@ -3455,12 +3456,12 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
             std::ifstream TTBLFile(CreateEditTTFileName.c_str(), std::ios_base::binary); // open in binary to examine each character
             if(TTBLFile.is_open())
             {
-                // check doesn't contain any non-ascii characters except CR, LF & '\0', and isn't empty <- not for experimental version
+                // check doesn't contain any control characters except CR, LF & '\0' (changed after v2.15.1 to allow extended characters in location names)
                 char c;
                 while(!TTBLFile.eof())
                 {
                     TTBLFile.get(c);
-//                    if((c < 32) && (c != 13) && (c != 10) && (c != '\0')) // char is signed by default so values > 127 will be caught as treated as -ve
+//                    if((c < 32) && (c != 13) && (c != 10) && (c != '\0')) // changed after v2.15.1 to allow extended characters in location names
                     if((c < 32) && (c >= 1)) //have to allow NULLs
                     {
                         ShowMessage("Timetable file contains invalid control characters");
@@ -20435,11 +20436,22 @@ void TInterface::SaveSession(int Caller)
         // avoid characters in filename:=   / \ : * ? " < > |
         TimetableTimeStr = Utilities->Format96HHMMSS(TrainController->TTClockTime);
         TimetableTimeStr = TimetableTimeStr.SubString(1, 2) + '.' + TimetableTimeStr.SubString(4, 2) + '.' + TimetableTimeStr.SubString(7, 2);
-// SessionFileStr = CurDir + "\\" + SESSION_DIR_NAME + "\\Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " + RailwayTitle +
-// "; " + TimetableTitle + ".ssn";
         SessionFileStr = LoadSessionDialog->InitialDir + "\\Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " + RailwayTitle +
             "; " + TimetableTitle + ".ssn";
         std::ofstream SessionFile(SessionFileStr.c_str());
+        if(SessionFile.fail())  //added after v2.15.1 to give another chance to save
+        {
+            TrainController->StopTTClockMessage(150, "Session file failed to open - perhaps the save location\n"
+                                                     "has been deleted or its name changed?\n\n"
+                                                     "Will attempt to save in the folder where\n"
+                                                     "'railway.exe' resides (can move to a more\n"
+                                                     "appropriate folder manually later).\n");
+            SessionFile.clear(); //clear flags
+            SessionFileStr = CurDir + "\\Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " + RailwayTitle +
+                "; " + TimetableTitle + ".ssn";
+            LoadSessionDialog->InitialDir = CurDir;
+            SessionFile.open(SessionFileStr.c_str());
+        }
         if(!(SessionFile.fail()))
         {
             Utilities->SaveFileString(SessionFile, ProgramVersion + ": ***Interface***" + FloatToStr(TrainController->ExcessLCDownMins));
@@ -20666,7 +20678,7 @@ In each case need to ensure that the following points are considered and dealt w
         }
         else
         {
-            TrainController->StopTTClockMessage(5, "Session file failed to open - reason not known, unable to save.");
+            TrainController->StopTTClockMessage(5, "Session file failed to open - reason not known, unable to save."); //after 2nd attempt to save
         }
         TrainController->LastSessionSaveTTClockTime = TrainController->TTClockTime; // added at v2.5.0
         Screen->Cursor = TCursor(-2); // Arrow

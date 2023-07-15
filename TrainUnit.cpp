@@ -12101,7 +12101,8 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
     }
     AnsiString Remainder = OneEntry.SubString(Pos + 1, OneEntry.Length() - Pos);
 
-    if((Remainder[1] >= '0') && (Remainder[1] <= '9'))
+//    if((Remainder[1] >= '0') && (Remainder[1] <= '9')) changed after v2.15.1 so only 'digit-digit-colon....' interpreted as a time - to allow locations to begin with digits
+    if((Remainder.Length() >= 3) && (Remainder[1] >= '0') && (Remainder[1] <= '9') && (Remainder[2] >= '0') && (Remainder[2] <= '9') && (Remainder[3] == ':'))
     // next segment is a time so this is a TimeTimeLoc & 3rd seg has to be a location to be valid
     {
         if(Remainder.Length() < 7)
@@ -12340,7 +12341,7 @@ bool TTrainController::SplitEntry(int Caller, AnsiString OneEntry, bool GiveMess
         }
         for(int x = 1; x < Third.Length() + 1; x++)
         {
-//            if((Third[x] < ' ') || (Third[x] > '~')) changed for experimental version
+//            if((Third[x] < ' ') || (Third[x] > '~')) changed after v2.15.1 to allow extended characters in location names
             if((Third[x] < ' ') && (Third[x] >= 0))
             {
                 TimetableMessage(GiveMessages, "Train description contains invalid characters in '" + Third + "'");
@@ -12454,31 +12455,34 @@ bool TTrainController::CheckFourthValidityForSplit(AnsiString SplitDistributionS
 
 bool TTrainController::CheckLocationValidity(int Caller, AnsiString LocStr, bool GiveMessages, bool CheckLocationsExistInRailway)
 {
-    // check that the location name exists in the railway (only if CheckLocationsExistInRailway is true), doesn't begin with a number
-    // and contains no special characters     <- can contain specials for experimental version
+    // check that the location name exists in the railway (only if CheckLocationsExistInRailway is true), doesn't begin with 'digit-digit-colon'
+    // and contains no control characters     changed after v2.15.1 to allow extended characters in location names
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CheckLocationValidity," + LocStr);
     if(LocStr == "")
     {
         Utilities->CallLogPop(1353);
         return(false); // has to have at least one character
     }
-    if((LocStr[1] >= '0') && (LocStr[1] <= '9'))
+//    if((LocStr[1] >= '0') && (LocStr[1] <= '9')) //changed after v2.15.1 to allow locations to begine with digits, if 'digit-digit-colon' then must be a time
+    if((LocStr.Length() >= 3) && (LocStr[1] >= '0') && (LocStr[1] <= '9') && (LocStr[2] >= '0') && (LocStr[2] <= '9') && (LocStr[3] == ':'))
     {
         Utilities->CallLogPop(1354);
-        return(false); // can't begin with a number or regarded as a time entry in SplitEntry
+        return(false); // can't begin with 'digit-digit-colon' as this regarded as a time
     }
     for(int x = 1; x < LocStr.Length() + 1; x++)
     {
-        if(((LocStr[x] < ' ') && (LocStr[x] >= 0)) || (LocStr[x] == ',') || (LocStr[x] == ';')) //changed for experimental version
+        if(((LocStr[x] < ' ') && (LocStr[x] >= 0)) || (LocStr[x] == ',') || (LocStr[x] == ';')) //changed after v2.15.1 to allow extended characters in location names
         {
             Utilities->CallLogPop(1355);
             return(false); // contains a special character or ',' or ';'
         }
-        if(LocStr[x] > 'z') //dropped for experimental version
+/*
+        if(LocStr[x] > 'z') //dropped after v2.15.1 to allow extended characters in location names
         {
-//            Utilities->CallLogPop(1356);
-//            return(false); // contains a character outside the standard ASCII set
+            Utilities->CallLogPop(1356);
+            return(false); // contains a character outside the standard ASCII set
         }
+*/
     }
     // check exists in railway location list if CheckLocationsExistInRailway is true
     if(CheckLocationsExistInRailway)
@@ -12701,7 +12705,7 @@ bool TTrainController::SplitTrainInfo(int Caller, AnsiString TrainInfoStr, AnsiS
         }
         for(int x = 1; x < Description.Length() + 1; x++)
         {
-//            if((Description[x] < ' ') || (Description[x] > '~')) changed for experimental version
+//            if((Description[x] < ' ') || (Description[x] > '~')) changed after v2.15.1 to allow extended characters in location names
             if((Description[x] < ' ') && (Description[x] >= 0))
             {
                 TimetableMessage(GiveMessages, "Train description contains invalid characters in '" + TrainInfoStr + "'");
@@ -12738,7 +12742,7 @@ bool TTrainController::SplitTrainInfo(int Caller, AnsiString TrainInfoStr, AnsiS
     }
     for(int x = 1; x < Description.Length() + 1; x++)
     {
-//        if((Description[x] < ' ') || (Description[x] > 126)) changed for experimental version
+//        if((Description[x] < ' ') || (Description[x] > 126)) changed after v2.15.1 to allow extended characters in location names
         if((Description[x] < ' ') && (Description[x] >= 0))
         {
             TimetableMessage(GiveMessages, "Train description contains invalid characters in '" + TrainInfoStr + "'");

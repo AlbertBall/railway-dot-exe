@@ -94,7 +94,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 Post v2.15.1";// + GetVersion();
+        ProgramVersion = "RailOS32 " + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -1301,7 +1301,7 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key, TShift
                 LocStr = LocStr.SubString(2, LocStr.Length()-1);
                 }
 */
-//                if((LocStr != "") && (LocStr[1] >= '0') && (LocStr[1] <= '9')) // changed after v2.15.1 to allow locs to begin with digits but not 'digit-digit-colon'
+//                if((LocStr != "") && (LocStr[1] >= '0') && (LocStr[1] <= '9')) // changed at v2.16.0 to allow locs to begin with digits but not 'digit-digit-colon'
                 if((LocStr.Length() >= 3) && (LocStr[1] >= '0') && (LocStr[1] <= '9') && (LocStr[2] >= '0') && (LocStr[2] <= '9') && (LocStr[3] == ':'))
                 {
                     Screen->Cursor = TCursor(-2); // Arrow
@@ -1330,12 +1330,12 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key, TShift
                     char Ch = LocStr[x];
 //                    if((Ch != ' ') && (Ch != '&') && (Ch != '(') && (Ch != ')') && (Ch != ':') && (Ch != 39) && (Ch != '.') && (Ch != '-') && (Ch != '+') &&
 //                       (Ch != '/') && ((Ch < '0') || (Ch > '9')) && ((Ch < 'A') || (Ch > 'Z')) && ((Ch < 'a') || (Ch > 'z')))
-// Above removed after v2.15.1 to allow extended characters in location names
+// Above removed at v2.16.0 to allow extended characters in location names
                     if(((Ch < 32) && (Ch >= 0)) || (Ch == ',') || (Ch == ';'))
                     {
                         Screen->Cursor = TCursor(-2); // Arrow
                         ShowMessage(
-//                            "Location name contains one or more invalid characters, must be alphanumeric, brackets, space, full stop, colon, inverted comma, '-', '+', '/' or '&&'"); //changed after v2.15.1 to allow extended characters in location names
+//                            "Location name contains one or more invalid characters, must be alphanumeric, brackets, space, full stop, colon, inverted comma, '-', '+', '/' or '&&'"); //changed at v2.16.0 to allow extended characters in location names
                             "Location name contains one or more invalid characters - must not contain control characters, ';' or ','");
                         Level1Mode = TrackMode;
                         SetLevel1Mode(52);
@@ -3456,12 +3456,12 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
             std::ifstream TTBLFile(CreateEditTTFileName.c_str(), std::ios_base::binary); // open in binary to examine each character
             if(TTBLFile.is_open())
             {
-                // check doesn't contain any control characters except CR, LF & '\0' (changed after v2.15.1 to allow extended characters in location names)
+                // check doesn't contain any control characters except CR, LF & '\0' (changed at v2.16.0 to allow extended characters in location names)
                 char c;
                 while(!TTBLFile.eof())
                 {
                     TTBLFile.get(c);
-//                    if((c < 32) && (c != 13) && (c != 10) && (c != '\0')) // changed after v2.15.1 to allow extended characters in location names
+//                    if((c < 32) && (c != 13) && (c != 10) && (c != '\0')) // changed at v2.16.0 to allow extended characters in location names
                     if((c < 32) && (c >= 1)) //have to allow NULLs
                     {
                         ShowMessage("Timetable file contains invalid control characters");
@@ -5879,7 +5879,7 @@ void TInterface::TimetableHandler()
         {
 //    if(*TTCurrentEntryPtr != "")  don't use this here as fails to highlight blank line entries, but need to add it in next condition or can have error (Cameron020723errorlog.err)
             if((TTCurrentEntryPtr > TTStartTimePtr) && (TTCurrentEntryPtr <= TTLastServicePtr) && (*TTCurrentEntryPtr != "") && ((*TTCurrentEntryPtr)[1] != '*'))
-            {                                                                                   //added (*TTCurrentEntryPtr != "") after v2.15.1 due to Cameron's error noted above
+            {                                                                                   //added (*TTCurrentEntryPtr != "") at v2.16.0 due to Cameron's error noted above
                 bool ServiceEntry = true;
                 DisplayOneTTLineInPanel(0, *TTCurrentEntryPtr, ServiceEntry);
             }
@@ -20439,7 +20439,7 @@ void TInterface::SaveSession(int Caller)
         SessionFileStr = LoadSessionDialog->InitialDir + "\\Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " + RailwayTitle +
             "; " + TimetableTitle + ".ssn";
         std::ofstream SessionFile(SessionFileStr.c_str());
-        if(SessionFile.fail())  //added after v2.15.1 to give another chance to save
+        if(SessionFile.fail())  //added at v2.16.0 to give another chance to save
         {
             TrainController->StopTTClockMessage(150, "Session file failed to open - perhaps the save location\n"
                                                      "has been deleted or its name changed?\n\n"

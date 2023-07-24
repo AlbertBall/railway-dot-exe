@@ -24,7 +24,7 @@
 /*
 The following notice relates to incorporation of Internet Direct (Indy) components used in the multiplayer functions under the BSD Licence.
 
-Portions of this software are Copyright (c) 1993 – 2018, Chad Z. Hower (Kudzu) and the Indy Pit Crew – http://www.IndyProject.org/
+Portions of this software are Copyright (c) 1993 ?2018, Chad Z. Hower (Kudzu) and the Indy Pit Crew ?http://www.IndyProject.org/
 
 License
 
@@ -36,7 +36,7 @@ Redistribution and use in source and binary forms, with or without modification,
     No personal names or organizations names associated with the Indy project may be used to endorse or promote products derived from
         this software without specific prior written permission of the specific individual or organization.
 
-THIS SOFTWARE IS PROVIDED BY Chad Z. Hower (Kudzu) and the Indy Pit Crew “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+THIS SOFTWARE IS PROVIDED BY Chad Z. Hower (Kudzu) and the Indy Pit Crew “AS IS?AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
 BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
 THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
 BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED

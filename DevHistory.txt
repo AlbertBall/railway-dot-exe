@@ -16,6 +16,40 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
+#97 Krizar 09/07/23 [done at v2.16.0]
+What about the ability to set both location name and optionally location display name (i.e. the name which is displayed but allowing any character including ü, é, å etc)? Currently I have to set the name, delete it with the name editor tool and then use the text placement tool to display the name with special characters. Not sure how difficult this would be to implement. It could just do exactly the same thing but automatically (ie have two text entries name the place with the first, hide the text, and place the text of the second)
+
+Albert — 10/07/23 at 07:16
+I agree that would a very useful feature but to be honest I have never been able to get my head around how modern C++Builder handles international characters and all the various encodings. It was simple in the old days when AnsiStrings and chars were just ASCII, but the default string in C++Builder is now the UnicodeString and they have added international functionality with new character types that are anything but easy to understand. The simplest approach I think would be to allow location names to use international characters and I think I prevented that for fear of complications. I'll have a play with it to see if there's a way to simplify things for the user without complicating the code too much.
+
+Bjorn — 10/07/23 at 07:45
+I believe if the program would support UTF(8/16) or ISO (8859) you'd have most, if not all, languages and characters covered.
+
+Albert — 10/07/23 at 07:54
+I'm sure it does or can be configured to do, the problem is that having developed the program many years ago a lot of my low level utilities read text byte by byte as ASCII characters, so I need to check which parts of the program depend on them. Starting from scratch now the design would be very different, but that's not a realistic option sadly.
+
+Bjorn — 10/07/23 at 07:56
+What I said was, ofcourse, an oversimplification, as the lower level functions can''t be changed as easily. However, as a possible solution, wouldn't it be possible to, let's say, have all valid ascii characters in an array and verify against that where this is required? and have the labeling functions and comments be as is?
+or, even simpler, use a built in HEX conversion, and filter out the ascii from the non-ascii as, I believe the hex codes for ascii are limited to 256 or 512, and higher numbers (higher than FF) would be non-ascii and thus skipped?
+
+Albert — 10/07/23 at 08:00
+That's a good thought... I'll keep that possibility in mind
+
+#96 fitzburger96 — 06/06/23 at 10:36
+Idea - minimum wait time at stations.
+
+I have a timetable where trains arriving at a terminus are scheduled for a 4 minute turnaround before departing on the next service. However, if the train arrives with a 3 minute delay, it will be absorbed by the timetable and the following service should depart on time - effectively representing a 1 minute timeframe where a real driver would have to secure the cab, walk 120 metres to the other cab, set up again and prepare for departure. I figure that's unrealistic.
+My proposal is that the timetable could incorporate a minimum waiting period on arrival at a location. This would somehow have to override the schedule of the following service, but gives a good portrayal of the real world snowball effect of late running. All input welcome
+
+Albert — 06/06/23 at 14:19
+Good idea though probably quite complex to code.  It would have to apply only when there is a change of direction which may or may not be at a terminus.  It's something to think about - I have added it to the suggestions list.
+
+mathstrains19 — 06/06/23 at 17:44
+I don’t think it would be necessary to limit it to a change of direction. I could see this feature being used for something like a very busy platform or loading up with food or something like that.
+
+Albert — 07/06/23 at 08:55
+That adds a complication in that it would need to be user-selectable since most station stops should to be as short as possible, but it's a good thought and I'll it to the list.
+
 #95 fitzburger96 — 23/03/23 at 23:15
 It may be helpful if hovering over a station (or individual platform if JamieT's suggestion [#94] is taken up) could display the next service/s due to stop there. At busy junction stations it could help with planning train paths in advance 
 KR/ZAR — 23/03/23 at 23:23
@@ -623,6 +657,21 @@ Multi-player facility over the internet.
 -----------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.15.1 for v2.16.0
+
+The new feature in this version is the ability to use extended characters in location names.  This will be useful for non-uk railways where some location name characters have special marks such as accents, umlauts, cedillas and so on.  Additionally the restriction on starting a location name with a number has now been lifted.  The only restriction now is that a name can't begin with 'digit-digit-colon' because when the timetable validator sees that it is assumed to be the beginning of a time entry.
+
+Note that a railway that uses extended characters can only be loaded into this version, the load will fail for any earlier version as extended characters won't be recognised.
+
+A bug in the earlier version was found by Cameron whereby attempting to save a blank timetable entry caused a crash in certain circumstances.  This was quite an easy fix and won't (shouln't!) happen again.  Thanks are due to Cameron for reporting this fault.
+
+Not for website:
+
+/ Where unable to save a session file (prob because location deleted) attempt to save in another location and give appropriate message, and only if can't save there give the unable to save message
+
+X Update manual wrt location names - no need, character restrictions aren't mentioned 
+
 
 VERSION CHANGES AFTER v2.15.0 for v2.15.1
 
@@ -2661,7 +2710,7 @@ Prior to uploading:
 
 1 Check that all callers have unique numbers and that no 'after vx.y.z comments left in code'
 
-2 Increment version number in Project>Options for both 32bit debug & 64bit release versions & copyright year (if required) in AboutUnit.cpp.
+2 Increment version number in Project>Options separately for both 32bit debug & 64bit release versions & copyright year (if required) in AboutUnit.cpp.
 
 3 Add 32 or 64 to appropriate version information in InterfaceUnit.cpp prior to compilation for each build & check when click 'About'.
 
@@ -2813,10 +2862,10 @@ ADDING A NEW PROJECT TO THE USER WEBSITE: (updated 31/08/22)
 13 Create new post, add title 'Railway name' by 'Author'
 14 Add description text (not the image) and add 'Download it here' with 'here' linked to the product location
 15 Add the image as the 'Featured Image' - don't include in the main description
-16 Set TAuto Poster to 'Yes'
-17 Categories: News & Railway Projects, Tags: year, author (use creator name from form) & Railway Projects
-18 Make sure 'Allow comments' is ticked
-19 Set scheduled date if not immediate
+16 Categories: News & Railway Projects, Tags: year, author (use creator name from form) & Railway Projects
+17 Make sure 'Allow comments' is ticked
+18 Set scheduled date if not immediate
+19 Set TAuto Poster to 'Yes'
 20 Save draft, preview, check & if ok, check TAuto Post still 'yes' (oddly it sometimes reverts to 'no') then either publish or schedule
 21 Final check that all links work (in preview if scheduled for future), including from home screen where this project should be the latest (unless scheduled), & that it downloads ok
 22 Make user a contributor if not already

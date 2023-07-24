@@ -1301,10 +1301,11 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key, TShift
                 LocStr = LocStr.SubString(2, LocStr.Length()-1);
                 }
 */
-                if((LocStr != "") && (LocStr[1] >= '0') && (LocStr[1] <= '9')) // can't begin with a number
+//                if((LocStr != "") && (LocStr[1] >= '0') && (LocStr[1] <= '9')) // changed at v2.16.0 to allow locs to begin with digits but not 'digit-digit-colon'
+                if((LocStr.Length() >= 3) && (LocStr[1] >= '0') && (LocStr[1] <= '9') && (LocStr[2] >= '0') && (LocStr[2] <= '9') && (LocStr[3] == ':'))
                 {
                     Screen->Cursor = TCursor(-2); // Arrow
-                    ShowMessage("Location name can't begin with a number");
+                    ShowMessage("Location name can't begin with 'digit-digit-colon' as that is treated as the start of a time entry");
                     Level1Mode = TrackMode;
                     SetLevel1Mode(51);
                     Level2TrackMode = AddLocationName;
@@ -1312,6 +1313,7 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key, TShift
                     Utilities->CallLogPop(776);
                     return;
                 }
+
                 if(LocStr.Length() > 50)
                 {
                     Screen->Cursor = TCursor(-2); // Arrow
@@ -1326,12 +1328,15 @@ void __fastcall TInterface::LocationNameKeyUp(TObject *Sender, WORD &Key, TShift
                 for(int x = 1; x <= LocStr.Length(); x++)
                 {
                     char Ch = LocStr[x];
-                    if((Ch != ' ') && (Ch != '&') && (Ch != '(') && (Ch != ')') && (Ch != ':') && (Ch != 39) && (Ch != '.') && (Ch != '-') && (Ch != '+') &&
-                       (Ch != '/') && ((Ch < '0') || (Ch > '9')) && ((Ch < 'A') || (Ch > 'Z')) && ((Ch < 'a') || (Ch > 'z')))
+//                    if((Ch != ' ') && (Ch != '&') && (Ch != '(') && (Ch != ')') && (Ch != ':') && (Ch != 39) && (Ch != '.') && (Ch != '-') && (Ch != '+') &&
+//                       (Ch != '/') && ((Ch < '0') || (Ch > '9')) && ((Ch < 'A') || (Ch > 'Z')) && ((Ch < 'a') || (Ch > 'z')))
+// Above removed at v2.16.0 to allow extended characters in location names
+                    if(((Ch < 32) && (Ch >= 0)) || (Ch == ',') || (Ch == ';'))
                     {
                         Screen->Cursor = TCursor(-2); // Arrow
                         ShowMessage(
-                            "Location name contains one or more invalid characters, must be alphanumeric, brackets, space, full stop, colon, inverted comma, '-', '+', '/' or '&&'");
+//                            "Location name contains one or more invalid characters, must be alphanumeric, brackets, space, full stop, colon, inverted comma, '-', '+', '/' or '&&'"); //changed at v2.16.0 to allow extended characters in location names
+                            "Location name contains one or more invalid characters - must not contain control characters, ';' or ','");
                         Level1Mode = TrackMode;
                         SetLevel1Mode(52);
                         Level2TrackMode = AddLocationName;
@@ -3332,7 +3337,7 @@ void __fastcall TInterface::CreateTimetableMenuItemClick(TObject *Sender)
         CopiedEntryFlag = false;
         NewEntryInPreparationFlag = false;
         CopiedEntryStr = "";
-        TEVPtr = TimetableEditVector.end();
+        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
         TTCurrentEntryPtr = TimetableEditVector.end();
         TTStartTimePtr = TimetableEditVector.end();
         TTFirstServicePtr = TimetableEditVector.end();
@@ -3434,8 +3439,9 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
         TimetableTitle = ""; // unload any loaded timetable.  Moved here from below at v2.1.0 for consistency with CreateTimetable
         TrainController->TrainDataVector.clear(); // unload any loaded timetable.  Moved here from below at v2.1.0 for consistency with CreateTimetable
         SetCaption(8); // added at v2.1.0 as formerly retained earlier loaded tt name in error
-        TEVPtr = TimetableEditVector.end();
-        TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr = TimetableEditVector.end();
+        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+        TTCurrentEntryPtr = TimetableEditVector.end();
+        TTStartTimePtr = TimetableEditVector.end();
         TTFirstServicePtr = TimetableEditVector.end();
         TTLastServicePtr = TimetableEditVector.end();
         if(TimetableDialog->Execute())
@@ -3450,14 +3456,15 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
             std::ifstream TTBLFile(CreateEditTTFileName.c_str(), std::ios_base::binary); // open in binary to examine each character
             if(TTBLFile.is_open())
             {
-                // check doesn't contain any non-ascii characters except CR, LF & '\0', and isn't empty
+                // check doesn't contain any control characters except CR, LF & '\0' (changed at v2.16.0 to allow extended characters in location names)
                 char c;
                 while(!TTBLFile.eof())
                 {
                     TTBLFile.get(c);
-                    if((c < 32) && (c != 13) && (c != 10) && (c != '\0')) // char is signed by default so values > 127 will be caught as treated as -ve
+//                    if((c < 32) && (c != 13) && (c != 10) && (c != '\0')) // changed at v2.16.0 to allow extended characters in location names
+                    if((c < 32) && (c >= 1)) //have to allow NULLs
                     {
-                        ShowMessage("Timetable file is empty or contains non-ascii characters, codes must be between 20 and 127, or CR or LF");
+                        ShowMessage("Timetable file contains invalid control characters");
                         TTBLFile.close();
                         Utilities->CallLogPop(1612);
                         return;
@@ -4314,8 +4321,9 @@ void __fastcall TInterface::CutTTEntryButtonClick(TObject *Sender)
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
         TTEntryChangedFlag = false;
-        TEVPtr = TimetableEditVector.end();
-        TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr = TimetableEditVector.end();
+        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+        TTCurrentEntryPtr = TimetableEditVector.end();
+        TTStartTimePtr = TimetableEditVector.end();
         TTFirstServicePtr = TimetableEditVector.end();
         TTLastServicePtr = TimetableEditVector.end();
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
@@ -4383,8 +4391,9 @@ void __fastcall TInterface::PasteTTEntryButtonClick(TObject *Sender)
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
         TTEntryChangedFlag = false;
-        TEVPtr = TimetableEditVector.end();
-        TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr =
+        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+        TTCurrentEntryPtr = TimetableEditVector.end();
+        TTStartTimePtr = TimetableEditVector.end();
         TTFirstServicePtr = TimetableEditVector.end();
         TTLastServicePtr = TimetableEditVector.end();
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
@@ -4452,8 +4461,9 @@ void __fastcall TInterface::DeleteTTEntryButtonClick(TObject *Sender)
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
         TTEntryChangedFlag = false;
-        TEVPtr = TimetableEditVector.end();
-        TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr = TimetableEditVector.end();
+        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+        TTCurrentEntryPtr = TimetableEditVector.end();
+        TTStartTimePtr = TimetableEditVector.end();
         TTFirstServicePtr = TimetableEditVector.end();
         TTLastServicePtr = TimetableEditVector.end();
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
@@ -5093,8 +5103,9 @@ void __fastcall TInterface::RestoreTTButtonClick(TObject *Sender)
             AllEntriesTTListBox->Clear();
             TTStartTimeBox->Text = "";
             AddSubMinsBox->Text = "";
-            TEVPtr = TimetableEditVector.end();
-            TTCurrentEntryPtr = TimetableEditVector.end(), TTStartTimePtr = TimetableEditVector.end();
+            TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+            TTCurrentEntryPtr = TimetableEditVector.end();
+            TTStartTimePtr = TimetableEditVector.end();
             TTFirstServicePtr = TimetableEditVector.end();
             TTLastServicePtr = TimetableEditVector.end();
             char *TimetableEntryString = new char[10000];
@@ -5415,7 +5426,7 @@ void TInterface::CompileAllEntriesMemoAndSetPointers(int Caller)
     } Segment;
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CompileAllEntriesMemoAndSetPointers");
     AllEntriesTTListBox->Clear();
-    TEVPtr = TimetableEditVector.end();
+    TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
     TTStartTimePtr = TimetableEditVector.end();
     TTFirstServicePtr = TimetableEditVector.end();
     TTLastServicePtr = TimetableEditVector.end();
@@ -5866,9 +5877,9 @@ void TInterface::TimetableHandler()
         OneEntryTimetableMemo->Clear(); // don't clear if Entry changed
         if(TTCurrentEntryPtr != TimetableEditVector.end())
         {
-// if(*TTCurrentEntryPtr != "")  leave this out or fails to highlight blank line entries
-            if((TTCurrentEntryPtr > TTStartTimePtr) && (TTCurrentEntryPtr <= TTLastServicePtr) && ((*TTCurrentEntryPtr)[1] != '*'))
-            {
+//    if(*TTCurrentEntryPtr != "")  don't use this here as fails to highlight blank line entries, but need to add it in next condition or can have error (Cameron020723errorlog.err)
+            if((TTCurrentEntryPtr > TTStartTimePtr) && (TTCurrentEntryPtr <= TTLastServicePtr) && (*TTCurrentEntryPtr != "") && ((*TTCurrentEntryPtr)[1] != '*'))
+            {                                                                                   //added (*TTCurrentEntryPtr != "") at v2.16.0 due to Cameron's error noted above
                 bool ServiceEntry = true;
                 DisplayOneTTLineInPanel(0, *TTCurrentEntryPtr, ServiceEntry);
             }
@@ -20425,11 +20436,22 @@ void TInterface::SaveSession(int Caller)
         // avoid characters in filename:=   / \ : * ? " < > |
         TimetableTimeStr = Utilities->Format96HHMMSS(TrainController->TTClockTime);
         TimetableTimeStr = TimetableTimeStr.SubString(1, 2) + '.' + TimetableTimeStr.SubString(4, 2) + '.' + TimetableTimeStr.SubString(7, 2);
-// SessionFileStr = CurDir + "\\" + SESSION_DIR_NAME + "\\Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " + RailwayTitle +
-// "; " + TimetableTitle + ".ssn";
         SessionFileStr = LoadSessionDialog->InitialDir + "\\Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " + RailwayTitle +
             "; " + TimetableTitle + ".ssn";
         std::ofstream SessionFile(SessionFileStr.c_str());
+        if(SessionFile.fail())  //added at v2.16.0 to give another chance to save
+        {
+            TrainController->StopTTClockMessage(150, "Session file failed to open - perhaps the save location\n"
+                                                     "has been deleted or its name changed?\n\n"
+                                                     "Will attempt to save in the folder where\n"
+                                                     "'railway.exe' resides (can move to a more\n"
+                                                     "appropriate folder manually later).\n");
+            SessionFile.clear(); //clear flags
+            SessionFileStr = CurDir + "\\Session " + CurrentDateTimeStr + "; Timetable time " + TimetableTimeStr + "; " + RailwayTitle +
+                "; " + TimetableTitle + ".ssn";
+            LoadSessionDialog->InitialDir = CurDir;
+            SessionFile.open(SessionFileStr.c_str());
+        }
         if(!(SessionFile.fail()))
         {
             Utilities->SaveFileString(SessionFile, ProgramVersion + ": ***Interface***" + FloatToStr(TrainController->ExcessLCDownMins));
@@ -20656,7 +20678,7 @@ In each case need to ensure that the following points are considered and dealt w
         }
         else
         {
-            TrainController->StopTTClockMessage(5, "Session file failed to open - reason not known, unable to save.");
+            TrainController->StopTTClockMessage(5, "Session file failed to open - reason not known, unable to save."); //after 2nd attempt to save
         }
         TrainController->LastSessionSaveTTClockTime = TrainController->TTClockTime; // added at v2.5.0
         Screen->Cursor = TCursor(-2); // Arrow

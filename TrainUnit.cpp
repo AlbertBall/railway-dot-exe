@@ -21241,6 +21241,10 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     {
         PerfFile << FormattedExcessLCDownMins.c_str() << " excess minutes of level crossing barrier down time" << '\n';
     }
+    else
+    {
+        ExcessLCDownMins = 0; //added after v2.16.0 so doesn't count towards performance score if < 0.1mins (else can have low score with no excess mins recorded)
+    }
     if(Utilities->CumulativeDelayedRandMinsAllTrains > 0) //added at v2.13.0
     {
         PerfFile << Utilities->CumulativeDelayedRandMinsAllTrains << " minutes lost due to random delays when stopped at locations" << '\n';

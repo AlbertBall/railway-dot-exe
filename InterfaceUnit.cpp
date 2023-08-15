@@ -94,7 +94,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion();
+        ProgramVersion = "RailOS32 " + GetVersion() + " Beta";
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -19034,15 +19034,15 @@ void TInterface::GetTrainFloatingInfoFromContinuation(int Caller, int VecPos, An
             {
                 TDateTime TempTime = CTEIt->first;
 // need this because CTEIt points to a const object and shouldn't use FormatString on a const object
-                TrainStatusFloat = CTEIt->second.HeadCode + ": " + CTEIt->second.Description + ServiceReferenceInfo + "\nEntry speed " +
-                    AnsiString::FormatFloat(FormatNoDPStr, EntrySpeed) + "km/h" + SpecialStr + "\nDelayed, was due at " + Utilities->Format96HHMM(TempTime);
+                TrainStatusFloat = CTEIt->second.HeadCode + ": " + CTEIt->second.FixedDescription + ServiceReferenceInfo + "\nEntry speed " +
+                    AnsiString::FormatFloat(FormatNoDPStr, EntrySpeed) + "km/h" + SpecialStr + "\nDelayed, was due at " + Utilities->Format96HHMM(TempTime); //FixedDescription = new name, changed at v2.16.1
             }
             else
             {
                 TDateTime TempTime = CTEIt->first;
 // need this because CTEIt points to a const object and shouldn't use FormatString on a const object
-                TrainStatusFloat = CTEIt->second.HeadCode + ": " + CTEIt->second.Description + ServiceReferenceInfo + "\nEntry speed " +
-                    AnsiString::FormatFloat(FormatNoDPStr, EntrySpeed) + "km/h" + SpecialStr + "\nExpected at " + Utilities->Format96HHMM(TempTime);
+                TrainStatusFloat = CTEIt->second.HeadCode + ": " + CTEIt->second.FixedDescription + ServiceReferenceInfo + "\nEntry speed " +
+                    AnsiString::FormatFloat(FormatNoDPStr, EntrySpeed) + "km/h" + SpecialStr + "\nExpected at " + Utilities->Format96HHMM(TempTime); //FixedDescription = new name, changed at v2.16.1
             }
             if(TrainTTInfoOnOffMenuItem->Caption == "Hide Timetable")
             {
@@ -19333,35 +19333,35 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
     {                                                                                          //added at v2.13.0
         if(int(Train.NewDelay) == 1)
         {
-            TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
+            TrainStatusFloat = HeadCode + ": " + Train.Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
                 "km/h (" + MaxMPHStr + "); Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' +
-                "New random delay here of 1 minute" + OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
+                "New random delay here of 1 minute" + OverallDelayString + AnsiString("\nNext: ") + NextStopStr; //changed to Train.Description at v2.16.1
         }
         else if(int(Train.NewDelay) > 1)
         {
-            TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
+            TrainStatusFloat = HeadCode + ": " + Train.Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
                 "km/h (" + MaxMPHStr + "); Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + '\n' +
-                "New random delay here of " + AnsiString(int(Train.NewDelay)) + " minutes" + OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
+                "New random delay here of " + AnsiString(int(Train.NewDelay)) + " minutes" + OverallDelayString + AnsiString("\nNext: ") + NextStopStr; //changed to Train.Description at v2.16.1
         }
         else //int(NewDelay) == 0
         {
-            TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
+            TrainStatusFloat = HeadCode + ": " + Train.Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
                 "km/h (" + MaxMPHStr + "); Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status +
-                OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
+                OverallDelayString + AnsiString("\nNext: ") + NextStopStr; //changed to Train.Description at v2.16.1
         }
     }
     else if(Train.Stopped()) //stopped anywhere else or not a departure next
     {
-        TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
+        TrainStatusFloat = HeadCode + ": " + Train.Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
             "km/h (" + MaxMPHStr + "); Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status +
-            OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
+            OverallDelayString + AnsiString("\nNext: ") + NextStopStr; //changed to Train.Description at v2.16.1
     }
     else //added mph at v2.15.0
     {
-        TrainStatusFloat = HeadCode + ": " + Train.TrainDataEntryPtr->Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
+        TrainStatusFloat = HeadCode + ": " + Train.Description + ServiceReferenceInfo + '\n' + "Maximum train speed " + MaxSpeedStr +
             "km/h (" + MaxMPHStr + "); Power " + PowerStr + "kW" + '\n' + "Mass " + MassStr + "Te; Brakes " + MaxBrakeStr + "Te" + '\n' + SpecialStr + Status + ": " +
             CurrSpeedStr.FormatFloat(FormatNoDPStr, CurrSpeed) + "km/h (" + CurrSpeedStr.FormatFloat(FormatNoDPStr, (CurrSpeed * 5 / 8)) + "mph)" +
-            OverallDelayString + AnsiString("\nNext: ") + NextStopStr;
+            OverallDelayString + AnsiString("\nNext: ") + NextStopStr; //changed to Train.Description at v2.16.1
     }
     Utilities->CallLogPop(2263);
     return(TrainStatusFloat);

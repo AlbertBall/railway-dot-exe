@@ -207,9 +207,9 @@ typedef std::vector<TTrainOperatingData>TTrainOperatingDataVector;
 class TTrainDataEntry
 {
 public:
-    AnsiString HeadCode, ServiceReference, Description;
+    AnsiString HeadCode, ServiceReference, FixedDescription;  //Description changed to FixedDescription at v2.16.1 to avoid confusion with TTrain::Description
 ///< headcode is the first train's headcode, rest are calculated from repeat information; ServiceReference is the full (up to 8 characters) reference from the timetable (added at V0.6b)
-    bool ExplicitDescription;
+    bool ExplicitDescription;  //added at v2.15.0
 ///< true if a description is given for the train, if only headcode given for a follow-on service then false, and train takes description of earlier service
     double MaxBrakeRate;
 ///< in metres/sec/sec
@@ -327,8 +327,8 @@ private:
     static int NextTrainID;
 ///< the ID value to be used for the next train that is created, static so that it doesn't need an object to call it and its value is independent of the objects
 
-    AnsiString HeadCode;
-///< needs own HeadCode because repeat entries will differ from TrainDataEntry.HeadCode
+    AnsiString HeadCode, Description;
+///< needs own HeadCode & description because repeat entries will differ from TrainDataEntry values (Description added at v2.16.1 due to Kaelon bug reported 10/08/23)
     AnsiString FollowOnServiceRef; //added at v2.12.0
 ///< used for terminating a service early and becoming new follow-on service
     bool SkippedDeparture;
@@ -739,7 +739,7 @@ public:
     class TContinuationTrainExpectationEntry
     {
     public:
-        AnsiString Description;
+        AnsiString FixedDescription;  //changed at v2.16.1 to avoid confusion with TTrain::Description
 ///< service description
         AnsiString HeadCode;
 ///< service headcode

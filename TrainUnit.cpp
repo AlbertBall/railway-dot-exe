@@ -1117,7 +1117,7 @@ void TTrain::UpdateTrain(int Caller)
                 }
                 else if(ActionVectorEntryPtr->Command == "dsc")
                 {
-                    TrainDataEntryPtr->Description = ActionVectorEntryPtr->NewDescription;
+                    Description = ActionVectorEntryPtr->NewDescription; //changed at v2.16.1
                     LogAction(37, HeadCode, "", ChangeDescription, ActionVectorEntryPtr->LocationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
                     LastActionTime = TrainController->TTClockTime;
                     ActionVectorEntryPtr++;
@@ -5420,7 +5420,7 @@ void TTrain::LogAction(int Caller, AnsiString OwnHeadCode, AnsiString OtherHeadC
     }
     if(ActionType == ChangeDescription)
     {
-        ActionLog = " changed its description to '" + TrainDataEntryPtr->Description + "' at ";
+        ActionLog = " changed its description to '" + Description + "' at "; //changed to train description at v2.16.1
     }
     if(ActionType == Leave)
     {
@@ -5963,7 +5963,7 @@ void TTrain::FrontTrainSplit(int Caller)
     // Hence deal with existing train while it references a valid entry in the vector, but retain the Old ActionVectorEntryPtr in a separate
     // variable as it is needed for setting up the new train
     TActionVectorEntry *OldActionVectorEntryPtr = ActionVectorEntryPtr;
-    AnsiString OriginalDescription = TrainDataEntryPtr->Description;  //new at v2.15.0 to record earlier service description
+    AnsiString OriginalDescription = Description;  //new at v2.15.0 to record earlier service description & changed at v2.16.1 to train description
 
     UnplotTrain(0);
     StartSpeed = 0;
@@ -6034,9 +6034,11 @@ void TTrain::FrontTrainSplit(int Caller)
         return;
     }
 
+    TrainController->TrainVector.back().Description = OldActionVectorEntryPtr->LinkedTrainEntryPtr->FixedDescription; //added at v2.16.1, new train takes description from its TrainDataEntry
     if(!OldActionVectorEntryPtr->LinkedTrainEntryPtr->ExplicitDescription) //new at v2.15.0 see above
     {
-        OldActionVectorEntryPtr->LinkedTrainEntryPtr->Description = OriginalDescription;
+//        OldActionVectorEntryPtr->LinkedTrainEntryPtr->Description = OriginalDescription; dropped at v2.16.1
+        TrainController->TrainVector.back().Description = OriginalDescription; //else takes it from this train's description
     }
 
     // Note data in 'this' now probably invalid as there has been a new addition to the TrainVector, so the train is likely to have a new address, hence make no more changes for the current train
@@ -6306,7 +6308,7 @@ void TTrain::RearTrainSplit(int Caller)
     // Hence deal with existing train while it references a valid entry in the vector, but retain the Old ActionVectorEntryPtr in a separate
     // variable as it is needed for setting up the new train
     TActionVectorEntry *OldActionVectorEntryPtr = ActionVectorEntryPtr;
-    AnsiString OriginalDescription = TrainDataEntryPtr->Description;  //new at v2.15.0 to record earlier service description
+    AnsiString OriginalDescription = Description;  //new at v2.15.0 to record earlier service description & changed at v2.16.1 to train description
     UnplotTrain(1);
     StartSpeed = 0;
     RearStartElement = FrontTrainRearPosition;
@@ -6377,10 +6379,13 @@ void TTrain::RearTrainSplit(int Caller)
         return;
     }
 
-    if(!OldActionVectorEntryPtr->LinkedTrainEntryPtr->ExplicitDescription) //new at v2.15.0 see above (after addtrain & return)
+    TrainController->TrainVector.back().Description = OldActionVectorEntryPtr->LinkedTrainEntryPtr->FixedDescription; //added at v2.16.1, new train takes description from its TrainDataEntry
+    if(!OldActionVectorEntryPtr->LinkedTrainEntryPtr->ExplicitDescription) //new at v2.15.0 see above
     {
-        OldActionVectorEntryPtr->LinkedTrainEntryPtr->Description = OriginalDescription;
+//        OldActionVectorEntryPtr->LinkedTrainEntryPtr->Description = OriginalDescription; dropped at v2.16.1
+        TrainController->TrainVector.back().Description = OriginalDescription; //else takes it from this train's description
     }
+
     // Note data in 'this' now probably invalid as there has been a new addition to the TrainVector, so the train is likely to have a new address, hence make no more changes for the current train
     // see mods in UpdateTrain for v1.3.2
     TrainController->TrainAdded = true;
@@ -6618,7 +6623,7 @@ void TTrain::NewTrainService(int Caller, bool NoLogFlag) //, bool NoLogFlag adde
     }
     AnsiString NewHeadCode = TrainController->GetRepeatHeadCode(5, ActionVectorEntryPtr->OtherHeadCode, RepeatNumber, IncrementalDigits);
 
-    AnsiString OldDescription = TrainDataEntryPtr->Description;  //new at v2.15.0 to record earlier service description
+    AnsiString OriginalDescription = Description;  //new at v2.15.0 to record earlier service description & changed at v2.16.1 to train description
 
     if(!NoLogFlag)
     {
@@ -6635,7 +6640,7 @@ void TTrain::NewTrainService(int Caller, bool NoLogFlag) //, bool NoLogFlag adde
     HeadCode = NewHeadCode;
     if(!TrainDataEntryPtr->ExplicitDescription) //new at v2.15.0 see above
     {
-        TrainDataEntryPtr->Description = OldDescription;
+        Description = OriginalDescription; //changed at v2.16.1 to train description
     }
     StoppedAtLocation = true;
     PlotStartPosition(5);
@@ -6936,7 +6941,7 @@ void TTrain::NewShuttleFromNonRepeatService(int Caller, bool NoLogFlag) //bool N
         return;
     }
     AnsiString NewHeadCode = ActionVectorEntryPtr->NonRepeatingShuttleLinkHeadCode;
-    AnsiString OldDescription = TrainDataEntryPtr->Description;  //new at v2.15.0 to record earlier service description
+    AnsiString OriginalDescription = Description;  //new at v2.15.0 to record earlier service description & changed at v2.16.1 to train description
 
     if(!NoLogFlag)
     {
@@ -6953,7 +6958,7 @@ void TTrain::NewShuttleFromNonRepeatService(int Caller, bool NoLogFlag) //bool N
     HeadCode = NewHeadCode;
     if(!TrainDataEntryPtr->ExplicitDescription) //new at v2.15.0 see above
     {
-        TrainDataEntryPtr->Description = OldDescription;
+        Description = OriginalDescription; //changed at v2.16.1 to train description
     }
     IncrementalMinutes = TrainDataEntryPtr->ActionVector.back().RearStartOrRepeatMins;
     IncrementalDigits = TrainDataEntryPtr->ActionVector.back().FrontStartOrRepeatDigits;
@@ -7058,7 +7063,7 @@ void TTrain::RepeatShuttleOrNewNonRepeatService(int Caller, bool NoLogFlag) //bo
             LogAction(17, HeadCode, NewHeadCode, NewService, ActionVectorEntryPtr->LocationName, "", ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
         }
         RepeatNumber = 0;
-        AnsiString OldDescription = TrainDataEntryPtr->Description;  //new at v2.15.0 to record earlier service description
+        AnsiString OriginalDescription = Description;  //new at v2.15.0 to record earlier service description & changed at v2.16.1 to train description
         UnplotTrain(6);
         RearStartElement = MidElement;
         RearStartExitPos = MidExitPos;
@@ -7070,7 +7075,7 @@ void TTrain::RepeatShuttleOrNewNonRepeatService(int Caller, bool NoLogFlag) //bo
         HeadCode = NewHeadCode;
         if(!TrainDataEntryPtr->ExplicitDescription) //new at v2.15.0 see above
         {
-            TrainDataEntryPtr->Description = OldDescription;
+            Description = OriginalDescription; //changed at v2.16.1 to train description
         }
         StoppedAtLocation = true;
         PlotStartPosition(9);
@@ -10026,6 +10031,7 @@ void TTrainController::Operate(int Caller)
                     {
                         TTOD.TrainID = TrainVector.back().TrainID;
                         TTOD.RunningEntry = Running;
+                        TrainVector.back().Description = TDEntry.FixedDescription; //added at v2.16.1
                     }
                     else if(EventType == FailTrainEntry)
                     {
@@ -10062,6 +10068,7 @@ void TTrainController::Operate(int Caller)
                         {
                             TTOD.TrainID = TrainVector.back().TrainID;
                             TTOD.RunningEntry = Running;
+                            TrainVector.back().Description = TDEntry.FixedDescription; //added at v2.16.1
                         }
                         else if(EventType == FailTrainEntry)
                         {
@@ -11497,7 +11504,7 @@ bool TTrainController::ProcessOneTimetableLine(int Caller, int Count, AnsiString
             //HeadCode = ServiceReference until final section of SecondPassActions
             TempTrainDataEntry.HeadCode = HeadCode;
             TempTrainDataEntry.ServiceReference = HeadCode;
-            TempTrainDataEntry.Description = Description;
+            TempTrainDataEntry.FixedDescription = Description; //name changed at v2.16.1
             TempTrainDataEntry.ExplicitDescription = false;
             if(Description != "")
             {
@@ -15401,9 +15408,9 @@ bool TTrainController::CheckCrossReferencesAndSetData(int Caller, AnsiString Mai
                 }
                 ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
                 ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
-                if(OtherTrainDataPtr->Description == "")
+                if(OtherTrainDataPtr->FixedDescription == "") //name changed at v2.16.1
                 {
-                    OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
+                    OtherTrainDataPtr->FixedDescription = MainTrainDataPtr->FixedDescription;
                 }
             }
             // NB: May not be set if main train is a service continuation without a description, if so can't do much about it but doesn't affect operation, just the train information display
@@ -15438,9 +15445,9 @@ bool TTrainController::CheckCrossReferencesAndSetData(int Caller, AnsiString Mai
             {
                 ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
                 ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
-                if(OtherTrainDataPtr->Description == "")
+                if(OtherTrainDataPtr->FixedDescription == "") //name changed at v2.16.1
                 {
-                    OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
+                    OtherTrainDataPtr->FixedDescription = MainTrainDataPtr->FixedDescription;
                 }
             }
             // Probably redundant as this is continued from the earlier service when the changeover happens (also may not be set here yet if a service continuation)
@@ -16332,9 +16339,9 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
             {
                 ForwardEntryPtr->LinkedTrainEntryPtr = OtherTrainDataPtr;
                 ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
-                if(OtherTrainDataPtr->Description == "")
+                if(OtherTrainDataPtr->FixedDescription == "") //name changed at v2.16.1
                 {
-                    OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
+                    OtherTrainDataPtr->FixedDescription = MainTrainDataPtr->FixedDescription;
                 }
             }
             // Probably redundant as this is continued from the earlier service when the changeover happens (also may not be set here yet if a service continuation)
@@ -16373,9 +16380,9 @@ Note:  Any shuttle start can have any finish - feeder and finish, neither, feede
                 // links to the non-repeating non-shuttle linked service
                 ReverseEntryPtr->LinkedTrainEntryPtr = MainTrainDataPtr;
                 // needed for creating formatted timetable
-                if(OtherTrainDataPtr->Description == "")
+                if(OtherTrainDataPtr->FixedDescription == "") //name changed at v2.16.1
                 {
-                    OtherTrainDataPtr->Description = MainTrainDataPtr->Description;
+                    OtherTrainDataPtr->FixedDescription = MainTrainDataPtr->FixedDescription;
                 }
             }
             // Probably redundant as this is continued from the earlier service when the changeover happens (also may not be set here yet if a service continuation)
@@ -16791,7 +16798,7 @@ void TTrainController::SaveTrainDataVectorToFile(int Caller)
         const TTrainDataEntry &TDEntry = TrainDataVector.at(x);
         OutFile << "HeadCode" << ',' << "Description" << ',' << "StartSpeed" << ',' << "MaxRunningSpeed" << ',' << "NumberOfTrains" << '\n' << '\n';
 
-        OutFile << TDEntry.HeadCode.c_str() << ',' << TDEntry.Description.c_str()
+        OutFile << TDEntry.HeadCode.c_str() << ',' << TDEntry.FixedDescription.c_str() /* name changed at v2.16.1*/
         << ',' << TDEntry.StartSpeed << ',' << TDEntry.MaxRunningSpeed << ',' << TDEntry.NumberOfTrains << '\n' << '\n';
 
         OutFile << ',' << "FormatType" << ',' << "EventTime" << ',' << "ArrivalTime" << ',' << "DepartureTime" << ',' << "LocationName" << ',' << "Command" <<
@@ -17226,7 +17233,7 @@ void TTrainController::BuildContinuationTrainExpectationMultiMap(int Caller)
                 CTEEntry.TrainDataEntryPtr = &TDEntry;
                 // retains this value for all repeats
                 CTEEntry.HeadCode = TDEntry.HeadCode;
-                CTEEntry.Description = TDEntry.Description;
+                CTEEntry.FixedDescription = TDEntry.FixedDescription; //name changed at v2.16.1
                 CTEEntry.IncrementalMinutes = 0;
                 CTEEntry.IncrementalDigits = 0;
                 if(AVLastEntry.FormatType == Repeat)
@@ -17485,13 +17492,13 @@ void TTrainController::CreateFormattedTimetable(int Caller, AnsiString RailwayTi
         for(int y = 0; y < TrainDataEntry.NumberOfTrains; y++)
         {
             OneTTLine.Header = "";
-            if((TrainDataEntry.Description != "") && (MassStr != ""))
+            if((TrainDataEntry.FixedDescription != "") && (MassStr != "")) //name changed at v2.16.1
             {
-                OneTTLine.Header = TrainDataEntry.Description + MassStr + PowerStr + BrakeStr + MaxSpeedStr;
+                OneTTLine.Header = TrainDataEntry.FixedDescription + MassStr + PowerStr + BrakeStr + MaxSpeedStr; //name changed at v2.16.1
             }
-            else if(TrainDataEntry.Description != "")
+            else if(TrainDataEntry.FixedDescription != "") //name changed at v2.16.1
             {
-                OneTTLine.Header = TrainDataEntry.Description;
+                OneTTLine.Header = TrainDataEntry.FixedDescription; //name changed at v2.16.1
             }
             OneTTLine.NumberOfTrains = TrainDataEntry.NumberOfTrains;
             TOneCompleteFormattedTrain OneTTTrain; // headcode + list of actions
@@ -21243,7 +21250,7 @@ void TTrainController::SendPerformanceSummary(int Caller, std::ofstream &PerfFil
     }
     else
     {
-        ExcessLCDownMins = 0; //added after v2.16.0 so doesn't count towards performance score if < 0.1mins (else can have low score with no excess mins recorded)
+        ExcessLCDownMins = 0; //added at v2.16.1 so doesn't count towards performance score if < 0.1mins (else can have low score with no excess mins recorded)
     }
     if(Utilities->CumulativeDelayedRandMinsAllTrains > 0) //added at v2.13.0
     {

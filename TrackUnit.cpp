@@ -15616,7 +15616,8 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
         if(SearchElement.TrackVectorPosition == RequiredPosition)
         {
 // need to ensure a signal/buffer/continuation
-            if((SearchElement.Config[SearchElement.XLinkPos] != Signal) && (SearchElement.Config[SearchElement.XLinkPos] != End))
+//            if((SearchElement.Config[SearchElement.XLinkPos] != Signal) && (SearchElement.Config[SearchElement.XLinkPos] != End)) dropped at v2.16.1 - may find element round a loop and appear invalid when in fact valid
+            if((SearchElement.TrackType != SignalPost) && (SearchElement.TrackType != Buffers) && (SearchElement.TrackType != Continuation)) //added at v2.16.1
             {
                 TrainController->StopTTClockMessage(94, "Must select a valid signal, buffers or continuation"); //added at v2.7.0
                 Track->SuppressRouteFailMessage = true;
@@ -15627,7 +15628,17 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                 QuitAllRecursiveSearchesFlag = true;  //added at v2.15.1 (to stop several same messages being given)
                 Utilities->CallLogPop(246);
                 return(false);
-            } // if((SearchElement.Config[SearchElement.XLinkPos] != Signal).......
+            } // if((SearchElement.TrackType != SignalPost) &&.......
+//need to make sure it's in the right direction
+            if((SearchElement.Config[SearchElement.XLinkPos] != Signal) && (SearchElement.Config[SearchElement.XLinkPos] != End))
+            { //condition added at v2.16.1
+                for(int x = 0; x < VectorCount; x++)
+                {
+                    SearchVector.erase(SearchVector.end() - 1);
+                }
+                Utilities->CallLogPop(2627);
+                return(false);
+            } // if((SearchElement.Config[SearchElement.XLinkPos] != Signal)......
 
             if(AutoSigsFlag)
             {
@@ -15675,8 +15686,8 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             Utilities->CallLogPop(248);
             return(false);
         }
-// check if SearchVector exceeds a size of 150
-        if(SearchVector.size() > 150)
+// check if SearchVector exceeds a size of 3000 - raised from 150 at v2.16.1
+        if(SearchVector.size() > 3000)
         {
             for(int x = 0; x < VectorCount; x++)
             {
@@ -17017,8 +17028,8 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
             Utilities->CallLogPop(299);
             return(false);
         }
-// check if SearchVector exceeds a size of 150
-        if(SearchVector.size() > 150)
+// check if SearchVector exceeds a size of 3000 - raised from 150 at v2.16.1
+        if(SearchVector.size() > 3000)
         {
             for(int x = 0; x < VectorCount; x++)
             {

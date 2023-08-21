@@ -15686,8 +15686,8 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             Utilities->CallLogPop(248);
             return(false);
         }
-// check if SearchVector exceeds a size of 3000 - raised from 150 at v2.16.1
-        if(SearchVector.size() > 3000)
+// check if SearchVector exceeds a size of 1000 - raised from 150 at v2.16.1
+        if(SearchVector.size() > 1000)
         {
             for(int x = 0; x < VectorCount; x++)
             {
@@ -17028,8 +17028,8 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
             Utilities->CallLogPop(299);
             return(false);
         }
-// check if SearchVector exceeds a size of 3000 - raised from 150 at v2.16.1
-        if(SearchVector.size() > 3000)
+// check if SearchVector exceeds a size of 1000 - raised from 150 at v2.16.1
+        if(SearchVector.size() > 1000)
         {
             for(int x = 0; x < VectorCount; x++)
             {

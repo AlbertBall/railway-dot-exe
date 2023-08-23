@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.16.0</span>
+   &#160;<span id="projectnumber">v2.16.1</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -116,14 +116,13 @@ Public Attributes</h2></td></tr>
 <tr class="separator:aa1c7c0c8f2437744f49d7e2856180dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadf0846698c4d7d596c9280037834456"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_data_entry.html#aadf0846698c4d7d596c9280037834456">ServiceReference</a></td></tr>
 <tr class="separator:aadf0846698c4d7d596c9280037834456"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea5870826c3c6815472e86d82b0c9fe7"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_data_entry.html#aea5870826c3c6815472e86d82b0c9fe7">Description</a></td></tr>
-<tr class="memdesc:aea5870826c3c6815472e86d82b0c9fe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">headcode is the first train's headcode, rest are calculated from repeat information; ServiceReference is the full (up to 8 characters) reference from the timetable (added at V0.6b)  <a href="class_t_train_data_entry.html#aea5870826c3c6815472e86d82b0c9fe7">More...</a><br /></td></tr>
-<tr class="separator:aea5870826c3c6815472e86d82b0c9fe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf01398985534818dd94de68c41e1b13"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_data_entry.html#aaf01398985534818dd94de68c41e1b13">FixedDescription</a></td></tr>
+<tr class="separator:aaf01398985534818dd94de68c41e1b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5371b4c18c08f286ffa794e371631d4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_data_entry.html#af5371b4c18c08f286ffa794e371631d4">ExplicitDescription</a></td></tr>
-<tr class="memdesc:af5371b4c18c08f286ffa794e371631d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">true if a description is given for the train, if only headcode given for a follow-on service then false, and train takes description of earlier service  <a href="class_t_train_data_entry.html#af5371b4c18c08f286ffa794e371631d4">More...</a><br /></td></tr>
+<tr class="memdesc:af5371b4c18c08f286ffa794e371631d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; headcode is the first train's headcode, rest are calculated from repeat information; ServiceReference is the full (up to 8 characters) reference from the timetable (added at V0.6b)  <a href="class_t_train_data_entry.html#af5371b4c18c08f286ffa794e371631d4">More...</a><br /></td></tr>
 <tr class="separator:af5371b4c18c08f286ffa794e371631d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d7e696d79ee15cae196c0197fed3821"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_data_entry.html#a3d7e696d79ee15cae196c0197fed3821">MaxBrakeRate</a></td></tr>
-<tr class="memdesc:a3d7e696d79ee15cae196c0197fed3821"><td class="mdescLeft">&#160;</td><td class="mdescRight">in metres/sec/sec  <a href="class_t_train_data_entry.html#a3d7e696d79ee15cae196c0197fed3821">More...</a><br /></td></tr>
+<tr class="memdesc:a3d7e696d79ee15cae196c0197fed3821"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; true if a description is given for the train, if only headcode given for a follow-on service then false, and train takes description of earlier service. Note that after SecondPassActions practically all services have FixedDescriptions.  <a href="class_t_train_data_entry.html#a3d7e696d79ee15cae196c0197fed3821">More...</a><br /></td></tr>
 <tr class="separator:a3d7e696d79ee15cae196c0197fed3821"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaef868581a7c5383f70f119b1f551178"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_train_data_entry.html#aaef868581a7c5383f70f119b1f551178">MaxRunningSpeed</a></td></tr>
 <tr class="memdesc:aaef868581a7c5383f70f119b1f551178"><td class="mdescLeft">&#160;</td><td class="mdescRight">in km/h  <a href="class_t_train_data_entry.html#aaef868581a7c5383f70f119b1f551178">More...</a><br /></td></tr>
@@ -203,24 +202,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aea5870826c3c6815472e86d82b0c9fe7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea5870826c3c6815472e86d82b0c9fe7">&#9670;&nbsp;</a></span>Description</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">AnsiString TTrainDataEntry::Description</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>headcode is the first train's headcode, rest are calculated from repeat information; ServiceReference is the full (up to 8 characters) reference from the timetable (added at V0.6b) </p>
-
-<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00210">210</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
-
-</div>
-</div>
 <a id="af5371b4c18c08f286ffa794e371631d4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af5371b4c18c08f286ffa794e371631d4">&#9670;&nbsp;</a></span>ExplicitDescription</h2>
 
@@ -233,9 +214,25 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>true if a description is given for the train, if only headcode given for a follow-on service then false, and train takes description of earlier service </p>
+<p>&lt; headcode is the first train's headcode, rest are calculated from repeat information; ServiceReference is the full (up to 8 characters) reference from the timetable (added at V0.6b) </p>
 
 <p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00212">212</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
+
+</div>
+</div>
+<a id="aaf01398985534818dd94de68c41e1b13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf01398985534818dd94de68c41e1b13">&#9670;&nbsp;</a></span>FixedDescription</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">AnsiString TTrainDataEntry::FixedDescription</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00210">210</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>
 
 </div>
 </div>
@@ -285,6 +282,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>&lt; true if a description is given for the train, if only headcode given for a follow-on service then false, and train takes description of earlier service. Note that after SecondPassActions practically all services have FixedDescriptions. </p>
 <p>in metres/sec/sec </p>
 
 <p class="definition">Definition at line <a class="el" href="_train_unit_8h_source.html#l00214">214</a> of file <a class="el" href="_train_unit_8h_source.html">TrainUnit.h</a>.</p>

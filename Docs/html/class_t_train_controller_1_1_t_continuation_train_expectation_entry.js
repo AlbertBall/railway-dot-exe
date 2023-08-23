@@ -1,6 +1,6 @@
 var class_t_train_controller_1_1_t_continuation_train_expectation_entry =
 [
-    [ "Description", "class_t_train_controller_1_1_t_continuation_train_expectation_entry.html#a4f8cb6b7a1ab76fb56a56594aa440fe5", null ],
+    [ "FixedDescription", "class_t_train_controller_1_1_t_continuation_train_expectation_entry.html#a88fc8593b6806ff794a261531195d563", null ],
     [ "HeadCode", "class_t_train_controller_1_1_t_continuation_train_expectation_entry.html#a385c1cedb6c4c81c59f38bc2ef3c50d9", null ],
     [ "IncrementalDigits", "class_t_train_controller_1_1_t_continuation_train_expectation_entry.html#af6516a6832fe532a42fd3757fa4143a0", null ],
     [ "IncrementalMinutes", "class_t_train_controller_1_1_t_continuation_train_expectation_entry.html#a83b9f2b6b24a097ee25d91f22f81c351", null ],

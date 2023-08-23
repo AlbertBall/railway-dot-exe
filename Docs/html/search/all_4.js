@@ -33,7 +33,7 @@ var searchData=
   ['derailments_913',['Derailments',['../class_t_train_controller.html#a6515788e5473df981d62ae885d82241e',1,'TTrainController']]],
   ['derailpending_914',['DerailPending',['../class_t_train.html#aabb977acb12c9cd6cd527faed9637830',1,'TTrain']]],
   ['derailwarning_915',['DerailWarning',['../class_t_rail_graphics.html#a2c688dc7a18b9121fd6c394c2564eac6',1,'TRailGraphics::DerailWarning()'],['../class_t_train_controller.html#ae14cb1df9539743db54f5828d9aceb03',1,'TTrainController::DerailWarning()']]],
-  ['description_916',['Description',['../class_t_train_data_entry.html#aea5870826c3c6815472e86d82b0c9fe7',1,'TTrainDataEntry::Description()'],['../class_t_train_controller_1_1_t_continuation_train_expectation_entry.html#a4f8cb6b7a1ab76fb56a56594aa440fe5',1,'TTrainController::TContinuationTrainExpectationEntry::Description()']]],
+  ['description_916',['Description',['../class_t_train.html#a19bea6764d9e7bacef7e4c46faaaa77b',1,'TTrain']]],
   ['developmentpanel_917',['DevelopmentPanel',['../class_t_interface.html#a82ceb0b38e171d2b46c19f76afef35c1',1,'TInterface']]],
   ['diagonalfouledbyroute_918',['DiagonalFouledByRoute',['../class_t_all_routes.html#ae3fb64509afc46d5871c7843c7769f88',1,'TAllRoutes']]],
   ['diagonalfouledbyrouteortrain_919',['DiagonalFouledByRouteOrTrain',['../class_t_all_routes.html#a2341a7e860e716e60b733f45814e4499',1,'TAllRoutes']]],

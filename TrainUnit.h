@@ -210,7 +210,7 @@ public:
     AnsiString HeadCode, ServiceReference, FixedDescription;  //Description changed to FixedDescription at v2.16.1 to avoid confusion with TTrain::Description
 ///< headcode is the first train's headcode, rest are calculated from repeat information; ServiceReference is the full (up to 8 characters) reference from the timetable (added at V0.6b)
     bool ExplicitDescription;  //added at v2.15.0
-///< true if a description is given for the train, if only headcode given for a follow-on service then false, and train takes description of earlier service
+///< true if a description is given for the train, if only headcode given for a follow-on service then false, and train takes description of earlier service. Note that after SecondPassActions practically all services have FixedDescriptions.
     double MaxBrakeRate;
 ///< in metres/sec/sec
     double MaxRunningSpeed;

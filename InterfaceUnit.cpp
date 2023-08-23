@@ -94,7 +94,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion() + " Beta";
+        ProgramVersion = "RailOS32 " + GetVersion() + " Beta2";
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -2693,7 +2693,7 @@ void TInterface::LoadRailway(int Caller, AnsiString LoadFileName)
     } // if(FileIntegrityCheck(LoadRailwayDialog->FileName.c_str()))
     else
     {
-        ShowMessage("File integrity check failed - unable to load " + LoadFileName + ". If the file exists and is spelled correctly then it is probably corrupt.");
+        ShowMessage("File integrity check failed - unable to load " + LoadFileName + ". Retry using the latest program version.  If that fails and the file exists and is spelled correctly then it is probably corrupt.");
     }   //message clarified at v2.14.0
     session_api_->write_string("railway_file", LoadRailwayDialog->FileName); // API v1.2
     session_api_->find_metadata_file(); // API v1.2
@@ -3461,8 +3461,8 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
                 while(!TTBLFile.eof())
                 {
                     TTBLFile.get(c);
-//                    if((c < 32) && (c != 13) && (c != 10) && (c != '\0')) // changed at v2.16.0 to allow extended characters in location names
-                    if((c < 32) && (c >= 1)) //have to allow NULLs
+                    if((c < 32) && (c != 13) && (c != 10) && (c != '\0'))
+//                    if((c < 32) && (c >= 1)) //have to allow NULLs - dropped at v2.16.1 as prevented CRLF which is ok, reverted to original condition above
                     {
                         ShowMessage("Timetable file contains invalid control characters");
                         TTBLFile.close();
@@ -12224,7 +12224,7 @@ void __fastcall TInterface::LoadTimetableMenuItemClick(TObject *Sender)
             } // if(TimetableIntegrityCheck
             else
             {
-                ShowMessage("Timetable integrity check failed - unable to load " + TimetableDialog->FileName + ". If the file exists, is spelled correctly, and is appropriate for this railway, then it probably contains errors - check in 'Edit timetable' mode.");
+                ShowMessage("Timetable integrity check failed - unable to load " + TimetableDialog->FileName + ". Retry using the latest program version.  If that fails and the file exists, is spelled correctly, and is appropriate for this railway, then it probably contains errors - check in 'Edit timetable' mode.");
                 //message clarified at v2.14.0
             }
         } // if(TimetableDialog->Execute())
@@ -20668,6 +20668,15 @@ In each case need to ensure that the following points are considered and dealt w
             }
             Utilities->SaveFileString(SessionFile, "End of file at v2.14.0");
 //end of v2.14.0 additions
+
+//additions at v2.16.1 - train descriptions
+            for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+            {
+                Utilities->SaveFileString(SessionFile, TVIt->Description);
+            }
+            Utilities->SaveFileString(SessionFile, "End of file at v2.16.1");
+//end of v2.16.1 additions
+
 //IF ADD MORE PARAMETERS REMEMBER TO ADD TO ERROR FILE TOO, BUT CHANGE 'SessionFile' to 'ErrorFile'
 
             SessionFile.close();
@@ -21251,7 +21260,40 @@ void TInterface::LoadSession(int Caller)
                         SessionFile.get(TempChar); //should be '\n'
                         DummyStr = Utilities->LoadFileString(SessionFile); // "End of file at v2.14.0"  discarded
 //end of v2.14.0 additions
-                        SessionFile.close();
+
+//additions at v2.16.1 - train descriptions
+                        SessionFile.get(TempChar);
+                        while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
+                        {// get rid of all end of lines & emerge with eof or digit that represents first train's description
+                            SessionFile.get(TempChar);
+                        }
+                        if(SessionFile.eof()) //old session file, no train descriptions, no changes of description
+                        {
+                            SessionFile.close(); //no need to initialise anything as initialisation will occur during BuildTrainDataVectorForLoadFile
+                            goto FINISHEDLOADING;
+                        }
+                        //TempChar now contains the first digit of first train's description
+                        TempString = "";
+                        while((TempChar != '\n') && (TempChar != '\0'))
+                        {
+                            TempString = TempString + TempChar;
+                            SessionFile.get(TempChar);
+                        }
+                        //here have first train's description as an AnsiString in TempString & '\n' in TempChar
+
+                        for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+                        {
+                            if(TVIt == TrainController->TrainVector.begin())
+                            {
+                                TVIt->Description = TempString;
+                            }
+                            else
+                            {
+                                TVIt->Description = Utilities->LoadFileString(SessionFile);
+                            }
+                        }
+                        DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.16.1" discarded
+//end of v2.16.1 additions
                     }
 
 FINISHEDLOADING:
@@ -21304,7 +21346,7 @@ FINISHEDLOADING:
             }
             else
             {
-                ShowMessage("Session file integrity check failed, unable to load " + LoadSessionDialog->FileName);
+                ShowMessage("Session file integrity check failed, unable to load " + LoadSessionDialog->FileName + ". Retry using the latest program version.");
             }
             Screen->Cursor = TCursor(-2); // Arrow;
         }
@@ -22108,7 +22150,7 @@ bool TInterface::BuildTrainDataVectorForLoadFile(int Caller, std::ifstream &TTBL
     {
         if(GiveMessages)
         {
-            ShowMessage("Timetable secondary integrity check failed - unable to load");
+            ShowMessage("Timetable secondary integrity check failed - unable to load. Retry using the latest program version.");
         }
         Utilities->CallLogPop(1238);
         return(false);
@@ -23330,6 +23372,13 @@ void TInterface::SaveErrorFile()
             }
             Utilities->SaveFileString(ErrorFile, "End of file at v2.14.0");
 //end of v2.14.0 additions
+//additions at v2.16.1 - train descriptions
+            for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+            {
+                Utilities->SaveFileString(ErrorFile, TVIt->Description);
+            }
+            Utilities->SaveFileString(ErrorFile, "End of file at v2.16.1");
+//end of v2.16.1 additions
 
 //REMAINDER STAY AT END OF FILE
 // addition at v2.8.0 in case of clipboard
@@ -23927,106 +23976,113 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
      //test code here
-
 /*
-//.ttb & .csv file conversion routines
-//      1st convert a .ttb file into a .csv file to allow spreadsheet functions to work on it - mainly sorting
-        std::ifstream InFile("BH Only.ttb", std::ios_base::binary);
-        if(!InFile.fail())
+        //print out original TrainDataVector for comparison
+        std::ofstream TDVFile((CurDir + "\\Formatted timetables\\TrainDataVector printout " + TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss") + "; " + RailwayTitle + "; " + TimetableTitle + " TrainDataVector.txt").c_str());
+        TDVFile << "Note that in the TrainDataVector, non-repeating shuttle link services F-nshs and Sns-fsh use the non-repeating headcode (NR) values for the corresponding "
+                    "shuttle headcodes when it should be the other headcode (OH), and the other headcode is unused.  The link values are the right way round.  Also OH & NR "
+                    "values ARE headcodes and not service references, but OLk and NRLk values are service references.\n\n";
+        //F-nshs  FNSNonRepeatToShuttle       N (shld be Y for outwd shuttle)  Y (shld be N)  Y (correct)  N (correct)     Feeder service link to shuttle
+        //Sns-fsh SNSNonRepeatFromShuttle     N (shld be Y for rtn shuttle)    Y (shld be N)  Y (correct)  N (correct)     Finishing service link from shuttle
+        AnsiString OHC = "", NRHC = "";
+        AnsiString OLk = "", NRLk = "";
+
+        for(TTrainDataVector::iterator TDVIt = TrainController->TrainDataVector.begin(); TDVIt != TrainController->TrainDataVector.end(); TDVIt++)
         {
-            std::ofstream OutFile("xx.csv", std::ios_base::binary);
-            if(!OutFile.fail())
+            TDVFile << TDVIt->ServiceReference + '\n';
+            TDVFile << TDVIt->FixedDescription + '\n';
+            for(unsigned int x = 0; x < TDVIt->ActionVector.size(); x++)
             {
-                char TempVal;
-                while(true)
+                TActionVectorEntry AVE = TDVIt->ActionVector.at(x);
+                if(AVE.OtherHeadCode == "")
                 {
-                    InFile.get(TempVal);
-                    if(InFile.eof())
-                    {
-                        break;
-                    }
-                    if(TempVal == '\0')
-                    {
-                        OutFile << '\r';
-                        OutFile << '\n';
-                    }
-                    else
-                    {
-                        OutFile << TempVal;
-                    }
+                    OHC = "OH 0";
                 }
-                InFile.close();
-                OutFile.close();
-            }
-            else
-            {
-                InFile.close();
-                ShowMessage("OutFile failed to open");
-            }
-        }
-        else
-        {
-            ShowMessage("InFile failed to open");
-        }
-*/
-//      2nd convert a .csv file back into a .ttb file
-/*        std::ifstream InFile2("xx.csv", std::ios_base::binary);
-        if(!InFile2.fail())
-        {
-            std::ofstream OutFile2("cc.ttb", std::ios_base::binary);
-            if(!OutFile2.fail())
-            {
-                char TempVal2;
-                while(true)
+                else
                 {
-                    InFile2.get(TempVal2);
-                    if(InFile2.eof())
-                    {
-                        break;
-                    }
-                    if(TempVal2 == '\r')
-                    {
-                        OutFile2 << '\0';
-                    }
-                    else if(TempVal2 == '\n')
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        OutFile2 << TempVal2;
-                    }
+                    OHC = "OH " + AVE.OtherHeadCode;
                 }
-                InFile2.close();
-                OutFile2.close();
-            }
-            else
-            {
-                InFile2.close();
-                ShowMessage("OutFile2 failed to open");
+                if(AVE.NonRepeatingShuttleLinkHeadCode == "")
+                {
+                    NRHC = "NR 0";
+                }
+                else
+                {
+                    NRHC = "NR " + AVE.NonRepeatingShuttleLinkHeadCode;
+                }
+                if(TDVIt->ActionVector.at(x).LinkedTrainEntryPtr == 0)
+                {
+                    OLk = "OLk 0";
+                }
+                else
+                {
+                    OLk = "OLk " + TDVIt->ActionVector.at(x).LinkedTrainEntryPtr->ServiceReference;
+                }
+                if(TDVIt->ActionVector.at(x).NonRepeatingShuttleLinkEntryPtr == 0)
+                {
+                    NRLk = "NRLk 0";
+                }
+                else
+                {
+                    NRLk = "NRLk " + TDVIt->ActionVector.at(x).NonRepeatingShuttleLinkEntryPtr->ServiceReference;
+                }
+
+                if(AVE.FormatType == TimeCmd) //cdt only
+                {
+                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << '\n';
+                }
+                if((AVE.FormatType == TimeCmdHeadCode) || (AVE.FormatType == FNSNonRepeatToShuttle))
+                {
+                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << OHC << ' ' << NRHC << ' ' << OLk << ' ' << NRLk << '\n';
+                }
+                else if((AVE.FormatType == FSHNewService) || (AVE.FormatType == SNSShuttle)) //these should have 2 linked services
+                {
+                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << OHC << ' ' << NRHC << ' ' << OLk << ' ' << NRLk << '\n';
+                }
+                else if(AVE.FormatType == SNSNonRepeatFromShuttle)
+                {
+                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << OHC << ' ' << NRHC << ' ' << OLk << ' ' << NRLk << '\n';
+                }
+                else if(AVE.FormatType == StartNew)
+                {
+                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << " Snt RearStartID " << Track->TrackElementAt(-5, AVE.RearStartOrRepeatMins).ElementID
+                        <<  " FrontStartID " << Track->TrackElementAt(-6, AVE.FrontStartOrRepeatDigits).ElementID << '\n';
+                }
+                else if(AVE.FormatType == SNTShuttle)
+                {
+                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << " Snt-sh RearStartID " << Track->TrackElementAt(-7, AVE.RearStartOrRepeatMins).ElementID
+                        <<  " FrontStartID " << Track->TrackElementAt(-8, AVE.FrontStartOrRepeatDigits).ElementID << '\n';
+                }
+                else if((AVE.FormatType == TimeLoc) && (AVE.ArrivalTime != TDateTime(-1)))
+                {
+                    TDVFile << Utilities->Format96HHMM(AVE.ArrivalTime) << " Arr " << AVE.LocationName <<  '\n';
+                }
+                else if((AVE.FormatType == TimeLoc) && (AVE.DepartureTime != TDateTime(-1)))
+                {
+                    TDVFile << Utilities->Format96HHMM(AVE.DepartureTime) << " Dep " << AVE.LocationName <<  '\n';
+                }
+                else if(AVE.FormatType == TimeTimeLoc)
+                {
+                    TDVFile << Utilities->Format96HHMM(AVE.ArrivalTime) << ' ' << Utilities->Format96HHMM(AVE.DepartureTime) << ' ' << AVE.LocationName <<  '\n';
+                }
+                else if(AVE.FormatType == PassTime)
+                {
+                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << "Pass" << ' ' << AVE.LocationName <<  '\n';
+                }
+                else if(AVE.FormatType == ExitRailway)
+                {
+                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << " Fer" <<  '\n';
+                }
+                else if(AVE.FormatType == FinRemHere)
+                {
+                    TDVFile << "Frh" <<  '\n';
+                }
             }
         }
-        else
-        {
-            ShowMessage("InFile2 failed to open");
-        }
+        TDVFile << '\n';
+        TDVFile.close();
+        ShowMessage("File created");
 */
-
-/*
-        if(Level1Mode == TimetableMode)  //Invert timetable entry test
-        {
-
-            TTCurrentEntryPtr = TimetableEditVector.begin();
-            InvertTTEntryButton->Click();
-            while(TTCurrentEntryPtr < (TimetableEditVector.end() - 1))
-            {
-                TTCurrentEntryPtr++;
-                InvertTTEntryButton->Click();
-            }
-        }
-*/
-
-      //throw Exception("Test error"); //for testing the error file
         Utilities->CallLogPop(2376);
     }
     catch(const Exception &e)

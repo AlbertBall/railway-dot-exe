@@ -2,8 +2,8 @@ var class_t_train_data_entry =
 [
     [ "TTrainDataEntry", "class_t_train_data_entry.html#a9e3a221ec9be3d20ee37c6c4d001ffa4", null ],
     [ "ActionVector", "class_t_train_data_entry.html#a73872a2abaa9d09a3f392b4e6f725289", null ],
-    [ "Description", "class_t_train_data_entry.html#aea5870826c3c6815472e86d82b0c9fe7", null ],
     [ "ExplicitDescription", "class_t_train_data_entry.html#af5371b4c18c08f286ffa794e371631d4", null ],
+    [ "FixedDescription", "class_t_train_data_entry.html#aaf01398985534818dd94de68c41e1b13", null ],
     [ "HeadCode", "class_t_train_data_entry.html#aa1c7c0c8f2437744f49d7e2856180dd8", null ],
     [ "Mass", "class_t_train_data_entry.html#a16d6c71abfab0a1ebd961fe3cd3edae7", null ],
     [ "MaxBrakeRate", "class_t_train_data_entry.html#a3d7e696d79ee15cae196c0197fed3821", null ],

@@ -6638,6 +6638,7 @@ void TTrain::NewTrainService(int Caller, bool NoLogFlag) //, bool NoLogFlag adde
     TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).RunningEntry = Running;
     ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0));
     HeadCode = NewHeadCode;
+    Description = TrainDataEntryPtr->FixedDescription;
     if(!TrainDataEntryPtr->ExplicitDescription) //new at v2.15.0 see above
     {
         Description = OriginalDescription; //changed at v2.16.1 to train description
@@ -6956,6 +6957,7 @@ void TTrain::NewShuttleFromNonRepeatService(int Caller, bool NoLogFlag) //bool N
     TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).RunningEntry = Running;
     ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0));
     HeadCode = NewHeadCode;
+    Description = TrainDataEntryPtr->FixedDescription;
     if(!TrainDataEntryPtr->ExplicitDescription) //new at v2.15.0 see above
     {
         Description = OriginalDescription; //changed at v2.16.1 to train description
@@ -7012,6 +7014,7 @@ void TTrain::RepeatShuttleOrRemainHere(int Caller, bool NoLogFlag) //bool NoLogF
     // need the next repeat value in order to obtain a correct NewHeadCode, but don't increase it
     // until after LogAction or the wrong time will be used
     AnsiString NewHeadCode = TrainController->GetRepeatHeadCode(6, ActionVectorEntryPtr->OtherHeadCode, TempRepeatNumber, IncrementalDigits);
+    AnsiString OriginalDescription = Description;  //new at v2.15.0 to record earlier service description & changed at v2.16.1 to train description
 
     if(!NoLogFlag)
     {
@@ -7027,6 +7030,11 @@ void TTrain::RepeatShuttleOrRemainHere(int Caller, bool NoLogFlag) //bool NoLogF
     TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).RunningEntry = Running;
     ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0));
     HeadCode = NewHeadCode;
+    Description = TrainDataEntryPtr->FixedDescription;
+    if(!TrainDataEntryPtr->ExplicitDescription) //new at v2.15.0 see above
+    {
+        Description = OriginalDescription; //changed at v2.16.1 to train description
+    }
     StoppedAtLocation = true;
     PlotStartPosition(7);
     PlotTrainWithNewBackgroundColour(23, clStationStopBackground, Display);
@@ -7073,6 +7081,7 @@ void TTrain::RepeatShuttleOrNewNonRepeatService(int Caller, bool NoLogFlag) //bo
         TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).RunningEntry = Running; // but note that RepeatNumber = 0
         ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0));
         HeadCode = NewHeadCode;
+        Description = TrainDataEntryPtr->FixedDescription;
         if(!TrainDataEntryPtr->ExplicitDescription) //new at v2.15.0 see above
         {
             Description = OriginalDescription; //changed at v2.16.1 to train description
@@ -7090,6 +7099,7 @@ void TTrain::RepeatShuttleOrNewNonRepeatService(int Caller, bool NoLogFlag) //bo
     // need the next repeat value in order to obtain a correct NewHeadCode, but don't increase it
     // until after LogAction or the wrong time will be used
     AnsiString NewHeadCode = TrainController->GetRepeatHeadCode(7, ActionVectorEntryPtr->OtherHeadCode, TempRepeatNumber, IncrementalDigits);
+    AnsiString OriginalDescription = Description;  //new at v2.15.0 to record earlier service description & changed at v2.16.1 to train description
 
     if(!NoLogFlag)
     {
@@ -7105,6 +7115,11 @@ void TTrain::RepeatShuttleOrNewNonRepeatService(int Caller, bool NoLogFlag) //bo
     TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).RunningEntry = Running;
     ActionVectorEntryPtr = &(TrainDataEntryPtr->ActionVector.at(0));
     HeadCode = NewHeadCode;
+    Description = TrainDataEntryPtr->FixedDescription;
+    if(!TrainDataEntryPtr->ExplicitDescription) //new at v2.15.0 see above
+    {
+        Description = OriginalDescription; //changed at v2.16.1 to train description
+    }
     StoppedAtLocation = true;
     PlotStartPosition(8);
     PlotTrainWithNewBackgroundColour(25, clStationStopBackground, Display);

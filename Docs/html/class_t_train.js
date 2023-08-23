@@ -84,6 +84,7 @@ var class_t_train =
     [ "DepartureTimeSet", "class_t_train.html#ab4f3876cb58a6160c2f1cd7a7eb3f234", null ],
     [ "Derailed", "class_t_train.html#aa7881a1af2b9f5e899ce02937325c3a3", null ],
     [ "DerailPending", "class_t_train.html#aabb977acb12c9cd6cd527faed9637830", null ],
+    [ "Description", "class_t_train.html#a19bea6764d9e7bacef7e4c46faaaa77b", null ],
     [ "DistanceToStationStop", "class_t_train.html#a1e58e27771dc21b6beca4cc0f61ceaa0", null ],
     [ "EntrySpeed", "class_t_train.html#ae132daaee23376980818479528f27e2f", null ],
     [ "EntryTime", "class_t_train.html#a6baa340127335e185e91f150ab93986f", null ],

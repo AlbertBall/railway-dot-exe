@@ -21272,15 +21272,14 @@ void TInterface::LoadSession(int Caller)
                             SessionFile.close(); //no need to initialise anything as initialisation will occur during BuildTrainDataVectorForLoadFile
                             goto FINISHEDLOADING;
                         }
-                        //TempChar now contains the first digit of first train's description
+                        //TempChar now contains the first digit of first train's description or 'E' for 'End of file at v2.16.1'
                         TempString = "";
                         while((TempChar != '\n') && (TempChar != '\0'))
                         {
                             TempString = TempString + TempChar;
                             SessionFile.get(TempChar);
                         }
-                        //here have first train's description as an AnsiString in TempString & '\n' in TempChar
-
+                        //here have first train's description as an AnsiString in TempString or 'End of file at v2.16.1' & '\n' in TempChar
                         for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
                         {
                             if(TVIt == TrainController->TrainVector.begin())
@@ -21292,7 +21291,10 @@ void TInterface::LoadSession(int Caller)
                                 TVIt->Description = Utilities->LoadFileString(SessionFile);
                             }
                         }
-                        DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.16.1" discarded
+                        if(TempString != "End of file at v2.16.1") //i.e. no train descriptions to load - can't have this as a description - unlikely anyway
+                        { //if it is then there is no remaining string to discard
+                            DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.16.1" discarded
+                        }
 //end of v2.16.1 additions
                     }
 

@@ -15366,6 +15366,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
     {
         QuitAllRecursiveSearchesFlag = false;
     }
+
     TPrefDirElement PrefDirElement1, PrefDirElement2, BlankElement;
 
 // check for a fouled diagonal for first element.  Added for v1.3.2
@@ -15663,8 +15664,8 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             SearchVector.push_back(PrefDirElement1); // must be 1 as it's a simple element
             VectorCount++; // not really needed but include for tidyness
             TotalSearchCount++;
-            if(!RecursiveCall && SignalHasFailed(0)) //added at v2.13.0
-            {
+            if(!RecursiveCall && SignalHasFailed(0)) //added at v2.13.0. SignalHasFailed returns true if a signal somewhere on the route fails, route not set if so
+            {                                        //has to be the top level call (!RecursiveCall) as only then is the route sue to be set
                 for(int x = 0; x < VectorCount; x++)
                 {
                     SearchVector.erase(SearchVector.end() - 1);
@@ -15686,8 +15687,8 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             Utilities->CallLogPop(248);
             return(false);
         }
-// check if SearchVector exceeds a size of 1000 - raised from 150 at v2.16.1
-        if(SearchVector.size() > 1000)
+// check if SearchVector exceeds a size of 150
+        if(SearchVector.size() > 150)
         {
             for(int x = 0; x < VectorCount; x++)
             {
@@ -17028,8 +17029,8 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
             Utilities->CallLogPop(299);
             return(false);
         }
-// check if SearchVector exceeds a size of 1000 - raised from 150 at v2.16.1
-        if(SearchVector.size() > 1000)
+// check if SearchVector exceeds a size of 150
+        if(SearchVector.size() > 150)
         {
             for(int x = 0; x < VectorCount; x++)
             {

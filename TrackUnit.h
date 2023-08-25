@@ -1538,7 +1538,7 @@ public:
 ///< display the original (non route-coloured) graphic
     };
 
-    static const int RouteSearchLimit = 30000;
+    static const int RouteSearchLimit = 200000; //raised at v2.16.1 to give better chance of finding route
 ///< limit to the number of elements searched in attempting to find a route
     bool QuitAllRecursiveSearchesFlag;
 ///<used during searching for preferred routes when no more recursive calls are required, added at v2.15.1
@@ -1548,7 +1548,6 @@ public:
     IDInt StartSelectionRouteID;
 ///< the route ID number of the route that is being extended forwards during route building, not
     ///< needed for session saves as routes in build are not saved in sessions
-
     int RouteID;
 ///< the ID number of the route, this is needed for session saves
     int StartRoutePosition;

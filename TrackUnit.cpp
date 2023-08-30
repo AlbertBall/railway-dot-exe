@@ -15452,9 +15452,10 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
 // note that may be buffers, continuation or gap
             SearchElement.XLinkPos = NextXLinkPos;
         }
-
 // can't set XLink or XLinkPos yet if the element is a non-failed leading point.
 
+//  drop this as time-consuming, and RouteSearchLimit will stop the search if on a loop
+/*
 // check if reached an earlier position on search PrefDir (was OK in SearchForPrefDir if entry values different, but not OK for a route)
         for(unsigned int x = 0; x < SearchVector.size(); x++)
         {
@@ -15472,7 +15473,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                 }
             }
         }
-
+*/
 // check if element in an existing route (OK if bridge & diff tracks, or start of an expected route)
         TAllRoutes::TRouteElementPair SecondPair;
         TAllRoutes::TRouteElementPair RoutePair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(16,
@@ -16873,6 +16874,7 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
 // can't set XLink or XLinkPos yet if the element is a leading point.
 
 // check if reached an earlier position on search PrefDir (was OK in SearchForPrefDir if entry values different, but not OK for a route)
+/*   drop as time consuming & RouteSearchLimit will stop search if on a loop
         for(unsigned int x = 0; x < SearchVector.size(); x++)
         {
             if(SearchElement.TrackVectorPosition == SearchVector.at(x).TrackVectorPosition)
@@ -16889,7 +16891,7 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
                 }
             }
         }
-
+*/
 // check if element in an existing route (OK if bridge & diff tracks, or start of an expected route)
         TAllRoutes::TRouteElementPair SecondPair;
         TAllRoutes::TRouteElementPair RoutePair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(3,

@@ -94,7 +94,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion() + " Beta2";
+        ProgramVersion = "RailOS32 " + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -21280,8 +21280,10 @@ void TInterface::LoadSession(int Caller)
                             SessionFile.get(TempChar);
                         }
                         //here have first train's description as an AnsiString in TempString or 'End of file at v2.16.1' & '\n' in TempChar
+                        bool AtLeastOneTrain = false;
                         for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
                         {
+                            AtLeastOneTrain = true;
                             if(TVIt == TrainController->TrainVector.begin())
                             {
                                 TVIt->Description = TempString;
@@ -21291,8 +21293,8 @@ void TInterface::LoadSession(int Caller)
                                 TVIt->Description = Utilities->LoadFileString(SessionFile);
                             }
                         }
-                        if(TempString != "End of file at v2.16.1") //i.e. no train descriptions to load - can't have this as a description - unlikely anyway
-                        { //if it is then there is no remaining string to discard
+                        if(AtLeastOneTrain) //i.e. no train descriptions to load, if there isn't then there is no remaining string to discard
+                        {
                             DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.16.1" discarded
                         }
 //end of v2.16.1 additions

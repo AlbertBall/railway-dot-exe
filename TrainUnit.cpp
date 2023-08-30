@@ -21918,7 +21918,7 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
     CurrentStopTime = 0;
     LaterStopTime = 0;
     RecoverableTime = 0;
-    if(CurrentElement == -1) // end element, no action needed
+    if(CurrentElement == -1) // train on end element, no action needed
     {
         Utilities->CallLogPop(2094);
         return(-1);
@@ -21969,17 +21969,35 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
                 Utilities->CallLogPop(2082);
                 return(-1); // no action needed
             }
-            else if(!((Train.ActionVectorEntryPtr->FormatType == TimeTimeLoc) || (Train.ActionVectorEntryPtr->FormatType == TimeLoc)))
-            {
+            else if(!((Train.ActionVectorEntryPtr->FormatType == TimeTimeLoc) || (Train.ActionVectorEntryPtr->FormatType == TimeLoc) || (Train.ActionVectorEntryPtr->FormatType == TimeCmdDescription)))
+            {     //added '|| (Train.ActionVectorEntryPtr->FormatType == TimeCmdDescription)' at v2.16.1 so description ignored in calculating action due time
                 Utilities->CallLogPop(2083);
-                return(-1); // not due a departure so no action needed
+                return(-1); // not due a departure or a description change so no action needed
             }
-            else // due a departure
+            else if(((Train.ActionVectorEntryPtr + 1)->FormatType == TimeLoc) && (Train.ActionVectorEntryPtr->FormatType == TimeCmdDescription)) // due a departure immediately after change of description
+            { //added at v2.16.1 to cover description change due next then a departure
+                double TimeToDepart = double((Train.GetTrainTime(7777, (Train.ActionVectorEntryPtr + 1)->DepartureTime)) - TrainController->TTClockTime) * 86400 / 60; // mins to depart excluding possible 30sec allowance from LastActionTime
+                //need repeat time for the above
+                if((Train.ActionVectorEntryPtr + 1)->DepartureTime == Train.ActionVectorEntryPtr->EventTime) //don't need repeat time here
+                {
+                    TimeToDepart+= 0.5;  //add in the 30 secs if depature time same as description change time
+                }
+                // can't convert a TDateTime to a float directly
+                CurrentStopTime = float(TimeToDepart);
+                AVPtr++;
+                AVPtr++;
+            }
+            else if((Train.ActionVectorEntryPtr->FormatType == TimeLoc) || (Train.ActionVectorEntryPtr->FormatType == TimeTimeLoc)) // due a departure as next action
             {
                 double TimeToDepart = double(Train.ReleaseTime - TrainController->TTClockTime) * 86400 / 60; // mins to depart
                 // can't convert a TDateTime to a float directly
                 CurrentStopTime = float(TimeToDepart);
                 AVPtr++;
+            }
+            else //added at v2.16.1 to catch all other combinations
+            {     //none of the above so no action needed
+                Utilities->CallLogPop(2628);
+                return(-1);
             }
         }
     }
@@ -22183,12 +22201,21 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
                 }
                 else if((AVPtr->FormatType == TimeLoc) && (AVPtr->ArrivalTime != TDateTime(-1))) // must be an arrival
                 {
+                    TTrain &Train = TrainVectorAtIdent(7777, TrainID);
                     if((AVPtr + 1)->FormatType == TimeLoc)
                     // must be a departure
                     {
                         LaterStopNumber++;
-                        StopTimeDouble = double((AVPtr + 1)->DepartureTime - AVPtr->ArrivalTime) * 86400.0 / 60.0;
-                        // can't convert a TDateTime to a float directly
+                        if(TTClockTime > Train.GetTrainTime(7777, AVPtr->ArrivalTime)) //running late
+                        {
+                            StopTimeDouble = double(Train.GetTrainTime(7777, ((AVPtr + 1)->DepartureTime - TTClockTime))) * 86400.0 / 60.0; //may be -ve but if so it's set to 0.5 later
+                            // can't convert a TDateTime to a float directly
+                        }
+                        else
+                        {
+                            StopTimeDouble = double((AVPtr + 1)->DepartureTime - AVPtr->ArrivalTime) * 86400.0 / 60.0; //diff will be same for all repeats
+                            // can't convert a TDateTime to a float directly                                           //so repeat times not required
+                        }
                         if(StopTimeDouble < 0.5)
                         {
                             StopTimeDouble = 0.5;
@@ -22203,7 +22230,35 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
                         AVPtr++;
                         AVPtr++;
                     }
-                    else // not a departure, does something else at the location so no calculation needed
+                    else if(((AVPtr + 1)->FormatType == TimeCmdDescription) && ((AVPtr + 2)->FormatType == TimeLoc))  //change of description then departure
+                    { //added at v2.16.1 so description changes ignored in calculating time to act
+                        LaterStopNumber++;
+                        if(TTClockTime > Train.GetTrainTime(7777, AVPtr->ArrivalTime)) //running late
+                        {
+                            StopTimeDouble = double(Train.GetTrainTime(7777, ((AVPtr + 2)->DepartureTime - TTClockTime))) * 86400.0 / 60.0; //may be -ve but if so it's set to 0.5 later
+                            // can't convert a TDateTime to a float directly
+                        }
+                        else
+                        {
+                            StopTimeDouble = double((AVPtr + 2)->DepartureTime - AVPtr->ArrivalTime) * 86400.0 / 60.0; //diff will be same for all repeats
+                            // can't convert a TDateTime to a float directly                                           //so repeat times not required
+                        }
+                        if(StopTimeDouble < 0.5)
+                        {
+                            StopTimeDouble = 0.5;
+                        }
+                        // at least 30 secs delay at station
+                        LaterStopTime += float(StopTimeDouble);
+                        RecoverableTime += StopTimeDouble - 0.5;
+                        if((LaterStopNumber == 1) && (TrainID > -1))
+                        {
+                            TrainVectorAtIdent(42, TrainID).FirstLaterStopRecoverableTime = RecoverableTime;
+                        }
+                        AVPtr++;
+                        AVPtr++;
+                        AVPtr++;
+                    }
+                    else // does something else at the location so no calculation needed
                     {
                         Utilities->CallLogPop(2086);
                         return(-1);

@@ -191,7 +191,7 @@
             <BuildOrder>4</BuildOrder>
         </CppCompile>
         <CppCompile Include="GraphicUnit.cpp">
-            <DependentOn>GraphicUnit.h</DependentOn>
+            <DependentOn>..\railway-dot-ewe\GraphicUnit.h</DependentOn>
             <BuildOrder>5</BuildOrder>
         </CppCompile>
         <CppCompile Include="InterfaceUnit.cpp">

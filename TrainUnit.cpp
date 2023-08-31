@@ -21902,7 +21902,7 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
     float MaxAllowableSpeed;
 
     //below added at v2.6.1
-    if(TrainID > -1)
+    if(TrainID > -1) //will be -1 for trains not entered yet
     {
         TTrain &Train = TrainVectorAtIdent(51, TrainID);
         Train.DistanceToStationStop = 0; //if find a red signal first then this distance isn't needed
@@ -21976,11 +21976,15 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
             }
             else if(((Train.ActionVectorEntryPtr + 1)->FormatType == TimeLoc) && (Train.ActionVectorEntryPtr->FormatType == TimeCmdDescription)) // due a departure immediately after change of description
             { //added at v2.16.1 to cover description change due next then a departure
-                double TimeToDepart = double((Train.GetTrainTime(7777, (Train.ActionVectorEntryPtr + 1)->DepartureTime)) - TrainController->TTClockTime) * 86400 / 60; // mins to depart excluding possible 30sec allowance from LastActionTime
+                double TimeToDepart = double((Train.GetTrainTime(68, (Train.ActionVectorEntryPtr + 1)->DepartureTime)) - TrainController->TTClockTime) * 86400 / 60; // mins to depart excluding possible 30sec allowance from LastActionTime
                 //need repeat time for the above
                 if((Train.ActionVectorEntryPtr + 1)->DepartureTime == Train.ActionVectorEntryPtr->EventTime) //don't need repeat time here
                 {
                     TimeToDepart+= 0.5;  //add in the 30 secs if depature time same as description change time
+                }
+                if(TimeToDepart < 0.5)
+                {
+                    TimeToDepart = 0.5;
                 }
                 // can't convert a TDateTime to a float directly
                 CurrentStopTime = float(TimeToDepart);
@@ -22201,20 +22205,20 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
                 }
                 else if((AVPtr->FormatType == TimeLoc) && (AVPtr->ArrivalTime != TDateTime(-1))) // must be an arrival
                 {
-                    TTrain &Train = TrainVectorAtIdent(7777, TrainID);
                     if((AVPtr + 1)->FormatType == TimeLoc)
                     // must be a departure
                     {
                         LaterStopNumber++;
-                        if(TTClockTime > Train.GetTrainTime(7777, AVPtr->ArrivalTime)) //running late
+                        StopTimeDouble = double((AVPtr + 1)->DepartureTime - AVPtr->ArrivalTime) * 86400.0 / 60.0; //diff will be same for all repeats
+                        // can't convert a TDateTime to a float directly                                           //so repeat times not required
+                        if(TrainID > -1) //exclude trains still to enter
                         {
-                            StopTimeDouble = double(Train.GetTrainTime(7777, ((AVPtr + 1)->DepartureTime - TTClockTime))) * 86400.0 / 60.0; //may be -ve but if so it's set to 0.5 later
-                            // can't convert a TDateTime to a float directly
-                        }
-                        else
-                        {
-                            StopTimeDouble = double((AVPtr + 1)->DepartureTime - AVPtr->ArrivalTime) * 86400.0 / 60.0; //diff will be same for all repeats
-                            // can't convert a TDateTime to a float directly                                           //so repeat times not required
+                            TTrain &Train = TrainVectorAtIdent(67, TrainID);
+                            if(TTClockTime > Train.GetTrainTime(69, AVPtr->ArrivalTime)) //running late, added at v2.16.1
+                            {
+                                StopTimeDouble = double(Train.GetTrainTime(70, (AVPtr + 1)->DepartureTime) - TTClockTime) * 86400.0 / 60.0; //may be -ve but if so it's set to 0.5 later
+                                // can't convert a TDateTime to a float directly
+                            }
                         }
                         if(StopTimeDouble < 0.5)
                         {
@@ -22233,15 +22237,16 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
                     else if(((AVPtr + 1)->FormatType == TimeCmdDescription) && ((AVPtr + 2)->FormatType == TimeLoc))  //change of description then departure
                     { //added at v2.16.1 so description changes ignored in calculating time to act
                         LaterStopNumber++;
-                        if(TTClockTime > Train.GetTrainTime(7777, AVPtr->ArrivalTime)) //running late
+                        StopTimeDouble = double((AVPtr + 2)->DepartureTime - AVPtr->ArrivalTime) * 86400.0 / 60.0; //diff will be same for all repeats
+                        // can't convert a TDateTime to a float directly                                           //so repeat times not required
+                        if(TrainID > -1) //exclude trains still to enter
                         {
-                            StopTimeDouble = double(Train.GetTrainTime(7777, ((AVPtr + 2)->DepartureTime - TTClockTime))) * 86400.0 / 60.0; //may be -ve but if so it's set to 0.5 later
-                            // can't convert a TDateTime to a float directly
-                        }
-                        else
-                        {
-                            StopTimeDouble = double((AVPtr + 2)->DepartureTime - AVPtr->ArrivalTime) * 86400.0 / 60.0; //diff will be same for all repeats
-                            // can't convert a TDateTime to a float directly                                           //so repeat times not required
+                            TTrain &Train = TrainVectorAtIdent(68, TrainID);
+                            if(TTClockTime > Train.GetTrainTime(71, AVPtr->ArrivalTime)) //running late, added at v2.16.1
+                            {
+                                StopTimeDouble = double(Train.GetTrainTime(72, (AVPtr + 2)->DepartureTime) - TTClockTime) * 86400.0 / 60.0; //may be -ve but if so it's set to 0.5 later
+                                // can't convert a TDateTime to a float directly
+                            }
                         }
                         if(StopTimeDouble < 0.5)
                         {
@@ -22252,7 +22257,7 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
                         RecoverableTime += StopTimeDouble - 0.5;
                         if((LaterStopNumber == 1) && (TrainID > -1))
                         {
-                            TrainVectorAtIdent(42, TrainID).FirstLaterStopRecoverableTime = RecoverableTime;
+                            TrainVectorAtIdent(69, TrainID).FirstLaterStopRecoverableTime = RecoverableTime;
                         }
                         AVPtr++;
                         AVPtr++;

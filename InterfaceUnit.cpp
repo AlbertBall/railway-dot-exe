@@ -23080,7 +23080,7 @@ void TInterface::SaveErrorFile()
    from & including ***ChangingLCVector*** to but excluding ***Timetable*** [if have ***No timetable loaded*** then can't use as a session file]
    from & including ***No editing timetable*** or ***Editing timetable - [title]***
    to but excluding ***TimetableClock***
-   from but excluding  End of file at vx.x.x
+   from but excluding  last entry of type 'End of file at vx.x.x'
    to end of file
 
    and save as a .ssn file.

@@ -658,6 +658,27 @@ Multi-player facility over the internet.
 
 4) Version change information
 
+VERSION CHANGES AFTER v2.16.0 for v2.16.1
+
+This is a bug-fix version that corrects bugs found in earlier versions.
+
+Kaelon noticed that a train that has its description changed during operation also caused service repeats to begin with the same changed description.  This was not intended but I had overlooked it during development.  This was corrected but the correction led to a number of other bugs found by both Kaelon and me during later testing.  These too have now been corrected - thanks to Kaelon for reporting the issues.
+
+When testing Commuterpop's new Generic Metro System it was noticed that an incorrect error message was sometimes given in setting a route, the message being 'Must select a valid signal...' when the selected signal was in fact valid for the intended route.  The correct message should have been the long 'can't find it' message.  It was caused by the search function searching along a looping route that found the correct signal element but because of the loop the signal was facing the wrong way for that route.  This has been corrected to give the right message.
+
+NOTE: Session files and timetables saved in this program version are unlikely to load successfully into earlier program versions.
+
+Not for website:
+
+Added else clause after if(ExcessLCDownMins > 0.1) to set ExcessLCDownMins to 0 because if < 0.1mins but > 0 then didn't record any excesses but it still counted towards the overall score, so could have nothing negative recorded but a score of say 84%
+
+Kaelon noticed that a train that has its description changed during operation also caused service repeats to begin with the same changed description.  This was caused by only having a single description recorded in TTrainDataEntry and not in TTrain, so when it was changed it changed for all repeat services too.  Corrected by adding a description member in TTrain and making sure that that was used when changing the description, but not that in TTrainDataEntry which is used for all new trains using that service.  Also changed the name in TTrainDataEntry from Description to FixedDescription to avoid ambiguity.  Unfortunately subsequent bugs also came to lightas follows: (1) a change to the timetable editing loader falsely excluded CR & LF when allowing extended characters - that was easily fixed; (2) when a service changed using Fns & Sns and the Sns service had an explicit description, it retained the Fns service description - this was a missing statement in the Fns function that set the description to the TrainDataEntry value before checking whether that should be kept or the earlier train description carried forward; (3) realised at this stage that needed train descriptions to be saved in session files, so that was added; (4) found that a session file with no trains (e.g. a pre-start session) failed to load because the 'End of file at v2.16.1' string was extracted as a description rather than a dummy value - corrected by checking explicitly if this was the string.
+
+The route search limit has been raised from 30000 to 200000 for both pref and non-pref routes to allow more leeway in route finding.
+
+Dropped the check in both types of route search for finding an element that is already in the search vector, it is time consuming and RouteSearchLimit will stop the search if searching in a loop.
+
+
 VERSION CHANGES AFTER v2.15.1 for v2.16.0
 
 The new feature in this version is the ability to use extended characters in location names.  This will be useful for non-uk railways where some location name characters have special marks such as accents, umlauts, cedillas and so on.  Additionally the restriction on starting a location name with a number has now been lifted.  The only restriction now is that a name can't begin with 'digit-digit-colon' because when the timetable validator sees that it is assumed to be the beginning of a time entry.
@@ -2718,7 +2739,7 @@ Prior to uploading:
 
 4a If help and/or manual updated include in both own-use win32 & 64 versions and in release win32 & 64 versions.
 
-4b Make sure DevHistoryPending.txt is up to date and copy it to DevHistory.txt
+4b Make sure DevHistoryPending.txt is up to date (include version change info & drop any text before title) and copy it to DevHistory.txt
 
 5 Use debug version for 32bit release & include 5 x .dll files and 5 x .bpl files from the Win32 debug folder.  NB .dll & .bpl have same names but very different so don't confuse them - use Project Deployment to ensure correct versions.  Change railway.exe to RailOS32.exe so no ambiguity.
 
@@ -2732,18 +2753,18 @@ Prior to uploading:
 
 10 Update manual & on-screen help if required + any other relevant files e.g. filespec & timetable errors
 
-11 Leave source code as 32bit debug, commit and merge with 'development' then 'master' and tag with release version.
-
-12 Create new directories 'Release 32bit vx.x.x' & 'Release 64bit vx.x.x' from earlier release & replace files as follows for 32 bit - similar for 64 bit.
+11 Create new directories 'Release 32bit vx.x.x' & 'Release 64bit vx.x.x' from earlier release & replace files as follows for 32 bit - similar for 64 bit.
 	readme 32bit.txt (reference latest release & update user manual reference & no. of pages if required)
 	Manual vx.x.x .pdf (if updated)
 	Quick start.pdf (if updated)
-	Release notes for vx.x.x.txt
+     	Release notes for vx.x.x.txt
 	Railways>RailOS32.exe
 	Railway>Help.chm (if updated)
 	In Railway, check have appropriate dlls and bpls as above + GNU licence + session.ini + metadata files for B'ham & L'pool, and that all directories contain the expected files & no extras (will be if had run from the release folder), especially make sure there's NO config.txt
 
-13 Zip the above as RailOS32 vx.x.x.zip & RailOS64 vx.x.x.zip
+12 Zip the above as RailOS32 vx.x.x.zip & RailOS64 vx.x.x.zip
+
+13 copy these new zip files to E:\Archives\railway backups
 
 
 On website:
@@ -2798,6 +2819,8 @@ On website:
 On GitHub:
 
 1 Ensure references to new version are included in source files (instead of 'after last version').
+
+1a Leave source code as 32bit debug, commit and merge with 'development' then 'master' and tag with release version.
 
 2 Update Doxygen files (& Doxyfile itself with new version number) & include graph legend link in pages.html (do a 'diff' from previous version & copy across), make sure flowcharts are in files folder & work ok.  Add all new doxy files to local repo.
 

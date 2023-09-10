@@ -6571,8 +6571,9 @@ void TTrain::ChangeTrainDirection(int Caller, bool NoLogFlag)
             int CorrectRouteID = OR.RouteID; //added at v2.13.0 as when last element removed & route removed from vector OR becomes the next route after the erased one and
                                       //elements can continue to be removed from that route
             TTrackElement TE = Track->TrackElementAt(997, FirstRouteElementVecPos);
-            if((TE.TrackType != SignalPost) && (TE.TrackType != Continuation)) //all autosigs routes have signalpost or continuation at 0 so they are automatically excluded
-            {
+//            if((TE.TrackType != SignalPost) && (TE.TrackType != Continuation)) //all autosigs routes have signalpost or continuation at 0 so they are automatically excluded
+            {                 //above condition removed after v2.16.1 so non-facing signal or continuation doesn't stop route being removed
+                              //if it is a facing signal then it will be detected below and not removed
                 bool FirstPass = true; //added at v2.8.0
                 while((OR.PrefDirSize() > 0) && (OR.RouteID == CorrectRouteID)) //remove the route up to but not including the next facing signal, in case a pref dir route extends to another signal
                 {  // && (OR.RouteID == RouteID) added at v2.13.0 to prevent another route having elements removed
@@ -7276,8 +7277,9 @@ void TTrain::SignallerChangeTrainDirection(int Caller)
             int CorrectRouteID = OR.RouteID; //added at v2.13.0 as when last element removed & route removed from vector OR becomes the next route after the erased one and
                                       //elements can continue to be removed from that route
             TTrackElement TE = Track->TrackElementAt(1001, FirstRouteElementVecPos);
-            if((TE.TrackType != SignalPost) && (TE.TrackType != Continuation)) //all autosigs routes have signalpost or continuation at 0 so they are automatically excluded
-            {
+//            if((TE.TrackType != SignalPost) && (TE.TrackType != Continuation)) //all autosigs routes have signalpost or continuation at 0 so they are automatically excluded
+            {          //above condition removed after v2.16.1 so non-facing signal or continuation doesn't stop route being removed
+                       //if it is a facing signal then it will be detected below and not removed
                 bool FirstPass = true; //added at v2.8.0
                 while((OR.PrefDirSize() > 0) && (OR.RouteID == CorrectRouteID)) //remove the route up to but not including the next facing signal, in case a pref dir route extends to another signal
                 {  // && (OR.RouteID == RouteID) added at v2.13.0 to prevent another route having elements removed

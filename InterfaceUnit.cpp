@@ -94,7 +94,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion();
+        ProgramVersion = "RailOS32 " + GetVersion() + '+';
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -568,7 +568,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TTLabel6->Caption = TTLabelStr6;
         TTLabel7->Caption = TTLabelStr7;
         TTLabel9->Caption = TTLabelStr9;
-        TTLabel11->Caption = TTLabelStr11;
+        TTLabel11->Caption = TTLabelStr11; //changed Left property to 300 from 487 after v2.16.1 so less likely for a long name to overlap TTLabel8
         TTLabel12->Caption = TTLabelStr12;
         TTLabel13->Caption = TTLabelStr13;
         TTLabel15->Caption = TTLabelStr15;

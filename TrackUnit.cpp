@@ -17930,9 +17930,9 @@ void TOneRoute::TruncateRoute(int Caller, int HLoc, int VLoc, bool PrefDirRoute,
         {
             TruncateType = FullTruncate;
             AllRoutes->RouteBackTruncateFlag = true; //Added at v2.15.1: FullTruncate is also a form of BackTruncate as far as the flag is concerned for SetAllRearwardsSignals
-        }
-        else
-        {
+        }                                           //without this, if a non-autosigs route is in front of an autosigs route and runs into buffers or a
+        else                                        //continuation, and the non-autosigs route is truncated back to the autosigs route (i.e. a full
+        {                                           //truncate for that route), the last signal in the autosigs route doesn't change to red.
             TPrefDirElement TempElement = PrefDirVector.at(TruncatePDElementPos + 1); //+1 will exist becaue of first condition
             if(TempElement.Config[TempElement.XLinkPos] == Signal)
             {

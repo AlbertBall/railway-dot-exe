@@ -9,14 +9,15 @@ The structure is as follows:-
 3)  List of problems & odd behaviour for which I don't yet have solutions
 4)  Changes made for each successive version release
 5)  Release & website reminders
-6)  Multiplayer experimentation notes
-7)  Historic development notes
+6)  Changes made after last release and reminders for next release
+7)  Multiplayer experimentation notes
+8)  Historic development notes
 
------------------------
+-------------------------------------------------------------------------------
 
 1) Future change suggestions from users:
 
-#97 Krizar 09/07/23 [done at v2.16.0]
+#97 [Done at 2.16.0] Krizar 09/07/23 [done at v2.16.0]
 What about the ability to set both location name and optionally location display name (i.e. the name which is displayed but allowing any character including ü, é, å etc)? Currently I have to set the name, delete it with the name editor tool and then use the text placement tool to display the name with special characters. Not sure how difficult this would be to implement. It could just do exactly the same thing but automatically (ie have two text entries name the place with the first, hide the text, and place the text of the second)
 
 Albert — 10/07/23 at 07:16
@@ -602,7 +603,7 @@ Have a 'Touch mode' where when activated the buttons are bigger for easier opera
 
 #1[done] Sam Wainwright email received 09/02/12: If a shunt signal is placed in the same direction as the main running signals, it is necessary to set a route through the shunt signal as well. Would it be possible to set a route from one running signal to the next with any shunt signals in the same direction in between clearing automatically?
 
------------------------
+-------------------------------------------------------------------------------
 
 2) Own thoughts:-
 
@@ -643,8 +644,7 @@ Variable train lengths.
 Restricted routes - DC 3 & 4 rail; AC; tube stock etc.
 Multi-player facility over the internet.
 
------------------------
-
+-------------------------------------------------------------------------------
 
 3) Problems recorded but without solutions as yet:
 
@@ -654,7 +654,7 @@ Multi-player facility over the internet.
 
 3.  If an arriving train reaches a platform with a train in front at buffers, and the arriving train is to split while facing the train at buffers (from the rear but maybe also from the front) and there is enough platform for the split, then the split doesn't occur.  Occurred on Chiltern (Chiltern rear split problem; Timetable time 10.49.03; Chiltern Railways v2; Chiltern Railways v2.ssn) after manoeuvring 5F33 & 1N24 onto a vacant platform & restoring appropriate directions & timetable control.  Due to lack of sophistication of split functions (see note in program: Split logic is:-  at least one of 4 final train positions must overlap with one of original train positions, & final 4 positions will maximise the number at the location.  Note that this function isn't sophisticated enough to account for trains already at the location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these circumstances the other train will need to be move sufficiently away to release all 4 positions, then the train will split.)  Try to improve if possible (i.e. just take account of 'available' platforms, and ensure keep trying in case other trains move off) or at least give a warning in the help & operator manuals to keep trains that are to split separated from trains already present at platforms - preferably don't have other trains at platforms at all where a train is to split.[leave for now unless reported as a problem - no-one has reported it yet]
 
------------------------
+-------------------------------------------------------------------------------
 
 4) Version change information
 
@@ -706,7 +706,7 @@ Gap graphics persisted after flashing during build and operation, now corrected.
 
 It was possible to have multiple "Must select valid signal..." messages during route searches in some circumstances.  The reason was traced to a particular feature of the search function which has now been amended to ensure that the message is only displayed once.
 
-It was found that when truncating a route that leads to buffers or continuation, the signal in a linked rear route didn't change to red as it should.  This was a bug introduced in v2.15.0 that has now been corrected.
+It was found that when truncating a route that leads to buffers or continuation in front of an autosigs route, the signal in the linked autosigs rear route didn't change to red as it should.  This was a bug introduced in v2.15.0 that has now been corrected.
 
 When testing a new railway (Crewe) it was found that trains waiting to enter at a continuation could crash even though the route was protected by a signal if an earlier train was removed under signaller control.  This was traced to an error in the removal function and has now been corrected.
 
@@ -2722,6 +2722,7 @@ Tidy all code, check & define all variables & functions, & improve layout
 Consider what to do about map/route checks & other such development checks before issue (maybe leave in for early release or
 have self-checking and normal release versions - if poss record the call stack)
 
+-------------------------------------------------------------------------------
 
 5) Release & website reminders:
 
@@ -2820,8 +2821,6 @@ On GitHub:
 
 1 Ensure references to new version are included in source files (instead of 'after last version').
 
-1a Leave source code as 32bit debug, commit and merge with 'development' then 'master' and tag with release version.
-
 2 Update Doxygen files (& Doxyfile itself with new version number) & include graph legend link in pages.html (do a 'diff' from previous version & copy across), make sure flowcharts are in files folder & work ok.  Add all new doxy files to local repo.
 
 3 Copy DevHistoryPending.txt to DevHistory.txt & ensure all extra text removed & version info changes made
@@ -2836,11 +2835,11 @@ On GitHub:
 
 8 Update all files on GitHub clone, ensuring that the .md files are ok and that all doxygen docs included - check unversioned files for possible inclusion
 
-9 Commit the latest update locally & tag with release version & message 'Update for vx.x.x'
+9  If on a development branch commit to that branch, then checkout last 'master' then merge the development branch into it, tag with release version & message 'Update for vx.x.x'
 
-10 Push to GitHub with 'include tags' ticked
+10 Push to GitHub with 'include tags' ticked, make sure remote reflects the merge properly
 
-11 Create a new release on GitHub & include the new zip file(s)
+11 Create a new release on GitHub [USING CHROME} & include the new zip file(s)
 
 
 ADDING A NEW PROJECT TO THE USER WEBSITE: (updated 31/08/22)
@@ -2894,8 +2893,21 @@ ADDING A NEW PROJECT TO THE USER WEBSITE: (updated 31/08/22)
 22 Make user a contributor if not already
 23 On Discord make author a creator if not already
 
+-------------------------------------------------------------------------------
 
-6) Multiplayer experimentation: [very tentative as yet]
+6) Changes made after v2.16.1 and reminders for next release
+
+Manual: When next change manual change 't' to 'to' on p 15 line 4
+
+Manual: Add bit about being able to change location name text on screen if want to (from Commuterpop ticket #8), but keep timetable & loc names same
+
+After v2.16.1 mention moved TTLabel11 more to the left to avoid long TT name overlap with TTLabel8
+
+Have improved route cancellation for train change of direction by removing signal or continuation condition - that allowed a non-facing signal or continuation to prevent a route cancellation, and wasn't needed anyway (not needed for website)
+
+-------------------------------------------------------------------------------
+
+7) Multiplayer experimentation: [very tentative as yet]
 
 When add multiplayer:
 
@@ -2991,10 +3003,9 @@ This works, ReadBuffer accepts the DynamicArray<Byte> type in place of TIdBytes.
 
 /if use this version for non-multiplayer ensure masterclock disabled in de-activate
 
-------------------------------
+-------------------------------------------------------------------------------
 
-
-7) Historic development notes
+8) Historic development notes
 
 02/07/10: Transferred all files to 'railway.exe Work Files' to mirror the (experimental) Subversion working file folder
 with local repository (on D: drive).  When familiar with Subversion just work in its working folder then transfer repository

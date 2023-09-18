@@ -2903,7 +2903,12 @@ Manual: Add bit about being able to change location name text on screen if want 
 
 After v2.16.1 mention moved TTLabel11 more to the left to avoid long TT name overlap with TTLabel8
 
-Have improved route cancellation for train change of direction by removing signal or continuation condition - that allowed a non-facing signal or continuation to prevent a route cancellation, and wasn't needed anyway (not needed for website)
+Have improved route cancellation for train change of direction by removing signal or continuation condition - that allowed a non-facing signal or continuation to prevent a route cancellation, and wasn't needed anyway (not for reporting on website)
+
+Fault: In reloading session with ContinuationAutoSigVector not empty, the new function (after v2.14.0) sets all signals and when reach this route the first signal is reset to red rather than the attribute that it had when the session file was saved.  If set it to AccessNumber than it sets ok, but all signals behind it set similarly, even if there is a train behind the first signal.  Need to think about this - maybe erase the vector entry when a train passes the first signal? - try this, have a suitable condition for giving signal a chance to fail - see TrainUnit.cpp line 1930, but is the train on the signal then (maybe it's half on)?, LeadElement only updated at line ~2030ish
+
+Strategy:  First understand and document what all associated functions do, inc SetAllRearwardsSignals, SetRearwardsSignalsReturnFalseForTrain, /FindForwardTargetSignalAttribute,  SetRouteSignals, SetTrailingSignalsOnContinuationRoute, SetTrailingSignalsOnAutoSigsRoute, ContinuationAutoSignals and any others, then (probably) modify SetRearwardsSignalsReturnFalseForTrain so that attribute changed within function first for ContinuationAutoSigs (CAS), but only if the start position is beyond the first signal (att becomes CASVectorPtr->AccessNumber), then for train found forwards (think about what attribute needs to be - depends on forward signal positions)...
+Maybe always set signals on entire route? - so start position always end of route - think about.
 
 -------------------------------------------------------------------------------
 

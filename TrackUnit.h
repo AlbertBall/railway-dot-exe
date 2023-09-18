@@ -1583,7 +1583,7 @@ public:
 // functions defined in .cpp file
 
 /// Used when setting signal aspects for a route by working forwards through the route to see what the next forward signal aspects is, because this determines all the rearward signal aspects.
-    bool FindForwardTargetSignalAttribute(int Caller, int &NextForwardLinkedRouteNumber, int &Attribute) const;
+    bool FindForwardTargetSignalAttribute(int Caller, int &NextForwardLinkedRouteNumber, int &Attribute, int StartPos) const;
 /// Set the starting conditions for a non-preferred (i.e. unrestricted) route selection beginning on HLoc & VLoc
     bool GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc, bool Callon);
 /// Try to find a set of linked tracks between the route start element and the one at HLoc & VLoc.  If find one return true, set &PointsChanged to true if any points need to be changed and &ReqPosRouteID to the route ID of the existing route to attach to, if there is one, and -1 if not
@@ -1602,7 +1602,7 @@ public:
     bool SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID, TOnePrefDir *EveryPrefDir,
         bool ConsecSignals, int EndSelectPosition, bool AutoSigsFlag, bool RecursiveCall);
 /// Called by TAllRoutes::SetAllRearwardsSignals to set rearwards signals from a specified starting position.  If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects.
-    bool SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribute, int PrefDirVectorStartPosition) const;
+    bool SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribute, int PrefDirVectorStartPosition, bool SkipForwardLook) const;
 /// Check incorporated in route search routines after have found a legitimate route, returns false for signal failure & deals with graphics & messages
     bool SignalHasFailed(int Caller); //added at v2.13.0
 /// Called after a non-preferred (i.e. unrestricted) route has been selected and has finished flashing, to add it to the AllRoutesVector

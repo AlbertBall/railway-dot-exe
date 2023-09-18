@@ -1888,7 +1888,7 @@ void TTrain::UpdateTrain(int Caller)
                     }
                     else
                     {
-                        ContinuationAutoSigEntry.FirstDelay = 60.0; // 60 secs
+                        ContinuationAutoSigEntry.FirstDelay = 60.0; // 60 secs between each action
                         ContinuationAutoSigEntry.SecondDelay = 120.0;
                         ContinuationAutoSigEntry.ThirdDelay = 180.0;
                     }

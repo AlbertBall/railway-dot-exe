@@ -17490,7 +17490,9 @@ void TOneRoute::SetRouteSignals(int Caller) const
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteSignals");
     if(!PrefDirVector.empty())
     {
-        // get target Attribute value, check first if there is a forward linked route
+        // get target Attribute value, check first if there is a forward linked route <-- no, done later
+
+/*  //don't need this after v2.16.1 as forward check carried out in SetRearwardsSignalsReturnFalseForTrain
         TPrefDirElement LastElement = GetFixedPrefDirElementAt(185, PrefDirSize() - 1);
         TPrefDirElement FirstElement = GetFixedPrefDirElementAt(186, 0);
         int ForwardLinkedRouteNumber, Attribute = 0;
@@ -17504,7 +17506,7 @@ void TOneRoute::SetRouteSignals(int Caller) const
                 {
                     int NextForwardLinkedRouteNumber = -1;
                     while(!(AllRoutes->GetFixedRouteAt(171, ForwardLinkedRouteNumber).FindForwardTargetSignalAttribute(1, NextForwardLinkedRouteNumber,
-                                                                                                                       Attribute)))
+                                                                                                                       Attribute, 0))) //start at beginning of route
                     {
                         ForwardLinkedRouteNumber = NextForwardLinkedRouteNumber;
                     }
@@ -17515,7 +17517,10 @@ void TOneRoute::SetRouteSignals(int Caller) const
                 }
             }
         }
+*/
+
         int RouteNumber;
+        int Attribute = 0;
         TAllRoutes::TRouteType RouteType = AllRoutes->GetRouteTypeAndNumber(15, GetFixedPrefDirElementAt(187, 0).TrackVectorPosition,
                                                                             GetFixedPrefDirElementAt(193, 0).XLinkPos, RouteNumber);
         if(RouteType != TAllRoutes::NoRoute)
@@ -17617,7 +17622,7 @@ bool TOneRoute::PointsToBeChanged(int Caller, int &NewFailedPointsTVPos) const
 
 // ---------------------------------------------------------------------------
 
-bool TOneRoute::FindForwardTargetSignalAttribute(int Caller, int &NextForwardLinkedRouteNumber, int &Attribute) const
+bool TOneRoute::FindForwardTargetSignalAttribute(int Caller, int &NextForwardLinkedRouteNumber, int &Attribute, int StartPos) const
 /*
       Works forward through the route until finds:-
       (a) a train - Attribute = 0, NextForwardLinkedRouteNumber = -1 & returns true;
@@ -17709,7 +17714,7 @@ bool TOneRoute::FindForwardTargetSignalAttribute(int Caller, int &NextForwardLin
 
 // ---------------------------------------------------------------------------
 
-bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribute, int PrefDirVectorStartPosition) const
+bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribute, int PrefDirVectorStartPosition, bool SkipForwardLook) const
 /*
       This function is only called by TAllRoutes::SetAllRearwardsSignals.
 
@@ -17737,62 +17742,128 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
     Graphics::TBitmap *EntryDirectionGraphicPtr = RailGraphics->bmTransparentBgnd;
 // if no train between end of route and PrefDirVectorStartPosition, route not in ContinuationAutoSigVector
 // & not truncating a route, then Attribute can be modified if end is buffers or continuation
-    bool SkipContinuationAndBufferAttributeChange = false;
 
     if(!PrefDirVector.empty())
     {
-        for(TPrefDirVectorConstIterator PrefDirPtr = (PrefDirVector.begin() + PrefDirVectorStartPosition); PrefDirPtr < PrefDirVector.end(); PrefDirPtr++)
+        if(!SkipForwardLook)
         {
-            int TrainID = Track->TrackElementAt(104, PrefDirPtr->TrackVectorPosition).TrainIDOnElement;
-            if(PrefDirPtr->TrackType == Bridge)
+            for(TPrefDirVectorConstIterator PrefDirPtr = (PrefDirVector.begin() + PrefDirVectorStartPosition); PrefDirPtr < PrefDirVector.end(); PrefDirPtr++)
             {
-                if(PrefDirPtr->XLinkPos < 2)
+                int TrainID = Track->TrackElementAt(104, PrefDirPtr->TrackVectorPosition).TrainIDOnElement;
+                if(PrefDirPtr->TrackType == Bridge)
                 {
-                    TrainID = Track->TrackElementAt(105, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
+                    if(PrefDirPtr->XLinkPos < 2)
+                    {
+                        TrainID = Track->TrackElementAt(105, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
+                    }
+                    else
+                    {
+                        TrainID = Track->TrackElementAt(106, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
+                    }
                 }
-                else
+                if(TrainID != -1)
                 {
-                    TrainID = Track->TrackElementAt(106, PrefDirPtr->TrackVectorPosition).TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
+                    SkipForwardLook = true;
+                    break;
                 }
-            }
-            if(TrainID != -1)
-            {
-                SkipContinuationAndBufferAttributeChange = true;
-                break;
             }
         }
 
-        TTrainController::TContinuationAutoSigVectorIterator AutoSigVectorIT;
-        if(!TrainController->ContinuationAutoSigVector.empty())
+        if(AllRoutes->RouteBackTruncateFlag)
         {
-            for(AutoSigVectorIT = TrainController->ContinuationAutoSigVector.begin(); AutoSigVectorIT < TrainController->ContinuationAutoSigVector.end();
-                AutoSigVectorIT++)
+            SkipForwardLook = true;
+        }
+
+        int NextForwardLinkedRouteNumber = -1;
+        if((unsigned int)PrefDirVectorStartPosition == PrefDirSize() - 1) //end element of route
+        {
+            TPrefDirElement PDE = GetFixedPrefDirElementAt(267, PrefDirVectorStartPosition);
+            TAllRoutes::TRouteType RouteType = AllRoutes->GetRouteTypeAndNumber(7777, Track->TrackElementAt(7777, PDE.TrackVectorPosition).Conn[PDE.XLinkPos], Track->TrackElementAt(7777, PDE.TrackVectorPosition).ConnLinkPos[PDE.XLinkPos], NextForwardLinkedRouteNumber);
+//the above returns a route (or no route) but LinkPos can be entry or exit, and need to know it's the entry link for the follow-on route to be valid
+            if(RouteType == TAllRoutes::NoRoute)
             {
-                if(!AllRoutes->AllRoutesVector.empty())
+                SkipForwardLook = true; //if there's no linked forward route then skip
+                if(PrefDirVector.back().TrackType == Buffers)
                 {
-                    if((&AllRoutes->AllRoutesVector.front() + AutoSigVectorIT->RouteNumber) == this)
+                    Attribute = 1; // treat buffer as red signal
+                }
+                if(PrefDirVector.back().TrackType == Continuation)
+                {   //check if timing out and no train between 1st signal and continuation and if so don't change attribute
+                    bool SetAttributeTo3 = true;
+                    TTrainController::TContinuationAutoSigVectorIterator AutoSigVectorIT;
+                    if(!TrainController->ContinuationAutoSigVector.empty())
                     {
-                        SkipContinuationAndBufferAttributeChange = true;
-                        break;
+                        for(AutoSigVectorIT = TrainController->ContinuationAutoSigVector.begin(); AutoSigVectorIT < TrainController->ContinuationAutoSigVector.end();
+                            AutoSigVectorIT++)
+                        {
+                            if(!AllRoutes->AllRoutesVector.empty())
+                            {
+                                if((&AllRoutes->AllRoutesVector.front() + AutoSigVectorIT->RouteNumber) == this)
+                                {
+                                    SetAttributeTo3 = false;
+                                    Attribute = AutoSigVectorIT->AccessNumber;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if(SetAttributeTo3)
+                    {
+                        Attribute = 3; // treat continuation as a green signal
+                    }
+                }
+            }
+            else
+            {
+                TPrefDirElement NewRoutePDE = AllRoutes->GetFixedRouteAt(7777, NextForwardLinkedRouteNumber).GetFixedPrefDirElementAt(7777, 0); //0 is start position
+                if(NewRoutePDE.ELinkPos != Track->TrackElementAt(7777, PDE.TrackVectorPosition).ConnLinkPos[PDE.XLinkPos]) //if it's not then route not linked so there's no forward route
+                {
+                    SkipForwardLook = true; //if there's no linked forward route then skip
+                    if(PrefDirVector.back().TrackType == Buffers)
+                    {
+                        Attribute = 1; // treat buffer as red signal
+                    }
+                    if(PrefDirVector.back().TrackType == Continuation)
+                    {
+                        Attribute = 3; // treat continuation as a green signal
                     }
                 }
             }
         }
-        if(AllRoutes->RouteBackTruncateFlag)
+
+        if(!SkipForwardLook)
         {
-            SkipContinuationAndBufferAttributeChange = true;
-        }
-        if(!SkipContinuationAndBufferAttributeChange)
-        {
-            if(PrefDirVector.back().TrackType == Buffers)
+            //start from element in front of PrefDirVectorStartPosition, which may be in same or next forward route (if there isn't one then
+            //SkipForwardLook will be true - see above)
+            int StartPos;
+            if((unsigned int)PrefDirVectorStartPosition < (PrefDirSize() - 1))
             {
-                Attribute = 1; // treat buffer as red signal
+                StartPos = PrefDirVectorStartPosition + 1;
             }
-            if(PrefDirVector.back().TrackType == Continuation)
+            else
             {
-                Attribute = 3; // treat continuation as a green signal
+                StartPos = 0; //start of next forward route
+            }
+            if(StartPos > 0) //starting in this route
+            {
+                if(!FindForwardTargetSignalAttribute(7777, NextForwardLinkedRouteNumber, Attribute, StartPos))// returns false for having to link to next route to continue search
+                {
+                    StartPos = 0; //reset to 0 for next route
+                    while(!AllRoutes->GetFixedRouteAt(7777, NextForwardLinkedRouteNumber).FindForwardTargetSignalAttribute(7777, NextForwardLinkedRouteNumber, Attribute, StartPos))
+                    {
+                        continue;
+                    }
+                }
+            }
+            else //starting in next forward route
+            {
+                while(!AllRoutes->GetFixedRouteAt(7777, NextForwardLinkedRouteNumber).FindForwardTargetSignalAttribute(7777, NextForwardLinkedRouteNumber, Attribute, StartPos))
+                {
+                    continue;
+                }
             }
         }
+        //now have target attribute so look backwards to set signals
         for(TPrefDirVectorConstIterator PrefDirPtr = (PrefDirVector.begin() + PrefDirVectorStartPosition); PrefDirPtr >= PrefDirVector.begin(); PrefDirPtr--)
         {
             int TrainID = Track->TrackElementAt(107, PrefDirPtr->TrackVectorPosition).TrainIDOnElement;
@@ -19858,7 +19929,7 @@ void TAllRoutes::SetTrailingSignalsOnContinuationRoute(int Caller, int RouteNumb
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTrailingSignalsOnContinuationRoute," + AnsiString(RouteNumber) + "," +
                                  AnsiString(AccessNumber));
     TPrefDirElement RouteElement;
-    int Attribute = AccessNumber + 1;
+    int Attribute = AccessNumber; //was +1, but after v2.16.1 access no. increment carried out before set signals so SetRouteSignals works ok whenever called
 // signal attributes:  0=red; 1=yellow; 2=double yellow; 3 = green
     int x = GetFixedRouteAt(121, RouteNumber).PrefDirSize() - 1;
 
@@ -19924,16 +19995,18 @@ void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumb
     int RearwardLinkedRouteNumber;
 
     Track->LCFoundInRouteBuildingFlag = false; // only examined for the new route segment, not for linked routes
-    if(GetFixedRouteAt(128, RouteNumber).SetRearwardsSignalsReturnFalseForTrain(1, Attribute, RouteStartPosition)) // updates Attribute to 1+ final
+    bool SkipForwardLook = false;
+    if(GetFixedRouteAt(128, RouteNumber).SetRearwardsSignalsReturnFalseForTrain(1, Attribute, RouteStartPosition, SkipForwardLook)) // updates Attribute to 1+ final
     // signal value in the route for use in further linked routes
     {
-        if(FirstElement.Conn[FirstElement.ELinkPos] > -1) // GetRouteTypeAndNumber tests for this but check here to avoid call if == -1
+        if(FirstElement.Conn[FirstElement.ELinkPos] > -1) // GetRouteTypeAndNumber tests for this but check here to avoid call if == -1 (no linked rearwards route)
         {
             while(GetRouteTypeAndNumber(6, FirstElement.Conn[FirstElement.ELinkPos], FirstElement.ConnLinkPos[FirstElement.ELinkPos],
                     RearwardLinkedRouteNumber) != TAllRoutes::NoRoute)
             {
+                SkipForwardLook = true; //don't need forward look for subsequent rearwards linked routes
                 if(!(GetFixedRouteAt(129, RearwardLinkedRouteNumber).SetRearwardsSignalsReturnFalseForTrain(2, Attribute, AllRoutes->GetFixedRouteAt(130,
-                    RearwardLinkedRouteNumber).PrefDirSize() - 1)))
+                    RearwardLinkedRouteNumber).PrefDirSize() - 1, SkipForwardLook)))
                 {
                     break;
                 }

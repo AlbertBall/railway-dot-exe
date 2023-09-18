@@ -18353,20 +18353,20 @@ void TInterface::ContinuationAutoSignals(int Caller, TDateTime TTClockTime)
             // end of additions
             if(((TTClockTime - AutoSigVectorIT->PassoutTime) > TDateTime(AutoSigVectorIT->FirstDelay / 86400)) && (AutoSigVectorIT->AccessNumber == 0))
             {
+                AutoSigVectorIT->AccessNumber++;  //moved to before set signals after v2.16.1 so SetRouteSignals works anytime called as Attribute set to AccessNumber
                 AllRoutes->SetTrailingSignalsOnContinuationRoute(1, AutoSigVectorIT->RouteNumber, 0);
-                AutoSigVectorIT->AccessNumber++;
                 continue;
             }
             if(((TTClockTime - AutoSigVectorIT->PassoutTime) > TDateTime(AutoSigVectorIT->SecondDelay / 86400)) && (AutoSigVectorIT->AccessNumber == 1))
             {
+                AutoSigVectorIT->AccessNumber++; //as above
                 AllRoutes->SetTrailingSignalsOnContinuationRoute(2, AutoSigVectorIT->RouteNumber, 1);
-                AutoSigVectorIT->AccessNumber++;
                 continue;
             }
             if(((TTClockTime - AutoSigVectorIT->PassoutTime) > TDateTime(AutoSigVectorIT->ThirdDelay / 86400)) && (AutoSigVectorIT->AccessNumber == 2))
             {
+                AutoSigVectorIT->AccessNumber++; //as above
                 AllRoutes->SetTrailingSignalsOnContinuationRoute(3, AutoSigVectorIT->RouteNumber, 2);
-                AutoSigVectorIT->AccessNumber++;
                 continue;
             }
         }
@@ -18378,6 +18378,7 @@ void TInterface::ContinuationAutoSignals(int Caller, TDateTime TTClockTime)
             {
                 TrainController->ContinuationAutoSigVector.erase(AutoSigVectorIT); // erase expired entries - reverse interation so OK to erase
             }
+
         }
     }
     Utilities->CallLogPop(744);
@@ -23980,113 +23981,15 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
      //test code here
-/*
-        //print out original TrainDataVector for comparison
-        std::ofstream TDVFile((CurDir + "\\Formatted timetables\\TrainDataVector printout " + TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss") + "; " + RailwayTitle + "; " + TimetableTitle + " TrainDataVector.txt").c_str());
-        TDVFile << "Note that in the TrainDataVector, non-repeating shuttle link services F-nshs and Sns-fsh use the non-repeating headcode (NR) values for the corresponding "
-                    "shuttle headcodes when it should be the other headcode (OH), and the other headcode is unused.  The link values are the right way round.  Also OH & NR "
-                    "values ARE headcodes and not service references, but OLk and NRLk values are service references.\n\n";
-        //F-nshs  FNSNonRepeatToShuttle       N (shld be Y for outwd shuttle)  Y (shld be N)  Y (correct)  N (correct)     Feeder service link to shuttle
-        //Sns-fsh SNSNonRepeatFromShuttle     N (shld be Y for rtn shuttle)    Y (shld be N)  Y (correct)  N (correct)     Finishing service link from shuttle
-        AnsiString OHC = "", NRHC = "";
-        AnsiString OLk = "", NRLk = "";
 
-        for(TTrainDataVector::iterator TDVIt = TrainController->TrainDataVector.begin(); TDVIt != TrainController->TrainDataVector.end(); TDVIt++)
-        {
-            TDVFile << TDVIt->ServiceReference + '\n';
-            TDVFile << TDVIt->FixedDescription + '\n';
-            for(unsigned int x = 0; x < TDVIt->ActionVector.size(); x++)
-            {
-                TActionVectorEntry AVE = TDVIt->ActionVector.at(x);
-                if(AVE.OtherHeadCode == "")
-                {
-                    OHC = "OH 0";
-                }
-                else
-                {
-                    OHC = "OH " + AVE.OtherHeadCode;
-                }
-                if(AVE.NonRepeatingShuttleLinkHeadCode == "")
-                {
-                    NRHC = "NR 0";
-                }
-                else
-                {
-                    NRHC = "NR " + AVE.NonRepeatingShuttleLinkHeadCode;
-                }
-                if(TDVIt->ActionVector.at(x).LinkedTrainEntryPtr == 0)
-                {
-                    OLk = "OLk 0";
-                }
-                else
-                {
-                    OLk = "OLk " + TDVIt->ActionVector.at(x).LinkedTrainEntryPtr->ServiceReference;
-                }
-                if(TDVIt->ActionVector.at(x).NonRepeatingShuttleLinkEntryPtr == 0)
-                {
-                    NRLk = "NRLk 0";
-                }
-                else
-                {
-                    NRLk = "NRLk " + TDVIt->ActionVector.at(x).NonRepeatingShuttleLinkEntryPtr->ServiceReference;
-                }
+                    if(AllRoutes->AllRoutesVector.size() > 0)
+                    {
+                        for(TAllRoutes::TAllRoutesVectorIterator ARVIt = AllRoutes->AllRoutesVector.begin(); ARVIt < AllRoutes->AllRoutesVector.end(); ARVIt++)
+                        {
+                            ARVIt->SetRouteSignals(13);
+                        }
+                    }
 
-                if(AVE.FormatType == TimeCmd) //cdt only
-                {
-                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << '\n';
-                }
-                if((AVE.FormatType == TimeCmdHeadCode) || (AVE.FormatType == FNSNonRepeatToShuttle))
-                {
-                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << OHC << ' ' << NRHC << ' ' << OLk << ' ' << NRLk << '\n';
-                }
-                else if((AVE.FormatType == FSHNewService) || (AVE.FormatType == SNSShuttle)) //these should have 2 linked services
-                {
-                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << OHC << ' ' << NRHC << ' ' << OLk << ' ' << NRLk << '\n';
-                }
-                else if(AVE.FormatType == SNSNonRepeatFromShuttle)
-                {
-                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << AVE.Command << ' ' << OHC << ' ' << NRHC << ' ' << OLk << ' ' << NRLk << '\n';
-                }
-                else if(AVE.FormatType == StartNew)
-                {
-                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << " Snt RearStartID " << Track->TrackElementAt(-5, AVE.RearStartOrRepeatMins).ElementID
-                        <<  " FrontStartID " << Track->TrackElementAt(-6, AVE.FrontStartOrRepeatDigits).ElementID << '\n';
-                }
-                else if(AVE.FormatType == SNTShuttle)
-                {
-                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << " Snt-sh RearStartID " << Track->TrackElementAt(-7, AVE.RearStartOrRepeatMins).ElementID
-                        <<  " FrontStartID " << Track->TrackElementAt(-8, AVE.FrontStartOrRepeatDigits).ElementID << '\n';
-                }
-                else if((AVE.FormatType == TimeLoc) && (AVE.ArrivalTime != TDateTime(-1)))
-                {
-                    TDVFile << Utilities->Format96HHMM(AVE.ArrivalTime) << " Arr " << AVE.LocationName <<  '\n';
-                }
-                else if((AVE.FormatType == TimeLoc) && (AVE.DepartureTime != TDateTime(-1)))
-                {
-                    TDVFile << Utilities->Format96HHMM(AVE.DepartureTime) << " Dep " << AVE.LocationName <<  '\n';
-                }
-                else if(AVE.FormatType == TimeTimeLoc)
-                {
-                    TDVFile << Utilities->Format96HHMM(AVE.ArrivalTime) << ' ' << Utilities->Format96HHMM(AVE.DepartureTime) << ' ' << AVE.LocationName <<  '\n';
-                }
-                else if(AVE.FormatType == PassTime)
-                {
-                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << ' ' << "Pass" << ' ' << AVE.LocationName <<  '\n';
-                }
-                else if(AVE.FormatType == ExitRailway)
-                {
-                    TDVFile << Utilities->Format96HHMM(AVE.EventTime) << " Fer" <<  '\n';
-                }
-                else if(AVE.FormatType == FinRemHere)
-                {
-                    TDVFile << "Frh" <<  '\n';
-                }
-            }
-        }
-        TDVFile << '\n';
-        TDVFile.close();
-        ShowMessage("File created");
-*/
         Utilities->CallLogPop(2376);
     }
     catch(const Exception &e)

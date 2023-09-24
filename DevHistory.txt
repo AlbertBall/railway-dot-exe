@@ -1,3 +1,32 @@
+Changes made after v2.16.1 and reminders for next release
+
+When load old session (King's Cross) trains lose their descriptions - this was a failt at v2.16.1 for all old sessions
+
+When load King's Cross after playing & saving a session prog goes into infinite loop at Utilities->LoadFileString (found out why and corrected after v2.16.1) - this was a failt at v2.16.1
+
+Remember to comment out the testfunction additions
+
+Manual: When next change manual change 't' to 'to' on p 15 line 4
+
+Manual: When next change manual mention that all train info bar brake force must be whole numbers but make sure this is the case - yes - already altered info in tt editor
+
+Manual: Add bit about being able to change location name text on screen if want to (from Commuterpop ticket #8), but keep timetable & loc names same
+
+After v2.16.1 mention moved TTLabel11 more to the left to avoid long TT name overlap with TTLabel8
+
+Check all 7777s & callers
+
+Have improved route cancellation for train change of direction by removing signal or continuation condition - that allowed a non-facing signal or continuation to prevent a route cancellation, and wasn't needed anyway (not for reporting on website)
+
+Fault: In reloading a Kaelon Amsterdam session with ContinuationAutoSigVector not empty, the new function (after v2.14.0) sets all signals and when reach this route the first signal is reset to red rather than the attribute that it had when the session file was saved.  If set it to AccessNumber than it sets ok, but all signals behind it set similarly, even if there is a train behind the first signal.  Need to think about this - maybe erase the vector entry when a train passes the first signal? - try this, have a suitable condition for giving signal a chance to fail - see TrainUnit.cpp line 1930, but is the train on the signal then (maybe it's half on)?, LeadElement only updated at line ~2030ish
+
+Strategy:  First understand and document what all associated functions do, inc SetAllRearwardsSignals, SetRearwardsSignalsReturnFalseForTrain, /FindForwardTargetSignalAttribute,  SetRouteSignals, SetTrailingSignalsOnContinuationRoute, SetTrailingSignalsOnAutoSigsRoute, ContinuationAutoSignals and any others, then (probably) modify SetRearwardsSignalsReturnFalseForTrain so that attribute changed within function first for ContinuationAutoSigs (CAS), but only if the start position is beyond the first signal (att becomes CASVectorPtr->AccessNumber), then for train found forwards (think about what attribute needs to be - depends on forward signal positions)...
+Maybe always set signals on entire route? - so start position always end of route - think about.
+
+-------------------------------------------------------------------------------
+
+
+
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -9,9 +38,8 @@ The structure is as follows:-
 3)  List of problems & odd behaviour for which I don't yet have solutions
 4)  Changes made for each successive version release
 5)  Release & website reminders
-6)  Changes made after last release and reminders for next release
-7)  Multiplayer experimentation notes
-8)  Historic development notes
+6)  Multiplayer experimentation notes
+7)  Historic development notes
 
 -------------------------------------------------------------------------------
 
@@ -2895,24 +2923,7 @@ ADDING A NEW PROJECT TO THE USER WEBSITE: (updated 31/08/22)
 
 -------------------------------------------------------------------------------
 
-6) Changes made after v2.16.1 and reminders for next release
-
-Manual: When next change manual change 't' to 'to' on p 15 line 4
-
-Manual: Add bit about being able to change location name text on screen if want to (from Commuterpop ticket #8), but keep timetable & loc names same
-
-After v2.16.1 mention moved TTLabel11 more to the left to avoid long TT name overlap with TTLabel8
-
-Have improved route cancellation for train change of direction by removing signal or continuation condition - that allowed a non-facing signal or continuation to prevent a route cancellation, and wasn't needed anyway (not for reporting on website)
-
-Fault: In reloading session with ContinuationAutoSigVector not empty, the new function (after v2.14.0) sets all signals and when reach this route the first signal is reset to red rather than the attribute that it had when the session file was saved.  If set it to AccessNumber than it sets ok, but all signals behind it set similarly, even if there is a train behind the first signal.  Need to think about this - maybe erase the vector entry when a train passes the first signal? - try this, have a suitable condition for giving signal a chance to fail - see TrainUnit.cpp line 1930, but is the train on the signal then (maybe it's half on)?, LeadElement only updated at line ~2030ish
-
-Strategy:  First understand and document what all associated functions do, inc SetAllRearwardsSignals, SetRearwardsSignalsReturnFalseForTrain, /FindForwardTargetSignalAttribute,  SetRouteSignals, SetTrailingSignalsOnContinuationRoute, SetTrailingSignalsOnAutoSigsRoute, ContinuationAutoSignals and any others, then (probably) modify SetRearwardsSignalsReturnFalseForTrain so that attribute changed within function first for ContinuationAutoSigs (CAS), but only if the start position is beyond the first signal (att becomes CASVectorPtr->AccessNumber), then for train found forwards (think about what attribute needs to be - depends on forward signal positions)...
-Maybe always set signals on entire route? - so start position always end of route - think about.
-
--------------------------------------------------------------------------------
-
-7) Multiplayer experimentation: [very tentative as yet]
+6) Multiplayer experimentation: [very tentative as yet]
 
 When add multiplayer:
 
@@ -3010,7 +3021,7 @@ This works, ReadBuffer accepts the DynamicArray<Byte> type in place of TIdBytes.
 
 -------------------------------------------------------------------------------
 
-8) Historic development notes
+7) Historic development notes
 
 02/07/10: Transferred all files to 'railway.exe Work Files' to mirror the (experimental) Subversion working file folder
 with local repository (on D: drive).  When familiar with Subversion just work in its working folder then transfer repository

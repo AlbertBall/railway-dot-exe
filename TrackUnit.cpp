@@ -17466,59 +17466,12 @@ void TOneRoute::SetRoutePoints(int Caller) const
 // ---------------------------------------------------------------------------
 
 void TOneRoute::SetRouteSignals(int Caller) const
-/* Used for new train additions in AddTrain and in route setting
-      Set the signals as follows:-
-      First check whether there is a linked forward route, and if so use FindForwardTargetSignalAttribute to work along it from the start
-      until find a train (return Attribute = 0 & NextForwardLinkedRouteNumber = -1), a buffer (return Attribute = 1 &
-      NextForwardLinkedRouteNumber = -1), a continuation (return Attribute = 3 & NextForwardLinkedRouteNumber = -1) or a forward-facing
-      signal.  If find a signal its attribute value + 1 up to a maximum value of 3 is returned & NextForwardLinkedRouteNumber = -1.
-      The above Attribute values represent the 'target' attribute, from which all rearwards signals in turn in the new route are set,
-      the first using the returned attribute value and subsequent ones incrementing the Attribute up to a maximum of 3.  All the foregoing
-      return true, as does finding none of the above and no onward linked forward route (NextForwardLinkedRouteNumber = -1).  If none
-      of the foregoing are found but there is a further forward linked forward route then the function returns false with
-      NextForwardLinkedRouteNumber = the next forward linked route number, to allow that to be examined similarly, and Attribute = 0.
+// Used for new train additions in AddTrain and in route setting, major changes after v2.16.1
 
-      When the target Attribute is found (will be 0 if no forward linked route), then SetAllRearwardsSignals is used to work back from
-      the end of the route setting each forward-facing signal one step nearer green as described above, until either reach the end of all
-      linked rearwards routes or find a train.  If find a train in the current route then signals behind it (and behind any other trains
-      in the current route) are set appropriately (including in linked rear routes), but if find a train in a linked rear route then no
-      further signals are set.  If there is no forward linked route and the front end of the current route is a buffer then
-      SetAllRearwardsSignals (in its call to SetRearwardsSignalsReturnFalseForTrain) treats it as a red signal, and if a continuation,
-      as a green signal.
-*/
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteSignals");
     if(!PrefDirVector.empty())
     {
-        // get target Attribute value, check first if there is a forward linked route <-- no, done later
-
-/*  //don't need this after v2.16.1 as forward check carried out in SetRearwardsSignalsReturnFalseForTrain
-        TPrefDirElement LastElement = GetFixedPrefDirElementAt(185, PrefDirSize() - 1);
-        TPrefDirElement FirstElement = GetFixedPrefDirElementAt(186, 0);
-        int ForwardLinkedRouteNumber, Attribute = 0;
-        if(LastElement.Conn[LastElement.XLinkPos] > -1)
-        // Note that LastElement can't be points but can be linked to points
-        {
-            if(AllRoutes->GetRouteTypeAndNumber(16, LastElement.Conn[LastElement.XLinkPos], LastElement.ConnLinkPos[LastElement.XLinkPos],
-                                                ForwardLinkedRouteNumber) != TAllRoutes::NoRoute)
-            {
-                if(ForwardLinkedRouteNumber > -1)
-                {
-                    int NextForwardLinkedRouteNumber = -1;
-                    while(!(AllRoutes->GetFixedRouteAt(171, ForwardLinkedRouteNumber).FindForwardTargetSignalAttribute(1, NextForwardLinkedRouteNumber,
-                                                                                                                       Attribute, 0))) //start at beginning of route
-                    {
-                        ForwardLinkedRouteNumber = NextForwardLinkedRouteNumber;
-                    }
-                    // if find a train before a signal then Attribute = 0, else if find end of route is a buffer then Attribute = 1, or a continuation then
-                    // Attribute = 3, else if find signal (other than a ground signal with Attribute > 0 [added at v2.14.0]) then Attribute = (signal attribute + 1) (or
-                    // same as signal Attribute if ground signal with Attribute > 0) up to a max value of 3.  All these return true, if find a forward linked
-                    // route then the routenumber is set in NextForwardLinkedRouteNumber, Attribute = 0 & returns false.
-                }
-            }
-        }
-*/
-
         int RouteNumber;
         int Attribute = 0;
         TAllRoutes::TRouteType RouteType = AllRoutes->GetRouteTypeAndNumber(15, GetFixedPrefDirElementAt(187, 0).TrackVectorPosition,
@@ -17623,8 +17576,11 @@ bool TOneRoute::PointsToBeChanged(int Caller, int &NewFailedPointsTVPos) const
 // ---------------------------------------------------------------------------
 
 bool TOneRoute::FindForwardTargetSignalAttribute(int Caller, int &NextForwardLinkedRouteNumber, int &Attribute, int StartPos) const
-/*
-      Works forward through the route until finds:-
+/*    //added StartPos after v2.16.1 so it starts in the current route
+
+      Only called by SetRearwardsSignalsReturnFalseForTrainInRear
+
+      Works forward through the route from & including StartPos until finds:-
       (a) a train - Attribute = 0, NextForwardLinkedRouteNumber = -1 & returns true;
       (b) end of route at buffers - Attribute = 1, NextForwardLinkedRouteNumber = -1 & returns true;
       (c) end of route at continuation - Attribute = 3, NextForwardLinkedRouteNumber = -1 & returns true;
@@ -17639,7 +17595,7 @@ bool TOneRoute::FindForwardTargetSignalAttribute(int Caller, int &NextForwardLin
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FindForwardTargetSignalAttribute");
     Attribute = 0;
     NextForwardLinkedRouteNumber = -1;
-    for(unsigned int x = 0; x < PrefDirSize(); x++)
+    for(unsigned int x = StartPos; x < PrefDirSize(); x++)
     {
         int TrainID = Track->TrackElementAt(100, PrefDirVector.at(x).TrackVectorPosition).TrainIDOnElement;
         if(PrefDirVector.at(x).TrackType == Bridge)
@@ -17655,7 +17611,7 @@ bool TOneRoute::FindForwardTargetSignalAttribute(int Caller, int &NextForwardLin
         }
         if(TrainID != -1)
         {
-            Utilities->CallLogPop(328);
+            Utilities->CallLogPop(328); //attribute still 0
             return(true);
         }
         if(PrefDirVector.at(x).TrackType == Buffers)
@@ -17693,54 +17649,61 @@ bool TOneRoute::FindForwardTargetSignalAttribute(int Caller, int &NextForwardLin
             Utilities->CallLogPop(331);
             return(true);
         }
-        if(x == PrefDirSize() - 1)
+        if(x == PrefDirSize() - 1) //end element and not signal, buffer, continuation or LC, and no train on element
         {
-            TPrefDirElement LastElement = PrefDirVector.at(x);
-            if(LastElement.Conn[LastElement.XLinkPos] > -1)
+            TPrefDirElement LastElement = GetFixedPrefDirElementAt(268, x);
+            NextForwardLinkedRouteNumber = -1;
+            TAllRoutes::TRouteType RouteType = AllRoutes->GetRouteTypeAndNumber(42, Track->TrackElementAt(1579, LastElement.TrackVectorPosition).Conn[LastElement.XLinkPos], Track->TrackElementAt(1580, LastElement.TrackVectorPosition).ConnLinkPos[LastElement.XLinkPos], NextForwardLinkedRouteNumber);
+//the above returns a route (or no route) but LinkPos can be entry or exit, so still need to know it's the entry link for the follow-on route to be valid
+            if(!(RouteType == TAllRoutes::NoRoute)) //probably a forward route but still need to check if it's linked
             {
-                if(AllRoutes->GetRouteTypeAndNumber(2, LastElement.Conn[LastElement.XLinkPos],
-                                                    Track->GetNonPointsOppositeLinkPos(LastElement.ConnLinkPos[LastElement.XLinkPos]), NextForwardLinkedRouteNumber) != TAllRoutes::NoRoute)
+                TPrefDirElement NewRoutePDE = AllRoutes->GetFixedRouteAt(227, NextForwardLinkedRouteNumber).GetFixedPrefDirElementAt(269, 0); //0 is start position
+                if(NewRoutePDE.ELinkPos == Track->TrackElementAt(1581, LastElement.TrackVectorPosition).ConnLinkPos[LastElement.XLinkPos]) //if it's not then route not linked so there's no forward route
                 {
                     Attribute = 0;
                     Utilities->CallLogPop(332);
                     return(false);
                 }
+                //else there is no forward route, so return true with attribute still 0
             }
+            //else there is no forward route, so return true with attribute still 0
         }
     }
-    Utilities->CallLogPop(333);
+    Utilities->CallLogPop(333); //
     return(true);
 }
 
 // ---------------------------------------------------------------------------
 
-bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribute, int PrefDirVectorStartPosition, bool SkipForwardLook) const
-/*
+bool TOneRoute::SetRearwardsSignalsReturnFalseForTrainInRear(int Caller, int &Attribute, int PrefDirVectorStartPosition, bool SkipForwardLook) const
+/*    Major changes after v2.16.1
       This function is only called by TAllRoutes::SetAllRearwardsSignals.
 
       Enter with Attribute set to the value to be used (unless modified by the initial forward search - see later) for the first rearwards
       signal found, and with PrefDirVectorStartPosition set to the position in PrefDirVector to begin the search.  BUT, don't begin with the
-      rearward search, first search forwards from the PrefDirVectorStartPosition in case the end of the route is a buffer or continuation, and
-      modify the Attribute accordingly UNLESS (a) train present between PrefDirVectorStartPosition & end; (b) route in
-      ContinuationAutoSigVector (i.e. train has exited the route at a continuation but it is still affecting the signals), or (c) truncating
-      a route.
+      rearward search, first search forwards (unless SkipForwardLook true) from the PrefDirVectorStartPosition + 1 (may be in a forward route -
+      see FindForwardTargetSignalAttribute) in case the end of the route is a buffer, continuation, or something else that requires Attribute
+      to be modified and modify the Attribute accordingly UNLESS (a) train or closed LC present between PrefDirVectorStartPosition & end;
+      (b) route in ContinuationAutoSigVector (i.e. train has exited the route at a continuation but it is still affecting the signals),
+      or (c) truncating a route.
 
       Having received or modified Attribute as above, work backwards from the PrefDirVectorStartPosition until find a train - return false, or a
-      signal.  If find a signal set its Attribute to the current Attribute value up to a maximum of 3, and replot the signal as well as
-      the required route and direction (if required) graphics, then increment Attribute up to a max. of 3 [addition at v2.9.2: if signal or element beyond
-      it is in a locked route then set signal to red & change Attribute to 0 - this fault reported by Simon Banham 21/07/21 as an image]. and continue working
-      backwards for the next signal (or train - return false as before) and so on.  On completion Attribute is passed back from the function as a
-      reference.  If no train is found before the beginning of the route is reached the function returns true
+      signal or something else that requires Attribute to change.  If find a signal set its Attribute to the current Attribute value up to a maximum
+      of 3, and replot the signal as well as the required route and direction (if required) graphics, then increment Attribute up to a max. of 3
+      [addition at v2.9.2: if signal or element beyond it is in a locked route then set signal to red & change Attribute to 0 - this fault reported
+      by Simon Banham 21/07/21 as an image]. and continue working backwards for the next signal (or train - return false as before) and so on.
+      On completion Attribute is passed back from the function as a reference.  If no train is found before the beginning of the route is reached
+      the function returns true.
 
-      In setting signals skip the first position if it's a signal and if truncating - otherwise the truncated signal counts as the first red
-      and the next rearwards signal becomes yellow, although it's the first in the route
+      In setting signals skip the first position if it's a signal and if truncating (can only truncate to signal if route is unrestricted) - otherwise
+      the truncated signal counts as the first red and the next rearwards signal becomes yellow, although it's the first in the route
 */
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRearwardsSignalsReturnFalseForTrain," + AnsiString(Attribute) + "," +
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRearwardsSignalsReturnFalseForTrainInRear," + AnsiString(Attribute) + "," +
                                  AnsiString(PrefDirVectorStartPosition));
     Graphics::TBitmap *EXGraphicPtr = RailGraphics->bmTransparentBgnd; // default values
     Graphics::TBitmap *EntryDirectionGraphicPtr = RailGraphics->bmTransparentBgnd;
-// if no train between end of route and PrefDirVectorStartPosition, route not in ContinuationAutoSigVector
+// if no train or closed LC between end of route and PrefDirVectorStartPosition, route not in ContinuationAutoSigVector
 // & not truncating a route, then Attribute can be modified if end is buffers or continuation
 
     if(!PrefDirVector.empty())
@@ -17778,7 +17741,7 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
         if((unsigned int)PrefDirVectorStartPosition == PrefDirSize() - 1) //end element of route
         {
             TPrefDirElement PDE = GetFixedPrefDirElementAt(267, PrefDirVectorStartPosition);
-            TAllRoutes::TRouteType RouteType = AllRoutes->GetRouteTypeAndNumber(7777, Track->TrackElementAt(7777, PDE.TrackVectorPosition).Conn[PDE.XLinkPos], Track->TrackElementAt(7777, PDE.TrackVectorPosition).ConnLinkPos[PDE.XLinkPos], NextForwardLinkedRouteNumber);
+            TAllRoutes::TRouteType RouteType = AllRoutes->GetRouteTypeAndNumber(43, Track->TrackElementAt(1582, PDE.TrackVectorPosition).Conn[PDE.XLinkPos], Track->TrackElementAt(1583, PDE.TrackVectorPosition).ConnLinkPos[PDE.XLinkPos], NextForwardLinkedRouteNumber);
 //the above returns a route (or no route) but LinkPos can be entry or exit, and need to know it's the entry link for the follow-on route to be valid
             if(RouteType == TAllRoutes::NoRoute)
             {
@@ -17813,10 +17776,10 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
                     }
                 }
             }
-            else
+            else //startpos still on end element and there is probably a forward route
             {
-                TPrefDirElement NewRoutePDE = AllRoutes->GetFixedRouteAt(7777, NextForwardLinkedRouteNumber).GetFixedPrefDirElementAt(7777, 0); //0 is start position
-                if(NewRoutePDE.ELinkPos != Track->TrackElementAt(7777, PDE.TrackVectorPosition).ConnLinkPos[PDE.XLinkPos]) //if it's not then route not linked so there's no forward route
+                TPrefDirElement NewRoutePDE = AllRoutes->GetFixedRouteAt(228, NextForwardLinkedRouteNumber).GetFixedPrefDirElementAt(270, 0); //0 is start position
+                if(NewRoutePDE.ELinkPos != Track->TrackElementAt(1584, PDE.TrackVectorPosition).ConnLinkPos[PDE.XLinkPos]) //if it's not then route not linked so there's no forward route
                 {
                     SkipForwardLook = true; //if there's no linked forward route then skip
                     if(PrefDirVector.back().TrackType == Buffers)
@@ -17828,6 +17791,7 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
                         Attribute = 3; // treat continuation as a green signal
                     }
                 }
+                //else there is a forward route, so just continue to examine it below unless SkipForwardLook is true
             }
         }
 
@@ -17846,10 +17810,10 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
             }
             if(StartPos > 0) //starting in this route
             {
-                if(!FindForwardTargetSignalAttribute(7777, NextForwardLinkedRouteNumber, Attribute, StartPos))// returns false for having to link to next route to continue search
+                if(!FindForwardTargetSignalAttribute(2, NextForwardLinkedRouteNumber, Attribute, StartPos))// returns false for having to link to next route to continue search
                 {
                     StartPos = 0; //reset to 0 for next route
-                    while(!AllRoutes->GetFixedRouteAt(7777, NextForwardLinkedRouteNumber).FindForwardTargetSignalAttribute(7777, NextForwardLinkedRouteNumber, Attribute, StartPos))
+                    while(!AllRoutes->GetFixedRouteAt(229, NextForwardLinkedRouteNumber).FindForwardTargetSignalAttribute(3, NextForwardLinkedRouteNumber, Attribute, StartPos))
                     {
                         continue;
                     }
@@ -17857,13 +17821,14 @@ bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain(int Caller, int &Attribut
             }
             else //starting in next forward route
             {
-                while(!AllRoutes->GetFixedRouteAt(7777, NextForwardLinkedRouteNumber).FindForwardTargetSignalAttribute(7777, NextForwardLinkedRouteNumber, Attribute, StartPos))
+                while(!AllRoutes->GetFixedRouteAt(230, NextForwardLinkedRouteNumber).FindForwardTargetSignalAttribute(4, NextForwardLinkedRouteNumber, Attribute, StartPos))
                 {
                     continue;
                 }
             }
         }
-        //now have target attribute so look backwards to set signals
+
+        //now have target attribute (as supplied or modified in forward look) so look backwards to set signals
         for(TPrefDirVectorConstIterator PrefDirPtr = (PrefDirVector.begin() + PrefDirVectorStartPosition); PrefDirPtr >= PrefDirVector.begin(); PrefDirPtr--)
         {
             int TrainID = Track->TrackElementAt(107, PrefDirPtr->TrackVectorPosition).TrainIDOnElement;
@@ -18925,7 +18890,7 @@ bool TAllRoutes::SearchAllRoutesAndTruncate(int Caller, int HLoc, int VLoc, bool
     for(unsigned int a = 0; a < AllRoutesSize(); a++)
     {
         TTruncateReturnType ReturnFlag;
-// used in SetRearwardsSignalsReturnFalseForTrain (called by TruncateRoute) to skip continuation & buffer attribute change
+// used in SetRearwardsSignalsReturnFalseForTrainInRear (called by TruncateRoute) to skip continuation & buffer attribute change
         GetModifiableRouteAt(7, a).TruncateRoute(0, HLoc, VLoc, PrefDirRoute, ReturnFlag);
         if(ReturnFlag == NotInRoute)
         {
@@ -19874,7 +19839,8 @@ void TAllRoutes::SetTrailingSignalsOnAutoSigsRoute(int Caller, int TrackVectorPo
       Identify the route that the TrackVectorPosition is in, carry out validity checks, then call SetAllRearwardsSignals to set signals
       in this route and all linked rearwards routes, unless find a train (a) in the current route, in which case the signals behind it are
       set (and behind any other trains in the current route), but only within the current route; or (b) in a linked rear route, in which
-      case the function sets no further signals.
+      case the function sets no further signals - if rear route is non-autosigs then no route behind train, if autosigs the train will have
+      set signals in rear as it passed them.
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTrailingSignalsOnAutoSigsRoute," + AnsiString(TrackVectorPosition) +
@@ -19913,17 +19879,18 @@ void TAllRoutes::SetTrailingSignalsOnAutoSigsRoute(int Caller, int TrackVectorPo
 
 // ---------------------------------------------------------------------------
 
-void TAllRoutes::SetTrailingSignalsOnContinuationRoute(int Caller, int RouteNumber, int AccessNumber)
+void TAllRoutes::SetTrailingSignalsOnContinuationRoute(int Caller, int RouteNumber, int AccessNumber) //minor changes after v2.16.1
 /*
       This is called by the InterfaceUnit at intervals based on entries in the ContinuationAutoSigVector in TrainController to set signals on
       the AutoSigsRoute to correspond to a train having exited the route at a continuation, and passing further signals (outside the simulated
       railway).  Initially the last passed signal will be red, then at the first call it will change to yellow and earlier signals will change
-      accordingly, then double yellow, then green.  There are only 3 calls in all for any given route, and the AccessNumber changes from 0 to 1
-      to 2 for successive calls.
-      Initially Attribute is set to AccessNumber + 1 to correspond to the first signal attribute to be set, then a number of validity checks
+      accordingly, then double yellow, then green (for 4 aspect signals).  There are only 3 calls in all for any given route, and the AccessNumber
+      changes from 0 to 1 to 2 for successive calls.
+      Initially Attribute is set to AccessNumber to correspond to the first signal attribute to be set, then a number of validity checks
       are carried out on RouteNumber.  Then SetAllRearwardsSignals is called to set signals in this route and all linked rearwards routes,
       unless find a train (a) in the current route, in which case the signals behind it are set (and behind any other trains in the current
-      route), but only within the current route; or (b) in a linked rear route, in which case the function sets no further signals.
+      route), but only within the current route; or (b) in a linked rear route, in which case the function sets no further signals - if rear
+      route is non-autosigs then no route behind train, if autosigs the train will have set signals in rear as it passes them.
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTrailingSignalsOnContinuationRoute," + AnsiString(RouteNumber) + "," +
@@ -19953,40 +19920,48 @@ void TAllRoutes::SetTrailingSignalsOnContinuationRoute(int Caller, int RouteNumb
 
 // ---------------------------------------------------------------------------
 
-void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumber, int RouteStartPosition)
+void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumber, int RouteStartPosition) //some changes after v2.16.1
 /*
       Sets signals in all linked rearwards routes from the RouteStartPosition in RouteNumber, unless find a train (a) in the current route,
       in which case the signals behind it are set (and behind any other trains in the current route), but only within the current route;
-      or (b) in a linked rear route, in which case the function sets no further signals.
+      or (b) in a linked rear route, in which case the function sets no further signals - if rear route is non-autosigs then no route behind train,
+      if autosigs the train will have set signals in rear as it passed them.
 
-      First call SetRearwardsSignalsReturnFalseForTrain (which is only called by this function) to set signals in route RouteNumber according
-      to the received or modified (because of the forward look for buffers or continuation) Attribute.  If no train is found during this call
-      (returns true) then check for and call SetRearwardsSignalsReturnFalseForTrain for each rearwards linked route until either reach the
-      beginning of the last linked route or find a train on a linked rear route.  If no train was found during the RouteNumber call to
-      SetRearwardsSignalsReturnFalseForTrain then the function terminates here.
-      However if a train was found during the RouteNumber call to SetRearwardsSignalsReturnFalseForTrain then need to continue after the
-      train in case had just added a route segment behind a train that now forms part of a single continuous route, otherwise the signals
-      won't be set behind the train.  First the route is examined element by element from the RouteStartPosition towards the start of the
+      First call SetRearwardsSignalsReturnFalseForTrainInRear (which is only called by this function) to set signals in route RouteNumber according
+      to the received or modified (because of the forward look for buffers or continuation etc.) Attribute.  If no train is found during this call
+      (returns true) then check for and call SetRearwardsSignalsReturnFalseForTrainInRear for each rearwards linked route (without a forward look)
+      until either reach the beginning of the last linked route or find a train in a linked rear route.  If a train is found in a linked rear route
+      then the function terminates.
+
+      However if a train is found during the RouteNumber call to SetRearwardsSignalsReturnFalseForTrainInRear then need to continue after the
+      train for an autosigs route or in case had just added a route segment behind a train that now forms part of a single continuous route for a
+      non-autosigs route, otherwise the signals won't be set behind the train.
+
+      First the route is examined element by element from the RouteStartPosition towards the start of the
       route until the train is found.  Then the route elements are examined from the TrainPosition towards the start of the route until the
       first element behind the train is found.  A recursive call to this function is then made from this behind-train position, to set all
       signals behind the train (and behind as many trains as there are on the single route) beginning with a red signal for the first signal
       found behind the train.
 
-      Description of SetRearwardsSignalsReturnFalseForTrain for reference:
+      Description of SetRearwardsSignalsReturnFalseForTrainInRear for reference
       Enter with Attribute set to the value to be used (unless modified by the initial forward search - see later) for the first rearwards
       signal found, and with PrefDirVectorStartPosition set to the position in PrefDirVector to begin the search.  BUT, don't begin with the
-      rearward search, first search forwards from the PrefDirVectorStartPosition in case the end of the route is a buffer or continuation, and
-      modify the Attribute accordingly UNLESS (a) train present between PrefDirVectorStartPosition & end; (b) route in
-      ContinuationAutoSigVector (i.e. train has exited the route at a continuation but it is still affecting the signals), or (c) truncating
-      a route.
+      rearward search, first search forwards (unless SkipForwardLook true) from the PrefDirVectorStartPosition + 1 (may be in a forward route -
+      see FindForwardTargetSignalAttribute) in case the end of the route is a buffer, continuation, or something else that requires Attribute
+      to be modified and modify the Attribute accordingly UNLESS (a) train or closed LC present between PrefDirVectorStartPosition & end;
+      (b) route in ContinuationAutoSigVector (i.e. train has exited the route at a continuation but it is still affecting the signals),
+      or (c) truncating a route.
 
       Having received or modified Attribute as above, work backwards from the PrefDirVectorStartPosition until find a train - return false, or a
-      signal.  If find a signal set its Attribute to the current Attribute value up to a maximum of 3, and replot the signal as well as
-      the required route and direction (if required) graphics, then increment Attribute up to a max. of 3 [addition at v2.9.2: if signal or element beyond
-      it is in a locked route then set signal to red & change Attribute to 0 - this fault reported by Simon Banham 21/07/21 as an image]. and continue working backwards
-      for the next signal (or train - return false as before) and so on.  On completion Attribute is passed back from the function as a
-      reference.  If no train is found before the beginning of the route is reached the function returns true
+      signal or something else that requires Attribute to change.  If find a signal set its Attribute to the current Attribute value up to a maximum
+      of 3, and replot the signal as well as the required route and direction (if required) graphics, then increment Attribute up to a max. of 3
+      [addition at v2.9.2: if signal or element beyond it is in a locked route then set signal to red & change Attribute to 0 - this fault reported
+      by Simon Banham 21/07/21 as an image]. and continue working backwards for the next signal (or train - return false as before) and so on.
+      On completion Attribute is passed back from the function as a reference.  If no train is found before the beginning of the route is reached
+      the function returns true.
 
+      In setting signals skip the first position if it's a signal and if truncating (can only truncate to signal if route is unrestricted) - otherwise
+      the truncated signal counts as the first red and the next rearwards signal becomes yellow, although it's the first in the route
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetAllRearwardsSignals," + AnsiString(Attribute) + "," +
@@ -19994,31 +19969,27 @@ void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumb
     TPrefDirElement FirstElement = GetFixedRouteAt(127, RouteNumber).GetFixedPrefDirElementAt(144, 0);
     int RearwardLinkedRouteNumber;
 
-    Track->LCFoundInRouteBuildingFlag = false; // only examined for the new route segment, not for linked routes
-    bool SkipForwardLook = false;
-    if(GetFixedRouteAt(128, RouteNumber).SetRearwardsSignalsReturnFalseForTrain(1, Attribute, RouteStartPosition, SkipForwardLook)) // updates Attribute to 1+ final
-    // signal value in the route for use in further linked routes
+//    Track->LCFoundInRouteBuildingFlag = false; // only examined for the new route segment, not for linked routes {dropped after v2.16.1 as not used)
+    bool SkipForwardLook = false; //allow forward look in first call
+    if(GetFixedRouteAt(128, RouteNumber).SetRearwardsSignalsReturnFalseForTrainInRear(1, Attribute, RouteStartPosition, SkipForwardLook)) // updates
+    //Attribute to 1+ final signal value in the route for use in further linked routes
     {
-        if(FirstElement.Conn[FirstElement.ELinkPos] > -1) // GetRouteTypeAndNumber tests for this but check here to avoid call if == -1 (no linked rearwards route)
-        {
+        if(FirstElement.Conn[FirstElement.ELinkPos] > -1) // GetRouteTypeAndNumber tests for this but check here to avoid call if == -1 (no
+        {                                                 //linked rearwards route)
             while(GetRouteTypeAndNumber(6, FirstElement.Conn[FirstElement.ELinkPos], FirstElement.ConnLinkPos[FirstElement.ELinkPos],
-                    RearwardLinkedRouteNumber) != TAllRoutes::NoRoute)
+                    RearwardLinkedRouteNumber) != TAllRoutes::NoRoute) //keep setting signals on each rear route until find a train or no more routes
             {
-                SkipForwardLook = true; //don't need forward look for subsequent rearwards linked routes
-                if(!(GetFixedRouteAt(129, RearwardLinkedRouteNumber).SetRearwardsSignalsReturnFalseForTrain(2, Attribute, AllRoutes->GetFixedRouteAt(130,
+                SkipForwardLook = true; //don't want forward look for subsequent rearwards linked routes
+                if(!(GetFixedRouteAt(129, RearwardLinkedRouteNumber).SetRearwardsSignalsReturnFalseForTrainInRear(2, Attribute, AllRoutes->GetFixedRouteAt(130,
                     RearwardLinkedRouteNumber).PrefDirSize() - 1, SkipForwardLook)))
                 {
                     break;
                 }
-                // in above the RouteSettingFlag is set to false because this call is for routes that lie behind the route that is being set so don't want to
-                // flash LCs on those routes
                 FirstElement = AllRoutes->GetFixedRouteAt(131, RearwardLinkedRouteNumber).GetFixedPrefDirElementAt(145, 0);
             }
         }
     }
-    else
-    // found a train in the entry route before the beginning of the route, so need to continue after the train in case had just added a
-    // route segment behind a train that now forms part of a single continuous route, otherwise the signals won't be set behind the train
+    else  // found a train in this route (in RouteNumber) before the beginning of the route, so need to continue setting signals after the train
     {
         int TrainID, TrainPosition, BehindTrainPosition;
         bool FoundTrain = false, BehindTrain = false;
@@ -20049,11 +20020,12 @@ void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumb
                 break;
             }
         }
-        if(FoundTrain && (TrainPosition > 1)) // if TrainPosition 1 or less then no route behind the train so can stop
-        {
-            for(int x = TrainPosition; x >= 0; x--) // then step back from that position until find element behind the train - ignore any
-            {
-                // signals that the train itself is straddling, need the first signal behind the train to be set to red, when the train passes
+        if(FoundTrain && (TrainPosition > 1)) // if TrainPosition 1 or less then this route doesn't continue behind the train so can stop.
+        {                                     //If there is a linked rear route then no need to deal with signals behind train here -
+                                              //if rear route is non-autosigs then no route behind train, if autosigs the train will have
+                                              //set signals in rear as it passed them.
+            for(int x = TrainPosition; x >= 0; x--) // now step back from that position until find element behind the train - ignore any
+            {   // signals that the train itself is straddling, need the first signal behind the train to be set to red, when the train passes
                 // the signal it's straddling the rearwards signals will be reset again.  Even if there are two or more trains adjacent still
                 // need the element behind the rearmost train.
                 TPrefDirElement PrefDirElement = GetFixedRouteAt(133, RouteNumber).GetFixedPrefDirElementAt(147, x);
@@ -20082,11 +20054,11 @@ void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumb
                 }
             }
             if(BehindTrain) // then carry out a recursive rearward signal setting behind the train &
-            // so on for as many trains as there are on the single route
+            // so on for as many trains as there are on this (RouteNumber) route
             {
-                SetAllRearwardsSignals(7, 0, RouteNumber, BehindTrainPosition); // false because can't set a route where there is a train
-                // first signal behind train to be red
-            }
+                SetAllRearwardsSignals(7, 0, RouteNumber, BehindTrainPosition); // Although SkipForwardLook will be false when
+                //SetRearwardsSignalsReturnFalseForTrainInRear is first called the forward look will find the train so Attribute will be set to 0
+            }   //for rearward signal setting
         }
     }
     Utilities->CallLogPop(411);

@@ -12224,7 +12224,7 @@ void __fastcall TInterface::LoadTimetableMenuItemClick(TObject *Sender)
             } // if(TimetableIntegrityCheck
             else
             {
-                ShowMessage("Timetable integrity check failed - unable to load " + TimetableDialog->FileName + ". Retry using the latest program version.  If that fails and the file exists, is spelled correctly, and is appropriate for this railway, then it probably contains errors - check in 'Edit timetable' mode.");
+                ShowMessage("Timetable integrity check failed - unable to load " + TimetableDialog->FileName + ". \n\nPlease make sure that you are using the latest program version and that the timetable contains no errors.");
                 //message clarified at v2.14.0
             }
         } // if(TimetableDialog->Execute())
@@ -17057,7 +17057,10 @@ void TInterface::SetLevel1Mode(int Caller)
         TrainController->TTClockTime = TrainController->TimetableStartTime;
         TrainController->LastSessionSaveTTClockTime = TrainController->TimetableStartTime; // added at v2.5.0
         Utilities->LastTSRCheckTime = TrainController->TTClockTime; //added at v2.14.0 so don't have any TSRs until 1 min after start
-
+        if(Utilities->PerformanceFile.is_open()) //added after v2.16.1 as a safeguard
+        {
+            Utilities->PerformanceFile.close();
+        }
         PerformanceFileName = TDateTime::CurrentDateTime().FormatString("dd-mm-yyyy hh.nn.ss");
         // format "16/06/2009 20:55:17"
         // avoid characters in filename:=   / \ : * ? " < > |
@@ -18328,7 +18331,7 @@ void TInterface::ApproachLocking(int Caller, TDateTime TTClockTime)
 
 // ---------------------------------------------------------------------------
 
-void TInterface::ContinuationAutoSignals(int Caller, TDateTime TTClockTime)
+void TInterface::ContinuationAutoSignals(int Caller, TDateTime TTClockTime) //some changes after v2.16.1
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ContinuationAutoSignals");
     if(!TrainController->ContinuationAutoSigVector.empty())
@@ -20736,6 +20739,10 @@ void TInterface::LoadSession(int Caller)
                 std::ifstream SessionFile(AnsiString(LoadSessionDialog->FileName).c_str());
                 if(!(SessionFile.fail()))
                 {
+                    if(Utilities->PerformanceFile.is_open()) //added after v2.16.1 because may still be open if an earlier session load failed
+                    {
+                        Utilities->PerformanceFile.close();
+                    }
                     TrainController->AvHoursIntValue = 0; // initial value set at v2.4.0 in case not changed later
                     TrainController->MTBFHours = 0; // initial value set at v2.4.0 in case not changed later
                     AnsiString TempString = Utilities->LoadFileString(SessionFile);
@@ -21280,24 +21287,26 @@ void TInterface::LoadSession(int Caller)
                             TempString = TempString + TempChar;
                             SessionFile.get(TempChar);
                         }
-                        //here have first train's description as an AnsiString in TempString or 'End of file at v2.16.1' & '\n' in TempChar
-                        bool AtLeastOneTrain = false;
-                        for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+                        //here have first train's description as an AnsiString in TempString or 'End of file at v2.16.1' & '\0' in TempChar
+                        if(TempString == "End of file at v2.16.1") //added after v2.16.1, before for some older session files called Utilities->LoadFileString(SessionFile)
+                        {                                          //after "End of file at v2.16.1" had been loaded, last character of file was '\n'
+                            goto FINISHEDLOADING;                  //so it kept going round loop in LoadFileString because there was no '\0' character.
+                        }
+                        if(!TrainController->TrainVector.empty())
                         {
-                            AtLeastOneTrain = true;
-                            if(TVIt == TrainController->TrainVector.begin())
+                            for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
                             {
-                                TVIt->Description = TempString;
-                            }
-                            else
-                            {
-                                TVIt->Description = Utilities->LoadFileString(SessionFile);
+                                if(TVIt == TrainController->TrainVector.begin())
+                                {
+                                    TVIt->Description = TempString;
+                                }
+                                else
+                                {
+                                    TVIt->Description = Utilities->LoadFileString(SessionFile);
+                                }
                             }
                         }
-                        if(AtLeastOneTrain) //i.e. no train descriptions to load, if there isn't then there is no remaining string to discard
-                        {
-                            DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.16.1" discarded
-                        }
+                        DummyStr = Utilities->LoadFileString(SessionFile); //"End of file at v2.16.1" discarded
 //end of v2.16.1 additions
                     }
 
@@ -21307,6 +21316,17 @@ FINISHEDLOADING:
                         SessionFile.close();
                     }
                     // deal with other settings
+                    //first check if there are any trains without descriptions and if so allocate them from TrainDataEntryPtr->FixedDescription
+                    if(!TrainController->TrainVector.empty()) //added after v2.16.1 as old session files won't have train descriptions
+                    {
+                        for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
+                        {
+                            if(TVIt->Description == "")
+                            {
+                                TVIt->Description = TVIt->TrainDataEntryPtr->FixedDescription;
+                            }
+                        }
+                    }
                     Display->DisplayOffsetH = TempDisplayOffsetH; // reset to saved values
                     Display->DisplayOffsetV = TempDisplayOffsetV;
                     Display->DisplayOffsetHHome = TempDisplayOffsetHHome;
@@ -21351,7 +21371,8 @@ FINISHEDLOADING:
             }
             else
             {
-                ShowMessage("Session file integrity check failed, unable to load " + LoadSessionDialog->FileName + ". Retry using the latest program version.");
+                ShowMessage("Session file integrity check failed, unable to load " + LoadSessionDialog->FileName +
+                ".\n\nPlease make sure that the timetable has been validated and that you are using the latest program version.");
             }
             Screen->Cursor = TCursor(-2); // Arrow;
         }
@@ -22155,7 +22176,7 @@ bool TInterface::BuildTrainDataVectorForLoadFile(int Caller, std::ifstream &TTBL
     {
         if(GiveMessages)
         {
-            ShowMessage("Timetable secondary integrity check failed - unable to load. Retry using the latest program version.");
+            ShowMessage("Timetable secondary integrity check failed - unable to load.\n\nPlease make sure that the timetable has been validated and that you are using the latest program version.");
         }
         Utilities->CallLogPop(1238);
         return(false);
@@ -23981,15 +24002,16 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
      //test code here
-
+    /*
                     if(AllRoutes->AllRoutesVector.size() > 0)
                     {
                         for(TAllRoutes::TAllRoutesVectorIterator ARVIt = AllRoutes->AllRoutesVector.begin(); ARVIt < AllRoutes->AllRoutesVector.end(); ARVIt++)
                         {
-                            ARVIt->SetRouteSignals(13);
+                            ARVIt->SetRouteSignals(14);
                         }
                     }
-
+    */
+    //end of test code
         Utilities->CallLogPop(2376);
     }
     catch(const Exception &e)

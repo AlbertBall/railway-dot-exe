@@ -94,7 +94,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         // initial setup
         // MasterClock->Enabled = false;//keep this stopped until all set up (no effect here as form not yet created, made false in object insp)
         // Visible = false; //keep the Interface form invisible until all set up (no effect here as form not yet created, made false in object insp)
-        ProgramVersion = "RailOS32 " + GetVersion() + '+';
+        ProgramVersion = "RailOS32 " + GetVersion();
         // use GNU Major/Minor/Patch version numbering system, change for each published modification, Dev x = interim internal
         // development stages (don't show on published versions)
 
@@ -568,7 +568,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TTLabel6->Caption = TTLabelStr6;
         TTLabel7->Caption = TTLabelStr7;
         TTLabel9->Caption = TTLabelStr9;
-        TTLabel11->Caption = TTLabelStr11; //changed Left property to 300 from 487 after v2.16.1 so less likely for a long name to overlap TTLabel8
+        TTLabel11->Caption = TTLabelStr11; //changed Left property to 300 from 487 at v2.16.2 so less likely for a long name to overlap TTLabel8
         TTLabel12->Caption = TTLabelStr12;
         TTLabel13->Caption = TTLabelStr13;
         TTLabel15->Caption = TTLabelStr15;
@@ -17057,7 +17057,7 @@ void TInterface::SetLevel1Mode(int Caller)
         TrainController->TTClockTime = TrainController->TimetableStartTime;
         TrainController->LastSessionSaveTTClockTime = TrainController->TimetableStartTime; // added at v2.5.0
         Utilities->LastTSRCheckTime = TrainController->TTClockTime; //added at v2.14.0 so don't have any TSRs until 1 min after start
-        if(Utilities->PerformanceFile.is_open()) //added after v2.16.1 as a safeguard
+        if(Utilities->PerformanceFile.is_open()) //added at v2.16.2 as a safeguard
         {
             Utilities->PerformanceFile.close();
         }
@@ -18331,7 +18331,7 @@ void TInterface::ApproachLocking(int Caller, TDateTime TTClockTime)
 
 // ---------------------------------------------------------------------------
 
-void TInterface::ContinuationAutoSignals(int Caller, TDateTime TTClockTime) //some changes after v2.16.1
+void TInterface::ContinuationAutoSignals(int Caller, TDateTime TTClockTime) //some changes at v2.16.2
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ContinuationAutoSignals");
     if(!TrainController->ContinuationAutoSigVector.empty())
@@ -18356,7 +18356,7 @@ void TInterface::ContinuationAutoSignals(int Caller, TDateTime TTClockTime) //so
             // end of additions
             if(((TTClockTime - AutoSigVectorIT->PassoutTime) > TDateTime(AutoSigVectorIT->FirstDelay / 86400)) && (AutoSigVectorIT->AccessNumber == 0))
             {
-                AutoSigVectorIT->AccessNumber++;  //moved to before set signals after v2.16.1 so SetRouteSignals works anytime called as Attribute set to AccessNumber
+                AutoSigVectorIT->AccessNumber++;  //moved to before set signals at v2.16.2 so SetRouteSignals works anytime called as Attribute set to AccessNumber
                 AllRoutes->SetTrailingSignalsOnContinuationRoute(1, AutoSigVectorIT->RouteNumber, 0);
                 continue;
             }
@@ -20739,7 +20739,7 @@ void TInterface::LoadSession(int Caller)
                 std::ifstream SessionFile(AnsiString(LoadSessionDialog->FileName).c_str());
                 if(!(SessionFile.fail()))
                 {
-                    if(Utilities->PerformanceFile.is_open()) //added after v2.16.1 because may still be open if an earlier session load failed
+                    if(Utilities->PerformanceFile.is_open()) //added at v2.16.2 because may still be open if an earlier session load failed
                     {
                         Utilities->PerformanceFile.close();
                     }
@@ -21288,7 +21288,7 @@ void TInterface::LoadSession(int Caller)
                             SessionFile.get(TempChar);
                         }
                         //here have first train's description as an AnsiString in TempString or 'End of file at v2.16.1' & '\0' in TempChar
-                        if(TempString == "End of file at v2.16.1") //added after v2.16.1, before for some older session files called Utilities->LoadFileString(SessionFile)
+                        if(TempString == "End of file at v2.16.1") //added at v2.16.2, before for some older session files called Utilities->LoadFileString(SessionFile)
                         {                                          //after "End of file at v2.16.1" had been loaded, last character of file was '\n'
                             goto FINISHEDLOADING;                  //so it kept going round loop in LoadFileString because there was no '\0' character.
                         }
@@ -21317,7 +21317,7 @@ FINISHEDLOADING:
                     }
                     // deal with other settings
                     //first check if there are any trains without descriptions and if so allocate them from TrainDataEntryPtr->FixedDescription
-                    if(!TrainController->TrainVector.empty()) //added after v2.16.1 as old session files won't have train descriptions
+                    if(!TrainController->TrainVector.empty()) //added at v2.16.2 as old session files won't have train descriptions
                     {
                         for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
                         {
@@ -24007,7 +24007,7 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
                     {
                         for(TAllRoutes::TAllRoutesVectorIterator ARVIt = AllRoutes->AllRoutesVector.begin(); ARVIt < AllRoutes->AllRoutesVector.end(); ARVIt++)
                         {
-                            ARVIt->SetRouteSignals(14);
+                            ARVIt->SetRouteSignals();
                         }
                     }
     */

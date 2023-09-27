@@ -762,7 +762,7 @@ can't have a route set while changing; can't be opened while a route is set; and
 ///< used to send no platforms warning once only
     bool SuppressRouteFailMessage;
 ///< true if a message has been given in the search routine, to avoid giving multiple times and to avoid other failure messages being given
-//    bool LCFoundInRouteBuildingFlag; {dropped after v2.16.1 as not used)
+//    bool LCFoundInRouteBuildingFlag; {dropped at v2.16.2 as not used)
 ///< true if a route set through an LC that is closed to trains (& therefore needs to be opened)
     bool PointFlashFlag;
 ///< true when points are flashing during manual change
@@ -1582,7 +1582,7 @@ public:
 
 // functions defined in .cpp file
 
-/// Used when setting signal aspects for a route by working forwards through the route to see what the next forward signal aspects is, because this determines all the rearward signal aspects (added StartPos after v2.16.1 as function now called in SetRearwardsSignalsReturnFalseForTrainInRear instead of SetRouteSignals)
+/// Used when setting signal aspects for a route by working forwards through the route to see what the next forward signal aspects is, because this determines all the rearward signal aspects (added StartPos at v2.16.2 as function now called in SetRearwardsSignalsReturnFalseForTrainInRear instead of SetRouteSignals)
     bool FindForwardTargetSignalAttribute(int Caller, int &NextForwardLinkedRouteNumber, int &Attribute, int StartPos) const;
 /// Set the starting conditions for a non-preferred (i.e. unrestricted) route selection beginning on HLoc & VLoc
     bool GetNonPreferredRouteStartElement(int Caller, int HLoc, int VLoc, bool Callon);
@@ -1601,7 +1601,7 @@ public:
 /// Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called recursively, if recursive RecursiveCall is true (added at v2.13.0)
     bool SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirElement, int XLinkPos, int RequiredPosition, IDInt ReqPosRouteID, TOnePrefDir *EveryPrefDir,
         bool ConsecSignals, int EndSelectPosition, bool AutoSigsFlag, bool RecursiveCall);
-/// Called by TAllRoutes::SetAllRearwardsSignals to set rearwards signals from a specified starting position.  If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects (added SkipForwardLook after v2.16.1 so behaviour different in first and second calls).
+/// Called by TAllRoutes::SetAllRearwardsSignals to set rearwards signals from a specified starting position.  If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects (added SkipForwardLook at v2.16.2 so behaviour different in first and second calls).
     bool SetRearwardsSignalsReturnFalseForTrainInRear(int Caller, int &Attribute, int PrefDirVectorStartPosition, bool SkipForwardLook) const;
 /// Check incorporated in route search routines after have found a legitimate route, returns false for signal failure & deals with graphics & messages
     bool SignalHasFailed(int Caller); //added at v2.13.0

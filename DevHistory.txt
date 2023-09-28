@@ -1,32 +1,3 @@
-Changes made after v2.16.1 and reminders for next release
-
-/When load old session (King's Cross) trains lose their descriptions - this was a failt at v2.16.1 for all old sessions
-
-/When load King's Cross after playing & saving a session prog goes into infinite loop at Utilities->LoadFileString (found out why and corrected after v2.16.1) - this was a failt at v2.16.1
-
-/Remember to comment out the testfunction additions
-
-Manual: When next change manual change 't' to 'to' on p 15 line 4
-
-Manual: When next change manual mention that all train info bar brake force must be whole numbers but make sure this is the case - yes - already altered info in tt editor
-
-Manual: Add bit about being able to change location name text on screen if want to (from Commuterpop ticket #8), but keep timetable & loc names same
-
-After v2.16.1 mention moved TTLabel11 more to the left to avoid long TT name overlap with TTLabel8
-
-/Check all 7777s & callers
-
-/Have improved route cancellation for train change of direction by removing signal or continuation condition - that allowed a non-facing signal or continuation to prevent a route cancellation, and wasn't needed anyway (not for reporting on website)
-
-/Fault: In reloading a Kaelon Amsterdam session with ContinuationAutoSigVector not empty, the new function (after v2.14.0) sets all signals and when reach this route the first signal is reset to red rather than the attribute that it had when the session file was saved.  If set it to AccessNumber than it sets ok, but all signals behind it set similarly, even if there is a train behind the first signal.  Need to think about this - maybe erase the vector entry when a train passes the first signal? - try this, have a suitable condition for giving signal a chance to fail - see TrainUnit.cpp line 1930, but is the train on the signal then (maybe it's half on)?, LeadElement only updated at line ~2030ish. Ok, corrected after v2.16.1
-
-/Fault on B'ham when train (2A09) exited from Snow Hill terminal platform (no signal) when force cancelled route above, but when rearwards signals set the route to be cancelled still exists, so setting signals first uses forward look when it finds a red signal in the route to be cancelled, so first signal in rear route becames yellow when should have been be red.  Dropped the rearwards function in favour of setting all route signals after the route has been removed.
-
-
--------------------------------------------------------------------------------
-
-
-
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -685,6 +656,33 @@ Multi-player facility over the internet.
 -------------------------------------------------------------------------------
 
 4) Version change information
+
+VERSION CHANGES AFTER v2.16.1 for v2.16.2
+
+Further testing revealed a number of bugs in v2.16.1 and earlier which have been corrected in this version.
+
+When loading an old session file trains lost their descriptions, these have now been re-instated.
+
+After loading an old session file and resaving as a new session, the program entered an infinite loop on reloading.  This was traced to an error in saved train description data that has now been corrected.
+
+A couple of signal sequencing errors were found (a) following route cancellation and (b) after reloading a session that was saved while signals on a continuation route were in course of updating after a train had exited.  The fault was an inadequacy in one of the main signal sequencing functions that had been patched a number of times to cater for earlier new features.  All related functions have now been re-written with a more logical structure so as to avoid further patching and to get rid of the existing patches.
+
+Minor improvement - In the timetable editor the timetable name has been moved more to the left to avoid overlapping the existing 'single entry' text. 
+
+Not for website:
+
+/When load old session (King's Cross) trains lose their descriptions - this was a failt at v2.16.1 for all old sessions
+
+/When load King's Cross after playing & saving a session prog goes into infinite loop at Utilities->LoadFileString (found out why and corrected after v2.16.1) - this was a failt at v2.16.1
+
+/Mention moved TTLabel11 more to the left to avoid long TT name overlap with TTLabel8
+
+/Have improved route cancellation for train change of direction by removing signal or continuation condition - that allowed a non-facing signal or continuation to prevent a route cancellation, and wasn't needed anyway (not for reporting on website)
+
+/Fault: In reloading a Kaelon Amsterdam session with ContinuationAutoSigVector not empty, the new function (after v2.14.0) sets all signals and when reach this route the first signal is reset to red rather than the attribute that it had when the session file was saved.  If set it to AccessNumber than it sets ok, but all signals behind it set similarly, even if there is a train behind the first signal.  Need to think about this - maybe erase the vector entry when a train passes the first signal? - try this, have a suitable condition for giving signal a chance to fail - see TrainUnit.cpp line 1930, but is the train on the signal then (maybe it's half on)?, LeadElement only updated at line ~2030ish. Ok, corrected after v2.16.1
+
+/Fault on B'ham when train (2A09) exited from Snow Hill terminal platform (no signal) when force cancelled route above, but when rearwards signals set the route to be cancelled still exists, so setting signals first uses forward look when it finds a red signal in the route to be cancelled, so first signal in rear route becames yellow when should have been be red.  Dropped the rearwards function in favour of setting all route signals after the route has been removed.  This was a fault introduced after v2.16.1 so no need to mention on website.
+
 
 VERSION CHANGES AFTER v2.16.0 for v2.16.1
 
@@ -2754,33 +2752,32 @@ have self-checking and normal release versions - if poss record the call stack)
 
 5) Release & website reminders:
 
-CHANGE OF PROGRAM VERSION: (updated 31/08/22)
+CHANGE OF PROGRAM VERSION:
 
 Prior to uploading:
 
-1 Check that all callers have unique numbers and that no 'after vx.y.z comments left in code'
+1 Check that all callers have unique numbers and that no 'after vx.y.z' comments left in code
 
 2 Increment version number in Project>Options separately for both 32bit debug & 64bit release versions & copyright year (if required) in AboutUnit.cpp.
 
-3 Add 32 or 64 to appropriate version information in InterfaceUnit.cpp prior to compilation for each build & check when click 'About'.
+3 Check if any new .dll or .bpl files needed (likely to if there's a new compiler version). Use Project Deployment to ensure correct versions.
 
-4 Check if any new .dll or .bpl files needed (likely to if there's a new compiler version)
+4 Do a final full build for each:
+32bit: use debug version, add 32 to version information in InterfaceUnit.cpp, copy railway.exe to RailOS32.exe for release & to RailOS32-vx.x.x for debug folder.
+64bit: use release version, add 64 to version information in InterfaceUnit.cpp, copy railway.exe to RailOS64.exe for release & to RailOS64-vx.x.x for release folder.
 
-4a If help and/or manual updated include in both own-use win32 & 64 versions and in release win32 & 64 versions.
+5 check that the 'About' box gives the correct version for both 32 & 64bit.
 
-4b Make sure DevHistoryPending.txt is up to date (include version change info & drop any text before title) and copy it to DevHistory.txt
+6 Ensure Readme.txt has different versions for 32 & 64 bit releases.  Include .dll & .bpl having same names for 32 & 64 bit but very different so don't confuse them.
 
-5 Use debug version for 32bit release & include 5 x .dll files and 5 x .bpl files from the Win32 debug folder.  NB .dll & .bpl have same names but very different so don't confuse them - use Project Deployment to ensure correct versions.  Change railway.exe to RailOS32.exe so no ambiguity.
+7 Update manual & on-screen help if required.  
 
-6 Use release version for 64bit release & include 3 x .dll files and 5 x .bpl files from the Win64 release folder. NB .dll & .bpl have same names but very different so don't confuse them - use Project Deployment to ensure correct versions.  Change railway.exe to RailOS64.exe so no ambiguity.
+8 Update any other relevant files e.g. filespec & timetable errors
 
-7 Ensure Readme.txt have different versions for 32 & 64 versions & two zip packages.
+9 Include (for 10.4 compiler) 5 x .dll files and 5 x .bpl files from the Win32 debug folder. 
+Include (for 10.4 compiler) 3 x .dll files and 5 x .bpl files from the Win64 release folder.
 
-8 Do a final build for each & check that the 'About' box gives the correct release version inc 32 or 64.
-
-9 Copy railway.exe in each build to RailOS32.exe & RailOS64.exe appropriately.
-
-10 Update manual & on-screen help if required + any other relevant files e.g. filespec & timetable errors
+10 Write release notes & include in DevHistory.txt for this release.
 
 11 Create new directories 'Release 32bit vx.x.x' & 'Release 64bit vx.x.x' from earlier release & replace files as follows for 32 bit - similar for 64 bit.
 	readme 32bit.txt (reference latest release & update user manual reference & no. of pages if required)
@@ -2851,7 +2848,7 @@ On GitHub:
 
 2 Update Doxygen files (& Doxyfile itself with new version number) & include graph legend link in pages.html (do a 'diff' from previous version & copy across), make sure flowcharts are in files folder & work ok.  Add all new doxy files to local repo.
 
-3 Copy DevHistoryPending.txt to DevHistory.txt & ensure all extra text removed & version info changes made
+3 Make sure DevHistory.txt is up to date (include version change info [for web & internal] & drop any text before title)
 
 4 Update DevHistory.txt with relevant public information if not already done so & make read-only
 

@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.16.1</span>
+   &#160;<span id="projectnumber">v2.16.2</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -129,9 +129,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7c359f022e985fbec06f5518bc9046b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a7c359f022e985fbec06f5518bc9046b3">StoreRouteElementInPrefDirVector</a> (<a class="el" href="class_t_pref_dir_element.html">TPrefDirElement</a> LoadPrefDirElement)</td></tr>
 <tr class="memdesc:a7c359f022e985fbec06f5518bc9046b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erase a single route element - don't need this now incorporated in .cpp file.  <a href="class_t_one_route.html#a7c359f022e985fbec06f5518bc9046b3">More...</a><br /></td></tr>
 <tr class="separator:a7c359f022e985fbec06f5518bc9046b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d92e68782eea0534a02e1b8176bc730"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a4d92e68782eea0534a02e1b8176bc730">FindForwardTargetSignalAttribute</a> (int Caller, int &amp;NextForwardLinkedRouteNumber, int &amp;Attribute) const</td></tr>
-<tr class="memdesc:a4d92e68782eea0534a02e1b8176bc730"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used when setting signal aspects for a route by working forwards through the route to see what the next forward signal aspects is, because this determines all the rearward signal aspects.  <a href="class_t_one_route.html#a4d92e68782eea0534a02e1b8176bc730">More...</a><br /></td></tr>
-<tr class="separator:a4d92e68782eea0534a02e1b8176bc730"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c15c59f761de0119fa17c44b18933d0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a8c15c59f761de0119fa17c44b18933d0">FindForwardTargetSignalAttribute</a> (int Caller, int &amp;NextForwardLinkedRouteNumber, int &amp;Attribute, int StartPos) const</td></tr>
+<tr class="memdesc:a8c15c59f761de0119fa17c44b18933d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used when setting signal aspects for a route by working forwards through the route to see what the next forward signal aspects is, because this determines all the rearward signal aspects (added StartPos at v2.16.2 as function now called in SetRearwardsSignalsReturnFalseForTrainInRear instead of SetRouteSignals)  <a href="class_t_one_route.html#a8c15c59f761de0119fa17c44b18933d0">More...</a><br /></td></tr>
+<tr class="separator:a8c15c59f761de0119fa17c44b18933d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13dd08bfcc95ea1296f9ac4fd699e94d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a13dd08bfcc95ea1296f9ac4fd699e94d">GetNonPreferredRouteStartElement</a> (int Caller, int HLoc, int VLoc, bool Callon)</td></tr>
 <tr class="memdesc:a13dd08bfcc95ea1296f9ac4fd699e94d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the starting conditions for a non-preferred (i.e. unrestricted) route selection beginning on HLoc &amp; VLoc.  <a href="class_t_one_route.html#a13dd08bfcc95ea1296f9ac4fd699e94d">More...</a><br /></td></tr>
 <tr class="separator:a13dd08bfcc95ea1296f9ac4fd699e94d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,9 +152,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3bbf0add5e8c2b88fb09cb1be158d9ad"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a3bbf0add5e8c2b88fb09cb1be158d9ad">SearchForPreferredRoute</a> (int Caller, <a class="el" href="class_t_pref_dir_element.html">TPrefDirElement</a> PrefDirElement, int XLinkPos, int RequiredPosition, <a class="el" href="class_i_d_int.html">IDInt</a> <a class="el" href="class_t_one_route.html#aee7b2c91e9920bbb59c84cb562f0680a">ReqPosRouteID</a>, <a class="el" href="class_t_one_pref_dir.html">TOnePrefDir</a> *EveryPrefDir, bool ConsecSignals, int EndSelectPosition, bool AutoSigsFlag, bool RecursiveCall)</td></tr>
 <tr class="memdesc:a3bbf0add5e8c2b88fb09cb1be158d9ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called by GetNextPreferredRouteElement to carry out the search for a valid route, and also called recursively, if recursive RecursiveCall is true (added at v2.13.0)  <a href="class_t_one_route.html#a3bbf0add5e8c2b88fb09cb1be158d9ad">More...</a><br /></td></tr>
 <tr class="separator:a3bbf0add5e8c2b88fb09cb1be158d9ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55e04e36f652344b5215f8a28143c4a3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a55e04e36f652344b5215f8a28143c4a3">SetRearwardsSignalsReturnFalseForTrain</a> (int Caller, int &amp;Attribute, int PrefDirVectorStartPosition) const</td></tr>
-<tr class="memdesc:a55e04e36f652344b5215f8a28143c4a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called by <a class="el" href="class_t_all_routes.html#ac6bd39457747eaa96476a8a87df15ac2" title="Set rearwards signals from the specified route starting position.">TAllRoutes::SetAllRearwardsSignals</a> to set rearwards signals from a specified starting position. If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects.  <a href="class_t_one_route.html#a55e04e36f652344b5215f8a28143c4a3">More...</a><br /></td></tr>
-<tr class="separator:a55e04e36f652344b5215f8a28143c4a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7cf8dc205ad2d463480ddf349fb2ccc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#ac7cf8dc205ad2d463480ddf349fb2ccc">SetRearwardsSignalsReturnFalseForTrainInRear</a> (int Caller, int &amp;Attribute, int PrefDirVectorStartPosition, bool SkipForwardLook) const</td></tr>
+<tr class="memdesc:ac7cf8dc205ad2d463480ddf349fb2ccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called by <a class="el" href="class_t_all_routes.html#ac6bd39457747eaa96476a8a87df15ac2" title="Set rearwards signals from the specified route starting position.">TAllRoutes::SetAllRearwardsSignals</a> to set rearwards signals from a specified starting position. If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects (added SkipForwardLook at v2.16.2 so behaviour different in first and second calls).  <a href="class_t_one_route.html#ac7cf8dc205ad2d463480ddf349fb2ccc">More...</a><br /></td></tr>
+<tr class="separator:ac7cf8dc205ad2d463480ddf349fb2ccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4177e4c0c4d6817515cb19f4f7e1427b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_one_route.html#a4177e4c0c4d6817515cb19f4f7e1427b">SignalHasFailed</a> (int Caller)</td></tr>
 <tr class="memdesc:a4177e4c0c4d6817515cb19f4f7e1427b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check incorporated in route search routines after have found a legitimate route, returns false for signal failure &amp; deals with graphics &amp; messages.  <a href="class_t_one_route.html#a4177e4c0c4d6817515cb19f4f7e1427b">More...</a><br /></td></tr>
 <tr class="separator:a4177e4c0c4d6817515cb19f4f7e1427b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -519,8 +519,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a4d92e68782eea0534a02e1b8176bc730"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d92e68782eea0534a02e1b8176bc730">&#9670;&nbsp;</a></span>FindForwardTargetSignalAttribute()</h2>
+<a id="a8c15c59f761de0119fa17c44b18933d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c15c59f761de0119fa17c44b18933d0">&#9670;&nbsp;</a></span>FindForwardTargetSignalAttribute()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -541,7 +541,13 @@ Here is the caller graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>Attribute</em>&#160;</td>
+          <td class="paramname"><em>Attribute</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>StartPos</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -551,18 +557,20 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Used when setting signal aspects for a route by working forwards through the route to see what the next forward signal aspects is, because this determines all the rearward signal aspects. </p>
+<p>Used when setting signal aspects for a route by working forwards through the route to see what the next forward signal aspects is, because this determines all the rearward signal aspects (added StartPos at v2.16.2 as function now called in SetRearwardsSignalsReturnFalseForTrainInRear instead of SetRouteSignals) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17620">17620</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17578">17578</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a4d92e68782eea0534a02e1b8176bc730_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><!-- SVG 4 -->
+</div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_t_one_route_a4d92e68782eea0534a02e1b8176bc730_icgraph.svg" width="100%" height="595"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><!-- SVG 5 -->
+</div>
 </div>
 
 </div>
@@ -585,11 +593,11 @@ Here is the caller graph for this function:</div>
 
 <p>Cancel a route immediately if a train occupies it when travelling in the wrong direction (or occupies a crossover on a non-route line when the other track is in a route) </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18472">18472</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18508">18508</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 4 -->
+<div class="center"><!-- SVG 6 -->
 </div>
 </div>
 <div class="dynheader">
@@ -788,7 +796,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 5 -->
+<div class="center"><!-- SVG 7 -->
 </div>
 </div>
 <div class="dynheader">
@@ -849,7 +857,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 6 -->
+<div class="center"><!-- SVG 8 -->
 </div>
 </div>
 <div class="dynheader">
@@ -887,7 +895,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <p>Called by GetNextNonPreferredRouteElement and GetNextPreferredRouteElement to check whether or not any points on the selected route need to be changed. Also gives every set of points that needs to change the chance to fail, and if so returns the TV position, added at v2.13.0 </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17532">17532</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17490">17490</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -935,17 +943,17 @@ Here is the caller graph for this function:</div>
 
 <p>Adds signal to front/end of green or red routes when blue route truncated or removed. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18346">18346</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18382">18382</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 7 -->
+<div class="center"><!-- SVG 9 -->
 </div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 8 -->
+<div class="center"><!-- SVG 10 -->
 </div>
 </div>
 
@@ -1172,7 +1180,7 @@ Here is the caller graph for this function:</div>
 
 <p>After a route has been selected successfully this function sets all LC change values appropriately for the selected route type and location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18576">18576</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18623">18623</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1186,14 +1194,14 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a55e04e36f652344b5215f8a28143c4a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55e04e36f652344b5215f8a28143c4a3">&#9670;&nbsp;</a></span>SetRearwardsSignalsReturnFalseForTrain()</h2>
+<a id="ac7cf8dc205ad2d463480ddf349fb2ccc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7cf8dc205ad2d463480ddf349fb2ccc">&#9670;&nbsp;</a></span>SetRearwardsSignalsReturnFalseForTrainInRear()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool TOneRoute::SetRearwardsSignalsReturnFalseForTrain </td>
+          <td class="memname">bool TOneRoute::SetRearwardsSignalsReturnFalseForTrainInRear </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>Caller</em>, </td>
@@ -1208,7 +1216,13 @@ Here is the caller graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>PrefDirVectorStartPosition</em>&#160;</td>
+          <td class="paramname"><em>PrefDirVectorStartPosition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>SkipForwardLook</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1218,19 +1232,19 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Called by <a class="el" href="class_t_all_routes.html#ac6bd39457747eaa96476a8a87df15ac2" title="Set rearwards signals from the specified route starting position.">TAllRoutes::SetAllRearwardsSignals</a> to set rearwards signals from a specified starting position. If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects. </p>
+<p>Called by <a class="el" href="class_t_all_routes.html#ac6bd39457747eaa96476a8a87df15ac2" title="Set rearwards signals from the specified route starting position.">TAllRoutes::SetAllRearwardsSignals</a> to set rearwards signals from a specified starting position. If a train is found during the rearwards search then this function flags the fact so that the calling function can change its behaviour with respect to further rearwards signal aspects (added SkipForwardLook at v2.16.2 so behaviour different in first and second calls). </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17712">17712</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17678">17678</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 9 -->
+<div class="center"><!-- SVG 11 -->
 </div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 10 -->
+<div class="center"><!-- SVG 12 -->
 </div>
 </div>
 
@@ -1302,7 +1316,7 @@ Here is the caller graph for this function:</div>
 
 <p>After a route has been selected successfully this function sets all RouteFlash (see above) values appropriately for the selected route type and location. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18548">18548</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18595">18595</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1382,7 +1396,7 @@ Here is the caller graph for this function:</div>
 
 <p>Set values for EXGraphicPtr and EntryDirectionGraphicPtr for all elements in SearchVector so that the route displays with the correct colour. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18525">18525</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18572">18572</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1418,7 +1432,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 11 -->
+<div class="center"><!-- SVG 13 -->
 </div>
 </div>
 <div class="dynheader">
@@ -1447,7 +1461,7 @@ Here is the caller graph for this function:</div>
 
 <p>Check incorporated in route search routines after have found a legitimate route, returns false for signal failure &amp; deals with graphics &amp; messages. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18667">18667</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l18714">18714</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1539,11 +1553,11 @@ Here is the caller graph for this function:</div>
 <p>Examines the route to see whether the element at H &amp; V is in the route, and if not returns a ReturnFlag value of NotInRoute. </p>
 <p>If it is in a route but the element selected is invalid, then a message is given and returns with a ReturnFlag value of InRouteFalse. Otherwise the route is truncated at and including the element that matches H &amp; V with a ReturnFlag value of InRouteTrue. Selection invalid if select a bridge; trying to leave a single element; last element to be left not a signal (for PrefDirRoute or AutoSigsFlag set); last element to be left a bridge, points or crossover (for not PrefDirRoute &amp; AutoSigsFlag not set), or part of route locked. </p>
 
-<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17889">17889</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8cpp_source.html#l17925">17925</a> of file <a class="el" href="_track_unit_8cpp_source.html">TrackUnit.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 12 -->
+<div class="center"><!-- SVG 14 -->
 </div>
 </div>
 

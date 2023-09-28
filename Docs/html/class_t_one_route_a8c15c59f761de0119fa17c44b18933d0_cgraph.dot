@@ -1,0 +1,48 @@
+digraph "TOneRoute::FindForwardTargetSignalAttribute"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="TOneRoute::FindForwardTarget\lSignalAttribute",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Used when setting signal aspects for a route by working forwards through the route to see what the ne..."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TUtilities::CallLogPop",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0",tooltip="pops the last entry off the call stack, throws an error if called when empty"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TOnePrefDir::GetFixedPref\lDirElementAt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_pref_dir.html#a5b67e5aaa86d324229aedc68f32f32b8",tooltip="Return a non-modifiable element at PrefDirVector position 'At'."];
+  Node3 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TUtilities::TimeStamp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c",tooltip="creates a string of the form 'hh:mm:ss' for use in call & event logging"];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TAllRoutes::GetFixedRouteAt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_all_routes.html#a7d9f820738af6314f2b9a4a1f52bb64a",tooltip="Returns a constant reference to the route at AllRoutesVector position 'At', after performing range ch..."];
+  Node5 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TAllRoutes::GetRouteType\lAndNumber",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_all_routes.html#a0a9ccbc84687f85806115877aa86dcfd",tooltip="Examines Route2MultiMap and if the element at TrackVectorPosition with LinkPos (can be entry or exit)..."];
+  Node6 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TTrack::TrackElementAt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#ad377e5a1f152f2e89832c0f9bcfd261f",tooltip="A range-checked version of TrackVector.at(At)"];
+  Node7 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="TTrack::IsLCAtHV",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a73e781d0ada0b77618b886557f79b115",tooltip="True if a level crossing is found at H & V."];
+  Node8 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="TTrack::GetVectorPositions\lFromInactiveTrackMap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a418966e6fefb71b9d0c9b941197832da",tooltip="Similar to GetVectorPositionFromTrackMap but for inactive elements, a pair is returned because there ..."];
+  Node9 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="TTrack::InactiveTrackElementAt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a51f89cf70e94b037f6378cd78003d82b",tooltip="A range-checked version of InactiveTrackVector.at(At)"];
+  Node10 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="TTrack::IsLCBarrierDownAtHV",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#aad258b17c96ace0dbbad3754eb743274",tooltip="True if an open (to trains) level crossing is found at H & V."];
+  Node11 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

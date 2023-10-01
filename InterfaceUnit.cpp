@@ -17204,6 +17204,9 @@ void TInterface::SetLevel1Mode(int Caller)
         }
         SaveOperatingImageMenuItem->Enabled = true;
 
+        FlashControlButton->Glyph->LoadFromResourceName(0, "NoFlash"); //these added at v2.16.2 so reloads with normal flashing
+        StopFlashFlag = false;
+
         OperateButton->Enabled = true;
         OperateButton->Glyph->LoadFromResourceName(0, "RunGraphic");
         ExitOperationButton->Enabled = true;

@@ -665,7 +665,7 @@ When loading an old session file trains lost their descriptions, these have now 
 
 After loading an old session file and resaving as a new session, the program entered an infinite loop on reloading.  This was traced to an error in saved train description data that has now been corrected.
 
-A couple of signal sequencing errors were found (a) following route cancellation and (b) after reloading a session that was saved while signals on a continuation route were in course of updating after a train had exited.  The fault was an inadequacy in one of the main signal sequencing functions that had been patched a number of times to cater for earlier new features.  All related functions have now been re-written with a more logical structure so as to avoid further patching and to get rid of the existing patches.
+A couple of signal sequencing errors were found (a) following a forced route cancellation and (b) after reloading a session that was saved while signals on a continuation route were in course of updating after a train had exited.  The faults were inadequacies in the signal sequencing functions that had been patched a number of times to cater for earlier new features.  All these functions have now been re-written to get rid of the existing patches and (hopefully) to avoid the need for further patching.
 
 Minor improvement - In the timetable editor the timetable name has been moved more to the left to avoid overlapping the existing 'single entry' text. 
 
@@ -682,6 +682,8 @@ Not for website:
 /Fault: In reloading a Kaelon Amsterdam session with ContinuationAutoSigVector not empty, the new function (after v2.14.0) sets all signals and when reach this route the first signal is reset to red rather than the attribute that it had when the session file was saved.  If set it to AccessNumber than it sets ok, but all signals behind it set similarly, even if there is a train behind the first signal.  Need to think about this - maybe erase the vector entry when a train passes the first signal? - try this, have a suitable condition for giving signal a chance to fail - see TrainUnit.cpp line 1930, but is the train on the signal then (maybe it's half on)?, LeadElement only updated at line ~2030ish. Ok, corrected after v2.16.1
 
 /Fault on B'ham when train (2A09) exited from Snow Hill terminal platform (no signal) when force cancelled route above, but when rearwards signals set the route to be cancelled still exists, so setting signals first uses forward look when it finds a red signal in the route to be cancelled, so first signal in rear route becames yellow when should have been be red.  Dropped the rearwards function in favour of setting all route signals after the route has been removed.  This was a fault introduced after v2.16.1 so no need to mention on website.
+
+/When reload a session where a warning is shown (train at signal, derailed etc.) and had selected no flashing earlier, it reloads with graphic flashing but 'Flash' shown on button. Corrected so that all sessions reload with flashing on and correct button graphic.
 
 
 VERSION CHANGES AFTER v2.16.0 for v2.16.1

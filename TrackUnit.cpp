@@ -1165,7 +1165,7 @@ TTrack::TTrack()
     AnsiString NL = '\n';
 
     RouteFailMessage = "Unable to set a route:" + NL + NL + "it may be unreachable, perhaps because of failed points; " + NL + NL +
-        "reachable but with too many different directions leading away from the start point  - set some points on the route required; " + NL + NL +
+        "reachable but too far ahead or with too many different directions leading away from the start point  - set some points on the route required; " + NL + NL +
         "blocked by a train, another route or a changing level crossing; " + NL + NL +
         "or invalid - possibly due to a preferred direction mismatch, or a missed signal in a blue route or green route restricted to consecutive signals.";
 
@@ -15688,8 +15688,8 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
             Utilities->CallLogPop(248);
             return(false);
         }
-// check if SearchVector exceeds a size of 150
-        if(SearchVector.size() > 150)
+// check if SearchVector exceeds a size of RouteSearchLimitOneLeg  (300)
+        if(SearchVector.size() > RouteSearchLimitOneLeg)
         {
             for(int x = 0; x < VectorCount; x++)
             {
@@ -17031,8 +17031,8 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
             Utilities->CallLogPop(299);
             return(false);
         }
-// check if SearchVector exceeds a size of 150
-        if(SearchVector.size() > 150)
+// check if SearchVector exceeds a size of RouteSearchLimitOneLeg (300)
+        if(SearchVector.size() > RouteSearchLimitOneLeg)
         {
             for(int x = 0; x < VectorCount; x++)
             {

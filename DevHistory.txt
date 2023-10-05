@@ -1,3 +1,7 @@
+mention that links to docs on json2ttb broken so presented 'as is'
+
+
+
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -667,6 +671,8 @@ After loading an old session file and resaving as a new session, the program ent
 
 A couple of signal sequencing errors were found (a) following a forced route cancellation and (b) after reloading a session that was saved while signals on a continuation route were in course of updating after a train had exited.  The faults were inadequacies in the signal sequencing functions that had been patched a number of times to cater for earlier new features.  All these functions have now been re-written to get rid of the existing patches and (hopefully) to avoid the need for further patching.
 
+Corrected an error in location name edit function when using extended characters
+
 Minor improvement - In the timetable editor the timetable name has been moved more to the left to avoid overlapping the existing 'single entry' text. 
 
 Not for website:
@@ -685,6 +691,11 @@ Not for website:
 
 /When reload a session where a warning is shown (train at signal, derailed etc.) and had selected no flashing earlier, it reloads with graphic flashing but 'Flash' shown on button. Corrected so that all sessions reload with flashing on and correct button graphic.
 
+/add back the link to the wiki + pdf map
+
+/add 'or too far ahead' in big route setting message + increased the 150 limit in searching for single leg routes to 300 to make it more likely that a route will be found
+
+/corrected error in location names with extended characters - character examination conditions in EditTimetableMenuItemClick overlooked fact that extended chars treated as negative, so were < 0.
 
 VERSION CHANGES AFTER v2.16.0 for v2.16.1
 

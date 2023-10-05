@@ -3461,7 +3461,7 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
                 while(!TTBLFile.eof())
                 {
                     TTBLFile.get(c);
-                    if((c < 32) && (c != 13) && (c != 10) && (c != '\0'))
+                    if((c > 0) && (c < 32) && (c != 13) && (c != 10)) //added (c > 0) at v2.16.2 as extended characters treated as negative
 //                    if((c < 32) && (c >= 1)) //have to allow NULLs - dropped at v2.16.1 as prevented CRLF which is ok, reverted to original condition above
                     {
                         ShowMessage("Timetable file contains invalid control characters");

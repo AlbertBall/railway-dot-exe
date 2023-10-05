@@ -1539,7 +1539,9 @@ public:
     };
 
     static const int RouteSearchLimit = 200000; //raised at v2.16.1 to give better chance of finding route
-///< limit to the number of elements searched in attempting to find a route
+///< limit to the total number of elements searched in attempting to find a route
+    static const int RouteSearchLimitOneLeg = 300; //raised at v2.16.2 to give better chance of finding route in a single leg
+///< limit to the number of elements searched in attempting to find a route in on leg
     bool QuitAllRecursiveSearchesFlag;
 ///<used during searching for preferred routes when no more recursive calls are required, added at v2.15.1
     IDInt ReqPosRouteID;

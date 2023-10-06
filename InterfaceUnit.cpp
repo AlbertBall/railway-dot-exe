@@ -3461,8 +3461,8 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
                 while(!TTBLFile.eof())
                 {
                     TTBLFile.get(c);
-                    if((c > 0) && (c < 32) && (c != 13) && (c != 10)) //added (c > 0) at v2.16.2 as extended characters treated as negative
-//                    if((c < 32) && (c >= 1)) //have to allow NULLs - dropped at v2.16.1 as prevented CRLF which is ok, reverted to original condition above
+                    if((c > 0) && (c < 32) && (c != 13) && (c != 10)) //added (c > 0) & dropped (c != 0) at v2.16.2 as extended characters treated as negative
+//                    if((c < 32) && (c >= 1)) //have to allow NULLs - dropped at v2.16.1 as prevented CRLF which is ok so used condition above
                     {
                         ShowMessage("Timetable file contains invalid control characters");
                         TTBLFile.close();
@@ -21275,7 +21275,7 @@ void TInterface::LoadSession(int Caller)
 //additions at v2.16.1 - train descriptions
                         SessionFile.get(TempChar);
                         while(!SessionFile.eof() && ((TempChar == '\n') || (TempChar == '\0')))
-                        {// get rid of all end of lines & emerge with eof or digit that represents first train's description
+                        {// get rid of all end of lines & emerge with eof or character that represents first train's description
                             SessionFile.get(TempChar);
                         }
                         if(SessionFile.eof()) //old session file, no train descriptions, no changes of description

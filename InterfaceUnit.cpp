@@ -5880,6 +5880,14 @@ void TInterface::TimetableHandler()
 //    if(*TTCurrentEntryPtr != "")  don't use this here as fails to highlight blank line entries, but need to add it in next condition or can have error (Cameron020723errorlog.err)
             if((TTCurrentEntryPtr > TTStartTimePtr) && (TTCurrentEntryPtr <= TTLastServicePtr) && (*TTCurrentEntryPtr != "") && ((*TTCurrentEntryPtr)[1] != '*'))
             {                                                                                   //added (*TTCurrentEntryPtr != "") at v2.16.0 due to Cameron's error noted above
+            /* Details of the error: Fault arose because a timetable had a start time without any entries other than comments,
+            and a blank line was saved at the end.  The program has a number of internal timetable service iterators (an iterator is a type
+            of memory address pointer) which point to the start time entry, the first service entry, the last service entry, the current
+            (i.e. user-selected entry) and so on. In earlier versions these were initially set to null (i.e zero - didn't point to anything), but in
+            v2.15.0 I changed them to point to the next (unused) service location because the 64 bit compiler won't accept
+            null as an iterator value. Interestingly I set them to an unused location deliberately to force an error if the program
+            tried to use it as a real location, and in Cameron's timetable it did.
+            */
                 bool ServiceEntry = true;
                 DisplayOneTTLineInPanel(0, *TTCurrentEntryPtr, ServiceEntry);
             }
@@ -24005,7 +24013,9 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
      //test code here
+
     /*
+    throw Exception("test error");
                     if(AllRoutes->AllRoutesVector.size() > 0)
                     {
                         for(TAllRoutes::TAllRoutesVectorIterator ARVIt = AllRoutes->AllRoutesVector.begin(); ARVIt < AllRoutes->AllRoutesVector.end(); ARVIt++)

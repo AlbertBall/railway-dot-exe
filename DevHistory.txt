@@ -697,6 +697,8 @@ Not for website:
 
 /corrected error in location names with extended characters - character examination conditions in EditTimetableMenuItemClick overlooked fact that extended chars treated as negative, so were < 0.
 
+/changed fatal error message to include a check to make sure that the latest program version is in use as the error may already have been corrected
+
 VERSION CHANGES AFTER v2.16.0 for v2.16.1
 
 This is a bug-fix version that corrects bugs found in earlier versions.

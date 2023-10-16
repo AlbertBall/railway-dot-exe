@@ -86,6 +86,8 @@ class TOnePrefDir; // predeclarations
 class TOneRoute;
 class TTrack;
 class TGraphicElement;
+class TTrainController;
+class TTrainDataEntry;
 class API; //forward class declaration instead of including header  added at v2.10.0
 
 class TInterface : public TForm
@@ -750,7 +752,8 @@ __published: // IDE-managed Components
     TBitBtn *SigAutoNonConsecButton;
     TButton *InvertTTEntryButton;
     TButton *Button1;
-    TBitBtn *FlashControlButton;  //added at v2.15.0
+    TBitBtn *FlashControlButton;
+    TButton *ExpandRepeatsButton;  //added at v2.15.0
 
 // menu item actions
     void __fastcall AboutMenuItemClick(TObject *Sender);
@@ -974,7 +977,8 @@ __published: // IDE-managed Components
     void __fastcall MajorFailuresMenuItemClick(TObject *Sender);
     void __fastcall SigAutoNonConsecButtonClick(TObject *Sender);
     void __fastcall InvertTTEntryButtonClick(TObject *Sender);
-    void __fastcall FlashControlButtonClick(TObject *Sender);  //added at v2.15.0
+    void __fastcall FlashControlButtonClick(TObject *Sender);
+    void __fastcall ExpandRepeatsButtonClick(TObject *Sender);  //added at v2.15.0
 
 
 public: // AboutForm needs access to these
@@ -1116,6 +1120,15 @@ private:
     typedef std::map<TNumHVPair, TNumHVPair, TDynamicMapComp> TCouplingMap;
     typedef TCouplingMap::iterator TCMIterator;
 
+// Timetable edit members
+
+    typedef std::vector<AnsiString> TTimetableEditVector;
+///< typedef for the complete timetable as a list of AnsiStrings (each a complete ttb line delimited by null) for use in edit timetable functions
+    typedef std::vector<AnsiString>::iterator TTEVPtr;
+///< typedef for pointers to entries in edit timetable functions
+
+// ---------------------------------------------------------------------------
+
 //variables
     TDynamicMap DynMapToHost, DynMapFromHost, HostCombinedDynamicMap;
     TCouplingPair AllRailwaysCouplingPair, OneRailwayCouplingPair;
@@ -1176,14 +1189,6 @@ private:
     bool MultiplayerRailwayValid(AnsiString RailwayName, char &ErrorNumber);
     ///< checks whether a railway loaded by a player is listed and available
     void BuildDummyTestMap(TDynamicMap &DMap, std::ifstream &ExitFile); //<--temporary function for testing purposes
-
-// ---------------------------------------------------------------------------
-// Timetable edit members
-
-    typedef std::vector<AnsiString>TTimetableEditVector;
-///< typedef for the complete timetable as a list of AnsiStrings for use in edit timetable functions
-    typedef std::vector<AnsiString>::iterator TTEVPtr;
-///< typedef for pointers to entries in edit timetable functions
 
 // ---------------------------------------------------------------------------
 
@@ -1441,7 +1446,6 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
 ///< increments each clock cycle to a max. of 4 then resets to 0, used to toggle bool WarningFlash - see above
     TCursor TempCursor;
 ///< stores the screen cursor while a temporary cursor (ususlly an hourglass) is displayed
-
     TDateTime LastTenthSecTick;
 ///< unused
     TDateTime PointFlashStartTime;

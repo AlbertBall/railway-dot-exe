@@ -33,7 +33,6 @@
 
 /// Predeclared to allow access, full declaration in DisplayUnit
 class TDisplay;
-
 /// Used for reporting error conditions & warnings
 enum TActionEventType
 {
@@ -89,8 +88,6 @@ enum TRunningEntry
     NotStarted, Running, Exited
 };
 
-// ---------------------------------------------------------------------------
-
 class TTrainDataEntry; // predeclared so TActionVectorEntry has access to it, description below
 
 typedef std::list<int>TNumList;
@@ -98,12 +95,11 @@ typedef std::list<int>TNumList;
 typedef TNumList::iterator TNumListIterator;
 
 // ---------------------------------------------------------------------------
-
 ///these added for multiplayer
 
 typedef std::pair<int, int> THVShortPair;
 
-class TExitInfo //corresponds to TServiceInfo in Interface  12 bytes
+class TExitInfo //corresponds to TServiceInfo in Interface 12 bytes
 {
 public:
     AnsiString ServiceReference;
@@ -240,7 +236,7 @@ public:
     }
 };
 
-typedef std::vector<TTrainDataEntry>TTrainDataVector;
+typedef std::vector<TTrainDataEntry> TTrainDataVector;
 ///< vector class for containing the whole timetable - one entry per timetable service entry (the object is a member of TTrainController)
 // ---------------------------------------------------------------------------
 

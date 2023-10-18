@@ -5290,11 +5290,15 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
             Utilities->CallLogPop(7777);
             return;
         }
+
         std::list<TTrainDataEntry*> PreRepeatList;
-//List of linked repeat service pointers (so they are unique) prior to being examined for other linked services (expands when examining services and contracts when services examined) - used when expanding repeat services - added at v2.16.2
+//List of linked repeat service pointers (so they are unique) prior to being examined for other linked services (expands when examining services
+//and contracts when services examined) - used when expanding repeat services
         std::list<TTrainDataEntry*> RepeatList;
-//<List of linked repeat service pointers after having been examined for other linked services (starts empty and expands when services examined) - used when expanding repeat services - added at v2.16.2
+//<List of linked repeat service pointers after having been examined for other linked services (starts empty and expands when services examined) -
+//used when expanding repeat services
         std::list<TTrainDataEntry*>::iterator ListIt;
+        AnsiString CurrentEntry = *TTCurrentEntryPtr;
 
         if(TTCurrentEntryPtr == TimetableEditVector.end())
         {
@@ -5309,12 +5313,16 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
         std::pair<TTrainDataEntry*, AnsiString*> LinkMapEntry;
         TTrainDataEntry* TDEPtr = &TrainController->TrainDataVector.front();
         bool StartTimeFound = false;
-        TDateTime StartTime; //only used for function
+        TDateTime DummyTime; //required for CheckTimeValidity function, not used otherwise
         bool BreakFlag = false;
         bool BlankLineFound = false;
+        int Mins;
+        int Digits;
+        int Repeats;
+
         for(TTimetableEditVector::iterator TTEVIt = TimetableEditVector.begin(); TTEVIt != TimetableEditVector.end(); TTEVIt++)
         {
-            while(!StartTimeFound && !TrainController->CheckTimeValidity(7777, *TTEVIt, StartTime))
+            while(!StartTimeFound && !TrainController->CheckTimeValidity(7777, *TTEVIt, DummyTime))
             {
                 BreakFlag = true;
                 break;
@@ -5325,7 +5333,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                 continue;
             }
             StartTimeFound = true;
-            if(TrainController->CheckTimeValidity(7777, *TTEVIt, StartTime)) //step past start time
+            if(TrainController->CheckTimeValidity(7777, *TTEVIt, DummyTime)) //step past start time
             {
                 continue; //no subsequent entry within the timetable can start with a time or it wouldn't validate
             }
@@ -5335,8 +5343,6 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
             }
             if((!BlankLineFound && (*TTEVIt)[1] != '*'))
             {  //valid service line
-//AnsiString HC = (*TDEPtr).ServiceReference;  //for diagnostics
-//AnsiString OneLine = *TTEVIt;
                 LinkMapEntry.first = TDEPtr;
                 LinkMapEntry.second = &(*TTEVIt); //convert iterator to AnsiString pointer
                 LinkMap.insert(LinkMapEntry);
@@ -5354,7 +5360,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
         TDEPtr = &TrainController->TrainDataVector.front();
         for(TTimetableEditVector::iterator TTEVIt = TimetableEditVector.begin(); TTEVIt != TimetableEditVector.end(); TTEVIt++)
         {
-            while(!StartTimeFound && !TrainController->CheckTimeValidity(7777, *TTEVIt, StartTime))
+            while(!StartTimeFound && !TrainController->CheckTimeValidity(7777, *TTEVIt, DummyTime))
             {
                 BreakFlag = true;
                 break;
@@ -5365,7 +5371,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                 continue;
             }
             StartTimeFound = true;
-            if(TrainController->CheckTimeValidity(7777, *TTEVIt, StartTime)) //step past start time
+            if(TrainController->CheckTimeValidity(7777, *TTEVIt, DummyTime)) //step past start time
             {
                 continue; //no subsequent entry within the timetable can start with a time or it wouldn't validate
             }
@@ -5375,8 +5381,6 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
             }
             if((!BlankLineFound && (*TTEVIt)[1] != '*'))
             {  //valid service line
-//AnsiString HC = (*TDEPtr).ServiceReference;  //for diagnostics
-//AnsiString OneLine = *TTEVIt;
                 if(TTEVIt == TTCurrentEntryPtr)
                 {
                     break;
@@ -5385,6 +5389,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
             }
         }
 //add this service to the RepeatList then examine it, and add all linked references to the PreRepeatList
+//ShuttleService = false;
         RepeatList.push_back(TDEPtr);
         bool DuplicatePointer;
         for(TActionVectorIterator AVIt = TDEPtr->ActionVector.begin(); AVIt != TDEPtr->ActionVector.end(); AVIt++)
@@ -5407,12 +5412,14 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                  || (AVIt->Command == "F-nshs") || (AVIt->Command == "Sns-fsh"))
             {
                 ShowMessage("This service forms part of a shuttle, and shuttles can't yet be expanded");
+//ShuttleService = true;
                 Utilities->CallLogPop(7777);
                 return;
             }
         }
         while(!PreRepeatList.empty())
         {
+//ShuttleService = false;
             TTrainDataEntry* TDEPtr = PreRepeatList.front();
             PreRepeatList.pop_front();
             for(TActionVectorIterator AVIt = TDEPtr->ActionVector.begin(); AVIt != TDEPtr->ActionVector.end(); AVIt++)
@@ -5435,6 +5442,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                      || (AVIt->Command == "F-nshs") || (AVIt->Command == "Sns-fsh"))
                 {
                     ShowMessage("This service forms part of a shuttle, and shuttles can't yet be expanded");
+//ShuttleService = true;
                     Utilities->CallLogPop(7777);
                     return;
                 }
@@ -5443,11 +5451,13 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
         }
 
         //here when have all linked services in RepeatList, add  marker "####" to start of all entries to be expanded
+        //with this it doesn't matter what order the RepeatList service pointers are in, as expansion will be done in the original
+        //timetable order when the markers are identified
         AnsiString* TrainEditEntryPtr;
+        TimetableChangedFlag = true;
         while(!RepeatList.empty())
         {
             TTrainDataEntry* TDEPtr = RepeatList.front();
-            RepeatList.pop_front();
             if(LinkMap.find(TDEPtr) != LinkMap.end())
             {
                 TrainEditEntryPtr = LinkMap.find(TDEPtr)->second;
@@ -5458,106 +5468,125 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                 Utilities->CallLogPop(7777);
                 return;
             }
-            *TrainEditEntryPtr = "####" + *TrainEditEntryPtr;
-        }
+            RepeatList.pop_front();
+            int RpIndex = TrainEditEntryPtr->Pos(",R;"); //RpIndex is the position of the comma
+            if(RpIndex == 0) //can't find the repeat, remove all markers and exit
+            {
+                for(TTimetableEditVector::iterator TTEVIt2 = TimetableEditVector.begin(); TTEVIt2 != TimetableEditVector.end(); TTEVIt2++)
+                {
+                    if(TTEVIt2->SubString(1,4) == "####")
+                    {
+                        *TTEVIt2 = TTEVIt2->SubString(5, TTEVIt2->Length() - 4); //remove the marker
+                    }
+                }
+                ShowMessage("Failed to find a repeat for the selected entry. Please discard the modified timetable"
+                   " which is likely to be corrupt and reload the original.");
+                Utilities->CallLogPop(7777);
+                return;
+            }
+            AnsiString Rpt = TrainEditEntryPtr->SubString(RpIndex + 3, TrainEditEntryPtr->Length() - (RpIndex + 2)); //Rpt = "mins;digits;repeats"
+            AnsiString AnsiMins = "", AnsiDigits = "", AnsiRepeats = "";
+            int x = 1;
+            while(Rpt[x] != ';')
+            {
+                AnsiMins += Rpt[x];
+                x++;
+            }
+            x++;
+            while(Rpt[x] != ';')
+            {
+                AnsiDigits += Rpt[x];
+                x++;
+            }
+            x++;
+            while(x <= Rpt.Length())
+            {
+                AnsiRepeats += Rpt[x];
+                x++;
+            }
+            Mins = AnsiMins.ToInt();
+            Digits = AnsiDigits.ToInt();
+            Repeats = AnsiRepeats.ToInt();
+            TrainEditEntryPtr->Delete(RpIndex, (TrainEditEntryPtr->Length() - RpIndex + 1)); //delete the repeat command before adding the marker
+            *TrainEditEntryPtr = "####" + *TrainEditEntryPtr;                                  //so there's room for the marker without the risk of
+        }                                                                                      //the vector being repositioned
         //now expand each entry with a marker
-        TTimetableEditVector::iterator TTEVIt = TimetableEditVector.begin();
+        int IteratorCount = 0; //use this instead of an iterator because vector likely to be repositioned during insertions
         while(true)
         {
-            if(TTEVIt->SubString(1,4) == "####")
+            if((TimetableEditVector.begin() + IteratorCount)->SubString(1,4) == "####")
             {
-                *TTEVIt = TTEVIt->SubString(5, TTEVIt->Length() - 4); //remove the marker
-                int RpIndex = TTEVIt->Pos(",R;"); //RpIndex is the position of the comma
-                if(RpIndex == 0) //can't find the repeat, remove all markers and exit
-                {
-                    for(TTimetableEditVector::iterator TTEVIt2 = TimetableEditVector.begin(); TTEVIt2 != TimetableEditVector.end(); TTEVIt2++)
-                    {
-                        if(TTEVIt2->SubString(1,4) == "####")
-                        {
-                            *TTEVIt2 = TTEVIt2->SubString(5, TTEVIt2->Length() - 4); //remove the marker
-                        }
-                    }
-                    ShowMessage("Failed to find a repeat for the selected entry. Please discard the modified timetable"
-                       " which is likely to be corrupt and reload the original.");
-                    Utilities->CallLogPop(7777);
-                    return;
-                }
-                AnsiString Rpt = TTEVIt->SubString(RpIndex + 3, TTEVIt->Length() - (RpIndex + 2)); //Rpt = "mins;digits;repeats"
-                AnsiString AnsiMins = "", AnsiDigits = "", AnsiRepeats = "";
-                int x = 1;
-                while(Rpt[x] != ';')
-                {
-                    AnsiMins += Rpt[x];
-                    x++;
-                }
-                x++;
-                while(Rpt[x] != ';')
-                {
-                    AnsiDigits += Rpt[x];
-                    x++;
-                }
-                x++;
-                while(x <= Rpt.Length())
-                {
-                    AnsiRepeats += Rpt[x];
-                    x++;
-                }
-                int Mins = AnsiMins.ToInt();
-                int Digits = AnsiDigits.ToInt();
-                int Repeats = AnsiRepeats.ToInt();
+                *(TimetableEditVector.begin() + IteratorCount) = (TimetableEditVector.begin() +
+                    IteratorCount)->SubString(5, (TimetableEditVector.begin() + IteratorCount)->Length() - 4); //remove the marker
+                //change all internal referenced services by the repeat digits
                 for(int x = 1; x <= Repeats; x++)
                 {
-                    AnsiString EntryCopy = *TTEVIt;
-                    EntryCopy.Delete(RpIndex, EntryCopy.Length() - RpIndex + 1);
-                    AnsiString AnsiServRef = "";
-                    int y = 1;
-                    while(EntryCopy[y] != ';')
+                    AnsiString EntryCopy = *(TimetableEditVector.begin() + IteratorCount);
+                    for(int Position = 1; Position <= EntryCopy.Length(); Position++)
                     {
-                        AnsiServRef += EntryCopy[y];
-                        y++;
+                        bool FoundRef = false;
+                        AnsiString AnsiServRef = "";
+                        if(Position == 1)
+                        {
+                            FoundRef = true;
+                        }
+                        else if((EntryCopy.SubString(Position, 3) == "Sns") || (EntryCopy.SubString(Position, 3) == "Fns") ||
+                                (EntryCopy.SubString(Position, 3) == "rsp") || (EntryCopy.SubString(Position, 3) == "fsp") ||
+                                (EntryCopy.SubString(Position, 3) == "Sfs") || (EntryCopy.SubString(Position, 3) == "Fjo") ||
+                                (EntryCopy.SubString(Position, 3) == "jbo"))
+                        {
+                            Position = Position + 4;
+                            FoundRef = true;
+                        }
+                        if(FoundRef)
+                        {
+                            int y = Position;
+                            while((y <= EntryCopy.Length()) && (EntryCopy[y] != ';') && (EntryCopy[y] != ','))
+                            {
+                                AnsiServRef += EntryCopy[y];
+                                y++;
+                            }
+                            AddRefDigits(AnsiServRef, Position, EntryCopy, Digits);
+                        }
                     }
-                    AnsiString AnsiLastDigits = AnsiServRef.SubString(AnsiServRef.Length() - 1, 2);
-                    int LastDigits = AnsiLastDigits.ToInt();
-                    int NewDigits = (LastDigits + (x * Digits)) % 100;
-                    AnsiString AnsiNewDigits = AnsiString(NewDigits);
-                    if(NewDigits < 10)
+                    //change all time strings in EntryCopy by Mins * x
+                    for(int z = 1; z <= EntryCopy.Length(); z++)
                     {
-                        AnsiNewDigits = "0" + AnsiNewDigits;
+                        if(TrainController->CheckTimeValidity(7777, EntryCopy.SubString(z,5), DummyTime)) //text after time ignored
+                        {
+                            AnsiString NewTime = AddTimeMinutes(EntryCopy.SubString(z,5), Mins);
+                            EntryCopy.Delete(z, 5);
+                            EntryCopy.Insert(NewTime, z); //this ok as doesn't alter overall length of EntryCopy
+                        }
                     }
-                    EntryCopy = EntryCopy.Delete(AnsiServRef.Length() - 1, 2);
-                    EntryCopy = EntryCopy.Insert(AnsiNewDigits, AnsiServRef.Length() - 1);
-
- <-- here to change all time strings in EntryCopy by Mins * x
-
-
-
+                    TimetableEditVector.insert(TimetableEditVector.begin() + IteratorCount + 1, EntryCopy); //use this as the vector may be repositioned
+                    IteratorCount++;
                 }
             }
             else
             {
-                TTEVIt++;
-                if(TTEVIt == TimetableEditVector.end())
+                IteratorCount++;
+                if((TimetableEditVector.begin() + IteratorCount) == TimetableEditVector.end())
                 {
                     break;
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         CompileAllEntriesMemoAndSetPointers(7777);
+        Level1Mode = TimetableMode;
+        SetLevel1Mode(7777);
+        //reset TTCurrentEntryPtr
+        int RpIndex = CurrentEntry.Pos(",R;"); //RpIndex is the position of the comma
+        AnsiString RepeatStripped = CurrentEntry;
+        RepeatStripped = RepeatStripped.Delete(RpIndex, (CurrentEntry.Length() - RpIndex + 1));
+        for(TTimetableEditVector::iterator TTEVIt = TimetableEditVector.begin(); TTEVIt != TimetableEditVector.end(); TTEVIt++)
+        {
+            if(RepeatStripped == *TTEVIt)
+            {
+                TTCurrentEntryPtr = TTEVIt;
+                break;
+            }
+        }
         Utilities->CallLogPop(7777);
     }
     catch(const Exception &e) //non-error catch
@@ -5565,8 +5594,53 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
         ShowMessage("The following error occurred during expansion: " + e.Message + ". Please discard the modified timetable"
             " which is likely to be corrupt and reload the original.");
         Utilities->CallLogPop(7777);
-//        ErrorLog(7777, e.Message);
     }
+}
+
+//---------------------------------------------------------------------------
+
+AnsiString TInterface::AddTimeMinutes(AnsiString OrigTimeString, int MinsToAdd)
+{//only used in ExpandRepeatsButtonClick function, errors caught in that function
+    TrainController->LogEvent("AddTimeMinutes");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddTimeMinutes");
+    int OrigMins = OrigTimeString.SubString(4,2).ToInt();
+    int Hrs = OrigTimeString.SubString(1,2).ToInt();
+    OrigMins += MinsToAdd;
+    while(OrigMins >= 60)
+    {
+        OrigMins -= 60;
+        Hrs++;
+    }
+    AnsiString MinsStr = AnsiString(OrigMins), HrsStr = AnsiString(Hrs);
+    if(OrigMins < 10)
+    {
+        MinsStr = "0" + MinsStr;
+    }
+    if(Hrs < 10)
+    {
+        HrsStr = "0" + HrsStr;
+    }
+    Utilities->CallLogPop(7777);
+    return(HrsStr + ":" + MinsStr);
+}
+
+//---------------------------------------------------------------------------
+
+void TInterface::AddRefDigits(AnsiString AnsiServRef, int Position, AnsiString &EntryCopy, int Digits)
+{//only used in ExpandRepeatsButtonClick function, errors caught in that function
+    TrainController->LogEvent("AddRefDigits");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddRefDigits");
+    AnsiString AnsiLastDigits = AnsiServRef.SubString(AnsiServRef.Length() - 1, 2);
+    int LastDigits = AnsiLastDigits.ToInt();
+    int NewDigits = (LastDigits + Digits) % 100;
+    AnsiString AnsiNewDigits = AnsiString(NewDigits);
+    if(NewDigits < 10)
+    {
+        AnsiNewDigits = "0" + AnsiNewDigits;
+    }
+    EntryCopy = EntryCopy.Delete(Position + AnsiServRef.Length() - 2, 2);
+    EntryCopy = EntryCopy.Insert(AnsiNewDigits, Position + AnsiServRef.Length() - 2);
+    Utilities->CallLogPop(7777);
 }
 
 //---------------------------------------------------------------------------
@@ -24330,6 +24404,34 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
      //test code here
 
     /*
+    while(true)
+    {
+        bool RepeatFound = false;
+        unsigned int TTIteratorCount;
+        for(TTIteratorCount = 0; TTIteratorCount < TimetableEditVector.size(); TTIteratorCount++)
+        {
+            TTimetableEditVector::iterator TTEVIt = TimetableEditVector.begin() + TTIteratorCount;
+            if((*TTEVIt).Pos(",R;") > 0)
+            {
+                TTCurrentEntryPtr = TTEVIt;
+                ExpandRepeatsButton->Click();
+                if(ShuttleService)
+                {
+                    continue;
+                }
+                RepeatFound = true;
+                SaveTTButton->Click();
+                ValidateTimetableButton->Click(); //new vector created here
+                break; //from for... loop
+            }
+        }
+        if(!RepeatFound)
+        {
+            break; //from while... loop
+        }
+    }
+
+
     throw Exception("test error");
                     if(AllRoutes->AllRoutesVector.size() > 0)
                     {

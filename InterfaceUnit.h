@@ -960,13 +960,15 @@ __published: // IDE-managed Components
     void __fastcall MPHPOwnPortEditBoxKeyUp(TObject *Sender, WORD &Key, TShiftState Shift);
     void __fastcall IPCheckLinkLabelLinkClick(TObject *Sender, const UnicodeString Link,
           TSysLinkType LinkType);
-    void __fastcall ReloadConfigMenuItemClick(TObject *Sender);
     void __fastcall ShowHideStringGridMenuItemClick(TObject *Sender);
+
+//non-multiplayer fastcalls
     void __fastcall SkipTimetabledActionsMenuItemClick(TObject *Sender);
     void __fastcall SkipTTActionsListBoxMouseUp(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
     void __fastcall SkipListExitImageClick(TObject *Sender);
     void __fastcall BecomeNewServiceMenuItemClick(TObject *Sender);
+    void __fastcall ReloadConfigMenuItemClick(TObject *Sender);
     void __fastcall NoDelaysMenuItemClick(TObject *Sender);
     void __fastcall MinorDelaysMenuItemClick(TObject *Sender);
     void __fastcall ModerateDelaysMenuItemClick(TObject *Sender);
@@ -978,7 +980,7 @@ __published: // IDE-managed Components
     void __fastcall SigAutoNonConsecButtonClick(TObject *Sender);
     void __fastcall InvertTTEntryButtonClick(TObject *Sender);
     void __fastcall FlashControlButtonClick(TObject *Sender);
-    void __fastcall ExpandRepeatsButtonClick(TObject *Sender);  //added at v2.15.0
+    void __fastcall ExpandRepeatsButtonClick(TObject *Sender);  //added at v2.16.2
 
 
 public: // AboutForm needs access to these
@@ -1022,7 +1024,7 @@ private:
     static const UnicodeString IMAGE_DIR_NAME;
     static const UnicodeString FORMATTEDTT_DIR_NAME;
     static const UnicodeString USERGRAPHICS_DIR_NAME;
-
+//bool ShuttleService;
 // Level 2 program modes (i.e. submodes from the level 1 modes)
     enum TLevel2OperMode
     {
@@ -1120,13 +1122,6 @@ private:
     typedef std::map<TNumHVPair, TNumHVPair, TDynamicMapComp> TCouplingMap;
     typedef TCouplingMap::iterator TCMIterator;
 
-// Timetable edit members
-
-    typedef std::vector<AnsiString> TTimetableEditVector;
-///< typedef for the complete timetable as a list of AnsiStrings (each a complete ttb line delimited by null) for use in edit timetable functions
-    typedef std::vector<AnsiString>::iterator TTEVPtr;
-///< typedef for pointers to entries in edit timetable functions
-
 // ---------------------------------------------------------------------------
 
 //variables
@@ -1189,6 +1184,15 @@ private:
     bool MultiplayerRailwayValid(AnsiString RailwayName, char &ErrorNumber);
     ///< checks whether a railway loaded by a player is listed and available
     void BuildDummyTestMap(TDynamicMap &DMap, std::ifstream &ExitFile); //<--temporary function for testing purposes
+
+// ---------------------------------------------------------------------------
+
+// Timetable edit members
+
+    typedef std::vector<AnsiString> TTimetableEditVector;
+///< typedef for the complete timetable as a list of AnsiStrings (each a complete ttb line delimited by null) for use in edit timetable functions
+    typedef std::vector<AnsiString>::iterator TTEVPtr;
+///< typedef for pointers to entries in edit timetable functions
 
 // ---------------------------------------------------------------------------
 
@@ -1500,6 +1504,8 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
 
 // functions defined in .cpp file
 
+/// used in ExpandRepeatsButtonClick function to add minutes to an AnsiString time
+    AnsiString AddTimeMinutes(AnsiString OrigTimeString, int MinsToAdd);
 /// used for floating window to display train status
     AnsiString GetTrainStatusFloat(int Caller, int TrainID, AnsiString FormatNoDPStr, AnsiString SpecialStr); //new at v2.6.2
 /// Search the timetable entry pointed to by TTCurrentEntryPtr and if any times (HH:MM) are present return true (checked in order to enable or not AddMinsButton & SubMinsButton)
@@ -1547,6 +1553,8 @@ to another point bidir leg with 3 PDs set.  If so it returns true, else false.*/
     bool SessionFileIntegrityCheck(int Caller, AnsiString FileName);
 /// Add 'Name' to TextVector and display on screen at a position determined by the shape and size of the location if UseEnteredPosition false, or at HPos & VPos if UseEnteredPosition true
     void AddLocationNameText(int Caller, AnsiString Name, int HPos, int VPos, bool UseEnteredPosition);
+/// Used in ExpandRepeatsButtonClick function to add digits a service reference
+    void AddRefDigits(AnsiString AnsiServRef, int Position, AnsiString &EntryCopy, int Digits);
 /// Function that deals with approach locking during ClockTimer2 function
     void ApproachLocking(int Caller, TDateTime Now);
 /// The main loop, called every clock tick via MasterClockTimer

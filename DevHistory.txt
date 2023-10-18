@@ -1,4 +1,11 @@
 mention that links to docs on json2ttb broken so presented 'as is'
+add repeat expansion
+include expansion in manual
+remove test function code
+remove shuttleservice bool from interface h & cpp & uncomment the shuttle message
+uncomment the timetable integrity message in validate tt button click
+uncomment initial warning message in expand repeat button click
+
 
 
 

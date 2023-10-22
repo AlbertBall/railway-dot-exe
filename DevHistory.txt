@@ -1,12 +1,16 @@
 mention that links to docs on json2ttb broken so presented 'as is'
-add repeat expansion
-include expansion in manual
+add repeat expansion & shuttle expansion
+include expansion explanation in manual
 remove test function code
-remove shuttleservice bool from interface h & cpp & uncomment the shuttle message
-uncomment the timetable integrity message in validate tt button click
-uncomment initial warning message in expand repeat button click
+/remove shuttleservice bool from interface h & cpp & uncomment the shuttle messages
+/uncomment the timetable integrity message in validate tt button click line 4886 int
+/uncomment initial warning message in expand repeat button click line 5287 int
+Find out exactly what TimetableHandler and CompileAllEntriesMemoAndSetPointers do and see if inclusion required
 
-
+For shuttles make sure all service refs are unique after expansion (diff rules for shuttles so can validate with shuttles but not when expanded)
+Still to resume original highlighted enrtry after expansion (doesn't for shuttles) & ensure displayed entry corresponds correctly with the new entry
+Still to expand the warning message
+Expanded ttb is aaBirm2.ttb - see if runs ok
 
 
 Development History

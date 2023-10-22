@@ -13318,12 +13318,12 @@ Command   Format                    OtherHead                        NonRepeatin
                                     Code                             ShuttleLink-   EntryPtr     ShuttleLink
                                                                      HeadCode                    EntryPtr
 
-Snt-sh  SNTShuttle                  Y (rtn shuttle)                  N              Y (rtn sh)   N               Simple shuttle - no feeder service
-Frh-sh  TimeCmdHeadCode             Y (outwd shuttle)                N              Y (outwd sh) N               Simple shuttle - no finishing service
-F-nshs  FNSNonRepeatToShuttle       N (shld be Y for outwd shuttle)  Y (shld be N)  Y (correct)  N (correct)     Feeder service link to shuttle
-Sns-sh  SNSShuttle                  Y (rtn shuttle)                  Y (feeder)     Y (rtn)      Y (fdr)         Shuttle link from feeder service
-Sns-fsh SNSNonRepeatFromShuttle     N (shld be Y for rtn shuttle)    Y (shld be N)  Y (correct)  N (correct)     Finishing service link from shuttle
-Fns-sh  FSHNewService               Y (outwd shuttle)                Y (finishing)  Y (outwd sh) Y (finish)      Shuttle link to finishing service
+Snt-sh  SNTShuttle                  Y (rtn shuttle)                  N              Y (rtn sh)         N               Simple shuttle - no feeder service
+Frh-sh  TimeCmdHeadCode             Y (outwd shuttle)                N              Y (outwd sh)       N               Simple shuttle - no finishing service
+F-nshs  FNSNonRepeatToShuttle       N (shld be Y for outwd shuttle)  Y (shld be N)  Y (correct)        N (correct)     Feeder service link to shuttle
+Sns-sh  SNSShuttle                  Y (rtn shuttle)                  Y (feeder)     Y (fdr-shld be rtn)N (shld be fdr) Luckily NonRep link not needed
+Sns-fsh SNSNonRepeatFromShuttle     N (shld be Y for rtn shuttle)    Y (shld be N)  Y (correct)        N (correct)     Finishing service link from shuttle
+Fns-sh  FSHNewService               Y (outwd shuttle)                Y (finishing)  Y (outwd sh)       Y (finish)      Shuttle link to finishing service
 
 Note:  Any shuttle start can have any finish - feeder and finish, neither, feeder but no finish & vice versa.
 

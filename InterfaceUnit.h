@@ -1024,7 +1024,6 @@ private:
     static const UnicodeString IMAGE_DIR_NAME;
     static const UnicodeString FORMATTEDTT_DIR_NAME;
     static const UnicodeString USERGRAPHICS_DIR_NAME;
-//bool ShuttleService;
 // Level 2 program modes (i.e. submodes from the level 1 modes)
     enum TLevel2OperMode
     {
@@ -1191,7 +1190,7 @@ private:
 
     typedef std::vector<AnsiString> TTimetableEditVector;
 ///< typedef for the complete timetable as a list of AnsiStrings (each a complete ttb line delimited by null) for use in edit timetable functions
-    typedef std::vector<AnsiString>::iterator TTEVPtr;
+    typedef std::vector<AnsiString>::iterator TTEVIterator;
 ///< typedef for pointers to entries in edit timetable functions
 
 // ---------------------------------------------------------------------------
@@ -1482,7 +1481,7 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
     TSpeedButton* CurrentSpeedButton;
 ///< stores the selected track build element button during railway building
 
-    TTEVPtr TEVPtr, TTCurrentEntryPtr, TTStartTimePtr, TTFirstServicePtr, TTLastServicePtr;
+    TTEVIterator TEVIterator, TTCurrentEntryIterator, TTStartTimeIterator, TTFirstServiceIterator, TTLastServiceIterator;
 ///< timetable entry value pointers used during timetable editing
 
     TTimetableEditVector TimetableEditVector, OriginalTimetableEditVector;
@@ -1505,7 +1504,7 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
 // functions defined in .cpp file
 
 /// used in ExpandRepeatsButtonClick function to add minutes to an AnsiString time
-    AnsiString AddTimeMinutes(AnsiString OrigTimeString, int MinsToAdd);
+    AnsiString AddTimeMinutes(AnsiString OrigTimeString, int MinsToAdd); //added at v2.16.2
 /// used for floating window to display train status
     AnsiString GetTrainStatusFloat(int Caller, int TrainID, AnsiString FormatNoDPStr, AnsiString SpecialStr); //new at v2.6.2
 /// Search the timetable entry pointed to by TTCurrentEntryPtr and if any times (HH:MM) are present return true (checked in order to enable or not AddMinsButton & SubMinsButton)
@@ -1554,7 +1553,7 @@ to another point bidir leg with 3 PDs set.  If so it returns true, else false.*/
 /// Add 'Name' to TextVector and display on screen at a position determined by the shape and size of the location if UseEnteredPosition false, or at HPos & VPos if UseEnteredPosition true
     void AddLocationNameText(int Caller, AnsiString Name, int HPos, int VPos, bool UseEnteredPosition);
 /// Used in ExpandRepeatsButtonClick function to add digits a service reference
-    void AddRefDigits(AnsiString AnsiServRef, int Position, AnsiString &EntryCopy, int Digits);
+    void AddRefDigits(AnsiString AnsiServRef, int Position, AnsiString &EntryCopy, int Digits); //added at v2.16.2
 /// Function that deals with approach locking during ClockTimer2 function
     void ApproachLocking(int Caller, TDateTime Now);
 /// The main loop, called every clock tick via MasterClockTimer

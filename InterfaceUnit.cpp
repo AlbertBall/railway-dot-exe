@@ -614,9 +614,9 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TrainController->MTBFHours = 0;
         TrainController->TwoOrMoreLocationsWarningGiven = false;
         CancelSelectionFlag = false;
-        TTStartTimePtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, best to initialise to an invalid location to force errors if not set properly
-        TTFirstServicePtr = TimetableEditVector.end();
-        TTLastServicePtr = TimetableEditVector.end();
+        TTStartTimeIterator = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, best to initialise to an invalid location to force errors if not set properly
+        TTFirstServiceIterator = TimetableEditVector.end();
+        TTLastServiceIterator = TimetableEditVector.end();
         Track->OverrideAndHideSignalBridgeMessage = false; // added at v2.5.1 to allow facing signals before bridges - with a warning
         ConflictPanel->Visible = false;
         TTClockAdjustWarningPanel->Visible = false;
@@ -3337,11 +3337,11 @@ void __fastcall TInterface::CreateTimetableMenuItemClick(TObject *Sender)
         CopiedEntryFlag = false;
         NewEntryInPreparationFlag = false;
         CopiedEntryStr = "";
-        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
-        TTCurrentEntryPtr = TimetableEditVector.end();
-        TTStartTimePtr = TimetableEditVector.end();
-        TTFirstServicePtr = TimetableEditVector.end();
-        TTLastServicePtr = TimetableEditVector.end();
+        TEVIterator = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+        TTCurrentEntryIterator = TimetableEditVector.end();
+        TTStartTimeIterator = TimetableEditVector.end();
+        TTFirstServiceIterator = TimetableEditVector.end();
+        TTLastServiceIterator = TimetableEditVector.end();
 
 // populate LocationNameComboBox if a railway is loaded, but first compile the ActiveTrackElementNameMap
         TTrack::TActiveTrackElementNameMapEntry ActiveTrackElementNameMapEntry;
@@ -3439,11 +3439,11 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
         TimetableTitle = ""; // unload any loaded timetable.  Moved here from below at v2.1.0 for consistency with CreateTimetable
         TrainController->TrainDataVector.clear(); // unload any loaded timetable.  Moved here from below at v2.1.0 for consistency with CreateTimetable
         SetCaption(8); // added at v2.1.0 as formerly retained earlier loaded tt name in error
-        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
-        TTCurrentEntryPtr = TimetableEditVector.end();
-        TTStartTimePtr = TimetableEditVector.end();
-        TTFirstServicePtr = TimetableEditVector.end();
-        TTLastServicePtr = TimetableEditVector.end();
+        TEVIterator = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+        TTCurrentEntryIterator = TimetableEditVector.end();
+        TTStartTimeIterator = TimetableEditVector.end();
+        TTFirstServiceIterator = TimetableEditVector.end();
+        TTLastServiceIterator = TimetableEditVector.end();
         if(TimetableDialog->Execute())
         {
             if(TimetableDialog->InitialDir != TPath::GetDirectoryName(TimetableDialog->FileName)) // new at v2.6.0 to retain a new directory
@@ -3547,7 +3547,7 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
             return;
         }
 // all now set where can be
-        TTCurrentEntryPtr = TimetableEditVector.begin();
+        TTCurrentEntryIterator = TimetableEditVector.begin();
 
 // populate LocationNameComboBox if a railway is loaded, but first compile the ActiveTrackElementNameMap
         TTrack::TActiveTrackElementNameMapEntry ActiveTrackElementNameMapEntry;
@@ -3632,27 +3632,27 @@ void __fastcall TInterface::NextTTEntryButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("NextTTEntryButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",NextTTEntryButtonClick");
-        if((TTCurrentEntryPtr == TimetableEditVector.end()) || TimetableEditVector.empty())
+        if((TTCurrentEntryIterator == TimetableEditVector.end()) || TimetableEditVector.empty())
         {
             Utilities->CallLogPop(1683);
             return;
         }
-        if(TTCurrentEntryPtr < (TimetableEditVector.end() - 1))
+        if(TTCurrentEntryIterator < (TimetableEditVector.end() - 1))
         {
-            TTCurrentEntryPtr++;
+            TTCurrentEntryIterator++;
         }
         TTEntryChangedFlag = false;
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
         // position changing in AllEntriesTTListBox
         Level1Mode = TimetableMode;
         SetLevel1Mode(85);
-        if((TTCurrentEntryPtr - TimetableEditVector.begin()) < TopPos)
+        if((TTCurrentEntryIterator - TimetableEditVector.begin()) < TopPos)
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin();
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin();
         }
-        else if((TTCurrentEntryPtr - TimetableEditVector.begin()) > (TopPos + 45))
+        else if((TTCurrentEntryIterator - TimetableEditVector.begin()) > (TopPos + 45))
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin() - 45;
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin() - 45;
         }
         else
         {
@@ -3673,27 +3673,27 @@ void __fastcall TInterface::PreviousTTEntryButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("PreviousTTEntryButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PreviousTTEntryButtonClick");
-        if((TTCurrentEntryPtr == TimetableEditVector.end()) || TimetableEditVector.empty())
+        if((TTCurrentEntryIterator == TimetableEditVector.end()) || TimetableEditVector.empty())
         {
             Utilities->CallLogPop(1684);
             return;
         }
-        if(TTCurrentEntryPtr > TimetableEditVector.begin())
+        if(TTCurrentEntryIterator > TimetableEditVector.begin())
         {
-            TTCurrentEntryPtr--;
+            TTCurrentEntryIterator--;
         }
         TTEntryChangedFlag = false;
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
         // position changing in AllEntriesTTListBox
         Level1Mode = TimetableMode;
         SetLevel1Mode(86);
-        if((TTCurrentEntryPtr - TimetableEditVector.begin()) < TopPos)
+        if((TTCurrentEntryIterator - TimetableEditVector.begin()) < TopPos)
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin();
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin();
         }
-        else if((TTCurrentEntryPtr - TimetableEditVector.begin()) > (TopPos + 45))
+        else if((TTCurrentEntryIterator - TimetableEditVector.begin()) > (TopPos + 45))
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin() - 45;
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin() - 45;
         }
         else
         {
@@ -3750,7 +3750,7 @@ void __fastcall TInterface::AddMinsButtonClick(TObject *Sender)
                 ValidFlag = false;
             }
         }
-        if((TTCurrentEntryPtr == TimetableEditVector.end()) || (*TTCurrentEntryPtr == "") || (AddSubMinsBox->Text == "") || !ValidFlag)
+        if((TTCurrentEntryIterator == TimetableEditVector.end()) || (*TTCurrentEntryIterator == "") || (AddSubMinsBox->Text == "") || !ValidFlag)
         {
             Utilities->CallLogPop(1649);
             return;
@@ -3834,7 +3834,7 @@ void __fastcall TInterface::SubMinsButtonClick(TObject *Sender)
                 ValidFlag = false;
             }
         }
-        if((TTCurrentEntryPtr == TimetableEditVector.end()) || (*TTCurrentEntryPtr == "") || (AddSubMinsBox->Text == "") || !ValidFlag)
+        if((TTCurrentEntryIterator == TimetableEditVector.end()) || (*TTCurrentEntryIterator == "") || (AddSubMinsBox->Text == "") || !ValidFlag)
         {
             Utilities->CallLogPop(1659);
             return;
@@ -3901,24 +3901,24 @@ void __fastcall TInterface::CopyTTEntryButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("CopyTTEntryButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CopyTTEntryButtonClick");
-        if(TTCurrentEntryPtr == TimetableEditVector.end())
+        if(TTCurrentEntryIterator == TimetableEditVector.end())
         {
             Utilities->CallLogPop(1636);
             return;
         }
-        CopiedEntryStr = *TTCurrentEntryPtr;
+        CopiedEntryStr = *TTCurrentEntryIterator;
         CopiedEntryFlag = true;
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
                                                     // position changing in AllEntriesTTListBox
         Level1Mode = TimetableMode;
         SetLevel1Mode(93);
-        if((TTCurrentEntryPtr - TimetableEditVector.begin()) < TopPos)
+        if((TTCurrentEntryIterator - TimetableEditVector.begin()) < TopPos)
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin();
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin();
         }
-        else if((TTCurrentEntryPtr - TimetableEditVector.begin()) > (TopPos + 45))
+        else if((TTCurrentEntryIterator - TimetableEditVector.begin()) > (TopPos + 45))
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin() - 45;
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin() - 45;
         }
         else
         {
@@ -3942,7 +3942,7 @@ void __fastcall TInterface::InvertTTEntryButtonClick(TObject *Sender) //added at
         TTimetableEditVector InputVector, OutputVector, OutputVector2, TimeVector1, TimeVector2; //TTimetableEditVector is an ansistring vector type so convenient to use
         typedef std::vector<int> TMinVector;
         TMinVector MinVector;
-        AnsiString OneLine = *TTCurrentEntryPtr, SubStr, First, Second, Third, Fourth, TrainDataLine, NewEntry;
+        AnsiString OneLine = *TTCurrentEntryIterator, SubStr, First, Second, Third, Fourth, TrainDataLine, NewEntry;
         int RearStartOrRepeatMins, FrontStartOrRepeatDigits;
         TTimetableFormatType FormatType;
         TTimetableLocationType LocationType;
@@ -3955,8 +3955,8 @@ void __fastcall TInterface::InvertTTEntryButtonClick(TObject *Sender) //added at
         bool FinalCallFalse = false;
         bool GiveMessagesFalse = false;
         bool CheckLocationsExistInRailwayFalse = false;
-        TrainController->StripSpaces(7, *TTCurrentEntryPtr);
-        if(!TrainController->ProcessOneTimetableLine(7, Count, *TTCurrentEntryPtr, EndOfFile, FinalCallFalse, GiveMessagesFalse, CheckLocationsExistInRailwayFalse))
+        TrainController->StripSpaces(7, *TTCurrentEntryIterator);
+        if(!TrainController->ProcessOneTimetableLine(7, Count, *TTCurrentEntryIterator, EndOfFile, FinalCallFalse, GiveMessagesFalse, CheckLocationsExistInRailwayFalse))
         // return true for success
         {
             ShowMessage("There seem to be one or more errors in the syntax for the selected entry.\n\nPlease correct before inverting. ");
@@ -3964,7 +3964,7 @@ void __fastcall TInterface::InvertTTEntryButtonClick(TObject *Sender) //added at
             return;
         }
         else //Syntax ok
-        {    //parse the entry (*TTCurrentEntryPtr) storing all the valid lines in an ansistring vector
+        {    //parse the entry (*TTCurrentEntryIterator) storing all the valid lines in an ansistring vector
             while(true) //button only enabled if a legitimate service is highlighted
             {
                 int Pos = OneLine.Pos(',');
@@ -3991,7 +3991,7 @@ void __fastcall TInterface::InvertTTEntryButtonClick(TObject *Sender) //added at
             //here with InputVector populated, weed out any invalid entries
 /*
 NewEntry = "";   //populated
-for(TTEVPtr IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
+for(TTEVIterator IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
 {
     NewEntry += *IPVIt + ',';
 }
@@ -4002,7 +4002,7 @@ PasteTTEntryButton->Click(); //paste it after the current entry
             TDateTime TimeVal; //not used
             if(InputVector.size() > 0)
             {
-                for(TTEVPtr IPVIt = InputVector.end() - 1; IPVIt >= InputVector.begin(); IPVIt--) //backwards so can erase invalid entries
+                for(TTEVIterator IPVIt = InputVector.end() - 1; IPVIt >= InputVector.begin(); IPVIt--) //backwards so can erase invalid entries
                 {
                     if(((*IPVIt)[1] == 'R') && (IPVIt == InputVector.end() - 1))// repeat, erase it (must be last entry
                     {
@@ -4062,7 +4062,7 @@ PasteTTEntryButton->Click(); //paste it after the current entry
             //now have InputVector populated in order with legitimate entries & it isn't empty, change all TimeTimeLocs to 2 x TimeLocs & Finish to TimeLoc
 /*
 NewEntry = ""; //weeded out
-for(TTEVPtr IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
+for(TTEVIterator IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
 {
     NewEntry += *IPVIt + ',';
 }
@@ -4074,7 +4074,7 @@ PasteTTEntryButton->Click(); //paste it after the current entry
             {
                 bool TimeTimeLocFound = false;
                 AnsiString LastTimeVal = "";
-                for(TTEVPtr IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
+                for(TTEVIterator IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
                 {
                     if((*IPVIt)[1] == 'W') // warning
                     {
@@ -4138,7 +4138,7 @@ PasteTTEntryButton->Click(); //paste it after the current entry
 
 /*
 NewEntry = ""; //start & finish added & all TimeLocs
-for(TTEVPtr IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
+for(TTEVIterator IPVIt = InputVector.begin(); IPVIt < InputVector.end(); IPVIt++)
 {
     NewEntry += *IPVIt + ',';
 }
@@ -4147,17 +4147,17 @@ PasteTTEntryButton->Click(); //paste it after the current entry
 */
 
             //populate OutputVector in reverse
-            for(TTEVPtr IPVIt = InputVector.end() - 1; IPVIt >= InputVector.begin(); IPVIt--)
+            for(TTEVIterator IPVIt = InputVector.end() - 1; IPVIt >= InputVector.begin(); IPVIt--)
             {
                 OutputVector.push_back(*IPVIt);
             }
             //extract all times in same order into TimeVector1
-            for(TTEVPtr OPVIt = OutputVector.begin(); OPVIt < OutputVector.end(); OPVIt++)
+            for(TTEVIterator OPVIt = OutputVector.begin(); OPVIt < OutputVector.end(); OPVIt++)
             {
                 TimeVector1.push_back((*OPVIt).SubString(1, 5));
             }
             //convert times to integers
-            for(TTEVPtr TVIt = TimeVector1.begin(); TVIt < TimeVector1.end(); TVIt++)
+            for(TTEVIterator TVIt = TimeVector1.begin(); TVIt < TimeVector1.end(); TVIt++)
             {
                 int Mins, Hrs;
                 Mins = (*TVIt).SubString(4, 2).ToInt();
@@ -4189,7 +4189,7 @@ PasteTTEntryButton->Click(); //paste it after the current entry
             }
 /*
 NewEntry = "";
-for(TTEVPtr PVIt = OutputVector.begin(); PVIt < OutputVector.end(); PVIt++)
+for(TTEVIterator PVIt = OutputVector.begin(); PVIt < OutputVector.end(); PVIt++)
 {
     NewEntry += *PVIt + ',';
 }
@@ -4200,7 +4200,7 @@ PasteTTEntryButton->Click(); //paste it after the current entry
             //convert successive TimeLocs to TimeTimeLocs and substitute text for linked service reference
             bool FirstTimeLocRegistered = false;
             AnsiString ArrivalTime, DepartureTime, FirstTimeLoc, FirstLocation;
-            for(TTEVPtr OPVIt = OutputVector.begin(); OPVIt < OutputVector.end(); OPVIt++)
+            for(TTEVIterator OPVIt = OutputVector.begin(); OPVIt < OutputVector.end(); OPVIt++)
             {
                 if(TrainController->SplitEntry(4, *OPVIt, GiveMessagesFalse, CheckLocationsExistInRailwayFalse, First, Second,
                               Third, Fourth, RearStartOrRepeatMins, FrontStartOrRepeatDigits, FormatType,
@@ -4270,7 +4270,7 @@ PasteTTEntryButton->Click(); //paste it after the current entry
             // convert to a timetable entry - single string
 
             NewEntry = "";
-            for(TTEVPtr OPVIt = OutputVector2.begin(); OPVIt < OutputVector2.end(); OPVIt++)
+            for(TTEVIterator OPVIt = OutputVector2.begin(); OPVIt < OutputVector2.end(); OPVIt++)
             {
                 NewEntry += *OPVIt + ',';
             }
@@ -4306,26 +4306,26 @@ void __fastcall TInterface::CutTTEntryButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("CutTTEntryButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",CutTTEntryButtonClick");
-        if(TTCurrentEntryPtr == TimetableEditVector.end()) // || (*TTCurrentEntryPtr == ""))//safeguard
+        if(TTCurrentEntryIterator == TimetableEditVector.end()) // || (*TTCurrentEntryIterator == ""))//safeguard
         {
             Utilities->CallLogPop(1674);
             return;
         }
-        CopiedEntryStr = *TTCurrentEntryPtr;
+        CopiedEntryStr = *TTCurrentEntryIterator;
         CopiedEntryFlag = true;
-        int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin(); // vector pointers unreliable after an erase,
+        int OldVectorPos = TTCurrentEntryIterator - TimetableEditVector.begin(); // vector pointers unreliable after an erase,
                                                                             // so use the position in the vector
-        TimetableEditVector.erase(TTCurrentEntryPtr);
+        TimetableEditVector.erase(TTCurrentEntryIterator);
 // now need to rebuild all the pointers & the AllEntriesTTListBox so repeat the process from EditTimetableMenuItemClick
 // pick up the start time if there is one
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
         TTEntryChangedFlag = false;
-        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
-        TTCurrentEntryPtr = TimetableEditVector.end();
-        TTStartTimePtr = TimetableEditVector.end();
-        TTFirstServicePtr = TimetableEditVector.end();
-        TTLastServicePtr = TimetableEditVector.end();
+        TEVIterator = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+        TTCurrentEntryIterator = TimetableEditVector.end();
+        TTStartTimeIterator = TimetableEditVector.end();
+        TTFirstServiceIterator = TimetableEditVector.end();
+        TTLastServiceIterator = TimetableEditVector.end();
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
         // position changing in AllEntriesTTListBox
         AllEntriesTTListBox->Clear();
@@ -4337,29 +4337,29 @@ void __fastcall TInterface::CutTTEntryButtonClick(TObject *Sender)
             Utilities->CallLogPop(1777);
             return;
         }
-// reset the TTCurrentEntryPtr to the Entry before the erased one if there is one //was 'after', changed at v2.5.0
+// reset the TTCurrentEntryIterator to the Entry before the erased one if there is one //was 'after', changed at v2.5.0
 // but vector pointers unreliable after an erase, so use the position in the vector
         if(OldVectorPos == 0)
         {
-            TTCurrentEntryPtr = TimetableEditVector.begin();
+            TTCurrentEntryIterator = TimetableEditVector.begin();
         }
         else
         {
-            TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos - 1;
+            TTCurrentEntryIterator = TimetableEditVector.begin() + OldVectorPos - 1;
         }
-        if(TTCurrentEntryPtr == TimetableEditVector.end())
+        if(TTCurrentEntryIterator == TimetableEditVector.end())
         {
             OneEntryTimetableMemo->Clear();
         }
         Level1Mode = TimetableMode;
         SetLevel1Mode(115);
-        if((TTCurrentEntryPtr - TimetableEditVector.begin()) < TopPos)
+        if((TTCurrentEntryIterator - TimetableEditVector.begin()) < TopPos)
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin();
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin();
         }
-        else if((TTCurrentEntryPtr - TimetableEditVector.begin()) > (TopPos + 45))
+        else if((TTCurrentEntryIterator - TimetableEditVector.begin()) > (TopPos + 45))
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin() - 45;
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin() - 45;
         }
         else
         {
@@ -4380,22 +4380,22 @@ void __fastcall TInterface::PasteTTEntryButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("PasteTTEntryButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",PasteTTEntryButtonClick");
-        if(TTCurrentEntryPtr == TimetableEditVector.end()) // || (CopiedEntryStr == "")) allow blank copies
+        if(TTCurrentEntryIterator == TimetableEditVector.end()) // || (CopiedEntryStr == "")) allow blank copies
         {
             Utilities->CallLogPop(1637);
             return;
         }
-        int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin(); // vector pointers unreliable after an insert
-        TimetableEditVector.insert(TTCurrentEntryPtr + 1, CopiedEntryStr); // inserts before the indicated pointer position, i.e. immediately
+        int OldVectorPos = TTCurrentEntryIterator - TimetableEditVector.begin(); // vector pointers unreliable after an insert
+        TimetableEditVector.insert(TTCurrentEntryIterator + 1, CopiedEntryStr); // inserts before the indicated pointer position, i.e. immediately
                                                                            // after the current Entry - may be at the end
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
         TTEntryChangedFlag = false;
-        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
-        TTCurrentEntryPtr = TimetableEditVector.end();
-        TTStartTimePtr = TimetableEditVector.end();
-        TTFirstServicePtr = TimetableEditVector.end();
-        TTLastServicePtr = TimetableEditVector.end();
+        TEVIterator = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+        TTCurrentEntryIterator = TimetableEditVector.end();
+        TTStartTimeIterator = TimetableEditVector.end();
+        TTFirstServiceIterator = TimetableEditVector.end();
+        TTLastServiceIterator = TimetableEditVector.end();
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
         // position changing in AllEntriesTTListBox
         AllEntriesTTListBox->Clear();
@@ -4407,19 +4407,19 @@ void __fastcall TInterface::PasteTTEntryButtonClick(TObject *Sender)
             Utilities->CallLogPop(1778);
             return;
         }
-// restore TTCurrentEntryPtr
-        TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos;
-        TTCurrentEntryPtr++; // advance the pointer to the pasted entry
+// restore TTCurrentEntryIterator
+        TTCurrentEntryIterator = TimetableEditVector.begin() + OldVectorPos;
+        TTCurrentEntryIterator++; // advance the pointer to the pasted entry
 // CopiedEntryStr = "";//revert to null - no, allow multiple copies
         Level1Mode = TimetableMode;
         SetLevel1Mode(94);
-        if((TTCurrentEntryPtr - TimetableEditVector.begin()) < TopPos)
+        if((TTCurrentEntryIterator - TimetableEditVector.begin()) < TopPos)
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin();
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin();
         }
-        else if((TTCurrentEntryPtr - TimetableEditVector.begin()) > (TopPos + 45))
+        else if((TTCurrentEntryIterator - TimetableEditVector.begin()) > (TopPos + 45))
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin() - 45;
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin() - 45;
         }
         else
         {
@@ -4440,7 +4440,7 @@ void __fastcall TInterface::DeleteTTEntryButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("DeleteTTEntryButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",DeleteTTEntryButtonClick");
-        if(TTCurrentEntryPtr == TimetableEditVector.end())
+        if(TTCurrentEntryIterator == TimetableEditVector.end())
         {
             Utilities->CallLogPop(1645);
             return;
@@ -4452,20 +4452,20 @@ void __fastcall TInterface::DeleteTTEntryButtonClick(TObject *Sender)
             Utilities->CallLogPop(1663);
             return;
         }
-        int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin(); // vector pointers unreliable after an erase,
+        int OldVectorPos = TTCurrentEntryIterator - TimetableEditVector.begin(); // vector pointers unreliable after an erase,
                                                                             // so use the position in the vector
-        TimetableEditVector.erase(TTCurrentEntryPtr);
+        TimetableEditVector.erase(TTCurrentEntryIterator);
 
 // now need to rebuild all the pointers & the AllEntriesTTListBox so repeat the process from EditTimetableMenuItemClick
 // pick up the start time if there is one
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
         TTEntryChangedFlag = false;
-        TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
-        TTCurrentEntryPtr = TimetableEditVector.end();
-        TTStartTimePtr = TimetableEditVector.end();
-        TTFirstServicePtr = TimetableEditVector.end();
-        TTLastServicePtr = TimetableEditVector.end();
+        TEVIterator = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+        TTCurrentEntryIterator = TimetableEditVector.end();
+        TTStartTimeIterator = TimetableEditVector.end();
+        TTFirstServiceIterator = TimetableEditVector.end();
+        TTLastServiceIterator = TimetableEditVector.end();
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
         // position changing in AllEntriesTTListBox
         AllEntriesTTListBox->Clear();
@@ -4477,29 +4477,29 @@ void __fastcall TInterface::DeleteTTEntryButtonClick(TObject *Sender)
             Utilities->CallLogPop(1779);
             return;
         }
-// reset the TTCurrentEntryPtr to the Entry before the erased one if there is one
+// reset the TTCurrentEntryIterator to the Entry before the erased one if there is one
 // but vector pointers unreliable after an erase, so use the position in the vector
         if(OldVectorPos == 0)
         {
-            TTCurrentEntryPtr = TimetableEditVector.begin();
+            TTCurrentEntryIterator = TimetableEditVector.begin();
         }
         else
         {
-            TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos - 1;
+            TTCurrentEntryIterator = TimetableEditVector.begin() + OldVectorPos - 1;
         }
-        if(TTCurrentEntryPtr == TimetableEditVector.end())
+        if(TTCurrentEntryIterator == TimetableEditVector.end())
         {
             OneEntryTimetableMemo->Clear();
         }
         Level1Mode = TimetableMode;
         SetLevel1Mode(95);
-        if((TTCurrentEntryPtr - TimetableEditVector.begin()) < TopPos)
+        if((TTCurrentEntryIterator - TimetableEditVector.begin()) < TopPos)
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin();
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin();
         }
-        else if((TTCurrentEntryPtr - TimetableEditVector.begin()) > (TopPos + 45))
+        else if((TTCurrentEntryIterator - TimetableEditVector.begin()) > (TopPos + 45))
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin() - 45;
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin() - 45;
         }
         else
         {
@@ -4530,11 +4530,11 @@ void __fastcall TInterface::SaveTTEntryButtonClick(TObject *Sender)
 */
         AnsiString TempStr = "";
         bool ActiveLine = false;
-        if(TTCurrentEntryPtr != TimetableEditVector.end())
+        if(TTCurrentEntryIterator != TimetableEditVector.end())
         {
-            if(*TTCurrentEntryPtr != "")
+            if(*TTCurrentEntryIterator != "")
             {
-                if((TTCurrentEntryPtr >= TTFirstServicePtr) && (TTCurrentEntryPtr <= TTLastServicePtr) && ((*TTCurrentEntryPtr)[1] != '*'))
+                if((TTCurrentEntryIterator >= TTFirstServiceIterator) && (TTCurrentEntryIterator <= TTLastServiceIterator) && ((*TTCurrentEntryIterator)[1] != '*'))
                 {
                     ActiveLine = true;
                     // need to add commas after each line in OneEntryTimetableMemo exept the last, where have '\0'
@@ -4581,15 +4581,15 @@ void __fastcall TInterface::SaveTTEntryButtonClick(TObject *Sender)
         TimetableChangedFlag = true;
         TTEntryChangedFlag = false;
         int TopPos;
-        if(TTCurrentEntryPtr == TimetableEditVector.end())
+        if(TTCurrentEntryIterator == TimetableEditVector.end())
         {
             NewEntryInPreparationFlag = true;
         }
         if(!NewEntryInPreparationFlag)
         {
-            (*TTCurrentEntryPtr) = TempStr;
+            (*TTCurrentEntryIterator) = TempStr;
             // need to reset the AllEntriesTTListBox in case the headcode has changed
-            int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin(); // vector pointers unreliable after an insert
+            int OldVectorPos = TTCurrentEntryIterator - TimetableEditVector.begin(); // vector pointers unreliable after an insert
             TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
             // position changing in AllEntriesTTListBox
             AllEntriesTTListBox->Clear();
@@ -4601,25 +4601,25 @@ void __fastcall TInterface::SaveTTEntryButtonClick(TObject *Sender)
                 Utilities->CallLogPop(1780);
                 return;
             }
-            // restore TTCurrentEntryPtr
-            TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos;
+            // restore TTCurrentEntryIterator
+            TTCurrentEntryIterator = TimetableEditVector.begin() + OldVectorPos;
         }
         else
         {
             NewEntryInPreparationFlag = false;
-            if(TTCurrentEntryPtr != TimetableEditVector.end())
+            if(TTCurrentEntryIterator != TimetableEditVector.end())
             {
-                int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin(); // vector pointers unreliable after an insert
-                TimetableEditVector.insert(TTCurrentEntryPtr + 1, TempStr); // inserts before the indicated pointer position, which may be at the end
-                TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos;
-                TTCurrentEntryPtr++;
+                int OldVectorPos = TTCurrentEntryIterator - TimetableEditVector.begin(); // vector pointers unreliable after an insert
+                TimetableEditVector.insert(TTCurrentEntryIterator + 1, TempStr); // inserts before the indicated pointer position, which may be at the end
+                TTCurrentEntryIterator = TimetableEditVector.begin() + OldVectorPos;
+                TTCurrentEntryIterator++;
             }
             else
             {
                 TimetableEditVector.insert(TimetableEditVector.end(), TempStr); // inserts before the indicated pointer position
-                TTCurrentEntryPtr = TimetableEditVector.end() - 1;
+                TTCurrentEntryIterator = TimetableEditVector.end() - 1;
             }
-            int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin(); // save the current position
+            int OldVectorPos = TTCurrentEntryIterator - TimetableEditVector.begin(); // save the current position
             TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
             // position changing in AllEntriesTTListBox
             AllEntriesTTListBox->Clear();
@@ -4631,25 +4631,25 @@ void __fastcall TInterface::SaveTTEntryButtonClick(TObject *Sender)
                 Utilities->CallLogPop(1781);
                 return;
             }
-// reset the TTCurrentEntryPtr after CompileAllEntriesMemoAndSetPointers
+// reset the TTCurrentEntryIterator after CompileAllEntriesMemoAndSetPointers
             if(OldVectorPos >= TimetableEditVector.end() - TimetableEditVector.begin() - 1)
             {
-                TTCurrentEntryPtr = TimetableEditVector.end() - 1;
+                TTCurrentEntryIterator = TimetableEditVector.end() - 1;
             }
             else
             {
-                TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos;
+                TTCurrentEntryIterator = TimetableEditVector.begin() + OldVectorPos;
             }
         }
         Level1Mode = TimetableMode;
         SetLevel1Mode(96);
-        if((TTCurrentEntryPtr - TimetableEditVector.begin()) < TopPos)
+        if((TTCurrentEntryIterator - TimetableEditVector.begin()) < TopPos)
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin();
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin();
         }
-        else if((TTCurrentEntryPtr - TimetableEditVector.begin()) > (TopPos + 45))
+        else if((TTCurrentEntryIterator - TimetableEditVector.begin()) > (TopPos + 45))
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin() - 45;
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin() - 45;
         }
         else
         {
@@ -4731,9 +4731,9 @@ void __fastcall TInterface::SaveTTButtonClick(TObject *Sender)
         }
         if(TTBLFile.is_open())
         {
-            for(TEVPtr = TimetableEditVector.begin(); TEVPtr != TimetableEditVector.end(); TEVPtr++)
+            for(TEVIterator = TimetableEditVector.begin(); TEVIterator != TimetableEditVector.end(); TEVIterator++)
             {
-                TTBLFile << (*TEVPtr).c_str() << '\0';
+                TTBLFile << (*TEVIterator).c_str() << '\0';
             }
             TimetableChangedFlag = false;
             TTBLFile.close();
@@ -4796,9 +4796,9 @@ void __fastcall TInterface::SaveTTAsButtonClick(TObject *Sender)
         }
         if(TTBLFile.is_open())
         {
-            for(TEVPtr = TimetableEditVector.begin(); TEVPtr != TimetableEditVector.end(); TEVPtr++)
+            for(TEVIterator = TimetableEditVector.begin(); TEVIterator != TimetableEditVector.end(); TEVIterator++)
             {
-                TTBLFile << (*TEVPtr).c_str() << '\0';
+                TTBLFile << (*TEVIterator).c_str() << '\0';
             }
             TimetableChangedFlag = false;
             TTBLFile.close();
@@ -4834,7 +4834,7 @@ void __fastcall TInterface::TTServiceSyntaxCheckButtonClick(TObject *Sender)
             CheckLocationsExistInRailway = true;
         }
 // TrainController->AnyHeadCodeValid = true; //don't fail here because of an unrestricted headcode, if no good will find when validate (dropped at v0.6b)
-        if(TrainController->ProcessOneTimetableLine(2, Count, *TTCurrentEntryPtr, EndOfFile, FinalCallFalse, GiveMessagesTrue, CheckLocationsExistInRailway))
+        if(TrainController->ProcessOneTimetableLine(2, Count, *TTCurrentEntryIterator, EndOfFile, FinalCallFalse, GiveMessagesTrue, CheckLocationsExistInRailway))
         // return true for success
         {
             ShowMessage(
@@ -4916,21 +4916,21 @@ void __fastcall TInterface::MoveTTEntryUpButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("MoveTTEntryUpButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MoveTTEntryUpButtonClick");
-        if(TTCurrentEntryPtr == TimetableEditVector.end())
+        if(TTCurrentEntryIterator == TimetableEditVector.end())
         {
             Utilities->CallLogPop(1634);
             return;
         }
-        if(TTCurrentEntryPtr < (TimetableEditVector.begin() + 1)) // shouldn't reach here but return if do
+        if(TTCurrentEntryIterator < (TimetableEditVector.begin() + 1)) // shouldn't reach here but return if do
         {
             Utilities->CallLogPop(1632);
             return;
         }
-        TEVPtr = TTCurrentEntryPtr - 1; // find earlier Entry
-        AnsiString TempStr = *TEVPtr;
-        *TEVPtr = *TTCurrentEntryPtr;
-        *TTCurrentEntryPtr = TempStr;
-        TTCurrentEntryPtr = TEVPtr;
+        TEVIterator = TTCurrentEntryIterator - 1; // find earlier Entry
+        AnsiString TempStr = *TEVIterator;
+        *TEVIterator = *TTCurrentEntryIterator;
+        *TTCurrentEntryIterator = TempStr;
+        TTCurrentEntryIterator = TEVIterator;
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
 
@@ -4938,26 +4938,26 @@ void __fastcall TInterface::MoveTTEntryUpButtonClick(TObject *Sender)
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
         // position changing in AllEntriesTTListBox
         AllEntriesTTListBox->Clear();
-        int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin(); // save the old position
+        int OldVectorPos = TTCurrentEntryIterator - TimetableEditVector.begin(); // save the old position
         CompileAllEntriesMemoAndSetPointers(6);
-// reset the TTCurrentEntryPtr after CompileAllEntriesMemoAndSetPointers
+// reset the TTCurrentEntryIterator after CompileAllEntriesMemoAndSetPointers
         if(OldVectorPos >= TimetableEditVector.end() - TimetableEditVector.begin() - 1)
         {
-            TTCurrentEntryPtr = TimetableEditVector.end() - 1;
+            TTCurrentEntryIterator = TimetableEditVector.end() - 1;
         }
         else
         {
-            TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos;
+            TTCurrentEntryIterator = TimetableEditVector.begin() + OldVectorPos;
         }
         Level1Mode = TimetableMode;
         SetLevel1Mode(100);
-        if((TTCurrentEntryPtr - TimetableEditVector.begin()) < TopPos)
+        if((TTCurrentEntryIterator - TimetableEditVector.begin()) < TopPos)
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin();
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin();
         }
-        else if((TTCurrentEntryPtr - TimetableEditVector.begin()) > (TopPos + 45))
+        else if((TTCurrentEntryIterator - TimetableEditVector.begin()) > (TopPos + 45))
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin() - 45;
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin() - 45;
         }
         else
         {
@@ -4978,21 +4978,21 @@ void __fastcall TInterface::MoveTTEntryDownButtonClick(TObject *Sender)
     {
         TrainController->LogEvent("MoveTTEntryDownButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",MoveTTEntryDownButtonClick");
-        if(TTCurrentEntryPtr == TimetableEditVector.end())
+        if(TTCurrentEntryIterator == TimetableEditVector.end())
         {
             Utilities->CallLogPop(1635);
             return;
         }
-        if(TTCurrentEntryPtr >= (TimetableEditVector.end() - 1)) // shouldn't reach here but return if do
+        if(TTCurrentEntryIterator >= (TimetableEditVector.end() - 1)) // shouldn't reach here but return if do
         {
             Utilities->CallLogPop(1678);
             return;
         }
-        TEVPtr = TTCurrentEntryPtr + 1; // find later Entry
-        AnsiString TempStr = *TEVPtr;
-        *TEVPtr = *TTCurrentEntryPtr;
-        *TTCurrentEntryPtr = TempStr;
-        TTCurrentEntryPtr = TEVPtr;
+        TEVIterator = TTCurrentEntryIterator + 1; // find later Entry
+        AnsiString TempStr = *TEVIterator;
+        *TEVIterator = *TTCurrentEntryIterator;
+        *TTCurrentEntryIterator = TempStr;
+        TTCurrentEntryIterator = TEVIterator;
         TimetableChangedFlag = true;
         TimetableValidFlag = false;
 
@@ -5000,26 +5000,26 @@ void __fastcall TInterface::MoveTTEntryDownButtonClick(TObject *Sender)
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
         // position changing in AllEntriesTTListBox
         AllEntriesTTListBox->Clear();
-        int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin(); // save the old position
+        int OldVectorPos = TTCurrentEntryIterator - TimetableEditVector.begin(); // save the old position
         CompileAllEntriesMemoAndSetPointers(7);
-// reset the TTCurrentEntryPtr after CompileAllEntriesMemoAndSetPointers
+// reset the TTCurrentEntryIterator after CompileAllEntriesMemoAndSetPointers
         if(OldVectorPos >= TimetableEditVector.end() - TimetableEditVector.begin() - 1)
         {
-            TTCurrentEntryPtr = TimetableEditVector.end() - 1;
+            TTCurrentEntryIterator = TimetableEditVector.end() - 1;
         }
         else
         {
-            TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos;
+            TTCurrentEntryIterator = TimetableEditVector.begin() + OldVectorPos;
         }
         Level1Mode = TimetableMode;
         SetLevel1Mode(101);
-        if((TTCurrentEntryPtr - TimetableEditVector.begin()) < TopPos)
+        if((TTCurrentEntryIterator - TimetableEditVector.begin()) < TopPos)
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin();
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin();
         }
-        else if((TTCurrentEntryPtr - TimetableEditVector.begin()) > (TopPos + 45))
+        else if((TTCurrentEntryIterator - TimetableEditVector.begin()) > (TopPos + 45))
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin() - 45;
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin() - 45;
         }
         else
         {
@@ -5050,13 +5050,13 @@ void __fastcall TInterface::CancelTTEntryButtonClick(TObject *Sender)
                                                     // position changing in AllEntriesTTListBox
         Level1Mode = TimetableMode;
         SetLevel1Mode(102);
-        if((TTCurrentEntryPtr - TimetableEditVector.begin()) < TopPos)
+        if((TTCurrentEntryIterator - TimetableEditVector.begin()) < TopPos)
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin();
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin();
         }
-        else if((TTCurrentEntryPtr - TimetableEditVector.begin()) > (TopPos + 45))
+        else if((TTCurrentEntryIterator - TimetableEditVector.begin()) > (TopPos + 45))
         {
-            AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin() - 45;
+            AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin() - 45;
         }
         else
         {
@@ -5103,11 +5103,11 @@ void __fastcall TInterface::RestoreTTButtonClick(TObject *Sender)
             AllEntriesTTListBox->Clear();
             TTStartTimeBox->Text = "";
             AddSubMinsBox->Text = "";
-            TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
-            TTCurrentEntryPtr = TimetableEditVector.end();
-            TTStartTimePtr = TimetableEditVector.end();
-            TTFirstServicePtr = TimetableEditVector.end();
-            TTLastServicePtr = TimetableEditVector.end();
+            TEVIterator = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+            TTCurrentEntryIterator = TimetableEditVector.end();
+            TTStartTimeIterator = TimetableEditVector.end();
+            TTFirstServiceIterator = TimetableEditVector.end();
+            TTLastServiceIterator = TimetableEditVector.end();
             char *TimetableEntryString = new char[10000];
             while(true)
             {
@@ -5140,7 +5140,7 @@ void __fastcall TInterface::RestoreTTButtonClick(TObject *Sender)
             return;
         }
 // all now set where can be
-        TTCurrentEntryPtr = TimetableEditVector.begin();
+        TTCurrentEntryIterator = TimetableEditVector.begin();
 // end of repeat from EditTimetableMenuItemClick
 
         Level1Mode = TimetableMode;
@@ -5200,7 +5200,7 @@ void __fastcall TInterface::TTTextButtonClick(TObject *Sender)
         TrainController->LogEvent("TTTextButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TTTextButtonClick");
 /*
-           if(TTStartTimePtr == 0)
+           if(TTStartTimeIterator == 0)
            {
             OneEntryTimetableMemo->Clear();
             TTStartTimeBox->SetFocus();
@@ -5298,9 +5298,9 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
 //<List of linked repeat service pointers after having been examined for other linked services (starts empty and expands when services examined) -
 //used when expanding repeat services
         std::list<TTrainDataEntry*>::iterator ListIt;
-        AnsiString CurrentEntry = *TTCurrentEntryPtr;
+        AnsiString CurrentEntry = *TTCurrentEntryIterator;
 
-        if(TTCurrentEntryPtr == TimetableEditVector.end())
+        if(TTCurrentEntryIterator == TimetableEditVector.end())
         {
             Utilities->CallLogPop(7777);
             return;
@@ -5319,6 +5319,38 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
         int Mins;
         int Digits;
         int Repeats;
+
+        int RpIndex = TTCurrentEntryIterator->Pos(",R;"); //RpIndex is the position of the comma
+        if(RpIndex == 0)   //can't find the repeat, give message & exit
+        {
+            ShowMessage("Failed to find a repeat for the selected entry. Please discard the modified timetable"
+               " which is likely to be corrupt and reload the original.");
+            Utilities->CallLogPop(7777);
+            return;
+        }
+        AnsiString Rpt = TTCurrentEntryIterator->SubString(RpIndex + 3, TTCurrentEntryIterator->Length() - (RpIndex + 2)); //Rpt = "mins;digits;repeats"
+        AnsiString AnsiMins = "", AnsiDigits = "", AnsiRepeats = "";
+        int x = 1;
+        while(Rpt[x] != ';')
+        {
+            AnsiMins += Rpt[x];
+            x++;
+        }
+        x++;
+        while(Rpt[x] != ';')
+        {
+            AnsiDigits += Rpt[x];
+            x++;
+        }
+        x++;
+        while(x <= Rpt.Length())
+        {
+            AnsiRepeats += Rpt[x];
+            x++;
+        }
+        Mins = AnsiMins.ToInt();
+        Digits = AnsiDigits.ToInt();
+        Repeats = AnsiRepeats.ToInt();
 
         for(TTimetableEditVector::iterator TTEVIt = TimetableEditVector.begin(); TTEVIt != TimetableEditVector.end(); TTEVIt++)
         {
@@ -5349,11 +5381,19 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                 TDEPtr++; //ready for next insert
             }
         }
-        /*Now need to get the TrainDataEntry pointer value for the highlighted entry (pointed to by TTCurrentEntryPtr)
-        TTCurrentEntryPtr points to the editor timetable value (AnsiString OneLine) which includes all prestart comments, start time,
+        /*Now need to get the TrainDataEntry pointer value for the highlighted entry (pointed to by TTCurrentEntryIterator)
+        TTCurrentEntryIterator points to the editor timetable value (AnsiString OneLine) which includes all prestart comments, start time,
         comments within the timetable (start with '*') and valid timetable lines, but the TrainDataVector lists only valid
         timetable lines. So work through TimeTableEditVector (lists all OneLines) counting only valid tt lines, first being 0,
-        and use that as the TrainDataVector position.*/
+        and use that as the TrainDataVector position.
+
+        Note that Sns-sh uses LinkedTrainEntryPtr to point to the feeder (in error) and its NonRepeatingShuttleLinkEntryPtr is NULL (again
+        in error) but these links are not in fact used in the program, only those in Fns-sh are used and those are correct - Fns-sh uses
+        LinkedTrainEntryPtr to point to the outward shuttle and NonRepeatingShuttleLinkEntryPtr to point to the finishing service.
+        Even though Sns-sh doesn't link to the return shuttle its later Fns command does so all will be picked up.
+        With these include in PreRepeatList all shuttles, but not non-repeating feeder and finshing services.  Later on only expand services
+        with repeats, and change commands as follows: F-nshs -> Fns, Snt-sh -> Snt, Sns-sh -> Sns, Fns-sh -> Fns, Frh-sh -> Frh and Sns-fsh -> Sns.  */
+
         BreakFlag = false;
         BlankLineFound = false;
         StartTimeFound = false;
@@ -5381,7 +5421,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
             }
             if((!BlankLineFound && (*TTEVIt)[1] != '*'))
             {  //valid service line
-                if(TTEVIt == TTCurrentEntryPtr)
+                if(TTEVIt == TTCurrentEntryIterator)
                 {
                     break;
                 }
@@ -5389,70 +5429,121 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
             }
         }
 //add this service to the RepeatList then examine it, and add all linked references to the PreRepeatList
-//ShuttleService = false;
         RepeatList.push_back(TDEPtr);
         bool DuplicatePointer;
         for(TActionVectorIterator AVIt = TDEPtr->ActionVector.begin(); AVIt != TDEPtr->ActionVector.end(); AVIt++)
         {
-            DuplicatePointer = false;
-            if((AVIt->Command == "Sns") || (AVIt->Command == "Fns") || (AVIt->Command == "Fjo") || (AVIt->Command == "jbo")
-                || (AVIt->Command == "Sfs") || (AVIt->Command == "fsp") || (AVIt->Command == "rsp"))
+            if((AVIt->Command == "Snt-sh") || (AVIt->Command == "Sns-sh") || (AVIt->Command == "Frh-sh") || (AVIt->Command == "Fns-sh") ||
+               (AVIt->Command == "Sns") || (AVIt->Command == "Fns") || (AVIt->Command == "rsp") || (AVIt->Command == "fsp") ||
+               (AVIt->Command == "Sfs") || (AVIt->Command == "jbo") || (AVIt->Command == "Fjo"))
             {
+                DuplicatePointer = false;
                 for(ListIt = RepeatList.begin(); ListIt != RepeatList.end(); ListIt++) //don't list any that have already been examined
                 {
+//AnsiString ListContents = (*ListIt)->ServiceReference;   //diagnostics
+//AnsiString AVItContents = AVIt->LinkedTrainEntryPtr->ServiceReference;
                     if(*ListIt == AVIt->LinkedTrainEntryPtr)
-                    DuplicatePointer = true;
+                    {
+                        DuplicatePointer = true;
+                    }
                 }
-                if(!DuplicatePointer)
+                for(ListIt = PreRepeatList.begin(); ListIt != PreRepeatList.end(); ListIt++) //don't list any that have already been included
+                {
+//AnsiString ListContents = (*ListIt)->ServiceReference;   //diagnostics
+//AnsiString AVItContents = AVIt->LinkedTrainEntryPtr->ServiceReference;
+                    if(*ListIt == AVIt->LinkedTrainEntryPtr)
+                    {
+                        DuplicatePointer = true;
+                    }
+                }
+                if((!DuplicatePointer) && (AVIt->Command != "Sns-sh")) //Sns-sh has LinkedTrainEntryPtr (in error) as the feeder pointer
                 {
                     PreRepeatList.push_back(AVIt->LinkedTrainEntryPtr);
                 }
             }
-            if((AVIt->Command == "Snt-sh") || (AVIt->Command == "Sns-sh") || (AVIt->Command == "Fns-sh") || (AVIt->Command == "Frh-sh")
-                 || (AVIt->Command == "F-nshs") || (AVIt->Command == "Sns-fsh"))
-            {
-                ShowMessage("This service forms part of a shuttle, and shuttles can't yet be expanded");
-//ShuttleService = true;
-                Utilities->CallLogPop(7777);
-                return;
-            }
         }
+
+        //now work through the PreRepeatList, adding new ones where find references and deleting when transfer to RepeatList
         while(!PreRepeatList.empty())
         {
-//ShuttleService = false;
             TTrainDataEntry* TDEPtr = PreRepeatList.front();
             PreRepeatList.pop_front();
             for(TActionVectorIterator AVIt = TDEPtr->ActionVector.begin(); AVIt != TDEPtr->ActionVector.end(); AVIt++)
             {
-            DuplicatePointer = false;
-            if((AVIt->Command == "Sns") || (AVIt->Command == "Fns") || (AVIt->Command == "Fjo") || (AVIt->Command == "jbo")
-                || (AVIt->Command == "Sfs") || (AVIt->Command == "fsp") || (AVIt->Command == "rsp"))
+                if((AVIt->Command == "Snt-sh") || (AVIt->Command == "Sns-sh") || (AVIt->Command == "Frh-sh") || (AVIt->Command == "Fns-sh") ||
+                   (AVIt->Command == "Sns") || (AVIt->Command == "Fns") || (AVIt->Command == "rsp") || (AVIt->Command == "fsp") ||
+                   (AVIt->Command == "Sfs") || (AVIt->Command == "jbo") || (AVIt->Command == "Fjo"))
                 {
+                    DuplicatePointer = false;
                     for(ListIt = RepeatList.begin(); ListIt != RepeatList.end(); ListIt++) //don't list any that have already been examined
                     {
                         if(*ListIt == AVIt->LinkedTrainEntryPtr)
-                        DuplicatePointer = true;
+                        {
+                            DuplicatePointer = true;
+                        }
                     }
-                    if(!DuplicatePointer)
+                    for(ListIt = PreRepeatList.begin(); ListIt != PreRepeatList.end(); ListIt++) //don't list any that have already been included
+                    {
+                        if(*ListIt == AVIt->LinkedTrainEntryPtr)
+                        {
+                            DuplicatePointer = true;
+                        }
+                    }
+                if((!DuplicatePointer) && (AVIt->Command != "Sns-sh")) //Sns-sh has LinkedTrainEntryPtr (in error) as the feeder pointer
                     {
                         PreRepeatList.push_back(AVIt->LinkedTrainEntryPtr);
                     }
-                }
-                if((AVIt->Command == "Snt-sh") || (AVIt->Command == "Sns-sh") || (AVIt->Command == "Fns-sh") || (AVIt->Command == "Frh-sh")
-                     || (AVIt->Command == "F-nshs") || (AVIt->Command == "Sns-fsh"))
-                {
-                    ShowMessage("This service forms part of a shuttle, and shuttles can't yet be expanded");
-//ShuttleService = true;
-                    Utilities->CallLogPop(7777);
-                    return;
                 }
             }
             RepeatList.push_back(TDEPtr);
         }
 
-        //here when have all linked services in RepeatList, add  marker "####" to start of all entries to be expanded
-        //with this it doesn't matter what order the RepeatList service pointers are in, as expansion will be done in the original
-        //timetable order when the markers are identified
+        //work through RepeatList making changes to the underlying timetable edit vector entries where have Sns-sh & Fns-sh commands
+        for(ListIt = RepeatList.begin(); ListIt != RepeatList.end(); ListIt++)
+        {
+            TTrainDataEntry* TDEPtr = *ListIt;
+            for(TActionVectorIterator AVIt = TDEPtr->ActionVector.begin(); AVIt != TDEPtr->ActionVector.end(); AVIt++)
+            {
+                if(AVIt->Command == "Sns-sh")
+                {
+                    if(LinkMap.find(AVIt->LinkedTrainEntryPtr) != LinkMap.end())
+                    {
+                        AnsiString* Feeder = LinkMap.find(AVIt->LinkedTrainEntryPtr)->second; //Sns-sh uses LinkedTrainEntryPtr (in error) for the feeder
+                        int FPos = Feeder->Pos("F-nshs");
+                        if(FPos > 0) //can't include an else here as commands may already have been changed
+                        {
+                            Feeder->Delete(FPos, 6);
+                            Feeder->Insert("Fns", FPos);
+                        }
+                    }
+                }
+                else if(AVIt->Command == "Fns-sh")
+                {
+                    if(LinkMap.find(AVIt->NonRepeatingShuttleLinkEntryPtr) != LinkMap.end())
+                    {
+                        AnsiString* Finisher = LinkMap.find(AVIt->NonRepeatingShuttleLinkEntryPtr)->second;
+                        int SPos = Finisher->Pos("Sns-fsh");
+                        if(SPos  > 0) //can't include an else here as commands may already have been changed
+                        {
+                            //first change the source reference after Sns-sh by (Digits * Repeats) as that will have changed when expanded
+                            int TempPos = SPos + 8; //now on 1st character of the source reference
+                            AnsiString SourceRef = "";
+                            while((*Finisher)[TempPos] != ',')
+                            {
+                                SourceRef += (*Finisher)[TempPos];
+                                TempPos++;
+                            }
+                            AddRefDigits(SourceRef, SPos + 8, *Finisher, (Digits * Repeats));
+                            Finisher->Delete(SPos + 3, 4); //drop the '-fsh'
+                        }
+                    }
+                }
+            }
+        }
+
+        //here when have all linked repeating services in RepeatList, add  marker "####" to start of all entries to be expanded. With this it doesn't
+        //matter what order the RepeatList service pointers are in, as expansion will be done in the original timetable order when the markers are identified
+
         AnsiString* TrainEditEntryPtr;
         TimetableChangedFlag = true;
         while(!RepeatList.empty())
@@ -5469,64 +5560,215 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                 return;
             }
             RepeatList.pop_front();
-            int RpIndex = TrainEditEntryPtr->Pos(",R;"); //RpIndex is the position of the comma
-            if(RpIndex == 0) //can't find the repeat, remove all markers and exit
+
+            RpIndex = TrainEditEntryPtr->Pos(",R;"); //RpIndex is the position of the comma
+            if(RpIndex > 0)
             {
-                for(TTimetableEditVector::iterator TTEVIt2 = TimetableEditVector.begin(); TTEVIt2 != TimetableEditVector.end(); TTEVIt2++)
-                {
-                    if(TTEVIt2->SubString(1,4) == "####")
-                    {
-                        *TTEVIt2 = TTEVIt2->SubString(5, TTEVIt2->Length() - 4); //remove the marker
-                    }
-                }
-                ShowMessage("Failed to find a repeat for the selected entry. Please discard the modified timetable"
-                   " which is likely to be corrupt and reload the original.");
+                TrainEditEntryPtr->Delete(RpIndex, (TrainEditEntryPtr->Length() - RpIndex + 1)); //delete the repeat command before adding the marker
+                *TrainEditEntryPtr = "####" + *TrainEditEntryPtr;                                //so there's room for the marker without the risk of
+            }                                                                                    //the vector being reallocated
+            else
+            {
+                ShowMessage("Failed to find a repeat entry, internal timetable has probably been corrupted, please reload the original timetable");
                 Utilities->CallLogPop(7777);
                 return;
             }
-            AnsiString Rpt = TrainEditEntryPtr->SubString(RpIndex + 3, TrainEditEntryPtr->Length() - (RpIndex + 2)); //Rpt = "mins;digits;repeats"
-            AnsiString AnsiMins = "", AnsiDigits = "", AnsiRepeats = "";
-            int x = 1;
-            while(Rpt[x] != ';')
-            {
-                AnsiMins += Rpt[x];
-                x++;
-            }
-            x++;
-            while(Rpt[x] != ';')
-            {
-                AnsiDigits += Rpt[x];
-                x++;
-            }
-            x++;
-            while(x <= Rpt.Length())
-            {
-                AnsiRepeats += Rpt[x];
-                x++;
-            }
-            Mins = AnsiMins.ToInt();
-            Digits = AnsiDigits.ToInt();
-            Repeats = AnsiRepeats.ToInt();
-            TrainEditEntryPtr->Delete(RpIndex, (TrainEditEntryPtr->Length() - RpIndex + 1)); //delete the repeat command before adding the marker
-            *TrainEditEntryPtr = "####" + *TrainEditEntryPtr;                                  //so there's room for the marker without the risk of
-        }                                                                                      //the vector being repositioned
+        }
+
+//NB: from here don't rely on LinkMap or TimetableEditVector iterators or pointers as they will likely change when services expand
+
         //now expand each entry with a marker
-        int IteratorCount = 0; //use this instead of an iterator because vector likely to be repositioned during insertions
+        int IteratorCount = 0; //use this instead of an explicit iterator because vector likely to be reallocated during insertions
+        AnsiString OutwardShuttleRef = "", ReturnShuttleRef = "", FeederRef = "", FinishRef = "";
+        int OutwardShuttlePos = 0, ReturnShuttlePos = 0, FinishPos = 0;
         while(true)
         {
             if((TimetableEditVector.begin() + IteratorCount)->SubString(1,4) == "####")
             {
-                *(TimetableEditVector.begin() + IteratorCount) = (TimetableEditVector.begin() +
-                    IteratorCount)->SubString(5, (TimetableEditVector.begin() + IteratorCount)->Length() - 4); //remove the marker
-                //change all internal referenced services by the repeat digits
+                AnsiString EntryCopy = *(TimetableEditVector.begin() + IteratorCount);
+                EntryCopy.Delete(1, 4); //remove the marker
+                int Sns_shPos = EntryCopy.Pos("Sns-sh");
+                int Fns_shPos = EntryCopy.Pos("Fns-sh");
+                int Snt_shPos = EntryCopy.Pos("Snt-sh");
+                int Frh_shPos = EntryCopy.Pos("Frh-sh");
+                if(Sns_shPos > 0) //has a feeder, syntax is '... ,HH:MM;Sns-sh;ReturnShuttleRef;FeederRef, ...'
+                {
+                    //set return shuttle ref
+                    int TempPos = Sns_shPos + 7; //TempPos is at the position after the ';' following 'Sns-sh', i.e. at start of ReturnShuttleRef
+                    ReturnShuttlePos = TempPos;
+                    while(EntryCopy[TempPos] != ';')
+                    {
+                        ReturnShuttleRef += EntryCopy[TempPos];
+                        TempPos++; //when exits TempPos at the position of the ';' following ReturnShuttleRef
+                    }
+                    TempPos++; //now at start of FeederRef
+                    while(EntryCopy[TempPos] != ',')
+                    {
+                        FeederRef += EntryCopy[TempPos];
+                        TempPos++; //when exits TempPos at the position of the ',' following FeederRef
+                    }
+                    //now change EntryCopy as necessary prior to expansion, but do deletions from end to start so Pos values stay valid
+                    EntryCopy.Delete(ReturnShuttlePos, ReturnShuttleRef.Length() + 1); //+1 to delete the ';'
+                    EntryCopy.Delete(Sns_shPos + 3, 3); //drop the '-sh'
+                    //copy it back to the vector
+                    *(TimetableEditVector.begin() + IteratorCount) = EntryCopy;
+                    IteratorCount++;
+                    //now deal with the repeats, but for these need ReturnShuttleRef rather than FeederRef, so alter that first
+                    EntryCopy.Delete(ReturnShuttlePos - 3, FeederRef.Length()); //-3 because have removed '-sh' and keep the ';'
+                    EntryCopy.Insert(ReturnShuttleRef, ReturnShuttlePos - 3); //now ready for the repeat insertions
+                    for(int x = 1; x <= Repeats; x++)
+                    {
+                        for(int Position = 1; Position <= EntryCopy.Length(); Position++)
+                        {
+                            bool FoundRef = false;
+                            AnsiString AnsiServRef = "";
+                            if(Position == 1) //for this service ref
+                            {
+                                FoundRef = true;
+                            }
+                            else if(Position == ReturnShuttlePos - 3) //return shuttle ref
+                            {
+                                FoundRef = true;
+                            }
+                            else if((EntryCopy.SubString(Position, 3) == "Fns") || (EntryCopy.SubString(Position, 3) == "rsp") ||
+                                    (EntryCopy.SubString(Position, 3) == "fsp") || (EntryCopy.SubString(Position, 3) == "Fjo") ||
+                                    (EntryCopy.SubString(Position, 3) == "jbo"))
+                            {
+                                Position += 4; //any other referenced services
+                                FoundRef = true;
+                            }
+                            if(FoundRef)
+                            {
+                                int y = Position;
+                                while((y <= EntryCopy.Length()) && (EntryCopy[y] != ';') && (EntryCopy[y] != ','))
+                                {
+                                    AnsiServRef += EntryCopy[y];
+                                    y++;
+                                }
+                                if((x > 1) || Position != ReturnShuttlePos - 3)//1st repeat needs to keep the original return shuttle ref after the 'Sns'
+                                {
+                                    AddRefDigits(AnsiServRef, Position, EntryCopy, Digits);
+                                }
+                            }
+                        }
+                        //change all time strings in EntryCopy by Mins
+                        for(int z = 1; z <= EntryCopy.Length(); z++)
+                        {
+                            if(TrainController->CheckTimeValidity(7777, EntryCopy.SubString(z,5), DummyTime)) //text after time ignored
+                            {
+                                AnsiString NewTime = AddTimeMinutes(EntryCopy.SubString(z,5), Mins);
+                                EntryCopy.Delete(z, 5);
+                                EntryCopy.Insert(NewTime, z); //this ok as doesn't alter overall length of EntryCopy
+                            }
+                        }
+                        //insert the entry
+                        TimetableEditVector.insert(TimetableEditVector.begin() + IteratorCount, EntryCopy);
+                        IteratorCount++;
+                    }
+                    continue;
+                }
+                else if(Fns_shPos > 0) //has a finisher, syntax is '... ,HH:MM;Fns-sh;OutwardShuttleRef;FinishRef NULL or end of file
+                {
+                    //set outward shuttle ref
+                    int TempPos = Fns_shPos + 7; //TempPos is at the position after the ';' following 'Fns-sh', i.e. at start of OutwardShuttleRef
+                    OutwardShuttlePos = TempPos;
+                    while(EntryCopy[TempPos] != ';')
+                    {
+                        OutwardShuttleRef += EntryCopy[TempPos];
+                        TempPos++; //when exits TempPos at the position of the ';' following the OutwardShuttleRef
+                    }
+                    TempPos++; //now at start of FinishRef
+                    FinishPos = TempPos;
+                    while(TempPos <= EntryCopy.Length()) //FinishRef is the last element in the entry apart from a final NULL
+                    {
+                        FinishRef += EntryCopy[TempPos];
+                        TempPos++; //when exits TempPos at the position of the NULL following FinishRef
+                    }
+                    //now change EntryCopy as necessary prior to expansion, but do deletions from end to start so Pos values stay valid
+                    EntryCopy.Delete(FinishPos, FinishRef.Length() + 1); //delete the finish ref and the ';' as all but last repeat refer back to the outward shuttle
+                    EntryCopy.Delete(Fns_shPos + 3, 3); //drop the '-sh'        //this is now the end of the entry
+
+                    //BUT, need to link back to the next repeat of the outward shuttle ref, so add the digits to OutwardShuttleRef and replace the original
+                    AddRefDigits(OutwardShuttleRef, OutwardShuttlePos - 3, EntryCopy, Digits); //-3 because have removed '-sh'
+                    //copy it back to the vector
+                    *(TimetableEditVector.begin() + IteratorCount) = EntryCopy;
+                    IteratorCount++;
+                    //now deal with the repeats
+                    for(int x = 1; x <= Repeats; x++)
+                    {
+                        if(x == Repeats) //at last repeat need the finishing ref
+                        {
+                            EntryCopy.Delete(OutwardShuttlePos - 3, OutwardShuttleRef.Length()); //-3 because have removed '-sh' and keep the ';'
+                            EntryCopy.Insert(FinishRef, OutwardShuttlePos - 3);
+                        }
+                        for(int Position = 1; Position <= EntryCopy.Length(); Position++)
+                        {
+                            bool FoundRef = false;
+                            AnsiString AnsiServRef = "";
+                            if(Position == 1) //for this service ref
+                            {
+                                FoundRef = true;
+                            }
+                            else if(Position == OutwardShuttlePos - 3) //outward shuttle ref
+                            {
+                                FoundRef = true;
+                            }
+                            else if((EntryCopy.SubString(Position, 3) == "Sns") || (EntryCopy.SubString(Position, 3) == "rsp") ||
+                                    (EntryCopy.SubString(Position, 3) == "fsp") || (EntryCopy.SubString(Position, 3) == "Fjo") ||
+                                    (EntryCopy.SubString(Position, 3) == "jbo"))
+                            {
+                                Position += 4; //any other referenced services
+                                FoundRef = true;
+                            }
+                            if(FoundRef)
+                            {
+                                int y = Position;
+                                while((y <= EntryCopy.Length()) && (EntryCopy[y] != ';') && (EntryCopy[y] != ','))
+                                {
+                                    AnsiServRef += EntryCopy[y];
+                                    y++;
+                                }
+                                if((x < Repeats) || (AnsiServRef != FinishRef)) //don't change the finish reference
+                                {
+                                    AddRefDigits(AnsiServRef, Position, EntryCopy, Digits);
+                                }
+                            }
+                        }
+                        //change all time strings in EntryCopy by Mins
+                        for(int z = 1; z <= EntryCopy.Length(); z++)
+                        {
+                            if(TrainController->CheckTimeValidity(7777, EntryCopy.SubString(z,5), DummyTime)) //text after time ignored
+                            {
+                                AnsiString NewTime = AddTimeMinutes(EntryCopy.SubString(z,5), Mins);
+                                EntryCopy.Delete(z, 5);
+                                EntryCopy.Insert(NewTime, z); //this ok as doesn't alter overall length of EntryCopy
+                            }
+                        }
+                        //insert the entry
+                        TimetableEditVector.insert(TimetableEditVector.begin() + IteratorCount, EntryCopy);
+                        IteratorCount++;
+                    }
+                    continue;
+                }
+                else if(Snt_shPos > 0)
+                {
+                    EntryCopy.Delete(Snt_shPos + 3, 3); //convert to Snt
+                }
+                else if(Frh_shPos > 0)
+                {
+                    EntryCopy.Delete(Frh_shPos + 3, 3); //convert to Frh
+                }
+                //all remainder have only 3 letter commands, just copy it back to the vector (without the '####' & deal with repeats
+                *(TimetableEditVector.begin() + IteratorCount) = EntryCopy;
+                IteratorCount++;
+                //now deal with the repeats
                 for(int x = 1; x <= Repeats; x++)
                 {
-                    AnsiString EntryCopy = *(TimetableEditVector.begin() + IteratorCount);
                     for(int Position = 1; Position <= EntryCopy.Length(); Position++)
                     {
                         bool FoundRef = false;
                         AnsiString AnsiServRef = "";
-                        if(Position == 1)
+                        if(Position == 1) //for this service ref
                         {
                             FoundRef = true;
                         }
@@ -5535,7 +5777,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                                 (EntryCopy.SubString(Position, 3) == "Sfs") || (EntryCopy.SubString(Position, 3) == "Fjo") ||
                                 (EntryCopy.SubString(Position, 3) == "jbo"))
                         {
-                            Position = Position + 4;
+                            Position += 4; //any other referenced services
                             FoundRef = true;
                         }
                         if(FoundRef)
@@ -5549,7 +5791,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                             AddRefDigits(AnsiServRef, Position, EntryCopy, Digits);
                         }
                     }
-                    //change all time strings in EntryCopy by Mins * x
+                    //change all time strings in EntryCopy by Mins
                     for(int z = 1; z <= EntryCopy.Length(); z++)
                     {
                         if(TrainController->CheckTimeValidity(7777, EntryCopy.SubString(z,5), DummyTime)) //text after time ignored
@@ -5559,7 +5801,8 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                             EntryCopy.Insert(NewTime, z); //this ok as doesn't alter overall length of EntryCopy
                         }
                     }
-                    TimetableEditVector.insert(TimetableEditVector.begin() + IteratorCount + 1, EntryCopy); //use this as the vector may be repositioned
+                    //insert the entry
+                    TimetableEditVector.insert(TimetableEditVector.begin() + IteratorCount, EntryCopy);
                     IteratorCount++;
                 }
             }
@@ -5575,15 +5818,15 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
         CompileAllEntriesMemoAndSetPointers(7777);
         Level1Mode = TimetableMode;
         SetLevel1Mode(7777);
-        //reset TTCurrentEntryPtr
-        int RpIndex = CurrentEntry.Pos(",R;"); //RpIndex is the position of the comma
+        //reset TTCurrentEntryIterator
+        RpIndex = CurrentEntry.Pos(",R;"); //RpIndex is the position of the comma
         AnsiString RepeatStripped = CurrentEntry;
         RepeatStripped = RepeatStripped.Delete(RpIndex, (CurrentEntry.Length() - RpIndex + 1));
         for(TTimetableEditVector::iterator TTEVIt = TimetableEditVector.begin(); TTEVIt != TimetableEditVector.end(); TTEVIt++)
         {
             if(RepeatStripped == *TTEVIt)
             {
-                TTCurrentEntryPtr = TTEVIt;
+                TTCurrentEntryIterator = TTEVIt;
                 break;
             }
         }
@@ -5599,7 +5842,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
 
 //---------------------------------------------------------------------------
 
-AnsiString TInterface::AddTimeMinutes(AnsiString OrigTimeString, int MinsToAdd)
+AnsiString TInterface::AddTimeMinutes(AnsiString OrigTimeString, int MinsToAdd) //added at v2.16.2
 {//only used in ExpandRepeatsButtonClick function, errors caught in that function
     TrainController->LogEvent("AddTimeMinutes");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddTimeMinutes");
@@ -5626,7 +5869,7 @@ AnsiString TInterface::AddTimeMinutes(AnsiString OrigTimeString, int MinsToAdd)
 
 //---------------------------------------------------------------------------
 
-void TInterface::AddRefDigits(AnsiString AnsiServRef, int Position, AnsiString &EntryCopy, int Digits)
+void TInterface::AddRefDigits(AnsiString AnsiServRef, int Position, AnsiString &EntryCopy, int Digits) //added at v2.16.2
 {//only used in ExpandRepeatsButtonClick function, errors caught in that function
     TrainController->LogEvent("AddRefDigits");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddRefDigits");
@@ -5651,7 +5894,7 @@ void __fastcall TInterface::LocationNameComboBoxClick(TObject *Sender)
     {
         TrainController->LogEvent("LocationNameComboBoxClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",LocationNameComboBoxClick");
-        if(TTStartTimePtr != TimetableEditVector.end())
+        if(TTStartTimeIterator != TimetableEditVector.end())
         {
             LocationNameComboBox->SelectAll();
             int SelPos = OneEntryTimetableMemo->SelStart;
@@ -5747,7 +5990,7 @@ void __fastcall TInterface::AllEntriesTTListBoxMouseUp(TObject *Sender, TMouseBu
     {
         TrainController->LogEvent("AllEntriesTTListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y));
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AllEntriesTTListBoxMouseUp," + AnsiString(X) + "," + AnsiString(Y));
-        if((TTCurrentEntryPtr == TimetableEditVector.end()) || TimetableEditVector.empty())
+        if((TTCurrentEntryIterator == TimetableEditVector.end()) || TimetableEditVector.empty())
         {
             Utilities->CallLogPop(1687);
             return;
@@ -5764,33 +6007,33 @@ void __fastcall TInterface::AllEntriesTTListBoxMouseUp(TObject *Sender, TMouseBu
         int LBIndex = AllEntriesTTListBox->ItemAtPos(TPoint(X,Y), true);
         if(LBIndex == -1)
         {
-            TTCurrentEntryPtr = TimetableEditVector.end() - 1;
+            TTCurrentEntryIterator = TimetableEditVector.end() - 1;
         }
         else
         {
-            TTCurrentEntryPtr = TimetableEditVector.begin() + LBIndex;
+            TTCurrentEntryIterator = TimetableEditVector.begin() + LBIndex;
         }
 //dropped at v2.13.0 as unreliable on high resolution monitors
         // find item required - 13 pixels per line of text
 /*        if((TopPos + (Y / 13)) >= AllEntriesTTListBox->Items->Count)
         {
-            TTCurrentEntryPtr = TimetableEditVector.end() - 1;
+            TTCurrentEntryIterator = TimetableEditVector.end() - 1;
         }
         else
         {
-            TTCurrentEntryPtr = TimetableEditVector.begin() + (Y / 13) + TopPos;
+            TTCurrentEntryIterator = TimetableEditVector.begin() + (Y / 13) + TopPos;
         }
 */
-        int OldVectorPos = TTCurrentEntryPtr - TimetableEditVector.begin(); // save the old position
+        int OldVectorPos = TTCurrentEntryIterator - TimetableEditVector.begin(); // save the old position
         CompileAllEntriesMemoAndSetPointers(9);
-// reset the TTCurrentEntryPtr after CompileAllEntriesMemoAndSetPointers
+// reset the TTCurrentEntryIterator after CompileAllEntriesMemoAndSetPointers
         if(OldVectorPos >= TimetableEditVector.end() - TimetableEditVector.begin() - 1)
         {
-            TTCurrentEntryPtr = TimetableEditVector.end() - 1;
+            TTCurrentEntryIterator = TimetableEditVector.end() - 1;
         }
         else
         {
-            TTCurrentEntryPtr = TimetableEditVector.begin() + OldVectorPos;
+            TTCurrentEntryIterator = TimetableEditVector.begin() + OldVectorPos;
         }
         Level1Mode = TimetableMode;
         SetLevel1Mode(120);
@@ -5813,38 +6056,38 @@ void TInterface::CompileAllEntriesMemoAndSetPointers(int Caller)
     } Segment;
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CompileAllEntriesMemoAndSetPointers");
     AllEntriesTTListBox->Clear();
-    TEVPtr = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
-    TTStartTimePtr = TimetableEditVector.end();
-    TTFirstServicePtr = TimetableEditVector.end();
-    TTLastServicePtr = TimetableEditVector.end();
+    TEVIterator = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
+    TTStartTimeIterator = TimetableEditVector.end();
+    TTFirstServiceIterator = TimetableEditVector.end();
+    TTLastServiceIterator = TimetableEditVector.end();
     if(TimetableEditVector.empty())
     {
-        TTCurrentEntryPtr = TimetableEditVector.end();
+        TTCurrentEntryIterator = TimetableEditVector.end();
         Utilities->CallLogPop(1681);
         return;
     }
     Segment = PreStartTime;
-    for(TEVPtr = TimetableEditVector.begin(); TEVPtr != TimetableEditVector.end(); TEVPtr++)
+    for(TEVIterator = TimetableEditVector.begin(); TEVIterator != TimetableEditVector.end(); TEVIterator++)
     {
         if(Segment == PreStartTime) // looking for the start time
         {
             TDateTime TempTime; // dummy
-            if(TrainController->CheckTimeValidity(33, *TEVPtr, TempTime))
+            if(TrainController->CheckTimeValidity(33, *TEVIterator, TempTime))
             {
-                TTStartTimePtr = TEVPtr; // TTStartTimeBox text set in TTHandler
-                AllEntriesTTListBox->Items->Add("START " + (*TEVPtr).SubString(1, 5));
+                TTStartTimeIterator = TEVIterator; // TTStartTimeBox text set in TTHandler
+                AllEntriesTTListBox->Items->Add("START " + (*TEVIterator).SubString(1, 5));
                 Segment = ActiveSegment;
                 continue;
             }
             else
             {
-                if(*TEVPtr == "")
+                if(*TEVIterator == "")
                 {
                     AllEntriesTTListBox->Items->Add("- Blank");
                 }
                 else
                 {
-                    AnsiString CurrentStr = *TEVPtr;
+                    AnsiString CurrentStr = *TEVIterator;
                     if(CurrentStr != "") // strip any non alphanumeric characters (specifically \r or \n)
                     {
                         CurrentStr = CurrentStr.SubString(1, 10); // limit length for LH window
@@ -5863,20 +6106,20 @@ void TInterface::CompileAllEntriesMemoAndSetPointers(int Caller)
         }
         if(Segment == ActiveSegment)
         {
-            if(*TEVPtr != "")
+            if(*TEVIterator != "")
             {
-                if((*TEVPtr)[1] != '*')
+                if((*TEVIterator)[1] != '*')
                 {
-                    TrainController->StripSpaces(5, *TEVPtr);
-                    ConvertCRLFsToCommas(0, *TEVPtr); // This needed because an entry intended as a service might have skipped the conversion in
+                    TrainController->StripSpaces(5, *TEVIterator);
+                    ConvertCRLFsToCommas(0, *TEVIterator); // This needed because an entry intended as a service might have skipped the conversion in
                     // SaveTTEntryButtonClick - see comment in that function
-                    if(TTFirstServicePtr == TimetableEditVector.end())
+                    if(TTFirstServiceIterator == TimetableEditVector.end())
                     {
-                        TTFirstServicePtr = TEVPtr;
+                        TTFirstServiceIterator = TEVIterator;
                     }
-                    TTLastServicePtr = TEVPtr;
+                    TTLastServiceIterator = TEVIterator;
                 }
-                AnsiString Entry = *TEVPtr;
+                AnsiString Entry = *TEVIterator;
 
 /* dropped at v2.9.1 so comment entries more meaningful, they self truncate to AllEntriesTTListBox width
                 if(Entry[1] == '*')
@@ -5927,13 +6170,13 @@ void TInterface::CompileAllEntriesMemoAndSetPointers(int Caller)
         }
         if(Segment == PostEnd)
         {
-            if(*TEVPtr == "")
+            if(*TEVIterator == "")
             {
                 AllEntriesTTListBox->Items->Add("+ Blank");
             }
             else
             {
-                AnsiString CurrentStr = *TEVPtr;
+                AnsiString CurrentStr = *TEVIterator;
                 if(CurrentStr != "") // strip any non alphanumeric characters (specifically \r or \n)
                 {
                     CurrentStr = CurrentStr.SubString(1, 10);
@@ -5950,11 +6193,11 @@ void TInterface::CompileAllEntriesMemoAndSetPointers(int Caller)
             continue;
         }
     }
-    if(TTStartTimePtr == TimetableEditVector.end())
+    if(TTStartTimeIterator == TimetableEditVector.end())
     {
         TTStartTimeBox->Text = "";
     }
-    TTCurrentEntryPtr = TTLastServicePtr; // may well be reset outside this function but need to ensure that it has a valid value on exit, even if it's null
+    TTCurrentEntryIterator = TTLastServiceIterator; // may well be reset outside this function but need to ensure that it has a valid value on exit, even if it's null
     Utilities->CallLogPop(1680);
 }
 // ---------------------------------------------------------------------------
@@ -5971,7 +6214,7 @@ void __fastcall TInterface::AZOrderButtonClick(TObject *Sender)
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AZOrderClick");
         if(AZOrderButton->Caption == AnsiString("A-Z Order"))
         {
-            TTEVPtr SortStart, SortEnd;
+            TTEVIterator SortStart, SortEnd;
             UnicodeString MessageStr =
                 "If you wish to preserve the original order don't save any changes whilst in alphabetical order.\n\n"
                 "To preserve the original order use alphabetical order to find the service required, click it to display it,"
@@ -5982,17 +6225,17 @@ void __fastcall TInterface::AZOrderButtonClick(TObject *Sender)
                 Application->MessageBox(MessageStr.c_str(), L"IMPORTANT:", MB_OK | MB_ICONWARNING);
                 AZWarningSent = true;
             }
-            TTSelectedEntry = *TTCurrentEntryPtr;
+            TTSelectedEntry = *TTCurrentEntryIterator;
             OriginalTimetableEditVector = TimetableEditVector;
             SortStart = TimetableEditVector.begin(); // if no start time set sort from beginning
-            if(TTFirstServicePtr != TimetableEditVector.end())
+            if(TTFirstServiceIterator != TimetableEditVector.end())
             {
-                SortStart = TTFirstServicePtr;
+                SortStart = TTFirstServiceIterator;
             }
             SortEnd = TimetableEditVector.end(); // if no last service set sort to end
-            if(TTLastServicePtr != TimetableEditVector.end())
+            if(TTLastServiceIterator != TimetableEditVector.end())
             {
-                SortEnd = TTLastServicePtr + 1;
+                SortEnd = TTLastServiceIterator + 1;
             }
             std::sort(SortStart, SortEnd);
             CompileAllEntriesMemoAndSetPointers(11);
@@ -6001,13 +6244,13 @@ void __fastcall TInterface::AZOrderButtonClick(TObject *Sender)
             {
                 if(TTSelectedEntry == *x)
                 {
-                    TTCurrentEntryPtr = x;
+                    TTCurrentEntryIterator = x;
                     CurrentEntryChanged = true;
                 }
             }
             if(!CurrentEntryChanged)
             {
-                TTCurrentEntryPtr = TTStartTimePtr;
+                TTCurrentEntryIterator = TTStartTimeIterator;
             }
             AZOrderButton->Caption = AnsiString("Original Order");
             AZOrderButton->Hint = AnsiString("Arrange services in original order       Toggle with Shift+ Z");
@@ -6029,7 +6272,7 @@ void __fastcall TInterface::AZOrderButtonClick(TObject *Sender)
                     return;
                 }
             }
-            TTSelectedEntry = *TTCurrentEntryPtr;
+            TTSelectedEntry = *TTCurrentEntryIterator;
             TimetableEditVector = OriginalTimetableEditVector;
             CompileAllEntriesMemoAndSetPointers(12);
             bool CurrentEntryChanged = false;
@@ -6037,13 +6280,13 @@ void __fastcall TInterface::AZOrderButtonClick(TObject *Sender)
             {
                 if(TTSelectedEntry == *x)
                 {
-                    TTCurrentEntryPtr = x;
+                    TTCurrentEntryIterator = x;
                     CurrentEntryChanged = true;
                 }
             }
             if(!CurrentEntryChanged)
             {
-                TTCurrentEntryPtr = TTStartTimePtr;
+                TTCurrentEntryIterator = TTStartTimeIterator;
             }
             AZOrderButton->Caption = AnsiString("A-Z Order");
             AZOrderButton->Hint = AnsiString("Arrange services in alphabetical order       Toggle with Shift+ Z");
@@ -6113,8 +6356,8 @@ void TInterface::ConvertCRLFsToCommas(int Caller, AnsiString &ConvStr)
 
 void TInterface::TimetableHandler()
 {
-/* CreateEditTTFileName set if a TT file loaded (even if empty), the pointers TTStartTimePtr, TTFirstServicePtr, TTLastServicePtr provide
-   relevant information - if null then not set.  TTCurrentEntryPtr is set to the Entry to be displayed or null if there's no start time or no
+/* CreateEditTTFileName set if a TT file loaded (even if empty), the pointers TTStartTimeIterator, TTFirstServiceIterator, TTLastServiceIterator provide
+   relevant information - if null then not set.  TTCurrentEntryIterator is set to the Entry to be displayed or null if there's no start time or no
    entries
 */
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TimetableHandler");
@@ -6160,9 +6403,9 @@ void TInterface::TimetableHandler()
     {
         TimetableNameLabel->Caption = "Editing timetable: " + CreateEditTTTitle;
     }
-    if(TTStartTimePtr != TimetableEditVector.end()) // Null means start time not yet set
+    if(TTStartTimeIterator != TimetableEditVector.end()) // Null means start time not yet set
     {
-        TTStartTimeBox->Text = (*TTStartTimePtr).SubString(1, 5); // 1st 5 chars = time if validity check OK
+        TTStartTimeBox->Text = (*TTStartTimeIterator).SubString(1, 5); // 1st 5 chars = time if validity check OK
     }
 // start time now set & displayed
 
@@ -6215,9 +6458,12 @@ void TInterface::TimetableHandler()
         {
             ExportTTButton->Enabled = true;
             ConflictAnalysisButton->Enabled = true;
-            ExpandRepeatsButton->Enabled = true;
+            if((*TTCurrentEntryIterator).Pos(",R;") > 0)
+            {
+                ExpandRepeatsButton->Enabled = true;
+            }
         }
-        if(TTCurrentEntryPtr != TimetableEditVector.end())
+        if(TTCurrentEntryIterator != TimetableEditVector.end())
         {
             CopyTTEntryButton->Enabled = true;
             CutTTEntryButton->Enabled = true;
@@ -6235,24 +6481,24 @@ void TInterface::TimetableHandler()
         {
             NewTTEntryButton->Enabled = true;
         }
-        if((TTCurrentEntryPtr != TimetableEditVector.end()) && !TimetableEditVector.empty())
+        if((TTCurrentEntryIterator != TimetableEditVector.end()) && !TimetableEditVector.empty())
         {
-            if((TimetableEditVector.end() - 1) > TTCurrentEntryPtr)
+            if((TimetableEditVector.end() - 1) > TTCurrentEntryIterator)
             {
                 NextTTEntryButton->Enabled = true;
                 MoveTTEntryDownButton->Enabled = true;
             }
-            if(TimetableEditVector.begin() < TTCurrentEntryPtr)
+            if(TimetableEditVector.begin() < TTCurrentEntryIterator)
             {
                 PreviousTTEntryButton->Enabled = true;
                 MoveTTEntryUpButton->Enabled = true;
             }
         }
-        if(TTCurrentEntryPtr != TimetableEditVector.end())
+        if(TTCurrentEntryIterator != TimetableEditVector.end())
         {
-            if(*TTCurrentEntryPtr != "")
+            if(*TTCurrentEntryIterator != "")
             {
-                if((TTCurrentEntryPtr >= TTFirstServicePtr) && (TTCurrentEntryPtr <= TTLastServicePtr) && ((*TTCurrentEntryPtr)[1] != '*'))
+                if((TTCurrentEntryIterator >= TTFirstServiceIterator) && (TTCurrentEntryIterator <= TTLastServiceIterator) && ((*TTCurrentEntryIterator)[1] != '*'))
                 {
                     TTServiceSyntaxCheckButton->Enabled = true;
                     InvertTTEntryButton->Enabled = true;
@@ -6264,11 +6510,11 @@ void TInterface::TimetableHandler()
             PasteTTEntryButton->Enabled = true;
         }
         OneEntryTimetableMemo->Clear(); // don't clear if Entry changed
-        if(TTCurrentEntryPtr != TimetableEditVector.end())
+        if(TTCurrentEntryIterator != TimetableEditVector.end())
         {
-//    if(*TTCurrentEntryPtr != "")  don't use this here as fails to highlight blank line entries, but need to add it in next condition or can have error (Cameron020723errorlog.err)
-            if((TTCurrentEntryPtr > TTStartTimePtr) && (TTCurrentEntryPtr <= TTLastServicePtr) && (*TTCurrentEntryPtr != "") && ((*TTCurrentEntryPtr)[1] != '*'))
-            {                                                                                   //added (*TTCurrentEntryPtr != "") at v2.16.0 due to Cameron's error noted above
+//    if(*TTCurrentEntryIterator != "")  don't use this here as fails to highlight blank line entries, but need to add it in next condition or can have error (Cameron020723errorlog.err)
+            if((TTCurrentEntryIterator > TTStartTimeIterator) && (TTCurrentEntryIterator <= TTLastServiceIterator) && (*TTCurrentEntryIterator != "") && ((*TTCurrentEntryIterator)[1] != '*'))
+            {                                                                                   //added (*TTCurrentEntryIterator != "") at v2.16.0 due to Cameron's error noted above
             /* Details of the error: Fault arose because a timetable had a start time without any entries other than comments,
             and a blank line was saved at the end.  The program has a number of internal timetable service iterators (an iterator is a type
             of memory address pointer) which point to the start time entry, the first service entry, the last service entry, the current
@@ -6278,12 +6524,12 @@ void TInterface::TimetableHandler()
             tried to use it as a real location, and in Cameron's timetable it did.
             */
                 bool ServiceEntry = true;
-                DisplayOneTTLineInPanel(0, *TTCurrentEntryPtr, ServiceEntry);
+                DisplayOneTTLineInPanel(0, *TTCurrentEntryIterator, ServiceEntry);
             }
             else
             {
                 bool ServiceEntry = false;
-                DisplayOneTTLineInPanel(1, *TTCurrentEntryPtr, ServiceEntry);
+                DisplayOneTTLineInPanel(1, *TTCurrentEntryIterator, ServiceEntry);
             }
         }
     }
@@ -6395,7 +6641,7 @@ void TInterface::HighlightOneEntryInAllEntriesTTListBox(int Caller, int Position
 // ---------------------------------------------------------------------------
 bool TInterface::AreAnyTimesInCurrentEntry()
 {
-    if((TTCurrentEntryPtr == TimetableEditVector.end()) || (*TTCurrentEntryPtr == ""))
+    if((TTCurrentEntryIterator == TimetableEditVector.end()) || (*TTCurrentEntryIterator == ""))
     {
         return(false);
     }
@@ -9717,11 +9963,11 @@ likely to be set to the wrong position since when ...Selected... runs it sets To
 the entry that the mouse is now on rather than the one that was chosen.
 Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any flag set so when Copy or any other key function runs the top index is correct
 */
-            if((GetKeyState(VK_LBUTTON) >= 0) && (GetKeyState(VK_RBUTTON) >= 0) && (TTCurrentEntryPtr != TimetableEditVector.end())) //no mouse key down & pointer > 0
+            if((GetKeyState(VK_LBUTTON) >= 0) && (GetKeyState(VK_RBUTTON) >= 0) && (TTCurrentEntryIterator != TimetableEditVector.end())) //no mouse key down & pointer > 0
             // high order bit set to 1 when button down, so arithmetically it is negative
             {
-                // TTCurrentEntryPtr == 0 when create a timetable
-                AllEntriesTTListBox->Selected[TTCurrentEntryPtr - TimetableEditVector.begin()] = true; //selects the current entry &
+                // TTCurrentEntryIterator == 0 when create a timetable
+                AllEntriesTTListBox->Selected[TTCurrentEntryIterator - TimetableEditVector.begin()] = true; //selects the current entry &
             }                                                                                          //makes it visible in the listbox
             if(AnyTTKeyFlagSet()) // true if any of the below flags set
             {
@@ -9838,9 +10084,9 @@ Later addition: Set member variable AllEntriesTTListBox->TopIndex here if any fl
 // highlight timetable entry if in tt mode (have to call this regularly so will scroll with the listbox)
 //dropped at v2.13.0 as clicking an entry does all that is required
 /*
-            if(!TimetableEditVector.empty() && (TTCurrentEntryPtr != TimetableEditVector.end()))
+            if(!TimetableEditVector.empty() && (TTCurrentEntryIterator != TimetableEditVector.end()))
             {
-                HighlightOneEntryInAllEntriesTTListBox(1, TTCurrentEntryPtr - TimetableEditVector.begin());
+                HighlightOneEntryInAllEntriesTTListBox(1, TTCurrentEntryIterator - TimetableEditVector.begin());
             }
             else
             {
@@ -16482,24 +16728,24 @@ void TInterface::SetTopIndex(int Caller)
 {
 // Set TopIndex to the proper value & also Selected so don't have a different selection to the highlighted entry
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTopIndex");
-    if((TTCurrentEntryPtr == TimetableEditVector.end()) || TimetableEditVector.empty()) //added at v2.13.0 as a fix for mathstrains19 (discord name) error reported 13/04/22
+    if((TTCurrentEntryIterator == TimetableEditVector.end()) || TimetableEditVector.empty()) //added at v2.13.0 as a fix for mathstrains19 (discord name) error reported 13/04/22
     {                                                           //without this it crashes at line before last with "List index out of bounds"
         Utilities->CallLogPop(2485);
         return;
     }
-    if((TTCurrentEntryPtr - TimetableEditVector.begin()) < AllEntriesTTListBox->TopIndex)
+    if((TTCurrentEntryIterator - TimetableEditVector.begin()) < AllEntriesTTListBox->TopIndex)
     {
-        AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin();
+        AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin();
     }
-    else if((TTCurrentEntryPtr - TimetableEditVector.begin()) > (AllEntriesTTListBox->TopIndex + 45))
+    else if((TTCurrentEntryIterator - TimetableEditVector.begin()) > (AllEntriesTTListBox->TopIndex + 45))
     {
-        AllEntriesTTListBox->TopIndex = TTCurrentEntryPtr - TimetableEditVector.begin() - 45;
+        AllEntriesTTListBox->TopIndex = TTCurrentEntryIterator - TimetableEditVector.begin() - 45;
     }
     else //leave AllEntriesTTListBox->TopIndex as it is
     {
 //        AllEntriesTTListBox->TopIndex = AllEntriesTTListBox->TopIndex; //removed at v2.13.0 as serves no purpose
     }
-    AllEntriesTTListBox->Selected[TTCurrentEntryPtr - TimetableEditVector.begin()] = true;
+    AllEntriesTTListBox->Selected[TTCurrentEntryIterator - TimetableEditVector.begin()] = true;
     Utilities->CallLogPop(2207);
 }
 
@@ -24413,12 +24659,8 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
             TTimetableEditVector::iterator TTEVIt = TimetableEditVector.begin() + TTIteratorCount;
             if((*TTEVIt).Pos(",R;") > 0)
             {
-                TTCurrentEntryPtr = TTEVIt;
+                TTCurrentEntryIterator = TTEVIt;
                 ExpandRepeatsButton->Click();
-                if(ShuttleService)
-                {
-                    continue;
-                }
                 RepeatFound = true;
                 SaveTTButton->Click();
                 ValidateTimetableButton->Click(); //new vector created here

@@ -5283,11 +5283,18 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
         TrainController->LogEvent("ExpandRepeatsButtonClick");
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",ExpandRepeatsButtonClick");
 
-        UnicodeString MessageStr = UnicodeString("Initial warning message.  Continue?");
+        UnicodeString MessageStr = UnicodeString("This will create separate services from the selected repeat entry. Beware that if the repeating "
+                                                 "service contains links to another service and has zero as the headcode digit increase for each repeat "
+                                                 "(i.e. repeats all have the same headcode) then the expanded timetable will fail to validate. "
+                                                 "In these circumstances please ensure that the headcode changes for each repeat and that all the "
+                                                 "service references (not necessarily headcodes) for all linked services are unique.\n\n"
+                                                 "It is recommended to save the expanded timetable using 'Save timetable as' rather than 'Save "
+                                                 "timetable' in order to keep the original timetable in case the expansion does not provide what "
+                                                 "is wanted.\n\nContinue?");
         int button = Application->MessageBox(MessageStr.c_str(), L"Warning!", MB_YESNO | MB_ICONWARNING);
         if(button == IDNO)
         {
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2629);
             return;
         }
 
@@ -5302,11 +5309,23 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
 
         if(TTCurrentEntryIterator == TimetableEditVector.end())
         {
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2630);
             return;
         }
         PreRepeatList.clear();
         RepeatList.clear();
+        if(!TimetableValidFlag) //button shouldn't be enabled if invalid but leave for safety
+        {
+            ShowMessage("Timetable must be validated before repeat services can be expanded");
+            Utilities->CallLogPop(2631);
+            return;
+        }
+        if((*TTCurrentEntryIterator).Pos(",R;") == 0) //button shouldn't be enabled if not a repeat but leave for safety
+        {
+            ShowMessage("Selected timetable entry is not a repeating service");
+            Utilities->CallLogPop(2632);
+            return;
+        }
 
 //Build the map of corresponding TrainDataVector pointers (keys) and TimetableEditVector pointers (values) for all services.
         std::map<TTrainDataEntry*, AnsiString*> LinkMap;
@@ -5325,7 +5344,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
         {
             ShowMessage("Failed to find a repeat for the selected entry. Please discard the modified timetable"
                " which is likely to be corrupt and reload the original.");
-            Utilities->CallLogPop(7777);
+            Utilities->CallLogPop(2633);
             return;
         }
         AnsiString Rpt = TTCurrentEntryIterator->SubString(RpIndex + 3, TTCurrentEntryIterator->Length() - (RpIndex + 2)); //Rpt = "mins;digits;repeats"
@@ -5354,7 +5373,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
 
         for(TTimetableEditVector::iterator TTEVIt = TimetableEditVector.begin(); TTEVIt != TimetableEditVector.end(); TTEVIt++)
         {
-            while(!StartTimeFound && !TrainController->CheckTimeValidity(7777, *TTEVIt, DummyTime))
+            while(!StartTimeFound && !TrainController->CheckTimeValidity(36, *TTEVIt, DummyTime))
             {
                 BreakFlag = true;
                 break;
@@ -5365,7 +5384,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                 continue;
             }
             StartTimeFound = true;
-            if(TrainController->CheckTimeValidity(7777, *TTEVIt, DummyTime)) //step past start time
+            if(TrainController->CheckTimeValidity(37, *TTEVIt, DummyTime)) //step past start time
             {
                 continue; //no subsequent entry within the timetable can start with a time or it wouldn't validate
             }
@@ -5400,7 +5419,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
         TDEPtr = &TrainController->TrainDataVector.front();
         for(TTimetableEditVector::iterator TTEVIt = TimetableEditVector.begin(); TTEVIt != TimetableEditVector.end(); TTEVIt++)
         {
-            while(!StartTimeFound && !TrainController->CheckTimeValidity(7777, *TTEVIt, DummyTime))
+            while(!StartTimeFound && !TrainController->CheckTimeValidity(38, *TTEVIt, DummyTime))
             {
                 BreakFlag = true;
                 break;
@@ -5411,7 +5430,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                 continue;
             }
             StartTimeFound = true;
-            if(TrainController->CheckTimeValidity(7777, *TTEVIt, DummyTime)) //step past start time
+            if(TrainController->CheckTimeValidity(39, *TTEVIt, DummyTime)) //step past start time
             {
                 continue; //no subsequent entry within the timetable can start with a time or it wouldn't validate
             }
@@ -5440,8 +5459,6 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                 DuplicatePointer = false;
                 for(ListIt = RepeatList.begin(); ListIt != RepeatList.end(); ListIt++) //don't list any that have already been examined
                 {
-//AnsiString ListContents = (*ListIt)->ServiceReference;   //diagnostics
-//AnsiString AVItContents = AVIt->LinkedTrainEntryPtr->ServiceReference;
                     if(*ListIt == AVIt->LinkedTrainEntryPtr)
                     {
                         DuplicatePointer = true;
@@ -5449,8 +5466,6 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                 }
                 for(ListIt = PreRepeatList.begin(); ListIt != PreRepeatList.end(); ListIt++) //don't list any that have already been included
                 {
-//AnsiString ListContents = (*ListIt)->ServiceReference;   //diagnostics
-//AnsiString AVItContents = AVIt->LinkedTrainEntryPtr->ServiceReference;
                     if(*ListIt == AVIt->LinkedTrainEntryPtr)
                     {
                         DuplicatePointer = true;
@@ -5498,7 +5513,8 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
             RepeatList.push_back(TDEPtr);
         }
 
-        //work through RepeatList making changes to the underlying timetable edit vector entries where have Sns-sh & Fns-sh commands
+        //work through RepeatList making changes to the underlying timetable edit vector entries where have feeders (linked to Sns-sh entries) and
+        //finishers (linked to Fns-sh entries)
         for(ListIt = RepeatList.begin(); ListIt != RepeatList.end(); ListIt++)
         {
             TTrainDataEntry* TDEPtr = *ListIt;
@@ -5556,7 +5572,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
             else //failed to find TDEPtr
             {
                 ShowMessage("Failed to find an entry link, internal timetable has probably been corrupted, please reload the original timetable");
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2634);
                 return;
             }
             RepeatList.pop_front();
@@ -5570,7 +5586,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
             else
             {
                 ShowMessage("Failed to find a repeat entry, internal timetable has probably been corrupted, please reload the original timetable");
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2635);
                 return;
             }
         }
@@ -5583,6 +5599,10 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
         int OutwardShuttlePos = 0, ReturnShuttlePos = 0, FinishPos = 0;
         while(true)
         {
+            if((TimetableEditVector.begin() + IteratorCount) == TimetableEditVector.end())
+            {
+                break;
+            }
             if((TimetableEditVector.begin() + IteratorCount)->SubString(1,4) == "####")
             {
                 AnsiString EntryCopy = *(TimetableEditVector.begin() + IteratorCount);
@@ -5591,8 +5611,14 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                 int Fns_shPos = EntryCopy.Pos("Fns-sh");
                 int Snt_shPos = EntryCopy.Pos("Snt-sh");
                 int Frh_shPos = EntryCopy.Pos("Frh-sh");
-                if(Sns_shPos > 0) //has a feeder, syntax is '... ,HH:MM;Sns-sh;ReturnShuttleRef;FeederRef, ...'
+                if(Sns_shPos > 0)
                 {
+                    /* feeder 1X00 -> outward 1A00 -> return 1A01 -> outward 1st repeat 1A02 -> return 1st repeat 1A03 -> ...
+                    Shuttle syntax: '... 1A00;description,07:00;Sns-sh;1A01;1X00, ...'
+                    New syntax for original entry: 1A00;description,07:00;Sns;1X00, ...'
+                    New syntax for first repeat entry: 1A02;description,07:00;Sns;1A01, ...' i.e original return shuttle ref
+                    New syntax for nth repeat entry: 1A00+Digits;description,07:00;Sns;1A99+Digits, ...'
+                    */
                     //set return shuttle ref
                     int TempPos = Sns_shPos + 7; //TempPos is at the position after the ';' following 'Sns-sh', i.e. at start of ReturnShuttleRef
                     ReturnShuttlePos = TempPos;
@@ -5654,7 +5680,123 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                         //change all time strings in EntryCopy by Mins
                         for(int z = 1; z <= EntryCopy.Length(); z++)
                         {
-                            if(TrainController->CheckTimeValidity(7777, EntryCopy.SubString(z,5), DummyTime)) //text after time ignored
+                            if(TrainController->CheckTimeValidity(40, EntryCopy.SubString(z,5), DummyTime)) //text after time ignored
+                            {
+                                AnsiString NewTime = AddTimeMinutes(EntryCopy.SubString(z,5), Mins);
+                                EntryCopy.Delete(z, 5);
+                                EntryCopy.Insert(NewTime, z); //this ok as doesn't alter overall length of EntryCopy
+                            }
+                        }
+                        //insert the entry
+                        TimetableEditVector.insert(TimetableEditVector.begin() + IteratorCount, EntryCopy);
+                        IteratorCount++;
+                    }
+                    continue;
+                }
+                else if(Snt_shPos > 0)
+                {
+                    /* outward 1A00 -> return 1A01 -> outward 1st repeat 1A02 -> return 1st repeat 1A03 -> ...
+                    Shuttle syntax: '... 1A00;description;train data,07:00;Snt-sh;15-40 15-41;1A01, ...'
+                    New syntax for original entry: 1A00;description,07:00;Snt;15-40 15-41, ...'  (train data, '-sh' & return ref dropped)
+                    New syntax for first repeat entry: 1A02;description,07:00;Sns;1A01, ...' i.e original return shuttle ref
+                    New syntax for nth repeat entry: 1A00+n x Digits;description,07:00;Sns;1A99+n x Digits, ...'
+                    */
+                    //set return shuttle ref
+                    AnsiString StartLoc = "";
+                    int TempPos = Snt_shPos + 7; //TempPos is at the position after the ';' following 'Snt-sh', i.e. at start of StartLoc
+                    int StartLocPos = TempPos;
+                    while(EntryCopy[TempPos] != ';')
+                    {
+                        StartLoc += EntryCopy[TempPos];
+                        TempPos++; //when exits TempPos at the position of the ';' following the start location
+                    }
+                    TempPos++; //now at start of Return shuttle
+                    ReturnShuttlePos = TempPos;
+                    while(EntryCopy[TempPos] != ',')
+                    {
+                        ReturnShuttleRef += EntryCopy[TempPos];
+                        TempPos++; //when exits TempPos at the position of the ',' following FeederRef
+                    }
+                    //now change EntryCopy as necessary prior to expansion, but do deletions from end to start so Pos values stay valid
+                    EntryCopy.Delete(ReturnShuttlePos, ReturnShuttleRef.Length()); //leave the comma
+                    EntryCopy.Delete(StartLocPos, StartLoc.Length() + 1); //+1 to delete the ';'
+                    EntryCopy.Delete(Snt_shPos + 3, 3); //drop the '-sh'
+                    EntryCopy.Insert(StartLoc, StartLocPos - 3); //-3 as dropped '-sh'
+                    //copy it back to the vector
+                    *(TimetableEditVector.begin() + IteratorCount) = EntryCopy;
+                    IteratorCount++;
+                    //now deal with the repeats, but for these need ReturnShuttleRef rather than starting location and 'Sns' rather than 'Snt'
+                    //& change ReturnRefPos to the StartLocPos - 3
+                    ReturnShuttlePos = StartLocPos - 3;
+                    AnsiString TrainDataString = "";
+                    int TrainDataPos;
+                    for(int x = 1; x <= Repeats; x++)
+                    {
+                        if(x == 1)
+                        {
+                            EntryCopy.Delete(StartLocPos - 3, StartLoc.Length()); //drop StartLoc
+                            EntryCopy.Insert(ReturnShuttleRef, StartLocPos - 3); //replace with ReturnShuttleRef
+                            EntryCopy.Delete(Snt_shPos, 3); //drop 'Snt'
+                            EntryCopy.Insert("Sns", Snt_shPos); //replace with 'Sns'
+                            //now drop train data, find TrainDataPos after 2nd ';' & delete up to the ',' but keep the comma
+                            TempPos = 1;
+                            while(EntryCopy[TempPos] != ';')
+                            {
+                                TempPos++; //when exits TempPos at the position of the ';' following the service ref
+                            }
+                            TempPos++; //now at start of description
+                            while(EntryCopy[TempPos] != ';')
+                            {
+                                TempPos++; //when exits TempPos at the position of the ';' following the description
+                            }
+                            TempPos++; //now at start of train data
+                            TrainDataPos = TempPos;
+                            while(EntryCopy[TempPos] != ',')
+                            {
+                                TrainDataString += EntryCopy[TempPos];
+                                TempPos++; //when exits TempPos at the position of the ',' following the train data
+                            }
+                            TrainDataPos--; //now at ';' after description
+                            EntryCopy.Delete(TrainDataPos, TrainDataString.Length() + 1); //delete the data & ';' after description but keep the comma
+                        }
+                        for(int Position = 1; Position <= EntryCopy.Length(); Position++)
+                        {
+                            bool FoundRef = false;
+                            AnsiString AnsiServRef = "";
+                            if(Position == 1) //for this service ref
+                            {
+                                FoundRef = true;
+                            }
+                            else if(Position == EntryCopy.Pos("Sns") + 4)
+                            {
+                                ReturnShuttlePos = Position;
+                                FoundRef = true;
+                            }
+                            else if((EntryCopy.SubString(Position, 3) == "Fns") || (EntryCopy.SubString(Position, 3) == "rsp") ||
+                                    (EntryCopy.SubString(Position, 3) == "fsp") || (EntryCopy.SubString(Position, 3) == "Fjo") ||
+                                    (EntryCopy.SubString(Position, 3) == "jbo"))
+                            {
+                                Position += 4; //any other referenced services
+                                FoundRef = true;
+                            }
+                            if(FoundRef)
+                            {
+                                int y = Position;
+                                while((y <= EntryCopy.Length()) && (EntryCopy[y] != ';') && (EntryCopy[y] != ','))
+                                {
+                                    AnsiServRef += EntryCopy[y];
+                                    y++;
+                                }
+                                if((x > 1) || Position != ReturnShuttlePos)//1st repeat needs to keep the original return shuttle ref after the 'Sns'
+                                {
+                                    AddRefDigits(AnsiServRef, Position, EntryCopy, Digits);
+                                }
+                            }
+                        }
+                        //change all time strings in EntryCopy by Mins
+                        for(int z = 1; z <= EntryCopy.Length(); z++)
+                        {
+                            if(TrainController->CheckTimeValidity(41, EntryCopy.SubString(z,5), DummyTime)) //text after time ignored
                             {
                                 AnsiString NewTime = AddTimeMinutes(EntryCopy.SubString(z,5), Mins);
                                 EntryCopy.Delete(z, 5);
@@ -5669,6 +5811,12 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                 }
                 else if(Fns_shPos > 0) //has a finisher, syntax is '... ,HH:MM;Fns-sh;OutwardShuttleRef;FinishRef NULL or end of file
                 {
+                    /* outward 1A00 -> return 1A01 -> outward 1st repeat 1A02 -> return 1st repeat 1A03 -> ... -> ... -> return last repeat 1A11; -> finisher 1X01
+                    Shuttle syntax: '... Fns-sh;1A00;1X01'
+                    New syntax for original entry: '... Fns;1A02' ('-sh' & finisher dropped)
+                    New syntax for first repeat entry: '... Fns;1A04'
+                    New syntax for last repeat entry: '... Fns;1X01'
+                    */
                     //set outward shuttle ref
                     int TempPos = Fns_shPos + 7; //TempPos is at the position after the ';' following 'Fns-sh', i.e. at start of OutwardShuttleRef
                     OutwardShuttlePos = TempPos;
@@ -5737,7 +5885,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                         //change all time strings in EntryCopy by Mins
                         for(int z = 1; z <= EntryCopy.Length(); z++)
                         {
-                            if(TrainController->CheckTimeValidity(7777, EntryCopy.SubString(z,5), DummyTime)) //text after time ignored
+                            if(TrainController->CheckTimeValidity(42, EntryCopy.SubString(z,5), DummyTime)) //text after time ignored
                             {
                                 AnsiString NewTime = AddTimeMinutes(EntryCopy.SubString(z,5), Mins);
                                 EntryCopy.Delete(z, 5);
@@ -5750,13 +5898,87 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                     }
                     continue;
                 }
-                else if(Snt_shPos > 0)
+                else if(Frh_shPos > 0)  //only the last repeat becomes Frh, others to be Fns followed by next repeat of the shuttle
                 {
-                    EntryCopy.Delete(Snt_shPos + 3, 3); //convert to Snt
-                }
-                else if(Frh_shPos > 0)
-                {
-                    EntryCopy.Delete(Frh_shPos + 3, 3); //convert to Frh
+                    /* outward 1A00 -> return 1A01 -> outward 1st repeat 1A02 -> return 1st repeat 1A03 -> ... -> ... -> return last repeat 1A11; final command 'Frh'
+                    Shuttle syntax: '... Frh-sh;1A00'
+                    New syntax for original entry: '... Fns;1A02' ('-sh' dropped)
+                    New syntax for first repeat entry: '... Fns;1A04'
+                    New syntax for last repeat entry: '... Frh' (time dropped)
+                    */
+                    //set outward shuttle ref
+                    int TempPos = Frh_shPos + 7; //TempPos is at the position after the ';' following 'Frh-sh', i.e. at start of OutwardShuttleRef
+                    OutwardShuttlePos = TempPos;
+                    while(TempPos <= EntryCopy.Length())
+                    {
+                        OutwardShuttleRef += EntryCopy[TempPos];
+                        TempPos++; //when exits TempPos after end of EntryCopy
+                    }
+                    //now change EntryCopy as necessary prior to expansion, but do deletions from end to start so Pos values stay valid
+                    EntryCopy.Delete(Frh_shPos, 6); //delete Frh-sh
+                    EntryCopy.Insert("Fns", Frh_shPos); //insert Fns & leave outward shuttle ref in place
+
+                    //BUT, need to link back to the next repeat of the outward shuttle ref, so add the digits to OutwardShuttleRef and replace the original
+                    AddRefDigits(OutwardShuttleRef, OutwardShuttlePos - 3, EntryCopy, Digits); //-3 because have removed 'Frh-sh' and replaced with 'Fns'
+                    //copy it back to the vector
+                    *(TimetableEditVector.begin() + IteratorCount) = EntryCopy;
+                    IteratorCount++;
+                    //now deal with the repeats
+                    for(int x = 1; x <= Repeats; x++)
+                    {
+                        if(x == Repeats) //at last repeat need Frh with no time and no service ref
+                        {
+                            EntryCopy.Delete(Frh_shPos - 6, EntryCopy.Length() - Frh_shPos + 7); //convert to Frh & get rid of the shuttle link and the time
+                            EntryCopy.Insert("Frh", Frh_shPos - 6);
+                        }
+                        for(int Position = 1; Position <= EntryCopy.Length(); Position++)
+                        {
+                            bool FoundRef = false;
+                            AnsiString AnsiServRef = "";
+                            if(Position == 1) //for this service ref
+                            {
+                                FoundRef = true;
+                            }
+                            else if(Position == OutwardShuttlePos - 3) //outward shuttle ref
+                            {
+                                FoundRef = true;
+                            }
+                            else if((EntryCopy.SubString(Position, 3) == "Sns") || (EntryCopy.SubString(Position, 3) == "rsp") ||
+                                    (EntryCopy.SubString(Position, 3) == "fsp") || (EntryCopy.SubString(Position, 3) == "Fjo") ||
+                                    (EntryCopy.SubString(Position, 3) == "jbo"))
+                            {
+                                Position += 4; //any other referenced services
+                                FoundRef = true;
+                            }
+                            if(FoundRef)
+                            {
+                                int y = Position;
+                                while((y <= EntryCopy.Length()) && (EntryCopy[y] != ';') && (EntryCopy[y] != ','))
+                                {
+                                    AnsiServRef += EntryCopy[y];
+                                    y++;
+                                }
+                                if((x < Repeats) || (AnsiServRef != FinishRef)) //don't change the finish reference
+                                {
+                                    AddRefDigits(AnsiServRef, Position, EntryCopy, Digits);
+                                }
+                            }
+                        }
+                        //change all time strings in EntryCopy by Mins
+                        for(int z = 1; z <= EntryCopy.Length(); z++)
+                        {
+                            if(TrainController->CheckTimeValidity(43, EntryCopy.SubString(z,5), DummyTime)) //text after time ignored
+                            {
+                                AnsiString NewTime = AddTimeMinutes(EntryCopy.SubString(z,5), Mins);
+                                EntryCopy.Delete(z, 5);
+                                EntryCopy.Insert(NewTime, z); //this ok as doesn't alter overall length of EntryCopy
+                            }
+                        }
+                        //insert the entry
+                        TimetableEditVector.insert(TimetableEditVector.begin() + IteratorCount, EntryCopy);
+                        IteratorCount++;
+                    }
+                    continue;
                 }
                 //all remainder have only 3 letter commands, just copy it back to the vector (without the '####' & deal with repeats
                 *(TimetableEditVector.begin() + IteratorCount) = EntryCopy;
@@ -5794,7 +6016,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                     //change all time strings in EntryCopy by Mins
                     for(int z = 1; z <= EntryCopy.Length(); z++)
                     {
-                        if(TrainController->CheckTimeValidity(7777, EntryCopy.SubString(z,5), DummyTime)) //text after time ignored
+                        if(TrainController->CheckTimeValidity(44, EntryCopy.SubString(z,5), DummyTime)) //text after time ignored
                         {
                             AnsiString NewTime = AddTimeMinutes(EntryCopy.SubString(z,5), Mins);
                             EntryCopy.Delete(z, 5);
@@ -5815,9 +6037,9 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                 }
             }
         }
-        CompileAllEntriesMemoAndSetPointers(7777);
+        CompileAllEntriesMemoAndSetPointers(13);
         Level1Mode = TimetableMode;
-        SetLevel1Mode(7777);
+        SetLevel1Mode(140);
         //reset TTCurrentEntryIterator
         RpIndex = CurrentEntry.Pos(",R;"); //RpIndex is the position of the comma
         AnsiString RepeatStripped = CurrentEntry;
@@ -5830,13 +6052,13 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                 break;
             }
         }
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2636);
     }
     catch(const Exception &e) //non-error catch
     {
         ShowMessage("The following error occurred during expansion: " + e.Message + ". Please discard the modified timetable"
             " which is likely to be corrupt and reload the original.");
-        Utilities->CallLogPop(7777);
+        Utilities->CallLogPop(2637);
     }
 }
 
@@ -5863,7 +6085,7 @@ AnsiString TInterface::AddTimeMinutes(AnsiString OrigTimeString, int MinsToAdd) 
     {
         HrsStr = "0" + HrsStr;
     }
-    Utilities->CallLogPop(7777);
+    Utilities->CallLogPop(2638);
     return(HrsStr + ":" + MinsStr);
 }
 
@@ -5883,7 +6105,7 @@ void TInterface::AddRefDigits(AnsiString AnsiServRef, int Position, AnsiString &
     }
     EntryCopy = EntryCopy.Delete(Position + AnsiServRef.Length() - 2, 2);
     EntryCopy = EntryCopy.Insert(AnsiNewDigits, Position + AnsiServRef.Length() - 2);
-    Utilities->CallLogPop(7777);
+    Utilities->CallLogPop(2639);
 }
 
 //---------------------------------------------------------------------------
@@ -24649,7 +24871,7 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
      //test code here
 
-    /*
+
     while(true)
     {
         bool RepeatFound = false;
@@ -24660,10 +24882,10 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
             if((*TTEVIt).Pos(",R;") > 0)
             {
                 TTCurrentEntryIterator = TTEVIt;
-                ExpandRepeatsButton->Click();
+                ExpandRepeatsButton->Click();     //edit vector expanded here
                 RepeatFound = true;
                 SaveTTButton->Click();
-                ValidateTimetableButton->Click(); //new vector created here
+                ValidateTimetableButton->Click(); //new data vector created here
                 break; //from for... loop
             }
         }
@@ -24673,7 +24895,7 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
         }
     }
 
-
+    /*
     throw Exception("test error");
                     if(AllRoutes->AllRoutesVector.size() > 0)
                     {

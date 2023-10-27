@@ -7,11 +7,20 @@ remove test function code
 /uncomment initial warning message in expand repeat button click line 5287 int
 Find out exactly what TimetableHandler and CompileAllEntriesMemoAndSetPointers do and see if inclusion required
 
-For shuttles make sure all service refs are unique after expansion (diff rules for shuttles so can validate with shuttles but not when expanded)
-Still to resume original highlighted enrtry after expansion (doesn't for shuttles) & ensure displayed entry corresponds correctly with the new entry
-Still to expand the warning message
-Expanded ttb is aaBirm2.ttb - see if runs ok
+/For shuttles make sure all service refs are unique after expansion (diff rules for shuttles so can validate with shuttles but not when expanded)
+Still to resume original highlighted entry after expansion (doesn't for shuttles) & ensure displayed entry corresponds correctly with the new entry
+Move the expansion button to a better position in the editor
+/Still to expand the warning message
+/Expanded ttb is aaBirm2.ttb - see if runs ok - seems ok
+Deal with all 7777s (done but check again with checker)
+comment out testfunction
+/add an ordinary service in middle of a shuttle and expand that first
+Xalso try Fjo/jbo in a shuttle if possible and expand those
+Xalso try Snt-sh start with Fns-sh finish, and Sns-sh start with Frh-sh finish
+/uncomment ShowMessage("Timetable integrity OK");
+/uncomment initial message 
 
+Maybe allow blue squares on points & crossovers, with warning about needing signaller control if trains foul other movements
 
 Development History
 

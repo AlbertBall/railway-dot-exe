@@ -20,6 +20,8 @@ Xalso try Snt-sh start with Fns-sh finish, and Sns-sh start with Frh-sh finish
 /uncomment ShowMessage("Timetable integrity OK");
 /uncomment initial message 
 
+chnge all refs to 2.16.2 to 2.17.0
+
 Maybe allow blue squares on points & crossovers, with warning about needing signaller control if trains foul other movements
 
 Development History

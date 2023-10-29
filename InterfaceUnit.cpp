@@ -3538,7 +3538,7 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
             Utilities->CallLogPop(1633);
             return;
         }
-        CompileAllEntriesMemoAndSetPointers(0);
+        CompileAllEntriesMemoAndSetIterators(0);
         if(TimetableEditVector.empty())
         {
             Level1Mode = TimetableMode;
@@ -4329,7 +4329,7 @@ void __fastcall TInterface::CutTTEntryButtonClick(TObject *Sender)
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
         // position changing in AllEntriesTTListBox
         AllEntriesTTListBox->Clear();
-        CompileAllEntriesMemoAndSetPointers(10);
+        CompileAllEntriesMemoAndSetIterators(10);
         if(TimetableEditVector.empty())
         {
             Level1Mode = TimetableMode;
@@ -4399,7 +4399,7 @@ void __fastcall TInterface::PasteTTEntryButtonClick(TObject *Sender)
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
         // position changing in AllEntriesTTListBox
         AllEntriesTTListBox->Clear();
-        CompileAllEntriesMemoAndSetPointers(2);
+        CompileAllEntriesMemoAndSetIterators(2);
         if(TimetableEditVector.empty())
         {
             Level1Mode = TimetableMode;
@@ -4469,7 +4469,7 @@ void __fastcall TInterface::DeleteTTEntryButtonClick(TObject *Sender)
         int TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
         // position changing in AllEntriesTTListBox
         AllEntriesTTListBox->Clear();
-        CompileAllEntriesMemoAndSetPointers(3);
+        CompileAllEntriesMemoAndSetIterators(3);
         if(TimetableEditVector.empty())
         {
             Level1Mode = TimetableMode;
@@ -4570,7 +4570,7 @@ void __fastcall TInterface::SaveTTEntryButtonClick(TObject *Sender)
         {
             TempStr = OneEntryTimetableMemo->Text; // Note that if the entry was intended as a service but goes in as plain text because
                                                    // the service & entry pointers aren't yet set, then CRLFs will be converted to commas in
-                                                   // CompileAllEntriesMemoAndSetPointers if it appears after the start time
+                                                   // CompileAllEntriesMemoAndSetIterators if it appears after the start time
                                                    // and before a blank line or end of file, so the syntax check will work OK
         }
         if(AZOrderButton->Caption == AnsiString("Original Order"))
@@ -4593,7 +4593,7 @@ void __fastcall TInterface::SaveTTEntryButtonClick(TObject *Sender)
             TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
             // position changing in AllEntriesTTListBox
             AllEntriesTTListBox->Clear();
-            CompileAllEntriesMemoAndSetPointers(4);
+            CompileAllEntriesMemoAndSetIterators(4);
             if(TimetableEditVector.empty())
             {
                 Level1Mode = TimetableMode;
@@ -4623,7 +4623,7 @@ void __fastcall TInterface::SaveTTEntryButtonClick(TObject *Sender)
             TopPos = AllEntriesTTListBox->TopIndex; // need to store this & reset it after SetLevel1Mode to prevent the scroll
             // position changing in AllEntriesTTListBox
             AllEntriesTTListBox->Clear();
-            CompileAllEntriesMemoAndSetPointers(5);
+            CompileAllEntriesMemoAndSetIterators(5);
             if(TimetableEditVector.empty())
             {
                 Level1Mode = TimetableMode;
@@ -4631,7 +4631,7 @@ void __fastcall TInterface::SaveTTEntryButtonClick(TObject *Sender)
                 Utilities->CallLogPop(1781);
                 return;
             }
-// reset the TTCurrentEntryIterator after CompileAllEntriesMemoAndSetPointers
+// reset the TTCurrentEntryIterator after CompileAllEntriesMemoAndSetIterators
             if(OldVectorPos >= TimetableEditVector.end() - TimetableEditVector.begin() - 1)
             {
                 TTCurrentEntryIterator = TimetableEditVector.end() - 1;
@@ -4939,8 +4939,8 @@ void __fastcall TInterface::MoveTTEntryUpButtonClick(TObject *Sender)
         // position changing in AllEntriesTTListBox
         AllEntriesTTListBox->Clear();
         int OldVectorPos = TTCurrentEntryIterator - TimetableEditVector.begin(); // save the old position
-        CompileAllEntriesMemoAndSetPointers(6);
-// reset the TTCurrentEntryIterator after CompileAllEntriesMemoAndSetPointers
+        CompileAllEntriesMemoAndSetIterators(6);
+// reset the TTCurrentEntryIterator after CompileAllEntriesMemoAndSetIterators
         if(OldVectorPos >= TimetableEditVector.end() - TimetableEditVector.begin() - 1)
         {
             TTCurrentEntryIterator = TimetableEditVector.end() - 1;
@@ -5001,8 +5001,8 @@ void __fastcall TInterface::MoveTTEntryDownButtonClick(TObject *Sender)
         // position changing in AllEntriesTTListBox
         AllEntriesTTListBox->Clear();
         int OldVectorPos = TTCurrentEntryIterator - TimetableEditVector.begin(); // save the old position
-        CompileAllEntriesMemoAndSetPointers(7);
-// reset the TTCurrentEntryIterator after CompileAllEntriesMemoAndSetPointers
+        CompileAllEntriesMemoAndSetIterators(7);
+// reset the TTCurrentEntryIterator after CompileAllEntriesMemoAndSetIterators
         if(OldVectorPos >= TimetableEditVector.end() - TimetableEditVector.begin() - 1)
         {
             TTCurrentEntryIterator = TimetableEditVector.end() - 1;
@@ -5131,7 +5131,7 @@ void __fastcall TInterface::RestoreTTButtonClick(TObject *Sender)
             Utilities->CallLogPop(1655);
             return;
         }
-        CompileAllEntriesMemoAndSetPointers(8);
+        CompileAllEntriesMemoAndSetIterators(8);
         if(TimetableEditVector.empty())
         {
             Level1Mode = TimetableMode;
@@ -5262,18 +5262,17 @@ void __fastcall TInterface::ExitTTModeButtonClick(TObject *Sender)
 void __fastcall TInterface::ExpandRepeatsButtonClick(TObject *Sender) //added at v2.16.2
 {
 /*The expand button is only enabled when a repeat service is highlighted.
-A warning message is given first with an option to quit about saving the original timetable if needed as when the expanded timetable is saved
+A warning message is given first with an option to quit about ensuring unique service refs when expanded (i.e. repeats allow xero for digit
+increases but expansion don't if there are linked services, and about using 'save as' rather than 'save' as when the expanded timetable is saved
 the earlier one is lost.
-Only expand non-shuttle services to begin with as shuttles need special treatment.  If a shuttle service (or a service linked to a shuttle) is
-highlighted then when detected a message is given and the function returns.
 The method is to compile a list of all linked repeat services (explained later), add a marker to the start of each linked service in the
 TimetableEditVector (to identify those to be expanded) then to expand them all.
 The TimetableEditVector contains all entries in the timetable editor including pre-start comments, start time, services,
 and comments within services.  If there are post-service comments then it includes the blank line and the comments.
 In order to compile the list of linked repeat services two lists of TrainDataEntry pointers are used, the first (PreRepeatList) of services
-that haven't yet been examined for further links, and the second (RepeatList)of examined services.  These use TrainDataEntry pointers because
-the links in the ActionVector take this form.  Newly found links are pushed to the back of the PreRepeatList and links the be examined are taken
-from the front, so eventually that list will empty and the RepeatList will become full of all the linked services.
+that haven't yet been examined for further links, and the second (RepeatList)of examined services.  These use TrainDataEntry pointers rather than
+iterators because the links in the ActionVector take this form.  Newly found links are pushed to the back of the PreRepeatList and links the be
+examined are taken from the front, so eventually that list will empty and the RepeatList will become full of all the linked services.
 
 But, since services don't have TimetableEditVector pointer values corresponding to TrainDataEntry pointers, first a map is contructed
 with keys as TrainDataEntry pointers (not iterators) and values as TimetableEditVector pointers, and that used to identify the correspondences.
@@ -5597,6 +5596,8 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
         int IteratorCount = 0; //use this instead of an explicit iterator because vector likely to be reallocated during insertions
         AnsiString OutwardShuttleRef = "", ReturnShuttleRef = "", FeederRef = "", FinishRef = "";
         int OutwardShuttlePos = 0, ReturnShuttlePos = 0, FinishPos = 0;
+        bool FirstPass = true;
+        int FirstEntryIterator;
         while(true)
         {
             if((TimetableEditVector.begin() + IteratorCount) == TimetableEditVector.end())
@@ -5605,6 +5606,11 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
             }
             if((TimetableEditVector.begin() + IteratorCount)->SubString(1,4) == "####")
             {
+                if(FirstPass)
+                {
+                    FirstEntryIterator = IteratorCount; //can use this to find TTCurrentEntryIterator as nothing changes before this
+                    FirstPass = false;
+                }
                 AnsiString EntryCopy = *(TimetableEditVector.begin() + IteratorCount);
                 EntryCopy.Delete(1, 4); //remove the marker
                 int Sns_shPos = EntryCopy.Pos("Sns-sh");
@@ -6037,21 +6043,11 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
                 }
             }
         }
-        CompileAllEntriesMemoAndSetPointers(13);
+        CompileAllEntriesMemoAndSetIterators(13);
+        //reset TTCurrentEntryIterator
+        TTCurrentEntryIterator = TimetableEditVector.begin() + FirstEntryIterator;
         Level1Mode = TimetableMode;
         SetLevel1Mode(140);
-        //reset TTCurrentEntryIterator
-        RpIndex = CurrentEntry.Pos(",R;"); //RpIndex is the position of the comma
-        AnsiString RepeatStripped = CurrentEntry;
-        RepeatStripped = RepeatStripped.Delete(RpIndex, (CurrentEntry.Length() - RpIndex + 1));
-        for(TTimetableEditVector::iterator TTEVIt = TimetableEditVector.begin(); TTEVIt != TimetableEditVector.end(); TTEVIt++)
-        {
-            if(RepeatStripped == *TTEVIt)
-            {
-                TTCurrentEntryIterator = TTEVIt;
-                break;
-            }
-        }
         Utilities->CallLogPop(2636);
     }
     catch(const Exception &e) //non-error catch
@@ -6247,8 +6243,8 @@ void __fastcall TInterface::AllEntriesTTListBoxMouseUp(TObject *Sender, TMouseBu
         }
 */
         int OldVectorPos = TTCurrentEntryIterator - TimetableEditVector.begin(); // save the old position
-        CompileAllEntriesMemoAndSetPointers(9);
-// reset the TTCurrentEntryIterator after CompileAllEntriesMemoAndSetPointers
+        CompileAllEntriesMemoAndSetIterators(9);
+// reset the TTCurrentEntryIterator after CompileAllEntriesMemoAndSetIterators
         if(OldVectorPos >= TimetableEditVector.end() - TimetableEditVector.begin() - 1)
         {
             TTCurrentEntryIterator = TimetableEditVector.end() - 1;
@@ -6270,13 +6266,13 @@ void __fastcall TInterface::AllEntriesTTListBoxMouseUp(TObject *Sender, TMouseBu
 
 // ---------------------------------------------------------------------------
 
-void TInterface::CompileAllEntriesMemoAndSetPointers(int Caller)
+void TInterface::CompileAllEntriesMemoAndSetIterators(int Caller)
 {
     enum
     {
         PreStartTime, ActiveSegment, PostEnd
     } Segment;
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CompileAllEntriesMemoAndSetPointers");
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",CompileAllEntriesMemoAndSetIterators");
     AllEntriesTTListBox->Clear();
     TEVIterator = TimetableEditVector.end(); //these are iterators so can't use '0'in 64bit version, initialise to an invalid location to force errors if not set properly
     TTStartTimeIterator = TimetableEditVector.end();
@@ -6460,7 +6456,7 @@ void __fastcall TInterface::AZOrderButtonClick(TObject *Sender)
                 SortEnd = TTLastServiceIterator + 1;
             }
             std::sort(SortStart, SortEnd);
-            CompileAllEntriesMemoAndSetPointers(11);
+            CompileAllEntriesMemoAndSetIterators(11);
             bool CurrentEntryChanged = false;
             for(TTimetableEditVector::iterator x = TimetableEditVector.begin(); x < TimetableEditVector.end(); x++)
             {
@@ -6496,7 +6492,7 @@ void __fastcall TInterface::AZOrderButtonClick(TObject *Sender)
             }
             TTSelectedEntry = *TTCurrentEntryIterator;
             TimetableEditVector = OriginalTimetableEditVector;
-            CompileAllEntriesMemoAndSetPointers(12);
+            CompileAllEntriesMemoAndSetIterators(12);
             bool CurrentEntryChanged = false;
             for(TTimetableEditVector::iterator x = TimetableEditVector.begin(); x < TimetableEditVector.end(); x++)
             {
@@ -6578,8 +6574,8 @@ void TInterface::ConvertCRLFsToCommas(int Caller, AnsiString &ConvStr)
 
 void TInterface::TimetableHandler()
 {
-/* CreateEditTTFileName set if a TT file loaded (even if empty), the pointers TTStartTimeIterator, TTFirstServiceIterator, TTLastServiceIterator provide
-   relevant information - if null then not set.  TTCurrentEntryIterator is set to the Entry to be displayed or null if there's no start time or no
+/* CreateEditTTFileName set if a TT file loaded (even if empty), the iterators TTStartTimeIterator, TTFirstServiceIterator, TTLastServiceIterator provide
+   relevant information - if set to ...end() then not set.  TTCurrentEntryIterator is set to the Entry to be displayed or null if there's no start time or no
    entries
 */
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TimetableHandler");
@@ -10165,6 +10161,7 @@ pause or run and it cycled round the operate panel buttons
 
                 DevelopmentPanel->Caption = MouseStr + "; TVPos: " + AnsiString(Position) + "; H: " + AnsiString(HLoc) + "; V: " + AnsiString(VLoc) +
                     "; SpTg: " + AnsiString(TrackElement.SpeedTag) + "; Type: " + Type[TrackElement.TrackType] + "; Att: " + AnsiString(TrackElement.Attribute)
+                    + ";SPos1: " + AnsiString(TrackElement.StationEntryStopLinkPos1) + ";SPos2: " + AnsiString(TrackElement.StationEntryStopLinkPos2)
                     + "; TrID: " + AnsiString(TrackElement.TrainIDOnElement) + "; TrID01: " + AnsiString(TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01) +
                     "; TrID23: " + AnsiString(TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23) + "; " + TrackElement.LocationName + "; " +
                     TrackElement.ActiveTrackElementName + "; InRoute " + InARoute + "; RtNum " + RouteNumber + "; PDVecPos " + RoutePrefDirPos;

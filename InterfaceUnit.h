@@ -1558,8 +1558,8 @@ to another point bidir leg with 3 PDs set.  If so it returns true, else false.*/
     void ApproachLocking(int Caller, TDateTime Now);
 /// The main loop, called every clock tick via MasterClockTimer
     void ClockTimer2(int Caller);
-/// Used during timetable editing funtions to compile the list of entries into the left hand long entry window and also to set the timetable entry pointers TEVPtr, TTStartTimePtr, TTFirstServicePtr, and TTLastServicePtr
-    void CompileAllEntriesMemoAndSetPointers(int Caller);
+/// Used during timetable editing funtions to compile the list of entries into the left hand long entry window and also to set the timetable entry iterators TEVPtr, TTStartTimePtr, TTFirstServicePtr, and TTLastServicePtr
+    void CompileAllEntriesMemoAndSetIterators(int Caller);
 /// Deal with signal resetting on auto signal routes that extend to continuations where trains have departed, called during the ClockTimer2 function
     void ContinuationAutoSignals(int Caller, TDateTime Now);
 /// Used in timetable editing functions to convert any CRLFs in intended service entries to commas

@@ -10286,8 +10286,7 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)
                             StartEntryPos = 1 - Dir;
                             Count = 1;
                             // work along named elements until find the other end
-                            while((TempElement.Conn[1 - EntryPos] > -1) && (TrackElementAt(53,
-                                                                                           TempElement.Conn[1 - EntryPos]).ActiveTrackElementName == TempName))
+                            while((TempElement.Conn[1 - EntryPos] > -1) && (TempElement.Conn[1 - EntryPos] < (int)TrackVector.size()) && (TrackElementAt(53, TempElement.Conn[1 - EntryPos]).ActiveTrackElementName == TempName))
                             // at end of 'while' Count = length (in elements) of platform/nonstationloc, VecPos = vector number of far end
                             // which is the last named element that is track-linked to the rest of the location, it may be a buffer
                             // all stop link pos's are set to 5

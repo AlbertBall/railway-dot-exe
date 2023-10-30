@@ -568,7 +568,7 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
         TTLabel6->Caption = TTLabelStr6;
         TTLabel7->Caption = TTLabelStr7;
         TTLabel9->Caption = TTLabelStr9;
-        TTLabel11->Caption = TTLabelStr11; //changed Left property to 300 from 487 at v2.16.2 so less likely for a long name to overlap TTLabel8
+        TTLabel11->Caption = TTLabelStr11; //changed Left property to 300 from 487 at v2.17.0 so less likely for a long name to overlap TTLabel8
         TTLabel12->Caption = TTLabelStr12;
         TTLabel13->Caption = TTLabelStr13;
         TTLabel15->Caption = TTLabelStr15;
@@ -3461,7 +3461,7 @@ void __fastcall TInterface::EditTimetableMenuItemClick(TObject *Sender)
                 while(!TTBLFile.eof())
                 {
                     TTBLFile.get(c);
-                    if((c > 0) && (c < 32) && (c != 13) && (c != 10)) //added (c > 0) & dropped (c != 0) at v2.16.2 as extended characters treated as negative
+                    if((c > 0) && (c < 32) && (c != 13) && (c != 10)) //added (c > 0) & dropped (c != 0) at v2.17.0 as extended characters treated as negative
 //                    if((c < 32) && (c >= 1)) //have to allow NULLs - dropped at v2.16.1 as prevented CRLF which is ok so used condition above
                     {
                         ShowMessage("Timetable file contains invalid control characters");
@@ -5259,7 +5259,7 @@ void __fastcall TInterface::ExitTTModeButtonClick(TObject *Sender)
 
 // ---------------------------------------------------------------------------
 
-void __fastcall TInterface::ExpandRepeatsButtonClick(TObject *Sender) //added at v2.16.2
+void __fastcall TInterface::ExpandRepeatsButtonClick(TObject *Sender) //added at v2.17.0
 {
 /*The expand button is only enabled when a repeat service is highlighted.
 A warning message is given first with an option to quit about ensuring unique service refs when expanded (i.e. repeats allow xero for digit
@@ -6060,7 +6060,7 @@ with keys as TrainDataEntry pointers (not iterators) and values as TimetableEdit
 
 //---------------------------------------------------------------------------
 
-AnsiString TInterface::AddTimeMinutes(AnsiString OrigTimeString, int MinsToAdd) //added at v2.16.2
+AnsiString TInterface::AddTimeMinutes(AnsiString OrigTimeString, int MinsToAdd) //added at v2.17.0
 {//only used in ExpandRepeatsButtonClick function, errors caught in that function
     TrainController->LogEvent("AddTimeMinutes");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddTimeMinutes");
@@ -6087,7 +6087,7 @@ AnsiString TInterface::AddTimeMinutes(AnsiString OrigTimeString, int MinsToAdd) 
 
 //---------------------------------------------------------------------------
 
-void TInterface::AddRefDigits(AnsiString AnsiServRef, int Position, AnsiString &EntryCopy, int Digits) //added at v2.16.2
+void TInterface::AddRefDigits(AnsiString AnsiServRef, int Position, AnsiString &EntryCopy, int Digits) //added at v2.17.0
 {//only used in ExpandRepeatsButtonClick function, errors caught in that function
     TrainController->LogEvent("AddRefDigits");
     Utilities->CallLog.push_back(Utilities->TimeStamp() + ",AddRefDigits");
@@ -17919,7 +17919,7 @@ void TInterface::SetLevel1Mode(int Caller)
         TrainController->TTClockTime = TrainController->TimetableStartTime;
         TrainController->LastSessionSaveTTClockTime = TrainController->TimetableStartTime; // added at v2.5.0
         Utilities->LastTSRCheckTime = TrainController->TTClockTime; //added at v2.14.0 so don't have any TSRs until 1 min after start
-        if(Utilities->PerformanceFile.is_open()) //added at v2.16.2 as a safeguard
+        if(Utilities->PerformanceFile.is_open()) //added at v2.17.0 as a safeguard
         {
             Utilities->PerformanceFile.close();
         }
@@ -18066,7 +18066,7 @@ void TInterface::SetLevel1Mode(int Caller)
         }
         SaveOperatingImageMenuItem->Enabled = true;
 
-        FlashControlButton->Glyph->LoadFromResourceName(0, "NoFlash"); //these added at v2.16.2 so reloads with normal flashing
+        FlashControlButton->Glyph->LoadFromResourceName(0, "NoFlash"); //these added at v2.17.0 so reloads with normal flashing
         StopFlashFlag = false;
 
         OperateButton->Enabled = true;
@@ -19196,7 +19196,7 @@ void TInterface::ApproachLocking(int Caller, TDateTime TTClockTime)
 
 // ---------------------------------------------------------------------------
 
-void TInterface::ContinuationAutoSignals(int Caller, TDateTime TTClockTime) //some changes at v2.16.2
+void TInterface::ContinuationAutoSignals(int Caller, TDateTime TTClockTime) //some changes at v2.17.0
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ContinuationAutoSignals");
     if(!TrainController->ContinuationAutoSigVector.empty())
@@ -19221,7 +19221,7 @@ void TInterface::ContinuationAutoSignals(int Caller, TDateTime TTClockTime) //so
             // end of additions
             if(((TTClockTime - AutoSigVectorIT->PassoutTime) > TDateTime(AutoSigVectorIT->FirstDelay / 86400)) && (AutoSigVectorIT->AccessNumber == 0))
             {
-                AutoSigVectorIT->AccessNumber++;  //moved to before set signals at v2.16.2 so SetRouteSignals works anytime called as Attribute set to AccessNumber
+                AutoSigVectorIT->AccessNumber++;  //moved to before set signals at v2.17.0 so SetRouteSignals works anytime called as Attribute set to AccessNumber
                 AllRoutes->SetTrailingSignalsOnContinuationRoute(1, AutoSigVectorIT->RouteNumber, 0);
                 continue;
             }
@@ -21604,7 +21604,7 @@ void TInterface::LoadSession(int Caller)
                 std::ifstream SessionFile(AnsiString(LoadSessionDialog->FileName).c_str());
                 if(!(SessionFile.fail()))
                 {
-                    if(Utilities->PerformanceFile.is_open()) //added at v2.16.2 because may still be open if an earlier session load failed
+                    if(Utilities->PerformanceFile.is_open()) //added at v2.17.0 because may still be open if an earlier session load failed
                     {
                         Utilities->PerformanceFile.close();
                     }
@@ -22153,7 +22153,7 @@ void TInterface::LoadSession(int Caller)
                             SessionFile.get(TempChar);
                         }
                         //here have first train's description as an AnsiString in TempString or 'End of file at v2.16.1' & '\0' in TempChar
-                        if(TempString == "End of file at v2.16.1") //added at v2.16.2, before for some older session files called Utilities->LoadFileString(SessionFile)
+                        if(TempString == "End of file at v2.16.1") //added at v2.17.0, before for some older session files called Utilities->LoadFileString(SessionFile)
                         {                                          //after "End of file at v2.16.1" had been loaded, last character of file was '\n'
                             goto FINISHEDLOADING;                  //so it kept going round loop in LoadFileString because there was no '\0' character.
                         }
@@ -22182,7 +22182,7 @@ FINISHEDLOADING:
                     }
                     // deal with other settings
                     //first check if there are any trains without descriptions and if so allocate them from TrainDataEntryPtr->FixedDescription
-                    if(!TrainController->TrainVector.empty()) //added at v2.16.2 as old session files won't have train descriptions
+                    if(!TrainController->TrainVector.empty()) //added at v2.17.0 as old session files won't have train descriptions
                     {
                         for(TTrainController::TTrainVector::iterator TVIt = TrainController->TrainVector.begin(); TVIt != TrainController->TrainVector.end(); TVIt++)
                         {
@@ -24866,9 +24866,8 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
     try
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
-     //test code here
-
-
+//test code here
+/*
     while(true)
     {
         bool RepeatFound = false;
@@ -24891,8 +24890,8 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
             break; //from while... loop
         }
     }
-
-    /*
+*/
+/*
     throw Exception("test error");
                     if(AllRoutes->AllRoutesVector.size() > 0)
                     {
@@ -24901,8 +24900,8 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
                             ARVIt->SetRouteSignals();
                         }
                     }
-    */
-    //end of test code
+*/
+//end of test code
         Utilities->CallLogPop(2376);
     }
     catch(const Exception &e)

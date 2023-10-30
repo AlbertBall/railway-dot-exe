@@ -6572,7 +6572,7 @@ void TTrain::ChangeTrainDirection(int Caller, bool NoLogFlag)
                                       //elements can continue to be removed from that route
             TTrackElement TE = Track->TrackElementAt(997, FirstRouteElementVecPos);
 //            if((TE.TrackType != SignalPost) && (TE.TrackType != Continuation)) //all autosigs routes have signalpost or continuation at 0 so they are automatically excluded
-            {                 //above condition removed v2.16.2 so non-facing signal or continuation doesn't stop route being removed
+            {                 //above condition removed v2.17.0 so non-facing signal or continuation doesn't stop route being removed
                               //if it is a facing signal then it will be detected below and not removed
                 bool FirstPass = true; //added at v2.8.0
                 while((OR.PrefDirSize() > 0) && (OR.RouteID == CorrectRouteID)) //remove the route up to but not including the next facing signal, in case a pref dir route extends to another signal
@@ -7278,7 +7278,7 @@ void TTrain::SignallerChangeTrainDirection(int Caller)
                                       //elements can continue to be removed from that route
             TTrackElement TE = Track->TrackElementAt(1001, FirstRouteElementVecPos);
 //            if((TE.TrackType != SignalPost) && (TE.TrackType != Continuation)) //all autosigs routes have signalpost or continuation at 0 so they are automatically excluded
-            {          //above condition removed at v2.16.2 so non-facing signal or continuation doesn't stop route being removed
+            {          //above condition removed at v2.17.0 so non-facing signal or continuation doesn't stop route being removed
                        //if it is a facing signal then it will be detected below and not removed
                 bool FirstPass = true; //added at v2.8.0
                 while((OR.PrefDirSize() > 0) && (OR.RouteID == CorrectRouteID)) //remove the route up to but not including the next facing signal, in case a pref dir route extends to another signal

@@ -1,29 +1,3 @@
-mention that links to docs on json2ttb broken so presented 'as is'
-add repeat expansion & shuttle expansion
-include expansion explanation in manual
-remove test function code
-/remove shuttleservice bool from interface h & cpp & uncomment the shuttle messages
-/uncomment the timetable integrity message in validate tt button click line 4886 int
-/uncomment initial warning message in expand repeat button click line 5287 int
-Find out exactly what TimetableHandler and CompileAllEntriesMemoAndSetPointers do and see if inclusion required
-
-/For shuttles make sure all service refs are unique after expansion (diff rules for shuttles so can validate with shuttles but not when expanded)
-Still to resume original highlighted entry after expansion (doesn't for shuttles) & ensure displayed entry corresponds correctly with the new entry
-Move the expansion button to a better position in the editor
-/Still to expand the warning message
-/Expanded ttb is aaBirm2.ttb - see if runs ok - seems ok
-Deal with all 7777s (done but check again with checker)
-comment out testfunction
-/add an ordinary service in middle of a shuttle and expand that first
-Xalso try Fjo/jbo in a shuttle if possible and expand those
-Xalso try Snt-sh start with Fns-sh finish, and Sns-sh start with Frh-sh finish
-/uncomment ShowMessage("Timetable integrity OK");
-/uncomment initial message 
-
-chnge all refs to 2.16.2 to 2.17.0
-
-Maybe allow blue squares on points & crossovers, with warning about needing signaller control if trains foul other movements
-
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.
@@ -683,7 +657,17 @@ Multi-player facility over the internet.
 
 4) Version change information
 
-VERSION CHANGES AFTER v2.16.1 for v2.16.2
+VERSION CHANGES AFTER v2.16.1 for v2.17.0
+
+New feature:
+
+A new 'Expand repeats' button has been provided in the timetable editor - enabled when a repeating service is selected.  It expands the service into separate equivalent services.  For example a service that repeats every 30 minutes with 2 digits increase per repeat and 8 repeats in all can be expanded into 9 separate services at 30 minute intervals, consisting of the original service and 8 repeats.  In addition every service that links to the repeat - splits, joins and new services - will also expand similarly.  
+
+This can be very useful when developing timetables that have similar services but with different stopping patterns, uneven headcodes or timings.  This is usually the case with real timetables.  A repeat service is created first from the first such service in the real timetable, then expanded, and each separate service edited to correspond with later services in the real timetable.  This is normally a much faster process than repeated copying and pasting, especially if there are several linked services.
+
+It has been provided to replace the utility 'json2ttb', which did the same thing, but the documentation links are now broken, so although it is still provided new users are very unlikely to be able to use it without documentation.
+
+Bugs and behavioural changes:
 
 Further testing revealed a number of bugs in v2.16.1 and earlier which have been corrected in this version.
 
@@ -693,17 +677,17 @@ After loading an old session file and resaving as a new session, the program ent
 
 A couple of signal sequencing errors were found (a) following a forced route cancellation and (b) after reloading a session that was saved while signals on a continuation route were in course of updating after a train had exited.  The faults were inadequacies in the signal sequencing functions that had been patched a number of times to cater for earlier new features.  All these functions have now been re-written to get rid of the existing patches and (hopefully) to avoid the need for further patching.
 
-Corrected an error in location name edit function when using extended characters
+An error in the location name edit function when using extended characters has been corrected.
 
 Minor improvement - In the timetable editor the timetable name has been moved more to the left to avoid overlapping the existing 'single entry' text. 
 
 Not for website:
 
-/When load old session (King's Cross) trains lose their descriptions - this was a failt at v2.16.1 for all old sessions
+/When load old session (King's Cross) trains lose their descriptions - this was a fault at v2.16.1 for all old sessions
 
-/When load King's Cross after playing & saving a session prog goes into infinite loop at Utilities->LoadFileString (found out why and corrected after v2.16.1) - this was a failt at v2.16.1
+/When load King's Cross after playing & saving a session prog goes into infinite loop at Utilities->LoadFileString (found out why and corrected after v2.16.1) - this was a fault at v2.16.1
 
-/Mention moved TTLabel11 more to the left to avoid long TT name overlap with TTLabel8
+/Moved TTLabel11 more to the left to avoid long TT name overlap with TTLabel8
 
 /Have improved route cancellation for train change of direction by removing signal or continuation condition - that allowed a non-facing signal or continuation to prevent a route cancellation, and wasn't needed anyway (not for reporting on website)
 

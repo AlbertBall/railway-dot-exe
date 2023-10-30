@@ -17465,7 +17465,7 @@ void TOneRoute::SetRoutePoints(int Caller) const
 // ---------------------------------------------------------------------------
 
 void TOneRoute::SetRouteSignals(int Caller) const
-// Used for new train additions in AddTrain and in route setting, major changes at v2.16.2
+// Used for new train additions in AddTrain and in route setting, major changes at v2.17.0
 
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetRouteSignals");
@@ -17575,7 +17575,7 @@ bool TOneRoute::PointsToBeChanged(int Caller, int &NewFailedPointsTVPos) const
 // ---------------------------------------------------------------------------
 
 bool TOneRoute::FindForwardTargetSignalAttribute(int Caller, int &NextForwardLinkedRouteNumber, int &Attribute, int StartPos) const
-/*    //added StartPos at v2.16.2 so it starts in the current route
+/*    //added StartPos at v2.17.0 so it starts in the current route
 
       Only called by SetRearwardsSignalsReturnFalseForTrainInRear
 
@@ -17675,7 +17675,7 @@ bool TOneRoute::FindForwardTargetSignalAttribute(int Caller, int &NextForwardLin
 // ---------------------------------------------------------------------------
 
 bool TOneRoute::SetRearwardsSignalsReturnFalseForTrainInRear(int Caller, int &Attribute, int PrefDirVectorStartPosition, bool SkipForwardLook) const
-/*    Major changes at v2.16.2
+/*    Major changes at v2.17.0
       This function is only called by TAllRoutes::SetAllRearwardsSignals.
 
       Enter with Attribute set to the value to be used (unless modified by the initial forward search - see later) for the first rearwards
@@ -18534,7 +18534,7 @@ void TOneRoute::ForceCancelRoute(int Caller)
                 Track->PlotSignal(3, Track->TrackElementAt(122, PrefDirVector.at(x).TrackVectorPosition), Display);
             }
         }
-//        AllRoutes->SetAllRearwardsSignals(4, 0, RouteNumber, 0); //dropped at v2.16.2 in favour of setting all signals after route removal (see below)
+//        AllRoutes->SetAllRearwardsSignals(4, 0, RouteNumber, 0); //dropped at v2.17.0 in favour of setting all signals after route removal (see below)
                                    //Fault found on B'ham when train (2A09) exited from Snow Hill terminal platform (no signal) when orce cancelled
                                    //route above, but when rearwards signals set the route to be cancelled still exists, so setting signals first uses
                                    //forward look when it finds a red signal in the route to be cancelled, so first signal in rear route becames yellow
@@ -18551,7 +18551,7 @@ void TOneRoute::ForceCancelRoute(int Caller)
         ReclaimSignalsForNonAutoSigRoutes(1, LastPDElement, FirstPDElement);
     }
 
-    if(AllRoutes->AllRoutesVector.size() > 0) //added at v2.16.2 - see above
+    if(AllRoutes->AllRoutesVector.size() > 0) //added at v2.17.0 - see above
     {
         for(TAllRoutes::TAllRoutesVectorIterator ARVIt = AllRoutes->AllRoutesVector.begin(); ARVIt < AllRoutes->AllRoutesVector.end(); ARVIt++)
         {
@@ -19889,7 +19889,7 @@ void TAllRoutes::SetTrailingSignalsOnAutoSigsRoute(int Caller, int TrackVectorPo
 
 // ---------------------------------------------------------------------------
 
-void TAllRoutes::SetTrailingSignalsOnContinuationRoute(int Caller, int RouteNumber, int AccessNumber) //minor changes at v2.16.2
+void TAllRoutes::SetTrailingSignalsOnContinuationRoute(int Caller, int RouteNumber, int AccessNumber) //minor changes at v2.17.0
 /*
       This is called by the InterfaceUnit at intervals based on entries in the ContinuationAutoSigVector in TrainController to set signals on
       the AutoSigsRoute to correspond to a train having exited the route at a continuation, and passing further signals (outside the simulated
@@ -19906,7 +19906,7 @@ void TAllRoutes::SetTrailingSignalsOnContinuationRoute(int Caller, int RouteNumb
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetTrailingSignalsOnContinuationRoute," + AnsiString(RouteNumber) + "," +
                                  AnsiString(AccessNumber));
     TPrefDirElement RouteElement;
-    int Attribute = AccessNumber; //was +1, but at v2.16.2 access no. increment carried out before set signals so SetRouteSignals works ok whenever called
+    int Attribute = AccessNumber; //was +1, but at v2.17.0 access no. increment carried out before set signals so SetRouteSignals works ok whenever called
 // signal attributes:  0=red; 1=yellow; 2=double yellow; 3 = green
     int x = GetFixedRouteAt(121, RouteNumber).PrefDirSize() - 1;
 
@@ -19930,7 +19930,7 @@ void TAllRoutes::SetTrailingSignalsOnContinuationRoute(int Caller, int RouteNumb
 
 // ---------------------------------------------------------------------------
 
-void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumber, int RouteStartPosition) //some changes at v2.16.2
+void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumber, int RouteStartPosition) //some changes at v2.17.0
 /*
       Sets signals in all linked rearwards routes from the RouteStartPosition in RouteNumber, unless find a train (a) in the current route,
       in which case the signals behind it are set (and behind any other trains in the current route), but only within the current route;
@@ -19979,7 +19979,7 @@ void TAllRoutes::SetAllRearwardsSignals(int Caller, int Attribute, int RouteNumb
     TPrefDirElement FirstElement = GetFixedRouteAt(127, RouteNumber).GetFixedPrefDirElementAt(144, 0);
     int RearwardLinkedRouteNumber;
 
-//    Track->LCFoundInRouteBuildingFlag = false; // only examined for the new route segment, not for linked routes {dropped at v2.16.2 as not used)
+//    Track->LCFoundInRouteBuildingFlag = false; // only examined for the new route segment, not for linked routes {dropped at v2.17.0 as not used)
     bool SkipForwardLook = false; //allow forward look in first call
     if(GetFixedRouteAt(128, RouteNumber).SetRearwardsSignalsReturnFalseForTrainInRear(1, Attribute, RouteStartPosition, SkipForwardLook)) // updates
     //Attribute to 1+ final signal value in the route for use in further linked routes

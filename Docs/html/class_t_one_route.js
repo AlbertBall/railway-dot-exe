@@ -31,6 +31,7 @@ var class_t_one_route =
     [ "RouteFlash", "class_t_one_route.html#ad5c3066eea66bd42ea847f550e2b0589", null ],
     [ "RouteID", "class_t_one_route.html#a75f84f2ad79c985ff7b664cfecdab376", null ],
     [ "RouteSearchLimit", "class_t_one_route.html#aa2d1990ed4b4884eb45ac54644fe749c", null ],
+    [ "RouteSearchLimitOneLeg", "class_t_one_route.html#a6bd715c369739f809f6a53be6d7879b2", null ],
     [ "StartElement1", "class_t_one_route.html#a884d9f41f6c31abba02933d24a940e22", null ],
     [ "StartElement2", "class_t_one_route.html#a0e1037a37eafc6f9e3d27cf362ee80ad", null ],
     [ "StartRoutePosition", "class_t_one_route.html#a5b779b57f966fd9c7c7d1c42f8ecde22", null ],

@@ -1,0 +1,31 @@
+digraph "TInterface::CompileAllEntriesMemoAndSetIterators"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="TInterface::CompileAllEntries\lMemoAndSetIterators",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Used during timetable editing funtions to compile the list of entries into the left hand long entry w..."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TInterface::AllEntriesTTList\lBoxMouseUp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a189a4b05f27d6b5ec8b9a90ec1a9cc50",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TInterface::AZOrderButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a28579472104533fb5fd01066a22fbb5b",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TInterface::CutTTEntryButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#acd41ae8fa5d16248a867472d9c8ae646",tooltip=" "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TInterface::DeleteTTEntry\lButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#abdd4a70649a10a29c9a069d040072808",tooltip=" "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TInterface::EditTimetable\lMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a0cf35a6e4a6cfa72b63222acb51f9f74",tooltip=" "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TInterface::ExpandRepeats\lButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a73c3a3003b50db610f10c8bbfffeb8a9",tooltip=" "];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="TInterface::MoveTTEntryDown\lButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a64926df4f293df9f038ce8c78e0201bb",tooltip=" "];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="TInterface::MoveTTEntryUp\lButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a768f6e8fb12c5a77b591e223ef10a46d",tooltip=" "];
+  Node1 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="TInterface::PasteTTEntry\lButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a02c5eb27baa019cb04e4704470371ae9",tooltip=" "];
+  Node1 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="TInterface::RestoreTTButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ae3e591300b5557eb124bad845ea6c34e",tooltip=" "];
+  Node1 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="TInterface::SaveTTEntryButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a3cf355e15ec89570b79bd893ffbf0818",tooltip=" "];
+}

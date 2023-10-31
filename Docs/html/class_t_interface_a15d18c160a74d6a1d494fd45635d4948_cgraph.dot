@@ -1,0 +1,25 @@
+digraph "TInterface::CompileAllEntriesMemoAndSetIterators"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="TInterface::CompileAllEntries\lMemoAndSetIterators",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Used during timetable editing funtions to compile the list of entries into the left hand long entry w..."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="TUtilities::CallLogPop",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#ae1eddca13cc3c492839e131f40ec21c0",tooltip="pops the last entry off the call stack, throws an error if called when empty"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="TTrainController::CheckTime\lValidity",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a523077cf0c9c02c8cb56dab0af9b0e52",tooltip="returns true if the time complies with requirements"];
+  Node3 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="TUtilities::TimeStamp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_utilities.html#a34bd6bb5305bc29afdf424f6d35a921c",tooltip="creates a string of the form 'hh:mm:ss' for use in call & event logging"];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="TInterface::ConvertCRLFs\lToCommas",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a358336965e798e398258e67edbba1195",tooltip="Used in timetable editing functions to convert any CRLFs in intended service entries to commas."];
+  Node5 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="TTrainController::StripSpaces",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#ab0481dd8db0f3f99811f2cdc5b5dfd32",tooltip="Strip both leading and trailing spaces at ends of Input and spaces before and after all commas and se..."];
+  Node6 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

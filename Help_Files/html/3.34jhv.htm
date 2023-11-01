@@ -52,8 +52,7 @@ div.WordSection1
 <p><a name=3.3></a><b>3.3 Named locations</b></p>
 
 <p>Two types of named location are provided: stations, and non-station named
-locations. Station elements consist of platforms, concourses, footbridges and underpasses. These are indicated by reddish-brown coloured elements, the narrow ones representing platforms that may be placed alongside horizontal or vertical track elements; the full square representing a concourse, positioned where there is no track
-and used to link platforms together; and footbridges/underpasses that lie at 90 degrees to the track and link platforms; and concourses across vertical or horizontal track. Footbridges/underpasses allow station
+locations. Station elements consist of platforms, concourses, footbridges and underpasses. These are indicated by reddish-brown coloured elements, the narrow ones representing platforms that may be placed alongside horizontal or vertical track elements, or along the straight track of points; the full square representing a concourse, positioned where there is no track and used to link platforms together; and footbridges/underpasses that lie at 90 degrees to the track and link platforms; and concourses across vertical or horizontal track. Footbridges/underpasses allow station
 elements to be linked together that would otherwise be too far apart. All
 station elements that are linked together take the same name. Trains stop at
 platforms if the timetable includes the station as a stop, and the stop
@@ -66,15 +65,12 @@ so.</p>
 <p>Non-station named locations are shown as blue squares, and are used to name
 sidings, depots, works, buffers, tunnels, bridges, continuations, junction
 approaches and anything else that needs a name. They are positioned on top of
-relevant track elements. All non-station named elements that are linked take
-the same name, but they do not link to stations so they may be positioned
-adjacent to station elements but have their own name. Trains will stop at all
-non-station named locations (providing the name is in the timetable) except
+track elements other than diagonals, points, crossings, bridges and gaps. All non-station named elements that are linked take the same name, but they do not link to stations so they may be positioned adjacent to station elements but have their own name. Trains will stop at all non-station named locations (providing the name is in the timetable) except
 continuations - continuation names are for identification and logging purposes
 only - and it is recommended that these be named for these purposes. The stop
 position is fixed relative to the length of the named location and direction of
 train travel, but in all cases the train stops with its front adjacent to the
-front end of the location, to allow as much room as possible behind for other
+end of the location, to allow as much room as possible behind for other
 trains.</p>
 
 <p>Named elements link together vertically and horizontally, but not
@@ -89,10 +85,7 @@ src="../images/NEL2.gif">, but the next arrangement is not linked because the
 station elements are diagonal to each other <img width=48 height=36
 src="../images/NEL3.gif">.</p>
 
-<p>Note that platforms may be located where there are signals, thereby effectively
-embedding the signal in the platform. This is useful when space is tight but is
-not generally recommended because problems may occur when trains are required
-to split - see <A HREF="5.2.1e43.htm">section 5.2.3 'Splits'</A>. Locations with very long platforms that are designed to hold two or more trains can use embedded signals, but signaller control is likely to be required to move trains up a platform to their departure position.</p>
+<p>Note that named locations may be located where there are signals. This is useful when space is tight but is not generally recommended because problems may occur when trains are required to split - see <A HREF="5.2.1e43.htm">section 5.2.3 'Splits'</A>. Locations with very long platforms that are designed to hold two or more trains can use embedded signals, but signaller control may be required to move trains up a platform to their departure position.</p>
 
 <p>Names are allocated using the <img width=24 height=24
 src="../images/RailSim2_NAMELOCS.gif"> 'name location' button. Any named

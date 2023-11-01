@@ -16,6 +16,38 @@ The structure is as follows:-
 
 1) Future change suggestions from users:
 
+#98 Qwertytops 26/10/23
+Would you think of adding some kind of connecting things so different locations could be joined without putting the blue squares on points/bridges?
+
+Albert 26/10/23
+I'll think about allowing blue squares on points and crossovers (but not bridges) in a future release, perhaps with a warning that signaller control might be needed to move stopped trains if they prevent other train movements
+
+BWJM 26/10/23
+Or would a better solution be discontinuous blue locations?  Is it really any different from a single blue location spanning two parallel tracks?
+By "discontinuous", I mean a single blue named location which is split into two separate places.
+Ugh... It's so annoying that I cannot put images in this channel.
+See images-and-links for a visualisation.  Engine Shed is a two-track continuous named location.  Stopping Point is a two-track discontinuous named location. 
+To create a discontinuous named location, just give it the same name as an existing one.  The app should toss up a warning or an info box saying that the name already exists, but unlike presently, it should not clear the name from the original location.
+I can't think of how this proposed situation would be treated any differently than the Engine Shed in my example.  A train can arrive/depart at either position to satisfy a timetable entry.
+
+Albert 27/10/23
+I'm sure that could be done though the coding might throw up some problems, but I'm struggling to understand why it's necessary. Are there any such situations in real life? If locations are separated geographically then surely they should have their own names? I can see that points and crossings can create unwanted discontinuities and that should be an easy change - though I haven't looked into it yet, but will do in due course.
+
+Albert 29/10/23
+What was it I said about allowing names on points and crossings being easy - I've just been experimenting and it's anything but!  It's to do with setting train stopping points: every named location incorporates two stopping points, one for each direction, that tell trains at what position they should stop when arriving at the location.  The function that sets those points relies on named elements having no more than a single track on them, and for good reason, because having two tracks (points and crossings) creates severe complications and ambiguities that would likely create all sorts of bugs in trying to resolve.  So I'm sorry to say it but named locations will have to stay as they are - to my mind the problems far outweigh the benefits.
+
+Qwertytops 30/10/23
+In that case would BWJM’s idea be possible?
+
+Albert 30/10/23
+It may be possible from a coding point of view but I can foresee a lot of problems in implementing it.  At present the location naming functions specifically prevent two different locations having the same timetable name in order to avoid such problems.  I am not aware of any such situations in real life - do you know of any?  If there are then I think they would likely create headaches for the railway authority in managing and operating the network.
+
+From a practical point of view I can think of three ways round it:
+(a) have different names as already suggested, they only need to be slightly different, a single character difference will suffice such as 'Reception siding 1' and 'Reception siding 2'; 
+(b) have separate names for timetabling purposes but a single name displayed on screen.  Paris Metro has a lot of stations like this, where the on-screen name is for example 'Bastille' but the platforms serving different lines have timetabled names 'Bastille Ligne 1' and 'Bastille Ligne 5'; 
+(c) arrange the layout so that the two areas can be linked together with blue squares hopefully without it looking too untidy.
+I hope one of these will help in your situation.
+
 #97 [Done at 2.16.0] Krizar 09/07/23 [done at v2.16.0]
 What about the ability to set both location name and optionally location display name (i.e. the name which is displayed but allowing any character including ü, é, å etc)? Currently I have to set the name, delete it with the name editor tool and then use the text placement tool to display the name with special characters. Not sure how difficult this would be to implement. It could just do exactly the same thing but automatically (ie have two text entries name the place with the first, hide the text, and place the text of the second)
 
@@ -2800,7 +2832,7 @@ Include (for 10.4 compiler) 3 x .dll files and 5 x .bpl files from the Win64 rel
 
 10 Write release notes & include in DevHistory.txt for this release.
 
-11 Create new directories 'Release 32bit vx.x.x' & 'Release 64bit vx.x.x' from earlier release & replace files as follows for 32 bit - similar for 64 bit.
+11 Create new directories 'RailOS32-vx.x.x' & 'RailOS64-vx.x.x' from earlier release & replace files as follows for 32 bit - similar for 64 bit.
 	readme 32bit.txt (reference latest release & update user manual reference & no. of pages if required)
 	Manual vx.x.x .pdf (if updated)
 	Quick start.pdf (if updated)
@@ -2809,7 +2841,7 @@ Include (for 10.4 compiler) 3 x .dll files and 5 x .bpl files from the Win64 rel
 	Railway>Help.chm (if updated)
 	In Railway, check have appropriate dlls and bpls as above + GNU licence + session.ini + metadata files for B'ham & L'pool, and that all directories contain the expected files & no extras (will be if had run from the release folder), especially make sure there's NO config.txt
 
-12 Zip the above as RailOS32 vx.x.x.zip & RailOS64 vx.x.x.zip
+12 Zip the above as RailOS32-vx.x.x.zip & RailOS64-vx.x.x.zip
 
 13 copy these new zip files to E:\Archives\railway backups
 

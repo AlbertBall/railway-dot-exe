@@ -697,7 +697,7 @@ A new 'Expand repeats' button has been provided in the timetable editor - enable
 
 This can be very useful when developing timetables that have similar services but with different stopping patterns, uneven headcodes or timings.  This is usually the case with real timetables.  A repeat service is created first from the first such service in the real timetable, then expanded, and each separate service edited to correspond with later services in the real timetable.  This is normally a much faster process than repeated copying and pasting, especially if there are several linked services.
 
-It has been provided to replace the utility 'json2ttb', which did the same thing, but the documentation links are now broken, so although it is still provided new users are very unlikely to be able to use it without documentation.
+It has been provided in recognition of the missing documentation for the utility 'json2ttb', which was able to create multiple services in a similar manner but the earlier links to its documentation are now broken, so although it is still provided new users are very unlikely to be able to use it without documentation.
 
 Bugs and behavioural changes:
 

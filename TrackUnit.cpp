@@ -10276,7 +10276,7 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)
                         // if a buffer then the named linkpos has to be 1
                         // already dealt with all types of single element so at least 2 linked named element
                         if(((TempElement.Conn[Dir] > -1) && (TempElement.Conn[1 - Dir] > -1) && (TrackElementAt(50,
-                                                                                                                TempElement.Conn[1 - Dir]).ActiveTrackElementName != TempName)) || ((TempElement.TrackType == Buffers) && (Dir == 1)))
+                                TempElement.Conn[1 - Dir]).ActiveTrackElementName != TempName)) || ((TempElement.TrackType == Buffers) && (Dir == 1)))
                         {
                             StartElement = TempElement;
                             StartVecPos = VecPos;
@@ -10339,7 +10339,7 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)
                                 ReverseSet = true;
                             }
                             while((TempElement.Conn[1 - EntryPos] > -1) && (TrackElementAt(69,
-                                                                                           TempElement.Conn[1 - EntryPos]).ActiveTrackElementName == TempName) && (!ForwardSet || !ReverseSet))
+                                  TempElement.Conn[1 - EntryPos]).ActiveTrackElementName == TempName) && (!ForwardSet || !ReverseSet))
                             {
                                 VecPos = TempElement.Conn[1 - EntryPos];
                                 int TempEntryPos = TempElement.ConnLinkPos[1 - EntryPos];
@@ -10375,6 +10375,41 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)
         }
     }
     Utilities->CallLogPop(639);
+}
+
+// ---------------------------------------------------------------------------
+
+void TTrack::SetNonStationStopLinkPosses(int Caller) //added after v2.17.0
+
+{
+/* Examine each non-station area with same name and find all exterior elements (i.e. those with a track that doesn't link to a same name element) and
+set the appropriate exit link (to the outside) as stop point.  May have 2 stop points on same element if 4 track.
+*/
+
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetNonStationStopLinkPosses");
+    TTrackElement TempElement;
+    AnsiString TempName;
+    std::list<int> NameList; //inactive elements
+    std::list<int> ExternalNameList; //inactive elements
+
+    for(unsigned int x = 0; x < TrackVector.size(); x++)
+    {
+        TrackElementAt(7777, x).StationEntryStopLinkPos1 = -1;
+        TrackElementAt(7777, x).StationEntryStopLinkPos2 = -1;
+    }
+    for(unsigned int x = 0; x < InactiveTrackVector.size(); x++)
+    {
+        if(InactiveTrackElementAt(7777, x).SpeedTag == 131) //other locs dealt with in SetStationEntryStopLinkPosses
+        {
+            for(unsigned int y = 0; y < TrackVector.size(); y++)
+            {
+
+
+
+            }
+        }
+    }
+    Utilities->CallLogPop(7777);
 }
 
 // ---------------------------------------------------------------------------

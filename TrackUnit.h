@@ -1272,6 +1272,8 @@ to bring the named location and timetable naming up to date with the deletion or
     void SetLinkedLevelCrossingBarrierAttributes(int Caller, int HLoc, int VLoc, int Attr);
 /// Set all TypeOfRoute values to 2 for all linked LCs to indicate manually lowered
     void SetLinkedManualLCs(int Caller, int HLoc, int VLoc);
+/// similar to SetStationEntryStopLinkPosses but for non-station named elements
+    void TTrack::SetNonStationStopLinkPosses(int Caller); //added after v2.17.0
 /// Called when trying to link track and when a name changed when track already linked.
 /**Examines all track elements that have ActiveTrackElementName set, sums the number of consecutive elements with the same name,
 and sets the EntryLink values for the front of train stop points for each direction.  For stations (not non-station named

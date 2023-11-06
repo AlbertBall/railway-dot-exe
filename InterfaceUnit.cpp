@@ -905,31 +905,65 @@ void __fastcall TInterface::SpeedButtonClick(TObject *Sender)
                     if(!FillSelectionMessageSentFlag)
                     {
                         UnicodeString MessageStr =
-                            "Click 'Yes' to fill the area with the chosen element or 'No' to abort.\n" "Existing elements won't be overwritten although track can\n"
-                            "have platforms and non-station named location elements added.\n\nThis message will not be shown again.";
+                            "Click 'Yes' to fill the area with the chosen element or 'No' to abort.\n"
+                            "Existing elements won't be overwritten but if the chosen element can be named then any existing named "
+                            "elements within the area will have their names removed.\n\nThis message will not be shown again.";
                         int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
                         if(button == IDYES)
                         {
                             FillSelectionFlag = true;
+                            FillSelectionMessageSentFlag = true;
                         }
                     }
                     if(FillSelectionFlag || FillSelectionMessageSentFlag)
                     {
                         bool TrackLinkingRequiredFlag = true;
+                        bool FoundFlag = false;
+                        if((CurrentSpeedButton->Tag == 76) || (CurrentSpeedButton->Tag == 77) || (CurrentSpeedButton->Tag == 78) || (CurrentSpeedButton->Tag == 79) ||
+                        (CurrentSpeedButton->Tag == 96) || (CurrentSpeedButton->Tag == 129) || (CurrentSpeedButton->Tag == 130) || (CurrentSpeedButton->Tag == 131) ||
+                        (CurrentSpeedButton->Tag == 145) || (CurrentSpeedButton->Tag == 146))
+                        {
+                            for(int HLoc = SelectRect.Left; HLoc < SelectRect.Right; HLoc++)
+                            {
+                                for(int VLoc = SelectRect.Top; VLoc < SelectRect.Bottom; VLoc++)
+                                {
+                                    int TVPos = Track->GetVectorPositionFromTrackMap(7777, HLoc, VLoc, FoundFlag);
+                                    if(FoundFlag)
+                                    {
+                                        TTrackElement &TE1 = Track->TrackElementAt(7777, TVPos);
+                                        TE1.ActiveTrackElementName = "";
+                                        TE1.LocationName = "";
+                                    }
+                                    FoundFlag = false;
+                                    TTrack::TIMPair IMPair = Track->GetVectorPositionsFromInactiveTrackMap(7777, HLoc, VLoc, FoundFlag);
+                                    if(FoundFlag)
+                                    {
+                                        TTrackElement &TE2 = Track->InactiveTrackElementAt(7777, IMPair.first);
+                                        TE2.ActiveTrackElementName = "";
+                                        TE2.LocationName = "";
+                                        TTrackElement &TE3 = Track->InactiveTrackElementAt(7777, IMPair.second);
+                                        TE3.ActiveTrackElementName = "";
+                                        TE3.LocationName = "";
+                                    }
+                                }
+                            }
+                            Track->RebuildLocationNameMultiMap(4);
+                        }
                         for(int HLoc = SelectRect.left; HLoc < SelectRect.right; HLoc++)
                         {
                             for(int VLoc = SelectRect.top; VLoc < SelectRect.bottom; VLoc++)
                             {
-                                if((HLoc != SelectRect.right) || (VLoc != SelectRect.bottom))
+                                if((HLoc != (SelectRect.right - 1)) || (VLoc != (SelectRect.bottom - 1)))
                                 {
-                                    Track->PlotAndAddTrackElement(3, CurrentSpeedButton->Tag, 0, HLoc, VLoc, TrackLinkingRequiredFlag, false);
-// false for internal checks
-                                    // above now has extra zero 'Aspect' parameter at v2.2.0 so can distinguish between adding track and pasting
+                                    Track->PlotAndAddTrackElement(3, CurrentSpeedButton->Tag, 0, HLoc, VLoc, TrackLinkingRequiredFlag, false, false);
+                                    //false for internal checks & false for perform name search
+                                    //above now has extra zero 'Aspect' (3rd parameter) at v2.2.0 so can distinguish between adding track and pasting
+                                    //for signals - 0 combined with TrackType == SignalPost means adding and not pasting
                                 }
                                 else
                                 {
-                                    Track->PlotAndAddTrackElement(4, CurrentSpeedButton->Tag, 0, HLoc, VLoc, TrackLinkingRequiredFlag, true);
-// internal checks true for last plot
+                                    Track->PlotAndAddTrackElement(4, CurrentSpeedButton->Tag, 0, HLoc, VLoc, TrackLinkingRequiredFlag, true, false);
+                                    // internal checks true for last plot
                                 }
                             }
                         }
@@ -943,7 +977,6 @@ void __fastcall TInterface::SpeedButtonClick(TObject *Sender)
                     SetLevel1Mode(139);
                     Level2TrackMode = AddTrack;
                     SetLevel2TrackMode(66);
-                    FillSelectionMessageSentFlag = true;
                     Screen->Cursor = TCursor(-2); // Arrow
                     ReselectMenuItem->Enabled = true; // allow when filling areas
                 }
@@ -7667,7 +7700,8 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                 CurrentTag = 0;
             }
             bool InternalChecks = true;
-            Track->PlotAndAddTrackElement(1, CurrentTag, 0, HLoc, VLoc, TrackLinkingRequiredFlag, InternalChecks);
+            bool PerformNameSearch = true;
+            Track->PlotAndAddTrackElement(1, CurrentTag, 0, HLoc, VLoc, TrackLinkingRequiredFlag, InternalChecks, PerformNameSearch);
             // above now has extra zero 'Aspect' parameter at v2.2.0 so can distinguish between adding track and pasting
             EditMenu->Enabled = true;
             if(Track->NamedLocationElementAt(1, HLoc, VLoc))

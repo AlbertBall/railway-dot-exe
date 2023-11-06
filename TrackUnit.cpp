@@ -2156,10 +2156,11 @@ void TTrack::EraseTrackElement(int Caller, int HLocInput, int VLocInput, int &Er
 
 // ---------------------------------------------------------------------------
 
-void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &TrackLinkingRequiredFlag, bool InternalChecks)
+void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &TrackLinkingRequiredFlag, bool InternalChecks, bool PerformNameSearch)
 // TrackLinkingRequiredFlag only relates to elements that require track linking after plotting - used to set TrackFinished
 // to false in calling function. New at v2.2.0 new parameter 'Aspect' to ensure signals plotted with correct number of aspects (for pasting)
 // and also when zero and combined with SignalPost to indicate that adding track rather than pasting
+// PerformNameSearch added after v2.17.0 to speed up named element additions when area selected
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotAndAddTrackElement," + AnsiString(CurrentTag) + "," +
                                  AnsiString(HLocInput) + "," + AnsiString(VLocInput) + "," + AnsiString((short)InternalChecks));
@@ -2283,12 +2284,15 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
             {
                 TrackLinkingRequiredFlag = true; // needed in order to call LinkTrack
                 TrackPush(1, TempTrackElement);
-                SearchForAndUpdateLocationName(1, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
+                if(PerformNameSearch)
+                {
+                    SearchForAndUpdateLocationName(1, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
                 // checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
                 // Must be called AFTER TrackPush
                 // No need to plot the element - Clearand ... called after this function called
                 // set corresponding track element length to 100m & give message if was different    drop in v2.4.0
                 // note can only be Length01 since even if points then only the straight part can be adjacent to the platform
+                }
 // drop in v2.4.0                if(TrackElementAt(2, VecPos).Length01 != DefaultTrackLength) ShowMessage("Note:  The track element at this location has a length of " +
 // AnsiString(TrackElementAt(3, VecPos).Length01) + "m.  It will be reset to 100m since all platform track lengths are fixed at 100m");
 // TrackElementAt(4, VecPos).Length01 = DefaultTrackLength;
@@ -2315,8 +2319,11 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
         {
             TrackLinkingRequiredFlag = true; // needed in case have named a continuation, need to check if adjacent element named
             TrackPush(2, TempTrackElement);
-            SearchForAndUpdateLocationName(2, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
+            if(PerformNameSearch)
+            {
+                SearchForAndUpdateLocationName(2, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
             // checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
+            }
             if(VecPos > -1) // need to allow for non-station named locations that aren't on tracks
             {
 // drop in v2.4.0                if(TrackElementAt(830, VecPos).Length01 != DefaultTrackLength) ShowMessage("Note:  The track element at this location has a length of " +
@@ -2370,8 +2377,11 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
     if(TempTrackElement.FixedNamedLocationElement) // concourse or footcrossing (platforms & named non-station locations already dealt with)
     {
         TrackPush(3, TempTrackElement);
-        SearchForAndUpdateLocationName(3, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
+        if(PerformNameSearch)
+        {
+            SearchForAndUpdateLocationName(3, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
         // checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
+        }
     }
     else if(TempTrackElement.TrackType == Points)
     {

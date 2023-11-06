@@ -75,8 +75,8 @@
         <Icon_MainIcon>$(BDS)\bin\cbuilder_PROJECTICON.ico</Icon_MainIcon>
         <UWP_CppLogo44>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_44.png</UWP_CppLogo44>
         <UWP_CppLogo150>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_150.png</UWP_CppLogo150>
-        <IncludePath>railway\;$(IncludePath)</IncludePath>
-        <ILINK_LibraryPath>railway\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <IncludePath>..\..\GitHub Current Version\railway-dot-exe\;railway\;$(IncludePath)</IncludePath>
+        <ILINK_LibraryPath>..\..\GitHub Current Version\railway-dot-exe\;railway\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <SanitizedProjectName>railway</SanitizedProjectName>
         <FeatureFilesAdded>false</FeatureFilesAdded>
     </PropertyGroup>
@@ -124,7 +124,7 @@
         <LinkPackageImports>rtl.bpi;vcl.bpi;vclimg.bpi;IndySystem.bpi;IndyCore.bpi</LinkPackageImports>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>2057</VerInfo_Locale>
-        <Icon_MainIcon>railway_Icon.ico</Icon_MainIcon>
+        <Icon_MainIcon>..\..\GitHub Current Version\railway-dot-exe\railway_Icon.ico</Icon_MainIcon>
         <VerInfo_MajorVer>2</VerInfo_MajorVer>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=2.17.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=2.4;Comments=</VerInfo_Keys>
         <ILINK_DisableIncrementalLinking>true</ILINK_DisableIncrementalLinking>
@@ -138,7 +138,7 @@
         <LinkPackageImports>rtl.bpi;vcl.bpi;vclimg.bpi;IndySystem.bpi;IndyCore.bpi</LinkPackageImports>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <Icon_MainIcon>Railway.ico</Icon_MainIcon>
+        <Icon_MainIcon>..\..\GitHub Current Version\railway-dot-exe\Railway.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
@@ -149,7 +149,7 @@
         <AppDPIAwarenessMode>PerMonitor</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <Icon_MainIcon>Railway.ico</Icon_MainIcon>
+        <Icon_MainIcon>..\..\GitHub Current Version\railway-dot-exe\Railway.ico</Icon_MainIcon>
         <LinkPackageImports>rtl.bpi;vcl.bpi;vclimg.bpi;IndySystem.bpi;IndyCore.bpi</LinkPackageImports>
         <BT_BuildType>Debug</BT_BuildType>
     </PropertyGroup>
@@ -159,7 +159,7 @@
         <LinkPackageImports>rtl.bpi;vcl.bpi;vclimg.bpi;IndySystem.bpi;IndyCore.bpi</LinkPackageImports>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <Icon_MainIcon>Railway.ico</Icon_MainIcon>
+        <Icon_MainIcon>..\..\GitHub Current Version\railway-dot-exe\Railway.ico</Icon_MainIcon>
         <VerInfo_MajorVer>2</VerInfo_MajorVer>
         <VerInfo_MinorVer>17</VerInfo_MinorVer>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=2.17.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>

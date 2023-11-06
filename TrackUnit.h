@@ -126,11 +126,11 @@ class TTrackElement : public TFixedTrackPiece
 public: // everything uses these - should really have Gets & Sets but too many to change now
 
     AnsiString ActiveTrackElementName;
-///< Location name used either in the timetable or for a continuation (continuation names not used in timetable as trains can't stop there).  Only active track elements where there are platforms or non-station named locations have ActiveTrackElementNames
+///< Location name used either in the timetable or for a continuation (continuation names not used in timetable as trains can't stop there).  Only active track elements where there are platforms or non-station named locations (not footcrossings) have ActiveTrackElementNames
     AnsiString ElementID;
 ///< the element identifier based on position in the railway
     AnsiString LocationName;
-///< location name not used for timetabling, only for identification: platforms, non-station named locations, concourses and footcrossings have LocationNames
+///< location name not used for timetabling, only for identification: platforms, non-station named locations, concourses (inactive) and footcrossings (active) have LocationNames
 
     bool CallingOnSet;
 ///< Used for for signals only when a train is being called on - used to plot the position lights
@@ -150,8 +150,8 @@ public: // everything uses these - should really have Gets & Sets but too many t
 ///< The h & v locations in the railway (top lh corner of the first build screen = 0,0)
     int Length01, Length23, SpeedLimit01, SpeedLimit23;
 ///< Element lengths and speed limits, ...01 is for the track with link positions [0] and [1], ...23 for [2] and [3], set to -1 if not used (lengths in m & speed limits in km/h)
-    int StationEntryStopLinkPos1, StationEntryStopLinkPos2;
-///< Used for track at platforms and non-station named locations to mark the train front element stop position, there are two for the two directions of travel, set to -1 if not used
+    int StationEntryStopLinkPos1, StationEntryStopLinkPos2, StationEntryStopLinkPos3, StationEntryStopLinkPos4;
+///< Used for track at platforms ( 1 & 2) and non-station named locations (1 - 4) to mark the train front element stop position, 3 & 4 added after v2.17.0 to allow non-station names on 4-track elements
     int TrainIDOnElement, TrainIDOnBridgeOrFailedPointOrigSpeedLimit01, TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
 ///< Set to the TrainID value for a bridge when a train is present on the element, bridges can have two trains present so the ...01 and ...23 values give the TrainIDs for track with link positions [0] & [1], and [2] & [3] respectively, set to -1 if no train present
 ///< For a failed point store the original speedlimits, names changed at v2.13.0 to cater for failed points (OK as these not used for points, only bridges)
@@ -166,7 +166,8 @@ public: // everything uses these - should really have Gets & Sets but too many t
 /// Constructor for non-specific default element. Use high neg numbers for 'unset' h & v as can go high negatively legitimately
     TTrackElement() : TFixedTrackPiece(), HLoc(-2000000000), VLoc(-2000000000), LocationName(""), ActiveTrackElementName(""), Attribute(0), CallingOnSet(false),
         Length01(-1), Length23(-1), SpeedLimit01(-1), SpeedLimit23(-1), TrainIDOnElement(-1), TrainIDOnBridgeOrFailedPointOrigSpeedLimit01(-1),
-        TrainIDOnBridgeOrFailedPointOrigSpeedLimit23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1), SigAspect(FourAspect)
+        TrainIDOnBridgeOrFailedPointOrigSpeedLimit23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1), StationEntryStopLinkPos3(-1),
+        StationEntryStopLinkPos4(-1), SigAspect(FourAspect)
     {
         Failed = false; //added at v2.13.1
         for(int x = 0; x < 4; x++)
@@ -1273,7 +1274,7 @@ to bring the named location and timetable naming up to date with the deletion or
 /// Set all TypeOfRoute values to 2 for all linked LCs to indicate manually lowered
     void SetLinkedManualLCs(int Caller, int HLoc, int VLoc);
 /// similar to SetStationEntryStopLinkPosses but for non-station named elements
-    void TTrack::SetNonStationStopLinkPosses(int Caller); //added after v2.17.0
+    void TTrack::SetNonStationStopLinkEntryPosses(int Caller); //added after v2.17.0
 /// Called when trying to link track and when a name changed when track already linked.
 /**Examines all track elements that have ActiveTrackElementName set, sums the number of consecutive elements with the same name,
 and sets the EntryLink values for the front of train stop points for each direction.  For stations (not non-station named

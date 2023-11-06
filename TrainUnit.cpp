@@ -2282,7 +2282,7 @@ void TTrain::UpdateTrain(int Caller)
                 // to point to the location arrival entry - before a change of direction
                 AnsiString LocName = Track->TrackElementAt(249, LeadElement).ActiveTrackElementName;
                 bool StopRequired = false;
-                int TTVPos = NameInTimetableBeforeCDT(1, LocName, StopRequired);
+                int TTVPos = NameInTimetableBeforeCDT(1, LocName, StopRequired); //excludes continuations
                 if(TTVPos > -1) // -1 if can't find it or if name is ""
                 {
                     // check if at buffers (no, dropped buffer check to allow to crash into buffers) or a through station stop,
@@ -2293,6 +2293,8 @@ void TTrain::UpdateTrain(int Caller)
                     TTrackElement NextTrackElement; // default for now
                     bool TrainAtStopLinkPos1 = (LeadTrackElement.StationEntryStopLinkPos1 == LeadEntryPos);
                     bool TrainAtStopLinkPos2 = (LeadTrackElement.StationEntryStopLinkPos2 == LeadEntryPos);
+                    bool TrainAtStopLinkPos3 = (LeadTrackElement.StationEntryStopLinkPos3 == LeadEntryPos);
+                    bool TrainAtStopLinkPos4 = (LeadTrackElement.StationEntryStopLinkPos4 == LeadEntryPos);
                     bool ForwardConnection = (LeadTrackElement.Conn[LeadExitPos] > -1);
                     int NextElementEntryPos = -1;
                     int NextElementExitPos = -1;
@@ -2308,7 +2310,7 @@ void TTrain::UpdateTrain(int Caller)
                         TrainOnNextElement = (NextTrackElement.TrainIDOnElement > -1);
                         StopSignalAtNextElement = ((NextTrackElement.Config[NextElementExitPos] == Signal) && (NextTrackElement.Attribute == 0));
                     }
-                    if(TrainAtStopLinkPos1 || TrainAtStopLinkPos2 || (ForwardConnection && (TrainOnNextElement || StopSignalAtNextElement)))
+                    if(TrainAtStopLinkPos1 || TrainAtStopLinkPos2 || TrainAtStopLinkPos3 || TrainAtStopLinkPos4 || (ForwardConnection && (TrainOnNextElement || StopSignalAtNextElement)))
                     {
                         if(TTVPos > 0)
                         {
@@ -3981,7 +3983,9 @@ when Straddle == LeadMidLag
                 bool StopRequired = false;
                 if(!TimetableFinished && (NameInTimetableBeforeCDT(12, Track->TrackElementAt(375, CurrentTrackVectorPosition).ActiveTrackElementName,
                         StopRequired) > -1) && ((Track->TrackElementAt(376, CurrentTrackVectorPosition).StationEntryStopLinkPos1 == EntryPos) ||
-                        (Track->TrackElementAt(377, CurrentTrackVectorPosition).StationEntryStopLinkPos2 == EntryPos)))
+                        (Track->TrackElementAt(377, CurrentTrackVectorPosition).StationEntryStopLinkPos2 == EntryPos) ||
+                        (Track->TrackElementAt(377, CurrentTrackVectorPosition).StationEntryStopLinkPos3 == EntryPos) ||
+                        (Track->TrackElementAt(377, CurrentTrackVectorPosition).StationEntryStopLinkPos4 == EntryPos)))
                 {
                     // no need to add in the length of element to CumulativeLength
                     if(StopRequired)
@@ -4091,8 +4095,7 @@ when Straddle == LeadMidLag
                 // station they are due to stop at even if there is a train in front blocking the normal stop position - providing there is
                 // at least one platform element free
                 else if((TrainMode == Timetable) && !TimetableFinished && (NameInTimetableBeforeCDT(10, Track->TrackElementAt(368,
-                                                                                                                              CurrentTrackVectorPosition).ActiveTrackElementName, StopRequired) > -1) && Track->OtherTrainOnTrack(3, NextTrackVectorPosition,
-                                                                                                                                                                                                                                  NextEntryPos, TrainID))
+                     CurrentTrackVectorPosition).ActiveTrackElementName, StopRequired) > -1) && Track->OtherTrainOnTrack(3, NextTrackVectorPosition, NextEntryPos, TrainID))
                 {
                     // no need to add in the length of element to CumulativeLength
                     if(StopRequired)
@@ -4118,9 +4121,10 @@ when Straddle == LeadMidLag
                 else if((TrainMode == Timetable) && !TimetableFinished && (NameInTimetableBeforeCDT(11, Track->TrackElementAt(370,
                               NextTrackVectorPosition).ActiveTrackElementName, StopRequired) > -1) && ((Track->TrackElementAt(371,
                               NextTrackVectorPosition).StationEntryStopLinkPos1 == EntryPos) || (Track->TrackElementAt(372,
-                              NextTrackVectorPosition).StationEntryStopLinkPos2 == EntryPos)))
-                {
-                    // need to add in the length of that element to CumulativeLength if a stop required
+                              NextTrackVectorPosition).StationEntryStopLinkPos2 == EntryPos) || (Track->TrackElementAt(372,
+                              NextTrackVectorPosition).StationEntryStopLinkPos3 == EntryPos) || (Track->TrackElementAt(372,
+                              NextTrackVectorPosition).StationEntryStopLinkPos4 == EntryPos)))
+                {      // need to add in the length of that element to CumulativeLength if a stop required
                     if(StopRequired)
                     {
                         StationFlag = true;
@@ -22139,7 +22143,9 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
                     bool StopRequired = false;
                     if(!Train.TimetableFinished && (Train.NameInTimetableBeforeCDT(16, Track->TrackElementAt(1005, CurrentElement).ActiveTrackElementName,
                         StopRequired) > -1) && ((Track->TrackElementAt(1006, CurrentElement).StationEntryStopLinkPos1 == CurrentEntryPos) ||
-                        (Track->TrackElementAt(1010, CurrentElement).StationEntryStopLinkPos2 == CurrentEntryPos)))
+                        (Track->TrackElementAt(1010, CurrentElement).StationEntryStopLinkPos2 == CurrentEntryPos) ||
+                        (Track->TrackElementAt(1010, CurrentElement).StationEntryStopLinkPos3 == CurrentEntryPos) ||
+                        (Track->TrackElementAt(1010, CurrentElement).StationEntryStopLinkPos4 == CurrentEntryPos)))
                     {
                         // no need to add in the length of element to CumulativeLength
                         if(StopRequired)

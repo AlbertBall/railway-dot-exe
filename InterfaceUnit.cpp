@@ -10162,10 +10162,13 @@ pause or run and it cycled round the operate panel buttons
                 DevelopmentPanel->Caption = MouseStr + "; TVPos: " + AnsiString(Position) + "; H: " + AnsiString(HLoc) + "; V: " + AnsiString(VLoc) +
                     "; SpTg: " + AnsiString(TrackElement.SpeedTag) + "; Type: " + Type[TrackElement.TrackType] + "; Att: " + AnsiString(TrackElement.Attribute)
                     + ";SPos1: " + AnsiString(TrackElement.StationEntryStopLinkPos1) + ";SPos2: " + AnsiString(TrackElement.StationEntryStopLinkPos2)
+                    + ";SPos3: " + AnsiString(TrackElement.StationEntryStopLinkPos3) + ";SPos4: " + AnsiString(TrackElement.StationEntryStopLinkPos4)
                     + "; TrID: " + AnsiString(TrackElement.TrainIDOnElement) + "; TrID01: " + AnsiString(TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01) +
-                    "; TrID23: " + AnsiString(TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23) + "; " + TrackElement.LocationName + "; " +
-                    TrackElement.ActiveTrackElementName + "; InRoute " + InARoute + "; RtNum " + RouteNumber + "; PDVecPos " + RoutePrefDirPos;
-// + "; OAHintCtr: " + TrainController->OpActionPanelHintDelayCounter;
+                    "; TrID23: " + AnsiString(TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23) + "; Locname: " + TrackElement.LocationName + "; Activename: " +
+                    TrackElement.ActiveTrackElementName + "; InRoute " + InARoute + "; RtNum " + RouteNumber + "; PDVecPos " + RoutePrefDirPos + " Links: " +
+                    TrackElement.Link[0] + "," + TrackElement.Link[1] + "," + TrackElement.Link[2] + "," + TrackElement.Link[3] + " CLPos " +
+                    TrackElement.ConnLinkPos[0] + "," +TrackElement.ConnLinkPos[1] + "," +TrackElement.ConnLinkPos[2] + "," +TrackElement.ConnLinkPos[3];
+                    // + "; OAHintCtr: " + TrainController->OpActionPanelHintDelayCounter;
             }
             else
             {//below used in elapsed time investigations
@@ -16269,8 +16272,9 @@ void __fastcall TInterface::FormResize(TObject *Sender) // new at v2.1.0
 //            ActionsDueForm->Top = Screen->Height -ActionsDueForm->Height - 32; //-32 to avoid overlapping taskbar;;
 //            ActionsDueForm->Left = Screen->Width - ActionsDueForm->Width;
             SigImagePanel->Left = (Interface->Width - SigImagePanel->Width) / 2; // added for v2.3.0
+            DevelopmentPanel->Width = MainScreen->Width; //added after v2.17.0
             DevelopmentPanel->Top = MainScreen->Top + MainScreen->Height - DevelopmentPanel->Height; // new v2.2.0
-            DevelopmentPanel->Left = MainScreen->Left + MainScreen->Width - DevelopmentPanel->Width; // new v2.2.0
+            DevelopmentPanel->Left = MainScreen->Left; // new v2.2.0 amended after v2.17.0
             MTBFEditBox->Left = MainScreen->Left + MainScreen->Width - MTBFEditBox->Width + 32; // new v2.4.0 32 is to place it above the positional panel
             MTBFLabel->Left = MainScreen->Left + MainScreen->Width - MTBFEditBox->Width + 30 - 55; // new v2.4.0 placed above and to the left of MTBFEditBox
             PositionalPanel->Left = MainScreen->Left + MainScreen->Width; // changed at v2.4.0
@@ -19333,6 +19337,7 @@ void TInterface::TrackTrainFloat(int Caller)
         bool ActiveTrackFoundFlag = false, InactiveTrackFoundFlag = false, TwoTrack = false;
         AnsiString Length01Str = "", Length23Str = "", SpeedLimit01Str = "", SpeedLimit23Str = "";
         AnsiString StationEntryStopLinkPos1Str = "", StationEntryStopLinkPos2Str = "";
+        AnsiString StationEntryStopLinkPos3Str = "", StationEntryStopLinkPos4Str = "";
         AnsiString ATrackSN = "", ATrackTN = "", IATrackSN = "", LengthAndSpeedCaption = "";
         AnsiString SigAspectString = ""; // new at version 0.6
         int ActiveVecPos = Track->GetVectorPositionFromTrackMap(5, HLoc, VLoc, ActiveTrackFoundFlag);
@@ -19349,6 +19354,8 @@ void TInterface::TrackTrainFloat(int Caller)
             ATrackSN = ActiveTrackElement.LocationName;
             StationEntryStopLinkPos1Str = AnsiString(ActiveTrackElement.StationEntryStopLinkPos1);
             StationEntryStopLinkPos2Str = AnsiString(ActiveTrackElement.StationEntryStopLinkPos2);
+            StationEntryStopLinkPos3Str = AnsiString(ActiveTrackElement.StationEntryStopLinkPos3);
+            StationEntryStopLinkPos4Str = AnsiString(ActiveTrackElement.StationEntryStopLinkPos4);
             ATrackTN = ActiveTrackElement.ActiveTrackElementName;
             if((ATrackTN != "") && (!InactiveTrackFoundFlag || ((InactiveTrackElement.TrackType != Platform) &&
                                                                 (InactiveTrackElement.TrackType != NamedNonStationLocation)) ||
@@ -21178,9 +21185,9 @@ void TInterface::ResetAll(int Caller)
     // HomeButton->Left = ScreenRightButton->Left;
     // NewHomeButton->Left = ScreenRightButton->Left;
     // ZoomButton->Left = ScreenRightButton->Left;
-    DevelopmentPanel->Top = MainScreen->Top + MainScreen->Height - DevelopmentPanel->Height;
-    DevelopmentPanel->Left = MainScreen->Left + MainScreen->Width - DevelopmentPanel->Width;
-    ;                                                                                          // new v2.2.0
+    DevelopmentPanel->Width = MainScreen->Width; //added after v2.17.0
+    DevelopmentPanel->Top = MainScreen->Top + MainScreen->Height - DevelopmentPanel->Height; // new v2.2.0
+    DevelopmentPanel->Left = MainScreen->Left; // new v2.2.0 amended after v2.17.0
 
     delete TempFont;
     CtrlKey = false;
@@ -25194,6 +25201,10 @@ void TInterface::LoadClipboard(int Caller) // new at v2.8.0
             wss << '\n';
             wss << TTVIt->StationEntryStopLinkPos2;
             wss << '\n';
+            wss << TTVIt->StationEntryStopLinkPos3;
+            wss << '\n';
+            wss << TTVIt->StationEntryStopLinkPos4;
+            wss << '\n';
             wss << TTVIt->TrainIDOnElement;
             wss << '\n';
             wss << TTVIt->TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
@@ -25413,6 +25424,10 @@ void TInterface::RecoverClipboard(int Caller, bool &ValidResult) // new at v2.8.
             TE.StationEntryStopLinkPos1 = AnsiString(LineString).ToInt();
             wss.getline(LineString, 100);
             TE.StationEntryStopLinkPos2 = AnsiString(LineString).ToInt();
+            wss.getline(LineString, 100);
+            TE.StationEntryStopLinkPos3 = AnsiString(LineString).ToInt();
+            wss.getline(LineString, 100);
+            TE.StationEntryStopLinkPos4 = AnsiString(LineString).ToInt();
             wss.getline(LineString, 100);
             TE.TrainIDOnElement = AnsiString(LineString).ToInt();
             wss.getline(LineString, 100);

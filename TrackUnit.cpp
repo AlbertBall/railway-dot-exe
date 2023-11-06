@@ -247,8 +247,8 @@ AnsiString TTrackElement::LogTrack(int Caller) const
 /// Constructor for specific type of element. Use very high neg. numbers as 'unset' values for HLoc & VLoc initially as can go high negatively legitimately, build from existing TTrackPiece with default values for extra members
     TTrackElement::TTrackElement(TFixedTrackPiece Input) : TFixedTrackPiece(Input), HLoc(-2000000000), VLoc(-2000000000), LocationName(""), ActiveTrackElementName(""),
         Attribute(0), CallingOnSet(false), Length01(Utilities->DefaultTrackLength), Length23(-1), SpeedLimit01(Utilities->DefaultTrackSpeedLimit), SpeedLimit23(-1),
-        TrainIDOnElement(-1), TrainIDOnBridgeOrFailedPointOrigSpeedLimit01(-1), TrainIDOnBridgeOrFailedPointOrigSpeedLimit23(-1), StationEntryStopLinkPos1(-1), StationEntryStopLinkPos2(-1),
-        SigAspect(FourAspect)
+        TrainIDOnElement(-1), TrainIDOnBridgeOrFailedPointOrigSpeedLimit01(-1), TrainIDOnBridgeOrFailedPointOrigSpeedLimit23(-1), StationEntryStopLinkPos1(-1),
+        StationEntryStopLinkPos2(-1), StationEntryStopLinkPos3(-1), StationEntryStopLinkPos4(-1), SigAspect(FourAspect)
     {
         Failed = false; //added at v2.13.0
         for(int x = 0; x < 4; x++)
@@ -1194,10 +1194,11 @@ TTrack::TTrack()
     BotPlatAllowed << 1 << 7 << 8 << 28 << 29 << 60 << 61 << 68 << 69 << 76 << 125 << 126 << 129 << 145;
     LeftPlatAllowed << 2 << 12 << 14 << 33 << 35 << 62 << 63 << 70 << 71 << 79 << 127 << 128 << 130 << 146;
     RightPlatAllowed << 2 << 11 << 13 << 32 << 34 << 62 << 63 << 70 << 71 << 78 << 127 << 128 << 130 << 146;
-    NameAllowed << 1 << 2 << 3 << 4 << 5 << 6 << 20 << 21 << 22 << 23 << 24 << 25 << 26 << 27 // disallow diagonals, points, crossovers, bridges, gaps,
-    << 60 << 61 << 62 << 63  << 68  << 69  << 70  << 71 << 80 << 81 << 82 << 83 << 125 << 126 << 127 << 128;     // diag continuations, diag buffers, footcrossings (diagonals may be OK
-    // but as can't link diagonal locations would need solid blocks to allow linkage & that would look untidy except for single
-    // elements, & can always use straights so leave out.) Allow horiz & vert signals as from v2.6.0
+    NameAllowed <<  1 << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 18 << 19 << 20 << 21 << 22 << 23 << 24
+         << 25 << 26 << 27 << 28 << 29 << 30 << 31 << 32 << 33 << 34 << 35 << 36 << 37 << 38 << 39 << 40 << 41 << 42 << 43 << 44 << 45 << 46 << 47
+         << 60 << 61 << 62 << 63 << 64 << 65 << 66 << 67 << 68 << 69 << 70 << 71  << 72 << 73 << 74 << 75 << 80 << 81 << 82 << 83 << 84 << 85 << 86
+         << 87 << 88 << 89 << 90 << 91 << 92 << 93 << 94 << 95 << 125 << 126 << 127 << 128 << 132 << 133 << 134 << 135 << 136 << 137 << 138 << 139
+         << 140 << 141 << 142 << 143; //prevent bridges, footcrossings, platforms, concourses, non-station named locs, parapets, level crossings
     LevelCrossingAllowed << 1 << 2; // only allow on straight tracks without direction markers
 // Note platforms not allowed at continuations, but named non-station locations OK, though not allowed in timetables
 
@@ -5087,21 +5088,18 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
             // find track element if present
             bool ConnectionFoundFlag;
             bool LinkMatchFound = false;
-            int VecPos = GetVectorPositionFromTrackMap(66, NewHLoc, NewVLoc, ConnectionFoundFlag);
+            int VecPos = GetVectorPositionFromTrackMap(66, NewHLoc, NewVLoc, ConnectionFoundFlag); //this is the joining element at link 'y'
             // if there isn't a connection set the invert values for the offending element
             if(ConnectionFoundFlag) //set the ConnLinkPos values
             {
-                for(unsigned int a = 0; a < 4; a++)
+                for(unsigned int a = 0; a < 4; a++) //links for the joining element at this element's link 'y'
                 {
                     if((TrackElementAt(1178, VecPos).Link[a] == (10 - TrackElementAt(1179, x).Link[y])) && (TrackElementAt(1180, VecPos).Config[a] != End) &&
                        (TrackElementAt(1181, VecPos).Config[a] != Gap))
                     {
-                        TrackElementAt(1182, x).ConnLinkPos[y] = a;
-                        // note - this ensures that if the connecting element is a leading point
-                        // then the ConnLinkPos value is 0 rather than 2, since 'a' starts at 0
-                        // (Points have the same link value for both [0] and [2])
+                        TrackElementAt(1182, x).ConnLinkPos[y] = a; //for points, 'y == 0' and 'y == 2' will be allocated same value for 'a'
                         LinkMatchFound = true;
-                        break; // stop after first find or will find later link for leading point
+                        break; //can only match 1 so can break
                     }
                 }
                 if(!LinkMatchFound)
@@ -5136,6 +5134,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
     if(FinalCall)
     {
         SetStationEntryStopLinkPosses(1);
+        SetNonStationStopLinkEntryPosses(7777);
     }
 
 // confirmatiory checks that all ok - or throw error
@@ -5163,7 +5162,8 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
         {
             if(TrackElementAt(1199, x).ActiveTrackElementName == "")
             {
-                if((TrackElementAt(1200, x).StationEntryStopLinkPos1 != -1) || (TrackElementAt(1201, x).StationEntryStopLinkPos2 != -1))
+                if((TrackElementAt(1200, x).StationEntryStopLinkPos1 != -1) || (TrackElementAt(1201, x).StationEntryStopLinkPos2 != -1) ||
+                    (TrackElementAt(1200, x).StationEntryStopLinkPos3 != -1) || (TrackElementAt(1201, x).StationEntryStopLinkPos4 != -1))
                 {
                     throw Exception("Error, StationEntryStopLinkPos not -1 for unnamed element at TrackVectorPosition = " + AnsiString(x));
                 }
@@ -5394,6 +5394,7 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
     if(FinalCall)
     {
         SetStationEntryStopLinkPosses(2);
+        SetNonStationStopLinkEntryPosses(7777);
     }
 // final check
     bool ConnErrorFlag = false;
@@ -5420,7 +5421,8 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
         {
             if(TrackElementAt(1269, x).ActiveTrackElementName == "")
             {
-                if((TrackElementAt(1270, x).StationEntryStopLinkPos1 != -1) || (TrackElementAt(1271, x).StationEntryStopLinkPos2 != -1))
+                if((TrackElementAt(1270, x).StationEntryStopLinkPos1 != -1) || (TrackElementAt(1271, x).StationEntryStopLinkPos2 != -1) ||
+                    (TrackElementAt(1200, x).StationEntryStopLinkPos3 != -1) || (TrackElementAt(1201, x).StationEntryStopLinkPos4 != -1))
                 {
                     throw Exception("Error, StationEntryStopLinkPos not -1 for unnamed element at TrackVectorPosition = " + AnsiString(x));
                 }
@@ -6141,6 +6143,17 @@ void TTrack::PlotPoints(int Caller, TTrackElement TrackElement, TDisplay *Disp, 
         throw Exception("Error, Wrong track type in PlotPoints");
     }
     Disp->PlotPointBlank(0, TrackElement.HLoc, TrackElement.VLoc); // to get rid of earlier fillet
+    //check if a blue location and if so plot the blue element again - named or not as appropriate - added after v2.17.0 for blue locs at points
+    bool FoundFlag = false;
+    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(7777, TrackElement.HLoc, TrackElement.VLoc, FoundFlag);
+    if(IMPair.first > 0) //can only have one entry in IMPair for points
+    {
+        TTrackElement ITE = InactiveTrackElementAt(7777, IMPair.first);
+        if(ITE.SpeedTag == 131)
+        {
+            ITE.PlotVariableTrackElement(7777, Disp); //plot the blue square again
+        }
+    }
     TrackElement.PlotVariableTrackElement(4, Disp);
     if(BothFillets)
     {
@@ -6198,11 +6211,17 @@ void TTrack::PlotPoints(int Caller, TTrackElement TrackElement, TDisplay *Disp, 
         Disp->GetImage()->Canvas->Draw((TrackElement.HLoc - Display->DisplayOffsetH) * 16, (TrackElement.VLoc - Display->DisplayOffsetV) * 16, RailGraphics->BlackOctagon); //indicates that it has failed
     }
 // replot platform if required
-    TIMPair IMPair;
-    bool FoundFlag;
-
     IMPair = GetVectorPositionsFromInactiveTrackMap(15, TrackElement.HLoc, TrackElement.VLoc, FoundFlag);
+    bool BlueLoc = false;
     if(FoundFlag)
+    {
+        TTrackElement TE = GetInactiveTrackElementFromTrackMap(7777, TrackElement.HLoc, TrackElement.VLoc);
+        if(TE.SpeedTag == 131) //non-station named location - don't want to replot these added after v2.17.0
+        {
+            BlueLoc = true;
+        }
+    }
+    if(FoundFlag && !BlueLoc)
     {
         // only one platform possible at points so only need to plot IMPair.first
         TTrackElement PlatElement = InactiveTrackElementAt(89, IMPair.first);
@@ -8571,6 +8590,7 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
     if(TrackFinished)
     {
         SetStationEntryStopLinkPosses(3);
+        SetNonStationStopLinkEntryPosses(7777);
     }
 // set here as well as in LinkTrack so don't have to link track just because a name added
 // if track not finished then will be set when track validated
@@ -10186,7 +10206,7 @@ bool TTrack::IsNamedNonStationLocationPresent(int Caller, int HLoc, int VLoc)
 
 // ---------------------------------------------------------------------------
 
-void TTrack::SetStationEntryStopLinkPosses(int Caller)
+void TTrack::SetStationEntryStopLinkPosses(int Caller)  //only for platforms
 /* Called when trying to link track and when a name changed when track already linked.  Examines all track elements that
       have ActiveTrackElementName set, sums the number of consecutive elements with the same name, and sets the EntryLink values for
       the front of train stop points for each direction.
@@ -10206,155 +10226,151 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        TrackElementAt(1378, x).StationEntryStopLinkPos1 = -1;
+        TrackElementAt(1378, x).StationEntryStopLinkPos1 = -1;  //this only sets 0 & 1 as all single track elements for platforms
         TrackElementAt(1379, x).StationEntryStopLinkPos2 = -1;
     }
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        ForwardSet = false;
-        ReverseSet = false;
         TempElement = TrackElementAt(1380, x);
-        VecPos = x;
-        if((TempElement.ActiveTrackElementName != "") && (TempElement.StationEntryStopLinkPos1 == -1))
-        // 2nd condition incl so don't re-examine elements with stop links set to 5
+        if(!IsNamedNonStationLocationPresent(7777, TempElement.HLoc, TempElement.VLoc)) //deal with non-station names later
         {
-            TempName = TempElement.ActiveTrackElementName;
-            if((TempElement.Conn[0] > -1) && (TempElement.Conn[1] > -1) && (TrackElementAt(44, TempElement.Conn[0]).ActiveTrackElementName == TempName) &&
-               (TrackElementAt(45, TempElement.Conn[1]).ActiveTrackElementName == TempName))
-            // an element linked at both ends where both links are also named elements
-            // only Conn[0] & [1] relevant for ActiveTrackElementName elements (only 2-track named element is points, and only straight track relevant & this has 0 & 1 as entry/exit positions)
+            ForwardSet = false;
+            ReverseSet = false;
+            VecPos = x;
+            if((TempElement.ActiveTrackElementName != "") && (TempElement.StationEntryStopLinkPos1 == -1) && (TempElement.StationEntryStopLinkPos2 == -1))
+            // 2nd condition incl so don't re-examine elements with stop links set to 5
             {
-                continue; // looking for an end element so skip this one
-            }
-            else // reached one end
-            {
-                if((TempElement.Conn[0] > -1) && (TempElement.Conn[1] > -1) && (TrackElementAt(46, TempElement.Conn[0]).ActiveTrackElementName != TempName) &&
-                   (TrackElementAt(47, TempElement.Conn[1]).ActiveTrackElementName != TempName))
-                // single named element linked at both ends
+                TempName = TempElement.ActiveTrackElementName;
+                if((TempElement.Conn[0] > -1) && (TempElement.Conn[1] > -1) && (TrackElementAt(44, TempElement.Conn[0]).ActiveTrackElementName == TempName) &&
+                   (TrackElementAt(45, TempElement.Conn[1]).ActiveTrackElementName == TempName))
+                // an element linked at both ends where both links are also named elements
+                // only Conn[0] & [1] relevant for ActiveTrackElementName elements (only 2-track named element is points, and only straight track relevant & this has 0 & 1 as entry/exit positions)
                 {
-                    TrackElementAt(48, VecPos).StationEntryStopLinkPos1 = 0;
-                    TrackElementAt(49, VecPos).StationEntryStopLinkPos2 = 1;
-                    continue;
+                    continue; // looking for an end element so skip this one
                 }
-                else if((TempElement.TrackType == Buffers) && (TrackElementAt(618, TempElement.Conn[1]).ActiveTrackElementName != TempName))
-                // single named buffer element (LinkPos 1 is the non-buffer end)
+                else // reached one end
                 {
-                    TrackElementAt(619, VecPos).StationEntryStopLinkPos1 = 0;
-                    TrackElementAt(620, VecPos).StationEntryStopLinkPos2 = 1;
-                    continue;
-                }
-                else
-                // Note: only interested in connection positions 0 & 1 since all named elements are single track except points,
-                // and platforms always on straight (conns 0 & 1) section of points
-                {
-                    for(int y = 0; y < 2; y++)
+                    if((TempElement.Conn[0] > -1) && (TempElement.Conn[1] > -1) && (TrackElementAt(46, TempElement.Conn[0]).ActiveTrackElementName != TempName) &&
+                       (TrackElementAt(47, TempElement.Conn[1]).ActiveTrackElementName != TempName))
+                    // single named element linked at both ends, can't be continuation as platforms not allowed there
                     {
-                        int Dir = y; // Dir is the ExitPos of the element, towards the rest of the named elements
-                        // check for buffers at both ends - no need, function below now covers buffers at one & both ends
-/* TTrackElement Temp1 = TempElement;
- ***********New section, compiles but not checked - does bit below need to be else if?
-                       if((Temp1.TrackType == Buffers) && (Temp1.GetConfig(Dir) != End))
-                           {
-                           //search along Dir direction until find other end, skip if Dir facing buffer end
-                           int NewDir = Dir;
-                           int NewVecPos;
-                           while((Temp1.Conn[NewDir] > -1) && (TrackElementAt(598, Temp1.Conn[NewDir]).ActiveTrackElementName == TempName))
-                               {
-                               NewVecPos = Temp1.Conn[NewDir];
-                               NewDir = Track->GetNonPointsOppositeLinkPos(Temp1.ConnLinkPos[NewDir]);
-                               Temp1 = TrackElementAt(601, NewVecPos);
-                               }
-                           if((Temp1.Conn[NewDir] == -1) && (Temp1.TrackType == Buffers))
-                               {
-                               TrackElementAt(599, VecPos).StationEntryStopLinkPos1 = Dir;//EntryPos for train coming from other end is Dir
-                               TrackElementAt(600, NewVecPos).StationEntryStopLinkPos2 = 1 - NewDir;//For train moving in same direction as search direction its EntryPos == 1 - NewDir since NewDir is the ExitPos
-                               }
-                           }
- ***************
-*/
-                        // end may be linked at both ends but only one link named, or buffer with linked element named
-                        // if a buffer then the named linkpos has to be 1
-                        // already dealt with all types of single element so at least 2 linked named element
-                        if(((TempElement.Conn[Dir] > -1) && (TempElement.Conn[1 - Dir] > -1) && (TrackElementAt(50,
-                                TempElement.Conn[1 - Dir]).ActiveTrackElementName != TempName)) || ((TempElement.TrackType == Buffers) && (Dir == 1)))
+                        TrackElementAt(48, VecPos).StationEntryStopLinkPos1 = 0;
+                        TrackElementAt(49, VecPos).StationEntryStopLinkPos2 = 1;
+                        continue;
+                    }
+                    else if((TempElement.TrackType == Buffers) && (TrackElementAt(618, TempElement.Conn[1]).ActiveTrackElementName != TempName))
+                    // single named buffer element (LinkPos 1 is the non-buffer end)
+                    {
+                        TrackElementAt(619, VecPos).StationEntryStopLinkPos1 = 0;
+                        TrackElementAt(620, VecPos).StationEntryStopLinkPos2 = 1;
+                        continue;
+                    }
+                    else
+                    // Note: only interested in connection positions 0 & 1 since all platform elements are single track except points,
+                    // and platforms always on straight (conns 0 & 1) section of points
+                    {
+                        for(int y = 0; y < 2; y++)
                         {
-                            StartElement = TempElement;
-                            StartVecPos = VecPos;
-                            TrackElementAt(51, VecPos).StationEntryStopLinkPos1 = 5; // set to 5 to stop re-examination in later searches, all set back at end
-                            TrackElementAt(52, VecPos).StationEntryStopLinkPos2 = 5;
-                            EntryPos = 1 - Dir;
-                            StartEntryPos = 1 - Dir;
-                            Count = 1;
-                            // work along named elements until find the other end
-                            while((TempElement.Conn[1 - EntryPos] > -1) && (TempElement.Conn[1 - EntryPos] < (int)TrackVector.size()) && (TrackElementAt(53, TempElement.Conn[1 - EntryPos]).ActiveTrackElementName == TempName))
-                            // at end of 'while' Count = length (in elements) of platform/nonstationloc, VecPos = vector number of far end
-                            // which is the last named element that is track-linked to the rest of the location, it may be a buffer
-                            // all stop link pos's are set to 5
-                            {
-                                VecPos = TempElement.Conn[1 - EntryPos];
-                                int TempEntryPos = TempElement.ConnLinkPos[1 - EntryPos];
-                                TempElement = TrackElementAt(54, TempElement.Conn[1 - EntryPos]);
-                                EntryPos = TempEntryPos;
-                                Count++;
-                                TrackElementAt(55, VecPos).StationEntryStopLinkPos1 = 5;
-                                TrackElementAt(56, VecPos).StationEntryStopLinkPos2 = 5;
-                            }
-                            // here when reached other end, maybe buffers, continuation or last named linked element
-                            if(TrackElementAt(57, VecPos).TrackType == Buffers)
-                            // terminal station, set end elements as stop elements
-                            {
-                                TrackElementAt(58, VecPos).StationEntryStopLinkPos1 = EntryPos;
-                                TrackElementAt(59, StartVecPos).StationEntryStopLinkPos2 = 1 - StartEntryPos; // for train leaving
-                                continue;
-                            }
-                            if(TrackElementAt(60, StartVecPos).TrackType == Buffers) // best not to use 'else if' as both ends could be buffers!
-                            // terminal station, set end elements as stop elements
-                            {
-                                TrackElementAt(61, VecPos).StationEntryStopLinkPos1 = EntryPos;
-                                TrackElementAt(62, StartVecPos).StationEntryStopLinkPos2 = 1 - StartEntryPos;
-                                continue;
-                            }
-                            if(IsNamedNonStationLocationPresent(1, TrackElementAt(63, StartVecPos).HLoc, TrackElementAt(64, StartVecPos).VLoc))
-                            // NonStationLocation so set end elements as stop elements
-                            {
-                                TrackElementAt(65, VecPos).StationEntryStopLinkPos1 = EntryPos;
-                                TrackElementAt(66, StartVecPos).StationEntryStopLinkPos2 = 1 - StartEntryPos;
-                                continue;
-                            }
-                            // now Count == length of platform, can calculate StationEntryStopLinkPos values and the elements to which they apply
-                            ForwardNumber = ((Count + 1) / 2) + 1;
-                            ReverseNumber = (Count - ForwardNumber) + 1;
-                            Count = 1; // starting value
-                            EntryPos = 1 - Dir;
-                            TempElement = StartElement;
-                            VecPos = StartVecPos;
-                            if(Count == ForwardNumber)
-                            {
-                                TrackElementAt(67, VecPos).StationEntryStopLinkPos1 = EntryPos;
-                                ForwardSet = true;
-                            }
-                            if(Count == ReverseNumber) // don't use 'else' as may both be at same element
-                            {
-                                TrackElementAt(68, VecPos).StationEntryStopLinkPos2 = 1 - EntryPos;
-                                ReverseSet = true;
-                            }
-                            while((TempElement.Conn[1 - EntryPos] > -1) && (TrackElementAt(69,
-                                  TempElement.Conn[1 - EntryPos]).ActiveTrackElementName == TempName) && (!ForwardSet || !ReverseSet))
-                            {
-                                VecPos = TempElement.Conn[1 - EntryPos];
-                                int TempEntryPos = TempElement.ConnLinkPos[1 - EntryPos];
-                                TempElement = TrackElementAt(70, TempElement.Conn[1 - EntryPos]);
-                                EntryPos = TempEntryPos;
-                                Count++;
+                            int Dir = y; // Dir is the ExitPos of the element, towards the rest of the named elements
+                            // check for buffers at both ends - no need, function below now covers buffers at one & both ends
+    /* TTrackElement Temp1 = TempElement;
+     ***********New section, compiles but not checked - does bit below need to be else if?
+                           if((Temp1.TrackType == Buffers) && (Temp1.GetConfig(Dir) != End))
+                               {
+                               //search along Dir direction until find other end, skip if Dir facing buffer end
+                               int NewDir = Dir;
+                               int NewVecPos;
+                               while((Temp1.Conn[NewDir] > -1) && (TrackElementAt(598, Temp1.Conn[NewDir]).ActiveTrackElementName == TempName))
+                                   {
+                                   NewVecPos = Temp1.Conn[NewDir];
+                                   NewDir = Track->GetNonPointsOppositeLinkPos(Temp1.ConnLinkPos[NewDir]);
+                                   Temp1 = TrackElementAt(601, NewVecPos);
+                                   }
+                               if((Temp1.Conn[NewDir] == -1) && (Temp1.TrackType == Buffers))
+                                   {
+                                   TrackElementAt(599, VecPos).StationEntryStopLinkPos1 = Dir;//EntryPos for train coming from other end is Dir
+                                   TrackElementAt(600, NewVecPos).StationEntryStopLinkPos2 = 1 - NewDir;//For train moving in same direction as search direction its EntryPos == 1 - NewDir since NewDir is the ExitPos
+                                   }
+                               }
+     ***************
+    */
+                            // end may be linked at both ends but only one link named, or buffer with linked element named
+                            // if a buffer then the named linkpos has to be 1
+                            // already dealt with all types of single element so at least 2 linked named elements
+                            if(((TempElement.Conn[Dir] > -1) && (TempElement.Conn[1 - Dir] > -1) && (TrackElementAt(50,
+                                    TempElement.Conn[1 - Dir]).ActiveTrackElementName != TempName)) || ((TempElement.TrackType == Buffers) && (Dir == 1)))
+                            {   //element linked at both ends with entry end not same name, or buffers with exit link == 1 (exit link always 1 but need to ensure Dir set correctly)
+                                StartElement = TempElement;
+                                StartVecPos = VecPos;  //this stays fixed at start of platform group
+                                TrackElementAt(51, VecPos).StationEntryStopLinkPos1 = 5; // set to 5 to stop re-examination in later searches, all set back at end
+                                TrackElementAt(52, VecPos).StationEntryStopLinkPos2 = 5;
+                                EntryPos = 1 - Dir;
+                                StartEntryPos = 1 - Dir;
+                                Count = 1;
+                                // work along named elements until find the other end
+                                while((TempElement.Conn[1 - EntryPos] > -1) && (TempElement.Conn[1 - EntryPos] < (int)TrackVector.size()) && (TrackElementAt(53, TempElement.Conn[1 - EntryPos]).ActiveTrackElementName == TempName))
+                                // at end of 'while' Count = length (in elements) of platform/nonstationloc, VecPos = vector number of far end
+                                // which is the last named element that is track-linked to the rest of the location, it may be a buffer
+                                // all stop link pos's are set to 5
+                                {
+                                    VecPos = TempElement.Conn[1 - EntryPos];
+                                    int TempEntryPos = TempElement.ConnLinkPos[1 - EntryPos];
+                                    TempElement = TrackElementAt(54, TempElement.Conn[1 - EntryPos]);
+                                    EntryPos = TempEntryPos;
+                                    Count++;
+                                    TrackElementAt(55, VecPos).StationEntryStopLinkPos1 = 5;
+                                    TrackElementAt(56, VecPos).StationEntryStopLinkPos2 = 5;
+                                }
+                                // here when reached other end, maybe buffers, or last named linked element
+                                if(TrackElementAt(57, VecPos).TrackType == Buffers)
+                                // terminal station, set end elements as stop elements
+                                {
+                                    TrackElementAt(58, VecPos).StationEntryStopLinkPos1 = EntryPos;
+                                    TrackElementAt(59, StartVecPos).StationEntryStopLinkPos2 = 1 - StartEntryPos; // for train leaving
+                                    continue;
+                                }
+                                if(TrackElementAt(60, StartVecPos).TrackType == Buffers) // best not to use 'else if' as both ends could be buffers!
+                                // terminal station, set end elements as stop elements
+                                {
+                                    TrackElementAt(61, VecPos).StationEntryStopLinkPos1 = EntryPos;
+                                    TrackElementAt(62, StartVecPos).StationEntryStopLinkPos2 = 1 - StartEntryPos;
+                                    continue;
+                                }
+                                // now Count == length of platform, can calculate StationEntryStopLinkPos values and the elements to which they apply
+                                ForwardNumber = ((Count + 1) / 2) + 1;
+                                ReverseNumber = (Count - ForwardNumber) + 1;
+                                Count = 1; // starting value
+                                EntryPos = 1 - Dir;
+                                TempElement = StartElement;
+                                VecPos = StartVecPos;
                                 if(Count == ForwardNumber)
                                 {
-                                    TrackElementAt(71, VecPos).StationEntryStopLinkPos1 = EntryPos;
+                                    TrackElementAt(67, VecPos).StationEntryStopLinkPos1 = EntryPos;
                                     ForwardSet = true;
                                 }
-                                if(Count == ReverseNumber)
+                                if(Count == ReverseNumber) // don't use 'else' as may both be at same element
                                 {
-                                    TrackElementAt(72, VecPos).StationEntryStopLinkPos2 = 1 - EntryPos;
+                                    TrackElementAt(68, VecPos).StationEntryStopLinkPos2 = 1 - EntryPos;
                                     ReverseSet = true;
+                                }
+                                while((TempElement.Conn[1 - EntryPos] > -1) && (TrackElementAt(69,
+                                      TempElement.Conn[1 - EntryPos]).ActiveTrackElementName == TempName) && (!ForwardSet || !ReverseSet))
+                                {
+                                    VecPos = TempElement.Conn[1 - EntryPos];
+                                    int TempEntryPos = TempElement.ConnLinkPos[1 - EntryPos];
+                                    TempElement = TrackElementAt(70, TempElement.Conn[1 - EntryPos]);
+                                    EntryPos = TempEntryPos;
+                                    Count++;
+                                    if(Count == ForwardNumber)
+                                    {
+                                        TrackElementAt(71, VecPos).StationEntryStopLinkPos1 = EntryPos;
+                                        ForwardSet = true;
+                                    }
+                                    if(Count == ReverseNumber)
+                                    {
+                                        TrackElementAt(72, VecPos).StationEntryStopLinkPos2 = 1 - EntryPos;
+                                        ReverseSet = true;
+                                    }
                                 }
                             }
                         }
@@ -10379,33 +10395,122 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)
 
 // ---------------------------------------------------------------------------
 
-void TTrack::SetNonStationStopLinkPosses(int Caller) //added after v2.17.0
+void TTrack::SetNonStationStopLinkEntryPosses(int Caller) //added after v2.17.0
 
 {
-/* Examine each non-station area with same name and find all exterior elements (i.e. those with a track that doesn't link to a same name element) and
-set the appropriate exit link (to the outside) as stop point.  May have 2 stop points on same element if 4 track.
-*/
+/*After v2.17.0 allow for 2 tracks on a non-station element.  Have StationEntryStopLinkPos1 & 2 contain both track entry positions, 0 & 1 in
+least sig 2 bits and 2 & 3 in next least sig bits.  In use have SESLPos1a == 0 or 1 and SESLPos1b == 2 or 3, and same for Pos2.  'b' values all
+set to 0 for platforms, and set appropriately for 2-track non-station locs. SESLPos values are TTrackElement variables only used in program, not
+saved in sessions or railways (same as StationEntryStopLinkPos1 & 2).
 
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetNonStationStopLinkPosses");
+Examine each non-station area with same name and, similar to above, look for cases where a track doesn't link to an element with the same name, or
+doesn't link at all, this is an end element, check both tracks separately for 4-track elements.
+*/
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SetNonStationStopLinkEntryPosses");
     TTrackElement TempElement;
     AnsiString TempName;
-    std::list<int> NameList; //inactive elements
-    std::list<int> ExternalNameList; //inactive elements
+    std::list<unsigned int> NameList; //end elements
+    std::list<AnsiString> ContinuationNameList; // list of continuation names so can exclude them
+    for(unsigned int x = 0; x < TrackVector.size(); x++)
+    {
+        TrackElementAt(1378, x).StationEntryStopLinkPos3 = -1;  // don't clear stopping points 0 & 1 as already set for platforms
+        TrackElementAt(1379, x).StationEntryStopLinkPos4 = -1;
+        if((TrackElementAt(1379, x).TrackType == Continuation) && (TrackElementAt(1379, x).ActiveTrackElementName != ""))
+        {
+            ContinuationNameList.push_back(TrackElementAt(1379, x).ActiveTrackElementName);
+        }
+    }
+    ContinuationNameList.sort();
+    ContinuationNameList.unique();
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        TrackElementAt(7777, x).StationEntryStopLinkPos1 = -1;
-        TrackElementAt(7777, x).StationEntryStopLinkPos2 = -1;
-    }
-    for(unsigned int x = 0; x < InactiveTrackVector.size(); x++)
-    {
-        if(InactiveTrackElementAt(7777, x).SpeedTag == 131) //other locs dealt with in SetStationEntryStopLinkPosses
+        TempElement = TrackElementAt(1380, x);
+        if(IsNamedNonStationLocationPresent(7777, TempElement.HLoc, TempElement.VLoc))
         {
-            for(unsigned int y = 0; y < TrackVector.size(); y++)
+            bool NameIsAContinuation = false;
+            if(std::find(ContinuationNameList.begin(), ContinuationNameList.end(), TempElement.ActiveTrackElementName) != ContinuationNameList.end())
             {
-
-
-
+                NameIsAContinuation = true;
+            }
+            if((TempElement.ActiveTrackElementName != "") && !NameIsAContinuation && (TempElement.StationEntryStopLinkPos1 == -1) &&
+                (TempElement.StationEntryStopLinkPos2 == -1)  && (TempElement.StationEntryStopLinkPos3 == -1)  && (TempElement.StationEntryStopLinkPos4 == -1))
+            // Non-station named elements can't be placed on platforms so no conflict with existing stop positions
+            {
+                TempName = TempElement.ActiveTrackElementName;
+                if((TempElement.Conn[0] > -1) && (TempElement.Conn[1] > -1) && (TrackElementAt(44, TempElement.Conn[0]).ActiveTrackElementName == TempName) &&
+                   (TrackElementAt(45, TempElement.Conn[1]).ActiveTrackElementName == TempName))
+                // an element linked at both ends of single or main track where both links are also named elements with same name
+                {
+                    if(TempElement.TrackType == Points) //for points links 0 and 2 are the same
+                    {
+                        if(((TempElement.Conn[2] > -1)) && (TempElement.Conn[3] > -1) &&
+                            ((TrackElementAt(44, TempElement.Conn[2]).ActiveTrackElementName == TempName)) &&
+                           (TrackElementAt(45, TempElement.Conn[3]).ActiveTrackElementName == TempName))
+                        {
+                            continue; //not an end element so skip it
+                        }
+                        else //reached an end on the diverging leg
+                        {
+                            NameList.push_back(x);
+                        }
+                    }
+                    else if(TempElement.TrackType == Crossover)
+                    {
+                        if((TempElement.Conn[2] > -1) && (TempElement.Conn[3] > -1) &&
+                            (TrackElementAt(44, TempElement.Conn[2]).ActiveTrackElementName == TempName) &&
+                           (TrackElementAt(45, TempElement.Conn[3]).ActiveTrackElementName == TempName))
+                        {
+                            continue; //not an end element so skip it
+                        }
+                        else
+                        {
+                            NameList.push_back(x);
+                        }
+                    }
+                    else
+                    {
+                        continue; //not points ot crossover & not an end element so skip
+                    }
+                }
+                else // reached one end of single or main track
+                {
+                    NameList.push_back(x);
+                }
+//NameList now contains all non-station end elements
+                while(!NameList.empty())
+                {
+                    unsigned int a = NameList.front();
+                    NameList.pop_front();
+                    TTrackElement &TempElement = TrackElementAt(7777, a);
+                    AnsiString TempName = TempElement.ActiveTrackElementName;
+                    if(TempElement.TrackType == Buffers) //buffer end is 0 so entry must be 1, gaps covered below as any other element
+                    {
+                        TempElement.StationEntryStopLinkPos1 = 1;
+                    }
+                    else
+                    {
+                        if((TempElement.Conn[0] == -1) || (TrackElementAt(7777, TempElement.Conn[0]).ActiveTrackElementName != TempName))
+                        {
+                            TempElement.StationEntryStopLinkPos1 = 1;
+                        }
+                        if((TempElement.Conn[1] == -1) || (TrackElementAt(7777, TempElement.Conn[1]).ActiveTrackElementName != TempName))
+                        {
+                            TempElement.StationEntryStopLinkPos2 = 0;
+                        }
+                        if((TempElement.TrackType == Points) || (TempElement.TrackType == Crossover))
+                        {
+                            if((TempElement.Conn[2] == -1) || (TrackElementAt(7777, TempElement.Conn[2]).ActiveTrackElementName != TempName))
+                            {
+                                TempElement.StationEntryStopLinkPos3 = 3;
+                            }
+                            if((TempElement.Conn[3] == -1) || (TrackElementAt(7777, TempElement.Conn[3]).ActiveTrackElementName != TempName))
+                            {
+                                TempElement.StationEntryStopLinkPos4 = 2;
+                            }
+                        }
+                    }
+                }
             }
         }
     }

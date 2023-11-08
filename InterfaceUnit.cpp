@@ -905,9 +905,9 @@ void __fastcall TInterface::SpeedButtonClick(TObject *Sender)
                     if(!FillSelectionMessageSentFlag)
                     {
                         UnicodeString MessageStr =
-                            "Click 'Yes' to fill the area with the chosen element or 'No' to abort.\n"
                             "Existing elements won't be overwritten but if the chosen element can be named then any existing named "
-                            "elements within the area will have their names removed.\n\nThis message will not be shown again.";
+                            "elements within or adjacent to the area will have their names removed.\n\n"
+                            "Click 'Yes' to fill the area with the chosen element or 'No' to abort.\n\nThis message will not be shown again.";
                         int button = Application->MessageBox(MessageStr.c_str(), L"", MB_YESNO);
                         if(button == IDYES)
                         {
@@ -919,54 +919,101 @@ void __fastcall TInterface::SpeedButtonClick(TObject *Sender)
                     {
                         bool TrackLinkingRequiredFlag = true;
                         bool FoundFlag = false;
+                        std::list<AnsiString> NamedElementList;
                         if((CurrentSpeedButton->Tag == 76) || (CurrentSpeedButton->Tag == 77) || (CurrentSpeedButton->Tag == 78) || (CurrentSpeedButton->Tag == 79) ||
                         (CurrentSpeedButton->Tag == 96) || (CurrentSpeedButton->Tag == 129) || (CurrentSpeedButton->Tag == 130) || (CurrentSpeedButton->Tag == 131) ||
                         (CurrentSpeedButton->Tag == 145) || (CurrentSpeedButton->Tag == 146))
                         {
-                            for(int HLoc = SelectRect.Left; HLoc < SelectRect.Right; HLoc++)
+                            for(int HLoc = SelectRect.Left - 1; HLoc < SelectRect.Right + 1; HLoc++)
                             {
-                                for(int VLoc = SelectRect.Top; VLoc < SelectRect.Bottom; VLoc++)
+                                for(int VLoc = SelectRect.Top - 1; VLoc < SelectRect.Bottom + 1; VLoc++)
                                 {
                                     int TVPos = Track->GetVectorPositionFromTrackMap(7777, HLoc, VLoc, FoundFlag);
                                     if(FoundFlag)
                                     {
-                                        TTrackElement &TE1 = Track->TrackElementAt(7777, TVPos);
-                                        TE1.ActiveTrackElementName = "";
-                                        TE1.LocationName = "";
+                                        TTrackElement TE1 = Track->TrackElementAt(7777, TVPos);
+                                        if(TE1.ActiveTrackElementName != "")
+                                        {
+                                            NamedElementList.push_back(TE1.ActiveTrackElementName);
+                                        }
+                                        if(TE1.LocationName != "")
+                                        {
+                                            NamedElementList.push_back(TE1.LocationName);
+                                        }
                                     }
                                     FoundFlag = false;
                                     TTrack::TIMPair IMPair = Track->GetVectorPositionsFromInactiveTrackMap(7777, HLoc, VLoc, FoundFlag);
                                     if(FoundFlag)
                                     {
-                                        TTrackElement &TE2 = Track->InactiveTrackElementAt(7777, IMPair.first);
-                                        TE2.ActiveTrackElementName = "";
-                                        TE2.LocationName = "";
-                                        TTrackElement &TE3 = Track->InactiveTrackElementAt(7777, IMPair.second);
-                                        TE3.ActiveTrackElementName = "";
-                                        TE3.LocationName = "";
+                                        TTrackElement TE2 = Track->InactiveTrackElementAt(7777, IMPair.first);
+                                        TTrackElement TE3 = Track->InactiveTrackElementAt(7777, IMPair.second);
+                                        if(TE2.ActiveTrackElementName != "") //don't think inactive elaments have active name but leave in just in case
+                                        {
+                                            NamedElementList.push_back(TE2.ActiveTrackElementName);
+                                        }
+                                        if(TE2.LocationName != "")
+                                        {
+                                            NamedElementList.push_back(TE2.LocationName);
+                                        }
+                                        if(TE3.ActiveTrackElementName != "")
+                                        {
+                                            NamedElementList.push_back(TE3.ActiveTrackElementName);
+                                        }
+                                        if(TE3.LocationName != "")
+                                        {
+                                            NamedElementList.push_back(TE3.LocationName);
+                                        }
                                     }
                                 }
                             }
-                            Track->RebuildLocationNameMultiMap(4);
+                            //now make list unique & blank all names contained in it
+                            NamedElementList.sort();
+                            NamedElementList.unique();
+                            AnsiString CurrentName = "";
+                            int HPos, VPos;
+                            while(!NamedElementList.empty())
+                            {
+                                CurrentName = NamedElementList.front();
+                                NamedElementList.pop_front();
+                                for(unsigned int TVNamePos = 0; TVNamePos < Track->TrackVector.size(); TVNamePos++)
+                                {
+                                    if(Track->TrackElementAt(7777, TVNamePos).ActiveTrackElementName == CurrentName)
+                                    {
+                                        Track->TrackElementAt(7777, TVNamePos).ActiveTrackElementName = "";
+                                    }
+                                    if(Track->TrackElementAt(7777, TVNamePos).LocationName == CurrentName)
+                                    {
+                                        Track->TrackElementAt(7777, TVNamePos).LocationName = "";
+                                    }
+                                }
+                                for(unsigned int ITVNamePos = 0; ITVNamePos < Track->InactiveTrackVector.size(); ITVNamePos++)
+                                {
+                                    if(Track->InactiveTrackElementAt(7777, ITVNamePos).ActiveTrackElementName == CurrentName)
+                                    {
+                                        Track->InactiveTrackElementAt(7777, ITVNamePos).ActiveTrackElementName = "";
+                                    }
+                                    if(Track->InactiveTrackElementAt(7777, ITVNamePos).LocationName == CurrentName)
+                                    {
+                                        Track->InactiveTrackElementAt(7777, ITVNamePos).LocationName = "";
+                                    }
+                                }
+                                if(TextHandler->FindText(7777, CurrentName, HPos, VPos)) //returns position in HPos & Vpos if found
+                                {
+                                    TextHandler->TextErase(7777, HPos, VPos, CurrentName);
+                                }
+                            }
                         }
                         for(int HLoc = SelectRect.left; HLoc < SelectRect.right; HLoc++)
                         {
                             for(int VLoc = SelectRect.top; VLoc < SelectRect.bottom; VLoc++)
                             {
-                                if((HLoc != (SelectRect.right - 1)) || (VLoc != (SelectRect.bottom - 1)))
-                                {
-                                    Track->PlotAndAddTrackElement(3, CurrentSpeedButton->Tag, 0, HLoc, VLoc, TrackLinkingRequiredFlag, false, false);
-                                    //false for internal checks & false for perform name search
-                                    //above now has extra zero 'Aspect' (3rd parameter) at v2.2.0 so can distinguish between adding track and pasting
-                                    //for signals - 0 combined with TrackType == SignalPost means adding and not pasting
-                                }
-                                else
-                                {
-                                    Track->PlotAndAddTrackElement(4, CurrentSpeedButton->Tag, 0, HLoc, VLoc, TrackLinkingRequiredFlag, true, false);
-                                    // internal checks true for last plot
-                                }
+                                Track->PlotAndAddTrackElement(3, CurrentSpeedButton->Tag, 0, HLoc, VLoc, TrackLinkingRequiredFlag, false, false);
+                                //false for internal checks & false for perform name search
+                                //above now has extra zero 'Aspect' (3rd parameter) at v2.2.0 so can distinguish between adding track and pasting
+                                //for signals - 0 combined with TrackType == SignalPost means adding and not pasting
                             }
                         }
+                        Track->RebuildLocationNameMultiMap(7777);
                     }
                     Track->SetTrackFinished(false);
                     ClearandRebuildRailway(80); // to remove selection outline

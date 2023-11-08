@@ -1,3 +1,47 @@
+Multi non-station locations:
+
+/Still to set entry points properly for buffers & gaps for non-stations (anything else?)
+
+/set 3 & 4 to -1 somewhere
+
+/at 10240 should link2 be included?
+
+/consider continuation names where name extends to other elements
+
+/if select area with existing named non-station elements takes a long time! Give warning - no, just remove all names from selected area	
+
+/No stop points in B'ham copy2 in non-station area on Derby area - ok, it's a continuation!
+
+/check gap stop points ok without special treatment & if ok why do buffers need special treatment? - all ok
+
+/yes or no further down in message
+
+/check if locs blanked for non loc selections, ok they aren't
+
+Xseparate loc blanking for station & non-station selections
+
+/un-name adjacent locs horiz & vert as well as within selection & cover selection being partly on a loc that extends well outside area
+
+Xspeed up enter loc name if poss
+
+/check when need rebuild loc map & ensure don't call map checker when incomplete
+
+/when remove names from locs in selecting need to remove names from screen too
+
+/when internal checks false ensure rebuild
+
+manual - can name gaps but won't have same name across the gap
+
+devise routine to quickly check all any railway re stop points for every named loc, singel & double track elements
+
+see if can continue name across a gap
+
+if named gaps and add element on connecting gap doesn't become named
+
+beware gap adj to another named track element that's not on same track
+
+
+
 Development History
 
 This is a very rough set of notes recorded practically from day 1 of C++ Builder development.  It was compiled for my own use as a diary of events, a to-do list, and a dumping ground for any other notes that I wished to keep.  I have added it to the development repository as there are things in it that need to be retained such as user requests and the full list of changes from version to version.

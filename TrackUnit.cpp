@@ -2403,7 +2403,7 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
     {
         TrackLinkingRequiredFlag = true; // plats & NamedLocs aleady dealt with
     }
-    if(InternalChecks)
+    if(InternalChecks && PerformNameSearch) //don't carry out checks if PerformNameSearch false else will fail, should be set correctly in calling function but include to be sure
     {
         CheckMapAndTrack(2); // test
         CheckMapAndInactiveTrack(2); // test
@@ -8411,6 +8411,7 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
         throw Exception("LNPendingList size not 1 on entry");
     }
     int CurrentElementNumber; //new after 2.4.3 due to error the JK found (Discord 9/7/20).  See note below after 'if(AddingElements)' where CurrentElementNumber is used.
+    bool FoundFlag = false, ErasedFlag = false;
     while(!LNPendingList.empty())
     {
         CurrentElementNumber = LNPendingList.front();
@@ -8501,6 +8502,30 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
                     LNPendingList.insert(LNPendingList.end(), NewElement);
                 }
             }
+            int TVPos = GetVectorPositionFromTrackMap(7777, H, V, FoundFlag); //deal with gaps, added after v2.17.0
+            {
+                if(FoundFlag && TrackElementAt(7777, TVPos).TrackType == GapJump)
+                {
+                    int GJTVPos = TrackElementAt(7777, TVPos).Conn[0];
+                    if(GJTVPos > -1)
+                    {
+                        int HLoc = TrackElementAt(7777, GJTVPos).HLoc;
+                        int VLoc = TrackElementAt(7777, GJTVPos).VLoc;
+                        bool FoundFlag2 = false;
+                        TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(7777, HLoc, VLoc, FoundFlag2);
+                        if(FoundFlag2)
+                        {
+                            if(Track->InactiveTrackElementAt(7777, IMPair.first).SpeedTag == 131) //only need first as second is for platforms
+                            {
+                                if(!ElementInLNDone2MultiMap(7777, IMPair.first) && !ElementInLNPendingList(7777, IMPair.first))
+                                {
+                                    LNPendingList.insert(LNPendingList.end(), IMPair.first);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         else if(Tag == 145) // v u'pass
         {
@@ -8563,7 +8588,6 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
 
     TLocationNameMultiMapIterator SNIterator;
     TLocationNameMultiMapRange SNRange = LocationNameMultiMap.equal_range(LocationName);
-    bool FoundFlag, ErasedFlag = false;
 
     if(SNRange.first != SNRange.second)
     {
@@ -9234,7 +9258,31 @@ void TTrack::SearchForAndUpdateLocationName(int Caller, int HLoc, int VLoc, int 
             {
                 LNPendingList.insert(Track->LNPendingList.end(), MapPos);
                 EnterLocationName(10, LocationName, true);
-                break;
+                Utilities->CallLogPop(7777);
+                return;
+            }
+        }
+        int TVPos = GetVectorPositionFromTrackMap(7777, HLoc, VLoc, FoundFlag); //deal with gaps, added after v2.17.0
+        {
+            if(FoundFlag && TrackElementAt(7777, TVPos).TrackType == GapJump)
+            {
+                int GJTVPos = TrackElementAt(7777, TVPos).Conn[0];
+                if(GJTVPos > -1)
+                {
+                    int HLoc2 = TrackElementAt(7777, GJTVPos).HLoc;
+                    int VLoc2 = TrackElementAt(7777, GJTVPos).VLoc;
+                    LocationName = TrackElementAt(7777, GJTVPos).ActiveTrackElementName;
+                    bool FoundFlag2 = false;
+                    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(7777, HLoc2, VLoc2, FoundFlag2);
+                    if(FoundFlag2)
+                    {
+                        if(Track->InactiveTrackElementAt(7777, IMPair.first).SpeedTag == 131) //only need first as second is for platforms
+                        {
+                            LNPendingList.insert(LNPendingList.end(), IMPair.first);
+                            EnterLocationName(7777, LocationName, true);
+                        }
+                    }
+                }
             }
         }
     }
@@ -9640,6 +9688,8 @@ void TTrack::RebuildLocationNameMultiMap(int Caller)
       Clears the existing LocationNameMultiMap and rebuilds it from TrackVector and InactiveTrackVector.  Called after the
       track is linked as many of the vector positions are likely to change - called from RepositionAndMapTrack();
       after names are changed in EraseLocationAndActiveTrackElementNames; and after the name changes in EnterLocationName.
+      InactiveTrackvector values are stored as they are, 0 to n, whereas ActiveTrackvector values stored as -1 - TVPos, i.e.
+      running from -1 to -1 - n
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RebuildLocationNameMultiMap");

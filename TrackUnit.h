@@ -1188,7 +1188,7 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
 /// Mark on screen a track element according to its length and speed limit if either of these differ from their default values
     void MarkOneLength(int Caller, TTrackElement TE, bool FirstTrack, TDisplay *Disp);
 /// Called during track building or pasting, when an element identified by CurrentTag (i.e. its SpeedTag value) is to be placed at position HLocInput & VLocInput.  If the element can be placed it is displayed and added to the relevant vector, and if named its name is added to LocationNameMultiMap. At v2.2.0 'Aspect' added so can distinguish between adding and pasting track
-    void PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &TrackPlottedFlag, bool InternalChecks, bool PerformNameSearch);
+    void PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &TrackPlottedFlag, bool InternalChecks, bool PerformNameSearch); //PerformNameSearch added after v2.17.0
 /// Plots a continuation on screen, may have overlays if a multiplayer session
     void PlotContinuation(int Caller, TTrackElement TrackElement, TDisplay *Disp);
 ///new at v2.2.0 - as PlotAndAddTrackElement but keeping speed & length attributes (for pasting) and also pasting location names

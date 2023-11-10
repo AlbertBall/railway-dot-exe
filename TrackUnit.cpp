@@ -1197,8 +1197,9 @@ TTrack::TTrack()
     NameAllowed <<  1 << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 18 << 19 << 20 << 21 << 22 << 23 << 24
          << 25 << 26 << 27 << 28 << 29 << 30 << 31 << 32 << 33 << 34 << 35 << 36 << 37 << 38 << 39 << 40 << 41 << 42 << 43 << 44 << 45 << 46 << 47
          << 60 << 61 << 62 << 63 << 64 << 65 << 66 << 67 << 68 << 69 << 70 << 71  << 72 << 73 << 74 << 75 << 80 << 81 << 82 << 83 << 84 << 85 << 86
-         << 87 << 88 << 89 << 90 << 91 << 92 << 93 << 94 << 95 << 125 << 126 << 127 << 128 << 132 << 133 << 134 << 135 << 136 << 137 << 138 << 139
-         << 140 << 141 << 142 << 143; //prevent bridges, footcrossings, platforms, concourses, non-station named locs, parapets, level crossings
+         << 87 << 125 << 126 << 127 << 128 << 132 << 133 << 134 << 135 << 136 << 137 << 138 << 139
+         << 140 << 141 << 142 << 143; //prevent bridges, footcrossings, platforms, concourses, non-station named locs, parapets, level crossings & gaps
+                                      //gaps cause a mass of problems as links not adjacent - interferes with cut/copy/paste & duplicate names found
     LevelCrossingAllowed << 1 << 2; // only allow on straight tracks without direction markers
 // Note platforms not allowed at continuations, but named non-station locations OK, though not allowed in timetables
 
@@ -2433,7 +2434,8 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
     }
     TempTrackElement.HLoc = HLocInput;
     TempTrackElement.VLoc = VLocInput;
-    for(int x = 0; x < 4; x++) // unset any gaps
+    bool FoundFlag = false, InactiveFoundFlag = false, NonStationOrLevelCrossingPresent = false, PlatformPresent = false;
+    for(int x = 0; x < 4; x++) // unset any gaps,
     {
         if(TempTrackElement.Config[x] == Gap)
         {
@@ -2443,7 +2445,6 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
     }
     SetElementID(5, TempTrackElement); // TempTrackElement is the one to be added
 // new at version 0.6 - set signal aspect depending on build mode
-    bool FoundFlag = false, InactiveFoundFlag = false, NonStationOrLevelCrossingPresent = false, PlatformPresent = false;
     int VecPos = GetVectorPositionFromTrackMap(56, HLocInput, VLocInput, FoundFlag); // active track already there
 
     // if find an active track element (as has been pasted into track vector when dealing with inactive elements in SelectVector)
@@ -2542,8 +2543,10 @@ void TTrack::PlotPastedTrackElementWithAttributes(int Caller, TTrackElement Temp
             TrackPush(13, TempTrackElement);
 //            if(!CopyFlag) // don't need this for copy - yes we do, this is so a location will be named if pasted next to a named location - condition removed at v2.6.0
             {
-                SearchForAndUpdateLocationName(5, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
+                {
+                    SearchForAndUpdateLocationName(5, TempTrackElement.HLoc, TempTrackElement.VLoc, TempTrackElement.SpeedTag);
                 // checks all adjacent locations and if any name found that one is used for all elements that are now linked to it
+                }
             }
             if(VecPos > -1) // need to allow for non-station named locations that aren't on tracks
             {
@@ -9094,9 +9097,9 @@ void TTrack::SearchForAndUpdateLocationName(int Caller, int HLoc, int VLoc, int 
       NB No longer used during EraseTrackElement, too long-winded - erase all name now if any part removed, user needs to re-enter
       Checks all locations that are adjacent to the one entered for linked named location elements, and if any LocationName is found
       in any of the linked elements that name is used for all elements that are now linked to it.  The location entered doesn't
-      need to be a FixedNamedLocationElement and there doesn't even need to be an element there.  Used during EraseTrackElement (in which
-      case the SpeedTag is that for the element that is erased) and PlotAndAddTrackElement, to bring the named location and timetable
-      naming up to date with the deletion or insertion.
+      need to be a FixedNamedLocationElement and there doesn't even need to be an element there.  Used during PlotAndAddTrackElement,
+      to bring the named location and timetable naming up to date with the deletion or insertion.  Note that only one name is sought,
+      it is entered into LNPendingList and EnterLocationName sets all others.
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",SearchForAndUpdateLocationName," + AnsiString(HLoc) + "," +

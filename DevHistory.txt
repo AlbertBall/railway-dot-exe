@@ -30,15 +30,28 @@ Xspeed up enter loc name if poss
 
 /when internal checks false ensure rebuild
 
-manual - can name gaps but won't have same name across the gap
+Xmanual - can name gaps but won't have same name across the gap - now can
 
-devise routine to quickly check all any railway re stop points for every named loc, singel & double track elements
+/see if can continue name across a gap
 
-see if can continue name across a gap
+/if named gaps and add element on connecting gap doesn't become named 
 
-if named gaps and add element on connecting gap doesn't become named
+Xwhen paste gaps ensure all become unlinked and names removed - gaps prohibited
 
-beware gap adj to another named track element that's not on same track
+Xbeware gap adj to another named track element that's not on same track - doesn't matter, all adj elements take same name
+
+/check stop points on linked gaps - seem ok
+
+Xneed more checks on names across gaps - prohibit gaps
+
+/check all cut, copy & paste functions re names inc clipboard - and cutting/copying an area where named loc adjacent to another named loc
+
+devise routine to quickly check all any railway re stop points for every named loc, single & double track elements
+
+more functions in checker
+
+check cut/copy named area pasted next to another named area to see if name adopted
+
 
 
 

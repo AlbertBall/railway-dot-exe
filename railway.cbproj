@@ -124,13 +124,13 @@
         <LinkPackageImports>rtl.bpi;vcl.bpi;vclimg.bpi;IndySystem.bpi;IndyCore.bpi</LinkPackageImports>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>2057</VerInfo_Locale>
-        <Icon_MainIcon>..\..\GitHub Current Version\railway-dot-exe\railway_Icon.ico</Icon_MainIcon>
+        <Icon_MainIcon>railway_Icon.ico</Icon_MainIcon>
         <VerInfo_MajorVer>2</VerInfo_MajorVer>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=2.17.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=2.4;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=2.18.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=2.4;Comments=</VerInfo_Keys>
         <ILINK_DisableIncrementalLinking>true</ILINK_DisableIncrementalLinking>
         <AppDPIAwarenessMode>PerMonitor</AppDPIAwarenessMode>
         <BT_BuildType>Debug</BT_BuildType>
-        <VerInfo_MinorVer>17</VerInfo_MinorVer>
+        <VerInfo_MinorVer>18</VerInfo_MinorVer>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>

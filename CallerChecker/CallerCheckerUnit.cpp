@@ -478,6 +478,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
         "SetLevel2TrackMode",
         "SetLinkedLevelCrossingBarrierAttributes",
         "SetLinkedManualLCs",
+        "SetNonStationStopLinkEntryPosses"
         "SetPausedOrZoomedInfoCaption",
         "SetRearwardsSignalsReturnFalseForTrain",
         "SetRemainingSearchVectorValues",

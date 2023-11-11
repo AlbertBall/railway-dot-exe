@@ -46,11 +46,24 @@ Xneed more checks on names across gaps - prohibit gaps
 
 /check all cut, copy & paste functions re names inc clipboard - and cutting/copying an area where named loc adjacent to another named loc
 
+/check cut/copy named area pasted next to another named area to see if name adopted
+
+/more functions in checker: SetNonStationStopLinkEntryPosses(int Caller)
+
 devise routine to quickly check all any railway re stop points for every named loc, single & double track elements
 
-more functions in checker
+don't allow starts or splits on points if to do so would cause a derailment
 
-check cut/copy named area pasted next to another named area to see if name adopted
+/track line 19759 - bridge expected!  ELinkIn = 9 & get link = 6 at 17952 1S14, ok for 2.16.1 - tried on non-names rly & ttb & same- but was trying to set 2 routes at once, one as planned and one from duddesden or derby across b'ham - sometimes see it sometimes not
+This also occurred in 2.17.0 so not a new fault
+Problem is that have allowed a rogue route element in searchvector that is only found when try to enter it into the routemap.  Identify the point and disallow in SearchForPref... and SearchForNonPref... It was in the section that had been disabled because too long winded - check for existing element in searchvector - now just search on crossovers, points and bridges on same track so doesn't take too much time, and if get on a loop then the search limit will stop the search
+
+Mention this search bug in version update
+
+
+
+
+
 
 
 
@@ -72,6 +85,18 @@ The structure is as follows:-
 -------------------------------------------------------------------------------
 
 1) Future change suggestions from users:
+
+#99 (see also #33) Qwertytops — 10/11/23 at 12:41
+Would it be difficult to have a distinction between wired and unwired track (and trains too obviously)? The electrified railway I'm building shares sections with diesel freight lines and there was an incident recently where an operator accidentally sent an electric train into an unwired platform
+
+Oxalin — 10/11/23 at 12:56
+I believe someone did make an attempt a while back at adding that functionality - one of the biggest issues was how to display it though
+
+Qwertytops — 10/11/23 at 13:12
+surely you could have a button or something in the menu that changes it from displaying routes to wires
+
+Albert — 10/11/23 at 15:22
+Yes it's been suggested before and I have thought about it, but it involves considerable programming difficulties involving both trains and track as well as the display difficulties that @Oxalin refers to.  Also there are many different types of electrified track - see https://en.wikipedia.org/wiki/Railway_electrification_in_Great_Britain and this is just for the UK, so it represents a significant task and not one that I'm eager to undertake!  Nevertheless I'll add it again to the wish list in case someone wants to pick it up at some stage.
 
 #98 Qwertytops 26/10/23
 Would you think of adding some kind of connecting things so different locations could be joined without putting the blue squares on points/bridges?

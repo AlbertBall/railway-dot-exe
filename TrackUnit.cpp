@@ -15656,35 +15656,54 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
         }
 // can't set XLink or XLinkPos yet if the element is a non-failed leading point.
 
-//  drop this as time-consuming, and RouteSearchLimit will stop the search if on a loop
-/*
-// check if reached an earlier position on search PrefDir (was OK in SearchForPrefDir if entry values different, but not OK for a route)
-        for(unsigned int x = 0; x < SearchVector.size(); x++)
+/* check if reached an earlier position on search PrefDir (was OK in SearchForPrefDir if entry values different, but not OK for a route)
+   drop this as time-consuming, and RouteSearchLimit will stop the search if on a loop <--NO, need to keep in the case of crossovers as can reach
+   element on opposite track and still find the required end point - causes error when adding to the Route"MultiMap (happened by chance when
+   developing non-station named elements on points & crossovers).  BUT need to speed up, don't use brute force search through all searchvector.
+
+   just test 4-track elements & fail for crossover, points or bridge on same track, if 2-track then looping and searchlimit will stop - changed after v2.17.0
+*/
+        if((SearchElement.TrackType == Crossover) || (SearchElement.TrackType == Points))
         {
-            if(SearchElement.TrackVectorPosition == SearchVector.at(x).TrackVectorPosition)
+            for(unsigned int x = 0; x < SearchVector.size(); x++)
             {
-                if((SearchElement.TrackType != Bridge) || ((SearchElement.TrackType == Bridge) && (SearchElement.ELink == SearchVector.at(x).ELink)))
-                // OK if a bridge & routes on different tracks
+                if((SearchVector.at(x).HLoc == SearchElement.HLoc) && (SearchVector.at(x).VLoc == SearchElement.VLoc))  //same element
                 {
                     for(int x = 0; x < VectorCount; x++)
                     {
                         SearchVector.erase(SearchVector.end() - 1);
                     }
-                    Utilities->CallLogPop(238);
+                    Utilities->CallLogPop(7777);
                     return(false);
                 }
             }
         }
-*/
+        else if(SearchElement.TrackType == Bridge)
+        {
+            for(unsigned int x = 0; x < SearchVector.size(); x++)
+            {
+                if((SearchVector.at(x).HLoc == SearchElement.HLoc) && (SearchVector.at(x).VLoc == SearchElement.VLoc) && //same element & same ELink
+                    (SearchElement.ELink == SearchVector.at(x).ELink))
+                {
+                    for(int x = 0; x < VectorCount; x++)
+                    {
+                        SearchVector.erase(SearchVector.end() - 1);
+                    }
+                    Utilities->CallLogPop(7777);
+                    return(false);
+                }
+            }
+        }
+
 // check if element in an existing route (OK if bridge & diff tracks, or start of an expected route)
         TAllRoutes::TRouteElementPair SecondPair;
         TAllRoutes::TRouteElementPair RoutePair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(16,
-                                                                                                   Track->TrackElementAt(89, SearchElement.TrackVectorPosition).HLoc, Track->TrackElementAt(90, SearchElement.TrackVectorPosition).VLoc, SecondPair);
+                 Track->TrackElementAt(89, SearchElement.TrackVectorPosition).HLoc, Track->TrackElementAt(90, SearchElement.TrackVectorPosition).VLoc, SecondPair);
         if(RoutePair.first > -1)
         {
             // OK if it's a bridge & routes on different tracks (hard to see how can reach a bridge before another element in route as can't start on a bridge, but leave check in anyway)
             if(!((SearchElement.TrackType == Bridge) && (SearchElement.ELinkPos != AllRoutes->GetFixedRouteAt(12, RoutePair.first).GetFixedPrefDirElementAt(38,
-                                                                                                                                                            RoutePair.second).ELinkPos)))
+                    RoutePair.second).ELinkPos)))
             {
                 // still OK if start of an expected route
                 if((ReqPosRouteID == IDInt(-1)) || ((int)RoutePair.first != AllRoutes->GetRouteVectorNumber(2, ReqPosRouteID)) || (RoutePair.second != 0))
@@ -17075,25 +17094,45 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
 // Now have  SpeedTag, HLoc, VLoc, TrackVectorPosition, ELink, ELinkPos, and for non-points XLink & XLinkPos
 // can't set XLink or XLinkPos yet if the element is a leading point.
 
-// check if reached an earlier position on search PrefDir (was OK in SearchForPrefDir if entry values different, but not OK for a route)
-/*   drop as time consuming & RouteSearchLimit will stop search if on a loop
-        for(unsigned int x = 0; x < SearchVector.size(); x++)
+/* check if reached an earlier position on search PrefDir (was OK in SearchForPrefDir if entry values different, but not OK for a route)
+   drop this as time-consuming, and RouteSearchLimit will stop the search if on a loop <--NO, need to keep in the case of crossovers as can reach
+   element on opposite track and still find the required end point - causes error when adding to the Route"MultiMap (happened by chance when
+   developing non-station named elements on points & crossovers).  BUT need to speed up, don't use brute force search through all searchvector.
+
+   just test 4-track elements & fail for crossover, points or bridge on same track, if 2-track then looping and searchlimit will stop - changed after v2.17.0
+*/
+        if((SearchElement.TrackType == Crossover) || (SearchElement.TrackType == Points))
         {
-            if(SearchElement.TrackVectorPosition == SearchVector.at(x).TrackVectorPosition)
+            for(unsigned int x = 0; x < SearchVector.size(); x++)
             {
-                if((SearchElement.TrackType != Bridge) || ((SearchElement.TrackType == Bridge) && (SearchElement.ELink == SearchVector.at(x).ELink)))
-                // OK if it's a bridge & routes on different tracks
+                if((SearchVector.at(x).HLoc == SearchElement.HLoc) && (SearchVector.at(x).VLoc == SearchElement.VLoc))  //same element
                 {
                     for(int x = 0; x < VectorCount; x++)
                     {
                         SearchVector.erase(SearchVector.end() - 1);
                     }
-                    Utilities->CallLogPop(291);
+                    Utilities->CallLogPop(7777);
                     return(false);
                 }
             }
         }
-*/
+        else if(SearchElement.TrackType == Bridge)
+        {
+            for(unsigned int x = 0; x < SearchVector.size(); x++)
+            {
+                if((SearchVector.at(x).HLoc == SearchElement.HLoc) && (SearchVector.at(x).VLoc == SearchElement.VLoc) && //same element & same ELink
+                    (SearchElement.ELink == SearchVector.at(x).ELink))
+                {
+                    for(int x = 0; x < VectorCount; x++)
+                    {
+                        SearchVector.erase(SearchVector.end() - 1);
+                    }
+                    Utilities->CallLogPop(7777);
+                    return(false);
+                }
+            }
+        }
+
 // check if element in an existing route (OK if bridge & diff tracks, or start of an expected route)
         TAllRoutes::TRouteElementPair SecondPair;
         TAllRoutes::TRouteElementPair RoutePair = AllRoutes->GetRouteElementDataFromRoute2MultiMap(3,
@@ -19750,13 +19789,13 @@ void TAllRoutes::Route2MultiMapInsert(int Caller, int HLoc, int VLoc, int ELinkI
     // true for element at H&V already included in map, has to be a bridge with existing route on opposite track to be valid
     {
         if(GetFixedRouteAt(113, Route2MultiMap.find(Route2MultiMapKeyPair)->second.first).GetFixedPrefDirElementAt(134,
-                                                                                                                   Route2MultiMap.find(Route2MultiMapKeyPair)->second.second).GetELink() != ELinkIn)
+              Route2MultiMap.find(Route2MultiMapKeyPair)->second.second).GetELink() != ELinkIn)
         // element already at H&V has different ELink to element to be inserted, so must be a bridge with existing route on opposite treack
         {
             if(GetFixedRouteAt(114, Route2MultiMap.find(Route2MultiMapKeyPair)->second.first).GetFixedPrefDirElementAt(135,
-                                                                                                                       Route2MultiMap.find(Route2MultiMapKeyPair)->second.second).TrackType != Bridge)
+                  Route2MultiMap.find(Route2MultiMapKeyPair)->second.second).TrackType != Bridge)
             {
-                throw Exception("Error, bridge expected in Route2MultiMapInsert but not, at HLoc=" + AnsiString(HLoc) + " VLoc=" + AnsiString(VLoc));
+               throw Exception("Error, bridge expected in Route2MultiMapInsert but not, at HLoc=" + AnsiString(HLoc) + " VLoc=" + AnsiString(VLoc));
             }
             Route2MultiMap.insert(Route2MultiMapEntry); // insert bridge into map again but now with the new track as part of required route
         }

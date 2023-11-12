@@ -10944,15 +10944,15 @@ bool TTrack::BlankElementAt(int Caller, int At) const
 
 // ---------------------------------------------------------------------------
 
-bool TTrack::OneNamedLocationLongEnoughForSplit(int Caller, AnsiString LocationName)
+bool TTrack::OneStationLongEnoughForSplit(int Caller, AnsiString LocationName)
 /* Check sufficient elements with same ActiveTrackElementName linked together without any trailing point links to allow a train split.
       Only one length is needed to return true, but this doesn't mean that all platforms at the location are long enough.  When a
-      split is required a specific check is made using ThisNamedLocationLongEnoughForSplit.
+      split is required a specific check is made using ThisStationLongEnoughForSplit.
       Need at least two linked ActiveTrackElementNames, with connected elements at each end, which may or may not be ActiveTrackElementNames,
       and no connections via point trailing links.  Note that these conditions exclude opposed buffers since these not linked.
 */
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",OneNamedLocationLongEnoughForSplit," + LocationName);
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",OneStationLongEnoughForSplit," + LocationName);
     TTrackElement InactiveElement, FirstNamedElement, SecondNamedElement, FirstNamedLinkedElement, SecondNamedLinkedElement;
     int FirstNamedExitPos, SecondNamedExitPos, FirstNamedLinkedExitPos, SecondNamedLinkedEntryPos;
     TLocationNameMultiMapIterator SNIterator;
@@ -10984,7 +10984,7 @@ bool TTrack::OneNamedLocationLongEnoughForSplit(int Caller, AnsiString LocationN
         if(TrackMap.find(HVPair) == TrackMap.end())
         {
             throw Exception
-                      ("Error - failed to find element in TrackMap for a non-concourse element in LocationNameMultiMap in OneNamedLocationLongEnoughForSplit (1)");
+                      ("Error - failed to find element in TrackMap for a non-concourse element in LocationNameMultiMap in OneStationLongEnoughForSplit (1)");
         }
         int TVPos = TrackMap.find(HVPair)->second;
         FirstNamedElement = TrackElementAt(560, TVPos);
@@ -11050,21 +11050,185 @@ bool TTrack::OneNamedLocationLongEnoughForSplit(int Caller, AnsiString LocationN
 }
 
 // ---------------------------------------------------------------------------
-bool TTrack::ThisNamedLocationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos,
+
+bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName)
+/* Check sufficient active elements at same H & V as the non-station element with same ActiveTrackElementName linked together to allow a train split.
+      Only one train length is needed to return true, but this doesn't mean that all tracks at the location are long enough.  When a
+      split is required a specific check is made using ThisNonStationLongEnoughForSplit.
+      Need at least two linked ActiveTrackElementNames, with connected elements at each end, or three if one end is a buffer, but no need to check
+      buffers explicitly as it will come out automatically with the logic applied.
+      Note that these conditions exclude opposed buffers since these not linked.
+*/
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",OneNonStationLongEnoughForSplit," + LocationName);
+    TTrackElement InactiveElement, FirstNamedElement, SecondNamedElement, FirstNamedLinkedElement, SecondNamedLinkedElement;
+    int FirstNamedExitPos, SecondNamedEntryPos, SecondNamedExitPos;
+    TLocationNameMultiMapIterator SNIterator;
+    TLocationNameMultiMapRange SNRange = LocationNameMultiMap.equal_range(LocationName);
+
+    if(SNRange.first == SNRange.second)
+    {
+        Utilities->CallLogPop(972);
+        return(false); // should have been caught earlier but include for completeness
+    }
+    for(SNIterator = SNRange.first; SNIterator != SNRange.second; SNIterator++)
+    {
+        if(SNIterator->second < 0)
+        {
+            continue; // exclude footcrossings
+        }
+        InactiveElement = InactiveTrackElementAt(47, SNIterator->second);
+        if(InactiveElement.TrackType == Concourse)
+        {
+            continue; // only interested in locations where ActiveTrackElementName may be set (not needed at v2.10.0 but leave in)
+        }
+        if(!TrackElementPresentAtHV(1, InactiveElement.HLoc, InactiveElement.VLoc)) //added at v2.10.0 in response to Jason Bassett error notified 14/08/21
+        {
+            continue; // only interested in locations where ActiveTrackElementName may be set
+        }
+        THVPair HVPair;
+        HVPair.first = InactiveElement.HLoc;
+        HVPair.second = InactiveElement.VLoc;
+        if(TrackMap.find(HVPair) == TrackMap.end())
+        {
+            throw Exception ("Error - failed to find element in TrackMap for a non-concourse element in LocationNameMultiMap in OneNonStationLongEnoughForSplit(1)");
+        }
+        int TVPos = TrackMap.find(HVPair)->second;
+        FirstNamedElement = TrackElementAt(560, TVPos);
+        // first check linked on both sides, skip the check if not
+        if(((FirstNamedElement.Conn[0] == -1) || (FirstNamedElement.Conn[1] == -1)) && ((FirstNamedElement.Conn[2] == -1) || (FirstNamedElement.Conn[3] == -1)))
+        {
+            continue;
+        }
+        // check if another ActiveTrackElementName connected via a link
+        if((FirstNamedElement.Conn[2] == -1) || (FirstNamedElement.Conn[3] == -1))  //examine connections at links 0 & 1
+        {
+            FirstNamedExitPos = 0; //this is the end linked to the second named element
+            {
+                SecondNamedElement = TrackElementAt(561, FirstNamedElement.Conn[FirstNamedExitPos]);
+                if(SecondNamedElement.ActiveTrackElementName == LocationName) //so far so good, check if linked on other side and if so return true
+                {
+                    SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos];
+                    if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
+                    {
+                        SecondNamedExitPos =  1 - SecondNamedEntryPos;  //SecondNamedExitPos is the end not linked to FirstNamedElement
+                    }
+                    else if(SecondNamedEntryPos == 2)
+                    {
+                        SecondNamedExitPos =  3;
+                    }
+                    else if(SecondNamedEntryPos == 3)
+                    {
+                        SecondNamedExitPos =  2;
+                    }
+                    if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
+                    {
+                        Utilities->CallLogPop(7777);
+                        return(true);
+                    } //if not try other exitpos
+                }
+            }
+            FirstNamedExitPos = 1;
+            {
+                SecondNamedElement = TrackElementAt(561, FirstNamedElement.Conn[FirstNamedExitPos]);
+                if(SecondNamedElement.ActiveTrackElementName == LocationName) //so far so good, check if linked on other side and if so return true
+                {
+                    SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos];
+                    if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
+                    {
+                        SecondNamedExitPos =  1 - SecondNamedEntryPos;
+                    }
+                    else if(SecondNamedEntryPos == 2)
+                    {
+                        SecondNamedExitPos =  3;
+                    }
+                    else if(SecondNamedEntryPos == 3)
+                    {
+                        SecondNamedExitPos =  2;
+                    }
+                    if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
+                    {
+                        Utilities->CallLogPop(7777);
+                        return(true);
+                    } //failed so far, try links 2 & 3, one or other must be linked on both side or would have continued
+                }
+            }
+        }
+        else if((FirstNamedElement.Conn[0] == -1) || (FirstNamedElement.Conn[1] == -1))  //examine connections at links 2 & 3
+        {
+            FirstNamedExitPos = 2;
+            {
+                SecondNamedElement = TrackElementAt(561, FirstNamedElement.Conn[FirstNamedExitPos]);
+                if(SecondNamedElement.ActiveTrackElementName == LocationName) //so far so good, check if linked on other side and if so return true
+                {
+                    SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos];
+                    if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
+                    {
+                        SecondNamedExitPos =  1 - SecondNamedEntryPos;
+                    }
+                    else if(SecondNamedEntryPos == 2)
+                    {
+                        SecondNamedExitPos =  3;
+                    }
+                    else if(SecondNamedEntryPos == 3)
+                    {
+                        SecondNamedExitPos =  2;
+                    }
+                    if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
+                    {
+                        Utilities->CallLogPop(7777);
+                        return(true);
+                    } //if not try other exitpos
+                }
+            }
+            FirstNamedExitPos = 3;
+            {
+                SecondNamedElement = TrackElementAt(561, FirstNamedElement.Conn[FirstNamedExitPos]);
+                if(SecondNamedElement.ActiveTrackElementName == LocationName) //so far so good, check if linked on other side and if so return true
+                {
+                    SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos];
+                    if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
+                    {
+                        SecondNamedExitPos =  1 - SecondNamedEntryPos;
+                    }
+                    else if(SecondNamedEntryPos == 2)
+                    {
+                        SecondNamedExitPos =  3;
+                    }
+                    else if(SecondNamedEntryPos == 3)
+                    {
+                        SecondNamedExitPos =  2;
+                    }
+                    if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
+                    {
+                        Utilities->CallLogPop(7777);
+                        return(true);
+                    } //failed so continue to next element or return false
+                }
+            }
+        }
+    }
+    Utilities->CallLogPop(1004);
+    return(false);
+}
+
+// ---------------------------------------------------------------------------
+
+bool TTrack::ThisStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos,
                                                  int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos)
 // for success need two linked named location elements, so that one element of each train can be at the location
-// FirstNamedElementPos is the input vector position and the first (if successful) of the two linked named location elements,
-// the second is SecondNamedElementPos, and the two linked elements are FirstNamedLinkedElementPos and SecondNamedLinkedElementPos.
+// FirstNamedElementPos is the input vector position of the train (lead or mid) and the first (if successful) of the two linked named location elements,
+// the second is SecondNamedElementPos of the split train, and the two linked elements are FirstNamedLinkedElementPos and SecondNamedLinkedElementPos.
 // the two trains will occupy these 4 elements
 // All are track vector positions, all but the input being references and set within the function.
 {
-/* Check sufficient elements (including TrackvectorPosition) with same ActiveTrackElementName linked together without any trailing point
-      links and including the element FirstNamedElementPos to allow a train split.  Need at least two linked ActiveTrackElementNames, with
-      connected elements at each end, which may or may not be ActiveTrackElementNames, and no connections via point trailing links.  Note that
-      these conditions exclude opposed buffers since these not linked.  Return the two train positions and exit positions for use in train
-      splitting.
+/* Check sufficient elements with same ActiveTrackElementName linked together without any trailing point links and
+      including the element FirstNamedElementPos to allow a train split.  Need at least two linked ActiveTrackElementNames, with connected
+      elements at each end, or three if one end is a buffer, where the connected elements may or may not be ActiveTrackElementNames, and
+      no connections via point trailing links.  Note that these conditions exclude opposed buffers since these
+      not linked.  Return the split train position in SecondNamedElementPos and exit positions (...LinkedElementPos) for use in train splitting.
 */
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ThisNamedLocationLongEnoughForSplit," + LocationName +
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ThisStationLongEnoughForSplit," + LocationName +
                                  AnsiString(FirstNamedElementPos));
     TTrackElement InactiveElement, FirstNamedElement, SecondNamedElement, FirstNamedLinkedElement, SecondNamedLinkedElement;
     int FirstNamedExitPos, SecondNamedExitPos, FirstNamedLinkedExitPos, SecondNamedLinkedEntryPos;
@@ -11105,8 +11269,7 @@ bool TTrack::ThisNamedLocationLongEnoughForSplit(int Caller, AnsiString Location
             else // for anything else throw the error
             {
                 throw Exception
-                          ("Error - failed to find element in TrackMap for a non-concourse element in LocationNameMultiMap in ThisNamedLocationLongEnoughForSplit (2)"
-                          );
+                    ("Error - failed to find element in TrackMap for a non-concourse element in LocationNameMultiMap in ThisStationLongEnoughForSplit (2)");
             }
         }
         int TVPos = TrackMap.find(HVPair)->second;

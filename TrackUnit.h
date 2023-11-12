@@ -1071,12 +1071,14 @@ can't have a route set while changing; can't be opened while a route is set; and
     bool NonFootCrossingNamedLocationExists(int Caller);
 /// True if there is at least one named location element with name 'LocationName', used in timetable integrity checking
     bool OneNamedLocationElementAtLocation(int Caller, AnsiString LocationName);
+/// As below but here allow points & crossovers
+    bool OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName);
 /** check sufficient track elements with same LocationName linked together without any trailing point links to allow a train split. Only one
 length is needed to return true, but this doesn't mean that all platforms at the location are long enough.  When a split is required during
-operation a specific check is made using ThisNamedLocationLongEnoughForSplit.  Need at least two linked track elements with the same LocationName, with connected
+operation a specific check is made using ThisStationLongEnoughForSplit.  Need at least two linked track elements with the same LocationName, with connected
 elements at each end, which may or may not be named and no connections via point trailing links.  Note that these conditions
 exclude opposed buffers since these not linked.  Used in timetable integrity checking. */
-    bool OneNamedLocationLongEnoughForSplit(int Caller, AnsiString LocationName);
+    bool OneStationLongEnoughForSplit(int Caller, AnsiString LocationName);
 /// True if another train on NextEntryPos track of element at NextPos, whether bridge or not, return false if not, or if NextPos == -1, or if only own train on the track
     bool OtherTrainOnTrack(int Caller, int NextPos, int NextEntryPos, int OwnTrainID);
 /// Check whether there is a platform present at HLoc & VLoc at the same side as the signal represented by SpeedTag, if so return true, and also return a pointer to the appropriate platform graphic (same as a normal platform graphic but with a bit cut out for the signal)
@@ -1093,8 +1095,8 @@ exclude opposed buffers since these not linked.  Used in timetable integrity che
     bool ReturnNextInactiveTrackElement(int Caller, TTrackElement &Next);
 /// Return a reference to the active track element pointed to by NextTrackElementPtr (during zoomed-in or out track rebuilding, or writing image files), return true if there is a next one or false if not
     bool ReturnNextTrackElement(int Caller, TTrackElement &Next);
-/// See above under 'OneNamedLocationLongEnoughForSplit'
-    bool ThisNamedLocationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos,
+/// See above under 'OneStationLongEnoughForSplit'
+    bool ThisStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos,
                                              int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos);
 /// True if a non-empty LocationName found as a timetabled location name i.e. not as a continuation name
     bool TimetabledLocationNameAllocated(int Caller, AnsiString LocationName);

@@ -75,7 +75,7 @@ Yes: to do: find way for timetable to distinguish between platforms and non-stat
 select FrontTrainStationSplit or FrontTrainNonStationSplit for fsp & same for rear
 create new functions FrontTrainNonStationSplit & RearTrainNonStationSplit, ThisNonStationLongEnoughForSplit + add to caller checker.  Helped by fact that trains stop at end of non-stations, so just ensure that have enough room at back for rear split (using existing points settings - check that get existing point error message if not set correctly) and at front for front split - where arriving front train moved to rear.
 
-
+Test OneNonStationLongEnoughForSplit with special test function that checks all non-station locs & test it on several railways with true & false results, or set up conditions for testing on a manipulated non-station
 
 
 

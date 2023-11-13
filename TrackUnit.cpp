@@ -11073,9 +11073,9 @@ bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName
     }
     for(SNIterator = SNRange.first; SNIterator != SNRange.second; SNIterator++)
     {
-        if(SNIterator->second < 0)
+        if(SNIterator->second < 0) //negative numbers represent active track elements
         {
-            continue; // exclude footcrossings
+            continue; // exclude footcrossings - only these have active track element names
         }
         InactiveElement = InactiveTrackElementAt(47, SNIterator->second);
         if(InactiveElement.TrackType == Concourse)
@@ -11286,57 +11286,239 @@ bool TTrack::ThisStationLongEnoughForSplit(int Caller, AnsiString LocationName, 
         // check if another ActiveTrackElementName connected via link pos 0 (can only be 0 or 1 since the only 2-track elements that can be
         // ActiveTrackElementNames are points and excluding trailing connections for points
         FirstNamedExitPos = 0;
+        SecondNamedElement = TrackElementAt(568, FirstNamedElement.Conn[FirstNamedExitPos]);
+        SecondNamedExitPos = GetNonPointsOppositeLinkPos(FirstNamedElement.ConnLinkPos[FirstNamedExitPos]);
+        FirstNamedLinkedElement = TrackElementAt(569, FirstNamedElement.Conn[1 - FirstNamedExitPos]);
+        FirstNamedLinkedExitPos = FirstNamedElement.ConnLinkPos[1 - FirstNamedExitPos];
+        if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
         {
-            SecondNamedElement = TrackElementAt(568, FirstNamedElement.Conn[FirstNamedExitPos]);
-            SecondNamedExitPos = GetNonPointsOppositeLinkPos(FirstNamedElement.ConnLinkPos[FirstNamedExitPos]);
-            FirstNamedLinkedElement = TrackElementAt(569, FirstNamedElement.Conn[1 - FirstNamedExitPos]);
-            FirstNamedLinkedExitPos = FirstNamedElement.ConnLinkPos[1 - FirstNamedExitPos];
-            if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
+            if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
             {
-                if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
+                SecondNamedLinkedElement = TrackElementAt(570, SecondNamedElement.Conn[SecondNamedExitPos]);
+                SecondNamedLinkedEntryPos = SecondNamedElement.ConnLinkPos[SecondNamedExitPos];
+                if((SecondNamedLinkedElement.TrackType != Points) || (SecondNamedLinkedEntryPos != 3))
+                // success, now check FirstNamedElement link not trailing points & if so all OK
                 {
-                    SecondNamedLinkedElement = TrackElementAt(570, SecondNamedElement.Conn[SecondNamedExitPos]);
-                    SecondNamedLinkedEntryPos = SecondNamedElement.ConnLinkPos[SecondNamedExitPos];
-                    if((SecondNamedLinkedElement.TrackType != Points) || (SecondNamedLinkedEntryPos != 3))
-                    // success, now check FirstNamedElement link not trailing points & if so all OK
+                    if((FirstNamedLinkedElement.TrackType != Points) || (FirstNamedLinkedExitPos != 3))
                     {
-                        if((FirstNamedLinkedElement.TrackType != Points) || (FirstNamedLinkedExitPos != 3))
-                        {
-                            SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
-                            FirstNamedLinkedElementPos = FirstNamedElement.Conn[1 - FirstNamedExitPos];
-                            SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
-                            Utilities->CallLogPop(1006);
-                            return(true);
-                        }
+                        SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
+                        FirstNamedLinkedElementPos = FirstNamedElement.Conn[1 - FirstNamedExitPos];
+                        SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
+                        Utilities->CallLogPop(1006);
+                        return(true);
                     }
                 }
             }
         }
         // failed, try link 1
         FirstNamedExitPos = 1;
+        SecondNamedElement = TrackElementAt(571, FirstNamedElement.Conn[FirstNamedExitPos]);
+        SecondNamedExitPos = GetNonPointsOppositeLinkPos(FirstNamedElement.ConnLinkPos[FirstNamedExitPos]);
+        FirstNamedLinkedElement = TrackElementAt(572, FirstNamedElement.Conn[1 - FirstNamedExitPos]);
+        FirstNamedLinkedExitPos = FirstNamedElement.ConnLinkPos[1 - FirstNamedExitPos];
+        if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
         {
+            if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
+            {
+                SecondNamedLinkedElement = TrackElementAt(573, SecondNamedElement.Conn[SecondNamedExitPos]);
+                SecondNamedLinkedEntryPos = SecondNamedElement.ConnLinkPos[SecondNamedExitPos];
+                if((SecondNamedLinkedElement.TrackType != Points) || (SecondNamedLinkedEntryPos != 3))
+                // success, now check FirstNamedElement link not trailing points & if so all OK
+                {
+                    if((FirstNamedLinkedElement.TrackType != Points) || (FirstNamedLinkedExitPos != 3))
+                    {
+                        SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
+                        FirstNamedLinkedElementPos = FirstNamedElement.Conn[1 - FirstNamedExitPos];
+                        SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
+                        Utilities->CallLogPop(1007);
+                        return(true);
+                    }
+                }
+            }
+        }
+    }
+    Utilities->CallLogPop(1008);
+    return(false);
+}
+
+// ---------------------------------------------------------------------------
+
+bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos, int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos)
+// for success need two linked named location elements, so that one element of each train can be at the location
+// FirstNamedElementPos is the input vector position of the train (lead or mid) and the first (if successful) of the two linked named location elements,
+// the second is SecondNamedElementPos of the split train, and the two linked elements are FirstNamedLinkedElementPos and SecondNamedLinkedElementPos.
+// the two trains will occupy these 4 elements
+// All are track vector positions, all but the input being references and set within the function.
+
+/* Check sufficient elements with same ActiveTrackElementName linked together and including the element FirstNamedElementPos to allow a train split.
+      Need at least two linked ActiveTrackElementNames, with connected elements at each end, or three if one end is a buffer, where the connected
+      elements may or may not be ActiveTrackElementNames.  Note that these conditions exclude opposed buffers since these not linked.  Return the split
+      train position in SecondNamedElementPos and exit positions (...LinkedElementPos) for use in train splitting.
+*/
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ThisNonStationLongEnoughForSplit," + LocationName +
+                                 AnsiString(FirstNamedElementPos));
+    TTrackElement InactiveElement, FirstNamedElement, SecondNamedElement, FirstNamedLinkedElement, SecondNamedLinkedElement;
+    int FirstNamedExitPos, SecondNamedEntryPos, SecondNamedExitPos;
+
+    SecondNamedElementPos = -1;
+    FirstNamedLinkedElementPos = -1;
+    SecondNamedLinkedElementPos = -1;
+    TLocationNameMultiMapIterator SNIterator;
+    TLocationNameMultiMapRange SNRange = LocationNameMultiMap.equal_range(LocationName);
+
+    if(SNRange.first == SNRange.second) // i.e. location name not in map
+    {
+        Utilities->CallLogPop(1005);
+        return(false); // should have been caught earlier but include for completeness
+    }
+    for(SNIterator = SNRange.first; SNIterator != SNRange.second; SNIterator++)
+    {
+        if(SNIterator->second < 0) //neg numbers are active track elements
+        {
+            continue; // exclude footcrossings
+        }
+        InactiveElement = InactiveTrackElementAt(69, SNIterator->second);
+        if(InactiveElement.TrackType != NamedNonStationLocation)
+        {
+            continue; // only interested in non-station names, shouldn't reach here but inc;ude as a safeguard
+        }
+        THVPair HVPair;
+        HVPair.first = InactiveElement.HLoc;
+        HVPair.second = InactiveElement.VLoc;
+        if(TrackMap.find(HVPair) == TrackMap.end()) //no track at this element
+        {
+            continue;
+        }
+        int TVPos = TrackMap.find(HVPair)->second;
+        if(TVPos != FirstNamedElementPos)
+        {
+            continue; // looking for an exact match
+        }
+        FirstNamedElement = TrackElementAt(567, TVPos);
+        // first check linked on both sides, skip the check if not
+        if(((FirstNamedElement.Conn[0] == -1) || (FirstNamedElement.Conn[1] == -1)) && ((FirstNamedElement.Conn[2] == -1) || (FirstNamedElement.Conn[3] == -1)))
+        {
+            continue;
+        }
+        // check if another ActiveTrackElementName connected via a link
+        if((FirstNamedElement.Conn[2] == -1) || (FirstNamedElement.Conn[3] == -1)) //examine links 0 & 1
+        {
+            FirstNamedExitPos = 0; //this links to the second named element
+            SecondNamedElement = TrackElementAt(568, FirstNamedElement.Conn[FirstNamedExitPos]);
+            SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos]; //links to FirstNamedElement
+            if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
+            {
+                SecondNamedExitPos = 1 - SecondNamedEntryPos;
+            }
+            else if(SecondNamedEntryPos == 2)
+            {
+                SecondNamedExitPos = 3;
+            }
+            else if(SecondNamedEntryPos == 3)
+            {
+                SecondNamedExitPos = 2;
+            }
+            FirstNamedLinkedElement = TrackElementAt(569, FirstNamedElement.Conn[1 - FirstNamedExitPos]);
+            if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
+            {
+                if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
+                {
+                    SecondNamedLinkedElement = TrackElementAt(570, SecondNamedElement.Conn[SecondNamedExitPos]);
+                    SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
+                    FirstNamedLinkedElementPos = FirstNamedElement.Conn[1 - FirstNamedExitPos];
+                    SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
+                    Utilities->CallLogPop(1006);
+                    return(true);
+                }
+            }
+        // failed, try link 1
+            FirstNamedExitPos = 1;
             SecondNamedElement = TrackElementAt(571, FirstNamedElement.Conn[FirstNamedExitPos]);
-            SecondNamedExitPos = GetNonPointsOppositeLinkPos(FirstNamedElement.ConnLinkPos[FirstNamedExitPos]);
+            SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos]; //links to FirstNamedElement
+            if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
+            {
+                SecondNamedExitPos = 1 - SecondNamedEntryPos;
+            }
+            else if(SecondNamedEntryPos == 2)
+            {
+                SecondNamedExitPos = 3;
+            }
+            else if(SecondNamedEntryPos == 3)
+            {
+                SecondNamedExitPos = 2;
+            }
             FirstNamedLinkedElement = TrackElementAt(572, FirstNamedElement.Conn[1 - FirstNamedExitPos]);
-            FirstNamedLinkedExitPos = FirstNamedElement.ConnLinkPos[1 - FirstNamedExitPos];
             if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
             {
                 if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
                 {
                     SecondNamedLinkedElement = TrackElementAt(573, SecondNamedElement.Conn[SecondNamedExitPos]);
-                    SecondNamedLinkedEntryPos = SecondNamedElement.ConnLinkPos[SecondNamedExitPos];
-                    if((SecondNamedLinkedElement.TrackType != Points) || (SecondNamedLinkedEntryPos != 3))
-                    // success, now check FirstNamedElement link not trailing points & if so all OK
-                    {
-                        if((FirstNamedLinkedElement.TrackType != Points) || (FirstNamedLinkedExitPos != 3))
-                        {
-                            SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
-                            FirstNamedLinkedElementPos = FirstNamedElement.Conn[1 - FirstNamedExitPos];
-                            SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
-                            Utilities->CallLogPop(1007);
-                            return(true);
-                        }
-                    }
+                    SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
+                    FirstNamedLinkedElementPos = FirstNamedElement.Conn[1 - FirstNamedExitPos];
+                    SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
+                    Utilities->CallLogPop(1007);
+                    return(true);
+                }
+            }
+        }
+        if((FirstNamedElement.Conn[0] == -1) || (FirstNamedElement.Conn[0] == -1)) //examine links 2 & 3
+        {
+            FirstNamedExitPos = 2; //this links to the second named element
+            SecondNamedElement = TrackElementAt(568, FirstNamedElement.Conn[FirstNamedExitPos]);
+            SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos]; //links to FirstNamedElement
+            if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
+            {
+                SecondNamedExitPos = 1 - SecondNamedEntryPos;
+            }
+            else if(SecondNamedEntryPos == 2)
+            {
+                SecondNamedExitPos = 3;
+            }
+            else if(SecondNamedEntryPos == 3)
+            {
+                SecondNamedExitPos = 2;
+            }
+            FirstNamedLinkedElement = TrackElementAt(569, FirstNamedElement.Conn[3]);
+            if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
+            {
+                if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
+                {
+                    SecondNamedLinkedElement = TrackElementAt(570, SecondNamedElement.Conn[SecondNamedExitPos]);
+                    SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
+                    FirstNamedLinkedElementPos = FirstNamedElement.Conn[3];
+                    SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
+                    Utilities->CallLogPop(1006);
+                    return(true);
+                }
+            }
+        // failed, try link 3
+            FirstNamedExitPos = 3;
+            SecondNamedElement = TrackElementAt(571, FirstNamedElement.Conn[FirstNamedExitPos]);
+            SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos]; //links to FirstNamedElement
+            if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
+            {
+                SecondNamedExitPos = 1 - SecondNamedEntryPos;
+            }
+            else if(SecondNamedEntryPos == 2)
+            {
+                SecondNamedExitPos = 3;
+            }
+            else if(SecondNamedEntryPos == 3)
+            {
+                SecondNamedExitPos = 2;
+            }
+            FirstNamedLinkedElement = TrackElementAt(572, FirstNamedElement.Conn[2]);
+            if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
+            {
+                if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
+                {
+                    SecondNamedLinkedElement = TrackElementAt(573, SecondNamedElement.Conn[SecondNamedExitPos]);
+                    SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
+                    FirstNamedLinkedElementPos = FirstNamedElement.Conn[2];
+                    SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
+                    Utilities->CallLogPop(1007);
+                    return(true);
                 }
             }
         }

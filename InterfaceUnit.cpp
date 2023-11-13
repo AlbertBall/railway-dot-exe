@@ -24956,6 +24956,20 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
 //test code here
 /*
+        for(TTrack::TTrackVectorIterator TVIt = Track->InactiveTrackVector.begin(); TVIt < Track->InactiveTrackVector.end(); TVIt++)
+        {
+            if(TVIt->LocationName != "")
+            {
+                AnsiString Name = TVIt->LocationName;
+                if(!Track->OneNonStationLongEnoughForSplit(7777, Name))
+                {
+                    int x = 4;
+                }
+            }
+        }
+        int y = 4;
+*/
+/*
     while(true)
     {
         bool RepeatFound = false;

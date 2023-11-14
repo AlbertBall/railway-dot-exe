@@ -4112,8 +4112,8 @@ when Straddle == LeadMidLag
                     // no need to add in the length of element to CumulativeLength
                     TrainInFrontInSignallerModeFlag = true;
                 }
-                // check if next element is a buffer
-                else if(Track->TrackElementAt(366, NextTrackVectorPosition).TrackType == Buffers)
+                // check if next element is a buffer, but if StepForwardFlag true then need to stop before reach the buffers
+                else if((Track->TrackElementAt(366, NextTrackVectorPosition).TrackType == Buffers) && !StepForwardFlag) //!StepForwardFlag added after v2.17.0
                 {
                     // need to add in the length of that element to CumulativeLength
                     CumulativeLength += Track->TrackElementAt(367, NextTrackVectorPosition).Length01;
@@ -5804,12 +5804,13 @@ void TTrain::FrontTrainSplit(int Caller)
             }
             else
             {
-                if(!Track->ThisNonStationLongEnoughForSplit(0, LocationName, FirstNamedElementPos,
+            //LeadEntryPos is the linkpos to MidElement
+                if(!Track->ThisNonStationLongEnoughForSplit(0, LocationName, FirstNamedElementPos, LeadEntryPos,
                       // check if possible with LeadElement as First
                       SecondNamedElementPos, FirstNamedLinkedElementPos, SecondNamedLinkedElementPos))
                 {
-                    FirstNamedElementPos = MidElement;
-                    if(!Track->ThisNonStationLongEnoughForSplit(1, LocationName, FirstNamedElementPos,
+                    FirstNamedElementPos = MidElement; //MidExitPos is the linkpos to LeadElement
+                    if(!Track->ThisNonStationLongEnoughForSplit(1, LocationName, FirstNamedElementPos, MidExitPos,
                           // if not then accept second if possible (though if Lead no good hard to see how Mid could work, but leave in)
                           SecondNamedElementPos, FirstNamedLinkedElementPos, SecondNamedLinkedElementPos))
                     {
@@ -5902,7 +5903,7 @@ void TTrain::FrontTrainSplit(int Caller)
                     else
                     {
                         FirstNamedElementPos = MidElement;
-                        if(!Track->ThisNonStationLongEnoughForSplit(4, LocationName, FirstNamedElementPos, SecondNamedElementPos, FirstNamedLinkedElementPos,
+                        if(!Track->ThisNonStationLongEnoughForSplit(4, LocationName, FirstNamedElementPos, MidExitPos, SecondNamedElementPos, FirstNamedLinkedElementPos,
                                                                        SecondNamedLinkedElementPos)) // restore originals
                         {
                             FirstNamedElementPos = LeadPosA;
@@ -6256,12 +6257,15 @@ void TTrain::RearTrainSplit(int Caller)
             }
             else
             {
-                if(!Track->ThisNonStationLongEnoughForSplit(2, LocationName, FirstNamedElementPos, SecondNamedElementPos, FirstNamedLinkedElementPos,
-                                                               SecondNamedLinkedElementPos))
+            //LeadEntryPos is the linkpos to MidElement
+                if(!Track->ThisNonStationLongEnoughForSplit(2, LocationName, FirstNamedElementPos, LeadEntryPos,
+                      // check if possible with LeadElement as First
+                      SecondNamedElementPos, FirstNamedLinkedElementPos, SecondNamedLinkedElementPos))
                 {
-                    FirstNamedElementPos = MidElement;
-                    if(!Track->ThisNonStationLongEnoughForSplit(3, LocationName, FirstNamedElementPos, SecondNamedElementPos, FirstNamedLinkedElementPos,
-                                                                   SecondNamedLinkedElementPos))
+                    FirstNamedElementPos = MidElement; //MidExitPos is the linkpos to LeadElement
+                    if(!Track->ThisNonStationLongEnoughForSplit(3, LocationName, FirstNamedElementPos, MidExitPos,
+                          // if not then accept second if possible (though if Lead no good hard to see how Mid could work, but leave in)
+                          SecondNamedElementPos, FirstNamedLinkedElementPos, SecondNamedLinkedElementPos))
                     {
                         if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != FailLocTooShort)
                         {
@@ -6351,7 +6355,7 @@ void TTrain::RearTrainSplit(int Caller)
                     }
                     else
                     {
-                        if(!Track->ThisNonStationLongEnoughForSplit(5, LocationName, FirstNamedElementPos, SecondNamedElementPos, FirstNamedLinkedElementPos,
+                        if(!Track->ThisNonStationLongEnoughForSplit(5, LocationName, FirstNamedElementPos, MidExitPos, SecondNamedElementPos, FirstNamedLinkedElementPos,
                                                                        SecondNamedLinkedElementPos)) // restore originals
                         {
                             FirstNamedElementPos = LeadPosA;

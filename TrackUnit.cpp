@@ -11343,7 +11343,7 @@ bool TTrack::ThisStationLongEnoughForSplit(int Caller, AnsiString LocationName, 
 
 // ---------------------------------------------------------------------------
 
-bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos, int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos)
+bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int TrainLinkPos, int &SecondNamedElementPos, int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos)
 // for success need two linked named location elements, so that one element of each train can be at the location
 // FirstNamedElementPos is the input vector position of the train (lead or mid) and the first (if successful) of the two linked named location elements,
 // the second is SecondNamedElementPos of the split train, and the two linked elements are FirstNamedLinkedElementPos and SecondNamedLinkedElementPos.
@@ -11357,7 +11357,7 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
 */
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ThisNonStationLongEnoughForSplit," + LocationName +
-                                 AnsiString(FirstNamedElementPos));
+                                 AnsiString(FirstNamedElementPos) + "," + AnsiString(TrainLinkPos));
     TTrackElement InactiveElement, FirstNamedElement, SecondNamedElement, FirstNamedLinkedElement, SecondNamedLinkedElement;
     int FirstNamedExitPos, SecondNamedEntryPos, SecondNamedExitPos;
 
@@ -11401,8 +11401,13 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
         {
             continue;
         }
-        // check if another ActiveTrackElementName connected via a link
-        if((FirstNamedElement.Conn[2] == -1) || (FirstNamedElement.Conn[3] == -1)) //examine links 0 & 1
+        // work on the links that the train is on (e.g. may be on a diagonal so don't want to find valid positions on non-diagonals that train can't reach)
+        bool LowLinks = true;
+        if(TrainLinkPos > 1)
+        {
+            LowLinks = false;
+        }
+        if((LowLinks && FirstNamedElement.Conn[0] > -1) && (FirstNamedElement.Conn[1] > -1)) //examine links 0 & 1
         {
             FirstNamedExitPos = 0; //this links to the second named element
             SecondNamedElement = TrackElementAt(568, FirstNamedElement.Conn[FirstNamedExitPos]);
@@ -11462,7 +11467,7 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
                 }
             }
         }
-        if((FirstNamedElement.Conn[0] == -1) || (FirstNamedElement.Conn[0] == -1)) //examine links 2 & 3
+        else if((!LowLinks && FirstNamedElement.Conn[2] > -1) && (FirstNamedElement.Conn[3] > -1)) //examine links 2 & 3
         {
             FirstNamedExitPos = 2; //this links to the second named element
             SecondNamedElement = TrackElementAt(568, FirstNamedElement.Conn[FirstNamedExitPos]);

@@ -1096,7 +1096,7 @@ exclude opposed buffers since these not linked.  Used in timetable integrity che
 /// Return a reference to the active track element pointed to by NextTrackElementPtr (during zoomed-in or out track rebuilding, or writing image files), return true if there is a next one or false if not
     bool ReturnNextTrackElement(int Caller, TTrackElement &Next);
 /// as below but allow points & crossoverssee above under
-    bool ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos,
+    bool ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int TrainLinkPos, int &SecondNamedElementPos,
                                                  int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos);
 /// See above under 'OneStationLongEnoughForSplit'
     bool ThisStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos,

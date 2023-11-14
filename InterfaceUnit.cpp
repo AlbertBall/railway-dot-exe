@@ -24956,44 +24956,6 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
 //test code here
 /*
-        for(TTrack::TTrackVectorIterator TVIt = Track->InactiveTrackVector.begin(); TVIt < Track->InactiveTrackVector.end(); TVIt++)
-        {
-            if(TVIt->LocationName != "")
-            {
-                AnsiString Name = TVIt->LocationName;
-                if(!Track->OneNonStationLongEnoughForSplit(7777, Name))
-                {
-                    int x = 4;
-                }
-            }
-        }
-        int y = 4;
-*/
-/*
-    while(true)
-    {
-        bool RepeatFound = false;
-        unsigned int TTIteratorCount;
-        for(TTIteratorCount = 0; TTIteratorCount < TimetableEditVector.size(); TTIteratorCount++)
-        {
-            TTimetableEditVector::iterator TTEVIt = TimetableEditVector.begin() + TTIteratorCount;
-            if((*TTEVIt).Pos(",R;") > 0)
-            {
-                TTCurrentEntryIterator = TTEVIt;
-                ExpandRepeatsButton->Click();     //edit vector expanded here
-                RepeatFound = true;
-                SaveTTButton->Click();
-                ValidateTimetableButton->Click(); //new data vector created here
-                break; //from for... loop
-            }
-        }
-        if(!RepeatFound)
-        {
-            break; //from while... loop
-        }
-    }
-*/
-/*
     throw Exception("test error");
                     if(AllRoutes->AllRoutesVector.size() > 0)
                     {

@@ -58,26 +58,28 @@ Problem is that have allowed a rogue route element in searchvector that is only 
 
 /check if clock stops for showmessage, prob need stopttclockmessage - no it keeps going behind the scenes, do need stopttclockmessage
 
-devise routine to quickly check all any railway re stop points for every named loc, single & double track elements
-
-Mention the existing search bug in version update
-
-don't allow starts (starts done) or splits on points if to do so would cause a derailment
-
-add showmessage at fail to split due to other train trainunit.cpp above line 5954 & test it, make sure it only shows once
-
-make function for front & rear wrong points & call in splits for rear when position set & front when its position set and also for checkstartallowable for both
-
 /check other warnings for needing a showmessage - done for splitting
 
-maybe keep existing split code for platforms and devise new one for non-station named locs.
+/maybe keep existing split code for platforms and devise new one for non-station named locs.
 Yes: to do: find way for timetable to distinguish between platforms and non-station locs & create new function OneNonStationLongEnoughForSplit
 select FrontTrainStationSplit or FrontTrainNonStationSplit for fsp & same for rear
 create new functions FrontTrainNonStationSplit & RearTrainNonStationSplit, ThisNonStationLongEnoughForSplit + add to caller checker.  Helped by fact that trains stop at end of non-stations, so just ensure that have enough room at back for rear split (using existing points settings - check that get existing point error message if not set correctly) and at front for front split - where arriving front train moved to rear.
 
-Test OneNonStationLongEnoughForSplit with special test function that checks all non-station locs & test it on several railways with true & false results, or set up conditions for testing on a manipulated non-station
+/Test OneNonStationLongEnoughForSplit with special test function that checks all non-station locs & test it on several railways with true & false results, or set up conditions for testing on a manipulated non-station
 
+/Test ThisNonStationLongEnoughForSplit extensively
 
+/At Alton train at headshunt if starts at end moves forward 2 elements under sig control instead of 1 - due to next element being buffers, now corrected
+
+/don't allow starts (starts done) or splits on points (ok covered by existing code) if to do so would cause a derailment
+
+/add showmessage at fail to split due to other train trainunit.cpp above line 5954 & test it, make sure it only shows once
+
+/make function for front & rear wrong points & call in splits for rear when position set & front when its position set and also for checkstartallowable for both
+
+devise routine to quickly check all any railway re stop points for every named loc, single & double track elements
+
+Mention the existing search bug in version update (discussed above starting 'track line 19759')
 
 
 

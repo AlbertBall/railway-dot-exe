@@ -492,7 +492,7 @@ private:
     int OldZoomOutElement[3];
 ///< stores the Lead, Mid & Lag TrackVectorPositions, used for unplotting trains from the old position in zoomed-out mode prior to replotting in a new position (new will be different from old if train moving)
     int PlotElement[4];
-///< the TrackVectorPosition of the element where each of the 4 headcode characters is plotted  (need to be set to Lead, Mid & Lag elemnt values before PlotGraphic called)
+///< the TrackVectorPosition of the element where each of the 4 headcode characters is plotted  (need to be set to Lead, Mid & Lag element values before PlotGraphic called)
     int PlotEntryPos[4];
 ///< the LinkPos value corresponding to the train entry link of the element where each of the 4 headcode characters is plotted
     int TrainCrashedInto;

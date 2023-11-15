@@ -44,7 +44,7 @@ digraph "TTrack::GetNonPointsOppositeLinkPos"
   Node16 [label="TTrain::ClearToNextSignal",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train.html#aeed1f50d8a4f76d7d77991d276758570",tooltip="Checks forward from train LeadElement, following leading point attributes but ignoring trailing point..."];
   Node16 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node17 [label="TTrack::OneNamedLocation\lLongEnoughForSplit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a9d209cb6e24f67ba12020440a5e42347",tooltip=" "];
+  Node17 [label="TTrack::OneStationLongEnough\lForSplit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a16dbc5b1b3898d70218cf52e52434bb6",tooltip=" "];
   Node17 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node18 [label="TTrainController::CheckCross\lReferencesAndSetData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a36581d2c8663849c6d19b65542c8fa4c",tooltip="A timetable validation function where all service cross references are checked for validity and set p..."];
   Node18 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -120,7 +120,7 @@ digraph "TTrack::GetNonPointsOppositeLinkPos"
   Node1 -> Node45 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node45 [label="TInterface::TakeSignaller\lControlMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ab5b80c76a8cc8d2c87f21d323f61c1ce",tooltip=" "];
   Node1 -> Node46 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node46 [label="TTrack::ThisNamedLocation\lLongEnoughForSplit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a4dffe604a7d6b14cce2c94ad7522fb7f",tooltip="See above under 'OneNamedLocationLongEnoughForSplit'."];
+  Node46 [label="TTrack::ThisStationLongEnough\lForSplit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a22fbc44ac291500a58f90f97de356c97",tooltip="See above under 'OneStationLongEnoughForSplit'."];
   Node46 -> Node29 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node46 -> Node30 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

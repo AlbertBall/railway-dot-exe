@@ -928,10 +928,10 @@ void __fastcall TInterface::SpeedButtonClick(TObject *Sender)
                             {
                                 for(int VLoc = SelectRect.Top - 1; VLoc < SelectRect.Bottom + 1; VLoc++)
                                 {
-                                    int TVPos = Track->GetVectorPositionFromTrackMap(7777, HLoc, VLoc, FoundFlag);
+                                    int TVPos = Track->GetVectorPositionFromTrackMap(69, HLoc, VLoc, FoundFlag);
                                     if(FoundFlag)
                                     {
-                                        TTrackElement TE1 = Track->TrackElementAt(7777, TVPos);
+                                        TTrackElement TE1 = Track->TrackElementAt(1632, TVPos);
                                         if(TE1.ActiveTrackElementName != "")
                                         {
                                             NamedElementList.push_back(TE1.ActiveTrackElementName);
@@ -942,11 +942,11 @@ void __fastcall TInterface::SpeedButtonClick(TObject *Sender)
                                         }
                                     }
                                     FoundFlag = false;
-                                    TTrack::TIMPair IMPair = Track->GetVectorPositionsFromInactiveTrackMap(7777, HLoc, VLoc, FoundFlag);
+                                    TTrack::TIMPair IMPair = Track->GetVectorPositionsFromInactiveTrackMap(35, HLoc, VLoc, FoundFlag);
                                     if(FoundFlag)
                                     {
-                                        TTrackElement TE2 = Track->InactiveTrackElementAt(7777, IMPair.first);
-                                        TTrackElement TE3 = Track->InactiveTrackElementAt(7777, IMPair.second);
+                                        TTrackElement TE2 = Track->InactiveTrackElementAt(1403, IMPair.first);
+                                        TTrackElement TE3 = Track->InactiveTrackElementAt(1404, IMPair.second);
                                         if(TE2.ActiveTrackElementName != "") //don't think inactive elaments have active name but leave in just in case
                                         {
                                             NamedElementList.push_back(TE2.ActiveTrackElementName);
@@ -977,29 +977,29 @@ void __fastcall TInterface::SpeedButtonClick(TObject *Sender)
                                 NamedElementList.pop_front();
                                 for(unsigned int TVNamePos = 0; TVNamePos < Track->TrackVector.size(); TVNamePos++)
                                 {
-                                    if(Track->TrackElementAt(7777, TVNamePos).ActiveTrackElementName == CurrentName)
+                                    if(Track->TrackElementAt(1633, TVNamePos).ActiveTrackElementName == CurrentName)
                                     {
-                                        Track->TrackElementAt(7777, TVNamePos).ActiveTrackElementName = "";
+                                        Track->TrackElementAt(1634, TVNamePos).ActiveTrackElementName = "";
                                     }
-                                    if(Track->TrackElementAt(7777, TVNamePos).LocationName == CurrentName)
+                                    if(Track->TrackElementAt(1635, TVNamePos).LocationName == CurrentName)
                                     {
-                                        Track->TrackElementAt(7777, TVNamePos).LocationName = "";
+                                        Track->TrackElementAt(1636, TVNamePos).LocationName = "";
                                     }
                                 }
                                 for(unsigned int ITVNamePos = 0; ITVNamePos < Track->InactiveTrackVector.size(); ITVNamePos++)
                                 {
-                                    if(Track->InactiveTrackElementAt(7777, ITVNamePos).ActiveTrackElementName == CurrentName)
+                                    if(Track->InactiveTrackElementAt(1405, ITVNamePos).ActiveTrackElementName == CurrentName)
                                     {
-                                        Track->InactiveTrackElementAt(7777, ITVNamePos).ActiveTrackElementName = "";
+                                        Track->InactiveTrackElementAt(1406, ITVNamePos).ActiveTrackElementName = "";
                                     }
-                                    if(Track->InactiveTrackElementAt(7777, ITVNamePos).LocationName == CurrentName)
+                                    if(Track->InactiveTrackElementAt(1407, ITVNamePos).LocationName == CurrentName)
                                     {
-                                        Track->InactiveTrackElementAt(7777, ITVNamePos).LocationName = "";
+                                        Track->InactiveTrackElementAt(1408, ITVNamePos).LocationName = "";
                                     }
                                 }
-                                if(TextHandler->FindText(7777, CurrentName, HPos, VPos)) //returns position in HPos & Vpos if found
+                                if(TextHandler->FindText(6, CurrentName, HPos, VPos)) //returns position in HPos & Vpos if found
                                 {
-                                    TextHandler->TextErase(7777, HPos, VPos, CurrentName);
+                                    TextHandler->TextErase(8, HPos, VPos, CurrentName);
                                 }
                             }
                         }
@@ -1013,7 +1013,7 @@ void __fastcall TInterface::SpeedButtonClick(TObject *Sender)
                                 //for signals - 0 combined with TrackType == SignalPost means adding and not pasting
                             }
                         }
-                        Track->RebuildLocationNameMultiMap(7777);
+                        Track->RebuildLocationNameMultiMap(4);
                     }
                     Track->SetTrackFinished(false);
                     ClearandRebuildRailway(80); // to remove selection outline
@@ -16353,9 +16353,9 @@ void __fastcall TInterface::FormResize(TObject *Sender) // new at v2.1.0
 //            ActionsDueForm->Top = Screen->Height -ActionsDueForm->Height - 32; //-32 to avoid overlapping taskbar;;
 //            ActionsDueForm->Left = Screen->Width - ActionsDueForm->Width;
             SigImagePanel->Left = (Interface->Width - SigImagePanel->Width) / 2; // added for v2.3.0
-            DevelopmentPanel->Width = MainScreen->Width; //added after v2.17.0
+            DevelopmentPanel->Width = MainScreen->Width; //added at v2.18.0
             DevelopmentPanel->Top = MainScreen->Top + MainScreen->Height - DevelopmentPanel->Height; // new v2.2.0
-            DevelopmentPanel->Left = MainScreen->Left; // new v2.2.0 amended after v2.17.0
+            DevelopmentPanel->Left = MainScreen->Left; // new v2.2.0 amended added at v2.18.0
             MTBFEditBox->Left = MainScreen->Left + MainScreen->Width - MTBFEditBox->Width + 32; // new v2.4.0 32 is to place it above the positional panel
             MTBFLabel->Left = MainScreen->Left + MainScreen->Width - MTBFEditBox->Width + 30 - 55; // new v2.4.0 placed above and to the left of MTBFEditBox
             PositionalPanel->Left = MainScreen->Left + MainScreen->Width; // changed at v2.4.0
@@ -21266,9 +21266,9 @@ void TInterface::ResetAll(int Caller)
     // HomeButton->Left = ScreenRightButton->Left;
     // NewHomeButton->Left = ScreenRightButton->Left;
     // ZoomButton->Left = ScreenRightButton->Left;
-    DevelopmentPanel->Width = MainScreen->Width; //added after v2.17.0
+    DevelopmentPanel->Width = MainScreen->Width; //added at v2.18.0
     DevelopmentPanel->Top = MainScreen->Top + MainScreen->Height - DevelopmentPanel->Height; // new v2.2.0
-    DevelopmentPanel->Left = MainScreen->Left; // new v2.2.0 amended after v2.17.0
+    DevelopmentPanel->Left = MainScreen->Left; // new v2.2.0 amended at v2.18.0
 
     delete TempFont;
     CtrlKey = false;
@@ -24955,6 +24955,27 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
 //test code here
+/*
+        for(TTrack::TTrackVectorIterator TVIt = Track->TrackVector.begin(); TVIt != Track->TrackVector.end(); TVIt++)
+        {
+            if(TVIt->StationEntryStopLinkPos1 > -1)
+            {
+                Display->PlotOutput(-1, (TVIt->HLoc * 16), (TVIt->VLoc * 16), RailGraphics->smBrightGreen);
+            }
+            if(TVIt->StationEntryStopLinkPos2 > -1)
+            {
+                Display->PlotOutput(-1, (TVIt->HLoc * 16), (TVIt->VLoc * 16 + 4), RailGraphics->smMagenta);
+            }
+            if(TVIt->StationEntryStopLinkPos3 > -1)
+            {
+                Display->PlotOutput(-1, (TVIt->HLoc * 16), (TVIt->VLoc * 16 + 8), RailGraphics->smOrange);
+            }
+            if(TVIt->StationEntryStopLinkPos4 > -1)
+            {
+                Display->PlotOutput(-1, (TVIt->HLoc * 16), (TVIt->VLoc * 16 + 12), RailGraphics->smRed);
+            }
+        }
+*/
 /*
     throw Exception("test error");
                     if(AllRoutes->AllRoutesVector.size() > 0)

@@ -24,11 +24,11 @@ digraph "TTextHandler::TextPtrAt"
   Node9 [label="TInterface::CancelSelection\lMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a2fb2cd7dbddb7fa689ea994e9ffc10ff",tooltip=" "];
   Node6 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node10 [label="TInterface::CopyMenuItem\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a424a7eb780461c1acb396feb21f52062",tooltip=" "];
-  Node6 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node11 [label="TInterface::CutMenuItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ae6e977c9dfdfbde9924ceefd19d7d0d3",tooltip=" "];
   Node6 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node6 -> Node23 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node23 [label="TInterface::MainScreenMouseUp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a03280ee86df28a9a7cf4473cdf7b9f8b",tooltip=" "];
+  Node6 -> Node99 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node99 [label="TInterface::SpeedButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ab1487b7a54ebacf27d7b980c65723d18",tooltip=" "];
   Node2 -> Node107 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node107 [label="TTrack::LinkTrack",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a17b6095b0c8de0e1493eeebd6d534247",tooltip="Attempt to link the track and return true if successful, if unsuccessful return error flag and positi..."];
   Node107 -> Node108 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -71,6 +71,7 @@ digraph "TTextHandler::TextPtrAt"
   Node112 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node112 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node112 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node112 -> Node99 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node2 -> Node118 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node118 [label="TTrack::TrackClear",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#ae6fe537bbd1e56074a358bf2c6233c71",tooltip="Empty the track and inactive track vectors, the corresponding track maps, and LocationNameMultiMap."];
   Node118 -> Node109 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -88,6 +89,7 @@ digraph "TTextHandler::TextPtrAt"
   Node122 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node122 -> Node119 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node122 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node122 -> Node99 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node138 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node138 [label="TTextHandler::SaveText",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_text_handler.html#a07441155bee467c9fb111b8332681466",tooltip="save the railway's text to VecFile"];
   Node138 -> Node83 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -105,13 +107,13 @@ digraph "TTextHandler::TextPtrAt"
   Node140 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node140 -> Node49 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node140 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node140 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node140 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node140 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node140 -> Node119 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node140 -> Node23 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node140 -> Node86 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node86 [label="TInterface::SaveMenuItem\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7699c9c408064623d335d3452b60f289",tooltip=" "];
+  Node140 -> Node99 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node140 -> Node81 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node138 -> Node85 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node138 -> Node86 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

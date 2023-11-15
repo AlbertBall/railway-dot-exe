@@ -591,7 +591,7 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
     void CheckAndCancelRouteForWrongEndEntry(int Caller, int Element, int EntryPos);
 /// Carry out the actions needed when a train is waiting to join another train
     void FinishJoin(int Caller);
-/// Carry out the actions needed when a train is to split from the front at a station
+/// Carry out the actions needed when a train is to split from the front
     void FrontTrainSplit(int Caller);
 /// Called when a train is about to leave an element and move onto another.
 /**This function obtains the new element that will become the train's LeadElement, the earlier LeadElement having been assigned to MidElement and earlier MidElement
@@ -627,7 +627,7 @@ erasing the vector element, otherwise the pointers to the bitmaps would be lost 
     void PlotTrainInZoomOutMode(int Caller, bool Flash);
 /// Changes the train's background colour (e.g. to pale green if stopped at a station) Note that this uses the PlotElement[4] values, so whenever called these should reflect the Lead, Mid and Lag Element values or will be plotted in the wrong position
     void PlotTrainWithNewBackgroundColour(int Caller, TColor NewBackgroundColour, TDisplay *Disp);
-/// Carry out the actions needed when a train is to split from the rear at a station
+/// Carry out the actions needed when a train is to split from the rear
     void RearTrainSplit(int Caller);
 /// Sends the 'train terminated' message to the performance log and sets TimetableFinished to true
     void RemainHere(int Caller);

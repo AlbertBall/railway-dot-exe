@@ -7,7 +7,7 @@ digraph "TTrack::IsNamedNonStationLocationPresent"
   rankdir="RL";
   Node1 [label="TTrack::IsNamedNonStation\lLocationPresent",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="True if a non-station named location at HLoc & VLoc."];
   Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node2 [label="TTrack::SetStationEntryStop\lLinkPosses",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a46b69ee08436c2ff5e41673df04bcf11",tooltip="Called when trying to link track and when a name changed when track already linked."];
+  Node2 [label="TTrack::SetNonStationStop\lLinkEntryPosses",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a95dbb3e618484c6edaf9b8a12e07532f",tooltip="similar to SetStationEntryStopLinkPosses but for non-station named elements"];
   Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node3 [label="TTrack::EnterLocationName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a433736aed04f76b3d0c39f0696c3bb18",tooltip="All platform, concourse, footcrossing & non-station named location elements are able to have a Locati..."];
   Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -15,7 +15,7 @@ digraph "TTrack::IsNamedNonStationLocationPresent"
   Node3 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node5 [label="TTrack::SearchForAndUpdate\lLocationName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a68519138e3b39b6ab9433cc9f7862c64",tooltip="Checks all locations that are adjacent to the one entered for linked named location elements."];
   Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node6 [label="TTrack::PlotAndAddTrackElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a4385335a5bb0891cdbf2b6d0f0aabdf2",tooltip="Called during track building or pasting, when an element identified by CurrentTag (i...."];
+  Node6 [label="TTrack::PlotAndAddTrackElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a3473a8df3ac25ff59d924a5ee347134b",tooltip="Called during track building or pasting, when an element identified by CurrentTag (i...."];
   Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node7 [label="TInterface::MainScreenMouse\lDown2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#abf07d5edc1507de381825f17620748b2",tooltip="Called when mouse button clicked in zoom-in mode."];
   Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -25,7 +25,7 @@ digraph "TTrack::IsNamedNonStationLocationPresent"
   Node5 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node10 [label="TTrack::PlotPastedTrackElement\lWithAttributes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a9f93210292bf2423e0ac0d738adafe9e",tooltip="new at v2.2.0 - as PlotAndAddTrackElement but keeping speed & length attributes (for pasting) and als..."];
   Node10 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node11 [label="TInterface::SetLevel2TrackMode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b",tooltip="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode."];
+  Node11 [label="TInterface::SetLevel2TrackMode",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_interface.html#a19ee788122a66d7e97873159bf2e4e4b",tooltip="Sets the Level2TrackMode user mode, using the Level2TrackMode variable to determine the mode."];
   Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node12 [label="TInterface::AddTextButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#aa20c05bf2d6c23035a10a89796334d0f",tooltip=" "];
   Node11 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -112,14 +112,11 @@ digraph "TTrack::IsNamedNonStationLocationPresent"
   Node41 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node41 -> Node104 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node104 [label="TInterface::TrackOKButton\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#aab42b12ff3ba43ad2f70994b5399dd90",tooltip=" "];
-  Node41 -> Node101 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node101 [label="TInterface::ZoomButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a08305797df7dfbdd16b3e8900c33e0bc",tooltip=" "];
   Node11 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node11 -> Node109 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node109 [label="TInterface::TextBoxKeyPress",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ad0ce61f7a8050fb57d19ebd049fa8b49",tooltip=" "];
   Node11 -> Node104 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node11 -> Node24 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node11 -> Node101 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node2 -> Node110 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node110 [label="TTrack::LinkTrack",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a17b6095b0c8de0e1493eeebd6d534247",tooltip="Attempt to link the track and return true if successful, if unsuccessful return error flag and positi..."];
   Node110 -> Node111 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -135,4 +132,9 @@ digraph "TTrack::IsNamedNonStationLocationPresent"
   Node2 -> Node113 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node113 [label="TTrack::LinkTrackNoMessages",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a42f410832651458a4a34769ef95be51b",tooltip="Attempt to link the track and return true if successful, don't issue any screen messages...."];
   Node113 -> Node111 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node114 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node114 [label="TTrack::SetStationEntryStop\lLinkPosses",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a46b69ee08436c2ff5e41673df04bcf11",tooltip="Called when trying to link track and when a name changed when track already linked."];
+  Node114 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node114 -> Node110 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node114 -> Node113 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

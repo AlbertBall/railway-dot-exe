@@ -2161,7 +2161,7 @@ void TTrack::PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int 
 // TrackLinkingRequiredFlag only relates to elements that require track linking after plotting - used to set TrackFinished
 // to false in calling function. New at v2.2.0 new parameter 'Aspect' to ensure signals plotted with correct number of aspects (for pasting)
 // and also when zero and combined with SignalPost to indicate that adding track rather than pasting
-// PerformNameSearch added after v2.17.0 to speed up named element additions when area selected
+// PerformNameSearch added at v2.18.0 to speed up named element additions when area selected
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",PlotAndAddTrackElement," + AnsiString(CurrentTag) + "," +
                                  AnsiString(HLocInput) + "," + AnsiString(VLocInput) + "," + AnsiString((short)InternalChecks));
@@ -5147,7 +5147,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
     if(FinalCall)
     {
         SetStationEntryStopLinkPosses(1);
-        SetNonStationStopLinkEntryPosses(7777);
+        SetNonStationStopLinkEntryPosses(0);
     }
 
 // confirmatiory checks that all ok - or throw error
@@ -5176,7 +5176,7 @@ bool TTrack::LinkTrack(int Caller, bool &LocError, int &HLoc, int &VLoc, bool Fi
             if(TrackElementAt(1199, x).ActiveTrackElementName == "")
             {
                 if((TrackElementAt(1200, x).StationEntryStopLinkPos1 != -1) || (TrackElementAt(1201, x).StationEntryStopLinkPos2 != -1) ||
-                    (TrackElementAt(1200, x).StationEntryStopLinkPos3 != -1) || (TrackElementAt(1201, x).StationEntryStopLinkPos4 != -1))
+                    (TrackElementAt(1637, x).StationEntryStopLinkPos3 != -1) || (TrackElementAt(1638, x).StationEntryStopLinkPos4 != -1))
                 {
                     throw Exception("Error, StationEntryStopLinkPos not -1 for unnamed element at TrackVectorPosition = " + AnsiString(x));
                 }
@@ -5407,7 +5407,7 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
     if(FinalCall)
     {
         SetStationEntryStopLinkPosses(2);
-        SetNonStationStopLinkEntryPosses(7777);
+        SetNonStationStopLinkEntryPosses(1);
     }
 // final check
     bool ConnErrorFlag = false;
@@ -5435,7 +5435,7 @@ bool TTrack::LinkTrackNoMessages(int Caller, bool FinalCall)
             if(TrackElementAt(1269, x).ActiveTrackElementName == "")
             {
                 if((TrackElementAt(1270, x).StationEntryStopLinkPos1 != -1) || (TrackElementAt(1271, x).StationEntryStopLinkPos2 != -1) ||
-                    (TrackElementAt(1200, x).StationEntryStopLinkPos3 != -1) || (TrackElementAt(1201, x).StationEntryStopLinkPos4 != -1))
+                    (TrackElementAt(1639, x).StationEntryStopLinkPos3 != -1) || (TrackElementAt(1640, x).StationEntryStopLinkPos4 != -1))
                 {
                     throw Exception("Error, StationEntryStopLinkPos not -1 for unnamed element at TrackVectorPosition = " + AnsiString(x));
                 }
@@ -6156,15 +6156,15 @@ void TTrack::PlotPoints(int Caller, TTrackElement TrackElement, TDisplay *Disp, 
         throw Exception("Error, Wrong track type in PlotPoints");
     }
     Disp->PlotPointBlank(0, TrackElement.HLoc, TrackElement.VLoc); // to get rid of earlier fillet
-    //check if a blue location and if so plot the blue element again - named or not as appropriate - added after v2.17.0 for blue locs at points
+    //check if a blue location and if so plot the blue element again - named or not as appropriate - added at v2.18.0 for blue locs at points
     bool FoundFlag = false;
-    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(7777, TrackElement.HLoc, TrackElement.VLoc, FoundFlag);
+    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(32, TrackElement.HLoc, TrackElement.VLoc, FoundFlag);
     if(IMPair.first > 0) //can only have one entry in IMPair for points
     {
-        TTrackElement ITE = InactiveTrackElementAt(7777, IMPair.first);
+        TTrackElement ITE = InactiveTrackElementAt(1409, IMPair.first);
         if(ITE.SpeedTag == 131)
         {
-            ITE.PlotVariableTrackElement(7777, Disp); //plot the blue square again
+            ITE.PlotVariableTrackElement(8, Disp); //plot the blue square again
         }
     }
     TrackElement.PlotVariableTrackElement(4, Disp);
@@ -6228,8 +6228,8 @@ void TTrack::PlotPoints(int Caller, TTrackElement TrackElement, TDisplay *Disp, 
     bool BlueLoc = false;
     if(FoundFlag)
     {
-        TTrackElement TE = GetInactiveTrackElementFromTrackMap(7777, TrackElement.HLoc, TrackElement.VLoc);
-        if(TE.SpeedTag == 131) //non-station named location - don't want to replot these added after v2.17.0
+        TTrackElement TE = GetInactiveTrackElementFromTrackMap(6, TrackElement.HLoc, TrackElement.VLoc);
+        if(TE.SpeedTag == 131) //non-station named location - don't want to replot these added at v2.18.0
         {
             BlueLoc = true;
         }
@@ -8505,22 +8505,22 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
                     LNPendingList.insert(LNPendingList.end(), NewElement);
                 }
             }
-            int TVPos = GetVectorPositionFromTrackMap(7777, H, V, FoundFlag); //deal with gaps, added after v2.17.0
+            int TVPos = GetVectorPositionFromTrackMap(67, H, V, FoundFlag); //deal with gaps, added at v2.18.0
             {
-                if(FoundFlag && TrackElementAt(7777, TVPos).TrackType == GapJump)
+                if(FoundFlag && TrackElementAt(1585, TVPos).TrackType == GapJump)
                 {
-                    int GJTVPos = TrackElementAt(7777, TVPos).Conn[0];
+                    int GJTVPos = TrackElementAt(1586, TVPos).Conn[0];
                     if(GJTVPos > -1)
                     {
-                        int HLoc = TrackElementAt(7777, GJTVPos).HLoc;
-                        int VLoc = TrackElementAt(7777, GJTVPos).VLoc;
+                        int HLoc = TrackElementAt(1587, GJTVPos).HLoc;
+                        int VLoc = TrackElementAt(1588, GJTVPos).VLoc;
                         bool FoundFlag2 = false;
-                        TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(7777, HLoc, VLoc, FoundFlag2);
+                        TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(33, HLoc, VLoc, FoundFlag2);
                         if(FoundFlag2)
                         {
-                            if(Track->InactiveTrackElementAt(7777, IMPair.first).SpeedTag == 131) //only need first as second is for platforms
+                            if(Track->InactiveTrackElementAt(1410, IMPair.first).SpeedTag == 131) //only need first as second is for platforms
                             {
-                                if(!ElementInLNDone2MultiMap(7777, IMPair.first) && !ElementInLNPendingList(7777, IMPair.first))
+                                if(!ElementInLNDone2MultiMap(5, IMPair.first) && !ElementInLNPendingList(6, IMPair.first))
                                 {
                                     LNPendingList.insert(LNPendingList.end(), IMPair.first);
                                 }
@@ -8627,7 +8627,7 @@ void TTrack::EnterLocationName(int Caller, AnsiString LocationName, bool AddingE
     if(TrackFinished)
     {
         SetStationEntryStopLinkPosses(3);
-        SetNonStationStopLinkEntryPosses(7777);
+        SetNonStationStopLinkEntryPosses(2);
     }
 // set here as well as in LinkTrack so don't have to link track just because a name added
 // if track not finished then will be set when track validated
@@ -9261,28 +9261,28 @@ void TTrack::SearchForAndUpdateLocationName(int Caller, int HLoc, int VLoc, int 
             {
                 LNPendingList.insert(Track->LNPendingList.end(), MapPos);
                 EnterLocationName(10, LocationName, true);
-                Utilities->CallLogPop(7777);
+                Utilities->CallLogPop(2657);
                 return;
             }
         }
-        int TVPos = GetVectorPositionFromTrackMap(7777, HLoc, VLoc, FoundFlag); //deal with gaps, added after v2.17.0
+        int TVPos = GetVectorPositionFromTrackMap(68, HLoc, VLoc, FoundFlag); //deal with gaps, added at v2.18.0
         {
-            if(FoundFlag && TrackElementAt(7777, TVPos).TrackType == GapJump)
+            if(FoundFlag && TrackElementAt(1589, TVPos).TrackType == GapJump)
             {
-                int GJTVPos = TrackElementAt(7777, TVPos).Conn[0];
+                int GJTVPos = TrackElementAt(1590, TVPos).Conn[0];
                 if(GJTVPos > -1)
                 {
-                    int HLoc2 = TrackElementAt(7777, GJTVPos).HLoc;
-                    int VLoc2 = TrackElementAt(7777, GJTVPos).VLoc;
-                    LocationName = TrackElementAt(7777, GJTVPos).ActiveTrackElementName;
+                    int HLoc2 = TrackElementAt(1591, GJTVPos).HLoc;
+                    int VLoc2 = TrackElementAt(1592, GJTVPos).VLoc;
+                    LocationName = TrackElementAt(1593, GJTVPos).ActiveTrackElementName;
                     bool FoundFlag2 = false;
-                    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(7777, HLoc2, VLoc2, FoundFlag2);
+                    TIMPair IMPair = GetVectorPositionsFromInactiveTrackMap(34, HLoc2, VLoc2, FoundFlag2);
                     if(FoundFlag2)
                     {
-                        if(Track->InactiveTrackElementAt(7777, IMPair.first).SpeedTag == 131) //only need first as second is for platforms
+                        if(Track->InactiveTrackElementAt(1411, IMPair.first).SpeedTag == 131) //only need first as second is for platforms
                         {
                             LNPendingList.insert(LNPendingList.end(), IMPair.first);
-                            EnterLocationName(7777, LocationName, true);
+                            EnterLocationName(16, LocationName, true);
                         }
                     }
                 }
@@ -10295,7 +10295,7 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)  //only for platforms
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
         TempElement = TrackElementAt(1380, x);
-        if(!IsNamedNonStationLocationPresent(7777, TempElement.HLoc, TempElement.VLoc)) //deal with non-station names later
+        if(!IsNamedNonStationLocationPresent(2, TempElement.HLoc, TempElement.VLoc)) //deal with non-station names later
         {
             ForwardSet = false;
             ReverseSet = false;
@@ -10458,10 +10458,10 @@ void TTrack::SetStationEntryStopLinkPosses(int Caller)  //only for platforms
 
 // ---------------------------------------------------------------------------
 
-void TTrack::SetNonStationStopLinkEntryPosses(int Caller) //added after v2.17.0
+void TTrack::SetNonStationStopLinkEntryPosses(int Caller) //added at v2.18.0
 
 {
-/*After v2.17.0 allow for 2 tracks on a non-station element.  Have StationEntryStopLinkPos1 & 2 contain both track entry positions, 0 & 1 in
+/*at v2.18.0 allow for 2 tracks on a non-station element.  Have StationEntryStopLinkPos1 & 2 contain both track entry positions, 0 & 1 in
 least sig 2 bits and 2 & 3 in next least sig bits.  In use have SESLPos1a == 0 or 1 and SESLPos1b == 2 or 3, and same for Pos2.  'b' values all
 set to 0 for platforms, and set appropriately for 2-track non-station locs. SESLPos values are TTrackElement variables only used in program, not
 saved in sessions or railways (same as StationEntryStopLinkPos1 & 2).
@@ -10476,11 +10476,11 @@ doesn't link at all, this is an end element, check both tracks separately for 4-
     std::list<AnsiString> ContinuationNameList; // list of continuation names so can exclude them
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        TrackElementAt(1378, x).StationEntryStopLinkPos3 = -1;  // don't clear stopping points 0 & 1 as already set for platforms
-        TrackElementAt(1379, x).StationEntryStopLinkPos4 = -1;
-        if((TrackElementAt(1379, x).TrackType == Continuation) && (TrackElementAt(1379, x).ActiveTrackElementName != ""))
+        TrackElementAt(1594, x).StationEntryStopLinkPos3 = -1;  // don't clear stopping points 0 & 1 as already set for platforms
+        TrackElementAt(1595, x).StationEntryStopLinkPos4 = -1;
+        if((TrackElementAt(1596, x).TrackType == Continuation) && (TrackElementAt(1641, x).ActiveTrackElementName != ""))
         {
-            ContinuationNameList.push_back(TrackElementAt(1379, x).ActiveTrackElementName);
+            ContinuationNameList.push_back(TrackElementAt(1597, x).ActiveTrackElementName);
         }
     }
     ContinuationNameList.sort();
@@ -10488,8 +10488,8 @@ doesn't link at all, this is an end element, check both tracks separately for 4-
 
     for(unsigned int x = 0; x < TrackVector.size(); x++)
     {
-        TempElement = TrackElementAt(1380, x);
-        if(IsNamedNonStationLocationPresent(7777, TempElement.HLoc, TempElement.VLoc))
+        TempElement = TrackElementAt(1598, x);
+        if(IsNamedNonStationLocationPresent(3, TempElement.HLoc, TempElement.VLoc))
         {
             bool NameIsAContinuation = false;
             if(std::find(ContinuationNameList.begin(), ContinuationNameList.end(), TempElement.ActiveTrackElementName) != ContinuationNameList.end())
@@ -10501,15 +10501,15 @@ doesn't link at all, this is an end element, check both tracks separately for 4-
             // Non-station named elements can't be placed on platforms so no conflict with existing stop positions
             {
                 TempName = TempElement.ActiveTrackElementName;
-                if((TempElement.Conn[0] > -1) && (TempElement.Conn[1] > -1) && (TrackElementAt(44, TempElement.Conn[0]).ActiveTrackElementName == TempName) &&
-                   (TrackElementAt(45, TempElement.Conn[1]).ActiveTrackElementName == TempName))
+                if((TempElement.Conn[0] > -1) && (TempElement.Conn[1] > -1) && (TrackElementAt(1599, TempElement.Conn[0]).ActiveTrackElementName == TempName) &&
+                   (TrackElementAt(1600, TempElement.Conn[1]).ActiveTrackElementName == TempName))
                 // an element linked at both ends of single or main track where both links are also named elements with same name
                 {
                     if(TempElement.TrackType == Points) //for points links 0 and 2 are the same
                     {
                         if(((TempElement.Conn[2] > -1)) && (TempElement.Conn[3] > -1) &&
-                            ((TrackElementAt(44, TempElement.Conn[2]).ActiveTrackElementName == TempName)) &&
-                           (TrackElementAt(45, TempElement.Conn[3]).ActiveTrackElementName == TempName))
+                            ((TrackElementAt(1601, TempElement.Conn[2]).ActiveTrackElementName == TempName)) &&
+                           (TrackElementAt(1602, TempElement.Conn[3]).ActiveTrackElementName == TempName))
                         {
                             continue; //not an end element so skip it
                         }
@@ -10521,8 +10521,8 @@ doesn't link at all, this is an end element, check both tracks separately for 4-
                     else if(TempElement.TrackType == Crossover)
                     {
                         if((TempElement.Conn[2] > -1) && (TempElement.Conn[3] > -1) &&
-                            (TrackElementAt(44, TempElement.Conn[2]).ActiveTrackElementName == TempName) &&
-                           (TrackElementAt(45, TempElement.Conn[3]).ActiveTrackElementName == TempName))
+                            (TrackElementAt(1603, TempElement.Conn[2]).ActiveTrackElementName == TempName) &&
+                           (TrackElementAt(1604, TempElement.Conn[3]).ActiveTrackElementName == TempName))
                         {
                             continue; //not an end element so skip it
                         }
@@ -10545,7 +10545,7 @@ doesn't link at all, this is an end element, check both tracks separately for 4-
                 {
                     unsigned int a = NameList.front();
                     NameList.pop_front();
-                    TTrackElement &TempElement = TrackElementAt(7777, a);
+                    TTrackElement &TempElement = TrackElementAt(1605, a);
                     AnsiString TempName = TempElement.ActiveTrackElementName;
                     if(TempElement.TrackType == Buffers) //buffer end is 0 so entry must be 1, gaps covered below as any other element
                     {
@@ -10553,21 +10553,21 @@ doesn't link at all, this is an end element, check both tracks separately for 4-
                     }
                     else
                     {
-                        if((TempElement.Conn[0] == -1) || (TrackElementAt(7777, TempElement.Conn[0]).ActiveTrackElementName != TempName))
+                        if((TempElement.Conn[0] == -1) || (TrackElementAt(1606, TempElement.Conn[0]).ActiveTrackElementName != TempName))
                         {
                             TempElement.StationEntryStopLinkPos1 = 1;
                         }
-                        if((TempElement.Conn[1] == -1) || (TrackElementAt(7777, TempElement.Conn[1]).ActiveTrackElementName != TempName))
+                        if((TempElement.Conn[1] == -1) || (TrackElementAt(1607, TempElement.Conn[1]).ActiveTrackElementName != TempName))
                         {
                             TempElement.StationEntryStopLinkPos2 = 0;
                         }
                         if((TempElement.TrackType == Points) || (TempElement.TrackType == Crossover))
                         {
-                            if((TempElement.Conn[2] == -1) || (TrackElementAt(7777, TempElement.Conn[2]).ActiveTrackElementName != TempName))
+                            if((TempElement.Conn[2] == -1) || (TrackElementAt(1608, TempElement.Conn[2]).ActiveTrackElementName != TempName))
                             {
                                 TempElement.StationEntryStopLinkPos3 = 3;
                             }
-                            if((TempElement.Conn[3] == -1) || (TrackElementAt(7777, TempElement.Conn[3]).ActiveTrackElementName != TempName))
+                            if((TempElement.Conn[3] == -1) || (TrackElementAt(1609, TempElement.Conn[3]).ActiveTrackElementName != TempName))
                             {
                                 TempElement.StationEntryStopLinkPos4 = 2;
                             }
@@ -10577,7 +10577,7 @@ doesn't link at all, this is an end element, check both tracks separately for 4-
             }
         }
     }
-    Utilities->CallLogPop(7777);
+    Utilities->CallLogPop(2640);
 }
 
 // ---------------------------------------------------------------------------
@@ -11068,7 +11068,7 @@ bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName
 
     if(SNRange.first == SNRange.second)
     {
-        Utilities->CallLogPop(972);
+        Utilities->CallLogPop(2641);
         return(false); // should have been caught earlier but include for completeness
     }
     for(SNIterator = SNRange.first; SNIterator != SNRange.second; SNIterator++)
@@ -11077,12 +11077,12 @@ bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName
         {
             continue; // exclude footcrossings - only these have active track element names
         }
-        InactiveElement = InactiveTrackElementAt(47, SNIterator->second);
+        InactiveElement = InactiveTrackElementAt(1412, SNIterator->second);
         if(InactiveElement.TrackType == Concourse)
         {
             continue; // only interested in locations where ActiveTrackElementName may be set (not needed at v2.10.0 but leave in)
         }
-        if(!TrackElementPresentAtHV(1, InactiveElement.HLoc, InactiveElement.VLoc)) //added at v2.10.0 in response to Jason Bassett error notified 14/08/21
+        if(!TrackElementPresentAtHV(2, InactiveElement.HLoc, InactiveElement.VLoc)) //added at v2.10.0 in response to Jason Bassett error notified 14/08/21
         {
             continue; // only interested in locations where ActiveTrackElementName may be set
         }
@@ -11094,7 +11094,7 @@ bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName
             throw Exception ("Error - failed to find element in TrackMap for a non-concourse element in LocationNameMultiMap in OneNonStationLongEnoughForSplit(1)");
         }
         int TVPos = TrackMap.find(HVPair)->second;
-        FirstNamedElement = TrackElementAt(560, TVPos);
+        FirstNamedElement = TrackElementAt(1610, TVPos);
         // first check linked on both sides, skip the check if not
         if(((FirstNamedElement.Conn[0] == -1) || (FirstNamedElement.Conn[1] == -1)) && ((FirstNamedElement.Conn[2] == -1) || (FirstNamedElement.Conn[3] == -1)))
         {
@@ -11105,7 +11105,7 @@ bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName
         {
             FirstNamedExitPos = 0; //this is the end linked to the second named element
             {
-                SecondNamedElement = TrackElementAt(561, FirstNamedElement.Conn[FirstNamedExitPos]);
+                SecondNamedElement = TrackElementAt(1611, FirstNamedElement.Conn[FirstNamedExitPos]);
                 if(SecondNamedElement.ActiveTrackElementName == LocationName) //so far so good, check if linked on other side and if so return true
                 {
                     SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos];
@@ -11123,14 +11123,14 @@ bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName
                     }
                     if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
                     {
-                        Utilities->CallLogPop(7777);
+                        Utilities->CallLogPop(2642);
                         return(true);
                     } //if not try other exitpos
                 }
             }
             FirstNamedExitPos = 1;
             {
-                SecondNamedElement = TrackElementAt(561, FirstNamedElement.Conn[FirstNamedExitPos]);
+                SecondNamedElement = TrackElementAt(1612, FirstNamedElement.Conn[FirstNamedExitPos]);
                 if(SecondNamedElement.ActiveTrackElementName == LocationName) //so far so good, check if linked on other side and if so return true
                 {
                     SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos];
@@ -11148,7 +11148,7 @@ bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName
                     }
                     if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
                     {
-                        Utilities->CallLogPop(7777);
+                        Utilities->CallLogPop(2643);
                         return(true);
                     } //failed so far, try links 2 & 3, one or other must be linked on both side or would have continued
                 }
@@ -11158,7 +11158,7 @@ bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName
         {
             FirstNamedExitPos = 2;
             {
-                SecondNamedElement = TrackElementAt(561, FirstNamedElement.Conn[FirstNamedExitPos]);
+                SecondNamedElement = TrackElementAt(1613, FirstNamedElement.Conn[FirstNamedExitPos]);
                 if(SecondNamedElement.ActiveTrackElementName == LocationName) //so far so good, check if linked on other side and if so return true
                 {
                     SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos];
@@ -11176,14 +11176,14 @@ bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName
                     }
                     if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
                     {
-                        Utilities->CallLogPop(7777);
+                        Utilities->CallLogPop(2644);
                         return(true);
                     } //if not try other exitpos
                 }
             }
             FirstNamedExitPos = 3;
             {
-                SecondNamedElement = TrackElementAt(561, FirstNamedElement.Conn[FirstNamedExitPos]);
+                SecondNamedElement = TrackElementAt(1614, FirstNamedElement.Conn[FirstNamedExitPos]);
                 if(SecondNamedElement.ActiveTrackElementName == LocationName) //so far so good, check if linked on other side and if so return true
                 {
                     SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos];
@@ -11201,14 +11201,14 @@ bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName
                     }
                     if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
                     {
-                        Utilities->CallLogPop(7777);
+                        Utilities->CallLogPop(2645);
                         return(true);
                     } //failed so continue to next element or return false
                 }
             }
         }
     }
-    Utilities->CallLogPop(1004);
+    Utilities->CallLogPop(2646);
     return(false);
 }
 
@@ -11369,7 +11369,7 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
 
     if(SNRange.first == SNRange.second) // i.e. location name not in map
     {
-        Utilities->CallLogPop(1005);
+        Utilities->CallLogPop(2647);
         return(false); // should have been caught earlier but include for completeness
     }
     for(SNIterator = SNRange.first; SNIterator != SNRange.second; SNIterator++)
@@ -11378,7 +11378,7 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
         {
             continue; // exclude footcrossings
         }
-        InactiveElement = InactiveTrackElementAt(69, SNIterator->second);
+        InactiveElement = InactiveTrackElementAt(1413, SNIterator->second);
         if(InactiveElement.TrackType != NamedNonStationLocation)
         {
             continue; // only interested in non-station names, shouldn't reach here but inc;ude as a safeguard
@@ -11395,7 +11395,7 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
         {
             continue; // looking for an exact match
         }
-        FirstNamedElement = TrackElementAt(567, TVPos);
+        FirstNamedElement = TrackElementAt(1615, TVPos);
         // first check linked on both sides, skip the check if not
         if(((FirstNamedElement.Conn[0] == -1) || (FirstNamedElement.Conn[1] == -1)) && ((FirstNamedElement.Conn[2] == -1) || (FirstNamedElement.Conn[3] == -1)))
         {
@@ -11410,7 +11410,7 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
         if((LowLinks && FirstNamedElement.Conn[0] > -1) && (FirstNamedElement.Conn[1] > -1)) //examine links 0 & 1
         {
             FirstNamedExitPos = 0; //this links to the second named element
-            SecondNamedElement = TrackElementAt(568, FirstNamedElement.Conn[FirstNamedExitPos]);
+            SecondNamedElement = TrackElementAt(1616, FirstNamedElement.Conn[FirstNamedExitPos]);
             SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos]; //links to FirstNamedElement
             if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
             {
@@ -11424,22 +11424,22 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
             {
                 SecondNamedExitPos = 2;
             }
-            FirstNamedLinkedElement = TrackElementAt(569, FirstNamedElement.Conn[1 - FirstNamedExitPos]);
+            FirstNamedLinkedElement = TrackElementAt(1617, FirstNamedElement.Conn[1 - FirstNamedExitPos]);
             if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
             {
                 if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
                 {
-                    SecondNamedLinkedElement = TrackElementAt(570, SecondNamedElement.Conn[SecondNamedExitPos]);
+                    SecondNamedLinkedElement = TrackElementAt(1618, SecondNamedElement.Conn[SecondNamedExitPos]);
                     SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
                     FirstNamedLinkedElementPos = FirstNamedElement.Conn[1 - FirstNamedExitPos];
                     SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
-                    Utilities->CallLogPop(1006);
+                    Utilities->CallLogPop(2648);
                     return(true);
                 }
             }
         // failed, try link 1
             FirstNamedExitPos = 1;
-            SecondNamedElement = TrackElementAt(571, FirstNamedElement.Conn[FirstNamedExitPos]);
+            SecondNamedElement = TrackElementAt(1619, FirstNamedElement.Conn[FirstNamedExitPos]);
             SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos]; //links to FirstNamedElement
             if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
             {
@@ -11453,16 +11453,16 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
             {
                 SecondNamedExitPos = 2;
             }
-            FirstNamedLinkedElement = TrackElementAt(572, FirstNamedElement.Conn[1 - FirstNamedExitPos]);
+            FirstNamedLinkedElement = TrackElementAt(1620, FirstNamedElement.Conn[1 - FirstNamedExitPos]);
             if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
             {
                 if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
                 {
-                    SecondNamedLinkedElement = TrackElementAt(573, SecondNamedElement.Conn[SecondNamedExitPos]);
+                    SecondNamedLinkedElement = TrackElementAt(1621, SecondNamedElement.Conn[SecondNamedExitPos]);
                     SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
                     FirstNamedLinkedElementPos = FirstNamedElement.Conn[1 - FirstNamedExitPos];
                     SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
-                    Utilities->CallLogPop(1007);
+                    Utilities->CallLogPop(2649);
                     return(true);
                 }
             }
@@ -11470,7 +11470,7 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
         else if((!LowLinks && FirstNamedElement.Conn[2] > -1) && (FirstNamedElement.Conn[3] > -1)) //examine links 2 & 3
         {
             FirstNamedExitPos = 2; //this links to the second named element
-            SecondNamedElement = TrackElementAt(568, FirstNamedElement.Conn[FirstNamedExitPos]);
+            SecondNamedElement = TrackElementAt(1622, FirstNamedElement.Conn[FirstNamedExitPos]);
             SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos]; //links to FirstNamedElement
             if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
             {
@@ -11484,22 +11484,22 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
             {
                 SecondNamedExitPos = 2;
             }
-            FirstNamedLinkedElement = TrackElementAt(569, FirstNamedElement.Conn[3]);
+            FirstNamedLinkedElement = TrackElementAt(1623, FirstNamedElement.Conn[3]);
             if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
             {
                 if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
                 {
-                    SecondNamedLinkedElement = TrackElementAt(570, SecondNamedElement.Conn[SecondNamedExitPos]);
+                    SecondNamedLinkedElement = TrackElementAt(1624, SecondNamedElement.Conn[SecondNamedExitPos]);
                     SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
                     FirstNamedLinkedElementPos = FirstNamedElement.Conn[3];
                     SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
-                    Utilities->CallLogPop(1006);
+                    Utilities->CallLogPop(2650);
                     return(true);
                 }
             }
         // failed, try link 3
             FirstNamedExitPos = 3;
-            SecondNamedElement = TrackElementAt(571, FirstNamedElement.Conn[FirstNamedExitPos]);
+            SecondNamedElement = TrackElementAt(1625, FirstNamedElement.Conn[FirstNamedExitPos]);
             SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos]; //links to FirstNamedElement
             if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
             {
@@ -11513,22 +11513,22 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
             {
                 SecondNamedExitPos = 2;
             }
-            FirstNamedLinkedElement = TrackElementAt(572, FirstNamedElement.Conn[2]);
+            FirstNamedLinkedElement = TrackElementAt(1626, FirstNamedElement.Conn[2]);
             if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
             {
                 if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
                 {
-                    SecondNamedLinkedElement = TrackElementAt(573, SecondNamedElement.Conn[SecondNamedExitPos]);
+                    SecondNamedLinkedElement = TrackElementAt(1627, SecondNamedElement.Conn[SecondNamedExitPos]);
                     SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
                     FirstNamedLinkedElementPos = FirstNamedElement.Conn[2];
                     SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
-                    Utilities->CallLogPop(1007);
+                    Utilities->CallLogPop(2651);
                     return(true);
                 }
             }
         }
     }
-    Utilities->CallLogPop(1008);
+    Utilities->CallLogPop(2652);
     return(false);
 }
 
@@ -16011,7 +16011,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
    element on opposite track and still find the required end point - causes error when adding to the Route"MultiMap (happened by chance when
    developing non-station named elements on points & crossovers).  BUT need to speed up, don't use brute force search through all searchvector.
 
-   just test 4-track elements & fail for crossover, points or bridge on same track, if 2-track then looping and searchlimit will stop - changed after v2.17.0
+   just test 4-track elements & fail for crossover, points or bridge on same track, if 2-track then looping and searchlimit will stop - changed at v2.18.0
 */
         if((SearchElement.TrackType == Crossover) || (SearchElement.TrackType == Points))
         {
@@ -16023,7 +16023,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                     {
                         SearchVector.erase(SearchVector.end() - 1);
                     }
-                    Utilities->CallLogPop(7777);
+                    Utilities->CallLogPop(2653);
                     return(false);
                 }
             }
@@ -16039,7 +16039,7 @@ bool TOneRoute::SearchForPreferredRoute(int Caller, TPrefDirElement PrefDirEleme
                     {
                         SearchVector.erase(SearchVector.end() - 1);
                     }
-                    Utilities->CallLogPop(7777);
+                    Utilities->CallLogPop(2654);
                     return(false);
                 }
             }
@@ -17449,7 +17449,7 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
    element on opposite track and still find the required end point - causes error when adding to the Route"MultiMap (happened by chance when
    developing non-station named elements on points & crossovers).  BUT need to speed up, don't use brute force search through all searchvector.
 
-   just test 4-track elements & fail for crossover, points or bridge on same track, if 2-track then looping and searchlimit will stop - changed after v2.17.0
+   just test 4-track elements & fail for crossover, points or bridge on same track, if 2-track then looping and searchlimit will stop - changed at v2.18.0
 */
         if((SearchElement.TrackType == Crossover) || (SearchElement.TrackType == Points))
         {
@@ -17461,7 +17461,7 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
                     {
                         SearchVector.erase(SearchVector.end() - 1);
                     }
-                    Utilities->CallLogPop(7777);
+                    Utilities->CallLogPop(2655);
                     return(false);
                 }
             }
@@ -17477,7 +17477,7 @@ bool TOneRoute::SearchForNonPreferredRoute(int Caller, TTrackElement CurrentTrac
                     {
                         SearchVector.erase(SearchVector.end() - 1);
                     }
-                    Utilities->CallLogPop(7777);
+                    Utilities->CallLogPop(2656);
                     return(false);
                 }
             }

@@ -1,5 +1,10 @@
 var NAVTREEINDEX14 =
 {
+"class_t_train_controller.html#aa9073b97736a2733dbdaf8dc52e34c24":[2,0,24,16],
+"class_t_train_controller.html#aa92b0775f08a0f99bfe1e54796825df7":[2,0,24,81],
+"class_t_train_controller.html#aab94af5bb445fc36543e2c22d2986daa":[2,0,24,43],
+"class_t_train_controller.html#aac40bb413b2b9188de4e5305848691a3":[2,0,24,60],
+"class_t_train_controller.html#aadffada34a23350d7773bc7735e423a1":[2,0,24,23],
 "class_t_train_controller.html#ab0481dd8db0f3f99811f2cdc5b5dfd32":[2,0,24,87],
 "class_t_train_controller.html#ab059fc7a9e528d0fd5caf87562b68bac":[2,0,24,59],
 "class_t_train_controller.html#ab0bd82e3cfd918e37938bd118a0978dd":[2,0,24,11],
@@ -163,8 +168,8 @@ var NAVTREEINDEX14 =
 "class_t_utilities.html#afcf1e36ba4cce8470285d047c8b9cb13":[2,0,29,40],
 "classes.html":[2,1],
 "files.html":[3,0],
-"functions.html":[2,3,0],
 "functions.html":[2,3,0,0],
+"functions.html":[2,3,0],
 "functions_b.html":[2,3,0,1],
 "functions_c.html":[2,3,0,2],
 "functions_d.html":[2,3,0,3],
@@ -172,8 +177,8 @@ var NAVTREEINDEX14 =
 "functions_enum.html":[2,3,4],
 "functions_eval.html":[2,3,5],
 "functions_f.html":[2,3,0,5],
-"functions_func.html":[2,3,1,0],
 "functions_func.html":[2,3,1],
+"functions_func.html":[2,3,1,0],
 "functions_func_b.html":[2,3,1,1],
 "functions_func_c.html":[2,3,1,2],
 "functions_func_d.html":[2,3,1,3],
@@ -244,10 +249,5 @@ var NAVTREEINDEX14 =
 "functions_w.html":[2,3,0,22],
 "functions_x.html":[2,3,0,23],
 "functions_y.html":[2,3,0,24],
-"functions_z.html":[2,3,0,25],
-"functions_~.html":[2,3,0,26],
-"globals.html":[3,1,0,0],
-"globals.html":[3,1,0],
-"globals_a.html":[3,1,0,1],
-"globals_b.html":[3,1,0,2]
+"functions_z.html":[2,3,0,25]
 };

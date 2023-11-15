@@ -37,7 +37,7 @@ digraph "TTrack::PlotSignalPlatforms"
   Node15 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node2 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node2 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node18 [label="TTrack::PlotAndAddTrackElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a4385335a5bb0891cdbf2b6d0f0aabdf2",tooltip="Called during track building or pasting, when an element identified by CurrentTag (i...."];
+  Node18 [label="TTrack::PlotAndAddTrackElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a3473a8df3ac25ff59d924a5ee347134b",tooltip="Called during track building or pasting, when an element identified by CurrentTag (i...."];
   Node18 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node18 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node19 [label="TInterface::SpeedButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ab1487b7a54ebacf27d7b980c65723d18",tooltip=" "];

@@ -15,9 +15,11 @@ digraph "TTrack::GetVectorPositionFromTrackMap"
   Node3 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node5 [label="TTrack::SearchForAndUpdate\lLocationName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a68519138e3b39b6ab9433cc9f7862c64",tooltip="Checks all locations that are adjacent to the one entered for linked named location elements."];
   Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node6 [label="TTrack::PlotAndAddTrackElement",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#a4385335a5bb0891cdbf2b6d0f0aabdf2",tooltip="Called during track building or pasting, when an element identified by CurrentTag (i...."];
+  Node6 [label="TTrack::PlotAndAddTrackElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a3473a8df3ac25ff59d924a5ee347134b",tooltip="Called during track building or pasting, when an element identified by CurrentTag (i...."];
   Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node7 [label="TInterface::MainScreenMouse\lDown2",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_interface.html#abf07d5edc1507de381825f17620748b2",tooltip="Called when mouse button clicked in zoom-in mode."];
+  Node6 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="TInterface::SpeedButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#ab1487b7a54ebacf27d7b980c65723d18",tooltip=" "];
   Node5 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node10 [label="TTrack::PlotPastedTrackElement\lWithAttributes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a9f93210292bf2423e0ac0d738adafe9e",tooltip="new at v2.2.0 - as PlotAndAddTrackElement but keeping speed & length attributes (for pasting) and als..."];
   Node10 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -40,6 +42,7 @@ digraph "TTrack::GetVectorPositionFromTrackMap"
   Node36 [label="TInterface::RotLeftMenuItem\lClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a3cf2db0424e05908b20a97130895d056",tooltip=" "];
   Node11 -> Node37 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node37 [label="TInterface::RotRightMenu\lItemClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#aa6e7359ece526e43589456e9a31851a0",tooltip=" "];
+  Node11 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node110 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node110 [label="TTrack::AdjElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a607c6164af3158c328dd7c3ae25236c7",tooltip="Used during location naming to check for adjacent named elements to a given element at HLoc & VLoc wi..."];
   Node110 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -102,9 +105,6 @@ digraph "TTrack::GetVectorPositionFromTrackMap"
   Node121 -> Node126 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node126 [label="TOneRoute::GetNextPreferred\lRouteElement",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_one_route.html#a974ac7ab4cb5e6a5df33a3d7b3563315",tooltip="Try to find a set of linked tracks that lie on preferred directions between the route start element a..."];
   Node126 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node121 -> Node128 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node128 [label="TOneRoute::GetNonPreferred\lRouteStartElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_one_route.html#a13dd08bfcc95ea1296f9ac4fd699e94d",tooltip="Set the starting conditions for a non-preferred (i.e. unrestricted) route selection beginning on HLoc..."];
-  Node128 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node121 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node132 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node132 [label="TInterface::FlashingGraphics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7e6535742855a19cb3e35b1711a7ab59",tooltip="Deal with any warning graphics that need to flash (call on, signal stop, crash etc),..."];
@@ -141,6 +141,7 @@ digraph "TTrack::GetVectorPositionFromTrackMap"
   Node1 -> Node140 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node140 [label="TInterface::SetTrackLengths",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#acc36eb15dae8d564e6d91f8c6596065c",tooltip="Called during track building when setting distances, to calculate and set the individual track elemen..."];
   Node140 -> Node21 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 -> Node141 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node141 [label="TTrack::TrackPush",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$class_t_track.html#a2d8f9445f873689b8e71d3f8efc7c7d3",tooltip="Insert TrackElement into the relevant vector and map, and, if named, insert the name in LocationNameM..."];
   Node141 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

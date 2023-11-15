@@ -151,7 +151,7 @@ public: // everything uses these - should really have Gets & Sets but too many t
     int Length01, Length23, SpeedLimit01, SpeedLimit23;
 ///< Element lengths and speed limits, ...01 is for the track with link positions [0] and [1], ...23 for [2] and [3], set to -1 if not used (lengths in m & speed limits in km/h)
     int StationEntryStopLinkPos1, StationEntryStopLinkPos2, StationEntryStopLinkPos3, StationEntryStopLinkPos4;
-///< Used for track at platforms ( 1 & 2) and non-station named locations (1 - 4) to mark the train front element stop position, 3 & 4 added after v2.17.0 to allow non-station names on 4-track elements
+///< Used for track at platforms ( 1 & 2) and non-station named locations (1 - 4) to mark the train front element stop position, 3 & 4 added at v2.18.0 to allow non-station names on 4-track elements
     int TrainIDOnElement, TrainIDOnBridgeOrFailedPointOrigSpeedLimit01, TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
 ///< Set to the TrainID value for a bridge when a train is present on the element, bridges can have two trains present so the ...01 and ...23 values give the TrainIDs for track with link positions [0] & [1], and [2] & [3] respectively, set to -1 if no train present
 ///< For a failed point store the original speedlimits, names changed at v2.13.0 to cater for failed points (OK as these not used for points, only bridges)
@@ -1193,7 +1193,7 @@ platforms (inc footcrossing tracks if (but only if) they have a platform at that
 /// Mark on screen a track element according to its length and speed limit if either of these differ from their default values
     void MarkOneLength(int Caller, TTrackElement TE, bool FirstTrack, TDisplay *Disp);
 /// Called during track building or pasting, when an element identified by CurrentTag (i.e. its SpeedTag value) is to be placed at position HLocInput & VLocInput.  If the element can be placed it is displayed and added to the relevant vector, and if named its name is added to LocationNameMultiMap. At v2.2.0 'Aspect' added so can distinguish between adding and pasting track
-    void PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &TrackPlottedFlag, bool InternalChecks, bool PerformNameSearch); //PerformNameSearch added after v2.17.0
+    void PlotAndAddTrackElement(int Caller, int CurrentTag, int Aspect, int HLocInput, int VLocInput, bool &TrackPlottedFlag, bool InternalChecks, bool PerformNameSearch); //PerformNameSearch added at v2.18.0
 /// Plots a continuation on screen, may have overlays if a multiplayer session
     void PlotContinuation(int Caller, TTrackElement TrackElement, TDisplay *Disp);
 ///new at v2.2.0 - as PlotAndAddTrackElement but keeping speed & length attributes (for pasting) and also pasting location names
@@ -1279,7 +1279,7 @@ to bring the named location and timetable naming up to date with the deletion or
 /// Set all TypeOfRoute values to 2 for all linked LCs to indicate manually lowered
     void SetLinkedManualLCs(int Caller, int HLoc, int VLoc);
 /// similar to SetStationEntryStopLinkPosses but for non-station named elements
-    void TTrack::SetNonStationStopLinkEntryPosses(int Caller); //added after v2.17.0
+    void SetNonStationStopLinkEntryPosses(int Caller); //added at v2.18.0
 /// Called when trying to link track and when a name changed when track already linked.
 /**Examines all track elements that have ActiveTrackElementName set, sums the number of consecutive elements with the same name,
 and sets the EntryLink values for the front of train stop points for each direction.  For stations (not non-station named

@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="railway-logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Railway Operation Simulator
-   &#160;<span id="projectnumber">v2.17.0</span>
+   &#160;<span id="projectnumber">v2.18.0</span>
    </div>
    <div id="projectbrief">A railway simulator for Windows</div>
   </td>
@@ -107,7 +107,8 @@ Inheritance diagram for TTrackElement:</div>
 <div class="dynheader">
 Collaboration diagram for TTrackElement:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_t_track_element__coll__graph.svg" width="215" height="551"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 1 -->
+</div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -153,13 +154,13 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aa74717ece7b257122688b6f5855d6125"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#aa74717ece7b257122688b6f5855d6125">ActiveTrackElementName</a></td></tr>
-<tr class="memdesc:aa74717ece7b257122688b6f5855d6125"><td class="mdescLeft">&#160;</td><td class="mdescRight">Location name used either in the timetable or for a continuation (continuation names not used in timetable as trains can't stop there). Only active track elements where there are platforms or non-station named locations have ActiveTrackElementNames.  <a href="class_t_track_element.html#aa74717ece7b257122688b6f5855d6125">More...</a><br /></td></tr>
+<tr class="memdesc:aa74717ece7b257122688b6f5855d6125"><td class="mdescLeft">&#160;</td><td class="mdescRight">Location name used either in the timetable or for a continuation (continuation names not used in timetable as trains can't stop there). Only active track elements where there are platforms or non-station named locations (not footcrossings) have ActiveTrackElementNames.  <a href="class_t_track_element.html#aa74717ece7b257122688b6f5855d6125">More...</a><br /></td></tr>
 <tr class="separator:aa74717ece7b257122688b6f5855d6125"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae780fef4d1277dfeeec0b770ae8b0919"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#ae780fef4d1277dfeeec0b770ae8b0919">ElementID</a></td></tr>
 <tr class="memdesc:ae780fef4d1277dfeeec0b770ae8b0919"><td class="mdescLeft">&#160;</td><td class="mdescRight">the element identifier based on position in the railway  <a href="class_t_track_element.html#ae780fef4d1277dfeeec0b770ae8b0919">More...</a><br /></td></tr>
 <tr class="separator:ae780fef4d1277dfeeec0b770ae8b0919"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4aec8db868ce67f4ec275ce5a2249dc"><td class="memItemLeft" align="right" valign="top">AnsiString&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#ae4aec8db868ce67f4ec275ce5a2249dc">LocationName</a></td></tr>
-<tr class="memdesc:ae4aec8db868ce67f4ec275ce5a2249dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">location name not used for timetabling, only for identification: platforms, non-station named locations, concourses and footcrossings have LocationNames  <a href="class_t_track_element.html#ae4aec8db868ce67f4ec275ce5a2249dc">More...</a><br /></td></tr>
+<tr class="memdesc:ae4aec8db868ce67f4ec275ce5a2249dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">location name not used for timetabling, only for identification: platforms, non-station named locations, concourses (inactive) and footcrossings (active) have LocationNames  <a href="class_t_track_element.html#ae4aec8db868ce67f4ec275ce5a2249dc">More...</a><br /></td></tr>
 <tr class="separator:ae4aec8db868ce67f4ec275ce5a2249dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cde223e36c063fedde528797b3df77d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#a7cde223e36c063fedde528797b3df77d">CallingOnSet</a></td></tr>
 <tr class="memdesc:a7cde223e36c063fedde528797b3df77d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for for signals only when a train is being called on - used to plot the position lights.  <a href="class_t_track_element.html#a7cde223e36c063fedde528797b3df77d">More...</a><br /></td></tr>
@@ -201,8 +202,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a243af97a79009b237beb0cdd6f7db969"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#a243af97a79009b237beb0cdd6f7db969">StationEntryStopLinkPos1</a></td></tr>
 <tr class="separator:a243af97a79009b237beb0cdd6f7db969"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6b589b13c3b59adb3c493816316ffe1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#af6b589b13c3b59adb3c493816316ffe1">StationEntryStopLinkPos2</a></td></tr>
-<tr class="memdesc:af6b589b13c3b59adb3c493816316ffe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for track at platforms and non-station named locations to mark the train front element stop position, there are two for the two directions of travel, set to -1 if not used.  <a href="class_t_track_element.html#af6b589b13c3b59adb3c493816316ffe1">More...</a><br /></td></tr>
 <tr class="separator:af6b589b13c3b59adb3c493816316ffe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae186fd3b9bad3883b8df4cd07c9f5d3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#aae186fd3b9bad3883b8df4cd07c9f5d3">StationEntryStopLinkPos3</a></td></tr>
+<tr class="separator:aae186fd3b9bad3883b8df4cd07c9f5d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a754059cd4a5be7d46dd7800efe20b7ca"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#a754059cd4a5be7d46dd7800efe20b7ca">StationEntryStopLinkPos4</a></td></tr>
+<tr class="memdesc:a754059cd4a5be7d46dd7800efe20b7ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for track at platforms ( 1 &amp; 2) and non-station named locations (1 - 4) to mark the train front element stop position, 3 &amp; 4 added at v2.18.0 to allow non-station names on 4-track elements.  <a href="class_t_track_element.html#a754059cd4a5be7d46dd7800efe20b7ca">More...</a><br /></td></tr>
+<tr class="separator:a754059cd4a5be7d46dd7800efe20b7ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f6319bc1752da843be71f1024774ace"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#a5f6319bc1752da843be71f1024774ace">TrainIDOnElement</a></td></tr>
 <tr class="separator:a5f6319bc1752da843be71f1024774ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb084fba3f720515d1fb8daf8a9bc606"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_t_track_element.html#afb084fba3f720515d1fb8daf8a9bc606">TrainIDOnBridgeOrFailedPointOrigSpeedLimit01</a></td></tr>
@@ -336,7 +341,7 @@ Public Attributes</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 1 -->
+<div class="center"><!-- SVG 2 -->
 </div>
 </div>
 
@@ -423,7 +428,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><!-- SVG 2 -->
+<div class="center"><!-- SVG 3 -->
 </div>
 </div>
 
@@ -442,7 +447,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Location name used either in the timetable or for a continuation (continuation names not used in timetable as trains can't stop there). Only active track elements where there are platforms or non-station named locations have ActiveTrackElementNames. </p>
+<p>Location name used either in the timetable or for a continuation (continuation names not used in timetable as trains can't stop there). Only active track elements where there are platforms or non-station named locations (not footcrossings) have ActiveTrackElementNames. </p>
 
 <p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00128">128</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
@@ -634,7 +639,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>location name not used for timetabling, only for identification: platforms, non-station named locations, concourses and footcrossings have LocationNames </p>
+<p>location name not used for timetabling, only for identification: platforms, non-station named locations, concourses (inactive) and footcrossings (active) have LocationNames </p>
 
 <p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00132">132</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 
@@ -716,7 +721,39 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Used for track at platforms and non-station named locations to mark the train front element stop position, there are two for the two directions of travel, set to -1 if not used. </p>
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00153">153</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+
+</div>
+</div>
+<a id="aae186fd3b9bad3883b8df4cd07c9f5d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae186fd3b9bad3883b8df4cd07c9f5d3">&#9670;&nbsp;</a></span>StationEntryStopLinkPos3</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TTrackElement::StationEntryStopLinkPos3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00153">153</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
+
+</div>
+</div>
+<a id="a754059cd4a5be7d46dd7800efe20b7ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a754059cd4a5be7d46dd7800efe20b7ca">&#9670;&nbsp;</a></span>StationEntryStopLinkPos4</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TTrackElement::StationEntryStopLinkPos4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Used for track at platforms ( 1 &amp; 2) and non-station named locations (1 - 4) to mark the train front element stop position, 3 &amp; 4 added at v2.18.0 to allow non-station names on 4-track elements. </p>
 
 <p class="definition">Definition at line <a class="el" href="_track_unit_8h_source.html#l00153">153</a> of file <a class="el" href="_track_unit_8h_source.html">TrackUnit.h</a>.</p>
 

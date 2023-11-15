@@ -7,7 +7,7 @@ digraph "TTrackElement::PlotVariableTrackElement"
   rankdir="RL";
   Node1 [label="TTrackElement::PlotVariable\lTrackElement",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Plot the element on the display 'variable' indicates that the element may be named and if so may be p..."];
   Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node2 [label="TTrack::PlotAndAddTrackElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a4385335a5bb0891cdbf2b6d0f0aabdf2",tooltip="Called during track building or pasting, when an element identified by CurrentTag (i...."];
+  Node2 [label="TTrack::PlotAndAddTrackElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a3473a8df3ac25ff59d924a5ee347134b",tooltip="Called during track building or pasting, when an element identified by CurrentTag (i...."];
   Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node3 [label="TInterface::MainScreenMouse\lDown2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#abf07d5edc1507de381825f17620748b2",tooltip="Called when mouse button clicked in zoom-in mode."];
   Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

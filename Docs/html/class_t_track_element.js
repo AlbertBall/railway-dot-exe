@@ -27,6 +27,8 @@ var class_t_track_element =
     [ "SpeedLimit23", "class_t_track_element.html#abd898b7031200a2f24c1315b52c965cd", null ],
     [ "StationEntryStopLinkPos1", "class_t_track_element.html#a243af97a79009b237beb0cdd6f7db969", null ],
     [ "StationEntryStopLinkPos2", "class_t_track_element.html#af6b589b13c3b59adb3c493816316ffe1", null ],
+    [ "StationEntryStopLinkPos3", "class_t_track_element.html#aae186fd3b9bad3883b8df4cd07c9f5d3", null ],
+    [ "StationEntryStopLinkPos4", "class_t_track_element.html#a754059cd4a5be7d46dd7800efe20b7ca", null ],
     [ "TempTrackMarker01", "class_t_track_element.html#a1712299f9cb22bb7afbe54e5a781f8ec", null ],
     [ "TempTrackMarker23", "class_t_track_element.html#ab0d0c071e2a124e9143e5c7bc2009805", null ],
     [ "TrainIDOnBridgeOrFailedPointOrigSpeedLimit01", "class_t_track_element.html#afb084fba3f720515d1fb8daf8a9bc606", null ],

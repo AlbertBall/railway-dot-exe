@@ -11,7 +11,7 @@ digraph "TTrack::TrackElementPresentAtHV"
   Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node3 [label="TInterface::MainScreenMouseDown",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a7f37862fb9e01e1328d9fd3fd8c50094",tooltip=" "];
   Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node4 [label="TTrack::OneNamedLocation\lLongEnoughForSplit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a9d209cb6e24f67ba12020440a5e42347",tooltip=" "];
+  Node4 [label="TTrack::OneNonStationLong\lEnoughForSplit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#af05aab9136551763f221773cda241ba5",tooltip="As below but here allow points & crossovers."];
   Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node5 [label="TTrainController::CheckCross\lReferencesAndSetData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_train_controller.html#a36581d2c8663849c6d19b65542c8fa4c",tooltip="A timetable validation function where all service cross references are checked for validity and set p..."];
   Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
@@ -35,4 +35,7 @@ digraph "TTrack::TrackElementPresentAtHV"
   Node14 [label="TInterface::BuildTrainData\lVectorForValidateFile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a4ffe7e6eb2421577f670a52f556aef97",tooltip="Check the integrity of a stored timetable file (either as a stand alone file or within a session file..."];
   Node14 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node15 [label="TInterface::ValidateTimetable\lButtonClick",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_interface.html#a2f501868bbee2310af99bf2e8e265c59",tooltip=" "];
+  Node1 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="TTrack::OneStationLongEnough\lForSplit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_t_track.html#a16dbc5b1b3898d70218cf52e52434bb6",tooltip=" "];
+  Node16 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

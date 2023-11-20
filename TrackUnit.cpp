@@ -11342,19 +11342,21 @@ bool TTrack::ThisStationLongEnoughForSplit(int Caller, AnsiString LocationName, 
 }
 
 // ---------------------------------------------------------------------------
-
+/*
 bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int TrainLinkPos, int &SecondNamedElementPos, int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos)
 // for success need two linked named location elements, so that one element of each train can be at the location
-// FirstNamedElementPos is the input vector position of the train (lead or mid) and the first (if successful) of the two linked named location elements,
-// the second is SecondNamedElementPos of the split train, and the two linked elements are FirstNamedLinkedElementPos and SecondNamedLinkedElementPos.
-// the two trains will occupy these 4 elements
+// FirstNamedElementPos is the vector position of the train (lead or mid), linked to it is SecondNamedElementPos, and the two linked elements
+// to these are FirstNamedLinkedElementPos and SecondNamedLinkedElementPos. which may or may not be named.  The two trains will occupy these 4 elements.
 // All are track vector positions, all but the input being references and set within the function.
+// TrainLinkPos links to the other half of the train - i.e. if FirstNamedElementPos is LeadElement, TrainLinkPos
+// is LeadEntryPos (links to MidElement), or if FirstNamedElementPos is MidElement, TrainLinkPos is MidExitPos (links to LeadElement)
 
 /* Check sufficient elements with same ActiveTrackElementName linked together and including the element FirstNamedElementPos to allow a train split.
       Need at least two linked ActiveTrackElementNames, with connected elements at each end, or three if one end is a buffer, where the connected
       elements may or may not be ActiveTrackElementNames.  Note that these conditions exclude opposed buffers since these not linked.  Return the split
       train position in SecondNamedElementPos and exit positions (...LinkedElementPos) for use in train splitting.
 */
+/*
 {
     Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ThisNonStationLongEnoughForSplit," + LocationName +
                                  AnsiString(FirstNamedElementPos) + "," + AnsiString(TrainLinkPos));
@@ -11381,7 +11383,7 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
         InactiveElement = InactiveTrackElementAt(1413, SNIterator->second);
         if(InactiveElement.TrackType != NamedNonStationLocation)
         {
-            continue; // only interested in non-station names, shouldn't reach here but inc;ude as a safeguard
+            continue; // only interested in non-station names, shouldn't reach here but include as a safeguard
         }
         THVPair HVPair;
         HVPair.first = InactiveElement.HLoc;
@@ -11402,14 +11404,15 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
             continue;
         }
         // work on the links that the train is on (e.g. may be on a diagonal so don't want to find valid positions on non-diagonals that train can't reach)
-        bool LowLinks = true;
+        bool LowLinks = true; //in all cases TrainLinkPos links to the other half of the train - i.e. if FirstNamedElementPos is LeadElement, TrainLinkPos
+                              //is LeadEntryPos (links to MidElement), or if FirstNamedElementPos is MidElement, TrainLinkPos is MidExitPos (links to LeadElement)
         if(TrainLinkPos > 1)
         {
             LowLinks = false;
         }
-        if((LowLinks && FirstNamedElement.Conn[0] > -1) && (FirstNamedElement.Conn[1] > -1)) //examine links 0 & 1
+        if((LowLinks && FirstNamedElement.Conn[0] > -1) && (FirstNamedElement.Conn[1] > -1)) //examine links 0 & 1 - linked to track on both these links
         {
-            FirstNamedExitPos = 0; //this links to the second named element
+            FirstNamedExitPos = 0; //try this first, this links to the second named element (treating SecondNamedElement as the most forward)
             SecondNamedElement = TrackElementAt(1616, FirstNamedElement.Conn[FirstNamedExitPos]);
             SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos]; //links to FirstNamedElement
             if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
@@ -11528,6 +11531,179 @@ bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationNam
             }
         }
     }
+    Utilities->CallLogPop(2652);
+    return(false);
+}
+*/
+// ---------------------------------------------------------------------------
+//NEW VERSION
+bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString HeadCode, AnsiString LocationName, int LeadElement, int LeadExitPos, int MidElement,
+    int MidEntryPos, int &FrontTrainFrontPos, int &FrontTrainRearPos, int &RearTrainFrontPos, int &RearTrainRearPos)
+/* Return false if the track that the train is on isn't long enough for a split - only 1 named element or 2 with only one external link.
+Otherwise find the best 4 final element positions, ensuring that FrontTrainFrontPos is on a named element and that LeadElement is one of
+the final 4 positions.
+*/
+{
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ThisNonStationLongEnoughForSplit," + LocationName +
+                                 AnsiString(LeadElement) + "," + AnsiString(LeadExitPos) + "," + AnsiString(MidElement) + "," + AnsiString(MidEntryPos));
+
+    //count forwards from LeadElement - only need to count forwards 2 elements to ptovide for room for new front train
+    int FwdPos[3] = {LeadElement, -1, -1}; //0 starts at LeadElement and increases as go forwards
+    int RwdPos[3] = {MidElement, -1, -1}; //0 starts at MidElement and increases as go backwards
+    TTrackElement FwdPos0Element = TrackElementAt(7777, LeadElement);
+    TTrackElement RwdPos0Element = TrackElementAt(7777, MidElement);
+    bool Derail = false, FwdDerail = false, RwdDerail = false;;
+    int NumFwdNamedElements = 0, NumFwdElements = 0, NumRwdNamedElements = 0, NumRwdElements = 1; //Fwd = ahead of LeadElement, Rwd includes MidElement
+    if(RwdPos0Element.ActiveTrackElementName == LocationName)
+    {
+        NumRwdNamedElements = 1;
+    }
+
+    FwdPos[1] = FwdPos0Element.Conn[LeadExitPos];
+    if(FwdPos[1] > -1)
+    {
+        NumFwdElements = 1;
+        TTrackElement FwdPos1Element = TrackElementAt(7777, FwdPos[1]);
+        if(FwdPos1Element.ActiveTrackElementName == LocationName)
+        {
+            NumFwdNamedElements = 1;
+            int FwdPos1EntryPos = FwdPos0Element.ConnLinkPos[LeadExitPos];
+            int FwdPos1ExitPos = GetAnyElementOppositeLinkPos(7777, FwdPos[1], FwdPos1EntryPos, Derail);
+            if(Derail)
+            {
+                FwdDerail = true; //keep it for later message if need to depend on it for split
+            }
+            FwdPos[2] = FwdPos1Element.Conn[FwdPos1ExitPos];
+            if(FwdPos[2] > -1)
+            {
+                NumFwdElements = 2;
+                TTrackElement FwdPos2Element = TrackElementAt(7777, FwdPos[2]);
+                if(FwdPos2Element.ActiveTrackElementName == LocationName)
+                {
+                    NumFwdNamedElements = 2;
+                }
+            }
+        }
+    }
+//this is as far as can go forwards
+
+    RwdPos[1] = RwdPos0Element.Conn[MidEntryPos];
+    if(RwdPos[1] > -1)
+    {
+        NumRwdElements = 2; //includes MidElement
+        TTrackElement RwdPos1Element = TrackElementAt(7777, RwdPos[1]);
+        if(RwdPos1Element.ActiveTrackElementName == LocationName)
+        {
+            NumRwdNamedElements = 2; //includes MidElement
+            int RwdPos1ExitPos = RwdPos0Element.ConnLinkPos[MidEntryPos];
+            int RwdPos1EntryPos = GetAnyElementOppositeLinkPos(7777, RwdPos[1], RwdPos1ExitPos, Derail);
+            if(Derail)
+            {
+                RwdDerail = true; //keep it for later message if need to depend on it for split
+            }
+            RwdPos[2] = RwdPos1Element.Conn[RwdPos1EntryPos];
+            if(RwdPos[2] > -1)
+            {
+                NumRwdElements = 3; //includes MidElement
+                TTrackElement RwdPos2Element = TrackElementAt(7777, RwdPos[2]);
+                if(RwdPos2Element.ActiveTrackElementName == LocationName)
+                {
+                    NumRwdNamedElements = 3; //includes MidElement
+                }
+            }
+        }
+    }
+//now try to accommodate front train on named elements if possible
+    if(NumFwdNamedElements == 2)//Front train moves onto the 2 forward named elements & rear train is on original train elements   X N N N  (N = named, X = named or not)
+    {                                                                                                                         //   M L - - >> RM RL FM FL
+        FrontTrainFrontPos = FwdPos[2];
+        FrontTrainRearPos = FwdPos[1];
+        RearTrainFrontPos = FwdPos[0]; //was LeadElement
+        RearTrainRearPos = MidElement;
+        if(FwdDerail)
+        {
+            TrainController->StopTTClockMessage(7777, HeadCode + "unable to split at " + LocationName + ", points set wrongly ahead of train, please change them to allow the split.");
+            Utilities->CallLogPop(7777);     //may be able to split further back but leave as is to avoid complication
+            return(false);
+        }
+        Utilities->CallLogPop(7777);
+        return(true);
+    }
+
+    if((NumFwdNamedElements == 1) && (NumRwdNamedElements >= 1) && (NumRwdElements >= 2)) //Rwd includes MidElement X N N N   (N = named, X = named or not but connected)
+    { //Front train moves onto the 1 forward named element & rear train occupies 1 element behind original train    - M L - >> RM RL FM FL
+        FrontTrainFrontPos = FwdPos[1];
+        FrontTrainRearPos = FwdPos[0]; //LeadElement
+        RearTrainFrontPos = MidElement;
+        RearTrainRearPos = RwdPos[1];
+        if(RearTrainRearPos > -1) //should be as tested above
+        {
+            if(FwdDerail)
+            {
+                TrainController->StopTTClockMessage(7777, HeadCode + "unable to split at " + LocationName + ", points set wrongly ahead of train, please change them to allow the split.");
+                Utilities->CallLogPop(7777);
+                return(false);
+            }
+            if(RwdDerail)
+            {
+                TrainController->StopTTClockMessage(7777, HeadCode + "unable to split at " + LocationName + ", points set wrongly behind train, please change them to allow the split.");
+                Utilities->CallLogPop(7777);
+                return(false);
+            }
+            Utilities->CallLogPop(7777);
+            return(true);
+        }
+    }
+
+    if((NumRwdNamedElements >= 2) && (NumRwdElements == 3)) //Rwd includes MidElement     X N N N   (N = named, X = named or not but connected)
+    {//front train occupies original train position and rear train fits behind it         - - M L   >>  RM RL FM FL
+        FrontTrainFrontPos = LeadElement;
+        FrontTrainRearPos = MidElement;
+        RearTrainFrontPos = RwdPos[1];
+        RearTrainRearPos = RwdPos[2];
+        if(RwdDerail)
+        {
+            TrainController->StopTTClockMessage(7777, HeadCode + "unable to split at " + LocationName + ", points set wrongly behind train, please change them to allow the split.");
+            Utilities->CallLogPop(7777);
+            return(false);
+        }
+    }
+
+//here look for front overhang situations
+    if((NumRwdNamedElements == 1) && (NumFwdElements == 2)) //                        X N N X   (N = named, X = named or not but connected)
+    {                                                                            //   M L - -   >>  RM RL FM FL
+        FrontTrainFrontPos = FwdPos[2];
+        FrontTrainRearPos = FwdPos[1];
+        RearTrainFrontPos = LeadElement;
+        RearTrainRearPos = MidElement;
+        if(FwdDerail)
+        {
+            TrainController->StopTTClockMessage(7777, HeadCode + "unable to split at " + LocationName + ", points set wrongly ahead of train, please change them to allow the split.");
+            Utilities->CallLogPop(7777);
+            return(false);
+        }
+    }
+
+    if((NumFwdElements == 1) && (NumRwdNamedElements >= 1) && (NumRwdElements >= 2)) //          X N N X   (N = named, X = named or not but connected)
+    {                                                                                //          - M L -   >>  RM RL FM FL
+        FrontTrainFrontPos = FwdPos[1];
+        FrontTrainRearPos = LeadElement;
+        RearTrainFrontPos = MidElement;
+        RearTrainRearPos = RwdPos[1];
+        if(FwdDerail)
+        {
+            TrainController->StopTTClockMessage(7777, HeadCode + "unable to split at " + LocationName + ", points set wrongly ahead of train, please change them to allow the split.");
+            Utilities->CallLogPop(7777);
+            return(false);
+        }
+        if(RwdDerail)
+        {
+            TrainController->StopTTClockMessage(7777, HeadCode + "unable to split at " + LocationName + ", points set wrongly behind train, please change them to allow the split.");
+            Utilities->CallLogPop(7777);
+            return(false);
+        }
+    }
+//anything else fails as location too short
     Utilities->CallLogPop(2652);
     return(false);
 }

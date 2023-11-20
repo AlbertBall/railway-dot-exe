@@ -1095,12 +1095,14 @@ exclude opposed buffers since these not linked.  Used in timetable integrity che
     bool ReturnNextInactiveTrackElement(int Caller, TTrackElement &Next);
 /// Return a reference to the active track element pointed to by NextTrackElementPtr (during zoomed-in or out track rebuilding, or writing image files), return true if there is a next one or false if not
     bool ReturnNextTrackElement(int Caller, TTrackElement &Next);
-/// as below but allow points & crossoverssee above under
-    bool ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int TrainLinkPos, int &SecondNamedElementPos,
-                                                 int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos);
+/// as below but allow points & crossovers
+//    bool ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int TrainLinkPos, int &SecondNamedElementPos,
+//                                                 int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos);
+    bool ThisNonStationLongEnoughForSplit(int Caller, AnsiString HeadCode, AnsiString LocationName, int LeadElement, int LeadExitPos,
+        int MidElement, int MidEntryPos, int &FrontTrainFrontPos, int &FrontTrainRearPos, int &RearTrainFrontPos, int &RearTrainRearPos);
 /// See above under 'OneStationLongEnoughForSplit'
-    bool ThisStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos,
-                                             int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos);
+    bool ThisStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos, int &FirstNamedLinkedElementPos,
+        int &SecondNamedLinkedElementPos);
 /// True if a non-empty LocationName found as a timetabled location name i.e. not as a continuation name
     bool TimetabledLocationNameAllocated(int Caller, AnsiString LocationName);
 /// New at v1.2.0; true if a track element present (not inactive elements - see InactiveTrackElementPresentAtHV

@@ -11054,7 +11054,7 @@ bool TTrack::OneStationLongEnoughForSplit(int Caller, AnsiString LocationName)
 bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName)
 /* Check sufficient active elements at same H & V as the non-station element with same ActiveTrackElementName linked together to allow a train split.
       Only one train length is needed to return true, but this doesn't mean that all tracks at the location are long enough.  When a
-      split is required a specific check is made using ThisNonStationLongEnoughForSplit.
+      split is required a specific check is made using ThisLocationLongEnoughForSplit.
       Need at least two linked ActiveTrackElementNames, with connected elements at each end, or three if one end is a buffer, but no need to check
       buffers explicitly as it will come out automatically with the logic applied.
       Note that these conditions exclude opposed buffers since these not linked.
@@ -11214,337 +11214,14 @@ bool TTrack::OneNonStationLongEnoughForSplit(int Caller, AnsiString LocationName
 
 // ---------------------------------------------------------------------------
 
-bool TTrack::ThisStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int &SecondNamedElementPos,
-                                                 int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos)
-// for success need two linked named location elements, so that one element of each train can be at the location
-// FirstNamedElementPos is the input vector position of the train (lead or mid) and the first (if successful) of the two linked named location elements,
-// the second is SecondNamedElementPos of the split train, and the two linked elements are FirstNamedLinkedElementPos and SecondNamedLinkedElementPos.
-// the two trains will occupy these 4 elements
-// All are track vector positions, all but the input being references and set within the function.
-{
-/* Check sufficient elements with same ActiveTrackElementName linked together without any trailing point links and
-      including the element FirstNamedElementPos to allow a train split.  Need at least two linked ActiveTrackElementNames, with connected
-      elements at each end, or three if one end is a buffer, where the connected elements may or may not be ActiveTrackElementNames, and
-      no connections via point trailing links.  Note that these conditions exclude opposed buffers since these
-      not linked.  Return the split train position in SecondNamedElementPos and exit positions (...LinkedElementPos) for use in train splitting.
-*/
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ThisStationLongEnoughForSplit," + LocationName +
-                                 AnsiString(FirstNamedElementPos));
-    TTrackElement InactiveElement, FirstNamedElement, SecondNamedElement, FirstNamedLinkedElement, SecondNamedLinkedElement;
-    int FirstNamedExitPos, SecondNamedExitPos, FirstNamedLinkedExitPos, SecondNamedLinkedEntryPos;
-
-    SecondNamedElementPos = -1;
-    FirstNamedLinkedElementPos = -1;
-    SecondNamedLinkedElementPos = -1;
-    TLocationNameMultiMapIterator SNIterator;
-    TLocationNameMultiMapRange SNRange = LocationNameMultiMap.equal_range(LocationName);
-
-    if(SNRange.first == SNRange.second) // i.e. location name not in map
-    {
-        Utilities->CallLogPop(1005);
-        return(false); // should have been caught earlier but include for completeness
-    }
-    for(SNIterator = SNRange.first; SNIterator != SNRange.second; SNIterator++)
-    {
-        if(SNIterator->second < 0)
-        {
-            continue; // exclude footcrossings
-        }
-        InactiveElement = InactiveTrackElementAt(69, SNIterator->second);
-        if(InactiveElement.TrackType == Concourse)
-        {
-            continue; // only interested in locations where ActiveTrackElementName may be set
-        }
-        THVPair HVPair;
-        HVPair.first = InactiveElement.HLoc;
-        HVPair.second = InactiveElement.VLoc;
-        if(TrackMap.find(HVPair) == TrackMap.end())
-        {
-            if(InactiveElement.TrackType == NamedNonStationLocation) // added at v2.2.0 to correct the error Xeon reported on 14/07/18.
-            // If there is a NamedNonStationLocation without an associated active track element (effectively a non-station concourse)
-            // then it won't be found in TrackMap but it's still legitimate.
-            {
-                continue;
-            }
-            else // for anything else throw the error
-            {
-                throw Exception
-                    ("Error - failed to find element in TrackMap for a non-concourse element in LocationNameMultiMap in ThisStationLongEnoughForSplit (2)");
-            }
-        }
-        int TVPos = TrackMap.find(HVPair)->second;
-        if(TVPos != FirstNamedElementPos)
-        {
-            continue; // looking for an exact match
-        }
-        FirstNamedElement = TrackElementAt(567, TVPos);
-        // first check linked on both sides, skip the check if not
-        if((FirstNamedElement.Conn[0] == -1) || (FirstNamedElement.Conn[1] == -1))
-        {
-            continue;
-        }
-        // check if another ActiveTrackElementName connected via link pos 0 (can only be 0 or 1 since the only 2-track elements that can be
-        // ActiveTrackElementNames are points and excluding trailing connections for points
-        FirstNamedExitPos = 0;
-        SecondNamedElement = TrackElementAt(568, FirstNamedElement.Conn[FirstNamedExitPos]);
-        SecondNamedExitPos = GetNonPointsOppositeLinkPos(FirstNamedElement.ConnLinkPos[FirstNamedExitPos]);
-        FirstNamedLinkedElement = TrackElementAt(569, FirstNamedElement.Conn[1 - FirstNamedExitPos]);
-        FirstNamedLinkedExitPos = FirstNamedElement.ConnLinkPos[1 - FirstNamedExitPos];
-        if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
-        {
-            if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
-            {
-                SecondNamedLinkedElement = TrackElementAt(570, SecondNamedElement.Conn[SecondNamedExitPos]);
-                SecondNamedLinkedEntryPos = SecondNamedElement.ConnLinkPos[SecondNamedExitPos];
-                if((SecondNamedLinkedElement.TrackType != Points) || (SecondNamedLinkedEntryPos != 3))
-                // success, now check FirstNamedElement link not trailing points & if so all OK
-                {
-                    if((FirstNamedLinkedElement.TrackType != Points) || (FirstNamedLinkedExitPos != 3))
-                    {
-                        SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
-                        FirstNamedLinkedElementPos = FirstNamedElement.Conn[1 - FirstNamedExitPos];
-                        SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
-                        Utilities->CallLogPop(1006);
-                        return(true);
-                    }
-                }
-            }
-        }
-        // failed, try link 1
-        FirstNamedExitPos = 1;
-        SecondNamedElement = TrackElementAt(571, FirstNamedElement.Conn[FirstNamedExitPos]);
-        SecondNamedExitPos = GetNonPointsOppositeLinkPos(FirstNamedElement.ConnLinkPos[FirstNamedExitPos]);
-        FirstNamedLinkedElement = TrackElementAt(572, FirstNamedElement.Conn[1 - FirstNamedExitPos]);
-        FirstNamedLinkedExitPos = FirstNamedElement.ConnLinkPos[1 - FirstNamedExitPos];
-        if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
-        {
-            if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
-            {
-                SecondNamedLinkedElement = TrackElementAt(573, SecondNamedElement.Conn[SecondNamedExitPos]);
-                SecondNamedLinkedEntryPos = SecondNamedElement.ConnLinkPos[SecondNamedExitPos];
-                if((SecondNamedLinkedElement.TrackType != Points) || (SecondNamedLinkedEntryPos != 3))
-                // success, now check FirstNamedElement link not trailing points & if so all OK
-                {
-                    if((FirstNamedLinkedElement.TrackType != Points) || (FirstNamedLinkedExitPos != 3))
-                    {
-                        SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
-                        FirstNamedLinkedElementPos = FirstNamedElement.Conn[1 - FirstNamedExitPos];
-                        SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
-                        Utilities->CallLogPop(1007);
-                        return(true);
-                    }
-                }
-            }
-        }
-    }
-    Utilities->CallLogPop(1008);
-    return(false);
-}
-
-// ---------------------------------------------------------------------------
-/*
-bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString LocationName, int FirstNamedElementPos, int TrainLinkPos, int &SecondNamedElementPos, int &FirstNamedLinkedElementPos, int &SecondNamedLinkedElementPos)
-// for success need two linked named location elements, so that one element of each train can be at the location
-// FirstNamedElementPos is the vector position of the train (lead or mid), linked to it is SecondNamedElementPos, and the two linked elements
-// to these are FirstNamedLinkedElementPos and SecondNamedLinkedElementPos. which may or may not be named.  The two trains will occupy these 4 elements.
-// All are track vector positions, all but the input being references and set within the function.
-// TrainLinkPos links to the other half of the train - i.e. if FirstNamedElementPos is LeadElement, TrainLinkPos
-// is LeadEntryPos (links to MidElement), or if FirstNamedElementPos is MidElement, TrainLinkPos is MidExitPos (links to LeadElement)
-
-/* Check sufficient elements with same ActiveTrackElementName linked together and including the element FirstNamedElementPos to allow a train split.
-      Need at least two linked ActiveTrackElementNames, with connected elements at each end, or three if one end is a buffer, where the connected
-      elements may or may not be ActiveTrackElementNames.  Note that these conditions exclude opposed buffers since these not linked.  Return the split
-      train position in SecondNamedElementPos and exit positions (...LinkedElementPos) for use in train splitting.
-*/
-/*
-{
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ThisNonStationLongEnoughForSplit," + LocationName +
-                                 AnsiString(FirstNamedElementPos) + "," + AnsiString(TrainLinkPos));
-    TTrackElement InactiveElement, FirstNamedElement, SecondNamedElement, FirstNamedLinkedElement, SecondNamedLinkedElement;
-    int FirstNamedExitPos, SecondNamedEntryPos, SecondNamedExitPos;
-
-    SecondNamedElementPos = -1;
-    FirstNamedLinkedElementPos = -1;
-    SecondNamedLinkedElementPos = -1;
-    TLocationNameMultiMapIterator SNIterator;
-    TLocationNameMultiMapRange SNRange = LocationNameMultiMap.equal_range(LocationName);
-
-    if(SNRange.first == SNRange.second) // i.e. location name not in map
-    {
-        Utilities->CallLogPop(2647);
-        return(false); // should have been caught earlier but include for completeness
-    }
-    for(SNIterator = SNRange.first; SNIterator != SNRange.second; SNIterator++)
-    {
-        if(SNIterator->second < 0) //neg numbers are active track elements
-        {
-            continue; // exclude footcrossings
-        }
-        InactiveElement = InactiveTrackElementAt(1413, SNIterator->second);
-        if(InactiveElement.TrackType != NamedNonStationLocation)
-        {
-            continue; // only interested in non-station names, shouldn't reach here but include as a safeguard
-        }
-        THVPair HVPair;
-        HVPair.first = InactiveElement.HLoc;
-        HVPair.second = InactiveElement.VLoc;
-        if(TrackMap.find(HVPair) == TrackMap.end()) //no track at this element
-        {
-            continue;
-        }
-        int TVPos = TrackMap.find(HVPair)->second;
-        if(TVPos != FirstNamedElementPos)
-        {
-            continue; // looking for an exact match
-        }
-        FirstNamedElement = TrackElementAt(1615, TVPos);
-        // first check linked on both sides, skip the check if not
-        if(((FirstNamedElement.Conn[0] == -1) || (FirstNamedElement.Conn[1] == -1)) && ((FirstNamedElement.Conn[2] == -1) || (FirstNamedElement.Conn[3] == -1)))
-        {
-            continue;
-        }
-        // work on the links that the train is on (e.g. may be on a diagonal so don't want to find valid positions on non-diagonals that train can't reach)
-        bool LowLinks = true; //in all cases TrainLinkPos links to the other half of the train - i.e. if FirstNamedElementPos is LeadElement, TrainLinkPos
-                              //is LeadEntryPos (links to MidElement), or if FirstNamedElementPos is MidElement, TrainLinkPos is MidExitPos (links to LeadElement)
-        if(TrainLinkPos > 1)
-        {
-            LowLinks = false;
-        }
-        if((LowLinks && FirstNamedElement.Conn[0] > -1) && (FirstNamedElement.Conn[1] > -1)) //examine links 0 & 1 - linked to track on both these links
-        {
-            FirstNamedExitPos = 0; //try this first, this links to the second named element (treating SecondNamedElement as the most forward)
-            SecondNamedElement = TrackElementAt(1616, FirstNamedElement.Conn[FirstNamedExitPos]);
-            SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos]; //links to FirstNamedElement
-            if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
-            {
-                SecondNamedExitPos = 1 - SecondNamedEntryPos;
-            }
-            else if(SecondNamedEntryPos == 2)
-            {
-                SecondNamedExitPos = 3;
-            }
-            else if(SecondNamedEntryPos == 3)
-            {
-                SecondNamedExitPos = 2;
-            }
-            FirstNamedLinkedElement = TrackElementAt(1617, FirstNamedElement.Conn[1 - FirstNamedExitPos]);
-            if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
-            {
-                if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
-                {
-                    SecondNamedLinkedElement = TrackElementAt(1618, SecondNamedElement.Conn[SecondNamedExitPos]);
-                    SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
-                    FirstNamedLinkedElementPos = FirstNamedElement.Conn[1 - FirstNamedExitPos];
-                    SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
-                    Utilities->CallLogPop(2648);
-                    return(true);
-                }
-            }
-        // failed, try link 1
-            FirstNamedExitPos = 1;
-            SecondNamedElement = TrackElementAt(1619, FirstNamedElement.Conn[FirstNamedExitPos]);
-            SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos]; //links to FirstNamedElement
-            if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
-            {
-                SecondNamedExitPos = 1 - SecondNamedEntryPos;
-            }
-            else if(SecondNamedEntryPos == 2)
-            {
-                SecondNamedExitPos = 3;
-            }
-            else if(SecondNamedEntryPos == 3)
-            {
-                SecondNamedExitPos = 2;
-            }
-            FirstNamedLinkedElement = TrackElementAt(1620, FirstNamedElement.Conn[1 - FirstNamedExitPos]);
-            if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
-            {
-                if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
-                {
-                    SecondNamedLinkedElement = TrackElementAt(1621, SecondNamedElement.Conn[SecondNamedExitPos]);
-                    SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
-                    FirstNamedLinkedElementPos = FirstNamedElement.Conn[1 - FirstNamedExitPos];
-                    SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
-                    Utilities->CallLogPop(2649);
-                    return(true);
-                }
-            }
-        }
-        else if((!LowLinks && FirstNamedElement.Conn[2] > -1) && (FirstNamedElement.Conn[3] > -1)) //examine links 2 & 3
-        {
-            FirstNamedExitPos = 2; //this links to the second named element
-            SecondNamedElement = TrackElementAt(1622, FirstNamedElement.Conn[FirstNamedExitPos]);
-            SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos]; //links to FirstNamedElement
-            if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
-            {
-                SecondNamedExitPos = 1 - SecondNamedEntryPos;
-            }
-            else if(SecondNamedEntryPos == 2)
-            {
-                SecondNamedExitPos = 3;
-            }
-            else if(SecondNamedEntryPos == 3)
-            {
-                SecondNamedExitPos = 2;
-            }
-            FirstNamedLinkedElement = TrackElementAt(1623, FirstNamedElement.Conn[3]);
-            if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
-            {
-                if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
-                {
-                    SecondNamedLinkedElement = TrackElementAt(1624, SecondNamedElement.Conn[SecondNamedExitPos]);
-                    SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
-                    FirstNamedLinkedElementPos = FirstNamedElement.Conn[3];
-                    SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
-                    Utilities->CallLogPop(2650);
-                    return(true);
-                }
-            }
-        // failed, try link 3
-            FirstNamedExitPos = 3;
-            SecondNamedElement = TrackElementAt(1625, FirstNamedElement.Conn[FirstNamedExitPos]);
-            SecondNamedEntryPos = FirstNamedElement.ConnLinkPos[FirstNamedExitPos]; //links to FirstNamedElement
-            if((SecondNamedEntryPos == 0) || (SecondNamedEntryPos == 1))
-            {
-                SecondNamedExitPos = 1 - SecondNamedEntryPos;
-            }
-            else if(SecondNamedEntryPos == 2)
-            {
-                SecondNamedExitPos = 3;
-            }
-            else if(SecondNamedEntryPos == 3)
-            {
-                SecondNamedExitPos = 2;
-            }
-            FirstNamedLinkedElement = TrackElementAt(1626, FirstNamedElement.Conn[2]);
-            if(SecondNamedElement.ActiveTrackElementName == LocationName) // success - check if it's connected on the far side
-            {
-                if(SecondNamedElement.Conn[SecondNamedExitPos] > -1)
-                {
-                    SecondNamedLinkedElement = TrackElementAt(1627, SecondNamedElement.Conn[SecondNamedExitPos]);
-                    SecondNamedElementPos = FirstNamedElement.Conn[FirstNamedExitPos];
-                    FirstNamedLinkedElementPos = FirstNamedElement.Conn[2];
-                    SecondNamedLinkedElementPos = SecondNamedElement.Conn[SecondNamedExitPos];
-                    Utilities->CallLogPop(2651);
-                    return(true);
-                }
-            }
-        }
-    }
-    Utilities->CallLogPop(2652);
-    return(false);
-}
-*/
-// ---------------------------------------------------------------------------
-//NEW VERSION
-bool TTrack::ThisNonStationLongEnoughForSplit(int Caller, AnsiString HeadCode, AnsiString LocationName, int LeadElement, int LeadExitPos, int MidElement,
+//new version at v2.18.0
+bool TTrack::ThisLocationLongEnoughForSplit(int Caller, AnsiString HeadCode, AnsiString LocationName, int LeadElement, int LeadExitPos, int MidElement,
     int MidEntryPos, int &FrontTrainFrontPos, int &FrontTrainRearPos, int &RearTrainFrontPos, int &RearTrainRearPos)
 /* Return false if the track that the train is on isn't long enough for a split - only 1 named element or 2 with only one external link.
-Otherwise find the best 4 final element positions, ensuring that FrontTrainFrontPos is on a named element and that LeadElement is one of
-the final 4 positions.
+Otherwise find the best 4 final element positions, preferably with FrontTrainFrontPos on a named element.
 */
 {
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ThisNonStationLongEnoughForSplit," + LocationName +
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",ThisLocationLongEnoughForSplit," + LocationName +
                                  AnsiString(LeadElement) + "," + AnsiString(LeadExitPos) + "," + AnsiString(MidElement) + "," + AnsiString(MidEntryPos));
 
     //count forwards from LeadElement - only need to count forwards 2 elements to ptovide for room for new front train
@@ -11552,9 +11229,11 @@ the final 4 positions.
     int RwdPos[3] = {MidElement, -1, -1}; //0 starts at MidElement and increases as go backwards
     TTrackElement FwdPos0Element = TrackElementAt(7777, LeadElement);
     TTrackElement RwdPos0Element = TrackElementAt(7777, MidElement);
+    int FwdPos1EntryPos, FwdPos1ExitPos, RwdPos1EntryPos, RwdPos1ExitPos;
+
     bool Derail = false, FwdDerail = false, RwdDerail = false;;
     int NumFwdNamedElements = 0, NumFwdElements = 0, NumRwdNamedElements = 0, NumRwdElements = 1; //Fwd = ahead of LeadElement, Rwd includes MidElement
-    if(RwdPos0Element.ActiveTrackElementName == LocationName)
+    if(RwdPos0Element.ActiveTrackElementName == LocationName) //MidElement
     {
         NumRwdNamedElements = 1;
     }
@@ -11567,8 +11246,8 @@ the final 4 positions.
         if(FwdPos1Element.ActiveTrackElementName == LocationName)
         {
             NumFwdNamedElements = 1;
-            int FwdPos1EntryPos = FwdPos0Element.ConnLinkPos[LeadExitPos];
-            int FwdPos1ExitPos = GetAnyElementOppositeLinkPos(7777, FwdPos[1], FwdPos1EntryPos, Derail);
+            FwdPos1EntryPos = FwdPos0Element.ConnLinkPos[LeadExitPos];
+            FwdPos1ExitPos = GetAnyElementOppositeLinkPos(7777, FwdPos[1], FwdPos1EntryPos, Derail);
             if(Derail)
             {
                 FwdDerail = true; //keep it for later message if need to depend on it for split
@@ -11595,8 +11274,8 @@ the final 4 positions.
         if(RwdPos1Element.ActiveTrackElementName == LocationName)
         {
             NumRwdNamedElements = 2; //includes MidElement
-            int RwdPos1ExitPos = RwdPos0Element.ConnLinkPos[MidEntryPos];
-            int RwdPos1EntryPos = GetAnyElementOppositeLinkPos(7777, RwdPos[1], RwdPos1ExitPos, Derail);
+            RwdPos1ExitPos = RwdPos0Element.ConnLinkPos[MidEntryPos];
+            RwdPos1EntryPos = GetAnyElementOppositeLinkPos(7777, RwdPos[1], RwdPos1ExitPos, Derail);
             if(Derail)
             {
                 RwdDerail = true; //keep it for later message if need to depend on it for split
@@ -11630,8 +11309,8 @@ the final 4 positions.
         return(true);
     }
 
-    if((NumFwdNamedElements == 1) && (NumRwdNamedElements >= 1) && (NumRwdElements >= 2)) //Rwd includes MidElement X N N N   (N = named, X = named or not but connected)
-    { //Front train moves onto the 1 forward named element & rear train occupies 1 element behind original train    - M L - >> RM RL FM FL
+    else if((NumFwdNamedElements == 1) && (NumRwdNamedElements >= 1) && (NumRwdElements >= 2)) //Rwd includes MidElement X N N N   (N = named, X = named or not but connected)
+    { //Front train moves onto the 1 forward named element & rear train occupies 1 element behind original train         - M L - >> RM RL FM FL
         FrontTrainFrontPos = FwdPos[1];
         FrontTrainRearPos = FwdPos[0]; //LeadElement
         RearTrainFrontPos = MidElement;
@@ -11655,8 +11334,8 @@ the final 4 positions.
         }
     }
 
-    if((NumRwdNamedElements >= 2) && (NumRwdElements == 3)) //Rwd includes MidElement     X N N N   (N = named, X = named or not but connected)
-    {//front train occupies original train position and rear train fits behind it         - - M L   >>  RM RL FM FL
+    else if((NumRwdNamedElements >= 2) && (NumRwdElements == 3)) //Rwd includes MidElement     X N N N   (N = named, X = named or not but connected)
+    {//front train occupies original train position and rear train fits behind it              - - M L   >>  RM RL FM FL
         FrontTrainFrontPos = LeadElement;
         FrontTrainRearPos = MidElement;
         RearTrainFrontPos = RwdPos[1];
@@ -11667,11 +11346,13 @@ the final 4 positions.
             Utilities->CallLogPop(7777);
             return(false);
         }
+        Utilities->CallLogPop(7777);
+        return(true);
     }
 
 //here look for front overhang situations
-    if((NumRwdNamedElements == 1) && (NumFwdElements == 2)) //                        X N N X   (N = named, X = named or not but connected)
-    {                                                                            //   M L - -   >>  RM RL FM FL
+    else if((NumRwdNamedElements == 1) && (NumFwdElements == 2)) //                        X N N X   (N = named, X = named or not but connected)
+    {                                                                                 //   M L - -   >>  RM RL FM FL
         FrontTrainFrontPos = FwdPos[2];
         FrontTrainRearPos = FwdPos[1];
         RearTrainFrontPos = LeadElement;
@@ -11682,10 +11363,12 @@ the final 4 positions.
             Utilities->CallLogPop(7777);
             return(false);
         }
+        Utilities->CallLogPop(7777);
+        return(true);
     }
 
-    if((NumFwdElements == 1) && (NumRwdNamedElements >= 1) && (NumRwdElements >= 2)) //          X N N X   (N = named, X = named or not but connected)
-    {                                                                                //          - M L -   >>  RM RL FM FL
+    else if((NumFwdElements == 1) && (NumRwdNamedElements >= 1) && (NumRwdElements >= 2)) //          X N N X   (N = named, X = named or not but connected)
+    {                                                                                     //          - M L -   >>  RM RL FM FL
         FrontTrainFrontPos = FwdPos[1];
         FrontTrainRearPos = LeadElement;
         RearTrainFrontPos = MidElement;
@@ -11702,6 +11385,8 @@ the final 4 positions.
             Utilities->CallLogPop(7777);
             return(false);
         }
+        Utilities->CallLogPop(7777);
+        return(true);
     }
 //anything else fails as location too short
     Utilities->CallLogPop(2652);

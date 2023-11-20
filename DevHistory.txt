@@ -21,7 +21,7 @@ create new functions FrontTrainNonStationSplit & RearTrainNonStationSplit, ThisN
 
 Mention the existing search bug in version update (discussed above starting 'track line 19759')
 
-Mention 50-50 mass power split in logs
+Mention 50-50 mass power split missing in logs
 
 update manual & onscreen help if necessary
 
@@ -30,6 +30,10 @@ note that can't use earlier versions to load railways or sessions with blue on p
 at b'ham when 7G46 changes direction at small heath it still retains the 'forward track occupied' message
 
 can maybe use Derail to detect train being created on wrongly set points - or is this done in create train?
+
+add train detection in ThislocationLong...
+
+deal with 7777s & callerchecker
 
 
 

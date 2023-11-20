@@ -5714,10 +5714,10 @@ void TTrain::TrainHasFailed(int Caller)
 
 // ---------------------------------------------------------------------------
 
-void TTrain::FrontTrainSplit(int Caller)
+void TTrain::FrontTrainSplit(int Caller) //Major rewrite at v2.18.0 using new ThisLocationLongEnoughForSplit
 {
 /*
-      Split logic for is:-  at least one of 4 final train positions must overlap with one of original train positions, & final 4 positions
+      Split logic for is:-  the final 4 train positions must overlap with the original train, & final 4 positions
       will maximise the number at the location.  Note that this function isn't sophisticated enough to account for trains already at the
       location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these
       circumstances the other train will need to be moved sufficiently away to release all 4 positions, then the train will split.
@@ -5741,426 +5741,48 @@ void TTrain::FrontTrainSplit(int Caller)
     {
         LocationName = Track->TrackElementAt(837, MidElement).ActiveTrackElementName;
     }
-    int FirstNamedElementPos, SecondNamedElementPos, FirstNamedLinkedElementPos, SecondNamedLinkedElementPos;
-    int RearTrainRearPosition, RearTrainFrontPosition, RearTrainExitPos;
-    int FrontTrainRearPosition, FrontTrainFrontPosition, FrontTrainExitPos;
+    int RearTrainRearPos, RearTrainFrontPos, RearTrainExitPos;
+    int FrontTrainRearPos, FrontTrainFrontPos;
     AnsiString OtherHeadCode = TrainController->GetRepeatHeadCode(1, ActionVectorEntryPtr->OtherHeadCode, RepeatNumber, IncrementalDigits);
 
-    // determine all positions & exits
-    if(LocationName != "")
-    {
-        // if message given call at ~5 sec intervals in case train repositioned
-        if(!(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported == FailLocTooShort) || (UpdateCounter == 0))
-        {
-            FirstNamedElementPos = LeadElement;
-            bool SuccessfulLinkage = false; //added at v2.18.0
-//determine whether LocationName is a station or non-station
-            bool StationLocation = false;
-            for(TTrack::TTrackVectorIterator TEIt = Track->InactiveTrackVector.begin(); TEIt != Track->InactiveTrackVector.end(); TEIt++)
-            {
-                if(TEIt->LocationName == Track->TrackElementAt(1628, LeadElement).ActiveTrackElementName)
-                {
-                    if(TEIt->TrackType != NamedNonStationLocation)
-                    {
-                        StationLocation = true;
-                    }
-                }
-                else if(TEIt->LocationName == Track->TrackElementAt(1629, MidElement).ActiveTrackElementName)
-                {
-                    if(TEIt->TrackType != NamedNonStationLocation)
-                    {
-                        StationLocation = true;
-                    }
-                }
-            }
-            if(StationLocation)
-            {
-                if(!Track->ThisStationLongEnoughForSplit(0, LocationName, FirstNamedElementPos,
-                      // check if possible with LeadElement as First
-                      SecondNamedElementPos, FirstNamedLinkedElementPos, SecondNamedLinkedElementPos))
-                {
-                    FirstNamedElementPos = MidElement;
-                    if(!Track->ThisStationLongEnoughForSplit(1, LocationName, FirstNamedElementPos,
-                          SecondNamedElementPos, FirstNamedLinkedElementPos, SecondNamedLinkedElementPos))
-                    {
-                        if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != FailLocTooShort)
-                        {
-                            TrainController->StopTTClockMessage(151, HeadCode + " failed to split - location too short at " + LocationName + ", reposition train if possible.");
-                            TrainController->LogActionError(6, HeadCode, "", FailLocTooShort, LocationName);
-                            TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailLocTooShort;
-                        }
-                        Utilities->CallLogPop(1009);
-                        return;
-                    }
-                    else
-                    {
-                        SuccessfulLinkage = true;
-                    }
-                }
-                else
-                {
-                    SuccessfulLinkage = true;
-                }
-            }
-            else
-            {
-            //LeadEntryPos is the linkpos to MidElement
-                if(!Track->ThisNonStationLongEnoughForSplit(0, LocationName, FirstNamedElementPos, LeadEntryPos,
-                      // check if possible with LeadElement as First
-                      SecondNamedElementPos, FirstNamedLinkedElementPos, SecondNamedLinkedElementPos))
-                {
-                    FirstNamedElementPos = MidElement; //MidExitPos is the linkpos to LeadElement
-                    if(!Track->ThisNonStationLongEnoughForSplit(1, LocationName, FirstNamedElementPos, MidExitPos,
-                          // if not then accept second if possible (though if Lead no good hard to see how Mid could work, but leave in)
-                          SecondNamedElementPos, FirstNamedLinkedElementPos, SecondNamedLinkedElementPos))
-                    {
-                        if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != FailLocTooShort)
-                        {
-                            TrainController->StopTTClockMessage(152, HeadCode + " failed to split - location too short at " + LocationName + ", reposition train if possible.");
-                            TrainController->LogActionError(66, HeadCode, "", FailLocTooShort, LocationName);
-                            TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailLocTooShort;
-                        }
-                        Utilities->CallLogPop(2658);
-                        return;
-                    }
-                    else
-                    {
-                        SuccessfulLinkage = true;
-                    }
-                }
-                else
-                {
-                    SuccessfulLinkage = true;
-                }
-            }
-            if(SuccessfulLinkage) //FirstNamedElementPos & SecondNamedElementPos are the two guaranteed named elements with ...LinkedElementPos
-                                  //linked to these but not necessarily named.  One half of train is on FirstNamedElementPos but could be lead or mid
-                                  //with the other half on either FirstNamedLinkedElementPos or SecondNamedElementPos.  Don't make any assumptions
-                                  //about which direction the train is facing or whether at end or not of location as may have a train already at
-                                  //the end and this train is further back.
-            {
-                //check if can move the 4 final elements so that the train that splits is entirely on named elements, only matters for non-stations
-                //as train likely to be at the end, stop points for platforms not at end if at least 3 platforms long
-                if(!StationLocation)
-                {
-                    if((Track->TrackElementAt(1656, FirstNamedLinkedElementPos).ActiveTrackElementName == LocationName) &&
-                        (Track->TrackElementAt(7777, FirstNamedLinkedElementPos).TrackType != Buffers)) //trains can't stop at continuations so if not
-                    {                                                                                   //buffers then FirstNamedLinkedElementPos is
-                        if(FirstNamedElementPos == LeadElement)                                         //linked on outside
-                        {
-                            if(SecondNamedElementPos == MidElement) //move train forwards - First is forward of Second
-                            {
-                                SecondNamedLinkedElementPos = SecondNamedElementPos;
-                                SecondNamedElementPos = FirstNamedElementPos;
-                                FirstNamedElementPos = FirstNamedLinkedElementPos;
-                                //new FirstNamedLinkedElementPos is forward of new FirstNamedElementPos so find forward link pos from FirstNamedElementPos
-                                //& new FirstNamedLinkedElementPos is linked to old FirstNamedLinkedElementPos (SecondNamedlementPos) with LeadExitPos
-                                bool Derail; //not used
-                                int FirstNamedLinkedElementEntryPos = Track->TrackElementAt(7777, SecondNamedlementPos).ConnLinkPos[LeadExitPos];
-                                int FirstNamedLinkedElementExitPos = Track->GetAnyElementOppositeLinkPos(7777, FirstNamedLinkedElementEntryPos,
-                                    FirstNamedLinkedElementEntryPos, Derail);
-                                FirstNamedLinkedElementPos = Track->TrackElementAt(7777, FirstNamedLinkedElementPos).Conn[FirstNamedLinkedElementExitPos];
-                            }
-                            else if(FirstNamedLinkedElementPos == MidElement) //can leave positions as they are
-                            {
-                            }
-                        }
-                        else if(FirstNamedElementPos == MidElement) <-- to here
-                        {
-                            if(FirstNamedLinkedElementPos == LeadElement) //can leave
-
-
-
-                        }
-                    }
-
-
-
-                        (Track->TrackElementAt(1657, SecondNamedLinkedElementPos).ActiveTrackElementName == LocationName))
-                    { //at least 3 named elements so can move the elements back
-                        int SecondLinkPos; //Link from SecondNamedElement to SecondNamedLinkedElement
-                        for(int x = 0; x < 4; x++)
-                        {
-                            if(Track->TrackElementAt(1658, SecondNamedLinkedElementPos).Conn[x] == SecondNamedElementPos)
-                            {
-                                SecondElementLinkPosToSecondElement = x;
-                                break;
-                            }
-                        }
-                        bool Derail; //not used
-                        NewLinkToSecondLinkPos = Track->GetAnyElementOppositeLinkPos(7777, SecondNamedLinkedElementPos, SecondElementLinkPosToSecondElement, Derail);
-                        FirstNamedLinkedElementPos = FirstNamedElementPos;
-                        FirstNamedElementPos = SecondNamedElementPos;
-                        SecondNamedElementPos = SecondNamedLinkedElementPos;
-                        SecondNamedLinkedElementPos = Track->TrackElementAt(1659, SecondNamedElementPos).Conn[NewLinkToSecondLinkPos];
-                    }
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                // if first is possible then check if all 4 positions at location, and if not try the second
-                int LeadPosA = FirstNamedElementPos;        at this point don't know if FirstNamedElementPos is LeadElement or MidElement, whether station or non-station
-                int LeadPosB = FirstNamedLinkedElementPos;
-                int LeadPosC = SecondNamedElementPos;
-                int LeadPosD = SecondNamedLinkedElementPos;
-                // count number of positions that are at the location
-                int LeadNumAtLoc = 0;
-                if(Track->TrackElementAt(758, LeadPosA).ActiveTrackElementName == LocationName)
-                {
-                    LeadNumAtLoc++;
-                }
-                if(Track->TrackElementAt(759, LeadPosB).ActiveTrackElementName == LocationName)
-                {
-                    LeadNumAtLoc++;
-                }
-                if(Track->TrackElementAt(760, LeadPosC).ActiveTrackElementName == LocationName)
-                {
-                    LeadNumAtLoc++;
-                }
-                if(Track->TrackElementAt(761, LeadPosD).ActiveTrackElementName == LocationName)
-                {
-                    LeadNumAtLoc++;
-                }
-                if(LeadNumAtLoc < 4)
-                {
-                    if(StationLocation)
-                    {
-                        FirstNamedElementPos = MidElement;
-                        if(!Track->ThisStationLongEnoughForSplit(4, LocationName, FirstNamedElementPos, SecondNamedElementPos, FirstNamedLinkedElementPos,
-                                                                       SecondNamedLinkedElementPos)) // restore originals
-                        {
-                            FirstNamedElementPos = LeadPosA;
-                            FirstNamedLinkedElementPos = LeadPosB;
-                            SecondNamedElementPos = LeadPosC;
-                            SecondNamedLinkedElementPos = LeadPosD;
-                        }
-                        else // count number at location
-                        {
-                            int MidNumAtLoc = 0;
-                            if(Track->TrackElementAt(762, FirstNamedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(Track->TrackElementAt(763, FirstNamedLinkedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(Track->TrackElementAt(764, FirstNamedLinkedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(Track->TrackElementAt(765, SecondNamedLinkedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(LeadNumAtLoc > MidNumAtLoc)
-                            // change back, else keep new values
-                            {
-                                FirstNamedElementPos = LeadPosA;
-                                FirstNamedLinkedElementPos = LeadPosB;
-                                SecondNamedElementPos = LeadPosC;
-                                SecondNamedLinkedElementPos = LeadPosD;
-                            }
-                        }
-                    }
-                    else  //non-station
-                    {
-                        FirstNamedElementPos = MidElement;      can't use ThisNonStationLongEnoughForSplit because positions may have moved - see above
-                        if(!Track->ThisNonStationLongEnoughForSplit(4, LocationName, FirstNamedElementPos, MidExitPos, SecondNamedElementPos, FirstNamedLinkedElementPos,
-                                                                       SecondNamedLinkedElementPos)) // restore originals
-                        {
-                            FirstNamedElementPos = LeadPosA; //as was
-                            FirstNamedLinkedElementPos = LeadPosB;
-                            SecondNamedElementPos = LeadPosC;
-                            SecondNamedLinkedElementPos = LeadPosD;
-                        }
-                        else // count number at location
-                        {
-                            int MidNumAtLoc = 0;
-                            if(Track->TrackElementAt(1646, FirstNamedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(Track->TrackElementAt(1647, FirstNamedLinkedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(Track->TrackElementAt(1648, FirstNamedLinkedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(Track->TrackElementAt(1649, SecondNamedLinkedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(LeadNumAtLoc > MidNumAtLoc)
-                            // change back, else keep new values
-                            {
-                                FirstNamedElementPos = LeadPosA;
-                                FirstNamedLinkedElementPos = LeadPosB;
-                                SecondNamedElementPos = LeadPosC;
-                                SecondNamedLinkedElementPos = LeadPosD;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            Utilities->CallLogPop(1791);
-            return;
-        }
-    }
-    else
+    if(LocationName == "")
     {
         throw Exception("Error - LocationName not set in FrontTrainSplit");
     }
-    // set front & rear train parameters
-    // need RearTrainRearPosition, RearTrainFrontPosition, RearTrainExitPos, FrontTrainRearPosition, FrontTrainFrontPosition & FrontTrainExitPos;
-    // have LeadElement & MidElement of train defining its direction, & one or other on FirstNamedElementPos
-    // have FirstNamedElementPos, SecondNamedElementPos, FirstNamedLinkedElementPos & SecondNamedLinkedElementPos from ThisStationLongEnoughForSplit.
-    if(LeadElement == FirstNamedElementPos)
-    {
-        if(MidElement == SecondNamedElementPos)
-        {
-            FrontTrainFrontPosition = FirstNamedLinkedElementPos;
-            FrontTrainRearPosition = FirstNamedElementPos;
-            RearTrainFrontPosition = SecondNamedElementPos;
-            RearTrainRearPosition = SecondNamedLinkedElementPos;
-        }
-        else // MidElement must == FirstNamedLinkedElementPos since this is a front split
-        {
-            FrontTrainFrontPosition = SecondNamedLinkedElementPos;
-            FrontTrainRearPosition = SecondNamedElementPos;
-            RearTrainFrontPosition = FirstNamedElementPos;
-            RearTrainRearPosition = FirstNamedLinkedElementPos;
-        }
-    }
-    else // MidElement == FirstNamedElementPos
-    {
-        if(LeadElement == SecondNamedElementPos)
-        {
-            FrontTrainFrontPosition = SecondNamedLinkedElementPos;
-            FrontTrainRearPosition = SecondNamedElementPos;
-            RearTrainFrontPosition = FirstNamedElementPos;
-            RearTrainRearPosition = FirstNamedLinkedElementPos;
-        }
-        else // LeadElement must == FirstNamedLinkedElementPos
-        {
-            FrontTrainFrontPosition = FirstNamedLinkedElementPos;
-            FrontTrainRearPosition = FirstNamedElementPos;
-            RearTrainFrontPosition = SecondNamedElementPos;
-            RearTrainRearPosition = SecondNamedLinkedElementPos;
-        }
-    }
-    RearTrainExitPos = -1;
-    for(int x = 0; x < 4; x++)
-    {
-        if(Track->TrackElementAt(584, RearTrainRearPosition).Conn[x] == RearTrainFrontPosition)
-        {
-            RearTrainExitPos = x;
-            break;
-        }
-    }
-    if(RearTrainExitPos == -1)
-    {
-        throw Exception("Error - RearTrainRearPosition not linked to RearTrainFrontPosition in FrontTrainSplit");
-    }
-    FrontTrainExitPos = -1;
-    for(int x = 0; x < 4; x++)
-    {
-        if(Track->TrackElementAt(585, FrontTrainRearPosition).Conn[x] == FrontTrainFrontPosition)
-        {
-            FrontTrainExitPos = x;
-            break;
-        }
-    }
-    if(FrontTrainExitPos == -1)
-    {
-        throw Exception("Error - FrontTrainRearPosition not linked to FrontTrainFrontPosition in FrontTrainSplit");
-    }
-    // check no train (apart from self) on any of the 4 elements & fail if so
-    int TrainIDOnRearOfRearTrain, TrainIDOnFrontOfRearTrain, TrainIDOnRearOfFrontTrain, TrainIDOnFrontOfFrontTrain;
-    TTrackElement RearMostElement = Track->TrackElementAt(574, RearTrainRearPosition);
+    // if message given call at ~5 sec intervals in case train repositioned
 
-    if((RearMostElement.TrackType == Bridge) && (RearTrainExitPos > 1))
+    if(!Track->ThisLocationLongEnoughForSplit(7777, HeadCode, LocationName, LeadElement, LeadExitPos, MidElement,
+        MidEntryPos, FrontTrainFrontPos, FrontTrainRearPos, RearTrainFrontPos, RearTrainRearPos))
     {
-        TrainIDOnRearOfRearTrain = RearMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
-    }
-    else if((RearMostElement.TrackType == Bridge) && (RearTrainExitPos < 2))
-    {
-        TrainIDOnRearOfRearTrain = RearMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
-    }
-    else
-    {
-        TrainIDOnRearOfRearTrain = RearMostElement.TrainIDOnElement;
-    }
-    // RearTrainFrontPosition = RearMostElement.Conn[RearTrainExitPos];
-    TrainIDOnFrontOfRearTrain = Track->TrackElementAt(575, RearTrainFrontPosition).TrainIDOnElement;
-    // can't be a bridge
-    TrainIDOnRearOfFrontTrain = Track->TrackElementAt(576, FrontTrainRearPosition).TrainIDOnElement;
-    // can't be a bridge
-    // FrontTrainFrontPosition = Track->TrackElementAt(578,FrontTrainRearPosition).Conn[FrontTrainExitPos];
-    TTrackElement FrontMostElement = Track->TrackElementAt(577, FrontTrainFrontPosition);
-
-    if((FrontMostElement.TrackType == Bridge) && (FrontTrainExitPos > 1))
-    {
-        TrainIDOnFrontOfFrontTrain = FrontMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
-    }
-    else if((FrontMostElement.TrackType == Bridge) && (FrontTrainExitPos < 2))
-    {
-        TrainIDOnFrontOfFrontTrain = FrontMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
-    }
-    else
-    {
-        TrainIDOnFrontOfFrontTrain = FrontMostElement.TrainIDOnElement;
-    }
-    if(((TrainIDOnRearOfRearTrain > -1) && (TrainIDOnRearOfRearTrain != TrainID)) || ((TrainIDOnFrontOfRearTrain > -1) && (TrainIDOnFrontOfRearTrain != TrainID)
-                                                                                      ) || ((TrainIDOnRearOfFrontTrain > -1) && (TrainIDOnRearOfFrontTrain != TrainID)) ||
-       ((TrainIDOnFrontOfFrontTrain > -1) && (TrainIDOnFrontOfFrontTrain != TrainID)))
-    {
-        if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != FailSplitDueToOtherTrain)
+        if((TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != FailLocTooShort) || (UpdateCounter == 0))
         {
-            TrainController->StopTTClockMessage(153, HeadCode + " unable to split - another train is obstructing at " + LocationName + ", please move it if possible."); //added at v2.18.0
-            TrainController->LogActionError(8, HeadCode, "", FailSplitDueToOtherTrain, LocationName);
-            TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailSplitDueToOtherTrain;
+            if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != FailLocTooShort)
+            {
+                TrainController->StopTTClockMessage(151, HeadCode + " failed to split - location too short at " + LocationName + ", reposition train if possible.");
+                TrainController->LogActionError(6, HeadCode, "", FailLocTooShort, LocationName);
+                TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailLocTooShort;
+            }
+            Utilities->CallLogPop(1009);
+            return;
         }
-        // don't advance ActionVectorEntryPtr as need to keep trying, other train may move off eventually
-        Utilities->CallLogPop(1010);
-        return;
     }
-    if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported == FailSplitDueToOtherTrain)
-    {
-        TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = NoEvent;
-    }
-    // reposition existing rear train, need to do this first for 2 reasons - 1) will likely be in the way of the new front train, and 2)
-    // the new train will likely cause a reallocation of the TrainVector, and if so the reference to the existing train will be invalidated.
-    // Hence deal with existing train while it references a valid entry in the vector, but retain the Old ActionVectorEntryPtr in a separate
-    // variable as it is needed for setting up the new train
-    AnsiString SplitTrainFixedDescription = ActionVectorEntryPtr->LinkedTrainEntryPtr->FixedDescription; //save these for new train before incremented
+
+//it is long enough for split
+    AnsiString SplitTrainFixedDescription = ActionVectorEntryPtr->LinkedTrainEntryPtr->FixedDescription; //save these for new train before ActionVectorEntryPtr incremented
     AnsiString SplittingTrainDescription = Description;  //new at v2.15.0 to record earlier service description & changed at v2.16.1 to train description
     bool SplitTrainExplicitDescription = ActionVectorEntryPtr->LinkedTrainEntryPtr->ExplicitDescription;
     TTrainDataEntry *LinkedTrainEntryPtr = ActionVectorEntryPtr->LinkedTrainEntryPtr;
 
     UnplotTrain(0);
     StartSpeed = 0;
-    RearStartElement = RearTrainRearPosition;
-    RearStartExitPos = RearTrainExitPos;
+    RearStartElement = RearTrainRearPos;
+    for(int x = 0; x < 4; x++)
+    {
+        if(Track->TrackElementAt(7777, RearStartElement).Conn[x] == RearTrainFrontPos)
+        {
+            RearStartExitPos = x;
+        }
+    }
     StoppedAtLocation = true;
     if((PowerAtRail < 1) && EntrySpeed < 1) // added at v2.4.0
     {
@@ -6190,7 +5812,7 @@ void TTrain::FrontTrainSplit(int Caller)
         PowerAtRail = PowerAtRail - NewTrainPowerAtRail;
         AValue = sqrt(2 * PowerAtRail / Mass);
     }
-    else
+    else  // same Mass, MaxBrakeRate & PowerAtRail as this train's halved values, and same MaxRunningSpeed as this train
     {
         Mass = Mass / 2;
         NewTrainMass = Mass;
@@ -6205,19 +5827,11 @@ void TTrain::FrontTrainSplit(int Caller)
         // shouldn't change but include in case not set earlier
     }
 
-//    ActionVectorEntryPtr++; //moved here at v2.15.0
-    // create new front train
-/*
-      TrainController::AddTrain(int RearPosition, int FrontPosition, AnsiString HeadCode, int StartSpeed, int Mass,
-      double MaxRunningSpeed, double MaxBrakeRate, double PowerAtRail, AnsiString ModeStr, TTrainDataEntry *TrainDataEntryPtr,
-      int RepeatNumber, int IncrementalMinutes, int SignallerSpeed)
-*/
-    // same Mass, MaxBrakeRate & PowerAtRail as this train's halved values, and same MaxRunningSpeed as this train
     TActionEventType EventType = NoEvent;
     ActionVectorEntryPtr++; //moved here at v2.18.0 to give more chances to split in case points set wrongly initially, also when AddTrain TrainVector
                             //may be repositioned so all references to this train may be invalid
 
-    if(!TrainController->AddTrain(0, FrontTrainRearPosition, FrontTrainFrontPosition, OtherHeadCode, 0, NewTrainMass, MaxRunningSpeed, MaxBrakeRate, NewTrainPowerAtRail,
+    if(!TrainController->AddTrain(0, FrontTrainRearPos, FrontTrainFrontPos, OtherHeadCode, 0, NewTrainMass, MaxRunningSpeed, MaxBrakeRate, NewTrainPowerAtRail,
                                   "Timetable", LinkedTrainEntryPtr, RepeatNumber, IncrementalMinutes, IncrementalDigits, SignallerMaxSpeed, false, EventType))
     // false for SignallerControl
     {
@@ -6248,404 +5862,83 @@ void TTrain::FrontTrainSplit(int Caller)
 
 // ---------------------------------------------------------------------------
 
-void TTrain::RearTrainSplit(int Caller)
+void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new ThisLocationLongEnoughForSplit
 {
 /*
-      Split logic is:-  at least one of 4 final train positions must overlap with one of original train positions, & final 4 positions
+      Split logic for is:-  the final 4 train positions must overlap with the original train, & final 4 positions
       will maximise the number at the location.  Note that this function isn't sophisticated enough to account for trains already at the
       location in determining the 4 positions, and will give a failure message if a train obstructs any of the 4 positions.  In these
       circumstances the other train will need to be moved sufficiently away to release all 4 positions, then the train will split.
 */
     TrainController->LogEvent("" + AnsiString(Caller) + ",RearTrainSplit" + "," + HeadCode);
-    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",RearTrainSplit" + "," + HeadCode);
+    Utilities->CallLog.push_back(Utilities->TimeStamp() + "," + AnsiString(Caller) + ",FrontTrainSplit" + "," + HeadCode);
     if(PowerAtRail < 1)
-    // new at v2.4.0 (ActionVectorEntryPtr not incremented so can split when power restored)
+    // new at v2.4.0 (ActionVectorEntryPtr not incremented so can split when power restored
     {
-        if(!ZeroPowerNoRearSplitMessage)
+        if(!ZeroPowerNoFrontSplitMessage)
         {
-            TrainController->StopTTClockMessage(83, HeadCode + ": A train without power can't split");
+            TrainController->StopTTClockMessage(82, HeadCode + ": A train without power can't split");
         }
-        ZeroPowerNoRearSplitMessage = true;
-        Utilities->CallLogPop(2138);
+        ZeroPowerNoFrontSplitMessage = true;
+        Utilities->CallLogPop(2137);
         return;
     }
-    AnsiString LocationName = Track->TrackElementAt(587, LeadElement).ActiveTrackElementName;
+    AnsiString LocationName = Track->TrackElementAt(555, LeadElement).ActiveTrackElementName;
 
     if(LocationName == "")
     {
-        LocationName = Track->TrackElementAt(838, MidElement).ActiveTrackElementName;
+        LocationName = Track->TrackElementAt(837, MidElement).ActiveTrackElementName;
     }
-    int FirstNamedElementPos, SecondNamedElementPos, FirstNamedLinkedElementPos, SecondNamedLinkedElementPos;
-    int RearTrainRearPosition, RearTrainFrontPosition, RearTrainExitPos;
-    int FrontTrainRearPosition, FrontTrainFrontPosition, FrontTrainExitPos;
-    AnsiString OtherHeadCode = TrainController->GetRepeatHeadCode(2, ActionVectorEntryPtr->OtherHeadCode, RepeatNumber, IncrementalDigits);
+    int RearTrainRearPos, RearTrainFrontPos;
+    int FrontTrainRearPos, FrontTrainFrontPos, FrontTrainExitPos;
+    AnsiString OtherHeadCode = TrainController->GetRepeatHeadCode(1, ActionVectorEntryPtr->OtherHeadCode, RepeatNumber, IncrementalDigits);
 
-    // determine all positions & exits
-    if(LocationName != "")
+    if(LocationName == "")
     {
-        // if message given call at ~5 sec intervals in case train repositioned
-        if(!(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported == FailLocTooShort) || (UpdateCounter == 0))
+        throw Exception("Error - LocationName not set in FrontTrainSplit");
+    }
+    // if message given call at ~5 sec intervals in case train repositioned
+
+    if(!Track->ThisLocationLongEnoughForSplit(7777, HeadCode, LocationName, LeadElement, LeadExitPos, MidElement,
+        MidEntryPos, FrontTrainFrontPos, FrontTrainRearPos, RearTrainFrontPos, RearTrainRearPos))
+    {
+        if((TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != FailLocTooShort) || (UpdateCounter == 0))
         {
-            FirstNamedElementPos = LeadElement;
-            bool SuccessfulLinkage = false; //added at v2.18.0
-//determine whether LocationName is a station or non-station
-            bool StationLocation = false;
-            for(TTrack::TTrackVectorIterator TEIt = Track->InactiveTrackVector.begin(); TEIt != Track->InactiveTrackVector.end(); TEIt++)
+            if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != FailLocTooShort)
             {
-                if(TEIt->LocationName == Track->TrackElementAt(1630, LeadElement).ActiveTrackElementName)
-                {
-                    if(TEIt->TrackType != NamedNonStationLocation)
-                    {
-                        StationLocation = true;
-                    }
-                }
-                else if(TEIt->LocationName == Track->TrackElementAt(1631, MidElement).ActiveTrackElementName)
-                {
-                    if(TEIt->TrackType != NamedNonStationLocation)
-                    {
-                        StationLocation = true;
-                    }
-                }
+                TrainController->StopTTClockMessage(151, HeadCode + " failed to split - location too short at " + LocationName + ", reposition train if possible.");
+                TrainController->LogActionError(6, HeadCode, "", FailLocTooShort, LocationName);
+                TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailLocTooShort;
             }
-            if(StationLocation)
-            {
-                if(!Track->ThisStationLongEnoughForSplit(2, LocationName, FirstNamedElementPos, SecondNamedElementPos, FirstNamedLinkedElementPos,
-                                                               SecondNamedLinkedElementPos))
-                {
-                    FirstNamedElementPos = MidElement;
-                    if(!Track->ThisStationLongEnoughForSplit(3, LocationName, FirstNamedElementPos, SecondNamedElementPos, FirstNamedLinkedElementPos,
-                                                                   SecondNamedLinkedElementPos))
-                    {
-                        if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != FailLocTooShort)
-                        {
-                            TrainController->StopTTClockMessage(154, HeadCode + " failed to split - location too short at " + LocationName + ", reposition train if possible.");
-                            TrainController->LogActionError(9, HeadCode, "", FailLocTooShort, LocationName);
-                            TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailLocTooShort;
-                        }
-                        Utilities->CallLogPop(1013);
-                        return;
-                    }
-                    else
-                    {
-                        SuccessfulLinkage = true;
-                    }
-                }
-                else
-                {
-                    SuccessfulLinkage = true;
-                }
-            }
-            else
-            {
-            //LeadEntryPos is the linkpos to MidElement
-                if(!Track->ThisNonStationLongEnoughForSplit(2, LocationName, FirstNamedElementPos, LeadEntryPos,
-                      // check if possible with LeadElement as First
-                      SecondNamedElementPos, FirstNamedLinkedElementPos, SecondNamedLinkedElementPos))
-                {
-                    FirstNamedElementPos = MidElement; //MidExitPos is the linkpos to LeadElement
-                    if(!Track->ThisNonStationLongEnoughForSplit(3, LocationName, FirstNamedElementPos, MidExitPos,
-                          // if not then accept second if possible (though if Lead no good hard to see how Mid could work, but leave in)
-                          SecondNamedElementPos, FirstNamedLinkedElementPos, SecondNamedLinkedElementPos))
-                    {
-                        if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != FailLocTooShort)
-                        {
-                            TrainController->StopTTClockMessage(155, HeadCode + " failed to split - location too short at " + LocationName + ", reposition train if possible.");
-                            TrainController->LogActionError(67, HeadCode, "", FailLocTooShort, LocationName);
-                            TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailLocTooShort;
-                        }
-                        Utilities->CallLogPop(2659);
-                        return;
-                    }
-                    else
-                    {
-                        SuccessfulLinkage = true;
-                    }
-                }
-                else
-                {
-                    SuccessfulLinkage = true;
-                }
-            }
-            if(SuccessfulLinkage)
-            {
-                //check if can move the 4 final elements back one element for a non-station (front will be at end of loc so if 3 or more named
-                //elements on the train track then can move back one - makes it less likely that a signal will be overlaid by the front train)
-                if(!StationLocation)
-                {
-                    if((Track->TrackElementAt(1660, FirstNamedLinkedElementPos).ActiveTrackElementName == LocationName) ||
-                        (Track->TrackElementAt(1661, SecondNamedLinkedElementPos).ActiveTrackElementName == LocationName))
-                    { //at least 3 named elements so can move the elements back
-                        int SecondLinkPos; //link from SecondNamedElement to SecondNamedLinkedElement
-                        for(int x = 0; x < 4; x++)
-                        {
-                            if(Track->TrackElementAt(1662, SecondNamedElementPos).Conn[x] == SecondNamedLinkedElementPos)
-                            {
-                                SecondLinkPos = x;
-                                break;
-                            }
-                        }
-                        FirstNamedLinkedElementPos = FirstNamedElementPos;
-                        FirstNamedElementPos = SecondNamedElementPos;
-                        SecondNamedElementPos = SecondNamedLinkedElementPos;
-                        SecondNamedLinkedElementPos = Track->TrackElementAt(1663, SecondNamedElementPos).Conn[SecondLinkPos];
-                    }
-                }
-                // check if all 4 positions at location, and if not try the second
-                int LeadPosA = FirstNamedElementPos;
-                int LeadPosB = FirstNamedLinkedElementPos;
-                int LeadPosC = SecondNamedElementPos;
-                int LeadPosD = SecondNamedLinkedElementPos;
-                // count number of positions that are at the location
-                int LeadNumAtLoc = 0;
-                if(Track->TrackElementAt(767, LeadPosA).ActiveTrackElementName == LocationName)
-                {
-                    LeadNumAtLoc++;
-                }
-                if(Track->TrackElementAt(768, LeadPosB).ActiveTrackElementName == LocationName)
-                {
-                    LeadNumAtLoc++;
-                }
-                if(Track->TrackElementAt(769, LeadPosC).ActiveTrackElementName == LocationName)
-                {
-                    LeadNumAtLoc++;
-                }
-                if(Track->TrackElementAt(770, LeadPosD).ActiveTrackElementName == LocationName)
-                {
-                    LeadNumAtLoc++;
-                }
-                if(LeadNumAtLoc < 4)
-                {
-                    FirstNamedElementPos = MidElement;
-                    if(StationLocation)
-                    {
-                        if(!Track->ThisStationLongEnoughForSplit(5, LocationName, FirstNamedElementPos, SecondNamedElementPos, FirstNamedLinkedElementPos,
-                                                                       SecondNamedLinkedElementPos)) // restore originals
-                        {
-                            FirstNamedElementPos = LeadPosA;
-                            FirstNamedLinkedElementPos = LeadPosB;
-                            SecondNamedElementPos = LeadPosC;
-                            SecondNamedLinkedElementPos = LeadPosD;
-                        }
-                        else // count number at location
-                        {
-                            int MidNumAtLoc = 0;
-                            if(Track->TrackElementAt(1650, FirstNamedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(Track->TrackElementAt(1651, FirstNamedLinkedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(Track->TrackElementAt(1652, FirstNamedLinkedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(Track->TrackElementAt(1653, SecondNamedLinkedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(LeadNumAtLoc > MidNumAtLoc)
-                            // change back, else keep new values
-                            {
-                                FirstNamedElementPos = LeadPosA;
-                                FirstNamedLinkedElementPos = LeadPosB;
-                                SecondNamedElementPos = LeadPosC;
-                                SecondNamedLinkedElementPos = LeadPosD;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if(!Track->ThisNonStationLongEnoughForSplit(5, LocationName, FirstNamedElementPos, MidExitPos, SecondNamedElementPos, FirstNamedLinkedElementPos,
-                                                                       SecondNamedLinkedElementPos)) // restore originals
-                        {
-                            FirstNamedElementPos = LeadPosA;
-                            FirstNamedLinkedElementPos = LeadPosB;
-                            SecondNamedElementPos = LeadPosC;
-                            SecondNamedLinkedElementPos = LeadPosD;
-                        }
-                        else // count number at location
-                        {
-                            int MidNumAtLoc = 0;
-                            if(Track->TrackElementAt(771, FirstNamedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(Track->TrackElementAt(772, FirstNamedLinkedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(Track->TrackElementAt(773, FirstNamedLinkedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(Track->TrackElementAt(774, SecondNamedLinkedElementPos).ActiveTrackElementName == LocationName)
-                            {
-                                MidNumAtLoc++;
-                            }
-                            if(LeadNumAtLoc > MidNumAtLoc)
-                            // change back, else keep new values
-                            {
-                                FirstNamedElementPos = LeadPosA;
-                                FirstNamedLinkedElementPos = LeadPosB;
-                                SecondNamedElementPos = LeadPosC;
-                                SecondNamedLinkedElementPos = LeadPosD;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            Utilities->CallLogPop(1792);
+            Utilities->CallLogPop(1009);
             return;
         }
     }
-    else
-    {
-        throw Exception("Error - LocationName not set in RearTrainSplit");
-    }
-    // set front & rear train parameters
-    // need RearTrainRearPosition, RearTrainFrontPosition, RearTrainExitPos, FrontTrainRearPosition, FrontTrainFrontPosition & FrontTrainExitPos;
-    // have LeadElement & MidElement of train defining its direction, & one or other on FirstNamedElementPos
-    // have FirstNamedElementPos, SecondNamedElementPos, FirstNamedLinkedElementPos & SecondNamedLinkedElementPos from ThisStationLongEnoughForSplit.
-    if(LeadElement == FirstNamedElementPos)
-    {
-        if(MidElement == SecondNamedElementPos)
-        {
-            FrontTrainFrontPosition = FirstNamedLinkedElementPos;
-            FrontTrainRearPosition = FirstNamedElementPos;
-            RearTrainFrontPosition = SecondNamedElementPos;
-            RearTrainRearPosition = SecondNamedLinkedElementPos;
-        }
-        else // MidElement must == FirstNamedLinkedElementPos
-        {
-            FrontTrainFrontPosition = SecondNamedLinkedElementPos;
-            FrontTrainRearPosition = SecondNamedElementPos;
-            RearTrainFrontPosition = FirstNamedElementPos;
-            RearTrainRearPosition = FirstNamedLinkedElementPos;
-        }
-    }
-    else // MidElement == FirstNamedElementPos
-    {
-        if(LeadElement == SecondNamedElementPos)
-        {
-            FrontTrainFrontPosition = SecondNamedLinkedElementPos;
-            FrontTrainRearPosition = SecondNamedElementPos;
-            RearTrainFrontPosition = FirstNamedElementPos;
-            RearTrainRearPosition = FirstNamedLinkedElementPos;
-        }
-        else // LeadElement must == FirstNamedLinkedElementPos
-        {
-            FrontTrainFrontPosition = FirstNamedLinkedElementPos;
-            FrontTrainRearPosition = FirstNamedElementPos;
-            RearTrainFrontPosition = SecondNamedElementPos;
-            RearTrainRearPosition = SecondNamedLinkedElementPos;
-        }
-    }
-    RearTrainExitPos = -1;
-    for(int x = 0; x < 4; x++)
-    {
-        if(Track->TrackElementAt(588, RearTrainRearPosition).Conn[x] == RearTrainFrontPosition)
-        {
-            RearTrainExitPos = x;
-            break;
-        }
-    }
-    if(RearTrainExitPos == -1)
-    {
-        throw Exception("Error - RearTrainRearPosition not linked to RearTrainFrontPosition in RearTrainSplit");
-    }
-    FrontTrainExitPos = -1;
-    for(int x = 0; x < 4; x++)
-    {
-        if(Track->TrackElementAt(589, FrontTrainRearPosition).Conn[x] == FrontTrainFrontPosition)
-        {
-            FrontTrainExitPos = x;
-            break;
-        }
-    }
-    if(FrontTrainExitPos == -1)
-    {
-        throw Exception("Error - FrontTrainRearPosition not linked to FrontTrainFrontPosition in RearTrainSplit");
-    }
-    // check no train (apart from self) on any of the 4 elements & fail if so
-    int TrainIDOnRearOfRearTrain, TrainIDOnFrontOfRearTrain, TrainIDOnRearOfFrontTrain, TrainIDOnFrontOfFrontTrain;
-    TTrackElement RearMostElement = Track->TrackElementAt(590, RearTrainRearPosition);
 
-    if((RearMostElement.TrackType == Bridge) && (RearTrainExitPos > 1))
-    {
-        TrainIDOnRearOfRearTrain = RearMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
-    }
-    else if((RearMostElement.TrackType == Bridge) && (RearTrainExitPos < 2))
-    {
-        TrainIDOnRearOfRearTrain = RearMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
-    }
-    else
-    {
-        TrainIDOnRearOfRearTrain = RearMostElement.TrainIDOnElement;
-    }
-    // RearTrainFrontPosition = RearMostElement.Conn[RearTrainExitPos];
-    TrainIDOnFrontOfRearTrain = Track->TrackElementAt(591, RearTrainFrontPosition).TrainIDOnElement;
-    // can't be a bridge
-    TrainIDOnRearOfFrontTrain = Track->TrackElementAt(592, FrontTrainRearPosition).TrainIDOnElement;
-    // can't be a bridge
-    // FrontTrainFrontPosition = Track->TrackElementAt(593,FrontTrainRearPosition).Conn[FrontTrainExitPos];
-    TTrackElement FrontMostElement = Track->TrackElementAt(594, FrontTrainFrontPosition);
-
-    if((FrontMostElement.TrackType == Bridge) && (FrontTrainExitPos > 1))
-    {
-        TrainIDOnFrontOfFrontTrain = FrontMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23;
-    }
-    else if((FrontMostElement.TrackType == Bridge) && (FrontTrainExitPos < 2))
-    {
-        TrainIDOnFrontOfFrontTrain = FrontMostElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01;
-    }
-    else
-    {
-        TrainIDOnFrontOfFrontTrain = FrontMostElement.TrainIDOnElement;
-    }
-    if(((TrainIDOnRearOfRearTrain > -1) && (TrainIDOnRearOfRearTrain != TrainID)) || ((TrainIDOnFrontOfRearTrain > -1) && (TrainIDOnFrontOfRearTrain != TrainID)
-                                                                                      ) || ((TrainIDOnRearOfFrontTrain > -1) && (TrainIDOnRearOfFrontTrain != TrainID)) ||
-       ((TrainIDOnFrontOfFrontTrain > -1) && (TrainIDOnFrontOfFrontTrain != TrainID)))
-    {
-        if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != FailSplitDueToOtherTrain)
-        {
-            TrainController->StopTTClockMessage(156, HeadCode + " unable to split - another train is obstructing at " + LocationName + ", please move it if possible."); //added at v2.18.0
-            TrainController->LogActionError(11, HeadCode, "", FailSplitDueToOtherTrain, LocationName);
-            TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = FailSplitDueToOtherTrain;
-        }
-        // don't advance ActionVectorEntryPtr as need to keep trying, other train may move off eventually
-        Utilities->CallLogPop(1014);
-        return;
-    }
-    if(TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported == FailSplitDueToOtherTrain)
-    {
-        TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported = NoEvent;
-    }
-
-    // reposition existing front train, need to do this first for 2 reasons - 1) will likely be in the way of the new rear train, and 2)
-    // the new train will likely cause a reallocation of the TrainVector, and if so the reference to the existing train will be invalidated.
-    // Hence deal with existing train while it references a valid entry in the vector, but retain the Old ActionVectorEntryPtr in a separate
-    // variable as it is needed for setting up the new train
-    AnsiString SplitTrainFixedDescription = ActionVectorEntryPtr->LinkedTrainEntryPtr->FixedDescription; //save these for new train before incremented
+//it is long enough for split
+    AnsiString SplitTrainFixedDescription = ActionVectorEntryPtr->LinkedTrainEntryPtr->FixedDescription; //save these for new train before ActionVectorEntryPtr incremented
     AnsiString SplittingTrainDescription = Description;  //new at v2.15.0 to record earlier service description & changed at v2.16.1 to train description
     bool SplitTrainExplicitDescription = ActionVectorEntryPtr->LinkedTrainEntryPtr->ExplicitDescription;
     TTrainDataEntry *LinkedTrainEntryPtr = ActionVectorEntryPtr->LinkedTrainEntryPtr;
-    UnplotTrain(1);
+
+    UnplotTrain(0);
     StartSpeed = 0;
-    RearStartElement = FrontTrainRearPosition;
-    RearStartExitPos = FrontTrainExitPos;
+    RearStartElement = FrontTrainRearPos;
+    for(int x = 0; x < 4; x++)
+    {
+        if(Track->TrackElementAt(7777, RearStartElement).Conn[x] == FrontTrainFrontPos)
+        {
+            RearStartExitPos = x;
+        }
+    }
     StoppedAtLocation = true;
     if((PowerAtRail < 1) && EntrySpeed < 1) // added at v2.4.0
     {
         StoppedWithoutPower = true;
     }
-    PlotStartPosition(4);
-    PlotTrainWithNewBackgroundColour(15, clStationStopBackground, Display);
-    LogAction(10, HeadCode, OtherHeadCode, RearSplit, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->SplitDistribution, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
+    PlotStartPosition(3);
+    PlotTrainWithNewBackgroundColour(14, clStationStopBackground, Display);
+    LogAction(9, HeadCode, OtherHeadCode, FrontSplit, ActionVectorEntryPtr->LocationName, ActionVectorEntryPtr->SplitDistribution, ActionVectorEntryPtr->EventTime, ActionVectorEntryPtr->Warning);
 //    ActionVectorEntryPtr++;  moved lower down at v2.15.0 because of new section below
     LastActionTime = TrainController->TTClockTime;
 
@@ -6664,10 +5957,10 @@ void TTrain::RearTrainSplit(int Caller)
         {
             NewTrainPowerAtRail = 0.08; //min value represents 0
         }
-        PowerAtRail = PowerAtRail - NewTrainPowerAtRail ;
+        PowerAtRail = PowerAtRail - NewTrainPowerAtRail;
         AValue = sqrt(2 * PowerAtRail / Mass);
     }
-    else
+    else // same Mass, MaxBrakeRate & PowerAtRail as this train's halved values, and same MaxRunningSpeed as this train
     {
         Mass = Mass / 2;
         NewTrainMass = Mass;
@@ -6682,26 +5975,15 @@ void TTrain::RearTrainSplit(int Caller)
         // shouldn't change but include in case not set earlier
     }
 
-//    ActionVectorEntryPtr++; //moved here at v2.15.0
-
-
-
-    // create new rear train
-/*
-      TrainController::AddTrain(int RearPosition, int FrontPosition, AnsiString HeadCode, int StartSpeed, int Mass,
-      double MaxRunningSpeed, double MaxBrakeRate, double PowerAtRail, AnsiString ModeStr, TTrainDataEntry *TrainDataEntryPtr,
-      int RepeatNumber, int IncrementalMinutes)
-*/
-    // same Mass, MaxBrakeRate & PowerAtRail as this train's halved values, and same MaxRunningSpeed as this train
     TActionEventType EventType = NoEvent;
     ActionVectorEntryPtr++; //moved here at v2.18.0 to give more chances to split in case points set wrongly initially, also when AddTrain TrainVector
                             //may be repositioned so all references to this train may be invalid
 
-    if(!TrainController->AddTrain(1, RearTrainRearPosition, RearTrainFrontPosition, OtherHeadCode, 0, NewTrainMass, MaxRunningSpeed, MaxBrakeRate, NewTrainPowerAtRail,
+    if(!TrainController->AddTrain(0, RearTrainRearPos, RearTrainFrontPos, OtherHeadCode, 0, NewTrainMass, MaxRunningSpeed, MaxBrakeRate, NewTrainPowerAtRail,
                                   "Timetable", LinkedTrainEntryPtr, RepeatNumber, IncrementalMinutes, IncrementalDigits, SignallerMaxSpeed, false, EventType))
     // false for SignallerControl
     {
-        Utilities->CallLogPop(1722); // EventType not used here
+        Utilities->CallLogPop(1721); // EventType not used here
         // if fails either a throw will have been sent in AddTrain or start position failed prob because of
         // another train, in which case a message will have been sent to the perf log, also might well clear later
         // when other train moves away
@@ -6715,14 +5997,15 @@ void TTrain::RearTrainSplit(int Caller)
         TrainController->TrainVector.back().Description = SplittingTrainDescription; //else takes it from this train's description
     }
 
-    // Note data in 'this' now probably invalid as there has been a new addition to the TrainVector, so the train is likely to have a new address,
-    // hence make no more changes for the current train see mods in UpdateTrain for v1.3.2
+    // Note data in 'this' now probably invalid as there has been a new addition to the TrainVector, so the train is likely to have a new address, hence make no more changes for the current train
+    // see mods in UpdateTrain for v1.3.2
     TrainController->TrainAdded = true;
+
     TTrainOperatingData &TTOD = LinkedTrainEntryPtr->TrainOperatingDataVector.at(RepeatNumber); // this is for the newly created train
 
     TTOD.TrainID = TrainController->TrainVector.back().TrainID;
     TTOD.RunningEntry = Running;
-    Utilities->CallLogPop(1015);
+    Utilities->CallLogPop(998);
 }
 
 // ---------------------------------------------------------------------------

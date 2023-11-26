@@ -99,6 +99,7 @@ TTrain::TTrain(int Caller, int RearStartElementIn, int RearStartExitPosIn, AnsiS
     StoppedAfterSPAD = false;
     StoppedWithoutPower = false; // new at v2.4.0
     StoppedForTrainInFront = false;
+    TrainInFront = false; //new at v2.18.0
     SignallerStoppingFlag = false;
     SignallerStopped = false;
     SignallerRemoved = false;
@@ -784,6 +785,7 @@ void TTrain::UpdateTrain(int Caller)
         Utilities->CallLogPop(1017);
         return; // no further action, user has to remove or work around
     }
+
     if(StoppedForTrainInFront && !RevisedStoppedAtLoc() && !Crashed && !Derailed && !TrainFailed)
     {
         PlotTrainWithNewBackgroundColour(42, clStoppedTrainInFront, Display);
@@ -1325,27 +1327,42 @@ void TTrain::UpdateTrain(int Caller)
             SetTrainMovementValues(4, NextElementPosition, NextEntryPos);
             // NextElement is the element to be entered
         }
+        if((LeadElement > -1) && (LeadExitPos > -1))//this section added at v2.18.0
+        {
+            int NextPos = Track->TrackElementAt(649, LeadElement).Conn[LeadExitPos];
+            if(NextPos > -1)
+            {
+                int NextEntryPos = Track->TrackElementAt(650, LeadElement).ConnLinkPos[LeadExitPos];
+                if(Track->OtherTrainOnTrack(1, NextPos, NextEntryPos, TrainID))
+                // true if another train on NextEntryPos track whether bridge or not
+                {
+                    TrainInFront = true;
+                }
+                else
+                {
+                    TrainInFront = false;
+                }
+            }
+        }
         if(StoppedForTrainInFront)
         {
             if(ClearToNextSignal(0))
             {
                 StoppedForTrainInFront = false;
+                TrainInFront = false;
                 BeingCalledOn = false;
                 EntrySpeed = 0;
                 EntryTime = TrainController->TTClockTime;
                 FirstHalfMove = true;
                 SetTrainMovementValues(16, NextElementPosition, NextEntryPos);
             }
-            else
-            {
-                if(TrainFailurePending) // ok, stopped so PlotElements set
-                {
-                    TrainHasFailed(4);
-                }
-                Utilities->CallLogPop(1097);
-                return;
-            }
         }
+    }
+    if(TrainFailurePending) // ok, stopped so PlotElements set
+    {
+        TrainHasFailed(4);
+        Utilities->CallLogPop(1097);
+        return;
     }
     if((Straddle == MidLag) && (LeadElement != -1))
     // later check only for Straddle == LeadMid, so need this check here for initial train start
@@ -1374,10 +1391,10 @@ void TTrain::UpdateTrain(int Caller)
     {
         if(RevisedStoppedAtLoc() && !StoppedAtBuffers && !Crashed && !Derailed && !HoldAtLocationInTTMode && !TrainFailed)
         {
-            if(BeingCalledOn)
-            {
-                StoppedForTrainInFront = true;
-            }
+//            if(BeingCalledOn)   //dropped when added TrainInFront at v2.18.0
+//            {
+//                TrainInFront = true;
+//            }
             if(TrainController->TTClockTime >= TRSTime)
             {
                 PlotTrainWithNewBackgroundColour(19, clTRSBackground, Display); // light pink
@@ -1568,18 +1585,18 @@ void TTrain::UpdateTrain(int Caller)
     // SetTrainMovementValues brakes & stops signaller mode train for a train in front using local
     // variable TrainInFrontInSignallerModeFlag
     {
-        if(LeadElement > -1)
+        if((LeadElement > -1) && (LeadExitPos > -1))
         {
             int NextPos = Track->TrackElementAt(649, LeadElement).Conn[LeadExitPos];
             int NextEntryPos = Track->TrackElementAt(650, LeadElement).ConnLinkPos[LeadExitPos];
             if(Track->OtherTrainOnTrack(1, NextPos, NextEntryPos, TrainID))
             // true if another train on NextEntryPos track whether bridge or not
             {
-                StoppedForTrainInFront = true;
+                TrainInFront = true;
             }
             else
             {
-                StoppedForTrainInFront = false;
+                TrainInFront = false;
             }
         }
     }
@@ -3835,7 +3852,7 @@ when Straddle == LeadMidLag
         throw Exception("Error - HalfLength or SpeedLimit < 0 in SetTrainMovementValues");
     }
     // check if zero entry speed with another train directly in front & if so remain stopped
-    if(Track->OtherTrainOnTrack(2, CurrentTrackVectorPosition, EntryPos, TrainID) && (EntrySpeed < 1))
+    if((EntryPos > -1) && Track->OtherTrainOnTrack(2, CurrentTrackVectorPosition, EntryPos, TrainID) && (EntrySpeed < 1))
     {
         EntrySpeed = 0;
         ExitSpeedHalf = 0;
@@ -3845,6 +3862,7 @@ when Straddle == LeadMidLag
         ExitTimeHalf = EntryTime + TDateTime(1/24); //set this high in case used later though unlikely
         ExitTimeFull = EntryTime + TDateTime(1/23); //set about 2.5 mins later than half time
         StoppedForTrainInFront = true;
+        TrainInFront = true;
         Utilities->CallLogPop(705);
         return;
     }
@@ -4867,13 +4885,13 @@ bool TTrain::ClearToNextSignal(int Caller)
     while(true)
     {
         if((Track->TrackElementAt(382, CurrentTrackVectorPosition).TrainIDOnElement > -1) && (Track->TrackElementAt(383,
-                                                                                                                    CurrentTrackVectorPosition).TrainIDOnElement != TrainID))
+            CurrentTrackVectorPosition).TrainIDOnElement != TrainID))
         {
             ReturnVal = 1;
             break;
         }
         if(((Track->TrackElementAt(384, CurrentTrackVectorPosition).TrackType == Buffers) || (Track->TrackElementAt(385,
-                                                                                                                    CurrentTrackVectorPosition).TrackType == Continuation)) && (EntryPos == 1))
+            CurrentTrackVectorPosition).TrackType == Continuation)) && (EntryPos == 1))
         {
             ReturnVal = 2;
             break;
@@ -5009,7 +5027,7 @@ bool TTrain::CallingOnAllowed(int Caller)
     int LeadElementDistance = Track->TrackElementAt(1017, LeadElement).Length01; //added after 2.7.0 as don't want to add this to overall distance since train has already covered this distance
     // use Length01, may be wrong for points/crossovers/bridges but unlikely to occur in practice
     // must be stopped at a signal but not at a location & still in timetable (a)
-    if(RevisedStoppedAtLoc() || !StoppedAtSignal || TimetableFinished || Crashed || Derailed || DerailPending || StoppedAfterSPAD || StoppedForTrainInFront)
+    if(RevisedStoppedAtLoc() || !StoppedAtSignal || TimetableFinished || Crashed || Derailed || DerailPending || StoppedAfterSPAD || StoppedForTrainInFront || TrainInFront)
     // no need to check for SignallerStopped as this function only called in Timetable mode
     {
         Utilities->CallLogPop(711);
@@ -5751,8 +5769,9 @@ void TTrain::FrontTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Th
     }
     // if message given call at ~5 sec intervals in case train repositioned
 
-    if(!Track->ThisLocationLongEnoughForSplit(7777, HeadCode, LocationName, LeadElement, LeadExitPos, MidElement,
-        MidEntryPos, FrontTrainFrontPos, FrontTrainRearPos, RearTrainFrontPos, RearTrainRearPos))
+    bool TemporaryDelay = false;
+    if(!Track->ThisLocationLongEnoughForSplit(0, HeadCode, TrainID, LocationName, LeadElement, LeadExitPos, MidElement,
+        MidEntryPos, FrontTrainFrontPos, FrontTrainRearPos, RearTrainFrontPos, RearTrainRearPos, TemporaryDelay))
     {
         if((TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != FailLocTooShort) || (UpdateCounter == 0))
         {
@@ -5765,6 +5784,13 @@ void TTrain::FrontTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Th
             Utilities->CallLogPop(1009);
             return;
         }
+    }
+
+    if(TemporaryDelay)
+    {
+        LastActionTime = TrainController->TTClockTime;
+        Utilities->CallLogPop(7777);
+        return;
     }
 
 //it is long enough for split
@@ -5899,8 +5925,9 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
     }
     // if message given call at ~5 sec intervals in case train repositioned
 
-    if(!Track->ThisLocationLongEnoughForSplit(7777, HeadCode, LocationName, LeadElement, LeadExitPos, MidElement,
-        MidEntryPos, FrontTrainFrontPos, FrontTrainRearPos, RearTrainFrontPos, RearTrainRearPos))
+    bool TemporaryDelay = false;
+    if(!Track->ThisLocationLongEnoughForSplit(1, HeadCode, TrainID, LocationName, LeadElement, LeadExitPos, MidElement,
+        MidEntryPos, FrontTrainFrontPos, FrontTrainRearPos, RearTrainFrontPos, RearTrainRearPos, TemporaryDelay))
     {
         if((TrainDataEntryPtr->TrainOperatingDataVector.at(RepeatNumber).EventReported != FailLocTooShort) || (UpdateCounter == 0))
         {
@@ -5913,6 +5940,13 @@ void TTrain::RearTrainSplit(int Caller) //Major rewrite at v2.18.0 using new Thi
             Utilities->CallLogPop(1009);
             return;
         }
+    }
+
+    if(TemporaryDelay)
+    {
+        LastActionTime = TrainController->TTClockTime;
+        Utilities->CallLogPop(7777);
+        return;
     }
 
 //it is long enough for split
@@ -6211,7 +6245,6 @@ void TTrain::ChangeTrainDirection(int Caller, bool NoLogFlag)
             }
         }
     }
-    StoppedForTrainInFront = false;
     Utilities->CallLogPop(1012);
 }
 
@@ -6789,29 +6822,30 @@ bool TTrain::AbleToMove(int Caller)
         if(Track->TrackElementAt(801, LeadElement).TrackType == Buffers)  //moved up here from 'else' below at v2.12.0
         {
             StoppedForTrainInFront = false;
+            TrainInFront = false;
             // don't set StoppedAtBuffers as (presumably) StoppedAtLocation & leave it at that
             Utilities->CallLogPop(2456);
             return(false);
         }
         int FrontPos = Track->TrackElementAt(678, LeadElement).Conn[LeadExitPos];
         int FrontEntryPos = Track->TrackElementAt(679, LeadElement).ConnLinkPos[LeadExitPos];
-        if((FrontPos > -1) && (TrainMode == Signaller) && StoppedForTrainInFront) //check if train in front still there
+        if((FrontPos > -1) && (TrainMode == Signaller) && TrainInFront) //check if train in front still there
         {
             TTrackElement TrackElement = Track->TrackElementAt(680, FrontPos);
             if((TrackElement.TrackType != Bridge) && (TrackElement.TrainIDOnElement == -1))
             {
                 Able = true;
-                StoppedForTrainInFront = false;
+                TrainInFront = false;
             }
             else if((TrackElement.TrackType == Bridge) && (FrontEntryPos < 2) && (TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit01 == -1))
             {
                 Able = true;
-                StoppedForTrainInFront = false;
+                TrainInFront = false;
             }
             else if((TrackElement.TrackType == Bridge) && (FrontEntryPos > 1) && (TrackElement.TrainIDOnBridgeOrFailedPointOrigSpeedLimit23 == -1))
             {
                 Able = true;
-                StoppedForTrainInFront = false;
+                TrainInFront = false;
             }
             else
             {
@@ -6823,6 +6857,7 @@ bool TTrain::AbleToMove(int Caller)
     {
         Able = true;
         StoppedForTrainInFront = false;
+        TrainInFront = false;
     }
     Utilities->CallLogPop(1454);
     return(Able);
@@ -6847,7 +6882,7 @@ bool TTrain::AbleToMoveButForSignal(int Caller)
 
     if(Track->OtherTrainOnTrack(5, VecPos, NextEntryPos, TrainID))
     {
-        StoppedForTrainInFront = true;
+        TrainInFront = true;
         Utilities->CallLogPop(1455);
         return(false);
     }
@@ -21613,7 +21648,7 @@ int TTrainController::CalcDistanceToRedSignalandStopTime(int Caller, int TrackVe
         // this used to deduct from RecoverableTime when arrive at a location
         if(Train.RevisedStoppedAtLoc())
         {
-            if(Train.StoppedForTrainInFront)
+            if(Train.StoppedForTrainInFront || Train.TrainInFront)
             {
                 Utilities->CallLogPop(2082);
                 return(-1); // no action needed

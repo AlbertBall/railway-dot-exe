@@ -88,6 +88,10 @@ __fastcall TInterface::TInterface(TComponent* Owner) : TForm(Owner)
     // constructor
     try
     {
+
+//        TestFunctionCount = 0; //used only in test function
+//        TestFunctionFirstPass = true;  //used only in test function
+
         Screen->Cursor = TCursor(-11); // Hourglass
         DirOpenError = false;
         AllSetUpFlag = false; //flag to prevent MasterClock from being enabled when application activates if there has been an error during
@@ -7577,7 +7581,7 @@ void TInterface::MainScreenMouseDown2(int Caller, TMouseButton Button, TShiftSta
                                     } // fails on trying to calc AutoSig time delay for resetting signals
 
                                     if(Train.AbleToMoveButForSignal(0) && !Train.TreatPassAsTimeLocDeparture) // may not be in AutoSigs route but disallow anyway as not needed at continuation
-                                    {                                                                         //TreatPassAsTimeLocDeparture addesd at v2.12.0 as above
+                                    {                                                                         //TreatPassAsTimeLocDeparture added at v2.12.0 as above
                                         PassRedSignalMenuItem->Enabled = true;
                                         PassRedSignalMenuItem->Visible = true;
                                         StepForwardMenuItem->Enabled = true;
@@ -20092,7 +20096,7 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
         {
             Status = "Stopped at signal";
         }
-        if(Train.StoppedForTrainInFront)
+        if((Train.TrainInFront) || (Train.StoppedForTrainInFront))
         {
             Status = "Stopped - forward track occupied"; // before station stop as want to display station stop if that set
         }
@@ -20100,7 +20104,7 @@ AnsiString TInterface::GetTrainStatusFloat(int Caller, int TrainID, AnsiString F
         {
             Status = "Stopped at " + Train.ActionVectorEntryPtr->LocationName;
         }
-        if((Train.RevisedStoppedAtLoc()) && (Train.StoppedForTrainInFront))
+        if((Train.RevisedStoppedAtLoc()) && (Train.TrainInFront))
         {
             Status = "Stopped at " + Train.ActionVectorEntryPtr->LocationName + " + forward track occupied";
         }
@@ -24955,37 +24959,7 @@ void TInterface::TestFunction()    //triggered by Ctrl Alt 4
     {
         Utilities->CallLog.push_back(Utilities->TimeStamp() + ",TestFunction");
 //test code here
-/*
-        for(TTrack::TTrackVectorIterator TVIt = Track->TrackVector.begin(); TVIt != Track->TrackVector.end(); TVIt++)
-        {
-            if(TVIt->StationEntryStopLinkPos1 > -1)
-            {
-                Display->PlotOutput(-1, (TVIt->HLoc * 16), (TVIt->VLoc * 16), RailGraphics->smBrightGreen);
-            }
-            if(TVIt->StationEntryStopLinkPos2 > -1)
-            {
-                Display->PlotOutput(-1, (TVIt->HLoc * 16), (TVIt->VLoc * 16 + 4), RailGraphics->smMagenta);
-            }
-            if(TVIt->StationEntryStopLinkPos3 > -1)
-            {
-                Display->PlotOutput(-1, (TVIt->HLoc * 16), (TVIt->VLoc * 16 + 8), RailGraphics->smOrange);
-            }
-            if(TVIt->StationEntryStopLinkPos4 > -1)
-            {
-                Display->PlotOutput(-1, (TVIt->HLoc * 16), (TVIt->VLoc * 16 + 12), RailGraphics->smRed);
-            }
-        }
-*/
-/*
-    throw Exception("test error");
-                    if(AllRoutes->AllRoutesVector.size() > 0)
-                    {
-                        for(TAllRoutes::TAllRoutesVectorIterator ARVIt = AllRoutes->AllRoutesVector.begin(); ARVIt < AllRoutes->AllRoutesVector.end(); ARVIt++)
-                        {
-                            ARVIt->SetRouteSignals();
-                        }
-                    }
-*/
+
 //end of test code
         Utilities->CallLogPop(2376);
     }

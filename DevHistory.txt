@@ -9,16 +9,6 @@ Yes: to do: find way for timetable to distinguish between platforms and non-stat
 select FrontTrainStationSplit or FrontTrainNonStationSplit for fsp & same for rear
 create new functions FrontTrainNonStationSplit & RearTrainNonStationSplit, ThisNonStationLongEnoughForSplit + add to caller checker.  Helped by fact that trains stop at end of non-stations, so just ensure that have enough room at back for rear split (using existing points settings - check that get existing point error message if not set correctly) and at front for front split - where arriving front train moved to rear.
 
-/check exit & entry posses for rear split
-
-/list split condits so know which of 4 elements the final 2 trains will be on
-
-/step back one element for trains on non-stations provided that have 3 named elements on train track, so don't overstep the location and foul signals
-
-/had spad at b'ham when testing above split - found it but ensure have correct solution
-
-/had repeated attempts to split even though split ok & second train created ok - was due to repositioning of original train after AddTrain, ok now
-
 Mention the existing search bug in version update (discussed above starting 'track line 19759')
 
 Mention 50-50 mass power split missing in logs
@@ -29,11 +19,17 @@ note that can't use earlier versions to load railways or sessions with blue on p
 
 at b'ham when 7G46 changes direction at small heath it still retains the 'forward track occupied' message
 
-can maybe use Derail to detect train being created on wrongly set points - or is this done in create train?
-
-add train detection in ThislocationLong...
-
 deal with 7777s & callerchecker
+
+Mention messages given every 30 secs if train obstructs or points not set correctly in train split
+
+Manual - best not to have sigs within platforms if trains split as can be unprotected
+
+/still to understand StoppedForTrainInFront & ensure it works correctly: background to show when should be moving in timetable & signaller, prevent signaller move when train in front
+
+need to test TrainInFront & StoppedForTrainInFront extensively
+
+check TrainInFront for any reason may be needed in session files - look at all instances for anything that might cause probs before operation begins & set during UpdateTrain
 
 
 

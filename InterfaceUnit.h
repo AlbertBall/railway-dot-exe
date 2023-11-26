@@ -980,8 +980,7 @@ __published: // IDE-managed Components
     void __fastcall SigAutoNonConsecButtonClick(TObject *Sender);
     void __fastcall InvertTTEntryButtonClick(TObject *Sender);
     void __fastcall FlashControlButtonClick(TObject *Sender);
-    void __fastcall ExpandRepeatsButtonClick(TObject *Sender);  //added at v2.17.0
-
+    void __fastcall ExpandRepeatsButtonClick(TObject *Sender); //added at v2.17.0
 
 public: // AboutForm needs access to these
 
@@ -1377,7 +1376,6 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
     bool RestoreTTKeyFlag;
     bool ExportTTKeyFlag;
     bool ConflictAnalysisKeyFlag;
-
     double PauseEntryRestartTime;
 ///< time value of the timetable restart time (as a double) on entry to pause mode
 
@@ -1412,6 +1410,12 @@ showing.  See DevHistory.txt for the version at v2.5.0 for details. */
     int PointFlashVectorPosition, DivergingPointVectorPosition;
     int SelectBitmapHLoc;
 ///< the original (prior to moving & after finished moving) HLoc value of Edit->Select & Edit->Reselect
+
+
+//    int TestFunctionCount; //used only in test function
+//    bool TestFunctionFirstPass; //used only in test function
+//    std::list<unsigned int> IDList;
+
     int SelectBitmapMouseLocX;
 ///< when flag SelectPickedUp is set to true (see above - to allow a selected screen area to move during MouseMove and remain in place at MouseUp) the mouse position is saved in SelectBitmapMouseLocX & Y for use later in MouseMove & MouseUp.
     int SelectBitmapMouseLocY;
